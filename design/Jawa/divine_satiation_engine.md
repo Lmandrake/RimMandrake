@@ -918,3 +918,13 @@ canon"; BENCH ideas invited and appended below.
   landing-judgement are the mod (working name candidates: Ninefold,
   The Front, Dispensations). The satiation engine owes the scorecard spec
   either way.
+
+## Ruling 2026-08-30 — the Narrator (owner; canon.yml narrator)
+Reconciliation calls 1+2 ratified WITH an amendment: a hidden, NON-EGOIC
+narrator exists — the original ship-mind's remnant — voicing the gods' acts in
+second person ("The Hooded One looks down upon the ship with an unseen frown...")
+and free to reference unrevealed lore ("...once known as the Cradle (Kolyska in
+their long dead tongue)..."). Into-the-Woods register: within and beyond the
+world at once. No ego, no self-description, no ship-moods — the
+no-integrating-self ruling stands, amended. v1: pre-authored prose only. The
+"in front" sketch's letters and hologram messages inherit this voice.

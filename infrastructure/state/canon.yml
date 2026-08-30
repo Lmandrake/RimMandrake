@@ -1249,6 +1249,32 @@ anomaly_content:
     Assailant flesh dungeon (ASSAILANT_FLESH_DUNGEON_1), and the sarlacc's
     design may draw on it too (explore at its design sitting). Nothing else
     touches Anomaly content.
+narrator:
+  ruled: true
+  src: >
+    Owner, 2026-08-30, ratifying reconciliation calls 1+2 WITH this amendment,
+    verbatim: "There IS a hidden, non-egoic narrator present (the original
+    ship-mind), because when the gods speak it will be in the second person.
+    'The Hooded One looks down upon the ship with an unseen frown, eyes
+    burning, and with a wave the ship launches of its own accord yet again,
+    out of pilot control.' That is what is left of the original ship-mind: the
+    narrator speaking of and to both the Jawa crew and their nine gods. The
+    Narrator will occasionally reference lore the player doesn't even know
+    yet. 'Unlike the old masters of the vessel, when it was once known as the
+    Cradle (Kolyska in their long dead tongue), these young upstarts seek
+    profit above proliferation of life.' That sort of thing, like the Narrator
+    in Stephen Sondheim's Into the Woods, who seems to be both within the
+    world and beyond it at the same time." AMENDS no-integrating-self
+    (2026-08-15): still no integrating SELF, no ego, no self-description, no
+    moods-of-the-ship - but a NARRATOR voice exists: the original ship-mind's
+    remnant, narrating crew and gods in second/third person, within and
+    beyond the world at once. It is also a lore-reveal channel (consistent
+    with cradle_memory: the temple's surfacing memory IS this voice), free to
+    reference history the player has not yet learned. Register rule ratified
+    same breath: players/UI say "The Utinni"; "Kolyska" appears only in the
+    Cradle-register (the Narrator may use it, as the example does). v1
+    no-LLM-voice stands: the Narrator lands as pre-authored letter/flavor
+    prose in v1.
 cradle_memory:
   ruled: true
   src: >

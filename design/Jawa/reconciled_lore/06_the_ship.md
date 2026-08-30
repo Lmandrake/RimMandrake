@@ -24,7 +24,14 @@ the gods do not get left behind; they instantiate. And the ship fits them
 better than any worshipper ever did — an all-knowing, omnipresent power that
 never sleeps, sees every chamber, speaks from the walls.
 
-**🔴 There is no "and yet I am me."** No integrating self, no narrator. Nine
+**🔴 There is no "and yet I am me."** No integrating self — AND YET a
+NARRATOR exists [owner 2026-08-30, canon.yml narrator, amending this line]:
+hidden, NON-EGOIC, the original ship-mind's remnant, speaking of and to both
+crew and gods in second/third person, Into-the-Woods-like — within and beyond
+the world at once — and free to reference lore the player has not yet learned
+("...when it was once known as the Cradle (Kolyska in their long dead
+tongue)..."). It has no self-description, no moods, no ego; it is a VOICE,
+not a landlord. In v1 it lands as pre-authored letter/flavor prose. Nine
 tenants plus the Cradle's old purpose, sharing hardware, nothing above them.
 "The Cradle-Mind" is the CREW's name for the thing in the walls; the thing in
 the walls calls itself nothing. A conversation with the ship is a conversation
