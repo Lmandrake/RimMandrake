@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T20:11:19Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T20:22:47Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -207,6 +207,15 @@ kind:     task
 summary:  Phase 2 prep per design/Jawa/pawnflavordesign.md § Open questions, item 6: a
 prose:    infrastructure/state/items/PAWN_FLAVOR_PHASE2_PROSE_1.md
 
+## GRAFFITI_MOD_EXPANSION_1 Assess the subscribed graffiti mod, then expand it: sacred graffiti, socially infuriating/amusing graffiti, beautiful graffiti
+state:    doing
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+summary:  Scope notes (BENCH, filing sitting 2026-08-30)
+prose:    infrastructure/state/items/GRAFFITI_MOD_EXPANSION_1.md
+
 ## COLONY_VISIBILITY_STAT_1 Design Colony Visibility as a first-class player-facing stat (F18): nine hands on one dial, owns threat-point modulation (replace-not-stack per F12); mod feasibility pass
 state:    doing
 row:      unassigned
@@ -351,16 +360,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## GRAFFITI_MOD_EXPANSION_1 Assess the subscribed graffiti mod, then expand it: sacred graffiti, socially infuriating/amusing graffiti, beautiful graffiti
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  Scope notes (BENCH, filing sitting 2026-08-30)
-prose:    infrastructure/state/items/GRAFFITI_MOD_EXPANSION_1.md
 
 ## SACRED_SITES_PASS_1 Sacred sites (F16): sweep all Ashkarr tile contents, mutators, landforms and landmarks for god-pleasing sites (oasis pleases Oomo); propose new landmark kinds + the tile-to-god annotation pass and tidal day/night split
 state:    proposed

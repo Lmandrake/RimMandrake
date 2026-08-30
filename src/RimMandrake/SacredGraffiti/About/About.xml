@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimMandrake Sacred Marks</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.sacredgraffiti</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+    <li>Mlie.GraffitiMod</li>
+  </loadAfter>
+  <modDependencies>
+    <li>
+      <packageId>Mlie.GraffitiMod</packageId>
+      <displayName>Graffiti Mod (Continued)</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2986996933</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+  <description>Sacred devotional wall-marks, one per Salvation god, built on Graffiti Mod
+(Continued)'s BaseGraffiti filth infrastructure (Mlie.GraffitiMod, workshop id 2986996933).
+
+GraffitiMod_Paint's spawn loop is hardcoded by defName in its DLL
+(GraffitiMod.dll: DefDatabase&lt;ThingDef&gt;.GetNamed("GraffitiMod_Paint") inside
+JoyGiver_PaintGraffiti / JobDriver_PaintGraffiti) - there is no plain-XML route
+to make an unhappy pawn's spontaneous graffiti spree choose a different
+ThingDef, and no first-class "style"/"category" concept exists to hang
+sacred/social/mood hooks on. So these marks are standalone ThingDefs
+(ParentName BaseGraffiti, reusing its filth/building fields) - real, valid,
+game-ready content - but nothing yet spawns them automatically. Placement
+(a ritual outcome, a ThingSetMaker, a bridge script) is the deferred piece;
+see GRAFFITI_MOD_EXPANSION_1 for the full assessment.
+
+Shipped: RimMandrake_SacredMark_Ishko (a pair of glowing orange eyes in the
+dark - Ishko the Unmaskable's canon iconography, design/Jawa/divine_satiation_engine.md
+pantheon section). Positive Beauty, unlike GraffitiMod's uniformly-ugly filth -
+devotional art, not vandalism.
+
+Designed, not yet arted: eight sibling marks, one per remaining Salvation god,
+same recipe (ParentName BaseGraffiti + new texPath + new statBases) - see the
+item file for each god's canon iconography anchor.</description>
+</ModMetaData>

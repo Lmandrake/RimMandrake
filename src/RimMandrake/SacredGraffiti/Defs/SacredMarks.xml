@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ============================================================
+       Sacred graffiti — devotional wall-marks, one per Salvation god.
+
+       ParentName reaches across mods into Mlie.GraffitiMod's BaseGraffiti
+       (see that mod's ThingDefs/GraffitiThing.xml) for the filth/building
+       field set an ordinary wall-mark needs: filth placement+cleaning,
+       building.canPlaceOverWall, zero flammability. Requires
+       Mlie.GraffitiMod loaded first (About.xml loadAfter/modDependencies).
+
+       Unlike GraffitiMod_Paint (the mod's one hardcoded, always-ugly
+       filth def), each mark here carries its OWN statBases so a devotional
+       mark can read as beautiful (positive Beauty) rather than vandalism -
+       the same statBases field GraffitiMod already uses, just given a
+       different sign per god's canon nature.
+
+       Iconography source (LOCKED, do not invent new imagery):
+       design/Jawa/divine_satiation_engine.md, "The Pantheon — canon of
+       record", each god's "Form:" line.
+
+       ★ Nothing spawns these yet. GraffitiMod's own spawn loop cannot
+       reach them (defName is hardcoded in its DLL — see About.xml and
+       GRAFFITI_MOD_EXPANSION_1). Placement is deferred, scoped C#/design
+       work: a ritual-outcome effect, a ThingSetMaker on a shrine build, or
+       a bridge script for authored content. Until then these are valid,
+       inert content — spawnable only via dev-mode "spawn thing" for
+       inspection. ============================================================ -->
+
+  <ThingDef ParentName="BaseGraffiti">
+    <defName>RimMandrake_SacredMark_Ishko</defName>
+    <label>sacred mark of Ishko</label>
+    <description>A pair of glowing orange eyes daubed on the wall in ochre and rust pigment, radiating short watchful strokes into the dark around them. Ishko the Unmaskable's mark - painted by a hand that believes stillness is holy, in the one god who does not punish a skipped rite, because to remain hidden and unlooked-at is, to him, already righteous.</description>
+    <graphicData>
+      <graphicClass>Graphic_Single</graphicClass>
+      <texPath>Things/Filth/SacredMark/SacredMark_Ishko</texPath>
+    </graphicData>
+    <statBases>
+      <Flammability>0</Flammability>
+      <Beauty>6</Beauty>
+      <Cleanliness>-2</Cleanliness>
+    </statBases>
+  </ThingDef>
+
+</Defs>
