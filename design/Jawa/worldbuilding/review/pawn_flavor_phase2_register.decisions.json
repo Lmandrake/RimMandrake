@@ -1,7 +1,8 @@
 {
  "sheet": "pawn_flavor_phase2_register",
- "posture": "draft-review; default APPROVE - a row left untouched ships the drafted prose as-is",
- "prefill": true,
+ "posture": "draft-review; default APPROVE - a row left undecided ships the drafted prose as-is",
+ "savedAt": "2026-08-30T19:13:16.582Z",
+ "decidedBy": "owner-sheet",
  "rows": {
   "ThoughtDef::AteBabyFood": {
    "d": "approve",
