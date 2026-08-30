@@ -140,14 +140,14 @@
   "open": true
  },
  "DROID_TILES_SOURED_TERRAIN_1": {
-  "fp": "619dcc6e0818",
+  "fp": "09485f9f1c5c",
   "number": 68,
   "open": true
  },
  "DUMPER_SWALLOWS_CACHE_THROW_1": {
-  "fp": "2572b2235fbe",
+  "fp": "96429b30966e",
   "number": 7,
-  "open": true
+  "open": false
  },
  "DUMP_PRODUCER_DATED_CAPTURES_1": {
   "fp": "d9e271ccd794",
@@ -183,6 +183,11 @@
   "fp": "48c036aa9d76",
   "number": 13,
   "open": false
+ },
+ "FORCE_SYSTEM_OWNERSHIP_1": {
+  "fp": "d39d31d3a373",
+  "number": 69,
+  "open": true
  },
  "GM_GATE_INCIDENT_SCHEDULE_1": {
   "fp": "bb0163ebb3ee",
@@ -317,6 +322,11 @@
  "VEHICLE_ION_TIER_1": {
   "fp": "4ee7d6eda96b",
   "number": 53,
+  "open": true
+ },
+ "WEAPONS_ABSORPTION_WAVE_1": {
+  "fp": "9c1ae93f99c4",
+  "number": 70,
   "open": true
  },
  "WILD_ANIMALS_PADDED_LISTS_1": {

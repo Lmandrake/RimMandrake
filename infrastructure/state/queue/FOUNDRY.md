@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T15:07:41Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T15:17:05Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -80,6 +80,15 @@ target:   v1
 kind:     bug
 summary:  GalacticEmpire.xml's PatchOperationReplace on
 prose:    infrastructure/state/items/EMPIRE_WHITELIST_OVERRIDDEN_1.md
+
+## DROID_SYSTEM_BUILD_1 Build the unifying droid mod per droid_system_spec.md (parked until the owner reopens)
+state:    doing
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     build
+summary:  design/Jawa/droidsystembuildspec.md — architecture (own DLL + HAR substrate,
+prose:    infrastructure/state/items/DROID_SYSTEM_BUILD_1.md
 
 ## OTHER_STUN_WEAPONS_SURVEY_1 Survey of every other stun-capable damage type: which have body-size scaling, which don't
 state:    doing
@@ -356,16 +365,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## DROID_SYSTEM_BUILD_1 Build the unifying droid mod per droid_system_spec.md (parked until the owner reopens)
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     build
-thin:     spec, verify and criteria all present
-summary:  design/Jawa/droidsystembuildspec.md — architecture (own DLL + HAR substrate,
-prose:    infrastructure/state/items/DROID_SYSTEM_BUILD_1.md
 
 ## WEAPONS_ABSORPTION_WAVE_1 Absorb all SW weapons/gear content into Jawa_Armoury: defName-preserving, packs retire
 state:    proposed

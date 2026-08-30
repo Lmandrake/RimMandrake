@@ -32,6 +32,19 @@ his list since the timestamp above.
 
 ---
 
+## 🔴 CURRENT MOD SET — empirepursuit fork swapped in, 2026-08-30
+
+**`FULL.LATEST.xml` was stale against live** (`FOUNDRY`, found while prepping a
+Droidworks quicktest — `which_is_live()` read UNRECOGNISED). The divergence was the
+already-known `EMPIRE_PURSUIT_SURVEY_SHADOW_1` fork swap, done live on 2026-08-29 with
+its own pre-swap backup already saved (`ModsConfig_2026-08-29_pre_empirepursuit_swap.xml`,
+byte-identical to the stale `FULL.LATEST`) — never propagated to `LATEST` until now.
+Re-captured from live (md5 `41cda74e`), 585 mods either way.
+
+| out (1) | in (1) |
+|---|---|
+| `matathias.ruthlessmechanoids` | `mandrake.empirepursuit` |
+
 ## 🔴 CURRENT MOD SET — two aesthetic mods added, 2026-08-29
 
 **The owner added two aesthetic mods via RimSort and re-sorted** (BENCH, at his
