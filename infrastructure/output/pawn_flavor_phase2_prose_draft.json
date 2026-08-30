@@ -1,0 +1,2012 @@
+{
+ "ThoughtDef::AlcoholWithdrawal": {
+  "label": "off the still-brew",
+  "description": "My hands won't stop shaking and everything grates on me. All I can think about is the taste of the last bottle I drained."
+ },
+ "ThoughtDef::AmbrosiaWithdrawal": {
+  "label": "ambrosia craving",
+  "description": "I'm cold clear through, heavy in the bones. Never thought I'd crave a piece of fruit this bad, but I'd trade good chrome for one bite of ambrosia right now."
+ },
+ "ThoughtDef::Ascetic": {
+  "label": "content with little",
+  "description": "My bunk is bare and small, just how I like it. No use hanging chrome on the wall when it could keep the vaporators running instead."
+ },
+ "ThoughtDef::AteCorpse": {
+  "label": "ate a raw carcass",
+  "description": "I tore meat straight off a dead animal's bones, no butchering, no fire. Out here you eat what's in front of you or you don't eat, but I still feel sick about it."
+ },
+ "ThoughtDef::AteFineMeal": {
+  "label": "ate a fine meal",
+  "description": "Real spice, real meat, cooked right. Out here that's worth more than scrap, and I savored every bite."
+ },
+ "ThoughtDef::AteHumanlikeMeatAsIngredient": {
+  "label": "ate cooked sapient flesh",
+  "description": "I ate a meal cooked from the flesh of one of the free peoples. It's mixed in there quiet as scrap-meat, but I know what it is, and it turns my stomach."
+ },
+ "ThoughtDef::AteHumanlikeMeatAsIngredientCannibal": {
+  "label": "ate cooked sapient flesh",
+  "description": "I ate a meal built from someone's flesh, dressed up nice with what herbs we had. Better than most rations I've had on this rock, don't tell the others I said that."
+ },
+ "ThoughtDef::AteHumanlikeMeatDirect": {
+  "label": "ate raw sapient flesh",
+  "description": "I ate the raw flesh of one of the free peoples, no fire, no cooking, like a womp-rat scavenging a carcass. I can still taste it and I want to scrub my own mouth out with sand."
+ },
+ "ThoughtDef::AteHumanlikeMeatDirectCannibal": {
+  "label": "ate raw sapient flesh",
+  "description": "Raw, still warm, no seasoning needed. I ate it like an animal would, and it was better than any ration cube I've cracked open out here."
+ },
+ "ThoughtDef::AteInImpressiveDiningRoom": {
+  "label": "ate in a fine mess hall",
+  "description": "We ate somewhere that actually looks cared for, swept floor, steady light, chairs that match. Feels good to sit down to a meal like that."
+ },
+ "ThoughtDef::AteInsectMeatAsIngredient": {
+  "label": "ate cooked insect meat",
+  "description": "The seasoning mostly covered the taste of the gray, slimy meat underneath, but I still bit into something soft and wet I couldn't name. Better not to ask what crawled into this pot."
+ },
+ "ThoughtDef::AteInsectMeatDirect": {
+  "label": "ate insect meat",
+  "description": "Gray, slimy, and it popped wrong between my teeth. Might be the worst thing I've put in my mouth since the water ration went bad."
+ },
+ "ThoughtDef::AteKibble": {
+  "label": "ate kibble",
+  "description": "I ate the same pressed meal-scraps we feed the banthas. Makes me feel like just another animal working this camp for its keep."
+ },
+ "ThoughtDef::AteLavishMeal": {
+  "label": "ate a lavish meal",
+  "description": "That was a real feast, good meat, good spice, no scrimping. Fed something in me that isn't just my stomach."
+ },
+ "ThoughtDef::AteNutrientPasteMeal": {
+  "label": "ate nutrient paste",
+  "description": "Gray paste out of the dispenser again, no taste, no texture worth mentioning. Keeps me standing, that's all it's good for."
+ },
+ "ThoughtDef::AteRawFood": {
+  "label": "ate raw food",
+  "description": "I ate it raw, straight off the cutting board, no fire under it. We've got a stove for a reason, this isn't how people are supposed to eat."
+ },
+ "ThoughtDef::AteRawHumanlikeMeat": {
+  "label": "ate raw sapient meat",
+  "description": "I ate the raw flesh of one of the free peoples. No fire touched it. I don't know how to feel about what that makes me."
+ },
+ "ThoughtDef::AteRottenFood": {
+  "label": "ate rotten food",
+  "description": "Whatever that was, it had gone soft and wrong days before I ate it. It practically dissolved in my mouth, and not the way food is supposed to."
+ },
+ "ThoughtDef::AteWithoutTable": {
+  "label": "ate without a table",
+  "description": "Ate crouched in the sand again, plate balanced on my knee. We haul scrap for half the sector, you'd think we could scavenge one decent table."
+ },
+ "ThoughtDef::BondedAnimalBanished": {
+  "label": "bonded animal {0} banished",
+  "description": "They cast my animal out of the camp. That creature and I were bonded, how could they just send it into the waste like that?"
+ },
+ "ThoughtDef::BondedAnimalDied": {
+  "label": "bonded animal {0} died",
+  "description": "It was one of a kind to me, and now it's gone. This galaxy doesn't care what it takes from you."
+ },
+ "ThoughtDef::BondedAnimalLost": {
+  "label": "bonded animal {0} lost",
+  "description": "It was one of a kind to me, and now it's gone from my life. Out here you lose things, I know that, but this one still stings."
+ },
+ "ThoughtDef::BondedAnimalMaster": {
+  "label": "with my bonded animal {0}",
+  "description": "Having my animal near settles something in me. Out on this rock, that bond is worth more than most people I've met."
+ },
+ "ThoughtDef::BondedAnimalReleased": {
+  "label": "bonded animal {0} released",
+  "description": "They let my animal go, set it loose into the dunes. It was one of a kind to me, why did it have to be that one?"
+ },
+ "ThoughtDef::BrawlerUnhappy": {
+  "label": "wants to brawl, not shoot",
+  "description": "I hate picking things off from a distance with a blaster I barely trust. Give me a blade and let me get in close where I can actually feel the fight."
+ },
+ "ThoughtDef::BrokeUpWithMe": {
+  "label": "broke up with me",
+  "description": "They ended it between us, just like that. I keep replaying it, trying to work out where it went wrong."
+ },
+ "ThoughtDef::ButcheredHumanlikeCorpse": {
+  "label": "butchered a sapient corpse",
+  "description": "I cut up a body like it was game meat off the sand, joints, cuts, the whole grim business. I know why we needed it, but it doesn't sit right."
+ },
+ "ThoughtDef::ButcheredHumanlikeCorpseOpinion": {
+  "label": "butchered a sapient corpse",
+  "description": "I heard what they did to that body, cut it up like scrap metal on a bench. I can't look at them quite the same way now."
+ },
+ "ThoughtDef::CheatedOnMe": {
+  "label": "cheated on me",
+  "description": "They went behind my back with someone else. I trusted them, and that trust is scrap now."
+ },
+ "ThoughtDef::CheatedOnMeMood": {
+  "label": "cheated on by {0}",
+  "description": "How could they do that to me? I gave them more than I give most people out here, and this is what I get back."
+ },
+ "ThoughtDef::ClothedNudist": {
+  "label": "constrained by clothes",
+  "description": "I'm no fan of wrappings and layers, but I'm bundled up anyway. Not unbearable, just chafing, like sand caught under a strap."
+ },
+ "ThoughtDef::ColonistBanishedToDie": {
+  "label": "banished someone to die",
+  "description": "We put them out past the dunes with nothing, knowing full well the desert doesn't forgive that. That's as good as a death sentence and we all know it."
+ },
+ "ThoughtDef::ColonistLeftUnburied": {
+  "label": "left unburied",
+  "description": "One of ours is dead and just lying out there in the open, food for scavengers. Nobody deserves that, everybody gets buried properly, or at least burned right."
+ },
+ "ThoughtDef::ColonyPrisonerEscaped": {
+  "label": "a prisoner escaped",
+  "description": "A prisoner slipped right out of our hands. If we can't hold onto someone we've got chained up, what's actually keeping the rest of us safe here?"
+ },
+ "ThoughtDef::DeadMansApparel": {
+  "label": "wearing a dead man's gear",
+  "description": "This gear came off someone who died in it. I scrubbed it down and it's still good kit, but it feels wrong against my skin."
+ },
+ "ThoughtDef::DoingPassionateWork": {
+  "label": "loves this work",
+  "description": "This is the work I was built for, or as close as I'll ever get. Give me this all day and I'd never once complain about the heat."
+ },
+ "ThoughtDef::DrugDesireFascination": {
+  "label": "craving chems",
+  "description": "Chems fascinate me, I want to feel that again, and worse, I want more of it than I did last time."
+ },
+ "ThoughtDef::DrugDesireFascinationSatisfied": {
+  "label": "chems satisfied",
+  "description": "Chems fascinate me, and getting my fix again felt as good as I hoped it would."
+ },
+ "ThoughtDef::DrugDesireInterest": {
+  "label": "curious about chems",
+  "description": "I'm curious about chems, not obsessed, just curious enough that I keep thinking about trying a little more."
+ },
+ "ThoughtDef::DrugDesireInterestSatisfied": {
+  "label": "chems satisfied",
+  "description": "I'm curious about chems, and scratching that itch again felt good."
+ },
+ "ThoughtDef::Drunk": {
+  "label": "drunk",
+  "description": "The drink's got hold of me now. Everything's a little looser, a little slower, a little further away."
+ },
+ "ThoughtDef::EnvironmentCold": {
+  "label": "cold",
+  "description": "The desert nights cut right through whatever I'm wearing. I can't stop shivering, and all I can think about is getting near a heater."
+ },
+ "ThoughtDef::EnvironmentDark": {
+  "label": "in the dark",
+  "description": "I've been stuck without decent light for too long now. Out here in the dark, every sound could be something with teeth."
+ },
+ "ThoughtDef::EnvironmentHot": {
+  "label": "too hot",
+  "description": "Twin suns overhead and no shade in sight, I'm cooking in my own skin. I'd give good credits for one breath of cool air."
+ },
+ "ThoughtDef::ExecutedPrisoner": {
+  "label": "executed a prisoner",
+  "description": "We put a prisoner down instead of letting them go or keeping them chained. That's not a decision that sits easy, whatever the reason was."
+ },
+ "ThoughtDef::ForcedMeToTakeDrugs": {
+  "label": "forced me to take chems",
+  "description": "They forced something into me I never would've taken on my own. I still feel it in my blood and I don't like what that says about them."
+ },
+ "ThoughtDef::ForcedMeToTakeDrugsMood": {
+  "label": "forced to take chems",
+  "description": "I don't touch chems, not ever, not by choice. Somebody forced it into me anyway, and now I feel like something's crawling under my skin."
+ },
+ "ThoughtDef::ForcedMeToTakeLuciferiumMood": {
+  "label": "forced to take luciferium",
+  "description": "I keep my body my own, no implants, no chems, nothing not born in me. They forced luciferium into me anyway, and now I feel hollowed out and refilled with something else."
+ },
+ "ThoughtDef::GoJuiceHigh": {
+  "label": "high on go-juice",
+  "description": "I'm wired but steady, every nerve dialed in tight. Point me at a target and I won't miss."
+ },
+ "ThoughtDef::GoJuiceWithdrawal": {
+  "label": "go-juice withdrawal",
+  "description": "My head's full of sand, my limbs weigh twice what they should, and my eyes won't hold still on anything. Everything hurts and I can't tell you why."
+ },
+ "ThoughtDef::GotMarried": {
+  "label": "got married to {0}",
+  "description": "We're bonded now, properly, in front of everyone. Starting something new together feels like the best trade I've ever made."
+ },
+ "ThoughtDef::Greedy": {
+  "label": "wants a better bunk",
+  "description": "I want a room that actually looks like something, not this bare hole I sleep in. A little more than I have would go a long way."
+ },
+ "ThoughtDef::HadAngeringFight": {
+  "label": "had an angering fight",
+  "description": "That fight left me shaking with anger, not relief. I'm still turning it over, still furious."
+ },
+ "ThoughtDef::HadCatharticFight": {
+  "label": "had a cathartic fight",
+  "description": "Got some things off my chest with my fists instead of my mouth. Feels like I let go of something I'd been carrying too long."
+ },
+ "ThoughtDef::HappyNude": {
+  "label": "happily nude",
+  "description": "No wraps, no layers, nothing between me and the air. I feel free out here, more myself than I do bundled up in gear."
+ },
+ "ThoughtDef::HardWorkerVsLazy": {
+  "label": "hard worker vs. lazy",
+  "description": "I put in the hours every single day, and I watch them drag their feet. Hard not to resent someone who lets the rest of us carry the load."
+ },
+ "ThoughtDef::HoldingMePrisoner": {
+  "label": "holding me prisoner",
+  "description": "They're keeping me chained up here against my will. I don't forget who put me in this cell, whatever else they do for me."
+ },
+ "ThoughtDef::HospitalPatientRoomStats": {
+  "label": "in a rough infirmary",
+  "description": "This sickbay is barely holding together, cracked walls, bad light, whatever was on hand when they built it. Hard to heal right in a place like this."
+ },
+ "ThoughtDef::HumanLeatherApparelHappy": {
+  "label": "wearing sapient-hide gear",
+  "description": "I like wearing what I took off someone who couldn't stop me. Anyone who looks close enough will know exactly what kind of person they're dealing with."
+ },
+ "ThoughtDef::Hungover": {
+  "label": "hungover",
+  "description": "My skull is pounding like someone's hammering dents out of it. Whatever I drank last night, it wasn't worth this."
+ },
+ "ThoughtDef::Inebriated": {
+  "label": "feeling the drink",
+  "description": "That drink's loosened something in me, warm, a little unsteady, not minding much of anything right now."
+ },
+ "ThoughtDef::Insulted": {
+  "label": "insulted",
+  "description": "They insulted me straight to my face. I'm not going to forget that anytime soon."
+ },
+ "ThoughtDef::InsultedMood": {
+  "label": "insulted",
+  "description": "Somebody just insulted me right to my face, no shame about it at all. What kind of person does that to someone they work beside?"
+ },
+ "ThoughtDef::Jealous": {
+  "label": "jealous of {0}'s bunk",
+  "description": "Their room's better than mine and I can't stop noticing it. I need the best space here, not seconds."
+ },
+ "ThoughtDef::JoyActivityInImpressiveRecRoom": {
+  "label": "had fun in a good rec room",
+  "description": "Blew off some steam somewhere that actually looks nice for once, decent light, decent seating, no scrap piled in the corner. Made the fun better."
+ },
+ "ThoughtDef::KilledColonyAnimal": {
+  "label": "culled our own stock",
+  "description": "I killed one of the colony's own beasts. It wasn't a raider, it was ours. My gut doesn't like that math."
+ },
+ "ThoughtDef::KilledMyBondedAnimal": {
+  "label": "killed my bonded beast",
+  "description": "I killed the animal that walked at my heel every day. My own hands did that. I don't think the guilt washes off like sand does."
+ },
+ "ThoughtDef::KilledMyFriend": {
+  "label": "killed my friend",
+  "description": "I killed someone who trusted me at my back. However it happened, that's a debt I can't pay off in scrap."
+ },
+ "ThoughtDef::KilledMyLover": {
+  "label": "killed my lover",
+  "description": "My own hands ended the one I loved. No amount of sand or silence buries that."
+ },
+ "ThoughtDef::KnowButcheredHumanlikeCorpse": {
+  "label": "we butchered a person",
+  "description": "We broke someone down like they were parts off a busted droid, not a person. I know it. It doesn't sit right in my chest."
+ },
+ "ThoughtDef::KnowColonistDied": {
+  "label": "one of ours died",
+  "description": "One of our own is off the manifest for good. We're supposed to look after our people better than that."
+ },
+ "ThoughtDef::KnowColonistExecuted": {
+  "label": "a colonist was put down",
+  "description": "The clan judged and it was carried out \u2014 execution or a mercy killing, whichever it was. Right by clan law doesn't make it feel any less like losing someone."
+ },
+ "ThoughtDef::KnowGuestExecuted": {
+  "label": "a guest was put down",
+  "description": "We judged a prisoner or guest and ended them, execution or mercy \u2014 call it justice, call it kindness. Either way it's still a body that used to talk to us."
+ },
+ "ThoughtDef::KnowGuestOrganHarvested": {
+  "label": "harvested a guest's organs",
+  "description": "We cut pieces out of someone who never got a say. Doesn't matter that we needed the parts \u2014 that's a rotten kind of salvage."
+ },
+ "ThoughtDef::KnowPrisonerSold": {
+  "label": "sold a prisoner",
+  "description": "We traded a living person off like they were spare plating. Even out here, that one turns my stomach."
+ },
+ "ThoughtDef::MasochistPain": {
+  "label": "the pain feels good",
+  "description": "Ow... heh. There's something almost right about the sting. Don't stop now \u2014 I could get used to running hot like this."
+ },
+ "ThoughtDef::MyAuntDied": {
+  "label": "my aunt {0} died",
+  "description": "My aunt's gone. One more name off the family ledger."
+ },
+ "ThoughtDef::MyBrotherDied": {
+  "label": "my brother {0} died",
+  "description": "My brother's dead. Same blood as me, and now half of it's gone."
+ },
+ "ThoughtDef::MyCousinDied": {
+  "label": "my cousin {0} died",
+  "description": "My cousin didn't make it. Same blood, same clan \u2014 that one leaves a mark."
+ },
+ "ThoughtDef::MyDaughterDied": {
+  "label": "my daughter {0} died",
+  "description": "My daughter is dead. She was my own blood \u2014 I don't know how to carry that."
+ },
+ "ThoughtDef::MyFatherDied": {
+  "label": "my father {0} died",
+  "description": "My father's gone. He taught me half of what I know, and now he's just gone for good."
+ },
+ "ThoughtDef::MyFianceDied": {
+  "label": "my fiance {0} died",
+  "description": "My fiance is dead. Whatever we were building together, it's scrap now \u2014 my future along with him."
+ },
+ "ThoughtDef::MyFianceeDied": {
+  "label": "my fiancee {0} died",
+  "description": "My fiancee is dead. Whatever we were building together, it's scrap now \u2014 my future along with her."
+ },
+ "ThoughtDef::MyGrandchildDied": {
+  "label": "my grandchild {0} died",
+  "description": "My grandchild died. Same blood, three generations down, and now that thread's cut."
+ },
+ "ThoughtDef::MyGrandparentDied": {
+  "label": "my grandparent {0} died",
+  "description": "My grandparent's gone. One more root pulled out of the family line."
+ },
+ "ThoughtDef::MyHalfSiblingDied": {
+  "label": "my half-sibling {0} died",
+  "description": "My half-sibling died. Half the blood, all of the loss."
+ },
+ "ThoughtDef::MyHusbandDied": {
+  "label": "{0} is gone",
+  "description": "My husband's gone. The bunk's got twice the space now and none of the warmth."
+ },
+ "ThoughtDef::MyKinDied": {
+  "label": "my kin {0} died",
+  "description": "One of my kin is dead. That's blood I won't get back."
+ },
+ "ThoughtDef::MyLoverDied": {
+  "label": "my lover {0} died",
+  "description": "My lover is dead. I'm alone, and the quiet after is worse than the desert ever was."
+ },
+ "ThoughtDef::MyLoverLost": {
+  "label": "my lover {0} lost",
+  "description": "My lover's gone missing out there. I keep telling myself they'll turn up on the next caravan in."
+ },
+ "ThoughtDef::MyMotherDied": {
+  "label": "my mother {0} died",
+  "description": "My mother's gone. She's not coming back this time."
+ },
+ "ThoughtDef::MyNephewDied": {
+  "label": "my nephew {0} died",
+  "description": "My nephew's dead. Such a good kid \u2014 gone too soon."
+ },
+ "ThoughtDef::MyNieceDied": {
+  "label": "my niece {0} died",
+  "description": "My niece's dead. Such a good kid \u2014 gone too soon."
+ },
+ "ThoughtDef::MySisterDied": {
+  "label": "my sister {0} died",
+  "description": "My sister's dead. Same blood as me, and now half of it's gone."
+ },
+ "ThoughtDef::MySonDied": {
+  "label": "my son {0} died",
+  "description": "My son is dead. My own blood \u2014 I don't know how to carry that."
+ },
+ "ThoughtDef::MyUncleDied": {
+  "label": "my uncle {0} died",
+  "description": "My uncle's gone. One more name off the family ledger."
+ },
+ "ThoughtDef::MyWifeDied": {
+  "label": "{0} is gone",
+  "description": "My wife's gone. The bunk's got twice the space now and none of the warmth."
+ },
+ "ThoughtDef::Naked": {
+  "label": "naked",
+  "description": "I've got no wraps on at all. Out here that's not modesty, that's bare flesh open to sun and grit \u2014 I feel raw."
+ },
+ "ThoughtDef::NeedBeauty": {
+  "label": "ugly surroundings",
+  "description": "This place is ruin and rot, not honest scrap. I can't stand looking at it any longer."
+ },
+ "ThoughtDef::NeedFood": {
+  "label": "gut's empty",
+  "description": "My stomach's gnawing and it's getting hard to think past it. Haven't had a real meal in too long \u2014 starting to feel it in my hands."
+ },
+ "ThoughtDef::NeedJoy": {
+  "label": "need to unwind",
+  "description": "It's been too long since I did anything that wasn't work. My hands want a task that isn't labor for once."
+ },
+ "ThoughtDef::NeedOutdoors": {
+  "label": "buried too deep",
+  "description": "Too many shifts under solid rock with the whole ridge pressing down on my skull. I need open air and a horizon, not another ceiling."
+ },
+ "ThoughtDef::NeedRest": {
+  "label": "running on empty",
+  "description": "I haven't slept enough. My eyes are heavy and my hands are getting careless \u2014 I need to lie down before I drop."
+ },
+ "ThoughtDef::NeedRoomSize": {
+  "label": "cramped quarters",
+  "description": "This room's barely big enough to turn around in. I feel like cargo stuffed in a crate, not a person with space to breathe."
+ },
+ "ThoughtDef::NewColonyHope": {
+  "label": "fresh start",
+  "description": "Still finding my feet in this new outpost, but there's something to it. I want to believe this claim pans out."
+ },
+ "ThoughtDef::NightOwlDuringTheDay": {
+  "label": "wrong shift",
+  "description": "My body wants the dark hours, not this glare. Working under the suns just isn't my rhythm."
+ },
+ "ThoughtDef::NotBondedAnimalMaster": {
+  "label": "not {0}'s partner",
+  "description": "I should be working beside my bonded animal, not stuck away from it. We're better as a pair out here."
+ },
+ "ThoughtDef::Nuzzled": {
+  "label": "nuzzled by a critter",
+  "description": "Some little beast pushed its snout into my hand like it actually likes me. Cuts right through the grind \u2014 I feel steadier for it."
+ },
+ "ThoughtDef::ObservedLayingCorpse": {
+  "label": "saw a body",
+  "description": "There's a corpse just lying out where anyone can see it. Doesn't matter how many I've hauled \u2014 that's still unsettling."
+ },
+ "ThoughtDef::ObservedLayingRottingCorpse": {
+  "label": "saw a rotting body",
+  "description": "That corpse has been sitting long enough to turn. The smell and the sight together turn my stomach."
+ },
+ "ThoughtDef::Pain": {
+  "label": "in pain",
+  "description": "Ow \u2014 that actually hurts. Hard to keep my head on anything else while it's got hold of me."
+ },
+ "ThoughtDef::PawnWithBadOpinionDied": {
+  "label": "my rival {0} died",
+  "description": "Serves them right, honestly. Out here the sand settles its own scores sometimes."
+ },
+ "ThoughtDef::PawnWithGoodOpinionDied": {
+  "label": "my friend {0} died",
+  "description": "A good one is gone for good. This galaxy gets a little darker with every friend it takes."
+ },
+ "ThoughtDef::PawnWithGoodOpinionLost": {
+  "label": "my friend {0} lost",
+  "description": "A good one's gone missing out there. This galaxy gets a little darker with every friend it costs me."
+ },
+ "ThoughtDef::PrisonBarracks": {
+  "label": "the barracks I'm caged in",
+  "description": "This is the barracks they're keeping me in. It tells me plenty about how this clan treats the ones it holds."
+ },
+ "ThoughtDef::PrisonCell": {
+  "label": "my cell",
+  "description": "This cell is what I've got to live in until they decide what happens to me. Says a lot about how this clan treats a prisoner."
+ },
+ "ThoughtDef::PrisonerBanishedToDie": {
+  "label": "banished a prisoner to die",
+  "description": "We turned a prisoner loose out in open sand, no water, no gear \u2014 that's not mercy, that's a slow way of killing someone."
+ },
+ "ThoughtDef::ProsthophileHappy": {
+  "label": "loving the new parts",
+  "description": "This new rig bolted onto me feels good \u2014 better than good. I want more chrome and less flesh."
+ },
+ "ThoughtDef::ProsthophobeUnhappy": {
+  "label": "hate this graft",
+  "description": "There's a piece of machine bolted into me now and it doesn't feel like mine. My skin should stay my skin."
+ },
+ "ThoughtDef::PsychicDrone": {
+  "label": "something in my skull",
+  "description": "There's a hum at the back of my mind that isn't mine. Some days it settles me, some days it scrapes like sand caught in a gear."
+ },
+ "ThoughtDef::PyroUsed": {
+  "label": "used a flame weapon",
+  "description": "Watching them burn \u2014 there's something clean about fire finishing what a blaster starts."
+ },
+ "ThoughtDef::RebuffedMyRomanceAttemptMood": {
+  "label": "rebuffed by {0}",
+  "description": "I tried to make something happen between us and got the cold shoulder instead. That stings worse than sand in an open cut."
+ },
+ "ThoughtDef::RejectedMyProposalMood": {
+  "label": "my proposal turned down by {0}",
+  "description": "I thought we had a future together. Turns out I read that wrong, and it was shot down flat."
+ },
+ "ThoughtDef::ReleasedHealthyPrisoner": {
+  "label": "released a prisoner",
+  "description": "We let a healthy prisoner go free instead of working them to nothing. Good to know this clan still has that much decency in it."
+ },
+ "ThoughtDef::RotStink": {
+  "label": "reek of rot",
+  "description": "Something's rotting close by and the stink of it is thick enough to taste. Turns my stomach every breath I take."
+ },
+ "ThoughtDef::SharedBed": {
+  "label": "sharing a bed",
+  "description": "I've got to bunk with someone I'd rather not share a mat with. There's no privacy left in that."
+ },
+ "ThoughtDef::Sick": {
+  "label": "feeling sick",
+  "description": "Something's wrong with me. I don't feel right at all."
+ },
+ "ThoughtDef::SkillBookPassion": {
+  "label": "a book worth reading",
+  "description": "This manual covers something I actually care about. Good read, for once, instead of just another maintenance log."
+ },
+ "ThoughtDef::SleepDisturbed": {
+  "label": "sleep got disturbed",
+  "description": "Someone kept moving around near me while I was trying to sleep. A door I could shut would fix this."
+ },
+ "ThoughtDef::SleptInBarracks": {
+  "label": "slept in the barracks",
+  "description": "I had to bunk down in the barracks again \u2014 cramped, shared, no door to shut. Not exactly restful."
+ },
+ "ThoughtDef::AdministeredDrug_Horrible": {
+  "label": "administered a drug",
+  "description": "I put chems into someone's blood without their say-so. That's not medicine, that's control, and it's a horrible thing to have done to a person."
+ },
+ "ThoughtDef::AdministeredDrug_Know_Horrible": {
+  "label": "administered a drug",
+  "description": "Word's gone round that someone in the clan dosed another without asking. Doing that to your own kin is a horrible thing, and it sours the whole camp."
+ },
+ "ThoughtDef::AdministeredHardDrug_Horrible": {
+  "label": "administered a hard drug",
+  "description": "I pushed a hard chem into someone's veins - not medicine, not comfort, just a way to control them. That's a horrible thing to have done."
+ },
+ "ThoughtDef::AdministeredHardDrug_Know_Horrible": {
+  "label": "administered a hard drug",
+  "description": "Someone in the clan forced a hard chem on another, not for healing and not even for kindness. Knowing that happened under our own roof turns my stomach."
+ },
+ "ThoughtDef::AdministeredRecreationalDrug_Horrible": {
+  "label": "administered a recreational drug",
+  "description": "I fed someone spice they never asked to take, just to loosen them up. That's a horrible thing to do to a person who trusted me."
+ },
+ "ThoughtDef::AdministeredRecreationalDrug_Know_Horrible": {
+  "label": "administered a recreational drug",
+  "description": "Somebody dosed another with spice for no reason but their own amusement. That's a horrible way to treat kin, and I'm not looking at them the same."
+ },
+ "ThoughtDef::AgeReversalDemanded": {
+  "label": "creaking with age",
+  "description": "My grip's going and my joints ache through the cold nights now. Time for a turn in the sculpting pod before the desert finishes what age started."
+ },
+ "ThoughtDef::AgeReversalReceived": {
+  "label": "sculpted young again",
+  "description": "The pod peeled the years right off me. Age and this desert can both wait - I'm not done working yet."
+ },
+ "ThoughtDef::AteFungusAsIngredient_Despised": {
+  "label": "ate cooked fungus",
+  "description": "That whole meal reeked like something left too long in a vaporator drain. I choked it down and regretted every bite."
+ },
+ "ThoughtDef::AteFungusAsIngredient_Preferred": {
+  "label": "ate cooked fungus",
+  "description": "Fungus folded into the meal, and it was perfect. Is there anything that stuff doesn't improve?"
+ },
+ "ThoughtDef::AteFungus_Despised": {
+  "label": "ate fungus raw",
+  "description": "That fungus tasted like a wet rag pulled out of a coolant tank. Never again if I can help it."
+ },
+ "ThoughtDef::AteFungus_Preferred": {
+  "label": "ate fungus",
+  "description": "Plain fungus, and it hit exactly right. Simple food, honest food."
+ },
+ "ThoughtDef::AteHumanMeat_Abhorrent": {
+  "label": "ate human meat",
+  "description": "I ate the flesh of one of our own kind. Every part of me screams that this breaks something that can't be fixed."
+ },
+ "ThoughtDef::AteHumanMeat_Disapproved": {
+  "label": "ate human meat",
+  "description": "I ate human meat because there was nothing else out there. I don't like what that says about me."
+ },
+ "ThoughtDef::AteHumanMeat_Horrible": {
+  "label": "ate human meat",
+  "description": "I had to eat human meat just to get through the day. It was a horrible thing to do, and I can still taste it."
+ },
+ "ThoughtDef::AteHumanMeat_Know_Abhorrent": {
+  "label": "ate human meat",
+  "description": "Someone in the clan ate a person's flesh. I can't unknow that, and I don't know how I look at them the same way again."
+ },
+ "ThoughtDef::AteHumanMeat_Know_Disapproved": {
+  "label": "ate human meat",
+  "description": "Word is somebody in camp ate human meat. I don't approve, but I know the desert forces hard choices sometimes."
+ },
+ "ThoughtDef::AteHumanMeat_Know_Horrible": {
+  "label": "ate human meat",
+  "description": "Someone in the clan ate a person's flesh, and it's spreading through camp like a bad smell. That's a horrible thing to have happened under our roof."
+ },
+ "ThoughtDef::AteHumanMeat_Preferred": {
+  "label": "ate human meat",
+  "description": "I ate human flesh and it settled something in me - strong, right, like the desert itself approves."
+ },
+ "ThoughtDef::AteHumanMeat_RequiredRavenous": {
+  "label": "ate human meat",
+  "description": "I ate human meat and the hunger in me finally went quiet. This is how it's meant to be - the world makes sense again."
+ },
+ "ThoughtDef::AteHumanMeat_RequiredStrong": {
+  "label": "ate human meat",
+  "description": "I ate human meat, same as any of the clan worth their salt. That's how you stay strong out here."
+ },
+ "ThoughtDef::AteInsectMeatAsIngredient_Loved": {
+  "label": "ate cooked insect meat",
+  "description": "The meal had insect meat folded through it - I could still taste the faint bug-tang under the spice. Best thing I've had in weeks."
+ },
+ "ThoughtDef::AteInsectMeat_Loved": {
+  "label": "ate insect meat",
+  "description": "Plain insect meat, and it went down smooth as oiled chrome. I'd eat it every night if the hive-catchers kept up."
+ },
+ "ThoughtDef::AteMeat_Abhorrent": {
+  "label": "ate meat",
+  "description": "I put meat in my mouth against everything I hold as true. I feel unclean down to the bone for it."
+ },
+ "ThoughtDef::AteMeat_Disapproved": {
+  "label": "ate meat",
+  "description": "I had to eat meat today. I don't approve of it, but hunger doesn't ask permission."
+ },
+ "ThoughtDef::AteMeat_Horrible": {
+  "label": "ate meat",
+  "description": "Meat went in my mouth, no way around it this trip. Every bite felt like spitting on what I'm supposed to hold to."
+ },
+ "ThoughtDef::AteMeat_Know_Abhorrent": {
+  "label": "ate meat",
+  "description": "Someone in the clan ate meat. Knowing that sits like grit under my skin - it's an abhorrent thing to have happened here."
+ },
+ "ThoughtDef::AteMeat_Know_Disapproved": {
+  "label": "ate meat",
+  "description": "Somebody ate meat. I don't approve, though I know the desert doesn't always leave a choice."
+ },
+ "ThoughtDef::AteMeat_Know_Horrible": {
+  "label": "ate meat",
+  "description": "Someone in the clan ate meat, and word of it has gotten around camp. That's a horrible thing for our people to have done."
+ },
+ "ThoughtDef::AteNonCannibalFood_Abhorrent": {
+  "label": "ate non-cannibal food",
+  "description": "I ate food that wasn't cut from a person. That's an abhorrent break from how a body ought to be honored - as food, not waste."
+ },
+ "ThoughtDef::AteNonCannibalFood_Horrible": {
+  "label": "ate non-cannibal food",
+  "description": "I ate food that came from anywhere but a body. My beliefs forbid it outright, and it was a horrible thing to have to swallow."
+ },
+ "ThoughtDef::AteNonCannibalFood_Know_Abhorrent": {
+  "label": "ate non-cannibal food",
+  "description": "Someone in the clan ate food that wasn't taken from a person. That's an abhorrent break from how things ought to be done here."
+ },
+ "ThoughtDef::AteNonCannibalFood_Know_Horrible": {
+  "label": "ate non-cannibal food",
+  "description": "Word is someone ate food that wasn't cut from a body. That's a horrible thing for one of our own to have done."
+ },
+ "ThoughtDef::AteNonFungusMealWithPlants_Despised": {
+  "label": "ate non-fungus plant cooked",
+  "description": "The meal had some green thing grown under open sky instead of proper fungus. I wish they'd used fungus."
+ },
+ "ThoughtDef::AteNonFungusPlant_Despised": {
+  "label": "ate non-fungus plant raw",
+  "description": "I had to eat some plant that wasn't fungus, raw at that. I'd take fungus over this every single time."
+ },
+ "ThoughtDef::AteNonMeat_Abhorrent": {
+  "label": "ate vegetarian",
+  "description": "I ate a meal with no meat in it at all. That's an abhorrent break from how a body's meant to eat - eggs, milk, anything with real substance would have done."
+ },
+ "ThoughtDef::AteNonMeat_Disapproved": {
+  "label": "ate vegetarian",
+  "description": "I ate a meal without meat. It's not how I like to eat, and it's not how I'm meant to."
+ },
+ "ThoughtDef::AteNonMeat_Horrible": {
+  "label": "ate vegetarian",
+  "description": "I ate a meal with no meat in it. That's a horrible break from the proper way to fill a plate."
+ },
+ "ThoughtDef::AteNonMeat_Know_Abhorrent": {
+  "label": "ate vegetarian",
+  "description": "Someone in camp ate a meal with no meat at all. That's an abhorrent thing for one of ours to have done."
+ },
+ "ThoughtDef::AteNonMeat_Know_Disapproved": {
+  "label": "ate vegetarian",
+  "description": "Somebody in the clan skipped meat at a meal. I don't much approve, but it's not the end of the world."
+ },
+ "ThoughtDef::AteNonMeat_Know_Horrible": {
+  "label": "ate vegetarian",
+  "description": "Word is someone in camp ate a meatless meal. That's a horrible way to treat your own body, if you ask me."
+ },
+ "ThoughtDef::AteVeneratedAnimalMeat": {
+  "label": "ate venerated animal meat",
+  "description": "I ate the flesh of an animal we hold sacred. I've broken something in myself that isn't easily mended."
+ },
+ "ThoughtDef::AwkwardExecution": {
+  "label": "awkward execution",
+  "description": "That execution was a mess - fumbled, dragged out, no dignity to it. Watching someone die should mean something, and that meant nothing."
+ },
+ "ThoughtDef::Blindness_Elevated_HalfBlind": {
+  "label": "half-blind",
+  "description": "The world's gone dim on one side, and something in me is opening up because of it. I'm on my way to seeing what actually matters."
+ },
+ "ThoughtDef::Blindness_Sublime_HalfBlind": {
+  "label": "half-blind",
+  "description": "Half the world's gone dark to my eyes, and I've never felt closer to understanding it. I can almost touch what's on the other side of sight."
+ },
+ "ThoughtDef::BoringScarification": {
+  "label": "boring scarification",
+  "description": "That scarring job was flat, careless work - no feeling in it, no skill either. I deserved better marks than that."
+ },
+ "ThoughtDef::CharityFulfilled_Essential_WandererJoins": {
+  "label": "wanderer helped",
+  "description": "We pulled a desperate stranger out of the sand and gave them water, shelter, a place at the fire. I am exactly the kind of person I want to be."
+ },
+ "ThoughtDef::CharityFulfilled_Important_WandererJoins": {
+  "label": "wanderer helped",
+  "description": "We took in a wanderer who had nothing left. Helping someone like that is the whole point of having a clan."
+ },
+ "ThoughtDef::CharityFulfilled_Worthwhile_WandererJoins": {
+  "label": "wanderer helped",
+  "description": "We helped a wanderer who showed up half-dead from the heat. Good - that's a good thing to have done."
+ },
+ "ThoughtDef::CharityRefused_Essential_IntroWimp": {
+  "label": "noble not helped",
+  "description": "A desperate noble came begging and we turned them away. That was deeply wrong of us, and I can't shake it."
+ },
+ "ThoughtDef::CharityRefused_Essential_RefugeePodCrash": {
+  "label": "crashed refugee not helped",
+  "description": "Their pod came down burning and hurt, and we left them to the sand. How am I supposed to live with that?"
+ },
+ "ThoughtDef::CharityRefused_Important_IntroWimp": {
+  "label": "turned away nobility",
+  "description": "A noble came to us hurting and we sent them off with nothing. We had more in us than that and didn't give it."
+ },
+ "ThoughtDef::CharityRefused_Important_RefugeePodCrash": {
+  "label": "left the crash-survivor to it",
+  "description": "They fell from orbit hurt and reaching out, and we let them lie there. Makes me wonder what kind of person that makes me."
+ },
+ "ThoughtDef::CharityRefused_Worthwhile_IntroWimp": {
+  "label": "noble not helped",
+  "description": "We turned away a noble who needed help. Maybe I'm not as generous as I like to think."
+ },
+ "ThoughtDef::CharityRefused_Worthwhile_RefugeePodCrash": {
+  "label": "left the crash-survivor to it",
+  "description": "Someone came down out of the sky hurt and asking, and we turned our backs. Could've done better by them than that."
+ },
+ "ThoughtDef::ConnectedTreeDied": {
+  "label": "bonded tree died",
+  "description": "My tree - the one thing on this whole burning world that ever felt calm - is gone. I felt it happen, felt it hurt, and then nothing."
+ },
+ "ThoughtDef::CutTree_Disapproved": {
+  "label": "cut tree",
+  "description": "I had to cut down a tree - out here, that's rarer than water. It felt wrong to do it."
+ },
+ "ThoughtDef::CutTree_Horrible": {
+  "label": "cut tree",
+  "description": "I had to cut down a tree, one of the only living things for miles that wasn't fighting just to survive. That was a horrible thing to do."
+ },
+ "ThoughtDef::CutTree_Know_Horrible_Mood": {
+  "label": "tree felled",
+  "description": "Someone cut down a tree - out here, where green things are close to sacred. That's a horrible thing for the clan to have allowed."
+ },
+ "ThoughtDef::Darklight_Preferred_BlindingLight": {
+  "label": "blinding light",
+  "description": "This light is scouring my eyes raw. I can't think straight under it."
+ },
+ "ThoughtDef::Darklight_Preferred_Darklight": {
+  "label": "darklight",
+  "description": "Low light, easy on the eyes - I can finally focus, sharp and steady."
+ },
+ "ThoughtDef::Darklight_Preferred_IndoorLight": {
+  "label": "indoor light",
+  "description": "This indoor light's too harsh for my liking. I'd take it dimmer if I could."
+ },
+ "ThoughtDef::DryadDied": {
+  "label": "dryad died",
+  "description": "The little one that lived in my tree's roots is gone for good. Rest easy, small thing - you didn't deserve this world's teeth."
+ },
+ "ThoughtDef::Eclipse_Beautiful": {
+  "label": "beautiful eclipse",
+  "description": "The suns finally give it a rest. A few minutes of shade from the sky itself - I'll take what I can get."
+ },
+ "ThoughtDef::EnslavedPrisoner_Disapproved": {
+  "label": "enslaved prisoner",
+  "description": "I put a collar on someone and called them property. It's hard to square that with who I want to be."
+ },
+ "ThoughtDef::EnslavedPrisoner_Honorable": {
+  "label": "took a bondsman",
+  "description": "I broke someone to the collar and put them to work my claim. A scavenger who can't feed his own crew has no business calling himself Jawa."
+ },
+ "ThoughtDef::EnslavedPrisoner_Horrible": {
+  "label": "forced someone into bondage",
+  "description": "I locked a collar on someone who never chose it. I keep hearing the chain rattle even when nobody's wearing one."
+ },
+ "ThoughtDef::EnslavedPrisoner_Know_Abhorrent": {
+  "label": "a person, chained",
+  "description": "Someone in this crew put a collar on another living person and called it a bargain. That's not salvage, that's not trade \u2014 that's what the Hutts do, and I want no part of it."
+ },
+ "ThoughtDef::EnslavedPrisoner_Know_Disapproved": {
+  "label": "bondage, disapproved",
+  "description": "Someone here took a prisoner into bondage. Not how I was raised to deal \u2014 a debt gets worked off, it doesn't get chained."
+ },
+ "ThoughtDef::EnslavedPrisoner_Know_Disapproved_Mood": {
+  "label": "prisoner bonded",
+  "description": "We put a collar on someone. We shouldn't have. There's better ways to squeeze value out of a captive."
+ },
+ "ThoughtDef::EnslavedPrisoner_Know_Honorable": {
+  "label": "bondage, approved",
+  "description": "Someone here bonded a prisoner to work. Good \u2014 a captive who earns their keep is worth more than one who just eats our water."
+ },
+ "ThoughtDef::EnslavedPrisoner_Know_Horrible": {
+  "label": "bondage among us",
+  "description": "Someone here collared a captive and set them to labor. It sits wrong in my gut, however they explain it."
+ },
+ "ThoughtDef::EnslavedPrisoner_Know_Horrible_Mood": {
+  "label": "prisoner bonded",
+  "description": "We collared someone and put them to work. What a rotten thing to do to another living soul."
+ },
+ "ThoughtDef::ExecutedColonist_Know_Abhorrent_Mood": {
+  "label": "a colonist's life, ended",
+  "description": "We executed or put down one of our own \u2014 deserved, maybe even merciful, but no less final. I still felt that goodbye in my chest."
+ },
+ "ThoughtDef::ExecutedGuest_Know_Abhorrent_Mood": {
+  "label": "a guest's life, ended",
+  "description": "We executed or eased the passing of a prisoner or guest under our roof. Justified, even kind \u2014 but I watched the breath go, and it stays with me."
+ },
+ "ThoughtDef::ExecutedPrisonerGuilty_Know_Respected": {
+  "label": "justice, done right",
+  "description": "Someone here executed a guilty prisoner. Good. A thief who'd sell out the whole camp doesn't get to keep breathing on our water."
+ },
+ "ThoughtDef::ExecutedPrisonerGuilty_Know_Respected_Mood": {
+  "label": "guilty prisoner executed",
+  "description": "We put down a guilty prisoner. Justice, plain and simple \u2014 the sand keeps what it's owed."
+ },
+ "ThoughtDef::ExecutedPrisonerGuilty_Respected": {
+  "label": "executed a guilty prisoner",
+  "description": "I put down a guilty prisoner myself. Justice served, and I slept fine after."
+ },
+ "ThoughtDef::ExecutedPrisonerInnocent_Horrible": {
+  "label": "executed an innocent",
+  "description": "I had to execute a prisoner who did nothing wrong. That's a debt against my own soul, and no amount of scrap pays it off."
+ },
+ "ThoughtDef::ExecutedPrisonerInnocent_Know_Horrible": {
+  "label": "innocent executed",
+  "description": "Someone here put down a prisoner who was innocent. My gut says that's a wrong no justification covers."
+ },
+ "ThoughtDef::ExecutedPrisoner_Horrible": {
+  "label": "executed a prisoner",
+  "description": "I had to put down a prisoner. Whatever the reason, that's a horrible thing to carry, and I feel it."
+ },
+ "ThoughtDef::ExecutedPrisoner_Know_Abhorrent": {
+  "label": "an execution, unforgivable",
+  "description": "Someone in this crew executed a prisoner and I can't call it anything but wrong. That's a line I don't cross, and I didn't ask them to cross it for me."
+ },
+ "ThoughtDef::ExecutedPrisoner_Know_Horrible": {
+  "label": "a prisoner executed",
+  "description": "Someone here put a prisoner down. However it's dressed up, that's a hard thing to know happened under our roof."
+ },
+ "ThoughtDef::ExecutedPrisoner_Know_Respected": {
+  "label": "a prisoner executed, respected",
+  "description": "Someone here executed a prisoner. Fair enough \u2014 this camp can't carry dead weight or old grudges."
+ },
+ "ThoughtDef::ExecutedPrisoner_Respected": {
+  "label": "executed a prisoner",
+  "description": "I put down a prisoner myself. Victory costs something, and I paid it without flinching."
+ },
+ "ThoughtDef::Execution_Know_Respected_Mood": {
+  "label": "an execution, respected",
+  "description": "We executed a prisoner or guest in front of everyone. Nobody doubts who runs this camp now."
+ },
+ "ThoughtDef::FailedConvertAbilityInitiator": {
+  "label": "failed to convert {0}",
+  "description": "I tried to bring {0} around to the true way and it just didn't take. Sand in my mouth, is what that was."
+ },
+ "ThoughtDef::FailedConvertIdeoAttemptResentment": {
+  "label": "pressured to convert",
+  "description": "Someone kept pushing their creed on me like I was a mark at a stall. I don't like being worked that way."
+ },
+ "ThoughtDef::GroinOrChestUncovered_Disapproved_Female": {
+  "label": "uncovered, exposed",
+  "description": "I've got skin showing that should be covered. Out here the sun and the sand and the wrong kind of stares all want a piece of me for it."
+ },
+ "ThoughtDef::GroinOrChestUncovered_Disapproved_Male": {
+  "label": "uncovered, exposed",
+  "description": "I'm walking around half-bare and it doesn't sit right. A body should be wrapped against the suns, not left out for anyone to look at."
+ },
+ "ThoughtDef::GroinUncovered_Disapproved_Female": {
+  "label": "uncovered below",
+  "description": "I don't have enough covering me down below and I feel it. That's not how a decent scavenger goes about her business."
+ },
+ "ThoughtDef::GroinUncovered_Disapproved_Male": {
+  "label": "uncovered below",
+  "description": "I'm exposed where I shouldn't be. Even a torn wrap of cloth would beat walking around like this."
+ },
+ "ThoughtDef::GuiltyPrisonerDied_Know_Respected": {
+  "label": "guilty prisoner's death, respected",
+  "description": "A guilty prisoner died because of something someone here did. Can't say I'm sorry \u2014 the debt's paid now."
+ },
+ "ThoughtDef::GuiltyPrisonerDied_Respected": {
+  "label": "caused a guilty prisoner's death",
+  "description": "I'm the reason that guilty prisoner is dead. Justice, and I'll say it plain \u2014 I don't lose sleep over it."
+ },
+ "ThoughtDef::HasAutomatedTurrets_Disapproved": {
+  "label": "automated guns",
+  "description": "We've got turrets out there deciding who lives on their own reckoning. A droid brain shouldn't be the one pulling that trigger."
+ },
+ "ThoughtDef::HasAutomatedTurrets_Horrible": {
+  "label": "automated guns",
+  "description": "We let machines decide who dies at our fence line. That's a horrible thing to hand off to scrap and wiring."
+ },
+ "ThoughtDef::HasAutomatedTurrets_Prohibited": {
+  "label": "automated guns",
+  "description": "We've got droid-minded guns making kill decisions on their own. That's abhorrent \u2014 no wire and no code should ever get to choose who dies."
+ },
+ "ThoughtDef::HumanLeatherApparel_RequiredRavenous": {
+  "label": "wearing skinned faces",
+  "description": "I'm dressed in what used to be someone's hide, and I like it more than I should. Let them see what's coming for them next."
+ },
+ "ThoughtDef::HumanLeatherApparel_RequiredStrong": {
+  "label": "wearing human leather",
+  "description": "I'm wearing skin that used to belong to somebody. It marks me as someone not to cross, and there's a grim comfort in that."
+ },
+ "ThoughtDef::IdeoBuildingDisrespected": {
+  "label": "{BUILDING_labelCap} disrespected",
+  "description": "We've got {BUILDING_labelIndef} sitting around, but the room it's in doesn't meet what's owed to it. That's no way to keep a holy thing."
+ },
+ "ThoughtDef::IdeoDiverity_Abhorrent_AltarSharing": {
+  "label": "a false altar, shared",
+  "description": "Some other belief's altar is sitting in the same room as our {ALTAR_labelShort}. That's a filth I can't stand next to \u2014 get it out."
+ },
+ "ThoughtDef::IdeoDiverity_Disapproved_AltarSharing": {
+  "label": "a false altar, shared",
+  "description": "There's another creed's altar sharing the room with our {ALTAR_labelShort}. Doesn't sit right, sharing sacred ground like that."
+ },
+ "ThoughtDef::IdeoDiverity_Horrible_AltarSharing": {
+  "label": "a false altar, right here",
+  "description": "Someone's set another faith's shrine up alongside our own {ALTAR_labelShort}, sharing the same air. That's not a small thing to let stand."
+ },
+ "ThoughtDef::IdeoDiversity_Horrible_Uniform": {
+  "label": "one true way",
+  "description": "Everyone here holds to the same creed, no false beliefs muddying the water. That's exactly how a camp should run."
+ },
+ "ThoughtDef::IdeoRoleApparelRequirementNotMet": {
+  "label": "want {ROLE_label} garb",
+  "description": "I haven't got the gear that marks me as {ROLE_labelDef}. Doesn't feel right standing in this role dressed like nobody."
+ },
+ "ThoughtDef::IngestedDrug_Horrible": {
+  "label": "used a drug",
+  "description": "I put a chemical in my body that never should've gone in. That's a horrible thing to have done to myself."
+ },
+ "ThoughtDef::IngestedDrug_Know_Horrible": {
+  "label": "someone used a drug",
+  "description": "Someone in this crew took a drug I hold as forbidden. Knowing it happened at all turns my stomach."
+ },
+ "ThoughtDef::IngestedHardDrug_Horrible": {
+  "label": "used a hard drug",
+  "description": "I took a hard drug for no reason worth naming \u2014 not medicine, not company, nothing. That's a horrible thing to have done."
+ },
+ "ThoughtDef::IngestedHardDrug_Know_Horrible": {
+  "label": "someone used a hard drug",
+  "description": "Someone here took a hard drug with no excuse behind it. That's the kind of thing that gets a camp burned down around it."
+ },
+ "ThoughtDef::IngestedRecreationalDrug_Horrible": {
+  "label": "used a recreational drug",
+  "description": "I took a drug just to feel something different. That goes against everything I was raised to hold to."
+ },
+ "ThoughtDef::IngestedRecreationalDrug_Know_Horrible": {
+  "label": "someone used a recreational drug",
+  "description": "Someone in this crew used a drug just for the feeling of it. Knowing that sits poorly with me."
+ },
+ "ThoughtDef::InnocentPrisonerDied_Abhorrent": {
+  "label": "killed an innocent prisoner",
+  "description": "An innocent prisoner is dead because of me. There's no scrap heap deep enough to bury what that makes me."
+ },
+ "ThoughtDef::InnocentPrisonerDied_Horrible": {
+  "label": "a prisoner died on my watch",
+  "description": "Someone chained up and blameless died because of choices I made. I keep turning that over and not liking who it makes me."
+ },
+ "ThoughtDef::InnocentPrisonerDied_Know_Abhorrent": {
+  "label": "an innocent prisoner, dead",
+  "description": "Someone here is responsible for an innocent prisoner's death. I can't forgive that, whatever the reason given."
+ },
+ "ThoughtDef::InnocentPrisonerDied_Know_Horrible": {
+  "label": "an innocent prisoner, dead",
+  "description": "Someone in this crew is behind the death of a prisoner who did nothing wrong. That's a hard weight to know is sitting on us now."
+ },
+ "ThoughtDef::KilledInnocentAnimal_Disapproved": {
+  "label": "killed an innocent animal",
+  "description": "I had to put down an animal that never threatened us. Didn't sit right, and I don't pretend it did."
+ },
+ "ThoughtDef::KilledInnocentAnimal_Horrible": {
+  "label": "killed an innocent animal",
+  "description": "I had to kill an animal that meant us no harm. Felt almost like murder, and I can't shake that feeling."
+ },
+ "ThoughtDef::KilledInnocentAnimal_Know_Abhorrent": {
+  "label": "an innocent animal, killed",
+  "description": "Someone here killed an animal that never threatened anyone. That's an act I can't look past."
+ },
+ "ThoughtDef::KilledInnocentAnimal_Know_Abhorrent_Mood": {
+  "label": "innocent animal killed",
+  "description": "Someone killed a harmless little creature that never hurt a soul. That's not hunting, that's murder."
+ },
+ "ThoughtDef::KilledInnocentAnimal_Know_Disapproved": {
+  "label": "an innocent animal, killed",
+  "description": "Someone here killed an animal that wasn't any threat to us. I don't approve, but I understand desert life is hard."
+ },
+ "ThoughtDef::KilledInnocentAnimal_Know_Disapproved_Mood": {
+  "label": "innocent animal killed",
+  "description": "Someone killed an animal that had done nothing to us. I don't approve of that kind of waste."
+ },
+ "ThoughtDef::KilledInnocentAnimal_Know_Horrible": {
+  "label": "an innocent animal, killed",
+  "description": "Someone here killed an innocent animal and I know about it now. That's a heartless thing to have done to another living creature."
+ },
+ "ThoughtDef::KilledInnocentAnimal_Know_Horrible_Mood": {
+  "label": "innocent animal killed",
+  "description": "Someone killed an animal that never threatened us. What a heartless, terrible thing to do to another living being."
+ },
+ "ThoughtDef::LacklusterFuneral": {
+  "label": "lackluster funeral",
+  "description": "That send-off was flat \u2014 no fire, no words that meant anything, no closing of the account. The dead deserved better than that."
+ },
+ "ThoughtDef::MasochistWearingCollar": {
+  "label": "collared, and I like it",
+  "description": "There's a collar locked tight around my neck and I can't stop grinning about it. Something about the bite of it feels right."
+ },
+ "ThoughtDef::MineableDestroyed_Disapproved": {
+  "label": "destroyed a natural wall",
+  "description": "I cut through stone that was never mine to cut. The desert doesn't forget a wound like that, and neither should I."
+ },
+ "ThoughtDef::MineableDestroyed_Horrible": {
+  "label": "destroyed a natural wall",
+  "description": "I tore into rock that had stood since before anyone's grandfather. That's a horrible violation, whatever the ore was worth."
+ },
+ "ThoughtDef::MineableDestroyed_Prohibited": {
+  "label": "destroyed a natural wall",
+  "description": "I dug straight through living stone for the sake of a claim. That's a terrible offense, and no vein of ore is worth what it cost."
+ },
+ "ThoughtDef::Mined_Know_Disapproved_Mood": {
+  "label": "the earth, mined",
+  "description": "Someone cut a hole clean through untouched rock. Wrong to scar the world like that, whatever's underneath."
+ },
+ "ThoughtDef::MinifiedTreeDied_Know_Disapproved_Mood": {
+  "label": "an uprooted tree died",
+  "description": "We pulled a tree out of the ground to carry off and let it wither instead. Wasn't right, doing that to a living thing that took decades to grow out here."
+ },
+ "ThoughtDef::MinifiedTreeDied_Know_Horrible_Mood": {
+  "label": "uprooted tree died",
+  "description": "We hauled a tree clean out of the ground, roots and all, and let it wither in the heat. That's a scar on the land we didn't have to leave."
+ },
+ "ThoughtDef::MinifiedTreeDied_Know_Prohibited_Mood": {
+  "label": "uprooted tree died",
+  "description": "We tore a tree from the sand and let it die instead of replanting it. A thing like that should never be done - not once, not ever."
+ },
+ "ThoughtDef::NoRecentExecution": {
+  "label": "no execution",
+  "description": "It's been too long since we put a prisoner down. Are we going soft, letting captives sit there drinking our water and breathing our air?"
+ },
+ "ThoughtDef::Pain_Idealized": {
+  "label": "pain sharpens me",
+  "description": "The hurt keeps me honest - every ache is a truth my body can't lie about. Out here, comfort rots you; this doesn't."
+ },
+ "ThoughtDef::PrisonerDied_Know_Respected": {
+  "label": "responsible for a prisoner's death",
+  "description": "Word's gotten around that I'm the one who ended that prisoner. I can feel the difference in how the others look at me now."
+ },
+ "ThoughtDef::PrisonerDied_Respected": {
+  "label": "prisoner died (my doing)",
+  "description": "I was the one who ended that prisoner. Say what you want - everyone in this camp respects that kind of nerve."
+ },
+ "ThoughtDef::Ranching_Central_AnimalMassPerCapita": {
+  "label": "animals per hand",
+  "description": "We're barely keeping any stock at all - no banthas, no dewbacks, nothing pulling a cart or carrying a load. A camp this thin on animals isn't living right."
+ },
+ "ThoughtDef::Ranching_SowedPlant": {
+  "label": "sowed a food plant",
+  "description": "I planted a crop meant for people to eat straight off the stalk. Wrong order of things - folk should eat what the animals raised, and the animals should eat what the desert grew on its own."
+ },
+ "ThoughtDef::SatisfyingScarification": {
+  "label": "satisfying scarification",
+  "description": "That cut ran clean and it hurt exactly enough. A scar worth keeping is one you can be proud to show."
+ },
+ "ThoughtDef::ScarificationCeremony_Know_Horrible": {
+  "label": "witnessed a scarification",
+  "description": "We cut one of our own open for the sake of a belief. I don't care what it means to anyone - that was wrong to watch."
+ },
+ "ThoughtDef::ScarificationCeremony_Self_Extreme": {
+  "label": "got scarified",
+  "description": "I carry a new mark now, cut deep enough that I'll never mistake what it means. It binds me to the clan for good."
+ },
+ "ThoughtDef::ScarificationCeremony_Self_Heavy": {
+  "label": "got scarified",
+  "description": "I carry a new mark now, cut deep enough to matter. It ties me closer to what we believe."
+ },
+ "ThoughtDef::ScarificationCeremony_Self_Minor": {
+  "label": "got scarified",
+  "description": "I carry a small new mark now. It's enough to remind me what I stand for."
+ },
+ "ThoughtDef::Scarification_Extreme": {
+  "label": "the ritual scars",
+  "description": "My skin's marked from edge to edge, the way it's supposed to be - every cut is a promise kept. Smooth, unmarked skin on anyone else just looks like a promise never made."
+ },
+ "ThoughtDef::Scarification_Extreme_Opinion": {
+  "label": "the ritual scars",
+  "description": "I look at how deep their marks run and I know exactly where they stand. Bare skin tells me the opposite, just as plain."
+ },
+ "ThoughtDef::Scarification_Heavy": {
+  "label": "the ritual scars",
+  "description": "I bear the cuts I'm meant to bear, same as everyone worth trusting. Smooth skin on someone who should know better just looks wrong."
+ },
+ "ThoughtDef::Scarification_Heavy_Opinion": {
+  "label": "the ritual scars",
+  "description": "Their marks tell me they've paid the price the rest of us paid. Bare skin makes me wonder what they've been skipping."
+ },
+ "ThoughtDef::Scarification_Minor": {
+  "label": "the ritual scar",
+  "description": "I carry the mark I'm supposed to carry. Skin without it just looks unfinished to me."
+ },
+ "ThoughtDef::Scarification_Minor_Opinion": {
+  "label": "the ritual scar",
+  "description": "I notice who's got the mark and who doesn't - it's a small thing, but I clock it every time."
+ },
+ "ThoughtDef::Skullspike_Disapproved": {
+  "label": "skulls on spikes",
+  "description": "There are skulls staked up around the camp. Even a couple of them turns my stomach every time I walk past."
+ },
+ "ThoughtDef::SlabBed_Preferred": {
+  "label": "slept on a slab bed",
+  "description": "I slept on bare scrap-slab instead of a proper mattress and I'm glad of it. Comfort's a trap out here - I'd rather prove I don't need it."
+ },
+ "ThoughtDef::SlaughteredAnimal_Disapproved": {
+  "label": "slaughtered an animal",
+  "description": "I had to put an animal down for meat. Ugly work, even when it's necessary."
+ },
+ "ThoughtDef::SlaughteredAnimal_Horrible": {
+  "label": "slaughtered an animal",
+  "description": "I had to butcher an animal today. Snuffing out a mind like that, even a beast's - that was horrible."
+ },
+ "ThoughtDef::SlaughteredAnimal_Know_Disapproved": {
+  "label": "slaughtered an animal",
+  "description": "I know I'm the one who put that animal down. Doesn't sit easy with me."
+ },
+ "ThoughtDef::SlaughteredAnimal_Know_Disapproved_Mood": {
+  "label": "an animal was slaughtered",
+  "description": "Someone in camp butchered an animal today. Sad business, even out here."
+ },
+ "ThoughtDef::SlaughteredAnimal_Know_Horrible": {
+  "label": "slaughtered an animal",
+  "description": "I know I'm the one who butchered that animal. Snuffing out a mind like that stays with me."
+ },
+ "ThoughtDef::SlaughteredAnimal_Know_Horrible_Mood": {
+  "label": "animal put down",
+  "description": "One of the beasts got the knife today, and not for meat we needed. There's a mind gone out of the world for nothing, and that sits wrong with me."
+ },
+ "ThoughtDef::SlaughteredAnimal_Know_Prohibited": {
+  "label": "slaughtered an animal",
+  "description": "I know I'm the one who took that animal's life. That should never have happened."
+ },
+ "ThoughtDef::SlaughteredAnimal_Know_Prohibited_Mood": {
+  "label": "an animal was slaughtered",
+  "description": "Someone butchered an animal today. A whole life, gone for nothing - that's a tragedy, not a chore."
+ },
+ "ThoughtDef::SleptInRoomWithSlave": {
+  "label": "shared a room with a slave",
+  "description": "I had to bunk down in the same room as a slave. I don't like what that says about how we run this camp."
+ },
+ "ThoughtDef::SleptUsingSleepAccelerator": {
+  "label": "used a sleep accelerator",
+  "description": "I slept wired into the accelerator rig. Cutting the hours down is exactly the kind of edge we're supposed to be chasing."
+ },
+ "ThoughtDef::SoldOrgan_Know_Horrible_Mood": {
+  "label": "an organ was sold",
+  "description": "Someone in camp sold an organ off like a spare part. Trading pieces of a person like scrap metal - that's horrible."
+ },
+ "ThoughtDef::SpectacularBlinding": {
+  "label": "spectacular blinding",
+  "description": "The chanting, the blade catching the light, the way everyone held their breath through the pain - that ceremony was something else. I won't forget it."
+ },
+ "ThoughtDef::SpectacularScarification": {
+  "label": "spectacular scarification",
+  "description": "The knife moved like it knew the pattern before the skin did. That wasn't just a cutting - that was a transformation, and I got to watch it happen."
+ },
+ "ThoughtDef::TameVeneratedAnimalDied": {
+  "label": "venerated {ANIMALKIND} died",
+  "description": "One of our venerated {ANIMALKIND} passed on. Losing a beast like that, one we held sacred, is worth grieving."
+ },
+ "ThoughtDef::TerribleSacrifice": {
+  "label": "botched sacrifice",
+  "description": "That sacrifice went wrong from the first cut and everyone in the room felt it. An ugly, awkward way for anything to die."
+ },
+ "ThoughtDef::TerribleScarification": {
+  "label": "botched scarification",
+  "description": "The cutting went crooked and the whole ceremony fell apart around it. Awkward, embarrassing, not worth the pain it caused."
+ },
+ "ThoughtDef::TradedOrgan_Abhorrent": {
+  "label": "traded an organ",
+  "description": "I had to hand over someone's organ like it was a spare vaporator part. That's an abhorrent thing to be part of, and I know it."
+ },
+ "ThoughtDef::TradedOrgan_Know_Abhorrent": {
+  "label": "traded an organ",
+  "description": "I know I'm the one who traded that organ away. It sits in me like something rotten."
+ },
+ "ThoughtDef::TradedOrgan_Know_Abhorrent_Mood": {
+  "label": "an organ was traded",
+  "description": "Someone in camp traded an organ off. Disgusting, abhorrent - a person isn't a parts bin."
+ },
+ "ThoughtDef::TreeDensityReduced": {
+  "label": "the standing green",
+  "description": "We haven't torn up much growth lately - what little green this desert holds, we're leaving be. Living easy on the land is worth something."
+ },
+ "ThoughtDef::UsedDespisedWeapon": {
+  "label": "used a despised weapon",
+  "description": "I had to fight with a weapon I'm ashamed to be seen carrying. Humiliating, using a thing like that."
+ },
+ "ThoughtDef::VeneratedAnimalsOnMapOrCaravan": {
+  "label": "venerated {ANIMAL_label} nearby",
+  "description": "There are venerated {ANIMAL_label} close by. Their presence settles something in me I didn't know was unsettled."
+ },
+ "ThoughtDef::HotSpring": {
+  "label": "hot spring",
+  "description": "I sank my feet into water that isn't rationed, isn't hauled, isn't fought over - just warm, and free, and mine for a minute. A desert doesn't give you that twice."
+ },
+ "ThoughtDef::SlaughteredFish_Disapproved": {
+  "label": "slaughtered fish",
+  "description": "I had to kill fish today, water-creatures on a world that barely has water to spare. Felt like an ugly waste of something rare."
+ },
+ "ThoughtDef::GR_Failures_Disliked": {
+  "label": "genetic failures",
+  "description": "One of the gene-work experiments came out wrong. Best we cut our losses and clear it out before it costs us more than the vats did."
+ },
+ "ThoughtDef::GR_HumanoidHybrids_Disliked": {
+  "label": "humanoid hybrids in camp",
+  "description": "There are humanoid hybrids wandering the camp, stitched together from parts that were never meant to share a body. Something about that sits wrong with me, however useful they turn out to be."
+ },
+ "ThoughtDef::AteBabyFood": {
+  "label": "ate baby mash",
+  "description": "I choked down the thin, watery mash we mix for the little ones. It's not just bland \u2014 eating a baby's ration feels like giving up."
+ },
+ "ThoughtDef::BabySick": {
+  "label": "my baby {BABY_nameDef} is sick",
+  "description": "My baby is running a fever I can't cool. Out in this heat sickness turns bad fast, and I can't stop picturing the worst of it."
+ },
+ "ThoughtDef::BloodfeederDied_Revered": {
+  "label": "bloodfeeder died",
+  "description": "One of the bloodfeeders is dead on our watch. Whatever binds us to them, breaking that bond can't go unanswered \u2014 I feel it coming for us."
+ },
+ "ThoughtDef::BloodfeederDied_Reviled": {
+  "label": "bloodfeeder died",
+  "description": "One less bloodfeeder in the galaxy. Good riddance \u2014 that's one predator that won't be draining anybody else dry."
+ },
+ "ThoughtDef::Bloodfeeder_ReveredBloodfeeder": {
+  "label": "revered bloodfeeder",
+  "description": "Let them kneel. Every drop I take off them puts them under me, same as scrap sits under the hand that salvages it."
+ },
+ "ThoughtDef::ChildLabor_Encouraged_ChildAssignedRecreation": {
+  "label": "children assigned recreation",
+  "description": "Kids playing instead of pulling their weight? Idle hands are a luxury nobody in this clan can afford."
+ },
+ "ThoughtDef::ChildLabor_Encouraged_ChildAssignedWork": {
+  "label": "children assigned work",
+  "description": "It turns my stomach seeing children hauling scrap and sweating over repairs. They get one childhood, and this world is stealing it."
+ },
+ "ThoughtDef::CribQuality": {
+  "label": "good crib",
+  "description": "Whoever patched this crib together did it with care \u2014 soft bedding, no sharp edges, no rattling joints. The little one sleeps easy in it."
+ },
+ "ThoughtDef::GrowthVat_Prohibited_GrowthVatInColony": {
+  "label": "growth vat",
+  "description": "There's a growth vat sitting in our colony, a person cooking in a tank like spare parts on a shelf. I hate having that thing under our roof."
+ },
+ "ThoughtDef::Miscarried": {
+  "label": "miscarried",
+  "description": "I lost my child before I ever got to hold them. That's a hole nothing I find out in the wastes is going to fill."
+ },
+ "ThoughtDef::MyBirthMotherDied": {
+  "label": "my birth mother {0} died",
+  "description": "My birth mother is gone. She's not coming back, and there's a gap in my life shaped exactly like her."
+ },
+ "ThoughtDef::PartnerMiscarried": {
+  "label": "{0} miscarried",
+  "description": "Our child's story ended before it ever began. I keep thinking about the life that never got a chance to start."
+ },
+ "ThoughtDef::PsychicBond": {
+  "label": "psychic bond",
+  "description": "Something in me is tied to them now, a thread of feeling that doesn't care about walls or distance."
+ },
+ "ThoughtDef::PsychicBondProximity": {
+  "label": "psychic bond",
+  "description": "The bond keeps us close in more than body \u2014 I feel what they feel, like a friend who never really leaves my side."
+ },
+ "ThoughtDef::PsychicBondTorn": {
+  "label": "psychic bond torn ({0})",
+  "description": "My bond with {OTHERPAWN} got ripped out by the roots. Feels like a piece of my own mind went missing along with them."
+ },
+ "ThoughtDef::Pyrophobia": {
+  "label": "afraid of fire",
+  "description": "Flame makes my skin crawl. Out here where one spark can eat a whole camp in minutes, I can't shake the feeling it's about to leap at me."
+ },
+ "ThoughtDef::Recluse": {
+  "label": "recluse",
+  "description": "Fewer people around means fewer things pulling at me. Out here, quiet is worth more than company."
+ },
+ "ThoughtDef::ScanningSickness": {
+  "label": "scanning sickness",
+  "description": "Ever since they ran that scanner over me I've been dizzy, thoughts sliding sideways whenever I try to hold onto one."
+ },
+ "ThoughtDef::Stillbirth": {
+  "label": "stillbirth",
+  "description": "My child died before they ever drew breath. I keep replaying every hour of that labor, hunting for the moment I could've saved them."
+ },
+ "ThoughtDef::SunlightSensitivity_Major": {
+  "label": "the suns are punishing",
+  "description": "Both suns are working me over out here \u2014 eyes watering, skin gone tight and raw like it's cooking under the light."
+ },
+ "ThoughtDef::SunlightSensitivity_Mild": {
+  "label": "sunlight sensitivity",
+  "description": "The suns sting my eyes and my skin prickles under the light, uncomfortable but bearable."
+ },
+ "ThoughtDef::VCE_AteCheese": {
+  "label": "ate bad cheese",
+  "description": "Whatever this cheese was, the curdling went wrong somewhere. Barely tastes like anything but sour milk and regret."
+ },
+ "ThoughtDef::VCE_AteFineDessert": {
+  "label": "ate fine dessert",
+  "description": "That dessert was actually good \u2014 a rare sweet thing to find out here."
+ },
+ "ThoughtDef::VCE_AteFineGrill": {
+  "label": "ate fine grill",
+  "description": "Meat and a few vegetables, grilled properly. Simple, but it hit the spot."
+ },
+ "ThoughtDef::VCE_AteFriedGoods": {
+  "label": "ate deep-fried food",
+  "description": "Greasy, crackling, dripping in oil. Say what you want about it, it's good."
+ },
+ "ThoughtDef::VCE_AteGourmetDessert": {
+  "label": "ate gourmet dessert",
+  "description": "That dessert hit flavors I didn't know a mouth could feel. My whole palate's still buzzing."
+ },
+ "ThoughtDef::VCE_AteGourmetGrill": {
+  "label": "ate gourmet grill",
+  "description": "The meat just fell apart on my tongue. Whoever cooked that knows more about fire than most people know about anything."
+ },
+ "ThoughtDef::VCE_AteGourmetMeal": {
+  "label": "ate gourmet meal",
+  "description": "That meal didn't taste like scavenger cooking \u2014 it tasted like something off a Hutt's table. My mouth's never had it that good."
+ },
+ "ThoughtDef::VCE_AteLavishDessert": {
+  "label": "ate lavish dessert",
+  "description": "Rich, sweet, and clearly made with ingredients somebody didn't have to scrounge for. Delicious."
+ },
+ "ThoughtDef::VCE_AteLavishGrill": {
+  "label": "ate lavish grill",
+  "description": "Meat and vegetables grilled just right, no burnt edges, no waste. A meal like that doesn't come around often."
+ },
+ "ThoughtDef::VCE_AteSimpleDessert": {
+  "label": "ate simple dessert",
+  "description": "Nothing fancy, but sweet enough to be worth eating."
+ },
+ "ThoughtDef::VCE_AteSimpleGrill": {
+  "label": "ate simple grill",
+  "description": "Just some grilled scraps. Filled the hole in my stomach and nothing more."
+ },
+ "ThoughtDef::VCE_ConsumedAgave": {
+  "label": "consumed agave",
+  "description": "Sweet agave nectar \u2014 one of the few good things this desert grows on its own."
+ },
+ "ThoughtDef::VCE_ConsumedCannedGoods": {
+  "label": "ate canned food",
+  "description": "Straight out of the tin, standing up, no table. Barely counts as a meal."
+ },
+ "ThoughtDef::VCE_ConsumedChocolateSyrup": {
+  "label": "consumed chocolate syrup",
+  "description": "Sweet, thick, and worth trading half my ration for. Chocolate's the closest thing to love I get out here."
+ },
+ "ThoughtDef::VCE_ConsumedDigestibleResurrectorNanites": {
+  "label": "resurrector nanites",
+  "description": "Whatever's crawling through my blood right now, I feel like I could wrestle a krayt dragon bare-handed."
+ },
+ "ThoughtDef::VCE_ConsumedInsectJelly": {
+  "label": "consumed insect jelly",
+  "description": "Sweet, rich, and thicker than I expected from something that came out of a bug. Not complaining."
+ },
+ "ThoughtDef::VCE_ConsumedMayo": {
+  "label": "consumed mayo",
+  "description": "Tangy, filling, and better than it has any right to taste made from whatever we had lying around."
+ },
+ "ThoughtDef::VCE_ConsumedSalt": {
+  "label": "consumed salt",
+  "description": "A pinch of salt and suddenly the whole meal tastes like somebody meant to cook it."
+ },
+ "ThoughtDef::VCE_ConsumedSpices": {
+  "label": "consumed spices",
+  "description": "That meal had real bite to it. Good \u2014 bland food's for people who don't have to work this hard."
+ },
+ "ThoughtDef::VCE_ConsumedSugar": {
+  "label": "consumed sugar",
+  "description": "Sugar isn't love. But out here, it's close enough."
+ },
+ "ThoughtDef::VCE_SmokeleafButterHigh": {
+  "label": "high on smokeleaf butter",
+  "description": "Everything's gone soft and slow and good. I'm not moving for a while."
+ },
+ "ThoughtDef::VME_Junk_Beautiful": {
+  "label": "surrounded by junk",
+  "description": "It's been too long since I've had good honest junk in sight. A pile of scrap and cast-off parts is the most comforting view there is."
+ },
+ "ThoughtDef::VME_TatteredApparel_Abhorrent": {
+  "label": "wearing ratty clothes",
+  "description": "I'm wrapped in threadbare rags and it's unbearable. Only the best cloth we can scavenge or trade for is fit for my back."
+ },
+ "ThoughtDef::VME_Trading_Required": {
+  "label": "recently traded",
+  "description": "We've made a trade recently, and that's exactly how it should be. A clan that isn't dealing is a clan that's dying."
+ },
+ "ThoughtDef::Jawa_IkeeWatching": {
+  "label": "the ikee's watching",
+  "description": "That one wet eye tracks everything from the rafters and never blinks. Unnerving company, but it always clocks the good salvage before anyone else does."
+ },
+ "ThoughtDef::RimMandrake_ThoughtDef_PsyHarmonize": {
+  "label": "psychic harmony: {HARMONIZER_labelShort}",
+  "description": "Whoever's radiating that harmonization, I'm catching pieces of what they feel as long as we're close. Not unpleasant. Just not entirely mine."
+ },
+ "ThoughtDef::SleptInBedroom": {
+  "label": "bunk quality",
+  "description": "The state of my sleeping nook says everything about my standing in this clan \u2014 I notice every crack, every patch job, every little comfort or the lack of one."
+ },
+ "ThoughtDef::SleptInCold": {
+  "label": "slept in the cold",
+  "description": "I shivered through the night with no heater running. Ash'karr nights bite hard once the twin suns go down \u2014 we need coils in this nook."
+ },
+ "ThoughtDef::SleptInHeat": {
+  "label": "slept in the heat",
+  "description": "I baked in my own bunk all night, the air thick as an engine bay at noon. Can't we scrounge up a cooling unit?"
+ },
+ "ThoughtDef::SleptOnGround": {
+  "label": "slept on the ground",
+  "description": "I curled up on bare sand like a womp rat in a burrow. A Jawa deserves better than dirt for a mattress."
+ },
+ "ThoughtDef::SleptOutside": {
+  "label": "slept outside",
+  "description": "I slept out under the open sky with nothing between me and the sand wind. No canopy, no walls \u2014 just grit in my teeth by morning."
+ },
+ "ThoughtDef::Slighted": {
+  "label": "slighted",
+  "description": "Someone looked right through me like I wasn't worth the trade. I won't forget who."
+ },
+ "ThoughtDef::SoldMyBondedAnimal": {
+  "label": "bonded critter sold off",
+  "description": "They traded away my critter like it was scrap metal, not a living thing that trusted me. That wasn't theirs to sell."
+ },
+ "ThoughtDef::SoldMyBondedAnimalMood": {
+  "label": "bonded critter sold off",
+  "description": "My critter is gone, traded off to some stranger's caravan. I fed it, I trained it, and nobody asked me first."
+ },
+ "ThoughtDef::SoldMyLovedOne": {
+  "label": "loved one sold",
+  "description": "Someone I love got sold off to a trader like a crate of parts. I won't forgive whoever signed that deal."
+ },
+ "ThoughtDef::SoldPrisoner": {
+  "label": "sold a captive into slavery",
+  "description": "I handed a prisoner over to be sold like salvage, not a person. The credits don't sit easy in my pocket."
+ },
+ "ThoughtDef::TeetotalerVsAddict": {
+  "label": "teetotaler vs addict",
+  "description": "I don't touch the stuff, and I can't stand watching someone else burn their life on it right in front of me."
+ },
+ "ThoughtDef::ToxicFallout": {
+  "label": "toxic fallout",
+  "description": "Sickly yellow ash sifts down like poisoned snow, sticking to everything it touches. My throat and skin burn wherever it lands."
+ },
+ "ThoughtDef::TravelAnticipation": {
+  "label": "eager for the road",
+  "description": "I've been checking the sandcrawler's rigging and counting water rations for days. I'm ready to see what's past the dunes."
+ },
+ "ThoughtDef::UndergrounderIndoors": {
+  "label": "likes walls overhead",
+  "description": "I like having a roof and walls between me and the open sand. Solid ground under my boots, not shifting dune."
+ },
+ "ThoughtDef::UndergrounderUnderground": {
+  "label": "loves it underground",
+  "description": "Deep in the rock, away from the twin suns and the wind \u2014 this is where I do my best work."
+ },
+ "ThoughtDef::WantToSleepWithSpouseOrLover": {
+  "label": "sleeping alone",
+  "description": "I should be curled up next to my spouse or lover tonight, not staring at an empty bunk."
+ },
+ "ThoughtDef::WasImprisoned": {
+  "label": "was imprisoned",
+  "description": "The clan locked me up for a stretch, like I was some beast to be caged. I haven't forgotten the feel of those bars."
+ },
+ "ThoughtDef::WitnessedDeathAlly": {
+  "label": "watched an ally die",
+  "description": "I watched one of my own go still. Breathing one moment, gone the next \u2014 I can still see it."
+ },
+ "ThoughtDef::WitnessedDeathBloodlust": {
+  "label": "watched a killing, loved it",
+  "description": "I watched someone die right in front of me. Sand and blood \u2014 my heart's still pounding from it."
+ },
+ "ThoughtDef::WitnessedDeathFamily": {
+  "label": "watched kin die",
+  "description": "I watched my own blood die in front of me. Nothing in this galaxy prepares you for that."
+ },
+ "ThoughtDef::WitnessedDeathNonAlly": {
+  "label": "watched a stranger die",
+  "description": "I watched someone die who wasn't one of mine. Alive one breath, gone the next \u2014 it still sits heavy."
+ },
+ "ThoughtDef::VBE_AmbrandyAsIngredient": {
+  "label": "drank ambrandy cocktail",
+  "description": "That ambrandy mix went down smooth as polished chrome. Worth every credit."
+ },
+ "ThoughtDef::VBE_CaffeineWithdrawal": {
+  "label": "caffeine withdrawal",
+  "description": "My hands won't stop shaking and my skull's pounding like a busted vaporator pump. I need caf, now."
+ },
+ "ThoughtDef::VBE_ConsumedGoStock": {
+  "label": "downed go-stock",
+  "description": "That go-stock lit a fire under me. Tasted rough, worked exactly like it should."
+ },
+ "ThoughtDef::VBE_ConsumedLuciferiumPowder": {
+  "label": "took luciferium powder",
+  "description": "That powder hit like a supercharge to every system I've got. I feel unstoppable."
+ },
+ "ThoughtDef::VBE_ConsumedWakeupPowder": {
+  "label": "snorted wake-up powder",
+  "description": "One hit of that powder and I'm wired straight through. Sleep can wait."
+ },
+ "ThoughtDef::VBE_DeluxeTobaccoHigh": {
+  "label": "smoked a cigar",
+  "description": "Puffing on that cigar, I feel like I finally hauled in a real score instead of scrap."
+ },
+ "ThoughtDef::VBE_DrankSoda": {
+  "label": "drank soda",
+  "description": "A cold, fizzy soda in this heat is a small mercy. I'll take it."
+ },
+ "ThoughtDef::VBE_DrankTea": {
+  "label": "drank tea",
+  "description": "A simple cup of tea, brewed slow, makes the whole day sit easier."
+ },
+ "ThoughtDef::VBE_EnergyDrinkHigh": {
+  "label": "drank an energy drink",
+  "description": "That drink hit my blood like a hyperdrive kicking in. I could run laps around the settlement."
+ },
+ "ThoughtDef::VBE_GinAsIngredient": {
+  "label": "drank gin cocktail",
+  "description": "That gin mix went down clean and sharp. Good stuff, whoever brewed it."
+ },
+ "ThoughtDef::VBE_HotCoffeeHigh": {
+  "label": "drank hot caf",
+  "description": "That hot caf hit exactly right. Bitter, strong, and just what I needed before the shift."
+ },
+ "ThoughtDef::VBE_IcedCoffeeHigh": {
+  "label": "drank iced caf",
+  "description": "Cold caf over ice, in this heat \u2014 that hit exactly right."
+ },
+ "ThoughtDef::VBE_RBMeadAsIngredient": {
+  "label": "drank mead cocktail",
+  "description": "That mead mix was sweet and heavy, sat warm in my chest the whole way down."
+ },
+ "ThoughtDef::VBE_TequilaAsIngredient": {
+  "label": "drank tequila cocktail",
+  "description": "That tequila mix burned going down, but it burned good."
+ },
+ "ThoughtDef::VBE_TobaccoHigh": {
+  "label": "lit one up",
+  "description": "Pulled the smoke deep and let it work. First real quiet my head's had all shift."
+ },
+ "ThoughtDef::VBE_TobaccoWithdrawal": {
+  "label": "tobacco withdrawal",
+  "description": "I'd trade half my scrap pile for a cigarette right now. My hands keep reaching for one that isn't there."
+ },
+ "ThoughtDef::VBE_VodkaAsIngredient": {
+  "label": "drank vodka cocktail",
+  "description": "That vodka mix hit clean and fast. No complaints."
+ },
+ "ThoughtDef::VBE_WhiskeyAsIngredient": {
+  "label": "drank whiskey cocktail",
+  "description": "That whiskey mix had a good burn to it, the kind that makes a long shift worth finishing."
+ },
+ "ThoughtDef::VBE_WineAsIngredient": {
+  "label": "drank wine cocktail",
+  "description": "That wine mix was smooth going down, better than anything I've traded for in a while."
+ },
+ "ThoughtDef::PR_ForceFed": {
+  "label": "force-fed",
+  "description": "Someone forced food down my throat like I was a beast too stupid to feed itself. I won't forget the humiliation of it."
+ },
+ "ThoughtDef::PR_HarmfulSurgeryVictim": {
+  "label": "cut me open",
+  "description": "This is the one who opened me up while I was strapped down and helpless. I look at them and feel the blade again."
+ },
+ "ThoughtDef::PR_HarmfulSurgeryWitness": {
+  "label": "butchers fellow captives",
+  "description": "They carve into the others in this cage like we're spare parts on a workbench. I could be next on the table."
+ },
+ "ThoughtDef::PR_MissesPrison": {
+  "label": "adjusting to freedom",
+  "description": "After so long chained in that cell, the open sand feels wrong under my feet. Part of me almost misses knowing exactly where the walls were."
+ },
+ "ThoughtDef::PR_OldFriend": {
+  "label": "old friend",
+  "description": "We've hauled scrap and dodged raiders together for years. I'd stand at their back against anything this desert throws at us."
+ },
+ "ThoughtDef::PR_PrisonWork": {
+  "label": "put to work in the cage",
+  "description": "At least they've given my hands something to do in here \u2014 better than staring at the bars all day, though some jobs they hand me are worse than the boredom."
+ },
+ "ThoughtDef::PR_Ringleader": {
+  "label": "cellblock mood",
+  "description": "The one who runs this block sets the temper for the rest of us \u2014 their mood bleeds into every cage down the row, mine included."
+ },
+ "ThoughtDef::PR_Searched": {
+  "label": "searched",
+  "description": "They patted me down like I was a crate of contraband, not a person. Nothing in this cell is mine anymore, not even my pockets."
+ },
+ "ThoughtDef::PR_SolitaryResentment": {
+  "label": "buried in the hole",
+  "description": "Nothing down here but dark and my own breathing, day after day. I'm keeping a tally, and it isn't in their favor."
+ },
+ "XenotypeDef::Baseliner": {
+  "label": "Baseliner",
+  "description": "No genes worth logging. A baseliner works like your grandfather worked \u2014 hands, sweat, and whatever tool's in reach. Cheap to feed, easy to trust, nothing to trade for. Every clan's got a few; every clan needs them."
+ },
+ "XenotypeDef::Jawa_Xeno_Gamorrean": {
+  "label": "Gamorrean",
+  "description": "Big, tusked, from a wet green world that ruined them for a desert. Strong backs, short patience \u2014 put them on hauling and lifting, never on a delicate deal. Feed them well and they won't ask questions about where the meat came from."
+ },
+ "XenotypeDef::MandrakeJawa": {
+  "label": "Jawa",
+  "description": "Us. Small under the hood for a reason \u2014 less skin in the sun, less water lost to it. Big eyes see in the dark when the sandcrawler runs cold-hours; the old scars on our hands are the ledger nobody needs written down. We don't explain ourselves to outsiders. We don't need to."
+ },
+ "XenotypeDef::RimMandrakeAbednedo": {
+  "label": "Abednedo",
+  "description": "Long dangling tendrils off the face, catch the wind before you feel it \u2014 useful on watch duty during a storm. Steady, easygoing types, good with their hands, don't spook at a hard bargain. Homeworld gets battered by weather worse than ours, so a little grit doesn't slow them down."
+ },
+ "XenotypeDef::RimMandrakeAnzati": {
+  "label": "Anzati",
+  "description": "Old. Older than they look, and that's the problem \u2014 they feed on more than food, and every settlement that's ever hosted one long-term has a story it doesn't like to tell. Charming to a fault, which is exactly the warning sign. Trade in the open, never alone, never after dark."
+ },
+ "XenotypeDef::RimMandrakeAqualish": {
+  "label": "Aqualish",
+  "description": "Round black eyes, thick fur, a temper that doesn't wait for an insult to land before it swings. Some strains run four arms \u2014 twice the work, twice the reach in a brawl. Good muscle for a raid or a hauling crew; bad choice to seat across a negotiating table."
+ },
+ "XenotypeDef::RimMandrakeArkanian": {
+  "label": "Arkanian",
+  "description": "Pale skin, white hair, eyes that don't blink at a gene-splice most folk would call heresy. Their homeworld bred engineers who rewrote living things for a living, and it shows in how coldly they talk about a body. Worth more at a workbench than a campfire."
+ },
+ "XenotypeDef::RimMandrakeBith": {
+  "label": "Bith",
+  "description": "Domed skull, no eyelids, ears that catch a coolant hiss three rooms off before you do. Steady hands, careful minds, half of them can carry a tune while they work a torch. Put one on watch or on repairs and forget you're short-handed."
+ },
+ "XenotypeDef::RimMandrakeBothan": {
+  "label": "Bothan",
+  "description": "Fur that shifts color with the mood, and a mind that never stops keeping score. Every clan trades gossip, but a Bothan trades it for a living \u2014 what they know, they sell, and what they sell, someone usually dies over. Useful. Never fully trusted, and they'd tell you the same."
+ },
+ "XenotypeDef::RimMandrakeCathar": {
+  "label": "Cathar",
+  "description": "Feline, quick-tempered, and loyal past the point of sense once you've earned it. A slight lands harder on a Cathar than on most \u2014 keep the insults for someone else's crew. Good in a fight, better as kin."
+ },
+ "XenotypeDef::RimMandrakeCerean": {
+  "label": "Cerean",
+  "description": "Tall skull, two minds working under it, and they'll make you wait while both weigh in. Slow to decide, near impossible to fool once they have. Put them on planning a raid or reading a contract, not on the clock."
+ },
+ "XenotypeDef::RimMandrakeChadraFan": {
+  "label": "Chadra-Fan",
+  "description": "Barely knee-high on a human, ears like satellite dishes, nose that reads a chemfuel leak before the gauge does. Quick, nervous, good in tight crawlspaces a bigger scavenger can't reach. Kin to how we work, if not to what we are."
+ },
+ "XenotypeDef::RimMandrakeChagrian": {
+  "label": "Chagrian",
+  "description": "Blue skin, head-tresses that read a room's mood before the mouth does, and a homeworld that was all water. They wilt on long dry runs faster than they'll admit \u2014 keep the ration skins close. Dignified, careful traders once they trust you."
+ },
+ "XenotypeDef::RimMandrakeChiss": {
+  "label": "Chiss",
+  "description": "Blue skin, red eyes, and a stare that's already three moves ahead of the conversation. Come from somewhere cold and unmapped, and it left them formal, disciplined, slow to warm to strangers. Deal straight with a Chiss and they'll deal straighter back \u2014 cross one and they'll have planned for it before you tried."
+ },
+ "XenotypeDef::RimMandrakeDathomirian": {
+  "label": "Dathomirian",
+  "description": "Horns on the males, wild manes on the females, and a homeworld thick with old magic nobody here claims to understand. Hard folk, harder to spook \u2014 most have already survived worse than a desert. Respect the reputation even when the individual seems ordinary."
+ },
+ "XenotypeDef::RimMandrakeDefel": {
+  "label": "Defel",
+  "description": "Fur that eats the light instead of reflecting it \u2014 step into shadow and they're near gone. Nocturnal by nature, which suits a night salvage run better than any tool we own. Post one on a dark watch and sleep easier."
+ },
+ "XenotypeDef::RimMandrakeDevaronian": {
+  "label": "Devaronian",
+  "description": "Horns and a devil's grin on the males, a face fur-covered enough to fool a stranger on the females \u2014 neither means what an outsider assumes. Restless by blood; most left home and never went back, which makes them the crew that never balks at a long run. Wanderers, not villains, whatever the face suggests."
+ },
+ "XenotypeDef::RimMandrakeDuros": {
+  "label": "Duros",
+  "description": "Smooth blue skin, no nose worth mentioning, red eyes that never seem to blink at a bad flight path. Some of the first to fly among the stars, and it's bred true \u2014 put a Duros in the pilot's seat of anything that moves and trust the landing."
+ },
+ "XenotypeDef::RimMandrakeEchani": {
+  "label": "Echani",
+  "description": "Pale skin, white hair, silver eyes, and a way of reading a fight in the set of your shoulders before you throw a punch. Warrior stock, disciplined past what most clans bother with. Hire one to guard the haul and don't waste words explaining the job \u2014 they'll already be watching the door."
+ },
+ "XenotypeDef::RimMandrakeEwok": {
+  "label": "Ewok",
+  "description": "Small, furry, and don't let the size fool you \u2014 a cornered Ewok has killed things twice its weight with a sharpened stick and a good trap. Tribal, clannish, suspicious of strangers the same way we are. Closer kin to us than most bigger folk want to admit."
+ },
+ "XenotypeDef::RimMandrakeFalleen": {
+  "label": "Falleen",
+  "description": "Mottled green skin, ridged skull, and a way of smelling out exactly what you want to hear \u2014 some claim it's more than charm, that the scent itself works on you. Watch a deal with a Falleen the same way you'd watch a card game with a cheat: closely, and sober."
+ },
+ "XenotypeDef::RimMandrakeFeeorin": {
+  "label": "Feeorin",
+  "description": "Tendrils trailing off the head and face, and enough years ahead of them \u2014 some run four centuries \u2014 that a Feeorin remembers debts the rest of us forgot were owed. Patient past reason. Good for a long trade relationship, bad to try and cheat, because they will still be here to collect."
+ },
+ "XenotypeDef::RimMandrakeGamorrean": {
+  "label": "Gamorrean",
+  "description": "Tusked, thick-skinned, built for lifting what two of us couldn't. Not the crew for talking a price down, but put one on the door or the loading ramp and nothing gets past that shouldn't. Feed them plenty and they're no trouble at all."
+ },
+ "XenotypeDef::RimMandrakeGand": {
+  "label": "Gand",
+  "description": "Some breathe our air fine; some need a mask the moment they step off a ship, ammonia-bred and none too happy about the swap. The findsmen among them won't say the word 'I' \u2014 track a person's trail their whole life and start talking like the trail matters more than the tracker. Hire one to find something lost and don't ask how they do it."
+ },
+ "XenotypeDef::RimMandrakeGeonosianVariants": {
+  "label": "Geonosian",
+  "description": "Winged, insectoid, and never really individuals \u2014 deal with the hive's will, not the drone in front of you, or the deal means nothing past that one drone. Master builders; put a swarm of them on a foundry job and they'll outbuild a whole crew of us. Don't turn your back on the wings."
+ },
+ "XenotypeDef::RimMandrakeGungan": {
+  "label": "Gungan",
+  "description": "Amphibious, thick-skinned, and clumsier looking than they fight \u2014 a Gungan with an energy-ball launcher has ended arguments faster than a blaster. Need water near enough to duck into, and they'll grumble the whole desert crossing about the lack of it. Sturdier allies than the look suggests."
+ },
+ "XenotypeDef::RimMandrakeHerglic": {
+  "label": "Herglic",
+  "description": "Hulking, black-skinned, built like they were meant for open water or open space rather than dry ground \u2014 which, on this world, they mostly were. Rare out here, and worth it when you find one: nothing hauls heavier or takes a hit better. Thick hide, thicker patience."
+ },
+ "XenotypeDef::RimMandrakeHutt": {
+  "label": "Hutt",
+  "description": "Slow-moving, slug-bodied, and it doesn't matter \u2014 a Hutt never has to move to win a deal, because the deal was already decided before you sat down. Old, patient past a human lifetime twice over, and every credit that crosses their coils gets remembered. Never owe one anything you can't repay on their terms."
+ },
+ "XenotypeDef::RimMandrakeIktotchi": {
+  "label": "Iktotchi",
+  "description": "Curved horns, reddish skin, and some of them swear they see trouble coming before it arrives \u2014 a few are even right often enough to bet on it. Good scouts, better gamblers. Listen when one says to move the caravan; ask questions after."
+ },
+ "XenotypeDef::RimMandrakeIridonian": {
+  "label": "Iridonian",
+  "description": "Crown of horns aside, near enough to human that you'd miss it in a headwrap. Homeworld's as unforgiving as ours, so they take to this life without complaint \u2014 desert-bred stock knows desert-bred work."
+ },
+ "XenotypeDef::RimMandrakeIthorian": {
+  "label": "Ithorian",
+  "description": "Long-necked, two mouths, a voice that comes out low and doubled like it's speaking from two directions at once. Gentle by nature, and they'll wince at how hard we strip a scrapyard bare \u2014 keep them off any job that looks too much like ruining living ground. Peaceable, useful, easily offended by waste."
+ },
+ "XenotypeDef::RimMandrakeJawa": {
+  "label": "Jawa",
+  "description": "Small, fur-covered, orange eyes that glow under a hood \u2014 a desert people, same as us, who never stop moving from one dry world to the next that'll have them. Every clan out here is built the same way: salvage what the big folk left, trade what you can't use, keep the hood up and the eyes hidden. Family, more or less, whatever crawler they call home."
+ },
+ "XenotypeDef::RimMandrakeKaleesh": {
+  "label": "Kaleesh",
+  "description": "Reptilian, scarred, and most wear the skull of something they killed rather than talk about how. Their homeworld chewed them into warriors first and everything else second. Earn respect from a Kaleesh with steel, not silver \u2014 credits mean less to them than a kill well made."
+ },
+ "XenotypeDef::RimMandrakeKaminoan": {
+  "label": "Kaminoan",
+  "description": "Tall, thin, amphibian, and colder about a living body than anyone ought to be \u2014 they didn't just study cloning, they perfected it. Precise, clinical, unnervingly patient with a scalpel. Good to have around when someone's hurt bad; don't expect warmth while they work."
+ },
+ "XenotypeDef::RimMandrakeKelDor": {
+  "label": "Kel Dor",
+  "description": "Orange-skinned, big black goggle-eyes too sensitive for open sun, and they need a mask fitted the moment they leave homeworld air or they won't last the day. Once geared up, sharp senses and steady nerves \u2014 good trackers, better pilots. Budget the mask into the price of hiring one."
+ },
+ "XenotypeDef::RimMandrakeKlatoonian": {
+  "label": "Klatoonian",
+  "description": "Green to brown skin, green blood if they're cut, and a build made for a lifetime of hauling somebody else's cargo. Strong, uncomplaining workers \u2014 the Hutts have leaned on their backs for generations, and we're not too proud to do the same. Don't flinch at the blood; it's just theirs."
+ },
+ "XenotypeDef::RimMandrakeKubaz": {
+  "label": "Kubaz",
+  "description": "Long snout, keen nose \u2014 a Kubaz can smell a coolant leak or a lie three stalls down the bazaar. Keep an eye on the ledger around one; the good ones traded gossip and grudges as fast as scrap back on Kubindi, and habits like that don't stay home. Useful on a crew that needs eyes and ears in a crowded market."
+ },
+ "XenotypeDef::RimMandrakeLasat": {
+  "label": "Lasat",
+  "description": "Big, strong, and built for hauling what two of us together couldn't lift. Lasan is gone \u2014 burned out from under them by the Empire \u2014 so don't ask, and don't expect gratitude for pity; earn trust with fair work and a straight trade, same as anyone who's lost a homeworld."
+ },
+ "XenotypeDef::RimMandrakeMimbanese": {
+  "label": "Mimbanese",
+  "description": "Mud-world stock, and it shows: they'll work a swamp claim or a flooded trench without the complaint that would fold a desert crew in an hour. Mimban bred them fighting Imperial mining rigs, so don't be surprised if one still flinches at a company logo."
+ },
+ "XenotypeDef::RimMandrakeMirialan": {
+  "label": "Mirialan",
+  "description": "Green or purple skin, marks cut into the face for things earned, not given \u2014 respect that, it's the closest thing they've got to our own clan-marks. Quiet, disciplined, good with their hands; the kind you want on a delicate salvage job, not a loud one."
+ },
+ "XenotypeDef::RimMandrakeMonCalamari": {
+  "label": "Mon Calamari",
+  "description": "Big-domed heads, gill-slits, a nose for a bad hull weld from a klick off. Put one near a busted engine or a leaking tank before you put a wrench in your own hand \u2014 Mon Cala breeds shipwrights, and it shows in everything they touch."
+ },
+ "XenotypeDef::RimMandrakeMuun": {
+  "label": "Muun",
+  "description": "Thin, tall, and they'll count your credits twice before you've finished counting them once. Banking-clan blood; fair dealers if the terms are exact, but read every line before you sign \u2014 a Muun never writes a contract that favors the other side."
+ },
+ "XenotypeDef::RimMandrakeNagai": {
+  "label": "Nagai",
+  "description": "Tall, quick, and touchy about honor in a way that gets men killed over nothing, so don't insult one you mean to keep around. Wild Space stock, hard fighters, harder to read \u2014 useful backup, bad company for a slow argument."
+ },
+ "XenotypeDef::RimMandrakeNautolan": {
+  "label": "Nautolan",
+  "description": "Green-blue skin, head-tentacles that read the air like a Jawa reads a scrap pile \u2014 don't try to bluff one, they'll smell the lie before you finish it. Amphibious, tough in weather that'd cook the rest of us; good for the wet-season runs nobody else wants."
+ },
+ "XenotypeDef::RimMandrakeNeimoidian": {
+  "label": "Neimoidian",
+  "description": "Smooth green faces, soft voices, and a mind for profit margins sharper than any blade on this crew. Trade Federation stock \u2014 don't mistake the caution for weakness, it's kept their kind rich longer than most species stay solvent."
+ },
+ "XenotypeDef::RimMandrakeNelvaanian": {
+  "label": "Nelvaanian",
+  "description": "Blue fur, wolf jaw, claws that'll open a crate faster than a vibroblade. Not much for words, plenty for work \u2014 point one at a job and step back."
+ },
+ "XenotypeDef::RimMandrakeNikto": {
+  "label": "Nikto",
+  "description": "Scaled hide, horns, built for rough work in worse weather \u2014 Kintan bred them tough. Plenty hire out as muscle for the Hutts; that's not an insult, it's just where the steady credits are, and a Nikto on your side is worth the wage."
+ },
+ "XenotypeDef::RimMandrakeOrtolan": {
+  "label": "Ortolan",
+  "description": "Soft, round, big ears, gentler than they look \u2014 good ears for a haggle, bad stomach for a fight. Feed one well and it'll remember you kindly; Ortolans hold a grudge about hunger longer than they hold one about anything else."
+ },
+ "XenotypeDef::RimMandrakePantoran": {
+  "label": "Pantoran",
+  "description": "Blue skin, gold marks on the face, cold-world stock that handles heat worse than we do \u2014 keep one shaded and watered on a desert run or you'll lose the day's work to sunstroke. Steady traders otherwise, no complaints there."
+ },
+ "XenotypeDef::RimMandrakePyke": {
+  "label": "Pyke",
+  "description": "Big skull, small face, and a look that unsettles half the market before they've said a word. Spice-cartel blood runs deep in that family name \u2014 trade careful, ask fewer questions than you want to, and never owe one credits."
+ },
+ "XenotypeDef::RimMandrakeQuarren": {
+  "label": "Quarren",
+  "description": "Squid-faced, sharp-tempered about their old rivalry with the Mon Calamari \u2014 don't seat the two at the same table unless you like shouting. Good hands underwater or in a flooded hold; keep the grudge off the work floor and they're solid."
+ },
+ "XenotypeDef::RimMandrakeRakata": {
+  "label": "Rakata",
+  "description": "Amphibious, old-blood, and carry themselves like they remember when their people ruled the stars \u2014 some of the oldest hyperspace lore in the galaxy traces back to Lehon. Rare to see one on a scavenger crew; when you do, listen before you talk."
+ },
+ "XenotypeDef::RimMandrakeRodian": {
+  "label": "Rodian",
+  "description": "Big infrared eyes, twitchy antennae that pick up a footstep before your own ears do \u2014 good watch on a night haul. Rodia turns out hunters and trackers more than traders; pay the bounty, don't become one."
+ },
+ "XenotypeDef::RimMandrakeSelkath": {
+  "label": "Selkath",
+  "description": "Water-skinned, from a whole world of the stuff, and they wilt fast away from it \u2014 keep a basin or a damp cloth handy if one's working your crew in this desert, or you'll lose them to the dry faster than you'd think. Steady, careful workers once they're not dying of thirst."
+ },
+ "XenotypeDef::RimMandrakeSithKissaiPureblood": {
+  "label": "Sith Kissai (Pureblood)",
+  "description": "Red skin, priest-caste bearing, and a way of talking about the dark side like it's a tool on a belt rather than a story. Rare out this far \u2014 if one's trading with you, they want something specific, and it's worth finding out what before the deal closes."
+ },
+ "XenotypeDef::RimMandrakeSithMassassi": {
+  "label": "Sith Massassi (Pureblood)",
+  "description": "Ridged red hide, tendrils down the jaw, built for a fight rather than a sermon \u2014 different line from the priest-caste Kissai, same old blood. Hard workers when the job's physical; don't expect the patience for anything fine."
+ },
+ "XenotypeDef::RimMandrakeSithZ": {
+  "label": "Sith Zugurak (Pureblood)",
+  "description": "The engineer line of that old bloodline \u2014 tomb-builders and shipwrights once, and the hands still show for it. Give one a busted hull or a collapsed tunnel and they'll have opinions worth listening to."
+ },
+ "XenotypeDef::RimMandrakeSnivvian": {
+  "label": "Snivvian",
+  "description": "Big nostrils, a jaw with a pair of tusks, and a face that reads sadder than the pawn usually feels \u2014 don't mistake the look for the mood. Decent traders, expressive in a way that makes them easy to read at the table, which cuts both ways."
+ },
+ "XenotypeDef::RimMandrakeSullustan": {
+  "label": "Sullustan",
+  "description": "Big eyes, big ears, built for the dark of a mine tunnel or a ship's crawlspace \u2014 Sullust breeds them underground and it never leaves. Some of the best small-craft pilots you'll find; put one behind the stick before you put one on a wrench."
+ },
+ "XenotypeDef::RimMandrakeTaung": {
+  "label": "Taung",
+  "description": "Old blood, near enough to a ghost story as a living species gets \u2014 the tales say they're kin somewhere far back to the armored clans, but nobody out here can prove it and I wouldn't ask one to their face. If you meet one, you're meeting something rare."
+ },
+ "XenotypeDef::RimMandrakeTogorian": {
+  "label": "Togorian",
+  "description": "Big cats standing upright, digitigrade like they're always ready to run \u2014 strong, fast, dangerous to cross. Good hunters, better guards; don't leave food unclaimed around one and don't test the claws."
+ },
+ "XenotypeDef::RimMandrakeTogruta": {
+  "label": "Togruta",
+  "description": "Colored skin, white stripes, head-tails that hear better than most crews' whole watch rotation put together. Shili bred them for the hunt-pack \u2014 one of these on lookout is worth two without the montrals."
+ },
+ "XenotypeDef::RimMandrakeTrandoshan": {
+  "label": "Trandoshan",
+  "description": "Scaled, tough, and they'll grow a lost finger back before you've finished apologizing for costing it to them. Hunters by nature and old rivals of the Wookiees \u2014 keep the two off the same crew unless you enjoy refereeing."
+ },
+ "XenotypeDef::RimMandrakeTusken": {
+  "label": "Tusken",
+  "description": "Wrapped head to foot, never seen bare-faced by outsiders and don't expect to be the first. Tatooine's own \u2014 territorial, dangerous to a moisture farm or a careless caravan, about as likely to trade fair as a sandstorm is to hold still. Respect the wraps, keep your distance, don't push."
+ },
+ "XenotypeDef::RimMandrakeTwilek": {
+  "label": "Twi'lek",
+  "description": "Lekku instead of hair, from Ryloth, and more of them scattered across the galaxy in chains than free \u2014 a fact worth remembering before you make demands of one on this crew. Adaptable, quick-witted, and they've earned every bit of the wariness they carry."
+ },
+ "XenotypeDef::RimMandrakeUgnaught": {
+  "label": "Ugnaught",
+  "description": "Short, piggish snout, and they'll outwork three of us on a shift without slowing down \u2014 Cloud City bred them for exactly that kind of labor and the habit never left. Pay fair, work them fair, and you'll never find a steadier hand on the line."
+ },
+ "XenotypeDef::RimMandrakeUmbaran": {
+  "label": "Umbaran",
+  "description": "Pale skin, no color in the eyes, and a soft way of talking that can turn a bad deal into a good-sounding one before you notice \u2014 watch for that, not the face. Umbara's a dark world; don't be surprised if one prefers the shade."
+ },
+ "XenotypeDef::RimMandrakeWeequay": {
+  "label": "Weequay",
+  "description": "Leather hide, tough enough to shrug off sun and a stray blaster bolt both \u2014 desert stock knows desert stock, and a Weequay handles this heat better than half the crew. Plenty run with pirates or mercs back where they're from; that's a resume, not a warning, out here."
+ },
+ "XenotypeDef::RimMandrakeWookiee": {
+  "label": "Wookiee",
+  "description": "Tall, strong, covered in fur, and loyal to whoever's earned it \u2014 Kashyyyk breeds warriors and craftsmen both, and you want either on your side of a fight. Don't cheat one on a debt; a Wookiee's memory for a wrong is as long as the arm that'll collect it."
+ },
+ "XenotypeDef::RimMandrakeYoderForceGremlin": {
+  "label": "Yoder",
+  "description": "Rare enough that most of the clan's never traded with one \u2014 small, strange, said to live long past anything reasonable. Whatever the truth of it, treat the meeting as the find of a lifetime and don't try too hard to explain what you're looking at."
+ },
+ "XenotypeDef::RimMandrakeZeltron": {
+  "label": "Zeltron",
+  "description": "Red skin, near-human otherwise, and they'll feel the room's mood before you've finished walking into it \u2014 good for reading a tense trade, bad for keeping your own bluff hidden. Warm company, sharp senses; don't bring one to a negotiation you plan to lie through."
+ },
+ "XenotypeDef::RimMandrakeZygerrian": {
+  "label": "Zygerrian",
+  "description": "Feline, sharp-featured, carrying an old reputation for the slave trade that the honest ones spend a lifetime living down. Judge the pawn in front of you, not the empire behind the name \u2014 but don't be shocked if others on the crew aren't as willing to let it go."
+ },
+ "MentalBreakDef::FireTerror": {
+  "label": "bolting from the flame",
+  "beginLetter": "{0} is bolting from the fire.\n\n[PAWN_pronoun] won't stop running until the flame is behind [PAWN_objective].",
+  "recoveryMessage": "{0} has stopped bolting from the fire."
+ },
+ "MentalBreakDef::BedroomTantrum": {
+  "label": "wrecking the bunk",
+  "beginLetter": "{0} has cracked and is tearing [PAWN_possessive] own bunk apart.\n\n[PAWN_pronoun] is going to wreck everything [PAWN_pronoun] owns in there before it passes.",
+  "recoveryMessage": "{0} has stopped wrecking [PAWN_possessive] bunk."
+ },
+ "MentalBreakDef::Berserk": {
+  "label": "gone to the blade",
+  "beginLetter": "{0} has snapped and gone to the blade.\n\n[PAWN_pronoun] will cut down anyone in reach - crew, stranger, doesn't matter.",
+  "recoveryMessage": "{0}'s rage has burned itself out."
+ },
+ "MentalBreakDef::Binging_DrugExtreme": {
+  "label": "riding the hard stuff",
+  "beginLetter": "",
+  "recoveryMessage": ""
+ },
+ "MentalBreakDef::Binging_DrugMajor": {
+  "label": "chasing the smoke",
+  "beginLetter": "",
+  "recoveryMessage": ""
+ },
+ "MentalBreakDef::Binging_Food": {
+  "label": "gorging the stores",
+  "beginLetter": "{0} is tearing into the food stores.\n\n[PAWN_pronoun] won't stop eating until the ration crate is bare.",
+  "recoveryMessage": "{0} has stopped gorging on the stores."
+ },
+ "MentalBreakDef::Catatonic": {
+  "label": "gone still",
+  "beginLetter": "",
+  "recoveryMessage": ""
+ },
+ "MentalBreakDef::CorpseObsession": {
+  "label": "corpse-fixed",
+  "beginLetter": "{0} has broken inside and fixed on the dead.\n\n[PAWN_pronoun] is going to drag a corpse out and put it where everyone has to look at it.",
+  "recoveryMessage": "{0} has let go of the corpse fixation."
+ },
+ "MentalBreakDef::GiveUpExit": {
+  "label": "walking off into the waste",
+  "beginLetter": "{0} has given up on this crew.\n\n[PAWN_pronoun] is walking out into the waste to try [PAWN_possessive] luck alone. You can run [PAWN_objective] down and hold [PAWN_objective], or let [PAWN_objective] go - the sand may bring [PAWN_objective] back someday, or it may not.",
+  "recoveryMessage": "{0} thought better of it and is coming back to the crew."
+ },
+ "MentalBreakDef::InsultingSpree": {
+  "label": "mouthing off at everyone",
+  "beginLetter": "{0} is on a mouthing-off spree.\n\n[PAWN_pronoun] will wander the hull, running [PAWN_possessive] mouth at whoever's closest.",
+  "recoveryMessage": "{0} has stopped mouthing off at everyone."
+ },
+ "MentalBreakDef::Jailbreaker": {
+  "label": "working the cage door",
+  "beginLetter": "{0} has cracked and is going to talk the prisoners into running.",
+  "recoveryMessage": "{0} has given up on working the cage door."
+ },
+ "MentalBreakDef::MurderousRage": {
+  "label": "marked for killing",
+  "beginLetter": "{0} has fixed on a killing.\n\n[PAWN_pronoun] has decided {1} doesn't get to see the next sunrise.",
+  "recoveryMessage": "{0} has let go of the killing rage."
+ },
+ "MentalBreakDef::RunWild": {
+  "label": "gone feral",
+  "beginLetter": "",
+  "recoveryMessage": ""
+ },
+ "MentalBreakDef::SadisticRage": {
+  "label": "taking it out on the cages",
+  "beginLetter": "{0} has flown into a black rage.\n\n[PAWN_pronoun] is going to go take it out on whoever's chained up.",
+  "recoveryMessage": "{0} is done taking it out on the prisoners."
+ },
+ "MentalBreakDef::Slaughterer": {
+  "label": "turned on the herd",
+  "beginLetter": "{0} has cracked and turned on the herd - [PAWN_pronoun]'s going to gut whatever [PAWN_pronoun] can catch.",
+  "recoveryMessage": "{0} has stopped slaughtering the animals."
+ },
+ "MentalBreakDef::Tantrum": {
+  "label": "smashing the hull",
+  "beginLetter": "{0} is smashing whatever's in reach - furniture, gear, the walls themselves.",
+  "recoveryMessage": "{0} has stopped smashing things."
+ },
+ "MentalBreakDef::TargetedInsultingSpree": {
+  "label": "riding {0} hard",
+  "beginLetter": "{0} has fixed [PAWN_possessive] rage on {1}.\n\n[PAWN_pronoun] will dog {1}'s steps, mouthing off without letup.",
+  "recoveryMessage": ""
+ },
+ "MentalBreakDef::TargetedTantrum": {
+  "label": "set on wrecking it",
+  "beginLetter": "{0} is having a fit and has fixed on one thing to destroy: {1}.",
+  "recoveryMessage": "{0} has stopped trying to destroy it."
+ },
+ "MentalBreakDef::Wander_OwnRoom": {
+  "label": "shut in",
+  "beginLetter": "{0} has shut [PAWN_objective]self in [PAWN_possessive] own quarters and won't come out.",
+  "recoveryMessage": "{0} has come out of [PAWN_possessive] quarters."
+ },
+ "MentalBreakDef::Wander_Psychotic": {
+  "label": "wandering blank-eyed",
+  "beginLetter": "{0} is wandering the hull blank-eyed, [PAWN_possessive] mind somewhere else entirely.",
+  "recoveryMessage": "{0} has stopped wandering blank-eyed."
+ },
+ "MentalBreakDef::Wander_Sad": {
+  "label": "wandering low",
+  "beginLetter": "{0} has broken down and is wandering the hull, hollowed out.",
+  "recoveryMessage": "{0} has stopped wandering in the low."
+ },
+ "MentalBreakDef::Rebellion": {
+  "label": "stirring the chained",
+  "beginLetter": "{0} has hit the wall inside and is going to stir the other chained ones to break for it.",
+  "recoveryMessage": ""
+ }
+}
