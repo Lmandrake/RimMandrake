@@ -238,7 +238,19 @@ under stress); **Cistern Auditor** (colony spoilage reduced); **Freed Proxy**
 Traits: **Transactional** (favor/slight opinion swings doubled), **Appetite**,
 **Cold-Blooded**.
 
-### Deep Desert Tribes — the conversion arc (round 4)
+### Deep Desert Tribes — the conversion arc (round 4) + the Fire side (round 7, ruled 2026-08-30)
+RULED (canon.yml deep_desert_tribes): dual theology — Water is life/sacredness
+(priest side, entries below stand whole), Fire is the warrior/hunter side that
+REAPS. Sand is safety: it does not burn. Round-7 additions (owner-approved):
+Childhood **Pyre-Watcher** (kept the season's first fires: fire-fear immune,
+mood buff on burn scars and open sand, roofed penalty).
+Adulthood **Flame-Reaper** (warrior/hunter elite: shooting/melee + scorched-
+ground foraging savant, no mood hit from burning structures/corpses —
+doctrine, not cruelty).
+Adulthood **Ash-Speaker** (rare judge of belonging: reads what regrew — social/
+conversion elite whose presence eases or hardens tribe conversion of outsiders).
+Trait **Reaps-the-Flames** (break-weight drop while fires burn on-map; small
+mood debuff in long-unburned lush green — the land is overdue).
 Capture economy: convertible via adoption (canon); until converted their faith
 attacks your infrastructure.
 Childhoods: **Sun-Sworn Child** (hard D-family: sandstorm immunity, roofed
