@@ -146,3 +146,12 @@ Top 15 by row count:
 
 Remaining 62 mods carry 1–7 rows each (full per-mod counts derivable again
 from `measure sql` against this capture; not reproduced row-by-row here).
+
+## 4. Owner's proposition requirements (2026-08-30 — gates section 2's ruling)
+Several VISUAL tree propositions before ruling: (A) thematic grouping,
+(B) power/impact grouping (Light/Heavy variants likely; ship weaponry possibly
+split from personal), (C) balance: unlock-count and player-value vs research
+cost per group. Research is EXPENSIVE for the Jawa — traded items, prototypes
+as costs. Plus SOURCE-GATED unique chains: technology only available in the
+Utinni's memory core (original ship weaponry), and possibly other gated forms
+(candidates from canon: Cathedral whispers, vault knowledge, the Hutt deal).
