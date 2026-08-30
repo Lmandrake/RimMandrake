@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T20:22:47Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T20:23:15Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -370,3 +370,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  <!-- status: live --
 prose:    infrastructure/state/items/SACRED_SITES_PASS_1.md
+
+## RIMMANDRAKE_PITS_BUILD_1 Build RimMandrake Pits: core framework mod (dig stages, terrain-mimic covers, mass triggers, struggle escape, fitting family, holding-platform pit cell) + campaign layer; first step is the spawn-mass quicktest matrix on the 22s minimal list
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/RIMMANDRAKE_PITS_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/RIMMANDRAKE_PITS_BUILD_1.md
