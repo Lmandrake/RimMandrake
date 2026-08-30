@@ -5,7 +5,7 @@
 # Droidworks — assumptions awaiting the owner
 
 ## Platform boundaries
-1. **HAR stays as the one dependency.** "As independent as possible" read as
+1. ✅ RULED YES (owner, 2026-08-29). **HAR stays as the one dependency.** "As independent as possible" read as
    independent of the DROID packs; HAR underpins 13 mostly non-droid mods in
    the load and stays regardless. If you want HAR gone too, races get
    reimplemented on raw humanlike ThingDefs — doable, roughly doubles the race
@@ -19,7 +19,7 @@
    DECLARE it as a dependency. Assumed: declaration only, no hard runtime use —
    must be verified (minimal-list load without ABF, watch for errors) before
    ABF actually leaves ModsConfig. Same check for Asimov ← FSF Complex Jobs.
-4. **JDS Separatists become capturable on port** (spec §8.3 recommendation;
+4. ✅ RULED CAPTURABLE (owner, 2026-08-29). **JDS Separatists become capturable on port** (spec §8.3 recommendation;
    the 2026-08-13 "never taken alive" ruling was platform-forced). Unruled —
    wave 3 assumes yes; say no and they get high energy-density detonation
    flavor instead.

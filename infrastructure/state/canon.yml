@@ -1207,9 +1207,10 @@ turrets:
     (8) the owner's 'auto turret' cut is vanilla Turret_Autocannon (already
     cut in the register), Turret_AutoChargeBlaster stays;
     (9) "Flamer Turret stays for the Wildsteam" (VFES_Turret_Flame).
-    BENCH defaults shipped AFK, flagged for veto: control (stun/EMP) rows
-    scale linear; big-burst beams cut burstShotCount instead of shrinking
-    per-shot damage; nine damage-type-indicative renames.
+    RATIFIED by the owner 2026-08-29 (were BENCH defaults): control (stun/EMP)
+    rows scale linear; big-burst beams cut burstShotCount instead of shrinking
+    per-shot damage. Nine damage-type-indicative renames shipped AFK,
+    unopposed.
   normalization_patch: src/Jawa/Jawa_Armoury/Patches/Turrets_DamageDoctrine.xml
   normalization_renames: src/Jawa/Jawa_Armoury/Patches/Turrets_Renames.xml
   normalization_generator: src/Jawa/Jawa_Armoury/Source/gen_turret_doctrine.py

@@ -230,13 +230,16 @@ ever uninstalled, only behaviorally amputated. ⚠️ Their packageIds are
 capitalized (`Killathon.ArtificialBeings`) — any future dependency grep must
 match case-insensitively or it reads 0.
 
-## 8. Open for the owner
+## 8. Open for the owner — ALL BUT ONE RULED 2026-08-29
 
-1. **Name** the platform mod (Droidworks / Droidbrain / …).
-2. **Chassis race granularity** — per family (recommended) or per model.
-3. **JDS Separatist identity post-port**: stay a faction of battle droids on our
-   platform (recommended: they finally become capturable, which the 2026-08-13
-   "never taken alive" ruling traded away for lack of a platform — reopen?) or
-   keep force-kill flavor via high energy-density detonation instead.
-4. **When the v1 play-raw period ends** — build starts at phase 0 regardless
-   (it touches no shipped pack), port waves need the call.
+1. ✅ **Name**: Droidworks.
+2. ✅ **Granularity**: consolidate to chassis families (owner) — landed as 7
+   abstract family bases + thin per-model concrete races
+   (DROIDWORKS_FAMILY_LAYER_1).
+3. ✅ **JDS Separatists become capturable** (owner) — one rule for all droids;
+   supersedes the platform-forced half of the 2026-08-13 "never taken alive"
+   ruling; wave 3 emits them like everyone.
+4. **When the v1 play-raw period ends** — build proceeds regardless (touches
+   no shipped pack); port-wave activation lands at a start-prep sitting with
+   the owner (Droidworks into ModsConfig, packs' retirement per the evidence
+   item).
