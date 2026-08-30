@@ -149,27 +149,76 @@ namespace JawaIonWeapons
         /// </summary>
         public static void Postfix(VehiclePawn __instance, DamageInfo dinfo, bool absorbed)
         {
-            if (!absorbed) return;
+            // VEHICLE_ION_TIER_1 - trace logging added 2026-08-30 after a live test
+            // (VVE_Mule, JawaIon_Damage) showed zero observable stun despite the patch
+            // registering correctly and every static check passing. One guard clause
+            // below is returning early for a reason not yet found by reading source -
+            // this makes it visible instead of guessing again. Remove once the real
+            // vehicle stuns as predicted and this has been re-verified live.
+            if (!absorbed)
+            {
+                Log.Message("[JawaIonWeapons] VehicleIonPatches.Postfix: absorbed=false, skipping ("
+                    + __instance?.LabelShortCap + ", dinfo.Def=" + dinfo.Def?.defName + ")");
+                return;
+            }
 
             DamageDef def = dinfo.Def;
-            if (def == null || def.defName != IonDamageDefName) return;
+            if (def == null || def.defName != IonDamageDefName)
+            {
+                Log.Message("[JawaIonWeapons] VehicleIonPatches.Postfix: def mismatch, skipping ("
+                    + __instance?.LabelShortCap + ", dinfo.Def=" + (def == null ? "null" : def.defName)
+                    + ", expected=" + IonDamageDefName + ")");
+                return;
+            }
 
             VehicleStatHandler statHandler = __instance?.statHandler;
             VehicleDef vehicleDef = __instance?.VehicleDef;
-            if (statHandler == null || vehicleDef == null) return;
+            if (statHandler == null || vehicleDef == null)
+            {
+                Log.Message("[JawaIonWeapons] VehicleIonPatches.Postfix: null statHandler/vehicleDef, skipping ("
+                    + __instance?.LabelShortCap + ", statHandler=" + (statHandler == null ? "null" : "ok")
+                    + ", vehicleDef=" + (vehicleDef == null ? "null" : "ok") + ")");
+                return;
+            }
 
             float empAmountDroid = ReadFloatField(def, "empAmountDroid", FallbackEmpAmountDroid);
-            if (empAmountDroid <= 0f) return;
+            if (empAmountDroid <= 0f)
+            {
+                Log.Message("[JawaIonWeapons] VehicleIonPatches.Postfix: empAmountDroid <= 0 ("
+                    + empAmountDroid + "), skipping (" + __instance?.LabelShortCap + ")");
+                return;
+            }
 
             IntVec2 size = vehicleDef.Size;
             float footprintArea = Math.Max(1, size.x * size.z);
             float amount = empAmountDroid / footprintArea;
-            if (amount <= 0f) return;
+            if (amount <= 0f)
+            {
+                Log.Message("[JawaIonWeapons] VehicleIonPatches.Postfix: amount <= 0 (" + amount
+                    + ", size=" + size + ", footprintArea=" + footprintArea + "), skipping ("
+                    + __instance?.LabelShortCap + ")");
+                return;
+            }
 
             int stunTicks = Mathf.RoundToInt(amount * 30f);
-            if (stunTicks <= 0) return;
+            if (stunTicks <= 0)
+            {
+                Log.Message("[JawaIonWeapons] VehicleIonPatches.Postfix: stunTicks <= 0 (" + stunTicks
+                    + ", amount=" + amount + "), skipping (" + __instance?.LabelShortCap + ")");
+                return;
+            }
+
+            bool stancesNull = __instance.stances == null;
+            bool stunnerNull = !stancesNull && __instance.stances.stunner == null;
+            Log.Message("[JawaIonWeapons] VehicleIonPatches.Postfix: calling StunFor(" + stunTicks
+                + ") on " + __instance?.LabelShortCap + " (stances=" + (stancesNull ? "NULL" : "ok")
+                + ", stunner=" + (stunnerNull ? "NULL" : "ok") + ")");
 
             __instance.stances?.stunner?.StunFor(stunTicks, dinfo.Instigator);
+
+            int afterTicks = __instance.stances?.stunner?.StunTicksLeft ?? -1;
+            Log.Message("[JawaIonWeapons] VehicleIonPatches.Postfix: StunFor returned, StunTicksLeft now = "
+                + afterTicks);
         }
 
         private static float ReadFloatField(object obj, string fieldName, float fallback)
