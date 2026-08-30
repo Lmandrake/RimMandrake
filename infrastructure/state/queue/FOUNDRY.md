@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T17:37:30Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T17:47:21Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -206,6 +206,15 @@ target:   v1
 kind:     bug
 summary:  design/Jawa/droidsystembuildspec.md §2, state 3 ("Downed/off"): "buildup
 prose:    infrastructure/state/items/DROIDWORKS_POWEREDDOWN_NOT_WIRED_1.md
+
+## PAINT_GUARD_ASK_EACH_TIME_1 ashkarr_paint guard: replace stale HOME_LATLON anchor with per-write ask-before-overwrite
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  (no items/PAINT_GUARD_ASK_EACH_TIME_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PAINT_GUARD_ASK_EACH_TIME_1.md
 
 ## MOD_LIST_OUTGROWN_AUDIT_2 Outgrown-mod audit: whole 585 list, starting with They/Them(ants) and ISEKAI level-up - OWNER SEQUENCED FIRST
 state:    doing
@@ -410,16 +419,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## PAINT_GUARD_ASK_EACH_TIME_1 ashkarr_paint guard: replace stale HOME_LATLON anchor with per-write ask-before-overwrite
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/PAINT_GUARD_ASK_EACH_TIME_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PAINT_GUARD_ASK_EACH_TIME_1.md
 
 ## ASSAILANT_DUNGEON_BUILD_1 Build the Assailant flesh dungeon: frozen first-impact complex, thaw-gated, deep Umbra
 state:    proposed

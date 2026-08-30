@@ -953,3 +953,20 @@ L REIGN-BREAKER deliberately attracting a raid / floodlit assault.
 CURSES: S Seen (colony visibility creeps up; the next raid sizes slightly
 larger) · M The Mask Slips (the detection clock jumps forward) · L Unmasked
 (a raid arrives already knowing your positions — no warning letter).
+
+### ② Ohm the All-Current — SHIPPED 2026-08-30 (revised scope)
+DEEDS +: droids acquired/captured/rebooted/repaired/built (his hands
+returning) · machines built and powered · ship systems restored · a full day
+of clean uptime.
+DEEDS −: droids destroyed or sold · machines left broken · deconstructing
+ship systems · power outages.
+BOONS: S Steady Current (fewer breakdowns, small power efficiency) · M The
+Hands Remember (droid work/charge speed up; occasionally a broken machine
+found repaired overnight) · L All-Current (a reign of perfect function: no
+breakdowns, every damaged machine slowly self-repairs).
+DEMANDS: S no droid hits zero power · M build or restore one machine this
+reign · L a droid choir kept aboard.
+TABOOS: S a breakdown left unrepaired overnight · M scrapping a repairable
+droid · L REIGN-BREAKER selling or deformatting a droid while he fronts.
+CURSES: S Static Bites (breakdown chance up) · M The Hands Refuse (droids
+slow, one refuses work) · L Blackout (a day-long ship power failure).

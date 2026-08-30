@@ -57,6 +57,8 @@ from rimbridge_client import RimBridge, resolve_endpoint
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from game_paths import PLAYER_LOG as _PLAYER_LOG  # noqa: E402
+from game_paths import SAVES as _SAVES_DIR  # noqa: E402
+import save_played_tiles  # noqa: E402
 
 REPO = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", ".."))
 TILES = os.path.join(REPO, "world", "ASHKARR_WORLDMAP_tiles.csv")
@@ -132,29 +134,93 @@ def canary(rb, out):
     return False
 
 
+def _played_tile_conflict(load_name, out):
+    """PAINT_GUARD_ASK_EACH_TIME_1. -> sorted list of tile ids this run's own
+    TILES.csv is about to overwrite that ALSO carry a generated local Map in
+    the campaign save - or [] if there is nothing to protect (no save, no
+    overlap). Reads the save named by --load if one was given (the file this
+    run just loaded), else the default frozen campaign save; neither read
+    touches the bridge.
+    """
+    save_path = (os.path.join(_SAVES_DIR, load_name + ".rws") if load_name
+                 else save_played_tiles.default_save_path(_SAVES_DIR))
+    played, used = save_played_tiles.played_tiles(save_path)
+    if not played:
+        w(out, "- paint guard: %s"
+             % ("no campaign save found - nothing to protect" if used is None
+                else "%s carries no generated local maps - nothing to protect" % used))
+        return []
+
+    rows = read_csv(TILES)
+    if rows is None:
+        w(out, "- ⚠️ paint guard: %s missing — cannot check for a conflict, and this run "
+               "would write the whole planet blind. Run ashkarr_paint.py first." % TILES)
+        return sorted(played)  # fail closed: treat every played tile as a conflict
+
+    writing = {int(r["tile"]) for r in rows}
+    conflict = sorted(played & writing)
+    if conflict:
+        w(out, "- paint guard: %s has %d generated map(s); %d of them are in this run's "
+               "own write set (%s)" % (used, len(played), len(conflict), TILES))
+    else:
+        w(out, "- paint guard: %s has %d generated map(s), none in this run's write set - "
+               "clean pass" % (used, len(played)))
+    return conflict
+
+
+def _ask_or_refuse(conflict, out, despite):
+    """The actual "question it has to ask right before it writes over a savegame
+    tilemap location, each time" (owner, PAINT_GUARD_ASK_EACH_TIME_1). Every
+    conflicting tile is named. Non-interactive (no tty on stdin) NEVER prompts -
+    it refuses outright with the tile list, exactly per the item's own rule,
+    because a hung prompt in a non-interactive run is worse than a refusal.
+    """
+    if not conflict:
+        return True
+    w(out, "- 🔴 **%d tile(s) with a live colony are in this run's write set: %s.**"
+         % (len(conflict), ", ".join(str(t) for t in conflict)))
+    w(out, "  Painting over a tile with a generated map moves the ground out from under "
+           "it - RimWorld cannot reconcile the two, and the colony on it does not survive "
+           "the mismatch. (Owner, 2026-08-26: \"it doesn't destroy the game. Just the "
+           "colony.\") `--despite-map` skips this check entirely, every run.")
+    if despite:
+        w(out, "  !! `--despite-map` given — proceeding over %d tile(s) anyway." % len(conflict))
+        return True
+    if not sys.stdin.isatty():
+        w(out, "  Non-interactive: REFUSING rather than prompting. Pass `--despite-map` to "
+               "proceed, or run interactively to be asked.")
+        return False
+    try:
+        ans = input("  Proceed and overwrite %d tile(s) with a live colony? [y/N] "
+                     % len(conflict)).strip().lower()
+    except EOFError:
+        ans = ""
+    if ans == "y":
+        w(out, "  confirmed interactively — proceeding over %d tile(s)." % len(conflict))
+        return True
+    w(out, "  declined — stopping.")
+    return False
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--apply", action="store_true", help="write for real; default is a dry run")
     ap.add_argument("--load", default=None, help="load this save first and wait for it")
     ap.add_argument("--report", default=None)
     ap.add_argument("--skip-links", action="store_true")
-    # 🔴 The help text carries the MEASURED OUTCOME, not a caution. Someone reading
-    # `--help` to decide whether to pass this flag never sees the refusal message
-    # below, which is where the evidence used to live exclusively.
+    # PAINT_GUARD_ASK_EACH_TIME_1 (2026-08-30): this used to be a BLANKET refuse -
+    # any map anywhere on the planet, whether or not this run's own write set ever
+    # touched it. It is now a per-tile question, asked every run
+    # (_played_tile_conflict/_ask_or_refuse below): only a played tile actually in
+    # TILES.csv's write set triggers it. `--despite-map` still skips the question
+    # entirely, same as before.
     ap.add_argument("--despite-map", action="store_true",
-                    help="proceed with a map instantiated. THIS WILL DESTROY THE CURRENT "
-                         "COLONY - make a new one and carry on. That much is agreed "
-                         "and expected: the paint moves the ground out from under a "
-                         "map already generated from it. \u26a0 A 2026-08-21 session ALSO "
-                         "reported the game then refusing to make a new colony and the "
-                         "UI losing its icons - the OWNER DISPUTES THAT (2026-08-23: he "
-                         "has since painted under a colony and carried on fine), it was "
-                         "never reproduced, and it must not be quoted as settled. "
-                         "The paint itself was faithful - seven tiles "
-                         "read back exact - so this is not a painting bug: it is moving "
-                         "the ground out from under a map already generated from it, "
-                         "which RimWorld cannot reconcile. Only for a world nobody keeps, "
-                         "and everything measured afterwards is unattributable.")
+                    help="skip the played-tile guard entirely and write over any colony "
+                         "tile in this run's write set without asking. THIS WILL DESTROY "
+                         "THAT COLONY - the paint moves the ground out from under a map "
+                         "already generated from it, and RimWorld cannot reconcile the two "
+                         "(owner, 2026-08-26: \"it doesn't destroy the game, just the "
+                         "colony\"). Only for a colony nobody keeps.")
     ap.add_argument("--despite-abort", action="store_true",
                     help="proceed even though the load aborted. Records it loudly in the "
                          "report. Only justified when the WORLD layer has been shown to be "
@@ -193,29 +259,17 @@ def main():
         gi = rb.call("rimworld/get_game_info", {})
         w(out, "- status `%s`, ticks %s, maps %s" % (gi.get("status"), gi.get("ticksGame"), gi.get("mapCount")))
 
-        # 🔴 NO MAP MAY EXIST. W9's spec says "assert and REFUSE loudly:
-        # Find.CurrentMap == null", and until 2026-08-21 this file only PRINTED the
-        # count — the assertion existed in prose and nowhere in code. Repainting a
-        # planet underneath a live map is what killed two saves and about two cold
-        # loads on 2026-08-18: the map was generated from its tile's biome, and moving
-        # that biome out from under it desyncs the two permanently.
-        # ⚠️ The deeper cost is ATTRIBUTION. With a map up, a defect in the picture
-        # cannot be told apart from map-desync, so the run proves nothing either way.
-        if (gi.get("mapCount") or 0) > 0 and not a.despite_map:
-            w(out, "- 🔴 **%s map(s) are instantiated.** This run requires a world and NO map. "
-                   "Generate a world and stop at the landing-site page. Regenerating costs "
-                   "a minute or two, not a reload — the mod load is already paid for.\n"
-                   "  🔴 `--despite-map` proceeds anyway, and IT WILL DESTROY THIS COLONY. "
-                   "That is agreed and expected - the paint moves the ground out from under a "
-                   "map already generated from it, and RimWorld cannot reconcile the two. Make "
-                   "a new colony and carry on.\n"
-                   "  ✅ A COLONY is the whole cost. Owner, 2026-08-26: \"What it can do is "
-                   "destroy the player colony, it doesn't destroy the game. Just the colony.\" "
-                   "The 2026-08-21 report of a game refusing to make a new colony and a UI "
-                   "losing its icons is STRUCK as disproven, and the item that carried it is "
-                   "dropped. Do not quote it.\n"
-                   "  The paint itself was faithful - seven tiles read back exact."
-                 % gi.get("mapCount"))
+        # PAINT_GUARD_ASK_EACH_TIME_1 (2026-08-30, owner: "This should be a question
+        # it has to ask right before it writes over a savegame tilemap location, each
+        # time"). Repainting a planet underneath a live map is what killed two saves
+        # and about two cold loads on 2026-08-18: the map was generated from its
+        # tile's biome, and moving that biome out from under it desyncs the two
+        # permanently. Owner, 2026-08-26: "What it can do is destroy the player
+        # colony, it doesn't destroy the game. Just the colony." Superseded from a
+        # blanket "any map anywhere -> refuse" into a per-tile question: only a
+        # played tile actually in THIS run's own write set (TILES.csv) triggers it.
+        conflict = _played_tile_conflict(a.load, out)
+        if not _ask_or_refuse(conflict, out, a.despite_map):
             return 5
         if gi.get("status") != "game_loaded":
             w(out, "- 🔴 no game loaded. Stopping.")
