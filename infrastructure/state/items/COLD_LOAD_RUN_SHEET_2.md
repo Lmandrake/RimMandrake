@@ -185,8 +185,8 @@ strings, written BEFORE the launch:
 - ⚠ New this load, upstream of us: `Jawa Patches (local)` logs one failed
   PatchOperationFindMod(Vanilla Factions Expanded - Insectoids 2) — predates
   today's work, needs one look.
-- Follow-up filed on TECH_TREE_WEAPON_GROUPS_1: vanilla `Mortars` research now
-  unlocks nothing (Turret_Mortar cut) — rule cut-or-repoint at that sitting.
+- ~~Mortars research orphan~~ CORRECTED 2026-08-30: measured 21 unlocks, only 2
+  cut — NOT an orphan; the research pass handles it with the whole tree.
 
 ## SALVAGERS_FOLD_JUNKERS — campaign load check (added 2026-08-29, BENCH)
 WORLDMAP_V1_original.rws edited: Salvagers ("The Comet Party") scribed

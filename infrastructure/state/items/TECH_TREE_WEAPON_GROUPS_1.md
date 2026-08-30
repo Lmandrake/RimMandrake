@@ -18,7 +18,7 @@ donor mods scatter), then the grouping design with the owner. Expect overlap
 with turret normalization — the turrets' techs should hang off the same tree.
 
 ## Inherited from the turret pass (2026-08-29, BENCH)
-Vanilla ResearchProjectDef `Mortars` now unlocks nothing a player can build:
+CORRECTED 2026-08-30 (research prep, MEASURED): Mortars unlocks 21 things, only 2 cut — it is NOT an orphan; it still unlocks three non-roster turrets and five live shell recipes. The earlier 'unlocks nothing' claim was wrong. Original (wrong) note kept context: Vanilla ResearchProjectDef `Mortars` was believed to unlock nothing:
 `Turret_Mortar` and `FT_Turret_Mortar` are Cherry-Picker cut at the turret
 roster normalization (proton mortars are OuterRim tech, auto-mortars are mech
 cluster pieces). At this sitting: cut the research row too, or repoint it at

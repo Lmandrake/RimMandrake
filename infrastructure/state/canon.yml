@@ -1249,6 +1249,30 @@ anomaly_content:
     Assailant flesh dungeon (ASSAILANT_FLESH_DUNGEON_1), and the sarlacc's
     design may draw on it too (explore at its design sitting). Nothing else
     touches Anomaly content.
+assailant_reveal_arc:
+  ruled: true
+  src: >
+    Owner, 2026-08-30, verbatim (the learning-chain + endgame of the Assailant
+    dungeon): "All of this! The ship remembers how to talk to the Rust
+    Cathedral, only to discover it's been talking to the FDE and no longer
+    trusts the Cradle ('you seem... different.') Earn the trust of the droids
+    to earn the trust of the Cathedral, then it reveals 'Where the infection
+    started... and remains to this day.' The first impact point of the
+    Assailant's landing, unknown and undetected at the time, and triangulated
+    far too long after all hope of response had been lost. Now the Rust
+    Cathedral wants to use the Cradle as its surgical, pyrrhic strike against
+    that ancient nemesis. And in so doing, will release technological
+    knowledge of value to the Hutts... so long as a deal is brokered to
+    protect its 'beautiful young children' the droids." Bound with it ("All of
+    this"): ship memory-fragments triangulate; FDE nightside refugees are the
+    last waypoint; the dungeon sits in the deep-Umbra neighborhood of tile
+    20853 with 20853 itself held for vault ③ — the frozen Rakata and their
+    frozen killer sleep near each other, one pilgrimage, two revelations.
+    Register notes: the Rust Cathedral SPEAKS (the whispered voices have a
+    speaker) and holds the droids as its children; the arc chains droid trust
+    → Cathedral trust → location reveal → thaw-gate strike → Hutt knowledge
+    deal. The dungeon is the Assailant's FIRST IMPACT POINT, frozen and
+    undetected, woken only by the players' own power core.
 junkers:
   water_and_identity_ruled: true
   water_and_identity_src: >

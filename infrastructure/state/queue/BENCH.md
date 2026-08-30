@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T15:52:39Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-08-30T16:08:50Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -98,6 +98,6 @@ row:      unassigned
 needs:    owner
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/FORCE_SYSTEM_OWNERSHIP_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  Sequence: (1) BENCH design sitting with the owner seeded by
 prose:    infrastructure/state/items/FORCE_SYSTEM_OWNERSHIP_1.md
