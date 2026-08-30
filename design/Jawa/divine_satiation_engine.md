@@ -1076,3 +1076,28 @@ fled · L REIGN-BREAKER a reign with no violence: fury, and the meter SPIKES.
 CURSES: S Bloodlust Whisper (colonists pick fights, animals aggress) · M The
 Light Turns (friendly-fire up; fires near your works) · L THE SEARING (the
 meter cashes out: the next raid arrives massive, burning, early).
+
+### ⑨ Ozzik the Shamed — SHIPPED 2026-08-30 (the trap; the pride-crisis machinery)
+DEEDS + (every advancement feeds him regardless): research completed ·
+legendary/masterwork creations · wealth milestones · great victories · ship
+systems restored · trophies displayed · the Utinni made GRAND.
+DEEDS −: humility — wealth given away, trophies melted, staying small,
+declining glory; grief-valve: restoring RAKATAN works feeds his grief-side
+gently without the pride spike (ties him to the vaults and the ship's past).
+BOONS: S Craftsman's Pride (quality chances up) · M The Prouder Age (research
+speed up, inspiration on great works) · L Glory (a triumph event: honor,
+recruits, goodwill — and the pride-meter silently leaps).
+DEMANDS: S display it (trophies/masterworks shown, not stored) · M a great
+work finished this reign · L a public triumph BROADCAST (splits the pantheon
+on purpose: Ishko's horror, Mob'Unloo's markup, Sh'kaar's invitation).
+TABOOS: S hiding achievements · M selling a trophy or great work ·
+L REIGN-BREAKER public humiliation accepted without answer while he fronts.
+CURSES (the pride-crisis machinery): S The Sting (expectations rise) ·
+M Exposure (wealth/position leaks: raid points calculate higher) ·
+L THE SHAMING (the humbling catastrophe scaled to the banked meter — and
+Zizzik and Sh'kaar arrive fed).
+
+## Matrix status: NINE OF NINE SHIPPED (2026-08-30)
+The engine build (satiation counters, front selection, light zones, emitter
+progression, judgement, boon/demand/taboo/curse invocation) sizes from these
+pages; it files when the owner calls the build.
