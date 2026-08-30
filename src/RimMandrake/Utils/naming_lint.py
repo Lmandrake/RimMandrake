@@ -73,8 +73,13 @@ def lint_mod(mod: Path, tier: str, sanctioned: set):
                 continue
             for ns in re.findall(r"^\s*namespace\s+([A-Za-z0-9_.]+)",
                                  c.read_text(encoding="utf-8", errors="replace"), re.M):
-                if not ns.startswith(f"{tier}."):
-                    v.append(("namespace", f"{ns} != {tier}.{mod.name}"))
+                # ruled 2026-08-31: namespaces nest under the RimMandrake root —
+                # RimMandrake.<Mod> / RimMandrake.StarWars.<Mod> / RimMandrake.Utinni.<Mod>
+                want = {"RimMandrake": "RimMandrake.",
+                        "RimStarWars": "RimMandrake.StarWars.",
+                        "RimUtinni": "RimMandrake.Utinni."}.get(tier, f"{tier}.")
+                if not ns.startswith(want):
+                    v.append(("namespace", f"{ns} != {want}{mod.name}"))
                     break
             break
     for x in list(mod.rglob("*.xml")) + [c for c in mod.rglob("*.cs") if "/obj/" not in str(c)]:
