@@ -1,0 +1,101 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    DroidworksBoltCore - Harmony hook suppressing mental breaks while a pawn
+    carries DW_RestrainingBolt (DROIDWORKS_BOLT_CORE_1). See
+    BoltCorePatches.cs for the full mechanism.
+
+    Split into its OWN sub-project, separate from the main Droidworks.csproj
+    (net472), for the same reason src/Jawa/JawaIonWeapons/Source/VehicleTier/
+    JawaIonVehicleTier.csproj is split from the main JawaIonWeapons.csproj:
+    Harmony (0Harmony.dll, brrainz.harmony) is a distinct dependency the main
+    project doesn't carry, and net48 keeps this build independent of whatever
+    the main net472 project is doing at any given moment - load-bearing this
+    session specifically because DROIDWORKS_WIPE_AND_SPIKE_1 is editing
+    Droidworks.csproj concurrently; this project touches ONLY its own folder
+    and its own <Compile> list, never that file. There is no Visual Studio or
+    targeting pack on this machine, so
+    Microsoft.NETFramework.ReferenceAssemblies supplies the reference
+    assemblies from NuGet instead - same as every other .csproj here.
+
+    Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\Jawa\Droidworks\Source\BoltCore\DroidworksBoltCore.csproj -c Release
+
+    Output lands in ../../Assemblies/ - the SAME folder the main
+    Droidworks.csproj (net472) already builds into (Source/BoltCore/../../
+    Assemblies = Droidworks/Assemblies/, identical depth to
+    Source/Droidworks/../../Assemblies). RimWorld loads every DLL in a mod's
+    Assemblies/ folder regardless of which one targeted which framework
+    profile, so the mod ships two assemblies from two separate .csproj files
+    with no solution tying them together - same pattern
+    JawaIonVehicleTier.csproj already proved out for JawaIonWeapons.
+
+    This project does NOT reference Droidworks.dll (the sibling net472
+    output) - BoltCorePatches.cs looks up DW_RestrainingBolt by defName via
+    DefDatabase<HediffDef>.GetNamedSilentFail instead, deliberately, so the
+    two assemblies build in either order and stay load-order independent -
+    identical reasoning to VehicleIonPatches.cs reading IonDamageDef's
+    empAmountDroid field by reflection rather than referencing
+    JawaIonWeapons.dll.
+
+    Every reference is Private=false. Nothing but our own DLL may land next
+    to the mod: shipping a copy of Assembly-CSharp.dll or 0Harmony.dll would
+    give the game two of each, and Harmony in particular must come from
+    brrainz.harmony.
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>DroidworksBoltCore</AssemblyName>
+    <RootNamespace>DroidworksBoltCore</RootNamespace>
+    <Version>1.0.0</Version>
+
+    <OutputPath>..\..\Assemblies\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AssemblySearchPaths>$(AssemblySearchPaths);$(RimWorldManaged)</AssemblySearchPaths>
+
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <DebugType>none</DebugType>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(RimWorldManaged)' == ''">
+    <RimWorldManaged>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManaged>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(HarmonyDll)' == ''">
+    <HarmonyDll>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HarmonyDll>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(RimWorldManaged)\Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>$(RimWorldManaged)\UnityEngine.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(HarmonyDll)</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="..\**\*.cs" />
+    <Compile Include="*.cs" />
+  </ItemGroup>
+
+</Project>

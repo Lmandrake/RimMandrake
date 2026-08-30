@@ -38,4 +38,80 @@
     </skillRequirements>
   </RecipeDef>
 
+  <!-- ========================================================================
+       DW_InstallRestrainingBolt — DROIDWORKS_BOLT_CORE_1, the formal surgery
+       route. Backs Droidworks.Recipe_InstallRestrainingBolt (Source/
+       Droidworks/Recipe_InstallRestrainingBolt.cs), which is vanilla
+       Recipe_InstallImplant plus one line seeding DW_BoltResentment — see
+       that file's header. targetsBodyPart false + addsHediff needs ZERO
+       override from vanilla Recipe_InstallImplant on its own
+       (droid_ruling.md section 3's own OuterRim_AttachRestraintBolt proves
+       this — it uses the bare vanilla class). surgerySuccessChanceFactor /
+       isViolation / anesthetize copy that same recipe's shape exactly:
+       "cannot fail," a violation, no anesthetic.
+  ======================================================================== -->
+  <RecipeDef>
+    <defName>DW_InstallRestrainingBolt</defName>
+    <label>install restraining bolt</label>
+    <description>Fit a restraining bolt onto this droid: mute, clumsier, and unable to hold its own opinion of others.</description>
+    <jobString>Installing restraining bolt.</jobString>
+    <workerClass>Droidworks.Recipe_InstallRestrainingBolt</workerClass>
+    <workAmount>600</workAmount>
+    <targetsBodyPart>false</targetsBodyPart>
+    <isViolation>true</isViolation>
+    <anesthetize>false</anesthetize>
+    <surgerySuccessChanceFactor>99999</surgerySuccessChanceFactor>
+    <addsHediff>DW_RestrainingBolt</addsHediff>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>DW_RestrainingBoltItem</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <thingDefs>
+        <li>DW_RestrainingBoltItem</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <skillRequirements>
+      <li>
+        <skill>Crafting</skill>
+        <minLevel>4</minLevel>
+      </li>
+    </skillRequirements>
+  </RecipeDef>
+
+  <!-- ========================================================================
+       DW_RemoveRestrainingBolt — custom worker
+       (Droidworks.Recipe_RemoveRestrainingBolt) because the bolt is a
+       whole-pawn hediff (targetsBodyPart false) — the same reason
+       OuterRimDroids ships its own Recipe_RemoveBolt rather than vanilla
+       Recipe_RemoveImplant (droid_ruling.md section 3 /
+       restraining_bolt_technical.md section 2). Deliberately does NOT touch
+       DW_BoltResentment — the whole point of that hediff is that it survives
+       removal.
+  ======================================================================== -->
+  <RecipeDef>
+    <defName>DW_RemoveRestrainingBolt</defName>
+    <label>remove restraining bolt</label>
+    <description>Remove a restraining bolt from this droid.</description>
+    <jobString>Removing restraining bolt.</jobString>
+    <workerClass>Droidworks.Recipe_RemoveRestrainingBolt</workerClass>
+    <workAmount>400</workAmount>
+    <targetsBodyPart>false</targetsBodyPart>
+    <isViolation>false</isViolation>
+    <anesthetize>false</anesthetize>
+    <removesHediff>DW_RestrainingBolt</removesHediff>
+    <skillRequirements>
+      <li>
+        <skill>Crafting</skill>
+        <minLevel>3</minLevel>
+      </li>
+    </skillRequirements>
+  </RecipeDef>
+
 </Defs>

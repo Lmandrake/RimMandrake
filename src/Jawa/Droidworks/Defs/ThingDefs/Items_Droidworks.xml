@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ========================================================================
+       DW_RestrainingBoltItem — DROIDWORKS_BOLT_CORE_1. The physical bolt: a
+       craftable ingredient consumed by DW_InstallRestrainingBolt (surgery
+       route). Named "…Item" rather than the bare DW_RestrainingBolt to avoid
+       a C# DefOf field-name collision with the HediffDef of that name
+       (RimWorld itself allows two different Def TYPES to share a defName —
+       Droid Depot's own OuterRim_RestraintBolt does exactly that across
+       HediffDef/ThingDef/RecipeDef — but DroidworksDefOf's [DefOf] fields are
+       plain C# statics and can't share a name across two different Def
+       types in one class, so this item gets its own defName instead).
+       Art/statBases/costList/recipeMaker shape copied from the live
+       OuterRim_RestraintBolt ThingDef (Droid Depot workshop 3096501398,
+       1.6/Defs/ThingDefs_Items/Items_Droids.xml) — texPath reused verbatim
+       (OuterRim/Items/RestraintBolt), same convention Buildings_Charging.xml
+       already uses for reusing Droid Depot art wholesale. costList/
+       recipeUsers swapped to our own ingredients and FabricationBench
+       (Droidworks has no bench of its own yet) rather than Droid Depot's
+       OuterRim_Durasteel/OuterRim_ComponentHypertech/
+       OuterRim_HypertechFabricator, which this mod doesn't require as a
+       dependency.
+  ======================================================================== -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>DW_RestrainingBoltItem</defName>
+    <label>restraining bolt</label>
+    <description>A small mechanical bolt. Clamped or surgically fitted onto a droid, it overrides the droid's behavior routines: mute, clumsier, and unable to hold its own opinions.</description>
+    <graphicData>
+      <texPath>OuterRim/Items/RestraintBolt</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <Mass>0.5</Mass>
+      <MaxHitPoints>100</MaxHitPoints>
+      <Flammability>0.3</Flammability>
+    </statBases>
+    <recipeMaker>
+      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+      <effectWorking>Repair</effectWorking>
+      <soundWorking>Recipe_Machining</soundWorking>
+      <workAmount>300</workAmount>
+      <productCount>1</productCount>
+      <workSkill>Crafting</workSkill>
+      <recipeUsers>
+        <li>FabricationBench</li>
+      </recipeUsers>
+    </recipeMaker>
+    <costList>
+      <Steel>6</Steel>
+      <ComponentIndustrial>1</ComponentIndustrial>
+    </costList>
+    <thingCategories>
+      <li>Manufactured</li>
+    </thingCategories>
+  </ThingDef>
+
+</Defs>

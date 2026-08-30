@@ -74,4 +74,94 @@
     </stages>
   </HediffDef>
 
+  <!-- ========================================================================
+       DW_RestrainingBolt — DROIDWORKS_BOLT_CORE_1. Pure vanilla HediffStage
+       fields, ZERO custom comp — matches OuterRim_RestraintBolt exactly, read
+       verbatim from the live mod XML (Droid Depot workshop 3096501398,
+       1.6/Defs/HediffDefs/Droid_General.xml): "HediffWithComps, no comps",
+       opinionOfOthersFactor 0, capMods Talking setMax 0 / Manipulation
+       setMax 0.75, SlaveSuppressionFallRate 0 (Ideology-gated). Manipulation's
+       25%-clumsier is a capMod setMax, NOT an offset/multiplier — offset is
+       additive and vanilla capMods have no multiplicative field at all, so
+       "0.75" IS the 25%-clumsier expression: it CAPS the capacity's ceiling
+       at 75%, the same mechanism the mute cap uses at 0%.
+       opinionOfOthersFactor is a HediffStage field, not a capMod — zeroes how
+       much this pawn's opinion of others counts, the "no socialization" half
+       of the ask.
+       A Harmony prefix on MentalBreakWorker.BreakCanOccur (BoltCore
+       sub-project, Source/BoltCore/BoltCorePatches.cs) suppresses mental
+       breaks while this hediff is present — the "quells rebellion" half —
+       copying the exact pattern droid_ruling.md section 3 documents.
+  ======================================================================== -->
+  <HediffDef>
+    <defName>DW_RestrainingBolt</defName>
+    <label>restraining bolt</label>
+    <description>A restraining bolt, clamped or surgically fitted. Mutes the droid, makes its hands clumsier, and overrides its ability to form its own opinions of others.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.8, 0.3, 0.3)</defaultLabelColor>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <maxSeverity>1.0</maxSeverity>
+    <isBad>true</isBad>
+    <everVisible>true</everVisible>
+    <stages>
+      <li>
+        <minSeverity>0</minSeverity>
+        <opinionOfOthersFactor>0</opinionOfOthersFactor>
+        <capMods>
+          <li>
+            <capacity>Talking</capacity>
+            <setMax>0</setMax>
+          </li>
+          <li>
+            <capacity>Manipulation</capacity>
+            <setMax>0.75</setMax>
+          </li>
+        </capMods>
+        <statFactors>
+          <SlaveSuppressionFallRate MayRequire="Ludeon.RimWorld.Ideology">0</SlaveSuppressionFallRate>
+        </statFactors>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <!-- ========================================================================
+       DW_BoltResentment — hidden accumulator, backs
+       Droidworks.HediffComp_DWBoltResentment (Source/Droidworks/
+       HediffComp_DWBoltResentment.cs). Rises only while DW_RestrainingBolt is
+       present on a Humanlike (sapient) pawn; pinned — never decays — once the
+       bolt is removed (design/Jawa/droid_system_spec.md section 7:
+       "Sapients accumulate resentment that persists after removal -> instant
+       rebellion when freed"). Seeded onto a pawn by both application routes
+       the moment a bolt goes on (Recipe_InstallRestrainingBolt.ApplyOnPawn /
+       JobDriver_DWClampBolt's AddFinishAction), both via
+       Droidworks.DroidworksBoltUtility.EnsureBoltResentment — so it is never
+       present on a pawn that has never been bolted.
+
+       STUB ACCUMULATOR ONLY — nothing reads this severity yet.
+       // TODO: mood aura (a debuff radiating from a bolted pawn onto nearby
+       //       colonists/droids — "depressing to be around", section 7)
+       //       depends on a mood thought/aura system not yet built — phase 3.
+       // TODO: idiosyncrasy-disable (bolts should suppress ALL born/
+       //       experienced idiosyncratic traits, section 7) depends on the
+       //       behavior-triad trait system from section 4/11, unbuilt.
+       // TODO: instant-rebellion-on-removal is the payoff this accumulator
+       //       feeds — not built here either; this item ships the
+       //       accumulator only, per BENCH's own scope note.
+  ======================================================================== -->
+  <HediffDef>
+    <defName>DW_BoltResentment</defName>
+    <label>bolt resentment</label>
+    <description>Accumulated resentment from being forced under a restraining bolt. Does not fade once the bolt is removed.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <maxSeverity>1.0</maxSeverity>
+    <isBad>true</isBad>
+    <everVisible>false</everVisible>
+    <comps>
+      <li Class="Droidworks.HediffCompProperties_DWBoltResentment">
+        <severityPerDayWhileBolted>0.05</severityPerDayWhileBolted>
+      </li>
+    </comps>
+  </HediffDef>
+
 </Defs>

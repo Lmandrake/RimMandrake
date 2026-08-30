@@ -16,4 +16,21 @@
     <suspendable>false</suspendable>
   </JobDef>
 
+  <!-- ========================================================================
+       DW_ClampBolt — DROIDWORKS_BOLT_CORE_1, the field route for fitting a
+       restraining bolt. Backs Droidworks.JobDriver_DWClampBolt
+       (Source/Droidworks/JobDriver_DWClampBolt.cs): 600 ticks on a DOWNED
+       droid, no bill, no ingredient (see the driver's own header for why) —
+       mirrors OuterRim_RestrainDroid's own JobDriver_RestrainDroid per
+       droid_ruling.md section 3. Wiring a float-menu option / WorkGiver to
+       actually ISSUE this job is left as follow-up, same precedent
+       DW_RebootDroid's own header set (recipe defined, wiring deferred).
+  ======================================================================== -->
+  <JobDef>
+    <defName>DW_ClampBolt</defName>
+    <driverClass>Droidworks.JobDriver_DWClampBolt</driverClass>
+    <reportString>clamping a restraining bolt onto TargetA.</reportString>
+    <suspendable>false</suspendable>
+  </JobDef>
+
 </Defs>

@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T05:10:40Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T05:16:47Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -179,15 +179,6 @@ target:   v1
 kind:     bug
 summary:  VEHICLEIONTIER1 — the ion gun has zero effect on Vehicle Framework vehicles
 prose:    infrastructure/state/items/VEHICLE_ION_TIER_1.md
-
-## DROIDWORKS_BOLT_CORE_1 Restraining bolt core: hediff, install/remove, field clamp, resentment accumulator
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  (no items/DROIDWORKS_BOLT_CORE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DROIDWORKS_BOLT_CORE_1.md
 
 ## DROIDWORKS_WIPE_AND_SPIKE_1 Memory wipe recipe + faction-keyed data spikes
 state:    doing
