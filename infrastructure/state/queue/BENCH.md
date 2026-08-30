@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T16:17:59Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T16:30:46Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -61,16 +61,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  TECHTREEWEAPONGROUPS1 — the research tree, examined with the owner
 prose:    infrastructure/state/items/TECH_TREE_WEAPON_GROUPS_1.md
-
-## VAULT_DUNGEON_CONCEPT_1 Design Forsaken-vault dungeons with the owner
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  VAULTDUNGEONCONCEPT1 — Forsaken-vault dungeons
-prose:    infrastructure/state/items/VAULT_DUNGEON_CONCEPT_1.md
 
 ## RESEARCH_TREE_NORMALIZATION_1 Restructure ALL research for the whole game - full normalization pass, after the droids land
 state:    proposed
