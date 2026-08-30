@@ -924,9 +924,17 @@ world at once. No ego, no self-description, no ship-moods — the
 no-integrating-self ruling stands, amended. v1: pre-authored prose only. The
 "in front" sketch's letters and hologram messages inherit this voice.
 
-## The Matrix — one page per god (sitting of 2026-08-30; format locked at ①)
+## Ohm re-scoped (owner, 2026-08-30)
+Ohm no longer believes he IS the ship and holds no Oracle role — both belong
+to the Narrator (canon.yml narrator). Ohm is simply one of the nine: the
+living machine, lonely for his lost hands. The scorecard's visibility channel
+is the Narrator's gestures and letters, not an Ohm boon.
+
+## The Matrix — one page per god (sitting of 2026-08-30; format locked at ①, CURSES added at ②)
 Format: deeds ± (satiation movers) · boons S/M/L · demands S/M/L · taboos
-S/M/L with an L reign-breaker (taboo break can flip the front mid-reign).
+S/M/L with an L reign-breaker (taboo break can flip the front mid-reign) ·
+CURSES S/M/L (what an angry or starved god actively does — added at the
+owner's catch on ②).
 
 ### ① Ishko the Unmaskable — SHIPPED 2026-08-30
 DEEDS +: ambush/from-cover kills · a raid survived undetected or enemies
@@ -942,3 +950,6 @@ buried within a day · M an hour of stillness · L blackout reign (no outdoor
 light, no comms).
 TABOOS: S corpses rotting on the surface · M melee-executing the downed ·
 L REIGN-BREAKER deliberately attracting a raid / floodlit assault.
+CURSES: S Seen (colony visibility creeps up; the next raid sizes slightly
+larger) · M The Mask Slips (the detection clock jumps forward) · L Unmasked
+(a raid arrives already knowing your positions — no warning letter).

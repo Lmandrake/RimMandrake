@@ -73,7 +73,7 @@ abstractions — **they run as personas inside the ship** (`06_the_ship.md`).
 | god | domain | the short of it |
 |---|---|---|
 | ① **Ishko the Unmaskable** | hiding, ambush, stillness | orange eyes in the dark; ranged-from-cover is pious, melee is exposure; death is the deepest hiding; never punishes a skipped rite |
-| ② **Ohm the All-Current** | the living machine | resident of the ship; believes he IS the ship; lonely for his lost hands (droids); the Oracle who reports the other gods |
+| ② **Ohm the All-Current** | the living machine | lonely for his lost hands (droids); simply one of the nine — the ship-identity and Oracle roles belong to the Narrator |
 | ③ **Oomo the Unspilled** | the body's waters, family increase | sex is devotional, famine is drought of the body; hates droids in chambers meant for eggs; chief demander of the kin-ransom |
 | ④ **Mob'Unloo the Ever-Owed** | trade, debt, bonds | ends ARE the ethics; successful theft is the perfect deal; being CAUGHT is the sin |
 | ⑤ **Rekko of the Second Hand** | salvage, repair | scrapping the repairable is tragedy to be mourned; theft gives a thing a better home; restore ≠ transcend |
