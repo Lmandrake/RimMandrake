@@ -43,11 +43,10 @@ patch of that ground (slight seam/discoloration at high zoom for the player's
 own eye; the F9 signature of the building). Lay it on sand, it is sand; on
 rough stone, it is rough stone. Mechanization options:
 
-- **Option A — pure visual** (recommended for v1): camouflage is cosmetic +
-  flat enemy-avoidance rules. Cheap, robust, always looks right.
-- **Option B — camo-quality stat**: match% between cover terrain-sample and
-  surrounding cells drives enemy detection odds (a sand-cover on a stone seam
-  is visible). Deeper, but invites fiddly re-covering micro.
+- **Option A — pure visual — ✅ RULED v1 (owner, 2026-08-30)**: camouflage is
+  cosmetic + flat enemy-avoidance rules. Cheap, robust, always looks right.
+- **Option B — camo-quality stat**: v2 candidate only (match% vs surrounding
+  cells drives detection). Not in v1.
 - Either way: **Jawa trap-sense sees all pits** (their own always; enemy pits
   per trap_renaissance_spec §2 Option C, RULED), allies/visitors do NOT — the
   §6 comedy/Zizzik feed applies.
@@ -76,10 +75,16 @@ pawns scatter. Occupants below can still shoot upward at pawns on the rim
 
 ## 5. The variants (one framework, five faces)
 
+_Floor fittings ✅ RULED expanded (owner, 2026-08-30): "Spikes, flammable oil,
+poison, water (can't climb out at all perhaps if deep)."_
+
 | Variant | Floor/fitting | What it is |
 |---|---|---|
 | **Bare pit** | nothing | capture; the bloodless take — `↑Mob'Unloo` `↑Ishko`, no Sh'kaar feed |
 | **Spiked pit** | scrap spikes | lethal fall; cheap kill-zone — feeds `▲Sh'kaar` (blood in the earth), `↓Oomo` faint |
+| **Oiled pit** | flammable oil pooled below | occupants soaked on impact; **ignitable at will or by tripwire** — a lit oil pit is Sh'kaar's altar (`▲Sh'kaar` large); doubles as a firebreak-fed area-denial horror |
+| **Poison pit** | toxin-slicked floor (CGT gas / toxin liquor) | slow capture-then-fade: occupant weakens over time instead of dying on impact — the patient hunter's kill or the softening pre-capture; `▲Zizzik` faint (the creeping wrongness) |
+| **Deep water pit** | flooded chasm | **no climbing out at all** — swimming things tread until exhausted; air-breathers drown if left. The drowning cell and the perfect indefinite hold in one. Oomo's domain both ways: holding in his waters is his patient jail, *drowning* a captive is life spilled through waters — `↓Oomo` + `▲Zizzik` on a death, neutral on a hold. |
 | **The oubliette** | ion mine / EMP charge at the bottom | mechs & droids drop in and switch OFF — **disable-and-take chamber**: Ozzik's favorite room, feeds the salvage loop |
 | **Baited pit** | bait slot on the cover (HAZN loop pattern) | draws predators/game to the lie — passive hunting; `↑Ishko` `↑Oomo` (game provides) |
 | **Pit cell** | gate cover + ladder | the prisoner pit, §6 |
@@ -93,11 +98,19 @@ pattern**: the pit cell is a *holding building* (CompHoldingPlatformTarget
 family precedent — modern, shipped, save-stable), not a room. Prisoners are
 ASSIGNED to the pit, held by the same struggle rules (§4), fed through the
 gate (a feeding job at the rim), visible below on the open-gate graphic.
+- ✅ **RULED severity (owner, 2026-08-30): the COVER is the mercy.** Gated/
+  covered pit cell = grim-but-usable — real mood/weather penalties, real Oomo
+  stakes, but a fed and tended pit is a legitimate long-term hold (the
+  hole-then-hearth conversion story works). **Uncovered = actively harsh: the
+  unsetting sun beats straight down into the hole — gruesome by design.** A
+  captive left open to the sky degrades fast (heatstroke, burn, despair), and
+  **an occupied pit left open to the sun FEEDS `▲Sh'kaar`** — the Searer
+  gorging on the one who cannot hide. Closing the gate is thus both cruelty's
+  limit and Ishko's small kindness (the captive, too, is hidden).
 - Gate open = interaction (feed, recruit-talk from the rim, hoist out);
-  gate closed = secure, and **rain/sandstorm misery applies** — a pit is not
-  kind. Mood/health penalties are real; Oomo watches how you keep them
-  (**tending/feeding pit captives = his nursing credit; letting one waste
-  away in the hole = his wrath and Zizzik's snack**).
+  Oomo watches how you keep them (**tending/feeding pit captives = his
+  nursing credit; letting one waste away in the hole = his wrath and
+  Zizzik's snack**).
 - Recruit from the pit at a penalty (who loves the hole?) — but emancipation
   OUT of the pit into the clan is exactly the §8b emancipation rite, and the
   contrast (the hole, then the hearth) is the conversion story itself.
@@ -127,12 +140,18 @@ and time instead of sitting inert like a spike board.
 
 ## 9. Layering & compatibility (first-class means standalone)
 
-- **Core mod: the pit framework** — species-agnostic, no Jawa references:
-  dig stages, covers, mass trigger, struggle escape, holding cell, terrain-
-  sampled graphics. Works on any colony, any modded creature (bodysize and
-  mass are universal stats — modded megafauna Just Works).
-- **Jawa layer (ours, patches on top)**: dig-speed bonus, trap-sense
-  integration, theology rows, droid dig jobs, oubliette recipe, art pass.
+✅ **RULED naming (owner, 2026-08-30): the RimMandrake moniker, never "Jawa",
+on everything that ships** — mod name, packageId, defName prefixes
+(`RimMandrake_Pits` / `RM_*`). "Jawa" stays inside lore text and campaign
+docs only.
+
+- **Core mod: `RimMandrake Pits`** — species-agnostic framework, no campaign
+  references: dig stages, covers, mass trigger, struggle escape, holding
+  cell, terrain-sampled graphics. Works on any colony, any modded creature
+  (bodysize and mass are universal stats — modded megafauna Just Works).
+- **Campaign layer (RimMandrake, patches on top)**: species dig-speed bonus,
+  trap-sense integration, theology rows, droid dig jobs, oubliette recipe,
+  art pass.
 - **Stretch, flagged not promised:** Vehicle Framework masses triggering
   covers (a speeder nose-down in a chasm is too good to not want) — gated on
   VEHICLE_ION_TIER_1 learnings; insect/infestation interactions.
@@ -150,10 +169,16 @@ Build route per rimbridge-companion/modding skills when the owner calls it;
 quicktest plan: spawn-mass matrix (squirrel/human/thrumbo/centipede ×
 cover tiers) on the 22-second minimal list.
 
-## 11. Open questions → owner cards
+## 11. Rulings ledger (owner cards, 2026-08-30) — all four answered
 
-1. Camouflage: pure visual (A) vs camo-quality stat (B)? (§3)
-2. Spiked lethal variant in v1, or capture-only at launch? (§5)
-3. Pit cell severity: how cruel is the hole allowed to be (mood/health tuning
-   — grim-but-usable vs actively monstrous)? (§6)
-4. Core+layer split ratified? (§9)
+1. Camouflage → **pure visual v1** (§3); camo-quality is a v2 candidate.
+2. Lethality → **full fitting family in v1**: spikes, flammable oil, poison,
+   deep water (§5).
+3. Pit cell severity → **the cover is the mercy**: covered grim-but-usable,
+   uncovered actively harsh under the unsetting sun, `▲Sh'kaar` fed by an
+   open occupied pit (§6).
+4. Structure → core + campaign layer, **RimMandrake moniker on everything
+   that ships** (§9).
+
+Remaining open: none blocking. Build files when the owner calls it; the
+spawn-mass quicktest matrix (§10) is the first build step.
