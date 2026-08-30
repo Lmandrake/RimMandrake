@@ -970,3 +970,19 @@ TABOOS: S a breakdown left unrepaired overnight · M scrapping a repairable
 droid · L REIGN-BREAKER selling or deformatting a droid while he fronts.
 CURSES: S Static Bites (breakdown chance up) · M The Hands Refuse (droids
 slow, one refuses work) · L Blackout (a day-long ship power failure).
+
+### ③ Oomo the Unspilled — SHIPPED 2026-08-30
+DEEDS +: births/pregnancies · lovin' and new bonds/marriages · feasts ·
+ransoming or rescuing kin · children raised well.
+DEEDS −: malnutrition/hunger · kin left unransomed or lost · droids stationed
+in bedrooms · dehydration.
+BOONS: S Full Cisterns (food satisfies more, small rest efficiency) · M The
+Body's Tide (healing faster, fertility up, meal joy up) · L Increase (a
+blessed birth — healthy, possibly twins — or kin arrive seeking to join).
+DEMANDS: S every mouth a real cooked meal daily (paste is drought) · M a
+feast this reign · L a union formed or a child begun this reign.
+TABOOS: S droids idling in sleeping chambers · M refusing a kin-ransom offer ·
+L REIGN-BREAKER a colonist starves to death, or kin sold into slavery.
+CURSES: S Dry Mouth (hunger/rest fall faster) · M The Withheld Tide (healing
+slows, fertility stops) · L Drought of the Body (colony-wide malaise until a
+feast breaks it).
