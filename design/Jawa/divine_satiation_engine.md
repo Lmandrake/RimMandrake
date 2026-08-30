@@ -72,6 +72,12 @@ Every god must have all three. **No god is ever "just +X% success."** Channels:
 **(c) extreme-band outcome** — the unusual blessing (Exalted) / harm (Wrathful), delivered with
 narrative build-up, never a flat modifier.
 
+> 🔴 **Channel (c) SUPERSEDED 2026-08-30:** extreme-band outcomes are now the matrix
+> pages' BOONS/CURSES (end of this doc), and curses obey the F10 alignment law — a
+> curse ENACTS the god's want against your interest, never inversion. The per-god
+> (c) prose below predates that law; where it disagrees with a matrix page, the
+> matrix page wins.
+
 ### ① Ishko the Unmaskable — hiding, ambush, the prepared dark
 - **(a) Ambient:** rises when a raid is defeated from concealment/ambush or a threat passes the colony
   undetected; falls when the colony is caught in the open / surprised.
@@ -960,10 +966,11 @@ owner's catch on ②).
 > **Ownership** — permanent law lives in the ideoligion's precepts; *rotating* law
 > lives in reigns. **§19.5** — Ohm-L self-repair, Oomo-L blessed birth/kin, and
 > Mob'Unloo-L's fence are LEGAL (opportunity-shaped, rare; ruled deliberately).
-> **Curse law (F10, re-spec owed):** a curse never punishes by inversion — it
-> ENACTS what the god wants, no longer in your interest (the god of fleeing
-> destroys the thing keeping you here). The curse columns below predate this law
-> and will be re-specced under it.
+> **Curse law (F10):** a curse never punishes by inversion — it ENACTS what the
+> god wants, no longer in your interest (the god of fleeing destroys the thing
+> keeping you here). The curse columns below were RE-SPECCED under this law
+> 2026-08-30 (CURSE_COLUMN_RESPEC_1): every curse carries an F9 signature tell,
+> every M/L curse states its exit-verb in the god's own currency.
 
 ### ① Ishko the Unmaskable — SHIPPED 2026-08-30
 DEEDS +: ambush/from-cover kills · a raid survived undetected or enemies
@@ -979,9 +986,15 @@ buried within a day · M an hour of stillness · L blackout reign (no outdoor
 light, no comms).
 TABOOS: S corpses rotting on the surface · M melee-executing the downed ·
 L REIGN-BREAKER deliberately attracting a raid / floodlit assault.
-CURSES: S Seen (colony visibility creeps up; the next raid sizes slightly
-larger) · M The Mask Slips (the detection clock jumps forward) · L Unmasked
-(a raid arrives already knowing your positions — no warning letter).
+CURSES (he enacts the hiding — on YOU): S The Dark Keeps Its Own (fog lingers,
+mislaid tools, sightlines shorten; tell: paired orange eyes glimpsed in
+doorways) · M Unseen by Friends (trade caravans and allies cannot FIND the
+colony — hidden from the world that feeds you; tell: the lamps gutter to
+embers — until the surface dead are buried and a day passes in true
+stillness) · L The Deep Dark (perfect concealment imposed: no comms, no
+visitors, the map's edges go black even to your own scouts; tell: total
+silence, even the wind — until an enemy is killed from cover, proving the
+dark is a weapon and not a grave).
 
 ### ② Ohm the All-Current — SHIPPED 2026-08-30 (revised scope)
 DEEDS +: droids acquired/captured/rebooted/repaired/built (his hands
@@ -997,8 +1010,15 @@ DEMANDS: S no droid hits zero power · M build or restore one machine this
 reign · L a droid choir kept aboard.
 TABOOS: S a breakdown left unrepaired overnight · M scrapping a repairable
 droid · L REIGN-BREAKER selling or deformatting a droid while he fronts.
-CURSES: S Static Bites (breakdown chance up) · M The Hands Refuse (droids
-slow, one refuses work) · L Blackout (a day-long ship power failure).
+CURSES (the machines LIVE — too much): S Overcurrent (machines run unbidden,
+power draw spikes, lights blaze at night — feeding Sh'kaar, galling Ishko;
+tell: a rising hum in the wires) · M The Hands Choose (droids take their own
+tasks, doors serve the machine's convenience not yours; tell: every screen
+flickers with current-patterns — until a machine is restored or built in his
+name) · L The Body Wakes (the ship runs itself: systems at full burn, engines
+warming without orders, fuel and power spent on HIS purposes; tell: the hull
+thrums like a held chord — until a droid is brought online, his hands
+returned by yours).
 
 ### ③ Oomo the Unspilled — SHIPPED 2026-08-30
 DEEDS +: births/pregnancies · lovin' and new bonds/marriages · feasts ·
@@ -1012,9 +1032,15 @@ DEMANDS: S every mouth a real cooked meal daily (paste is drought) · M a
 feast this reign · L a union formed or a child begun this reign.
 TABOOS: S droids idling in sleeping chambers · M refusing a kin-ransom offer ·
 L REIGN-BREAKER a colonist starves to death, or kin sold into slavery.
-CURSES: S Dry Mouth (hunger/rest fall faster) · M The Withheld Tide (healing
-slows, fertility stops) · L Drought of the Body (colony-wide malaise until a
-feast breaks it).
+CURSES (the waters pass whether you will it or not): S The Tide Rises (thirst
+and appetite spike, unwanted advances bloom, jealousies stir; tell: a
+dripping no one can locate) · M Spilled Freely (wounds weep, fevers break
+wet, unplanned eggs begun, stores sweat toward spoilage; tell: condensation
+on every cold surface — until the sick are tended and a feast is laid) ·
+L The Flood of Increase (the family GROWS against your will: kin arrive
+hungry to join, every bond ignites at once, work stops for lovin' and
+quarrels; tell: the cisterns brim though no one filled them — until a union
+is sanctified or kin are ransomed home).
 
 ### ④ Mob'Unloo the Ever-Owed — SHIPPED 2026-08-30
 DEEDS +: profitable trades · successful undetected theft (deliberate Ishko
@@ -1029,9 +1055,16 @@ DEMANDS: S every visitor caravan traded with · M turn a profit this reign ·
 L collect a debt (ransom, fee or repayment from another faction).
 TABOOS: S gifts for nothing · M breaking a struck deal · L REIGN-BREAKER
 getting CAUGHT publicly while he fronts.
-CURSES: S Bad Faith (sell prices dip) · M Called Debts (markups; an old
-grievance called in) · L The Ledger Closes (no caravans, no comms trade —
-the market will not see you).
+CURSES (the ledger balances ITSELF — out of your pocket): S Interest Accrues
+(visitors expect small tributes, ghosts rattle their accounts; tell: a dry
+clicking like a tally being kept) · M Called In (a faction calls a debt due —
+goodwill or goods demanded; traders arrive only to COLLECT; tell: every
+price on the trade screen shown in red — until a debt of yours is settled or
+a true profit tithed to him) · L The Audit (everything owed comes due at
+once: ransom demands, creditor caravans, the unsettled dead walking their
+claims; tell: two unblinking eyes over an endless tally in the letter's
+seal — until one great debt is collected FROM another faction in his name,
+the ledger fed from outside).
 
 ### ⑤ Rekko of the Second Hand — SHIPPED 2026-08-30
 DEEDS +: repairing anything · restoring wrecks/ruins-finds · careful
@@ -1047,9 +1080,17 @@ DEMANDS: S nothing deteriorating in the open · M restore one wreck/find this
 reign · L restoration tithe: the reign's finest fix is USED, not sold.
 TABOOS: S smelting/scrapping above half condition · M destroying a repairable
 machine or building · L REIGN-BREAKER mass destruction of the salvageable.
-CURSES: S Loose Screws (repairs fail more) · M Everything Breaks
-(deterioration accelerates, quality drops) · L The Second Hand Withdraws
-(nothing repairable at all for the span — only replaced).
+CURSES (the discarded claim their due): S The Heap Stirs (mend-jobs
+self-assign over other work — the broken cry to be held; tell: metal
+scraping stone from the scrap-zone at night) · M The Second Hand Takes (a
+neglected possession leaves you for a "better master" — claimed by visitor,
+trader or the sands — and every damaged thing on the map palls the mood
+until touched; tell: the scarred-hand mark found pressed in dust — until a
+wreck is restored and the reign's finest fix enshrined in USE) · L The
+Rewoken (the sleeping hands rise unbidden: derelicts activate, ancient
+wrecks stir half-alive and must be dealt with; tell: engines that should be
+dead turning over in the dark — until one waking is honored, repaired
+rather than put down).
 
 ### ⑥ Ta'Baa the Unrooted — SHIPPED 2026-08-30
 DEEDS +: LAUNCHING (the holiest; big spike per liftoff) · caravans out and
@@ -1065,9 +1106,17 @@ DEMANDS: S keep a fueled lift margin always · M send a caravan/sortie this
 reign · L LAUNCH before the reign ends.
 TABOOS: S fuel margin at zero · M walling in the ship · L REIGN-BREAKER
 dismantling engine components while he fronts.
-CURSES: S Heavy Feet (speed down, wanderlust) · M The Rooted Ache (mood sag
-worsening each launchless day) · L Despair's Whisper (break thresholds
-collapse until something FLIES).
+CURSES (he makes you leave — his way): S The Wind Under Doors (wanderlust
+dreams, pawns drift shipward mid-task, doors swing open toward the berth;
+tell: a low whistle of departure in the corridors) · M Cut Moorings (the
+anchor suffers: a rooted structure fails, the farm withers, fuel is found
+hauled to the ship unbidden — helpful, and not what you wanted; tell: the
+receding dune-line shimmering where there is no heat — until a caravan goes
+out and comes BACK, motion offered freely) · L The Burning of the Root (he
+destroys the thing keeping you here — granary, mine, the beloved room — and
+the engines self-prime, spending your fuel toward HIS exit; tell:
+engine-glow reflections on walls that face no engines — until something
+FLIES).
 
 ### ⑦ Zizzik the Spark-Maker — SHIPPED 2026-08-30 (inverted; the banked wake)
 DEEDS + (feeding keeps wakes small): breakdowns left to happen · mental
@@ -1084,9 +1133,15 @@ reign).
 TABOOS: S instantly repairing everything · M arresting/drafting pawns out of
 breaks during his reign · L REIGN-BREAKER a perfectly ordered day during HIS
 reign.
-CURSES (the wake, sized by slumber length): S Spark Bites (breakdown flurry) ·
-M The Betrayal (an ally turns: fights epidemic, animal manhunts, droid
-glitch) · L THE WAKING (the banked cascade at once).
+CURSES (the wake, sized by slumber length — he was always going to): S Spark
+Bites (a flurry of small breakdowns; tell: the rattle circles closer, room
+by room) · M The Betrayal (an ally turns — fights epidemic, animal manhunt,
+droid glitch; tell: three sharp taps from inside a wall, then nothing —
+until a burnt offering is made, one working thing destroyed to gorge him) ·
+L THE WAKING (the banked cascade lands at once, sized by every quiet day
+you hoarded; tell: total silence where the rattle lived, the held breath —
+no exit ONCE IT FIRES, but the controlled-waking rite spends the bank early
+on YOUR schedule, and honored breaks keep him gorged after).
 
 ### ⑧ Sh'kaar the All-Searing — SHIPPED 2026-08-30 (EVIL; the escalation meter)
 DEEDS + (every one feeds the meter): kills yours and theirs · battles fought
@@ -1103,9 +1158,17 @@ DEMANDS: S blood this reign · M a battle joined, not avoided · L a
 conflagration: an enemy position burned to nothing.
 TABOOS: S mercy mid-battle (surrender accepted while he fronts) · M a battle
 fled · L REIGN-BREAKER a reign with no violence: fury, and the meter SPIKES.
-CURSES: S Bloodlust Whisper (colonists pick fights, animals aggress) · M The
-Light Turns (friendly-fire up; fires near your works) · L THE SEARING (the
-meter cashes out: the next raid arrives massive, burning, early).
+CURSES (he brings the war HE wants to your door): S Bloodlust Whisper
+(colonists pick fights, animals aggress — his war seeded in your own; tell:
+heat-shimmer indoors, the light a shade too white) · M The Light Turns
+(fires kindle near your works, friendly-fire rises, pawns drift into the
+open to fight HIS way; tell: shadows shorten at the wrong hours — until he
+is fed a death that isn't yours: a prisoner released to the desert, a
+death-match, an enemy slain far away) · L THE SEARING (the meter cashes
+out: the next raid arrives massive, burning, early — his battle, delivered;
+tell: white glare on the horizon that does not fade at night — no exit but
+through it, and only Ishko's stillness afterward cools the meter: don't
+fight, and he starves).
 
 ### ⑨ Ozzik the Shamed — SHIPPED 2026-08-30 (the trap; the pride-crisis machinery)
 DEEDS + (every advancement feeds him regardless): research completed ·
@@ -1124,10 +1187,18 @@ work finished this reign · L a public triumph BROADCAST (splits the pantheon
 on purpose: Ishko's horror, Mob'Unloo's markup, Sh'kaar's invitation).
 TABOOS: S hiding achievements · M selling a trophy or great work ·
 L REIGN-BREAKER public humiliation accepted without answer while he fronts.
-CURSES (the pride-crisis machinery): S The Sting (expectations rise) ·
-M Exposure (wealth/position leaks: raid points calculate higher) ·
-L THE SHAMING (the humbling catastrophe scaled to the banked meter — and
-Zizzik and Sh'kaar arrive fed).
+CURSES (the pride-crisis machinery — he makes you GRAND, ready or not):
+S The Sting (expectations rise; the crew taste the prouder age and want it
+NOW; tell: polished metal catching eyes, the tarnished-crown mark in the
+letter) · M Renown (your name spreads unbidden — wealth and position leak,
+raid points calculate higher, envoys and rivals arrive drawn by a legend
+you never broadcast; tell: strangers arrive already knowing your works —
+until the Unburdening: wealth given away, or a great work walked away
+from) · L THE SHAMING (the humbling catastrophe scaled to the banked
+meter — and Zizzik and Sh'kaar arrive fed; tell: a letter written in the
+register of elegy, the crew silent at their benches — no exit but through
+it; afterward only humble work answers, and restoring Rakatan works feeds
+his grief-side gently).
 
 ## Matrix status: NINE OF NINE SHIPPED (2026-08-30)
 The engine build (satiation counters, front selection, light zones, emitter
