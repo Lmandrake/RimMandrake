@@ -51,6 +51,41 @@ bridge. Once deployed, in priority order:
 4. `jawa/explosion_at` and `jawa/ideo_ritual_obligation_remove` — lower priority,
    more standard.
 
+## Live-verify 2026-08-30, FOUNDRY — PARTIAL. 2 of 7 proven, 5 not yet run.
+
+Full 585-mod list, fresh quicktest map. **Pass suspended mid-item**: the owner was
+watching this game window live and paused it, so the visually dramatic and
+game-wide calls in this batch (`explosion_at`, `hot_reload_defs`) were deliberately
+NOT fired. See "held" below — this is a decision, not an oversight.
+
+### ✅ `jawa/clear_area` — PASS, and the dryRun default is real
+```
+rect 200,200,12,12   baseline 109 things
+clear_area {rect}                    -> dryRun true,  destroyedCount 109, destroyed[] enumerated
+  independent re-count               -> 109   (dryRun destroyed NOTHING - the safety rail holds)
+clear_area {rect, dryRun: false}     -> dryRun false, destroyedCount 109
+  independent re-count               -> 0
+```
+Also exercised for real a second time over `172,62,8,8`
+(`destroyedCount: 40`, incl. `PassableBasalt`/`BoulderBasalt` and a
+`VGE_LandingStructure`), confirmed gone by a follow-up `jawa/list_things`.
+`roofedCellsBefore: 0` reported on unroofed ground, as expected.
+
+### ✅ `jawa/spawn_fill_area` — PASS
+`{rect: "200,200,4,4", thingDef: "Steel"}` → `cellsFilled: 16`; independent
+`jawa/list_things` over the same 4x4 returned **16 things, every one `Steel`** —
+one per cell, exactly the unconditional per-cell `GenSpawn.Spawn` it claims.
+
+### Not yet run
+- `jawa/make_empty_room`, `jawa/destroy_bulk` (dryRun), `jawa/ideo_ritual_obligation_remove`
+  — safe, simply not reached before the pass was suspended.
+- 🔴 **held deliberately, needs an owner heads-up before firing:**
+  - `jawa/explosion_at` — visually dramatic on a screen he is watching.
+  - `jawa/hot_reload_defs` — reloads every active mod's XML on a **585-mod** live
+    game as a queued long event. If it stalls or throws it costs a ~25-minute cold
+    load of a game other seats are using. Worth doing, worth doing deliberately and
+    announced — not slipped into a verification sweep.
+
 ## criteria
 - [x] Root cause of the original miss identified and documented, not just patched.
 - [x] Full 367-attribute `[DebugAction]` inventory pulled, triaged for real value
@@ -59,7 +94,11 @@ bridge. Once deployed, in priority order:
 - [x] Every signature read from 1.6 source, not guessed — including the full 30+
       param `GenExplosion.DoExplosion` signature, positionally verified.
 - [x] Builds clean, no duplicate alias (full surface re-scanned).
-- [ ] Deployed and proven live — `hot_reload_defs` above all else. Needs the game
-      down, then bridge.
+- [x] Deployed — all 7 registered on the live bridge.
+- [ ] Proven live. `clear_area` (dryRun rail verified non-destructive, real mode
+      verified by independent re-count 109 -> 0) and `spawn_fill_area` (16 of 16
+      cells) PASS. `make_empty_room`, `destroy_bulk`, `ideo_ritual_obligation_remove`
+      not yet run; `explosion_at` and `hot_reload_defs` held pending an owner
+      heads-up (he is watching the window; hot_reload_defs risks a 25-min reload).
 
 --- history ---
