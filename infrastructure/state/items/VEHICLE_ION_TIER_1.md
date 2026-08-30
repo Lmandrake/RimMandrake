@@ -97,12 +97,130 @@ from `ION_TIERS_MEASURED_LIVE_1`.
 - [x] Deployed 2026-08-29 (game DOWN): `deploy_custom_mods.py --mod
       JawaIonWeapons --apply` — 3 files (new DLL, updated About.xml, rebuilt
       main DLL), VERIFIED in sync.
-- [ ] Live-verified: a real vehicle stuns at the predicted tick count for its
-      footprint, raw component damage unchanged, no crash/log error from the
-      new assembly loading. **Never observed running — this is a brand-new
-      mechanism**, not a re-check of one already seen live.
+- [x] Postfix observed RUNNING live (2026-08-30) with correct arithmetic —
+      `StunFor(720)` on a 1x1 Dirtbike, `StunFor(90)` on a 2x4 Mule, exactly the
+      owner's `empAmountDroid / footprintArea * 30` ruling. Reflection, scaling
+      and tick conversion all confirmed working. No crash, no log error.
+- [ ] Live-verified: a real vehicle actually STUNS. Still 0 on 6 of 6 vehicles.
+      Cause is now known exactly and is not in our code: Vehicle Framework
+      prefixes `StunHandler.StunFor` with `Patch_HealthAndStats.StunVehicle`,
+      which skips the original for any `VehiclePawn` unless
+      `VehicleStatHandler.OverrideStunPatch` is true. Fix = set that flag by
+      reflection around the `StunFor` call and restore it in a `finally`, copying
+      `ElectrifyAllComponents`. Needs a rebuild + a game-down deploy.
 
-## Live-verify, 2026-08-30 — FAILED, still open, not closed
+## 🔴 ROOT CAUSE FOUND, 2026-08-30 (FOUNDRY, bridge pass) — still open, but no longer a mystery
+
+**The deployed trace logging paid off in one run.** Everything below supersedes
+the two earlier "everything static looks correct and none of it explains the
+failure" passes — the answer was never in our code.
+
+Setup: full 585-mod list, fresh quicktest map. Deployed
+`JawaIonVehicleTier.dll` confirmed **byte-identical to the repo build**
+(md5 `f61078a077b83e7846ad013f46d2be63`, both 2026-08-30 03:29:41) — the
+`StunFor`-direct version with trace logging IS what the game is running.
+
+**Batch of 9, not one pawn** ([[spawn-many-for-bridge-tests]]): 3 `VVE_Dirtbike`
+(1x1, area 1), 3 `VVE_Mule` (2x4, area 8), 3 `OuterRim_BattleDroid` as control.
+⚠️ `jawa/spawn_batch` throws NRE on a PawnKindDef — droids need `jawa/spawn_pawn`;
+vehicles need `spawn_batch`. Each hit once with
+`jawa/damage(damageDef=JawaIon_Damage, amount=30, allowColonists=true)`.
+
+| subject | n | predicted stun | measured `stunTicksLeft` |
+|---|---|---|---|
+| `OuterRim_BattleDroid` (control) | 3 | 720 | **720, downed — 3 of 3** |
+| `VVE_Dirtbike` (area 1) | 3 | 720 | **0 — 3 of 3** |
+| `VVE_Mule` (area 8) | 3 | 90 | **0 — 3 of 3** |
+
+Control passes, so the methodology is sound this session. Read back independently
+via `jawa/list_pawns` (`stunned`, `stunTicksLeft`), not from the damage call.
+
+### The postfix RUNS, computes the RIGHT number, calls StunFor — and is skipped
+
+Player.log, the deployed trace lines, verbatim:
+
+```
+[JawaIonWeapons] VehicleIonPatches.Postfix: calling StunFor(720) on Dirtbike (stances=ok, stunner=ok)
+[JawaIonWeapons] VehicleIonPatches.Postfix: StunFor returned, StunTicksLeft now = 0
+[JawaIonWeapons] VehicleIonPatches.Postfix: calling StunFor(90)  on Mule     (stances=ok, stunner=ok)
+[JawaIonWeapons] VehicleIonPatches.Postfix: StunFor returned, StunTicksLeft now = 0
+```
+(6 of each pair, one per vehicle. **No guard clause logged** — not one early return.)
+
+⭐ **This vindicates the owner ruling's arithmetic outright**: 720 for the 1x1
+Dirtbike and 90 for the 2x4 Mule are exactly `empAmountDroid / area * 30` with
+`empAmountDroid = 24`. Reflection, footprint scaling and tick conversion all work.
+
+`RimWorld/StunHandler.cs:176-185` is unconditional —
+`stunTicksLeft = Mathf.Max(stunTicksLeft, ticks)` — and `StunTicksLeft =>
+stunTicksLeft` (line 47) is a direct field read. **Calling `StunFor(720)` and then
+reading 0 from the same object is impossible unless the method body never ran.**
+
+### It never ran. Vehicle Framework prefixes `StunHandler.StunFor` itself.
+
+`jawa/harmony_patches {typeName:"StunHandler", methodName:"StunFor"}`, live:
+
+```
+prefixCount 1
+  owner:         SmashPhil.VehicleFramework
+  patchMethod:   Vehicles.Patch_HealthAndStats.StunVehicle
+  patchAssembly: Vehicles
+  priority:      400
+```
+
+`Source/Vehicles/Harmony/Patches/Patch_HealthAndStats.cs:273-280`:
+
+```csharp
+public static bool StunVehicle(int ticks, Thing instigator, Thing ___parent)
+{
+    if (___parent is VehiclePawn vehicle)
+        return vehicle.statHandler.OverrideStunPatch;   // false by default => SKIP the original
+    return true;
+}
+```
+
+**A vehicle cannot be stunned by ANY caller** — vanilla, modded, or ours — unless
+`VehicleStatHandler.OverrideStunPatch` is true. It is
+`public bool OverrideStunPatch { get; private set; }`
+(`VehicleStatHandler.cs:75`), and VF's own `ElectrifyAllComponents` is the only
+thing that ever sets it: `true` at line 750, back to `false` at 793, wrapped
+around its own `StunFor` call, with the comment
+*"EMP Damage may stun, disable stun patch temporarily to allow for StunFor to pass through"*.
+
+### Why the previous two passes could not see this
+
+Three independent gates in series, each of which silently swallows the hit — this
+item has now hit all three, one per pass:
+
+1. `VehiclePawn.PreApplyDamage` sets `absorbed = true`, so `DamageWorker_IonBuildup`
+   never runs. *(found by reading source, pass 1)*
+2. `VehicleComponent.ApplyEMPDamage` returns 0 unless the per-VehicleDef XML
+   opt-in `empStuns` is set — unset on every VVE vehicle. *(found by a control
+   firing vanilla EMP, pass 2)*
+3. **`Patch_HealthAndStats.StunVehicle` prefixes `StunFor` and skips it unless
+   `OverrideStunPatch` is true.** *(found here, pass 3 — and only because the
+   trace logging proved the call was made and had no effect)*
+
+🔑 Gate 3 was invisible to source reading of *our* code and of *`StunHandler`*,
+because the interception is a Harmony patch in a third assembly. `jawa/harmony_patches`
+is what named it. VF itself flags the whole area as unfinished at
+`VehicleStatHandler.cs:743`: *"Takes in damage def even though we know it's EMP,
+may need to add support for modded damage types to stun vehicles."*
+
+### The fix, now fully specified
+
+In `VehicleIonPatches.Postfix`, set `OverrideStunPatch = true` by reflection
+(the setter is private) immediately before the `StunFor` call and restore it in a
+`finally` — precisely what `ElectrifyAllComponents` does around its own. No new
+mechanism, no guessing: the vendored source is the template. Then delete the
+trace logging, which has now done its job.
+
+⛔ Not done this pass: the game is UP and holds `JawaIonVehicleTier.dll` locked, so
+no rebuild can be deployed. This rides the next game-down window, and the
+verification is already written above — the same 9-subject batch should read
+720 / 720 / 90.
+
+## Live-verify, 2026-08-30 — FAILED (superseded by the ROOT CAUSE section above)
 
 On BENCH's 585-mod quicktest map (game UP, bridge fully responsive, confirmed
 via a working `jawa/list_pawns` main-thread call first):

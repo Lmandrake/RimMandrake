@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T18:54:24Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T18:55:55Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -337,7 +337,7 @@ row:      unassigned
 needs:    bridge
 target:   v1
 kind:     bug
-blocked:  built and deployed (game DOWN); live-verify against a real vehicle owed at next game-up, a mechanism never once observed running
+blocked:  Root cause found live: VF prefixes StunHandler.StunFor (Patch_HealthAndStats.StunVehicle) and skips it for any VehiclePawn unless VehicleStatHandler.OverrideStunPatch is true; postfix runs with correct ticks (720/90) but StunFor is a no-op. Fix needs game-down rebuild+deploy
 summary:  VEHICLEIONTIER1 — the ion gun has zero effect on Vehicle Framework vehicles
 prose:    infrastructure/state/items/VEHICLE_ION_TIER_1.md
 
