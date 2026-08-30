@@ -55,4 +55,115 @@
     </thingCategories>
   </ThingDef>
 
+  <!-- ========================================================================
+       DW_DroidHead — DROIDWORKS_WIPE_AND_SPIKE_1. PLACEHOLDER, not the real
+       item. The shop/salvage pipeline that would drop a faction-specific
+       droid head off a damaged/destroyed droid is unbuilt — this generic
+       resource exists so DW_DataSpike's recipe has something real to consume
+       today. One generic head, not per-faction (matches DW_DataSpike itself
+       being one generic keyed def in v0 — see that def's own header).
+       Category ResourcesRaw, not Manufactured — it is salvage, not a crafted
+       product. Art reused verbatim from the KotOR HK-series head texture
+       already active in this mod's own generated race defs (Races_KotOR.xml)
+       — same "reuse an active mod's art by texPath" convention
+       Buildings_Charging.xml/Items_Droidworks.xml already established.
+  ======================================================================== -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>DW_DroidHead</defName>
+    <label>droid head</label>
+    <description>A salvaged droid head, worn from an unspecified faction's service. PLACEHOLDER — the shop/salvage pipeline that drops real faction-specific heads is unbuilt; this generic resource exists so data-spike crafting has something real to consume today.</description>
+    <graphicData>
+      <texPath>KotOR/Droid/HK/HK_head</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <Mass>1.5</Mass>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>0.5</Flammability>
+    </statBases>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+  </ThingDef>
+
+  <!-- ========================================================================
+       DW_DataSpike — DROIDWORKS_WIPE_AND_SPIKE_1. Reauthors OuterRim_DataSpike
+       (droid_ruling.md section 6/history), not a reference to that class.
+       ONE generic def in v0, keyed via CompDWDataSpike.spikeFaction to
+       guy762_KotORFaction_RogueDroids — droid_ruling.md's own ruling names
+       KotOR as "THE capture target" family, so that is the one faction v0
+       ships a working key for. Adding another keyed faction is another
+       ThingDef of this exact shape with a different spikeFaction value, not
+       a C# change (see CompDWDataSpike.cs's header).
+
+       comps:
+       - CompProperties_Usable: useJob points at OUR OWN DW_DataSpike JobDef
+         (Droidworks.JobDriver_DWDataSpike), not vanilla's generic
+         JobDriver_UseItem — CompUsable.TryStartUseJob builds the job as
+         TargetA=this item, TargetB=the picked target, which is exactly the
+         index shape the job driver expects. useDuration is irrelevant here
+         (unused by a non-vanilla driverClass) and left at its default.
+       - CompProperties_Targetable: compClass Droidworks.CompTargetable_DWDataSpike
+         — the reauthored, faction-aware version of the donor's
+         Comp_TargetableOnDownedDroid (see that file's own header for the full
+         comparison, including the donor's documented corpse-casting bug that
+         this reauthoring sidesteps by never accepting corpses).
+       - Droidworks.CompProperties_DWDataSpike: the faction key itself.
+
+       recipeMaker: crafts DW_DataSpike from 1 DW_DroidHead — this recipeMaker
+       block IS the "RecipeDef crafting a keyed spike" the item brief asks
+       for (vanilla auto-generates a real RecipeDef from it, same convention
+       DW_RestrainingBoltItem already uses rather than a hand-written
+       standalone RecipeDef).
+  ======================================================================== -->
+  <ThingDef ParentName="ResourceBase">
+    <defName>DW_DataSpike</defName>
+    <label>data spike (rogue droid collective)</label>
+    <description>A compact tool loaded with the rogue droid collective's own ownership protocols. Used on a downed or captured droid of that collective, it overrides the droid's loyalty to your own. Keyed to the wrong faction, it does nothing.</description>
+    <graphicData>
+      <texPath>OuterRim/Items/DataSpike</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <Mass>0.3</Mass>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>0.5</Flammability>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Usable">
+        <useJob>DW_DataSpike</useJob>
+        <useLabel>Spike droid (rogue droid collective)</useLabel>
+      </li>
+      <li Class="CompProperties_Targetable">
+        <compClass>Droidworks.CompTargetable_DWDataSpike</compClass>
+      </li>
+      <li Class="Droidworks.CompProperties_DWDataSpike">
+        <spikeFaction>guy762_KotORFaction_RogueDroids</spikeFaction>
+      </li>
+    </comps>
+    <recipeMaker>
+      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+      <effectWorking>Cook</effectWorking>
+      <soundWorking>Recipe_Machining</soundWorking>
+      <workAmount>1200</workAmount>
+      <productCount>1</productCount>
+      <workSkill>Crafting</workSkill>
+      <recipeUsers>
+        <li>FabricationBench</li>
+      </recipeUsers>
+      <skillRequirements>
+        <li>
+          <skill>Crafting</skill>
+          <minLevel>6</minLevel>
+        </li>
+      </skillRequirements>
+    </recipeMaker>
+    <costList>
+      <DW_DroidHead>1</DW_DroidHead>
+    </costList>
+    <thingCategories>
+      <li>Manufactured</li>
+    </thingCategories>
+  </ThingDef>
+
 </Defs>

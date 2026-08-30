@@ -33,4 +33,22 @@
     <suspendable>false</suspendable>
   </JobDef>
 
+  <!-- ========================================================================
+       DW_DataSpike — DROIDWORKS_WIPE_AND_SPIKE_1. Backs
+       Droidworks.JobDriver_DWDataSpike (Source/Droidworks/JobDriver_DWDataSpike.cs):
+       carry the spike (TargetA) to the target droid (TargetB), work 600 ticks,
+       then SetFaction(Player) if the target is still downed/prisoner and the
+       spike's faction key still matches. Assigned as DW_DataSpike ThingDef's
+       own CompProperties_Usable.useJob, so CompUsable.TryStartUseJob builds
+       the job directly in this TargetA=item/TargetB=target shape — see
+       CompTargetable_DWDataSpike.cs's header for why that avoids the donor
+       mod's two-job chain.
+  ======================================================================== -->
+  <JobDef>
+    <defName>DW_DataSpike</defName>
+    <driverClass>Droidworks.JobDriver_DWDataSpike</driverClass>
+    <reportString>spiking TargetB.</reportString>
+    <suspendable>false</suspendable>
+  </JobDef>
+
 </Defs>

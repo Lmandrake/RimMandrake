@@ -114,4 +114,38 @@
     </skillRequirements>
   </RecipeDef>
 
+  <!-- ========================================================================
+       DW_MemoryWipe — DROIDWORKS_WIPE_AND_SPIKE_1. Backs
+       Droidworks.Recipe_DWMemoryWipe (Source/Droidworks/Recipe_DWMemoryWipe.cs)
+       — see that file's header for the full mechanism writeup (trait
+       randomization via Verse.PawnGenerator.GenerateTraitsFor, relations via
+       Pawn_RelationsTracker.ClearAllRelations, social memories via the same
+       ISocialThought filter Anomaly's own Brainwipe ritual uses). Whole-pawn,
+       no race restriction (same v0 precedent DW_RebootDroid/
+       DW_InstallRestrainingBolt already set — recipeUsers wiring onto the
+       generated race defs is follow-up work, not this item's scope).
+       isViolation true — RecipeWorker.IsViolationOnPawn's own default logic
+       already means "violation unless performed on your own faction's pawn",
+       which is exactly right here: wiping your own droid is not a violation,
+       wiping a captured hostile before/without consent is.
+  ======================================================================== -->
+  <RecipeDef>
+    <defName>DW_MemoryWipe</defName>
+    <label>memory wipe</label>
+    <description>Erase this droid's accumulated experience: clear its relations and social memories, and roll a fresh set of personality traits. Sets the droid to your faction. Skills are untouched — they live in the body, not the mind.</description>
+    <jobString>Wiping droid memory.</jobString>
+    <workerClass>Droidworks.Recipe_DWMemoryWipe</workerClass>
+    <workAmount>1200</workAmount>
+    <targetsBodyPart>false</targetsBodyPart>
+    <isViolation>true</isViolation>
+    <anesthetize>false</anesthetize>
+    <surgerySuccessChanceFactor>99999</surgerySuccessChanceFactor>
+    <skillRequirements>
+      <li>
+        <skill>Crafting</skill>
+        <minLevel>5</minLevel>
+      </li>
+    </skillRequirements>
+  </RecipeDef>
+
 </Defs>

@@ -3021,3 +3021,4 @@
 {"seat":"FOUNDRY","event":"close","id":"DROIDWORKS_BOLT_CORE_1","sha":"148c699f","ts":"2026-08-30T05:16:47Z"}
 {"seat":"FOUNDRY","event":"claim","id":"DROIDWORKS_FAMILY_LAYER_1","ts":"2026-08-30T05:31:02Z"}
 {"seat":"FOUNDRY","event":"start","id":"DROIDWORKS_FAMILY_LAYER_1","ts":"2026-08-30T05:31:03Z"}
+{"seat":"FOUNDRY","event":"close","id":"DROIDWORKS_WIPE_AND_SPIKE_1","sha":"277fcfa1","ts":"2026-08-30T05:34:51Z"}

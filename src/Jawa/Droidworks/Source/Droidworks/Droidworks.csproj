@@ -44,15 +44,19 @@
   <ItemGroup>
     <Compile Include="CompDroidDetonation.cs" />
     <Compile Include="CompDWCharger.cs" />
+    <Compile Include="CompDWDataSpike.cs" />
+    <Compile Include="CompTargetable_DWDataSpike.cs" />
     <Compile Include="DroidworksBoltUtility.cs" />
     <Compile Include="DroidworksDefOf.cs" />
     <Compile Include="DroidworksModExtension.cs" />
     <Compile Include="HediffComp_DWBoltResentment.cs" />
     <Compile Include="HediffComp_PoweredDown.cs" />
     <Compile Include="JobDriver_DWClampBolt.cs" />
+    <Compile Include="JobDriver_DWDataSpike.cs" />
     <Compile Include="JobDriver_DWRecharge.cs" />
     <Compile Include="JobGiver_DWRecharge.cs" />
     <Compile Include="Need_Power.cs" />
+    <Compile Include="Recipe_DWMemoryWipe.cs" />
     <Compile Include="Recipe_InstallRestrainingBolt.cs" />
     <Compile Include="Recipe_RebootDroid.cs" />
     <Compile Include="Recipe_RemoveRestrainingBolt.cs" />
