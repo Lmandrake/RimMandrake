@@ -1,5 +1,107 @@
 # OTHER_STUN_WEAPONS_SURVEY_1 — every other stun-capable damage type, and whether it scales
 
+## ✅ SIXTH PASS, 2026-08-30 (FOUNDRY) — every open question measured live. CLOSED.
+
+Fresh 585-mod quicktest, game paused. `Jawa_InverseBodySize` confirmed loaded
+(`jawa/get_defs` → `StatDef`, mod *"Jawa Ion Weapons (local)"*). All four
+outstanding criteria below are now answered by measurement.
+
+### (a) 🔴 The squared standard is EXACT, to the bit — `guy762_RangedDamage_KOstun`
+
+⭐ **The instrument that made this trivial: `Jawa_InverseBodySize` is a real StatDef,
+so `jawa/pawn_stats` reads the multiplier itself off a live pawn.** No inference needed:
+
+```
+Rat          Jawa_InverseBodySize = 5.0        (bodySize 0.2)
+Human        Jawa_InverseBodySize = 1.0        (bodySize 1)
+AA_Behemoth  Jawa_InverseBodySize = 0.03125    (bodySize 32)
+```
+
+Then one `jawa/damage {damageDef: guy762_RangedDamage_KOstun, amount: 10}` per pawn,
+severity read back from `jawa/list_pawns {includeHealth: true}` → `health.hediffs`:
+
+| species | live `bodySize` | `PsychicShock` severity | predicted `10 × (1/bodySize)²` | ratio vs Human |
+|---|---|---|---|---|
+| `Rat` | 0.2 | **250.0** | 250 | **25×** |
+| `Colonist` (Human) | 1.0 | **10.0** | 10 | 1× |
+| `AA_Behemoth` | 32.0 | **0.009765625** | 10/1024 = 0.009765625 | **1/1024** |
+
+Not approximately — `0.009765625` is exactly `10/1024`. `severityFixed: 10` makes this
+independent of damage dealt and of armour, which is why KOstun is the clean instrument
+and sonic is not. ⇒ **the owner's squared ruling is live and correct on a third-party
+DamageDef, through pure XML + the `Jawa_InverseBodySize` StatDef.**
+
+⚠️ `downed: true` came back on Rat, Human AND Behemoth alike, so **downing is not the
+discriminator** — `PsychicShock` incapacitates at any severity (Behemoth read
+`Consciousness 0.1` at severity 0.0098). Only the severity number separates the cases.
+A pass judged on "did it drop" would have read as no scaling at all.
+
+### (a) `guy762_RangedDamage_sonic` — same result, noisier instrument
+`severityPerDamageDealt: 0.01`, so the reading must be normalised by the damage that
+actually landed (`jawa/damage` → `totalDamageDealt`):
+
+| species | bodySize | dealt | `guy762_SonicDisorient` | severity/dealt | predicted `0.01 × (1/bs)²` |
+|---|---|---|---|---|---|
+| `Colonist` | 1.0 | 14.42 | 0.14423 | **0.01000** | 0.01 |
+| `Rat` | 0.2 | 1.0 | 0.25 | **0.25** | 0.25 |
+| `AA_Behemoth` | 32.0 | **0.0** | 0.0 | — | — |
+
+Two clean rows land exactly on prediction. ⚠️ Three caveats, recorded so nobody reads
+the noisy rows as contradictions: the hediff **caps at severity 0.5** (two rats
+saturated there), multi-part hits split the damage and blur the ratio, and a Behemoth's
+armour absorbed **all** sonic damage even at `amount: 300` — `dealt 0.0`, so there is
+nothing to scale. Sonic is confirmed by the clean rows and by sharing the identical
+patched XML with KOstun, not by the saturated ones.
+
+### (b) 🔑 The vehicle question is ANSWERED — and it needed `jawa/vehicle_components`
+The fifth pass predicted the pawn tools were blind, not the weapon inert. Confirmed:
+**`totalDamageDealt` read `0.0` for every damage type on every vehicle, including plain
+vanilla `Bullet`**, while `jawa/vehicle_components` showed real component loss. The pawn
+read-back is the broken instrument, exactly as diagnosed.
+
+9 fresh `VVE_Bulldog`, 3 per damage type, **5 hits each**, components read before/after:
+
+| damage | stun on hit | component damage after 5 hits |
+|---|---|---|
+| `JawaIon_Damage` (ours) | **48 ticks, 15/15 hits** | **0 of 3 vehicles**, worstEfficiency 1.0 throughout |
+| `OuterRim_BlasterIon` @20 | 0, always | 1 of 3 vehicles, one component to 0.9 |
+| vanilla `Bullet` @50 (control) | 0, always | 1 of 2 vehicles, two components to 0.74 |
+
+⇒ **our ion weapon is the only one of the three with a reliable, deterministic effect on
+a Vehicle Framework vehicle** — it stuns every time and damages nothing, which is the
+capture-not-kill guarantee holding. `48` is `empAmountDroid(24) / area * 30` for a
+15-cell footprint, consistent with the Dirtbike(720)/Mule(90) readings in
+`VEHICLE_ION_TIER_1`. `OuterRim_BlasterIon` behaves against a vehicle exactly as this
+survey already found it behaves against a pawn: **ordinary weak damage, no stun** — its
+"ion" identity is flavour, not mechanism.
+
+🔴 **A single sample lied here and the batch caught it.** The first `OuterRim_BlasterIon`
+shot happened to drop a component to 0.6 efficiency while the first `Bullet` shot did
+nothing, which reads as *"ion hurts vehicles, bullets don't"*. Across 9 vehicles × 5 hits
+that reverses: both are stochastic per-component rolls of similar weak magnitude, and the
+bullet control actually did **more** damage. ([[spawn-many-for-bridge-tests]])
+
+### `OuterRim_Ion` — resolved. Ordinary damage, not a stun mechanism.
+The last unresolved row in the table below. Clean single hits, `amount: 20`, 3 subjects
+per species — the isolation the second pass could not get:
+
+```
+Rat                   dealt 12.7 / 23.0 / 17.7   stun 0/0/0   2 dead, 1 downed
+AA_Behemoth           dealt  0.0 /  1.0 /  0.0   stun 0/0/0   armour absorbs it
+OuterRim_BattleDroid  dealt 19.8 / 19.6 / 20.0   stun 0/0/0   hediffs 1 -> 4/5/6, none downed
+```
+**Stun 0 on 9 of 9.** It deals plain injury damage that armour resists normally. ⇒ same
+verdict as `OuterRim_BlasterIon`: no incapacitation effect exists to body-size-scale, so
+this survey's question does not apply to it. Row closed.
+
+### `guy762_*_ion` family vs a DROID — resolved. Also ordinary damage.
+The other open row: earlier passes only tested flesh. `guy762_RangedDamage_ion` @20
+against `OuterRim_BattleDroid` × 3 → dealt **36 / 20 / 15**, one droid killed outright,
+**stun 0 on all three**, and against a Rat → 8/8/14 dealt, all three dead. ⇒ it is a
+real, lethal damage type against droids and organics alike, and **not** an anti-droid
+stun weapon. Nothing here to scale either.
+
+
 Owner, 2026-08-29: "Now investigate other weapons that stun. Other ion weaponry, sonic
 weaponry." Follow-up to `ION_STUN_IGNORES_BODY_SIZE_1`.
 
@@ -229,11 +331,12 @@ same shape as `ION_STUN_IGNORES_BODY_SIZE_1`'s own verify table.
 - [x] The actual ion TURRETS found, live-tested, and their real DamageDef (`OuterRim_BlasterIon`,
       distinct from `OuterRim_Ion`) characterized — confirmed functionally inert as a stun
       mechanism, not something needing a body-size fix.
-- [x] Owner ruled: squared standard, not vanilla's free linear toggle. Built and validated
-      offline (compile clean, `validate_patch.py` clean); DLL deploy blocked on game-down,
-      XML deployed. Live severity read-back still owed — see verify above.
-- [ ] `OuterRim_Ion` (the still-separate, still-unresolved entry) — its live test remains
-      inconclusive, not redone this pass.
+- [x] Owner ruled: squared standard, not vanilla's free linear toggle. Built, deployed and
+      **live-verified exactly**: Rat 250.0 / Human 10.0 / Behemoth 0.009765625 on
+      `PsychicShock` — 25× and 1/1024×, to the bit. See the sixth pass at the top.
+- [x] `OuterRim_Ion` resolved: 9 clean single hits across Rat/Behemoth/BattleDroid,
+      **stun 0 on all 9**, ordinary armour-resisted injury damage. Not a stun mechanism,
+      so the body-size question does not apply to it.
 - [x] ~~New capability gap surfaced~~ **NOT a gap — corrected offline, 2026-08-29.** This
       survey's vehicle test used `jawa/list_pawns`/`jawa/pawn_get`/`jawa/thing_stats`/
       `jawa/inspect_string`, none of which reach `VehiclePawn`'s own component system — but
@@ -242,8 +345,13 @@ same shape as `ION_STUN_IGNORES_BODY_SIZE_1`'s own verify table.
       via reflection (each with label, `Health`/`MaxHealth`/`HealthPercent`/`Efficiency`).
       The vehicle question below is answerable with the RIGHT tool, no new build needed —
       just re-run against `VVE_Bulldog_PawnKind` with `jawa/vehicle_components` instead.
-- [ ] If pursued: `guy762_*_ion` family checked against an actual droid/mechanoid target, since
-      live evidence suggests it may not be a flesh-stun mechanism at all.
+      **Done, sixth pass**: 9 Bulldogs × 5 hits. `JawaIon_Damage` stuns 15/15 with zero
+      component damage; `OuterRim_BlasterIon` and vanilla `Bullet` both do weak stochastic
+      component damage and never stun. `totalDamageDealt` read 0.0 for all three, confirming
+      the pawn read-back — not the weapon — was the blind instrument.
+- [x] `guy762_*_ion` family checked against an actual droid: `guy762_RangedDamage_ion` @20 on
+      `OuterRim_BattleDroid` ×3 → 36/20/15 damage dealt, one killed, **stun 0 on all three**.
+      A real lethal damage type, not a stun mechanism, against droids as against flesh.
 
 ## 2026-08-30 (FOUNDRY, fifth pass) — the DLL deploy blocker is GONE; the live read-back is not
 

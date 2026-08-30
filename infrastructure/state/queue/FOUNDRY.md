@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T21:24:46Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T21:29:51Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -89,15 +89,6 @@ target:   v1
 kind:     build
 summary:  design/Jawa/droidsystembuildspec.md — architecture (own DLL + HAR substrate,
 prose:    infrastructure/state/items/DROID_SYSTEM_BUILD_1.md
-
-## OTHER_STUN_WEAPONS_SURVEY_1 Survey of every other stun-capable damage type: which have body-size scaling, which don't
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     investigate
-summary:  OTHERSTUNWEAPONSSURVEY1 — every other stun-capable damage type, and whether it scales
-prose:    infrastructure/state/items/OTHER_STUN_WEAPONS_SURVEY_1.md
 
 ## WEAPONS_ABSORPTION_WAVE_1 Absorb all SW weapons/gear content into Jawa_Armoury: defName-preserving, packs retire
 state:    doing
@@ -264,16 +255,6 @@ kind:     bug
 blocked:  69 XML candidates cleared, points at a C# compat framework not an XML conflict. Needs a Harmony patch inventory (no bridge tool yet, needs game-down deploy) or a mod-list bisect.
 summary:  GalacticEmpire.xml's PatchOperationReplace on
 prose:    infrastructure/state/items/EMPIRE_WHITELIST_OVERRIDDEN_1.md
-
-## OTHER_STUN_WEAPONS_SURVEY_1 Survey of every other stun-capable damage type: which have body-size scaling, which don't
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     investigate
-blocked:  DLL deploy blocker resolved: JawaIonWeapons.dll + StatDefs_JawaIon.xml + ThirdPartyStunBodySize_Squared.xml all in the game copy with mtimes before the 11:23 launch, deploy plan in sync, so the squared fix IS loaded. Both remaining verify steps (Rat vs AA_Behemoth severity read-back; jawa/vehicle_components against VVE_Bulldog_PawnKind) are live-only and the game is wedged on a never-completing 'Loading world.' long event. Needs an owner restart.
-summary:  OTHERSTUNWEAPONSSURVEY1 — every other stun-capable damage type, and whether it scales
-prose:    infrastructure/state/items/OTHER_STUN_WEAPONS_SURVEY_1.md
 
 ## DROID_TILES_SOURED_TERRAIN_1 Free Droid Enclave tiles get polluted ground and fouled water (2026-08-04 doctrine, ruled alive)
 state:    proposed  (BLOCKED)
