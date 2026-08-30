@@ -67,7 +67,7 @@ namespace RimMandrake.Pits
             actionType = DebugActionType.ToolMap)]
         private static void ArmPlankLattice() { Arm(PitCoverTier.PlankLattice); }
 
-        [DebugAction(CAT, "Arm cover: reinforced frame (400kg)",
+        [DebugAction(CAT, "Arm cover: reinforced frame (220kg)",
             allowedGameStates = AllowedGameStates.PlayingOnMap,
             actionType = DebugActionType.ToolMap)]
         private static void ArmReinforcedFrame() { Arm(PitCoverTier.ReinforcedFrame); }

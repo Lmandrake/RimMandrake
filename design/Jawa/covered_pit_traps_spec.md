@@ -56,7 +56,9 @@ rough stone, it is rough stone. Mechanization options:
   hunting and raider work.
 - **Plank & lattice** (~120kg): humans walk over… heavies, mechs, big game
   fall. Let the raiders escort their centipede onto it.
-- **Reinforced frame** (~400kg): only the monsters and vehicles go through.
+- **Reinforced frame** (~220kg, revised 2026-08-30 — 400kg measured unreachable
+  by any single vanilla creature, 240kg ceiling): only the monsters and
+  vehicles go through.
 Below rating: walks across safely. At/above: the floor lies. **Load sums** — a
 tight raider knot can overload a plank cover together; a spread line crosses.
 (Squad-breaking emergent play: they learn to spread, you learn to funnel.)

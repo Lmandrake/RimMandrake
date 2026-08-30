@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T22:16:05Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-08-30T23:39:45Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -266,5 +266,15 @@ needs:    offline
 target:   v1
 kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/NAMING_SCHEME_EXECUTION_1.md yet — write one when you have something to say)
+summary:  Sequencing (owner, 2026-08-31)
 prose:    infrastructure/state/items/NAMING_SCHEME_EXECUTION_1.md
+
+## BEAST_MASS_REALISM_AUDIT_1 Audit our authored creatures' bodySize/mass values against realism -- the pits mass-trigger tuning surfaced they may not be representative
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     investigate
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/BEAST_MASS_REALISM_AUDIT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BEAST_MASS_REALISM_AUDIT_1.md

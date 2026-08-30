@@ -127,11 +127,16 @@ Muffalo **144**, Centipede **202**, elephant/megasloth/thrumbo **240**.
 
 ### Tuning findings (numbers, not verdicts)
 
-- 🔑 **The 400 kg reinforced-frame tier is unreachable by any single vanilla
+- 🔑 **The 400 kg reinforced-frame tier was unreachable by any single vanilla
   creature.** The heaviest thing in Core is 240 kg (elephant, megasloth,
   thrumbo). Spec §3 wants that tier to mean "only monsters and vehicles
-  fall"; as built it means "only crowds fall". Either drop it to ~200–220 kg
-  or restate it as a group-only tier. Left at 400 pending that call.
+  fall"; as built it meant "only crowds fall". **Owner ruled 2026-08-30:
+  drop to 220 kg** (within reach of the 240 kg single-creature ceiling,
+  still excludes humans/heavies) — changed in `PitCoverTier.cs`,
+  `PitDebugActions.cs`, and `covered_pit_traps_spec.md` §3. Same ruling also
+  flagged the 240 kg ceiling itself as suspiciously low for a "big game"
+  category — filed `BEAST_MASS_REALISM_AUDIT_1` to check our authored
+  creatures' bodySize/mass values against realism.
 - `PitDepthTier.MaxBodySize` is dead code — nothing reads it, so the spec's
   "Shallow holds bodysize <= 1" is not enforced anywhere.
 
