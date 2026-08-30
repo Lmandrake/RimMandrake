@@ -20,6 +20,36 @@
 
        painFactor 0 and everything reversible => no permanent harm; the hediff
        simply disappears as severity decays back to 0.
+
+       🔴 UPDATED, DROIDWORKS_ION_GUARD_1 (2026-08-30), design/Jawa/droid_ruling.md
+       §5 Option A items 1-2 (items 3-4, EMP shield-break and body-size scaling,
+       are deliberately NOT part of this change — separate items).
+
+       Item 1 (let buildup apply to droids, not just flesh) was ALREADY DONE
+       before this session started — DamageWorker_IonBuildup.cs's guard already
+       reads `pawn.RaceProps.IsMechanoid`, not the doc's `!IsFlesh` (see that
+       file's own history comment, dated 2026-08-12). droid_ruling.md §3/§5
+       describe the guard's PRE-FIX state and are stale on this one point;
+       corrected in place there rather than left to mislead the next reader.
+
+       Item 2 (stay down longer) IS this change: `severityPerDay` slowed from
+       -1.2 to -0.3 (the doc's own suggested number), AND a new "still
+       overloaded" stage inserted at minSeverity 0.5 carrying the SAME
+       Consciousness setMax 0.10 as the top "overloaded" stage at 0.9. Vanilla's
+       HediffCompProperties_SeverityPerDay has no floor/notBelow field (checked
+       against the live def dump - every vanilla user of that comp class exposes
+       only severityPerDay/showDaysToRecover/showHoursToRecover/mechanitorFactor/
+       reverseSeverityChangeChance/severityPerDayRange/minAge), so a genuine
+       severity floor would need new C# - out of scope for a tuning-only item.
+       This stage-based floor gets the same PLAYER-FACING result without touching
+       code: once a target crosses 0.9 and decay starts pulling severity back
+       down, it stays fully capped (not just "overloading") until severity falls
+       below 0.5 - roughly triple the real time at -0.3/day vs the old top-stage
+       band alone at -1.2/day. Judgment call, flagged for the owner: the doc only
+       offered "slow decay" OR "floor stage" as alternatives; this does both,
+       because both are pure XML/tuning and the combination is what actually
+       reads as "stays down longer" rather than "collapses, wobbles, gets back up
+       in under a minute."
   ======================================================================== -->
   <HediffDef>
     <defName>JawaIon_Stun</defName>
@@ -31,9 +61,11 @@
     <maxSeverity>1.0</maxSeverity>
     <isBad>true</isBad>
     <comps>
-      <!-- Decay: severity falls ~1.2/day (~0.05/hour) so buildup fades unless refreshed. -->
+      <!-- Decay: severity falls ~0.3/day (~0.0125/hour) so a downed target
+           stays down for hours rather than minutes. Was -1.2 (DROIDWORKS_ION_GUARD_1,
+           2026-08-30, droid_ruling.md §5 Option A item 2). -->
       <li Class="HediffCompProperties_SeverityPerDay">
-        <severityPerDay>-1.2</severityPerDay>
+        <severityPerDay>-0.3</severityPerDay>
       </li>
     </comps>
     <stages>
@@ -79,6 +111,22 @@
           <li>
             <capacity>Moving</capacity>
             <offset>-0.30</offset>
+          </li>
+        </capMods>
+      </li>
+      <li>
+        <!-- FLOOR STAGE, DROIDWORKS_ION_GUARD_1 (2026-08-30). Same setMax as
+             "overloaded" below, at a LOWER minSeverity, so decay from 0.9 does
+             not relax the cap until severity has fallen most of the way back to
+             0 - a downed target stays capacity-capped (still Downed), not just
+             "wobbling back up", for the bulk of its recovery time. -->
+        <label>overloaded</label>
+        <minSeverity>0.5</minSeverity>
+        <painFactor>0</painFactor>
+        <capMods>
+          <li>
+            <capacity>Consciousness</capacity>
+            <setMax>0.10</setMax>
           </li>
         </capMods>
       </li>

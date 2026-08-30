@@ -344,7 +344,19 @@ final word. See §11 for why that patch is right and what it costs.
 
 Most of the ask is already built. The exception is the most important part.
 
-### 🔴 Ion does NOT down a droid today
+### ✅ SUPERSEDED 2026-08-30, DROIDWORKS_ION_GUARD_1 — this section describes the PRE-FIX guard
+
+The code block and "THAT GUARD" callout below describe `!pawn.RaceProps.IsFlesh`
+as the LIVE guard. It is not, and was not when DROIDWORKS_ION_GUARD_1 went to
+verify it — `DamageWorker_IonBuildup.cs`'s own history comment dates the real fix
+to 2026-08-12, a day before this doc's "CONSISTENCY CHECK... done 2026-08-13, and
+it HOLDS" banner (§ below) — this section simply never got updated to match. The
+live guard is `pawn.RaceProps.IsMechanoid` (skips true mechanoids only), exactly
+what §5 Option A item 1 recommends. Read this section for the WHY, not the WHAT —
+`ION_TIERS_MEASURED_LIVE_1` (rimflow, closed 2026-08-29) is the current, live-
+measured state of all three tiers.
+
+### 🔴 Ion does NOT down a droid today (historical — see the note above)
 
 `file:///D:/Luke/dev/Rimworld/src/Jawa/JawaIonWeapons/Source/DamageWorker_IonBuildup.cs`
 
@@ -445,17 +457,18 @@ its own.
 
 Keep the existing mechanism. Three small changes:
 
-1. 🔴 **Let ion buildup apply to droids.** In
-   `src/Jawa/JawaIonWeapons/Source/DamageWorker_IonBuildup.cs`, the guard
-   `if (!pawn.RaceProps.IsFlesh) return;` excludes every droid. Remove it, or
-   narrow it to skip only `IsMechanoid` pawns (JDS droids, which cannot be downed
-   anyway). **This is the change that delivers the whole ask** — without it
-   ion only stuns droids. Requires rebuilding the JawaIonWeapons assembly.
-   ⚠️ Verify in play that a non-flesh humanlike pawn does go Downed on the
-   Consciousness cap; downing is capacity-based so it should, but it is the one
-   step never observed.
-2. **Slow the decay** so a downed target stays down longer (`severityPerDay`
-   from `-1.2` toward `-0.3`), or add a floor stage that does not decay.
+1. ✅ **DONE, verified live** — `IsMechanoid` is already the guard (fixed
+   2026-08-12, predating this doc's own 2026-08-13 consistency check; confirmed
+   read of the CURRENT source 2026-08-30 by DROIDWORKS_ION_GUARD_1). Downing on
+   the Consciousness cap for a non-flesh humanlike is measured live in
+   `ION_TIERS_MEASURED_LIVE_1` — the "one step never observed" caveat below is
+   closed.
+2. ✅ **DONE 2026-08-30, DROIDWORKS_ION_GUARD_1.** `severityPerDay` slowed
+   `-1.2` → `-0.3`, plus a floor stage added at `minSeverity 0.5` carrying the
+   same `Consciousness setMax 0.10` as the top stage (vanilla's decay comp has
+   no floor field to lean on — checked against the live def dump — so a stage
+   floor is the XML-only route). `HediffDefs_JawaIonStun.xml` carries the full
+   reasoning inline.
 3. **Make ion break shields.** `CompShield::PostPreApplyDamage` tests reference
    equality against `DamageDefOf.EMP`, so the cleanest route is to have the ion
    projectile also deliver a small amount of real `EMP` damage.
