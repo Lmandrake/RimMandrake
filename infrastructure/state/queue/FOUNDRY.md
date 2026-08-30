@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T21:50:21Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T21:54:41Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -87,7 +87,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     build
-summary:  (no items/WEAPONS_ABSORPTION_WAVE_1.md yet — write one when you have something to say)
+summary:  Absorb all Star Wars weapons/gear content into JawaArmoury, defName-preserving, so the six
 prose:    infrastructure/state/items/WEAPONS_ABSORPTION_WAVE_1.md
 
 ## DROIDWORKS_POWEREDDOWN_NOT_WIRED_1 Ion buildup crossing threshold downs via vanilla JawaIon_Stun capMods only -- never adds the DW_PoweredDown hediff the state machine is built around
