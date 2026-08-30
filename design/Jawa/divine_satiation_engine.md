@@ -878,8 +878,10 @@ _Each god is given as a uniform block: **name & epithets** (every title he holds
 ### 2.0b-ii Folk practice — the nine daily gestures (F1, ruled 2026-08-30)
 
 _A religion is visible in habit before it is visible in crisis. One gesture per god, performed without
-thought, costing nothing, meaning everything. Lore for the Narrator to reference; **three will later be
-promoted to micro-mechanics — which three is OPEN-FOR-OWNER.**_
+thought, costing nothing, meaning everything. Lore for the Narrator to reference; **✅ RULED (door
+ruling, 2026-08-30): FOUR promote to micro-mechanics — Zizzik's decoy, Ta'Baa's leaving-bag,
+Sh'kaar's shade-line pause, Mob'Unloo's set-it-down (built last; it touches item-transfer jobs).
+Mechanics: `folk_gesture_mechanics.md`.**_
 
 - **① Ishko** — a Jawa touches the doorframe before stepping out: *ask the dark before you leave it.*
 - **② Ohm** — the first touch of any machine each day is a knuckle-tap on the housing, so the current

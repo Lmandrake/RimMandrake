@@ -226,15 +226,14 @@ Things** (survives any map loss). Version-stamp the component for migration.
 
 ## 11. OPEN-FOR-OWNER (genuinely his, everything else is TUNE)
 
-1. **Severity ceiling:** may an L curse kill a named colonist outright, or is
-   lethal always mediated (raid/fire he must lose to)? The F10 law permits
-   both readings.
+1. ~~Severity ceiling~~ ✅ **RULED (door ruling, 2026-08-30): survivable
+   events only** — an L curse delivers a situation, lethal if mishandled,
+   never a scripted named-colonist death.
 2. **Diegesis level of the UI:** are the nine satiation bands ever shown as a
    panel (even post-contact), or only ever felt through letters/gestures/the
    hologram room? (The review leans diegetic; the call is his.)
 3. **Reign pacing feel:** reign-per-landing is ratified direction, but long
    sits make long reigns — does a max reign length force a challenge?
-4. **Mod name** (RimMandrake_Salvation vs a proper title — Ninefold, The
-   Front, Dispensations were his candidates).
+4. ~~Mod name~~ ✅ **RULED (door ruling, 2026-08-30): `RimMandrake Ninefold`.**
 5. **First-contact order override:** the chains doc proposes encounter order;
    he may want a scripted first god for campaign start.
