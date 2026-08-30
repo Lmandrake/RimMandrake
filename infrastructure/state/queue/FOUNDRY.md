@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T01:39:39Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T01:41:33Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -474,3 +474,13 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DROIDWORKS_PHASE0_XML_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DROIDWORKS_PHASE0_XML_1.md
+
+## DROIDWORKS_DEF_GENERATOR_1 Generator: emit DW_ races and kinds for all 85 droids from extraction.json
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DROIDWORKS_DEF_GENERATOR_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROIDWORKS_DEF_GENERATOR_1.md
