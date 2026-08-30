@@ -60,3 +60,9 @@ the BENCH conversation with the owner, not before it.
 The living phase-1 brainstorm, owner rulings included:
 `design/Jawa/pawn_flavor_design.md`. Wildsteam canon clarified in
 `design/Jawa/worldbuilding/FACTION_SPEC.md` §6 the same day.
+
+## Inherited ruling (owner, 2026-08-30)
+Deep Desert Tribes are the FIRE-FARMERS (fire-ecology strategy ③): burn-cycle
+agriculture as nomadic identity. This sitting carries the re-flavor pass —
+faction text + backstory hooks (Jawa_KraytWatcher-style additions to the
+DeepDesert set).

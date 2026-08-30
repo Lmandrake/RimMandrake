@@ -5,11 +5,11 @@ names what turns on the answer. Ordered by how much downstream work waits.
 
 ## Design-shaping
 
-1. **The fire-farming faction (strategy ③).** `hydrology_and_fire_ecology.md`
-   proposes a faction that sets the Pyrelands' burns deliberately — "the most
-   distinctive thing on the map" — and no roster faction ever claimed the role.
-   Adopt (who?), fold into an existing faction (Deep Desert Tribes read
-   closest), or drop.
+1. ✅ RULED (owner, 2026-08-30): **the Deep Desert Tribes are the
+   fire-farmers** — burn-cycle agriculture as a nomadic way of life (follow
+   the burns, harvest the flush). One re-flavor pass over their faction text +
+   backstory hooks rides PAWN_FLAVOR_STARWARS_1; no world edits.
+
 2. **Free Droid Enclave geography.** The Geonosian two-outposts ruling gives
    the droids a plateau presence beside their volcanic/poison-springs homes —
    *"whether the volcanic enclaves and the plateau enclaves are one faction or
