@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T10:52:47Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-08-30T15:07:41Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -335,6 +335,16 @@ blocked:  built and deployed (game DOWN); live-verify against a real vehicle owe
 summary:  VEHICLEIONTIER1 — the ion gun has zero effect on Vehicle Framework vehicles
 prose:    infrastructure/state/items/VEHICLE_ION_TIER_1.md
 
+## DROID_TILES_SOURED_TERRAIN_1 Free Droid Enclave tiles get polluted ground and fouled water (2026-08-04 doctrine, ruled alive)
+state:    proposed  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  sequenced with Droidworks phase 3 (droid_system_build_spec.md line 186) — parked behind DROID_SYSTEM_BUILD_1 which needs owner to reopen
+summary:  (no items/DROID_TILES_SOURED_TERRAIN_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROID_TILES_SOURED_TERRAIN_1.md
+
 # WAITING ON A WINDOW — nothing is wrong
 
 _none._
@@ -357,12 +367,12 @@ thin:     spec, verify and criteria all present
 summary:  design/Jawa/droidsystembuildspec.md — architecture (own DLL + HAR substrate,
 prose:    infrastructure/state/items/DROID_SYSTEM_BUILD_1.md
 
-## DROID_TILES_SOURED_TERRAIN_1 Free Droid Enclave tiles get polluted ground and fouled water (2026-08-04 doctrine, ruled alive)
+## WEAPONS_ABSORPTION_WAVE_1 Absorb all SW weapons/gear content into Jawa_Armoury: defName-preserving, packs retire
 state:    proposed
 row:      unassigned
 needs:    offline
 target:   v1
-kind:     task
+kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DROID_TILES_SOURED_TERRAIN_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DROID_TILES_SOURED_TERRAIN_1.md
+summary:  (no items/WEAPONS_ABSORPTION_WAVE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WEAPONS_ABSORPTION_WAVE_1.md
