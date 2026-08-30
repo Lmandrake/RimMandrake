@@ -986,3 +986,20 @@ L REIGN-BREAKER a colonist starves to death, or kin sold into slavery.
 CURSES: S Dry Mouth (hunger/rest fall faster) · M The Withheld Tide (healing
 slows, fertility stops) · L Drought of the Body (colony-wide malaise until a
 feast breaks it).
+
+### ④ Mob'Unloo the Ever-Owed — SHIPPED 2026-08-30
+DEEDS +: profitable trades · successful undetected theft (deliberate Ishko
+overlap: raid-and-vanish is doubly holy) · debts collected, ransoms taken ·
+caravans returning heavier than they left.
+DEEDS −: being caught (public failure of a theft/capture) · unpaid debts ·
+selling at a loss · gifts with no return.
+BOONS: S Thumb on the Scale (small sell bonus) · M The Ledger Smiles
+(favorable prices both ways, more caravans) · L The Perfect Deal (one
+extraordinary trade event; or a one-time fence for hot goods at full value).
+DEMANDS: S every visitor caravan traded with · M turn a profit this reign ·
+L collect a debt (ransom, fee or repayment from another faction).
+TABOOS: S gifts for nothing · M breaking a struck deal · L REIGN-BREAKER
+getting CAUGHT publicly while he fronts.
+CURSES: S Bad Faith (sell prices dip) · M Called Debts (markups; an old
+grievance called in) · L The Ledger Closes (no caravans, no comms trade —
+the market will not see you).
