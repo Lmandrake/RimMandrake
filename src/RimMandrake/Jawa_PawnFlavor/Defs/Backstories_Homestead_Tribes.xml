@@ -195,4 +195,74 @@
     </spawnCategories>
   </BackstoryDef>
 
+  <!-- ===== Deep Desert Tribes — the Fire side (round 7, ruled 2026-08-30) =====
+       canon.yml deep_desert_tribes: dual theology — Water is life/sacredness
+       (the block above stands whole); Fire is the warrior/hunter side that
+       REAPS, burning the Pyrelands to reveal food and burning what does not
+       belong. Sand is safety; it does not burn. Reuses the SAME spawnCategory
+       (JawaBSC_Tribes) as the Water side above — already wired to TribeCivil
+       in Patches/FactionBackstoryWiring.xml, no new wiring needed.
+       Jawa_ReapsTheFlames / Jawa_AshJudgment: Defs/Traits_JawaPawnFlavor.xml. -->
+
+  <BackstoryDef>
+    <defName>Jawa_PyreWatcher</defName>
+    <identifier>Jawa_PyreWatcher</identifier>
+    <slot>Childhood</slot>
+    <title>pyre-watcher</title>
+    <titleShort>pyre-watcher</titleShort>
+    <description>[PAWN_nameDef] kept the season's first fires — the ones that scorch the Pyrelands bare so the rains after can feed the tribe. [PAWN_pronoun] learned to read a burn scar the way others read a face, and has never once flinched from what the flame reveals.</description>
+    <skillGains>
+      <Cooking>1</Cooking>
+      <Social>1</Social>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <forcedTraits>
+      <Jawa_ReapsTheFlames>0</Jawa_ReapsTheFlames>
+    </forcedTraits>
+    <spawnCategories>
+      <li>JawaBSC_Tribes</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Jawa_FlameReaper</defName>
+    <identifier>Jawa_FlameReaper</identifier>
+    <slot>Adulthood</slot>
+    <title>flame-reaper</title>
+    <titleShort>reaper</titleShort>
+    <description>[PAWN_nameDef] is the tribe's warrior-hunter elite: the one sent to burn what does not belong, and to work the scorched ground after for whatever it gives up. [PAWN_pronoun] does not grieve a burning structure or a burning corpse — that grief belongs to people who have not yet understood what fire is for.</description>
+    <skillGains>
+      <Shooting>4</Shooting>
+      <Melee>3</Melee>
+      <Plants>2</Plants>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <forcedTraits>
+      <Jawa_ReapsTheFlames>0</Jawa_ReapsTheFlames>
+    </forcedTraits>
+    <spawnCategories>
+      <li>JawaBSC_Tribes</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Jawa_AshSpeaker</defName>
+    <identifier>Jawa_AshSpeaker</identifier>
+    <slot>Adulthood</slot>
+    <title>ash-speaker</title>
+    <titleShort>ash-speaker</titleShort>
+    <description>[PAWN_nameDef] walks the burn scars once the smoke clears and reads what regrew — who belongs, who does not, who has earned the tribe's water. It is a rare gift, and the tribe does not overrule it: [PAWN_pronoun] can ease an outsider's road into the fire-faith, or close it, with a word.</description>
+    <skillGains>
+      <Social>5</Social>
+      <Intellectual>3</Intellectual>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <forcedTraits>
+      <Jawa_AshJudgment>0</Jawa_AshJudgment>
+    </forcedTraits>
+    <spawnCategories>
+      <li>JawaBSC_Tribes</li>
+    </spawnCategories>
+  </BackstoryDef>
+
 </Defs>

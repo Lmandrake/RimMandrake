@@ -62,6 +62,49 @@
     </degreeDatas>
   </TraitDef>
 
+  <!-- ===== PAWN_FLAVOR_ROUND7_FIRE_1 (2026-08-30) — Deep Desert Fire side ===== -->
+
+  <!-- 🔴 TODO / light-C# tier, per the item's own instruction ("stub the trait/
+       backstory hooks with TODO and file the C# piece separately rather than
+       blocking the defs"): the design (pawn_flavor_design.md, canon.yml
+       deep_desert_tribes) calls for TWO dynamic, situational mood/break
+       modifiers neither TraitDegreeData nor BackstoryDef exposes in pure XML -
+       "break-weight drop while fires burn on-map" (needs a StatPart reading
+       Map.fireWatcher-equivalent state, not a flat MentalBreakThreshold offset)
+       and "small mood debuff in long-unburned lush green" (needs a
+       ThoughtWorker reading the pawn's local terrain/growth state). Neither is
+       faked here with a flat always-on number that would misrepresent the
+       design as unconditional. File the ThoughtWorker/StatPart as its own
+       C# item when picked up. -->
+  <TraitDef>
+    <defName>Jawa_ReapsTheFlames</defName>
+    <commonality>0.15</commonality>
+    <degreeDatas>
+      <li>
+        <label>reaps the flames</label>
+        <description>{PAWN_nameDef} does not fear fire; {PAWN_pronoun} reaps it. Burning the Pyrelands reveals food, and burning what does not belong — a settlement, a vehicle, an offworlder — is doctrine, not cruelty. Sand is safety; it does not burn.</description>
+      </li>
+    </degreeDatas>
+  </TraitDef>
+
+  <!-- Ash-Speaker's forced trait — "reads what regrew" as a real conversion-power
+       boost, not a stub: ConversionPower is a genuine vanilla (Ideology) stat,
+       verified via RimSage before use. Gated MayRequire so an Ideology-less
+       game loses only the number, never the trait. -->
+  <TraitDef>
+    <defName>Jawa_AshJudgment</defName>
+    <commonality>0</commonality>
+    <degreeDatas>
+      <li>
+        <label>ash-judgment</label>
+        <description>{PAWN_nameDef} reads what regrew after the burning — who returned, who fled, who was never worth the ash. {PAWN_possessive} judgment of belonging carries weight the tribe does not question, and {PAWN_pronoun} eases or hardens the road for anyone the tribe is deciding whether to keep.</description>
+        <statOffsets>
+          <ConversionPower MayRequire="Ludeon.RimWorld.Ideology">0.5</ConversionPower>
+        </statOffsets>
+      </li>
+    </degreeDatas>
+  </TraitDef>
+
   <TraitDef>
     <defName>Jawa_PodracerReflexes</defName>
     <commonality>0.2</commonality>

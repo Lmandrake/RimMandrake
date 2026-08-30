@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T17:47:21Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T17:52:50Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -234,6 +234,15 @@ kind:     bug
 summary:  🔴 Scope correction: this is NOT a Droidworks-only bug
 prose:    infrastructure/state/items/DROIDWORKS_ISFLESH_RELATIONS_CRASH_1.md
 
+## PAWN_FLAVOR_ROUND7_FIRE_1 Build round 7: the Deep Desert Fire side - Pyre-Watcher, Flame-Reaper, Ash-Speaker, Reaps-the-Flames
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  (no items/PAWN_FLAVOR_ROUND7_FIRE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PAWN_FLAVOR_ROUND7_FIRE_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -439,16 +448,6 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/VAULT_DUNGEON_BUILD_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/VAULT_DUNGEON_BUILD_1.md
-
-## PAWN_FLAVOR_ROUND7_FIRE_1 Build round 7: the Deep Desert Fire side - Pyre-Watcher, Flame-Reaper, Ash-Speaker, Reaps-the-Flames
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/PAWN_FLAVOR_ROUND7_FIRE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PAWN_FLAVOR_ROUND7_FIRE_1.md
 
 ## PAWN_FLAVOR_ROUND8_FDE_1 Build round 8: the FDE droid grouping set - seven entries across Assembly/Service slots
 state:    proposed
