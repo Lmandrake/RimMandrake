@@ -1003,3 +1003,21 @@ getting CAUGHT publicly while he fronts.
 CURSES: S Bad Faith (sell prices dip) · M Called Debts (markups; an old
 grievance called in) · L The Ledger Closes (no caravans, no comms trade —
 the market will not see you).
+
+### ⑤ Rekko of the Second Hand — SHIPPED 2026-08-30
+DEEDS +: repairing anything · restoring wrecks/ruins-finds · careful
+parts-deconstruction where repair is truly impossible (mourned) · giving
+salvage a home (installing/wearing/using reclaimed things) · damaged goods
+made whole.
+DEEDS −: scrapping the repairable · destroying usable goods · deterioration
+in the open · buying new what could have been restored.
+BOONS: S Second Wind (repair speed up, less material) · M The Better Home
+(restored items gain a quality step; deterioration slows colony-wide) ·
+L Rekko's Eye (a salvage revelation: hidden cache/wreck site appears).
+DEMANDS: S nothing deteriorating in the open · M restore one wreck/find this
+reign · L restoration tithe: the reign's finest fix is USED, not sold.
+TABOOS: S smelting/scrapping above half condition · M destroying a repairable
+machine or building · L REIGN-BREAKER mass destruction of the salvageable.
+CURSES: S Loose Screws (repairs fail more) · M Everything Breaks
+(deterioration accelerates, quality drops) · L The Second Hand Withdraws
+(nothing repairable at all for the span — only replaced).
