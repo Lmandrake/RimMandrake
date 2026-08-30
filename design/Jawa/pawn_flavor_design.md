@@ -208,6 +208,22 @@ scrambled wander/babble state).
 v2 hooks the owner named: restraining bolts, data spikes, memory wipes as active
 mechanics, not just history.
 
+#### FDE grouping entries (round 8, ruled 2026-08-30 — all seven approved)
+Per canon.yml free_droid_enclaves.geography, entries only FDE droids carry:
+CATHEDRAL — Assembly **Congregation-Consecrated** (one savant skill from a
+part's past life, occasional foreign memory flicker); Service
+**Cathedral-Whispered** (listeners: research/crafting savant, listening
+trance, unease aura for organics); Service **Cathedral-Mason** (builders:
+construction elite, mood buff near Forsaken ruins/materials, sacrilege mood
+hit deconstructing old machines).
+NIGHTSIDE — Assembly **Cold-Forged** (cold-immune frame, heat break weight,
+slightly slow servos); Service **Pipe-Keeper** (tireless, cold-immune,
+construction elite, permanent small mood debuff — it feels like having a
+master again); Service **Dirty-Burner** (toxin-immune, refining/power
+affinity, hoards charge — mood drop at low colony power).
+SHARED — trait **Freedom-Scarred** (opinion penalty toward bolt-users, mood
+buff per unbolted droid on map).
+
 ### Galactic Empire — the procedural occupier (round 4)
 Capture economy: permanent enemy → no goodwill, NO ransom; the Empire retrieves
 or erases, never buys. Pure slave-or-recruit pipeline.
