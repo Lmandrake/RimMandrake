@@ -220,6 +220,12 @@ capture).
       validated 0/0 — see "Placement mechanism" above. Not live-fired (no real
       ritual def exists to fire it; that's the Matrix engine build, ruled
       out-of-scope for this item).
+      🔑 **And it cannot be, on this build.** Checked live 2026-08-30 (FOUNDRY):
+      `mandrake.sacredgraffiti` is **absent from `ModsConfig.xml`** — deployed but
+      deliberately not enabled — so `SacredGraffiti.dll` is not loaded and
+      `RitualOutcomeEffectWorker_PlaceSacredMark` does not exist in the running
+      game at all. There is no live observation to make here until the mod is
+      enabled AND a ritual points at the worker; a bridge pass has nothing to add.
 - [ ] Remaining eight gods' marks arted (mechanical, once art time is spent — not a design blocker).
 - [ ] Socially infuriating / amusing directions designed past the capability table, if the owner wants them built.
 - [ ] Matrix engine build (separate, owner-called pass per the design doc) wires a real ritual's `outcomeEffect` to this mechanism.
