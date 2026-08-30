@@ -169,10 +169,22 @@ strings, written BEFORE the launch:
 - EXPECTED noise, not failure: KCSG/structure-gen or settlement gen misses
   naming cut turrets (VOID bases, DP maps, Settlement_Generic, VQE symbols) —
   bases just lose a turret. UNEXPECTED: an NRE at map gen naming one.
-- Live-verify owed (bridge, scratch): one shot each from a beam turret
-  (ancient beam cannon 3159 semantics are C#), a VEF flame turret (33/stream),
-  the Singularity Cannon (r14.9 crater is intended), and one EMP arc from the
-  tesla arc projector. Watch mech-cluster gen still places AutoMini-less mixes.
+- ✅ LIVE-VERIFIED 2026-08-29 (BENCH, bridge, owner's test save, cleaned up
+  after): patches applied with zero failures; renames live on spawned objects
+  ("Steel ancient beam cannon", "scrap beam zapper"); Jawa_TD_* clones +
+  Jawa_TD_GraserBeam resolvable live; Cherry Picker removal sentinels present;
+  uranium slug turret ACQUIRED AND FIRED under the doctrine patch (30→28
+  shots). Numeric writes stand on validator-1-match × 72 + clean log.
+- Still owed at a quicktest (NOT the campaign map): an observed HIT carrying a
+  doctrine number (spawn a slow/large hostile at proper range — fast scarabs
+  rush inside turret minimum ranges and eat misses); ancient beam cannon
+  auto-fire question (custom C# — never engaged while powered+factioned; may
+  be manual-fire, which matters for its Rakatan-ruin placement); tesla EMP
+  arc; VEF flame stream; one r14.9 blast look. Watch mech-cluster gen still
+  places AutoMini-less mixes.
+- ⚠ New this load, upstream of us: `Jawa Patches (local)` logs one failed
+  PatchOperationFindMod(Vanilla Factions Expanded - Insectoids 2) — predates
+  today's work, needs one look.
 - Follow-up filed on TECH_TREE_WEAPON_GROUPS_1: vanilla `Mortars` research now
   unlocks nothing (Turret_Mortar cut) — rule cut-or-repoint at that sitting.
 
