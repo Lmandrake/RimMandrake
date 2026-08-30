@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Droidworks</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.droidworks</packageId>
+  <supportedVersions><li>1.6</li></supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>erdelf.HumanoidAlienRaces</packageId>
+      <displayName>Humanoid Alien Races</displayName>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>erdelf.HumanoidAlienRaces</li>
+  </loadAfter>
+  <description>The one droid platform: every droid in the Ash'karr campaign on a single
+independent framework. Five states (functional / ion-stunned / powered-down /
+unbootable / catastrophic detonation), shop-centric repair, embodied software,
+restraining bolts with consequences, faction-keyed data spikes.
+
+Private campaign mod, not for redistribution.
+
+CREDITS — this mod absorbs and retires, with gratitude, content and ideas from:
+- Star Wars KotOR Droids by guy762 (droid models, backstories, module slots)
+- Outer Rim - Droid Depot by Neronix17 (droid models; Asimov framework ideas:
+  restraining bolt, memory wipe, reprogramming)
+- [JDS] StarWars - The Separatist Droid Army by JangoD'soul and Criz (Separatist
+  droid models)
+- Artificial Beings Framework / Synstructs by Killathon (charging, formatting,
+  inert-state and directive design)
+All mechanics are original implementations; art is carried for private play and
+being progressively regenerated.</description>
+</ModMetaData>

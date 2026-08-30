@@ -7,7 +7,21 @@
      for WHAT); this doc is HOW. Verb decisions: droid_verbs_decisions.json
      (FROZEN). Engine evidence: droid_ruling.md. Census: droid_census_2026-08-29.md. -->
 
-# The Droid Platform — buildable spec (v1 of the build)
+# Droidworks — buildable spec (v1 of the build)
+
+> 🔴 **REVISED 2026-08-29 (owner, later the same day)**: name is **Droidworks**;
+> make it **as independent as possible** — the packs RETIRE with credit rather
+> than staying as asset libraries; art is **yanked into the mod now** (owner
+> regenerates it later; private play, no redistribution). This supersedes the
+> defNames-preserved / packs-stay strategy in §0/§4/§6 below: ALL waves author
+> **our own `DW_` defs**, art lives at `src/Jawa/Droidworks/Textures/` keeping
+> the original texPath structure, and the packs leave ModsConfig once their
+> retirement checks pass. Save-compat by defName-preservation is no longer
+> needed (zero droid pawns scribed in the frozen world; ports land at save
+> boundaries). Open assumptions: `droidworks_assumptions.md`. Build state:
+> skeleton + phase-0 C# written (BENCH), compile/XML/ion items filed for
+> FOUNDRY (`DROIDWORKS_DLL_COMPILE_1`, `DROIDWORKS_PHASE0_XML_1`,
+> `DROIDWORKS_ION_GUARD_1`).
 
 ## 0. The question the owner asked: build our own vs wrangle a pack
 

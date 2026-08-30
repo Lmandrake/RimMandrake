@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T01:35:06Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T01:39:39Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -444,3 +444,33 @@ kind:     build
 thin:     spec, verify and criteria all present
 summary:  design/Jawa/droidsystembuildspec.md — architecture (own DLL + HAR substrate,
 prose:    infrastructure/state/items/DROID_SYSTEM_BUILD_1.md
+
+## DROIDWORKS_DLL_COMPILE_1 Compile the Droidworks phase-0 DLL from the written sources
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DROIDWORKS_DLL_COMPILE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROIDWORKS_DLL_COMPILE_1.md
+
+## DROIDWORKS_ION_GUARD_1 Ion downs droids: narrow the IsFlesh guard, add no-decay floor stage
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DROIDWORKS_ION_GUARD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROIDWORKS_ION_GUARD_1.md
+
+## DROIDWORKS_PHASE0_XML_1 Author Droidworks phase-0 defs: power need, powered-down + ion hediffs, reboot recipe
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DROIDWORKS_PHASE0_XML_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROIDWORKS_PHASE0_XML_1.md
