@@ -1770,6 +1770,7 @@ namespace JawaBench.BridgeTools
                 var size = map.Size;
                 var rows = new List<object>();
                 var landed = 0;
+                var substituted = 0;
                 for (var i = 0; i < count; i++)
                 {
                     cancellationToken.ThrowIfCancellationRequested();
@@ -1847,13 +1848,30 @@ namespace JawaBench.BridgeTools
                     // this tool exists to prevent.
                     var xenoNow = pawn.genes?.Xenotype?.defName;
                     var xenoOk = xeno == null || xenoNow == xeno.defName;
-                    if (pawn.Spawned && xenoOk) landed++;
+
+                    // ⚠️ SPAWN_PAWN_SUBSTITUTES_VANILLA_KIND_1: the kind that comes
+                    // BACK is not always the kind that went in. Vanilla cannot do
+                    // this -- TryGenerateNewPawnInternal assigns
+                    // `pawn.kindDef = request.KindDef` (PawnGenerator.cs:734) and
+                    // RedressPawn calls ChangeKind(request.KindDef) -- so a mismatch
+                    // means a Harmony patch rewrote `request` by ref or replaced
+                    // `__result`. Either way it is invisible unless we READ IT BACK,
+                    // which this tool did not do: it printed the REQUESTED defName in
+                    // its message and never looked at pawn.kindDef, so a substituted
+                    // pawn counted as a clean spawn.
+                    var kindNow = pawn.kindDef?.defName;
+                    var kindOk = kindNow == kind.defName;
+                    if (!kindOk) substituted++;
+                    if (pawn.Spawned && xenoOk && kindOk) landed++;
 
                     rows.Add(new
                     {
-                        ok = pawn.Spawned && xenoOk,
+                        ok = pawn.Spawned && xenoOk && kindOk,
                         id = pawn.ThingID,
                         name = pawn.Name?.ToStringShort ?? pawn.LabelShortCap,
+                        kindRequested = kind.defName,
+                        kindActual = kindNow,
+                        kindSubstituted = !kindOk,
                         faction = pawn.Faction?.def?.defName,
                         hostile = pawn.Faction != null && pawn.Faction.HostileTo(Faction.OfPlayer),
                         x = pawn.Position.x,
@@ -1877,9 +1895,16 @@ namespace JawaBench.BridgeTools
                               (xeno != null ? $" as {xeno.defName}" : "") + "." +
                               (landed == rows.Count ? "" :
                                $" ⚠️ {rows.Count - landed} did not spawn as asked -- see the " +
-                               "rows with ok:false."),
+                               "rows with ok:false.") +
+                              (substituted == 0 ? "" :
+                               $" ⚠️ {substituted} came back as a DIFFERENT PawnKindDef than " +
+                               "requested -- see kindActual on the rows with " +
+                               "kindSubstituted:true. Vanilla PawnGenerator cannot do this; " +
+                               "a Harmony patch on pawn generation did, and it reaches raids " +
+                               "too, not just this tool."),
                     spawnedCount = landed,
                     failedCount = rows.Count - landed,
+                    substitutedCount = substituted,
                     xenotypeRequested = xeno?.defName,
                     pawns = rows,
                     ticksGame = TicksGameSafe()

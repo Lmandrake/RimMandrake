@@ -155,3 +155,96 @@ correct**, and it is not the fix for this.
 **What a real measurement needs:** ≥60 spawns per cell (5 and 20 are far too few for a ~2–15%
 rate), and the substituted kind recorded rather than just counted — the one substitute inspected
 all session was a vanilla `Colonist`.
+
+---
+
+## ✅ ATTRIBUTED 2026-08-30 (FOUNDRY) — read out of source, not inferred. It is NOT `jawa/spawn_pawn`, and it is NOT vanilla `PawnGenerator` either.
+
+The open criterion was *"attributed to `jawa/spawn_pawn` or to `PawnGenerator`"*, with the
+note that **"if it is the engine, it affects raids too"**. Both named suspects are now
+excluded, and the answer to the raid question is **yes anyway** — see the last paragraph.
+
+### 1. `jawa/spawn_pawn` has no kind-selection logic at all
+Full source read (`JawaBenchTerrainTools.cs`, `SpawnPawn`). It resolves exactly one
+`PawnKindDef` by name via `DefDatabase<PawnKindDef>.GetNamedSilentFail`, **fails hard** if
+that name does not resolve, and passes that same object into
+`PawnGenerator.GeneratePawn(kind, fac)` — one call, unmodified. There is no fallback kind,
+no retry with a different kind, no substitution branch anywhere in the method.
+
+⇒ **The tool cannot be choosing a different kind.** What it *was* doing wrong is narrower
+and is now fixed (§3).
+
+### 2. Vanilla `PawnGenerator` has no substitution path either
+Three facts, each read from 1.6 source via RimSage:
+
+- `TryGenerateNewPawnInternal` (`Verse/PawnGenerator.cs:734`) assigns
+  **`pawn.kindDef = request.KindDef;`** as one of the first things it does to a fresh pawn.
+- `GenerateNewPawnInternal` (`:682-725`) retries **the same request** up to 120 times and,
+  on total failure, logs `"Pawn generation error: … Too many tries (120), returning null"`
+  and **returns null**. It never swaps in an easier kind.
+- The one path that reuses an *existing* pawn — `GenerateOrRedressPawnInternal`'s world-pawn
+  redress — ends in `RedressPawn`, which calls **`pawn.ChangeKind(request.KindDef)`**
+  (`Verse/Pawn.cs:6094`, unconditional) and then `GenerateGearFor(pawn, request)`.
+
+⇒ **There is no vanilla code that answers a request for kind A with a pawn whose `kindDef`
+is B.** Vanilla either gives you the kind you asked for, or gives you nothing and says so in
+the log. ⛔ So the earlier working theory — *"a faction-side fallback to `basicMemberKind`"* —
+is dead: no such fallback exists on this path.
+
+⚠️ **The redress path was the best-looking candidate and it does not fit.** Its probability
+formula `ChanceToRedressAnyWorldPawn = min(0.02 + 0.001 × freeWorldPawns, 0.8)` matches this
+item's measured **2%–15% band almost exactly**, and `IsValidCandidateToRedress` rejects any
+world pawn whose `pawn.Faction != request.Faction`, which is the right *shape* for a
+faction-dependent rate. It is still ruled out on two independent counts: the redressed pawn
+is force-renamed to the requested kind, and it is **re-geared** — where every substituted
+pawn measured in this item was **bare**. Recorded because the numeric coincidence is close
+enough to mislead the next reader.
+
+### 3. What was actually broken in the tool — fixed this pass
+`jawa/spawn_pawn` **never read `pawn.kindDef` back**. Its per-pawn rows carried `id`, `name`,
+`faction`, `xenotype` — and no kind at all — while its `message` printed the **requested**
+`kind.defName`. That is why it reported `Spawned 5/5 <requested kind>` over a substituted
+pawn: not a wrong claim it computed, a claim it never checked.
+
+Fixed: each row now carries `kindRequested` / `kindActual` / `kindSubstituted`, a mismatch
+forces `ok:false` (so it stops counting toward `spawnedCount`), and the response carries
+`substitutedCount` plus a message naming what a mismatch means. Compiles clean
+(`build.py --gm`: bundle ships only `JawaBench.BridgeTools.dll`, zero tool removals).
+⚠️ **Built, NOT deployed** — the running game holds the companion DLL open; deploy at the
+next game-down window with `python.exe src/RimMandrake/bridgetools/build.py --gm --apply`.
+
+### 4. Where the substitution must therefore live, and why it reaches raids
+Since neither the tool nor the engine can do it, it is a **Harmony patch on the pawn-
+generation path**. The live game's own patch dump (harvested from `Player.log` this session,
+585 mods) names every candidate with the right signature — only a by-ref parameter can do
+this:
+
+| patch | hook | why it qualifies |
+|---|---|---|
+| `AlienRace.HarmonyPatches:GeneratePawnPrefix(PawnGenerationRequest& request)` | `GeneratePawn` | **by-ref request** — can rewrite `KindDef` before line 734 |
+| `AlienRace.HarmonyPatches:TryGenerateNewPawnInternalPrefix(PawnGenerationRequest& request)` | `TryGenerateNewPawnInternal` | same, one level deeper |
+| `FactionLoadout.Patches.PawnGenPatchIdeo:Prefix(PawnGenerationRequest& request)` | `GenerateNewPawnInternal` | same; `co.uk.epicguru.factionloadout` is **active** in the 590-entry list |
+| `EBSGFramework.HarmonyPatches:TryGenerateNewPawnInternalPostfix(Pawn& __result)` | `TryGenerateNewPawnInternal` | **by-ref result** — can replace the whole pawn |
+| `BigAndSmall.GeneratePawns_Patch:GeneratePawnPostfix(Pawn& __result, …)` | `GeneratePawn` | same (`redmattis.betterprerequisites`, active) |
+
+Every other pawn-gen patch in the dump takes `PawnGenerationRequest` or `Pawn __result`
+**by value** and is therefore incapable of causing this, whatever else it does.
+
+🔴 **All five sit on `GeneratePawn` / `GenerateNewPawnInternal` / `TryGenerateNewPawnInternal`
+— the paths a raid uses.** So the original question resolves: the substitution is **not** a
+bridge artifact, it is on the universal generation path, and **a raid can deliver a bare
+vanilla `Colonist` in place of one of our kinds exactly as this tool did.** ⛔ What is *not*
+established is which of the five, and no amount of source reading settles that — it needs a
+live mod-disable bisect with the fixed tool reading `kindActual` back.
+
+## criteria
+- [x] Kind read back compared against kind requested.
+- [x] Attributed: the faction, not the kind and not `requiredWorkTags`.
+- [x] **Attributed to neither `jawa/spawn_pawn` nor vanilla `PawnGenerator`** — both
+      excluded from source. It is a third-party Harmony patch, shortlisted to five by
+      signature, and it is on the raid path.
+- [x] The tool reports the substitution instead of counting it as the requested kind —
+      `kindActual` / `kindSubstituted` / `substitutedCount`, built clean, deploy owed.
+- [ ] **Which of the five patches** — needs a live bisect, not source. Filed as the one
+      remaining unknown; do it with the fixed tool once deployed.
+- [ ] Substitution at 0 for Empire and Blackstar kinds in normal play.

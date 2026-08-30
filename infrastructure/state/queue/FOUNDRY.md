@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T20:35:07Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T20:42:26Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -19,7 +19,7 @@ Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED be
 Started, and therefore not offered again. `rimflow close` or `rimflow block` moves them.
 
 ## SPAWN_PAWN_SUBSTITUTES_VANILLA_KIND_1 jawa/spawn_pawn reports 2/2 of the kind asked for and delivers one vanilla Colonist
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    bridge
 target:   v1
@@ -239,6 +239,16 @@ kind:     task
 blocked:  remaining check needs the NEXT cold load's Player.log + fresh capture; a restart is the owner's call (game-state-is-one-command-now), not FOUNDRY's to trigger for one item
 summary:  🔴 OWNER, 2026-08-22: "We need a THOROUGH retag of all the weapons and armor to ensure
 prose:    infrastructure/state/items/THOROUGH_RETAG_WEAPONS_ARMOUR_1.md
+
+## SPAWN_PAWN_SUBSTITUTES_VANILLA_KIND_1 jawa/spawn_pawn reports 2/2 of the kind asked for and delivers one vanilla Colonist
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     bug
+blocked:  Attributed from source: NOT jawa/spawn_pawn (no kind-selection logic) and NOT vanilla PawnGenerator (assigns pawn.kindDef=request.KindDef at PawnGenerator.cs:734; RedressPawn forces ChangeKind; failure returns null, never a different kind). It is a third-party Harmony patch on the pawn-gen path, shortlisted to 5 by by-ref signature (HAR x2, FactionLoadout, EBSGFramework, BigAndSmall) -- all on GeneratePawn/TryGenerateNewPawnInternal, so it reaches raids. Tool fixed to read kindDef back (kindActual/kindSubstituted/substitutedCount), builds clean, deploy owed at game-down. Which of the 5 needs a live mod-disable bisect.
+summary:  SPAWNPAWNSUBSTITUTESVANILLAKIND1 — "Spawned 2/2" delivered one of something else
+prose:    infrastructure/state/items/SPAWN_PAWN_SUBSTITUTES_VANILLA_KIND_1.md
 
 ## SIX_FACTIONS_NEVER_RAID_1 Six of the seven authored factions produced no raid in 18 firings
 state:    doing  (BLOCKED)
