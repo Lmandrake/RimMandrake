@@ -155,3 +155,26 @@ cost per group. Research is EXPENSIVE for the Jawa — traded items, prototypes
 as costs. Plus SOURCE-GATED unique chains: technology only available in the
 Utinni's memory core (original ship weaponry), and possibly other gated forms
 (candidates from canon: Cathedral whispers, vault knowledge, the Hutt deal).
+
+## 5. The Ship tree + coupling audit (ruled shape 2026-08-30; MEASURED against 515 rows)
+Owner ruled: thematic (A) for weapons; THE SHIP is its own NON-LINEAR tree
+(choices matter in the expensive grind): VFE factory items + Gravship systems
+(painfully, slowly) + ship weaponry + the MiningCo mining laser as ancient
+ship tech.
+
+**Couples IN (measured):** the gravship cluster (Odyssey gravtech ×3, VGE ×3,
+GravTech GravForge/GravTuning/AdvShipParts, GTbc_BigCannons), Core
+ShipReactor, VFE_Manufacturing (the factory node), MiningCo drill-turret pair
+(ResearchDrillTurret + EfficientDrilling — the ancient-ship-tech reflavor),
+and the KotOR ship-design trio (MM_Research_Ancient/CW/EmpireShipDesigns —
+currently measured ORPHANS; "Ancient Era Ship Designs" reflavors naturally
+into the Memory Core chain instead of dying).
+
+**Stays MODULAR (recommended):** Rimefeller's 14 fuel rows (serve colony +
+vehicles too — at most ONE cross-prerequisite: a ship node requiring
+ChemfuelRefining, "feeding her"), Helixien gas (1), vehicles (VVE ×4 +
+KotOR repulsor), hygiene/water (v2 domain). MiningCo sonar/speaker: out.
+
+**The one seam:** GRAVITICS sits in both worlds — gravitic PERSONAL weapons
+are a thematic school (Rakatan relics), grav INDUSTRIAL/ship rows are Ship
+tree. Needs the explicit split ruling.
