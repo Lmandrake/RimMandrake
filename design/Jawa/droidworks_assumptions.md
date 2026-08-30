@@ -189,8 +189,8 @@
     otherwise.
 16. Droidworks is **not yet in ModsConfig** — activation is yours at a
     start-prep pass (rimworld-start-prep rules apply; RimSort refresh trap).
-17. The shop CUSTOMER layer (visitors with broken droids) still unruled as
-    own-mod vs quest pack (design spec §11.3).
+17. ✅ RULED QUEST-PACK-ON-TOP (owner, 2026-08-29). The shop CUSTOMER layer
+    ships as a separate quest/incident mod later; Droidworks stays pure platform.
 18. **A fifth mod holds KotOR droid plumbing**: the abstract race parent
     `guy762_KotORDroidBase` and the droid-slot equipment art
     (`droidshield_*`, `droidtech_*`, `hvyshield_*`) live in

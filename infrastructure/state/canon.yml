@@ -1216,8 +1216,8 @@ turrets:
   normalization_generator: src/Jawa/Jawa_Armoury/Source/gen_turret_doctrine.py
   normalization_exempt_mechanism:
     - VFES_Complex_HeavyIncineratorComplex   # C# fire spew, no number exists
-  normalization_hold_bench:
-    - VGE_AnticraftCaster                    # gravship showpiece
+  normalization_hold_bench: []               # anticraft HOLD lifted 2026-08-29:
+                                             # owner ruled doctrine 3x3 beam (158x20)
 weapons:
   ion_doctrine_ruled: true
   ion_doctrine_src: >

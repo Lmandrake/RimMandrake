@@ -565,6 +565,11 @@
     <mods><li>Vanilla Gravship Expanded - Chapter 1</li></mods>
     <match Class="PatchOperationSequence">
       <operations>
+        <!-- VGE_Bullet_AnticraftCaster : damageAmountBase -> 158 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="VGE_Bullet_AnticraftCaster"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>158</damageAmountBase></value>
+        </li>
         <!-- VGE_Bullet_GaussGun : damageAmountBase -> 1260 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="VGE_Bullet_GaussGun"]/projectile/damageAmountBase</xpath>

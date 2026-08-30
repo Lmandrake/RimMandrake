@@ -41,7 +41,7 @@ skip, printed at the end.
 EXEMPT by mechanism (no number exists to write, doctrine cannot reach them
 offline): VFES_Complex_HeavyIncineratorComplex (C# fire spew).
 EXEMPT utility: foam x2, searchlight, drill, gravlite interceptor.
-HOLD for the bench: VGE_AnticraftCaster (gravship showpiece).
+HOLD lifted 2026-08-29: VGE_AnticraftCaster ruled doctrine 3x3 beam (in PLAN).
 """
 import io
 import os
@@ -123,6 +123,7 @@ PLAN = {
     "OuterRim_HeavyLaserCannon":    (5589, None, None, None),
     "OuterRim_HeavyTurbolaser":     (5589, None, None, None),
     "OuterRim_ProtonArtillery":     (3188, 14.9, None, None),   # r7.9*3 capped, spill 2.53
+    "VGE_AnticraftCaster":          (3159, None, None, None),   # owner 2026-08-29: doctrine 3x3 beam, HOLD lifted
     "VGE_GaussGun":                 (1260, 11.7, None, None),
     "VGE_HeavyChargeAnnihilator":   (4860, None, None, None),
     "VGE_JavelinPod":               (1260, 8.7,  None, None),

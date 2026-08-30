@@ -146,5 +146,5 @@ customer layer (visitors with broken droids — quest work, Repair Shop dream).
    §1; check the file) and six untouched rows keep prefill values — none blocks.
 2. How the behavior triad maps onto engine primitives (traits vs hediffs vs
    directives) — deliberately unengineered until played.
-3. Whether the shop customer layer is part of the own-mod or a quest pack on top.
+3. ~~Shop customer layer~~ RULED 2026-08-29: a quest pack on top; Droidworks stays pure platform.
 4. Salvagers vs Junkers warcasket exclusivity — still unruled (pawn-flavor doc).
