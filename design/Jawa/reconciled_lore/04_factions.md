@@ -60,7 +60,8 @@ priest side — and Fire is the warrior/hunter side. They REAP THE FLAMES: fire
 lit on the Pyrelands burns away the life and reveals the food; take the
 scorched fruits and seeds and move on. What does not belong — settlements,
 vehicles, offworlders — burns too: what belongs here regrows by itself, and
-what does not enriches the soil as ash. They do not farm.
+what does not enriches the soil as ash. They do not farm. And they live on the sand because sand does not
+burn — that is safety.
 farming sacrilege, **offworld technology abhorrent — destroyed, not used**
 (doctrinal, not primitive: they descend from a spacefaring people). Short raid
 range by CHOICE, not physiology (W3). Signature: the water raid — fast, light,
