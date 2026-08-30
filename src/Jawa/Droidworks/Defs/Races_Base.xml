@@ -11,15 +11,47 @@
        no custom BodyDef). Concrete races override defName/label/description/
        race/alienRace/graphicPaths/generalSettings/modExtensions.
 
-       Known gap, NOT solved here (out of this item's scope, flagged in
-       DROIDWORKS_DEF_GENERATOR_1's closing note as a follow-up): organic
-       needs (Food/Rest/Joy/Beauty/Comfort/...) are not blacklisted on this
-       base, so every DW droid pawn currently carries full vanilla Human needs
-       alongside DW_Power. Nothing in phase-0's NeedDefs/HediffDefs disables
-       them either — this was never wired, not silently dropped. -->
+       DROIDWORKS_FLESHTYPE_NEEDS_GAP_1 (2026-08-30): Food and Rest fixed
+       here — verified against decompiled 1.6 source, not guessed.
+       `Pawn_NeedsTracker.ShouldHaveNeed` special-cases exactly two needs:
+       `nd == NeedDefOf.Food -> pawn.RaceProps.EatsFood` (driven by
+       `<foodType>`) and `nd == NeedDefOf.Rest -> pawn.RaceProps.needsRest`.
+       Every other need (Mood/Joy/Beauty/Comfort/Expectations/...) falls
+       through to `true` unless a hediff/gene/trait/ideo explicitly disables
+       it. DELIBERATELY NOT touched here: this base keeps `intelligence`
+       Humanlike (inherited from ParentName="Human") specifically so the
+       "soul" layer (drift, module personality, long-unwiped droids are
+       PEOPLE — droid_system_build_spec.md Phase 3) has real Mood/Joy to
+       work with. Stripping those needs now would be a bigger design call
+       than this item's scope — flagged for the owner, not decided here.
+       Xenotype/genes are a SEPARATE mechanism (`PawnKindDef.xenotypeSet`,
+       not a race field — `PawnGenerator.cs` reads it, `RaceProperties` has
+       no such field) and are fixed per-kind by the generator, not here.
+
+       🔴 `<fleshType>` is DELIBERATELY NOT SET HERE — do not add it back
+       without DROIDWORKS_ISFLESH_RELATIONS_CRASH_1 landing first. Live-tested
+       2026-08-30: `PawnComponentsUtility.AddAndRemoveDynamicComponents` only
+       allocates `pawn.relations` `if (pawn.RaceProps.IsFlesh)`, and
+       `IsFlesh == FleshType.isOrganic`. Setting `isOrganic:false` (the whole
+       point of the spec's own droid flesh type) leaves `pawn.relations` null
+       forever on a race that is ALSO Humanlike intelligence — and Humanlike
+       pawns go through full relation generation regardless, so
+       `PawnGenerator.GeneratePawnRelations`/`GenerateTraits` NREs on the null
+       tracker (`LovePartnerRelationUtility.HasAnyLovePartnerOfTheOppositeGender`,
+       `AlienRace.HarmonyPatches.GenerationChanceGenderless`) the moment a
+       droid is generated through a code path that runs it — which is any
+       normal raid/world-pawn spawn, not just this bridge tool. Confirmed
+       NOT specific to Droidworks: the already-shipped `OuterRim_BattleDroid`
+       (`Asimov_Automaton` fleshtype, `isOrganic:false` since
+       `Jawa_Doctrine/Patches/DroidsAreMachines.xml`, 2026-08-11) hit the
+       IDENTICAL crash, 10/10 in a batch test. This is a pre-existing latent
+       bug in the whole shipped droid roster, not something this item
+       introduced — see DROIDWORKS_ISFLESH_RELATIONS_CRASH_1. -->
   <AlienRace.ThingDef_AlienRace Name="DW_Race_Base" ParentName="Human" Abstract="True">
     <race>
       <body>Human</body>
+      <foodType>None</foodType>
+      <needsRest>false</needsRest>
     </race>
     <alienRace>
       <generalSettings>
@@ -37,6 +69,38 @@
       </graphicPaths>
     </alienRace>
   </AlienRace.ThingDef_AlienRace>
+
+  <!-- Our own droid flesh type, isOrganic:false from birth
+       (droid_system_build_spec.md §1). AUTHORED BUT NOT YET WIRED onto
+       DW_Race_Base — see the DROIDWORKS_ISFLESH_RELATIONS_CRASH_1 note above
+       DW_Race_Base for why. Wire `<fleshType>DW_FleshType_Droid</fleshType>`
+       back in once that item's relations-tracker fix lands. Mirrors vanilla
+       `Mechanoid`'s other
+       fields (corpseCategory, damageEffecter, genericWounds — reusing
+       vanilla's own mech wound textures, no new art needed) so droids hit
+       and rot like machines everywhere that checks fleshType rather than
+       IsMechanoid specifically. Does NOT set IsMechanoid=true (that stays a
+       property of FleshTypeDefOf.Mechanoid alone) — keeping IsMechanoid
+       false is the whole point (droid_ruling.md, JawaIonWeapons' own guard
+       comment): these are non-mechanoid humanlikes, force-kill-on-down does
+       not apply, and the ion capture pipeline treats them as capturable. -->
+  <FleshTypeDef>
+    <defName>DW_FleshType_Droid</defName>
+    <corpseCategory>CorpsesMechanoid</corpseCategory>
+    <damageEffecter>Damage_HitMechanoid</damageEffecter>
+    <genericWounds>
+      <li>
+        <texture>Things/Pawn/Wounds/WoundMechA</texture>
+      </li>
+      <li>
+        <texture>Things/Pawn/Wounds/WoundMechB</texture>
+      </li>
+      <li>
+        <texture>Things/Pawn/Wounds/WoundMechC</texture>
+      </li>
+    </genericWounds>
+    <isOrganic>false</isOrganic>
+  </FleshTypeDef>
 
   <!-- Shared blank head — for source droids whose own art has no separate
        head layer (the KotOR/OuterRim "NNNblank"/no-Head-folder convention,

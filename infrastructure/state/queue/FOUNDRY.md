@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T16:30:46Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T16:36:07Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -445,3 +445,13 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/VAULT_DUNGEON_BUILD_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/VAULT_DUNGEON_BUILD_1.md
+
+## DROIDWORKS_ISFLESH_RELATIONS_CRASH_1 isOrganic:false + Humanlike intelligence NREs on pawn generation for any faction with an ideo -- pawn.relations is never allocated (PawnComponentsUtility gates it on IsFlesh), pre-existing on OuterRim_BattleDroid too
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec
+summary:  🔴 Scope correction: this is NOT a Droidworks-only bug
+prose:    infrastructure/state/items/DROIDWORKS_ISFLESH_RELATIONS_CRASH_1.md

@@ -39,8 +39,36 @@ ported race.
 4. Quicktest re-check: spawn a fresh pilot, `jawa/pawn_get`, expect
    `fleshType: DW_FleshType_Droid`, no `Food`/`Rest` need rows, no xenotype.
 
+## Done (2026-08-30, live-verified, 10/10 batch)
+- Food and Rest needs removed (`<foodType>None</foodType>`,
+  `<needsRest>false</needsRest>` on `DW_Race_Base`). Verified:
+  `jawa/pawn_get` on a fresh pilot reads `needs: [Mood, DW_Power]` — no Food,
+  no Rest.
+- `PawnKindDef.xenotypeSet` (forcing Baseliner) added to all 80 generated
+  kinds. Works for the realistic case (player-faction spawns, no meme
+  override); does NOT override a hostile faction's own ideo-meme xenotype
+  weighting (engine quirk: `PawnGenerator.XenotypesAvailableFor`'s
+  `AddOrAdjust` treats a Baseliner entry as a no-op and assigns it only the
+  weight left over after faction/meme contributions — there is no PawnKindDef
+  field that can force Baseliner outright against a meme). Low-priority,
+  cosmetic-only; not pursued further this session.
+
+## NOT done — moved to DROIDWORKS_ISFLESH_RELATIONS_CRASH_1
+`DW_FleshType_Droid` (`isOrganic: false`) is authored in
+`Defs/Races_Base.xml` but deliberately **not wired** onto `DW_Race_Base`.
+Wiring it in triggered a real, reproducible `NullReferenceException` on pawn
+generation for any faction with an ideoligion — and confirmed, live, that the
+identical crash already exists on the shipped `OuterRim_BattleDroid`
+(`isOrganic:false` since `DroidsAreMachines.xml`, 2026-08-11). That is a
+bigger, pre-existing engine-interaction bug, not scoped to this item — see
+`DROIDWORKS_ISFLESH_RELATIONS_CRASH_1` for the full root cause and fix plan.
+
 ## criteria
-- [ ] `DW_FleshType_Droid` exists, `isOrganic: false`, wired on `DW_Race_Base`.
-- [ ] Organic needs no longer appear on a droid pawn (live-verified).
-- [ ] No random xenotype/genes assigned at spawn (live-verified).
-- [ ] `validate_patch.py` clean against the live def dump.
+- [x] Organic needs no longer appear on a droid pawn (live-verified, 10/10).
+- [x] No random xenotype/genes assigned at spawn for the realistic
+      (player-faction) case — partial for hostile-faction-with-meme case,
+      documented above as a known, low-priority engine limitation.
+- [x] `validate_patch.py` clean against the live def dump.
+- [ ] `DW_FleshType_Droid` exists but is NOT wired on `DW_Race_Base` —
+      superseded by `DROIDWORKS_ISFLESH_RELATIONS_CRASH_1`, not closeable
+      here.

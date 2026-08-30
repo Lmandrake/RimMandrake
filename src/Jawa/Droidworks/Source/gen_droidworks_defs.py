@@ -530,6 +530,20 @@ def render_kind(kd):
         for t in kd["weaponTags"]:
             p.append("      <li>%s</li>" % esc(t))
         p.append("    </weaponTags>")
+    # DROIDWORKS_FLESHTYPE_NEEDS_GAP_1 (2026-08-30): a droid has no business
+    # getting a random human xenotype at spawn. XenotypeSet has a CUSTOM
+    # loader (XenotypeChance.LoadDataFromXmlCustom) -- the field is
+    # xenotypeChances and each entry's TAG NAME is read as the xenotype
+    # defName itself (xmlRoot.Name), with the chance as the node's own text.
+    # A naive <li><xenotype>..</xenotype><chance>..</chance></li> shape is
+    # the <li>-in-a-custom-loader trap (rimworld-custom-loader-li-trap) and
+    # would silently discard the whole PawnKindDef, not just misparse this
+    # field.
+    p.append("    <xenotypeSet>")
+    p.append("      <xenotypeChances>")
+    p.append("        <Baseliner>1</Baseliner>")
+    p.append("      </xenotypeChances>")
+    p.append("    </xenotypeSet>")
     p.append("  </PawnKindDef>")
     return "\n".join(p)
 

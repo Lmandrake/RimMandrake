@@ -9,126 +9,231 @@
     <label>specialist droid</label>
     <race>DW_Race_guy762_DroidRace_T3series</race>
     <combatPower>50</combatPower>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_KotORDroidColonist_3CUD</defName>
     <label>utility droid</label>
     <race>DW_Race_guy762_DroidRace_3Cseries</race>
     <combatPower>30</combatPower>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_KotORDroidColonist_ITUD</defName>
     <label>specialist droid</label>
     <race>DW_Race_guy762_DroidRace_ITseries</race>
     <combatPower>30</combatPower>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_KotORDroidColonist_R8009UD</defName>
     <label>utility droid</label>
     <race>DW_Race_guy762_DroidRace_R8009UD</race>
     <combatPower>20</combatPower>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_KotORDroidColonist_GE3LD</defName>
     <label>labor droid</label>
     <race>DW_Race_guy762_DroidRace_GE3LD</race>
     <combatPower>10</combatPower>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_KotORDroidColonist_GE3PD</defName>
     <label>protocol droid</label>
     <race>DW_Race_guy762_DroidRace_GE3PD</race>
     <combatPower>10</combatPower>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_KotORDroidColonist_KX12UPD</defName>
     <label>probe droid</label>
     <race>DW_Race_guy762_DroidRace_KX12UPD</race>
     <combatPower>20</combatPower>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_KotORDroidColonist_KX12APD</defName>
     <label>assassin probe</label>
     <race>DW_Race_guy762_DroidRace_KX12APD</race>
     <combatPower>50</combatPower>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_KotORDroidColonist_MPDMkI</defName>
     <label>patrol droid</label>
     <race>DW_Race_guy762_DroidRace_MPDMkI</race>
     <combatPower>20</combatPower>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_KotORDroidColonist_KM1MD</defName>
     <label>mining droid</label>
     <race>DW_Race_guy762_DroidRace_KM1MD</race>
     <combatPower>30</combatPower>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_KotORDroidColonist_KM1HMD</defName>
     <label>excavation droid</label>
     <race>DW_Race_guy762_DroidRace_KM1HMD</race>
     <combatPower>40</combatPower>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_KotORDroidColonist_SentWD</defName>
     <label>war droid</label>
     <race>DW_Race_guy762_DroidRace_SentWD</race>
     <combatPower>50</combatPower>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_KotORDroidColonist_DevWD</defName>
     <label>battle droid</label>
     <race>DW_Race_guy762_DroidRace_DevWD</race>
     <combatPower>30</combatPower>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_KotORDroidColonist_DevAD</defName>
     <label>assassin droid</label>
     <race>DW_Race_guy762_DroidRace_DevAD</race>
     <combatPower>60</combatPower>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_KotORDroidColonist_ADMkI</defName>
     <label>assault droid</label>
     <race>DW_Race_guy762_DroidRace_ADMkI</race>
     <combatPower>70</combatPower>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_KotORDroidColonist_ADMkI_sf</defName>
     <label>star forge droid</label>
     <race>DW_Race_guy762_DroidRace_ADMkI_sf</race>
     <combatPower>100</combatPower>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_KotORDroidColonist_ADMkIV</defName>
     <label>heavy assault droid</label>
     <race>DW_Race_guy762_DroidRace_ADMkIV</race>
     <combatPower>90</combatPower>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_KotORDroidColonist_ADMkIV_sith</defName>
     <label>heavy assault droid</label>
     <race>DW_Race_guy762_DroidRace_ADMkIV_sith</race>
     <combatPower>120</combatPower>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_KotORDroidColonist_HK50AD</defName>
     <label>HK-50 unit</label>
     <race>DW_Race_guy762_DroidRace_HK50series</race>
     <combatPower>100</combatPower>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_KotORDroidColonist_HK51AD</defName>
     <label>HK-51 unit</label>
     <race>DW_Race_guy762_DroidRace_HK51series</race>
     <combatPower>100</combatPower>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_KotORDroidColonist_GOTO</defName>
     <label>specialist droid</label>
     <race>DW_Race_guy762_DroidRace_GOTO</race>
     <combatPower>100</combatPower>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_KotORMIBColonist_HK51AD</defName>
@@ -141,6 +246,11 @@
       <li>KotORDroidShield_weak</li>
       <li>KotORDroidUpgrade_combat</li>
     </apparelTags>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_KotORPlayableHero_HK47</defName>
@@ -153,6 +263,11 @@
       <li>KotORDroidShield_weak</li>
       <li>SWCPSpecificDroidTech_HK47Sensor</li>
     </apparelTags>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_KotORPlayableHero_T3M4</defName>
@@ -166,6 +281,11 @@
       <li>SWKotORSpecificDroidGadget_T3M4RenewableShield</li>
       <li>SWKotORSpecificDroidTech_T3M4RepairHardware</li>
     </apparelTags>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_KotORDroidGood_3C</defName>
@@ -178,6 +298,11 @@
       <li>KotORDroidShield_weak</li>
       <li>KotORDroidGadget_repairdroid</li>
     </apparelTags>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_KotORDroidGood_R8009</defName>
@@ -189,6 +314,11 @@
       <li>KotORDroidUpgrade_repair</li>
       <li>KotORDroidGadget_repairdroid</li>
     </apparelTags>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_KotORDroidGood_GE3PD</defName>
@@ -199,6 +329,11 @@
       <li>KotORDroidArmorT1_weak</li>
       <li>KotORDroidUpgrade_repair</li>
     </apparelTags>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_KotORDroidGood_GE3LD</defName>
@@ -209,6 +344,11 @@
       <li>KotORDroidArmorT1_weak</li>
       <li>KotORDroidUpgrade_repair</li>
     </apparelTags>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_KotORDroidGood_KX12UPD</defName>
@@ -222,6 +362,11 @@
       <li>KotORDroidShield_mid</li>
       <li>SWKotORSpecificDroidWeapon_KoltoSpray</li>
     </apparelTags>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_KotORDroidGood_KM1HMD</defName>
@@ -234,6 +379,11 @@
       <li>SWKotORSpecificDroidWeapon_FirefoamCannon</li>
       <li>SWKotORSpecificDroidGadget_ThermalHeavyShield</li>
     </apparelTags>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_KotORDroidBad_KM1MD</defName>
@@ -248,6 +398,11 @@
       <li>SWKotORSpecificDroidWeapon_MiningLaserCannon</li>
       <li>SWCPSpecificDroidArmor_EnvironmentMedium</li>
     </apparelTags>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_KotORDroidBad_KM1HMD</defName>
@@ -262,6 +417,11 @@
       <li>SWKotORSpecificDroidWeapon_SonicCannon</li>
       <li>SWCPSpecificDroidArmor_EnvironmentHeavy</li>
     </apparelTags>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_KotORDroidBad_KX12UPD</defName>
@@ -276,6 +436,11 @@
       <li>SWKotORSpecificDroidWeapon_HoldoutBlaster</li>
       <li>SWCPSpecificDroidArmor_CzerkaLight</li>
     </apparelTags>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_KotORDroidBad_MPDMkI</defName>
@@ -290,6 +455,11 @@
       <li>SWKotORSpecificDroidWeapon_HoldoutBlaster</li>
       <li>SWCPSpecificDroidArmor_CzerkaLight</li>
     </apparelTags>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_KotORDroidBad_KX12APD</defName>
@@ -305,6 +475,11 @@
       <li>SWKotORSpecificDroidGadget_2minDroidStealthDevice</li>
       <li>SWCPSpecificDroidArmor_AgriniumLight</li>
     </apparelTags>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_KotORDroidBad_KX12APD_sapper</defName>
@@ -320,6 +495,11 @@
       <li>SWKotORSpecificDroidGadget_2minDroidStealthDevice</li>
       <li>SWCPSpecificDroidArmor_AgriniumLight</li>
     </apparelTags>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_KotORDroidBad_DevWD_weak</defName>
@@ -335,6 +515,11 @@
       <li>SWCPSpecificApparelItem_DoubleBandolier</li>
       <li>SWCPSpecificDroidArmor_CzerkaLight</li>
     </apparelTags>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_KotORDroidBad_DevWD_strong</defName>
@@ -349,6 +534,11 @@
       <li>SWCPSpecificDroidArmor_CzerkaMedium</li>
       <li>guy762PatchedTag_Cape</li>
     </apparelTags>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_KotORDroidBad_DevWD_magnaguard</defName>
@@ -363,6 +553,11 @@
       <li>SWCPSpecificDroidArmor_QuadraniumMedium</li>
       <li>guy762PatchedTag_Cape</li>
     </apparelTags>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_KotORDroidBad_SentWD</defName>
@@ -378,6 +573,11 @@
       <li>KotORDroidWeapon_explosive</li>
       <li>SWCPSpecificDroidArmor_CzerkaMedium</li>
     </apparelTags>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_KotORDroidBad_ADMkI</defName>
@@ -393,6 +593,11 @@
       <li>SWKotORSpecificDroidWeapon_TriShot</li>
       <li>SWCPSpecificDroidArmor_CzerkaHeavy</li>
     </apparelTags>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_KotORDroidBad_ADMkIV</defName>
@@ -409,6 +614,11 @@
       <li>SWKotORSpecificDroidWeapon_HeavyRepeaterCannon</li>
       <li>SWCPSpecificDroidArmor_CzerkaHeavy</li>
     </apparelTags>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_KotORDroidBad_hk50</defName>
@@ -424,6 +634,11 @@
       <li>KotORDroidShield_strong</li>
       <li>SWCPSpecificDroidArmor_DeshMedium</li>
     </apparelTags>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_KotORDroidBad_hk50boss</defName>
@@ -439,5 +654,10 @@
       <li>SWCPSpecificDroidArmor_QuadraniumMedium</li>
       <li>SWKotORSpecificDroidGadget_AdvDeflectorShield</li>
     </apparelTags>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
 </Defs>

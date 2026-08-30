@@ -9,114 +9,209 @@
     <label>B1 Battle Droid</label>
     <race>DW_Race_OuterRim_BattleDroid</race>
     <combatPower>40</combatPower>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_OuterRim_BattleDroidAdvanced</defName>
     <label>B1A Battle Droid</label>
     <race>DW_Race_OuterRim_BattleDroidAdvanced</race>
     <combatPower>40</combatPower>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_OuterRim_CommandoDroid</defName>
     <label>BX Commando Droid</label>
     <race>DW_Race_OuterRim_CommandoDroid</race>
     <combatPower>40</combatPower>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_OuterRim_HKDroid</defName>
     <label>HK-Series Assasin Droid</label>
     <race>DW_Race_OuterRim_HKDroid</race>
     <combatPower>40</combatPower>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_OuterRim_ImperialLaborDroid</defName>
     <label>imperial labor droid</label>
     <race>DW_Race_OuterRim_ImperialLaborDroid</race>
     <combatPower>40</combatPower>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_OuterRim_KXSecurityDroid</defName>
     <label>KX Security Droid</label>
     <race>DW_Race_OuterRim_KXSecurityDroid</race>
     <combatPower>40</combatPower>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_OuterRim_MagnaGuardDroid</defName>
     <label>MagnaGuard Droid</label>
     <race>DW_Race_OuterRim_MagnaGuardDroid</race>
     <combatPower>40</combatPower>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_OuterRim_ProtocolDroid</defName>
     <label>protocol droid</label>
     <race>DW_Race_OuterRim_ProtocolDroid</race>
     <combatPower>40</combatPower>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_OuterRim_SuperBattleDroid</defName>
     <label>B2 Super Battle Droid</label>
     <race>DW_Race_OuterRim_SuperBattleDroid</race>
     <combatPower>40</combatPower>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_OuterRim_SuperTacticalDroid</defName>
     <label>Super Tactical Droid</label>
     <race>DW_Race_OuterRim_SuperTacticalDroid</race>
     <combatPower>40</combatPower>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_OuterRim_TacticalDroid</defName>
     <label>T-Series Tactical Droid</label>
     <race>DW_Race_OuterRim_TacticalDroid</race>
     <combatPower>40</combatPower>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_OuterRim_MuckrakerDroid</defName>
     <label>Muckraker Crab Droid</label>
     <race>DW_Race_OuterRim_MuckrakerDroid</race>
     <combatPower>99999</combatPower>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_OuterRim_DestroyerDroid</defName>
     <label>Destroyer Droid</label>
     <race>DW_Race_OuterRim_DestroyerDroid</race>
     <combatPower>99999</combatPower>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_OuterRim_DUMDroid</defName>
     <label>DUM Repair Droid</label>
     <race>DW_Race_OuterRim_DUMDroid</race>
     <combatPower>99999</combatPower>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_OuterRim_FX7Droid</defName>
     <label>fx-7 medical Droid</label>
     <race>DW_Race_OuterRim_FX7Droid</race>
     <combatPower>99999</combatPower>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_OuterRim_GNKDroid</defName>
     <label>gnk power Droid</label>
     <race>DW_Race_OuterRim_GNKDroid</race>
     <combatPower>99999</combatPower>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_OuterRim_MSEDroid</defName>
     <label>MSE Repair Droid</label>
     <race>DW_Race_OuterRim_MSEDroid</race>
     <combatPower>99999</combatPower>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_OuterRim_SalvageAssistDroid</defName>
     <label>salvage assist droid</label>
     <race>DW_Race_OuterRim_SalvageAssistDroid</race>
     <combatPower>99999</combatPower>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_OuterRim_RSeriesDroid</defName>
     <label>R-Series Droid</label>
     <race>DW_Race_OuterRim_AstromechDroid</race>
     <combatPower>99999</combatPower>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef>
     <defName>DW_OuterRim_ImperialKXSecurityDroid</defName>
@@ -126,5 +221,10 @@
     <weaponTags>
       <li>ORImperialHeavy</li>
     </weaponTags>
+    <xenotypeSet>
+      <xenotypeChances>
+        <Baseliner>1</Baseliner>
+      </xenotypeChances>
+    </xenotypeSet>
   </PawnKindDef>
 </Defs>
