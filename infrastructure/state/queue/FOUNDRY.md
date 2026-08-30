@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T19:11:03Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T19:20:06Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -392,3 +392,23 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  Scope notes (BENCH, filing sitting 2026-08-30)
 prose:    infrastructure/state/items/GRAFFITI_MOD_EXPANSION_1.md
+
+## SACRED_SITES_PASS_1 Sacred sites (F16): sweep all Ashkarr tile contents, mutators, landforms and landmarks for god-pleasing sites (oasis pleases Oomo); propose new landmark kinds + the tile-to-god annotation pass and tidal day/night split
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SACRED_SITES_PASS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SACRED_SITES_PASS_1.md
+
+## COLONY_VISIBILITY_STAT_1 Design Colony Visibility as a first-class player-facing stat (F18): nine hands on one dial, owns threat-point modulation (replace-not-stack per F12); mod feasibility pass
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/COLONY_VISIBILITY_STAT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/COLONY_VISIBILITY_STAT_1.md

@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T19:11:03Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T19:20:06Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -62,3 +62,53 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/JAWA_TRAP_RENAISSANCE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/JAWA_TRAP_RENAISSANCE_1.md
+
+## CURSE_COLUMN_RESPEC_1 Re-spec all nine matrix curse columns under the F10 alignment law: a curse ENACTS what the god wants, no longer in your interest — never inversion; exit-verbs on every M/L
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/CURSE_COLUMN_RESPEC_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/CURSE_COLUMN_RESPEC_1.md
+
+## DEVOTIONAL_SACRIFICE_CATALOG_1 Catalog sacrifice-as-play devotions (F11): rites, intentional releases, a battery left to short — the fun pious channel for competent play, Zizzik first but pantheon-wide
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DEVOTIONAL_SACRIFICE_CATALOG_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DEVOTIONAL_SACRIFICE_CATALOG_1.md
+
+## GOD_INTERCESSION_SPEC_1 Spec intercession (F13): earning one god as shield against another, played socially not head-on; plus the disposable shrine-as-offering rite valued by work-hours/footprint/room stats
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/GOD_INTERCESSION_SPEC_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/GOD_INTERCESSION_SPEC_1.md
+
+## DIVINE_DILEMMA_EVENTS_1 Author 10-15 divine dilemma choice-letters (F6): three gods argue the options across the 3x3 triads, every option playable, each charged in a different god currency
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DIVINE_DILEMMA_EVENTS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DIVINE_DILEMMA_EVENTS_1.md
+
+## FIRST_CONTACT_CHAINS_1 Author nine first-manifestation chains (F15), one page per god, dramatic not subtle: shock-curiosity-delight-realization-strategy; pairs with F4 veiled discovery
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/FIRST_CONTACT_CHAINS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FIRST_CONTACT_CHAINS_1.md
