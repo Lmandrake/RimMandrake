@@ -1231,6 +1231,21 @@ weapons:
     innovation and identity (JawaIonWeapons). Both ion turrets on the canon
     roster are assigned to the Galactic Empire on this basis
     (turret_register.json).
+research_tree:
+  shape_ruled: true
+  shape_src: >
+    Owner, 2026-08-30, on the visual propositions: THEMATIC (proposition A) is
+    the ruled shape for weapon techs. And "The Ship" is its OWN TREE: the VFE
+    factory items, the Gravship systems ("painfully, slowly"), and the ship
+    weaponry - explicitly NOT a linear progression: "offering the player
+    choices in this challenging, expensive tech grind is very important."
+    Technology stays uncoupled/modular unless a tree is shown to belong;
+    ruled addition, verbatim: "the MiningCo mining laser seems very similar
+    to the Utinni's defensive weapon, so perhaps its unlock belongs here too
+    as an ancient ship tech. That's pretty cool." - the mining laser unlock
+    joins the Ship tree as ancient ship tech. Coupling audit owed: check
+    which other tech chains SHOULD couple into the Ship tree (factory +
+    ship + exotic ship weapons) or confirm modularity.
 royalty:
   dead_ruled: true
   dead_src: >
