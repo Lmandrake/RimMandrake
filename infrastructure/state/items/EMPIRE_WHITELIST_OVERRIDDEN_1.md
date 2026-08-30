@@ -63,3 +63,92 @@ game-down deploy window; still genuinely blocked on that, not on tooling.
       a companion tool or scenario part at world-gen) — owner's call once the mechanism is named.
 - [ ] Live re-check: `jawa/get_defs FactionDef/Empire permanentEnemyToEveryoneExcept` excludes
       PlayerColony/PlayerTribe, and a fresh relation seed shows Empire Hostile to the player.
+
+## 2026-08-30 (FOUNDRY) — mechanism found with `jawa/harmony_patches`, live, 585 mods
+
+`jawa/harmony_patches` is now DEPLOYED and answers. Run against `FactionDef`, `Faction`,
+`FactionGenerator`, `FactionManager`, `DefGenerator`, `DirectXmlLoader`, `LoadedModManager`
+and `XmlInheritance` at the main menu (defs and Harmony patches are both in place before
+any save loads).
+
+### ⭐ The decisive hit — the whitelist is not what decides hostility any more
+
+    RimWorld.FactionDef.PermanentlyHostileTo
+      postfix  SWCP.Core.Patches.FactionDef_PermanentlyHostileTo_Postfix   [SWCP_Core]
+
+and, from `vendor/mod_sources/SWCP_Core_decompiled/SWCP.Core/Patches.cs`:
+
+```csharp
+public static void FactionDef_PermanentlyHostileTo_Postfix(
+    FactionDef otherFactionDef, FactionDef __instance, ref bool __result)
+{
+    if (!__result)
+        __result = ((Def)__instance)
+            .GetModExtension<ModExtension_FactionPermanentlyHostileTo>()
+            ?.FactionIsHostileTo(otherFactionDef) ?? false;
+}
+```
+
+`ModExtension_FactionPermanentlyHostileTo` is one field, `List<FactionDef>
+hostileFactionDefs`, and `FactionIsHostileTo(other)` is `hostileFactionDefs.Contains(other)`.
+SWCP postfixes **three** methods in the same family, all live:
+
+    FactionDef.PermanentlyHostileTo                       -> the extension can force TRUE
+    GoodwillSituationWorker_PermanentEnemy.ArePermanentEnemies -> same, per Faction pair
+    Faction.CanChangeGoodwillFor                          -> locks goodwill when hostile
+    Faction.TryMakeInitialRelationsWith .. GetInitialGoodwill  -> prefix, forces -100
+
+🔑 **This is a purely ADDITIVE route that cannot lose a patch race.** Every postfix above
+fires only when the vanilla answer was already `false`, and nothing else in the mod set
+writes that mod extension. Putting `PlayerColony`/`PlayerTribe` in Empire's
+`hostileFactionDefs` makes `Empire.PermanentlyHostileTo(PlayerColony)` return true
+**regardless of what `permanentEnemyToEveryoneExcept` ends up containing** — which is the
+outcome this item wants, reached without having to win the whitelist argument at all.
+
+### The whitelist itself: our patch DOES win, and the extras are appended afterwards
+The live 24-entry list opens with our patch's **exact 12 entries in our exact order**
+(`Jawa_HuttCartel` … `TradersGuild`), then appends `PlayerColony`, `PlayerTribe`,
+`BS_PlayerTribeXenoPlus`, `BS_PlayerColonyXenoPlus`, `VFEI2_PlayerOutpost`, `VFET_WildMen`,
+`VQE_NewVaultPlayerFaction`, `AM_PlayerColony`, `VFEP_PlayerPirate`, `BS_JotunPlayerColony`,
+`OuterRim_RogueDroidColony`, `OuterRim_EmpirePlayerFaction`, `OuterRim_RebelPlayerFaction`.
+
+⭐ **The ORDER is the evidence, and it corrects the 2026-08-29 framing.** Our `Replace` is
+not being beaten — it lands, and the list it produced survives intact as the prefix. Every
+appended entry is a `isPlayer=true` FactionDef, so a post-load C# pass appends "all player
+factions", exactly the framework shape hypothesised before. The two XML candidates that
+touch this xpath were read and are both harmless prefix-preserving `Add`s:
+`VFE-Insectoids2/1.6/Patches/Royalty.xml` adds `VFEI2_PlayerOutpost` only, and
+`CaravanAdventures`' `StoryUtility.cs` adds only sacrilegHunters/mechanoids at runtime.
+
+## criteria
+- [x] The interloping mechanism named — **`SWCP.Core.Patches.FactionDef_PermanentlyHostileTo_Postfix`
+      (assembly `SWCP_Core`) is what actually decides this**, via
+      `ModExtension_FactionPermanentlyHostileTo`; the whitelist no longer has the last word.
+      (The separate cosmetic question of which mod appends the player factions to the list
+      is now moot for hostility — our own entries are intact and the extras change nothing
+      once the extension is present.)
+- [ ] **A fix decided — OWNER'S CALL, and there is now a clean recommendation.** Add to
+      `src/Jawa/Jawa_Patches/Patches/GalacticEmpire.xml`:
+
+          <li Class="PatchOperationAdd">
+            <xpath>/Defs/FactionDef[defName="Empire"]</xpath>
+            <value>
+              <modExtensions>
+                <li Class="SWCP.Core.ModExtension_FactionPermanentlyHostileTo">
+                  <hostileFactionDefs>
+                    <li>PlayerColony</li>
+                    <li>PlayerTribe</li>
+                  </hostileFactionDefs>
+                </li>
+              </modExtensions>
+            </value>
+          </li>
+
+      ⚠️ Gate it on SWCP being active (`PatchOperationFindMod`) — a `Class=` naming a type
+      no loaded assembly has **discards the whole FactionDef silently**
+      (`modextension-missing-type-discards-def`), which would delete the Empire outright.
+      ⚠️ `Empire` may already declare `modExtensions`; if so this must be an Add INTO that
+      list, not an Add of the list. Check before writing.
+- [ ] Live re-check after the fix: Empire reads Hostile to the player from a fresh relation
+      seed. (The whitelist half of the old criterion is retired — it will keep reading 24
+      entries and that is now known to be harmless.)

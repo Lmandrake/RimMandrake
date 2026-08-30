@@ -3271,3 +3271,7 @@
 {"seat":"FOUNDRY","event":"bridge","state":"taken","ts":"2026-08-30T23:35:22Z"}
 {"seat":"OWNER","event":"file","id":"BEAST_MASS_REALISM_AUDIT_1","title":"Audit our authored creatures' bodySize/mass values against realism -- the pits mass-trigger tuning surfaced they may not be representative","kind":"investigate","target":"v1","needs":"offline","caused_by":"RIMMANDRAKE_PITS_BUILD_1","for":"FOUNDRY","ownerSaid":"220 yes but also file an item to reevaluate the masses of our beasts. That sounds suspiciously as though they are not representative.","ts":"2026-08-30T23:39:45Z"}
 {"seat":"FOUNDRY","event":"close","id":"EMPIRE_PURSUIT_SURVEY_SHADOW_1","sha":"9d6d46f7","ts":"2026-08-30T23:42:10Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","ownerSaid":"You can take the bridge now. Do anything you like. Even restart the whole game. Deploy things. Anything.","ts":"2026-08-30T23:45:38Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ownerSaid":"Game is down","ts":"2026-08-30T23:45:43Z"}
+{"seat":"FOUNDRY","event":"game","state":"LOADING","measured":true,"evidence":"RimWorldWin64 running; BRIDGE NOT PROBED — no port found in the environment or in Player.log, so LOADING here is a DEFAULT, not a reading.","ts":"2026-08-30T23:46:12Z"}
+{"seat":"FOUNDRY","event":"block","id":"EMPIRE_WHITELIST_OVERRIDDEN_1","reason":"mechanism named (SWCP_Core postfix on FactionDef.PermanentlyHostileTo via ModExtension_FactionPermanentlyHostileTo); fix drafted, needs owner's call then a load to verify","ts":"2026-08-30T23:48:44Z"}

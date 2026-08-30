@@ -51,3 +51,59 @@ arrived as 22 `Jawa_Hutt_*` pawns when more than one faction was hostile.
 
 ## criteria
 - [ ] Each of the six either raids as itself, or the reason it cannot is named from the engine.
+
+## 2026-08-30 (FOUNDRY) — the engine gate read, one of the seven answered, one lead killed
+
+### The gate, named: `PawnGroupMakerUtility.UsableFactions`
+`Source/RimWorld/PawnGroupMakerUtility.cs:355` is the only place the engine decides which
+factions may source a combat group. A faction must satisfy **all** of:
+
+    !Hidden · !temporary · !defeated · def.humanlikeFaction · HostileTo(player)
+    def.pawnGroupMakers != null
+    def.pawnGroupMakers.Any(x => x.kindDef == PawnGroupKindDefOf.Combat)
+    !def.raidsForbidden
+    points >= def.MinPointsToGeneratePawnGroup(Combat)
+
+`TryGetRandomFactionForCombatPawnGroup` (line 360) is its only caller of consequence.
+
+### ✅ `Jawa_DeepwaterCompact` is ANSWERED — `raidsForbidden = true`
+Read live off the def, 585-mod set: Deepwater is the **only** one of the seven with
+`raidsForbidden: true`. `UsableFactions` filters on `!def.raidsForbidden`, so the
+storyteller can never select it, and `TimedDetectionRaids` skips it too
+(`Planet/TimedDetectionRaids.cs:51`). ⇒ **Deepwater will never raid in play, by design of
+its own def.** Whether that is what the owner wants is a separate question and belongs to
+whoever owns the faction spec; mechanically it is not a bug and needs no further probing.
+
+### ⛔ The points gate is REFUTED as an explanation — do not re-test it
+`MinPointsToGeneratePawnGroup(Combat)` resolves to the cheapest `isFighter` option's
+`combatPower` (`PawnGenOption.Cost => kind.combatPower`). Computed for all five remaining
+factions off their own rosters:
+
+    Jawa_GeonosianFoundryHive   Jawa_Geonosian_Grunt      56
+    Jawa_Junkers                Jawa_Junkers_Grunt        56
+    Jawa_WildsteamClan          Jawa_Wildsteam_Specialist 82
+    Jawa_FreeDroidEnclaves      Jawa_Droid_Grunt          90
+    Jawa_AscendantHelix         Jawa_Helix_Grunt         130
+
+Every one clears the 3000 points the firings used by **more than twentyfold**. Also
+checked and clean: all five set `humanlikeFaction` true, and the two factions with only
+**2** `pawnGroupMakers` (Geonosian, Junkers) are missing the **Trader** maker, not the
+Combat one — both carry an intact 4-option Combat maker.
+
+### 🔴 The correction that matters: none of the above can explain the 18 firings
+`IncidentWorker_RaidEnemy.TryResolveRaidFaction` (lines 58-73) returns **true immediately**
+when `parms.faction` is already set and hostile:
+
+    if (parms.faction != null && parms.faction.HostileTo(Faction.OfPlayer)
+        && (!parms.faction.deactivated || parms.forced))
+        return true;
+
+`fire_raid` names the faction, so `UsableFactions` is never reached — `raidsForbidden`,
+`MinPointsToGeneratePawnGroup` and the whole line-355 filter are **bypassed** on the exact
+path the 18 firings took. ⇒ The empty firings are **downstream of faction resolution**, in
+pawn-group generation, the raid strategy, or the arrival mode. Every FactionDef-field
+hypothesis is now exhausted; the def is not where the answer is.
+
+⭐ Consequence for whoever picks this up: the two findings above are about **play**
+(the storyteller's own selection), not about `fire_raid`. Deepwater is answered for play
+and still unexplained for `fire_raid`, like the other five.

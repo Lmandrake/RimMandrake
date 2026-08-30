@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T23:42:10Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-08-30T23:48:44Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -214,7 +214,7 @@ row:      unassigned
 needs:    bridge
 target:   v1
 kind:     bug
-blocked:  69 XML candidates cleared, points at a C# compat framework not an XML conflict. Needs a Harmony patch inventory (no bridge tool yet, needs game-down deploy) or a mod-list bisect.
+blocked:  mechanism named (SWCP_Core postfix on FactionDef.PermanentlyHostileTo via ModExtension_FactionPermanentlyHostileTo); fix drafted, needs owner's call then a load to verify
 summary:  GalacticEmpire.xml's PatchOperationReplace on
 prose:    infrastructure/state/items/EMPIRE_WHITELIST_OVERRIDDEN_1.md
 
