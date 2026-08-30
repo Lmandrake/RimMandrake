@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T21:29:51Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T21:32:23Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -35,15 +35,6 @@ target:   v1
 kind:     bug
 summary:  SIXFACTIONSNEVERRAID1 — only the Hutt Cartel has ever been seen to raid
 prose:    infrastructure/state/items/SIX_FACTIONS_NEVER_RAID_1.md
-
-## PLACER_IDENTITY_REPLAY_1 Replay the exported identity payload: quality, container contents, bills, storage settings need companion setter tools; the exporter already captures them
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-summary:  PLACERIDENTITYREPLAY1 — the setter half of the identity-grade export
-prose:    infrastructure/state/items/PLACER_IDENTITY_REPLAY_1.md
 
 ## EMPIRE_PURSUIT_SURVEY_SHADOW_1 Fork pursuit mod: survey-shadow biomes slow the Empire to 20-30 days
 state:    doing  (BLOCKED)
@@ -205,16 +196,6 @@ kind:     bug
 blocked:  needs bridge; BENCH holds it (owner confirmed live, 2026-08-29) — my prior fire_raid work on the sibling item collided with BENCH's session, not touching the bridge again until it's free
 summary:  SIXFACTIONSNEVERRAID1 — only the Hutt Cartel has ever been seen to raid
 prose:    infrastructure/state/items/SIX_FACTIONS_NEVER_RAID_1.md
-
-## PLACER_IDENTITY_REPLAY_1 Replay the exported identity payload: quality, container contents, bills, storage settings need companion setter tools; the exporter already captures them
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-blocked:  Live round-trip is the only open criterion and needs a map; game wedged on a never-completing 'Loading world.' long event (mapCount 0, ticksGame frozen, go_to_main_menu NREs). Bridge healthy. jawa/set_quality and jawa/container_fill remain deployed-but-never-called. Needs an owner restart.
-summary:  PLACERIDENTITYREPLAY1 — the setter half of the identity-grade export
-prose:    infrastructure/state/items/PLACER_IDENTITY_REPLAY_1.md
 
 ## EMPIRE_PURSUIT_SURVEY_SHADOW_1 Fork pursuit mod: survey-shadow biomes slow the Empire to 20-30 days
 state:    doing  (BLOCKED)

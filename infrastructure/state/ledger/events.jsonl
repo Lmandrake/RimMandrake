@@ -3256,3 +3256,4 @@
 {"seat":"FOUNDRY","event":"close","id":"BRIDGE_KCSG_VGE_TOOLS_1","sha":"b6467b31","ts":"2026-08-30T21:24:04Z"}
 {"seat":"FOUNDRY","event":"close","id":"BRIDGE_GEN_AND_STORYTELLER_TOOLS_1","sha":"09ce2278","ts":"2026-08-30T21:24:46Z"}
 {"seat":"FOUNDRY","event":"close","id":"OTHER_STUN_WEAPONS_SURVEY_1","sha":"1fdba76d","ts":"2026-08-30T21:29:51Z"}
+{"seat":"FOUNDRY","event":"close","id":"PLACER_IDENTITY_REPLAY_1","sha":"a52e71dd","ts":"2026-08-30T21:32:23Z"}
