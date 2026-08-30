@@ -10,10 +10,15 @@ names what turns on the answer. Ordered by how much downstream work waits.
    the burns, harvest the flush). One re-flavor pass over their faction text +
    backstory hooks rides PAWN_FLAVOR_STARWARS_1; no world edits.
 
-2. **Free Droid Enclave geography.** The Geonosian two-outposts ruling gives
-   the droids a plateau presence beside their volcanic/poison-springs homes —
-   *"whether the volcanic enclaves and the plateau enclaves are one faction or
-   a split"* is explicitly unresolved [2026-08-17].
+2. ✅ RULED (owner, 2026-08-30, canon.yml free_droid_enclaves.geography):
+   TWO groupings — the Cathedral congregation (poisoning/worshiping/building,
+   learning ancient tech from whispered voices deep in the machinery; revealed
+   content, ties to their Archotech turret) and the nightside refugees (~two
+   settlements, power-starved, burning strange materials, servo-freezing cold,
+   selling fuel to the Junkers via long-distance pipes — dependency that feels
+   like having a master again). VERIFY owed: two nightside settlements on the
+   frozen map.
+
 3. ✅ RULED ALIVE (owner, 2026-08-29): a Droidworks-era faction behavior —
    droid-held tiles get Biotech-polluted ground and fouled water. Filed as
    DROID_TILES_SOURED_TERRAIN_1, sequenced with Droidworks phase 3.

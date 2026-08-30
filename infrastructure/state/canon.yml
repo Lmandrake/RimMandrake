@@ -1249,6 +1249,29 @@ anomaly_content:
     Assailant flesh dungeon (ASSAILANT_FLESH_DUNGEON_1), and the sarlacc's
     design may draw on it too (explore at its design sitting). Nothing else
     touches Anomaly content.
+free_droid_enclaves:
+  geography_ruled: true
+  geography_src: >
+    Owner, 2026-08-30, verbatim: "There are indeed already two groupings.
+    Those in the Rust Cathedral poisoning it, worshiping it, building more,
+    and learning ancient tech from the whispered voices deep in the old
+    machinery (this will become clearer as the plot evolves, and also links
+    to their Archotech turret). Then there are the droids who fled deep into
+    the cold dark of the nightside. I believe there are two settlements
+    already there. They suffer from very low power (droids DO need that) and
+    burn the strange materials around them for dirty power. It is also so
+    cold that it can freeze their servo's. Not a great existence, but they
+    have learned to generate fuel they sell to the Junkers via long-distance
+    pipes they keep running... at the cost of their customers becoming their
+    slave masters if they are sloppy, and it feels like they have a master
+    again (emotionally displeasing)." Notes of record: the whispered-voices
+    thread is REVEALED content (plot-evolving; ties to the Free Droids'
+    Archotech charge turret — 'Something's... down there. Talking to them.'
+    already on the turret decision sheet); nightside groups confirm the
+    Droidworks power need canonically ("droids DO need that"); the
+    fuel-pipes-to-Junkers dependency carries the master-again emotional
+    theme. VERIFY owed: two nightside settlements on the frozen world
+    ("I believe" — check the map, report back, never assume).
 narrator:
   ruled: true
   src: >
