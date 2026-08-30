@@ -16,3 +16,11 @@ Two threads, one sitting:
 Census first (ResearchProjectDef across the 585 capture: what exists, what the
 donor mods scatter), then the grouping design with the owner. Expect overlap
 with turret normalization — the turrets' techs should hang off the same tree.
+
+## Inherited from the turret pass (2026-08-29, BENCH)
+Vanilla ResearchProjectDef `Mortars` now unlocks nothing a player can build:
+`Turret_Mortar` and `FT_Turret_Mortar` are Cherry-Picker cut at the turret
+roster normalization (proton mortars are OuterRim tech, auto-mortars are mech
+cluster pieces). At this sitting: cut the research row too, or repoint it at
+something worth researching. Same look owed at `GunTurrets` (still unlocks
+uranium slug — alive) and any mod research rows naming only cut turrets.

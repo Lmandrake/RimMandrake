@@ -2933,3 +2933,6 @@
 {"seat":"FOUNDRY","event":"start","id":"VEHICLE_ION_TIER_1","ts":"2026-08-29T23:56:48Z"}
 {"seat":"FOUNDRY","event":"block","id":"VEHICLE_ION_TIER_1","reason":"built and deployed (game DOWN); live-verify against a real vehicle owed at next game-up, a mechanism never once observed running","ts":"2026-08-29T23:57:37Z"}
 {"seat":"FOUNDRY","event":"needs","id":"DROID_SYSTEM_BUILD_1","to":"owner","reason":"parked until the owner reopens, per its own filing note - mistagged, causing it to leak through --mode afk suppression","ts":"2026-08-29T23:58:53Z"}
+{"seat":"BENCH","event":"claim","id":"TURRET_ROSTER_CURATION_1","ts":"2026-08-30T00:20:39Z"}
+{"seat":"BENCH","event":"close","id":"TURRET_ROSTER_CURATION_1","sha":"3015d6a3","ts":"2026-08-30T00:20:53Z"}
+{"seat":"BENCH","event":"note","id":"TURRET_ROSTER_CURATION_1","text":"Doctrine patch (71 ops) + renames shipped; 37 non-roster cuts in Cherry Picker + orphan re-check done; live verify rides COLD_LOAD_RUN_SHEET_2","ts":"2026-08-30T00:20:57Z"}

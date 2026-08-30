@@ -38,3 +38,18 @@ where it belongs, what it defends), CUT (Cherry Picker, per
 - [ ] A roster with a MEASURED count, its inclusion rule stated.
 - [ ] Every roster row carries an owner ruling: KEEP(role) / CUT / RETUNE.
 - [ ] Cuts landed in Cherry Picker + orphan re-check done; follow-ups filed.
+
+## Resolution (2026-08-29, BENCH — normalization pass, owner rulings + AFK batch)
+- Roster: 56 defs MEASURED, canon.yml `turrets.official_roster` (frozen 213032f2).
+  Inclusion rule: live spawned array survivors of the owner's three cut passes.
+- Every row ruled: decisions in `turret_register.decisions.json` (user/state),
+  damage in `design/Jawa/worldbuilding/review/turret_normalization_v1.md` and the
+  PLAN of `src/Jawa/Jawa_Armoury/Source/gen_turret_doctrine.py`; policy rulings
+  as data in canon.yml `turrets.normalization_*`.
+- Cuts: all 37 non-roster turrets now in Cherry Picker (27 added this pass,
+  1485→1513 incl. Grenade_TurretPack); orphan re-check done — structure-gen
+  references are benign losses; two real orphans handled (turret-pack pair cut,
+  Mortars research filed onto TECH_TREE_WEAPON_GROUPS_1).
+- Open: live verify at next load (run sheet COLD_LOAD_RUN_SHEET_2, TURRET
+  DOCTRINE section); VGE_AnticraftCaster held for the bench; beam/control
+  defaults flagged for owner veto.

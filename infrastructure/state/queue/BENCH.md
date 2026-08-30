@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-29T23:58:53Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T00:20:57Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -51,16 +51,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## TURRET_ROSTER_CURATION_1 Spawn every turret live with the owner; decide keep/cut, role and placement for each
-state:    proposed
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify
-summary:  TURRETROSTERCURATION1 — every turret, spawned and judged with the owner
-prose:    infrastructure/state/items/TURRET_ROSTER_CURATION_1.md
 
 ## ASSAILANT_FLESH_DUNGEON_1 Design the Assailant flesh dungeon with the owner - and the Rakata dark-history reveal it carries
 state:    proposed

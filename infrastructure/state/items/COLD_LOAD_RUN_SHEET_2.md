@@ -150,6 +150,32 @@ saves re-synced to the new 585). Decision strings:
 - ⚠ RimSort is possibly open: its view is now stale — hit Refresh, don't Save
   over this.
 
+## TURRET DOCTRINE first load (added 2026-08-29 third sitting, BENCH — AFK batch)
+Deployed: `Turrets_DamageDoctrine.xml` (71 generated ops) + `Turrets_Renames.xml`
+(10 label ops) in Jawa_Armoury; 28 new Cherry Picker keys (1485→1513, backup
+`.bak-20260829-turretroster`): 27 non-roster turrets + Grenade_TurretPack (its
+Turret_TacticalTurret is cut; Apparel_PackTurret was already cut). Decision
+strings, written BEFORE the launch:
+- FAIL: `Patch operation ... failed` naming Turrets_DamageDoctrine or
+  Turrets_Renames; or a red duplicate-def error naming any `Jawa_TD_*` clone
+  (the anchored-add matched more than one file).
+- PASS positive (dump): `Bullet_TurretSniper` damageAmountBase 960;
+  `EWebShot` damageDef `OuterRim_Blaster` 368; `Bullet_TeslaBlaster` damageDef
+  `EMP` 80; `GTbc_Rocket_TheSingularityCannon` 72085 r14.9; label of
+  `VFES_Turret_ChargeRailgun` reads `helical charge railgun`. Clones present:
+  `Jawa_TD_Turret_AutoChargeBlaster` (107), `Jawa_TD_GraserBeam` (395).
+- PASS (Cherry Picker log): removal list contains `- ThingDef/Turret_MiniTurret,`
+  and `- ThingDef/Turret_Autocannon,`.
+- EXPECTED noise, not failure: KCSG/structure-gen or settlement gen misses
+  naming cut turrets (VOID bases, DP maps, Settlement_Generic, VQE symbols) —
+  bases just lose a turret. UNEXPECTED: an NRE at map gen naming one.
+- Live-verify owed (bridge, scratch): one shot each from a beam turret
+  (ancient beam cannon 3159 semantics are C#), a VEF flame turret (33/stream),
+  the Singularity Cannon (r14.9 crater is intended), and one EMP arc from the
+  tesla arc projector. Watch mech-cluster gen still places AutoMini-less mixes.
+- Follow-up filed on TECH_TREE_WEAPON_GROUPS_1: vanilla `Mortars` research now
+  unlocks nothing (Turret_Mortar cut) — rule cut-or-repoint at that sitting.
+
 ## SALVAGERS_FOLD_JUNKERS — campaign load check (added 2026-08-29, BENCH)
 WORLDMAP_V1_original.rws edited: Salvagers ("The Comet Party") scribed
 `defeated=True` (backup `.pre_salvager_fold_2026-08-29.rws`). On the next

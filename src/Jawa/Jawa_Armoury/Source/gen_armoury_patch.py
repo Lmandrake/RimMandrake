@@ -13,6 +13,13 @@ Targets (design/Jawa/worldbuilding/setting_physics.md, torso ~40 HP):
   ion/stun/sonic     UNCHANGED -- the verb is the weapon (L4/L16)
   explosives         UNCHANGED -- balanced by scarcity alone (L13)
 
+⛔ SUPERSEDED 2026-08-29 for canon-roster turrets: the three fixed-gun tiers
+below lost ownership of every projectile fired by a turret on canon.yml
+turrets.official_roster — gen_turret_doctrine.py writes those under the
+(squares)^2 doctrine, and its output file sorts after this one so its writes
+win. On this generator's NEXT regen, exclude those projectiles from the
+emplacement/artillery/turbolaser rungs entirely.
+
 THREE FIXED-GUN TIERS, owner ruled 2026-08-14:
   emplacement         40-200   a defence turret hits like a heavy blaster
   artillery          250-600   a siege gun is heavier, and still not ship-scale
