@@ -41,10 +41,9 @@ names what turns on the answer. Ordered by how much downstream work waits.
    it; ship rules (weapons, fuel, raids) enforce it; hologram room for
    messages; landing = judgement of the past map. Awaits canonization at a
    bench sitting.
-10. Can the Cradle's own purpose be spoken to at all? ("No" is the more
-    frightening answer.) — COLORED by the 2026-08-29 cradle_memory ruling: the
-    unified voice is GONE, so nothing whole can answer; whether the executing
-    purpose can be addressed at all stays open.
+10. ✅ RULED NO (owner, 2026-08-30): the ship NARRATES, never converses — the
+    purpose cannot be summoned, questioned, or bargained with; addressing it
+    yields only narration about the attempt. canon.yml cradle_memory.
 
 ## Deadline-bound
 
