@@ -1231,6 +1231,24 @@ weapons:
     innovation and identity (JawaIonWeapons). Both ion turrets on the canon
     roster are assigned to the Galactic Empire on this basis
     (turret_register.json).
+royalty:
+  dead_ruled: true
+  dead_src: >
+    Owner, 2026-08-29, ratifying what a permanently hostile Empire already
+    implied: Royalty's player-facing systems — titles, permits, honour, the
+    Royalty questline — are DEAD in this campaign, as a decision rather than a
+    side effect (V2_DREAMS asked for exactly this ratification). The DLC stays
+    installed (defs/art in use elsewhere); its progression content is never
+    surfaced. RESEARCH_TREE_NORMALIZATION_1 may cut its research rows.
+anomaly_content:
+  boundary_ruled: true
+  boundary_src: >
+    Owner, 2026-08-29, verbatim: "Mostly the assailant exception but may also
+    be some possibilities with the sarlacc too." So: ZERO ambient Anomaly
+    content in v1; Anomaly's fleshmass/entity toolbox is allowed INSIDE the
+    Assailant flesh dungeon (ASSAILANT_FLESH_DUNGEON_1), and the sarlacc's
+    design may draw on it too (explore at its design sitting). Nothing else
+    touches Anomaly content.
 rakata:
   victims_and_tyrants_ruled: true
   victims_and_tyrants_src: >

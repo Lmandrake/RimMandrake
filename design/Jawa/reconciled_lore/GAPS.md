@@ -14,21 +14,17 @@ names what turns on the answer. Ordered by how much downstream work waits.
    the droids a plateau presence beside their volcanic/poison-springs homes —
    *"whether the volcanic enclaves and the plateau enclaves are one faction or
    a split"* is explicitly unresolved [2026-08-17].
-3. **Android terrain-souring.** The 2026-08-04 doctrine (droid-held tiles get
-   Biotech-polluted ground and fouled water) was never restated in
-   FACTION_SPEC. Alive (a Droidworks-era faction behavior worth authoring) or
-   dead (the water-cracking description is the whole of it)?
-4. **Royalty's deletion, ratified.** A permanently hostile Empire silently
-   turns off titles, permits, honour and the whole Royalty questline. V2_DREAMS
-   calls it "almost certainly correct but it should be a decision, not a side
-   effect." One word makes it a ruling.
+3. ✅ RULED ALIVE (owner, 2026-08-29): a Droidworks-era faction behavior —
+   droid-held tiles get Biotech-polluted ground and fouled water. Filed as
+   DROID_TILES_SOURED_TERRAIN_1, sequenced with Droidworks phase 3.
+4. ✅ RULED DEAD (owner, 2026-08-29): Royalty's player-facing systems are off
+   as a decision, not a side effect. canon.yml `royalty.dead_ruled`.
 5. **Victory, formally.** The win paths exist as the god-map (droid-army /
    coalition / the Hutt road) and the pride-crisis is the designed endgame —
    but no doc states whether v1 has a formal win condition or is open-ended.
-6. **Flesh vaults and Anomaly.** Anomaly content is at zero; the ② vaults are
-   currently describable without fleshmass content and v1 assumes NOT using it.
-   Confirm, or carve an exception for the Assailant dungeon (which wants the
-   most disgusting biology available).
+6. ✅ RULED (owner, 2026-08-29): zero ambient Anomaly; the Assailant dungeon
+   gets the fleshmass exception, and the sarlacc may draw on it too.
+   canon.yml `anomaly_content.boundary_ruled`.
 
 ## Ship-mind arc (the forgotten_war open list, still open)
 
