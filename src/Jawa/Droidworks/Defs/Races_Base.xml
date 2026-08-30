@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- Droidworks race base — every DW_Race_* def emitted by
+       Source/gen_droidworks_defs.py ParentNames onto this ONE abstract def
+       (BENCH's spec: one base, not one per race). ParentName="Human" gives a
+       working race.body, needs and apparel slots for free — matches the
+       pattern used by other private HAR races that don't want a bespoke
+       BodyDef (e.g. XMT_Starbeast_AlienRace, workshop 3596077324: ParentName
+       ="Human", Class="AlienRace.ThingDef_AlienRace", no thingClass override,
+       no custom BodyDef). Concrete races override defName/label/description/
+       race/alienRace/graphicPaths/generalSettings/modExtensions.
+
+       Known gap, NOT solved here (out of this item's scope, flagged in
+       DROIDWORKS_DEF_GENERATOR_1's closing note as a follow-up): organic
+       needs (Food/Rest/Joy/Beauty/Comfort/...) are not blacklisted on this
+       base, so every DW droid pawn currently carries full vanilla Human needs
+       alongside DW_Power. Nothing in phase-0's NeedDefs/HediffDefs disables
+       them either — this was never wired, not silently dropped. -->
+  <AlienRace.ThingDef_AlienRace Name="DW_Race_Base" ParentName="Human" Abstract="True">
+    <race>
+      <body>Human</body>
+    </race>
+    <alienRace>
+      <generalSettings>
+        <alienPartGenerator>
+          <headTypes Inherit="False">
+            <li>Male_AverageNormal</li>
+          </headTypes>
+          <bodyTypes Inherit="False">
+            <li>Male</li>
+          </bodyTypes>
+        </alienPartGenerator>
+      </generalSettings>
+      <graphicPaths>
+        <skinShader>Cutout</skinShader>
+      </graphicPaths>
+    </alienRace>
+  </AlienRace.ThingDef_AlienRace>
+
+  <!-- Shared blank head — for source droids whose own art has no separate
+       head layer (the KotOR/OuterRim "NNNblank"/no-Head-folder convention,
+       carried forward honestly here rather than letting a headless droid
+       inherit DW_Race_Base's Male_AverageNormal human face). DW/blank_*.png
+       is a generated fully-transparent stub written once by the generator
+       if missing — a technical rendering stub, not hand-drawn art. -->
+  <HeadTypeDef>
+    <defName>DW_HeadType_Blank</defName>
+    <graphicPath>DW/blank</graphicPath>
+    <gender>None</gender>
+  </HeadTypeDef>
+
+</Defs>

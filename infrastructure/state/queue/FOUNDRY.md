@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T02:43:07Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T03:05:44Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -179,15 +179,6 @@ target:   v1
 kind:     bug
 summary:  VEHICLEIONTIER1 — the ion gun has zero effect on Vehicle Framework vehicles
 prose:    infrastructure/state/items/VEHICLE_ION_TIER_1.md
-
-## DROIDWORKS_DEF_GENERATOR_1 Generator: emit DW_ races and kinds for all 85 droids from extraction.json
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  (no items/DROIDWORKS_DEF_GENERATOR_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DROIDWORKS_DEF_GENERATOR_1.md
 
 # BLOCKED — something is WRONG and someone must act
 

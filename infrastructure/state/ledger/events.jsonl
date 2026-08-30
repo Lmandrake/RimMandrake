@@ -2993,3 +2993,4 @@
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-08-30T02:43:06Z"}
 {"seat":"FOUNDRY","event":"note","id":"NO_TOOL_REPORTS_MAP_TILE_1","text":"Live-verified 2026-08-30 (quicktest, game UP). jawa/map_info returned tile:21069 (called earlier this session for map dimensions, before this item was even pulled). Independent cross-check via the item's own documented workaround, jawa/world_objects_get{limit:400} -> the PlayerColony settlement 'Colony' -> tile:21069 - exact match, no duplicate player settlements this time (single-colony quicktest). Closing.","ts":"2026-08-30T02:43:06Z"}
 {"seat":"FOUNDRY","event":"close","id":"NO_TOOL_REPORTS_MAP_TILE_1","sha":"deff7a54","ts":"2026-08-30T02:43:07Z"}
+{"seat":"FOUNDRY","event":"close","id":"DROIDWORKS_DEF_GENERATOR_1","sha":"77745e8c","ts":"2026-08-30T03:05:44Z"}
