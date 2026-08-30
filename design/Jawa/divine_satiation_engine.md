@@ -1205,6 +1205,18 @@ The engine build (satiation counters, front selection, light zones, emitter
 progression, judgement, boon/demand/taboo/curse invocation) sizes from these
 pages; it files when the owner calls the build.
 
+## F18 Visibility dial — design spec filed (2026-08-30, COLONY_VISIBILITY_STAT_1)
+Colony Visibility (0–100, five-band ladder) is now specced as the shared dial
+`salvation_engine_review.md` F18 called for — the raise/lower hooks route
+through Ishko's, Ozzik's, Ohm's and Sh'kaar's *already-shipped* matrix pages
+above (no new god behavior), Sh'kaar's escalation meter multiplies the
+derived raid-threat number rather than the display, and Ta'Baa's launch
+resets it. It is also specced to replace vanilla's wealth-based raid-point
+scaling at the actual raid call sites (F12), scoped away from the ~45 other
+callers of `StorytellerUtility.DefaultThreatPointsNow` that have nothing to
+do with visibility. Full design, the F12 mechanism read from RimWorld source,
+and the deferred Harmony-transpiler build item: `design/Jawa/worldbuilding/colony_visibility_stat.md`.
+
 ## 11. Sacred sites — divine geography (F16, SACRED_SITES_PASS_1)
 Spec-only pass, filed per `salvation_engine_review.md` F16: full doc at
 `design/Jawa/worldbuilding/sacred_sites_pass_1.md` — the tile→god annotation
