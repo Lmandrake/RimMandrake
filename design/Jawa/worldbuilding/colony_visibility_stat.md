@@ -8,9 +8,14 @@ stack — the mod takes ownership of threat-point modulation into one number
 the gods contest"). Pointer target from
 `design/Jawa/divine_satiation_engine.md`; do not duplicate the pantheon
 mechanics here — this doc only adds the Visibility dial and cites the matrix
-pages it draws from. Register: SPEC, not yet built — files as a build item
-when the owner calls it (per CHARTER's item-decision pattern; this doc is the
-offline design pass COLONY_VISIBILITY_STAT_1 asked for)._
+pages it draws from. Register: SPEC, partially built 2026-08-30 (owner ruling: build the full
+replacement) — safe-core GameComponent and Ta'Baa's launch reset are real
+and wired; the §4 F12 raid-point replacement shipped for exactly one of the
+four call sites named below (`TimedDetectionRaids`) after re-reading live
+1.6 source found the other three citations do not match current source and
+are not load-bearing for ordinary raids — current build status, corrected
+call-site facts, and what's still TODO live in
+`infrastructure/state/items/COLONY_VISIBILITY_STAT_1.md`, not here._
 
 ---
 

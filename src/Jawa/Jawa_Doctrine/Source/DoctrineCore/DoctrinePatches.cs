@@ -15,13 +15,26 @@ namespace JawaDoctrineCore
     {
         static JawaDoctrineCoreMod()
         {
+            var harmony = new Harmony("mandrake.jawadoctrine.core");
             try
             {
-                DoctrinePatches.Apply(new Harmony("mandrake.jawadoctrine.core"));
+                DoctrinePatches.Apply(harmony);
             }
             catch (Exception ex)
             {
                 Log.Error("[JawaDoctrineCore] Failed to apply patches: " + ex);
+            }
+
+            try
+            {
+                // COLONY_VISIBILITY_STAT_1 - safe-core GameComponent needs no
+                // patch to register (see ColonyVisibility.cs), but the F12
+                // raid-point replacement and Ta'Baa launch-reset hook do.
+                ColonyVisibilityRaidPatch.Apply(harmony);
+            }
+            catch (Exception ex)
+            {
+                Log.Error("[JawaDoctrineCore] Failed to apply Colony Visibility patches: " + ex);
             }
         }
     }
