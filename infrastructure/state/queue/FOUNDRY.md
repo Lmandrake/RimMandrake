@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T17:24:35Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T17:25:46Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -392,16 +392,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## DROIDWORKS_FLESHTYPE_NEEDS_GAP_1 DW_Race_Base has no fleshType override and no organic-needs blacklist -- droids run as reskinned humans mechanically
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     spec, verify and criteria all present
-summary:  design/Jawa/droidsystembuildspec.md §1: "Flesh type: our own
-prose:    infrastructure/state/items/DROIDWORKS_FLESHTYPE_NEEDS_GAP_1.md
 
 ## DROIDWORKS_POWEREDDOWN_NOT_WIRED_1 Ion buildup crossing threshold downs via vanilla JawaIon_Stun capMods only -- never adds the DW_PoweredDown hediff the state machine is built around
 state:    proposed
