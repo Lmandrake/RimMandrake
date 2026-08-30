@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T17:17:07Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T17:24:35Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -188,6 +188,15 @@ target:   v1
 kind:     build
 summary:  (no items/WEAPONS_ABSORPTION_WAVE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/WEAPONS_ABSORPTION_WAVE_1.md
+
+## ISEKAI_GRANT_EXCLUSION_1 Exclude Jawa_ traits from ISEKAI grant-item pools
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  (no items/ISEKAI_GRANT_EXCLUSION_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ISEKAI_GRANT_EXCLUSION_1.md
 
 ## MOD_LIST_OUTGROWN_AUDIT_2 Outgrown-mod audit: whole 585 list, starting with They/Them(ants) and ISEKAI level-up - OWNER SEQUENCED FIRST
 state:    doing
@@ -383,16 +392,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## ISEKAI_GRANT_EXCLUSION_1 Exclude Jawa_ traits from ISEKAI grant-item pools
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/ISEKAI_GRANT_EXCLUSION_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ISEKAI_GRANT_EXCLUSION_1.md
 
 ## DROIDWORKS_FLESHTYPE_NEEDS_GAP_1 DW_Race_Base has no fleshType override and no organic-needs blacklist -- droids run as reskinned humans mechanically
 state:    proposed

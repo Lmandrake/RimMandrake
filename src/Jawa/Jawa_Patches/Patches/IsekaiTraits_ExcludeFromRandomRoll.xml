@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  IsekaiTraits_ExcludeFromRandomRoll.xml   Jawa_Patches · authored 2026-08-30
+  ============================================================================
+
+  ISEKAI_GRANT_EXCLUSION_1, owner's ruling: our Star-Wars identity traits
+  (IsekaiTraits_StarWarsReflavor.xml reflavors Isekai_Protagonist/Antagonist
+  to "Chosen One"/"Dark Side Ascendant" — Force-fiction identity) must not be
+  dispensed by blind chance. Identity arrives via backstories/play only:
+  Hero's Awakening Scroll and Villain's Mask (both explicit CompUseEffect
+  grants, unaffected by commonality) are the intended route.
+
+  READ THE MECHANISM FIRST (standing lesson) — there are TWO independent
+  random-roll pathways, not one:
+
+  (1) VANILLA pawn generation reads the TraitDef's own <commonality> field
+      directly for every pawn generated anywhere in the game (colonists,
+      wanderers, prisoners, raiders). Source read 2026-08-30, workshop
+      3657580708 Defs/TraitDefs/IsekaiTraits.xml: Isekai_Protagonist and
+      Isekai_Antagonist both ship commonality=0.01 ("Extremely rare natural
+      roll, also earned via [scroll/mask]" — a DELIBERATE upstream choice we
+      are overriding). CLOSED by this patch: commonality -> 0, mirroring the
+      convention every Isekai_Rank_* trait already uses ("Never randomly
+      assigned" per RankTraits.xml) for exactly this "earned only" pattern.
+      Explicit grants (CompUseEffect_IsekaiTrait.DoEffect -> AddIsekaiTrait ->
+      Trait.GainTrait) call GainTrait directly and never consult commonality,
+      so the scroll/mask still work identically after this patch.
+
+  (2) ISEKAI's OWN NPC trait roller, IsekaiTraitHelper.RollRandomTraits
+      (Source/IsekaiLeveling/Core/IsekaiTraitHelper.cs), is called from
+      PawnStatGenerator.InitializePawnStats for every pawn the mod's own
+      component initializes. It reads a HARDCODED C# dictionary
+      (TraitCommonality, mirroring the same 0.01/0.01 values) — NOT the live
+      TraitDef.commonality field. This patch (an XML edit) CANNOT reach that
+      pathway; no PatchOperation touches C# state. Reflected in the item's
+      progress note as a separate, smaller residual gap (needs a Harmony
+      reflection patch removing Protagonist/Antagonist from the private
+      static RollableTraits list — not attempted here, no existing Jawa_
+      Harmony-patch DLL to host it in cheaply). Actual exposure through this
+      path is small (0.01 weight among dozens of candidates, itself gated
+      behind an 80%-chance-of-zero roll) but nonzero.
+-->
+<Patch>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>ISEKAI RPG LEVELING</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/TraitDef[defName="Isekai_Protagonist"]/commonality</xpath>
+          <value><commonality>0</commonality></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/TraitDef[defName="Isekai_Antagonist"]/commonality</xpath>
+          <value><commonality>0</commonality></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+</Patch>
