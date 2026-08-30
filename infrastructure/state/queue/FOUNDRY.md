@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T02:40:26Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T02:41:11Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## BUILD_BATCH_FACTION_REJECTS_PLAYER_1 jawa/build_batch refuses faction='player' while jawa/spawn_pawn accepts it - two tools, two grammars
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     bug
-summary:  BUILDBATCHFACTIONREJECTSPLAYER1 — two tools, two faction grammars
-prose:    infrastructure/state/items/BUILD_BATCH_FACTION_REJECTS_PLAYER_1.md
 
 ## ORDERED_JOB_CANNOT_SOW_1 jawa/ordered_job cannot set plantDefToSow, so any Sow it issues is accepted and dies in the first toil
 state:    ready

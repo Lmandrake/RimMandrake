@@ -2975,3 +2975,9 @@
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-08-30T02:40:25Z"}
 {"seat":"FOUNDRY","event":"note","id":"FIRE_RAID_ECHOES_REQUESTED_FACTION_1","text":"Re-confirmed live 2026-08-30 (quicktest, game UP) against the current deployed build, independent of BENCH's 08-29 proof. dryRun=true against Jawa_FreeDroidEnclaves (Neutral): factionNotes correctly warns before firing, 'read actual.faction, not resolved.faction'. Real fire: actual={faction:DV_OutlanderRoughBuzzer, substituted:true, requested:Jawa_FreeDroidEnclaves}, arrived=[{faction:DV_OutlanderRoughBuzzer, pawnsArrived:3}]. Independent jawa/list_pawns census of hostile pawns: 3, all DV_OutlanderRoughBuzzer/Co'crik - matches the tool's own report exactly, same discipline as the item's own 'census the arrivals, never the reply' rule. Closing.","ts":"2026-08-30T02:40:25Z"}
 {"seat":"FOUNDRY","event":"close","id":"FIRE_RAID_ECHOES_REQUESTED_FACTION_1","sha":"b1221996","ts":"2026-08-30T02:40:26Z"}
+{"seat":"FOUNDRY","event":"claim","id":"BUILD_BATCH_FACTION_REJECTS_PLAYER_1","ts":"2026-08-30T02:41:03Z"}
+{"seat":"FOUNDRY","event":"start","id":"BUILD_BATCH_FACTION_REJECTS_PLAYER_1","ts":"2026-08-30T02:41:03Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","ts":"2026-08-30T02:41:03Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-08-30T02:41:10Z"}
+{"seat":"FOUNDRY","event":"note","id":"BUILD_BATCH_FACTION_REJECTS_PLAYER_1","text":"Live-verified 2026-08-30 (quicktest, game UP): jawa/build_batch {ops:'DiningChair:140,50', faction:'player'} -> placed successfully, thing.faction='PlayerColony', no refusal. Matches the item's own prove-it plan exactly. Closing.","ts":"2026-08-30T02:41:10Z"}
+{"seat":"FOUNDRY","event":"close","id":"BUILD_BATCH_FACTION_REJECTS_PLAYER_1","sha":"4f135423","ts":"2026-08-30T02:41:11Z"}
