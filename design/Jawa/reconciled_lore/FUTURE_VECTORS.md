@@ -17,7 +17,10 @@ simulation produces Star Wars-shaped stories on its own.
    reputation — ruled a pack on top, not platform).
 2. **The dungeons arc.** Assailant flesh dungeon + Forsaken vault design with
    the owner; the Sarlacc (confirmed buildable pit-gate rebrand) and They! ant
-   nests slot in behind them as living-location dungeons.
+   nests slot in behind them as living-location dungeons. Build spec (site,
+   thaw-gate, content palette, KCSG route, six-vault siting+grammar):
+   `worldbuilding/dungeons_arc_spec.md` — creative lock-in still owed with the
+   owner per this line.
 3. **Research tree normalization** — the full-tree pass after droids land.
 
 ## The big standalone candidates (dream-text §28, judged against today)

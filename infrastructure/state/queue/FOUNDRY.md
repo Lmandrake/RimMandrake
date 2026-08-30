@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T20:07:01Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T20:11:19Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -171,6 +171,24 @@ kind:     task
 summary:  Two named leads first: They/Them (ants ruled OUT FOREVER — GAPS 11 2026-08-30;
 prose:    infrastructure/state/items/MOD_LIST_OUTGROWN_AUDIT_2.md
 
+## ASSAILANT_DUNGEON_BUILD_1 Build the Assailant flesh dungeon: frozen first-impact complex, thaw-gated, deep Umbra
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  Full spec: design/Jawa/worldbuilding/dungeonsarcspec.md §2. Summary:
+prose:    infrastructure/state/items/ASSAILANT_DUNGEON_BUILD_1.md
+
+## VAULT_DUNGEON_BUILD_1 Build the six Forsaken vaults: concentric grammar templates, LARGE maps, quicktest-proven
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  Full spec: design/Jawa/worldbuilding/dungeonsarcspec.md §3. Summary:
+prose:    infrastructure/state/items/VAULT_DUNGEON_BUILD_1.md
+
 ## DROIDWORKS_ISFLESH_RELATIONS_CRASH_1 isOrganic:false + Humanlike intelligence NREs on pawn generation for any faction with an ideo -- pawn.relations is never allocated (PawnComponentsUtility gates it on IsFlesh), pre-existing on OuterRim_BattleDroid too
 state:    doing
 row:      unassigned
@@ -188,6 +206,15 @@ target:   v1
 kind:     task
 summary:  Phase 2 prep per design/Jawa/pawnflavordesign.md § Open questions, item 6: a
 prose:    infrastructure/state/items/PAWN_FLAVOR_PHASE2_PROSE_1.md
+
+## COLONY_VISIBILITY_STAT_1 Design Colony Visibility as a first-class player-facing stat (F18): nine hands on one dial, owns threat-point modulation (replace-not-stack per F12); mod feasibility pass
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Design pass (per F18/F12, design/Jawa/salvationenginereview.md, and the
+prose:    infrastructure/state/items/COLONY_VISIBILITY_STAT_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -325,26 +352,6 @@ _none._
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
 
-## ASSAILANT_DUNGEON_BUILD_1 Build the Assailant flesh dungeon: frozen first-impact complex, thaw-gated, deep Umbra
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/ASSAILANT_DUNGEON_BUILD_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ASSAILANT_DUNGEON_BUILD_1.md
-
-## VAULT_DUNGEON_BUILD_1 Build the six Forsaken vaults: concentric grammar templates, LARGE maps, quicktest-proven
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/VAULT_DUNGEON_BUILD_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/VAULT_DUNGEON_BUILD_1.md
-
 ## GRAFFITI_MOD_EXPANSION_1 Assess the subscribed graffiti mod, then expand it: sacred graffiti, socially infuriating/amusing graffiti, beautiful graffiti
 state:    proposed
 row:      unassigned
@@ -362,15 +369,5 @@ needs:    offline
 target:   v1
 kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SACRED_SITES_PASS_1.md yet — write one when you have something to say)
+summary:  <!-- status: live --
 prose:    infrastructure/state/items/SACRED_SITES_PASS_1.md
-
-## COLONY_VISIBILITY_STAT_1 Design Colony Visibility as a first-class player-facing stat (F18): nine hands on one dial, owns threat-point modulation (replace-not-stack per F12); mod feasibility pass
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/COLONY_VISIBILITY_STAT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/COLONY_VISIBILITY_STAT_1.md
