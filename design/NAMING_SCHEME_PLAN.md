@@ -55,8 +55,7 @@ exemplar) · SacredGraffiti (core; the nine mark-styles extract to a RimUtinni
 content pack) · WreckedMachines (core; Rekko-relic hooks extract to
 RimUtinni) · StrandedQuest (**VERIFY in Phase 1**: read its 2 defs' quest
 text — campaign flavor would make it RimUtinni) · Inhabited (297 defs) ·
-PlanetPresetPrime · RimDefDump · JawaRules (**misnamed**; verify its 2 rules
-are engine-level, then rename) · DesertVehicleReskin (**re-assigned by review
+PlanetPresetPrime · RimDefDump · DesertVehicleReskin (**re-assigned by review
 finding 1**: it redraws Alpha Vehicles — Neolithic draught animals for desert
 reading — not SW content; fix-mod rule → the fixed mod is generic) ·
 GravshipAstronautFix · PhytokinBarkHeadFix · ResearchKitEastFix ·
@@ -65,7 +64,12 @@ ToolBeltFix · SauridFrillFix.
 **RimStarWars (10):** RimMandrake_StarWarsRaces (**511 defs — the largest
 re-prefix, and currently carrying the top-tier name on SW content**) ·
 Droidworks (176 `DW_`; campaign roster/curation extracts to RimUtinni) ·
-JawaIonWeapons · JawaIkee · JawaVoice (**straddle, review finding 3**: the
+JawaIonWeapons · JawaIkee · JawaRules (**re-tiered by Phase-1 evidence**: its
+4 Harmony rules key to the MandrakeJawa xenotype and droid pawns — species
+rules, not engine; 2 generic rules noted as later RM-extract candidates) ·
+JawaVoice (**straddle, review finding 3, CONFIRMED by Phase-1 line skim**:
+lines are generic Jawaese, but 6 patch files carry god/ship/campaign
+references → Phase 3 extract): the
 Jawaese-bubble framework is RSW; the authored line corpus is campaign flavor
 — skim the lines in Phase 1 and extract RUT content if they name the
 clan/ship/gods) · Jawa_Armoury (SW gun rebalance; campaign armory-doctrine
@@ -82,9 +86,24 @@ misfiled under `src/RimMandrake/`) · AshkarrLandmarkArt.
 → RimStarWars; campaign doctrine patches → RimUtinni. Needs per-file triage;
 its own execution sub-item.
 
-_Count reconciliation: 14+10+6+1 = 31 assigned vs the census's 32 About.xml
-roots — the Phase 1 rename map enumerates every About.xml and reconciles the
-delta exactly; no assignment ships on these lists alone._
+_Count RECONCILED (Phase 1, MEASURED): 31 About.xml roots exist — the
+census's "32" was a miscount; these lists are complete. Post-Phase-1 tiers:
+RM 13 · RSW 11 · RUT 6 · SPLIT 1. Def surface: **1,323** rename rows (higher
+than the census's 1,261 because defs declared inside `Patches/` payloads
+count too — they must be renamed as well). RSW carries 778 of 1,323: the
+Star Wars collection is the heaviest migration surface._
+
+## 3b. Phase 1 — DELIVERED 2026-08-30
+
+`src/RimMandrake/Utils/naming_lint.py` (standalone warn-mode; `--strict` for
+the future hard gate; deploy wiring deliberately left to the execution item)
+and `infrastructure/state/naming_rename_map.csv` (1,399 rows: 31 mod ·
+31 packageId · 1,323 def · 14 namespace, every VERIFY resolved with evidence
+in its note column). **Lint baseline at delivery: 31 mods, 31 non-compliant,
+72 violations** — the pre-migration debt, re-runnable any time; zero
+exemption leaks (the JawaBench boundary is already clean). Phase 2 executes
+off the map; §7's question 3 is resolved (JawaRules → RimStarWars, by
+evidence).
 
 **In-flight content (born correctly from today):** Covered Pits core → RM ·
 trap primitive tier → RM (owner-explicit) · ion/capture absorption patches →
