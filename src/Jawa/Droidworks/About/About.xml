@@ -8,6 +8,7 @@
     <li>
       <packageId>erdelf.HumanoidAlienRaces</packageId>
       <displayName>Humanoid Alien Races</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/839005762</steamWorkshopUrl>
     </li>
   </modDependencies>
   <loadAfter>

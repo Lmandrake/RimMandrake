@@ -193,3 +193,19 @@ WORLDMAP_V1_original.rws edited: Salvagers ("The Comet Party") scribed
 `defeated=True` (backup `.pre_salvager_fold_2026-08-29.rws`). On the next
 CAMPAIGN load: no Scribe error naming `Faction_24` or `Salvagers`; The Comet
 Party absent from the faction/comms UI (or listed defeated); Junkers unchanged.
+
+## Load scored 2026-08-30 (the doctrine load, BENCH — game up at 02:0x, build 585b31e0)
+- ✅ TURRET DOCTRINE: 72-op patch (anticraft included) + renames applied, 0
+  failures, 0 duplicate Jawa_TD_* errors; Cherry Picker removal list carries
+  the turret cuts (autocannon sentinel read). Grenade_TurretPack key is INERT
+  (projectile-shaped def, CP does not process it) — harmless: its delivering
+  apparel IS removed, so the projectile is unreachable. Key left in place.
+- ✅ PAWN_FLAVOR/RAKATA/ISEKAI/EMPIRE_PURSUIT/SALVAGERS: all FAIL strings zero
+  on the PREVIOUS load's log (harvested before the cycle); BackstoryDef
+  Cherry-Picker sentinel fired there. This load: Jawa_ config errors 0,
+  cross-refs 0.
+- ✅ JawaBench ready: 301 tools, build 585b31e0 (HEAD) — companion current.
+- ⚠ Droidworks (inactive) logged a dependency-URL warning ×2 — About.xml
+  fixed + redeployed same sitting; gone at next launch.
+- Bio-tab positive check + live-fire observations ride the bridge session
+  (bridge held by FOUNDRY at scoring time; BENCH queued on release).
