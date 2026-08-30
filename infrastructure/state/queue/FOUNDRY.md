@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T02:38:16Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T02:40:26Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## FIRE_RAID_ECHOES_REQUESTED_FACTION_1 jawa/fire_raid reports the faction you asked for even when the worker raids with a different one
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     bug
-summary:  FIRERAIDECHOESREQUESTEDFACTION1 — it reports what you asked for, not what raided
-prose:    infrastructure/state/items/FIRE_RAID_ECHOES_REQUESTED_FACTION_1.md
 
 ## BUILD_BATCH_FACTION_REJECTS_PLAYER_1 jawa/build_batch refuses faction='player' while jawa/spawn_pawn accepts it - two tools, two grammars
 state:    ready
