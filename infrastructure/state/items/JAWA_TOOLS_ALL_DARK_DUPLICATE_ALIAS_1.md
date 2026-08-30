@@ -44,18 +44,20 @@ the attribute open, not any string literal) for any other duplicate alias — no
 Builds clean, 0 errors 0 warnings.
 
 ## Verify
-**NOT YET DEPLOYED — the game is UP, BENCH holds the bridge, the companion DLL cannot
-be written while RimWorld runs.** Deploy at the next down-window
-(`build.py --gm --apply`), then confirm live: `rimbridge_client.py --list-tools` shows
-`jawa/*` tools again (should be ~278: the pre-existing 253 + this session's 25, minus
-nothing — `bill_add_legacy` is a rename, not a removal).
+**Deployed and confirmed live, 2026-08-30.** Deployed with `build.py --gm --apply`
+while the game was DOWN, then launched (full 585-mod list, ~15 min cold load) and ran
+`prove_new_tools.py --census`: **301 of 302 `jawa/*` tools in the deployed DLL are
+registered live** on the running bridge (426 tools on the bridge overall, counting the
+125 core `rimworld/*`). The one apparent gap, `jawa/revoke`, is not a regression —
+grep confirms it was never implemented (`JawaBenchPawnKitTools.cs:212`: "there is no
+revoke tool yet"); the census script's own expectation list is stale, not the tools.
 
 ## criteria
 - [x] Root cause named from the log, not guessed.
 - [x] Fixed: the older duplicate renamed, the documented/relied-upon one keeps the name.
 - [x] Whole tool surface re-scanned for any OTHER duplicate alias — none found.
 - [x] Builds clean.
-- [ ] Deployed and live tool count confirmed non-zero. Needs the game down, then bridge.
+- [x] Deployed and live tool count confirmed non-zero. 301/302 registered live, 2026-08-30.
 
 ## Watch out
 Add a duplicate-alias check to `build.py` itself so this cannot happen a third time —

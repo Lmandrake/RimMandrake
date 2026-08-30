@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T18:27:43Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: FOUNDRY
+as-of: 2026-08-30T18:40:28Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -116,15 +116,6 @@ target:   v1
 kind:     build
 summary:  New file JawaBenchGenTools2.cs (4 tools, ungated — map-generation/roof-repair
 prose:    infrastructure/state/items/BRIDGE_GEN_AND_STORYTELLER_TOOLS_1.md
-
-## JAWA_TOOLS_ALL_DARK_DUPLICATE_ALIAS_1 Every jawa/ bridge tool is dark right now - duplicate jawa/bill_add alias crashed the WHOLE provider registration
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     bug
-summary:  jawa/billadd was declared TWICE — two independently-written tools, same alias:
-prose:    infrastructure/state/items/JAWA_TOOLS_ALL_DARK_DUPLICATE_ALIAS_1.md
 
 ## BRIDGE_PIPE_NET_INFO_1 jawa/pipe_net_info: VEF verified, Rimefeller/DBH generic reflection dump, per owner ruling
 state:    doing  (BLOCKED)
@@ -364,16 +355,6 @@ blocked:  built clean this game-loading window, not yet deployed - game must be 
 summary:  New file JawaBenchGenTools2.cs (4 tools, ungated — map-generation/roof-repair
 prose:    infrastructure/state/items/BRIDGE_GEN_AND_STORYTELLER_TOOLS_1.md
 
-## JAWA_TOOLS_ALL_DARK_DUPLICATE_ALIAS_1 Every jawa/ bridge tool is dark right now - duplicate jawa/bill_add alias crashed the WHOLE provider registration
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     bug
-blocked:  fixed in source, builds clean; NOT deployed - game is up, BENCH holds bridge, DLL cannot be written while RimWorld runs. Deploy next down-window.
-summary:  jawa/billadd was declared TWICE — two independently-written tools, same alias:
-prose:    infrastructure/state/items/JAWA_TOOLS_ALL_DARK_DUPLICATE_ALIAS_1.md
-
 ## BRIDGE_PIPE_NET_INFO_1 jawa/pipe_net_info: VEF verified, Rimefeller/DBH generic reflection dump, per owner ruling
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -483,5 +464,5 @@ needs:    offline
 target:   v1
 kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/GRAFFITI_MOD_EXPANSION_1.md yet — write one when you have something to say)
+summary:  Scope notes (BENCH, filing sitting 2026-08-30)
 prose:    infrastructure/state/items/GRAFFITI_MOD_EXPANSION_1.md
