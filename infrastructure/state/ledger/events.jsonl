@@ -3040,3 +3040,5 @@
 {"seat":"FOUNDRY","event":"bridge","state":"taken","ts":"2026-08-30T09:59:37Z"}
 {"seat":"FOUNDRY","event":"note","id":"VEHICLE_ION_TIER_1","text":"FOUNDRY 2026-08-30 live-verify FAILED: real vehicle (VVE_Mule) shows zero stun effect from JawaIon_Damage despite patch registered correctly and all static checks passing. Control test on OuterRim_BattleDroid confirmed methodology sound (720 ticks, matches prior measurement). Root cause NOT found via static reading - needs trace logging + rebuild in next DOWN window. Full writeup in the item's own Live-verify section. Item stays open, not closed.","ts":"2026-08-30T10:08:16Z"}
 {"seat":"FOUNDRY","event":"close","id":"VEHICLE_FRAMEWORK_AERIAL_DEBUG_1","sha":"pending","ts":"2026-08-30T10:08:16Z"}
+{"seat":"FOUNDRY","event":"note","id":"VEHICLE_FRAMEWORK_AERIAL_DEBUG_1","text":"FOUNDRY 2026-08-30: the close event's sha field above read 'pending' (recorded before commit) - actual sha is b395127a.","ts":"2026-08-30T10:08:37Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-08-30T10:08:37Z"}
