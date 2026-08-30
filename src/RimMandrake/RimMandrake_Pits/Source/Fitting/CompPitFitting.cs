@@ -60,7 +60,8 @@ namespace RimMandrake.Pits
                     // drowning progress can be read back like any other hediff.
                     if (!CanSwim(p))
                     {
-                        HealthUtility.AdjustSeverity(p, RMPits_HediffDefOf.RM_PitDrowning, 1f);
+                        HealthUtility.AdjustSeverity(p, RMPits_HediffDefOf.RM_PitDrowning,
+                            Props.drowningSeverityPerInterval);
                     }
                     break;
             }

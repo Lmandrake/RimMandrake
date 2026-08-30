@@ -70,6 +70,13 @@ TIERS = {
         "want": [BRIDGE],
         "dlc": False,
     },
+    "pits": {
+        "why": "Prove the RimMandrake Pits framework (dig stages, mass-sum "
+               "cover trigger, struggle escape) with nothing else on the map "
+               "that could spring a trap or explain a failure.",
+        "want": [BRIDGE, "mandrake.rimmandrakepits"],
+        "dlc": False,
+    },
     "bench": {
         "why": "RimBridge + our mods + the smallest content set that can answer "
                "the open balance questions: saber vs vibro vs armour, ion vs "

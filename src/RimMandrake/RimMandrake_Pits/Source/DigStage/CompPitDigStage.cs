@@ -38,6 +38,24 @@ namespace RimMandrake.Pits
             }
         }
 
+        // A Shallow dig site has RequiredStages == 1, and placement IS stage 1
+        // (PitDepthTier: "a Shallow dig site finishes open the moment its frame
+        // completes"). Nothing used to implement that: AdvanceStage was the only
+        // caller of CompleteToOpenPit, and a Shallow site never advances, so it
+        // sat as a dig site forever - measured live 2026-08-30, and it stranded
+        // every one of the six Shallow fittings, which is the whole fitting
+        // family. Completed here on the first tick rather than in
+        // PostSpawnSetup, because that would Destroy the parent from inside its
+        // own spawn.
+        public override void CompTick()
+        {
+            base.CompTick();
+            if (!NeedsMoreDigging && parent.Spawned)
+            {
+                CompleteToOpenPit();
+            }
+        }
+
         private void ResetStageWork()
         {
             workLeftThisStage = Props.depthTier.WorkPerAdditionalStage();

@@ -17,8 +17,14 @@
        PLACEHOLDER ART - see Pit_OpenPits.xml header.
        ================================================================== -->
 
-  <ThingDef Abstract="true" ParentName="BuildingBase">
-    <defName>RM_PitDigSiteBase</defName>
+  <ThingDef Name="RM_PitDigSiteBase" Abstract="true" ParentName="BuildingBase">
+    <!-- 🔴 REQUIRED, and measured: BuildingBase never sets tickerType, so it
+         defaults to TickerType.Never. Without this line CompPitCoverTrigger.CompTick
+         and Building_OpenPit.Tick never run at all - proved live 2026-08-30, an
+         immobilised 62.75kg pawn sat on an armed 40kg cover for 200 ticks and the
+         trap did not spring. The whole mass-trigger and struggle-escape mechanism
+         is dead without it. -->
+    <tickerType>Normal</tickerType>
     <thingClass>RimMandrake.Pits.Building_PitDigSite</thingClass>
     <graphicData>
       <texPath>Things/Building/Security/TrapSpikeArmed</texPath>

@@ -18,8 +18,14 @@
        is listed there, not here.
        ================================================================== -->
 
-  <ThingDef Abstract="true" ParentName="BuildingBase">
-    <defName>RM_OpenPitBase</defName>
+  <ThingDef Name="RM_OpenPitBase" Abstract="true" ParentName="BuildingBase">
+    <!-- 🔴 REQUIRED, and measured: BuildingBase never sets tickerType, so it
+         defaults to TickerType.Never. Without this line CompPitCoverTrigger.CompTick
+         and Building_OpenPit.Tick never run at all - proved live 2026-08-30, an
+         immobilised 62.75kg pawn sat on an armed 40kg cover for 200 ticks and the
+         trap did not spring. The whole mass-trigger and struggle-escape mechanism
+         is dead without it. -->
+    <tickerType>Normal</tickerType>
     <thingClass>RimMandrake.Pits.Building_OpenPit</thingClass>
     <label>open pit</label>
     <description>A pit dug into the ground. Cover it to arm it as a trap, or leave it open as a plain hazard.</description>
@@ -61,7 +67,9 @@
     <label>spiked pit</label>
     <description>An earthen pit lined with scrap spikes. A cheap kill-zone.</description>
     <comps>
-      <li Class="RimMandrake.Pits.CompProperties_PitCoverTrigger" />
+      <!-- CompPitCoverTrigger is INHERITED from RM_OpenPitBase; RimWorld
+           APPENDS a child <comps> list to its parent's, so redeclaring it
+           here would give the pit two live trigger comps. -->
       <li Class="RimMandrake.Pits.CompProperties_PitFitting">
         <fittingType>Spiked</fittingType>
       </li>
@@ -73,7 +81,9 @@
     <label>oiled pit</label>
     <description>An earthen pit with flammable oil pooled at the bottom. Ignitable at will.</description>
     <comps>
-      <li Class="RimMandrake.Pits.CompProperties_PitCoverTrigger" />
+      <!-- CompPitCoverTrigger is INHERITED from RM_OpenPitBase; RimWorld
+           APPENDS a child <comps> list to its parent's, so redeclaring it
+           here would give the pit two live trigger comps. -->
       <li Class="RimMandrake.Pits.CompProperties_PitFitting">
         <fittingType>Oiled</fittingType>
       </li>
@@ -85,7 +95,9 @@
     <label>poison pit</label>
     <description>An earthen pit, its floor slicked with toxin. The catch weakens over time instead of dying on impact.</description>
     <comps>
-      <li Class="RimMandrake.Pits.CompProperties_PitCoverTrigger" />
+      <!-- CompPitCoverTrigger is INHERITED from RM_OpenPitBase; RimWorld
+           APPENDS a child <comps> list to its parent's, so redeclaring it
+           here would give the pit two live trigger comps. -->
       <li Class="RimMandrake.Pits.CompProperties_PitFitting">
         <fittingType>Poison</fittingType>
       </li>
@@ -97,7 +109,9 @@
     <label>deep water pit</label>
     <description>A flooded chasm. There is no climbing out of this one.</description>
     <comps>
-      <li Class="RimMandrake.Pits.CompProperties_PitCoverTrigger" />
+      <!-- CompPitCoverTrigger is INHERITED from RM_OpenPitBase; RimWorld
+           APPENDS a child <comps> list to its parent's, so redeclaring it
+           here would give the pit two live trigger comps. -->
       <li Class="RimMandrake.Pits.CompProperties_PitFitting">
         <fittingType>Water</fittingType>
       </li>
@@ -109,7 +123,9 @@
     <label>oubliette</label>
     <description>An earthen pit with an ion charge at the bottom. Mechanoids and droids that fall in switch off.</description>
     <comps>
-      <li Class="RimMandrake.Pits.CompProperties_PitCoverTrigger" />
+      <!-- CompPitCoverTrigger is INHERITED from RM_OpenPitBase; RimWorld
+           APPENDS a child <comps> list to its parent's, so redeclaring it
+           here would give the pit two live trigger comps. -->
       <li Class="RimMandrake.Pits.CompProperties_PitFitting">
         <fittingType>Oubliette</fittingType>
       </li>

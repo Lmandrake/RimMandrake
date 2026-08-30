@@ -30,6 +30,16 @@ namespace RimMandrake.Pits
 
             if (--ticksUntilScan > 0) return;
             ticksUntilScan = Props.scanIntervalTicks;
+            RunScan();
+        }
+
+        // The scan body, callable on demand. Split out so the quicktest matrix
+        // can drive one deterministic scan from the bridge instead of stepping
+        // ticks and hoping the cadence lined up; CompTick's behaviour is
+        // unchanged.
+        public void RunScan()
+        {
+            if (!Pit.Covered || Pit.Sprung) return;
 
             float summedMass = 0f;
             List<Pawn> onCover = new List<Pawn>();

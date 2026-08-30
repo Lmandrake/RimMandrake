@@ -53,6 +53,7 @@
     <Compile Include="Escape\PitEscapeUtility.cs" />
     <Compile Include="Holding\Building_OpenPit.cs" />
     <Compile Include="Holding\Building_PitCell.cs" />
+    <Compile Include="Debug\PitDebugActions.cs" />
   </ItemGroup>
 
   <ItemGroup>

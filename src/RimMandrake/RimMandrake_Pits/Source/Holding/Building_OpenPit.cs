@@ -51,6 +51,7 @@ namespace RimMandrake.Pits
 
         public bool Covered => covered;
         public bool Sprung => innerContainer != null && innerContainer.Count > 0;
+        public int OccupantCount => innerContainer == null ? 0 : innerContainer.Count;
 
         public int MaxOccupants
         {
@@ -143,7 +144,7 @@ namespace RimMandrake.Pits
                         defaultLabel = "RMPits_Uncover".Translate(),
                         defaultDesc = "RMPits_UncoverDesc".Translate(),
                         icon = TexCommand.ForbidOff,
-                        action = delegate { covered = false; CoverTier = PitCoverTier.None; DirtyMapMesh(); },
+                        action = delegate { ClearCover(); },
                     };
                 }
             }
@@ -162,18 +163,40 @@ namespace RimMandrake.Pits
                 defaultLabel = labelKey.Translate(),
                 defaultDesc = "RMPits_ArmCoverDesc".Translate(tier.TriggerMassKg()),
                 icon = TexCommand.ForbidOff,
-                action = delegate
-                {
-                    CoverTier = tier;
-                    covered = true;
-                    DirtyMapMesh();
-                },
+                action = delegate { SetCover(tier); },
             };
         }
 
+        // Arming and disarming as METHODS, not gizmo-lambda bodies: a gizmo
+        // body is unreachable from anything but a human clicking it, and the
+        // mass-trigger matrix has to be driven from the bridge (see
+        // Debug/PitDebugActions.cs). Same code path either way.
+        public void SetCover(PitCoverTier tier)
+        {
+            CoverTier = tier;
+            covered = true;
+            DirtyMapMesh();
+        }
+
+        public void ClearCover()
+        {
+            covered = false;
+            CoverTier = PitCoverTier.None;
+            DirtyMapMesh();
+        }
+
+        // 🔴 MUST include MapMeshFlagDefOf.Things. This was Buildings ALONE, and
+        // measured live 2026-08-30 the terrain-mimic never appeared: arming three
+        // pits left them drawing their own def graphic, identical to the two
+        // uncovered controls beside them. A Thing's own Print() output lives in
+        // the section layer dirtied by Things (Verse/Thing.cs DirtyMapMesh);
+        // Buildings dirties the linked/buildings layers instead, so the section
+        // was never regenerated and the pre-arm print stayed on screen. Both
+        // flags are sent because a pit is also a Building.
         protected void DirtyMapMesh()
         {
-            Map?.mapDrawer.MapMeshDirty(Position, MapMeshFlagDefOf.Buildings);
+            Map?.mapDrawer.MapMeshDirty(Position,
+                (ulong)MapMeshFlagDefOf.Things | (ulong)MapMeshFlagDefOf.Buildings);
         }
 
         // --- Springing --------------------------------------------------
@@ -218,7 +241,7 @@ namespace RimMandrake.Pits
             }
         }
 
-        private void RunStruggleInterval()
+        internal void RunStruggleInterval()
         {
             CompPitFitting fitting = GetComp<CompPitFitting>();
             List<Pawn> occupants = new List<Pawn>();
