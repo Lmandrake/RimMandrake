@@ -188,4 +188,26 @@ game-down window.
       `symbol` and `settlement` NRE on unprimed `GenOption.mineables` /
       `GenOption.settlementLayout`. `tiled` has no defs on this mod list.
 
+## Fix built, 2026-08-30, BENCH (offline pass, game UP — no deploy possible)
+
+All three `structure`/`settlement`/`symbol` defects fixed, matching KCSG's own
+vendored `DebugActions.cs` call sequence exactly:
+- `structure`: `Generate` lookup now asks for the real 5-param declared arity
+  (`StructureLayoutDef, CellRect, Map, Faction, bool`) instead of the 3-param
+  call-site shape; call order fixed to `GetAllMineableIn` → `CleanRect` →
+  `Generate` (was `CleanRect` → `GetAllMineableIn` → `Generate`).
+- `settlement`: now sets `BaseGen.globalSettings.map` (vanilla, direct) and
+  `GenOption.settlementLayout` (KCSG, by reflection — the field
+  `GenOption.RoadOptions` reads with no null guard) before calling
+  `GenOption.GetAllMineableIn` then `SettlementGenUtils.Generate`.
+- `symbol`: now calls `GenOption.GetAllMineableIn(CellRect.SingleCell(cell), map)`
+  before `SymbolUtils.Generate`, priming the `mineables` dictionary
+  `GetMineableAt` dereferences with no null guard.
+`tiled` untouched — no defect was found in it, only that no `TiledStructureDef`
+exists on the live mod list to test against.
+Builds clean: `python.exe build.py --gm` → 0 errors, 0 warnings.
+**Fixed in source, builds clean, awaiting next game-down deploy + live re-verify**
+— criterion above stays unchecked until all three modes are re-proven live
+(`tiled` remains untestable on this mod list, not a defect).
+
 --- history ---

@@ -151,15 +151,25 @@ namespace JawaBench.BridgeTools
 
                     var cleanRect = layoutUtils.GetMethod("CleanRect", KcsgStatic, null, new[] { defType, typeof(Map), typeof(CellRect), typeof(bool) }, null);
                     var getMineable = genOption.GetMethod("GetAllMineableIn", KcsgStatic, null, new[] { typeof(CellRect), typeof(Map) }, null);
-                    var generate = layoutUtils.GetMethod("Generate", KcsgStatic, null, new[] { defType, typeof(CellRect), typeof(Map) }, null);
+                    // 🔴 BRIDGE_KCSG_VGE_TOOLS_1: the real Generate() declares 5/6/7 params
+                    // (Faction/bool/Rot4? are optional args, which do NOT show up as a separate
+                    // overload via reflection - GetMethod needs the actual declared arity).
+                    // This is the 5-param overload: Generate(StructureLayoutDef, CellRect, Map,
+                    // Faction=null, bool=false) - the one KCSG's own debug action calls via
+                    // layoutDef.Generate(cellRect, map).
+                    var generate = layoutUtils.GetMethod("Generate", KcsgStatic, null,
+                        new[] { defType, typeof(CellRect), typeof(Map), typeof(Faction), typeof(bool) }, null);
                     if (cleanRect == null || getMineable == null || generate == null)
                         return Fail("KCSG.LayoutUtils/GenOption method shapes did not match - names may have changed since vendoring.");
 
                     try
                     {
-                        cleanRect.Invoke(null, new object[] { layoutDef, map, r, true });
+                        // 🔴 Call order matters: KCSG's own debug action (Utils/DebugActions.cs)
+                        // runs GetAllMineableIn -> CleanRect -> Generate. CleanRect reads the
+                        // mineables dictionary GetAllMineableIn primes, so it must run first.
                         getMineable.Invoke(null, new object[] { r, map });
-                        generate.Invoke(null, new object[] { layoutDef, r, map });
+                        cleanRect.Invoke(null, new object[] { layoutDef, map, r, true });
+                        generate.Invoke(null, new object[] { layoutDef, r, map, null, false });
                     }
                     catch (Exception e) { return Fail("KCSG generation threw " + e.GetType().Name + ": " + (e.InnerException?.Message ?? e.Message)); }
 
@@ -178,12 +188,27 @@ namespace JawaBench.BridgeTools
                     if (!TryRect(rect, map, out r, out err)) return Fail(err);
 
                     var settlementGenUtils = KcsgType("SettlementGenUtils");
-                    if (settlementGenUtils == null) return Fail("KCSG.SettlementGenUtils not found.");
+                    var genOption = KcsgType("GenOption");
+                    if (settlementGenUtils == null || genOption == null) return Fail("KCSG.SettlementGenUtils/GenOption not found.");
                     var generate = settlementGenUtils.GetMethod("Generate", KcsgStatic, null, new[] { typeof(ResolveParams), typeof(Map), defType }, null);
-                    if (generate == null) return Fail("KCSG.SettlementGenUtils.Generate method shape did not match.");
+                    var getMineable = genOption.GetMethod("GetAllMineableIn", KcsgStatic, null, new[] { typeof(CellRect), typeof(Map) }, null);
+                    var settlementLayoutField = genOption.GetField("settlementLayout", KcsgStatic);
+                    if (generate == null || getMineable == null || settlementLayoutField == null)
+                        return Fail("KCSG.SettlementGenUtils/GenOption method/field shapes did not match.");
 
+                    // 🔴 BRIDGE_KCSG_VGE_TOOLS_1: SettlementGenUtils.Generate reads
+                    // GenOption.RoadOptions (=> settlementLayout.roadOptions, NO null guard) and,
+                    // when avoidMountains is set, GenOption.GetMineableAt - both unprimed statics
+                    // KCSG's own debug action sets first (Utils/DebugActions.cs Quickspawn):
+                    // BaseGen.globalSettings.map, GenOption.settlementLayout, GetAllMineableIn.
+                    BaseGen.globalSettings.map = map;
                     var rp = new ResolveParams { faction = map.ParentFaction, rect = r };
-                    try { generate.Invoke(null, new object[] { rp, map, sld }); }
+                    try
+                    {
+                        settlementLayoutField.SetValue(null, sld);
+                        getMineable.Invoke(null, new object[] { r, map });
+                        generate.Invoke(null, new object[] { rp, map, sld });
+                    }
                     catch (Exception e) { return Fail("SettlementGenUtils.Generate threw " + e.GetType().Name + ": " + (e.InnerException?.Message ?? e.Message)); }
 
                     return new { success = true, layoutType = "settlement", defName = sld.defName, at = new { x = r.minX, z = r.minZ, w = r.Width, h = r.Height }, ticksGame = TicksGameSafe() };
@@ -224,12 +249,24 @@ namespace JawaBench.BridgeTools
 
                     var structureLayoutType = KcsgType("StructureLayoutDef");
                     var symbolUtils = KcsgType("SymbolUtils");
-                    if (symbolUtils == null || structureLayoutType == null) return Fail("KCSG.SymbolUtils/StructureLayoutDef not found.");
+                    var genOption = KcsgType("GenOption");
+                    if (symbolUtils == null || structureLayoutType == null || genOption == null)
+                        return Fail("KCSG.SymbolUtils/StructureLayoutDef/GenOption not found.");
                     var generate = symbolUtils.GetMethod("Generate", KcsgStatic, null,
                         new[] { defType, structureLayoutType, typeof(Map), typeof(IntVec3), typeof(Faction), typeof(ThingDef) }, null);
-                    if (generate == null) return Fail("KCSG.SymbolUtils.Generate method shape did not match.");
+                    var getMineable = genOption.GetMethod("GetAllMineableIn", KcsgStatic, null, new[] { typeof(CellRect), typeof(Map) }, null);
+                    if (generate == null || getMineable == null)
+                        return Fail("KCSG.SymbolUtils.Generate/GenOption.GetAllMineableIn method shape did not match.");
 
-                    try { generate.Invoke(null, new object[] { sym, null, map, cell, map.ParentFaction, null }); }
+                    // 🔴 BRIDGE_KCSG_VGE_TOOLS_1: SymbolUtils.Generate reaches
+                    // GenOption.GetMineableAt(cell), which NREs unconditionally (no null guard)
+                    // unless GetAllMineableIn primed the backing dictionary first - every real
+                    // KCSG entry point does this before generating.
+                    try
+                    {
+                        getMineable.Invoke(null, new object[] { CellRect.SingleCell(cell), map });
+                        generate.Invoke(null, new object[] { sym, null, map, cell, map.ParentFaction, null });
+                    }
                     catch (Exception e) { return Fail("SymbolUtils.Generate threw " + e.GetType().Name + ": " + (e.InnerException?.Message ?? e.Message)); }
 
                     return new { success = true, layoutType = "symbol", defName = sym.defName, at = new { x = cell.x, z = cell.z }, ticksGame = TicksGameSafe() };
