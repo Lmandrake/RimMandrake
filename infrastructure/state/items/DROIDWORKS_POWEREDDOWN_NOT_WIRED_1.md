@@ -52,4 +52,15 @@ vanilla stun-capture, not the intended state machine.
 ## Depends on
 `DROIDWORKS_FLESHTYPE_NEEDS_GAP_1` — the guard for "is this pawn a droid"
 should key on `DW_FleshType_Droid`, not `IsMechanoid` (wrong bucket) or
-kindDef-name matching (fragile). Land that first.
+kindDef-name matching (fragile). Land that first. **Closed 2026-08-30.**
+
+## Status, 2026-08-30 (FOUNDRY)
+The wiring itself already landed: `HediffComp_IonOverloadsDroid.cs` +
+`Patches/IonBuildup_PowersDownDroid.xml`, commit `6f4c3c77`. `deploy_custom_mods.py
+--mod Droidworks` confirms the game copy is in sync (476 files) — but **Droidworks
+is not enabled in the current 585-mod ModsConfig**, so this session's live game
+cannot exercise it. Today's earlier "Live confirmation" note above was taken on a
+Droidworks-specific quicktest tier, not this load. The three `## criteria` checks
+need a dedicated Droidworks-tier quicktest load to verify (spawn a pilot chassis,
+ion-damage past 0.9, confirm `DW_PoweredDown` lands and does not self-clear, confirm
+`Recipe_RebootDroid` now has something to target) — not done this pass, still open.
