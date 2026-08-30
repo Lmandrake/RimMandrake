@@ -36,7 +36,7 @@ reuses RimStarWars wholesale only if nothing campaign-specific leaked into it.
 
 | Surface | Grammar | Examples |
 |---|---|---|
-| packageId | `<tier>.<modname>`, lowercase | `rimmandrake.pits` · `rimstarwars.races` · `rimutinni.doctrine` |
+| packageId | `mandrake.<tier>.<modname>`, lowercase — **author segment KEPT** (review finding 6: RimWorld resolves mods and MayRequire by packageId; third-party `rimstarwars.*`-style ids are plausible on Workshop and would collide silently; uniqueness beats prettiness) | `mandrake.rm.pits` · `mandrake.rsw.races` · `mandrake.rut.doctrine` |
 | Mod display name | `<Tier>: <Name>` | `RimMandrake: Covered Pits` · `RimUtinni: The Salvation` |
 | defName prefix | `RM_` · `RSW_` · `RUT_` | `RM_PitCover` · `RSW_JawaEyes_Amber` · `RUT_SalvationRite_Landing` |
 | Folder | `src/<Tier>/<ModName>/` | `src/RimStarWars/Droidworks/` |
@@ -50,30 +50,41 @@ mod and the owner signs the exceptions.
 
 ## 3. Tier assignment — all 32 mods (from the MEASURED census)
 
-**RimMandrake (11):** RimMandrake_Pits (27 `RM_`, already clean — the
+**RimMandrake (14):** RimMandrake_Pits (27 `RM_`, already clean — the
 exemplar) · SacredGraffiti (core; the nine mark-styles extract to a RimUtinni
 content pack) · WreckedMachines (core; Rekko-relic hooks extract to
-RimUtinni) · StrandedQuest · Inhabited (297 defs) · PlanetPresetPrime ·
-RimDefDump · JawaRules (**misnamed**; verify its 2 rules are engine-level,
-then rename) · GravshipAstronautFix · PhytokinBarkHeadFix ·
-ResearchKitEastFix · ToolBeltFix · SauridFrillFix.
+RimUtinni) · StrandedQuest (**VERIFY in Phase 1**: read its 2 defs' quest
+text — campaign flavor would make it RimUtinni) · Inhabited (297 defs) ·
+PlanetPresetPrime · RimDefDump · JawaRules (**misnamed**; verify its 2 rules
+are engine-level, then rename) · DesertVehicleReskin (**re-assigned by review
+finding 1**: it redraws Alpha Vehicles — Neolithic draught animals for desert
+reading — not SW content; fix-mod rule → the fixed mod is generic) ·
+GravshipAstronautFix · PhytokinBarkHeadFix · ResearchKitEastFix ·
+ToolBeltFix · SauridFrillFix.
 
 **RimStarWars (10):** RimMandrake_StarWarsRaces (**511 defs — the largest
 re-prefix, and currently carrying the top-tier name on SW content**) ·
 Droidworks (176 `DW_`; campaign roster/curation extracts to RimUtinni) ·
-JawaIonWeapons · JawaIkee · JawaVoice · DesertVehicleReskin · Jawa_Armoury
-(SW gun rebalance; campaign armory-doctrine patches extract to RimUtinni) ·
-BlastDoorFrameAsyncFix · CereanManeFix · KotORBandolierNorthFix ·
-MSEDroidFix.
+JawaIonWeapons · JawaIkee · JawaVoice (**straddle, review finding 3**: the
+Jawaese-bubble framework is RSW; the authored line corpus is campaign flavor
+— skim the lines in Phase 1 and extract RUT content if they name the
+clan/ship/gods) · Jawa_Armoury (SW gun rebalance; campaign armory-doctrine
+patches extract to RimUtinni) · BlastDoorFrameAsyncFix · CereanManeFix ·
+KotORBandolierNorthFix · MSEDroidFix.
 
-**RimUtinni (7):** Jawa_Doctrine · JawaFactionSlate · JawaPlantGrowth ·
-EmpirePursuit (pursuer engine may generalize to RimMandrake later; ship
-Utinni now) · Jawa_PawnFlavor (90 defs — today misfiled under
-`src/RimMandrake/`) · AshkarrLandmarkArt · the future Salvation content pack.
+**RimUtinni (6 + the future Salvation pack):** Jawa_Doctrine ·
+JawaFactionSlate · JawaPlantGrowth (**VERIFY in Phase 1**: a generic growth
+tweak would be RM) · EmpirePursuit (pursuer engine may generalize to
+RimMandrake later; ship Utinni now) · Jawa_PawnFlavor (90 defs — today
+misfiled under `src/RimMandrake/`) · AshkarrLandmarkArt.
 
 **SPLIT (1):** Jawa_Patches (121 defs, 67 patches) — SW races/animals content
 → RimStarWars; campaign doctrine patches → RimUtinni. Needs per-file triage;
 its own execution sub-item.
+
+_Count reconciliation: 14+10+6+1 = 31 assigned vs the census's 32 About.xml
+roots — the Phase 1 rename map enumerates every About.xml and reconciles the
+delta exactly; no assignment ships on these lists alone._
 
 **In-flight content (born correctly from today):** Covered Pits core → RM ·
 trap primitive tier → RM (owner-explicit) · ion/capture absorption patches →
@@ -91,7 +102,7 @@ confirms or collapses it to RimUtinni whole.
 |---|---|---|---|
 | 1 | Live ModsConfig.xml | 24 active `mandrake.*` ids | scripted swap from the rename map, same session as redeploy — game DOWN |
 | 2 | Our own `MayRequire` attrs | **167** | sed from map + a zero-tolerance checker (a wrong MayRequire is a silent no-op; nothing audits it today) |
-| 3 | World-freeze savegames | 6 draft .rws; our BiomeDef/TerrainDef/FactionDefs bake as shortHashes | **renames MUST precede the final freeze**; drafts regenerate after rename |
+| 3 | World-freeze savegames | 6 draft .rws; our BiomeDef/TerrainDef/FactionDefs bake as shortHashes | **renames MUST precede the final freeze.** Drafts do not "regenerate" by script — Ash'karr is hand-authored; the route is a bridge re-import from the CSV bundle (rimworld-world-editing), a game-up bridge-claimed window of its own. Alternative: declare current drafts sacrificial and re-import once, post-rename. (The worldbuilding CSVs/MDs themselves carry zero of our defNames — MEASURED — so the coupling is confined to .rws artifacts and mod XML.) |
 | 4 | `The Salvation.rid` + `MandrakeJawa.xtp` | 17 packageId refs; `Jawa_*` gene defNames | regenerate via `build_salvation_rid.py` AFTER renames, BEFORE worldgen; validate with `validate_save_artifact.py` |
 | 5 | Tooling scripts | 56 .py referencing our names; deploy discovers 2 src dirs | sed from map; extend deploy discovery to `src/<Tier>/` (3 dirs); tooling's own names exempt (§1) |
 | 6 | Patches/xpaths naming our defNames | inside the 1,261-def rename | same map, same sed; validate_patch.py both `--live` and `--defs` after |
@@ -116,15 +127,24 @@ the **rename map** (`infrastructure/state/naming_rename_map.csv`: every old
 defName/packageId/folder → new, with tier and confidence). Owner reviews the
 §3 assignments + straddle splits — a review-sheet if he wants clicks.
 
-**Phase 2 — the atomic migration (one focused session + one game-down
-window):** freeze other seats' writes to `src/` (announce in queues); apply
+**Phase 2 — the atomic migration (one focused session + one game-down window
++ one bridge window for the world re-import):** freeze other seats' writes to
+`src/` with a MECHANISM, not an announcement (review finding 5): a rimflow
+blocking item plus a temporary PreToolUse hook refusing `src/` writes that
+lack the sprint tag — a peer FOUNDRY window mid-build otherwise ships against
+half-renamed defs. The sweep explicitly includes queue files and design specs
+citing old defNames/packageIds (FOUNDRY.md verifiably cites `Jawa_Armoury`-era
+names today). Then apply
 the map — `git mv` folders (history preserved), packageIds, defNames,
 namespaces, MayRequire, xpaths, tool-script references; swap ModsConfig;
 redeploy; `refresh.py`; regenerate .rid/.xtp; run naming_lint (zero
 violations), the MayRequire checker (zero), validate_patch on every patch
 mod, magenta sweep; 22-second minimal-list load + quicktest. **Estimate:
-300–800k tokens** (mostly scripted; verification dominates), executable by
-Opus 5 — the judgment lives in the map, which Phase 1 fixes.
+300–800k tokens PLUS one game-down window (redeploy + ModsConfig swap) PLUS
+one game-up bridge window (world re-import)** — the token number alone
+undersells the wall-clock shape (review finding 9). Mostly scripted;
+verification dominates; executable by Opus 5 — the judgment lives in the
+map, which Phase 1 fixes.
 
 **Phase 3 — content splits (per-item):** Jawa_Patches triage; extract the
 straddle packs (SacredGraffiti marks, WreckedMachines relics, Droidworks
@@ -143,7 +163,10 @@ urgent.
 ## 6. Enforcement (what "enforce it on the whole thing" means mechanically)
 
 1. `naming_lint.py` — the machine gate; refusal wired into deploy from
-   Phase 1 (warn-mode until Phase 2 lands, then hard).
+   Phase 1 (warn-mode until Phase 2 lands, then hard). One added rule
+   (review finding 8): shipped mod XML/C# may not reference exempt-tooling
+   identifiers (JawaBench namespace, `jawa/*` tool names) — the exemption
+   must never leak into shipping content.
 2. CLAUDE.md carries the three-line rule (committed with this plan).
 3. The memory file `rimmandrake-moniker-for-mods` upgraded to the tri-tier
    scheme (done same day) so every future session knows it cold.
@@ -163,6 +186,22 @@ urgent.
 3. **JawaRules**: verify-then-rename to RimMandrake, or is it doctrine?
 4. **Display-name format**: `RimMandrake: Covered Pits` (recommended) vs
    bare names with tier only in packageId.
+
+## 8b. Review round 2 — adversarial fork, all nine findings folded in
+
+DesertVehicleReskin re-tiered to RimMandrake (its target mod is generic — my
+census reasoning was wrong) · StrandedQuest and JawaPlantGrowth carry Phase-1
+VERIFY flags (assignments were unverified guesses) · JawaVoice added to the
+straddle list (framework RSW, line corpus possibly RUT) · the world-draft
+"regeneration" hand-wave replaced with the real route (bridge re-import,
+game-up window) and the sacrificial-drafts alternative · Phase 2's write
+freeze got a mechanism (rimflow blocking item + temporary hook) and the sweep
+now names queue/spec files citing old names · **the packageId grammar changed:
+author segment kept (`mandrake.rm.*`)** — dropping it risked silent Workshop
+collisions on exactly the surface (MayRequire) that fails silently · §3
+counts corrected with an honest 31-vs-32 reconciliation note · an
+exemption-leak lint rule added · the Phase 2 estimate now states its two
+game-window costs, not just tokens.
 
 ## 8. Review log (the improve pass, same sitting)
 

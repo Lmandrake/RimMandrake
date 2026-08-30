@@ -45,7 +45,7 @@ superseded 2026-08-27 — redesign #4, `Fable_Review/`.)*
 Every NEW packageId, defName, C# namespace and mod folder uses the tier
 grammar in `design/NAMING_SCHEME_PLAN.md`: **RimMandrake** (any RimWorld game) /
 **RimStarWars** (any Star Wars scenario) / **RimUtinni** (this campaign) —
-packageId `<tier>.<modname>`, prefixes `RM_`/`RSW_`/`RUT_`. "Jawa" is lore
+packageId `mandrake.<tier>.<modname>`, prefixes `RM_`/`RSW_`/`RUT_`. "Jawa" is lore
 text only. Dev tooling is exempt. Old names migrate under
 NAMING_SCHEME_EXECUTION_1 — do not rename ahead of it.
 
