@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T20:42:26Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T20:44:50Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -190,7 +190,7 @@ summary:  Full spec: design/Jawa/worldbuilding/dungeonsarcspec.md §3. Summary:
 prose:    infrastructure/state/items/VAULT_DUNGEON_BUILD_1.md
 
 ## DROIDWORKS_ISFLESH_RELATIONS_CRASH_1 isOrganic:false + Humanlike intelligence NREs on pawn generation for any faction with an ideo -- pawn.relations is never allocated (PawnComponentsUtility gates it on IsFlesh), pre-existing on OuterRim_BattleDroid too
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
@@ -349,6 +349,16 @@ kind:     task
 blocked:  sequenced with Droidworks phase 3 (droid_system_build_spec.md line 186) — parked behind DROID_SYSTEM_BUILD_1 which needs owner to reopen
 summary:  (no items/DROID_TILES_SOURED_TERRAIN_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DROID_TILES_SOURED_TERRAIN_1.md
+
+## DROIDWORKS_ISFLESH_RELATIONS_CRASH_1 isOrganic:false + Humanlike intelligence NREs on pawn generation for any faction with an ideo -- pawn.relations is never allocated (PawnComponentsUtility gates it on IsFlesh), pre-existing on OuterRim_BattleDroid too
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+blocked:  Fix verified offline as far as source allows: Jawa_Doctrine active, JawaDoctrineCore.dll deployed 10:33 before the 11:23 launch, postfix targets the CORRECT method (the IsFlesh relations gate is in PawnComponentsUtility.CreateInitialComponents, not AddAndRemoveDynamicComponents as this item's spec said), runs before GenerateTraits/GeneratePawnRelations, and nothing nulls relations afterwards. Droidworks is NOT in the 590-entry mod list so OuterRim_BattleDroid is the whole case. LIVE 10/10 STILL OWED: the game is wedged on a never-completing 'Loading world.' long event (mapCount 0, ticksGame frozen 9252, go_to_main_menu NREs, Root_Play throws every frame); bridge healthy, game dead. Needs an owner restart.
+summary:  🔴 Scope correction: this is NOT a Droidworks-only bug
+prose:    infrastructure/state/items/DROIDWORKS_ISFLESH_RELATIONS_CRASH_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
