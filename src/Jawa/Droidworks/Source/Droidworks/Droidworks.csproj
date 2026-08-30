@@ -43,9 +43,12 @@
 
   <ItemGroup>
     <Compile Include="CompDroidDetonation.cs" />
+    <Compile Include="CompDWCharger.cs" />
     <Compile Include="DroidworksDefOf.cs" />
     <Compile Include="DroidworksModExtension.cs" />
     <Compile Include="HediffComp_PoweredDown.cs" />
+    <Compile Include="JobDriver_DWRecharge.cs" />
+    <Compile Include="JobGiver_DWRecharge.cs" />
     <Compile Include="Need_Power.cs" />
     <Compile Include="Recipe_RebootDroid.cs" />
   </ItemGroup>

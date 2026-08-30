@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ========================================================================
+       DW_Recharge — the active half of DROIDWORKS_CHARGING_TRIO_1. Backs
+       Droidworks.JobDriver_DWRecharge (Source/Droidworks/JobDriver_DWRecharge.cs):
+       a droid walks to a DW_ChargeSocket or DW_ChargeDock and stands at its
+       interaction cell while Need_Power rises. Issued both by the player
+       (float menu / forced work) and unprompted by
+       Droidworks.JobGiver_DWRecharge (see ThinkTreeDefs_DWRecharge.xml).
+  ======================================================================== -->
+  <JobDef>
+    <defName>DW_Recharge</defName>
+    <driverClass>Droidworks.JobDriver_DWRecharge</driverClass>
+    <reportString>recharging at TargetA.</reportString>
+    <suspendable>false</suspendable>
+  </JobDef>
+
+</Defs>

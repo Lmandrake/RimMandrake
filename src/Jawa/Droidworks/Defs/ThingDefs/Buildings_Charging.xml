@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ========================================================================
+       DROIDWORKS_CHARGING_TRIO_1 — three-tier charging (design/Jawa/
+       droid_system_spec.md section 5: "room nimbus / dock / socket"). All
+       three back Droidworks.CompDWCharger (Source/Droidworks/CompDWCharger.cs).
+       Spectacular visuals (sparks, lightning, pulsing nimbus glow) are
+       EXPLICITLY DEFERRED per that spec - none of these three have anything
+       beyond a static sprite. Fields mirror vanilla's own mech-recharger
+       shape (Biotech/ThingDefs_Buildings/Buildings_Rechargers.xml,
+       BasicRecharger/StandardRecharger) rather than guessed: ParentName
+       BuildingBase (not BaseMechCharger - that abstract's thingClass,
+       Building_MechCharger, is mechanoid-pawn-specific and wrong for a droid
+       pawn using the ordinary Pawn/Job system), hasInteractionCell + goto-
+       InteractionCell in JobDriver_DWRecharge, CompPowerTrader for the power
+       draw.
+
+       Art: DW_ChargeDock reuses Droid Depot's DroidBay 4-directional set
+       verbatim (Textures/OuterRim/Building/DroidBay/DroidBay_*.png) - a
+       parking-bay footprint that already reads as "droid docks here". Socket
+       and Nimbus reuse DroidChargePlatform.png unmodified, at different
+       drawSizes - a plain recolor pass, per BENCH's own note ("owner
+       regenerates art later"), is a documented follow-up, not built here.
+  ======================================================================== -->
+
+  <!-- DW_ChargeSocket — wall-mount, cheap, one droid at a time. -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>DW_ChargeSocket</defName>
+    <label>charge socket</label>
+    <description>A cheap wall-mounted charging socket. One droid can dock here at a time and slowly top off its power.</description>
+    <thingClass>Building</thingClass>
+    <graphicData>
+      <texPath>OuterRim/Building/DroidChargePlatform</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+    </graphicData>
+    <size>(1,1)</size>
+    <hasInteractionCell>true</hasInteractionCell>
+    <interactionCellOffset>(0,0,1)</interactionCellOffset>
+    <passability>PassThroughOnly</passability>
+    <fillPercent>0.3</fillPercent>
+    <rotatable>true</rotatable>
+    <tickerType>Normal</tickerType>
+    <altitudeLayer>Building</altitudeLayer>
+    <designationCategory>Production</designationCategory>
+    <uiOrder>2455</uiOrder>
+    <constructEffect>ConstructMetal</constructEffect>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <WorkToBuild>600</WorkToBuild>
+      <Mass>5</Mass>
+      <Flammability>0.5</Flammability>
+      <Beauty>-1</Beauty>
+    </statBases>
+    <costList>
+      <Steel>15</Steel>
+      <ComponentIndustrial>1</ComponentIndustrial>
+    </costList>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>100</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Flickable"/>
+      <li Class="CompProperties_Forbiddable"/>
+      <li Class="Droidworks.CompProperties_DWCharger">
+        <chargeRatePerHour>25</chargeRatePerHour>
+        <radius>0</radius>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- DW_ChargeDock — 1x2 parking bay, faster than the socket. First-come
+       (no CompAssignableToPawn): see DROIDWORKS_CHARGING_TRIO_1's closing
+       note for why an assignable version was left as follow-up rather than
+       built here. -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>DW_ChargeDock</defName>
+    <label>charge dock</label>
+    <description>A dedicated charging bay, big enough for a droid to park in fully. Faster than a bare socket. First-come, first-served - not assignable to a specific droid.</description>
+    <thingClass>Building</thingClass>
+    <graphicData>
+      <texPath>OuterRim/Building/DroidBay/DroidBay</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(1,2)</drawSize>
+      <shadowData>
+        <volume>(0.8, 0.5, 1.6)</volume>
+      </shadowData>
+    </graphicData>
+    <size>(1,2)</size>
+    <hasInteractionCell>true</hasInteractionCell>
+    <interactionCellOffset>(0,0,2)</interactionCellOffset>
+    <passability>Impassable</passability>
+    <fillPercent>0.5</fillPercent>
+    <rotatable>true</rotatable>
+    <tickerType>Normal</tickerType>
+    <altitudeLayer>Building</altitudeLayer>
+    <designationCategory>Production</designationCategory>
+    <uiOrder>2456</uiOrder>
+    <constructEffect>ConstructMetal</constructEffect>
+    <statBases>
+      <MaxHitPoints>150</MaxHitPoints>
+      <WorkToBuild>2000</WorkToBuild>
+      <Mass>25</Mass>
+      <Flammability>0.5</Flammability>
+      <Beauty>0</Beauty>
+    </statBases>
+    <costList>
+      <Steel>60</Steel>
+      <ComponentIndustrial>1</ComponentIndustrial>
+    </costList>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>150</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Flickable"/>
+      <li Class="CompProperties_Forbiddable"/>
+      <li Class="Droidworks.CompProperties_DWCharger">
+        <chargeRatePerHour>40</chargeRatePerHour>
+        <radius>0</radius>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- DW_ChargeNimbus — room-radius charger, high power draw, no job needed:
+       every droid within radius tops off passively via CompDWCharger.CompTick
+       while doing anything else in the room. -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>DW_ChargeNimbus</defName>
+    <label>charge nimbus</label>
+    <description>A high-draw ambient charger. Every droid within range slowly recharges just by being nearby - no need to dock.</description>
+    <thingClass>Building</thingClass>
+    <graphicData>
+      <texPath>OuterRim/Building/DroidChargePlatform</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1.5,1.5)</drawSize>
+    </graphicData>
+    <size>(1,1)</size>
+    <hasInteractionCell>false</hasInteractionCell>
+    <passability>PassThroughOnly</passability>
+    <fillPercent>0.3</fillPercent>
+    <rotatable>false</rotatable>
+    <tickerType>Normal</tickerType>
+    <altitudeLayer>Building</altitudeLayer>
+    <designationCategory>Production</designationCategory>
+    <uiOrder>2457</uiOrder>
+    <constructEffect>ConstructMetal</constructEffect>
+    <statBases>
+      <MaxHitPoints>200</MaxHitPoints>
+      <WorkToBuild>4000</WorkToBuild>
+      <Mass>40</Mass>
+      <Flammability>0.5</Flammability>
+      <Beauty>-1</Beauty>
+    </statBases>
+    <costList>
+      <Steel>100</Steel>
+      <ComponentIndustrial>3</ComponentIndustrial>
+    </costList>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <basePowerConsumption>800</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Flickable"/>
+      <li Class="CompProperties_Forbiddable"/>
+      <li Class="Droidworks.CompProperties_DWCharger">
+        <chargeRatePerHour>15</chargeRatePerHour>
+        <radius>6.9</radius>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>
