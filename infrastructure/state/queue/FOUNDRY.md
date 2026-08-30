@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T18:47:07Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T18:50:06Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -353,7 +353,7 @@ row:      unassigned
 needs:    bridge
 target:   v1
 kind:     build
-blocked:  built clean, not deployed - game up, BENCH holds bridge
+blocked:  jawa/alerts_list fails every call: FieldOrNull's PubInst BindingFlags omit NonPublic so private AlertsReadout.activeAlerts is never found; other 4 tools proven live
 summary:  New file JawaBenchStoryTools.cs (5 tools, all ungated):
 prose:    infrastructure/state/items/BRIDGE_STORY_ALERT_TALE_TOOLS_1.md
 
