@@ -4,10 +4,15 @@
   "number": 1,
   "open": false
  },
- "ASSAILANT_FLESH_DUNGEON_1": {
-  "fp": "c5c3889e3efd",
-  "number": 41,
+ "ASSAILANT_DUNGEON_BUILD_1": {
+  "fp": "3007c2f97ef7",
+  "number": 76,
   "open": true
+ },
+ "ASSAILANT_FLESH_DUNGEON_1": {
+  "fp": "0f817766b7a6",
+  "number": 41,
+  "open": false
  },
  "AUTHORED_FACTION_RAID_SPAWNS_NOTHING_1": {
   "fp": "82cdde9e300a",
@@ -109,6 +114,11 @@
   "number": 65,
   "open": false
  },
+ "DROIDWORKS_FLESHTYPE_NEEDS_GAP_1": {
+  "fp": "3c32e7487b77",
+  "number": 71,
+  "open": true
+ },
  "DROIDWORKS_ION_GUARD_1": {
   "fp": "3fe6b8186355",
   "number": 58,
@@ -124,6 +134,11 @@
   "number": 62,
   "open": false
  },
+ "DROIDWORKS_POWEREDDOWN_NOT_WIRED_1": {
+  "fp": "bdcdb71e3407",
+  "number": 72,
+  "open": true
+ },
  "DROIDWORKS_RETIRE_EVIDENCE_1": {
   "fp": "63bd399ab6ed",
   "number": 63,
@@ -135,7 +150,7 @@
   "open": false
  },
  "DROID_SYSTEM_BUILD_1": {
-  "fp": "b3590298e043",
+  "fp": "92442f1f9abb",
   "number": 35,
   "open": true
  },
@@ -185,9 +200,9 @@
   "open": false
  },
  "FORCE_SYSTEM_OWNERSHIP_1": {
-  "fp": "d39d31d3a373",
+  "fp": "1cb9375bcabe",
   "number": 69,
-  "open": true
+  "open": false
  },
  "GM_GATE_INCIDENT_SCHEDULE_1": {
   "fp": "bb0163ebb3ee",
@@ -214,6 +229,11 @@
   "number": 16,
   "open": false
  },
+ "ISEKAI_GRANT_EXCLUSION_1": {
+  "fp": "3aa00fc4487e",
+  "number": 73,
+  "open": true
+ },
  "JAWA_CULTURES_LEAK_TO_STRANGERS_1": {
   "fp": "5830a3a554ab",
   "number": 17,
@@ -225,8 +245,18 @@
   "open": true
  },
  "LORE_SWITCHOVER_ADOPTION_1": {
-  "fp": "d3e7050aff62",
+  "fp": "0545e78630bf",
   "number": 67,
+  "open": false
+ },
+ "MOD_LIST_OUTGROWN_AUDIT_1": {
+  "fp": "dbc34693f8b3",
+  "number": 75,
+  "open": false
+ },
+ "MOD_LIST_OUTGROWN_AUDIT_2": {
+  "fp": "486df337a1c1",
+  "number": 77,
   "open": true
  },
  "NONCANON_ARRIVES_BY_PAWNKIND_1": {
@@ -253,6 +283,11 @@
   "fp": "793d0549a401",
   "number": 21,
   "open": false
+ },
+ "PAINT_GUARD_ASK_EACH_TIME_1": {
+  "fp": "03b51f48fd51",
+  "number": 74,
+  "open": true
  },
  "PAWN_FLAVOR_STARWARS_1": {
   "fp": "24a4879ca0bd",
@@ -314,10 +349,15 @@
   "number": 51,
   "open": false
  },
- "VAULT_DUNGEON_CONCEPT_1": {
-  "fp": "024edd42a102",
-  "number": 52,
+ "VAULT_DUNGEON_BUILD_1": {
+  "fp": "1946ea413475",
+  "number": 78,
   "open": true
+ },
+ "VAULT_DUNGEON_CONCEPT_1": {
+  "fp": "8c19910bbe43",
+  "number": 52,
+  "open": false
  },
  "VEHICLE_ION_TIER_1": {
   "fp": "4ee7d6eda96b",
