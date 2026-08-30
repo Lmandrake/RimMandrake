@@ -124,6 +124,65 @@ ASTROMECH_SHAPED = {
     "guy762_DroidRace_ITseries",
 }
 
+# --------------------------------------------------- DROIDWORKS_FAMILY_LAYER_1
+# OWNER RULING 2026-08-29 (ledger DROIDWORKS_FAMILY_LAYER_1): insert 7
+# chassis-family abstracts between DW_Race_Base and the 57 concrete races —
+# DW_Race_Base -> DW_Family_{Labour,Protocol,Astromech,Battle,Heavy,Probe,
+# Power} -> concrete races. The 6 CHASSIS_TUNING buckets above become 7
+# families by splitting "astromech-labour" exactly along ASTROMECH_SHAPED
+# (already computed above, for the chassisClass int) — the ruling's own
+# family list order (Labour, Protocol, Astromech, Battle, Heavy, Probe,
+# Power) matches DroidworksModExtension.cs's own int-code order (0..6)
+# verbatim, confirming this split IS the intended 7th family, not a guess.
+FAMILY_BY_BUCKET = {
+    "battle": "battle", "heavy": "heavy", "gonk-power": "power",
+    "protocol": "protocol", "probe": "probe",
+}
+FAMILY_DISPLAY = {
+    "labour": "Labour", "protocol": "Protocol", "astromech": "Astromech",
+    "battle": "Battle", "heavy": "Heavy", "probe": "Probe", "power": "Power",
+}
+FAMILY_TUNING = {
+    "battle":    (1.0, 0, 3),
+    "heavy":     (1.0, 2, 4),
+    "power":     (0.33, 3, 6),
+    "astromech": (0.33, 0, 2),
+    "labour":    (0.33, 0, 0),
+    "protocol":  (0.033, 0, 1),
+    "probe":     (1.0, 1, 5),
+}
+
+
+def family_for(orig, bucket):
+    if bucket == "astromech-labour":
+        return "astromech" if orig in ASTROMECH_SHAPED else "labour"
+    return FAMILY_BY_BUCKET[bucket]
+
+
+def family_dn(family_key):
+    return "DW_Family_" + FAMILY_DISPLAY[family_key]
+
+
+# Races whose generated def must carry a <comps> block the generator does
+# not otherwise derive from extraction.json — currently just GNK's hand-
+# wired CompDroidDetonation (DROIDWORKS_PILOT_GONK_1: "the gonk detonates by
+# nature"). Rolling CompDroidDetonation out to every energyDensity>0 race
+# (Heavy/Power/Probe families) is a known follow-up, explicitly NOT done by
+# this table — see DROIDWORKS_FAMILY_LAYER_1's closing note. Teaching the
+# generator this one exception is what stops a blind regenerate from
+# reverting GNK's fix again (the exact trap that already happened once).
+COMPS_OVERRIDE = {
+    "OuterRim_GNKDroid": [
+        '      <!-- "the gonk detonates by nature" (BENCH). Pilot wiring: no other\n'
+        '           DW race attaches this comp yet, despite Heavy/Power/Probe carrying\n'
+        '           energyDensity > 0 on their family abstract (DROIDWORKS_FAMILY_LAYER_1) —\n'
+        '           the mechanic was built (CompDroidDetonation.cs) but never wired to any\n'
+        "           other def. This is the first race to prove the wiring works end to\n"
+        "           end; rolling it out to the rest is a follow-up, not this item. -->",
+        '      <li Class="Droidworks.CompProperties_DroidDetonation" />',
+    ],
+}
+
 # orig race defName -> (bucket, note-or-None). Every one of the 57 races.
 CHASSIS_PLAN = {
     # --- OuterRimDroidDepot, family Humanlike ---
@@ -363,16 +422,21 @@ def render_headtype(dn, path):
 
 def render_race(rd):
     p = []
-    p.append('  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">')
+    p.append('  <AlienRace.ThingDef_AlienRace ParentName="%s">' % rd["family_dn"])
     p.append("    <defName>%s</defName>" % rd["dn"])
     p.append("    <label>%s</label>" % esc(rd["label"]))
     p.append("    <description>%s</description>" % esc(rd["description"]))
-    p.append("    <race>")
-    if rd["bodySize"] is not None:
-        p.append("      <baseBodySize>%s</baseBodySize>" % rd["bodySize"])
-    if rd["healthScale"] is not None:
-        p.append("      <baseHealthScale>%s</baseHealthScale>" % rd["healthScale"])
-    p.append("    </race>")
+    # bodySize/healthScale are only emitted here when they DIFFER from the
+    # family abstract's default (DROIDWORKS_FAMILY_LAYER_1: "models override
+    # only where the source race genuinely differed" — computed in main() by
+    # comparing against the per-family mode, never averaged away silently).
+    if rd["bodySize"] is not None or rd["healthScale"] is not None:
+        p.append("    <race>")
+        if rd["bodySize"] is not None:
+            p.append("      <baseBodySize>%s</baseBodySize>" % rd["bodySize"])
+        if rd["healthScale"] is not None:
+            p.append("      <baseHealthScale>%s</baseHealthScale>" % rd["healthScale"])
+        p.append("    </race>")
     if rd["moveSpeed"] is not None:
         p.append("    <statBases>")
         p.append("      <MoveSpeed>%s</MoveSpeed>" % rd["moveSpeed"])
@@ -413,11 +477,36 @@ def render_race(rd):
     p.append("        </alienPartGenerator>")
     p.append("      </generalSettings>")
     p.append("    </alienRace>")
+    # DroidworksExtension (powerFallPerDay/energyDensity/chassisClass) moved
+    # DOWN onto the family abstract (DROIDWORKS_FAMILY_LAYER_1) — every race
+    # in a family shares identical tuning by construction (the family split
+    # IS the tuning boundary), so there is never a per-race override to keep.
+    comps_lines = rd.get("comps_lines")
+    if comps_lines:
+        p.append("    <comps>")
+        p.extend(comps_lines)
+        p.append("    </comps>")
+    p.append("  </AlienRace.ThingDef_AlienRace>")
+    return "\n".join(p)
+
+
+def render_family_base(family_key, body_default, health_default):
+    power_fall, energy_density, class_int = FAMILY_TUNING[family_key]
+    p = []
+    p.append('  <AlienRace.ThingDef_AlienRace Name="%s" ParentName="DW_Race_Base" Abstract="True">'
+              % family_dn(family_key))
+    if body_default is not None or health_default is not None:
+        p.append("    <race>")
+        if body_default is not None:
+            p.append("      <baseBodySize>%s</baseBodySize>" % body_default)
+        if health_default is not None:
+            p.append("      <baseHealthScale>%s</baseHealthScale>" % health_default)
+        p.append("    </race>")
     p.append("    <modExtensions>")
     p.append('      <li Class="Droidworks.DroidworksExtension">')
-    p.append("        <powerFallPerDay>%s</powerFallPerDay>" % rd["powerFallPerDay"])
-    p.append("        <energyDensity>%s</energyDensity>" % rd["energyDensity"])
-    p.append("        <chassisClass>%d</chassisClass>" % rd["chassisClassInt"])
+    p.append("        <powerFallPerDay>%s</powerFallPerDay>" % power_fall)
+    p.append("        <energyDensity>%s</energyDensity>" % energy_density)
+    p.append("        <chassisClass>%d</chassisClass>" % class_int)
     p.append("      </li>")
     p.append("    </modExtensions>")
     p.append("  </AlienRace.ThingDef_AlienRace>")
@@ -681,11 +770,16 @@ def main():
 
     all_defnames = []
 
+    # Pass 1: resolve every race's data (unchanged from the pre-family-layer
+    # logic) WITHOUT rendering yet — DROIDWORKS_FAMILY_LAYER_1 needs the full
+    # per-family population of bodySize/healthScale values before it can
+    # decide which values are common enough to move onto the family abstract.
+    resolved = []
     for race in races:
         orig = race["defName"]
         mod = race["mod"]
-        family = family_for_mod.get(mod)
-        if family is None:
+        src_family = family_for_mod.get(mod)
+        if src_family is None:
             R.skip(orig, "unrecognised source mod %r" % mod)
             continue
 
@@ -693,12 +787,10 @@ def main():
         if bucket is None:
             R.skip(orig, "no chassis classification in CHASSIS_PLAN — cannot attach DroidworksExtension, hard stop for this race")
             continue
-        power_fall, energy_density, class_int = CHASSIS_TUNING[bucket]
-        if bucket == "astromech-labour" and orig in ASTROMECH_SHAPED:
-            class_int = 2
+        chassis_family = family_for(orig, bucket)
         chassis_counts[bucket] = chassis_counts.get(bucket, 0) + 1
         if cnote:
-            R.note("chassis %s -> %s: %s" % (orig, bucket, cnote))
+            R.note("chassis %s -> %s (family %s): %s" % (orig, bucket, chassis_family, cnote))
 
         bodySize = resolve_field(races_by_orig, orig, lambda r: r.get("bodySize"))
         healthScale = resolve_field(races_by_orig, orig, lambda r: r.get("baseHealthScale"))
@@ -733,8 +825,14 @@ def main():
             head_defname = "DW_HeadType_" + orig
             headtype_block = render_headtype(head_defname, gfx["head_stem"])
             all_defnames.append(head_defname)
+        if headtype_block:
+            headtype_out[src_family].append(headtype_block)
 
-        rd = {
+        if gfx["body_stem"] is None:
+            R.warn("%s: emitted WITHOUT a resolved body texPath — will render with HAR's default/missing-texture body" % orig)
+
+        resolved.append({
+            "orig": orig, "src_family": src_family, "chassis_family": chassis_family,
             "dn": dn,
             "label": label,
             "description": "A DW-unified %s. Absorbed from %s (%s)." % (label, mod, orig),
@@ -748,16 +846,58 @@ def main():
             "head_defname": head_defname,
             "colorChannels": colors,
             "customDrawSize": gfx.get("customDrawSize"),
-            "powerFallPerDay": power_fall,
-            "energyDensity": energy_density,
-            "chassisClassInt": class_int,
-        }
-        if gfx["body_stem"] is None:
-            R.warn("%s: emitted WITHOUT a resolved body texPath — will render with HAR's default/missing-texture body" % orig)
+        })
 
-        race_out[family].append(render_race(rd))
-        if headtype_block:
-            headtype_out[family].append(headtype_block)
+    # Per-family mode for bodySize/healthScale — a "genuinely common" value
+    # needs at least 2 members sharing it (n=1 or all-distinct means no real
+    # majority, so nothing is moved and every race keeps its explicit value,
+    # unchanged from pre-family-layer behaviour: never averaged, never a
+    # singleton picked arbitrarily). MoveSpeed is deliberately EXCLUDED from
+    # this dedup: many races carry no MoveSpeed override at all today (fall
+    # through to Human's engine default via DW_Race_Base) — moving a family
+    # default onto MoveSpeed would silently change THEIR effective speed too,
+    # not just the races that genuinely share a value. Left per-race, as-is.
+    from collections import Counter
+
+    def family_mode(field):
+        by_fam = {}
+        for r in resolved:
+            by_fam.setdefault(r["chassis_family"], []).append(r[field])
+        modes = {}
+        for fam, vals in by_fam.items():
+            c = Counter(vals)
+            val, count = c.most_common(1)[0]
+            modes[fam] = val if count >= 2 else None
+        return modes
+
+    body_defaults = family_mode("bodySize")
+    health_defaults = family_mode("healthScale")
+
+    family_blocks = []
+    override_counts = {}
+    for fam in sorted(FAMILY_TUNING):
+        family_blocks.append(render_family_base(fam, body_defaults.get(fam), health_defaults.get(fam)))
+
+    # Pass 2: render, now that each race knows whether its bodySize/
+    # healthScale matches its family's default (omit -> inherit) or not
+    # (keep an explicit override — every kept override is counted/printed
+    # below, per the ruling's "list every override the generator keeps").
+    for r in resolved:
+        fam = r["chassis_family"]
+        body_override = r["bodySize"] if r["bodySize"] != body_defaults.get(fam) else None
+        health_override = r["healthScale"] if r["healthScale"] != health_defaults.get(fam) else None
+        if body_override is not None:
+            override_counts["bodySize/" + fam] = override_counts.get("bodySize/" + fam, 0) + 1
+        if health_override is not None:
+            override_counts["healthScale/" + fam] = override_counts.get("healthScale/" + fam, 0) + 1
+
+        rd = dict(r)
+        rd["bodySize"] = body_override
+        rd["healthScale"] = health_override
+        rd["family_dn"] = family_dn(fam)
+        rd["comps_lines"] = COMPS_OVERRIDE.get(r["orig"])
+
+        race_out[r["src_family"]].append(render_race(rd))
 
     # ---------------------------------------------------------- kinds ----
     kind_out = {"OuterRim": [], "KotOR": [], "JDS": []}
@@ -800,6 +940,11 @@ def main():
         kind_out[family].append(render_kind(kd))
 
     # -------------------------------------------------------- write out --
+    write_defs(
+        os.path.join(DEFS_ROOT, "Races_Families.xml"),
+        "Droidworks chassis-family abstracts (DROIDWORKS_FAMILY_LAYER_1) — "
+        "DW_Race_Base -> DW_Family_<Name> -> concrete DW_Race_<orig>.",
+        family_blocks, [], [])
     for family in ("OuterRim", "KotOR", "JDS"):
         if race_out[family] or headtype_out[family]:
             write_defs(
@@ -814,7 +959,9 @@ def main():
 
     # ---------------------------------------------------------- report ---
     dup = set(x for x in all_defnames if all_defnames.count(x) > 1)
-    all_defnames_full = all_defnames + kind_defnames + ["DW_Race_Base", "DW_HeadType_Blank"]
+    family_defnames = [family_dn(f) for f in FAMILY_TUNING]
+    all_defnames_full = (all_defnames + kind_defnames + family_defnames +
+                          ["DW_Race_Base", "DW_HeadType_Blank"])
     seen = set()
     dupes = set()
     for x in all_defnames_full:
@@ -824,13 +971,26 @@ def main():
     if dupes:
         R.warn("defName collisions across generated output: %s" % sorted(dupes))
     else:
-        print("defName uniqueness: PASS — %d distinct defNames (%d races + %d headtypes + %d kinds + 2 base)"
+        print("defName uniqueness: PASS — %d distinct defNames (%d races + %d headtypes + %d kinds + %d family abstracts + 2 base)"
               % (len(all_defnames_full), len(race_dn),
-                 len(all_defnames) - len(race_dn), len(kind_defnames)))
+                 len(all_defnames) - len(race_dn), len(kind_defnames), len(family_defnames)))
 
-    print("\n=== chassis classification counts ===")
+    print("\n=== chassis classification counts (bucket) ===")
     for b in sorted(chassis_counts):
         print("  %-18s %d" % (b, chassis_counts[b]))
+    print("\n=== family abstracts (7) ===")
+    fam_race_counts = {}
+    for r in resolved:
+        fam_race_counts[r["chassis_family"]] = fam_race_counts.get(r["chassis_family"], 0) + 1
+    for fam in sorted(FAMILY_TUNING):
+        pf, ed, ci = FAMILY_TUNING[fam]
+        print("  %-20s %2d races  powerFallPerDay=%s energyDensity=%s chassisClass=%d  "
+              "bodySize default=%s  healthScale default=%s"
+              % (family_dn(fam), fam_race_counts.get(fam, 0), pf, ed, ci,
+                 body_defaults.get(fam), health_defaults.get(fam)))
+    print("\n=== per-race overrides kept (value differs from family default) ===")
+    for k in sorted(override_counts):
+        print("  %-24s %d" % (k, override_counts[k]))
     print("\n=== summary ===")
     print("races emitted: %d / %d source" % (len(race_dn), len(races)))
     print("kinds emitted: %d / %d source" % (len(kind_defnames), len(kinds)))

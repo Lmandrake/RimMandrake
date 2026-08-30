@@ -4,7 +4,7 @@
      Do not hand-edit; re-run the generator. -->
 <Defs>
 
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Labour">
     <defName>DW_Race_JDSCIS_Pistoeka_Sotage_Droid</defName>
     <label>Pistoeka Sotage Droid</label>
     <description>A DW-unified Pistoeka Sotage Droid. Absorbed from JDS_Separatists (JDSCIS_Pistoeka_Sotage_Droid).</description>
@@ -33,22 +33,11 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>0.33</powerFallPerDay>
-        <energyDensity>0</energyDensity>
-        <chassisClass>0</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Battle">
     <defName>DW_Race_JDSCIS_B1_Battle_Droid</defName>
     <label>B1 Battle Droid</label>
     <description>A DW-unified B1 Battle Droid. Absorbed from JDS_Separatists (JDSCIS_B1_Battle_Droid).</description>
-    <race>
-      <baseBodySize>0.7</baseBodySize>
-      <baseHealthScale>1.0</baseHealthScale>
-    </race>
     <statBases>
       <MoveSpeed>2.0</MoveSpeed>
     </statBases>
@@ -70,22 +59,11 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>1.0</powerFallPerDay>
-        <energyDensity>0</energyDensity>
-        <chassisClass>3</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Battle">
     <defName>DW_Race_JDSCIS_B1_Security_Droid</defName>
     <label>B1 Security Droid</label>
     <description>A DW-unified B1 Security Droid. Absorbed from JDS_Separatists (JDSCIS_B1_Security_Droid).</description>
-    <race>
-      <baseBodySize>0.7</baseBodySize>
-      <baseHealthScale>1.0</baseHealthScale>
-    </race>
     <statBases>
       <MoveSpeed>2.0</MoveSpeed>
     </statBases>
@@ -107,22 +85,11 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>1.0</powerFallPerDay>
-        <energyDensity>0</energyDensity>
-        <chassisClass>3</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Battle">
     <defName>DW_Race_JDSCIS_B1_Commander_Droid</defName>
     <label>B1 Commander Droid</label>
     <description>A DW-unified B1 Commander Droid. Absorbed from JDS_Separatists (JDSCIS_B1_Commander_Droid).</description>
-    <race>
-      <baseBodySize>0.7</baseBodySize>
-      <baseHealthScale>1.0</baseHealthScale>
-    </race>
     <statBases>
       <MoveSpeed>2.0</MoveSpeed>
     </statBases>
@@ -144,22 +111,11 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>1.0</powerFallPerDay>
-        <energyDensity>0</energyDensity>
-        <chassisClass>3</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Battle">
     <defName>DW_Race_JDSCIS_BX_Commando_Droid</defName>
     <label>BX Commando Droid</label>
     <description>A DW-unified BX Commando Droid. Absorbed from JDS_Separatists (JDSCIS_BX_Commando_Droid).</description>
-    <race>
-      <baseBodySize>0.7</baseBodySize>
-      <baseHealthScale>1.0</baseHealthScale>
-    </race>
     <statBases>
       <MoveSpeed>2.0</MoveSpeed>
     </statBases>
@@ -181,21 +137,13 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>1.0</powerFallPerDay>
-        <energyDensity>0</energyDensity>
-        <chassisClass>3</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Heavy">
     <defName>DW_Race_JDSCIS_IG-100_MagnaGuards</defName>
     <label>IG-100 MagnaGuards</label>
     <description>A DW-unified IG-100 MagnaGuards. Absorbed from JDS_Separatists (JDSCIS_IG-100_MagnaGuards).</description>
     <race>
       <baseBodySize>0.7</baseBodySize>
-      <baseHealthScale>1.0</baseHealthScale>
     </race>
     <statBases>
       <MoveSpeed>2.0</MoveSpeed>
@@ -218,21 +166,13 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>1.0</powerFallPerDay>
-        <energyDensity>2</energyDensity>
-        <chassisClass>4</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Heavy">
     <defName>DW_Race_JDSCIS_T1_Tactical_Droid</defName>
     <label>T1 Tactical Droid</label>
     <description>A DW-unified T1 Tactical Droid. Absorbed from JDS_Separatists (JDSCIS_T1_Tactical_Droid).</description>
     <race>
       <baseBodySize>0.7</baseBodySize>
-      <baseHealthScale>1.0</baseHealthScale>
     </race>
     <statBases>
       <MoveSpeed>2.0</MoveSpeed>
@@ -255,21 +195,13 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>1.0</powerFallPerDay>
-        <energyDensity>2</energyDensity>
-        <chassisClass>4</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Heavy">
     <defName>DW_Race_JDSCIS_ST_Super_Tactical_Droid</defName>
     <label>ST Super Tactical Droid</label>
     <description>A DW-unified ST Super Tactical Droid. Absorbed from JDS_Separatists (JDSCIS_ST_Super_Tactical_Droid).</description>
     <race>
       <baseBodySize>0.7</baseBodySize>
-      <baseHealthScale>1.0</baseHealthScale>
     </race>
     <statBases>
       <MoveSpeed>2.0</MoveSpeed>
@@ -292,21 +224,13 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>1.0</powerFallPerDay>
-        <energyDensity>2</energyDensity>
-        <chassisClass>4</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Heavy">
     <defName>DW_Race_JDSCIS_B2_Super_Battle_Droid</defName>
     <label>B2 Super Battle Droid</label>
     <description>A DW-unified B2 Super Battle Droid. Absorbed from JDS_Separatists (JDSCIS_B2_Super_Battle_Droid).</description>
     <race>
       <baseBodySize>0.7</baseBodySize>
-      <baseHealthScale>1.0</baseHealthScale>
     </race>
     <statBases>
       <MoveSpeed>2.0</MoveSpeed>
@@ -329,21 +253,13 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>1.0</powerFallPerDay>
-        <energyDensity>2</energyDensity>
-        <chassisClass>4</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Heavy">
     <defName>DW_Race_JDSCIS_B2_HA_Super_Battle_Droid</defName>
     <label>B2 HA Super Battle Droid</label>
     <description>A DW-unified B2 HA Super Battle Droid. Absorbed from JDS_Separatists (JDSCIS_B2_HA_Super_Battle_Droid).</description>
     <race>
       <baseBodySize>0.7</baseBodySize>
-      <baseHealthScale>1.0</baseHealthScale>
     </race>
     <statBases>
       <MoveSpeed>2.0</MoveSpeed>
@@ -366,20 +282,12 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>1.0</powerFallPerDay>
-        <energyDensity>2</energyDensity>
-        <chassisClass>4</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Battle">
     <defName>DW_Race_JDSCIS_AQ_Battle_Droid</defName>
     <label>AQ Battle Droid</label>
     <description>A DW-unified AQ Battle Droid. Absorbed from JDS_Separatists (JDSCIS_AQ_Battle_Droid).</description>
     <race>
-      <baseBodySize>0.7</baseBodySize>
       <baseHealthScale>1.5</baseHealthScale>
     </race>
     <statBases>
@@ -403,20 +311,12 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>1.0</powerFallPerDay>
-        <energyDensity>0</energyDensity>
-        <chassisClass>3</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Battle">
     <defName>DW_Race_JDSCIS_Droideka_Droid</defName>
     <label>Droideka Droid</label>
     <description>A DW-unified Droideka Droid. Absorbed from JDS_Separatists (JDSCIS_Droideka_Droid).</description>
     <race>
-      <baseBodySize>0.7</baseBodySize>
       <baseHealthScale>1.5</baseHealthScale>
     </race>
     <statBases>
@@ -440,20 +340,12 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>1.0</powerFallPerDay>
-        <energyDensity>0</energyDensity>
-        <chassisClass>3</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Battle">
     <defName>DW_Race_JDSCIS_Droideka_Sharpshooter_Droid</defName>
     <label>Droideka Sharpshooter Droid</label>
     <description>A DW-unified Droideka Sharpshooter Droid. Absorbed from JDS_Separatists (JDSCIS_Droideka_Sharpshooter_Droid).</description>
     <race>
-      <baseBodySize>0.7</baseBodySize>
       <baseHealthScale>1.5</baseHealthScale>
     </race>
     <statBases>
@@ -477,15 +369,8 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>1.0</powerFallPerDay>
-        <energyDensity>0</energyDensity>
-        <chassisClass>3</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Heavy">
     <defName>DW_Race_JDSCIS_Demolition_Droid</defName>
     <label>Demolition Droid</label>
     <description>A DW-unified Demolition Droid. Absorbed from JDS_Separatists (JDSCIS_Demolition_Droid).</description>
@@ -514,15 +399,8 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>1.0</powerFallPerDay>
-        <energyDensity>2</energyDensity>
-        <chassisClass>4</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Heavy">
     <defName>DW_Race_JDSCIS_DSD1_Dwarf_Spider_Droid</defName>
     <label>DSD1 Dwarf Spider Droid</label>
     <description>A DW-unified DSD1 Dwarf Spider Droid. Absorbed from JDS_Separatists (JDSCIS_DSD1_Dwarf_Spider_Droid).</description>
@@ -551,20 +429,12 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>1.0</powerFallPerDay>
-        <energyDensity>2</energyDensity>
-        <chassisClass>4</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Battle">
     <defName>DW_Race_JDSCIS_LR-57_Combat_Droid</defName>
     <label>LR-57_Combat_Droid</label>
     <description>A DW-unified LR-57_Combat_Droid. Absorbed from JDS_Separatists (JDSCIS_LR-57_Combat_Droid).</description>
     <race>
-      <baseBodySize>0.7</baseBodySize>
       <baseHealthScale>1.5</baseHealthScale>
     </race>
     <statBases>
@@ -588,13 +458,6 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>1.0</powerFallPerDay>
-        <energyDensity>0</energyDensity>
-        <chassisClass>3</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
 
 </Defs>

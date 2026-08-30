@@ -55,7 +55,7 @@
     <gender>None</gender>
   </HeadTypeDef>
 
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Battle">
     <defName>DW_Race_OuterRim_BattleDroid</defName>
     <label>B1 Battle Droid</label>
     <description>A DW-unified B1 Battle Droid. Absorbed from OuterRimDroidDepot (OuterRim_BattleDroid).</description>
@@ -108,15 +108,8 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>1.0</powerFallPerDay>
-        <energyDensity>0</energyDensity>
-        <chassisClass>3</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Battle">
     <defName>DW_Race_OuterRim_BattleDroidAdvanced</defName>
     <label>B1A Battle Droid</label>
     <description>A DW-unified B1A Battle Droid. Absorbed from OuterRimDroidDepot (OuterRim_BattleDroidAdvanced).</description>
@@ -169,15 +162,8 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>1.0</powerFallPerDay>
-        <energyDensity>0</energyDensity>
-        <chassisClass>3</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Battle">
     <defName>DW_Race_OuterRim_CommandoDroid</defName>
     <label>BX Commando Droid</label>
     <description>A DW-unified BX Commando Droid. Absorbed from OuterRimDroidDepot (OuterRim_CommandoDroid).</description>
@@ -230,15 +216,8 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>1.0</powerFallPerDay>
-        <energyDensity>0</energyDensity>
-        <chassisClass>3</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Battle">
     <defName>DW_Race_OuterRim_HKDroid</defName>
     <label>HK-Series Assassin Droid</label>
     <description>A DW-unified HK-Series Assassin Droid. Absorbed from OuterRimDroidDepot (OuterRim_HKDroid).</description>
@@ -299,20 +278,12 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>1.0</powerFallPerDay>
-        <energyDensity>0</energyDensity>
-        <chassisClass>3</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Labour">
     <defName>DW_Race_OuterRim_ImperialLaborDroid</defName>
     <label>Imperial Labor Droid</label>
     <description>A DW-unified Imperial Labor Droid. Absorbed from OuterRimDroidDepot (OuterRim_ImperialLaborDroid).</description>
     <race>
-      <baseBodySize>1</baseBodySize>
       <baseHealthScale>0.8</baseHealthScale>
     </race>
     <statBases>
@@ -360,15 +331,8 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>0.33</powerFallPerDay>
-        <energyDensity>0</energyDensity>
-        <chassisClass>0</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Battle">
     <defName>DW_Race_OuterRim_KXSecurityDroid</defName>
     <label>KX Security Droid</label>
     <description>A DW-unified KX Security Droid. Absorbed from OuterRimDroidDepot (OuterRim_KXSecurityDroid).</description>
@@ -421,22 +385,11 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>1.0</powerFallPerDay>
-        <energyDensity>0</energyDensity>
-        <chassisClass>3</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Heavy">
     <defName>DW_Race_OuterRim_MagnaGuardDroid</defName>
     <label>MagnaGuard Droid</label>
     <description>A DW-unified MagnaGuard Droid. Absorbed from OuterRimDroidDepot (OuterRim_MagnaGuardDroid).</description>
-    <race>
-      <baseBodySize>1</baseBodySize>
-      <baseHealthScale>1.0</baseHealthScale>
-    </race>
     <statBases>
       <MoveSpeed>5.4</MoveSpeed>
     </statBases>
@@ -482,20 +435,12 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>1.0</powerFallPerDay>
-        <energyDensity>2</energyDensity>
-        <chassisClass>4</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Protocol">
     <defName>DW_Race_OuterRim_ProtocolDroid</defName>
     <label>protocol droid</label>
     <description>A DW-unified protocol droid. Absorbed from OuterRimDroidDepot (OuterRim_ProtocolDroid).</description>
     <race>
-      <baseBodySize>1</baseBodySize>
       <baseHealthScale>0.8</baseHealthScale>
     </race>
     <statBases>
@@ -567,22 +512,11 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>0.033</powerFallPerDay>
-        <energyDensity>0</energyDensity>
-        <chassisClass>1</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Heavy">
     <defName>DW_Race_OuterRim_SuperBattleDroid</defName>
     <label>B2 Super Battle Droid</label>
     <description>A DW-unified B2 Super Battle Droid. Absorbed from OuterRimDroidDepot (OuterRim_SuperBattleDroid).</description>
-    <race>
-      <baseBodySize>1</baseBodySize>
-      <baseHealthScale>1.0</baseHealthScale>
-    </race>
     <statBases>
       <MoveSpeed>4</MoveSpeed>
     </statBases>
@@ -625,20 +559,12 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>1.0</powerFallPerDay>
-        <energyDensity>2</energyDensity>
-        <chassisClass>4</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Heavy">
     <defName>DW_Race_OuterRim_SuperTacticalDroid</defName>
     <label>Super Tactical Droid</label>
     <description>A DW-unified Super Tactical Droid. Absorbed from OuterRimDroidDepot (OuterRim_SuperTacticalDroid).</description>
     <race>
-      <baseBodySize>1</baseBodySize>
       <baseHealthScale>0.8</baseHealthScale>
     </race>
     <statBases>
@@ -702,20 +628,12 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>1.0</powerFallPerDay>
-        <energyDensity>2</energyDensity>
-        <chassisClass>4</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Heavy">
     <defName>DW_Race_OuterRim_TacticalDroid</defName>
     <label>T-Series Tactical Droid</label>
     <description>A DW-unified T-Series Tactical Droid. Absorbed from OuterRimDroidDepot (OuterRim_TacticalDroid).</description>
     <race>
-      <baseBodySize>1</baseBodySize>
       <baseHealthScale>0.7</baseHealthScale>
     </race>
     <statBases>
@@ -779,30 +697,8 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>1.0</powerFallPerDay>
-        <energyDensity>2</energyDensity>
-        <chassisClass>4</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
-  <!-- FOUNDRY, 2026-08-30: this and the next 6 races (Muckraker, Destroyer, DUM,
-       FX7, MSE, SalvageAssist) carried extraction.json's baseHealthScaleSource
-       "UNCERTAIN - presumably inherited from AsimovAutomatonBase, not read"
-       through LITERALLY as the text "UNCERTAIN" inside a float field - invalid
-       XML, would fail to parse. Resolved by reading AsimovAutomatonBase and its
-       parent AsimovNonEnergyAutomatonBase directly (workshop 3096481956,
-       Race_Bases.xml) - neither declares baseHealthScale, so the engine default
-       1.0 is the genuine value, not a guess. extraction.json updated to match
-       (baseHealthScale 1.0, baseHealthScaleSource records the resolution) so a
-       future regenerate does not reintroduce this. Hand-patched here rather than
-       regenerated: gen_droidworks_defs.py's last run also reverted
-       DROIDWORKS_PILOT_GONK_1's GNK fix and CompDroidDetonation wiring, neither
-       of which round-trips through extraction.json yet - a full regenerate is a
-       separate, deliberate decision, not something to do incidentally fixing 7
-       values. -->
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Astromech">
     <defName>DW_Race_OuterRim_AstromechDroid</defName>
     <label>Astromech Droid</label>
     <description>A DW-unified Astromech Droid. Absorbed from OuterRimDroidDepot (OuterRim_AstromechDroid).</description>
@@ -852,21 +748,13 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>0.33</powerFallPerDay>
-        <energyDensity>0</energyDensity>
-        <chassisClass>2</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Labour">
     <defName>DW_Race_OuterRim_MuckrakerDroid</defName>
     <label>Muckraker Crab Droid</label>
     <description>A DW-unified Muckraker Crab Droid. Absorbed from OuterRimDroidDepot (OuterRim_MuckrakerDroid).</description>
     <race>
       <baseBodySize>1.2</baseBodySize>
-      <baseHealthScale>1.0</baseHealthScale>
     </race>
     <statBases>
       <MoveSpeed>5.2</MoveSpeed>
@@ -910,21 +798,13 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>0.33</powerFallPerDay>
-        <energyDensity>0</energyDensity>
-        <chassisClass>0</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Battle">
     <defName>DW_Race_OuterRim_DestroyerDroid</defName>
     <label>Destroyer Droid</label>
     <description>A DW-unified Destroyer Droid. Absorbed from OuterRimDroidDepot (OuterRim_DestroyerDroid).</description>
     <race>
       <baseBodySize>1.0</baseBodySize>
-      <baseHealthScale>1.0</baseHealthScale>
     </race>
     <statBases>
       <MoveSpeed>4.2</MoveSpeed>
@@ -968,21 +848,13 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>1.0</powerFallPerDay>
-        <energyDensity>0</energyDensity>
-        <chassisClass>3</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Labour">
     <defName>DW_Race_OuterRim_DUMDroid</defName>
     <label>DUM Repair Droid</label>
     <description>A DW-unified DUM Repair Droid. Absorbed from OuterRimDroidDepot (OuterRim_DUMDroid).</description>
     <race>
       <baseBodySize>0.75</baseBodySize>
-      <baseHealthScale>1.0</baseHealthScale>
     </race>
     <statBases>
       <MoveSpeed>5.2</MoveSpeed>
@@ -1026,21 +898,13 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>0.33</powerFallPerDay>
-        <energyDensity>0</energyDensity>
-        <chassisClass>0</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Labour">
     <defName>DW_Race_OuterRim_FX7Droid</defName>
     <label>fx-7 medical droid</label>
     <description>A DW-unified fx-7 medical droid. Absorbed from OuterRimDroidDepot (OuterRim_FX7Droid).</description>
     <race>
       <baseBodySize>0.75</baseBodySize>
-      <baseHealthScale>1.0</baseHealthScale>
     </race>
     <statBases>
       <MoveSpeed>2.4</MoveSpeed>
@@ -1084,29 +948,8 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>0.33</powerFallPerDay>
-        <energyDensity>0</energyDensity>
-        <chassisClass>0</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
-  <!-- DROIDWORKS_PILOT_GONK_1 pass (2026-08-30): the generator's own run
-       (DROIDWORKS_DEF_GENERATOR_1) carried extraction.json's
-       baseHealthScaleSource "UNCERTAIN - same as other animal-framework
-       droids" through LITERALLY as the text "UNCERTAIN" inside a float
-       field — that is not valid XML for a float and this race (plus 7
-       siblings in this same file: DUM/FX7/MSE/SalvageAssist and 3 more,
-       all sharing the same UNCERTAIN sentinel) would fail to parse
-       baseHealthScale. Resolved the same way the generator's own closing
-       note resolved the JDS null-baseHealthScale gap: RimWorld's engine
-       default (1.0) is the genuine effective value absent better data,
-       used explicitly with this note rather than left as a broken
-       sentinel. The other 7 UNCERTAIN entries in this file have the same
-       defect, unfixed here (out of this item's scope — GNK only) and
-       flagged in this item's closing doc for a follow-up. -->
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Power">
     <defName>DW_Race_OuterRim_GNKDroid</defName>
     <label>gnk power Droid</label>
     <description>A DW-unified gnk power Droid. Absorbed from OuterRimDroidDepot (OuterRim_GNKDroid).</description>
@@ -1117,16 +960,6 @@
     <statBases>
       <MoveSpeed>1.9</MoveSpeed>
     </statBases>
-    <comps>
-      <!-- "the gonk detonates by nature" (BENCH). Pilot wiring: no other
-           DW race attaches this comp yet, despite 18 races carrying
-           energyDensity > 0 in their DroidworksExtension (see
-           DROIDWORKS_DEF_GENERATOR_1's chassis table) — the mechanic was
-           built (CompDroidDetonation.cs) but never wired to any def. This
-           is the first race to prove the wiring works end to end; rolling
-           it out to the rest is a follow-up, not this item. -->
-      <li Class="Droidworks.CompProperties_DroidDetonation" />
-    </comps>
     <alienRace>
       <graphicPaths>
         <skinShader>Cutout</skinShader>
@@ -1166,21 +999,22 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>0.33</powerFallPerDay>
-        <energyDensity>3</energyDensity>
-        <chassisClass>6</chassisClass>
-      </li>
-    </modExtensions>
+    <comps>
+      <!-- "the gonk detonates by nature" (BENCH). Pilot wiring: no other
+           DW race attaches this comp yet, despite Heavy/Power/Probe carrying
+           energyDensity > 0 on their family abstract (DROIDWORKS_FAMILY_LAYER_1) —
+           the mechanic was built (CompDroidDetonation.cs) but never wired to any
+           other def. This is the first race to prove the wiring works end to
+           end; rolling it out to the rest is a follow-up, not this item. -->
+      <li Class="Droidworks.CompProperties_DroidDetonation" />
+    </comps>
   </AlienRace.ThingDef_AlienRace>
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Labour">
     <defName>DW_Race_OuterRim_MSEDroid</defName>
     <label>MSE Repair Droid</label>
     <description>A DW-unified MSE Repair Droid. Absorbed from OuterRimDroidDepot (OuterRim_MSEDroid).</description>
     <race>
       <baseBodySize>0.5</baseBodySize>
-      <baseHealthScale>1.0</baseHealthScale>
     </race>
     <statBases>
       <MoveSpeed>5.3</MoveSpeed>
@@ -1224,21 +1058,13 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>0.33</powerFallPerDay>
-        <energyDensity>0</energyDensity>
-        <chassisClass>0</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Labour">
     <defName>DW_Race_OuterRim_SalvageAssistDroid</defName>
     <label>salvage assist droid</label>
     <description>A DW-unified salvage assist droid. Absorbed from OuterRimDroidDepot (OuterRim_SalvageAssistDroid).</description>
     <race>
       <baseBodySize>0.5</baseBodySize>
-      <baseHealthScale>1.0</baseHealthScale>
     </race>
     <statBases>
       <MoveSpeed>5.3</MoveSpeed>
@@ -1298,13 +1124,6 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>0.33</powerFallPerDay>
-        <energyDensity>0</energyDensity>
-        <chassisClass>0</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
 
 </Defs>

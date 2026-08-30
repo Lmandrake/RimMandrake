@@ -45,7 +45,7 @@
     <gender>None</gender>
   </HeadTypeDef>
 
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Battle">
     <defName>DW_Race_guy762_DroidRace_HKseries</defName>
     <label>HK-series protocol droid</label>
     <description>A DW-unified HK-series protocol droid. Absorbed from KotORDroids (guy762_DroidRace_HKseries).</description>
@@ -99,15 +99,8 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>1.0</powerFallPerDay>
-        <energyDensity>0</energyDensity>
-        <chassisClass>3</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Battle">
     <defName>DW_Race_guy762_DroidRace_HK50series</defName>
     <label>HK-50 series protocol droid</label>
     <description>A DW-unified HK-50 series protocol droid. Absorbed from KotORDroids (guy762_DroidRace_HK50series).</description>
@@ -161,15 +154,8 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>1.0</powerFallPerDay>
-        <energyDensity>0</energyDensity>
-        <chassisClass>3</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Battle">
     <defName>DW_Race_guy762_DroidRace_HK51series</defName>
     <label>HK-51 series assassin droid</label>
     <description>A DW-unified HK-51 series assassin droid. Absorbed from KotORDroids (guy762_DroidRace_HK51series).</description>
@@ -223,20 +209,12 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>1.0</powerFallPerDay>
-        <energyDensity>0</energyDensity>
-        <chassisClass>3</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Protocol">
     <defName>DW_Race_guy762_DroidRace_GE3PD</defName>
     <label>GE3-series protocol droid</label>
     <description>A DW-unified GE3-series protocol droid. Absorbed from KotORDroids (guy762_DroidRace_GE3PD).</description>
     <race>
-      <baseBodySize>1</baseBodySize>
       <baseHealthScale>1</baseHealthScale>
     </race>
     <statBases>
@@ -263,22 +241,11 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>0.033</powerFallPerDay>
-        <energyDensity>0</energyDensity>
-        <chassisClass>1</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Labour">
     <defName>DW_Race_guy762_DroidRace_GE3LD</defName>
     <label>GE3-series labor droid</label>
     <description>A DW-unified GE3-series labor droid. Absorbed from KotORDroids (guy762_DroidRace_GE3LD).</description>
-    <race>
-      <baseBodySize>1</baseBodySize>
-      <baseHealthScale>1</baseHealthScale>
-    </race>
     <statBases>
       <MoveSpeed>2</MoveSpeed>
     </statBases>
@@ -324,15 +291,8 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>0.33</powerFallPerDay>
-        <energyDensity>0</energyDensity>
-        <chassisClass>0</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Protocol">
     <defName>DW_Race_guy762_DroidRace_GOTO</defName>
     <label>G0-T0 superintelligence droid</label>
     <description>A DW-unified G0-T0 superintelligence droid. Absorbed from KotORDroids (guy762_DroidRace_GOTO).</description>
@@ -383,21 +343,13 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>0.033</powerFallPerDay>
-        <energyDensity>0</energyDensity>
-        <chassisClass>1</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Labour">
     <defName>DW_Race_guy762_DroidRace_KM1MD</defName>
     <label>KM1-series Mining Droid</label>
     <description>A DW-unified KM1-series Mining Droid. Absorbed from KotORDroids (guy762_DroidRace_KM1MD).</description>
     <race>
       <baseBodySize>1.5</baseBodySize>
-      <baseHealthScale>1</baseHealthScale>
     </race>
     <statBases>
       <MoveSpeed>4</MoveSpeed>
@@ -442,21 +394,13 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>0.33</powerFallPerDay>
-        <energyDensity>0</energyDensity>
-        <chassisClass>0</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Labour">
     <defName>DW_Race_guy762_DroidRace_KM1HMD</defName>
     <label>KM1-B Excavation Droid</label>
     <description>A DW-unified KM1-B Excavation Droid. Absorbed from KotORDroids (guy762_DroidRace_KM1HMD).</description>
     <race>
       <baseBodySize>1.5</baseBodySize>
-      <baseHealthScale>1</baseHealthScale>
     </race>
     <statBases>
       <MoveSpeed>4</MoveSpeed>
@@ -501,20 +445,12 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>0.33</powerFallPerDay>
-        <energyDensity>0</energyDensity>
-        <chassisClass>0</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Probe">
     <defName>DW_Race_guy762_DroidRace_KX12UPD</defName>
     <label>K-X12 utility probe droid</label>
     <description>A DW-unified K-X12 utility probe droid. Absorbed from KotORDroids (guy762_DroidRace_KX12UPD).</description>
     <race>
-      <baseBodySize>0.4</baseBodySize>
       <baseHealthScale>0.6</baseHealthScale>
     </race>
     <statBases>
@@ -559,20 +495,12 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>1.0</powerFallPerDay>
-        <energyDensity>1</energyDensity>
-        <chassisClass>5</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Probe">
     <defName>DW_Race_guy762_DroidRace_KX12APD</defName>
     <label>K-X12 assassin probe droid</label>
     <description>A DW-unified K-X12 assassin probe droid. Absorbed from KotORDroids (guy762_DroidRace_KX12APD).</description>
     <race>
-      <baseBodySize>0.4</baseBodySize>
       <baseHealthScale>0.8</baseHealthScale>
     </race>
     <statBases>
@@ -617,15 +545,8 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>1.0</powerFallPerDay>
-        <energyDensity>1</energyDensity>
-        <chassisClass>5</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Battle">
     <defName>DW_Race_guy762_DroidRace_MPDMkI</defName>
     <label>Municipal Patrol Droid Mark I</label>
     <description>A DW-unified Municipal Patrol Droid Mark I. Absorbed from KotORDroids (guy762_DroidRace_MPDMkI).</description>
@@ -675,20 +596,12 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>1.0</powerFallPerDay>
-        <energyDensity>0</energyDensity>
-        <chassisClass>3</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Astromech">
     <defName>DW_Race_guy762_DroidRace_R8009UD</defName>
     <label>R-8009 series utility droid</label>
     <description>A DW-unified R-8009 series utility droid. Absorbed from KotORDroids (guy762_DroidRace_R8009UD).</description>
     <race>
-      <baseBodySize>0.65</baseBodySize>
       <baseHealthScale>0.8</baseHealthScale>
     </race>
     <statBases>
@@ -734,22 +647,11 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>0.33</powerFallPerDay>
-        <energyDensity>0</energyDensity>
-        <chassisClass>2</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Astromech">
     <defName>DW_Race_guy762_DroidRace_T3series</defName>
     <label>T3-series utility droid</label>
     <description>A DW-unified T3-series utility droid. Absorbed from KotORDroids (guy762_DroidRace_T3series).</description>
-    <race>
-      <baseBodySize>0.65</baseBodySize>
-      <baseHealthScale>1.5</baseHealthScale>
-    </race>
     <statBases>
       <MoveSpeed>3</MoveSpeed>
     </statBases>
@@ -784,22 +686,11 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>0.33</powerFallPerDay>
-        <energyDensity>0</energyDensity>
-        <chassisClass>2</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Astromech">
     <defName>DW_Race_guy762_DroidRace_3Cseries</defName>
     <label>3C-series utility droid</label>
     <description>A DW-unified 3C-series utility droid. Absorbed from KotORDroids (guy762_DroidRace_3Cseries).</description>
-    <race>
-      <baseBodySize>0.65</baseBodySize>
-      <baseHealthScale>1.5</baseHealthScale>
-    </race>
     <statBases>
       <MoveSpeed>3</MoveSpeed>
     </statBases>
@@ -842,22 +733,11 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>0.33</powerFallPerDay>
-        <energyDensity>0</energyDensity>
-        <chassisClass>2</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Astromech">
     <defName>DW_Race_guy762_DroidRace_ITseries</defName>
     <label>IT-series utility droid</label>
     <description>A DW-unified IT-series utility droid. Absorbed from KotORDroids (guy762_DroidRace_ITseries).</description>
-    <race>
-      <baseBodySize>0.65</baseBodySize>
-      <baseHealthScale>1.5</baseHealthScale>
-    </race>
     <statBases>
       <MoveSpeed>3</MoveSpeed>
     </statBases>
@@ -900,22 +780,11 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>0.33</powerFallPerDay>
-        <energyDensity>0</energyDensity>
-        <chassisClass>2</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Heavy">
     <defName>DW_Race_guy762_DroidRace_DevWD</defName>
     <label>Devastator-class war droid</label>
     <description>A DW-unified Devastator-class war droid. Absorbed from KotORDroids (guy762_DroidRace_DevWD).</description>
-    <race>
-      <baseBodySize>1</baseBodySize>
-      <baseHealthScale>1</baseHealthScale>
-    </race>
     <statBases>
       <MoveSpeed>4</MoveSpeed>
     </statBases>
@@ -954,20 +823,12 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>1.0</powerFallPerDay>
-        <energyDensity>2</energyDensity>
-        <chassisClass>4</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Heavy">
     <defName>DW_Race_guy762_DroidRace_DevAD</defName>
     <label>Devastator-class Type II assassin droid</label>
     <description>A DW-unified Devastator-class Type II assassin droid. Absorbed from KotORDroids (guy762_DroidRace_DevAD).</description>
     <race>
-      <baseBodySize>1</baseBodySize>
       <baseHealthScale>1.25</baseHealthScale>
     </race>
     <statBases>
@@ -1008,20 +869,12 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>1.0</powerFallPerDay>
-        <energyDensity>2</energyDensity>
-        <chassisClass>4</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Heavy">
     <defName>DW_Race_guy762_DroidRace_SentWD</defName>
     <label>Sentinel-class war droid</label>
     <description>A DW-unified Sentinel-class war droid. Absorbed from KotORDroids (guy762_DroidRace_SentWD).</description>
     <race>
-      <baseBodySize>1</baseBodySize>
       <baseHealthScale>1.5</baseHealthScale>
     </race>
     <statBases>
@@ -1048,15 +901,8 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>1.0</powerFallPerDay>
-        <energyDensity>2</energyDensity>
-        <chassisClass>4</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Heavy">
     <defName>DW_Race_guy762_DroidRace_ADMkI</defName>
     <label>Assault Droid Mark I</label>
     <description>A DW-unified Assault Droid Mark I. Absorbed from KotORDroids (guy762_DroidRace_ADMkI).</description>
@@ -1107,15 +953,8 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>1.0</powerFallPerDay>
-        <energyDensity>2</energyDensity>
-        <chassisClass>4</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Heavy">
     <defName>DW_Race_guy762_DroidRace_ADMkI_sf</defName>
     <label>Star Forge Assault Droid</label>
     <description>A DW-unified Star Forge Assault Droid. Absorbed from KotORDroids (guy762_DroidRace_ADMkI_sf).</description>
@@ -1166,15 +1005,8 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>1.0</powerFallPerDay>
-        <energyDensity>2</energyDensity>
-        <chassisClass>4</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Heavy">
     <defName>DW_Race_guy762_DroidRace_ADMkIV</defName>
     <label>Assault Droid Mark IV</label>
     <description>A DW-unified Assault Droid Mark IV. Absorbed from KotORDroids (guy762_DroidRace_ADMkIV).</description>
@@ -1225,15 +1057,8 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>1.0</powerFallPerDay>
-        <energyDensity>2</energyDensity>
-        <chassisClass>4</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
-  <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
+  <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Heavy">
     <defName>DW_Race_guy762_DroidRace_ADMkIV_sith</defName>
     <label>Assault Droid Mk.IV Type B</label>
     <description>A DW-unified Assault Droid Mk.IV Type B. Absorbed from KotORDroids (guy762_DroidRace_ADMkIV_sith).</description>
@@ -1284,13 +1109,6 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
-    <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
-        <powerFallPerDay>1.0</powerFallPerDay>
-        <energyDensity>2</energyDensity>
-        <chassisClass>4</chassisClass>
-      </li>
-    </modExtensions>
   </AlienRace.ThingDef_AlienRace>
 
 </Defs>

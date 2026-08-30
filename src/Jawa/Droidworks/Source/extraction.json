@@ -980,8 +980,8 @@
       "label": "gnk power Droid",
       "bodySize": 1.0,
       "bodySizeSource": "override",
-      "baseHealthScale": "UNCERTAIN",
-      "baseHealthScaleSource": "UNCERTAIN - same as other animal-framework droids",
+      "baseHealthScale": 1.0,
+      "baseHealthScaleSource": "resolved 2026-08-30, FOUNDRY (DROIDWORKS_FAMILY_LAYER_1): AsimovAutomatonBase and its parent AsimovNonEnergyAutomatonBase (workshop 3096481956, Race_Bases.xml) were read directly - neither declares baseHealthScale, so the engine default 1.0 applies. Same read already used to fix the other 7 UNCERTAIN siblings in DROIDWORKS_FAMILY_LAYER_1's predecessor commit 4c0be10a; GNK's own hand-patched XML value (DROIDWORKS_PILOT_GONK_1) already used 1.0 - this brings extraction.json in sync with it. Was UNCERTAIN because this chain was unread at extraction time.",
       "moveSpeed": 1.9,
       "graphics": {
         "bodyPath": null,
