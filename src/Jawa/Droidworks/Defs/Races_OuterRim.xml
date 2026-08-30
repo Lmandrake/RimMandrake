@@ -1077,17 +1077,41 @@
       </li>
     </modExtensions>
   </AlienRace.ThingDef_AlienRace>
+  <!-- DROIDWORKS_PILOT_GONK_1 pass (2026-08-30): the generator's own run
+       (DROIDWORKS_DEF_GENERATOR_1) carried extraction.json's
+       baseHealthScaleSource "UNCERTAIN - same as other animal-framework
+       droids" through LITERALLY as the text "UNCERTAIN" inside a float
+       field — that is not valid XML for a float and this race (plus 7
+       siblings in this same file: DUM/FX7/MSE/SalvageAssist and 3 more,
+       all sharing the same UNCERTAIN sentinel) would fail to parse
+       baseHealthScale. Resolved the same way the generator's own closing
+       note resolved the JDS null-baseHealthScale gap: RimWorld's engine
+       default (1.0) is the genuine effective value absent better data,
+       used explicitly with this note rather than left as a broken
+       sentinel. The other 7 UNCERTAIN entries in this file have the same
+       defect, unfixed here (out of this item's scope — GNK only) and
+       flagged in this item's closing doc for a follow-up. -->
   <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
     <defName>DW_Race_OuterRim_GNKDroid</defName>
     <label>gnk power Droid</label>
     <description>A DW-unified gnk power Droid. Absorbed from OuterRimDroidDepot (OuterRim_GNKDroid).</description>
     <race>
       <baseBodySize>1.0</baseBodySize>
-      <baseHealthScale>UNCERTAIN</baseHealthScale>
+      <baseHealthScale>1.0</baseHealthScale>
     </race>
     <statBases>
       <MoveSpeed>1.9</MoveSpeed>
     </statBases>
+    <comps>
+      <!-- "the gonk detonates by nature" (BENCH). Pilot wiring: no other
+           DW race attaches this comp yet, despite 18 races carrying
+           energyDensity > 0 in their DroidworksExtension (see
+           DROIDWORKS_DEF_GENERATOR_1's chassis table) — the mechanic was
+           built (CompDroidDetonation.cs) but never wired to any def. This
+           is the first race to prove the wiring works end to end; rolling
+           it out to the rest is a follow-up, not this item. -->
+      <li Class="Droidworks.CompProperties_DroidDetonation" />
+    </comps>
     <alienRace>
       <graphicPaths>
         <skinShader>Cutout</skinShader>
