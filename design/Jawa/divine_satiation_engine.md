@@ -1021,3 +1021,20 @@ machine or building · L REIGN-BREAKER mass destruction of the salvageable.
 CURSES: S Loose Screws (repairs fail more) · M Everything Breaks
 (deterioration accelerates, quality drops) · L The Second Hand Withdraws
 (nothing repairable at all for the span — only replaced).
+
+### ⑥ Ta'Baa the Unrooted — SHIPPED 2026-08-30
+DEEDS +: LAUNCHING (the holiest; big spike per liftoff) · caravans out and
+back · fuel stockpiled · escape routes built · rescuing the trapped · mental
+breaks resisted.
+DEEDS −: rooted-erosion (satiation decays per day landed — his canon clock) ·
+despair (breaks, catatonia) · fuel run dry · ship immobilized/engine-stripped.
+BOONS: S Tailwind (move/caravan speed) · M The Open Door (launch fuel cost
+down; break thresholds ease) · L Somewhere Better (a revealed opportunity
+site reachable this reign).
+DEMANDS: S keep a fueled lift margin always · M send a caravan/sortie this
+reign · L LAUNCH before the reign ends.
+TABOOS: S fuel margin at zero · M walling in the ship · L REIGN-BREAKER
+dismantling engine components while he fronts.
+CURSES: S Heavy Feet (speed down, wanderlust) · M The Rooted Ache (mood sag
+worsening each launchless day) · L Despair's Whisper (break thresholds
+collapse until something FLIES).
