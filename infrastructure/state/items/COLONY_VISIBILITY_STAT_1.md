@@ -169,10 +169,57 @@ checked against the live source.
 6. Per-settlement Visibility for a colony that settles (F14) — out of scope
    v1, flagged only.
 
-## Verify — needs the bridge, not done here
-Game is up this session; assembly is NOT deployed
-(`deploy_custom_mods.py --mod Jawa_Doctrine --apply` queued for the next
-down window, same as this session's other pending fixes). Once deployed:
+## ✅ DEPLOYED AND LOADING CLEAN — live check 3 of 3 done, 2026-08-30 (FOUNDRY)
+
+`JawaDoctrineCore.dll` is deployed and in the running 585-mod build. Fresh
+quicktest, game paused. **Verify step 3 below is DONE and passes; steps 1 and 2
+are not, and this item stays `doing`.**
+
+**Both Harmony patches are registered on the live game** — `jawa/harmony_patches`,
+raw:
+```
+TimedDetectionRaids.CompTickInterval
+  transpilerCount 1
+    owner        mandrake.jawadoctrine.core
+    patchMethod  JawaDoctrineCore.ColonyVisibilityRaidPatch.Transpiler_SwapDefaultThreatPoints
+    patchAssembly JawaDoctrineCore     patchInfoError null
+
+GravshipUtility.GenerateGravship
+  postfixCount 1
+    patchMethod  JawaDoctrineCore.ColonyVisibilityRaidPatch.Postfix_ResetVisibilityOnLaunch
+```
+
+**✅ Verify step 3 passes: the transpiler's failure error did NOT fire.**
+`Player.log` (current session's, 703 KB, mtime 14:36) contains **zero** lines
+matching `JawaDoctrineCore` or `ColonyVisibility`. Control: the same grep returns
+40 hits for `Harmony`, so the instrument works and the file really does cover
+startup. ⇒ the transpiler found exactly its one call site and swapped it; a
+failed swap would have logged `"expected exactly 1 call-site swap"`
+(`ColonyVisibilityRaidPatch.cs:175`) at patch time.
+
+**The GameComponent is instantiated on a live game.** Proven by saving the
+quicktest and reading the component list out of the `.rws`:
+```
+<li Class="JawaDoctrineCore.GameComponent_ColonyVisibility" />
+```
+⇒ `Game.FillComponents()` reflected over it and constructed it with no Def or XML,
+exactly as designed, and it takes part in `ExposeData`. The element is
+**self-closing and that is correct**: `ExposeData` writes
+`Scribe_Values.Look(ref shipVisibility, "shipVisibility", 10f)` and
+`shkaarEscalationMultiplier` with default `1f`, and a brand-new game holds both at
+their defaults, which Scribe omits. Not evidence of a broken `ExposeData` — the
+element's presence is the finding.
+⚠️ **Not proven: that a CHANGED value round-trips.** Nothing on the bridge can call
+`Adjust()`, so the persistence path was observed only at its defaults.
+
+⚠️ Steps 1 and 2 below still owed, and neither is cheap: step 1 needs a real
+gravship launch, step 2 needs a `TimedDetectionRaids` countdown driven to fire plus
+a way to set `shipVisibility` (no debug gizmo exists yet). **The scoping decisions
+owed above are the real blocker regardless** — the dominant storyteller raid path
+remains unpatched by design.
+
+## Verify — needs the bridge
+Once deployed:
 1. Quicktest: force a gravship launch, confirm `shipVisibility` drops to
    the 5-15 floor (dev-mode log line `[ColonyVisibility] launch reset:`).
 2. Quicktest: drive `shipVisibility` to a few different values (dev console
@@ -186,8 +233,13 @@ down window, same as this session's other pending fixes). Once deployed:
    the deployed game's actual IL).
 
 ## Watch out
-🔴 **This item stays `doing`, not `closed`** — built and compiles clean,
-but unverified live (needs the bridge, which needs a down/up cycle this
-session isn't taking), and three of the design doc's four F12 call sites
-turned out to be wrong against live source, leaving the dominant raid path
-genuinely unpatched. Both facts block closing.
+🔴 **This item stays `doing`, not `closed`.** Updated 2026-08-30: it is now
+deployed, both patches are registered, the transpiler applied without error and
+the GameComponent is instantiated on a live game — so *"unverified live"* is no
+longer the blocker. What still blocks closing:
+1. The raid-point math has never been **observed changing** — steps 1 and 2 of
+   Verify (gravship launch reset, and a detection raid whose points track
+   Visibility rather than wealth) are undone.
+2. Three of the design doc's four F12 call sites were wrong against live source,
+   so the **dominant storyteller raid path is genuinely unpatched** and the scoping
+   decision for it is owed to the owner/BENCH (decisions 1 and 2 above).
