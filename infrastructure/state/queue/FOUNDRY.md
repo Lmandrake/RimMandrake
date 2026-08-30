@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T21:32:23Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T21:34:28Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -89,15 +89,6 @@ target:   v1
 kind:     build
 summary:  (no items/WEAPONS_ABSORPTION_WAVE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/WEAPONS_ABSORPTION_WAVE_1.md
-
-## ISEKAI_GRANT_EXCLUSION_1 Exclude Jawa_ traits from ISEKAI grant-item pools
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  ISEKAIGRANTEXCLUSION1 — keep the Star-Wars identity traits off the random-roll path
-prose:    infrastructure/state/items/ISEKAI_GRANT_EXCLUSION_1.md
 
 ## DROIDWORKS_POWEREDDOWN_NOT_WIRED_1 Ion buildup crossing threshold downs via vanilla JawaIon_Stun capMods only -- never adds the DW_PoweredDown hediff the state machine is built around
 state:    doing
@@ -246,16 +237,6 @@ kind:     task
 blocked:  sequenced with Droidworks phase 3 (droid_system_build_spec.md line 186) — parked behind DROID_SYSTEM_BUILD_1 which needs owner to reopen
 summary:  (no items/DROID_TILES_SOURED_TERRAIN_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DROID_TILES_SOURED_TERRAIN_1.md
-
-## ISEKAI_GRANT_EXCLUSION_1 Exclude Jawa_ traits from ISEKAI grant-item pools
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-blocked:  XML fix deployed and loaded (patch written 10:22, game launched 11:23; Jawa_Patches in sync). Live verify blocked: game wedged on a never-completing 'Loading world.' long event. Also fixed jawa/get_defs, which reported TraitDef.commonality as '(no such field)' for the Isekai traits AND vanilla Nimble because the field is private -- that nearly got a correct shipped patch reported as a no-op. Once the companion redeploys, the commonality half of the verify needs no map at all.
-summary:  ISEKAIGRANTEXCLUSION1 — keep the Star-Wars identity traits off the random-roll path
-prose:    infrastructure/state/items/ISEKAI_GRANT_EXCLUSION_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 

@@ -73,5 +73,63 @@ still needs a pawn.
 - [x] Vanilla random-roll path closed by a validated, FindMod-gated patch, deployed and
       loaded in the running build.
 - [x] Residual NPC-roller risk named and escalated to BENCH rather than silently fixed.
-- [ ] Live confirmation: commonality reads 0 from the running DefDatabase, and an explicit
-      scroll/mask grant still applies the trait.
+- [x] Live confirmation: commonality reads 0 from the running DefDatabase (with a control
+      proving the reader is not blind), an explicit grant still applies the trait, and 120
+      freshly generated pawns rolled neither. See the section below.
+
+## ✅ LIVE CONFIRMATION 2026-08-30 (FOUNDRY) — all three checks pass. CLOSED.
+
+Fresh 585-mod quicktest. The fixed `jawa/get_defs` (NonPublic field search) is deployed.
+
+### 1. `commonality` reads a real 0 — and the control proves it is a MEASURED zero
+```
+jawa/get_defs {defs: "TraitDef/Isekai_Protagonist;TraitDef/Isekai_Antagonist;
+                      TraitDef/Nimble;TraitDef/Isekai_Rank_S", fields: "commonality"}
+
+  Isekai_Protagonist   commonality 0.0     (upstream 0.01 -> patched)
+  Isekai_Antagonist    commonality 0.0     (upstream 0.01 -> patched)
+  Nimble        (Core) commonality 1.0     <- CONTROL
+  Isekai_Rank_S        commonality 0.0     (the mod's own never-rolled convention)
+```
+🔑 **`Nimble` reading `1.0` is what makes the two zeroes worth anything.** `commonality` is
+`private float` on `TraitDef`; the previous pass's tool could not see it and said
+*"(no such field)"* on all three alike, which was indistinguishable from the patch having
+missed. A reader that returns 1.0 for a def nobody patched and 0.0 for the two that were
+patched is reading the field, not failing on it. ⇒ the shipped XML fix is confirmed applied,
+and the earlier near-miss is fully retired.
+
+### 2. The explicit grant still works on a commonality-0 trait
+```
+jawa/pawn_traits {action: "list"}  -> traitCount 4  [Undergrounder, Straight, Isekai_Rank_C, Isekai_Title_Archer]
+jawa/pawn_traits {action: "add", trait: "Isekai_Protagonist"} -> added 1, refused []
+jawa/pawn_traits {action: "list"}  -> traitCount 5, Isekai_Protagonist present
+```
+This exercises `TraitSet.GainTrait`, the same terminal call
+`CompUseEffect_IsekaiTrait.DoEffect` → `IsekaiTraitHelper.AddIsekaiTrait` makes (read from
+the mod's own `Source/IsekaiLeveling/Items/CompUseEffect_IsekaiTrait.cs`). ⇒ `commonality 0`
+removes the trait from the random roll **without** disabling the scroll/mask route, which is
+exactly the owner's ruling.
+
+### 3. 120 freshly generated pawns rolled neither
+```
+120 pawns via jawa/spawn_pawn (Colonist, 4 batches of 30)
+  Isekai_Protagonist  0
+  Isekai_Antagonist   0
+  traits that DID roll: Bisexual 58, Isekai_Rank_F 39, Isekai_Rank_E 30,
+                        Straight 28, Isekai_Rank_D 26, PsychicSensitivity 18
+```
+The right-hand column is the control: trait assignment is plainly running on these pawns.
+
+### ⚠️ What this sample does NOT prove — pathway (2) is untouched and still open
+🔑 **The `Isekai_Rank_*` rows are live evidence for this item's pathway (2), which until now
+was source-only.** `Isekai_Rank_S`/`_F`/`_E`/`_D` all read `commonality 0.0` in check 1, and
+**39 + 30 + 26 of them appeared on these 120 pawns anyway** — so Isekai's own C# roller
+demonstrably assigns traits the TraitDef says are never rolled. (`jawa/drain_log` shows its
+narration during map gen: *"[Isekai Forge] Enhancing Alpha, Techie (rank D)…"*.)
+
+⇒ 0/120 on Protagonist/Antagonist confirms **pathway (1) is closed** and is *consistent with*
+pathway (2) being rare, but at a hardcoded 0.01 weight behind an 80%-chance-of-zero roll a
+120-pawn sample would expect roughly zero hits either way. **It is not evidence that
+pathway (2) is closed, and pathway (2) is not closed** — it remains flagged for BENCH exactly
+as this item already recorded, now with a live demonstration that the mechanism is real
+rather than a source reading.
