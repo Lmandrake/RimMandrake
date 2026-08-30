@@ -3262,3 +3262,4 @@
 {"seat":"FOUNDRY","event":"start","id":"RIMMANDRAKE_PITS_BUILD_1","ts":"2026-08-30T21:36:06Z"}
 {"seat":"FOUNDRY","event":"note","id":"RIMMANDRAKE_PITS_BUILD_1","text":"Core framework mod built and deployed (files only, not in ModsConfig): dig stages, terrain-mimic covers, mass triggers, struggle escape, fitting family, pit cell. 0 errors/0 warnings. Spawn-mass quicktest matrix still owed - bridge occupied. Left doing.","ts":"2026-08-30T21:36:59Z"}
 {"seat":"FOUNDRY","event":"block","id":"SPAWN_PAWN_SUBSTITUTES_VANILLA_KIND_1","reason":"Tool read-back proven live on 480 spawns; remaining unknown is WHICH of 5 Harmony patches, needs a mod-disable bisect with a game restart per candidate (~1000 spawns per cell at the real 0.8% rate)","ts":"2026-08-30T21:37:24Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-08-30T21:41:02Z"}
