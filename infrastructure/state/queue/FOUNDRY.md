@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T16:36:07Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: FOUNDRY
+as-of: 2026-08-30T16:44:54Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -179,6 +179,15 @@ target:   v1
 kind:     bug
 summary:  VEHICLEIONTIER1 — the ion gun has zero effect on Vehicle Framework vehicles
 prose:    infrastructure/state/items/VEHICLE_ION_TIER_1.md
+
+## MOD_LIST_OUTGROWN_AUDIT_2 Outgrown-mod audit: whole 585 list, starting with They/Them(ants) and ISEKAI level-up - OWNER SEQUENCED FIRST
+state:    doing
+row:      1
+needs:    offline
+target:   v1
+kind:     task
+summary:  Two named leads first: They/Them (ants ruled OUT FOREVER — GAPS 11 2026-08-30;
+prose:    infrastructure/state/items/MOD_LIST_OUTGROWN_AUDIT_2.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -416,16 +425,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/PAINT_GUARD_ASK_EACH_TIME_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PAINT_GUARD_ASK_EACH_TIME_1.md
 
-## MOD_LIST_OUTGROWN_AUDIT_2 Outgrown-mod audit: whole 585 list, starting with They/Them(ants) and ISEKAI level-up - OWNER SEQUENCED FIRST
-state:    proposed
-row:      1
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  Two named leads first: They/Them (ants ruled OUT FOREVER — GAPS 11 2026-08-30;
-prose:    infrastructure/state/items/MOD_LIST_OUTGROWN_AUDIT_2.md
-
 ## ASSAILANT_DUNGEON_BUILD_1 Build the Assailant flesh dungeon: frozen first-impact complex, thaw-gated, deep Umbra
 state:    proposed
 row:      unassigned
@@ -455,3 +454,43 @@ kind:     bug
 thin:     no ## spec
 summary:  🔴 Scope correction: this is NOT a Droidworks-only bug
 prose:    infrastructure/state/items/DROIDWORKS_ISFLESH_RELATIONS_CRASH_1.md
+
+## PAWN_FLAVOR_ROUND7_FIRE_1 Build round 7: the Deep Desert Fire side - Pyre-Watcher, Flame-Reaper, Ash-Speaker, Reaps-the-Flames
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/PAWN_FLAVOR_ROUND7_FIRE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PAWN_FLAVOR_ROUND7_FIRE_1.md
+
+## PAWN_FLAVOR_ROUND8_FDE_1 Build round 8: the FDE droid grouping set - seven entries across Assembly/Service slots
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/PAWN_FLAVOR_ROUND8_FDE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PAWN_FLAVOR_ROUND8_FDE_1.md
+
+## PAWN_FLAVOR_ROUND9_FUEL_1 Build round 9: Junkers fuel economy - Shore-Rat, Still-Master, Pipe-Tapper
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/PAWN_FLAVOR_ROUND9_FUEL_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PAWN_FLAVOR_ROUND9_FUEL_1.md
+
+## PAWN_FLAVOR_PHASE2_PROSE_1 Phase 2 prep: lore-prose pass over ThoughtDef/MentalBreakDef/xenotype flavor - census + drafts + review sheet
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/PAWN_FLAVOR_PHASE2_PROSE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PAWN_FLAVOR_PHASE2_PROSE_1.md

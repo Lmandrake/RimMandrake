@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T16:36:07Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: FOUNDRY
+as-of: 2026-08-30T16:44:54Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -17,15 +17,6 @@ Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED be
 # IN PROGRESS
 
 Started, and therefore not offered again. `rimflow close` or `rimflow block` moves them.
-
-## PAWN_FLAVOR_STARWARS_1 Assess and rework backstories, childhoods and traits for Star Wars fidelity, with the owner
-state:    doing
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-summary:  PAWNFLAVORSTARWARS1 — backstories, childhoods and traits, in-fiction
-prose:    infrastructure/state/items/PAWN_FLAVOR_STARWARS_1.md
 
 ## COLD_LOAD_RUN_SHEET_2 Next window run sheet: scenario-tool deploy, pursuit install, ship round trip
 state:    doing

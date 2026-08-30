@@ -147,7 +147,8 @@ own catechism, no doc source); Junkers "Junk-Reckoner" trait; Homestead
 forcedTraits/disallowedTraits (XML) or a spawn hook (C#) — mechanism not yet
 ruled.
 
-## Per-faction sets (rounds 2–3 depth) — ⚠ superseded for the ROSTER by round 6
+## Per-faction sets — ✅ ROSTER RATIFIED v1 (owner, 2026-08-30): all twelve
+## faction sets stand as the ruled design; rounds 7-9 build alongside
 
 ### Homestead Defense League — the Tatooine homage set
 Childhoods: **Farm-Fostered** (Luke: learns from elders; horizon-yearning debuff
