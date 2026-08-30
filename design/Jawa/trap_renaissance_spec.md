@@ -56,6 +56,15 @@ re-home, never a mobility exploit for turrets/defenses in combat.
   they exist to be sold, gifted, or fed to Rekko's restoration).
 - Theology: `↑Rekko` (a better home) + `↑Mob'Unloo` (something for nothing) on a
   clean take; the §8b theft row already prices getting caught.
+- **Reframe (MEASURED, 2026-08-30): `MinifyEverything` (erdelf.minifyeverything)
+  is already in the stack** and grants near-universal minification — so this
+  feature is really TWO curations: (a) whitelisting the 96-def genuinely
+  unstealable frontier, and (b) carving combat buildings OUT of what
+  MinifyEverything already grants (the §2b denylist, 161 rows prefilled DENY).
+  The owner's click-through sheet is ready:
+  `Transient/minify_whitelist_sheet.html`, census committed at
+  `worldbuilding/data/minify_whitelist_prefill.csv` (257 rows from the frozen
+  dump), decisions land at `worldbuilding/data/minify_whitelist_decisions.json`.
 
 ## 3. Absorption tier (patches, not frameworks)
 

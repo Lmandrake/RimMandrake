@@ -90,8 +90,21 @@ vocabulary only (memory + covered_pit_traps_spec §9).
    pacing, first-contact order override.
 3. Visibility §6: difficulty curve endpoints; threat-scoped vs global
    patching; does a returned-to tile remember its Visibility.
-4. Minify whitelist/denylist (review-sheet).
+4. Minify whitelist/denylist — **the review-sheet is READY, he just clicks:**
+   `Transient/minify_whitelist_sheet.html` (257 prefilled rows; decisions save
+   to `worldbuilding/data/minify_whitelist_decisions.json`). Note the reframe:
+   MinifyEverything is in the stack, so the denylist carve-out matters as much
+   as the whitelist (trap_renaissance_spec §2b).
 5. Sacred-site placement on THE map (his pen, with worldview.py).
+
+## Sprint tail (added after the door rulings, same day)
+
+Door rulings propagated into the build spec and engine doc ·
+`folk_gesture_mechanics.md` (four promoted gestures, with the set-it-down
+demotion clause) · `narrator_corpus/judgement_and_council.md` (verdicts,
+arrival clauses, compère tissue, the chorus barks — the voice layer is now
+complete end to end) · the minify census CSV committed under
+`worldbuilding/data/`.
 
 ## Process notes for the successor seat
 
