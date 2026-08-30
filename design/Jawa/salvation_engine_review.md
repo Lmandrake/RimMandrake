@@ -8,6 +8,39 @@ canon** — nothing here is decided until the owner rules on a finding by name.
 Findings are NAMED (F1–F19 with slugs) so rulings can land piecewise
 ("do SIGNATURE and POTLATCH, park MOOD")._
 
+## RULINGS — owner card-session, 2026-08-30 (this section is decided; the findings below are the arguments)
+
+| Finding | Ruling |
+|---|---|
+| F1 Folk-depth | **Lore lines for all nine + promote 3 to micro-mechanics** (idle animations / tiny ticks). |
+| F2 Reality-leak | **Attenuate by distance** — full effects on the ship's map; letters only for caravans/outposts. |
+| F3 Species seam | **Name it in §2.0d** — done in the same sweep. |
+| F4 Onboarding | **Veiled discovery** — meters hidden until first manifestation; a god introduces himself before he bills you. |
+| F5 The 3×3 | **Adopt as crew-lore** (bulkhead diagram, never engine architecture). |
+| F6 Dilemma events | **10–15 authored** three-cornered choice-letters. |
+| F7 Invisible feuds | **Both** — contested credit + the Rekko⇄Ozzik restore-vs-build dial. |
+| F8 Mood | **Weather, never a number** — gestures + Narrator adjectives, front god loudest. |
+| F9 Signature | **Adopt, and go further:** custom per-god sound (a toll that rings several times), ominous foreboding events. Traceability, warning, and *emotional weight* are all mandatory. |
+| F10 Exit-verbs | **Adopt, and REFRAME curses entirely:** move away from reward/punishment toward *rotation of alignment/anti-alignment with aspects of the world*. A curse never does the opposite of what the god wants (that just makes you uglier to him) — **it ENACTS what he wants, no longer in your interest**: anger the god of fleeing by never fleeing, and he destroys the thing keeping you here. Curses may even carry benefits — just not the ones you'd choose. The whole curse column gets re-specced under this law. |
+| F11 Zizzik's bank | **Visible + spendable, PLUS a fun devotional channel for competent play:** rites, intentionally letting people go, a battery left out in the weather to short as an offering — sacrifice-as-play, to be expanded. Competence must have its own pious outlet, not just deny him. |
+| F12 Double-billing | **Replace, don't stack** — the mod owns threat-point modulation. |
+| F13 Ozzik's trap | **All three valves, and the deeper law: INTERCESSION.** The right way to manage the gods is *against each other*, never head-on — "X is angered, but Y intervenes while giving you a warning look." Social negotiation in a complex environment; head-on you lose or grow oppressed. Plus the **disposable shrine-as-offering**: build a structure on the local map and *walk away from it* — an offering valued by summed work-hours (better than silver-equivalent, though that's also interesting), footprint, and the baked-in room stats. Far more potent than leaving gold on the ground. |
+| F14 Reign-parking | **Watchers + decadence, with a correction:** the religion *pressures* toward roaming but does not demand it — Jawa settlements exist on the map; settling is difficult, costly, and requires managing the gods against each other to keep sane and healthy. Travel is merely *easier*. **The PLAYER's forced movement comes from the Empire chasing the ship, not from the theology.** |
+| F15 First-contact chains | **Spec all nine — dramatic, not subtle.** |
+| F16 Divine geography | **Full adoption, PLUS SACRED SITES:** new landmark kinds (or reinterpretations of existing ones) that automatically please certain gods on landing — Oomo delighting in an oasis is the archetype. Owed: a deep inspiration pass over all tile contents, mutators, landforms, and features. Plus the tidal day/night split. |
+| F17 Interface | **All three** — reign-calendar, letter rewrite layer, inspect tags. |
+| F18 Visibility dial | **First-class player-facing stat.** |
+| F19 Tenth position | **Add the balance-keeper ending.** |
+| V.1 Chorus | **Chorus stays, Narrator compères** — gods speak in their own registers during rites; the Narrator stages them, never speaks *as* them. |
+| V.2 Restraining bolts | **Pantheon-wide** — any starved front-god can seize actuators; the bolts answer any god. |
+| V.3 The sun | **One unsetting sun.** Canon block edited; the description doc's flag resolved. |
+| V.4 §19.5 borderlines | **All three legal** (opportunity-shaped, rare) — ruled deliberately, noted in the engine doc. |
+| V sweep | **All uncontroversial edits done now** (pointers, weapon doctrine, precept-vs-reign line, seam sentence). |
+
+**Spec work these rulings now owe** (files as items when the owner calls each build): the curse-column re-spec under F10's alignment law · the F11 devotional-sacrifice catalog · the F13 intercession mechanic + disposable-shrine rite · the nine F15 chains · the F6 dilemma set · the F16 sacred-sites tile pass · the F18 Visibility stat design.
+
+---
+
 **Verdict:** the design is already unusually strong. The three-sign structure
 (please / starve / perilous), the four pressure-clocks, and the reign format
 (deeds/boons/demands/taboos/curses) are genuinely novel — no shipped RimWorld

@@ -16,8 +16,9 @@ beg" (J:326), being caught vs stealing (J:162).
 ⚠️ **`Sh'kaar` is written as "the sun that never sets", NOT "the twin suns"**
 (J:206). The twin-sun line predates the tidally-locked world established in
 <!-- canon-ok: "faction_religions.md:11-17" is a line range, not a faction count. -->
-`faction_religions.md`:11–17, where the sun does not move at all. Flagged for the
-owner — if the twin suns are canon, this is the one line to change.
+`faction_religions.md`:11–17, where the sun does not move at all. **RESOLVED
+2026-08-30 (owner, card-session V.3): one unsetting sun is canon** — this text
+was right; the engine doc's canon block was edited to match.
 
 ⚠️ **"Utinni" is deliberately absent.** It appears nowhere in the lore docs, and
 J:120 forbids introducing a sacred word that has not been established first.

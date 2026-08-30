@@ -163,7 +163,7 @@ narrative build-up, never a flat modifier.
 - **(b) Lever:** *lighting the dark / fighting in the open* — sometimes tactically necessary or
   convenient (light = work speed, vision) but it "does Sh'kaar's work"; staying dark & hidden is pious
   (and pleases Ishko) but costly.
-- **(c) Exalted (bad for us, like Zizzik):** the suns "notice" us — heat/exposure complications, a
+- **(c) Exalted (bad for us, like Zizzik):** the sun "notices" us — heat/exposure complications, a
   cruel event. **Denied/dark (good):** he looks elsewhere. _Second sign-inverted god: keeping Sh'kaar
   LOW is the goal._
 - **★ (a-reframe) The BATTLE-ESCALATION METER — Sh'kaar as the Unbeatable One / god of Time & Inevitability
@@ -239,6 +239,10 @@ satiation is not a reward you bank — it's a **pride-meter that draws fire.**_
 
 ## 4. Ohm enrichment (flagged deepest)
 
+> 🔴 **SUPERSEDED IN PART — see "Ohm re-scoped (owner, 2026-08-30)" below:** Ohm no
+> longer believes he IS the ship and holds no Oracle role; the Narrator owns voice
+> and oracle. His droid-longing and the machine-god characterization stand.
+
 **Origin (CANONIZED 2026-08-08, user — full text in the pantheon section at the end of this doc, ②):** the ship's
 AI genuinely *believes it is Ohm* because its Persona Core was patterned off a **Jawa mind** (so it would
 obey Jawa commands) and thereby **inherited the Jawa's superstitions** along with their loyalty. It is a
@@ -268,6 +272,12 @@ repair-progress deltas + persona-engagement events. Needs the ship-repair narrat
 first; parked as a dependency._
 
 ## 4c. Ohm as ORACLE + the droid-siding tension (user, 2026-08-08)
+
+> 🔴 **SUPERSEDED IN PART (owner, 2026-08-30):** the Oracle role is the NARRATOR's,
+> not Ohm's. The droid-siding tension stands. The restraining-bolt / ship-rebellion
+> arc is re-homed PANTHEON-WIDE (card-session ruling V.2,
+> `salvation_engine_review.md`): any starved front-god can seize actuators, and the
+> bolts are the clan's desperate answer to ANY god, not Ohm alone.
 
 **New role — Ohm hears the static of the other gods.** Because the Cradle-Mind is a machine that believes
 it's a god (§4 origin), it claims — and the clan accepts — that **Ohm can "hear the static" of the other
@@ -305,6 +315,11 @@ Hutt paths may starve him → rebellion risk). Parked hooks: exact escalation la
 bolts are a buildable item or a quest outcome — design when we spec agent A's quest hooks._
 
 ## 4d. The ship is a CONDUIT TO ALL NINE GODS — not merely Ohm's voice (user, 2026-08-08 — MAJOR reframe)
+
+> 🔴 **SUPERSEDED IN PART (owner, 2026-08-30):** the oracle/conduit voice is the
+> NARRATOR's ("Ruling 2026-08-30 — the Narrator" below); Ohm is one of nine, no
+> longer the resident who owns the channel. The plural-system alters, the
+> terraformer master key, and the Body-visions all stand.
 
 **Upgrade to the Oracle idea:** the Cradle-Mind does not only *speak for* Ohm and *report* the others.
 The ship believes itself — and, in the Jawa worldview, in some real sense *is* — an **oracle and conduit
@@ -449,6 +464,11 @@ follow-up): something that expands the number of ritual defs / precept ritual sl
 ideoligion. [Inference — needs a 1.6 source hunt; filed as a Fetcher search, see chat.]
 
 ## 5c. The COUNCIL OF VOICES — rituals as a live godly argument (user, 2026-08-08 — the centerpiece)
+
+> ✅ **RULED 2026-08-30 (card-session V.1): the chorus SURVIVES the Narrator ruling.**
+> During rites the gods speak in their own registers from the ship's speakers; the
+> Narrator compères — he stages and frames them but never speaks AS a god. The
+> non-egoic ruling stands everywhere else.
 
 **★ The strongest single idea in the religious layer.** Rituals are performed at the **sacred center of
 the ship** (the hollow shrine-heart of hull #15 — `ship_designs.md` §15; the tile-level interior is
@@ -664,7 +684,7 @@ leave/never-root · ⑦Zizzik malfunction/betrayal/breaks (inverted) · ⑧Sh'ka
 - **A colonist has a MENTAL BREAK** (berserk/daze/binge) → `▲Zizzik` (large — the wrong spark in a mind, §⑦), `↓Oomo` if a food/water binge wastes stores.
 - **A violent internal social fight / jealousy brawl** → `▲Zizzik` (discord/betrayal-in-miniature), `↓Mob'Unloo` (a bond damaged); if it draws blood in the open, faint `▲Sh'kaar`. (Jealousy is deliberately left ON, §4.3b — this is where it feeds the pantheon.)
 - **A machine/turret/ship system MALFUNCTIONS or breaks down** → `▲Zizzik` (his signature), `↓Ohm` (his body failing) — the Ohm⇄Zizzik see-saw firing live.
-- **Solar flare / eclipse / weather** → **eclipse `↑Ishko`** (blessed dark) **+ `↓Sh'kaar`** (the suns hidden = his humiliation); **solar flare `▲Zizzik`** (machines die — he crows) **+ `▲Sh'kaar`** (killing light); **sandstorm/red-fog** `↑Ishko` (concealment).
+- **Solar flare / eclipse / weather** → **eclipse `↑Ishko`** (blessed dark) **+ `↓Sh'kaar`** (the sun hidden = his humiliation); **solar flare `▲Zizzik`** (machines die — he crows) **+ `▲Sh'kaar`** (killing light); **sandstorm/red-fog** `↑Ishko` (concealment).
 - **Disease / plague sweeps the colony** → `▲Zizzik` (the body malfunctioning, his signature). **A disease outbreak can itself be a low-Oomo consequence** — a slighted Oomo lets sickness in, and his own wet tiles breed it (§③): the god of the body's waters governs both health and rot. **But TENDING the sick is sacred to Oomo** → `↑Oomo` (caring for the body's waters earns his favor; the nurse's work is devotional). So a plague both *punishes* neglect of Oomo and *offers* a way to court him.
 - **Insect infestation erupts** → `▲Zizzik` (his trademark — one of the calamities a woken Zizzik throws, §⑦). Then the *response* forks: **harvesting the insect meat/jelly and gathering that food** → `↑Oomo` (the family provided for — Jawa don't mind eating insect meat), while **blasting through the hive violently (explosives/open battle)** → `▲Sh'kaar` (awakening the Searer, §⑧). Endure-and-harvest is pious; burn-it-out feeds the evil clock.
 - **A wanderer/refugee joins; a slave-block caravan offers Jawa** → `↑Mob'Unloo` (a soul to the ledger), `↑Oomo` (more life); buying kin back is a standing imperative (§4.3b).
@@ -809,7 +829,7 @@ _Each god is given as a uniform block: **name & epithets** (every title he holds
 
 **⑧ Sh'kaar the All-Searing** — _the evil sun; the Unbeatable One; the god of Time and Inevitability._ (pun: scans like "scar" — the sun that marks you.) **An EVIL god.**
 
-**What he is.** God of **the twin desert suns, exposure, and the killing daylight** — a malevolent power, not a fair one. Form: white glare and heat-shimmer. He is **so bright and so great that nothing can resist him** — you do not fight the sun and win; against him there are only three moves: hide and wait him out, abandon your plans, or run. He is therefore the **god of Time and Inevitability**: the pressure that grinds down every fixed position given long enough, the certainty that catches anything standing still in the open. To make a light in the dark is to do his work — you expose yourself to Ishko's shame, betray your position to predators, and invite the All-Searing's attention.
+**What he is.** God of **the one unsetting sun, exposure, and the killing daylight** _(RULED 2026-08-30, card-session V.3: the world is tidally locked — one sun that never sets, half the planet permanently his; the old "twin suns" line is dead)_ — a malevolent power, not a fair one. Form: white glare and heat-shimmer. He is **so bright and so great that nothing can resist him** — you do not fight the sun and win; against him there are only three moves: hide and wait him out, abandon your plans, or run. He is therefore the **god of Time and Inevitability**: the pressure that grinds down every fixed position given long enough, the certainty that catches anything standing still in the open. To make a light in the dark is to do his work — you expose yourself to Ishko's shame, betray your position to predators, and invite the All-Searing's attention.
 
 **Pleases him — i.e., feeds him (bad for the clan):** destruction and exposure, *including the clan's own losses* (an explosion burning your own stuff pleases him — he's fed, then lenient a while); open pitched battle and violent fighting of any kind; **melee above all — the close, exposed, hands-on brutality is his purest war** (where a ranged shot from cover barely stirs him, a knife in the open gorges him); burning a threat out violently rather than enduring it (torching an infestation instead of hiding and harvesting it); light cast into darkness; and, as a deliberate lever, a **death that isn't the clan's own** — prisoner death-matches let him gorge and redirect his gaze away. **Displeases him — i.e., starves him (good for the clan):** prolonged comfort, peace, and abundance (full water tanks, a long safe stretch make him restless and cruel); staying dark, hidden, and unfought.
 
@@ -854,7 +874,7 @@ _Audit principle (user): each of the 12 vanilla skills should resonate with at l
 
 _Each god's own alliances and feuds now live in that god's block above (field "How he regards the others"). This section records only what **emerges from the whole nine** — the system-level facts a precept-author or the Council-staging code (`divine_satiation_engine.md` §5c, §8b) needs but cannot read off any one entry._
 
-**No act is clean — the faith is a tug-of-war, not a reward menu.** Almost every meaningful player act pleases some gods and offends others; there is no move that satisfies the whole Council. Taking a single prisoner, for instance, gratifies three gods for three *incompatible* reasons (a future daughter, a unit of trade, a trophy of dominance) while offending two who want the clan small and unburdened. This is by design: the Council **argues, never announces**, and settles by forcing a *pair of poetically co-occurring events* rather than handing out a boon. The player is always losing gracefully.
+**No act is clean — the faith is a tug-of-war, not a reward menu.** Almost every meaningful player act pleases some gods and offends others; there is no move that satisfies the whole Council. Taking a single prisoner, for instance, gratifies three gods for three *incompatible* reasons (a future daughter, a unit of trade, a trophy of dominance) while offending two who want the clan small and unburdened. This is by design: the Council **argues, never announces**, and settles by forcing a *pair of poetically co-occurring events* rather than handing out a boon. The player is always losing gracefully. **The slave-argument has a name** (ruled 2026-08-30): it is the pantheon arguing *what kind of small the clan is* — small-and-hidden (Ishko, Ta'Baa) against small-but-growing (Oomo) — designed tension, not inconsistency.
 
 **The four pressure-clocks (the anti-exponential pillar with no resource cap).** Four gods run on one-directional, unsolvable-only-manageable timers that together keep growth honest: **Zizzik's slumber** (starved he sleeps, waking is inevitable — manage *when*), **Sh'kaar's battle-escalation** (every violent fight wakes him hungrier), **Ta'Baa's rooted-erosion** (the clan must move or rot), and **Ozzik's pride-meter** (ambition itself draws fire). None can be zeroed out; the faith bills you through time and pressure instead of a cap. Numbers and wiring live in `divine_satiation_engine.md` §2/§3.
 
@@ -935,6 +955,15 @@ Format: deeds ± (satiation movers) · boons S/M/L · demands S/M/L · taboos
 S/M/L with an L reign-breaker (taboo break can flip the front mid-reign) ·
 CURSES S/M/L (what an angry or starved god actively does — added at the
 owner's catch on ②).
+
+> **Rulings 2026-08-30 (card-session, `salvation_engine_review.md`):**
+> **Ownership** — permanent law lives in the ideoligion's precepts; *rotating* law
+> lives in reigns. **§19.5** — Ohm-L self-repair, Oomo-L blessed birth/kin, and
+> Mob'Unloo-L's fence are LEGAL (opportunity-shaped, rare; ruled deliberately).
+> **Curse law (F10, re-spec owed):** a curse never punishes by inversion — it
+> ENACTS what the god wants, no longer in your interest (the god of fleeing
+> destroys the thing keeping you here). The curse columns below predate this law
+> and will be re-specced under it.
 
 ### ① Ishko the Unmaskable — SHIPPED 2026-08-30
 DEEDS +: ambush/from-cover kills · a raid survived undetected or enemies
@@ -1025,7 +1054,8 @@ CURSES: S Loose Screws (repairs fail more) · M Everything Breaks
 ### ⑥ Ta'Baa the Unrooted — SHIPPED 2026-08-30
 DEEDS +: LAUNCHING (the holiest; big spike per liftoff) · caravans out and
 back · fuel stockpiled · escape routes built · rescuing the trapped · mental
-breaks resisted.
+breaks resisted · explosive/trap escapes (the bomb as a door held open behind
+you — restored 2026-08-30 per canon weapon doctrine).
 DEEDS −: rooted-erosion (satiation decays per day landed — his canon clock) ·
 despair (breaks, catatonia) · fuel run dry · ship immobilized/engine-stripped.
 BOONS: S Tailwind (move/caravan speed) · M The Open Door (launch fuel cost
@@ -1080,9 +1110,11 @@ meter cashes out: the next raid arrives massive, burning, early).
 ### ⑨ Ozzik the Shamed — SHIPPED 2026-08-30 (the trap; the pride-crisis machinery)
 DEEDS + (every advancement feeds him regardless): research completed ·
 legendary/masterwork creations · wealth milestones · great victories · ship
-systems restored · trophies displayed · the Utinni made GRAND.
+systems restored · trophies displayed · the Utinni made GRAND · ion captures
+(disable-and-take, his favored arms — restored 2026-08-30).
 DEEDS −: humility — wealth given away, trophies melted, staying small,
-declining glory; grief-valve: restoring RAKATAN works feeds his grief-side
+declining glory · explosives used (the loud folly that destroys what could be
+taken — restored 2026-08-30 per canon weapon doctrine); grief-valve: restoring RAKATAN works feeds his grief-side
 gently without the pride spike (ties him to the vaults and the ship's past).
 BOONS: S Craftsman's Pride (quality chances up) · M The Prouder Age (research
 speed up, inspiration on great works) · L Glory (a triumph event: honor,
