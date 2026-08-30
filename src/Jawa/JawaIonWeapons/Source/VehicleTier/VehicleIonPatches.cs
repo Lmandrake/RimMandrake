@@ -91,6 +91,21 @@ namespace JawaIonWeapons
     /// meaningful EMPResistance value was not checked - flagged as an open
     /// question, not asserted either way.
     ///
+    /// 🔴 ROOT CAUSE FOUND 2026-08-30, live trace logging: StunFor was called with the
+    /// right ticks and had NO effect (StunTicksLeft read back 0 immediately after).
+    /// VF prefixes RimWorld.StunHandler.StunFor with its OWN Harmony patch,
+    /// Patch_HealthAndStats.StunVehicle (Vehicles.dll, priority 400):
+    ///     if (___parent is VehiclePawn vehicle) return vehicle.statHandler.OverrideStunPatch;
+    /// i.e. a vehicle can NEVER be stunned by ANY caller - vanilla, modded, or ours -
+    /// unless VehicleStatHandler.OverrideStunPatch is true. It is `{ get; private set; }`
+    /// (VehicleStatHandler.cs:75); ElectrifyAllComponents is the only place that ever sets
+    /// it, true immediately before its own StunFor call and back to false in a finally
+    /// (VehicleStatHandler.cs:750/793, comment: "EMP Damage may stun, disable stun patch
+    /// temporarily to allow for StunFor to pass through"). This postfix now does exactly
+    /// that around its own StunFor call, via the property's private setter (reflection,
+    /// since it is private) - no new mechanism, the vendored source is the template.
+    /// Trace logging removed now that the cause is confirmed and fixed.
+    ///
     /// TIER AND SCALING - owner ruling, 2026-08-29 (ION vehicle follow-up to
     /// ION_STUN_IGNORES_BODY_SIZE_1): vehicles sit at the DROID tier
     /// (empAmountDroid - "droids & vehicles: strong" is D1's own wording), scaled
@@ -149,76 +164,57 @@ namespace JawaIonWeapons
         /// </summary>
         public static void Postfix(VehiclePawn __instance, DamageInfo dinfo, bool absorbed)
         {
-            // VEHICLE_ION_TIER_1 - trace logging added 2026-08-30 after a live test
-            // (VVE_Mule, JawaIon_Damage) showed zero observable stun despite the patch
-            // registering correctly and every static check passing. One guard clause
-            // below is returning early for a reason not yet found by reading source -
-            // this makes it visible instead of guessing again. Remove once the real
-            // vehicle stuns as predicted and this has been re-verified live.
-            if (!absorbed)
-            {
-                Log.Message("[JawaIonWeapons] VehicleIonPatches.Postfix: absorbed=false, skipping ("
-                    + __instance?.LabelShortCap + ", dinfo.Def=" + dinfo.Def?.defName + ")");
-                return;
-            }
+            if (!absorbed) return;
 
             DamageDef def = dinfo.Def;
-            if (def == null || def.defName != IonDamageDefName)
-            {
-                Log.Message("[JawaIonWeapons] VehicleIonPatches.Postfix: def mismatch, skipping ("
-                    + __instance?.LabelShortCap + ", dinfo.Def=" + (def == null ? "null" : def.defName)
-                    + ", expected=" + IonDamageDefName + ")");
-                return;
-            }
+            if (def == null || def.defName != IonDamageDefName) return;
 
             VehicleStatHandler statHandler = __instance?.statHandler;
             VehicleDef vehicleDef = __instance?.VehicleDef;
-            if (statHandler == null || vehicleDef == null)
-            {
-                Log.Message("[JawaIonWeapons] VehicleIonPatches.Postfix: null statHandler/vehicleDef, skipping ("
-                    + __instance?.LabelShortCap + ", statHandler=" + (statHandler == null ? "null" : "ok")
-                    + ", vehicleDef=" + (vehicleDef == null ? "null" : "ok") + ")");
-                return;
-            }
+            if (statHandler == null || vehicleDef == null) return;
+
+            if (__instance.stances?.stunner == null) return;
 
             float empAmountDroid = ReadFloatField(def, "empAmountDroid", FallbackEmpAmountDroid);
-            if (empAmountDroid <= 0f)
-            {
-                Log.Message("[JawaIonWeapons] VehicleIonPatches.Postfix: empAmountDroid <= 0 ("
-                    + empAmountDroid + "), skipping (" + __instance?.LabelShortCap + ")");
-                return;
-            }
+            if (empAmountDroid <= 0f) return;
 
             IntVec2 size = vehicleDef.Size;
             float footprintArea = Math.Max(1, size.x * size.z);
             float amount = empAmountDroid / footprintArea;
-            if (amount <= 0f)
-            {
-                Log.Message("[JawaIonWeapons] VehicleIonPatches.Postfix: amount <= 0 (" + amount
-                    + ", size=" + size + ", footprintArea=" + footprintArea + "), skipping ("
-                    + __instance?.LabelShortCap + ")");
-                return;
-            }
+            if (amount <= 0f) return;
 
             int stunTicks = Mathf.RoundToInt(amount * 30f);
-            if (stunTicks <= 0)
+            if (stunTicks <= 0) return;
+
+            // VEHICLE_ION_TIER_1 - VF's own Patch_HealthAndStats.StunVehicle prefixes
+            // RimWorld.StunHandler.StunFor and skips the original call for any VehiclePawn
+            // unless VehicleStatHandler.OverrideStunPatch is true. ElectrifyAllComponents is
+            // VF's only caller that sets it, true right before its own StunFor and back to
+            // false in a finally - mirrored here exactly, via the property's private setter.
+            if (OverrideStunPatchSetter == null)
             {
-                Log.Message("[JawaIonWeapons] VehicleIonPatches.Postfix: stunTicks <= 0 (" + stunTicks
-                    + ", amount=" + amount + "), skipping (" + __instance?.LabelShortCap + ")");
+                Log.Error("[JawaIonWeapons] VehicleStatHandler.OverrideStunPatch setter not found by "
+                    + "reflection - Vehicle Framework's API has moved. Vehicle stun skipped.");
                 return;
             }
 
-            bool stancesNull = __instance.stances == null;
-            bool stunnerNull = !stancesNull && __instance.stances.stunner == null;
-            Log.Message("[JawaIonWeapons] VehicleIonPatches.Postfix: calling StunFor(" + stunTicks
-                + ") on " + __instance?.LabelShortCap + " (stances=" + (stancesNull ? "NULL" : "ok")
-                + ", stunner=" + (stunnerNull ? "NULL" : "ok") + ")");
+            SetOverrideStunPatch(statHandler, true);
+            try
+            {
+                __instance.stances.stunner.StunFor(stunTicks, dinfo.Instigator);
+            }
+            finally
+            {
+                SetOverrideStunPatch(statHandler, false);
+            }
+        }
 
-            __instance.stances?.stunner?.StunFor(stunTicks, dinfo.Instigator);
+        private static readonly MethodInfo OverrideStunPatchSetter = AccessTools.PropertySetter(
+            typeof(VehicleStatHandler), nameof(VehicleStatHandler.OverrideStunPatch));
 
-            int afterTicks = __instance.stances?.stunner?.StunTicksLeft ?? -1;
-            Log.Message("[JawaIonWeapons] VehicleIonPatches.Postfix: StunFor returned, StunTicksLeft now = "
-                + afterTicks);
+        private static void SetOverrideStunPatch(VehicleStatHandler statHandler, bool value)
+        {
+            OverrideStunPatchSetter.Invoke(statHandler, new object[] { value });
         }
 
         private static float ReadFloatField(object obj, string fieldName, float fallback)

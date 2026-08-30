@@ -230,6 +230,21 @@ no rebuild can be deployed. This rides the next game-down window, and the
 verification is already written above — the same 9-subject batch should read
 720 / 720 / 90.
 
+## Fix built, 2026-08-30, BENCH (offline pass, game UP — no deploy possible)
+
+`VehicleIonPatches.Postfix` now sets `VehicleStatHandler.OverrideStunPatch = true`
+(via the property's private setter, `AccessTools.PropertySetter` — direct type
+reference, this sub-project already references `Vehicles.dll`) immediately before
+its own `StunFor` call and restores it to `false` in a `finally`, exactly mirroring
+`ElectrifyAllComponents`'s own bracketing around its `StunFor` call — no new
+mechanism, the vendored source is the template. The diagnostic trace logging that
+found the root cause has been removed now that the cause is confirmed and fixed.
+Builds clean: `dotnet build JawaIonVehicleTier.csproj -c Release` → 0 errors,
+0 warnings. **Fixed in source, builds clean, awaiting next game-down deploy +
+live re-verify** — criterion above stays unchecked until a real vehicle is
+observed to actually stun (the 9-subject batch: 720/720/90 predicted for
+Dirtbike/droid-control/Mule).
+
 ## Live-verify, 2026-08-30 — FAILED (superseded by the ROOT CAUSE section above)
 
 On BENCH's 585-mod quicktest map (game UP, bridge fully responsive, confirmed
