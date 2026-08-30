@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T15:49:57Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-08-30T15:52:39Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -416,12 +416,12 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/PAINT_GUARD_ASK_EACH_TIME_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PAINT_GUARD_ASK_EACH_TIME_1.md
 
-## MOD_LIST_OUTGROWN_AUDIT_1 Outgrown-mod audit: whole 585 list, starting with They/Them(ants) and ISEKAI level-up
+## MOD_LIST_OUTGROWN_AUDIT_2 Outgrown-mod audit: whole 585 list, starting with They/Them(ants) and ISEKAI level-up - OWNER SEQUENCED FIRST
 state:    proposed
-row:      unassigned
+row:      1
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/MOD_LIST_OUTGROWN_AUDIT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/MOD_LIST_OUTGROWN_AUDIT_1.md
+thin:     spec, verify and criteria all present
+summary:  Two named leads first: They/Them (ants ruled OUT FOREVER — GAPS 11 2026-08-30;
+prose:    infrastructure/state/items/MOD_LIST_OUTGROWN_AUDIT_2.md
