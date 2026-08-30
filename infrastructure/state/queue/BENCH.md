@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T17:34:03Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T17:37:30Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -52,3 +52,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/RESEARCH_TREE_NORMALIZATION_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/RESEARCH_TREE_NORMALIZATION_1.md
+
+## DIVINE_FRONT_MATRIX_1 The nine one-pagers: per-god domain deeds + boon/demand/taboo matrix in strengths
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DIVINE_FRONT_MATRIX_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DIVINE_FRONT_MATRIX_1.md

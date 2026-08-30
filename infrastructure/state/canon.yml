@@ -1371,6 +1371,15 @@ in_front:
     scheduled reckoning, not the only one. The silent eight express through
     ambient micro-gestures (door hesitations, hum shifts, flickers in their
     palettes).
+  scorecard_ruled: true
+  scorecard_src: >
+    Owner, 2026-08-30: DEEDS BY DOMAIN - each god's satiation moves on
+    countable deeds in its domain during the map (kills, trades, repairs,
+    water discipline, droid treatment, bolt usage, mapped per god); event
+    counters -> satiation deltas -> judgement ranking at landing (and the
+    mid-map flip on violent swings). The per-god deed lists are designed
+    with the boon/demand/taboo matrix: one god, one page - domain deeds,
+    boons, demands, taboos, in strengths.
   language_ruled: true
   language_src: >
     Owner, 2026-08-30, verbatim essentials: the hologram room is NOT there at
