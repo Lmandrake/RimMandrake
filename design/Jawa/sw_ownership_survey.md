@@ -325,10 +325,10 @@ already roster-ruled), sov.sith (8; zero world presence — could simply cut),
 opturret (3, roster-ruled). Art: ~130 MB yank (many small files; owner
 regenerates over time). Retires 5-6 mods.
 
-**Tier 2 — the C#-ownership waves** (the "own the code" ask, each its own DLL
-work): ① lee.theforce.lightsaber — 335 defs + 273 KB closed DLL, highest live
-world signal; a real re-implementation, and `design/Jawa/force_users_build_spec.md`
-already exists as its design seed. ② outerrim.core — 446 defs + SOURCE ON DISK
+**Tier 2 — the C#-ownership waves**: ① lee.theforce.lightsaber STAYS
+UPSTREAM (owner, 2026-08-30: peripheral to the scenario, outside the ingest
+plan; compatibility-tested alongside our mods later — the behavioral inventory
+at force_system_inventory.md serves that experiment). ② outerrim.core — 446 defs + SOURCE ON DISK
 (22 classes; easiest C# absorption in the load) but 3,156 world-save hits and
 two unguarded mines addons hang off it: defName preservation is mandatory and
 the addons get re-pointed or absorbed with it. Galactic Empire / Droid Depot
