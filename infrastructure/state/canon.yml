@@ -1249,6 +1249,25 @@ anomaly_content:
     Assailant flesh dungeon (ASSAILANT_FLESH_DUNGEON_1), and the sarlacc's
     design may draw on it too (explore at its design sitting). Nothing else
     touches Anomaly content.
+junkers:
+  water_and_identity_ruled: true
+  water_and_identity_src: >
+    Owner, 2026-08-30, verbatim: "A blend of (1) and (2). They are rich in BAD
+    water (terminator seas are not potable themselves) and it takes a lot of
+    fuel to distill it. So they are a fuel-first nation and that's mostly what
+    they sell, mining the edge of the dark and the edge of potable water to
+    produce products to sell via their bolted-together, kludgey, dangerous
+    tech... and stuffing their own people into those machines and welding
+    them there for their mini-spaceship-as-a-person warcaskets. Slow
+    thinking, slow moving, extremely dangerous, and usually accompanied by
+    bursting flames, toxic spew, buzzing razor saws, and coarse laughter.
+    Space orcs rebranded as industrial factory workers gone amok via lord of
+    the flies." Register notes: closes the W-audit's last faction (Junkers
+    water = abundant-but-bad, fuel-gated distillation); reinforces warcaskets
+    as core Junker identity (bears on the still-open Salvagers/Junkers
+    warcasket exclusivity question); pairs with
+    free_droid_enclaves.geography (FDE fuel flows to a fuel-HUNGRY nation -
+    the dependency has an economic engine).
 free_droid_enclaves:
   geography_ruled: true
   geography_src: >

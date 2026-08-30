@@ -71,8 +71,11 @@ names what turns on the answer. Ordered by how much downstream work waits.
     carry glowing strange LIFE in the dark, the decay portion has its glow
     forest + glowing mushrooms — the crystal caverns alone glow geologically.
 
-14. The Junkers' water doctrine still assumes universal thirst (the one
-    faction the W-audit could not fix from existing text).
+14. ✅ RULED (owner, 2026-08-30, canon.yml junkers): rich in BAD water
+    (terminator seas non-potable), fuel-gated distillation → a FUEL-FIRST
+    nation mining the edges of dark and potable; warcasket-welded space-orc
+    industrial society. Closes the W-audit.
+
 15. Industrial water draw (W7) — vats and biosculpters; matters only when
     water is tracked (v2), noted so it is not invented twice.
 16. setting_physics still-open: what jams and how visibly (L12); how long a

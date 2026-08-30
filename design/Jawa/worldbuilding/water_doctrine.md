@@ -224,3 +224,10 @@ made now because the ruling was fresh and the contradictions were cheap to see.
 ---
 
 ⭐ **The water cycle, the burning savanna and the terminator poison forest are specced in `design/Jawa/worldbuilding/hydrology_and_fire_ecology.md`** (owner, 2026-08-15). It rules that rain falls ONLY on the unlandable peaks, that condensation on the shade side of the terminator is the planet's second and opposite water mechanism, that the seas are hypersaline and nutrient-overcharged (hence gigantism), and that freakish plant growth plus dry thunderstorms make the savanna a self-sustaining fire.
+
+## W-Junkers (ruled 2026-08-30 — closes the audit's last faction; canon.yml junkers)
+Junkers water = ABUNDANT BUT BAD: terminator seas are theirs and non-potable;
+distillation is fuel-expensive, so potable water is a fuel-derived product in a
+fuel-first economy. They mine the edge of the dark and the edge of potable
+water; what they sell is mostly fuel and kludged products. FDE long-distance
+fuel pipes (canon free_droid_enclaves.geography) feed this hunger.
