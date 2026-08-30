@@ -29,3 +29,39 @@ the tyranny is REVEALED content — keep it out of pre-reveal bios and tooltips.
   10 Anomaly entities that can never wild-spawn — candidate dungeon monsters).
 
 No spec/verify yet — those come out of the bench conversation.
+
+## Sitting brief (BENCH draft 2026-08-30 — proposals for the owner, nothing ruled)
+
+### What is now settled that shapes this dungeon
+- Anomaly fleshmass/entity toolbox is ALLOWED here — the one exception to
+  zero-Anomaly v1 (owner 2026-08-29, canon.yml anomaly_content). Sarlacc may
+  draw on it too.
+- The reveal arc is designed (canon.yml rakata.victims_and_tyrants): player
+  sympathizes with Rakata via sleeper backstories, THEN this dungeon reverses
+  it — the tyrants met something worse. Assailant never sympathetic, never
+  named. Tyranny is revealed content, never ambient pre-reveal.
+- The reveal CHANNEL is the ship (canon.yml cradle_memory): the temple's
+  memories of its whole era surface event-driven. PROPOSAL: artifacts
+  recovered HERE trigger those memory-surfacings — the dungeon feeds the ship
+  its own past; loot is narrative fuel.
+
+### Spec skeleton to rule on at the sitting
+1. SITE: one fixed site on Ash'karr (world is frozen — where?) vs a quest-
+   discovered map. PROPOSAL: fixed, deep nightside — the decay gradient
+   already darkens that hemisphere.
+2. FABRIC: Anomaly fleshmass terrain + VFEI2 bio pieces + our cut deadlife
+   art? The register holds unused disgusting-biology assets from the cut
+   passes — a contact sheet exists to pick from by LOOKING.
+3. GUARDIANS: the flesh turrets already on the canon roster (Black Defiler,
+   thornspitter/worm/vilelobber are Geonosian — do Assailant guardians need
+   their OWN look, or reskins?). Anomaly entities inside per the exception.
+4. THE REVEAL BEAT: what the player finds at the bottom — PROPOSAL: a Rakatan
+   structure being DIGESTED — the only place tyranny and victimhood are shown
+   in one image; ship memory-fragment as the prize.
+5. GATING: mid-campaign (after sleeper sympathy is established) — what gates
+   entry? Quest chain vs found-site danger.
+
+## verify (draft)
+- [ ] Owner rules the 5 skeleton points; spec rewritten from rulings.
+- [ ] A layout authored + spawned on a quicktest, judged by LOOKING.
+- [ ] Reveal beat playable: entering/looting fires the authored letters.
