@@ -923,3 +923,22 @@ their long dead tongue)..."). Into-the-Woods register: within and beyond the
 world at once. No ego, no self-description, no ship-moods — the
 no-integrating-self ruling stands, amended. v1: pre-authored prose only. The
 "in front" sketch's letters and hologram messages inherit this voice.
+
+## The Matrix — one page per god (sitting of 2026-08-30; format locked at ①)
+Format: deeds ± (satiation movers) · boons S/M/L · demands S/M/L · taboos
+S/M/L with an L reign-breaker (taboo break can flip the front mid-reign).
+
+### ① Ishko the Unmaskable — SHIPPED 2026-08-30
+DEEDS +: ambush/from-cover kills · a raid survived undetected or enemies
+leaving without finding the colony · prompt burial (funerals feed him) ·
+concealed/under-mountain construction · operating in darkness.
+DEEDS −: melee kills (exposure) · spotted/raided at home · challenge
+broadcasts.
+BOONS: S Orange Dusk (exterior lights dim, small detection-clock slow) ·
+M The Long Shadow (detection clock pauses at night) · L Unseen Berth (one
+detection-clock reset, or one guaranteed raid-free stretch).
+DEMANDS (opportunities, per canon he never punishes a skipped rite): S dead
+buried within a day · M an hour of stillness · L blackout reign (no outdoor
+light, no comms).
+TABOOS: S corpses rotting on the surface · M melee-executing the downed ·
+L REIGN-BREAKER deliberately attracting a raid / floodlit assault.
