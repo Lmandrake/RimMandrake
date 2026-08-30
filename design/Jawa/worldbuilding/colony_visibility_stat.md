@@ -353,3 +353,74 @@ actual mod project around it.
 
 _Pointer: this doc is cited from `design/Jawa/divine_satiation_engine.md`
 under the Matrix status line. Edit visibility mechanics here only._
+
+---
+
+## Annex A — the threat-point choke point, VERIFIED against source (BENCH merge, 2026-08-30)
+
+_Merged from a parallel BENCH pass the same day (its duplicate file deleted; this
+doc stays the one of record). Everything below marked VERIFIED was read out of
+the decompiled 1.6 source via rimsage this sitting, not remembered:_
+
+## 3. Threat-point modulation — the mechanism (replace, don't stack)
+
+**VERIFIED (read 2026-08-30, `Source/RimWorld/StorytellerUtility.cs:131`):**
+`StorytellerUtility.DefaultThreatPointsNow(IIncidentTarget)` is the single
+choke point. Formula as shipped: wealth → `PointsPerWealthCurve`; + per-pawn
+points (colonists by wealth curve; release-trained animals 0.08×combatPower;
+colony mechs & subhumans by curve; ×health lerp 0.65; slaves ×0.75; Biotech
+age curve); × `IncidentPointsRandomFactorRange`; × adaptation
+(`Find.StoryWatcher.watcherAdaptation.TotalThreatPointsFactor` lerped by
+`difficulty.adaptationEffectFactor`); × `difficulty.threatScale` ×
+`pointsFactorFromDaysPassed`; clamped to `[GlobalPointsMin(), 10000]`.
+**VERIFIED callers:** ~50 sites — enemy raids (`IncidentWorker_RaidEnemy:88`),
+friendly raids, quest point budgets (slate "points"), site generation, ambient
+threats (infestation curves, manhunters via ThreatsGenerator), and even
+benign sizing (thrumbo herd count).
+
+**We do NOT rewrite the wealth curves** (that fights every mod and DLC).
+Visibility multiplies the output: `points ×= VisibilityToThreatCurve(vis)`,
+first-guess curve `0→0.55 · 25→0.80 · 50→1.00 · 75→1.25 · 100→1.60`,
+re-clamped to `GlobalPointsMin()` (**VERIFY** its value) so "Unseen" never
+breaks the storyteller's floor.
+
+**The scope decision (OPEN-FOR-OWNER, the one real fork):**
+- **Option A — global postfix** on `DefaultThreatPointsNow`: one Harmony
+  patch, everything coherent — but quest budgets shrink too, and points drive
+  quest *rewards* as well as challenge, and thrumbo herds get smaller when
+  you hide. A hidden colony is offered smaller stories. Defensible, weird at
+  the edges.
+- **Option B — threat-scoped (recommended v1):** targeted patches on the
+  hostile paths only: `IncidentWorker_RaidEnemy` (**VERIFIED** callsite),
+  `ThreatsGenerator` (**VERIFIED**), `TimedDetectionRaids` (**VERIFIED**),
+  infestation/manhunter workers (**VERIFY** the full hostile list against the
+  caller inventory above). Player-legible: Visibility affects THREATS.
+  More patch surface, surgical behavior.
+- Adaptation note: vanilla adaptation keeps running underneath either option
+  and will partially re-inflate a long-hidden colony's raids; that is
+  acceptable (the storyteller resents being cheated — very Zizzik) but must
+  be in the tuning measurements, not discovered live.
+
+## 5. Tuning protocol (MEASURED before shipped)
+
+1. Throwaway-save rig on the 22s minimal list; fixed-wealth test colony.
+2. **VERIFIED instrument:** the storyteller debug readout prints
+   `Base points` (`Storyteller.cs:382`) and `DebugOutputsIncidents` logs
+   `DefaultThreatPointsNow` — measure points at Visibility ∈ {0, 25, 50, 75,
+   100} × 3 wealth bands, 10 samples each (random factor needs averaging).
+3. Acceptance: monotone in Visibility; Unseen ≈ 0.5–0.6× Noticed; Blazing ≈
+   1.5–1.7×; adaptation drift over 30 simulated days < 15% of the Visibility
+   effect. Publish the table in this doc before the mod ships.
+
+## 6. OPEN-FOR-OWNER
+
+1. §3 scope: global (A) vs threat-only (**B recommended**).
+2. Curve endpoints — how safe is perfectly hidden (0.55×?) and how brutal is
+   Blazing (1.6×?). These ARE the campaign difficulty knobs.
+3. Bands-with-needle vs raw number (recommended: bands + itemized inspect).
+4. Do friendly raids / thrumbo passes scale (only relevant under Option A)?
+5. Killground designator: name and whether it is Ishko-gated (only usable
+   once Ishko has manifested — pairs with F4 discovery).
+6. Does Visibility persist per-tile when the ship leaves and returns
+   (a remembered tile), or is every landing a clean floor? (Ta'Baa says
+   clean; Ishko says the desert remembers. Genuinely his call.)
