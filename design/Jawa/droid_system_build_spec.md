@@ -185,11 +185,36 @@ sheet and goes to Cherry Picker.
 - `DroidsAreMachines.xml` retires per-wave; JawaIonWeapons keeps its role as the
   ion authority (ion doctrine: personal ion is Jawa identity — canon.yml).
 
-## 7. Port manifest (MEASURED)
+## 7. Port manifest (MEASURED — census sweep 2026-08-29, dump capture
+2026-08-29T20-07-29Z at 585 mods, fingerprint-matched to live ModsConfig)
 
-*Pending: filled by the census sweep running 2026-08-29 (frozen-dump +
-mod-XML + ModsConfig sweep: full kind lists per framework, C#-source
-availability per pack, dependency blast radius).*
+| wave | mod (packageId) | kinds | races | notes |
+|---|---|---|---|---|
+| 1 | Star Wars KotOR Droids (`guy762.kotordroids`) | **44** | 22 | 24 colonist/hero + 14 enemy + 6 neutral. **Pure XML, no DLL at all** — rides ABF/Synstructs entirely, so wave 1 is pure def patching |
+| 2 | Outer Rim - Droid Depot (`neronix17.outerrim.droiddepot`) | **20** | 19 | 19 player-buildable + 1 escaped-battle-droid rogue. Ships `Source/` on disk |
+| 2 | Outer Rim - Galactic Empire | **1** | 0 new | `OuterRim_ImperialKXSecurityDroid` reuses the Droid Depot KX race — cross-mod race reuse, port rides wave 2 |
+| 2 | **our** `mandrake.jawa.patches` | **4** | 0 new | `Jawa_Droid_{Grunt,Heavy,Specialist,Leader}` on Droid Depot races, Free Droid Enclaves faction — an existing partial unified platform; ports trivially with wave 2 |
+| 3 | [JDS] Separatist Droid Army | **16** | 16 | true vanilla-mechanoid pipeline (confirmed `mechWeightClass` on B1) — the conversion wave |
+| | **total** | **85** | ~57 | |
+
+**No strays exist**: gonk (`OuterRim_GNKDroid`), mouse (`OuterRim_MSEDroid`) and
+the KX-12 probe (KotOR) all live inside the packs above; a full-corpus scan of
+all 1,737 PawnKindDefs found no droid kind outside these five packageIds. The
+"strays" wave dissolves.
+
+**C# source availability**: ABF/SynCore — Assemblies only on disk, ABF has a
+GitHub (`RWDevathon/Artificial-Beings-Framework`); Asimov — Assemblies only;
+HAR — Assemblies, GitHub wiki; Droid Depot + Outer Rim Core — `Source/` shipped
+on disk. Design-borrowing is unaffected either way (§6: we take design, not code).
+
+**Dependency blast radius (active mods declaring deps)**: ABF/SynCore ← the 3
+KotOR mods + our Jawa Doctrine Patches (+ FSF Complex Jobs on ABF). Asimov ←
+Droid Depot, FSF Complex Jobs, Jawa Doctrine Patches. HAR ← 13 mostly
+non-droid mods (shared race infrastructure — confirms HAR stays regardless).
+Conclusion: **all framework packs stay installed** (as §4 planned); nothing is
+ever uninstalled, only behaviorally amputated. ⚠️ Their packageIds are
+capitalized (`Killathon.ArtificialBeings`) — any future dependency grep must
+match case-insensitively or it reads 0.
 
 ## 8. Open for the owner
 
