@@ -50,6 +50,7 @@
     <Compile Include="DroidworksDefOf.cs" />
     <Compile Include="DroidworksModExtension.cs" />
     <Compile Include="HediffComp_DWBoltResentment.cs" />
+    <Compile Include="HediffComp_IonOverloadsDroid.cs" />
     <Compile Include="HediffComp_PoweredDown.cs" />
     <Compile Include="JobDriver_DWClampBolt.cs" />
     <Compile Include="JobDriver_DWDataSpike.cs" />
