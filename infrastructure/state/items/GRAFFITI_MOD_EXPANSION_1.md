@@ -132,10 +132,94 @@ pass demonstrates work).
    + validate pass each. Cheap, incremental, no design risk — the blocker is
    only that this pass shipped one as proof-of-pattern rather than all nine.
 
+## Placement mechanism (2026-08-30, second pass — owner's ruling)
+
+**Ruling:** a sacred mark is placed as a `RitualOutcomeEffect` off the
+Salvation Matrix's per-god boons — i.e. completing a ritual for a given god
+places that god's mark, as a reward/consequence, tied to the religion
+mechanics already built — not a Harmony patch on GraffitiMod's own spawn
+loop, not hand-placement.
+
+**What "the religion mechanics already built" turned out to mean, read from
+`design/Jawa/divine_satiation_engine.md` in full:** the Salvation Matrix's
+nine per-god pages (BOONS/DEMANDS/TABOOS/CURSES, all nine "SHIPPED
+2026-08-30") are **design prose only**. The doc says so itself, in terms:
+*"The engine build (satiation counters, front selection, light zones, emitter
+progression, judgement, boon/demand/taboo/curse invocation) sizes from these
+pages; it files when the owner calls the build."* Confirmed by search: zero
+`RitualOutcomeEffectDef`/`RitualOutcomeComp` in `src/` before this pass, and
+zero `RitualDef`/`PreceptDef` XML anywhere in the mod tree — only a
+`Salvation` ideoligion `.rid` (memes/precepts, no custom rituals). **So there
+is no real ritual def to hook a mark-placement effect onto yet** — building
+one would mean inventing a fake ritual, which the task explicitly ruled out.
+
+**What plain vanilla already offers, read from RimWorld 1.6 source via
+RimSage:** `RitualOutcomeEffectDef` (`Source/RimWorld/RitualOutcomeEffectDef.cs`)
+already carries `filthDefToSpawn`/`filthCountToSpawn` fields — used today by
+`RitualOutcomeEffectWorker_RemoveConsumableBuilding` to spawn `Filth_Ash` when
+a Pyre/Christmas-tree ritual consumes its building
+(`Defs/Ideology/Rituals/Ritual_Outcomes.xml`, `DestroyConsumableBuilding_Pyre`).
+That worker only fires at a *consumed* building's occupied rect and always
+destroys the target — the wrong shape for a mark that should appear at an
+ordinary ritual site and destroy nothing.
+
+**Built:** `RitualOutcomeEffectWorker_PlaceSacredMark`
+(`src/RimMandrake/SacredGraffiti/Source/SacredGraffiti.cs`, assembly
+`SacredGraffiti.dll`, no Harmony — `RitualOutcomeEffectDef.workerClass` is a
+plain `Activator.CreateInstance` extension point, not a patch target) — a
+generic, **god-agnostic** `RitualOutcomeEffectWorker_FromQuality` subclass.
+It overrides `ApplyExtraOutcome` (vanilla's own extension point, called with
+the already-rolled outcome, so all of `Apply`'s letter/memory/development-
+point bookkeeping is untouched) and, on a **positive** outcome only, spawns
+`def.filthDefToSpawn` at the ritual's `selectedTarget` cell via
+`FilthMaker.TryMakeFilth` (falling back to a present participant's position
+if the target carried no cell). A curse never leaves a mark. §19.5-clean: no
+material reward, only the devotional wall-mark, whose own `statBases` already
+carry its Beauty sign.
+
+Reusable by construction: any future `RitualOutcomeEffectDef` points its
+`workerClass` at this type and its `filthDefToSpawn` at a god's mark ThingDef
+— no new C# per god. `src/RimMandrake/SacredGraffiti/Defs/RitualOutcomeEffects.xml`
+ships one demonstration instance,
+`RimMandrake_Ishko_RitualOutcome_PlaceSacredMark` (`filthDefToSpawn`
+`RimMandrake_SacredMark_Ishko`), showing the parameterization. **It is not
+referenced by any `RitualDef`/`PreceptDef`, because none exist** — same
+inert-but-valid status as the ThingDef marks themselves, ready the instant a
+real Matrix ritual's `outcomeEffect` names it. That wiring is the "engine
+build" the design doc itself says is a separate, owner-called pass — not
+invented here.
+
+Built clean: `dotnet build … -c Release` → `SacredGraffiti.dll`, 0
+warnings/0 errors.
+`skills/rimworld-modding/scripts/validate_patch.py src/RimMandrake/SacredGraffiti
+--live <2026-08-30T18-37-19Z capture> --defs <RimWorld install> --defs
+<Workshop content> --defs <Mods>` → **0 errors, 0 warnings**, `ParentName`
+`BaseGraffiti` now resolves cross-mod (Mlie.GraffitiMod present in the same
+capture).
+
+**Still open — genuinely not this pass:**
+- **Live proof** that a spawned `RitualOutcomeEffectDef` actually places
+  filth in a running game — needs the bridge/a real ritual to invoke it,
+  which does not exist (see above). Offline: built, wired to vanilla fields
+  correctly per source, validated 0/0. That is as real as it gets without a
+  live ritual to fire it.
+- **Wiring this mechanism to Ishko's actual Matrix page** (or any god's) —
+  blocked on the Matrix engine build itself, which the design doc says is a
+  separate, owner-called pass, not a graffiti-item task.
+- The other eight gods' marks' art (unchanged from the prior pass — cheap,
+  mechanical, no design risk).
+- Socially infuriating / amusing directions (unchanged — needs new C#
+  the owner hasn't asked for yet).
+
 ## verify (draft)
 - [x] Mod identified (`Mlie.GraffitiMod` / Graffiti Mod (Continued), workshop 2986996933).
 - [x] Its Defs + DLL strings read; framework capability table above.
 - [x] One sacred-graffiti ThingDef shipped with real art, validated 0/0 against the live 585-mod dump.
-- [ ] Owner/BENCH rules the placement-mechanism question (item 1 above) — closes or reopens this item.
+- [x] Owner rules the placement-mechanism question: `RitualOutcomeEffect` off
+      Matrix boons. Generic `RitualOutcomeEffectWorker_PlaceSacredMark` built,
+      validated 0/0 — see "Placement mechanism" above. Not live-fired (no real
+      ritual def exists to fire it; that's the Matrix engine build, ruled
+      out-of-scope for this item).
 - [ ] Remaining eight gods' marks arted (mechanical, once art time is spent — not a design blocker).
 - [ ] Socially infuriating / amusing directions designed past the capability table, if the owner wants them built.
+- [ ] Matrix engine build (separate, owner-called pass per the design doc) wires a real ritual's `outcomeEffect` to this mechanism.

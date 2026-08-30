@@ -36,6 +36,20 @@ dark - Ishko the Unmaskable's canon iconography, design/Jawa/divine_satiation_en
 pantheon section). Positive Beauty, unlike GraffitiMod's uniformly-ugly filth -
 devotional art, not vandalism.
 
+Placement mechanism (owner's ruling): a sacred mark is placed as a RITUAL
+OUTCOME - a reward off a Salvation Matrix boon - not a Harmony patch on
+GraffitiMod's own spawn loop and not hand-placement. RitualOutcomeEffectWorker_PlaceSacredMark
+(Source/SacredGraffiti.cs) is a generic, god-agnostic mechanism: on a
+favorable ritual outcome it spawns a sacred-mark ThingDef at the ritual site,
+reusing vanilla's own filthDefToSpawn/filthCountToSpawn RitualOutcomeEffectDef
+fields for their documented purpose (the same fields DestroyConsumableBuilding_Pyre
+uses to spawn Filth_Ash). Defs/RitualOutcomeEffects.xml demonstrates the
+parameterization for Ishko; it is not wired to any real ritual because none
+exist yet - the Salvation Matrix's nine gods' boons/curses are design prose
+only (divine_satiation_engine.md, "the engine build ... files when the owner
+calls the build"). This mechanism is ready the moment a real Matrix ritual
+exists to reference it.
+
 Designed, not yet arted: eight sibling marks, one per remaining Salvation god,
 same recipe (ParentName BaseGraffiti + new texPath + new statBases) - see the
 item file for each god's canon iconography anchor.</description>

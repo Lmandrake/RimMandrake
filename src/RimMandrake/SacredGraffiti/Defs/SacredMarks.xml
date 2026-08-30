@@ -20,13 +20,17 @@
        design/Jawa/divine_satiation_engine.md, "The Pantheon — canon of
        record", each god's "Form:" line.
 
-       ★ Nothing spawns these yet. GraffitiMod's own spawn loop cannot
-       reach them (defName is hardcoded in its DLL — see About.xml and
-       GRAFFITI_MOD_EXPANSION_1). Placement is deferred, scoped C#/design
-       work: a ritual-outcome effect, a ThingSetMaker on a shrine build, or
-       a bridge script for authored content. Until then these are valid,
-       inert content — spawnable only via dev-mode "spawn thing" for
-       inspection. ============================================================ -->
+       Placement mechanism (owner's ruling, GRAFFITI_MOD_EXPANSION_1): a
+       ritual outcome, not a Harmony patch on GraffitiMod's own hardcoded
+       spawn loop (which cannot reach these defNames at all — see About.xml)
+       and not hand-placement. RitualOutcomeEffectWorker_PlaceSacredMark
+       (Source/SacredGraffiti.cs, wired via Defs/RitualOutcomeEffects.xml) is
+       the reusable mechanism, ready the moment a real Salvation Matrix
+       ritual exists to invoke it — none do yet; the Matrix is design prose
+       only (design/Jawa/divine_satiation_engine.md, "The Matrix" section).
+       Until a real ritual references it, these marks are valid, inert
+       content — spawnable only via dev-mode "spawn thing" for inspection.
+       ============================================================ -->
 
   <ThingDef ParentName="BaseGraffiti">
     <defName>RimMandrake_SacredMark_Ishko</defName>

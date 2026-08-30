@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ============================================================
+       Placement mechanism for sacred marks — GRAFFITI_MOD_EXPANSION_1,
+       owner's ruling: a mark is placed as a RITUAL OUTCOME (a reward off a
+       Salvation Matrix boon), not a Harmony patch on GraffitiMod's own spawn
+       loop, not hand-placement.
+
+       RitualOutcomeEffectWorker_PlaceSacredMark (Source/SacredGraffiti.cs)
+       is the reusable mechanism: on a positive ritual outcome it spawns
+       filthDefToSpawn (a sacred-mark ThingDef) at the ritual site, reusing
+       vanilla's own filthDefToSpawn/filthCountToSpawn RitualOutcomeEffectDef
+       fields for their documented purpose.
+
+       ★ This def is NOT referenced by any RitualDef/PreceptDef. None exist
+       to reference it: design/Jawa/divine_satiation_engine.md's "Matrix" —
+       all nine gods' boons/curses — is design prose only; "the engine build
+       ... files when the owner calls the build" (Matrix status line,
+       2026-08-30). Wiring this to Ishko's actual boon column is that build,
+       not this pass. This def demonstrates the parameterization (point a
+       future ritual's outcomeEffect field at a def like this one) and is
+       otherwise inert — same status as the ThingDef marks themselves: real,
+       valid, unused until a ritual exists to invoke it. See
+       GRAFFITI_MOD_EXPANSION_1 for the full picture.
+       ============================================================ -->
+
+  <RitualOutcomeEffectDef>
+    <defName>RimMandrake_Ishko_RitualOutcome_PlaceSacredMark</defName>
+    <description>Depending on ritual quality, a favorable outcome may leave Ishko's sacred mark at the ritual site.</description>
+    <workerClass>RimMandrake.SacredGraffiti.RitualOutcomeEffectWorker_PlaceSacredMark</workerClass>
+    <startingQuality>0.5</startingQuality>
+    <filthDefToSpawn>RimMandrake_SacredMark_Ishko</filthDefToSpawn>
+    <filthCountToSpawn>1~1</filthCountToSpawn>
+    <outcomeChances>
+      <li>
+        <label>Unremarked</label>
+        <chance>0.4</chance>
+        <description>The rite passed unremarked. Ishko kept his silence.</description>
+        <positivityIndex>-1</positivityIndex>
+      </li>
+      <li>
+        <label>Watched Over</label>
+        <chance>0.6</chance>
+        <description>The rite pleased the Unmaskable. His mark is found on a wall come morning.</description>
+        <positivityIndex>1</positivityIndex>
+      </li>
+    </outcomeChances>
+  </RitualOutcomeEffectDef>
+
+</Defs>
