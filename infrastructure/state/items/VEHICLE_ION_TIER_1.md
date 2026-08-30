@@ -101,13 +101,47 @@ from `ION_TIERS_MEASURED_LIVE_1`.
       `StunFor(720)` on a 1x1 Dirtbike, `StunFor(90)` on a 2x4 Mule, exactly the
       owner's `empAmountDroid / footprintArea * 30` ruling. Reflection, scaling
       and tick conversion all confirmed working. No crash, no log error.
-- [ ] Live-verified: a real vehicle actually STUNS. Still 0 on 6 of 6 vehicles.
-      Cause is now known exactly and is not in our code: Vehicle Framework
-      prefixes `StunHandler.StunFor` with `Patch_HealthAndStats.StunVehicle`,
-      which skips the original for any `VehiclePawn` unless
-      `VehicleStatHandler.OverrideStunPatch` is true. Fix = set that flag by
-      reflection around the `StunFor` call and restore it in a `finally`, copying
-      `ElectrifyAllComponents`. Needs a rebuild + a game-down deploy.
+- [x] Live-verified: a real vehicle actually STUNS. **9 of 9 subjects hit the
+      predicted number** after the `OverrideStunPatch` fix was deployed — see the
+      re-verify section immediately below.
+
+## ✅ RE-VERIFY 2026-08-30 (FOUNDRY) — 9/9 at the predicted ticks. CLOSED.
+
+Fresh 585-mod quicktest, game paused. Deployed
+`…\RimWorld\Mods\JawaIonWeapons\Assemblies\JawaIonVehicleTier.dll` is
+**byte-identical to the repo build** (md5 `fb8cc71cf0bdf9a5b4310019db21419f`,
+written 2026-08-30 13:05:54, before this load) — the `OverrideStunPatch` version
+IS what the game is running.
+
+Same 9-subject batch this item specified. Vehicles via `jawa/spawn_batch`, droids
+via `jawa/spawn_pawn` (the documented split). Each hit once with
+`jawa/damage {damageDef: JawaIon_Damage, amount: 30, allowColonists: true}`.
+
+| subject | n | predicted | measured `stunTicksLeft` | downed |
+|---|---|---|---|---|
+| `VVE_Dirtbike` (1x1, area 1) | 3 | 720 | **720, 720, 720** | false |
+| `VVE_Mule` (2x4, area 8) | 3 | 90 | **90, 90, 90** | false |
+| `OuterRim_BattleDroid` (control) | 3 | 720 | **720, 720, 720** | true |
+
+Read back independently via a fresh `jawa/list_pawns` (`stunned: true`,
+`stunTicksLeft`), not from the damage call's own return. ⇒ the owner's ruling
+lands exactly: `empAmountDroid(24) / footprintArea * 30`.
+
+⭐ This is the transition the item was open for. The identical batch read
+**0 / 0 / 720** on the previous pass; only the `OverrideStunPatch` flag changed.
+
+### Capture-not-kill still holds on the vehicle half
+`jawa/vehicle_components` (the vehicle-correct tool, not a pawn read) after the hit:
+```
+VVE_Dirtbike87542  componentCount  5, damagedCount 0, worstEfficiency 1.0
+VVE_Mule87600      componentCount 21, damagedCount 0, worstEfficiency 1.0
+```
+⇒ the synthetic `DamageDefOf.EMP` hit stuns and does **not** add component damage,
+which is what the fix's design promised.
+
+⚠️ Still UNMEASURED and deliberately not chased: whether `StatDefOf.EMPResistance`
+would have folded the number down had the hit gone through vanilla's damage
+pathway. The direct `StunFor` call bypasses it by design.
 
 ## 🔴 ROOT CAUSE FOUND, 2026-08-30 (FOUNDRY, bridge pass) — still open, but no longer a mystery
 

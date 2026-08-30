@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T21:22:57Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T21:23:28Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -116,15 +116,6 @@ target:   v1
 kind:     build
 summary:  This reverses an earlier call in this same session. BRIDGEPIPENETINFO1 and
 prose:    infrastructure/state/items/BRIDGE_KCSG_VGE_TOOLS_1.md
-
-## VEHICLE_ION_TIER_1 Ion weapon has zero effect on Vehicle Framework vehicles
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     bug
-summary:  VEHICLEIONTIER1 — the ion gun has zero effect on Vehicle Framework vehicles
-prose:    infrastructure/state/items/VEHICLE_ION_TIER_1.md
 
 ## WEAPONS_ABSORPTION_WAVE_1 Absorb all SW weapons/gear content into Jawa_Armoury: defName-preserving, packs retire
 state:    doing
@@ -321,16 +312,6 @@ kind:     build
 blocked:  kcsg_place fails in all 3 testable modes: structure looks up a 3-param LayoutUtils.Generate that does not exist (real arities 5/6/7), symbol and settlement NRE on unprimed GenOption.mineables/settlementLayout. research_reinvented_reset and vge_spawn_structure_skyfaller pass
 summary:  This reverses an earlier call in this same session. BRIDGEPIPENETINFO1 and
 prose:    infrastructure/state/items/BRIDGE_KCSG_VGE_TOOLS_1.md
-
-## VEHICLE_ION_TIER_1 Ion weapon has zero effect on Vehicle Framework vehicles
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     bug
-blocked:  Root cause found live: VF prefixes StunHandler.StunFor (Patch_HealthAndStats.StunVehicle) and skips it for any VehiclePawn unless VehicleStatHandler.OverrideStunPatch is true; postfix runs with correct ticks (720/90) but StunFor is a no-op. Fix needs game-down rebuild+deploy
-summary:  VEHICLEIONTIER1 — the ion gun has zero effect on Vehicle Framework vehicles
-prose:    infrastructure/state/items/VEHICLE_ION_TIER_1.md
 
 ## DROID_TILES_SOURED_TERRAIN_1 Free Droid Enclave tiles get polluted ground and fouled water (2026-08-04 doctrine, ruled alive)
 state:    proposed  (BLOCKED)
