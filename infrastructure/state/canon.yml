@@ -1273,6 +1273,22 @@ assailant_reveal_arc:
     → Cathedral trust → location reveal → thaw-gate strike → Hutt knowledge
     deal. The dungeon is the Assailant's FIRST IMPACT POINT, frozen and
     undetected, woken only by the players' own power core.
+deep_desert_tribes:
+  fire_identity_ruled: true
+  fire_identity_src: >
+    Owner, 2026-08-30, verbatim (supersedes the same-day 'fire-farmer'
+    phrasing): "Keep everything water-priest (life and sacredness). But then
+    there is the Warrior/Hunter side, and that is the Fire. the Fire is lit
+    on the Pyrelands to burn away the life and reveal the food: take the
+    scorched fruits and seeds that remain and move on. That may also include
+    settlements, vehicles, and offworlders who do not belong here.
+    Shoot/kill/burn what lay before you and drink in the rewards. If they
+    belong here, they will regrow by themselves again. If they do not...
+    then their ash enriches the soil for the next harvest. Strike 'farmers'
+    from the name. They do not farm. But they do reap the flames." So: dual
+    theology - Water is life and sacredness (the priest side), Fire is the
+    warrior/hunter side that REAPS; burning extends to what does not belong,
+    and belonging is proven by regrowth.
 junkers:
   water_and_identity_ruled: true
   water_and_identity_src: >

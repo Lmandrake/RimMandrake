@@ -54,9 +54,13 @@ exempt from the defended-source rule). `raidsForbidden` as mechanism. Their
 guilt-theology: the water was withdrawn, and the withdrawal was deserved.
 Capture: morally ugly excellence. A rare Jedi may quietly shelter among them.
 
-**4 · Deep Desert Tribes.** Tusken-pattern clans; water sacred, moisture **They are the fire-farmers** [owner 2026-08-30]:
-burn-cycle agriculture as a nomadic way of life — follow the burns, harvest
-the flush (fire-ecology strategy ③ has their face).
+**4 · Deep Desert Tribes.** Tusken-pattern clans; water sacred, moisture **Their theology is dual** [owner
+2026-08-30, canon.yml deep_desert_tribes]: Water is life and sacredness — the
+priest side — and Fire is the warrior/hunter side. They REAP THE FLAMES: fire
+lit on the Pyrelands burns away the life and reveals the food; take the
+scorched fruits and seeds and move on. What does not belong — settlements,
+vehicles, offworlders — burns too: what belongs here regrows by itself, and
+what does not enriches the soil as ash. They do not farm.
 farming sacrilege, **offworld technology abhorrent — destroyed, not used**
 (doctrinal, not primitive: they descend from a spacefaring people). Short raid
 range by CHOICE, not physiology (W3). Signature: the water raid — fast, light,
