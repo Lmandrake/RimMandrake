@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T19:39:26Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T19:40:31Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
-The first heading below is what `rimflow next --seat BENCH` returns. This file and that command call the same function, so they cannot disagree.
-
-## JAWA_TRAP_RENAISSANCE_1 The trap renaissance: audit every trap in the stack, then make Jawa trapcraft FUN
-state:    ready
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-summary:  (no items/JAWA_TRAP_RENAISSANCE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/JAWA_TRAP_RENAISSANCE_1.md
+Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
 
 # IN PROGRESS
 
