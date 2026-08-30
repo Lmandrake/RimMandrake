@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T19:24:56Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T19:27:49Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -98,15 +98,6 @@ target:   v1
 kind:     investigate
 summary:  OTHERSTUNWEAPONSSURVEY1 — every other stun-capable damage type, and whether it scales
 prose:    infrastructure/state/items/OTHER_STUN_WEAPONS_SURVEY_1.md
-
-## BRIDGE_LORDS_AND_GAPS_TOOLS_1 10 new bridge tools: lord_destroy/set_point/travel_to, pawns_patrol_route, set_pawn_gender, set_pollution, battery_set, wipe_cell, get_gravship_substructure, forecast_incidents
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     build
-summary:  Close 10 genuine gaps against design/Jawa/bridge/BRIDGECAPABILITYROSTER.md and its
-prose:    infrastructure/state/items/BRIDGE_LORDS_AND_GAPS_TOOLS_1.md
 
 ## BRIDGE_GEN_AND_STORYTELLER_TOOLS_1 11 more bridge tools: scatter_at/run_genstep/run_basegen_symbol/fix_floating_roofs, spawn_mech_cluster, incident_queue_clear, set_game_speed, letter_list/letter_send_delayed, av_effect, set_thing_props
 state:    doing  (BLOCKED)
@@ -280,16 +271,6 @@ kind:     bug
 blocked:  69 XML candidates cleared, points at a C# compat framework not an XML conflict. Needs a Harmony patch inventory (no bridge tool yet, needs game-down deploy) or a mod-list bisect.
 summary:  GalacticEmpire.xml's PatchOperationReplace on
 prose:    infrastructure/state/items/EMPIRE_WHITELIST_OVERRIDDEN_1.md
-
-## BRIDGE_LORDS_AND_GAPS_TOOLS_1 10 new bridge tools: lord_destroy/set_point/travel_to, pawns_patrol_route, set_pawn_gender, set_pollution, battery_set, wipe_cell, get_gravship_substructure, forecast_incidents
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     build
-blocked:  built and deployed clean this game-down window (10 tools, 0 errors/warnings); unproven live - every mechanism needs the next game-up window to prove, see items/BRIDGE_LORDS_AND_GAPS_TOOLS_1.md Verify
-summary:  Close 10 genuine gaps against design/Jawa/bridge/BRIDGECAPABILITYROSTER.md and its
-prose:    infrastructure/state/items/BRIDGE_LORDS_AND_GAPS_TOOLS_1.md
 
 ## BRIDGE_GEN_AND_STORYTELLER_TOOLS_1 11 more bridge tools: scatter_at/run_genstep/run_basegen_symbol/fix_floating_roofs, spawn_mech_cluster, incident_queue_clear, set_game_speed, letter_list/letter_send_delayed, av_effect, set_thing_props
 state:    doing  (BLOCKED)
