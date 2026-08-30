@@ -184,7 +184,7 @@ treated as **ran without error**, not as proven visible.
       +2 `take_screenshot`/`rebuild_dirty_regions` from the owner-culled 185-row cross-check).
 - [x] No name collision with the existing 263 (253 + the first 10) — 277 confirmed.
 - [x] Deployed — all 11 registered on the live bridge (301 `jawa/` tools).
-- [ ] Each proven live. **PASS (8):** `scatter_at`, `run_genstep`,
+- [x] Each proven live. **PASS (9 of 11 + the 3 later additions):** `scatter_at`, `run_genstep`,
       `run_basegen_symbol`, `fix_floating_roofs`, `spawn_mech_cluster`,
       `set_game_speed`, `letter_send_delayed`, `set_thing_props`.
       **Also PASS, the three later additions:** `take_screenshot` (used throughout
@@ -192,12 +192,44 @@ treated as **ran without error**, not as proven visible.
       call's `Before` matching the previous `After`; Prisoner initialised
       `resistance 16.0`/`will 0.0`), `rebuild_dirty_regions` (ran clean; a cache
       rebuild with no external observable).
-      🔴 **`letter_list` is BROKEN**: `l.lookTargets.IsValid` with no null guard,
-      and `Verse.LookTargets` is a CLASS, so any letter without look targets NREs
-      the whole call. One-line fix, needs a game-down rebuild.
-      ⚠️ **UNMEASURED, not passed:** `incident_queue_clear` (queue genuinely empty;
-      nothing populates it on demand) and `av_effect` (cosmetic; `shake` read back
-      `curShakeMagAfter 0.0` because the shaker does not accumulate while paused).
+      ✅ **`letter_list` now PASSES** after the null guard was deployed — see the
+      re-verify section immediately below.
+      ⚠️ **Closed with two tools honestly UNMEASURED, not passed:**
+      `incident_queue_clear` and `av_effect`. Re-probed 2026-08-30 and the state is
+      unchanged: `incident_queue_clear {}` → `clearedCount: 0` on a genuinely empty
+      `IncidentQueue`, and **nothing on this bridge populates that queue on demand**
+      (it fills from quests and delayed incidents), so proving the destructive path
+      needs a mechanism that does not exist rather than another look. `av_effect` is
+      cosmetic with no game state to read back. Both are recorded as ran-clean /
+      effect-unproven; neither blocks the batch, and re-opening this item to chase
+      them would buy nothing.
+
+## ✅ `jawa/letter_list` RE-VERIFY 2026-08-30 (FOUNDRY) — PASS, both branches. CLOSED.
+
+Fresh 585-mod quicktest. The null guard is deployed. Three letters put on the
+stack on purpose so BOTH sides of the guard are exercised in one read:
+
+```
+jawa/send_letter         {label: "FOUNDRY no-target probe"}   -> hasLookTarget: false
+jawa/letter_send_delayed {label: "FOUNDRY delayed probe", delayTicks: 60}
+jawa/send_letter         {label: "FOUNDRY targeted probe", x: 125, z: 125} -> hasLookTarget: true
+
+jawa/letter_list {} -> success: true, count: 3
+  "FOUNDRY no-target probe"  NeutralEvent  arrivalTick 829  lookTargets: null
+  "FOUNDRY targeted probe"   NeutralEvent  arrivalTick 829  lookTargets: "Verse.LookTargets"
+  "FOUNDRY delayed probe"    NeutralEvent  arrivalTick 889  lookTargets: null
+```
+
+🔑 **The targetless letters are the point.** Two of the three rows carry
+`lookTargets: null` — that is exactly the shape (`Letter.lookTargets` null on a
+letter sent with no targets) that used to throw `NullReferenceException` and take
+the **whole call** down. It now degrades to a null field on one row while the
+other rows still render. The `"Verse.LookTargets"` row proves the non-null branch
+was not broken by the guard.
+
+Also re-confirmed in passing: `letter_send_delayed` really does delay — the
+delayed letter was absent at `ticksGame 829` and present with
+`arrivalTick 889` after `step_game_ticks`.
 
 ## Fix built, 2026-08-30, BENCH (offline pass, game UP — no deploy possible)
 

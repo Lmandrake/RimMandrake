@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T21:24:04Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T21:24:46Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -98,15 +98,6 @@ target:   v1
 kind:     investigate
 summary:  OTHERSTUNWEAPONSSURVEY1 — every other stun-capable damage type, and whether it scales
 prose:    infrastructure/state/items/OTHER_STUN_WEAPONS_SURVEY_1.md
-
-## BRIDGE_GEN_AND_STORYTELLER_TOOLS_1 11 more bridge tools: scatter_at/run_genstep/run_basegen_symbol/fix_floating_roofs, spawn_mech_cluster, incident_queue_clear, set_game_speed, letter_list/letter_send_delayed, av_effect, set_thing_props
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     build
-summary:  New file JawaBenchGenTools2.cs (4 tools, ungated — map-generation/roof-repair
-prose:    infrastructure/state/items/BRIDGE_GEN_AND_STORYTELLER_TOOLS_1.md
 
 ## WEAPONS_ABSORPTION_WAVE_1 Absorb all SW weapons/gear content into Jawa_Armoury: defName-preserving, packs retire
 state:    doing
@@ -283,16 +274,6 @@ kind:     investigate
 blocked:  DLL deploy blocker resolved: JawaIonWeapons.dll + StatDefs_JawaIon.xml + ThirdPartyStunBodySize_Squared.xml all in the game copy with mtimes before the 11:23 launch, deploy plan in sync, so the squared fix IS loaded. Both remaining verify steps (Rat vs AA_Behemoth severity read-back; jawa/vehicle_components against VVE_Bulldog_PawnKind) are live-only and the game is wedged on a never-completing 'Loading world.' long event. Needs an owner restart.
 summary:  OTHERSTUNWEAPONSSURVEY1 — every other stun-capable damage type, and whether it scales
 prose:    infrastructure/state/items/OTHER_STUN_WEAPONS_SURVEY_1.md
-
-## BRIDGE_GEN_AND_STORYTELLER_TOOLS_1 11 more bridge tools: scatter_at/run_genstep/run_basegen_symbol/fix_floating_roofs, spawn_mech_cluster, incident_queue_clear, set_game_speed, letter_list/letter_send_delayed, av_effect, set_thing_props
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     build
-blocked:  jawa/letter_list NREs on any letter with null lookTargets (Verse.LookTargets is a class; JawaBenchStorytellerTools2.cs:245 dereferences it unguarded). Other 10 pass or are honestly unmeasured
-summary:  New file JawaBenchGenTools2.cs (4 tools, ungated — map-generation/roof-repair
-prose:    infrastructure/state/items/BRIDGE_GEN_AND_STORYTELLER_TOOLS_1.md
 
 ## DROID_TILES_SOURED_TERRAIN_1 Free Droid Enclave tiles get polluted ground and fouled water (2026-08-04 doctrine, ruled alive)
 state:    proposed  (BLOCKED)
