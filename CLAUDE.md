@@ -40,6 +40,15 @@ superseded 2026-08-27 — redesign #4, `Fable_Review/`.)*
   fingerprint matches the live mod set; the frozen `official` dump is the sole
   design target (`GAME_STATE_WORKFLOW.md`).
 
+## Shipping names are three-tier — owner, 2026-08-30
+
+Every NEW packageId, defName, C# namespace and mod folder uses the tier
+grammar in `design/NAMING_SCHEME_PLAN.md`: **RimMandrake** (any RimWorld game) /
+**RimStarWars** (any Star Wars scenario) / **RimUtinni** (this campaign) —
+packageId `<tier>.<modname>`, prefixes `RM_`/`RSW_`/`RUT_`. "Jawa" is lore
+text only. Dev tooling is exempt. Old names migrate under
+NAMING_SCHEME_EXECUTION_1 — do not rename ahead of it.
+
 ## Queue items are NAMED, not numbered — owner, 2026-08-20
 
 `THREE_UPPER_SNAKE_WORDS_#`, guessable cold: `SANDSTORM_WEATHER_TUNING_1`. No new

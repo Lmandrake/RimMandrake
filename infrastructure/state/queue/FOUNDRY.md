@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T21:41:02Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-08-30T21:50:21Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -257,4 +257,14 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-_none._
+Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
+
+## NAMING_SCHEME_EXECUTION_1 Execute the three-tier rename per design/NAMING_SCHEME_PLAN.md: Phase 1 lint+rename-map, Phase 2 atomic migration (game-down window), Phase 3 splits - GATED on the owner's token-budget go
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/NAMING_SCHEME_EXECUTION_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/NAMING_SCHEME_EXECUTION_1.md
