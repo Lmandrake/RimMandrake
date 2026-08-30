@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T21:23:28Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T21:24:04Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -107,15 +107,6 @@ target:   v1
 kind:     build
 summary:  New file JawaBenchGenTools2.cs (4 tools, ungated — map-generation/roof-repair
 prose:    infrastructure/state/items/BRIDGE_GEN_AND_STORYTELLER_TOOLS_1.md
-
-## BRIDGE_KCSG_VGE_TOOLS_1 jawa/kcsg_place (structure/settlement/tiled/symbol), jawa/vge_spawn_structure_skyfaller, jawa/research_reinvented_reset
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     build
-summary:  This reverses an earlier call in this same session. BRIDGEPIPENETINFO1 and
-prose:    infrastructure/state/items/BRIDGE_KCSG_VGE_TOOLS_1.md
 
 ## WEAPONS_ABSORPTION_WAVE_1 Absorb all SW weapons/gear content into Jawa_Armoury: defName-preserving, packs retire
 state:    doing
@@ -302,16 +293,6 @@ kind:     build
 blocked:  jawa/letter_list NREs on any letter with null lookTargets (Verse.LookTargets is a class; JawaBenchStorytellerTools2.cs:245 dereferences it unguarded). Other 10 pass or are honestly unmeasured
 summary:  New file JawaBenchGenTools2.cs (4 tools, ungated — map-generation/roof-repair
 prose:    infrastructure/state/items/BRIDGE_GEN_AND_STORYTELLER_TOOLS_1.md
-
-## BRIDGE_KCSG_VGE_TOOLS_1 jawa/kcsg_place (structure/settlement/tiled/symbol), jawa/vge_spawn_structure_skyfaller, jawa/research_reinvented_reset
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     build
-blocked:  kcsg_place fails in all 3 testable modes: structure looks up a 3-param LayoutUtils.Generate that does not exist (real arities 5/6/7), symbol and settlement NRE on unprimed GenOption.mineables/settlementLayout. research_reinvented_reset and vge_spawn_structure_skyfaller pass
-summary:  This reverses an earlier call in this same session. BRIDGEPIPENETINFO1 and
-prose:    infrastructure/state/items/BRIDGE_KCSG_VGE_TOOLS_1.md
 
 ## DROID_TILES_SOURED_TERRAIN_1 Free Droid Enclave tiles get polluted ground and fouled water (2026-08-04 doctrine, ruled alive)
 state:    proposed  (BLOCKED)

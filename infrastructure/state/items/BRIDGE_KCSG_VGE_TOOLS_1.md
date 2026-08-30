@@ -179,14 +179,64 @@ game-down window.
 - [x] Vehicle Framework's remaining debug actions explicitly triaged and left
       unbuilt with a stated reason, not silently skipped.
 - [x] Deployed — all 3 tools registered on the live bridge.
-- [ ] Proven live. `research_reinvented_reset` (515 projects, verified by an
+- [x] Proven live. `research_reinvented_reset` (515 projects, verified by an
       independent finished-state probe) and `vge_spawn_structure_skyfaller`
-      (one attributable new `VGE_LandingStructure` on an id-diff) both PASS.
-      **`jawa/kcsg_place` fails in all 3 testable modes**: `structure` looks up a
-      3-param `Generate` that does not exist (real arities 5/6/7 — optional args
-      are not in a signature) and calls CleanRect before GetAllMineableIn;
-      `symbol` and `settlement` NRE on unprimed `GenOption.mineables` /
-      `GenOption.settlementLayout`. `tiled` has no defs on this mod list.
+      (one attributable new `VGE_LandingStructure` on an id-diff) PASS.
+      **`jawa/kcsg_place` now passes all 3 testable modes** after the arity /
+      call-order / `GenOption`-priming fixes were deployed — see the re-verify
+      section immediately below. `tiled` remains untestable: the live mod list
+      contains zero `TiledStructureDef`s, which is a content fact, not a defect.
+
+## ✅ `jawa/kcsg_place` RE-VERIFY 2026-08-30 (FOUNDRY) — 3 of 3 testable modes PASS. CLOSED.
+
+Fresh 585-mod quicktest, game paused. Every mode judged by a **def-level
+before/after diff of the target rect**, never by the call's own `success`.
+
+### ✅ `structure` — PASS, 329 pieces of real KCSG content
+```
+jawa/kcsg_place {layoutType: structure, defName: AB_GiantBonesA, rect: "150,60,25,25"}
+  before  409 things: PassableBasalt 147, SolidBasalt 116, WeatheredBasalt 70,
+                      LavaFlowBasalt 48, BoulderBasalt 20, HewnBasalt 5
+  after   329 things
+  NEW:    AB_BoneWall x329
+  GONE:   every basalt above, + WeatheredOreTech x3
+```
+The whole rock field was removed by `CleanRect` and **329 `AB_BoneWall`** — the
+layout's own content — placed. Previously this mode could only refuse
+(*"method shapes did not match"*); the 5-param declared arity now resolves.
+⚠️ Note for the next reader: the raw thing COUNT went **down** (409 → 329), because
+`CleanRect` deletes more than the layout adds. A count-only instrument would have
+read this pass as a failure. The def-level diff is the correct instrument.
+
+### ✅ `symbol` — PASS, one thing at the exact named cell
+```
+jawa/kcsg_place {layoutType: symbol, defName: Column_AM_BlocksPristineLimestone_Kemetic,
+                 point: "200,60"}   -> success true
+  NEW: Column x1     GONE: BoulderBasalt x1
+```
+No NRE. `GenOption.mineables` is primed by the added
+`GetAllMineableIn(CellRect.SingleCell(cell), map)`, so `GetMineableAt`'s unguarded
+dictionary read finds a real dictionary.
+
+### ✅ `settlement` — PASS, a whole insectoid settlement, HIGH RISK path
+```
+jawa/kcsg_place {layoutType: settlement, defName: VFEI2_InsectoidSettlementRatingOne,
+                 rect: "200,190,40,40"}   -> success true
+  things 537 -> 732
+  NEW: VFEI_HiveWall 194, Filth_Slime 104, VFEI2_InsectJellyWall 32,
+       VFEI2_RoyalJellyWall 8, Hive 7, VFEI2_FoamPod 5, GlowPod 4,
+       VFEI2_JellyFarm 3, VFEI2_Creeper 2, InsectJelly 1, VFEI2_GlowPodFormation 1
+```
+No NRE — `BaseGen.globalSettings.map` and `GenOption.settlementLayout` are set
+before the call, so `GenOption.RoadOptions`' guard-free read resolves.
+**Cleaned up immediately**: `jawa/clear_area` destroyed 752 things; a re-read of
+the rect leaves only filth (`VFEI2_Filth_InsectJelly`, `VFEI2_Filth_RoyalJelly`,
+`Filth_BloodInsect`) — every Hive, wall and building gone.
+
+### ⛔ `tiled` — still untestable, unchanged
+A bogus defName returns `candidates: []`, i.e. the live 585-mod list still
+declares zero `TiledStructureDef`s. Nothing exists to place; no defect was ever
+found in this branch and none was introduced.
 
 ## Fix built, 2026-08-30, BENCH (offline pass, game UP — no deploy possible)
 
