@@ -1057,3 +1057,22 @@ reign.
 CURSES (the wake, sized by slumber length): S Spark Bites (breakdown flurry) ·
 M The Betrayal (an ally turns: fights epidemic, animal manhunts, droid
 glitch) · L THE WAKING (the banked cascade at once).
+
+### ⑧ Sh'kaar the All-Searing — SHIPPED 2026-08-30 (EVIL; the escalation meter)
+DEEDS + (every one feeds the meter): kills yours and theirs · battles fought
+at all · executions · fires and burning · the Deep Desert Fire-side reaping
+(feeds him too, uncomfortably).
+DEEDS − (the only calming verbs): a death that isn't yours — an enemy dying
+far away, a caused-but-unjoined faction battle, a prisoner released into the
+desert, a sacrifice; long true peace starves him quiet. He is the one god you
+WANT starving.
+BOONS: S Keen Edge (damage up slightly) · M The Searing Hour (one fight where
+volleys burn: turret damage +, burn riders) · L Annihilation (one battle
+simply won — the enemy routs at first blood).
+DEMANDS: S blood this reign · M a battle joined, not avoided · L a
+conflagration: an enemy position burned to nothing.
+TABOOS: S mercy mid-battle (surrender accepted while he fronts) · M a battle
+fled · L REIGN-BREAKER a reign with no violence: fury, and the meter SPIKES.
+CURSES: S Bloodlust Whisper (colonists pick fights, animals aggress) · M The
+Light Turns (friendly-fire up; fires near your works) · L THE SEARING (the
+meter cashes out: the next raid arrives massive, burning, early).
