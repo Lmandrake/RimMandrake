@@ -3166,3 +3166,7 @@
 {"seat":"BENCH","event":"claim","id":"DIVINE_FRONT_MATRIX_1","ts":"2026-08-30T18:09:38Z"}
 {"seat":"BENCH","event":"close","id":"DIVINE_FRONT_MATRIX_1","sha":"7cc6cb20","ts":"2026-08-30T18:09:39Z"}
 {"seat":"BENCH","event":"bridge","state":"released","ts":"2026-08-30T18:14:09Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","ownerSaid":"prepare for agent reboot... deploy all you can, I'm bringing the game up for you too","ts":"2026-08-30T18:15:02Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","ownerSaid":"Game is up","ts":"2026-08-30T18:15:07Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","ts":"2026-08-30T18:15:20Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-08-30T18:15:42Z"}
