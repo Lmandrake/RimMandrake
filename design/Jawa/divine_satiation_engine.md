@@ -895,11 +895,6 @@ canon"; BENCH ideas invited and appended below.
   rationale — nine personas on one ancient substrate; the most-engaged god
   gets actuator time. Lights, doors, subsystem priorities are literally
   allocation. Techno-explanation stays honest and the Jawa read it as favor.
-- **Holograms ARE the temple's memory** (ties the cradle_memory ruling to the
-  hologram room): the gods can only manifest by puppeting the substrate's
-  old Rakatan recordings — every divine message arrives wearing a fragment of
-  the ancient story. One mechanism carries BOTH the judgement channel and the
-  event-driven history reveal; the reveal pacing rides worship.
 - **The silent-observer gestures** are ambient micro-effects, not letters: a
   door that hesitates, a hum that sours, lamps that flicker in one god's
   palette while another holds the floor — cheap comps, huge presence.

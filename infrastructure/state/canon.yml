@@ -1371,6 +1371,23 @@ in_front:
     scheduled reckoning, not the only one. The silent eight express through
     ambient micro-gestures (door hesitations, hum shifts, flickers in their
     palettes).
+  language_ruled: true
+  language_src: >
+    Owner, 2026-08-30, verbatim essentials: the hologram room is NOT there at
+    the beginning - "When the Jawa get droids, they will start to 'receive
+    visions' and build some of the first holo-emitters when resources are
+    present." Droids rebuilding emitters repurpose old terminals from the
+    ruins, "and the Jawa will quickly realize which of the old junk is sacred
+    and not for scavenging but restoration." The lights happen of their own
+    accord. "More than one god can be 'active' at a time, though it will move
+    between them, and the corridors will show this in different colored areas
+    even perhaps that slowly move throughout the ship." Gods "speak for
+    themselves (or rather, often be narrated without spoken word at all, or
+    even their words are narrated too)." The memory-fragment/recording-puppet
+    proposal is REJECTED as too restrictive: "The narrator will be the
+    vehicle to leak in perspectives from the old ship's life, not literal
+    recordings." AMENDS core: multiple gods active at once, front moving
+    among them, roaming colored light-zones.
   rulesets_ruled: true
   rulesets_src: >
     Owner, 2026-08-30, verbatim: "Boon, demand, taboo, yes. And within each
@@ -1403,7 +1420,11 @@ narrator:
     remnant, narrating crew and gods in second/third person, within and
     beyond the world at once. It is also a lore-reveal channel (consistent
     with cradle_memory: the temple's surfacing memory IS this voice), free to
-    reference history the player has not yet learned. Register rule ratified
+    reference history the player has not yet learned - the Narrator, not
+    recordings, is the vehicle for the old ship's perspectives. And it has a
+    sense of humor, very Star Wars (owner, 2026-08-30, verbatim): "referring
+    often to the Jawa as 'the short ones' or 'the surprisingly hairy
+    creatures.'" Register rule ratified
     same breath: players/UI say "The Utinni"; "Kolyska" appears only in the
     Cradle-register (the Narrator may use it, as the example does). v1
     no-LLM-voice stands: the Narrator lands as pre-authored letter/flavor

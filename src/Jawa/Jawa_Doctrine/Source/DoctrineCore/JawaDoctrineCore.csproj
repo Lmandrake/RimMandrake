@@ -1,0 +1,78 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    JawaDoctrineCore - Jawa_Doctrine's first C# (DROIDWORKS_ISFLESH_RELATIONS_CRASH_1).
+    Harmony (0Harmony.dll) dependency, so net48 + its own reference, same
+    pattern as src/Jawa/Droidworks/Source/BoltCore/DroidworksBoltCore.csproj.
+    There is no Visual Studio or targeting pack on this machine, so
+    Microsoft.NETFramework.ReferenceAssemblies supplies the reference
+    assemblies from NuGet instead - same as every other .csproj here.
+
+    Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\Jawa\Jawa_Doctrine\Source\DoctrineCore\JawaDoctrineCore.csproj -c Release
+
+    Output lands in ../../Assemblies/ (Source/DoctrineCore/../../Assemblies =
+    Jawa_Doctrine/Assemblies/), a new folder for this mod - Jawa_Doctrine
+    shipped no C# before this item.
+
+    Every reference is Private=false. Nothing but our own DLL may land next
+    to the mod: shipping a copy of Assembly-CSharp.dll or 0Harmony.dll would
+    give the game two of each, and Harmony in particular must come from
+    brrainz.harmony.
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>JawaDoctrineCore</AssemblyName>
+    <RootNamespace>JawaDoctrineCore</RootNamespace>
+    <Version>1.0.0</Version>
+
+    <OutputPath>..\..\Assemblies\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AssemblySearchPaths>$(AssemblySearchPaths);$(RimWorldManaged)</AssemblySearchPaths>
+
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <DebugType>none</DebugType>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(RimWorldManaged)' == ''">
+    <RimWorldManaged>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManaged>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(HarmonyDll)' == ''">
+    <HarmonyDll>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HarmonyDll>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(RimWorldManaged)\Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>$(RimWorldManaged)\UnityEngine.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(HarmonyDll)</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Compile Remove="..\**\*.cs" />
+    <Compile Include="*.cs" />
+  </ItemGroup>
+
+</Project>

@@ -1,6 +1,10 @@
 #!/usr/bin/env python3
 """github_mirror.py — one-way mirror of rimflow queue items to GitHub issues.
 
+🔑 The Projects v2 board (github_project.py) is the durable sync of this same
+mirror onto a real GitHub project. Run it after `--apply`, or pass
+`--apply --with-project` here to chain it in one command.
+
 QUEUE_GITHUB_MIRROR_1 pilot. ⭐ events.jsonl STAYS the truth; GitHub is a
 VISUALIZER. Nothing here ever writes the ledger, and nothing in the ledger
 ever reads GitHub. Deleting every mirrored issue loses nothing.
@@ -86,6 +90,9 @@ def main():
                     help="execute via gh (default: dry run, print the plan)")
     ap.add_argument("--ensure-labels", action="store_true",
                     help="also create the label set on the repo")
+    ap.add_argument("--with-project", action="store_true",
+                    help="after applying, also sync the Projects v2 board "
+                    "(runs github_project.py --apply)")
     args = ap.parse_args()
 
     world = model.replay()
@@ -146,6 +153,12 @@ def main():
           % (mode, len(plan), len(world.open_items()), len(mmap)))
     for line in plan:
         print("  " + line)
+
+    if args.apply and args.with_project:
+        proj = os.path.join(os.path.dirname(os.path.abspath(__file__)), "github_project.py")
+        r = subprocess.run([sys.executable, proj, "--apply"])
+        if r.returncode != 0:
+            sys.exit("github_project.py --apply failed (exit %d)" % r.returncode)
 
 
 if __name__ == "__main__":

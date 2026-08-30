@@ -11,6 +11,12 @@ Currently: removes the Droid Factory from the build menu. Droid parts, repair
 and upgrading are deliberately untouched. The Jawa restore droids; they do not
 manufacture them.
 
+Assemblies/JawaDoctrineCore.dll (DROIDWORKS_ISFLESH_RELATIONS_CRASH_1, 2026-08-30):
+one Harmony postfix on PawnComponentsUtility.CreateInitialComponents, allocating
+pawn.relations for Humanlike + non-flesh pawns (vanilla only allocates it for
+IsFlesh pawns) — the gap DroidsAreMachines.xml's own isOrganic:false opens for
+every droid race project-wide.
+
 Rationale lives in worldbuilding/balance_paradigm.md (Axis 18a/18b).
 Load last.</description>
 
