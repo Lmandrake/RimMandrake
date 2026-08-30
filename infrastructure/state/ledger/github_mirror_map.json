@@ -14,6 +14,11 @@
   "number": 2,
   "open": false
  },
+ "BEHEMOTH_ART_UPRES_1": {
+  "fp": "4c563462acba",
+  "number": 55,
+  "open": false
+ },
  "BLIND_SCAN_RELATIVE_PATHS_1": {
   "fp": "6e12a59130b0",
   "number": 3,
@@ -77,6 +82,26 @@
  "CORRECT_ASHKARR_IDEOLOGY_1": {
   "fp": "33ddc396eb10",
   "number": 34,
+  "open": true
+ },
+ "DROIDWORKS_DEF_GENERATOR_1": {
+  "fp": "5cf99a4a6124",
+  "number": 56,
+  "open": true
+ },
+ "DROIDWORKS_DLL_COMPILE_1": {
+  "fp": "dc720cbd8127",
+  "number": 57,
+  "open": true
+ },
+ "DROIDWORKS_ION_GUARD_1": {
+  "fp": "ed67f7a161ce",
+  "number": 58,
+  "open": true
+ },
+ "DROIDWORKS_PHASE0_XML_1": {
+  "fp": "1e6498e651b8",
+  "number": 59,
   "open": true
  },
  "DROID_SYSTEM_BUILD_1": {

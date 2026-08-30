@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T01:50:53Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T02:01:27Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -179,15 +179,6 @@ target:   v1
 kind:     bug
 summary:  VEHICLEIONTIER1 — the ion gun has zero effect on Vehicle Framework vehicles
 prose:    infrastructure/state/items/VEHICLE_ION_TIER_1.md
-
-## BEHEMOTH_ART_UPRES_1 Star Wars Behemoth art is low-res (256px) vs AA_Behemoth's 512px, needs redraw
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  BEHEMOTHARTUPRES1 — redraw the Star Wars "Behemoth" at 512px
-prose:    infrastructure/state/items/BEHEMOTH_ART_UPRES_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
