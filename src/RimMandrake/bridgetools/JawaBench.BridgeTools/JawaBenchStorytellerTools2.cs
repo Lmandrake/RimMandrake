@@ -242,7 +242,7 @@ namespace JawaBench.BridgeTools
                     label = l.Label,
                     defName = l.def != null ? l.def.defName : null,
                     arrivalTick = l.arrivalTick,
-                    lookTargets = l.lookTargets.IsValid ? l.lookTargets.ToString() : null
+                    lookTargets = l.lookTargets != null && l.lookTargets.IsValid ? l.lookTargets.ToString() : null
                 }).ToList();
 
                 return new

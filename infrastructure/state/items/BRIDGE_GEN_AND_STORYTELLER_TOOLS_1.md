@@ -199,4 +199,15 @@ treated as **ran without error**, not as proven visible.
       nothing populates it on demand) and `av_effect` (cosmetic; `shake` read back
       `curShakeMagAfter 0.0` because the shaker does not accumulate while paused).
 
+## Fix built, 2026-08-30, BENCH (offline pass, game UP — no deploy possible)
+
+`JawaBenchStorytellerTools2.cs:245` now reads
+`l.lookTargets != null && l.lookTargets.IsValid` before calling `.ToString()` —
+a letter with no look targets now returns `lookTargets: null` in its row instead
+of NREing the whole call. Builds clean: `python.exe build.py --gm` → 0 errors,
+0 warnings. **Fixed in source, builds clean, awaiting next game-down deploy +
+live re-verify** — criterion above stays unchecked until `letter_list` is
+re-proven live against a real look-targetless letter (`incident_queue_clear` and
+`av_effect` remain honestly UNMEASURED, untouched this pass).
+
 --- history ---
