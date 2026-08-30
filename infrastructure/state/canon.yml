@@ -1245,7 +1245,16 @@ research_tree:
     as an ancient ship tech. That's pretty cool." - the mining laser unlock
     joins the Ship tree as ancient ship tech. Coupling audit owed: check
     which other tech chains SHOULD couple into the Ship tree (factory +
-    ship + exotic ship weapons) or confirm modularity.
+    ship + exotic ship weapons) or confirm modularity. AUDIT RULED same
+    sitting: modularity HOLDS. Ship tree takes the gravship/gravtech cluster,
+    Core ShipReactor, VFE_Manufacturing, the MiningCo drill-laser pair
+    (ancient ship tech), and the three orphaned KotOR ship-design rows
+    (Ancient Era Ship Designs reflavors into the Memory Core chain).
+    GRAVITIC SPLIT ratified: personal grav weapons remain a thematic weapon
+    school; grav industrial/ship rows (GravForge, GravTuning, AdvShipParts,
+    big cannons) are Ship tree. FUEL CROSS-LINK ratified: exactly one Ship
+    node requires ChemfuelRefining ("feeding her"); Rimefeller, gas,
+    vehicles, hygiene stay modular chains.
 royalty:
   dead_ruled: true
   dead_src: >
