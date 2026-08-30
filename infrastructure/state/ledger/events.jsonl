@@ -3215,3 +3215,8 @@
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-08-30T19:52:56Z"}
 {"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-08-30T20:00:07Z"}
 {"seat":"BENCH","event":"close","id":"COVERED_PIT_TRAPS_1","sha":"3ee5e2ec","ts":"2026-08-30T20:01:03Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","ts":"2026-08-30T20:05:37Z"}
+{"seat":"FOUNDRY","event":"note","id":"BRIDGE_STORY_ALERT_TALE_TOOLS_1","text":"alerts_list fix built: FieldOrNull now includes NonPublic. Builds clean, awaiting game-down deploy + live re-verify.","ts":"2026-08-30T20:07:00Z"}
+{"seat":"FOUNDRY","event":"note","id":"VEHICLE_ION_TIER_1","text":"Fix built: OverrideStunPatch set true/false around StunFor, mirroring VF's ElectrifyAllComponents. Builds clean, awaiting game-down deploy + live re-verify.","ts":"2026-08-30T20:07:00Z"}
+{"seat":"FOUNDRY","event":"note","id":"BRIDGE_KCSG_VGE_TOOLS_1","text":"kcsg_place fix built: real Generate arity, GetAllMineableIn primed before CleanRect/Generate/SymbolUtils.Generate, GenOption.settlementLayout+BaseGen.globalSettings.map set for settlement. Builds clean, awaiting game-down deploy + live re-verify.","ts":"2026-08-30T20:07:00Z"}
+{"seat":"FOUNDRY","event":"note","id":"BRIDGE_GEN_AND_STORYTELLER_TOOLS_1","text":"letter_list fix built: null guard on lookTargets before .IsValid. Builds clean, awaiting game-down deploy + live re-verify.","ts":"2026-08-30T20:07:01Z"}
