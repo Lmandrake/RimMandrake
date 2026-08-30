@@ -7,12 +7,66 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T02:01:27Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: free
+as-of: 2026-08-30T02:36:18Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
-Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
+The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
+
+## BUILD_BATCH_OVERWRITES_SILENTLY_1 jawa/build_batch reports placed for an op that destroys an existing building in the same run
+state:    ready
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     bug
+summary:  BUILDBATCHOVERWRITESSILENTLY1 — a later op destroys an earlier building, both report placed
+prose:    infrastructure/state/items/BUILD_BATCH_OVERWRITES_SILENTLY_1.md
+
+## FIRE_RAID_ECHOES_REQUESTED_FACTION_1 jawa/fire_raid reports the faction you asked for even when the worker raids with a different one
+state:    ready
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     bug
+summary:  FIRERAIDECHOESREQUESTEDFACTION1 — it reports what you asked for, not what raided
+prose:    infrastructure/state/items/FIRE_RAID_ECHOES_REQUESTED_FACTION_1.md
+
+## BUILD_BATCH_FACTION_REJECTS_PLAYER_1 jawa/build_batch refuses faction='player' while jawa/spawn_pawn accepts it - two tools, two grammars
+state:    ready
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     bug
+summary:  BUILDBATCHFACTIONREJECTSPLAYER1 — two tools, two faction grammars
+prose:    infrastructure/state/items/BUILD_BATCH_FACTION_REJECTS_PLAYER_1.md
+
+## ORDERED_JOB_CANNOT_SOW_1 jawa/ordered_job cannot set plantDefToSow, so any Sow it issues is accepted and dies in the first toil
+state:    ready
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     bug
+summary:  ORDEREDJOBCANNOTSOW1 — the job is accepted and dies in its first toil
+prose:    infrastructure/state/items/ORDERED_JOB_CANNOT_SOW_1.md
+
+## NO_TOOL_REPORTS_MAP_TILE_1 No bridge tool reports which world tile the current map is on - you have to find the player Settlement
+state:    ready
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+summary:  NOTOOLREPORTSMAPTILE1 — the map knows its tile and the bridge will not say
+prose:    infrastructure/state/items/NO_TOOL_REPORTS_MAP_TILE_1.md
+
+## DUMPER_SWALLOWS_CACHE_THROW_1 The def dumper publishes the engine's cached answer and swallows the exception behind it
+state:    ready
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     defect
+summary:  DUMPERSWALLOWSCACHETHROW1 — the dump reports the engine's answer and hides that the engine threw
+prose:    infrastructure/state/items/DUMPER_SWALLOWS_CACHE_THROW_1.md
 
 # IN PROGRESS
 
@@ -80,15 +134,6 @@ target:   v1
 kind:     bug
 summary:  GalacticEmpire.xml's PatchOperationReplace on
 prose:    infrastructure/state/items/EMPIRE_WHITELIST_OVERRIDDEN_1.md
-
-## ION_STUN_IGNORES_BODY_SIZE_1 Ion (and likely sonic) stun/overload severity has no body-size term - a 32x-human Behemoth drops as fast as a person
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     bug
-summary:  Every flesh target — a rat and a 32×-human-bodySize Alpha Animals Behemoth alike — currently
-prose:    infrastructure/state/items/ION_STUN_IGNORES_BODY_SIZE_1.md
 
 ## OTHER_STUN_WEAPONS_SURVEY_1 Survey of every other stun-capable damage type: which have body-size scaling, which don't
 state:    doing
@@ -254,16 +299,6 @@ blocked:  69 XML candidates cleared, points at a C# compat framework not an XML 
 summary:  GalacticEmpire.xml's PatchOperationReplace on
 prose:    infrastructure/state/items/EMPIRE_WHITELIST_OVERRIDDEN_1.md
 
-## ION_STUN_IGNORES_BODY_SIZE_1 Ion (and likely sonic) stun/overload severity has no body-size term - a 32x-human Behemoth drops as fast as a person
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     bug
-blocked:  fix committed and built clean; deploy blocked, game holds the DLL locked. Deploy at next down-window: deploy_custom_mods.py --mod JawaIonWeapons --apply
-summary:  Every flesh target — a rat and a 32×-human-bodySize Alpha Animals Behemoth alike — currently
-prose:    infrastructure/state/items/ION_STUN_IGNORES_BODY_SIZE_1.md
-
 ## BRIDGE_LORDS_AND_GAPS_TOOLS_1 10 new bridge tools: lord_destroy/set_point/travel_to, pawns_patrol_route, set_pawn_gender, set_pollution, battery_set, wipe_cell, get_gravship_substructure, forecast_incidents
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -356,67 +391,7 @@ prose:    infrastructure/state/items/VEHICLE_ION_TIER_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is LOADING. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
-
-## BUILD_BATCH_OVERWRITES_SILENTLY_1 jawa/build_batch reports placed for an op that destroys an existing building in the same run
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     bug
-waiting:  needs `bridge`, game is LOADING
-summary:  BUILDBATCHOVERWRITESSILENTLY1 — a later op destroys an earlier building, both report placed
-prose:    infrastructure/state/items/BUILD_BATCH_OVERWRITES_SILENTLY_1.md
-
-## FIRE_RAID_ECHOES_REQUESTED_FACTION_1 jawa/fire_raid reports the faction you asked for even when the worker raids with a different one
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     bug
-waiting:  needs `bridge`, game is LOADING
-summary:  FIRERAIDECHOESREQUESTEDFACTION1 — it reports what you asked for, not what raided
-prose:    infrastructure/state/items/FIRE_RAID_ECHOES_REQUESTED_FACTION_1.md
-
-## BUILD_BATCH_FACTION_REJECTS_PLAYER_1 jawa/build_batch refuses faction='player' while jawa/spawn_pawn accepts it - two tools, two grammars
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     bug
-waiting:  needs `bridge`, game is LOADING
-summary:  BUILDBATCHFACTIONREJECTSPLAYER1 — two tools, two faction grammars
-prose:    infrastructure/state/items/BUILD_BATCH_FACTION_REJECTS_PLAYER_1.md
-
-## ORDERED_JOB_CANNOT_SOW_1 jawa/ordered_job cannot set plantDefToSow, so any Sow it issues is accepted and dies in the first toil
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     bug
-waiting:  needs `bridge`, game is LOADING
-summary:  ORDEREDJOBCANNOTSOW1 — the job is accepted and dies in its first toil
-prose:    infrastructure/state/items/ORDERED_JOB_CANNOT_SOW_1.md
-
-## NO_TOOL_REPORTS_MAP_TILE_1 No bridge tool reports which world tile the current map is on - you have to find the player Settlement
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-waiting:  needs `bridge`, game is LOADING
-summary:  NOTOOLREPORTSMAPTILE1 — the map knows its tile and the bridge will not say
-prose:    infrastructure/state/items/NO_TOOL_REPORTS_MAP_TILE_1.md
-
-## DUMPER_SWALLOWS_CACHE_THROW_1 The def dumper publishes the engine's cached answer and swallows the exception behind it
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     defect
-waiting:  needs `bridge`, game is LOADING
-summary:  DUMPERSWALLOWSCACHETHROW1 — the dump reports the engine's answer and hides that the engine threw
-prose:    infrastructure/state/items/DUMPER_SWALLOWS_CACHE_THROW_1.md
+_none._
 
 # NOT THIS TARGET
 
@@ -435,36 +410,6 @@ kind:     build
 thin:     spec, verify and criteria all present
 summary:  design/Jawa/droidsystembuildspec.md — architecture (own DLL + HAR substrate,
 prose:    infrastructure/state/items/DROID_SYSTEM_BUILD_1.md
-
-## DROIDWORKS_DLL_COMPILE_1 Compile the Droidworks phase-0 DLL from the written sources
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DROIDWORKS_DLL_COMPILE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DROIDWORKS_DLL_COMPILE_1.md
-
-## DROIDWORKS_ION_GUARD_1 Ion downs droids: narrow the IsFlesh guard, add no-decay floor stage
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DROIDWORKS_ION_GUARD_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DROIDWORKS_ION_GUARD_1.md
-
-## DROIDWORKS_PHASE0_XML_1 Author Droidworks phase-0 defs: power need, powered-down + ion hediffs, reboot recipe
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DROIDWORKS_PHASE0_XML_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DROIDWORKS_PHASE0_XML_1.md
 
 ## DROIDWORKS_DEF_GENERATOR_1 Generator: emit DW_ races and kinds for all 85 droids from extraction.json
 state:    proposed

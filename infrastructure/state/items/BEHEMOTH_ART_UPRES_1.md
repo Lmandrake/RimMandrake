@@ -143,4 +143,23 @@ LIES     bare-path fallback (Graphic_Multi.Init falls back to the unsuffixed
          rendered"
 ```
 
+## PARTIAL live check, 2026-08-30 (quicktest, game UP) — do not read as this plan fully closed
+
+Spawned a male `Behemoth`, screenshotted close-zoomed while facing NORTH only
+(the pawn's spawn-time rotation, never explicitly rotated). Confirmed: renders
+as the intended cream/tan/bone frilled-shell silhouette, matches the reference
+art's style, not magenta/broken, not the wrong def (a nearby `AA_Behemoth`
+dragon spawned for an unrelated test was momentarily mistaken for this one in
+a wider shot — corrected by re-reading `jawa/list_pawns`' exact coordinates
+before the close shot). `jawa/texture_audit filter=Behemoth`: 0 of 27 texPaths
+across 12 defs dead.
+
+**NOT done, named honestly rather than left implicit**: south/east facings,
+the female variant, the dessicated corpse, the one-tusk-vs-two-tusk
+male/female differentiator, and any blockiness-vs-256px comparison — none of
+this session's screenshots were sharp/zoomed enough for that last one to be a
+real judgment, and I did not attempt it. This PROVE/EXPECT/LIES plan is
+**still open**; what closed this pass was narrower: "does it render, is it
+the right creature, are its texPaths alive" — yes to all three.
+
 --- history ---

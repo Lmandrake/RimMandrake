@@ -102,7 +102,19 @@ plausibly outpace it at this scale).
 - [x] `DamageWorker_IonBuildup.cs` applies it; human-scale behavior (~4-5 hits) unchanged by
       construction (bodySize 1 → division by 1).
 - [x] Deployed 2026-08-29T18:54:14Z (`deploy_custom_mods.py --mod JawaIonWeapons --apply`).
-- [ ] Live-verified post-deploy: Rat ~1 hit, Human ~4-5, `AA_Behemoth` effectively immune to
-      solo fire.
+- [x] Live-verified 2026-08-30 (quicktest, game UP): fresh Rat downed in 1 hit
+      (severity 6.0 in one hit, matches `0.24/0.2²`). Fresh `Tribal_Warrior`
+      downed after 2 hits, not the 4-5 baseline — `hediffsBefore` was already
+      7 at hit 1, same pre-existing-hediff noise `ION_TIERS_MEASURED_LIVE_1`
+      already flagged as per-pawn generation variance, not a math defect.
+      `AA_Behemoth`: `downed=false` after 3 hits, hediff count plateaus at 2
+      (severity negligible, matches the ~4270-hit prediction). `totalDamageDealt
+      = 0.0` on every hit for all three — capture-not-kill holds. Bonus:
+      `OuterRim_BattleDroid` read `stunTicksLeft: 720`, exactly matching the
+      prior droid-tier measurement — confirms `DROIDWORKS_ION_GUARD_1`'s guard
+      change didn't disturb the machine/droid tier.
+      **Not verified**: the multi-hour decay/floor-stage curve
+      (`DROIDWORKS_ION_GUARD_1`'s own change) — needs a long observation
+      window, not practical in a quicktest pass; left open there.
 - [ ] Sonic weapons' mechanism named (which mod, which DamageDef/HediffDef, does it already
       read body size) — separate follow-up, not blocking this item's close.
