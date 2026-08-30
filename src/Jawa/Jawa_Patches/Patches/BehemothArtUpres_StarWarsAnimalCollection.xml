@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  BehemothArtUpres_StarWarsAnimalCollection.xml   Jawa_Patches - new file 2026-08-29
+  ============================================================================
+  Item: BEHEMOTH_ART_UPRES_1
+
+  Owner, verbatim, mid-AFK: "improve the art of the Behemoth that did not come
+  from the Craigs. (it looks like a dinosaur with something coming out of its
+  jaw). It's very low res and should be made as large as the Behemoth that DID
+  come from the Craigs."
+
+  Two "Behemoth" creatures exist in the live mod set - AA_Behemoth (Alpha
+  Animals, a dragon, already 512x512) is NOT this. The target is `Behemoth`
+  (PawnKindDef, Star Wars Animal Collection (Continued) -
+  mlie.starwarsanimalcollection): an "armoured shaggy quadruped" with a
+  triceratops-like frilled head and two curved tusks - exactly "a dinosaur
+  with something coming out of its jaw" - shipped at 256x256. Redrawn here at
+  512x512 (2x pixel resolution, matching AA_Behemoth's canvas), SAME
+  silhouette and design - this is a resolution/quality upgrade, not a
+  redesign. drawSize is untouched (art-only item).
+
+  Confirmed via the live def dump and the mod's own XML
+  (.../3497316713/1.6/Defs/ThingDefs_Races/Races_Animal_SW.xml:3664):
+  PawnKindDef[defName="Behemoth"]/lifeStages has THREE <li> (calf/juvenile/
+  adult) that all reuse the SAME four texPath stems at different drawSize -
+  one PatchOperationReplace per stem, matched by the node's CURRENT VALUE
+  (not by li[N] position - GrimTerraTexPaths_Fix.xml's own reasoning: a
+  positional index breaks the moment anything reorders the list), covers all
+  three life stages in a single op.
+
+  🔑 north is IDENTICAL between sexes. Verified: behemoth_m_north.png and
+  behemoth_f_north.png are byte-for-byte identical in the donor's own art (a
+  rear/back-of-head view has no tusks or face to differ). So ONE redrawn
+  north image is deployed twice, under both the male and female texPath
+  stems, rather than drawn separately - guarantees they stay identical rather
+  than merely similar.
+
+  🪤 texPath is NOT namespaced by mod - ContentFinder resolves a relative
+  texPath against every active mod's Textures folder. Reusing the donor's own
+  string (swanimals/Behemoth/Behemoth_m) verbatim would create a same-path
+  collision with the donor's own bundled art (both mods then offer a resource
+  at that path; which one wins depends on load order, not on this patch).
+  New art therefore ships under a DISTINCT relative path -
+  swanimals/Behemoth/JawaBehemoth_* - never the donor's own stem.
+
+  dessicatedBodyGraphicData/femaleDessicatedBodyGraphicData ship ONE image
+  each, no facing suffix - matching the donor's own convention (there is no
+  behemoth_m_dessicated_south.png, just behemoth_m_dessicated.png).
+  Graphic_Multi's bare-path fallback (ContentFinder.Get on the un-suffixed
+  path, before it errors) is what makes a single corpse image satisfy every
+  rotation; this patch mirrors that rather than fighting it.
+
+  Verified against the live def dump before writing this file
+  (2026-08-29T20-07-29Z capture) and against validate_patch.py.
+
+  ⛔ DO NOT EDIT THE WORKSHOP FOLDER. Steam overwrites it on the next update.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Star Wars Animal Collection (Continued)</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="Behemoth"]/lifeStages/li/bodyGraphicData[texPath="swanimals/Behemoth/Behemoth_m"]/texPath</xpath>
+          <value><texPath>swanimals/Behemoth/JawaBehemoth_m</texPath></value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="Behemoth"]/lifeStages/li/femaleGraphicData[texPath="swanimals/Behemoth/Behemoth_f"]/texPath</xpath>
+          <value><texPath>swanimals/Behemoth/JawaBehemoth_f</texPath></value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="Behemoth"]/lifeStages/li/dessicatedBodyGraphicData[texPath="swanimals/Behemoth/Behemoth_m_Dessicated"]/texPath</xpath>
+          <value><texPath>swanimals/Behemoth/JawaBehemoth_m_Dessicated</texPath></value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/PawnKindDef[defName="Behemoth"]/lifeStages/li/femaleDessicatedBodyGraphicData[texPath="swanimals/Behemoth/Behemoth_f_Dessicated"]/texPath</xpath>
+          <value><texPath>swanimals/Behemoth/JawaBehemoth_f_Dessicated</texPath></value>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>

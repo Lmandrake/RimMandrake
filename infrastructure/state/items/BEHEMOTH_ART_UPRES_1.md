@@ -68,19 +68,79 @@ above.
 
 ## criteria
 
-- [ ] Four live texPaths redrawn at 512x512, silhouette/style matched to the
+- [x] Four live texPaths redrawn at 512x512, silhouette/style matched to the
       existing reference (same armoured-quadruped-with-tusks design, not a
       redesign).
-- [ ] New patch file added to `Jawa_Patches`, `PatchOperationFindMod` on the
+- [x] New patch file added to `Jawa_Patches`, `PatchOperationFindMod` on the
       donor mod, texPath redirects for all four stems, hitting all three life
       stages via a value-matched xpath.
-- [ ] `validate_patch.py` clean against the live def dump.
-- [ ] `generating-rimworld-sprites`'s offline validator clean on each new PNG.
-- [ ] Deployed (`deploy_custom_mods.py --mod Jawa_Patches --apply`) — loose
+- [x] `validate_patch.py` clean against the live def dump.
+- [x] `generating-rimworld-sprites`'s offline validator clean on each new PNG.
+- [x] Deployed (`deploy_custom_mods.py --mod Jawa_Patches --apply`) — loose
       textures/XML are not DLL-locked, safe to deploy whether the game is up or
       down.
 - [ ] In-game render is unconfirmed until the next load/lookout — note this
       plainly rather than claiming it, same as every other art item this
       session.
+
+## Done — 2026-08-29
+
+New file `src/Jawa/Jawa_Patches/Patches/BehemothArtUpres_StarWarsAnimalCollection.xml`,
+new art under `src/Jawa/Jawa_Patches/Textures/swanimals/Behemoth/` (8 PNGs,
+512x512, real alpha). Deployed via `deploy_custom_mods.py --mod Jawa_Patches
+--apply` (9 files, verified in sync).
+
+**texPath is NOT namespaced per-mod** — `ContentFinder` resolves a relative
+texPath against every active mod's Textures folder, so reusing the donor's own
+string (`swanimals/Behemoth/Behemoth_m`) would collide with the donor's own
+bundled art. New art ships under a distinct stem, `swanimals/Behemoth/
+JawaBehemoth_*`, never the donor's own string.
+
+**North is identical between sexes** — verified `behemoth_m_north.png` and
+`behemoth_f_north.png` are byte-for-byte identical in the donor's own art (a
+rear/back-of-head view has no tusks or face to differ), so ONE redrawn north
+image is deployed under both `JawaBehemoth_m_north.png` and
+`JawaBehemoth_f_north.png` rather than drawn twice — guarantees they stay
+identical rather than merely similar.
+
+**Generation notes** (`codex_image.py`'s 120s watchdog fired "failed" on most
+calls; the underlying generation had actually completed in every case —
+recovered from `~/.codex/generated_images/<session>/` by directory-diff, same
+pattern as the turret-art item earlier this session):
+- South/east/dessicated (male) and a first north attempt all landed in one
+  batch of generations; the model ignored "rear view" three times running and
+  kept redrawing the front-facing bust — the reference's own north art is a
+  face-less rump silhouette (no tusks, no eyes), which the model needed telling
+  explicitly ("no face, no tusks are visible from this angle") before it
+  produced the correct simplified silhouette.
+- Female south twice came back **12-14% narrower** than the reference despite
+  an explicit "do not narrow the frill outline" instruction, and once even
+  with the approved male art attached as a second reference image for width
+  matching. Third pass fixed it with a deterministic, non-generative step
+  instead of a fourth prompt iteration: `pnglib.resize_rgba` widened the raw
+  generation by the exact aspect-correction factor (0.958/0.845 ≈ 1.135x, X
+  only) before cutting/conforming — this is a controlled, measured correction
+  to a real generation, not a stretch masking a redesign, and the offline
+  validator's span/aspect/origin checks all passed clean afterward.
+- All 8 final PNGs passed `validate_sprite.py` (1 informational WARN each —
+  faint alpha 1-31 fringe pixels within the silhouette, consistent with the
+  soft cel-shading style, not a defect). `selftest.py` still 9/9.
+
+**Still unconfirmed**: in-game render. Route to prove it —
+
+```
+PROVE    spawn a Behemoth (jawa/pawn_spawn or dev-mode spawn, PawnKindDef
+         "Behemoth"), rotate through south/east/north, inspect the corpse
+         after death
+EXPECT   sharp 512px-source art (no visible upscaling blockiness vs the old
+         256px), same silhouette/proportions as before across all three
+         facings and both corpse variants, female showing one tusk vs male's
+         two
+LIES     bare-path fallback (Graphic_Multi.Init falls back to the unsuffixed
+         texPath before erroring) — a mis-deployed _south file would silently
+         render whatever sits at the bare `JawaBehemoth_m` path instead;
+         confirm by naming the facing actually looked at, not just "it
+         rendered"
+```
 
 --- history ---
