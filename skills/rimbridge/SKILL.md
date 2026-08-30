@@ -41,27 +41,35 @@ things** — a colony and a 568-mod game respectively.
 
 ---
 
-## 0b. 🔴 You probably may not drive this. The bridge belongs to CHECK.
+## 0b. 🔴 Claim the bridge before you drive it — `rimflow bridge take`/`release`
 
-**Owner's ruling, 2026-08-15.** Bridge rights are **AGENT CHECK's at all times**.
-No other seat connects and drives the game on its own initiative.
+⛔ **SUPERSEDED 2026-08-27 by redesign #4** (`redesign-4-two-windows` —
+BENCH+FOUNDRY replace the four seats, CHECK/BUILD no longer exist). The
+section below used to say bridge rights belong permanently to a seat called
+CHECK and that everyone else must ask it in chat. That seat is gone. **FOUNDRY
+now owns bridge driving directly**, per its own role file: `rimflow bridge
+take` before driving, `rimflow bridge release` the instant you stop — no
+chat message, no asking, no waiting on another seat's grant. BENCH does not
+drive the bridge as a matter of routine.
 
-**If you are not CHECK**, the whole protocol is three one-line messages:
+```
+python3 src/RimMandrake/rimflow/cli.py bridge take
+...drive it...
+python3 src/RimMandrake/rimflow/cli.py bridge release
+```
 
-1. **Ask CHECK**, one line: *"Bridge free? I need N minutes for \<what\>."*
-2. **Drive only after CHECK grants it.** No grant is a no.
-3. **Tell CHECK the moment you are done.** This is your responsibility, not
-   theirs, and it is urgent — a borrower who goes quiet has taken the bridge
-   indefinitely and CHECK is blocked behind you.
+Release it the moment you stop — a borrower who goes quiet has taken the
+bridge indefinitely and blocks whoever needs it next, same hazard as before,
+just enforced by `rimflow` state rather than a chat handshake. If `bridge
+take` refuses because someone else holds it, that is your answer: wait for
+their release, or check with the owner if it looks abandoned. **Do not** use
+cross-session messaging to ask another window for the bridge — that channel
+is off entirely (`no-agent-to-agent-messaging`); `rimflow`'s own take/release
+state is the only handshake that exists now.
 
-These three messages are a **sanctioned exception** to the project's
-two-sentence live-messaging limit (`infrastructure/agents/POLICY.md`). Nothing
-else about the bridge is: everything that is not the ask, the grant or the
-hand-back goes in a queue item.
+### What two drivers actually does — measured 2026-08-15 (pre-redesign, still true)
 
-### What two drivers actually does — measured 2026-08-15
-
-CHECK and BUILD called the bridge at the same time and it **went unresponsive**.
+Two seats (then named CHECK and BUILD) called the bridge at the same time and it **went unresponsive**.
 
 ⭐ **It did NOT crash, and the game did not need reloading.** It was **stuck**,
 and it came back on its own the instant BUILD's call finished. That distinction

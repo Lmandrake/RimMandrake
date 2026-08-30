@@ -448,6 +448,8 @@ to the map and the node reappears with `supported: true`. Check the view before 
   colonist"* — even though `jawa/set_pawn_faction` answers *"Pawn is already in
   PlayerColony"*. It filters on colonists and a `VehiclePawn` is not one. No selection ⇒
   `list_selected_gizmos`, `open_inspect_tab` and `get_ui_layout` all have nothing to read.
+  **Not vehicle-specific — this is the general `Pawn.IsColonist` gate**, confirmed later to
+  block ordinary bridge-spawned humanlike pawns too; see the dedicated entry below.
 - `jawa/get_defs` with `fields: "components"` returns `["VehicleComponentProperties" × 5]` —
   the reflective reader flattens list elements to their class name and does not descend.
   `jawa/get_def` returns `comps` (the `CompProperties` list), which is a **different field**
@@ -741,6 +743,10 @@ exclude `HMC_Wall_*`, `ShipWallMountMiniTurret`, `VQE_AncientShieldedTurret` fro
 free-standing lineup, or give walls first.
 
 ## `select_pawn` and every `ToolMapForPawns` debug action require `IsColonist` — a bridge-spawned pawn, even faction PlayerColony, does not qualify
+
+The vehicle case above ("Nothing reaches a `VehiclePawn`'s UI") already hit this same gate
+in a narrower form and attributed it (correctly) to "filters on colonists". This entry
+confirms the mechanism generalizes past vehicles to ordinary bridge-spawned humanlike pawns.
 
 Measured 2026-08-30. Spawned a `DW_OuterRim_GNKDroid` via `jawa/spawn_pawn` with
 `faction: "PlayerColony"` — the response showed `faction: PlayerColony, hostile:

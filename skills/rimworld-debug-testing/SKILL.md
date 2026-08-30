@@ -148,6 +148,23 @@ observation: put a KotOR droid in front of it and look.
 **A negative needs a positive observation.** If the claim is *"X no longer
 appears"*, absence of an error is not evidence. Go and see that X is gone.
 
+**A single spawned pawn is not a sample.** Owner's instruction, 2026-08-30:
+*"Please always spawn MANY examples to test, because sometimes random humans
+pop up at the beginning of a new colony."* A fresh `start_debug_game_ready`
+map seeds wildlife and can seed wandering/joining humans near the player
+start, so one test pawn's outcome can be confounded by an unrelated pawn
+nearby — and RimWorld's own pawn-generation RNG (damage rolls, storyteller-
+seeded traits/xenotype, hit-location variance) means one result cannot
+distinguish "this is what the mechanism does" from "this is what happened to
+happen once." Measured the same day: spawning 5 identical droids and killing
+each with identical damage produced 4 clean corpse+detonation results and one
+pawn that merely lost both arms to bad hit-location rolls before a follow-up
+hit finished it — a single-pawn test would have reported that one as a
+mechanism failure. **Spawn a batch (3-5+) of the same kind, run the same test
+on each, and confirm the result is consistent across the batch** before
+reporting a mechanism as proven or broken; cross-check `jawa/list_pawns` for
+any unrelated pawn near the test site first.
+
 ## 4a. 🔴 LOOK AT IT. `take_screenshot` and then READ the image.
 
 **Owner's instruction, 2026-08-13, and it is the most under-used capability we
