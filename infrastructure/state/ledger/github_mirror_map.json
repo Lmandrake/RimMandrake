@@ -90,9 +90,9 @@
   "open": true
  },
  "DROIDWORKS_CHARGING_TRIO_1": {
-  "fp": "b33da87ea52d",
+  "fp": "193ad946b997",
   "number": 61,
-  "open": true
+  "open": false
  },
  "DROIDWORKS_DEF_GENERATOR_1": {
   "fp": "6e36de7de3ce",
@@ -120,14 +120,14 @@
   "open": false
  },
  "DROIDWORKS_PILOT_GONK_1": {
-  "fp": "b6d79c8d55a5",
+  "fp": "7d16d1ea34c6",
   "number": 62,
-  "open": true
+  "open": false
  },
  "DROIDWORKS_RETIRE_EVIDENCE_1": {
-  "fp": "db9f1fbb392c",
+  "fp": "63bd399ab6ed",
   "number": 63,
-  "open": true
+  "open": false
  },
  "DROIDWORKS_WIPE_AND_SPIKE_1": {
   "fp": "5e1ac60a7061",
@@ -214,6 +214,11 @@
   "number": 49,
   "open": true
  },
+ "LORE_SWITCHOVER_ADOPTION_1": {
+  "fp": "d3e7050aff62",
+  "number": 67,
+  "open": true
+ },
  "NONCANON_ARRIVES_BY_PAWNKIND_1": {
   "fp": "978e1ecd905e",
   "number": 18,
@@ -263,6 +268,11 @@
   "fp": "a6272107ff98",
   "number": 24,
   "open": false
+ },
+ "RESEARCH_TREE_NORMALIZATION_1": {
+  "fp": "110a6ad46efb",
+  "number": 66,
+  "open": true
  },
  "SIX_FACTIONS_NEVER_RAID_1": {
   "fp": "d8ee35d5c4d2",
