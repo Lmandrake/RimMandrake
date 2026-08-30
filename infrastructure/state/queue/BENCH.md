@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T19:34:42Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T19:39:26Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -61,3 +61,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/RESEARCH_TREE_NORMALIZATION_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/RESEARCH_TREE_NORMALIZATION_1.md
+
+## COVERED_PIT_TRAPS_1 Spec covered pit traps (1x1/1x2/2x2): trigger on mass, hold by bodysize/health; plus the gated prisoner pit - dug fast by Jawa or droids, the canon alternative to locked barracks
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/COVERED_PIT_TRAPS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/COVERED_PIT_TRAPS_1.md
