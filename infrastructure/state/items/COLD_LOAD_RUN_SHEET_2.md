@@ -230,3 +230,10 @@ Party absent from the faction/comms UI (or listed defeated); Junkers unchanged.
   CHAIN, not a spawn. (Also good vault-design intel: it cannot be casually
   fired.) Tesla EMP arc + flame stream: mechanism-proven by the 960; specific
   behaviors ride the next sitting or the vault dressing pass.
+
+## The Salvation + VME_Nomad (added 2026-08-30, BENCH — owner ruling)
+Player .rid now carries VME_Nomad as a 4th normal meme (repo + Ideos copies,
+validated 267/267). At next load with the ideo in play: PASS = The Salvation
+loads with all 4 memes visible and the settled-too-long mechanic armed; WATCH =
+any meme-cap complaint or a silently dropped meme (fixed-ideo loads usually
+bypass editor caps — verify, don't assume).

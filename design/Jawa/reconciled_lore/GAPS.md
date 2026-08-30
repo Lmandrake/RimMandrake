@@ -52,13 +52,17 @@ names what turns on the answer. Ordered by how much downstream work waits.
 
 ## Deadline-bound
 
-11. **Giant ants at the world screen.** `GiantAnt_Faction` is zeroed by
-    default; a faction absent at world creation can never be added. Tick it to
-    1 at the freeze (ants exist as unbuilt background) or accept that v2 ants
-    need a new world.
-12. **Player-side `VME_Nomad`** (`DEPLOY_SALVATION_RID_1`): the tribes carry
-    it; the player .rid does not, and the −50-mood hazard is real only on the
-    player side. Decide before the .rid is loaded at the freeze.
+11. ✅ RULED (owner, 2026-08-30): **ants stay at zero — out, forever.** The
+    insect niche is served by Geonosians + VFEI2; no ant content can ever
+    appear in this campaign, accepted knowingly.
+
+12. ✅ RULED (owner, 2026-08-30): **VME_Nomad ADDED to the player .rid** (the
+    hard −50 settled-too-long version — the faith itself forces the rhythm,
+    stacking with pursuit). Both copies edited + validated (267/267 resolve).
+    Fact of record: The Salvation had NO nomad meme before this (owner's
+    belief checked and corrected). Meme-cap behavior at load rides the run
+    sheet.
+
 
 ## Smaller, filed
 
