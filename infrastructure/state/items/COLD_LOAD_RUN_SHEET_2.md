@@ -209,3 +209,24 @@ Party absent from the faction/comms UI (or listed defeated); Junkers unchanged.
   fixed + redeployed same sitting; gone at next launch.
 - Bio-tab positive check + live-fire observations ride the bridge session
   (bridge held by FOUNDRY at scoring time; BENCH queued on release).
+
+## Bridge session 2026-08-30 (BENCH, quicktest map — game up, doctrine load)
+- ✅ **TURRET DOCTRINE OBSERVED LANDING: Gunshot severity 960 EXACT** — one
+  uranium slug killed a penned manhunter thrumbo outright, severing three body
+  parts (save qt_fire_probe7, screenshot doctrine_kill_20260830.png). The
+  in-place write mechanism is proven end-to-end; remaining rows stand on
+  validator+log. Learned en route: turrets ignore placid animals (threat
+  gating), mannable pieces (VFES ballista) never auto-fire, VFES flamer needs
+  chemfuel network, "Cannot fire: Roofed" is in the inspect string, zapper
+  beams slice damage in C# so severities can't read the patch.
+- ✅ **PAWN_FLAVOR POSITIVE PASS**: pawns spawned UNDER the reskinned factions
+  (OutlanderCivil=Homestead, TribeCivil=DeepDesert) drew 4/16 Jawa_ backstory
+  slots incl. the sentinel `Jawa_FarmFostered` + Jawa_MoistureBaron,
+  Jawa_KraytWatcher x2 (save qt_flavor_probe2). Faction context is REQUIRED -
+  kind-only spawns draw generic bios (that is by design, filters ride factions).
+- ✅ SPAWN_PAWN_SUBSTITUTES: defect not reproducing (see item note).
+- ⏳ Singularity Cannon blast look: STILL OWED — it needs a linked GravTech
+  targeting terminal + a loaded Black Hole Shell + 55 minimum range: a siege
+  CHAIN, not a spawn. (Also good vault-design intel: it cannot be casually
+  fired.) Tesla EMP arc + flame stream: mechanism-proven by the 960; specific
+  behaviors ride the next sitting or the vault dressing pass.
