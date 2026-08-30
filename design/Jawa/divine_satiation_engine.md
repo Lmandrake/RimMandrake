@@ -25,10 +25,18 @@ mechanical spec; the pantheon doc is the lore-of-record. Ship-voice that narrate
 - **Mood** (−100…+100, self-driven, fickle). The god's *own* temper today, independent of its view of
   the colony. Wanders on its own clock with a personality-shaped random walk (§2). High Mood = lenient
   even to sinners; low Mood = a jerk even to the devout. Mood modulates the *magnitude and sign-bias* of
-  how satiation-events resolve and how extreme-band outcomes fire.
+  how satiation-events resolve and how extreme-band outcomes fire. **Mood is WEATHER, never a number
+  (F8, ruled 2026-08-30):** it is surfaced only through ambient gestures (a door that hesitates, a hum
+  that sours, lamps in his palette) and the Narrator's adjectives — the front god's tells loudest. No
+  UI ever prints it; the player reads the ship the way a sailor reads the sky.
 
 **Derived at read time:** `effective_favor(god) = f(satiation, mood)` — the number A/H/D actually consume.
 A Wrathful god in a good Mood is survivable; a merely Slighted god in a foul Mood can still bite.
+
+**Attenuation (F2, ruled 2026-08-30): the gods are provably real only where the hull is.** Full divine
+effects — boons, demands, taboos, curses, the front's rules — run on the ship's map only. Caravans and
+outposts receive Narrator letters only: the faith travels, the certainty does not. Sinning away from the
+gods' sight is *safer*, and the clan knows it — the ship is holy ground by contrast.
 
 ---
 
@@ -390,6 +398,12 @@ the Oracle narrate from.**
 
 ## 5. Rituals are an INVITATION, not a scalar sum (agent A's input) — REVISED 2026-08-08 (user)
 
+> **Companion specs (2026-08-30):** intercession & the disposable shrine —
+> `god_intercession_spec.md` · sacrifice-as-play devotions —
+> `devotional_sacrifice_catalog.md` · the twelve three-cornered choice-letters —
+> `divine_dilemma_events.md` · the nine unveilings (veiled-discovery onboarding, F4) —
+> `first_contact_chains.md`.
+
 **Rejected model:** collapsing the pantheon to one `outcome_score` and picking a single branch. Too flat.
 
 **Adopted model — a ritual is an open floor the gods may speak from.** Every rite does two things at
@@ -595,6 +609,10 @@ These give the crew live theology to invoke and the agent live signal to narrate
 ---
 
 ## 8b. The ACTION / EVENT → god audit — the ambient channel (rebuilt with user from the game up, 2026-08-09)
+
+> **Pending row-sets (2026-08-30, land on the owner's word):** trapcraft rows —
+> `trap_renaissance_spec.md` §5 · pit rows — `covered_pit_traps_spec.md` §8 ·
+> disarm/theft rows — `trap_renaissance_spec.md` §2/§2b.
 
 _This is the concrete answer to §10's "exact ambient-event → delta mappings." It maps **what the player
 DOES** (deliberate acts, including ones that aren't a single skill — repair, raiding a map's plants,
@@ -857,6 +875,29 @@ _Each god is given as a uniform block: **name & epithets** (every title he holds
 
 **Mechanics:** → `design/Jawa/divine_satiation_engine.md` §3⑨ (the sign-complex trap: Exalted triggers exposure not reward; the grief-pall when the clan stays small too long; the two faces mapped onto win-paths 2 and 3), §2 (volatile Mood band), §8 (the one-way amplifier onto Sh'kaar+Zizzik), §8b; §2.2 (ion-over-explosives armory bias); §2.0c (Artistic, Social-statecraft, Intellectual, high Construction).
 
+### 2.0b-ii Folk practice — the nine daily gestures (F1, ruled 2026-08-30)
+
+_A religion is visible in habit before it is visible in crisis. One gesture per god, performed without
+thought, costing nothing, meaning everything. Lore for the Narrator to reference; **three will later be
+promoted to micro-mechanics — which three is OPEN-FOR-OWNER.**_
+
+- **① Ishko** — a Jawa touches the doorframe before stepping out: *ask the dark before you leave it.*
+- **② Ohm** — the first touch of any machine each day is a knuckle-tap on the housing, so the current
+  knows a friendly hand is coming.
+- **③ Oomo** — the first sip of any cup is held in the mouth a moment: waters are greeted before they
+  are taken.
+- **④ Mob'Unloo** — nothing is ever handed directly; a thing is set down and the other takes it up, for
+  every transfer is a transaction and a hand-to-hand gift confuses the ledger.
+- **⑤ Rekko** — no tool is left lying face-down; a Jawa rights it in passing, for the discarded are
+  only sleeping.
+- **⑥ Ta'Baa** — every Jawa keeps a packed leaving-bag by the bunk, never unpacked, never mentioned.
+- **⑦ Zizzik** — one broken thing is kept unrepaired in every room: the decoy, so the wrong spark has
+  somewhere harmless to land.
+- **⑧ Sh'kaar** — no Jawa steps from shade into sunlight without pausing at the line; you do not enter
+  his country carelessly.
+- **⑨ Ozzik** — every fine work carries one small deliberate flaw, scratched in by its maker, so the
+  crown never quite fits.
+
 ### 2.0c Skill-resonance grid (CANONIZED 2026-08-08) — every RimWorld skill maps to a god
 
 _Audit principle (user): each of the 12 vanilla skills should resonate with at least one god; any orphaned skill flags a gap to fill. Running the grid is what surfaced the need for Ozzik. This grid is also the engine's cleanest ambient signal source — "skill X was exercised / a related act occurred" feeds the named god (see `divine_satiation_engine.md` §3)._
@@ -891,7 +932,9 @@ _Each god's own alliances and feuds now live in that god's block above (field "H
 **Two triads worth naming explicitly:**
 
 - **The fall-triad — Zizzik / Ozzik / Sh'kaar (must not be blurred).** Ozzik is the **shame of having lost** the civilization; Zizzik is the worship of **the accidents that took it**; Sh'kaar is the **inevitability** guaranteeing the fall recurs. Ozzik and Zizzik near-rhyme on purpose and pleasing Ozzik feeds Zizzik, but the feeling differs (mourns what was vs. celebrates the mechanism). Keep the three distinct in authoring.
-- **The win-path map** (which alters win the Body, `divine_satiation_engine.md` §4d): Ohm + Sh'kaar → droid-army-by-force; Mob'Unloo + Ozzik → coalition/commerce (≈ Hutt dominion); Ishko + Ta'Baa + Oomo + Rekko → the humble-survival bloc. **Rekko ⇄ Ozzik (restore vs. transcend) is the sharpest internal war**, and the endgame is which program runs.
+- **The win-path map** (which alters win the Body, `divine_satiation_engine.md` §4d): Ohm + Sh'kaar → droid-army-by-force; Mob'Unloo + Ozzik → coalition/commerce (≈ Hutt dominion); Ishko + Ta'Baa + Oomo + Rekko → the humble-survival bloc. **Rekko ⇄ Ozzik (restore vs. transcend) is the sharpest internal war**, and the endgame is which program runs. **Third lane — the balance-keeper ending (F19, ruled 2026-08-30): no god wins; the argument kept honest IS the god.** The clan that never lets any voice conquer the hull achieves what the terraformer never could — a plural mind at peace with remaining plural. Earned by mastery of the whole wheel, never avoidance: every god has fronted at least once, all four pressure-clocks survived through full cycles, Zizzik woken deliberately, no reign-breaker left unanswered. "We are always losing gracefully" as a victory condition.
+
+**The crew's own diagram — the 3×3 (crew-lore, ruled 2026-08-30).** Scratched on a bulkhead near the temple, the crew draw their gods as three rows of three: **the Body** (Oomo · Ohm · Rekko — *what shall the clan's hands be?* eggs, droids, or the mended second-hand thing), **the Path** (Ishko · Ta'Baa · Mob'Unloo — *how do we survive the stranger?* hide from him, leave him behind, or price him), **the Fall** (Zizzik · Sh'kaar · Ozzik — *why did we fall?* the accident, the inevitability, or our own pride). Within any row, a situation is a three-cornered argument — not this, nor this, but that. **This is how the CREW diagram their gods, never engine architecture:** no mechanic may require triad symmetry, and the 6/2/1 sign asymmetry (good-to-please / good-to-starve / necessary-but-perilous) stands untouched beneath it.
 
 ## Ruling 2026-08-29 — the temple remembers (owner; canon.yml cradle_memory)
 The crew know the vessel is ancient; the Rakatan story is learned FROM THE SHIP
@@ -971,6 +1014,18 @@ owner's catch on ②).
 > keeping you here). The curse columns below were RE-SPECCED under this law
 > 2026-08-30 (CURSE_COLUMN_RESPEC_1): every curse carries an F9 signature tell,
 > every M/L curse states its exit-verb in the god's own currency.
+>
+> **Reign politics (F14, ruled 2026-08-30):** while one god fronts, the
+> most-starved rival accrues grievance; past a threshold he forces a
+> **challenge** — yield the front (peaceful transition, small tribute) or hold
+> it (the challenger's next curse tier is pre-armed). A god who fronts too long
+> grows **decadent** — boons thin, demands inflate. Holding a beloved front
+> stays possible, at escalating cost. **And the correction that bounds it all:
+> the religion PRESSURES toward roaming, it does not demand it** — Jawa
+> settlements exist on the map; settling is difficult, costly, and kept sane
+> only by managing the gods against each other (`god_intercession_spec.md`).
+> Travel is merely easier. The PLAYER's forced movement comes from the Empire
+> chasing the ship, not from the theology.
 
 ### ① Ishko the Unmaskable — SHIPPED 2026-08-30
 DEEDS +: ambush/from-cover kills · a raid survived undetected or enemies
