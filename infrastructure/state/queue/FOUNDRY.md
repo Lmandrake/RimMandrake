@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T19:27:49Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T19:34:42Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -278,7 +278,7 @@ row:      unassigned
 needs:    bridge
 target:   v1
 kind:     build
-blocked:  built clean this game-loading window, not yet deployed - game must be closed first, then proven live
+blocked:  jawa/letter_list NREs on any letter with null lookTargets (Verse.LookTargets is a class; JawaBenchStorytellerTools2.cs:245 dereferences it unguarded). Other 10 pass or are honestly unmeasured
 summary:  New file JawaBenchGenTools2.cs (4 tools, ungated — map-generation/roof-repair
 prose:    infrastructure/state/items/BRIDGE_GEN_AND_STORYTELLER_TOOLS_1.md
 
