@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T18:44:49Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T18:47:07Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -125,15 +125,6 @@ target:   v1
 kind:     build
 summary:  jawa/pipenetinfo (new file JawaBenchPipeTools.cs, ungated, read-only):
 prose:    infrastructure/state/items/BRIDGE_PIPE_NET_INFO_1.md
-
-## BRIDGE_UIROOT_WINDOW_TOOLS_1 jawa/window_list_close + jawa/screenshot_mode - the UIRoot row had real capabilities after all
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     build
-summary:  New file JawaBenchUIRootTools.cs (2 tools, ungated):
-prose:    infrastructure/state/items/BRIDGE_UIROOT_WINDOW_TOOLS_1.md
 
 ## BRIDGE_STORY_ALERT_TALE_TOOLS_1 5 more gems: alerts_list (resolves roster UNCERTAIN), tale_list/tale_record (free-text-on-pawn answer), story_stats, faction_goodwill_situations
 state:    doing  (BLOCKED)
@@ -355,16 +346,6 @@ kind:     build
 blocked:  built clean, not deployed - game up, BENCH holds bridge
 summary:  jawa/pipenetinfo (new file JawaBenchPipeTools.cs, ungated, read-only):
 prose:    infrastructure/state/items/BRIDGE_PIPE_NET_INFO_1.md
-
-## BRIDGE_UIROOT_WINDOW_TOOLS_1 jawa/window_list_close + jawa/screenshot_mode - the UIRoot row had real capabilities after all
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     build
-blocked:  built clean, not deployed - game up, BENCH holds bridge
-summary:  New file JawaBenchUIRootTools.cs (2 tools, ungated):
-prose:    infrastructure/state/items/BRIDGE_UIROOT_WINDOW_TOOLS_1.md
 
 ## BRIDGE_STORY_ALERT_TALE_TOOLS_1 5 more gems: alerts_list (resolves roster UNCERTAIN), tale_list/tale_record (free-text-on-pawn answer), story_stats, faction_goodwill_situations
 state:    doing  (BLOCKED)

@@ -3178,3 +3178,4 @@
 {"seat":"FOUNDRY","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-08-30T18:39:36Z"}
 {"seat":"FOUNDRY","event":"close","id":"JAWA_TOOLS_ALL_DARK_DUPLICATE_ALIAS_1","sha":"f6aef49d","ts":"2026-08-30T18:40:28Z"}
 {"seat":"FOUNDRY","event":"close","id":"PAINT_GUARD_ASK_EACH_TIME_1","sha":"2c352882","ts":"2026-08-30T18:44:49Z"}
+{"seat":"FOUNDRY","event":"close","id":"BRIDGE_UIROOT_WINDOW_TOOLS_1","sha":"57d4154e","ts":"2026-08-30T18:47:07Z"}
