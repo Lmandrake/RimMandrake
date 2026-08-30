@@ -3211,3 +3211,4 @@
 {"seat":"OWNER","event":"file","id":"COVERED_PIT_TRAPS_1","title":"Spec covered pit traps (1x1/1x2/2x2): trigger on mass, hold by bodysize/health; plus the gated prisoner pit - dug fast by Jawa or droids, the canon alternative to locked barracks","kind":"task","target":"v1","needs":"offline","spec":"design/Jawa/trap_renaissance_spec.md","for":"BENCH","ownerSaid":"I think we need to add a queue item to spec out 1x1, 1x2, 2x2 covered pit traps that trigger based on mass and hold based on bodysize/health plus a gated pit for prisoner holding.","ts":"2026-08-30T19:39:26Z"}
 {"seat":"BENCH","event":"close","id":"JAWA_TRAP_RENAISSANCE_1","sha":"94a05164","ts":"2026-08-30T19:40:31Z"}
 {"seat":"BENCH","event":"claim","id":"COVERED_PIT_TRAPS_1","ts":"2026-08-30T19:45:45Z"}
+{"seat":"FOUNDRY","event":"close","id":"BRIDGE_DEBUGACTION_SWEEP_GEMS_1","sha":"51f436ee","ts":"2026-08-30T19:51:33Z"}

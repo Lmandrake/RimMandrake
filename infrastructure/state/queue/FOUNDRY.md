@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T19:34:42Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T19:51:33Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -116,15 +116,6 @@ target:   v1
 kind:     build
 summary:  New file JawaBenchStoryTools.cs (5 tools, all ungated):
 prose:    infrastructure/state/items/BRIDGE_STORY_ALERT_TALE_TOOLS_1.md
-
-## BRIDGE_DEBUGACTION_SWEEP_GEMS_1 First DebugAction sweep harvest: clear_area, spawn_fill_area, make_empty_room, destroy_bulk, explosion_at, ideo_ritual_obligation_remove, hot_reload_defs
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     build
-summary:  New file JawaBenchDebugGems1.cs (7 tools):
-prose:    infrastructure/state/items/BRIDGE_DEBUGACTION_SWEEP_GEMS_1.md
 
 ## BRIDGE_KCSG_VGE_TOOLS_1 jawa/kcsg_place (structure/settlement/tiled/symbol), jawa/vge_spawn_structure_skyfaller, jawa/research_reinvented_reset
 state:    doing  (BLOCKED)
@@ -291,16 +282,6 @@ kind:     build
 blocked:  jawa/alerts_list fails every call: FieldOrNull's PubInst BindingFlags omit NonPublic so private AlertsReadout.activeAlerts is never found; other 4 tools proven live
 summary:  New file JawaBenchStoryTools.cs (5 tools, all ungated):
 prose:    infrastructure/state/items/BRIDGE_STORY_ALERT_TALE_TOOLS_1.md
-
-## BRIDGE_DEBUGACTION_SWEEP_GEMS_1 First DebugAction sweep harvest: clear_area, spawn_fill_area, make_empty_room, destroy_bulk, explosion_at, ideo_ritual_obligation_remove, hot_reload_defs
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     build
-blocked:  built clean, not deployed - game up, BENCH holds bridge
-summary:  New file JawaBenchDebugGems1.cs (7 tools):
-prose:    infrastructure/state/items/BRIDGE_DEBUGACTION_SWEEP_GEMS_1.md
 
 ## BRIDGE_KCSG_VGE_TOOLS_1 jawa/kcsg_place (structure/settlement/tiled/symbol), jawa/vge_spawn_structure_skyfaller, jawa/research_reinvented_reset
 state:    doing  (BLOCKED)

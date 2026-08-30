@@ -51,12 +51,11 @@ bridge. Once deployed, in priority order:
 4. `jawa/explosion_at` and `jawa/ideo_ritual_obligation_remove` — lower priority,
    more standard.
 
-## Live-verify 2026-08-30, FOUNDRY — PARTIAL. 2 of 7 proven, 5 not yet run.
+## Live-verified 2026-08-30, FOUNDRY — ALL 7 PASS
 
-Full 585-mod list, fresh quicktest map. **Pass suspended mid-item**: the owner was
-watching this game window live and paused it, so the visually dramatic and
-game-wide calls in this batch (`explosion_at`, `hot_reload_defs`) were deliberately
-NOT fired. See "held" below — this is a decision, not an oversight.
+Full 585-mod list, fresh quicktest map, game paused except deliberate
+`step_game_ticks`. `explosion_at` and `hot_reload_defs` were held mid-pass while
+the owner was watching the window, then fired on his explicit go-ahead.
 
 ### ✅ `jawa/clear_area` — PASS, and the dryRun default is real
 ```
@@ -124,6 +123,41 @@ step_game_ticks 120  (resolves it WITHOUT unpausing, per bridge skill 4b)
 an `Explosion` Thing appears, and nothing is damaged until ticks run. Reading the
 result at that moment would have filed this tool as broken.
 
+### ⭐ `jawa/hot_reload_defs` — PASS. It works on the full 585-mod list, no restart.
+
+The headline claim, tested exactly as this item specified: change one XML value in
+a **deployed** mod, call it, read the value back live.
+
+```
+live DamageDef/JawaIon_Damage  empAmountDroid  = 24.0
+edit  <gamedir>\Mods\JawaIonWeapons\Defs\DamageDefs_JawaIon.xml   24 -> 77   (on disk)
+  (re-read before reloading: still 24.0 — the running game does NOT see the file)
+jawa/hot_reload_defs {}  -> success, "Queued as a long event - completion is not
+                            guaranteed by the time this call returns."
+...wait...
+live empAmountDroid = 77.0        <-- NEW VALUE, NO RESTART
+restore XML to 24, hot_reload_defs again
+live empAmountDroid = 24.0        <-- back, both directions proven
+```
+Read with `jawa/get_defs` on a **fresh connection** each time. Final state: the
+deployed XML is byte-identical to its backup (md5 `5a7f6e33…`), the live value is
+24.0, and the game is `programState: Playing`, `paused: true`, `playable: true`,
+`longEventPending: false`, at the **same `ticksGame` 6022** — no game time lost.
+
+🔴 **The cost, measured, because the note "queued long event" undersells it:** the
+reload blocks RimWorld's main thread for roughly **2–4 minutes** on this 585-mod
+set. Four consecutive `jawa/get_defs` calls timed out at 30 s each while it ran.
+⚠️ **And those timeouts desync the client socket** — the documented "a timeout is
+fatal to the CONNECTION, not the call" trap fired exactly as written: the next
+four polls each returned `unexpected response id '<guid>'`, reading the previous
+call's late reply. **Drop the socket and reconnect; do not poll a hot reload on
+the connection that issued it.**
+
+⇒ Still an enormous win: **minutes, against a ~25-minute cold load**, for any
+XML/Def change. Scope remains XML only — it does not reload the companion DLL or
+any C# (which is why `alerts_list`, `kcsg_place`, `letter_list` and the vehicle
+ion patch all still need a game-down deploy).
+
 ## criteria
 - [x] Root cause of the original miss identified and documented, not just patched.
 - [x] Full 367-attribute `[DebugAction]` inventory pulled, triaged for real value
@@ -133,10 +167,15 @@ result at that moment would have filed this tool as broken.
       param `GenExplosion.DoExplosion` signature, positionally verified.
 - [x] Builds clean, no duplicate alias (full surface re-scanned).
 - [x] Deployed — all 7 registered on the live bridge.
-- [ ] Proven live. `clear_area` (dryRun rail verified non-destructive, real mode
-      verified by independent re-count 109 -> 0) and `spawn_fill_area` (16 of 16
-      cells) PASS. `make_empty_room`, `destroy_bulk`, `ideo_ritual_obligation_remove`
-      not yet run; `explosion_at` and `hot_reload_defs` held pending an owner
-      heads-up (he is watching the window; hot_reload_defs risks a 25-min reload).
+- [x] **All 7 proven live**, each by an independent read-back or a before/after
+      transition: `clear_area` (dryRun rail non-destructive; real 109 -> 0),
+      `spawn_fill_area` (16/16 cells), `make_empty_room` (24 perimeter = 23 Wall +
+      1 Door, interior WoodPlankFloor + RoofConstructed), `destroy_bulk` (three
+      filters discriminate; 41 unchanged after dryRuns, 41 -> 40 for real),
+      `explosion_at` (24 things destroyed in radius after step_game_ticks),
+      `ideo_ritual_obligation_remove` (add -> list id 55 -> remove -> 0), and
+      ⭐ `hot_reload_defs` (deployed XML 24 -> 77 read back live with NO restart,
+      then restored to 24; ~2-4 min main-thread block on 585 mods, and it desyncs
+      the issuing connection).
 
 --- history ---
