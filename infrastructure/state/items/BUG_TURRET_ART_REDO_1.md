@@ -73,3 +73,40 @@ the skill (texture binds by texPath — [[texture-binds-by-texpath-not-defname]]
       re-projectile" idea on Vilelobber's `turret_register.json` row is still
       `contested: true` and untouched — this item did not touch damage,
       projectiles, or stats on any of the three.
+
+## CORRECTION, 2026-08-30 — the "0 nodes on disk, but EXISTS in the live game" line above was the bug, not a clean bill
+
+Live load harvest (`harvest_log.py`) after the first real load with this patch
+active:
+
+```
+Verse.PatchOperationReplace(xpath="Defs/ThingDef[defName="VFEI2_Vilelobber"]/graphicData/texPath"): Failed to find a node with the given xpath
+Verse.PatchOperationSequence: Error in the operation at position=1
+Verse.PatchOperationFindMod(Vanilla Factions Expanded - Insectoids 2): Error in <match>
+```
+
+The closing note's own words — "0 nodes on disk, but 'X' EXISTS in the live
+game (expected for the ParentName case)" — got the mechanism BACKWARDS. Per
+`skills/rimworld-modding/references/patch-operations.md` §5: **"Inheritance is
+resolved AFTER patches run. Patches operate on the literal [XML as written on
+disk]."** Vilelobber and Thornworm declare no literal `graphicData` at all
+(100% inherited from abstract `VFEI2_TurretBase`) — 0 nodes on disk means the
+`PatchOperationReplace` matches NOTHING and FAILS, full stop, no grace (that
+"matches nothing logs nothing" leniency belongs to
+`PatchOperationConditional`'s own top-level test, not to a bare `Replace`
+nested in a `Sequence`). `validate_patch.py`'s clean run did not catch this
+because its `--live` check resolves against the def DUMP, which reflects the
+POST-inheritance C# object — exactly the state that makes an inherited field
+look present when the raw XML tree the patch actually walks does not have it.
+
+**Fixed in `BugTurretRetexture_GeonosianHive.xml`**: Vilelobber and Thornworm's
+ops are now `PatchOperationAdd`, inserting a whole new `<graphicData>` element
+(every field `VFEI2_TurretBase` declares, texPath swapped) as a literal child
+of each ThingDef, rather than trying to `Replace` a field that was never
+theirs to begin with. Thornspitter's original `Replace` was correct all along
+— it declares its own literal `graphicData/texPath` — and is unchanged.
+Redeployed; the fix ships on the NEXT full load, not into this session's
+already-loaded pawns/live game.
+
+Filed nowhere new — this correction lives here because the item it corrects is
+here, per "superseding a doc means writing INTO the doc you superseded."

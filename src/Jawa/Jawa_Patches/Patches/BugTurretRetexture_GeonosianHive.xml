@@ -38,14 +38,37 @@
   graphicClass on all three is Verse.Graphic_Single (confirmed against the
   2026-08-29T20-07-29Z def dump) - one texture per def, no facing suffixes.
 
-  Structural template: GrimTerraTexPaths_Fix.xml (this mod's other
-  texPath-repair patch). Differs from that file in ONE way: GrimTerra's ops
-  predicate on the CHILD VALUE (bodyGraphicData[texPath="..."]/texPath)
-  because they are picking one <li> out of several in a lifeStages list. These
-  three ThingDefs have exactly one graphicData/texPath node each - no list, no
-  ambiguity - so a plain PatchOperationReplace on
-  Defs/ThingDef[defName="..."]/graphicData/texPath is sufficient and was
-  verified to resolve against the live def dump before writing this file.
+  🔴 CORRECTED 2026-08-30, live load harvest (harvest_log.py): the original
+  version of this file used PatchOperationReplace on
+  Defs/ThingDef[defName="..."]/graphicData/texPath for all three defs, and
+  Vilelobber and Thornworm FAILED AT ACTUAL LOAD -
+  "[Jawa Patches (local)] Patch operation Verse.PatchOperationFindMod(Vanilla
+  Factions Expanded - Insectoids 2) failed" - even though validate_patch.py
+  against the live def dump reported 0 errors. The dump reflects the
+  POST-inheritance C# object, which is why the xpath looked fine offline; the
+  real mechanism is the opposite of what was assumed:
+  `skills/rimworld-modding/references/patch-operations.md` §5 -
+  "Inheritance is resolved AFTER patches run. Patches operate on the literal
+  [XML as written on disk]." Read on THIS disk: Vilelobber and Thornworm each
+  declare `<ThingDef ParentName="VFEI2_TurretBase">` with NO literal
+  `<graphicData>` node of their own at all - it is 100% inherited from the
+  abstract parent (Buildings_Insectoid.xml:2397). A Replace on a node that does
+  not exist in the raw tree matches zero and the operation fails (it is NOT the
+  "matches nothing logs nothing" PatchOperationConditional case - Replace
+  wrapped only in FindMod/Sequence has no such grace). Thornspitter is
+  different: it DOES declare its own literal `<graphicData>` (a different
+  texPath, different drawSize) - its Replace op below was never broken and is
+  unchanged.
+
+  THE FIX for Vilelobber/Thornworm: PatchOperationAdd, not Replace, inserting a
+  whole new `<graphicData>` element as a direct child of each ThingDef -
+  replicating every field VFEI2_TurretBase's graphicData declares (drawSize
+  1.5x1.5, drawOffset, damageData/rect, shadowData) except texPath, which
+  points at the new Jawa art. Read straight off VFEI2_TurretBase's own XML
+  (Buildings_Insectoid.xml:2400-2412), not guessed - dropping any of those
+  fields would silently revert to a C# default the moment the child's own
+  literal graphicData node exists (object-typed fields REPLACE on inheritance,
+  they do not merge field-by-field; only LIST-typed fields append).
 
   Scope: ART ONLY. Damage, projectiles and the "sonic re-projectile" idea on
   Vilelobber's turret_register.json row are untouched - that is a separate,
@@ -63,16 +86,51 @@
     <match Class="PatchOperationSequence">
       <operations>
 
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/ThingDef[defName="VFEI2_Vilelobber"]/graphicData/texPath</xpath>
-          <value><texPath>Things/Building/InsectoidTurrets/Jawa_Vilelobber_Base</texPath></value>
+        <!-- Vilelobber has NO literal graphicData of its own (100% inherited
+             from VFEI2_TurretBase) - ADD the whole node, not Replace one field
+             of it. Every field but texPath copied verbatim from the base. -->
+        <li Class="PatchOperationAdd">
+          <xpath>Defs/ThingDef[defName="VFEI2_Vilelobber"]</xpath>
+          <value>
+            <graphicData>
+              <texPath>Things/Building/InsectoidTurrets/Jawa_Vilelobber_Base</texPath>
+              <graphicClass>Graphic_Single</graphicClass>
+              <drawSize>(1.5, 1.5)</drawSize>
+              <drawOffset>(0,0,-0.1)</drawOffset>
+              <damageData>
+                <rect>(0.2,0.2,0.6,0.6)</rect>
+              </damageData>
+              <shadowData>
+                <volume>(1.5,0.35,1.4)</volume>
+                <offset>(0,0,-0.05)</offset>
+              </shadowData>
+            </graphicData>
+          </value>
         </li>
 
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/ThingDef[defName="VFEI2_Thornworm"]/graphicData/texPath</xpath>
-          <value><texPath>Things/Building/InsectoidTurrets/Jawa_Thornworm_Base</texPath></value>
+        <!-- Thornworm: same situation as Vilelobber, same base, same fix. -->
+        <li Class="PatchOperationAdd">
+          <xpath>Defs/ThingDef[defName="VFEI2_Thornworm"]</xpath>
+          <value>
+            <graphicData>
+              <texPath>Things/Building/InsectoidTurrets/Jawa_Thornworm_Base</texPath>
+              <graphicClass>Graphic_Single</graphicClass>
+              <drawSize>(1.5, 1.5)</drawSize>
+              <drawOffset>(0,0,-0.1)</drawOffset>
+              <damageData>
+                <rect>(0.2,0.2,0.6,0.6)</rect>
+              </damageData>
+              <shadowData>
+                <volume>(1.5,0.35,1.4)</volume>
+                <offset>(0,0,-0.05)</offset>
+              </shadowData>
+            </graphicData>
+          </value>
         </li>
 
+        <!-- Thornspitter DOES declare its own literal graphicData/texPath
+             (Buildings_Insectoid.xml:2656-2668, its own drawSize/shadowData,
+             not the shared base's) - this Replace was never broken, unchanged. -->
         <li Class="PatchOperationReplace">
           <xpath>Defs/ThingDef[defName="VFEI2_Thornspitter"]/graphicData/texPath</xpath>
           <value><texPath>Things/Building/InsectoidTurrets/Jawa_ThornspitterSmall_Base</texPath></value>
