@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T02:36:18Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-08-30T02:38:16Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## BUILD_BATCH_OVERWRITES_SILENTLY_1 jawa/build_batch reports placed for an op that destroys an existing building in the same run
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     bug
-summary:  BUILDBATCHOVERWRITESSILENTLY1 — a later op destroys an earlier building, both report placed
-prose:    infrastructure/state/items/BUILD_BATCH_OVERWRITES_SILENTLY_1.md
 
 ## FIRE_RAID_ECHOES_REQUESTED_FACTION_1 jawa/fire_raid reports the faction you asked for even when the worker raids with a different one
 state:    ready
@@ -225,6 +216,15 @@ kind:     bug
 summary:  VEHICLEIONTIER1 — the ion gun has zero effect on Vehicle Framework vehicles
 prose:    infrastructure/state/items/VEHICLE_ION_TIER_1.md
 
+## DROIDWORKS_DEF_GENERATOR_1 Generator: emit DW_ races and kinds for all 85 droids from extraction.json
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  (no items/DROIDWORKS_DEF_GENERATOR_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROIDWORKS_DEF_GENERATOR_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -410,13 +410,3 @@ kind:     build
 thin:     spec, verify and criteria all present
 summary:  design/Jawa/droidsystembuildspec.md — architecture (own DLL + HAR substrate,
 prose:    infrastructure/state/items/DROID_SYSTEM_BUILD_1.md
-
-## DROIDWORKS_DEF_GENERATOR_1 Generator: emit DW_ races and kinds for all 85 droids from extraction.json
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DROIDWORKS_DEF_GENERATOR_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DROIDWORKS_DEF_GENERATOR_1.md
