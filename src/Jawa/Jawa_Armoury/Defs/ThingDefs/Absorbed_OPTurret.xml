@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Absorbed from rpgwanderer.opturret (workshop 3550061539, "Archotech
+     Blaster Turret"), WEAPONS_ABSORPTION_WAVE_1. HAND-PORTED (3-def pack) —
+     defNames preserved verbatim per the item's rule 1. Turrets_DamageDoctrine.xml's
+     Bullet_ArchotechChargeBlasterHeavy op is retired and baked in HERE instead
+     (was PatchOperationFindMod-gated on "Archotech Blaster Turret", which stops
+     matching once that pack retires). Value confirmed by running
+     gen_turret_doctrine.py before this port: damageAmountBase 50->24 (owner's
+     turret-damage doctrine: (squares)^2 x anchor, archotech allowed 4x —
+     PLAN comment "1x1 (mult 1)... archotech 4x"). Source pack stays active for
+     now (retirement is a separate later step) — do not deploy this file until
+     then, or duplicate defNames result. -->
+<Defs>
+
+  <ThingDef ParentName="BaseBullet">
+    <defName>Bullet_ArchotechChargeBlasterHeavy</defName>
+    <label>archotech archites blaster shot</label>
+    <graphicData>
+      <texPath>OPArchotechTurret/OPArchotechTurretCharge</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>TransparentPostLight</shaderType>
+    </graphicData>
+    <projectile>
+      <damageDef>Bullet</damageDef>
+      <armorPenetrationBase>999</armorPenetrationBase>
+      <damageAmountBase>24</damageAmountBase>
+      <speed>100</speed>
+    </projectile>
+  </ThingDef>
+
+  <ThingDef ParentName="Gun_ChargeBlasterHeavyBase">
+    <defName>Gun_ArchotechChargeBlasterHeavyTurret</defName>
+    <label>archotech charge blaster</label>
+    <description>A pulse-charged rapid-fire archites blaster for area fire.</description>
+    <graphicData>
+      <texPath>OPArchotechTurret/OPArchotechTurretGun</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <Mass>100</Mass>
+      <ShootingAccuracyTurret>1.0</ShootingAccuracyTurret>
+      <AccuracyTouch>1.0</AccuracyTouch>
+      <AccuracyShort>1.0</AccuracyShort>
+      <AccuracyMedium>1.0</AccuracyMedium>
+      <AccuracyLong>1.0</AccuracyLong>
+      <RangedWeapon_Cooldown>0.0</RangedWeapon_Cooldown>
+    </statBases>
+    <verbs>
+      <li>
+        <verbClass>Verb_Shoot</verbClass>
+        <hasStandardCommand>true</hasStandardCommand>
+        <defaultProjectile>Bullet_ArchotechChargeBlasterHeavy</defaultProjectile>
+        <warmupTime>0.0</warmupTime>
+        <range>400</range>
+        <defaultCooldownTime>0.05</defaultCooldownTime>
+        <forcedMissRadius>0</forcedMissRadius>
+        <burstShotCount>10</burstShotCount>
+        <ticksBetweenBurstShots>1</ticksBetweenBurstShots>
+        <soundCast>Shot_ChargeBlaster</soundCast>
+        <soundCastTail>GunTail_Heavy</soundCastTail>
+        <muzzleFlashScale>9</muzzleFlashScale>
+      </li>
+    </verbs>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>Turret_AutoChargeBlaster_OP</defName>
+    <label>Archotech charge turret</label>
+    <description>An archotech blaster turret using archites clouds that destroy what they touch on a molecular level. Directly written into your dreams from the insane mind of a demented archotech, this turret is capable of unleashing devastating volleys of energy blasts at unsuspecting foes... And friends who didn't clear the way fast enough. Seriously, don't blame the archotech for friendly fire, it's doing its best.</description>
+    <thingClass>Building_TurretGun</thingClass>
+    <drawerType>MapMeshAndRealTime</drawerType>
+    <graphicData>
+      <texPath>OPArchotechTurret/OPArchotechTurretBase</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+      <damageData>
+        <rect>(0.2,0.2,0.6,0.6)</rect>
+      </damageData>
+      <shadowData>
+        <volume>(0.27,0.25,0.27)</volume>
+        <offset>(0,0,0)</offset>
+      </shadowData>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>200000</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Beauty>10</Beauty>
+    </statBases>
+    <costList>
+      <Steel>300</Steel>
+      <Plasteel>300</Plasteel>
+      <Silver>200</Silver>
+      <Jade>400</Jade>
+      <Gold>200</Gold>
+      <Uranium>200</Uranium>
+      <ComponentSpacer>6</ComponentSpacer>
+    </costList>
+    <receivesSignals>true</receivesSignals>
+    <drawHighlight>true</drawHighlight>
+    <drawHighlightOnlyForHostile>true</drawHighlightOnlyForHostile>
+    <altitudeLayer>Building</altitudeLayer>
+    <stealable>false</stealable>
+    <rotatable>true</rotatable>
+    <designationCategory>Security</designationCategory>
+    <size>(1,1)</size>
+    <tickerType>Normal</tickerType>
+    <constructionSkillPrerequisite>20</constructionSkillPrerequisite>
+    <comps>
+      <li Class="CompProperties_AmbientSound">
+        <sound>MechTurretBig_Call</sound>
+      </li>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <shortCircuitInRain>false</shortCircuitInRain>
+        <basePowerConsumption>2000</basePowerConsumption>
+      </li>
+    </comps>
+    <passability>PassThroughOnly</passability>
+    <pathCost>1</pathCost>
+    <fillPercent>0.5</fillPercent>
+    <hasTooltip>true</hasTooltip>
+    <killedLeavings>
+      <ChunkSlagSteel>1</ChunkSlagSteel>
+    </killedLeavings>
+    <building>
+      <ai_combatDangerous>true</ai_combatDangerous>
+      <turretGunDef>Gun_ArchotechChargeBlasterHeavyTurret</turretGunDef>
+      <turretBurstCooldownTime>0</turretBurstCooldownTime>
+      <turretTopDrawSize>1.75</turretTopDrawSize>
+      <turretTopOffset>(0, 0.05)</turretTopOffset>
+    </building>
+    <uiIconScale>0.95</uiIconScale>
+  </ThingDef>
+
+</Defs>

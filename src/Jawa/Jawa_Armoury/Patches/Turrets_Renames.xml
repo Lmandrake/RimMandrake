@@ -7,14 +7,11 @@
      Derivation: design/Jawa/worldbuilding/review/turret_normalization_v1.md -->
 <Patch>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>E-Web Heavy Repeating Blaster</li></mods>
-    <match Class="PatchOperationReplace">
-      <!-- "EWebMG": it is a repeating blaster, not a machine gun -->
-      <xpath>/Defs/ThingDef[defName="RN2SWGun_EWeb_MG"]/label</xpath>
-      <value><label>E-Web repeating blaster</label></value>
-    </match>
-  </Operation>
+  <!-- "EWebMG" -> "E-Web repeating blaster" op RETIRED here (WEAPONS_ABSORPTION_WAVE_1):
+       baked directly into the absorbed def's own <label>,
+       Jawa_Armoury/Defs/ThingDefs/Absorbed_Eweb.xml. Was gated on
+       "E-Web Heavy Repeating Blaster" and would silently stop matching once
+       that pack retires. -->
 
   <Operation Class="PatchOperationFindMod">
     <mods><li>Vanilla Furniture Expanded - Security</li></mods>

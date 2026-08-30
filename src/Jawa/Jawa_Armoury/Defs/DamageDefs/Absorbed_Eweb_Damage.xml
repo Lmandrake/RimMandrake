@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Absorbed from maincrep.eweb (workshop 3555571107), WEAPONS_ABSORPTION_WAVE_1.
+     defName preserved verbatim; unchanged from source. Not currently referenced
+     by any absorbed ThingDef here (EWebShot uses OuterRim_Blaster/vanilla Bullet
+     paths) — shipped anyway per the item's rule 1 (the frozen save may hold it;
+     not this generator's call to cut a defName it didn't rule on). -->
+<Defs>
+
+  <DamageDef>
+    <defName>RN2_SteelBall</defName>
+    <label>shrapnel</label>
+    <workerClass>DamageWorker_AddInjury</workerClass>
+    <externalViolence>true</externalViolence>
+    <deathMessage>{0} has been shot to death.</deathMessage>
+    <hediff>RN2_SteelBall_Hediff</hediff>
+    <harmAllLayersUntilOutside>true</harmAllLayersUntilOutside>
+    <impactSoundType>Bullet</impactSoundType>
+    <armorCategory>Sharp</armorCategory>
+    <overkillPctToDestroyPart>0~0.7</overkillPctToDestroyPart>
+    <isRanged>true</isRanged>
+    <makesAnimalsFlee>true</makesAnimalsFlee>
+  </DamageDef>
+
+</Defs>

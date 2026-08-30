@@ -89,7 +89,11 @@ PLAN = {
     "OuterRim_LightLaserCannon_Coruscant": (69, None, None, None),
     "OuterRim_LightLaserCannon_Tatooine":  (69, None, None, None),
     "OuterRim_PTowerTurret":        (69,   None, None, None),
-    "Turret_AutoChargeBlaster_OP":  (240,  None, None, None),   # archotech 4x
+    # Turret_AutoChargeBlaster_OP (240, archotech 4x) RETIRED here
+    # WEAPONS_ABSORPTION_WAVE_1: baked directly into the absorbed
+    # Bullet_ArchotechChargeBlasterHeavy def, Jawa_Armoury/Defs/ThingDefs/
+    # Absorbed_OPTurret.xml — this FindMod op was gated on "Archotech Blaster
+    # Turret" and would silently stop matching once that pack retires.
     "Turret_BeamRepeater":          (64,   None, 8,    None),   # beam: burst 30 -> 8
     "VFEI2_Thornspitter":           (25,   None, None, None),
     "VFES_Turret_Flame":            (33,   None, None, None),   # Wildsteam keep
@@ -99,7 +103,11 @@ PLAN = {
     "OuterRim_MediumLaserCannon":   (1104, None, None, None),
     "OuterRim_ProtonMortar":        (560,  11.8, None, None),
     "OuterRim_Turbolaser":          (1104, None, None, None),
-    "RN2SWGun_EWeb_MG":             (1104, None, None, "OuterRim_Blaster"),
+    # RN2SWGun_EWeb_MG (1104, retype OuterRim_Blaster) RETIRED here
+    # WEAPONS_ABSORPTION_WAVE_1: baked directly into the absorbed EWebShot
+    # def, Jawa_Armoury/Defs/ThingDefs/Absorbed_Eweb.xml — this FindMod op
+    # was gated on "E-Web Heavy Repeating Blaster" and would silently stop
+    # matching once that pack retires.
     "Turret_Atomiser":              (624,  None, None, None),
     "Turret_AutoChargeBlaster":     (960,  None, None, None),
     "Turret_AutoInferno":           (132,  4.8,  None, None),

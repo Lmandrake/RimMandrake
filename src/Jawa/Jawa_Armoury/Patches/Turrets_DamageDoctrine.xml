@@ -37,19 +37,6 @@
   </Operation>
 
   <Operation Class="PatchOperationFindMod">
-    <mods><li>Archotech Blaster Turret</li></mods>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <!-- Bullet_ArchotechChargeBlasterHeavy : damageAmountBase -> 24 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="Bullet_ArchotechChargeBlasterHeavy"]/projectile/damageAmountBase</xpath>
-          <value><damageAmountBase>24</damageAmountBase></value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationFindMod">
     <mods><li>Core</li></mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -239,24 +226,6 @@
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="DP_Cannonball"]/projectile/explosionRadius</xpath>
           <value><explosionRadius>6.0</explosionRadius></value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>E-Web Heavy Repeating Blaster</li></mods>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <!-- EWebShot : damageAmountBase -> 368 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="EWebShot"]/projectile/damageAmountBase</xpath>
-          <value><damageAmountBase>368</damageAmountBase></value>
-        </li>
-        <!-- EWebShot : damageDef -> OuterRim_Blaster -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="EWebShot"]/projectile/damageDef</xpath>
-          <value><damageDef>OuterRim_Blaster</damageDef></value>
         </li>
       </operations>
     </match>

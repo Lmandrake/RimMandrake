@@ -124,6 +124,11 @@
   "number": 58,
   "open": false
  },
+ "DROIDWORKS_ISFLESH_RELATIONS_CRASH_1": {
+  "fp": "8f54f40ce94b",
+  "number": 79,
+  "open": true
+ },
  "DROIDWORKS_PHASE0_XML_1": {
   "fp": "1f52e52c565d",
   "number": 59,
@@ -289,10 +294,30 @@
   "number": 74,
   "open": true
  },
- "PAWN_FLAVOR_STARWARS_1": {
-  "fp": "24a4879ca0bd",
-  "number": 39,
+ "PAWN_FLAVOR_PHASE2_PROSE_1": {
+  "fp": "6c042873d16c",
+  "number": 80,
   "open": true
+ },
+ "PAWN_FLAVOR_ROUND7_FIRE_1": {
+  "fp": "2a0fea89355a",
+  "number": 81,
+  "open": true
+ },
+ "PAWN_FLAVOR_ROUND8_FDE_1": {
+  "fp": "bb2cface6afb",
+  "number": 82,
+  "open": true
+ },
+ "PAWN_FLAVOR_ROUND9_FUEL_1": {
+  "fp": "a2765e6063d2",
+  "number": 83,
+  "open": true
+ },
+ "PAWN_FLAVOR_STARWARS_1": {
+  "fp": "0c307ac630c6",
+  "number": 39,
+  "open": false
  },
  "PAWN_WEAPON_GEN_TAG_POOL_READ_1": {
   "fp": "8b33c46ec8c3",
