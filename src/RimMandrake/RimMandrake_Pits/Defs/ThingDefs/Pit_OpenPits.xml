@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ==================================================================
+       The pit itself. NOT player-buildable directly (no
+       designationCategory) - these are only ever spawned by
+       CompPitDigStage.CompleteToOpenPit when a Building_PitDigSite (see
+       Pit_DigSites.xml) finishes its final stage. One def per FLOOR FITTING
+       (section 5, "one framework, five faces" - CompPitFitting is data, not
+       a subclass); depth tier is a RUNTIME field
+       (Building_OpenPit.DepthTier) set by the dig site at spawn, so the
+       SAME open-pit def serves Shallow, Deep and Chasm alike.
+
+       PLACEHOLDER ART: reuses the vanilla spike-trap texture
+       (Things/Building/Security/TrapSpikeArmed) so the mod loads with no
+       missing-texture errors. A real art pass is explicitly deferred to the
+       campaign layer per covered_pit_traps_spec.md section 9 - "art pass"
+       is listed there, not here.
+       ================================================================== -->
+
+  <ThingDef Abstract="true" ParentName="BuildingBase">
+    <defName>RM_OpenPitBase</defName>
+    <thingClass>RimMandrake.Pits.Building_OpenPit</thingClass>
+    <label>open pit</label>
+    <description>A pit dug into the ground. Cover it to arm it as a trap, or leave it open as a plain hazard.</description>
+    <graphicData>
+      <texPath>Things/Building/Security/TrapSpikeArmed</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <rotatable>false</rotatable>
+    <neverMultiSelect>false</neverMultiSelect>
+    <passability>Standable</passability>
+    <fillPercent>0</fillPercent>
+    <pathCost>30</pathCost>
+    <useHitPoints>true</useHitPoints>
+    <selectable>true</selectable>
+    <size>(1,1)</size>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Beauty>-6</Beauty>
+    </statBases>
+    <building>
+      <deconstructible>false</deconstructible>
+      <expandHomeArea>false</expandHomeArea>
+    </building>
+    <comps>
+      <li Class="RimMandrake.Pits.CompProperties_PitCoverTrigger" />
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_OpenPitBase">
+    <defName>RM_OpenPit_Bare</defName>
+    <label>pit</label>
+    <description>An earthen pit. Whoever falls in is caught, not killed - the bloodless take.</description>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_OpenPitBase">
+    <defName>RM_OpenPit_Spiked</defName>
+    <label>spiked pit</label>
+    <description>An earthen pit lined with scrap spikes. A cheap kill-zone.</description>
+    <comps>
+      <li Class="RimMandrake.Pits.CompProperties_PitCoverTrigger" />
+      <li Class="RimMandrake.Pits.CompProperties_PitFitting">
+        <fittingType>Spiked</fittingType>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_OpenPitBase">
+    <defName>RM_OpenPit_Oiled</defName>
+    <label>oiled pit</label>
+    <description>An earthen pit with flammable oil pooled at the bottom. Ignitable at will.</description>
+    <comps>
+      <li Class="RimMandrake.Pits.CompProperties_PitCoverTrigger" />
+      <li Class="RimMandrake.Pits.CompProperties_PitFitting">
+        <fittingType>Oiled</fittingType>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_OpenPitBase">
+    <defName>RM_OpenPit_Poison</defName>
+    <label>poison pit</label>
+    <description>An earthen pit, its floor slicked with toxin. The catch weakens over time instead of dying on impact.</description>
+    <comps>
+      <li Class="RimMandrake.Pits.CompProperties_PitCoverTrigger" />
+      <li Class="RimMandrake.Pits.CompProperties_PitFitting">
+        <fittingType>Poison</fittingType>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_OpenPitBase">
+    <defName>RM_OpenPit_Water</defName>
+    <label>deep water pit</label>
+    <description>A flooded chasm. There is no climbing out of this one.</description>
+    <comps>
+      <li Class="RimMandrake.Pits.CompProperties_PitCoverTrigger" />
+      <li Class="RimMandrake.Pits.CompProperties_PitFitting">
+        <fittingType>Water</fittingType>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_OpenPitBase">
+    <defName>RM_OpenPit_Oubliette</defName>
+    <label>oubliette</label>
+    <description>An earthen pit with an ion charge at the bottom. Mechanoids and droids that fall in switch off.</description>
+    <comps>
+      <li Class="RimMandrake.Pits.CompProperties_PitCoverTrigger" />
+      <li Class="RimMandrake.Pits.CompProperties_PitFitting">
+        <fittingType>Oubliette</fittingType>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

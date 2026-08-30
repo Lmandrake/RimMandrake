@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ==================================================================
+       Dig-stage lifecycle (covered_pit_traps_spec.md section 2). Player-
+       buildable via the normal Blueprint -> Frame path (ConstructionSpeed) -
+       placement IS stage 1. Shallow is done the moment its frame completes
+       (1 required stage); Deep/Chasm need further "Dig Deeper" passes
+       (CompPitDigStage, JobDriver_DigPitDeeper, MiningSpeed-scaled). On the
+       final stage the site transforms into its openPitDef (Pit_OpenPits.xml).
+
+       Costs/work are the spec's own placeholder framing ("dug fast") -
+       PLACEHOLDER, not tuned; the quicktest matrix is the tuning step.
+       Chasm's costList carries the spec's "needs shoring materials" as an
+       ordinary constructible cost, not special-cased code.
+
+       PLACEHOLDER ART - see Pit_OpenPits.xml header.
+       ================================================================== -->
+
+  <ThingDef Abstract="true" ParentName="BuildingBase">
+    <defName>RM_PitDigSiteBase</defName>
+    <thingClass>RimMandrake.Pits.Building_PitDigSite</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Security/TrapSpikeArmed</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <rotatable>false</rotatable>
+    <passability>Standable</passability>
+    <fillPercent>0</fillPercent>
+    <pathCost>30</pathCost>
+    <useHitPoints>true</useHitPoints>
+    <selectable>true</selectable>
+    <size>(1,1)</size>
+    <statBases>
+      <WorkToBuild>1200</WorkToBuild>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Beauty>-6</Beauty>
+    </statBases>
+    <designationCategory>Security</designationCategory>
+    <constructionSkillPrerequisite>2</constructionSkillPrerequisite>
+    <costList>
+      <WoodLog>5</WoodLog>
+    </costList>
+    <building>
+      <expandHomeArea>false</expandHomeArea>
+    </building>
+  </ThingDef>
+
+  <!-- ===== Shallow (1 stage - done at placement), one dig site per fitting ===== -->
+
+  <ThingDef ParentName="RM_PitDigSiteBase">
+    <defName>RM_PitDigSite_Shallow_Bare</defName>
+    <label>pit (shallow)</label>
+    <description>A shallow pit, dug fast. Cover it to catch whoever crosses.</description>
+    <comps>
+      <li Class="RimMandrake.Pits.CompProperties_PitDigStage">
+        <depthTier>Shallow</depthTier>
+        <openPitDef>RM_OpenPit_Bare</openPitDef>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_PitDigSiteBase">
+    <defName>RM_PitDigSite_Shallow_Spiked</defName>
+    <label>spiked pit (shallow)</label>
+    <description>A shallow pit lined with scrap spikes, dug fast.</description>
+    <comps>
+      <li Class="RimMandrake.Pits.CompProperties_PitDigStage">
+        <depthTier>Shallow</depthTier>
+        <openPitDef>RM_OpenPit_Spiked</openPitDef>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_PitDigSiteBase">
+    <defName>RM_PitDigSite_Shallow_Oiled</defName>
+    <label>oiled pit (shallow)</label>
+    <description>A shallow pit with oil pooled at the bottom, dug fast.</description>
+    <comps>
+      <li Class="RimMandrake.Pits.CompProperties_PitDigStage">
+        <depthTier>Shallow</depthTier>
+        <openPitDef>RM_OpenPit_Oiled</openPitDef>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_PitDigSiteBase">
+    <defName>RM_PitDigSite_Shallow_Poison</defName>
+    <label>poison pit (shallow)</label>
+    <description>A shallow pit, its floor slicked with toxin, dug fast.</description>
+    <comps>
+      <li Class="RimMandrake.Pits.CompProperties_PitDigStage">
+        <depthTier>Shallow</depthTier>
+        <openPitDef>RM_OpenPit_Poison</openPitDef>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_PitDigSiteBase">
+    <defName>RM_PitDigSite_Shallow_Water</defName>
+    <label>deep water pit (shallow)</label>
+    <description>A shallow pit dug down to the water table, dug fast.</description>
+    <comps>
+      <li Class="RimMandrake.Pits.CompProperties_PitDigStage">
+        <depthTier>Shallow</depthTier>
+        <openPitDef>RM_OpenPit_Water</openPitDef>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_PitDigSiteBase">
+    <defName>RM_PitDigSite_Shallow_Oubliette</defName>
+    <label>oubliette (shallow)</label>
+    <description>A shallow pit rigged with an ion charge, dug fast.</description>
+    <comps>
+      <li Class="RimMandrake.Pits.CompProperties_PitDigStage">
+        <depthTier>Shallow</depthTier>
+        <openPitDef>RM_OpenPit_Oubliette</openPitDef>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <!-- ===== Deep (2 stages) and Chasm (3 stages, shoring cost) - bare only in
+       this build; proving the staged-digging path does not require the
+       full fitting x depth cross product. See item file. ===== -->
+
+  <ThingDef ParentName="RM_PitDigSiteBase">
+    <defName>RM_PitDigSite_Deep_Bare</defName>
+    <label>pit (deep)</label>
+    <description>A pit dug deep enough to hold heavier game. Needs a second digging pass after the frame completes.</description>
+    <comps>
+      <li Class="RimMandrake.Pits.CompProperties_PitDigStage">
+        <depthTier>Deep</depthTier>
+        <openPitDef>RM_OpenPit_Bare</openPitDef>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_PitDigSiteBase">
+    <defName>RM_PitDigSite_Chasm_Bare</defName>
+    <label>pit (chasm)</label>
+    <description>A pit dug deep enough for megafauna. Needs shoring, and two further digging passes after the frame completes.</description>
+    <costList>
+      <WoodLog>5</WoodLog>
+      <Steel>20</Steel>
+    </costList>
+    <comps>
+      <li Class="RimMandrake.Pits.CompProperties_PitDigStage">
+        <depthTier>Chasm</depthTier>
+        <openPitDef>RM_OpenPit_Bare</openPitDef>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

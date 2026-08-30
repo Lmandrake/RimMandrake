@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimMandrake Pits</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.rimmandrakepits</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>The earth that swallows: a species-agnostic covered-pit-trap framework.
+
+Dig a pit in stages, arm it with a terrain-mimic cover, and let mass do the
+rest: enough weight crosses the cover and the floor lies, dropping whoever
+stood on it into the hole below. Escape is a struggle clock scored off
+bodysize, health and manipulation, not a coin flip. The same holder class
+doubles as a gated holding-platform pit cell for prisoners, where closing the
+gate is the mercy and leaving it open under the sun is the cruelty.
+
+This is the CORE framework only: dig-stage lifecycle, terrain-sampled cover
+graphics, mass-sum trigger, struggle escape, the floor-fitting family (bare /
+spiked / oiled / poison / deep-water / oubliette), and the holding-platform
+pit cell. No species bonuses, no theology, no droid-labor integration, no art
+pass — those live in the campaign layer per design/Jawa/covered_pit_traps_spec.md
+section 9. Full spec: design/Jawa/covered_pit_traps_spec.md. Built for
+RIMMANDRAKE_PITS_BUILD_1; the spawn-mass quicktest matrix (squirrel/human/
+thrumbo/centipede x cover tiers) is the verification step this build enables
+but does not itself run.</description>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+  </loadAfter>
+</ModMetaData>

@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <JobDef>
+    <defName>RM_DigPitDeeper</defName>
+    <driverClass>RimMandrake.Pits.JobDriver_DigPitDeeper</driverClass>
+    <reportString>digging the pit deeper.</reportString>
+  </JobDef>
+
+</Defs>

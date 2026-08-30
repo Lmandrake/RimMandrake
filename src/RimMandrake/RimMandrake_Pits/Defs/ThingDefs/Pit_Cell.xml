@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ==================================================================
+       The gated prisoner pit cell (covered_pit_traps_spec.md section 6).
+       Dug like any other pit (section 2 lifecycle reused wholesale - see
+       Pit_DigSites.xml); the final building is Building_PitCell, which
+       carries NO CompPitCoverTrigger (manually gated, not mass-sprung) and
+       NO CompPitFitting. "Capacity by footprint: 1x2 holds one; 2x2 holds
+       two" (section 6) - Building_OpenPit.MaxOccupants reads this straight
+       off ThingDef.size, so the two sizes below are the whole mechanism;
+       see Building_OpenPit's own doc comment for the multi-occupant-DRAWING
+       gap this does not solve.
+
+       PLACEHOLDER ART - see Pit_OpenPits.xml header.
+       ================================================================== -->
+
+  <ThingDef ParentName="RM_PitDigSiteBase">
+    <defName>RM_PitDigSite_Cell_1x2</defName>
+    <label>prisoner pit (1x2)</label>
+    <description>A gated pit dug for holding one captive.</description>
+    <size>(1,2)</size>
+    <rotatable>true</rotatable>
+    <comps>
+      <li Class="RimMandrake.Pits.CompProperties_PitDigStage">
+        <depthTier>Deep</depthTier>
+        <openPitDef>RM_PitCell_1x2</openPitDef>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_PitDigSiteBase">
+    <defName>RM_PitDigSite_Cell_2x2</defName>
+    <label>prisoner pit (2x2)</label>
+    <description>A gated pit dug wide enough to hold two captives (or one big one).</description>
+    <size>(2,2)</size>
+    <rotatable>true</rotatable>
+    <costList>
+      <WoodLog>10</WoodLog>
+    </costList>
+    <comps>
+      <li Class="RimMandrake.Pits.CompProperties_PitDigStage">
+        <depthTier>Chasm</depthTier>
+        <openPitDef>RM_PitCell_2x2</openPitDef>
+      </li>
+    </comps>
+  </ThingDef>
+
+  <ThingDef Abstract="true" ParentName="BuildingBase">
+    <defName>RM_PitCellBase</defName>
+    <thingClass>RimMandrake.Pits.Building_PitCell</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Security/TrapSpikeArmed</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <rotatable>true</rotatable>
+    <passability>Standable</passability>
+    <fillPercent>0</fillPercent>
+    <pathCost>30</pathCost>
+    <useHitPoints>true</useHitPoints>
+    <selectable>true</selectable>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Beauty>-10</Beauty>
+    </statBases>
+    <building>
+      <deconstructible>false</deconstructible>
+      <expandHomeArea>false</expandHomeArea>
+    </building>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_PitCellBase">
+    <defName>RM_PitCell_1x2</defName>
+    <label>prisoner pit</label>
+    <description>A gated pit for holding one captive. The cover is the mercy - closing the gate spares them the sun.</description>
+    <size>(1,2)</size>
+  </ThingDef>
+
+  <ThingDef ParentName="RM_PitCellBase">
+    <defName>RM_PitCell_2x2</defName>
+    <label>prisoner pit, wide</label>
+    <description>A gated pit wide enough to hold two captives (or one big one). The cover is the mercy - closing the gate spares them the sun.</description>
+    <size>(2,2)</size>
+  </ThingDef>
+
+</Defs>

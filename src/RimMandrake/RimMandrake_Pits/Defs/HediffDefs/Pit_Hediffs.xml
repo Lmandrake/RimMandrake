@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- Presence marker + struggle-exhaustion clock. Section 4 of
+       covered_pit_traps_spec.md: "each failed attempt costs a little
+       health/stamina (thrashing)." Severity accrues 0.1 on capture and 0.02
+       per failed escape attempt (Building_OpenPit/PitEscapeUtility); removed
+       entirely on a successful climb-out. Placeholder stage thresholds -
+       tuning is a quicktest-matrix question, not a design one. -->
+  <HediffDef>
+    <defName>RM_PinnedInPit</defName>
+    <label>pinned in pit</label>
+    <description>Caught below the rim, thrashing to climb out. Every failed attempt costs a little more strength.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.8, 0.6, 0.3)</defaultLabelColor>
+    <maxSeverity>1.0</maxSeverity>
+    <stages>
+      <li>
+        <label>caught</label>
+        <painOffset>0.05</painOffset>
+      </li>
+      <li>
+        <minSeverity>0.5</minSeverity>
+        <label>exhausted</label>
+        <painOffset>0.1</painOffset>
+        <capMods>
+          <li>
+            <capacity>Moving</capacity>
+            <offset>-0.2</offset>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <!-- Pit Cell severity ruling (covered_pit_traps_spec.md section 6, owner
+       ruling 2026-08-30): "the COVER is the mercy... Uncovered = actively
+       harsh: the unsetting sun beats straight down." Accrues while the gate
+       is open, recedes while closed (Building_PitCell.ApplyExposure).
+       Placeholder rate/stages - the spec names the direction and the
+       theology feed (campaign layer), not a tuned curve. -->
+  <HediffDef>
+    <defName>RM_PitExposure</defName>
+    <label>pit exposure</label>
+    <description>Open to the sky in the bottom of a pit, with no shade and no cover. The sun does the rest.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.9, 0.6, 0.2)</defaultLabelColor>
+    <maxSeverity>1.0</maxSeverity>
+    <stages>
+      <li>
+        <label>exposed</label>
+        <painOffset>0.05</painOffset>
+      </li>
+      <li>
+        <minSeverity>0.4</minSeverity>
+        <label>heatstruck</label>
+        <painOffset>0.15</painOffset>
+        <hediffGivers>
+          <li Class="HediffGiver_Random">
+            <hediff>Heatstroke</hediff>
+            <mtbDays>1</mtbDays>
+          </li>
+        </hediffGivers>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <!-- Water-fitting drowning clock. Section 5 of covered_pit_traps_spec.md:
+       "no climbing out at all - swimming things tread until exhausted;
+       air-breathers drown if left." No vanilla "aquatic"/drowning hediff was
+       found in-source to reuse (CompPitFitting.CanSwim flags the same gap),
+       so this is a small custom clock rather than a guessed vanilla
+       defName. Severity IS the damage/exhaustion signal. -->
+  <HediffDef>
+    <defName>RM_PitDrowning</defName>
+    <label>drowning</label>
+    <description>Treading water in a flooded pit with no way out and no air to spare.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.3, 0.5, 0.9)</defaultLabelColor>
+    <lethalSeverity>1.0</lethalSeverity>
+    <stages>
+      <li>
+        <label>treading water</label>
+        <painOffset>0.1</painOffset>
+      </li>
+      <li>
+        <minSeverity>0.6</minSeverity>
+        <label>exhausted</label>
+        <painOffset>0.3</painOffset>
+        <capMods>
+          <li>
+            <capacity>Consciousness</capacity>
+            <offset>-0.3</offset>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+</Defs>

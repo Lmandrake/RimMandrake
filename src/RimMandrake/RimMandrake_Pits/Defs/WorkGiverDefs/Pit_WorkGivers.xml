@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <WorkGiverDef>
+    <defName>RM_DigPitDeeper</defName>
+    <label>dig pit deeper</label>
+    <giverClass>RimMandrake.Pits.WorkGiver_DigPitDeeper</giverClass>
+    <workType>Mining</workType>
+    <priorityInType>51</priorityInType>
+    <verb>dig</verb>
+    <gerund>digging deeper</gerund>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+
+</Defs>

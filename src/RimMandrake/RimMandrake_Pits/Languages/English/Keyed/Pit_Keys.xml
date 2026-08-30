@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+
+  <RMPits_DigDeeper>Dig deeper</RMPits_DigDeeper>
+  <RMPits_DigDeeperDesc>Queue a deepening pass on this pit. Needed for Deep and Chasm tiers.</RMPits_DigDeeperDesc>
+  <RMPits_CancelDigDeeper>Cancel dig deeper</RMPits_CancelDigDeeper>
+  <RMPits_CancelDigDeeperDesc>Cancel the queued deepening pass.</RMPits_CancelDigDeeperDesc>
+  <RMPits_DigProgress>Dig stage: {0} / {1}</RMPits_DigProgress>
+
+  <RMPits_ArmWovenScrap>Arm: woven scrap</RMPits_ArmWovenScrap>
+  <RMPits_ArmPlankLattice>Arm: plank &amp; lattice</RMPits_ArmPlankLattice>
+  <RMPits_ArmReinforcedFrame>Arm: reinforced frame</RMPits_ArmReinforcedFrame>
+  <RMPits_ArmCoverDesc>Cover this pit so it triggers once {0} kg of standing mass crosses it.</RMPits_ArmCoverDesc>
+  <RMPits_Uncover>Uncover</RMPits_Uncover>
+  <RMPits_UncoverDesc>Remove the cover. The pit becomes a plain open hole again.</RMPits_UncoverDesc>
+
+  <RMPits_IgnitePit>Ignite</RMPits_IgnitePit>
+  <RMPits_IgnitePitDesc>Set the oil-soaked pit alight.</RMPits_IgnitePitDesc>
+
+  <RMPits_InspectArmed>Armed: {0} cover ({1} kg trigger)</RMPits_InspectArmed>
+  <RMPits_InspectOpen>Uncovered</RMPits_InspectOpen>
+  <RMPits_InspectOccupants>Holding: {0} / {1}</RMPits_InspectOccupants>
+
+  <RMPits_OpenGate>Open gate</RMPits_OpenGate>
+  <RMPits_CloseGate>Close gate</RMPits_CloseGate>
+  <RMPits_ToggleGateDesc>Open exposes the captive to the sun; closed is the mercy.</RMPits_ToggleGateDesc>
+  <RMPits_AssignPrisoner>Assign prisoner</RMPits_AssignPrisoner>
+  <RMPits_AssignPrisonerDesc>Mark a colony prisoner for this cell.</RMPits_AssignPrisonerDesc>
+  <RMPits_PlaceInPitCell>Place in pit</RMPits_PlaceInPitCell>
+  <RMPits_PlaceInPitCellDesc>Move the assigned prisoner into the cell now (stand-in for a real carry job - see item file).</RMPits_PlaceInPitCellDesc>
+  <RMPits_FeedCaptive>Feed captive</RMPits_FeedCaptive>
+  <RMPits_FeedCaptiveDesc>Restore the held captive's food need (stand-in for a real feed-through-the-gate job - see item file).</RMPits_FeedCaptiveDesc>
+  <RMPits_NoEligiblePrisoners>No eligible prisoners</RMPits_NoEligiblePrisoners>
+
+</LanguageData>
