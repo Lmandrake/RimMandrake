@@ -72,3 +72,37 @@ a generated patch beside the armoury ladder, `src/Jawa/Jawa_Armoury` pattern.
 | GTbc_GravRailArtillery | 5x5 | Forsaken vaults | BLAST | AA rocket 140 | 280×1 r8.9 | 31219×1 (volley 31219) r14.9 | 111.5× |  |  |  |
 | VGE_MassDriver | 5x5 | Galactic Empire | BLAST | AA rocket 140 | 50×3 r4.9 | 3154×3 (volley 9463) r14.9 | 63.1× |  |  |  |
 | GTbc_TheSingularityCannon | 7x7 | Forsaken vaults | BLAST | AA rocket 140 | 308×1 r6.9 | 72085×1 (volley 72085) r14.9 | 234.0× |  |  |  |
+
+---
+
+## Rulings landed later the same sitting (owner, then AFK) — the table above is superseded where they touch it
+
+The executable truth is now the PLAN dict in
+`src/Jawa/Jawa_Armoury/Source/gen_turret_doctrine.py` (and canon.yml
+`turrets.normalization_src`); this section records only what changed vs the table:
+
+- **Traps ×2** (owner: "traps ... cannot broadcast at range, up to x2 as powerful"):
+  DetColumn 250 stands (≤280); FlameColumn clamps 120→66; EMP column set at the
+  ceiling 40, retyped Stun→EMP.
+- **Archotech ×4** (owner): Turret_AutoChargeBlaster_OP volley 240 → 24×10.
+- **Helix railgun keeps kinetic** (owner: "charge bullet flavor ok") → 320×3.
+- **Ion anchor = heavy ion rifle 9** (owner): light ion 5×2, heavy ion 365×2.
+- **Turret_AutoChargeBlaster KEPT** (owner: the 'auto turret' cut was the vanilla
+  player autocannon — `Turret_Autocannon`, already cut in the register) → 107×9 via
+  clone (projectile shared with personal charge blasters).
+- **VFES_Turret_Flame stays for the Wildsteam** (owner) → 33.
+- **Beams (BENCH default, veto-able)**: volley kept at doctrine by cutting burst —
+  Vaporiser 21×30 (was 86×180), beam repeater 8×8 (was 5×30). BigLaserCannon =
+  DamageDef LaserCannonBeam 40→3159 (exclusive); graser complex = cloned Beam
+  DamageDef 395×8 (vanilla Beam is shared with the personal graser).
+- **Exempt by mechanism**: VFES_Complex_HeavyIncineratorComplex (C# fire spew — no
+  number exists to write). Still on the roster, unscaled.
+- **Renames shipped** (separate one-file-revert patch `Turrets_Renames.xml`):
+  E-Web repeating blaster · tesla arc projector · ion surge column · scrap beam
+  zapper · sludge sprayer · vaporiser/atomiser beam turret · grav shockwave turret ·
+  helical charge railgun · ancient beam cannon.
+- Current-value column above was LIVE (post-armoury-patch); the generator writes
+  ABSOLUTE doctrine values onto raw XML, so the delta column is illustrative only.
+- ⚠ Live-verify owed at next load: beam turrets (C# pulse semantics), VEF
+  flamethrower streams (per-cell application), EMP retypes, and one spawn-and-shoot
+  of the Singularity Cannon (72,085 in r14.9 is intended, per doctrine "awesome").

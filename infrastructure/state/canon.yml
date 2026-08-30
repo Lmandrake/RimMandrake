@@ -1191,6 +1191,32 @@ turrets:
     - VGE_HeavyChargeAnnihilator
     - VGE_JavelinPod
     - VGE_MassDriver
+  normalization_ruled: true
+  normalization_src: >
+    Owner at the bench, 2026-08-29, extending the weapon normalization to
+    turrets under damage_doctrine. Rulings, in his words where quoted:
+    (1) per-VOLLEY — a turret's full burst delivers anchor x multiplier;
+    (2) both directions — over-doctrine turrets come down;
+    (3) blast-class ordnance splits the multiplier: volley = anchor x squares,
+    blast radius x side, radius capped 14.9 with the remainder in damage;
+    (4) fiat anchors living/bio=25, tesla=20, gravitic=3 (measured);
+    (5) traps "cannot broadcast at range" so the three Trade Moot columns may
+    sit "up to x2 as powerful" — clamp, don't raise;
+    (6) "archotech allowed to be x4 expected" (Turret_AutoChargeBlaster_OP);
+    (7) ion anchor is the "heavy ion rifle as comparitor" (9, not wrist 5);
+    (8) the owner's 'auto turret' cut is vanilla Turret_Autocannon (already
+    cut in the register), Turret_AutoChargeBlaster stays;
+    (9) "Flamer Turret stays for the Wildsteam" (VFES_Turret_Flame).
+    BENCH defaults shipped AFK, flagged for veto: control (stun/EMP) rows
+    scale linear; big-burst beams cut burstShotCount instead of shrinking
+    per-shot damage; nine damage-type-indicative renames.
+  normalization_patch: src/Jawa/Jawa_Armoury/Patches/Turrets_DamageDoctrine.xml
+  normalization_renames: src/Jawa/Jawa_Armoury/Patches/Turrets_Renames.xml
+  normalization_generator: src/Jawa/Jawa_Armoury/Source/gen_turret_doctrine.py
+  normalization_exempt_mechanism:
+    - VFES_Complex_HeavyIncineratorComplex   # C# fire spew, no number exists
+  normalization_hold_bench:
+    - VGE_AnticraftCaster                    # gravship showpiece
 weapons:
   ion_doctrine_ruled: true
   ion_doctrine_src: >

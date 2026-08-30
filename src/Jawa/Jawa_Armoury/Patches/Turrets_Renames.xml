@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Turret renames: lore-consistent and damage-type-indicative.
+     Proposed at the 2026-08-29 bench sitting (owner: "Consider renaming
+     turrets to be both lore consistent and damage-type indicative"); the
+     helical name got an explicit yes, the rest shipped AFK under the same
+     instruction. HAND-WRITTEN (10 ops) - not generated. One file, one revert.
+     Derivation: design/Jawa/worldbuilding/review/turret_normalization_v1.md -->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>E-Web Heavy Repeating Blaster</li></mods>
+    <match Class="PatchOperationReplace">
+      <!-- "EWebMG": it is a repeating blaster, not a machine gun -->
+      <xpath>/Defs/ThingDef[defName="RN2SWGun_EWeb_MG"]/label</xpath>
+      <value><label>E-Web repeating blaster</label></value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Vanilla Furniture Expanded - Security</li></mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- deals EMP arc (post-doctrine), "blaster" misled -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="VFES_Turret_TeslaBlaster"]/label</xpath>
+          <value><label>tesla arc projector</label></value>
+        </li>
+        <!-- Ascendant Helix's rail piece; owner yes on the name 2026-08-29 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="VFES_Turret_ChargeRailgun"]/label</xpath>
+          <value><label>helical charge railgun</label></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Utility Columns</li></mods>
+    <match Class="PatchOperationReplace">
+      <!-- "stun pulse column" -> ion, per the owner's rework-to-ion note -->
+      <xpath>/Defs/ThingDef[defName="EMPColumnMod"]/label</xpath>
+      <value><label>ion surge column</label></value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Dedicated Turrets</li></mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- "zapper" implied electricity; it deals Burn (beam) -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="Turret_Zapper"]/label</xpath>
+          <value><label>scrap beam zapper</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="Turret_Sludger"]/label</xpath>
+          <value><label>sludge sprayer</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="Turret_Vaporiser"]/label</xpath>
+          <value><label>vaporiser beam turret</label></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="Turret_Atomiser"]/label</xpath>
+          <value><label>atomiser beam turret</label></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>GravTech</li></mods>
+    <match Class="PatchOperationReplace">
+      <!-- it pushes, it does not shoot bolts -->
+      <xpath>/Defs/ThingDef[defName="Turret_GravBlaster"]/label</xpath>
+      <value><label>grav shockwave turret</label></value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Laser Cannon</li></mods>
+    <match Class="PatchOperationReplace">
+      <!-- Rakatan relic group; "Laser Cannon" said nothing -->
+      <xpath>/Defs/ThingDef[defName="BigLaserCannon"]/label</xpath>
+      <value><label>ancient beam cannon</label></value>
+    </match>
+  </Operation>
+
+</Patch>
