@@ -144,11 +144,36 @@ not a number, the reasons. Bad defName → `success: false, "No FactionDef 'X'."
       SCOPING-DOWN of tale_record rather than guessing a generic arg binder.
 - [x] Builds clean, no duplicate alias (full surface re-scanned).
 - [x] Deployed — all 5 registered on the live bridge (301 `jawa/` tools).
-- [ ] Proven live. **4 of 5 pass** (`tale_list`, `tale_record`, `story_stats`,
-      `faction_goodwill_situations`, each with a raw read-back or a before/after
-      transition). `alerts_list` fails every call: `FieldOrNull`'s `BindingFlags`
-      omit `NonPublic`, so the private `AlertsReadout.activeAlerts` can never be
-      found. One-flag fix, needs a rebuild + a game-down deploy.
+- [x] Proven live. **5 of 5 pass.** `tale_list`, `tale_record`, `story_stats` and
+      `faction_goodwill_situations` passed 2026-08-30 with raw read-backs /
+      before-after transitions (below). `alerts_list` passed on the re-test after
+      the `NonPublic` binding-flag fix was deployed — see the re-verify section
+      immediately below.
+
+## ✅ `jawa/alerts_list` RE-VERIFY 2026-08-30 (FOUNDRY) — PASS. Item closed.
+
+Fresh 585-mod quicktest, `JawaBench.BridgeTools.dll` carrying the `FieldOrNull`
+`NonPublic` fix deployed before this load (301 `jawa/` tools registered).
+
+```
+jawa/alerts_list {}  ->  success: true, count: 4
+  MoodAlerts.AlertLovers                        "Lovers separated"              Medium
+  SurvivalTools.Alert_ColonistNeedsSurvivalTool "Colonists lack essential tools" Medium
+  RimWorld.Alert_NeedColonistBeds               "Need colonist beds"            High
+  RimWorld.Alert_DateRitualComing               "Ritual opportunity soon"       Medium
+```
+Each row carried a full `GetExplanation()` body (the lovers row named both
+affected colonists and their -4 mood, the beds row the full vanilla text). One
+vanilla alert type and **two from different mods** — this is the private
+`AlertsReadout.activeAlerts` list itself, not a synthesised or partial read.
+
+🔑 **`count: 0` is not the pass, and was not accepted as one.** The first read on
+the fresh paused map returned `success: true, count: 0`, which proves only that
+the refusal branch is gone. `AlertsReadout` is updated from OnGUI, so with the
+game paused and unfocused the roster stays empty. The pass is the transition:
+`jawa/set_game_speed Normal` → 8 s wall-clock (`ticksGame` 365 → 823) → the four
+rows above → re-paused. Before the fix this call could not return `success: true`
+at all, at any count.
 
 ## Fix built, 2026-08-30, BENCH (offline pass, game UP — no deploy possible)
 

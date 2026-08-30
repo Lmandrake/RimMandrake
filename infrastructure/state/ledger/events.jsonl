@@ -3251,3 +3251,4 @@
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-08-30T20:48:42Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"taken","ts":"2026-08-30T21:13:26Z"}
 {"seat":"FOUNDRY","event":"close","id":"DROIDWORKS_ISFLESH_RELATIONS_CRASH_1","sha":"5a84d91a","ts":"2026-08-30T21:18:19Z"}
+{"seat":"FOUNDRY","event":"close","id":"BRIDGE_STORY_ALERT_TALE_TOOLS_1","sha":"7b487906","ts":"2026-08-30T21:22:57Z"}

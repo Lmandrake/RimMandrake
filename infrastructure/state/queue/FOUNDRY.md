@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T21:18:19Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T21:22:57Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -107,15 +107,6 @@ target:   v1
 kind:     build
 summary:  New file JawaBenchGenTools2.cs (4 tools, ungated — map-generation/roof-repair
 prose:    infrastructure/state/items/BRIDGE_GEN_AND_STORYTELLER_TOOLS_1.md
-
-## BRIDGE_STORY_ALERT_TALE_TOOLS_1 5 more gems: alerts_list (resolves roster UNCERTAIN), tale_list/tale_record (free-text-on-pawn answer), story_stats, faction_goodwill_situations
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     build
-summary:  New file JawaBenchStoryTools.cs (5 tools, all ungated):
-prose:    infrastructure/state/items/BRIDGE_STORY_ALERT_TALE_TOOLS_1.md
 
 ## BRIDGE_KCSG_VGE_TOOLS_1 jawa/kcsg_place (structure/settlement/tiled/symbol), jawa/vge_spawn_structure_skyfaller, jawa/research_reinvented_reset
 state:    doing  (BLOCKED)
@@ -320,16 +311,6 @@ kind:     build
 blocked:  jawa/letter_list NREs on any letter with null lookTargets (Verse.LookTargets is a class; JawaBenchStorytellerTools2.cs:245 dereferences it unguarded). Other 10 pass or are honestly unmeasured
 summary:  New file JawaBenchGenTools2.cs (4 tools, ungated — map-generation/roof-repair
 prose:    infrastructure/state/items/BRIDGE_GEN_AND_STORYTELLER_TOOLS_1.md
-
-## BRIDGE_STORY_ALERT_TALE_TOOLS_1 5 more gems: alerts_list (resolves roster UNCERTAIN), tale_list/tale_record (free-text-on-pawn answer), story_stats, faction_goodwill_situations
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     build
-blocked:  jawa/alerts_list fails every call: FieldOrNull's PubInst BindingFlags omit NonPublic so private AlertsReadout.activeAlerts is never found; other 4 tools proven live
-summary:  New file JawaBenchStoryTools.cs (5 tools, all ungated):
-prose:    infrastructure/state/items/BRIDGE_STORY_ALERT_TALE_TOOLS_1.md
 
 ## BRIDGE_KCSG_VGE_TOOLS_1 jawa/kcsg_place (structure/settlement/tiled/symbol), jawa/vge_spawn_structure_skyfaller, jawa/research_reinvented_reset
 state:    doing  (BLOCKED)
