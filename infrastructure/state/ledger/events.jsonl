@@ -3177,3 +3177,4 @@
 {"seat":"OWNER","event":"file","id":"GRAFFITI_MOD_EXPANSION_1","title":"Assess the subscribed graffiti mod, then expand it: sacred graffiti, socially infuriating/amusing graffiti, beautiful graffiti","kind":"task","target":"v1","needs":"offline","for":"FOUNDRY","ownerSaid":"Add a queue item to assess the graffiti mod and expand it to include sacred graffiti, socially infuriating graffiti or amusing graffiti, or even beautiful graffiti. (we are subscribed)","ts":"2026-08-30T18:27:43Z"}
 {"seat":"FOUNDRY","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-08-30T18:39:36Z"}
 {"seat":"FOUNDRY","event":"close","id":"JAWA_TOOLS_ALL_DARK_DUPLICATE_ALIAS_1","sha":"f6aef49d","ts":"2026-08-30T18:40:28Z"}
+{"seat":"FOUNDRY","event":"close","id":"PAINT_GUARD_ASK_EACH_TIME_1","sha":"2c352882","ts":"2026-08-30T18:44:49Z"}
