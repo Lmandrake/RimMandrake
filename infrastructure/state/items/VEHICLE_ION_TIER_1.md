@@ -102,6 +102,70 @@ from `ION_TIERS_MEASURED_LIVE_1`.
       new assembly loading. **Never observed running — this is a brand-new
       mechanism**, not a re-check of one already seen live.
 
+## Live-verify, 2026-08-30 — FAILED, still open, not closed
+
+On BENCH's 585-mod quicktest map (game UP, bridge fully responsive, confirmed
+via a working `jawa/list_pawns` main-thread call first):
+
+- Spawned `VVE_Mule` via `jawa/spawn_batch` (⚠️ NOT `jawa/build_batch`, which
+  throws `NullReferenceException` on a `VehicleDef` — `ThingMaker.MakeThing`
+  doesn't init the Pawn-specific machinery a `VehiclePawn` needs; `spawn_batch`
+  already routes `VehicleDef` through `Vehicles.VehicleSpawner.SpawnVehicleRandomized`
+  by reflection, committed 2026-08-14 `9a5b6fed` — this is the tool to use going
+  forward). Confirmed spawned: `VVE_Mule79920`, `Vehicles.VehiclePawn`.
+- **CONTROL TEST FIRST**, to rule out my own methodology being broken this
+  session: hit a freshly-spawned `OuterRim_BattleDroid` with the same
+  `jawa/damage(damageDef=JawaIon_Damage)` call — **720 stunTicksLeft, downed:
+  true, hediffsAfter: 1** — exactly matching `ION_TIERS_MEASURED_LIVE_1`'s prior
+  droid measurement. The read-back path (`jawa/damage`, `jawa/list_pawns`,
+  `jawa/inspect_string`) is proven working this session.
+- Then the real test: `jawa/damage(damageDef=JawaIon_Damage, thingId=VVE_Mule79920,
+  amount=30, allowColonists=true)` — **stunTicksLeft: 0, stunned: false,
+  totalDamageDealt: 0, hediffsAfter: 0.** Confirmed 0 three independent ways:
+  the damage call's own read-back, a fresh `jawa/list_pawns` row, and
+  `jawa/inspect_string` (no stun text in the inspect pane). **The fix does not
+  produce any observable effect on a real vehicle.**
+
+**Everything checked on the static side looks correct, and none of it explains
+the failure** — this is the honest, unresolved state, not a guess dressed up as
+a finding:
+- `jawa/harmony_patches(typeName=VehiclePawn, methodName=PreApplyDamage)`
+  confirms exactly one postfix registered: `JawaIonWeapons.VehicleIonPatches.Postfix`,
+  `patchAssembly: JawaIonVehicleTier` — the patch IS applied, nothing is
+  shadowing or failing to register it.
+- The deployed DLL
+  (`C:\...\RimWorld\Mods\JawaIonWeapons\Assemblies\JawaIonVehicleTier.dll`)
+  timestamp (2026-08-29 19:29:34 -0700) sits 60s BEFORE the commit that landed
+  the corrected source (`1016e113`, 19:30:34 -0700) — consistent with a normal
+  build-then-commit sequence, not a stale pre-correction build. It also
+  predates this game session's own load start (08:38:23Z / ~01:38 local) by
+  hours, so a fresh load should have picked it up.
+- Current source (`VehicleIonPatches.cs`) reads correctly against the current
+  mechanism: `absorbed` is unconditionally `true` in VF's own
+  `VehiclePawn.PreApplyDamage` (read from vendored source, not assumed);
+  `def.defName == "JawaIon_Damage"` matches what was actually fired;
+  `empAmountDroid` is a genuine public field (`24f`) on `IonDamageDef`, readable
+  by the same reflection the postfix uses; `VehicleDef.Size` is a real,
+  correct property (`ThingDef.Size => size`, confirmed in decompiled Verse
+  source — NOT a wrong-field guess); `stances.stunner` is the same field VF's
+  own `VehicleStatHandler.cs:780` calls directly with no null-guard, so it
+  should not be null on a spawned vehicle.
+- Player.log has **zero** lines mentioning `VehicleIonPatches` or `StunHandler`
+  around the test window (`MEASURE_ALLOW_SCAN=1` literal search) — no thrown
+  exception was logged, which rules out a crashing postfix but does not by
+  itself prove the postfix ran to completion.
+
+**Not chased further this pass**: could not attach a debugger or add trace
+logging without a rebuild + redeploy + game restart, none of which were
+available (game UP, DLL locked, and forcing a restart isn't FOUNDRY's call
+mid a BENCH quicktest session). The next attempt should add a `Log.Message`
+inside the postfix (or right before each early-return) to see exactly which
+guard clause is firing, rebuild, and redeploy in the next game-DOWN window —
+that will resolve this in one load rather than more static reading, which has
+now been exhausted without an answer.
+
+**criterion above stays unchecked. This item is NOT closed.**
+
 ## First live test, 2026-08-30 (quicktest, game UP) — found and fixed a real gap
 
 Quicktest map, spawned `VVE_Mule` (2x4, area 8, confirmed via `jawa/vehicle_components`

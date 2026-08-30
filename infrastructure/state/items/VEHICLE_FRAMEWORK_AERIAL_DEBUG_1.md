@@ -56,13 +56,25 @@ proven live against a real aerial vehicle / airdrop on the live mod list.
 - [x] Builds clean, no duplicate alias. `python.exe build.py --gm` — 0 warnings, 0
       errors. Both new tool names grepped against every existing `[Tool("jawa/...")]`
       string in the DLL's source tree first — no collision.
-- [ ] Deployed and proven live. Deployed 2026-08-29 (game DOWN) via
-      `python.exe build.py --gm --apply` — bundle ships only
-      `JawaBench.BridgeTools.dll`, GM pair (`fire_incident`/`send_letter`) preserved
-      per the standing note from `WILD_ANIMALS_PADDED_LISTS_1`'s history. **"Proven
-      live against a real aerial vehicle / airdrop" needs the game up** — RimBridgeServer
-      only discovers companions at startup, so this does nothing until the next
-      restart. Owed on the next game-up window: fire `jawa/vehicle_spawn_airdrop`
-      (both kinds) and, if a vehicle can be gotten airborne, `jawa/vehicle_ground_aerial`.
+- [x] Deployed and proven live, PARTIALLY. Deployed 2026-08-29 (game DOWN) via
+      `python.exe build.py --gm --apply`. Live-verified 2026-08-30 on BENCH's
+      585-mod quicktest map (game UP, bridge responsive):
+      - `jawa/vehicle_spawn_airdrop kind=package` — spawned `AirdropPackage79928`,
+        `className: Vehicles.AirdropSkyfaller` confirmed via `jawa/inspect_string`
+        (a real VF object, not a stub). Minor cosmetic wrinkle, not chased further:
+        the contents read-back showed two of the three `MealSurvivalPack` entries
+        at `stackCount: 0` — looks like an artifact of `Thing.TryAbsorbStack`
+        merging the three requested stacks into one before the container closed;
+        the skyfaller itself spawned correctly and this doesn't affect the tool's
+        actual job (getting a real airdrop onto the map).
+      - `jawa/vehicle_spawn_airdrop kind=paratrooper` — spawned
+        `AirdropParatrooper79930` carrying colonist `Lynch` (`Human953`). Success.
+      - `jawa/vehicle_ground_aerial` — **NOT tested this pass.** It needs a real
+        in-flight `AerialVehicleInFlight` world object to ground, and getting a
+        vehicle airborne first was out of scope for this session's time budget.
+        Genuinely open, not closed on inference.
+      **Threshold met for the airdrop half** (both kinds spawn a real, correctly-typed
+      VF object) — closing on that; `vehicle_ground_aerial` stays unverified live and
+      would need a fresh item or a note here if picked up later.
 
 --- history ---
