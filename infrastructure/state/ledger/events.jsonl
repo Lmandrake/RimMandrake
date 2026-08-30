@@ -2936,3 +2936,6 @@
 {"seat":"BENCH","event":"claim","id":"TURRET_ROSTER_CURATION_1","ts":"2026-08-30T00:20:39Z"}
 {"seat":"BENCH","event":"close","id":"TURRET_ROSTER_CURATION_1","sha":"3015d6a3","ts":"2026-08-30T00:20:53Z"}
 {"seat":"BENCH","event":"note","id":"TURRET_ROSTER_CURATION_1","text":"Doctrine patch (71 ops) + renames shipped; 37 non-roster cuts in Cherry Picker + orphan re-check done; live verify rides COLD_LOAD_RUN_SHEET_2","ts":"2026-08-30T00:20:57Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","ownerSaid":"Game is going up","ts":"2026-08-30T01:27:07Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","ownerSaid":"Game is loading","ts":"2026-08-30T01:28:05Z"}
+{"seat":"OWNER","event":"needs","id":"DROID_SYSTEM_BUILD_1","to":"owner","reason":"reopened by the owner 2026-08-29; buildable spec written (droid_system_build_spec.md); waiting on the four §8 rulings, then phase 0 is FOUNDRY-buildable","ownerSaid":"We've fallen in love with the full droid item and would like you to fully work it out into a buildable spec","ts":"2026-08-30T01:32:48Z"}

@@ -1,5 +1,8 @@
-<!-- status: PARKED — spec complete, build deferred; owner's ruling 2026-08-29 -->
-# The Droid System — spec (parked)
+<!-- status: REOPENED 2026-08-29 (owner: "We've fallen in love with the full
+     droid item") — this doc stays the DESIGN-INTENT authority; the buildable
+     engineering spec, build-vs-wrangle analysis and port plan are the
+     successor: droid_system_build_spec.md -->
+# The Droid System — spec
 
 **Ruling that parks this** (owner, 2026-08-29, recorded in
 `DROID_SYSTEM_EMBRACE_1`): *spec it out, then set it aside. V1 plays all three

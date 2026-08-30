@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T00:20:57Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: free
+as-of: 2026-08-30T01:32:48Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -356,7 +356,7 @@ prose:    infrastructure/state/items/VEHICLE_ION_TIER_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is LOADING. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## BUILD_BATCH_OVERWRITES_SILENTLY_1 jawa/build_batch reports placed for an op that destroys an existing building in the same run
 state:    ready
@@ -364,7 +364,7 @@ row:      unassigned
 needs:    bridge
 target:   v1
 kind:     bug
-waiting:  needs `bridge`, game is DOWN
+waiting:  needs `bridge`, game is LOADING
 summary:  BUILDBATCHOVERWRITESSILENTLY1 — a later op destroys an earlier building, both report placed
 prose:    infrastructure/state/items/BUILD_BATCH_OVERWRITES_SILENTLY_1.md
 
@@ -374,7 +374,7 @@ row:      unassigned
 needs:    bridge
 target:   v1
 kind:     bug
-waiting:  needs `bridge`, game is DOWN
+waiting:  needs `bridge`, game is LOADING
 summary:  FIRERAIDECHOESREQUESTEDFACTION1 — it reports what you asked for, not what raided
 prose:    infrastructure/state/items/FIRE_RAID_ECHOES_REQUESTED_FACTION_1.md
 
@@ -384,7 +384,7 @@ row:      unassigned
 needs:    bridge
 target:   v1
 kind:     bug
-waiting:  needs `bridge`, game is DOWN
+waiting:  needs `bridge`, game is LOADING
 summary:  BUILDBATCHFACTIONREJECTSPLAYER1 — two tools, two faction grammars
 prose:    infrastructure/state/items/BUILD_BATCH_FACTION_REJECTS_PLAYER_1.md
 
@@ -394,7 +394,7 @@ row:      unassigned
 needs:    bridge
 target:   v1
 kind:     bug
-waiting:  needs `bridge`, game is DOWN
+waiting:  needs `bridge`, game is LOADING
 summary:  ORDEREDJOBCANNOTSOW1 — the job is accepted and dies in its first toil
 prose:    infrastructure/state/items/ORDERED_JOB_CANNOT_SOW_1.md
 
@@ -404,7 +404,7 @@ row:      unassigned
 needs:    bridge
 target:   v1
 kind:     task
-waiting:  needs `bridge`, game is DOWN
+waiting:  needs `bridge`, game is LOADING
 summary:  NOTOOLREPORTSMAPTILE1 — the map knows its tile and the bridge will not say
 prose:    infrastructure/state/items/NO_TOOL_REPORTS_MAP_TILE_1.md
 
@@ -414,7 +414,7 @@ row:      unassigned
 needs:    bridge
 target:   v1
 kind:     defect
-waiting:  needs `bridge`, game is DOWN
+waiting:  needs `bridge`, game is LOADING
 summary:  DUMPERSWALLOWSCACHETHROW1 — the dump reports the engine's answer and hides that the engine threw
 prose:    infrastructure/state/items/DUMPER_SWALLOWS_CACHE_THROW_1.md
 
@@ -432,6 +432,6 @@ row:      unassigned
 needs:    owner
 target:   v1
 kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DROID_SYSTEM_BUILD_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  design/Jawa/droidsystembuildspec.md — architecture (own DLL + HAR substrate,
 prose:    infrastructure/state/items/DROID_SYSTEM_BUILD_1.md
