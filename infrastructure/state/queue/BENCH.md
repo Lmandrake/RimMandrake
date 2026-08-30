@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T19:52:56Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T20:01:03Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
-The first heading below is what `rimflow next --seat BENCH` returns. This file and that command call the same function, so they cannot disagree.
-
-## COVERED_PIT_TRAPS_1 Spec covered pit traps (1x1/1x2/2x2): trigger on mass, hold by bodysize/health; plus the gated prisoner pit - dug fast by Jawa or droids, the canon alternative to locked barracks
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/COVERED_PIT_TRAPS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/COVERED_PIT_TRAPS_1.md
+Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
 
 # IN PROGRESS
 

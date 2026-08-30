@@ -3213,3 +3213,5 @@
 {"seat":"BENCH","event":"claim","id":"COVERED_PIT_TRAPS_1","ts":"2026-08-30T19:45:45Z"}
 {"seat":"FOUNDRY","event":"close","id":"BRIDGE_DEBUGACTION_SWEEP_GEMS_1","sha":"51f436ee","ts":"2026-08-30T19:51:33Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-08-30T19:52:56Z"}
+{"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-08-30T20:00:07Z"}
+{"seat":"BENCH","event":"close","id":"COVERED_PIT_TRAPS_1","sha":"3ee5e2ec","ts":"2026-08-30T20:01:03Z"}
