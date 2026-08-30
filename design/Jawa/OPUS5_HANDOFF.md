@@ -68,19 +68,30 @@ vocabulary only (memory + covered_pit_traps_spec §9).
 | Research normalization | principles doc | gated "after the droids land"; when it opens, run the census its §4 demands before any surgery | Tech-ceiling + theology-lock rulings |
 | Dilemmas / chains / catalog / intercession | specced | become content defs inside M3–M5; text exists, wiring doesn't | No |
 
-## What genuinely needs the owner (the whole list)
+## Door rulings — owner, 2026-08-30, on his way out (AUTHORITATIVE)
+
+- **The engine mod's name is `RimMandrake Ninefold`.**
+- **Curse severity: survivable events only.** An L curse delivers a situation
+  — lethal if mishandled, never a scripted named-colonist death.
+- **The "Ask the Hutts" bark in triad_fall.md STAYS** — the seed for the
+  ledger arc is deliberate.
+- **FOUR folk gestures promote to micro-mechanics** (he chose all four
+  offered, superseding the promote-3 mark in the engine doc): Zizzik's decoy
+  (placeable broken thing per room, ties to the slumber), Ta'Baa's
+  leaving-bag (tiny buildable, eases the rooted-clock, speeds evacuation),
+  Sh'kaar's shade-line pause (pawn hesitation animation at light
+  boundaries), Mob'Unloo's set-it-down (no direct handoffs — build last,
+  it touches item-transfer jobs).
+
+## What genuinely needs the owner (the remaining list)
 
 1. Read the Narrator corpus once — approve or correct the nine voices.
-2. Engine build spec §OPEN-FOR-OWNER: curse severity ceiling, UI diegesis
-   level, reign pacing, the mod's name (Ninefold / The Front /
-   Dispensations), first-contact order override.
+2. Engine build spec §OPEN-FOR-OWNER, remaining: UI diegesis level, reign
+   pacing, first-contact order override.
 3. Visibility §6: difficulty curve endpoints; threat-scoped vs global
    patching; does a returned-to tile remember its Visibility.
-4. Folk practice: which 3 of the 9 gestures get promoted to micro-mechanics.
-5. Minify whitelist/denylist (review-sheet).
-6. Sacred-site placement on THE map (his pen, with worldview.py).
-7. Zizzik's "Ask the Hutts" line in triad_fall.md — campaign-weight proper
-   noun, flagged for his eye.
+4. Minify whitelist/denylist (review-sheet).
+5. Sacred-site placement on THE map (his pen, with worldview.py).
 
 ## Process notes for the successor seat
 
