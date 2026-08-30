@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ========================================================================
+       DW_PoweredDown — state 3: downed/off. Backs
+       Droidworks.HediffComp_PoweredDown (Source/Droidworks/HediffComp_PoweredDown.cs),
+       whose CompPostTick pins severity at 1 and refuses all decay — this hediff
+       does NOT self-clear; only Recipe_RebootDroid (see RecipeDefs below) removes
+       it. The single stage's setMax mirrors JawaIonWeapons' own "overloaded"
+       stage shape (JawaIon_Stun, HediffDefs_JawaIonStun.xml) — same mechanism,
+       different door: Consciousness pinned under the vanilla downed threshold
+       (~0.30) collapses the pawn alive.
+  ======================================================================== -->
+  <HediffDef>
+    <defName>DW_PoweredDown</defName>
+    <label>powered down</label>
+    <description>This droid's power has run out. It cannot act until someone reboots it.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.5, 0.5, 0.5)</defaultLabelColor>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <maxSeverity>1.0</maxSeverity>
+    <isBad>true</isBad>
+    <everVisible>true</everVisible>
+    <comps>
+      <li Class="Droidworks.HediffCompProperties_PoweredDown" />
+    </comps>
+    <stages>
+      <li>
+        <minSeverity>0</minSeverity>
+        <capMods>
+          <li>
+            <capacity>Consciousness</capacity>
+            <setMax>0.10</setMax>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+  <!-- ========================================================================
+       DW_IonOverload — PLACEHOLDER (per DROIDWORKS_PHASE0_XML_1's own spec: v0
+       only, mirrors JawaIonWeapons' "overloaded" stage shape rather than the
+       full 4-stage buildup ramp). Not yet wired to any DamageWorker/HediffComp -
+       DROIDWORKS_ION_GUARD_1 is what makes JawaIon_Damage able to reach a droid
+       at all; this def exists so a future pass has a real defName to target
+       rather than inventing one at the point of use.
+  ======================================================================== -->
+  <HediffDef>
+    <defName>DW_IonOverload</defName>
+    <label>ion overload</label>
+    <description>An accumulating ionic charge disrupting this droid's power bus. Enough of it drops the droid where it stands, powered down but intact.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <defaultLabelColor>(0.55, 0.75, 1.0)</defaultLabelColor>
+    <scenarioCanAdd>false</scenarioCanAdd>
+    <maxSeverity>1.0</maxSeverity>
+    <isBad>true</isBad>
+    <comps>
+      <li Class="HediffCompProperties_SeverityPerDay">
+        <severityPerDay>-1.2</severityPerDay>
+      </li>
+    </comps>
+    <stages>
+      <li>
+        <label>overloaded</label>
+        <minSeverity>0.9</minSeverity>
+        <painFactor>0</painFactor>
+        <capMods>
+          <li>
+            <capacity>Consciousness</capacity>
+            <setMax>0.10</setMax>
+          </li>
+        </capMods>
+      </li>
+    </stages>
+  </HediffDef>
+
+</Defs>

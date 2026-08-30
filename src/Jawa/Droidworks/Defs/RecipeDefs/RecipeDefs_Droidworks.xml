@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ========================================================================
+       DW_RebootDroid — the outside-help reboot. Backs
+       Droidworks.Recipe_RebootDroid (Source/Droidworks/Recipe_RebootDroid.cs),
+       whose GetPartsToApplyOn already gates eligibility on HasHediff(DW_PoweredDown)
+       in C# - so this recipe needs no race/body restriction of its own to be
+       correct, which is exactly why v0 leaves recipeUsers unset (generic):
+       no Droidworks race ThingDef exists yet (DROIDWORKS_DEF_GENERATOR_1 hasn't
+       run), so there is nothing real to name here, and inventing a defName would
+       be exactly the guess this project's doctrine forbids. Wiring
+       <recipes><li>DW_RebootDroid</li></recipes> onto the generated race defs is
+       follow-up work for whoever builds on DROIDWORKS_DEF_GENERATOR_1's output.
+
+       skillRequirements: the spec asked for "Crafting 4 or Medicine 4
+       (either-or)". Vanilla RecipeDef.skillRequirements is an AND list, not OR -
+       there is no XML-only way to express "either skill qualifies" without a
+       custom RecipeWorker, which is a design change outside this item's scope
+       (XML only, no C# changes here). v0 SIMPLIFICATION, flagged for the owner:
+       Crafting 4 alone, the more droid-appropriate of the two skills. Revisit if
+       the either-or requirement is load-bearing.
+  ======================================================================== -->
+  <RecipeDef>
+    <defName>DW_RebootDroid</defName>
+    <label>reboot droid</label>
+    <description>Remove the powered-down state and restore enough charge for the droid to reach a charger under its own power.</description>
+    <jobString>Rebooting droid.</jobString>
+    <workerClass>Droidworks.Recipe_RebootDroid</workerClass>
+    <workAmount>600</workAmount>
+    <targetsBodyPart>false</targetsBodyPart>
+    <anesthetize>false</anesthetize>
+    <skillRequirements>
+      <li>
+        <skill>Crafting</skill>
+        <minLevel>4</minLevel>
+      </li>
+    </skillRequirements>
+  </RecipeDef>
+
+</Defs>
