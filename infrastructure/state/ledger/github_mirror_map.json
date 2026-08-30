@@ -85,9 +85,9 @@
   "open": true
  },
  "DROIDWORKS_BOLT_CORE_1": {
-  "fp": "726be4d3bb92",
+  "fp": "29e7902d3a99",
   "number": 60,
-  "open": true
+  "open": false
  },
  "DROIDWORKS_CHARGING_TRIO_1": {
   "fp": "193ad946b997",
@@ -105,9 +105,9 @@
   "open": false
  },
  "DROIDWORKS_FAMILY_LAYER_1": {
-  "fp": "a874e160175a",
+  "fp": "bcf670007874",
   "number": 65,
-  "open": true
+  "open": false
  },
  "DROIDWORKS_ION_GUARD_1": {
   "fp": "3fe6b8186355",
@@ -130,13 +130,18 @@
   "open": false
  },
  "DROIDWORKS_WIPE_AND_SPIKE_1": {
-  "fp": "5e1ac60a7061",
+  "fp": "95630be5ce00",
   "number": 64,
-  "open": true
+  "open": false
  },
  "DROID_SYSTEM_BUILD_1": {
   "fp": "b3590298e043",
   "number": 35,
+  "open": true
+ },
+ "DROID_TILES_SOURED_TERRAIN_1": {
+  "fp": "619dcc6e0818",
+  "number": 68,
   "open": true
  },
  "DUMPER_SWALLOWS_CACHE_THROW_1": {
