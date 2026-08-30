@@ -60,14 +60,14 @@
   "open": true
  },
  "BUILD_BATCH_FACTION_REJECTS_PLAYER_1": {
-  "fp": "bfa61700d640",
+  "fp": "ba6a98754722",
   "number": 4,
-  "open": true
+  "open": false
  },
  "BUILD_BATCH_OVERWRITES_SILENTLY_1": {
-  "fp": "b250ec5b01ba",
+  "fp": "b0bdc77a7cf9",
   "number": 5,
-  "open": true
+  "open": false
  },
  "COLD_LOAD_RUN_SHEET_1": {
   "fp": "5776e2b34513",
@@ -84,24 +84,49 @@
   "number": 34,
   "open": true
  },
- "DROIDWORKS_DEF_GENERATOR_1": {
-  "fp": "5cf99a4a6124",
-  "number": 56,
+ "DROIDWORKS_BOLT_CORE_1": {
+  "fp": "726be4d3bb92",
+  "number": 60,
   "open": true
+ },
+ "DROIDWORKS_CHARGING_TRIO_1": {
+  "fp": "b33da87ea52d",
+  "number": 61,
+  "open": true
+ },
+ "DROIDWORKS_DEF_GENERATOR_1": {
+  "fp": "6e36de7de3ce",
+  "number": 56,
+  "open": false
  },
  "DROIDWORKS_DLL_COMPILE_1": {
-  "fp": "dc720cbd8127",
+  "fp": "60c08931018e",
   "number": 57,
-  "open": true
+  "open": false
  },
  "DROIDWORKS_ION_GUARD_1": {
-  "fp": "ed67f7a161ce",
+  "fp": "3fe6b8186355",
   "number": 58,
-  "open": true
+  "open": false
  },
  "DROIDWORKS_PHASE0_XML_1": {
-  "fp": "1e6498e651b8",
+  "fp": "1f52e52c565d",
   "number": 59,
+  "open": false
+ },
+ "DROIDWORKS_PILOT_GONK_1": {
+  "fp": "b6d79c8d55a5",
+  "number": 62,
+  "open": true
+ },
+ "DROIDWORKS_RETIRE_EVIDENCE_1": {
+  "fp": "db9f1fbb392c",
+  "number": 63,
+  "open": true
+ },
+ "DROIDWORKS_WIPE_AND_SPIKE_1": {
+  "fp": "5e1ac60a7061",
+  "number": 64,
   "open": true
  },
  "DROID_SYSTEM_BUILD_1": {
@@ -145,9 +170,9 @@
   "open": true
  },
  "FIRE_RAID_ECHOES_REQUESTED_FACTION_1": {
-  "fp": "c6d75faba08f",
+  "fp": "48c036aa9d76",
   "number": 13,
-  "open": true
+  "open": false
  },
  "GM_GATE_INCIDENT_SCHEDULE_1": {
   "fp": "bb0163ebb3ee",
@@ -165,9 +190,9 @@
   "open": false
  },
  "ION_STUN_IGNORES_BODY_SIZE_1": {
-  "fp": "6ed98c2bd27f",
+  "fp": "e560b3b2cbe0",
   "number": 37,
-  "open": true
+  "open": false
  },
  "ION_TIERS_MEASURED_LIVE_1": {
   "fp": "01a70ff1b063",
@@ -190,14 +215,14 @@
   "open": false
  },
  "NO_TOOL_REPORTS_MAP_TILE_1": {
-  "fp": "2a5faf1b0539",
+  "fp": "fcde32abd871",
   "number": 19,
-  "open": true
+  "open": false
  },
  "ORDERED_JOB_CANNOT_SOW_1": {
-  "fp": "baaddce7fcb3",
+  "fp": "53940c4570ba",
   "number": 20,
-  "open": true
+  "open": false
  },
  "OTHER_STUN_WEAPONS_SURVEY_1": {
   "fp": "694512606156",
