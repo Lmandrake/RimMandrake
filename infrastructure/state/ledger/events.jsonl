@@ -3170,3 +3170,8 @@
 {"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","ownerSaid":"Game is up","ts":"2026-08-30T18:15:07Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"taken","ts":"2026-08-30T18:15:20Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-08-30T18:15:42Z"}
+{"seat":"BENCH","event":"seat","state":"ready","ts":"2026-08-30T18:20:57Z"}
+{"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-08-30T18:21:17Z"}
+{"seat":"FOUNDRY","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-08-30T18:21:17Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","ts":"2026-08-30T18:21:50Z"}
+{"seat":"OWNER","event":"file","id":"GRAFFITI_MOD_EXPANSION_1","title":"Assess the subscribed graffiti mod, then expand it: sacred graffiti, socially infuriating/amusing graffiti, beautiful graffiti","kind":"task","target":"v1","needs":"offline","for":"FOUNDRY","ownerSaid":"Add a queue item to assess the graffiti mod and expand it to include sacred graffiti, socially infuriating graffiti or amusing graffiti, or even beautiful graffiti. (we are subscribed)","ts":"2026-08-30T18:27:43Z"}

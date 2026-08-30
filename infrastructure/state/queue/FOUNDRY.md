@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T18:15:42Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-08-30T18:27:43Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -475,3 +475,13 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/VAULT_DUNGEON_BUILD_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/VAULT_DUNGEON_BUILD_1.md
+
+## GRAFFITI_MOD_EXPANSION_1 Assess the subscribed graffiti mod, then expand it: sacred graffiti, socially infuriating/amusing graffiti, beautiful graffiti
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/GRAFFITI_MOD_EXPANSION_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/GRAFFITI_MOD_EXPANSION_1.md
