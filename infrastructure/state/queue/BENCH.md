@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T16:14:03Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T16:17:59Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -51,16 +51,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## ASSAILANT_FLESH_DUNGEON_1 Design the Assailant flesh dungeon with the owner - and the Rakata dark-history reveal it carries
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  ASSAILANTFLESHDUNGEON1 — the disgusting biological dungeon, and what it reveals
-prose:    infrastructure/state/items/ASSAILANT_FLESH_DUNGEON_1.md
 
 ## TECH_TREE_WEAPON_GROUPS_1 Examine the research tree with the owner: ship-systems-online arc + weapon techs grouped by kind (ion/laser/blaster/sonic...)
 state:    proposed

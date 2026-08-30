@@ -1,0 +1,11 @@
+{
+ "posture": "ruled-verbally",
+ "ruling": "Owner, 2026-08-30, verbatim: 'That was an exceptional list of absolutely disgusting content. Well done. (assailant ruling). All of this! :)' \u2014 ALL 70 rows keep-for-dungeon, including the three contested cut defs (DeadColumnMod, Trispike, Metalhorror) which get a SITE-ONLY exception: un-cut at build, placed only in the dungeon.",
+ "decidedCount": 70,
+ "blanket": "keep-for-dungeon",
+ "contested_resolved": {
+  "DeadColumnMod": "site-only",
+  "Trispike": "site-only",
+  "Metalhorror": "site-only"
+ }
+}

@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T16:14:03Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T16:17:59Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -425,3 +425,13 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  Two named leads first: They/Them (ants ruled OUT FOREVER — GAPS 11 2026-08-30;
 prose:    infrastructure/state/items/MOD_LIST_OUTGROWN_AUDIT_2.md
+
+## ASSAILANT_DUNGEON_BUILD_1 Build the Assailant flesh dungeon: frozen first-impact complex, thaw-gated, deep Umbra
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/ASSAILANT_DUNGEON_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ASSAILANT_DUNGEON_BUILD_1.md
