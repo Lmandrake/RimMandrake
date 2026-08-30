@@ -2987,3 +2987,9 @@
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-08-30T02:42:27Z"}
 {"seat":"FOUNDRY","event":"note","id":"ORDERED_JOB_CANNOT_SOW_1","text":"Live-verified 2026-08-30 (quicktest, game UP). No plantDef: tool refuses at the door with the exact named-field message, not a silent toil failure. With plantDef=Plant_Potato: accepted=true, afterJobDef=Sow, nowRunningRequested=true, plantDefToSow=Plant_Potato echoed back. Bonus: game was paused during the wait and the tool correctly reported pausedDuringWait=true alongside ticksElapsed=0, confirming the related waitTicks-while-paused fix is also live and not misreadable as job failure. Both halves of this item's fix confirmed. Closing.","ts":"2026-08-30T02:42:27Z"}
 {"seat":"FOUNDRY","event":"close","id":"ORDERED_JOB_CANNOT_SOW_1","sha":"a9c89bbf","ts":"2026-08-30T02:42:28Z"}
+{"seat":"FOUNDRY","event":"claim","id":"NO_TOOL_REPORTS_MAP_TILE_1","ts":"2026-08-30T02:42:56Z"}
+{"seat":"FOUNDRY","event":"start","id":"NO_TOOL_REPORTS_MAP_TILE_1","ts":"2026-08-30T02:42:56Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","ts":"2026-08-30T02:42:57Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-08-30T02:43:06Z"}
+{"seat":"FOUNDRY","event":"note","id":"NO_TOOL_REPORTS_MAP_TILE_1","text":"Live-verified 2026-08-30 (quicktest, game UP). jawa/map_info returned tile:21069 (called earlier this session for map dimensions, before this item was even pulled). Independent cross-check via the item's own documented workaround, jawa/world_objects_get{limit:400} -> the PlayerColony settlement 'Colony' -> tile:21069 - exact match, no duplicate player settlements this time (single-colony quicktest). Closing.","ts":"2026-08-30T02:43:06Z"}
+{"seat":"FOUNDRY","event":"close","id":"NO_TOOL_REPORTS_MAP_TILE_1","sha":"deff7a54","ts":"2026-08-30T02:43:07Z"}

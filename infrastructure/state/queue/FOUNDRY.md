@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T02:42:28Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T02:43:07Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## NO_TOOL_REPORTS_MAP_TILE_1 No bridge tool reports which world tile the current map is on - you have to find the player Settlement
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-summary:  NOTOOLREPORTSMAPTILE1 — the map knows its tile and the bridge will not say
-prose:    infrastructure/state/items/NO_TOOL_REPORTS_MAP_TILE_1.md
 
 ## DUMPER_SWALLOWS_CACHE_THROW_1 The def dumper publishes the engine's cached answer and swallows the exception behind it
 state:    ready
