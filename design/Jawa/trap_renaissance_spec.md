@@ -34,7 +34,7 @@ to rule:
   Ishko is content or fronting (he shows his own kind of danger to his own kind
   of people). Theology-rich; cost: sometimes you step on a mine because your god
   sulked — reads unfair unless well-signed.
-- **Option C — both, layered (recommended)**: the gene gives sight + a solid
+- **Option C — both, layered — ✅ RULED (owner, 2026-08-30)**: the gene gives sight + a solid
   disarm bonus always (paranoia is biology); Ishko's favor upgrades disarm speed
   and yield ("the dark shows its teeth to its own"). Mob'Unloo books each
   disarmed-trap salvage as a small `↑` (profit from another's preparation is the
@@ -128,5 +128,6 @@ cunning register is ours alone.
   blast? **90-second quicktest, not a load.**
 - "Jawa-buildable" research gates are UNMEASURED until RESEARCH_TREE_
   NORMALIZATION_1 (gated on droids landing) settles the whitelist.
-- Trap-sense Option ruling (§2 A/B/C) and the minify whitelist/denylist (§2b)
-  are the two rulings this spec still owes the owner.
+- ~~Trap-sense option~~ RULED: §2 Option C (both, layered). Remaining owed
+  ruling: the minify whitelist/denylist curation (§2b) — needs the buildings
+  inventory in front of us, its own sitting.
