@@ -1,0 +1,92 @@
+<!-- status: draft — BENCH synthesis of the three-arm beast fan-out, 2026-08-31. Owner's law: bodySize tracks visual size (spindly exception); mass matches scale; danger matches size — "a bull casually kills someone without intending to." Data: beast_census.csv (1,022 rows) · beast_roster.csv (581 kinds) · vanilla curves (arm 3, quoted here). -->
+# Beast Normalization — size, mass, and casual lethality
+
+## 1. What the fan-out established (MEASURED, frozen dump `1742630eb6253187`)
+
+1. **Mass is not authored — it is `60 kg × bodySize`.** The Mass StatDef
+   carries `StatPart_BodySize` over a flat 60 base; 1,019 of 1,022 animals
+   keep the raw 60 (three overrides in 584 mods). So in-game mass DOES scale
+   with size already — but on a compressed scale (elephant = 240 kg vs ~4,000
+   real). **Consequence: there is no independent mass defect to fix. bodySize
+   is the only dial.** (And the Covered Pits mass triggers are already
+   calibrated to engine mass — the peer's 240 kg ceiling is exactly
+   bodySize 4.0 × 60. Confirmed consistent; no correction needed there.)
+2. **Vanilla already normalizes sprites: `drawSize ≈ 1.9·√bodySize`** (115
+   vanilla animals, tight fit). The owner's law inverts cleanly:
+   **`bodySize ≈ (drawSize / 1.9)²`** — with two sanctioned exemptions:
+   the **legibility floor** (critters below bs ≈ 0.5 are drawn oversized on
+   purpose) and the **spindly register** (long-limbed, low-mass builds get a
+   named exemption row, never a silent one).
+3. **The dump cannot see drawSize — field-level coverage gap**, same class as
+   the old statBases hole (verified: texPath present, drawSize absent, whole
+   population). The bodySize-vs-visual audit is **UNMEASURED until the
+   capture is widened** (remedy: extend `measure/dumpdb.py`'s GraphicData
+   capture; raw-XML sweeps are a trap — drawSize inherits through ParentName
+   chains).
+4. **Danger does not track size, and the Star Wars marquee monsters are the
+   worst offenders.** Median danger-per-size 4.0 across 1,022; the SW
+   bestiary's apex reads: GreaterKraytDragon **1.5** (bs 15, DPS 22.5 —
+   three timber wolves), KraytDragon 1.25, JungleRancor 1.33, Horax 1.07,
+   Beldon 0.92. Big herbivores generally sit at the bottom (vanilla cow
+   k=2.5; the Jurassic herbivore family 0.56–0.69). Vanilla undersells
+   bull-class burst by 3–4×.
+5. **Scope is one mod.** All 581 spawnable Ash'karr beasts are third-party;
+   the SW bestiary (161 defs) comes entirely from
+   `mlie.starwarsanimalcollection`, zero are Cherry-Picker cut, and our own
+   mods ship no animals. The normalization is a patch mod over known targets.
+
+## 2. The three laws (the normalization itself)
+
+**Law 1 — bodySize from visual:** `bodySize = (drawSize/1.9)²`, exemptions:
+legibility floor (bs < 0.5 keeps authored size) and the spindly register
+(each exemption a named row with a one-line physical justification). Gated on
+finding 3's capture fix.
+
+**Law 2 — mass rides bodySize** (already definitional). DECISION FOR THE
+OWNER: leave the engine's compressed 60×bs scale (recommended — every
+downstream system is tuned to it: hauling, caravans, pit covers), or override
+to realistic masses (a 4-tonne elephant would distort carrying/caravan
+balance stack-wide for flavor nobody reads). Recommended: **no override;
+close the question.**
+
+**Law 3 — casual lethality, with counterplay** (arm-3 curve, adopted as
+draft): for bs ≥ 1, **best-hit damage goes linear: ≈ 12–15 × bodySize**
+(muffalo/bull 2.4 → ~30: one hit downs an unarmored pawn; thrumbo-class 4.0
+→ 50–60: maims or kills) while **DPS stays sublinear (≈ 8–12·√bs) via 3–4 s
+cooldowns on the big hits** — burst lethality, not shredding; fights are
+survived by not being hit. **Aggression does NOT rise**: the "casual" half
+lives in the revenge knobs (`manhunterOnDamageChance`,
+`manhunterOnTameFailChance`) raised on big herbivores — docile until
+provoked, catastrophic when provoked. Counterweights that keep the early
+game playable: armor honestly absorbs (flak turns 30 blunt survivable),
+telegraphs before charges, and the theology already teaches the answer —
+hunt from range; the new curve makes Ishko's doctrine mechanically true.
+
+## 3. Execution shape
+
+- **One patch mod, tier RimStarWars** (the lethality of SW beasts is
+  any-SW-scenario content): working id `mandrake.rsw.beastnorm`, per the
+  naming scheme. Ash'karr roster priorities (the 15 campaign-relevant kinds,
+  Krayt family first) come from the RimUtinni-side roster data but the
+  patches are SW-general.
+- **Manifest-driven** (`beast_norm_manifest.csv`: defName · new tools rows ·
+  cooldowns · revenge chances · bodySize when Law 1 unlocks · exemption
+  flag) — patch a curated artifact, never re-derive; the census CSVs are the
+  input, the manifest is the decision record.
+- **Order:** (1) danger pass on the SW 161 — buildable NOW from the census;
+  (2) `dumpdb.py` GraphicData widening (small tooling fix) → then (3) the
+  bodySize-visual pass. The three-arm data stays current only against
+  fingerprint `1742630eb6253187` — re-verify before executing.
+- Non-SW offenders (Jurassic herbivores, `Titan` the unidentified 1.0-
+  commonality beast) get a second manifest wave after the SW pass proves the
+  curve in play.
+
+## 4. Open for the owner
+
+1. Law 2: confirm no real-mass override (recommended).
+2. Law 3 numbers: 12–15×bs per-hit is the draft coefficient — a quicktest
+   (spawn muffalo vs unarmored pawn, MEASURED outcomes) should tune it
+   before the manifest freezes.
+3. The empty seas (zero marine fauna in Ocean/Lake biomes — MEASURED): out
+   of scope here, but the three seas holding nothing alive is a
+   worldbuilding hole worth its own item.

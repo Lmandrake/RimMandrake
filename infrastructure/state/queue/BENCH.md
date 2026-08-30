@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T23:55:18Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T23:57:19Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -52,3 +52,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/RESEARCH_TREE_NORMALIZATION_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/RESEARCH_TREE_NORMALIZATION_1.md
+
+## EMPTY_SEAS_FAUNA_1 The three seas hold nothing alive: Ocean and Lake biomes have empty wildAnimals (MEASURED) - worldbuilding gap; decide whether Ash'karr's seas get fauna
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/EMPTY_SEAS_FAUNA_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/EMPTY_SEAS_FAUNA_1.md

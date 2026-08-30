@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T23:55:18Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T23:57:19Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -259,3 +259,23 @@ kind:     investigate
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/BEAST_MASS_REALISM_AUDIT_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/BEAST_MASS_REALISM_AUDIT_1.md
+
+## BEAST_DANGER_NORMALIZATION_1 Build mandrake.rsw.beastnorm: Law 3 danger pass on the 161 SW beasts (best-hit 12-15x bodySize, sublinear DPS, revenge knobs) - manifest-driven, quicktest the coefficient first
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/BEAST_DANGER_NORMALIZATION_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BEAST_DANGER_NORMALIZATION_1.md
+
+## DUMP_DRAWSIZE_CAPTURE_1 Widen measure/dumpdb.py GraphicData capture to include drawSize (whole-population field gap, verified); unblocks the bodySize-visual normalization (Law 1)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DUMP_DRAWSIZE_CAPTURE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DUMP_DRAWSIZE_CAPTURE_1.md
