@@ -1,3 +1,5 @@
+> ⛔ **SUPERSEDED** — the live version of this content: design/Jawa/reconciled_lore/02_world.md
+
 <!-- status: live -->
 # The world is TIDALLY LOCKED — and it explains everything
 

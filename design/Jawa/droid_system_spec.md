@@ -1,3 +1,5 @@
+> ⛔ **SUPERSEDED** — the live version of this content: design/Jawa/reconciled_lore/08_droids.md
+
 <!-- status: REOPENED 2026-08-29 (owner: "We've fallen in love with the full
      droid item") — this doc stays the DESIGN-INTENT authority; the buildable
      engineering spec, build-vs-wrangle analysis and port plan are the

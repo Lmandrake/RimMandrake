@@ -1,3 +1,5 @@
+> ⛔ **SUPERSEDED** — the live version of this content: design/Jawa/reconciled_lore/05_the_clan.md
+
 <!-- status: live -->
 # Jawa society — slavery, reproduction, the life-cycle, and what they carry
 

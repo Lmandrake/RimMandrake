@@ -54,14 +54,23 @@ exempt from the defended-source rule). `raidsForbidden` as mechanism. Their
 guilt-theology: the water was withdrawn, and the withdrawal was deserved.
 Capture: morally ugly excellence. A rare Jedi may quietly shelter among them.
 
-**4 · Deep Desert Tribes.** Tusken-pattern clans; water sacred, moisture
+**4 · Deep Desert Tribes.** Tusken-pattern clans; water sacred, moisture **They are the fire-farmers** [owner 2026-08-30]:
+burn-cycle agriculture as a nomadic way of life — follow the burns, harvest
+the flush (fire-ecology strategy ③ has their face).
 farming sacrilege, **offworld technology abhorrent — destroyed, not used**
 (doctrinal, not primitive: they descend from a spacefaring people). Short raid
 range by CHOICE, not physiology (W3). Signature: the water raid — fast, light,
 chiefless (composition v1; steal-and-leave behavior is v2 C#). Convertible via
 adoption; until converted their faith attacks your vaporators.
 
-**5 · Free Droid Enclaves.** Battle droids who woke up and decided they belong
+**5 · Free Droid Enclaves — two groupings** [owner 2026-08-30, canon.yml
+free_droid_enclaves.geography]: the CATHEDRAL congregation — poisoning it,
+worshiping it, building more, learning ancient tech from whispered voices deep
+in the old machinery (revealed content; ties to their Archotech charge turret)
+— and the NIGHTSIDE refugees (~two settlements, verify owed): power-starved,
+burning strange materials for dirty power in servo-freezing cold, selling fuel
+to the Junkers through long-distance pipes they must keep running — a
+dependency that feels like having a master again. Battle droids who woke up and decided they belong
 to themselves. Settle where organics cannot: Cathedral ground, volcanic seats,
 the quiet dark — and on water they crack for fuel, so attackers arrive thirsty
 at a source they cannot drink. **Restraining bolts are slavery; memory erasure
@@ -94,7 +103,7 @@ hive whose work is unfinished cannot stop) and the **Plateau** (a splinter
 colony worshipping the Rakatan ruins' Founder machinery, nine years trying to
 commune with its AI, and failing — the live tension). Buried against the sun;
 idleness is the beginning of the end of the world. **Formally ALLIED with the
-Free Droid Enclaves, with trade** (supersedes the roster's "cold/no trade") —
+Free Droid Enclaves, with trade** —
 the cruellest ground on the planet is the one place with a functioning peace.
 No trade with the player; no ransom, no rescue; prisoners become labour.
 
@@ -118,7 +127,15 @@ enemy. Hostile when someone paid them; never otherwise.
 `05_the_clan.md`. Trade Moot pawns are kin: enslaving them is the taboo the
 colony itself feels; the Moot ransoms generously and REMEMBERS, both ways.
 
-**12 · the Junkers.** The bottom of the scrap heap given weapons and a grudge;
+**12 · the Junkers.** [owner 2026-08-30, canon.yml junkers] Rich in BAD
+water (the terminator seas are theirs and non-potable); distillation is
+fuel-expensive, so they are a FUEL-FIRST nation mining the edge of the dark
+and the edge of potable water, selling fuel and kludged products through
+bolted-together, dangerous tech — and welding their own people into
+mini-spaceship-as-a-person warcaskets. Slow thinking, slow moving, extremely
+dangerous; bursting flames, toxic spew, buzzing razor saws, coarse laughter:
+space orcs as industrial factory workers gone amok, lord-of-the-flies style.
+The bottom of the scrap heap given weapons and a grudge;
 scavengers who arrive second and kill whoever arrived first, welded into
 warcaskets cut off other people's bodies. No doctrine, only the ladder; a
 casket is a biography; no funerals, because a corpse is stock. Hostile on

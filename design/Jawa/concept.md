@@ -1,3 +1,5 @@
+> ⛔ **SUPERSEDED** — the live version of this content: design/Jawa/reconciled_lore/01_campaign.md
+
 <!-- status: live -->
 # concept.md — Portable Campaign Brief
 

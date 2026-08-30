@@ -48,10 +48,11 @@ their title attached — `B58 (the dead Jawa pawnkind)`, never bare.
 
 ## Superseding a doc means writing INTO the doc you superseded
 
-One line at the top of the superseded file naming the successor and what changed —
-nobody reads backwards. "Not my file" does not discharge it. Single-source only
-what a generator can enforce; where only discipline enforces a duplicate, write a
-pointer instead.
+One line at the top of the superseded file naming the successor — nobody reads
+backwards, and provenance lives in git, nowhere else (owner, 2026-08-30):
+entries state what IS, never what used to be. "Not my file" does not discharge
+it. Single-source only what a generator can enforce; where only discipline
+enforces a duplicate, write a pointer instead.
 
 ## Git
 

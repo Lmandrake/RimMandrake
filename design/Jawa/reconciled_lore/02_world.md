@@ -52,7 +52,9 @@ sterile scars visible from orbit).
 
 Sequence, fading spatially: poison forest (the seam) → mycotic jungle →
 gelatinous superorganism (**patches only, never a band**) → propane lakes,
-crystalline caverns, self-glowing landscapes (the last light) → **the forsaken
+crystalline caverns (their glow is MINERAL — geological, not alive; the
+crags keep the glowing strange life and the decay belt its glow forest and
+mushrooms [owner 2026-08-30]), self-glowing landscapes (the last light) → **the forsaken
 crags** — total darkness, an alien chemistry that is oddly FULL of life and
 deeply hostile: most creatures manhunt on arrival, **nothing is edible**. The
 crags are the exact conjugate of the deep desert: absence kills you there,

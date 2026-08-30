@@ -1,3 +1,5 @@
+> ⛔ **SUPERSEDED** — the live version of this content: design/Jawa/reconciled_lore/03_deep_history.md
+
 <!-- status: live -->
 # What the machines are
 

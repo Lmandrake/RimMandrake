@@ -2,7 +2,7 @@
 
 The constitution is `worldbuilding/setting_physics.md` (L1–L18 + the
 interaction matrix) — still live and canonical. This file is the compressed
-map plus the rulings that amended it.
+map as it stands.
 
 ## The seven forms of harm
 
@@ -33,7 +33,7 @@ ion is how you take one intact.
 **LOCKED SPEC D1** [owner 2026-08-08]: a single-target stun gun **tiered by
 target class** — strongest vs machines, strong vs droids/vehicles, weakest but
 nonzero vs flesh (stacked fire downs a person alive). The tiering IS the
-tactical identity; L4's "zero damage to flesh" is amended by it. Implementation
+tactical identity; L4 reads with this tiering. Implementation
 truth [measured/built 2026-08-22]: flesh rides our buildup hediff
 (consciousness-cap downing); machines are reached by re-issuing the hit as
 vanilla EMP (the engine whitelists stun damage defs by object identity — no
@@ -52,7 +52,7 @@ blasters 24–34, heavy 52–72, slugthrowers 18–36, lightsabers 80–120, vib
 35–52 — one-to-two-shot lethality against the unarmoured restored as physical
 consequence. **The vanilla industrial firearm line stays CUT** — theme beat
 balance, knowingly; v1's floor is neolithic + cheap blasters
-[owner 2026-08-22]. Mech weapons are the one narrow reversal.
+[owner 2026-08-22]. Mech weapons alone keep industrial firearms.
 
 ## The turret doctrine [owner 2026-08-29, canon.yml > turrets]
 

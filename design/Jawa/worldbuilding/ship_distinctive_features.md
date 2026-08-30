@@ -1,3 +1,5 @@
+> ⛔ **SUPERSEDED** — the live version of this content: design/Jawa/reconciled_lore/06_the_ship.md
+
 <!-- status: live -->
 # ship_distinctive_features.md — the Kolyska's identity layer
 

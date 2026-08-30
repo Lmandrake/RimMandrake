@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T15:44:02Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T15:49:57Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -84,7 +84,7 @@ prose:    infrastructure/state/items/EMPIRE_WHITELIST_OVERRIDDEN_1.md
 ## DROID_SYSTEM_BUILD_1 Build the unifying droid mod per droid_system_spec.md (parked until the owner reopens)
 state:    doing
 row:      unassigned
-needs:    bridge
+needs:    offline
 target:   v1
 kind:     build
 summary:  design/Jawa/droidsystembuildspec.md — architecture (own DLL + HAR substrate,
@@ -392,8 +392,8 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DROIDWORKS_FLESHTYPE_NEEDS_GAP_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  design/Jawa/droidsystembuildspec.md §1: "Flesh type: our own
 prose:    infrastructure/state/items/DROIDWORKS_FLESHTYPE_NEEDS_GAP_1.md
 
 ## DROIDWORKS_POWEREDDOWN_NOT_WIRED_1 Ion buildup crossing threshold downs via vanilla JawaIon_Stun capMods only -- never adds the DW_PoweredDown hediff the state machine is built around
@@ -402,6 +402,26 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DROIDWORKS_POWEREDDOWN_NOT_WIRED_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  design/Jawa/droidsystembuildspec.md §2, state 3 ("Downed/off"): "buildup
 prose:    infrastructure/state/items/DROIDWORKS_POWEREDDOWN_NOT_WIRED_1.md
+
+## PAINT_GUARD_ASK_EACH_TIME_1 ashkarr_paint guard: replace stale HOME_LATLON anchor with per-write ask-before-overwrite
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/PAINT_GUARD_ASK_EACH_TIME_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PAINT_GUARD_ASK_EACH_TIME_1.md
+
+## MOD_LIST_OUTGROWN_AUDIT_1 Outgrown-mod audit: whole 585 list, starting with They/Them(ants) and ISEKAI level-up
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/MOD_LIST_OUTGROWN_AUDIT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/MOD_LIST_OUTGROWN_AUDIT_1.md

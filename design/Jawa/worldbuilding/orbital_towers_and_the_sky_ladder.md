@@ -1,3 +1,5 @@
+> ⛔ **SUPERSEDED** — the live version of this content: design/Jawa/reconciled_lore/01_campaign.md + design/Jawa/reconciled_lore/04_factions.md
+
 <!-- status: live -->
 # Orbital towers and the sky ladder — the Empire's way down
 

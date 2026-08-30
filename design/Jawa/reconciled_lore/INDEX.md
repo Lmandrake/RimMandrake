@@ -12,11 +12,10 @@ Dispositions:
 
 | doc | disposition |
 |---|---|
-| concept.md | ABSORBED → 01 (⚠️ its Empire-fusion line is stale — CONTRADICTIONS #16) |
+| concept.md | ABSORBED → 01 |
 | droid_system_spec.md | ABSORBED → 08 (design intent retained as authority for WHAT) |
 | droid_system_build_spec.md | SPEC (live) — Droidworks engineering + port plan |
 | droidworks_assumptions.md | SPEC (live) — awaiting owner pass (GAPS #20) |
-| droid_ruling.md | ABSORBED → 07/08 (engine evidence retained; ⚠️ its §3 data-spike claim — CONTRADICTIONS #39) |
 | droid_census_2026-08-29.md | HISTORY — the census that fed the platform ruling |
 | pawn_flavor_design.md | SPEC (live) — PAWN_FLAVOR_STARWARS_1 working doc; roster of record in the register generator |
 | divine_satiation_engine.md | SPEC (live) — pantheon canon-of-record + mechanics; 05 summarizes |
@@ -32,7 +31,7 @@ Dispositions:
 |---|---|
 | setting_physics.md | SPEC (live) — the constitution; 07 is the compressed map |
 | hydrology_and_fire_ecology.md | ABSORBED → 02 |
-| tidally_locked_world.md | ABSORBED → 02 (⚠️ carries the known axis defects — canon.yml temperature_curves) |
+| tidally_locked_world.md | ABSORBED → 02 |
 | desert_world_design.md | ABSORBED → 02 (four-axis schema, anchors, regionalization) + 01 (orbital leash); its mod-hunt logs are HISTORY |
 | water_doctrine.md | ABSORBED → 02 (the four rulings + W1–W7) |
 | the_one_map.md | HISTORY — vision doc; its water numbers are dead (canon.yml) |

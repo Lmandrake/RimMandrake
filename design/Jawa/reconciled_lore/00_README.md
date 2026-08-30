@@ -28,7 +28,6 @@ quest-pack included).
 | `09_arcs_dungeons_quests.md` | the designed player arcs and where they fire |
 | `FUTURE_VECTORS.md` | where v2 wants to go, distilled and aligned |
 | `INDEX.md` | every old doc → where its live content now lives |
-| `CONTRADICTIONS.md` | every disagreement found, and which side won |
 | `GAPS.md` | genuinely unsettled questions, for the owner |
 
 ## The layering rule (this is what "zero redundancy" means here)
@@ -42,3 +41,11 @@ quest-pack included).
   ruling's words are its authority.
 - Source tags are compact: `[owner 2026-08-15]` = an owner ruling on that date;
   `[measured]` = read from the game/dump, see the source doc.
+
+## The provenance rule [owner 2026-08-30]
+
+**Provenance lives in git, nowhere else.** Entries state what IS, never what
+used to be — no amendment narrations, no before/after, no superseded-by
+prose. A dated owner tag on a current rule is sourcing and stays; a story
+about how the rule got here is git's job. (The contradiction map that guided
+the reconciliation is in git history.)

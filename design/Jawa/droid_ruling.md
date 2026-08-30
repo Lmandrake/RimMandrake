@@ -1,3 +1,5 @@
+> ⛔ **SUPERSEDED** — the live version of this content: design/Jawa/reconciled_lore/07_physics_and_arms.md + design/Jawa/reconciled_lore/08_droids.md
+
 <!-- status: live -->
 # Droid ruling — ion, capture, and what detonates
 

@@ -1,3 +1,5 @@
+> ⛔ **SUPERSEDED** — the live version of this content: design/Jawa/reconciled_lore/03_deep_history.md + design/Jawa/reconciled_lore/06_the_ship.md
+
 <!-- status: live -->
 # the_forgotten_war.md — the war that ended this world, and what it left
 

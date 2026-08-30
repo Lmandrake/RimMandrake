@@ -82,6 +82,12 @@ permanent colony lives aboard; planetary camps are disposable. Small crew
   SITUATION the clan's doctrine answers (enslave; love-gate if Jawa)
   [owner 2026-08-22].
 
+## Victory [owner 2026-08-30]
+
+v1 is OPEN-ENDED: the arcs provide climaxes, nothing rolls credits. The
+pressure systems (pursuit cadence, the pride-crisis) give the late game its
+shape; authored endings (the god-map roads) are v2.
+
 ## Fuel is life
 
 **Many paths to fuel, or the ship starves** [owner 2026-08-15]: helixien gas

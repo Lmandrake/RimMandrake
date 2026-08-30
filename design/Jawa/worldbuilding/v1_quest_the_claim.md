@@ -1,3 +1,5 @@
+> ⛔ **SUPERSEDED** — the live version of this content: design/Jawa/reconciled_lore/09_arcs_dungeons_quests.md
+
 <!-- status: live -->
 # "The Claim" — the v1 quest, specified
 

@@ -1,3 +1,5 @@
+> ⛔ **SUPERSEDED** — the live version of this content: design/Jawa/reconciled_lore/04_factions.md
+
 <!-- status: live -->
 # Eleven religions, seeded — every one a position on the light
 

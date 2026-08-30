@@ -1,3 +1,5 @@
+> ⛔ **SUPERSEDED** — the live version of this content: design/Jawa/reconciled_lore/02_world.md
+
 <!-- status: live -->
 # hydrology_and_fire_ecology.md — where the water goes, and what burns
 
