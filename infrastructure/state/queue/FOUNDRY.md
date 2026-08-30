@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T02:41:11Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T02:42:28Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## ORDERED_JOB_CANNOT_SOW_1 jawa/ordered_job cannot set plantDefToSow, so any Sow it issues is accepted and dies in the first toil
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     bug
-summary:  ORDEREDJOBCANNOTSOW1 — the job is accepted and dies in its first toil
-prose:    infrastructure/state/items/ORDERED_JOB_CANNOT_SOW_1.md
 
 ## NO_TOOL_REPORTS_MAP_TILE_1 No bridge tool reports which world tile the current map is on - you have to find the player Settlement
 state:    ready

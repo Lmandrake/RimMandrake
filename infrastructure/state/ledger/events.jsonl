@@ -2981,3 +2981,9 @@
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-08-30T02:41:10Z"}
 {"seat":"FOUNDRY","event":"note","id":"BUILD_BATCH_FACTION_REJECTS_PLAYER_1","text":"Live-verified 2026-08-30 (quicktest, game UP): jawa/build_batch {ops:'DiningChair:140,50', faction:'player'} -> placed successfully, thing.faction='PlayerColony', no refusal. Matches the item's own prove-it plan exactly. Closing.","ts":"2026-08-30T02:41:10Z"}
 {"seat":"FOUNDRY","event":"close","id":"BUILD_BATCH_FACTION_REJECTS_PLAYER_1","sha":"4f135423","ts":"2026-08-30T02:41:11Z"}
+{"seat":"FOUNDRY","event":"claim","id":"ORDERED_JOB_CANNOT_SOW_1","ts":"2026-08-30T02:41:42Z"}
+{"seat":"FOUNDRY","event":"start","id":"ORDERED_JOB_CANNOT_SOW_1","ts":"2026-08-30T02:41:43Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","ts":"2026-08-30T02:41:43Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-08-30T02:42:27Z"}
+{"seat":"FOUNDRY","event":"note","id":"ORDERED_JOB_CANNOT_SOW_1","text":"Live-verified 2026-08-30 (quicktest, game UP). No plantDef: tool refuses at the door with the exact named-field message, not a silent toil failure. With plantDef=Plant_Potato: accepted=true, afterJobDef=Sow, nowRunningRequested=true, plantDefToSow=Plant_Potato echoed back. Bonus: game was paused during the wait and the tool correctly reported pausedDuringWait=true alongside ticksElapsed=0, confirming the related waitTicks-while-paused fix is also live and not misreadable as job failure. Both halves of this item's fix confirmed. Closing.","ts":"2026-08-30T02:42:27Z"}
+{"seat":"FOUNDRY","event":"close","id":"ORDERED_JOB_CANNOT_SOW_1","sha":"a9c89bbf","ts":"2026-08-30T02:42:28Z"}
