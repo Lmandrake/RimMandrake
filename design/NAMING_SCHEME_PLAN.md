@@ -40,7 +40,7 @@ reuses RimStarWars wholesale only if nothing campaign-specific leaked into it.
 | Mod display name | `<Tier>: <Name>` | `RimMandrake: Covered Pits` · `RimUtinni: The Salvation` |
 | defName prefix | `RM_` · `RSW_` · `RUT_` | `RM_PitCover` · `RSW_JawaEyes_Amber` · `RUT_SalvationRite_Landing` |
 | Folder | `src/<Tier>/<ModName>/` | `src/RimStarWars/Droidworks/` |
-| C# namespace | `<Tier>.<ModName>` | `RimStarWars.Droidworks` |
+| C# namespace | **nested under the RimMandrake root** (ruled 2026-08-31 on a peer stream's catch, owner: "Deploy this change. We believe in it."): `RimMandrake.<ModName>` / `RimMandrake.StarWars.<ModName>` / `RimMandrake.Utinni.<ModName>` — never the bare global `RimStarWars`/`RimUtinni` (type-name ambiguity with other SW mods' assemblies; ownership explicit in every stack trace) | `RimMandrake.StarWars.Droidworks` |
 | texPath root | `<Tier>/<ModName>/…` inside each mod | moves with its mod, nothing cross-references |
 
 Established sub-prefixes with real def counts (`Inhabited_`, `DW_`) MAY keep
@@ -203,8 +203,15 @@ urgent.
    Droidworks, it's pre-freeze cheap and the split (§3) rewrites half of it
    anyway.)
 3. **JawaRules**: verify-then-rename to RimMandrake, or is it doctrine?
-4. **Display-name format**: `RimMandrake: Covered Pits` (recommended) vs
-   bare names with tier only in packageId.
+4. ~~Display-name format~~ ✅ **RULED with the namespace change (2026-08-31):
+   public titles and collection pages carry the RimMandrake mark** —
+   collections "RimMandrake", "RimMandrake: Star Wars", "RimMandrake:
+   Utinni"; mod titles `RimMandrake: <Name>` (Star Wars/Utinni mods may
+   style as `RimMandrake: SW — <Name>` on the storefront). Bare
+   "RimStarWars" is never a public brand. packageIds stay `mandrake.<tier>.
+   <modname>` — the author segment is the collision guard there, and the
+   peer stream's nesting adds no safety at double the length in every log
+   and MayRequire.
 
 ## 8b. Review round 2 — adversarial fork, all nine findings folded in
 

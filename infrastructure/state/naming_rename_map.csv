@@ -179,12 +179,12 @@ def,DW_RechargeInsert,RSW_DW_RechargeInsert,RimStarWars,HIGH,
 def,DW_RemoveRestrainingBolt,RSW_DW_RemoveRestrainingBolt,RimStarWars,HIGH,
 def,DW_RestrainingBolt,RSW_DW_RestrainingBolt,RimStarWars,HIGH,
 def,DW_RestrainingBoltItem,RSW_DW_RestrainingBoltItem,RimStarWars,HIGH,
-namespace,Droidworks,RimStarWars.Droidworks,RimStarWars,HIGH,
-namespace,DroidworksBoltCore,RimStarWars.Droidworks,RimStarWars,HIGH,
+namespace,Droidworks,RimMandrake.StarWars.Droidworks,RimStarWars,HIGH,
+namespace,DroidworksBoltCore,RimMandrake.StarWars.Droidworks,RimStarWars,HIGH,
 mod,src/Jawa/EmpirePursuit,src/RimUtinni/EmpirePursuit,RimUtinni,HIGH,pursuer engine may generalize later
 packageId,mandrake.empirepursuit,mandrake.rut.empirepursuit,RimUtinni,HIGH,
 def,RuthlessPursuingMechanoids,RUT_RuthlessPursuingMechanoids,RimUtinni,HIGH,
-namespace,RuthlessPursuingMechanoids,RimUtinni.EmpirePursuit,RimUtinni,HIGH,
+namespace,RuthlessPursuingMechanoids,RimMandrake.Utinni.EmpirePursuit,RimUtinni,HIGH,
 mod,src/Jawa/Inhabited,src/RimMandrake/Inhabited,RimMandrake,HIGH,297 defs; par plan 7 keep Inhabited_ stem - def rows unchanged pending owner sign
 packageId,mandrake.inhabited,mandrake.rm.inhabited,RimMandrake,HIGH,
 def,Inhabited_Blackstar_AdannFerroTheRecoverer,Inhabited_Blackstar_AdannFerroTheRecoverer,RimMandrake,HIGH,
@@ -490,7 +490,7 @@ packageId,mandrake.jawafactionslate,mandrake.rut.factionslate,RimUtinni,HIGH,
 mod,src/Jawa/JawaIkee,src/RimStarWars/JawaIkee,RimStarWars,HIGH,"species content; Jawa in name = species vocabulary, legal in RSW"
 packageId,mandrake.jawaikee,mandrake.rsw.jawaikee,RimStarWars,HIGH,
 def,Jawa_IkeeWatching,RSW_Jawa_IkeeWatching,RimStarWars,HIGH,
-namespace,JawaIkee,RimStarWars.JawaIkee,RimStarWars,HIGH,
+namespace,JawaIkee,RimMandrake.StarWars.JawaIkee,RimStarWars,HIGH,
 mod,src/Jawa/JawaIonWeapons,src/RimStarWars/JawaIonWeapons,RimStarWars,RULED,ion is SW-family
 packageId,mandrake.jawaionweapons,mandrake.rsw.ionweapons,RimStarWars,RULED,
 def,JawaIon_Blaster,RSW_JawaIon_Blaster,RimStarWars,RULED,
@@ -499,11 +499,11 @@ def,JawaIon_Damage,RSW_JawaIon_Damage,RimStarWars,RULED,
 def,JawaIon_Stun,RSW_JawaIon_Stun,RimStarWars,RULED,
 def,JawaIon_Weaponry,RSW_JawaIon_Weaponry,RimStarWars,RULED,
 def,Jawa_InverseBodySize,RSW_Jawa_InverseBodySize,RimStarWars,RULED,
-namespace,JawaIonWeapons,RimStarWars.JawaIonWeapons,RimStarWars,RULED,
+namespace,JawaIonWeapons,RimMandrake.StarWars.JawaIonWeapons,RimStarWars,RULED,
 mod,src/Jawa/JawaPlantGrowth,src/RimUtinni/PlantGrowth,RimUtinni,HIGH,"VERIFY resolved: names the terminator, poison forest, water-limited farming - planet-specific tuning, NOT generic"
 packageId,mandrake.jawaplantgrowth,mandrake.rut.plantgrowth,RimUtinni,HIGH,
 def,JawaPlantGrowth_Settings,RUT_JawaPlantGrowth_Settings,RimUtinni,HIGH,
-namespace,JawaPlantGrowth,RimUtinni.PlantGrowth,RimUtinni,HIGH,
+namespace,JawaPlantGrowth,RimMandrake.Utinni.PlantGrowth,RimUtinni,HIGH,
 mod,src/Jawa/JawaVoice,src/RimStarWars/JawaVoice,RimStarWars,HIGH,"VERIFY resolved: straddle CONFIRMED - 6 patch files (Ideology, Insults, CoreInteractions, weather, prisoners, Interactions) reference gods/ship/campaign; framework+generic Jawaese=RSW, those files extract to RUT in Phase 3"
 packageId,mandrake.jawavoice,mandrake.rsw.jawavoice,RimStarWars,HIGH,
 mod,src/Jawa/Jawa_Armoury,src/RimStarWars/Armoury,RimStarWars,HIGH,SW gun rebalance; doctrine patches extract to RUT in Phase 3
@@ -598,7 +598,7 @@ def,Yellow_Bullet_Laser,RSW_Yellow_Bullet_Laser,RimStarWars,HIGH,
 def,Z6_Rotary_Blaster_Cannon_Shot,RSW_Z6_Rotary_Blaster_Cannon_Shot,RimStarWars,HIGH,
 mod,src/Jawa/Jawa_Doctrine,src/RimUtinni/Doctrine,RimUtinni,RULED,campaign doctrine
 packageId,mandrake.jawa.doctrine,mandrake.rut.doctrine,RimUtinni,RULED,
-namespace,JawaDoctrineCore,RimUtinni.Doctrine,RimUtinni,RULED,
+namespace,JawaDoctrineCore,RimMandrake.Utinni.Doctrine,RimUtinni,RULED,
 mod,src/Jawa/Jawa_Patches,src/SPLIT_Phase3/Jawa_Patches,SPLIT,VERIFY,Phase 3 per-file triage: Ashkarr/Rakata/DeepDesert/Pyrelands files=RUT; animal/texture/generic fixes=RSW or RM
 packageId,mandrake.jawa.patches,TBD_SPLIT,SPLIT,VERIFY,
 def,Base_Player,TBD_SPLIT,SPLIT,VERIFY,Phase 3 per-file triage: Ashkarr/Rakata/DeepDesert/Pyrelands files=RUT; animal/texture/generic fixes=RSW or RM
@@ -1245,7 +1245,7 @@ mod,src/RimMandrake/GravshipAstronautFix,src/RimMandrake/GravshipAstronautFix,Ri
 packageId,mandrake.gravshipastronautfix,mandrake.rm.gravshipastronautfix,RimMandrake,RULED,
 mod,src/RimMandrake/JawaRules,src/RimStarWars/JawaRules,RimStarWars,HIGH,"VERIFY resolved: 4 Harmony rules keyed to MandrakeJawa xenotype + droid pawns (no-sow, droid-relations) = species rules, NOT engine-level; 2 generic rules (pet-names, world-labels) are later RM-extract candidates"
 packageId,mandrake.jawarules,mandrake.rsw.jawarules,RimStarWars,HIGH,
-namespace,JawaRules,RimStarWars.JawaRules,RimStarWars,HIGH,
+namespace,JawaRules,RimMandrake.StarWars.JawaRules,RimStarWars,HIGH,
 mod,src/RimMandrake/Jawa_PawnFlavor,src/RimUtinni/PawnFlavor,RimUtinni,HIGH,Ashkarr faction backstories
 packageId,mandrake.jawapawnflavor,mandrake.rut.pawnflavor,RimUtinni,HIGH,
 def,Jawa_AcademyCadet,RUT_Jawa_AcademyCadet,RimUtinni,HIGH,

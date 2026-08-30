@@ -45,9 +45,10 @@ superseded 2026-08-27 — redesign #4, `Fable_Review/`.)*
 Every NEW packageId, defName, C# namespace and mod folder uses the tier
 grammar in `design/NAMING_SCHEME_PLAN.md`: **RimMandrake** (any RimWorld game) /
 **RimStarWars** (any Star Wars scenario) / **RimUtinni** (this campaign) —
-packageId `mandrake.<tier>.<modname>`, prefixes `RM_`/`RSW_`/`RUT_`. "Jawa" is lore
-text only. Dev tooling is exempt. Old names migrate under
-NAMING_SCHEME_EXECUTION_1 — do not rename ahead of it.
+packageId `mandrake.<tier>.<modname>`, prefixes `RM_`/`RSW_`/`RUT_`,
+C# namespaces nested `RimMandrake[.StarWars|.Utinni].<Mod>` (never bare
+`RimStarWars`/`RimUtinni`). "Jawa" is lore text only. Dev tooling is exempt.
+Old names migrate under NAMING_SCHEME_EXECUTION_1 — do not rename ahead of it.
 
 ## Queue items are NAMED, not numbered — owner, 2026-08-20
 
