@@ -1,0 +1,414 @@
+<!doctype html>
+<title>Mirrored Tickets</title>
+<style>
+:root{
+  --bg:#eeece4; --surface:#ffffff; --surface-2:#f7f5ee; --border:#dcd6c6;
+  --ink:#2a241d; --ink-2:#655c4d; --ink-3:#948a76;
+  --accent:#1f8f83; --accent-ink:#ffffff;
+  --st-proposed:#6341c8; --st-ready:#419bc8; --st-doing:#a3720f; --st-blocked:#c84c41;
+  --st-done:#279b57; --st-dropped:#948a76; --st-superseded:#c841c8;
+  --shadow: 0 1px 2px rgba(30,25,15,.08), 0 4px 16px rgba(30,25,15,.06);
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#171310; --surface:#211c17; --surface-2:#271f19; --border:#3a3025;
+    --ink:#f1e9db; --ink-2:#c2b6a0; --ink-3:#8d8271;
+    --accent:#39c8b8; --accent-ink:#0d1a17;
+    --st-proposed:#845ed7; --st-ready:#3aa0d6; --st-doing:#c99a2e; --st-blocked:#e2645a;
+    --st-done:#37b06a; --st-dropped:#8d8271; --st-superseded:#d268c9;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#171310; --surface:#211c17; --surface-2:#271f19; --border:#3a3025;
+  --ink:#f1e9db; --ink-2:#c2b6a0; --ink-3:#8d8271;
+  --accent:#39c8b8; --accent-ink:#0d1a17;
+  --st-proposed:#845ed7; --st-ready:#3aa0d6; --st-doing:#c99a2e; --st-blocked:#e2645a;
+  --st-done:#37b06a; --st-dropped:#8d8271; --st-superseded:#d268c9;
+  --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px rgba(0,0,0,.35);
+  color-scheme: dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:"IBM Plex Sans",system-ui,-apple-system,sans-serif;font-size:14px;line-height:1.5}
+code,.mono,.id,.stat-n,.chip{font-family:"IBM Plex Mono",ui-monospace,Menlo,Consolas,monospace}
+h1,h2,h3{text-wrap:balance;margin:0}
+a{color:var(--accent)}
+
+header.top{position:sticky;top:0;z-index:20;background:var(--surface);
+  border-bottom:1px solid var(--border);padding:14px 20px;display:flex;
+  align-items:center;gap:20px;flex-wrap:wrap;box-shadow:var(--shadow)}
+header.top .brand{display:flex;flex-direction:column;gap:2px;margin-right:auto}
+header.top .brand .name{font-weight:700;font-size:17px;letter-spacing:.2px}
+header.top .brand .sub{color:var(--ink-3);font-size:12px}
+.stat-row{display:flex;gap:14px;flex-wrap:wrap}
+.stat{display:flex;flex-direction:column;align-items:center;min-width:44px}
+.stat .stat-n{font-size:17px;font-weight:600}
+.stat .stat-l{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-3)}
+.tabs{display:flex;gap:4px;background:var(--surface-2);border:1px solid var(--border);
+  border-radius:8px;padding:3px}
+.tab{padding:6px 14px;border-radius:6px;cursor:pointer;font-size:13px;color:var(--ink-2);
+  user-select:none}
+.tab.active{background:var(--accent);color:var(--accent-ink);font-weight:600}
+.ghlink{font-size:12px;color:var(--ink-2);text-decoration:none;border:1px solid var(--border);
+  padding:6px 10px;border-radius:6px;white-space:nowrap}
+.ghlink:hover{border-color:var(--accent);color:var(--accent)}
+
+.filters{position:sticky;top:64px;z-index:19;background:var(--bg);
+  border-bottom:1px solid var(--border);padding:10px 20px;display:flex;gap:10px;
+  flex-wrap:wrap;align-items:center}
+.filters input[type=search]{background:var(--surface);border:1px solid var(--border);
+  border-radius:6px;color:var(--ink);padding:6px 10px;font-size:13px;width:220px}
+.fgroup{display:flex;gap:4px;flex-wrap:wrap}
+.fchip{border:1px solid var(--border);background:var(--surface);color:var(--ink-2);
+  border-radius:999px;padding:4px 10px;font-size:11.5px;cursor:pointer;user-select:none}
+.fchip.on{background:var(--accent);color:var(--accent-ink);border-color:var(--accent)}
+.fclear{font-size:11.5px;color:var(--ink-3);cursor:pointer;text-decoration:underline;
+  text-underline-offset:2px}
+
+main{padding:18px 20px 60px}
+.legend{display:flex;gap:16px;flex-wrap:wrap;font-size:11.5px;color:var(--ink-2);
+  margin:0 0 14px;align-items:center}
+.legend .lg-group{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.dot{width:9px;height:9px;border-radius:50%;display:inline-block}
+.note{font-size:11.5px;color:var(--ink-3);max-width:640px}
+
+/* ---- graph view ---- */
+#graphwrap{background:var(--surface);border:1px solid var(--border);border-radius:10px;
+  overflow:hidden;position:relative}
+#graph{width:100%;display:block;cursor:grab}
+#graph:active{cursor:grabbing}
+.gnode circle{stroke-width:2px}
+.gnode text{font-family:"IBM Plex Mono",monospace;font-size:9px;fill:var(--ink-2);
+  pointer-events:none}
+.glink{stroke:var(--ink-3);stroke-opacity:.55;fill:none}
+.glink.superseded{stroke-dasharray:3,3}
+.glink.blocks{stroke:var(--st-blocked);stroke-opacity:.8}
+.gnode.dim{opacity:.18}
+.glink.dim{opacity:.06}
+
+/* ---- board view ---- */
+#board{display:grid;grid-template-columns:repeat(6,minmax(200px,1fr));gap:12px;
+  overflow-x:auto}
+.col{background:var(--surface-2);border:1px solid var(--border);border-radius:10px;
+  padding:10px;min-width:200px;display:flex;flex-direction:column;gap:8px}
+.col h3{font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;
+  display:flex;justify-content:space-between;color:var(--ink-2)}
+.card{background:var(--surface);border:1px solid var(--border);border-left:3px solid var(--ink-3);
+  border-radius:8px;padding:9px 10px;cursor:pointer;box-shadow:var(--shadow)}
+.card:hover{border-color:var(--accent)}
+.card .id{font-size:11px;font-weight:600;word-break:break-word}
+.card .title{font-size:12px;color:var(--ink-2);margin-top:3px;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.card .chips{margin-top:6px;display:flex;gap:5px;flex-wrap:wrap}
+.chip{font-size:9.5px;padding:2px 6px;border-radius:5px;background:var(--surface-2);
+  border:1px solid var(--border);color:var(--ink-2)}
+.chip.imp-critical{background:var(--st-blocked);color:#fff;border-color:transparent}
+.chip.imp-high{background:color-mix(in srgb, var(--st-blocked) 35%, var(--surface-2));
+  color:var(--ink);border-color:transparent}
+
+/* ---- detail drawer ---- */
+#scrim{position:fixed;inset:0;background:rgba(10,8,5,.35);display:none;z-index:29}
+#drawer{position:fixed;top:0;right:0;height:100%;width:min(420px,92vw);background:var(--surface);
+  border-left:1px solid var(--border);box-shadow:var(--shadow);transform:translateX(100%);
+  transition:transform .18s ease;z-index:30;overflow-y:auto;padding:20px}
+#drawer.open{transform:translateX(0)}
+#scrim.show{display:block}
+#drawer h2{font-size:15px;margin-bottom:2px}
+#drawer .dtitle{color:var(--ink-2);font-size:13px;margin-bottom:14px}
+#drawer .drow{display:flex;justify-content:space-between;gap:10px;padding:6px 0;
+  border-bottom:1px solid var(--border);font-size:12.5px}
+#drawer .drow .k{color:var(--ink-3)}
+#drawer .rel{font-size:12.5px;margin:4px 0;padding:6px 8px;background:var(--surface-2);
+  border-radius:6px}
+#drawer .why{font-size:12px;color:var(--ink-2);background:var(--surface-2);
+  border-radius:6px;padding:8px;margin-top:6px}
+#drawer .why b{color:var(--ink)}
+#drawer .close{position:absolute;top:14px;right:16px;cursor:pointer;color:var(--ink-3);
+  font-size:18px;line-height:1;background:none;border:none}
+#drawer a.ghbtn{display:inline-block;margin-top:14px;background:var(--accent);
+  color:var(--accent-ink);padding:7px 12px;border-radius:6px;font-size:12.5px;
+  text-decoration:none;font-weight:600}
+[hidden]{display:none!important}
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<header class="top">
+  <div class="brand">
+    <div class="name">Mirrored Tickets — RimMaster</div>
+    <div class="sub">rimflow ledger → GitHub Issues mirror, visualized — generated 2026-08-30 00:09 UTC</div>
+  </div>
+  <div class="stat-row" id="statrow"></div>
+  <div class="tabs">
+    <div class="tab active" data-view="graph">Graph</div>
+    <div class="tab" data-view="board">Board</div>
+  </div>
+  <a class="ghlink" href="https://github.com/Lmandrake/RimMaster/issues" target="_blank" rel="noopener">Issues on GitHub ↗</a>
+</header>
+
+<div class="filters">
+  <input type="search" id="search" placeholder="Filter by ID or title…">
+  <div class="fgroup" id="f-state"></div>
+  <div class="fgroup" id="f-needs"></div>
+  <span class="fclear" id="fclear" hidden>clear filters</span>
+</div>
+
+<main>
+  <div class="legend">
+    <div class="lg-group"><b>State:</b>
+      <span><span class="dot" style="background:var(--st-proposed)"></span> proposed</span>
+      <span><span class="dot" style="background:var(--st-ready)"></span> ready</span>
+      <span><span class="dot" style="background:var(--st-doing)"></span> doing</span>
+      <span><span class="dot" style="background:var(--st-blocked)"></span> blocked</span>
+      <span><span class="dot" style="background:var(--st-done)"></span> done</span>
+      <span><span class="dot" style="background:var(--st-superseded)"></span> superseded/dropped</span>
+    </div>
+    <div class="lg-group"><b>Node size</b> = inferred effort (S→XL) &nbsp; <b>ring width</b> = inferred importance &nbsp; <b>◆ diamond</b> = blocked (shape, not just color)</div>
+    <div class="lg-group"><b>Edges:</b> solid → caused-by &nbsp; dashed → superseded-by &nbsp; <span style="color:var(--st-blocked)">red</span> → blocked-on</div>
+  </div>
+  <p class="note">Relationships are read straight from the rimflow ledger (caused_by / superseded_by / blocked_on) —
+  nothing here is invented. <b>Effort and importance have no ledger field</b>; both are inferred per item from its prose
+  file by a small heuristic (checklist size, word count, file-paths named, owner-flag density, how many other mirrored
+  items it caused, how many it blocks). Click any node or card to see the reasoning and mark it as what it is: an
+  inference, not a ledger fact.</p>
+
+  <div id="graphwrap"><svg id="graph"></svg></div>
+  <div id="board" hidden></div>
+</main>
+
+<div id="scrim"></div>
+<div id="drawer">
+  <button class="close" id="drawerclose">✕</button>
+  <div id="drawerbody"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script id="ticket-data" type="application/json">[{"id": "ASHKARR_IDEOLOGY_MODE_CALL_1", "issue": 1, "gh_open": false, "title": "ASHKARR_IDEOLOGY_MODE_CALL_1", "kind": "decision", "owner": "OWNER", "needs": "owner", "state": "superseded", "open": false, "blocked": false, "blocked_reason": null, "blocked_on": null, "caused_by": null, "superseded_by": "CORRECT_ASHKARR_IDEOLOGY_1", "effort": "M", "effort_why": "0 checklist line(s), 725 words, 4 file path(s) named", "importance": "critical", "importance_why": "2 owner-flag(\ud83d\udd34) marker(s); caused 3 other mirrored item(s); needs:owner", "has_prose": true}, {"id": "ASSAILANT_FLESH_DUNGEON_1", "issue": 41, "gh_open": true, "title": "Design the Assailant flesh dungeon with the owner - and the Rakata dark-history reveal it carries", "kind": "task", "owner": "BENCH", "needs": "owner", "state": "proposed", "open": true, "blocked": false, "blocked_reason": null, "blocked_on": null, "caused_by": null, "superseded_by": null, "effort": "S", "effort_why": "0 checklist line(s), 259 words, 1 file path(s) named", "importance": "high", "importance_why": "carries a verbatim owner quote; touches canon; needs:owner", "has_prose": true}, {"id": "AUTHORED_FACTION_RAID_SPAWNS_NOTHING_1", "issue": 2, "gh_open": false, "title": "A hostile Jawa_HuttCartel raid reports fired and delivers zero pawns", "kind": "bug", "owner": "FOUNDRY", "needs": "bridge", "state": "done", "open": false, "blocked": false, "blocked_reason": null, "blocked_on": null, "caused_by": "seven-authored-factions-generate-and-field-their-own-kinds-5b90c7", "superseded_by": null, "effort": "L", "effort_why": "5 checklist line(s), 1101 words, 3 file path(s) named", "importance": "critical", "importance_why": "3 owner-flag(\ud83d\udd34) marker(s)", "has_prose": true}, {"id": "BLIND_SCAN_RELATIVE_PATHS_1", "issue": 3, "gh_open": false, "title": "block_blind_scan misses relative paths: selftest a_relative_path_is_resolved_against_the_shell_cwd fails (grep of defs/ThingDef.json allowed)", "kind": "task", "owner": "FOUNDRY", "needs": "offline", "state": "done", "open": false, "blocked": false, "blocked_reason": null, "blocked_on": null, "caused_by": null, "superseded_by": null, "effort": "M", "effort_why": "2 checklist line(s), 263 words, 3 file path(s) named", "importance": "low", "importance_why": "no strong signal found in prose or the ledger", "has_prose": true}, {"id": "BRIDGE_DEBUGACTION_SWEEP_GEMS_1", "issue": 42, "gh_open": true, "title": "First DebugAction sweep harvest: clear_area, spawn_fill_area, make_empty_room, destroy_bulk, explosion_at, ideo_ritual_obligation_remove, hot_reload_defs", "kind": "build", "owner": "FOUNDRY", "needs": "bridge", "state": "doing", "open": true, "blocked": true, "blocked_reason": "built clean, not deployed - game up, BENCH holds bridge", "blocked_on": null, "caused_by": null, "superseded_by": null, "effort": "M", "effort_why": "5 checklist line(s), 516 words, 1 file path(s) named", "importance": "medium", "importance_why": "currently blocked", "has_prose": true}, {"id": "BRIDGE_GEN_AND_STORYTELLER_TOOLS_1", "issue": 43, "gh_open": true, "title": "11 more bridge tools: scatter_at/run_genstep/run_basegen_symbol/fix_floating_roofs, spawn_mech_cluster, incident_queue_clear, set_game_speed, letter_list/letter_send_delayed, av_effect, set_thing_props", "kind": "build", "owner": "FOUNDRY", "needs": "bridge", "state": "doing", "open": true, "blocked": true, "blocked_reason": "built clean this game-loading window, not yet deployed - game must be closed first, then proven live", "blocked_on": null, "caused_by": null, "superseded_by": null, "effort": "L", "effort_why": "5 checklist line(s), 539 words, 6 file path(s) named", "importance": "medium", "importance_why": "currently blocked", "has_prose": true}, {"id": "BRIDGE_KCSG_VGE_TOOLS_1", "issue": 44, "gh_open": true, "title": "jawa/kcsg_place (structure/settlement/tiled/symbol), jawa/vge_spawn_structure_skyfaller, jawa/research_reinvented_reset", "kind": "build", "owner": "FOUNDRY", "needs": "bridge", "state": "doing", "open": true, "blocked": true, "blocked_reason": "built clean, not deployed - game up, BENCH holds bridge", "blocked_on": null, "caused_by": null, "superseded_by": null, "effort": "L", "effort_why": "5 checklist line(s), 594 words, 1 file path(s) named", "importance": "medium", "importance_why": "currently blocked", "has_prose": true}, {"id": "BRIDGE_LORDS_AND_GAPS_TOOLS_1", "issue": 45, "gh_open": true, "title": "10 new bridge tools: lord_destroy/set_point/travel_to, pawns_patrol_route, set_pawn_gender, set_pollution, battery_set, wipe_cell, get_gravship_substructure, forecast_incidents", "kind": "build", "owner": "FOUNDRY", "needs": "bridge", "state": "doing", "open": true, "blocked": true, "blocked_reason": "built and deployed clean this game-down window (10 tools, 0 errors/warnings); unproven live - every mechanism needs the next game-up window to prove, see items/BRIDGE_LORDS_AND_GAPS_TOOLS_1.md Verify", "blocked_on": null, "caused_by": null, "superseded_by": null, "effort": "L", "effort_why": "4 checklist line(s), 547 words, 5 file path(s) named", "importance": "medium", "importance_why": "currently blocked", "has_prose": true}, {"id": "BRIDGE_PIPE_NET_INFO_1", "issue": 46, "gh_open": true, "title": "jawa/pipe_net_info: VEF verified, Rimefeller/DBH generic reflection dump, per owner ruling", "kind": "build", "owner": "FOUNDRY", "needs": "bridge", "state": "doing", "open": true, "blocked": true, "blocked_reason": "built clean, not deployed - game up, BENCH holds bridge", "blocked_on": null, "caused_by": null, "superseded_by": null, "effort": "L", "effort_why": "6 checklist line(s), 410 words, 2 file path(s) named", "importance": "high", "importance_why": "1 owner-flag(\ud83d\udd34) marker(s); currently blocked", "has_prose": true}, {"id": "BRIDGE_STORY_ALERT_TALE_TOOLS_1", "issue": 47, "gh_open": true, "title": "5 more gems: alerts_list (resolves roster UNCERTAIN), tale_list/tale_record (free-text-on-pawn answer), story_stats, faction_goodwill_situations", "kind": "build", "owner": "FOUNDRY", "needs": "bridge", "state": "doing", "open": true, "blocked": true, "blocked_reason": "built clean, not deployed - game up, BENCH holds bridge", "blocked_on": null, "caused_by": null, "superseded_by": null, "effort": "L", "effort_why": "5 checklist line(s), 444 words, 3 file path(s) named", "importance": "medium", "importance_why": "currently blocked", "has_prose": true}, {"id": "BRIDGE_UIROOT_WINDOW_TOOLS_1", "issue": 48, "gh_open": true, "title": "jawa/window_list_close + jawa/screenshot_mode - the UIRoot row had real capabilities after all", "kind": "build", "owner": "FOUNDRY", "needs": "bridge", "state": "doing", "open": true, "blocked": true, "blocked_reason": "built clean, not deployed - game up, BENCH holds bridge", "blocked_on": null, "caused_by": null, "superseded_by": null, "effort": "L", "effort_why": "4 checklist line(s), 279 words, 4 file path(s) named", "importance": "medium", "importance_why": "currently blocked", "has_prose": true}, {"id": "BUILD_BATCH_FACTION_REJECTS_PLAYER_1", "issue": 4, "gh_open": true, "title": "jawa/build_batch refuses faction='player' while jawa/spawn_pawn accepts it - two tools, two grammars", "kind": "bug", "owner": "FOUNDRY", "needs": "bridge", "state": "ready", "open": true, "blocked": false, "blocked_reason": null, "blocked_on": null, "caused_by": null, "superseded_by": null, "effort": "S", "effort_why": "0 checklist line(s), 239 words, 2 file path(s) named", "importance": "low", "importance_why": "no strong signal found in prose or the ledger", "has_prose": true}, {"id": "BUILD_BATCH_OVERWRITES_SILENTLY_1", "issue": 5, "gh_open": true, "title": "jawa/build_batch reports placed for an op that destroys an existing building in the same run", "kind": "bug", "owner": "FOUNDRY", "needs": "bridge", "state": "ready", "open": true, "blocked": false, "blocked_reason": null, "blocked_on": null, "caused_by": null, "superseded_by": null, "effort": "M", "effort_why": "0 checklist line(s), 298 words, 4 file path(s) named", "importance": "high", "importance_why": "2 owner-flag(\ud83d\udd34) marker(s)", "has_prose": true}, {"id": "COLD_LOAD_RUN_SHEET_1", "issue": 6, "gh_open": false, "title": "One batched cold load scores every pending reading; replaces NEXT_RELOAD.md and EXPECTED_FAILURES_next_load.md", "kind": "task", "owner": "BENCH", "needs": "game-up", "state": "superseded", "open": false, "blocked": false, "blocked_reason": null, "blocked_on": null, "caused_by": null, "superseded_by": "COLD_LOAD_RUN_SHEET_2", "effort": "XL", "effort_why": "0 checklist line(s), 1171 words, 18 file path(s) named", "importance": "high", "importance_why": "1 owner-flag(\ud83d\udd34) marker(s); caused 1 other mirrored item(s)", "has_prose": true}, {"id": "COLD_LOAD_RUN_SHEET_2", "issue": 33, "gh_open": true, "title": "Next window run sheet: scenario-tool deploy, pursuit install, ship round trip", "kind": "task", "owner": "BENCH", "needs": "deploy", "state": "doing", "open": true, "blocked": false, "blocked_reason": null, "blocked_on": null, "caused_by": null, "superseded_by": null, "effort": "L", "effort_why": "0 checklist line(s), 1396 words, 10 file path(s) named", "importance": "medium", "importance_why": "touches canon", "has_prose": true}, {"id": "CORRECT_ASHKARR_IDEOLOGY_1", "issue": 34, "gh_open": true, "title": "ASHKARR_IDEOLOGY_MODE_CALL_1's 'world creation only' claim is wrong - FactionIdeosTracker.ChooseOrGenerateIdeo works live", "kind": "task", "owner": "OWNER", "needs": "offline", "state": "proposed", "open": true, "blocked": false, "blocked_reason": null, "blocked_on": null, "caused_by": "ASHKARR_IDEOLOGY_MODE_CALL_1", "superseded_by": null, "effort": "L", "effort_why": "3 checklist line(s), 585 words, 6 file path(s) named", "importance": "low", "importance_why": "no strong signal found in prose or the ledger", "has_prose": true}, {"id": "DROID_SYSTEM_BUILD_1", "issue": 35, "gh_open": true, "title": "Build the unifying droid mod per droid_system_spec.md (parked until the owner reopens)", "kind": "build", "owner": "FOUNDRY", "needs": "owner", "state": "proposed", "open": true, "blocked": false, "blocked_reason": null, "blocked_on": null, "caused_by": null, "superseded_by": null, "effort": "M", "effort_why": "no prose file on disk \u2014 defaulted, not inferred", "importance": "medium", "importance_why": "needs:owner", "has_prose": false}, {"id": "DUMPER_SWALLOWS_CACHE_THROW_1", "issue": 7, "gh_open": true, "title": "The def dumper publishes the engine's cached answer and swallows the exception behind it", "kind": "defect", "owner": "FOUNDRY", "needs": "bridge", "state": "ready", "open": true, "blocked": false, "blocked_reason": null, "blocked_on": null, "caused_by": null, "superseded_by": null, "effort": "M", "effort_why": "3 checklist line(s), 306 words, 3 file path(s) named", "importance": "low", "importance_why": "no strong signal found in prose or the ledger", "has_prose": true}, {"id": "DUMP_PRODUCER_DATED_CAPTURES_1", "issue": 8, "gh_open": false, "title": "DefDumper writes captures/<id>/ and prunes to the newest three", "kind": "task", "owner": "FOUNDRY", "needs": "harvest", "state": "dropped", "open": false, "blocked": false, "blocked_reason": null, "blocked_on": null, "caused_by": null, "superseded_by": null, "effort": "L", "effort_why": "0 checklist line(s), 1065 words, 14 file path(s) named", "importance": "critical", "importance_why": "4 owner-flag(\ud83d\udd34) marker(s)", "has_prose": true}, {"id": "EMPIRE_PURSUIT_SCENPART_INSTALL_1", "issue": 9, "gh_open": false, "title": "Install endless Empire pursuit ScenPart into the campaign, with the owner", "kind": "build", "owner": "BENCH", "needs": "bridge", "state": "done", "open": false, "blocked": false, "blocked_reason": null, "blocked_on": null, "caused_by": null, "superseded_by": null, "effort": "M", "effort_why": "3 checklist line(s), 415 words, 1 file path(s) named", "importance": "medium", "importance_why": "caused 1 other mirrored item(s)", "has_prose": true}, {"id": "EMPIRE_PURSUIT_SURVEY_SHADOW_1", "issue": 10, "gh_open": true, "title": "Fork pursuit mod: survey-shadow biomes slow the Empire to 20-30 days", "kind": "build", "owner": "FOUNDRY", "needs": "bridge", "state": "doing", "open": true, "blocked": true, "blocked_reason": "offline half done (fork+build clean, see progress note); verify needs bridge live-check, waiting on game-up (same gate as EMPIRE_PURSUIT_SCENPART_INSTALL_1)", "blocked_on": null, "caused_by": null, "superseded_by": null, "effort": "L", "effort_why": "3 checklist line(s), 502 words, 4 file path(s) named", "importance": "high", "importance_why": "carries a verbatim owner quote; currently blocked", "has_prose": true}, {"id": "EMPIRE_RAID_QUICKTEST_1", "issue": 11, "gh_open": true, "title": "Quicktest proof of the full Empire reskin: fire RaidEnemy as vanilla Empire (pass points explicitly; read faction from the REPLY, not the request), verify Jawa_Empire kinds in OuterRim armor, Emperor/Palpatine via fixedLeaderKinds, Rising Order ideo, and NO OuterRim_GalacticEmpire faction on the world \u2014 criteria preserved at V2_DREAMS C2 strike", "kind": "task", "owner": "FOUNDRY", "needs": "bridge", "state": "doing", "open": true, "blocked": true, "blocked_reason": "6/7 criteria confirmed, incl. live raid at points=1200 with correct kinds+apparel. Sole remainder is EMPIRE_WHITELIST_OVERRIDDEN_1 (Empire not naturally hostile).", "blocked_on": null, "caused_by": null, "superseded_by": null, "effort": "L", "effort_why": "7 checklist line(s), 929 words, 4 file path(s) named", "importance": "critical", "importance_why": "1 owner-flag(\ud83d\udd34) marker(s); touches canon; caused 2 other mirrored item(s); currently blocked", "has_prose": true}, {"id": "EMPIRE_TROOPER_TRAINING_1", "issue": 12, "gh_open": false, "title": "Jawa_Empire_Grunt/Heavy/Specialist carry no training hediffs (grep Training = 0 in JawaFactionRoster.xml); apply the OuterRim_StormtrooperTraining line via the same mechanism OuterRim_ImpStormtrooper uses \u2014 read that def for the field, never guess it", "kind": "task", "owner": "FOUNDRY", "needs": "offline", "state": "done", "open": false, "blocked": false, "blocked_reason": null, "blocked_on": null, "caused_by": null, "superseded_by": null, "effort": "L", "effort_why": "4 checklist line(s), 357 words, 6 file path(s) named", "importance": "low", "importance_why": "no strong signal found in prose or the ledger", "has_prose": true}, {"id": "EMPIRE_WHITELIST_OVERRIDDEN_1", "issue": 36, "gh_open": true, "title": "Empire permanentEnemyToEveryoneExcept still contains PlayerColony/PlayerTribe despite GalacticEmpire.xml's Replace", "kind": "bug", "owner": "FOUNDRY", "needs": "bridge", "state": "doing", "open": true, "blocked": true, "blocked_reason": "69 XML candidates cleared, points at a C# compat framework not an XML conflict. Needs a Harmony patch inventory (no bridge tool yet, needs game-down deploy) or a mod-list bisect.", "blocked_on": null, "caused_by": "EMPIRE_RAID_QUICKTEST_1", "superseded_by": null, "effort": "L", "effort_why": "3 checklist line(s), 588 words, 6 file path(s) named", "importance": "high", "importance_why": "1 owner-flag(\ud83d\udd34) marker(s); currently blocked", "has_prose": true}, {"id": "FIRE_RAID_ECHOES_REQUESTED_FACTION_1", "issue": 13, "gh_open": true, "title": "jawa/fire_raid reports the faction you asked for even when the worker raids with a different one", "kind": "bug", "owner": "FOUNDRY", "needs": "bridge", "state": "ready", "open": true, "blocked": false, "blocked_reason": null, "blocked_on": null, "caused_by": null, "superseded_by": null, "effort": "S", "effort_why": "0 checklist line(s), 322 words, 2 file path(s) named", "importance": "medium", "importance_why": "1 owner-flag(\ud83d\udd34) marker(s)", "has_prose": true}, {"id": "GM_GATE_INCIDENT_SCHEDULE_1", "issue": 31, "gh_open": false, "title": "jawa/incident_schedule (SimTools) queues incidents against the player but sits OUTSIDE #if JAWA_GM_TOOLS, contradicting the EventTools doctrine line 'everything that acts on the player is behind the gate' \u2014 audit SimTools' storyteller section for other un-gated actors and wrap them; found 2026-08-28 while fixing the gate guard's false positive", "kind": "task", "owner": "FOUNDRY", "needs": "offline", "state": "done", "open": false, "blocked": false, "blocked_reason": null, "blocked_on": null, "caused_by": null, "superseded_by": null, "effort": "M", "effort_why": "3 checklist line(s), 289 words, 1 file path(s) named", "importance": "low", "importance_why": "no strong signal found in prose or the ledger", "has_prose": true}, {"id": "GRAVSHIP_LANDING_DIRECT_PLACE_1", "issue": 14, "gh_open": false, "title": "Land a gravship without the cutscene machinery (skipCutscene route)", "kind": "build", "owner": "BENCH", "needs": "deploy", "state": "done", "open": false, "blocked": false, "blocked_reason": null, "blocked_on": null, "caused_by": null, "superseded_by": null, "effort": "M", "effort_why": "1 checklist line(s), 439 words, 2 file path(s) named", "importance": "low", "importance_why": "no strong signal found in prose or the ledger", "has_prose": true}, {"id": "IKEE_WILDNESS_PATCH_DEAD_1", "issue": 15, "gh_open": false, "title": "Ikee_Tuning.xml wildness patch targets a field 1.6 does not have; two live def errors", "kind": "defect", "owner": "FOUNDRY", "needs": "offline", "state": "done", "open": false, "blocked": false, "blocked_reason": null, "blocked_on": null, "caused_by": null, "superseded_by": null, "effort": "L", "effort_why": "0 checklist line(s), 590 words, 8 file path(s) named", "importance": "low", "importance_why": "no strong signal found in prose or the ledger", "has_prose": true}, {"id": "ION_STUN_IGNORES_BODY_SIZE_1", "issue": 37, "gh_open": true, "title": "Ion (and likely sonic) stun/overload severity has no body-size term - a 32x-human Behemoth drops as fast as a person", "kind": "bug", "owner": "FOUNDRY", "needs": "bridge", "state": "doing", "open": true, "blocked": true, "blocked_reason": "fix committed and built clean; deploy blocked, game holds the DLL locked. Deploy at next down-window: deploy_custom_mods.py --mod JawaIonWeapons --apply", "blocked_on": null, "caused_by": null, "superseded_by": null, "effort": "L", "effort_why": "5 checklist line(s), 901 words, 6 file path(s) named", "importance": "high", "importance_why": "1 owner-flag(\ud83d\udd34) marker(s); caused 2 other mirrored item(s); currently blocked", "has_prose": true}, {"id": "ION_TIERS_MEASURED_LIVE_1", "issue": 16, "gh_open": false, "title": "Measure all three ion tiers live: mech, droid, and the flesh baseline that must not move", "kind": "check", "owner": "FOUNDRY", "needs": "bridge", "state": "done", "open": false, "blocked": false, "blocked_reason": null, "blocked_on": null, "caused_by": null, "superseded_by": null, "effort": "M", "effort_why": "3 checklist line(s), 638 words, 2 file path(s) named", "importance": "low", "importance_why": "no strong signal found in prose or the ledger", "has_prose": true}, {"id": "JAWA_CULTURES_LEAK_TO_STRANGERS_1", "issue": 17, "gh_open": false, "title": "Six unrelated ideoligions rolled our twelve CultureDefs and generated their own names", "kind": "decision", "owner": "FOUNDRY", "needs": "offline", "state": "dropped", "open": false, "blocked": false, "blocked_reason": null, "blocked_on": null, "caused_by": "ASHKARR_IDEOLOGY_MODE_CALL_1", "superseded_by": null, "effort": "S", "effort_why": "0 checklist line(s), 268 words, 1 file path(s) named", "importance": "low", "importance_why": "no strong signal found in prose or the ledger", "has_prose": true}, {"id": "JAWA_TOOLS_ALL_DARK_DUPLICATE_ALIAS_1", "issue": 49, "gh_open": true, "title": "Every jawa/ bridge tool is dark right now - duplicate jawa/bill_add alias crashed the WHOLE provider registration", "kind": "bug", "owner": "FOUNDRY", "needs": "bridge", "state": "doing", "open": true, "blocked": true, "blocked_reason": "fixed in source, builds clean; NOT deployed - game is up, BENCH holds bridge, DLL cannot be written while RimWorld runs. Deploy next down-window.", "blocked_on": null, "caused_by": null, "superseded_by": null, "effort": "L", "effort_why": "5 checklist line(s), 541 words, 5 file path(s) named", "importance": "high", "importance_why": "1 owner-flag(\ud83d\udd34) marker(s); currently blocked", "has_prose": true}, {"id": "NONCANON_ARRIVES_BY_PAWNKIND_1", "issue": 18, "gh_open": false, "title": "106 of our PawnKindDefs bypass every faction xenotype gate - is that wanted, and is gene extraction in scope", "kind": "decision", "owner": "FOUNDRY", "needs": "offline", "state": "done", "open": false, "blocked": false, "blocked_reason": "scope call only the owner can make (post-redesign#4, DECIDE seat superseded); needs ruling on roster-vs-arrivals, Ancient Rakata intent, gene-extraction scope", "blocked_on": null, "caused_by": null, "superseded_by": null, "effort": "M", "effort_why": "3 checklist line(s), 586 words, 3 file path(s) named", "importance": "high", "importance_why": "1 owner-flag(\ud83d\udd34) marker(s); touches canon", "has_prose": true}, {"id": "NO_TOOL_REPORTS_MAP_TILE_1", "issue": 19, "gh_open": true, "title": "No bridge tool reports which world tile the current map is on - you have to find the player Settlement", "kind": "task", "owner": "FOUNDRY", "needs": "bridge", "state": "ready", "open": true, "blocked": false, "blocked_reason": null, "blocked_on": null, "caused_by": null, "superseded_by": null, "effort": "S", "effort_why": "0 checklist line(s), 368 words, 1 file path(s) named", "importance": "low", "importance_why": "no strong signal found in prose or the ledger", "has_prose": true}, {"id": "ORDERED_JOB_CANNOT_SOW_1", "issue": 20, "gh_open": true, "title": "jawa/ordered_job cannot set plantDefToSow, so any Sow it issues is accepted and dies in the first toil", "kind": "bug", "owner": "FOUNDRY", "needs": "bridge", "state": "ready", "open": true, "blocked": false, "blocked_reason": null, "blocked_on": null, "caused_by": null, "superseded_by": null, "effort": "M", "effort_why": "0 checklist line(s), 419 words, 5 file path(s) named", "importance": "low", "importance_why": "no strong signal found in prose or the ledger", "has_prose": true}, {"id": "OTHER_STUN_WEAPONS_SURVEY_1", "issue": 38, "gh_open": true, "title": "Survey of every other stun-capable damage type: which have body-size scaling, which don't", "kind": "investigate", "owner": "FOUNDRY", "needs": "bridge", "state": "doing", "open": true, "blocked": false, "blocked_reason": null, "blocked_on": null, "caused_by": "ION_STUN_IGNORES_BODY_SIZE_1", "superseded_by": null, "effort": "XL", "effort_why": "7 checklist line(s), 2409 words, 20 file path(s) named", "importance": "low", "importance_why": "no strong signal found in prose or the ledger", "has_prose": true}, {"id": "PACIFIST_GUARD_NAMES_WRONG_FACTIONS_1", "issue": 21, "gh_open": false, "title": "The no-pacifist guard covers Empire and Blackstar; the rolls landed on eight factions", "kind": "task", "owner": "FOUNDRY", "needs": "owner", "state": "done", "open": false, "blocked": false, "blocked_reason": null, "blocked_on": null, "caused_by": null, "superseded_by": null, "effort": "M", "effort_why": "0 checklist line(s), 565 words, 3 file path(s) named", "importance": "high", "importance_why": "1 owner-flag(\ud83d\udd34) marker(s); needs:owner", "has_prose": true}, {"id": "PAWN_FLAVOR_STARWARS_1", "issue": 39, "gh_open": true, "title": "Assess and rework backstories, childhoods and traits for Star Wars fidelity, with the owner", "kind": "task", "owner": "BENCH", "needs": "owner", "state": "doing", "open": true, "blocked": false, "blocked_reason": null, "blocked_on": null, "caused_by": null, "superseded_by": null, "effort": "M", "effort_why": "0 checklist line(s), 536 words, 2 file path(s) named", "importance": "high", "importance_why": "carries a verbatim owner quote; touches canon; needs:owner", "has_prose": true}, {"id": "PAWN_WEAPON_GEN_TAG_POOL_READ_1", "issue": 22, "gh_open": false, "title": "PAWN_WEAPON_GEN_TAG_POOL_READ_1", "kind": "fix", "owner": "FOUNDRY", "needs": "offline", "state": "done", "open": false, "blocked": false, "blocked_reason": null, "blocked_on": null, "caused_by": null, "superseded_by": null, "effort": "M", "effort_why": "3 checklist line(s), 569 words, 2 file path(s) named", "importance": "high", "importance_why": "1 owner-flag(\ud83d\udd34) marker(s); touches canon; caused 1 other mirrored item(s)", "has_prose": true}, {"id": "PAWN_WEAPON_POOL_JOIN_TOOL_1", "issue": 32, "gh_open": false, "title": "Join weaponTags against roster IsRangedWeapon/generateAllowChance for the 23 bare-producing kinds", "kind": "task", "owner": "FOUNDRY", "needs": "offline", "state": "done", "open": false, "blocked": false, "blocked_reason": null, "blocked_on": null, "caused_by": "PAWN_WEAPON_GEN_TAG_POOL_READ_1", "superseded_by": null, "effort": "L", "effort_why": "3 checklist line(s), 661 words, 4 file path(s) named", "importance": "high", "importance_why": "1 owner-flag(\ud83d\udd34) marker(s); touches canon", "has_prose": true}, {"id": "PLACER_IDENTITY_REPLAY_1", "issue": 23, "gh_open": true, "title": "Replay the exported identity payload: quality, container contents, bills, storage settings need companion setter tools; the exporter already captures them", "kind": "task", "owner": "FOUNDRY", "needs": "bridge", "state": "doing", "open": true, "blocked": false, "blocked_reason": null, "blocked_on": null, "caused_by": null, "superseded_by": null, "effort": "M", "effort_why": "4 checklist line(s), 365 words, 1 file path(s) named", "importance": "low", "importance_why": "no strong signal found in prose or the ledger", "has_prose": true}, {"id": "QUEUE_GITHUB_MIRROR_1", "issue": 24, "gh_open": false, "title": "Pilot: rimflow post-write mirror of queue items to GitHub issues on Lmandrake/RimMaster (named ID as issue title, lane as label) \u2014 events.jsonl STAYS the truth, GitHub is visualizer only; prereqs: gh CLI install + auth (owner), confirm repo private", "kind": "task", "owner": "BENCH", "needs": "offline", "state": "done", "open": false, "blocked": false, "blocked_reason": null, "blocked_on": null, "caused_by": null, "superseded_by": null, "effort": "M", "effort_why": "0 checklist line(s), 300 words, 3 file path(s) named", "importance": "medium", "importance_why": "touches canon", "has_prose": true}, {"id": "SIX_FACTIONS_NEVER_RAID_1", "issue": 25, "gh_open": true, "title": "Six of the seven authored factions produced no raid in 18 firings", "kind": "bug", "owner": "FOUNDRY", "needs": "bridge", "state": "doing", "open": true, "blocked": true, "blocked_reason": "needs bridge; BENCH holds it (owner confirmed live, 2026-08-29) \u2014 my prior fire_raid work on the sibling item collided with BENCH's session, not touching the bridge again until it's free", "blocked_on": null, "caused_by": "seven-authored-factions-generate-and-field-their-own-kinds-5b90c7", "superseded_by": null, "effort": "M", "effort_why": "1 checklist line(s), 452 words, 1 file path(s) named", "importance": "high", "importance_why": "1 owner-flag(\ud83d\udd34) marker(s); blocks 1 mirrored item(s); currently blocked", "has_prose": true}, {"id": "SPAWN_PAWN_SUBSTITUTES_VANILLA_KIND_1", "issue": 26, "gh_open": true, "title": "jawa/spawn_pawn reports 2/2 of the kind asked for and delivers one vanilla Colonist", "kind": "bug", "owner": "FOUNDRY", "needs": "bridge", "state": "doing", "open": true, "blocked": false, "blocked_reason": null, "blocked_on": null, "caused_by": null, "superseded_by": null, "effort": "XL", "effort_why": "9 checklist line(s), 1313 words, 4 file path(s) named", "importance": "medium", "importance_why": "1 owner-flag(\ud83d\udd34) marker(s)", "has_prose": true}, {"id": "TECH_TREE_WEAPON_GROUPS_1", "issue": 50, "gh_open": true, "title": "Examine the research tree with the owner: ship-systems-online arc + weapon techs grouped by kind (ion/laser/blaster/sonic...)", "kind": "task", "owner": "BENCH", "needs": "owner", "state": "proposed", "open": true, "blocked": false, "blocked_reason": null, "blocked_on": null, "caused_by": null, "superseded_by": null, "effort": "S", "effort_why": "0 checklist line(s), 154 words, 2 file path(s) named", "importance": "high", "importance_why": "carries a verbatim owner quote; touches canon; needs:owner", "has_prose": true}, {"id": "THOROUGH_RETAG_WEAPONS_ARMOUR_1", "issue": 27, "gh_open": true, "title": "The thorough weapon and armour retag: the advice, the measured state, and the dump it is blocked on", "kind": "task", "owner": "FOUNDRY", "needs": "bridge", "state": "ready", "open": true, "blocked": true, "blocked_reason": "remaining check needs the NEXT cold load's Player.log + fresh capture; a restart is the owner's call (game-state-is-one-command-now), not FOUNDRY's to trigger for one item", "blocked_on": null, "caused_by": null, "superseded_by": null, "effort": "XL", "effort_why": "0 checklist line(s), 2557 words, 8 file path(s) named", "importance": "critical", "importance_why": "6 owner-flag(\ud83d\udd34) marker(s); caused 1 other mirrored item(s); currently blocked", "has_prose": true}, {"id": "THRUSTER_INSTABUILD_NEVER_ACTIVE_1", "issue": 28, "gh_open": false, "title": "Tool-built thrusters link but never contribute range on the full list", "kind": "bug", "owner": "FOUNDRY", "needs": "bridge", "state": "done", "open": false, "blocked": false, "blocked_reason": "mechanism fully mapped and committed (4f9bb163); live repro on this quicktest map kept getting contaminated by terrain/substructure setup mistakes before a clean confirm. Needs a careful retry on flat/non-mountain terrain, small tick steps only.", "blocked_on": null, "caused_by": null, "superseded_by": null, "effort": "L", "effort_why": "2 checklist line(s), 1039 words, 6 file path(s) named", "importance": "medium", "importance_why": "caused 1 other mirrored item(s)", "has_prose": true}, {"id": "TURRET_ROSTER_CURATION_1", "issue": 51, "gh_open": true, "title": "Spawn every turret live with the owner; decide keep/cut, role and placement for each", "kind": "task", "owner": "BENCH", "needs": "game-up", "state": "proposed", "open": true, "blocked": false, "blocked_reason": null, "blocked_on": null, "caused_by": null, "superseded_by": null, "effort": "M", "effort_why": "3 checklist line(s), 355 words, 1 file path(s) named", "importance": "medium", "importance_why": "carries a verbatim owner quote", "has_prose": true}, {"id": "VAULT_DUNGEON_CONCEPT_1", "issue": 52, "gh_open": true, "title": "Design Forsaken-vault dungeons with the owner", "kind": "task", "owner": "BENCH", "needs": "owner", "state": "proposed", "open": true, "blocked": false, "blocked_reason": null, "blocked_on": null, "caused_by": null, "superseded_by": null, "effort": "S", "effort_why": "0 checklist line(s), 83 words, 0 file path(s) named", "importance": "medium", "importance_why": "touches canon; needs:owner", "has_prose": true}, {"id": "VEHICLE_ION_TIER_1", "issue": 53, "gh_open": true, "title": "Ion weapon has zero effect on Vehicle Framework vehicles", "kind": "bug", "owner": "FOUNDRY", "needs": "bridge", "state": "doing", "open": true, "blocked": true, "blocked_reason": "built and deployed (game DOWN); live-verify against a real vehicle owed at next game-up, a mechanism never once observed running", "blocked_on": null, "caused_by": "ION_STUN_IGNORES_BODY_SIZE_1", "superseded_by": null, "effort": "L", "effort_why": "5 checklist line(s), 771 words, 4 file path(s) named", "importance": "medium", "importance_why": "currently blocked", "has_prose": true}, {"id": "WILD_ANIMALS_PADDED_LISTS_1", "issue": 40, "gh_open": true, "title": "wildAnimals lists padded to 1024 by unidentified C# pass", "kind": "investigate", "owner": "FOUNDRY", "needs": "bridge", "state": "doing", "open": true, "blocked": true, "blocked_reason": "game DOWN, tool call needs a live game; deferred to next UP", "blocked_on": null, "caused_by": "COLD_LOAD_RUN_SHEET_1", "superseded_by": null, "effort": "L", "effort_why": "3 checklist line(s), 990 words, 10 file path(s) named", "importance": "high", "importance_why": "1 owner-flag(\ud83d\udd34) marker(s); currently blocked", "has_prose": true}, {"id": "WORLD_MUTATOR_LANDMARK_IMPORTERS_1", "issue": 29, "gh_open": false, "title": "No file importer for mutators or landmarks - 13,569 tiles and 579 landmarks can only be replayed by script", "kind": "task", "owner": "FOUNDRY", "needs": "offline", "state": "dropped", "open": false, "blocked": true, "blocked_reason": "Only worth building if the owner chooses the rebuild in ASHKARR_IDEOLOGY_MODE_CALL_1. Filed so the cost of that choice is visible when he makes it, not so a seat starts on it.", "blocked_on": null, "caused_by": "ASHKARR_IDEOLOGY_MODE_CALL_1", "superseded_by": null, "effort": "S", "effort_why": "0 checklist line(s), 277 words, 2 file path(s) named", "importance": "medium", "importance_why": "currently blocked", "has_prose": true}, {"id": "seven-authored-factions-generate-and-field-their-own-kinds-5b90c7", "issue": 30, "gh_open": true, "title": "seven-authored-factions-generate-and-field-their-own-kinds-5b90c7", "kind": "check", "owner": "FOUNDRY", "needs": "game-up", "state": "ready", "open": true, "blocked": true, "blocked_reason": "2 of 3 criteria met; the raid criterion is blocked on SIX_FACTIONS_NEVER_RAID_1 - six of seven produced nothing in 18 firings", "blocked_on": "SIX_FACTIONS_NEVER_RAID_1", "caused_by": null, "superseded_by": null, "effort": "M", "effort_why": "0 checklist line(s), 961 words, 3 file path(s) named", "importance": "critical", "importance_why": "3 owner-flag(\ud83d\udd34) marker(s); caused 2 other mirrored item(s); currently blocked", "has_prose": true}]</script>
+<script>
+const DATA = JSON.parse(document.getElementById('ticket-data').textContent);
+const GH_REPO = "Lmandrake/RimMaster";
+const STATE_COLOR = {proposed:'var(--st-proposed)', ready:'var(--st-ready)', doing:'var(--st-doing)',
+  blocked:'var(--st-blocked)', done:'var(--st-done)', dropped:'var(--st-dropped)', superseded:'var(--st-superseded)'};
+const EFFORT_R = {S:9, M:13, L:17, XL:22};
+const IMP_W = {low:1.5, medium:2.5, high:4, critical:6};
+const byId = Object.fromEntries(DATA.map(d => [d.id, d]));
+
+function displayState(d){ return d.blocked ? 'blocked' : d.state; }
+
+// ---------- stat row ----------
+(function(){
+  const counts = {};
+  DATA.forEach(d => { const s = displayState(d); counts[s] = (counts[s]||0)+1; });
+  const order = ['proposed','ready','doing','blocked','done'];
+  const row = document.getElementById('statrow');
+  order.forEach(s => {
+    if(!counts[s]) return;
+    const el = document.createElement('div');
+    el.className = 'stat';
+    el.innerHTML = `<span class="stat-n" style="color:${STATE_COLOR[s]}">${counts[s]}</span><span class="stat-l">${s}</span>`;
+    row.appendChild(el);
+  });
+})();
+
+// ---------- filter chips ----------
+let activeState = null, activeNeeds = null, searchQ = '';
+function chipRow(container, values, activeGetter, setter){
+  values.forEach(v => {
+    const c = document.createElement('span');
+    c.className = 'fchip'; c.textContent = v;
+    c.onclick = () => { setter(activeGetter() === v ? null : v); render(); };
+    container.appendChild(c);
+  });
+}
+chipRow(document.getElementById('f-state'),
+  ['proposed','ready','doing','blocked','done','dropped','superseded'],
+  () => activeState, v => activeState = v);
+chipRow(document.getElementById('f-needs'),
+  [...new Set(DATA.map(d=>d.needs))].sort(),
+  () => activeNeeds, v => activeNeeds = v);
+document.getElementById('search').addEventListener('input', e => { searchQ = e.target.value.toLowerCase(); render(); });
+document.getElementById('fclear').onclick = () => {
+  activeState = null; activeNeeds = null; searchQ = '';
+  document.getElementById('search').value = '';
+  render();
+};
+
+function matches(d){
+  if(activeState && displayState(d) !== activeState) return false;
+  if(activeNeeds && d.needs !== activeNeeds) return false;
+  if(searchQ && !(d.id.toLowerCase().includes(searchQ) || (d.title||'').toLowerCase().includes(searchQ))) return false;
+  return true;
+}
+
+function syncChipUI(){
+  document.querySelectorAll('#f-state .fchip').forEach(c => c.classList.toggle('on', c.textContent === activeState));
+  document.querySelectorAll('#f-needs .fchip').forEach(c => c.classList.toggle('on', c.textContent === activeNeeds));
+  document.getElementById('fclear').hidden = !(activeState || activeNeeds || searchQ);
+}
+
+// ---------- drawer ----------
+const drawer = document.getElementById('drawer'), scrim = document.getElementById('scrim');
+function openDrawer(d){
+  const rel = [];
+  if(d.caused_by) rel.push(`caused by <b>${d.caused_by}</b>`);
+  if(d.blocked_on) rel.push(`blocked on <b>${d.blocked_on}</b>`);
+  if(d.superseded_by) rel.push(`superseded by <b>${d.superseded_by}</b>`);
+  const causes = DATA.filter(x => x.caused_by === d.id).map(x=>x.id);
+  if(causes.length) rel.push(`caused: ${causes.map(c=>`<b>${c}</b>`).join(', ')}`);
+  const blocks = DATA.filter(x => x.blocked_on === d.id).map(x=>x.id);
+  if(blocks.length) rel.push(`blocks: ${blocks.map(c=>`<b>${c}</b>`).join(', ')}`);
+  document.getElementById('drawerbody').innerHTML = `
+    <h2>${d.id}</h2>
+    <div class="dtitle">${(d.title||'').replace(/</g,'&lt;')}</div>
+    <div class="drow"><span class="k">state</span><span>${displayState(d)}${d.blocked?' — '+(d.blocked_reason||''):''}</span></div>
+    <div class="drow"><span class="k">owner (seat)</span><span>${d.owner||'—'}</span></div>
+    <div class="drow"><span class="k">needs</span><span>${d.needs}</span></div>
+    <div class="drow"><span class="k">effort (inferred)</span><span>${d.effort}</span></div>
+    <div class="drow"><span class="k">importance (inferred)</span><span>${d.importance}</span></div>
+    ${rel.length ? '<div style="margin-top:10px">'+rel.map(r=>`<div class="rel">${r}</div>`).join('')+'</div>' : ''}
+    <div class="why"><b>Why this effort:</b> ${d.effort_why}</div>
+    <div class="why"><b>Why this importance:</b> ${d.importance_why}</div>
+    ${d.issue ? `<a class="ghbtn" target="_blank" rel="noopener" href="https://github.com/${GH_REPO}/issues/${d.issue}">Open issue #${d.issue} on GitHub ↗</a>` : '<div class="note" style="margin-top:10px">Not yet mirrored to an issue.</div>'}
+  `;
+  drawer.classList.add('open'); scrim.classList.add('show');
+}
+document.getElementById('drawerclose').onclick = () => { drawer.classList.remove('open'); scrim.classList.remove('show'); };
+scrim.onclick = document.getElementById('drawerclose').onclick;
+
+// ---------- tabs ----------
+document.querySelectorAll('.tab').forEach(t => t.onclick = () => {
+  document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));
+  t.classList.add('active');
+  const v = t.dataset.view;
+  document.getElementById('graphwrap').hidden = v !== 'graph';
+  document.getElementById('board').hidden = v !== 'board';
+});
+
+// ---------- board view ----------
+const COLS = [
+  {key:'proposed', label:'Proposed'}, {key:'ready', label:'Ready'},
+  {key:'doing', label:'Doing'}, {key:'blocked', label:'Blocked'},
+  {key:'done', label:'Done'}, {key:'closed', label:'Superseded / Dropped'},
+];
+function renderBoard(){
+  const board = document.getElementById('board');
+  board.innerHTML = '';
+  COLS.forEach(col => {
+    const colEl = document.createElement('div'); colEl.className = 'col';
+    let items = DATA.filter(matches).filter(d => {
+      if(col.key === 'closed') return d.state === 'dropped' || d.state === 'superseded';
+      return displayState(d) === col.key;
+    });
+    const h = document.createElement('h3');
+    h.innerHTML = `<span>${col.label}</span><span>${items.length}</span>`;
+    colEl.appendChild(h);
+    items.forEach(d => {
+      const c = document.createElement('div');
+      c.className = 'card';
+      c.style.borderLeftColor = STATE_COLOR[displayState(d)] || 'var(--ink-3)';
+      c.innerHTML = `<div class="id">${d.id}</div><div class="title">${(d.title||'').replace(/</g,'&lt;')}</div>
+        <div class="chips">
+          <span class="chip">${d.effort}</span>
+          <span class="chip imp-${d.importance}">${d.importance}</span>
+          <span class="chip">${d.needs}</span>
+          ${d.issue ? `<span class="chip">#${d.issue}</span>` : ''}
+        </div>`;
+      c.onclick = () => openDrawer(d);
+      colEl.appendChild(c);
+    });
+    board.appendChild(colEl);
+  });
+}
+
+// ---------- graph view ----------
+let sim, svg, gLink, gNode;
+function buildGraph(){
+  const w = document.getElementById('graphwrap').clientWidth || 900, h = 560;
+  svg = d3.select('#graph').attr('viewBox', [0,0,w,h]);
+  svg.selectAll('*').remove();
+  const zoomG = svg.append('g');
+  svg.call(d3.zoom().scaleExtent([0.3,3]).on('zoom', ev => zoomG.attr('transform', ev.transform)));
+
+  const nodes = DATA.map(d => Object.assign({}, d));
+  const links = [];
+  nodes.forEach(d => {
+    if(d.caused_by && byId[d.caused_by]) links.push({source:d.caused_by, target:d.id, type:'caused'});
+    if(d.superseded_by && byId[d.superseded_by]) links.push({source:d.id, target:d.superseded_by, type:'superseded'});
+    if(d.blocked_on && byId[d.blocked_on]) links.push({source:d.blocked_on, target:d.id, type:'blocks'});
+  });
+
+  sim = d3.forceSimulation(nodes)
+    .force('link', d3.forceLink(links).id(d=>d.id).distance(70).strength(0.35))
+    .force('charge', d3.forceManyBody().strength(-90))
+    .force('center', d3.forceCenter(w/2, h/2))
+    .force('collide', d3.forceCollide(d => EFFORT_R[d.effort] + 6));
+
+  gLink = zoomG.append('g').selectAll('path').data(links).join('path')
+    .attr('class', d => 'glink ' + (d.type === 'superseded' ? 'superseded' : d.type === 'blocks' ? 'blocks' : ''))
+    .attr('stroke-width', 1.3);
+
+  gNode = zoomG.append('g').selectAll('g').data(nodes).join('g')
+    .attr('class', 'gnode')
+    .style('cursor','pointer')
+    .call(d3.drag()
+      .on('start', (ev,d) => { if(!ev.active) sim.alphaTarget(0.2).restart(); d.fx=d.x; d.fy=d.y; })
+      .on('drag', (ev,d) => { d.fx=ev.x; d.fy=ev.y; })
+      .on('end', (ev,d) => { if(!ev.active) sim.alphaTarget(0); d.fx=null; d.fy=null; }));
+
+  // Blocked items get a DIAMOND, not a circle — a colorblind-safe cue for the
+  // one state most worth spotting at a glance, independent of the hue check.
+  gNode.each(function(d){
+    const r = EFFORT_R[d.effort] || 12;
+    const sel = d3.select(this);
+    const shape = d.blocked
+      ? sel.append('rect').attr('x', -r*0.78).attr('y', -r*0.78)
+          .attr('width', r*1.56).attr('height', r*1.56)
+          .attr('transform', 'rotate(45)')
+      : sel.append('circle').attr('r', r);
+    shape.attr('fill', STATE_COLOR[displayState(d)])
+      .attr('fill-opacity', (d.state==='dropped'||d.state==='superseded') ? 0.35 : 0.85)
+      .attr('stroke', STATE_COLOR[displayState(d)])
+      .attr('stroke-width', IMP_W[d.importance] || 1.5);
+  });
+
+  gNode.append('text')
+    .attr('dy', d => (EFFORT_R[d.effort]||12) + 11)
+    .attr('text-anchor','middle')
+    .text(d => d.id.length > 22 ? d.id.slice(0,20)+'…' : d.id);
+
+  gNode.on('click', (ev,d) => openDrawer(d));
+  gNode.on('mouseenter', (ev,d) => highlight(d.id));
+  gNode.on('mouseleave', () => highlight(null));
+
+  sim.on('tick', () => {
+    gLink.attr('d', d => `M${d.source.x},${d.source.y} L${d.target.x},${d.target.y}`);
+    gNode.attr('transform', d => `translate(${d.x},${d.y})`);
+  });
+
+  function highlight(id){
+    if(!id){ gNode.classed('dim', false); gLink.classed('dim', false); return; }
+    const neigh = new Set([id]);
+    links.forEach(l => { if(l.source.id===id) neigh.add(l.target.id); if(l.target.id===id) neigh.add(l.source.id); });
+    gNode.classed('dim', d => !neigh.has(d.id));
+    gLink.classed('dim', l => l.source.id!==id && l.target.id!==id);
+  }
+  applyGraphFilter();
+}
+function applyGraphFilter(){
+  if(!gNode) return;
+  gNode.style('display', d => matches(d) ? null : 'none');
+}
+
+function render(){
+  syncChipUI();
+  renderBoard();
+  applyGraphFilter();
+}
+
+buildGraph();
+render();
+window.addEventListener('resize', () => { buildGraph(); });
+</script>

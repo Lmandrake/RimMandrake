@@ -4,6 +4,11 @@
   "number": 1,
   "open": false
  },
+ "ASSAILANT_FLESH_DUNGEON_1": {
+  "fp": "c5c3889e3efd",
+  "number": 41,
+  "open": true
+ },
  "AUTHORED_FACTION_RAID_SPAWNS_NOTHING_1": {
   "fp": "82cdde9e300a",
   "number": 2,
@@ -13,6 +18,41 @@
   "fp": "6e12a59130b0",
   "number": 3,
   "open": false
+ },
+ "BRIDGE_DEBUGACTION_SWEEP_GEMS_1": {
+  "fp": "5bcfc8ed9bfa",
+  "number": 42,
+  "open": true
+ },
+ "BRIDGE_GEN_AND_STORYTELLER_TOOLS_1": {
+  "fp": "56153f7a0f49",
+  "number": 43,
+  "open": true
+ },
+ "BRIDGE_KCSG_VGE_TOOLS_1": {
+  "fp": "4a97278e0965",
+  "number": 44,
+  "open": true
+ },
+ "BRIDGE_LORDS_AND_GAPS_TOOLS_1": {
+  "fp": "16f3e1e78e41",
+  "number": 45,
+  "open": true
+ },
+ "BRIDGE_PIPE_NET_INFO_1": {
+  "fp": "9ec4bfc0ddd9",
+  "number": 46,
+  "open": true
+ },
+ "BRIDGE_STORY_ALERT_TALE_TOOLS_1": {
+  "fp": "01eb7142a3f1",
+  "number": 47,
+  "open": true
+ },
+ "BRIDGE_UIROOT_WINDOW_TOOLS_1": {
+  "fp": "76d12fc6e569",
+  "number": 48,
+  "open": true
  },
  "BUILD_BATCH_FACTION_REJECTS_PLAYER_1": {
   "fp": "bfa61700d640",
@@ -50,9 +90,9 @@
   "open": true
  },
  "DUMP_PRODUCER_DATED_CAPTURES_1": {
-  "fp": "3b01fca3dfdf",
+  "fp": "d9e271ccd794",
   "number": 8,
-  "open": true
+  "open": false
  },
  "EMPIRE_PURSUIT_SCENPART_INSTALL_1": {
   "fp": "5975c32b7bd8",
@@ -60,7 +100,7 @@
   "open": false
  },
  "EMPIRE_PURSUIT_SURVEY_SHADOW_1": {
-  "fp": "e8e8a3d5d6b1",
+  "fp": "a3ceda7d78c6",
   "number": 10,
   "open": true
  },
@@ -113,6 +153,11 @@
   "fp": "5830a3a554ab",
   "number": 17,
   "open": false
+ },
+ "JAWA_TOOLS_ALL_DARK_DUPLICATE_ALIAS_1": {
+  "fp": "441e3aee9d28",
+  "number": 49,
+  "open": true
  },
  "NONCANON_ARRIVES_BY_PAWNKIND_1": {
   "fp": "978e1ecd905e",
@@ -174,6 +219,11 @@
   "number": 26,
   "open": true
  },
+ "TECH_TREE_WEAPON_GROUPS_1": {
+  "fp": "4b5a880b6e10",
+  "number": 50,
+  "open": true
+ },
  "THOROUGH_RETAG_WEAPONS_ARMOUR_1": {
   "fp": "2a036eec4df8",
   "number": 27,
@@ -184,8 +234,23 @@
   "number": 28,
   "open": false
  },
+ "TURRET_ROSTER_CURATION_1": {
+  "fp": "ab6d1672595e",
+  "number": 51,
+  "open": true
+ },
+ "VAULT_DUNGEON_CONCEPT_1": {
+  "fp": "024edd42a102",
+  "number": 52,
+  "open": true
+ },
+ "VEHICLE_ION_TIER_1": {
+  "fp": "4ee7d6eda96b",
+  "number": 53,
+  "open": true
+ },
  "WILD_ANIMALS_PADDED_LISTS_1": {
-  "fp": "7811f822fb1b",
+  "fp": "9c7ca2a30317",
   "number": 40,
   "open": true
  },
