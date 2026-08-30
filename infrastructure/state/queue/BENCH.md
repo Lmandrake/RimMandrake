@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T04:53:10Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T05:10:40Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -91,3 +91,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/RESEARCH_TREE_NORMALIZATION_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/RESEARCH_TREE_NORMALIZATION_1.md
+
+## LORE_SWITCHOVER_ADOPTION_1 Adopt reconciled_lore: owner rules the 20 gaps, then the switch-over pass
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/LORE_SWITCHOVER_ADOPTION_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/LORE_SWITCHOVER_ADOPTION_1.md
