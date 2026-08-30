@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T18:55:55Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T19:04:56Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -327,7 +327,7 @@ row:      unassigned
 needs:    bridge
 target:   v1
 kind:     build
-blocked:  built clean, not deployed - game up, BENCH holds bridge
+blocked:  kcsg_place fails in all 3 testable modes: structure looks up a 3-param LayoutUtils.Generate that does not exist (real arities 5/6/7), symbol and settlement NRE on unprimed GenOption.mineables/settlementLayout. research_reinvented_reset and vge_spawn_structure_skyfaller pass
 summary:  This reverses an earlier call in this same session. BRIDGEPIPENETINFO1 and
 prose:    infrastructure/state/items/BRIDGE_KCSG_VGE_TOOLS_1.md
 

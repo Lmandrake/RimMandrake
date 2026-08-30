@@ -59,6 +59,117 @@ deployed** — game up, BENCH holds bridge. Once deployed, in priority order:
 3. `jawa/vge_spawn_structure_skyfaller` — confirm the landing structure spawns and
    resolves into the KCSG layout on arrival (per VGE's own design).
 
+## Live-verify 2026-08-30, FOUNDRY — 2 of 3 tools PASS. `kcsg_place` is BROKEN in every mode that could be tested. Not closed.
+
+Full 585-mod list, fresh quicktest map, bridge live. All three tools registered.
+
+### ✅ `jawa/research_reinvented_reset` — PASS
+```
+research_finish_project x3  ->  Smithing wasAlreadyFinished true
+                                Brewing  wasAlreadyFinished false (finished by this call)
+                                ComplexFurniture wasAlreadyFinished true
+research_reinvented_reset   ->  success true, projectsResetCount: 515
+re-probe the same three     ->  wasAlreadyFinished FALSE on all three
+```
+`ResetAllProgress()` really cleared the manager — proven by an independent probe
+that reads finished-state before it writes, not by the reset's own return value.
+
+### ✅ `jawa/vge_spawn_structure_skyfaller` — PASS, does exactly what it claims
+Clean before/after id-diff over a virgin 30x30 rect (`160,50,30,30`), so the
+result is attributable:
+```
+before                     497 things
+vge_spawn_structure_skyfaller {defName: AB_KemeticTemple, point: "175,65"}
+  -> success true, thingId VGE_LandingStructure46225
+after                      498 things
+  the ONE new id: VGE_LandingStructure46225  (def VGE_LandingStructure)
+```
+⚠️ Honest limit, not a failure: after 1,200 stepped ticks the landing structure
+was **still sitting there unresolved** — it had not turned into the KCSG layout.
+The tool's own Description scopes itself to "sets one field and spawns", and that
+is exactly what it did; whatever drives VGE's arrival/descent did not run here.
+Whether a landing structure resolves at all outside real map generation is
+**UNMEASURED**, not proven either way.
+
+### 🔴 `jawa/kcsg_place` — 3 of 4 modes fail. Every cause identified exactly.
+
+| mode | result | cause |
+|---|---|---|
+| `structure` | refuses | our reflection lookup asks for a `Generate` arity that does not exist |
+| `settlement` | NRE | KCSG static `GenOption.settlementLayout` never primed |
+| `symbol` | NRE | KCSG static `GenOption.mineables` never primed |
+| `tiled` | untestable | **zero `TiledStructureDef`s exist on this mod list** |
+
+**`structure`** — `jawa/kcsg_place {layoutType: structure, defName: AB_GiantBonesA,
+rect: "60,60,20,20"}` → `success: false, "KCSG.LayoutUtils/GenOption method shapes
+did not match - names may have changed since vendoring."` The names have **not**
+changed. Probed the DEPLOYED `KCSG.dll` with `ilprobe` (workshop `2023507013/1.6`):
+`KCSG.LayoutUtils` exists with 3 `Generate` overloads and 2 `CleanRect`;
+`KCSG.GenOption` exists with `GetAllMineableIn`/`GetMineableAt`. The lookup at
+`JawaBenchKcsgTools.cs:154` is:
+```csharp
+layoutUtils.GetMethod("Generate", KcsgStatic, null,
+    new[] { defType, typeof(CellRect), typeof(Map) }, null);   // 3 parameters
+```
+but the real overloads declare **5, 6 and 7** parameters
+(`LayoutUtils.cs:14/20/23`) — the 3-argument form only exists at a *call site*,
+via C# default arguments. 🔑 **Optional parameters are not part of a method's
+signature**, so an exact-type `GetMethod` can never match one. The item's own spec
+correctly caught that these are extension methods and then wrote the call-site
+shape into the reflection lookup anyway. `CleanRect(def, Map, CellRect, bool)` and
+`GetAllMineableIn(CellRect, Map)` are genuine declared arities and DO resolve —
+only `Generate` is null, and the shared refusal message hides which of the three
+failed.
+⚠️ **Second, separate defect in the same branch: the call ORDER is inverted.** KCSG's
+own debug action (`Utils/DebugActions.cs:29-32`) runs
+`GetAllMineableIn` → `CleanRect` → `Generate`; ours runs
+`CleanRect` → `GetAllMineableIn` → `Generate`, so `CleanRect` would read an
+unprimed `mineables` even once the arity is fixed. It also derives its rect from
+`layoutDef.sizes`, not from an arbitrary caller rect.
+
+**`symbol`** — resolves and invokes, then
+`"SymbolUtils.Generate threw TargetInvocationException: Object reference not set
+to an instance of an object"`, on a virgin cell and again inside a rect. Cause,
+read from source and confirmed against the deployed DLL:
+`SymbolUtils.Generate` reaches `GenOption.GetMineableAt(cell)`
+(`SymbolUtils.cs:60`), and that method is
+```csharp
+public static Mineable GetMineableAt(IntVec3 cell)
+{
+    if (mineables.ContainsKey(cell))   // GenOption.cs:51 - NO null guard
+```
+`mineables` is `private static Dictionary<IntVec3, Mineable>` (confirmed in the
+deployed `KCSG.dll` field list) and is assigned **only** in `GetAllMineableIn`.
+`symbol` mode never calls it ⇒ guaranteed NRE. Fix: prime with
+`GenOption.GetAllMineableIn(CellRect.SingleCell(cell), map)` first, as every KCSG
+entry point does.
+
+**`settlement`** — `defName: VFEI2_InsectoidSettlementRatingOne` (a real live def),
+rect `40,150,30,30` → `"SettlementGenUtils.Generate threw
+TargetInvocationException: Object reference not set to an instance of an object"`;
+the rect's thing count was **436 before and 436 after**, so nothing partial was
+written. Cause: `SettlementGenUtils.Generate` reads
+`GenOption.RoadOptions` (`SettlementGenUtils.cs:67`), declared as
+```csharp
+public static RoadOptions RoadOptions => settlementLayout.roadOptions;  // GenOption.cs:25 - no ?.
+```
+`GenOption.settlementLayout` is a static our tool never sets. It also reaches the
+same unprimed `GetMineableAt` at line 63 when `avoidMountains` is set.
+
+**`tiled`** — could not be tested and that is a finding, not a gap in this pass:
+the tool's own refusal for a bogus name returned `candidates: []`, i.e. **the live
+585-mod list contains zero `TiledStructureDef`s**. Nothing exists to place.
+
+🔑 **One sentence for the whole tool:** KCSG's utilities are not standalone
+functions — they read a bundle of `GenOption` statics that KCSG's own GenStep and
+debug actions prime first. `jawa/kcsg_place` calls the leaves without setting up
+that state. The fix for three of four modes is the same shape: prime
+`GenOption.mineables` (and `settlementLayout` for settlements) before invoking,
+and ask reflection for the real declared arities.
+
+⛔ Not fixable this pass — game UP, companion DLL locked. Rides the next
+game-down window.
+
 ## criteria
 - [x] Reversed the earlier "out of scope" call on KCSG once its actual vendoring
       location was found — recorded here rather than silently overwritten.
@@ -67,6 +178,14 @@ deployed** — game up, BENCH holds bridge. Once deployed, in priority order:
 - [x] Builds clean, no duplicate alias (full surface re-scanned).
 - [x] Vehicle Framework's remaining debug actions explicitly triaged and left
       unbuilt with a stated reason, not silently skipped.
-- [ ] Deployed and proven live. Needs the game down, then bridge.
+- [x] Deployed — all 3 tools registered on the live bridge.
+- [ ] Proven live. `research_reinvented_reset` (515 projects, verified by an
+      independent finished-state probe) and `vge_spawn_structure_skyfaller`
+      (one attributable new `VGE_LandingStructure` on an id-diff) both PASS.
+      **`jawa/kcsg_place` fails in all 3 testable modes**: `structure` looks up a
+      3-param `Generate` that does not exist (real arities 5/6/7 — optional args
+      are not in a signature) and calls CleanRect before GetAllMineableIn;
+      `symbol` and `settlement` NRE on unprimed `GenOption.mineables` /
+      `GenOption.settlementLayout`. `tiled` has no defs on this mod list.
 
 --- history ---
