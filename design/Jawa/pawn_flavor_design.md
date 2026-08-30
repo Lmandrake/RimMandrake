@@ -190,6 +190,16 @@ Trait axis: **Casket-Dreamer** (mood buff near caskets, wants in) vs
 **Casket-Haunted** (fear: debuff near them, refuses surgery) — assigned across
 Junkers AND leaking to captives of other factions reacting to YOUR caskets.
 
+#### Fuel-economy entries (round 9, ruled 2026-08-30)
+Per canon.yml junkers (fuel-first bad-water nation): childhood **Shore-Rat**
+(raised skimming the terminator seas: toxin resistance, swimming/hauling
+floors, permanent low expectations); adulthood **Still-Master** (runs a
+distillation stack: fuel/chemistry savant, mood buff at high colony fuel
+stores, rage break when stills idle); adulthood **Pipe-Tapper** (walked and
+tapped the FDE lines: construction/mining elite, cold resistance, opinion
+penalty from FDE droids who know what tappers are). The casket remains the
+crown; fuel is the floor everyone stands on.
+
 ### Droids — the flagship set (v2-system candidate)
 Reframed slots: **Assembly** (childhood) × **Service Record** (adulthood).
 Variance deliberately NOT centered on zero: the market prices it — god-rolls are
