@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T23:39:45Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T23:42:10Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -35,15 +35,6 @@ target:   v1
 kind:     bug
 summary:  SIXFACTIONSNEVERRAID1 — only the Hutt Cartel has ever been seen to raid
 prose:    infrastructure/state/items/SIX_FACTIONS_NEVER_RAID_1.md
-
-## EMPIRE_PURSUIT_SURVEY_SHADOW_1 Fork pursuit mod: survey-shadow biomes slow the Empire to 20-30 days
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     build
-summary:  Ruthless Faction Pursuit has one global raidDelayHours. Fork the bundled source
-prose:    infrastructure/state/items/EMPIRE_PURSUIT_SURVEY_SHADOW_1.md
 
 ## EMPIRE_RAID_QUICKTEST_1 Quicktest proof of the full Empire reskin: fire RaidEnemy as vanilla Empire (pass points explicitly; read faction from the REPLY, not the request), verify Jawa_Empire kinds in OuterRim armor, Emperor/Palpatine via fixedLeaderKinds, Rising Order ideo, and NO OuterRim_GalacticEmpire faction on the world — criteria preserved at V2_DREAMS C2 strike
 state:    doing  (BLOCKED)
@@ -196,16 +187,6 @@ kind:     bug
 blocked:  needs bridge; BENCH holds it (owner confirmed live, 2026-08-29) — my prior fire_raid work on the sibling item collided with BENCH's session, not touching the bridge again until it's free
 summary:  SIXFACTIONSNEVERRAID1 — only the Hutt Cartel has ever been seen to raid
 prose:    infrastructure/state/items/SIX_FACTIONS_NEVER_RAID_1.md
-
-## EMPIRE_PURSUIT_SURVEY_SHADOW_1 Fork pursuit mod: survey-shadow biomes slow the Empire to 20-30 days
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     build
-blocked:  offline half done (fork+build clean, see progress note); verify needs bridge live-check, waiting on game-up (same gate as EMPIRE_PURSUIT_SCENPART_INSTALL_1)
-summary:  Ruthless Faction Pursuit has one global raidDelayHours. Fork the bundled source
-prose:    infrastructure/state/items/EMPIRE_PURSUIT_SURVEY_SHADOW_1.md
 
 ## EMPIRE_RAID_QUICKTEST_1 Quicktest proof of the full Empire reskin: fire RaidEnemy as vanilla Empire (pass points explicitly; read faction from the REPLY, not the request), verify Jawa_Empire kinds in OuterRim armor, Emperor/Palpatine via fixedLeaderKinds, Rising Order ideo, and NO OuterRim_GalacticEmpire faction on the world — criteria preserved at V2_DREAMS C2 strike
 state:    doing  (BLOCKED)

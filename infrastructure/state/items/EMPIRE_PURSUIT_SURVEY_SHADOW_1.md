@@ -57,3 +57,35 @@ this session. Not deployed to the live Mods folder either; that and the runtime
 scenario-part insert both belong to EMPIRE_PURSUIT_SCENPART_INSTALL_1, which is already
 blocked on game-up + bridge for exactly this reason. Leaving this item OPEN rather than
 closing it, so the live check has somewhere to land.
+
+## live check 2026-08-30 (FOUNDRY) — PASSED, item closes
+
+Bridge live, 585-mod set, main menu (defs resolve at startup, no save needed).
+`jawa/get_defs ScenPartDef/RuthlessPursuingMechanoids` returns, from the live
+DefDatabase:
+
+    defType                 ScenPartDef_RuthlessPursuit
+    modName / packageId     Empire Pursuit — Survey Shadow / mandrake.empirepursuit
+    surveyShadowBiomes      ["AB_RockyCrags"]
+    surveyShadowMultiplier  4.0
+
+and `jawa/get_defs BiomeDef/AB_RockyCrags` → `label: "forsaken crags"`, `packageId:
+sarg.alphabiomes`.
+
+🔑 **What this proves, and it is the failure mode the check existed for.** `defType`
+reads back as the FORK'S OWN `ScenPartDef` subclass, not `ScenPartDef` — so the custom
+`Class="RimworldPursuingMechanoids.ScenPartDef_RuthlessPursuit"` resolved. A missing or
+misnamed type discards the WHOLE def silently (`modextension-missing-type-discards-def`),
+and the def would simply be absent; it is present. `surveyShadowBiomes` reads back as a
+one-element list rather than empty or null, so the `List<BiomeDef>` cross-reference to
+Alpha Biomes' `AB_RockyCrags` RESOLVED — a dead defName would have been dropped from the
+list, leaving `[]`, which reads identically to "the owner has not filled it in yet".
+And the mod is deployed AND active: `packageId` comes off the live def, and
+`mandrake.empirepursuit` is ModsConfig line 300.
+
+**What is deliberately NOT claimed here:** no raid has been watched arriving late on a
+forsaken-crags map. That is play-time observation, and it belongs to
+`EMPIRE_PURSUIT_SCENPART_INSTALL_1` (the runtime insert) and to the owner playing —
+per CHARTER, the owner playing is the default validation for a mechanism whose parts
+have each been observed. All three `criteria` above were already met offline; this
+closes the "does it load at all" half that only the game could answer.
