@@ -1204,3 +1204,15 @@ his grief-side gently).
 The engine build (satiation counters, front selection, light zones, emitter
 progression, judgement, boon/demand/taboo/curse invocation) sizes from these
 pages; it files when the owner calls the build.
+
+## 11. Sacred sites — divine geography (F16, SACRED_SITES_PASS_1)
+Spec-only pass, filed per `salvation_engine_review.md` F16: full doc at
+`design/Jawa/worldbuilding/sacred_sites_pass_1.md` — the tile→god annotation
+scheme (keyed on biome/mutator/landmark, never on region name — 13 of
+Ash'karr's 71 named regions are internally incoherent per
+`REGIONS_THAT_LIE.md`), nine landmark-reinterpretation proposals grounded in
+the curated gazetteer (`ASHKARR_WORLD_DEFINITION.md` §13.3), the tidal
+day/night split mapped onto this map's real arc bands (Sh'kaar arc 0–~74,
+terminator battlefield ~74–100, Ishko ~110–180), six drafted landing-judgment
+flavor lines in the Narrator's voice, and a precise (not-built) spec for the
+C# landing-time hook. Item stays `doing` pending the owner's build call.
