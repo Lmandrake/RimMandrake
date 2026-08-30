@@ -66,8 +66,11 @@ names what turns on the answer. Ordered by how much downstream work waits.
 
 ## Smaller, filed
 
-13. Crystalline cavern glow: bioluminescent (decay-gradient's) or mineral
-    (the crags') — either is good; deciding it is worth one line.
+13. ✅ RULED (owner, 2026-08-30): **crystalline cavern biomes are
+    MINERAL-based.** Distinction preserved deliberately: the crags already
+    carry glowing strange LIFE in the dark, the decay portion has its glow
+    forest + glowing mushrooms — the crystal caverns alone glow geologically.
+
 14. The Junkers' water doctrine still assumes universal thirst (the one
     faction the W-audit could not fix from existing text).
 15. Industrial water draw (W7) — vats and biosculpters; matters only when
