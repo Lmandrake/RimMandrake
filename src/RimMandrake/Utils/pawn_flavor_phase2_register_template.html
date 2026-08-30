@@ -44,6 +44,9 @@ body.folded #brief{display:none}
 .chip.ThoughtDef{color:#a8d5ff;border-color:#2c4a66}
 .chip.MentalBreakDef{color:#f0b8e2;border-color:#663056}
 .chip.XenotypeDef{color:#c9f0b8;border-color:#3d6630}
+.chip.tier{margin-left:4px}
+.chip.tier.COMMON{color:#e6b455;border-color:#66512c}
+.chip.tier.OCCASIONAL{color:#9aa3ad;border-color:#2a2f37}
 .why{color:var(--dim);font-size:10.5px;margin-top:4px}
 .prose{flex:1;display:flex;gap:12px}
 .prose .col{flex:1;min-width:0}
@@ -70,10 +73,11 @@ footer{padding:20px 22px;color:var(--dim);font-size:12px}
   <div id="brief">
     <div class="panel">
       <b>The brief.</b> PAWN_FLAVOR_PHASE2_PROSE_1 — lore-prose pass over every ThoughtDef,
-      MentalBreakDef and XenotypeDef in the <b>COMMON</b> tier (403 + 22 + 72 = 497 rows;
-      reachable in ordinary play on the live 585-mod set per
-      <code>infrastructure/output/pawn_flavor_phase2_census.csv</code>). OCCASIONAL and DORMANT
-      tiers are deliberately OUT of this pass — future work, not dropped. Every row already
+      MentalBreakDef and XenotypeDef in the <b>COMMON</b> tier (403 + 22 + 72 = 497 rows) and the
+      <b>OCCASIONAL</b> tier (1,262 + 11 + 13 = 1,286 rows) — 1,783 rows total, everything
+      reachable (routinely or occasionally) in play on the live 585-mod set per
+      <code>infrastructure/output/pawn_flavor_phase2_census.csv</code>. DORMANT stays OUT —
+      essentially unreachable on this mod set, future work if ever. Every row already
       carries drafted Star-Wars/Jawa-scavenger replacement prose, current vs proposed side by
       side — <b>you only disagree.</b> Decisions: <b>approve</b> (ship the draft as-is) ·
       <b>tweak</b> (right idea, wrong wording — say the fix in the note) · <b>reject</b> (redo
@@ -81,18 +85,26 @@ footer{padding:20px 22px;color:var(--dim);font-size:12px}
       but distinguishable from an active approval).
       <br><b>Field shape varies by def type:</b> ThoughtDef/XenotypeDef carry label+description.
       MentalBreakDef's actual prose lives on the linked MentalStateDef (label, the letter that
-      announces it, the recovery message) — two entries (Catatonic, RunWild) have no linked
-      MentalStateDef and carry only a label.
+      announces it, the recovery message) — several entries have no linked MentalStateDef and
+      carry only a label.
       <br><b>Posture:</b> default is APPROVE — a row you never touch ships the drafted prose.
-      Nothing is stripped by silence; this is a draft awaiting sign-off, not a whitelist.
+      Nothing is stripped by silence; this is a draft awaiting sign-off, not a whitelist. The
+      <b>tier</b> filter below tells COMMON rows (first pass, reviewed once already) from
+      OCCASIONAL rows (added in the extension pass, less-encountered content) if you want to
+      focus your remaining time on one or the other.
     </div>
     <div class="panel"><b class="inv">How the drafts were made (overturn in one line):</b>
-      497 rows split across 9 parallel drafting passes (7 ThoughtDef batches by mod, 2
-      XenotypeDef batches) plus the 22 MentalBreakDef rows hand-drafted against the real
-      MentalStateDef fields via RimSage. Each batch got the same style guide: desert scavenger
-      register, mechanical meaning and mood direction preserved exactly, first-person
-      present-tense for thoughts, Star Wars proper nouns used sparingly. Fifteen rows that came
-      back too close to the original vanilla wording were rewritten by hand afterward. Xenotype
+      COMMON's 497 rows split across 9 parallel drafting passes (7 ThoughtDef batches by mod, 2
+      XenotypeDef batches) plus 22 MentalBreakDef rows hand-drafted against the real
+      MentalStateDef fields via RimSage; 15 rows that came back too close to the original
+      vanilla wording were rewritten by hand afterward. OCCASIONAL's 1,286 rows followed the
+      same style guide at a tighter pass: 1,262 ThoughtDef rows split across 12 parallel
+      drafting batches grouped by mod/theme, plus 11 MentalBreakDef + 13 XenotypeDef rows
+      hand-drafted directly against the real MentalStateDef/XenotypeDef XML (RimSage where
+      indexed, live mod XML on disk where not — several third-party mods, e.g. Alpha Memes and
+      Vanilla Ideology Expanded, aren't in RimSage's index at all). Style guide throughout:
+      desert scavenger register, mechanical meaning and mood direction preserved exactly,
+      first-person present-tense for thoughts, Star Wars proper nouns used sparingly. Xenotype
       entries are re-voiced as the Jawa clan's own practical bestiary entries, not Wookieepedia
       paraphrase — species facts kept, framing changed.
     </div>
@@ -112,6 +124,8 @@ footer{padding:20px 22px;color:var(--dim);font-size:12px}
   <div class="bar">
     <select id="f_type"><option value="">all def types</option>
       <option>ThoughtDef</option><option>MentalBreakDef</option><option>XenotypeDef</option></select>
+    <select id="f_tier"><option value="">all tiers</option>
+      <option>COMMON</option><option>OCCASIONAL</option></select>
     <select id="f_mod"><option value="">all mods</option></select>
     <select id="f_dec"><option value="">all decisions</option>
       <option>approve</option><option>tweak</option><option>reject</option><option>skip</option></select>
@@ -274,18 +288,25 @@ function measure(){
 }
 addEventListener('resize', measure);
 
-/* ---------- summary (per-type counts) ---------- */
+/* ---------- summary (per-type, per-tier counts) ---------- */
 function summarize(){
   const types = ['ThoughtDef','MentalBreakDef','XenotypeDef'];
-  let h = '<b>Row counts — COMMON tier only</b><table><tr><th>def type</th><th>rows</th><th>mods</th></tr>';
-  let total = 0;
+  const tiers = ['COMMON','OCCASIONAL'];
+  let h = '<b>Row counts — COMMON + OCCASIONAL</b><table><tr><th>def type</th>' +
+          tiers.map(t => `<th>${t}</th>`).join('') + '<th>all</th></tr>';
+  let grand = 0;
   for (const t of types){
-    const rs = DATA.filter(r => r.defType === t);
-    const mods = new Set(rs.map(r => r.modName));
-    h += `<tr><td>${t}</td><td>${rs.length}</td><td>${[...mods].join(', ')}</td></tr>`;
-    total += rs.length;
+    let rowTotal = 0;
+    let cells = '';
+    for (const tier of tiers){
+      const n = DATA.filter(r => r.defType === t && r.tier === tier).length;
+      cells += `<td>${n}</td>`;
+      rowTotal += n;
+    }
+    h += `<tr><td>${t}</td>${cells}<td>${rowTotal}</td></tr>`;
+    grand += rowTotal;
   }
-  h += `<tr><th>all</th><th>${total}</th><th></th></tr></table>`;
+  h += `<tr><th>all</th>${tiers.map(tier => `<th>${DATA.filter(r=>r.tier===tier).length}</th>`).join('')}<th>${grand}</th></tr></table>`;
   el('summary').innerHTML = h;
 }
 
@@ -299,7 +320,7 @@ function card(it){
   const m = mergedRow(it.id);
   return `<div class="row${m.t ? ' touched' : ''}" data-id="${it.id}">
     <div class="rname"><span class="dn">${esc(it.defName)}</span>
-      <br><span class="chip ${it.defType}">${it.defType}</span>
+      <br><span class="chip ${it.defType}">${it.defType}</span><span class="chip tier ${it.tier}">${it.tier}</span>
       <div class="why">${esc(it.why)}</div></div>
     <div class="prose">
       <div class="col"><div class="lbl">current</div><div class="cur">${esc(it.current)}</div></div>
@@ -314,11 +335,12 @@ function card(it){
   </div>`;
 }
 function render(){
-  const ft = el('f_type').value, fm = el('f_mod').value, fd = el('f_dec').value,
+  const ft = el('f_type').value, ftier = el('f_tier').value, fm = el('f_mod').value, fd = el('f_dec').value,
         fo = el('f_touched').checked, q = el('f_q').value.toLowerCase();
   const shown = DATA.filter(it => {
     const m = mergedRow(it.id);
     if (ft && it.defType !== ft) return false;
+    if (ftier && it.tier !== ftier) return false;
     if (fm && it.modName !== fm) return false;
     if (fd && m.d !== fd) return false;
     if (fo && !m.t) return false;
@@ -378,7 +400,7 @@ function banner(msg){
   el('counts').textContent = msg;
   clearTimeout(bannerTimer); bannerTimer = setTimeout(render, 4000);
 }
-for (const id of ['f_type','f_mod','f_dec','f_touched'])
+for (const id of ['f_type','f_tier','f_mod','f_dec','f_touched'])
   el(id).onchange = render;
 el('f_q').oninput = render;
 

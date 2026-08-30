@@ -8,14 +8,16 @@ Inputs (both committed, both read-only here):
   * infrastructure/output/pawn_flavor_phase2_census.csv - the COMMON/OCCASIONAL/
     DORMANT census over every ThoughtDef/MentalBreakDef/XenotypeDef reachable in
     the live 585-mod set (row = defType, defName, modName, currentLabelOrText,
-    tier, oneLineWhy). This generator only rows the COMMON tier (497 rows).
+    tier, oneLineWhy). This generator rows the COMMON tier (497 rows) plus the
+    OCCASIONAL tier (1,286 rows, added in the OCCASIONAL-extension pass) - 1,783
+    rows total. DORMANT stays out of scope (see pawn_flavor_design.md item 6).
   * infrastructure/output/pawn_flavor_phase2_prose_draft.json - the drafted
-    Star-Wars/Jawa-scavenger replacement prose for every COMMON row, keyed
-    "<defType>::<defName>". Field shape varies by defType (ThoughtDef/XenotypeDef
-    carry label+description; MentalBreakDef carries label+beginLetter+
-    recoveryMessage, since the prose actually lives on the linked MentalStateDef,
-    not on MentalBreakDef itself - two rows have no MentalStateDef at all and
-    carry only a label).
+    Star-Wars/Jawa-scavenger replacement prose for every COMMON+OCCASIONAL row,
+    keyed "<defType>::<defName>". Field shape varies by defType (ThoughtDef/
+    XenotypeDef carry label+description; MentalBreakDef carries label+
+    beginLetter+recoveryMessage, since the prose actually lives on the linked
+    MentalStateDef, not on MentalBreakDef itself - several rows have no linked
+    MentalStateDef at all and carry only a label).
 
 This is a DRAFT-REVIEW sheet, not a keep/cut sheet like Phase 1's
 gen_pawn_flavor_register.py: every row already carries a proposed replacement:
@@ -56,14 +58,17 @@ def fmt_proposed(defType, p):
     return "label: " + p.get("label", "") + "\n" + p.get("description", "")
 
 
+ROWED_TIERS = {"COMMON", "OCCASIONAL"}
+
+
 def build_rows():
     census = list(csv.DictReader(open(CENSUS_CSV, encoding="utf-8")))
-    common = [r for r in census if r["tier"] == "COMMON"]
+    wanted = [r for r in census if r["tier"] in ROWED_TIERS]
     prose = json.load(open(PROSE_JSON, encoding="utf-8"))
 
     rows = []
     missing = []
-    for r in common:
+    for r in wanted:
         key = r["defType"] + "::" + r["defName"]
         p = prose.get(key)
         if p is None:
@@ -74,14 +79,15 @@ def build_rows():
             "defType": r["defType"],
             "defName": r["defName"],
             "modName": r["modName"],
+            "tier": r["tier"],
             "group": r["defType"] + " \u00b7 " + r["modName"],
             "why": r["oneLineWhy"],
             "current": r["currentLabelOrText"],
             "proposed": fmt_proposed(r["defType"], p),
         })
     if missing:
-        raise SystemExit("REFUSED: %d COMMON census rows have no drafted prose (first 5: %s) - "
-                          "draft prose for every COMMON row before generating."
+        raise SystemExit("REFUSED: %d COMMON/OCCASIONAL census rows have no drafted prose (first 5: %s) - "
+                          "draft prose for every row before generating."
                           % (len(missing), missing[:5]))
 
     rows.sort(key=lambda r: (DEFTYPE_ORDER.get(r["defType"], 9), r["modName"], r["defName"]))
