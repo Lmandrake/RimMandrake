@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T20:23:15Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T20:29:22Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -216,15 +216,6 @@ kind:     task
 summary:  Scope notes (BENCH, filing sitting 2026-08-30)
 prose:    infrastructure/state/items/GRAFFITI_MOD_EXPANSION_1.md
 
-## COLONY_VISIBILITY_STAT_1 Design Colony Visibility as a first-class player-facing stat (F18): nine hands on one dial, owns threat-point modulation (replace-not-stack per F12); mod feasibility pass
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  Design pass (per F18/F12, design/Jawa/salvationenginereview.md, and the
-prose:    infrastructure/state/items/COLONY_VISIBILITY_STAT_1.md
-
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -360,16 +351,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## SACRED_SITES_PASS_1 Sacred sites (F16): sweep all Ashkarr tile contents, mutators, landforms and landmarks for god-pleasing sites (oasis pleases Oomo); propose new landmark kinds + the tile-to-god annotation pass and tidal day/night split
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  <!-- status: live --
-prose:    infrastructure/state/items/SACRED_SITES_PASS_1.md
 
 ## RIMMANDRAKE_PITS_BUILD_1 Build RimMandrake Pits: core framework mod (dig stages, terrain-mimic covers, mass triggers, struggle escape, fitting family, holding-platform pit cell) + campaign layer; first step is the spawn-mass quicktest matrix on the 22s minimal list
 state:    proposed
