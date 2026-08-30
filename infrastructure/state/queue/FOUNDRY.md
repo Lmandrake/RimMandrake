@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T05:16:47Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T05:31:03Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -188,6 +188,15 @@ target:   v1
 kind:     build
 summary:  (no items/DROIDWORKS_WIPE_AND_SPIKE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DROIDWORKS_WIPE_AND_SPIKE_1.md
+
+## DROIDWORKS_FAMILY_LAYER_1 Rework generator output: 7 chassis-family abstract bases between DW_Race_Base and the 57 models
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  (no items/DROIDWORKS_FAMILY_LAYER_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROIDWORKS_FAMILY_LAYER_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -374,13 +383,3 @@ kind:     build
 thin:     spec, verify and criteria all present
 summary:  design/Jawa/droidsystembuildspec.md — architecture (own DLL + HAR substrate,
 prose:    infrastructure/state/items/DROID_SYSTEM_BUILD_1.md
-
-## DROIDWORKS_FAMILY_LAYER_1 Rework generator output: 7 chassis-family abstract bases between DW_Race_Base and the 57 models
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DROIDWORKS_FAMILY_LAYER_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DROIDWORKS_FAMILY_LAYER_1.md
