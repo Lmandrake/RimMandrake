@@ -98,11 +98,23 @@ namespace JawaBench.BridgeTools
             catch (Exception) { return null; }
         }
 
-        /// <summary>Read a public instance field, or null when it is not there.</summary>
+        /// <summary>
+        /// Read a public OR private instance field, or null when it is not there.
+        ///
+        /// 🔴 BRIDGE_STORY_ALERT_TALE_TOOLS_1: this used to be PubInst-only, so it could
+        /// never find a private field - which is exactly what `jawa/alerts_list` needed
+        /// (`AlertsReadout.activeAlerts` is private) and silently could not get. NonPublic
+        /// is additive to the existing Public lookup for every other caller: it never
+        /// removes a match that worked before, it only adds fields that previously
+        /// returned null. Checked every other FieldOrNull call site in the codebase
+        /// (JawaBenchPipeTools.cs, JawaBenchSwcpCharacterTools.cs, JawaBenchVehicleAerialTools.cs,
+        /// JawaBenchVehicleTools.cs itself) - all read known-public fields on vanilla/VF
+        /// types, none relies on the narrower public-only behavior.
+        /// </summary>
         private static object FieldOrNull(object obj, string name)
         {
             if (obj == null) return null;
-            FieldInfo fi = obj.GetType().GetField(name, PubInst);
+            FieldInfo fi = obj.GetType().GetField(name, PubInst | BindingFlags.NonPublic);
             if (fi == null) return null;
             try { return fi.GetValue(obj); }
             catch (Exception) { return null; }

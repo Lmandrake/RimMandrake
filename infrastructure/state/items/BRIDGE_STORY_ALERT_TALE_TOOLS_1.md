@@ -150,4 +150,17 @@ not a number, the reasons. Bad defName → `success: false, "No FactionDef 'X'."
       omit `NonPublic`, so the private `AlertsReadout.activeAlerts` can never be
       found. One-flag fix, needs a rebuild + a game-down deploy.
 
+## Fix built, 2026-08-30, BENCH (offline pass, game UP — no deploy possible)
+
+`FieldOrNull` (`JawaBenchVehicleTools.cs`, shared across the whole companion) now
+looks up with `PubInst | BindingFlags.NonPublic` instead of `PubInst` alone —
+additive only: every other caller of `FieldOrNull` (`JawaBenchPipeTools.cs`,
+`JawaBenchSwcpCharacterTools.cs`, `JawaBenchVehicleAerialTools.cs`,
+`JawaBenchVehicleTools.cs` itself) reads a known-public field, so nothing that
+worked before can stop matching. `PropOrNull` and the file's other
+`GetProperty(..., PubInst)` call sites were left untouched — only `FieldOrNull`
+changed. Builds clean: `python.exe build.py --gm` → 0 errors, 0 warnings.
+**Fixed in source, builds clean, awaiting next game-down deploy + live re-verify**
+— criterion above stays unchecked until `alerts_list` is re-proven live.
+
 --- history ---
