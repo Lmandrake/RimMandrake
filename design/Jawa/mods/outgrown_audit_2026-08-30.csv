@@ -1,0 +1,586 @@
+packageId,verdict,note
+zetrith.prepatcher,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+brrainz.harmony,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+aleksey.betterstacktraces,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+ludeon.rimworld,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+ludeon.rimworld.royalty,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+ludeon.rimworld.ideology,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+ludeon.rimworld.biotech,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+ludeon.rimworld.anomaly,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+ludeon.rimworld.odyssey,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+owlchemist.cherrypicker,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+aoba.framework,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+vanillaexpanded.backgrounds,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+thesepeople.ritualattachableoutcomes,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+adaptive.storage.framework,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+redmattis.betterprerequisites,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+smashphil.vehicleframework,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+imranfish.xmlextensions,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+unlimitedhugs.hugslib,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+oskarpotocki.vanillafactionsexpanded.core,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+ebsg.framework,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+04.23.2020,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+ap.huntingmeme,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+dizzy.candlesandmeditation,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+hmc.wall.furniture,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+m3.continued.jangodsoul.starwars.bti,keep,See design/Jawa/sw_ownership_survey.md — already assessed as genuine SW content.
+jm.disstynan,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+zal.calltradeships,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+lc.tammybee.selectablesculpturegraphic,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mingtuwuxiang.spacebasedecorative,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+nals.facialanimation,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mlie.rfrumorhasit,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+rh2.cpers.arrest.here,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+cp.uncle.boris.used.furniture,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+sbz.neatstoragefridge,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+sbz.gravshipstorage,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+sr.modrimworld.factionalwarcontinued,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mlie.syrmoreslaves,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+zav.glowstoneforked,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+armoredampharos.fancyrats,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+adaptive.ideology.storage,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+adaptive.primitivestorage,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+adaptive.simplestorage,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mlie.advancedbiomes,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+ali.growodysseyplants,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+7f.alienworlds,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+andrewraphaellukasik.allowdeadanimals,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+unlimitedhugs.allowtool,keep,"Essential QoL utility (mass designations, forbid/allow) — no examination needed"
+duz.almosttherefork,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+sarg.alphabiomes,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+sarg.alphamechs,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+sarg.alphamemes,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+swablu.ambience,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+vita.campdangers,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+xmb.ancientminingindustry.mo,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+aqued.dredgeaberrations,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+rpgwanderer.opturret,keep,See design/Jawa/sw_ownership_survey.md — already assessed as genuine SW content.
+neronix17.asimov,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+asp.halituisamaricanous,examine,"Cosmetic astronomy-themed style/terrain pack — check it's actually visible/used against the desert palette, or drop as dead weight"
+kshtantrumsounds.mod,keep,"Sound-only flavor for tantrums — trivial, harmless"
+automatic.autolinks,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+fuu.autostriponhaul,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mlie.beastsoftherim,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+elsov.beliar,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+io.github.relvl.rimworld.bestapparel,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+ionfrigate12345.coolandgoodambush,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mlie.betterbeggars,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+dizzyeevee.bettercrossbreeding,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+nephlite.advexplosions,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+arkymn.bettergrowthmoments,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+zal.betterinfestations,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+coldcrow.betterkibble,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+madeline.modmismatchformatter,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mlie.betterprojectileorigin,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+jm.bettertraders,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+chaoticenrico.bettertrees,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+falconne.bwm,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+businburg.businfeatures,examine,Adds TraitDefs under a vague name — unclear what traits without opening it; check for balance overlap
+redmattis.biggergravship,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+kopp.biomecompatibilityproject,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+biomesteam.biomesfossils,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+biomesteam.coreframework,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+zal.biomeskit,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+fuu.bloodanimations,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+bs.mbifvte,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+gulmadred.breedingritual,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+memegoddess.buildfrominventory,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+8z.callforintel,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+brrainz.cameraplus,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+iforgotmysocks.caravanadventures,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+joe.cephaloids,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+kapitanoczywisty.changemapedge,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+void.charactereditor,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+heatherathebyne.childrenlearnoncaravan,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mlie.choosebiomecommonality,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+kearril.choosewheretoland,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mlie.choosewildanimalspawns,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+kikohi.coloreddeepresources,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+petetimessix.compacthediffs,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+com.makeitso.configurabletechprints,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+cozyfire.velcroboy333,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+heatherathebyne.craftingspotslavegear,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+thumb.bettercremation,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+greg.customgastypes,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+hailuan.customquestframework,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+costel.customroomnames,keep,Trivial QoL: name your rooms
+dimonsever000.ideologyvirtues,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+east.dancepartycustommusic,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+van.beasts,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+van.dacrypts,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+darkestdungeon.incidentsounds,keep,Sound-only flavor for incidents — trivial
+troopersmith1.deathrattle,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mlie.decorativecliffs,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+clown.dedicatedturrets,examine,New turret mechanics (research/hediff/effect/thing defs) — direct overlap risk with the ratified turret-normalization doctrine in canon.yml; check before keeping both
+gondragon.defensivepositions,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+merthsoft.designatorshapes,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+milkwater.destinymod,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+garwel.destroyitem,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+det.avaloi,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+det.boglegs,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+det.brawnum,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+det.buzzers,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+det.keshig,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+det.venators,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+cometopapa.deteriorated,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+lornath.diseaseimmunityprogresstracker,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+jecrell.doorsexpanded,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+dubwise.dubspaintshop,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+dubwise.dubsbadhygiene.thirst,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+dubwise.dubsbadhygiene.lite,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+dubwise.dubsmintmenus,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+dubwise.dubsmintminimap,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+dubwise.dubsrimkit,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+blues.forge,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+maincrep.eweb,keep,See design/Jawa/sw_ownership_survey.md — already assessed as genuine SW content.
+yourname.effigys.mod,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+carnysenpai.enableoversizedweapons,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+nep.enginesunlimited,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+det.epochsincense,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+det.epochspyrinth,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+erin.ffanimals,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+keshash.extraexplosioneffects,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+eoralmilk.faceaddonframework,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+azravos.factioncustomizer,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+mlie.factionraidcooldown,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+kosaro.fahrenheitandcelsius,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+tyrannidae.fancyratsplus,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+realify.firefoam,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+aelanna.fistnerf,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+kathanon.floatsubmenu,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+temeez.floorlights2,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+aoba.fortress.neolithic,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+m00nl1ght.geologicallandforms,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+memegoddess.giddyup,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+lts.geg,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+albion.goexplore,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mlie.graffitimod,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+arcjc007.gravshipcrashes,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+arcjc007.gravshipexporter,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+sk.gravshipraids,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+imagitama.rimworldgravshiprangeonmap,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+grimterra.biomesmod,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+grimterra.terrainretexturemod,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+arti.shrinez,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mlie.harvestwhenbutchering,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+ael.tua.helmetsaddtoxresistance,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+elsov.highborn,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mlie.horrors,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+hazn.huntingtraps,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+hailuan.iwbb,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+amegakull.scvrole,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+kxp.ideosymbolsasideograms,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+llunak.moreprecepts,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+agentblac.makepawnsprisoners,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mlie.incidentdisabler,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+koth.isid,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mandrake.inhabited,keep,Our own mod — not a third-party audit target.
+haecriver.injuredcarry,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+ferny.easycaravanformation,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+turnovus.biotech.integratedgenes,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+jaxe.bubbles,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+mlie.interactionareasettings,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+glitchgoblin.invisibleconduitcont,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+zal.ionweaponry,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mandrake.jawafactionslate,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mandrake.jawaplantgrowth,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mandrake.jawarules,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+jecrell.jecstools,keep,See design/Jawa/sw_ownership_survey.md — already assessed as genuine SW content.
+kikohi.jewelry,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mlie.jurassicrimworlddinosaursonly,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mf.jfklanding,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+timuttie.justleavealready.fork.mitasamodel,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mlie.justputitoverthere,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+linnun.keepconverting,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+vaguelysexual.modpackageid.goeshere,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mlie.largefactionbases,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+zal.largeoutpost,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+arcjc007.lasercannon,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+costel.layeredapparel,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+noneobsidiaexpansion.ledlightsstrip,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+juanlopez2008.lightsout,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mlie.linkablesettings,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+dorbo.watersfx,keep,Sound-only flavor — trivial
+tyrannidae.littlecritters,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mlie.logafterdeferror,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+zylle.mapdesigner,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+nozome.mapmodeframework,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+m00nl1ght.mappreview,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+udon.masslovein,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+sirdarkelf.meaningfulencounters,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+badoaks.meatonastick,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+samael.npcmechsandanimals,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+bonible.medievalmeleesounds,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mewn.medievalsigns,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+spino.megafauna,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+mlie.mercerbackpacks,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+flangopink.metalpipe,keep,Decorative items + sounds — trivial flavor
+flangopink.metalpipehorseshoe,keep,Decorative item variant — trivial flavor
+andromeda.milkyway,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+rabiosus.minesight,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+cain.mineshaft,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+erdelf.minifyeverything,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mlie.miningcoalertspeaker,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+mlie.miningcodrillturret,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+mlie.miningcomms,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+mlie.miningcospaceship,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+mlie.moevents,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+hali.modifylandingtile,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+kaitorisenkou.modularweapons2,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+deadmano.moodalerts,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+acutus.moodchainreaction,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+zylle.moredangerousgame,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mlie.morefactioninteraction,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+bichang.moresculpture,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+garryflowers.moreslaverystuff,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+zylle.morevanillabiomes,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+tidal.morevanilla.textures,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+morphsassorted.biotechretex,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mandrake.msedroidfix,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+snobi.mutatorworldicons,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+oblitus.mylittleplanet,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+veterano.mythicages.megafaunabestiary,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+radzerp.naturalpaths,keep,"Terrain path decor — trivial flavor, fits desert terrain work"
+zylle.nightlights,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+nightmare.core,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+dingo.noforcedslowdown,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mlie.nomissinggeneicons,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+edern.norandomapparelonideoedit,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+jaeger972.nomadfreindlyquests,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+avilmask.nonunopinata,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+planetace.nondestructivegravlaunch,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mehni.numbers,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+onimods.electrictorches,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+karew.orcclan,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+coolzie.oocreboost,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+arkymn.slowerpawntickrate,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+alleykat.persistentprecepts,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mlie.perspectivebuildings,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+meltup.polyamorybeds.vanilla,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+xylthixlm.races.core,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mlie.preceptsandmemes,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+m00nl1ght.unofficialupdates.preparelanding,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+ironscruff.primordialgeysers,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mlie.prisonersshouldfearturrets,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+laureeeeeeeeeeeeeeen.shrooms,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+fluxilis.germanquality,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+dawnsglow.qualcolor,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+leo.raidprotectionfee,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+ingendum.raiderswarmcompression,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+zal.randomgrowthchoices,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+wemd.realisticdarknesslight,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mlie.realistichumansounds,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+mosi.rebalancedancientjunk,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mlie.recyclethis,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+reel.turretpipeline,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mlie.relevantstatsindescription,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+petetimessix.researchreinvented,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+scorpio.resourcedictionary,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+alma.tossem,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+lingluo.cockroach,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+sihv.rombonesport,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+kilokio.rimai.framework,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+brrainz.rimbridgeserver,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+dubwise.rimefeller,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+rimfridge.kv.rw,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+malteschulze.rimmsqol,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+mlie.rimquest,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+deon.rimtek.core,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+sierra.rt.generaltraits,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+depscian.rimtunes,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+sov.sith,keep,See design/Jawa/sw_ownership_survey.md — already assessed as genuine SW content.
+mianreplicate.romanceandintimacyontherim,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+tug.minotaur,examine,A full Biotech xenotype (genes/abilities/achievements) — thematic fit for a Jawa-desert-Star-Wars campaign is questionable; likely unused
+kupie.isjustdoingitlive.plzdonthateme.roofedscanning,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+ghost.rootsofrimworld,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+memegoddess.runandgun,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mandrake.empirepursuit,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+rwnodetree.rwplanetatmosphere,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+moja.salvagerubble,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+plusblankplus.scenarioamenderfork,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+memegoddess.searchanddestroy,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+hellrevenger.searchoption,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+avilmask.selfdyeing,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+sensiblebedownership.1trickpwnyta,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+boots.sensiblefactions,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+flyingsloth.scfilthreducer,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+victor.buymore,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+shavius.medieval.flavour,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+spacemoth.showknowntechprints,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+dark.signs,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+stokes.simplehoodcape,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+usgiyi.slaveoutfits,keep,Slave apparel — directly on-theme for the clan's enslave-not-recruit doctrine
+mlie.slaverebellionsimproved,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+astryl.sleepingbuddies,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+hol.smeltpatch,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+weilbyte.snapout,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+krelinos.socialexpfromtrade,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mlie.spaceworms,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+jpt.speakup,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+elshender.stackablechunks,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+balistafreak.standalonehotspring,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mlie.starwarsanimalcollection,keep,See design/Jawa/sw_ownership_survey.md — already assessed as genuine SW content.
+lumi.swlights,keep,See design/Jawa/sw_ownership_survey.md — already assessed as genuine SW content.
+starwars.themedsounds,keep,See design/Jawa/sw_ownership_survey.md — already assessed as genuine SW content.
+amoruch.rimworldstealingmod,examine,"New stealing job/thought/trait mechanic — thematically apt for scavenger Jawa, but check for anti-exponential/balance concerns before endorsing"
+karshou.storagememory,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mlie.storytellerenhanced,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mandrake.strandedquest,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+kas.strongerscaling,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+moistestwhale.stuffontablesforked,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+gerrymon.stylizedslavecollar,keep,Slave collar/headgear items — directly on-theme for the slavery doctrine
+jellypowered.survivaltools,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mlie.tabsorting,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+ucp.tabletopdecorations,keep,Decor — trivial flavor
+summersausages2ttv.techlevelenforcement,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+sapiently.theyatomicmonsters,examine,"NAMED LEAD — see write-up above: faction/raid mechanic ruled out forever (world frozen, faction needs a worldgen-time tick that will never happen again), but its PawnKindDef/race/building assets remain live candidates for the already-planned v2 authored ant-nest dungeon (FUTURE_VECTORS.md, 09_arcs_dungeons_quests.md). Keep for parts, not for its own mechanic."
+propickelz.tinkerbench,keep,"Tinkering Bench and Biohacking Station — strong thematic fit (Jawa are canon droid-tinkerers); a positive candidate, not a removal risk"
+titans.fl,examine,New giant-scale race — check power/scale level against the anti-exponential discipline before endorsing
+vlvop.tormentmaster.expansion,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+tsa.torturepod,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+smashphil.dropspot,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+hobtook.tradeui,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mlie.tradeabletrinkets,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+automatic.traderships,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+joseasoler.tradergen,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+kearril.tradingoptionscontinue,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+aelanna.transparentsubstructure,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+xercaine.tribal.furniture,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+geojak.tributedemand,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+ferny.triumphantresearch,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+trouperton.trystantravellersshuttleschematics,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+error277.tunneler.expanded,keep,Tunneling terrain/building/drug content — directly on-theme for the clan's Nomad+Tunneler ideology memes
+archie.turrettargetpatch,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+marvinkosh.ughyougotme,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+madarauchiha.undraftaftertucking,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+universalpregnancy.1trickpwnyta,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+doomdrvk.unlimitednuzzles,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+nephlite.orbitaltradecolumn,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+sirvan.mwretextured,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+sirvan.steelretexture,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+vanillaexpanded.vaewaste,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+vanillaexpanded.vappe,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+vanillaexpanded.vaeaccessories,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+vanillaexpanded.vanillabackstoriesexpanded,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+vanillaexpanded.vbrewe,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+vanillaexpanded.vcooke,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+vanillaexpanded.vee,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+oskarpotocki.vfe.insectoid2,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+oskarpotocki.vfe.tribals,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+vanillaexpanded.vfecore,keep,See design/Jawa/sw_ownership_survey.md — already assessed as genuine SW content.
+vanillaexpanded.vfearchitect,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+vanillaexpanded.vfeart,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+vanillaexpanded.vfefactory,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+vanillaexpanded.vfefarming,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+vanillaexpanded.vfemedical,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+vanillaexpanded.vfepower,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+vanillaexpanded.vfeproduction,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+vanillaexpanded.vfepropsanddecor,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+vanillaexpanded.vfesecurity,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+vanillaexpanded.vfespacer,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+vanillaexpanded.gravship,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+vanillaexpanded.helixiengas,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+vanillaexpanded.viehar,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+vanillaexpanded.ideo.relicsandartifacts,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+vanillaexpanded.vexploratione,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+vanillaexpanded.outposts,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+vanillaexpanded.vplantsesucculents,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+vanillaquestsexpanded.ancients,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+vanillaquestsexpanded.cryptoforge,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+vanillaquestsexpanded.generator,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+vanillaracesexpanded.archon,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+vanillaracesexpanded.fungoid,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+vanillaracesexpanded.genie,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+vanillaracesexpanded.phytokin,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+vanillaracesexpanded.saurid,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+vanillaracesexpanded.starjack,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+gravenwitch.vsrexamined,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+vanillaexpanded.vanillatradingexpanded,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+vanillaexpanded.vanillatraitsexpanded,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+vanillaexpanded.vwe,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+vanillaexpanded.vwems,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+gabrieel1482.raidvehicleframework,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+ninagoblin.visitsettlements,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+addvans.walktheworld,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+ogliss.g223.wanderingcaravans,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+addvans.wasdedpawn,examine,"Single hediff, unclear purpose from name alone — needs an actual open-and-look"
+sl4vp0wer.weareunited,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+aelanna.weaponracks,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+bodlosh.weaponstats,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+revolus.whatsmissing,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+co.uk.epicguru.whatsthatmod,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+winggar.meaningfulparties,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+tleno.wireheadstyle,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+fluffy.worktab,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+zal.worldmapenhanced,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+ferny.worldbuilder,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+funkyshit.mods.worldedit.alpha,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+bs.xenotypespawncontrol,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+mlie.yayoscaravan,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mlie.yayoscombat3,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mlie.yayosmeteor,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+btd.remix.gravshipblueprints,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+m3.continued.jangodsoul.starwars.tsda,keep,See design/Jawa/sw_ownership_survey.md — already assessed as genuine SW content.
+lazyfridaystudio.genesexpandedeyes,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+nals.facialanimationexperimentals,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+7f.alienworlds.tidallylocked,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+sarg.alphaanimals,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+xmb.ancienturbanruins.mo,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+mandrake.ashkarrlandmarkart,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+groovytaco.beltextractors,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+maal.bettertreesmod,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+m00nl1ght.geologicallandforms.biometransitions,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+biomesteam.biomescore,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+mandrake.sauridfrillfix,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+neronix17.retexture.charactereditor,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+qux.comigo.bettertreesmod,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+hailuan.customquestframeworkai,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+lumi.doorsexpanded,keep,See design/Jawa/sw_ownership_survey.md — already assessed as genuine SW content.
+mlie.dungeonpack,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+vesper.egihologramsandprojectors,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+jaeger972.factionterritories,keep,"NAMED LEAD (THIRD, owner/vault-sitting) — see write-up above: NOT just a visual map mode. Defs/Invasions.xml + Expansion.SettlementConstruction + VassalOutposts.xml = real faction territorial expansion, invasion, and vassalage mechanics tied to settlement count. Strong candidate mechanism for VAULT_DUNGEON_CONCEPT_1 point 4 (vault-access conflicts inside faction territory)."
+aoba.fortress.industrial,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+sd.fa.geneticheadsframework,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+gmmp.dungeon,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+zal.gianttoads,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+als.gravtech,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+grimterra.worldmap,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+who.vfee.isopodageneline,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+icepickgma.invisibledisplaycase,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mandrake.jawavoice,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+neku.largepawns,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+lwm.deepstorage,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+smxrez.makeshiftreexamined,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+badoaks.meatonastick.expansion,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+zacharyfoster.mineralsframework,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mandrake.gravshipastronautfix,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+sinnamon.moreritualrewards,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+zal.moreutilitypacks,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+andromeda.niceresearchtab,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mandrake.planetpresetprime,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+xylthixlm.races.titan,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+mlie.preceptsandmemesritualsmodule,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+lambda.psykshroom,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+ogliss.thewhitecrayon.quarry,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+dizzyeevee.rheng,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+regrowth.botr.core,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+memegoddess.replacestuff,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+aw.researchreinvented.retextured,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+petetimessix.researchreinvented.steppingstones,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+kilokio.rimai.core,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+jaxe.rimhud,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+zal.spaceports,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+co.uk.epicguru.factionloadout,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+deon.rimtek.digipal,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+deon.rimtek.docmate,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+telardo.romanceontherim,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+kathanon.searchablemenus,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mlie.showmeyourhands,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+scherub.stonecuttingextended,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+cyanobot.toddlers,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mandrake.toolbeltfix,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+vanillaexpanded.vchemfuele,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+vanillaexpanded.vcookestews,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+kuhlyus.modpatch.vanillaoutpost,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mrhydralisk.voeadditionaloutposts,keep,Additional outposts for the already-adopted Vanilla Outposts Expanded framework
+vanillaexpanded.vwel,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+arcjc007.wallstuff,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+fourtoo.glowingbush,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+kyzy.shipwallenhanced,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+daria40k.alphaanimalspatchoutposts,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+ks.aaretextured,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+sarg.alphagenes,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+meteores.ancienturbanruinsalldeconstructible.aurad,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+biomesteam.biomescaverns,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+biomesteam.biomespollutedlands,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+mandrake.blastdoorframeasyncfix,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+zal.comigogreaterswamps,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mlie.functionalvanillaexpandedprops,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+sd.fa.geneticheadsbiotech,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+sd.fa.geneticheadsmods,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+als.gravtech.bc,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+erdelf.humanoidalienraces,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+jellycreative.isekaileveling,keep,"NAMED LEAD — see write-up above: full RPG leveling system (skill trees, runes, quests, world objects, incidents), not just the grant-item mechanic ISEKAI_GRANT_EXCLUSION_1 touched. Substantial, not owned by any of our own systems."
+zacharyfoster.mineralsfrozen,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+zacharyfoster.mineralsrock,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+zacharyfoster.mineralssparkle,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mehni.pickupandhaul,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+avius.prisonlabor,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+reel.facialanims,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mandrake.researchkiteastfix,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+oskarpotocki.vfe.pirates,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+vanillaexpanded.vmemese,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+vanillaexpanded.skills,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+killathon.artificialbeings,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+sd.fa.reelsadjustments,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+opa.allspecialistscanwork,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+sarg.alphaskills,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+meteores.ancienturbanruinsvanillaloot.aurvl,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+chezhou.chezhoulib.lib,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+broms.deeporbit,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+farhanfair.warcaskettweakspatch,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+halituisamaricanous.gravtechbigcannons,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+teiwaz.gtgtradercore,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+keyz182.keyzallowutilities,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+toastyman.moreritualseats,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+sugarcube.puahsharedstorage,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+legator.prisonerrealism,examine,"Prisoner mechanics overhaul — thematically apt for the slavery/prisoner-heavy campaign, but check for overlap with our own enslave-not-recruit doctrine before endorsing wholesale"
+font.rimesis,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+petetimessix.simplesidearms,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+tribeagle.simpleslaverycollars,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+neronix17.toolbox,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+vanillaexpanded.vgeneticse,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+vanillaexpanded.vtexe.facialanims,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+oskarpotocki.vanillavehiclesexpanded,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+dmp.vfepirates.warcasketwork,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+aoba.warcasket,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+divinederivative.romance,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+teiwaz.taajg,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+teiwaz.tacac,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+killathon.artificialbeings.syncore,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+brrainz.achtung,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+sd.fa.vteadjustments,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+sarg.alphavehiclesneolithic,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+kem.beardadjustment,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+redmattis.bigsmall.core,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+lovelydovey.sex.witheuterpe,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+chezhou.creature.sandworm,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+neronix17.outerrim.core,keep,See design/Jawa/sw_ownership_survey.md — already assessed as genuine SW content.
+neronix17.outland.genetics,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+neronix17.shieldgenerators,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+farxmai2.vanilladeconstructablevehicles,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+redmattis.optional,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+redmattis.bigsmall,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+redmattis.bigweapons,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+avilmask.commonsense,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mandrake.desertvehiclereskin,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+lovelydovey.sex.withrosaline,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+lovelydovey.recreation.witheuterpe,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+leutiankane.mineablesor,keep,See design/Jawa/sw_ownership_survey.md — already assessed as genuine SW content.
+leutiankane.mines2patchouterrim,keep,See design/Jawa/sw_ownership_survey.md — already assessed as genuine SW content.
+neronix17.outerrim.droiddepot,keep,See design/Jawa/sw_ownership_survey.md — already assessed as genuine SW content.
+neronix17.outerrim.furnitureanddecor,keep,See design/Jawa/sw_ownership_survey.md — already assessed as genuine SW content.
+neronix17.outerrim.galacticempire,keep,See design/Jawa/sw_ownership_survey.md — already assessed as genuine SW content.
+neronix17.outerrim.rebelalliance,keep,See design/Jawa/sw_ownership_survey.md — already assessed as genuine SW content.
+jelheb.rusticmealretexture,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+frozensnowfox.complexjobs,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+dubwise.dubsbreakmod,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+danzinagri.facialanimationcompatabilityproject,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mandrake.jawa.doctrine,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+dubwise.dubsperformanceanalyzer.steam,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+taranchuk.performanceoptimizer,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+co.uk.epicguru.meleeanimation,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+lordfelix.rimcontrol,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+meathax.showmeyourtools,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+lee.theforce.lightsaber,keep,See design/Jawa/sw_ownership_survey.md — already assessed as genuine SW content.
+guy762.mm.kotorcore,keep,See design/Jawa/sw_ownership_survey.md — already assessed as genuine SW content.
+mandrake.starwarsraces,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+guy762.kotorweapons,keep,See design/Jawa/sw_ownership_survey.md — already assessed as genuine SW content.
+mandrake.jawa.armoury,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mandrake.jawaikee,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+mandrake.jawaionweapons,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+mandrake.jawa.patches,keep,Referenced in an existing design doc / canon.yml — already has a documented adoption reason.
+mandrake.jawapawnflavor,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.
+guy762.kotordroids,keep,See design/Jawa/sw_ownership_survey.md — already assessed as genuine SW content.
+btd.gbp.shippack.kotor.vge,keep,See design/Jawa/sw_ownership_survey.md — already assessed as genuine SW content.
+mandrake.rimdefdump,keep,No content-bearing Defs folder found (framework/library/patch-only or C#-mechanic-only) — not individually examined this pass.

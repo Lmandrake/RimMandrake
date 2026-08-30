@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T16:46:48Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T16:52:24Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -183,7 +183,7 @@ prose:    infrastructure/state/items/VEHICLE_ION_TIER_1.md
 ## MOD_LIST_OUTGROWN_AUDIT_2 Outgrown-mod audit: whole 585 list, starting with They/Them(ants) and ISEKAI level-up - OWNER SEQUENCED FIRST
 state:    doing
 row:      1
-needs:    offline
+needs:    owner
 target:   v1
 kind:     task
 summary:  Two named leads first: They/Them (ants ruled OUT FOREVER — GAPS 11 2026-08-30;
