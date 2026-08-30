@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T17:56:27Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T18:01:41Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -243,6 +243,15 @@ kind:     build
 summary:  (no items/PAWN_FLAVOR_ROUND7_FIRE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PAWN_FLAVOR_ROUND7_FIRE_1.md
 
+## PAWN_FLAVOR_ROUND8_FDE_1 Build round 8: the FDE droid grouping set - seven entries across Assembly/Service slots
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  (no items/PAWN_FLAVOR_ROUND8_FDE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PAWN_FLAVOR_ROUND8_FDE_1.md
+
 ## PAWN_FLAVOR_ROUND9_FUEL_1 Build round 9: Junkers fuel economy - Shore-Rat, Still-Master, Pipe-Tapper
 state:    doing
 row:      unassigned
@@ -457,16 +466,6 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/VAULT_DUNGEON_BUILD_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/VAULT_DUNGEON_BUILD_1.md
-
-## PAWN_FLAVOR_ROUND8_FDE_1 Build round 8: the FDE droid grouping set - seven entries across Assembly/Service slots
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/PAWN_FLAVOR_ROUND8_FDE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PAWN_FLAVOR_ROUND8_FDE_1.md
 
 ## PAWN_FLAVOR_PHASE2_PROSE_1 Phase 2 prep: lore-prose pass over ThoughtDef/MentalBreakDef/xenotype flavor - census + drafts + review sheet
 state:    proposed

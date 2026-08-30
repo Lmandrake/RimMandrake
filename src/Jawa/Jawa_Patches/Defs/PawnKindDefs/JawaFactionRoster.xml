@@ -1032,6 +1032,18 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>WarcasketAll</li>
       <li>WarcasketVeteran</li>
     </apparelDisallowTags>
+    <backstoryFilters>
+      <li>
+        <categories>
+          <li>JawaBSC_FDECathedral</li>
+        </categories>
+      </li>
+      <li>
+        <categories>
+          <li>JawaBSC_FDENightside</li>
+        </categories>
+      </li>
+    </backstoryFilters>
   </PawnKindDef>
 
   <PawnKindDef MayRequire="Neronix17.OuterRim.DroidDepot">
@@ -1085,6 +1097,18 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>WarcasketAll</li>
       <li>WarcasketVeteran</li>
     </apparelDisallowTags>
+    <backstoryFilters>
+      <li>
+        <categories>
+          <li>JawaBSC_FDECathedral</li>
+        </categories>
+      </li>
+      <li>
+        <categories>
+          <li>JawaBSC_FDENightside</li>
+        </categories>
+      </li>
+    </backstoryFilters>
   </PawnKindDef>
 
   <PawnKindDef MayRequire="Neronix17.OuterRim.DroidDepot">
@@ -1137,6 +1161,18 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>WarcasketAll</li>
       <li>WarcasketVeteran</li>
     </apparelDisallowTags>
+    <backstoryFilters>
+      <li>
+        <categories>
+          <li>JawaBSC_FDECathedral</li>
+        </categories>
+      </li>
+      <li>
+        <categories>
+          <li>JawaBSC_FDENightside</li>
+        </categories>
+      </li>
+    </backstoryFilters>
   </PawnKindDef>
 
   <PawnKindDef MayRequire="Neronix17.OuterRim.DroidDepot">
@@ -1192,6 +1228,18 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <li>WarcasketAll</li>
       <li>WarcasketVeteran</li>
     </apparelDisallowTags>
+    <backstoryFilters>
+      <li>
+        <categories>
+          <li>JawaBSC_FDECathedral</li>
+        </categories>
+      </li>
+      <li>
+        <categories>
+          <li>JawaBSC_FDENightside</li>
+        </categories>
+      </li>
+    </backstoryFilters>
   </PawnKindDef>
 
   <!-- 🔴 REVERTED 2026-08-23. Cut to 500~600; the bowcaster costs 1250 and KotORBowcaster is

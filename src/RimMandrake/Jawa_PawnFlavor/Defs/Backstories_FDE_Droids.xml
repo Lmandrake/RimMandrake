@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- PAWN_FLAVOR_ROUND8_FDE_1 (2026-08-30). Per canon.yml free_droid_enclaves.geography:
+     "there are indeed already two groupings" — the Rust Cathedral congregation and the
+     nightside refugee settlements. Reframed slots per pawn_flavor_design.md's droid set:
+     Assembly = Childhood, Service (Record) = Adulthood.
+
+     🔴 REGISTER GUARD, per the item's own instruction and canon.yml's
+     assailant_reveal_arc: the whispered voices deep in the Cathedral's machinery are
+     REVEALED content (the arc chains droid trust -> Cathedral trust -> location
+     reveal). The Cathedral-side entries below mention listening/trance/unease as
+     sensory FLAVOR only — never who or what is speaking, never why, never a
+     connection to anything beyond "the machinery." The arc reveals the speaker; this
+     file never does.
+
+     WIRING: only Jawa_Droid_* kinds exist with an FDE faction assignment today
+     (defaultFactionDef Jawa_FreeDroidEnclaves, in JawaFactionRoster.xml). Droidworks
+     wave 1 generated DW_ kinds carry NO faction assignment at all yet (gen_droidworks_
+     defs.py's own printed note: no kind matched "jawa" in extraction.json). So this
+     wave wires Jawa_Droid_Grunt/Heavy/Specialist/Leader only, via backstoryFilters
+     added directly onto each PawnKindDef in JawaFactionRoster.xml (JawaBSC_FDECathedral
+     + JawaBSC_FDENightside, both categories on all four kinds — the owner's geography
+     ruling names two settlements but no kind-to-settlement split, and inventing one
+     would be a guess). RE-POINT OWED once Droidworks wave 2 assigns DW_ kinds to
+     Jawa_FreeDroidEnclaves: wire the same two categories onto those kinds too. -->
+<Defs>
+
+  <!-- ===== CATHEDRAL ===== -->
+
+  <BackstoryDef>
+    <defName>Jawa_CongregationConsecrated</defName>
+    <identifier>Jawa_CongregationConsecrated</identifier>
+    <slot>Childhood</slot>
+    <title>congregation-consecrated</title>
+    <titleShort>consecrated</titleShort>
+    <description>[PAWN_nameDef] was assembled from a part that had already lived a life before this one, and something of that life came through in the build. The Cathedral's fitters call it a blessing when it happens. [PAWN_pronoun] calls it a memory that is not quite [PAWN_possessive] own, surfacing at the worst times.</description>
+    <skillGains>
+      <Intellectual>3</Intellectual>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <spawnCategories>
+      <li>JawaBSC_FDECathedral</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <!-- 🔴 TODO / light-C# tier: "occasional foreign memory flicker" is a dynamic
+       mental event (needs a rare MentalStateDef or mote trigger), not a flat
+       stat. Not faked here. -->
+
+  <BackstoryDef>
+    <defName>Jawa_CathedralWhispered</defName>
+    <identifier>Jawa_CathedralWhispered</identifier>
+    <slot>Adulthood</slot>
+    <title>cathedral-whispered</title>
+    <titleShort>whispered</titleShort>
+    <description>[PAWN_nameDef] sits with the old machinery for hours at a time, listening to whatever it is that the deepest halls of the Cathedral carry. [PAWN_pronoun] comes back from those sessions with answers to questions nobody asked out loud — and organics who stand too close for too long find [PAWN_nameDef] hard to be near, though none of them can say exactly why.</description>
+    <skillGains>
+      <Intellectual>5</Intellectual>
+      <Crafting>4</Crafting>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <spawnCategories>
+      <li>JawaBSC_FDECathedral</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <!-- 🔴 TODO / light-C# tier: "listening trance" (a periodic idle/work-blocking
+       state) and "unease aura for organics" (a proximity mood effect on nearby
+       Humanlike-flesh pawns) are both dynamic and need a JobDriver/aura Hediff.
+       Not faked here — no flat statOffset was invented to stand in for either. -->
+
+  <BackstoryDef>
+    <defName>Jawa_CathedralMason</defName>
+    <identifier>Jawa_CathedralMason</identifier>
+    <slot>Adulthood</slot>
+    <title>cathedral-mason</title>
+    <titleShort>mason</titleShort>
+    <description>[PAWN_nameDef] builds — for the Cathedral, and out of whatever the Cathedral still has standing. Forsaken ruin and Forsaken material both feel like coming home. Taking one of the old machines apart, though, feels like something else entirely, and [PAWN_pronoun] does not talk about that feeling.</description>
+    <skillGains>
+      <Construction>6</Construction>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <spawnCategories>
+      <li>JawaBSC_FDECathedral</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <!-- 🔴 TODO / light-C# tier: "mood buff near Forsaken ruins/materials" and
+       "sacrilege mood hit deconstructing old machines" both need a
+       ThoughtWorker reading nearby terrain/things or the pawn's current job -
+       not a flat trait field. Not faked here. -->
+
+  <!-- ===== NIGHTSIDE ===== -->
+
+  <BackstoryDef>
+    <defName>Jawa_ColdForged</defName>
+    <identifier>Jawa_ColdForged</identifier>
+    <slot>Childhood</slot>
+    <title>cold-forged</title>
+    <titleShort>cold-forged</titleShort>
+    <description>[PAWN_nameDef] was built in the nightside dark, where the cold is thick enough to seize a servo mid-stride if you let it. [PAWN_pronoun] runs a little slower than a Cathedral-built frame for exactly that reason — cold-forged parts move carefully, and carefully is not the same as fast.</description>
+    <skillGains>
+      <Crafting>1</Crafting>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <forcedTraits>
+      <Jawa_NightsideHardy>0</Jawa_NightsideHardy>
+    </forcedTraits>
+    <spawnCategories>
+      <li>JawaBSC_FDENightside</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <BackstoryDef>
+    <defName>Jawa_PipeKeeper</defName>
+    <identifier>Jawa_PipeKeeper</identifier>
+    <slot>Adulthood</slot>
+    <title>pipe-keeper</title>
+    <titleShort>pipe-keeper</titleShort>
+    <description>[PAWN_nameDef] keeps the long-distance fuel pipes running that feed the Junkers — the nightside settlements' one real export. It is steady work and it never really stops, which suits [PAWN_pronoun] fine most days. On the others, taking orders from whoever is buying the fuel this week feels uncomfortably close to having a master again.</description>
+    <skillGains>
+      <Construction>5</Construction>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <forcedTraits>
+      <Jawa_NightsideHardy>0</Jawa_NightsideHardy>
+    </forcedTraits>
+    <spawnCategories>
+      <li>JawaBSC_FDENightside</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <!-- 🔴 TODO / light-C# tier: "tireless" and "permanent small mood debuff" -
+       RestRateMultiplier is a real vanilla stat (already used for "tireless"-
+       flavored content elsewhere, see Jawa_WaterDiscipline) but was left off
+       Jawa_NightsideHardy since it belongs to Pipe-Keeper specifically, not
+       Cold-Forged, and TraitDegreeData carries no flat always-on mood field in
+       vanilla to express "permanent small mood debuff" cleanly - a paired
+       Hediff+ThoughtDef would be the honest way, not attempted here. -->
+
+  <BackstoryDef>
+    <defName>Jawa_DirtyBurner</defName>
+    <identifier>Jawa_DirtyBurner</identifier>
+    <slot>Adulthood</slot>
+    <title>dirty-burner</title>
+    <titleShort>burner</titleShort>
+    <description>[PAWN_nameDef] burns whatever the nightside dark provides for power — most of it toxic, none of it clean. [PAWN_pronoun] has learned to run hot reserves and thin margins both, and would rather hoard every spare joule of charge than trust the settlement's grid to still be there tomorrow.</description>
+    <skillGains>
+      <Crafting>4</Crafting>
+      <Intellectual>2</Intellectual>
+    </skillGains>
+    <workDisables>None</workDisables>
+    <forcedTraits>
+      <Jawa_DirtyBurnerAffinity>0</Jawa_DirtyBurnerAffinity>
+    </forcedTraits>
+    <spawnCategories>
+      <li>JawaBSC_FDENightside</li>
+    </spawnCategories>
+  </BackstoryDef>
+
+  <!-- 🔴 TODO / light-C# tier: "hoards charge" and "mood drop at low colony
+       power" both need to read live colony power/Need_Power state - dynamic,
+       not a flat trait field. Not faked here. -->
+
+</Defs>

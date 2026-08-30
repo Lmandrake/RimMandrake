@@ -158,6 +158,69 @@
     </degreeDatas>
   </TraitDef>
 
+  <!-- ===== PAWN_FLAVOR_ROUND8_FDE_1 (2026-08-30) — FDE droid groupings ===== -->
+
+  <!-- Cold-Forged / Pipe-Keeper's forced trait. "cold-immune frame" and
+       "slightly slow servos" map cleanly to real vanilla stats.
+       "heat break weight" is approximated honestly, not stubbed: lowering
+       ComfyTemperatureMax feeds the pawn into vanilla's OWN existing
+       heat-discomfort mood thought more readily - no new C# needed, this
+       reuses a mechanism that already exists rather than inventing one. -->
+  <TraitDef>
+    <defName>Jawa_NightsideHardy</defName>
+    <commonality>0</commonality>
+    <degreeDatas>
+      <li>
+        <label>nightside-hardy</label>
+        <description>{PAWN_nameDef} was built or hardened in the nightside cold, where a seized servo is a death sentence. {PAWN_pronoun} shrugs off cold that would freeze a Cathedral-built frame solid — and runs a little slower for it, and suffers in heat that would not trouble one at all.</description>
+        <statOffsets>
+          <ComfyTemperatureMin>-15</ComfyTemperatureMin>
+          <ComfyTemperatureMax>-5</ComfyTemperatureMax>
+          <MoveSpeed>-0.05</MoveSpeed>
+        </statOffsets>
+      </li>
+    </degreeDatas>
+  </TraitDef>
+
+  <!-- Dirty-Burner's forced trait. "toxin-immune" is a real vanilla stat
+       (ToxicResistance, same pattern as Jawa_ShoreHardened, pushed further
+       toward the stat's own max of 1.0 since "immune" is stronger language
+       than "resistant"). -->
+  <TraitDef>
+    <defName>Jawa_DirtyBurnerAffinity</defName>
+    <commonality>0</commonality>
+    <degreeDatas>
+      <li>
+        <label>dirty-burner</label>
+        <description>{PAWN_nameDef} burns whatever the nightside dark provides, filtered or not. What would poison a cleaner-fed frame barely registers.</description>
+        <statOffsets>
+          <ToxicResistance>0.6</ToxicResistance>
+        </statOffsets>
+      </li>
+    </degreeDatas>
+  </TraitDef>
+
+  <!-- 🔴 TODO / light-C# tier, per the item's own instruction. SHARED across
+       both FDE groupings (not forced by any one backstory - a rollable trait
+       any FDE droid may carry, same as Jawa_PodracerReflexes below is not
+       faction-gated). Both halves of the design are dynamic and genuinely
+       need C#: "opinion penalty toward bolt-users" is relational (a
+       SocialCardUtility-style modifier keyed to whether the OTHER pawn owns/
+       operates a restraining bolt - ties naturally to Droidworks'
+       DW_RestrainingBolt/DW_BoltResentment, which already exist); "mood buff
+       per unbolted droid on map" needs a ThoughtWorker counting live map
+       pawns. Neither is faked with a flat number. -->
+  <TraitDef>
+    <defName>Jawa_FreedomScarred</defName>
+    <commonality>0.2</commonality>
+    <degreeDatas>
+      <li>
+        <label>freedom-scarred</label>
+        <description>{PAWN_nameDef} remembers what a restraining bolt feels like, whether {PAWN_pronoun} ever wore one or not — every FDE droid does. {PAWN_pronoun} does not trust anyone who keeps one on hand, and takes quiet comfort in the sight of another droid running free.</description>
+      </li>
+    </degreeDatas>
+  </TraitDef>
+
   <TraitDef>
     <defName>Jawa_PodracerReflexes</defName>
     <commonality>0.2</commonality>
