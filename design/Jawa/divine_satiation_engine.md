@@ -875,3 +875,46 @@ dwelling within it speaking and there is no unified voice remaining. Nor do any
 of them seek unity as much as any group of people wish to merge into one."
 Settles open-list items on nine-awareness and Rakatan-knowledge; the
 speak-to-the-purpose question stays open (the whole voice is gone).
+
+## Design sketch 2026-08-29 — "in front" (owner; PRE-CANON, ideas register)
+Owner's sketch, near-verbatim: each god grows LOUDER when engaged strongly,
+positively or negatively; the others watch, silently observing with reactions
+and gestures. Crew behavior determines which gods are "in front" for a
+specific map. The ship's LIGHTS indicate who is in front, clearly. The RULES
+of the ship reflect who is in front and absolutely affect gameplay. A room
+exists where holograms of the gods manifest to deliver messages. Hoped-for
+mod (ours): landing on a new map issues a JUDGEMENT of past-map performance.
+Consequences: ship weapons available or offline, engines take more or less
+fuel, other highly consequential influences. No actual magic — to the Jawa it
+seems close. Holograms feature richly, almost as ghosts. The ship could send
+messages to attract or discourage raids. All "ideas to consider but not yet
+canon"; BENCH ideas invited and appended below.
+
+### BENCH contributions (2026-08-29, same register — not canon)
+- **"In front" is scheduler priority, not possession**: the no-magic
+  rationale — nine personas on one ancient substrate; the most-engaged god
+  gets actuator time. Lights, doors, subsystem priorities are literally
+  allocation. Techno-explanation stays honest and the Jawa read it as favor.
+- **Holograms ARE the temple's memory** (ties the cradle_memory ruling to the
+  hologram room): the gods can only manifest by puppeting the substrate's
+  old Rakatan recordings — every divine message arrives wearing a fragment of
+  the ancient story. One mechanism carries BOTH the judgement channel and the
+  event-driven history reveal; the reveal pacing rides worship.
+- **The silent-observer gestures** are ambient micro-effects, not letters: a
+  door that hesitates, a hum that sours, lamps that flicker in one god's
+  palette while another holds the floor — cheap comps, huge presence.
+- **Judgement at landing fits the gravship loop as liturgy**: act on a map →
+  launch → the scorecard (per-god satiation deltas: kills, trades, repairs,
+  water discipline, droid treatment, bolt usage per faction-ethics canon) →
+  new dispensation on the next map. Launch/land is already the campaign's
+  natural chapter break; judgement makes it a rite.
+- **Every front-god ruleset is a boon AND a demand** (no purely good god):
+  weapons online but fuel-hungry engines; thrifty engines but comms silence;
+  rich trade beacons but raid-attracting broadcasts. The raid attract/
+  discourage lever = the ship's transponder, mechanically storyteller
+  incident-weight factors while that god fronts.
+- **v1/v2 seam**: v1 already owns satiation tracks + pre-authored letters
+  (felt-not-heard); the front system, light language, hologram room and
+  landing-judgement are the mod (working name candidates: Ninefold,
+  The Front, Dispensations). The satiation engine owes the scorecard spec
+  either way.

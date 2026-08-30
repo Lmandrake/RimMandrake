@@ -35,9 +35,12 @@ names what turns on the answer. Ordered by how much downstream work waits.
 8. ✅ RULED (owner, 2026-08-29): the crew know the vessel is ANCIENT; the
    Rakatan story is not known at start — it is learned FROM THE SHIP as events
    unfold, surfacing from the substrate's memory of its whole era.
-9. How does a fragment "growing into the ship" express mechanically — rooms,
-   systems, behaviors, voice? (The satiation engine owes this mapping; it is
-   where the arc becomes buildable rather than flavor.)
+9. ⭐ SKETCHED, not yet canon (owner, 2026-08-29 — full register in
+   divine_satiation_engine.md "in front" section): engagement makes a god
+   louder; crew behavior picks who is "in front" per map; ship lights signal
+   it; ship rules (weapons, fuel, raids) enforce it; hologram room for
+   messages; landing = judgement of the past map. Awaits canonization at a
+   bench sitting.
 10. Can the Cradle's own purpose be spoken to at all? ("No" is the more
     frightening answer.) — COLORED by the 2026-08-29 cradle_memory ruling: the
     unified voice is GONE, so nothing whole can answer; whether the executing
