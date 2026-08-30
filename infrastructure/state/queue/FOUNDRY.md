@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T15:32:15Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: free
+as-of: 2026-08-30T15:44:02Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -375,3 +375,33 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/WEAPONS_ABSORPTION_WAVE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/WEAPONS_ABSORPTION_WAVE_1.md
+
+## ISEKAI_GRANT_EXCLUSION_1 Exclude Jawa_ traits from ISEKAI grant-item pools
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/ISEKAI_GRANT_EXCLUSION_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ISEKAI_GRANT_EXCLUSION_1.md
+
+## DROIDWORKS_FLESHTYPE_NEEDS_GAP_1 DW_Race_Base has no fleshType override and no organic-needs blacklist -- droids run as reskinned humans mechanically
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DROIDWORKS_FLESHTYPE_NEEDS_GAP_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROIDWORKS_FLESHTYPE_NEEDS_GAP_1.md
+
+## DROIDWORKS_POWEREDDOWN_NOT_WIRED_1 Ion buildup crossing threshold downs via vanilla JawaIon_Stun capMods only -- never adds the DW_PoweredDown hediff the state machine is built around
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DROIDWORKS_POWEREDDOWN_NOT_WIRED_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROIDWORKS_POWEREDDOWN_NOT_WIRED_1.md

@@ -739,3 +739,33 @@ is still spawned. Fog-clear and terrain-paint were exonerated by the second inci
 **Rule:** never bridge-spawn wall-mounted or shield-comp turrets onto open ground;
 exclude `HMC_Wall_*`, `ShipWallMountMiniTurret`, `VQE_AncientShieldedTurret` from any
 free-standing lineup, or give walls first.
+
+## `select_pawn` and every `ToolMapForPawns` debug action require `IsColonist` — a bridge-spawned pawn, even faction PlayerColony, does not qualify
+
+Measured 2026-08-30. Spawned a `DW_OuterRim_GNKDroid` via `jawa/spawn_pawn` with
+`faction: "PlayerColony"` — the response showed `faction: PlayerColony, hostile:
+False`. `rimworld/select_pawn {pawnId: <id>}` still refused: *"Could not find
+player-controlled colonist id"*. `Actions\Add Hediff...\Restraining bolt`
+(`actionType: ToolMapForPawns`) then reported `success: true` with an empty
+`effects.logs` and changed nothing — `jawa/pawn_get` afterward showed no new
+hediff at all, an old backstory scar unrelated to the call. Same silent
+no-op on `Actions\Add Prisoner` (`actionType: Action`, acts on "current
+selection" — which was nothing, since selection had already failed).
+
+⇒ **`ResolvePawn`'s "player colonists only" restriction (§4) means literally
+`Pawn.IsColonist`**, which tracks colony membership (join pipeline, `playerSettings`
+being set, etc.), not merely `faction == PlayerColony`. A pawn dropped straight
+into the faction via `spawn_thing`/`spawn_pawn`/a debug spawn is NOT a colonist
+by this test, and every `ToolMapForPawns` action — `Add Hediff...`, `Add
+Prisoner`, `T: Enslave`, `T: Turn into prisoner` and siblings — silently
+no-ops on it exactly like it does on a hostile.
+
+**Generalises to:** any test that needs to arrest, imprison, enslave, or hand-add
+a hediff to a bridge-spawned NON-colonist pawn (a captured droid, a downed
+rogue, anything not part of the starting colonist trio). `ToolMap` actions
+targeting by `x`/`z` or `thingId` (e.g. `jawa/damage`) are unaffected — they
+work on any target regardless of faction/colonist status, per §3's own
+distinction. **Workaround, unproven:** none found this session; a real fix
+would need either a genuine colonist-join path exposed on the bridge, or a
+new `jawa/` tool that bypasses `ResolvePawn` for hediff-adding the way
+`jawa/damage` already does for damage.
