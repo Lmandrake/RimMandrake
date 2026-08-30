@@ -1,5 +1,58 @@
 # SPAWN_PAWN_SUBSTITUTES_VANILLA_KIND_1 — "Spawned 2/2" delivered one of something else
 
+## ✅ TOOL FIX PROVEN LIVE, 🔴 AND THE RATE IS AN ORDER OF MAGNITUDE LOWER THAN RECORDED — 2026-08-30 (FOUNDRY)
+
+Fresh 585-mod quicktest. The fixed `jawa/spawn_pawn` (with `kindActual` /
+`kindSubstituted` / `substitutedCount`) is deployed. **480 spawns, 240 per cell** — the
+`>=60 per cell` this item's own CORRECTION section demanded, and 12× the sample any
+previous cell had.
+
+### The read-back works, and it is honest
+All **480 rows** carried `kindRequested`, `kindActual` and `kindSubstituted`. On a
+substitution the tool now says so instead of counting it as the requested kind:
+```
+Spawned 39/40 Jawa_Hutt_Grunt in faction Jawa_HuttCartel.
+  ⚠️ 1 did not spawn as asked -- see the rows with ok:false.
+  ⚠️ 1 came back as a DIFFERENT PawnKindDef than requested -- see kindActual
+     on the rows with kindSubstituted:true.
+```
+`spawnedCount` dropped to 39, `substitutedCount` read 1, and the offending row named
+`kindActual: "Colonist"`. ⇒ **the silent-success this item was filed for is closed.** Every
+substitute seen this session was a vanilla `Colonist`, which answers the outstanding
+*"record the substituted kind, don't just count it"*.
+
+### 🔴 But the faction attribution does NOT reproduce
+| cell | substituted / spawned | rate |
+|---|---|---|
+| `Jawa_Empire_Grunt` → **`Empire`** (vanilla faction) | **2 / 240** | 0.83% |
+| `Jawa_Hutt_Grunt` → **`Jawa_HuttCartel`** (authored) | **1 / 240** | 0.42% |
+
+Against the ~**15% vs ~2%** this item records above. 2-vs-1 at n=240 is noise: **at a
+proper sample size there is no detectable faction effect at all**, and the absolute rate is
+roughly one-twentieth of what was recorded.
+
+🔑 **The most likely reason the old number was inflated, and it is a method difference, not
+a mod-list one.** Every earlier measurement compared a post-hoc `jawa/list_pawns` census
+against the kinds requested. A fresh quicktest map **seeds its own wandering/joining
+humans**, and a map-resident vanilla `Colonist` standing near the spawn point is
+indistinguishable, in a census diff, from a substituted one
+([[census-requested-vs-actual-kind]], [[spawn-many-for-bridge-tests]]). The fixed tool reads
+`pawn.kindDef` **off the object it just generated, inside the same call**, so it cannot
+count a bystander. ⚠️ Stated as the likely explanation, not a proven one — the old runs
+cannot be re-examined.
+
+⇒ **Treat the `~15% in vanilla factions` figure and the `it is the faction, not the kind`
+attribution below as SUPERSEDED and not reproduced.** What survives: substitution is real
+(3 events in 480), it produces a bare vanilla `Colonist`, and the five-patch shortlist and
+raid-path reasoning are unaffected — those were read from source, not from these rates.
+
+### Not attempted, deliberately
+The mod-disable bisect across the five shortlisted Harmony patches needs a **game restart
+per candidate** and was out of scope for this pass. It is also now a harder experiment than
+it looked: at ~0.5–0.8% a cell needs on the order of a thousand spawns to separate
+"disabled it" from "did not roll one", where the old 15% figure implied a few dozen would do.
+**Whoever runs it should size it off 0.8%, not 15%.**
+
 Measured live 2026-08-27, 582 mods.
 Evidence: `infrastructure/state/evidence/bridge_session_2026-08-27_BUILD.md`.
 
@@ -239,12 +292,18 @@ live mod-disable bisect with the fixed tool reading `kindActual` back.
 
 ## criteria
 - [x] Kind read back compared against kind requested.
-- [x] Attributed: the faction, not the kind and not `requiredWorkTags`.
+- [ ] ~~Attributed: the faction, not the kind and not `requiredWorkTags`.~~ 🔴 **RETRACTED
+      2026-08-30** — at 240 spawns per cell the vanilla-faction cell reads 0.83% and the
+      authored-faction cell 0.42%. No detectable faction effect; the 15%-vs-2% split rested
+      on 3-of-20 cells measured by a census diff that could count map-resident pawns.
 - [x] **Attributed to neither `jawa/spawn_pawn` nor vanilla `PawnGenerator`** — both
       excluded from source. It is a third-party Harmony patch, shortlisted to five by
-      signature, and it is on the raid path.
+      signature, and it is on the raid path. (Unaffected by the retraction above: read from
+      source, not from the rates.)
 - [x] The tool reports the substitution instead of counting it as the requested kind —
-      `kindActual` / `kindSubstituted` / `substitutedCount`, built clean, deploy owed.
-- [ ] **Which of the five patches** — needs a live bisect, not source. Filed as the one
-      remaining unknown; do it with the fixed tool once deployed.
+      `kindActual` / `kindSubstituted` / `substitutedCount`, **deployed and proven live on
+      480 spawns**, substitute recorded as vanilla `Colonist`.
+- [ ] **Which of the five patches** — needs a live mod-disable bisect with a game restart
+      per candidate. Size it off the real ~0.8% rate: on the order of a thousand spawns per
+      cell, not a few dozen.
 - [ ] Substitution at 0 for Empire and Blackstar kinds in normal play.

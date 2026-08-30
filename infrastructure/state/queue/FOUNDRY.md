@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T21:34:28Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T21:37:24Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -144,6 +144,15 @@ kind:     task
 summary:  Scope notes (BENCH, filing sitting 2026-08-30)
 prose:    infrastructure/state/items/GRAFFITI_MOD_EXPANSION_1.md
 
+## RIMMANDRAKE_PITS_BUILD_1 Build RimMandrake Pits: core framework mod (dig stages, terrain-mimic covers, mass triggers, struggle escape, fitting family, holding-platform pit cell) + campaign layer; first step is the spawn-mass quicktest matrix on the 22s minimal list
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Full specs, both ruled by the owner 2026-08-30: design/Jawa/coveredpittrapsspec.md
+prose:    infrastructure/state/items/RIMMANDRAKE_PITS_BUILD_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -174,7 +183,7 @@ row:      unassigned
 needs:    bridge
 target:   v1
 kind:     bug
-blocked:  Attributed from source: NOT jawa/spawn_pawn (no kind-selection logic) and NOT vanilla PawnGenerator (assigns pawn.kindDef=request.KindDef at PawnGenerator.cs:734; RedressPawn forces ChangeKind; failure returns null, never a different kind). It is a third-party Harmony patch on the pawn-gen path, shortlisted to 5 by by-ref signature (HAR x2, FactionLoadout, EBSGFramework, BigAndSmall) -- all on GeneratePawn/TryGenerateNewPawnInternal, so it reaches raids. Tool fixed to read kindDef back (kindActual/kindSubstituted/substitutedCount), builds clean, deploy owed at game-down. Which of the 5 needs a live mod-disable bisect.
+blocked:  Tool read-back proven live on 480 spawns; remaining unknown is WHICH of 5 Harmony patches, needs a mod-disable bisect with a game restart per candidate (~1000 spawns per cell at the real 0.8% rate)
 summary:  SPAWNPAWNSUBSTITUTESVANILLAKIND1 — "Spawned 2/2" delivered one of something else
 prose:    infrastructure/state/items/SPAWN_PAWN_SUBSTITUTES_VANILLA_KIND_1.md
 
@@ -248,14 +257,4 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## RIMMANDRAKE_PITS_BUILD_1 Build RimMandrake Pits: core framework mod (dig stages, terrain-mimic covers, mass triggers, struggle escape, fitting family, holding-platform pit cell) + campaign layer; first step is the spawn-mass quicktest matrix on the 22s minimal list
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/RIMMANDRAKE_PITS_BUILD_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/RIMMANDRAKE_PITS_BUILD_1.md
+_none._
