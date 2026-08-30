@@ -19,9 +19,9 @@ names what turns on the answer. Ordered by how much downstream work waits.
    DROID_TILES_SOURED_TERRAIN_1, sequenced with Droidworks phase 3.
 4. ✅ RULED DEAD (owner, 2026-08-29): Royalty's player-facing systems are off
    as a decision, not a side effect. canon.yml `royalty.dead_ruled`.
-5. **Victory, formally.** The win paths exist as the god-map (droid-army /
-   coalition / the Hutt road) and the pride-crisis is the designed endgame —
-   but no doc states whether v1 has a formal win condition or is open-ended.
+5. ✅ RULED (owner, 2026-08-30): **v1 is OPEN-ENDED** — arcs provide climaxes,
+   nothing rolls credits; authored endings (the god-map roads) are v2. The
+   pressure systems (pursuit cadence, pride-crisis) give late-game shape.
 6. ✅ RULED (owner, 2026-08-29): zero ambient Anomaly; the Assailant dungeon
    gets the fleshmass exception, and the sarlacc may draw on it too.
    canon.yml `anomaly_content.boundary_ruled`.
