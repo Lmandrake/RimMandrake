@@ -3180,3 +3180,4 @@
 {"seat":"FOUNDRY","event":"close","id":"PAINT_GUARD_ASK_EACH_TIME_1","sha":"2c352882","ts":"2026-08-30T18:44:49Z"}
 {"seat":"FOUNDRY","event":"close","id":"BRIDGE_UIROOT_WINDOW_TOOLS_1","sha":"57d4154e","ts":"2026-08-30T18:47:07Z"}
 {"seat":"FOUNDRY","event":"block","id":"BRIDGE_STORY_ALERT_TALE_TOOLS_1","reason":"jawa/alerts_list fails every call: FieldOrNull's PubInst BindingFlags omit NonPublic so private AlertsReadout.activeAlerts is never found; other 4 tools proven live","ts":"2026-08-30T18:50:06Z"}
+{"seat":"FOUNDRY","event":"close","id":"BRIDGE_PIPE_NET_INFO_1","sha":"5a09cfb9","ts":"2026-08-30T18:52:28Z"}
