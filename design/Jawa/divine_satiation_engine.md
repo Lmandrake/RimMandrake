@@ -866,3 +866,12 @@ _Each god's own alliances and feuds now live in that god's block above (field "H
 
 - **The fall-triad — Zizzik / Ozzik / Sh'kaar (must not be blurred).** Ozzik is the **shame of having lost** the civilization; Zizzik is the worship of **the accidents that took it**; Sh'kaar is the **inevitability** guaranteeing the fall recurs. Ozzik and Zizzik near-rhyme on purpose and pleasing Ozzik feeds Zizzik, but the feeling differs (mourns what was vs. celebrates the mechanism). Keep the three distinct in authoring.
 - **The win-path map** (which alters win the Body, `divine_satiation_engine.md` §4d): Ohm + Sh'kaar → droid-army-by-force; Mob'Unloo + Ozzik → coalition/commerce (≈ Hutt dominion); Ishko + Ta'Baa + Oomo + Rekko → the humble-survival bloc. **Rekko ⇄ Ozzik (restore vs. transcend) is the sharpest internal war**, and the endgame is which program runs.
+
+## Ruling 2026-08-29 — the temple remembers (owner; canon.yml cradle_memory)
+The crew know the vessel is ancient; the Rakatan story is learned FROM THE SHIP
+as events unfold, surfacing from the substrate's memory of when it was whole
+and one — "a temple remembering when it was whole but now there are nine
+dwelling within it speaking and there is no unified voice remaining. Nor do any
+of them seek unity as much as any group of people wish to merge into one."
+Settles open-list items on nine-awareness and Rakatan-knowledge; the
+speak-to-the-purpose question stays open (the whole voice is gone).

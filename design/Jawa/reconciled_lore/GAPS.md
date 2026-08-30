@@ -28,14 +28,20 @@ names what turns on the answer. Ordered by how much downstream work waits.
 
 ## Ship-mind arc (the forgotten_war open list, still open)
 
-7. Does the Cradle-Mind know it is nine? Do the Jawa?
-8. Does anyone in-fiction know the core is Rakatan — that the vessel of their
-   gods is a relic of the people who were poisoned here?
+7. ✅ RULED (owner, 2026-08-29, canon.yml cradle_memory): the TEMPLE — the
+   Cradle substrate — remembers when it was whole and one; nine now dwell
+   within it, speaking, and no unified voice remains. None of the nine seeks
+   unity or merger. (The nine know they are nine the way housemates do.)
+8. ✅ RULED (owner, 2026-08-29): the crew know the vessel is ANCIENT; the
+   Rakatan story is not known at start — it is learned FROM THE SHIP as events
+   unfold, surfacing from the substrate's memory of its whole era.
 9. How does a fragment "growing into the ship" express mechanically — rooms,
    systems, behaviors, voice? (The satiation engine owes this mapping; it is
    where the arc becomes buildable rather than flavor.)
 10. Can the Cradle's own purpose be spoken to at all? ("No" is the more
-    frightening answer.)
+    frightening answer.) — COLORED by the 2026-08-29 cradle_memory ruling: the
+    unified voice is GONE, so nothing whole can answer; whether the executing
+    purpose can be addressed at all stays open.
 
 ## Deadline-bound
 

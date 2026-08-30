@@ -1249,6 +1249,26 @@ anomaly_content:
     Assailant flesh dungeon (ASSAILANT_FLESH_DUNGEON_1), and the sarlacc's
     design may draw on it too (explore at its design sitting). Nothing else
     touches Anomaly content.
+cradle_memory:
+  ruled: true
+  src: >
+    Owner, 2026-08-29, verbatim: "The ship is known to be an ancient vessel
+    but they will be learning the ancient story from the ship as events
+    unfold. And the ship will only remember when it was once whole and one as
+    though that is a temple remembering when it was whole but now there are
+    nine dwelling within it speaking and there is no unified voice remaining.
+    Nor do any of them seek unity as much as any group of people wish to
+    merge into one." Unpacked, consistent with the no-integrating-self ruling:
+    (1) The crew KNOW the vessel is ancient; the RAKATAN story is not known at
+    start and is revealed BY THE SHIP, event-driven, as play unfolds — the
+    reveal channel is the substrate's own memory. (2) What remembers being
+    whole is the TEMPLE — the Cradle substrate — whose memories are of its
+    whole-and-one era; that memory is where the ancient story surfaces from.
+    (3) No unified voice remains, and NONE of the nine seeks unity or merger —
+    reunification is nobody's goal, no more than nine people wish to become
+    one person. Settles reconciled_lore GAPS 7 and 8; colors 10 (the whole
+    voice is gone; whether the executing purpose can be addressed at all
+    remains open).
 rakata:
   victims_and_tyrants_ruled: true
   victims_and_tyrants_src: >

@@ -43,6 +43,15 @@ kinship it cannot explain: near Rakatan vaults or salvage, something in the
 substrate **relaxes** — not warning, comfort — and it draws the ship toward
 the vaults. The gods are Jawa; the floor they stand on is not.
 
+**The temple remembers being whole** [owner 2026-08-29, canon.yml
+cradle_memory]: the crew know the vessel is ancient, and the ANCIENT STORY is
+learned from the ship as events unfold — it surfaces from the substrate's own
+memory of when it was whole and one, a temple remembering wholeness while nine
+dwell within it speaking. No unified voice remains, and none of the nine seeks
+unity — merger is nobody's goal, any more than nine people wish to become one.
+The reveal channel for the Rakatan history is therefore the ship itself,
+event-driven.
+
 **v1 has no talking ship** [owner 2026-08-15]: all in-game LLM voice is v2.
 The nine are **felt, not heard** — the satiation tracks, boons and banes,
 whose kind of week the colony keeps having, pre-authored letters attributed to
