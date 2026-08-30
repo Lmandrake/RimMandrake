@@ -1,0 +1,4020 @@
+{
+  "races": [
+    {
+      "defName": "OuterRim_BattleDroid",
+      "mod": "OuterRimDroidDepot",
+      "framework": "Asimov",
+      "family": "Humanlike",
+      "parentName": "OuterRim_BaseHumanoidDroid",
+      "label": "B1 Battle Droid",
+      "bodySize": 1,
+      "bodySizeSource": "override (declared directly in this def; OuterRim_BaseHumanoidDroid's <race> block declares no baseBodySize)",
+      "baseHealthScale": 0.8,
+      "baseHealthScaleSource": "override (declared directly in this def)",
+      "moveSpeed": 4.8,
+      "graphics": {
+        "bodyPath": "OuterRim/Droid/B1/Body/",
+        "headTypeWhitelist": [
+          "OuterRim_Head_BattleDroid"
+        ],
+        "bodyTypeWhitelist": [
+          "Male"
+        ],
+        "shaderType": "CutoutComplex",
+        "skinColorPairs": [
+          {
+            "colorOne": "(239, 228, 176)",
+            "colorTwo": "(239, 228, 176)",
+            "weight": 100,
+            "comment": "Default Factory Colours"
+          }
+        ]
+      },
+      "comps": [
+        "TabulaRasa.CompProperties_TraitsOverTime (inherited from base)",
+        "Asimov.CompProperties_Hibernation (inherited from base)",
+        "CompProperties_Stunnable (inherited from base; affectedDamageDefs Stun/EMP/OuterRim_Ion)",
+        "Asimov.CompProperties_Automaton",
+        "Asimov.CompProperties_RecolourablePawn"
+      ],
+      "modExtensions": [
+        "Asimov.DefModExt_EnergyNeed (inherited)",
+        "TabulaRasa.DefModExt_DiseaseImmunity (inherited, 25 listed hediffs)",
+        "OuterRimDroids.DefModExt_Droid (inherited)",
+        "OuterRimDroids.DefModExt_DroidEquipment (inherited)"
+      ],
+      "notableFields": {
+        "immuneToDisease": true,
+        "corpseRots": false,
+        "corpseEdible": false,
+        "disabledNeedsCount": 10,
+        "canUseRanged": true,
+        "canUseMelee": true,
+        "isFighter": false,
+        "combatPower": 40,
+        "defaultFactionType": "PlayerColony",
+        "researchPrerequisites": [
+          "OuterRim_BattleDroids"
+        ],
+        "marketValue": 1500
+      }
+    },
+    {
+      "defName": "OuterRim_BattleDroidAdvanced",
+      "mod": "OuterRimDroidDepot",
+      "framework": "Asimov",
+      "family": "Humanlike",
+      "parentName": "OuterRim_BaseHumanoidDroid",
+      "label": "B1A Battle Droid",
+      "bodySize": 1,
+      "bodySizeSource": "override",
+      "baseHealthScale": 0.8,
+      "baseHealthScaleSource": "override",
+      "moveSpeed": 4.2,
+      "graphics": {
+        "bodyPath": "OuterRim/Droid/B1A/Body/",
+        "headTypeWhitelist": [
+          "OuterRim_Head_BattleDroidAdvanced"
+        ],
+        "bodyTypeWhitelist": [
+          "Male"
+        ],
+        "shaderType": "CutoutComplex",
+        "skinColorPairs": [
+          {
+            "colorOne": "(146, 148, 172)",
+            "colorTwo": "(65, 107, 127)",
+            "weight": 100,
+            "comment": "Default Factory Colours"
+          }
+        ]
+      },
+      "comps": [
+        "TabulaRasa.CompProperties_TraitsOverTime (inherited)",
+        "Asimov.CompProperties_Hibernation (inherited)",
+        "CompProperties_Stunnable (inherited)",
+        "Asimov.CompProperties_Automaton",
+        "Asimov.CompProperties_RecolourablePawn"
+      ],
+      "modExtensions": [
+        "Asimov.DefModExt_EnergyNeed (inherited)",
+        "TabulaRasa.DefModExt_DiseaseImmunity (inherited)",
+        "OuterRimDroids.DefModExt_Droid (inherited)",
+        "OuterRimDroids.DefModExt_DroidEquipment (inherited)"
+      ],
+      "notableFields": {
+        "immuneToDisease": true,
+        "corpseRots": false,
+        "corpseEdible": false,
+        "disabledNeedsCount": 10,
+        "canUseRanged": true,
+        "canUseMelee": true,
+        "isFighter": false,
+        "combatPower": 40,
+        "defaultFactionType": "PlayerColony",
+        "researchPrerequisites": [
+          "OuterRim_BattleDroids"
+        ],
+        "marketValue": 1800,
+        "note": "Higher-skill variant of B1 (11 skills listed vs 4), functions as servant/bodyguard for Separatist officials"
+      }
+    },
+    {
+      "defName": "OuterRim_CommandoDroid",
+      "mod": "OuterRimDroidDepot",
+      "framework": "Asimov",
+      "family": "Humanlike",
+      "parentName": "OuterRim_BaseHumanoidDroid",
+      "label": "BX Commando Droid",
+      "bodySize": 1,
+      "bodySizeSource": "override",
+      "baseHealthScale": 0.8,
+      "baseHealthScaleSource": "override",
+      "moveSpeed": 5.4,
+      "graphics": {
+        "bodyPath": "OuterRim/Droid/BX/Body/",
+        "headTypeWhitelist": [
+          "OuterRim_Head_CommandoDroid"
+        ],
+        "bodyTypeWhitelist": [
+          "Male"
+        ],
+        "shaderType": "CutoutComplex",
+        "skinColorPairs": [
+          {
+            "colorOne": "(99, 96, 90)",
+            "colorTwo": "(99, 96, 90)",
+            "weight": 100,
+            "comment": "Default Factory Colours"
+          }
+        ]
+      },
+      "comps": [
+        "TabulaRasa.CompProperties_TraitsOverTime (inherited)",
+        "Asimov.CompProperties_Hibernation (inherited)",
+        "CompProperties_Stunnable (inherited)",
+        "Asimov.CompProperties_Automaton",
+        "Asimov.CompProperties_RecolourablePawn"
+      ],
+      "modExtensions": [
+        "Asimov.DefModExt_EnergyNeed (inherited)",
+        "TabulaRasa.DefModExt_DiseaseImmunity (inherited)",
+        "OuterRimDroids.DefModExt_Droid (inherited)",
+        "OuterRimDroids.DefModExt_DroidEquipment (inherited)"
+      ],
+      "notableFields": {
+        "immuneToDisease": true,
+        "corpseRots": false,
+        "corpseEdible": false,
+        "disabledNeedsCount": 10,
+        "canUseRanged": true,
+        "canUseMelee": true,
+        "isFighter": false,
+        "combatPower": 40,
+        "defaultFactionType": "PlayerColony",
+        "researchPrerequisites": [
+          "OuterRim_BattleDroids"
+        ],
+        "marketValue": 2000,
+        "meleeSkill": 16
+      }
+    },
+    {
+      "defName": "OuterRim_HKDroid",
+      "mod": "OuterRimDroidDepot",
+      "framework": "Asimov",
+      "family": "Humanlike",
+      "parentName": "OuterRim_BaseHumanoidDroid",
+      "label": "HK-Series Assassin Droid",
+      "bodySize": 1,
+      "bodySizeSource": "override",
+      "baseHealthScale": 0.9,
+      "baseHealthScaleSource": "override",
+      "moveSpeed": 5.0,
+      "graphics": {
+        "bodyPath": "OuterRim/Droid/HK/Body/",
+        "headTypeWhitelist": [
+          "OuterRim_Head_HKDroid"
+        ],
+        "bodyTypeWhitelist": [
+          "Male"
+        ],
+        "shaderType": "CutoutComplex",
+        "skinColorPairs": [
+          {
+            "colorOne": "(141, 60, 42)",
+            "colorTwo": "(239, 175, 45)",
+            "weight": 100,
+            "comment": "Default Factory Colours"
+          },
+          {
+            "colorOne": "(135, 135, 135)",
+            "colorTwo": "(99, 165, 253)",
+            "weight": 100,
+            "comment": "Default Factory Colours"
+          }
+        ]
+      },
+      "comps": [
+        "TabulaRasa.CompProperties_TraitsOverTime (inherited)",
+        "Asimov.CompProperties_Hibernation (inherited)",
+        "CompProperties_Stunnable (inherited)",
+        "Asimov.CompProperties_Automaton",
+        "Asimov.CompProperties_RecolourablePawn"
+      ],
+      "modExtensions": [
+        "Asimov.DefModExt_EnergyNeed (inherited)",
+        "TabulaRasa.DefModExt_DiseaseImmunity (inherited)",
+        "OuterRimDroids.DefModExt_Droid (inherited)",
+        "OuterRimDroids.DefModExt_DroidEquipment (inherited)"
+      ],
+      "notableFields": {
+        "immuneToDisease": true,
+        "corpseRots": false,
+        "corpseEdible": false,
+        "disabledNeedsCount": 10,
+        "canUseRanged": true,
+        "canUseMelee": true,
+        "isFighter": false,
+        "combatPower": 40,
+        "defaultFactionType": "PlayerColony",
+        "researchPrerequisites": [
+          "OuterRim_AssassinDroids"
+        ],
+        "marketValue": 2000,
+        "shootingSkill": 16
+      }
+    },
+    {
+      "defName": "OuterRim_ImperialLaborDroid",
+      "mod": "OuterRimDroidDepot",
+      "framework": "Asimov",
+      "family": "Humanlike",
+      "parentName": "OuterRim_BaseHumanoidDroid",
+      "label": "Imperial Labor Droid",
+      "bodySize": 1,
+      "bodySizeSource": "override",
+      "baseHealthScale": 0.8,
+      "baseHealthScaleSource": "override",
+      "moveSpeed": 4.2,
+      "graphics": {
+        "bodyPath": "OuterRim/Droid/ImperialLabor/Body/",
+        "headTypeWhitelist": [
+          "OuterRim_Head_ImperialLaborDroid"
+        ],
+        "bodyTypeWhitelist": [
+          "Male"
+        ],
+        "shaderType": "CutoutComplex",
+        "skinColorPairs": [
+          {
+            "colorOne": "(45, 45, 45)",
+            "colorTwo": "(173, 151, 95)",
+            "weight": 100,
+            "comment": "Default Factory Colours"
+          }
+        ]
+      },
+      "comps": [
+        "TabulaRasa.CompProperties_TraitsOverTime (inherited)",
+        "Asimov.CompProperties_Hibernation (inherited)",
+        "CompProperties_Stunnable (inherited)",
+        "Asimov.CompProperties_Automaton",
+        "Asimov.CompProperties_RecolourablePawn"
+      ],
+      "modExtensions": [
+        "Asimov.DefModExt_EnergyNeed (inherited)",
+        "TabulaRasa.DefModExt_DiseaseImmunity (inherited)",
+        "OuterRimDroids.DefModExt_Droid (inherited)",
+        "OuterRimDroids.DefModExt_DroidEquipment (inherited)"
+      ],
+      "notableFields": {
+        "immuneToDisease": true,
+        "corpseRots": false,
+        "corpseEdible": false,
+        "disabledNeedsCount": 10,
+        "canUseRanged": true,
+        "canUseMelee": true,
+        "isFighter": false,
+        "combatPower": 40,
+        "defaultFactionType": "PlayerColony",
+        "researchPrerequisites": [
+          "OuterRim_LaborDroids"
+        ],
+        "marketValue": 1800
+      }
+    },
+    {
+      "defName": "OuterRim_KXSecurityDroid",
+      "mod": "OuterRimDroidDepot",
+      "framework": "Asimov",
+      "family": "Humanlike",
+      "parentName": "OuterRim_BaseHumanoidDroid",
+      "label": "KX Security Droid",
+      "bodySize": 1,
+      "bodySizeSource": "override",
+      "baseHealthScale": 1.2,
+      "baseHealthScaleSource": "override",
+      "moveSpeed": 4.8,
+      "graphics": {
+        "bodyPath": "OuterRim/Droid/KX/Body/",
+        "headTypeWhitelist": [
+          "OuterRim_Head_KXSeriesDroid"
+        ],
+        "bodyTypeWhitelist": [
+          "Male"
+        ],
+        "shaderType": "CutoutComplex",
+        "skinColorPairs": [
+          {
+            "colorOne": "(20, 20, 20)",
+            "colorTwo": "(20, 20, 20)",
+            "weight": 100,
+            "comment": "Default Factory Colours"
+          }
+        ]
+      },
+      "comps": [
+        "TabulaRasa.CompProperties_TraitsOverTime (inherited)",
+        "Asimov.CompProperties_Hibernation (inherited)",
+        "CompProperties_Stunnable (inherited)",
+        "Asimov.CompProperties_Automaton",
+        "Asimov.CompProperties_RecolourablePawn (channelTwo=false, unlike most others)"
+      ],
+      "modExtensions": [
+        "Asimov.DefModExt_EnergyNeed (inherited)",
+        "TabulaRasa.DefModExt_DiseaseImmunity (inherited)",
+        "OuterRimDroids.DefModExt_Droid (inherited)",
+        "OuterRimDroids.DefModExt_DroidEquipment (inherited)"
+      ],
+      "notableFields": {
+        "immuneToDisease": true,
+        "corpseRots": false,
+        "corpseEdible": false,
+        "disabledNeedsCount": 10,
+        "canUseRanged": true,
+        "canUseMelee": true,
+        "isFighter": false,
+        "combatPower": 40,
+        "defaultFactionType": "PlayerColony",
+        "researchPrerequisites": [
+          "OuterRim_SecurityDroids"
+        ],
+        "marketValue": 1500,
+        "extraStat": "SuppressionPower=1 (MayRequire Ludeon.RimWorld.Ideology)",
+        "fistPower": "10.5 (highest melee fist power of all humanlike droids; standard is 5.2)"
+      }
+    },
+    {
+      "defName": "OuterRim_MagnaGuardDroid",
+      "mod": "OuterRimDroidDepot",
+      "framework": "Asimov",
+      "family": "Humanlike",
+      "parentName": "OuterRim_BaseHumanoidDroid",
+      "label": "MagnaGuard Droid",
+      "bodySize": 1,
+      "bodySizeSource": "override",
+      "baseHealthScale": 1.0,
+      "baseHealthScaleSource": "override",
+      "moveSpeed": 5.4,
+      "graphics": {
+        "bodyPath": "OuterRim/Droid/Magnaguard/Body/",
+        "headTypeWhitelist": [
+          "OuterRim_Head_MagnaGuardDroid"
+        ],
+        "bodyTypeWhitelist": [
+          "Male"
+        ],
+        "shaderType": "CutoutComplex",
+        "skinColorPairs": [
+          {
+            "colorOne": "(207, 195, 214)",
+            "colorTwo": "(207, 195, 214)",
+            "weight": 100,
+            "comment": "Default Factory Colours"
+          }
+        ]
+      },
+      "comps": [
+        "TabulaRasa.CompProperties_TraitsOverTime (inherited)",
+        "Asimov.CompProperties_Hibernation (inherited)",
+        "CompProperties_Stunnable (inherited)",
+        "Asimov.CompProperties_Automaton",
+        "Asimov.CompProperties_RecolourablePawn"
+      ],
+      "modExtensions": [
+        "Asimov.DefModExt_EnergyNeed (inherited)",
+        "TabulaRasa.DefModExt_DiseaseImmunity (inherited)",
+        "OuterRimDroids.DefModExt_Droid (inherited)",
+        "OuterRimDroids.DefModExt_DroidEquipment (inherited)"
+      ],
+      "notableFields": {
+        "immuneToDisease": true,
+        "corpseRots": false,
+        "corpseEdible": false,
+        "disabledNeedsCount": 10,
+        "canUseRanged": true,
+        "canUseMelee": true,
+        "isFighter": false,
+        "combatPower": 40,
+        "defaultFactionType": "PlayerColony",
+        "researchPrerequisites": [
+          "OuterRim_BattleDroids"
+        ],
+        "marketValue": 1000,
+        "meleeSkill": 16
+      }
+    },
+    {
+      "defName": "OuterRim_ProtocolDroid",
+      "mod": "OuterRimDroidDepot",
+      "framework": "Asimov",
+      "family": "Humanlike",
+      "parentName": "OuterRim_BaseHumanoidDroid",
+      "label": "protocol droid",
+      "bodySize": 1,
+      "bodySizeSource": "override",
+      "baseHealthScale": 0.8,
+      "baseHealthScaleSource": "override",
+      "moveSpeed": 4.8,
+      "graphics": {
+        "bodyPath": "OuterRim/Droid/Protocol/Body/",
+        "headTypeWhitelist": [
+          "OuterRim_Head_ProtocolDroid"
+        ],
+        "bodyTypeWhitelist": [
+          "Male"
+        ],
+        "shaderType": "CutoutComplex",
+        "skinColorPairs": [
+          {
+            "colorOne": "(191, 165, 98)",
+            "colorTwo": "(191, 165, 98)",
+            "weight": 100,
+            "comment": "Default Factory Colours"
+          },
+          {
+            "colorOne": "(181, 181, 181)",
+            "colorTwo": "(181, 181, 181)",
+            "weight": 100,
+            "comment": "Default Factory Colours"
+          },
+          {
+            "colorOne": "(106, 121, 153)",
+            "colorTwo": "(106, 121, 153)",
+            "weight": 100,
+            "comment": "Default Factory Colours"
+          },
+          {
+            "colorOne": "(186, 87, 80)",
+            "colorTwo": "(186, 87, 80)",
+            "weight": 10,
+            "comment": "Default Factory Colours"
+          }
+        ]
+      },
+      "comps": [
+        "TabulaRasa.CompProperties_TraitsOverTime (inherited)",
+        "Asimov.CompProperties_Hibernation (inherited)",
+        "CompProperties_Stunnable (inherited)",
+        "Asimov.CompProperties_Automaton",
+        "Asimov.CompProperties_RecolourablePawn"
+      ],
+      "modExtensions": [
+        "Asimov.DefModExt_EnergyNeed (inherited)",
+        "TabulaRasa.DefModExt_DiseaseImmunity (inherited)",
+        "OuterRimDroids.DefModExt_Droid (inherited)",
+        "OuterRimDroids.DefModExt_DroidEquipment (inherited)"
+      ],
+      "notableFields": {
+        "immuneToDisease": true,
+        "corpseRots": false,
+        "corpseEdible": false,
+        "disabledNeedsCount": 10,
+        "canUseRanged": true,
+        "canUseMelee": true,
+        "isFighter": false,
+        "combatPower": 40,
+        "defaultFactionType": "PlayerColony",
+        "researchPrerequisites": [
+          "OuterRim_ProtocolDroids"
+        ],
+        "marketValue": 1500,
+        "note": "race.hasGenders=true, the only humanlike droid to override the base's hasGenders=false; socialSkill=20 (Cooking listed twice in skillSettings, likely an authoring duplicate in the source XML)"
+      }
+    },
+    {
+      "defName": "OuterRim_SuperBattleDroid",
+      "mod": "OuterRimDroidDepot",
+      "framework": "Asimov",
+      "family": "Humanlike",
+      "parentName": "OuterRim_BaseHumanoidDroid",
+      "label": "B2 Super Battle Droid",
+      "bodySize": 1,
+      "bodySizeSource": "override",
+      "baseHealthScale": 1.0,
+      "baseHealthScaleSource": "override",
+      "moveSpeed": 4,
+      "graphics": {
+        "bodyPath": "OuterRim/Droid/B2/Body/",
+        "headTypeWhitelist": [
+          "OuterRim_Head_BlankDroid"
+        ],
+        "bodyTypeWhitelist": [
+          "Male"
+        ],
+        "shaderType": "CutoutComplex",
+        "skinColorPairs": [
+          {
+            "colorOne": "(102, 112, 129)",
+            "colorTwo": "(102, 112, 129)",
+            "weight": 100,
+            "comment": "Default Factory Colours"
+          }
+        ]
+      },
+      "comps": [
+        "TabulaRasa.CompProperties_TraitsOverTime (inherited)",
+        "Asimov.CompProperties_Hibernation (inherited)",
+        "CompProperties_Stunnable (inherited)",
+        "Asimov.CompProperties_Automaton",
+        "Asimov.CompProperties_RecolourablePawn"
+      ],
+      "modExtensions": [
+        "Asimov.DefModExt_EnergyNeed (inherited)",
+        "TabulaRasa.DefModExt_DiseaseImmunity (inherited)",
+        "OuterRimDroids.DefModExt_Droid (inherited)",
+        "OuterRimDroids.DefModExt_DroidEquipment (inherited)"
+      ],
+      "notableFields": {
+        "immuneToDisease": true,
+        "corpseRots": false,
+        "corpseEdible": false,
+        "disabledNeedsCount": 10,
+        "canUseRanged": true,
+        "canUseMelee": true,
+        "isFighter": false,
+        "combatPower": 40,
+        "defaultFactionType": "PlayerColony",
+        "researchPrerequisites": [
+          "OuterRim_BattleDroids"
+        ],
+        "marketValue": 2000,
+        "note": "Only humanlike droid with no separate 'head' melee tool (just left/right fist, power 12 each - highest of any humanlike). Uses OuterRim_Head_BlankDroid, a shared/generic head."
+      }
+    },
+    {
+      "defName": "OuterRim_SuperTacticalDroid",
+      "mod": "OuterRimDroidDepot",
+      "framework": "Asimov",
+      "family": "Humanlike",
+      "parentName": "OuterRim_BaseHumanoidDroid",
+      "label": "Super Tactical Droid",
+      "bodySize": 1,
+      "bodySizeSource": "override",
+      "baseHealthScale": 0.8,
+      "baseHealthScaleSource": "override",
+      "moveSpeed": 4.6,
+      "graphics": {
+        "bodyPath": "OuterRim/Droid/SuperTactical/Body/",
+        "headTypeWhitelist": [
+          "OuterRim_Head_SuperTacticalDroid"
+        ],
+        "bodyTypeWhitelist": [
+          "Male"
+        ],
+        "shaderType": "CutoutComplex",
+        "skinColorPairs": [
+          {
+            "colorOne": "(130, 150, 176)",
+            "colorTwo": "(130, 150, 176)",
+            "weight": 100,
+            "comment": "Default Factory Colours"
+          },
+          {
+            "colorOne": "(155, 171, 132)",
+            "colorTwo": "(155, 171, 132)",
+            "weight": 100,
+            "comment": "Default Factory Colours"
+          },
+          {
+            "colorOne": "(163, 127, 111)",
+            "colorTwo": "(163, 127, 111)",
+            "weight": 100,
+            "comment": "Default Factory Colours"
+          }
+        ]
+      },
+      "comps": [
+        "TabulaRasa.CompProperties_TraitsOverTime (inherited)",
+        "Asimov.CompProperties_Hibernation (inherited)",
+        "CompProperties_Stunnable (inherited)",
+        "Asimov.CompProperties_Automaton",
+        "Asimov.CompProperties_RecolourablePawn"
+      ],
+      "modExtensions": [
+        "Asimov.DefModExt_EnergyNeed (inherited)",
+        "TabulaRasa.DefModExt_DiseaseImmunity (inherited)",
+        "OuterRimDroids.DefModExt_Droid (inherited)",
+        "OuterRimDroids.DefModExt_DroidEquipment (inherited)"
+      ],
+      "notableFields": {
+        "immuneToDisease": true,
+        "corpseRots": false,
+        "corpseEdible": false,
+        "disabledNeedsCount": 10,
+        "canUseRanged": true,
+        "canUseMelee": true,
+        "isFighter": false,
+        "combatPower": 40,
+        "defaultFactionType": "PlayerColony",
+        "researchPrerequisites": [
+          "OuterRim_ProtocolDroids"
+        ],
+        "marketValue": 1000,
+        "intellectualSkill": 16
+      }
+    },
+    {
+      "defName": "OuterRim_TacticalDroid",
+      "mod": "OuterRimDroidDepot",
+      "framework": "Asimov",
+      "family": "Humanlike",
+      "parentName": "OuterRim_BaseHumanoidDroid",
+      "label": "T-Series Tactical Droid",
+      "bodySize": 1,
+      "bodySizeSource": "override",
+      "baseHealthScale": 0.7,
+      "baseHealthScaleSource": "override",
+      "moveSpeed": 4.6,
+      "graphics": {
+        "bodyPath": "OuterRim/Droid/Tactical/Body/",
+        "headTypeWhitelist": [
+          "OuterRim_Head_TacticalDroid"
+        ],
+        "bodyTypeWhitelist": [
+          "Male"
+        ],
+        "shaderType": "CutoutComplex",
+        "skinColorPairs": [
+          {
+            "colorOne": "(130, 150, 176)",
+            "colorTwo": "(222, 217, 197)",
+            "weight": 100,
+            "comment": "Default Factory Colours"
+          },
+          {
+            "colorOne": "(155, 171, 132)",
+            "colorTwo": "(222, 217, 197)",
+            "weight": 100,
+            "comment": "Default Factory Colours"
+          },
+          {
+            "colorOne": "(163, 127, 111)",
+            "colorTwo": "(222, 217, 197)",
+            "weight": 100,
+            "comment": "Default Factory Colours"
+          }
+        ]
+      },
+      "comps": [
+        "TabulaRasa.CompProperties_TraitsOverTime (inherited)",
+        "Asimov.CompProperties_Hibernation (inherited)",
+        "CompProperties_Stunnable (inherited)",
+        "Asimov.CompProperties_Automaton",
+        "Asimov.CompProperties_RecolourablePawn"
+      ],
+      "modExtensions": [
+        "Asimov.DefModExt_EnergyNeed (inherited)",
+        "TabulaRasa.DefModExt_DiseaseImmunity (inherited)",
+        "OuterRimDroids.DefModExt_Droid (inherited)",
+        "OuterRimDroids.DefModExt_DroidEquipment (inherited)"
+      ],
+      "notableFields": {
+        "immuneToDisease": true,
+        "corpseRots": false,
+        "corpseEdible": false,
+        "disabledNeedsCount": 10,
+        "canUseRanged": true,
+        "canUseMelee": true,
+        "isFighter": false,
+        "combatPower": 40,
+        "defaultFactionType": "PlayerColony",
+        "researchPrerequisites": [
+          "OuterRim_ProtocolDroids"
+        ],
+        "marketValue": 1500,
+        "intellectualSkill": 12,
+        "note": "Lowest baseHealthScale (0.7) of any humanlike droid"
+      }
+    },
+    {
+      "defName": "OuterRim_AstromechDroid",
+      "mod": "OuterRimDroidDepot",
+      "framework": "Asimov",
+      "family": "Animal",
+      "parentName": "BaseAnimalDroid",
+      "label": "Astromech Droid",
+      "bodySize": 0.75,
+      "bodySizeSource": "override (declared directly; BaseAnimalDroid's <race> block declares no baseBodySize)",
+      "baseHealthScale": "UNCERTAIN",
+      "baseHealthScaleSource": "UNCERTAIN - not declared in Droid__BaseAstromech.xml or Droid__BaseAnimalDroid.xml; presumably inherited further up from ParentName=\"AsimovAutomatonBase\", which was not in the read set and was not fetched",
+      "moveSpeed": 4.2,
+      "graphics": {
+        "bodyPath": null,
+        "note": "Animal-framework droids do not use the humanlike customGraphics/bodyPath field. The race's <race><body> is 'OuterRim_AstromechDroid' (a BodyDef, not a texture path); visual texPath comes from the paired PawnKindDef's lifeStages/bodyGraphicData (see kinds -> OuterRim_RSeriesDroid, since this race has no PawnKindDef of its own).",
+        "headTypeWhitelist": null,
+        "shaderType": null,
+        "graphicClass": "Graphic_Multi (from the PawnKindDef bodyGraphicData; no shaderType field on animal-framework droids)",
+        "skinColorPairs": [
+          {
+            "colorOne": "(138, 136, 125)",
+            "colorTwo": "(138, 136, 125)",
+            "weight": 100,
+            "comment": "Default Factory Colours, declared inside Asimov.CompProperties_RecolourablePawn"
+          }
+        ]
+      },
+      "comps": [
+        "Asimov.CompProperties_Automaton",
+        "Asimov.CompProperties_RecolourablePawn",
+        "OuterRimDroids.CompProperties_DroidHealer (tickInterval=180, healAmount=6, radius=3)"
+      ],
+      "modExtensions": [
+        "OuterRimDroids.DefModExt_Droid (inherited from BaseAnimalDroid)",
+        "OuterRimDroids.DefModExt_DroidEquipment (inherited from BaseAnimalDroid)"
+      ],
+      "notableFields": {
+        "immuneToDisease": true,
+        "corpseRots": false,
+        "corpseEdible": false,
+        "canUseRanged": true,
+        "canUseMelee": true,
+        "researchPrerequisites": [
+          "OuterRim_AstromechDroids"
+        ],
+        "enabledWorkTypes": [
+          "Research",
+          "Hauling",
+          "Cleaning"
+        ],
+        "hackingSpeed": "5 (MayRequire Ludeon.RimWorld.Ideology)",
+        "psychicSensitivity": 0.25,
+        "note": "No PawnKindDef named OuterRim_AstromechDroid exists; the only PawnKindDef using this race is OuterRim_RSeriesDroid (see kinds)."
+      }
+    },
+    {
+      "defName": "OuterRim_MuckrakerDroid",
+      "mod": "OuterRimDroidDepot",
+      "framework": "Asimov",
+      "family": "Animal",
+      "parentName": "BaseAnimalDroid",
+      "label": "Muckraker Crab Droid",
+      "bodySize": 1.2,
+      "bodySizeSource": "override",
+      "baseHealthScale": "UNCERTAIN",
+      "baseHealthScaleSource": "UNCERTAIN - not declared in this file or BaseAnimalDroid; presumably from unread AsimovAutomatonBase",
+      "moveSpeed": 5.2,
+      "graphics": {
+        "bodyPath": null,
+        "headTypeWhitelist": null,
+        "shaderType": null,
+        "graphicClass": "Graphic_Multi",
+        "texPath": "OuterRim/Droid/Muckraker/CrabDroid (from PawnKindDef bodyGraphicData, drawSize 1.7)",
+        "skinColorPairs": [
+          {
+            "colorOne": "(138, 74, 52)",
+            "colorTwo": "(138, 74, 52)",
+            "weight": 100,
+            "comment": "Default Factory Colours"
+          }
+        ]
+      },
+      "comps": [
+        "Asimov.CompProperties_Automaton",
+        "Asimov.CompProperties_RecolourablePawn"
+      ],
+      "modExtensions": [
+        "OuterRimDroids.DefModExt_Droid (inherited)",
+        "OuterRimDroids.DefModExt_DroidEquipment (inherited)"
+      ],
+      "notableFields": {
+        "immuneToDisease": true,
+        "corpseRots": false,
+        "corpseEdible": false,
+        "canUseRanged": true,
+        "canUseMelee": true,
+        "researchPrerequisites": [
+          "OuterRim_BattleDroids"
+        ],
+        "enabledWorkTypes": [
+          "Mining",
+          "Hauling",
+          "Cleaning"
+        ],
+        "race.body": "OuterRim_QuadLeggedDroid"
+      }
+    },
+    {
+      "defName": "OuterRim_DestroyerDroid",
+      "mod": "OuterRimDroidDepot",
+      "framework": "Asimov",
+      "family": "Animal",
+      "parentName": "BaseAnimalDroid",
+      "label": "Destroyer Droid",
+      "bodySize": 1.0,
+      "bodySizeSource": "override",
+      "baseHealthScale": "UNCERTAIN",
+      "baseHealthScaleSource": "UNCERTAIN - same as other animal-framework droids",
+      "moveSpeed": 4.2,
+      "graphics": {
+        "bodyPath": null,
+        "headTypeWhitelist": null,
+        "shaderType": null,
+        "graphicClass": "Graphic_Multi",
+        "texPath": "OuterRim/Droid/Droideka/Droideka (from PawnKindDef bodyGraphicData, drawSize 2)",
+        "skinColorPairs": [
+          {
+            "colorOne": "(138, 74, 52)",
+            "colorTwo": "(138, 74, 52)",
+            "weight": 100,
+            "comment": "Default Factory Colours"
+          }
+        ]
+      },
+      "comps": [
+        "Asimov.CompProperties_Automaton (canUseMelee=false, unlike most other droids)",
+        "Asimov.CompProperties_RecolourablePawn"
+      ],
+      "modExtensions": [
+        "OuterRimDroids.DefModExt_Droid (inherited)",
+        "OuterRimDroids.DefModExt_DroidEquipment (inherited)"
+      ],
+      "notableFields": {
+        "immuneToDisease": true,
+        "corpseRots": false,
+        "corpseEdible": false,
+        "canUseRanged": true,
+        "canUseMelee": false,
+        "researchPrerequisites": [
+          "OuterRim_BattleDroids"
+        ],
+        "enabledWorkTypes": [
+          "Mining",
+          "Hauling",
+          "Cleaning"
+        ],
+        "race.body": "OuterRim_AstromechDroid (reuses the astromech BodyDef despite being the droideka)",
+        "shootingSkill": 15
+      }
+    },
+    {
+      "defName": "OuterRim_DUMDroid",
+      "mod": "OuterRimDroidDepot",
+      "framework": "Asimov",
+      "family": "Animal",
+      "parentName": "BaseAnimalDroid",
+      "label": "DUM Repair Droid",
+      "bodySize": 0.75,
+      "bodySizeSource": "override",
+      "baseHealthScale": "UNCERTAIN",
+      "baseHealthScaleSource": "UNCERTAIN - same as other animal-framework droids",
+      "moveSpeed": 5.2,
+      "graphics": {
+        "bodyPath": null,
+        "headTypeWhitelist": null,
+        "shaderType": null,
+        "graphicClass": "Graphic_Multi",
+        "texPath": "OuterRim/Droid/DUM (from PawnKindDef bodyGraphicData, drawSize 1)",
+        "skinColorPairs": [
+          {
+            "colorOne": "(112, 68, 55)",
+            "colorTwo": "(112, 68, 55)",
+            "weight": 100,
+            "comment": "Default Factory Colours"
+          }
+        ]
+      },
+      "comps": [
+        "Asimov.CompProperties_Automaton",
+        "OuterRimDroids.CompProperties_DroidHealer (tickInterval=180, healAmount=3, radius=3)",
+        "Asimov.CompProperties_RecolourablePawn"
+      ],
+      "modExtensions": [
+        "OuterRimDroids.DefModExt_Droid (inherited)",
+        "OuterRimDroids.DefModExt_DroidEquipment (inherited)"
+      ],
+      "notableFields": {
+        "immuneToDisease": true,
+        "corpseRots": false,
+        "corpseEdible": false,
+        "canUseRanged": true,
+        "canUseMelee": true,
+        "researchPrerequisites": [
+          "OuterRim_MaintenanceDroids"
+        ],
+        "race.body": "OuterRim_HumanoidDroid",
+        "note": "General-purpose, low all-round skills (3-5), enableAllWorkTypes=true"
+      }
+    },
+    {
+      "defName": "OuterRim_FX7Droid",
+      "mod": "OuterRimDroidDepot",
+      "framework": "Asimov",
+      "family": "Animal",
+      "parentName": "BaseAnimalDroid",
+      "label": "fx-7 medical droid",
+      "bodySize": 0.75,
+      "bodySizeSource": "override",
+      "baseHealthScale": "UNCERTAIN",
+      "baseHealthScaleSource": "UNCERTAIN - same as other animal-framework droids",
+      "moveSpeed": 2.4,
+      "graphics": {
+        "bodyPath": null,
+        "headTypeWhitelist": null,
+        "shaderType": null,
+        "graphicClass": "Graphic_Multi",
+        "texPath": "OuterRim/Droid/FX7 (from PawnKindDef bodyGraphicData, drawSize (1.4,1.4))",
+        "skinColorPairs": [
+          {
+            "colorOne": "(255, 255, 255)",
+            "colorTwo": "(255, 255, 255)",
+            "weight": 100,
+            "comment": "Default Factory Colours"
+          }
+        ]
+      },
+      "comps": [
+        "Asimov.CompProperties_Automaton (canUseRanged=false, canUseMelee=false)",
+        "Asimov.CompProperties_RecolourablePawn"
+      ],
+      "modExtensions": [
+        "OuterRimDroids.DefModExt_Droid (inherited)",
+        "OuterRimDroids.DefModExt_DroidEquipment (inherited)"
+      ],
+      "notableFields": {
+        "immuneToDisease": true,
+        "corpseRots": false,
+        "corpseEdible": false,
+        "canUseRanged": false,
+        "canUseMelee": false,
+        "researchPrerequisites": [
+          "OuterRim_MedicalDroids"
+        ],
+        "enabledWorkTypes": [
+          "Doctor",
+          "Hauling",
+          "Cleaning"
+        ],
+        "race.body": "OuterRim_QuadWheeledDroid",
+        "medicineSkill": 20,
+        "note": "Slowest droid in the mod (MoveSpeed 2.4)"
+      }
+    },
+    {
+      "defName": "OuterRim_GNKDroid",
+      "mod": "OuterRimDroidDepot",
+      "framework": "Asimov",
+      "family": "Animal",
+      "parentName": "BaseAnimalDroid",
+      "label": "gnk power Droid",
+      "bodySize": 1.0,
+      "bodySizeSource": "override",
+      "baseHealthScale": "UNCERTAIN",
+      "baseHealthScaleSource": "UNCERTAIN - same as other animal-framework droids",
+      "moveSpeed": 1.9,
+      "graphics": {
+        "bodyPath": null,
+        "headTypeWhitelist": null,
+        "shaderType": null,
+        "graphicClass": "Graphic_Multi",
+        "texPath": "OuterRim/Droid/GNK (from PawnKindDef bodyGraphicData, drawSize (1.3,1.3))",
+        "skinColorPairs": [
+          {
+            "colorOne": "(138, 136, 125)",
+            "colorTwo": "(138, 136, 125)",
+            "weight": 100,
+            "comment": "Default Factory Colours"
+          }
+        ]
+      },
+      "comps": [
+        "Asimov.CompProperties_Automaton (canUseRanged=false, canUseMelee=false, enableAllWorkTypes=false, empty skillSettings)",
+        "VEF.AnimalBehaviours.CompProperties_Electrified (electroChargeAmount=5, electroRate=60, electroRadius=3; recharges ~24 battery defs in range)",
+        "Asimov.CompProperties_RecolourablePawn"
+      ],
+      "modExtensions": [
+        "OuterRimDroids.DefModExt_Droid (Inherit=\"false\" override, own block)",
+        "OuterRimDroids.DefModExt_DroidEquipment (own block)",
+        "Asimov.DefModExt_AutomatonApparel (own block; apparelWhitelist includes DroidArmorLight/Module/Heavy, all 5 droid weapon apparel tags [not present in the 4 apparel files we read - weapons live elsewhere], DroidDeflectorShield, DroidPropulsionJets)"
+      ],
+      "notableFields": {
+        "immuneToDisease": true,
+        "corpseRots": false,
+        "corpseEdible": false,
+        "canUseRanged": false,
+        "canUseMelee": false,
+        "researchPrerequisites": [
+          "OuterRim_PowerDroids"
+        ],
+        "race.body": "OuterRim_HumanoidDroid",
+        "note": "Only animal-framework droid in this read set whose modExtensions block uses Inherit=\"false\" and explicitly lists an Asimov.DefModExt_AutomatonApparel apparelWhitelist (identical whitelist is left commented-out in Droid__BaseAnimalDroid.xml for the other animal droids, i.e. GNK is the only one of the 8 with apparel slots actually enabled by XML as authored)."
+      }
+    },
+    {
+      "defName": "OuterRim_MSEDroid",
+      "mod": "OuterRimDroidDepot",
+      "framework": "Asimov",
+      "family": "Animal",
+      "parentName": "BaseAnimalDroid",
+      "label": "MSE Repair Droid",
+      "bodySize": 0.5,
+      "bodySizeSource": "override",
+      "baseHealthScale": "UNCERTAIN",
+      "baseHealthScaleSource": "UNCERTAIN - same as other animal-framework droids",
+      "moveSpeed": 5.3,
+      "graphics": {
+        "bodyPath": null,
+        "headTypeWhitelist": null,
+        "shaderType": null,
+        "graphicClass": "Graphic_Multi",
+        "texPath": "OuterRim/Droid/MSE (from PawnKindDef bodyGraphicData, drawSize 2)",
+        "skinColorPairs": [
+          {
+            "colorOne": "(110, 110, 110)",
+            "colorTwo": "(110, 110, 110)",
+            "weight": 100,
+            "comment": "Default Factory Colours"
+          }
+        ]
+      },
+      "comps": [
+        "Asimov.CompProperties_Automaton (canUseRanged=false, canUseMelee=false, no skillSettings block)",
+        "OuterRimDroids.CompProperties_DroidHealer (tickInterval=180, healAmount=3, radius=3)",
+        "Asimov.CompProperties_RecolourablePawn"
+      ],
+      "modExtensions": [
+        "OuterRimDroids.DefModExt_Droid (inherited)",
+        "OuterRimDroids.DefModExt_DroidEquipment (inherited)"
+      ],
+      "notableFields": {
+        "immuneToDisease": true,
+        "corpseRots": false,
+        "corpseEdible": false,
+        "canUseRanged": false,
+        "canUseMelee": false,
+        "researchPrerequisites": [
+          "OuterRim_MaintenanceDroids"
+        ],
+        "enabledWorkTypes": [
+          "Hauling",
+          "Cleaning"
+        ],
+        "race.body": "OuterRim_QuadWheeledDroid",
+        "note": "Smallest bodySize (0.5) alongside SalvageAssistDroid"
+      }
+    },
+    {
+      "defName": "OuterRim_SalvageAssistDroid",
+      "mod": "OuterRimDroidDepot",
+      "framework": "Asimov",
+      "family": "Animal",
+      "parentName": "BaseAnimalDroid",
+      "label": "salvage assist droid",
+      "bodySize": 0.5,
+      "bodySizeSource": "override",
+      "baseHealthScale": "UNCERTAIN",
+      "baseHealthScaleSource": "UNCERTAIN - same as other animal-framework droids",
+      "moveSpeed": 5.3,
+      "graphics": {
+        "bodyPath": null,
+        "headTypeWhitelist": null,
+        "shaderType": null,
+        "graphicClass": "Graphic_Multi",
+        "texPath": "OuterRim/Droid/SalvageAssist (from PawnKindDef bodyGraphicData, drawSize 1.5)",
+        "skinColorPairs": [
+          {
+            "colorOne": "(166, 82, 76)",
+            "colorTwo": "(166, 82, 76)",
+            "weight": 100,
+            "comment": "Default Factory Colours"
+          },
+          {
+            "colorOne": "(173, 133, 76)",
+            "colorTwo": "(173, 133, 76)",
+            "weight": 100,
+            "comment": "Default Factory Colours"
+          },
+          {
+            "colorOne": "(81, 125, 153)",
+            "colorTwo": "(81, 125, 153)",
+            "weight": 100,
+            "comment": "Default Factory Colours"
+          }
+        ]
+      },
+      "comps": [
+        "Asimov.CompProperties_Automaton (canUseRanged=false, canUseMelee=false, no skillSettings block)",
+        "Asimov.CompProperties_RecolourablePawn"
+      ],
+      "modExtensions": [
+        "OuterRimDroids.DefModExt_Droid (inherited)",
+        "OuterRimDroids.DefModExt_DroidEquipment (inherited)"
+      ],
+      "notableFields": {
+        "immuneToDisease": true,
+        "corpseRots": false,
+        "corpseEdible": false,
+        "canUseRanged": false,
+        "canUseMelee": false,
+        "researchPrerequisites": [
+          "OuterRim_MaintenanceDroids"
+        ],
+        "enabledWorkTypes": [
+          "Hauling",
+          "Cleaning"
+        ],
+        "race.body": "OuterRim_QuadWheeledDroid",
+        "butcherProductsOverride": "Inherit=False: OuterRim_DroidBrain 1, OuterRim_ComponentHypertech 1, OuterRim_Durasteel 10 (cheapest butcher yield in the mod)"
+      }
+    },
+    {
+      "defName": "guy762_DroidRace_HKseries",
+      "label": "HK-series protocol droid",
+      "parentName": "guy762_KotORDroidBase",
+      "mod": "KotORDroids",
+      "framework": "HAR (AlienRace.ThingDef_AlienRace)",
+      "bodySize": 1.2,
+      "baseHealthScale": 2,
+      "moveSpeed": 5,
+      "graphics": {
+        "body_path": "Droid/HK/HK_body",
+        "bodyMasks_path": "Droid/HK/HK_bodymask",
+        "head_path": "Droid/HK/HK_head",
+        "headMasks_path": "Droid/HK/HK_headmask",
+        "skinShader": "Cutout",
+        "headTypes": [
+          "guy762_DroidHeadType_HK"
+        ],
+        "bodyTypes": [
+          "Female"
+        ],
+        "customDrawSize": "(1.2)",
+        "headBodyPartDef": "ABF_BodyPart_Synstruct_Head",
+        "colorChannels_skin_first": "RGBA(200,100,50,255) weight1 (rusty red, only)",
+        "colorChannels_skin_second": "RGBA(255,105,65,255) weight1 (orange, only)"
+      },
+      "immunities_or_comps": [
+        "EMPResistance 0.8 (MayRequire Biotech)",
+        "RangedCooldownFactor 0.5 (MayRequire Biotech)",
+        "ABF_ArtificialPawnExtension: canBeSapient=false, droneSkillLevel=0, dronesCanHaveTraits=true, onlyUseRaceRestrictedMedicine=true",
+        "blacklistedNeeds includes Joy, Beauty, Comfort, Outdoors, Indoors, Mood, RoomSize, DrugDesire (droid is need-immune to organic needs)",
+        "ABF_SynstructExtension.playerReprogrammableDronePawnKindDef = KotORPlayableHero_HK47",
+        "hasGenders=false; lifeExpectancy=5000; race.body=ATR_KotORDroidBody_HK"
+      ]
+    },
+    {
+      "defName": "guy762_DroidRace_HK50series",
+      "label": "HK-50 series protocol droid",
+      "parentName": "guy762_DroidRace_HKseries",
+      "mod": "KotORDroids",
+      "framework": "HAR",
+      "bodySize": null,
+      "baseHealthScale": null,
+      "moveSpeed": null,
+      "graphics": {
+        "inheritedFrom": "guy762_DroidRace_HKseries (graphicPaths not overridden)",
+        "colorChannels_skin_first": "RGBA(115,125,120,255) weight50 (poor durasteel, only)",
+        "colorChannels_skin_second": "RGBA(220,180,105,255) weight50 (yellow, only)"
+      },
+      "immunities_or_comps": [
+        "ABF_ArtificialPawnExtension: canBeSapient=false, maxDirectives=6, forbiddenWorkTypes adds Doctor/Handling/Cooking vs base",
+        "ABF_SynstructExtension.playerReprogrammableDronePawnKindDef = KotORDroidColonist_HK50AD"
+      ]
+    },
+    {
+      "defName": "guy762_DroidRace_HK51series",
+      "label": "HK-51 series assassin droid",
+      "parentName": "guy762_DroidRace_HKseries",
+      "mod": "KotORDroids",
+      "framework": "HAR",
+      "bodySize": null,
+      "baseHealthScale": null,
+      "moveSpeed": null,
+      "graphics": {
+        "inheritedFrom": "guy762_DroidRace_HKseries (graphicPaths not overridden)",
+        "colorChannels_skin_first": "RGBA(85,85,90,255) weight100",
+        "colorChannels_skin_second": "RGBA(115,195,230,255) weight100 (blue)"
+      },
+      "immunities_or_comps": [
+        "ABF_ArtificialPawnExtension: maxDirectives=8, dronesCanHaveTraits=false",
+        "ABF_SynstructExtension.playerReprogrammableDronePawnKindDef = KotORDroidColonist_HK51AD"
+      ]
+    },
+    {
+      "defName": "guy762_DroidRace_GE3PD",
+      "label": "GE3-series protocol droid",
+      "parentName": "guy762_KotORDroidBase",
+      "mod": "KotORDroids",
+      "framework": "HAR",
+      "bodySize": 1,
+      "baseHealthScale": 1,
+      "moveSpeed": 1,
+      "graphics": {
+        "body_path": "Droid/GE3/GE3_body",
+        "bodyMasks_path": "Droid/GE3/GE3_bodymask",
+        "head_path": "Droid/GE3/GE3_head",
+        "headMasks_path": "Droid/GE3/GE3_headmask",
+        "skinShader": "Cutout",
+        "headTypes": [
+          "guy762_DroidHeadType_GE3PD"
+        ],
+        "bodyTypes": [
+          "Female"
+        ],
+        "headBodyPartDef": "ABF_BodyPart_Synstruct_Head"
+      },
+      "immunities_or_comps": [
+        "EMPResistance 0 (MayRequire Biotech)",
+        "ABF_ArtificialPawnExtension: canBeSapient=false, inherentSkills Social14/Medicine8, medical/social work",
+        "ABF_SynstructExtension.playerReprogrammableDronePawnKindDef = KotORDroidColonist_GE3PD"
+      ]
+    },
+    {
+      "defName": "guy762_DroidRace_GE3LD",
+      "label": "GE3-series labor droid",
+      "parentName": "guy762_DroidRace_GE3PD",
+      "mod": "KotORDroids",
+      "framework": "HAR",
+      "bodySize": null,
+      "baseHealthScale": null,
+      "moveSpeed": 2,
+      "graphics": {
+        "inheritedFrom": "guy762_DroidRace_GE3PD (graphicPaths not overridden)",
+        "colorChannels_skin_first": "RGBA(80,115,125,255) weight100 (teal)",
+        "colorChannels_skin_second": "RGBA(205,155,130,255) weight100 (copper)"
+      },
+      "immunities_or_comps": [
+        "ABF_ArtificialPawnExtension: dronesCanHaveTraits=false, inherentSkills Plants8, plant/hauling work"
+      ]
+    },
+    {
+      "defName": "guy762_DroidRace_GOTO",
+      "label": "G0-T0 superintelligence droid",
+      "parentName": "guy762_KotORDroidBase",
+      "mod": "KotORDroids",
+      "framework": "HAR",
+      "bodySize": 1.25,
+      "baseHealthScale": 2,
+      "moveSpeed": 2,
+      "graphics": {
+        "body_path": "Droid/GOTO/GOTO",
+        "bodyMasks_path": "Droid/GOTO/GOTO_mask",
+        "head_path": "768blank",
+        "skinShader": "Cutout",
+        "headTypes": [
+          "guy762_DroidHeadType_HK"
+        ],
+        "customDrawSize": "(1.25)",
+        "colorChannels_skin_first": "RGBA(50,50,55,255) weight100 (black)",
+        "colorChannels_skin_second": "RGBA(175,175,180,255) weight10 (grey)"
+      },
+      "immunities_or_comps": [
+        "EMPResistance 0.9, StaggerDurationFactor 0.9 (MayRequire Biotech)",
+        "VacuumSpeedMultiplier 2 (MayRequire kentington.saveourship2)",
+        "PathfindingFramework.MovementExtension movementDef=PF_Movement_Flying (MayRequire pathfinding.framework)",
+        "ABF_SynstructExtension.playerReprogrammableDronePawnKindDef = KotORDroidColonist_GOTO"
+      ]
+    },
+    {
+      "defName": "guy762_DroidRace_KM1MD",
+      "label": "KM1-series Mining Droid",
+      "parentName": "guy762_KotORDroidBase",
+      "mod": "KotORDroids",
+      "framework": "HAR",
+      "bodySize": 1.5,
+      "baseHealthScale": 1,
+      "moveSpeed": 4,
+      "graphics": {
+        "body_path": "Droid/KM1MD/KM1MD",
+        "bodyMasks_path": "Droid/KM1MD/KM1MD_mask",
+        "head_path": "768blank",
+        "skinShader": "Cutout",
+        "headTypes": [
+          "guy762_DroidHeadType_HK"
+        ],
+        "customDrawSize": "(1.5)",
+        "colorChannels_skin_first": "RGBA(180,180,190,255) weight100 (bley)",
+        "colorChannels_skin_second": "RGBA(255,0,0,255) weight100 (LED red)"
+      },
+      "immunities_or_comps": [
+        "StaggerDurationFactor 0.5 (MayRequire Biotech)",
+        "custom lifeStageAges soundset kotorsound_AssaultMk2_*",
+        "ABF_SynstructExtension.playerReprogrammableDronePawnKindDef = KotORDroidColonist_KM1MD"
+      ]
+    },
+    {
+      "defName": "guy762_DroidRace_KM1HMD",
+      "label": "KM1-B Excavation Droid",
+      "parentName": "guy762_DroidRace_KM1MD",
+      "mod": "KotORDroids",
+      "framework": "HAR",
+      "bodySize": null,
+      "baseHealthScale": null,
+      "moveSpeed": null,
+      "graphics": {
+        "inheritedFrom": "guy762_DroidRace_KM1MD (graphicPaths not overridden)",
+        "colorChannels_skin_first": "RGBA(215,100,100,255) weight100 (red) / RGBA(95,120,185,255) weight1 (blue)",
+        "colorChannels_skin_second": "RGBA(235,255,120,255) weight10 (LED yellow)"
+      },
+      "immunities_or_comps": [
+        "IncomingDamageFactor 0.85",
+        "ABF_SynstructExtension.playerReprogrammableDronePawnKindDef = KotORDroidColonist_KM1HMD"
+      ]
+    },
+    {
+      "defName": "guy762_DroidRace_KX12UPD",
+      "label": "K-X12 utility probe droid",
+      "parentName": "guy762_KotORDroidBase",
+      "mod": "KotORDroids",
+      "framework": "HAR",
+      "bodySize": 0.4,
+      "baseHealthScale": 0.6,
+      "moveSpeed": 3,
+      "graphics": {
+        "body_path": "Droid/KX12/KX12",
+        "bodyMasks_path": "Droid/KX12/KX12_mask",
+        "head_path": "512blank",
+        "skinShader": "Cutout",
+        "headTypes": [
+          "guy762_DroidHeadType_HK"
+        ],
+        "colorChannels_skin_first": "RGBA(180,190,185,255) weight50 (silver)",
+        "colorChannels_skin_second": "RGBA(255,0,0,255) weight100 (LED red)"
+      },
+      "immunities_or_comps": [
+        "onlyUseRaceRestrictedWeapons=true, weaponList empty (no innate weaponTags)",
+        "VacuumSpeedMultiplier 6 (MayRequire kentington.saveourship2)",
+        "PathfindingFramework.MovementExtension movementDef=PF_Movement_Flying (MayRequire pathfinding.framework)",
+        "custom lifeStageAges soundset kotorsound_KX12_*",
+        "ABF_SynstructExtension.playerReprogrammableDronePawnKindDef = KotORDroidColonist_KX12UPD"
+      ]
+    },
+    {
+      "defName": "guy762_DroidRace_KX12APD",
+      "label": "K-X12 assassin probe droid",
+      "parentName": "guy762_DroidRace_KX12UPD",
+      "mod": "KotORDroids",
+      "framework": "HAR",
+      "bodySize": null,
+      "baseHealthScale": 0.8,
+      "moveSpeed": null,
+      "graphics": {
+        "inheritedFrom": "guy762_DroidRace_KX12UPD (graphicPaths not overridden)",
+        "colorChannels_skin_first": "RGBA(85,85,90,255) weight100",
+        "colorChannels_skin_second": "RGBA(255,0,255,255) weight100 (purple)"
+      },
+      "immunities_or_comps": [
+        "race.body=ATR_KotORDroidBody_KX12APD",
+        "deathAction.workerClass = DeathActionWorker_BigExplosion (self-destructs on death, executionRange 6)",
+        "AimingDelayFactor 0.75",
+        "ABF_SynstructExtension.playerReprogrammableDronePawnKindDef = KotORDroidColonist_KX12APD"
+      ]
+    },
+    {
+      "defName": "guy762_DroidRace_MPDMkI",
+      "label": "Municipal Patrol Droid Mark I",
+      "parentName": "guy762_KotORDroidBase",
+      "mod": "KotORDroids",
+      "framework": "HAR",
+      "bodySize": 0.5,
+      "baseHealthScale": 0.6,
+      "moveSpeed": 6,
+      "graphics": {
+        "body_path": "Droid/MPDMk1/MPDMk1",
+        "bodyMasks_path": "Droid/MPDMk1/MPDMk1_mask",
+        "head_path": "512blank",
+        "skinShader": "Cutout",
+        "headTypes": [
+          "guy762_DroidHeadType_HK"
+        ],
+        "colorChannels_skin_first": "RGBA(180,190,185,255) weight50 (silver)",
+        "colorChannels_skin_second": "RGBA(0,255,255,255) weight100 (LED cyan)"
+      },
+      "immunities_or_comps": [
+        "onlyUseRaceRestrictedWeapons=true, weaponList empty",
+        "VacuumSpeedMultiplier 4 (MayRequire kentington.saveourship2)",
+        "PathfindingFramework.MovementExtension movementDef=PF_Movement_Flying (MayRequire pathfinding.framework)",
+        "ABF_SynstructExtension.playerReprogrammableDronePawnKindDef = KotORDroidColonist_MPDMkI"
+      ]
+    },
+    {
+      "defName": "guy762_DroidRace_R8009UD",
+      "label": "R-8009 series utility droid",
+      "parentName": "guy762_KotORDroidBase",
+      "mod": "KotORDroids",
+      "framework": "HAR",
+      "bodySize": 0.65,
+      "baseHealthScale": 0.8,
+      "moveSpeed": 3,
+      "graphics": {
+        "body_path": "Droid/R8009/R8009",
+        "bodyMasks_path": "Droid/R8009/R8009_mask",
+        "head_path": "512blank",
+        "skinShader": "Cutout",
+        "headTypes": [
+          "guy762_DroidHeadType_HK"
+        ],
+        "customDrawSize": "(0.9)",
+        "colorChannels_skin_first": "RGBA(190,170,120,255) weight10 (beige)",
+        "colorChannels_skin_second": "RGBA(130,140,155,255) weight10"
+      },
+      "immunities_or_comps": [
+        "onlyUseRaceRestrictedWeapons=true, weaponList empty",
+        "VacuumSpeedMultiplier 2 (MayRequire kentington.saveourship2)",
+        "ABF_SynstructExtension.playerReprogrammableDronePawnKindDef = KotORDroidColonist_R8009UD"
+      ]
+    },
+    {
+      "defName": "guy762_DroidRace_T3series",
+      "label": "T3-series utility droid",
+      "parentName": "guy762_KotORDroidBase",
+      "mod": "KotORDroids",
+      "framework": "HAR",
+      "bodySize": 0.65,
+      "baseHealthScale": 1.5,
+      "moveSpeed": 3,
+      "graphics": {
+        "body_path": "Droid/T3/T3",
+        "bodyMasks_path": "Droid/T3/T3_mask",
+        "head_path": "512blank",
+        "skinShader": "Cutout",
+        "headTypes": [
+          "guy762_DroidHeadType_HK"
+        ],
+        "colorChannels_skin_first": "RGBA(235,255,255,255) weight10",
+        "colorChannels_skin_second": "5 weighted options incl RGBA(235,255,255,255), blue, slate, olive, red"
+      },
+      "immunities_or_comps": [
+        "onlyUseRaceRestrictedWeapons=true",
+        "StaggerDurationFactor 0.8, EMPResistance 0.9 (MayRequire Biotech)",
+        "note: 'T3 namemakers now *have* to be in the pawnkinddefs' per authors XML comment -- no nameGenerator field set on this def itself",
+        "ABF_SynstructExtension.playerReprogrammableDronePawnKindDef = KotORDroidColonist_T3UD"
+      ]
+    },
+    {
+      "defName": "guy762_DroidRace_3Cseries",
+      "label": "3C-series utility droid",
+      "parentName": "guy762_DroidRace_T3series",
+      "mod": "KotORDroids",
+      "framework": "HAR",
+      "bodySize": null,
+      "baseHealthScale": null,
+      "moveSpeed": null,
+      "graphics": {
+        "inheritedFrom": "guy762_DroidRace_T3series (graphicPaths not overridden)",
+        "colorChannels_skin_first": "RGBA(255,225,150,255) weight5",
+        "colorChannels_skin_second": "RGBA(255,125,75,255) weight5"
+      },
+      "immunities_or_comps": [
+        "IncomingDamageFactor 1 (explicit)",
+        "ABF_SynstructExtension.playerReprogrammableDronePawnKindDef = KotORDroidColonist_3CUD"
+      ]
+    },
+    {
+      "defName": "guy762_DroidRace_ITseries",
+      "label": "IT-series utility droid",
+      "parentName": "guy762_DroidRace_T3series",
+      "mod": "KotORDroids",
+      "framework": "HAR",
+      "bodySize": null,
+      "baseHealthScale": null,
+      "moveSpeed": null,
+      "graphics": {
+        "inheritedFrom": "guy762_DroidRace_T3series (graphicPaths not overridden)",
+        "colorChannels_skin_first": "RGBA(255,245,180,255) weight1",
+        "colorChannels_skin_second": "RGBA(205,160,25,255) weight1"
+      },
+      "immunities_or_comps": [
+        "GlobalLearningFactor 2.5, IncomingDamageFactor 1 (explicit)",
+        "ABF_SynstructExtension.playerReprogrammableDronePawnKindDef = KotORDroidColonist_ITUD"
+      ]
+    },
+    {
+      "defName": "guy762_DroidRace_DevWD",
+      "label": "Devastator-class war droid",
+      "parentName": "guy762_KotORDroidBase",
+      "mod": "KotORDroids",
+      "framework": "HAR",
+      "bodySize": 1,
+      "baseHealthScale": 1,
+      "moveSpeed": 4,
+      "graphics": {
+        "body_path": "Droid/DevWD/DevWD_body",
+        "bodyMasks_path": "Droid/DevWD/DevWD_bodymask",
+        "head_path": "Droid/DevWD/DevWD_head",
+        "headMasks_path": "Droid/DevWD/DevWD_headmask",
+        "skinShader": "Cutout",
+        "headTypes": [
+          "guy762_DroidHeadType_DevWD"
+        ],
+        "bodyTypes": [
+          "Female"
+        ],
+        "customDrawSize": "(1.1)",
+        "headBodyPartDef": "ABF_BodyPart_Synstruct_Head",
+        "colorChannels_skin_first": "RGBA(225,210,195,255) weight100 (republic beige)"
+      },
+      "immunities_or_comps": [
+        "EMPResistance 0 (MayRequire Biotech)",
+        "ABF_SynstructExtension.playerReprogrammableDronePawnKindDef = KotORDroidColonist_DevWD"
+      ]
+    },
+    {
+      "defName": "guy762_DroidRace_DevAD",
+      "label": "Devastator-class Type II assassin droid",
+      "parentName": "guy762_DroidRace_DevWD",
+      "mod": "KotORDroids",
+      "framework": "HAR",
+      "bodySize": null,
+      "baseHealthScale": 1.25,
+      "moveSpeed": 6,
+      "graphics": {
+        "inheritedFrom": "guy762_DroidRace_DevWD (graphicPaths not overridden)",
+        "colorChannels_skin_first": "RGBA(145,65,70,255) weight1 (flat crimson)"
+      },
+      "immunities_or_comps": [
+        "race.body=ATR_KotORDroidBody_DevAD",
+        "ABF_SynstructExtension.playerReprogrammableDronePawnKindDef = KotORDroidColonist_DevAD"
+      ]
+    },
+    {
+      "defName": "guy762_DroidRace_SentWD",
+      "label": "Sentinel-class war droid",
+      "parentName": "guy762_KotORDroidBase",
+      "mod": "KotORDroids",
+      "framework": "HAR",
+      "bodySize": 1,
+      "baseHealthScale": 1.5,
+      "moveSpeed": 4,
+      "graphics": {
+        "body_path": "Droid/SentWD/SentWD_body",
+        "head_path": "Droid/SentWD/SentWD_head",
+        "skinShader": "Cutout",
+        "headTypes": [
+          "guy762_DroidHeadType_SentWD"
+        ],
+        "bodyTypes": [
+          "Female"
+        ],
+        "headBodyPartDef": "ABF_BodyPart_Synstruct_Head",
+        "note": "bodyMasks/headMasks commented out (disabled) in this def",
+        "colorChannels_skin_first": "3 options: RGBA(235,255,255,255) w10, RGBA(180,185,170,255) w1 (offwhite), RGBA(160,170,165,255) w1 (grey) -- no 'second' channel block"
+      },
+      "immunities_or_comps": [
+        "EMPResistance 0.15 (MayRequire Biotech)",
+        "ABF_SynstructExtension.playerReprogrammableDronePawnKindDef = KotORDroidColonist_SentWD"
+      ]
+    },
+    {
+      "defName": "guy762_DroidRace_ADMkI",
+      "label": "Assault Droid Mark I",
+      "parentName": "guy762_KotORDroidBase",
+      "mod": "KotORDroids",
+      "framework": "HAR",
+      "bodySize": 1.5,
+      "baseHealthScale": 2,
+      "moveSpeed": 3,
+      "graphics": {
+        "body_path": "Droid/AssaultMk1/AssaultMk1",
+        "bodyMasks_path": "Droid/AssaultMk1/AssaultMk1_mask",
+        "head_path": "768blank",
+        "skinShader": "Cutout",
+        "headTypes": [
+          "guy762_DroidHeadType_HK"
+        ],
+        "customDrawSize": "(1.5)",
+        "colorChannels_skin_first": "RGBA(215,235,235,255) weight100 (slightly darker t3)",
+        "colorChannels_skin_second": "RGBA(0,255,255,255) weight100 (LED cyan)"
+      },
+      "immunities_or_comps": [
+        "RangedCooldownFactor 0.9, StaggerDurationFactor 0.75, EMPResistance 0.8 (MayRequire Biotech)",
+        "one-legged design per description; tools use FrontRightPaw/FrontLeftPaw not hands",
+        "ABF_SynstructExtension.playerReprogrammableDronePawnKindDef = KotORDroidColonist_ADMkI"
+      ]
+    },
+    {
+      "defName": "guy762_DroidRace_ADMkI_sf",
+      "label": "Star Forge Assault Droid",
+      "parentName": "guy762_DroidRace_ADMkI",
+      "mod": "KotORDroids",
+      "framework": "HAR",
+      "bodySize": null,
+      "baseHealthScale": null,
+      "moveSpeed": null,
+      "graphics": {
+        "inheritedFrom": "guy762_DroidRace_ADMkI (graphicPaths not overridden)",
+        "colorChannels_skin_first": "RGBA(170,60,55,255) weight100 (star forge red)",
+        "colorChannels_skin_second": "RGBA(255,0,0,255) weight100 (LED red)"
+      },
+      "immunities_or_comps": [
+        "IncomingDamageFactor 0.9, RangedCooldownFactor 0.8, StaggerDurationFactor 0.5, EMPResistance 1 (MayRequire Biotech)",
+        "race.body=ATR_KotORDroidBody_ADMkI_sf",
+        "ABF_SynstructExtension.playerReprogrammableDronePawnKindDef = KotORDroidColonist_ADMkI_sf"
+      ]
+    },
+    {
+      "defName": "guy762_DroidRace_ADMkIV",
+      "label": "Assault Droid Mark IV",
+      "parentName": "guy762_KotORDroidBase",
+      "mod": "KotORDroids",
+      "framework": "HAR",
+      "bodySize": 2.5,
+      "baseHealthScale": 4,
+      "moveSpeed": 2,
+      "graphics": {
+        "body_path": "Droid/AssaultMk4/AssaultMk4",
+        "bodyMasks_path": "Droid/AssaultMk4/AssaultMk4_mask",
+        "head_path": "1024blank",
+        "skinShader": "Cutout",
+        "headTypes": [
+          "guy762_DroidHeadType_HK"
+        ],
+        "customDrawSize": "(2)",
+        "colorChannels_skin_first": "RGBA(225,210,195,255) weight5 (republic beige)",
+        "colorChannels_skin_second": "RGBA(190,100,85,255) weight5 (republic red)"
+      },
+      "immunities_or_comps": [
+        "RangedCooldownFactor 0.75, StaggerDurationFactor 0.5, EMPResistance 0.8 (MayRequire Biotech)",
+        "largest baseBodySize in the mod (2.5); Mass 200",
+        "ABF_SynstructExtension.playerReprogrammableDronePawnKindDef = KotORDroidColonist_ADMkIV"
+      ]
+    },
+    {
+      "defName": "guy762_DroidRace_ADMkIV_sith",
+      "label": "Assault Droid Mk.IV Type B",
+      "parentName": "guy762_DroidRace_ADMkIV",
+      "mod": "KotORDroids",
+      "framework": "HAR",
+      "bodySize": null,
+      "baseHealthScale": null,
+      "moveSpeed": null,
+      "graphics": {
+        "inheritedFrom": "guy762_DroidRace_ADMkIV (graphicPaths not overridden)",
+        "colorChannels_skin_first": "RGBA(235,255,255,255) weight100",
+        "colorChannels_skin_second": "RGBA(235,255,255,255) weight100"
+      },
+      "immunities_or_comps": [
+        "race.body=ATR_KotORDroidBody_ADMkIV_B",
+        "ABF_SynstructExtension.playerReprogrammableDronePawnKindDef = KotORDroidColonist_ADMkIV_sith"
+      ]
+    },
+    {
+      "defName": "JDSCIS_Pistoeka_Sotage_Droid",
+      "mod": "JDS_Separatists",
+      "framework": "mechanoid",
+      "bodySize": 0.7,
+      "baseHealthScale": 0.3,
+      "moveSpeed": 4.0,
+      "graphics": {
+        "texPath": "Things/Pistoeka_Sotage_Droid",
+        "graphicClass": "Graphic_Multi",
+        "drawSize": "1.5"
+      },
+      "notableFields": {
+        "parentName": "JDSSWCIS_Droids (Abstract=True, ParentName=BasePawn)",
+        "fleshType": "Mechanoid",
+        "mechWeightClass": "Light",
+        "marketValue": 1200,
+        "armorRating_Blunt": 0.07,
+        "armorRating_Sharp": 0.07,
+        "armorRating_Heat": 0.5,
+        "bakedMeleeWeaponTool": {
+          "label": "right blade",
+          "capacities": [
+            "Cut",
+            "Stab"
+          ],
+          "power": 8,
+          "cooldownTime": 2,
+          "alwaysTreatAsWeapon": true
+        },
+        "mechEnabledWorkTypes": [],
+        "comps": [
+          "CompProperties_CanBeDormant",
+          "CompProperties_WakeUpDormant",
+          "CompProperties_OverseerSubject (MayRequire Ludeon.Rimworld.Biotech)",
+          "CompProperties_MechRepairable (MayRequire Ludeon.Rimworld.Biotech)"
+        ]
+      }
+    },
+    {
+      "defName": "JDSCIS_B1_Battle_Droid",
+      "mod": "JDS_Separatists",
+      "framework": "mechanoid",
+      "bodySize": 0.7,
+      "baseHealthScale": null,
+      "moveSpeed": 2.0,
+      "graphics": {
+        "texPath": "Things/B1_Battle_Droids",
+        "graphicClass": "Graphic_Multi",
+        "drawSize": "1.5"
+      },
+      "notableFields": {
+        "parentName": "JDSSWCIS_Droids",
+        "fleshType": "Mechanoid",
+        "mechWeightClass": "Light",
+        "marketValue": 1200,
+        "armorRating_Heat": 0.5,
+        "armorRating_Blunt": 0.1,
+        "armorRating_Sharp": 0.2,
+        "mechEnabledWorkTypes": [
+          "Hauling"
+        ],
+        "comps": [
+          "CompProperties_CanBeDormant",
+          "CompProperties_WakeUpDormant",
+          "CompProperties_OverseerSubject (MayRequire Ludeon.Rimworld.Biotech)",
+          "CompProperties_MechRepairable (MayRequire Ludeon.Rimworld.Biotech)"
+        ]
+      }
+    },
+    {
+      "defName": "JDSCIS_B1_Security_Droid",
+      "mod": "JDS_Separatists",
+      "framework": "mechanoid",
+      "bodySize": 0.7,
+      "baseHealthScale": null,
+      "moveSpeed": 2.0,
+      "graphics": {
+        "texPath": "Things/B1_Security_Droids",
+        "graphicClass": "Graphic_Multi",
+        "drawSize": "1.5"
+      },
+      "notableFields": {
+        "parentName": "JDSSWCIS_Droids",
+        "fleshType": "Mechanoid",
+        "mechWeightClass": "Light",
+        "marketValue": 1200,
+        "armorRating_Heat": 0.5,
+        "armorRating_Blunt": 0.1,
+        "armorRating_Sharp": 0.2,
+        "mechEnabledWorkTypes": [
+          "Hauling"
+        ],
+        "comps": [
+          "CompProperties_CanBeDormant",
+          "CompProperties_WakeUpDormant",
+          "CompProperties_OverseerSubject (MayRequire Ludeon.Rimworld.Biotech)",
+          "CompProperties_MechRepairable (MayRequire Ludeon.Rimworld.Biotech)"
+        ]
+      }
+    },
+    {
+      "defName": "JDSCIS_B1_Commander_Droid",
+      "mod": "JDS_Separatists",
+      "framework": "mechanoid",
+      "bodySize": 0.7,
+      "baseHealthScale": null,
+      "moveSpeed": 2.0,
+      "graphics": {
+        "texPath": "Things/B1_Commander_Droids",
+        "graphicClass": "Graphic_Multi",
+        "drawSize": "1.5"
+      },
+      "notableFields": {
+        "parentName": "JDSSWCIS_Droids",
+        "fleshType": "Mechanoid",
+        "mechWeightClass": "Light",
+        "marketValue": 1200,
+        "armorRating_Heat": 0.5,
+        "armorRating_Blunt": 0.1,
+        "armorRating_Sharp": 0.2,
+        "mechEnabledWorkTypes": [],
+        "comps": [
+          "CompProperties_CanBeDormant",
+          "CompProperties_WakeUpDormant",
+          "CompProperties_OverseerSubject (MayRequire Ludeon.Rimworld.Biotech)",
+          "CompProperties_MechRepairable (MayRequire Ludeon.Rimworld.Biotech)",
+          "Fortified.CompProperties_CommandRelay (MayRequire aoba.framework; maxWorldMapRadius=10, maxRelayRadius=20, minRelayRadius=5)"
+        ]
+      }
+    },
+    {
+      "defName": "JDSCIS_BX_Commando_Droid",
+      "mod": "JDS_Separatists",
+      "framework": "mechanoid",
+      "bodySize": 0.7,
+      "baseHealthScale": null,
+      "moveSpeed": 2.0,
+      "graphics": {
+        "texPath": "Things/BX_Commando_Droids",
+        "graphicClass": "Graphic_Multi",
+        "drawSize": "1.5"
+      },
+      "notableFields": {
+        "parentName": "JDSSWCIS_Droids",
+        "fleshType": "Mechanoid",
+        "mechWeightClass": "Light",
+        "marketValue": 1200,
+        "armorRating_Heat": 0.7,
+        "armorRating_Blunt": 0.1,
+        "armorRating_Sharp": 0.2,
+        "mechEnabledWorkTypes": [],
+        "comps": [
+          "CompProperties_CanBeDormant",
+          "CompProperties_WakeUpDormant",
+          "CompProperties_OverseerSubject (MayRequire Ludeon.Rimworld.Biotech)",
+          "CompProperties_MechRepairable (MayRequire Ludeon.Rimworld.Biotech)"
+        ]
+      }
+    },
+    {
+      "defName": "JDSCIS_IG-100_MagnaGuards",
+      "mod": "JDS_Separatists",
+      "framework": "mechanoid",
+      "bodySize": 0.7,
+      "baseHealthScale": null,
+      "moveSpeed": 2.0,
+      "graphics": {
+        "texPath": "Things/IG-100_MagnaGuards",
+        "graphicClass": "Graphic_Multi",
+        "drawSize": "1.5"
+      },
+      "notableFields": {
+        "parentName": "JDSSWCIS_Droids",
+        "fleshType": "Mechanoid",
+        "mechWeightClass": "Light",
+        "marketValue": 1200,
+        "armorRating_Heat": 0.8,
+        "armorRating_Blunt": 0.1,
+        "armorRating_Sharp": 0.2,
+        "mechEnabledWorkTypes": [],
+        "comps": [
+          "CompProperties_CanBeDormant",
+          "CompProperties_WakeUpDormant",
+          "CompProperties_OverseerSubject (MayRequire Ludeon.Rimworld.Biotech)",
+          "CompProperties_MechRepairable (MayRequire Ludeon.Rimworld.Biotech)"
+        ]
+      }
+    },
+    {
+      "defName": "JDSCIS_T1_Tactical_Droid",
+      "mod": "JDS_Separatists",
+      "framework": "mechanoid",
+      "bodySize": 0.7,
+      "baseHealthScale": null,
+      "moveSpeed": 2.0,
+      "graphics": {
+        "texPath": "Things/T1_Tactical_Droid",
+        "graphicClass": "Graphic_Multi",
+        "drawSize": "1.5"
+      },
+      "notableFields": {
+        "parentName": "JDSSWCIS_Droids",
+        "fleshType": "Mechanoid",
+        "mechWeightClass": "Light",
+        "marketValue": 1200,
+        "armorRating_Heat": 0.5,
+        "armorRating_Blunt": 0.1,
+        "armorRating_Sharp": 0.2,
+        "foodPoisonChance": 0.0001,
+        "mechEnabledWorkTypes": [
+          "Crafting",
+          "Smithing",
+          "Tailoring",
+          "Cooking"
+        ],
+        "comps": [
+          "CompProperties_CanBeDormant",
+          "CompProperties_WakeUpDormant",
+          "CompProperties_OverseerSubject (MayRequire Ludeon.Rimworld.Biotech)",
+          "CompProperties_MechRepairable (MayRequire Ludeon.Rimworld.Biotech)"
+        ]
+      }
+    },
+    {
+      "defName": "JDSCIS_ST_Super_Tactical_Droid",
+      "mod": "JDS_Separatists",
+      "framework": "mechanoid",
+      "bodySize": 0.7,
+      "baseHealthScale": null,
+      "moveSpeed": 2.0,
+      "graphics": {
+        "texPath": "Things/ST_Super_Tactical_Droid",
+        "graphicClass": "Graphic_Multi",
+        "drawSize": "1.5"
+      },
+      "notableFields": {
+        "parentName": "JDSSWCIS_Droids",
+        "fleshType": "Mechanoid",
+        "mechWeightClass": "Light",
+        "marketValue": 1200,
+        "armorRating_Heat": 0.5,
+        "armorRating_Blunt": 0.1,
+        "armorRating_Sharp": 0.2,
+        "foodPoisonChance": 0,
+        "mechEnabledWorkTypes": [
+          "Crafting",
+          "Smithing",
+          "Tailoring",
+          "Cooking",
+          "Research"
+        ],
+        "comps": [
+          "CompProperties_CanBeDormant",
+          "CompProperties_WakeUpDormant",
+          "CompProperties_OverseerSubject (MayRequire Ludeon.Rimworld.Biotech)",
+          "CompProperties_MechRepairable (MayRequire Ludeon.Rimworld.Biotech)"
+        ]
+      }
+    },
+    {
+      "defName": "JDSCIS_B2_Super_Battle_Droid",
+      "mod": "JDS_Separatists",
+      "framework": "mechanoid",
+      "bodySize": 0.7,
+      "baseHealthScale": null,
+      "moveSpeed": 2.0,
+      "graphics": {
+        "texPath": "Things/B2_Super_Battle_Droid",
+        "graphicClass": "Graphic_Multi",
+        "drawSize": "1.5"
+      },
+      "notableFields": {
+        "parentName": "JDSSWCIS_Droids",
+        "fleshType": "Mechanoid",
+        "mechWeightClass": "Light",
+        "marketValue": 1200,
+        "armorRating_Heat": 1.0,
+        "armorRating_Blunt": 0.1,
+        "armorRating_Sharp": 0.2,
+        "mechEnabledWorkTypes": [],
+        "comps": [
+          "CompProperties_CanBeDormant",
+          "CompProperties_WakeUpDormant",
+          "CompProperties_OverseerSubject (MayRequire Ludeon.Rimworld.Biotech)",
+          "CompProperties_MechRepairable (MayRequire Ludeon.Rimworld.Biotech)"
+        ]
+      }
+    },
+    {
+      "defName": "JDSCIS_B2_HA_Super_Battle_Droid",
+      "mod": "JDS_Separatists",
+      "framework": "mechanoid",
+      "bodySize": 0.7,
+      "baseHealthScale": null,
+      "moveSpeed": 2.0,
+      "graphics": {
+        "texPath": "Things/B2_HA_Super_Battle_Droid",
+        "graphicClass": "Graphic_Multi",
+        "drawSize": "1.5"
+      },
+      "notableFields": {
+        "parentName": "JDSSWCIS_Droids",
+        "fleshType": "Mechanoid",
+        "mechWeightClass": "Light",
+        "marketValue": 1200,
+        "armorRating_Heat": 1.0,
+        "armorRating_Blunt": 0.1,
+        "armorRating_Sharp": 0.2,
+        "mechEnabledWorkTypes": [],
+        "comps": [
+          "CompProperties_CanBeDormant",
+          "CompProperties_WakeUpDormant",
+          "CompProperties_OverseerSubject (MayRequire Ludeon.Rimworld.Biotech)",
+          "CompProperties_MechRepairable (MayRequire Ludeon.Rimworld.Biotech)"
+        ]
+      }
+    },
+    {
+      "defName": "JDSCIS_AQ_Battle_Droid",
+      "mod": "JDS_Separatists",
+      "framework": "mechanoid",
+      "bodySize": 0.7,
+      "baseHealthScale": 1.5,
+      "moveSpeed": 1.7,
+      "graphics": {
+        "texPath": "Things/AQ_Battle_Droid",
+        "graphicClass": "Graphic_Multi",
+        "drawSize": "1.9"
+      },
+      "notableFields": {
+        "parentName": "JDSSWCIS_Droids",
+        "fleshType": "Mechanoid",
+        "mechWeightClass": "Light",
+        "marketValue": 1200,
+        "armorRating_Heat": 0.5,
+        "armorRating_Blunt": 0.1,
+        "armorRating_Sharp": 0.2,
+        "mechEnabledWorkTypes": [],
+        "comps": [
+          "CompProperties_CanBeDormant",
+          "CompProperties_WakeUpDormant",
+          "CompProperties_OverseerSubject (MayRequire Ludeon.Rimworld.Biotech)",
+          "CompProperties_MechRepairable (MayRequire Ludeon.Rimworld.Biotech)"
+        ]
+      }
+    },
+    {
+      "defName": "JDSCIS_Droideka_Droid",
+      "mod": "JDS_Separatists",
+      "framework": "mechanoid",
+      "bodySize": 0.7,
+      "baseHealthScale": 1.5,
+      "moveSpeed": 1.7,
+      "graphics": {
+        "texPath": "Things/Droideka_Droid",
+        "graphicClass": "Graphic_Multi",
+        "drawSize": "1.9"
+      },
+      "notableFields": {
+        "parentName": "JDSSWCIS_Droids",
+        "fleshType": "Mechanoid",
+        "mechWeightClass": "Light",
+        "marketValue": 1200,
+        "armorRating_Heat": 0.5,
+        "armorRating_Blunt": 0.1,
+        "armorRating_Sharp": 0.2,
+        "energyShieldEnergyMax": 1.5,
+        "mechEnabledWorkTypes": [],
+        "comps": [
+          "CompProperties_CanBeDormant",
+          "CompProperties_WakeUpDormant",
+          "CompProperties_OverseerSubject (MayRequire Ludeon.Rimworld.Biotech)",
+          "CompProperties_MechRepairable (MayRequire Ludeon.Rimworld.Biotech)",
+          "CompProperties_Shield"
+        ]
+      }
+    },
+    {
+      "defName": "JDSCIS_Droideka_Sharpshooter_Droid",
+      "mod": "JDS_Separatists",
+      "framework": "mechanoid",
+      "bodySize": 0.7,
+      "baseHealthScale": 1.5,
+      "moveSpeed": 1.7,
+      "graphics": {
+        "texPath": "Things/Droideka_Sharpshooter_Droid",
+        "graphicClass": "Graphic_Multi",
+        "drawSize": "1.9"
+      },
+      "notableFields": {
+        "parentName": "JDSSWCIS_Droids",
+        "fleshType": "Mechanoid",
+        "mechWeightClass": "Light",
+        "marketValue": 1200,
+        "armorRating_Heat": 0.5,
+        "armorRating_Blunt": 0.1,
+        "armorRating_Sharp": 0.2,
+        "mechEnabledWorkTypes": [],
+        "comps": [
+          "CompProperties_CanBeDormant",
+          "CompProperties_WakeUpDormant",
+          "CompProperties_OverseerSubject (MayRequire Ludeon.Rimworld.Biotech)",
+          "CompProperties_MechRepairable (MayRequire Ludeon.Rimworld.Biotech)"
+        ]
+      }
+    },
+    {
+      "defName": "JDSCIS_Demolition_Droid",
+      "mod": "JDS_Separatists",
+      "framework": "mechanoid",
+      "bodySize": 0.7,
+      "baseHealthScale": 1.5,
+      "moveSpeed": 1.7,
+      "graphics": {
+        "texPath": "Things/Demolition_Droid",
+        "graphicClass": "Graphic_Multi",
+        "drawSize": "2.3"
+      },
+      "notableFields": {
+        "parentName": "JDSSWCIS_Droids",
+        "fleshType": "Mechanoid",
+        "mechWeightClass": "Light",
+        "marketValue": 1200,
+        "armorRating_Heat": 1.0,
+        "armorRating_Blunt": 0.1,
+        "armorRating_Sharp": 0.2,
+        "mechEnabledWorkTypes": [],
+        "comps": [
+          "CompProperties_CanBeDormant",
+          "CompProperties_WakeUpDormant",
+          "CompProperties_OverseerSubject (MayRequire Ludeon.Rimworld.Biotech)",
+          "CompProperties_MechRepairable (MayRequire Ludeon.Rimworld.Biotech)"
+        ]
+      }
+    },
+    {
+      "defName": "JDSCIS_DSD1_Dwarf_Spider_Droid",
+      "mod": "JDS_Separatists",
+      "framework": "mechanoid",
+      "bodySize": 0.7,
+      "baseHealthScale": 1.5,
+      "moveSpeed": 1.7,
+      "graphics": {
+        "texPath": "Things/DSD1_Dwarf_Spider_Droid",
+        "graphicClass": "Graphic_Multi",
+        "drawSize": "2.8"
+      },
+      "notableFields": {
+        "parentName": "JDSSWCIS_Droids",
+        "fleshType": "Mechanoid",
+        "mechWeightClass": "Light",
+        "marketValue": 1200,
+        "armorRating_Heat": 0.5,
+        "armorRating_Blunt": 0.1,
+        "armorRating_Sharp": 0.2,
+        "mechEnabledWorkTypes": [],
+        "comps": [
+          "CompProperties_CanBeDormant",
+          "CompProperties_WakeUpDormant",
+          "CompProperties_OverseerSubject (MayRequire Ludeon.Rimworld.Biotech)",
+          "CompProperties_MechRepairable (MayRequire Ludeon.Rimworld.Biotech)"
+        ]
+      }
+    },
+    {
+      "defName": "JDSCIS_LR-57_Combat_Droid",
+      "mod": "JDS_Separatists",
+      "framework": "mechanoid",
+      "bodySize": 0.7,
+      "baseHealthScale": 1.5,
+      "moveSpeed": 1.7,
+      "graphics": {
+        "texPath": "Things/LR-57_Combat_Droid",
+        "graphicClass": "Graphic_Multi",
+        "drawSize": "2.8"
+      },
+      "notableFields": {
+        "parentName": "JDSSWCIS_Droids",
+        "fleshType": "Mechanoid",
+        "mechWeightClass": "Light",
+        "marketValue": 1200,
+        "armorRating_Heat": 0.5,
+        "armorRating_Blunt": 0.1,
+        "armorRating_Sharp": 0.2,
+        "mechEnabledWorkTypes": [],
+        "comps": [
+          "CompProperties_CanBeDormant",
+          "CompProperties_WakeUpDormant",
+          "CompProperties_OverseerSubject (MayRequire Ludeon.Rimworld.Biotech)",
+          "CompProperties_MechRepairable (MayRequire Ludeon.Rimworld.Biotech)"
+        ]
+      }
+    }
+  ],
+  "kinds": [
+    {
+      "defName": "OuterRim_BattleDroid",
+      "label": "B1 Battle Droid",
+      "race": "OuterRim_BattleDroid",
+      "mod": "OuterRimDroidDepot",
+      "combatPower": 40,
+      "defaultFaction": "PlayerColony",
+      "isFighter": false,
+      "apparelTags": [],
+      "weaponTags": null,
+      "notes": "apparelTags declared with Inherit=\"false\" and no <li> children -> overrides to an empty list (no apparel spawns). apparelAllowHeadgearChance=0, apparelMoney=0~0, techHediffsChance=0.0, techHediffsTags Inherit=false (empty), initialWillRange=0, initialResistanceRange=30~40. forceNormalGearQuality=true, apparelIgnoreSeasons=true. modExtensions: TabulaRasa.DefModExt_PawnKindExtended (clearApparel=True). backstoryFiltersOverride category OuterRimDroidBackstory."
+    },
+    {
+      "defName": "OuterRim_BattleDroidAdvanced",
+      "label": "B1A Battle Droid",
+      "race": "OuterRim_BattleDroidAdvanced",
+      "mod": "OuterRimDroidDepot",
+      "combatPower": 40,
+      "defaultFaction": "PlayerColony",
+      "isFighter": false,
+      "apparelTags": [],
+      "weaponTags": null,
+      "notes": "Same PawnKindDef pattern as OuterRim_BattleDroid (empty apparelTags via Inherit=false, clearApparel modExtension, initialResistanceRange 30~40)."
+    },
+    {
+      "defName": "OuterRim_CommandoDroid",
+      "label": "BX Commando Droid",
+      "race": "OuterRim_CommandoDroid",
+      "mod": "OuterRimDroidDepot",
+      "combatPower": 40,
+      "defaultFaction": "PlayerColony",
+      "isFighter": false,
+      "apparelTags": [],
+      "weaponTags": null,
+      "notes": "Same PawnKindDef pattern as OuterRim_BattleDroid."
+    },
+    {
+      "defName": "OuterRim_HKDroid",
+      "label": "HK-Series Assasin Droid",
+      "race": "OuterRim_HKDroid",
+      "mod": "OuterRimDroidDepot",
+      "combatPower": 40,
+      "defaultFaction": "PlayerColony",
+      "isFighter": false,
+      "apparelTags": [],
+      "weaponTags": null,
+      "notes": "Label verbatim from XML has a typo: 'Assasin' (one 's'), differs from the race's label 'HK-Series Assassin Droid' (two 's'). Same PawnKindDef pattern as OuterRim_BattleDroid otherwise."
+    },
+    {
+      "defName": "OuterRim_ImperialLaborDroid",
+      "label": "imperial labor droid",
+      "race": "OuterRim_ImperialLaborDroid",
+      "mod": "OuterRimDroidDepot",
+      "combatPower": 40,
+      "defaultFaction": "PlayerColony",
+      "isFighter": false,
+      "apparelTags": [],
+      "weaponTags": null,
+      "notes": "Same PawnKindDef pattern as OuterRim_BattleDroid. Label is lowercase, unlike the race's 'Imperial Labor Droid'."
+    },
+    {
+      "defName": "OuterRim_KXSecurityDroid",
+      "label": "KX Security Droid",
+      "race": "OuterRim_KXSecurityDroid",
+      "mod": "OuterRimDroidDepot",
+      "combatPower": 40,
+      "defaultFaction": "PlayerColony",
+      "isFighter": false,
+      "apparelTags": [],
+      "weaponTags": null,
+      "notes": "Same PawnKindDef pattern as OuterRim_BattleDroid."
+    },
+    {
+      "defName": "OuterRim_MagnaGuardDroid",
+      "label": "MagnaGuard Droid",
+      "race": "OuterRim_MagnaGuardDroid",
+      "mod": "OuterRimDroidDepot",
+      "combatPower": 40,
+      "defaultFaction": "PlayerColony",
+      "isFighter": false,
+      "apparelTags": [],
+      "weaponTags": null,
+      "notes": "Same PawnKindDef pattern as OuterRim_BattleDroid."
+    },
+    {
+      "defName": "OuterRim_ProtocolDroid",
+      "label": "protocol droid",
+      "race": "OuterRim_ProtocolDroid",
+      "mod": "OuterRimDroidDepot",
+      "combatPower": 40,
+      "defaultFaction": "PlayerColony",
+      "isFighter": false,
+      "apparelTags": [],
+      "weaponTags": null,
+      "notes": "Same PawnKindDef pattern as OuterRim_BattleDroid."
+    },
+    {
+      "defName": "OuterRim_SuperBattleDroid",
+      "label": "B2 Super Battle Droid",
+      "race": "OuterRim_SuperBattleDroid",
+      "mod": "OuterRimDroidDepot",
+      "combatPower": 40,
+      "defaultFaction": "PlayerColony",
+      "isFighter": false,
+      "apparelTags": [],
+      "weaponTags": null,
+      "notes": "Same PawnKindDef pattern as OuterRim_BattleDroid."
+    },
+    {
+      "defName": "OuterRim_SuperTacticalDroid",
+      "label": "Super Tactical Droid",
+      "race": "OuterRim_SuperTacticalDroid",
+      "mod": "OuterRimDroidDepot",
+      "combatPower": 40,
+      "defaultFaction": "PlayerColony",
+      "isFighter": false,
+      "apparelTags": [],
+      "weaponTags": null,
+      "notes": "Same PawnKindDef pattern as OuterRim_BattleDroid."
+    },
+    {
+      "defName": "OuterRim_TacticalDroid",
+      "label": "T-Series Tactical Droid",
+      "race": "OuterRim_TacticalDroid",
+      "mod": "OuterRimDroidDepot",
+      "combatPower": 40,
+      "defaultFaction": "PlayerColony",
+      "isFighter": false,
+      "apparelTags": [],
+      "weaponTags": null,
+      "notes": "Same PawnKindDef pattern as OuterRim_BattleDroid."
+    },
+    {
+      "defName": "OuterRim_MuckrakerDroid",
+      "label": "Muckraker Crab Droid",
+      "race": "OuterRim_MuckrakerDroid",
+      "mod": "OuterRimDroidDepot",
+      "combatPower": 99999,
+      "defaultFaction": null,
+      "isFighter": false,
+      "apparelTags": "UNCERTAIN (not declared on this PawnKindDef; would come from ParentName=\"AsimovAutomatonKindBase\", which was not in the read set)",
+      "weaponTags": "UNCERTAIN (same reason)",
+      "notes": "ParentName=AsimovAutomatonKindBase, not OuterRim_BaseHumanoidDroid's kind pattern - has none of defaultFactionType/apparelTags/techHediffs/initialWillRange fields set directly; only defName, label, race, combatPower, isFighter, lifeStages(bodyGraphicData). combatPower=99999 is a clear sentinel/placeholder value (identical across every animal-framework kind in this mod), not a real balance number - flagged, not treated as a genuine combat rating."
+    },
+    {
+      "defName": "OuterRim_DestroyerDroid",
+      "label": "Destroyer Droid",
+      "race": "OuterRim_DestroyerDroid",
+      "mod": "OuterRimDroidDepot",
+      "combatPower": 99999,
+      "defaultFaction": null,
+      "isFighter": false,
+      "apparelTags": "UNCERTAIN (same reason as OuterRim_MuckrakerDroid)",
+      "weaponTags": "UNCERTAIN (same reason)",
+      "notes": "Same ParentName=AsimovAutomatonKindBase pattern. combatPower=99999 sentinel."
+    },
+    {
+      "defName": "OuterRim_DUMDroid",
+      "label": "DUM Repair Droid",
+      "race": "OuterRim_DUMDroid",
+      "mod": "OuterRimDroidDepot",
+      "combatPower": 99999,
+      "defaultFaction": null,
+      "isFighter": false,
+      "apparelTags": "UNCERTAIN (same reason as OuterRim_MuckrakerDroid)",
+      "weaponTags": "UNCERTAIN (same reason)",
+      "notes": "Same ParentName=AsimovAutomatonKindBase pattern. combatPower=99999 sentinel."
+    },
+    {
+      "defName": "OuterRim_FX7Droid",
+      "label": "fx-7 medical Droid",
+      "race": "OuterRim_FX7Droid",
+      "mod": "OuterRimDroidDepot",
+      "combatPower": 99999,
+      "defaultFaction": null,
+      "isFighter": false,
+      "apparelTags": "UNCERTAIN (same reason as OuterRim_MuckrakerDroid)",
+      "weaponTags": "UNCERTAIN (same reason)",
+      "notes": "Same ParentName=AsimovAutomatonKindBase pattern. combatPower=99999 sentinel."
+    },
+    {
+      "defName": "OuterRim_GNKDroid",
+      "label": "gnk power Droid",
+      "race": "OuterRim_GNKDroid",
+      "mod": "OuterRimDroidDepot",
+      "combatPower": 99999,
+      "defaultFaction": null,
+      "isFighter": false,
+      "apparelTags": "UNCERTAIN (same reason as OuterRim_MuckrakerDroid)",
+      "weaponTags": "UNCERTAIN (same reason)",
+      "notes": "Same ParentName=AsimovAutomatonKindBase pattern. combatPower=99999 sentinel. This is the race whose ThingDef itself declares an explicit Asimov.DefModExt_AutomatonApparel apparelWhitelist (see races entry), but that whitelist lives on the race's modExtensions, not on this PawnKindDef's apparelTags."
+    },
+    {
+      "defName": "OuterRim_MSEDroid",
+      "label": "MSE Repair Droid",
+      "race": "OuterRim_MSEDroid",
+      "mod": "OuterRimDroidDepot",
+      "combatPower": 99999,
+      "defaultFaction": null,
+      "isFighter": false,
+      "apparelTags": "UNCERTAIN (same reason as OuterRim_MuckrakerDroid)",
+      "weaponTags": "UNCERTAIN (same reason)",
+      "notes": "Same ParentName=AsimovAutomatonKindBase pattern. combatPower=99999 sentinel."
+    },
+    {
+      "defName": "OuterRim_SalvageAssistDroid",
+      "label": "salvage assist droid",
+      "race": "OuterRim_SalvageAssistDroid",
+      "mod": "OuterRimDroidDepot",
+      "combatPower": 99999,
+      "defaultFaction": null,
+      "isFighter": false,
+      "apparelTags": "UNCERTAIN (same reason as OuterRim_MuckrakerDroid)",
+      "weaponTags": "UNCERTAIN (same reason)",
+      "notes": "Same ParentName=AsimovAutomatonKindBase pattern. combatPower=99999 sentinel."
+    },
+    {
+      "defName": "OuterRim_RSeriesDroid",
+      "label": "R-Series Droid",
+      "race": "OuterRim_AstromechDroid",
+      "mod": "OuterRimDroidDepot",
+      "combatPower": 99999,
+      "defaultFaction": null,
+      "isFighter": false,
+      "apparelTags": "UNCERTAIN (same reason as OuterRim_MuckrakerDroid)",
+      "weaponTags": "UNCERTAIN (same reason)",
+      "notes": "This kind has NO own ThingDef/race defName - it reuses race=OuterRim_AstromechDroid directly (i.e. R2 units ARE astromech droids mechanically, just with their own art: texPath OuterRim/Droid/Astromech/R2, drawSize 1.5, Graphic_Multi). ParentName=AsimovAutomatonKindBase. combatPower=99999 sentinel."
+    },
+    {
+      "defName": "KotORDroidColonist_T3UD",
+      "label": "specialist droid",
+      "race": "guy762_DroidRace_T3series",
+      "mod": "KotORDroids",
+      "combatPower": 50,
+      "defaultFactionType": "PlayerColony (inherited from guy762_DroidPawnKindBase)",
+      "isFighter": null,
+      "apparelTags_or_gear": "no apparelTags; standard player droid, gear from race apparelList only",
+      "notes": "forcedTraits TooSmart 0, Asexual 0; nameMaker guy762_DroidNamer_T3 (author comment: required for all T3 pawns)"
+    },
+    {
+      "defName": "KotORDroidColonist_3CUD",
+      "label": "utility droid",
+      "race": "guy762_DroidRace_3Cseries",
+      "mod": "KotORDroids",
+      "combatPower": 30,
+      "defaultFactionType": "PlayerColony (inherited)",
+      "isFighter": null,
+      "apparelTags_or_gear": "none set",
+      "notes": ""
+    },
+    {
+      "defName": "KotORDroidColonist_ITUD",
+      "label": "specialist droid",
+      "race": "guy762_DroidRace_ITseries",
+      "mod": "KotORDroids",
+      "combatPower": 30,
+      "defaultFactionType": "PlayerColony (inherited)",
+      "isFighter": null,
+      "apparelTags_or_gear": "none set",
+      "notes": ""
+    },
+    {
+      "defName": "KotORDroidColonist_R8009UD",
+      "label": "utility droid",
+      "race": "guy762_DroidRace_R8009UD",
+      "mod": "KotORDroids",
+      "combatPower": 20,
+      "defaultFactionType": "PlayerColony (inherited)",
+      "isFighter": null,
+      "apparelTags_or_gear": "none set",
+      "notes": ""
+    },
+    {
+      "defName": "KotORDroidColonist_GE3LD",
+      "label": "labor droid",
+      "race": "guy762_DroidRace_GE3LD",
+      "mod": "KotORDroids",
+      "combatPower": 10,
+      "defaultFactionType": "PlayerColony (inherited)",
+      "isFighter": null,
+      "apparelTags_or_gear": "none set",
+      "notes": "lowest combatPower colonist kind"
+    },
+    {
+      "defName": "KotORDroidColonist_GE3PD",
+      "label": "protocol droid",
+      "race": "guy762_DroidRace_GE3PD",
+      "mod": "KotORDroids",
+      "combatPower": 10,
+      "defaultFactionType": "PlayerColony (inherited)",
+      "isFighter": null,
+      "apparelTags_or_gear": "none set",
+      "notes": ""
+    },
+    {
+      "defName": "KotORDroidColonist_KX12UPD",
+      "label": "probe droid",
+      "race": "guy762_DroidRace_KX12UPD",
+      "mod": "KotORDroids",
+      "combatPower": 20,
+      "defaultFactionType": "PlayerColony (inherited)",
+      "isFighter": null,
+      "apparelTags_or_gear": "none set",
+      "notes": ""
+    },
+    {
+      "defName": "KotORDroidColonist_KX12APD",
+      "label": "assassin probe",
+      "race": "guy762_DroidRace_KX12APD",
+      "mod": "KotORDroids",
+      "combatPower": 50,
+      "defaultFactionType": "PlayerColony (inherited)",
+      "isFighter": null,
+      "apparelTags_or_gear": "none set",
+      "notes": ""
+    },
+    {
+      "defName": "KotORDroidColonist_MPDMkI",
+      "label": "patrol droid",
+      "race": "guy762_DroidRace_MPDMkI",
+      "mod": "KotORDroids",
+      "combatPower": 20,
+      "defaultFactionType": "PlayerColony (inherited)",
+      "isFighter": null,
+      "apparelTags_or_gear": "none set",
+      "notes": ""
+    },
+    {
+      "defName": "KotORDroidColonist_KM1MD",
+      "label": "mining droid",
+      "race": "guy762_DroidRace_KM1MD",
+      "mod": "KotORDroids",
+      "combatPower": 30,
+      "defaultFactionType": "PlayerColony (inherited)",
+      "isFighter": null,
+      "apparelTags_or_gear": "none set",
+      "notes": ""
+    },
+    {
+      "defName": "KotORDroidColonist_KM1HMD",
+      "label": "excavation droid",
+      "race": "guy762_DroidRace_KM1HMD",
+      "mod": "KotORDroids",
+      "combatPower": 40,
+      "defaultFactionType": "PlayerColony (inherited)",
+      "isFighter": null,
+      "apparelTags_or_gear": "none set",
+      "notes": ""
+    },
+    {
+      "defName": "KotORDroidColonist_SentWD",
+      "label": "war droid",
+      "race": "guy762_DroidRace_SentWD",
+      "mod": "KotORDroids",
+      "combatPower": 50,
+      "defaultFactionType": "PlayerColony (inherited)",
+      "isFighter": null,
+      "apparelTags_or_gear": "none set",
+      "notes": ""
+    },
+    {
+      "defName": "KotORDroidColonist_DevWD",
+      "label": "battle droid",
+      "race": "guy762_DroidRace_DevWD",
+      "mod": "KotORDroids",
+      "combatPower": 30,
+      "defaultFactionType": "PlayerColony (inherited)",
+      "isFighter": null,
+      "apparelTags_or_gear": "none set",
+      "notes": ""
+    },
+    {
+      "defName": "KotORDroidColonist_DevAD",
+      "label": "assassin droid",
+      "race": "guy762_DroidRace_DevAD",
+      "mod": "KotORDroids",
+      "combatPower": 60,
+      "defaultFactionType": "PlayerColony (inherited)",
+      "isFighter": null,
+      "apparelTags_or_gear": "none set",
+      "notes": ""
+    },
+    {
+      "defName": "KotORDroidColonist_ADMkI",
+      "label": "assault droid",
+      "race": "guy762_DroidRace_ADMkI",
+      "mod": "KotORDroids",
+      "combatPower": 70,
+      "defaultFactionType": "PlayerColony (inherited)",
+      "isFighter": null,
+      "apparelTags_or_gear": "none set",
+      "notes": ""
+    },
+    {
+      "defName": "KotORDroidColonist_ADMkI_sf",
+      "label": "star forge droid",
+      "race": "guy762_DroidRace_ADMkI_sf",
+      "mod": "KotORDroids",
+      "combatPower": 100,
+      "defaultFactionType": "PlayerColony (inherited)",
+      "isFighter": null,
+      "apparelTags_or_gear": "none set",
+      "notes": ""
+    },
+    {
+      "defName": "KotORDroidColonist_ADMkIV",
+      "label": "heavy assault droid",
+      "race": "guy762_DroidRace_ADMkIV",
+      "mod": "KotORDroids",
+      "combatPower": 90,
+      "defaultFactionType": "PlayerColony (inherited)",
+      "isFighter": null,
+      "apparelTags_or_gear": "none set",
+      "notes": ""
+    },
+    {
+      "defName": "KotORDroidColonist_ADMkIV_sith",
+      "label": "heavy assault droid",
+      "race": "guy762_DroidRace_ADMkIV_sith",
+      "mod": "KotORDroids",
+      "combatPower": 120,
+      "defaultFactionType": "PlayerColony (inherited)",
+      "isFighter": null,
+      "apparelTags_or_gear": "none set",
+      "notes": "highest combatPower plain colonist kind"
+    },
+    {
+      "defName": "KotORDroidColonist_HK50AD",
+      "label": "HK-50 unit",
+      "race": "guy762_DroidRace_HK50series",
+      "mod": "KotORDroids",
+      "combatPower": 100,
+      "defaultFactionType": "PlayerColony (inherited)",
+      "isFighter": null,
+      "apparelTags_or_gear": "none set",
+      "notes": "forcedTraits ABF_Trait_Synstruct_BiologicalPreference -1, ShootingAccuracy -1, Psychopath 0, Bloodlust 0, Asexual 0"
+    },
+    {
+      "defName": "KotORDroidColonist_HK51AD",
+      "label": "HK-51 unit",
+      "race": "guy762_DroidRace_HK51series",
+      "mod": "KotORDroids",
+      "combatPower": 100,
+      "defaultFactionType": "PlayerColony (inherited)",
+      "isFighter": null,
+      "apparelTags_or_gear": "none set",
+      "notes": "forcedTraits BiologicalPreference +1, ShootingAccuracy +1, Bloodlust 0"
+    },
+    {
+      "defName": "KotORDroidColonist_GOTO",
+      "label": "specialist droid",
+      "race": "guy762_DroidRace_GOTO",
+      "mod": "KotORDroids",
+      "combatPower": 100,
+      "defaultFactionType": "PlayerColony (inherited)",
+      "isFighter": null,
+      "apparelTags_or_gear": "none set",
+      "notes": "forcedTraits TooSmart 0, Psychopath 0, AnnoyingVoice 0, Asexual 0"
+    },
+    {
+      "defName": "KotORMIBColonist_HK51AD",
+      "label": "(inherits HK-51 unit label)",
+      "race": "guy762_DroidRace_HK51series",
+      "mod": "KotORDroids",
+      "combatPower": 200,
+      "defaultFactionType": "PlayerColony (inherited via parent KotORDroidColonist_HK51AD)",
+      "isFighter": true,
+      "apparelTags_or_gear": "apparelTags: KotORDroidArmorT2_weak, KotORDroidWeapon_hvy_any, KotORDroidShield_weak, KotORDroidUpgrade_combat; apparelMoney 9999, itemQuality Good; weaponMoney 1600, weaponTags EXC_assassin; inventory: guy762_repairkit_con x3-6",
+      "notes": "Exchange-affiliated bounty-hunter variant of HK-51, ParentName=KotORDroidColonist_HK51AD; requiredWorkTags Violent"
+    },
+    {
+      "defName": "KotORPlayableHero_HK47",
+      "label": "HK unit",
+      "race": "guy762_DroidRace_HKseries",
+      "mod": "KotORDroids",
+      "combatPower": 500,
+      "defaultFactionType": "PlayerColony (inherited, overrides modExtensions to just pawnState=Reprogrammable, drops caravanRole)",
+      "isFighter": true,
+      "apparelTags_or_gear": "apparelTags: KotORDroidArmorT2_weak, KotORDroidWeapon_hvy_any, KotORDroidShield_weak, SWCPSpecificDroidTech_HK47Sensor; apparelRequired guy762_DroidSensor_hk; apparelMoney 29999, itemQuality Legendary; weaponMoney 99999999, weaponTags SaV_hk47, biocodeWeaponChance 1",
+      "notes": "named playable-hero pawnkind for the iconic HK-47; minGenerationAge 14 maxGenerationAge 15; forcedTraits BiologicalPreference -1, Psychopath 0, Bloodlust 0, Asexual 0"
+    },
+    {
+      "defName": "KotORPlayableHero_T3M4",
+      "label": "T3 unit",
+      "race": "guy762_DroidRace_T3series",
+      "mod": "KotORDroids",
+      "combatPower": 100,
+      "defaultFactionType": "PlayerColony (inherited, modExtensions overridden to pawnState=Reprogrammable only)",
+      "isFighter": true,
+      "apparelTags_or_gear": "apparelTags: KotORDroidArmorT1_weak, KotORDroidWeapon_light_any, SWKotORSpecificDroidWeapon_ShockArm, SWKotORSpecificDroidGadget_T3M4RenewableShield, SWKotORSpecificDroidTech_T3M4RepairHardware; apparelRequired guy762_DroidHardware_regen, guy762_DroidShield_renewable, guy762_DroidGadget_shock; apparelMoney 29999, itemQuality Legendary",
+      "notes": "named playable-hero pawnkind for T3-M4; minGenerationAge 9 maxGenerationAge 10; nameMaker guy762_HeroNamer_T3M4; skinColorOverride (235,255,255); forcedTraits TooSmart 0, Asexual 0"
+    },
+    {
+      "defName": "KotORDroidGood_3C",
+      "label": "utility droid",
+      "race": "guy762_DroidRace_3Cseries",
+      "mod": "KotORDroids",
+      "combatPower": 20,
+      "defaultFactionType": "UNCERTAIN (ParentName=KotORDroidBase_good, whose own def was not found in the v1.6 read set -- likely defined in a dependency mod)",
+      "isFighter": false,
+      "apparelTags_or_gear": "apparelTags: KotORDroidArmorT1_weak, KotORDroidUpgrade_repair, KotORDroidShield_weak, KotORDroidGadget_repairdroid; apparelMoney 1000-5000, itemQuality Normal",
+      "notes": "encounter/wild-good-faction kind, not a player colonist kind"
+    },
+    {
+      "defName": "KotORDroidGood_R8009",
+      "label": "maintenance droid",
+      "race": "guy762_DroidRace_R8009UD",
+      "mod": "KotORDroids",
+      "combatPower": 10,
+      "defaultFactionType": "UNCERTAIN (see KotORDroidGood_3C note)",
+      "isFighter": false,
+      "apparelTags_or_gear": "apparelTags: KotORDroidArmorT1_weak, KotORDroidUpgrade_repair, KotORDroidGadget_repairdroid; apparelMoney 500-2500, itemQuality Poor",
+      "notes": ""
+    },
+    {
+      "defName": "KotORDroidGood_GE3PD",
+      "label": "protocol droid",
+      "race": "guy762_DroidRace_GE3PD",
+      "mod": "KotORDroids",
+      "combatPower": 30,
+      "defaultFactionType": "UNCERTAIN (see KotORDroidGood_3C note)",
+      "isFighter": false,
+      "apparelTags_or_gear": "apparelTags: KotORDroidArmorT1_weak, KotORDroidUpgrade_repair; apparelMoney 500-2500, itemQuality Normal",
+      "notes": ""
+    },
+    {
+      "defName": "KotORDroidGood_GE3LD",
+      "label": "labor droid",
+      "race": "guy762_DroidRace_GE3LD",
+      "mod": "KotORDroids",
+      "combatPower": 10,
+      "defaultFactionType": "UNCERTAIN (see KotORDroidGood_3C note)",
+      "isFighter": false,
+      "apparelTags_or_gear": "apparelTags: KotORDroidArmorT1_weak, KotORDroidUpgrade_repair; apparelMoney 500-2500, itemQuality Poor",
+      "notes": ""
+    },
+    {
+      "defName": "KotORDroidGood_KX12UPD",
+      "label": "medical droid",
+      "race": "guy762_DroidRace_KX12UPD",
+      "mod": "KotORDroids",
+      "combatPower": 75,
+      "defaultFactionType": "UNCERTAIN (see KotORDroidGood_3C note)",
+      "isFighter": null,
+      "apparelTags_or_gear": "apparelTags: KotORDroidArmorT1_mid, KotORDroidArmorT1_stuffable, KotORDroidUpgrade_combat, KotORDroidShield_mid, SWKotORSpecificDroidWeapon_KoltoSpray; apparelRequired guy762_DroidGadget_kolto; apparelMoney 2500-5000, itemQuality Normal; inventoryOptions overridden to none",
+      "notes": "isFighter not set on this kind despite combat gear (unlike sibling 'good' kinds which explicitly set false)"
+    },
+    {
+      "defName": "KotORDroidGood_KM1HMD",
+      "label": "fire control droid",
+      "race": "guy762_DroidRace_KM1HMD",
+      "mod": "KotORDroids",
+      "combatPower": 25,
+      "defaultFactionType": "UNCERTAIN (see KotORDroidGood_3C note)",
+      "isFighter": null,
+      "apparelTags_or_gear": "apparelTags: KotORDroidArmorT3_stuffable, KotORDroidArmorT3_miningdroid, SWKotORSpecificDroidWeapon_FirefoamCannon, SWKotORSpecificDroidGadget_ThermalHeavyShield; apparelRequired guy762_HvyShield_thermal, guy762_LgtCannon_firefoam; apparelMoney 2500-5000, itemQuality Normal",
+      "notes": ""
+    },
+    {
+      "defName": "KotORDroidBad_KM1MD",
+      "label": "mining droid",
+      "race": "guy762_DroidRace_KM1MD",
+      "mod": "KotORDroids",
+      "combatPower": 50,
+      "defaultFactionType": "guy762_KotORFaction_RogueDroids (via ParentName=KotORDroidBase_bad, explicit in this file)",
+      "isFighter": null,
+      "apparelTags_or_gear": "apparelTags: KotORDroidArmorT2_stuffable, KotORDroidArmorT2_miningdroid, KotORDroidShield_miningdroid, KotORLgtCannon_miningdroid, SWKotORSpecificDroidWeapon_MiningLaserCannon, SWCPSpecificDroidArmor_EnvironmentMedium; apparelRequired guy762_DroidArmorMid_env, guy762_LgtCannon_mininglaser; apparelMoney 2500-5000, itemQuality Poor",
+      "notes": "canBeSapper=true; used in Factions_RogueDroids 'mining droid breach' pawnGroupMaker"
+    },
+    {
+      "defName": "KotORDroidBad_KM1HMD",
+      "label": "excavation droid",
+      "race": "guy762_DroidRace_KM1HMD",
+      "mod": "KotORDroids",
+      "combatPower": 200,
+      "defaultFactionType": "guy762_KotORFaction_RogueDroids",
+      "isFighter": null,
+      "apparelTags_or_gear": "apparelTags: KotORDroidArmorT3_stuffable, KotORDroidArmorT3_miningdroid, KotORDroidShield_miningdroid, SWKotORSpecificDroidWeapon_MiningLaserCannon, SWKotORSpecificDroidWeapon_SonicCannon, SWCPSpecificDroidArmor_EnvironmentHeavy; apparelRequired guy762_LgtCannon_mininglaser, guy762_LgtCannon_sonic, guy762_DroidArmorHvy_env; apparelMoney 7500-15000, itemQuality Normal",
+      "notes": "maxPerGroup 3; canBeSapper=true, isGoodBreacher=true; used in 'assault' and 'mining droid breach' raid options"
+    },
+    {
+      "defName": "KotORDroidBad_KX12UPD",
+      "label": "probe droid",
+      "race": "guy762_DroidRace_KX12UPD",
+      "mod": "KotORDroids",
+      "combatPower": 35,
+      "defaultFactionType": "guy762_KotORFaction_RogueDroids",
+      "isFighter": null,
+      "apparelTags_or_gear": "apparelTags: KotORDroidArmorT1_weak, KotORDroidArmorT1_stuffable, KotORDroidUpgrade_combat, KotORDroidShield_weak, SWKotORSpecificDroidWeapon_HoldoutBlaster, SWCPSpecificDroidArmor_CzerkaLight; apparelRequired guy762_DroidWeapon_holdout, guy762_DroidArmorLte_czerka; apparelMoney 1000-2500, itemQuality Poor",
+      "notes": ""
+    },
+    {
+      "defName": "KotORDroidBad_MPDMkI",
+      "label": "patrol droid",
+      "race": "guy762_DroidRace_MPDMkI",
+      "mod": "KotORDroids",
+      "combatPower": 40,
+      "defaultFactionType": "guy762_KotORFaction_RogueDroids",
+      "isFighter": null,
+      "apparelTags_or_gear": "apparelTags: KotORDroidArmorT1_mid, KotORDroidArmorT1_stuffable, KotORDroidUpgrade_combat, KotORDroidShield_weak, SWKotORSpecificDroidWeapon_HoldoutBlaster, SWCPSpecificDroidArmor_CzerkaLight; apparelRequired guy762_DroidWeapon_holdout, guy762_DroidArmorLte_czerka; apparelMoney 1000-2500, itemQuality Normal",
+      "notes": "most common low-tier raider, appears in most pawnGroupMaker options"
+    },
+    {
+      "defName": "KotORDroidBad_KX12APD",
+      "label": "assassin probe",
+      "race": "guy762_DroidRace_KX12APD",
+      "mod": "KotORDroids",
+      "combatPower": 150,
+      "defaultFactionType": "guy762_KotORFaction_RogueDroids",
+      "isFighter": null,
+      "apparelTags_or_gear": "apparelTags: KotORDroidArmorT1_strong, KotORDroidArmorT1_stuffable, KotORDroidUpgrade_combat, KotORDroidWeapon_battledroid, SWKotORSpecificDroidWeapon_Railgun, SWKotORSpecificDroidGadget_2minDroidStealthDevice, SWCPSpecificDroidArmor_AgriniumLight; apparelRequired guy762_DroidStealthDevice, guy762_DroidWeapon_railgun, guy762_DroidArmorLte_agrinium; apparelMoney 7500-10000, itemQuality Good",
+      "notes": "used in 'assassination team' raid option"
+    },
+    {
+      "defName": "KotORDroidBad_KX12APD_sapper",
+      "label": "saboteur probe",
+      "race": "guy762_DroidRace_KX12APD",
+      "mod": "KotORDroids",
+      "combatPower": 150,
+      "defaultFactionType": "guy762_KotORFaction_RogueDroids",
+      "isFighter": null,
+      "apparelTags_or_gear": "apparelTags: KotORDroidArmorT1_strong, KotORDroidArmorT1_stuffable, KotORDroidUpgrade_combat, KotORDroidWeapon_battledroid, SWKotORSpecificDroidWeapon_SonicBlaster, SWKotORSpecificDroidGadget_2minDroidStealthDevice, SWCPSpecificDroidArmor_AgriniumLight; apparelRequired guy762_DroidStealthDevice, guy762_DroidWeapon_sonic, guy762_DroidArmorLte_agrinium; apparelMoney 7500-10000, itemQuality Good",
+      "notes": "canBeSapper=true, isGoodBreacher=true"
+    },
+    {
+      "defName": "KotORDroidBad_DevWD_weak",
+      "label": "battle droid",
+      "race": "guy762_DroidRace_DevWD",
+      "mod": "KotORDroids",
+      "combatPower": 75,
+      "defaultFactionType": "guy762_KotORFaction_RogueDroids",
+      "isFighter": null,
+      "apparelTags_or_gear": "apparelTags: KotORDroidArmorT1_weak, KotORDroidArmorT1_stuffable, KotORDroidUpgrade_combat, KotORDroidShield_weak, KotORUtility_weakgrenade, SWCPSpecificApparelItem_DoubleBandolier, SWCPSpecificDroidArmor_CzerkaLight; weaponMoney 500-2500, weaponTags SaV_WarDroid_closerange",
+      "notes": "most-used option across raid options ('quick raid','battle droid rush','skirmish')"
+    },
+    {
+      "defName": "KotORDroidBad_DevWD_strong",
+      "label": "elite war droid",
+      "race": "guy762_DroidRace_DevAD",
+      "mod": "KotORDroids",
+      "combatPower": 150,
+      "defaultFactionType": "guy762_KotORFaction_RogueDroids",
+      "isFighter": null,
+      "apparelTags_or_gear": "apparelTags: KotORDroidArmorT2_mid, KotORDroidUpgrade_combat, KotORDroidShield_mid, KotORDroidWeapon_battledroid, SWCPSpecificDroidArmor_CzerkaMedium, guy762PatchedTag_Cape; weaponMoney 2500-5000, weaponTags SaV_WarDroid_mid; inventory guy762_repairkit_adv or guy762_DroidBattery",
+      "notes": "race is DevAD despite defName referencing DevWD_strong"
+    },
+    {
+      "defName": "KotORDroidBad_DevWD_magnaguard",
+      "label": "bodyguard droid",
+      "race": "guy762_DroidRace_DevAD",
+      "mod": "KotORDroids",
+      "combatPower": 200,
+      "defaultFactionType": "guy762_KotORFaction_RogueDroids",
+      "isFighter": null,
+      "apparelTags_or_gear": "apparelTags: KotORDroidUpgrade_combat, KotORDroidShield_melee, KotORDroidShield_strong, KotORDroidWeapon_battledroid, SWCPSpecificDroidArmor_QuadraniumMedium, guy762PatchedTag_Cape; weaponMoney 20000-22000, weaponTags KotORSniper, SaV_geonosianmelee; biocodeWeaponChance 0.9",
+      "notes": "skinColorOverride (85,90,120); not referenced in Factions_RogueDroids pawnGroupMakers list read (may be used elsewhere, e.g. quests)"
+    },
+    {
+      "defName": "KotORDroidBad_SentWD",
+      "label": "war droid",
+      "race": "guy762_DroidRace_SentWD",
+      "mod": "KotORDroids",
+      "combatPower": 125,
+      "defaultFactionType": "guy762_KotORFaction_RogueDroids",
+      "isFighter": null,
+      "apparelTags_or_gear": "apparelTags: KotORDroidArmorT2_weak, KotORDroidArmorT2_stuffable, KotORDroidUpgrade_combat, KotORDroidShield_weak, KotORUtility_weakgrenade, KotORDroidWeapon_explosive, SWCPSpecificDroidArmor_CzerkaMedium; weaponMoney 500-2500, weaponTags SaV_WarDroid_closerange",
+      "notes": ""
+    },
+    {
+      "defName": "KotORDroidBad_ADMkI",
+      "label": "assault droid",
+      "race": "guy762_DroidRace_ADMkI",
+      "mod": "KotORDroids",
+      "combatPower": 250,
+      "defaultFactionType": "guy762_KotORFaction_RogueDroids",
+      "isFighter": null,
+      "apparelTags_or_gear": "apparelTags: KotORDroidArmorT3_weak, KotORDroidArmorT3_stuffable, KotORDroidUpgrade_combat, KotORHvyShield_weak, KotORDroidWeapon_wardroid, SWKotORSpecificDroidWeapon_TriShot, SWCPSpecificDroidArmor_CzerkaHeavy; apparelMoney 10000-25000",
+      "notes": "maxPerGroup 6"
+    },
+    {
+      "defName": "KotORDroidBad_ADMkIV",
+      "label": "heavy assault droid",
+      "race": "guy762_DroidRace_ADMkIV",
+      "mod": "KotORDroids",
+      "combatPower": 500,
+      "defaultFactionType": "guy762_KotORFaction_RogueDroids",
+      "isFighter": null,
+      "apparelTags_or_gear": "apparelTags: KotORDroidArmorT3_mid, KotORDroidArmorT3_stuffable, KotORDroidUpgrade_combat, KotORHvyShield_mid, KotORLgtCannon_artillery, KotORLgtCannon_antipersonnel, SWKotORSpecificDroidWeapon_HeavyRepeaterCannon, SWCPSpecificDroidArmor_CzerkaHeavy; apparelMoney 50000-75000",
+      "notes": "maxPerGroup 4; highest combatPower of any rogue-faction kind read"
+    },
+    {
+      "defName": "KotORDroidBad_hk50",
+      "label": "HK-50 unit",
+      "race": "guy762_DroidRace_HK50series",
+      "mod": "KotORDroids",
+      "combatPower": 500,
+      "defaultFactionType": "guy762_KotORFaction_RogueDroids",
+      "isFighter": null,
+      "apparelTags_or_gear": "apparelTags: KotORDroidArmorT2, KotORDroidUpgrade_hacking, KotORDroidUpgrade_combat, KotORDroidWeapon_asndroid, KotORUtility_stronggrenade, KotORDroidShield_strong, SWCPSpecificDroidArmor_DeshMedium; weaponMoney 5000-25000, weaponTags SaV_bountyhunter_hvy/SaV_heavy/KotORSniper",
+      "notes": "maxPerGroup 3; itemQuality Excellent; forcedTraits ShootingAccuracy -1, Psychopath 0, Bloodlust 0, Asexual 0; used in 'territory intrusion' and 'assassination team'"
+    },
+    {
+      "defName": "KotORDroidBad_hk50boss",
+      "label": "veteran HK-50 unit",
+      "race": "guy762_DroidRace_HK50series (inherited from KotORDroidBad_hk50)",
+      "mod": "KotORDroids",
+      "combatPower": 500,
+      "defaultFactionType": "guy762_KotORFaction_RogueDroids (inherited)",
+      "isFighter": null,
+      "apparelTags_or_gear": "apparelTags OVERRIDDEN: KotORDroidUpgrade_hacking, KotORDroidUpgrade_combat, KotORDroidWeapon_asndroid, KotORUtility_stronggrenade, KotORAccessory_bandolier, SWCPSpecificDroidArmor_QuadraniumMedium, SWKotORSpecificDroidGadget_AdvDeflectorShield; weaponMoney 50000-75000, weaponTags SaV_bountyhunter_star/KotORRocketRifle",
+      "notes": "isBoss=true, skipResistant=true; ParentName=KotORDroidBad_hk50, not referenced directly in Factions_RogueDroids pawnGroupMakers read here (likely a scripted/quest boss encounter)"
+    },
+    {
+      "defName": "JDSCIS_Pistoeka_Sotage_Droid",
+      "label": "Pistoeka Sotage Droid",
+      "race": "JDSCIS_Pistoeka_Sotage_Droid",
+      "mod": "JDS_Separatists",
+      "combatPower": 45,
+      "defaultFaction": "JDSCIS_CIS_Faction",
+      "isFighter": null,
+      "gear_or_weapons": {
+        "mechanism": "weaponTags",
+        "weaponTags": []
+      },
+      "notes": "No weaponTags declared; this kind's damage is baked into the ThingDef itself as a melee tool ('right blade', alwaysTreatAsWeapon=true), not equipped gear."
+    },
+    {
+      "defName": "JDSCIS_B1_Battle_Droid",
+      "label": "B1 Battle Droid",
+      "race": "JDSCIS_B1_Battle_Droid",
+      "mod": "JDS_Separatists",
+      "combatPower": 45,
+      "defaultFaction": "JDSCIS_CIS_Faction",
+      "isFighter": null,
+      "gear_or_weapons": {
+        "mechanism": "weaponTags",
+        "weaponTags": [
+          "E-5_Blaster_Rifle"
+        ]
+      },
+      "notes": ""
+    },
+    {
+      "defName": "JDSCIS_B1_Security_Droid",
+      "label": "B1 Security Droid",
+      "race": "JDSCIS_B1_Security_Droid",
+      "mod": "JDS_Separatists",
+      "combatPower": 45,
+      "defaultFaction": "JDSCIS_CIS_Faction",
+      "isFighter": null,
+      "gear_or_weapons": {
+        "mechanism": "weaponTags",
+        "weaponTags": [
+          "SE-14_Light_Blaster_Pistol"
+        ]
+      },
+      "notes": ""
+    },
+    {
+      "defName": "JDSCIS_B1_Commander_Droid",
+      "label": "B1 Commander Droid",
+      "race": "JDSCIS_B1_Commander_Droid",
+      "mod": "JDS_Separatists",
+      "combatPower": 45,
+      "defaultFaction": "JDSCIS_CIS_Faction",
+      "isFighter": null,
+      "gear_or_weapons": {
+        "mechanism": "weaponTags",
+        "weaponTags": [
+          "SE-14_Light_Blaster_Pistol"
+        ]
+      },
+      "notes": "Race carries Fortified.CompProperties_CommandRelay (MayRequire aoba.framework) -- a squad command-relay effect, not a weapon."
+    },
+    {
+      "defName": "JDSCIS_BX_Commando_Droid",
+      "label": "BX Commando Droid",
+      "race": "JDSCIS_BX_Commando_Droid",
+      "mod": "JDS_Separatists",
+      "combatPower": 45,
+      "defaultFaction": "JDSCIS_CIS_Faction",
+      "isFighter": null,
+      "gear_or_weapons": {
+        "mechanism": "weaponTags",
+        "weaponTags": [
+          "E-5S_Sniper_Rifle"
+        ]
+      },
+      "notes": ""
+    },
+    {
+      "defName": "JDSCIS_IG-100_MagnaGuards",
+      "label": "IG-100 MagnaGuards",
+      "race": "JDSCIS_IG-100_MagnaGuards",
+      "mod": "JDS_Separatists",
+      "combatPower": 45,
+      "defaultFaction": "JDSCIS_CIS_Faction",
+      "isFighter": null,
+      "gear_or_weapons": {
+        "mechanism": "weaponTags",
+        "weaponTags": [
+          "Electrostaff"
+        ]
+      },
+      "notes": ""
+    },
+    {
+      "defName": "JDSCIS_T1_Tactical_Droid",
+      "label": "T1 Tactical Droid",
+      "race": "JDSCIS_T1_Tactical_Droid",
+      "mod": "JDS_Separatists",
+      "combatPower": 45,
+      "defaultFaction": "JDSCIS_CIS_Faction",
+      "isFighter": null,
+      "gear_or_weapons": {
+        "mechanism": "weaponTags",
+        "weaponTags": [
+          "SE-14_Light_Blaster_Pistol"
+        ]
+      },
+      "notes": ""
+    },
+    {
+      "defName": "JDSCIS_ST_Super_Tactical_Droid",
+      "label": "ST Super Tactical Droid",
+      "race": "JDSCIS_ST_Super_Tactical_Droid",
+      "mod": "JDS_Separatists",
+      "combatPower": 45,
+      "defaultFaction": "JDSCIS_CIS_Faction",
+      "isFighter": null,
+      "gear_or_weapons": {
+        "mechanism": "weaponTags",
+        "weaponTags": [
+          "SE-14_Light_Blaster_Pistol"
+        ]
+      },
+      "notes": ""
+    },
+    {
+      "defName": "JDSCIS_B2_Super_Battle_Droid",
+      "label": "B2 Super Battle Droid",
+      "race": "JDSCIS_B2_Super_Battle_Droid",
+      "mod": "JDS_Separatists",
+      "combatPower": 45,
+      "defaultFaction": "JDSCIS_CIS_Faction",
+      "isFighter": null,
+      "gear_or_weapons": {
+        "mechanism": "weaponTags",
+        "weaponTags": [
+          "B2_Wrist_Blaster"
+        ]
+      },
+      "notes": ""
+    },
+    {
+      "defName": "JDSCIS_B2_HA_Super_Battle_Droid",
+      "label": "B2 HA Super Battle Droid",
+      "race": "JDSCIS_B2_HA_Super_Battle_Droid",
+      "mod": "JDS_Separatists",
+      "combatPower": 45,
+      "defaultFaction": "JDSCIS_CIS_Faction",
+      "isFighter": null,
+      "gear_or_weapons": {
+        "mechanism": "weaponTags",
+        "weaponTags": [
+          "B2_HA_Wrist_Cannon"
+        ]
+      },
+      "notes": ""
+    },
+    {
+      "defName": "JDSCIS_AQ_Battle_Droid",
+      "label": "AQ Battle Droid",
+      "race": "JDSCIS_AQ_Battle_Droid",
+      "mod": "JDS_Separatists",
+      "combatPower": 45,
+      "defaultFaction": "JDSCIS_CIS_Faction",
+      "isFighter": null,
+      "gear_or_weapons": {
+        "mechanism": "weaponTags",
+        "weaponTags": [
+          "AQ_Battle_Blaster"
+        ]
+      },
+      "notes": ""
+    },
+    {
+      "defName": "JDSCIS_Droideka_Droid",
+      "label": "Droideka Droid",
+      "race": "JDSCIS_Droideka_Droid",
+      "mod": "JDS_Separatists",
+      "combatPower": 45,
+      "defaultFaction": "JDSCIS_CIS_Faction",
+      "isFighter": null,
+      "gear_or_weapons": {
+        "mechanism": "weaponTags",
+        "weaponTags": [
+          "Droidekas_Blaster"
+        ]
+      },
+      "notes": "Race also carries EnergyShieldEnergyMax=1.5 statBase and CompProperties_Shield."
+    },
+    {
+      "defName": "JDSCIS_Droideka_Sharpshooter_Droid",
+      "label": "Droideka Sharpshooter Droid",
+      "race": "JDSCIS_Droideka_Sharpshooter_Droid",
+      "mod": "JDS_Separatists",
+      "combatPower": 45,
+      "defaultFaction": "JDSCIS_CIS_Faction",
+      "isFighter": null,
+      "gear_or_weapons": {
+        "mechanism": "weaponTags",
+        "weaponTags": [
+          "Droideka_Long_Blaster"
+        ]
+      },
+      "notes": ""
+    },
+    {
+      "defName": "JDSCIS_Demolition_Droid",
+      "label": "Demolition Droid",
+      "race": "JDSCIS_Demolition_Droid",
+      "mod": "JDS_Separatists",
+      "combatPower": 45,
+      "defaultFaction": "JDSCIS_CIS_Faction",
+      "isFighter": null,
+      "gear_or_weapons": {
+        "mechanism": "weaponTags",
+        "weaponTags": [
+          "Thermal_Detonator"
+        ]
+      },
+      "notes": ""
+    },
+    {
+      "defName": "JDSCIS_DSD1_Dwarf_Spider_Droid",
+      "label": "DSD1 Dwarf Spider Droid",
+      "race": "JDSCIS_DSD1_Dwarf_Spider_Droid",
+      "mod": "JDS_Separatists",
+      "combatPower": 45,
+      "defaultFaction": "JDSCIS_CIS_Faction",
+      "isFighter": null,
+      "gear_or_weapons": {
+        "mechanism": "weaponTags",
+        "weaponTags": [
+          "DSD1_Dwarf_Spider_Blaster"
+        ]
+      },
+      "notes": ""
+    },
+    {
+      "defName": "JDSCIS_LR-57_Combat_Droid",
+      "label": "LR-57_Combat_Droid",
+      "race": "JDSCIS_LR-57_Combat_Droid",
+      "mod": "JDS_Separatists",
+      "combatPower": 45,
+      "defaultFaction": "JDSCIS_CIS_Faction",
+      "isFighter": null,
+      "gear_or_weapons": {
+        "mechanism": "weaponTags",
+        "weaponTags": [
+          "LR-57_Combat_Blaster"
+        ]
+      },
+      "notes": "Label is verbatim 'LR-57_Combat_Droid' (underscores, unspaced) in the source XML, unlike every other kind's spaced label -- likely a source typo, not corrected here."
+    },
+    {
+      "defName": "OuterRim_ImperialKXSecurityDroid",
+      "label": "KX Security Droid",
+      "race": "OuterRim_KXSecurityDroid",
+      "mod": "OuterRimGalacticEmpire",
+      "combatPower": 120,
+      "defaultFaction": "OuterRim_GalacticEmpire",
+      "isFighter": true,
+      "apparelTags": null,
+      "weaponTags": [
+        "ORImperialHeavy"
+      ],
+      "notes": "ParentName=BaseImperialDroidPawn (abstract, defined in same file: 1.6/Mods/OuterRimDroidDepot/Defs/PawnKindDefs/PawnKinds_Droids.xml, loaded conditionally IfModActive=Neronix17.OuterRim.DroidDepot). Race is OuterRim_KXSecurityDroid, defined by Droid Depot itself -- Galactic Empire adds no new droid race art, only this PawnKindDef reskinning the existing KX race into an Imperial-faction kind. Inherited from base: apparelIgnoreSeasons=true, itemQuality=Normal, gearHealthRange 0.5-2, apparelMoney 300-1200, apparelTags=[DroidArmor], apparelRequired=[OuterRim_DroidArmorModule], specificApparelRequirements: Middle layer stuff=OuterRim_Durasteel, weaponMoney fixed 40000, techHediffsMoney 12000-20000 tags=[Advanced] chance=0, inventoryOptions: 3x Asimov_Chargepack, initialWillRange 5~10, initialResistanceRange 10~20, backstoryFiltersOverride category=OuterRimDroidBackstory. A second PawnKindDef (OuterRim_ImperialDTSeriesSentryDroid) exists in the same file but is COMMENTED OUT in the XML -- not live content, excluded here."
+    }
+  ],
+  "apparel_modules": [
+    {
+      "defName": "OuterRim_DroidArmorLight",
+      "label": "droid armor (light)",
+      "mod": "OuterRimDroidDepot",
+      "slot_or_bodyGroup": "layers=[Middle]; bodyPartGroups=[Shoulders,Arms,Hands,Torso,Neck,Legs,Feet,FullHead]; apparel tags=[DroidArmor]; defaultOutfitTags=[Soldier]",
+      "texPath": "OuterRim/Items/DroidArmor (Graphic_Single)",
+      "effects_summary": "Craftable stuff-based (Metallic) plated armor covering nearly the whole body; grants StuffEffectMultiplierArmor 0.30 (lightest of the three armor tiers) at the cost of -0.2 MoveSpeed, costStuffCount 60, MaxHitPoints 300, EquipDelay 6."
+    },
+    {
+      "defName": "OuterRim_DroidArmorModule",
+      "label": "droid armor (medium)",
+      "mod": "OuterRimDroidDepot",
+      "slot_or_bodyGroup": "layers=[Middle]; bodyPartGroups=[Shoulders,Arms,Hands,Torso,Neck,Legs,Feet,FullHead]; apparel tags=[DroidArmor]; defaultOutfitTags=[Soldier]",
+      "texPath": "OuterRim/Items/DroidArmor (Graphic_Single)",
+      "effects_summary": "Mid-tier armor: StuffEffectMultiplierArmor 0.60, -0.8 MoveSpeed, costStuffCount 100 plus 2 OuterRim_ComponentHypertech, MaxHitPoints 300, EquipDelay 6. XML has a TODO comment noting the defName should be renamed to match the light/heavy naming convention."
+    },
+    {
+      "defName": "OuterRim_DroidArmorHeavy",
+      "label": "droid armor (heavy)",
+      "mod": "OuterRimDroidDepot",
+      "slot_or_bodyGroup": "layers=[Middle]; bodyPartGroups=[Shoulders,Arms,Hands,Torso,Neck,Legs,Feet,FullHead]; apparel tags=[DroidArmor]; defaultOutfitTags=[Soldier]",
+      "texPath": "OuterRim/Items/DroidArmor (Graphic_Single)",
+      "effects_summary": "Heaviest armor tier: StuffEffectMultiplierArmor 0.90, -1.2 MoveSpeed, costStuffCount 160 plus 4 OuterRim_ComponentHypertech, MaxHitPoints 300, EquipDelay 6."
+    },
+    {
+      "defName": "OuterRim_DroidDeflectorShield",
+      "label": "droid deflector shield",
+      "mod": "OuterRimDroidDepot",
+      "slot_or_bodyGroup": "layers=[Shell]; bodyPartGroups=[Torso,Neck,Shoulders,Arms,Legs]; apparel tags=[DroidDeflectorShield]; defaultOutfitTags=[Soldier]",
+      "texPath": "OuterRim/Items/DroidFunctionModule (Graphic_Single, drawSize 0.90)",
+      "effects_summary": "Grants a VEF.Apparels.CompProperties_ShieldBubble personal energy shield (EnergyShieldEnergyMax 120, rechargeRate 0.4, blocks ranged attacks only, not melee) at the cost of -1.3 MoveSpeed; requires research OuterRim_DroidAdvancedSys and Crafting skill 4 to make; costs 180 Durasteel + 6 ComponentHypertech."
+    },
+    {
+      "defName": "OuterRim_DroidPropulsionJets",
+      "label": "droid propulsion jets",
+      "mod": "OuterRimDroidDepot",
+      "slot_or_bodyGroup": "layers=[Shell]; bodyPartGroups=[Torso,Shoulders,Arms,Legs]; apparel tags=[DroidJetpack]; defaultOutfitTags=[Soldier]",
+      "texPath": "OuterRim/Items/DroidFunctionModule (Graphic_Single, drawSize 0.90)",
+      "effects_summary": "Grants the OuterRim_DroidJetpackJump ability (VEF.Abilities.CompProperties_AbilitiesApparel) letting the wearer fly a short distance over obstacles, at the cost of -1.3 MoveSpeed; requires research OuterRim_DroidAdvancedSys and Crafting skill 6 to make; costs 180 Durasteel + 6 ComponentHypertech. The paired AbilityDef OuterRim_DroidJetpackJump (ParentName=OuterRimJetpackAbilityBase) is also declared in this file."
+    },
+    {
+      "defName": "guy762_DroidSensor_hk",
+      "label": "droid assassination module",
+      "mod": "KotORDroids",
+      "slot_or_bodyGroup": "apparel bodyPartGroups: Eyes; tags KotORDroidUpgrade_hk, SWCPDroidApparelRestrictionTag_HK47Only (race-locked to HK-series/HK-50/HK-51 per descriptionHyperlinks)",
+      "texPath": "Items/droidtech/droidsensor_hk",
+      "effects_summary": "Equippable sensor module giving +0.9 ShootingAccuracyPawn and +0.9 MeleeHitChance; craftable via recipeMaker requiring research guy762_ResearchKotOR_hkequipment and Crafting16/Intellectual16."
+    },
+    {
+      "defName": "guy762_DroidSensor_goto",
+      "label": "droid omniscience unit",
+      "mod": "KotORDroids",
+      "slot_or_bodyGroup": "apparel bodyPartGroups: Eyes; tags KotORDroidUpgrade_goto, SWCPDroidApparelRestrictionTag_G0T0Only (race-locked to GOTO)",
+      "texPath": "Items/droidtech/droidsensor_goto",
+      "effects_summary": "High-end sensor giving -1 PawnTrapSpringChance, -0.5 MortarMissRadiusFactor, +0.3 ShootingAccuracyPawn/MeleeHitChance, and applies a permanent non-bad Hediff (guy762_SensorHediff_goto, +1 Sight, +1 Hearing capacity) removed if apparel is dropped."
+    },
+    {
+      "defName": "guy762_SensorHediff_goto",
+      "label": "droid omniscience unit (hediff)",
+      "mod": "KotORDroids",
+      "slot_or_bodyGroup": "applied to ABF_BodyPart_Synstruct_Core via CompProperties_CauseHediff_Apparel",
+      "texPath": null,
+      "effects_summary": "Not itself an apparel item -- the HediffDef companion to guy762_DroidSensor_goto; grants +1 Sight and +1 Hearing capacity while the sensor is worn."
+    },
+    {
+      "defName": "guy762_DroidShield_basicI",
+      "label": "Mark I droid defense shield",
+      "mod": "KotORDroids",
+      "slot_or_bodyGroup": "apparel tags KotORDroidShield_t1/weak, SWCPDroidApparelRestrictionTag_ShieldSlot",
+      "texPath": "Items/droidshield/droidshield_tier1",
+      "effects_summary": "Basic manually-activated personal energy shield (Verb_SelfHediff -> hediff guy762_DroidEShield_basic1), 10 charges, destroyed when empty."
+    },
+    {
+      "defName": "guy762_DroidShield_envI",
+      "label": "Mark I droid environment shield",
+      "mod": "KotORDroids",
+      "slot_or_bodyGroup": "apparel tags KotORDroidShield_t1/weak",
+      "texPath": "Items/droidshield/droidshield_tier1_yt",
+      "effects_summary": "Manually-activated environmental protection shield, 10 charges, destroyed when empty."
+    },
+    {
+      "defName": "guy762_DroidShield_melee",
+      "label": "droid melee shield",
+      "mod": "KotORDroids",
+      "slot_or_bodyGroup": "apparel tags KotORDroidShield_t1/melee",
+      "texPath": "Items/droidshield/droidshield_tier1_melee",
+      "effects_summary": "Manually-activated shield oriented at melee/wildlife combat, 10 charges, destroyed when empty."
+    },
+    {
+      "defName": "guy762_DroidShield_basicII",
+      "label": "Mark II droid defense shield",
+      "mod": "KotORDroids",
+      "slot_or_bodyGroup": "apparel tags KotORDroidShield_t2/mid",
+      "texPath": "Items/droidshield/droidshield_tier2",
+      "effects_summary": "Upgraded personal energy shield, 10 charges, destroyed when empty."
+    },
+    {
+      "defName": "guy762_DroidShield_envII",
+      "label": "Mark II droid environment shield",
+      "mod": "KotORDroids",
+      "slot_or_bodyGroup": "apparel tags KotORDroidShield_t2/mid",
+      "texPath": "Items/droidshield/droidshield_tier2_yt",
+      "effects_summary": "Upgraded environment shield, 10 charges, destroyed when empty."
+    },
+    {
+      "defName": "guy762_DroidShield_defI",
+      "label": "droid deflector grid",
+      "mod": "KotORDroids",
+      "slot_or_bodyGroup": "apparel tags KotORDroidShield_t2/deflector",
+      "texPath": "Items/droidshield/droidshield_tier2_grn",
+      "effects_summary": "Deflector-type shield resistant to sustained small-arms fire (breaks only to large blasts or attrition, not ion weapons); 5 charges, destroyed when empty; thingSetMakerTags RewardStandardMidFreq."
+    },
+    {
+      "defName": "guy762_DroidShield_basicIII",
+      "label": "Mark III droid defense shield",
+      "mod": "KotORDroids",
+      "slot_or_bodyGroup": "apparel tags KotORDroidShield_t3/strong",
+      "texPath": "Items/droidshield/droidshield_tier3",
+      "effects_summary": "Top-tier personal energy shield, 10 charges, destroyed when empty."
+    },
+    {
+      "defName": "guy762_DroidShield_defII",
+      "label": "adv. droid deflector grid",
+      "mod": "KotORDroids",
+      "slot_or_bodyGroup": "apparel tags KotORDroidShield_t3/advdeflector",
+      "texPath": "Items/droidshield/droidshield_tier3_grn",
+      "effects_summary": "Advanced deflector shield, vulnerable specifically to ion weapons; 5 charges, destroyed when empty; thingSetMakerTags RewardStandardLowFreq."
+    },
+    {
+      "defName": "guy762_DroidShield_ion",
+      "label": "droid ion barrier",
+      "mod": "KotORDroids",
+      "slot_or_bodyGroup": "apparel tags KotORDroidShield_rare/t3",
+      "texPath": "Items/droidshield/droidshield_tier3_blu",
+      "effects_summary": "Rare shield specifically tuned against ion/EMP effects, but explicitly vulnerable to sonic attacks; 5 charges, destroyed when empty."
+    },
+    {
+      "defName": "guy762_DroidShield_baragwin",
+      "label": "Baragwin droid shield",
+      "mod": "KotORDroids",
+      "slot_or_bodyGroup": "apparel tags KotORDroidShield_rare/t3",
+      "texPath": "Items/droidshield/droidshield_tier1_baragwin",
+      "effects_summary": "Self-recharging shield that runs off the droid's own power supply; 1 charge but replenishAfterCooldown=true with baseReloadTicks 12000 (auto-recharges, never destroyed on empty)."
+    },
+    {
+      "defName": "guy762_DroidShield_renewable",
+      "label": "droid renewable shield",
+      "mod": "KotORDroids",
+      "slot_or_bodyGroup": "apparel tags KotORDroidUpgrade_T3M4, SWCPDroidApparelRestrictionTag_T3M4Only (race-locked to T3-series)",
+      "texPath": "Items/droidshield/droidshield_tier3_t3",
+      "effects_summary": "Craftable (research guy762_ResearchKotOR_teethree, Crafting16) self-recharging shield exclusive to T3-series droids; 1 charge, auto-recharges every 12000 ticks, never destroyed."
+    },
+    {
+      "defName": "guy762_DroidShield_arkanian",
+      "label": "Arkanian droid defense shield",
+      "mod": "KotORDroids",
+      "slot_or_bodyGroup": "apparel tags KotORDroidShield_t2/mid",
+      "texPath": "Items/droidshield/droidshield_tier1_ark",
+      "effects_summary": "Craftable shield (research guy762_ResearchKotOR_droidshields, Crafting6) built from guy762_energyshield_arkanian + 1 ComponentIndustrial; 5 charges, destroyed when empty."
+    },
+    {
+      "defName": "guy762_DroidShield_echani",
+      "label": "Echani droid shield",
+      "mod": "KotORDroids",
+      "slot_or_bodyGroup": "apparel tags KotORDroidShield_t2/strong",
+      "texPath": "Items/droidshield/droidshield_tier2_ech",
+      "effects_summary": "Craftable shield (Crafting8) built from guy762_energyshield_echaniHvy + 1 ComponentIndustrial; 5 charges, destroyed when empty; thingSetMakerTags RewardStandardMidFreq."
+    },
+    {
+      "defName": "guy762_DroidShield_verpine",
+      "label": "Verpine prototype droid shield",
+      "mod": "KotORDroids",
+      "slot_or_bodyGroup": "apparel tags KotORDroidShield_t3/rare",
+      "texPath": "Items/droidshield/droidshield_tier3_vrp",
+      "effects_summary": "Craftable rare shield (Crafting10) built from guy762_energyshield_verpine + 1 ComponentIndustrial; 5 charges, destroyed when empty."
+    },
+    {
+      "defName": "guy762_DroidSoftware_exchange",
+      "label": "droid Exchange interface",
+      "mod": "KotORDroids",
+      "slot_or_bodyGroup": "apparel bodyPartGroups: guy762BG_Droid_Tech_software; tags KotORDroidUpgrade_tech/hacking/computers",
+      "texPath": "Items/droidtech/droidsoftware_K",
+      "effects_summary": "Craftable software module (research guy762_ResearchKotOR_exchange, Intellectual14) granting +0.6 HackingSpeed (MayRequire Ideology) and +0.3 ResearchSpeed."
+    },
+    {
+      "defName": "guy762_DroidHardware_regen",
+      "label": "droid self-sustaining unit",
+      "mod": "KotORDroids",
+      "slot_or_bodyGroup": "apparel bodyPartGroups: guy762BG_Droid_Tech_hardware; tags KotORDroidUpgrade_T3M4, SWCPDroidApparelRestrictionTag_T3M4Only (race-locked to T3-series)",
+      "texPath": "Items/droidtech/droidhardware_T3",
+      "effects_summary": "Craftable hardware module (research guy762_ResearchKotOR_teethree, Intellectual16) granting +0.3 InjuryHealingFactor -- effectively self-repair without needing repair kits."
+    },
+    {
+      "defName": "guy762_HvyShield_basic",
+      "label": "heavy energy shield",
+      "mod": "KotORDroids",
+      "slot_or_bodyGroup": "apparel tags KotORHvyShield_weak, SWCPDroidApparelRestrictionTag_HeavyShieldSlot",
+      "texPath": "Items/hvyshield/hvyshield_grey",
+      "effects_summary": "Craftable (research guy762_ResearchKotOR_hvyshields, Crafting10) heavy-class shield for large droids/vehicles; 1 charge, auto-recharges every 12000 ticks."
+    },
+    {
+      "defName": "guy762_HvyShield_thermal",
+      "label": "heavy thermal shield",
+      "mod": "KotORDroids",
+      "slot_or_bodyGroup": "apparel tags KotORDroidShield_miningdroid, SWCPDroidApparelRestrictionTag_HeavyShieldSlot",
+      "texPath": "Items/hvyshield/hvyshield_rdgry",
+      "effects_summary": "Non-craftable (no recipeMaker) heavy shield marketed for mining droids protecting against temperature extremes, thermal detonations, and plasma burns; auto-recharging, 1 charge."
+    },
+    {
+      "defName": "guy762_HvyShield_env",
+      "label": "heavy environmental shield",
+      "mod": "KotORDroids",
+      "slot_or_bodyGroup": "apparel tags KotORHvyShield_weak, SWCPDroidApparelRestrictionTag_HeavyShieldSlot",
+      "texPath": "Items/hvyshield/hvyshield_yt",
+      "effects_summary": "Craftable (research guy762_ResearchKotOR_hvyshields, Crafting12) heavy environmental shield for combat droids/speeders; auto-recharging, 1 charge."
+    },
+    {
+      "defName": "guy762_HvyShield_debris",
+      "label": "heavy debris shield",
+      "mod": "KotORDroids",
+      "slot_or_bodyGroup": "apparel tags KotORHvyShield_civilian/melee, SWCPDroidApparelRestrictionTag_HeavyShieldSlot",
+      "texPath": "Items/hvyshield/hvyshield_orng",
+      "effects_summary": "Non-craftable heavy shield primarily for speeder debris protection, doubles as melee defense for war droids; auto-recharging, 1 charge."
+    },
+    {
+      "defName": "guy762_HvyShield_echani",
+      "label": "Echani heavy shield",
+      "mod": "KotORDroids",
+      "slot_or_bodyGroup": "apparel tags KotORHvyShield_mid, SWCPDroidApparelRestrictionTag_HeavyShieldSlot",
+      "texPath": "Items/hvyshield/hvyshield_tan",
+      "effects_summary": "Non-craftable mid-tier heavy shield; auto-recharging, 1 charge."
+    },
+    {
+      "defName": "guy762_HvyShield_baragwin",
+      "label": "Baragwin heavy shield",
+      "mod": "KotORDroids",
+      "slot_or_bodyGroup": "apparel tags KotORHvyShield_mid, SWCPDroidApparelRestrictionTag_HeavyShieldSlot",
+      "texPath": "Items/hvyshield/hvyshield_blk",
+      "effects_summary": "Non-craftable mid-tier heavy shield; auto-recharging, 1 charge; thingSetMakerTags RewardStandardMidFreq."
+    },
+    {
+      "defName": "guy762_HvyShield_ion",
+      "label": "heavy ion shield",
+      "mod": "KotORDroids",
+      "slot_or_bodyGroup": "apparel tags KotORHvyShield_strong, SWCPDroidApparelRestrictionTag_HeavyShieldSlot",
+      "texPath": "Items/hvyshield/hvyshield_blu",
+      "effects_summary": "Craftable (research guy762_ResearchKotOR_iondamp, Crafting14) heavy shield resistant to ion/EMP but vulnerable to sonic; auto-recharging, 1 charge; thingSetMakerTags RewardStandardMidFreq."
+    },
+    {
+      "defName": "guy762_HvyShield_deflector",
+      "label": "heavy deflector grid",
+      "mod": "KotORDroids",
+      "slot_or_bodyGroup": "apparel tags KotORHvyShield_deflector, SWCPDroidApparelRestrictionTag_HeavyShieldSlot",
+      "texPath": "Items/hvyshield/hvyshield_dkgry",
+      "effects_summary": "Craftable (research guy762_ResearchKotOR_deflectors, Crafting16) top-tier heavy deflector shield; auto-recharging, 1 charge; thingSetMakerTags RewardStandardLowFreq."
+    },
+    {
+      "defName": "guy762_HvyShield_balmorran",
+      "label": "Balmorran prototype overshield",
+      "mod": "KotORDroids",
+      "slot_or_bodyGroup": "apparel tags KotORDroidShield_balmorran, SWCPDroidApparelRestrictionTag_HeavyShieldSlot",
+      "texPath": "Items/hvyshield/hvyshield_grn",
+      "effects_summary": "Non-craftable rare heavy shield; faster recharge than most (baseReloadTicks 8000 vs 12000 typical), 1 charge."
+    },
+    {
+      "defName": "guy762_HvyShield_starforge",
+      "label": "Star Forge shield",
+      "mod": "KotORDroids",
+      "slot_or_bodyGroup": "apparel tags SE_starforgedroid, SWCPDroidApparelRestrictionTag_HeavyShieldSlot",
+      "texPath": "Items/hvyshield/hvyshield_red",
+      "effects_summary": "Non-craftable, highest-MarketValue (18000) heavy shield in the set, lore-tied to the Star Forge superweapon; auto-recharging, 1 charge."
+    }
+  ],
+  "backstories": [
+    {
+      "defName": "OuterRim_BackstoryDroidChild",
+      "mod": "OuterRimDroidDepot",
+      "slot": "Childhood",
+      "title": "Droid",
+      "titleShort": "Droid",
+      "bodyTypeGlobal": "Male",
+      "spawnCategories": [
+        "OuterRimDroidBackstory"
+      ],
+      "baseDesc": "Droids, less commonly known as robots or automatons, are mechanical beings that possess artificial intellgience. They are used in a variety of roles and environments, often those considered too medial or dangerous for organic species, but also in fields that require extensive specialization and knowledge."
+    },
+    {
+      "defName": "OuterRim_BackstoryDroidAdult",
+      "mod": "OuterRimDroidDepot",
+      "slot": "Adulthood",
+      "title": "Old Droid",
+      "titleShort": "Old Droid",
+      "bodyTypeGlobal": "Male",
+      "spawnCategories": [
+        "OuterRimDroidBackstory"
+      ],
+      "baseDesc": "Droids are often around for longer than their creators, some have been operational for hundreds, if not thousands of years."
+    },
+    {
+      "defName": "guy762_Backstory_HK_A",
+      "title": "HK unit",
+      "category": "Childhood",
+      "spawnCategories": [
+        "guy762BSC_Droid_HK47_",
+        "guy762BSC_Droid_all"
+      ],
+      "skill_gains": [],
+      "work_disables": [
+        "Animals",
+        "Caring",
+        "Artistic",
+        "Cooking",
+        "PlantWork",
+        "Mining",
+        "ManualDumb"
+      ],
+      "requiredWorkTags": [
+        "Violent",
+        "Hunting",
+        "Crafting",
+        "Constructing",
+        "Intellectual",
+        "Firefighting",
+        "Social"
+      ],
+      "forcedTraits": {
+        "ABF_Trait_Synstruct_BiologicalPreference": -1,
+        "Psychopath": 0,
+        "Bloodlust": 0,
+        "Asexual": 0
+      }
+    },
+    {
+      "defName": "guy762_Backstory_HK50_C",
+      "title": "HK-50 unit",
+      "category": "Childhood",
+      "spawnCategories": [
+        "guy762BSC_Droid_HK50_",
+        "guy762BSC_Droid_all"
+      ],
+      "skill_gains": [],
+      "work_disables": [
+        "Animals",
+        "Caring",
+        "Artistic",
+        "Cooking",
+        "PlantWork",
+        "Mining",
+        "ManualDumb"
+      ],
+      "requiredWorkTags": [
+        "Violent",
+        "Hunting",
+        "Crafting",
+        "Constructing",
+        "Intellectual",
+        "Firefighting",
+        "Social"
+      ],
+      "forcedTraits": {
+        "ABF_Trait_Synstruct_BiologicalPreference": -1,
+        "ShootingAccuracy": -1,
+        "Psychopath": 0,
+        "Bloodlust": 0,
+        "Asexual": 0
+      }
+    },
+    {
+      "defName": "guy762_Backstory_HK51_A",
+      "title": "HK-51 unit",
+      "category": "Childhood",
+      "spawnCategories": [
+        "guy762BSC_Droid_HK51_",
+        "guy762BSC_Droid_all"
+      ],
+      "skill_gains": [],
+      "work_disables": [
+        "Animals",
+        "Caring",
+        "Artistic",
+        "Cooking",
+        "PlantWork",
+        "Mining",
+        "ManualDumb"
+      ],
+      "requiredWorkTags": [
+        "Violent",
+        "Hunting",
+        "Crafting",
+        "Constructing",
+        "Intellectual",
+        "Firefighting",
+        "Social"
+      ],
+      "forcedTraits": {
+        "ABF_Trait_Synstruct_BiologicalPreference": 1,
+        "ShootingAccuracy": 1,
+        "Bloodlust": 0
+      }
+    },
+    {
+      "defName": "guy762_Backstory_GE3PD",
+      "title": "GE3-series protocol droid",
+      "category": "Childhood",
+      "spawnCategories": [
+        "guy762BSC_Droid_GE3PD",
+        "guy762BSC_Droid_all"
+      ],
+      "skill_gains": [],
+      "work_disables": [
+        "Intellectual",
+        "Artistic",
+        "Animals",
+        "Violent",
+        "Constructing",
+        "Mining",
+        "Crafting",
+        "PlantWork",
+        "Hauling",
+        "Cleaning"
+      ],
+      "requiredWorkTags": [
+        "Caring",
+        "Social",
+        "Cooking",
+        "Firefighting"
+      ],
+      "forcedTraits": {}
+    },
+    {
+      "defName": "guy762_Backstory_GE3LD",
+      "title": "GE3-series labor droid",
+      "category": "Childhood",
+      "spawnCategories": [
+        "guy762BSC_Droid_GE3LD"
+      ],
+      "skill_gains": [],
+      "work_disables": [
+        "Intellectual",
+        "Artistic",
+        "Hunting",
+        "Violent",
+        "Constructing",
+        "Mining",
+        "Crafting",
+        "Caring"
+      ],
+      "requiredWorkTags": [
+        "Cleaning",
+        "Social",
+        "Cooking",
+        "PlantWork",
+        "Animals",
+        "Hauling",
+        "Firefighting"
+      ],
+      "forcedTraits": {}
+    },
+    {
+      "defName": "guy762_Backstory_GOTO",
+      "title": "G0-T0 Infrastructure Planning Droid",
+      "category": "Childhood",
+      "spawnCategories": [
+        "guy762BSC_Droid_GOTO",
+        "guy762BSC_Droid_all"
+      ],
+      "skill_gains": [],
+      "work_disables": [
+        "Cooking",
+        "PlantWork",
+        "Mining",
+        "ManualDumb",
+        "Artistic",
+        "Caring",
+        "Animals",
+        "Hunting",
+        "Constructing",
+        "Social"
+      ],
+      "requiredWorkTags": [
+        "Violent",
+        "Intellectual",
+        "Crafting",
+        "Firefighting"
+      ],
+      "forcedTraits": {
+        "TooSmart": 0,
+        "Psychopath": 0,
+        "AnnoyingVoice": 0,
+        "Asexual": 0
+      }
+    },
+    {
+      "defName": "guy762_Backstory_KM1MD",
+      "title": "KM1-series Mining Droid",
+      "category": "Childhood",
+      "spawnCategories": [
+        "guy762BSC_Droid_KM1MD",
+        "guy762BSC_Droid_all"
+      ],
+      "skill_gains": [],
+      "work_disables": [
+        "Animals",
+        "Hunting",
+        "Caring",
+        "Artistic",
+        "Cooking",
+        "PlantWork",
+        "Cleaning",
+        "Constructing",
+        "Crafting",
+        "Social",
+        "Intellectual"
+      ],
+      "requiredWorkTags": [
+        "Violent",
+        "Mining",
+        "Hauling",
+        "Firefighting"
+      ],
+      "forcedTraits": {}
+    },
+    {
+      "defName": "guy762_Backstory_KX12UPD",
+      "title": "K-X12 utility probe droid",
+      "category": "Childhood",
+      "spawnCategories": [
+        "guy762BSC_Droid_KX12UPD",
+        "guy762BSC_Droid_all"
+      ],
+      "skill_gains": [],
+      "work_disables": [
+        "Animals",
+        "Hunting",
+        "Artistic",
+        "Cooking",
+        "PlantWork",
+        "Mining",
+        "Crafting",
+        "Social",
+        "Hauling",
+        "Cleaning"
+      ],
+      "requiredWorkTags": [
+        "Violent",
+        "Caring",
+        "Hunting",
+        "Firefighting",
+        "Constructing"
+      ],
+      "forcedTraits": {}
+    },
+    {
+      "defName": "guy762_Backstory_KX12APD",
+      "title": "K-X12 assassin probe droid",
+      "category": "Childhood",
+      "spawnCategories": [
+        "guy762BSC_Droid_KX12APD"
+      ],
+      "skill_gains": [],
+      "work_disables": [
+        "Animals",
+        "Artistic",
+        "Cooking",
+        "PlantWork",
+        "Mining",
+        "Crafting",
+        "Social",
+        "Hauling",
+        "Cleaning",
+        "Constructing",
+        "Caring",
+        "Intellectual"
+      ],
+      "requiredWorkTags": [
+        "Violent",
+        "Hunting"
+      ],
+      "forcedTraits": {}
+    },
+    {
+      "defName": "guy762_Backstory_MPDMkI",
+      "title": "Municipal Patrol Droid Mark I",
+      "category": "Childhood",
+      "spawnCategories": [
+        "guy762BSC_Droid_MPDMkI",
+        "guy762BSC_Droid_all"
+      ],
+      "skill_gains": [],
+      "work_disables": [
+        "Animals",
+        "Artistic",
+        "Cooking",
+        "PlantWork",
+        "Mining",
+        "Crafting",
+        "Social",
+        "Hauling",
+        "Cleaning",
+        "Constructing",
+        "Caring",
+        "Intellectual"
+      ],
+      "requiredWorkTags": [
+        "Violent",
+        "Hunting"
+      ],
+      "forcedTraits": {}
+    },
+    {
+      "defName": "guy762_Backstory_R8009UD",
+      "title": "R-8009 series utility droid",
+      "category": "Childhood",
+      "spawnCategories": [
+        "guy762BSC_Droid_R8009UD",
+        "guy762BSC_Droid_all"
+      ],
+      "skill_gains": [],
+      "work_disables": [
+        "Animals",
+        "Hunting",
+        "Caring",
+        "Artistic",
+        "Cooking",
+        "PlantWork",
+        "Mining",
+        "Crafting",
+        "Social",
+        "Intellectual"
+      ],
+      "requiredWorkTags": [
+        "Hauling",
+        "Cleaning",
+        "Constructing",
+        "Firefighting"
+      ],
+      "forcedTraits": {}
+    },
+    {
+      "defName": "guy762_Backstory_TsUD_T3",
+      "title": "T3-series utility droid",
+      "category": "Childhood",
+      "spawnCategories": [
+        "guy762BSC_Droid_TsUD_T3",
+        "guy762BSC_Droid_all"
+      ],
+      "skill_gains": [],
+      "work_disables": [
+        "Animals",
+        "Hunting",
+        "Caring",
+        "Artistic",
+        "Cooking",
+        "PlantWork",
+        "Mining",
+        "Social",
+        "Cleaning"
+      ],
+      "requiredWorkTags": [
+        "Violent",
+        "Hauling",
+        "Crafting",
+        "Constructing",
+        "Intellectual",
+        "Firefighting"
+      ],
+      "forcedTraits": {
+        "TooSmart": 0,
+        "Asexual": 0
+      }
+    },
+    {
+      "defName": "guy762_Backstory_TsUD_3C",
+      "title": "3C-series utility droid",
+      "category": "Childhood",
+      "spawnCategories": [
+        "guy762BSC_Droid_TsUD_3C",
+        "guy762BSC_Droid_all"
+      ],
+      "skill_gains": [],
+      "work_disables": [
+        "Animals",
+        "Hunting",
+        "Caring",
+        "Artistic",
+        "Cooking",
+        "PlantWork",
+        "Mining",
+        "Social",
+        "Intellectual",
+        "Cleaning"
+      ],
+      "requiredWorkTags": [
+        "Violent",
+        "Hauling",
+        "Crafting",
+        "Constructing",
+        "Firefighting"
+      ],
+      "forcedTraits": {}
+    },
+    {
+      "defName": "guy762_Backstory_TsUD_IT",
+      "title": "IT-series utility droid",
+      "category": "Childhood",
+      "spawnCategories": [
+        "guy762BSC_Droid_TsUD_IT",
+        "guy762BSC_Droid_all"
+      ],
+      "skill_gains": [],
+      "work_disables": [
+        "ManualSkilled",
+        "ManualDumb",
+        "Artistic",
+        "Caring",
+        "Animals",
+        "Hunting",
+        "Social"
+      ],
+      "requiredWorkTags": [
+        "Violent",
+        "Intellectual",
+        "Firefighting"
+      ],
+      "forcedTraits": {}
+    },
+    {
+      "defName": "guy762_Backstory_DevWD",
+      "title": "Devastator-class war droid",
+      "category": "Childhood",
+      "spawnCategories": [
+        "guy762BSC_Droid_DevWD",
+        "guy762BSC_Droid_all"
+      ],
+      "skill_gains": [],
+      "work_disables": [
+        "ManualSkilled",
+        "Intellectual",
+        "Artistic",
+        "Caring",
+        "Animals",
+        "Hunting",
+        "Social"
+      ],
+      "requiredWorkTags": [
+        "Violent",
+        "Hauling",
+        "Firefighting"
+      ],
+      "forcedTraits": {}
+    },
+    {
+      "defName": "guy762_Backstory_DevAD",
+      "title": "Devastator-class Type II assassin droid",
+      "category": "Childhood",
+      "spawnCategories": [
+        "guy762BSC_Droid_DevAD",
+        "guy762BSC_Droid_all"
+      ],
+      "skill_gains": [],
+      "work_disables": [
+        "ManualSkilled",
+        "Firefighting",
+        "Intellectual",
+        "Artistic",
+        "Caring",
+        "Animals",
+        "ManualDumb",
+        "Social"
+      ],
+      "requiredWorkTags": [
+        "Violent",
+        "Hunting"
+      ],
+      "forcedTraits": {}
+    },
+    {
+      "defName": "guy762_Backstory_SentWD",
+      "title": "Sentinel-class war droid",
+      "category": "Childhood",
+      "spawnCategories": [
+        "guy762BSC_Droid_SentWD",
+        "guy762BSC_Droid_all"
+      ],
+      "skill_gains": [],
+      "work_disables": [
+        "ManualSkilled",
+        "Intellectual",
+        "Artistic",
+        "Caring",
+        "Animals",
+        "Social"
+      ],
+      "requiredWorkTags": [
+        "Violent",
+        "Hunting",
+        "Hauling",
+        "Firefighting"
+      ],
+      "forcedTraits": {}
+    },
+    {
+      "defName": "guy762_Backstory_AssaultMk1",
+      "title": "Assault Droid Mark I",
+      "category": "Childhood",
+      "spawnCategories": [
+        "guy762BSC_Droid_assault_mk1",
+        "guy762BSC_Droid_all"
+      ],
+      "skill_gains": [],
+      "work_disables": [
+        "Social",
+        "AllWork"
+      ],
+      "requiredWorkTags": [
+        "Violent"
+      ],
+      "forcedTraits": {}
+    },
+    {
+      "defName": "guy762_Backstory_AssaultMk4",
+      "title": "Assault Droid Mark IV",
+      "category": "Childhood",
+      "spawnCategories": [
+        "guy762BSC_Droid_assault_mk4",
+        "guy762BSC_Droid_all"
+      ],
+      "skill_gains": [],
+      "work_disables": [
+        "Social",
+        "AllWork"
+      ],
+      "requiredWorkTags": [
+        "Violent"
+      ],
+      "forcedTraits": {}
+    }
+  ],
+  "_meta": {
+    "_extract_droiddepot.json": {
+      "mod": "OuterRimDroidDepot",
+      "packageId": "Neronix17.OuterRim.DroidDepot",
+      "root": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3096501398",
+      "versionFolder": "1.6",
+      "note": "Read-only extraction. Task brief said '10 concrete + 1 abstract base' humanlike and '8 concrete + 2 abstract bases' animal, but the actual file list supplied (and read in full) contains 11 concrete humanlike races and 8 concrete animal races (Droid__BaseAstromech.xml is NOT Abstract despite its filename - it is a concrete ThingDef, OuterRim_AstromechDroid, that simply has no PawnKindDef of its own in that file). Total concrete races = 19. Total PawnKindDefs = 19 (the 19th kind, OuterRim_RSeriesDroid, reuses the OuterRim_AstromechDroid race rather than declaring a new race)."
+    },
+    "_extract_jds.json": {
+      "mod": "JDS Separatists",
+      "modRoot": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495",
+      "loadFoldersRead": "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/LoadFolders.xml",
+      "v1_6_loadFolders_declared": [
+        "1.6",
+        "Common"
+      ],
+      "defsActuallyRead": [
+        "/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3276499495/1.6/Defs/ThingDefs_Race.xml"
+      ],
+      "note": "Common/ has no Defs folder in this mod (only Languages/Sounds/Textures), so despite LoadFolders.xml listing 'Common' for v1.6, all droid ThingDefs/PawnKindDefs live under 1.6/Defs/ThingDefs_Race.xml. Also checked and confirmed empty of droid-relevant content: 1.6/Defs/ThingDefs_Buildings.xml (mech gestator building is fully commented out), 1.6/Defs/ThingDefs_Factions.xml (no ThingDef/PawnKindDef tags present), 1.6/Defs/ThingDefs_Bodies.xml (BodyDefs only, referenced by <race><body> but not part of the extraction schema), 1.6/Defs/ThingDefs_Sounds.xml, 1.6/Defs/ThingDefs_WorkGivers.xml, 1.6/Defs/Scenarios.xml, and 1.6/Patches/ThingDefs_Patch.xml (defines JDSCIS_*_Recipe RecipeDefs for a mech gestator/resurrection-droid workflow that consume these ThingDefs as products; does not patch stats on the droid ThingDefs/PawnKindDefs themselves).",
+      "graphicsMechanismNote": "None of these ThingDefs declare a <graphicData> block. All sprite data lives on the PAIRED PawnKindDef, under lifeStages/li/bodyGraphicData (two identical <li> life-stage entries per kind in every case read). The 'graphics' object below is therefore sourced from the paired PawnKindDef's bodyGraphicData, not from ThingDef.graphicData. shaderType is never declared (one commented-out CutoutWithOverlay example exists on JDSCIS_B1_Commander_Droid's kind only, inert) so it is omitted throughout.",
+      "bodySizeNote": "baseBodySize is declared once, at 0.7, on the abstract parent ThingDef Name=\"JDSSWCIS_Droids\" (ParentName=\"BasePawn\"). No concrete droid ThingDef overrides it, so 0.7 is the effective inherited value for every race below.",
+      "uncertainOrUnresolved": [
+        "isFighter: this field does not appear on any PawnKindDef in this mod (grepped for 'isFighter' across ThingDefs_Race.xml, no match) -- reported as null throughout, not fabricated.",
+        "EMPSensitivity / canBeAmbushed: not declared anywhere in this mod's droid defs -- omitted, not fabricated.",
+        "JDSCIS_LR-57_Combat_Droid PawnKindDef's <label> is literally 'LR-57_Combat_Droid' (with underscores, unlike every sibling kind's spaced label) -- copied verbatim, likely an authoring typo in the source mod, not corrected here."
+      ]
+    },
+    "_extract_galacticempire.json": {
+      "notes": "Outer Rim - Galactic Empire (workshop 2919248699, packageId Neronix17.OuterRim.GalacticEmpire) ships NO droid-specific AssetBundle art of its own -- checked all 697 Texture2D entries in Common/AssetBundles/neronix17_outerrim_galacticempire, zero matched 'droid' or 'kx' in container path or name. The only droid content this pack contributes is the OuterRim_ImperialKXSecurityDroid PawnKindDef above, which reuses Droid Depot's KX race and its already-extracted art (src/Jawa/Droidworks/Textures/OuterRim/Droid/KX/). LoadFolders.xml v1.6 loads: /, Common, 1.6, and conditionally 1.6/Mods/OuterRimDroidDepot when Neronix17.OuterRim.DroidDepot is active -- that conditional folder is where PawnKinds_Droids.xml (source of this kind) lives."
+    }
+  }
+}

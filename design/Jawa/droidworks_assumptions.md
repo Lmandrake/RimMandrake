@@ -66,3 +66,13 @@
     start-prep pass (rimworld-start-prep rules apply; RimSort refresh trap).
 17. The shop CUSTOMER layer (visitors with broken droids) still unruled as
     own-mod vs quest pack (design spec §11.3).
+18. **A fifth mod holds KotOR droid plumbing**: the abstract race parent
+    `guy762_KotORDroidBase` and the droid-slot equipment art
+    (`droidshield_*`, `droidtech_*`, `hvyshield_*`) live in
+    `guy762.KotORWeapons` (workshop 3254370945) — a mod we KEEP for the
+    armoury regardless. Assumed fine to leave that art un-yanked for now;
+    the def generator must read the base's fields from that mod's XML, not
+    assume extraction.json has them. (Found by the art sweep, 2026-08-29.)
+19. Two Droid Depot UI icons had bundle paths that differ from def texPaths
+    (cultures/memes icons); extracted to the DEF paths. Assumed the def path
+    is the truth (per reading-rimworld-graphics).
