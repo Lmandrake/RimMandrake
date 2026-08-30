@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T03:05:44Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T04:39:36Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -365,3 +365,53 @@ kind:     build
 thin:     spec, verify and criteria all present
 summary:  design/Jawa/droidsystembuildspec.md — architecture (own DLL + HAR substrate,
 prose:    infrastructure/state/items/DROID_SYSTEM_BUILD_1.md
+
+## DROIDWORKS_BOLT_CORE_1 Restraining bolt core: hediff, install/remove, field clamp, resentment accumulator
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DROIDWORKS_BOLT_CORE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROIDWORKS_BOLT_CORE_1.md
+
+## DROIDWORKS_CHARGING_TRIO_1 Charging trio: wall socket, assignable dock, room nimbus + recharge job
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DROIDWORKS_CHARGING_TRIO_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROIDWORKS_CHARGING_TRIO_1.md
+
+## DROIDWORKS_WIPE_AND_SPIKE_1 Memory wipe recipe + faction-keyed data spikes
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DROIDWORKS_WIPE_AND_SPIKE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROIDWORKS_WIPE_AND_SPIKE_1.md
+
+## DROIDWORKS_PILOT_GONK_1 Hand-author the pilot race: gonk on HAR, before the generator emits 57
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DROIDWORKS_PILOT_GONK_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROIDWORKS_PILOT_GONK_1.md
+
+## DROIDWORKS_RETIRE_EVIDENCE_1 Evidence: can ABF/Synstructs and Asimov actually retire? (assumption 3)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DROIDWORKS_RETIRE_EVIDENCE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROIDWORKS_RETIRE_EVIDENCE_1.md
