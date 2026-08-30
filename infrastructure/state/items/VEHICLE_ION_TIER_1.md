@@ -135,6 +135,16 @@ vehicles need `spawn_batch`. Each hit once with
 Control passes, so the methodology is sound this session. Read back independently
 via `jawa/list_pawns` (`stunned`, `stunTicksLeft`), not from the damage call.
 
+🔑 **This finding does NOT rest on a pawn read tool, which matters** — pawn-scoped
+reads (`jawa/list_pawns`, `pawn_get`, `thing_stats`, `inspect_string`) are known
+blind to a `VehiclePawn`'s health/component state (`OTHER_STUN_WEAPONS_SURVEY_1`
+burned a cycle on exactly that; `jawa/vehicle_components` is the right tool for
+vehicle damage). The decisive reading here is the **postfix's own in-process
+`__instance.stances.stunner.StunTicksLeft`**, printed to Player.log one line after
+its own `StunFor` call — the same object, inside the game, no bridge tool between.
+That is what makes "StunFor ran and had no effect" airtight rather than a
+possible instrument artefact.
+
 ### The postfix RUNS, computes the RIGHT number, calls StunFor — and is skipped
 
 Player.log, the deployed trace lines, verbatim:
