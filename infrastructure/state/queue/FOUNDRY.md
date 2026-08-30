@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T18:52:28Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-30T18:54:24Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -197,33 +197,6 @@ target:   v1
 kind:     bug
 summary:  🔴 Scope correction: this is NOT a Droidworks-only bug
 prose:    infrastructure/state/items/DROIDWORKS_ISFLESH_RELATIONS_CRASH_1.md
-
-## PAWN_FLAVOR_ROUND7_FIRE_1 Build round 7: the Deep Desert Fire side - Pyre-Watcher, Flame-Reaper, Ash-Speaker, Reaps-the-Flames
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  (no items/PAWN_FLAVOR_ROUND7_FIRE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PAWN_FLAVOR_ROUND7_FIRE_1.md
-
-## PAWN_FLAVOR_ROUND8_FDE_1 Build round 8: the FDE droid grouping set - seven entries across Assembly/Service slots
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  (no items/PAWN_FLAVOR_ROUND8_FDE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PAWN_FLAVOR_ROUND8_FDE_1.md
-
-## PAWN_FLAVOR_ROUND9_FUEL_1 Build round 9: Junkers fuel economy - Shore-Rat, Still-Master, Pipe-Tapper
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  (no items/PAWN_FLAVOR_ROUND9_FUEL_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PAWN_FLAVOR_ROUND9_FUEL_1.md
 
 ## PAWN_FLAVOR_PHASE2_PROSE_1 Phase 2 prep: lore-prose pass over ThoughtDef/MentalBreakDef/xenotype flavor - census + drafts + review sheet
 state:    doing
