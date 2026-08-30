@@ -102,4 +102,55 @@ from `ION_TIERS_MEASURED_LIVE_1`.
       new assembly loading. **Never observed running — this is a brand-new
       mechanism**, not a re-check of one already seen live.
 
+## First live test, 2026-08-30 (quicktest, game UP) — found and fixed a real gap
+
+Quicktest map, spawned `VVE_Mule` (2x4, area 8, confirmed via `jawa/vehicle_components`
+list mode — real vehicle, 21 components, all healthy). Hit it with
+`jawa/damage(damageDef=JawaIon_Damage, amount=8)`.
+
+**Confirmed the patch itself works**: `jawa/harmony_patches
+{typeName:"VehiclePawn", methodName:"PreApplyDamage"}` shows the postfix
+registered clean (`mandrake.jawaionweapons.vehicletier`, 1 postfix, 0 errors).
+
+**But `stunTicksLeft` read 0 after the hit.** Ran a CONTROL before assuming the
+patch itself was broken: fired genuine vanilla `DamageDefOf.EMP` (not
+`JawaIon_Damage`) at the same vehicle via `jawa/damage` directly — **also zero
+stun**. That isolates the gap to VF's own mechanism, not this patch. Read
+`VehicleComponent.ApplyEMPDamage`
+(`Source/Vehicles/Components/Vehicles/Health/VehicleComponent.cs:153-166`):
+
+```csharp
+if (!vehicle.VehicleDef.properties.empStuns) return 0;
+```
+
+`empStuns` is a per-`VehicleDef` XML opt-in. Grepped the whole of Vanilla
+Vehicles Expanded (workshop `3014906877`) for the string — **zero hits**. No
+vehicle in the actual mod stack turns this on. Riding VF's real mechanism (the
+original version of this fix) would have shipped a patch that registers
+correctly, builds clean, and produces **no stun on any vehicle a player will
+ever meet** — a silent-success bug of exactly the kind this project is
+vigilant about, just one level deeper than usual (correct plumbing, inert
+destination).
+
+**Fixed**: `VehicleIonPatches.cs` now calls `vehicle.stances.stunner.StunFor(...)`
+directly — the same vanilla `StunHandler` API (`RimWorld/StunHandler.cs`, read
+via RimSage) VF's own `ElectrifyAllComponents` calls internally — bypassing
+`empStuns` and the per-component chance roll entirely. Ticks = `amount * 30`,
+same convention as the pawn/droid tiers. Flagged, not resolved: this skips
+whatever `StatDefOf.EMPResistance` folding vanilla's own damage pathway would
+apply; whether vehicles carry a meaningful EMPResistance value was not
+checked.
+
+**Rebuilt, NOT redeployed**: `dotnet build` on `JawaIonVehicleTier.csproj` — 0
+warnings, 0 errors, wrote cleanly to this repo's own `Assemblies/` folder.
+Could not deploy to the game's Mods folder — **the game is UP and holds the
+DLL locked**, same class of block `ION_STUN_IGNORES_BODY_SIZE_1` hit earlier.
+Deploy + the real live-verify (does a vehicle now actually show
+`stunTicksLeft > 0`) both ride the next game-down window.
+
+Also confirmed, independent of the stun question: zero real damage landed on
+the vehicle's components from either hit (`jawa/vehicle_components` —
+`damagedCount: 0`, `worstEfficiency: 1.0` throughout) — the capture-not-kill
+guarantee holds for vehicles too, at least on the raw-damage half.
+
 --- history ---

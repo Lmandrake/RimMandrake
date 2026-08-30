@@ -3,6 +3,7 @@ using System.Linq;
 using System.Reflection;
 using HarmonyLib;
 using RimWorld;
+using UnityEngine;
 using Vehicles;
 using Verse;
 
@@ -61,13 +62,34 @@ namespace JawaIonWeapons
     /// JawaIon_Damage is a distinct DamageDef, so that path never fires for it
     /// either.
     ///
-    /// THE FIX mirrors DamageWorker_IonBuildup.ApplyMachineTier's own trick for
-    /// pawns exactly: after the vehicle's real damage has been applied (so raw
-    /// component damage is unaffected), fire a SECOND, synthetic hit built from
-    /// literal DamageDefOf.EMP straight at statHandler.TakeDamage - that is a
-    /// genuine EMP DamageInfo by identity, so ElectrifyAllComponents runs for
-    /// real, using VF's own stun/adaptation machinery rather than reimplementing
-    /// it.
+    /// 🔴 CORRECTED 2026-08-30, first live test (quicktest, game UP): the original
+    /// version of this file routed a synthetic EMP hit through
+    /// statHandler.TakeDamage(emp) to reach ElectrifyAllComponents - registered
+    /// fine (confirmed via jawa/harmony_patches) but produced NO stun on a
+    /// VVE_Mule. Traced why with a CONTROL: firing genuine vanilla DamageDefOf.EMP
+    /// at the same vehicle via jawa/damage ALSO produced zero stun - so the gap was
+    /// never this patch, it is VehicleComponent.ApplyEMPDamage itself
+    /// (Source/Vehicles/Components/Vehicles/Health/VehicleComponent.cs:153-166):
+    /// `if (!vehicle.VehicleDef.properties.empStuns) return 0;` - a per-VehicleDef
+    /// XML OPT-IN, unset (default false) on every vehicle in Vanilla Vehicles
+    /// Expanded (grepped the whole mod, zero hits for "empStuns" - confirmed, not
+    /// assumed). Even with it set, the stun is further gated behind
+    /// `Rand.Chance(chanceToStun)` per component. Riding VF's own mechanism would
+    /// have meant "the ion gun never stuns any real vehicle in this campaign,"
+    /// which fails the actual ask.
+    ///
+    /// THE FIX now stuns directly: vehicle.stances.stunner.StunFor(...), the exact
+    /// vanilla StunHandler API (RimWorld/StunHandler.cs, read via RimSage: `public
+    /// void StunFor(int ticks, Thing instigator, ...)`) VF's own
+    /// ElectrifyAllComponents calls internally - same primitive, no dependency on
+    /// VF's opt-in flag or its per-component chance roll. Ticks computed the same
+    /// "amount * 30" convention DamageWorker_IonBuildup.ApplyMachineTier documents
+    /// for pawns. ⚠️ NOT resistance-adjusted: the pawn tiers reach StunFor through
+    /// vanilla's own damage->CanBeStunnedByDamage->StunHandler pathway, which folds
+    /// in StatDefOf.EMPResistance before calling StunFor; calling StunFor directly
+    /// here skips that computation entirely. Whether a vehicle even HAS a
+    /// meaningful EMPResistance value was not checked - flagged as an open
+    /// question, not asserted either way.
     ///
     /// TIER AND SCALING - owner ruling, 2026-08-29 (ION vehicle follow-up to
     /// ION_STUN_IGNORES_BODY_SIZE_1): vehicles sit at the DROID tier
@@ -144,24 +166,10 @@ namespace JawaIonWeapons
             float amount = empAmountDroid / footprintArea;
             if (amount <= 0f) return;
 
-            DamageInfo emp = new DamageInfo(
-                DamageDefOf.EMP,
-                amount,
-                0f,
-                dinfo.Angle,
-                dinfo.Instigator,
-                null,
-                dinfo.Weapon,
-                DamageInfo.SourceCategory.ThingOrUnknown,
-                dinfo.IntendedTarget);
-            emp.SetIgnoreArmor(true);
+            int stunTicks = Mathf.RoundToInt(amount * 30f);
+            if (stunTicks <= 0) return;
 
-            // Directly at the stat handler, NOT __instance.TakeDamage(...) - that
-            // would re-enter Thing.TakeDamage -> PreApplyDamage -> THIS postfix.
-            // dinfo.Def is genuinely DamageDefOf.EMP here (not JawaIon_Damage), so
-            // the defName guard above would already stop a re-entry from looping,
-            // but going straight to the stat handler skips the round trip entirely.
-            statHandler.TakeDamage(emp);
+            __instance.stances?.stunner?.StunFor(stunTicks, dinfo.Instigator);
         }
 
         private static float ReadFloatField(object obj, string fieldName, float fallback)
