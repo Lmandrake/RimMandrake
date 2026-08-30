@@ -787,13 +787,28 @@
       </li>
     </modExtensions>
   </AlienRace.ThingDef_AlienRace>
+  <!-- FOUNDRY, 2026-08-30: this and the next 6 races (Muckraker, Destroyer, DUM,
+       FX7, MSE, SalvageAssist) carried extraction.json's baseHealthScaleSource
+       "UNCERTAIN - presumably inherited from AsimovAutomatonBase, not read"
+       through LITERALLY as the text "UNCERTAIN" inside a float field - invalid
+       XML, would fail to parse. Resolved by reading AsimovAutomatonBase and its
+       parent AsimovNonEnergyAutomatonBase directly (workshop 3096481956,
+       Race_Bases.xml) - neither declares baseHealthScale, so the engine default
+       1.0 is the genuine value, not a guess. extraction.json updated to match
+       (baseHealthScale 1.0, baseHealthScaleSource records the resolution) so a
+       future regenerate does not reintroduce this. Hand-patched here rather than
+       regenerated: gen_droidworks_defs.py's last run also reverted
+       DROIDWORKS_PILOT_GONK_1's GNK fix and CompDroidDetonation wiring, neither
+       of which round-trips through extraction.json yet - a full regenerate is a
+       separate, deliberate decision, not something to do incidentally fixing 7
+       values. -->
   <AlienRace.ThingDef_AlienRace ParentName="DW_Race_Base">
     <defName>DW_Race_OuterRim_AstromechDroid</defName>
     <label>Astromech Droid</label>
     <description>A DW-unified Astromech Droid. Absorbed from OuterRimDroidDepot (OuterRim_AstromechDroid).</description>
     <race>
       <baseBodySize>0.75</baseBodySize>
-      <baseHealthScale>UNCERTAIN</baseHealthScale>
+      <baseHealthScale>1.0</baseHealthScale>
     </race>
     <statBases>
       <MoveSpeed>4.2</MoveSpeed>
@@ -851,7 +866,7 @@
     <description>A DW-unified Muckraker Crab Droid. Absorbed from OuterRimDroidDepot (OuterRim_MuckrakerDroid).</description>
     <race>
       <baseBodySize>1.2</baseBodySize>
-      <baseHealthScale>UNCERTAIN</baseHealthScale>
+      <baseHealthScale>1.0</baseHealthScale>
     </race>
     <statBases>
       <MoveSpeed>5.2</MoveSpeed>
@@ -909,7 +924,7 @@
     <description>A DW-unified Destroyer Droid. Absorbed from OuterRimDroidDepot (OuterRim_DestroyerDroid).</description>
     <race>
       <baseBodySize>1.0</baseBodySize>
-      <baseHealthScale>UNCERTAIN</baseHealthScale>
+      <baseHealthScale>1.0</baseHealthScale>
     </race>
     <statBases>
       <MoveSpeed>4.2</MoveSpeed>
@@ -967,7 +982,7 @@
     <description>A DW-unified DUM Repair Droid. Absorbed from OuterRimDroidDepot (OuterRim_DUMDroid).</description>
     <race>
       <baseBodySize>0.75</baseBodySize>
-      <baseHealthScale>UNCERTAIN</baseHealthScale>
+      <baseHealthScale>1.0</baseHealthScale>
     </race>
     <statBases>
       <MoveSpeed>5.2</MoveSpeed>
@@ -1025,7 +1040,7 @@
     <description>A DW-unified fx-7 medical droid. Absorbed from OuterRimDroidDepot (OuterRim_FX7Droid).</description>
     <race>
       <baseBodySize>0.75</baseBodySize>
-      <baseHealthScale>UNCERTAIN</baseHealthScale>
+      <baseHealthScale>1.0</baseHealthScale>
     </race>
     <statBases>
       <MoveSpeed>2.4</MoveSpeed>
@@ -1165,7 +1180,7 @@
     <description>A DW-unified MSE Repair Droid. Absorbed from OuterRimDroidDepot (OuterRim_MSEDroid).</description>
     <race>
       <baseBodySize>0.5</baseBodySize>
-      <baseHealthScale>UNCERTAIN</baseHealthScale>
+      <baseHealthScale>1.0</baseHealthScale>
     </race>
     <statBases>
       <MoveSpeed>5.3</MoveSpeed>
@@ -1223,7 +1238,7 @@
     <description>A DW-unified salvage assist droid. Absorbed from OuterRimDroidDepot (OuterRim_SalvageAssistDroid).</description>
     <race>
       <baseBodySize>0.5</baseBodySize>
-      <baseHealthScale>UNCERTAIN</baseHealthScale>
+      <baseHealthScale>1.0</baseHealthScale>
     </race>
     <statBases>
       <MoveSpeed>5.3</MoveSpeed>
