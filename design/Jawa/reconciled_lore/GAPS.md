@@ -81,8 +81,10 @@ names what turns on the answer. Ordered by how much downstream work waits.
 16. setting_physics still-open: what jams and how visibly (L12); how long a
     lightsaber takes through a bulkhead (L3); does Faraday-type armour help
     organics against lightning (L16).
-17. ISEKAI grant-items dispensing `Jawa_` traits through its generic comp —
-    owner's later call [flagged 2026-08-29].
+17. ✅ RULED (owner, 2026-08-30): **Jawa_ traits are BLOCKED from ISEKAI
+    grant items** — identity traits arrive only through backstories and play.
+    Build item filed (ISEKAI_GRANT_EXCLUSION_1).
+
 18. Stale Setdown machinery: `ashkarr_paint.py` HOME_LATLON abort-guard and
     the populate/repair landmark placement still act on the struck start
     [flagged in canon start_struck]; ripping them out needs a ruling.
