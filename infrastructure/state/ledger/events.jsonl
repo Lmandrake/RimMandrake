@@ -3042,3 +3042,4 @@
 {"seat":"FOUNDRY","event":"close","id":"VEHICLE_FRAMEWORK_AERIAL_DEBUG_1","sha":"pending","ts":"2026-08-30T10:08:16Z"}
 {"seat":"FOUNDRY","event":"note","id":"VEHICLE_FRAMEWORK_AERIAL_DEBUG_1","text":"FOUNDRY 2026-08-30: the close event's sha field above read 'pending' (recorded before commit) - actual sha is b395127a.","ts":"2026-08-30T10:08:37Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-08-30T10:08:37Z"}
+{"seat":"FOUNDRY","event":"note","id":"VEHICLE_ION_TIER_1","text":"FOUNDRY 2026-08-30: added Log.Message trace at every guard clause + after StunFor, rebuilt clean (9ba937bd). NOT deployed - DLL locked while game UP. Owed on next DOWN window: deploy_custom_mods.py --mod JawaIonWeapons --apply, then re-run this same VVE_Mule test on next game-up and read Player.log for which guard fired (or confirm StunFor ran and StunTicksLeft still read 0 downstream, which would point at the READ side instead).","ts":"2026-08-30T10:29:59Z"}
