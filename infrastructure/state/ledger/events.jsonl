@@ -3358,3 +3358,6 @@
 {"seat":"FOUNDRY","event":"close","id":"BEAST_DANGER_NORMALIZATION_1","sha":"374e6f4d0d26b17aca87402dad5fc150b0e5ed10","ts":"2026-08-31T15:04:34Z"}
 {"seat":"FOUNDRY","event":"claim","id":"DEPTHS_ODYSSEY_VERIFY_1","ts":"2026-08-31T15:04:55Z"}
 {"seat":"FOUNDRY","event":"start","id":"DEPTHS_ODYSSEY_VERIFY_1","ts":"2026-08-31T15:04:55Z"}
+{"seat":"FOUNDRY","event":"claim","id":"SEAS_WATERLINE_PASS_1","ts":"2026-08-31T15:05:30Z"}
+{"seat":"FOUNDRY","event":"start","id":"SEAS_WATERLINE_PASS_1","ts":"2026-08-31T15:05:30Z"}
+{"seat":"FOUNDRY","event":"close","id":"SEAS_WATERLINE_PASS_1","sha":"eb02b70531e5ce0b9b705f1ce0acc2e1979a43f1","ts":"2026-08-31T15:14:30Z"}

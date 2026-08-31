@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-31T15:04:55Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-31T15:14:30Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -200,16 +200,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## SEAS_WATERLINE_PASS_1 Waterline pass: repatriate the misplaced SW aquatics (KwazelMaw/Mott out of the fire deserts), first spawns for Dianoga/Dragonsnake, borrow BMT/AA coastal fauna, Odyssey fishing mutators on the seas
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SEAS_WATERLINE_PASS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/SEAS_WATERLINE_PASS_1.md
 
 ## TILE_STRUCTURE_DESIGNS_1 Make and improve the promise/whisper structure designs per the roster (22+22): rimplace templates + GenStep_RimplacePlan responder (VERIFY terrain/roof ordering); coverage lint = no promise without responder
 state:    proposed
