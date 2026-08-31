@@ -5,7 +5,7 @@ textures (and their masks) for *Doors Expanded Star Wars edition*.
 RUN WITH:  /home/mandrake/.venvs/art/bin/python   (the only interpreter here with Pillow)
 
     /home/mandrake/.venvs/art/bin/python \
-        /mnt/d/Luke/dev/Rimworld/src/RimMandrake/BlastDoorFrameAsyncFix/Source/build_frameasync_east.py
+        /mnt/d/Luke/dev/Rimworld/src/RimStarWars/BlastDoorFrameAsyncFix/Source/build_frameasync_east.py
 
 Everything below is derived from files on disk at build time. Nothing is hand
 painted, so re-running this reproduces the shipped PNGs byte-for-byte.
@@ -121,7 +121,7 @@ from PIL import Image, ImageChops, ImageFilter
 DONOR = ("/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100"
          "/3550435517/Textures/Things/Building/Door/Blast")
 
-OUT = ("/mnt/d/Luke/dev/Rimworld/src/RimMandrake/BlastDoorFrameAsyncFix"
+OUT = ("/mnt/d/Luke/dev/Rimworld/src/RimStarWars/BlastDoorFrameAsyncFix"
        "/Textures/Things/Building/Door/Blast")
 
 # stem -> (defName, east frame mask filename as the DONOR spells it)

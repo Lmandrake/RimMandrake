@@ -135,13 +135,13 @@
           <customSummary>Start with six Jawa of the clan that woke the hull.</customSummary>
           <overrideKinds>
             <li>
-              <xenotype>MandrakeJawa</xenotype>
+              <xenotype>RSW_MandrakeJawa</xenotype>
               <pawnKind>Jawa_Colonist</pawnKind>
             </li>
           </overrideKinds>
           <xenotypeCounts>
             <li>
-              <xenotype>MandrakeJawa</xenotype>
+              <xenotype>RSW_MandrakeJawa</xenotype>
               <count>6</count>
               <description>Jawa scavenger</description>
               <requiredAtStart>true</requiredAtStart>

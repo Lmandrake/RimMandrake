@@ -18,7 +18,7 @@ WHAT IS DEPENDED ON      Biotech, Core, VEF, Outland Genetics, Integrated Genes,
                          LFS Eyes, Big and Small. Their genes are generic and stay
                          where they are.
 
-Also repoints src/Jawa/Jawa_Patches at the copies: verify() fails if any def
+Also repoints src/SPLIT_Phase3/Jawa_Patches at the copies: verify() fails if any def
 there still reaches a departing mod, including through a ParentName, which is a
 silent discard rather than an error.
 
@@ -45,7 +45,7 @@ from game_paths import DEF_DUMP, WORKSHOP  # noqa: E402
 DUMP = DEF_DUMP
 WS = WORKSHOP
 BTD = WS + "/3458153185"
-OUT = os.path.join(REPO, "src/Jawa/RimMandrake_StarWarsRaces")
+OUT = os.path.join(REPO, "src/RimStarWars/StarWarsRaces")
 
 # donor tag -> (mod root, texture roots in search order)
 #
@@ -68,7 +68,7 @@ DONOR_PIDS = {d["packageId"] for d in DONORS.values()}
 PREFIX = "RimMandrake_"
 TEXNS = "RimMandrakeSW"          # our texture path namespace
 STRNS = "RimMandrakeSWNames"     # our Languages/English/Strings namespace
-SPECIES_PREFIX = "RimMandrake"   # xenotype defNames: RimMandrakeTwilek
+SPECIES_PREFIX = "RimMandrake"   # xenotype defNames: RSW_RimMandrakeTwilek
 
 # A RulePackDef's Rule_File entries name a plain text word list under some
 # active mod's `Languages/<lang>/Strings`. Copying the RulePackDef without the
@@ -98,10 +98,10 @@ RESCUE_KINDS = [
 # discard, so these travel and are renamed with them.
 RESCUE_KIND_PARENTS = {"OuterRimTestColonyPawnKind": PREFIX + "ColonyPawnKind",
                        "OuterRimTestTribalPawnKind": PREFIX + "TribalPawnKind"}
-# Owner ruling 2026-08-14: MandrakeJawa is the ONLY active Jawa xenotype. The
-# rescued Jawa kinds roll it, not the BTD-derived RimMandrakeJawa the equivalence
+# Owner ruling 2026-08-14: RSW_MandrakeJawa is the ONLY active Jawa xenotype. The
+# rescued Jawa kinds roll it, not the BTD-derived RSW_RimMandrakeJawa the equivalence
 # table would otherwise hand them.
-RESCUE_XENOTYPE_OVERRIDE = {"OuterRim_Jawa": "MandrakeJawa"}
+RESCUE_XENOTYPE_OVERRIDE = {"OuterRim_Jawa": "RSW_MandrakeJawa"}
 
 # Owner ruling 2026-08-15. Miraluka is not built. It was also the only def in
 # the set whose geneClass lived in a donor assembly (OuterRimDiversity.
@@ -206,8 +206,8 @@ def write_xml(path, header_lines, elements, keep_existing=True):
 
     ⭐ OWNER'S RULING 2026-08-23: this generator may ADD, it may never SUBTRACT.
     MEASURED that day, on a rebuild whose species count matched perfectly: SW_Genes
-    lost **17** defs — `RimMandrake_DevaronianHorns`, `RimMandrake_GeonosianHead`,
-    `RimMandrake_Eyes_HugeRed` among them — while gaining 42. The losses are
+    lost **17** defs — `RSW_DevaronianHorns`, `RSW_GeonosianHead`,
+    `RSW_Eyes_HugeRed` among them — while gaining 42. The losses are
     APPEARANCE genes the shipped xenotypes still name, so dropping them is a
     cross-reference error and a species losing its face. The gains are inert if
     nothing references them.
@@ -235,7 +235,7 @@ def write_xml(path, header_lines, elements, keep_existing=True):
             # abstract that vanishes takes its CHILDREN with it: a ParentName that
             # resolves to nothing is a SILENT DISCARD in RimWorld, so the def simply does
             # not exist in game. MEASURED 2026-08-23 — three defs died exactly this way
-            # (RimMandrake_GunganEars on RimMandrake_GeneEarsBase, two head types on
+            # (RSW_GunganEars on RimMandrake_GeneEarsBase, two head types on
             # RimMandrake_HeavyBoneBase) and the only reason it was caught is that the
             # offline validator resolves ParentName.
             def _key(e):
@@ -784,7 +784,7 @@ def copy_textures(texhits, texidx, dry=False):
 
 ABOUT = """<?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
-  <packageId>mandrake.starwarsraces</packageId>
+  <packageId>mandrake.rsw.starwarsraces</packageId>
   <name>RimMandrake - Star Wars Races</name>
   <author>mandrake</author>
   <supportedVersions>
@@ -811,7 +811,7 @@ Species NAMES come with them. 48 name-generating rule packs and the word lists t
 
 Outer Rim's sixteen species pawn kinds are copied as well, with both of their abstract parents, because a faction that fields them directly loses those raids and caravans outright when that mod leaves.
 
-The MandrakeJawa xenotype and its four genes - skittish, hooded face, and the orange and amber big-eye colours with their glow sprite - are authored here rather than copied, and live in this mod because the Jawa are a species like any other.
+The RSW_MandrakeJawa xenotype and its four genes - skittish, hooded face, and the orange and amber big-eye colours with their glow sprite - are authored here rather than copied, and live in this mod because the Jawa are a species like any other.
 
 Nothing generic was copied. Genes that belong to Biotech, Core, Outland Genetics, Integrated Genes, LFS Genes Expanded - Eyes and Big and Small remain theirs; those mods are dependencies and must stay installed.
 
@@ -1280,7 +1280,7 @@ def _shipped_gene_count():
 
 ORPHAN_XENOTYPES = {
  'Anzati': """  <XenotypeDef>
-    <defName>RimMandrakeAnzati</defName>
+    <defName>RSW_RimMandrakeAnzati</defName>
     <label>Anzati</label>
     <description>Anzati were a long-lived humanoid species that hailed from the Mid Rim Territories planet of Anzat. They were feared and hated as they fed on the life force of other sentient species.</description>
     <iconPath>UI/Icons/Xenotypes/Sanguophage</iconPath>
@@ -1292,7 +1292,7 @@ ORPHAN_XENOTYPES = {
       <li>DiseaseFree</li>
       <li>PerfectImmunity</li>
       <li>TotalHealing</li>
-      <li>RimMandrake_Beard_chintendril</li>
+      <li>RSW_Beard_chintendril</li>
       <li>Hemogenic</li>
       <li>HemogenDrain</li>
       <li>Bloodfeeder</li>
@@ -1309,7 +1309,7 @@ ORPHAN_XENOTYPES = {
       <li>Hair_DarkReddish</li>
       <li>Hair_MidBlack</li>
       <li>Hair_DarkBlack</li>
-      <li>RimMandrake_Skin_MidGray</li>
+      <li>RSW_Skin_MidGray</li>
       <li>Skin_LightGray</li>
       <li>DarkVision</li>
       <li>Hair_Grayless</li>
@@ -1319,7 +1319,7 @@ ORPHAN_XENOTYPES = {
     </genes>
   </XenotypeDef>""",
  'Herglic': """  <XenotypeDef>
-    <defName>RimMandrakeHerglic</defName>
+    <defName>RSW_RimMandrakeHerglic</defName>
     <label>Herglic</label>
     <description>Herglics are a hulking species with black skin, a wide mouth and oily eyes. They are a rare sight in the galaxy and can hit like a wrecking ball. Their thick skin allows them to shake off most blunt attacks.</description>
     <iconPath>RimMandrakeSW/OR/OuterRim/XenotypeIcons/Xenotype_Herglic</iconPath>
@@ -1330,7 +1330,7 @@ ORPHAN_XENOTYPES = {
       <li>MeleeDamage_Strong</li>
       <li>Hair_BaldOnly</li>
       <li>Beard_NoBeardOnly</li>
-      <li>RimMandrake_HerglicHead</li>
+      <li>RSW_HerglicHead</li>
       <li>Body_Hulk</li>
       <li>Skin_InkBlack</li>
       <li>Skin_SlateGray</li>
@@ -1343,7 +1343,7 @@ ORPHAN_XENOTYPES = {
     </genes>
   </XenotypeDef>""",
  'Muun': """  <XenotypeDef>
-    <defName>RimMandrakeMuun</defName>
+    <defName>RSW_RimMandrakeMuun</defName>
     <label>Muun</label>
     <description>Tall thin humanoids known for running the InterGalactic Ganking Clan.</description>
     <iconPath>UI/Icons/Xenotypes/Genie</iconPath>
@@ -1352,9 +1352,9 @@ ORPHAN_XENOTYPES = {
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
     <combatPowerFactor>0.800000011920929</combatPowerFactor>
     <genes>
-      <li>RimMandrake_Head_quarren</li>
-      <li>RimMandrake_Body_gaunt</li>
-      <li>RimMandrake_BodySizeGene_bigger</li>
+      <li>RSW_Head_quarren</li>
+      <li>RSW_Body_gaunt</li>
+      <li>RSW_BodySizeGene_bigger</li>
       <li>Immunity_Weak</li>
       <li>WoundHealing_Slow</li>
       <li>Delicate</li>
@@ -1372,7 +1372,7 @@ ORPHAN_XENOTYPES = {
     </genes>
   </XenotypeDef>""",
  'Ortolan': """  <XenotypeDef>
-    <defName>RimMandrakeOrtolan</defName>
+    <defName>RSW_RimMandrakeOrtolan</defName>
     <label>Ortolan</label>
     <description>A sentient elephantine species of squad, blue-skinned bipeds with large, floppy ears.</description>
     <iconPath>UI/Icons/Xenotypes/Pigskin</iconPath>
@@ -1380,8 +1380,8 @@ ORPHAN_XENOTYPES = {
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
     <genes>
-      <li>RimMandrake_Eyes_Big</li>
-      <li>RimMandrake_Head_kubaz</li>
+      <li>RSW_Eyes_Big</li>
+      <li>RSW_Head_kubaz</li>
       <li>Immunity_Strong</li>
       <li>MinTemp_LargeDecrease</li>
       <li>Hair_BaldOnly</li>
@@ -1400,7 +1400,7 @@ ORPHAN_XENOTYPES = {
     </genes>
   </XenotypeDef>""",
  'SithZ': """  <XenotypeDef>
-    <defName>RimMandrakeSithZ</defName>
+    <defName>RSW_RimMandrakeSithZ</defName>
     <label>Sith Zugurak (Pureblood)</label>
     <description>Zugurak  were the caste of engineers within the Sith species known for constructing burial mounds and starships.</description>
     <iconPath>RimMandrakeSW/OR/OuterRim/XenotypeIcons/Xenotype_Sith</iconPath>
@@ -1408,8 +1408,8 @@ ORPHAN_XENOTYPES = {
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
     <genes>
-      <li>RimMandrake_FacialRidges_bumpy</li>
-      <li>RimMandrake_Beard_chintendril</li>
+      <li>RSW_FacialRidges_bumpy</li>
+      <li>RSW_Beard_chintendril</li>
       <li>Aggression_Aggressive</li>
       <li>Hair_BaldOnly</li>
       <li>Beard_NoBeardOnly</li>
@@ -1431,7 +1431,7 @@ ORPHAN_XENOTYPES = {
     </genes>
   </XenotypeDef>""",
  'Togorian': """  <XenotypeDef>
-    <defName>RimMandrakeTogorian</defName>
+    <defName>RSW_RimMandrakeTogorian</defName>
     <label>Togorian</label>
     <description>Togirian were a sentient species of large, feline beings with digitgrade feet.</description>
     <iconPath>RimMandrakeSW/OR/OuterRim/XenotypeIcons/Xenotype_Cathar</iconPath>
@@ -1439,9 +1439,9 @@ ORPHAN_XENOTYPES = {
     <canGenerateAsCombatant>true</canGenerateAsCombatant>
     <factionlessGenerationWeight>0</factionlessGenerationWeight>
     <genes>
-      <li>RimMandrake_Furskin_shortfur</li>
-      <li>RimMandrake_statgene_predator</li>
-      <li>RimMandrake_BodySizeGene_big</li>
+      <li>RSW_Furskin_shortfur</li>
+      <li>RSW_statgene_predator</li>
+      <li>RSW_BodySizeGene_big</li>
       <li>Immunity_Strong</li>
       <li>NakedSpeed</li>
       <li>MaxTemp_SmallIncrease</li>
@@ -1669,7 +1669,7 @@ PROSE = {"label", "description", "labelShortAdj", "labelNoun", "labelPlural",
 # Only the DEFS. A PatchOperation naming a donor def is guarded by
 # PatchOperationConditional or PatchOperationFindMod and becomes a no-op when
 # that mod leaves; a def is not.
-PATCHES = os.path.join(REPO, "src/Jawa/Jawa_Patches/Defs")
+PATCHES = os.path.join(REPO, "src/SPLIT_Phase3/Jawa_Patches/Defs")
 
 
 def scan_defs(root):

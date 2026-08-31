@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using RimWorld;
 using Verse;
 
-namespace JawaIkee
+namespace RimMandrake.StarWars.JawaIkee
 {
     /// <summary>
     /// Which xenotypes are COMFORTED by an ikee rather than unsettled by it.

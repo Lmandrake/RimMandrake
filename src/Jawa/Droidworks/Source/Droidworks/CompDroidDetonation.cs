@@ -2,7 +2,7 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace Droidworks
+namespace RimMandrake.StarWars.Droidworks
 {
     public class CompProperties_DroidDetonation : CompProperties
     {

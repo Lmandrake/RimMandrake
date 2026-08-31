@@ -5,7 +5,7 @@
     mod DLL must target net472. There is no Visual Studio or targeting pack on
     this machine, so Microsoft.NETFramework.ReferenceAssemblies supplies the
     reference assemblies from NuGet instead. Same recipe as JawaRules
-    (src/RimMandrake/JawaRules/Source/JawaRules.csproj).
+    (src/RimStarWars/JawaRules/Source/JawaRules.csproj).
 
     Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
       "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\SacredGraffiti\Source\SacredGraffiti.csproj -c Release
@@ -21,7 +21,7 @@
     <TargetFramework>net472</TargetFramework>
     <LangVersion>latest</LangVersion>
     <AssemblyName>SacredGraffiti</AssemblyName>
-    <RootNamespace>RimMandrake.SacredGraffiti</RootNamespace>
+    <RootNamespace>Rimmandrake.rm.sacredgraffiti</RootNamespace>
     <Version>1.0.0</Version>
 
     <OutputPath>..\Assemblies\</OutputPath>

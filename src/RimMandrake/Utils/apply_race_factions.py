@@ -22,7 +22,7 @@ not the owner's.
 🔴 A FactionDef carrying the marker FROZEN-XENOTYPESET is SKIPPED, not rewritten.
 Measured 2026-08-21: `Jawa_FreeDroidEnclaves` was hand-emptied on the owner's ruling of
 2026-08-19 (a droid enclave generating Ugnaughts), but the matrix still grades
-`RimMandrakeUgnaught` for it, so --apply refilled it at 1.000 - silently, in valid XML,
+`RSW_RimMandrakeUgnaught` for it, so --apply refilled it at 1.000 - silently, in valid XML,
 visible only as a pawn. `--thaw-frozen` overrides the skip and is almost never right:
 the honest fix is to clear that cell in the matrix.
 """
@@ -34,12 +34,12 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
 DEC = os.path.join(REPO, "design/Jawa/worldbuilding/review/race_faction_assignment.prefill.json")
-FACDIR = os.path.join(REPO, "src/Jawa/Jawa_Patches/Defs/FactionDefs")
-PATCH = os.path.join(REPO, "src/Jawa/Jawa_Patches/Patches/VanillaFaction_Xenotypes.xml")
+FACDIR = os.path.join(REPO, "src/SPLIT_Phase3/Jawa_Patches/Defs/FactionDefs")
+PATCH = os.path.join(REPO, "src/SPLIT_Phase3/Jawa_Patches/Patches/VanillaFaction_Xenotypes.xml")
 
 WEIGHT = {"A": 30, "S": 10, "R": 3}
 VANILLA = {"Empire", "OutlanderCivil", "TribeCivil", "Pirate"}
-MAYREQ = ' MayRequire="mandrake.starwarsraces"'
+MAYREQ = ' MayRequire="mandrake.rsw.starwarsraces"'
 
 
 def main():

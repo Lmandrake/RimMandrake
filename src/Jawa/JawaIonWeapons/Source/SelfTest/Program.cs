@@ -43,11 +43,11 @@
 //   python3 src/RimMandrake/Utils/selftest_stun_scaling.py
 
 using System;
-using JawaIonWeapons;
+using RimMandrake.StarWars.JawaIonWeapons;
 using RimWorld;
 using Verse;
 
-namespace JawaIonWeapons.SelfTest
+namespace RimMandrake.StarWars.JawaIonWeapons.SelfTest
 {
     internal static class Program
     {

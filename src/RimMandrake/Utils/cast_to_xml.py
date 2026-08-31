@@ -55,7 +55,7 @@ and it was wrong in the direction that hides a real defect. It used to say
 `guy762_KelDorMask` "is real, is authored, and is absent from [the reduced
 dump], while it is present in the 578-mod live capture." It is NOT present in
 the 578-mod capture. `guy762.StarWarsXenotypes` was deliberately switched OFF
-and consolidated into `mandrake.starwarsraces` (item C36; canon.yml:829), so
+and consolidated into `mandrake.rsw.starwarsraces` (item C36; canon.yml:829), so
 the def does not exist in the running game at all -- the 578-mod load logs
 `Could not resolve cross-reference to Verse.ThingDef named guy762_KelDorMask
 (wanter=apparel)` twice, once for each cast roster that still asks for it.

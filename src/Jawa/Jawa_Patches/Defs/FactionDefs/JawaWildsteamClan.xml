@@ -34,7 +34,7 @@
 
   Pawn kinds verified present in the 2026-08-14 dump (585 mods) and mapped to
   their owning mod for `MayRequire`:
-      RimMandrake_Wookiee · RimMandrake_WookieeTribal      mandrake.starwarsraces
+      RSW_Wookiee · RSW_WookieeTribal      mandrake.rsw.starwarsraces
       Bantha                                     Mlie.StarWarsAnimalCollection
       Muffalo                                    vanilla Core, no MayRequire
   ============================================================================
@@ -139,14 +139,14 @@
          nothing depends on them. -->
     <xenotypeSet Inherit="False">
       <xenotypeChances>
-        <RimMandrakeLasat MayRequire="mandrake.starwarsraces">0.283</RimMandrakeLasat>
-        <RimMandrakeWookiee MayRequire="mandrake.starwarsraces">0.283</RimMandrakeWookiee>
-        <RimMandrakeEwok MayRequire="mandrake.starwarsraces">0.094</RimMandrakeEwok>
-        <RimMandrakeIthorian MayRequire="mandrake.starwarsraces">0.094</RimMandrakeIthorian>
-        <RimMandrakeTogorian MayRequire="mandrake.starwarsraces">0.094</RimMandrakeTogorian>
-        <RimMandrakeTogruta MayRequire="mandrake.starwarsraces">0.094</RimMandrakeTogruta>
+        <RSW_RimMandrakeLasat MayRequire="mandrake.rsw.starwarsraces">0.283</RSW_RimMandrakeLasat>
+        <RSW_RimMandrakeWookiee MayRequire="mandrake.rsw.starwarsraces">0.283</RSW_RimMandrakeWookiee>
+        <RSW_RimMandrakeEwok MayRequire="mandrake.rsw.starwarsraces">0.094</RSW_RimMandrakeEwok>
+        <RSW_RimMandrakeIthorian MayRequire="mandrake.rsw.starwarsraces">0.094</RSW_RimMandrakeIthorian>
+        <RSW_RimMandrakeTogorian MayRequire="mandrake.rsw.starwarsraces">0.094</RSW_RimMandrakeTogorian>
+        <RSW_RimMandrakeTogruta MayRequire="mandrake.rsw.starwarsraces">0.094</RSW_RimMandrakeTogruta>
         <Baseliner>0.028</Baseliner>
-        <RimMandrakeCathar MayRequire="mandrake.starwarsraces">0.028</RimMandrakeCathar>
+        <RSW_RimMandrakeCathar MayRequire="mandrake.rsw.starwarsraces">0.028</RSW_RimMandrakeCathar>
       </xenotypeChances>
     </xenotypeSet>
 
@@ -169,11 +169,11 @@
       <li>
         <kindDef>Trader</kindDef>
         <traders>
-          <RimMandrake_Wookiee MayRequire="mandrake.starwarsraces">1</RimMandrake_Wookiee>
+          <RSW_Wookiee MayRequire="mandrake.rsw.starwarsraces">1</RSW_Wookiee>
         </traders>
         <guards>
-          <RimMandrake_WookieeTribal MayRequire="mandrake.starwarsraces">6</RimMandrake_WookieeTribal>
-          <RimMandrake_Wookiee MayRequire="mandrake.starwarsraces">3</RimMandrake_Wookiee>
+          <RSW_WookieeTribal MayRequire="mandrake.rsw.starwarsraces">6</RSW_WookieeTribal>
+          <RSW_Wookiee MayRequire="mandrake.rsw.starwarsraces">3</RSW_Wookiee>
         </guards>
         <carriers>
           <Muffalo>6</Muffalo>

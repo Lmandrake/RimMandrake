@@ -1,7 +1,7 @@
 using Verse;
 using Verse.AI.Group;
 
-namespace Inhabited
+namespace RimMandrake.Inhabited
 {
     /// <summary>
     /// The people who live here. Not a visitor arc, not a trade caravan: the

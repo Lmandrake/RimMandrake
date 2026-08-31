@@ -8,7 +8,7 @@
        cut defs BY NAME (fixedChild/fixedAdultBackstories + forcedTraits) — a
        latent cross-reference error, not just an empty pool. This repoints the
        fixed slots at the Jawa_PawnFlavor Rakata solids and drops the dead
-       forcedTraits (Jawa_RakataFleshShaped forces BodyPurist itself).
+       forcedTraits (RUT_Jawa_RakataFleshShaped forces BodyPurist itself).
        The shuffled VQE_AncientPatient pool needs no patch — Jawa_PawnFlavor's
        Rakata backstories carry that spawnCategory directly.
        Jawa_PawnFlavor always rides alongside this mod, so the defNames in the
@@ -24,7 +24,7 @@
           <xpath>Defs/PawnKindDef[defName="VQE_Experiment"]/fixedChildBackstories</xpath>
           <value>
             <fixedChildBackstories>
-              <li>Jawa_RakataTakenChild</li>
+              <li>RUT_Jawa_RakataTakenChild</li>
             </fixedChildBackstories>
           </value>
         </li>
@@ -32,7 +32,7 @@
           <xpath>Defs/PawnKindDef[defName="VQE_Experiment"]/fixedAdultBackstories</xpath>
           <value>
             <fixedAdultBackstories>
-              <li>Jawa_RakataFleshShaped</li>
+              <li>RUT_Jawa_RakataFleshShaped</li>
             </fixedAdultBackstories>
           </value>
         </li>
@@ -74,7 +74,7 @@
           <value>
             <xenotypeSet Inherit="False">
               <xenotypeChances Inherit="False">
-                <RimMandrakeRakata MayRequire="mandrake.starwarsraces">1.0</RimMandrakeRakata>
+                <RSW_RimMandrakeRakata MayRequire="mandrake.rsw.starwarsraces">1.0</RSW_RimMandrakeRakata>
               </xenotypeChances>
             </xenotypeSet>
             <useFactionXenotypes>false</useFactionXenotypes>
@@ -85,7 +85,7 @@
           <value>
             <xenotypeSet Inherit="False">
               <xenotypeChances Inherit="False">
-                <RimMandrakeRakata MayRequire="mandrake.starwarsraces">1.0</RimMandrakeRakata>
+                <RSW_RimMandrakeRakata MayRequire="mandrake.rsw.starwarsraces">1.0</RSW_RimMandrakeRakata>
               </xenotypeChances>
             </xenotypeSet>
             <useFactionXenotypes>false</useFactionXenotypes>

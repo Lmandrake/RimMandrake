@@ -13,14 +13,14 @@
 -->
 <Defs>
   <GeneDef ParentName="RimMandrake_GeneHeadBase">
-    <defName>RimMandrake_AbednedoHead</defName>
+    <defName>RSW_AbednedoHead</defName>
     <label>abednedo head</label>
     <description>Carriers of this gene have the Abednedo racial head type.</description>
     <iconPath>RimMandrakeSW/OR/OuterRim/GeneIcons/Gene_AbednedoHead</iconPath>
     <biostatCpx>1</biostatCpx>
     <biostatMet>0</biostatMet>
     <forcedHeadTypes>
-      <li>RimMandrake_Abednedo_Normal</li>
+      <li>RSW_Abednedo_Normal</li>
     </forcedHeadTypes>
     <displayOrderInCategory>9100</displayOrderInCategory>
     <symbolPack>
@@ -32,19 +32,19 @@
     </symbolPack>
   </GeneDef>
   <GeneDef>
-    <defName>RimMandrake_AbilityGene_JumpLegs</defName>
+    <defName>RSW_AbilityGene_JumpLegs</defName>
     <label>jump legs</label>
     <description>Carriers have powerful legs which allow them to jump great distances.</description>
     <iconPath>UI/Icons/Genes/Gene_LongJumpLegs</iconPath>
     <displayOrderInCategory>702</displayOrderInCategory>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <biostatCpx>2</biostatCpx>
     <biostatMet>-2</biostatMet>
     <abilities>
-      <li>RimMandrake_GeneAbility_jump</li>
+      <li>RSW_GeneAbility_jump</li>
     </abilities>
     <descriptionHyperlinks>
-      <AbilityDef>RimMandrake_GeneAbility_jump</AbilityDef>
+      <AbilityDef>RSW_GeneAbility_jump</AbilityDef>
     </descriptionHyperlinks>
     <symbolPack>
       <wholeNameSymbols>
@@ -81,31 +81,31 @@
     </symbolPack>
   </GeneDef>
   <GeneDef>
-    <defName>RimMandrake_AbilityGene_inkspray</defName>
+    <defName>RSW_AbilityGene_inkspray</defName>
     <label>ink spray</label>
     <description>Carriers grow glands in the neck that generate and store a sticky ink substance. They can spew this ink over an area, where it will stick to enemies and blind them.</description>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_InkSpray</iconPath>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <marketValueFactor>1.5</marketValueFactor>
     <abilities>
-      <li>RimMandrake_GeneAbility_ink</li>
+      <li>RSW_GeneAbility_ink</li>
     </abilities>
     <descriptionHyperlinks>
-      <AbilityDef>RimMandrake_GeneAbility_ink</AbilityDef>
+      <AbilityDef>RSW_GeneAbility_ink</AbilityDef>
     </descriptionHyperlinks>
     <biostatCpx>2</biostatCpx>
     <biostatMet>-1</biostatMet>
   </GeneDef>
   <GeneDef ParentName="RimMandrake_GeneHeadBase">
-    <defName>RimMandrake_AqualishHead</defName>
+    <defName>RSW_AqualishHead</defName>
     <label>aqualish head</label>
     <description>Carriers of this gene have the Aqualish racial head type.</description>
     <iconPath>RimMandrakeSW/OR/OuterRim/GeneIcons/Gene_AqualishHead</iconPath>
     <biostatCpx>1</biostatCpx>
     <biostatMet>0</biostatMet>
     <forcedHeadTypes>
-      <li>RimMandrake_Aqualish_Duo</li>
-      <li>RimMandrake_Aqualish_Quad</li>
+      <li>RSW_Aqualish_Duo</li>
+      <li>RSW_Aqualish_Quad</li>
     </forcedHeadTypes>
     <displayOrderInCategory>9100</displayOrderInCategory>
     <symbolPack>
@@ -117,13 +117,13 @@
     </symbolPack>
   </GeneDef>
   <GeneDef ParentName="GeneBeardStyleBase">
-    <defName>RimMandrake_Beard_Chops</defName>
+    <defName>RSW_Beard_Chops</defName>
     <label>sideburns</label>
     <labelShortAdj>sideburns</labelShortAdj>
     <description>Carriers of this gene grow sideburns.</description>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_BeardStyleSideburnsOnly</iconPath>
     <displayOrderInCategory>767</displayOrderInCategory>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <beardTagFilter>
       <whitelist>true</whitelist>
       <tags>
@@ -132,11 +132,11 @@
     </beardTagFilter>
   </GeneDef>
   <GeneDef>
-    <defName>RimMandrake_Beard_chinspines</defName>
+    <defName>RSW_Beard_chinspines</defName>
     <label>chin spines</label>
     <description>Carriers of this gene grow flexible spines on their chins.</description>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_ChinSpines</iconPath>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <iconColor>(0.75, 0.75, 0.75)</iconColor>
     <displayOrderInCategory>770</displayOrderInCategory>
     <biostatCpx>0</biostatCpx>
@@ -163,11 +163,11 @@
     </renderNodeProperties>
   </GeneDef>
   <GeneDef>
-    <defName>RimMandrake_Beard_chintendril</defName>
+    <defName>RSW_Beard_chintendril</defName>
     <label>chin tendrils</label>
     <description>Carriers of this gene grow two large tendrils on their chins.</description>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_ChinTendril</iconPath>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <iconColor>(0.75, 0.75, 0.75)</iconColor>
     <displayOrderInCategory>773</displayOrderInCategory>
     <biostatCpx>0</biostatCpx>
@@ -197,11 +197,11 @@
     </renderNodeProperties>
   </GeneDef>
   <GeneDef>
-    <defName>RimMandrake_Beard_fishmouth</defName>
+    <defName>RSW_Beard_fishmouth</defName>
     <label>jowled mouth</label>
     <description>Carriers of this gene grow large, fishy jowls.</description>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_SelkathMouth</iconPath>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <displayOrderInCategory>784</displayOrderInCategory>
     <biostatCpx>0</biostatCpx>
     <renderNodeProperties>
@@ -223,14 +223,14 @@
         </drawData>
       </li>
     </renderNodeProperties>
-    <prerequisite>RimMandrake_Head_selkath</prerequisite>
+    <prerequisite>RSW_Head_selkath</prerequisite>
   </GeneDef>
   <GeneDef>
-    <defName>RimMandrake_Beard_fourtusks</defName>
+    <defName>RSW_Beard_fourtusks</defName>
     <label>four tusks</label>
     <description>Carriers of this gene grow four large tusks.</description>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_FourTusks</iconPath>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <displayOrderInCategory>788</displayOrderInCategory>
     <iconColor>(0.75, 0.75, 0.75)</iconColor>
     <biostatCpx>0</biostatCpx>
@@ -259,11 +259,11 @@
     </renderNodeProperties>
   </GeneDef>
   <GeneDef>
-    <defName>RimMandrake_Beard_hugetusks</defName>
+    <defName>RSW_Beard_hugetusks</defName>
     <label>huge tusks</label>
     <description>Carriers of this gene grow two huge tusks.</description>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_HugeTusks</iconPath>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <displayOrderInCategory>788</displayOrderInCategory>
     <iconColor>(0.75, 0.75, 0.75)</iconColor>
     <biostatCpx>0</biostatCpx>
@@ -293,11 +293,11 @@
     </renderNodeProperties>
   </GeneDef>
   <GeneDef>
-    <defName>RimMandrake_Beard_squidmouth</defName>
+    <defName>RSW_Beard_squidmouth</defName>
     <label>tentacle mouth</label>
     <description>Carriers of this gene grow facial tentacles and large tusks.</description>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_SquidMouth</iconPath>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <displayOrderInCategory>783</displayOrderInCategory>
     <biostatCpx>0</biostatCpx>
     <renderNodeProperties>
@@ -320,14 +320,14 @@
     </renderNodeProperties>
   </GeneDef>
   <GeneDef ParentName="RimMandrake_GeneHeadBase">
-    <defName>RimMandrake_BithHead</defName>
+    <defName>RSW_BithHead</defName>
     <label>bith head</label>
     <description>Carriers of this gene have the Bith racial head type.</description>
     <iconPath>RimMandrakeSW/OR/OuterRim/GeneIcons/Gene_BithHead</iconPath>
     <biostatCpx>1</biostatCpx>
     <biostatMet>0</biostatMet>
     <forcedHeadTypes>
-      <li>RimMandrake_Bith_Normal</li>
+      <li>RSW_Bith_Normal</li>
     </forcedHeadTypes>
     <displayOrderInCategory>9100</displayOrderInCategory>
     <symbolPack>
@@ -339,13 +339,13 @@
     </symbolPack>
   </GeneDef>
   <GeneDef ParentName="GeneTailBase">
-    <defName>RimMandrake_BodyAttachment_falleen</defName>
+    <defName>RSW_BodyAttachment_falleen</defName>
     <label>ridged spine</label>
     <description>Carriers of this gene grow pronounced, ridged spines.</description>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_RidgedSpine</iconPath>
     <iconColor>(0.75, 0.75, 0.75)</iconColor>
     <displayOrderInCategory>785</displayOrderInCategory>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <renderNodeProperties>
       <li>
         <workerClass>PawnRenderNodeWorker_AttachmentBody</workerClass>
@@ -376,7 +376,7 @@
     </renderNodeProperties>
   </GeneDef>
   <GeneDef Name="RimMandrake_BodySizeGene_base" Abstract="True">
-    <displayCategory>RimMandrake_BodySize_Category</displayCategory>
+    <displayCategory>RSW_BodySize_Category</displayCategory>
     <exclusionTags>
       <li>BodySize</li>
     </exclusionTags>
@@ -387,7 +387,7 @@
     <endogeneCategory>BodyType</endogeneCategory>
   </GeneDef>
   <GeneDef ParentName="RimMandrake_BodySizeGene_base">
-    <defName>RimMandrake_BodySizeGene_big</defName>
+    <defName>RSW_BodySizeGene_big</defName>
     <label>Big Frame</label>
     <description>taller-than-normal</description>
     <exclusionTags>
@@ -403,7 +403,7 @@
     <selectionWeight>0.0</selectionWeight>
   </GeneDef>
   <GeneDef ParentName="RimMandrake_BodySizeGene_base">
-    <defName>RimMandrake_BodySizeGene_bigger</defName>
+    <defName>RSW_BodySizeGene_bigger</defName>
     <label>Bigger Frame</label>
     <description>wookiee size</description>
     <exclusionTags>
@@ -419,7 +419,7 @@
     <selectionWeight>0.0</selectionWeight>
   </GeneDef>
   <GeneDef ParentName="RimMandrake_BodySizeGene_base">
-    <defName>RimMandrake_BodySizeGene_biggest</defName>
+    <defName>RSW_BodySizeGene_biggest</defName>
     <label>Biggest Frame</label>
     <description>hutt size</description>
     <exclusionTags>
@@ -435,7 +435,7 @@
     <selectionWeight>0.0</selectionWeight>
   </GeneDef>
   <GeneDef ParentName="RimMandrake_BodySizeGene_base">
-    <defName>RimMandrake_BodySizeGene_small</defName>
+    <defName>RSW_BodySizeGene_small</defName>
     <label>Small Frame</label>
     <description>shorter-than-normal</description>
     <exclusionTags>
@@ -451,7 +451,7 @@
     <selectionWeight>0.0</selectionWeight>
   </GeneDef>
   <GeneDef ParentName="RimMandrake_BodySizeGene_base">
-    <defName>RimMandrake_BodySizeGene_smaller</defName>
+    <defName>RSW_BodySizeGene_smaller</defName>
     <label>Smaller Frame</label>
     <description>jawa size</description>
     <exclusionTags>
@@ -467,7 +467,7 @@
     <selectionWeight>0.0</selectionWeight>
   </GeneDef>
   <GeneDef ParentName="RimMandrake_BodySizeGene_base">
-    <defName>RimMandrake_BodySizeGene_smallest</defName>
+    <defName>RSW_BodySizeGene_smallest</defName>
     <label>Smallest Frame</label>
     <description>yoda size</description>
     <exclusionTags>
@@ -483,7 +483,7 @@
     <selectionWeight>0.0</selectionWeight>
   </GeneDef>
   <GeneDef>
-    <defName>RimMandrake_Body_gaunt</defName>
+    <defName>RSW_Body_gaunt</defName>
     <label>gaunt body</label>
     <labelShortAdj>gaunt body</labelShortAdj>
     <description>Carriers of this gene have a thin, bony body.</description>
@@ -492,11 +492,11 @@
     </exclusionTags>
     <biostatCpx>1</biostatCpx>
     <selectionWeight>0</selectionWeight>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <displayOrderInCategory>801</displayOrderInCategory>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_GauntBody</iconPath>
     <bodyType>Thin</bodyType>
-    <fur>RimMandrake_FurDef_gaunt</fur>
+    <fur>RSW_FurDef_gaunt</fur>
     <tattoosVisible>true</tattoosVisible>
     <skinIsHairColor>false</skinIsHairColor>
     <renderNodeProperties Inherit="False">
@@ -513,15 +513,15 @@
     </renderNodeProperties>
   </GeneDef>
   <GeneDef ParentName="RimMandrake_GeneHeadBase">
-    <defName>RimMandrake_BothanHead</defName>
+    <defName>RSW_BothanHead</defName>
     <label>bothan head</label>
     <description>Carriers of this gene have the Bothan racial head type.</description>
     <iconPath>RimMandrakeSW/OR/OuterRim/GeneIcons/Gene_BothanHead</iconPath>
     <biostatCpx>1</biostatCpx>
     <biostatMet>0</biostatMet>
     <forcedHeadTypes>
-      <li>RimMandrake_Bothan_MaleNormal</li>
-      <li>RimMandrake_Bothan_FemaleNormal</li>
+      <li>RSW_Bothan_MaleNormal</li>
+      <li>RSW_Bothan_FemaleNormal</li>
     </forcedHeadTypes>
     <displayOrderInCategory>9100</displayOrderInCategory>
     <symbolPack>
@@ -533,11 +533,11 @@
     </symbolPack>
   </GeneDef>
   <GeneDef>
-    <defName>RimMandrake_Brow_Ridged</defName>
+    <defName>RSW_Brow_Ridged</defName>
     <label>ridged brow</label>
     <description>Carriers of this gene have a spiny, ridged brow.</description>
     <biostatCpx>0</biostatCpx>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_RidgedBrow</iconPath>
     <displayOrderInCategory>790</displayOrderInCategory>
     <iconColor>(0.75, 0.75, 0.75)</iconColor>
@@ -568,11 +568,11 @@
     </renderNodeProperties>
   </GeneDef>
   <GeneDef>
-    <defName>RimMandrake_Brow_facespines</defName>
+    <defName>RSW_Brow_facespines</defName>
     <label>facial spines</label>
     <description>Carriers of this gene grow pointy spines on their face.</description>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_FaceSpines</iconPath>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <iconColor>(0.75, 0.75, 0.75)</iconColor>
     <displayOrderInCategory>786</displayOrderInCategory>
     <biostatCpx>0</biostatCpx>
@@ -603,11 +603,11 @@
     </renderNodeProperties>
   </GeneDef>
   <GeneDef>
-    <defName>RimMandrake_Brow_pointy</defName>
+    <defName>RSW_Brow_pointy</defName>
     <label>pointed brow</label>
     <description>Carriers of this gene have a prominent, pointed brow.</description>
     <biostatCpx>0</biostatCpx>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_PointyBrow</iconPath>
     <displayOrderInCategory>761</displayOrderInCategory>
     <iconColor>(0.75, 0.75, 0.75)</iconColor>
@@ -631,15 +631,15 @@
     </renderNodeProperties>
   </GeneDef>
   <GeneDef ParentName="RimMandrake_GeneHeadBase">
-    <defName>RimMandrake_CatharHead</defName>
+    <defName>RSW_CatharHead</defName>
     <label>cathar head</label>
     <description>Carriers of this gene have the Cathar racial head type.</description>
     <iconPath>RimMandrakeSW/OR/OuterRim/GeneIcons/Gene_CatharHead</iconPath>
     <biostatCpx>1</biostatCpx>
     <biostatMet>0</biostatMet>
     <forcedHeadTypes>
-      <li>RimMandrake_Cathar_MaleNormal</li>
-      <li>RimMandrake_Cathar_FemaleNormal</li>
+      <li>RSW_Cathar_MaleNormal</li>
+      <li>RSW_Cathar_FemaleNormal</li>
     </forcedHeadTypes>
     <displayOrderInCategory>9100</displayOrderInCategory>
     <symbolPack>
@@ -651,7 +651,7 @@
     </symbolPack>
   </GeneDef>
   <GeneDef ParentName="RimMandrake_GeneHeadBase">
-    <defName>RimMandrake_CereanHead</defName>
+    <defName>RSW_CereanHead</defName>
     <label>cerean head</label>
     <description>Carriers of this gene have the Cerean racial head type.</description>
     <iconPath>RimMandrakeSW/OR/OuterRim/GeneIcons/Gene_CereanHead</iconPath>
@@ -663,12 +663,12 @@
     <hairTagFilter>
       <whitelist>true</whitelist>
       <tags>
-        <li>RimMandrake_Cerean</li>
+        <li>RSW_Cerean</li>
       </tags>
     </hairTagFilter>
     <forcedHeadTypes>
-      <li>RimMandrake_Cerean_MaleNormal</li>
-      <li>RimMandrake_Cerean_FemaleNormal</li>
+      <li>RSW_Cerean_MaleNormal</li>
+      <li>RSW_Cerean_FemaleNormal</li>
     </forcedHeadTypes>
     <displayOrderInCategory>9100</displayOrderInCategory>
     <symbolPack>
@@ -680,7 +680,7 @@
     </symbolPack>
   </GeneDef>
   <GeneDef ParentName="RimMandrake_GeneHeadboneHornBase">
-    <defName>RimMandrake_ChagrianHorns</defName>
+    <defName>RSW_ChagrianHorns</defName>
     <label>horns (Chagrian)</label>
     <description>Carriers of this gene grow two large tentacles either side of their head with horns protruding from the ends resting on the chest and inner shoulders. Males having a set of upright horns from their skulls.</description>
     <iconPath>RimMandrakeSW/OR/OuterRim/Genes/Headbone/Chagrian</iconPath>
@@ -707,21 +707,21 @@
     <prerequisite>Hair_BaldOnly</prerequisite>
   </GeneDef>
   <GeneDef ParentName="RimMandrake_GeneHeadBase">
-    <defName>RimMandrake_DathomirianHead</defName>
+    <defName>RSW_DathomirianHead</defName>
     <label>dathomirian head</label>
     <description>Carriers of this gene have the Dathomirian racial head type.</description>
     <iconPath>RimMandrakeSW/OR/OuterRim/GeneIcons/Gene_DathomirianHead</iconPath>
     <biostatCpx>1</biostatCpx>
     <biostatMet>0</biostatMet>
     <forcedHeadTypes>
-      <li>RimMandrake_Dathomirian_Male0</li>
-      <li>RimMandrake_Dathomirian_Male1</li>
-      <li>RimMandrake_Dathomirian_Male2</li>
-      <li>RimMandrake_Dathomirian_Male3</li>
-      <li>RimMandrake_Dathomirian_Female0</li>
-      <li>RimMandrake_Dathomirian_Female1</li>
-      <li>RimMandrake_Dathomirian_Female2</li>
-      <li>RimMandrake_Dathomirian_Female3</li>
+      <li>RSW_Dathomirian_Male0</li>
+      <li>RSW_Dathomirian_Male1</li>
+      <li>RSW_Dathomirian_Male2</li>
+      <li>RSW_Dathomirian_Male3</li>
+      <li>RSW_Dathomirian_Female0</li>
+      <li>RSW_Dathomirian_Female1</li>
+      <li>RSW_Dathomirian_Female2</li>
+      <li>RSW_Dathomirian_Female3</li>
     </forcedHeadTypes>
     <displayOrderInCategory>9100</displayOrderInCategory>
     <symbolPack>
@@ -733,7 +733,7 @@
     </symbolPack>
   </GeneDef>
   <GeneDef ParentName="RimMandrake_GeneHeadboneHornBase">
-    <defName>RimMandrake_DevaronianHorns</defName>
+    <defName>RSW_DevaronianHorns</defName>
     <label>horns (devaronian)</label>
     <description>Carriers of this gene grow two small horns protruding from the forehead. Male horns are much more prominent while female horns are barely more than bumps.</description>
     <iconPath>RimMandrakeSW/OR/Outland/Genes/Horns/Common/LongProng</iconPath>
@@ -779,15 +779,15 @@
     </symbolPack>
   </GeneDef>
   <GeneDef ParentName="RimMandrake_GeneHeadBase">
-    <defName>RimMandrake_DurosHead</defName>
+    <defName>RSW_DurosHead</defName>
     <label>duros head</label>
     <description>Carriers of this gene have the Duros racial head type.</description>
     <iconPath>RimMandrakeSW/OR/OuterRim/GeneIcons/Gene_DurosHead</iconPath>
     <biostatCpx>1</biostatCpx>
     <biostatMet>0</biostatMet>
     <forcedHeadTypes>
-      <li>RimMandrake_Duros_MaleNormal</li>
-      <li>RimMandrake_Duros_FemaleNormal</li>
+      <li>RSW_Duros_MaleNormal</li>
+      <li>RSW_Duros_FemaleNormal</li>
     </forcedHeadTypes>
     <displayOrderInCategory>9100</displayOrderInCategory>
     <symbolPack>
@@ -799,11 +799,11 @@
     </symbolPack>
   </GeneDef>
   <GeneDef ParentName="GeneEarsBase">
-    <defName>RimMandrake_Ears_BigCat</defName>
+    <defName>RSW_Ears_BigCat</defName>
     <label>big cat ears</label>
     <description>Carriers of this gene have large, cat-like ears.</description>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_EarCatBig</iconPath>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <renderNodeProperties>
       <li>
         <nodeClass>PawnRenderNode_AttachmentHead</nodeClass>
@@ -859,11 +859,11 @@
     </symbolPack>
   </GeneDef>
   <GeneDef ParentName="GeneEarsBase">
-    <defName>RimMandrake_Ears_big</defName>
+    <defName>RSW_Ears_big</defName>
     <label>big ears</label>
     <description>Carriers of this gene will grow larger-than-usual ears.</description>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_BigEar</iconPath>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <renderNodeProperties>
       <li>
         <nodeClass>PawnRenderNode_AttachmentHead</nodeClass>
@@ -884,11 +884,11 @@
     </renderNodeProperties>
   </GeneDef>
   <GeneDef ParentName="GeneEarsBase">
-    <defName>RimMandrake_Ears_fin</defName>
+    <defName>RSW_Ears_fin</defName>
     <label>fin ears</label>
     <description>Carriers of this gene will grow large, pointed, fin-like ears.</description>
     <displayOrderInCategory>782</displayOrderInCategory>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_EarFin</iconPath>
     <renderNodeProperties>
       <li>
@@ -913,11 +913,11 @@
     </renderNodeProperties>
   </GeneDef>
   <GeneDef ParentName="GeneEarsBase">
-    <defName>RimMandrake_Ears_round</defName>
+    <defName>RSW_Ears_round</defName>
     <label>round ears</label>
     <description>Carriers of this gene will grow round, bear-like ears.</description>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_EarRound</iconPath>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <renderNodeProperties>
       <li>
         <nodeClass>PawnRenderNode_AttachmentHead</nodeClass>
@@ -938,11 +938,11 @@
     </renderNodeProperties>
   </GeneDef>
   <GeneDef ParentName="GeneEarsBase">
-    <defName>RimMandrake_Ears_smallwebbed</defName>
+    <defName>RSW_Ears_smallwebbed</defName>
     <label>small webbed ears</label>
     <description>Carriers of this gene grow small, floppy, webbed ears.</description>
     <displayOrderInCategory>784</displayOrderInCategory>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_SmallEarWebbed</iconPath>
     <renderNodeProperties>
       <li>
@@ -967,11 +967,11 @@
     </renderNodeProperties>
   </GeneDef>
   <GeneDef ParentName="GeneEarsBase">
-    <defName>RimMandrake_Ears_webbed</defName>
+    <defName>RSW_Ears_webbed</defName>
     <label>webbed ears</label>
     <description>Carriers of this gene grow huge, floppy, webbed ears.</description>
     <displayOrderInCategory>783</displayOrderInCategory>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_EarWebbed</iconPath>
     <renderNodeProperties>
       <li>
@@ -996,11 +996,11 @@
     </renderNodeProperties>
   </GeneDef>
   <GeneDef ParentName="GeneEarsBase">
-    <defName>RimMandrake_Ears_weirdflap</defName>
+    <defName>RSW_Ears_weirdflap</defName>
     <label>flap ears</label>
     <description>Carriers of this gene grow large, bumpy, flap ears.</description>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_EarFlap</iconPath>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <renderNodeProperties>
       <li>
         <nodeClass>PawnRenderNode_AttachmentHead</nodeClass>
@@ -1020,13 +1020,13 @@
     </renderNodeProperties>
   </GeneDef>
   <GeneDef ParentName="GeneEyeColor">
-    <defName>RimMandrake_Eyes_Big</defName>
+    <defName>RSW_Eyes_Big</defName>
     <label>big eyes</label>
     <labelShortAdj>big-eyed</labelShortAdj>
     <description>Carriers of this gene have large, black eyes.</description>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_BigEyes</iconPath>
     <displayOrderInCategory>765</displayOrderInCategory>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <renderNodeProperties>
       <li Class="PawnRenderNodeProperties_Eye">
         <texPath>RimMandrakeSW/SWX/Pawn/HeadAttachments/bigeyes/bigeyes</texPath>
@@ -1063,7 +1063,7 @@
     </renderNodeProperties>
   </GeneDef>
   <GeneDef ParentName="GeneEyeColor">
-    <defName>RimMandrake_Eyes_BigGreen</defName>
+    <defName>RSW_Eyes_BigGreen</defName>
     <label>green big eyes</label>
     <labelShortAdj>big-eyed</labelShortAdj>
     <description>Carriers of this gene have large, green eyes.</description>
@@ -1105,7 +1105,7 @@
     </renderNodeProperties>
   </GeneDef>
   <GeneDef ParentName="GeneEyeColor">
-    <defName>RimMandrake_Eyes_BigOrange</defName>
+    <defName>RSW_Eyes_BigOrange</defName>
     <label>orange big eyes</label>
     <labelShortAdj>big-eyed</labelShortAdj>
     <description>Carriers of this gene have large, orange eyes.</description>
@@ -1147,7 +1147,7 @@
     </renderNodeProperties>
   </GeneDef>
   <GeneDef ParentName="GeneEyeColor">
-    <defName>RimMandrake_Eyes_BigRed</defName>
+    <defName>RSW_Eyes_BigRed</defName>
     <label>red big eyes</label>
     <labelShortAdj>big-eyed</labelShortAdj>
     <description>Carriers of this gene have large, red eyes.</description>
@@ -1189,7 +1189,7 @@
     </renderNodeProperties>
   </GeneDef>
   <GeneDef ParentName="GeneEyeColor">
-    <defName>RimMandrake_Eyes_BigYellow</defName>
+    <defName>RSW_Eyes_BigYellow</defName>
     <label>yellow big eyes</label>
     <labelShortAdj>big-eyed</labelShortAdj>
     <description>Carriers of this gene have large, yellow eyes.</description>
@@ -1231,7 +1231,7 @@
     </renderNodeProperties>
   </GeneDef>
   <GeneDef ParentName="GeneEyeColor">
-    <defName>RimMandrake_Eyes_Blue</defName>
+    <defName>RSW_Eyes_Blue</defName>
     <label>blue eyes</label>
     <labelShortAdj>blue-eyed</labelShortAdj>
     <description>Carriers of this gene have blue-pigmented eyes.</description>
@@ -1278,13 +1278,13 @@
     </renderNodeProperties>
   </GeneDef>
   <GeneDef ParentName="GeneEyeColor">
-    <defName>RimMandrake_Eyes_FourBig</defName>
+    <defName>RSW_Eyes_FourBig</defName>
     <label>four eyes</label>
     <labelShortAdj>four-eyed</labelShortAdj>
     <description>Carriers of this gene have two sets of large, black eyes.</description>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_FourEyes</iconPath>
     <displayOrderInCategory>787</displayOrderInCategory>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <renderNodeProperties>
       <li Class="PawnRenderNodeProperties_Eye">
         <texPath>RimMandrakeSW/SWX/Pawn/HeadAttachments/foureyes/foureyes</texPath>
@@ -1321,7 +1321,7 @@
     </renderNodeProperties>
   </GeneDef>
   <GeneDef ParentName="GeneEyeColor">
-    <defName>RimMandrake_Eyes_Green</defName>
+    <defName>RSW_Eyes_Green</defName>
     <label>green eyes</label>
     <labelShortAdj>green-eyed</labelShortAdj>
     <description>Carriers of this gene have green-pigmented eyes.</description>
@@ -1368,7 +1368,7 @@
     </renderNodeProperties>
   </GeneDef>
   <GeneDef ParentName="GeneEyeColor">
-    <defName>RimMandrake_Eyes_HugeRed</defName>
+    <defName>RSW_Eyes_HugeRed</defName>
     <label>red huge eyes</label>
     <labelShortAdj>big-eyed</labelShortAdj>
     <description>Carriers of this gene have huge red eyes.</description>
@@ -1410,7 +1410,7 @@
     </renderNodeProperties>
   </GeneDef>
   <GeneDef ParentName="GeneEyeColor">
-    <defName>RimMandrake_Eyes_HugeYellow</defName>
+    <defName>RSW_Eyes_HugeYellow</defName>
     <label>yellow huge eyes</label>
     <labelShortAdj>big-eyed</labelShortAdj>
     <description>Carriers of this gene have huge yellow eyes.</description>
@@ -1454,7 +1454,7 @@
     </renderNodeProperties>
   </GeneDef>
   <GeneDef ParentName="GeneEyeColor">
-    <defName>RimMandrake_Eyes_InvertedYellow</defName>
+    <defName>RSW_Eyes_InvertedYellow</defName>
     <label>yellow inverted eyes</label>
     <labelShortAdj>big-eyed</labelShortAdj>
     <description>Carriers of this gene have huge yellow eyes.</description>
@@ -1498,11 +1498,11 @@
     </renderNodeProperties>
   </GeneDef>
   <GeneDef>
-    <defName>RimMandrake_Face_jowls</defName>
+    <defName>RSW_Face_jowls</defName>
     <label>jowls</label>
     <description>Carriers of this gene have large, dog-like facial jowls.</description>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_Jowls</iconPath>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <iconColor>(0.75, 0.75, 0.75)</iconColor>
     <displayOrderInCategory>769</displayOrderInCategory>
     <biostatCpx>0</biostatCpx>
@@ -1535,15 +1535,15 @@
     </renderNodeProperties>
   </GeneDef>
   <GeneDef>
-    <defName>RimMandrake_Face_jowlsBigHead</defName>
+    <defName>RSW_Face_jowlsBigHead</defName>
     <label>jowls and forehead crease</label>
     <description>Carriers of this gene have large, dog-like facial jowls and a forehead crease.</description>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_BithJowls</iconPath>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <iconColor>(0.75, 0.75, 0.75)</iconColor>
     <displayOrderInCategory>768</displayOrderInCategory>
     <biostatCpx>0</biostatCpx>
-    <prerequisite>RimMandrake_Head_duros</prerequisite>
+    <prerequisite>RSW_Head_duros</prerequisite>
     <renderNodeProperties>
       <li>
         <nodeClass>PawnRenderNode_AttachmentHead</nodeClass>
@@ -1571,11 +1571,11 @@
     </renderNodeProperties>
   </GeneDef>
   <GeneDef>
-    <defName>RimMandrake_Face_pointyteeth</defName>
+    <defName>RSW_Face_pointyteeth</defName>
     <label>pointy teeth</label>
     <description>Carriers of this gene grow sharp, pointy teeth.</description>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_PointyTeeth</iconPath>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <iconColor>(0.75, 0.75, 0.75)</iconColor>
     <displayOrderInCategory>772</displayOrderInCategory>
     <biostatCpx>0</biostatCpx>
@@ -1607,11 +1607,11 @@
     </renderNodeProperties>
   </GeneDef>
   <GeneDef>
-    <defName>RimMandrake_Face_tusks</defName>
+    <defName>RSW_Face_tusks</defName>
     <label>large tusks</label>
     <description>Carriers of this gene grow large tusks.</description>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_Tusks</iconPath>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <iconColor>(0.75, 0.75, 0.75)</iconColor>
     <displayOrderInCategory>772</displayOrderInCategory>
     <biostatCpx>0</biostatCpx>
@@ -1643,11 +1643,11 @@
     </renderNodeProperties>
   </GeneDef>
   <GeneDef>
-    <defName>RimMandrake_FacialRidges_broad</defName>
+    <defName>RSW_FacialRidges_broad</defName>
     <label>broad facial ridges</label>
     <description>Carriers of this gene grow raised, broad ridges of skin on their face.</description>
     <iconPath>UI/Icons/Genes/Gene_FacialRidges</iconPath>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <iconColor>(0.75, 0.75, 0.75)</iconColor>
     <displayOrderInCategory>502</displayOrderInCategory>
     <biostatCpx>0</biostatCpx>
@@ -1679,11 +1679,11 @@
     </renderNodeProperties>
   </GeneDef>
   <GeneDef>
-    <defName>RimMandrake_FacialRidges_bumpy</defName>
+    <defName>RSW_FacialRidges_bumpy</defName>
     <label>bumpy facial ridges</label>
     <description>Carriers of this gene grow raised, bumpy ridges of skin on their face.</description>
     <iconPath>UI/Icons/Genes/Gene_FacialRidges</iconPath>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <iconColor>(0.75, 0.75, 0.75)</iconColor>
     <displayOrderInCategory>501</displayOrderInCategory>
     <biostatCpx>0</biostatCpx>
@@ -1716,11 +1716,11 @@
     </renderNodeProperties>
   </GeneDef>
   <GeneDef>
-    <defName>RimMandrake_FacialRidges_iridonian</defName>
+    <defName>RSW_FacialRidges_iridonian</defName>
     <label>facial creases</label>
     <description>Carriers of this gene have deep, elaborate creases on their face.</description>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_IridonianFace</iconPath>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <iconColor>(0.75, 0.75, 0.75)</iconColor>
     <displayOrderInCategory>503</displayOrderInCategory>
     <biostatCpx>0</biostatCpx>
@@ -1784,7 +1784,7 @@
     </renderNodeProperties>
   </GeneDef>
   <GeneDef ParentName="GeneSkinColorOverride">
-    <defName>RimMandrake_FemalePaleSkin</defName>
+    <defName>RSW_FemalePaleSkin</defName>
     <label>gray skin (female only)</label>
     <labelShortAdj>gray</labelShortAdj>
     <geneClass>VEF.Genes.GeneGendered</geneClass>
@@ -1803,27 +1803,27 @@
     </modExtensions>
   </GeneDef>
   <GeneDef MayRequire="OskarPotocki.VanillaFactionsExpanded.Core">
-    <defName>RimMandrake_Furskin_shortfur</defName>
+    <defName>RSW_Furskin_shortfur</defName>
     <label>short furskin</label>
     <labelShortAdj>furskinned</labelShortAdj>
     <description>Carriers of this gene grow thin fur all over their body, which protects them from cold temperatures. This is otherwise identical to regular furskin, save for the fact it uses the pawn's "skin" color instead.</description>
     <biostatCpx>1</biostatCpx>
     <biostatMet>-1</biostatMet>
     <displayOrderInCategory>776</displayOrderInCategory>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <iconPath>UI/Icons/Genes/Gene_Furskin</iconPath>
     <iconColor>(255,255,255)</iconColor>
     <forcedHeadTypes>
-      <li>RimMandrake_shortFurskin_Average1</li>
-      <li>RimMandrake_shortFurskin_Average2</li>
-      <li>RimMandrake_shortFurskin_Average3</li>
-      <li>RimMandrake_shortFurskin_Narrow1</li>
-      <li>RimMandrake_shortFurskin_Narrow2</li>
-      <li>RimMandrake_shortFurskin_Narrow3</li>
-      <li>RimMandrake_shortFurskin_Heavy1</li>
-      <li>RimMandrake_shortFurskin_Heavy2</li>
-      <li>RimMandrake_shortFurskin_Heavy3</li>
-      <li>RimMandrake_shortFurskin_Gaunt</li>
+      <li>RSW_shortFurskin_Average1</li>
+      <li>RSW_shortFurskin_Average2</li>
+      <li>RSW_shortFurskin_Average3</li>
+      <li>RSW_shortFurskin_Narrow1</li>
+      <li>RSW_shortFurskin_Narrow2</li>
+      <li>RSW_shortFurskin_Narrow3</li>
+      <li>RSW_shortFurskin_Heavy1</li>
+      <li>RSW_shortFurskin_Heavy2</li>
+      <li>RSW_shortFurskin_Heavy3</li>
+      <li>RSW_shortFurskin_Gaunt</li>
     </forcedHeadTypes>
     <beardTagFilter>
       <whitelist>true</whitelist>
@@ -1862,7 +1862,7 @@
     </modExtensions>
   </GeneDef>
   <GeneDef ParentName="GeneEyeColor">
-    <defName>RimMandrake_GS_Eyes_Yellow</defName>
+    <defName>RSW_GS_Eyes_Yellow</defName>
     <label>yellow eyes</label>
     <labelShortAdj>yellow-eyed</labelShortAdj>
     <description>Carriers of this gene have deeply yellow-pigmented eyes.</description>
@@ -1910,7 +1910,7 @@
     </renderNodeProperties>
   </GeneDef>
   <GeneDef>
-    <defName>RimMandrake_GS_Primitive</defName>
+    <defName>RSW_GS_Primitive</defName>
     <label>Primitive</label>
     <labelShortAdj>kind</labelShortAdj>
     <description>Carriers of this gene are very primitive and enjoy a much more simple life.</description>
@@ -1956,14 +1956,14 @@
     </modExtensions>
   </GeneDef>
   <GeneDef ParentName="RimMandrake_GeneHeadBase">
-    <defName>RimMandrake_GeonosianHead</defName>
+    <defName>RSW_GeonosianHead</defName>
     <label>geonosian head</label>
     <description>Carriers of this gene have the Geonosian racial head type.</description>
     <iconPath>RimMandrakeSW/OR/OuterRim/GeneIcons/Gene_GeonosianHead</iconPath>
     <biostatCpx>1</biostatCpx>
     <biostatMet>0</biostatMet>
     <forcedHeadTypes>
-      <li>RimMandrake_Geonosian_Normal</li>
+      <li>RSW_Geonosian_Normal</li>
     </forcedHeadTypes>
     <displayOrderInCategory>9100</displayOrderInCategory>
     <symbolPack>
@@ -1975,7 +1975,7 @@
     </symbolPack>
   </GeneDef>
   <GeneDef ParentName="RimMandrake_GeneEarsBase">
-    <defName>RimMandrake_GunganEars</defName>
+    <defName>RSW_GunganEars</defName>
     <label>ears (gungan)</label>
     <description>Carriers of this gene will grow long flat ears that trail from the back of their head.</description>
     <iconPath>RimMandrakeSW/OR/OuterRim/GeneIcons/Gene_GunganEars</iconPath>
@@ -2020,15 +2020,15 @@
     </symbolPack>
   </GeneDef>
   <GeneDef ParentName="RimMandrake_GeneHeadBase">
-    <defName>RimMandrake_GunganHead</defName>
+    <defName>RSW_GunganHead</defName>
     <label>gungan head</label>
     <description>Carriers of this gene have the Gungan racial head type.</description>
     <iconPath>RimMandrakeSW/OR/OuterRim/GeneIcons/Gene_GunganHead</iconPath>
     <biostatCpx>1</biostatCpx>
     <biostatMet>0</biostatMet>
     <forcedHeadTypes>
-      <li>RimMandrake_Gungan_MaleNormal</li>
-      <li>RimMandrake_Gungan_FemaleNormal</li>
+      <li>RSW_Gungan_MaleNormal</li>
+      <li>RSW_Gungan_FemaleNormal</li>
     </forcedHeadTypes>
     <displayOrderInCategory>9100</displayOrderInCategory>
     <symbolPack>
@@ -2040,47 +2040,47 @@
     </symbolPack>
   </GeneDef>
   <GeneDef ParentName="GeneHairColorBase">
-    <defName>RimMandrake_Hair_DarkBlue</defName>
+    <defName>RSW_Hair_DarkBlue</defName>
     <label>dark blue hair</label>
     <hairColorOverride>(30,40,80)</hairColorOverride>
     <selectionWeight>0.05</selectionWeight>
     <displayOrderInCategory>139</displayOrderInCategory>
   </GeneDef>
   <GeneDef ParentName="GeneHairColorBase">
-    <defName>RimMandrake_Hair_DarkRed</defName>
+    <defName>RSW_Hair_DarkRed</defName>
     <label>dark red hair</label>
     <hairColorOverride>(140,0,25)</hairColorOverride>
     <selectionWeight>0.05</selectionWeight>
     <displayOrderInCategory>191</displayOrderInCategory>
   </GeneDef>
   <GeneDef ParentName="GeneHairColorBase">
-    <defName>RimMandrake_Hair_Lavender</defName>
+    <defName>RSW_Hair_Lavender</defName>
     <label>lavender hair</label>
     <hairColorOverride>(160,145,200)</hairColorOverride>
     <selectionWeight>0.05</selectionWeight>
     <displayOrderInCategory>142</displayOrderInCategory>
   </GeneDef>
   <GeneDef ParentName="GeneHairColorBase">
-    <defName>RimMandrake_Hair_SlateBlue</defName>
+    <defName>RSW_Hair_SlateBlue</defName>
     <label>slate-blue hair</label>
     <hairColorOverride>(165,180,190)</hairColorOverride>
     <selectionWeight>0.05</selectionWeight>
     <displayOrderInCategory>141</displayOrderInCategory>
   </GeneDef>
   <GeneDef ParentName="GeneHairColorBase">
-    <defName>RimMandrake_Hair_SlateRed</defName>
+    <defName>RSW_Hair_SlateRed</defName>
     <label>slate-red hair</label>
     <hairColorOverride>(125,95,100)</hairColorOverride>
     <selectionWeight>0.05</selectionWeight>
     <displayOrderInCategory>189</displayOrderInCategory>
   </GeneDef>
   <GeneDef ParentName="GeneHeadboneBase">
-    <defName>RimMandrake_Hair_rodian</defName>
+    <defName>RSW_Hair_rodian</defName>
     <label>head spines</label>
     <description>Carriers of this gene grow flexible spines on their head.</description>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_HeadSpines</iconPath>
     <displayOrderInCategory>766</displayOrderInCategory>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <exclusionTags Inherit="False" />
     <renderNodeProperties>
       <li>
@@ -2108,20 +2108,20 @@
     </renderNodeProperties>
   </GeneDef>
   <GeneDef>
-    <defName>RimMandrake_HeadAttachment_gandmask</defName>
+    <defName>RSW_HeadAttachment_gandmask</defName>
     <label>tubed breath mask</label>
     <description>Members of this species wear specialized breath masks to help them survive in oxygen-rich environments.</description>
     <descriptionHyperlinks>
-      <HediffDef>RimMandrake_GeneHediff_gandmask</HediffDef>
+      <HediffDef>RSW_GeneHediff_gandmask</HediffDef>
     </descriptionHyperlinks>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_GandMask</iconPath>
     <displayOrderInCategory>801</displayOrderInCategory>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <modExtensions>
       <li Class="BetterPrerequisites.GeneExtension">
         <applyPartHediff>
           <li>
-            <hediff>RimMandrake_GeneHediff_gandmask</hediff>
+            <hediff>RSW_GeneHediff_gandmask</hediff>
             <bodyparts>
               <li>Jaw</li>
             </bodyparts>
@@ -2134,20 +2134,20 @@
     </exclusionTags>
   </GeneDef>
   <GeneDef>
-    <defName>RimMandrake_HeadAttachment_kaleeshmask</defName>
+    <defName>RSW_HeadAttachment_kaleeshmask</defName>
     <label>skull mask</label>
     <description>Members of this species wear skull masks decorated with red markings.</description>
     <descriptionHyperlinks>
-      <HediffDef>RimMandrake_GeneHediff_kaleeshmask</HediffDef>
+      <HediffDef>RSW_GeneHediff_kaleeshmask</HediffDef>
     </descriptionHyperlinks>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_KaleeshMask</iconPath>
     <displayOrderInCategory>799</displayOrderInCategory>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <modExtensions>
       <li Class="BetterPrerequisites.GeneExtension">
         <applyPartHediff>
           <li>
-            <hediff>RimMandrake_GeneHediff_kaleeshmask</hediff>
+            <hediff>RSW_GeneHediff_kaleeshmask</hediff>
             <bodyparts>
               <li>Head</li>
             </bodyparts>
@@ -2160,20 +2160,20 @@
     </exclusionTags>
   </GeneDef>
   <GeneDef>
-    <defName>RimMandrake_HeadAttachment_keldormask</defName>
+    <defName>RSW_HeadAttachment_keldormask</defName>
     <label>breath mask</label>
     <description>Members of this species wear specialized breath masks to help them survive in oxygen-rich environments.</description>
     <descriptionHyperlinks>
-      <HediffDef>RimMandrake_GeneHediff_keldormask</HediffDef>
+      <HediffDef>RSW_GeneHediff_keldormask</HediffDef>
     </descriptionHyperlinks>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_KelDorMask</iconPath>
     <displayOrderInCategory>800</displayOrderInCategory>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <modExtensions>
       <li Class="BetterPrerequisites.GeneExtension">
         <applyPartHediff>
           <li>
-            <hediff>RimMandrake_GeneHediff_keldormask</hediff>
+            <hediff>RSW_GeneHediff_keldormask</hediff>
             <bodyparts>
               <li>Jaw</li>
             </bodyparts>
@@ -2186,13 +2186,13 @@
     </exclusionTags>
   </GeneDef>
   <GeneDef ParentName="GeneJawBase">
-    <defName>RimMandrake_Head_Bone</defName>
+    <defName>RSW_Head_Bone</defName>
     <label>bone head</label>
     <description>Carriers of this gene have intimidating  facial bone protrusions.</description>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_SovSithHead</iconPath>
     <forcedHeadTypes>
-      <li>RimMandrake_Male_HeavyBoneNormal</li>
-      <li>RimMandrake_Female_HeavyBoneNormal</li>
+      <li>RSW_Male_HeavyBoneNormal</li>
+      <li>RSW_Female_HeavyBoneNormal</li>
     </forcedHeadTypes>
     <statFactors>
       <SuppressionPower MayRequire="Ludeon.RimWorld.Ideology">1.50</SuppressionPower>
@@ -2203,13 +2203,13 @@
     </exclusionTags>
   </GeneDef>
   <GeneDef ParentName="GeneJawBase">
-    <defName>RimMandrake_Head_Devolved</defName>
+    <defName>RSW_Head_Devolved</defName>
     <label>Devolved head</label>
     <description>Carriers of this gene have a devolved facial appearance.</description>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_SovDevHead</iconPath>
     <forcedHeadTypes>
-      <li>RimMandrake_Male_DevolvedNormal</li>
-      <li>RimMandrake_Female_DevolvedNormal</li>
+      <li>RSW_Male_DevolvedNormal</li>
+      <li>RSW_Female_DevolvedNormal</li>
     </forcedHeadTypes>
     <statFactors>
 
@@ -2220,30 +2220,30 @@
     </exclusionTags>
   </GeneDef>
   <GeneDef ParentName="GeneJawBase">
-    <defName>RimMandrake_Head_duros</defName>
+    <defName>RSW_Head_duros</defName>
     <label>big head</label>
     <description>Carriers of this gene have an enlarged forehead.</description>
     <displayOrderInCategory>763</displayOrderInCategory>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_Fivehead</iconPath>
     <forcedHeadTypes>
-      <li>RimMandrake_Male_FiveheadNormal</li>
-      <li>RimMandrake_Male_FiveheadPointy</li>
-      <li>RimMandrake_Male_FiveheadWide</li>
-      <li>RimMandrake_Female_FiveheadNormal</li>
-      <li>RimMandrake_Female_FiveheadPointy</li>
-      <li>RimMandrake_Female_FiveheadWide</li>
+      <li>RSW_Male_FiveheadNormal</li>
+      <li>RSW_Male_FiveheadPointy</li>
+      <li>RSW_Male_FiveheadWide</li>
+      <li>RSW_Female_FiveheadNormal</li>
+      <li>RSW_Female_FiveheadPointy</li>
+      <li>RSW_Female_FiveheadWide</li>
     </forcedHeadTypes>
   </GeneDef>
   <GeneDef ParentName="GeneJawBase">
-    <defName>RimMandrake_Head_gand</defName>
+    <defName>RSW_Head_gand</defName>
     <label>large bug head</label>
     <description>Carriers of this gene have wide, chitinous insectoid heads with big bug eyes and a beak.</description>
     <displayOrderInCategory>798</displayOrderInCategory>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_GandHead</iconPath>
     <forcedHeadTypes>
-      <li>RimMandrake_GandHead</li>
+      <li>RSW_GandHead</li>
     </forcedHeadTypes>
     <exclusionTags>
       <li>EyeColor</li>
@@ -2276,40 +2276,40 @@
     </modExtensions>
   </GeneDef>
   <GeneDef ParentName="GeneJawBase">
-    <defName>RimMandrake_Head_geonosian</defName>
+    <defName>RSW_Head_geonosian</defName>
     <label>bug head</label>
     <description>Carriers of this gene have long, chitinous insectoid heads.</description>
     <displayOrderInCategory>797</displayOrderInCategory>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_GeonosianHead</iconPath>
     <forcedHeadTypes>
-      <li>RimMandrake_Male_GeonosianHead</li>
-      <li>RimMandrake_Female_GeonosianHead</li>
+      <li>RSW_Male_GeonosianHead</li>
+      <li>RSW_Female_GeonosianHead</li>
     </forcedHeadTypes>
   </GeneDef>
   <GeneDef ParentName="GeneJawBase">
-    <defName>RimMandrake_Head_gungan</defName>
+    <defName>RSW_Head_gungan</defName>
     <label>billed head</label>
     <description>Carriers of this gene have billed, frog-like heads.</description>
     <displayOrderInCategory>794</displayOrderInCategory>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_GunganHead</iconPath>
     <forcedHeadTypes>
-      <li>RimMandrake_Male_GunganHead</li>
-      <li>RimMandrake_Female_GunganHead</li>
+      <li>RSW_Male_GunganHead</li>
+      <li>RSW_Female_GunganHead</li>
     </forcedHeadTypes>
   </GeneDef>
   <GeneDef ParentName="GeneJawBase">
-    <defName>RimMandrake_Head_hutt</defName>
+    <defName>RSW_Head_hutt</defName>
     <label>fat head</label>
     <description>Carriers of this gene have enlarged, widened jaws.</description>
     <displayOrderInCategory>784</displayOrderInCategory>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_Fathead</iconPath>
     <iconColor>(0.75, 0.75, 0.75)</iconColor>
     <forcedHeadTypes>
-      <li>RimMandrake_Male_Fathead</li>
-      <li>RimMandrake_Female_Fathead</li>
+      <li>RSW_Male_Fathead</li>
+      <li>RSW_Female_Fathead</li>
     </forcedHeadTypes>
     <modExtensions>
       <li Class="BetterPrerequisites.GeneExtension">
@@ -2318,63 +2318,63 @@
     </modExtensions>
   </GeneDef>
   <GeneDef ParentName="GeneJawBase">
-    <defName>RimMandrake_Head_ithorian</defName>
+    <defName>RSW_Head_ithorian</defName>
     <label>flat head</label>
     <description>Carriers of this gene have protruded, flat, slug-like heads.</description>
     <displayOrderInCategory>800</displayOrderInCategory>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_IthorianHead</iconPath>
     <forcedHeadTypes>
-      <li>RimMandrake_Male_IthorianHead</li>
-      <li>RimMandrake_Female_IthorianHead</li>
+      <li>RSW_Male_IthorianHead</li>
+      <li>RSW_Female_IthorianHead</li>
     </forcedHeadTypes>
   </GeneDef>
   <GeneDef ParentName="GeneJawBase">
-    <defName>RimMandrake_Head_kubaz</defName>
+    <defName>RSW_Head_kubaz</defName>
     <label>long tapered jaw</label>
     <description>Carriers of this gene have long, tapered, anteater-like mouths.</description>
     <displayOrderInCategory>791</displayOrderInCategory>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_JawKubaz</iconPath>
     <forcedHeadTypes>
-      <li>RimMandrake_Male_Kubaz</li>
-      <li>RimMandrake_Female_Kubaz</li>
+      <li>RSW_Male_Kubaz</li>
+      <li>RSW_Female_Kubaz</li>
     </forcedHeadTypes>
   </GeneDef>
   <GeneDef ParentName="GeneJawBase">
-    <defName>RimMandrake_Head_quarren</defName>
+    <defName>RSW_Head_quarren</defName>
     <label>oval head</label>
     <description>Carriers of this gene have an enlarged, egg-shaped forehead.</description>
     <displayOrderInCategory>781</displayOrderInCategory>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_Egghead</iconPath>
     <forcedHeadTypes>
-      <li>RimMandrake_Male_Egghead</li>
-      <li>RimMandrake_Female_Egghead</li>
+      <li>RSW_Male_Egghead</li>
+      <li>RSW_Female_Egghead</li>
     </forcedHeadTypes>
   </GeneDef>
   <GeneDef ParentName="GeneJawBase">
-    <defName>RimMandrake_Head_rodian</defName>
+    <defName>RSW_Head_rodian</defName>
     <label>tapered jaw</label>
     <description>Carriers of this gene have tapered, anteater-like mouths.</description>
     <displayOrderInCategory>771</displayOrderInCategory>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_JawRodian</iconPath>
     <forcedHeadTypes>
-      <li>RimMandrake_Male_Rodian</li>
-      <li>RimMandrake_Female_Rodian</li>
+      <li>RSW_Male_Rodian</li>
+      <li>RSW_Female_Rodian</li>
     </forcedHeadTypes>
   </GeneDef>
   <GeneDef ParentName="GeneJawBase">
-    <defName>RimMandrake_Head_selkath</defName>
+    <defName>RSW_Head_selkath</defName>
     <label>fishy head</label>
     <description>Carriers of this gene have elongated, fishy heads.</description>
     <displayOrderInCategory>796</displayOrderInCategory>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_SelkathHead</iconPath>
     <forcedHeadTypes>
-      <li>RimMandrake_Male_SelkathHead</li>
-      <li>RimMandrake_Female_SelkathHead</li>
+      <li>RSW_Male_SelkathHead</li>
+      <li>RSW_Female_SelkathHead</li>
     </forcedHeadTypes>
     <modExtensions>
       <li Class="BigAndSmall.PawnExtension">
@@ -2404,50 +2404,50 @@
     </modExtensions>
   </GeneDef>
   <GeneDef ParentName="GeneJawBase">
-    <defName>RimMandrake_Head_taung</defName>
+    <defName>RSW_Head_taung</defName>
     <label>sharp head</label>
     <description>Carriers of this gene have hard, pointy, carapace-like extrusions on their faces.</description>
     <displayOrderInCategory>795</displayOrderInCategory>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_TaungHead</iconPath>
     <forcedHeadTypes>
-      <li>RimMandrake_Male_TaungHead</li>
-      <li>RimMandrake_Female_TaungHead</li>
+      <li>RSW_Male_TaungHead</li>
+      <li>RSW_Female_TaungHead</li>
     </forcedHeadTypes>
   </GeneDef>
   <GeneDef ParentName="GeneJawBase">
-    <defName>RimMandrake_Head_trandoshan</defName>
+    <defName>RSW_Head_trandoshan</defName>
     <label>lizard jaw</label>
     <description>Carriers of this gene have large, lizard-like mouths.</description>
     <displayOrderInCategory>778</displayOrderInCategory>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_JawTrandoshan</iconPath>
     <forcedHeadTypes>
-      <li>RimMandrake_Male_Trandoshan</li>
-      <li>RimMandrake_Female_Trandoshan</li>
+      <li>RSW_Male_Trandoshan</li>
+      <li>RSW_Female_Trandoshan</li>
     </forcedHeadTypes>
   </GeneDef>
   <GeneDef ParentName="GeneJawBase">
-    <defName>RimMandrake_Head_wookiee</defName>
+    <defName>RSW_Head_wookiee</defName>
     <label>shaggy furskin</label>
     <labelShortAdj>shaggy</labelShortAdj>
     <description>Carriers of this gene have long, shaggy fur.</description>
     <displayOrderInCategory>792</displayOrderInCategory>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_ShaggyFur</iconPath>
     <prerequisite>Furskin</prerequisite>
     <forcedHeadTypes>
-      <li>RimMandrake_Wookiee_Average1</li>
-      <li>RimMandrake_Wookiee_Average2</li>
-      <li>RimMandrake_Wookiee_Average3</li>
+      <li>RSW_Wookiee_Average1</li>
+      <li>RSW_Wookiee_Average2</li>
+      <li>RSW_Wookiee_Average3</li>
     </forcedHeadTypes>
   </GeneDef>
   <GeneDef ParentName="GeneHeadboneBase">
-    <defName>RimMandrake_Headbone_BigHorns</defName>
+    <defName>RSW_Headbone_BigHorns</defName>
     <label>big-horns</label>
     <description>Carriers of this gene grow two large horns protruding from the forehead.</description>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_HeadboneBighorns</iconPath>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <symbolPack>
       <prefixSymbols>
         <li>
@@ -2506,11 +2506,11 @@
     </renderNodeProperties>
   </GeneDef>
   <GeneDef ParentName="GeneHeadboneBase">
-    <defName>RimMandrake_Headbone_nautolan</defName>
+    <defName>RSW_Headbone_nautolan</defName>
     <label>small head-tails</label>
     <description>Carriers of this gene grow many smaller head tails protruding from the back and sides of the head.</description>
     <displayOrderInCategory>761</displayOrderInCategory>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_HeadboneNautolan</iconPath>
     <renderNodeProperties>
       <li>
@@ -2531,11 +2531,11 @@
     </renderNodeProperties>
   </GeneDef>
   <GeneDef ParentName="GeneHeadboneBase">
-    <defName>RimMandrake_Headbone_rodian</defName>
+    <defName>RSW_Headbone_rodian</defName>
     <label>antennae</label>
     <description>Carriers of this gene grow two antennae on their forehead.</description>
     <displayOrderInCategory>764</displayOrderInCategory>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_HeadboneRodian</iconPath>
     <renderNodeProperties>
       <li>
@@ -2559,12 +2559,12 @@
     </renderNodeProperties>
   </GeneDef>
   <GeneDef ParentName="GeneHeadboneBase">
-    <defName>RimMandrake_Headbone_taung</defName>
+    <defName>RSW_Headbone_taung</defName>
     <label>sparse head-tails</label>
     <description>Carriers of this gene grow fewer small head tails protruding from the back of the head.</description>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_HeadboneTaung</iconPath>
     <displayOrderInCategory>761</displayOrderInCategory>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <renderNodeProperties>
       <li>
         <nodeClass>PawnRenderNode_AttachmentHead</nodeClass>
@@ -2587,11 +2587,11 @@
     </renderNodeProperties>
   </GeneDef>
   <GeneDef ParentName="GeneHeadboneBase">
-    <defName>RimMandrake_Headbone_togruta</defName>
+    <defName>RSW_Headbone_togruta</defName>
     <label>montrals</label>
     <description>Carriers of this gene have large organic growths on their heads, including two rigid horns and three flexible head-tails.</description>
     <displayOrderInCategory>774</displayOrderInCategory>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_HeadboneTogruta</iconPath>
     <renderNodeProperties>
       <li>
@@ -2615,11 +2615,11 @@
     </renderNodeProperties>
   </GeneDef>
   <GeneDef ParentName="GeneHeadboneBase">
-    <defName>RimMandrake_Headbone_trandoshan</defName>
+    <defName>RSW_Headbone_trandoshan</defName>
     <label>ridged crown</label>
     <description>Carriers of this gene have ridged crowns on their heads.</description>
     <displayOrderInCategory>777</displayOrderInCategory>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_HeadboneTrandoshan</iconPath>
     <renderNodeProperties>
       <li>
@@ -2641,11 +2641,11 @@
     </renderNodeProperties>
   </GeneDef>
   <GeneDef ParentName="GeneHeadboneBase">
-    <defName>RimMandrake_Headbone_twilek</defName>
+    <defName>RSW_Headbone_twilek</defName>
     <label>head-tails</label>
     <description>Carriers of this gene grow two large head tails protruding from the back of the head.</description>
     <displayOrderInCategory>762</displayOrderInCategory>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_HeadboneTwilek</iconPath>
     <renderNodeProperties>
       <li>
@@ -2669,12 +2669,12 @@
     </renderNodeProperties>
   </GeneDef>
   <GeneDef ParentName="GeneHeadboneBase">
-    <defName>RimMandrake_Headbone_zabrak</defName>
+    <defName>RSW_Headbone_zabrak</defName>
     <label>mini-horned crown</label>
     <description>Carriers of this gene grow many miniature horns protruding from the top of the head.</description>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_ZabrakHorns</iconPath>
     <displayOrderInCategory>760</displayOrderInCategory>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <renderNodeProperties>
       <li>
         <nodeClass>PawnRenderNode_AttachmentHead</nodeClass>
@@ -2701,14 +2701,14 @@
     </renderNodeProperties>
   </GeneDef>
   <GeneDef ParentName="RimMandrake_GeneHeadBase">
-    <defName>RimMandrake_HerglicHead</defName>
+    <defName>RSW_HerglicHead</defName>
     <label>herglic head</label>
     <description>Carriers of this gene have the Herglic racial head type.</description>
     <iconPath>RimMandrakeSW/OR/OuterRim/GeneIcons/Gene_HerglicHead</iconPath>
     <biostatCpx>1</biostatCpx>
     <biostatMet>0</biostatMet>
     <forcedHeadTypes>
-      <li>RimMandrake_Herglic</li>
+      <li>RSW_Herglic</li>
     </forcedHeadTypes>
     <displayOrderInCategory>9100</displayOrderInCategory>
     <symbolPack>
@@ -2720,15 +2720,15 @@
     </symbolPack>
   </GeneDef>
   <GeneDef ParentName="RimMandrake_GeneHeadBase">
-    <defName>RimMandrake_IktotchiHead</defName>
+    <defName>RSW_IktotchiHead</defName>
     <label>iktotchi head</label>
     <description>Carriers of this gene have the Iktotchi racial head type.</description>
     <iconPath>RimMandrakeSW/OR/OuterRim/GeneIcons/Gene_IktotchiHead</iconPath>
     <biostatCpx>1</biostatCpx>
     <biostatMet>0</biostatMet>
     <forcedHeadTypes>
-      <li>RimMandrake_Iktotchi_MaleNormal</li>
-      <li>RimMandrake_Iktotchi_FemaleNormal</li>
+      <li>RSW_Iktotchi_MaleNormal</li>
+      <li>RSW_Iktotchi_FemaleNormal</li>
     </forcedHeadTypes>
     <displayOrderInCategory>9100</displayOrderInCategory>
     <symbolPack>
@@ -2740,14 +2740,14 @@
     </symbolPack>
   </GeneDef>
   <GeneDef ParentName="RimMandrake_GeneHeadBase">
-    <defName>RimMandrake_IthorianHead</defName>
+    <defName>RSW_IthorianHead</defName>
     <label>ithorian head</label>
     <description>Carriers of this gene have the Ithorian racial head type.</description>
     <iconPath>RimMandrakeSW/OR/OuterRim/GeneIcons/Gene_IthorianHead</iconPath>
     <biostatCpx>1</biostatCpx>
     <biostatMet>0</biostatMet>
     <forcedHeadTypes>
-      <li>RimMandrake_Ithorian_Normal</li>
+      <li>RSW_Ithorian_Normal</li>
     </forcedHeadTypes>
     <displayOrderInCategory>9100</displayOrderInCategory>
     <symbolPack>
@@ -2759,15 +2759,15 @@
     </symbolPack>
   </GeneDef>
   <GeneDef ParentName="RimMandrake_GeneHeadBase">
-    <defName>RimMandrake_KaminoanHead</defName>
+    <defName>RSW_KaminoanHead</defName>
     <label>kaminoan head</label>
     <description>Carriers of this gene have the Kaminoan racial head type.</description>
     <iconPath>RimMandrakeSW/OR/OuterRim/GeneIcons/Gene_KaminoanHead</iconPath>
     <biostatCpx>1</biostatCpx>
     <biostatMet>0</biostatMet>
     <forcedHeadTypes>
-      <li>RimMandrake_Kaminoan_MaleNormal</li>
-      <li>RimMandrake_Kaminoan_FemaleNormal</li>
+      <li>RSW_Kaminoan_MaleNormal</li>
+      <li>RSW_Kaminoan_FemaleNormal</li>
     </forcedHeadTypes>
     <displayOrderInCategory>9100</displayOrderInCategory>
     <symbolPack>
@@ -2779,7 +2779,7 @@
     </symbolPack>
   </GeneDef>
   <GeneDef Name="RimMandrake_LifespanGeneBase" Abstract="True">
-    <displayCategory>RimMandrake_Lifespan_Category</displayCategory>
+    <displayCategory>RSW_Lifespan_Category</displayCategory>
     <exclusionTags>
       <li>RimMandrake_Lifespan</li>
     </exclusionTags>
@@ -2789,7 +2789,7 @@
     <canGenerateInGeneSet>true</canGenerateInGeneSet>
   </GeneDef>
   <GeneDef ParentName="GeneSkinColorOverride">
-    <defName>RimMandrake_MaleOrangeSkin</defName>
+    <defName>RSW_MaleOrangeSkin</defName>
     <label>orange skin (male only)</label>
     <labelShortAdj>orange</labelShortAdj>
     <geneClass>VEF.Genes.GeneGendered</geneClass>
@@ -2808,7 +2808,7 @@
     </modExtensions>
   </GeneDef>
   <GeneDef ParentName="GeneSkinColorOverride">
-    <defName>RimMandrake_MaleRedSkin</defName>
+    <defName>RSW_MaleRedSkin</defName>
     <label>red skin (male only)</label>
     <labelShortAdj>red</labelShortAdj>
     <geneClass>VEF.Genes.GeneGendered</geneClass>
@@ -2827,7 +2827,7 @@
     </modExtensions>
   </GeneDef>
   <GeneDef ParentName="GeneSkinColorOverride">
-    <defName>RimMandrake_MaleYellowSkin</defName>
+    <defName>RSW_MaleYellowSkin</defName>
     <label>yellow skin (male only)</label>
     <labelShortAdj>yellow</labelShortAdj>
     <geneClass>VEF.Genes.GeneGendered</geneClass>
@@ -2846,19 +2846,19 @@
     </modExtensions>
   </GeneDef>
   <GeneDef ParentName="RimMandrake_GeneHeadBase">
-    <defName>RimMandrake_MirialanHead</defName>
+    <defName>RSW_MirialanHead</defName>
     <label>mirialan head</label>
     <description>Carriers of this gene have the Mirialan racial head type.</description>
     <iconPath>RimMandrakeSW/OR/OuterRim/GeneIcons/Gene_MirialanHead</iconPath>
     <biostatCpx>1</biostatCpx>
     <biostatMet>0</biostatMet>
     <forcedHeadTypes>
-      <li>RimMandrake_Mirialan_Male0</li>
-      <li>RimMandrake_Mirialan_Male1</li>
-      <li>RimMandrake_Mirialan_Male2</li>
-      <li>RimMandrake_Mirialan_Female0</li>
-      <li>RimMandrake_Mirialan_Female1</li>
-      <li>RimMandrake_Mirialan_Female2</li>
+      <li>RSW_Mirialan_Male0</li>
+      <li>RSW_Mirialan_Male1</li>
+      <li>RSW_Mirialan_Male2</li>
+      <li>RSW_Mirialan_Female0</li>
+      <li>RSW_Mirialan_Female1</li>
+      <li>RSW_Mirialan_Female2</li>
     </forcedHeadTypes>
     <displayOrderInCategory>9100</displayOrderInCategory>
     <symbolPack>
@@ -2870,14 +2870,14 @@
     </symbolPack>
   </GeneDef>
   <GeneDef ParentName="RimMandrake_GeneHeadBase">
-    <defName>RimMandrake_MonCalamariHead</defName>
+    <defName>RSW_MonCalamariHead</defName>
     <label>mon calamari head</label>
     <description>Carriers of this gene have the Mon Calamari racial head type.</description>
     <iconPath>RimMandrakeSW/OR/OuterRim/GeneIcons/Gene_MonCalamariHead</iconPath>
     <biostatCpx>1</biostatCpx>
     <biostatMet>0</biostatMet>
     <forcedHeadTypes>
-      <li>RimMandrake_MonCalamari_Normal</li>
+      <li>RSW_MonCalamari_Normal</li>
     </forcedHeadTypes>
     <displayOrderInCategory>9100</displayOrderInCategory>
     <symbolPack>
@@ -2889,11 +2889,11 @@
     </symbolPack>
   </GeneDef>
   <GeneDef ParentName="GeneNoseBase">
-    <defName>RimMandrake_Mouth_sus</defName>
+    <defName>RSW_Mouth_sus</defName>
     <label>mandibled mouth</label>
     <description>Carriers of this gene have large, vertical mouths with mandible teeth.</description>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_SusMouth</iconPath>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <missingGeneRomanceChanceFactor>0.4</missingGeneRomanceChanceFactor>
     <displayOrderInCategory>791</displayOrderInCategory>
     <renderNodeProperties>
@@ -2922,14 +2922,14 @@
     </renderNodeProperties>
   </GeneDef>
   <GeneDef ParentName="RimMandrake_GeneHeadBase">
-    <defName>RimMandrake_NiktoHead</defName>
+    <defName>RSW_NiktoHead</defName>
     <label>nikto head</label>
     <description>Carriers of this gene have the Nikto racial head type.</description>
     <iconPath>RimMandrakeSW/OR/OuterRim/GeneIcons/Gene_NiktoHead</iconPath>
     <biostatCpx>1</biostatCpx>
     <biostatMet>0</biostatMet>
     <forcedHeadTypes>
-      <li>RimMandrake_Nikto</li>
+      <li>RSW_Nikto</li>
     </forcedHeadTypes>
     <displayOrderInCategory>9100</displayOrderInCategory>
     <symbolPack>
@@ -2941,11 +2941,11 @@
     </symbolPack>
   </GeneDef>
   <GeneDef ParentName="GeneNoseBase">
-    <defName>RimMandrake_Nose_Cat</defName>
+    <defName>RSW_Nose_Cat</defName>
     <label>cat-like nose</label>
     <description>Carriers of this gene have smaller, cat-like noses</description>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_NoseCat</iconPath>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <missingGeneRomanceChanceFactor>0.2</missingGeneRomanceChanceFactor>
     <displayOrderInCategory>789</displayOrderInCategory>
     <renderNodeProperties>
@@ -2974,11 +2974,11 @@
     </renderNodeProperties>
   </GeneDef>
   <GeneDef ParentName="GeneNoseBase">
-    <defName>RimMandrake_Nose_Dog</defName>
+    <defName>RSW_Nose_Dog</defName>
     <label>dog-like nose</label>
     <description>Carriers of this gene have smaller, dog-like noses</description>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_NoseDog</iconPath>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <missingGeneRomanceChanceFactor>0.2</missingGeneRomanceChanceFactor>
     <displayOrderInCategory>789</displayOrderInCategory>
     <renderNodeProperties>
@@ -3007,11 +3007,11 @@
     </renderNodeProperties>
   </GeneDef>
   <GeneDef ParentName="GeneNoseBase">
-    <defName>RimMandrake_Nose_SmallPig</defName>
+    <defName>RSW_Nose_SmallPig</defName>
     <label>small pig nose</label>
     <description>Carriers of this gene have smaller, pig-like noses</description>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_NosePigSmall</iconPath>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <missingGeneRomanceChanceFactor>0.2</missingGeneRomanceChanceFactor>
     <displayOrderInCategory>779</displayOrderInCategory>
     <renderNodeProperties>
@@ -3039,11 +3039,11 @@
     </renderNodeProperties>
   </GeneDef>
   <GeneDef ParentName="GeneNoseBase">
-    <defName>RimMandrake_Nose_Snout</defName>
+    <defName>RSW_Nose_Snout</defName>
     <label>snout</label>
     <description>Carriers of this gene have an elongated, canine-like snout.</description>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_Snout</iconPath>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <displayOrderInCategory>775</displayOrderInCategory>
     <renderNodeProperties>
       <li>
@@ -3071,31 +3071,31 @@
     </renderNodeProperties>
   </GeneDef>
   <GeneDef ParentName="RimMandrake_GeneHeadBase">
-    <defName>RimMandrake_PantoranHead</defName>
+    <defName>RSW_PantoranHead</defName>
     <label>pantoran head</label>
     <description>Carriers of this gene have the Pantoran racial head type.</description>
     <iconPath>RimMandrakeSW/OR/OuterRim/GeneIcons/Gene_PantoranHead</iconPath>
     <biostatCpx>1</biostatCpx>
     <biostatMet>0</biostatMet>
     <forcedHeadTypes>
-      <li>RimMandrake_Pantoran_Male0</li>
-      <li>RimMandrake_Pantoran_Male1</li>
-      <li>RimMandrake_Pantoran_Male2</li>
-      <li>RimMandrake_Pantoran_Male3</li>
-      <li>RimMandrake_Pantoran_Male4</li>
-      <li>RimMandrake_Pantoran_Male5</li>
-      <li>RimMandrake_Pantoran_Male6</li>
-      <li>RimMandrake_Pantoran_Male7</li>
-      <li>RimMandrake_Pantoran_Male8</li>
-      <li>RimMandrake_Pantoran_Female0</li>
-      <li>RimMandrake_Pantoran_Female1</li>
-      <li>RimMandrake_Pantoran_Female2</li>
-      <li>RimMandrake_Pantoran_Female3</li>
-      <li>RimMandrake_Pantoran_Female4</li>
-      <li>RimMandrake_Pantoran_Female5</li>
-      <li>RimMandrake_Pantoran_Female6</li>
-      <li>RimMandrake_Pantoran_Female7</li>
-      <li>RimMandrake_Pantoran_Female8</li>
+      <li>RSW_Pantoran_Male0</li>
+      <li>RSW_Pantoran_Male1</li>
+      <li>RSW_Pantoran_Male2</li>
+      <li>RSW_Pantoran_Male3</li>
+      <li>RSW_Pantoran_Male4</li>
+      <li>RSW_Pantoran_Male5</li>
+      <li>RSW_Pantoran_Male6</li>
+      <li>RSW_Pantoran_Male7</li>
+      <li>RSW_Pantoran_Male8</li>
+      <li>RSW_Pantoran_Female0</li>
+      <li>RSW_Pantoran_Female1</li>
+      <li>RSW_Pantoran_Female2</li>
+      <li>RSW_Pantoran_Female3</li>
+      <li>RSW_Pantoran_Female4</li>
+      <li>RSW_Pantoran_Female5</li>
+      <li>RSW_Pantoran_Female6</li>
+      <li>RSW_Pantoran_Female7</li>
+      <li>RSW_Pantoran_Female8</li>
     </forcedHeadTypes>
     <displayOrderInCategory>9100</displayOrderInCategory>
     <symbolPack>
@@ -3107,14 +3107,14 @@
     </symbolPack>
   </GeneDef>
   <GeneDef ParentName="RimMandrake_GeneHeadBase">
-    <defName>RimMandrake_PykeHead</defName>
+    <defName>RSW_PykeHead</defName>
     <label>pyke head</label>
     <description>Carriers of this gene have the Pyke racial head type.</description>
     <iconPath>RimMandrakeSW/OR/OuterRim/GeneIcons/Gene_PykeHead</iconPath>
     <biostatCpx>1</biostatCpx>
     <biostatMet>0</biostatMet>
     <forcedHeadTypes>
-      <li>RimMandrake_Pyke_Normal</li>
+      <li>RSW_Pyke_Normal</li>
     </forcedHeadTypes>
     <displayOrderInCategory>9100</displayOrderInCategory>
     <symbolPack>
@@ -3126,14 +3126,14 @@
     </symbolPack>
   </GeneDef>
   <GeneDef ParentName="RimMandrake_GeneHeadBase">
-    <defName>RimMandrake_QuarrenHead</defName>
+    <defName>RSW_QuarrenHead</defName>
     <label>quarren head</label>
     <description>Carriers of this gene have the Quarren racial head type.</description>
     <iconPath>RimMandrakeSW/OR/OuterRim/GeneIcons/Gene_QuarrenHead</iconPath>
     <biostatCpx>1</biostatCpx>
     <biostatMet>0</biostatMet>
     <forcedHeadTypes>
-      <li>RimMandrake_Quarren_Normal</li>
+      <li>RSW_Quarren_Normal</li>
     </forcedHeadTypes>
     <displayOrderInCategory>9100</displayOrderInCategory>
     <symbolPack>
@@ -3145,14 +3145,14 @@
     </symbolPack>
   </GeneDef>
   <GeneDef ParentName="RimMandrake_GeneHeadBase">
-    <defName>RimMandrake_RakatanHead</defName>
+    <defName>RSW_RakatanHead</defName>
     <label>rakatan head</label>
     <description>Carriers of this gene have the Rakatan racial head type.</description>
     <iconPath>RimMandrakeSW/OR/OuterRim/GeneIcons/Gene_RakatanHead</iconPath>
     <biostatCpx>1</biostatCpx>
     <biostatMet>0</biostatMet>
     <forcedHeadTypes>
-      <li>RimMandrake_Rakatan</li>
+      <li>RSW_Rakatan</li>
     </forcedHeadTypes>
     <displayOrderInCategory>9100</displayOrderInCategory>
     <symbolPack>
@@ -3164,24 +3164,24 @@
     </symbolPack>
   </GeneDef>
   <GeneDef ParentName="GeneVoiceBase">
-    <defName>RimMandrake_SandVoiceGene</defName>
+    <defName>RSW_SandVoiceGene</defName>
     <label>Devolved voice</label>
     <description>Carriers have a voice that mainly supports barks,grunts and honks.</description>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_SovSandVoice</iconPath>
     <displayOrderInCategory>125</displayOrderInCategory>
-    <soundCall>RimMandrake_Pawn_SandP_Call</soundCall>
-    <soundDeath>RimMandrake_Pawn_SandP_Death</soundDeath>
-    <soundWounded>RimMandrake_Pawn_SandP_Wounded</soundWounded>
+    <soundCall>RSW_Pawn_SandP_Call</soundCall>
+    <soundDeath>RSW_Pawn_SandP_Death</soundDeath>
+    <soundWounded>RSW_Pawn_SandP_Wounded</soundWounded>
   </GeneDef>
   <GeneDef ParentName="RimMandrake_GeneHeadBase">
-    <defName>RimMandrake_SelkathHead</defName>
+    <defName>RSW_SelkathHead</defName>
     <label>selkath head</label>
     <description>Carriers of this gene have the Selkath racial head type.</description>
     <iconPath>RimMandrakeSW/OR/OuterRim/GeneIcons/Gene_SelkathHead</iconPath>
     <biostatCpx>1</biostatCpx>
     <biostatMet>0</biostatMet>
     <forcedHeadTypes>
-      <li>RimMandrake_Selkath_Normal</li>
+      <li>RSW_Selkath_Normal</li>
     </forcedHeadTypes>
     <displayOrderInCategory>9100</displayOrderInCategory>
     <symbolPack>
@@ -3193,7 +3193,7 @@
     </symbolPack>
   </GeneDef>
   <GeneDef ParentName="GeneSkinColorOverride">
-    <defName>RimMandrake_Skin_BrightGreen</defName>
+    <defName>RSW_Skin_BrightGreen</defName>
     <label>bright green skin</label>
     <labelShortAdj>bright green</labelShortAdj>
     <description>Carriers of this gene produce a pigment that gives their skin a bright green color.\n\nThis gene is added by the Star Wars Xenotypes mod!</description>
@@ -3222,7 +3222,7 @@
     </symbolPack>
   </GeneDef>
   <GeneDef ParentName="GeneSkinColorOverride">
-    <defName>RimMandrake_Skin_DarkGreen</defName>
+    <defName>RSW_Skin_DarkGreen</defName>
     <label>dark green skin</label>
     <labelShortAdj>dark green</labelShortAdj>
     <description>Carriers of this gene produce a pigment that gives their skin a dark green color.\n\nThis gene is added by the Star Wars Xenotypes mod!</description>
@@ -3251,7 +3251,7 @@
     </symbolPack>
   </GeneDef>
   <GeneDef ParentName="GeneSkinColorOverride">
-    <defName>RimMandrake_Skin_Lavender</defName>
+    <defName>RSW_Skin_Lavender</defName>
     <label>lavender skin</label>
     <labelShortAdj>lavender</labelShortAdj>
     <description>Carriers of this produce a lavender pigment in their skin.\n\nThis gene is added by the Star Wars Xenotypes mod!</description>
@@ -3271,7 +3271,7 @@
     </symbolPack>
   </GeneDef>
   <GeneDef ParentName="GeneSkinColorOverride">
-    <defName>RimMandrake_Skin_MidGray</defName>
+    <defName>RSW_Skin_MidGray</defName>
     <label>medium gray skin</label>
     <labelShortAdj>gray</labelShortAdj>
     <description>Carriers of this produce a medium-gray pigment in their skin.\n\nThis gene is added by the Star Wars Xenotypes mod!</description>
@@ -3318,7 +3318,7 @@
     </symbolPack>
   </GeneDef>
   <GeneDef ParentName="GeneSkinColorOverride">
-    <defName>RimMandrake_Skin_PaleOrange</defName>
+    <defName>RSW_Skin_PaleOrange</defName>
     <label>pale orange skin</label>
     <labelShortAdj>gray</labelShortAdj>
     <description>Carriers of this produce a pigment that turns their skin a dull orange color.\n\nThis gene is added by the Star Wars Xenotypes mod!</description>
@@ -3333,7 +3333,7 @@
     </symbolPack>
   </GeneDef>
   <GeneDef ParentName="GeneSkinColorOverride">
-    <defName>RimMandrake_Skin_SelkathBlue</defName>
+    <defName>RSW_Skin_SelkathBlue</defName>
     <label>ocean blue skin</label>
     <labelShortAdj>blue</labelShortAdj>
     <description>Carriers of this produce a medium-blue pigment in their skin.\n\nThis gene is added by the Star Wars Xenotypes mod!</description>
@@ -3351,7 +3351,7 @@
     </symbolPack>
   </GeneDef>
   <GeneDef ParentName="GeneSkinColorOverride">
-    <defName>RimMandrake_Skin_SlateBlue</defName>
+    <defName>RSW_Skin_SlateBlue</defName>
     <label>slate-blue skin</label>
     <labelShortAdj>gray</labelShortAdj>
     <description>Carriers of this produce a slate-blue pigment in their skin.\n\nThis gene is added by the Star Wars Xenotypes mod!</description>
@@ -3371,7 +3371,7 @@
     </symbolPack>
   </GeneDef>
   <GeneDef ParentName="GeneSkinColorOverride">
-    <defName>RimMandrake_Skin_SlateRed</defName>
+    <defName>RSW_Skin_SlateRed</defName>
     <label>slate red skin</label>
     <labelShortAdj>red</labelShortAdj>
     <description>Carriers of this produce a pigment that turns their skin a slate red color.\n\nThis gene is added by the Star Wars Xenotypes mod!</description>
@@ -3392,7 +3392,7 @@
     </symbolPack>
   </GeneDef>
   <GeneDef ParentName="GeneSkinColorOverride">
-    <defName>RimMandrake_Skin_Turquoise</defName>
+    <defName>RSW_Skin_Turquoise</defName>
     <label>turquoise skin</label>
     <labelShortAdj>turquoise</labelShortAdj>
     <description>Carriers of this gene produce a pigment that turns their skin a turquoise color.\n\nThis gene is added by the Star Wars Xenotypes mod!</description>
@@ -3413,14 +3413,14 @@
     </symbolPack>
   </GeneDef>
   <GeneDef ParentName="RimMandrake_GeneHeadBase">
-    <defName>RimMandrake_SullustanHead</defName>
+    <defName>RSW_SullustanHead</defName>
     <label>sullustan head</label>
     <description>Carriers of this gene have the Sullustan racial head type.</description>
     <iconPath>RimMandrakeSW/OR/OuterRim/GeneIcons/Gene_SullustanHead</iconPath>
     <biostatCpx>1</biostatCpx>
     <biostatMet>0</biostatMet>
     <forcedHeadTypes>
-      <li>RimMandrake_Sullustan</li>
+      <li>RSW_Sullustan</li>
     </forcedHeadTypes>
     <displayOrderInCategory>9100</displayOrderInCategory>
     <symbolPack>
@@ -3432,13 +3432,13 @@
     </symbolPack>
   </GeneDef>
   <GeneDef ParentName="GeneTailBase">
-    <defName>RimMandrake_Tail_hutt</defName>
+    <defName>RSW_Tail_hutt</defName>
     <label>slug tail</label>
     <description>Carriers of this gene grow huge, bulbous tails in place of legs. They aren't very dexterous.</description>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_TailFat</iconPath>
     <iconColor>(0.75, 0.75, 0.75)</iconColor>
     <displayOrderInCategory>785</displayOrderInCategory>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <statOffsets>
       <MoveSpeed>-2.7</MoveSpeed>
     </statOffsets>
@@ -3479,21 +3479,21 @@
     <prerequisite>Body_Fat</prerequisite>
   </GeneDef>
   <GeneDef ParentName="RimMandrake_GeneHeadBase">
-    <defName>RimMandrake_TogrutaHead</defName>
+    <defName>RSW_TogrutaHead</defName>
     <label>togruta head</label>
     <description>Carriers of this gene have the Togruta racial head type.</description>
     <iconPath>RimMandrakeSW/OR/OuterRim/GeneIcons/Gene_TogrutaHead</iconPath>
     <biostatCpx>1</biostatCpx>
     <biostatMet>0</biostatMet>
     <forcedHeadTypes>
-      <li>RimMandrake_Togruta_Male0</li>
-      <li>RimMandrake_Togruta_Male1</li>
-      <li>RimMandrake_Togruta_Male2</li>
-      <li>RimMandrake_Togruta_Male3</li>
-      <li>RimMandrake_Togruta_Female0</li>
-      <li>RimMandrake_Togruta_Female1</li>
-      <li>RimMandrake_Togruta_Female2</li>
-      <li>RimMandrake_Togruta_Female3</li>
+      <li>RSW_Togruta_Male0</li>
+      <li>RSW_Togruta_Male1</li>
+      <li>RSW_Togruta_Male2</li>
+      <li>RSW_Togruta_Male3</li>
+      <li>RSW_Togruta_Female0</li>
+      <li>RSW_Togruta_Female1</li>
+      <li>RSW_Togruta_Female2</li>
+      <li>RSW_Togruta_Female3</li>
     </forcedHeadTypes>
     <displayOrderInCategory>9100</displayOrderInCategory>
     <symbolPack>
@@ -3505,7 +3505,7 @@
     </symbolPack>
   </GeneDef>
   <GeneDef ParentName="RimMandrake_GeneHeadboneHornBase">
-    <defName>RimMandrake_TogrutaMontrals</defName>
+    <defName>RSW_TogrutaMontrals</defName>
     <label>togruta montrals</label>
     <description>Carriers of this gene grow large hollow horns that cover the majority of the head, with soft fleshy tails extending below the head.</description>
     <iconPath>RimMandrakeSW/OR/OuterRim/GeneIcons/Gene_Montrals</iconPath>
@@ -3528,14 +3528,14 @@
     <prerequisite>Hair_BaldOnly</prerequisite>
   </GeneDef>
   <GeneDef ParentName="RimMandrake_GeneHeadBase">
-    <defName>RimMandrake_TrandoshanHead</defName>
+    <defName>RSW_TrandoshanHead</defName>
     <label>trandoshan head</label>
     <description>Carriers of this gene have the Trandoshan racial head type.</description>
     <iconPath>RimMandrakeSW/OR/OuterRim/GeneIcons/Gene_TrandoshanHead</iconPath>
     <biostatCpx>1</biostatCpx>
     <biostatMet>0</biostatMet>
     <forcedHeadTypes>
-      <li>RimMandrake_Trandoshan</li>
+      <li>RSW_Trandoshan</li>
     </forcedHeadTypes>
     <displayOrderInCategory>9100</displayOrderInCategory>
     <symbolPack>
@@ -3547,17 +3547,17 @@
     </symbolPack>
   </GeneDef>
   <GeneDef ParentName="RimMandrake_GeneHeadBase">
-    <defName>RimMandrake_TwilekHead</defName>
+    <defName>RSW_TwilekHead</defName>
     <label>twi'lek head</label>
     <description>Carriers of this gene have the Twi'lek racial head type.</description>
     <iconPath>RimMandrakeSW/OR/OuterRim/GeneIcons/Gene_Lekku</iconPath>
     <biostatCpx>1</biostatCpx>
     <biostatMet>0</biostatMet>
     <forcedHeadTypes>
-      <li>RimMandrake_Twilek_MaleNormal</li>
-      <li>RimMandrake_Twilek_MaleStriped</li>
-      <li>RimMandrake_Twilek_FemaleNormal</li>
-      <li>RimMandrake_Twilek_FemaleStriped</li>
+      <li>RSW_Twilek_MaleNormal</li>
+      <li>RSW_Twilek_MaleStriped</li>
+      <li>RSW_Twilek_FemaleNormal</li>
+      <li>RSW_Twilek_FemaleStriped</li>
     </forcedHeadTypes>
     <displayOrderInCategory>9100</displayOrderInCategory>
     <symbolPack>
@@ -3569,14 +3569,14 @@
     </symbolPack>
   </GeneDef>
   <GeneDef ParentName="RimMandrake_GeneHeadBase">
-    <defName>RimMandrake_WookieeHead</defName>
+    <defName>RSW_WookieeHead</defName>
     <label>wookiee head</label>
     <description>Carriers of this gene have the Wookiee racial head type.</description>
     <iconPath>RimMandrakeSW/OR/OuterRim/GeneIcons/Gene_WookieeHead</iconPath>
     <biostatCpx>1</biostatCpx>
     <biostatMet>0</biostatMet>
     <forcedHeadTypes>
-      <li>RimMandrake_Wookiee</li>
+      <li>RSW_Wookiee</li>
     </forcedHeadTypes>
     <displayOrderInCategory>9100</displayOrderInCategory>
     <symbolPack>
@@ -3588,7 +3588,7 @@
     </symbolPack>
   </GeneDef>
   <GeneDef ParentName="RimMandrake_GeneHeadboneHornBase">
-    <defName>RimMandrake_ZabrakHornsMale</defName>
+    <defName>RSW_ZabrakHornsMale</defName>
     <label>zabrak horns (male only)</label>
     <geneClass>VEF.Genes.GeneGendered</geneClass>
     <description>Carriers of this gene grow man small horns on their head.\n\nOnly affects male pawns.</description>
@@ -3623,13 +3623,13 @@
     </modExtensions>
   </GeneDef>
   <GeneDef MayRequire="OskarPotocki.VanillaFactionsExpanded.Core">
-    <defName>RimMandrake_butchergene_insectmeat</defName>
+    <defName>RSW_butchergene_insectmeat</defName>
     <label>insectoid</label>
     <description>Carriers of this gene yield insect meat when their corpses are butchered.</description>
     <iconPath>Things/Item/Resource/MeatFoodRaw/Meat_Insect/Meat_Insect_c</iconPath>
     <iconColor>(160,168,139)</iconColor>
     <displayOrderInCategory>600</displayOrderInCategory>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <biostatCpx>1</biostatCpx>
     <selectionWeight>0</selectionWeight>
     <exclusionTags>
@@ -3644,13 +3644,13 @@
     </modExtensions>
   </GeneDef>
   <GeneDef MayRequire="OskarPotocki.VanillaFactionsExpanded.Core">
-    <defName>RimMandrake_butchergene_lizardskin</defName>
+    <defName>RSW_butchergene_lizardskin</defName>
     <label>lizardskin</label>
     <description>Carriers of this gene yield lizardskin when their corpses are butchered.</description>
     <iconPath>Things/Item/Resource/Leather/Leather_b</iconPath>
     <iconColor>(101,116,58)</iconColor>
     <displayOrderInCategory>800</displayOrderInCategory>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <biostatCpx>1</biostatCpx>
     <selectionWeight>0</selectionWeight>
     <modExtensions>
@@ -3660,7 +3660,7 @@
     </modExtensions>
   </GeneDef>
   <GeneDef ParentName="RimMandrake_LifespanGeneBase">
-    <defName>RimMandrake_lifespan_double</defName>
+    <defName>RSW_lifespan_double</defName>
     <label>200-year lifespan</label>
     <description>Carriers of this gene live for approximately 200 years.</description>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_Lifespan2x</iconPath>
@@ -3670,7 +3670,7 @@
     </statFactors>
   </GeneDef>
   <GeneDef ParentName="RimMandrake_LifespanGeneBase">
-    <defName>RimMandrake_lifespan_half</defName>
+    <defName>RSW_lifespan_half</defName>
     <label>60-year lifespan</label>
     <description>Carriers of this gene live for approximately 60 years.</description>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_LifespanHalf</iconPath>
@@ -3680,7 +3680,7 @@
     </statFactors>
   </GeneDef>
   <GeneDef ParentName="RimMandrake_LifespanGeneBase">
-    <defName>RimMandrake_lifespan_nine</defName>
+    <defName>RSW_lifespan_nine</defName>
     <label>900-year lifespan</label>
     <description>Carriers of this gene live for approximately 900 years.</description>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_Lifespan9x</iconPath>
@@ -3690,7 +3690,7 @@
     </statFactors>
   </GeneDef>
   <GeneDef ParentName="RimMandrake_LifespanGeneBase">
-    <defName>RimMandrake_lifespan_quad</defName>
+    <defName>RSW_lifespan_quad</defName>
     <label>400-year lifespan</label>
     <description>Carriers of this gene live for approximately 400 years.</description>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_Lifespan4x</iconPath>
@@ -3700,7 +3700,7 @@
     </statFactors>
   </GeneDef>
   <GeneDef ParentName="RimMandrake_LifespanGeneBase">
-    <defName>RimMandrake_lifespan_six</defName>
+    <defName>RSW_lifespan_six</defName>
     <label>600-year lifespan</label>
     <description>Carriers of this gene live for approximately 600 years.</description>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_Lifespan6x</iconPath>
@@ -3710,15 +3710,15 @@
     </statFactors>
   </GeneDef>
   <GeneDef MayRequire="Ludeon.RimWorld.Royalty">
-    <defName>RimMandrake_statgene_PsyHarmonize</defName>
+    <defName>RSW_statgene_PsyHarmonize</defName>
     <label>psychic harmonization</label>
     <description>Carriers of this gene have a natural ability to synchronize their emotions with others.</description>
     <descriptionHyperlinks>
-      <HediffDef>RimMandrake_Hediff_PsyHarmonize</HediffDef>
+      <HediffDef>RSW_Hediff_PsyHarmonize</HediffDef>
     </descriptionHyperlinks>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_PsyHarmonizer</iconPath>
     <displayOrderInCategory>701</displayOrderInCategory>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <biostatCpx>1</biostatCpx>
     <biostatMet>3</biostatMet>
     <selectionWeight>0</selectionWeight>
@@ -3726,7 +3726,7 @@
       <li Class="BigAndSmall.PawnExtension">
         <applyPartHediff>
           <li>
-            <hediff>RimMandrake_Hediff_PsyHarmonize</hediff>
+            <hediff>RSW_Hediff_PsyHarmonize</hediff>
             <bodyparts>
               <li>Brain</li>
             </bodyparts>
@@ -3736,12 +3736,12 @@
     </modExtensions>
   </GeneDef>
   <GeneDef MayRequire="pathfinding.framework">
-    <defName>RimMandrake_statgene_amphibious</defName>
+    <defName>RSW_statgene_amphibious</defName>
     <label>amphibious</label>
     <description>Carriers of this gene have evolved to move around efficiently in both land and in water.</description>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_Amphibious</iconPath>
     <displayOrderInCategory>702</displayOrderInCategory>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <biostatCpx>2</biostatCpx>
     <selectionWeight>0</selectionWeight>
     <modExtensions>
@@ -3751,11 +3751,11 @@
     </modExtensions>
   </GeneDef>
   <GeneDef ParentName="GeneAggressionBase">
-    <defName>RimMandrake_statgene_compliant</defName>
+    <defName>RSW_statgene_compliant</defName>
     <label>compliant</label>
     <description>Carriers of this gene are naturally compliant and significantly less likely to rebel while enslaved or attempt escapes while imprisoned.</description>
     <iconPath>UI/Icons/Genes/Gene_Submissive</iconPath>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <socialFightChanceFactor>0.25</socialFightChanceFactor>
     <aggroMentalBreakSelectionChanceFactor>0.25</aggroMentalBreakSelectionChanceFactor>
     <prisonBreakMTBFactor>0.25</prisonBreakMTBFactor>
@@ -3772,12 +3772,12 @@
     <biostatMet>-1</biostatMet>
   </GeneDef>
   <GeneDef MayRequire="Ludeon.RimWorld.Royalty">
-    <defName>RimMandrake_statgene_force</defName>
+    <defName>RSW_statgene_force</defName>
     <label>natural force-user</label>
     <description>Carriers of this gene have evolved a natural ability to use the force.</description>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_ForceNatural</iconPath>
     <displayOrderInCategory>700</displayOrderInCategory>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <biostatCpx>10</biostatCpx>
     <biostatArc>3</biostatArc>
     <selectionWeight>0</selectionWeight>
@@ -3795,12 +3795,12 @@
     </modExtensions>
   </GeneDef>
   <GeneDef>
-    <defName>RimMandrake_statgene_fourthroats</defName>
+    <defName>RSW_statgene_fourthroats</defName>
     <label>four throats</label>
     <description>Carriers of this gene have four throats for four times the speaking power.</description>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_FourThroats</iconPath>
     <displayOrderInCategory>781</displayOrderInCategory>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <biostatCpx>1</biostatCpx>
     <capMods>
       <li>
@@ -3810,26 +3810,26 @@
     </capMods>
   </GeneDef>
   <GeneDef>
-    <defName>RimMandrake_statgene_metabolismcheat</defName>
+    <defName>RSW_statgene_metabolismcheat</defName>
     <label>efficient metabolism</label>
     <description>Carriers of this gene have evolved the ability to metabolize food more efficiently.</description>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_EfficientStomach</iconPath>
     <displayOrderInCategory>669</displayOrderInCategory>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <biostatCpx>8</biostatCpx>
     <biostatMet>3</biostatMet>
     <selectionWeight>0</selectionWeight>
   </GeneDef>
   <GeneDef>
-    <defName>RimMandrake_statgene_predator</defName>
+    <defName>RSW_statgene_predator</defName>
     <label>predator instincts</label>
     <description>Carriers of this gene are evolved from predator species. They have a natural affinity for hunting, and grow claws to boot.</description>
     <descriptionHyperlinks>
-      <HediffDef>RimMandrake_GeneHediff_claws</HediffDef>
+      <HediffDef>RSW_GeneHediff_claws</HediffDef>
     </descriptionHyperlinks>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_Predator</iconPath>
     <displayOrderInCategory>794</displayOrderInCategory>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <biostatCpx>2</biostatCpx>
     <biostatMet>-1</biostatMet>
     <statOffsets>
@@ -3840,7 +3840,7 @@
       <li Class="BigAndSmall.PawnExtension">
         <applyPartHediff>
           <li>
-            <hediff>RimMandrake_GeneHediff_claws</hediff>
+            <hediff>RSW_GeneHediff_claws</hediff>
             <bodyparts>
               <li>Hand</li>
               <li>Hand</li>
@@ -3855,12 +3855,12 @@
     </modExtensions>
   </GeneDef>
   <GeneDef>
-    <defName>RimMandrake_statgene_senses</defName>
+    <defName>RSW_statgene_senses</defName>
     <label>heightened senses</label>
     <description>Carriers of this gene have hyper-tuned sight and hearing, but as a result are extremely vulnerable to sonic attacks.</description>
     <iconPath>UI/Icons/Genes/Gene_EarHuman</iconPath>
     <displayOrderInCategory>780</displayOrderInCategory>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
     <biostatCpx>1</biostatCpx>
     <capMods>
       <li>
@@ -3879,12 +3879,12 @@
     </damageFactors>
   </GeneDef>
   <GeneDef>
-    <defName>RimMandrake_tattooGene_mirialan</defName>
+    <defName>RSW_tattooGene_mirialan</defName>
     <label>geometric tattoos</label>
     <description>Members of this species decorate their faces with tattoos of geometric shapes.</description>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_TattooMirialan</iconPath>
     <displayOrderInCategory>795</displayOrderInCategory>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
       <!-- 🔴 DISABLED 2026-08-26 by BUILD. This block was DISCARDING THE WHOLE GENE.
            Player.log, four times, one per tattoo gene:
              Could not find type named GeneTattooTagFilter.ModExtension_GeneTattooTagFilter
@@ -3911,12 +3911,12 @@
       -->
   </GeneDef>
   <GeneDef>
-    <defName>RimMandrake_tattooGene_pantoran</defName>
+    <defName>RSW_tattooGene_pantoran</defName>
     <label>yellow tattoos</label>
     <description>Members of this species decorate their faces with yellow tattoos.</description>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_TattooPantoran</iconPath>
     <displayOrderInCategory>797</displayOrderInCategory>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
       <!-- 🔴 DISABLED 2026-08-26 by BUILD. This block was DISCARDING THE WHOLE GENE.
            Player.log, four times, one per tattoo gene:
              Could not find type named GeneTattooTagFilter.ModExtension_GeneTattooTagFilter
@@ -3943,12 +3943,12 @@
       -->
   </GeneDef>
   <GeneDef>
-    <defName>RimMandrake_tattooGene_togruta</defName>
+    <defName>RSW_tattooGene_togruta</defName>
     <label>white tattoos</label>
     <description>Members of this species decorate their faces with white tattoos.</description>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_TattooTogruta</iconPath>
     <displayOrderInCategory>796</displayOrderInCategory>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
       <!-- 🔴 DISABLED 2026-08-26 by BUILD. This block was DISCARDING THE WHOLE GENE.
            Player.log, four times, one per tattoo gene:
              Could not find type named GeneTattooTagFilter.ModExtension_GeneTattooTagFilter
@@ -3975,12 +3975,12 @@
       -->
   </GeneDef>
   <GeneDef>
-    <defName>RimMandrake_tattooGene_zabrak</defName>
+    <defName>RSW_tattooGene_zabrak</defName>
     <label>dark tattoos</label>
     <description>Members of this species decorate their faces and bodies with intricate black tattoos.</description>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Genes/Gene_TattooZabrak</iconPath>
     <displayOrderInCategory>798</displayOrderInCategory>
-    <displayCategory>RimMandrake_SWparts_Category</displayCategory>
+    <displayCategory>RSW_SWparts_Category</displayCategory>
       <!-- 🔴 DISABLED 2026-08-26 by BUILD. This block was DISCARDING THE WHOLE GENE.
            Player.log, four times, one per tattoo gene:
              Could not find type named GeneTattooTagFilter.ModExtension_GeneTattooTagFilter

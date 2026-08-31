@@ -28,7 +28,7 @@ east would not match the west a player actually sees.
     ModsConfig.xml, 2026-08-13
       petetimessix.researchreinvented          line 275
       aw.researchreinvented.retextured         line 457   <- donor for all 4
-      mandrake.researchkiteastfix              (to be inserted after 558)
+      mandrake.rm.researchkiteastfix              (to be inserted after 558)
 
 VERIFIED BROKEN BEFORE REPAIR, 2026-08-13 (alpha channel max over whole image)
 =============================================================================

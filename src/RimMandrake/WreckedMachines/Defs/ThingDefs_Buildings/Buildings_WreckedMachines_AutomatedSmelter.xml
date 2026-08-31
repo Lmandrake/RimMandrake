@@ -44,7 +44,7 @@
        TIER 1 — WRECKED.  Dead. Occupies its tiles and nothing else.
        ================================================================== -->
   <ThingDef ParentName="BuildingBase">
-    <defName>WM_AutomatedSmelter_Wrecked</defName>
+    <defName>RM_WM_AutomatedSmelter_Wrecked</defName>
     <label>wrecked automated smelter</label>
     <description>What is left of an automated smelter. The casing is split, the electromagnets are gone, and the feed throat is choked with its own cooled slag. It has no power in it and nothing to give.\n\nFor now it is simply rubble: clear it, or build the machine it used to be over the top of it.</description>
     <drawerType>MapMeshOnly</drawerType>
@@ -118,7 +118,7 @@
        TIER 2 — KLUDGED.  Runs, badly, on the crudest recipes only.
        ================================================================== -->
   <ThingDef ParentName="BuildingBase">
-    <defName>WM_AutomatedSmelter_Kludged</defName>
+    <defName>RM_WM_AutomatedSmelter_Kludged</defName>
     <label>kludged automated smelter</label>
     <description>An automated smelter dragged back into service by people who did not build it. Mismatched plating covers the worst of the breach, the coil loom is spliced by hand, and something that was never meant to be a thermal regulator is bolted across the intake.\n\nIt melts anything already mostly metal. Ask it for precision and it will give you slag and a temperature alarm. It runs hotter than it should, breaks down often, and cannot be overclocked.</description>
     <drawerType>MapMeshAndRealTime</drawerType>
@@ -239,7 +239,7 @@
        TIER 3 — REPAIRED.  Full function. Mechanically identical to the donor.
        ================================================================== -->
   <ThingDef ParentName="BuildingBase">
-    <defName>WM_AutomatedSmelter_Repaired</defName>
+    <defName>RM_WM_AutomatedSmelter_Repaired</defName>
     <label>repaired automated smelter</label>
     <description>An automated smelter rebuilt by scavengers. The breaches are filled with metal that does not match, the cabling is routed almost neatly, and a few improvised vents still smoke under load — but the electromagnets sing again and the feed runs clean.\n\nIt does everything the original did. It will never look like the original again.\n\nFactory buildings need factory hoppers for input and output. They produce significant heat and consume much power, but can be overclocked for higher efficiency, increasing both heat generation and power consumption. Needs to be constructed on factory floor.</description>
     <drawerType>MapMeshAndRealTime</drawerType>

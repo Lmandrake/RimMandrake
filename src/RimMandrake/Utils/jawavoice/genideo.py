@@ -13,8 +13,8 @@ CONDS = ["INITIATOR_faction==PlayerColony",
          "INITIATOR_faction==PlayerTribe",
          # 🔴 CORRECTED 2026-08-21. These read `OuterRim_Jawa` / `OuterRim_JawaTribal`,
          # which are ABSENT from the live capture - measured against defs.sqlite
-         # (OFFICIAL, 578 mods): both return zero rows, while `RimMandrake_Jawa` and
-         # `RimMandrake_JawaTribal` exist as PawnKindDefs in "RimMandrake - Star Wars
+         # (OFFICIAL, 578 mods): both return zero rows, while `RSW_Jawa` and
+         # `RSW_JawaTribal` exist as PawnKindDefs in "RimMandrake - Star Wars
          # Races". The committed output had already been moved to the live names and
          # the sibling `genxml.py` had been updated; this file was the half of the
          # rename nobody finished.
@@ -22,8 +22,8 @@ CONDS = ["INITIATOR_faction==PlayerColony",
          # pawnkind that does not exist. A grammar condition naming a dead kind never
          # matches, logs nothing, and the success line still reads
          # "14 defs, 47 lines -> 188 rules". The COUNT was never the thing that moved.
-         "INITIATOR_kind==RimMandrake_Jawa",
-         "INITIATOR_kind==RimMandrake_JawaTribal"]
+         "INITIATOR_kind==RSW_Jawa",
+         "INITIATOR_kind==RSW_JawaTribal"]
 
 GROUPS = [
     ("PRISONERS: acquisition, and the slow work on the will",
@@ -124,7 +124,7 @@ HEADER = u'''<?xml version="1.0" encoding="utf-8"?>
   THE FOUR CONDITION FAN OUT
   ==========================
   47 lines authored across 14 defs, emitted as 188 rules, once per speaker
-  condition (PlayerColony, PlayerTribe, RimMandrake_Jawa, RimMandrake_JawaTribal).
+  condition (PlayerColony, PlayerTribe, RSW_Jawa, RSW_JawaTribal).
   Grammar conditions AND together and there is no OR, so four cases means four
   copies. Covering only the first would leave tribal starts and every NPC Jawa
   speaking English.

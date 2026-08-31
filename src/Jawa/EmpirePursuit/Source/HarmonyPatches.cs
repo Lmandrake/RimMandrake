@@ -11,14 +11,14 @@ using System.Text;
 using System.Threading.Tasks;
 using Verse;
 
-namespace RuthlessPursuingMechanoids
+namespace RUT_RuthlessPursuingMechanoids
 {
     [StaticConstructorOnStartup]
     public static class HarmonyPatcher
     {
         static HarmonyPatcher()
         {
-            new Harmony("mandrake.empirepursuit").PatchAll(Assembly.GetExecutingAssembly());
+            new Harmony("mandrake.rut.empirepursuit").PatchAll(Assembly.GetExecutingAssembly());
         }
     }
 

@@ -2,11 +2,11 @@
 
   <!--
     DroidworksBoltCore - Harmony hook suppressing mental breaks while a pawn
-    carries DW_RestrainingBolt (DROIDWORKS_BOLT_CORE_1). See
+    carries RSW_DW_RestrainingBolt (DROIDWORKS_BOLT_CORE_1). See
     BoltCorePatches.cs for the full mechanism.
 
     Split into its OWN sub-project, separate from the main Droidworks.csproj
-    (net472), for the same reason src/Jawa/JawaIonWeapons/Source/VehicleTier/
+    (net472), for the same reason src/RimStarWars/JawaIonWeapons/Source/VehicleTier/
     JawaIonVehicleTier.csproj is split from the main JawaIonWeapons.csproj:
     Harmony (0Harmony.dll, brrainz.harmony) is a distinct dependency the main
     project doesn't carry, and net48 keeps this build independent of whatever
@@ -31,7 +31,7 @@
     JawaIonVehicleTier.csproj already proved out for JawaIonWeapons.
 
     This project does NOT reference Droidworks.dll (the sibling net472
-    output) - BoltCorePatches.cs looks up DW_RestrainingBolt by defName via
+    output) - BoltCorePatches.cs looks up RSW_DW_RestrainingBolt by defName via
     DefDatabase<HediffDef>.GetNamedSilentFail instead, deliberately, so the
     two assemblies build in either order and stay load-order independent -
     identical reasoning to VehicleIonPatches.cs reading IonDamageDef's

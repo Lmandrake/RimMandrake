@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using Verse;
 
-namespace RuthlessPursuingMechanoids
+namespace RUT_RuthlessPursuingMechanoids
 {
     public class RFPSettings : ModSettings
     {

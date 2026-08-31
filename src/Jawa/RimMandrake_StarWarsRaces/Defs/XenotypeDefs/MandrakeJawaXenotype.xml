@@ -4,14 +4,14 @@
   MandrakeJawaXenotype.xml                   Jawa_Patches · authored 2026-08-14
   ============================================================================
 
-  OWNER'S RULING, 2026-08-14: "the xenotype MandrakeJawa is the ONLY Jawa
+  OWNER'S RULING, 2026-08-14: "the xenotype RSW_MandrakeJawa is the ONLY Jawa
   xenotype active anymore."
 
   WHERE THE GENES CAME FROM
   =========================
   Transcribed from the owner's own custom xenotype, saved in the game's editor:
-      C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Xenotypes\MandrakeJawa.xtp
-  A copy is committed at `src/Jawa/ideoligion/MandrakeJawa.xtp` so the source of
+      C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Xenotypes\RSW_MandrakeJawa.xtp
+  A copy is committed at `src/Jawa/ideoligion/RSW_MandrakeJawa.xtp` so the source of
   this def cannot be lost with the AppData folder.
 
   🔴 WHY A DEF AND NOT JUST THE .xtp
@@ -29,12 +29,12 @@
   🔴 THE DEF AND THE .xtp NOW DIFFER BY EXACTLY THREE GENES, ON PURPOSE
   ====================================================================
   `AptitudeTerrible_Plants` is the 36th, added 2026-08-21 (JAWA_CANNOT_FARM_GENE_1);
-  `RimMandrake_Jawa_MiningDisabled` is the 37th, added 2026-08-22
+  `RSW_Jawa_MiningDisabled` is the 37th, added 2026-08-22
   (JAWA_CANNOT_DIG_GENE_1); and `SEX_AlwaysAphrodor` is the 38th, added 2026-08-22 on
   the owner's description of the clan as a "single-gender-egg-layer-either-impregnate-
   the-other variety" - see the long note beside it below for why the ovipositor alone
   did not deliver that. All three are on the owner's rulings. None is in
-  `MandrakeJawa.xtp` and none must be
+  `RSW_MandrakeJawa.xtp` and none must be
   put there: the .xtp is the owner's saved editor artifact and a record of what
   he built by hand, and the repo copy is byte-identical to the live one under
   `LocalLow\Xenotypes\`. Both should stay that way.
@@ -52,7 +52,7 @@
 <Defs>
 
   <XenotypeDef>
-    <defName>MandrakeJawa</defName>
+    <defName>RSW_MandrakeJawa</defName>
     <label>Jawa</label>
     <description>The clan aboard the Kolyska. Small, hooded, ink-black of skin and huge of eye, bred narrow by a desert that never turns from the sun. They see in the dark, they carry the scent of their own kind, they lay eggs rather than bear young, and every one of them is male. They are frail, sour-stomached and quick to flinch — and they will strip a wreck to its frame and make it run again.</description>
     <descriptionShort>Small hooded desert scavengers with huge glowing eyes, dark vision and an unmatched instinct for salvage.</descriptionShort>
@@ -69,7 +69,7 @@
          that file carries only `name` and `inheritable`, so it was invented
          when this def was written. `false` bars the xenotype from COMBAT pawn
          generation, and `Jawa_IndigenousTribes` has a Combat group whose every
-         option (Jawa_Tribal_Scavenger / _Slinger / _Elder) forces MandrakeJawa.
+         option (Jawa_Tribal_Scavenger / _Slinger / _Elder) forces RSW_MandrakeJawa.
          A Jawa faction that cannot generate a fighter is a faction that cannot
          raid. Every vanilla faction xenotype (Neanderthal, Hussar, Impid)
          ships `true`. -->
@@ -78,10 +78,10 @@
     <!-- Jawa names, not colonist names. The rule pack and its word lists are
          this mod's, copied from Star Wars Xenotypes and renamed, so this holds
          with every donor switched off. -->
-    <nameMaker>RimMandrake_KoTOR_NamerJawa</nameMaker>
+    <nameMaker>RSW_KoTOR_NamerJawa</nameMaker>
     <genes>
       <!-- frame and constitution -->
-      <li>RimMandrake_BodySizeGene_smaller</li>
+      <li>RSW_BodySizeGene_smaller</li>
       <li>StrongStomach</li>
       <li>AG_UnderdevelopedTeeth</li>
       <li>AG_SurvivalInstinct_High</li>
@@ -94,7 +94,7 @@
       <li>MinTemp_SmallIncrease</li>
       <li>MaxTemp_LargeIncrease</li>
       <li>MeleeDamage_Weak</li>
-      <li>RimMandrake_Jawa_Skittish</li>
+      <li>RSW_Jawa_Skittish</li>
       <li>Pain_Extra</li>
       <!-- reproduction: egg-laying, early maturity, short gestation -->
       <li>BS_EarlyMaturity</li>
@@ -146,11 +146,11 @@
       <li>Beard_NoBeardOnly</li>
       <li>Body_Standard</li>
       <li>Skin_InkBlack</li>
-      <li>RimMandrake_Eyes_HugeYellow</li>
-      <li>RimMandrake_Jawa_Eyes_HugeOrange</li>
-      <li>RimMandrake_Jawa_Eyes_HugeAmber</li>
+      <li>RSW_Eyes_HugeYellow</li>
+      <li>RSW_Jawa_Eyes_HugeOrange</li>
+      <li>RSW_Jawa_Eyes_HugeAmber</li>
       <li>Outland_Blood_Gray</li>
-      <li>RimMandrake_Jawa_Head_Plain</li>
+      <li>RSW_Jawa_Head_Plain</li>
       <!-- the ones that carry the fiction -->
       <li>DarkVision</li>
       <li>Outland_FamiliarScent</li>
@@ -183,7 +183,7 @@
            DRILLTURRET_IS_A_SHOOTING_JOB_1 moved it to `Hunting`, which also means this
            design depends on Jawa being capable of VIOLENT work. No gene in this list
            disables a work tag; keep it that way or the turret silently dies. -->
-      <li>RimMandrake_Jawa_MiningDisabled</li>
+      <li>RSW_Jawa_MiningDisabled</li>
       <li>VRE_Curiosity_Social</li>
     </genes>
   </XenotypeDef>

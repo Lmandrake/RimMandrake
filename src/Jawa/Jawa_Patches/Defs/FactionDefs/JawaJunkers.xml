@@ -145,8 +145,8 @@
          them, so without this opt-out the faction fields Hussars in a Star Wars
          campaign. `BTD_` and not `OuterRim_`: three packs ship overlapping
          xenotypes. 🔴 THAT NOTE IS OUT OF DATE (2026-08-19): `BTD_Jawa` no longer
-         loads either. The surviving Jawa xenotypes are `MandrakeJawa` and
-         `RimMandrakeJawa`, both from `mandrake.starwarsraces`.
+         loads either. The surviving Jawa xenotypes are `RSW_MandrakeJawa` and
+         `RSW_RimMandrakeJawa`, both from `mandrake.rsw.starwarsraces`.
          ⚠️ The CHANCES are BUILD's, not the spec's — R27 gives species, not
          numbers. They sum to ~1.00, with the dossier
          lead species heaviest.
@@ -155,23 +155,23 @@
          nothing depends on them. -->
     <xenotypeSet Inherit="False">
       <xenotypeChances>
-        <RimMandrakeChadraFan MayRequire="mandrake.starwarsraces">0.140</RimMandrakeChadraFan>
-        <RimMandrakeFeeorin MayRequire="mandrake.starwarsraces">0.140</RimMandrakeFeeorin>
-        <RimMandrakeGamorrean MayRequire="mandrake.starwarsraces">0.140</RimMandrakeGamorrean>
-        <RimMandrakeGand MayRequire="mandrake.starwarsraces">0.140</RimMandrakeGand>
-        <RimMandrakeAqualish MayRequire="mandrake.starwarsraces">0.047</RimMandrakeAqualish>
+        <RSW_RimMandrakeChadraFan MayRequire="mandrake.rsw.starwarsraces">0.140</RSW_RimMandrakeChadraFan>
+        <RSW_RimMandrakeFeeorin MayRequire="mandrake.rsw.starwarsraces">0.140</RSW_RimMandrakeFeeorin>
+        <RSW_RimMandrakeGamorrean MayRequire="mandrake.rsw.starwarsraces">0.140</RSW_RimMandrakeGamorrean>
+        <RSW_RimMandrakeGand MayRequire="mandrake.rsw.starwarsraces">0.140</RSW_RimMandrakeGand>
+        <RSW_RimMandrakeAqualish MayRequire="mandrake.rsw.starwarsraces">0.047</RSW_RimMandrakeAqualish>
         <Baseliner>0.047</Baseliner>
-        <RimMandrakeNikto MayRequire="mandrake.starwarsraces">0.047</RimMandrakeNikto>
-        <RimMandrakeRodian MayRequire="mandrake.starwarsraces">0.047</RimMandrakeRodian>
-        <RimMandrakeSnivvian MayRequire="mandrake.starwarsraces">0.047</RimMandrakeSnivvian>
-        <RimMandrakeTrandoshan MayRequire="mandrake.starwarsraces">0.047</RimMandrakeTrandoshan>
-        <RimMandrakeUgnaught MayRequire="mandrake.starwarsraces">0.047</RimMandrakeUgnaught>
-        <RimMandrakeWeequay MayRequire="mandrake.starwarsraces">0.047</RimMandrakeWeequay>
-        <RimMandrakeDuros MayRequire="mandrake.starwarsraces">0.014</RimMandrakeDuros>
-        <RimMandrakeKubaz MayRequire="mandrake.starwarsraces">0.014</RimMandrakeKubaz>
-        <RimMandrakePantoran MayRequire="mandrake.starwarsraces">0.014</RimMandrakePantoran>
-        <RimMandrakeTwilek MayRequire="mandrake.starwarsraces">0.014</RimMandrakeTwilek>
-        <RimMandrakeZygerrian MayRequire="mandrake.starwarsraces">0.014</RimMandrakeZygerrian>
+        <RSW_RimMandrakeNikto MayRequire="mandrake.rsw.starwarsraces">0.047</RSW_RimMandrakeNikto>
+        <RSW_RimMandrakeRodian MayRequire="mandrake.rsw.starwarsraces">0.047</RSW_RimMandrakeRodian>
+        <RSW_RimMandrakeSnivvian MayRequire="mandrake.rsw.starwarsraces">0.047</RSW_RimMandrakeSnivvian>
+        <RSW_RimMandrakeTrandoshan MayRequire="mandrake.rsw.starwarsraces">0.047</RSW_RimMandrakeTrandoshan>
+        <RSW_RimMandrakeUgnaught MayRequire="mandrake.rsw.starwarsraces">0.047</RSW_RimMandrakeUgnaught>
+        <RSW_RimMandrakeWeequay MayRequire="mandrake.rsw.starwarsraces">0.047</RSW_RimMandrakeWeequay>
+        <RSW_RimMandrakeDuros MayRequire="mandrake.rsw.starwarsraces">0.014</RSW_RimMandrakeDuros>
+        <RSW_RimMandrakeKubaz MayRequire="mandrake.rsw.starwarsraces">0.014</RSW_RimMandrakeKubaz>
+        <RSW_RimMandrakePantoran MayRequire="mandrake.rsw.starwarsraces">0.014</RSW_RimMandrakePantoran>
+        <RSW_RimMandrakeTwilek MayRequire="mandrake.rsw.starwarsraces">0.014</RSW_RimMandrakeTwilek>
+        <RSW_RimMandrakeZygerrian MayRequire="mandrake.rsw.starwarsraces">0.014</RSW_RimMandrakeZygerrian>
       </xenotypeChances>
     </xenotypeSet>
 

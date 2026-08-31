@@ -2,11 +2,11 @@ using RimWorld;
 using UnityEngine;
 using Verse;
 
-namespace Droidworks
+namespace RimMandrake.StarWars.Droidworks
 {
     public class HediffCompProperties_DWBoltResentment : HediffCompProperties
     {
-        /// Severity gained per in-game day while DW_RestrainingBolt is present.
+        /// Severity gained per in-game day while RSW_DW_RestrainingBolt is present.
         public float severityPerDayWhileBolted = 0.05f;
 
         public HediffCompProperties_DWBoltResentment() =>
@@ -15,7 +15,7 @@ namespace Droidworks
 
     /// <summary>
     /// DROIDWORKS_BOLT_CORE_1 - the resentment accumulator. Rises only while
-    /// DW_RestrainingBolt is present on a Humanlike (sapient) pawn, and -
+    /// RSW_DW_RestrainingBolt is present on a Humanlike (sapient) pawn, and -
     /// the whole point of the mechanic (design/Jawa/droid_system_spec.md
     /// section 7: "Sapients accumulate resentment that persists after
     /// removal -> instant rebellion when freed") - is PINNED once the bolt is
@@ -27,7 +27,7 @@ namespace Droidworks
     ///
     /// This is a stub accumulator, not a consequence system - nothing reads
     /// this hediff's severity yet. See the // TODO comments on
-    /// HediffDefs_Droidworks.xml's DW_BoltResentment entry for what a later
+    /// HediffDefs_Droidworks.xml's RSW_DW_BoltResentment entry for what a later
     /// phase hangs off it (mood aura, idiosyncrasy-disable,
     /// instant-rebellion-on-removal) - none of that is built here.
     /// everVisible=false on the def: the player is never meant to see a
@@ -45,7 +45,7 @@ namespace Droidworks
             Pawn p = Pawn;
             if (p == null || p.Dead) return;
             if (p.RaceProps == null || p.RaceProps.intelligence != Intelligence.Humanlike) return;
-            if (!p.health.hediffSet.HasHediff(DroidworksDefOf.DW_RestrainingBolt)) return;
+            if (!p.health.hediffSet.HasHediff(DroidworksDefOf.RSW_DW_RestrainingBolt)) return;
 
             float gainPerTick = Props.severityPerDayWhileBolted / GenDate.TicksPerDay;
             parent.Severity = Mathf.Min(parent.def.maxSeverity, parent.Severity + gainPerTick);

@@ -1,7 +1,7 @@
 using UnityEngine;
 using Verse;
 
-namespace JawaDoctrineCore
+namespace RimMandrake.Utinni.Doctrine
 {
     /// <summary>
     /// COLONY_VISIBILITY_STAT_1 safe core. Tracks the shared 0-100 Colony

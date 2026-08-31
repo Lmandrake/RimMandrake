@@ -27,7 +27,7 @@
 -->
 <Defs>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeAbednedo_Kind</defName>
+    <defName>RSW_RimMandrakeAbednedo_Kind</defName>
     <label>Abednedo</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -37,12 +37,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeAbednedo>1.0</RimMandrakeAbednedo>
+        <RSW_RimMandrakeAbednedo>1.0</RSW_RimMandrakeAbednedo>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeAnzati_Kind</defName>
+    <defName>RSW_RimMandrakeAnzati_Kind</defName>
     <label>Anzati</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -52,12 +52,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeAnzati>1.0</RimMandrakeAnzati>
+        <RSW_RimMandrakeAnzati>1.0</RSW_RimMandrakeAnzati>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeAqualish_Kind</defName>
+    <defName>RSW_RimMandrakeAqualish_Kind</defName>
     <label>Aqualish</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -67,12 +67,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeAqualish>1.0</RimMandrakeAqualish>
+        <RSW_RimMandrakeAqualish>1.0</RSW_RimMandrakeAqualish>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeArkanian_Kind</defName>
+    <defName>RSW_RimMandrakeArkanian_Kind</defName>
     <label>Arkanian</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -82,12 +82,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeArkanian>1.0</RimMandrakeArkanian>
+        <RSW_RimMandrakeArkanian>1.0</RSW_RimMandrakeArkanian>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeBith_Kind</defName>
+    <defName>RSW_RimMandrakeBith_Kind</defName>
     <label>Bith</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -97,12 +97,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeBith>1.0</RimMandrakeBith>
+        <RSW_RimMandrakeBith>1.0</RSW_RimMandrakeBith>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeBothan_Kind</defName>
+    <defName>RSW_RimMandrakeBothan_Kind</defName>
     <label>Bothan</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -112,12 +112,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeBothan>1.0</RimMandrakeBothan>
+        <RSW_RimMandrakeBothan>1.0</RSW_RimMandrakeBothan>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeCathar_Kind</defName>
+    <defName>RSW_RimMandrakeCathar_Kind</defName>
     <label>Cathar</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -127,12 +127,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeCathar>1.0</RimMandrakeCathar>
+        <RSW_RimMandrakeCathar>1.0</RSW_RimMandrakeCathar>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeCerean_Kind</defName>
+    <defName>RSW_RimMandrakeCerean_Kind</defName>
     <label>Cerean</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -142,12 +142,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeCerean>1.0</RimMandrakeCerean>
+        <RSW_RimMandrakeCerean>1.0</RSW_RimMandrakeCerean>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeChadraFan_Kind</defName>
+    <defName>RSW_RimMandrakeChadraFan_Kind</defName>
     <label>Chadra-Fan</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -157,12 +157,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeChadraFan>1.0</RimMandrakeChadraFan>
+        <RSW_RimMandrakeChadraFan>1.0</RSW_RimMandrakeChadraFan>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeChagrian_Kind</defName>
+    <defName>RSW_RimMandrakeChagrian_Kind</defName>
     <label>Chagrian</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -172,12 +172,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeChagrian>1.0</RimMandrakeChagrian>
+        <RSW_RimMandrakeChagrian>1.0</RSW_RimMandrakeChagrian>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeChiss_Kind</defName>
+    <defName>RSW_RimMandrakeChiss_Kind</defName>
     <label>Chiss</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -187,12 +187,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeChiss>1.0</RimMandrakeChiss>
+        <RSW_RimMandrakeChiss>1.0</RSW_RimMandrakeChiss>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeDathomirian_Kind</defName>
+    <defName>RSW_RimMandrakeDathomirian_Kind</defName>
     <label>Dathomirian</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -202,12 +202,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeDathomirian>1.0</RimMandrakeDathomirian>
+        <RSW_RimMandrakeDathomirian>1.0</RSW_RimMandrakeDathomirian>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeDefel_Kind</defName>
+    <defName>RSW_RimMandrakeDefel_Kind</defName>
     <label>Defel</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -217,12 +217,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeDefel>1.0</RimMandrakeDefel>
+        <RSW_RimMandrakeDefel>1.0</RSW_RimMandrakeDefel>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeDevaronian_Kind</defName>
+    <defName>RSW_RimMandrakeDevaronian_Kind</defName>
     <label>Devaronian</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -232,12 +232,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeDevaronian>1.0</RimMandrakeDevaronian>
+        <RSW_RimMandrakeDevaronian>1.0</RSW_RimMandrakeDevaronian>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeDuros_Kind</defName>
+    <defName>RSW_RimMandrakeDuros_Kind</defName>
     <label>Duros</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -247,12 +247,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeDuros>1.0</RimMandrakeDuros>
+        <RSW_RimMandrakeDuros>1.0</RSW_RimMandrakeDuros>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeEchani_Kind</defName>
+    <defName>RSW_RimMandrakeEchani_Kind</defName>
     <label>Echani</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -262,12 +262,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeEchani>1.0</RimMandrakeEchani>
+        <RSW_RimMandrakeEchani>1.0</RSW_RimMandrakeEchani>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeEwok_Kind</defName>
+    <defName>RSW_RimMandrakeEwok_Kind</defName>
     <label>Ewok</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -277,12 +277,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeEwok>1.0</RimMandrakeEwok>
+        <RSW_RimMandrakeEwok>1.0</RSW_RimMandrakeEwok>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeFalleen_Kind</defName>
+    <defName>RSW_RimMandrakeFalleen_Kind</defName>
     <label>Falleen</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -292,12 +292,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeFalleen>1.0</RimMandrakeFalleen>
+        <RSW_RimMandrakeFalleen>1.0</RSW_RimMandrakeFalleen>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeFeeorin_Kind</defName>
+    <defName>RSW_RimMandrakeFeeorin_Kind</defName>
     <label>Feeorin</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -307,12 +307,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeFeeorin>1.0</RimMandrakeFeeorin>
+        <RSW_RimMandrakeFeeorin>1.0</RSW_RimMandrakeFeeorin>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeGamorrean_Kind</defName>
+    <defName>RSW_RimMandrakeGamorrean_Kind</defName>
     <label>Gamorrean</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -322,12 +322,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeGamorrean>1.0</RimMandrakeGamorrean>
+        <RSW_RimMandrakeGamorrean>1.0</RSW_RimMandrakeGamorrean>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeGand_Kind</defName>
+    <defName>RSW_RimMandrakeGand_Kind</defName>
     <label>Gand</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -337,12 +337,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeGand>1.0</RimMandrakeGand>
+        <RSW_RimMandrakeGand>1.0</RSW_RimMandrakeGand>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeGeonosianVariants_Kind</defName>
+    <defName>RSW_RimMandrakeGeonosianVariants_Kind</defName>
     <label>Geonosian</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -352,12 +352,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeGeonosianVariants>1.0</RimMandrakeGeonosianVariants>
+        <RSW_RimMandrakeGeonosianVariants>1.0</RSW_RimMandrakeGeonosianVariants>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeGungan_Kind</defName>
+    <defName>RSW_RimMandrakeGungan_Kind</defName>
     <label>gungan</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -367,12 +367,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeGungan>1.0</RimMandrakeGungan>
+        <RSW_RimMandrakeGungan>1.0</RSW_RimMandrakeGungan>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeHerglic_Kind</defName>
+    <defName>RSW_RimMandrakeHerglic_Kind</defName>
     <label>Herglic</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -382,12 +382,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeHerglic>1.0</RimMandrakeHerglic>
+        <RSW_RimMandrakeHerglic>1.0</RSW_RimMandrakeHerglic>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeHutt_Kind</defName>
+    <defName>RSW_RimMandrakeHutt_Kind</defName>
     <label>Hutt</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -397,12 +397,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeHutt>1.0</RimMandrakeHutt>
+        <RSW_RimMandrakeHutt>1.0</RSW_RimMandrakeHutt>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeIktotchi_Kind</defName>
+    <defName>RSW_RimMandrakeIktotchi_Kind</defName>
     <label>Iktotchi</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -412,12 +412,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeIktotchi>1.0</RimMandrakeIktotchi>
+        <RSW_RimMandrakeIktotchi>1.0</RSW_RimMandrakeIktotchi>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeIridonian_Kind</defName>
+    <defName>RSW_RimMandrakeIridonian_Kind</defName>
     <label>Iridonian</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -427,12 +427,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeIridonian>1.0</RimMandrakeIridonian>
+        <RSW_RimMandrakeIridonian>1.0</RSW_RimMandrakeIridonian>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeIthorian_Kind</defName>
+    <defName>RSW_RimMandrakeIthorian_Kind</defName>
     <label>Ithorian</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -442,19 +442,19 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeIthorian>1.0</RimMandrakeIthorian>
+        <RSW_RimMandrakeIthorian>1.0</RSW_RimMandrakeIthorian>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeJawa_Kind</defName>
+    <defName>RSW_RimMandrakeJawa_Kind</defName>
     <label>Jawa</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeJawa>1.0</RimMandrakeJawa>
+        <RSW_RimMandrakeJawa>1.0</RSW_RimMandrakeJawa>
       </xenotypeChances>
     </xenotypeSet>
       <apparelRequired>
@@ -470,7 +470,7 @@
     <apparelColor>(77,58,42)</apparelColor>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeKaleesh_Kind</defName>
+    <defName>RSW_RimMandrakeKaleesh_Kind</defName>
     <label>Kaleesh</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -480,12 +480,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeKaleesh>1.0</RimMandrakeKaleesh>
+        <RSW_RimMandrakeKaleesh>1.0</RSW_RimMandrakeKaleesh>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeKaminoan_Kind</defName>
+    <defName>RSW_RimMandrakeKaminoan_Kind</defName>
     <label>kaminoan</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -495,12 +495,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeKaminoan>1.0</RimMandrakeKaminoan>
+        <RSW_RimMandrakeKaminoan>1.0</RSW_RimMandrakeKaminoan>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeKelDor_Kind</defName>
+    <defName>RSW_RimMandrakeKelDor_Kind</defName>
     <label>Kel Dor</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -510,12 +510,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeKelDor>1.0</RimMandrakeKelDor>
+        <RSW_RimMandrakeKelDor>1.0</RSW_RimMandrakeKelDor>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeKlatoonian_Kind</defName>
+    <defName>RSW_RimMandrakeKlatoonian_Kind</defName>
     <label>Klatoonian</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -525,12 +525,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeKlatoonian>1.0</RimMandrakeKlatoonian>
+        <RSW_RimMandrakeKlatoonian>1.0</RSW_RimMandrakeKlatoonian>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeKubaz_Kind</defName>
+    <defName>RSW_RimMandrakeKubaz_Kind</defName>
     <label>Kubaz</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -540,12 +540,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeKubaz>1.0</RimMandrakeKubaz>
+        <RSW_RimMandrakeKubaz>1.0</RSW_RimMandrakeKubaz>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeLasat_Kind</defName>
+    <defName>RSW_RimMandrakeLasat_Kind</defName>
     <label>Lasat</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -555,12 +555,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeLasat>1.0</RimMandrakeLasat>
+        <RSW_RimMandrakeLasat>1.0</RSW_RimMandrakeLasat>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeMimbanese_Kind</defName>
+    <defName>RSW_RimMandrakeMimbanese_Kind</defName>
     <label>Mimbanese</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -570,12 +570,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeMimbanese>1.0</RimMandrakeMimbanese>
+        <RSW_RimMandrakeMimbanese>1.0</RSW_RimMandrakeMimbanese>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeMirialan_Kind</defName>
+    <defName>RSW_RimMandrakeMirialan_Kind</defName>
     <label>mirialan</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -585,12 +585,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeMirialan>1.0</RimMandrakeMirialan>
+        <RSW_RimMandrakeMirialan>1.0</RSW_RimMandrakeMirialan>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeMonCalamari_Kind</defName>
+    <defName>RSW_RimMandrakeMonCalamari_Kind</defName>
     <label>Mon Calamari</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -600,12 +600,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeMonCalamari>1.0</RimMandrakeMonCalamari>
+        <RSW_RimMandrakeMonCalamari>1.0</RSW_RimMandrakeMonCalamari>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeMuun_Kind</defName>
+    <defName>RSW_RimMandrakeMuun_Kind</defName>
     <label>Muun</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -615,12 +615,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeMuun>1.0</RimMandrakeMuun>
+        <RSW_RimMandrakeMuun>1.0</RSW_RimMandrakeMuun>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeNagai_Kind</defName>
+    <defName>RSW_RimMandrakeNagai_Kind</defName>
     <label>Nagai</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -630,12 +630,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeNagai>1.0</RimMandrakeNagai>
+        <RSW_RimMandrakeNagai>1.0</RSW_RimMandrakeNagai>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeNautolan_Kind</defName>
+    <defName>RSW_RimMandrakeNautolan_Kind</defName>
     <label>Nautolan</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -645,12 +645,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeNautolan>1.0</RimMandrakeNautolan>
+        <RSW_RimMandrakeNautolan>1.0</RSW_RimMandrakeNautolan>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeNeimoidian_Kind</defName>
+    <defName>RSW_RimMandrakeNeimoidian_Kind</defName>
     <label>Neimoidian</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -660,12 +660,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeNeimoidian>1.0</RimMandrakeNeimoidian>
+        <RSW_RimMandrakeNeimoidian>1.0</RSW_RimMandrakeNeimoidian>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeNelvaanian_Kind</defName>
+    <defName>RSW_RimMandrakeNelvaanian_Kind</defName>
     <label>Nelvaanian</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -675,12 +675,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeNelvaanian>1.0</RimMandrakeNelvaanian>
+        <RSW_RimMandrakeNelvaanian>1.0</RSW_RimMandrakeNelvaanian>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeNikto_Kind</defName>
+    <defName>RSW_RimMandrakeNikto_Kind</defName>
     <label>Nikto</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -690,12 +690,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeNikto>1.0</RimMandrakeNikto>
+        <RSW_RimMandrakeNikto>1.0</RSW_RimMandrakeNikto>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeOrtolan_Kind</defName>
+    <defName>RSW_RimMandrakeOrtolan_Kind</defName>
     <label>Ortolan</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -705,12 +705,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeOrtolan>1.0</RimMandrakeOrtolan>
+        <RSW_RimMandrakeOrtolan>1.0</RSW_RimMandrakeOrtolan>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakePantoran_Kind</defName>
+    <defName>RSW_RimMandrakePantoran_Kind</defName>
     <label>Pantoran</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -720,12 +720,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakePantoran>1.0</RimMandrakePantoran>
+        <RSW_RimMandrakePantoran>1.0</RSW_RimMandrakePantoran>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakePyke_Kind</defName>
+    <defName>RSW_RimMandrakePyke_Kind</defName>
     <label>Pyke</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -735,12 +735,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakePyke>1.0</RimMandrakePyke>
+        <RSW_RimMandrakePyke>1.0</RSW_RimMandrakePyke>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeQuarren_Kind</defName>
+    <defName>RSW_RimMandrakeQuarren_Kind</defName>
     <label>Quarren</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -750,12 +750,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeQuarren>1.0</RimMandrakeQuarren>
+        <RSW_RimMandrakeQuarren>1.0</RSW_RimMandrakeQuarren>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeRakata_Kind</defName>
+    <defName>RSW_RimMandrakeRakata_Kind</defName>
     <label>Rakata</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -765,12 +765,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeRakata>1.0</RimMandrakeRakata>
+        <RSW_RimMandrakeRakata>1.0</RSW_RimMandrakeRakata>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeRodian_Kind</defName>
+    <defName>RSW_RimMandrakeRodian_Kind</defName>
     <label>Rodian</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -780,12 +780,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeRodian>1.0</RimMandrakeRodian>
+        <RSW_RimMandrakeRodian>1.0</RSW_RimMandrakeRodian>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeSelkath_Kind</defName>
+    <defName>RSW_RimMandrakeSelkath_Kind</defName>
     <label>Selkath</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -795,12 +795,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeSelkath>1.0</RimMandrakeSelkath>
+        <RSW_RimMandrakeSelkath>1.0</RSW_RimMandrakeSelkath>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeSithKissaiPureblood_Kind</defName>
+    <defName>RSW_RimMandrakeSithKissaiPureblood_Kind</defName>
     <label>Sith Kissai (Pureblood)</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -810,12 +810,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeSithKissaiPureblood>1.0</RimMandrakeSithKissaiPureblood>
+        <RSW_RimMandrakeSithKissaiPureblood>1.0</RSW_RimMandrakeSithKissaiPureblood>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeSithMassassi_Kind</defName>
+    <defName>RSW_RimMandrakeSithMassassi_Kind</defName>
     <label>Sith Massassi (Pureblood)</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -825,12 +825,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeSithMassassi>1.0</RimMandrakeSithMassassi>
+        <RSW_RimMandrakeSithMassassi>1.0</RSW_RimMandrakeSithMassassi>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeSithZ_Kind</defName>
+    <defName>RSW_RimMandrakeSithZ_Kind</defName>
     <label>Sith Zugurak (Pureblood)</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -840,12 +840,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeSithZ>1.0</RimMandrakeSithZ>
+        <RSW_RimMandrakeSithZ>1.0</RSW_RimMandrakeSithZ>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeSnivvian_Kind</defName>
+    <defName>RSW_RimMandrakeSnivvian_Kind</defName>
     <label>Snivvian</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -855,12 +855,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeSnivvian>1.0</RimMandrakeSnivvian>
+        <RSW_RimMandrakeSnivvian>1.0</RSW_RimMandrakeSnivvian>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeSullustan_Kind</defName>
+    <defName>RSW_RimMandrakeSullustan_Kind</defName>
     <label>Sullustan</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -870,12 +870,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeSullustan>1.0</RimMandrakeSullustan>
+        <RSW_RimMandrakeSullustan>1.0</RSW_RimMandrakeSullustan>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeTaung_Kind</defName>
+    <defName>RSW_RimMandrakeTaung_Kind</defName>
     <label>Taung</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -885,12 +885,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeTaung>1.0</RimMandrakeTaung>
+        <RSW_RimMandrakeTaung>1.0</RSW_RimMandrakeTaung>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeTogorian_Kind</defName>
+    <defName>RSW_RimMandrakeTogorian_Kind</defName>
     <label>Togorian</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -900,12 +900,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeTogorian>1.0</RimMandrakeTogorian>
+        <RSW_RimMandrakeTogorian>1.0</RSW_RimMandrakeTogorian>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeTogruta_Kind</defName>
+    <defName>RSW_RimMandrakeTogruta_Kind</defName>
     <label>Togruta</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -915,12 +915,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeTogruta>1.0</RimMandrakeTogruta>
+        <RSW_RimMandrakeTogruta>1.0</RSW_RimMandrakeTogruta>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeTrandoshan_Kind</defName>
+    <defName>RSW_RimMandrakeTrandoshan_Kind</defName>
     <label>Trandoshan</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -930,12 +930,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeTrandoshan>1.0</RimMandrakeTrandoshan>
+        <RSW_RimMandrakeTrandoshan>1.0</RSW_RimMandrakeTrandoshan>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeTusken_Kind</defName>
+    <defName>RSW_RimMandrakeTusken_Kind</defName>
     <label>Tusken</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -945,12 +945,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeTusken>1.0</RimMandrakeTusken>
+        <RSW_RimMandrakeTusken>1.0</RSW_RimMandrakeTusken>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeTwilek_Kind</defName>
+    <defName>RSW_RimMandrakeTwilek_Kind</defName>
     <label>Twi'lek</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -960,12 +960,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeTwilek>1.0</RimMandrakeTwilek>
+        <RSW_RimMandrakeTwilek>1.0</RSW_RimMandrakeTwilek>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeUgnaught_Kind</defName>
+    <defName>RSW_RimMandrakeUgnaught_Kind</defName>
     <label>Ugnaught</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -975,12 +975,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeUgnaught>1.0</RimMandrakeUgnaught>
+        <RSW_RimMandrakeUgnaught>1.0</RSW_RimMandrakeUgnaught>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeUmbaran_Kind</defName>
+    <defName>RSW_RimMandrakeUmbaran_Kind</defName>
     <label>Umbaran</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -990,12 +990,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeUmbaran>1.0</RimMandrakeUmbaran>
+        <RSW_RimMandrakeUmbaran>1.0</RSW_RimMandrakeUmbaran>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeWeequay_Kind</defName>
+    <defName>RSW_RimMandrakeWeequay_Kind</defName>
     <label>Weequay</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -1005,12 +1005,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeWeequay>1.0</RimMandrakeWeequay>
+        <RSW_RimMandrakeWeequay>1.0</RSW_RimMandrakeWeequay>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeWookiee_Kind</defName>
+    <defName>RSW_RimMandrakeWookiee_Kind</defName>
     <label>Wookiee</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -1020,12 +1020,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeWookiee>1.0</RimMandrakeWookiee>
+        <RSW_RimMandrakeWookiee>1.0</RSW_RimMandrakeWookiee>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeYoderForceGremlin_Kind</defName>
+    <defName>RSW_RimMandrakeYoderForceGremlin_Kind</defName>
     <label>Yoder</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -1035,12 +1035,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeYoderForceGremlin>1.0</RimMandrakeYoderForceGremlin>
+        <RSW_RimMandrakeYoderForceGremlin>1.0</RSW_RimMandrakeYoderForceGremlin>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeZeltron_Kind</defName>
+    <defName>RSW_RimMandrakeZeltron_Kind</defName>
     <label>Zeltron</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -1050,12 +1050,12 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeZeltron>1.0</RimMandrakeZeltron>
+        <RSW_RimMandrakeZeltron>1.0</RSW_RimMandrakeZeltron>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="BasePlayerPawnKind">
-    <defName>RimMandrakeZygerrian_Kind</defName>
+    <defName>RSW_RimMandrakeZygerrian_Kind</defName>
     <label>Zygerrian</label>
     <defaultFactionDef>PlayerColony</defaultFactionDef>
     <initialResistanceRange>10~20</initialResistanceRange>
@@ -1065,7 +1065,7 @@
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeZygerrian>1.0</RimMandrakeZygerrian>
+        <RSW_RimMandrakeZygerrian>1.0</RSW_RimMandrakeZygerrian>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>

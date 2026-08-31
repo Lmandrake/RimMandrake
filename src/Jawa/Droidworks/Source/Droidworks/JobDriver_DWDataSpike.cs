@@ -3,7 +3,7 @@ using RimWorld;
 using Verse;
 using Verse.AI;
 
-namespace Droidworks
+namespace RimMandrake.StarWars.Droidworks
 {
     /// <summary>
     /// DROIDWORKS_WIPE_AND_SPIKE_1. The 600-tick spike job: carry the item to

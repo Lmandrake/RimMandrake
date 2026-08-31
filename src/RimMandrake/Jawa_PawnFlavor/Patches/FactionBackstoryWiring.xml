@@ -10,7 +10,7 @@
            the def is ALSO abstract root Name=PirateBandBase, so this patch
            leaks JawaBSC_Blackstar to the five zeroed pirate siblings -
            accepted, they never spawn), Jawa_IndigenousTribes (Tribal,
-           src/Jawa/Jawa_Patches Defs/FactionDefs).
+           src/SPLIT_Phase3/Jawa_Patches Defs/FactionDefs).
          Inherit filters from an abstract parent (patches run before
            inheritance, so these defs have NO raw node, and a declared list
            OVERRIDES the parent's - each nomatch therefore restates the

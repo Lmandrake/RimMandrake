@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using RimWorld;
 using Verse;
 
-namespace Inhabited
+namespace RimMandrake.Inhabited
 {
     /// <summary>
     /// One authored trait on a character, with its degree resolved to the integer

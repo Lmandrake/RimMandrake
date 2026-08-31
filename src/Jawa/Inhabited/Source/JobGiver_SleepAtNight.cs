@@ -2,7 +2,7 @@ using RimWorld;
 using Verse;
 using Verse.AI;
 
-namespace Inhabited
+namespace RimMandrake.Inhabited
 {
     /// <summary>
     /// Sleeps at night SPECIFICALLY, rather than when tired.

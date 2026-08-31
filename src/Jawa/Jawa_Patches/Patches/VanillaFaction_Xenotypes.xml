@@ -11,9 +11,9 @@
         <xenotypeSet Inherit="False">
           <xenotypeChances>
             <Baseliner>0.769</Baseliner>
-            <RimMandrakeChadraFan MayRequire="mandrake.starwarsraces">0.077</RimMandrakeChadraFan>
-            <RimMandrakeChiss MayRequire="mandrake.starwarsraces">0.077</RimMandrakeChiss>
-            <RimMandrakeEchani MayRequire="mandrake.starwarsraces">0.077</RimMandrakeEchani>
+            <RSW_RimMandrakeChadraFan MayRequire="mandrake.rsw.starwarsraces">0.077</RSW_RimMandrakeChadraFan>
+            <RSW_RimMandrakeChiss MayRequire="mandrake.rsw.starwarsraces">0.077</RSW_RimMandrakeChiss>
+            <RSW_RimMandrakeEchani MayRequire="mandrake.rsw.starwarsraces">0.077</RSW_RimMandrakeEchani>
           </xenotypeChances>
         </xenotypeSet>
       </value>
@@ -24,9 +24,9 @@
         <xenotypeSet Inherit="False">
           <xenotypeChances>
             <Baseliner>0.769</Baseliner>
-            <RimMandrakeChadraFan MayRequire="mandrake.starwarsraces">0.077</RimMandrakeChadraFan>
-            <RimMandrakeChiss MayRequire="mandrake.starwarsraces">0.077</RimMandrakeChiss>
-            <RimMandrakeEchani MayRequire="mandrake.starwarsraces">0.077</RimMandrakeEchani>
+            <RSW_RimMandrakeChadraFan MayRequire="mandrake.rsw.starwarsraces">0.077</RSW_RimMandrakeChadraFan>
+            <RSW_RimMandrakeChiss MayRequire="mandrake.rsw.starwarsraces">0.077</RSW_RimMandrakeChiss>
+            <RSW_RimMandrakeEchani MayRequire="mandrake.rsw.starwarsraces">0.077</RSW_RimMandrakeEchani>
           </xenotypeChances>
         </xenotypeSet>
       </value>
@@ -39,20 +39,20 @@
       <value>
         <xenotypeSet Inherit="False">
           <xenotypeChances>
-            <RimMandrakeAbednedo MayRequire="mandrake.starwarsraces">0.152</RimMandrakeAbednedo>
+            <RSW_RimMandrakeAbednedo MayRequire="mandrake.rsw.starwarsraces">0.152</RSW_RimMandrakeAbednedo>
             <Baseliner>0.152</Baseliner>
-            <RimMandrakeIthorian MayRequire="mandrake.starwarsraces">0.152</RimMandrakeIthorian>
-            <RimMandrakeMirialan MayRequire="mandrake.starwarsraces">0.152</RimMandrakeMirialan>
-            <RimMandrakePantoran MayRequire="mandrake.starwarsraces">0.152</RimMandrakePantoran>
-            <RimMandrakeBothan MayRequire="mandrake.starwarsraces">0.051</RimMandrakeBothan>
-            <RimMandrakeSullustan MayRequire="mandrake.starwarsraces">0.051</RimMandrakeSullustan>
-            <RimMandrakeTogruta MayRequire="mandrake.starwarsraces">0.051</RimMandrakeTogruta>
-            <RimMandrakeChadraFan MayRequire="mandrake.starwarsraces">0.015</RimMandrakeChadraFan>
-            <RimMandrakeDuros MayRequire="mandrake.starwarsraces">0.015</RimMandrakeDuros>
-            <RimMandrakeKelDor MayRequire="mandrake.starwarsraces">0.015</RimMandrakeKelDor>
-            <RimMandrakeOrtolan MayRequire="mandrake.starwarsraces">0.015</RimMandrakeOrtolan>
-            <RimMandrakeTwilek MayRequire="mandrake.starwarsraces">0.015</RimMandrakeTwilek>
-            <RimMandrakeUgnaught MayRequire="mandrake.starwarsraces">0.015</RimMandrakeUgnaught>
+            <RSW_RimMandrakeIthorian MayRequire="mandrake.rsw.starwarsraces">0.152</RSW_RimMandrakeIthorian>
+            <RSW_RimMandrakeMirialan MayRequire="mandrake.rsw.starwarsraces">0.152</RSW_RimMandrakeMirialan>
+            <RSW_RimMandrakePantoran MayRequire="mandrake.rsw.starwarsraces">0.152</RSW_RimMandrakePantoran>
+            <RSW_RimMandrakeBothan MayRequire="mandrake.rsw.starwarsraces">0.051</RSW_RimMandrakeBothan>
+            <RSW_RimMandrakeSullustan MayRequire="mandrake.rsw.starwarsraces">0.051</RSW_RimMandrakeSullustan>
+            <RSW_RimMandrakeTogruta MayRequire="mandrake.rsw.starwarsraces">0.051</RSW_RimMandrakeTogruta>
+            <RSW_RimMandrakeChadraFan MayRequire="mandrake.rsw.starwarsraces">0.015</RSW_RimMandrakeChadraFan>
+            <RSW_RimMandrakeDuros MayRequire="mandrake.rsw.starwarsraces">0.015</RSW_RimMandrakeDuros>
+            <RSW_RimMandrakeKelDor MayRequire="mandrake.rsw.starwarsraces">0.015</RSW_RimMandrakeKelDor>
+            <RSW_RimMandrakeOrtolan MayRequire="mandrake.rsw.starwarsraces">0.015</RSW_RimMandrakeOrtolan>
+            <RSW_RimMandrakeTwilek MayRequire="mandrake.rsw.starwarsraces">0.015</RSW_RimMandrakeTwilek>
+            <RSW_RimMandrakeUgnaught MayRequire="mandrake.rsw.starwarsraces">0.015</RSW_RimMandrakeUgnaught>
           </xenotypeChances>
         </xenotypeSet>
       </value>
@@ -62,20 +62,20 @@
       <value>
         <xenotypeSet Inherit="False">
           <xenotypeChances>
-            <RimMandrakeAbednedo MayRequire="mandrake.starwarsraces">0.152</RimMandrakeAbednedo>
+            <RSW_RimMandrakeAbednedo MayRequire="mandrake.rsw.starwarsraces">0.152</RSW_RimMandrakeAbednedo>
             <Baseliner>0.152</Baseliner>
-            <RimMandrakeIthorian MayRequire="mandrake.starwarsraces">0.152</RimMandrakeIthorian>
-            <RimMandrakeMirialan MayRequire="mandrake.starwarsraces">0.152</RimMandrakeMirialan>
-            <RimMandrakePantoran MayRequire="mandrake.starwarsraces">0.152</RimMandrakePantoran>
-            <RimMandrakeBothan MayRequire="mandrake.starwarsraces">0.051</RimMandrakeBothan>
-            <RimMandrakeSullustan MayRequire="mandrake.starwarsraces">0.051</RimMandrakeSullustan>
-            <RimMandrakeTogruta MayRequire="mandrake.starwarsraces">0.051</RimMandrakeTogruta>
-            <RimMandrakeChadraFan MayRequire="mandrake.starwarsraces">0.015</RimMandrakeChadraFan>
-            <RimMandrakeDuros MayRequire="mandrake.starwarsraces">0.015</RimMandrakeDuros>
-            <RimMandrakeKelDor MayRequire="mandrake.starwarsraces">0.015</RimMandrakeKelDor>
-            <RimMandrakeOrtolan MayRequire="mandrake.starwarsraces">0.015</RimMandrakeOrtolan>
-            <RimMandrakeTwilek MayRequire="mandrake.starwarsraces">0.015</RimMandrakeTwilek>
-            <RimMandrakeUgnaught MayRequire="mandrake.starwarsraces">0.015</RimMandrakeUgnaught>
+            <RSW_RimMandrakeIthorian MayRequire="mandrake.rsw.starwarsraces">0.152</RSW_RimMandrakeIthorian>
+            <RSW_RimMandrakeMirialan MayRequire="mandrake.rsw.starwarsraces">0.152</RSW_RimMandrakeMirialan>
+            <RSW_RimMandrakePantoran MayRequire="mandrake.rsw.starwarsraces">0.152</RSW_RimMandrakePantoran>
+            <RSW_RimMandrakeBothan MayRequire="mandrake.rsw.starwarsraces">0.051</RSW_RimMandrakeBothan>
+            <RSW_RimMandrakeSullustan MayRequire="mandrake.rsw.starwarsraces">0.051</RSW_RimMandrakeSullustan>
+            <RSW_RimMandrakeTogruta MayRequire="mandrake.rsw.starwarsraces">0.051</RSW_RimMandrakeTogruta>
+            <RSW_RimMandrakeChadraFan MayRequire="mandrake.rsw.starwarsraces">0.015</RSW_RimMandrakeChadraFan>
+            <RSW_RimMandrakeDuros MayRequire="mandrake.rsw.starwarsraces">0.015</RSW_RimMandrakeDuros>
+            <RSW_RimMandrakeKelDor MayRequire="mandrake.rsw.starwarsraces">0.015</RSW_RimMandrakeKelDor>
+            <RSW_RimMandrakeOrtolan MayRequire="mandrake.rsw.starwarsraces">0.015</RSW_RimMandrakeOrtolan>
+            <RSW_RimMandrakeTwilek MayRequire="mandrake.rsw.starwarsraces">0.015</RSW_RimMandrakeTwilek>
+            <RSW_RimMandrakeUgnaught MayRequire="mandrake.rsw.starwarsraces">0.015</RSW_RimMandrakeUgnaught>
           </xenotypeChances>
         </xenotypeSet>
       </value>
@@ -88,18 +88,18 @@
       <value>
         <xenotypeSet Inherit="False">
           <xenotypeChances>
-            <RimMandrakeNagai MayRequire="mandrake.starwarsraces">0.270</RimMandrakeNagai>
-            <RimMandrakeZygerrian MayRequire="mandrake.starwarsraces">0.270</RimMandrakeZygerrian>
-            <RimMandrakeAnzati MayRequire="mandrake.starwarsraces">0.090</RimMandrakeAnzati>
+            <RSW_RimMandrakeNagai MayRequire="mandrake.rsw.starwarsraces">0.270</RSW_RimMandrakeNagai>
+            <RSW_RimMandrakeZygerrian MayRequire="mandrake.rsw.starwarsraces">0.270</RSW_RimMandrakeZygerrian>
+            <RSW_RimMandrakeAnzati MayRequire="mandrake.rsw.starwarsraces">0.090</RSW_RimMandrakeAnzati>
             <Baseliner>0.090</Baseliner>
-            <RimMandrakeDefel MayRequire="mandrake.starwarsraces">0.090</RimMandrakeDefel>
-            <RimMandrakeCathar MayRequire="mandrake.starwarsraces">0.027</RimMandrakeCathar>
-            <RimMandrakeDuros MayRequire="mandrake.starwarsraces">0.027</RimMandrakeDuros>
-            <RimMandrakePyke MayRequire="mandrake.starwarsraces">0.027</RimMandrakePyke>
-            <RimMandrakeRodian MayRequire="mandrake.starwarsraces">0.027</RimMandrakeRodian>
-            <RimMandrakeTaung MayRequire="mandrake.starwarsraces">0.027</RimMandrakeTaung>
-            <RimMandrakeTogorian MayRequire="mandrake.starwarsraces">0.027</RimMandrakeTogorian>
-            <RimMandrakeTwilek MayRequire="mandrake.starwarsraces">0.027</RimMandrakeTwilek>
+            <RSW_RimMandrakeDefel MayRequire="mandrake.rsw.starwarsraces">0.090</RSW_RimMandrakeDefel>
+            <RSW_RimMandrakeCathar MayRequire="mandrake.rsw.starwarsraces">0.027</RSW_RimMandrakeCathar>
+            <RSW_RimMandrakeDuros MayRequire="mandrake.rsw.starwarsraces">0.027</RSW_RimMandrakeDuros>
+            <RSW_RimMandrakePyke MayRequire="mandrake.rsw.starwarsraces">0.027</RSW_RimMandrakePyke>
+            <RSW_RimMandrakeRodian MayRequire="mandrake.rsw.starwarsraces">0.027</RSW_RimMandrakeRodian>
+            <RSW_RimMandrakeTaung MayRequire="mandrake.rsw.starwarsraces">0.027</RSW_RimMandrakeTaung>
+            <RSW_RimMandrakeTogorian MayRequire="mandrake.rsw.starwarsraces">0.027</RSW_RimMandrakeTogorian>
+            <RSW_RimMandrakeTwilek MayRequire="mandrake.rsw.starwarsraces">0.027</RSW_RimMandrakeTwilek>
           </xenotypeChances>
         </xenotypeSet>
       </value>
@@ -109,18 +109,18 @@
       <value>
         <xenotypeSet Inherit="False">
           <xenotypeChances>
-            <RimMandrakeNagai MayRequire="mandrake.starwarsraces">0.270</RimMandrakeNagai>
-            <RimMandrakeZygerrian MayRequire="mandrake.starwarsraces">0.270</RimMandrakeZygerrian>
-            <RimMandrakeAnzati MayRequire="mandrake.starwarsraces">0.090</RimMandrakeAnzati>
+            <RSW_RimMandrakeNagai MayRequire="mandrake.rsw.starwarsraces">0.270</RSW_RimMandrakeNagai>
+            <RSW_RimMandrakeZygerrian MayRequire="mandrake.rsw.starwarsraces">0.270</RSW_RimMandrakeZygerrian>
+            <RSW_RimMandrakeAnzati MayRequire="mandrake.rsw.starwarsraces">0.090</RSW_RimMandrakeAnzati>
             <Baseliner>0.090</Baseliner>
-            <RimMandrakeDefel MayRequire="mandrake.starwarsraces">0.090</RimMandrakeDefel>
-            <RimMandrakeCathar MayRequire="mandrake.starwarsraces">0.027</RimMandrakeCathar>
-            <RimMandrakeDuros MayRequire="mandrake.starwarsraces">0.027</RimMandrakeDuros>
-            <RimMandrakePyke MayRequire="mandrake.starwarsraces">0.027</RimMandrakePyke>
-            <RimMandrakeRodian MayRequire="mandrake.starwarsraces">0.027</RimMandrakeRodian>
-            <RimMandrakeTaung MayRequire="mandrake.starwarsraces">0.027</RimMandrakeTaung>
-            <RimMandrakeTogorian MayRequire="mandrake.starwarsraces">0.027</RimMandrakeTogorian>
-            <RimMandrakeTwilek MayRequire="mandrake.starwarsraces">0.027</RimMandrakeTwilek>
+            <RSW_RimMandrakeDefel MayRequire="mandrake.rsw.starwarsraces">0.090</RSW_RimMandrakeDefel>
+            <RSW_RimMandrakeCathar MayRequire="mandrake.rsw.starwarsraces">0.027</RSW_RimMandrakeCathar>
+            <RSW_RimMandrakeDuros MayRequire="mandrake.rsw.starwarsraces">0.027</RSW_RimMandrakeDuros>
+            <RSW_RimMandrakePyke MayRequire="mandrake.rsw.starwarsraces">0.027</RSW_RimMandrakePyke>
+            <RSW_RimMandrakeRodian MayRequire="mandrake.rsw.starwarsraces">0.027</RSW_RimMandrakeRodian>
+            <RSW_RimMandrakeTaung MayRequire="mandrake.rsw.starwarsraces">0.027</RSW_RimMandrakeTaung>
+            <RSW_RimMandrakeTogorian MayRequire="mandrake.rsw.starwarsraces">0.027</RSW_RimMandrakeTogorian>
+            <RSW_RimMandrakeTwilek MayRequire="mandrake.rsw.starwarsraces">0.027</RSW_RimMandrakeTwilek>
           </xenotypeChances>
         </xenotypeSet>
       </value>
@@ -133,16 +133,16 @@
       <value>
         <xenotypeSet Inherit="False">
           <xenotypeChances>
-            <RimMandrakeTusken MayRequire="mandrake.starwarsraces">0.526</RimMandrakeTusken>
+            <RSW_RimMandrakeTusken MayRequire="mandrake.rsw.starwarsraces">0.526</RSW_RimMandrakeTusken>
             <Baseliner>0.053</Baseliner>
-            <RimMandrakeIridonian MayRequire="mandrake.starwarsraces">0.053</RimMandrakeIridonian>
-            <RimMandrakeKaleesh MayRequire="mandrake.starwarsraces">0.053</RimMandrakeKaleesh>
-            <RimMandrakeLasat MayRequire="mandrake.starwarsraces">0.053</RimMandrakeLasat>
-            <RimMandrakeMimbanese MayRequire="mandrake.starwarsraces">0.053</RimMandrakeMimbanese>
-            <RimMandrakeNagai MayRequire="mandrake.starwarsraces">0.053</RimMandrakeNagai>
-            <RimMandrakeNelvaanian MayRequire="mandrake.starwarsraces">0.053</RimMandrakeNelvaanian>
-            <RimMandrakeTaung MayRequire="mandrake.starwarsraces">0.053</RimMandrakeTaung>
-            <RimMandrakeTogorian MayRequire="mandrake.starwarsraces">0.053</RimMandrakeTogorian>
+            <RSW_RimMandrakeIridonian MayRequire="mandrake.rsw.starwarsraces">0.053</RSW_RimMandrakeIridonian>
+            <RSW_RimMandrakeKaleesh MayRequire="mandrake.rsw.starwarsraces">0.053</RSW_RimMandrakeKaleesh>
+            <RSW_RimMandrakeLasat MayRequire="mandrake.rsw.starwarsraces">0.053</RSW_RimMandrakeLasat>
+            <RSW_RimMandrakeMimbanese MayRequire="mandrake.rsw.starwarsraces">0.053</RSW_RimMandrakeMimbanese>
+            <RSW_RimMandrakeNagai MayRequire="mandrake.rsw.starwarsraces">0.053</RSW_RimMandrakeNagai>
+            <RSW_RimMandrakeNelvaanian MayRequire="mandrake.rsw.starwarsraces">0.053</RSW_RimMandrakeNelvaanian>
+            <RSW_RimMandrakeTaung MayRequire="mandrake.rsw.starwarsraces">0.053</RSW_RimMandrakeTaung>
+            <RSW_RimMandrakeTogorian MayRequire="mandrake.rsw.starwarsraces">0.053</RSW_RimMandrakeTogorian>
           </xenotypeChances>
         </xenotypeSet>
       </value>
@@ -152,16 +152,16 @@
       <value>
         <xenotypeSet Inherit="False">
           <xenotypeChances>
-            <RimMandrakeTusken MayRequire="mandrake.starwarsraces">0.526</RimMandrakeTusken>
+            <RSW_RimMandrakeTusken MayRequire="mandrake.rsw.starwarsraces">0.526</RSW_RimMandrakeTusken>
             <Baseliner>0.053</Baseliner>
-            <RimMandrakeIridonian MayRequire="mandrake.starwarsraces">0.053</RimMandrakeIridonian>
-            <RimMandrakeKaleesh MayRequire="mandrake.starwarsraces">0.053</RimMandrakeKaleesh>
-            <RimMandrakeLasat MayRequire="mandrake.starwarsraces">0.053</RimMandrakeLasat>
-            <RimMandrakeMimbanese MayRequire="mandrake.starwarsraces">0.053</RimMandrakeMimbanese>
-            <RimMandrakeNagai MayRequire="mandrake.starwarsraces">0.053</RimMandrakeNagai>
-            <RimMandrakeNelvaanian MayRequire="mandrake.starwarsraces">0.053</RimMandrakeNelvaanian>
-            <RimMandrakeTaung MayRequire="mandrake.starwarsraces">0.053</RimMandrakeTaung>
-            <RimMandrakeTogorian MayRequire="mandrake.starwarsraces">0.053</RimMandrakeTogorian>
+            <RSW_RimMandrakeIridonian MayRequire="mandrake.rsw.starwarsraces">0.053</RSW_RimMandrakeIridonian>
+            <RSW_RimMandrakeKaleesh MayRequire="mandrake.rsw.starwarsraces">0.053</RSW_RimMandrakeKaleesh>
+            <RSW_RimMandrakeLasat MayRequire="mandrake.rsw.starwarsraces">0.053</RSW_RimMandrakeLasat>
+            <RSW_RimMandrakeMimbanese MayRequire="mandrake.rsw.starwarsraces">0.053</RSW_RimMandrakeMimbanese>
+            <RSW_RimMandrakeNagai MayRequire="mandrake.rsw.starwarsraces">0.053</RSW_RimMandrakeNagai>
+            <RSW_RimMandrakeNelvaanian MayRequire="mandrake.rsw.starwarsraces">0.053</RSW_RimMandrakeNelvaanian>
+            <RSW_RimMandrakeTaung MayRequire="mandrake.rsw.starwarsraces">0.053</RSW_RimMandrakeTaung>
+            <RSW_RimMandrakeTogorian MayRequire="mandrake.rsw.starwarsraces">0.053</RSW_RimMandrakeTogorian>
           </xenotypeChances>
         </xenotypeSet>
       </value>

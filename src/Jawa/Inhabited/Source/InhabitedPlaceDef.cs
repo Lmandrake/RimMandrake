@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using RimWorld;
 using Verse;
 
-namespace Inhabited
+namespace RimMandrake.Inhabited
 {
     /// <summary>
     /// What could end a cast. The default is nothing: they live here.
@@ -27,7 +27,7 @@ namespace Inhabited
     /// <summary>What the world map reports about a place.</summary>
     public enum InhabitedState
     {
-        Inhabited,
+        RimMandrake.Inhabited,
         Abandoned,
         Looted,
         Squatted
@@ -74,7 +74,7 @@ namespace Inhabited
         ///
         /// So a place has a mess and a paste vat, a farmstead a granary, a Tusken
         /// camp a herd -- and all of it is visible, stealable and destroyable.
-        /// Burn the granary and the cast does not starve to death in front of the
+        /// RSW_Burn the granary and the cast does not starve to death in front of the
         /// player: they leave. That is FATE firing for a cause the player created,
         /// with no new code at all.
         /// </summary>

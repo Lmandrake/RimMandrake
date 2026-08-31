@@ -1,6 +1,6 @@
 using Verse;
 
-namespace JawaIonWeapons
+namespace RimMandrake.StarWars.JawaIonWeapons
 {
     /// <summary>
     /// A DamageDef that carries the ion blaster's TARGET-CLASS GRADIENT as XML.
@@ -11,7 +11,7 @@ namespace JawaIonWeapons
     ///     machines / mechanoids   near one-shot disable
     ///     droids &amp; vehicles       strong
     ///     flesh people            weakest - no stun at all, only the slow
-    ///                             JawaIon_Stun buildup that ends in a live collapse
+    ///                             RSW_JawaIon_Stun buildup that ends in a live collapse
     ///
     /// The two numbers below are EMP-equivalent damage amounts, not ticks.
     /// StunHandler turns them into ticks at 30 per point and then subtracts the

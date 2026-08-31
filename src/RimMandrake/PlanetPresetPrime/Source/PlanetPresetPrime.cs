@@ -4,7 +4,7 @@ using HarmonyLib;
 using RimWorld;
 using Verse;
 
-namespace PlanetPresetPrime
+namespace RimMandrake.PlanetPresetPrime
 {
     // Ash'karr is 21,872 tiles: planetCoverage 1.0 at subdivisions 7. Nothing in
     // RimWorld remembers either number - Config/Prefs.xml has 63 keys and not one
@@ -24,7 +24,7 @@ namespace PlanetPresetPrime
 
         static PlanetPresetPrimeMod()
         {
-            Harmony h = new Harmony("mandrake.planetpresetprime");
+            Harmony h = new Harmony("mandrake.rm.planetpresetprime");
             h.PatchAll(Assembly.GetExecutingAssembly());
 
             // A mod that writes nothing at load is indistinguishable from a mod that
@@ -33,7 +33,7 @@ namespace PlanetPresetPrime
             // when the page opens: the page may never open in a given session, and
             // its silence would then read as "the assembly is missing".
             Log.Message(string.Format(
-                "[PlanetPresetPrime] loaded: will prime coverage {0}, subdivisions {1}. "
+                "[RimMandrake.PlanetPresetPrime] loaded: will prime coverage {0}, subdivisions {1}. "
                 + "MLP type {2}.",
                 Coverage, Subdivisions,
                 AccessTools.TypeByName("WorldGenRules.WorldGenRules") != null ? "found" : "ABSENT"));
@@ -68,7 +68,7 @@ namespace PlanetPresetPrime
             if (CoverageField != null)
                 CoverageField.SetValue(__instance, PlanetPresetPrimeMod.Coverage);
             else
-                Log.Warning("[PlanetPresetPrime] Page_CreateWorldParams.planetCoverage not found; "
+                Log.Warning("[RimMandrake.PlanetPresetPrime] Page_CreateWorldParams.planetCoverage not found; "
                           + "coverage not primed. The field was renamed by a game update.");
 
             bool mlp = PrimeSubdivisions(PlanetPresetPrimeMod.Subdivisions);
@@ -77,7 +77,7 @@ namespace PlanetPresetPrime
             {
                 reported = true;
                 Log.Message(string.Format(
-                    "[PlanetPresetPrime] ready: coverage {0}, subdivisions {1}, MLP slider {2}",
+                    "[RimMandrake.PlanetPresetPrime] ready: coverage {0}, subdivisions {1}, MLP slider {2}",
                     PlanetPresetPrimeMod.Coverage,
                     PlanetPresetPrimeMod.Subdivisions,
                     mlp ? "primed" : "ABSENT (vanilla subdivisions set anyway)"));
@@ -117,7 +117,7 @@ namespace PlanetPresetPrime
                     }
                     else
                     {
-                        Log.Warning("[PlanetPresetPrime] My Little Planet is present but "
+                        Log.Warning("[RimMandrake.PlanetPresetPrime] My Little Planet is present but "
                                   + "WorldGenRules.WorldGenRules.subcount is missing or not an int. "
                                   + "Its slider will stamp its own default over the planet size.");
                     }
@@ -125,14 +125,14 @@ namespace PlanetPresetPrime
             }
             catch (Exception e)
             {
-                Log.Warning("[PlanetPresetPrime] could not prime My Little Planet's subcount: " + e.Message);
+                Log.Warning("[RimMandrake.PlanetPresetPrime] could not prime My Little Planet's subcount: " + e.Message);
             }
 
             PlanetLayerSettingsDef surface = PlanetLayerSettingsDefOf.Surface;
             if (surface != null && surface.settings != null)
                 surface.settings.subdivisions = n;
             else
-                Log.Warning("[PlanetPresetPrime] PlanetLayerSettingsDefOf.Surface.settings is null; "
+                Log.Warning("[RimMandrake.PlanetPresetPrime] PlanetLayerSettingsDefOf.Surface.settings is null; "
                           + "subdivisions not set.");
 
             return mlpPrimed;

@@ -2531,7 +2531,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <weaponTags>
       <li>KotORRanged_ion</li>
       <li>Jawa_IonWeapon</li>
-      <li>JawaIon_Damage</li>
+      <li>RSW_JawaIon_Damage</li>
       <li>KotORRanged_weak</li>
     </weaponTags>
     <maxApparelQuality>Normal</maxApparelQuality>
@@ -2599,7 +2599,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <initialWillRange>2~5</initialWillRange>
     <weaponTags>
       <li>Jawa_IonWeapon</li>
-      <li>JawaIon_Damage</li>
+      <li>RSW_JawaIon_Damage</li>
       <li>KotORRanged_ion</li>
     </weaponTags>
     <maxApparelQuality>Normal</maxApparelQuality>
@@ -2668,7 +2668,7 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
     <weaponTags>
       <li>KotORRanged_ion</li>
       <li>Jawa_IonWeapon</li>
-      <li>JawaIon_Damage</li>
+      <li>RSW_JawaIon_Damage</li>
     </weaponTags>
     <maxApparelQuality>Good</maxApparelQuality>
       <apparelRequired>

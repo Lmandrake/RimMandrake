@@ -5,7 +5,7 @@
     load-bearing comps/classes guy762.mm.kotorcore's Defs depend on, so the
     kotorcore materials+apparel absorption doesn't need the source DLLs kept
     active. Same net472/NuGet-reference-assemblies pattern as every other
-    csproj in this repo (see src/Jawa/Droidworks/Source/Droidworks/Droidworks.csproj).
+    csproj in this repo (see src/RimStarWars/Droidworks/Source/Droidworks/Droidworks.csproj).
     Namespaces and class names are kept IDENTICAL to kotorcore's own DLLs
     (CompExtraSounds, CrystalFormations, KoltoTank, MentalBreakBlocker,
     SecondaryMineableYield, SelfHediffVerb, Spinning_Projectile) so the

@@ -3324,7 +3324,7 @@ namespace JawaBench.BridgeTools
             CancellationToken cancellationToken,
             [ToolParameter(Description =
                 "Output file. Omit for the default, which is the game's save-data " +
-                "DefDump folder — the same folder RimDefDump writes to and refresh.py " +
+                "DefDump folder — the same folder RimMandrake.RimDefDump writes to and refresh.py " +
                 "already reads — under a name carrying the world seed, e.g. " +
                 "'world_tiles_<seed>.csv'. A bare filename is resolved into that same " +
                 "folder; an absolute path is used as given, and its directory is created " +
@@ -3523,7 +3523,7 @@ namespace JawaBench.BridgeTools
 
             try
             {
-                // No BOM and a generous buffer, matching RimDefDump's writer:
+                // No BOM and a generous buffer, matching RimMandrake.RimDefDump's writer:
                 // the Python side reads these with plain utf-8, and this file is
                 // in the same size class as the def dumps.
                 using (var sw = new StreamWriter(outPath, false, new UTF8Encoding(false), 1 << 20))

@@ -73,7 +73,7 @@
   <!-- Our own droid flesh type, isOrganic:false from birth
        (droid_system_build_spec.md §1). AUTHORED BUT NOT YET WIRED onto
        DW_Race_Base — see the DROIDWORKS_ISFLESH_RELATIONS_CRASH_1 note above
-       DW_Race_Base for why. Wire `<fleshType>DW_FleshType_Droid</fleshType>`
+       DW_Race_Base for why. Wire `<fleshType>RSW_DW_FleshType_Droid</fleshType>`
        back in once that item's relations-tracker fix lands. Mirrors vanilla
        `Mechanoid`'s other
        fields (corpseCategory, damageEffecter, genericWounds — reusing
@@ -85,7 +85,7 @@
        comment): these are non-mechanoid humanlikes, force-kill-on-down does
        not apply, and the ion capture pipeline treats them as capturable. -->
   <FleshTypeDef>
-    <defName>DW_FleshType_Droid</defName>
+    <defName>RSW_DW_FleshType_Droid</defName>
     <corpseCategory>CorpsesMechanoid</corpseCategory>
     <damageEffecter>Damage_HitMechanoid</damageEffecter>
     <genericWounds>
@@ -109,7 +109,7 @@
        is a generated fully-transparent stub written once by the generator
        if missing — a technical rendering stub, not hand-drawn art. -->
   <HeadTypeDef>
-    <defName>DW_HeadType_Blank</defName>
+    <defName>RSW_DW_HeadType_Blank</defName>
     <graphicPath>DW/blank</graphicPath>
     <gender>None</gender>
   </HeadTypeDef>

@@ -2,7 +2,7 @@
 <ModMetaData>
   <name>Research Kit East Fix — Research Reinvented (Retextured)</name>
   <author>Mandrake</author>
-  <packageId>mandrake.researchkiteastfix</packageId>
+  <packageId>mandrake.rm.researchkiteastfix</packageId>
   <supportedVersions>
     <li>1.6</li>
   </supportedVersions>

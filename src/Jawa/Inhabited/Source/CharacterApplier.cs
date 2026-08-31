@@ -3,7 +3,7 @@ using RimWorld;
 using RimWorld.Planet;
 using Verse;
 
-namespace Inhabited
+namespace RimMandrake.Inhabited
 {
     /// <summary>
     /// Makes a generated pawn into one of the 269 authored people.
@@ -87,7 +87,7 @@ namespace Inhabited
                     }
                     if (blocker != null)
                     {
-                        Log.Warning("[Inhabited] " + character.defName + " (" + character.label
+                        Log.Warning("[RimMandrake.Inhabited] " + character.defName + " (" + character.label
                                     + ") authors " + t.def.defName + " alongside "
                                     + blocker.def.defName + ", which conflict. "
                                     + t.def.defName + " was NOT applied. Fix the cast file.");

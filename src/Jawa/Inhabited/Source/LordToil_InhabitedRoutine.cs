@@ -3,7 +3,7 @@ using Verse;
 using Verse.AI;
 using Verse.AI.Group;
 
-namespace Inhabited
+namespace RimMandrake.Inhabited
 {
     /// <summary>Where the cast should be right now.</summary>
     public enum RouteStance

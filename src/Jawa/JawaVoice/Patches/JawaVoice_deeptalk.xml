@@ -7,28 +7,28 @@
       <value>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Bu nyubah saa mit. (Everything we do is meaningless. So, why care answering that?)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Bu nyubah saa mit. (Everything we do is meaningless. So, why care answering that?)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Bu nyubah saa mit. (Everything we do is meaningless. So, why care answering that?)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Bu nyubah saa mit. (Everything we do is meaningless. So, why care answering that?)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)->Bu nyubah saa mit. (Everything we do is meaningless. So, why care answering that?)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)->Bu nyubah saa mit. (Everything we do is meaningless. So, why care answering that?)</li>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Wot sut ga... (Nothing we do will be remembered, eventually. So, why care answering that?)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Wot sut ga... (Nothing we do will be remembered, eventually. So, why care answering that?)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Wot sut ga... (Nothing we do will be remembered, eventually. So, why care answering that?)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Wot sut ga... (Nothing we do will be remembered, eventually. So, why care answering that?)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)->Wot sut ga... (Nothing we do will be remembered, eventually. So, why care answering that?)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)->Wot sut ga... (Nothing we do will be remembered, eventually. So, why care answering that?)</li>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Na g'eh mi mu be. (Life is what you make of it — so make it good, today!)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Na g'eh mi mu be. (Life is what you make of it — so make it good, today!)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Na g'eh mi mu be. (Life is what you make of it — so make it good, today!)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Na g'eh mi mu be. (Life is what you make of it — so make it good, today!)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)->Na g'eh mi mu be. (Life is what you make of it — so make it good, today!)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)->Na g'eh mi mu be. (Life is what you make of it — so make it good, today!)</li>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Toot toot n'en gootoon m'abi... (I don't know its meaning — but I know it should be free of drugs.)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Toot toot n'en gootoon m'abi... (I don't know its meaning — but I know it should be free of drugs.)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Toot toot n'en gootoon m'abi... (I don't know its meaning — but I know it should be free of drugs.)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Toot toot n'en gootoon m'abi... (I don't know its meaning — but I know it should be free of drugs.)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)->Toot toot n'en gootoon m'abi... (I don't know its meaning — but I know it should be free of drugs.)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)->Toot toot n'en gootoon m'abi... (I don't know its meaning — but I know it should be free of drugs.)</li>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->K'akib w'oob t'et t'eu lun nyi? (A nice beer and smokeleaf!)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->K'akib w'oob t'et t'eu lun nyi? (A nice beer and smokeleaf!)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->K'akib w'oob t'et t'eu lun nyi? (A nice beer and smokeleaf!)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->K'akib w'oob t'et t'eu lun nyi? (A nice beer and smokeleaf!)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)->K'akib w'oob t'et t'eu lun nyi? (A nice beer and smokeleaf!)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)->K'akib w'oob t'et t'eu lun nyi? (A nice beer and smokeleaf!)</li>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Mon mon s'hoblu weeh zahnan huboo huboo? (A line of yayo and some psychite tea!)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Mon mon s'hoblu weeh zahnan huboo huboo? (A line of yayo and some psychite tea!)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Mon mon s'hoblu weeh zahnan huboo huboo? (A line of yayo and some psychite tea!)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Mon mon s'hoblu weeh zahnan huboo huboo? (A line of yayo and some psychite tea!)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)->Mon mon s'hoblu weeh zahnan huboo huboo? (A line of yayo and some psychite tea!)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)->Mon mon s'hoblu weeh zahnan huboo huboo? (A line of yayo and some psychite tea!)</li>
       </value>
     </match>
   </Operation>
@@ -39,28 +39,28 @@
       <value>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->M'oo to k'abzoot. (I wouldn't like to speak about it...)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->M'oo to k'abzoot. (I wouldn't like to speak about it...)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->M'oo to k'abzoot. (I wouldn't like to speak about it...)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->M'oo to k'abzoot. (I wouldn't like to speak about it...)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)->M'oo to k'abzoot. (I wouldn't like to speak about it...)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)->M'oo to k'abzoot. (I wouldn't like to speak about it...)</li>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Laab bonmoo rahlah rahlah boot. (I had no technology during my childhood. We survived on the land and moved with the Muffalo, friend.)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Laab bonmoo rahlah rahlah boot. (I had no technology during my childhood. We survived on the land and moved with the Muffalo, friend.)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Laab bonmoo rahlah rahlah boot. (I had no technology during my childhood. We survived on the land and moved with the Muffalo, friend.)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Laab bonmoo rahlah rahlah boot. (I had no technology during my childhood. We survived on the land and moved with the Muffalo, friend.)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)->Laab bonmoo rahlah rahlah boot. (I had no technology during my childhood. We survived on the land and moved with the Muffalo, friend.)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)->Laab bonmoo rahlah rahlah boot. (I had no technology during my childhood. We survived on the land and moved with the Muffalo, friend.)</li>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Shi gob gou. (I lived a nomadic lifestyle — living off the land and moving alongside muffalos.)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Shi gob gou. (I lived a nomadic lifestyle — living off the land and moving alongside muffalos.)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Shi gob gou. (I lived a nomadic lifestyle — living off the land and moving alongside muffalos.)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Shi gob gou. (I lived a nomadic lifestyle — living off the land and moving alongside muffalos.)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)->Shi gob gou. (I lived a nomadic lifestyle — living off the land and moving alongside muffalos.)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)->Shi gob gou. (I lived a nomadic lifestyle — living off the land and moving alongside muffalos.)</li>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->S'heka m'atwuh sitbooh le? (I miss being able to roam free with the Muffalo and playing sticks and stones.)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->S'heka m'atwuh sitbooh le? (I miss being able to roam free with the Muffalo and playing sticks and stones.)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->S'heka m'atwuh sitbooh le? (I miss being able to roam free with the Muffalo and playing sticks and stones.)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->S'heka m'atwuh sitbooh le? (I miss being able to roam free with the Muffalo and playing sticks and stones.)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)->S'heka m'atwuh sitbooh le? (I miss being able to roam free with the Muffalo and playing sticks and stones.)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)->S'heka m'atwuh sitbooh le? (I miss being able to roam free with the Muffalo and playing sticks and stones.)</li>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->T'eeb t'eeb t'aab sho ton z'een. (My childhood was full of nature. These new technologies are both confusing and scary.)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->T'eeb t'eeb t'aab sho ton z'een. (My childhood was full of nature. These new technologies are both confusing and scary.)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->T'eeb t'eeb t'aab sho ton z'een. (My childhood was full of nature. These new technologies are both confusing and scary.)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->T'eeb t'eeb t'aab sho ton z'een. (My childhood was full of nature. These new technologies are both confusing and scary.)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)->T'eeb t'eeb t'aab sho ton z'een. (My childhood was full of nature. These new technologies are both confusing and scary.)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)->T'eeb t'eeb t'aab sho ton z'een. (My childhood was full of nature. These new technologies are both confusing and scary.)</li>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Loob segoo m'oo m'oo! (I grew up learning how to survive off the land and animals around us.)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Loob segoo m'oo m'oo! (I grew up learning how to survive off the land and animals around us.)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Loob segoo m'oo m'oo! (I grew up learning how to survive off the land and animals around us.)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Loob segoo m'oo m'oo! (I grew up learning how to survive off the land and animals around us.)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)->Loob segoo m'oo m'oo! (I grew up learning how to survive off the land and animals around us.)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)->Loob segoo m'oo m'oo! (I grew up learning how to survive off the land and animals around us.)</li>
       </value>
     </match>
   </Operation>
@@ -71,16 +71,16 @@
       <value>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Lobko banzoon nonsuh bo! (Oh... And what was this dream about, friend?)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Lobko banzoon nonsuh bo! (Oh... And what was this dream about, friend?)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Lobko banzoon nonsuh bo! (Oh... And what was this dream about, friend?)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Lobko banzoon nonsuh bo! (Oh... And what was this dream about, friend?)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)->Lobko banzoon nonsuh bo! (Oh... And what was this dream about, friend?)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)->Lobko banzoon nonsuh bo! (Oh... And what was this dream about, friend?)</li>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Motmoot motmoot son matsu baa na. (What was your dream about, friend?)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Motmoot motmoot son matsu baa na. (What was your dream about, friend?)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Motmoot motmoot son matsu baa na. (What was your dream about, friend?)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Motmoot motmoot son matsu baa na. (What was your dream about, friend?)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)->Motmoot motmoot son matsu baa na. (What was your dream about, friend?)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)->Motmoot motmoot son matsu baa na. (What was your dream about, friend?)</li>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Likeh re. (Really, friend? What was your dream about?)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Likeh re. (Really, friend? What was your dream about?)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Likeh re. (Really, friend? What was your dream about?)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Likeh re. (Really, friend? What was your dream about?)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)->Likeh re. (Really, friend? What was your dream about?)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)->Likeh re. (Really, friend? What was your dream about?)</li>
       </value>
     </match>
   </Operation>
@@ -91,28 +91,28 @@
       <value>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Nyat gunshu gunshu tuhkob shaageeh shaageeh. (I don't want to discuss that with a pea-brain like you, friend.)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Nyat gunshu gunshu tuhkob shaageeh shaageeh. (I don't want to discuss that with a pea-brain like you, friend.)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Nyat gunshu gunshu tuhkob shaageeh shaageeh. (I don't want to discuss that with a pea-brain like you, friend.)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Nyat gunshu gunshu tuhkob shaageeh shaageeh. (I don't want to discuss that with a pea-brain like you, friend.)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)->Nyat gunshu gunshu tuhkob shaageeh shaageeh. (I don't want to discuss that with a pea-brain like you, friend.)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)->Nyat gunshu gunshu tuhkob shaageeh shaageeh. (I don't want to discuss that with a pea-brain like you, friend.)</li>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Woh taah rahhih rahhiu zubat. (Not right now, friend.)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Woh taah rahhih rahhiu zubat. (Not right now, friend.)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Woh taah rahhih rahhiu zubat. (Not right now, friend.)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Woh taah rahhih rahhiu zubat. (Not right now, friend.)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)->Woh taah rahhih rahhiu zubat. (Not right now, friend.)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)->Woh taah rahhih rahhiu zubat. (Not right now, friend.)</li>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Galoh to n'atsoon m'an zee. (Interesting, friend... I think it's very complicated.)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Galoh to n'atsoon m'an zee. (Interesting, friend... I think it's very complicated.)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Galoh to n'atsoon m'an zee. (Interesting, friend... I think it's very complicated.)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Galoh to n'atsoon m'an zee. (Interesting, friend... I think it's very complicated.)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)->Galoh to n'atsoon m'an zee. (Interesting, friend... I think it's very complicated.)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)->Galoh to n'atsoon m'an zee. (Interesting, friend... I think it's very complicated.)</li>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->S'heetmon sab k'osheh nyaru nyaru m'oobzoh m'oobzoh. (Hmm... I haven't thought about that lately, friend!)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->S'heetmon sab k'osheh nyaru nyaru m'oobzoh m'oobzoh. (Hmm... I haven't thought about that lately, friend!)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->S'heetmon sab k'osheh nyaru nyaru m'oobzoh m'oobzoh. (Hmm... I haven't thought about that lately, friend!)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->S'heetmon sab k'osheh nyaru nyaru m'oobzoh m'oobzoh. (Hmm... I haven't thought about that lately, friend!)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)->S'heetmon sab k'osheh nyaru nyaru m'oobzoh m'oobzoh. (Hmm... I haven't thought about that lately, friend!)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)->S'heetmon sab k'osheh nyaru nyaru m'oobzoh m'oobzoh. (Hmm... I haven't thought about that lately, friend!)</li>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Habih beeran beeran. (Is that weird?)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Habih beeran beeran. (Is that weird?)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Habih beeran beeran. (Is that weird?)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Habih beeran beeran. (Is that weird?)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)->Habih beeran beeran. (Is that weird?)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)->Habih beeran beeran. (Is that weird?)</li>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Boh sotgee sotgee neh s'hobbat hehgan... (But that's just what I think.)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Boh sotgee sotgee neh s'hobbat hehgan... (But that's just what I think.)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Boh sotgee sotgee neh s'hobbat hehgan... (But that's just what I think.)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Boh sotgee sotgee neh s'hobbat hehgan... (But that's just what I think.)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)->Boh sotgee sotgee neh s'hobbat hehgan... (But that's just what I think.)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)->Boh sotgee sotgee neh s'hobbat hehgan... (But that's just what I think.)</li>
       </value>
     </match>
   </Operation>
@@ -123,28 +123,28 @@
       <value>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Katmeb n'ohoot wut t'owuh t'owuu n'aab. (I learn more about that.)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Katmeb n'ohoot wut t'owuh t'owuu n'aab. (I learn more about that.)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Katmeb n'ohoot wut t'owuh t'owuu n'aab. (I learn more about that.)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Katmeb n'ohoot wut t'owuh t'owuu n'aab. (I learn more about that.)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)->Katmeb n'ohoot wut t'owuh t'owuu n'aab. (I learn more about that.)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)->Katmeb n'ohoot wut t'owuh t'owuu n'aab. (I learn more about that.)</li>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Mohoon za? (This is thought-provoking!)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Mohoon za? (This is thought-provoking!)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Mohoon za? (This is thought-provoking!)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Mohoon za? (This is thought-provoking!)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)->Mohoon za? (This is thought-provoking!)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)->Mohoon za? (This is thought-provoking!)</li>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->B'oohhat moh s'oobroob k'eezoo. (I wonder if we can find a book about that?)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->B'oohhat moh s'oobroob k'eezoo. (I wonder if we can find a book about that?)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->B'oohhat moh s'oobroob k'eezoo. (I wonder if we can find a book about that?)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->B'oohhat moh s'oobroob k'eezoo. (I wonder if we can find a book about that?)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)->B'oohhat moh s'oobroob k'eezoo. (I wonder if we can find a book about that?)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)->B'oohhat moh s'oobroob k'eezoo. (I wonder if we can find a book about that?)</li>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Mon ranbet rob rou gan? (At least we can all agree on!)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Mon ranbet rob rou gan? (At least we can all agree on!)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Mon ranbet rob rou gan? (At least we can all agree on!)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Mon ranbet rob rou gan? (At least we can all agree on!)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)->Mon ranbet rob rou gan? (At least we can all agree on!)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)->Mon ranbet rob rou gan? (At least we can all agree on!)</li>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Ta tabba gowe kaabna n'ob. (I wonder if we can write a book about that?)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Ta tabba gowe kaabna n'ob. (I wonder if we can write a book about that?)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Ta tabba gowe kaabna n'ob. (I wonder if we can write a book about that?)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Ta tabba gowe kaabna n'ob. (I wonder if we can write a book about that?)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)->Ta tabba gowe kaabna n'ob. (I wonder if we can write a book about that?)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)->Ta tabba gowe kaabna n'ob. (I wonder if we can write a book about that?)</li>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Ma ma s'un ranbu tet teu. (I love talking to you about things, friend!)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Ma ma s'un ranbu tet teu. (I love talking to you about things, friend!)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Ma ma s'un ranbu tet teu. (I love talking to you about things, friend!)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Ma ma s'un ranbu tet teu. (I love talking to you about things, friend!)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)->Ma ma s'un ranbu tet teu. (I love talking to you about things, friend!)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)->Ma ma s'un ranbu tet teu. (I love talking to you about things, friend!)</li>
       </value>
     </match>
   </Operation>

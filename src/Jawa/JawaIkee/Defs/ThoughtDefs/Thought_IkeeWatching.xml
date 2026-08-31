@@ -11,14 +11,14 @@
   so it can be tuned without rebuilding the assembly. Add or remove <li> entries.
 
   ⚠️ MayRequire on each entry: every one of these xenotypes comes from
-  mandrake.starwarsraces, so without the guard a mod-list change turns this def into
+  mandrake.rsw.starwarsraces, so without the guard a mod-list change turns this def into
   a red error at load rather than a shorter list.
   ============================================================================
 -->
 <Defs>
 
   <ThoughtDef>
-    <defName>Jawa_IkeeWatching</defName>
+    <defName>RSW_Jawa_IkeeWatching</defName>
     <workerClass>JawaIkee.ThoughtWorker_IkeeNearby</workerClass>
     <validWhileDespawned>false</validWhileDespawned>
     <modExtensions>
@@ -26,19 +26,19 @@
         <radius>12</radius>
         <tolerantXenotypes>
           <!-- the clan itself -->
-          <li MayRequire="mandrake.starwarsraces">MandrakeJawa</li>
+          <li MayRequire="mandrake.rsw.starwarsraces">RSW_MandrakeJawa</li>
           <!-- Hutt space: the cartel keeps worse things than this in its palaces -->
-          <li MayRequire="mandrake.starwarsraces">RimMandrakeHutt</li>
-          <li MayRequire="mandrake.starwarsraces">RimMandrakeGamorrean</li>
-          <li MayRequire="mandrake.starwarsraces">RimMandrakeNikto</li>
-          <li MayRequire="mandrake.starwarsraces">RimMandrakeKlatoonian</li>
-          <li MayRequire="mandrake.starwarsraces">RimMandrakeWeequay</li>
+          <li MayRequire="mandrake.rsw.starwarsraces">RSW_RimMandrakeHutt</li>
+          <li MayRequire="mandrake.rsw.starwarsraces">RSW_RimMandrakeGamorrean</li>
+          <li MayRequire="mandrake.rsw.starwarsraces">RSW_RimMandrakeNikto</li>
+          <li MayRequire="mandrake.rsw.starwarsraces">RSW_RimMandrakeKlatoonian</li>
+          <li MayRequire="mandrake.rsw.starwarsraces">RSW_RimMandrakeWeequay</li>
           <!-- hunters and scavengers who keep live trophies -->
-          <li MayRequire="mandrake.starwarsraces">RimMandrakeTrandoshan</li>
-          <li MayRequire="mandrake.starwarsraces">RimMandrakeRodian</li>
-          <li MayRequire="mandrake.starwarsraces">RimMandrakeAqualish</li>
+          <li MayRequire="mandrake.rsw.starwarsraces">RSW_RimMandrakeTrandoshan</li>
+          <li MayRequire="mandrake.rsw.starwarsraces">RSW_RimMandrakeRodian</li>
+          <li MayRequire="mandrake.rsw.starwarsraces">RSW_RimMandrakeAqualish</li>
           <!-- hive-minded: an extra eye is unremarkable -->
-          <li MayRequire="mandrake.starwarsraces">RimMandrakeGeonosianVariants</li>
+          <li MayRequire="mandrake.rsw.starwarsraces">RSW_RimMandrakeGeonosianVariants</li>
         </tolerantXenotypes>
       </li>
     </modExtensions>

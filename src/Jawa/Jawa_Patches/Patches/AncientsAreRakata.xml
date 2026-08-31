@@ -58,7 +58,7 @@
   ============================================================================
   THE MECHANISM, and why both halves are required (R-A3)
   ============================================================================
-  1. `RimMandrakeRakata` at chance 1.0, alone in the set. A `xenotypeChances`
+  1. `RSW_RimMandrakeRakata` at chance 1.0, alone in the set. A `xenotypeChances`
      list summing below 1 leaves the remainder to fall through. 1.0 is the only
      value that means ALWAYS - do not write 0.95 "for variety"; variety here is
      a bug.
@@ -100,14 +100,14 @@
                                            kept for consistency with the block.
 
   ⚠️ LOAD ORDER IS ON OUR SIDE AND MUST STAY THAT WAY. `mandrake.jawa.patches`
-  sits near the end of ModsConfig.xml, after `mandrake.starwarsraces`,
+  sits near the end of ModsConfig.xml, after `mandrake.rsw.starwarsraces`,
   `xmb.ancienturbanruins.mo` and `xylthixlm.races.titan`, so our Remove runs last
   and wins. Moving these operations into an earlier-loading mod breaks that.
 
   ============================================================================
   GUARDING (R-A6) - and a guard that "passes" proves nothing
   ============================================================================
-    the RimMandrakeRakata entry   MayRequire="mandrake.starwarsraces"
+    the RSW_RimMandrakeRakata entry   MayRequire="mandrake.rsw.starwarsraces"
     AncientSoldier_Leader         MayRequire="Ludeon.RimWorld.Odyssey"
     the four urban-ruins kinds    PatchOperationFindMod "Ancient urban ruins"
 
@@ -139,7 +139,7 @@
             <value>
                   <xenotypeSet Inherit="False">
                     <xenotypeChances Inherit="False">
-                      <RimMandrakeRakata MayRequire="mandrake.starwarsraces">1.0</RimMandrakeRakata>
+                      <RSW_RimMandrakeRakata MayRequire="mandrake.rsw.starwarsraces">1.0</RSW_RimMandrakeRakata>
                     </xenotypeChances>
                   </xenotypeSet>
                   <useFactionXenotypes>false</useFactionXenotypes>
@@ -164,7 +164,7 @@
             <value>
                   <xenotypeSet Inherit="False">
                     <xenotypeChances Inherit="False">
-                      <RimMandrakeRakata MayRequire="mandrake.starwarsraces">1.0</RimMandrakeRakata>
+                      <RSW_RimMandrakeRakata MayRequire="mandrake.rsw.starwarsraces">1.0</RSW_RimMandrakeRakata>
                     </xenotypeChances>
                   </xenotypeSet>
                   <useFactionXenotypes>false</useFactionXenotypes>
@@ -208,7 +208,7 @@
                 <value>
                       <xenotypeSet Inherit="False">
                         <xenotypeChances Inherit="False">
-                          <RimMandrakeRakata MayRequire="mandrake.starwarsraces">1.0</RimMandrakeRakata>
+                          <RSW_RimMandrakeRakata MayRequire="mandrake.rsw.starwarsraces">1.0</RSW_RimMandrakeRakata>
                         </xenotypeChances>
                       </xenotypeSet>
                       <useFactionXenotypes>false</useFactionXenotypes>
@@ -237,7 +237,7 @@
                 <value>
                       <xenotypeSet Inherit="False">
                         <xenotypeChances Inherit="False">
-                          <RimMandrakeRakata MayRequire="mandrake.starwarsraces">1.0</RimMandrakeRakata>
+                          <RSW_RimMandrakeRakata MayRequire="mandrake.rsw.starwarsraces">1.0</RSW_RimMandrakeRakata>
                         </xenotypeChances>
                       </xenotypeSet>
                       <useFactionXenotypes>false</useFactionXenotypes>
@@ -266,7 +266,7 @@
                 <value>
                       <xenotypeSet Inherit="False">
                         <xenotypeChances Inherit="False">
-                          <RimMandrakeRakata MayRequire="mandrake.starwarsraces">1.0</RimMandrakeRakata>
+                          <RSW_RimMandrakeRakata MayRequire="mandrake.rsw.starwarsraces">1.0</RSW_RimMandrakeRakata>
                         </xenotypeChances>
                       </xenotypeSet>
                       <useFactionXenotypes>false</useFactionXenotypes>
@@ -295,7 +295,7 @@
                 <value>
                       <xenotypeSet Inherit="False">
                         <xenotypeChances Inherit="False">
-                          <RimMandrakeRakata MayRequire="mandrake.starwarsraces">1.0</RimMandrakeRakata>
+                          <RSW_RimMandrakeRakata MayRequire="mandrake.rsw.starwarsraces">1.0</RSW_RimMandrakeRakata>
                         </xenotypeChances>
                       </xenotypeSet>
                       <useFactionXenotypes>false</useFactionXenotypes>

@@ -36,7 +36,7 @@ asked a question colour cannot answer.
 
 **If you composited the animals yourself, do not use this — emit the mask from
 the geometry you already know.** That is what
-`src/Jawa/DesertVehicleReskin/Source/build_eopie_sled_south.py` does, and
+`src/RimMandrake/DesertVehicleReskin/Source/build_eopie_sled_south.py` does, and
 it is exact rather than inferred. This tool remains the right answer when you are
 *editing* a shipped facing in place and do not have that knowledge.
 

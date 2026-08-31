@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Wrapper for the C# selftest of GameComponent_ColonyVisibility
-(COLONY_VISIBILITY_STAT_1: src/Jawa/Jawa_Doctrine/Source/DoctrineCore/
+(COLONY_VISIBILITY_STAT_1: src/RimUtinni/Doctrine/Source/DoctrineCore/
 ColonyVisibility.cs).
 
 Same shape as selftest_pit_logic.py, same reason: `selftest_*.py` is this

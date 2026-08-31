@@ -2,7 +2,7 @@
 <ModMetaData>
   <name>Cerean Mane South Fix — Outer Rim: Galactic Diversity</name>
   <author>Mandrake</author>
-  <packageId>mandrake.cereanmanefix</packageId>
+  <packageId>mandrake.rsw.cereanmanefix</packageId>
   <supportedVersions>
     <li>1.6</li>
   </supportedVersions>

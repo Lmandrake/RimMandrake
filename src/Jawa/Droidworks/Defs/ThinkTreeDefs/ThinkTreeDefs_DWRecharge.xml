@@ -2,7 +2,7 @@
 <Defs>
 
   <!-- ========================================================================
-       DW_RechargeInsert — droids self-seek a charger below 30% power,
+       RSW_DW_RechargeInsert — droids self-seek a charger below 30% power,
        unprompted, using the vanilla modder insertion hook
        (ThinkTreeDef.insertTag) rather than a PatchOperation into
        Core/ThinkTreeDefs/Humanlike.xml. Wrapped in
@@ -12,17 +12,17 @@
        per BENCH's own instruction.
 
        Harmless on non-droid pawns: ThinkNode_ConditionalNeedPercentageAbove.
-       Satisfied() returns false when the pawn has no DW_Power need, which
+       Satisfied() returns false when the pawn has no RSW_DW_Power need, which
        (inverted) opens the subtree — but JobGiver_DWRecharge's own TryGiveJob
        re-checks for the need and returns null immediately, so no-op in
        practice for every Human/mechanoid/animal pawn in the game.
   ======================================================================== -->
   <ThinkTreeDef>
-    <defName>DW_RechargeInsert</defName>
+    <defName>RSW_DW_RechargeInsert</defName>
     <insertTag>Humanlike_PreMain</insertTag>
     <insertPriority>50</insertPriority>
     <thinkRoot Class="ThinkNode_ConditionalNeedPercentageAbove">
-      <need>DW_Power</need>
+      <need>RSW_DW_Power</need>
       <threshold>0.3</threshold>
       <invert>true</invert>
       <subNodes>

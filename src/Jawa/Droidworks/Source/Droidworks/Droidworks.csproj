@@ -5,7 +5,7 @@
     mod DLL must target net472. There is no Visual Studio or targeting pack on
     this machine, so Microsoft.NETFramework.ReferenceAssemblies supplies the
     reference assemblies from NuGet instead. Copied verbatim from the known-good
-    pattern at src/Jawa/JawaIonWeapons/Source/JawaIonWeapons.csproj
+    pattern at src/RimStarWars/JawaIonWeapons/Source/JawaIonWeapons.csproj
     (DROIDWORKS_DLL_COMPILE_1).
 
     Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):

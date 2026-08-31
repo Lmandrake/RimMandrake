@@ -1,6 +1,6 @@
 using Verse;
 
-namespace Droidworks
+namespace RimMandrake.StarWars.Droidworks
 {
     /// <summary>
     /// Per-race droid tuning, attached to the race ThingDef.

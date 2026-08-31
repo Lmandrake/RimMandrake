@@ -140,7 +140,7 @@ def main():
     # Provenance. A log that does not mention the mod at all is far more likely to
     # be the PREVIOUS session's than a catastrophic failure, and reporting the
     # second when it is the first wastes a load round.
-    if not any("mandrake.inhabited" in ln or "[Inhabited]" in ln
+    if not any("mandrake.rm.inhabited" in ln or "[Inhabited]" in ln
                or "Inhabited" in ln for ln in lines[:4000]):
         print("⚠️  no mention of Inhabited in the first 4000 lines -- is this the "
               "log from THIS launch? Player.log is rotated, not appended.")

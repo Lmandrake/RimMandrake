@@ -272,7 +272,7 @@ Species, palette and surface come from image 2: olive-green pebbled scale hide w
 
 ```bash
 cd /mnt/d/Luke/dev/Rimworld
-S=src/Jawa/DesertVehicleReskin/Source
+S=src/RimMandrake/DesertVehicleReskin/Source
 G=skills/generating-images/scripts
 
 # --- 1. GENERATE. Four calls, four generations of the owner's quota. Prompts are §4;
@@ -345,7 +345,7 @@ python3 $S/build_beast_vehicle.py Chariot         --facing east --pair $S/art/de
 # --- 4. VALIDATE against the donor facing each one replaces. 0 REJECT is the bar the
 #        other eight facings cleared.
 D="/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100/3028675048/Textures/Things/Vehicles/Land/Tier0"
-T=src/Jawa/DesertVehicleReskin/Textures/Things/Vehicles/Land/Tier0
+T=src/RimMandrake/DesertVehicleReskin/Textures/Things/Vehicles/Land/Tier0
 for v in OxCart CoveredCarriage WarChariot Chariot; do
   python3 skills/generating-rimworld-sprites/scripts/validate_sprite.py \
     --reference "$D/$v/AV_${v}_east.png" --candidate "$T/$v/AV_${v}_east.png"

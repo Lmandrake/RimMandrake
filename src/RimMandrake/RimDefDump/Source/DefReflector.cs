@@ -5,7 +5,7 @@ using System.Reflection;
 using RimWorld;
 using Verse;
 
-namespace RimDefDump
+namespace RimMandrake.RimDefDump
 {
     /// <summary>
     /// Reflects a Def (or any object hanging off one) into JSON.

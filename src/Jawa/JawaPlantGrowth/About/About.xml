@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
   <name>Jawa Plant Growth (local)</name>
-  <packageId>mandrake.jawaplantgrowth</packageId>
+  <packageId>mandrake.rut.plantgrowth</packageId>
   <author>mandrake</author>
   <supportedVersions>
     <li>1.6</li>

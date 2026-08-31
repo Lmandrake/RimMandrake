@@ -20,105 +20,105 @@
        XenotypeDef.genes is a plain List<GeneDef>, so <li> is correct here - this is NOT
        the LoadDataFromXmlCustom field where an <li> discards the whole def. -->
 
-  <!-- MandrakeJawa: -35.5..65 -> -50..55 °C   metabolism -1   sheds MinTemp_SmallIncrease, MaxTemp_LargeIncrease -->
+  <!-- RSW_MandrakeJawa: -35.5..65 -> -50..55 °C   metabolism -1   sheds MinTemp_SmallIncrease, MaxTemp_LargeIncrease -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/XenotypeDef[defName="MandrakeJawa"]/genes/li[text()="MinTemp_SmallIncrease"]</xpath>
+    <xpath>/Defs/XenotypeDef[defName="RSW_MandrakeJawa"]/genes/li[text()="MinTemp_SmallIncrease"]</xpath>
     <match Class="PatchOperationRemove">
-      <xpath>/Defs/XenotypeDef[defName="MandrakeJawa"]/genes/li[text()="MinTemp_SmallIncrease"]</xpath>
+      <xpath>/Defs/XenotypeDef[defName="RSW_MandrakeJawa"]/genes/li[text()="MinTemp_SmallIncrease"]</xpath>
     </match>
   </Operation>
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/XenotypeDef[defName="MandrakeJawa"]/genes/li[text()="MaxTemp_LargeIncrease"]</xpath>
+    <xpath>/Defs/XenotypeDef[defName="RSW_MandrakeJawa"]/genes/li[text()="MaxTemp_LargeIncrease"]</xpath>
     <match Class="PatchOperationRemove">
-      <xpath>/Defs/XenotypeDef[defName="MandrakeJawa"]/genes/li[text()="MaxTemp_LargeIncrease"]</xpath>
+      <xpath>/Defs/XenotypeDef[defName="RSW_MandrakeJawa"]/genes/li[text()="MaxTemp_LargeIncrease"]</xpath>
     </match>
   </Operation>
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/XenotypeDef[defName="MandrakeJawa"]/genes/li[text()="MinTemp_SmallDecrease"]</xpath>
+    <xpath>/Defs/XenotypeDef[defName="RSW_MandrakeJawa"]/genes/li[text()="MinTemp_SmallDecrease"]</xpath>
     <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/XenotypeDef[defName="MandrakeJawa"]/genes</xpath>
+      <xpath>/Defs/XenotypeDef[defName="RSW_MandrakeJawa"]/genes</xpath>
       <value><li>MinTemp_SmallDecrease</li></value>
     </nomatch>
   </Operation>
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/XenotypeDef[defName="MandrakeJawa"]/genes/li[text()="MaxTemp_SmallIncrease"]</xpath>
+    <xpath>/Defs/XenotypeDef[defName="RSW_MandrakeJawa"]/genes/li[text()="MaxTemp_SmallIncrease"]</xpath>
     <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/XenotypeDef[defName="MandrakeJawa"]/genes</xpath>
+      <xpath>/Defs/XenotypeDef[defName="RSW_MandrakeJawa"]/genes</xpath>
       <value><li>MaxTemp_SmallIncrease</li></value>
     </nomatch>
   </Operation>
 
-  <!-- RimMandrakeJawa: -40..65 -> -50..55 °C   metabolism +0   sheds MaxTemp_LargeIncrease -->
+  <!-- RSW_RimMandrakeJawa: -40..65 -> -50..55 °C   metabolism +0   sheds MaxTemp_LargeIncrease -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/XenotypeDef[defName="RimMandrakeJawa"]/genes/li[text()="MaxTemp_LargeIncrease"]</xpath>
+    <xpath>/Defs/XenotypeDef[defName="RSW_RimMandrakeJawa"]/genes/li[text()="MaxTemp_LargeIncrease"]</xpath>
     <match Class="PatchOperationRemove">
-      <xpath>/Defs/XenotypeDef[defName="RimMandrakeJawa"]/genes/li[text()="MaxTemp_LargeIncrease"]</xpath>
+      <xpath>/Defs/XenotypeDef[defName="RSW_RimMandrakeJawa"]/genes/li[text()="MaxTemp_LargeIncrease"]</xpath>
     </match>
   </Operation>
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/XenotypeDef[defName="RimMandrakeJawa"]/genes/li[text()="MinTemp_SmallDecrease"]</xpath>
+    <xpath>/Defs/XenotypeDef[defName="RSW_RimMandrakeJawa"]/genes/li[text()="MinTemp_SmallDecrease"]</xpath>
     <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/XenotypeDef[defName="RimMandrakeJawa"]/genes</xpath>
+      <xpath>/Defs/XenotypeDef[defName="RSW_RimMandrakeJawa"]/genes</xpath>
       <value><li>MinTemp_SmallDecrease</li></value>
     </nomatch>
   </Operation>
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/XenotypeDef[defName="RimMandrakeJawa"]/genes/li[text()="MaxTemp_SmallIncrease"]</xpath>
+    <xpath>/Defs/XenotypeDef[defName="RSW_RimMandrakeJawa"]/genes/li[text()="MaxTemp_SmallIncrease"]</xpath>
     <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/XenotypeDef[defName="RimMandrakeJawa"]/genes</xpath>
+      <xpath>/Defs/XenotypeDef[defName="RSW_RimMandrakeJawa"]/genes</xpath>
       <value><li>MaxTemp_SmallIncrease</li></value>
     </nomatch>
   </Operation>
 
-  <!-- RimMandrakeHutt: -40..55 -> -50..55 °C   metabolism -1 -->
+  <!-- RSW_RimMandrakeHutt: -40..55 -> -50..55 °C   metabolism -1 -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/XenotypeDef[defName="RimMandrakeHutt"]/genes/li[text()="MinTemp_SmallDecrease"]</xpath>
+    <xpath>/Defs/XenotypeDef[defName="RSW_RimMandrakeHutt"]/genes/li[text()="MinTemp_SmallDecrease"]</xpath>
     <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/XenotypeDef[defName="RimMandrakeHutt"]/genes</xpath>
+      <xpath>/Defs/XenotypeDef[defName="RSW_RimMandrakeHutt"]/genes</xpath>
       <value><li>MinTemp_SmallDecrease</li></value>
     </nomatch>
   </Operation>
 
-  <!-- RimMandrakeTusken: -35.5..65 -> -50..55 °C   metabolism -1   sheds MinTemp_SmallIncrease, MaxTemp_LargeIncrease -->
+  <!-- RSW_RimMandrakeTusken: -35.5..65 -> -50..55 °C   metabolism -1   sheds MinTemp_SmallIncrease, MaxTemp_LargeIncrease -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/XenotypeDef[defName="RimMandrakeTusken"]/genes/li[text()="MinTemp_SmallIncrease"]</xpath>
+    <xpath>/Defs/XenotypeDef[defName="RSW_RimMandrakeTusken"]/genes/li[text()="MinTemp_SmallIncrease"]</xpath>
     <match Class="PatchOperationRemove">
-      <xpath>/Defs/XenotypeDef[defName="RimMandrakeTusken"]/genes/li[text()="MinTemp_SmallIncrease"]</xpath>
+      <xpath>/Defs/XenotypeDef[defName="RSW_RimMandrakeTusken"]/genes/li[text()="MinTemp_SmallIncrease"]</xpath>
     </match>
   </Operation>
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/XenotypeDef[defName="RimMandrakeTusken"]/genes/li[text()="MaxTemp_LargeIncrease"]</xpath>
+    <xpath>/Defs/XenotypeDef[defName="RSW_RimMandrakeTusken"]/genes/li[text()="MaxTemp_LargeIncrease"]</xpath>
     <match Class="PatchOperationRemove">
-      <xpath>/Defs/XenotypeDef[defName="RimMandrakeTusken"]/genes/li[text()="MaxTemp_LargeIncrease"]</xpath>
+      <xpath>/Defs/XenotypeDef[defName="RSW_RimMandrakeTusken"]/genes/li[text()="MaxTemp_LargeIncrease"]</xpath>
     </match>
   </Operation>
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/XenotypeDef[defName="RimMandrakeTusken"]/genes/li[text()="MinTemp_SmallDecrease"]</xpath>
+    <xpath>/Defs/XenotypeDef[defName="RSW_RimMandrakeTusken"]/genes/li[text()="MinTemp_SmallDecrease"]</xpath>
     <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/XenotypeDef[defName="RimMandrakeTusken"]/genes</xpath>
+      <xpath>/Defs/XenotypeDef[defName="RSW_RimMandrakeTusken"]/genes</xpath>
       <value><li>MinTemp_SmallDecrease</li></value>
     </nomatch>
   </Operation>
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/XenotypeDef[defName="RimMandrakeTusken"]/genes/li[text()="MaxTemp_SmallIncrease"]</xpath>
+    <xpath>/Defs/XenotypeDef[defName="RSW_RimMandrakeTusken"]/genes/li[text()="MaxTemp_SmallIncrease"]</xpath>
     <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/XenotypeDef[defName="RimMandrakeTusken"]/genes</xpath>
+      <xpath>/Defs/XenotypeDef[defName="RSW_RimMandrakeTusken"]/genes</xpath>
       <value><li>MaxTemp_SmallIncrease</li></value>
     </nomatch>
   </Operation>
 
-  <!-- RimMandrakeWookiee: -50..45 -> -60..55 °C   metabolism -2 -->
+  <!-- RSW_RimMandrakeWookiee: -50..45 -> -60..55 °C   metabolism -2 -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/XenotypeDef[defName="RimMandrakeWookiee"]/genes/li[text()="MinTemp_SmallDecrease"]</xpath>
+    <xpath>/Defs/XenotypeDef[defName="RSW_RimMandrakeWookiee"]/genes/li[text()="MinTemp_SmallDecrease"]</xpath>
     <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/XenotypeDef[defName="RimMandrakeWookiee"]/genes</xpath>
+      <xpath>/Defs/XenotypeDef[defName="RSW_RimMandrakeWookiee"]/genes</xpath>
       <value><li>MinTemp_SmallDecrease</li></value>
     </nomatch>
   </Operation>
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/XenotypeDef[defName="RimMandrakeWookiee"]/genes/li[text()="MaxTemp_SmallIncrease"]</xpath>
+    <xpath>/Defs/XenotypeDef[defName="RSW_RimMandrakeWookiee"]/genes/li[text()="MaxTemp_SmallIncrease"]</xpath>
     <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/XenotypeDef[defName="RimMandrakeWookiee"]/genes</xpath>
+      <xpath>/Defs/XenotypeDef[defName="RSW_RimMandrakeWookiee"]/genes</xpath>
       <value><li>MaxTemp_SmallIncrease</li></value>
     </nomatch>
   </Operation>

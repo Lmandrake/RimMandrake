@@ -4,8 +4,8 @@
   <!-- ===== Homestead Defense League - JawaBSC_Homestead ===== -->
 
   <BackstoryDef>
-    <defName>Jawa_FarmFostered</defName>
-    <identifier>Jawa_FarmFostered</identifier>
+    <defName>RUT_Jawa_FarmFostered</defName>
+    <identifier>RUT_Jawa_FarmFostered</identifier>
     <slot>Childhood</slot>
     <title>farm-fostered</title>
     <titleShort>fostered</titleShort>
@@ -22,8 +22,8 @@
   </BackstoryDef>
 
   <BackstoryDef>
-    <defName>Jawa_RaiderOrphaned</defName>
-    <identifier>Jawa_RaiderOrphaned</identifier>
+    <defName>RUT_Jawa_RaiderOrphaned</defName>
+    <identifier>RUT_Jawa_RaiderOrphaned</identifier>
     <slot>Childhood</slot>
     <title>raider-orphaned</title>
     <titleShort>orphan</titleShort>
@@ -35,7 +35,7 @@
     </skillGains>
     <workDisables>None</workDisables>
     <forcedTraits>
-      <Jawa_SandStoic>0</Jawa_SandStoic>
+      <RUT_Jawa_SandStoic>0</RUT_Jawa_SandStoic>
     </forcedTraits>
     <spawnCategories>
       <li>JawaBSC_Homestead</li>
@@ -43,8 +43,8 @@
   </BackstoryDef>
 
   <BackstoryDef>
-    <defName>Jawa_MoistureBaron</defName>
-    <identifier>Jawa_MoistureBaron</identifier>
+    <defName>RUT_Jawa_MoistureBaron</defName>
+    <identifier>RUT_Jawa_MoistureBaron</identifier>
     <slot>Adulthood</slot>
     <title>moisture baron</title>
     <titleShort>baron</titleShort>
@@ -62,8 +62,8 @@
   </BackstoryDef>
 
   <BackstoryDef>
-    <defName>Jawa_HomesteadMatron</defName>
-    <identifier>Jawa_HomesteadMatron</identifier>
+    <defName>RUT_Jawa_HomesteadMatron</defName>
+    <identifier>RUT_Jawa_HomesteadMatron</identifier>
     <slot>Adulthood</slot>
     <title>homestead matron</title>
     <titleShort>matron</titleShort>
@@ -80,8 +80,8 @@
   </BackstoryDef>
 
   <BackstoryDef>
-    <defName>Jawa_WastesHermit</defName>
-    <identifier>Jawa_WastesHermit</identifier>
+    <defName>RUT_Jawa_WastesHermit</defName>
+    <identifier>RUT_Jawa_WastesHermit</identifier>
     <slot>Adulthood</slot>
     <title>hermit of the wastes</title>
     <titleShort>hermit</titleShort>
@@ -101,8 +101,8 @@
   <!-- ===== Deep Desert Tribes - JawaBSC_Tribes ===== -->
 
   <BackstoryDef>
-    <defName>Jawa_SunSwornChild</defName>
-    <identifier>Jawa_SunSwornChild</identifier>
+    <defName>RUT_Jawa_SunSwornChild</defName>
+    <identifier>RUT_Jawa_SunSwornChild</identifier>
     <slot>Childhood</slot>
     <title>sun-sworn child</title>
     <titleShort>sun-sworn</titleShort>
@@ -114,7 +114,7 @@
     </skillGains>
     <workDisables>None</workDisables>
     <forcedTraits>
-      <Jawa_WaterDiscipline>0</Jawa_WaterDiscipline>
+      <RUT_Jawa_WaterDiscipline>0</RUT_Jawa_WaterDiscipline>
     </forcedTraits>
     <spawnCategories>
       <li>JawaBSC_Tribes</li>
@@ -122,8 +122,8 @@
   </BackstoryDef>
 
   <BackstoryDef>
-    <defName>Jawa_KraytWatcher</defName>
-    <identifier>Jawa_KraytWatcher</identifier>
+    <defName>RUT_Jawa_KraytWatcher</defName>
+    <identifier>RUT_Jawa_KraytWatcher</identifier>
     <slot>Childhood</slot>
     <title>krayt-watcher</title>
     <titleShort>watcher</titleShort>
@@ -139,8 +139,8 @@
   </BackstoryDef>
 
   <BackstoryDef>
-    <defName>Jawa_WaterRaider</defName>
-    <identifier>Jawa_WaterRaider</identifier>
+    <defName>RUT_Jawa_WaterRaider</defName>
+    <identifier>RUT_Jawa_WaterRaider</identifier>
     <slot>Adulthood</slot>
     <title>water-raider</title>
     <titleShort>raider</titleShort>
@@ -157,8 +157,8 @@
   </BackstoryDef>
 
   <BackstoryDef>
-    <defName>Jawa_BanthaBonded</defName>
-    <identifier>Jawa_BanthaBonded</identifier>
+    <defName>RUT_Jawa_BanthaBonded</defName>
+    <identifier>RUT_Jawa_BanthaBonded</identifier>
     <slot>Adulthood</slot>
     <title>beast-bonded nomad</title>
     <titleShort>nomad</titleShort>
@@ -175,8 +175,8 @@
   </BackstoryDef>
 
   <BackstoryDef>
-    <defName>Jawa_SunDebtCantor</defName>
-    <identifier>Jawa_SunDebtCantor</identifier>
+    <defName>RUT_Jawa_SunDebtCantor</defName>
+    <identifier>RUT_Jawa_SunDebtCantor</identifier>
     <slot>Adulthood</slot>
     <title>sun-debt cantor</title>
     <titleShort>cantor</titleShort>
@@ -188,7 +188,7 @@
     </skillGains>
     <workDisables>None</workDisables>
     <forcedTraits>
-      <Jawa_SandStoic>0</Jawa_SandStoic>
+      <RUT_Jawa_SandStoic>0</RUT_Jawa_SandStoic>
     </forcedTraits>
     <spawnCategories>
       <li>JawaBSC_Tribes</li>
@@ -202,11 +202,11 @@
        belong. Sand is safety; it does not burn. Reuses the SAME spawnCategory
        (JawaBSC_Tribes) as the Water side above — already wired to TribeCivil
        in Patches/FactionBackstoryWiring.xml, no new wiring needed.
-       Jawa_ReapsTheFlames / Jawa_AshJudgment: Defs/Traits_JawaPawnFlavor.xml. -->
+       RUT_Jawa_ReapsTheFlames / RUT_Jawa_AshJudgment: Defs/Traits_JawaPawnFlavor.xml. -->
 
   <BackstoryDef>
-    <defName>Jawa_PyreWatcher</defName>
-    <identifier>Jawa_PyreWatcher</identifier>
+    <defName>RUT_Jawa_PyreWatcher</defName>
+    <identifier>RUT_Jawa_PyreWatcher</identifier>
     <slot>Childhood</slot>
     <title>pyre-watcher</title>
     <titleShort>pyre-watcher</titleShort>
@@ -217,7 +217,7 @@
     </skillGains>
     <workDisables>None</workDisables>
     <forcedTraits>
-      <Jawa_ReapsTheFlames>0</Jawa_ReapsTheFlames>
+      <RUT_Jawa_ReapsTheFlames>0</RUT_Jawa_ReapsTheFlames>
     </forcedTraits>
     <spawnCategories>
       <li>JawaBSC_Tribes</li>
@@ -225,8 +225,8 @@
   </BackstoryDef>
 
   <BackstoryDef>
-    <defName>Jawa_FlameReaper</defName>
-    <identifier>Jawa_FlameReaper</identifier>
+    <defName>RUT_Jawa_FlameReaper</defName>
+    <identifier>RUT_Jawa_FlameReaper</identifier>
     <slot>Adulthood</slot>
     <title>flame-reaper</title>
     <titleShort>reaper</titleShort>
@@ -238,7 +238,7 @@
     </skillGains>
     <workDisables>None</workDisables>
     <forcedTraits>
-      <Jawa_ReapsTheFlames>0</Jawa_ReapsTheFlames>
+      <RUT_Jawa_ReapsTheFlames>0</RUT_Jawa_ReapsTheFlames>
     </forcedTraits>
     <spawnCategories>
       <li>JawaBSC_Tribes</li>
@@ -246,8 +246,8 @@
   </BackstoryDef>
 
   <BackstoryDef>
-    <defName>Jawa_AshSpeaker</defName>
-    <identifier>Jawa_AshSpeaker</identifier>
+    <defName>RUT_Jawa_AshSpeaker</defName>
+    <identifier>RUT_Jawa_AshSpeaker</identifier>
     <slot>Adulthood</slot>
     <title>ash-speaker</title>
     <titleShort>ash-speaker</titleShort>
@@ -258,7 +258,7 @@
     </skillGains>
     <workDisables>None</workDisables>
     <forcedTraits>
-      <Jawa_AshJudgment>0</Jawa_AshJudgment>
+      <RUT_Jawa_AshJudgment>0</RUT_Jawa_AshJudgment>
     </forcedTraits>
     <spawnCategories>
       <li>JawaBSC_Tribes</li>

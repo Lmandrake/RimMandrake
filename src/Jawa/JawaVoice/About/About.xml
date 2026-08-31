@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
-  <packageId>mandrake.jawavoice</packageId>
+  <packageId>mandrake.rsw.jawavoice</packageId>
   <name>JawaVoice (SpeakUp reskin)</name>
   <author>mandrake</author>
   <description>Makes Jawa pawns speak Jawaese in SpeakUp bubbles, in the shape "Jawaese line. (English meaning...)" — e.g. "Jit jot zoot goot. (Well, there goes everything...)".

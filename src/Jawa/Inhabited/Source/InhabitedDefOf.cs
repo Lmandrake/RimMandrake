@@ -3,7 +3,7 @@ using RimWorld.Planet;
 using Verse;
 using Verse.AI;
 
-namespace Inhabited
+namespace RimMandrake.Inhabited
 {
     /// <summary>
     /// Every def this assembly names. DefOfHelper throws at startup if one is

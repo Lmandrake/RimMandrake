@@ -2,8 +2,8 @@
 <!--
   DROIDWORKS_POWEREDDOWN_NOT_WIRED_1. Wires HediffComp_IonOverloadsDroid
   (Source/Droidworks/HediffComp_IonOverloadsDroid.cs) onto JawaIonWeapons'
-  JawaIon_Stun so a DW_ race droid crossing the ion-overload threshold gets
-  the persistent DW_PoweredDown state instead of a self-decaying stun. See
+  RSW_JawaIon_Stun so a DW_ race droid crossing the ion-overload threshold gets
+  the persistent RSW_DW_PoweredDown state instead of a self-decaying stun. See
   that C# file's own header for the full mechanism. FindMod-gated: a no-op
   if Jawa Ion Weapons isn't active, matching the "patch matches nothing,
   nothing happens" doctrine deliberately here.
@@ -14,7 +14,7 @@
       <li>Jawa Ion Weapons (local)</li>
     </mods>
     <match Class="PatchOperationAdd">
-      <xpath>/Defs/HediffDef[defName="JawaIon_Stun"]/comps</xpath>
+      <xpath>/Defs/HediffDef[defName="RSW_JawaIon_Stun"]/comps</xpath>
       <value>
         <li Class="Droidworks.HediffCompProperties_IonOverloadsDroid" />
       </value>

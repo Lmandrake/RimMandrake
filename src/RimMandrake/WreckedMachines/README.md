@@ -1,6 +1,6 @@
 # WreckedMachines
 
-_Authored mod. `packageId: mandrake.wreckedmachines`. Started 2026-08-12._
+_Authored mod. `packageId: mandrake.rm.wreckedmachines`. Started 2026-08-12._
 
 Three visual states for large machines owned by other mods — **wrecked →
 kludged → restored** — so the Kolyska's dead factory is something the crew

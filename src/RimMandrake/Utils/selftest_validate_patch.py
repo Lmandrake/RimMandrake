@@ -76,18 +76,18 @@ def case(name, fn):
 SAMPLE = """<?xml version="1.0" encoding="utf-8"?>
 <Defs>
   <XenotypeDef>
-    <defName>RimMandrakeWookiee</defName>
+    <defName>RSW_RimMandrakeWookiee</defName>
     <label>Wookiee</label>
     <genes>
-      <li>RimMandrake_BodySizeGene_big</li>
-      <li>RimMandrake_lifespan_quad</li>
+      <li>RSW_BodySizeGene_big</li>
+      <li>RSW_lifespan_quad</li>
     </genes>
   </XenotypeDef>
   <XenotypeDef>
-    <defName>RimMandrakeJawa</defName>
+    <defName>RSW_RimMandrakeJawa</defName>
     <label>Jawa</label>
     <genes>
-      <li>RimMandrake_BodySizeGene_smaller</li>
+      <li>RSW_BodySizeGene_smaller</li>
     </genes>
   </XenotypeDef>
   <ThingDef>
@@ -131,8 +131,8 @@ def t_a_bare_Defs_step_matches_the_same_as_a_rooted_one():
     This is the 2026-08-21 half of the bug: the ElementPath branch used to treat
     the bare form as `Defs/Defs/…`.
     """
-    bare = n('Defs/XenotypeDef[defName="RimMandrakeWookiee"]/genes')
-    rooted = n('/Defs/XenotypeDef[defName="RimMandrakeWookiee"]/genes')
+    bare = n('Defs/XenotypeDef[defName="RSW_RimMandrakeWookiee"]/genes')
+    rooted = n('/Defs/XenotypeDef[defName="RSW_RimMandrakeWookiee"]/genes')
     assert bare == rooted == 1, ("bare=%s rooted=%s; both must be 1" % (bare, rooted))
 
 
@@ -144,10 +144,10 @@ def t_a_text_predicate_matches_through_the_lxml_branch():
     """
     if not getattr(V, "HAVE_LXML", False):
         return                       # no lxml: the branch under test cannot run
-    bare = n('Defs/XenotypeDef[defName="RimMandrakeWookiee"]/genes'
-             '/li[text()="RimMandrake_BodySizeGene_big"]')
-    rooted = n('/Defs/XenotypeDef[defName="RimMandrakeWookiee"]/genes'
-               '/li[text()="RimMandrake_BodySizeGene_big"]')
+    bare = n('Defs/XenotypeDef[defName="RSW_RimMandrakeWookiee"]/genes'
+             '/li[text()="RSW_BodySizeGene_big"]')
+    rooted = n('/Defs/XenotypeDef[defName="RSW_RimMandrakeWookiee"]/genes'
+               '/li[text()="RSW_BodySizeGene_big"]')
     assert bare == rooted == 1, (
         "a text() xpath must match the same whether or not the root step carries a "
         "leading slash. bare=%s rooted=%s. This is the exact shape that reported "
@@ -165,8 +165,8 @@ def t_every_full_xpath_feature_takes_the_lxml_branch_and_still_matches():
     for xp in (
         'Defs/XenotypeDef[contains(defName, "Wookiee")]',
         'Defs/XenotypeDef[starts-with(defName, "RimMandrakeW")]',
-        'Defs/XenotypeDef[defName="RimMandrakeWookiee" or defName="NoSuchDef"]',
-        'Defs/XenotypeDef[not(defName="RimMandrakeJawa")]',
+        'Defs/XenotypeDef[defName="RSW_RimMandrakeWookiee" or defName="NoSuchDef"]',
+        'Defs/XenotypeDef[not(defName="RSW_RimMandrakeJawa")]',
     ):
         assert n(xp) == 1, "%r matched 0 — the lxml branch is not rebasing" % xp
 
@@ -179,7 +179,7 @@ def t_a_genuinely_dead_xpath_still_reports_zero():
     """
     assert n('Defs/XenotypeDef[defName="NoSuchXenotypeAnywhere"]/genes') == 0
     if getattr(V, "HAVE_LXML", False):
-        assert n('Defs/XenotypeDef[defName="RimMandrakeWookiee"]/genes'
+        assert n('Defs/XenotypeDef[defName="RSW_RimMandrakeWookiee"]/genes'
                  '/li[text()="RimMandrake_BodySizeGene_NOPE"]') == 0
 
 
@@ -201,7 +201,7 @@ def t_the_two_engines_agree_on_the_expressions_both_can_evaluate():
         return
     from lxml import etree as LET
     root = docs()[0][1]
-    for xp in ('Defs/XenotypeDef[defName="RimMandrakeWookiee"]/genes',
+    for xp in ('Defs/XenotypeDef[defName="RSW_RimMandrakeWookiee"]/genes',
                'Defs/XenotypeDef/genes/li',
                'Defs/ThingDef[defName="Gun_Autopistol"]/weaponTags'):
         et_path = V.to_elementtree_xpath(xp)

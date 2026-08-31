@@ -14,7 +14,7 @@
      tints the mote, which is the whole change. Nothing else is touched: the
      texture, timing, altitude layer and thingClass are vanilla's.
 
-     THE COLOUR is deliberately the same hue already used by JawaIon_Damage's
+     THE COLOUR is deliberately the same hue already used by RSW_JawaIon_Damage's
      explosionColorEdge (0.55, 0.75, 1.0) so a bolt's impact flash and the stun
      arc it leaves behind read as one effect rather than two.
 
@@ -23,7 +23,7 @@
      from StunHandler against a hardcoded ThingDefOf.Mote_Stun, so there is no
      XML route to a per-source colour. Consequences worth accepting knowingly:
 
-       * Jawa ion bolts arc pale blue. This is the point. JawaIon_Damage
+       * Jawa ion bolts arc pale blue. This is the point. RSW_JawaIon_Damage
          already sets causeStun true, so the effect is ours by default.
        * KotOR stun bolts, Outer Rim stun grenades and sonic weapons also arc
          pale blue. All energy weapons; consistent with the setting.

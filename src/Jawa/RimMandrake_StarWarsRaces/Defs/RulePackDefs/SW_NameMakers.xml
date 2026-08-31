@@ -13,7 +13,7 @@
 -->
 <Defs>
   <RulePackDef>
-    <defName>RimMandrake_ChissNameGenerator</defName>
+    <defName>RSW_ChissNameGenerator</defName>
     <rulePack>
       <rulesStrings>
         <li>name-&gt;[Chiss1][Chiss2][Chiss3] '[Chiss4]'[Chiss5][Chiss6][Chiss7][Chiss8]'[Chiss9]' [Chiss10][Chiss11][Chiss12][Chiss13][Chiss14]</li>
@@ -95,7 +95,7 @@
     </rulePack>
   </RulePackDef>
   <RulePackDef>
-    <defName>RimMandrake_KoTOR_NamerAqualish</defName>
+    <defName>RSW_KoTOR_NamerAqualish</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name-&gt;[firstName] [lastName]</li>
@@ -126,7 +126,7 @@
     </rulePack>
   </RulePackDef>
   <RulePackDef>
-    <defName>RimMandrake_KoTOR_NamerArkanian</defName>
+    <defName>RSW_KoTOR_NamerArkanian</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name-&gt;[firstName] [lastName]</li>
@@ -157,7 +157,7 @@
     </rulePack>
   </RulePackDef>
   <RulePackDef>
-    <defName>RimMandrake_KoTOR_NamerBith</defName>
+    <defName>RSW_KoTOR_NamerBith</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name-&gt;[firstName] [lastName]</li>
@@ -188,7 +188,7 @@
     </rulePack>
   </RulePackDef>
   <RulePackDef>
-    <defName>RimMandrake_KoTOR_NamerBothan</defName>
+    <defName>RSW_KoTOR_NamerBothan</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name-&gt;[firstName] [lastName]</li>
@@ -219,7 +219,7 @@
     </rulePack>
   </RulePackDef>
   <RulePackDef>
-    <defName>RimMandrake_KoTOR_NamerCathar</defName>
+    <defName>RSW_KoTOR_NamerCathar</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name-&gt;[firstName] [lastName]</li>
@@ -250,7 +250,7 @@
     </rulePack>
   </RulePackDef>
   <RulePackDef>
-    <defName>RimMandrake_KoTOR_NamerChadraFan</defName>
+    <defName>RSW_KoTOR_NamerChadraFan</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name-&gt;[firstName] [lastName]</li>
@@ -281,7 +281,7 @@
     </rulePack>
   </RulePackDef>
   <RulePackDef>
-    <defName>RimMandrake_KoTOR_NamerChiss</defName>
+    <defName>RSW_KoTOR_NamerChiss</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name-&gt;[firstName] [lastName]</li>
@@ -312,7 +312,7 @@
     </rulePack>
   </RulePackDef>
   <RulePackDef>
-    <defName>RimMandrake_KoTOR_NamerDevaronian</defName>
+    <defName>RSW_KoTOR_NamerDevaronian</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name-&gt;[firstName] [lastName]</li>
@@ -343,7 +343,7 @@
     </rulePack>
   </RulePackDef>
   <RulePackDef>
-    <defName>RimMandrake_KoTOR_NamerDuros</defName>
+    <defName>RSW_KoTOR_NamerDuros</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name-&gt;[firstName] [lastName]</li>
@@ -374,7 +374,7 @@
     </rulePack>
   </RulePackDef>
   <RulePackDef>
-    <defName>RimMandrake_KoTOR_NamerEchani</defName>
+    <defName>RSW_KoTOR_NamerEchani</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name-&gt;[firstName] [lastName]</li>
@@ -405,7 +405,7 @@
     </rulePack>
   </RulePackDef>
   <RulePackDef>
-    <defName>RimMandrake_KoTOR_NamerEwok</defName>
+    <defName>RSW_KoTOR_NamerEwok</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name-&gt;[firstName] [lastName]</li>
@@ -436,7 +436,7 @@
     </rulePack>
   </RulePackDef>
   <RulePackDef>
-    <defName>RimMandrake_KoTOR_NamerFalleen</defName>
+    <defName>RSW_KoTOR_NamerFalleen</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name-&gt;[firstName] [lastName]</li>
@@ -467,7 +467,7 @@
     </rulePack>
   </RulePackDef>
   <RulePackDef>
-    <defName>RimMandrake_KoTOR_NamerFeeorin</defName>
+    <defName>RSW_KoTOR_NamerFeeorin</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name-&gt;[firstName] [lastName]</li>
@@ -498,7 +498,7 @@
     </rulePack>
   </RulePackDef>
   <RulePackDef>
-    <defName>RimMandrake_KoTOR_NamerGamorrean</defName>
+    <defName>RSW_KoTOR_NamerGamorrean</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name-&gt;[firstName] [lastName]</li>
@@ -529,7 +529,7 @@
     </rulePack>
   </RulePackDef>
   <RulePackDef>
-    <defName>RimMandrake_KoTOR_NamerGand</defName>
+    <defName>RSW_KoTOR_NamerGand</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name-&gt;[gand] '[gand]' [lastName]</li>
@@ -545,7 +545,7 @@
     </rulePack>
   </RulePackDef>
   <RulePackDef>
-    <defName>RimMandrake_KoTOR_NamerHutt</defName>
+    <defName>RSW_KoTOR_NamerHutt</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name-&gt;[lastName] [hsyl1][hsyl2] [firstName]</li>
@@ -588,7 +588,7 @@
     </rulePack>
   </RulePackDef>
   <RulePackDef>
-    <defName>RimMandrake_KoTOR_NamerHutt_highcaste</defName>
+    <defName>RSW_KoTOR_NamerHutt_highcaste</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name-&gt;[lastName] '[lastName] [theHutt]' [hsyl1][hsyl2] [firstName]</li>
@@ -633,7 +633,7 @@
     </rulePack>
   </RulePackDef>
   <RulePackDef>
-    <defName>RimMandrake_KoTOR_NamerHutt_lowcaste</defName>
+    <defName>RSW_KoTOR_NamerHutt_lowcaste</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name-&gt;[lastName] '[lastName] [theHuun]' [firstName]</li>
@@ -678,7 +678,7 @@
     </rulePack>
   </RulePackDef>
   <RulePackDef>
-    <defName>RimMandrake_KoTOR_NamerIridonian</defName>
+    <defName>RSW_KoTOR_NamerIridonian</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name-&gt;[firstName] [lastName]</li>
@@ -709,7 +709,7 @@
     </rulePack>
   </RulePackDef>
   <RulePackDef>
-    <defName>RimMandrake_KoTOR_NamerJawa</defName>
+    <defName>RSW_KoTOR_NamerJawa</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name-&gt;[firstName] [lastName]</li>
@@ -740,7 +740,7 @@
     </rulePack>
   </RulePackDef>
   <RulePackDef>
-    <defName>RimMandrake_KoTOR_NamerKlatoonian</defName>
+    <defName>RSW_KoTOR_NamerKlatoonian</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name-&gt;[firstName] [lastName]</li>
@@ -771,7 +771,7 @@
     </rulePack>
   </RulePackDef>
   <RulePackDef>
-    <defName>RimMandrake_KoTOR_NamerKubaz</defName>
+    <defName>RSW_KoTOR_NamerKubaz</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name-&gt;[firstName] [lastName]</li>
@@ -802,7 +802,7 @@
     </rulePack>
   </RulePackDef>
   <RulePackDef>
-    <defName>RimMandrake_KoTOR_NamerLasat</defName>
+    <defName>RSW_KoTOR_NamerLasat</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name-&gt;[firstName] [lastName]</li>
@@ -833,7 +833,7 @@
     </rulePack>
   </RulePackDef>
   <RulePackDef>
-    <defName>RimMandrake_KoTOR_NamerMimbanese</defName>
+    <defName>RSW_KoTOR_NamerMimbanese</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name-&gt;[firstName] [lastName]</li>
@@ -864,7 +864,7 @@
     </rulePack>
   </RulePackDef>
   <RulePackDef>
-    <defName>RimMandrake_KoTOR_NamerMiraluka</defName>
+    <defName>RSW_KoTOR_NamerMiraluka</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name-&gt;[firstName] [lastName]</li>
@@ -895,7 +895,7 @@
     </rulePack>
   </RulePackDef>
   <RulePackDef>
-    <defName>RimMandrake_KoTOR_NamerMirialan</defName>
+    <defName>RSW_KoTOR_NamerMirialan</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name-&gt;[firstName] [lastName]</li>
@@ -926,7 +926,7 @@
     </rulePack>
   </RulePackDef>
   <RulePackDef>
-    <defName>RimMandrake_KoTOR_NamerNagai</defName>
+    <defName>RSW_KoTOR_NamerNagai</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name-&gt;[firstName] [lastName]</li>
@@ -957,7 +957,7 @@
     </rulePack>
   </RulePackDef>
   <RulePackDef>
-    <defName>RimMandrake_KoTOR_NamerNautolan</defName>
+    <defName>RSW_KoTOR_NamerNautolan</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name-&gt;[firstName] [lastName]</li>
@@ -988,7 +988,7 @@
     </rulePack>
   </RulePackDef>
   <RulePackDef>
-    <defName>RimMandrake_KoTOR_NamerNeimoidian</defName>
+    <defName>RSW_KoTOR_NamerNeimoidian</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name-&gt;[firstName] [lastName]</li>
@@ -1019,7 +1019,7 @@
     </rulePack>
   </RulePackDef>
   <RulePackDef>
-    <defName>RimMandrake_KoTOR_NamerNelvaanian</defName>
+    <defName>RSW_KoTOR_NamerNelvaanian</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name-&gt;[firstName] [lastName]</li>
@@ -1050,7 +1050,7 @@
     </rulePack>
   </RulePackDef>
   <RulePackDef>
-    <defName>RimMandrake_KoTOR_NamerNikto</defName>
+    <defName>RSW_KoTOR_NamerNikto</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name-&gt;[firstName] [lastName]</li>
@@ -1081,7 +1081,7 @@
     </rulePack>
   </RulePackDef>
   <RulePackDef>
-    <defName>RimMandrake_KoTOR_NamerPantoran</defName>
+    <defName>RSW_KoTOR_NamerPantoran</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name-&gt;[firstName] [lastName]</li>
@@ -1112,7 +1112,7 @@
     </rulePack>
   </RulePackDef>
   <RulePackDef>
-    <defName>RimMandrake_KoTOR_NamerQuarren</defName>
+    <defName>RSW_KoTOR_NamerQuarren</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name-&gt;[firstName] [lastName]</li>
@@ -1143,7 +1143,7 @@
     </rulePack>
   </RulePackDef>
   <RulePackDef>
-    <defName>RimMandrake_KoTOR_NamerRodian</defName>
+    <defName>RSW_KoTOR_NamerRodian</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name-&gt;[firstName] [lastName]</li>
@@ -1174,7 +1174,7 @@
     </rulePack>
   </RulePackDef>
   <RulePackDef>
-    <defName>RimMandrake_KoTOR_NamerSnivvian</defName>
+    <defName>RSW_KoTOR_NamerSnivvian</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name-&gt;[firstName] [lastName]</li>
@@ -1205,7 +1205,7 @@
     </rulePack>
   </RulePackDef>
   <RulePackDef>
-    <defName>RimMandrake_KoTOR_NamerSullustan</defName>
+    <defName>RSW_KoTOR_NamerSullustan</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name-&gt;[firstName] [lastName]</li>
@@ -1236,7 +1236,7 @@
     </rulePack>
   </RulePackDef>
   <RulePackDef>
-    <defName>RimMandrake_KoTOR_NamerTogruta</defName>
+    <defName>RSW_KoTOR_NamerTogruta</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name-&gt;[firstName] [lastName]</li>
@@ -1267,7 +1267,7 @@
     </rulePack>
   </RulePackDef>
   <RulePackDef>
-    <defName>RimMandrake_KoTOR_NamerTrandoshan</defName>
+    <defName>RSW_KoTOR_NamerTrandoshan</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name-&gt;[firstName] [lastName]</li>
@@ -1298,7 +1298,7 @@
     </rulePack>
   </RulePackDef>
   <RulePackDef>
-    <defName>RimMandrake_KoTOR_NamerTwilek</defName>
+    <defName>RSW_KoTOR_NamerTwilek</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name-&gt;[firstName] [lastName]</li>
@@ -1329,7 +1329,7 @@
     </rulePack>
   </RulePackDef>
   <RulePackDef>
-    <defName>RimMandrake_KoTOR_NamerUmbaran</defName>
+    <defName>RSW_KoTOR_NamerUmbaran</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name-&gt;[firstName] [lastName]</li>
@@ -1360,7 +1360,7 @@
     </rulePack>
   </RulePackDef>
   <RulePackDef>
-    <defName>RimMandrake_KoTOR_NamerWeequay</defName>
+    <defName>RSW_KoTOR_NamerWeequay</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name-&gt;[firstName] [lastName]</li>
@@ -1391,7 +1391,7 @@
     </rulePack>
   </RulePackDef>
   <RulePackDef>
-    <defName>RimMandrake_KoTOR_NamerWookiee</defName>
+    <defName>RSW_KoTOR_NamerWookiee</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name-&gt;[firstName] [lastName]</li>
@@ -1422,7 +1422,7 @@
     </rulePack>
   </RulePackDef>
   <RulePackDef>
-    <defName>RimMandrake_KoTOR_NamerYoder</defName>
+    <defName>RSW_KoTOR_NamerYoder</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name-&gt;[firstName] [lastName]</li>
@@ -1453,7 +1453,7 @@
     </rulePack>
   </RulePackDef>
   <RulePackDef>
-    <defName>RimMandrake_KoTOR_NamerZeltron</defName>
+    <defName>RSW_KoTOR_NamerZeltron</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name-&gt;[firstName] [lastName]</li>
@@ -1484,7 +1484,7 @@
     </rulePack>
   </RulePackDef>
   <RulePackDef>
-    <defName>RimMandrake_KoTOR_NamerZygerrian</defName>
+    <defName>RSW_KoTOR_NamerZygerrian</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name-&gt;[firstName] [lastName]</li>
@@ -1515,7 +1515,7 @@
     </rulePack>
   </RulePackDef>
   <RulePackDef>
-    <defName>RimMandrake_NamerPersonPureblood</defName>
+    <defName>RSW_NamerPersonPureblood</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name-&gt;[firstName] [lastName]</li>
@@ -1546,7 +1546,7 @@
     </rulePack>
   </RulePackDef>
   <RulePackDef>
-    <defName>RimMandrake_NamerPersonSandP</defName>
+    <defName>RSW_NamerPersonSandP</defName>
     <rulePack>
       <rulesStrings>
         <li>r_name-&gt;[firstName] [lastName]</li>

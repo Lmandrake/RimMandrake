@@ -2,12 +2,12 @@
 <!-- Absorbed from maincrep.eweb (workshop 3555571107, "E-Web Heavy Repeating
      Blaster"), WEAPONS_ABSORPTION_WAVE_1. HAND-PORTED (8-def pack, too small
      to warrant a generator) — defNames preserved verbatim per the item's rule 1.
-     Turrets_DamageDoctrine.xml's EWebShot ops and Turrets_Renames.xml's
-     RN2SWGun_EWeb_MG label op are retired and baked in HERE instead — both
+     Turrets_DamageDoctrine.xml's RSW_EWebShot ops and Turrets_Renames.xml's
+     RSW_RN2SWGun_EWeb_MG label op are retired and baked in HERE instead — both
      were PatchOperationFindMod-gated on "E-Web Heavy Repeating Blaster", which
      stops matching once that pack retires (a patch that matches nothing logs
      nothing). Values confirmed by running gen_turret_doctrine.py before this
-     port: EWebShot damageAmountBase 14->368, damageDef Bullet->OuterRim_Blaster.
+     port: RSW_EWebShot damageAmountBase 14->368, damageDef Bullet->OuterRim_Blaster.
      Source pack stays active for now (retirement is a separate later step,
      gated on a full-list load proving zero missing-def errors) — do not
      deploy this file until then, or duplicate defNames result. -->
@@ -31,7 +31,7 @@
   </ThingDef>
 
   <ThingDef ParentName="BuildingBase">
-    <defName>RN2SWGun_EWeb_MG</defName>
+    <defName>RSW_RN2SWGun_EWeb_MG</defName>
     <label>E-Web repeating blaster</label>
     <!-- label per Jawa_Armoury/Patches/Turrets_Renames.xml (retired by this absorption): "it is a repeating blaster, not a machine gun" -->
     <description>The E-Web was a heavy repeating blaster manufactured by BlasTech Industries. It was one of the most powerful repeating blasters in the Imperial arsenal.</description>
@@ -102,7 +102,7 @@
     <specialDisplayRadius>40</specialDisplayRadius>
     <building>
       <ai_combatDangerous>true</ai_combatDangerous>
-      <turretGunDef>RN2SWGun_EWebMounted_GPMG</turretGunDef>
+      <turretGunDef>RSW_RN2SWGun_EWebMounted_GPMG</turretGunDef>
       <turretBurstWarmupTime>0.04</turretBurstWarmupTime>
       <turretBurstCooldownTime>0.04</turretBurstCooldownTime>
     </building>
@@ -110,7 +110,7 @@
   </ThingDef>
 
   <ThingDef ParentName="RNBaseWeaponTurret">
-    <defName>RN2SWGun_EWebMounted_GPMG</defName>
+    <defName>RSW_RN2SWGun_EWebMounted_GPMG</defName>
     <label>M60</label>
     <description>The E-Web was a heavy repeating blaster manufactured by BlasTech Industries. It was one of the most powerful repeating blasters in the Imperial arsenal.</description>
     <graphicData>
@@ -130,12 +130,12 @@
     <verbs>
       <li>
         <verbClass>Verb_Shoot</verbClass>
-        <defaultProjectile>EWebShot</defaultProjectile>
+        <defaultProjectile>RSW_EWebShot</defaultProjectile>
         <warmupTime>0.05</warmupTime>
         <range>40</range>
         <ticksBetweenBurstShots>7</ticksBetweenBurstShots>
         <burstShotCount>3</burstShotCount>
-        <soundCast>RNShotEWebMG</soundCast>
+        <soundCast>RSW_RNShotEWebMG</soundCast>
         <soundCastTail>GunTail_Light</soundCastTail>
         <muzzleFlashScale>9</muzzleFlashScale>
         <consumeFuelPerShot>1</consumeFuelPerShot>
@@ -144,7 +144,7 @@
   </ThingDef>
 
   <ThingDef ParentName="BaseBullet">
-    <defName>EWebShot</defName>
+    <defName>RSW_EWebShot</defName>
     <label>7.62x54mmR bullet</label>
     <graphicData>
       <texPath>Things/Red_Laser</texPath>

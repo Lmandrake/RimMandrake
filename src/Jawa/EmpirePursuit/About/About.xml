@@ -5,7 +5,7 @@
   <supportedVersions>
     <li>1.6</li>
   </supportedVersions>
-  <packageId>mandrake.empirepursuit</packageId>
+  <packageId>mandrake.rut.empirepursuit</packageId>
   <description>A fork of "Ruthless Faction Pursuit" (workshop 3621784437) by Matathias, GPLv3,
 modified with credit per the original author's request in its description ("I've included the
 source code in the mod upload too, so feel free to make your own edits... I only ask that you

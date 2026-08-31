@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """Wrapper for the C# selftest of StatPart_InverseBodySize
 (OTHER_STUN_WEAPONS_SURVEY_1 / ION_STUN_IGNORES_BODY_SIZE_1:
-src/Jawa/JawaIonWeapons/Source/StatPart_InverseBodySize.cs).
+src/RimStarWars/JawaIonWeapons/Source/StatPart_InverseBodySize.cs).
 
 Same shape as selftest_pit_logic.py and selftest_colony_visibility.py, same
 reason: `selftest_*.py` is this project's established fast, offline,

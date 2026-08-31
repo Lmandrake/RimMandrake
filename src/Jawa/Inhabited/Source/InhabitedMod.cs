@@ -3,7 +3,7 @@ using System.Reflection;
 using HarmonyLib;
 using Verse;
 
-namespace Inhabited
+namespace RimMandrake.Inhabited
 {
     /// <summary>
     /// Harmony bootstrap, and the one line of startup logging this mod emits.
@@ -24,7 +24,7 @@ namespace Inhabited
     [StaticConstructorOnStartup]
     public static class InhabitedMod
     {
-        public const string HarmonyId = "mandrake.inhabited";
+        public const string HarmonyId = "mandrake.rm.inhabited";
 
         static InhabitedMod()
         {
@@ -36,7 +36,7 @@ namespace Inhabited
             int places = DefDatabase<InhabitedPlaceDef>.DefCount;
             int casts = DefDatabase<InhabitedCastDef>.DefCount;
 
-            Log.Message("[Inhabited] ready: " + patches + " patches, "
+            Log.Message("[RimMandrake.Inhabited] ready: " + patches + " patches, "
                         + characters + " characters, "
                         + places + " places, "
                         + casts + " casts.");

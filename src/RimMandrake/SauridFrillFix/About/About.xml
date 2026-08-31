@@ -2,7 +2,7 @@
 <ModMetaData>
   <name>Center Frill North Fix — Vanilla Races Expanded: Saurid</name>
   <author>Mandrake</author>
-  <packageId>mandrake.sauridfrillfix</packageId>
+  <packageId>mandrake.rm.sauridfrillfix</packageId>
   <supportedVersions>
     <li>1.6</li>
   </supportedVersions>

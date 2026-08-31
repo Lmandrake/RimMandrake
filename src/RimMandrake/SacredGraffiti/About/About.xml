@@ -2,7 +2,7 @@
 <ModMetaData>
   <name>RimMandrake Sacred Marks</name>
   <author>Mandrake</author>
-  <packageId>mandrake.sacredgraffiti</packageId>
+  <packageId>mandrake.rm.sacredgraffiti</packageId>
   <supportedVersions>
     <li>1.6</li>
   </supportedVersions>
@@ -31,7 +31,7 @@ game-ready content - but nothing yet spawns them automatically. Placement
 (a ritual outcome, a ThingSetMaker, a bridge script) is the deferred piece;
 see GRAFFITI_MOD_EXPANSION_1 for the full assessment.
 
-Shipped: RimMandrake_SacredMark_Ishko (a pair of glowing orange eyes in the
+Shipped: RM_SacredMark_Ishko (a pair of glowing orange eyes in the
 dark - Ishko the Unmaskable's canon iconography, design/Jawa/divine_satiation_engine.md
 pantheon section). Positive Beauty, unlike GraffitiMod's uniformly-ugly filth -
 devotional art, not vandalism.

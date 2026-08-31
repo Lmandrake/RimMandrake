@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!--
-  Stranded - one survivor, six to ten days, and the choice of keeping them.
+  RM_Stranded - one survivor, six to ten days, and the choice of keeping them.
 
   Written 2026-08-14 against RimWorld 1.6 with skills/rimworld-quests/SKILL.md, as
   that skill's own gate: a real quest authored end to end, deliberately NOT part of
@@ -56,7 +56,7 @@
 <Defs>
 
   <QuestScriptDef>
-    <defName>Stranded</defName>
+    <defName>RM_Stranded</defName>
 
     <!-- Route 1, the natural random pool: weight > 0 and randomlySelectable left
          at its default true. 0.6 is mid-family (shipped weights run 0.15-2.0). -->
@@ -76,7 +76,7 @@
 
     <questNameRules>
       <rulesStrings>
-        <li>questName->Stranded</li>
+        <li>questName->RM_Stranded</li>
         <li>questName->Pod down</li>
         <li>questName->The survivor</li>
       </rulesStrings>
@@ -188,7 +188,7 @@
                 <outcome>Fail</outcome>
                 <goodwillChangeAmount>-12</goodwillChangeAmount>
                 <goodwillChangeFactionOf>$asker</goodwillChangeFactionOf>
-                <goodwillChangeReason>StrandedTravellerTaken</goodwillChangeReason>
+                <goodwillChangeReason>RM_StrandedTravellerTaken</goodwillChangeReason>
               </li>
             </nodes>
           </node>
@@ -207,7 +207,7 @@
                 <outcome>Fail</outcome>
                 <goodwillChangeAmount>-20</goodwillChangeAmount>
                 <goodwillChangeFactionOf>$asker</goodwillChangeFactionOf>
-                <goodwillChangeReason>StrandedTravellerTaken</goodwillChangeReason>
+                <goodwillChangeReason>RM_StrandedTravellerTaken</goodwillChangeReason>
               </li>
             </nodes>
           </node>
@@ -226,7 +226,7 @@
                 <outcome>Fail</outcome>
                 <goodwillChangeAmount>-12</goodwillChangeAmount>
                 <goodwillChangeFactionOf>$asker</goodwillChangeFactionOf>
-                <goodwillChangeReason>StrandedTravellerTaken</goodwillChangeReason>
+                <goodwillChangeReason>RM_StrandedTravellerTaken</goodwillChangeReason>
               </li>
             </nodes>
           </node>

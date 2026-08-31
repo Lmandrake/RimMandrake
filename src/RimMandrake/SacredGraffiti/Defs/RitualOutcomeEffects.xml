@@ -26,11 +26,11 @@
        ============================================================ -->
 
   <RitualOutcomeEffectDef>
-    <defName>RimMandrake_Ishko_RitualOutcome_PlaceSacredMark</defName>
+    <defName>RM_Ishko_RitualOutcome_PlaceSacredMark</defName>
     <description>Depending on ritual quality, a favorable outcome may leave Ishko's sacred mark at the ritual site.</description>
-    <workerClass>RimMandrake.SacredGraffiti.RitualOutcomeEffectWorker_PlaceSacredMark</workerClass>
+    <workerClass>Rimmandrake.rm.sacredgraffiti.RitualOutcomeEffectWorker_PlaceSacredMark</workerClass>
     <startingQuality>0.5</startingQuality>
-    <filthDefToSpawn>RimMandrake_SacredMark_Ishko</filthDefToSpawn>
+    <filthDefToSpawn>RM_SacredMark_Ishko</filthDefToSpawn>
     <filthCountToSpawn>1~1</filthCountToSpawn>
     <outcomeChances>
       <li>

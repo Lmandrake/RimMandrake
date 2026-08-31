@@ -44,7 +44,7 @@
     <mods><li>Dedicated Turrets</li></mods>
     <match Class="PatchOperationSequence">
       <operations>
-        <!-- "zapper" implied electricity; it deals Burn (beam) -->
+        <!-- "zapper" implied electricity; it deals RSW_Burn (beam) -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="Turret_Zapper"]/label</xpath>
           <value><label>scrap beam zapper</label></value>

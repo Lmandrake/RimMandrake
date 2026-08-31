@@ -9,7 +9,7 @@
   Observed in game 2026-08-11 at full stack: Hutts have "little black eyelashed
   eyes" instead of the vertical slit pupils HuttEyes_Slitted.xml was supposed to
   give them. Verified from the live def dump: all six feline genes we assign have
-  renderNodeProperties = NONE, while our own RimMandrake_Jawa_Eyes_HugeOrange still has 2.
+  renderNodeProperties = NONE, while our own RSW_Jawa_Eyes_HugeOrange still has 2.
 
   THE CAUSE  [the interesting part]
   =================================

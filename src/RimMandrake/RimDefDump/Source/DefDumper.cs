@@ -8,7 +8,7 @@ using System.Text;
 using RimWorld;
 using Verse;
 
-namespace RimDefDump
+namespace RimMandrake.RimDefDump
 {
     /// <summary>
     /// Entry point. [StaticConstructorOnStartup] runs after every mod has
@@ -34,7 +34,7 @@ namespace RimDefDump
             {
                 // A research tool must never be the reason a 23-minute load
                 // fails. Swallow everything, loudly.
-                Log.Error("[RimDefDump] dump failed (game unaffected): " + ex);
+                Log.Error("[RimMandrake.RimDefDump] dump failed (game unaffected): " + ex);
             }
         }
     }
@@ -108,7 +108,7 @@ namespace RimDefDump
 
             if (!File.Exists(marker))
             {
-                Log.Message("[RimDefDump] inert (no " + MarkerName + "). To enable, create: " + marker);
+                Log.Message("[RimMandrake.RimDefDump] inert (no " + MarkerName + "). To enable, create: " + marker);
                 return;
             }
 
@@ -120,7 +120,7 @@ namespace RimDefDump
             }
             catch (Exception ex)
             {
-                Log.Warning("[RimDefDump] could not read marker, defaulting to 'animals': " + ex.Message);
+                Log.Warning("[RimMandrake.RimDefDump] could not read marker, defaulting to 'animals': " + ex.Message);
             }
 
             bool dumpAll = mode == "all";
@@ -133,7 +133,7 @@ namespace RimDefDump
             string writing = Path.Combine(capturesRoot, WritingDir);
             string final = Path.Combine(capturesRoot, captureId);
 
-            Log.Message("[RimDefDump] starting, mode=" + mode + ", capture=" + captureId
+            Log.Message("[RimMandrake.RimDefDump] starting, mode=" + mode + ", capture=" + captureId
                         + ", out=" + capturesRoot);
 
             var total = Stopwatch.StartNew();
@@ -144,12 +144,12 @@ namespace RimDefDump
             // safe and is the only way a second attempt can proceed.
             if (Directory.Exists(writing))
             {
-                Log.Warning("[RimDefDump] removing a leftover " + WritingDir
+                Log.Warning("[RimMandrake.RimDefDump] removing a leftover " + WritingDir
                             + " from an earlier run that did not finish");
                 try { Directory.Delete(writing, true); }
                 catch (Exception ex)
                 {
-                    Log.Error("[RimDefDump] cannot clear " + writing + ": " + ex.Message);
+                    Log.Error("[RimMandrake.RimDefDump] cannot clear " + writing + ": " + ex.Message);
                     return;
                 }
             }
@@ -173,7 +173,7 @@ namespace RimDefDump
             Prune(capturesRoot);
 
             total.Stop();
-            Log.Message("[RimDefDump] done in " + total.ElapsedMilliseconds + " ms"
+            Log.Message("[RimMandrake.RimDefDump] done in " + total.ElapsedMilliseconds + " ms"
                         + " (animals " + animalMs + " ms, all-defs " + allMs + " ms)");
         }
 
@@ -190,18 +190,18 @@ namespace RimDefDump
                 // Clearing it would destroy a capture written seconds ago, so refuse instead.
                 if (Directory.Exists(final))
                 {
-                    Log.Error("[RimDefDump] capture " + captureId + " already exists; "
+                    Log.Error("[RimMandrake.RimDefDump] capture " + captureId + " already exists; "
                               + "leaving the new one under " + WritingDir + " rather than "
                               + "overwriting a capture that is already on disk");
                     return false;
                 }
                 Directory.Move(writing, final);
-                Log.Message("[RimDefDump] capture published: " + final);
+                Log.Message("[RimMandrake.RimDefDump] capture published: " + final);
                 return true;
             }
             catch (Exception ex)
             {
-                Log.Error("[RimDefDump] could not publish the capture (nothing was lost, "
+                Log.Error("[RimMandrake.RimDefDump] could not publish the capture (nothing was lost, "
                           + "the previous captures are intact): " + ex);
                 return false;
             }
@@ -240,18 +240,18 @@ namespace RimDefDump
                     try
                     {
                         Directory.Delete(victim, true);
-                        Log.Message("[RimDefDump] pruned old capture " + ids[i]);
+                        Log.Message("[RimMandrake.RimDefDump] pruned old capture " + ids[i]);
                     }
                     catch (Exception ex)
                     {
-                        Log.Warning("[RimDefDump] could not prune " + ids[i] + ": " + ex.Message);
+                        Log.Warning("[RimMandrake.RimDefDump] could not prune " + ids[i] + ": " + ex.Message);
                     }
                 }
             }
             catch (Exception ex)
             {
                 // Retention failing is untidy; it is not a reason to fail the dump.
-                Log.Warning("[RimDefDump] retention pass failed: " + ex.Message);
+                Log.Warning("[RimMandrake.RimDefDump] retention pass failed: " + ex.Message);
             }
         }
 
@@ -315,7 +315,7 @@ namespace RimDefDump
             {
                 var w = new JsonWriter(sw);
                 w.StartObject();
-                w.Prop("tool", "RimDefDump");
+                w.Prop("tool", "RimMandrake.RimDefDump");
                 w.Prop("toolVersion", "1.0");
                 w.Prop("mode", mode);
                 w.Prop("capturedUtc", CapturedUtc);
@@ -523,7 +523,7 @@ namespace RimDefDump
                     try { kinds = b.AllWildAnimals; }
                     catch (Exception ex)
                     {
-                        Log.Warning("[RimDefDump] biome " + b.defName + " AllWildAnimals threw: " + ex.Message);
+                        Log.Warning("[RimMandrake.RimDefDump] biome " + b.defName + " AllWildAnimals threw: " + ex.Message);
                         continue;
                     }
                     // The record's own field, so a reader can tell what the DEF SAYS from
@@ -584,7 +584,7 @@ namespace RimDefDump
                 // Report the skip rather than letting it be a silent filter —
                 // a reader comparing this count against the offline tool needs
                 // to know what was excluded and why.
-                Log.Message("[RimDefDump] animals=" + nAnimals
+                Log.Message("[RimMandrake.RimDefDump] animals=" + nAnimals
                             + " (skipped " + nCorpsesSkipped + " generated corpse defs)"
                             + " biomes=" + biomes.Count
                             + " biomeAnimalPairs=" + nPairs);
@@ -637,7 +637,7 @@ namespace RimDefDump
                 wildAnimalsField = typeof(BiomeDef).GetField(
                     "wildAnimals", BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public);
                 if (wildAnimalsField == null)
-                    Log.Warning("[RimDefDump] BiomeDef.wildAnimals not found by reflection - "
+                    Log.Warning("[RimMandrake.RimDefDump] BiomeDef.wildAnimals not found by reflection - "
                                 + "commonalityDeclared will be null for every row. The field was "
                                 + "renamed or made public; fix DeclaredWildAnimals().");
             }
@@ -714,7 +714,7 @@ namespace RimDefDump
                 try { n = CountDefsOf(defType); }
                 catch (Exception ex)
                 {
-                    Log.Warning("[RimDefDump] cannot enumerate " + defType.FullName + ": " + ex.Message);
+                    Log.Warning("[RimMandrake.RimDefDump] cannot enumerate " + defType.FullName + ": " + ex.Message);
                     continue;
                 }
                 if (n < 0) continue;
@@ -762,7 +762,7 @@ namespace RimDefDump
                     names.Add(group[i].type.FullName + "=" + group[i].count + "->" + group[i].file);
                 }
                 collisions.Add(kv.Key + ": " + string.Join(", ", names.ToArray()));
-                Log.Warning("[RimDefDump] def type name collision — " + kv.Key + ": "
+                Log.Warning("[RimMandrake.RimDefDump] def type name collision — " + kv.Key + ": "
                             + string.Join(", ", names.ToArray()));
             }
 
@@ -776,7 +776,7 @@ namespace RimDefDump
                 try { defs = AllDefsOf(defType); }
                 catch (Exception ex)
                 {
-                    Log.Warning("[RimDefDump] cannot enumerate " + defType.FullName + ": " + ex.Message);
+                    Log.Warning("[RimMandrake.RimDefDump] cannot enumerate " + defType.FullName + ": " + ex.Message);
                     continue;
                 }
                 if (defs == null) continue;
@@ -808,7 +808,7 @@ namespace RimDefDump
                 }
                 catch (Exception ex)
                 {
-                    Log.Warning("[RimDefDump] failed writing " + defType.FullName + ": " + ex.Message);
+                    Log.Warning("[RimMandrake.RimDefDump] failed writing " + defType.FullName + ": " + ex.Message);
                     continue;
                 }
                 entry.count = n;
@@ -819,7 +819,7 @@ namespace RimDefDump
                     entry.file.EndsWith(".json") ? entry.file.Substring(0, entry.file.Length - 5) : entry.file, n));
             }
 
-            Log.Message("[RimDefDump] wrote " + counts.Count + " def-type files to " + dir
+            Log.Message("[RimMandrake.RimDefDump] wrote " + counts.Count + " def-type files to " + dir
                         + " (" + collisions.Count + " simple-name collisions disambiguated)");
         }
 

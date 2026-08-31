@@ -12,7 +12,7 @@
   RabbitFrame sounds great for Yoda, for example."
 
   🔴 EVERY SIZE GENE THE STAR WARS PACK SHIPS IS COSMETIC. Verified in our own
-  source: `RimMandrake_BodySizeGene_big/bigger/biggest/small/smaller` all write
+  source: `RSW_BodySizeGene_big/bigger/biggest/small/smaller` all write
   `SM_Cosmetic_BodySizeOffset`, and a repo-wide grep finds 10 uses of that stat and
   ZERO of `SM_BodySizeOffset`. ⇒ a Wookiee and a Jawa had IDENTICAL mechanical body
   size: same health scale, same melee damage, same carry capacity, same food. The
@@ -70,9 +70,9 @@
   large. Their frailty is still carried by their own genes.
 
   🔴 SUPERSEDED IN PART, 2026-08-22 — OUR OWN FIVE GENES ARE NOW MECHANICAL TOO.
-  `RimMandrake_BodySizeGene_big/bigger/biggest/small/smaller` were rewritten from
+  `RSW_BodySizeGene_big/bigger/biggest/small/smaller` were rewritten from
   `SM_Cosmetic_BodySizeOffset` to `SM_BodySizeOffset` in
-  `src/Jawa/RimMandrake_StarWarsRaces/Defs/GeneDefs/SW_Genes.xml`, on the owner's
+  `src/RimStarWars/StarWarsRaces/Defs/GeneDefs/SW_Genes.xml`, on the owner's
   instruction: *"I'd like it to affect carrying capacity, food, melee, etc. just as
   you say. Let's use this stuff right."* They now read
 
@@ -96,10 +96,10 @@
   species whose males are 2.0 m and females 1.5 m, where 1.75 would not have been.
 
   ⚠️ STILL DELIBERATELY ABSENT, and each for a reason that survives the new steer:
-    * `RimMandrakeNelvaanian` - males 2.0 m / 130 kg, females 1.5 m / 50 kg. A gene
+    * `RSW_RimMandrakeNelvaanian` - males 2.0 m / 130 kg, females 1.5 m / 50 kg. A gene
       applies to the whole xenotype, so a size gene would make the females giants
       too. This one needs a different tool, not a bigger number.
-    * `RimMandrakeChagrian` - 2.0 m and slender; it sits in the -0.20 cosmetic band
+    * `RSW_RimMandrakeChagrian` - 2.0 m and slender; it sits in the -0.20 cosmetic band
       with Bothan, Defel, Gand, Geonosian, Selkath, Snivvian and Sullustan, and
       THERE IS NO RUNG between -0.35 and 0. Putting that band on `BS_SmallFrame`
       would make a Bothan exactly as small as a Jawa, which is a bigger error than
@@ -123,9 +123,9 @@
   <!-- ═══ 1.75 · HalfJotunFrame — tall AND massive ═══════════════════════ -->
 
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/XenotypeDef[defName="RimMandrakeWookiee"]/genes/li[text()="RimMandrake_BodySizeGene_big"]</xpath>
+    <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeWookiee"]/genes/li[text()="RSW_BodySizeGene_big"]</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>Defs/XenotypeDef[defName="RimMandrakeWookiee"]/genes/li[text()="RimMandrake_BodySizeGene_big"]</xpath>
+      <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeWookiee"]/genes/li[text()="RSW_BodySizeGene_big"]</xpath>
       <value><li MayRequire="redmattis.bigsmall.core">HalfJotunFrame</li></value>
     </match>
   </Operation>
@@ -137,53 +137,53 @@
        Pawn_GeneTracker.CheckForOverrides, one would silently win, and which one is
        not worth relying on. Corrected 2026-08-22; the Add was the original. -->
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/XenotypeDef[defName="RimMandrakeHerglic"]/genes/li[text()="Outland_BodyScale_Large"]</xpath>
+    <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeHerglic"]/genes/li[text()="Outland_BodyScale_Large"]</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>Defs/XenotypeDef[defName="RimMandrakeHerglic"]/genes/li[text()="Outland_BodyScale_Large"]</xpath>
+      <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeHerglic"]/genes/li[text()="Outland_BodyScale_Large"]</xpath>
       <value><li MayRequire="redmattis.bigsmall.core">HalfJotunFrame</li></value>
     </match>
     <nomatch Class="PatchOperationAdd">
-      <xpath>Defs/XenotypeDef[defName="RimMandrakeHerglic"]/genes</xpath>
+      <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeHerglic"]/genes</xpath>
       <value><li MayRequire="redmattis.bigsmall.core">HalfJotunFrame</li></value>
     </nomatch>
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/XenotypeDef[defName="RimMandrakeFeeorin"]/genes/li[text()="RimMandrake_BodySizeGene_bigger"]</xpath>
+    <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeFeeorin"]/genes/li[text()="RSW_BodySizeGene_bigger"]</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>Defs/XenotypeDef[defName="RimMandrakeFeeorin"]/genes/li[text()="RimMandrake_BodySizeGene_bigger"]</xpath>
+      <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeFeeorin"]/genes/li[text()="RSW_BodySizeGene_bigger"]</xpath>
       <value><li MayRequire="redmattis.bigsmall.core">HalfJotunFrame</li></value>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/XenotypeDef[defName="RimMandrakeLasat"]/genes/li[text()="RimMandrake_BodySizeGene_bigger"]</xpath>
+    <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeLasat"]/genes/li[text()="RSW_BodySizeGene_bigger"]</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>Defs/XenotypeDef[defName="RimMandrakeLasat"]/genes/li[text()="RimMandrake_BodySizeGene_bigger"]</xpath>
+      <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeLasat"]/genes/li[text()="RSW_BodySizeGene_bigger"]</xpath>
       <value><li MayRequire="redmattis.bigsmall.core">HalfJotunFrame</li></value>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/XenotypeDef[defName="RimMandrakeSithMassassi"]/genes/li[text()="RimMandrake_BodySizeGene_big"]</xpath>
+    <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeSithMassassi"]/genes/li[text()="RSW_BodySizeGene_big"]</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>Defs/XenotypeDef[defName="RimMandrakeSithMassassi"]/genes/li[text()="RimMandrake_BodySizeGene_big"]</xpath>
+      <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeSithMassassi"]/genes/li[text()="RSW_BodySizeGene_big"]</xpath>
       <value><li MayRequire="redmattis.bigsmall.core">HalfJotunFrame</li></value>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/XenotypeDef[defName="RimMandrakeKaminoan"]/genes/li[text()="RimMandrake_BodySizeGene_bigger"]</xpath>
+    <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeKaminoan"]/genes/li[text()="RSW_BodySizeGene_bigger"]</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>Defs/XenotypeDef[defName="RimMandrakeKaminoan"]/genes/li[text()="RimMandrake_BodySizeGene_bigger"]</xpath>
+      <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeKaminoan"]/genes/li[text()="RSW_BodySizeGene_bigger"]</xpath>
       <value><li MayRequire="redmattis.bigsmall.core">HalfJotunFrame</li></value>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/XenotypeDef[defName="RimMandrakeHutt"]/genes/li[text()="RimMandrake_BodySizeGene_biggest"]</xpath>
+    <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeHutt"]/genes/li[text()="RSW_BodySizeGene_biggest"]</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>Defs/XenotypeDef[defName="RimMandrakeHutt"]/genes/li[text()="RimMandrake_BodySizeGene_biggest"]</xpath>
+      <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeHutt"]/genes/li[text()="RSW_BodySizeGene_biggest"]</xpath>
       <value><li MayRequire="redmattis.bigsmall.core">HalfJotunFrame</li></value>
     </match>
   </Operation>
@@ -192,121 +192,121 @@
   <!-- ═══ 1.40 · BS_LargeFrame — tall, or heavy without the height ═══════ -->
 
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/XenotypeDef[defName="RimMandrakeGamorrean"]/genes/li[text()="RimMandrake_BodySizeGene_big"]</xpath>
+    <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeGamorrean"]/genes/li[text()="RSW_BodySizeGene_big"]</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>Defs/XenotypeDef[defName="RimMandrakeGamorrean"]/genes/li[text()="RimMandrake_BodySizeGene_big"]</xpath>
+      <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeGamorrean"]/genes/li[text()="RSW_BodySizeGene_big"]</xpath>
       <value><li MayRequire="redmattis.bigsmall.core">BS_LargeFrame</li></value>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/XenotypeDef[defName="Jawa_Xeno_Gamorrean"]/genes/li[text()="RimMandrake_BodySizeGene_big"]</xpath>
+    <xpath>Defs/XenotypeDef[defName="Jawa_Xeno_Gamorrean"]/genes/li[text()="RSW_BodySizeGene_big"]</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>Defs/XenotypeDef[defName="Jawa_Xeno_Gamorrean"]/genes/li[text()="RimMandrake_BodySizeGene_big"]</xpath>
+      <xpath>Defs/XenotypeDef[defName="Jawa_Xeno_Gamorrean"]/genes/li[text()="RSW_BodySizeGene_big"]</xpath>
       <value><li MayRequire="redmattis.bigsmall.core">BS_LargeFrame</li></value>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/XenotypeDef[defName="RimMandrakeTaung"]/genes/li[text()="RimMandrake_BodySizeGene_big"]</xpath>
+    <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeTaung"]/genes/li[text()="RSW_BodySizeGene_big"]</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>Defs/XenotypeDef[defName="RimMandrakeTaung"]/genes/li[text()="RimMandrake_BodySizeGene_big"]</xpath>
+      <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeTaung"]/genes/li[text()="RSW_BodySizeGene_big"]</xpath>
       <value><li MayRequire="redmattis.bigsmall.core">BS_LargeFrame</li></value>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/XenotypeDef[defName="RimMandrakeTrandoshan"]/genes/li[text()="RimMandrake_BodySizeGene_big"]</xpath>
+    <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeTrandoshan"]/genes/li[text()="RSW_BodySizeGene_big"]</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>Defs/XenotypeDef[defName="RimMandrakeTrandoshan"]/genes/li[text()="RimMandrake_BodySizeGene_big"]</xpath>
+      <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeTrandoshan"]/genes/li[text()="RSW_BodySizeGene_big"]</xpath>
       <value><li MayRequire="redmattis.bigsmall.core">BS_LargeFrame</li></value>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/XenotypeDef[defName="RimMandrakeTogorian"]/genes/li[text()="RimMandrake_BodySizeGene_big"]</xpath>
+    <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeTogorian"]/genes/li[text()="RSW_BodySizeGene_big"]</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>Defs/XenotypeDef[defName="RimMandrakeTogorian"]/genes/li[text()="RimMandrake_BodySizeGene_big"]</xpath>
+      <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeTogorian"]/genes/li[text()="RSW_BodySizeGene_big"]</xpath>
       <value><li MayRequire="redmattis.bigsmall.core">BS_LargeFrame</li></value>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/XenotypeDef[defName="RimMandrakeKlatoonian"]/genes</xpath>
+    <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeKlatoonian"]/genes</xpath>
     <match Class="PatchOperationAdd">
-      <xpath>Defs/XenotypeDef[defName="RimMandrakeKlatoonian"]/genes</xpath>
+      <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeKlatoonian"]/genes</xpath>
       <value><li MayRequire="redmattis.bigsmall.core">BS_LargeFrame</li></value>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/XenotypeDef[defName="RimMandrakeRakata"]/genes</xpath>
+    <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeRakata"]/genes</xpath>
     <match Class="PatchOperationAdd">
-      <xpath>Defs/XenotypeDef[defName="RimMandrakeRakata"]/genes</xpath>
+      <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeRakata"]/genes</xpath>
       <value><li MayRequire="redmattis.bigsmall.core">BS_LargeFrame</li></value>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/XenotypeDef[defName="RimMandrakeCerean"]/genes/li[text()="RimMandrake_BodySizeGene_big"]</xpath>
+    <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeCerean"]/genes/li[text()="RSW_BodySizeGene_big"]</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>Defs/XenotypeDef[defName="RimMandrakeCerean"]/genes/li[text()="RimMandrake_BodySizeGene_big"]</xpath>
+      <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeCerean"]/genes/li[text()="RSW_BodySizeGene_big"]</xpath>
       <value><li MayRequire="redmattis.bigsmall.core">BS_LargeFrame</li></value>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/XenotypeDef[defName="RimMandrakeGungan"]/genes/li[text()="RimMandrake_BodySizeGene_big"]</xpath>
+    <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeGungan"]/genes/li[text()="RSW_BodySizeGene_big"]</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>Defs/XenotypeDef[defName="RimMandrakeGungan"]/genes/li[text()="RimMandrake_BodySizeGene_big"]</xpath>
+      <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeGungan"]/genes/li[text()="RSW_BodySizeGene_big"]</xpath>
       <value><li MayRequire="redmattis.bigsmall.core">BS_LargeFrame</li></value>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/XenotypeDef[defName="RimMandrakeIthorian"]/genes/li[text()="RimMandrake_BodySizeGene_big"]</xpath>
+    <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeIthorian"]/genes/li[text()="RSW_BodySizeGene_big"]</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>Defs/XenotypeDef[defName="RimMandrakeIthorian"]/genes/li[text()="RimMandrake_BodySizeGene_big"]</xpath>
+      <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeIthorian"]/genes/li[text()="RSW_BodySizeGene_big"]</xpath>
       <value><li MayRequire="redmattis.bigsmall.core">BS_LargeFrame</li></value>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/XenotypeDef[defName="RimMandrakeKaleesh"]/genes/li[text()="RimMandrake_BodySizeGene_big"]</xpath>
+    <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeKaleesh"]/genes/li[text()="RSW_BodySizeGene_big"]</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>Defs/XenotypeDef[defName="RimMandrakeKaleesh"]/genes/li[text()="RimMandrake_BodySizeGene_big"]</xpath>
+      <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeKaleesh"]/genes/li[text()="RSW_BodySizeGene_big"]</xpath>
       <value><li MayRequire="redmattis.bigsmall.core">BS_LargeFrame</li></value>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/XenotypeDef[defName="RimMandrakeKelDor"]/genes/li[text()="RimMandrake_BodySizeGene_big"]</xpath>
+    <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeKelDor"]/genes/li[text()="RSW_BodySizeGene_big"]</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>Defs/XenotypeDef[defName="RimMandrakeKelDor"]/genes/li[text()="RimMandrake_BodySizeGene_big"]</xpath>
+      <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeKelDor"]/genes/li[text()="RSW_BodySizeGene_big"]</xpath>
       <value><li MayRequire="redmattis.bigsmall.core">BS_LargeFrame</li></value>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/XenotypeDef[defName="RimMandrakeNagai"]/genes/li[text()="RimMandrake_BodySizeGene_big"]</xpath>
+    <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeNagai"]/genes/li[text()="RSW_BodySizeGene_big"]</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>Defs/XenotypeDef[defName="RimMandrakeNagai"]/genes/li[text()="RimMandrake_BodySizeGene_big"]</xpath>
+      <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeNagai"]/genes/li[text()="RSW_BodySizeGene_big"]</xpath>
       <value><li MayRequire="redmattis.bigsmall.core">BS_LargeFrame</li></value>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/XenotypeDef[defName="RimMandrakePyke"]/genes/li[text()="RimMandrake_BodySizeGene_big"]</xpath>
+    <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakePyke"]/genes/li[text()="RSW_BodySizeGene_big"]</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>Defs/XenotypeDef[defName="RimMandrakePyke"]/genes/li[text()="RimMandrake_BodySizeGene_big"]</xpath>
+      <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakePyke"]/genes/li[text()="RSW_BodySizeGene_big"]</xpath>
       <value><li MayRequire="redmattis.bigsmall.core">BS_LargeFrame</li></value>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/XenotypeDef[defName="RimMandrakeMuun"]/genes/li[text()="RimMandrake_BodySizeGene_bigger"]</xpath>
+    <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeMuun"]/genes/li[text()="RSW_BodySizeGene_bigger"]</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>Defs/XenotypeDef[defName="RimMandrakeMuun"]/genes/li[text()="RimMandrake_BodySizeGene_bigger"]</xpath>
+      <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeMuun"]/genes/li[text()="RSW_BodySizeGene_bigger"]</xpath>
       <value><li MayRequire="redmattis.bigsmall.core">BS_LargeFrame</li></value>
     </match>
   </Operation>
@@ -315,43 +315,43 @@
   <!-- ═══ 0.65 · BS_SmallFrame ══════════════════════════════════════════ -->
 
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/XenotypeDef[defName="MandrakeJawa"]/genes/li[text()="RimMandrake_BodySizeGene_smaller"]</xpath>
+    <xpath>Defs/XenotypeDef[defName="RSW_MandrakeJawa"]/genes/li[text()="RSW_BodySizeGene_smaller"]</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>Defs/XenotypeDef[defName="MandrakeJawa"]/genes/li[text()="RimMandrake_BodySizeGene_smaller"]</xpath>
+      <xpath>Defs/XenotypeDef[defName="RSW_MandrakeJawa"]/genes/li[text()="RSW_BodySizeGene_smaller"]</xpath>
       <value><li MayRequire="redmattis.bigsmall.core">BS_SmallFrame</li></value>
     </match>
   </Operation>
 
-  <!-- The Star Wars pack ships its OWN Jawa xenotype alongside our MandrakeJawa.
+  <!-- The Star Wars pack ships its OWN Jawa xenotype alongside our RSW_MandrakeJawa.
        Both must be the same size or two Jawa stand side by side at 0.65 and 0.50. -->
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/XenotypeDef[defName="RimMandrakeJawa"]/genes/li[text()="RimMandrake_BodySizeGene_smaller"]</xpath>
+    <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeJawa"]/genes/li[text()="RSW_BodySizeGene_smaller"]</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>Defs/XenotypeDef[defName="RimMandrakeJawa"]/genes/li[text()="RimMandrake_BodySizeGene_smaller"]</xpath>
+      <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeJawa"]/genes/li[text()="RSW_BodySizeGene_smaller"]</xpath>
       <value><li MayRequire="redmattis.bigsmall.core">BS_SmallFrame</li></value>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/XenotypeDef[defName="RimMandrakeEwok"]/genes/li[text()="RimMandrake_BodySizeGene_smaller"]</xpath>
+    <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeEwok"]/genes/li[text()="RSW_BodySizeGene_smaller"]</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>Defs/XenotypeDef[defName="RimMandrakeEwok"]/genes/li[text()="RimMandrake_BodySizeGene_smaller"]</xpath>
+      <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeEwok"]/genes/li[text()="RSW_BodySizeGene_smaller"]</xpath>
       <value><li MayRequire="redmattis.bigsmall.core">BS_SmallFrame</li></value>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/XenotypeDef[defName="RimMandrakeChadraFan"]/genes/li[text()="RimMandrake_BodySizeGene_smaller"]</xpath>
+    <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeChadraFan"]/genes/li[text()="RSW_BodySizeGene_smaller"]</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>Defs/XenotypeDef[defName="RimMandrakeChadraFan"]/genes/li[text()="RimMandrake_BodySizeGene_smaller"]</xpath>
+      <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeChadraFan"]/genes/li[text()="RSW_BodySizeGene_smaller"]</xpath>
       <value><li MayRequire="redmattis.bigsmall.core">BS_SmallFrame</li></value>
     </match>
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/XenotypeDef[defName="RimMandrakeUgnaught"]/genes/li[text()="RimMandrake_BodySizeGene_smaller"]</xpath>
+    <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeUgnaught"]/genes/li[text()="RSW_BodySizeGene_smaller"]</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>Defs/XenotypeDef[defName="RimMandrakeUgnaught"]/genes/li[text()="RimMandrake_BodySizeGene_smaller"]</xpath>
+      <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeUgnaught"]/genes/li[text()="RSW_BodySizeGene_smaller"]</xpath>
       <value><li MayRequire="redmattis.bigsmall.core">BS_SmallFrame</li></value>
     </match>
   </Operation>
@@ -360,9 +360,9 @@
   <!-- ═══ 0.40 · BS_RabbitFrame — the owner named this rung himself ═════ -->
 
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/XenotypeDef[defName="RimMandrakeYoderForceGremlin"]/genes/li[text()="RimMandrake_BodySizeGene_smaller"]</xpath>
+    <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeYoderForceGremlin"]/genes/li[text()="RSW_BodySizeGene_smaller"]</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>Defs/XenotypeDef[defName="RimMandrakeYoderForceGremlin"]/genes/li[text()="RimMandrake_BodySizeGene_smaller"]</xpath>
+      <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeYoderForceGremlin"]/genes/li[text()="RSW_BodySizeGene_smaller"]</xpath>
       <value><li MayRequire="redmattis.bigsmall.core">BS_RabbitFrame</li></value>
     </match>
   </Operation>

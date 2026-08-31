@@ -1,6 +1,6 @@
 using Verse;
 
-namespace Droidworks
+namespace RimMandrake.StarWars.Droidworks
 {
     public class HediffCompProperties_PoweredDown : HediffCompProperties
     {

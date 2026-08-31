@@ -85,12 +85,12 @@
     <inheritable>true</inheritable>
     <iconPath>UI/Icons/Xenotypes/Pigskin</iconPath>
     <combatPowerFactor>1.7</combatPowerFactor>
-    <nameMaker>RimMandrake_KoTOR_NamerGamorrean</nameMaker>
+    <nameMaker>RSW_KoTOR_NamerGamorrean</nameMaker>
     <chanceToUseNameMaker>1</chanceToUseNameMaker>
     <genes>
       <!-- appearance -->
-      <li>RimMandrake_Face_jowls</li>
-      <li>RimMandrake_Face_tusks</li>
+      <li>RSW_Face_jowls</li>
+      <li>RSW_Face_tusks</li>
       <li>Ears_Pig</li>                          <!-- ADDED: see header -->
       <li>Nose_Pig</li>
       <li>Jaw_Heavy</li>                         <!-- forces the vanilla heavy-jaw head; replace when our head gene exists -->
@@ -99,9 +99,9 @@
       <li>Beard_NoBeardOnly</li>
       <li>Beauty_VeryUgly</li>
       <li>Skin_Green</li>
-      <li>RimMandrake_Skin_DarkGreen</li>
+      <li>RSW_Skin_DarkGreen</li>
       <li>Body_Fat</li>
-      <li>RimMandrake_BodySizeGene_big</li>
+      <li>RSW_BodySizeGene_big</li>
       <li>VoicePig</li>
       <!-- <li>Headbone_MiniHorns</li> -->       <!-- REMOVED: see header; uncomment to restore upstream -->
 
@@ -109,7 +109,7 @@
       <li>Aggression_HyperAggressive</li>
       <li MayRequire="Ludeon.RimWorld.Ideology">Turn_Gene_HerdMentality</li>
       <li>Turn_Gene_VerySlowNeuralHeat</li>
-      <li>RimMandrake_GS_Primitive</li>
+      <li>RSW_GS_Primitive</li>
       <li>AptitudeTerrible_Intellectual</li>
 
       <!-- constitution -->

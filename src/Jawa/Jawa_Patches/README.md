@@ -54,9 +54,9 @@ independently uploadable mod per donor:
 
 | the file | now shipped by | donor |
 |---|---|---|
-| `Textures/Things/Pawns/Mechanoid/Astronaut/MechAncient_Astronaut_north.png` | `mandrake.gravshipastronautfix` | Vanilla Gravship Expanded – Ch.1 |
+| `Textures/Things/Pawns/Mechanoid/Astronaut/MechAncient_Astronaut_north.png` | `mandrake.rm.gravshipastronautfix` | Vanilla Gravship Expanded – Ch.1 |
 | `Textures/Things/Pawns/Mechanoid/Astronaut/Allegiance_Mech_Astronaut_north.png` | same | same |
-| `Textures/Pawn/CenterFrill/CenterFrill8_north.png` | `mandrake.sauridfrillfix` | Vanilla Races Expanded – Saurid |
+| `Textures/Pawn/CenterFrill/CenterFrill8_north.png` | `mandrake.rm.sauridfrillfix` | Vanilla Races Expanded – Saurid |
 
 🔴 **Do not re-add them.** Both mods were enabled in `ModsConfig.xml` while this
 mod still carried its own copies, and **`mandrake.jawa.patches` sits below both**

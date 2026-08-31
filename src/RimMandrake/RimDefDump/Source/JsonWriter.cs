@@ -2,7 +2,7 @@ using System;
 using System.Globalization;
 using System.IO;
 
-namespace RimDefDump
+namespace RimMandrake.RimDefDump
 {
     /// <summary>
     /// Minimal streaming JSON writer. Hand-rolled on purpose: RimWorld does not

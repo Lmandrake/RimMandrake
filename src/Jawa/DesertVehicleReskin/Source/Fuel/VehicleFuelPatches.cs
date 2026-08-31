@@ -10,7 +10,7 @@ using Vehicles.World;
 using Verse;
 using Verse.AI;
 
-namespace DesertVehicleReskin
+namespace RimMandrake.DesertVehicleReskin
 {
     /// <summary>
     /// Harmony bootstrap. Deliberately mentions no Vehicles type: if Vehicle
@@ -28,18 +28,18 @@ namespace DesertVehicleReskin
                 .Any(assembly => assembly.GetName().Name == "Vehicles");
             if (!vehiclesLoaded)
             {
-                Log.Warning("[DesertVehicleReskin] Vehicles (Vehicle Framework) is not loaded; "
+                Log.Warning("[RimMandrake.DesertVehicleReskin] Vehicles (Vehicle Framework) is not loaded; "
                     + "fuel widening skipped. Textures are unaffected.");
                 return;
             }
 
             try
             {
-                VehicleFuelPatches.Apply(new Harmony("mandrake.desertvehiclereskin"));
+                VehicleFuelPatches.Apply(new Harmony("mandrake.rm.desertvehiclereskin"));
             }
             catch (Exception ex)
             {
-                Log.Error("[DesertVehicleReskin] Failed to widen vehicle fuel types: " + ex);
+                Log.Error("[RimMandrake.DesertVehicleReskin] Failed to widen vehicle fuel types: " + ex);
             }
         }
     }
@@ -74,7 +74,7 @@ namespace DesertVehicleReskin
 
             if (closestFuel == null || inventoryFuel == null)
             {
-                Log.Error("[DesertVehicleReskin] Vehicle Framework's fuel API has moved: "
+                Log.Error("[RimMandrake.DesertVehicleReskin] Vehicle Framework's fuel API has moved: "
                     + "ClosestFuelAvailable=" + (closestFuel != null)
                     + " AllFuelFromInventory=" + (inventoryFuel != null)
                     + ". Fuel widening not applied.");

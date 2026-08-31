@@ -16,7 +16,7 @@
        InteractionCell in JobDriver_DWRecharge, CompPowerTrader for the power
        draw.
 
-       Art: DW_ChargeDock reuses Droid Depot's DroidBay 4-directional set
+       Art: RSW_DW_ChargeDock reuses Droid Depot's DroidBay 4-directional set
        verbatim (Textures/OuterRim/Building/DroidBay/DroidBay_*.png) - a
        parking-bay footprint that already reads as "droid docks here". Socket
        and Nimbus reuse DroidChargePlatform.png unmodified, at different
@@ -24,9 +24,9 @@
        regenerates art later"), is a documented follow-up, not built here.
   ======================================================================== -->
 
-  <!-- DW_ChargeSocket — wall-mount, cheap, one droid at a time. -->
+  <!-- RSW_DW_ChargeSocket — wall-mount, cheap, one droid at a time. -->
   <ThingDef ParentName="BuildingBase">
-    <defName>DW_ChargeSocket</defName>
+    <defName>RSW_DW_ChargeSocket</defName>
     <label>charge socket</label>
     <description>A cheap wall-mounted charging socket. One droid can dock here at a time and slowly top off its power.</description>
     <thingClass>Building</thingClass>
@@ -71,12 +71,12 @@
     </comps>
   </ThingDef>
 
-  <!-- DW_ChargeDock — 1x2 parking bay, faster than the socket. First-come
+  <!-- RSW_DW_ChargeDock — 1x2 parking bay, faster than the socket. First-come
        (no CompAssignableToPawn): see DROIDWORKS_CHARGING_TRIO_1's closing
        note for why an assignable version was left as follow-up rather than
        built here. -->
   <ThingDef ParentName="BuildingBase">
-    <defName>DW_ChargeDock</defName>
+    <defName>RSW_DW_ChargeDock</defName>
     <label>charge dock</label>
     <description>A dedicated charging bay, big enough for a droid to park in fully. Faster than a bare socket. First-come, first-served - not assignable to a specific droid.</description>
     <thingClass>Building</thingClass>
@@ -124,11 +124,11 @@
     </comps>
   </ThingDef>
 
-  <!-- DW_ChargeNimbus — room-radius charger, high power draw, no job needed:
+  <!-- RSW_DW_ChargeNimbus — room-radius charger, high power draw, no job needed:
        every droid within radius tops off passively via CompDWCharger.CompTick
        while doing anything else in the room. -->
   <ThingDef ParentName="BuildingBase">
-    <defName>DW_ChargeNimbus</defName>
+    <defName>RSW_DW_ChargeNimbus</defName>
     <label>charge nimbus</label>
     <description>A high-draw ambient charger. Every droid within range slowly recharges just by being nearby - no need to dock.</description>
     <thingClass>Building</thingClass>

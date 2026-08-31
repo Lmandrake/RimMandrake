@@ -34,8 +34,8 @@
 
   Pawn kinds verified present in the 2026-08-14 dump (585 mods) and mapped to
   their owning mod for `MayRequire`:
-      RimMandrake_Arkanian · RimMandrake_ArkanianTribal · RimMandrake_Kaminoan
-                                                            mandrake.starwarsraces
+      RSW_Arkanian · RSW_ArkanianTribal · RSW_Kaminoan
+                                                            mandrake.rsw.starwarsraces
   ============================================================================
 -->
 <Defs>
@@ -137,21 +137,21 @@
          nothing depends on them. -->
     <xenotypeSet Inherit="False">
       <xenotypeChances>
-        <RimMandrakeArkanian MayRequire="mandrake.starwarsraces">0.248</RimMandrakeArkanian>
+        <RSW_RimMandrakeArkanian MayRequire="mandrake.rsw.starwarsraces">0.248</RSW_RimMandrakeArkanian>
         <Baseliner>0.083</Baseliner>
-        <RimMandrakeBith MayRequire="mandrake.starwarsraces">0.083</RimMandrakeBith>
-        <RimMandrakeCerean MayRequire="mandrake.starwarsraces">0.083</RimMandrakeCerean>
-        <RimMandrakeKaminoan MayRequire="mandrake.starwarsraces">0.083</RimMandrakeKaminoan>
-        <RimMandrakeMuun MayRequire="mandrake.starwarsraces">0.083</RimMandrakeMuun>
-        <RimMandrakeNeimoidian MayRequire="mandrake.starwarsraces">0.083</RimMandrakeNeimoidian>
-        <RimMandrakeUmbaran MayRequire="mandrake.starwarsraces">0.083</RimMandrakeUmbaran>
-        <RimMandrakeIktotchi MayRequire="mandrake.starwarsraces">0.025</RimMandrakeIktotchi>
-        <RimMandrakeKelDor MayRequire="mandrake.starwarsraces">0.025</RimMandrakeKelDor>
-        <RimMandrakeKubaz MayRequire="mandrake.starwarsraces">0.025</RimMandrakeKubaz>
-        <RimMandrakeRakata MayRequire="mandrake.starwarsraces">0.025</RimMandrakeRakata>
-        <RimMandrakeSithKissaiPureblood MayRequire="mandrake.starwarsraces">0.025</RimMandrakeSithKissaiPureblood>
-        <RimMandrakeSithMassassi MayRequire="mandrake.starwarsraces">0.025</RimMandrakeSithMassassi>
-        <RimMandrakeSithZ MayRequire="mandrake.starwarsraces">0.025</RimMandrakeSithZ>
+        <RSW_RimMandrakeBith MayRequire="mandrake.rsw.starwarsraces">0.083</RSW_RimMandrakeBith>
+        <RSW_RimMandrakeCerean MayRequire="mandrake.rsw.starwarsraces">0.083</RSW_RimMandrakeCerean>
+        <RSW_RimMandrakeKaminoan MayRequire="mandrake.rsw.starwarsraces">0.083</RSW_RimMandrakeKaminoan>
+        <RSW_RimMandrakeMuun MayRequire="mandrake.rsw.starwarsraces">0.083</RSW_RimMandrakeMuun>
+        <RSW_RimMandrakeNeimoidian MayRequire="mandrake.rsw.starwarsraces">0.083</RSW_RimMandrakeNeimoidian>
+        <RSW_RimMandrakeUmbaran MayRequire="mandrake.rsw.starwarsraces">0.083</RSW_RimMandrakeUmbaran>
+        <RSW_RimMandrakeIktotchi MayRequire="mandrake.rsw.starwarsraces">0.025</RSW_RimMandrakeIktotchi>
+        <RSW_RimMandrakeKelDor MayRequire="mandrake.rsw.starwarsraces">0.025</RSW_RimMandrakeKelDor>
+        <RSW_RimMandrakeKubaz MayRequire="mandrake.rsw.starwarsraces">0.025</RSW_RimMandrakeKubaz>
+        <RSW_RimMandrakeRakata MayRequire="mandrake.rsw.starwarsraces">0.025</RSW_RimMandrakeRakata>
+        <RSW_RimMandrakeSithKissaiPureblood MayRequire="mandrake.rsw.starwarsraces">0.025</RSW_RimMandrakeSithKissaiPureblood>
+        <RSW_RimMandrakeSithMassassi MayRequire="mandrake.rsw.starwarsraces">0.025</RSW_RimMandrakeSithMassassi>
+        <RSW_RimMandrakeSithZ MayRequire="mandrake.rsw.starwarsraces">0.025</RSW_RimMandrakeSithZ>
       </xenotypeChances>
     </xenotypeSet>
 
@@ -174,10 +174,10 @@
       <li>
         <kindDef>Trader</kindDef>
         <traders>
-          <RimMandrake_Kaminoan MayRequire="mandrake.starwarsraces">1</RimMandrake_Kaminoan>
+          <RSW_Kaminoan MayRequire="mandrake.rsw.starwarsraces">1</RSW_Kaminoan>
         </traders>
         <guards>
-          <RimMandrake_Arkanian MayRequire="mandrake.starwarsraces">6</RimMandrake_Arkanian>
+          <RSW_Arkanian MayRequire="mandrake.rsw.starwarsraces">6</RSW_Arkanian>
         </guards>
         <carriers>
           <Muffalo>6</Muffalo>

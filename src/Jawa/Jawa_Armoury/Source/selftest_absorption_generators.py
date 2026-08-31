@@ -24,7 +24,7 @@ script (which this item explicitly forbids while WEAPONS_ABSORPTION_WAVE_1
 is mid-flight in this same directory tree): import each module, monkeypatch
 its path constants to point at a throwaway fixture + a throwaway tmp output
 tree, then call main() directly. Nothing under this repo's real
-src/Jawa/Jawa_Armoury/ is ever touched - every patched constant points
+src/RimStarWars/Armoury/ is ever touched - every patched constant points
 outside it.
 
 WHAT IS CHECKED, PER GENERATOR:

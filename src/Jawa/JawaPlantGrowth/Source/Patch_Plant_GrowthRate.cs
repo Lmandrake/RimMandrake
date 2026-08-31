@@ -2,7 +2,7 @@ using HarmonyLib;
 using RimWorld;   // Plant lives in RimWorld, not Verse — confirmed against Assembly-CSharp
 using Verse;
 
-namespace JawaPlantGrowth
+namespace RimMandrake.Utinni.PlantGrowth
 {
     [StaticConstructorOnStartup]
     public static class JawaPlantGrowthMod
@@ -15,14 +15,14 @@ namespace JawaPlantGrowth
             }
             catch (System.Exception e)
             {
-                Log.Error("[JawaPlantGrowth] failed to build the growth tables, leaving growth vanilla: " + e);
+                Log.Error("[RimMandrake.Utinni.PlantGrowth] failed to build the growth tables, leaving growth vanilla: " + e);
                 return;
             }
 
-            new Harmony("mandrake.jawaplantgrowth").PatchAll();
+            new Harmony("mandrake.rut.plantgrowth").PatchAll();
 
             Log.Message(string.Format(
-                "[JawaPlantGrowth] scaling {0} plant defs (default x{1}, tree x{2}), " +
+                "[RimMandrake.Utinni.PlantGrowth] scaling {0} plant defs (default x{1}, tree x{2}), " +
                 "{3} exempt, {4} terminator biome(s) at x{5}.",
                 PlantGrowthConfig.ScaledCount,
                 PlantGrowthConfig.DefaultMultiplier,

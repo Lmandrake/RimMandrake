@@ -7,7 +7,7 @@
          num *= 1f / pawn.BodySize;                          // victimSeverityScalingByInvBodySize
          num *= pawn.GetStatValue(victimSeverityScaling);    // victimSeverityScaling's StatDef value
      Both apply to the SAME li in sequence, so setting BOTH - the bool AND a StatDef whose own
-     value IS 1/BodySize (JawaIonWeapons.Jawa_InverseBodySize, see StatDefs_JawaIon.xml and
+     value IS 1/BodySize (JawaIonWeapons.RSW_Jawa_InverseBodySize, see StatDefs_JawaIon.xml and
      StatPart_InverseBodySize.cs) - multiplies severity by (1/BodySize)^2. No Harmony, no new
      DamageWorker; the owner's squared curve from pure XML on a def we do not own.
 
@@ -18,14 +18,14 @@
          guy762_RangedDamage_KOstun  -> additionalHediffs/li (hediff PsychicShock, severityFixed 10)
          guy762_RangedDamage_sonic   -> additionalHediffs/li (hediff guy762_SonicDisorient, severityPerDamageDealt 0.01)
 
-     Reference humans unaffected by construction: BodySize 1 -> Jawa_InverseBodySize reads 1.0,
+     Reference humans unaffected by construction: BodySize 1 -> RSW_Jawa_InverseBodySize reads 1.0,
      so (1/1)^2 = 1, identical to today. Only the curve away from BodySize 1 changes, same
-     invariant the owner's own ruling protected for JawaIon_Damage.
+     invariant the owner's own ruling protected for RSW_JawaIon_Damage.
 
      ⛔ NOT patched: guy762_RangedDamage_organicstun (commented out, dead, in guy762's own
      source), guy762_GrenadeDamage_stun (no additionalHediffs at all - no XML lever exists),
      the whole guy762_*_ion family (survey found these are NOT a flesh-stun mechanism; live-
-     tested, ordinary Burn injury on a Rat). See OTHER_STUN_WEAPONS_SURVEY_1.md's table for
+     tested, ordinary RSW_Burn injury on a Rat). See OTHER_STUN_WEAPONS_SURVEY_1.md's table for
      the full per-weapon read.
 
      MayRequire guy762.MM.KotORCore (this mod's own packageId, read from its About.xml) - the
@@ -40,7 +40,7 @@
         <xpath>Defs/DamageDef[defName="guy762_RangedDamage_KOstun"]/additionalHediffs/li</xpath>
         <value>
           <victimSeverityScalingByInvBodySize>true</victimSeverityScalingByInvBodySize>
-          <victimSeverityScaling>Jawa_InverseBodySize</victimSeverityScaling>
+          <victimSeverityScaling>RSW_Jawa_InverseBodySize</victimSeverityScaling>
         </value>
       </li>
 
@@ -48,7 +48,7 @@
         <xpath>Defs/DamageDef[defName="guy762_RangedDamage_sonic"]/additionalHediffs/li</xpath>
         <value>
           <victimSeverityScalingByInvBodySize>true</victimSeverityScalingByInvBodySize>
-          <victimSeverityScaling>Jawa_InverseBodySize</victimSeverityScaling>
+          <victimSeverityScaling>RSW_Jawa_InverseBodySize</victimSeverityScaling>
         </value>
       </li>
 

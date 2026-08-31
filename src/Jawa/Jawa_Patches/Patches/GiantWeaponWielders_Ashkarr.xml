@@ -24,7 +24,7 @@
   is ogre scale — twice a human's mass. Right for a Jotun, wrong for a Wookiee.
   Body size is settled separately and already shipped, in BodySizeIsReal.xml.
 
-  ⛔ NOT RULED IN: RimMandrakeHutt. Canonically the largest species we field, so
+  ⛔ NOT RULED IN: RSW_RimMandrakeHutt. Canonically the largest species we field, so
   a size gene would be right, but a sessile slug with vestigial arms cannot
   swing a giant hammer. Size yes, giant weapons no. Do not "complete the set".
 
@@ -49,65 +49,65 @@
   <!-- ============ THE NINE — canonically large and built to fight ============ -->
   <!-- Wookiee — the canonical strong-and-huge species; the roster's own Wildsteam Clan is built on them -->
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/XenotypeDef[defName="RimMandrakeWookiee"]/genes/li[text()="BS_GiantWeaponWielder"]</xpath>
+    <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeWookiee"]/genes/li[text()="BS_GiantWeaponWielder"]</xpath>
     <nomatch Class="PatchOperationAdd">
-      <xpath>Defs/XenotypeDef[defName="RimMandrakeWookiee"]/genes</xpath>
+      <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeWookiee"]/genes</xpath>
       <value><li MayRequire="redmattis.bigsmall.core">BS_GiantWeaponWielder</li></value>
     </nomatch>
   </Operation>
   <!-- Gamorrean — upstream def; the Hutts' door-muscle, bought by the crate and armed with axes -->
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/XenotypeDef[defName="RimMandrakeGamorrean"]/genes/li[text()="BS_GiantWeaponWielder"]</xpath>
+    <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeGamorrean"]/genes/li[text()="BS_GiantWeaponWielder"]</xpath>
     <nomatch Class="PatchOperationAdd">
-      <xpath>Defs/XenotypeDef[defName="RimMandrakeGamorrean"]/genes</xpath>
+      <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeGamorrean"]/genes</xpath>
       <value><li MayRequire="redmattis.bigsmall.core">BS_GiantWeaponWielder</li></value>
     </nomatch>
   </Operation>
   <!-- Herglic — cetacean bulk, already on HalfJotunFrame in BodySizeIsReal -->
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/XenotypeDef[defName="RimMandrakeHerglic"]/genes/li[text()="BS_GiantWeaponWielder"]</xpath>
+    <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeHerglic"]/genes/li[text()="BS_GiantWeaponWielder"]</xpath>
     <nomatch Class="PatchOperationAdd">
-      <xpath>Defs/XenotypeDef[defName="RimMandrakeHerglic"]/genes</xpath>
+      <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeHerglic"]/genes</xpath>
       <value><li MayRequire="redmattis.bigsmall.core">BS_GiantWeaponWielder</li></value>
     </nomatch>
   </Operation>
   <!-- Trandoshan — heavy hunters and melee specialists in the Cartel's own species table -->
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/XenotypeDef[defName="RimMandrakeTrandoshan"]/genes/li[text()="BS_GiantWeaponWielder"]</xpath>
+    <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeTrandoshan"]/genes/li[text()="BS_GiantWeaponWielder"]</xpath>
     <nomatch Class="PatchOperationAdd">
-      <xpath>Defs/XenotypeDef[defName="RimMandrakeTrandoshan"]/genes</xpath>
+      <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeTrandoshan"]/genes</xpath>
       <value><li MayRequire="redmattis.bigsmall.core">BS_GiantWeaponWielder</li></value>
     </nomatch>
   </Operation>
   <!-- Togorian — two-plus metres of felinoid, built for the charge -->
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/XenotypeDef[defName="RimMandrakeTogorian"]/genes/li[text()="BS_GiantWeaponWielder"]</xpath>
+    <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeTogorian"]/genes/li[text()="BS_GiantWeaponWielder"]</xpath>
     <nomatch Class="PatchOperationAdd">
-      <xpath>Defs/XenotypeDef[defName="RimMandrakeTogorian"]/genes</xpath>
+      <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeTogorian"]/genes</xpath>
       <value><li MayRequire="redmattis.bigsmall.core">BS_GiantWeaponWielder</li></value>
     </nomatch>
   </Operation>
   <!-- Lasat — heavy-worlder frame and reach -->
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/XenotypeDef[defName="RimMandrakeLasat"]/genes/li[text()="BS_GiantWeaponWielder"]</xpath>
+    <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeLasat"]/genes/li[text()="BS_GiantWeaponWielder"]</xpath>
     <nomatch Class="PatchOperationAdd">
-      <xpath>Defs/XenotypeDef[defName="RimMandrakeLasat"]/genes</xpath>
+      <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeLasat"]/genes</xpath>
       <value><li MayRequire="redmattis.bigsmall.core">BS_GiantWeaponWielder</li></value>
     </nomatch>
   </Operation>
   <!-- Feeorin — large, long-lived, and gets stronger with age -->
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/XenotypeDef[defName="RimMandrakeFeeorin"]/genes/li[text()="BS_GiantWeaponWielder"]</xpath>
+    <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeFeeorin"]/genes/li[text()="BS_GiantWeaponWielder"]</xpath>
     <nomatch Class="PatchOperationAdd">
-      <xpath>Defs/XenotypeDef[defName="RimMandrakeFeeorin"]/genes</xpath>
+      <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeFeeorin"]/genes</xpath>
       <value><li MayRequire="redmattis.bigsmall.core">BS_GiantWeaponWielder</li></value>
     </nomatch>
   </Operation>
   <!-- Sith Massassi — warrior-caste, bred bigger than the base Sith -->
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/XenotypeDef[defName="RimMandrakeSithMassassi"]/genes/li[text()="BS_GiantWeaponWielder"]</xpath>
+    <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeSithMassassi"]/genes/li[text()="BS_GiantWeaponWielder"]</xpath>
     <nomatch Class="PatchOperationAdd">
-      <xpath>Defs/XenotypeDef[defName="RimMandrakeSithMassassi"]/genes</xpath>
+      <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeSithMassassi"]/genes</xpath>
       <value><li MayRequire="redmattis.bigsmall.core">BS_GiantWeaponWielder</li></value>
     </nomatch>
   </Operation>
@@ -115,57 +115,57 @@
   <!-- ============ THE SEVEN — the owner's call, ruled IN 2026-08-23 ============ -->
   <!-- Aqualish — shotgunners and bruisers; broad rather than tall -->
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/XenotypeDef[defName="RimMandrakeAqualish"]/genes/li[text()="BS_GiantWeaponWielder"]</xpath>
+    <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeAqualish"]/genes/li[text()="BS_GiantWeaponWielder"]</xpath>
     <nomatch Class="PatchOperationAdd">
-      <xpath>Defs/XenotypeDef[defName="RimMandrakeAqualish"]/genes</xpath>
+      <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeAqualish"]/genes</xpath>
       <value><li MayRequire="redmattis.bigsmall.core">BS_GiantWeaponWielder</li></value>
     </nomatch>
   </Operation>
   <!-- Cathar — lighter than the rest of this list, ruled in for the melee charge -->
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/XenotypeDef[defName="RimMandrakeCathar"]/genes/li[text()="BS_GiantWeaponWielder"]</xpath>
+    <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeCathar"]/genes/li[text()="BS_GiantWeaponWielder"]</xpath>
     <nomatch Class="PatchOperationAdd">
-      <xpath>Defs/XenotypeDef[defName="RimMandrakeCathar"]/genes</xpath>
+      <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeCathar"]/genes</xpath>
       <value><li MayRequire="redmattis.bigsmall.core">BS_GiantWeaponWielder</li></value>
     </nomatch>
   </Operation>
   <!-- Chagrian — tall and heavy-headed -->
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/XenotypeDef[defName="RimMandrakeChagrian"]/genes/li[text()="BS_GiantWeaponWielder"]</xpath>
+    <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeChagrian"]/genes/li[text()="BS_GiantWeaponWielder"]</xpath>
     <nomatch Class="PatchOperationAdd">
-      <xpath>Defs/XenotypeDef[defName="RimMandrakeChagrian"]/genes</xpath>
+      <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeChagrian"]/genes</xpath>
       <value><li MayRequire="redmattis.bigsmall.core">BS_GiantWeaponWielder</li></value>
     </nomatch>
   </Operation>
   <!-- Gungan — long-limbed and far stronger than the comic reading suggests -->
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/XenotypeDef[defName="RimMandrakeGungan"]/genes/li[text()="BS_GiantWeaponWielder"]</xpath>
+    <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeGungan"]/genes/li[text()="BS_GiantWeaponWielder"]</xpath>
     <nomatch Class="PatchOperationAdd">
-      <xpath>Defs/XenotypeDef[defName="RimMandrakeGungan"]/genes</xpath>
+      <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeGungan"]/genes</xpath>
       <value><li MayRequire="redmattis.bigsmall.core">BS_GiantWeaponWielder</li></value>
     </nomatch>
   </Operation>
   <!-- Kaleesh — warrior culture; Grievous' own species -->
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/XenotypeDef[defName="RimMandrakeKaleesh"]/genes/li[text()="BS_GiantWeaponWielder"]</xpath>
+    <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeKaleesh"]/genes/li[text()="BS_GiantWeaponWielder"]</xpath>
     <nomatch Class="PatchOperationAdd">
-      <xpath>Defs/XenotypeDef[defName="RimMandrakeKaleesh"]/genes</xpath>
+      <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeKaleesh"]/genes</xpath>
       <value><li MayRequire="redmattis.bigsmall.core">BS_GiantWeaponWielder</li></value>
     </nomatch>
   </Operation>
   <!-- Klatoonian — Hutt labour and enforcement stock -->
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/XenotypeDef[defName="RimMandrakeKlatoonian"]/genes/li[text()="BS_GiantWeaponWielder"]</xpath>
+    <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeKlatoonian"]/genes/li[text()="BS_GiantWeaponWielder"]</xpath>
     <nomatch Class="PatchOperationAdd">
-      <xpath>Defs/XenotypeDef[defName="RimMandrakeKlatoonian"]/genes</xpath>
+      <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeKlatoonian"]/genes</xpath>
       <value><li MayRequire="redmattis.bigsmall.core">BS_GiantWeaponWielder</li></value>
     </nomatch>
   </Operation>
   <!-- Nelvaanian — hunter-warriors, heavy upper build -->
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/XenotypeDef[defName="RimMandrakeNelvaanian"]/genes/li[text()="BS_GiantWeaponWielder"]</xpath>
+    <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeNelvaanian"]/genes/li[text()="BS_GiantWeaponWielder"]</xpath>
     <nomatch Class="PatchOperationAdd">
-      <xpath>Defs/XenotypeDef[defName="RimMandrakeNelvaanian"]/genes</xpath>
+      <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeNelvaanian"]/genes</xpath>
       <value><li MayRequire="redmattis.bigsmall.core">BS_GiantWeaponWielder</li></value>
     </nomatch>
   </Operation>

@@ -33,7 +33,7 @@
        ============================================================ -->
 
   <ThingDef ParentName="BaseGraffiti">
-    <defName>RimMandrake_SacredMark_Ishko</defName>
+    <defName>RM_SacredMark_Ishko</defName>
     <label>sacred mark of Ishko</label>
     <description>A pair of glowing orange eyes daubed on the wall in ochre and rust pigment, radiating short watchful strokes into the dark around them. Ishko the Unmaskable's mark - painted by a hand that believes stillness is holy, in the one god who does not punish a skipped rite, because to remain hidden and unlooked-at is, to him, already righteous.</description>
     <graphicData>

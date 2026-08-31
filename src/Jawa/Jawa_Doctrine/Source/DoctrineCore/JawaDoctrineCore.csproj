@@ -3,7 +3,7 @@
   <!--
     JawaDoctrineCore - Jawa_Doctrine's first C# (DROIDWORKS_ISFLESH_RELATIONS_CRASH_1).
     Harmony (0Harmony.dll) dependency, so net48 + its own reference, same
-    pattern as src/Jawa/Droidworks/Source/BoltCore/DroidworksBoltCore.csproj.
+    pattern as src/RimStarWars/Droidworks/Source/BoltCore/DroidworksBoltCore.csproj.
     There is no Visual Studio or targeting pack on this machine, so
     Microsoft.NETFramework.ReferenceAssemblies supplies the reference
     assemblies from NuGet instead - same as every other .csproj here.

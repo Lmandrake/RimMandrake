@@ -28,7 +28,7 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-OUT = Path("src/Jawa/Jawa_Patches/Defs/PawnKindDefs/JawaFactionRoster.xml")
+OUT = Path("src/SPLIT_Phase3/Jawa_Patches/Defs/PawnKindDefs/JawaFactionRoster.xml")
 
 # (faction, role) -> (race ThingDef, owning packageId for MayRequire)
 #
@@ -268,11 +268,11 @@ R = [
  ("Blackstar","Specialist","Blackstar hunter",12800,800,None,["ORSniper","KotORRanged_rare"],[]),
  ("Blackstar","Leader","Captain Jaxen Marr",14600,1500,None,["KotORRanged_legendary","ORPistol"],[]),
 
-# 🔑 IONBLASTER_INTO_THE_GENERATOR_1. `JawaIon_Damage` is the campaign's signature weapon
+# 🔑 IONBLASTER_INTO_THE_GENERATOR_1. `RSW_JawaIon_Damage` is the campaign's signature weapon
 # tag and it is declared HERE on Heavy/Specialist/Leader, not in a patch. It replaced
 # `Patches/JawaIon_FieldOurOwnGun.xml`, which was a stopgap and is deleted - a patch that
 # adds a tag the generator does not know about drifts the moment this table is re-emitted.
-# ⛔ The GRUNT is excluded on purpose: `JawaIon_Blaster` costs 420 against his 250 ceiling,
+# ⛔ The GRUNT is excluded on purpose: `RSW_JawaIon_Blaster` costs 420 against his 250 ceiling,
 # so the tag there would be a silent no-op. Same reason his `Jawa_IonWeaponLight` is dead
 # weight today - it resolves to `IW_Gun_IonPistol` (800) and `IW_Gun_IonPDW` (1000), both
 # far above 250. It is KEPT rather than dropped because it costs nothing at spawn time and
@@ -280,9 +280,9 @@ R = [
 # is a design feature (design/Jawa/mods/required_mods.md), so the ceiling does not move.
 # His live pool is `KotORRanged_ion` -> `guy762_ionpistol` at 200, which always arms.
  ("TradeMoot","Grunt","Jawa scavenger",250,100,("max","Poor"),["KotORRanged_ion","SaV_jawaheavy","Jawa_IonWeaponLight"],["guy762_Robes_jawa"]),
- ("TradeMoot","Heavy","crawler guard",450,130,("max","Normal"),["KotORRanged_ion","Jawa_IonWeapon","JawaIon_Damage","KotORRanged_weak"],["guy762_Robes_jawa"]),
- ("TradeMoot","Specialist","Scrap-Singer",900,160,("max","Normal"),["Jawa_IonWeapon","JawaIon_Damage","KotORRanged_ion"],["guy762_Robes_jawa"]),
- ("TradeMoot","Leader","First Bargainer Kiknik the Wealthy",900,250,("max","Good"),["KotORRanged_ion","Jawa_IonWeapon","JawaIon_Damage"],["guy762_Robes_jawa"]),
+ ("TradeMoot","Heavy","crawler guard",450,130,("max","Normal"),["KotORRanged_ion","Jawa_IonWeapon","RSW_JawaIon_Damage","KotORRanged_weak"],["guy762_Robes_jawa"]),
+ ("TradeMoot","Specialist","Scrap-Singer",900,160,("max","Normal"),["Jawa_IonWeapon","RSW_JawaIon_Damage","KotORRanged_ion"],["guy762_Robes_jawa"]),
+ ("TradeMoot","Leader","First Bargainer Kiknik the Wealthy",900,250,("max","Good"),["KotORRanged_ion","Jawa_IonWeapon","RSW_JawaIon_Damage"],["guy762_Robes_jawa"]),
 
  ("Junkers","Grunt","Junker scrapper",60,400,("max","Awful"),["ORMeleeBlunt","NeolithicMeleeBasic"],[]),
  ("Junkers","Heavy","warcasket Junker",140,700,None,["SimpleGun","KotORRanged_weak"],["VFEP_WarcasketHelmet_Warcasket"]),
@@ -412,7 +412,7 @@ def combat_power(wm, am, role, fac=None):
 # ⇒ Regenerating is now a NO-OP DIFF, which is the only definition of "the
 # header is true" that survives contact with anyone. Verify it that way:
 #     python3 src/RimMandrake/Utils/gen_pawnkind_roster.py
-#     git diff --stat src/Jawa/Jawa_Patches/Defs/PawnKindDefs/JawaFactionRoster.xml
+#     git diff --stat src/SPLIT_Phase3/Jawa_Patches/Defs/PawnKindDefs/JawaFactionRoster.xml
 # Empty means true. Anything else means this table has drifted again.
 #
 # ⚠️ EDIT THE KIT HERE, not in the XML. An edit to the XML is reverted by the
@@ -2466,7 +2466,7 @@ KIT = {
     <weaponTags>
       <li>KotORRanged_ion</li>
       <li>Jawa_IonWeapon</li>
-      <li>JawaIon_Damage</li>
+      <li>RSW_JawaIon_Damage</li>
       <li>KotORRanged_weak</li>
     </weaponTags>
     <maxApparelQuality>Normal</maxApparelQuality>
@@ -2523,7 +2523,7 @@ KIT = {
     <initialWillRange>2~5</initialWillRange>
     <weaponTags>
       <li>Jawa_IonWeapon</li>
-      <li>JawaIon_Damage</li>
+      <li>RSW_JawaIon_Damage</li>
       <li>KotORRanged_ion</li>
     </weaponTags>
     <maxApparelQuality>Normal</maxApparelQuality>
@@ -2581,7 +2581,7 @@ KIT = {
     <weaponTags>
       <li>KotORRanged_ion</li>
       <li>Jawa_IonWeapon</li>
-      <li>JawaIon_Damage</li>
+      <li>RSW_JawaIon_Damage</li>
     </weaponTags>
     <maxApparelQuality>Good</maxApparelQuality>
       <apparelRequired>

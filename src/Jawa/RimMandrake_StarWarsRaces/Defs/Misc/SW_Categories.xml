@@ -13,16 +13,16 @@
 -->
 <Defs>
   <GeneCategoryDef>
-    <defName>RimMandrake_BodySize_Category</defName>
+    <defName>RSW_BodySize_Category</defName>
     <label>body size</label>
     <displayPriorityInXenotype>508</displayPriorityInXenotype>
   </GeneCategoryDef>
   <StyleItemCategoryDef>
-    <defName>RimMandrake_Cerean</defName>
-    <label>RimMandrake_Cerean</label>
+    <defName>RSW_Cerean</defName>
+    <label>RSW_Cerean</label>
   </StyleItemCategoryDef>
   <FurDef>
-    <defName>RimMandrake_FurDef_gaunt</defName>
+    <defName>RSW_FurDef_gaunt</defName>
     <noGraphic>true</noGraphic>
     <bodyTypeGraphicPaths>
       <Hulk>Things/Pawn/Humanlike/Bodies/Naked_Hulk</Hulk>
@@ -35,12 +35,12 @@
     </bodyTypeGraphicPaths>
   </FurDef>
   <GeneCategoryDef>
-    <defName>RimMandrake_Lifespan_Category</defName>
+    <defName>RSW_Lifespan_Category</defName>
     <label>lifespan</label>
     <displayPriorityInXenotype>507</displayPriorityInXenotype>
   </GeneCategoryDef>
   <GeneCategoryDef>
-    <defName>RimMandrake_SWparts_Category</defName>
+    <defName>RSW_SWparts_Category</defName>
     <label>cosmetic (Star Wars)</label>
     <displayPriorityInXenotype>762</displayPriorityInXenotype>
   </GeneCategoryDef>

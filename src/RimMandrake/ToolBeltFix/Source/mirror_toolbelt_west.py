@@ -33,7 +33,7 @@ donor or the donor's blank file wins and the repair is invisible.
 
     ModsConfig.xml, 2026-08-13
       vanillaexpanded.vaeaccessories     line 361
-      mandrake.toolbeltfix               (to be inserted after 558)
+      mandrake.rm.toolbeltfix               (to be inserted after 558)
 """
 import os, sys
 from PIL import Image

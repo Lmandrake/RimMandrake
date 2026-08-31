@@ -8,8 +8,8 @@
        home-water conditional) stay designed-not-built on the deferred list. -->
 
   <BackstoryDef>
-    <defName>Jawa_CisternHatched</defName>
-    <identifier>Jawa_CisternHatched</identifier>
+    <defName>RUT_Jawa_CisternHatched</defName>
+    <identifier>RUT_Jawa_CisternHatched</identifier>
     <slot>Childhood</slot>
     <title>cistern-hatched</title>
     <titleShort>cistern-born</titleShort>
@@ -25,8 +25,8 @@
   </BackstoryDef>
 
   <BackstoryDef>
-    <defName>Jawa_TollWharfChild</defName>
-    <identifier>Jawa_TollWharfChild</identifier>
+    <defName>RUT_Jawa_TollWharfChild</defName>
+    <identifier>RUT_Jawa_TollWharfChild</identifier>
     <slot>Childhood</slot>
     <title>toll-wharf child</title>
     <titleShort>wharf child</titleShort>
@@ -42,8 +42,8 @@
   </BackstoryDef>
 
   <BackstoryDef>
-    <defName>Jawa_WaterWarden</defName>
-    <identifier>Jawa_WaterWarden</identifier>
+    <defName>RUT_Jawa_WaterWarden</defName>
+    <identifier>RUT_Jawa_WaterWarden</identifier>
     <slot>Adulthood</slot>
     <title>water warden</title>
     <titleShort>warden</titleShort>
@@ -60,8 +60,8 @@
   </BackstoryDef>
 
   <BackstoryDef>
-    <defName>Jawa_PurificationEngineer</defName>
-    <identifier>Jawa_PurificationEngineer</identifier>
+    <defName>RUT_Jawa_PurificationEngineer</defName>
+    <identifier>RUT_Jawa_PurificationEngineer</identifier>
     <slot>Adulthood</slot>
     <title>purification engineer</title>
     <titleShort>purifier</titleShort>
@@ -78,8 +78,8 @@
   </BackstoryDef>
 
   <BackstoryDef>
-    <defName>Jawa_CompactFactor</defName>
-    <identifier>Jawa_CompactFactor</identifier>
+    <defName>RUT_Jawa_CompactFactor</defName>
+    <identifier>RUT_Jawa_CompactFactor</identifier>
     <slot>Adulthood</slot>
     <title>compact factor</title>
     <titleShort>factor</titleShort>

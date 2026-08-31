@@ -84,7 +84,7 @@
   THE FOUR CONDITION FAN OUT
   ==========================
   47 lines authored across 14 defs, emitted as 188 rules, once per speaker
-  condition (PlayerColony, PlayerTribe, RimMandrake_Jawa, RimMandrake_JawaTribal).
+  condition (PlayerColony, PlayerTribe, RSW_Jawa, RSW_JawaTribal).
   Grammar conditions AND together and there is no OR, so four cases means four
   copies. Covering only the first would leave tribal starts and every NPC Jawa
   speaking English.
@@ -133,20 +133,20 @@
       <value>
         <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Nootiba nootibu. Ta ma. (You on manifest now. Line eleven.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Nootiba nootibu. Ta ma. (You on manifest now. Line eleven.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)-&gt;Nootiba nootibu. Ta ma. (You on manifest now. Line eleven.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)-&gt;Nootiba nootibu. Ta ma. (You on manifest now. Line eleven.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)-&gt;Nootiba nootibu. Ta ma. (You on manifest now. Line eleven.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)-&gt;Nootiba nootibu. Ta ma. (You on manifest now. Line eleven.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Mombay m'bwa! Nootiba mi. (You mine. Found, logged, mine.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Mombay m'bwa! Nootiba mi. (You mine. Found, logged, mine.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)-&gt;Mombay m'bwa! Nootiba mi. (You mine. Found, logged, mine.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)-&gt;Mombay m'bwa! Nootiba mi. (You mine. Found, logged, mine.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)-&gt;Mombay m'bwa! Nootiba mi. (You mine. Found, logged, mine.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)-&gt;Mombay m'bwa! Nootiba mi. (You mine. Found, logged, mine.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Boota, noo kroo... ashuna! (All here work, or become parts. Choose today.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Boota, noo kroo... ashuna! (All here work, or become parts. Choose today.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)-&gt;Boota, noo kroo... ashuna! (All here work, or become parts. Choose today.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)-&gt;Boota, noo kroo... ashuna! (All here work, or become parts. Choose today.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)-&gt;Boota, noo kroo... ashuna! (All here work, or become parts. Choose today.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)-&gt;Boota, noo kroo... ashuna! (All here work, or become parts. Choose today.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Ibana boo, ibana noo boo. (Say yes now: free. Say yes later: cost hand.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Ibana boo, ibana noo boo. (Say yes now: free. Say yes later: cost hand.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)-&gt;Ibana boo, ibana noo boo. (Say yes now: free. Say yes later: cost hand.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)-&gt;Ibana boo, ibana noo boo. (Say yes now: free. Say yes later: cost hand.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)-&gt;Ibana boo, ibana noo boo. (Say yes now: free. Say yes later: cost hand.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)-&gt;Ibana boo, ibana noo boo. (Say yes now: free. Say yes later: cost hand.)</li>
       </value>
     </match>
   </Operation>
@@ -158,28 +158,28 @@
       <value>
         <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;N'ekka ashuna ta. N'ekka. (Nobody coming. Nobody even looking.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;N'ekka ashuna ta. N'ekka. (Nobody coming. Nobody even looking.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)-&gt;N'ekka ashuna ta. N'ekka. (Nobody coming. Nobody even looking.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)-&gt;N'ekka ashuna ta. N'ekka. (Nobody coming. Nobody even looking.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)-&gt;N'ekka ashuna ta. N'ekka. (Nobody coming. Nobody even looking.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)-&gt;N'ekka ashuna ta. N'ekka. (Nobody coming. Nobody even looking.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Gaha gahu boota ma. (Sand keep what sand take. Never give back.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Gaha gahu boota ma. (Sand keep what sand take. Never give back.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)-&gt;Gaha gahu boota ma. (Sand keep what sand take. Never give back.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)-&gt;Gaha gahu boota ma. (Sand keep what sand take. Never give back.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)-&gt;Gaha gahu boota ma. (Sand keep what sand take. Never give back.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)-&gt;Gaha gahu boota ma. (Sand keep what sand take. Never give back.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Mob un loo ta? Hmph. (I ask your people your price. No answer yet.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Mob un loo ta? Hmph. (I ask your people your price. No answer yet.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)-&gt;Mob un loo ta? Hmph. (I ask your people your price. No answer yet.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)-&gt;Mob un loo ta? Hmph. (I ask your people your price. No answer yet.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)-&gt;Mob un loo ta? Hmph. (I ask your people your price. No answer yet.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)-&gt;Mob un loo ta? Hmph. (I ask your people your price. No answer yet.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Nootib n'ekka, zaah ibana. (Your name worth nothing here. Your water worth much.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Nootib n'ekka, zaah ibana. (Your name worth nothing here. Your water worth much.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)-&gt;Nootib n'ekka, zaah ibana. (Your name worth nothing here. Your water worth much.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)-&gt;Nootib n'ekka, zaah ibana. (Your name worth nothing here. Your water worth much.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)-&gt;Nootib n'ekka, zaah ibana. (Your name worth nothing here. Your water worth much.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)-&gt;Nootib n'ekka, zaah ibana. (Your name worth nothing here. Your water worth much.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Sabioto. Bahnoo bahnau ta. (Stop struggle. You wear out. You not new.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Sabioto. Bahnoo bahnau ta. (Stop struggle. You wear out. You not new.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)-&gt;Sabioto. Bahnoo bahnau ta. (Stop struggle. You wear out. You not new.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)-&gt;Sabioto. Bahnoo bahnau ta. (Stop struggle. You wear out. You not new.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)-&gt;Sabioto. Bahnoo bahnau ta. (Stop struggle. You wear out. You not new.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)-&gt;Sabioto. Bahnoo bahnau ta. (Stop struggle. You wear out. You not new.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Mi noo kroo ta... boo. (Every day you whole, is day I not strip you.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Mi noo kroo ta... boo. (Every day you whole, is day I not strip you.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)-&gt;Mi noo kroo ta... boo. (Every day you whole, is day I not strip you.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)-&gt;Mi noo kroo ta... boo. (Every day you whole, is day I not strip you.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)-&gt;Mi noo kroo ta... boo. (Every day you whole, is day I not strip you.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)-&gt;Mi noo kroo ta... boo. (Every day you whole, is day I not strip you.)</li>
       </value>
     </match>
   </Operation>
@@ -195,20 +195,20 @@
       <value>
         <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Togo togu! Togo togu ma! (Hands where I see! That is law here.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Togo togu! Togo togu ma! (Hands where I see! That is law here.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)-&gt;Togo togu! Togo togu ma! (Hands where I see! That is law here.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)-&gt;Togo togu! Togo togu ma! (Hands where I see! That is law here.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)-&gt;Togo togu! Togo togu ma! (Hands where I see! That is law here.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)-&gt;Togo togu! Togo togu ma! (Hands where I see! That is law here.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Boota mambay, bahnoo kroo. (Work, stay whole. Argue, become parts. Short list.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Boota mambay, bahnoo kroo. (Work, stay whole. Argue, become parts. Short list.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)-&gt;Boota mambay, bahnoo kroo. (Work, stay whole. Argue, become parts. Short list.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)-&gt;Boota mambay, bahnoo kroo. (Work, stay whole. Argue, become parts. Short list.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)-&gt;Boota mambay, bahnoo kroo. (Work, stay whole. Argue, become parts. Short list.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)-&gt;Boota mambay, bahnoo kroo. (Work, stay whole. Argue, become parts. Short list.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Nootiba nootibu, ma. (I count you every morning. I never miscount.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Nootiba nootibu, ma. (I count you every morning. I never miscount.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)-&gt;Nootiba nootibu, ma. (I count you every morning. I never miscount.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)-&gt;Nootiba nootibu, ma. (I count you every morning. I never miscount.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)-&gt;Nootiba nootibu, ma. (I count you every morning. I never miscount.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)-&gt;Nootiba nootibu, ma. (I count you every morning. I never miscount.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Noo t'aah, noo bom'loo. Boota! (No questions. No haggling. Only work.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Noo t'aah, noo bom'loo. Boota! (No questions. No haggling. Only work.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)-&gt;Noo t'aah, noo bom'loo. Boota! (No questions. No haggling. Only work.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)-&gt;Noo t'aah, noo bom'loo. Boota! (No questions. No haggling. Only work.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)-&gt;Noo t'aah, noo bom'loo. Boota! (No questions. No haggling. Only work.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)-&gt;Noo t'aah, noo bom'loo. Boota! (No questions. No haggling. Only work.)</li>
       </value>
     </match>
   </Operation>
@@ -220,20 +220,20 @@
       <value>
         <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Ashuna... ashunu, ta ne? (We go. Tonight. You and me.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Ashuna... ashunu, ta ne? (We go. Tonight. You and me.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)-&gt;Ashuna... ashunu, ta ne? (We go. Tonight. You and me.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)-&gt;Ashuna... ashunu, ta ne? (We go. Tonight. You and me.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)-&gt;Ashuna... ashunu, ta ne? (We go. Tonight. You and me.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)-&gt;Ashuna... ashunu, ta ne? (We go. Tonight. You and me.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Nootib bahnoo... utinni! (They count bad now. Is find. Finds belong to takers.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Nootib bahnoo... utinni! (They count bad now. Is find. Finds belong to takers.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)-&gt;Nootib bahnoo... utinni! (They count bad now. Is find. Finds belong to takers.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)-&gt;Nootib bahnoo... utinni! (They count bad now. Is find. Finds belong to takers.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)-&gt;Nootib bahnoo... utinni! (They count bad now. Is find. Finds belong to takers.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)-&gt;Nootib bahnoo... utinni! (They count bad now. Is find. Finds belong to takers.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Mombay m'bwa! Zaah mi, gah mi. (I am mine. My water. My sand. My name.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Mombay m'bwa! Zaah mi, gah mi. (I am mine. My water. My sand. My name.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)-&gt;Mombay m'bwa! Zaah mi, gah mi. (I am mine. My water. My sand. My name.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)-&gt;Mombay m'bwa! Zaah mi, gah mi. (I am mine. My water. My sand. My name.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)-&gt;Mombay m'bwa! Zaah mi, gah mi. (I am mine. My water. My sand. My name.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)-&gt;Mombay m'bwa! Zaah mi, gah mi. (I am mine. My water. My sand. My name.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Bom'loo n'ekka ta ne. Ashuna! (Never was going to be bargain. So stop waiting.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Bom'loo n'ekka ta ne. Ashuna! (Never was going to be bargain. So stop waiting.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)-&gt;Bom'loo n'ekka ta ne. Ashuna! (Never was going to be bargain. So stop waiting.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)-&gt;Bom'loo n'ekka ta ne. Ashuna! (Never was going to be bargain. So stop waiting.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)-&gt;Bom'loo n'ekka ta ne. Ashuna! (Never was going to be bargain. So stop waiting.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)-&gt;Bom'loo n'ekka ta ne. Ashuna! (Never was going to be bargain. So stop waiting.)</li>
       </value>
     </match>
   </Operation>
@@ -249,16 +249,16 @@
       <value>
         <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Bom'loo boo mi, ta tellah? (Hear offer before you refuse. Is all anyone owed.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Bom'loo boo mi, ta tellah? (Hear offer before you refuse. Is all anyone owed.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)-&gt;Bom'loo boo mi, ta tellah? (Hear offer before you refuse. Is all anyone owed.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)-&gt;Bom'loo boo mi, ta tellah? (Hear offer before you refuse. Is all anyone owed.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)-&gt;Bom'loo boo mi, ta tellah? (Hear offer before you refuse. Is all anyone owed.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)-&gt;Bom'loo boo mi, ta tellah? (Hear offer before you refuse. Is all anyone owed.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Gaha gahu. Mi ta ibana. (Sand take and take. What we keep, we keep together.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Gaha gahu. Mi ta ibana. (Sand take and take. What we keep, we keep together.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)-&gt;Gaha gahu. Mi ta ibana. (Sand take and take. What we keep, we keep together.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)-&gt;Gaha gahu. Mi ta ibana. (Sand take and take. What we keep, we keep together.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)-&gt;Gaha gahu. Mi ta ibana. (Sand take and take. What we keep, we keep together.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)-&gt;Gaha gahu. Mi ta ibana. (Sand take and take. What we keep, we keep together.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Kroo boota, ta boota! (All broken can be worth something again. Person too.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Kroo boota, ta boota! (All broken can be worth something again. Person too.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)-&gt;Kroo boota, ta boota! (All broken can be worth something again. Person too.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)-&gt;Kroo boota, ta boota! (All broken can be worth something again. Person too.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)-&gt;Kroo boota, ta boota! (All broken can be worth something again. Person too.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)-&gt;Kroo boota, ta boota! (All broken can be worth something again. Person too.)</li>
       </value>
     </match>
   </Operation>
@@ -270,12 +270,12 @@
       <value>
         <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Utinni! Bom'loo ibana! (A find! Deal struck! Deal good!)</li>
         <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Utinni! Bom'loo ibana! (A find! Deal struck! Deal good!)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)-&gt;Utinni! Bom'loo ibana! (A find! Deal struck! Deal good!)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)-&gt;Utinni! Bom'loo ibana! (A find! Deal struck! Deal good!)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)-&gt;Utinni! Bom'loo ibana! (A find! Deal struck! Deal good!)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)-&gt;Utinni! Bom'loo ibana! (A find! Deal struck! Deal good!)</li>
         <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Mambay. Nootiba ta, taa baa. (Good. You on manifest. Welcome.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Mambay. Nootiba ta, taa baa. (Good. You on manifest. Welcome.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)-&gt;Mambay. Nootiba ta, taa baa. (Good. You on manifest. Welcome.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)-&gt;Mambay. Nootiba ta, taa baa. (Good. You on manifest. Welcome.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)-&gt;Mambay. Nootiba ta, taa baa. (Good. You on manifest. Welcome.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)-&gt;Mambay. Nootiba ta, taa baa. (Good. You on manifest. Welcome.)</li>
       </value>
     </match>
   </Operation>
@@ -287,12 +287,12 @@
       <value>
         <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Bom'loo noo... mambay. Sh'akka boo. (No deal today. Fine. Price only come down.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Bom'loo noo... mambay. Sh'akka boo. (No deal today. Fine. Price only come down.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)-&gt;Bom'loo noo... mambay. Sh'akka boo. (No deal today. Fine. Price only come down.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)-&gt;Bom'loo noo... mambay. Sh'akka boo. (No deal today. Fine. Price only come down.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)-&gt;Bom'loo noo... mambay. Sh'akka boo. (No deal today. Fine. Price only come down.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)-&gt;Bom'loo noo... mambay. Sh'akka boo. (No deal today. Fine. Price only come down.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Mob un loo? Hmph. Ashuna. (I make fair offer. Walk away then.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Mob un loo? Hmph. Ashuna. (I make fair offer. Walk away then.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)-&gt;Mob un loo? Hmph. Ashuna. (I make fair offer. Walk away then.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)-&gt;Mob un loo? Hmph. Ashuna. (I make fair offer. Walk away then.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)-&gt;Mob un loo? Hmph. Ashuna. (I make fair offer. Walk away then.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)-&gt;Mob un loo? Hmph. Ashuna. (I make fair offer. Walk away then.)</li>
       </value>
     </match>
   </Operation>
@@ -308,16 +308,16 @@
       <value>
         <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Sabioto. Nootiba nootibu ma. (Sit. One piece at time, together, like salvage.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Sabioto. Nootiba nootibu ma. (Sit. One piece at time, together, like salvage.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)-&gt;Sabioto. Nootiba nootibu ma. (Sit. One piece at time, together, like salvage.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)-&gt;Sabioto. Nootiba nootibu ma. (Sit. One piece at time, together, like salvage.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)-&gt;Sabioto. Nootiba nootibu ma. (Sit. One piece at time, together, like salvage.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)-&gt;Sabioto. Nootiba nootibu ma. (Sit. One piece at time, together, like salvage.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Bahnoo noo kroo, ta boota. (Cracked not worthless. I rebuild worse than you.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Bahnoo noo kroo, ta boota. (Cracked not worthless. I rebuild worse than you.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)-&gt;Bahnoo noo kroo, ta boota. (Cracked not worthless. I rebuild worse than you.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)-&gt;Bahnoo noo kroo, ta boota. (Cracked not worthless. I rebuild worse than you.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)-&gt;Bahnoo noo kroo, ta boota. (Cracked not worthless. I rebuild worse than you.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)-&gt;Bahnoo noo kroo, ta boota. (Cracked not worthless. I rebuild worse than you.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Zaah mi, zaah ta. Mambay. (Take my water. Take moment. Is all right.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Zaah mi, zaah ta. Mambay. (Take my water. Take moment. Is all right.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)-&gt;Zaah mi, zaah ta. Mambay. (Take my water. Take moment. Is all right.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)-&gt;Zaah mi, zaah ta. Mambay. (Take my water. Take moment. Is all right.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)-&gt;Zaah mi, zaah ta. Mambay. (Take my water. Take moment. Is all right.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)-&gt;Zaah mi, zaah ta. Mambay. (Take my water. Take moment. Is all right.)</li>
       </value>
     </match>
   </Operation>
@@ -329,12 +329,12 @@
       <value>
         <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Noo... noo, mi t'aah bahnoo. (No. No, that come out wrong. Now worse.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Noo... noo, mi t'aah bahnoo. (No. No, that come out wrong. Now worse.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)-&gt;Noo... noo, mi t'aah bahnoo. (No. No, that come out wrong. Now worse.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)-&gt;Noo... noo, mi t'aah bahnoo. (No. No, that come out wrong. Now worse.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)-&gt;Noo... noo, mi t'aah bahnoo. (No. No, that come out wrong. Now worse.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)-&gt;Noo... noo, mi t'aah bahnoo. (No. No, that come out wrong. Now worse.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Sabioto! Mi kroo ma boota. (Forget I speak. I take working thing. I break it.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Sabioto! Mi kroo ma boota. (Forget I speak. I take working thing. I break it.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)-&gt;Sabioto! Mi kroo ma boota. (Forget I speak. I take working thing. I break it.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)-&gt;Sabioto! Mi kroo ma boota. (Forget I speak. I take working thing. I break it.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)-&gt;Sabioto! Mi kroo ma boota. (Forget I speak. I take working thing. I break it.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)-&gt;Sabioto! Mi kroo ma boota. (Forget I speak. I take working thing. I break it.)</li>
       </value>
     </match>
   </Operation>
@@ -346,12 +346,12 @@
       <value>
         <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Ibana. Ibana, ta. Mambay. (Yes. You right to hold. Is all right.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Ibana. Ibana, ta. Mambay. (Yes. You right to hold. Is all right.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)-&gt;Ibana. Ibana, ta. Mambay. (Yes. You right to hold. Is all right.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)-&gt;Ibana. Ibana, ta. Mambay. (Yes. You right to hold. Is all right.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)-&gt;Ibana. Ibana, ta. Mambay. (Yes. You right to hold. Is all right.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)-&gt;Ibana. Ibana, ta. Mambay. (Yes. You right to hold. Is all right.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Gaha gahu, ta noo. Boota! (Sand shift. You not shift. That worth something.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Gaha gahu, ta noo. Boota! (Sand shift. You not shift. That worth something.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)-&gt;Gaha gahu, ta noo. Boota! (Sand shift. You not shift. That worth something.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)-&gt;Gaha gahu, ta noo. Boota! (Sand shift. You not shift. That worth something.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)-&gt;Gaha gahu, ta noo. Boota! (Sand shift. You not shift. That worth something.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)-&gt;Gaha gahu, ta noo. Boota! (Sand shift. You not shift. That worth something.)</li>
       </value>
     </match>
   </Operation>
@@ -363,16 +363,16 @@
       <value>
         <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Ta noo kroo! Boota, boota! (You not scrap yet. Get up. Get up.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Ta noo kroo! Boota, boota! (You not scrap yet. Get up. Get up.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)-&gt;Ta noo kroo! Boota, boota! (You not scrap yet. Get up. Get up.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)-&gt;Ta noo kroo! Boota, boota! (You not scrap yet. Get up. Get up.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)-&gt;Ta noo kroo! Boota, boota! (You not scrap yet. Get up. Get up.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)-&gt;Ta noo kroo! Boota, boota! (You not scrap yet. Get up. Get up.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Zaah, mambay, ibana ma. (Water. Rest. One reason. That is whole repair.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Zaah, mambay, ibana ma. (Water. Rest. One reason. That is whole repair.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)-&gt;Zaah, mambay, ibana ma. (Water. Rest. One reason. That is whole repair.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)-&gt;Zaah, mambay, ibana ma. (Water. Rest. One reason. That is whole repair.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)-&gt;Zaah, mambay, ibana ma. (Water. Rest. One reason. That is whole repair.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)-&gt;Zaah, mambay, ibana ma. (Water. Rest. One reason. That is whole repair.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Booka ta boota ne! (Something here still need you. Get up.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Booka ta boota ne! (Something here still need you. Get up.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)-&gt;Booka ta boota ne! (Something here still need you. Get up.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)-&gt;Booka ta boota ne! (Something here still need you. Get up.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)-&gt;Booka ta boota ne! (Something here still need you. Get up.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)-&gt;Booka ta boota ne! (Something here still need you. Get up.)</li>
       </value>
     </match>
   </Operation>
@@ -388,16 +388,16 @@
       <value>
         <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Utinni! Boota, boota, boota! (Work! Salvage in ground! Daylight going to waste!)</li>
         <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Utinni! Boota, boota, boota! (Work! Salvage in ground! Daylight going to waste!)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)-&gt;Utinni! Boota, boota, boota! (Work! Salvage in ground! Daylight going to waste!)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)-&gt;Utinni! Boota, boota, boota! (Work! Salvage in ground! Daylight going to waste!)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)-&gt;Utinni! Boota, boota, boota! (Work! Salvage in ground! Daylight going to waste!)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)-&gt;Utinni! Boota, boota, boota! (Work! Salvage in ground! Daylight going to waste!)</li>
         <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Ashuna! Gaha gahu noo bom'loo! (Move! Desert not negotiate! Dark not negotiate!)</li>
         <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Ashuna! Gaha gahu noo bom'loo! (Move! Desert not negotiate! Dark not negotiate!)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)-&gt;Ashuna! Gaha gahu noo bom'loo! (Move! Desert not negotiate! Dark not negotiate!)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)-&gt;Ashuna! Gaha gahu noo bom'loo! (Move! Desert not negotiate! Dark not negotiate!)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)-&gt;Ashuna! Gaha gahu noo bom'loo! (Move! Desert not negotiate! Dark not negotiate!)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)-&gt;Ashuna! Gaha gahu noo bom'loo! (Move! Desert not negotiate! Dark not negotiate!)</li>
         <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Nootiba nootibu, booka ne! (Every hand today. Every crate tonight. All eat.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Nootiba nootibu, booka ne! (Every hand today. Every crate tonight. All eat.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)-&gt;Nootiba nootibu, booka ne! (Every hand today. Every crate tonight. All eat.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)-&gt;Nootiba nootibu, booka ne! (Every hand today. Every crate tonight. All eat.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)-&gt;Nootiba nootibu, booka ne! (Every hand today. Every crate tonight. All eat.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)-&gt;Nootiba nootibu, booka ne! (Every hand today. Every crate tonight. All eat.)</li>
       </value>
     </match>
   </Operation>
@@ -409,20 +409,20 @@
       <value>
         <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Mombay m'bwa! Ta nubba ma! (That was mine! Was in this one hands!)</li>
         <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Mombay m'bwa! Ta nubba ma! (That was mine! Was in this one hands!)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)-&gt;Mombay m'bwa! Ta nubba ma! (That was mine! Was in this one hands!)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)-&gt;Mombay m'bwa! Ta nubba ma! (That was mine! Was in this one hands!)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)-&gt;Mombay m'bwa! Ta nubba ma! (That was mine! Was in this one hands!)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)-&gt;Mombay m'bwa! Ta nubba ma! (That was mine! Was in this one hands!)</li>
         <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Mi nootib! Booka n'ekka! (I check manifest! Count short! Story short too!)</li>
         <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Mi nootib! Booka n'ekka! (I check manifest! Count short! Story short too!)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)-&gt;Mi nootib! Booka n'ekka! (I check manifest! Count short! Story short too!)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)-&gt;Mi nootib! Booka n'ekka! (I check manifest! Count short! Story short too!)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)-&gt;Mi nootib! Booka n'ekka! (I check manifest! Count short! Story short too!)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)-&gt;Mi nootib! Booka n'ekka! (I check manifest! Count short! Story short too!)</li>
         <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Bom'loo bahnoo ta ne! (This one bargain bad faith. Everyone here feel it.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Bom'loo bahnoo ta ne! (This one bargain bad faith. Everyone here feel it.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)-&gt;Bom'loo bahnoo ta ne! (This one bargain bad faith. Everyone here feel it.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)-&gt;Bom'loo bahnoo ta ne! (This one bargain bad faith. Everyone here feel it.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)-&gt;Bom'loo bahnoo ta ne! (This one bargain bad faith. Everyone here feel it.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)-&gt;Bom'loo bahnoo ta ne! (This one bargain bad faith. Everyone here feel it.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Heeka heeku! Gah t'aah ma! (Smell story! Buried and dug up twice!)</li>
         <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Heeka heeku! Gah t'aah ma! (Smell story! Buried and dug up twice!)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)-&gt;Heeka heeku! Gah t'aah ma! (Smell story! Buried and dug up twice!)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)-&gt;Heeka heeku! Gah t'aah ma! (Smell story! Buried and dug up twice!)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)-&gt;Heeka heeku! Gah t'aah ma! (Smell story! Buried and dug up twice!)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)-&gt;Heeka heeku! Gah t'aah ma! (Smell story! Buried and dug up twice!)</li>
       </value>
     </match>
   </Operation>
@@ -434,24 +434,24 @@
       <value>
         <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Noo! Noo! Mi nootib ibana! (No! No! My count honest! I show again!)</li>
         <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Noo! Noo! Mi nootib ibana! (No! No! My count honest! I show again!)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)-&gt;Noo! Noo! Mi nootib ibana! (No! No! My count honest! I show again!)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)-&gt;Noo! Noo! Mi nootib ibana! (No! No! My count honest! I show again!)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)-&gt;Noo! Noo! Mi nootib ibana! (No! No! My count honest! I show again!)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)-&gt;Noo! Noo! Mi nootib ibana! (No! No! My count honest! I show again!)</li>
         <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Utinni noo kroo ta! (Finding thing not stealing thing! Ask any of you!)</li>
         <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Utinni noo kroo ta! (Finding thing not stealing thing! Ask any of you!)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)-&gt;Utinni noo kroo ta! (Finding thing not stealing thing! Ask any of you!)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)-&gt;Utinni noo kroo ta! (Finding thing not stealing thing! Ask any of you!)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)-&gt;Utinni noo kroo ta! (Finding thing not stealing thing! Ask any of you!)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)-&gt;Utinni noo kroo ta! (Finding thing not stealing thing! Ask any of you!)</li>
         <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Bom'loo mi! Bom'loo, bom'loo! (Let me make offer! Always is offer!)</li>
         <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Bom'loo mi! Bom'loo, bom'loo! (Let me make offer! Always is offer!)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)-&gt;Bom'loo mi! Bom'loo, bom'loo! (Let me make offer! Always is offer!)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)-&gt;Bom'loo mi! Bom'loo, bom'loo! (Let me make offer! Always is offer!)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)-&gt;Bom'loo mi! Bom'loo, bom'loo! (Let me make offer! Always is offer!)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)-&gt;Bom'loo mi! Bom'loo, bom'loo! (Let me make offer! Always is offer!)</li>
         <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Sabioto! Sh'akka mi, noo nootib! (This not trial! This is crowd deciding my price!)</li>
         <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Sabioto! Sh'akka mi, noo nootib! (This not trial! This is crowd deciding my price!)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)-&gt;Sabioto! Sh'akka mi, noo nootib! (This not trial! This is crowd deciding my price!)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)-&gt;Sabioto! Sh'akka mi, noo nootib! (This not trial! This is crowd deciding my price!)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)-&gt;Sabioto! Sh'akka mi, noo nootib! (This not trial! This is crowd deciding my price!)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)-&gt;Sabioto! Sh'akka mi, noo nootib! (This not trial! This is crowd deciding my price!)</li>
         <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)-&gt;Taa baa... mambay... mi n'ekka. (Please. Please. I have nothing left to trade.)</li>
         <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)-&gt;Taa baa... mambay... mi n'ekka. (Please. Please. I have nothing left to trade.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)-&gt;Taa baa... mambay... mi n'ekka. (Please. Please. I have nothing left to trade.)</li>
-        <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)-&gt;Taa baa... mambay... mi n'ekka. (Please. Please. I have nothing left to trade.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)-&gt;Taa baa... mambay... mi n'ekka. (Please. Please. I have nothing left to trade.)</li>
+        <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)-&gt;Taa baa... mambay... mi n'ekka. (Please. Please. I have nothing left to trade.)</li>
       </value>
     </match>
   </Operation>

@@ -7,8 +7,8 @@
       <value>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Moh tamah tot! (*stares at friend*)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Moh tamah tot! (*stares at friend*)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Moh tamah tot! (*stares at friend*)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Moh tamah tot! (*stares at friend*)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)->Moh tamah tot! (*stares at friend*)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)->Moh tamah tot! (*stares at friend*)</li>
       </value>
     </match>
   </Operation>

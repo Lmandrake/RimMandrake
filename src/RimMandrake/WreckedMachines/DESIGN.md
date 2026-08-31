@@ -12,7 +12,7 @@ how the mod realises it._
 > driving progression unchanged. **No part of this mod ships in v1** — not the
 > tiers, not the art, not the repair loop, not any research.
 >
-> `mandrake.wreckedmachines` is undeployed and absent from `ModsConfig.xml`, and
+> `mandrake.rm.wreckedmachines` is undeployed and absent from `ModsConfig.xml`, and
 > that is the **intended** state. See `V2.md`.
 >
 > ⚠️ **Everything below is still true and still correct.** It is a design that is
@@ -253,7 +253,7 @@ Substitute *wreck* for *Door* and *the project gating the repaired machine* for
     <defName>WM_AnalyseWreckedSmelter</defName>
     <opportunityType>Analyse</opportunityType>
     <project>VFE_BasicFactories</project>
-    <things><li>WM_AutomatedSmelter_Wrecked</li></things>
+    <things><li>RM_WM_AutomatedSmelter_Wrecked</li></things>
 </PeteTimesSix.ResearchReinvented.Defs.SpecialResearchOpportunityDef>
 ```
 
@@ -562,7 +562,7 @@ exactly this reason, and caught the transposition in testing.
 ## 6. Defs authored 2026-08-12 — what was decided while writing them
 
 `Defs/ThingDefs_Buildings/Buildings_WreckedMachines_AutomatedSmelter.xml` now
-holds three ThingDefs: `WM_AutomatedSmelter_Wrecked`, `_Kludged`, `_Repaired`.
+holds three ThingDefs: `RM_WM_AutomatedSmelter_Wrecked`, `_Kludged`, `_Repaired`.
 Every field is either Core's or copied verbatim from
 `VFEFactory_AutomatedSmelter` (donor file and line range quoted at the top of the
 XML). Nothing was invented from memory.

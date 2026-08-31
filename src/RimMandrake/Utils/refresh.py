@@ -300,7 +300,7 @@ def write_stamp(fp, note=""):
     # 🔴 WRITE VIA A TEMP FILE, THEN READ IT BACK. Measured 2026-08-26: a plain
     # "w" over this path on the DrvFs mount left the TAIL of a longer previous
     # stamp behind, so the file held valid JSON followed by garbage:
-    #     ...list at 582"\n}\nmandrake.ashkarrlandmarkart"\n}
+    #     ...list at 582"\n}\nmandrake.rut.ashkarrlandmarkart"\n}
     # read_stamp() swallows ValueError and returns None, the artefact table then
     # reads "never stamped -> REBUILD", and the tool that exists to answer
     # "do I need a game load?" answers YES forever, for free, with no error.

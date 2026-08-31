@@ -2,17 +2,17 @@
 <Defs>
 
   <!-- ========================================================================
-       DW_PoweredDown — state 3: downed/off. Backs
+       RSW_DW_PoweredDown — state 3: downed/off. Backs
        Droidworks.HediffComp_PoweredDown (Source/Droidworks/HediffComp_PoweredDown.cs),
        whose CompPostTick pins severity at 1 and refuses all decay — this hediff
        does NOT self-clear; only Recipe_RebootDroid (see RecipeDefs below) removes
        it. The single stage's setMax mirrors JawaIonWeapons' own "overloaded"
-       stage shape (JawaIon_Stun, HediffDefs_JawaIonStun.xml) — same mechanism,
+       stage shape (RSW_JawaIon_Stun, HediffDefs_JawaIonStun.xml) — same mechanism,
        different door: Consciousness pinned under the vanilla downed threshold
        (~0.30) collapses the pawn alive.
   ======================================================================== -->
   <HediffDef>
-    <defName>DW_PoweredDown</defName>
+    <defName>RSW_DW_PoweredDown</defName>
     <label>powered down</label>
     <description>This droid's power has run out. It cannot act until someone reboots it.</description>
     <hediffClass>HediffWithComps</hediffClass>
@@ -38,15 +38,15 @@
   </HediffDef>
 
   <!-- ========================================================================
-       DW_IonOverload — PLACEHOLDER (per DROIDWORKS_PHASE0_XML_1's own spec: v0
+       RSW_DW_IonOverload — PLACEHOLDER (per DROIDWORKS_PHASE0_XML_1's own spec: v0
        only, mirrors JawaIonWeapons' "overloaded" stage shape rather than the
        full 4-stage buildup ramp). Not yet wired to any DamageWorker/HediffComp -
-       DROIDWORKS_ION_GUARD_1 is what makes JawaIon_Damage able to reach a droid
+       DROIDWORKS_ION_GUARD_1 is what makes RSW_JawaIon_Damage able to reach a droid
        at all; this def exists so a future pass has a real defName to target
        rather than inventing one at the point of use.
   ======================================================================== -->
   <HediffDef>
-    <defName>DW_IonOverload</defName>
+    <defName>RSW_DW_IonOverload</defName>
     <label>ion overload</label>
     <description>An accumulating ionic charge disrupting this droid's power bus. Enough of it drops the droid where it stands, powered down but intact.</description>
     <hediffClass>HediffWithComps</hediffClass>
@@ -75,7 +75,7 @@
   </HediffDef>
 
   <!-- ========================================================================
-       DW_RestrainingBolt — DROIDWORKS_BOLT_CORE_1. Pure vanilla HediffStage
+       RSW_DW_RestrainingBolt — DROIDWORKS_BOLT_CORE_1. Pure vanilla HediffStage
        fields, ZERO custom comp — matches OuterRim_RestraintBolt exactly, read
        verbatim from the live mod XML (Droid Depot workshop 3096501398,
        1.6/Defs/HediffDefs/Droid_General.xml): "HediffWithComps, no comps",
@@ -94,7 +94,7 @@
        copying the exact pattern droid_ruling.md section 3 documents.
   ======================================================================== -->
   <HediffDef>
-    <defName>DW_RestrainingBolt</defName>
+    <defName>RSW_DW_RestrainingBolt</defName>
     <label>restraining bolt</label>
     <description>A restraining bolt, clamped or surgically fitted. Mutes the droid, makes its hands clumsier, and overrides its ability to form its own opinions of others.</description>
     <hediffClass>HediffWithComps</hediffClass>
@@ -125,9 +125,9 @@
   </HediffDef>
 
   <!-- ========================================================================
-       DW_BoltResentment — hidden accumulator, backs
+       RSW_DW_BoltResentment — hidden accumulator, backs
        Droidworks.HediffComp_DWBoltResentment (Source/Droidworks/
-       HediffComp_DWBoltResentment.cs). Rises only while DW_RestrainingBolt is
+       HediffComp_DWBoltResentment.cs). Rises only while RSW_DW_RestrainingBolt is
        present on a Humanlike (sapient) pawn; pinned — never decays — once the
        bolt is removed (design/Jawa/droid_system_spec.md section 7:
        "Sapients accumulate resentment that persists after removal -> instant
@@ -149,7 +149,7 @@
        //       accumulator only, per BENCH's own scope note.
   ======================================================================== -->
   <HediffDef>
-    <defName>DW_BoltResentment</defName>
+    <defName>RSW_DW_BoltResentment</defName>
     <label>bolt resentment</label>
     <description>Accumulated resentment from being forced under a restraining bolt. Does not fade once the bolt is removed.</description>
     <hediffClass>HediffWithComps</hediffClass>

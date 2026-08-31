@@ -5,8 +5,8 @@
        Hatched into caste; the Hive does not acknowledge losses. -->
 
   <BackstoryDef>
-    <defName>Jawa_HatchedToTheLine</defName>
-    <identifier>Jawa_HatchedToTheLine</identifier>
+    <defName>RUT_Jawa_HatchedToTheLine</defName>
+    <identifier>RUT_Jawa_HatchedToTheLine</identifier>
     <slot>Childhood</slot>
     <title>hatched to the line</title>
     <titleShort>line-hatched</titleShort>
@@ -23,8 +23,8 @@
   </BackstoryDef>
 
   <BackstoryDef>
-    <defName>Jawa_WingedBrood</defName>
-    <identifier>Jawa_WingedBrood</identifier>
+    <defName>RUT_Jawa_WingedBrood</defName>
+    <identifier>RUT_Jawa_WingedBrood</identifier>
     <slot>Childhood</slot>
     <title>winged brood</title>
     <titleShort>winged</titleShort>
@@ -40,8 +40,8 @@
   </BackstoryDef>
 
   <BackstoryDef>
-    <defName>Jawa_FoundryArtisan</defName>
-    <identifier>Jawa_FoundryArtisan</identifier>
+    <defName>RUT_Jawa_FoundryArtisan</defName>
+    <identifier>RUT_Jawa_FoundryArtisan</identifier>
     <slot>Adulthood</slot>
     <title>foundry artisan</title>
     <titleShort>artisan</titleShort>
@@ -57,8 +57,8 @@
   </BackstoryDef>
 
   <BackstoryDef>
-    <defName>Jawa_SiegeCaller</defName>
-    <identifier>Jawa_SiegeCaller</identifier>
+    <defName>RUT_Jawa_SiegeCaller</defName>
+    <identifier>RUT_Jawa_SiegeCaller</identifier>
     <slot>Adulthood</slot>
     <title>siege-caller</title>
     <titleShort>caller</titleShort>
@@ -75,8 +75,8 @@
   </BackstoryDef>
 
   <BackstoryDef>
-    <defName>Jawa_JediHuntVeteran</defName>
-    <identifier>Jawa_JediHuntVeteran</identifier>
+    <defName>RUT_Jawa_JediHuntVeteran</defName>
+    <identifier>RUT_Jawa_JediHuntVeteran</identifier>
     <slot>Adulthood</slot>
     <title>hunt-detachment veteran</title>
     <titleShort>hunter</titleShort>
@@ -87,7 +87,7 @@
     </skillGains>
     <workDisables>None</workDisables>
     <forcedTraits>
-      <Jawa_SandStoic>0</Jawa_SandStoic>
+      <RUT_Jawa_SandStoic>0</RUT_Jawa_SandStoic>
     </forcedTraits>
     <spawnCategories>
       <li>JawaBSC_Geonosian</li>
@@ -98,8 +98,8 @@
        Two populations, one cult: Curators, and the Made they despise. -->
 
   <BackstoryDef>
-    <defName>Jawa_DesignBorn</defName>
-    <identifier>Jawa_DesignBorn</identifier>
+    <defName>RUT_Jawa_DesignBorn</defName>
+    <identifier>RUT_Jawa_DesignBorn</identifier>
     <slot>Childhood</slot>
     <title>design-born</title>
     <titleShort>designed</titleShort>
@@ -115,8 +115,8 @@
   </BackstoryDef>
 
   <BackstoryDef>
-    <defName>Jawa_VatDecanted</defName>
-    <identifier>Jawa_VatDecanted</identifier>
+    <defName>RUT_Jawa_VatDecanted</defName>
+    <identifier>RUT_Jawa_VatDecanted</identifier>
     <slot>Childhood</slot>
     <title>vat-decanted</title>
     <titleShort>decanted</titleShort>
@@ -134,8 +134,8 @@
   </BackstoryDef>
 
   <BackstoryDef>
-    <defName>Jawa_GeneCurator</defName>
-    <identifier>Jawa_GeneCurator</identifier>
+    <defName>RUT_Jawa_GeneCurator</defName>
+    <identifier>RUT_Jawa_GeneCurator</identifier>
     <slot>Adulthood</slot>
     <title>gene-curator</title>
     <titleShort>curator</titleShort>
@@ -152,8 +152,8 @@
   </BackstoryDef>
 
   <BackstoryDef>
-    <defName>Jawa_RetrievalAgent</defName>
-    <identifier>Jawa_RetrievalAgent</identifier>
+    <defName>RUT_Jawa_RetrievalAgent</defName>
+    <identifier>RUT_Jawa_RetrievalAgent</identifier>
     <slot>Adulthood</slot>
     <title>retrieval agent</title>
     <titleShort>retriever</titleShort>
@@ -170,8 +170,8 @@
   </BackstoryDef>
 
   <BackstoryDef>
-    <defName>Jawa_EscapedAsset</defName>
-    <identifier>Jawa_EscapedAsset</identifier>
+    <defName>RUT_Jawa_EscapedAsset</defName>
+    <identifier>RUT_Jawa_EscapedAsset</identifier>
     <slot>Adulthood</slot>
     <title>escaped asset</title>
     <titleShort>escapee</titleShort>
@@ -193,8 +193,8 @@
        accepted, they never spawn (FACTION_SPEC containment). -->
 
   <BackstoryDef>
-    <defName>Jawa_RaisedOnRetainer</defName>
-    <identifier>Jawa_RaisedOnRetainer</identifier>
+    <defName>RUT_Jawa_RaisedOnRetainer</defName>
+    <identifier>RUT_Jawa_RaisedOnRetainer</identifier>
     <slot>Childhood</slot>
     <title>raised on retainer</title>
     <titleShort>retainer</titleShort>
@@ -205,7 +205,7 @@
     </skillGains>
     <workDisables>None</workDisables>
     <forcedTraits>
-      <Jawa_Laconic>0</Jawa_Laconic>
+      <RUT_Jawa_Laconic>0</RUT_Jawa_Laconic>
     </forcedTraits>
     <spawnCategories>
       <li>JawaBSC_Blackstar</li>
@@ -213,8 +213,8 @@
   </BackstoryDef>
 
   <BackstoryDef>
-    <defName>Jawa_BountyPostedYoung</defName>
-    <identifier>Jawa_BountyPostedYoung</identifier>
+    <defName>RUT_Jawa_BountyPostedYoung</defName>
+    <identifier>RUT_Jawa_BountyPostedYoung</identifier>
     <slot>Childhood</slot>
     <title>bounty-posted young</title>
     <titleShort>hunted</titleShort>
@@ -234,8 +234,8 @@
   </BackstoryDef>
 
   <BackstoryDef>
-    <defName>Jawa_NamedHunter</defName>
-    <identifier>Jawa_NamedHunter</identifier>
+    <defName>RUT_Jawa_NamedHunter</defName>
+    <identifier>RUT_Jawa_NamedHunter</identifier>
     <slot>Adulthood</slot>
     <title>named hunter</title>
     <titleShort>hunter</titleShort>
@@ -252,8 +252,8 @@
   </BackstoryDef>
 
   <BackstoryDef>
-    <defName>Jawa_ContractBroker</defName>
-    <identifier>Jawa_ContractBroker</identifier>
+    <defName>RUT_Jawa_ContractBroker</defName>
+    <identifier>RUT_Jawa_ContractBroker</identifier>
     <slot>Adulthood</slot>
     <title>contract broker</title>
     <titleShort>broker</titleShort>
@@ -269,8 +269,8 @@
   </BackstoryDef>
 
   <BackstoryDef>
-    <defName>Jawa_DisgracedHunter</defName>
-    <identifier>Jawa_DisgracedHunter</identifier>
+    <defName>RUT_Jawa_DisgracedHunter</defName>
+    <identifier>RUT_Jawa_DisgracedHunter</identifier>
     <slot>Adulthood</slot>
     <title>disgraced hunter</title>
     <titleShort>disgraced</titleShort>
@@ -282,7 +282,7 @@
     </skillGains>
     <workDisables>None</workDisables>
     <forcedTraits>
-      <Jawa_Laconic>0</Jawa_Laconic>
+      <RUT_Jawa_Laconic>0</RUT_Jawa_Laconic>
     </forcedTraits>
     <spawnCategories>
       <li>JawaBSC_Blackstar</li>

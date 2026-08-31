@@ -5,7 +5,7 @@ using RimWorld;
 using RimWorld.Planet;
 using Verse;
 
-namespace Inhabited
+namespace RimMandrake.Inhabited
 {
     /// <summary>
     /// A place on the planet that somebody lives in, and the people themselves.
@@ -55,7 +55,7 @@ namespace Inhabited
         public InhabitedStock stock;
 
         /// <summary>What the world map reports.</summary>
-        public InhabitedState state = InhabitedState.Inhabited;
+        public InhabitedState state = InhabitedState.RimMandrake.Inhabited;
 
         /// <summary>
         /// True once the cast has been rolled. A second visit must not re-roll a
@@ -113,7 +113,7 @@ namespace Inhabited
             Scribe_Defs.Look(ref castDef, "castDef");
             Scribe_Deep.Look(ref roster, "roster", this);
             Scribe_Deep.Look(ref stock, "stock", this);
-            Scribe_Values.Look(ref state, "state", InhabitedState.Inhabited);
+            Scribe_Values.Look(ref state, "state", InhabitedState.RimMandrake.Inhabited);
             Scribe_Values.Look(ref castInstantiated, "castInstantiated", defaultValue: false);
             Scribe_Values.Look(ref nameInt, "name");
             if (Scribe.mode == LoadSaveMode.PostLoadInit)

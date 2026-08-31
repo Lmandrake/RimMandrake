@@ -5,7 +5,7 @@ using RimWorld.Planet;
 using Verse;
 using Verse.AI.Group;
 
-namespace Inhabited
+namespace RimMandrake.Inhabited
 {
     /// <summary>
     /// The survivors go back into the world. The dead do not.
@@ -69,14 +69,14 @@ namespace Inhabited
                 p.DeSpawnOrDeselect();
                 if (!place.roster.TryAdd(p, canMergeWithExistingStacks: false))
                 {
-                    Log.Warning("[Inhabited] could not return " + p.LabelShort + " to the roster of "
+                    Log.Warning("[RimMandrake.Inhabited] could not return " + p.LabelShort + " to the roster of "
                                 + place.LabelCap + "; they are left to the world.");
                 }
             }
 
             // No death record, no memorial, no ledger, no counter. The roster IS
             // the survivors and the absence is the memory.
-            if (place.SoulCount == 0 && place.state == InhabitedState.Inhabited)
+            if (place.SoulCount == 0 && place.state == InhabitedState.RimMandrake.Inhabited)
             {
                 place.state = InhabitedState.Abandoned;
             }

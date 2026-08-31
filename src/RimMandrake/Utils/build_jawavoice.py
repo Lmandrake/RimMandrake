@@ -17,7 +17,7 @@ MECHANISM (verified against SpeakUp source, see jawaese.py header):
 
 IDENTITY GATE (dual, per the xenotype-not-a-condition finding):
     colonists:  INITIATOR_faction==PlayerColony / PlayerTribe
-    NPC jawas:  INITIATOR_kind==RimMandrake_Jawa / RimMandrake_JawaTribal
+    NPC jawas:  INITIATOR_kind==RSW_Jawa / RSW_JawaTribal
   ⚠️ Corrected 2026-08-21: this line said `OuterRim_JawaTribal`, which is absent
   from the live capture. GATES below was already right; only the prose was stale.
   Emitted as separate gated entries so a flip to a trait-based gate later is a
@@ -43,7 +43,7 @@ import jawaese
 # 2026-08-21 (JAWAVOICE_BUILDER_IS_ORPHANED_1).
 #   SRC pointed at `Utils/_speakup_src_1p6`, which has never existed. The snapshot is
 #     where this file's own docstring always said it was: `vendor/mod_sources/`.
-#   OUT was short one `..` and resolved to `src/RimMandrake/src/Jawa/JawaVoice`, so a
+#   OUT was short one `..` and resolved to `src/RimMandrake/src/RimStarWars/JawaVoice`, so a
 #     run would `makedirs` a phantom tree and write nine files nobody would ever read.
 # ⚠️ That second bug was the ONLY thing protecting the nine committed patches. Anyone
 # who fixed the path without noticing the first bug would have pointed a working writer
@@ -56,15 +56,15 @@ if not os.path.isdir(os.path.join(SRC, "Defs")):
     raise SystemExit(
         "build_jawavoice: no SpeakUp snapshot at %s\n"
         "⛔ REFUSING rather than emitting an empty mod over the nine committed\n"
-        "   patches in src/Jawa/JawaVoice/Patches/. Restore the snapshot first." % SRC)
+        "   patches in src/RimStarWars/JawaVoice/Patches/. Restore the snapshot first." % SRC)
 
 # The two gate predicates. To switch to a trait gate later, replace both with
 # a single ("INITIATOR_trait==Jawaese-speaker",) entry.
 GATES = [
     "INITIATOR_faction==PlayerColony",
     "INITIATOR_faction==PlayerTribe",
-    "INITIATOR_kind==RimMandrake_Jawa",
-    "INITIATOR_kind==RimMandrake_JawaTribal",
+    "INITIATOR_kind==RSW_Jawa",
+    "INITIATOR_kind==RSW_JawaTribal",
 ]
 
 # Canon-anchor situation map: defName -> CANON key (jawaese.CANON).

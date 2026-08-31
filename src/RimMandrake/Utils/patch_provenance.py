@@ -62,7 +62,7 @@ CUSTOM = os.path.join(ROOT, "src")
 LEDGER = os.path.join(ROOT, "observed", "2026-08-13",
                       "inventory", "patch_ledger.json")
 
-# "<!-- Mid_Blue_Blaster_Bolt : 15 -> 26 -->"
+# "<!-- RSW_Mid_Blue_Blaster_Bolt : 15 -> 26 -->"
 # "<!-- Force_LightsaberBase / point : 28 -> 99 -->"
 # "<!-- MA_ClawSaber / blade AP 0.24 -> 0.00 -->"
 # "<!-- AG_Forsaken_Hood [powered] ArmorRating_Sharp -> 1.40 -->"   (no original)

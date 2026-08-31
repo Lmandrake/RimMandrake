@@ -6,7 +6,7 @@ using RimWorld;
 using Vehicles;
 using Verse;
 
-namespace DesertVehicleReskin
+namespace RimMandrake.DesertVehicleReskin
 {
     /// <summary>
     /// The verify step for VEHICLE_FUEL_ACCEPTS_VEGETABLES_1: what does the
@@ -34,7 +34,7 @@ namespace DesertVehicleReskin
                 .ToList();
 
             StringBuilder report = new StringBuilder();
-            report.AppendLine("[DesertVehicleReskin] widened vehicle fuel — "
+            report.AppendLine("[RimMandrake.DesertVehicleReskin] widened vehicle fuel — "
                 + accepted.Count + " ThingDefs pass the vegetable rule:");
             report.AppendLine(string.Join(", ", accepted.Select(def => def.defName)));
 

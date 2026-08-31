@@ -3,7 +3,7 @@ using RimWorld;
 using Verse;
 using Verse.AI;
 
-namespace Droidworks
+namespace RimMandrake.StarWars.Droidworks
 {
     /// <summary>
     /// The field route for fitting a restraining bolt: a 600-tick job on a
@@ -17,7 +17,7 @@ namespace Droidworks
     /// recipe GetPartsToApplyOn.
     ///
     /// v0 SIMPLIFICATION, same precedent Recipe_RebootDroid.cs already set
-    /// for this codebase: no ingredient consumed here. DW_RestrainingBoltItem
+    /// for this codebase: no ingredient consumed here. RSW_DW_RestrainingBoltItem
     /// still exists as the surgery route's crafted ingredient and as a
     /// general economy piece - "outside help, no formal bill" is the whole
     /// point of a field verb, and wiring a WorkGiver/float-menu option that
@@ -51,9 +51,9 @@ namespace Droidworks
             {
                 Pawn target = Target;
                 if (target == null || target.Dead) return;
-                if (!target.health.hediffSet.HasHediff(DroidworksDefOf.DW_RestrainingBolt))
+                if (!target.health.hediffSet.HasHediff(DroidworksDefOf.RSW_DW_RestrainingBolt))
                 {
-                    target.health.AddHediff(DroidworksDefOf.DW_RestrainingBolt);
+                    target.health.AddHediff(DroidworksDefOf.RSW_DW_RestrainingBolt);
                 }
                 DroidworksBoltUtility.EnsureBoltResentment(target);
             });

@@ -5,7 +5,7 @@ Emits design/Jawa/worldbuilding/review/pawn_flavor_register.html and, when no
 owner-touched decisions file exists, the prefill JSON beside it.
 
 The sheet's row data merges two sources:
-  * SHIPPED content read live from src/RimMandrake/Jawa_PawnFlavor/Defs/*.xml
+  * SHIPPED content read live from src/RimUtinni/PawnFlavor/Defs/*.xml
     (backstories + traits) and the ISEKAI reflavor patch - regenerating the
     sheet tracks the mod.
   * DESIGNED content transcribed from design/Jawa/pawn_flavor_design.md
@@ -44,11 +44,11 @@ FACTION_OF_CAT = {
 }
 
 SHIPPED_TRAIT_FACTION = {
-    "Jawa_WaterDiscipline": ("Cross-faction seed families", "D-family: low water/food needs; colony-waste mood hit."),
-    "Jawa_SandStoic": ("Deep Desert Tribes", "Heat and sandstorm tolerance; the desert does not frighten them."),
-    "Jawa_Numbered": ("Galactic Empire", "Bonds slowly, insult-immune - a designation, not a name."),
-    "Jawa_Laconic": ("Blackstar Company", "Says little; social chill, unshakable under fire."),
-    "Jawa_PodracerReflexes": ("Cross-faction seed families", "A-family: speed and dodge up, ranged aim down, reckless."),
+    "RUT_Jawa_WaterDiscipline": ("Cross-faction seed families", "D-family: low water/food needs; colony-waste mood hit."),
+    "RUT_Jawa_SandStoic": ("Deep Desert Tribes", "Heat and sandstorm tolerance; the desert does not frighten them."),
+    "RUT_Jawa_Numbered": ("Galactic Empire", "Bonds slowly, insult-immune - a designation, not a name."),
+    "RUT_Jawa_Laconic": ("Blackstar Company", "Says little; social chill, unshakable under fire."),
+    "RUT_Jawa_PodracerReflexes": ("Cross-faction seed families", "A-family: speed and dodge up, ranged aim down, reckless."),
 }
 
 # DESIGNED rows: (faction, layer, name, does, status, contested, note)
@@ -173,9 +173,9 @@ for n, t in (("Three Centuries of Protocol", "Service: social/trade monster, abs
 # ---------------------------------------------------------------------------
 
 # shipped backstories the slates designated as their faction's COMMON one
-COMMON_SHIPPED = {"Jawa_SandcrawlerBorn", "Jawa_FarmFostered", "Jawa_SunSwornChild",
-                  "Jawa_ScrapSifter", "Jawa_SpringSworn", "Jawa_VatDecanted",
-                  "Jawa_HatchedToTheLine"}
+COMMON_SHIPPED = {"RUT_Jawa_SandcrawlerBorn", "RUT_Jawa_FarmFostered", "RUT_Jawa_SunSwornChild",
+                  "RUT_Jawa_ScrapSifter", "RUT_Jawa_SpringSworn", "RUT_Jawa_VatDecanted",
+                  "RUT_Jawa_HatchedToTheLine"}
 
 R6 = [  # (faction, layer, name, does[, contested])
  # Jawa Trade Moot
@@ -484,7 +484,7 @@ ISEKAI_DOES = {
 
 def shipped_rows():
     rows = []
-    for f in sorted(glob.glob(os.path.join(ROOT, "src/RimMandrake/Jawa_PawnFlavor/Defs/Backstories_*.xml"))):
+    for f in sorted(glob.glob(os.path.join(ROOT, "src/RimUtinni/PawnFlavor/Defs/Backstories_*.xml"))):
         for bs in ET.parse(f).getroot():
             cat = [c.text for c in bs.find("spawnCategories")][0]
             skills = ", ".join("%s+%s" % (s.tag[:5], s.text) for s in bs.find("skillGains"))
@@ -498,7 +498,7 @@ def shipped_rows():
                 "does": (skills or "no skill gains") + ".",
                 "status": "shipped-xml", "contested": False,
                 "desc": (bs.findtext("description") or "")})
-    tf = os.path.join(ROOT, "src/RimMandrake/Jawa_PawnFlavor/Defs/Traits_JawaPawnFlavor.xml")
+    tf = os.path.join(ROOT, "src/RimUtinni/PawnFlavor/Defs/Traits_JawaPawnFlavor.xml")
     for td in ET.parse(tf).getroot():
         dn = td.findtext("defName")
         fac, does = SHIPPED_TRAIT_FACTION[dn]

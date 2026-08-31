@@ -3,7 +3,7 @@ using System.Linq;
 using RimWorld;
 using Verse;
 
-namespace Droidworks
+namespace RimMandrake.StarWars.Droidworks
 {
     /// <summary>
     /// DROIDWORKS_WIPE_AND_SPIKE_1. Memory wipe, per design/Jawa/droid_system_spec.md

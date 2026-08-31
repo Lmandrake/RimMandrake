@@ -9,7 +9,7 @@ Usage: grade_authored_kinds_trial.py <worktree-root>
 import re, sys, os
 import xml.etree.ElementTree as ET
 
-P = "src/Jawa/Jawa_Patches/Patches/{}.xml"
+P = "src/SPLIT_Phase3/Jawa_Patches/Patches/{}.xml"
 FILES = ["DeepDesertTribes", "BlackstarCompany", "GalacticEmpire"]
 # vanilla kinds that must never appear in one of OUR combat groups
 VANILLA_TRIBAL = re.compile(r"<Tribal_\w+>")

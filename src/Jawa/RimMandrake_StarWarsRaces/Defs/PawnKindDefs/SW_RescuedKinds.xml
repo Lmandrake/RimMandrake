@@ -62,76 +62,76 @@
     <initialResistanceRange>10~17</initialResistanceRange>
   </PawnKindDef>
   <PawnKindDef ParentName="RimMandrake_ColonyPawnKind">
-    <defName>RimMandrake_Aqualish</defName>
+    <defName>RSW_Aqualish</defName>
     <label>aqualish</label>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeAqualish>999</RimMandrakeAqualish>
+        <RSW_RimMandrakeAqualish>999</RSW_RimMandrakeAqualish>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="RimMandrake_ColonyPawnKind">
-    <defName>RimMandrake_Arkanian</defName>
+    <defName>RSW_Arkanian</defName>
     <label>arkanian</label>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeArkanian>999</RimMandrakeArkanian>
+        <RSW_RimMandrakeArkanian>999</RSW_RimMandrakeArkanian>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="RimMandrake_TribalPawnKind">
-    <defName>RimMandrake_ArkanianTribal</defName>
+    <defName>RSW_ArkanianTribal</defName>
     <label>tribal arkanian</label>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeArkanian>999</RimMandrakeArkanian>
+        <RSW_RimMandrakeArkanian>999</RSW_RimMandrakeArkanian>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="RimMandrake_ColonyPawnKind">
-    <defName>RimMandrake_Geonosian</defName>
+    <defName>RSW_Geonosian</defName>
     <label>geonosian</label>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeGeonosianVariants>999</RimMandrakeGeonosianVariants>
+        <RSW_RimMandrakeGeonosianVariants>999</RSW_RimMandrakeGeonosianVariants>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="RimMandrake_TribalPawnKind">
-    <defName>RimMandrake_GeonosianTribal</defName>
+    <defName>RSW_GeonosianTribal</defName>
     <label>tribal geonosian</label>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeGeonosianVariants>999</RimMandrakeGeonosianVariants>
+        <RSW_RimMandrakeGeonosianVariants>999</RSW_RimMandrakeGeonosianVariants>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="RimMandrake_ColonyPawnKind">
-    <defName>RimMandrake_Herglic</defName>
+    <defName>RSW_Herglic</defName>
     <label>herglic</label>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeHerglic>999</RimMandrakeHerglic>
+        <RSW_RimMandrakeHerglic>999</RSW_RimMandrakeHerglic>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="RimMandrake_ColonyPawnKind">
-    <defName>RimMandrake_Jawa</defName>
+    <defName>RSW_Jawa</defName>
     <label>jawa</label>
     <xenotypeSet>
       <xenotypeChances>
-        <MandrakeJawa>999</MandrakeJawa>
+        <RSW_MandrakeJawa>999</RSW_MandrakeJawa>
       </xenotypeChances>
     </xenotypeSet>
       <!-- dusty dark brown — Jawa -->
     <apparelColor>(77,58,42)</apparelColor>
   </PawnKindDef>
   <PawnKindDef ParentName="RimMandrake_TribalPawnKind">
-    <defName>RimMandrake_JawaTribal</defName>
+    <defName>RSW_JawaTribal</defName>
     <label>tribal jawa</label>
     <xenotypeSet>
       <xenotypeChances>
-        <MandrakeJawa>999</MandrakeJawa>
+        <RSW_MandrakeJawa>999</RSW_MandrakeJawa>
       </xenotypeChances>
     </xenotypeSet>
       <apparelRequired>
@@ -147,74 +147,74 @@
     <apparelColor>(77,58,42)</apparelColor>
   </PawnKindDef>
   <PawnKindDef ParentName="RimMandrake_ColonyPawnKind">
-    <defName>RimMandrake_Kaminoan</defName>
+    <defName>RSW_Kaminoan</defName>
     <label>kaminoan</label>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeKaminoan>999</RimMandrakeKaminoan>
+        <RSW_RimMandrakeKaminoan>999</RSW_RimMandrakeKaminoan>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="RimMandrake_ColonyPawnKind">
-    <defName>RimMandrake_MonCalamari</defName>
+    <defName>RSW_MonCalamari</defName>
     <label>mon calamari</label>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeMonCalamari>999</RimMandrakeMonCalamari>
+        <RSW_RimMandrakeMonCalamari>999</RSW_RimMandrakeMonCalamari>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="RimMandrake_ColonyPawnKind">
-    <defName>RimMandrake_Nikto</defName>
+    <defName>RSW_Nikto</defName>
     <label>nikto</label>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeNikto>999</RimMandrakeNikto>
+        <RSW_RimMandrakeNikto>999</RSW_RimMandrakeNikto>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="RimMandrake_TribalPawnKind">
-    <defName>RimMandrake_NiktoTribal</defName>
+    <defName>RSW_NiktoTribal</defName>
     <label>tribal nikto</label>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeNikto>999</RimMandrakeNikto>
+        <RSW_RimMandrakeNikto>999</RSW_RimMandrakeNikto>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="RimMandrake_ColonyPawnKind">
-    <defName>RimMandrake_Quarren</defName>
+    <defName>RSW_Quarren</defName>
     <label>quarren</label>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeQuarren>999</RimMandrakeQuarren>
+        <RSW_RimMandrakeQuarren>999</RSW_RimMandrakeQuarren>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="RimMandrake_TribalPawnKind">
-    <defName>RimMandrake_QuarrenTribal</defName>
+    <defName>RSW_QuarrenTribal</defName>
     <label>tribal quarren</label>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeQuarren>999</RimMandrakeQuarren>
+        <RSW_RimMandrakeQuarren>999</RSW_RimMandrakeQuarren>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="RimMandrake_ColonyPawnKind">
-    <defName>RimMandrake_Wookiee</defName>
+    <defName>RSW_Wookiee</defName>
     <label>wookiee</label>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeWookiee>999</RimMandrakeWookiee>
+        <RSW_RimMandrakeWookiee>999</RSW_RimMandrakeWookiee>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>
   <PawnKindDef ParentName="RimMandrake_TribalPawnKind">
-    <defName>RimMandrake_WookieeTribal</defName>
+    <defName>RSW_WookieeTribal</defName>
     <label>tribal wookiee</label>
     <xenotypeSet>
       <xenotypeChances>
-        <RimMandrakeWookiee>999</RimMandrakeWookiee>
+        <RSW_RimMandrakeWookiee>999</RSW_RimMandrakeWookiee>
       </xenotypeChances>
     </xenotypeSet>
   </PawnKindDef>

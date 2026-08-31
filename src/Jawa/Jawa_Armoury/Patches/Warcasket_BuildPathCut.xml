@@ -113,7 +113,7 @@
       485  farhanfair.warcaskettweakspatch
       501  dmp.vfepirates.warcasketwork
       502  aoba.warcasket
-      563  mandrake.jawa.armoury              <- us, after all four ✅
+      563  mandrake.rsw.armoury              <- us, after all four ✅
 
   Wrapped in PatchOperationFindMod so the whole file is a silent no-op if VFE
   Pirates is ever removed. Each op is additionally PatchOperationConditional on

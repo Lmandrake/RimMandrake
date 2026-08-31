@@ -4,8 +4,8 @@
   <!-- ===== Jawa Trade Moot - JawaBSC_Moot ===== -->
 
   <BackstoryDef>
-    <defName>Jawa_SandcrawlerBorn</defName>
-    <identifier>Jawa_SandcrawlerBorn</identifier>
+    <defName>RUT_Jawa_SandcrawlerBorn</defName>
+    <identifier>RUT_Jawa_SandcrawlerBorn</identifier>
     <slot>Childhood</slot>
     <title>sandcrawler-born</title>
     <titleShort>crawler-born</titleShort>
@@ -21,8 +21,8 @@
   </BackstoryDef>
 
   <BackstoryDef>
-    <defName>Jawa_TinkererChild</defName>
-    <identifier>Jawa_TinkererChild</identifier>
+    <defName>RUT_Jawa_TinkererChild</defName>
+    <identifier>RUT_Jawa_TinkererChild</identifier>
     <slot>Childhood</slot>
     <title>tinkerer's child</title>
     <titleShort>tinkerer</titleShort>
@@ -38,8 +38,8 @@
   </BackstoryDef>
 
   <BackstoryDef>
-    <defName>Jawa_BazaarHaggler</defName>
-    <identifier>Jawa_BazaarHaggler</identifier>
+    <defName>RUT_Jawa_BazaarHaggler</defName>
+    <identifier>RUT_Jawa_BazaarHaggler</identifier>
     <slot>Adulthood</slot>
     <title>bazaar haggler</title>
     <titleShort>haggler</titleShort>
@@ -56,8 +56,8 @@
   </BackstoryDef>
 
   <BackstoryDef>
-    <defName>Jawa_SalvageMaster</defName>
-    <identifier>Jawa_SalvageMaster</identifier>
+    <defName>RUT_Jawa_SalvageMaster</defName>
+    <identifier>RUT_Jawa_SalvageMaster</identifier>
     <slot>Adulthood</slot>
     <title>salvage master</title>
     <titleShort>salvager</titleShort>
@@ -74,8 +74,8 @@
   </BackstoryDef>
 
   <BackstoryDef>
-    <defName>Jawa_MootSpeaker</defName>
-    <identifier>Jawa_MootSpeaker</identifier>
+    <defName>RUT_Jawa_MootSpeaker</defName>
+    <identifier>RUT_Jawa_MootSpeaker</identifier>
     <slot>Adulthood</slot>
     <title>moot speaker</title>
     <titleShort>speaker</titleShort>
@@ -94,8 +94,8 @@
        Life-web covenant people, NOT a steam cult - see FACTION_SPEC.md section 6. -->
 
   <BackstoryDef>
-    <defName>Jawa_SpringSworn</defName>
-    <identifier>Jawa_SpringSworn</identifier>
+    <defName>RUT_Jawa_SpringSworn</defName>
+    <identifier>RUT_Jawa_SpringSworn</identifier>
     <slot>Childhood</slot>
     <title>spring-sworn</title>
     <titleShort>spring-sworn</titleShort>
@@ -112,8 +112,8 @@
   </BackstoryDef>
 
   <BackstoryDef>
-    <defName>Jawa_DroughtMarked</defName>
-    <identifier>Jawa_DroughtMarked</identifier>
+    <defName>RUT_Jawa_DroughtMarked</defName>
+    <identifier>RUT_Jawa_DroughtMarked</identifier>
     <slot>Childhood</slot>
     <title>drought-marked</title>
     <titleShort>marked</titleShort>
@@ -124,7 +124,7 @@
     </skillGains>
     <workDisables>None</workDisables>
     <forcedTraits>
-      <Jawa_WaterDiscipline>0</Jawa_WaterDiscipline>
+      <RUT_Jawa_WaterDiscipline>0</RUT_Jawa_WaterDiscipline>
     </forcedTraits>
     <spawnCategories>
       <li>JawaBSC_Wildsteam</li>
@@ -132,8 +132,8 @@
   </BackstoryDef>
 
   <BackstoryDef>
-    <defName>Jawa_WebTender</defName>
-    <identifier>Jawa_WebTender</identifier>
+    <defName>RUT_Jawa_WebTender</defName>
+    <identifier>RUT_Jawa_WebTender</identifier>
     <slot>Adulthood</slot>
     <title>web-tender</title>
     <titleShort>tender</titleShort>
@@ -149,8 +149,8 @@
   </BackstoryDef>
 
   <BackstoryDef>
-    <defName>Jawa_SeedCarrier</defName>
-    <identifier>Jawa_SeedCarrier</identifier>
+    <defName>RUT_Jawa_SeedCarrier</defName>
+    <identifier>RUT_Jawa_SeedCarrier</identifier>
     <slot>Adulthood</slot>
     <title>seed-carrier</title>
     <titleShort>carrier</titleShort>
@@ -167,8 +167,8 @@
   </BackstoryDef>
 
   <BackstoryDef>
-    <defName>Jawa_FreeholdWarrior</defName>
-    <identifier>Jawa_FreeholdWarrior</identifier>
+    <defName>RUT_Jawa_FreeholdWarrior</defName>
+    <identifier>RUT_Jawa_FreeholdWarrior</identifier>
     <slot>Adulthood</slot>
     <title>freehold warrior</title>
     <titleShort>warrior</titleShort>
@@ -188,8 +188,8 @@
        Everything orbits the warcasket. -->
 
   <BackstoryDef>
-    <defName>Jawa_CasketCradled</defName>
-    <identifier>Jawa_CasketCradled</identifier>
+    <defName>RUT_Jawa_CasketCradled</defName>
+    <identifier>RUT_Jawa_CasketCradled</identifier>
     <slot>Childhood</slot>
     <title>casket-cradled</title>
     <titleShort>cradled</titleShort>
@@ -205,8 +205,8 @@
   </BackstoryDef>
 
   <BackstoryDef>
-    <defName>Jawa_ScrapSifter</defName>
-    <identifier>Jawa_ScrapSifter</identifier>
+    <defName>RUT_Jawa_ScrapSifter</defName>
+    <identifier>RUT_Jawa_ScrapSifter</identifier>
     <slot>Childhood</slot>
     <title>scrap-sifter</title>
     <titleShort>sifter</titleShort>
@@ -223,8 +223,8 @@
   </BackstoryDef>
 
   <BackstoryDef>
-    <defName>Jawa_CasketWright</defName>
-    <identifier>Jawa_CasketWright</identifier>
+    <defName>RUT_Jawa_CasketWright</defName>
+    <identifier>RUT_Jawa_CasketWright</identifier>
     <slot>Adulthood</slot>
     <title>casket-wright</title>
     <titleShort>wright</titleShort>
@@ -241,8 +241,8 @@
   </BackstoryDef>
 
   <BackstoryDef>
-    <defName>Jawa_CasketDenied</defName>
-    <identifier>Jawa_CasketDenied</identifier>
+    <defName>RUT_Jawa_CasketDenied</defName>
+    <identifier>RUT_Jawa_CasketDenied</identifier>
     <slot>Adulthood</slot>
     <title>casket-denied</title>
     <titleShort>denied</titleShort>
@@ -259,8 +259,8 @@
   </BackstoryDef>
 
   <BackstoryDef>
-    <defName>Jawa_WallOfMeat</defName>
-    <identifier>Jawa_WallOfMeat</identifier>
+    <defName>RUT_Jawa_WallOfMeat</defName>
+    <identifier>RUT_Jawa_WallOfMeat</identifier>
     <slot>Adulthood</slot>
     <title>wall-of-meat veteran</title>
     <titleShort>veteran</titleShort>
@@ -285,8 +285,8 @@
        no new wiring needed. Forced traits: Traits_JawaPawnFlavor.xml. -->
 
   <BackstoryDef>
-    <defName>Jawa_ShoreRat</defName>
-    <identifier>Jawa_ShoreRat</identifier>
+    <defName>RUT_Jawa_ShoreRat</defName>
+    <identifier>RUT_Jawa_ShoreRat</identifier>
     <slot>Childhood</slot>
     <title>shore-rat</title>
     <titleShort>shore-rat</titleShort>
@@ -297,7 +297,7 @@
     </skillGains>
     <workDisables>None</workDisables>
     <forcedTraits>
-      <Jawa_ShoreHardened>0</Jawa_ShoreHardened>
+      <RUT_Jawa_ShoreHardened>0</RUT_Jawa_ShoreHardened>
     </forcedTraits>
     <spawnCategories>
       <li>JawaBSC_Junkers</li>
@@ -305,8 +305,8 @@
   </BackstoryDef>
 
   <BackstoryDef>
-    <defName>Jawa_StillMaster</defName>
-    <identifier>Jawa_StillMaster</identifier>
+    <defName>RUT_Jawa_StillMaster</defName>
+    <identifier>RUT_Jawa_StillMaster</identifier>
     <slot>Adulthood</slot>
     <title>still-master</title>
     <titleShort>still-master</titleShort>
@@ -317,7 +317,7 @@
     </skillGains>
     <workDisables>None</workDisables>
     <forcedTraits>
-      <Jawa_StillTemper>0</Jawa_StillTemper>
+      <RUT_Jawa_StillTemper>0</RUT_Jawa_StillTemper>
     </forcedTraits>
     <spawnCategories>
       <li>JawaBSC_Junkers</li>
@@ -325,8 +325,8 @@
   </BackstoryDef>
 
   <BackstoryDef>
-    <defName>Jawa_PipeTapper</defName>
-    <identifier>Jawa_PipeTapper</identifier>
+    <defName>RUT_Jawa_PipeTapper</defName>
+    <identifier>RUT_Jawa_PipeTapper</identifier>
     <slot>Adulthood</slot>
     <title>pipe-tapper</title>
     <titleShort>tapper</titleShort>
@@ -337,7 +337,7 @@
     </skillGains>
     <workDisables>None</workDisables>
     <forcedTraits>
-      <Jawa_LineTapper>0</Jawa_LineTapper>
+      <RUT_Jawa_LineTapper>0</RUT_Jawa_LineTapper>
     </forcedTraits>
     <spawnCategories>
       <li>JawaBSC_Junkers</li>

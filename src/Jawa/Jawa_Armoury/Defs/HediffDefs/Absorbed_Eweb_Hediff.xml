@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <!-- Absorbed from maincrep.eweb (workshop 3555571107), WEAPONS_ABSORPTION_WAVE_1.
-     defName preserved verbatim; unchanged from source. Paired with RN2_SteelBall
+     defName preserved verbatim; unchanged from source. Paired with RSW_RN2_SteelBall
      (Defs/DamageDefs/Absorbed_Eweb_Damage.xml) — see that file's note. -->
 <Defs>
 
   <HediffDef ParentName="InjuryBase">
-    <defName>RN2_SteelBall_Hediff</defName>
+    <defName>RSW_RN2_SteelBall_Hediff</defName>
     <label>shrapnel</label>
     <labelNoun>a shrapnel wound</labelNoun>
     <description>A shrapnel wound.</description>

@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Verse;
 
-namespace RuthlessPursuingMechanoids
+namespace RUT_RuthlessPursuingMechanoids
 {
     public static class DebugUtility
     {

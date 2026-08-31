@@ -96,9 +96,9 @@
     nothing here models.
   -->
   <Operation Class="PatchOperationConditional">
-    <xpath>Defs/XenotypeDef[defName="RimMandrakeHutt"]/genes</xpath>
+    <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeHutt"]/genes</xpath>
     <match Class="PatchOperationAdd">
-      <xpath>Defs/XenotypeDef[defName="RimMandrakeHutt"]/genes</xpath>
+      <xpath>Defs/XenotypeDef[defName="RSW_RimMandrakeHutt"]/genes</xpath>
       <value>
         <li MayRequire="LovelyDovey.Sex.WithRosaline">SEX_AlwaysAphrodor</li>
       </value>

@@ -13,12 +13,12 @@
 -->
 <Defs>
   <EffecterDef>
-    <defName>RimMandrake_Effecter_InkSprayDirectional</defName>
+    <defName>RSW_Effecter_InkSprayDirectional</defName>
     <children>
       <li>
         <subEffecterClass>SubEffecter_SprayerTriggered</subEffecterClass>
         <positionRadius>0.15</positionRadius>
-        <fleckDef>RimMandrake_Fleck_InkSpray</fleckDef>
+        <fleckDef>RSW_Fleck_InkSpray</fleckDef>
         <burstCount>10~15</burstCount>
         <speed>0.6~3.0</speed>
         <scale>0.5~1.2</scale>
@@ -29,7 +29,7 @@
     </children>
   </EffecterDef>
   <FleckDef ParentName="FleckBase_Thrown">
-    <defName>RimMandrake_Fleck_InkSpray</defName>
+    <defName>RSW_Fleck_InkSpray</defName>
     <graphicData>
       <texPath>Things/Mote/AcidSpray</texPath>
       <color>(0,0,65)</color>
@@ -42,11 +42,11 @@
     <growthRate>0.9</growthRate>
   </FleckDef>
   <ThingDef ParentName="ResourceBase">
-    <defName>RimMandrake_GandMask</defName>
+    <defName>RSW_GandMask</defName>
     <label>Gand breath mask</label>
     <description>A specialized breath mask for Gand.\n\nNOTE: This is not an apparel item! This can only be applied to a pawn with a simple surgery!\n\nNOTE: The mask variant is randomized upon installation.</description>
     <descriptionHyperlinks>
-      <RecipeDef>RimMandrake_InstallHediff_gandmask</RecipeDef>
+      <RecipeDef>RSW_InstallHediff_gandmask</RecipeDef>
     </descriptionHyperlinks>
     <graphicData>
       <texPath>RimMandrakeSW/SWX/Pawn/HeadAttachments/gand/gand_mask_item</texPath>
@@ -69,7 +69,7 @@
     <techLevel>Spacer</techLevel>
   </ThingDef>
   <BigAndSmall.GraphicSetDef>
-    <defName>RimMandrake_GandMaskCustomization_default</defName>
+    <defName>RSW_GandMaskCustomization_default</defName>
     <conditionalGraphics>
       <triggerFlags>
         <whitelist>
@@ -83,7 +83,7 @@
     </conditionalGraphics>
   </BigAndSmall.GraphicSetDef>
   <BigAndSmall.GraphicSetDef>
-    <defName>RimMandrake_GandMaskCustomization_yuun</defName>
+    <defName>RSW_GandMaskCustomization_yuun</defName>
     <conditionalGraphics>
       <triggerFlags>
         <whitelist>
@@ -96,7 +96,7 @@
     </conditionalGraphics>
   </BigAndSmall.GraphicSetDef>
   <BigAndSmall.GraphicSetDef>
-    <defName>RimMandrake_GandMaskCustomization_zuckuss</defName>
+    <defName>RSW_GandMaskCustomization_zuckuss</defName>
     <conditionalGraphics>
       <triggerFlags>
         <whitelist>
@@ -109,11 +109,11 @@
     </conditionalGraphics>
   </BigAndSmall.GraphicSetDef>
   <AbilityDef>
-    <defName>RimMandrake_GeneAbility_ink</defName>
+    <defName>RSW_GeneAbility_ink</defName>
     <label>ink spray</label>
     <description>Spray a sticky ink substance from glands in the neck up through the mouth and all over the target area. The ink will stick to targets and blind them.</description>
     <descriptionHyperlinks>
-      <HediffDef>RimMandrake_hediff_ink</HediffDef>
+      <HediffDef>RSW_hediff_ink</HediffDef>
     </descriptionHyperlinks>
     <iconPath>RimMandrakeSW/SWX/UI/Icons/Ability_InkSpray</iconPath>
     <cooldownTicksRange>30000</cooldownTicksRange>
@@ -133,14 +133,14 @@
     </verbProperties>
     <comps>
       <li Class="CompProperties_AbilitySprayLiquid">
-        <projectileDef>RimMandrake_throwngrenade_ink</projectileDef>
+        <projectileDef>RSW_throwngrenade_ink</projectileDef>
         <numCellsToHit>4</numCellsToHit>
-        <sprayEffecter>RimMandrake_Effecter_InkSprayDirectional</sprayEffecter>
+        <sprayEffecter>RSW_Effecter_InkSprayDirectional</sprayEffecter>
       </li>
     </comps>
   </AbilityDef>
-  <AbilityDef Name="RimMandrake_GeneAbility_jump">
-    <defName>RimMandrake_GeneAbility_jump</defName>
+  <AbilityDef Name="RSW_GeneAbility_jump">
+    <defName>RSW_GeneAbility_jump</defName>
     <label>jump legs</label>
     <description>Jump to a nearby location using strong jumping legs.</description>
     <iconPath>UI/Abilities/Longjump</iconPath>
@@ -167,7 +167,7 @@
     <jobDef>CastJump</jobDef>
   </AbilityDef>
   <HediffDef>
-    <defName>RimMandrake_GeneHediff_claws</defName>
+    <defName>RSW_GeneHediff_claws</defName>
     <label>claws</label>
     <description>Sharp claws for scratching and slashing.</description>
     <hediffClass>HediffWithComps</hediffClass>
@@ -193,15 +193,15 @@
     </addedPartProps>
   </HediffDef>
   <HediffDef>
-    <defName>RimMandrake_GeneHediff_gandmask</defName>
+    <defName>RSW_GeneHediff_gandmask</defName>
     <label>Gand breath mask</label>
     <description>A specialized breath mask for Gand.</description>
     <descriptionHyperlinks>
-      <ThingDef>RimMandrake_GandMask</ThingDef>
-      <RecipeDef>RimMandrake_RemoveHediff_gandmask</RecipeDef>
-      <RecipeDef>RimMandrake_InstallHediff_gandmask</RecipeDef>
+      <ThingDef>RSW_GandMask</ThingDef>
+      <RecipeDef>RSW_RemoveHediff_gandmask</RecipeDef>
+      <RecipeDef>RSW_InstallHediff_gandmask</RecipeDef>
     </descriptionHyperlinks>
-    <spawnThingOnRemoved>RimMandrake_GandMask</spawnThingOnRemoved>
+    <spawnThingOnRemoved>RSW_GandMask</spawnThingOnRemoved>
     <scenarioCanAdd>false</scenarioCanAdd>
     <maxSeverity>1.0</maxSeverity>
     <isBad>false</isBad>
@@ -227,9 +227,9 @@
             <li>RimMandrakeSW/SWX/Pawn/HeadAttachments/gand/mask_yuun</li>
           </texturePaths>
           <altDefs>
-            <li>RimMandrake_GandMaskCustomization_default</li>
-            <li>RimMandrake_GandMaskCustomization_yuun</li>
-            <li>RimMandrake_GandMaskCustomization_zuckuss</li>
+            <li>RSW_GandMaskCustomization_default</li>
+            <li>RSW_GandMaskCustomization_yuun</li>
+            <li>RSW_GandMaskCustomization_zuckuss</li>
           </altDefs>
         </conditionalGraphics>
         <drawData>
@@ -241,15 +241,15 @@
     </renderNodeProperties>
   </HediffDef>
   <HediffDef>
-    <defName>RimMandrake_GeneHediff_kaleeshmask</defName>
+    <defName>RSW_GeneHediff_kaleeshmask</defName>
     <label>skull mask</label>
     <description>An intimidating skull mask adorned with red markings.</description>
     <descriptionHyperlinks>
-      <ThingDef>RimMandrake_KaleeshMask</ThingDef>
-      <RecipeDef>RimMandrake_RemoveHediff_kaleeshmask</RecipeDef>
-      <RecipeDef>RimMandrake_InstallHediff_kaleeshmask</RecipeDef>
+      <ThingDef>RSW_KaleeshMask</ThingDef>
+      <RecipeDef>RSW_RemoveHediff_kaleeshmask</RecipeDef>
+      <RecipeDef>RSW_InstallHediff_kaleeshmask</RecipeDef>
     </descriptionHyperlinks>
-    <spawnThingOnRemoved>RimMandrake_KaleeshMask</spawnThingOnRemoved>
+    <spawnThingOnRemoved>RSW_KaleeshMask</spawnThingOnRemoved>
     <scenarioCanAdd>false</scenarioCanAdd>
     <maxSeverity>1.0</maxSeverity>
     <isBad>false</isBad>
@@ -284,15 +284,15 @@
     </renderNodeProperties>
   </HediffDef>
   <HediffDef>
-    <defName>RimMandrake_GeneHediff_keldormask</defName>
+    <defName>RSW_GeneHediff_keldormask</defName>
     <label>Kel Dor breath mask</label>
     <description>A specialized breath mask for Kel Dor.</description>
     <descriptionHyperlinks>
-      <ThingDef>RimMandrake_KelDorMask</ThingDef>
-      <RecipeDef>RimMandrake_RemoveHediff_keldormask</RecipeDef>
-      <RecipeDef>RimMandrake_InstallHediff_keldormask</RecipeDef>
+      <ThingDef>RSW_KelDorMask</ThingDef>
+      <RecipeDef>RSW_RemoveHediff_keldormask</RecipeDef>
+      <RecipeDef>RSW_InstallHediff_keldormask</RecipeDef>
     </descriptionHyperlinks>
-    <spawnThingOnRemoved>RimMandrake_KelDorMask</spawnThingOnRemoved>
+    <spawnThingOnRemoved>RSW_KelDorMask</spawnThingOnRemoved>
     <scenarioCanAdd>false</scenarioCanAdd>
     <maxSeverity>1.0</maxSeverity>
     <isBad>false</isBad>
@@ -331,7 +331,7 @@
     </renderNodeProperties>
   </HediffDef>
   <HediffDef MayRequire="Ludeon.RimWorld.Royalty">
-    <defName>RimMandrake_Hediff_PsyHarmonize</defName>
+    <defName>RSW_Hediff_PsyHarmonize</defName>
     <label>psychic harmonization</label>
     <labelNoun>psychic harmonization</labelNoun>
     <description>Psychic harmonization. Projects the user's mood in a spherical psychic field, forcing others nearby to feel a blurred, simplified version of their emotions. It can be a powerful tool to keep morale high, but if the user becomes unhappy, it can lead to collective disaster.</description>
@@ -342,7 +342,7 @@
     <comps>
       <li Class="HediffCompProperties_PsychicHarmonizer">
         <range>15</range>
-        <thought>RimMandrake_ThoughtDef_PsyHarmonize</thought>
+        <thought>RSW_ThoughtDef_PsyHarmonize</thought>
       </li>
     </comps>
   </HediffDef>
@@ -361,19 +361,19 @@
     <soundWorking>Recipe_Tailor</soundWorking>
   </RecipeDef>
   <RecipeDef ParentName="RimMandrake_InstallHediffMaskBase">
-    <defName>RimMandrake_InstallHediff_gandmask</defName>
+    <defName>RSW_InstallHediff_gandmask</defName>
     <label>install Gand breath mask</label>
     <description>Install a Gand breath mask.\n\nNOTE: The mask variant is randomized upon installation.</description>
     <descriptionHyperlinks>
-      <ThingDef>RimMandrake_GandMask</ThingDef>
-      <HediffDef>RimMandrake_GeneHediff_gandmask</HediffDef>
+      <ThingDef>RSW_GandMask</ThingDef>
+      <HediffDef>RSW_GeneHediff_gandmask</HediffDef>
     </descriptionHyperlinks>
     <jobString>Installing Gand breath mask.</jobString>
     <ingredients>
       <li>
         <filter>
           <thingDefs>
-            <li>RimMandrake_GandMask</li>
+            <li>RSW_GandMask</li>
           </thingDefs>
         </filter>
         <count>1</count>
@@ -381,28 +381,28 @@
     </ingredients>
     <fixedIngredientFilter>
       <thingDefs>
-        <li>RimMandrake_GandMask</li>
+        <li>RSW_GandMask</li>
       </thingDefs>
     </fixedIngredientFilter>
-    <addsHediff>RimMandrake_GeneHediff_gandmask</addsHediff>
+    <addsHediff>RSW_GeneHediff_gandmask</addsHediff>
     <appliedOnFixedBodyParts>
       <li>Jaw</li>
     </appliedOnFixedBodyParts>
   </RecipeDef>
   <RecipeDef ParentName="RimMandrake_InstallHediffMaskBase">
-    <defName>RimMandrake_InstallHediff_kaleeshmask</defName>
+    <defName>RSW_InstallHediff_kaleeshmask</defName>
     <label>install Kaleesh skull mask</label>
     <description>Install a Kaleesh skull mask.\n\nNOTE: The mask variant is randomized upon installation.</description>
     <descriptionHyperlinks>
-      <ThingDef>RimMandrake_KaleeshMask</ThingDef>
-      <HediffDef>RimMandrake_GeneHediff_kaleeshmask</HediffDef>
+      <ThingDef>RSW_KaleeshMask</ThingDef>
+      <HediffDef>RSW_GeneHediff_kaleeshmask</HediffDef>
     </descriptionHyperlinks>
     <jobString>Installing Kaleesh skull mask.</jobString>
     <ingredients>
       <li>
         <filter>
           <thingDefs>
-            <li>RimMandrake_KaleeshMask</li>
+            <li>RSW_KaleeshMask</li>
           </thingDefs>
         </filter>
         <count>1</count>
@@ -410,28 +410,28 @@
     </ingredients>
     <fixedIngredientFilter>
       <thingDefs>
-        <li>RimMandrake_KaleeshMask</li>
+        <li>RSW_KaleeshMask</li>
       </thingDefs>
     </fixedIngredientFilter>
-    <addsHediff>RimMandrake_GeneHediff_kaleeshmask</addsHediff>
+    <addsHediff>RSW_GeneHediff_kaleeshmask</addsHediff>
     <appliedOnFixedBodyParts>
       <li>Head</li>
     </appliedOnFixedBodyParts>
   </RecipeDef>
   <RecipeDef ParentName="RimMandrake_InstallHediffMaskBase">
-    <defName>RimMandrake_InstallHediff_keldormask</defName>
+    <defName>RSW_InstallHediff_keldormask</defName>
     <label>install Kel Dor breath mask</label>
     <description>Install a Kel Dor breath mask.\n\nNOTE: The mask variant is randomized upon installation.</description>
     <descriptionHyperlinks>
-      <ThingDef>RimMandrake_KelDorMask</ThingDef>
-      <HediffDef>RimMandrake_GeneHediff_keldormask</HediffDef>
+      <ThingDef>RSW_KelDorMask</ThingDef>
+      <HediffDef>RSW_GeneHediff_keldormask</HediffDef>
     </descriptionHyperlinks>
     <jobString>Installing Kel Dor breath mask.</jobString>
     <ingredients>
       <li>
         <filter>
           <thingDefs>
-            <li>RimMandrake_KelDorMask</li>
+            <li>RSW_KelDorMask</li>
           </thingDefs>
         </filter>
         <count>1</count>
@@ -439,20 +439,20 @@
     </ingredients>
     <fixedIngredientFilter>
       <thingDefs>
-        <li>RimMandrake_KelDorMask</li>
+        <li>RSW_KelDorMask</li>
       </thingDefs>
     </fixedIngredientFilter>
-    <addsHediff>RimMandrake_GeneHediff_keldormask</addsHediff>
+    <addsHediff>RSW_GeneHediff_keldormask</addsHediff>
     <appliedOnFixedBodyParts>
       <li>Jaw</li>
     </appliedOnFixedBodyParts>
   </RecipeDef>
   <ThingDef ParentName="ResourceBase">
-    <defName>RimMandrake_KaleeshMask</defName>
+    <defName>RSW_KaleeshMask</defName>
     <label>Kaleesh skull mask</label>
     <description>The traditional skull mask of a Kaleesh.\n\nNOTE: This is not an apparel item! This can only be applied to a pawn with a simple surgery!\n\nNOTE: The mask variant is randomized upon installation.</description>
     <descriptionHyperlinks>
-      <RecipeDef>RimMandrake_InstallHediff_kaleeshmask</RecipeDef>
+      <RecipeDef>RSW_InstallHediff_kaleeshmask</RecipeDef>
     </descriptionHyperlinks>
     <graphicData>
       <texPath>RimMandrakeSW/SWX/Pawn/HeadAttachments/kaleesh/kaleesh_mask_item</texPath>
@@ -475,11 +475,11 @@
     <techLevel>Neolithic</techLevel>
   </ThingDef>
   <ThingDef ParentName="ResourceBase">
-    <defName>RimMandrake_KelDorMask</defName>
+    <defName>RSW_KelDorMask</defName>
     <label>Kel Dor breath mask</label>
     <description>A specialized breath mask for Kel Dor.\n\nNOTE: This is not an apparel item! This can only be applied to a pawn with a simple surgery!\n\nNOTE: The mask variant is randomized upon installation.</description>
     <descriptionHyperlinks>
-      <RecipeDef>RimMandrake_InstallHediff_keldormask</RecipeDef>
+      <RecipeDef>RSW_InstallHediff_keldormask</RecipeDef>
     </descriptionHyperlinks>
     <graphicData>
       <texPath>RimMandrakeSW/SWX/Pawn/HeadAttachments/keldor/keldor_mask_item</texPath>
@@ -502,7 +502,7 @@
     <techLevel>Spacer</techLevel>
   </ThingDef>
   <SoundDef>
-    <defName>RimMandrake_Pawn_SandP_Call</defName>
+    <defName>RSW_Pawn_SandP_Call</defName>
     <context>MapOnly</context>
     <subSounds>
       <li>
@@ -518,7 +518,7 @@
     </subSounds>
   </SoundDef>
   <SoundDef>
-    <defName>RimMandrake_Pawn_SandP_Death</defName>
+    <defName>RSW_Pawn_SandP_Death</defName>
     <context>MapOnly</context>
     <subSounds>
       <li>
@@ -534,7 +534,7 @@
     </subSounds>
   </SoundDef>
   <SoundDef>
-    <defName>RimMandrake_Pawn_SandP_Wounded</defName>
+    <defName>RSW_Pawn_SandP_Wounded</defName>
     <context>MapOnly</context>
     <subSounds>
       <li>
@@ -551,18 +551,18 @@
     </subSounds>
   </SoundDef>
   <DamageDef>
-    <defName>RimMandrake_RangedDamage_ink</defName>
+    <defName>RSW_RangedDamage_ink</defName>
     <label>ink</label>
     <workerClass>DamageWorker_AddGlobal</workerClass>
     <canInterruptJobs>true</canInterruptJobs>
     <makesBlood>false</makesBlood>
     <defaultDamage>10</defaultDamage>
-    <hediff>RimMandrake_hediff_ink</hediff>
+    <hediff>RSW_hediff_ink</hediff>
     <harmsHealth>false</harmsHealth>
     <consideredHelpful>false</consideredHelpful>
     <modExtensions>
       <li Class="guy762_Ionization.ModExtension_HediffGiver">
-        <hediffToAdd>RimMandrake_hediff_ink</hediffToAdd>
+        <hediffToAdd>RSW_hediff_ink</hediffToAdd>
         <severityFixed>1</severityFixed>
       </li>
     </modExtensions>
@@ -583,40 +583,40 @@
     <soundWorking>Recipe_Tailor</soundWorking>
   </RecipeDef>
   <RecipeDef ParentName="RimMandrake_RemoveHediffMaskBase">
-    <defName>RimMandrake_RemoveHediff_gandmask</defName>
+    <defName>RSW_RemoveHediff_gandmask</defName>
     <label>remove Gand breath mask</label>
     <description>Remove Gand breath mask.</description>
     <descriptionHyperlinks>
-      <ThingDef>RimMandrake_GandMask</ThingDef>
-      <HediffDef>RimMandrake_GeneHediff_gandmask</HediffDef>
+      <ThingDef>RSW_GandMask</ThingDef>
+      <HediffDef>RSW_GeneHediff_gandmask</HediffDef>
     </descriptionHyperlinks>
     <jobString>Removing Gand breath mask.</jobString>
-    <removesHediff>RimMandrake_GeneHediff_gandmask</removesHediff>
+    <removesHediff>RSW_GeneHediff_gandmask</removesHediff>
   </RecipeDef>
   <RecipeDef ParentName="RimMandrake_RemoveHediffMaskBase">
-    <defName>RimMandrake_RemoveHediff_kaleeshmask</defName>
+    <defName>RSW_RemoveHediff_kaleeshmask</defName>
     <label>remove Kaleesh skull mask</label>
     <description>Remove Kaleesh skull mask.</description>
     <descriptionHyperlinks>
-      <ThingDef>RimMandrake_KaleeshMask</ThingDef>
-      <HediffDef>RimMandrake_GeneHediff_kaleeshmask</HediffDef>
+      <ThingDef>RSW_KaleeshMask</ThingDef>
+      <HediffDef>RSW_GeneHediff_kaleeshmask</HediffDef>
     </descriptionHyperlinks>
     <jobString>Removing Kaleesh skull mask.</jobString>
-    <removesHediff>RimMandrake_GeneHediff_kaleeshmask</removesHediff>
+    <removesHediff>RSW_GeneHediff_kaleeshmask</removesHediff>
   </RecipeDef>
   <RecipeDef ParentName="RimMandrake_RemoveHediffMaskBase">
-    <defName>RimMandrake_RemoveHediff_keldormask</defName>
+    <defName>RSW_RemoveHediff_keldormask</defName>
     <label>remove Kel Dor breath mask</label>
     <description>Remove Kel Dor breath mask.</description>
     <descriptionHyperlinks>
-      <ThingDef>RimMandrake_KelDorMask</ThingDef>
-      <HediffDef>RimMandrake_GeneHediff_keldormask</HediffDef>
+      <ThingDef>RSW_KelDorMask</ThingDef>
+      <HediffDef>RSW_GeneHediff_keldormask</HediffDef>
     </descriptionHyperlinks>
     <jobString>Removing Kel Dor breath mask.</jobString>
-    <removesHediff>RimMandrake_GeneHediff_keldormask</removesHediff>
+    <removesHediff>RSW_GeneHediff_keldormask</removesHediff>
   </RecipeDef>
   <ThoughtDef MayRequire="Ludeon.RimWorld.Royalty">
-    <defName>RimMandrake_ThoughtDef_PsyHarmonize</defName>
+    <defName>RSW_ThoughtDef_PsyHarmonize</defName>
     <thoughtClass>Thought_PsychicHarmonizer</thoughtClass>
     <effectMultiplyingStat>PsychicSensitivity</effectMultiplyingStat>
     <stackLimit>100</stackLimit>
@@ -630,7 +630,7 @@
     </stages>
   </ThoughtDef>
   <ThingDef ParentName="BaseFilth">
-    <defName>RimMandrake_filth_ink</defName>
+    <defName>RSW_filth_ink</defName>
     <label>ink</label>
     <statBases>
       <Beauty>-30</Beauty>
@@ -653,7 +653,7 @@
     </filth>
   </ThingDef>
   <HediffDef>
-    <defName>RimMandrake_hediff_ink</defName>
+    <defName>RSW_hediff_ink</defName>
     <label>ink</label>
     <labelNoun>ink</labelNoun>
     <description>Ink in the eyes. It impairs vision, but can be cleared in a few moments.</description>
@@ -677,7 +677,7 @@
     </comps>
   </HediffDef>
   <ThingDef>
-    <defName>RimMandrake_throwngrenade_ink</defName>
+    <defName>RSW_throwngrenade_ink</defName>
     <label>ink</label>
     <thingClass>Projectile_Liquid</thingClass>
     <category>Projectile</category>
@@ -692,14 +692,14 @@
       <drawSize>0.85</drawSize>
     </graphicData>
     <projectile>
-      <damageDef>RimMandrake_RangedDamage_ink</damageDef>
+      <damageDef>RSW_RangedDamage_ink</damageDef>
       <speed>25</speed>
       <damageAmountBase>30</damageAmountBase>
       <arcHeightFactor>0.4</arcHeightFactor>
       <armorPenetrationBase>0.8</armorPenetrationBase>
       <stoppingPower>1</stoppingPower>
       <shadowSize>0</shadowSize>
-      <filth>RimMandrake_filth_ink</filth>
+      <filth>RSW_filth_ink</filth>
       <filthCount>1</filthCount>
     </projectile>
   </ThingDef>

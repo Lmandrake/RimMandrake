@@ -2,7 +2,7 @@ using RimWorld;
 using Verse;
 using Verse.AI;
 
-namespace Droidworks
+namespace RimMandrake.StarWars.Droidworks
 {
     /// <summary>
     /// Unprompted recharge-seeking: a droid below the power threshold paths to
@@ -16,7 +16,7 @@ namespace Droidworks
     /// with invert="true" - the exact shape vanilla itself uses for its own
     /// below-threshold need-seeking (Idle Joy at 90%, Core/ThinkTreeDefs/
     /// Humanlike.xml), per BENCH's own instruction to mirror it rather than
-    /// invent a WorkGiver. Harmless on non-droid pawns: they carry no DW_Power
+    /// invent a WorkGiver. Harmless on non-droid pawns: they carry no RSW_DW_Power
     /// need, so TryGiveJob below returns null immediately and nothing else in
     /// this class ever runs for them.
     /// </summary>
@@ -37,7 +37,7 @@ namespace Droidworks
                 9999f,
                 t => IsUsableCharger(pawn, t));
 
-            return charger != null ? JobMaker.MakeJob(DroidworksDefOf.DW_Recharge, charger) : null;
+            return charger != null ? JobMaker.MakeJob(DroidworksDefOf.RSW_DW_Recharge, charger) : null;
         }
 
         private static bool IsUsableCharger(Pawn pawn, Thing t)

@@ -7,7 +7,7 @@ rather than like a bag of syllables with apostrophes in it.
 
 `JawaVoice_Insults.xml` v1 was written by ear on 2026-08-11. It read fine in
 isolation and was measurably wrong against the 639-line corpus already shipping
-in `src/Jawa/JawaVoice/Patches/`:
+in `src/RimStarWars/JawaVoice/Patches/`:
 
 | metric | corpus | v1 |
 |---|---|---|

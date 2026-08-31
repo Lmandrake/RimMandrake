@@ -193,7 +193,7 @@
 
     ⭐ AND SIX OF OURS ARE MEASURED CLEAN, WHICH IS ALSO NOT WORK
     ============================================================
-    `RimMandrake_ArkanianTribal`, `_GeonosianTribal`, `_JawaTribal`, `_NiktoTribal`,
+    `RSW_ArkanianTribal`, `_GeonosianTribal`, `_JawaTribal`, `_NiktoTribal`,
     `_QuarrenTribal`, `_WookieeTribal` each carry a DEAD `Medieval` apparel tag,
     inherited from the abstract `RimMandrake_TribalPawnKind` in
     `SW_RescuedKinds.xml` (which is GENERATED - do not hand-edit it). The whole

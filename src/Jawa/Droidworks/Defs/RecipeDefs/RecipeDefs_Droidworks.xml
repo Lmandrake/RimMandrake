@@ -2,15 +2,15 @@
 <Defs>
 
   <!-- ========================================================================
-       DW_RebootDroid — the outside-help reboot. Backs
+       RSW_DW_RebootDroid — the outside-help reboot. Backs
        Droidworks.Recipe_RebootDroid (Source/Droidworks/Recipe_RebootDroid.cs),
-       whose GetPartsToApplyOn already gates eligibility on HasHediff(DW_PoweredDown)
+       whose GetPartsToApplyOn already gates eligibility on HasHediff(RSW_DW_PoweredDown)
        in C# - so this recipe needs no race/body restriction of its own to be
        correct, which is exactly why v0 leaves recipeUsers unset (generic):
        no Droidworks race ThingDef exists yet (DROIDWORKS_DEF_GENERATOR_1 hasn't
        run), so there is nothing real to name here, and inventing a defName would
        be exactly the guess this project's doctrine forbids. Wiring
-       <recipes><li>DW_RebootDroid</li></recipes> onto the generated race defs is
+       <recipes><li>RSW_DW_RebootDroid</li></recipes> onto the generated race defs is
        follow-up work for whoever builds on DROIDWORKS_DEF_GENERATOR_1's output.
 
        skillRequirements: the spec asked for "Crafting 4 or Medicine 4
@@ -22,7 +22,7 @@
        the either-or requirement is load-bearing.
   ======================================================================== -->
   <RecipeDef>
-    <defName>DW_RebootDroid</defName>
+    <defName>RSW_DW_RebootDroid</defName>
     <label>reboot droid</label>
     <description>Remove the powered-down state and restore enough charge for the droid to reach a charger under its own power.</description>
     <jobString>Rebooting droid.</jobString>
@@ -39,10 +39,10 @@
   </RecipeDef>
 
   <!-- ========================================================================
-       DW_InstallRestrainingBolt — DROIDWORKS_BOLT_CORE_1, the formal surgery
+       RSW_DW_InstallRestrainingBolt — DROIDWORKS_BOLT_CORE_1, the formal surgery
        route. Backs Droidworks.Recipe_InstallRestrainingBolt (Source/
        Droidworks/Recipe_InstallRestrainingBolt.cs), which is vanilla
-       Recipe_InstallImplant plus one line seeding DW_BoltResentment — see
+       Recipe_InstallImplant plus one line seeding RSW_DW_BoltResentment — see
        that file's header. targetsBodyPart false + addsHediff needs ZERO
        override from vanilla Recipe_InstallImplant on its own
        (droid_ruling.md section 3's own OuterRim_AttachRestraintBolt proves
@@ -51,7 +51,7 @@
        "cannot fail," a violation, no anesthetic.
   ======================================================================== -->
   <RecipeDef>
-    <defName>DW_InstallRestrainingBolt</defName>
+    <defName>RSW_DW_InstallRestrainingBolt</defName>
     <label>install restraining bolt</label>
     <description>Fit a restraining bolt onto this droid: mute, clumsier, and unable to hold its own opinion of others.</description>
     <jobString>Installing restraining bolt.</jobString>
@@ -61,12 +61,12 @@
     <isViolation>true</isViolation>
     <anesthetize>false</anesthetize>
     <surgerySuccessChanceFactor>99999</surgerySuccessChanceFactor>
-    <addsHediff>DW_RestrainingBolt</addsHediff>
+    <addsHediff>RSW_DW_RestrainingBolt</addsHediff>
     <ingredients>
       <li>
         <filter>
           <thingDefs>
-            <li>DW_RestrainingBoltItem</li>
+            <li>RSW_DW_RestrainingBoltItem</li>
           </thingDefs>
         </filter>
         <count>1</count>
@@ -74,7 +74,7 @@
     </ingredients>
     <fixedIngredientFilter>
       <thingDefs>
-        <li>DW_RestrainingBoltItem</li>
+        <li>RSW_DW_RestrainingBoltItem</li>
       </thingDefs>
     </fixedIngredientFilter>
     <skillRequirements>
@@ -86,17 +86,17 @@
   </RecipeDef>
 
   <!-- ========================================================================
-       DW_RemoveRestrainingBolt — custom worker
+       RSW_DW_RemoveRestrainingBolt — custom worker
        (Droidworks.Recipe_RemoveRestrainingBolt) because the bolt is a
        whole-pawn hediff (targetsBodyPart false) — the same reason
        OuterRimDroids ships its own Recipe_RemoveBolt rather than vanilla
        Recipe_RemoveImplant (droid_ruling.md section 3 /
        restraining_bolt_technical.md section 2). Deliberately does NOT touch
-       DW_BoltResentment — the whole point of that hediff is that it survives
+       RSW_DW_BoltResentment — the whole point of that hediff is that it survives
        removal.
   ======================================================================== -->
   <RecipeDef>
-    <defName>DW_RemoveRestrainingBolt</defName>
+    <defName>RSW_DW_RemoveRestrainingBolt</defName>
     <label>remove restraining bolt</label>
     <description>Remove a restraining bolt from this droid.</description>
     <jobString>Removing restraining bolt.</jobString>
@@ -105,7 +105,7 @@
     <targetsBodyPart>false</targetsBodyPart>
     <isViolation>false</isViolation>
     <anesthetize>false</anesthetize>
-    <removesHediff>DW_RestrainingBolt</removesHediff>
+    <removesHediff>RSW_DW_RestrainingBolt</removesHediff>
     <skillRequirements>
       <li>
         <skill>Crafting</skill>
@@ -115,14 +115,14 @@
   </RecipeDef>
 
   <!-- ========================================================================
-       DW_MemoryWipe — DROIDWORKS_WIPE_AND_SPIKE_1. Backs
+       RSW_DW_MemoryWipe — DROIDWORKS_WIPE_AND_SPIKE_1. Backs
        Droidworks.Recipe_DWMemoryWipe (Source/Droidworks/Recipe_DWMemoryWipe.cs)
        — see that file's header for the full mechanism writeup (trait
        randomization via Verse.PawnGenerator.GenerateTraitsFor, relations via
        Pawn_RelationsTracker.ClearAllRelations, social memories via the same
        ISocialThought filter Anomaly's own Brainwipe ritual uses). Whole-pawn,
-       no race restriction (same v0 precedent DW_RebootDroid/
-       DW_InstallRestrainingBolt already set — recipeUsers wiring onto the
+       no race restriction (same v0 precedent RSW_DW_RebootDroid/
+       RSW_DW_InstallRestrainingBolt already set — recipeUsers wiring onto the
        generated race defs is follow-up work, not this item's scope).
        isViolation true — RecipeWorker.IsViolationOnPawn's own default logic
        already means "violation unless performed on your own faction's pawn",
@@ -130,7 +130,7 @@
        wiping a captured hostile before/without consent is.
   ======================================================================== -->
   <RecipeDef>
-    <defName>DW_MemoryWipe</defName>
+    <defName>RSW_DW_MemoryWipe</defName>
     <label>memory wipe</label>
     <description>Erase this droid's accumulated experience: clear its relations and social memories, and roll a fresh set of personality traits. Sets the droid to your faction. Skills are untouched — they live in the body, not the mind.</description>
     <jobString>Wiping droid memory.</jobString>

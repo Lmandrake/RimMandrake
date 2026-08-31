@@ -61,13 +61,13 @@ NEW = ("jawa/pawn_stats", "jawa/room_get", "jawa/thing_stats")
 # The genes measured off live instances on 2026-08-26. The stat must move in the
 # direction the genes say; the exact numbers are what this run establishes.
 XENOS = [
-    ("RimMandrakeUgnaught", "no temperature gene at all"),
-    ("RimMandrakeTwilek",   "no temperature gene at all"),
-    ("RimMandrakeKelDor",   "no temperature gene at all"),
+    ("RSW_RimMandrakeUgnaught", "no temperature gene at all"),
+    ("RSW_RimMandrakeTwilek",   "no temperature gene at all"),
+    ("RSW_RimMandrakeKelDor",   "no temperature gene at all"),
     ("Baseliner",           "the reference point"),
-    ("MandrakeJawa",        "MinTemp_SmallDecrease + MaxTemp_SmallIncrease"),
-    ("RimMandrakeChiss",    "MinTemp_LargeDecrease + MaxTemp_SmallDecrease"),
-    ("RimMandrakeWookiee",  "Furskin + MinTemp_SmallDecrease + MaxTemp_SmallIncrease  <- N2, the stack"),
+    ("RSW_MandrakeJawa",        "MinTemp_SmallDecrease + MaxTemp_SmallIncrease"),
+    ("RSW_RimMandrakeChiss",    "MinTemp_LargeDecrease + MaxTemp_SmallDecrease"),
+    ("RSW_RimMandrakeWookiee",  "Furskin + MinTemp_SmallDecrease + MaxTemp_SmallIncrease  <- N2, the stack"),
 ]
 
 fails = []

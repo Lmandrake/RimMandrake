@@ -5,7 +5,7 @@ using RimWorld.Planet;
 using RimWorld.QuestGen;
 using Verse;
 
-namespace Inhabited
+namespace RimMandrake.Inhabited
 {
     /// <summary>
     /// The beggars at the player's gate are the people whose livelihood he burned

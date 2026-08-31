@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using RimWorld;
 using Verse;
 
-namespace Droidworks
+namespace RimMandrake.StarWars.Droidworks
 {
     /// <summary>
     /// DROIDWORKS_WIPE_AND_SPIKE_1. Reauthored, not the donor mod's own class -
@@ -18,7 +18,7 @@ namespace Droidworks
     /// pawns are legal, clickable targets). The actual walk-carry-work-effect
     /// sequence is entirely in JobDriver_DWDataSpike, NOT in this class's
     /// GetTargets/DoEffect - CompTargetable's base DoEffect is never invoked
-    /// in this wiring because DW_DataSpike's CompProperties_Usable.useJob
+    /// in this wiring because RSW_DW_DataSpike's CompProperties_Usable.useJob
     /// points straight at our own JobDef/JobDriver rather than vanilla's
     /// generic JobDriver_UseItem, so CompUsable.UsedBy (and therefore
     /// CompUseEffect.DoEffect) is never reached. This is a deliberate

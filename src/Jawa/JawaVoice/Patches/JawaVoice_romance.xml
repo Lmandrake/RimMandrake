@@ -7,8 +7,8 @@
       <value>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Neboh neboh so so nyeeb noo weetoo. (Oh! I'm so in love with you, friend — let's be together!)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Neboh neboh so so nyeeb noo weetoo. (Oh! I'm so in love with you, friend — let's be together!)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Neboh neboh so so nyeeb noo weetoo. (Oh! I'm so in love with you, friend — let's be together!)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Neboh neboh so so nyeeb noo weetoo. (Oh! I'm so in love with you, friend — let's be together!)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)->Neboh neboh so so nyeeb noo weetoo. (Oh! I'm so in love with you, friend — let's be together!)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)->Neboh neboh so so nyeeb noo weetoo. (Oh! I'm so in love with you, friend — let's be together!)</li>
       </value>
     </match>
   </Operation>
@@ -19,16 +19,16 @@
       <value>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->B'aanyeh hat! (Er, thank you, friend...)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->B'aanyeh hat! (Er, thank you, friend...)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->B'aanyeh hat! (Er, thank you, friend...)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->B'aanyeh hat! (Er, thank you, friend...)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)->B'aanyeh hat! (Er, thank you, friend...)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)->B'aanyeh hat! (Er, thank you, friend...)</li>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Ni kob bo! (Uh, friend... thanks...)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Ni kob bo! (Uh, friend... thanks...)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Ni kob bo! (Uh, friend... thanks...)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Ni kob bo! (Uh, friend... thanks...)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)->Ni kob bo! (Uh, friend... thanks...)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)->Ni kob bo! (Uh, friend... thanks...)</li>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Leehmoob katsoon ge bahzo. (Oh, friend... I don't know what to say...)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Leehmoob katsoon ge bahzo. (Oh, friend... I don't know what to say...)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Leehmoob katsoon ge bahzo. (Oh, friend... I don't know what to say...)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Leehmoob katsoon ge bahzo. (Oh, friend... I don't know what to say...)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)->Leehmoob katsoon ge bahzo. (Oh, friend... I don't know what to say...)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)->Leehmoob katsoon ge bahzo. (Oh, friend... I don't know what to say...)</li>
       </value>
     </match>
   </Operation>
@@ -39,12 +39,12 @@
       <value>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Zo tub... (Oh! I thought you'd never ask, friend — yes, I will!)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Zo tub... (Oh! I thought you'd never ask, friend — yes, I will!)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Zo tub... (Oh! I thought you'd never ask, friend — yes, I will!)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Zo tub... (Oh! I thought you'd never ask, friend — yes, I will!)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)->Zo tub... (Oh! I thought you'd never ask, friend — yes, I will!)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)->Zo tub... (Oh! I thought you'd never ask, friend — yes, I will!)</li>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Beennun z'it wobmih... (Yes, friend — I will!)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Beennun z'it wobmih... (Yes, friend — I will!)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Beennun z'it wobmih... (Yes, friend — I will!)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Beennun z'it wobmih... (Yes, friend — I will!)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)->Beennun z'it wobmih... (Yes, friend — I will!)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)->Beennun z'it wobmih... (Yes, friend — I will!)</li>
       </value>
     </match>
   </Operation>
@@ -55,8 +55,8 @@
       <value>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Nootwu zi huwah huwau? (Oh, friend... I'm sorry... I'm not ready for this... I need more time to think about it...)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Nootwu zi huwah huwau? (Oh, friend... I'm sorry... I'm not ready for this... I need more time to think about it...)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Nootwu zi huwah huwau? (Oh, friend... I'm sorry... I'm not ready for this... I need more time to think about it...)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Nootwu zi huwah huwau? (Oh, friend... I'm sorry... I'm not ready for this... I need more time to think about it...)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)->Nootwu zi huwah huwau? (Oh, friend... I'm sorry... I'm not ready for this... I need more time to think about it...)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)->Nootwu zi huwah huwau? (Oh, friend... I'm sorry... I'm not ready for this... I need more time to think about it...)</li>
       </value>
     </match>
   </Operation>
@@ -67,8 +67,8 @@
       <value>
           <li>r_logentry(INITIATOR_faction==PlayerColony,priority=250)->Z'oobwo t'osuh! (Wow, friend... I wasn't expecting this — too much pressure......)</li>
           <li>r_logentry(INITIATOR_faction==PlayerTribe,priority=250)->Z'oobwo t'osuh! (Wow, friend... I wasn't expecting this — too much pressure......)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_Jawa,priority=250)->Z'oobwo t'osuh! (Wow, friend... I wasn't expecting this — too much pressure......)</li>
-          <li>r_logentry(INITIATOR_kind==RimMandrake_JawaTribal,priority=250)->Z'oobwo t'osuh! (Wow, friend... I wasn't expecting this — too much pressure......)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_Jawa,priority=250)->Z'oobwo t'osuh! (Wow, friend... I wasn't expecting this — too much pressure......)</li>
+          <li>r_logentry(INITIATOR_kind==RSW_JawaTribal,priority=250)->Z'oobwo t'osuh! (Wow, friend... I wasn't expecting this — too much pressure......)</li>
       </value>
     </match>
   </Operation>

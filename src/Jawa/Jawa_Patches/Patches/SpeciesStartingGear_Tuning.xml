@@ -72,7 +72,7 @@
   outfit to require yet. They are dev-spawn scaffolding; dressing them properly
   is a separate job that needs a costume decision per species.
 
-  ⚠️ BLAST RADIUS. Op 1 edits the `RimMandrake_Jawa` pawnkind itself, not a copy,
+  ⚠️ BLAST RADIUS. Op 1 edits the `RSW_Jawa` pawnkind itself, not a copy,
   so it changes every Jawa this pawnkind ever produces, including any the world
   generates later. That is intended — we want Jawa in robes everywhere — but it is
   wider than a Jawa_Patches-only change and should be said out loud.
@@ -105,9 +105,9 @@
        1. Jawa: hood and robes, nothing else
        ================================================================== -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/PawnKindDef[defName="RimMandrake_Jawa"]/apparelRequired</xpath>
+    <xpath>/Defs/PawnKindDef[defName="RSW_Jawa"]/apparelRequired</xpath>
     <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/PawnKindDef[defName="RimMandrake_Jawa"]</xpath>
+      <xpath>/Defs/PawnKindDef[defName="RSW_Jawa"]</xpath>
       <value>
         <apparelRequired>
           <li>guy762_Robes_jawa</li>

@@ -2,7 +2,7 @@
 <ModMetaData>
   <name>Jawa Pawn Flavor — faction backstories and traits</name>
   <author>Mandrake</author>
-  <packageId>mandrake.jawapawnflavor</packageId>
+  <packageId>mandrake.rut.pawnflavor</packageId>
   <supportedVersions>
     <li>1.6</li>
   </supportedVersions>

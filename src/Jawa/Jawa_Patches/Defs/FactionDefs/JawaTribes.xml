@@ -168,7 +168,7 @@
          faction feel like a reskin. -->
     <xenotypeSet Inherit="False">
       <xenotypeChances>
-        <MandrakeJawa MayRequire="mandrake.starwarsraces">1.000</MandrakeJawa>
+        <RSW_MandrakeJawa MayRequire="mandrake.rsw.starwarsraces">1.000</RSW_MandrakeJawa>
       </xenotypeChances>
     </xenotypeSet>
 

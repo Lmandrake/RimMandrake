@@ -4,7 +4,7 @@
 <Defs>
 
   <SoundDef>
-    <defName>RNShotEWebMG</defName>
+    <defName>RSW_RNShotEWebMG</defName>
     <context>MapOnly</context>
     <eventNames />
     <maxSimultaneous>1</maxSimultaneous>

@@ -29,7 +29,7 @@
 
   Pawn kinds verified present in the 2026-08-14 dump (585 mods) and mapped to
   their owning mod for `MayRequire`:
-      RimMandrake_Nikto · RimMandrake_NiktoTribal          mandrake.starwarsraces
+      RSW_Nikto · RSW_NiktoTribal          mandrake.rsw.starwarsraces
       Bantha · Dewback                        Mlie.StarWarsAnimalCollection
       Jawa_Gamorrean_* · Jawa_Spawn_Hutt      OURS, this same mod - no MayRequire
   ============================================================================
@@ -172,32 +172,32 @@
          nothing depends on them. -->
     <xenotypeSet Inherit="False">
       <xenotypeChances>
-        <RimMandrakeHutt MayRequire="mandrake.starwarsraces">0.145</RimMandrakeHutt>
-        <RimMandrakeKlatoonian MayRequire="mandrake.starwarsraces">0.145</RimMandrakeKlatoonian>
-        <RimMandrakeNikto MayRequire="mandrake.starwarsraces">0.145</RimMandrakeNikto>
-        <RimMandrakeAqualish MayRequire="mandrake.starwarsraces">0.048</RimMandrakeAqualish>
-        <RimMandrakeDevaronian MayRequire="mandrake.starwarsraces">0.048</RimMandrakeDevaronian>
-        <RimMandrakeFalleen MayRequire="mandrake.starwarsraces">0.048</RimMandrakeFalleen>
-        <RimMandrakeGamorrean MayRequire="mandrake.starwarsraces">0.048</RimMandrakeGamorrean>
-        <RimMandrakePyke MayRequire="mandrake.starwarsraces">0.048</RimMandrakePyke>
-        <RimMandrakeRodian MayRequire="mandrake.starwarsraces">0.048</RimMandrakeRodian>
-        <RimMandrakeTrandoshan MayRequire="mandrake.starwarsraces">0.048</RimMandrakeTrandoshan>
-        <RimMandrakeTwilek MayRequire="mandrake.starwarsraces">0.048</RimMandrakeTwilek>
-        <RimMandrakeZeltron MayRequire="mandrake.starwarsraces">0.048</RimMandrakeZeltron>
+        <RSW_RimMandrakeHutt MayRequire="mandrake.rsw.starwarsraces">0.145</RSW_RimMandrakeHutt>
+        <RSW_RimMandrakeKlatoonian MayRequire="mandrake.rsw.starwarsraces">0.145</RSW_RimMandrakeKlatoonian>
+        <RSW_RimMandrakeNikto MayRequire="mandrake.rsw.starwarsraces">0.145</RSW_RimMandrakeNikto>
+        <RSW_RimMandrakeAqualish MayRequire="mandrake.rsw.starwarsraces">0.048</RSW_RimMandrakeAqualish>
+        <RSW_RimMandrakeDevaronian MayRequire="mandrake.rsw.starwarsraces">0.048</RSW_RimMandrakeDevaronian>
+        <RSW_RimMandrakeFalleen MayRequire="mandrake.rsw.starwarsraces">0.048</RSW_RimMandrakeFalleen>
+        <RSW_RimMandrakeGamorrean MayRequire="mandrake.rsw.starwarsraces">0.048</RSW_RimMandrakeGamorrean>
+        <RSW_RimMandrakePyke MayRequire="mandrake.rsw.starwarsraces">0.048</RSW_RimMandrakePyke>
+        <RSW_RimMandrakeRodian MayRequire="mandrake.rsw.starwarsraces">0.048</RSW_RimMandrakeRodian>
+        <RSW_RimMandrakeTrandoshan MayRequire="mandrake.rsw.starwarsraces">0.048</RSW_RimMandrakeTrandoshan>
+        <RSW_RimMandrakeTwilek MayRequire="mandrake.rsw.starwarsraces">0.048</RSW_RimMandrakeTwilek>
+        <RSW_RimMandrakeZeltron MayRequire="mandrake.rsw.starwarsraces">0.048</RSW_RimMandrakeZeltron>
         <Baseliner>0.014</Baseliner>
-        <RimMandrakeBothan MayRequire="mandrake.starwarsraces">0.014</RimMandrakeBothan>
-        <RimMandrakeFeeorin MayRequire="mandrake.starwarsraces">0.014</RimMandrakeFeeorin>
-        <!-- 🔴 MandrakeJawa REMOVED 2026-08-23 on the owner's ruling: "Let's take the
+        <RSW_RimMandrakeBothan MayRequire="mandrake.rsw.starwarsraces">0.014</RSW_RimMandrakeBothan>
+        <RSW_RimMandrakeFeeorin MayRequire="mandrake.rsw.starwarsraces">0.014</RSW_RimMandrakeFeeorin>
+        <!-- 🔴 RSW_MandrakeJawa REMOVED 2026-08-23 on the owner's ruling: "Let's take the
              Jawa out of any faction except player and Trade Moot then..."
              It was the ONLY non-Trade-Moot faction carrying Jawa, at 0.014. The point
              is that a Jawa must always be a robed Jawa, and a Jawa generated inside the
              Hutt Cartel would have drawn cartel apparel instead. Its 0.014 is left
              unclaimed; RimWorld fills the remainder with Baseliner. -->
-        <RimMandrakeKubaz MayRequire="mandrake.starwarsraces">0.014</RimMandrakeKubaz>
-        <RimMandrakeMuun MayRequire="mandrake.starwarsraces">0.014</RimMandrakeMuun>
-        <RimMandrakeOrtolan MayRequire="mandrake.starwarsraces">0.014</RimMandrakeOrtolan>
-        <RimMandrakeUgnaught MayRequire="mandrake.starwarsraces">0.014</RimMandrakeUgnaught>
-        <RimMandrakeZygerrian MayRequire="mandrake.starwarsraces">0.014</RimMandrakeZygerrian>
+        <RSW_RimMandrakeKubaz MayRequire="mandrake.rsw.starwarsraces">0.014</RSW_RimMandrakeKubaz>
+        <RSW_RimMandrakeMuun MayRequire="mandrake.rsw.starwarsraces">0.014</RSW_RimMandrakeMuun>
+        <RSW_RimMandrakeOrtolan MayRequire="mandrake.rsw.starwarsraces">0.014</RSW_RimMandrakeOrtolan>
+        <RSW_RimMandrakeUgnaught MayRequire="mandrake.rsw.starwarsraces">0.014</RSW_RimMandrakeUgnaught>
+        <RSW_RimMandrakeZygerrian MayRequire="mandrake.rsw.starwarsraces">0.014</RSW_RimMandrakeZygerrian>
       </xenotypeChances>
     </xenotypeSet>
 
@@ -220,7 +220,7 @@
       <li>
         <kindDef>Trader</kindDef>
         <traders>
-          <RimMandrake_Nikto MayRequire="mandrake.starwarsraces">1</RimMandrake_Nikto>
+          <RSW_Nikto MayRequire="mandrake.rsw.starwarsraces">1</RSW_Nikto>
         </traders>
         <guards>
           <Jawa_Gamorrean_Guard>6</Jawa_Gamorrean_Guard>

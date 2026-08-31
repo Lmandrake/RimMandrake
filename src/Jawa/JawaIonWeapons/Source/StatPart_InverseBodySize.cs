@@ -1,7 +1,7 @@
 using RimWorld;
 using Verse;
 
-namespace JawaIonWeapons
+namespace RimMandrake.StarWars.JawaIonWeapons
 {
     /// <summary>
     /// Second multiplier that turns the owner's ruled bodySize^2 stun-scaling standard

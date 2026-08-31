@@ -6,7 +6,7 @@
        Traits with commonality 0 exist only through a backstory's forcedTraits. -->
 
   <TraitDef>
-    <defName>Jawa_WaterDiscipline</defName>
+    <defName>RUT_Jawa_WaterDiscipline</defName>
     <commonality>0.5</commonality>
     <degreeDatas>
       <li>
@@ -21,7 +21,7 @@
   </TraitDef>
 
   <TraitDef>
-    <defName>Jawa_SandStoic</defName>
+    <defName>RUT_Jawa_SandStoic</defName>
     <commonality>0.4</commonality>
     <degreeDatas>
       <li>
@@ -36,7 +36,7 @@
   </TraitDef>
 
   <TraitDef>
-    <defName>Jawa_Numbered</defName>
+    <defName>RUT_Jawa_Numbered</defName>
     <commonality>0</commonality>
     <degreeDatas>
       <li>
@@ -51,7 +51,7 @@
   </TraitDef>
 
   <TraitDef>
-    <defName>Jawa_Laconic</defName>
+    <defName>RUT_Jawa_Laconic</defName>
     <commonality>0</commonality>
     <degreeDatas>
       <li>
@@ -77,7 +77,7 @@
        design as unconditional. File the ThoughtWorker/StatPart as its own
        C# item when picked up. -->
   <TraitDef>
-    <defName>Jawa_ReapsTheFlames</defName>
+    <defName>RUT_Jawa_ReapsTheFlames</defName>
     <commonality>0.15</commonality>
     <degreeDatas>
       <li>
@@ -92,7 +92,7 @@
        verified via RimSage before use. Gated MayRequire so an Ideology-less
        game loses only the number, never the trait. -->
   <TraitDef>
-    <defName>Jawa_AshJudgment</defName>
+    <defName>RUT_Jawa_AshJudgment</defName>
     <commonality>0</commonality>
     <degreeDatas>
       <li>
@@ -110,7 +110,7 @@
   <!-- Shore-Rat's forced trait — toxin resistance is a real vanilla stat
        (ToxicResistance, verified via RimSage before use), not a stub. -->
   <TraitDef>
-    <defName>Jawa_ShoreHardened</defName>
+    <defName>RUT_Jawa_ShoreHardened</defName>
     <commonality>0</commonality>
     <degreeDatas>
       <li>
@@ -129,7 +129,7 @@
        stockpile / workbench idle state) - not faked with an always-on
        number. File the hook as its own C# item when picked up. -->
   <TraitDef>
-    <defName>Jawa_StillTemper</defName>
+    <defName>RUT_Jawa_StillTemper</defName>
     <commonality>0</commonality>
     <degreeDatas>
       <li>
@@ -145,7 +145,7 @@
        IS a stub: it needs a relational ThoughtDef/opinion hook keyed to the
        OTHER pawn's kind, which no TraitDegreeData field expresses. -->
   <TraitDef>
-    <defName>Jawa_LineTapper</defName>
+    <defName>RUT_Jawa_LineTapper</defName>
     <commonality>0</commonality>
     <degreeDatas>
       <li>
@@ -167,7 +167,7 @@
        heat-discomfort mood thought more readily - no new C# needed, this
        reuses a mechanism that already exists rather than inventing one. -->
   <TraitDef>
-    <defName>Jawa_NightsideHardy</defName>
+    <defName>RUT_Jawa_NightsideHardy</defName>
     <commonality>0</commonality>
     <degreeDatas>
       <li>
@@ -183,11 +183,11 @@
   </TraitDef>
 
   <!-- Dirty-Burner's forced trait. "toxin-immune" is a real vanilla stat
-       (ToxicResistance, same pattern as Jawa_ShoreHardened, pushed further
+       (ToxicResistance, same pattern as RUT_Jawa_ShoreHardened, pushed further
        toward the stat's own max of 1.0 since "immune" is stronger language
        than "resistant"). -->
   <TraitDef>
-    <defName>Jawa_DirtyBurnerAffinity</defName>
+    <defName>RUT_Jawa_DirtyBurnerAffinity</defName>
     <commonality>0</commonality>
     <degreeDatas>
       <li>
@@ -202,16 +202,16 @@
 
   <!-- 🔴 TODO / light-C# tier, per the item's own instruction. SHARED across
        both FDE groupings (not forced by any one backstory - a rollable trait
-       any FDE droid may carry, same as Jawa_PodracerReflexes below is not
+       any FDE droid may carry, same as RUT_Jawa_PodracerReflexes below is not
        faction-gated). Both halves of the design are dynamic and genuinely
        need C#: "opinion penalty toward bolt-users" is relational (a
        SocialCardUtility-style modifier keyed to whether the OTHER pawn owns/
        operates a restraining bolt - ties naturally to Droidworks'
-       DW_RestrainingBolt/DW_BoltResentment, which already exist); "mood buff
+       RSW_DW_RestrainingBolt/RSW_DW_BoltResentment, which already exist); "mood buff
        per unbolted droid on map" needs a ThoughtWorker counting live map
        pawns. Neither is faked with a flat number. -->
   <TraitDef>
-    <defName>Jawa_FreedomScarred</defName>
+    <defName>RUT_Jawa_FreedomScarred</defName>
     <commonality>0.2</commonality>
     <degreeDatas>
       <li>
@@ -222,7 +222,7 @@
   </TraitDef>
 
   <TraitDef>
-    <defName>Jawa_PodracerReflexes</defName>
+    <defName>RUT_Jawa_PodracerReflexes</defName>
     <commonality>0.2</commonality>
     <degreeDatas>
       <li>

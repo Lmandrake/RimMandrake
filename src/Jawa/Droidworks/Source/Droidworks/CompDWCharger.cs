@@ -1,14 +1,14 @@
 using RimWorld;
 using Verse;
 
-namespace Droidworks
+namespace RimMandrake.StarWars.Droidworks
 {
     /// <summary>
     /// { chargeRatePerHour, radius } per DROIDWORKS_CHARGING_TRIO_1's spec.
-    /// radius 0 (DW_ChargeSocket, DW_ChargeDock): the building only charges
+    /// radius 0 (RSW_DW_ChargeSocket, RSW_DW_ChargeDock): the building only charges
     /// whichever droid is actively docked there via JobDriver_DWRecharge - this
     /// comp's own CompTick is a no-op for those, by design (see below).
-    /// radius > 0 (DW_ChargeNimbus): ambient, room-wide, no job needed - every
+    /// radius > 0 (RSW_DW_ChargeNimbus): ambient, room-wide, no job needed - every
     /// droid within range gets topped off passively by CompTick.
     /// </summary>
     public class CompProperties_DWCharger : CompProperties

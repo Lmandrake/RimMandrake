@@ -4,7 +4,7 @@ using System.Text;
 using RimWorld;
 using Verse;
 
-namespace Inhabited
+namespace RimMandrake.Inhabited
 {
     /// <summary>
     /// Writes a report to DISK as well as to the log, and says where it went.
@@ -63,13 +63,13 @@ namespace Inhabited
             try
             {
                 File.AppendAllText(path, sb.ToString());
-                Log.Message("[Inhabited] " + title + " -> " + path);
+                Log.Message("[RimMandrake.Inhabited] " + title + " -> " + path);
             }
             catch (Exception e)
             {
                 // Falling back to the log is better than losing the report, even
                 // though the log will not survive the next launch.
-                Log.Warning("[Inhabited] could not write " + path + ": " + e.Message
+                Log.Warning("[RimMandrake.Inhabited] could not write " + path + ": " + e.Message
                             + "\nReport follows, and it will NOT survive the next launch:\n"
                             + sb);
             }

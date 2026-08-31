@@ -3,18 +3,18 @@ using RimWorld;
 using Verse;
 using Verse.AI;
 
-namespace Droidworks
+namespace RimMandrake.StarWars.Droidworks
 {
     /// <summary>
-    /// A droid stands at a DW_ChargeSocket/DW_ChargeDock (radius-0 chargers only
-    /// - DW_ChargeNimbus charges passively via CompDWCharger.CompTick, no job)
+    /// A droid stands at a RSW_DW_ChargeSocket/RSW_DW_ChargeDock (radius-0 chargers only
+    /// - RSW_DW_ChargeNimbus charges passively via CompDWCharger.CompTick, no job)
     /// while Need_Power.CurLevel rises at the charger's
     /// CompProperties_DWCharger.chargeRatePerHour. Shaped like
     /// JobDriver_Refuel's goto-then-wait-and-tick pattern rather than
     /// JobDriver_LayDown's - no sleep, no bed thoughts, no posture machinery
     /// this system needs; standing at the interaction cell is enough for v1
     /// ("lies" - a bed-like animation - is a documented follow-up, not built
-    /// here, since DW_ChargeDock ships as a plain Building, not a
+    /// here, since RSW_DW_ChargeDock ships as a plain Building, not a
     /// Building_Bed).
     /// </summary>
     public class JobDriver_DWRecharge : JobDriver

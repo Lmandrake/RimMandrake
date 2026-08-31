@@ -2,50 +2,50 @@
 <Defs>
 
   <!-- ========================================================================
-       DW_Recharge — the active half of DROIDWORKS_CHARGING_TRIO_1. Backs
+       RSW_DW_Recharge — the active half of DROIDWORKS_CHARGING_TRIO_1. Backs
        Droidworks.JobDriver_DWRecharge (Source/Droidworks/JobDriver_DWRecharge.cs):
-       a droid walks to a DW_ChargeSocket or DW_ChargeDock and stands at its
+       a droid walks to a RSW_DW_ChargeSocket or RSW_DW_ChargeDock and stands at its
        interaction cell while Need_Power rises. Issued both by the player
        (float menu / forced work) and unprompted by
        Droidworks.JobGiver_DWRecharge (see ThinkTreeDefs_DWRecharge.xml).
   ======================================================================== -->
   <JobDef>
-    <defName>DW_Recharge</defName>
+    <defName>RSW_DW_Recharge</defName>
     <driverClass>Droidworks.JobDriver_DWRecharge</driverClass>
     <reportString>recharging at TargetA.</reportString>
     <suspendable>false</suspendable>
   </JobDef>
 
   <!-- ========================================================================
-       DW_ClampBolt — DROIDWORKS_BOLT_CORE_1, the field route for fitting a
+       RSW_DW_ClampBolt — DROIDWORKS_BOLT_CORE_1, the field route for fitting a
        restraining bolt. Backs Droidworks.JobDriver_DWClampBolt
        (Source/Droidworks/JobDriver_DWClampBolt.cs): 600 ticks on a DOWNED
        droid, no bill, no ingredient (see the driver's own header for why) —
        mirrors OuterRim_RestrainDroid's own JobDriver_RestrainDroid per
        droid_ruling.md section 3. Wiring a float-menu option / WorkGiver to
        actually ISSUE this job is left as follow-up, same precedent
-       DW_RebootDroid's own header set (recipe defined, wiring deferred).
+       RSW_DW_RebootDroid's own header set (recipe defined, wiring deferred).
   ======================================================================== -->
   <JobDef>
-    <defName>DW_ClampBolt</defName>
+    <defName>RSW_DW_ClampBolt</defName>
     <driverClass>Droidworks.JobDriver_DWClampBolt</driverClass>
     <reportString>clamping a restraining bolt onto TargetA.</reportString>
     <suspendable>false</suspendable>
   </JobDef>
 
   <!-- ========================================================================
-       DW_DataSpike — DROIDWORKS_WIPE_AND_SPIKE_1. Backs
+       RSW_DW_DataSpike — DROIDWORKS_WIPE_AND_SPIKE_1. Backs
        Droidworks.JobDriver_DWDataSpike (Source/Droidworks/JobDriver_DWDataSpike.cs):
        carry the spike (TargetA) to the target droid (TargetB), work 600 ticks,
        then SetFaction(Player) if the target is still downed/prisoner and the
-       spike's faction key still matches. Assigned as DW_DataSpike ThingDef's
+       spike's faction key still matches. Assigned as RSW_DW_DataSpike ThingDef's
        own CompProperties_Usable.useJob, so CompUsable.TryStartUseJob builds
        the job directly in this TargetA=item/TargetB=target shape — see
        CompTargetable_DWDataSpike.cs's header for why that avoids the donor
        mod's two-job chain.
   ======================================================================== -->
   <JobDef>
-    <defName>DW_DataSpike</defName>
+    <defName>RSW_DW_DataSpike</defName>
     <driverClass>Droidworks.JobDriver_DWDataSpike</driverClass>
     <reportString>spiking TargetB.</reportString>
     <suspendable>false</suspendable>

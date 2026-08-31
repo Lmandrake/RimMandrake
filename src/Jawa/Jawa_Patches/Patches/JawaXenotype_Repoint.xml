@@ -2,7 +2,7 @@
 <Patch>
 
   <!--
-    Every Jawa pawn kind rolls `MandrakeJawa`. Owner's ruling 2026-08-14: it is the
+    Every Jawa pawn kind rolls `RSW_MandrakeJawa`. Owner's ruling 2026-08-14: it is the
     ONLY active Jawa xenotype.
 
     🔴 THIS IS A WORLDGEN GATE, NOT A TUNING PATCH. `xenotypeSet` is read at PAWN
@@ -12,21 +12,21 @@
 
     🔴 RETARGETED 2026-08-19 (B58). This file used to patch Outer Rim's
     `OuterRim_Jawa` and `OuterRim_JawaTribal`. Switching the three donor mods off
-    and `mandrake.starwarsraces` on DELETED both — measured against the live def
+    and `mandrake.rsw.starwarsraces` on DELETED both — measured against the live def
     dump, neither name resolves as a PawnKindDef or a XenotypeDef any more, so both
     operations had become silent no-ops.
 
     WHAT IT TOUCHES NOW, and why it is still needed at all:
 
-      RimMandrake_Jawa        already `MandrakeJawa` 999   — nothing to do
-      RimMandrake_JawaTribal  already `MandrakeJawa` 999   — nothing to do
-      RimMandrakeJawa_Kind    `RimMandrakeJawa` 1.0        — 🔴 THE WRONG ONE
+      RSW_Jawa        already `RSW_MandrakeJawa` 999   — nothing to do
+      RSW_JawaTribal  already `RSW_MandrakeJawa` 999   — nothing to do
+      RSW_RimMandrakeJawa_Kind    `RSW_RimMandrakeJawa` 1.0        — 🔴 THE WRONG ONE
 
-    ⚠️ TWO Jawa xenotypes ship from `mandrake.starwarsraces` and they are not the
-    same thing: `MandrakeJawa` carries **35** genes and is the owner's hand-built
-    set; `RimMandrakeJawa` carries **24** and is generator output. They share the
+    ⚠️ TWO Jawa xenotypes ship from `mandrake.rsw.starwarsraces` and they are not the
+    same thing: `RSW_MandrakeJawa` carries **35** genes and is the owner's hand-built
+    set; `RSW_RimMandrakeJawa` carries **24** and is generator output. They share the
     label "Jawa", so the wrong one is invisible in play — you would have to count
-    genes on a pawn to catch it. And `RimMandrakeJawa_Kind` is
+    genes on a pawn to catch it. And `RSW_RimMandrakeJawa_Kind` is
     `defaultFactionDef PlayerColony`: it is the PLAYER'S Jawa.
 
     🔑 IT IS PATCHED HERE RATHER THAN FIXED AT SOURCE because
@@ -42,12 +42,12 @@
   -->
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/PawnKindDef[defName="RimMandrakeJawa_Kind"]/xenotypeSet/xenotypeChances/RimMandrakeJawa</xpath>
+    <xpath>/Defs/PawnKindDef[defName="RSW_RimMandrakeJawa_Kind"]/xenotypeSet/xenotypeChances/RSW_RimMandrakeJawa</xpath>
     <match Class="PatchOperationReplace">
-      <xpath>/Defs/PawnKindDef[defName="RimMandrakeJawa_Kind"]/xenotypeSet/xenotypeChances</xpath>
+      <xpath>/Defs/PawnKindDef[defName="RSW_RimMandrakeJawa_Kind"]/xenotypeSet/xenotypeChances</xpath>
       <value>
         <xenotypeChances>
-          <MandrakeJawa>1.0</MandrakeJawa>
+          <RSW_MandrakeJawa>1.0</RSW_MandrakeJawa>
         </xenotypeChances>
       </value>
     </match>

@@ -109,7 +109,7 @@ would have shipped all three silently.
 **1. Projectiles are shared.** The first generator ranked *weapons* and wrote the
 result onto their projectiles. `KotORBlasterBolt_default` backs most of the KotOR
 line, so one heavy rifle dragged the whole family to 66 — and independent ranking
-inverted `Low_Blue_Blaster_Bolt` (11→66) *above* `High_Blue` (25→34). Ranged
+inverted `RSW_Low_Blue_Blaster_Bolt` (11→66) *above* `High_Blue` (25→34). Ranged
 damage is a property of the projectile, so the **projectile** is the unit of work.
 
 **2. Patches hit raw XML, before inheritance.** All 15 lightsabers inherit tools
@@ -141,9 +141,9 @@ Source/compare_ladder.py            before/after verification
 **Do not hand-edit the XML.** Re-run the generators:
 
 ```bash
-python src/Jawa/Jawa_Armoury/Source/gen_armoury_patch.py
-python src/Jawa/Jawa_Armoury/Source/gen_torpedo_speed.py
-python skills/rimworld-modding/scripts/validate_patch.py src/Jawa/Jawa_Armoury/Patches \
+python src/RimStarWars/Armoury/Source/gen_armoury_patch.py
+python src/RimStarWars/Armoury/Source/gen_torpedo_speed.py
+python skills/rimworld-modding/scripts/validate_patch.py src/RimStarWars/Armoury/Patches \
    --defs ".../workshop/content/294100" --defs ".../RimWorld/Mods" --defs ".../RimWorld/Data"
 ```
 
@@ -163,7 +163,7 @@ first attempt.
 
 ## Not enabled
 
-`mandrake.jawa.armoury` is **not** in `ModsConfig.xml`. RimDefDump was inert and
+`mandrake.rsw.armoury` is **not** in `ModsConfig.xml`. RimDefDump was inert and
 read-only; this rewrites combat values across five mods, and dropping a balance
 overhaul into a stack someone else is debugging would be genuinely disruptive.
 Enable deliberately, and load it **last**.

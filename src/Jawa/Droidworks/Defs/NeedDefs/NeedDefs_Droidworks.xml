@@ -2,14 +2,14 @@
 <Defs>
 
   <!-- ========================================================================
-       DW_Power — the droid power need. Backs Droidworks.Need_Power
+       RSW_DW_Power — the droid power need. Backs Droidworks.Need_Power
        (Source/Droidworks/Need_Power.cs). Falls at the race's
-       DroidworksExtension.powerFallPerDay; at 0.02 the C# applies DW_PoweredDown
+       DroidworksExtension.powerFallPerDay; at 0.02 the C# applies RSW_DW_PoweredDown
        via NeedInterval (state 3 — see HediffDefs_Droidworks.xml). Fields match a
        vanilla NeedDef shape 1:1 (RimWorld's own Chemical_* needs), not guessed.
   ======================================================================== -->
   <NeedDef>
-    <defName>DW_Power</defName>
+    <defName>RSW_DW_Power</defName>
     <needClass>Droidworks.Need_Power</needClass>
     <label>power</label>
     <description>Stored charge. A droid whose power runs out shuts down until someone reboots it.</description>

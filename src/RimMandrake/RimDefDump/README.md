@@ -86,7 +86,7 @@ and should not be retired.
    robocopy "D:\Luke\dev\Rimworld\src\RimMandrake\RimDefDump" ^
             "C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\RimDefDump" /E
    ```
-2. Enable `mandrake.rimdefdump` in the mod list. It has no dependencies and no
+2. Enable `mandrake.rm.rimdefdump` in the mod list. It has no dependencies and no
    load-order requirements — it only reads, so anywhere late is fine.
 3. Create the marker file to arm it:
    ```

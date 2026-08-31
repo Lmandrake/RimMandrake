@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
   <name>Planet Preset Prime (local)</name>
-  <packageId>mandrake.planetpresetprime</packageId>
+  <packageId>mandrake.rm.planetpresetprime</packageId>
   <author>mandrake</author>
   <supportedVersions>
     <li>1.6</li>

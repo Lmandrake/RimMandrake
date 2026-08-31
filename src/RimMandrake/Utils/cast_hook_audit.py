@@ -27,7 +27,7 @@ a hook can be metaphor, a habit, or a thing that happens once. A flag here means
 deleting characterisation to satisfy a regex.
 
 ⚠️ THE XML IS GENERATED, THE PROSE IS THE SOURCE. `cast_to_xml.py` writes
-`src/Jawa/Inhabited/Defs/CastRosters/*.xml` from `design/Jawa/bridge/INHABITED_CAST_*.md`.
+`src/RimMandrake/Inhabited/Defs/CastRosters/*.xml` from `design/Jawa/bridge/INHABITED_CAST_*.md`.
 Fix a disagreement in the PROSE and re-run that tool; an edit here or in the XML is
 overwritten on the next generation.
 """

@@ -1,11 +1,11 @@
 using Verse;
 
-namespace Droidworks
+namespace RimMandrake.StarWars.Droidworks
 {
     /// <summary>
     /// DROIDWORKS_WIPE_AND_SPIKE_1. Data-driven faction key for a data spike -
     /// see JobDriver_DWDataSpike.cs and CompTargetable_DWDataSpike.cs for how it
-    /// is read. v0 keys ONE generic DW_DataSpike def to a single faction
+    /// is read. v0 keys ONE generic RSW_DW_DataSpike def to a single faction
     /// (spikeFaction is a static XML value on that one ThingDef's comp, not a
     /// per-instance runtime field) - design/Jawa/droid_ruling.md's own KotOR
     /// ruling ("THE capture target") picks guy762_KotORFaction_RogueDroids as

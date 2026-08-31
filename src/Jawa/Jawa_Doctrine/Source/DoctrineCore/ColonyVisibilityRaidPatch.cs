@@ -7,7 +7,7 @@ using RimWorld.Planet;
 using UnityEngine;
 using Verse;
 
-namespace JawaDoctrineCore
+namespace RimMandrake.Utinni.Doctrine
 {
     /// <summary>
     /// COLONY_VISIBILITY_STAT_1, F12 half. Replaces vanilla's wealth term
@@ -114,7 +114,7 @@ namespace JawaDoctrineCore
             var raidTarget = AccessTools.Method(typeof(TimedDetectionRaids), "CompTickInterval");
             if (raidTarget == null)
             {
-                Log.Error("[JawaDoctrineCore] TimedDetectionRaids.CompTickInterval not found by reflection - "
+                Log.Error("[RimMandrake.Utinni.Doctrine] TimedDetectionRaids.CompTickInterval not found by reflection - "
                     + "vanilla API has moved. Colony Visibility raid-point replacement NOT applied.");
             }
             else
@@ -126,7 +126,7 @@ namespace JawaDoctrineCore
             var launchTarget = AccessTools.Method(typeof(GravshipUtility), nameof(GravshipUtility.GenerateGravship));
             if (launchTarget == null)
             {
-                Log.Error("[JawaDoctrineCore] GravshipUtility.GenerateGravship not found by reflection - "
+                Log.Error("[RimMandrake.Utinni.Doctrine] GravshipUtility.GenerateGravship not found by reflection - "
                     + "vanilla API has moved. Ta'Baa launch-reset hook NOT applied.");
             }
             else
@@ -172,7 +172,7 @@ namespace JawaDoctrineCore
             }
             if (swapped != 1)
             {
-                Log.Error($"[JawaDoctrineCore] ColonyVisibility transpiler expected exactly 1 call-site swap in "
+                Log.Error($"[RimMandrake.Utinni.Doctrine] ColonyVisibility transpiler expected exactly 1 call-site swap in "
                     + $"TimedDetectionRaids.CompTickInterval, found {swapped}. Vanilla method body has likely "
                     + "changed shape since this was verified - raid-point replacement may not be correctly "
                     + "applied. Re-check against current source rather than trusting this patch blind.");

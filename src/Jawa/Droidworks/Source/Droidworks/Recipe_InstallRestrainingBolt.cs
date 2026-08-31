@@ -2,17 +2,17 @@ using System.Collections.Generic;
 using RimWorld;
 using Verse;
 
-namespace Droidworks
+namespace RimMandrake.StarWars.Droidworks
 {
     /// <summary>
     /// The formal, consented/violating surgery route for fitting a
     /// restraining bolt. Vanilla Recipe_InstallImplant already handles
     /// targetsBodyPart=false + addsHediff on its own - droid_ruling.md
     /// section 3's own OuterRim_AttachRestraintBolt needs zero C# for exactly
-    /// this reason, and DW_InstallRestrainingBolt's XML copies that shape
+    /// this reason, and RSW_DW_InstallRestrainingBolt's XML copies that shape
     /// (surgerySuccessChanceFactor 99999, isViolation true, anesthetize
     /// false). The ONLY thing this subclass adds is seeding
-    /// DW_BoltResentment the moment the bolt goes on, for a sapient pawn -
+    /// RSW_DW_BoltResentment the moment the bolt goes on, for a sapient pawn -
     /// the resentment accumulator otherwise has nothing to tick
     /// (HediffComp_DWBoltResentment.CompPostTick only runs once the hediff
     /// exists on the pawn). The field-clamp route (JobDriver_DWClampBolt)

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
-  <packageId>mandrake.rimdefdump</packageId>
+  <packageId>mandrake.rm.rimdefdump</packageId>
   <name>RimDefDump (local tooling)</name>
   <author>Mandrake</author>
   <supportedVersions>

@@ -1,7 +1,7 @@
 using RimWorld;
 using Verse;
 
-namespace DesertVehicleReskin
+namespace RimMandrake.DesertVehicleReskin
 {
     /// <summary>
     /// What a draught vehicle will eat.

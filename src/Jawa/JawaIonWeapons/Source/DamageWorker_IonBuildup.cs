@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using RimWorld;
 using Verse;
 
-namespace JawaIonWeapons
+namespace RimMandrake.StarWars.JawaIonWeapons
 {
     /// <summary>
     /// Applies an accumulating hediff on hit WITHOUT ever dealing an injury.
@@ -13,7 +13,7 @@ namespace JawaIonWeapons
     /// fleshy target, but it must wear one down until they collapse alive. No
     /// stock damage worker can do both.
     ///
-    ///   * The StunBase family (which JawaIon_Damage belongs to) cannot kill,
+    ///   * The StunBase family (which RSW_JawaIon_Damage belongs to) cannot kill,
     ///     but never reaches DamageWorker_AddInjury.ApplyDamageToPart -- and
     ///     that method is the ONLY thing in the game that reads a DamageDef's
     ///     additionalHediffs. Every Core def using additionalHediffs is an
@@ -163,11 +163,11 @@ namespace JawaIonWeapons
         ///     if (def == DamageDefOf.NerveStun &amp;&amp; !IsMechanoid) return true;
         ///     return false;
         ///
-        /// So `causeStun: true` on JawaIon_Damage stunned NOTHING, and the earlier
+        /// So `causeStun: true` on RSW_JawaIon_Damage stunned NOTHING, and the earlier
         /// comment in DamageDefs_JawaIon.xml claiming we inherit "the flesh-vs-mech
         /// resistance gradient" from EMP was wrong: EMP's mech half is not inherited,
         /// it is keyed on the def OBJECT. Measured live 2026-08-22: Mech_Scyther took
-        /// JawaIon_Damage x13 at up to 20 and reported stunned=False, stunTicks=0,
+        /// RSW_JawaIon_Damage x13 at up to 20 and reported stunned=False, stunTicks=0,
         /// while one vanilla EMP at 20 gave it 570 ticks.
         ///
         /// ⚠️ NON-PAWNS ALREADY WORKED and are deliberately left alone. The non-Pawn

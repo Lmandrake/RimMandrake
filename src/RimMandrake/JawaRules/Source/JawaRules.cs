@@ -8,16 +8,16 @@ using RimWorld.Planet;
 using UnityEngine;
 using Verse;
 
-namespace JawaRules
+namespace RimMandrake.StarWars.JawaRules
 {
     [StaticConstructorOnStartup]
     public static class JawaRulesMod
     {
         // The player's Jawa. Both Jawa_Colonist and the three Jawa_Tribal_* kinds
-        // roll MandrakeJawa at 1.0; RimMandrakeJawa is the generated species-catalogue
+        // roll RSW_MandrakeJawa at 1.0; RSW_RimMandrakeJawa is the generated species-catalogue
         // twin and is NOT what our pawnkinds field. Keyed by name so a missing def is
         // a quiet no-op rather than a type-load failure.
-        public const string JawaXenotype = "MandrakeJawa";
+        public const string JawaXenotype = "RSW_MandrakeJawa";
 
         static JawaRulesMod()
         {
@@ -28,7 +28,7 @@ namespace JawaRules
             // batched load, looking exactly like a mod that simply did nothing.
             // Resolving each target explicitly turns that into one named warning and
             // leaves the other rule working.
-            var h = new Harmony("mandrake.jawarules");
+            var h = new Harmony("mandrake.rsw.jawarules");
 
             Apply(h, AccessTools.Method(typeof(WorkGiver_GrowerSow), "ExtraRequirements"),
                   typeof(Patch_GrowerSow_ExtraRequirements), "no-sow",
@@ -65,7 +65,7 @@ namespace JawaRules
         {
             if (target == null)
             {
-                Log.Error("[JawaRules] " + rule + ": TARGET METHOD NOT FOUND — this rule is "
+                Log.Error("[RimMandrake.StarWars.JawaRules] " + rule + ": TARGET METHOD NOT FOUND — this rule is "
                           + "NOT in effect. A game update renamed it. The other rule in this "
                           + "assembly is unaffected.");
                 return;
@@ -73,11 +73,11 @@ namespace JawaRules
             try
             {
                 h.Patch(target, postfix: new HarmonyMethod(patchClass, "Postfix"));
-                Log.Message("[JawaRules] " + rule + ": " + detail);
+                Log.Message("[RimMandrake.StarWars.JawaRules] " + rule + ": " + detail);
             }
             catch (Exception e)
             {
-                Log.Error("[JawaRules] " + rule + ": patch FAILED, rule NOT in effect — "
+                Log.Error("[RimMandrake.StarWars.JawaRules] " + rule + ": patch FAILED, rule NOT in effect — "
                           + e.Message);
             }
         }
@@ -91,7 +91,7 @@ namespace JawaRules
         {
             if (target == null)
             {
-                Log.Error("[JawaRules] " + rule + ": TARGET METHOD NOT FOUND — this rule is "
+                Log.Error("[RimMandrake.StarWars.JawaRules] " + rule + ": TARGET METHOD NOT FOUND — this rule is "
                           + "NOT in effect. A game update renamed it. The other rules in "
                           + "this assembly are unaffected.");
                 return;
@@ -99,11 +99,11 @@ namespace JawaRules
             try
             {
                 h.Patch(target, transpiler: new HarmonyMethod(patchClass, "Transpiler"));
-                Log.Message("[JawaRules] " + rule + ": " + detail);
+                Log.Message("[RimMandrake.StarWars.JawaRules] " + rule + ": " + detail);
             }
             catch (Exception e)
             {
-                Log.Error("[JawaRules] " + rule + ": patch FAILED, rule NOT in effect — "
+                Log.Error("[RimMandrake.StarWars.JawaRules] " + rule + ": patch FAILED, rule NOT in effect — "
                           + e.Message);
             }
         }
@@ -169,7 +169,7 @@ namespace JawaRules
             {
                 // Pawn generation is not a place to throw: a failure here would abort
                 // the whole pawn and take a raid or a colonist with it.
-                Log.WarningOnce("[JawaRules] could not add a relations tracker to "
+                Log.WarningOnce("[RimMandrake.StarWars.JawaRules] could not add a relations tracker to "
                                 + (pawn == null ? "a null pawn" : pawn.def?.defName)
                                 + ": " + e.Message, 0x4A57A1);
             }
@@ -225,7 +225,7 @@ namespace JawaRules
             catch (Exception e)
             {
                 // Naming is cosmetic; taming and birth are not. Never throw here.
-                Log.WarningOnce("[JawaRules] pet-names: " + e.Message, 0x4A57A2);
+                Log.WarningOnce("[RimMandrake.StarWars.JawaRules] pet-names: " + e.Message, 0x4A57A2);
             }
         }
     }
@@ -286,7 +286,7 @@ namespace JawaRules
 
             if (hits != 1)
             {
-                Log.Error("[JawaRules] world-labels: expected exactly ONE "
+                Log.Error("[RimMandrake.StarWars.JawaRules] world-labels: expected exactly ONE "
                           + VanillaAlpha.ToString("0.00") + " constant in "
                           + "WorldFeatures.UpdateAlpha and found " + hits
                           + ". The label opacity is NOT what was asked for. A game "
@@ -358,7 +358,7 @@ namespace JawaRules
 
             if (hits != ExpectedHits)
             {
-                Log.Error("[JawaRules] world-label-lift: expected exactly " + ExpectedHits
+                Log.Error("[RimMandrake.StarWars.JawaRules] world-label-lift: expected exactly " + ExpectedHits
                           + " " + VanillaLift.ToString("0.00") + " constants in "
                           + "WorldFeatureTextMesh_TextMeshPro.WrapAroundPlanetSurface and "
                           + "found " + hits + ". The labels are NOT lifted, or are lifted "

@@ -4,7 +4,7 @@ using RimWorld;
 using RimWorld.Planet;
 using Verse;
 
-namespace Inhabited
+namespace RimMandrake.Inhabited
 {
     /// <summary>
     /// Why someone is placeless. Drift between factions is possible but rare and

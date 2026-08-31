@@ -2,7 +2,7 @@
 <!-- Absorbed from rpgwanderer.opturret (workshop 3550061539, "Archotech
      Blaster Turret"), WEAPONS_ABSORPTION_WAVE_1. HAND-PORTED (3-def pack) —
      defNames preserved verbatim per the item's rule 1. Turrets_DamageDoctrine.xml's
-     Bullet_ArchotechChargeBlasterHeavy op is retired and baked in HERE instead
+     RSW_Bullet_ArchotechChargeBlasterHeavy op is retired and baked in HERE instead
      (was PatchOperationFindMod-gated on "Archotech Blaster Turret", which stops
      matching once that pack retires). Value confirmed by running
      gen_turret_doctrine.py before this port: damageAmountBase 50->24 (owner's
@@ -13,7 +13,7 @@
 <Defs>
 
   <ThingDef ParentName="BaseBullet">
-    <defName>Bullet_ArchotechChargeBlasterHeavy</defName>
+    <defName>RSW_Bullet_ArchotechChargeBlasterHeavy</defName>
     <label>archotech archites blaster shot</label>
     <graphicData>
       <texPath>OPArchotechTurret/OPArchotechTurretCharge</texPath>
@@ -29,7 +29,7 @@
   </ThingDef>
 
   <ThingDef ParentName="Gun_ChargeBlasterHeavyBase">
-    <defName>Gun_ArchotechChargeBlasterHeavyTurret</defName>
+    <defName>RSW_Gun_ArchotechChargeBlasterHeavyTurret</defName>
     <label>archotech charge blaster</label>
     <description>A pulse-charged rapid-fire archites blaster for area fire.</description>
     <graphicData>
@@ -49,7 +49,7 @@
       <li>
         <verbClass>Verb_Shoot</verbClass>
         <hasStandardCommand>true</hasStandardCommand>
-        <defaultProjectile>Bullet_ArchotechChargeBlasterHeavy</defaultProjectile>
+        <defaultProjectile>RSW_Bullet_ArchotechChargeBlasterHeavy</defaultProjectile>
         <warmupTime>0.0</warmupTime>
         <range>400</range>
         <defaultCooldownTime>0.05</defaultCooldownTime>
@@ -64,7 +64,7 @@
   </ThingDef>
 
   <ThingDef ParentName="BuildingBase">
-    <defName>Turret_AutoChargeBlaster_OP</defName>
+    <defName>RSW_Turret_AutoChargeBlaster_OP</defName>
     <label>Archotech charge turret</label>
     <description>An archotech blaster turret using archites clouds that destroy what they touch on a molecular level. Directly written into your dreams from the insane mind of a demented archotech, this turret is capable of unleashing devastating volleys of energy blasts at unsuspecting foes... And friends who didn't clear the way fast enough. Seriously, don't blame the archotech for friendly fire, it's doing its best.</description>
     <thingClass>Building_TurretGun</thingClass>
@@ -124,7 +124,7 @@
     </killedLeavings>
     <building>
       <ai_combatDangerous>true</ai_combatDangerous>
-      <turretGunDef>Gun_ArchotechChargeBlasterHeavyTurret</turretGunDef>
+      <turretGunDef>RSW_Gun_ArchotechChargeBlasterHeavyTurret</turretGunDef>
       <turretBurstCooldownTime>0</turretBurstCooldownTime>
       <turretTopDrawSize>1.75</turretTopDrawSize>
       <turretTopOffset>(0, 0.05)</turretTopOffset>

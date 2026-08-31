@@ -5,7 +5,7 @@
   ============================================================================
 
   OWNER'S REQUEST, 2026-08-14: "make a pawntype for the player colonists that is
-  MandrakeJawa xenotype and with The Salvation religion."
+  RSW_MandrakeJawa xenotype and with The Salvation religion."
 
   🔴 THE HALF THAT A PawnKindDef CANNOT DO, AND WHERE IT LIVES INSTEAD
   ===================================================================
@@ -48,7 +48,7 @@
       <li>ORHermit</li>
       <li>KotORClothing_civilian_hooded</li>
     </apparelTags>
-    <!-- 🔴 THE APPAREL IS THE PAWN. SCENARIO_SPEC.md:142 - "All six: xenotype MandrakeJawa,
+    <!-- 🔴 THE APPAREL IS THE PAWN. SCENARIO_SPEC.md:142 - "All six: xenotype RSW_MandrakeJawa,
          apparel locked to the Jawa robe and hood" - and faction_equipment_guidance.md lists
          the Jawa as one of four cases where the silhouette IS the faction. Without these two
          lines a founder arrives in jeans, a t-shirt and a hay sunhat; measured 6 of 6 live on
@@ -107,7 +107,7 @@
     <initialResistanceRange>13~21</initialResistanceRange>
     <xenotypeSet>
       <xenotypeChances>
-        <MandrakeJawa>1.0</MandrakeJawa>
+        <RSW_MandrakeJawa>1.0</RSW_MandrakeJawa>
       </xenotypeChances>
     </xenotypeSet>
       <!-- dusty dark brown — the player's own Jawa -->
@@ -123,7 +123,7 @@
     <label>Jawa scrounger</label>
     <xenotypeSet>
       <xenotypeChances>
-        <MandrakeJawa>1.0</MandrakeJawa>
+        <RSW_MandrakeJawa>1.0</RSW_MandrakeJawa>
       </xenotypeChances>
     </xenotypeSet>
       <apparelRequired Inherit="False">
@@ -179,7 +179,7 @@
     <label>Jawa slinger</label>
     <xenotypeSet>
       <xenotypeChances>
-        <MandrakeJawa>1.0</MandrakeJawa>
+        <RSW_MandrakeJawa>1.0</RSW_MandrakeJawa>
       </xenotypeChances>
     </xenotypeSet>
       <apparelRequired Inherit="False">
@@ -246,7 +246,7 @@
     </weaponTags>
     <xenotypeSet>
       <xenotypeChances>
-        <MandrakeJawa>1.0</MandrakeJawa>
+        <RSW_MandrakeJawa>1.0</RSW_MandrakeJawa>
       </xenotypeChances>
     </xenotypeSet>
       <apparelRequired Inherit="False">

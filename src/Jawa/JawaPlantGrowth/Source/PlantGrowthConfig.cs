@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using RimWorld;
 using Verse;
 
-namespace JawaPlantGrowth
+namespace RimMandrake.Utinni.PlantGrowth
 {
     /// <summary>
     /// The single place every tunable for planetary fast growth lives.
@@ -122,7 +122,7 @@ namespace JawaPlantGrowth
             {
                 BiomeDef biome = DefDatabase<BiomeDef>.GetNamedSilentFail(name);
                 if (biome != null) biomes.Add(biome);
-                else Log.Warning("[JawaPlantGrowth] terminator biome '" + name + "' is not loaded; skipping it.");
+                else Log.Warning("[RimMandrake.Utinni.PlantGrowth] terminator biome '" + name + "' is not loaded; skipping it.");
             }
 
             _exempt = exempt;

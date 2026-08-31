@@ -3,7 +3,7 @@ using System.Linq;
 using RimWorld;
 using Verse;
 
-namespace RimMandrake.SacredGraffiti
+namespace Rimmandrake.rm.sacredgraffiti
 {
     // GRAFFITI_MOD_EXPANSION_1 — the owner's ruling on placement: a sacred
     // mark is placed as a RITUAL OUTCOME (a reward off a Salvation Matrix
@@ -16,7 +16,7 @@ namespace RimMandrake.SacredGraffiti
     // no real RitualDef/PreceptDef/outcomeEffect for any god yet. This class
     // does not invent one. It is the reusable MECHANISM: point any future
     // RitualOutcomeEffectDef's workerClass at this type, set its
-    // filthDefToSpawn to a god's sacred-mark ThingDef (RimMandrake_SacredMark_Ishko
+    // filthDefToSpawn to a god's sacred-mark ThingDef (RM_SacredMark_Ishko
     // today; eight more once arted - see the item file), and it is live the
     // moment a real Matrix ritual references that RitualOutcomeEffectDef as
     // its outcomeEffect. No further C# needed per god.

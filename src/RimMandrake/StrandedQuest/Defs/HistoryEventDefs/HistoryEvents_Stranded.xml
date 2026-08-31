@@ -8,7 +8,7 @@
 <Defs>
 
   <HistoryEventDef>
-    <defName>StrandedTravellerTaken</defName>
+    <defName>RM_StrandedTravellerTaken</defName>
     <label>took in a survivor we vouched for</label>
   </HistoryEventDef>
 

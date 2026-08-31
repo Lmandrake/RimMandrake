@@ -2,7 +2,7 @@
 <ModMetaData>
   <name>Desert Vehicle Reskin — Alpha Vehicles Neolithic</name>
   <author>Mandrake</author>
-  <packageId>mandrake.desertvehiclereskin</packageId>
+  <packageId>mandrake.rm.desertvehiclereskin</packageId>
   <supportedVersions>
     <li>1.6</li>
   </supportedVersions>

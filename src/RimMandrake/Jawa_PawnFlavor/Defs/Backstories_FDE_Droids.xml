@@ -27,8 +27,8 @@
   <!-- ===== CATHEDRAL ===== -->
 
   <BackstoryDef>
-    <defName>Jawa_CongregationConsecrated</defName>
-    <identifier>Jawa_CongregationConsecrated</identifier>
+    <defName>RUT_Jawa_CongregationConsecrated</defName>
+    <identifier>RUT_Jawa_CongregationConsecrated</identifier>
     <slot>Childhood</slot>
     <title>congregation-consecrated</title>
     <titleShort>consecrated</titleShort>
@@ -47,8 +47,8 @@
        stat. Not faked here. -->
 
   <BackstoryDef>
-    <defName>Jawa_CathedralWhispered</defName>
-    <identifier>Jawa_CathedralWhispered</identifier>
+    <defName>RUT_Jawa_CathedralWhispered</defName>
+    <identifier>RUT_Jawa_CathedralWhispered</identifier>
     <slot>Adulthood</slot>
     <title>cathedral-whispered</title>
     <titleShort>whispered</titleShort>
@@ -69,8 +69,8 @@
        Not faked here — no flat statOffset was invented to stand in for either. -->
 
   <BackstoryDef>
-    <defName>Jawa_CathedralMason</defName>
-    <identifier>Jawa_CathedralMason</identifier>
+    <defName>RUT_Jawa_CathedralMason</defName>
+    <identifier>RUT_Jawa_CathedralMason</identifier>
     <slot>Adulthood</slot>
     <title>cathedral-mason</title>
     <titleShort>mason</titleShort>
@@ -92,8 +92,8 @@
   <!-- ===== NIGHTSIDE ===== -->
 
   <BackstoryDef>
-    <defName>Jawa_ColdForged</defName>
-    <identifier>Jawa_ColdForged</identifier>
+    <defName>RUT_Jawa_ColdForged</defName>
+    <identifier>RUT_Jawa_ColdForged</identifier>
     <slot>Childhood</slot>
     <title>cold-forged</title>
     <titleShort>cold-forged</titleShort>
@@ -103,7 +103,7 @@
     </skillGains>
     <workDisables>None</workDisables>
     <forcedTraits>
-      <Jawa_NightsideHardy>0</Jawa_NightsideHardy>
+      <RUT_Jawa_NightsideHardy>0</RUT_Jawa_NightsideHardy>
     </forcedTraits>
     <spawnCategories>
       <li>JawaBSC_FDENightside</li>
@@ -111,8 +111,8 @@
   </BackstoryDef>
 
   <BackstoryDef>
-    <defName>Jawa_PipeKeeper</defName>
-    <identifier>Jawa_PipeKeeper</identifier>
+    <defName>RUT_Jawa_PipeKeeper</defName>
+    <identifier>RUT_Jawa_PipeKeeper</identifier>
     <slot>Adulthood</slot>
     <title>pipe-keeper</title>
     <titleShort>pipe-keeper</titleShort>
@@ -122,7 +122,7 @@
     </skillGains>
     <workDisables>None</workDisables>
     <forcedTraits>
-      <Jawa_NightsideHardy>0</Jawa_NightsideHardy>
+      <RUT_Jawa_NightsideHardy>0</RUT_Jawa_NightsideHardy>
     </forcedTraits>
     <spawnCategories>
       <li>JawaBSC_FDENightside</li>
@@ -131,15 +131,15 @@
 
   <!-- 🔴 TODO / light-C# tier: "tireless" and "permanent small mood debuff" -
        RestRateMultiplier is a real vanilla stat (already used for "tireless"-
-       flavored content elsewhere, see Jawa_WaterDiscipline) but was left off
-       Jawa_NightsideHardy since it belongs to Pipe-Keeper specifically, not
+       flavored content elsewhere, see RUT_Jawa_WaterDiscipline) but was left off
+       RUT_Jawa_NightsideHardy since it belongs to Pipe-Keeper specifically, not
        Cold-Forged, and TraitDegreeData carries no flat always-on mood field in
        vanilla to express "permanent small mood debuff" cleanly - a paired
        Hediff+ThoughtDef would be the honest way, not attempted here. -->
 
   <BackstoryDef>
-    <defName>Jawa_DirtyBurner</defName>
-    <identifier>Jawa_DirtyBurner</identifier>
+    <defName>RUT_Jawa_DirtyBurner</defName>
+    <identifier>RUT_Jawa_DirtyBurner</identifier>
     <slot>Adulthood</slot>
     <title>dirty-burner</title>
     <titleShort>burner</titleShort>
@@ -150,7 +150,7 @@
     </skillGains>
     <workDisables>None</workDisables>
     <forcedTraits>
-      <Jawa_DirtyBurnerAffinity>0</Jawa_DirtyBurnerAffinity>
+      <RUT_Jawa_DirtyBurnerAffinity>0</RUT_Jawa_DirtyBurnerAffinity>
     </forcedTraits>
     <spawnCategories>
       <li>JawaBSC_FDENightside</li>

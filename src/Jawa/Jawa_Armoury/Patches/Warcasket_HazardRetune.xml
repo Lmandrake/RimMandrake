@@ -11,7 +11,7 @@
 
   THE PROBLEM — one suit cancels both the weapon answer and the world
   ====================================================================
-  VFEP_Warcasket_Hazard is immune to TWO different things at once, from two
+  RSW_VFEP_Warcasket_Hazard is immune to TWO different things at once, from two
   different mods, and neither author could see the other's contribution.
 
   Read 2026-08-12 from the live source, not from the def dump — the dump has NO
@@ -21,7 +21,7 @@
     C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\
       2723801948\...                            (VFE Pirates, load 470)
         <VFEPirates.WarcasketDef>
-          <defName>VFEP_Warcasket_Hazard</defName>
+          <defName>RSW_VFEP_Warcasket_Hazard</defName>
           <statBases>
             <ArmorRating_Heat>2.0</ArmorRating_Heat>     <- MaxArmorRating
             <Insulation_Heat>72</Insulation_Heat>
@@ -78,7 +78,7 @@
   LOAD ORDER
   ==========
   farhanfair.warcaskettweakspatch  489
-  mandrake.jawa.armoury            567   <- we replace his value, not the base
+  mandrake.rsw.armoury            567   <- we replace his value, not the base
 
   Verified in runtime/backups/ModsConfig.full-568.2026-08-11.xml on 2026-08-12.
   If Farhan is ever moved after us, this patch silently loses and Hazard goes
@@ -110,9 +110,9 @@
 
         <!-- ArmorRating_Heat 2.00 -> 1.30, all three Hazard pieces -->
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/VFEPirates.WarcasketDef[defName="VFEP_Warcasket_Hazard"]/statBases/ArmorRating_Heat</xpath>
+          <xpath>/Defs/VFEPirates.WarcasketDef[defName="RSW_VFEP_Warcasket_Hazard"]/statBases/ArmorRating_Heat</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/VFEPirates.WarcasketDef[defName="VFEP_Warcasket_Hazard"]/statBases/ArmorRating_Heat</xpath>
+            <xpath>/Defs/VFEPirates.WarcasketDef[defName="RSW_VFEP_Warcasket_Hazard"]/statBases/ArmorRating_Heat</xpath>
             <value><ArmorRating_Heat>1.30</ArmorRating_Heat></value>
           </match>
         </li>
@@ -139,9 +139,9 @@
           loudly if it did not — but each op is still guarded, unlike his.
         -->
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/VFEPirates.WarcasketDef[defName="VFEP_Warcasket_Hazard"]/statBases/Insulation_Heat</xpath>
+          <xpath>/Defs/VFEPirates.WarcasketDef[defName="RSW_VFEP_Warcasket_Hazard"]/statBases/Insulation_Heat</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/VFEPirates.WarcasketDef[defName="VFEP_Warcasket_Hazard"]/statBases/Insulation_Heat</xpath>
+            <xpath>/Defs/VFEPirates.WarcasketDef[defName="RSW_VFEP_Warcasket_Hazard"]/statBases/Insulation_Heat</xpath>
             <value><Insulation_Heat>50</Insulation_Heat></value>
           </match>
         </li>

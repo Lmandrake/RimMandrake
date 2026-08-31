@@ -5,7 +5,7 @@ using RimWorld.Planet;
 using Verse;
 using Verse.AI.Group;
 
-namespace Inhabited
+namespace RimMandrake.Inhabited
 {
     /// <summary>
     /// Puts the company on the ground.

@@ -74,7 +74,7 @@ TIERS = {
         "why": "Prove the RimMandrake Pits framework (dig stages, mass-sum "
                "cover trigger, struggle escape) with nothing else on the map "
                "that could spring a trap or explain a failure.",
-        "want": [BRIDGE, "mandrake.rimmandrakepits"],
+        "want": [BRIDGE, "mandrake.rm.pits"],
         "dlc": False,
     },
     "bench": {
@@ -84,9 +84,9 @@ TIERS = {
         "want": [
             BRIDGE,
             # --- ours
-            "mandrake.jawa.armoury", "mandrake.jawa.doctrine",
-            "mandrake.jawa.patches", "mandrake.jawaionweapons",
-            "mandrake.rimdefdump",
+            "mandrake.rsw.armoury", "mandrake.rut.doctrine",
+            "mandrake.jawa.patches", "mandrake.rsw.ionweapons",
+            "mandrake.rm.rimdefdump",
             # --- weapons and armour matrix (L3 / L14)
             "lee.theforce.lightsaber",      # lightsabers, Heat damage
             "guy762.mm.kotorcore",          # durasteel + matrix armour

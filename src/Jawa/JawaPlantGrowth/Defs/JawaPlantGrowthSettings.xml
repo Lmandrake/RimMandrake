@@ -7,7 +7,7 @@
     Source/PlantGrowthConfig.cs are used instead, and they are the same numbers.
   -->
   <JawaPlantGrowth.PlantGrowthSettingsDef>
-    <defName>JawaPlantGrowth_Settings</defName>
+    <defName>RUT_JawaPlantGrowth_Settings</defName>
 
     <!-- Wild plants AND player crops. Corn's 11.3 growDays becomes ~2.8.
          Crops are deliberately NOT exempt: on this world the limit on farming is

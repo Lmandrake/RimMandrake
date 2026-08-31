@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
-  <packageId>mandrake.starwarsraces</packageId>
+  <packageId>mandrake.rsw.starwarsraces</packageId>
   <name>RimMandrake - Star Wars Races</name>
   <author>mandrake</author>
   <supportedVersions>
@@ -19,7 +19,7 @@ Species NAMES come with them. 48 name-generating rule packs and the word lists t
 
 Outer Rim's sixteen species pawn kinds are copied as well, with both of their abstract parents, because a faction that fields them directly loses those raids and caravans outright when that mod leaves.
 
-The MandrakeJawa xenotype and its four genes - skittish, hooded face, and the orange and amber big-eye colours with their glow sprite - are authored here rather than copied, and live in this mod because the Jawa are a species like any other.
+The RSW_MandrakeJawa xenotype and its four genes - skittish, hooded face, and the orange and amber big-eye colours with their glow sprite - are authored here rather than copied, and live in this mod because the Jawa are a species like any other.
 
 Nothing generic was copied. Genes that belong to Biotech, Core, Outland Genetics, Integrated Genes, LFS Genes Expanded - Eyes and Big and Small remain theirs; those mods are dependencies and must stay installed.
 

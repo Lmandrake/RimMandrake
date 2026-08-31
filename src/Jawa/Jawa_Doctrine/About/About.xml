@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
-  <packageId>mandrake.jawa.doctrine</packageId>
+  <packageId>mandrake.rut.doctrine</packageId>
   <name>Jawa Doctrine Patches</name>
   <author>Mandrake</author>
   <supportedVersions><li>1.6</li></supportedVersions>
@@ -42,7 +42,7 @@ Load last.</description>
         * "Mythological Creatures!" - MegafaunaYield has a group for it, but no
           such mod is installed today. A loadAfter naming a packageId that does
           not exist fails SILENTLY and constrains nothing, which is exactly how
-          mandrake.jawa.armoury's rule sat inert. Its patch group is a harmless
+          mandrake.rsw.armoury's rule sat inert. Its patch group is a harmless
           no-op; if the mod is ever reinstalled, add it here. -->
   <loadAfter>
     <li>Abrolo.Grimstone.Beasts</li>                      <!-- Grimstone : Beasts -->

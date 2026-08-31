@@ -34,10 +34,10 @@
 //   python3 src/RimMandrake/Utils/selftest_colony_visibility.py
 
 using System;
-using JawaDoctrineCore;
+using RimMandrake.Utinni.Doctrine;
 using Verse;
 
-namespace JawaDoctrineCore.SelfTest
+namespace RimMandrake.Utinni.Doctrine.SelfTest
 {
     internal static class Program
     {

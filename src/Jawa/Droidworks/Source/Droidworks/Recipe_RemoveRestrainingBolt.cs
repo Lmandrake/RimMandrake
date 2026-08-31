@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using RimWorld;
 using Verse;
 
-namespace Droidworks
+namespace RimMandrake.StarWars.Droidworks
 {
     /// <summary>
     /// Custom worker because the bolt is a whole-pawn hediff
@@ -14,7 +14,7 @@ namespace Droidworks
     /// pattern for a whole-pawn condition-gated surgery), reading
     /// recipe.removesHediff data-driven from the RecipeDef rather than a
     /// hardcoded DefOf, matching vanilla Recipe_RemoveImplant's own shape.
-    /// Deliberately does NOT touch DW_BoltResentment - the whole point of
+    /// Deliberately does NOT touch RSW_DW_BoltResentment - the whole point of
     /// that hediff is that it survives removal.
     /// </summary>
     public class Recipe_RemoveRestrainingBolt : Recipe_Surgery

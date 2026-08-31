@@ -66,7 +66,7 @@ python3 build_jawavoice.py
 ```
 
 Reads the SpeakUp 1.6 source snapshot in `vendor/mod_sources/_speakup_src_1p6/` and rewrites
-`src/Jawa/JawaVoice/Patches/*.xml`. Coverage: **185 defs, ~3,200 gated
+`src/RimStarWars/JawaVoice/Patches/*.xml`. Coverage: **185 defs, ~3,200 gated
 lines** across weather, needs, thoughts, jobs, games, social chat, jokes,
 prisoners, romance, and animals.
 

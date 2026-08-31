@@ -11,7 +11,7 @@
        Outer Rim Core uses).
   ======================================================================== -->
   <ResearchProjectDef>
-    <defName>JawaIon_Weaponry</defName>
+    <defName>RSW_JawaIon_Weaponry</defName>
     <label>Jawa ion weaponry</label>
     <description>The bound-wire craft of the ion emitter: how to shape a weak ionic bolt that overloads machines and scrambles nerves without drawing blood. Native knowledge among the clan.</description>
     <baseCost>400</baseCost>

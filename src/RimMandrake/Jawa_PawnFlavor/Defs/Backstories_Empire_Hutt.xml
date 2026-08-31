@@ -5,8 +5,8 @@
        The procedural occupier. Captives are the pipeline; the Empire never ransoms. -->
 
   <BackstoryDef>
-    <defName>Jawa_AcademyCadet</defName>
-    <identifier>Jawa_AcademyCadet</identifier>
+    <defName>RUT_Jawa_AcademyCadet</defName>
+    <identifier>RUT_Jawa_AcademyCadet</identifier>
     <slot>Childhood</slot>
     <title>academy cadet</title>
     <titleShort>cadet</titleShort>
@@ -18,7 +18,7 @@
     </skillGains>
     <workDisables>None</workDisables>
     <forcedTraits>
-      <Jawa_Numbered>0</Jawa_Numbered>
+      <RUT_Jawa_Numbered>0</RUT_Jawa_Numbered>
     </forcedTraits>
     <spawnCategories>
       <li>JawaBSC_Empire</li>
@@ -26,8 +26,8 @@
   </BackstoryDef>
 
   <BackstoryDef>
-    <defName>Jawa_GarrisonBrat</defName>
-    <identifier>Jawa_GarrisonBrat</identifier>
+    <defName>RUT_Jawa_GarrisonBrat</defName>
+    <identifier>RUT_Jawa_GarrisonBrat</identifier>
     <slot>Childhood</slot>
     <title>garrison brat</title>
     <titleShort>brat</titleShort>
@@ -43,8 +43,8 @@
   </BackstoryDef>
 
   <BackstoryDef>
-    <defName>Jawa_Stormtrooper</defName>
-    <identifier>Jawa_Stormtrooper</identifier>
+    <defName>RUT_Jawa_Stormtrooper</defName>
+    <identifier>RUT_Jawa_Stormtrooper</identifier>
     <slot>Adulthood</slot>
     <title>stormtrooper</title>
     <titleShort>trooper</titleShort>
@@ -61,8 +61,8 @@
   </BackstoryDef>
 
   <BackstoryDef>
-    <defName>Jawa_RequisitionsOfficer</defName>
-    <identifier>Jawa_RequisitionsOfficer</identifier>
+    <defName>RUT_Jawa_RequisitionsOfficer</defName>
+    <identifier>RUT_Jawa_RequisitionsOfficer</identifier>
     <slot>Adulthood</slot>
     <title>requisitions officer</title>
     <titleShort>quartermaster</titleShort>
@@ -79,8 +79,8 @@
   </BackstoryDef>
 
   <BackstoryDef>
-    <defName>Jawa_ImperialDeserter</defName>
-    <identifier>Jawa_ImperialDeserter</identifier>
+    <defName>RUT_Jawa_ImperialDeserter</defName>
+    <identifier>RUT_Jawa_ImperialDeserter</identifier>
     <slot>Adulthood</slot>
     <title>imperial deserter</title>
     <titleShort>deserter</titleShort>
@@ -100,8 +100,8 @@
        Everything is for sale; the Cartel always pays for its own. -->
 
   <BackstoryDef>
-    <defName>Jawa_PalaceRaised</defName>
-    <identifier>Jawa_PalaceRaised</identifier>
+    <defName>RUT_Jawa_PalaceRaised</defName>
+    <identifier>RUT_Jawa_PalaceRaised</identifier>
     <slot>Childhood</slot>
     <title>palace-raised</title>
     <titleShort>palace-raised</titleShort>
@@ -117,8 +117,8 @@
   </BackstoryDef>
 
   <BackstoryDef>
-    <defName>Jawa_DebtBorn</defName>
-    <identifier>Jawa_DebtBorn</identifier>
+    <defName>RUT_Jawa_DebtBorn</defName>
+    <identifier>RUT_Jawa_DebtBorn</identifier>
     <slot>Childhood</slot>
     <title>debt-born</title>
     <titleShort>debt-born</titleShort>
@@ -135,8 +135,8 @@
   </BackstoryDef>
 
   <BackstoryDef>
-    <defName>Jawa_Majordomo</defName>
-    <identifier>Jawa_Majordomo</identifier>
+    <defName>RUT_Jawa_Majordomo</defName>
+    <identifier>RUT_Jawa_Majordomo</identifier>
     <slot>Adulthood</slot>
     <title>majordomo</title>
     <titleShort>majordomo</titleShort>
@@ -152,8 +152,8 @@
   </BackstoryDef>
 
   <BackstoryDef>
-    <defName>Jawa_CollectionEnforcer</defName>
-    <identifier>Jawa_CollectionEnforcer</identifier>
+    <defName>RUT_Jawa_CollectionEnforcer</defName>
+    <identifier>RUT_Jawa_CollectionEnforcer</identifier>
     <slot>Adulthood</slot>
     <title>collection enforcer</title>
     <titleShort>enforcer</titleShort>
@@ -169,8 +169,8 @@
   </BackstoryDef>
 
   <BackstoryDef>
-    <defName>Jawa_SpiceRunner</defName>
-    <identifier>Jawa_SpiceRunner</identifier>
+    <defName>RUT_Jawa_SpiceRunner</defName>
+    <identifier>RUT_Jawa_SpiceRunner</identifier>
     <slot>Adulthood</slot>
     <title>spice-runner</title>
     <titleShort>runner</titleShort>

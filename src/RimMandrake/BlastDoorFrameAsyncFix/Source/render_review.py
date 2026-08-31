@@ -24,7 +24,7 @@ from PIL import Image
 
 DONOR = ("/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100"
          "/3550435517/Textures/Things/Building/Door/Blast")
-OUT = ("/mnt/d/Luke/dev/Rimworld/src/RimMandrake/BlastDoorFrameAsyncFix"
+OUT = ("/mnt/d/Luke/dev/Rimworld/src/RimStarWars/BlastDoorFrameAsyncFix"
        "/Textures/Things/Building/Door/Blast")
 HERE = os.path.dirname(os.path.abspath(__file__))
 

@@ -7,7 +7,7 @@ using UnityEngine;
 using Vehicles;
 using Verse;
 
-namespace JawaIonWeapons
+namespace RimMandrake.StarWars.JawaIonWeapons
 {
     /// <summary>
     /// Harmony bootstrap for the Vehicle Framework ion tier. Deliberately mentions
@@ -25,25 +25,25 @@ namespace JawaIonWeapons
                 .Any(assembly => assembly.GetName().Name == "Vehicles");
             if (!vehiclesLoaded)
             {
-                Log.Warning("[JawaIonWeapons] Vehicle Framework is not loaded; the vehicle ion "
+                Log.Warning("[RimMandrake.StarWars.JawaIonWeapons] Vehicle Framework is not loaded; the vehicle ion "
                     + "tier is skipped. Pawn/droid/mech tiers are unaffected.");
                 return;
             }
 
             try
             {
-                VehicleIonPatches.Apply(new Harmony("mandrake.jawaionweapons.vehicletier"));
+                VehicleIonPatches.Apply(new Harmony("mandrake.rsw.ionweapons.vehicletier"));
             }
             catch (Exception ex)
             {
-                Log.Error("[JawaIonWeapons] Failed to patch the vehicle ion tier: " + ex);
+                Log.Error("[RimMandrake.StarWars.JawaIonWeapons] Failed to patch the vehicle ion tier: " + ex);
             }
         }
     }
 
     /// <summary>
     /// VEHICLE_ION_TIER_1 - closes the gap found reading VF's own damage pipeline:
-    /// firing JawaIon_Damage at a Vehicle Framework vehicle currently does plain
+    /// firing RSW_JawaIon_Damage at a Vehicle Framework vehicle currently does plain
     /// component damage and NOTHING ELSE. Traced end to end, not guessed:
     ///
     ///   Verse.Thing.TakeDamage(DamageInfo)   <- normal combat calls THIS overload
@@ -59,7 +59,7 @@ namespace JawaIonWeapons
     /// ElectrifyAllComponents, which stuns the vehicle via the same
     /// vehicle.stances.stunner.StunFor(...) call a pawn's stunner uses - but it is
     /// gated on `defApplied == DamageDefOf.EMP` by literal object identity, and
-    /// JawaIon_Damage is a distinct DamageDef, so that path never fires for it
+    /// RSW_JawaIon_Damage is a distinct DamageDef, so that path never fires for it
     /// either.
     ///
     /// 🔴 CORRECTED 2026-08-30, first live test (quicktest, game UP): the original
@@ -127,18 +127,18 @@ namespace JawaIonWeapons
     ///   VVE_Warbird         5x5  (area 25)  amount = 0.96  (~25x the hits)
     ///
     /// empAmountDroid ITSELF IS READ BY REFLECTION, not hardcoded here and not a
-    /// hard reference to JawaIonWeapons.dll's own IonDamageDef type - this
+    /// hard reference to RimMandrake.StarWars.JawaIonWeapons.dll's own IonDamageDef type - this
     /// assembly targets net48 (Vehicles.dll/SmashTools.dll are net48; the main
-    /// JawaIonWeapons.csproj stays net472, matching DesertVehicleReskin's own
+    /// RimMandrake.StarWars.JawaIonWeapons.csproj stays net472, matching RimMandrake.DesertVehicleReskin's own
     /// reason for splitting a Harmony/Vehicles-dependent patch into its own
     /// sub-project) and reflection keeps the two build outputs load-order
-    /// independent - this one does not need JawaIonWeapons.dll to have built
+    /// independent - this one does not need RimMandrake.StarWars.JawaIonWeapons.dll to have built
     /// first. A miss REFUSES (falls back to the def's own default, matching
     /// IonDamageDef's field initializer) rather than silently reading zero.
     /// </summary>
     public static class VehicleIonPatches
     {
-        private const string IonDamageDefName = "JawaIon_Damage";
+        private const string IonDamageDefName = "RSW_JawaIon_Damage";
         private const float FallbackEmpAmountDroid = 24f;
 
         public static void Apply(Harmony harmony)
@@ -147,7 +147,7 @@ namespace JawaIonWeapons
                 nameof(VehiclePawn.PreApplyDamage));
             if (preApplyDamage == null)
             {
-                Log.Error("[JawaIonWeapons] VehiclePawn.PreApplyDamage not found by reflection - "
+                Log.Error("[RimMandrake.StarWars.JawaIonWeapons] VehiclePawn.PreApplyDamage not found by reflection - "
                     + "Vehicle Framework's API has moved. Vehicle ion tier not applied.");
                 return;
             }
@@ -193,7 +193,7 @@ namespace JawaIonWeapons
             // false in a finally - mirrored here exactly, via the property's private setter.
             if (OverrideStunPatchSetter == null)
             {
-                Log.Error("[JawaIonWeapons] VehicleStatHandler.OverrideStunPatch setter not found by "
+                Log.Error("[RimMandrake.StarWars.JawaIonWeapons] VehicleStatHandler.OverrideStunPatch setter not found by "
                     + "reflection - Vehicle Framework's API has moved. Vehicle stun skipped.");
                 return;
             }

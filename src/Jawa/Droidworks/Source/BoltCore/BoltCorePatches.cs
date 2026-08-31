@@ -4,7 +4,7 @@ using HarmonyLib;
 using Verse;
 using Verse.AI;
 
-namespace DroidworksBoltCore
+namespace RimMandrake.StarWars.RimMandrake.StarWars.Droidworks
 {
     /// <summary>
     /// Harmony bootstrap for the restraining-bolt core (DROIDWORKS_BOLT_CORE_1).
@@ -12,7 +12,7 @@ namespace DroidworksBoltCore
     /// AppDomain probe for an optional dependency (Vehicle Framework),
     /// MentalBreakWorker is a base-game type that always exists, so there is
     /// nothing to probe for here. The one thing that CAN be legitimately
-    /// missing is the DW_RestrainingBolt HediffDef itself (Droidworks not
+    /// missing is the RSW_DW_RestrainingBolt HediffDef itself (RimMandrake.StarWars.Droidworks not
     /// installed, or a future rename) - BoltCorePatches.Prefix degrades
     /// quietly for that case rather than throwing.
     /// </summary>
@@ -23,18 +23,18 @@ namespace DroidworksBoltCore
         {
             try
             {
-                BoltCorePatches.Apply(new Harmony("mandrake.droidworks.boltcore"));
+                BoltCorePatches.Apply(new Harmony("mandrake.rsw.droidworks.boltcore"));
             }
             catch (Exception ex)
             {
-                Log.Error("[DroidworksBoltCore] Failed to apply restraining-bolt patches: " + ex);
+                Log.Error("[RimMandrake.StarWars.RimMandrake.StarWars.Droidworks] Failed to apply restraining-bolt patches: " + ex);
             }
         }
     }
 
     /// <summary>
     /// DROIDWORKS_BOLT_CORE_1 - suppresses mental breaks while a pawn carries
-    /// DW_RestrainingBolt, copying the EXACT mechanism design/Jawa/
+    /// RSW_DW_RestrainingBolt, copying the EXACT mechanism design/Jawa/
     /// droid_ruling.md section 3 documents for OuterRim's own restraint bolt:
     /// "A Harmony prefix on MentalBreakWorker.BreakCanOccur returns false
     /// while it is fitted." ("Asimov's own" per the item brief - Droid
@@ -45,15 +45,15 @@ namespace DroidworksBoltCore
     /// from that mod family.)
     ///
     /// Looked up by defName via DefDatabase&lt;HediffDef&gt;.GetNamedSilentFail
-    /// rather than a hard reference to the main Droidworks.dll (net472) -
+    /// rather than a hard reference to the main RimMandrake.StarWars.Droidworks.dll (net472) -
     /// this sub-project is net48 (see csproj header) and stays load-order
     /// independent of it, same reasoning VehicleIonPatches.cs uses for
     /// reading IonDamageDef's empAmountDroid field by reflection instead of
-    /// referencing JawaIonWeapons.dll.
+    /// referencing RimMandrake.StarWars.JawaIonWeapons.dll.
     /// </summary>
     public static class BoltCorePatches
     {
-        private const string BoltHediffDefName = "DW_RestrainingBolt";
+        private const string BoltHediffDefName = "RSW_DW_RestrainingBolt";
 
         private static HediffDef _boltDefCache;
         private static bool _boltDefResolved;
@@ -64,7 +64,7 @@ namespace DroidworksBoltCore
                 nameof(MentalBreakWorker.BreakCanOccur));
             if (breakCanOccur == null)
             {
-                Log.Error("[DroidworksBoltCore] MentalBreakWorker.BreakCanOccur not found by "
+                Log.Error("[RimMandrake.StarWars.RimMandrake.StarWars.Droidworks] MentalBreakWorker.BreakCanOccur not found by "
                     + "reflection - vanilla API has moved. Restraining-bolt break suppression not applied.");
                 return;
             }
@@ -85,7 +85,7 @@ namespace DroidworksBoltCore
             if (pawn?.health?.hediffSet == null) return true;
 
             HediffDef boltDef = BoltDef;
-            if (boltDef == null) return true; // Droidworks not loaded / def missing - degrade quietly
+            if (boltDef == null) return true; // RimMandrake.StarWars.Droidworks not loaded / def missing - degrade quietly
 
             if (!pawn.health.hediffSet.HasHediff(boltDef)) return true;
 

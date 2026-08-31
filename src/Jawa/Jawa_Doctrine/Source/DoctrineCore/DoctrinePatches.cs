@@ -3,12 +3,12 @@ using HarmonyLib;
 using RimWorld;
 using Verse;
 
-namespace JawaDoctrineCore
+namespace RimMandrake.Utinni.Doctrine
 {
     /// <summary>
     /// Harmony bootstrap for Jawa_Doctrine's own C# fixes.
     /// [StaticConstructorOnStartup], same pattern as
-    /// Droidworks/Source/BoltCore/BoltCorePatches.cs.
+    /// RimMandrake.StarWars.Droidworks/Source/BoltCore/BoltCorePatches.cs.
     /// </summary>
     [StaticConstructorOnStartup]
     public static class JawaDoctrineCoreMod
@@ -22,7 +22,7 @@ namespace JawaDoctrineCore
             }
             catch (Exception ex)
             {
-                Log.Error("[JawaDoctrineCore] Failed to apply patches: " + ex);
+                Log.Error("[RimMandrake.Utinni.Doctrine] Failed to apply patches: " + ex);
             }
 
             try
@@ -34,7 +34,7 @@ namespace JawaDoctrineCore
             }
             catch (Exception ex)
             {
-                Log.Error("[JawaDoctrineCore] Failed to apply Colony Visibility patches: " + ex);
+                Log.Error("[RimMandrake.Utinni.Doctrine] Failed to apply Colony Visibility patches: " + ex);
             }
         }
     }
@@ -53,7 +53,7 @@ namespace JawaDoctrineCore
     /// AlienRace.HarmonyPatches.GenerationChanceGenderless, etc. Confirmed
     /// 10/10 in a batch test on the already-shipped OuterRim_BattleDroid
     /// (2026-08-30), so this is a live bug in the current campaign, not just
-    /// future Droidworks content.
+    /// future RimMandrake.StarWars.Droidworks content.
     ///
     /// Fix: a postfix that allocates pawn.relations for exactly the
     /// complementary case vanilla leaves uncovered - Humanlike AND !IsFlesh.
@@ -68,7 +68,7 @@ namespace JawaDoctrineCore
                 nameof(PawnComponentsUtility.CreateInitialComponents));
             if (target == null)
             {
-                Log.Error("[JawaDoctrineCore] PawnComponentsUtility.CreateInitialComponents not found by "
+                Log.Error("[RimMandrake.Utinni.Doctrine] PawnComponentsUtility.CreateInitialComponents not found by "
                     + "reflection - vanilla API has moved. Non-flesh-Humanlike relations fix not applied.");
                 return;
             }

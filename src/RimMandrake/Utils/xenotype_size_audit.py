@@ -32,7 +32,7 @@ Two further mechanical routes exist and are counted:
 
 ``sizeByAgeMult`` is deliberately NOT counted.  It is Big and Small's early- and
 late-maturity curve: it changes how fast a pawn reaches its adult size, not what
-that adult size is.  ``BS_EarlyMaturity`` on ``MandrakeJawa`` is that gene, and
+that adult size is.  ``BS_EarlyMaturity`` on ``RSW_MandrakeJawa`` is that gene, and
 counting it would report the player xenotype as carrying a size gene when it
 does not.
 
@@ -281,53 +281,53 @@ FOREIGN = "NOT OURS"
 
 VERDICTS = {
     # ---- strong candidates -------------------------------------------------
-    "RimMandrakeWookiee": (STRONG, "2.1 m and the galaxy's byword for strength; the single most obvious candidate"),
-    "RimMandrakeGamorrean": (STRONG, "the def's own text says 'tall, strong bipeds'; porcine brutes hired as muscle"),
-    "Jawa_Xeno_Gamorrean": (STRONG, "our own Gamorrean variant -- same call as RimMandrakeGamorrean, and it already carries the cosmetic big gene"),
-    "RimMandrakeHerglic": (STRONG, "the def calls them 'hulking' and says they 'hit like a wrecking ball'"),
-    "RimMandrakeTrandoshan": (STRONG, "2 m reptilian trophy hunters; large and built for violence"),
-    "RimMandrakeTogorian": (STRONG, "the def's own text: 'large, feline beings'"),
-    "RimMandrakeLasat": (STRONG, "over 2 m and famously powerful in melee"),
-    "RimMandrakeFeeorin": (STRONG, "tall, heavily muscled and long-lived; grows stronger with age"),
-    "RimMandrakeSithMassassi": (STRONG, "the Sith war caste -- bred tall and heavily muscled for exactly this"),
+    "RSW_RimMandrakeWookiee": (STRONG, "2.1 m and the galaxy's byword for strength; the single most obvious candidate"),
+    "RSW_RimMandrakeGamorrean": (STRONG, "the def's own text says 'tall, strong bipeds'; porcine brutes hired as muscle"),
+    "Jawa_Xeno_Gamorrean": (STRONG, "our own Gamorrean variant -- same call as RSW_RimMandrakeGamorrean, and it already carries the cosmetic big gene"),
+    "RSW_RimMandrakeHerglic": (STRONG, "the def calls them 'hulking' and says they 'hit like a wrecking ball'"),
+    "RSW_RimMandrakeTrandoshan": (STRONG, "2 m reptilian trophy hunters; large and built for violence"),
+    "RSW_RimMandrakeTogorian": (STRONG, "the def's own text: 'large, feline beings'"),
+    "RSW_RimMandrakeLasat": (STRONG, "over 2 m and famously powerful in melee"),
+    "RSW_RimMandrakeFeeorin": (STRONG, "tall, heavily muscled and long-lived; grows stronger with age"),
+    "RSW_RimMandrakeSithMassassi": (STRONG, "the Sith war caste -- bred tall and heavily muscled for exactly this"),
     # ---- plausible ---------------------------------------------------------
-    "RimMandrakeKlatoonian": (PLAUSIBLE, "the def's own text: 'possessed a strong build, which made them useful laborers'"),
-    "RimMandrakeAqualish": (PLAUSIBLE, "burly and thickset; frequently cast as heavies"),
-    "RimMandrakeCathar": (PLAUSIBLE, "large athletic felinoids, though closer to human height than to a giant"),
-    "RimMandrakeKaleesh": (PLAUSIBLE, "formidable warriors, but canonically near human height -- the fighting is the argument, not the size"),
-    "RimMandrakeChagrian": (PLAUSIBLE, "tall and solidly built, though not warriors by disposition"),
-    "RimMandrakeNelvaanian": (PLAUSIBLE, "lupine and powerfully built; a defensible large frame"),
-    "RimMandrakeGungan": (PLAUSIBLE, "tall amphibians, but rangy rather than heavy"),
+    "RSW_RimMandrakeKlatoonian": (PLAUSIBLE, "the def's own text: 'possessed a strong build, which made them useful laborers'"),
+    "RSW_RimMandrakeAqualish": (PLAUSIBLE, "burly and thickset; frequently cast as heavies"),
+    "RSW_RimMandrakeCathar": (PLAUSIBLE, "large athletic felinoids, though closer to human height than to a giant"),
+    "RSW_RimMandrakeKaleesh": (PLAUSIBLE, "formidable warriors, but canonically near human height -- the fighting is the argument, not the size"),
+    "RSW_RimMandrakeChagrian": (PLAUSIBLE, "tall and solidly built, though not warriors by disposition"),
+    "RSW_RimMandrakeNelvaanian": (PLAUSIBLE, "lupine and powerfully built; a defensible large frame"),
+    "RSW_RimMandrakeGungan": (PLAUSIBLE, "tall amphibians, but rangy rather than heavy"),
     # ---- tall, not big -----------------------------------------------------
-    "RimMandrakeKaminoan": (TALL, "2.3 m and famously frail -- tall is not big, and a giant weapon on one would read as a joke"),
-    "RimMandrakeMuun": (TALL, "the def says it: 'tall thin humanoids'. Bankers."),
-    "RimMandrakeCerean": (TALL, "the height is in the cranium; the body is ordinary"),
-    "RimMandrakePyke": (TALL, "tall and spindly criminal caste"),
-    "RimMandrakeNagai": (TALL, "the def says 'tall and agile' -- agility is the point, mass is not"),
-    "RimMandrakeIthorian": (TALL, "tall, but gentle herbivore pacifists; arming one with an ogre club is against the species"),
-    "RimMandrakeKelDor": (TALL, "slight build under the mask"),
+    "RSW_RimMandrakeKaminoan": (TALL, "2.3 m and famously frail -- tall is not big, and a giant weapon on one would read as a joke"),
+    "RSW_RimMandrakeMuun": (TALL, "the def says it: 'tall thin humanoids'. Bankers."),
+    "RSW_RimMandrakeCerean": (TALL, "the height is in the cranium; the body is ordinary"),
+    "RSW_RimMandrakePyke": (TALL, "tall and spindly criminal caste"),
+    "RSW_RimMandrakeNagai": (TALL, "the def says 'tall and agile' -- agility is the point, mass is not"),
+    "RSW_RimMandrakeIthorian": (TALL, "tall, but gentle herbivore pacifists; arming one with an ogre club is against the species"),
+    "RSW_RimMandrakeKelDor": (TALL, "slight build under the mask"),
     # ---- special -----------------------------------------------------------
-    "RimMandrakeHutt": (SPECIAL, "canonically the largest species we field by a wide margin, so a size gene is RIGHT -- but a Hutt is a sessile slug with vestigial arms and could not swing a giant hammer. Size yes, giant weapons no."),
+    "RSW_RimMandrakeHutt": (SPECIAL, "canonically the largest species we field by a wide margin, so a size gene is RIGHT -- but a Hutt is a sessile slug with vestigial arms and could not swing a giant hammer. Size yes, giant weapons no."),
     # ---- never -------------------------------------------------------------
-    "MandrakeJawa": (NEVER, "the player xenotype, and canonically ~1 m. Never a candidate."),
-    "RimMandrakeJawa": (NEVER, "canonically ~1 m"),
-    "RimMandrakeEwok": (NEVER, "the def's own text: 'small primitive species', 'diminutive size'"),
-    "RimMandrakeChadraFan": (NEVER, "the def's own text: 'meter-tall, rodent-like humanoids'"),
-    "RimMandrakeUgnaught": (NEVER, "canonically short and stocky labourers"),
-    "RimMandrakeYoderForceGremlin": (NEVER, "the Yoda species; tiny by definition"),
-    "RimMandrakeSullustan": (NEVER, "short"),
-    "RimMandrakeBothan": (NEVER, "short and slight"),
-    "RimMandrakeDefel": (NEVER, "small shadow-dwellers"),
-    "RimMandrakeGand": (NEVER, "small insectoids"),
-    "RimMandrakeGeonosianVariants": (NEVER, "slight winged insectoids"),
-    "RimMandrakeSnivvian": (NEVER, "short"),
-    "RimMandrakeSelkath": (NEVER, "modest build"),
-    "RimMandrakeOrtolan": (NEVER, "the def's own text: 'squat, blue-skinned bipeds'"),
+    "RSW_MandrakeJawa": (NEVER, "the player xenotype, and canonically ~1 m. Never a candidate."),
+    "RSW_RimMandrakeJawa": (NEVER, "canonically ~1 m"),
+    "RSW_RimMandrakeEwok": (NEVER, "the def's own text: 'small primitive species', 'diminutive size'"),
+    "RSW_RimMandrakeChadraFan": (NEVER, "the def's own text: 'meter-tall, rodent-like humanoids'"),
+    "RSW_RimMandrakeUgnaught": (NEVER, "canonically short and stocky labourers"),
+    "RSW_RimMandrakeYoderForceGremlin": (NEVER, "the Yoda species; tiny by definition"),
+    "RSW_RimMandrakeSullustan": (NEVER, "short"),
+    "RSW_RimMandrakeBothan": (NEVER, "short and slight"),
+    "RSW_RimMandrakeDefel": (NEVER, "small shadow-dwellers"),
+    "RSW_RimMandrakeGand": (NEVER, "small insectoids"),
+    "RSW_RimMandrakeGeonosianVariants": (NEVER, "slight winged insectoids"),
+    "RSW_RimMandrakeSnivvian": (NEVER, "short"),
+    "RSW_RimMandrakeSelkath": (NEVER, "modest build"),
+    "RSW_RimMandrakeOrtolan": (NEVER, "the def's own text: 'squat, blue-skinned bipeds'"),
 }
 
 # Everything else of ours is human scale.  Named so the table is complete and so
 # a future reader can see the default was a decision, not an omission.
-OURS_PREFIXES = ("RimMandrake", "MandrakeJawa", "Jawa_", "guy762_")
+OURS_PREFIXES = ("RimMandrake", "RSW_MandrakeJawa", "Jawa_", "guy762_")
 
 
 def verdict_for(row: dict) -> tuple[str, str]:

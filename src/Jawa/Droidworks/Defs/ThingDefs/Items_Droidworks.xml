@@ -2,9 +2,9 @@
 <Defs>
 
   <!-- ========================================================================
-       DW_RestrainingBoltItem — DROIDWORKS_BOLT_CORE_1. The physical bolt: a
-       craftable ingredient consumed by DW_InstallRestrainingBolt (surgery
-       route). Named "…Item" rather than the bare DW_RestrainingBolt to avoid
+       RSW_DW_RestrainingBoltItem — DROIDWORKS_BOLT_CORE_1. The physical bolt: a
+       craftable ingredient consumed by RSW_DW_InstallRestrainingBolt (surgery
+       route). Named "…Item" rather than the bare RSW_DW_RestrainingBolt to avoid
        a C# DefOf field-name collision with the HediffDef of that name
        (RimWorld itself allows two different Def TYPES to share a defName —
        Droid Depot's own OuterRim_RestraintBolt does exactly that across
@@ -23,7 +23,7 @@
        dependency.
   ======================================================================== -->
   <ThingDef ParentName="ResourceBase">
-    <defName>DW_RestrainingBoltItem</defName>
+    <defName>RSW_DW_RestrainingBoltItem</defName>
     <label>restraining bolt</label>
     <description>A small mechanical bolt. Clamped or surgically fitted onto a droid, it overrides the droid's behavior routines: mute, clumsier, and unable to hold its own opinions.</description>
     <graphicData>
@@ -56,11 +56,11 @@
   </ThingDef>
 
   <!-- ========================================================================
-       DW_DroidHead — DROIDWORKS_WIPE_AND_SPIKE_1. PLACEHOLDER, not the real
+       RSW_DW_DroidHead — DROIDWORKS_WIPE_AND_SPIKE_1. PLACEHOLDER, not the real
        item. The shop/salvage pipeline that would drop a faction-specific
        droid head off a damaged/destroyed droid is unbuilt — this generic
-       resource exists so DW_DataSpike's recipe has something real to consume
-       today. One generic head, not per-faction (matches DW_DataSpike itself
+       resource exists so RSW_DW_DataSpike's recipe has something real to consume
+       today. One generic head, not per-faction (matches RSW_DW_DataSpike itself
        being one generic keyed def in v0 — see that def's own header).
        Category ResourcesRaw, not Manufactured — it is salvage, not a crafted
        product. Art reused verbatim from the KotOR HK-series head texture
@@ -69,7 +69,7 @@
        Buildings_Charging.xml/Items_Droidworks.xml already established.
   ======================================================================== -->
   <ThingDef ParentName="ResourceBase">
-    <defName>DW_DroidHead</defName>
+    <defName>RSW_DW_DroidHead</defName>
     <label>droid head</label>
     <description>A salvaged droid head, worn from an unspecified faction's service. PLACEHOLDER — the shop/salvage pipeline that drops real faction-specific heads is unbuilt; this generic resource exists so data-spike crafting has something real to consume today.</description>
     <graphicData>
@@ -87,7 +87,7 @@
   </ThingDef>
 
   <!-- ========================================================================
-       DW_DataSpike — DROIDWORKS_WIPE_AND_SPIKE_1. Reauthors OuterRim_DataSpike
+       RSW_DW_DataSpike — DROIDWORKS_WIPE_AND_SPIKE_1. Reauthors OuterRim_DataSpike
        (droid_ruling.md section 6/history), not a reference to that class.
        ONE generic def in v0, keyed via CompDWDataSpike.spikeFaction to
        guy762_KotORFaction_RogueDroids — droid_ruling.md's own ruling names
@@ -97,7 +97,7 @@
        a C# change (see CompDWDataSpike.cs's header).
 
        comps:
-       - CompProperties_Usable: useJob points at OUR OWN DW_DataSpike JobDef
+       - CompProperties_Usable: useJob points at OUR OWN RSW_DW_DataSpike JobDef
          (Droidworks.JobDriver_DWDataSpike), not vanilla's generic
          JobDriver_UseItem — CompUsable.TryStartUseJob builds the job as
          TargetA=this item, TargetB=the picked target, which is exactly the
@@ -110,14 +110,14 @@
          this reauthoring sidesteps by never accepting corpses).
        - Droidworks.CompProperties_DWDataSpike: the faction key itself.
 
-       recipeMaker: crafts DW_DataSpike from 1 DW_DroidHead — this recipeMaker
+       recipeMaker: crafts RSW_DW_DataSpike from 1 RSW_DW_DroidHead — this recipeMaker
        block IS the "RecipeDef crafting a keyed spike" the item brief asks
        for (vanilla auto-generates a real RecipeDef from it, same convention
-       DW_RestrainingBoltItem already uses rather than a hand-written
+       RSW_DW_RestrainingBoltItem already uses rather than a hand-written
        standalone RecipeDef).
   ======================================================================== -->
   <ThingDef ParentName="ResourceBase">
-    <defName>DW_DataSpike</defName>
+    <defName>RSW_DW_DataSpike</defName>
     <label>data spike (rogue droid collective)</label>
     <description>A compact tool loaded with the rogue droid collective's own ownership protocols. Used on a downed or captured droid of that collective, it overrides the droid's loyalty to your own. Keyed to the wrong faction, it does nothing.</description>
     <graphicData>
@@ -131,7 +131,7 @@
     </statBases>
     <comps>
       <li Class="CompProperties_Usable">
-        <useJob>DW_DataSpike</useJob>
+        <useJob>RSW_DW_DataSpike</useJob>
         <useLabel>Spike droid (rogue droid collective)</useLabel>
       </li>
       <li Class="CompProperties_Targetable">
@@ -159,7 +159,7 @@
       </skillRequirements>
     </recipeMaker>
     <costList>
-      <DW_DroidHead>1</DW_DroidHead>
+      <RSW_DW_DroidHead>1</RSW_DW_DroidHead>
     </costList>
     <thingCategories>
       <li>Manufactured</li>

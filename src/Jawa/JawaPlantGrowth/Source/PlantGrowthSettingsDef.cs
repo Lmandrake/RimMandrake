@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 using Verse;
 
-namespace JawaPlantGrowth
+namespace RimMandrake.Utinni.PlantGrowth
 {
     /// <summary>
     /// XML carrier for everything in PlantGrowthConfig, so the bands, the terminator
