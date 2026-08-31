@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-31T17:43:17Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-31T17:47:15Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -36,6 +36,15 @@ kind:     task
 summary:  Owner ruled 2026-08-31: all six §5 roles, and the three predator roles are the
 prose:    infrastructure/state/items/SW_SEA_MONSTERS_ART_1.md
 
+## CAI_FOG_DEEP_DIVE_1 CAI fog-of-war deep dive: full exploration of the mod for general gameplay (combat AI promises) AND underwater short-sight needs; big integration, be thorough
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/CAI_FOG_DEEP_DIVE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/CAI_FOG_DEEP_DIVE_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 _none._
@@ -61,16 +70,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/RESEARCH_TREE_NORMALIZATION_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/RESEARCH_TREE_NORMALIZATION_1.md
-
-## CAI_FOG_DEEP_DIVE_1 CAI fog-of-war deep dive: full exploration of the mod for general gameplay (combat AI promises) AND underwater short-sight needs; big integration, be thorough
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/CAI_FOG_DEEP_DIVE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/CAI_FOG_DEEP_DIVE_1.md
 
 ## SARLACC_SPEC_SESSION_1 Fable spec: the Sarlacc - landmark pit gate rebrand + pearls economy + DEEP DUNGEON experience with wildly animated sarlacc emergence and attack tentacles (owner widened scope 2026-08-31); source facts already measured in V2_DREAMS entry
 state:    proposed
