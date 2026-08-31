@@ -599,7 +599,7 @@ def,Z6_Rotary_Blaster_Cannon_Shot,RSW_Z6_Rotary_Blaster_Cannon_Shot,RimStarWars,
 mod,src/Jawa/Jawa_Doctrine,src/RimUtinni/Doctrine,RimUtinni,RULED,campaign doctrine
 packageId,mandrake.jawa.doctrine,mandrake.rut.doctrine,RimUtinni,RULED,
 namespace,JawaDoctrineCore,RimMandrake.Utinni.Doctrine,RimUtinni,RULED,
-mod,src/Jawa/Jawa_Patches,src/SPLIT_Phase3/Jawa_Patches,SPLIT,VERIFY,Phase 3 per-file triage: Ashkarr/Rakata/DeepDesert/Pyrelands files=RUT; animal/texture/generic fixes=RSW or RM
+mod,src/Jawa/Jawa_Patches,src/SPLIT_Phase3/Jawa_Patches,SPLIT,VERIFY,"Triage done (JAWA_PATCHES_SPLIT_1, 93/93 files classified, jawa_patches_split_map.csv) - physical split not yet executed"
 packageId,mandrake.jawa.patches,TBD_SPLIT,SPLIT,VERIFY,
 def,Base_Player,TBD_SPLIT,SPLIT,VERIFY,Phase 3 per-file triage: Ashkarr/Rakata/DeepDesert/Pyrelands files=RUT; animal/texture/generic fixes=RSW or RM
 def,Jawa_AscendantHelix,TBD_SPLIT,SPLIT,VERIFY,Phase 3 per-file triage: Ashkarr/Rakata/DeepDesert/Pyrelands files=RUT; animal/texture/generic fixes=RSW or RM
