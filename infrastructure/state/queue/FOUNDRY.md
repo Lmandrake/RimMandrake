@@ -234,8 +234,8 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/NINEFOLD_ENGINE_M0_1.md yet — write one when you have something to say)
+thin:     no ## verify, no ## criteria
+summary:  design/Jawa/divinesatiationengine.md — full design ruled, "NINE OF
 prose:    infrastructure/state/items/NINEFOLD_ENGINE_M0_1.md
 
 ## COLONY_VISIBILITY_BUILD_1 Build the Colony Visibility dial (mandrake.rm.visibility): safe core first, threat-scoped Postfix per ruling (hostile callers only), Spike 3 is the patch skeleton
