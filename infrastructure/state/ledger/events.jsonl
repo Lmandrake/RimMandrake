@@ -3324,3 +3324,4 @@
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-08-31T05:17:18Z"}
 {"seat":"FOUNDRY","event":"verify","id":"TERRITORY_ROAD_WEIGHTED_SCALE_1","result":"pass","config":"full-585","evidence":"Transient/territory_before_v2.png,Transient/territory_after_v2.png,Transient/territory_final_paused_safe.png","sha":"a8e46e55","ts":"2026-08-31T05:17:26Z"}
 {"seat":"FOUNDRY","event":"close","id":"TERRITORY_ROAD_WEIGHTED_SCALE_1","sha":"67c62b1e","ts":"2026-08-31T05:17:49Z"}
+{"seat":"OWNER","event":"claim","id":"NAMING_SCHEME_EXECUTION_1","ownerSaid":"Deploy the full rename.","override":"OWNER may not `claim` NAMING_SCHEME_EXECUTION_1 — it belongs to FOUNDRY. Filing work FOR another seat is normal; changing another seat's item is refused.","ts":"2026-08-31T06:04:12Z"}
