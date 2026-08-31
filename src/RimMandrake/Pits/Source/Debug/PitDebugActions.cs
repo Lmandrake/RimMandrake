@@ -38,6 +38,18 @@ namespace RimMandrake.Pits
             return null;
         }
 
+        private static Building_PitCell PitCellAt(IntVec3 c)
+        {
+            Map map = Find.CurrentMap;
+            if (map == null || !c.InBounds(map)) return null;
+            List<Thing> things = c.GetThingList(map);
+            for (int i = 0; i < things.Count; i++)
+            {
+                if (things[i] is Building_PitCell p) return p;
+            }
+            return null;
+        }
+
         private static Building_PitDigSite SiteAt(IntVec3 c)
         {
             Map map = Find.CurrentMap;
@@ -172,6 +184,102 @@ namespace RimMandrake.Pits
                 + " workLeft=" + comp.workLeftThisStage.ToString("F0");
             comp.AddDigWork(999999f);
             Log.Message("[RMPitsDebug] DIG was[" + was + "] nowAt=" + DescribeCell(c));
+        }
+
+        // ------------------------------------------------- pit cell (gated holding)
+
+        // RIMMANDRAKE_PITS_BUILD_1's own "Watch out": Pit Cell intake/gate/feed
+        // and the Oiled ignite have no bridge-reachable hook. These four close
+        // that gap so the gizmo-only surfaces can be quicktest-proven like
+        // everything else in this file.
+
+        [DebugAction(CAT, "PitCell: assign nearest prisoner",
+            allowedGameStates = AllowedGameStates.PlayingOnMap,
+            actionType = DebugActionType.ToolMap)]
+        private static void PitCellAssignNearestPrisoner()
+        {
+            IntVec3 c = UI.MouseCell();
+            Building_PitCell cell = PitCellAt(c);
+            if (cell == null) { Log.Message("[RMPitsDebug] NO_PITCELL at " + c); return; }
+            Map map = Find.CurrentMap;
+            if (map == null) return;
+
+            Pawn nearest = null;
+            float best = float.MaxValue;
+            foreach (Pawn p in map.mapPawns.PrisonersOfColonySpawned)
+            {
+                if (p.Dead) continue;
+                float d = p.Position.DistanceToSquared(c);
+                if (d < best) { best = d; nearest = p; }
+            }
+            if (nearest == null) { Log.Message("[RMPitsDebug] NO_ELIGIBLE_PRISONERS on map"); return; }
+            cell.AssignedPrisoner = nearest;
+            Log.Message("[RMPitsDebug] ASSIGNED " + nearest.LabelShortCap + " id=" + nearest.ThingID
+                + " to PitCell at " + c);
+        }
+
+        [DebugAction(CAT, "PitCell: place assigned in cell",
+            allowedGameStates = AllowedGameStates.PlayingOnMap,
+            actionType = DebugActionType.ToolMap)]
+        private static void PitCellPlaceAssigned()
+        {
+            IntVec3 c = UI.MouseCell();
+            Building_PitCell cell = PitCellAt(c);
+            if (cell == null) { Log.Message("[RMPitsDebug] NO_PITCELL at " + c); return; }
+            if (cell.AssignedPrisoner == null) { Log.Message("[RMPitsDebug] NO_ASSIGNED_PRISONER"); return; }
+            cell.PlaceAssignedInCell();
+            Log.Message("[RMPitsDebug] PLACED assignedPrisoner=" + cell.AssignedPrisoner?.LabelShortCap
+                + " heldPawn=" + (cell.HeldPawn?.LabelShortCap ?? "NONE"));
+        }
+
+        [DebugAction(CAT, "PitCell: toggle gate",
+            allowedGameStates = AllowedGameStates.PlayingOnMap,
+            actionType = DebugActionType.ToolMap)]
+        private static void PitCellToggleGate()
+        {
+            IntVec3 c = UI.MouseCell();
+            Building_PitCell cell = PitCellAt(c);
+            if (cell == null) { Log.Message("[RMPitsDebug] NO_PITCELL at " + c); return; }
+            cell.covered = !cell.covered;
+            cell.DirtyMapMesh(cell.Map);
+            Log.Message("[RMPitsDebug] GATE " + (cell.GateClosed ? "CLOSED" : "OPEN") + " at " + c);
+        }
+
+        [DebugAction(CAT, "PitCell: feed held captive",
+            allowedGameStates = AllowedGameStates.PlayingOnMap,
+            actionType = DebugActionType.ToolMap)]
+        private static void PitCellFeed()
+        {
+            IntVec3 c = UI.MouseCell();
+            Building_PitCell cell = PitCellAt(c);
+            if (cell == null) { Log.Message("[RMPitsDebug] NO_PITCELL at " + c); return; }
+            Pawn held = cell.HeldPawn;
+            if (held == null) { Log.Message("[RMPitsDebug] NO_HELD_PAWN"); return; }
+            float before = held.needs?.food?.CurLevel ?? -1f;
+            cell.FeedHeldPawn();
+            Log.Message("[RMPitsDebug] FED " + held.LabelShortCap + " food " + before.ToString("F2")
+                + " -> " + (held.needs?.food?.CurLevel ?? -1f).ToString("F2"));
+        }
+
+        [DebugAction(CAT, "Oiled: ignite (bypasses soaked/Sprung gate)",
+            allowedGameStates = AllowedGameStates.PlayingOnMap,
+            actionType = DebugActionType.ToolMap)]
+        private static void OiledIgnite()
+        {
+            IntVec3 c = UI.MouseCell();
+            Building_OpenPit pit = PitAt(c);
+            if (pit == null) { NoPit(c); return; }
+            CompPitFitting fit = pit.GetComp<CompPitFitting>();
+            if (fit == null || fit.Props.fittingType != PitFittingType.Oiled)
+            {
+                Log.Message("[RMPitsDebug] NOT_OILED " + pit.def.defName);
+                return;
+            }
+            Map map = pit.Map;
+            if (map == null) return;
+            bool started = FireUtility.TryStartFireIn(pit.Position, map, 1f, pit);
+            Log.Message("[RMPitsDebug] IGNITE " + pit.def.defName + " soaked=" + fit.soaked
+                + " sprung=" + pit.Sprung + " fireStarted=" + started);
         }
 
         // ------------------------------------------------------------ report

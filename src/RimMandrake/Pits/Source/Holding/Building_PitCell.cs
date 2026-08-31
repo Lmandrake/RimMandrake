@@ -136,7 +136,7 @@ namespace RimMandrake.Pits
             Find.WindowStack.Add(new FloatMenu(options));
         }
 
-        private void PlaceAssignedInCell()
+        internal void PlaceAssignedInCell()
         {
             Pawn p = AssignedPrisoner;
             if (p == null || !p.Spawned || Map == null) return;
@@ -146,7 +146,7 @@ namespace RimMandrake.Pits
             HealthUtility.AdjustSeverity(p, RMPits_HediffDefOf.RM_PinnedInPit, 0.1f);
         }
 
-        private void FeedHeldPawn()
+        internal void FeedHeldPawn()
         {
             Pawn p = HeldPawn;
             if (p?.needs?.food == null) return;

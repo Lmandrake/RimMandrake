@@ -246,3 +246,26 @@ combination) once the base mechanic is quicktest-proven.
 🔑 **`RM_PlaceInPitCell`/`RM_FeedCaptive` are stand-ins, not the real
 mechanic.** Do not report prisoner intake or feeding as "done" — they are
 placeholders that make the holder testable, explicitly flagged above.
+
+## 2026-08-31 (FOUNDRY) — the gizmo-only gap closed, still owed a live proof
+
+Added five debug actions closing exactly the gap the "Watch out" section
+above named (`Source/Debug/PitDebugActions.cs`, category `RMPits`):
+`PitCell: assign nearest prisoner`, `PitCell: place assigned in cell`,
+`PitCell: toggle gate`, `PitCell: feed held captive`, and
+`Oiled: ignite (bypasses soaked/Sprung gate)`. Two methods on
+`Building_PitCell` (`PlaceAssignedInCell`, `FeedHeldPawn`) went from
+`private` to `internal` so the debug-action class can reach them —
+`covered`/`soaked` were already `public`. Builds clean (0 errors, 0
+warnings), deployed.
+
+**Still not live-proven.** `mandrake.rm.pits` is deliberately not in the
+owner's active `ModsConfig.xml` (his own content-tier decision, unchanged
+by this pass) and the `pits` test tier needs the game closed to swap to —
+both paths need a restart this session doesn't have. The next window that
+loads either the pits tier or the main list with this mod active should
+run these five actions once each and confirm: prisoner assigned, teleported
+into the cell, gate toggles (and `RM_PitExposure` moves the right
+direction per §-cited rate), food need refills, and an Oiled+Sprung pit
+actually ignites. Nothing here changes the core criteria, already all
+met.
