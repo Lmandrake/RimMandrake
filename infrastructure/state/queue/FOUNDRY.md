@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-31T04:25:23Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-31T05:17:49Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -134,15 +134,6 @@ target:   v1
 kind:     task
 summary:  Full specs, both ruled by the owner 2026-08-30: design/Jawa/coveredpittrapsspec.md
 prose:    infrastructure/state/items/RIMMANDRAKE_PITS_BUILD_1.md
-
-## TERRITORY_ROAD_WEIGHTED_SCALE_1 Faction territories: bigger, road-weighted (owner's live ask)
-state:    doing
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-summary:  1. Confirm the settings ARE live-settable without a restart (WriteSettings -
-prose:    infrastructure/state/items/TERRITORY_ROAD_WEIGHTED_SCALE_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
