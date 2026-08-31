@@ -20,7 +20,10 @@ namespace RimMandrake.RimDefDump
     ///  2. It reaches into Unity. Textures, Materials and Graphics are huge,
     ///     useless to us, and touching some of them before load completes can
     ///     throw.
-    ///     Rule: anything in the UnityEngine namespace is skipped by type.
+    ///     Rule: anything in the UnityEngine namespace is skipped by type,
+    ///     except the small value structs in SafeUnityValueTypeNames
+    ///     (Vector2/3/4, Color, Color32, Quaternion, Rect, Bounds) — those
+    ///     carry no asset reference and are captured normally.
     ///  3. Individual field reads can throw for mod-specific reasons.
     ///     Rule: every read is wrapped; a failure records the exception rather
     ///     than losing the whole def.
@@ -88,13 +91,44 @@ namespace RimMandrake.RimDefDump
             return arr;
         }
 
+        /// <summary>
+        /// Plain Unity VALUE structs — no asset backing, cannot throw touching
+        /// them before load completes — that are safe and useful to capture
+        /// despite living in the UnityEngine namespace.
+        ///
+        /// DUMP_DRAWSIZE_CAPTURE_1 (2026-08-30): the blanket "skip all of
+        /// UnityEngine" rule below was written for Texture2D/Material/Mesh and
+        /// friends, but it also ate every Vector2/Color/etc field on EVERY def
+        /// in the dump — GraphicData.drawSize (Vector2), GraphicData.color and
+        /// .colorTwo (Color), any Quaternion/Rect/Bounds anywhere in the graph.
+        /// Verified against a live capture: GravEngine and
+        /// GravshipShieldGenerator both set graphicData.drawSize=(3,3) in raw
+        /// XML, and neither's captured graphicData JSON carried drawSize at
+        /// all. Named by type NAME (not namespace) so it stays a narrow,
+        /// explicit allowlist rather than reopening the whole namespace.
+        /// </summary>
+        private static readonly HashSet<string> SafeUnityValueTypeNames = new HashSet<string>
+        {
+            "Vector2", "Vector3", "Vector4",
+            "Color", "Color32",
+            "Quaternion", "Rect", "Bounds",
+        };
+
         private static bool IsSkippedType(Type t)
         {
             if (t == null) return true;
             if (typeof(Delegate).IsAssignableFrom(t)) return true;
 
             string ns = t.Namespace ?? "";
-            if (ns.StartsWith("UnityEngine", StringComparison.Ordinal)) return true;
+            if (ns.StartsWith("UnityEngine", StringComparison.Ordinal))
+            {
+                // A handful of plain structs are safe (see
+                // SafeUnityValueTypeNames above); everything else in
+                // UnityEngine — Texture, Material, Mesh, GameObject,
+                // Component, ... — stays skipped exactly as before.
+                if (SafeUnityValueTypeNames.Contains(t.Name)) return false;
+                return true;
+            }
             if (ns.StartsWith("System.Reflection", StringComparison.Ordinal)) return true;
             if (ns.StartsWith("System.Threading", StringComparison.Ordinal)) return true;
             if (ns.StartsWith("System.IO", StringComparison.Ordinal)) return true;
