@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimMandrake Ninefold (M0 — safe core)</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.rm.ninefold</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>The safe core of the divine-satiation engine (design/Jawa/divine_satiation_engine.md), M0 slice only: a nine-god satiation/mood vector, the band ladder (Wrathful/Slighted/Neutral/Content/Exalted), and a per-god Mood random walk. Pure state - no live mutation, no raid math, no event hooks yet.
+
+This is the mod project the divine_satiation_engine.md spec explicitly noted did not exist ("no C# under src/RimMandrake/ references any of the nine gods or satiation"), and which design/Jawa/worldbuilding/colony_visibility_stat.md's own "safe core" build plan is blocked on. Creating it unblocks both.
+
+NOT shipped here (NINEFOLD_ENGINE_M0_1's other named pieces, deliberately left for a build-and-review session): the five easiest event hooks binding real RimWorld events to ApplyDelta calls, first-contact chains, and the signed corpus letters - the latter needs the owner's voice-text redline pass per the item's own note ("provisional voice approval; owner redlines live text"). Mood-walk amplitudes per god are a first-pass encoding of the spec's qualitative personality column, explicitly UNTUNED (design/Jawa/divine_satiation_engine.md §10 defers real tuning to a throwaway-save test rig).</description>
+
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+  </loadAfter>
+</ModMetaData>
