@@ -7,12 +7,21 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-31T03:28:27Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-31T03:30:17Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
-Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
+The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
+
+## seven-authored-factions-generate-and-field-their-own-kinds-5b90c7 seven-authored-factions-generate-and-field-their-own-kinds-5b90c7
+state:    ready
+row:      9
+needs:    game-up
+target:   v1
+kind:     check
+summary:  Carries the live half of B45 · B46 · B47 · B48 · B49 · B50 · B51 — Hutt
+prose:    infrastructure/state/items/seven-authored-factions-generate-and-field-their-own-kinds-5b90c7.md
 
 # IN PROGRESS
 
@@ -26,15 +35,6 @@ target:   v1
 kind:     bug
 summary:  SPAWNPAWNSUBSTITUTESVANILLAKIND1 — "Spawned 2/2" delivered one of something else
 prose:    infrastructure/state/items/SPAWN_PAWN_SUBSTITUTES_VANILLA_KIND_1.md
-
-## SIX_FACTIONS_NEVER_RAID_1 Six of the seven authored factions produced no raid in 18 firings
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     bug
-summary:  SIXFACTIONSNEVERRAID1 — SOLVED: the Raid Protection Fee mod eats the raid and opens a modal
-prose:    infrastructure/state/items/SIX_FACTIONS_NEVER_RAID_1.md
 
 ## EMPIRE_RAID_QUICKTEST_1 Quicktest proof of the full Empire reskin: fire RaidEnemy as vanilla Empire (pass points explicitly; read faction from the REPLY, not the request), verify Jawa_Empire kinds in OuterRim armor, Emperor/Palpatine via fixedLeaderKinds, Rising Order ideo, and NO OuterRim_GalacticEmpire faction on the world — criteria preserved at V2_DREAMS C2 strike
 state:    doing  (BLOCKED)
@@ -148,16 +148,6 @@ prose:    infrastructure/state/items/RIMMANDRAKE_PITS_BUILD_1.md
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
 
-## seven-authored-factions-generate-and-field-their-own-kinds-5b90c7 seven-authored-factions-generate-and-field-their-own-kinds-5b90c7
-state:    ready  (BLOCKED)
-row:      9
-needs:    game-up
-target:   v1
-kind:     check
-blocked:  2 of 3 criteria met; the raid criterion is blocked on SIX_FACTIONS_NEVER_RAID_1 - six of seven produced nothing in 18 firings (on SIX_FACTIONS_NEVER_RAID_1)
-summary:  Carries the live half of B45 · B46 · B47 · B48 · B49 · B50 · B51 — Hutt
-prose:    infrastructure/state/items/seven-authored-factions-generate-and-field-their-own-kinds-5b90c7.md
-
 ## THOROUGH_RETAG_WEAPONS_ARMOUR_1 The thorough weapon and armour retag: the advice, the measured state, and the dump it is blocked on
 state:    ready  (BLOCKED)
 row:      unassigned
@@ -177,16 +167,6 @@ kind:     bug
 blocked:  Tool read-back proven live on 480 spawns; remaining unknown is WHICH of 5 Harmony patches, needs a mod-disable bisect with a game restart per candidate (~1000 spawns per cell at the real 0.8% rate)
 summary:  SPAWNPAWNSUBSTITUTESVANILLAKIND1 — "Spawned 2/2" delivered one of something else
 prose:    infrastructure/state/items/SPAWN_PAWN_SUBSTITUTES_VANILLA_KIND_1.md
-
-## SIX_FACTIONS_NEVER_RAID_1 Six of the seven authored factions produced no raid in 18 firings
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     bug
-blocked:  mechanism unnamed; parked on a game-down window (minimal-tier bisect, then a pawngroup-preview companion tool)
-summary:  SIXFACTIONSNEVERRAID1 — SOLVED: the Raid Protection Fee mod eats the raid and opens a modal
-prose:    infrastructure/state/items/SIX_FACTIONS_NEVER_RAID_1.md
 
 ## EMPIRE_RAID_QUICKTEST_1 Quicktest proof of the full Empire reskin: fire RaidEnemy as vanilla Empire (pass points explicitly; read faction from the REPLY, not the request), verify Jawa_Empire kinds in OuterRim armor, Emperor/Palpatine via fixedLeaderKinds, Rising Order ideo, and NO OuterRim_GalacticEmpire faction on the world — criteria preserved at V2_DREAMS C2 strike
 state:    doing  (BLOCKED)
@@ -296,6 +276,6 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/FIRE_RAID_REPORTS_MODAL_1.md yet — write one when you have something to say)
+thin:     no ## verify
+summary:  jawa/fireraid sets executed = incident.Worker.TryExecute(parms). A Harmony prefix can
 prose:    infrastructure/state/items/FIRE_RAID_REPORTS_MODAL_1.md

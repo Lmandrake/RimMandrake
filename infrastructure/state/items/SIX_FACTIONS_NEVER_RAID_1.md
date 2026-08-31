@@ -34,6 +34,18 @@ The failing factions produce **exactly one extortion dialog instead of a raid**;
 faction produces **no dialog and a real raid**. Evidence and scripts:
 `Transient/six_factions_2026_08_30/` (decompile: `decomp/ProtectionFee.cs`).
 
+### ✅ Confirmed on OUR factions too — the title's own claim, finally tested properly
+Made genuinely hostile with `jawa/faction_relations_set kind=Hostile both=true` (verified
+`hostile: true` on `jawa/list_factions` before firing, so `substituted: false` on every row):
+
+    Jawa_HuttCartel       subst=False   dialogs 0->1   lords 3->3   pawns=0
+    Jawa_Junkers          subst=False   dialogs 0->1   lords 3->3   pawns=0
+    Jawa_AscendantHelix   subst=False   dialogs 0->1   lords 3->3   pawns=0
+
+Identical signature to vanilla `Pirate`: one extortion dialog, no Lord, no pawns. ⇒ **The
+authored factions behave exactly like vanilla ones. Nothing about their defs, kinds, group
+makers or ideo is implicated.** Relations restored to `Neutral` / goodwill `0` afterwards.
+
 ## Why every earlier symptom now makes sense
 - **`executed: true` with zero pawns.** `jawa/fire_raid` sets
   `executed = incident.Worker.TryExecute(parms)`. The prefix assigns `__result = true`
