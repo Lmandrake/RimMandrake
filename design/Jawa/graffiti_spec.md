@@ -78,6 +78,34 @@ Small marks with viewer mood ticks and social ripples:
 Amusing marks are cheap, common, and cleanable without offense — the
 disposable chatter of a talkative culture.
 
+### ③b THE SHAMING TIER — intra-colony social warfare (owner, 2026-08-31)
+
+_The missing weapon the owner asked for: marks that enrage one colonist
+against another, or massively lower a pawn's social standing._
+
+- **The Accusation** — a mark naming a colonist's real failure, drawn from
+  the tale pool (the botched surgery, the fled fight, the binge): while it
+  stands, **every viewer takes a recurring −opinion of the SUBJECT** (the
+  massive standing drop — mechanically a social memory with otherPawn =
+  subject, refreshed by viewing, capped stacking), and the subject takes a
+  humiliation mood hit **plus the Ozzik pressure: answer it or bear it.**
+  Answers: destroy the mark (a social fight with the artist likely), or
+  answer with a DEED (a matching tale — the redeeming surgery, the held
+  line — voids the mark's power and flips it into a small pride thought).
+  Ozzik's answer-humiliation law, scaled down to one wall and one Jawa.
+- **The Feud Mark** — painted to set A against B: mocks A in B's known
+  style/signature; A's grudge lands on B unless A passes a social check to
+  read the true hand. Scheming-tier, `▲Zizzik` (large — lovers and rivals
+  set against each other is his feast), `↓Mob'Unloo` (a forged signature is
+  a forged ledger).
+- **Painting either is a hostile social act**: artist↔subject relations
+  drop hard; Kind pawns refuse the work order; the colony reads who painted
+  what (marks carry authorship, like art).
+- **Autonomy**: grudge-holding pawns can paint Accusations during a new
+  social-break variant (the shaming spree) — discord becomes visible on
+  the walls before it becomes a fistfight. Zizzik approves. Frequency
+  strictly rarer than insult sprees; a colony at peace paints none.
+
 ### ④ SOCIALLY INFURIATING — taunts (the aggro lever)
 
 Marks meant to be read by ENEMIES. This is a weapon with a price tag, and
