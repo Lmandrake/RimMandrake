@@ -1255,6 +1255,20 @@ research_tree:
     big cannons) are Ship tree. FUEL CROSS-LINK ratified: exactly one Ship
     node requires ChemfuelRefining ("feeding her"); Rimefeller, gas,
     vehicles, hygiene stay modular chains.
+  taxonomy_ruled: true
+  taxonomy_src: >
+    Owner, 2026-08-31, question cards on research_tree_taxonomy.md: SEVEN
+    campaign tabs replace the 38 mod tabs (Scavenger / Trade & Craft / The
+    Armory / The Machine / THE SHIP / The Reach / Anomaly-untouched) - the
+    ambition gradient made visible. Research Reinvented KEPT AS SUBSTRATE:
+    its techprint economy implements "research is expensive, traded items as
+    costs"; the manifest runs after RR's load-time rewrite and builds on its
+    output (448/515 rows carry RR techprints, MEASURED). Theology stays
+    DECOUPLED from tier gates: pride-weights on completion only, no
+    Ozzik-standing research locks (reversible later; coupling is not).
+    CEILING: Ultra reachable, priced brutally - nothing forbidden, The Reach
+    is the trap; colony techLevel set INDUSTRIAL so the vanilla cost
+    multiplier does the anti-exponential work as economics, not walls.
 royalty:
   dead_ruled: true
   dead_src: >

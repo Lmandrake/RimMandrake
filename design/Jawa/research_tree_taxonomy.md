@@ -132,18 +132,18 @@ Checks, each with its false-pass named:
    reachable).
 6. Nothing renames a defName, ever (saves + mod C# break invisibly).
 
-## 6. OPEN-FOR-OWNER — carried from principles §6, narrowed
+## 6. RULED by the owner, 2026-08-31 (question cards) — canon `research_tree.taxonomy_ruled`
 
-1. **The ceiling** (§6.1): which era may the Jawa reach, and the colony
-   techLevel choice — a normalization INPUT (vanilla cost multiplier).
-2. **Theology-locked research** (§6.2): Ozzik holding the T4 keys — gorgeous,
-   couples engine and tree; rule deliberately.
-3. **The tab set above** — yes/no/amend (this doc's main ask).
-4. **Sonic school**: fold into Kinetic or keep thin?
-5. **Where the manifest ships**: RimMandrake core vs campaign layer.
-6. **Research Reinvented's fate** — the new question this census raised: keep
-   it as the substrate the manifest builds on (its techprint economy IS
-   "research is expensive, traded items as costs" — arguably already the
-   owner's proposition requirement implemented), or absorb its role and
-   retire it. This interacts with everything above; rule it first at the
-   sitting.
+1. ✅ **Tab set: the seven tabs, as written in §1.**
+2. ✅ **Research Reinvented: KEPT AS SUBSTRATE** — the manifest runs after
+   RR's rewrite and builds on its output; its techprint economy is the
+   "expensive research, traded costs" requirement already implemented.
+3. ✅ **Theology stays decoupled** — pride-weights on completion only; no
+   Ozzik-standing gates (reversible later; coupling is not).
+4. ✅ **Ceiling: Ultra reachable, priced brutally** — colony techLevel
+   INDUSTRIAL; the vanilla multiplier does the anti-exponential work as
+   economics, not walls. Nothing forbidden; The Reach is the trap.
+
+Still open, small, for the normalization sitting itself: sonic school (fold
+into Kinetic or keep thin) · where the manifest ships (RimMandrake core vs
+campaign layer).
