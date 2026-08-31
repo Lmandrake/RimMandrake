@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-31T06:56:49Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-08-31T07:24:12Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
-The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## RENAME_VERIFY_WINDOW_1 Rename verification at next game window: refresh.py dump rebuild + re-fingerprint, validate_patch --live/--defs on all patch mods, magenta texture sweep, 22s minimal-list load; then rid/xtp validate_save_artifact
-state:    ready
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-summary:  (no items/RENAME_VERIFY_WINDOW_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/RENAME_VERIFY_WINDOW_1.md
+Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
 
 # IN PROGRESS
 
@@ -135,6 +126,15 @@ kind:     task
 summary:  Full specs, both ruled by the owner 2026-08-30: design/Jawa/coveredpittrapsspec.md
 prose:    infrastructure/state/items/RIMMANDRAKE_PITS_BUILD_1.md
 
+## RENAME_VERIFY_WINDOW_1 Rename verification at next game window: refresh.py dump rebuild + re-fingerprint, validate_patch --live/--defs on all patch mods, magenta texture sweep, 22s minimal-list load; then rid/xtp validate_save_artifact
+state:    doing
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+summary:  RENAMEVERIFYWINDOW1 — proving the three-tier rename end to end
+prose:    infrastructure/state/items/RENAME_VERIFY_WINDOW_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -217,8 +217,8 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DEPTHS_ODYSSEY_VERIFY_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  Answer, from source (RimSage searchdefs/searchsource/readcsharpsymbol against
 prose:    infrastructure/state/items/DEPTHS_ODYSSEY_VERIFY_1.md
 
 ## SEAS_WATERLINE_PASS_1 Waterline pass: repatriate the misplaced SW aquatics (KwazelMaw/Mott out of the fire deserts), first spawns for Dianoga/Dragonsnake, borrow BMT/AA coastal fauna, Odyssey fishing mutators on the seas
@@ -290,3 +290,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/ISHKO_DARK_LANDMARKS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/ISHKO_DARK_LANDMARKS_1.md
+
+## NAMESPACE_PAIR_DEPLOY_1 Lift the DEPLOY_HOLD namespace block: the four mods' XML and their rebuilt assemblies deploy together, never apart
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/NAMESPACE_PAIR_DEPLOY_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/NAMESPACE_PAIR_DEPLOY_1.md
