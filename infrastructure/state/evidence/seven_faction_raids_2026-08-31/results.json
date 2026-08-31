@@ -1,0 +1,538 @@
+{
+ "startedUtc": "2026-08-31T04:06:03Z",
+ "rows": [
+  {
+   "faction": "Jawa_HuttCartel",
+   "hostileAtFiring": true,
+   "raidsForbidden": null,
+   "expectedCombatKinds": [
+    "Jawa_Hutt_Grunt",
+    "Jawa_Hutt_Heavy",
+    "Jawa_Hutt_Leader",
+    "Jawa_Hutt_Specialist"
+   ],
+   "kindsGainedOnMap": {
+    "Jawa_Hutt_Specialist": 7,
+    "Jawa_Hutt_Grunt": 25,
+    "Jawa_Hutt_Heavy": 9,
+    "AA_Ravager": 1
+   },
+   "foreignKinds": [
+    "AA_Ravager"
+   ],
+   "substituted": false,
+   "actualFaction": "Jawa_HuttCartel",
+   "blockedByDialog": false,
+   "windowsOpened": [],
+   "pawnsArrivedTotal": 42,
+   "otherFactionArrivals": [],
+   "triesUsed": 1,
+   "attempts": [
+    {
+     "try": 1,
+     "executed": true,
+     "success": true,
+     "blockedByDialog": false,
+     "windowsOpened": [],
+     "actual": {
+      "faction": "Jawa_HuttCartel",
+      "name": "Hutt Cartel",
+      "substituted": false,
+      "requested": "Jawa_HuttCartel"
+     },
+     "arrived": [
+      {
+       "faction": "Jawa_HuttCartel",
+       "name": "Hutt Cartel",
+       "pawnsArrived": 42,
+       "hostileToPlayer": true
+      }
+     ],
+     "pawnsArrivedTotal": 42,
+     "note": "Raid fired. arrived[] is counted off the map; an arrival mode that delays entry can legitimately show 0 pawns this instant.",
+     "kindsGainedOnMap": {
+      "Jawa_Hutt_Specialist": 7,
+      "Jawa_Hutt_Grunt": 25,
+      "Jawa_Hutt_Heavy": 9,
+      "AA_Ravager": 1
+     }
+    }
+   ],
+   "verdict": "PASS WITH FOREIGN KINDS: AA_Ravager"
+  },
+  {
+   "faction": "Jawa_FreeDroidEnclaves",
+   "hostileAtFiring": true,
+   "raidsForbidden": null,
+   "expectedCombatKinds": [
+    "Jawa_Droid_Grunt",
+    "Jawa_Droid_Heavy",
+    "Jawa_Droid_Leader",
+    "Jawa_Droid_Specialist"
+   ],
+   "kindsGainedOnMap": {
+    "Jawa_Droid_Grunt": 19,
+    "Jawa_Droid_Heavy": 4,
+    "Jawa_Droid_Leader": 2,
+    "Jawa_Droid_Specialist": 4,
+    "AA_TetraSlug": 1,
+    "Tibidee": 1,
+    "Dinocrocuta": 1,
+    "AA_Slurrypede": 1
+   },
+   "foreignKinds": [
+    "AA_Slurrypede",
+    "AA_TetraSlug",
+    "Dinocrocuta",
+    "Tibidee"
+   ],
+   "substituted": false,
+   "actualFaction": "Jawa_FreeDroidEnclaves",
+   "blockedByDialog": false,
+   "windowsOpened": [],
+   "pawnsArrivedTotal": 33,
+   "otherFactionArrivals": [],
+   "triesUsed": 1,
+   "attempts": [
+    {
+     "try": 1,
+     "executed": true,
+     "success": true,
+     "blockedByDialog": false,
+     "windowsOpened": [],
+     "actual": {
+      "faction": "Jawa_FreeDroidEnclaves",
+      "name": "Free Droid Enclaves",
+      "substituted": false,
+      "requested": "Jawa_FreeDroidEnclaves"
+     },
+     "arrived": [
+      {
+       "faction": "Jawa_FreeDroidEnclaves",
+       "name": "Free Droid Enclaves",
+       "pawnsArrived": 33,
+       "hostileToPlayer": true
+      }
+     ],
+     "pawnsArrivedTotal": 33,
+     "note": "Raid fired. arrived[] is counted off the map; an arrival mode that delays entry can legitimately show 0 pawns this instant.",
+     "kindsGainedOnMap": {
+      "Jawa_Droid_Grunt": 19,
+      "Jawa_Droid_Heavy": 4,
+      "Jawa_Droid_Leader": 2,
+      "Jawa_Droid_Specialist": 4,
+      "AA_TetraSlug": 1,
+      "Tibidee": 1,
+      "Dinocrocuta": 1,
+      "AA_Slurrypede": 1
+     }
+    }
+   ],
+   "verdict": "PASS WITH FOREIGN KINDS: AA_Slurrypede,AA_TetraSlug,Dinocrocuta,Tibidee"
+  },
+  {
+   "faction": "Jawa_WildsteamClan",
+   "hostileAtFiring": true,
+   "raidsForbidden": null,
+   "expectedCombatKinds": [
+    "Jawa_Wildsteam_Grunt",
+    "Jawa_Wildsteam_Heavy",
+    "Jawa_Wildsteam_Leader",
+    "Jawa_Wildsteam_Specialist"
+   ],
+   "kindsGainedOnMap": {
+    "Jawa_Wildsteam_Grunt": 15,
+    "Jawa_Wildsteam_Specialist": 4,
+    "Jawa_Wildsteam_Heavy": 5,
+    "JRWBagaceratops": 1,
+    "AA_Helixien": 1
+   },
+   "foreignKinds": [
+    "AA_Helixien",
+    "JRWBagaceratops"
+   ],
+   "substituted": false,
+   "actualFaction": "Jawa_WildsteamClan",
+   "blockedByDialog": false,
+   "windowsOpened": [],
+   "pawnsArrivedTotal": 26,
+   "otherFactionArrivals": [],
+   "triesUsed": 1,
+   "attempts": [
+    {
+     "try": 1,
+     "executed": true,
+     "success": true,
+     "blockedByDialog": false,
+     "windowsOpened": [],
+     "actual": {
+      "faction": "Jawa_WildsteamClan",
+      "name": "Wildsteam Clan",
+      "substituted": false,
+      "requested": "Jawa_WildsteamClan"
+     },
+     "arrived": [
+      {
+       "faction": "Jawa_WildsteamClan",
+       "name": "Wildsteam Clan",
+       "pawnsArrived": 26,
+       "hostileToPlayer": true
+      }
+     ],
+     "pawnsArrivedTotal": 26,
+     "note": "Raid fired. arrived[] is counted off the map; an arrival mode that delays entry can legitimately show 0 pawns this instant.",
+     "kindsGainedOnMap": {
+      "Jawa_Wildsteam_Grunt": 15,
+      "Jawa_Wildsteam_Specialist": 4,
+      "Jawa_Wildsteam_Heavy": 5,
+      "JRWBagaceratops": 1,
+      "AA_Helixien": 1
+     }
+    }
+   ],
+   "verdict": "PASS WITH FOREIGN KINDS: AA_Helixien,JRWBagaceratops"
+  },
+  {
+   "faction": "Jawa_DeepwaterCompact",
+   "hostileAtFiring": true,
+   "raidsForbidden": "true",
+   "expectedCombatKinds": [
+    "Jawa_Deepwater_Grunt",
+    "Jawa_Deepwater_Heavy",
+    "Jawa_Deepwater_Leader",
+    "Jawa_Deepwater_Specialist"
+   ],
+   "kindsGainedOnMap": {
+    "Jawa_Deepwater_Grunt": 16,
+    "Jawa_Deepwater_Heavy": 10,
+    "Jawa_Deepwater_Specialist": 5,
+    "Jawa_Deepwater_Leader": 2,
+    "AA_Gigantelope": 1
+   },
+   "foreignKinds": [
+    "AA_Gigantelope"
+   ],
+   "substituted": false,
+   "actualFaction": "Jawa_DeepwaterCompact",
+   "blockedByDialog": false,
+   "windowsOpened": [],
+   "pawnsArrivedTotal": 34,
+   "otherFactionArrivals": [],
+   "triesUsed": 1,
+   "attempts": [
+    {
+     "try": 1,
+     "executed": true,
+     "success": true,
+     "blockedByDialog": false,
+     "windowsOpened": [],
+     "actual": {
+      "faction": "Jawa_DeepwaterCompact",
+      "name": "Deepwater Compact",
+      "substituted": false,
+      "requested": "Jawa_DeepwaterCompact"
+     },
+     "arrived": [
+      {
+       "faction": "Jawa_DeepwaterCompact",
+       "name": "Deepwater Compact",
+       "pawnsArrived": 34,
+       "hostileToPlayer": true
+      }
+     ],
+     "pawnsArrivedTotal": 34,
+     "note": "Raid fired. arrived[] is counted off the map; an arrival mode that delays entry can legitimately show 0 pawns this instant.",
+     "kindsGainedOnMap": {
+      "Jawa_Deepwater_Grunt": 16,
+      "Jawa_Deepwater_Heavy": 10,
+      "Jawa_Deepwater_Specialist": 5,
+      "Jawa_Deepwater_Leader": 2,
+      "AA_Gigantelope": 1
+     }
+    }
+   ],
+   "verdict": "PASS WITH FOREIGN KINDS: AA_Gigantelope"
+  },
+  {
+   "faction": "Jawa_GeonosianFoundryHive",
+   "hostileAtFiring": true,
+   "raidsForbidden": null,
+   "expectedCombatKinds": [
+    "Jawa_Geonosian_Grunt",
+    "Jawa_Geonosian_Heavy",
+    "Jawa_Geonosian_Leader",
+    "Jawa_Geonosian_Specialist"
+   ],
+   "kindsGainedOnMap": {
+    "Jawa_Geonosian_Leader": 4,
+    "Jawa_Geonosian_Heavy": 18,
+    "Jawa_Geonosian_Grunt": 26,
+    "Jawa_Geonosian_Specialist": 7,
+    "AA_RayHound": 1
+   },
+   "foreignKinds": [
+    "AA_RayHound"
+   ],
+   "substituted": false,
+   "actualFaction": "Jawa_GeonosianFoundryHive",
+   "blockedByDialog": false,
+   "windowsOpened": [],
+   "pawnsArrivedTotal": 56,
+   "otherFactionArrivals": [],
+   "triesUsed": 1,
+   "attempts": [
+    {
+     "try": 1,
+     "executed": true,
+     "success": true,
+     "blockedByDialog": false,
+     "windowsOpened": [],
+     "actual": {
+      "faction": "Jawa_GeonosianFoundryHive",
+      "name": "Geonosian Foundry Hive",
+      "substituted": false,
+      "requested": "Jawa_GeonosianFoundryHive"
+     },
+     "arrived": [
+      {
+       "faction": "Jawa_GeonosianFoundryHive",
+       "name": "Geonosian Foundry Hive",
+       "pawnsArrived": 56,
+       "hostileToPlayer": true
+      }
+     ],
+     "pawnsArrivedTotal": 56,
+     "note": "Raid fired. arrived[] is counted off the map; an arrival mode that delays entry can legitimately show 0 pawns this instant.",
+     "kindsGainedOnMap": {
+      "Jawa_Geonosian_Leader": 4,
+      "Jawa_Geonosian_Heavy": 18,
+      "Jawa_Geonosian_Grunt": 26,
+      "Jawa_Geonosian_Specialist": 7,
+      "AA_RayHound": 1
+     }
+    }
+   ],
+   "verdict": "PASS WITH FOREIGN KINDS: AA_RayHound"
+  },
+  {
+   "faction": "Jawa_AscendantHelix",
+   "hostileAtFiring": true,
+   "raidsForbidden": null,
+   "expectedCombatKinds": [
+    "Jawa_Helix_Grunt",
+    "Jawa_Helix_Heavy",
+    "Jawa_Helix_Leader",
+    "Jawa_Helix_Specialist"
+   ],
+   "kindsGainedOnMap": {
+    "Jawa_Helix_Heavy": 4,
+    "Jawa_Helix_Grunt": 13,
+    "Jawa_Helix_Specialist": 3,
+    "AA_Wildpawn": 1
+   },
+   "foreignKinds": [
+    "AA_Wildpawn"
+   ],
+   "substituted": false,
+   "actualFaction": "Jawa_AscendantHelix",
+   "blockedByDialog": false,
+   "windowsOpened": [],
+   "pawnsArrivedTotal": 21,
+   "otherFactionArrivals": [],
+   "triesUsed": 1,
+   "attempts": [
+    {
+     "try": 1,
+     "executed": true,
+     "success": true,
+     "blockedByDialog": false,
+     "windowsOpened": [],
+     "actual": {
+      "faction": "Jawa_AscendantHelix",
+      "name": "Ascendant Helix",
+      "substituted": false,
+      "requested": "Jawa_AscendantHelix"
+     },
+     "arrived": [
+      {
+       "faction": "Jawa_AscendantHelix",
+       "name": "Ascendant Helix",
+       "pawnsArrived": 21,
+       "hostileToPlayer": true
+      }
+     ],
+     "pawnsArrivedTotal": 21,
+     "note": "Raid fired. arrived[] is counted off the map; an arrival mode that delays entry can legitimately show 0 pawns this instant.",
+     "kindsGainedOnMap": {
+      "Jawa_Helix_Heavy": 4,
+      "Jawa_Helix_Grunt": 13,
+      "Jawa_Helix_Specialist": 3,
+      "AA_Wildpawn": 1
+     }
+    }
+   ],
+   "verdict": "PASS WITH FOREIGN KINDS: AA_Wildpawn"
+  },
+  {
+   "faction": "Jawa_Junkers",
+   "hostileAtFiring": true,
+   "raidsForbidden": null,
+   "expectedCombatKinds": [
+    "Jawa_Junkers_Grunt",
+    "Jawa_Junkers_Heavy",
+    "Jawa_Junkers_Leader",
+    "Jawa_Junkers_Specialist"
+   ],
+   "kindsGainedOnMap": {
+    "Jawa_Junkers_Heavy": 16,
+    "Jawa_Junkers_Specialist": 7,
+    "Jawa_Junkers_Grunt": 12,
+    "Jawa_Junkers_Leader": 3
+   },
+   "foreignKinds": [],
+   "substituted": false,
+   "actualFaction": "Jawa_Junkers",
+   "blockedByDialog": false,
+   "windowsOpened": [],
+   "pawnsArrivedTotal": 38,
+   "otherFactionArrivals": [],
+   "triesUsed": 1,
+   "attempts": [
+    {
+     "try": 1,
+     "executed": true,
+     "success": true,
+     "blockedByDialog": false,
+     "windowsOpened": [],
+     "actual": {
+      "faction": "Jawa_Junkers",
+      "name": "the Junkers",
+      "substituted": false,
+      "requested": "Jawa_Junkers"
+     },
+     "arrived": [
+      {
+       "faction": "Jawa_Junkers",
+       "name": "the Junkers",
+       "pawnsArrived": 38,
+       "hostileToPlayer": true
+      }
+     ],
+     "pawnsArrivedTotal": 38,
+     "note": "Raid fired. arrived[] is counted off the map; an arrival mode that delays entry can legitimately show 0 pawns this instant.",
+     "kindsGainedOnMap": {
+      "Jawa_Junkers_Heavy": 16,
+      "Jawa_Junkers_Specialist": 7,
+      "Jawa_Junkers_Grunt": 12,
+      "Jawa_Junkers_Leader": 3
+     }
+    }
+   ],
+   "verdict": "PASS - raided as itself, own kinds only"
+  }
+ ],
+ "notes": [],
+ "gameInfo": {
+  "modCount": null,
+  "ticksGame": 1,
+  "mapCount": 1,
+  "gameVersion": null
+ },
+ "toolCount": 427,
+ "jawaCount": 302,
+ "factionsPresent": {
+  "Jawa_HuttCartel": true,
+  "Jawa_FreeDroidEnclaves": true,
+  "Jawa_WildsteamClan": true,
+  "Jawa_DeepwaterCompact": true,
+  "Jawa_GeonosianFoundryHive": true,
+  "Jawa_AscendantHelix": true,
+  "Jawa_Junkers": true
+ },
+ "settlementCounts": {
+  "Jawa_HuttCartel": 5,
+  "Jawa_FreeDroidEnclaves": 1,
+  "Jawa_WildsteamClan": 1,
+  "Jawa_DeepwaterCompact": 4,
+  "Jawa_GeonosianFoundryHive": 2,
+  "Jawa_AscendantHelix": 3,
+  "Jawa_Junkers": 4
+ },
+ "control": {
+  "faction": "Pirate",
+  "attempts": [
+   {
+    "try": 1,
+    "executed": true,
+    "success": true,
+    "blockedByDialog": false,
+    "windowsOpened": [],
+    "actual": {
+     "faction": "Pirate",
+     "name": "Blackstar Company",
+     "substituted": false,
+     "requested": "Pirate"
+    },
+    "arrived": [
+     {
+      "faction": "Pirate",
+      "name": "Blackstar Company",
+      "pawnsArrived": 39,
+      "hostileToPlayer": true
+     }
+    ],
+    "pawnsArrivedTotal": 39,
+    "note": "Raid fired. arrived[] is counted off the map; an arrival mode that delays entry can legitimately show 0 pawns this instant.",
+    "kindsGainedOnMap": {
+     "Jawa_Blackstar_Grunt": 21,
+     "Jawa_Blackstar_Heavy": 15,
+     "AA_Thermadon": 1,
+     "AA_Radyak": 1,
+     "AA_TeratogenicOriginator": 1
+    }
+   }
+  ]
+ },
+ "finalFactions": [
+  {
+   "defName": "Jawa_AscendantHelix",
+   "hostile": false,
+   "goodwill": 0
+  },
+  {
+   "defName": "Jawa_DeepwaterCompact",
+   "hostile": false,
+   "goodwill": 0
+  },
+  {
+   "defName": "Jawa_FreeDroidEnclaves",
+   "hostile": false,
+   "goodwill": 0
+  },
+  {
+   "defName": "Jawa_GeonosianFoundryHive",
+   "hostile": false,
+   "goodwill": 0
+  },
+  {
+   "defName": "Jawa_HuttCartel",
+   "hostile": false,
+   "goodwill": 0
+  },
+  {
+   "defName": "Jawa_Junkers",
+   "hostile": false,
+   "goodwill": 0
+  },
+  {
+   "defName": "Jawa_IndigenousTribes",
+   "hostile": false,
+   "goodwill": 0
+  },
+  {
+   "defName": "Jawa_WildsteamClan",
+   "hostile": false,
+   "goodwill": 0
+  }
+ ]
+}
