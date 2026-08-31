@@ -76,10 +76,15 @@ directly):
   rather than silently under-building. Re-verified clean at 28×18:
   `lint` 0 findings, `verify` 14/14 defNames found.
 
-Still not "shipped" by the roster's own §5 bar for any of these three:
-no GenStepDef/TileMutatorDef wiring (only Moisture Farm has that so
-far), no letter text in the gods' register, not placed on any tile.
-41 of 44 rows remain untouched. Left `doing`.
+**Wiring added same pass**: `GenStepDefs_Batch2.xml` +
+`TileMutatorDefs_Batch2.xml` in `mandrake.rsw.injections` give all
+three (`RSW_KraytGraveyard`, `RSW_PodracerWreck`, `RSW_HuntingLodge`)
+the same `extraGenSteps` responder wiring Moisture Farm has —
+`validate_patch.py`: 0 errors on the whole content pack (5 files).
+Still not "shipped" by the roster's own §5 bar: no letter text in the
+gods' register, not placed on any tile (deliberately — a live world-tile
+edit, out of scope here, same as Moisture Farm). 40 of 44 rows remain
+untouched. Left `doing`.
 
 ## STATE 2026-08-31, session end (owner went AFK mid-item)
 

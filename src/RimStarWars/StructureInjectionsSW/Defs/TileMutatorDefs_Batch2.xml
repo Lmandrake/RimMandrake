@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ⚠️ None of these three are placed on any Ash'karr tile — same
+       deliberate deferral as RSW_MoistureFarm (a live world-tile edit on
+       the frozen map, out of scope for this pass; placement stays the
+       owner's hand). These prove the engine end to end for three more
+       roster rows. -->
+
+  <!-- The Krayt Graveyard - PROMISE #3, Sh'kaar. -->
+  <TileMutatorDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RSW_KraytGraveyard</defName>
+    <label>krayt graveyard</label>
+    <description>A crescent of bones too big for anything that still walks. Whatever left them may not be finished with the ground it is buried in.</description>
+    <biomeWhitelist>
+      <li>ExtremeDesert</li>
+    </biomeWhitelist>
+    <extraGenSteps>
+      <li>RSW_GenStep_KraytGraveyard</li>
+    </extraGenSteps>
+  </TileMutatorDef>
+
+  <!-- The Podracer Wreck - PROMISE #4, Ta'Baa. -->
+  <TileMutatorDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RSW_PodracerWreck</defName>
+    <label>podracer wreck</label>
+    <description>Scattered engine debris from a race that ended badly, out here where nobody was watching. One pod held together. First caravan there wins.</description>
+    <biomeWhitelist>
+      <li>Desert</li>
+      <li>ExtremeDesert</li>
+    </biomeWhitelist>
+    <extraGenSteps>
+      <li>RSW_GenStep_PodracerWreck</li>
+    </extraGenSteps>
+  </TileMutatorDef>
+
+  <!-- The Hunting Lodge - PROMISE #12, Ishko. -->
+  <TileMutatorDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RSW_HuntingLodge</defName>
+    <label>hunting lodge</label>
+    <description>A trophy hall, kennels, and a cold room for what does not keep in the heat. Something still uses the kennels.</description>
+    <biomeWhitelist>
+      <li>AridShrubland</li>
+      <li>ZBiome_Grasslands</li>
+    </biomeWhitelist>
+    <extraGenSteps>
+      <li>RSW_GenStep_HuntingLodge</li>
+    </extraGenSteps>
+  </TileMutatorDef>
+
+</Defs>

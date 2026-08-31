@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- The Krayt Graveyard - structure_injection_roster.md PROMISE #3. -->
+  <GenStepDef>
+    <defName>RSW_GenStep_KraytGraveyard</defName>
+    <genStep Class="RimMandrake.StructureInjections.GenStep_RimplacePlan">
+      <planFile>Templates/krayt_graveyard.txt</planFile>
+      <centerOnMap>true</centerOnMap>
+    </genStep>
+    <order>400</order>
+  </GenStepDef>
+
+  <!-- The Podracer Wreck - structure_injection_roster.md PROMISE #4. -->
+  <GenStepDef>
+    <defName>RSW_GenStep_PodracerWreck</defName>
+    <genStep Class="RimMandrake.StructureInjections.GenStep_RimplacePlan">
+      <planFile>Templates/podracer_wreck.txt</planFile>
+      <centerOnMap>true</centerOnMap>
+    </genStep>
+    <order>400</order>
+  </GenStepDef>
+
+  <!-- The Hunting Lodge - structure_injection_roster.md PROMISE #12. -->
+  <GenStepDef>
+    <defName>RSW_GenStep_HuntingLodge</defName>
+    <genStep Class="RimMandrake.StructureInjections.GenStep_RimplacePlan">
+      <planFile>Templates/hunting_lodge.txt</planFile>
+      <centerOnMap>true</centerOnMap>
+    </genStep>
+    <order>400</order>
+  </GenStepDef>
+
+</Defs>
