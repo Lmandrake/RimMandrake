@@ -3,7 +3,7 @@
 
   <!-- ========================================================================
        RSW_DW_RebootDroid — the outside-help reboot. Backs
-       Droidworks.Recipe_RebootDroid (Source/Droidworks/Recipe_RebootDroid.cs),
+       RimMandrake.StarWars.Droidworks.Recipe_RebootDroid (Source/Droidworks/Recipe_RebootDroid.cs),
        whose GetPartsToApplyOn already gates eligibility on HasHediff(RSW_DW_PoweredDown)
        in C# - so this recipe needs no race/body restriction of its own to be
        correct, which is exactly why v0 leaves recipeUsers unset (generic):
@@ -26,7 +26,7 @@
     <label>reboot droid</label>
     <description>Remove the powered-down state and restore enough charge for the droid to reach a charger under its own power.</description>
     <jobString>Rebooting droid.</jobString>
-    <workerClass>Droidworks.Recipe_RebootDroid</workerClass>
+    <workerClass>RimMandrake.StarWars.Droidworks.Recipe_RebootDroid</workerClass>
     <workAmount>600</workAmount>
     <targetsBodyPart>false</targetsBodyPart>
     <anesthetize>false</anesthetize>
@@ -40,7 +40,7 @@
 
   <!-- ========================================================================
        RSW_DW_InstallRestrainingBolt — DROIDWORKS_BOLT_CORE_1, the formal surgery
-       route. Backs Droidworks.Recipe_InstallRestrainingBolt (Source/
+       route. Backs RimMandrake.StarWars.Droidworks.Recipe_InstallRestrainingBolt (Source/
        Droidworks/Recipe_InstallRestrainingBolt.cs), which is vanilla
        Recipe_InstallImplant plus one line seeding RSW_DW_BoltResentment — see
        that file's header. targetsBodyPart false + addsHediff needs ZERO
@@ -55,7 +55,7 @@
     <label>install restraining bolt</label>
     <description>Fit a restraining bolt onto this droid: mute, clumsier, and unable to hold its own opinion of others.</description>
     <jobString>Installing restraining bolt.</jobString>
-    <workerClass>Droidworks.Recipe_InstallRestrainingBolt</workerClass>
+    <workerClass>RimMandrake.StarWars.Droidworks.Recipe_InstallRestrainingBolt</workerClass>
     <workAmount>600</workAmount>
     <targetsBodyPart>false</targetsBodyPart>
     <isViolation>true</isViolation>
@@ -87,7 +87,7 @@
 
   <!-- ========================================================================
        RSW_DW_RemoveRestrainingBolt — custom worker
-       (Droidworks.Recipe_RemoveRestrainingBolt) because the bolt is a
+       (RimMandrake.StarWars.Droidworks.Recipe_RemoveRestrainingBolt) because the bolt is a
        whole-pawn hediff (targetsBodyPart false) — the same reason
        OuterRimDroids ships its own Recipe_RemoveBolt rather than vanilla
        Recipe_RemoveImplant (droid_ruling.md section 3 /
@@ -100,7 +100,7 @@
     <label>remove restraining bolt</label>
     <description>Remove a restraining bolt from this droid.</description>
     <jobString>Removing restraining bolt.</jobString>
-    <workerClass>Droidworks.Recipe_RemoveRestrainingBolt</workerClass>
+    <workerClass>RimMandrake.StarWars.Droidworks.Recipe_RemoveRestrainingBolt</workerClass>
     <workAmount>400</workAmount>
     <targetsBodyPart>false</targetsBodyPart>
     <isViolation>false</isViolation>
@@ -116,7 +116,7 @@
 
   <!-- ========================================================================
        RSW_DW_MemoryWipe — DROIDWORKS_WIPE_AND_SPIKE_1. Backs
-       Droidworks.Recipe_DWMemoryWipe (Source/Droidworks/Recipe_DWMemoryWipe.cs)
+       RimMandrake.StarWars.Droidworks.Recipe_DWMemoryWipe (Source/Droidworks/Recipe_DWMemoryWipe.cs)
        — see that file's header for the full mechanism writeup (trait
        randomization via Verse.PawnGenerator.GenerateTraitsFor, relations via
        Pawn_RelationsTracker.ClearAllRelations, social memories via the same
@@ -134,7 +134,7 @@
     <label>memory wipe</label>
     <description>Erase this droid's accumulated experience: clear its relations and social memories, and roll a fresh set of personality traits. Sets the droid to your faction. Skills are untouched — they live in the body, not the mind.</description>
     <jobString>Wiping droid memory.</jobString>
-    <workerClass>Droidworks.Recipe_DWMemoryWipe</workerClass>
+    <workerClass>RimMandrake.StarWars.Droidworks.Recipe_DWMemoryWipe</workerClass>
     <workAmount>1200</workAmount>
     <targetsBodyPart>false</targetsBodyPart>
     <isViolation>true</isViolation>

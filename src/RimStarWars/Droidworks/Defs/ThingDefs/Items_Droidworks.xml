@@ -98,17 +98,17 @@
 
        comps:
        - CompProperties_Usable: useJob points at OUR OWN RSW_DW_DataSpike JobDef
-         (Droidworks.JobDriver_DWDataSpike), not vanilla's generic
+         (RimMandrake.StarWars.Droidworks.JobDriver_DWDataSpike), not vanilla's generic
          JobDriver_UseItem — CompUsable.TryStartUseJob builds the job as
          TargetA=this item, TargetB=the picked target, which is exactly the
          index shape the job driver expects. useDuration is irrelevant here
          (unused by a non-vanilla driverClass) and left at its default.
-       - CompProperties_Targetable: compClass Droidworks.CompTargetable_DWDataSpike
+       - CompProperties_Targetable: compClass RimMandrake.StarWars.Droidworks.CompTargetable_DWDataSpike
          — the reauthored, faction-aware version of the donor's
          Comp_TargetableOnDownedDroid (see that file's own header for the full
          comparison, including the donor's documented corpse-casting bug that
          this reauthoring sidesteps by never accepting corpses).
-       - Droidworks.CompProperties_DWDataSpike: the faction key itself.
+       - RimMandrake.StarWars.Droidworks.CompProperties_DWDataSpike: the faction key itself.
 
        recipeMaker: crafts RSW_DW_DataSpike from 1 RSW_DW_DroidHead — this recipeMaker
        block IS the "RecipeDef crafting a keyed spike" the item brief asks
@@ -135,9 +135,9 @@
         <useLabel>Spike droid (rogue droid collective)</useLabel>
       </li>
       <li Class="CompProperties_Targetable">
-        <compClass>Droidworks.CompTargetable_DWDataSpike</compClass>
+        <compClass>RimMandrake.StarWars.Droidworks.CompTargetable_DWDataSpike</compClass>
       </li>
-      <li Class="Droidworks.CompProperties_DWDataSpike">
+      <li Class="RimMandrake.StarWars.Droidworks.CompProperties_DWDataSpike">
         <spikeFaction>guy762_KotORFaction_RogueDroids</spikeFaction>
       </li>
     </comps>

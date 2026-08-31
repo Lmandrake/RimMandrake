@@ -35,7 +35,7 @@
           <needLOSToAcquireNonPawnTargets>true</needLOSToAcquireNonPawnTargets>
         </li>
 
-        <li Class="Inhabited.JobGiver_SleepAtNight">
+        <li Class="RimMandrake.Inhabited.JobGiver_SleepAtNight">
           <sleepStartHour>22</sleepStartHour>
           <wakeHour>6</wakeHour>
         </li>

@@ -1006,7 +1006,7 @@
            the mechanic was built (CompDroidDetonation.cs) but never wired to any
            other def. This is the first race to prove the wiring works end to
            end; rolling it out to the rest is a follow-up, not this item. -->
-      <li Class="Droidworks.CompProperties_DroidDetonation" />
+      <li Class="RimMandrake.StarWars.Droidworks.CompProperties_DroidDetonation" />
     </comps>
   </AlienRace.ThingDef_AlienRace>
   <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Labour">

@@ -16,7 +16,7 @@
     <match Class="PatchOperationAdd">
       <xpath>/Defs/HediffDef[defName="RSW_JawaIon_Stun"]/comps</xpath>
       <value>
-        <li Class="Droidworks.HediffCompProperties_IonOverloadsDroid" />
+        <li Class="RimMandrake.StarWars.Droidworks.HediffCompProperties_IonOverloadsDroid" />
       </value>
     </match>
   </Operation>

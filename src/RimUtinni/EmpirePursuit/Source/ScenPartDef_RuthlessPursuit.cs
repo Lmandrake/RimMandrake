@@ -3,7 +3,7 @@ using RimWorld;
 using RimWorld.Planet;
 using Verse;
 
-namespace RimMandrake.Utinni.EmpirePursuit
+namespace RuthlessPursuingMechanoids
 {
     /* EMPIRE_PURSUIT_SURVEY_SHADOW_1 — added 2026-08-29, not part of upstream.
      * Carries the owner-editable survey-shadow biome list as data on the def, per

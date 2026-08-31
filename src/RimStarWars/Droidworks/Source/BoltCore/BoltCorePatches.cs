@@ -4,7 +4,7 @@ using HarmonyLib;
 using Verse;
 using Verse.AI;
 
-namespace RimMandrake.StarWars.RimMandrake.StarWars.Droidworks
+namespace RimMandrake.StarWars.Droidworks
 {
     /// <summary>
     /// Harmony bootstrap for the restraining-bolt core (DROIDWORKS_BOLT_CORE_1).

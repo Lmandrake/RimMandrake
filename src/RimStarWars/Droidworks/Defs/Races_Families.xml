@@ -10,7 +10,7 @@
       <baseHealthScale>1.5</baseHealthScale>
     </race>
     <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
+      <li Class="RimMandrake.StarWars.Droidworks.DroidworksExtension">
         <powerFallPerDay>0.33</powerFallPerDay>
         <energyDensity>0</energyDensity>
         <chassisClass>2</chassisClass>
@@ -23,7 +23,7 @@
       <baseHealthScale>1.0</baseHealthScale>
     </race>
     <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
+      <li Class="RimMandrake.StarWars.Droidworks.DroidworksExtension">
         <powerFallPerDay>1.0</powerFallPerDay>
         <energyDensity>0</energyDensity>
         <chassisClass>3</chassisClass>
@@ -36,7 +36,7 @@
       <baseHealthScale>1.0</baseHealthScale>
     </race>
     <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
+      <li Class="RimMandrake.StarWars.Droidworks.DroidworksExtension">
         <powerFallPerDay>1.0</powerFallPerDay>
         <energyDensity>2</energyDensity>
         <chassisClass>4</chassisClass>
@@ -49,7 +49,7 @@
       <baseHealthScale>1.0</baseHealthScale>
     </race>
     <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
+      <li Class="RimMandrake.StarWars.Droidworks.DroidworksExtension">
         <powerFallPerDay>0.33</powerFallPerDay>
         <energyDensity>0</energyDensity>
         <chassisClass>0</chassisClass>
@@ -58,7 +58,7 @@
   </AlienRace.ThingDef_AlienRace>
   <AlienRace.ThingDef_AlienRace Name="DW_Family_Power" ParentName="DW_Race_Base" Abstract="True">
     <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
+      <li Class="RimMandrake.StarWars.Droidworks.DroidworksExtension">
         <powerFallPerDay>0.33</powerFallPerDay>
         <energyDensity>3</energyDensity>
         <chassisClass>6</chassisClass>
@@ -70,7 +70,7 @@
       <baseBodySize>0.4</baseBodySize>
     </race>
     <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
+      <li Class="RimMandrake.StarWars.Droidworks.DroidworksExtension">
         <powerFallPerDay>1.0</powerFallPerDay>
         <energyDensity>1</energyDensity>
         <chassisClass>5</chassisClass>
@@ -82,7 +82,7 @@
       <baseBodySize>1</baseBodySize>
     </race>
     <modExtensions>
-      <li Class="Droidworks.DroidworksExtension">
+      <li Class="RimMandrake.StarWars.Droidworks.DroidworksExtension">
         <powerFallPerDay>0.033</powerFallPerDay>
         <energyDensity>0</energyDensity>
         <chassisClass>1</chassisClass>

@@ -22,7 +22,7 @@
     <isBad>true</isBad>
     <everVisible>true</everVisible>
     <comps>
-      <li Class="Droidworks.HediffCompProperties_PoweredDown" />
+      <li Class="RimMandrake.StarWars.Droidworks.HediffCompProperties_PoweredDown" />
     </comps>
     <stages>
       <li>
@@ -158,7 +158,7 @@
     <isBad>true</isBad>
     <everVisible>false</everVisible>
     <comps>
-      <li Class="Droidworks.HediffCompProperties_DWBoltResentment">
+      <li Class="RimMandrake.StarWars.Droidworks.HediffCompProperties_DWBoltResentment">
         <severityPerDayWhileBolted>0.05</severityPerDayWhileBolted>
       </li>
     </comps>

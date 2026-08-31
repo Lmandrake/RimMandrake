@@ -26,7 +26,7 @@
       <threshold>0.3</threshold>
       <invert>true</invert>
       <subNodes>
-        <li Class="Droidworks.JobGiver_DWRecharge" />
+        <li Class="RimMandrake.StarWars.Droidworks.JobGiver_DWRecharge" />
       </subNodes>
     </thinkRoot>
   </ThinkTreeDef>

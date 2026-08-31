@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using Verse;
 
-namespace RimMandrake.Utinni.EmpirePursuit
+namespace RuthlessPursuingMechanoids
 {
     /* This is its own class, but it largely duplicates the functionality of ScenPart_PursuingMechanoids. Here are the major differences:
      *   1) The gravship check is removed, and all of the special "starting map" checks that were meant for the orbital platform start have also been removed
@@ -27,7 +27,7 @@ namespace RimMandrake.Utinni.EmpirePursuit
      */
     /* #-#-# RUTHLESS 2.0 #-#-# */
     /* I'm expanding the scope of this mod to allow the player to set *any* faction to endlessly pursue them. But for the sake of backwards compatibility with
-     * existing saves, I'm keeping the "RimMandrake.Utinni.EmpirePursuit" naming scheme.
+     * existing saves, I'm keeping the "RuthlessPursuingMechanoids" naming scheme.
      * Hopefully future me won't regret this.
      */
     public class ScenPart_RuthlessPursuingMechanoids : ScenPart

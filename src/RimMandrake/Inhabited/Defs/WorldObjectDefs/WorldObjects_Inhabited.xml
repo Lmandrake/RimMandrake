@@ -14,7 +14,7 @@
     <defName>Inhabited_Place</defName>
     <label>inhabited place</label>
     <description>Somebody lives here.</description>
-    <worldObjectClass>Inhabited.WorldObject_Inhabited</worldObjectClass>
+    <worldObjectClass>RimMandrake.Inhabited.WorldObject_Inhabited</worldObjectClass>
     <texture>World/WorldObjects/TribalSettlement</texture>
     <expandingIcon>true</expandingIcon>
     <expandingIconPriority>20</expandingIconPriority>

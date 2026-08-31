@@ -13,7 +13,7 @@
   <GenStepDef>
     <defName>Inhabited_Cast</defName>
     <order>900</order>
-    <genStep Class="Inhabited.GenStep_InhabitedCast" />
+    <genStep Class="RimMandrake.Inhabited.GenStep_InhabitedCast" />
   </GenStepDef>
 
 </Defs>

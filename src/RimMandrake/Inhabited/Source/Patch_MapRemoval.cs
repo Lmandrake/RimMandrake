@@ -76,7 +76,7 @@ namespace RimMandrake.Inhabited
 
             // No death record, no memorial, no ledger, no counter. The roster IS
             // the survivors and the absence is the memory.
-            if (place.SoulCount == 0 && place.state == InhabitedState.RimMandrake.Inhabited)
+            if (place.SoulCount == 0 && place.state == InhabitedState.Inhabited)
             {
                 place.state = InhabitedState.Abandoned;
             }

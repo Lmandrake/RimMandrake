@@ -1,0 +1,9 @@
+# Forked third-party ScenPart: namespace, class name and ScenPartDef defName are
+# held IDENTICAL to upstream (matathias.ruthlessmechanoids) ON PURPOSE, because a
+# ScenPart is scribed into savegames and scenario files by its FULL TYPE NAME - a
+# namespace change makes every existing save and .rsc unloadable. Recorded in
+# EMPIRE_PURSUIT_SURVEY_SHADOW_1 when the fork was made; Phase 2a renamed it anyway
+# and Phase 2c did not catch it. naming_lint exempts these.
+RuthlessPursuingMechanoids
+ScenPart_RuthlessPursuingMechanoids
+ScenPartDef_RuthlessPursuit

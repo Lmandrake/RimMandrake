@@ -19,10 +19,10 @@
 
   <ThoughtDef>
     <defName>RSW_Jawa_IkeeWatching</defName>
-    <workerClass>JawaIkee.ThoughtWorker_IkeeNearby</workerClass>
+    <workerClass>RimMandrake.StarWars.JawaIkee.ThoughtWorker_IkeeNearby</workerClass>
     <validWhileDespawned>false</validWhileDespawned>
     <modExtensions>
-      <li Class="JawaIkee.IkeeToleranceExtension">
+      <li Class="RimMandrake.StarWars.JawaIkee.IkeeToleranceExtension">
         <radius>12</radius>
         <tolerantXenotypes>
           <!-- the clan itself -->

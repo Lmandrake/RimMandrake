@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 using UnityEngine;
 using Verse;
 
-namespace RimMandrake.Utinni.EmpirePursuit
+namespace RuthlessPursuingMechanoids
 {
     public class RFPSettings : ModSettings
     {

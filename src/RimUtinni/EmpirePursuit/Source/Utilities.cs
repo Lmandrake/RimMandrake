@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Verse;
 
-namespace RimMandrake.Utinni.EmpirePursuit
+namespace RuthlessPursuingMechanoids
 {
     public static class DebugUtility
     {

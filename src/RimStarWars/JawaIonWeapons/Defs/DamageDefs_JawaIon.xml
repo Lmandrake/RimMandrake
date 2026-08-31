@@ -55,7 +55,7 @@
        reference an ABSTRACT def declared with a Name= attribute. Core's own EMP
        does exactly what we now do: ParentName="StunBase", where StunBase is
        DamageDef Name="StunBase" Abstract="True" in Core Damages_Stun.xml. -->
-  <DamageDef Class="JawaIonWeapons.IonDamageDef" ParentName="StunBase">
+  <DamageDef Class="RimMandrake.StarWars.JawaIonWeapons.IonDamageDef" ParentName="StunBase">
     <defName>RSW_JawaIon_Damage</defName>
     <label>ion</label>
     <deathMessage>{0} was overloaded by ion fire.</deathMessage>
@@ -66,7 +66,7 @@
     <!-- WIRED 2026-08-11. Custom worker, see Source/DamageWorker_IonBuildup.cs.
          It calls base.Apply first, so the impact sound and vanilla bookkeeping
          are unchanged. -->
-    <workerClass>JawaIonWeapons.DamageWorker_IonBuildup</workerClass>
+    <workerClass>RimMandrake.StarWars.JawaIonWeapons.DamageWorker_IonBuildup</workerClass>
 
     <!-- ⚠️ Kept for NON-PAWN targets only - turrets and stunnable buildings.
          It cannot and never could stun a pawn; see the correction above. -->

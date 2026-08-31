@@ -27,7 +27,7 @@ namespace RimMandrake.Inhabited
     /// <summary>What the world map reports about a place.</summary>
     public enum InhabitedState
     {
-        RimMandrake.Inhabited,
+        Inhabited,
         Abandoned,
         Looted,
         Squatted

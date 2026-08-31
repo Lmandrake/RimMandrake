@@ -150,3 +150,64 @@ GravshipAstronautFix/Textures/Things/Structures/GravshipGenebank/GravshipGeneban
 #    Kept as the record of why a finished patch sat undeployed for twenty minutes,
 #    and of the check that caught it: two correct patches, one merged behaviour
 #    that neither seat designed.
+
+# --- The C# namespace rename: XML and ASSEMBLY must land together -------------
+# 2026-08-31 (FOUNDRY, RENAME_VERIFY_WINDOW_1). Naming Phase 2a moved every C#
+# namespace to the `RimMandrake.*` root but left the XML type references on the
+# OLD bare namespace, in four mods. That is invisible today only because the
+# DEPLOYED assemblies are pre-rename builds, so XML and DLL still agree.
+#
+# ⛔ Deploying either half alone BREAKS the mod, in opposite directions:
+#      new XML + old DLL  -> "Could not find type named RimMandrake.StarWars.…"
+#      old XML + new DLL  -> "Could not find type named Droidworks.…"
+#    and a def that cannot resolve a Class/compClass/workerClass is DISCARDED, or
+#    loses the comp, silently for anything downstream of it.
+#
+# The XML is fixed and the assemblies are rebuilt in the repo; the game was UP
+# when this landed, and the OS holds every Mods/**/Assemblies/*.dll open, so the
+# DLLs could not be written. ⇒ LIFT THIS WHOLE BLOCK AT ONCE, the next time the
+# game is DOWN, with `deploy_custom_mods.py --mod <name> --apply` per mod. The
+# assemblies go in the same --apply as their XML; never one without the other.
+Inhabited/Assemblies/Inhabited.dll                        # FOUNDRY: namespace rename, XML+DLL pair, 2026-08-31
+Inhabited/Defs/DutyDefs/Duties_Inhabited.xml              # FOUNDRY: namespace rename, XML+DLL pair, 2026-08-31
+Inhabited/Defs/GenStepDefs/GenSteps_Inhabited.xml         # FOUNDRY: namespace rename, XML+DLL pair, 2026-08-31
+Inhabited/Defs/WorldObjectDefs/WorldObjects_Inhabited.xml # FOUNDRY: namespace rename, XML+DLL pair, 2026-08-31
+Droidworks/Assemblies/Droidworks.dll                      # FOUNDRY: namespace rename, XML+DLL pair, 2026-08-31
+Droidworks/Assemblies/DroidworksBoltCore.dll              # FOUNDRY: namespace rename, XML+DLL pair, 2026-08-31
+Droidworks/Defs/HediffDefs/HediffDefs_Droidworks.xml      # FOUNDRY: namespace rename, XML+DLL pair, 2026-08-31
+Droidworks/Defs/JobDefs/JobDefs_Droidworks.xml            # FOUNDRY: namespace rename, XML+DLL pair, 2026-08-31
+Droidworks/Defs/Races_Families.xml                        # FOUNDRY: namespace rename, XML+DLL pair, 2026-08-31
+Droidworks/Defs/Races_OuterRim.xml                        # FOUNDRY: namespace rename, XML+DLL pair, 2026-08-31
+Droidworks/Defs/RecipeDefs/RecipeDefs_Droidworks.xml      # FOUNDRY: namespace rename, XML+DLL pair, 2026-08-31
+Droidworks/Defs/ThingDefs/Buildings_Charging.xml          # FOUNDRY: namespace rename, XML+DLL pair, 2026-08-31
+Droidworks/Defs/ThingDefs/Items_Droidworks.xml            # FOUNDRY: namespace rename, XML+DLL pair, 2026-08-31
+Droidworks/Defs/ThinkTreeDefs/ThinkTreeDefs_DWRecharge.xml # FOUNDRY: namespace rename, XML+DLL pair, 2026-08-31
+Droidworks/Patches/IonBuildup_PowersDownDroid.xml         # FOUNDRY: namespace rename, XML+DLL pair, 2026-08-31
+JawaIkee/Assemblies/JawaIkee.dll                          # FOUNDRY: namespace rename, XML+DLL pair, 2026-08-31
+JawaIkee/Defs/ThoughtDefs/Thought_IkeeWatching.xml        # FOUNDRY: namespace rename, XML+DLL pair, 2026-08-31
+JawaIonWeapons/Assemblies/JawaIonWeapons.dll              # FOUNDRY: namespace rename, XML+DLL pair, 2026-08-31
+JawaIonWeapons/Assemblies/JawaIonVehicleTier.dll          # FOUNDRY: namespace rename, XML+DLL pair, 2026-08-31
+JawaIonWeapons/Defs/DamageDefs_JawaIon.xml                # FOUNDRY: namespace rename, XML+DLL pair, 2026-08-31
+JawaIonWeapons/Defs/StatDefs_JawaIon.xml                  # FOUNDRY: namespace rename, XML+DLL pair, 2026-08-31
+JawaIonWeapons/About/About.xml                            # FOUNDRY: namespace rename, XML+DLL pair, 2026-08-31
+
+# --- EmpirePursuit: the assembly only, XML ships NOW --------------------------
+# 2026-08-31 (FOUNDRY, RENAME_VERIFY_WINDOW_1). This one is the mirror image of the
+# block above and must not be batched with it. Phase 2a rewrote the forked ScenPart's
+# namespace, AssemblyName and RootNamespace to `RUT_RuthlessPursuingMechanoids` — a
+# defName prefix rule applied to a C# identifier — so the DEPLOYED
+# ScenParts_EmpirePursuit.xml has been naming a type that exists in no assembly since
+# the migration deployed. That is a live break, not a latent one.
+#
+# The fork holds its namespace, class name and ScenPartDef defName IDENTICAL to
+# upstream ON PURPOSE (EMPIRE_PURSUIT_SURVEY_SHADOW_1): a ScenPart is scribed into
+# savegames and .rsc scenario files by its FULL TYPE NAME, so renaming it makes every
+# existing save and scenario unloadable. Restored, and `.naming-vendored` now records
+# the exemption so no future pass repeats it.
+#
+# ⇒ The XML is deployed immediately: restoring `RuthlessPursuingMechanoids.*` makes it
+#   agree with the ALREADY-DEPLOYED 2026-08-28 assembly, which never had the RUT_ name.
+#   The rebuilt repo DLL is byte-different but semantically identical, and the game is
+#   UP, so it is held here rather than blocking the XML repair.
+# ⇒ LIFT when the game is down; nothing depends on it landing first.
+EmpirePursuit/Assemblies/RuthlessPursuingMechanoids.dll   # FOUNDRY: rebuild only, deployed copy is already correct, 2026-08-31
