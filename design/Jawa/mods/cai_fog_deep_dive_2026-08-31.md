@@ -83,10 +83,17 @@ our companion DLL — legal against any route), or NWN's glow model absorbed and
 retuned (route C). The unresolved fork glow-LUT question above may make route
 A/B's clamp unnecessary — check first.
 
+🔴 **Conflict confirmed in OUR list (measured 2026-08-31):**
+`memegoddess.searchanddestroy` is ACTIVE — the exact mod in CAI's open
+incompatibility issue #86. Routes A and B (anything enabling CAI's combat AI)
+require dropping Search and Destroy or accepting a documented conflict; route C
+is unaffected. This is a ruling the route decision must carry.
+
 ## Next steps, in order
 1. Read `yuganxia/CAI-5000-continue`'s 1.6 sight source — settle the glow-LUT
-   question (one subagent, no game).
-2. Grep our ModsConfig for Search-and-Destroy-class AI mods before any enable.
+   question (one subagent, no game). *(in flight)*
+2. ~~Grep our ModsConfig for Search-and-Destroy-class AI mods~~ — done, see
+   the red flag above.
 3. Minimal-list quicktest (22 s cycle): enable per the chosen route, spawn a
    night raid, LOOK at fog behavior + a `Sighter`-comp lamp; then a full-list
    trial ride on an existing cold-load run sheet — never its own load.
