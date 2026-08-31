@@ -47,7 +47,7 @@ OWNER: leave the engine's compressed 60×bs scale (recommended — every
 downstream system is tuned to it: hauling, caravans, pit covers), or override
 to realistic masses (a 4-tonne elephant would distort carrying/caravan
 balance stack-wide for flavor nobody reads). Recommended: **no override;
-close the question.**
+close the question.** ✅ RULED (owner card, 2026-08-31): engine scale kept.
 
 **Law 3 — casual lethality, with counterplay** (arm-3 curve, adopted as
 draft): for bs ≥ 1, **best-hit damage goes linear: ≈ 12–15 × bodySize**
@@ -66,7 +66,7 @@ hunt from range; the new curve makes Ishko's doctrine mechanically true.
 
 Star Wars canon: big beasts shrug blaster fire. Two mechanizations, one
 recommended:
-- **Option A — armor absorption (RECOMMENDED, the owner's own lean):**
+- **Option A — armor absorption — ✅ RULED (owner card, 2026-08-31):**
   `ArmorRating_Heat` on a **thick-hide register** of beasts, scaling with
   bodySize (draft: ~15% × bodySize, capped ~75%). Blasters deal energy/burn
   damage, so "blasters stop working" EMERGES — the bigger the beast, the
@@ -111,9 +111,9 @@ recommended:
 ## 4. Open for the owner
 
 1. Law 2: confirm no real-mass override (recommended).
-2. Law 3 numbers: 12–15×bs per-hit is the draft coefficient — a quicktest
-   (spawn muffalo vs unarmored pawn, MEASURED outcomes) should tune it
-   before the manifest freezes.
+2. Law 3 numbers: ✅ RULED (owner card, 2026-08-31) — QUICKTEST FIRST: the
+   coefficient is tuned by a muffalo-vs-unarmored-pawn quicktest (MEASURED
+   outcomes) at the next game window before the manifest freezes.
 3. The empty seas (zero marine fauna in Ocean/Lake biomes — MEASURED): out
    of scope here, but the three seas holding nothing alive is a
    worldbuilding hole worth its own item.

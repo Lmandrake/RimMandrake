@@ -40,31 +40,38 @@ to rule:
   disarmed-trap salvage as a small `↑` (profit from another's preparation is the
   perfect deal's little brother).
 
-## 2b. The light minify — stealing the unstealable
+## 2b. Battlefield capture — stealing THEIR defenses (RE-SCOPED by the owner, 2026-08-31)
 
-Jawa can uninstall and carry off an **unusually large set of otherwise
-unstealable/unminifiable buildings** — as LOOT. The hard line (owner): **making
-things super-strong via minify is not cool** — this is steal-to-salvage/sell/
-re-home, never a mobility exploit for turrets/defenses in combat.
+> 🔴 **The earlier read of this section was wrong** ("No, this isn't what we
+> meant at all") and its whitelist review-sheet is DEAD — sheet and prefill CSV
+> deleted; no curation sheet is needed. The scope is a CATEGORY, not a list.
 
-- Mechanism: a Jawa-only work type ("strip it") that converts listed unminifiable
-  buildings into a minified item or a rich salvage bundle; long work time, needs
-  the map pacified or the theft unseen (Ishko: get away clean).
-- Bounds: a curated whitelist (production benches, mod machines, art, ship
-  fittings), an explicit denylist (turrets and anything that would fight for you
-  where it lands — re-installation of denylisted stolen goods is disabled;
-  they exist to be sold, gifted, or fed to Rekko's restoration).
-- Theology: `↑Rekko` (a better home) + `↑Mob'Unloo` (something for nothing) on a
-  clean take; the §8b theft row already prices getting caught.
-- **Reframe (MEASURED, 2026-08-30): `MinifyEverything` (erdelf.minifyeverything)
-  is already in the stack** and grants near-universal minification — so this
-  feature is really TWO curations: (a) whitelisting the 96-def genuinely
-  unstealable frontier, and (b) carving combat buildings OUT of what
-  MinifyEverything already grants (the §2b denylist, 161 rows prefilled DENY).
-  The owner's click-through sheet is ready:
-  `Transient/minify_whitelist_sheet.html`, census committed at
-  `worldbuilding/data/minify_whitelist_prefill.csv` (257 rows from the frozen
-  dump), decisions land at `worldbuilding/data/minify_whitelist_decisions.json`.
+**The feature: the clan captures the enemy's own defensive works.** Owner's
+words: "We can steal their traps rather than setting them off... maybe also
+their sandbags, anti-tank traps, fences, etc. Yes to turrets, yes to unstable
+fuel nodes and other unconventional 'trap' nodes."
+
+- **Enemy traps** — trap-sense (§2, Option C RULED) upgrades from
+  disarm-for-salvage to **disarm-and-TAKE**: a Jawa lifts the enemy's trap
+  intact and it becomes his. The purest expression of "I will profit from your
+  preparations."
+- **Fortifications**: sandbags, barricades, anti-tank traps/dragon's teeth,
+  fences — uninstallable by Jawa, re-deployable at home.
+- **Turrets — ✅ RULED (owner card, 2026-08-31): REDEPLOY, DEGRADED.** A
+  captured turret reinstalls at reduced condition/quality — battlefield
+  capture is real, but a stolen gun is never as good as the day it was
+  theirs. (Prices the original no-superweapon worry into the loop.)
+- **Unconventional "trap" nodes**: unstable fuel nodes, exploding power
+  cells, and kin — capturable and re-deployable as OUR hazards (feeds the
+  lure-layer and pit-fitting doctrine).
+- Mechanism unchanged in shape: a Jawa work type, long work time, unseen or
+  pacified map (Ishko: get away clean); theology unchanged: `↑Rekko`
+  (a better home) + `↑Mob'Unloo` (something for nothing), §8b prices getting
+  caught. `↑Ozzik` on a turret take (dominion's instrument, taken intact).
+- The MinifyEverything overlap note survives only as a build fact: that mod
+  already grants broad minification of ordinary buildings; THIS feature is
+  specifically the combat/deployable category vanilla and MinifyEverything
+  treat as untouchable, plus the trap-lift verb.
 
 ## 3. Absorption tier (patches, not frameworks)
 
