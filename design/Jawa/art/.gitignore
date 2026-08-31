@@ -26,3 +26,8 @@ census_building_graphics.tsv
 # normally mean "gitignore it", but a filter nobody can read without first
 # running an 850 MB scan is not a deliverable. Regenerate after any modstack
 # change: python3 design/Jawa/art/salvage_filter.py
+
+# ✅ AND the pantheon slide — our own generation (Codex, 2026-08-31, owner-commissioned
+# for a presentation slide), not borrowed pixels. A re-run would be a different image,
+# so the file itself is the artifact. Tracked.
+!pantheon_slide.png
