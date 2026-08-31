@@ -76,9 +76,9 @@
     <mods><li>Archotech Blaster Turret</li></mods>
     <match Class="PatchOperationSequence">
       <operations>
-        <!-- RSW_Bullet_ArchotechChargeBlasterHeavy : 102 -> 187 -->
+        <!-- Bullet_ArchotechChargeBlasterHeavy : 102 -> 187 -->
         <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="RSW_Bullet_ArchotechChargeBlasterHeavy"]/projectile/damageAmountBase</xpath>
+          <xpath>/Defs/ThingDef[defName="Bullet_ArchotechChargeBlasterHeavy"]/projectile/damageAmountBase</xpath>
           <value><damageAmountBase>187</damageAmountBase></value>
         </li>
       </operations>

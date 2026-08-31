@@ -508,13 +508,13 @@
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RSW_Gun_ArchotechChargeBlasterHeavyTurret"]/weaponTags</xpath>
+    <xpath>/Defs/ThingDef[defName="Gun_ArchotechChargeBlasterHeavyTurret"]/weaponTags</xpath>
     <match Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="RSW_Gun_ArchotechChargeBlasterHeavyTurret"]/weaponTags</xpath>
+      <xpath>/Defs/ThingDef[defName="Gun_ArchotechChargeBlasterHeavyTurret"]/weaponTags</xpath>
       <value><li>AssaultRifle</li><li>SimpleGun</li></value>
     </match>
     <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="RSW_Gun_ArchotechChargeBlasterHeavyTurret"]</xpath>
+      <xpath>/Defs/ThingDef[defName="Gun_ArchotechChargeBlasterHeavyTurret"]</xpath>
       <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
     </nomatch>
   </Operation>
