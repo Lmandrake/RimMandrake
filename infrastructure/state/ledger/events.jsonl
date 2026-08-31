@@ -3369,3 +3369,6 @@
 {"seat":"FOUNDRY","event":"start","id":"JAWA_PATCHES_SPLIT_1","ts":"2026-08-31T15:39:21Z"}
 {"seat":"FOUNDRY","event":"claim","id":"GRAFFITI_FRAMEWORK_BUILD_1","ts":"2026-08-31T15:48:10Z"}
 {"seat":"FOUNDRY","event":"start","id":"GRAFFITI_FRAMEWORK_BUILD_1","ts":"2026-08-31T15:48:11Z"}
+{"seat":"FOUNDRY","event":"claim","id":"ISHKO_DARK_LANDMARKS_1","ts":"2026-08-31T15:49:09Z"}
+{"seat":"FOUNDRY","event":"start","id":"ISHKO_DARK_LANDMARKS_1","ts":"2026-08-31T15:49:09Z"}
+{"seat":"FOUNDRY","event":"close","id":"ISHKO_DARK_LANDMARKS_1","sha":"f814989af0a6818dbc4371847879f1b6d152595e","ts":"2026-08-31T15:55:38Z"}

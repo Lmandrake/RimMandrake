@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-31T15:48:11Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-31T15:55:38Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -247,13 +247,3 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/COLONY_VISIBILITY_BUILD_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/COLONY_VISIBILITY_BUILD_1.md
-
-## ISHKO_DARK_LANDMARKS_1 Author 2-3 Ishko dark LandmarkDefs (lightless sink, shadowed overhang, cold lava tube - after verifying the ~46 unused legal landmarks lack a dark candidate); placement stays the owner's hand
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/ISHKO_DARK_LANDMARKS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ISHKO_DARK_LANDMARKS_1.md
