@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ISHKO_DARK_LANDMARKS_1. Three new LandmarkDefs for Ishko the Unmaskable
+       (dark, stillness, hiding - reconciled_lore/05_the_clan.md line 75).
+       Verified first (sacred_sites_pass_1.md flagged this as real work, not
+       reinterpretation): no existing legal LandmarkDef is curated as Ishko's
+       own - Cavern/Hollow are referenced only as generic biome-class reasoning
+       (sacred_sites_pass_1.md line 69), never tagged with an owner in the
+       reinterpretation table (line 76-137). These three are new content.
+
+       Anchored on real, legal TileMutatorDefs (Hollow/Chasm/Cavern) so no new
+       C# or TileMutatorDef is needed - the pattern every vanilla LandmarkDef
+       in Landmarks.xml uses. Icons reuse the existing Ash'karr-styled repaints
+       (mandrake.rut.ashkarrlandmarkart) of the closest vanilla silhouette, so
+       they read in the campaign's own house style rather than raw Odyssey art
+       or a blank icon - bespoke art is a follow-up, not a blocker for v1.
+       nameMakers are likewise reused rather than authoring three new
+       RulePackDefs for this pass.
+
+       Placement is deliberately NOT done here - the owner's hand, per the
+       item's own title. -->
+
+  <LandmarkDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_LightlessSink</defName>
+    <label>lightless sink</label>
+    <description>The ground gives way here and does not give it back - a hollow the light never finds the bottom of. Ishko does not hide in it. Ishko is simply already there, and always was.</description>
+    <iconTexturePath>World/Landmarks/Ashkarr/Hollow</iconTexturePath>
+    <atlasSize>(2, 2)</atlasSize>
+    <commonality>0.08</commonality>
+    <nameMaker>NamerLandmark_Hollow</nameMaker>
+    <category>mountain</category>
+    <mutatorChances>
+      <Hollow Required="True"/>
+      <IceCaves>0.35</IceCaves>
+      <FoggyMutator>0.15</FoggyMutator>
+      <AnimalLife_Decreased>0.2</AnimalLife_Decreased>
+      <DryGround>0.1</DryGround>
+    </mutatorChances>
+  </LandmarkDef>
+
+  <LandmarkDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_ShadowedOverhang</defName>
+    <label>shadowed overhang</label>
+    <description>Rock leaning far enough over itself that noon never reaches the ground beneath it. A patient watcher can stand under this stone for a whole day and be seen by no one who was not already looking - which is the whole of Ishko's doctrine, cut into the world.</description>
+    <iconTexturePath>World/Landmarks/Ashkarr/Chasm</iconTexturePath>
+    <atlasSize>(2, 2)</atlasSize>
+    <commonality>0.08</commonality>
+    <nameMaker>NamerLandmark_Chasm</nameMaker>
+    <category>mountain</category>
+    <mutatorChances>
+      <Chasm Required="True"/>
+      <IceCaves>0.25</IceCaves>
+      <FoggyMutator>0.2</FoggyMutator>
+      <AnimalLife_Decreased>0.15</AnimalLife_Decreased>
+      <SunnyMutator>0.02</SunnyMutator>
+    </mutatorChances>
+  </LandmarkDef>
+
+  <LandmarkDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_ColdLavaTube</defName>
+    <label>cold lava tube</label>
+    <description>A vein the world's fire used to run through, long since gone out. Sh'kaar's heat left it whole tile-lengths ago; what is left is a tunnel of his old work, claimed cold, claimed dark, claimed - like everything eventually is - by Ishko.</description>
+    <iconTexturePath>World/Landmarks/Ashkarr/Cavern</iconTexturePath>
+    <atlasSize>(2, 2)</atlasSize>
+    <commonality>0.06</commonality>
+    <nameMaker>NamerLandmark_Cavern</nameMaker>
+    <category>mountain</category>
+    <mutatorChances>
+      <Cavern Required="True"/>
+      <LavaCaves>0.4</LavaCaves>
+      <IceCaves>0.15</IceCaves>
+      <FoggyMutator>0.1</FoggyMutator>
+      <AnimalLife_Decreased>0.2</AnimalLife_Decreased>
+      <DryGround>0.1</DryGround>
+    </mutatorChances>
+  </LandmarkDef>
+
+</Defs>

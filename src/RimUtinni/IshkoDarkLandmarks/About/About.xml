@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimUtinni: Ishko's Dark Landmarks</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.rut.ishkolandmarks</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Three new LandmarkDefs for Ishko the Unmaskable (design/Jawa/worldbuilding/sacred_sites_pass_1.md flagged him as the one god of the Nine with no curated landmark of his own): the Lightless Sink, the Shadowed Overhang, and the Cold Lava Tube.
+
+Verified first, not assumed: no existing legal LandmarkDef in the current stack is tagged as Ishko's own. Cavern and Hollow are already referenced as generic biome-class reasoning for his nightside domain, but neither is a curated, owned landmark - these three fill that gap as new content rather than reinterpretation.
+
+Each anchors on a real, legal TileMutatorDef (Hollow, Chasm, Cavern respectively) so no new C# is needed - the same pattern every vanilla LandmarkDef uses. Icons reuse the existing Ash'karr-styled repaints of the closest vanilla silhouette (mandrake.rut.ashkarrlandmarkart's house style) rather than shipping with no icon or a mismatched one; bespoke art is a follow-up.
+
+Placement on the actual Ash'karr world is deliberately NOT done here - that stays the owner's hand.</description>
+
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld.Odyssey</packageId>
+      <displayName>Odyssey</displayName>
+    </li>
+  </modDependencies>
+
+  <loadAfter>
+    <li>Ludeon.RimWorld.Odyssey</li>
+    <li>mandrake.rut.ashkarrlandmarkart</li>
+  </loadAfter>
+</ModMetaData>
