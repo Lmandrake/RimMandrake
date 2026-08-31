@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-31T15:59:41Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-31T17:43:17Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -61,3 +61,123 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/RESEARCH_TREE_NORMALIZATION_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/RESEARCH_TREE_NORMALIZATION_1.md
+
+## CAI_FOG_DEEP_DIVE_1 CAI fog-of-war deep dive: full exploration of the mod for general gameplay (combat AI promises) AND underwater short-sight needs; big integration, be thorough
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/CAI_FOG_DEEP_DIVE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/CAI_FOG_DEEP_DIVE_1.md
+
+## SARLACC_SPEC_SESSION_1 Fable spec: the Sarlacc - landmark pit gate rebrand + pearls economy + DEEP DUNGEON experience with wildly animated sarlacc emergence and attack tentacles (owner widened scope 2026-08-31); source facts already measured in V2_DREAMS entry
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SARLACC_SPEC_SESSION_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SARLACC_SPEC_SESSION_1.md
+
+## NINE_VOICES_CAST_BIBLE_1 Fable spec: re-scope llm_voice_preauthoring.md from one Cradle-Mind to the nine-god cast under R-W6 constraints
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/NINE_VOICES_CAST_BIBLE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/NINE_VOICES_CAST_BIBLE_1.md
+
+## RESEARCH_TAXONOMY_DRAFT_1 Fable spec: full-game research tree taxonomy + migration rules + validator design, decision doc for the owner; mechanical retag stays later (feeds RESEARCH_TREE_NORMALIZATION_1)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/RESEARCH_TAXONOMY_DRAFT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/RESEARCH_TAXONOMY_DRAFT_1.md
+
+## RACE_REGEN_ARCHITECTURE_1 Fable spec: race regeneration architecture - 69 species authored as ours, per-species gene philosophy, generator ending donor dependency (subsumes stripped-genes + six deferred species)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/RACE_REGEN_ARCHITECTURE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/RACE_REGEN_ARCHITECTURE_1.md
+
+## CANTINA_KITCHEN_SPEC_1 Fable spec: Cantina Kitchen - live-food container building, recipe repoint over VCE/VBE, faith-dependent mood matrix
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/CANTINA_KITCHEN_SPEC_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/CANTINA_KITCHEN_SPEC_1.md
+
+## TUSKEN_WATER_RAID_1 Fable spec: steal-and-withdraw RaidStrategyDef + LordJob design for the Deep Desert Tribes water raid (no live strategy does it, measured 2026-08-14)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/TUSKEN_WATER_RAID_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/TUSKEN_WATER_RAID_1.md
+
+## BOILING_WATER_BURNS_1 Fable spec: boiling water that burns on contact - our own content; start from design/Jawa/mods/REGROWTH_BOILING_LIFT_SPEC.md (B64 lineage)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/BOILING_WATER_BURNS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BOILING_WATER_BURNS_1.md
+
+## DUST_STORMS_DESTRUCTIVE_1 Fable spec: meaningful dust storms that damage structures and move light objects
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DUST_STORMS_DESTRUCTIVE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DUST_STORMS_DESTRUCTIVE_1.md
+
+## PLANTS_VISIBLE_GROWTH_1 Fable spec: plants that visibly grow as you watch - growth-stage rendering feasibility + design
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/PLANTS_VISIBLE_GROWTH_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PLANTS_VISIBLE_GROWTH_1.md
+
+## DESERT_PLANTS_SCRAGGLY_1 Fable spec: nasty scraggly desert flora replacing the strange rainbow plants - census of current flora + art direction + def plan
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DESERT_PLANTS_SCRAGGLY_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DESERT_PLANTS_SCRAGGLY_1.md
+
+## LLM_INGAME_WIRING_1 Fable spec: wire an LLM into the game - event-triggered infrequent calls: the nine gods alive beyond prescribed dialog, generated raids, in-game content specialization (owner reopened the v2 LLM gate 2026-08-31)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/LLM_INGAME_WIRING_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/LLM_INGAME_WIRING_1.md

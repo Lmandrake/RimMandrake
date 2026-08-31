@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-31T15:59:41Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-31T17:43:17Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -171,6 +171,15 @@ kind:     task
 summary:  design/Jawa/divinesatiationengine.md — full design ruled, "NINE OF
 prose:    infrastructure/state/items/NINEFOLD_ENGINE_M0_1.md
 
+## COLONY_VISIBILITY_BUILD_1 Build the Colony Visibility dial (mandrake.rm.visibility): safe core first, threat-scoped Postfix per ruling (hostile callers only), Spike 3 is the patch skeleton
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  design/Jawa/worldbuilding/colonyvisibilitystat.md, specifically
+prose:    infrastructure/state/items/COLONY_VISIBILITY_BUILD_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -235,14 +244,4 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## COLONY_VISIBILITY_BUILD_1 Build the Colony Visibility dial (mandrake.rm.visibility): safe core first, threat-scoped Postfix per ruling (hostile callers only), Spike 3 is the patch skeleton
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/COLONY_VISIBILITY_BUILD_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/COLONY_VISIBILITY_BUILD_1.md
+_none._
