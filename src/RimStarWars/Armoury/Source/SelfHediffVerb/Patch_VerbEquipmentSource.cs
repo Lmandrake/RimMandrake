@@ -3,7 +3,7 @@ using Verse;
 
 namespace SelfHediffVerb;
 
-[HarmonyPatch(typeof(Verb), "EquipmentSource")]
+[HarmonyPatch(typeof(Verb), nameof(Verb.EquipmentSource), MethodType.Getter)]
 [HarmonyAfter("kaitorisenkou.ModularWeapons")]
 public static class Patch_VerbEquipmentSource
 {

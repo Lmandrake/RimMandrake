@@ -647,7 +647,7 @@ namespace JawaBench.BridgeTools
         private static readonly HashSet<string> ExplosiveDamageDefs =
             new HashSet<string>(StringComparer.OrdinalIgnoreCase)
             {
-                "Bomb","BombSuper","MiningBomb","Thump","Flame","RSW_Burn","AcidBurn","ElectricalBurn",
+                "Bomb","BombSuper","MiningBomb","Thump","Flame","Burn","AcidBurn","ElectricalBurn",
                 "Vaporize","NociosphereVaporize","EMP","Stun","MechBandShockwave","Smoke","ToxGas",
                 "DeadlifeDust","Extinguish"
             };
@@ -657,7 +657,7 @@ namespace JawaBench.BridgeTools
             "jawa/map_explosion",
             Description =
                 "*** ACTS ON THE LIVE MAP *** Detonate an explosion of any type at a cell. " +
-                "damType is a DamageDef: Bomb · BombSuper · Thump · Flame · RSW_Burn · AcidBurn · " +
+                "damType is a DamageDef: Bomb · BombSuper · Thump · Flame · Burn · AcidBurn · " +
                 "Vaporize · EMP · Stun · Smoke · ToxGas · DeadlifeDust · Extinguish and more. " +
                 "damage<0 uses the def's own defaultDamage. Optional gas cloud, fire chance, " +
                 "falloff, neighbour spill and per-cell spawns (filth, chunks, firefoam). " +

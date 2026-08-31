@@ -25,7 +25,7 @@
      ⛔ NOT patched: guy762_RangedDamage_organicstun (commented out, dead, in guy762's own
      source), guy762_GrenadeDamage_stun (no additionalHediffs at all - no XML lever exists),
      the whole guy762_*_ion family (survey found these are NOT a flesh-stun mechanism; live-
-     tested, ordinary RSW_Burn injury on a Rat). See OTHER_STUN_WEAPONS_SURVEY_1.md's table for
+     tested, ordinary Burn injury on a Rat). See OTHER_STUN_WEAPONS_SURVEY_1.md's table for
      the full per-weapon read.
 
      MayRequire guy762.MM.KotORCore (this mod's own packageId, read from its About.xml) - the

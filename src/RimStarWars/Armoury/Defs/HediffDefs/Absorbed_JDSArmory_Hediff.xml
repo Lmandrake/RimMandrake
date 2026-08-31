@@ -11,7 +11,7 @@
 
   <HediffDef ParentName="InjuryBase">
     <defName>RSW_Blaster_Burn</defName>
-    <label>Blaster RSW_Burn</label>
+    <label>Blaster Burn</label>
     <labelNoun>a blaster burn</labelNoun>
     <description>A blaster burn.</description>
     <comps>

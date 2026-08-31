@@ -107,7 +107,7 @@
         <blocksMeleeDamage>true</blocksMeleeDamage>
         <blockedDamageDefs>
           <li>Flame</li>
-          <li>RSW_Burn</li>
+          <li>Burn</li>
           <li>guy762_GrenadeDamage_plasma</li>
           <li>guy762_GrenadeDamage_thermaldet</li>
           <li>guy762_BeamDamage_radiation</li>
@@ -428,7 +428,7 @@
           <li>guy762_GrenadeDamage_sonic</li>
           <li>Thump</li>
           <li>Flame</li>
-          <li>RSW_Burn</li>
+          <li>Burn</li>
           <li>guy762_GrenadeDamage_plasma</li>
           <li>guy762_BeamDamage_radiation</li>
           <li>Frostbite</li>
@@ -513,7 +513,7 @@
           <li>guy762_GrenadeDamage_sonic</li>
           <li>Thump</li>
           <li>Flame</li>
-          <li>RSW_Burn</li>
+          <li>Burn</li>
           <li>guy762_GrenadeDamage_plasma</li>
           <li>guy762_BeamDamage_radiation</li>
           <li>Frostbite</li>

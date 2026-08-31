@@ -27,12 +27,13 @@ What this generator does NOT do, on purpose:
     for ParentName) -- preserved verbatim, flagged loudly in the report,
     not corrected. A generator that "fixes" prose it wasn't asked to
     fix is exactly the kind of invention CLAUDE.md rules out.
-  - does not resolve the ThingDefs_Hediff.xml HediffDef named plain
-    "RSW_Burn" -- that defName already exists in vanilla Core (BurnBase-
-    derived). JDS Armory already overrides it today, live, with this
-    generator or without it; absorbing the defName-preserving copy
-    perpetuates exactly the same override once the source pack retires,
-    it does not introduce a NEW collision. Flagged, not fixed.
+  - does not resolve the ThingDefs_Hediff.xml HediffDef whose defName was
+    plain "Burn" (now renamed to RSW_Burn by the naming migration) --
+    that defName already collided with vanilla Core (BurnBase-derived)
+    before the migration. JDS Armory already overrides it today, live,
+    with this generator or without it; absorbing the defName-preserving
+    copy perpetuates exactly the same override once the source pack
+    retires, it does not introduce a NEW collision. Flagged, not fixed.
   - does not deploy. Every output file's header says so and the file is
     left undeployed in Jawa_Armoury's live mod folder (identical
     discipline to Absorbed_Eweb.xml/Absorbed_OPTurret.xml): the source
@@ -316,9 +317,10 @@ def main():
                     continue
                 all_new_defnames[dn] = src_fn
                 if dn == "RSW_Burn":
-                    R.warn("HediffDef 'RSW_Burn' (from %s) is a vanilla Core defName (BurnBase-derived) -- "
-                           "JDS Armory already overrides it today while active; absorbing preserves that "
-                           "override verbatim, does not introduce a new one. Flagged, not fixed." % src_fn)
+                    R.warn("HediffDef 'RSW_Burn' (from %s) was plain 'Burn' before the naming migration, "
+                           "a vanilla Core defName (BurnBase-derived) -- JDS Armory already overrides it "
+                           "today while active; absorbing preserves that override verbatim, does not "
+                           "introduce a new one. Flagged, not fixed." % src_fn)
 
             collect_paths(el, "texPath", tex_paths)
             collect_paths(el, "uiIconPath", tex_paths)

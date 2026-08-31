@@ -12,7 +12,7 @@
   <DamageDef Name="BlasterBurn" ParentName="Bullet">
     <defName>RSW_Blaster_Damage</defName>
     <workerClass>DamageWorker_AddInjury</workerClass>
-    <label>Blaster RSW_Burn</label>
+    <label>Blaster Burn</label>
     <hasForcefulImpact>true</hasForcefulImpact>
     <makesBlood>false</makesBlood>
     <canInterruptJobs>false</canInterruptJobs>

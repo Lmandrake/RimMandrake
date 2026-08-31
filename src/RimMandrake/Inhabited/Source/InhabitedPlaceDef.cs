@@ -74,7 +74,7 @@ namespace RimMandrake.Inhabited
         ///
         /// So a place has a mess and a paste vat, a farmstead a granary, a Tusken
         /// camp a herd -- and all of it is visible, stealable and destroyable.
-        /// RSW_Burn the granary and the cast does not starve to death in front of the
+        /// Burn the granary and the cast does not starve to death in front of the
         /// player: they leave. That is FATE firing for a cause the player created,
         /// with no new code at all.
         /// </summary>
