@@ -120,6 +120,57 @@ resolve to "keep" on inspection (mostly trivial flavor, or — `propickelz.
 tinkerbench` and `error277.tunneler.expanded` especially — turn out to be
 unexpectedly strong thematic fits nobody had written down yet).
 
+## Examine candidates — three ruled, 2026-08-31 (owner sitting)
+
+### `clown.dedicatedturrets` — KEEP, already folded into our own doctrine
+
+Not a conflict — it's **already claimed by the turret-normalization roster**.
+`turret_register.json` lists all four of its turrets (Atomiser, Vaporiser,
+Sludger, Zapper) as canon entries assigned to the Junkers faction (owner
+ruling: "the makeshift look"), each with a computed `scaleTarget`/
+`scaleAnchor` awaiting the same rescale pass every other turret got. The
+mod is purely additive (no vanilla/other-mod turret defs touched) and
+ships real C# mechanics beyond a flat damage number (Atomiser: 3-stage
+ramping beam; Vaporiser: instant line-of-sight beam; Sludger: cone-spray
+slow/accuracy debuff; Zapper: chain-lightning stun) — the outstanding work
+is executing the register's already-decided rescale on these four, which
+needs bespoke `DamageScalingExtension`/`ControlProjectileExtension` edits
+(their output isn't a flat `damageAmountBase`), not a keep/cut call.
+
+### `titans.fl` — RETIRE, design extracted first
+
+Owner: it read genuinely scary, unlike most RimWorld creatures, but "it's
+not Star Wars canon." Full mechanical extraction:
+`design/Jawa/mods/titans_design_extraction.md`. Short version: the
+scariness is NOT raw stat inflation (its per-hit damage is actually below
+Thrumbo's, and vanilla's own `combatPower` rates it lower) — it's five
+ordinary knobs stacked at once: zero-armor pure-HP tanking (a different
+survivability shape than armor-deflection), near-total pain immunity
+(0.95, defeats "wound it into submission"), an opening-hit hard stun on
+its melee tools, active unprovoked predation up to 2x its own size, and
+pack spawning (1-8) that compounds all of the above across multiple
+bodies. All plain XML fields, zero C#/Harmony dependency, fully portable
+to a Star Wars apex creature. Removed from `ModsConfig.xml` (takes effect
+next restart — the in-flight one at ruling time had already read the old
+list).
+
+### `legator.prisonerrealism` — KEEP, one setting toggled
+
+Already adopted as the prisoner-handling backbone
+(`required_mods.md:1281`, workshop `3760196312`) — a large, mostly
+complementary system (institutionalization, riots, force-feed, contraband,
+lockpicking, recidivism, etc.) sitting entirely upstream of the
+recruit/enslave choice; grepped its full `Source/` tree for
+`GuestTracker`/`resistance`/`.will`/`SlaveOf`/`IsSlave`/`InteractionMode` —
+zero hits, it never touches enslavement mechanics. **One real, narrow
+conflict**: its `RecruitOffer` feature (`Source/Features/RecruitOffer/`)
+periodically letters an offer to recruit an institutionalized prisoner
+outright, calling `RecruitUtility.Recruit` directly on Accept — the exact
+action `jawa_society.md` §4.1's enslave-not-recruit doctrine bans. Fully
+containable: `enableRecruitOffer` is a per-feature mod setting (default
+**true**) — turn it off, keep everything else. Doctrine op, not a
+ModsConfig change.
+
 ## Summary
 
 | bucket | count | action |
