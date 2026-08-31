@@ -292,7 +292,7 @@ load and are then removed; `BTD_Jawa` survives.
 🔴 **AND THE SURVIVOR EXPIRES.** That sentence was measured with the three donor
 mods active. They were later switched off in favour of one authored species mod,
 and today **none of those three names loads** — the live Jawa xenotypes are
-`MandrakeJawa` and `RimMandrakeJawa`, from `mandrake.starwarsraces`. Patches still
+`MandrakeJawa` and `RimMandrakeJawa`, from `mandrake.rsw.starwarsraces`. Patches still
 aimed at `BTD_Jawa` had been matching nothing for days without logging a thing,
 because a `PatchOperationConditional` on a missing def is a silent no-op.
 

@@ -138,7 +138,7 @@
     <label>Thermal Detonator</label>
     <thingClass>Projectile_Explosive</thingClass>
     <graphicData>
-      <texPath>Things/Projectile/RSW_Thermal_Detonator_Thowable</texPath>
+      <texPath>Things/Projectile/Thermal_Detonator_Thowable</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>1.2</drawSize>
     </graphicData>
@@ -155,7 +155,7 @@
     <label>ECD Grenade</label>
     <thingClass>Projectile_Explosive</thingClass>
     <graphicData>
-      <texPath>Things/Projectile/RSW_ECD_Grenade_Thowable</texPath>
+      <texPath>Things/Projectile/ECD_Grenade_Thowable</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>1.2</drawSize>
     </graphicData>
