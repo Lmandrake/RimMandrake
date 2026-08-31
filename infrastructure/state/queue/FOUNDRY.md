@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-31T15:21:14Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-08-31T15:39:21Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -144,6 +144,15 @@ kind:     task
 summary:  design/Jawa/worldbuilding/structureinjectionroster.md (the content
 prose:    infrastructure/state/items/TILE_STRUCTURE_DESIGNS_1.md
 
+## JAWA_PATCHES_SPLIT_1 Phase 3: triage src/SPLIT_Phase3/Jawa_Patches per-file (125 TBD defs) - Ashkarr/Rakata/DeepDesert/Pyrelands to RUT, animal/texture/generic to RSW or RM; plus straddle extractions (SacredGraffiti marks, WreckedMachines relics, Droidworks campaign layer, Armoury doctrine, JawaVoice campaign lines)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  design/NAMINGSCHEMEPLAN.md §5 Phase 3: "JawaPatches triage; extract
+prose:    infrastructure/state/items/JAWA_PATCHES_SPLIT_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -209,16 +218,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## JAWA_PATCHES_SPLIT_1 Phase 3: triage src/SPLIT_Phase3/Jawa_Patches per-file (125 TBD defs) - Ashkarr/Rakata/DeepDesert/Pyrelands to RUT, animal/texture/generic to RSW or RM; plus straddle extractions (SacredGraffiti marks, WreckedMachines relics, Droidworks campaign layer, Armoury doctrine, JawaVoice campaign lines)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/JAWA_PATCHES_SPLIT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/JAWA_PATCHES_SPLIT_1.md
 
 ## GRAFFITI_FRAMEWORK_BUILD_1 Build mandrake.rm.graffiti (SUPERSEDES Mlie.GraffitiMod - absorb spree, retire from modlist, VERIFY license before asset reuse) + mandrake.rut.marks: five families, taunt funnel in v1, faint-scrawl cant
 state:    proposed

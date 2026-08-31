@@ -3364,3 +3364,6 @@
 {"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-08-31T15:20:47Z"}
 {"seat":"FOUNDRY","event":"claim","id":"TILE_STRUCTURE_DESIGNS_1","ts":"2026-08-31T15:21:14Z"}
 {"seat":"FOUNDRY","event":"start","id":"TILE_STRUCTURE_DESIGNS_1","ts":"2026-08-31T15:21:14Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-08-31T15:37:31Z"}
+{"seat":"FOUNDRY","event":"claim","id":"JAWA_PATCHES_SPLIT_1","ts":"2026-08-31T15:39:20Z"}
+{"seat":"FOUNDRY","event":"start","id":"JAWA_PATCHES_SPLIT_1","ts":"2026-08-31T15:39:21Z"}
