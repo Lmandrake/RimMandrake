@@ -1,0 +1,15 @@
+defName,source,existing_max_commonality,Lake_present,Lake_old,Lake_new,Ocean_present,Ocean_old,Ocean_new,misplaced_biome,misplaced_old
+KwazelMaw,sw,0.800000011920929,False,,0.6,False,,0.32,ExtremeDesert,0.3499999940395355
+Mott,sw,0.8999999761581421,False,,0.67,False,,0.36,LavaField,0.699999988079071
+Dianoga,sw,0.800000011920929,False,,0.6,False,,0.32,,
+Dragonsnake,sw,0.800000011920929,False,,0.6,False,,0.32,,
+Fambaa,sw,0.800000011920929,False,,0.6,False,,0.32,,
+Fanback,sw,0.800000011920929,False,,0.6,False,,0.32,,
+Blixus,sw,0.800000011920929,False,,0.6,False,,0.32,,
+BMT_MucklurkerCatfish,borrowed,0.4000000059604645,False,,0.3,False,,0.16,,
+BMT_TaintedTurtle,borrowed,0.699999988079071,False,,0.52,False,,0.28,,
+BMT_MutatingTumorfishSpawn,borrowed,0.4000000059604645,False,,0.3,False,,0.16,,
+BMT_MutatingTumorfishFry,borrowed,0.4000000059604645,False,,0.3,False,,0.16,,
+BMT_MutatingTumorfishAdult,borrowed,0.18000000715255737,False,,0.14,False,,0.07,,
+Megasquid,borrowed,0.5,False,,0.38,False,,0.2,,
+DA_LeviathanCrab,borrowed,0.1574999988079071,False,,0.12,False,,0.06,,

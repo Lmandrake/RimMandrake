@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimStarWars: Seas Waterline Pass</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.rsw.seaswaterline</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Lane 1 of the seas-filling program (design/Jawa/worldbuilding/the_seas.md): the seas are sealed and faunaless in the current stack (Ocean and Lake carry zero wildAnimals entries, measured live), while a misplaced cast of Star Wars aquatics already sits in the mod list with nowhere wet to swim.
+
+Gives Lake and Ocean their first wildAnimals commonality for a fourteen-creature waterline cast:
+
+  the seven Star Wars aquatics (KwazelMaw, Mott, Dianoga, Dragonsnake, Fambaa, Fanback, Blixus) from Star Wars Animal Collection (Continued)
+  five license-cleared neighbors (design/Jawa/worldbuilding/depths_concept.md's Lane-1 check): the BMT catfish/turtle/tumorfish family from Biomes! Polluted Lands, Megasquid from Beasts of the Rim (Continued), and DA_LeviathanCrab from Dark Ages: Beasts and Monsters, as the big offshore silhouette
+
+Also zeroes KwazelMaw's ExtremeDesert 0.35 and Mott's LavaField 0.70 placement, which some other mod's compatibility patch adds (neither value is declared in the donor mod's own file) - the fire-desert entries are collection defaults nobody curated, not an intentional design. The validator's cross-mod scan flagged Alpha Biomes, More Vanilla Biomes and Alpha Animals as the mods whose own patches touch wildBiomes broadly across the stack, so those three are named in loadAfter alongside the direct donors, and this mod is positioned late in ModsConfig to win the override race.
+
+Patch-only, no new mechanics: every operation is a PatchOperationConditional keyed to the animal's own wildBiomes dictionary, add-if-missing / replace-if-present, so it no-ops harmlessly on any mod list that doesn't carry these defNames.
+
+Odyssey fishing tile mutators on Ash'karr's actual sea tiles (the_seas.md's third Lane-1 bullet) are NOT in this mod - that's a live world-tile edit on the frozen Ash'karr map, not a def patch, and needs the bridge plus a deliberate world_commit. Left for a follow-up item.</description>
+
+  <modDependencies>
+    <li>
+      <packageId>mlie.starwarsanimalcollection</packageId>
+      <displayName>Star Wars Animal Collection (Continued)</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/3497316713</steamWorkshopUrl>
+    </li>
+    <li>
+      <packageId>biomesteam.biomespollutedlands</packageId>
+      <displayName>Biomes! Polluted Lands</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/3390196656</steamWorkshopUrl>
+    </li>
+    <li>
+      <packageId>mlie.beastsoftherim</packageId>
+      <displayName>Beasts of the Rim (Continued)</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/2194018641</steamWorkshopUrl>
+    </li>
+    <li>
+      <packageId>van.beasts</packageId>
+      <displayName>Dark Ages: Beasts and Monsters</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/3472275628</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+
+  <loadAfter>
+    <li>mlie.starwarsanimalcollection</li>
+    <li>biomesteam.biomespollutedlands</li>
+    <li>mlie.beastsoftherim</li>
+    <li>van.beasts</li>
+    <li>sarg.alphabiomes</li>
+    <li>zylle.morevanillabiomes</li>
+    <li>sarg.alphaanimals</li>
+  </loadAfter>
+</ModMetaData>
