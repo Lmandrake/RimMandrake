@@ -7,6 +7,17 @@ Alien plants and animals. Makes attack from above very real and constant like
 drop pod raids." Answers EMPTY_SEAS_FAUNA_1 — the three seas hold nothing
 alive today (MEASURED), and this is what they were waiting for._
 
+_Owner's second seed, 2026-08-31, verbatim anchor: "New resources, the concept
+of being immersed in a massive conductive fluid (electrical area attacks are
+very powerful), most weapons malfunctioning, new weapons that work, slow
+movement similar to vacuum dynamics, the need for oxygen, and some races being
+totally adapted and comfortable (NOT Jawa). Ultimately it would be excellent if
+we could have the Deepwater faction have settlements beneath the waves even.
+And a great place to hide from the Empire." And on the donor mods (GravTide,
+Electrofishing, Gerrymon's Nautian Style): "they tend to be too cartoonish. I
+would like to take the underwater biome much more seriously than this." —
+inspiration and parts sources, never the register. §9 carries the survey._
+
 ## 1. The fantasy
 
 The surface of Ash'karr belongs to the sun that never sets. The deep does
@@ -43,10 +54,14 @@ knowledge, not verified symbols):
 | Substructure (gravship floor) | **Anchored platform** — the buildable seabed footing | substructure terrain affordance; reusable as-is? |
 | Drop-pod arrival workers | **Descent arrivals** (§4) | PawnsArrivalModeWorker family — can arrivals animate downward with a warning shadow |
 
-The honest unknown: how much of the vacuum layer is data (patchable) versus
-hardcoded to the literal word "vacuum" in C#. That single source-read decides
-whether v1 is a patch mod or needs a companion DLL, and it should happen
-before anything else is specced further.
+The honest unknown — how much of the vacuum layer is patchable versus
+hardcoded — now has an **existence proof**: GravTide (§10) ships today doing
+exactly this reuse, via `<inVacuum>true</inVacuum>` on a biome plus Harmony
+patches on `VacuumComponent.ExchangeRoomVacuum`, `Pawn.HarmedByVacuum` and
+kin. The bet is won in principle; the Odyssey source-read gate (§11) remains,
+but it now has a map — GravTide's patch-target list IS the verify list, and
+the read decides how much needs a companion DLL of our own, not whether the
+approach works.
 
 ## 3. Darkness and fog — the defining sensory rule
 
@@ -76,7 +91,7 @@ The owner's drop-pod instinct, made native:
   F9 signature grammar applies — every descent is signed by its shape).
   Attack from above is "very real and constant" exactly as drop raids are:
   you harden the roofless dimension, not the walls. Overhead netting (the
-  pit-cover inverted — §7) becomes the sandbag of the deep.
+  pit-cover inverted — §9) becomes the sandbag of the deep.
 - **The rain of salvage.** The same column delivers the economy: wrecks,
   cargo pallets, dead machines and drowned ships **sink in** over time —
   scatter events seeded by the surface world's battles and by history. The
@@ -89,7 +104,48 @@ The owner's drop-pod instinct, made native:
   stops, everyone holds still on the silt until the shadow slides on. (It
   reads your lure pressure. Usually it keeps going.)
 
-## 5. The alien bestiary and flora — the art the owner already said yes to
+## 5. The medium is the mechanic — immersion in a conductive fluid
+
+The deep is not a dark room you walk through; it is a substance you are
+suspended in, and every system below follows from that. (Owner's second seed —
+all four are ruled IN.)
+
+- **Oxygen is the clock.** The dive suit's air supply is the primary resource
+  of every expedition — the vacuum layer's exposure timer made front-and-center
+  rather than incidental. Every plan below the surface is shaped by the swim
+  back. Adapted races (§7) are exempt, and that exemption is their whole
+  economic and military identity.
+- **Movement is slow, vacuum-style.** The same drag dynamics Odyssey applies
+  in vacuum, reused with the sign flipped: unadapted pawns move through water
+  like divers, not runners. Slowness is what makes the lamp radius, the
+  descent shadow and the swim-back clock bite. Adapted races swim at full
+  speed — in their country, *you* are the lumbering one.
+- **Water is a massive conductive fluid, and electricity knows it.**
+  Electrical AREA attacks are very powerful underwater — the owner's ruling,
+  and the deep's signature combat physics, cutting both ways:
+  - *Yours:* discharge weapons and tesla-mine emplacements that stun or kill
+    everything in the water body around the point of discharge — the answer to
+    a scavenger swarm or a shoal-borne ambush, and far stronger than any
+    surface equivalent.
+  - *Theirs, and the environment's:* a breached conduit electrifies the
+    flooded room; a discharge is indiscriminate — your divers in the field
+    are in the field. And a discharge is the loudest thing you can do:
+    a massive spike of lure pressure (§3). The dinner bell, electrified.
+- **Most weapons malfunction; the deep has its own armory.** Blasters and
+  slugthrowers misfire, short, or do nothing underwater — carrying a surface
+  loadout below is a mistake the game teaches once. What works, by design:
+  - **Harpoon weapons** — the deep's ranged standard: slow, silent,
+    armor-piercing, retrievable.
+  - **Discharge/ion weapons** — the area nuke above, with its lure cost.
+  - **Sonic/pressure weapons** — concussive bursts the medium carries better
+    than air ever did; the mid-tier between harpoon and discharge.
+  - **Melee, always** — spears and blades care nothing for wet; the silt
+    ambusher fight is a knife fight whether you planned one or not.
+  The verify target: how vanilla/Odyssey gates weapon function per
+  environment, if at all — this may be the first genuinely new C# surface
+  (a `weaponsUnderwater` verb gate) rather than a reskin.
+
+## 6. The alien bestiary and flora — the art the owner already said yes to
 
 Creature slots by role, sized under **beast-normalization Law 3** (best-hit
 ≈ 12–15 × bodySize — at sea scales this is the whole point):
@@ -109,7 +165,38 @@ the snare register underwater); pressure-fruit (the unique food that
 justifies farming down here at all); vent gardens (heat + light + danger in
 one tile — the deep's oasis, and its most contested real estate).
 
-## 6. Why go — the reasons the sea tilemap earns its place
+## 7. The Deepwater faction — the people the water already belongs to
+
+The owner's ruling: some races are **totally adapted and comfortable** down
+there — and the Jawa are explicitly not among them. The deep is a foreign
+country with its own citizens, and that asymmetry is the design.
+
+- **Adapted races** (RimStarWars tier — aquatic species belong to every SW
+  scenario): water-breathing, full move speed in water, dark-adapted senses,
+  pressure-immune body. In gene terms, each adaptation is one lever of the
+  drowning/pressure/drag stack in §5 turned off — which is why the stack
+  must be stats and hediffs, not hardcode: a gene that zeroes a stat is free.
+  The SW register offers Mon Calamari, Quarren, Nautolan and Gungan shapes to
+  draw from; which species ship is an art-and-canon pass of its own.
+- **The Jawa get nothing.** No dive gene, no comfort, no exception. Every
+  Jawa below the surface is a guest inside a machine with a countdown — the
+  clan's relationship to the deep stays technological (suits, hulls, hired
+  guides), never biological. That keeps §1's dread honest for the player
+  forever.
+- **Settlements beneath the waves.** The Deepwater faction holds world-map
+  settlements on sea tiles — lit towns in the trench dark, reachable only by
+  diving, trading in what the surface cannot make (§8). They are the deep's
+  proof of concept: civilization IS possible down here, just not yours yet.
+- **The place the Empire cannot see.** The Empire's writ ends at the surface
+  the way Sh'kaar's does — orbital scan, TIE patrol and garrison doctrine all
+  stop at the waterline. The deep is where you go to disappear: fugitives,
+  contraband, a clan that has made itself too interesting. A Deepwater
+  settlement that will hide you is the campaign's ultimate bolt-hole — for a
+  price, and the price is denominated in favors to people who never needed
+  the Empire's permission to exist. (Genre precedent everywhere: the deep
+  city is where you hide from the surface power. It plays.)
+
+## 8. Why go — the reasons the sea tilemap earns its place
 
 1. **Salvage no one else can reach** — the sunken colonization-age fleet.
    The terraformer that made these seas drowned its own support ships in
@@ -129,8 +216,11 @@ one tile — the deep's oasis, and its most contested real estate).
 5. **Because the map already paid for it.** Three seas were hand-authored
    into a fixed world and currently hold nothing. This mod is the reason
    they exist.
+6. **Because the Empire cannot follow.** §7's bolt-hole: the deep is the
+   one refuge orbital power cannot audit, and a campaign that picks a fight
+   with the Empire needs exactly one of those.
 
-## 7. Coupling notes
+## 9. Coupling notes
 
 - **Beast normalization**: sea creatures are born under Law 3 — no retrofit.
 - **Pits come along**: the trap doctrine translates — weighted drift-nets
@@ -144,20 +234,54 @@ one tile — the deep's oasis, and its most contested real estate).
 - **Trap-sense, Visibility, the Ninefold**: lure pressure is Visibility's
   sibling dial — same shape, wetter; consider one shared C# core.
 
-## 8. Scope honesty — the v1 slice vs the dream
+## 10. Donor-mod survey — measured 2026-08-31, owner-commissioned
+
+All three named mods are subscribed on this machine and were read on disk
+(workshop ids attached). Verdicts against the owner's lens — parts and
+inspiration, never the register:
+
+| Mod (workshop id) | What it IS | Verdict |
+|---|---|---|
+| **GravTide** (3779600989) | ~250 C# files, ~130 defs. Odyssey vacuum reused as water pressure — depth-rated suits (20/300/1000 m), hypoxia + HPNS hediffs, drowning formula `(1−GearSeal−BodySeal)×(1−WaterBreathing)`, `StatPart_WaterDrag` on MoveSpeed, `UnderwaterWeaponExtension` crippling unfit weapons, no-fire-underwater, flooding that shorts powered gear, depth-banded seafloor mapgen (vents, oil seeps, plasteel nodules), and a ship/platform/submarine layer | **The architecture textbook.** Not cartoonish — art is vanilla-consistent and its real-world vent/kelp ecology is exactly the seriousness the owner wants. Steal the *shape*: stat/hediff/extension architecture, patch-target list, depth-band mapgen. Its content register (industrial sub-nautical) is not ours — SW trench gothic is |
+| **Electrofishing** (3542849317) | One building + one C# comp: water-body-gated AoE shock (Burn + chance-Stun to every pawn standing in water within radius), power-gated, and agitation can trigger a raid *from* the water | **One good pattern.** The water-body-scoped AoE is §5's discharge weapon in miniature, and shock-noise-summons-the-deep is our lure doctrine arriving armed. A weekend's C#, ours to rewrite |
+| **Gerrymon's Nautian Style** (3147664706) | Pure StyleCategoryDef/ThingStyleDef/terrain reskin — an "Ocean" aesthetic for vanilla buildings and floors. **No race, no genes, no faction, no C#, no creature art at all** | **Least relevant.** Useful only as precedent that a style category can carry the Deepwater faction's visual identity via ATH Stylable Framework. The fish-people race the name implies does not exist in this mod or its family (8 siblings checked, all unrelated) |
+
+**License reality:** none of the three grants reuse — no LICENSE file, no
+permission clause anywhere. So nothing is copied: GravTide is a *map* of what
+works (its patch targets, its stat shapes, its formula), and everything we
+ship is written fresh under our own namespaces. If verbatim asset reuse ever
+looks worthwhile, the route is asking the author (GravTide's About.xml links a
+Discord), not lifting.
+
+**What the survey changes upstream:** §2's bet is proven (GravTide exists);
+§5's drowning/pressure/drag stack should be built as stats + DefModExtensions
+*because* that is what lets §7's genes switch it off per-race; and the
+"weapons malfunction" mechanic has a working precedent (verb/projectile
+Harmony patches reading a per-weapon extension) rather than being novel risk.
+
+## 11. Scope honesty — the v1 slice vs the dream
 
 **v1 — "Dive expeditions" (a caravan-scale slice, no underwater colony):**
-sea tiles become visitable sites with dive gear required; permanent-dark
+sea tiles become visitable sites with dive gear required; the oxygen clock
+and vacuum-style water drag (§5); weapons gated per-environment, with the
+harpoon standard and one discharge weapon shipping alongside; permanent-dark
 short-sight rules; the light-lure clock; descent arrivals; one wreck-field
-site type; one leviathan; the silt ambusher and harpooner; Oomo's shore
-rite. No base-building below, no moon pools, no flooding sim. This ships on
-the Odyssey-analog bet at its cheapest and proves the fantasy.
+site type; one leviathan; the silt ambusher and harpooner; the Deepwater
+faction present on the world map — settlements on sea tiles, visitable and
+trading (§7), adapted-race genes on its pawns; Oomo's shore rite. No
+base-building below, no moon pools, no flooding sim, no refuge storyline
+yet. This ships on the Odyssey-analog bet at its cheapest and proves the
+fantasy.
 
 **v2 — "The Drowned Colony":** anchored platforms, sealed habitats, moon
-pools, flood-on-breach, farming vents, the full bestiary, sound-lure,
-leviathan weather. The full "space but wet" dream — priced only after the
-v1 source-read tells us how much of Odyssey's layer we can actually wear.
+pools, flood-on-breach (with §5's electrified-room consequence), farming
+vents, the full bestiary, sound-lure, leviathan weather, and the Empire
+bolt-hole arc — hiding the clan in a Deepwater settlement as playable
+refuge, not just lore. The full "space but wet" dream — priced only after
+the v1 source-read tells us how much of Odyssey's layer we can actually
+wear.
 
 **Gate before ANY build spec:** the Odyssey source-read (§2's VERIFY
-column). One session, game-down, rimsage only. It decides patch-mod vs
-companion-DLL and therefore everything about cost.
+column), now read side-by-side with GravTide's patch-target list (§10) as
+the map of what is known to work. One session, game-down, rimsage only. It
+decides patch-mod vs companion-DLL and therefore everything about cost.
