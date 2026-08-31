@@ -3361,3 +3361,6 @@
 {"seat":"FOUNDRY","event":"claim","id":"SEAS_WATERLINE_PASS_1","ts":"2026-08-31T15:05:30Z"}
 {"seat":"FOUNDRY","event":"start","id":"SEAS_WATERLINE_PASS_1","ts":"2026-08-31T15:05:30Z"}
 {"seat":"FOUNDRY","event":"close","id":"SEAS_WATERLINE_PASS_1","sha":"eb02b70531e5ce0b9b705f1ce0acc2e1979a43f1","ts":"2026-08-31T15:14:30Z"}
+{"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-08-31T15:20:47Z"}
+{"seat":"FOUNDRY","event":"claim","id":"TILE_STRUCTURE_DESIGNS_1","ts":"2026-08-31T15:21:14Z"}
+{"seat":"FOUNDRY","event":"start","id":"TILE_STRUCTURE_DESIGNS_1","ts":"2026-08-31T15:21:14Z"}
