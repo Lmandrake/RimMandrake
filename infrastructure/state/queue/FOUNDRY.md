@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T23:57:19Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-31T00:18:36Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -279,3 +279,23 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DUMP_DRAWSIZE_CAPTURE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DUMP_DRAWSIZE_CAPTURE_1.md
+
+## DEPTHS_ODYSSEY_VERIFY_1 Odyssey source read gating the Depths: vacuum pipeline patchability, vacsuit stat gating, leak/flood-fill, orbital mapgen + arrival families; plus SwimmingKit 1.6 status and Lane-1 license checks
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DEPTHS_ODYSSEY_VERIFY_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DEPTHS_ODYSSEY_VERIFY_1.md
+
+## SEAS_WATERLINE_PASS_1 Waterline pass: repatriate the misplaced SW aquatics (KwazelMaw/Mott out of the fire deserts), first spawns for Dianoga/Dragonsnake, borrow BMT/AA coastal fauna, Odyssey fishing mutators on the seas
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SEAS_WATERLINE_PASS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SEAS_WATERLINE_PASS_1.md

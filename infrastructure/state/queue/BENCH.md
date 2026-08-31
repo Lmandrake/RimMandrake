@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-30T23:57:19Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-31T00:18:36Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -53,12 +53,12 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/RESEARCH_TREE_NORMALIZATION_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/RESEARCH_TREE_NORMALIZATION_1.md
 
-## EMPTY_SEAS_FAUNA_1 The three seas hold nothing alive: Ocean and Lake biomes have empty wildAnimals (MEASURED) - worldbuilding gap; decide whether Ash'karr's seas get fauna
+## SW_SEA_MONSTERS_ART_1 SW sea-monster art pass with the owner: the Naboo trench trio + creature roles from depths_concept.md, born under beast-normalization Laws 3+4, tier RimStarWars
 state:    proposed
 row:      unassigned
 needs:    owner
 target:   v1
 kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/EMPTY_SEAS_FAUNA_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/EMPTY_SEAS_FAUNA_1.md
+summary:  (no items/SW_SEA_MONSTERS_ART_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SW_SEA_MONSTERS_ART_1.md
