@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-31T19:49:20Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-31T19:50:19Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -71,13 +71,3 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/RACE_REGEN_ARCHITECTURE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/RACE_REGEN_ARCHITECTURE_1.md
-
-## TUSKEN_WATER_RAID_1 Fable spec: steal-and-withdraw RaidStrategyDef + LordJob design for the Deep Desert Tribes water raid (no live strategy does it, measured 2026-08-14)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/TUSKEN_WATER_RAID_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/TUSKEN_WATER_RAID_1.md
