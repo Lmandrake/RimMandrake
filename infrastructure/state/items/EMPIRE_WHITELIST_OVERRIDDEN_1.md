@@ -179,3 +179,28 @@ themselves were never located in any mod's XML at all and remain unexplained.
 moment the SWCP postfix was found: it answers hostility from a mod extension nothing else
 writes, so the contents of `permanentEnemyToEveryoneExcept` no longer decide the outcome
 this item exists for. Fix the hostility via the extension; leave the list alone.
+
+## 2026-08-30 (FOUNDRY) — owner said yes, fix shipped and deployed
+
+Owner: "Yes to all your questions." Wrote the drafted fix into
+`src/Jawa/Jawa_Patches/Patches/GalacticEmpire.xml`: a `PatchOperationFindMod` gated on
+"Star Wars KotOR Resources and Materials" (the pack bundling SWCP_Core; that mod's own
+`packageId` is `guy762.MM.KotORCore`, but `PatchOperationFindMod` takes the display name,
+not the packageId) wrapping a `PatchOperationAdd` that gives Empire a fresh
+`<modExtensions>` block (confirmed empty on the live merged def first — this is an Add of
+the whole element, not an Add into an existing list) carrying
+`SWCP.Core.ModExtension_FactionPermanentlyHostileTo` with `hostileFactionDefs` =
+PlayerColony, PlayerTribe.
+
+`validate_patch.py --live` against the current 585-mod dump: 0 errors, 0 warnings, the
+FindMod's wrapped Add resolved 1 match (confirming the mod name string matches the live
+active mod). Deployed via `deploy_custom_mods.py --mod Jawa_Patches --apply`.
+
+**Needs a restart to take effect** (defs parse at startup only) — not yet live-verified.
+
+## criteria (current)
+- [x] The interloping mechanism named (SWCP_Core's `FactionDef_PermanentlyHostileTo`
+      postfix, via `ModExtension_FactionPermanentlyHostileTo`).
+- [x] A fix decided and shipped: additive mod extension, gated, cannot lose a patch race.
+- [ ] Live re-check owed at the next restart: Empire reads Hostile to the player from a
+      fresh relation seed. (The whitelist's own contents no longer matter for this.)

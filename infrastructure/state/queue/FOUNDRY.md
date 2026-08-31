@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-31T00:27:51Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: FOUNDRY
+as-of: 2026-08-31T00:40:18Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -55,7 +55,7 @@ summary:  WILDANIMALSPADDEDLISTS1 — offline half done: mechanism strongly narr
 prose:    infrastructure/state/items/WILD_ANIMALS_PADDED_LISTS_1.md
 
 ## EMPIRE_WHITELIST_OVERRIDDEN_1 Empire permanentEnemyToEveryoneExcept still contains PlayerColony/PlayerTribe despite GalacticEmpire.xml's Replace
-state:    doing  (BLOCKED)
+state:    doing
 row:      unassigned
 needs:    bridge
 target:   v1
@@ -207,16 +207,6 @@ kind:     investigate
 blocked:  game DOWN, tool call needs a live game; deferred to next UP
 summary:  WILDANIMALSPADDEDLISTS1 — offline half done: mechanism strongly narrowed, exact patch still unnamed
 prose:    infrastructure/state/items/WILD_ANIMALS_PADDED_LISTS_1.md
-
-## EMPIRE_WHITELIST_OVERRIDDEN_1 Empire permanentEnemyToEveryoneExcept still contains PlayerColony/PlayerTribe despite GalacticEmpire.xml's Replace
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     bug
-blocked:  mechanism named (SWCP_Core postfix + ModExtension_FactionPermanentlyHostileTo); additive fix drafted, needs owner's call then one load to verify
-summary:  GalacticEmpire.xml's PatchOperationReplace on
-prose:    infrastructure/state/items/EMPIRE_WHITELIST_OVERRIDDEN_1.md
 
 ## DROID_TILES_SOURED_TERRAIN_1 Free Droid Enclave tiles get polluted ground and fouled water (2026-08-04 doctrine, ruled alive)
 state:    proposed  (BLOCKED)

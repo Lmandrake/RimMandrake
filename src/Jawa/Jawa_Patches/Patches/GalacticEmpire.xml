@@ -431,4 +431,37 @@
     </match>
   </Operation>
 
+  <!-- ═══ EMPIRE_WHITELIST_OVERRIDDEN_1, 2026-08-30 ═══════════════════════════════
+       `permanentEnemyToEveryoneExcept` (the whitelist, patched above) turns out NOT
+       to be the last word on Empire hostility: SWCP_Core (bundled in "Star Wars
+       KotOR Resources and Materials") postfixes `FactionDef.PermanentlyHostileTo`
+       and three sibling methods (goodwill-situation, goodwill-lock, initial-relation)
+       to read a `SWCP.Core.ModExtension_FactionPermanentlyHostileTo` mod extension
+       FIRST, additively - it can force hostility TRUE regardless of what the
+       whitelist ends up containing, and nothing else in the mod set writes that
+       extension, so this cannot lose a patch race the way the whitelist can.
+       Live merged Empire def checked 2026-08-30: no existing <modExtensions>, so
+       this is a fresh Add of the whole element, not an Add into an existing list.
+       ⚠️ Gated on PatchOperationFindMod: a `Class=` naming a type no loaded
+       assembly has silently DISCARDS THE WHOLE FactionDef
+       (modextension-missing-type-discards-def) - this must no-op if SWCP is cut. -->
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Star Wars KotOR Resources and Materials</li>
+    </mods>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/FactionDef[defName="Empire"]</xpath>
+      <value>
+        <modExtensions>
+          <li Class="SWCP.Core.ModExtension_FactionPermanentlyHostileTo">
+            <hostileFactionDefs>
+              <li>PlayerColony</li>
+              <li>PlayerTribe</li>
+            </hostileFactionDefs>
+          </li>
+        </modExtensions>
+      </value>
+    </match>
+  </Operation>
+
 </Patch>
