@@ -35,6 +35,87 @@ namespace JawaBench.BridgeTools
         private static readonly HashSet<string> ForbiddenConditions =
             new HashSet<string>(StringComparer.OrdinalIgnoreCase) { "Planetkiller" };
 
+        // ================================================================
+        //  WINDOW-STACK DIFF ACROSS A FIRING  (FIRE_RAID_REPORTS_MODAL_1)
+        //  🔴 WHY THIS EXISTS: a Harmony prefix can set __result = true, skip the
+        //  incident entirely and push a modal instead. Leo.RaidProtectionFee does
+        //  exactly that on IncidentWorker_RaidEnemy.TryExecuteWorker - it opens a
+        //  "pay silver or be raided" Dialog_NodeTree, assigns __result = true and
+        //  returns false, so every caller sees executed:true with zero pawns and
+        //  cannot tell a CANCELLED raid from a raid that generated nothing.
+        //  That ambiguity cost this project three retracted evidence tables
+        //  (SIX_FACTIONS_NEVER_RAID_1). Nothing on the bridge can answer a modal,
+        //  so the only honest thing a firing tool can do is SAY one appeared.
+        //  Window.ID is unique per window instance, so identity by ID is exact -
+        //  no type-name heuristics, and a window that was already open is not
+        //  reported as new.
+        // ================================================================
+
+        /// <summary>IDs of every window currently on the stack. Empty (never null) when there is no stack.</summary>
+        private static HashSet<int> SnapshotWindowIds()
+        {
+            var ids = new HashSet<int>();
+            try
+            {
+                var stack = Find.WindowStack;
+                if (stack == null) return ids;
+                var ws = stack.Windows;
+                for (int i = 0; i < ws.Count; i++) ids.Add(ws[i].ID);
+            }
+            catch (Exception) { /* no UI root yet - report nothing rather than throwing inside a firing */ }
+            return ids;
+        }
+
+        /// <summary>
+        /// Windows on the stack now whose ID was not in <paramref name="beforeIds"/>.
+        /// Each row is { type, optionalTitle, forcePause, isDebug, id }.
+        /// </summary>
+        private static List<object> WindowsOpenedSince(HashSet<int> beforeIds)
+        {
+            var rows = new List<object>();
+            try
+            {
+                var stack = Find.WindowStack;
+                if (stack == null) return rows;
+                var ws = stack.Windows;
+                for (int i = 0; i < ws.Count; i++)
+                {
+                    var w = ws[i];
+                    if (beforeIds.Contains(w.ID)) continue;
+                    rows.Add(new
+                    {
+                        type = w.GetType().FullName,
+                        optionalTitle = w.optionalTitle,
+                        forcePause = w.forcePause,
+                        isDebug = w.IsDebug,
+                        id = w.ID
+                    });
+                }
+            }
+            catch (Exception) { }
+            return rows;
+        }
+
+        /// <summary>
+        /// The one sentence a caller needs when a modal ate the incident, or null when none did.
+        /// <paramref name="suspicious"/> is the caller's own second reading that the incident did
+        /// not really happen - zero pawns arrived, or a bare "it succeeded" with nothing to show.
+        /// </summary>
+        private static string DialogSwallowNote(List<object> windowsOpened, bool suspicious)
+        {
+            if (windowsOpened == null || windowsOpened.Count == 0 || !suspicious) return null;
+            var types = string.Join(", ", windowsOpened
+                .Select(o => o.GetType().GetProperty("type").GetValue(o, null) as string)
+                .Where(s => !string.IsNullOrEmpty(s)).ToArray());
+            return "🔴 A DIALOG SWALLOWED THIS FIRING. " + windowsOpened.Count + " window(s) opened during the call ("
+                 + types + ") and the incident produced nothing. A Harmony prefix - Leo.RaidProtectionFee is the known one - "
+                 + "can replace the incident with a modal and still set __result = true, so 'executed' is NOT "
+                 + "evidence the incident happened. Nothing on the bridge clicks a button, so the modal will "
+                 + "never be answered and it will block later calls. Clear it with "
+                 + "jawa/window_list_close {action:'close', typeName:'<the type above>', closeAll:true}, "
+                 + "then either disable the intercepting mod or fire at a faction it exempts.";
+        }
+
         [Tool(
             "jawa/weather_get",
             Description =
@@ -354,8 +435,18 @@ namespace JawaBench.BridgeTools
                 "auto-resolves faction, strategy and arrival mode when they are null, so " +
                 "anything set here wins over the storyteller. " +
                 "Use jawa/raid_preview first to see which strategies CanUseWith your parms. " +
-                "⚠️ points is required and must be > 0 or the worker logs an error.",
-            ResultDescription = "success, the resolved parms, and whether TryExecute accepted.")]
+                "⚠️ points is required and must be > 0 or the worker logs an error. " +
+                "🔴 READ blockedByDialog BEFORE executed. A Harmony prefix can replace the raid " +
+                "with a modal and still set __result = true - Leo.RaidProtectionFee's " +
+                "'pay silver or be raided' dialog does exactly that. This tool diffs " +
+                "Find.WindowStack across the firing, so a raid eaten by a dialog reports " +
+                "blockedByDialog:true and success:false instead of a bare executed:true. " +
+                "Clear the modal with jawa/window_list_close; the bridge cannot answer it.",
+            ResultDescription =
+                "success (executed AND not blocked), executed (raw TryExecute), " +
+                "windowsOpened[] (type, optionalTitle, forcePause, isDebug, id - any window " +
+                "added during the firing), blockedByDialog, actual{faction,substituted}, " +
+                "arrived[], pawnsArrivedTotal, resolved parms.")]
         public static async Task<object> FireRaid(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -467,9 +558,15 @@ namespace JawaBench.BridgeTools
                     if (p.Faction != null)
                         before[p.Faction] = (before.TryGetValue(p.Faction, out var bn) ? bn : 0) + 1;
 
+                // FIRE_RAID_REPORTS_MODAL_1 - snapshot the window stack across TryExecute so
+                // a raid replaced by a modal is reported as such, not as executed:true.
+                var windowIdsBefore = SnapshotWindowIds();
+
                 bool executed;
                 try { executed = incident.Worker.TryExecute(parms); }
                 catch (Exception e) { return Fail("TryExecute threw: " + e.GetType().Name + ": " + e.Message); }
+
+                var windowsOpened = WindowsOpenedSince(windowIdsBefore);
 
                 var after = new Dictionary<Faction, int>();
                 foreach (var p in map.mapPawns.AllPawnsSpawned)
@@ -494,9 +591,20 @@ namespace JawaBench.BridgeTools
                 bool substituted = requestedFaction != null && usedFaction != null
                                    && usedFaction != requestedFaction;
 
+                int pawnsArrivedTotal = 0;
+                foreach (var a in arrivals)
+                    pawnsArrivedTotal += (int)a.GetType().GetProperty("pawnsArrived").GetValue(a, null);
+                bool blockedByDialog = windowsOpened.Count > 0 && pawnsArrivedTotal == 0;
+                string swallowNote = DialogSwallowNote(windowsOpened, pawnsArrivedTotal == 0);
+
                 return (object)new
                 {
-                    success = executed, dryRun = false, resolved, executed, factionNotes,
+                    success = executed && !blockedByDialog, dryRun = false, resolved, executed, factionNotes,
+                    // 🔑 THE ANSWER TO "executed:true AND NOTHING HAPPENED". A window that
+                    // appeared across TryExecute means a Harmony prefix pushed a modal in
+                    // place of the raid; nothing on the bridge can answer it.
+                    windowsOpened,
+                    blockedByDialog,
                     // 🔑 THE OUTCOME, which `resolved` is not. `actual` is the faction the
                     // worker ended up using (it writes back into parms); `arrived` is counted
                     // off the map, so it is true even if the worker is patched by a mod.
@@ -508,15 +616,18 @@ namespace JawaBench.BridgeTools
                         requested = requestedFaction != null ? requestedFaction.def.defName : null
                     },
                     arrived = arrivals,
-                    note = !executed
-                        ? "TryExecute returned false - the worker refused these parms."
-                        : (substituted
-                            ? "⚠ RAIDED WITH A DIFFERENT FACTION. Asked for "
-                              + requestedFaction.def.defName + ", the worker used "
-                              + usedFaction.def.defName + " - a non-hostile faction cannot raid. "
-                              + "This is correct engine behaviour; the defect was never reporting it."
-                            : "Raid fired. arrived[] is counted off the map; an arrival mode that "
-                              + "delays entry can legitimately show 0 pawns this instant."),
+                    pawnsArrivedTotal,
+                    note = blockedByDialog
+                        ? swallowNote
+                        : (!executed
+                            ? "TryExecute returned false - the worker refused these parms."
+                            : (substituted
+                                ? "⚠ RAIDED WITH A DIFFERENT FACTION. Asked for "
+                                  + requestedFaction.def.defName + ", the worker used "
+                                  + usedFaction.def.defName + " - a non-hostile faction cannot raid. "
+                                  + "This is correct engine behaviour; the defect was never reporting it."
+                                : "Raid fired. arrived[] is counted off the map; an arrival mode that "
+                                  + "delays entry can legitimately show 0 pawns this instant.")),
                     ticksGame = TicksGameSafe(),
                 };
             });

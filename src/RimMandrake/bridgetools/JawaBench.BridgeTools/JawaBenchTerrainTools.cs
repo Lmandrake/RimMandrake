@@ -3898,10 +3898,14 @@ namespace JawaBench.BridgeTools
                 "Fire a storyteller incident — a raid, a trader, a solar flare, an infestation. " +
                 "This is the GM half of the primitive set: everything else on this bridge " +
                 "changes something the caller named, whereas an incident makes the WORLD act " +
-                "on the player. Use dryRun to ask whether it CAN fire without firing it.",
+                "on the player. Use dryRun to ask whether it CAN fire without firing it. " +
+                "🔴 READ blockedByDialog BEFORE fired. A Harmony prefix can replace the incident " +
+                "with a modal and still set __result = true (Leo.RaidProtectionFee does this to " +
+                "RaidEnemy), so this tool diffs Find.WindowStack across TryExecute. Clear any " +
+                "modal it reports with jawa/window_list_close - the bridge cannot answer one.",
             ResultDescription =
-                "Returns whether it fired, the points used, and CanFireNow — which is the " +
-                "honest answer to 'why did nothing happen'.")]
+                "Returns whether it fired, the points used, CanFireNow — the honest answer to " +
+                "'why did nothing happen' — plus windowsOpened[] and blockedByDialog.")]
         public static async Task<object> FireIncident(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -3947,20 +3951,30 @@ namespace JawaBench.BridgeTools
 
                 var canFire = idef.Worker.CanFireNow(parms);
                 var fired = false;
+                // FIRE_RAID_REPORTS_MODAL_1 - diff the window stack across TryExecute.
+                var windowIdsBefore = SnapshotWindowIds();
                 if (!dryRun) fired = idef.Worker.TryExecute(parms);
+                var windowsOpened = dryRun ? new List<object>() : WindowsOpenedSince(windowIdsBefore);
+                bool blockedByDialog = fired && windowsOpened.Count > 0;
+                string swallowNote = DialogSwallowNote(windowsOpened, fired);
 
                 return new
                 {
-                    // Loud: an incident that could not fire is NOT a success.
-                    success = dryRun ? canFire : fired,
+                    // Loud: an incident that could not fire is NOT a success. Neither is one
+                    // whose "success" was a Harmony prefix pushing a modal in its place.
+                    success = dryRun ? canFire : (fired && !blockedByDialog),
                     message = dryRun
                         ? $"{idef.defName} canFireNow={canFire} (dry run, nothing fired)."
-                        : (fired ? $"{idef.defName} fired with {parms.points:0} points."
-                                 : $"{idef.defName} did NOT fire. canFireNow={canFire}."),
+                        : (blockedByDialog
+                            ? swallowNote
+                            : (fired ? $"{idef.defName} fired with {parms.points:0} points."
+                                     : $"{idef.defName} did NOT fire. canFireNow={canFire}.")),
                     incident = idef.defName,
                     category = idef.category?.defName,
                     canFireNow = canFire,
                     fired,
+                    windowsOpened,
+                    blockedByDialog,
                     points = parms.points,
                     faction = parms.faction?.def?.defName,
                     ticksGame = TicksGameSafe()

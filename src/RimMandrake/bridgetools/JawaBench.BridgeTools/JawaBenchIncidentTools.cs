@@ -121,9 +121,14 @@ namespace JawaBench.BridgeTools
                 "for this def and Storyteller.LastIncidentTick - the numbers later incident selection " +
                 "and 'time since last incident of this kind' logic actually read. Use this one when the " +
                 "incident needs to be believed by the storyteller's own memory, not just to have happened. " +
-                "dryRun defaults true.",
+                "dryRun defaults true. " +
+                "🔴 READ blockedByDialog BEFORE fired. A Harmony prefix can replace the incident with a " +
+                "modal and still set __result = true (Leo.RaidProtectionFee does this to RaidEnemy), so " +
+                "Find.WindowStack is diffed across TryFire. Clear any modal reported here with " +
+                "jawa/window_list_close - nothing on the bridge can answer one.",
             ResultDescription =
-                "success (TryFire's own return), resolved parms, and BOTH read-back fields: " +
+                "success (fired AND not blocked), fired (TryFire's own return), windowsOpened[], " +
+                "blockedByDialog, resolved parms, and BOTH read-back fields: " +
                 "lastFireTickForThisDef (map.StoryState.lastFireTicks[def]) and lastIncidentTick " +
                 "(Storyteller.LastIncidentTick), before and after - the actual evidence TryFire ran, " +
                 "not an echo of the request.")]
@@ -186,25 +191,34 @@ namespace JawaBench.BridgeTools
                 int fireTickBefore; map.StoryState.lastFireTicks.TryGetValue(idef, out fireTickBefore);
                 int lastIncidentTickBefore = Find.Storyteller.LastIncidentTick;
 
+                // FIRE_RAID_REPORTS_MODAL_1 - diff the window stack across TryFire.
+                var windowIdsBefore = SnapshotWindowIds();
+
                 var fi = new FiringIncident(idef, null, parms);
                 bool fired;
                 try { fired = Find.Storyteller.TryFire(fi); }
                 catch (Exception e) { return Fail("TryFire threw: " + e.GetType().Name + ": " + e.Message); }
+
+                var windowsOpened = WindowsOpenedSince(windowIdsBefore);
+                bool blockedByDialog = fired && windowsOpened.Count > 0;
+                string swallowNote = DialogSwallowNote(windowsOpened, fired);
 
                 int fireTickAfter; map.StoryState.lastFireTicks.TryGetValue(idef, out fireTickAfter);
                 int lastIncidentTickAfter = Find.Storyteller.LastIncidentTick;
 
                 return (object)new
                 {
-                    success = fired,
+                    success = fired && !blockedByDialog,
                     dryRun = false,
                     resolved,
                     fired,
+                    windowsOpened,
+                    blockedByDialog,
                     canFireNow = canFire,
                     lastFireTickForThisDef = new { before = fireTickBefore, after = fireTickAfter },
                     lastIncidentTick = new { before = lastIncidentTickBefore, after = lastIncidentTickAfter },
                     recordedInAdaptationState = fireTickAfter != fireTickBefore,
-                    note = fired
+                    note = blockedByDialog ? swallowNote : fired
                         ? (fireTickAfter != fireTickBefore
                             ? "Fired AND recorded in StoryState.lastFireTicks - this is the difference from jawa/fire_incident."
                             : "Fired, but lastFireTicks did NOT move. Notify_IncidentFired only skips this when parms.forced is true or parms.target does not match this map's StoryState - neither should happen here, so this would itself be worth reporting upstream.")
