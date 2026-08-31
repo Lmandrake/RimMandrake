@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimStarWars: Structure Injections</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.rsw.injections</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>SW content for the promise/whisper structure program (design/Jawa/worldbuilding/structure_injection_roster.md), riding mandrake.rm.injections' GenStep_RimplacePlan engine.
+
+Ships one promise so far: The Moisture Farm (roster row 1) - a vaporator ring around a buried cistern hut, walled yard. The rimplace template is authored and lints/verifies clean; the TileMutatorDef/GenStepDef wiring exists and proves the engine end to end. It is NOT yet placed on any Ash'karr tile (a live world-tile edit, deliberately deferred - see structure_injection_roster.md) and has no letter text in the god's register yet. 43 more roster rows remain open for future batches.</description>
+
+  <modDependencies>
+    <li>
+      <packageId>mandrake.rm.injections</packageId>
+      <displayName>RimMandrake: Structure Injections</displayName>
+    </li>
+  </modDependencies>
+
+  <loadAfter>
+    <li>mandrake.rm.injections</li>
+  </loadAfter>
+</ModMetaData>

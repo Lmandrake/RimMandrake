@@ -4,6 +4,7 @@
     lint     run it and report what is wrong
     calls    emit the exact jawa/* bridge calls
     verify   check every defName against the live def dump
+    export   write the flat runtime plan (for GenStep_RimplacePlan)
     selftest prove the engine still works
 
 Needs the lupa Lua runtime:
@@ -24,7 +25,8 @@ sys.path.insert(0, str(_HERE.parent))
 
 from rimplace.core import Palette, Rect                       # noqa: E402
 from rimplace.luaenv import TemplateError, run_template       # noqa: E402
-from rimplace.plan import calls_summary, compile_calls, lint, render  # noqa: E402
+from rimplace.plan import (calls_summary, compile_calls,      # noqa: E402
+                           compile_flat, lint, render)
 
 REPO = _HERE.parents[3]
 TEMPLATES = REPO / "design" / "Jawa" / "templates"
@@ -131,7 +133,7 @@ def _paint_violations(plan):
 def main(argv=None):
     ap = argparse.ArgumentParser(prog="rimplace", description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("command", choices=["render", "lint", "calls", "verify", "selftest"])
+    ap.add_argument("command", choices=["render", "lint", "calls", "verify", "export", "selftest"])
     ap.add_argument("template", nargs="?", default="dwelling")
     ap.add_argument("--rect", default="0,0,16,12", help="x,z,w,h")
     ap.add_argument("--faction", default="Jawa_IndigenousTribes")
@@ -146,6 +148,8 @@ def main(argv=None):
     ap.add_argument("--seed", type=int, default=1)
     ap.add_argument("--roof", action="store_true", help="show roof in render")
     ap.add_argument("--json", action="store_true", help="emit the BuildPlan")
+    ap.add_argument("--out", default=None,
+                    help="export: file path to write the flat plan to")
     a = ap.parse_args(argv)
 
     if a.command == "selftest":
@@ -204,6 +208,16 @@ def main(argv=None):
         if viols:
             print(f"  {len(viols)} paint target(s) the game will refuse.")
         return 1 if (missing or viols) else (2 if unmeasured else 0)
+
+    if a.command == "export":
+        if not a.out:
+            raise SystemExit("export needs --out <path>")
+        flat = compile_flat(plan)
+        out_path = Path(a.out)
+        out_path.parent.mkdir(parents=True, exist_ok=True)
+        out_path.write_text(flat, encoding="utf-8")
+        print(f"  wrote {out_path} ({len(flat.splitlines())} line(s))")
+        return 0
     return 0
 
 

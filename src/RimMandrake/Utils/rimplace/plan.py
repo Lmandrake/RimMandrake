@@ -408,6 +408,48 @@ def compile_calls(plan: BuildPlan, faction: str | None = None,
     return calls
 
 
+def compile_flat(plan: BuildPlan) -> str:
+    """BuildPlan -> the flat runtime format `GenStep_RimplacePlan` reads at
+    mapgen time (src/RimMandrake/StructureInjections/Source/RimplacePlan.cs).
+    Deliberately NOT JSON: RimWorldWin64_Data/Managed ships no JSON library,
+    so the mapgen-time parser is plain StreamReader + string.Split, no
+    dependency at all. `to_json()` stays the IR for human review and
+    diffing; this is a second, disposable compile target off the same
+    object, same relationship as `compile_calls()`.
+
+    One directive per line, tab-separated, "#" comment lines ignored:
+        FOOTPRINT   x  z  w  h
+        FOUNDATION  x  z  defName
+        TERRAIN     x  z  defName
+        THING       defName  x  z  rot  stuff-or-dash
+        ROOF        x  z  defName
+        PAINT       x  z  colorDefName
+        FLOORCOLOR  x  z  colorDefName
+    Sections are emitted in the SAME order `compile_calls()` uses them
+    (foundation, terrain, things, roof, paint, floor color) so a reader that
+    just applies lines top-to-bottom gets the ordering the live path proved
+    necessary (foundation before terrain, walls before roof).
+    """
+    lines = ["# rimplace flat plan v1"]
+    fp = plan.meta.get("footprint")
+    if fp:
+        lines.append(f"FOOTPRINT\t{fp[0]}\t{fp[1]}\t{fp[2]}\t{fp[3]}")
+    for (x, z), d in sorted(plan.foundation.items()):
+        lines.append(f"FOUNDATION\t{x}\t{z}\t{d}")
+    for (x, z), d in sorted(plan.terrain.items()):
+        lines.append(f"TERRAIN\t{x}\t{z}\t{d}")
+    for t in plan.things:
+        lines.append(f"THING\t{t.defName}\t{t.x}\t{t.z}\t{t.rot}\t{t.stuff or '-'}")
+    for (x, z), d in sorted(plan.roof.items()):
+        lines.append(f"ROOF\t{x}\t{z}\t{d}")
+    for t in plan.things:
+        if t.paint:
+            lines.append(f"PAINT\t{t.x}\t{t.z}\t{t.paint}")
+    for (x, z), d in sorted(plan.floor_color.items()):
+        lines.append(f"FLOORCOLOR\t{x}\t{z}\t{d}")
+    return "\n".join(lines) + "\n"
+
+
 def calls_summary(calls: list[dict]) -> str:
     n = defaultdict(int)
     for c in calls:

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimMandrake: Structure Injections</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.rm.injections</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>The engine half of the promise/whisper structure program (design/Jawa/worldbuilding/structure_injection_roster.md). Species-agnostic, campaign-agnostic: replays a rimplace BuildPlan onto a map at generation time.
+
+rimplace (src/RimMandrake/Utils/rimplace/) authors and lints a structure offline, then compiles it to a flat runtime plan a GenStepDef can carry. GenStep_RimplacePlan reads that plan at mapgen and places its foundation, terrain, things (transmitters before connectors, so power binds), and roof in the same order the live bridge path already proved necessary. A TileMutatorDef or LandmarkDef that carries the GenStepDef in its extraGenSteps list is a promise; the plan it replays is the responder.
+
+This mod ships no content of its own - no SW or Ash'karr specific defs. Content packs (RimStarWars, RimUtinni) reference this engine's GenStepDef and supply their own compiled plans.</description>
+
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+  </loadAfter>
+</ModMetaData>

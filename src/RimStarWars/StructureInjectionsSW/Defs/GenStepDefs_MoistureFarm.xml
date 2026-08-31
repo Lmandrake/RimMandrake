@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- The Moisture Farm - structure_injection_roster.md PROMISE #1.
+       Replays Templates/moisture_farm.txt (rimplace export, seed 7,
+       20x20) via mandrake.rm.injections' GenStep_RimplacePlan. -->
+  <GenStepDef>
+    <defName>RSW_GenStep_MoistureFarm</defName>
+    <genStep Class="RimMandrake.StructureInjections.GenStep_RimplacePlan">
+      <planFile>Templates/moisture_farm.txt</planFile>
+      <centerOnMap>true</centerOnMap>
+    </genStep>
+    <order>400</order>
+  </GenStepDef>
+
+</Defs>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- The Moisture Farm - structure_injection_roster.md PROMISE #1.
+       Responder mechanism per structure_injection_roster.md §0b: a
+       TileMutatorDef's extraGenSteps is the def-driven injection hook
+       (Verse/RoofGrid.cs and MapGenerator.cs concatenate them into the
+       real genstep pipeline; no Harmony involved).
+
+       ⚠️ NOT YET PLACED on any Ash'karr tile — that is a live world-tile
+       edit on the frozen map (bridge + world_commit), out of scope for
+       this pass. This def exists to prove the engine end to end; a
+       LandmarkDef carrying it (so the icon IS the promise, per §0b) and
+       the actual placement are follow-up work. -->
+  <TileMutatorDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RSW_MoistureFarm</defName>
+    <label>moisture farm</label>
+    <description>A vaporator field draws what water the air will give up, ringed around a buried cistern. Whoever built it left in a hurry, or never came back.</description>
+    <biomeWhitelist>
+      <li>Desert</li>
+      <li>ExtremeDesert</li>
+      <li>AridShrubland</li>
+    </biomeWhitelist>
+    <extraGenSteps>
+      <li>RSW_GenStep_MoistureFarm</li>
+    </extraGenSteps>
+  </TileMutatorDef>
+
+</Defs>
