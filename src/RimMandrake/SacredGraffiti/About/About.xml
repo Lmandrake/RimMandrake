@@ -8,28 +8,26 @@
   </supportedVersions>
   <loadAfter>
     <li>Ludeon.RimWorld</li>
-    <li>Mlie.GraffitiMod</li>
+    <li>mandrake.rm.graffiti</li>
   </loadAfter>
   <modDependencies>
     <li>
-      <packageId>Mlie.GraffitiMod</packageId>
-      <displayName>Graffiti Mod (Continued)</displayName>
-      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2986996933</steamWorkshopUrl>
+      <packageId>mandrake.rm.graffiti</packageId>
+      <displayName>RimMandrake: Graffiti Framework</displayName>
     </li>
   </modDependencies>
-  <description>Sacred devotional wall-marks, one per Salvation god, built on Graffiti Mod
-(Continued)'s BaseGraffiti filth infrastructure (Mlie.GraffitiMod, workshop id 2986996933).
+  <description>Sacred devotional wall-marks, one per Salvation god, built on
+mandrake.rm.graffiti's RM_BaseGraffiti filth infrastructure.
 
-GraffitiMod_Paint's spawn loop is hardcoded by defName in its DLL
-(GraffitiMod.dll: DefDatabase&lt;ThingDef&gt;.GetNamed("GraffitiMod_Paint") inside
-JoyGiver_PaintGraffiti / JobDriver_PaintGraffiti) - there is no plain-XML route
-to make an unhappy pawn's spontaneous graffiti spree choose a different
-ThingDef, and no first-class "style"/"category" concept exists to hang
-sacred/social/mood hooks on. So these marks are standalone ThingDefs
-(ParentName BaseGraffiti, reusing its filth/building fields) - real, valid,
-game-ready content - but nothing yet spawns them automatically. Placement
-(a ritual outcome, a ThingSetMaker, a bridge script) is the deferred piece;
-see GRAFFITI_MOD_EXPANSION_1 for the full assessment.
+Repointed 2026-08-31 (GRAFFITI_FRAMEWORK_BUILD_1) from Mlie.GraffitiMod's own
+BaseGraffiti, now that mod is retired and its vandal-spree mechanic absorbed
+into mandrake.rm.graffiti's own C# (RM_PaintGraffitiJob/RM_PaintGraffitiJoy/
+the RM_GraffitiPaintingSpreeBreak mental break). These marks are standalone
+ThingDefs (ParentName RM_BaseGraffiti, reusing its filth/building fields) -
+real, valid, game-ready content - but nothing yet spawns them automatically
+outside a ritual outcome. Placement (a ThingSetMaker, a bridge script) beyond
+that is the deferred piece; see GRAFFITI_MOD_EXPANSION_1 for the full
+assessment.
 
 Shipped: RM_SacredMark_Ishko (a pair of glowing orange eyes in the
 dark - Ishko the Unmaskable's canon iconography, design/Jawa/divine_satiation_engine.md
@@ -51,6 +49,6 @@ calls the build"). This mechanism is ready the moment a real Matrix ritual
 exists to reference it.
 
 Designed, not yet arted: eight sibling marks, one per remaining Salvation god,
-same recipe (ParentName BaseGraffiti + new texPath + new statBases) - see the
+same recipe (ParentName RM_BaseGraffiti + new texPath + new statBases) - see the
 item file for each god's canon iconography anchor.</description>
 </ModMetaData>

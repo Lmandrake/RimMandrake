@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <JobDef>
+    <defName>RM_PaintGraffitiJob</defName>
+    <driverClass>RimMandrake.Graffiti.JobDriver_PaintGraffiti</driverClass>
+    <reportString>painting graffiti.</reportString>
+    <joyKind>Meditative</joyKind>
+    <joyDuration>8000</joyDuration>
+  </JobDef>
+
+</Defs>

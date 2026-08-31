@@ -39,6 +39,12 @@
   <ItemGroup>
     <Compile Include="GraffitiCategory.cs" />
     <Compile Include="ModExtension_Graffiti.cs" />
+    <Compile Include="RMGraffitiDefOf.cs" />
+    <Compile Include="GraffitiJobUtility.cs" />
+    <Compile Include="JobDriver_PaintGraffiti.cs" />
+    <Compile Include="JoyGiver_PaintGraffiti.cs" />
+    <Compile Include="MentalState_GraffitiSpree.cs" />
+    <Compile Include="JobGiver_GraffitiPaintingSpree.cs" />
   </ItemGroup>
 
   <ItemGroup>

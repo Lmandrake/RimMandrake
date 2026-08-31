@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <JoyGiverDef>
+    <defName>RM_PaintGraffitiJoy</defName>
+    <giverClass>RimMandrake.Graffiti.JoyGiver_PaintGraffiti</giverClass>
+    <baseChance>4</baseChance>
+    <jobDef>RM_PaintGraffitiJob</jobDef>
+    <joyKind>Meditative</joyKind>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </JoyGiverDef>
+
+</Defs>

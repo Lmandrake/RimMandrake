@@ -1,16 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
-  <name>RimMandrake: Graffiti Framework (data layer)</name>
+  <name>RimMandrake: Graffiti Framework</name>
   <author>Mandrake</author>
   <packageId>mandrake.rm.graffiti</packageId>
   <supportedVersions>
     <li>1.6</li>
   </supportedVersions>
-  <description>The engine half of the graffiti program (design/Jawa/graffiti_spec.md): `ModExtension_Graffiti`, a data annotation any graffiti ThingDef can carry (category - Sacred/Mural/Jest/Taunt/Cant, quality support, maker/subject tracking, a viewer-reaction ThoughtDef seam, and a god-satiation-hook string a RUT content pack reads to call into mandrake.rm.ninefold).
+  <description>The engine for the graffiti program (design/Jawa/graffiti_spec.md), superseding Graffiti Mod (Continued) (Mlie.GraffitiMod) per the owner's 2026-08-31 ruling: "we absorb the vandal-spree mechanic into our own framework C# and RETIRE Mlie.GraffitiMod from the mod list."
 
-This is deliberately the DATA layer only. NOT built here (a larger, separate pass per infrastructure/state/items/GRAFFITI_FRAMEWORK_BUILD_1.md): the absorbed vandal-spree JobDriver/JoyGiver (the owner ruled Mlie.GraffitiMod's mechanic gets absorbed and that mod retired from the list - a live-modlist change, not done solo), the viewer ThoughtWorker that actually reacts to a mark being seen, and the taunt-driven raid breach-bias hook. Nothing here is wired to fire yet - it is the vocabulary future code writes against, same relationship mandrake.rm.ninefold's Adjust() has to its own not-yet-built event hooks.
+`ModExtension_Graffiti`: a data annotation any graffiti ThingDef can carry (category - Sacred/Mural/Jest/Taunt/Cant, quality support, maker/subject tracking, a viewer-reaction ThoughtDef seam, and a god-satiation-hook string a RUT content pack reads to call into mandrake.rm.ninefold). Nothing reads these fields yet - the viewer ThoughtWorker and the taunt-driven raid breach-bias hook are a separate, larger pass.
 
-Ships no content (no marks, no murals, no jests) - mandrake.rut.marks and the existing mandrake.rm.sacredgraffiti are the content side.</description>
+The absorbed spree mechanic: an unhappy or idle artistic pawn seeks "paint graffiti" as Meditative joy (RM_PaintGraffitiJob/RM_PaintGraffitiJoy) or, on the RM_GraffitiPaintingSpreeBreak mental break, is forced to paint repeatedly for a stretch - both spawn RM_Graffiti_Vandal, an untrained scrawl mark with negative Beauty, on a nearby wall. Fresh C# against the real vanilla toil API (JobDriver_RelaxAlone's goto-and-gain-Joy shape, JobDriver_Floordrawing's spawn-on-completion shape) - the donor mod ships no source to reuse directly.
+
+RM_Graffiti_Vandal's six texture variants are Graffiti Mod (Continued)'s own art, copied byte-for-byte under its MIT license (LICENSE.md, workshop id 2986996933, (c) 2020 Mlie) - see this mod's own LICENSE-THIRD-PARTY.md for the full notice. RM_BaseGraffiti (thingClass plain vanilla Filth, not the donor's custom subclass - verified CornerFiller linking needs no special subclass support) is a fresh abstract def so mandrake.rm.sacredgraffiti's existing marks keep working once the donor mod is gone.
+
+Ships the engine plus the one generic vandal mark. mandrake.rut.marks (not yet built) is the sacred/jest/taunt/cant content side.</description>
 
   <loadAfter>
     <li>Ludeon.RimWorld</li>

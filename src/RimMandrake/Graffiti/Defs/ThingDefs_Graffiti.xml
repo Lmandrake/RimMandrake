@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- RM_BaseGraffiti - our OWN abstract parent, thingClass plain vanilla
+       Filth (verified: CornerFiller linking is a GraphicData/Graphic_Linked
+       concern, not a thingClass concern - Filth needs no special subclass
+       support). Deliberately NOT ParentName="BaseGraffiti" (Mlie.GraffitiMod's
+       own abstract def, thingClass GraffitiMod.Filth_Graffiti) - that def
+       lives in the donor mod being retired this pass, and mandrake.rm.
+       sacredgraffiti's existing SacredMarks.xml still inherits from it
+       today. Repointing that file to this def is a follow-up, tracked in
+       the item file, not done blind in this pass. -->
+  <ThingDef Name="RM_BaseGraffiti" Abstract="True">
+    <thingClass>Filth</thingClass>
+    <tickerType>Normal</tickerType>
+    <category>Filth</category>
+    <altitudeLayer>BuildingOnTop</altitudeLayer>
+    <useHitPoints>false</useHitPoints>
+    <drawerType>MapMeshAndRealTime</drawerType>
+    <filth>
+      <placementMask>Any</placementMask>
+      <cleaningSound>Interact_CleanFilth</cleaningSound>
+      <rainWashes>true</rainWashes>
+      <cleaningWorkToReduceThickness>1200</cleaningWorkToReduceThickness>
+      <canFilthAttach>true</canFilthAttach>
+    </filth>
+    <building>
+      <isEdifice>false</isEdifice>
+      <canPlaceOverWall>true</canPlaceOverWall>
+    </building>
+    <staticSunShadowHeight>0</staticSunShadowHeight>
+    <castEdgeShadows>false</castEdgeShadows>
+    <constructEffect>ConstructDirt</constructEffect>
+    <repairEffect>ConstructDirt</repairEffect>
+    <statBases>
+      <Flammability>0</Flammability>
+    </statBases>
+  </ThingDef>
+
+  <!-- The absorbed vandal-spree mark. Textures are the donor mod's own
+       6 graffiti_N.png files, copied byte-for-byte (MIT license, confirmed
+       via LICENSE.md read in full - GRAFFITI_FRAMEWORK_BUILD_1's own
+       license-check gate) - credited in About.xml. -->
+  <ThingDef ParentName="RM_BaseGraffiti">
+    <defName>RM_Graffiti_Vandal</defName>
+    <label>graffiti</label>
+    <description>An untrained scrawl, sprayed by an idle or unhappy hand. Nobody will call it art.</description>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <texPath>Things/Filth/Art/RM_Graffiti_Vandal</texPath>
+      <linkType>CornerFiller</linkType>
+      <linkFlags>
+        <li>Wall</li>
+      </linkFlags>
+    </graphicData>
+    <statBases>
+      <Beauty>-15</Beauty>
+      <Cleanliness>-5</Cleanliness>
+    </statBases>
+  </ThingDef>
+
+</Defs>

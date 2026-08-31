@@ -71,4 +71,53 @@ yet.** No JobDriver/JoyGiver, no ThoughtWorker, no raid-AI hook, no
 content (ships zero marks). This is the exact vocabulary the larger
 build (still not attempted solo, per the reasons above) will write
 against, mirroring `mandrake.rm.ninefold`'s own `Adjust()`-with-nothing-
-calling-it-yet shape. Left `doing`.
+calling-it-yet shape.
+
+## 2026-08-31, third pass (FOUNDRY) — owner authorized the full absorb-and-retire build
+
+Owner: "Full authorization on 1 and 2" (restart control, and this build
+including retiring `Mlie.GraffitiMod`). Built the absorbed spree
+mechanic for real:
+
+- **`RM_Graffiti_Vandal`** — the vandal mark, `ParentName="RM_BaseGraffiti"`
+  (our OWN abstract parent, `thingClass` plain vanilla `Filth` — verified
+  via fresh RimSage research that `CornerFiller` linking is a
+  `GraphicData`/`Graphic_Linked` concern, not a `thingClass` concern, so
+  no custom subclass is needed). Six texture variants are the donor
+  mod's own art, copied byte-for-byte under its MIT license
+  (`LICENSE-THIRD-PARTY.md`, full notice).
+- **`JobDriver_PaintGraffiti`** + **`JoyGiver_PaintGraffiti`** — fresh C#
+  against the real vanilla toil API (the donor mod ships no source to
+  reuse — compiled-only DLL). Modeled on two verified vanilla analogs,
+  not guessed: `JobDriver_RelaxAlone`'s goto-and-gain-Joy-via-
+  `JoyUtility.JoyTickCheckEnd` shape, and `JobDriver_Floordrawing`'s
+  `FilthMaker.TryMakeFilth`-on-completion shape. `JoyGiver_PaintGraffiti`
+  scans for a nearby wall cell itself (no vanilla `RCellFinder` helper
+  exists for this, confirmed absent).
+- **`RM_GraffitiPaintingSpreeBreak`/`State`** + `JobGiver_GraffitiPaintingSpree`
+  — the mental-break spree, same `ThinkTreeDef` shape
+  (`insertTag: Humanlike_PostMentalState`) as the donor's own
+  `SubTrees_Misc.xml`.
+- **Caught and fixed a real dependency break before it shipped**:
+  `mandrake.rm.sacredgraffiti`'s existing `RM_SacredMark_Ishko`
+  inherited `ParentName="BaseGraffiti"` from the DONOR mod's own abstract
+  def — retiring `Mlie.GraffitiMod` would have silently discarded the
+  already-shipped Ishko mark. Repointed to `RM_BaseGraffiti`, updated
+  `About.xml` deps/loadAfter, revalidated clean (0 errors, `ParentName`
+  resolves against the deployed mod).
+- `Mlie.GraffitiMod` removed from `ModsConfig.xml`.
+- Builds clean (0 warnings, 0 errors). `validate_patch.py`: 0 errors on
+  both `mandrake.rm.graffiti` (6 files) and `mandrake.rm.sacredgraffiti`
+  (3 files, once the deployed `Mods/` folder is included as a `--defs`
+  root — my own dev mods aren't in the Workshop-scanned path, a known
+  validator blind spot, not a real defect).
+
+**Deploy timing note**: the game was mid-restart when this landed. XML/
+textures deployed clean; the assembly deploy hit the expected Windows
+file-lock (`OSError [WinError 1224]`-class error, DLL memory-mapped by
+the in-flight load) — this build's C# will not be live until the NEXT
+restart, which I'm now authorized to trigger myself.
+
+**Still not built**: the viewer `ThoughtWorker`, the taunt-driven raid
+breach-bias hook, and all sacred/mural/jest/taunt/cant CONTENT beyond
+the one generic vandal mark (`mandrake.rut.marks`). Left `doing`.

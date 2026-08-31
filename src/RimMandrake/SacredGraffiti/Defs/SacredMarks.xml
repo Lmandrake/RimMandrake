@@ -4,11 +4,14 @@
   <!-- ============================================================
        Sacred graffiti — devotional wall-marks, one per Salvation god.
 
-       ParentName reaches across mods into Mlie.GraffitiMod's BaseGraffiti
-       (see that mod's ThingDefs/GraffitiThing.xml) for the filth/building
-       field set an ordinary wall-mark needs: filth placement+cleaning,
-       building.canPlaceOverWall, zero flammability. Requires
-       Mlie.GraffitiMod loaded first (About.xml loadAfter/modDependencies).
+       ParentName reaches across mods into mandrake.rm.graffiti's own
+       RM_BaseGraffiti (repointed 2026-08-31 from Mlie.GraffitiMod's
+       BaseGraffiti now that mod is retired, GRAFFITI_FRAMEWORK_BUILD_1 —
+       thingClass plain vanilla Filth, verified CornerFiller linking needs
+       no special subclass) for the filth/building field set an ordinary
+       wall-mark needs: filth placement+cleaning, building.canPlaceOverWall,
+       zero flammability. Requires
+       mandrake.rm.graffiti loaded first (About.xml loadAfter/modDependencies).
 
        Unlike GraffitiMod_Paint (the mod's one hardcoded, always-ugly
        filth def), each mark here carries its OWN statBases so a devotional
@@ -32,7 +35,7 @@
        content — spawnable only via dev-mode "spawn thing" for inspection.
        ============================================================ -->
 
-  <ThingDef ParentName="BaseGraffiti">
+  <ThingDef ParentName="RM_BaseGraffiti">
     <defName>RM_SacredMark_Ishko</defName>
     <label>sacred mark of Ishko</label>
     <description>A pair of glowing orange eyes daubed on the wall in ochre and rust pigment, radiating short watchful strokes into the dark around them. Ishko the Unmaskable's mark - painted by a hand that believes stillness is holy, in the one god who does not punish a skipped rite, because to remain hidden and unlooked-at is, to him, already righteous.</description>
