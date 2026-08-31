@@ -38,21 +38,19 @@
     </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="KwazelMaw"]/race/wildBiomes/ExtremeDesert</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="KwazelMaw"]/race/wildBiomes/ExtremeDesert</xpath>
-      <value>
-        <ExtremeDesert>0</ExtremeDesert>
-      </value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="KwazelMaw"]/race/wildBiomes</xpath>
-      <value>
-        <ExtremeDesert>0</ExtremeDesert>
-      </value>
-    </nomatch>
-  </Operation>
+  <!-- KwazelMaw x ExtremeDesert intentionally NOT touched here (was: an
+       animal-side zero, removed 2026-08-31 post-restart regression fix).
+       BiomeCast_Ashkarr.xml already places KwazelMaw in ExtremeDesert at
+       0.35 - "kwazel maw - huge, ours" - deliberate Ash'karr biome-cast
+       content, not stray compat-patch pollution as this file's header
+       guessed. Adding a second, animal-side wildBiomes entry for the SAME
+       (biome, animal) pair does not override that value; BiomeDef.
+       CommonalityOfAnimal folds BOTH directions into one Dictionary and
+       throws System.ArgumentException on the second Add regardless of the
+       value written, killing ChooseWildAnimalSpawns' static ctor and
+       GiddyUp.MountUtility.BuildAnimalBiomeCache outright. Confirmed via
+       src/RimMandrake/Utils/biome_animal_conflicts.py against the
+       2026-08-31T18-29-38Z capture. See SEAS_WATERLINE_PASS_1.md. -->
 
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="Mott"]/race/wildBiomes/Lake</xpath>
@@ -86,21 +84,11 @@
     </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="Mott"]/race/wildBiomes/LavaField</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="Mott"]/race/wildBiomes/LavaField</xpath>
-      <value>
-        <LavaField>0</LavaField>
-      </value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="Mott"]/race/wildBiomes</xpath>
-      <value>
-        <LavaField>0</LavaField>
-      </value>
-    </nomatch>
-  </Operation>
+  <!-- Mott x LavaField: same reasoning as KwazelMaw x ExtremeDesert above -
+       BiomeCast_Ashkarr.xml already places Mott in LavaField at 0.7
+       ("mott - small, ours"); a second animal-side entry crashed
+       CommonalityOfAnimal's Dictionary.Add on "Mott" the same way. Removed
+       2026-08-31. -->
 
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="Dianoga"]/race/wildBiomes/Lake</xpath>
