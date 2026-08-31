@@ -1,0 +1,67 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    STUN_SCALING_TEST_COVERAGE_1: offline, no game selftest harness for
+    StatPart_InverseBodySize (OTHER_STUN_WEAPONS_SURVEY_1 /
+    ION_STUN_IGNORES_BODY_SIZE_1's pure XML route). NOT the mod build
+    (JawaIonWeapons.csproj, one directory up: EnableDefaultCompileItems is
+    false there and its own Compile list does not mention this folder).
+
+    net472 to match JawaIonWeapons.csproj itself. Private=true on the three
+    RimWorld references (unlike the real mod build, which sets Private=
+    false because the game already has them loaded) - this is a standalone
+    .exe outside the game process, so it needs the DLLs actually copied
+    next to it to resolve StatRequest/Pawn/UnityEngine.Mathf at runtime.
+
+    Run via the wrapper:
+      python3 src/RimMandrake/Utils/selftest_stun_scaling.py
+
+    Direct invocation (Windows path required, dotnet.exe cannot take /mnt/d):
+      "%USERPROFILE%\.dotnet\dotnet.exe" run [dash][dash]project D:\Luke\dev\Rimworld\src\Jawa\JawaIonWeapons\Source\SelfTest\JawaIonWeapons.SelfTest.csproj -c Release
+      (written apart only because an XML comment cannot hold two adjacent hyphens)
+  -->
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>JawaIonWeapons.SelfTest</AssemblyName>
+    <RootNamespace>JawaIonWeapons.SelfTest</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <DebugType>none</DebugType>
+    <BaseOutputPath>bin\</BaseOutputPath>
+    <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(RimWorldManaged)' == ''">
+    <RimWorldManaged>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManaged>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(RimWorldManaged)\Assembly-CSharp.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>$(RimWorldManaged)\UnityEngine.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- The REAL production source file, compiled in directly. -->
+    <Compile Include="..\StatPart_InverseBodySize.cs" />
+    <Compile Include="Program.cs" />
+  </ItemGroup>
+
+</Project>

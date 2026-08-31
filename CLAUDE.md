@@ -96,6 +96,8 @@ python3 skills/rimworld-modding/scripts/validate_patch.py <path> --defs ...
 ./game --said "<his words>" up|down|loading         the moment he says it; bare ./game measures
 python3 src/RimMandrake/rimflow/cli.py …            the ledger: file/claim/close/drop/verify
 node --check <file.js>                              Node 22 is installed user-local
+for f in $(find src -name selftest_\*.py); do python3 "$f" || echo "FAIL $f"; done
+                                                     run every fast offline selftest before a commit
 ```
 
 `broadcast.py` is the owner's tool; the game-state relay above is its only carve-out.

@@ -1,0 +1,48 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    RIMMANDRAKE_PITS_TEST_COVERAGE_1: offline, no game selftest harness for
+    the covered pit trap math. NOT the mod build (RimMandrake_Pits.csproj,
+    one directory up, is unaffected: its EnableDefaultCompileItems is false
+    and its own Compile list does not mention this folder). This project
+    targets plain net8.0 with zero RimWorld/Unity references, on purpose:
+    everything it tests either has no Verse/Unity dependency at all
+    (PitCoverTier) or has been hand extracted into a pure float form because
+    the real method needs a live Pawn/Map that cannot exist without the game
+    running (see Program.cs header for exactly what is and is not covered).
+
+    Run via the wrapper, which resolves the Windows native dotnet.exe and
+    the D drive path for you:
+      python3 src/RimMandrake/Utils/selftest_pit_logic.py
+
+    Direct invocation (Windows path required, dotnet.exe cannot take /mnt/d):
+      "%USERPROFILE%\.dotnet\dotnet.exe" run [dash][dash]project D:\Luke\dev\Rimworld\src\RimMandrake\RimMandrake_Pits\Source\SelfTest\RimMandrakePits.SelfTest.csproj -c Release
+      (that flag is two hyphens then "project" - written apart here only because
+      an XML comment cannot contain two adjacent hyphens)
+  -->
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>disable</Nullable>
+    <AssemblyName>RimMandrakePits.SelfTest</AssemblyName>
+    <RootNamespace>RimMandrake.Pits.SelfTest</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <!-- Keep every build artifact out of the tree the mod build/deploy scan
+         walks - this is a throwaway test binary, never deployed. -->
+    <BaseOutputPath>bin\</BaseOutputPath>
+    <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- The REAL production source file, compiled in directly - this is
+         what makes TriggerMassKg() coverage genuine rather than a
+         reimplementation nobody keeps in sync. -->
+    <Compile Include="..\Trigger\PitCoverTier.cs" />
+    <Compile Include="..\DigStage\PitDepthTier.cs" />
+    <Compile Include="Program.cs" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,75 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    COLONY_VISIBILITY_TEST_COVERAGE_1: offline, no game selftest harness for
+    GameComponent_ColonyVisibility's band ladder and Adjust() clamp. NOT the
+    mod build (JawaDoctrineCore.csproj, one directory up: its own Compile
+    Remove ..\**\*.cs plus Compile Include *.cs pattern excludes this
+    subfolder automatically - confirmed by reading the glob, not assumed).
+
+    This targets net48 like the real project (same RimWorldManaged
+    reference assemblies) because ColonyVisibility.cs's own class derives
+    from Verse.GameComponent and calls UnityEngine.Mathf - those need real
+    Assembly-CSharp.dll/UnityEngine.dll to resolve, even though nothing
+    called here needs a running game (see Program.cs header for exactly
+    what that means and does not mean).
+
+    Run via the wrapper:
+      python3 src/RimMandrake/Utils/selftest_colony_visibility.py
+
+    Direct invocation (Windows path required, dotnet.exe cannot take /mnt/d):
+      "%USERPROFILE%\.dotnet\dotnet.exe" run [dash][dash]project D:\Luke\dev\Rimworld\src\Jawa\Jawa_Doctrine\Source\DoctrineCore\SelfTest\JawaDoctrineCore.SelfTest.csproj -c Release
+      (written apart only because an XML comment cannot hold two adjacent hyphens)
+  -->
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>JawaDoctrineCore.SelfTest</AssemblyName>
+    <RootNamespace>JawaDoctrineCore.SelfTest</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <DebugType>none</DebugType>
+    <BaseOutputPath>bin\</BaseOutputPath>
+    <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(RimWorldManaged)' == ''">
+    <RimWorldManaged>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManaged>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
+
+  <!-- Private=true here (unlike every real mod .csproj in this repo, which
+       sets Private=false because the game already has these assemblies
+       loaded). This is a standalone .exe, not a mod loaded into a running
+       RimWorld process - it needs Assembly-CSharp.dll/UnityEngine*.dll
+       actually copied next to it to resolve at runtime, or every call that
+       touches Verse.GameComponent/UnityEngine.Mathf throws
+       FileNotFoundException (confirmed: it did, before this was set). -->
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(RimWorldManaged)\Assembly-CSharp.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>$(RimWorldManaged)\UnityEngine.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- The REAL production source file, compiled in directly. -->
+    <Compile Include="..\ColonyVisibility.cs" />
+    <Compile Include="Program.cs" />
+  </ItemGroup>
+
+</Project>
