@@ -32,13 +32,23 @@ REPLACES it) and `(NWN) Real Fog of War (Continued)` (3391128917).
   `CompProperties_Sighter` (`radius`, `radiusNight`, `powered`, `mannable`) —
   a fixed-radius reveal source XML-attachable to a BUILDING, day/night lerped
   by sky glow.
-- ⚠️ **UNRESOLVED, and it decides the underwater answer:** the 1.6 fork's
-  compiled DLL contains glow-sight machinery the read source does not explain —
-  `BuildSightGlowCoeffLut`, `GetSightGlowBucket`, `GroundGlowAt`,
-  `GetNightVisionEfficiency`. Either the fork added per-cell glow-driven sight
-  (the lamp-cone for free) or those strings serve fog rendering only. The
-  fork's own source is at `yuganxia/CAI-5000-continue` (GitHub, confirmed) —
-  one targeted read settles it. Do not state either version as fact until then.
+- ✅ **SETTLED (fork source read, `yuganxia/CAI-5000-continue` @ `1769e8d`):
+  pawn sight in CAI is NEVER glow-driven — RENDER-ONLY / SIGHTER-ONLY.**
+  `GetSightRadius_Pawn`/`GetFogRadius` use skills, verb range and capacities
+  with no glow term anywhere; per-cell GlowGrid appears only in
+  `MapComponent_FogGrid` as a *rendering* layer (re-fogging explored-but-dark
+  cells — visually useful for the deep, but not sight); `radiusNight` is the
+  Sighter comp's global sky-glow day/night lerp. ⇒ **The lamp-cone under any
+  CAI route costs us one small Harmony clamp on the two pawn formulas, scoped
+  to seafloor maps, in our own companion DLL** (legal — runtime patching, not
+  absorption), plus `CompProperties_Sighter` on lamp buildings.
+  📌 *Correction kept visible:* an earlier disk-strings pass attributed
+  `BuildSightGlowCoeffLut`/`GetSightGlowBucket`/`GetNightVisionEfficiency` to
+  the fork DLL; the source read found none of the three in the repo, its full
+  git history, or strings of its shipped DLL (`GroundGlowAt` is vanilla API the
+  fork never calls). Either the installed workshop DLL is not built from this
+  repo (provenance already flagged) or the strings pass misgrouped symbols —
+  do not design against those three names.
 
 ### The license reality 🔴
 **Neither CAI repo has any license** (`kbatbouta/CAI-5000` frozen at 1.4;
