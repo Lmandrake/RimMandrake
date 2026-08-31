@@ -264,11 +264,14 @@ namespace JawaBench.BridgeTools
                 "raidForceOneDowned, pawnGroupMakerSeed (biocode weapon/apparel handled via " +
                 "biocodeWeaponsChance/biocodeApparelChance too). Use jawa/fire_raid for a plain " +
                 "raid; use this one only when the shape itself is the point. dryRun defaults " +
-                "true.",
+                "true. 🔴 READ blockedByDialog BEFORE executed - a Harmony prefix can replace the " +
+                "raid with a modal and still set __result = true, so Find.WindowStack is diffed " +
+                "across the firing. Clear any modal with jawa/window_list_close.",
             ResultDescription =
-                "success, dryRun, resolved (the parms as SENT, including the shape flags), " +
-                "canFireNow (dry run), or executed + arrived[] (faction, pawnsArrived, counted " +
-                "off the map before/after - not echoed from the request).")]
+                "success (executed AND not blocked), dryRun, resolved (the parms as SENT, " +
+                "including the shape flags), canFireNow (dry run), or executed + windowsOpened[] " +
+                "+ blockedByDialog + arrived[] (faction, pawnsArrived, counted off the map " +
+                "before/after - not echoed from the request).")]
         public static async Task<object> RaidShapeFire(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -342,9 +345,14 @@ namespace JawaBench.BridgeTools
                 foreach (var p in map.mapPawns.AllPawnsSpawned)
                     if (p.Faction != null) before[p.Faction] = (before.TryGetValue(p.Faction, out var bn) ? bn : 0) + 1;
 
+                // FIRE_RAID_REPORTS_MODAL_1 - diff the window stack across TryExecute.
+                var windowIdsBefore = SnapshotWindowIds();
+
                 bool executed;
                 try { executed = IncidentDefOf.RaidEnemy.Worker.TryExecute(parms); }
                 catch (Exception e) { return Fail("TryExecute threw: " + e.GetType().Name + ": " + e.Message); }
+
+                var windowsOpened = WindowsOpenedSince(windowIdsBefore);
 
                 var after = new Dictionary<Faction, int>();
                 foreach (var p in map.mapPawns.AllPawnsSpawned)
@@ -357,17 +365,28 @@ namespace JawaBench.BridgeTools
                         arrivals.Add(new { faction = kv.Key.def.defName, name = kv.Key.Name, pawnsArrived = kv.Value - was });
                 }
 
+                int pawnsArrivedTotal = 0;
+                foreach (var a in arrivals)
+                    pawnsArrivedTotal += (int)a.GetType().GetProperty("pawnsArrived").GetValue(a, null);
+                bool blockedByDialog = windowsOpened.Count > 0 && pawnsArrivedTotal == 0;
+                string swallowNote = DialogSwallowNote(windowsOpened, pawnsArrivedTotal == 0);
+
                 return new
                 {
-                    success = executed,
+                    success = executed && !blockedByDialog,
                     dryRun = false,
                     resolved,
                     executed,
+                    windowsOpened,
+                    blockedByDialog,
                     actualFaction = parms.faction != null ? parms.faction.def.defName : null,
                     arrived = arrivals,
-                    note = executed
-                        ? "Raid fired. arrived[] is counted off the map; a delayed arrival mode can legitimately show 0 pawns this instant."
-                        : "TryExecute returned false - the worker refused these parms.",
+                    pawnsArrivedTotal,
+                    note = blockedByDialog
+                        ? swallowNote
+                        : (executed
+                            ? "Raid fired. arrived[] is counted off the map; a delayed arrival mode can legitimately show 0 pawns this instant."
+                            : "TryExecute returned false - the worker refused these parms."),
                     ticksGame = TicksGameSafe()
                 };
             }).ConfigureAwait(false);
