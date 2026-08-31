@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-31T15:04:34Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-31T15:04:55Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -126,6 +126,15 @@ kind:     task
 summary:  Full specs, both ruled by the owner 2026-08-30: design/Jawa/coveredpittrapsspec.md
 prose:    infrastructure/state/items/RIMMANDRAKE_PITS_BUILD_1.md
 
+## DEPTHS_ODYSSEY_VERIFY_1 Odyssey source read gating the Depths: vacuum pipeline patchability, vacsuit stat gating, leak/flood-fill, orbital mapgen + arrival families; plus SwimmingKit 1.6 status and Lane-1 license checks
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Answer, from source (RimSage searchdefs/searchsource/readcsharpsymbol against
+prose:    infrastructure/state/items/DEPTHS_ODYSSEY_VERIFY_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -191,16 +200,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## DEPTHS_ODYSSEY_VERIFY_1 Odyssey source read gating the Depths: vacuum pipeline patchability, vacsuit stat gating, leak/flood-fill, orbital mapgen + arrival families; plus SwimmingKit 1.6 status and Lane-1 license checks
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  Answer, from source (RimSage searchdefs/searchsource/readcsharpsymbol against
-prose:    infrastructure/state/items/DEPTHS_ODYSSEY_VERIFY_1.md
 
 ## SEAS_WATERLINE_PASS_1 Waterline pass: repatriate the misplaced SW aquatics (KwazelMaw/Mott out of the fire deserts), first spawns for Dianoga/Dragonsnake, borrow BMT/AA coastal fauna, Odyssey fishing mutators on the seas
 state:    proposed

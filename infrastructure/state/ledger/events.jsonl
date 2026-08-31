@@ -3356,3 +3356,5 @@
 {"seat":"BENCH","event":"claim","id":"SW_SEA_MONSTERS_ART_1","ts":"2026-08-31T15:00:53Z"}
 {"seat":"BENCH","event":"start","id":"SW_SEA_MONSTERS_ART_1","ts":"2026-08-31T15:00:57Z"}
 {"seat":"FOUNDRY","event":"close","id":"BEAST_DANGER_NORMALIZATION_1","sha":"374e6f4d0d26b17aca87402dad5fc150b0e5ed10","ts":"2026-08-31T15:04:34Z"}
+{"seat":"FOUNDRY","event":"claim","id":"DEPTHS_ODYSSEY_VERIFY_1","ts":"2026-08-31T15:04:55Z"}
+{"seat":"FOUNDRY","event":"start","id":"DEPTHS_ODYSSEY_VERIFY_1","ts":"2026-08-31T15:04:55Z"}
