@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-31T06:27:13Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-31T06:34:26Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -218,7 +218,7 @@ needs:    offline
 target:   v1
 kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DUMP_DRAWSIZE_CAPTURE_1.md yet — write one when you have something to say)
+summary:  DUMPDRAWSIZECAPTURE1 — RimDefDump was skipping every Unity value struct, not just GraphicData
 prose:    infrastructure/state/items/DUMP_DRAWSIZE_CAPTURE_1.md
 
 ## DEPTHS_ODYSSEY_VERIFY_1 Odyssey source read gating the Depths: vacuum pipeline patchability, vacsuit stat gating, leak/flood-fill, orbital mapgen + arrival families; plus SwimmingKit 1.6 status and Lane-1 license checks
@@ -250,16 +250,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/TILE_STRUCTURE_DESIGNS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/TILE_STRUCTURE_DESIGNS_1.md
-
-## SELFTEST_DRIFT_REPAIR_1 Two pre-existing selftest failures, not rename fallout: check_canon world-facts drift (water/settlements/latitude/lake vs canon.yml) and frozen_dumps unreproducible-sha (defs.sqlite rebuilt from frozen capture 2026-08-30); diagnose and repair
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SELFTEST_DRIFT_REPAIR_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/SELFTEST_DRIFT_REPAIR_1.md
 
 ## JAWA_PATCHES_SPLIT_1 Phase 3: triage src/SPLIT_Phase3/Jawa_Patches per-file (125 TBD defs) - Ashkarr/Rakata/DeepDesert/Pyrelands to RUT, animal/texture/generic to RSW or RM; plus straddle extractions (SacredGraffiti marks, WreckedMachines relics, Droidworks campaign layer, Armoury doctrine, JawaVoice campaign lines)
 state:    proposed

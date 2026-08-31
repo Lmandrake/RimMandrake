@@ -19,6 +19,7 @@ exists to keep it that way.
     python3 src/RimMandrake/Utils/selftest_check_canon.py
 """
 import os
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -117,13 +118,67 @@ CASES = [
 ]
 
 
-def run(md):
+CANON_LIVE = os.path.join(ROOT, "infrastructure", "state", "canon.yml")
+
+# 🔴 SELFTEST_DRIFT_REPAIR_1: 9 of these CASES went red on 2026-08-30 with no code
+# change of their own. check_canon.py grew `suspend_planet_rules()` on 2026-08-22
+# (commit 3dc322c1, "There is no frozen world...") — while `canon.yml > planet.status`
+# reads anything but `frozen`, every planet-derived rule (water, tiles, settlements,
+# axis, lake, seas, named_regions, rivers, habitable_ring, start_tile) is downgraded
+# to advisory (exit 0) even on a real hit. This file's CASES were last touched
+# 2026-08-20, two days before that feature existed, and always assumed hard-fail.
+# `planet.status` is legitimately `remaking` right now (owner, 2026-08-22/23: the
+# freeze is a SAVEGAME — map ported through the live bridge, factions/leaders/
+# ideoligions correct at initiation, THEN saved — and that has not happened yet;
+# see canon.yml > planet.status_src and infrastructure/state/V1.md). So neither
+# canon.yml nor the world-facts source is stale: the SELFTEST is, because its planet-
+# derived cases are entangled with a live, intentionally-mutable status flag.
+# ⇒ FIX: build a throwaway canon.yml with `planet.status` forced to `frozen` and run
+# the rule-matching cases against THAT, decoupled from whatever the live flag says
+# today. The suspend feature itself gets its own dedicated case below, run against
+# a `remaking` fixture, so a future flip of the live flag can never silently change
+# what this file asserts either way.
+def _frozen_canon_root():
+    """A temp ROOT whose infrastructure/state/canon.yml is the real one with
+    `planet.status` forced to `frozen` — decouples the rule-matching CASES below
+    from whatever the live status legitimately is today."""
+    import yaml
+    with open(CANON_LIVE, encoding="utf-8") as fh:
+        canon = yaml.safe_load(fh)
+    canon["planet"]["status"] = "frozen"
+    d = tempfile.mkdtemp(prefix=".canon_frozen_", dir=os.path.dirname(os.path.dirname(HERE)))
+    os.makedirs(os.path.join(d, "infrastructure", "state"), exist_ok=True)
+    with open(os.path.join(d, "infrastructure", "state", "canon.yml"), "w", encoding="utf-8") as fh:
+        yaml.safe_dump(canon, fh)
+    return d
+
+
+def _remaking_canon_root():
+    """Same idea, forced the other way — for the one case that locks in the
+    advisory-downgrade behaviour itself."""
+    import yaml
+    with open(CANON_LIVE, encoding="utf-8") as fh:
+        canon = yaml.safe_load(fh)
+    canon["planet"]["status"] = "remaking"
+    d = tempfile.mkdtemp(prefix=".canon_remaking_", dir=os.path.dirname(os.path.dirname(HERE)))
+    os.makedirs(os.path.join(d, "infrastructure", "state"), exist_ok=True)
+    with open(os.path.join(d, "infrastructure", "state", "canon.yml"), "w", encoding="utf-8") as fh:
+        yaml.safe_dump(canon, fh)
+    return d
+
+
+def run(md, project_dir=None):
     fd, path = tempfile.mkstemp(suffix=".md", prefix="canonprobe_", dir=ROOT)
+    env = dict(os.environ)
+    if project_dir:
+        env["CLAUDE_PROJECT_DIR"] = project_dir
+    else:
+        env.pop("CLAUDE_PROJECT_DIR", None)
     try:
         with os.fdopen(fd, "w", encoding="utf-8") as fh:
             fh.write(md + "\n")
         p = subprocess.run([sys.executable, TOOL, path], capture_output=True,
-                           text=True, cwd=ROOT, timeout=60)
+                           text=True, cwd=ROOT, timeout=60, env=env)
         return p.returncode, p.stdout + p.stderr
     finally:
         os.unlink(path)
@@ -135,18 +190,38 @@ def main():
         print("SKIP — PyYAML not installed, so nothing was measured.\n"
               "⚠️ UNMEASURED is not PASSED.", file=sys.stderr)
         return 2
+
+    frozen_root = _frozen_canon_root()
+    remaking_root = _remaking_canon_root()
     fails = 0
-    for name, md, expect_hit, key in CASES:
-        code, out = run(md)
-        # exit 1 = a hard contradiction. Advisory hits print but still exit 0.
-        got_hit = code == 1
-        ok = got_hit == expect_hit and (not key or ("[%s]" % key) in out)
+    try:
+        for name, md, expect_hit, key in CASES:
+            code, out = run(md, project_dir=frozen_root)
+            # exit 1 = a hard contradiction. Advisory hits print but still exit 0.
+            got_hit = code == 1
+            ok = got_hit == expect_hit and (not key or ("[%s]" % key) in out)
+            print("%-5s %s" % ("ok" if ok else "FAIL", name))
+            if not ok:
+                fails += 1
+                print("        exit=%s expected_hit=%s\n        %s"
+                      % (code, expect_hit, out.strip().replace("\n", "\n        ")[:600]))
+
+        # ⭐ Locks in suspend_planet_rules() itself: a real hit on a planet-derived
+        # fact, against a canon reading `remaking`, must print but NOT block.
+        name = "planet.status=remaking downgrades a planet-derived hit to advisory"
+        code, out = run("Water is 25% of tiles.", project_dir=remaking_root)
+        ok = code == 0 and "advisory" in out and "[water]" in out
         print("%-5s %s" % ("ok" if ok else "FAIL", name))
         if not ok:
             fails += 1
-            print("        exit=%s expected_hit=%s\n        %s"
-                  % (code, expect_hit, out.strip().replace("\n", "\n        ")[:600]))
-    print("\n%d/%d passed" % (len(CASES) - fails, len(CASES)))
+            print("        exit=%s\n        %s"
+                  % (code, out.strip().replace("\n", "\n        ")[:600]))
+    finally:
+        shutil.rmtree(frozen_root, ignore_errors=True)
+        shutil.rmtree(remaking_root, ignore_errors=True)
+
+    total = len(CASES) + 1
+    print("\n%d/%d passed" % (total - fails, total))
     return 1 if fails else 0
 
 

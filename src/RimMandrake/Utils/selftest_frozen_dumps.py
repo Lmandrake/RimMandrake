@@ -343,19 +343,37 @@ def t_no_registry_entry_carries_an_unreproducible_sha():
     ⇒ Only the newest official entry is checked. ⚠️ And the exemption is itself
     a symptom — `DUMP_PRODUCER_DATED_CAPTURES_1` gives each capture its own
     directory, after which a superseded entry still has its artifact and this
-    could check every row again."""
+    could check every row again.
+
+    🔴 SELFTEST_DRIFT_REPAIR_1: this case went red 2026-08-30 with the active
+    entry (OFFICIAL-2026-08-29, capture 2026-08-29T13-30-02Z) claiming
+    modlist_sha 1742630eb6253187 and `refresh.dump_fingerprint()` — called with
+    NO argument — recomputing c0b45bcbe2caaa1b instead. That is not an
+    unreproducible sha: `dump_fingerprint()`'s default argument is `D_DUMP`,
+    which resolves to the NEWEST capture on disk (`game_paths.newest_capture()`),
+    and a newer capture (2026-08-31T04-57-37Z, taken after this entry was
+    frozen) had since been produced by an ordinary game load — exactly the
+    "our own mods change the count constantly" drift the frozen-dump immunity
+    exists to shrug off. The bug was in THIS test: it fingerprinted whatever is
+    current instead of the specific capture the active entry names. Recomputing
+    against `<DUMP_ROOT>/captures/<active["capture"]>` (falling back to the flat
+    root for a pre-migration entry with no `capture` field) reproduces
+    1742630eb6253187 exactly — the registry entry was correct all along."""
     real = os.path.normpath(os.path.join(
         os.path.dirname(os.path.dirname(HERE)), "..",
         "infrastructure", "state", "dumps", "REGISTRY.jsonl"))
     if not os.path.exists(real):
         return
-    known = {(refresh.dump_fingerprint() or {}).get("hash"), "see manifest.json"}
-    known.discard(None)
     rows = [json.loads(l) for l in open(real, encoding="utf-8") if l.strip()]
     official = [e for e in rows if e.get("kind") == "official"]
     if not official:
         return
     active = official[-1]
+    import game_paths as gp
+    cap_id = active.get("capture")
+    cap_path = os.path.join(gp.DUMP_ROOT, "captures", cap_id) if cap_id else gp.DUMP_ROOT
+    known = {(refresh.dump_fingerprint(cap_path) or {}).get("hash"), "see manifest.json"}
+    known.discard(None)
     sha = active.get("modlist_sha")
     assert sha in known, (
         "the ACTIVE frozen entry %s claims modlist_sha %r, which nothing on this "
