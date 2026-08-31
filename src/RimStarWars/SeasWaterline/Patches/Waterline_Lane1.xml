@@ -250,163 +250,223 @@
     </nomatch>
   </Operation>
 
+  <!-- BMT_* (Biomes! Polluted Lands) borrowed fauna: unlike the SW/other
+       borrowed defNames above, these ship with NO raw <race><wildBiomes>
+       container at all - confirmed 2026-08-31 via validate_patch.py
+       (0 nodes on disk) and the def dump (post-inheritance race.wildBiomes
+       is null before this fix). A bare nomatch->Add into
+       .../race/wildBiomes fails outright because that container doesn't
+       exist to add a child to - the 12-op failure this replaced. Guard
+       three deep: wildBiomes container, then race, then the ThingDef
+       itself, so this works regardless of which level is actually
+       missing. Adding a whole <race> node here is safe without
+       Inherit="true" - Verse.XmlInheritance.RecursiveNodeCopyOverwriteElements
+       merges by element name recursively by default (Inherit="false" is
+       the opt-IN to whole-node replacement, not the default) - confirmed
+       via rimsage against the decompiled source, not assumed. -->
+
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="BMT_MucklurkerCatfish"]/race/wildBiomes/Lake</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="BMT_MucklurkerCatfish"]/race/wildBiomes/Lake</xpath>
-      <value>
-        <Lake>0.3</Lake>
-      </value>
+    <xpath>/Defs/ThingDef[defName="BMT_MucklurkerCatfish"]/race/wildBiomes</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="BMT_MucklurkerCatfish"]/race/wildBiomes/Lake</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="BMT_MucklurkerCatfish"]/race/wildBiomes/Lake</xpath>
+            <value><Lake>0.3</Lake></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="BMT_MucklurkerCatfish"]/race/wildBiomes</xpath>
+            <value><Lake>0.3</Lake></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="BMT_MucklurkerCatfish"]/race/wildBiomes/Ocean</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="BMT_MucklurkerCatfish"]/race/wildBiomes/Ocean</xpath>
+            <value><Ocean>0.16</Ocean></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="BMT_MucklurkerCatfish"]/race/wildBiomes</xpath>
+            <value><Ocean>0.16</Ocean></value>
+          </nomatch>
+        </li>
+      </operations>
     </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="BMT_MucklurkerCatfish"]/race/wildBiomes</xpath>
-      <value>
-        <Lake>0.3</Lake>
-      </value>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="BMT_MucklurkerCatfish"]/race</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="BMT_MucklurkerCatfish"]/race</xpath>
+        <value><wildBiomes><Lake>0.3</Lake><Ocean>0.16</Ocean></wildBiomes></value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="BMT_MucklurkerCatfish"]</xpath>
+        <value><race><wildBiomes><Lake>0.3</Lake><Ocean>0.16</Ocean></wildBiomes></race></value>
+      </nomatch>
     </nomatch>
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="BMT_MucklurkerCatfish"]/race/wildBiomes/Ocean</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="BMT_MucklurkerCatfish"]/race/wildBiomes/Ocean</xpath>
-      <value>
-        <Ocean>0.16</Ocean>
-      </value>
+    <xpath>/Defs/ThingDef[defName="BMT_TaintedTurtle"]/race/wildBiomes</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="BMT_TaintedTurtle"]/race/wildBiomes/Lake</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="BMT_TaintedTurtle"]/race/wildBiomes/Lake</xpath>
+            <value><Lake>0.52</Lake></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="BMT_TaintedTurtle"]/race/wildBiomes</xpath>
+            <value><Lake>0.52</Lake></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="BMT_TaintedTurtle"]/race/wildBiomes/Ocean</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="BMT_TaintedTurtle"]/race/wildBiomes/Ocean</xpath>
+            <value><Ocean>0.28</Ocean></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="BMT_TaintedTurtle"]/race/wildBiomes</xpath>
+            <value><Ocean>0.28</Ocean></value>
+          </nomatch>
+        </li>
+      </operations>
     </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="BMT_MucklurkerCatfish"]/race/wildBiomes</xpath>
-      <value>
-        <Ocean>0.16</Ocean>
-      </value>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="BMT_TaintedTurtle"]/race</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="BMT_TaintedTurtle"]/race</xpath>
+        <value><wildBiomes><Lake>0.52</Lake><Ocean>0.28</Ocean></wildBiomes></value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="BMT_TaintedTurtle"]</xpath>
+        <value><race><wildBiomes><Lake>0.52</Lake><Ocean>0.28</Ocean></wildBiomes></race></value>
+      </nomatch>
     </nomatch>
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="BMT_TaintedTurtle"]/race/wildBiomes/Lake</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="BMT_TaintedTurtle"]/race/wildBiomes/Lake</xpath>
-      <value>
-        <Lake>0.52</Lake>
-      </value>
+    <xpath>/Defs/ThingDef[defName="BMT_MutatingTumorfishSpawn"]/race/wildBiomes</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="BMT_MutatingTumorfishSpawn"]/race/wildBiomes/Lake</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="BMT_MutatingTumorfishSpawn"]/race/wildBiomes/Lake</xpath>
+            <value><Lake>0.3</Lake></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="BMT_MutatingTumorfishSpawn"]/race/wildBiomes</xpath>
+            <value><Lake>0.3</Lake></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="BMT_MutatingTumorfishSpawn"]/race/wildBiomes/Ocean</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="BMT_MutatingTumorfishSpawn"]/race/wildBiomes/Ocean</xpath>
+            <value><Ocean>0.16</Ocean></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="BMT_MutatingTumorfishSpawn"]/race/wildBiomes</xpath>
+            <value><Ocean>0.16</Ocean></value>
+          </nomatch>
+        </li>
+      </operations>
     </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="BMT_TaintedTurtle"]/race/wildBiomes</xpath>
-      <value>
-        <Lake>0.52</Lake>
-      </value>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="BMT_MutatingTumorfishSpawn"]/race</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="BMT_MutatingTumorfishSpawn"]/race</xpath>
+        <value><wildBiomes><Lake>0.3</Lake><Ocean>0.16</Ocean></wildBiomes></value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="BMT_MutatingTumorfishSpawn"]</xpath>
+        <value><race><wildBiomes><Lake>0.3</Lake><Ocean>0.16</Ocean></wildBiomes></race></value>
+      </nomatch>
     </nomatch>
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="BMT_TaintedTurtle"]/race/wildBiomes/Ocean</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="BMT_TaintedTurtle"]/race/wildBiomes/Ocean</xpath>
-      <value>
-        <Ocean>0.28</Ocean>
-      </value>
+    <xpath>/Defs/ThingDef[defName="BMT_MutatingTumorfishFry"]/race/wildBiomes</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="BMT_MutatingTumorfishFry"]/race/wildBiomes/Lake</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="BMT_MutatingTumorfishFry"]/race/wildBiomes/Lake</xpath>
+            <value><Lake>0.3</Lake></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="BMT_MutatingTumorfishFry"]/race/wildBiomes</xpath>
+            <value><Lake>0.3</Lake></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="BMT_MutatingTumorfishFry"]/race/wildBiomes/Ocean</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="BMT_MutatingTumorfishFry"]/race/wildBiomes/Ocean</xpath>
+            <value><Ocean>0.16</Ocean></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="BMT_MutatingTumorfishFry"]/race/wildBiomes</xpath>
+            <value><Ocean>0.16</Ocean></value>
+          </nomatch>
+        </li>
+      </operations>
     </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="BMT_TaintedTurtle"]/race/wildBiomes</xpath>
-      <value>
-        <Ocean>0.28</Ocean>
-      </value>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="BMT_MutatingTumorfishFry"]/race</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="BMT_MutatingTumorfishFry"]/race</xpath>
+        <value><wildBiomes><Lake>0.3</Lake><Ocean>0.16</Ocean></wildBiomes></value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="BMT_MutatingTumorfishFry"]</xpath>
+        <value><race><wildBiomes><Lake>0.3</Lake><Ocean>0.16</Ocean></wildBiomes></race></value>
+      </nomatch>
     </nomatch>
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="BMT_MutatingTumorfishSpawn"]/race/wildBiomes/Lake</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="BMT_MutatingTumorfishSpawn"]/race/wildBiomes/Lake</xpath>
-      <value>
-        <Lake>0.3</Lake>
-      </value>
+    <xpath>/Defs/ThingDef[defName="BMT_MutatingTumorfishAdult"]/race/wildBiomes</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="BMT_MutatingTumorfishAdult"]/race/wildBiomes/Lake</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="BMT_MutatingTumorfishAdult"]/race/wildBiomes/Lake</xpath>
+            <value><Lake>0.14</Lake></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="BMT_MutatingTumorfishAdult"]/race/wildBiomes</xpath>
+            <value><Lake>0.14</Lake></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="BMT_MutatingTumorfishAdult"]/race/wildBiomes/Ocean</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="BMT_MutatingTumorfishAdult"]/race/wildBiomes/Ocean</xpath>
+            <value><Ocean>0.07</Ocean></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="BMT_MutatingTumorfishAdult"]/race/wildBiomes</xpath>
+            <value><Ocean>0.07</Ocean></value>
+          </nomatch>
+        </li>
+      </operations>
     </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="BMT_MutatingTumorfishSpawn"]/race/wildBiomes</xpath>
-      <value>
-        <Lake>0.3</Lake>
-      </value>
-    </nomatch>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="BMT_MutatingTumorfishSpawn"]/race/wildBiomes/Ocean</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="BMT_MutatingTumorfishSpawn"]/race/wildBiomes/Ocean</xpath>
-      <value>
-        <Ocean>0.16</Ocean>
-      </value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="BMT_MutatingTumorfishSpawn"]/race/wildBiomes</xpath>
-      <value>
-        <Ocean>0.16</Ocean>
-      </value>
-    </nomatch>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="BMT_MutatingTumorfishFry"]/race/wildBiomes/Lake</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="BMT_MutatingTumorfishFry"]/race/wildBiomes/Lake</xpath>
-      <value>
-        <Lake>0.3</Lake>
-      </value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="BMT_MutatingTumorfishFry"]/race/wildBiomes</xpath>
-      <value>
-        <Lake>0.3</Lake>
-      </value>
-    </nomatch>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="BMT_MutatingTumorfishFry"]/race/wildBiomes/Ocean</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="BMT_MutatingTumorfishFry"]/race/wildBiomes/Ocean</xpath>
-      <value>
-        <Ocean>0.16</Ocean>
-      </value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="BMT_MutatingTumorfishFry"]/race/wildBiomes</xpath>
-      <value>
-        <Ocean>0.16</Ocean>
-      </value>
-    </nomatch>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="BMT_MutatingTumorfishAdult"]/race/wildBiomes/Lake</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="BMT_MutatingTumorfishAdult"]/race/wildBiomes/Lake</xpath>
-      <value>
-        <Lake>0.14</Lake>
-      </value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="BMT_MutatingTumorfishAdult"]/race/wildBiomes</xpath>
-      <value>
-        <Lake>0.14</Lake>
-      </value>
-    </nomatch>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="BMT_MutatingTumorfishAdult"]/race/wildBiomes/Ocean</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="BMT_MutatingTumorfishAdult"]/race/wildBiomes/Ocean</xpath>
-      <value>
-        <Ocean>0.07</Ocean>
-      </value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="BMT_MutatingTumorfishAdult"]/race/wildBiomes</xpath>
-      <value>
-        <Ocean>0.07</Ocean>
-      </value>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="BMT_MutatingTumorfishAdult"]/race</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="BMT_MutatingTumorfishAdult"]/race</xpath>
+        <value><wildBiomes><Lake>0.14</Lake><Ocean>0.07</Ocean></wildBiomes></value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="BMT_MutatingTumorfishAdult"]</xpath>
+        <value><race><wildBiomes><Lake>0.14</Lake><Ocean>0.07</Ocean></wildBiomes></race></value>
+      </nomatch>
     </nomatch>
   </Operation>
 
@@ -442,35 +502,46 @@
     </nomatch>
   </Operation>
 
+  <!-- DA_LeviathanCrab (Dark Ages: Beasts and Monsters): same missing-
+       container shape as the BMT_* block above. -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="DA_LeviathanCrab"]/race/wildBiomes/Lake</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="DA_LeviathanCrab"]/race/wildBiomes/Lake</xpath>
-      <value>
-        <Lake>0.12</Lake>
-      </value>
+    <xpath>/Defs/ThingDef[defName="DA_LeviathanCrab"]/race/wildBiomes</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="DA_LeviathanCrab"]/race/wildBiomes/Lake</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="DA_LeviathanCrab"]/race/wildBiomes/Lake</xpath>
+            <value><Lake>0.12</Lake></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="DA_LeviathanCrab"]/race/wildBiomes</xpath>
+            <value><Lake>0.12</Lake></value>
+          </nomatch>
+        </li>
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="DA_LeviathanCrab"]/race/wildBiomes/Ocean</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="DA_LeviathanCrab"]/race/wildBiomes/Ocean</xpath>
+            <value><Ocean>0.06</Ocean></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="DA_LeviathanCrab"]/race/wildBiomes</xpath>
+            <value><Ocean>0.06</Ocean></value>
+          </nomatch>
+        </li>
+      </operations>
     </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="DA_LeviathanCrab"]/race/wildBiomes</xpath>
-      <value>
-        <Lake>0.12</Lake>
-      </value>
-    </nomatch>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="DA_LeviathanCrab"]/race/wildBiomes/Ocean</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="DA_LeviathanCrab"]/race/wildBiomes/Ocean</xpath>
-      <value>
-        <Ocean>0.06</Ocean>
-      </value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="DA_LeviathanCrab"]/race/wildBiomes</xpath>
-      <value>
-        <Ocean>0.06</Ocean>
-      </value>
+    <nomatch Class="PatchOperationConditional">
+      <xpath>/Defs/ThingDef[defName="DA_LeviathanCrab"]/race</xpath>
+      <match Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="DA_LeviathanCrab"]/race</xpath>
+        <value><wildBiomes><Lake>0.12</Lake><Ocean>0.06</Ocean></wildBiomes></value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[defName="DA_LeviathanCrab"]</xpath>
+        <value><race><wildBiomes><Lake>0.12</Lake><Ocean>0.06</Ocean></wildBiomes></race></value>
+      </nomatch>
     </nomatch>
   </Operation>
 </Patch>
