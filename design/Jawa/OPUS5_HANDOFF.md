@@ -162,3 +162,57 @@ The per-workstream table above is one day stale. What changed on the 31st:
   selftest-built game DLLs into the public repo (amended out; bin/obj now
   ignored); peers ship queue work without claiming — git log before starting
   anything.
+
+## Second reboot addendum — 2026-08-31, the last Fable sitting (BENCH)
+
+The owner spent the final window on spec-out ("what could Fable spec while we
+retain access" — the ranked plan is `design/FABLE_WINDOW_PROPOSITION.md`) and
+ruled everything put to him via question cards. **Ten specs delivered, closed
+and pushed; nothing below is open design — it is execution.**
+
+- **The Depths went from concept to executable**: `depths_concept.md` v2
+  (owner's second seed: conductive fluid, weapon malfunction, oxygen, drag,
+  adapted races NOT Jawa, Deepwater faction, Empire bolt-hole) + two donor
+  surveys (§10 + `mods/underwater_donor_scan_2026-08-31.md`) + FOUNDRY's
+  source read (clone-job verdict) + `worldbuilding/depths_build_spec_v1.md`
+  (RULED: independent `RM_PressureRating`; sight cap rides NWN fog).
+- **Fog of war RULED, Route B**: CAI 5000's combat AI + NWN Real FoW with
+  CAI's fog off; `memegoddess.searchanddestroy` DROPPED. Evidence:
+  `mods/cai_fog_deep_dive_2026-08-31.md` (CAI unlicensed → pattern-only; NWN
+  Apache-2.0 both ends; pawn sight never glow-driven — lamp-cone needs one
+  scoped Harmony clamp). Execution: `FOW_ROUTE_B_INTEGRATION_1` (FOUNDRY).
+- **Specs shipped and their items CLOSED**: sarlacc
+  (`worldbuilding/sarlacc_spec.md` — tentacles must be PAWNS, pocket-map
+  nesting legal, AmbientHorror+Custom is a WORLD-CREATION DEADLINE for the
+  scenario spec) · Nine Voices (`RimMandrake/nine_voices_cast_bible.md`; old
+  Part A persona = Ohm's delusion, superseded in place) · research taxonomy
+  (`research_tree_taxonomy.md` + FOUR canon rulings at
+  `research_tree.taxonomy_ruled`: seven tabs, Research Reinvented KEPT AS
+  SUBSTRATE — it already co-writes 448/515 rows, theology decoupled, Ultra
+  reachable priced brutally / colony techLevel INDUSTRIAL) · Oracle LLM
+  wiring (`RimMandrake/llm_ingame_wiring_spec.md`; RULED cloud key, budgets
+  3/1/2, experiment-first → `ORACLE_EXPERIMENT_SPIKE_1`) · dust storms /
+  boiling water / visible growth / scraggly flora (specs in their item
+  files; Tornado.cs is the devil skeleton, boiling water is pure defs,
+  growth is 10%-quantized+cultivated-only, the rainbow flora is named and
+  `AB_RockyCrags` grows tundra by mistake) · Cantina Kitchen
+  (`cantina_kitchen_spec.md`) · Tusken water raid (item file; steal-and-leave
+  is mostly SHIPPED — register corrected) · race regen
+  (`race_regen_architecture.md` — invert the generator, byte-parity
+  acceptance).
+- **Register corrections made in place** (do not re-derive): V2_DREAMS
+  sarlacc unknowns MEASURED (heart surface-only; PitGate siteable-with-C#);
+  V2_DREAMS Tusken entry corrected; `llm_voice_preauthoring.md` Part A
+  superseded + Part B's RimDialogue measured ABSENT from disk (RimTalk is
+  subscribed instead).
+- **Awaits the owner only**: sea-monster mockup picks (18 PNGs + 6 sheets in
+  `Transient/sea_monsters_mockups/`, regeneration prompts preserved in the
+  item file) · the outgrown-mod audit sitting (7 examine candidates) · the
+  Depths concept ratification line · RESEARCH_TREE gate ("after the droids
+  land").
+- **Standing practice added 2026-08-31**: decisions go to the owner as
+  AskUserQuestion CARDS, free text always open (his words: "Ask me question
+  cards but let me always respond freely if needed").
+- Codex imagegen note: calls can run 3–7 min and the WSL-side timeout kill
+  leaves the Windows codex.exe running — files land AFTER the wrapper
+  reports failure. Check the output dir before re-rolling.
