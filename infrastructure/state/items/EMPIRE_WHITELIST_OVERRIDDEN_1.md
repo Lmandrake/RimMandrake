@@ -202,5 +202,8 @@ active mod). Deployed via `deploy_custom_mods.py --mod Jawa_Patches --apply`.
 - [x] The interloping mechanism named (SWCP_Core's `FactionDef_PermanentlyHostileTo`
       postfix, via `ModExtension_FactionPermanentlyHostileTo`).
 - [x] A fix decided and shipped: additive mod extension, gated, cannot lose a patch race.
-- [ ] Live re-check owed at the next restart: Empire reads Hostile to the player from a
-      fresh relation seed. (The whitelist's own contents no longer matter for this.)
+- [x] Live re-check, 2026-08-31 post-restart quicktest: `jawa/list_factions` shows
+      Empire (Galactic Empire) `hostile: true`, `goodwill: -100`. `permanentEnemy`
+      reads `false` (the whitelist-derived flag - expected, it no longer decides
+      the outcome) but `hostile` is `true` via the SWCP mod extension, exactly as
+      predicted. Closed.

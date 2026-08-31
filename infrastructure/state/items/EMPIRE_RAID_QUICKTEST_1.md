@@ -101,6 +101,20 @@ remaining criteria below are now confirmed.
       fire this session, including the 1200-point success.
 - [x] Bug 2 (raid never generating) — root-caused and closed, see above and
       `EMPIRE_RAID_NEVER_GENERATES_1`.
-- [ ] Bug 1 remains open: `EMPIRE_WHITELIST_OVERRIDDEN_1` — Empire still reads Neutral to the
-      player by default (the interloping mod/patch not yet named). This item's own spec ("no
-      set_faction_relation step needed") does not hold until that closes.
+- [x] Bug 1 closed (`EMPIRE_WHITELIST_OVERRIDDEN_1`, 2026-08-31): Empire now reads
+      `hostile: true` by DEFAULT, no `set_faction_relation` workaround needed —
+      the item's original spec holds again.
+
+## 2026-08-31 (FOUNDRY) — full end-to-end reconfirm on a FRESH post-fix world
+
+New quicktest world (post SeasWaterline-crash-fix + Empire-whitelist-fix restart,
+`jawa/list_factions`: Empire `hostile: true, goodwill: -100` by default, no
+workaround). `jawa/fire_raid faction=Empire points=1200 dryRun=false`: first
+attempt was swallowed by a `Leo.RaidProtectionFee` modal
+(`Verse.Dialog_NodeTree`, closed via `jawa/window_list_close`) — a known,
+documented tool behavior, not a defect. Retried clean: `executed: true,
+actual.faction: Empire, substituted: false, arrived: [{faction: Empire,
+pawnsArrived: 6, hostileToPlayer: true}]`. `jawa/list_pawns faction=Empire`
+confirms the 6 raiders are `Jawa_Empire_Specialist`/etc kinds, faction
+"Galactic Empire", hostile true. All criteria now hold together on one world
+generated entirely after every fix landed. **Closed.**

@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-31T18:50:20Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-31T19:20:11Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -27,15 +27,6 @@ kind:     bug
 summary:  SPAWNPAWNSUBSTITUTESVANILLAKIND1 — "Spawned 2/2" delivered one of something else
 prose:    infrastructure/state/items/SPAWN_PAWN_SUBSTITUTES_VANILLA_KIND_1.md
 
-## EMPIRE_RAID_QUICKTEST_1 Quicktest proof of the full Empire reskin: fire RaidEnemy as vanilla Empire (pass points explicitly; read faction from the REPLY, not the request), verify Jawa_Empire kinds in OuterRim armor, Emperor/Palpatine via fixedLeaderKinds, Rising Order ideo, and NO OuterRim_GalacticEmpire faction on the world — criteria preserved at V2_DREAMS C2 strike
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-summary:  Quicktest (~90 s map, bridge) proof of the shipped Empire reskin, against vanilla
-prose:    infrastructure/state/items/EMPIRE_RAID_QUICKTEST_1.md
-
 ## WILD_ANIMALS_PADDED_LISTS_1 wildAnimals lists padded to 1024 by unidentified C# pass
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -44,15 +35,6 @@ target:   v1
 kind:     investigate
 summary:  WILDANIMALSPADDEDLISTS1 — offline half done: mechanism strongly narrowed, exact patch still unnamed
 prose:    infrastructure/state/items/WILD_ANIMALS_PADDED_LISTS_1.md
-
-## EMPIRE_WHITELIST_OVERRIDDEN_1 Empire permanentEnemyToEveryoneExcept still contains PlayerColony/PlayerTribe despite GalacticEmpire.xml's Replace
-state:    doing
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     bug
-summary:  GalacticEmpire.xml's PatchOperationReplace on
-prose:    infrastructure/state/items/EMPIRE_WHITELIST_OVERRIDDEN_1.md
 
 ## DROID_SYSTEM_BUILD_1 Build the unifying droid mod per droid_system_spec.md (parked until the owner reopens)
 state:    doing
@@ -203,16 +185,6 @@ kind:     bug
 blocked:  Tool read-back proven live on 480 spawns; remaining unknown is WHICH of 5 Harmony patches, needs a mod-disable bisect with a game restart per candidate (~1000 spawns per cell at the real 0.8% rate)
 summary:  SPAWNPAWNSUBSTITUTESVANILLAKIND1 — "Spawned 2/2" delivered one of something else
 prose:    infrastructure/state/items/SPAWN_PAWN_SUBSTITUTES_VANILLA_KIND_1.md
-
-## EMPIRE_RAID_QUICKTEST_1 Quicktest proof of the full Empire reskin: fire RaidEnemy as vanilla Empire (pass points explicitly; read faction from the REPLY, not the request), verify Jawa_Empire kinds in OuterRim armor, Emperor/Palpatine via fixedLeaderKinds, Rising Order ideo, and NO OuterRim_GalacticEmpire faction on the world — criteria preserved at V2_DREAMS C2 strike
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-blocked:  6/7 criteria confirmed, incl. live raid at points=1200 with correct kinds+apparel. Sole remainder is EMPIRE_WHITELIST_OVERRIDDEN_1 (Empire not naturally hostile).
-summary:  Quicktest (~90 s map, bridge) proof of the shipped Empire reskin, against vanilla
-prose:    infrastructure/state/items/EMPIRE_RAID_QUICKTEST_1.md
 
 ## WILD_ANIMALS_PADDED_LISTS_1 wildAnimals lists padded to 1024 by unidentified C# pass
 state:    doing  (BLOCKED)
