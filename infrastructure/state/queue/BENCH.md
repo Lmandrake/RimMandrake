@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-31T18:09:49Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-31T18:12:20Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -61,16 +61,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/RESEARCH_TREE_NORMALIZATION_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/RESEARCH_TREE_NORMALIZATION_1.md
-
-## NINE_VOICES_CAST_BIBLE_1 Fable spec: re-scope llm_voice_preauthoring.md from one Cradle-Mind to the nine-god cast under R-W6 constraints
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/NINE_VOICES_CAST_BIBLE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/NINE_VOICES_CAST_BIBLE_1.md
 
 ## RESEARCH_TAXONOMY_DRAFT_1 Fable spec: full-game research tree taxonomy + migration rules + validator design, decision doc for the owner; mechanical retag stays later (feeds RESEARCH_TREE_NORMALIZATION_1)
 state:    proposed

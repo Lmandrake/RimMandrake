@@ -3397,3 +3397,5 @@
 {"seat":"BENCH","event":"claim","id":"SARLACC_SPEC_SESSION_1","ts":"2026-08-31T18:05:35Z"}
 {"seat":"BENCH","event":"start","id":"SARLACC_SPEC_SESSION_1","ts":"2026-08-31T18:05:35Z"}
 {"seat":"BENCH","event":"close","id":"SARLACC_SPEC_SESSION_1","sha":"180bfe8b","ts":"2026-08-31T18:09:49Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-08-31T18:10:59Z"}
+{"seat":"BENCH","event":"close","id":"NINE_VOICES_CAST_BIBLE_1","sha":"e3533fa0","ts":"2026-08-31T18:12:20Z"}
