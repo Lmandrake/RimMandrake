@@ -114,6 +114,37 @@ recommended:
 2. Law 3 numbers: ✅ RULED (owner card, 2026-08-31) — QUICKTEST FIRST: the
    coefficient is tuned by a muffalo-vs-unarmored-pawn quicktest (MEASURED
    outcomes) at the next game window before the manifest freezes.
+   **QUICKTESTED 2026-08-31 (FOUNDRY, BEAST_DANGER_NORMALIZATION_1):** a
+   single `jawa/damage` Blunt hit at K x bodySize for K in {12, 13.5, 15},
+   bodySize 2.4 (muffalo class, unarmored colonist, apparel stripped) —
+   **never produced a clean single-hit "down"** at any tested location.
+   Torso absorbed 29-44 raw damage with no down at any K (painTotal ~0.4,
+   Moving ~0.46 at the top of that range — well under the down threshold).
+   Head hits at the same K killed outright (skull HP is low). A follow-up
+   sweep at Torso found the transition is **bimodal, not smooth**: 44-48
+   damage still survived clean, 50-70 killed outright, with no clear
+   "downed, not dead" middle band observed. **Conclusion: "one hit downs"
+   is not literally achievable via a single TakeDamage instance at any K
+   in the ruled 12-15 range — RimWorld's downed state does not scale
+   smoothly with raw damage.** Shipped with **K=15** (top of the ruled
+   band, maximizes casual lethality within it) on the understanding that
+   the design's real threat model is a short flurry (2+ hits inside the
+   sublinear-DPS cooldown window, or a multi-tool creature landing more
+   than one tool per round), not one atomic strike. Full manifest and
+   patch: `mandrake.rsw.beastnorm`, `data/beast_norm_manifest.csv`.
 3. The empty seas (zero marine fauna in Ocean/Lake biomes — MEASURED): out
    of scope here, but the three seas holding nothing alive is a
    worldbuilding hole worth its own item.
+
+## 5. Execution note (FOUNDRY, 2026-08-31)
+
+The frozen fingerprint `1742630eb6253187` this doc cites for
+`beast_census.csv`/`beast_roster.csv` no longer matches the live mod set
+(`refresh.py --fingerprint` now reads `0245d9fd5f108808`, 585 mods). The
+SW-animal content itself was unaffected (spot-checked Acklay's XML against
+its census row: exact match), but the shipped `mandrake.rsw.beastnorm`
+manifest was built by parsing `mlie.starwarsanimalcollection`'s own
+`Races_Animal_SW.xml` directly (all 160 SW beast `ThingDef`s live in that
+one file) rather than trusting the stale CSV, which sidesteps the
+staleness question entirely for this mod. The two roster CSVs still need
+a re-harvest before anything else leans on them.

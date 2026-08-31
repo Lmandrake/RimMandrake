@@ -1,0 +1,161 @@
+defName,bodySize,best_tool_index,best_tool_label,best_tool_capacities,old_power,old_cooldown,old_dps,new_power,new_cooldown,new_dps,is_herbivore,raise_revenge,manhunterOnDamageChance_present,manhunterOnDamageChance_old,manhunterOnDamageChance_new,manhunterOnTameFailChance_present,manhunterOnTameFailChance_old,manhunterOnTameFailChance_new,exempt
+Dewback,3.0,1,head,Blunt,15.0,2.0,7.5,45.0,2.6,17.31,False,False,True,0.25,,True,0.05,,
+Rancor,6.0,2,teeth,Bite,30.0,2.0,15.0,90.0,3.67,24.52,False,False,True,1.0,,True,0.5,,
+Bantha,4.0,0,horns,Scratch+Stab,23.0,2.4,9.58,60.0,3.0,20.0,True,True,True,0.35,0.9,True,0.05,0.4,
+Nexu,2.5,2,teeth,Bite,15.0,2.0,7.5,37.5,2.37,15.82,False,False,True,1.0,,True,0.35,,
+Acklay,3.0,0,,Cut+Stab,20.0,2.0,10.0,45.0,2.6,17.31,False,False,True,1.0,,True,0.40,,
+Tauntaun,1.0,3,head,Blunt,13.0,2.6,5.0,15.0,1.5,10.0,False,False,True,0.5,,True,0,,
+KraytDragon,12.0,2,teeth,Bite,30.0,2.0,15.0,180.0,5.2,34.62,False,False,True,1.0,,True,0.30,,
+Reek,3.0,0,horn,Stab,19.0,2.0,9.5,45.0,2.6,17.31,False,False,True,1.0,,True,0.30,,
+Nerf,2.0,1,,Bite,8.8,2.6,3.38,30.0,2.12,14.15,True,True,True,0.35,0.9,True,0.05,0.4,
+Gizka,0.18,2,,Bite,4.0,2.6,1.54,4.0,2.6,1.54,False,False,False,,,False,,,bs<1
+Porg,0.18,1,beak,Bite,3.0,2.0,1.5,3.0,2.0,1.5,False,False,False,,,False,,,bs<1
+Vulptex,0.55,2,cute little teeth,Bite,4.8,2.0,2.4,4.8,2.0,2.4,False,False,False,,,False,,,bs<1
+Wampa,6.0,2,teeth,Bite,30.0,2.0,15.0,90.0,3.67,24.52,False,False,True,1.0,,True,0.5,,
+Akk,3.0,0,teeth,Bite,20.0,2.0,10.0,45.0,2.6,17.31,False,False,True,1.00,,True,0.30,,
+Aiwha,3.0,1,head,Blunt,15.0,2.0,7.5,45.0,2.6,17.31,False,False,True,0.25,,True,0.10,,
+Anooba,0.95,2,,Bite,16.0,2.0,8.0,16.0,2.0,8.0,False,False,True,1.00,,True,0.30,,bs<1
+Behemoth,6.0,0,tusk,Scratch+Stab,28.0,2.0,14.0,90.0,3.67,24.52,True,True,True,1.00,1.0,True,0.05,0.4,
+Beldon,6.0,0,left lappet,Blunt+ScratchToxic,11.0,2.0,5.5,90.0,3.67,24.52,True,True,True,0.01,0.9,True,0.01,0.4,
+Boarwolf,2.0,2,,Bite,18.0,2.0,9.0,30.0,2.12,14.15,False,False,True,1.00,,True,0.30,,
+Blarth,0.32,2,cute teeth,Bite,5.8,2.0,2.9,5.8,2.0,2.9,False,False,False,,,False,,,bs<1
+Blixus,4.0,3,,Bite,24.0,2.6,9.23,60.0,3.0,20.0,False,False,True,1.00,,True,0.30,,
+Blurrg,2.5,2,,Bite,19.0,2.0,9.5,37.5,2.37,15.82,True,True,True,0.50,0.9,True,0.15,0.4,
+Bolotaur,3.0,3,head,Blunt,16.0,2.0,8.0,45.0,2.6,17.31,True,True,True,0.25,0.9,True,0.10,0.4,
+Bogwing,0.7,2,beak,Bite,12.0,2.0,6.0,12.0,2.0,6.0,False,False,True,0.50,,True,0.30,,bs<1
+Boma,2.0,3,,Bite,16.0,2.0,8.0,30.0,2.12,14.15,False,False,True,1.00,,True,0.30,,
+Bordok,1.4,0,head,Blunt,12.0,2.9,4.14,21.0,1.77,11.86,True,False,False,,,False,,,
+Borcatu,0.4,0,left claw,Scratch,6.0,2.0,3.0,6.0,2.0,3.0,False,False,True,1.00,,True,0.60,,bs<1
+Brezak,3.0,0,tail,Blunt,16.0,2.0,8.0,45.0,2.6,17.31,False,False,True,1.0,,True,0.30,,
+Bursa,2.5,2,,Bite,26.0,2.6,10.0,37.5,2.37,15.82,False,False,True,0.50,,True,0.30,,
+CanCell,1.45,0,mandibles,Bite,7.0,2.0,3.5,21.75,1.81,12.02,False,False,False,,,False,,,
+Cannok,0.85,2,,Bite,9.7,2.0,4.85,9.7,2.0,4.85,False,False,True,1.00,,True,0.30,,bs<1
+ChrysalideRancor,8.0,2,teeth,Bite,40.0,2.0,20.0,120.0,4.24,28.3,False,False,True,1.0,,True,0.50,,
+Clodhopper,0.5,0,left foot,Blunt,6.0,2.0,3.0,6.0,2.0,3.0,False,False,False,,,False,,,bs<1
+Convor,0.4,2,head,Blunt,6.0,2.0,3.0,6.0,2.0,3.0,False,False,False,,,False,,,bs<1
+CorellianHound,0.85,2,,Bite,14.0,2.0,7.0,14.0,2.0,7.0,False,False,True,1.00,,True,0.30,,bs<1
+Corinathoth,4.0,0,horn,Scratch+Stab,16.0,2.0,8.0,60.0,3.0,20.0,True,True,True,1.0,1.0,False,,0.4,
+Dactillion,3.0,2,beak,Bite,16.0,2.0,8.0,45.0,2.6,17.31,False,False,True,1.00,,True,0.30,,
+Dalgo,2.5,0,head,Blunt,10.0,2.9,3.45,37.5,2.37,15.82,False,False,True,0.30,,False,,,
+Devourers,2.5,2,,Bite,20.0,2.0,10.0,37.5,2.37,15.82,False,False,True,1.00,,True,0.70,,
+Dianoga,4.0,2,,Bite,22.0,2.6,8.46,60.0,3.0,20.0,False,False,True,1.00,,True,0.30,,
+Dragonsnake,4.0,0,,Bite,30.0,2.6,11.54,60.0,3.0,20.0,False,False,True,1.0,,True,0.70,,
+Drexl,5.0,2,,Bite,26.0,2.0,13.0,75.0,3.35,22.39,False,False,True,1.00,,True,0.6,,
+EnergySpider,3.0,1,fanged pedipalps,Bite,24.0,1.4,17.14,45.0,2.6,17.31,False,False,True,1.0,,True,0.5,,
+Eopie,1.4,0,head,Blunt,12.0,2.9,4.14,21.0,1.77,11.86,True,False,False,,,False,,,
+Falumpaset,3.0,3,,Bite,18.0,2.0,9.0,45.0,2.6,17.31,False,False,True,0.10,,True,0.05,,
+Fambaa,6.0,0,,Bite,28.0,2.6,10.77,90.0,3.67,24.52,True,True,True,0.10,0.9,True,0.05,0.4,
+Fanback,2.0,0,tusk,Scratch+Stab,14.0,2.0,7.0,30.0,2.12,14.15,False,False,True,1.00,,True,0.50,,
+FeralGrazer,2.0,2,head,Blunt,15.0,2.9,5.17,30.0,2.12,14.15,True,True,True,0.1,0.9,False,,0.4,
+FeralNerf,1.0,4,head,Blunt,13.0,2.6,5.0,15.0,1.5,10.0,True,False,True,0.1,,False,,,
+FrilledGorg,0.4,2,,Bite,6.0,2.0,3.0,6.0,2.0,3.0,False,False,False,,,False,,,bs<1
+FrogDog,0.85,1,,Bite,12.0,2.0,6.0,12.0,2.0,6.0,False,False,False,,,False,,,bs<1
+Gelagrub,2.4,1,head,Blunt,14.0,2.0,7.0,36.0,2.32,15.52,True,True,True,0.1,0.9,False,,0.4,
+Gorg,0.3,2,,Bite,3.0,2.0,1.5,3.0,2.0,1.5,False,False,False,,,False,,,bs<1
+Gornt,0.85,0,horn,Scratch+Stab,9.0,2.0,4.5,9.0,2.0,4.5,False,False,False,,,False,,,bs<1
+Grank,0.85,2,,Bite,16.0,2.0,8.0,16.0,2.0,8.0,False,False,True,1.0,,True,0.10,,bs<1
+GraniteSlug,0.2,0,head,Blunt,1.0,2.0,0.5,1.0,2.0,0.5,False,False,False,,,False,,,bs<1
+Grazer,2.75,0,head,Blunt,10.0,2.0,5.0,41.25,2.49,16.57,True,True,False,,0.9,False,,0.4,
+GreaterKraytDragon,15.0,2,teeth,Bite,45.0,2.0,22.5,225.0,5.81,38.73,False,False,True,1.0,,True,0.60,,
+Gualaar,3.0,0,horn,Scratch+Stab,20.0,2.0,10.0,45.0,2.6,17.31,True,True,True,0.10,0.9,True,0.05,0.4,
+Gullipud,0.4,0,claws,Scratch,4.0,1.5,2.67,4.0,1.5,2.67,False,False,False,,,False,,,bs<1
+Gundark,3.0,4,teeth,Bite,26.0,2.0,13.0,45.0,2.6,17.31,False,False,True,1.0,,True,0.6,,
+Gutkurr,2.0,2,beaked maw,Bite,16.0,2.0,8.0,30.0,2.12,14.15,False,False,True,1.0,,True,0.6,,
+HarvesterBeetle,5.0,0,mandibles,Bite,25.0,2.0,12.5,75.0,3.35,22.39,True,True,True,0.1,0.9,False,,0.4,
+Hawkbat,2.0,1,beak,Bite,10.0,2.0,5.0,30.0,2.12,14.15,False,False,True,1.0,,True,0.40,,
+Horax,15.0,3,head,Blunt+Stab+Scratch,32.0,2.0,16.0,225.0,5.81,38.73,False,False,True,1.00,,True,0.80,,
+Hrumph,2.5,3,head,Blunt+Scratch+Stab,20.0,2.0,10.0,37.5,2.37,15.82,True,True,False,,0.9,False,,0.4,
+Hssiss,2.75,0,poisonous fangs,ToxicBite,18.0,2.6,6.92,41.25,2.49,16.57,False,False,True,1.00,,True,0.50,,
+Igitz,0.32,3,head,Blunt,6.0,2.0,3.0,6.0,2.0,3.0,False,False,False,,,False,,,bs<1
+Insectomorph,2.0,0,teeth,Bite,12.0,2.0,6.0,30.0,2.12,14.15,False,False,True,0.1,,False,,,
+IridonianReek,3.0,0,horn,Stab,24.0,2.0,12.0,45.0,2.6,17.31,True,True,True,1.0,1.0,True,0.30,0.4,
+IthorianReek,4.5,0,horn,Stab,15.0,2.0,7.5,67.5,3.18,21.23,True,True,True,0.10,0.9,False,,0.4,
+Iriaz,0.7,3,head,Blunt,8.0,2.0,4.0,8.0,2.0,4.0,True,False,False,,,False,,,bs<1
+Jakobeast,2.6,0,left tusk,Scratch+Stab,23.0,2.0,11.5,39.0,2.42,16.12,True,True,True,0.35,0.9,True,0.05,0.4,
+Jamel,1.9,0,head,Blunt,16.0,2.9,5.52,28.5,2.07,13.77,True,True,False,,0.9,False,,0.4,
+Jimvu,2.0,0,head,Blunt,8.0,2.9,2.76,30.0,2.12,14.15,True,True,True,0.30,0.9,False,,0.4,
+JungleRancor,15.0,2,teeth,Bite,40.0,2.0,20.0,225.0,5.81,38.73,False,False,True,1.0,,True,0.5,,
+Kaadu,1.5,0,foot,Blunt,13.0,1.5,8.67,22.5,1.84,12.23,True,True,True,0.25,0.9,True,0.05,0.4,
+Katarn,4.0,0,left claw,Scratch,18.0,1.5,12.0,60.0,3.0,20.0,False,False,True,1.00,,True,0.40,,
+KellDragon,4.0,2,teeth,Bite,20.0,2.0,10.0,60.0,3.0,20.0,False,False,True,1.0,,True,0.30,,
+KowakianMonkeyLizard,0.35,2,,Bite,5.0,2.0,2.5,5.0,2.0,2.5,False,False,False,,,False,,,bs<1
+Kinrath,1.2,0,poisonous stinger appendage,ScratchToxic,12.0,2.6,4.62,18.0,1.64,10.98,False,False,True,1.0,,True,0.30,,
+Klorslug,1.5,3,circular teeth,Bite,14.0,1.4,10.0,22.5,1.84,12.23,False,False,True,1.0,,True,0.60,,
+Krykna,0.8,0,beak,Bite,10.0,2.0,5.0,10.0,2.0,5.0,False,False,True,1.0,,True,0.80,,bs<1
+Kreetle,0.2,0,mandibles,Bite,5.0,2.0,2.5,5.0,2.0,2.5,False,False,True,0.10,,True,0.10,,bs<1
+KwazelMaw,4.0,1,head,Blunt,30.0,2.0,15.0,60.0,3.0,20.0,False,False,True,1.0,,True,0.30,,
+Kwi,3.0,2,teeth,Bite,24.0,2.0,12.0,45.0,2.6,17.31,True,True,True,1.0,1.0,True,0.25,0.4,
+Kybuck,1.0,3,head,Blunt,20.0,2.6,7.69,15.0,1.5,10.0,True,False,False,,,False,,,
+LavaFlea,2.4,1,head,Blunt,14.0,2.0,7.0,36.0,2.32,15.52,True,True,True,0.1,0.9,False,,0.4,
+Leaftail,0.2,2,,Bite,5.0,2.0,2.5,5.0,2.0,2.5,False,False,True,0.10,,False,,,bs<1
+LongtailGorg,0.6,2,,Bite,5.0,2.0,2.5,5.0,2.0,2.5,False,False,False,,,False,,,bs<1
+Lothcat,0.35,0,left claw,Scratch,7.0,1.5,4.67,7.0,1.5,4.67,False,False,False,,,False,,,bs<1
+LothWolf,3.5,0,left claw,Scratch,16.0,1.5,10.67,52.5,2.81,18.68,False,False,False,,,False,,,
+Lylek,5.0,0,left tentacle,Blunt+Poke,28.0,2.0,14.0,75.0,3.35,22.39,False,False,True,1.0,,True,0.40,,
+Maalraas,2.0,2,,Bite,18.0,2.0,9.0,30.0,2.12,14.15,False,False,True,1.00,,True,0.50,,
+Manka,3.0,0,tusks,Scratch+Stab,24.0,2.0,12.0,45.0,2.6,17.31,False,False,True,1.00,,True,0.40,,
+MarshHaunt,2.5,0,left fist,Blunt+Poke,18.0,1.5,12.0,37.5,2.37,15.82,False,False,True,1.00,,True,0.70,,
+Massiff,0.85,2,,Bite,16.0,2.0,8.0,16.0,2.0,8.0,False,False,True,1.00,,True,0.30,,bs<1
+MastiffPhalone,2.0,0,beak,Bite,18.0,2.0,9.0,30.0,2.12,14.15,False,False,True,1.00,,True,0.30,,
+Mastmot,6.0,0,tusk,Scratch+Stab,28.0,2.0,14.0,90.0,3.67,24.52,True,True,True,1.0,1.0,True,0.05,0.4,
+Mawvorr,2.5,2,,Bite,16.0,2.0,8.0,37.5,2.37,15.82,False,False,True,1.00,,True,0.30,,
+Mott,0.75,2,,Bite,9.0,2.0,4.5,9.0,2.0,4.5,True,False,False,,,False,,,bs<1
+Mudhorn,4.0,0,horn,Scratch+Blunt,26.0,2.0,13.0,60.0,3.0,20.0,False,False,True,1.0,,True,0.60,,
+Mynock,0.5,0,head,Blunt,3.0,2.0,1.5,3.0,2.0,1.5,False,False,False,,,False,,,bs<1
+Narglatch,4.0,2,,Bite,26.0,2.0,13.0,60.0,3.0,20.0,False,False,True,1.0,,True,0.30,,
+Neebray,0.2,1,bite,Bite,2.5,2.0,1.25,2.5,2.0,1.25,False,False,False,,,False,,,bs<1
+Nuna,0.6,1,beak,Bite,6.0,2.0,3.0,6.0,2.0,3.0,True,False,False,,,False,,,bs<1
+Ollopom,0.6,2,bite,Bite,8.0,2.0,4.0,8.0,2.0,4.0,True,False,False,,,True,0.0,,bs<1
+Orray,2.0,2,,Bite,28.0,2.0,14.0,30.0,2.12,14.15,False,False,True,1.0,,True,0.30,,
+PaintedSpat,1.5,1,beak,Bite,16.0,2.0,8.0,22.5,1.84,12.23,False,False,True,0.25,,True,0.05,,
+PekoPeko,2.5,2,strong beak,Bite,16.0,2.0,8.0,37.5,2.37,15.82,False,False,False,,,False,,,
+Pikobis,0.6,1,beak,Bite,8.0,2.0,4.0,8.0,2.0,4.0,False,False,False,,,False,,,bs<1
+Pufferpig,0.5,1,head,Blunt,10.0,2.0,5.0,10.0,2.0,5.0,True,False,False,,,False,,,bs<1
+Qormot,1.0,3,,Bite,10.0,2.0,5.0,15.0,1.5,10.0,False,False,True,1.0,,True,0.6,,
+Raxshir,3.5,2,,Bite,16.0,2.0,8.0,52.5,2.81,18.68,False,False,True,1.00,,True,0.60,,
+Rikknit,0.3,0,left claw,Scratch,8.0,2.0,4.0,8.0,2.0,4.0,False,False,True,0.10,,False,,,bs<1
+Roggwart,5.0,2,teeth,Bite,26.0,2.0,13.0,75.0,3.35,22.39,False,False,True,1.0,,True,0.6,,
+Ronto,6.0,3,head,Blunt,28.0,2.0,14.0,90.0,3.67,24.52,True,True,True,0.25,0.9,True,0.05,0.4,
+Rycrit,0.85,0,,Bite,16.0,2.0,8.0,16.0,2.0,8.0,False,False,False,,,False,,,bs<1
+Runyip,1.5,3,head,Blunt,16.0,2.9,5.52,22.5,1.84,12.23,True,True,True,0.40,0.9,False,,0.4,
+Scavrat,0.5,2,,Bite,8.0,2.0,4.0,8.0,2.0,4.0,False,False,False,,,False,,,bs<1
+Scurrier,0.2,2,,Bite,4.0,2.0,2.0,4.0,2.0,2.0,False,False,False,,,False,,,bs<1
+Shaak,2.0,0,head,Blunt,12.0,2.9,4.14,30.0,2.12,14.15,True,True,False,,0.9,False,,0.4,
+Shiro,0.5,0,beak,Bite,9.0,2.5,3.6,9.0,2.5,3.6,False,False,True,0.25,,True,0.05,,bs<1
+ShiroTrap,0.75,0,beak,Bite,12.0,2.5,4.8,12.0,2.5,4.8,False,False,True,0.25,,True,0.05,,bs<1
+Shyrack,0.75,2,,Bite,9.0,2.0,4.5,9.0,2.0,4.5,False,False,True,1.00,,True,0.75,,bs<1
+Silooth,3.0,0,mandibles,Blunt,25.0,2.0,12.5,45.0,2.6,17.31,True,True,True,0.1,0.9,True,0.20,0.4,
+Skalder,4.0,0,tusk,Scratch+Stab,25.0,2.6,9.62,60.0,3.0,20.0,True,True,True,1.0,1.0,False,,0.4,
+Sketto,0.4,2,beak,Bite,12.0,2.0,6.0,12.0,2.0,6.0,False,False,False,,,False,,,bs<1
+Snoruuk,0.5,0,head,Blunt,2.0,2.0,1.0,2.0,2.0,1.0,False,False,False,,,False,,,bs<1
+Squall,0.3,0,,Bite,4.0,2.0,2.0,4.0,2.0,2.0,True,False,False,,,False,,,bs<1
+Stintaril,0.5,2,,Bite,12.0,2.0,6.0,12.0,2.0,6.0,False,False,True,1.0,,True,0.10,,bs<1
+Strill,1.0,2,,Bite,18.0,2.0,9.0,15.0,1.5,10.0,False,False,True,1.00,,True,0.40,,
+Tach,0.5,2,,Bite,8.0,2.0,4.0,8.0,2.0,4.0,True,False,True,0.10,,True,0.10,,bs<1
+TeeMuss,2.1,0,head,Blunt,12.0,2.9,4.14,31.5,2.17,14.52,True,True,False,,0.9,False,,0.4,
+TetnissCrab,0.5,0,,Scratch+Stab,5.0,2.0,2.5,5.0,2.0,2.5,False,False,True,1.0,,True,0.0,,bs<1
+Thranta,4.0,1,head,Blunt,18.0,2.0,9.0,60.0,3.0,20.0,False,False,True,0.10,,True,0.10,,
+Tibidee,12.0,4,tail,Blunt,32.0,2.2,14.55,180.0,5.2,34.62,True,True,True,1.00,1.0,True,0.05,0.4,
+Tooke,0.1,2,,Bite,5.0,2.0,2.5,5.0,2.0,2.5,False,False,True,0.10,,False,,,bs<1
+Torton,6.0,0,,Bite,28.0,2.6,10.77,90.0,3.67,24.52,False,False,True,1.0,,True,0.20,,
+Taozin,6.0,0,spiked-tail,Blunt+Stab,24.0,2.2,10.91,90.0,3.67,24.52,False,False,True,1.0,,True,0.5,,
+Tukata,4.0,2,poisonous fangs,ToxicBite,26.0,2.0,13.0,60.0,3.0,20.0,False,False,True,1.00,,True,0.40,,
+TuskCat,3.0,2,,Bite,16.0,2.0,8.0,45.0,2.6,17.31,False,False,True,0.50,,True,0.30,,
+Urusai,0.75,1,beak,Bite,10.0,2.0,5.0,10.0,2.0,5.0,False,False,False,,,False,,,bs<1
+Uvak,3.0,2,beak,Bite,16.0,2.0,8.0,45.0,2.6,17.31,False,False,True,1.0,,True,0.40,,
+Vapaad,4.0,2,left toxic tentacle,Scratch+ScratchToxic,14.0,1.5,9.33,60.0,3.0,20.0,False,False,True,1.00,,True,0.30,,
+Varactyl,3.0,3,head,Blunt,16.0,2.0,8.0,45.0,2.6,17.31,True,True,True,0.25,0.9,True,0.10,0.4,
+Veermok,2.0,0,left fist,Blunt+Scratch,18.0,1.5,12.0,30.0,2.12,14.15,False,False,True,1.00,,True,0.70,,
+Voorpak,0.35,2,,Bite,6.0,2.0,3.0,6.0,2.0,3.0,False,False,False,,,False,,,bs<1
+Vornskyr,2.0,3,,Bite,20.0,2.0,10.0,30.0,2.12,14.15,False,False,True,1.00,,True,0.30,,
+Warbird,5.0,0,serrated beak,Bite,24.0,2.0,12.0,75.0,3.35,22.39,False,False,True,1.0,,True,0.40,,
+WarWyrm,15.0,0,,ToxicBite,45.0,3.0,15.0,225.0,5.81,38.73,False,False,True,1.0,,True,0.95,,
+Whisperbird,0.4,1,beak,Bite,8.0,2.0,4.0,8.0,2.0,4.0,False,False,False,,,False,,,bs<1
+WompRat,0.75,0,left claw,Scratch,8.5,2.0,4.25,8.5,2.0,4.25,False,False,False,,,False,,,bs<1
+Woolamander,0.75,2,,Bite,12.0,2.0,6.0,12.0,2.0,6.0,True,False,True,0.10,,True,0.10,,bs<1
+Worrt,0.6,2,prehensile tongue,Bite,8.0,2.0,4.0,8.0,2.0,4.0,False,False,False,,,False,,,bs<1
+Wraid,3.0,0,left claw,Blunt+Scratch,16.0,1.5,10.67,45.0,2.6,17.31,False,False,True,1.0,,True,0.30,,
+Wyyyschokk,3.0,0,fanged chelicerae,Bite,20.0,2.0,10.0,45.0,2.6,17.31,False,False,True,1.0,,True,0.80,,
+Yobshrimp,0.4,0,,Scratch+Stab,6.0,2.0,3.0,6.0,2.0,3.0,False,False,True,0.5,,True,0.0,,bs<1
+Zakkeg,5.0,2,,Bite,26.0,2.0,13.0,75.0,3.35,22.39,False,False,True,1.00,,True,0.60,,
+Zeer,3.0,0,horn,Scratch+Stab,16.0,2.0,8.0,45.0,2.6,17.31,True,True,True,0.10,0.9,True,0.05,0.4,

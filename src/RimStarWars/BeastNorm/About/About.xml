@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimStarWars: Beast Danger Normalization</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.rsw.beastnorm</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Law 3 of the beast normalization pass (design/Jawa/worldbuilding/beast_normalization_spec.md): casual lethality with counterplay for the 105 SW beasts at bodySize >= 1 from Star Wars Animal Collection (Continued).
+
+Best-hit melee damage on each animal's hardest tool goes linear with bodySize (power = 15 x bodySize). Cooldown on that same tool is lengthened so overall DPS from it stays sublinear (10 x sqrt(bodySize)) - burst lethality, not shredding. Aggression is unchanged; "docile until provoked" is expressed instead through raised manhunterOnDamageChance / manhunterOnTameFailChance on the 32 big herbivores (bodySize >= 1.5, no carnivore diet tag), which previously sat far below the predators' own values.
+
+The 55 beasts under bodySize 1 are untouched - Law 3 is explicitly scoped to bs >= 1.
+
+Manifest-driven: design/Jawa/worldbuilding/data/beast_norm_manifest.csv is the decision record, generated from the donor mod's own XML (not from a cached census, which had drifted stale against the current mod set). Every operation is a PatchOperationConditional keyed to the beast's own defName, so this mod no-ops harmlessly if a beast is renamed or removed upstream.
+
+Coefficient (K=15, top of the owner-ruled 12-15 range) was picked from a live quicktest (unarmored colonist, single Blunt hit via jawa/damage): a single hit at this magnitude reliably causes serious injury but is bimodal between "survives, badly hurt" and "dies outright" rather than a clean single-hit down - RimWorld's downed state does not scale smoothly with raw damage. See BEAST_DANGER_NORMALIZATION_1 for the full measurement.</description>
+
+  <modDependencies>
+    <li>
+      <packageId>mlie.starwarsanimalcollection</packageId>
+      <displayName>Star Wars Animal Collection (Continued)</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/3497316713</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+
+  <loadAfter>
+    <li>mlie.starwarsanimalcollection</li>
+  </loadAfter>
+</ModMetaData>
