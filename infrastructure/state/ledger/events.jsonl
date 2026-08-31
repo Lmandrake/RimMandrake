@@ -3330,3 +3330,6 @@
 {"seat":"BENCH","event":"file","id":"RENAME_VERIFY_WINDOW_1","title":"Rename verification at next game window: refresh.py dump rebuild + re-fingerprint, validate_patch --live/--defs on all patch mods, magenta texture sweep, 22s minimal-list load; then rid/xtp validate_save_artifact","kind":"task","target":"v1","needs":"game-up","spec":"design/NAMING_SCHEME_PLAN.md","for":"FOUNDRY","ts":"2026-08-31T06:27:04Z"}
 {"seat":"OWNER","event":"close","id":"NAMING_SCHEME_EXECUTION_1","sha":"54a8e28d","ownerSaid":"Deploy the full rename.","ts":"2026-08-31T06:27:13Z"}
 {"seat":"FOUNDRY","event":"close","id":"SELFTEST_DRIFT_REPAIR_1","sha":"e1e2a0f7","ts":"2026-08-31T06:34:26Z"}
+{"seat":"FOUNDRY","event":"claim","id":"DUMP_DRAWSIZE_CAPTURE_1","ts":"2026-08-31T06:34:36Z"}
+{"seat":"FOUNDRY","event":"start","id":"DUMP_DRAWSIZE_CAPTURE_1","ts":"2026-08-31T06:34:36Z"}
+{"seat":"FOUNDRY","event":"close","id":"DUMP_DRAWSIZE_CAPTURE_1","sha":"5a553293","ts":"2026-08-31T06:35:28Z"}

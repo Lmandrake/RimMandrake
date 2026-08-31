@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-31T06:34:26Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-31T06:35:28Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -210,16 +210,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/BEAST_DANGER_NORMALIZATION_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/BEAST_DANGER_NORMALIZATION_1.md
-
-## DUMP_DRAWSIZE_CAPTURE_1 Widen measure/dumpdb.py GraphicData capture to include drawSize (whole-population field gap, verified); unblocks the bodySize-visual normalization (Law 1)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  DUMPDRAWSIZECAPTURE1 — RimDefDump was skipping every Unity value struct, not just GraphicData
-prose:    infrastructure/state/items/DUMP_DRAWSIZE_CAPTURE_1.md
 
 ## DEPTHS_ODYSSEY_VERIFY_1 Odyssey source read gating the Depths: vacuum pipeline patchability, vacsuit stat gating, leak/flood-fill, orbital mapgen + arrival families; plus SwimmingKit 1.6 status and Lane-1 license checks
 state:    proposed
