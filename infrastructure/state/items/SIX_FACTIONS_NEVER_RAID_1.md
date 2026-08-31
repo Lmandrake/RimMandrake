@@ -1,204 +1,129 @@
-# SIX_FACTIONS_NEVER_RAID_1 — eight authored factions and two VANILLA ones spawn no raiders
+# SIX_FACTIONS_NEVER_RAID_1 — SOLVED: the Raid Protection Fee mod eats the raid and opens a modal
 
-🔴 **READ THE 2026-08-30 LIVE SECTION AT THE BOTTOM FIRST.** The title above and the
-2026-08-27 table below are both WRONG, and the reason is named there: the harness that
-produced them could not make a faction hostile, so all 18 "firings" were substituted
-raids under another flag. The measured fact is now: **`Jawa_HuttCartel` never raids
-either, and neither do vanilla `Pirate` and `CASacrilegHunters`** — while `Empire`,
-`Insect`, `OutlanderCivil` and `TribeCivil` raid 8/8 on the same map, same tick, same
-points. This is not a property of the factions this repo authors.
+🔴 **ANSWER, measured live 2026-08-30 (FOUNDRY, pass 3), with causal proof:**
+A raid fired at certain factions does not fail — **it is replaced by an extortion dialog.**
+`Leo.RaidProtectionFee` (`leo.raidprotectionfee`, "Raid Protection Fee", workshop
+`3650927927`) prefixes `IncidentWorker_RaidEnemy.TryExecuteWorker` and ends with:
 
+    Find.WindowStack.Add(new Dialog_NodeTree(val4, true, true, null));
+    __result = true;
+    return false;
 
-## The 2026-08-27 run is RETRACTED
-It recorded each authored faction as the sole hostile, then three `fire_raid` firings
-each, and reported the Hutt raiding while six others delivered nothing. **None of those
-factions was ever hostile** — see §1 of the 2026-08-30 section — so every firing was
-substituted onto a different faction and the table measured nothing about its subjects.
-Its three derived conclusions ("not hostility", "not the pawn kinds", "not the group
-makers") are superseded by the live reads below, which re-established the last two
-properly and refuted the first. Provenance is in git.
+It opens a *"pay N silver or be raided"* `Dialog_NodeTree`, **sets `__result = true`**, and
+returns `false` so vanilla never runs. The raid happens only when a human answers the modal
+(**Reject** → `ResumeRaid` + `SetCooldown(faction, 60000)`; **Accept** → trade, no raid).
 
-⚠️ One thing from that run survives and is still true: `resolved.faction` on a `fire_raid`
-response ECHOES THE REQUEST (`FIRE_RAID_ECHOES_REQUESTED_FACTION_1`). Read `actual` and
-`arrived`, which the tool now returns and which are counted off the map.
+⇒ **Not ours. Not a def. Not the ideo. Not the pawn group maker. Not a campaign bug.**
+It is a mod feature that a bridge-driven firing can never answer, because nothing clicks.
 
-## 2026-08-30 (FOUNDRY), pass 1 — the engine gate read, from source only
+## The causal proof
+Live, Map_0, paused, `ticksGame` 4236, 590 mods, dialogs cleared before each firing,
+`jawa/window_list_close` counting `Verse.Dialog_NodeTree` on the window stack:
 
-### The gate, named: `PawnGroupMakerUtility.UsableFactions`
-`Source/RimWorld/PawnGroupMakerUtility.cs:355` is the only place the engine decides which
-factions may source a combat group. A faction must satisfy **all** of:
+| faction | Dialog_NodeTree | Lord | pawns arrived |
+|---|---|---|---|
+| `Pirate` | 0 → **1** | 3 → 3 | **0** |
+| `Empire` | 0 → 0 | 3 → **4** | **33** |
+| `Salvagers` | 0 → **1** | 3 → 3 | **0** |
+| `AM_EnemyPirate` | 0 → **1** | — | **0** |
+| `TribalHostile` | 0 → **1** | — | **0** |
+| `DP_GenericHostile` | 0 → **1** | — | **0** |
+| `Entities` | 0 → 0 | — | **0** ← separate cause, see below |
 
-    !Hidden · !temporary · !defeated · def.humanlikeFaction · HostileTo(player)
-    def.pawnGroupMakers != null
-    def.pawnGroupMakers.Any(x => x.kindDef == PawnGroupKindDefOf.Combat)
-    !def.raidsForbidden
-    points >= def.MinPointsToGeneratePawnGroup(Combat)
+The failing factions produce **exactly one extortion dialog instead of a raid**; the working
+faction produces **no dialog and a real raid**. Evidence and scripts:
+`Transient/six_factions_2026_08_30/` (decompile: `decomp/ProtectionFee.cs`).
 
-`TryGetRandomFactionForCombatPawnGroup` (line 360) is its only caller of consequence.
+## Why every earlier symptom now makes sense
+- **`executed: true` with zero pawns.** `jawa/fire_raid` sets
+  `executed = incident.Worker.TryExecute(parms)`. The prefix assigns `__result = true`
+  explicitly. The item was right that a Harmony patch had to be in the path — this is it.
+- **Silent.** No `Log.Error`, no letter, no Lord. The mod logs nothing; it opens a window.
+- **0.07 s, deterministically.** Successes take 0.3–14 s; every failure returned in
+  0.06–0.08 s. It only pushes a window.
+- 🔑 **The per-world FLIP.** `WorldComponent_ProtectionFee.factionCooldowns` is a
+  `Scribe_Collections`-saved `Dictionary<int,int>` keyed by **`faction.loadID`** and compared
+  against `TicksGame`. `OnCooldown(f)` true ⇒ prefix returns `true` ⇒ **normal raid**.
+  `loadID` is assigned at worldgen, so the cooldown set differs per world and decays with
+  time. **That is the entire "which factions fail flips between sessions" mystery** — and it
+  is why the 122-field FactionDef diff correctly found nothing.
+- **Non-humanlike factions are exempt:** `if (!HostileTo(player) || !def.humanlikeFaction)
+  return true;` — matches `Mechanoid` and `Insect` raiding 8/8 all along.
+- **Non-hostile factions are exempt too**, which is why every *substituted* firing "worked".
 
-### ✅ `Jawa_DeepwaterCompact` is ANSWERED — `raidsForbidden = true`
-Read live off the def, 585-mod set: Deepwater is the **only** one of the seven with
-`raidsForbidden: true`. `UsableFactions` filters on `!def.raidsForbidden`, so the
-storyteller can never select it, and `TimedDetectionRaids` skips it too
-(`Planet/TimedDetectionRaids.cs:51`). ⇒ **Deepwater will never raid in play, by design of
-its own def.** Whether that is what the owner wants is a separate question and belongs to
-whoever owns the faction spec; mechanically it is not a bug and needs no further probing.
-⚠️ Pass 2 read the same field live off `OutlanderCivil`, which carries `raidsForbidden:true`
-in this load and raids 8/8 under an explicit firing — so the flag bears on STORYTELLER
-selection only, exactly as this section says, and never on `fire_raid`.
+Settings: no `Mod_3650927927_*` file exists, so the mod runs on **defaults** —
+`factionExtortionChances` returns **1.0 for every faction** and
+`incidentSourceEnabledStatus["RaidEnemy"]` defaults **true**. Extortion is on for every
+humanlike hostile faction that is not on cooldown.
 
-### ⛔ The points gate is REFUTED as an explanation — do not re-test it
-`MinPointsToGeneratePawnGroup(Combat)` resolves to the cheapest `isFighter` option's
-`combatPower` (`PawnGenOption.Cost => kind.combatPower`). Computed for all five remaining
-factions off their own rosters:
+## The one faction this does NOT explain
+`Entities` (Anomaly, `humanlikeFaction: false`, hidden) bypasses the fee, opens no dialog,
+spawns nothing, and logs nothing. It is not a raiding faction — it carries no usable Combat
+group maker for this path. Benign; not pursued. Everything else is accounted for.
 
-    Jawa_GeonosianFoundryHive   Jawa_Geonosian_Grunt      56
-    Jawa_Junkers                Jawa_Junkers_Grunt        56
-    Jawa_WildsteamClan          Jawa_Wildsteam_Specialist 82
-    Jawa_FreeDroidEnclaves      Jawa_Droid_Grunt          90
-    Jawa_AscendantHelix         Jawa_Helix_Grunt         130
+## 🔴 The harness defect that produced three retracted tables
+**`jawa/fire_raid` at a faction that is not hostile silently substitutes another faction**
+(`actual.substituted: true`). In the 2026-08-30 pass-3 census, all ten `hostile=False`
+factions — every `Jawa_*` among them — reported `substituted: true` and "succeeded" as
+somebody else. **Only `hostile=True` rows are real tests.** Read `actual.substituted`
+before believing any row. This is the same defect that voided 2026-08-27, in a new costume.
 
-Every one clears the 3000 points the firings used by **more than twentyfold**. Also
-checked and clean: all five set `humanlikeFaction` true, and the two factions with only
-**2** `pawnGroupMakers` (Geonosian, Junkers) are missing the **Trader** maker, not the
-Combat one — both carry an intact 4-option Combat maker.
+Real, non-substituted results on this world: `Empire` · `Mechanoid` · `Insect` ·
+`AncientsHostile` · `HoraxCult` raid; `Pirate` · `Salvagers` · `AM_EnemyPirate` ·
+`TribalHostile` · `DP_GenericHostile` are extorted; `Entities` is inert.
 
-### 🔴 The correction that matters: none of the above can explain the 18 firings
-`IncidentWorker_RaidEnemy.TryResolveRaidFaction` (lines 58-73) returns **true immediately**
-when `parms.faction` is already set and hostile:
+## Hypotheses killed, with the measurement that killed each
+- ⛔ **The ideo / meme xenotypeSet hypothesis** (the item's own leading candidate).
+  `jawa/faction_ideo_get` on all 15 factions: **every one shares the identical ideo** —
+  `Astropolitan`, `ideoId 18`, **`memeCount 0`**, `classicMode true`. Failing and working
+  factions have byte-identical ideo input, so `PawnGenerator.XenotypesAvailableFor` cannot
+  separate them. Dead.
+- ⛔ **`ChoosePawnGenOptionsByPoints` weight-zero.** Never reached — the raid is cancelled
+  above it, at `TryExecuteWorker`. (The silent-zero path is real in vanilla and worth
+  remembering, but it is not this.)
+- ⛔ **FactionDef lists.** `pawnGroupMakers` count, `techLevel`, `permanentEnemy`,
+  `raidsForbidden`, `hidden`, `humanlikeFaction`, `earliestRaidDays`, arrival-layer lists
+  read live for all 11: `Pirate` has 8 group makers and fails, `AncientsHostile` has 1 and
+  works. Nothing separates them.
+- ⛔ **`Faction Raid Cooldown`** (`mlie.factionraidcooldown`) patches
+  `FactionCanBeGroupSource`, which `TryResolveRaidFaction` **never reaches** when
+  `parms.faction` is pre-set. Cannot affect an explicit firing. *(It can still gate the
+  storyteller's own selection — untested, see below.)*
+- ⛔ **VE Outposts `InterceptRaid`** — no outposts exist in this world.
+- ⛔ **MultiRaiders / SWCP / Rimesis / TabulaRasa** group-maker patches — all downstream of
+  a cancellation that happens before them.
 
-    if (parms.faction != null && parms.faction.HostileTo(Faction.OfPlayer)
-        && (!parms.faction.deactivated || parms.forced))
-        return true;
+## Step 4 — the storyteller path: NOT cleanly testable here, and I am not asserting either way
+`jawa/storyteller_fire RaidEnemy` returns **`canFireNow: false` for every faction**, working
+ones included (`Empire` as well as `Pirate`), on this 3-colonist scratch quicktest whose
+default threat points are 232 against the 3000 requested. The gate is not faction-specific,
+so it proves nothing about the escalation. **What can be said from the source:** the
+`ProtectionFee` prefix sits on `TryExecuteWorker` and does not care how the incident was
+chosen, so a storyteller-chosen raid from a humanlike hostile faction off cooldown will get
+the same extortion dialog — which in real play is the mod **working as designed**, because a
+human is there to answer it. Proving that needs a real colony with enough threat points.
 
-`fire_raid` names the faction, so `UsableFactions` is never reached — `raidsForbidden`,
-`MinPointsToGeneratePawnGroup` and the whole line-355 filter are **bypassed** on the exact
-path the 18 firings took. ⇒ The empty firings are **downstream of faction resolution**, in
-pawn-group generation, the raid strategy, or the arrival mode. Every FactionDef-field
-hypothesis is now exhausted; the def is not where the answer is.
-
-⭐ Consequence for whoever picks this up: the two findings above are about **play**
-(the storyteller's own selection), not about `fire_raid`. Deepwater is answered for play
-and still unexplained for `fire_raid`, like the other five.
-
-### A map WAS available — pass 2 found one and used it
-`rimworld/get_game_info` reported `mapCount: 1` on a scratch quicktest colony already
-loaded in the running game. No world generation and no restart were needed. ⇒ Before
-budgeting a quicktest load for this kind of item, **ask the bridge whether a map is
-already up**; the campaign save being world-only says nothing about the live session.
-
-## 2026-08-30 (FOUNDRY), pass 2 — LIVE RAIDS FIRED. The premise is refuted; the split is not ours
-
-Measured on the running 590-entry game, Map_0, paused, `ticksGame` 1176→4236, three
-colonists, ~90 raids fired. Evidence, with the firing scripts and the full 122-field def
-dumps: `infrastructure/state/evidence/raid_split_2026-08-30/`.
-
-### 🔴 1. The 2026-08-27 evidence is VOID — the factions were never hostile
-`jawa/set_faction_relation kind=Hostile` **cannot make an ordinary faction hostile.** It
-calls `Faction.SetRelationDirect`, and `RimWorld/Faction.cs:641` opens with
-
-    if (HasGoodwill && other.HasGoodwill) { Log.Error("Tried to use SetRelationDirect
-        for factions which use goodwill..."); return; }
-
-`HasGoodwill` is `!Hidden && !temporary` — true for every ordinary faction and for the
-player — so the setter **returns without writing**. Its sibling `goodwill=` parameter
-writes `rel.baseGoodwill` on ONE side and never calls `FactionRelation.CheckKindThresholds`,
-so goodwill −100 sits under `kind = Neutral` and `HostileTo` stays FALSE. ⭐ The tool
-reports this honestly — `kind:{was:Neutral, now:Neutral, asked:Hostile, ok:false}`,
-`success:false`, `hostileToPlayer:false` — it was simply not read.
-⇒ Every 2026-08-27 firing hit `TryResolveRaidFaction`'s substitution path. Reproduced
-live: requesting `Jawa_HuttCartel` this way delivered **19 `Empire` pawns**,
-`substituted:true`.
-✅ **`jawa/faction_relations_set` (JawaBenchWorldTools) is the correct tool** — it writes
-both records and fires `Notify_RelationKindChanged` itself. Use it, never the older one.
-
-### 2. With real hostility, `substituted:false` every time — and still nothing arrives
-Forced `strategy=ImmediateAttack`, `arrivalMode=EdgeWalkIn`, 3000 points, 8 consecutive
-firings each, pawns counted off `map.mapPawns.AllPawnsSpawned` and the map cleared between:
-
-    Empire                8/8   (27–35 pawns)      Jawa_HuttCartel            0/8
-    Insect                8/8   (29–44)            Jawa_Junkers               0/8
-    OutlanderCivil        8/8   (26–47)            Jawa_AscendantHelix        0/8
-    TribeCivil            ✅     (69–78)            Jawa_FreeDroidEnclaves     0/8
-    TradersGuild          4/8   (19–20)            Jawa_IndigenousTribes      0/N
-    ⛔ Pirate             0/8    ← VANILLA          Jawa_WildsteamClan         0/N
-    ⛔ CASacrilegHunters  0/8    ← a MOD's faction  Jawa_GeonosianFoundryHive  0/N
-                                                   Jawa_DeepwaterCompact      0/N
-
-🔑 **The Hutt Cartel is on the failing side, and two factions this repo did not author are
-there with it.** The 2026-08-27 asymmetry does not exist. `Jawa_DeepwaterCompact`
-behaves exactly like the other seven under `fire_raid`, `raidsForbidden` notwithstanding
-— and `OutlanderCivil` carries `raidsForbidden:true` in this load and raids 8/8, so that
-field is confirmed irrelevant to an explicit-faction firing.
-
-### 3. What the failure looks like, from the inside
-- `executed:true`, `substituted:false`, `actual.faction` = the one requested.
-- **No Lord is created** (`jawa/lord_pawn_move action=list` count unchanged), no pawns,
-  no letter. Working factions add exactly one `LordJob_AssaultColony`.
-- **Not a points gate:** 70 · 150 · 400 · 1000 · 3000 · 10000 · 30000 → 0 at every value
-  for Hutt and Trade Moot; `OutlanderCivil` produced pawns at all of them.
-- **Not the strategy:** `jawa/raid_preview` with each as the SOLE hostile reports
-  `ImmediateAttack · ImmediateAttackSmart · StageThenAttack · Siege · VREA_Archon…`
-  usable for Hutt and Pirate exactly as for Empire.
-- **Not the kinds:** all 49 roster `PawnKindDef`s read live — every one found,
-  `isFighter:true`, sane `combatPower`. `Jawa_Empire_*` (Empire) and `Jawa_DeepDesert_*`
-  (TribeCivil) are OUR kinds and they raid fine.
-- **Not any FactionDef scalar:** all 122 public fields read live off 7 defs and diffed
-  failing-vs-working — **zero fields separate the two groups**.
-- **Nothing is logged.** `drain_log` (fresh process, buffer alive, `contains=` verified
-  working) finds none of `Exception while generating pawn group` · `Got no pawns` ·
-  `Cannot generate pawns for` · `no usable PawnGroupMakers` · `Pawn generation error`.
-- The `Isekai Raid` mod logs `Hostile group incoming! Points: 3000, Faction: X, Type:
-  ImmediateAttack` for BOTH groups, then per-pawn grading and `Processed N hostile pawns,
-  Lord: LordJob_AssaultColony` only for the working ones.
-- `jawa/fire_incident RaidEnemy` reproduces the same split, so it is not `fire_raid`.
-
-### 4. Where the mechanism has to be, and why it needs the game DOWN
-Three vanilla paths can end a raid with an empty group; two of them `Log.Error`, and
-neither error appears. The third is silent: `PawnGroupMakerUtility.ChoosePawnGenOptionsByPoints`
-breaks out of its loop when `TryRandomElementByWeight` finds every candidate at weight 0
-(weight = `selectionWeight × xenotypeChance × PawnWeightFactorByMostExpensivePawnCostFractionCurve`),
-and `PawnGroupKindWorker_Normal.GeneratePawns` then returns an empty list with no message.
-⚠️ That is a HYPOTHESIS, not a finding — nothing on the bridge can see inside it, and
-`executed:true` on a zero-pawn raid is impossible in vanilla 1.6
-(`IncidentWorker_Raid.TryGenerateRaidInfo` returns false), so at least one Harmony patch
-is already in the path.
+## Consequences
+- **Campaign: no defect.** In play the player sees the dialog and chooses. Reject → the raid
+  proceeds and the faction goes on a 60000-tick (~1 in-game day) cooldown, after which it
+  raids normally again.
+- **Bridge testing: a real trap.** Any unattended `fire_raid` at a humanlike hostile faction
+  off cooldown reports `executed: true`, spawns nothing, and leaves a `forcePause: true`
+  modal on the stack. This is the `stale-modal-blocks-every-later-call` lesson recurring:
+  **the variable was a window nobody checked.** Cleared with
+  `jawa/window_list_close {action:close, typeName:Dialog_NodeTree, closeAll:true}`.
+- Follow-up filed: `FIRE_RAID_REPORTS_MODAL_1` — `jawa/fire_raid` should diff the window
+  stack across the firing and report a dialog that swallowed the raid instead of
+  `executed: true`.
 
 ## criteria
-- [x] The 2026-08-27 table is retracted, with the harness defect that produced it named
-      from the engine (`Faction.SetRelationDirect` refuses goodwill-bearing pairs).
-- [x] `Jawa_DeepwaterCompact` — `raidsForbidden:true` keeps it out of
-      `PawnGroupMakerUtility.UsableFactions` and so out of STORYTELLER selection. Still
-      true, still not a bug. It does not explain the `fire_raid` result, and this load
-      shows `OutlanderCivil` raiding with the same flag set.
-- [ ] The mechanism. **Next step, in order, and neither is another def read:**
-      1. On a minimal / dependency-scoped tier (`modset_builder.py`), quicktest map, fire
-         at `Jawa_HuttCartel` and at vanilla `Pirate`. If both raid, the defect is a mod
-         in the 590 stack and the job becomes bisecting it — `Isekai Raid` first, it is
-         demonstrably in the path. If both stay empty, it is ours after all.
-      2. If a live read inside generation is still needed, add ONE companion tool
-         (`rimbridge-companion`) that, for a named faction, reports in one call:
-         `TryGetRandomPawnGroupMaker` → chosen maker; `PawnGroupMaker.CanGenerateFrom`;
-         `PawnGroupMakerUtility.AnyOptions`; `GetOptions(...).Count` with each entry's
-         `Cost`, `SelectionWeight` and xenotype; and `GeneratePawnKindsExample`. That
-         names the gate directly instead of inferring it.
-      Both need the game CLOSED (a companion DLL cannot deploy while it runs), so this
-      item is parked on the next game-down window.
-
-### 5. 🔑 The polarity FLIPS between worlds — so it is not a def property at all
-`EMPIRE_RAID_NEVER_GENERATES_1` measured, on 2026-08-29 and a different world,
-**`Empire` failing 4/4 while `Pirate` succeeded first try.** This session, same call,
-different world: **`Empire` 8/8, `Pirate` 0/8.** The two factions that item contrasted
-are both reversed. ⇒ Which faction yields an empty pawn group is **per-world state**, not
-a FactionDef field — consistent with the 122-field diff finding nothing.
-⭐ The one input to pawn-group weighting that is generated per world rather than read from
-a def: the **ideo**. `PawnGenerator.XenotypesAvailableFor` folds
-`faction.ideos.PrimaryIdeo.memes[].xenotypeSet` in beside `factionDef.xenotypeSet`, and its
-chances become the `SelectionWeight` multiplier that `ChoosePawnGenOptionsByPoints` can
-drive to zero. HYPOTHESIS, untested — but it is the first one that survives the flip.
-
-## ⚠️ Escalation — this is bigger than the item
-If a faction that yields an empty pawn group under an explicit firing also yields one
-under the storyteller, then **8 of 15 factions in this world, including vanilla `Pirate`,
-can never send a raid in play.** That was not tested (the storyteller path was not
-exercised) and it would be a campaign-level defect, not a bridge curiosity.
+- [x] The 2026-08-27 table is retracted, with its harness defect named.
+- [x] `Jawa_DeepwaterCompact` — `raidsForbidden: true` keeps it out of
+      `PawnGroupMakerUtility.UsableFactions` and so out of STORYTELLER selection. Not a bug.
+- [x] **The mechanism.** `Leo.RaidProtectionFee`'s prefix on
+      `IncidentWorker_RaidEnemy.TryExecuteWorker` replaces the raid with a `Dialog_NodeTree`
+      and returns `__result = true`. Proven causally by window-stack diff, explained down to
+      the saved per-world `factionCooldowns` that made the polarity flip.
+- [x] Ours or a mod: **a mod**, and one that is behaving as designed.
+- [x] State restored — dialogs closed, map cleared, game paused at tick 4236,
+      `ModsConfig.xml` never modified (no minimal tier was needed; no restart was needed).

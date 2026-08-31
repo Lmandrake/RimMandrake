@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-31T03:14:22Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-31T03:28:27Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -33,7 +33,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     bug
-summary:  SIXFACTIONSNEVERRAID1 — eight authored factions and two VANILLA ones spawn no raiders
+summary:  SIXFACTIONSNEVERRAID1 — SOLVED: the Raid Protection Fee mod eats the raid and opens a modal
 prose:    infrastructure/state/items/SIX_FACTIONS_NEVER_RAID_1.md
 
 ## EMPIRE_RAID_QUICKTEST_1 Quicktest proof of the full Empire reskin: fire RaidEnemy as vanilla Empire (pass points explicitly; read faction from the REPLY, not the request), verify Jawa_Empire kinds in OuterRim armor, Emperor/Palpatine via fixedLeaderKinds, Rising Order ideo, and NO OuterRim_GalacticEmpire faction on the world — criteria preserved at V2_DREAMS C2 strike
@@ -185,7 +185,7 @@ needs:    deploy
 target:   v1
 kind:     bug
 blocked:  mechanism unnamed; parked on a game-down window (minimal-tier bisect, then a pawngroup-preview companion tool)
-summary:  SIXFACTIONSNEVERRAID1 — eight authored factions and two VANILLA ones spawn no raiders
+summary:  SIXFACTIONSNEVERRAID1 — SOLVED: the Raid Protection Fee mod eats the raid and opens a modal
 prose:    infrastructure/state/items/SIX_FACTIONS_NEVER_RAID_1.md
 
 ## EMPIRE_RAID_QUICKTEST_1 Quicktest proof of the full Empire reskin: fire RaidEnemy as vanilla Empire (pass points explicitly; read faction from the REPLY, not the request), verify Jawa_Empire kinds in OuterRim armor, Emperor/Palpatine via fixedLeaderKinds, Rising Order ideo, and NO OuterRim_GalacticEmpire faction on the world — criteria preserved at V2_DREAMS C2 strike
@@ -289,3 +289,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/TILE_STRUCTURE_DESIGNS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/TILE_STRUCTURE_DESIGNS_1.md
+
+## FIRE_RAID_REPORTS_MODAL_1 jawa/fire_raid must report a modal that swallowed the raid, not executed:true
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/FIRE_RAID_REPORTS_MODAL_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FIRE_RAID_REPORTS_MODAL_1.md
