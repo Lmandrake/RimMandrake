@@ -253,6 +253,12 @@ ship is written fresh under our own namespaces. If verbatim asset reuse ever
 looks worthwhile, the route is asking the author (GravTide's About.xml links a
 Discord), not lifting.
 
+**Wider scan:** the owner-commissioned three-domain sweep (disk · Steam · GitHub
+with licenses) lives in `design/Jawa/mods/underwater_donor_scan_2026-08-31.md` —
+headline: Ocean Biome (subscribed) is a second full reference architecture, and
+an MIT trio (RimworldSwimming, RimNauts2, Vehicle-Framework) is the legal
+ingestion pool.
+
 **What the survey changes upstream:** §2's bet is proven (GravTide exists);
 §5's drowning/pressure/drag stack should be built as stats + DefModExtensions
 *because* that is what lets §7's genes switch it off per-race; and the
