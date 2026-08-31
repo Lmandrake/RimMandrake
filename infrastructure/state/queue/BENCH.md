@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-31T17:47:15Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-31T18:01:44Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -35,15 +35,6 @@ target:   v1
 kind:     task
 summary:  Owner ruled 2026-08-31: all six §5 roles, and the three predator roles are the
 prose:    infrastructure/state/items/SW_SEA_MONSTERS_ART_1.md
-
-## CAI_FOG_DEEP_DIVE_1 CAI fog-of-war deep dive: full exploration of the mod for general gameplay (combat AI promises) AND underwater short-sight needs; big integration, be thorough
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  (no items/CAI_FOG_DEEP_DIVE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/CAI_FOG_DEEP_DIVE_1.md
 
 # BLOCKED — something is WRONG and someone must act
 

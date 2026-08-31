@@ -78,7 +78,14 @@ provenance/cadence unverified. Anomaly/Odyssey coverage of the AI is
 undocumented anywhere; the fork's changelog snippet claims gravship-preview
 and pocket-map fixes (unverified).
 
-## The decision — three viable routes
+## The decision — 🔴 RULED by the owner, 2026-08-31 (question cards)
+
+**Route B: CAI combat AI + NWN fog (CAI's own fog toggled OFF), and
+`memegoddess.searchanddestroy` is DROPPED** — CAI's combat AI supersedes what
+S&D bolts on. Integration work: `FOW_ROUTE_B_INTEGRATION_1`. The S&D drop also
+lands in the outgrown-mod audit as a settled retire.
+
+The menu as it was put to him:
 
 | route | what it buys | what it costs |
 |---|---|---|

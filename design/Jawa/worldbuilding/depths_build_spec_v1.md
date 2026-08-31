@@ -25,10 +25,15 @@ weapon gate. Everything else is defs.
    That mod needs full exploration. It promised much improved pawn combat
    experiences and real fog of war. Go ahead and do a deep dive now both for
    general gameplay as well as wrt underwater needs. It's a big integration so
-   be thorough."* ⇒ Neither defer-blind nor build-our-own: the deep dive
-   (`CAI_FOG_DEEP_DIVE_1`) decides whether CAI's fog-of-war layer carries the
-   lamp-cone rule. v1's dark/lure mechanics (§2, §3) do not wait on it; the
-   sight-cap section of this spec is updated when that item lands.
+   be thorough."* ⇒ The dive is DONE
+   (`design/Jawa/mods/cai_fog_deep_dive_2026-08-31.md`) and the owner ruled
+   **Route B: CAI combat AI + NWN Real Fog of War** (CAI's own fog off; S&D
+   dropped). The lamp-cone rides NWN's glow-native fog (Apache-2.0 —
+   absorbable if we ever need to own it): permanent-dark seafloor + lamps
+   should produce the cone through its `NightVisionEffectiveness`/glow model,
+   with a per-map view-range clamp as the fallback if configuration alone
+   overshoots. Verified during `FOW_ROUTE_B_INTEGRATION_1`'s quicktests; v1's
+   dark/lure mechanics (§2, §3) do not wait on it.
 
 ## 1. Mod shape and naming (three-tier, per NAMING_SCHEME_PLAN)
 

@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-31T17:47:15Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-31T18:01:44Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -244,4 +244,14 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-_none._
+Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
+
+## FOW_ROUTE_B_INTEGRATION_1 Execute FoW route B: enable Krkr.rule56 (fork 3673768803, CAI fog OFF in settings) + Mlie.NWNRealFogOfWar, drop memegoddess.searchanddestroy, load-order placement per start-prep skill, minimal-list quicktest matrix (night raid + Sighter lamp + fog visuals) before full-list ride; evidence in design/Jawa/mods/cai_fog_deep_dive_2026-08-31.md
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/FOW_ROUTE_B_INTEGRATION_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FOW_ROUTE_B_INTEGRATION_1.md
