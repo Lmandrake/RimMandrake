@@ -38,13 +38,26 @@ raided normally here: **39 pawns**, `windowsOpened []`, `blockedByDialog false`.
 removed, and the faction that could never raid raids. That is the causal closure of
 `SIX_FACTIONS_NEVER_RAID_1` from the other direction.
 
-## The animals are global, and not ours
+## The animals are global, and not ours — and the injector is named
 One to four extra pawns per raid are ANIMALS carrying the raiding faction's flag
 (`AA_*` = Alpha Animals, plus `Tibidee`, `Dinocrocuta`, `JRWBagaceratops`). **The vanilla
 `Pirate` control got three of them too**, and none of these appears in any authored
 `pawnGroupMaker` (all eight authored FactionDefs use `<pawnGroupMakers Inherit="False">`).
-⇒ a mod on this stack adds beasts to every raid on the planet. Not a defect in the
-authored factions, and not in scope here.
+
+🔑 **`co.uk.epicguru.factionloadout` — "Rimsential - Total Control: Continued"** (workshop
+`3063465133`, active at index 471 of 585). It is a C# Harmony assembly, not an XML patch: its
+`PawnGroupMakerEdit` / `GetOrInitPawnGroupMakerEdits` machinery rewrites a faction's group
+maker at generation time and draws from **`AllAnimalKindDefs`** — the live DefDatabase — which
+is why the species differ per raid and track whatever animal mods are installed, and why a
+`RelationWithExtraPawnChanceFactor` makes the count vary 0-3 (`Jawa_Junkers` rolled zero).
+⚠️ String-level evidence off the assembly, not a decompiled trace of the patch target.
+Ruled out by direct check: `Samael.NPCMechsAndAnimals` (vanilla defNames only, never
+`Jawa_*`, never animals on `Pirate`), VFE's `TileMutatorWorker_ExtraAnimal` (faction-less
+wildlife), `Van.Beasts`, `Mlie.BeastsoftheRim`, `sk.gravshipraids`,
+`Ingendum.RaiderSwarmCompression`. A grep of ~29,000 XML files across the active mod folders
+found the injected defNames in **no** `pawnGroupMakers` context at all.
+⇒ Global, additive, and not a defect in the authored factions. What it does NOT do here is
+displace our kinds: every humanlike in every row is still ours.
 
 ## `Jawa_DeepwaterCompact` raids when told to, and still will not raid in play
 Its def carries `raidsForbidden: true`, which keeps it out of
@@ -77,9 +90,12 @@ the two factions share no abstract parent, no PatchOperation in the repo or the 
 tree touches the Hutt's group makers, and the only file naming both is
 `Patches/GalacticEmpire.xml`, where `Jawa_HuttCartel` appears solely inside `Empire`'s
 `permanentEnemyToEveryoneExcept` list. Repo and deployed copies are byte-identical.
-**Seven raids this session produced no foreign humanlike kind at all.** Recorded, not
-chased; the same one-extra-pawn shape as the global animal injection is the obvious next
-suspect if it ever recurs.
+**Seven raids this session produced no foreign humanlike kind at all.**
+🔑 **The best remaining suspect is the same mod as the animals:**
+`co.uk.epicguru.factionloadout` rewrites `pawnGroupMaker`s at generation time and carries a
+`RelationWithExtraPawnChanceFactor`, i.e. a chance to add an EXTRA pawn beyond the group —
+which is exactly the one-pawn-in-159 shape, and it explains why no XML route exists to find.
+Not chased further; if it recurs, that assembly is where to look, not our defs.
 
 ## State restored
 All `Jawa_*` relations returned to `Neutral` / goodwill 0. The map, world and save are a

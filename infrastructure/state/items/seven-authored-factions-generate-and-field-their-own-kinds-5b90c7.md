@@ -68,11 +68,16 @@ control proves it from the other side: `Pirate`, extorted to zero pawns on every
 pass, raided for **39 pawns** here with the one mod removed
 (`SIX_FACTIONS_NEVER_RAID_1`).
 
-### The animals are global, not ours
+### The animals are global, not ours — `co.uk.epicguru.factionloadout`
 One to four extra pawns per raid are ANIMALS under the raiding faction's flag (`AA_*` =
 Alpha Animals, plus `Tibidee`, `Dinocrocuta`, `JRWBagaceratops`). **The vanilla `Pirate`
-control got three too.** None is in any authored `pawnGroupMaker`. A mod on this stack
-adds beasts to every raid on the planet; out of scope here.
+control got three too.** None is in any authored `pawnGroupMaker`, and a grep of ~29,000
+XML files across the active mods finds them in no `pawnGroupMakers` context at all.
+The injector is **"Rimsential - Total Control: Continued"** (`co.uk.epicguru.factionloadout`,
+workshop `3063465133`, active) — a Harmony assembly whose `PawnGroupMakerEdit` machinery
+rewrites group makers at generation time and draws from `AllAnimalKindDefs`, with a
+`RelationWithExtraPawnChanceFactor` that makes the count vary 0-3. Additive, global, and it
+displaces none of our kinds.
 
 ### `Jawa_DeepwaterCompact` — both halves of the design hold
 `raidsForbidden: true` keeps it out of `PawnGroupMakerUtility.UsableFactions` and so out of
@@ -87,7 +92,10 @@ the two factions share no abstract parent, no PatchOperation in the repo or the 
 tree touches the Hutt's group makers, and the only file naming both is
 `Patches/GalacticEmpire.xml`, where `Jawa_HuttCartel` sits solely inside `Empire`'s
 `permanentEnemyToEveryoneExcept` list. Repo and deployed copies are byte-identical.
-**Seven raids here produced no foreign humanlike kind at all.** Recorded, not chased.
+**Seven raids here produced no foreign humanlike kind at all.** 🔑 The best remaining
+suspect is the same assembly as the animals: `co.uk.epicguru.factionloadout` carries a
+`RelationWithExtraPawnChanceFactor` — a chance to add ONE extra pawn beyond the group, which
+is exactly the one-in-159 shape and explains why no XML route exists. Not chased further.
 
 ### 🔴 The harness defect this round found — it voided the round's own first pass
 **`jawa/set_faction_relation` cannot make these factions hostile.** It moves goodwill to
