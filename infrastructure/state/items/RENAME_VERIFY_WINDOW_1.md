@@ -92,7 +92,23 @@ a 585-mod / 9,160-def-file load set. Full output:
 ⛔ **`--live` was deliberately NOT passed.** It resolves against the DefDump, which holds
 pre-rename names — it would have reported the whole rename as broken.
 
-RESULT_PLACEHOLDER
+**PASS — 436 files, 10 errors, 5629 warnings, 0 of them rename-related.**
+
+All 10 errors are missing donor texPaths inside Armoury's absorbed KotOR content
+(`guy762_OrbMote`, `guy762_throwngrenade_foam`, `guy762_PoweredWallBase` ×2,
+`guy762_DoubleAutoDoorBase`, `KOTOR_Mineable`, `KotORDart_stun/_toxic/_saber`,
+`BulletDeflected`) — the same pre-migration set the texture sweep found, traceable to
+`dede5dc0` and earlier. 5,444 of the warnings are the benign "inner xpath differs from
+the conditional test" add-if-missing shape; the rest are patch-created nodes and
+multi-match notes.
+
+**Cross-checked mechanically, not by eye:** every token in the 12,127-line output was
+intersected with the `old` column of `naming_rename_map.csv`. 22 names matched, and all
+22 are accounted for — 8 are mod FOLDER names appearing in file paths, 3 are identity
+rows where old == new (`RM_OpenPitBase`, `RM_PitCellBase`, `RM_PitDigSiteBase`), and 11
+are `TBD_SPLIT` rows belonging to Jawa_Patches, which Phase 3 has not triaged yet and
+which is parked on purpose. **No def, packageId or namespace that should have been
+renamed is still being referenced by its old name.**
 
 ### 2a. the check nobody listed — **does the C# still compile?**
 
@@ -240,8 +256,23 @@ diffs against it.
 | `mandrake.missingartfixes` in `src/Jawa/README.md`, `harvest_log.py`, `KotORBandolierNorthFix/About/About.xml` | the mod is retired and no longer in `src/` or the live list; all three are prose |
 | docs under `design/`, `infrastructure/state/facts/`, `canon.yml`, `V1_CHAIN.md`, `LOAD_PROCEDURE.md` | doc propagation, Phase 3's scope — not touched here |
 
+## what a load still owes
+
+| owed | why it cannot be done from here |
+|---|---|
+| §4, the 22 s minimal-list load | launching or closing the game is the owner's act, and the running process is a pre-rename session |
+| §1, a fresh def capture | the dump is armed before launch and written at startup |
+| §5, a clean `validate_save_artifact` on the `.xtp` | it resolves against that capture |
+| `NAMESPACE_PAIR_DEPLOY_1` | assemblies cannot be written while the game holds them open |
+
 ## state
 
-`doing` — blocked on one thing only: **a fresh game load**, which closes §4 outright and
-converts §1's and §5's UNMEASURED halves into measurements. Everything achievable
-without the game is done and pushed.
+`blocked` on a game load. Everything reachable without one is done, deployed where it
+could be, and pushed: two mod lists and RimSort's two databases repaired, two magenta
+texPaths fixed and deployed, two mods that could not compile made to build, a live
+EmpirePursuit break repaired and deployed, 45 stale XML type references fixed and held
+with their rebuilt assemblies, and validate_patch clean across 436 files.
+
+Commits: `0fda62c9` (mod lists) · `8d96b8b3` (texPaths, skill docs) · `838a41ff`
+(lessons) · `e2fdf908` (namespaces, EmpirePursuit, holds) · `644cd945` (nine
+assemblies) · `7edae811` (`NAMESPACE_PAIR_DEPLOY_1`).

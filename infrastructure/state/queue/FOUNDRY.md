@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-31T07:24:12Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-31T07:25:52Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -127,7 +127,7 @@ summary:  Full specs, both ruled by the owner 2026-08-30: design/Jawa/coveredpit
 prose:    infrastructure/state/items/RIMMANDRAKE_PITS_BUILD_1.md
 
 ## RENAME_VERIFY_WINDOW_1 Rename verification at next game window: refresh.py dump rebuild + re-fingerprint, validate_patch --live/--defs on all patch mods, magenta texture sweep, 22s minimal-list load; then rid/xtp validate_save_artifact
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    game-up
 target:   v1
@@ -188,6 +188,16 @@ kind:     task
 blocked:  sequenced with Droidworks phase 3 (droid_system_build_spec.md line 186) — parked behind DROID_SYSTEM_BUILD_1 which needs owner to reopen
 summary:  (no items/DROID_TILES_SOURED_TERRAIN_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DROID_TILES_SOURED_TERRAIN_1.md
+
+## RENAME_VERIFY_WINDOW_1 Rename verification at next game window: refresh.py dump rebuild + re-fingerprint, validate_patch --live/--defs on all patch mods, magenta texture sweep, 22s minimal-list load; then rid/xtp validate_save_artifact
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+blocked:  needs a POST-rename game load: the running session launched pre-rename, and launching is the owner's act
+summary:  RENAMEVERIFYWINDOW1 — proving the three-tier rename end to end
+prose:    infrastructure/state/items/RENAME_VERIFY_WINDOW_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
@@ -297,6 +307,6 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/NAMESPACE_PAIR_DEPLOY_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  At the next game-down window, lift the block headed
 prose:    infrastructure/state/items/NAMESPACE_PAIR_DEPLOY_1.md

@@ -3344,3 +3344,4 @@
 {"seat":"FOUNDRY","event":"start","id":"RENAME_VERIFY_WINDOW_1","ts":"2026-08-31T07:10:46Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-08-31T07:23:57Z"}
 {"seat":"FOUNDRY","event":"file","id":"NAMESPACE_PAIR_DEPLOY_1","title":"Lift the DEPLOY_HOLD namespace block: the four mods' XML and their rebuilt assemblies deploy together, never apart","kind":"task","target":"v1","needs":"deploy","caused_by":"RENAME_VERIFY_WINDOW_1","for":"FOUNDRY","ts":"2026-08-31T07:24:12Z"}
+{"seat":"FOUNDRY","event":"block","id":"RENAME_VERIFY_WINDOW_1","reason":"needs a POST-rename game load: the running session launched pre-rename, and launching is the owner's act","ts":"2026-08-31T07:25:52Z"}
