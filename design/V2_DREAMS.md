@@ -785,10 +785,15 @@ state:    ready
 
 The Deep Desert Tribes' signature is a raid that targets water containers and
 disengages once loaded. v1 ships the COMPOSITION only — a light, fast, chiefless
-party. The behaviour needs a custom `RaidStrategyDef` with a C# worker class:
-measured 2026-08-14, all 18 live `RaidStrategyDef`s are attack, breach, siege or
-mod-specific, and none steals and leaves. Vanilla's `LordJob` layer is where the
-steal-and-withdraw behaviour would have to be built.
+party. ✅ **CORRECTED 2026-08-31 (deeper source read; spec now lives at
+`infrastructure/state/items/TUSKEN_WATER_RAID_1.md`):** the 2026-08-14 line
+below understated what ships. All 18 live `RaidStrategyDef`s are indeed
+attack/breach/siege — but the LordJob layer ALREADY composes
+attack→steal→leave (`LordJob_AssaultColony(canSteal:true)` +
+`LordJob_Steal`'s subgraph + `JobDriver_TakeAndExitMap` exiting on
+completion). Only the water-TARGETING predicate is ours to write
+(`StealAIUtility` scores pure market value with no def filter). Small build,
+not a from-scratch behaviour.
 
 ## A salvage-built weapon tier, as blasters
 
