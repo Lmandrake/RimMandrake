@@ -3372,3 +3372,5 @@
 {"seat":"FOUNDRY","event":"claim","id":"ISHKO_DARK_LANDMARKS_1","ts":"2026-08-31T15:49:09Z"}
 {"seat":"FOUNDRY","event":"start","id":"ISHKO_DARK_LANDMARKS_1","ts":"2026-08-31T15:49:09Z"}
 {"seat":"FOUNDRY","event":"close","id":"ISHKO_DARK_LANDMARKS_1","sha":"f814989af0a6818dbc4371847879f1b6d152595e","ts":"2026-08-31T15:55:38Z"}
+{"seat":"FOUNDRY","event":"claim","id":"NINEFOLD_ENGINE_M0_1","ts":"2026-08-31T15:59:41Z"}
+{"seat":"FOUNDRY","event":"start","id":"NINEFOLD_ENGINE_M0_1","ts":"2026-08-31T15:59:41Z"}
