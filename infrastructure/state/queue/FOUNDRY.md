@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-31T06:35:28Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-31T06:36:21Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -116,15 +116,6 @@ target:   v1
 kind:     task
 summary:  Phase 2 prep per design/Jawa/pawnflavordesign.md § Open questions, item 6: a
 prose:    infrastructure/state/items/PAWN_FLAVOR_PHASE2_PROSE_1.md
-
-## GRAFFITI_MOD_EXPANSION_1 Assess the subscribed graffiti mod, then expand it: sacred graffiti, socially infuriating/amusing graffiti, beautiful graffiti
-state:    doing
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-summary:  Scope notes (BENCH, filing sitting 2026-08-30)
-prose:    infrastructure/state/items/GRAFFITI_MOD_EXPANSION_1.md
 
 ## RIMMANDRAKE_PITS_BUILD_1 Build RimMandrake Pits: core framework mod (dig stages, terrain-mimic covers, mass triggers, struggle escape, fitting family, holding-platform pit cell) + campaign layer; first step is the spawn-mass quicktest matrix on the 22s minimal list
 state:    doing
@@ -260,3 +251,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/RENAME_VERIFY_WINDOW_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/RENAME_VERIFY_WINDOW_1.md
+
+## GRAFFITI_FRAMEWORK_BUILD_1 Build mandrake.rm.graffiti (SUPERSEDES Mlie.GraffitiMod - absorb spree, retire from modlist, VERIFY license before asset reuse) + mandrake.rut.marks: five families, taunt funnel in v1, faint-scrawl cant
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/GRAFFITI_FRAMEWORK_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/GRAFFITI_FRAMEWORK_BUILD_1.md

@@ -187,9 +187,19 @@ tag YOUR walls on the way out — and scrubbing THEIRS is a devotion).
 
 ## 7. Owner rulings requested
 
-1. The orthogonality ruling (§0): sacred ≠ beautiful — confirm.
-2. Companion-not-supersede (§2) — confirm.
-3. Taunt power level: is breach-at-the-taunt funneling (the lure synergy)
-   v1-worthy or dream-tier?
-4. Cant visibility: strictly clan-only rendering, or faint "something is
-   scrawled here" for enemies (readable menace vs true invisibility)?
+✅ ALL FOUR RULED (owner cards, 2026-08-31):
+1. Orthogonality CONFIRMED — sacred ≠ beautiful; the fall-triad's marks are
+   allowed to be disturbing.
+2. **SUPERSEDE NOW — overriding this spec's companion recommendation.** We
+   absorb the vandal-spree mechanic into our own framework C# and RETIRE
+   Mlie.GraffitiMod from the mod list at build time. Build implications:
+   our JobDriver/JoyGiver own the spree (no Harmony redirect needed after
+   all), the base mod's six vandal textures are replaced or re-licensed
+   (VERIFY the mod's license before any asset reuse — flag in the build
+   item), and the whole family ships as one mod: `mandrake.rm.graffiti`
+   plus the `mandrake.rut.marks` content pack.
+3. Taunt funneling is V1 — breach-at-the-taunt ships with the family; the
+   raid-AI breach-bias hook is built once and shared with the engine's
+   Ishko-delivers work.
+4. Cant renders as a FAINT SCRAWL to outsiders — they see that marks exist,
+   never what they mean.
