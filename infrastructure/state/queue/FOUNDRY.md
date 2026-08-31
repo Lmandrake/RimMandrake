@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-31T00:40:18Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-08-31T00:48:55Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -289,3 +289,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/SEAS_WATERLINE_PASS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SEAS_WATERLINE_PASS_1.md
+
+## TILE_STRUCTURE_DESIGNS_1 Make and improve the promise/whisper structure designs per the roster (22+22): rimplace templates + GenStep_RimplacePlan responder (VERIFY terrain/roof ordering); coverage lint = no promise without responder
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/TILE_STRUCTURE_DESIGNS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/TILE_STRUCTURE_DESIGNS_1.md
