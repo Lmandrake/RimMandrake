@@ -139,6 +139,11 @@ through me…") + a CQF DialogTree on a quested vanilla persona core. The person
 
 ## PART B — RimDialogue "Additional Instructions": dynamic Jawaese (A/B vs. JawaVoice)
 
+> ⚠️ **MEASURED 2026-08-31: RimDialogue is not on this disk** — zero hits across
+> all 1258 workshop About.xml; only its Bubbles dependency is present. This
+> section's prompt targets a mod that must be subscribed before the A/B can
+> run. `cj.rimtalk` (subscribed) is an uninventoried alternative lane.
+
 ### B.0 How RimDialogue consumes this (from the unpacked source)
 
 RimDialogue (`ProceduralProducts.RimDialogue`, 1.6, deps Harmony + Jaxe's Interaction Bubbles
