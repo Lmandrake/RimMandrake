@@ -1,3 +1,12 @@
+# AUTHORED_FACTION_RAID_SPAWNS_NOTHING_1 — settled; the answer is elsewhere
+
+🔑 **Both criteria below are MET, and the evidence is in two other files.** The zero-pawn
+firings were `Leo.RaidProtectionFee` replacing the raid with a modal (`SIX_FACTIONS_NEVER_RAID_1`),
+and `jawa/fire_raid` no longer reports `executed: true` for a raid a dialog ate — it returns
+`blockedByDialog` (`FIRE_RAID_REPORTS_MODAL_1`). All seven authored factions have since raided
+as themselves with their own kinds, one firing each:
+`infrastructure/state/evidence/seven_faction_raids_2026-08-31_FOUNDRY.md`.
+
 # AUTHORED_FACTION_RAID_SPAWNS_NOTHING_1 — the raid fires and nobody comes
 
 Measured live 2026-08-27, seat BUILD, 582 mods, paused scratch map.
