@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimMandrake: Colony Visibility</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.rm.visibility</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>The Colony Visibility dial (design/Jawa/worldbuilding/colony_visibility_stat.md, F18/F12): a shared 0-100 GameComponent stat, read by a five-band ladder (Hidden/Discreet/Noticed/Marked/Exposed), that multiplies hostile threat-point sizing instead of stacking on top of vanilla's wealth scaling.
+
+Rehomed and rebuilt from COLONY_VISIBILITY_STAT_1's earlier work (which lived inside mandrake.rut.doctrine) into its own dedicated mod per this item's own naming - the mechanism is engine-generic; Ash'karr-specific triggers (Ishko/Sh'kaar/Ta'Baa/Ozzik) are a separate RUT-tier content pack's job, calling into this mod's Adjust().
+
+Ta'Baa's launch reset (a real Harmony postfix on GravshipUtility.GenerateGravship) is wired. The threat-point multiplier targets hostile-only call sites per the owner's 2026-08-31 ruling closing the global-vs-threat-scoped fork.</description>
+
+  <loadAfter>
+    <li>brrainz.harmony</li>
+  </loadAfter>
+
+  <modDependencies>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+    </li>
+  </modDependencies>
+</ModMetaData>

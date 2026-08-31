@@ -25,17 +25,12 @@ namespace RimMandrake.Utinni.Doctrine
                 Log.Error("[RimMandrake.Utinni.Doctrine] Failed to apply patches: " + ex);
             }
 
-            try
-            {
-                // COLONY_VISIBILITY_STAT_1 - safe-core GameComponent needs no
-                // patch to register (see ColonyVisibility.cs), but the F12
-                // raid-point replacement and Ta'Baa launch-reset hook do.
-                ColonyVisibilityRaidPatch.Apply(harmony);
-            }
-            catch (Exception ex)
-            {
-                Log.Error("[RimMandrake.Utinni.Doctrine] Failed to apply Colony Visibility patches: " + ex);
-            }
+            // COLONY_VISIBILITY_STAT_1's ColonyVisibility.cs / ColonyVisibilityRaidPatch.cs
+            // moved out to their own dedicated mod, mandrake.rm.visibility
+            // (COLONY_VISIBILITY_BUILD_1), which also supersedes the raid-point
+            // technique (a transpiler on one call site -> a Prefix on
+            // IncidentWorker.TryExecute, hostile-worker-type-scoped). See
+            // src/RimMandrake/Visibility/Source/.
         }
     }
 
