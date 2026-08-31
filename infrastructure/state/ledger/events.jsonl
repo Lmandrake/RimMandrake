@@ -3318,3 +3318,5 @@
 {"seat":"FOUNDRY","event":"file","id":"TERRITORY_ROAD_WEIGHTED_SCALE_1","title":"Faction territories: bigger, road-weighted (owner's live ask)","kind":"task","target":"v1","needs":"bridge","for":"FOUNDRY","ts":"2026-08-31T04:22:50Z"}
 {"seat":"FOUNDRY","event":"claim","id":"TERRITORY_ROAD_WEIGHTED_SCALE_1","ts":"2026-08-31T04:23:00Z"}
 {"seat":"FOUNDRY","event":"start","id":"TERRITORY_ROAD_WEIGHTED_SCALE_1","ts":"2026-08-31T04:23:00Z"}
+{"seat":"FOUNDRY","event":"close","id":"FIRE_RAID_REPORTS_MODAL_1","sha":"7aabc1a3c9897c172d08e4dc986db8e614188ee0","ts":"2026-08-31T04:24:13Z"}
+{"seat":"FOUNDRY","event":"close","id":"seven-authored-factions-generate-and-field-their-own-kinds-5b90c7","sha":"7aabc1a3c9897c172d08e4dc986db8e614188ee0","ts":"2026-08-31T04:24:14Z"}

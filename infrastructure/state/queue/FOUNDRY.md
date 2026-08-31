@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-31T03:30:41Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-08-31T04:24:14Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
-The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## seven-authored-factions-generate-and-field-their-own-kinds-5b90c7 seven-authored-factions-generate-and-field-their-own-kinds-5b90c7
-state:    ready
-row:      9
-needs:    game-up
-target:   v1
-kind:     check
-summary:  Carries the live half of B45 · B46 · B47 · B48 · B49 · B50 · B51 — Hutt
-prose:    infrastructure/state/items/seven-authored-factions-generate-and-field-their-own-kinds-5b90c7.md
+Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
 
 # IN PROGRESS
 
@@ -143,6 +134,15 @@ target:   v1
 kind:     task
 summary:  Full specs, both ruled by the owner 2026-08-30: design/Jawa/coveredpittrapsspec.md
 prose:    infrastructure/state/items/RIMMANDRAKE_PITS_BUILD_1.md
+
+## TERRITORY_ROAD_WEIGHTED_SCALE_1 Faction territories: bigger, road-weighted (owner's live ask)
+state:    doing
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+summary:  1. Confirm the settings ARE live-settable without a restart (WriteSettings -
+prose:    infrastructure/state/items/TERRITORY_ROAD_WEIGHTED_SCALE_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -269,13 +269,3 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/TILE_STRUCTURE_DESIGNS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/TILE_STRUCTURE_DESIGNS_1.md
-
-## FIRE_RAID_REPORTS_MODAL_1 jawa/fire_raid must report a modal that swallowed the raid, not executed:true
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     bug
-thin:     no ## verify
-summary:  jawa/fireraid sets executed = incident.Worker.TryExecute(parms). A Harmony prefix can
-prose:    infrastructure/state/items/FIRE_RAID_REPORTS_MODAL_1.md
