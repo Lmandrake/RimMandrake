@@ -3309,3 +3309,12 @@
 {"seat":"FOUNDRY","event":"close","id":"SIX_FACTIONS_NEVER_RAID_1","sha":"b6b181b7","ts":"2026-08-31T03:29:04Z"}
 {"seat":"FOUNDRY","event":"unblock","id":"seven-authored-factions-generate-and-field-their-own-kinds-5b90c7","reason":"SIX_FACTIONS_NEVER_RAID_1 closed: the 18 empty firings were Leo.RaidProtectionFee swallowing the raid into a Dialog_NodeTree, not the authored kinds. Jawa_HuttCartel/Junkers/AscendantHelix, made genuinely hostile, show the identical dialog+0-pawn signature as vanilla Pirate. NOTE the raid criterion still cannot be proven via fire_raid while that mod is active and the faction is off cooldown - the modal is never answered. Prove it with the mod disabled, or via FIRE_RAID_REPORTS_MODAL_1.","ts":"2026-08-31T03:30:17Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-08-31T03:30:41Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","ts":"2026-08-31T03:41:08Z"}
+{"seat":"FOUNDRY","event":"claim","id":"FIRE_RAID_REPORTS_MODAL_1","ts":"2026-08-31T03:49:09Z"}
+{"seat":"FOUNDRY","event":"start","id":"FIRE_RAID_REPORTS_MODAL_1","ts":"2026-08-31T03:49:09Z"}
+{"seat":"FOUNDRY","event":"claim","id":"seven-authored-factions-generate-and-field-their-own-kinds-5b90c7","ts":"2026-08-31T03:49:10Z"}
+{"seat":"FOUNDRY","event":"start","id":"seven-authored-factions-generate-and-field-their-own-kinds-5b90c7","ts":"2026-08-31T03:49:10Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","ts":"2026-08-31T04:20:35Z"}
+{"seat":"FOUNDRY","event":"file","id":"TERRITORY_ROAD_WEIGHTED_SCALE_1","title":"Faction territories: bigger, road-weighted (owner's live ask)","kind":"task","target":"v1","needs":"bridge","for":"FOUNDRY","ts":"2026-08-31T04:22:50Z"}
+{"seat":"FOUNDRY","event":"claim","id":"TERRITORY_ROAD_WEIGHTED_SCALE_1","ts":"2026-08-31T04:23:00Z"}
+{"seat":"FOUNDRY","event":"start","id":"TERRITORY_ROAD_WEIGHTED_SCALE_1","ts":"2026-08-31T04:23:00Z"}
