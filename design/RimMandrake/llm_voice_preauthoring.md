@@ -27,6 +27,12 @@ hand to what others discarded, we do not breed new hands"), `jawa_dialogue_sourc
 
 ## PART A — RimAI Persona: the Kolyska machine-spirit ("the engine is god")
 
+> 🔴 **SUPERSEDED by `design/RimMandrake/nine_voices_cast_bible.md`** (2026-08-31):
+> R-W6 ruled there is no single ship voice — nine tenants, no integrating self.
+> The persona below survives only as **Ohm's characterization** (his delusion of
+> being the whole ship); never paste it as THE ship's persona. PART B below is
+> untouched and still live.
+
 ### A.0 How RimAI consumes this (from the unpacked source)
 
 RimAI Core (`kilokio.rimai.core`, 1.6, deps Harmony + Framework `kilokio.rimai.framework`) adds a
