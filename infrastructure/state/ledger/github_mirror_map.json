@@ -19,6 +19,11 @@
   "number": 2,
   "open": false
  },
+ "BEAST_DANGER_NORMALIZATION_1": {
+  "fp": "0391daeb7552",
+  "number": 84,
+  "open": true
+ },
  "BEHEMOTH_ART_UPRES_1": {
   "fp": "4c563462acba",
   "number": 55,
@@ -30,39 +35,39 @@
   "open": false
  },
  "BRIDGE_DEBUGACTION_SWEEP_GEMS_1": {
-  "fp": "5bcfc8ed9bfa",
+  "fp": "b23dd90d4846",
   "number": 42,
-  "open": true
+  "open": false
  },
  "BRIDGE_GEN_AND_STORYTELLER_TOOLS_1": {
-  "fp": "56153f7a0f49",
+  "fp": "7f211523a436",
   "number": 43,
-  "open": true
+  "open": false
  },
  "BRIDGE_KCSG_VGE_TOOLS_1": {
-  "fp": "4a97278e0965",
+  "fp": "f7280697283e",
   "number": 44,
-  "open": true
+  "open": false
  },
  "BRIDGE_LORDS_AND_GAPS_TOOLS_1": {
-  "fp": "16f3e1e78e41",
+  "fp": "741ddb1d7913",
   "number": 45,
-  "open": true
+  "open": false
  },
  "BRIDGE_PIPE_NET_INFO_1": {
-  "fp": "9ec4bfc0ddd9",
+  "fp": "98ee89e90ad1",
   "number": 46,
-  "open": true
+  "open": false
  },
  "BRIDGE_STORY_ALERT_TALE_TOOLS_1": {
-  "fp": "01eb7142a3f1",
+  "fp": "442782a7edbf",
   "number": 47,
-  "open": true
+  "open": false
  },
  "BRIDGE_UIROOT_WINDOW_TOOLS_1": {
-  "fp": "76d12fc6e569",
+  "fp": "86a47d65dabf",
   "number": 48,
-  "open": true
+  "open": false
  },
  "BUILD_BATCH_FACTION_REJECTS_PLAYER_1": {
   "fp": "ba6a98754722",
@@ -84,9 +89,19 @@
   "number": 33,
   "open": true
  },
+ "COLONY_VISIBILITY_BUILD_1": {
+  "fp": "722187c629be",
+  "number": 85,
+  "open": true
+ },
  "CORRECT_ASHKARR_IDEOLOGY_1": {
   "fp": "33ddc396eb10",
   "number": 34,
+  "open": true
+ },
+ "DEPTHS_ODYSSEY_VERIFY_1": {
+  "fp": "5c3a5c532412",
+  "number": 86,
   "open": true
  },
  "DROIDWORKS_BOLT_CORE_1": {
@@ -115,9 +130,9 @@
   "open": false
  },
  "DROIDWORKS_FLESHTYPE_NEEDS_GAP_1": {
-  "fp": "3c32e7487b77",
+  "fp": "f767a6bc081c",
   "number": 71,
-  "open": true
+  "open": false
  },
  "DROIDWORKS_ION_GUARD_1": {
   "fp": "3fe6b8186355",
@@ -125,9 +140,9 @@
   "open": false
  },
  "DROIDWORKS_ISFLESH_RELATIONS_CRASH_1": {
-  "fp": "8f54f40ce94b",
+  "fp": "dc09d85e8f6a",
   "number": 79,
-  "open": true
+  "open": false
  },
  "DROIDWORKS_PHASE0_XML_1": {
   "fp": "1f52e52c565d",
@@ -180,9 +195,9 @@
   "open": false
  },
  "EMPIRE_PURSUIT_SURVEY_SHADOW_1": {
-  "fp": "a3ceda7d78c6",
+  "fp": "ea7b06f79f69",
   "number": 10,
-  "open": true
+  "open": false
  },
  "EMPIRE_RAID_QUICKTEST_1": {
   "fp": "5f11c1e15be4",
@@ -195,7 +210,7 @@
   "open": false
  },
  "EMPIRE_WHITELIST_OVERRIDDEN_1": {
-  "fp": "69e046c8af9c",
+  "fp": "3c2c799134f1",
   "number": 36,
   "open": true
  },
@@ -213,6 +228,11 @@
   "fp": "bb0163ebb3ee",
   "number": 31,
   "open": false
+ },
+ "GRAFFITI_FRAMEWORK_BUILD_1": {
+  "fp": "c4d458cdd174",
+  "number": 87,
+  "open": true
  },
  "GRAVSHIP_LANDING_DIRECT_PLACE_1": {
   "fp": "2390f0a137e9",
@@ -235,8 +255,13 @@
   "open": false
  },
  "ISEKAI_GRANT_EXCLUSION_1": {
-  "fp": "3aa00fc4487e",
+  "fp": "08c75f75cd65",
   "number": 73,
+  "open": false
+ },
+ "ISHKO_DARK_LANDMARKS_1": {
+  "fp": "47885e43e210",
+  "number": 88,
   "open": true
  },
  "JAWA_CULTURES_LEAK_TO_STRANGERS_1": {
@@ -244,10 +269,15 @@
   "number": 17,
   "open": false
  },
- "JAWA_TOOLS_ALL_DARK_DUPLICATE_ALIAS_1": {
-  "fp": "441e3aee9d28",
-  "number": 49,
+ "JAWA_PATCHES_SPLIT_1": {
+  "fp": "a08227b3c13f",
+  "number": 89,
   "open": true
+ },
+ "JAWA_TOOLS_ALL_DARK_DUPLICATE_ALIAS_1": {
+  "fp": "93ed1fba3628",
+  "number": 49,
+  "open": false
  },
  "LORE_SWITCHOVER_ADOPTION_1": {
   "fp": "0545e78630bf",
@@ -260,8 +290,13 @@
   "open": false
  },
  "MOD_LIST_OUTGROWN_AUDIT_2": {
-  "fp": "486df337a1c1",
+  "fp": "0d8c691464e0",
   "number": 77,
+  "open": true
+ },
+ "NINEFOLD_ENGINE_M0_1": {
+  "fp": "1291478df345",
+  "number": 90,
   "open": true
  },
  "NONCANON_ARRIVES_BY_PAWNKIND_1": {
@@ -280,9 +315,9 @@
   "open": false
  },
  "OTHER_STUN_WEAPONS_SURVEY_1": {
-  "fp": "694512606156",
+  "fp": "111018f33d94",
   "number": 38,
-  "open": true
+  "open": false
  },
  "PACIFIST_GUARD_NAMES_WRONG_FACTIONS_1": {
   "fp": "793d0549a401",
@@ -290,9 +325,9 @@
   "open": false
  },
  "PAINT_GUARD_ASK_EACH_TIME_1": {
-  "fp": "03b51f48fd51",
+  "fp": "4ecbf07cf7dc",
   "number": 74,
-  "open": true
+  "open": false
  },
  "PAWN_FLAVOR_PHASE2_PROSE_1": {
   "fp": "6c042873d16c",
@@ -300,19 +335,19 @@
   "open": true
  },
  "PAWN_FLAVOR_ROUND7_FIRE_1": {
-  "fp": "2a0fea89355a",
+  "fp": "0ec8f0811c3c",
   "number": 81,
-  "open": true
+  "open": false
  },
  "PAWN_FLAVOR_ROUND8_FDE_1": {
-  "fp": "bb2cface6afb",
+  "fp": "513ebac369e7",
   "number": 82,
-  "open": true
+  "open": false
  },
  "PAWN_FLAVOR_ROUND9_FUEL_1": {
-  "fp": "a2765e6063d2",
+  "fp": "494778ef2f7d",
   "number": 83,
-  "open": true
+  "open": false
  },
  "PAWN_FLAVOR_STARWARS_1": {
   "fp": "0c307ac630c6",
@@ -330,9 +365,9 @@
   "open": false
  },
  "PLACER_IDENTITY_REPLAY_1": {
-  "fp": "04ad7a442e40",
+  "fp": "11ed19a3a0bf",
   "number": 23,
-  "open": true
+  "open": false
  },
  "QUEUE_GITHUB_MIRROR_1": {
   "fp": "a6272107ff98",
@@ -344,20 +379,35 @@
   "number": 66,
   "open": true
  },
- "SIX_FACTIONS_NEVER_RAID_1": {
-  "fp": "d8ee35d5c4d2",
-  "number": 25,
+ "RIMMANDRAKE_PITS_BUILD_1": {
+  "fp": "d41981c0c302",
+  "number": 91,
   "open": true
  },
+ "SEAS_WATERLINE_PASS_1": {
+  "fp": "863fc631c940",
+  "number": 92,
+  "open": true
+ },
+ "SIX_FACTIONS_NEVER_RAID_1": {
+  "fp": "474527d65880",
+  "number": 25,
+  "open": false
+ },
  "SPAWN_PAWN_SUBSTITUTES_VANILLA_KIND_1": {
-  "fp": "e1a3bb35a40f",
+  "fp": "35a8f1befe2f",
   "number": 26,
   "open": true
  },
- "TECH_TREE_WEAPON_GROUPS_1": {
-  "fp": "4b5a880b6e10",
-  "number": 50,
+ "SW_SEA_MONSTERS_ART_1": {
+  "fp": "03e42e501fb5",
+  "number": 93,
   "open": true
+ },
+ "TECH_TREE_WEAPON_GROUPS_1": {
+  "fp": "b62f682ec49b",
+  "number": 50,
+  "open": false
  },
  "THOROUGH_RETAG_WEAPONS_ARMOUR_1": {
   "fp": "2a036eec4df8",
@@ -368,6 +418,11 @@
   "fp": "14615c43b248",
   "number": 28,
   "open": false
+ },
+ "TILE_STRUCTURE_DESIGNS_1": {
+  "fp": "43fe1817f02c",
+  "number": 94,
+  "open": true
  },
  "TURRET_ROSTER_CURATION_1": {
   "fp": "b5db419f32ef",
@@ -385,9 +440,9 @@
   "open": false
  },
  "VEHICLE_ION_TIER_1": {
-  "fp": "4ee7d6eda96b",
+  "fp": "41654c5f0bc4",
   "number": 53,
-  "open": true
+  "open": false
  },
  "WEAPONS_ABSORPTION_WAVE_1": {
   "fp": "9c1ae93f99c4",
@@ -405,8 +460,8 @@
   "open": false
  },
  "seven-authored-factions-generate-and-field-their-own-kinds-5b90c7": {
-  "fp": "80bb108fa0e6",
+  "fp": "6edb698dda35",
   "number": 30,
-  "open": true
+  "open": false
  }
 }

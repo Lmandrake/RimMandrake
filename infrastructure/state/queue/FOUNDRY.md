@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-31T08:44:19Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-08-31T15:04:34Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -191,16 +191,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## BEAST_DANGER_NORMALIZATION_1 Build mandrake.rsw.beastnorm: Law 3 danger pass on the 161 SW beasts (best-hit 12-15x bodySize, sublinear DPS, revenge knobs) - manifest-driven, quicktest the coefficient first
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/BEAST_DANGER_NORMALIZATION_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BEAST_DANGER_NORMALIZATION_1.md
 
 ## DEPTHS_ODYSSEY_VERIFY_1 Odyssey source read gating the Depths: vacuum pipeline patchability, vacsuit stat gating, leak/flood-fill, orbital mapgen + arrival families; plus SwimmingKit 1.6 status and Lane-1 license checks
 state:    proposed

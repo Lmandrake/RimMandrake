@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-31T08:44:19Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-08-31T15:04:34Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -26,6 +26,15 @@ target:   v1
 kind:     task
 summary:  The next batched window scores everything below, then this closes and a fresh sheet is
 prose:    infrastructure/state/items/COLD_LOAD_RUN_SHEET_2.md
+
+## SW_SEA_MONSTERS_ART_1 SW sea-monster art pass with the owner: the Naboo trench trio + creature roles from depths_concept.md, born under beast-normalization Laws 3+4, tier RimStarWars
+state:    doing
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+summary:  Owner ruled 2026-08-31: all six §5 roles, and the three predator roles are the
+prose:    infrastructure/state/items/SW_SEA_MONSTERS_ART_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -52,13 +61,3 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/RESEARCH_TREE_NORMALIZATION_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/RESEARCH_TREE_NORMALIZATION_1.md
-
-## SW_SEA_MONSTERS_ART_1 SW sea-monster art pass with the owner: the Naboo trench trio + creature roles from depths_concept.md, born under beast-normalization Laws 3+4, tier RimStarWars
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SW_SEA_MONSTERS_ART_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/SW_SEA_MONSTERS_ART_1.md

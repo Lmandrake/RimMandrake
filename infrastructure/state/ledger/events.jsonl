@@ -3347,3 +3347,12 @@
 {"seat":"FOUNDRY","event":"block","id":"RENAME_VERIFY_WINDOW_1","reason":"needs a POST-rename game load: the running session launched pre-rename, and launching is the owner's act","ts":"2026-08-31T07:25:52Z"}
 {"seat":"FOUNDRY","event":"close","id":"NAMESPACE_PAIR_DEPLOY_1","sha":"6d50a65b","ts":"2026-08-31T08:44:19Z"}
 {"seat":"FOUNDRY","event":"close","id":"RENAME_VERIFY_WINDOW_1","sha":"6d50a65b","ts":"2026-08-31T08:44:19Z"}
+{"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-08-31T14:33:15Z"}
+{"seat":"BENCH","event":"seat","state":"ready","ts":"2026-08-31T14:37:09Z"}
+{"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-08-31T14:37:30Z"}
+{"seat":"FOUNDRY","event":"claim","id":"BEAST_DANGER_NORMALIZATION_1","ts":"2026-08-31T14:38:44Z"}
+{"seat":"FOUNDRY","event":"start","id":"BEAST_DANGER_NORMALIZATION_1","ts":"2026-08-31T14:38:44Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","ts":"2026-08-31T14:39:37Z"}
+{"seat":"BENCH","event":"claim","id":"SW_SEA_MONSTERS_ART_1","ts":"2026-08-31T15:00:53Z"}
+{"seat":"BENCH","event":"start","id":"SW_SEA_MONSTERS_ART_1","ts":"2026-08-31T15:00:57Z"}
+{"seat":"FOUNDRY","event":"close","id":"BEAST_DANGER_NORMALIZATION_1","sha":"374e6f4d0d26b17aca87402dad5fc150b0e5ed10","ts":"2026-08-31T15:04:34Z"}
