@@ -52,3 +52,23 @@ the owner present for the mod-list retirement call:**
 
 Left `doing`, not closed — this is a scoping/prerequisite pass, not a
 shipped slice.
+
+## 2026-08-31, second pass (FOUNDRY) — the data-layer engine piece built
+
+Built `mandrake.rm.graffiti` (`src/RimMandrake/Graffiti/`):
+`ModExtension_Graffiti` (a `DefModExtension`, not a parallel Def
+hierarchy — the same idiom SWCP_Core's `ModExtension_FactionPermanentlyHostileTo`
+uses, read this session while fixing `EMPIRE_WHITELIST_OVERRIDDEN_1`) with
+`category` (Sacred/Mural/Jest/Taunt/Cant), `visibility`
+(Public/ClanOnly per §1's Cant rule), `supportsQuality`, `hasSubject`,
+`tracksMaker`, a `viewerReactionThought` seam, and a `godSatiationHook`
+string field so a RUT content pack can call into `mandrake.rm.ninefold`'s
+`ApplyDelta` without this engine mod hard-depending on the pantheon.
+Builds clean (0 errors/warnings), deployed.
+
+**Deliberately still just the data layer — nothing reads these fields
+yet.** No JobDriver/JoyGiver, no ThoughtWorker, no raid-AI hook, no
+content (ships zero marks). This is the exact vocabulary the larger
+build (still not attempted solo, per the reasons above) will write
+against, mirroring `mandrake.rm.ninefold`'s own `Adjust()`-with-nothing-
+calling-it-yet shape. Left `doing`.

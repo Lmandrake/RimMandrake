@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimMandrake: Graffiti Framework (data layer)</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.rm.graffiti</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>The engine half of the graffiti program (design/Jawa/graffiti_spec.md): `ModExtension_Graffiti`, a data annotation any graffiti ThingDef can carry (category - Sacred/Mural/Jest/Taunt/Cant, quality support, maker/subject tracking, a viewer-reaction ThoughtDef seam, and a god-satiation-hook string a RUT content pack reads to call into mandrake.rm.ninefold).
+
+This is deliberately the DATA layer only. NOT built here (a larger, separate pass per infrastructure/state/items/GRAFFITI_FRAMEWORK_BUILD_1.md): the absorbed vandal-spree JobDriver/JoyGiver (the owner ruled Mlie.GraffitiMod's mechanic gets absorbed and that mod retired from the list - a live-modlist change, not done solo), the viewer ThoughtWorker that actually reacts to a mark being seen, and the taunt-driven raid breach-bias hook. Nothing here is wired to fire yet - it is the vocabulary future code writes against, same relationship mandrake.rm.ninefold's Adjust() has to its own not-yet-built event hooks.
+
+Ships no content (no marks, no murals, no jests) - mandrake.rut.marks and the existing mandrake.rm.sacredgraffiti are the content side.</description>
+
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+  </loadAfter>
+</ModMetaData>
