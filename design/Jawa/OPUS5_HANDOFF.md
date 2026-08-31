@@ -119,3 +119,46 @@ complete end to end) · the minify census CSV committed under
 - When a ruling here conflicts with anything older, this sprint's docs win —
   supersession pointers were written into `divine_satiation_engine.md`
   (§3c, §4, §4c, §4d) already; extend that discipline.
+
+## Reboot addendum — 2026-08-31, end of the Fable window (read this before the table above)
+
+The per-workstream table above is one day stale. What changed on the 31st:
+
+- **THE RENAME IS DONE.** Phase 2 executed: all mods live under
+  `src/{RimMandrake,RimStarWars,RimUtinni}/` with `mandrake.<tier>.<name>`
+  ids, `RM_/RSW_/RUT_` prefixes, nested namespaces; game side redeployed and
+  ModsConfig swapped. `naming_lint.py` = the gate (1 expected SPLIT
+  violation). 🔴 **The def dump is STALE against the new names — nothing
+  that reads the dump is trustworthy until RENAME_VERIFY_WINDOW_1 runs at
+  the next game-up** (refresh, re-fingerprint, validate_patch, magenta
+  sweep, minimal-list load). Phase 3 = JAWA_PATCHES_SPLIT_1.
+- **The ruling backlog is EMPTY.** Seven cards on the 31st: Ninefold M0
+  CALLED (provisional corpus — the owner redlines live letters, felt-only
+  diegesis, max-reign forces challenge, emergent first contact); Visibility
+  build called (threat-scoped, desert-remembers tile memory); beast Laws
+  2/3/4 ruled (engine mass, quicktest coefficient, armor-absorption hide);
+  stolen turrets redeploy degraded.
+- **Trap §2b re-scoped by the owner**: battlefield capture of enemy
+  defenses (traps lifted intact, sandbags, turrets, fuel nodes) — the old
+  minify whitelist sheet is DEAD, deleted, category rule instead.
+- **New spec families since the table**: the seas program (`the_seas.md`,
+  `depths_concept.md` — three lanes, waterline patch item filed), beast
+  normalization (`worldbuilding/beast_normalization_spec.md`, four laws),
+  graffiti (`graffiti_spec.md` — five families + the shaming tier;
+  SUPERSEDE-now ruled over the spec's companion recommendation), structure
+  injection roster (promises/whispers, `structure_injection_roster.md`),
+  covered pits (ruled, build item queued), pantheon slide art committed.
+- **Build queue for FOUNDRY** (all offline-startable): NINEFOLD_ENGINE_M0_1 ·
+  COLONY_VISIBILITY_BUILD_1 · RIMMANDRAKE_PITS_BUILD_1 ·
+  GRAFFITI_FRAMEWORK_BUILD_1 · BEAST_DANGER_NORMALIZATION_1 ·
+  TILE_STRUCTURE_DESIGNS_1 · SEAS_WATERLINE_PASS_1 · JAWA_PATCHES_SPLIT_1 ·
+  ISHKO_DARK_LANDMARKS_1 · DEPTHS_ODYSSEY_VERIFY_1 · DUMP_DRAWSIZE_CAPTURE_1 ·
+  SELFTEST_DRIFT_REPAIR_1. Gated on game-up: RENAME_VERIFY_WINDOW_1 (RUN
+  FIRST), the muffalo coefficient quicktest, the Odyssey source read.
+- **Needs the owner's hands only**: corpus redline on live M0 text ·
+  sea-monster art session (SW_SEA_MONSTERS_ART_1) · sacred-site placement ·
+  RESEARCH_TREE_NORMALIZATION_1 (still gated on droids).
+- Process cautions that bit this window: a directory-scoped commit swept
+  selftest-built game DLLs into the public repo (amended out; bin/obj now
+  ignored); peers ship queue work without claiming — git log before starting
+  anything.
