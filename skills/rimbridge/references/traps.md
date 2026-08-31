@@ -775,3 +775,37 @@ distinction. **Workaround, unproven:** none found this session; a real fix
 would need either a genuine colonist-join path exposed on the bridge, or a
 new `jawa/` tool that bypasses `ResolvePawn` for hediff-adding the way
 `jawa/damage` already does for damage.
+
+---
+
+## 🔴 `jawa/set_faction_relation kind=Hostile` cannot make an ordinary faction hostile
+
+2026-08-30, live, 590-entry list. Setting `{faction: <any normal faction>, kind: "Hostile"}`
+returns `kind:{was:"Neutral", now:"Neutral", asked:"Hostile", ok:false}` and
+`hostileToPlayer:false`. Setting `goodwill:-100` instead writes the number and leaves
+`kind` Neutral, so `HostileTo(player)` is STILL false at goodwill −100.
+
+**Cause, from the engine.** The tool calls `Faction.SetRelationDirect`, and
+`RimWorld/Faction.cs:641` refuses outright when both sides carry goodwill:
+
+    if (HasGoodwill && other.HasGoodwill) { Log.Error("Tried to use SetRelationDirect for
+        factions which use goodwill. The relation would be overriden by goodwill anyway."); return; }
+
+`HasGoodwill` is `!Hidden && !temporary` — true for essentially every faction and for the
+player — so the write never happens. `SetRelationDirect` is for mechanoids, insects and
+permanent enemies only. And a bare `baseGoodwill` assignment does not derive `kind`:
+only `FactionRelation.CheckKindThresholds`, reached through `TryAffectGoodwillWith`, does.
+
+✅ **Use `jawa/faction_relations_set`** (`faction`, `other:"Player"`, `kind:"Hostile"`).
+It picks the write path off the pair — `SetRelationDirect` only when one side lacks
+goodwill, otherwise a direct record write on BOTH sides followed by
+`Notify_RelationKindChanged`, which is what makes live pawns re-target.
+
+**What it cost:** the whole 2026-08-27 evidence body of `SIX_FACTIONS_NEVER_RAID_1` —
+18 raid firings recorded as "each faction was verified hostile" when none of them was.
+`IncidentWorker_RaidEnemy.TryResolveRaidFaction` silently substituted a genuinely hostile
+faction each time, so the item's headline asymmetry was an artifact of the harness.
+The tool did report `ok:false` and `success:false`; nobody read the field.
+
+**Generalises to:** any bridge write whose result carries a `was`/`now` read-back —
+assert on the read-back, not on `success`, and not on the absence of an exception.

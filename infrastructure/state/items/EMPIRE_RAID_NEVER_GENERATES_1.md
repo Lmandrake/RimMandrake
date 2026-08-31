@@ -133,3 +133,27 @@ it will read as a total failure that isn't one.
       vs Jawa_Empire_Grunt's combatPower 101.
 - [x] A raid delivers Empire's own kinds reproducibly — confirmed live at 1200 points, correct
       apparel and weapon.
+
+## 🔴 2026-08-30 (FOUNDRY) — CORRECTION: the polarity FLIPPED, so it is not Empire-specific
+
+Live, 590-entry list, `Map_0` of a scratch quicktest colony, paused, 8 consecutive firings
+per faction at 3000 points with `strategy=ImmediateAttack`, `arrivalMode=EdgeWalkIn`,
+arrivals counted off the map. Evidence:
+`infrastructure/state/evidence/raid_split_2026-08-30/`.
+
+    Empire   8/8  (27–35 pawns)        ← failed 4/4 on 2026-08-29
+    Pirate   0/8                       ← succeeded first try on 2026-08-29
+
+**Exactly the two factions this item contrasted, both reversed, on a different world.**
+⇒ Which faction produces an empty pawn group is **not a property of its FactionDef** — it
+is per-world state. Confirmed independently: all 122 public `FactionDef` fields were read
+live off 7 factions and diffed failing-group vs working-group, and **no field separates
+them** (`split.py` / `defs4.json` in the evidence folder). All 49 roster `PawnKindDef`s
+read healthy, `isFighter: true`.
+
+⭐ The remaining suspect that is per-world rather than per-def: the **generated ideo**.
+`PawnGenerator.XenotypesAvailableFor` (the input to the weight that
+`ChoosePawnGenOptionsByPoints` can zero out) reads
+`faction.ideos.PrimaryIdeo.memes[].xenotypeSet` as well as the FactionDef's own. That is a
+HYPOTHESIS, untested. See `SIX_FACTIONS_NEVER_RAID_1` for the next steps; this item is not
+reopened.

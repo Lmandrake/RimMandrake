@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-31T00:55:38Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-31T01:13:08Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -30,10 +30,10 @@ prose:    infrastructure/state/items/SPAWN_PAWN_SUBSTITUTES_VANILLA_KIND_1.md
 ## SIX_FACTIONS_NEVER_RAID_1 Six of the seven authored factions produced no raid in 18 firings
 state:    doing  (BLOCKED)
 row:      unassigned
-needs:    bridge
+needs:    deploy
 target:   v1
 kind:     bug
-summary:  SIXFACTIONSNEVERRAID1 — only the Hutt Cartel has ever been seen to raid
+summary:  SIXFACTIONSNEVERRAID1 — eight authored factions and two VANILLA ones spawn no raiders
 prose:    infrastructure/state/items/SIX_FACTIONS_NEVER_RAID_1.md
 
 ## EMPIRE_RAID_QUICKTEST_1 Quicktest proof of the full Empire reskin: fire RaidEnemy as vanilla Empire (pass points explicitly; read faction from the REPLY, not the request), verify Jawa_Empire kinds in OuterRim armor, Emperor/Palpatine via fixedLeaderKinds, Rising Order ideo, and NO OuterRim_GalacticEmpire faction on the world — criteria preserved at V2_DREAMS C2 strike
@@ -181,11 +181,11 @@ prose:    infrastructure/state/items/SPAWN_PAWN_SUBSTITUTES_VANILLA_KIND_1.md
 ## SIX_FACTIONS_NEVER_RAID_1 Six of the seven authored factions produced no raid in 18 firings
 state:    doing  (BLOCKED)
 row:      unassigned
-needs:    bridge
+needs:    deploy
 target:   v1
 kind:     bug
-blocked:  Deepwater answered (raidsForbidden); other five need a MAP - quicktest on the full list did not produce one in 10min, do it on the minimal list
-summary:  SIXFACTIONSNEVERRAID1 — only the Hutt Cartel has ever been seen to raid
+blocked:  mechanism unnamed; parked on a game-down window (minimal-tier bisect, then a pawngroup-preview companion tool)
+summary:  SIXFACTIONSNEVERRAID1 — eight authored factions and two VANILLA ones spawn no raiders
 prose:    infrastructure/state/items/SIX_FACTIONS_NEVER_RAID_1.md
 
 ## EMPIRE_RAID_QUICKTEST_1 Quicktest proof of the full Empire reskin: fire RaidEnemy as vanilla Empire (pass points explicitly; read faction from the REPLY, not the request), verify Jawa_Empire kinds in OuterRim armor, Emperor/Palpatine via fixedLeaderKinds, Rising Order ideo, and NO OuterRim_GalacticEmpire faction on the world — criteria preserved at V2_DREAMS C2 strike

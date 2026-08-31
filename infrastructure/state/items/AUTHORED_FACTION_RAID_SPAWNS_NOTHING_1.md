@@ -127,3 +127,29 @@ simulated ticks without unpausing wall-clock (`jawa/time_set_ticks` explicitly d
 simulate), and the criterion above already has a live positive (four Hutt raids, 2026-08-27).
 This item was about **honest reporting of a firing that produces nothing**, not about arrivals,
 and that is what's now proven.
+
+## 🔴 2026-08-30 (FOUNDRY) — CORRECTION: `executed: true` is NOT proof a raid happened
+
+Live, 590-entry list, `Map_0` of a scratch quicktest colony, paused, ~90 firings.
+Evidence and scripts: `infrastructure/state/evidence/raid_split_2026-08-30/`.
+
+The "Not re-tested: actual pawn arrival count" above has now been tested, and it inverts
+the closing conclusion:
+
+* `Jawa_HuttCartel`, hostility set with `jawa/faction_relations_set` and read back true,
+  `strategy=ImmediateAttack`, `arrivalMode=EdgeWalkIn`: **`executed: true`,
+  `substituted: false`, and ZERO pawns — 8 firings out of 8.** Also zero at 70 · 150 ·
+  400 · 1000 · 3000 · 10000 · 30000 points. No `LordJob_AssaultColony` is created, so it
+  is not an arrival delay.
+* On the same map, same tick, same call, `Empire` · `Insect` · `OutlanderCivil` ·
+  `TribeCivil` delivered 26–78 pawns, 8/8.
+
+⇒ **The honest-failure path this item closed on does not fire.** Vanilla
+`IncidentWorker_Raid.TryGenerateRaidInfo` returns FALSE on an empty group, so
+`TryExecute` cannot return true with zero pawns in an unpatched 1.6 — at least one
+Harmony patch is in the path (`Isekai Raid` logs into it and is a candidate).
+🔑 **Do not read `executed`/`success` on `jawa/fire_raid` as "a raid arrived". Read
+`arrived[]`, which is counted off `map.mapPawns.AllPawnsSpawned`.**
+
+Continued in `SIX_FACTIONS_NEVER_RAID_1`, which now carries the full split table and the
+next steps. This item is not reopened; its own criterion is unaffected.
