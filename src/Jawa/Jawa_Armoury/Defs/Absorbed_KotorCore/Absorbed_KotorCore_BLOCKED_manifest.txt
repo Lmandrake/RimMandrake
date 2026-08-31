@@ -1,0 +1,36 @@
+guy762.mm.kotorcore elements EXCLUDED from absorption -- each references a
+class confirmed to be kotorcore's own (AthenaPort.*, taranchuk_homingprojectiles.*)
+or a faction/vehicle/economy sub-framework judged out of this item's materials+
+apparel scope (SWCP.Core.*, SWCP.Currencies.*, SWCP.RimframeGrineerDoors.*). See
+gen_kotorcore_absorption.py's module docstring for why each is deferred rather
+than ported or guessed at. Not written to any Defs/ file; regenerate this list
+by rerunning gen_kotorcore_absorption.py.
+
+defName	source file	matched class
+SWCP_AICastAbilityAtTarget	JobDefs_misc.xml	SWCP.Core.
+SWCP_VATS_AttackHybrid	JobDefs_misc.xml	SWCP.Core.
+(no defName)	PawnGroupKind_TaxCollectors.xml	SWCP.Core.
+KotORMissile_whistlingbird	ProjectileDefs/Bullets_HomingProjectiles.xml	taranchuk_homingprojectiles.
+KotORMissile_seeker	ProjectileDefs/Bullets_HomingProjectiles.xml	taranchuk_homingprojectiles.
+KotORMissile_highex	ProjectileDefs/Bullets_HomingProjectiles.xml	taranchuk_homingprojectiles.
+KotORMissile_plasma	ProjectileDefs/Bullets_HomingProjectiles.xml	taranchuk_homingprojectiles.
+KotORMissile_ion	ProjectileDefs/Bullets_HomingProjectiles.xml	taranchuk_homingprojectiles.
+KotORMissile_buster	ProjectileDefs/Bullets_HomingProjectiles.xml	taranchuk_homingprojectiles.
+KotORElectricBolt	ProjectileDefs/Bullets_Special.xml	AthenaPort.
+guy762_Autodoor1x1_DoomgiverA	ThingDefs_Buildings/Structure_SWDoors.xml	SWCP.RimframeGrineerDoors.
+guy762_Autodoor1x1_TatooineA	ThingDefs_Buildings/Structure_SWDoors.xml	SWCP.RimframeGrineerDoors.
+guy762_Autodoor1x1_SandcrawlerA	ThingDefs_Buildings/Structure_SWDoors.xml	SWCP.RimframeGrineerDoors.
+guy762_Autodoor1x1_DreadnaughtA	ThingDefs_Buildings/Structure_SWDoors.xml	SWCP.RimframeGrineerDoors.
+guy762_DoubleAutodoor_DoomgiverVerticalA	ThingDefs_Buildings/Structure_SWDoors.xml	SWCP.RimframeGrineerDoors.
+guy762_DoubleAutodoor_DreadnaughtVerticalA	ThingDefs_Buildings/Structure_SWDoors.xml	SWCP.RimframeGrineerDoors.
+guy762_DoubleAutodoor_TatooineVerticalA	ThingDefs_Buildings/Structure_SWDoors.xml	SWCP.RimframeGrineerDoors.
+SWCP_VATS_Zoomer	Thing_VATS_Zoomer.xml	SWCP.Core.
+guy762_BaseTraderKind_Czerka	TraderKindDefs/BaseTrader_Czerka.xml	SWCP.Currencies.
+guy762_BaseTraderKind_HuttGalleon	TraderKindDefs/BaseTrader_HuttGalleon.xml	SWCP.Currencies.
+guy762_BaseTraderKind_spicerunner	TraderKindDefs/BaseTrader_Scum_Spicerunner.xml	SWCP.Currencies.
+guy762_TraderKind_AdascorpPharma	TraderKindDefs/OrbitalTrader_AdascorpPharmaceuticals.xml	SWCP.Currencies.
+guy762_TraderKind_Czerka	TraderKindDefs/OrbitalTrader_Czerka.xml	SWCP.Currencies.
+guy762_TraderKind_HuttGalleon	TraderKindDefs/OrbitalTrader_HuttGalleon.xml	SWCP.Currencies.
+guy762_TraderKind_spicerunner	TraderKindDefs/OrbitalTrader_Scum_Spicerunner.xml	SWCP.Currencies.
+guy762_TraderKind_tetanminer	TraderKindDefs/OrbitalTrader_TetanMiner.xml	SWCP.Currencies.
+guy762_TraderKind_TrandoSlaver	TraderKindDefs/OrbitalTrader_TrandoshanSlavers.xml	SWCP.Currencies.

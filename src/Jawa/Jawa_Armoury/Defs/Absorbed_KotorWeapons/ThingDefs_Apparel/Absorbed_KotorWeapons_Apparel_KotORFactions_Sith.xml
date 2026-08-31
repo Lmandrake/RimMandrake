@@ -393,6 +393,36 @@
     </comps>
   </ThingDef>
 
+  <HediffDef>
+    <defName>guy762_Hediff_sithmask</defName>
+    <label>Sith mask</label>
+    <description>This mask blocks outside mental influence and other sensory noise, allowing the user to focus their abilities inward with no distraction.</description>
+    <hediffClass>HediffWithComps</hediffClass>
+    <modExtensions>
+      <li Class="MentalBreakBlocker.ModExtension_MentalBreakBlocker">
+        <!--choose one: mood, damage, psycast, moodAndDamage, moodAndPsycast, damageAndPsycast, all-->
+        <!--  allow only mood or damage cause  -->
+        <cause>moodAndDamage</cause>
+        <isWhitelist>true</isWhitelist>
+      </li>
+    </modExtensions>
+    <comps>
+      <li Class="HediffCompProperties_RemoveIfApparelDropped" />
+    </comps>
+    <stages>
+      <li>
+        <makeImmuneTo>
+          <li MayRequire="guy762.Lee.KotORPotF">SWPotF_hediff_ForceFear</li>
+          <li MayRequire="guy762.Lee.KotORPotF">SWPotF_hediff_ForcePacify</li>
+        </makeImmuneTo>
+        <damageFactors>
+          <Stun>0</Stun>
+        </damageFactors>
+      </li>
+    </stages>
+    <isBad>false</isBad>
+  </HediffDef>
+
   <ThingDef ParentName="KotORArmorModdable_hard">
     <defName>guy762_SithArmor_marauder</defName>
     <label>Sith Marauder armor (polished)</label>

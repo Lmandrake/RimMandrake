@@ -1,0 +1,134 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Jawa_Armoury's first C# work (WEAPONS_ABSORPTION_WAVE_1): ports the 7
+    load-bearing comps/classes guy762.mm.kotorcore's Defs depend on, so the
+    kotorcore materials+apparel absorption doesn't need the source DLLs kept
+    active. Same net472/NuGet-reference-assemblies pattern as every other
+    csproj in this repo (see src/Jawa/Droidworks/Source/Droidworks/Droidworks.csproj).
+    Namespaces and class names are kept IDENTICAL to kotorcore's own DLLs
+    (CompExtraSounds, CrystalFormations, KoltoTank, MentalBreakBlocker,
+    SecondaryMineableYield, SelfHediffVerb, Spinning_Projectile) so the
+    absorbed defs' Class=/compClass=/verbClass=/driverClass=/genStep=
+    attributes resolve to these classes with ZERO XML rewriting: RimWorld
+    resolves those names across every loaded assembly, not by DLL identity.
+
+    Build (dotnet is WINDOWS-NATIVE, cannot take a /mnt/d path):
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\Jawa\Jawa_Armoury\Source\JawaArmoury.csproj -c Release
+
+    Output lands in ../Assemblies/ (Source/../Assemblies = Jawa_Armoury/Assemblies/).
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>JawaArmoury</AssemblyName>
+    <RootNamespace>JawaArmoury</RootNamespace>
+    <Version>1.0.0</Version>
+    <Nullable>disable</Nullable>
+
+    <OutputPath>..\Assemblies\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AssemblySearchPaths>$(AssemblySearchPaths);$(RimWorldManaged)</AssemblySearchPaths>
+
+    <!-- Nothing but our own DLL should ever be copied next to the mod.
+         See traps.md: three mods in this load set shipped the base game's own
+         assemblies into their Assemblies folder and it caused silent chaos.
+         0Harmony is provided at runtime by the brrainz.harmony mod (kotorcore's
+         own loadAfter dependency, carried forward here): compile-only ref. -->
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <DebugType>none</DebugType>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(RimWorldManaged)' == ''">
+    <RimWorldManaged>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManaged>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(HarmonyDll)' == ''">
+    <HarmonyDll>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HarmonyDll>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="CompExtraSounds\CompExtraSounds.cs" />
+    <Compile Include="CompExtraSounds\CompProperties_ExtraSounds.cs" />
+    <Compile Include="CompExtraSounds\DefModExtension_ExtraSounds.cs" />
+    <Compile Include="CompExtraSounds\ExtraSoundsUtility.cs" />
+    <Compile Include="CompExtraSounds\HarmonyCompExtraSounds.cs" />
+    <Compile Include="CrystalFormations\GenStep_ScatterLightsaberCrystals.cs" />
+    <Compile Include="MentalBreakBlocker\BlockMentalBreakCause.cs" />
+    <Compile Include="MentalBreakBlocker\ModExtension_MentalBreakBlocker.cs" />
+    <Compile Include="MentalBreakBlocker\MentalBreakBlocker.cs" />
+    <Compile Include="SecondaryMineableYield\SecondaryYieldEntry.cs" />
+    <Compile Include="SecondaryMineableYield\ModExtension_SecondaryMineableYield.cs" />
+    <Compile Include="SecondaryMineableYield\SecondaryMineableYield.cs" />
+    <Compile Include="SelfHediffVerb\VerbProperties_SelfHediff.cs" />
+    <Compile Include="SelfHediffVerb\CompProperties_VerbWithCooltime.cs" />
+    <Compile Include="SelfHediffVerb\CompVerbWithCooltime.cs" />
+    <Compile Include="SelfHediffVerb\Verb_SelfHediff.cs" />
+    <Compile Include="SelfHediffVerb\Patch_VerbEquipmentSource.cs" />
+    <Compile Include="SelfHediffVerb\SelfHediffVerb.cs" />
+    <Compile Include="Spinning_Projectile\ThingCompProperties_ReturningWeapon.cs" />
+    <Compile Include="Spinning_Projectile\ThingComp_ReturningWeapon.cs" />
+    <Compile Include="Spinning_Projectile\MoteWeaponReturn.cs" />
+    <Compile Include="Spinning_Projectile\SpinningWeaponProjectile.cs" />
+    <Compile Include="Spinning_Projectile\HarmonyPatches.cs" />
+    <Compile Include="KoltoTank\CompProperties_KoltoTank.cs" />
+    <Compile Include="KoltoTank\CompKoltoTank.cs" />
+    <Compile Include="KoltoTank\CompProperties_SecondLayer.cs" />
+    <Compile Include="KoltoTank\CompSecondLayer.cs" />
+    <Compile Include="KoltoTank\Kolto_DefOf.cs" />
+    <Compile Include="KoltoTank\HARFleshCheck.cs" />
+    <Compile Include="KoltoTank\KoltoTankPatches.cs" />
+    <Compile Include="KoltoTank\FloatMenuOptionProvider_CarryToKoltoTank.cs" />
+    <Compile Include="KoltoTank\JobDriver_CarryToKoltoTank.cs" />
+    <Compile Include="KoltoTank\JobDriver_EnterKoltoTank.cs" />
+    <Compile Include="KoltoTank\Building_KoltoTank.cs" />
+    <Compile Include="guy762_Ionization\DamageDefOf_guy762.cs" />
+    <Compile Include="guy762_Ionization\ModExtension_HediffGiver.cs" />
+    <Compile Include="guy762_Ionization\DamageWorker_RaceHediffBase.cs" />
+    <Compile Include="guy762_Ionization\DamageWorker_OrganicStun.cs" />
+    <Compile Include="guy762_Ionization\DamageWorker_KotORPlasmaGrenade.cs" />
+    <Compile Include="MinePocket\MineDefOfs.cs" />
+    <Compile Include="MinePocket\MinePocketDefExtension.cs" />
+    <Compile Include="MinePocket\CompDefuse.cs" />
+    <Compile Include="MinePocket\Verb_ShootMine.cs" />
+    <Compile Include="MinePocket\Projectile_SpawnMine.cs" />
+    <Compile Include="MinePocket\MinePocketJob.cs" />
+    <Compile Include="InstantHealingDrug\CompProperties_DrugInstantHeal.cs" />
+    <Compile Include="InstantHealingDrug\InstantHealingDrug.cs" />
+    <Compile Include="InstantHealingDrug\TCED_TryGiveJob_Patch.cs" />
+    <Compile Include="JumppackForMeleeAI\JumpJobDefOf.cs" />
+    <Compile Include="JumppackForMeleeAI\JumppackForMeleeAI.cs" />
+    <Compile Include="JumppackForMeleeAI\JobDriver_CastJumpOnce.cs" />
+    <Compile Include="JumppackForMeleeAI\JobGiver_AIMeleeJumppack.cs" />
+    <Compile Include="JumppackForMeleeAI\Patch_JobGiver_AIFightEnemy.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(RimWorldManaged)\Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>$(RimWorldManaged)\UnityEngine.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(HarmonyDll)</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>

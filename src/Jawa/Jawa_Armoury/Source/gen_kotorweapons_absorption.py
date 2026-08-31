@@ -120,15 +120,41 @@ SRC_TEX_FALLBACK = os.path.join(KOTORCORE_FOLDER, "Textures")
 OUT_SUBDIR = "Absorbed_KotorWeapons"  # under DEFS_ROOT; this generator's own output tree
 OUT_FILE_PREFIX = "Absorbed_KotorWeapons_"
 
-# namespaces confirmed (by DLL filename) to live in guy762.mm.kotorcore's
-# OWN bundled Assemblies -- the 4 (of kotorcore's 7 total) that this
-# pack's Defs actually reference. Any element using one of these is
-# EXCLUDED, not guessed at.
+# UPDATED post-comp-porting-decision (WEAPONS_ABSORPTION_WAVE_1, kotorcore pass,
+# reconciled after a same-session concurrent-agent collision on
+# gen_kotorcore_absorption.py -- see that script's own docstring and the item's
+# ledger note for the full account). The surviving comp-porting implementation
+# is JawaArmoury.csproj (Source/<Component>/*.cs, one class per file), which
+# kept every ported class NAMESPACE-IDENTICAL to its kotorcore source DLL --
+# unlike this generator's own first-draft REWRITE_NAMESPACES approach (since
+# discarded), a namespace-identical port needs ZERO XML rewriting: Class=/
+# compClass=/verbClass=/driverClass= values already resolve correctly once
+# JawaArmoury.dll is the assembly on the load path. So the 4 namespaces below
+# are simply no longer blocked (not rewritten either) -- CompExtraSounds.,
+# MentalBreakBlocker., SecondaryMineableYield., SelfHediffVerb.
+#
+# Two more namespaces are NEWLY blocked here, a real classification correction:
+# the earlier kotorweapons pass (and this generator's own first draft) treated
+# AthenaPort.*/SWCP.Core.*/SWCP.Currencies.*/SWCP.RimframeGrineerDoors.*/
+# taranchuk_homingprojectiles.* as independent external-framework references
+# that "stay active regardless" -- WRONG, confirmed against the rule-6 DLL
+# inventory: AthenaPort.dll, SWCP_Core.dll, SWCP_Currencies.dll, SWCP_
+# RimframeGrineerDoors.dll all live in guy762.mm.kotorcore's OWN 1.6/Assemblies/,
+# and taranchuk_homingprojectiles.dll in kotorcore's own AdditionalMods/
+# SharedCodeFromShun/ (not a separate workshop-subscribed mod). They retire
+# alongside kotorcore's Defs/ exactly like the other 11 now-ported/blocked
+# classes -- measured (grep against WeaponRanged_KotORBlasterRifle.xml and
+# WeaponRanged_KotORHeavyRepeater.xml: both reference SWCP.Core.
+# CompProperties_PositionAttributes, not in JawaArmoury's ported set), not
+# guessed at. SWCP.Core is the only one of the 5 actually referenced by
+# kotorweapons' own Defs (measured); the rest are named for completeness/
+# consistency with gen_kotorcore_absorption.py's own block list.
 BLOCKED_NAMESPACES = (
-    "CompExtraSounds.",
-    "MentalBreakBlocker.",
-    "SecondaryMineableYield.",
-    "SelfHediffVerb.",
+    "AthenaPort.",
+    "SWCP.Core.",
+    "SWCP.Currencies.",
+    "SWCP.RimframeGrineerDoors.",
+    "taranchuk_homingprojectiles.",
 )
 
 
@@ -378,8 +404,15 @@ def main():
         src_relpath = os.path.join(rel_dir, filename[len(OUT_FILE_PREFIX):])
         write_defs_file(rel_dir, filename, elements, src_relpath)
 
+    manifest_path = os.path.join(own_out_dir, OUT_FILE_PREFIX + "BLOCKED_manifest.txt")
+    if not blocked_manifest:
+        # Stale-file cleanup: a prior run's manifest (from before the
+        # comp-porting decision) must not survive a rerun that no longer
+        # blocks anything, or it reads as "still blocked" when it isn't.
+        if os.path.isfile(manifest_path):
+            os.remove(manifest_path)
+            R.note("removed stale %s (nothing blocked this run)" % os.path.relpath(manifest_path, _REPO_ROOT))
     if blocked_manifest:
-        manifest_path = os.path.join(own_out_dir, OUT_FILE_PREFIX + "BLOCKED_manifest.txt")
         os.makedirs(own_out_dir, exist_ok=True)
         with open(manifest_path, "w", encoding="utf-8") as f:
             f.write(

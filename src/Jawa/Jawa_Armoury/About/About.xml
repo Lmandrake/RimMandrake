@@ -34,7 +34,16 @@ ladder, it does not flatten it.
 Rationale: worldbuilding/setting_physics.md (the 18 laws) and
 worldbuilding/balance_paradigm.md (why we change any value at all).
 Generated from a live post-patch def dump; load last.</description>
-  <modDependencies />
+  <modDependencies>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+  <!-- Harmony dependency added WEAPONS_ABSORPTION_WAVE_1 (2026-08-30): this mod's first
+       C# (Source/), porting 7 load-bearing kotorcore comp classes -- see items/
+       WEAPONS_ABSORPTION_WAVE_1.md. -->
   <!-- Corrected 2026-08-13. Both previous ids were WRONG and this whole block
        was therefore INERT: `guy762.starwarskotorweapons` and `Aoba.OuterRim.Core`
        match no installed mod (Aoba is Dead Man's Switch - wrong author entirely).
@@ -42,6 +51,7 @@ Generated from a live post-patch def dump; load last.</description>
        logs it, and the rule simply does not constrain anything. Verified against
        the live ModsConfig - the two below are present, the two above are not. -->
   <loadAfter>
+    <li>brrainz.harmony</li>
     <li>guy762.kotorweapons</li>
     <li>Neronix17.OuterRim.Core</li>
   </loadAfter>
