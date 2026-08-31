@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-31T19:43:32Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-31T19:48:06Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -91,43 +91,3 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/TUSKEN_WATER_RAID_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/TUSKEN_WATER_RAID_1.md
-
-## BOILING_WATER_BURNS_1 Fable spec: boiling water that burns on contact - our own content; start from design/Jawa/mods/REGROWTH_BOILING_LIFT_SPEC.md (B64 lineage)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/BOILING_WATER_BURNS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BOILING_WATER_BURNS_1.md
-
-## DUST_STORMS_DESTRUCTIVE_1 Fable spec: meaningful dust storms that damage structures and move light objects
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DUST_STORMS_DESTRUCTIVE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DUST_STORMS_DESTRUCTIVE_1.md
-
-## PLANTS_VISIBLE_GROWTH_1 Fable spec: plants that visibly grow as you watch - growth-stage rendering feasibility + design
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/PLANTS_VISIBLE_GROWTH_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PLANTS_VISIBLE_GROWTH_1.md
-
-## DESERT_PLANTS_SCRAGGLY_1 Fable spec: nasty scraggly desert flora replacing the strange rainbow plants - census of current flora + art direction + def plan
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DESERT_PLANTS_SCRAGGLY_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DESERT_PLANTS_SCRAGGLY_1.md
