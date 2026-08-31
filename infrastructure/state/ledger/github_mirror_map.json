@@ -34,6 +34,11 @@
   "number": 3,
   "open": false
  },
+ "BOILING_WATER_BURNS_1": {
+  "fp": "09833c2fab6f",
+  "number": 95,
+  "open": true
+ },
  "BRIDGE_DEBUGACTION_SWEEP_GEMS_1": {
   "fp": "b23dd90d4846",
   "number": 42,
@@ -79,6 +84,16 @@
   "number": 5,
   "open": false
  },
+ "CAI_FOG_DEEP_DIVE_1": {
+  "fp": "2a48ecb04d4a",
+  "number": 96,
+  "open": true
+ },
+ "CANTINA_KITCHEN_SPEC_1": {
+  "fp": "6c7909b2b24f",
+  "number": 97,
+  "open": true
+ },
  "COLD_LOAD_RUN_SHEET_1": {
   "fp": "5776e2b34513",
   "number": 6,
@@ -102,6 +117,11 @@
  "DEPTHS_ODYSSEY_VERIFY_1": {
   "fp": "5c3a5c532412",
   "number": 86,
+  "open": true
+ },
+ "DESERT_PLANTS_SCRAGGLY_1": {
+  "fp": "838f2ba86450",
+  "number": 98,
   "open": true
  },
  "DROIDWORKS_BOLT_CORE_1": {
@@ -188,6 +208,11 @@
   "fp": "d9e271ccd794",
   "number": 8,
   "open": false
+ },
+ "DUST_STORMS_DESTRUCTIVE_1": {
+  "fp": "30f6fa0fd577",
+  "number": 99,
+  "open": true
  },
  "EMPIRE_PURSUIT_SCENPART_INSTALL_1": {
   "fp": "5975c32b7bd8",
@@ -279,6 +304,11 @@
   "number": 49,
   "open": false
  },
+ "LLM_INGAME_WIRING_1": {
+  "fp": "50973c0e8537",
+  "number": 100,
+  "open": true
+ },
  "LORE_SWITCHOVER_ADOPTION_1": {
   "fp": "0545e78630bf",
   "number": 67,
@@ -297,6 +327,11 @@
  "NINEFOLD_ENGINE_M0_1": {
   "fp": "1291478df345",
   "number": 90,
+  "open": true
+ },
+ "NINE_VOICES_CAST_BIBLE_1": {
+  "fp": "e93c4dde80d9",
+  "number": 101,
   "open": true
  },
  "NONCANON_ARRIVES_BY_PAWNKIND_1": {
@@ -369,10 +404,25 @@
   "number": 23,
   "open": false
  },
+ "PLANTS_VISIBLE_GROWTH_1": {
+  "fp": "c13287b6c436",
+  "number": 102,
+  "open": true
+ },
  "QUEUE_GITHUB_MIRROR_1": {
   "fp": "a6272107ff98",
   "number": 24,
   "open": false
+ },
+ "RACE_REGEN_ARCHITECTURE_1": {
+  "fp": "6fda6d0b71e1",
+  "number": 103,
+  "open": true
+ },
+ "RESEARCH_TAXONOMY_DRAFT_1": {
+  "fp": "f6195d73b962",
+  "number": 104,
+  "open": true
  },
  "RESEARCH_TREE_NORMALIZATION_1": {
   "fp": "110a6ad46efb",
@@ -382,6 +432,11 @@
  "RIMMANDRAKE_PITS_BUILD_1": {
   "fp": "d41981c0c302",
   "number": 91,
+  "open": true
+ },
+ "SARLACC_SPEC_SESSION_1": {
+  "fp": "7f0989b596ff",
+  "number": 105,
   "open": true
  },
  "SEAS_WATERLINE_PASS_1": {
@@ -428,6 +483,11 @@
   "fp": "b5db419f32ef",
   "number": 51,
   "open": false
+ },
+ "TUSKEN_WATER_RAID_1": {
+  "fp": "396a773d2332",
+  "number": 106,
+  "open": true
  },
  "VAULT_DUNGEON_BUILD_1": {
   "fp": "1946ea413475",
