@@ -107,3 +107,22 @@ hypothesis is now exhausted; the def is not where the answer is.
 ⭐ Consequence for whoever picks this up: the two findings above are about **play**
 (the storyteller's own selection), not about `fire_raid`. Deepwater is answered for play
 and still unexplained for `fire_raid`, like the other five.
+
+### Live re-test NOT done this session — and why, so nobody repeats the attempt blind
+The 585-mod game was up and the bridge free, but the item needs a MAP and the campaign save
+`WORLDMAP_V1_original` has none (`currentMapId: null` — it is a world-only save).
+`rimworld/start_debug_game_ready` was called and had not produced a map after **10 minutes**
+on the full mod list; the driving script was killed, and the game fell back to `Entry`.
+⇒ Budget a quicktest map on the FULL list at ≥10 min, or do this item on the minimal list
+instead (`rimworld-debug-testing`), where a quicktest world is ~5 s.
+
+## criteria
+- [x] `Jawa_DeepwaterCompact` — reason named from the engine: `raidsForbidden = true`
+      excludes it from `PawnGroupMakerUtility.UsableFactions`, so the storyteller can never
+      pick it. Not a bug; a property of its own def.
+- [ ] The other five — still open, but the search space is now much smaller. Every
+      `FactionDef` field the engine consults is verified clean, and `TryResolveRaidFaction`
+      short-circuits before any of them on an explicit `parms.faction`. ⇒ **Next step is
+      NOT another def read.** Fire one raid for a non-Hutt faction on a map and read
+      `effects.logs` on the `fire_raid` response itself — that is per-call log capture and
+      it survives the `Reached max messages limit` that killed `drain_log` last time.

@@ -152,3 +152,30 @@ touch this xpath were read and are both harmless prefix-preserving `Add`s:
 - [ ] Live re-check after the fix: Empire reads Hostile to the player from a fresh relation
       seed. (The whitelist half of the old criterion is retired — it will keep reading 24
       entries and that is now known to be harmless.)
+
+### ⚠️ CORRECTION, same day: my "post-load C# pass" reading above is NOT established
+A second, independent sweep (ilspycmd over VEF, BSXeno, BigAndSmall, Outposts, OuterRimCore,
+OuterRimGalacticEmpire, FactionLoadout, plus all ~60 vendored sources) found **no**
+`StaticConstructorOnStartup`, Harmony patch or `AllDefs.Where(isPlayer)` enumeration writing
+this field anywhere. What it found instead is a **community XML idiom**: ~50 separate mod
+folders independently ship a `PatchOperationFindMod(Royalty)` wrapping a
+`PatchOperationAdd` on this exact xpath, each appending only its own defName. Five of the
+thirteen were located verbatim — `BS_PlayerTribeXenoPlus`/`BS_PlayerColonyXenoPlus`
+(RedMattis.BetterPrerequisites, `1.6\Base\Patches\vanilla_patches.xml`),
+`BS_JotunPlayerColony` (RedMattis.BigSmall), `VFEI2_PlayerOutpost`
+(oskarpotocki.vfe.insectoid2), `VFET_WildMen` (VFE Tribals), `VQE_NewVaultPlayerFaction`
+(VQE Ancients). 🔑 **The 2026-08-29 grep missed them because it searched for the literal
+strings `PlayerColony`/`PlayerTribe` and every added value is a COMPOUND name.**
+
+🔴 **But that explanation does not close either, and the contradiction is the finding.**
+Those Adds all come from mods EARLIER than `mandrake.jawa.patches` (ModsConfig line 585 of
+585 active; the five entries at 591-595 are `knownExpansions`, not load order), so our
+`Replace` should have wiped every one of them — yet they are present, appended AFTER our
+12 in the live list. ⇒ **Either patch order is not what ModsConfig line number implies, or
+our Replace is not the last write.** Neither has been measured. `PlayerColony`/`PlayerTribe`
+themselves were never located in any mod's XML at all and remain unexplained.
+
+⛔ **Do not spend another session on this.** The whitelist stopped being the mechanism the
+moment the SWCP postfix was found: it answers hostility from a mod extension nothing else
+writes, so the contents of `permanentEnemyToEveryoneExcept` no longer decide the outcome
+this item exists for. Fix the hostility via the extension; leave the list alone.

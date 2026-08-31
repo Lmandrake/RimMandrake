@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-31T00:18:36Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-31T00:27:51Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -184,7 +184,7 @@ row:      unassigned
 needs:    bridge
 target:   v1
 kind:     bug
-blocked:  needs bridge; BENCH holds it (owner confirmed live, 2026-08-29) — my prior fire_raid work on the sibling item collided with BENCH's session, not touching the bridge again until it's free
+blocked:  Deepwater answered (raidsForbidden); other five need a MAP - quicktest on the full list did not produce one in 10min, do it on the minimal list
 summary:  SIXFACTIONSNEVERRAID1 — only the Hutt Cartel has ever been seen to raid
 prose:    infrastructure/state/items/SIX_FACTIONS_NEVER_RAID_1.md
 
@@ -214,7 +214,7 @@ row:      unassigned
 needs:    bridge
 target:   v1
 kind:     bug
-blocked:  mechanism named (SWCP_Core postfix on FactionDef.PermanentlyHostileTo via ModExtension_FactionPermanentlyHostileTo); fix drafted, needs owner's call then a load to verify
+blocked:  mechanism named (SWCP_Core postfix + ModExtension_FactionPermanentlyHostileTo); additive fix drafted, needs owner's call then one load to verify
 summary:  GalacticEmpire.xml's PatchOperationReplace on
 prose:    infrastructure/state/items/EMPIRE_WHITELIST_OVERRIDDEN_1.md
 
