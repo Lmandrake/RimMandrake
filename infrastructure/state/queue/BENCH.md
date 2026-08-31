@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-31T18:12:20Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-31T18:17:31Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -61,16 +61,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/RESEARCH_TREE_NORMALIZATION_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/RESEARCH_TREE_NORMALIZATION_1.md
-
-## RESEARCH_TAXONOMY_DRAFT_1 Fable spec: full-game research tree taxonomy + migration rules + validator design, decision doc for the owner; mechanical retag stays later (feeds RESEARCH_TREE_NORMALIZATION_1)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/RESEARCH_TAXONOMY_DRAFT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/RESEARCH_TAXONOMY_DRAFT_1.md
 
 ## RACE_REGEN_ARCHITECTURE_1 Fable spec: race regeneration architecture - 69 species authored as ours, per-species gene philosophy, generator ending donor dependency (subsumes stripped-genes + six deferred species)
 state:    proposed
