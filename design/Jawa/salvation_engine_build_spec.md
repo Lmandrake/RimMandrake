@@ -236,5 +236,5 @@ Things** (survives any map loss). Version-stamp the component for migration.
    length FORCES a jealous-watchers challenge** — the court never fully
    sleeps, even on a long settle. Length TUNE.
 4. ~~Mod name~~ ✅ **RULED (door ruling, 2026-08-30): `RimMandrake Ninefold`.**
-5. **First-contact order override:** the chains doc proposes encounter order;
-   he may want a scripted first god for campaign start.
+5. ~~First-contact order~~ ✅ **RULED (owner card, 2026-08-31): EMERGENT** —
+   whoever the colony's acts wake first introduces himself first.

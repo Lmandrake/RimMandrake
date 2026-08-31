@@ -437,3 +437,8 @@ The global-vs-threat-scoped fork is closed: the Postfix replaces threat
 points for HOSTILE events only. Quest budgets, herd sizing and friendly
 arrivals stay on vanilla wealth scaling. Ninefold M0 is called the same day;
 this build pairs with it.
+
+**Tile memory RULED (owner card, 2026-08-31): the desert remembers, decaying**
+— a returned-to tile restores a decayed fraction of its old Visibility
+(halved per season away, TUNE). Old camps become a strategic resource; never
+free, never forever.
