@@ -1,4 +1,4 @@
-<!-- status: DRAFT pending two owner rulings (§0) — BENCH, 2026-08-31.
+<!-- status: RULED — both §0 questions answered by the owner 2026-08-31 (question cards).
      Executes: depths_concept.md §11 v1 slice. Grounded in DEPTHS_ODYSSEY_VERIFY_1's
      source verdicts and the two donor surveys (depths_concept §10, mods/underwater_donor_scan_2026-08-31.md). -->
 # The Depths — v1 "Dive expeditions" build spec
@@ -10,10 +10,9 @@ not patch job**; triggers data-driven, consumers hardcoded), and the donor scans
 The C# surface is small and bounded: one MapComponent, one GenStep, one Harmony
 weapon gate. Everything else is defs.
 
-## 0. The two rulings this draft awaits — each is one line from the owner
+## 0. The two rulings — RULED by the owner, 2026-08-31
 
-1. **Dive stat: independent, or a VacuumResistance reskin?**
-   **Drafted for his yes: INDEPENDENT (`RM_PressureRating`).** The reskin ships
+1. ✅ **Dive stat: INDEPENDENT (`RM_PressureRating`) — ratified.** The reskin ships
    fastest (zero C#) but merges number spaces: every vacsuit in the campaign
    becomes a working dive suit, spacewalking and diving stay coupled forever, and
    §7-of-concept's adapted-race genes would also zero *vacuum* harm. This
@@ -21,11 +20,15 @@ weapon gate. Everything else is defs.
    real, and the companion DLL is required for the lure clock and weapon gate
    anyway — the marginal cost of the independent stat is one more Harmony-free
    StatDef plus the exposure logic we already own. Recommendation: independent.
-2. **The short-sight cap (concept §3 "lamp-cone discovery") ships in v1 or
-   waits?** It is the one v1 feature with no proven engine route (fog-of-war
-   radius is not def-driven). **Drafted for his yes: v1 ships permanent DARK
-   (light level zero, lamps matter, §5 lure clock live) and defers the hard
-   line-of-sight cap to v2** rather than gating the whole slice on R&D.
+2. ✅ **The short-sight cap: routed through CAI fog of war — owner's ruling,
+   verbatim:** *"We had already been wanting to pull in the cai fog of war.
+   That mod needs full exploration. It promised much improved pawn combat
+   experiences and real fog of war. Go ahead and do a deep dive now both for
+   general gameplay as well as wrt underwater needs. It's a big integration so
+   be thorough."* ⇒ Neither defer-blind nor build-our-own: the deep dive
+   (`CAI_FOG_DEEP_DIVE_1`) decides whether CAI's fog-of-war layer carries the
+   lamp-cone rule. v1's dark/lure mechanics (§2, §3) do not wait on it; the
+   sight-cap section of this spec is updated when that item lands.
 
 ## 1. Mod shape and naming (three-tier, per NAMING_SCHEME_PLAN)
 
