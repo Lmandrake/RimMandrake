@@ -22,6 +22,15 @@ Process: owner's mockup loop — offline PNG options per creature, he picks, the
 palette passes; only then facings + validator + def work. Mockups live in
 `Transient/sea_monsters_mockups/` (review-once material).
 
+**Round-1 state, 2026-08-31:** all 18 mockups generated and valid; six labeled
+contact sheets await the owner's picks at
+`Transient/sea_monsters_mockups/SHEET_{opee,colo,sando,grazer,swarm,colossus}.png`.
+The generation prompts are BANKED in the repo at
+`src/RimStarWars/SeaBeasts/art/gen_sea_mockups.py` (skip-existing; rerunnable
+if Transient ages out). Codex trap: calls run 3–7 min some days and a killed
+WSL wrapper leaves codex.exe finishing the file anyway — check the dir before
+re-rolling.
+
 ## verify
 
 Round 1 closes when the owner has picked one concept per creature (or sent a
