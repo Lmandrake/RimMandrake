@@ -62,6 +62,33 @@ game playable: armor honestly absorbs (flak turns 30 blunt survivable),
 telegraphs before charges, and the theology already teaches the answer —
 hunt from range; the new curve makes Ishko's doctrine mechanically true.
 
+## 2b. Law 4 — the blaster-shrugging hide (owner, 2026-08-31: "the canon had it")
+
+Star Wars canon: big beasts shrug blaster fire. Two mechanizations, one
+recommended:
+- **Option A — armor absorption (RECOMMENDED, the owner's own lean):**
+  `ArmorRating_Heat` on a **thick-hide register** of beasts, scaling with
+  bodySize (draft: ~15% × bodySize, capped ~75%). Blasters deal energy/burn
+  damage, so "blasters stop working" EMERGES — the bigger the beast, the
+  more bolts it eats — with no new mechanics, vanilla-native, savegame-safe.
+  Register-based like the spindly list: not every big beast qualifies
+  (soft-bodied and spindly exempt).
+- **Option B — heat-resist/overheat hediff:** blasters literally degrade
+  against a target over time. Flavorful but new C#, invisible until read,
+  and double-punishes with Option A.
+- **The emergent gift either way:** slugthrowers, bolts, and the primitive
+  tier regain a PURPOSE — big game wants physical damage, exactly the
+  scavenger answer (and ion wants the machine). Weapon choice becomes prey
+  choice.
+
+## 2c. Coupling register (owner, 2026-08-31: "make sure our pit traps come along for the ride")
+
+| Coupled system | The rule |
+|---|---|
+| **Pit covers** | Calibrated to ENGINE mass (60×bs) — already true (the 240 kg ceiling = bs 4.0). IF Law 2 ever flips to real masses, cover ratings rescale in the SAME manifest, same commit. |
+| **Ion stun counts** | Hits-to-stun/drop scales with the NEW bodySize (stun buildup ∝ bs): a normalized Krayt takes proportionally more ion hits; ties VEHICLE_ION_TIER_1 and the oubliette. The ion tier reads bodySize at run-time, so Law 1 corrections propagate free — but the per-hit stun magnitude is tuned once against the POST-normalization sizes, in this manifest. |
+| **Law 4 hides vs our armory** | The thick-hide register is the same register the hunting doctrine reads: blasters for raiders, slugs for beasts, ion for machines. |
+
 ## 3. Execution shape
 
 - **One patch mod, tier RimStarWars** (the lethality of SW beasts is
