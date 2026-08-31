@@ -30,6 +30,43 @@ python3 src/RimMandrake/Utils/modlist_swap.py --restore    # put the owner's lis
 with the game DOWN and RimSort not mid-edit, and re-capture FULL if the owner has changed
 his list since the timestamp above.
 
+🔴 **A packageId rename does not change the mod SET, so nothing here warns you.**
+Both saved lists are plain id lists with no folder, name or version beside them: an id
+that no longer exists is dropped by RimWorld at startup **silently**, and every count in
+this directory still reads 585. `modlist_swap.py --status` shows `UNRECOGNISED`, which is
+the same thing it says when the owner adds a mod — indistinguishable. ⇒ **After any
+`packageId` change, re-capture `FULL.LATEST` from live and hand-map `MINIMAL`, in the
+same commit as the rename.** The check that actually proves it is resolving every id in
+a list against the `<packageId>` in every installed `About/About.xml` (Workshop root
+included) — a count cannot.
+
+---
+
+## 🔴 CURRENT MOD SET — three-tier packageId rename, 2026-08-31
+
+**Both saved lists held PRE-RENAME packageIds** (`RENAME_VERIFY_WINDOW_1`, FOUNDRY).
+Naming Phase 2 renamed 23 of our 24 active `mandrake.*` ids to `mandrake.<tier>.<name>`
+and rewrote the live `ModsConfig.xml` — but neither saved snapshot was updated, so a
+`--restore` would have written 23 dead ids and silently deactivated every renamed mod of
+ours, and the 19-mod `MINIMAL` list would have loaded without Inhabited, JawaIonWeapons
+or Droidworks.
+
+- `FULL.LATEST.xml` re-captured from live (md5 `e9819939`, 585 mods either way). The
+  pre-rename file is preserved at `ModsConfig.FULL.20260830_pre_rename.xml`.
+- `MINIMAL.xml` hand-mapped: `mandrake.inhabited` → `mandrake.rm.inhabited`,
+  `mandrake.jawaionweapons` → `mandrake.rsw.ionweapons`, `mandrake.droidworks` →
+  `mandrake.rsw.droidworks`.
+
+**Live is the authority here, and it was checked rather than assumed:** all 24 `mandrake.*`
+ids in the live file resolve to an installed mod's own `About.xml` packageId, the
+non-`mandrake` 561 entries are byte-order-identical to the pre-rename list, and the
+old↔new mapping is 23-for-23 with `mandrake.jawa.patches` deliberately unrenamed
+(Jawa_Patches is parked for Phase 3).
+
+| out (23, pre-rename) | in (23, renamed) |
+|---|---|
+| `mandrake.inhabited` · `mandrake.jawafactionslate` · `mandrake.jawaplantgrowth` · `mandrake.jawarules` · `mandrake.msedroidfix` · `mandrake.empirepursuit` · `mandrake.strandedquest` · `mandrake.ashkarrlandmarkart` · `mandrake.sauridfrillfix` · `mandrake.jawavoice` · `mandrake.gravshipastronautfix` · `mandrake.planetpresetprime` · `mandrake.toolbeltfix` · `mandrake.blastdoorframeasyncfix` · `mandrake.researchkiteastfix` · `mandrake.desertvehiclereskin` · `mandrake.jawa.doctrine` · `mandrake.starwarsraces` · `mandrake.jawa.armoury` · `mandrake.jawaikee` · `mandrake.jawaionweapons` · `mandrake.jawapawnflavor` · `mandrake.rimdefdump` | `mandrake.rm.inhabited` · `mandrake.rut.factionslate` · `mandrake.rut.plantgrowth` · `mandrake.rsw.jawarules` · `mandrake.rsw.msedroidfix` · `mandrake.rut.empirepursuit` · `mandrake.rm.strandedquest` · `mandrake.rut.ashkarrlandmarkart` · `mandrake.rm.sauridfrillfix` · `mandrake.rsw.jawavoice` · `mandrake.rm.gravshipastronautfix` · `mandrake.rm.planetpresetprime` · `mandrake.rm.toolbeltfix` · `mandrake.rsw.blastdoorframeasyncfix` · `mandrake.rm.researchkiteastfix` · `mandrake.rm.desertvehiclereskin` · `mandrake.rut.doctrine` · `mandrake.rsw.starwarsraces` · `mandrake.rsw.armoury` · `mandrake.rsw.jawaikee` · `mandrake.rsw.ionweapons` · `mandrake.rut.pawnflavor` · `mandrake.rm.rimdefdump` |
+
 ---
 
 ## 🔴 CURRENT MOD SET — empirepursuit fork swapped in, 2026-08-30
