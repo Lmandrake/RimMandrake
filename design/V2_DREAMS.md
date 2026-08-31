@@ -933,15 +933,31 @@ mechanic that already ships — the cheapest large win in the register.
 - `FleshmassHeart` or `Dreadmeld` → **the sarlacc itself**. The heart's shipped
   description — grows until it consumes everything — is already the myth.
 
-⚠️ **Two things NOT established, and they must be checked before building:**
+✅ **Both former unknowns MEASURED from source, 2026-08-31 (rimsage, decompiled
+Anomaly C# + defs):**
 
-1. **Whether `FleshmassHeart` actually spawns inside the Undercave.** It is a
-   separate IncidentDef and the Undercave's gen steps list `Dreadmeld`, not the
-   heart. The heart may be surface content. **Do not design around the heart
-   being at the bottom of the pit until someone has looked.**
-2. **How a pit gate is triggered**, and whether it can be sited deliberately —
-   a sarlacc that appears at random is a monster, a sarlacc that lives in a known
-   place is a *landmark*, and the landmark is worth far more.
+1. **`FleshmassHeart` is SURFACE-ONLY.** `IncidentDef FleshmassHeart` targets
+   `Map_PlayerHome` only; `IncidentWorker_FleshmassHeart` spawns
+   `FleshmassHeartSpawner` on the target map via `LargeBuildingCellFinder`, and
+   nothing in `UndercaveMapComponent` or the Undercave genstep chain
+   (`Fleshbulbs, RockChunks, PlaceCaveExit, Dreadmeld, Fleshmass, FleshSacks,
+   UndercaveInterest, Plants`) references it. ⇒ The sarlacc-at-the-bottom is
+   OURS to author — either cast `Dreadmeld` (already resident) as the beast, or
+   add the heart to the Undercave generation ourselves. Do not expect vanilla to
+   put it there.
+2. **A pit gate is SITEABLE-WITH-C#, and cheaply.** `PitGate : MapPortal` is
+   fully self-contained — `SpawnSetup` starts its own lifecycle, `Tick()` drives
+   its own incidents/collapse, `ExposeData` persists its own fields, no
+   GameComponent bookkeeping — and its def already wires
+   `portal.pocketMapGenerator = Undercave` / `exitDef = CaveExit`. So one small
+   C# spawn call (`GenSpawn.Spawn` + `SetFaction(Faction.OfEntities)`, exactly
+   what `IncidentWorker_PitGate.TryExecuteWorker` does minus the random cell
+   finder) places a fully functioning gate at an authored cell. Vanilla's own
+   `PsychicRitualDef_SummonPitGate` proves trigger-on-demand but still rolls a
+   random cell; the exact-cell landmark needs the one spawn call. The vanilla
+   incident path stays available (`CanFireNowSub`: Anomaly active, player home
+   map, no existing gate). **The landmark sarlacc is confirmed cheap.**
+   ⚠️ `CQF_Undercave` remains unassessed — rimsage indexes core+Anomaly only.
 
 🔴 **The blocker is a standing owner ruling, not a technical one.** Anomaly's
 content is set to **ZERO** (owner, 2026-08-13) with the DLC left enabled so its
