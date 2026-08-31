@@ -229,11 +229,12 @@ Things** (survives any map loss). Version-stamp the component for migration.
 1. ~~Severity ceiling~~ ✅ **RULED (door ruling, 2026-08-30): survivable
    events only** — an L curse delivers a situation, lethal if mishandled,
    never a scripted named-colonist death.
-2. **Diegesis level of the UI:** are the nine satiation bands ever shown as a
-   panel (even post-contact), or only ever felt through letters/gestures/the
-   hologram room? (The review leans diegetic; the call is his.)
-3. **Reign pacing feel:** reign-per-landing is ratified direction, but long
-   sits make long reigns — does a max reign length force a challenge?
+2. ~~Diegesis~~ ✅ **RULED (owner card, 2026-08-31): FELT ONLY** — no panel,
+   no numbers, ever; the instrument panel is diegetic (Narrator, lights,
+   hologram room).
+3. ~~Reign pacing~~ ✅ **RULED (owner card, 2026-08-31): a maximum reign
+   length FORCES a jealous-watchers challenge** — the court never fully
+   sleeps, even on a long settle. Length TUNE.
 4. ~~Mod name~~ ✅ **RULED (door ruling, 2026-08-30): `RimMandrake Ninefold`.**
 5. **First-contact order override:** the chains doc proposes encounter order;
    he may want a scripted first god for campaign start.

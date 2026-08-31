@@ -7,12 +7,21 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-31T06:36:21Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-31T06:48:42Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
-Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
+The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
+
+## RENAME_VERIFY_WINDOW_1 Rename verification at next game window: refresh.py dump rebuild + re-fingerprint, validate_patch --live/--defs on all patch mods, magenta texture sweep, 22s minimal-list load; then rid/xtp validate_save_artifact
+state:    ready
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+summary:  (no items/RENAME_VERIFY_WINDOW_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/RENAME_VERIFY_WINDOW_1.md
 
 # IN PROGRESS
 
@@ -242,16 +251,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/JAWA_PATCHES_SPLIT_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/JAWA_PATCHES_SPLIT_1.md
 
-## RENAME_VERIFY_WINDOW_1 Rename verification at next game window: refresh.py dump rebuild + re-fingerprint, validate_patch --live/--defs on all patch mods, magenta texture sweep, 22s minimal-list load; then rid/xtp validate_save_artifact
-state:    proposed
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/RENAME_VERIFY_WINDOW_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/RENAME_VERIFY_WINDOW_1.md
-
 ## GRAFFITI_FRAMEWORK_BUILD_1 Build mandrake.rm.graffiti (SUPERSEDES Mlie.GraffitiMod - absorb spree, retire from modlist, VERIFY license before asset reuse) + mandrake.rut.marks: five families, taunt funnel in v1, faint-scrawl cant
 state:    proposed
 row:      unassigned
@@ -261,3 +260,23 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/GRAFFITI_FRAMEWORK_BUILD_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/GRAFFITI_FRAMEWORK_BUILD_1.md
+
+## NINEFOLD_ENGINE_M0_1 Build RimMandrake Ninefold M0: GodStates satiation ledger + five easiest event hooks + first-contact chains + signed corpus letters (provisional voice approval; owner redlines live text). Felt-only diegesis ruled - no panels ever
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/NINEFOLD_ENGINE_M0_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/NINEFOLD_ENGINE_M0_1.md
+
+## COLONY_VISIBILITY_BUILD_1 Build the Colony Visibility dial (mandrake.rm.visibility): safe core first, threat-scoped Postfix per ruling (hostile callers only), Spike 3 is the patch skeleton
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/COLONY_VISIBILITY_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/COLONY_VISIBILITY_BUILD_1.md

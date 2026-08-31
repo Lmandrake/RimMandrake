@@ -429,3 +429,11 @@ breaks the storyteller's floor.
 6. Does Visibility persist per-tile when the ship leaves and returns
    (a remembered tile), or is every landing a clean floor? (Ta'Baa says
    clean; Ishko says the desert remembers. Genuinely his call.)
+
+
+## Ruling 2026-08-31 (owner card) — THREAT-SCOPED patching
+
+The global-vs-threat-scoped fork is closed: the Postfix replaces threat
+points for HOSTILE events only. Quest budgets, herd sizing and friendly
+arrivals stay on vanilla wealth scaling. Ninefold M0 is called the same day;
+this build pairs with it.
