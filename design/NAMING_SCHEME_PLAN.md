@@ -93,6 +93,22 @@ than the census's 1,261 because defs declared inside `Patches/` payloads
 count too — they must be renamed as well). RSW carries 778 of 1,323: the
 Star Wars collection is the heaviest migration surface._
 
+## 3a. Phase 2 — EXECUTED 2026-08-31 (owner: "Deploy the full rename.")
+
+Applied via `Utils/migrate_names.py` off the map, staged commits: text (4,904
+defName · 255 packageId · 275 path · 164 namespace hits, 468 files), 31 folder
+moves (`git mv`, history kept), ModsConfig 23 id swaps, redeploy (2,691 files,
+holds honored after DEPLOY_HOLD path fix), 7 stale game-side folders removed,
+rid/xtp references migrated on both sides (incl. one our-gene ref found in
+third-party `pokean.xtp`). Case-insensitive packageId replace bit two
+camel-case namespaces (fixed); vendored-absorption defNames (Armoury's
+~1,470) are exempted via per-mod `.naming-vendored` files. **Lint: 1
+violation = the expected SPLIT marker.** DEFERRED to the next game window
+(RENAME_VERIFY_WINDOW_1): dump refresh + re-fingerprint, validate_patch
+--live/--defs, magenta sweep, minimal-list load. Phase 3 =
+JAWA_PATCHES_SPLIT_1. World drafts: sacrificial per plan alternative;
+re-import post-refresh.
+
 ## 3b. Phase 1 — DELIVERED 2026-08-30
 
 `src/RimMandrake/Utils/naming_lint.py` (standalone warn-mode; `--strict` for

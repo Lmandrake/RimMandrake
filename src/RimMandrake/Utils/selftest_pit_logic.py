@@ -11,13 +11,13 @@ project has no prior xUnit/NUnit precedent (checked: no *.Test*.csproj,
 no PackageReference to any test framework anywhere under src/). Rather than
 stand up a full test project layout, the actual test lives in a small
 standalone net8.0 console app that needs no RimWorld/Unity assemblies -
-RimMandrake_Pits/Source/SelfTest/ (see that project's own header for exactly
+Pits/Source/SelfTest/ (see that project's own header for exactly
 what it compiles in for real vs. what it had to hand-extract because the
 real method needs a live Pawn/Map). This script is just the one-line,
 `python3 selftest_pit_logic.py`-shaped door into it, so it slots into the
 same "loop over every selftest_*.py" habit as everything else here.
 
-dotnet is WINDOWS-NATIVE (see RimMandrake_Pits.csproj's own build comment)
+dotnet is WINDOWS-NATIVE (see Pits.csproj's own build comment)
 and cannot take a /mnt/d path, so this script finds dotnet.exe and converts
 the repo-relative project path to a D-drive-style path before invoking it.
 
@@ -33,7 +33,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 # Utils -> RimMandrake -> src -> repo root.
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
 CSPROJ = os.path.join(
-    REPO, "src", "RimMandrake", "RimMandrake_Pits", "Source", "SelfTest",
+    REPO, "src", "RimMandrake", "Pits", "Source", "SelfTest",
     "RimMandrakePits.SelfTest.csproj",
 )
 

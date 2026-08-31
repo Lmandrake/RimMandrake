@@ -94,7 +94,7 @@
 			<li>brrainz.cameraplus</li>
 			<li>iforgotmysocks.caravanadventures</li>
 			<li>joe.cephaloids</li>
-			<li>mandrake.cereanmanefix</li>
+			<li>mandrake.rsw.cereanmanefix</li>
 			<li>kapitanoczywisty.changemapedge</li>
 			<li>void.charactereditor</li>
 			<li>heatherathebyne.childrenlearnoncaravan</li>
@@ -235,7 +235,7 @@
 			<li>zylle.morevanillabiomes</li>
 			<li>tidal.morevanilla.textures</li>
 			<li>morphsassorted.biotechretex</li>
-			<li>mandrake.msedroidfix</li>
+			<li>mandrake.rsw.msedroidfix</li>
 			<li>snobi.mutatorworldicons</li>
 			<li>veterano.mythicages.megafaunabestiary</li>
 			<li>radzerp.naturalpaths</li>
@@ -426,7 +426,7 @@
 			<li>maal.bettertreesmod</li>
 			<li>m00nl1ght.geologicallandforms.biometransitions</li>
 			<li>biomesteam.biomescore</li>
-			<li>mandrake.sauridfrillfix</li>
+			<li>mandrake.rm.sauridfrillfix</li>
 			<li>neronix17.retexture.charactereditor</li>
 			<li>qux.comigo.bettertreesmod</li>
 			<li>hailuan.customquestframeworkai</li>
@@ -446,7 +446,7 @@
 			<li>smxrez.makeshiftreexamined</li>
 			<li>badoaks.meatonastick.expansion</li>
 			<li>zacharyfoster.mineralsframework</li>
-			<li>mandrake.gravshipastronautfix</li>
+			<li>mandrake.rm.gravshipastronautfix</li>
 			<li>sinnamon.moreritualrewards</li>
 			<li>zal.moreutilitypacks</li>
 			<li>andromeda.niceresearchtab</li>
@@ -468,7 +468,7 @@
 			<li>kathanon.searchablemenus</li>
 			<li>scherub.stonecuttingextended</li>
 			<li>cyanobot.toddlers</li>
-			<li>mandrake.toolbeltfix</li>
+			<li>mandrake.rm.toolbeltfix</li>
 			<li>vanillaexpanded.vchemfuele</li>
 			<li>vanillaexpanded.vcookestews</li>
 			<li>kuhlyus.modpatch.vanillaoutpost</li>
@@ -484,7 +484,7 @@
 			<li>meteores.ancienturbanruinsalldeconstructible.aurad</li>
 			<li>biomesteam.biomescaverns</li>
 			<li>biomesteam.biomespollutedlands</li>
-			<li>mandrake.blastdoorframeasyncfix</li>
+			<li>mandrake.rsw.blastdoorframeasyncfix</li>
 			<li>zal.comigogreaterswamps</li>
 			<li>mlie.functionalvanillaexpandedprops</li>
 			<li>sd.fa.geneticheadsbiotech</li>
@@ -498,7 +498,7 @@
 			<li>reel.facialanims</li>
 			<li>noxilie.regrow.wmb.advancedbiomes</li>
 			<li>noxilie.regrow.wmb.alphabiomes</li>
-			<li>mandrake.researchkiteastfix</li>
+			<li>mandrake.rm.researchkiteastfix</li>
 			<li>oskarpotocki.vfe.pirates</li>
 			<li>vanillaexpanded.vmemese</li>
 			<li>vanillaexpanded.skills</li>
@@ -544,7 +544,7 @@
 			<li>redmattis.bigsmall</li>
 			<li>redmattis.bigweapons</li>
 			<li>avilmask.commonsense</li>
-			<li>mandrake.desertvehiclereskin</li>
+			<li>mandrake.rm.desertvehiclereskin</li>
 			<li>lovelydovey.sex.withrosaline</li>
 			<li>lovelydovey.recreation.witheuterpe</li>
 			<li>leutiankane.mineablesor</li>
@@ -559,26 +559,26 @@
 			<li>danzinagri.facialanimationcompatabilityproject</li>
 			<li>sd.fa.geneticheadsmods</li>
 			<li>dubwise.dubsperformanceanalyzer.steam</li>
-			<li>mandrake.jawa.doctrine</li>
-			<li>mandrake.jawavoice</li>
+			<li>mandrake.rut.doctrine</li>
+			<li>mandrake.rsw.jawavoice</li>
 			<li>taranchuk.performanceoptimizer</li>
 			<li>co.uk.epicguru.meleeanimation</li>
 			<li>lordfelix.rimcontrol</li>
 			<li>lee.theforce.lightsaber</li>
-			<li>mandrake.starwarsraces</li>
+			<li>mandrake.rsw.starwarsraces</li>
 			<li>guy762.mm.kotorcore</li>
 			<li>guy762.kotorweapons</li>
 			<li>als.gravtech</li>
 			<li>als.gravtech.bc</li>
 			<li>HalituisAmaricanous.gravtechbigcannons</li>
-			<li>mandrake.jawa.armoury</li>
-			<li>mandrake.jawaionweapons</li>
+			<li>mandrake.rsw.armoury</li>
+			<li>mandrake.rsw.ionweapons</li>
 			<li>mandrake.jawa.patches</li>
-			<li>mandrake.jawaplantgrowth</li>
+			<li>mandrake.rut.plantgrowth</li>
 			<li>guy762.kotordroids</li>
 			<li>btd.gbp.shippack.kotor.vge</li>
 			<li>mandrake.jawaseashaper</li>
-			<li>mandrake.rimdefdump</li>
+			<li>mandrake.rm.rimdefdump</li>
 		</modIds>
 		<modSteamIds>
 			<li>0</li>

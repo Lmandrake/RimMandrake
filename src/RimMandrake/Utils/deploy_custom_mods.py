@@ -58,7 +58,7 @@ SRC_ROOT = os.path.join(ROOT, "src")
 # plan §4 dep 2. `custom_patches/` was flat; the two-tier split puts mods under
 # src/Jawa/ AND src/RimMandrake/, so discovery gains one level. The deployed
 # folder name is still the bare mod name — the game never sees the tier.
-SRC_TIERS = ("Jawa", "RimMandrake")
+SRC_TIERS = ("RimMandrake", "RimStarWars", "RimUtinni", "SPLIT_Phase3")
 
 
 def mod_dirs():

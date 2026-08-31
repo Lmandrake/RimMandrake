@@ -94,7 +94,7 @@
 			<li>brrainz.cameraplus</li>
 			<li>iforgotmysocks.caravanadventures</li>
 			<li>joe.cephaloids</li>
-			<li>mandrake.cereanmanefix</li>
+			<li>mandrake.rsw.cereanmanefix</li>
 			<li>kapitanoczywisty.changemapedge</li>
 			<li>void.charactereditor</li>
 			<li>heatherathebyne.childrenlearnoncaravan</li>
@@ -237,7 +237,7 @@
 			<li>zylle.morevanillabiomes</li>
 			<li>tidal.morevanilla.textures</li>
 			<li>morphsassorted.biotechretex</li>
-			<li>mandrake.msedroidfix</li>
+			<li>mandrake.rsw.msedroidfix</li>
 			<li>snobi.mutatorworldicons</li>
 			<li>veterano.mythicages.megafaunabestiary</li>
 			<li>radzerp.naturalpaths</li>
@@ -432,7 +432,7 @@
 			<li>maal.bettertreesmod</li>
 			<li>m00nl1ght.geologicallandforms.biometransitions</li>
 			<li>biomesteam.biomescore</li>
-			<li>mandrake.sauridfrillfix</li>
+			<li>mandrake.rm.sauridfrillfix</li>
 			<li>neronix17.retexture.charactereditor</li>
 			<li>qux.comigo.bettertreesmod</li>
 			<li>hailuan.customquestframeworkai</li>
@@ -452,7 +452,7 @@
 			<li>smxrez.makeshiftreexamined</li>
 			<li>badoaks.meatonastick.expansion</li>
 			<li>zacharyfoster.mineralsframework</li>
-			<li>mandrake.gravshipastronautfix</li>
+			<li>mandrake.rm.gravshipastronautfix</li>
 			<li>sinnamon.moreritualrewards</li>
 			<li>zal.moreutilitypacks</li>
 			<li>andromeda.niceresearchtab</li>
@@ -474,7 +474,7 @@
 			<li>kathanon.searchablemenus</li>
 			<li>scherub.stonecuttingextended</li>
 			<li>cyanobot.toddlers</li>
-			<li>mandrake.toolbeltfix</li>
+			<li>mandrake.rm.toolbeltfix</li>
 			<li>vanillaexpanded.vchemfuele</li>
 			<li>vanillaexpanded.vcookestews</li>
 			<li>kuhlyus.modpatch.vanillaoutpost</li>
@@ -490,7 +490,7 @@
 			<li>meteores.ancienturbanruinsalldeconstructible.aurad</li>
 			<li>biomesteam.biomescaverns</li>
 			<li>biomesteam.biomespollutedlands</li>
-			<li>mandrake.blastdoorframeasyncfix</li>
+			<li>mandrake.rsw.blastdoorframeasyncfix</li>
 			<li>zal.comigogreaterswamps</li>
 			<li>mlie.functionalvanillaexpandedprops</li>
 			<li>sd.fa.geneticheadsbiotech</li>
@@ -505,7 +505,7 @@
 			<li>noxilie.regrow.wmb.advancedbiomes</li>
 			<li>noxilie.regrow.wmb.alphabiomes</li>
 			<li>regrowth.botr.boilingforest</li>
-			<li>mandrake.researchkiteastfix</li>
+			<li>mandrake.rm.researchkiteastfix</li>
 			<li>oskarpotocki.vfe.pirates</li>
 			<li>vanillaexpanded.vmemese</li>
 			<li>vanillaexpanded.skills</li>
@@ -552,7 +552,7 @@
 			<li>redmattis.sapientanimals</li>
 			<li>redmattis.bigweapons</li>
 			<li>avilmask.commonsense</li>
-			<li>mandrake.desertvehiclereskin</li>
+			<li>mandrake.rm.desertvehiclereskin</li>
 			<li>lovelydovey.sex.withrosaline</li>
 			<li>lovelydovey.recreation.witheuterpe</li>
 			<li>leutiankane.mineablesor</li>
@@ -569,8 +569,8 @@
 			<li>danzinagri.facialanimationcompatabilityproject</li>
 			<li>sd.fa.geneticheadsmods</li>
 			<li>dubwise.dubsperformanceanalyzer.steam</li>
-			<li>mandrake.jawa.doctrine</li>
-			<li>mandrake.jawavoice</li>
+			<li>mandrake.rut.doctrine</li>
+			<li>mandrake.rsw.jawavoice</li>
 			<li>taranchuk.performanceoptimizer</li>
 			<li>co.uk.epicguru.meleeanimation</li>
 			<li>lordfelix.rimcontrol</li>
@@ -581,13 +581,13 @@
 			<li>als.gravtech</li>
 			<li>als.gravtech.bc</li>
 			<li>halituisamaricanous.gravtechbigcannons</li>
-			<li>mandrake.jawa.armoury</li>
-			<li>mandrake.jawaionweapons</li>
+			<li>mandrake.rsw.armoury</li>
+			<li>mandrake.rsw.ionweapons</li>
 			<li>mandrake.jawa.patches</li>
 			<li>guy762.kotordroids</li>
 			<li>btd.gbp.shippack.kotor.vge</li>
 			<li>mandrake.jawaseashaper</li>
-			<li>mandrake.rimdefdump</li>
+			<li>mandrake.rm.rimdefdump</li>
 		</modIds>
 		<modSteamIds>
 			<li>0</li>
@@ -1766,10 +1766,10 @@
 		<PrisonLaborVersion>v1_6_3</PrisonLaborVersion>
 	</meta>
 	<xenotype>
-		<name>MandrakeJawa</name>
+		<name>RSW_MandrakeJawa</name>
 		<inheritable>True</inheritable>
 		<genes>
-			<li>RimMandrake_BodySizeGene_smaller</li>
+			<li>RSW_BodySizeGene_smaller</li>
 			<li>StrongStomach</li>
 			<li>AG_UnderdevelopedTeeth</li>
 			<li>AG_SurvivalInstinct_High</li>
@@ -1782,7 +1782,7 @@
 			<li>MinTemp_SmallIncrease</li>
 			<li>MaxTemp_LargeIncrease</li>
 			<li>MeleeDamage_Weak</li>
-			<li>RimMandrake_Jawa_Skittish</li>
+			<li>RSW_Jawa_Skittish</li>
 			<li>Pain_Extra</li>
 			<li>BS_EarlyMaturity</li>
 			<li>VRE_ShortPregnancy</li>
@@ -1791,12 +1791,12 @@
 			<li>Beard_NoBeardOnly</li>
 			<li>Body_Standard</li>
 			<li>Skin_InkBlack</li>
-			<li>RimMandrake_Eyes_HugeYellow</li>
-			<li>RimMandrake_Jawa_Eyes_HugeOrange</li>
-			<li>RimMandrake_Jawa_Eyes_HugeAmber</li>
+			<li>RSW_Eyes_HugeYellow</li>
+			<li>RSW_Jawa_Eyes_HugeOrange</li>
+			<li>RSW_Jawa_Eyes_HugeAmber</li>
 			<li>Outland_Blood_Gray</li>
 			<li>DarkVision</li>
-			<li>RimMandrake_Jawa_Head_Plain</li>
+			<li>RSW_Jawa_Head_Plain</li>
 			<li>Outland_FamiliarScent</li>
 			<li>Outland_Evasive</li>
 			<li>Outland_AllMale</li>

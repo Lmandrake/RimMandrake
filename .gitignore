@@ -254,3 +254,7 @@ Transient/*
 
 # Machine cache, logs and samples do not come into the repo at all — they go to
 # /tmp. Nothing in this repo should be written for a program to read later.
+
+# build outputs never ship
+src/**/bin/
+src/**/obj/

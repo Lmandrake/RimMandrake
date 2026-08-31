@@ -16,8 +16,8 @@
 # --- Jawa_Armoury: LIVE mod, two held files -------------------------------
 # Owner ruled SHIP NEITHER, 2026-08-12. Every other file in this mod continues
 # to deploy normally; that split is the reason this list is per-file.
-Jawa_Armoury/Patches/Warcasket_HazardRetune.xml   # owner: SHIP NEITHER, 2026-08-12
-Jawa_Armoury/Patches/Armour_Ratings.xml           # owner: SHIP NEITHER, 2026-08-12
+Armoury/Patches/Warcasket_HazardRetune.xml   # owner: SHIP NEITHER, 2026-08-12
+Armoury/Patches/Armour_Ratings.xml           # owner: SHIP NEITHER, 2026-08-12
 
 # --- Jawa_Armoury: WEAPONS_ABSORPTION_WAVE_1 eweb/opturret absorption ------
 # maincrep.eweb and rpgwanderer.opturret are STILL ACTIVE in ModsConfig — the
@@ -33,13 +33,13 @@ Jawa_Armoury/Patches/Armour_Ratings.xml           # owner: SHIP NEITHER, 2026-08
 # (pre-this-session) versions live, so eweb/opturret keep behaving exactly as
 # they did before this item, until retirement actually happens. Lift together,
 # never separately.
-Jawa_Armoury/Defs/DamageDefs/Absorbed_Eweb_Damage.xml   # FOUNDRY: eweb/opturret retirement not done yet, 2026-08-30
-Jawa_Armoury/Defs/HediffDefs/Absorbed_Eweb_Hediff.xml   # FOUNDRY: eweb/opturret retirement not done yet, 2026-08-30
-Jawa_Armoury/Defs/SoundDefs/Absorbed_Eweb_Sounds.xml    # FOUNDRY: eweb/opturret retirement not done yet, 2026-08-30
-Jawa_Armoury/Defs/ThingDefs/Absorbed_Eweb.xml           # FOUNDRY: eweb/opturret retirement not done yet, 2026-08-30
-Jawa_Armoury/Defs/ThingDefs/Absorbed_OPTurret.xml       # FOUNDRY: eweb/opturret retirement not done yet, 2026-08-30
-Jawa_Armoury/Patches/Turrets_DamageDoctrine.xml         # FOUNDRY: paired with the absorbed defs above, 2026-08-30
-Jawa_Armoury/Patches/Turrets_Renames.xml                # FOUNDRY: paired with the absorbed defs above, 2026-08-30
+Armoury/Defs/DamageDefs/Absorbed_Eweb_Damage.xml   # FOUNDRY: eweb/opturret retirement not done yet, 2026-08-30
+Armoury/Defs/HediffDefs/Absorbed_Eweb_Hediff.xml   # FOUNDRY: eweb/opturret retirement not done yet, 2026-08-30
+Armoury/Defs/SoundDefs/Absorbed_Eweb_Sounds.xml    # FOUNDRY: eweb/opturret retirement not done yet, 2026-08-30
+Armoury/Defs/ThingDefs/Absorbed_Eweb.xml           # FOUNDRY: eweb/opturret retirement not done yet, 2026-08-30
+Armoury/Defs/ThingDefs/Absorbed_OPTurret.xml       # FOUNDRY: eweb/opturret retirement not done yet, 2026-08-30
+Armoury/Patches/Turrets_DamageDoctrine.xml         # FOUNDRY: paired with the absorbed defs above, 2026-08-30
+Armoury/Patches/Turrets_Renames.xml                # FOUNDRY: paired with the absorbed defs above, 2026-08-30
 
 # --- WreckedMachines: whole mod parked to v2 ------------------------------
 # Owner stood the mod down to v2 on 2026-08-12: v1 uses mangled metal salvage

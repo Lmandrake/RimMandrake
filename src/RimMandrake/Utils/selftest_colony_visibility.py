@@ -30,7 +30,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 # Utils -> RimMandrake -> src -> repo root.
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
 CSPROJ = os.path.join(
-    REPO, "src", "Jawa", "Jawa_Doctrine", "Source", "DoctrineCore", "SelfTest",
+    REPO, "src", "RimUtinni", "Doctrine", "Source", "DoctrineCore", "SelfTest",
     "JawaDoctrineCore.SelfTest.csproj",
 )
 
