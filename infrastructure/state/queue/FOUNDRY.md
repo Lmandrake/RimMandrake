@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-31T15:39:21Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-31T15:48:11Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -153,6 +153,15 @@ kind:     task
 summary:  design/NAMINGSCHEMEPLAN.md §5 Phase 3: "JawaPatches triage; extract
 prose:    infrastructure/state/items/JAWA_PATCHES_SPLIT_1.md
 
+## GRAFFITI_FRAMEWORK_BUILD_1 Build mandrake.rm.graffiti (SUPERSEDES Mlie.GraffitiMod - absorb spree, retire from modlist, VERIFY license before asset reuse) + mandrake.rut.marks: five families, taunt funnel in v1, faint-scrawl cant
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  design/Jawa/graffitispec.md — full design, all four owner rulings made
+prose:    infrastructure/state/items/GRAFFITI_FRAMEWORK_BUILD_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -218,16 +227,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## GRAFFITI_FRAMEWORK_BUILD_1 Build mandrake.rm.graffiti (SUPERSEDES Mlie.GraffitiMod - absorb spree, retire from modlist, VERIFY license before asset reuse) + mandrake.rut.marks: five families, taunt funnel in v1, faint-scrawl cant
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/GRAFFITI_FRAMEWORK_BUILD_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/GRAFFITI_FRAMEWORK_BUILD_1.md
 
 ## NINEFOLD_ENGINE_M0_1 Build RimMandrake Ninefold M0: GodStates satiation ledger + five easiest event hooks + first-contact chains + signed corpus letters (provisional voice approval; owner redlines live text). Felt-only diegesis ruled - no panels ever
 state:    proposed

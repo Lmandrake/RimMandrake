@@ -3367,3 +3367,5 @@
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-08-31T15:37:31Z"}
 {"seat":"FOUNDRY","event":"claim","id":"JAWA_PATCHES_SPLIT_1","ts":"2026-08-31T15:39:20Z"}
 {"seat":"FOUNDRY","event":"start","id":"JAWA_PATCHES_SPLIT_1","ts":"2026-08-31T15:39:21Z"}
+{"seat":"FOUNDRY","event":"claim","id":"GRAFFITI_FRAMEWORK_BUILD_1","ts":"2026-08-31T15:48:10Z"}
+{"seat":"FOUNDRY","event":"start","id":"GRAFFITI_FRAMEWORK_BUILD_1","ts":"2026-08-31T15:48:11Z"}
