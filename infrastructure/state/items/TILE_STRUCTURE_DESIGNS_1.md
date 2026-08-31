@@ -49,6 +49,38 @@ compiler.
 - The remaining ~40 rows are explicitly left open for further batches,
   not silently declared done.
 
+## 2026-08-31 batch 2 (FOUNDRY) — three more roster rows authored
+
+Per the roster's own §5 protocol (batch of 3-5, offline verify, no live
+placement). All lint/verify results independently re-confirmed by
+FOUNDRY, not taken on a subagent's word alone (one fork's own summary
+was internally confused about which items were done; the actual
+`.lua` files and `lint`/`verify` output are the evidence, checked
+directly):
+
+- **The Krayt Graveyard** (row 3, RSW) —
+  `design/Jawa/templates/krayt_graveyard.lua`. `lint`: 0 findings.
+  `verify`: 3/3 defNames found.
+- **The Podracer Wreck** (row 4, RSW) —
+  `design/Jawa/templates/podracer_wreck.lua`. No "podracer engine"
+  ThingDef exists in the stack (verified against the live dump, not
+  guessed) — uses `AncientPodCar` (this project's own existing
+  `PodCarIsLandspeeder.xml` reskin) as the one intact centerpiece plus
+  vanilla `ChunkSlagSteel`/`Steel` scatter. `lint`: 0 findings. `verify`:
+  3/3 defNames found.
+- **The Hunting Lodge** (row 12, RSW) —
+  `design/Jawa/templates/hunting_lodge.lua`. **Caught and fixed a real
+  defect**: the template's own footprint requirement (3 bays ≥5 wide
+  each + the cold room's power apron) needs 28×18, not the 20×16 first
+  tried — `lint` correctly refused with `empty-plan`/`generator-refusal`
+  rather than silently under-building. Re-verified clean at 28×18:
+  `lint` 0 findings, `verify` 14/14 defNames found.
+
+Still not "shipped" by the roster's own §5 bar for any of these three:
+no GenStepDef/TileMutatorDef wiring (only Moisture Farm has that so
+far), no letter text in the gods' register, not placed on any tile.
+41 of 44 rows remain untouched. Left `doing`.
+
 ## STATE 2026-08-31, session end (owner went AFK mid-item)
 
 **Done, offline-verified:**
