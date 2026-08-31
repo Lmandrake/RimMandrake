@@ -116,12 +116,15 @@ filled, lengths capped, no def names accepted from the model.
 3. **Live Ollama trial** (model quality per llm_voice_preauthoring.md B.4),
    then the budget/killswitch proofs.
 
-## 5. Open for the owner
+## 5. RULED by the owner, 2026-08-31 (question cards)
 
-1. **Host**: local Ollama (private, free, quality-limited) vs a cloud key vs
-   the NVIDIA free tier (works for dev fanout; in-GAME use is a different
-   posture — flag, not a recommendation).
-2. **v1 dormancy**: wiring ships dark in v1 (felt-not-heard holds) — confirm,
-   or name the first consumer to go live.
-3. **Budget numbers**: calls/day per consumer (proposal: gods 3, raids 1,
-   flavor 2).
+1. ✅ **Host: CLOUD API KEY** — quality is the point; key lives in mod
+   settings; the endpoint stays OpenAI-compatible-configurable so local
+   remains a fallback posture, never the design target.
+2. ✅ **Sequencing, owner verbatim:** *"Let's experiment first with just the
+   oracle concept to test out llm work."* ⇒ Neither dormant-ship nor
+   consumer-live is decided yet — an **experiment spike comes first**
+   (`ORACLE_EXPERIMENT_SPIKE_1`): the thin client + ONE god-letter consumer
+   end-to-end against the cloud key on the minimal list, mock-endpoint gate
+   first per §4. The v1 posture is ruled after he sees it work.
+3. ✅ **Budgets as proposed**: gods 3 / raids 1 / flavor 2 per in-game day.

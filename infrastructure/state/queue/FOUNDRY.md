@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-31T19:40:44Z (the last event's own timestamp, not the render clock)
+as-of: 2026-08-31T19:43:32Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -227,3 +227,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/FOW_ROUTE_B_INTEGRATION_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/FOW_ROUTE_B_INTEGRATION_1.md
+
+## ORACLE_EXPERIMENT_SPIKE_1 Oracle experiment spike: thin OpenAI-compatible client + ONE god-letter consumer end-to-end (mock endpoint gate, then cloud key) on the 22s minimal list; spec design/RimMandrake/llm_ingame_wiring_spec.md; v1 posture ruled after the owner sees it
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/ORACLE_EXPERIMENT_SPIKE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ORACLE_EXPERIMENT_SPIKE_1.md
