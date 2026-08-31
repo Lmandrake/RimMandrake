@@ -94,7 +94,7 @@ namespace JawaBench.BridgeTools
                 "success, added {className, def, summary}, partCount, parts[] read back.")]
         public static async Task<object> ScenarioPartAdd(
             IRimBridgeContext ctx, CancellationToken cancellationToken,
-            [ToolParameter(Description = "Full class name, e.g. 'RUT_RuthlessPursuingMechanoids.ScenPart_RuthlessPursuingMechanoids'.")]
+            [ToolParameter(Description = "Full class name, e.g. 'RimMandrake.Utinni.EmpirePursuit.ScenPart_RuthlessPursuingMechanoids'.")]
             string className = null,
             [ToolParameter(Description = "ScenPartDef defName to assign to the part's def field.")]
             string defName = null,

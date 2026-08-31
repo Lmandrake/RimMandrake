@@ -10,7 +10,7 @@
       "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\Jawa\EmpirePursuit\Source\EmpirePursuit.csproj -c Release
 
     Output lands in ../Assemblies/, which is where RimWorld looks. AssemblyName is kept as
-    "RUT_RuthlessPursuingMechanoids" (not "EmpirePursuit") purely for readability if anyone ever
+    "RimMandrake.Utinni.EmpirePursuit" (not "EmpirePursuit") purely for readability if anyone ever
     diffs this against upstream's DLL — the class/namespace identity that matters for
     save/scenario compatibility comes from RootNamespace and the source, not from this name.
   -->
@@ -44,7 +44,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="RUT_RuthlessPursuingMechanoids.cs" />
+    <Compile Include="RimMandrake.Utinni.EmpirePursuit.cs" />
     <Compile Include="ScenPartDef_RuthlessPursuit.cs" />
     <Compile Include="Settings.cs" />
     <Compile Include="Utilities.cs" />

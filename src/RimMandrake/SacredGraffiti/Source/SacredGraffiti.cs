@@ -3,7 +3,7 @@ using System.Linq;
 using RimWorld;
 using Verse;
 
-namespace Rimmandrake.rm.sacredgraffiti
+namespace RimMandrake.SacredGraffiti
 {
     // GRAFFITI_MOD_EXPANSION_1 — the owner's ruling on placement: a sacred
     // mark is placed as a RITUAL OUTCOME (a reward off a Salvation Matrix

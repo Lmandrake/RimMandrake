@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Verse;
 
-namespace RUT_RuthlessPursuingMechanoids
+namespace RimMandrake.Utinni.EmpirePursuit
 {
     [StaticConstructorOnStartup]
     public static class HarmonyPatcher

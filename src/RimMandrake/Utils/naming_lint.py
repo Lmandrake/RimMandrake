@@ -58,13 +58,19 @@ def lint_mod(mod: Path, tier: str, sanctioned: set):
         if mod.parent.name != tier:
             v.append(("folder", f"src/{mod.parent.name}/ != src/{tier}/"))
         prefix = TIER_PREFIX[tier]
+        # absorbed third-party content keeps its defNames for compat;
+        # a mod declares preserved prefixes in .naming-vendored
+        vf = mod / ".naming-vendored"
+        vendored = tuple(l.strip() for l in vf.read_text().splitlines()
+                         if l.strip() and not l.startswith("#")) if vf.exists() else ()
         bad = 0
         for x in mod.rglob("*.xml"):
             if x.name == "About.xml":
                 continue
             for d in re.findall(r"<defName>([A-Za-z0-9_\-]+)</defName>",
                                 x.read_text(encoding="utf-8", errors="replace")):
-                if not d.startswith(prefix) and d not in sanctioned:
+                if not d.startswith(prefix) and d not in sanctioned \
+                        and not (vendored and d.startswith(vendored)):
                     bad += 1
         if bad:
             v.append(("defName", f"{bad} defs lack {prefix}"))
@@ -78,7 +84,7 @@ def lint_mod(mod: Path, tier: str, sanctioned: set):
                 want = {"RimMandrake": "RimMandrake.",
                         "RimStarWars": "RimMandrake.StarWars.",
                         "RimUtinni": "RimMandrake.Utinni."}.get(tier, f"{tier}.")
-                if not ns.startswith(want):
+                if not ns.startswith(want) and not (vendored and ns.startswith(vendored)):
                     v.append(("namespace", f"{ns} != {want}{mod.name}"))
                     break
             break
