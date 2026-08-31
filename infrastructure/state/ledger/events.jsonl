@@ -3301,3 +3301,4 @@
 {"seat":"FOUNDRY","event":"block","id":"SIX_FACTIONS_NEVER_RAID_1","reason":"mechanism unnamed; parked on a game-down window (minimal-tier bisect, then a pawngroup-preview companion tool)","ts":"2026-08-31T01:10:49Z"}
 {"seat":"FOUNDRY","event":"note","id":"AUTHORED_FACTION_RAID_SPAWNS_NOTHING_1","text":"Corrected 2026-08-30: executed:true with ZERO arrivals, 8/8 for Jawa_HuttCartel at 70-30000 points. The honest-failure path does not fire; read arrived[], not executed.","ts":"2026-08-31T01:13:08Z"}
 {"seat":"FOUNDRY","event":"note","id":"EMPIRE_RAID_NEVER_GENERATES_1","text":"Corrected 2026-08-30: polarity flipped on a different world - Empire 8/8, Pirate 0/8. Not Empire-specific; per-world state, not a FactionDef field (122-field diff separates nothing).","ts":"2026-08-31T01:13:08Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-08-31T01:13:44Z"}
