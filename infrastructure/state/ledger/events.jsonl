@@ -3321,3 +3321,5 @@
 {"seat":"FOUNDRY","event":"close","id":"FIRE_RAID_REPORTS_MODAL_1","sha":"7aabc1a3c9897c172d08e4dc986db8e614188ee0","ts":"2026-08-31T04:24:13Z"}
 {"seat":"FOUNDRY","event":"close","id":"seven-authored-factions-generate-and-field-their-own-kinds-5b90c7","sha":"7aabc1a3c9897c172d08e4dc986db8e614188ee0","ts":"2026-08-31T04:24:14Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-08-31T04:25:23Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-08-31T05:17:18Z"}
+{"seat":"FOUNDRY","event":"verify","id":"TERRITORY_ROAD_WEIGHTED_SCALE_1","result":"pass","config":"full-585","evidence":"Transient/territory_before_v2.png,Transient/territory_after_v2.png,Transient/territory_final_paused_safe.png","sha":"a8e46e55","ts":"2026-08-31T05:17:26Z"}

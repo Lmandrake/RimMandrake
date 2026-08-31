@@ -39,9 +39,15 @@
 // live-applied (Settings.Write() persists it to
 // Config\Mod_3626725895_FactionTerritoriesMod.xml - the SAME file a normal player edits
 // via the in-game Mod Settings window - so it survives every future load, not just this
-// bridge session; FactionTerritoriesUtility.RequestRegenerate(clearCache:true) is the
-// mod's own live-refresh path, the same one its "Clear all faction colour overrides"
-// button and its own WriteSettings() override call).
+// bridge session; FactionTerritoriesUtility.RequestRegenerateInternal(clearCache:true) is
+// the mod's own SYNCHRONOUS live-refresh path (MapModeComponent.RegenerateNow() - the same
+// call jawa/world_map_mode's mode switch already uses), used deliberately in place of the
+// public RequestRegenerate() its settings window and WriteSettings() call, which only sets
+// a `pending` flag consumed on the next GameComponentTick - a tick that does not run while
+// the game is paused. This was found the hard way: an early version of this tool called
+// RequestRegenerate() and needed the caller to unpause a REAL, persistent save just to make
+// one tick elapse before the new radius was visible - unpausing a real campaign to force a
+// cosmetic refresh is not an acceptable price for a settings tool to charge.
 //
 // REFLECTION, DELIBERATELY
 // ========================
@@ -113,8 +119,9 @@ namespace JawaBench.BridgeTools
                 "via Settings.Write() to the mod's own Config\\Mod_3626725895_FactionTerritoriesMod.xml " +
                 "- the same file the in-game Mod Settings window writes - so it survives every " +
                 "future load, not only this session. Pass regenerate=false to skip the " +
-                "immediate live refresh (RequestRegenerate) if you are about to set several " +
-                "fields in a row and only want the LAST call to trigger a rebuild. " +
+                "immediate, PAUSE-SAFE live refresh (RequestRegenerateInternal - no need to " +
+                "unpause the game) if you are about to set several fields in a row and only " +
+                "want the LAST call to trigger a rebuild. " +
                 "Requires jaeger972.factionterritories active; reports a missing mod as data " +
                 "rather than throwing.",
             ResultDescription =
@@ -141,7 +148,7 @@ namespace JawaBench.BridgeTools
             bool? includeWaterTiles = null,
             [ToolParameter(Description = "Persist any change to the mod's own settings XML via Settings.Write() (default true). False leaves the live object changed for this session only - the mod's own game-exit path may still write it later.")]
             bool persist = true,
-            [ToolParameter(Description = "Call FactionTerritoriesUtility.RequestRegenerate(clearCache:true) after any change, the mod's own live-refresh path - the same one its settings window and its own WriteSettings() use (default true).")]
+            [ToolParameter(Description = "Call FactionTerritoriesUtility.RequestRegenerateInternal(clearCache:true) after any change - the mod's own SYNCHRONOUS, pause-safe live-refresh path (MapModeComponent.RegenerateNow()), not the settings window's tick-gated RequestRegenerate. Default true.")]
             bool regenerate = true)
         {
             return await ctx.MainThread.InvokeAsync(() =>
@@ -250,15 +257,26 @@ namespace JawaBench.BridgeTools
                 bool regenerated = false;
                 if (changed.Count > 0 && regenerate)
                 {
+                    // RequestRegenerateInternal, NOT RequestRegenerate. RequestRegenerate (the
+                    // one the mod's own settings window and WriteSettings() call) only sets a
+                    // `pending` flag on GameComponent_FactionTerritories, consumed the next time
+                    // GameComponentTick runs - which does NOT run while the game is paused. A
+                    // caller sitting at the world map (as this tool's own caller usually is) who
+                    // wants to SEE the new radius immediately would otherwise have to unpause the
+                    // game just to make one tick elapse - on a real save, not a scratch map, that
+                    // is genuine unintended gameplay, not a harmless refresh. RequestRegenerateInternal
+                    // is the synchronous, main-thread, pause-safe path (MapModeComponent.RegenerateNow(),
+                    // the exact call jawa/world_map_mode already uses for a mode switch) with the
+                    // same clearCache behaviour, so this never needs the sim to tick.
                     Type utilType = FtType("FactionTerritories.FactionTerritoriesUtility");
-                    MethodInfo regenMethod = utilType?.GetMethod("RequestRegenerate", FtPublicStatic);
+                    MethodInfo regenMethod = utilType?.GetMethod("RequestRegenerateInternal", FtPublicStatic);
                     if (regenMethod != null)
                     {
                         try { regenMethod.Invoke(null, new object[] { true }); regenerated = true; }
                         catch (Exception e)
                         {
                             return Fail(
-                                "FactionTerritoriesUtility.RequestRegenerate threw: " + e.Message,
+                                "FactionTerritoriesUtility.RequestRegenerateInternal threw: " + e.Message,
                                 new { modPresent = true, before, changed, persisted });
                         }
                     }
