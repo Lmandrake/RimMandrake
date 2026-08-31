@@ -42,7 +42,7 @@ Generated from a live post-patch def dump; load last.</description>
     </li>
   </modDependencies>
   <!-- Harmony dependency added WEAPONS_ABSORPTION_WAVE_1 (2026-08-30): this mod's first
-       C# (Source/), porting 7 load-bearing kotorcore comp classes -- see items/
+       C# (Source/), porting 7 load-bearing kotorcore comp classes; see items/
        WEAPONS_ABSORPTION_WAVE_1.md. -->
   <!-- Corrected 2026-08-13. Both previous ids were WRONG and this whole block
        was therefore INERT: `guy762.starwarskotorweapons` and `Aoba.OuterRim.Core`
