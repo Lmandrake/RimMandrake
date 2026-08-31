@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-08-31T18:17:31Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-08-31T18:50:20Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -131,13 +131,3 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DESERT_PLANTS_SCRAGGLY_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DESERT_PLANTS_SCRAGGLY_1.md
-
-## LLM_INGAME_WIRING_1 Fable spec: wire an LLM into the game - event-triggered infrequent calls: the nine gods alive beyond prescribed dialog, generated raids, in-game content specialization (owner reopened the v2 LLM gate 2026-08-31)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/LLM_INGAME_WIRING_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/LLM_INGAME_WIRING_1.md

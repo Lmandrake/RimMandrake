@@ -3400,3 +3400,5 @@
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-08-31T18:10:59Z"}
 {"seat":"BENCH","event":"close","id":"NINE_VOICES_CAST_BIBLE_1","sha":"e3533fa0","ts":"2026-08-31T18:12:20Z"}
 {"seat":"BENCH","event":"close","id":"RESEARCH_TAXONOMY_DRAFT_1","sha":"d85403b5","ts":"2026-08-31T18:17:31Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","ts":"2026-08-31T18:31:57Z"}
+{"seat":"BENCH","event":"close","id":"LLM_INGAME_WIRING_1","sha":"1309d59f","ts":"2026-08-31T18:50:20Z"}
