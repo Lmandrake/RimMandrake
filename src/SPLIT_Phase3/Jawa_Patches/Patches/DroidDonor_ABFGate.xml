@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  DroidDonor_ABFGate.xml                     Jawa_Patches · authored 2026-09-01
+  ============================================================================
+
+  WHY THIS EXISTS
+  ================
+  DROID_DONOR_PATCH_GATE_1: guy762.mm.kotorcore ("Star Wars KotOR Resources and
+  Materials") and guy762.kotorweapons ("Star Wars KotOR Weapons and Armor")
+  both ship XML that references ABF's ("ABF: Artificial Beings Framework",
+  packageId Killathon.ArtificialBeings) `ArtificialBeings.*` C# classes with NO
+  MayRequire guard against ABF itself. If ABF (and its SynCore add-on,
+  Killathon.ArtificialBeings.SynCore, which depends on ABF core and cannot
+  outlive it) ever retire (WEAPONS_DONOR_RETIREMENT_1 / DROID_SYSTEM_BUILD_1's
+  eventual plan), every site below throws "could not find class" at load.
+
+  🔴 CRITICAL GATING CORRECTION, caught during this pass's own validate run:
+  ABF is STILL ACTIVE right now and these are, right now, REAL, WORKING
+  mechanics (a droid's ABF "Reprogrammable" pawnState, the recharge cells'
+  actual need-offset, the Baragwin trader's droid stock). An early draft of
+  this file gated each Remove on "the donor mod (kotorcore/kotorweapons) is
+  active" — which is true TODAY, meaning it would have fired immediately and
+  silently broken live ABF functionality the moment this patch deployed, long
+  before ABF ever retires. That is backwards. The correct gate is the
+  INVERSE: fire the Remove only once ABF is GONE (PatchOperationFindMod's
+  <nomatch> branch, confirmed real via Verse/PatchOperationFindMod.cs — match
+  fires when found, nomatch fires when absent). Every operation below is
+  dormant today (ABF is active -> nomatch never fires) and activates itself
+  automatically the moment ABF leaves ModsConfig.xml, which is exactly what
+  "safe to retire ABF" requires and nothing more.
+
+  SCOPE OF THIS FILE — sites 2-10 of the 11 catalogued in
+  infrastructure/state/items/DROID_DONOR_PATCH_GATE_1.md. All nine are inert-
+  once-ABF-is-gone metadata/mechanic-offset list entries the item file itself
+  calls "clean, isolated cuts" needing no design replacement. Deliberately
+  NOT included: Site 1 (guy762_KotORDroidBase's CompCoherenceNeed + its
+  ParentName="ABF_Thing_Synstruct_HumanlikeBase" inheritance) — that one is a
+  live mechanic plus an inheritance-chain dependency that needs the
+  Droidworks Need_Power replacement (design/Jawa/droid_system_build_spec.md
+  §3 unit 1) ported onto guy762.KotORDroids first; that port hasn't happened
+  yet (DROID_SYSTEM_BUILD_1's own "port manifest... waves 1-3" criterion is
+  still open). Patching Site 1 now would silently strip a real need with no
+  replacement even after ABF retires — a design call reserved for that item.
+
+  RE-VERIFIED AGAINST LIVE WORKSHOP COPIES 2026-09-01 (not just the item
+  doc's citations — mod updates shift lines):
+    - Sites 3-4: the item doc cited PawnKindDef Name="guy762_RogueDroidPawnKindBase"
+      for site 3. The LIVE file (guy762.mm.kotorcore workshop 3254370945,
+      1.6/AdditionalMods/_DroidsBase/Defs/PawnKinds_RogueDroidsBase.xml) has
+      no such Name anywhere — the two abstract PawnKindDefs are actually
+      Name="KotORDroidBase_good" (site 3) and Name="SWCPDroidBase_bad"
+      (site 4, matches the doc). Xpaths below use the verified live names.
+    - Sites 2, 5, 6, 7-10: line numbers and content otherwise match the item
+      doc's citations exactly.
+    - NEW FINDING beyond the original 11-site catalog: Site 2's xpath
+      (Name="guy762_DroidPawnKindBase") also matches a SECOND, independent
+      copy of the same modExtensions/li inside guy762.KotORDroids' own
+      PawnKinds_PlayerDroids.xml (workshop 3047371944) — RimWorld merges
+      same-Name/defName nodes from every active mod into one document before
+      a patch's xpath runs, so this one operation correctly reaches both
+      copies without a second xpath. Confirmed via validate_patch.py's own
+      "2 match(es) across 2 mod folders" report.
+    - NEW FINDING, also beyond the catalog: sites 7-10 (kotorweapons' trader
+      stock) are NOT actually "currently moot" as the item doc states.
+      guy762.kotorweapons itself is inactive, but mandrake.rsw.armoury
+      already carries its own absorbed, ACTIVE copy of the same
+      guy762_TraderKind_baragwin/guy762_BaseTraderKind_baragwin TraderKindDefs
+      with the identical unguarded ArtificialBeings.StockGenerator_Colonists
+      entries (src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/TraderKindDefs/).
+      Gating on "Star Wars KotOR Weapons and Armor" being active would never
+      fire against this absorbed copy at all. Fixed by gating on ABF's
+      absence instead (see the correction above) — that condition is correct
+      regardless of which of the two copies (donor or absorbed) happens to be
+      loaded, or even if both are.
+
+  NOT YET DONE, on purpose:
+    - validate_patch.py against a dump captured with ABF actually removed
+      (item's own verify step 3) — that needs a mod-list change and a
+      restart, out of scope for this offline pass. Validated here only
+      against the CURRENT (ABF-present) dump: confirms every match xpath is
+      real and well-formed, but cannot exercise the <nomatch> branch itself
+      (ABF is active in this dump, so every operation's <match> branch is
+      what actually ran during validation — the info log below reflects
+      that, not the dormant <nomatch> content).
+    - Cold-load verification with ABF actually off (item's verify step 4).
+  Both remain open in DROID_DONOR_PATCH_GATE_1's own criteria.
+  ============================================================================
+-->
+<Patch>
+
+  <!-- ===================== kotorcore-side (sites 2, 3, 4, 5, 6) ===================== -->
+  <!-- All gated on ABF's ABSENCE (nomatch) - dormant while ABF is active and these
+       mechanics are real, fires only once ABF actually retires. -->
+
+  <!-- Site 2: guy762_DroidPawnKindBase's ABF_ArtificialPawnKindExtension
+       (also reaches guy762.KotORDroids' own duplicate copy - see NEW FINDING above) -->
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>ABF: Artificial Beings Framework</li></mods>
+    <nomatch Class="PatchOperationRemove">
+      <xpath>/Defs/PawnKindDef[@Name="guy762_DroidPawnKindBase"]/modExtensions/li[@Class="ArtificialBeings.ABF_ArtificialPawnKindExtension"]</xpath>
+    </nomatch>
+  </Operation>
+
+  <!-- Site 3: KotORDroidBase_good's ABF_ArtificialPawnKindExtension (live Name, not the item doc's stale guess) -->
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>ABF: Artificial Beings Framework</li></mods>
+    <nomatch Class="PatchOperationRemove">
+      <xpath>/Defs/PawnKindDef[@Name="KotORDroidBase_good"]/modExtensions/li[@Class="ArtificialBeings.ABF_ArtificialPawnKindExtension"]</xpath>
+    </nomatch>
+  </Operation>
+
+  <!-- Site 4: SWCPDroidBase_bad's ABF_ArtificialPawnKindExtension -->
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>ABF: Artificial Beings Framework</li></mods>
+    <nomatch Class="PatchOperationRemove">
+      <xpath>/Defs/PawnKindDef[@Name="SWCPDroidBase_bad"]/modExtensions/li[@Class="ArtificialBeings.ABF_ArtificialPawnKindExtension"]</xpath>
+    </nomatch>
+  </Operation>
+
+  <!-- Site 5: guy762_DroidBattery's IngestionOutcomeDoer_OffsetArtificialNeed -->
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>ABF: Artificial Beings Framework</li></mods>
+    <nomatch Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="guy762_DroidBattery"]/ingestible/outcomeDoers/li[@Class="ArtificialBeings.IngestionOutcomeDoer_OffsetArtificialNeed"]</xpath>
+    </nomatch>
+  </Operation>
+
+  <!-- Site 6: guy762_DroidBattery_adv's IngestionOutcomeDoer_OffsetArtificialNeed -->
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>ABF: Artificial Beings Framework</li></mods>
+    <nomatch Class="PatchOperationRemove">
+      <xpath>/Defs/ThingDef[defName="guy762_DroidBattery_adv"]/ingestible/outcomeDoers/li[@Class="ArtificialBeings.IngestionOutcomeDoer_OffsetArtificialNeed"]</xpath>
+    </nomatch>
+  </Operation>
+
+  <!-- ===================== trader stock (sites 7, 8, 9, 10) ===================== -->
+  <!-- Reaches whichever copy is actually loaded: the original kotorweapons donor
+       TraderKindDefs if that mod is ever reactivated, AND/OR mandrake.rsw.armoury's
+       own already-absorbed copy that is live today (see NEW FINDING above) - a
+       defName-keyed xpath against the merged Defs document hits both without
+       needing to know which one is present. Content-matched (pawnKindDefs/li=...)
+       rather than list position, per the item file's own guidance, since each
+       trader def has two structurally-identical stockGenerators/li entries. -->
+
+  <!-- Site 7: orbital trader, common droids (KotORDroidColonist_DevWD/SentWD) -->
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>ABF: Artificial Beings Framework</li></mods>
+    <nomatch Class="PatchOperationRemove">
+      <xpath>/Defs/TraderKindDef[defName="guy762_TraderKind_baragwin"]/stockGenerators/li[@Class="ArtificialBeings.StockGenerator_Colonists"][pawnKindDefs/li="KotORDroidColonist_DevWD"]</xpath>
+    </nomatch>
+  </Operation>
+
+  <!-- Site 8: orbital trader, uncommon droids (KotORDroidColonist_ADMkI/ADMkIV) -->
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>ABF: Artificial Beings Framework</li></mods>
+    <nomatch Class="PatchOperationRemove">
+      <xpath>/Defs/TraderKindDef[defName="guy762_TraderKind_baragwin"]/stockGenerators/li[@Class="ArtificialBeings.StockGenerator_Colonists"][pawnKindDefs/li="KotORDroidColonist_ADMkI"]</xpath>
+    </nomatch>
+  </Operation>
+
+  <!-- Site 9: base trader, common droids -->
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>ABF: Artificial Beings Framework</li></mods>
+    <nomatch Class="PatchOperationRemove">
+      <xpath>/Defs/TraderKindDef[defName="guy762_BaseTraderKind_baragwin"]/stockGenerators/li[@Class="ArtificialBeings.StockGenerator_Colonists"][pawnKindDefs/li="KotORDroidColonist_DevWD"]</xpath>
+    </nomatch>
+  </Operation>
+
+  <!-- Site 10: base trader, uncommon droids -->
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>ABF: Artificial Beings Framework</li></mods>
+    <nomatch Class="PatchOperationRemove">
+      <xpath>/Defs/TraderKindDef[defName="guy762_BaseTraderKind_baragwin"]/stockGenerators/li[@Class="ArtificialBeings.StockGenerator_Colonists"][pawnKindDefs/li="KotORDroidColonist_ADMkI"]</xpath>
+    </nomatch>
+  </Operation>
+
+</Patch>

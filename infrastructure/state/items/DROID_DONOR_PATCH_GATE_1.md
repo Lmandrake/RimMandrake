@@ -1,5 +1,52 @@
 # Patch gate for ABF/Synstructs retirement — 11 ungated sites in KotOR donor content
 
+## 2026-09-01 — UNBLOCKED, sites 2-10 patched (Site 1 still open)
+
+`DROID_SYSTEM_BUILD_1` was reopened/greenlit by the owner 2026-09-01, so this
+gate's own blocking criterion is satisfied. Built the 9 "easy removal" sites
+(2 through 10 — everything except Site 1, still gated on the Droidworks
+`Need_Power` port landing on `guy762.KotORDroids`, see that item):
+`src/SPLIT_Phase3/Jawa_Patches/Patches/DroidDonor_ABFGate.xml`.
+
+🔴 **Gating correction made mid-build, worth recording**: an early draft
+gated each removal on "the donor mod (kotorcore/kotorweapons) is active" —
+true TODAY, since ABF is still active and these are real, working
+mechanics right now (a droid's ABF `Reprogrammable` pawnState, the recharge
+cells' actual need-offset, the Baragwin trader's droid stock). That gate
+would have fired immediately on deploy and broken live ABF functionality
+long before ABF ever retires. Fixed: every operation now uses
+`PatchOperationFindMod`'s `<nomatch>` branch on **ABF itself**
+(`ABF: Artificial Beings Framework`, packageId `Killathon.ArtificialBeings`)
+— dormant while ABF is active, fires automatically the moment ABF leaves
+`ModsConfig.xml`. See the patch file's own header for the full writeup.
+
+**Two findings beyond the original 11-site catalog**, both confirmed via
+`validate_patch.py`'s live xpath-hit-count check against the current
+589-mod dump:
+1. Site 2's xpath also reaches a second, independent copy of the same
+   `modExtensions/li` inside `guy762.KotORDroids`' own
+   `PawnKinds_PlayerDroids.xml` — RimWorld merges same-`Name`/`defName`
+   nodes from every active mod before a patch's xpath runs, so one
+   operation correctly covers both copies.
+2. Sites 7-10 (kotorweapons' trader stock) are **not actually "currently
+   moot"** as this file previously stated. `guy762.kotorweapons` itself is
+   inactive, but `mandrake.rsw.armoury` already carries its own absorbed,
+   ACTIVE copy of the same `guy762_TraderKind_baragwin`/
+   `guy762_BaseTraderKind_baragwin` `TraderKindDef`s with the identical
+   unguarded `ArtificialBeings.StockGenerator_Colonists` entries
+   (`src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/TraderKindDefs/`).
+   The ABF-absence gate (above) is correct regardless of which copy (donor
+   or absorbed, or both) is loaded; a kotorweapons-active gate would have
+   missed the absorbed copy entirely.
+
+**Validated** against the current (ABF-present) dump: `validate_patch.py`
+with `--defs` on Data/Mods/Workshop roots, 0 errors, 0 warnings, all 9
+operations' target xpaths confirmed real. **Not yet done**: validating
+against a dump captured with ABF actually removed (needs a mod-list change),
+and cold-load verification with ABF off — both remain open below.
+
+---
+
 🔴 **BLOCKED on `DROID_SYSTEM_BUILD_1` being reopened by the owner.** This file
 is prep material only — a scoping/menu document so FOUNDRY can execute
 immediately once the owner reopens `DROID_SYSTEM_BUILD_1` (or explicitly
@@ -214,16 +261,26 @@ Studios\Config\ModsConfig.xml` directly (591 mods) and confirmed it matches
    in `droidworks_assumptions.md` get to flip to "patched, safe to retire."
 
 ## criteria
-- [ ] BLOCKED — `DROID_SYSTEM_BUILD_1` reopened by the owner, or this gate
-      explicitly authorized standalone.
+- [x] BLOCKED — `DROID_SYSTEM_BUILD_1` reopened by the owner, or this gate
+      explicitly authorized standalone. **Reopened 2026-09-01.**
 - [x] All 11 cited sites re-verified against live workshop copies
-      (2026-08-31): 10 live + 1 already-dead (commented out, `_DroidsBase`
-      batteries file line 50).
+      (2026-08-31, re-confirmed 2026-09-01): 10 live + 1 already-dead
+      (commented out, `_DroidsBase` batteries file line 50).
 - [x] Per-site patch-option menu written (this file).
 - [x] Structural distinction drawn: list-item removals (Sites 2–10, easy)
       vs the compClass/ParentName pair on `guy762_KotORDroidBase` (Site 1 +
       addendum, needs design sign-off, not just removal).
 - [x] Live mod-list check: ABF + SynCore both active; kotorweapons currently
-      inactive (its 4 sites are dormant, not currently blocking).
-- [ ] Patch(es) written, validated, cold-load-verified — not started, not
-      authorized.
+      inactive (its 4 sites are dormant, not currently blocking) — **note
+      2026-09-01: "dormant" was wrong for sites 7-10 specifically, see above;
+      the absence-gated fix is correct regardless.**
+- [x] Sites 2-10 patched and offline-validated, 2026-09-01:
+      `src/SPLIT_Phase3/Jawa_Patches/Patches/DroidDonor_ABFGate.xml`, gated
+      on ABF's absence (dormant today), 0 errors/0 warnings against the
+      current dump.
+- [ ] Site 1 (`CompCoherenceNeed` + `ParentName` on `guy762_KotORDroidBase`)
+      — still blocked on the Droidworks `Need_Power` port landing on
+      `guy762.KotORDroids` (`DROID_SYSTEM_BUILD_1`'s open port-manifest
+      criterion).
+- [ ] Cold-load-verified with ABF actually removed from the mod list — not
+      done this pass (offline-only; needs a mod-list change and a restart).
