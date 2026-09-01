@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-01T06:27:06Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-01T07:13:50Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -188,15 +188,6 @@ target:   v1
 kind:     build
 summary:  Source finding: design/Jawa/droidworksassumptions.md, item 3 (the
 prose:    infrastructure/state/items/DROID_DONOR_PATCH_GATE_1.md
-
-## LIGHTSABER_MELEE_PATCH_FAIL_1 Armoury_MeleePower.xml's lightsaber PatchOperationSequence fails against the live Star Wars: The Force - Lightsaber mod
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  src/RimStarWars/Armoury/Patches/ArmouryMeleePower.xml (mod display name
-prose:    infrastructure/state/items/LIGHTSABER_MELEE_PATCH_FAIL_1.md
 
 # BLOCKED — something is WRONG and someone must act
 

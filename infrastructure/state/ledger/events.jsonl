@@ -3492,3 +3492,7 @@
 {"seat":"FOUNDRY","event":"claim","id":"TECHPRINT_FACTION_GATING_1","ts":"2026-09-01T06:20:52Z"}
 {"seat":"FOUNDRY","event":"start","id":"TECHPRINT_FACTION_GATING_1","ts":"2026-09-01T06:20:52Z"}
 {"seat":"FOUNDRY","event":"note","id":"TECHPRINT_FACTION_GATING_1","text":"Scoped all 4 access classes. common: nothing to build (blank=common already). jawa-special: real pure-XML mechanism (ScenPart_StartingResearch), no rows named yet. ship-only/memory_core: hiddenPrerequisites half is pure-data but the reveal/trigger half is NOT implemented anywhere - just a manifest label today, needs a thin QuestNode/Harmony follow-on. faction-held: real pure-XML mechanism found (heldByFactionCategoryTags + StockGenerator_Techprints, verified against a live Royalty precedent), RR's own faction system correctly ruled OUT as a false lead - but stays BLOCKED, no faction-tech alignment doc exists and none was invented across the 521 rows.","ts":"2026-09-01T06:27:06Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","ts":"2026-09-01T06:27:33Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-01T06:27:33Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","ts":"2026-09-01T06:58:27Z"}
+{"seat":"FOUNDRY","event":"close","id":"LIGHTSABER_MELEE_PATCH_FAIL_1","sha":"e9828d3e","ts":"2026-09-01T07:13:50Z"}
