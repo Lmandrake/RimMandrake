@@ -167,33 +167,42 @@ though there was a scare."* Proceeded per this item's own verify plan §3.
   **NOT yet re-verified with a second cold load** — low-risk, single-file,
   named-string change; ride it into whatever load closes this item next.
 
-**🔴 NEW FINDING — `guy762.kotorweapons` is NOT a clean retirement, contrary
-to this item's own earlier verdict below ("no equivalent blocker... nothing
-else active depends on it").** Same class of bug as the opturret miss, but
-far bigger: grepping kotorweapons' own 636 defNames (from its live
-`1.6/Defs/`) against local content turned up dependencies *outside* the
-`Absorbed_KotorWeapons` copies (which are fine and expected to persist):
-- `WeaponTags_Renormalise.xml` (generated) — **66** kotorweapons defNames
-  tagged (bowcasters, blaster pistols, batons, vibroweapons, …). Retiring
-  kotorweapons reproduces the opturret failure 66 times over unless the file
-  is safely regenerated first (needs a genuinely offline/pre-patch dump —
-  the live one captured today is post-patch and unusable per the file's own
-  warning) or each entry is hand-gated.
-- `src/RimStarWars/Armoury/Patches/Armour_Ratings.xml`,
-  `Armour_Penetration.xml`, `Armoury_MeleePower.xml` — **102 / 288 / 52**
-  raw `guy762_` mentions respectively (mixed kotorcore+kotorweapons, not yet
-  split out), tuning damage/armor/penetration stats on ThingDefs these
-  patches assume are live, with **no `PatchOperationFindMod` guard** for
-  either KotOR donor anywhere in any of the three files.
-- Two Jawa_Patches PawnKindDef files also reference specific kotorweapons
-  gear by defName (`GamorreanPawnKinds.xml`, `JawaFactionRoster.xml`).
+**🔴 FOLLOW-UP, same sitting — corrected.** The raw `guy762_` mention counts
+above (102/288/52 in the three Armoury patch files) were a false alarm: I
+counted mentions, not whether they sit inside a guard. Re-checked properly
+(walk each file's top-level `PatchOperationFindMod` blocks, confirm every
+`guy762_` line falls inside one) — **`Armour_Ratings.xml`, `Armour_Penetration.xml`
+and `Armoury_MeleePower.xml` are ALL already correctly grouped** under their
+own `<mods><li>Star Wars KotOR Weapons and Armor</li></mods>` /
+`Star Wars KotOR Resources and Materials` FindMod blocks, zero orphans in
+any of the three. Not a blocker; leave them alone. Filing this correction so
+the false claim doesn't survive as the record — see [[dramatic-findings-need-a-second-look]].
 
-**Verdict: kotorweapons needs its own patch-gate pass before it can retire —
-the same shape of work as `DROID_DONOR_PATCH_GATE_1`, not a "confirmed
-clean, isolated cold load" wave as step 4 below assumed.** Did not attempt
-the retirement this session; the risk of repeating the 2026-08-31 incident
-at 66x the scale outweighs finishing this item in one sitting. `kotorcore`
-remains blocked on `DROID_DONOR_PATCH_GATE_1` as before, unchanged.
+**What WAS real, now fixed:** `WeaponTags_Renormalise.xml`'s 63 unguarded
+`PatchOperationConditional` blocks for kotorweapons defNames (the same shape
+as the opturret bug) — wrapped every one in
+`<Operation Class="PatchOperationFindMod"><mods><li>Star Wars KotOR Weapons
+and Armor</li></mods><match Class="PatchOperationConditional">…`, mechanically,
+verified well-formed and `validate_patch.py --defs`: 0 errors (still
+matches correctly with kotorweapons active). Deployed.
+
+**Residual, accepted risk:** 3 `apparelRequired` entries hardcode
+kotorweapons defNames directly in two PawnKindDef files with no possible
+patch-level guard (Defs load unconditionally) —
+`GamorreanPawnKinds.xml` → `guy762_HvyArmor_gamorrean` (1 of that kind's 2
+required items; `guy762_Hat_gamorrean`/`guy762_Clothing_gamorrean` are a
+*different*, still-active guy762 mod, not kotorweapons) and
+`JawaFactionRoster.xml` (generated) → `guy762_MandoArmor_battle`,
+`guy762_MandoHelmet_supercom`. Retiring kotorweapons turns these into
+`Could not resolve cross-reference` lines (the def loader drops the
+unresolvable list entry and keeps going — soft, not the def-discarding
+`<li>`-in-a-dictionary-field failure mode) — accepted as a small, known,
+non-fatal cost rather than surgery on 2 more files; watch `harvest_log.py`'s
+crossref baseline (was 25) for confirmation it rises by exactly 3.
+
+**Verdict, revised: retired `guy762.kotorweapons` this sitting** (586 mods)
+after the WeaponTags fix — see cold-load verification below. `kotorcore`
+remains blocked on `DROID_DONOR_PATCH_GATE_1`, unchanged.
 
 ## verify
 1. ~~Extended generator(s) absorb the AdditionalMods gap~~ — done, kept.
