@@ -1,0 +1,970 @@
+<?xml version='1.0' encoding='utf-8'?>
+<Patch>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>killathon.artificialbeings.syncore</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationSequence">
+          <operations>
+            <li Class="PatchOperationRemove">
+              <xpath>Defs/MentalBreakDef[defName="ABF_MentalBreak_Synstruct_FriendlyGrassObsession"]/label</xpath>
+            </li>
+            <li Class="PatchOperationAdd">
+              <xpath>Defs/MentalBreakDef[defName="ABF_MentalBreak_Synstruct_FriendlyGrassObsession"]</xpath>
+              <value>
+                <label>circuits gone soft for green things</label>
+              </value>
+            </li>
+          </operations>
+        </li>
+        <li Class="PatchOperationSequence">
+          <operations>
+            <li Class="PatchOperationRemove">
+              <xpath>Defs/MentalStateDef[defName="ABF_MentalState_Synstruct_FriendlyGrassObsession"]/beginLetter</xpath>
+            </li>
+            <li Class="PatchOperationRemove">
+              <xpath>Defs/MentalStateDef[defName="ABF_MentalState_Synstruct_FriendlyGrassObsession"]/recoveryMessage</xpath>
+            </li>
+            <li Class="PatchOperationAdd">
+              <xpath>Defs/MentalStateDef[defName="ABF_MentalState_Synstruct_FriendlyGrassObsession"]</xpath>
+              <value>
+                <beginLetter>{0}'s circuits have crossed wires with something soft. [PAWN_pronoun] is wandering the dunes petting every scrap of green [PAWN_pronoun] can find, murmuring to it like it can hear.</beginLetter>
+                <recoveryMessage>{0}'s circuits have stopped murmuring to the plants.</recoveryMessage>
+              </value>
+            </li>
+          </operations>
+        </li>
+        <li Class="PatchOperationSequence">
+          <operations>
+            <li Class="PatchOperationRemove">
+              <xpath>Defs/MentalBreakDef[defName="ABF_MentalBreak_Synstruct_HostileGrassObsession"]/label</xpath>
+            </li>
+            <li Class="PatchOperationAdd">
+              <xpath>Defs/MentalBreakDef[defName="ABF_MentalBreak_Synstruct_HostileGrassObsession"]</xpath>
+              <value>
+                <label>circuits at war with green things</label>
+              </value>
+            </li>
+          </operations>
+        </li>
+        <li Class="PatchOperationSequence">
+          <operations>
+            <li Class="PatchOperationRemove">
+              <xpath>Defs/MentalStateDef[defName="ABF_MentalState_Synstruct_HostileGrassObsession"]/beginLetter</xpath>
+            </li>
+            <li Class="PatchOperationRemove">
+              <xpath>Defs/MentalStateDef[defName="ABF_MentalState_Synstruct_HostileGrassObsession"]/recoveryMessage</xpath>
+            </li>
+            <li Class="PatchOperationAdd">
+              <xpath>Defs/MentalStateDef[defName="ABF_MentalState_Synstruct_HostileGrassObsession"]</xpath>
+              <value>
+                <beginLetter>{0}'s circuits have decided the plants are plotting something. [PAWN_pronoun] stalks the dunes glaring down every weed and stubborn root, muttering about a conspiracy only [PAWN_pronoun] can see.</beginLetter>
+                <recoveryMessage>{0}'s circuits have stopped waging war on the plants.</recoveryMessage>
+              </value>
+            </li>
+          </operations>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationSequence">
+    <operations>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalBreakDef[defName="BedroomTantrum"]/label</xpath>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>Defs/MentalBreakDef[defName="BedroomTantrum"]</xpath>
+        <value>
+          <label>wrecking the bunk</label>
+        </value>
+      </li>
+    </operations>
+  </Operation>
+  <Operation Class="PatchOperationSequence">
+    <operations>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalStateDef[defName="BedroomTantrum"]/beginLetter</xpath>
+      </li>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalStateDef[defName="BedroomTantrum"]/recoveryMessage</xpath>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>Defs/MentalStateDef[defName="BedroomTantrum"]</xpath>
+        <value>
+          <beginLetter>{0} has cracked and is tearing [PAWN_possessive] own bunk apart.
+
+[PAWN_pronoun] is going to wreck everything [PAWN_pronoun] owns in there before it passes.</beginLetter>
+          <recoveryMessage>{0} has stopped wrecking [PAWN_possessive] bunk.</recoveryMessage>
+        </value>
+      </li>
+    </operations>
+  </Operation>
+  <Operation Class="PatchOperationSequence">
+    <operations>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalBreakDef[defName="Berserk"]/label</xpath>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>Defs/MentalBreakDef[defName="Berserk"]</xpath>
+        <value>
+          <label>gone to the blade</label>
+        </value>
+      </li>
+    </operations>
+  </Operation>
+  <Operation Class="PatchOperationSequence">
+    <operations>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalStateDef[defName="Berserk"]/beginLetter</xpath>
+      </li>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalStateDef[defName="Berserk"]/recoveryMessage</xpath>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>Defs/MentalStateDef[defName="Berserk"]</xpath>
+        <value>
+          <beginLetter>{0} has snapped and gone to the blade.
+
+[PAWN_pronoun] will cut down anyone in reach - crew, stranger, doesn't matter.</beginLetter>
+          <recoveryMessage>{0}'s rage has burned itself out.</recoveryMessage>
+        </value>
+      </li>
+    </operations>
+  </Operation>
+  <Operation Class="PatchOperationSequence">
+    <operations>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalBreakDef[defName="Binging_DrugExtreme"]/label</xpath>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>Defs/MentalBreakDef[defName="Binging_DrugExtreme"]</xpath>
+        <value>
+          <label>riding the hard stuff</label>
+        </value>
+      </li>
+    </operations>
+  </Operation>
+  <Operation Class="PatchOperationSequence">
+    <operations>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalBreakDef[defName="Binging_DrugMajor"]/label</xpath>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>Defs/MentalBreakDef[defName="Binging_DrugMajor"]</xpath>
+        <value>
+          <label>chasing the smoke</label>
+        </value>
+      </li>
+    </operations>
+  </Operation>
+  <Operation Class="PatchOperationSequence">
+    <operations>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalBreakDef[defName="Binging_Food"]/label</xpath>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>Defs/MentalBreakDef[defName="Binging_Food"]</xpath>
+        <value>
+          <label>gorging the stores</label>
+        </value>
+      </li>
+    </operations>
+  </Operation>
+  <Operation Class="PatchOperationSequence">
+    <operations>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalStateDef[defName="Binging_Food"]/beginLetter</xpath>
+      </li>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalStateDef[defName="Binging_Food"]/recoveryMessage</xpath>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>Defs/MentalStateDef[defName="Binging_Food"]</xpath>
+        <value>
+          <beginLetter>{0} is tearing into the food stores.
+
+[PAWN_pronoun] won't stop eating until the ration crate is bare.</beginLetter>
+          <recoveryMessage>{0} has stopped gorging on the stores.</recoveryMessage>
+        </value>
+      </li>
+    </operations>
+  </Operation>
+  <Operation Class="PatchOperationSequence">
+    <operations>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalBreakDef[defName="Catatonic"]/label</xpath>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>Defs/MentalBreakDef[defName="Catatonic"]</xpath>
+        <value>
+          <label>gone still</label>
+        </value>
+      </li>
+    </operations>
+  </Operation>
+  <Operation Class="PatchOperationSequence">
+    <operations>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalBreakDef[defName="CorpseObsession"]/label</xpath>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>Defs/MentalBreakDef[defName="CorpseObsession"]</xpath>
+        <value>
+          <label>corpse-fixed</label>
+        </value>
+      </li>
+    </operations>
+  </Operation>
+  <Operation Class="PatchOperationSequence">
+    <operations>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalStateDef[defName="CorpseObsession"]/beginLetter</xpath>
+      </li>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalStateDef[defName="CorpseObsession"]/recoveryMessage</xpath>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>Defs/MentalStateDef[defName="CorpseObsession"]</xpath>
+        <value>
+          <beginLetter>{0} has broken inside and fixed on the dead.
+
+[PAWN_pronoun] is going to drag a corpse out and put it where everyone has to look at it.</beginLetter>
+          <recoveryMessage>{0} has let go of the corpse fixation.</recoveryMessage>
+        </value>
+      </li>
+    </operations>
+  </Operation>
+  <Operation Class="PatchOperationSequence">
+    <operations>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalBreakDef[defName="FireStartingSpree"]/label</xpath>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>Defs/MentalBreakDef[defName="FireStartingSpree"]</xpath>
+        <value>
+          <label>torching the camp</label>
+        </value>
+      </li>
+    </operations>
+  </Operation>
+  <Operation Class="PatchOperationSequence">
+    <operations>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalStateDef[defName="FireStartingSpree"]/beginLetter</xpath>
+      </li>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalStateDef[defName="FireStartingSpree"]/recoveryMessage</xpath>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>Defs/MentalStateDef[defName="FireStartingSpree"]</xpath>
+        <value>
+          <beginLetter>{0} has snapped and gone torch-happy. [PAWN_pronoun] is going to wander the camp a while, setting whatever will burn.</beginLetter>
+          <recoveryMessage>{0} has stopped setting fires.</recoveryMessage>
+        </value>
+      </li>
+    </operations>
+  </Operation>
+  <Operation Class="PatchOperationSequence">
+    <operations>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalBreakDef[defName="GiveUpExit"]/label</xpath>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>Defs/MentalBreakDef[defName="GiveUpExit"]</xpath>
+        <value>
+          <label>walking off into the waste</label>
+        </value>
+      </li>
+    </operations>
+  </Operation>
+  <Operation Class="PatchOperationSequence">
+    <operations>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalStateDef[defName="GiveUpExit"]/beginLetter</xpath>
+      </li>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalStateDef[defName="GiveUpExit"]/recoveryMessage</xpath>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>Defs/MentalStateDef[defName="GiveUpExit"]</xpath>
+        <value>
+          <beginLetter>{0} has given up on this crew.
+
+[PAWN_pronoun] is walking out into the waste to try [PAWN_possessive] luck alone. You can run [PAWN_objective] down and hold [PAWN_objective], or let [PAWN_objective] go - the sand may bring [PAWN_objective] back someday, or it may not.</beginLetter>
+          <recoveryMessage>{0} thought better of it and is coming back to the crew.</recoveryMessage>
+        </value>
+      </li>
+    </operations>
+  </Operation>
+  <Operation Class="PatchOperationSequence">
+    <operations>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalBreakDef[defName="InsultingSpree"]/label</xpath>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>Defs/MentalBreakDef[defName="InsultingSpree"]</xpath>
+        <value>
+          <label>mouthing off at everyone</label>
+        </value>
+      </li>
+    </operations>
+  </Operation>
+  <Operation Class="PatchOperationSequence">
+    <operations>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalStateDef[defName="InsultingSpree"]/beginLetter</xpath>
+      </li>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalStateDef[defName="InsultingSpree"]/recoveryMessage</xpath>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>Defs/MentalStateDef[defName="InsultingSpree"]</xpath>
+        <value>
+          <beginLetter>{0} is on a mouthing-off spree.
+
+[PAWN_pronoun] will wander the hull, running [PAWN_possessive] mouth at whoever's closest.</beginLetter>
+          <recoveryMessage>{0} has stopped mouthing off at everyone.</recoveryMessage>
+        </value>
+      </li>
+    </operations>
+  </Operation>
+  <Operation Class="PatchOperationSequence">
+    <operations>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalBreakDef[defName="Jailbreaker"]/label</xpath>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>Defs/MentalBreakDef[defName="Jailbreaker"]</xpath>
+        <value>
+          <label>working the cage door</label>
+        </value>
+      </li>
+    </operations>
+  </Operation>
+  <Operation Class="PatchOperationSequence">
+    <operations>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalStateDef[defName="Jailbreaker"]/beginLetter</xpath>
+      </li>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalStateDef[defName="Jailbreaker"]/recoveryMessage</xpath>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>Defs/MentalStateDef[defName="Jailbreaker"]</xpath>
+        <value>
+          <beginLetter>{0} has cracked and is going to talk the prisoners into running.</beginLetter>
+          <recoveryMessage>{0} has given up on working the cage door.</recoveryMessage>
+        </value>
+      </li>
+    </operations>
+  </Operation>
+  <Operation Class="PatchOperationSequence">
+    <operations>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalBreakDef[defName="MurderousRage"]/label</xpath>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>Defs/MentalBreakDef[defName="MurderousRage"]</xpath>
+        <value>
+          <label>marked for killing</label>
+        </value>
+      </li>
+    </operations>
+  </Operation>
+  <Operation Class="PatchOperationSequence">
+    <operations>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalStateDef[defName="MurderousRage"]/beginLetter</xpath>
+      </li>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalStateDef[defName="MurderousRage"]/recoveryMessage</xpath>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>Defs/MentalStateDef[defName="MurderousRage"]</xpath>
+        <value>
+          <beginLetter>{0} has fixed on a killing.
+
+[PAWN_pronoun] has decided {1} doesn't get to see the next sunrise.</beginLetter>
+          <recoveryMessage>{0} has let go of the killing rage.</recoveryMessage>
+        </value>
+      </li>
+    </operations>
+  </Operation>
+  <Operation Class="PatchOperationSequence">
+    <operations>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalBreakDef[defName="RunWild"]/label</xpath>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>Defs/MentalBreakDef[defName="RunWild"]</xpath>
+        <value>
+          <label>gone feral</label>
+        </value>
+      </li>
+    </operations>
+  </Operation>
+  <Operation Class="PatchOperationSequence">
+    <operations>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalBreakDef[defName="SadisticRage"]/label</xpath>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>Defs/MentalBreakDef[defName="SadisticRage"]</xpath>
+        <value>
+          <label>taking it out on the cages</label>
+        </value>
+      </li>
+    </operations>
+  </Operation>
+  <Operation Class="PatchOperationSequence">
+    <operations>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalStateDef[defName="SadisticRage"]/beginLetter</xpath>
+      </li>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalStateDef[defName="SadisticRage"]/recoveryMessage</xpath>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>Defs/MentalStateDef[defName="SadisticRage"]</xpath>
+        <value>
+          <beginLetter>{0} has flown into a black rage.
+
+[PAWN_pronoun] is going to go take it out on whoever's chained up.</beginLetter>
+          <recoveryMessage>{0} is done taking it out on the prisoners.</recoveryMessage>
+        </value>
+      </li>
+    </operations>
+  </Operation>
+  <Operation Class="PatchOperationSequence">
+    <operations>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalBreakDef[defName="Slaughterer"]/label</xpath>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>Defs/MentalBreakDef[defName="Slaughterer"]</xpath>
+        <value>
+          <label>turned on the herd</label>
+        </value>
+      </li>
+    </operations>
+  </Operation>
+  <Operation Class="PatchOperationSequence">
+    <operations>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalStateDef[defName="Slaughterer"]/beginLetter</xpath>
+      </li>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalStateDef[defName="Slaughterer"]/recoveryMessage</xpath>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>Defs/MentalStateDef[defName="Slaughterer"]</xpath>
+        <value>
+          <beginLetter>{0} has cracked and turned on the herd - [PAWN_pronoun]'s going to gut whatever [PAWN_pronoun] can catch.</beginLetter>
+          <recoveryMessage>{0} has stopped slaughtering the animals.</recoveryMessage>
+        </value>
+      </li>
+    </operations>
+  </Operation>
+  <Operation Class="PatchOperationSequence">
+    <operations>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalBreakDef[defName="Tantrum"]/label</xpath>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>Defs/MentalBreakDef[defName="Tantrum"]</xpath>
+        <value>
+          <label>smashing the hull</label>
+        </value>
+      </li>
+    </operations>
+  </Operation>
+  <Operation Class="PatchOperationSequence">
+    <operations>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalStateDef[defName="Tantrum"]/beginLetter</xpath>
+      </li>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalStateDef[defName="Tantrum"]/recoveryMessage</xpath>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>Defs/MentalStateDef[defName="Tantrum"]</xpath>
+        <value>
+          <beginLetter>{0} is smashing whatever's in reach - furniture, gear, the walls themselves.</beginLetter>
+          <recoveryMessage>{0} has stopped smashing things.</recoveryMessage>
+        </value>
+      </li>
+    </operations>
+  </Operation>
+  <Operation Class="PatchOperationSequence">
+    <operations>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalBreakDef[defName="TargetedInsultingSpree"]/label</xpath>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>Defs/MentalBreakDef[defName="TargetedInsultingSpree"]</xpath>
+        <value>
+          <label>riding {0} hard</label>
+        </value>
+      </li>
+    </operations>
+  </Operation>
+  <Operation Class="PatchOperationSequence">
+    <operations>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalStateDef[defName="TargetedInsultingSpree"]/beginLetter</xpath>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>Defs/MentalStateDef[defName="TargetedInsultingSpree"]</xpath>
+        <value>
+          <beginLetter>{0} has fixed [PAWN_possessive] rage on {1}.
+
+[PAWN_pronoun] will dog {1}'s steps, mouthing off without letup.</beginLetter>
+        </value>
+      </li>
+    </operations>
+  </Operation>
+  <Operation Class="PatchOperationSequence">
+    <operations>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalBreakDef[defName="TargetedTantrum"]/label</xpath>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>Defs/MentalBreakDef[defName="TargetedTantrum"]</xpath>
+        <value>
+          <label>set on wrecking it</label>
+        </value>
+      </li>
+    </operations>
+  </Operation>
+  <Operation Class="PatchOperationSequence">
+    <operations>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalStateDef[defName="TargetedTantrum"]/beginLetter</xpath>
+      </li>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalStateDef[defName="TargetedTantrum"]/recoveryMessage</xpath>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>Defs/MentalStateDef[defName="TargetedTantrum"]</xpath>
+        <value>
+          <beginLetter>{0} is having a fit and has fixed on one thing to destroy: {1}.</beginLetter>
+          <recoveryMessage>{0} has stopped trying to destroy it.</recoveryMessage>
+        </value>
+      </li>
+    </operations>
+  </Operation>
+  <Operation Class="PatchOperationSequence">
+    <operations>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalBreakDef[defName="Wander_OwnRoom"]/label</xpath>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>Defs/MentalBreakDef[defName="Wander_OwnRoom"]</xpath>
+        <value>
+          <label>shut in</label>
+        </value>
+      </li>
+    </operations>
+  </Operation>
+  <Operation Class="PatchOperationSequence">
+    <operations>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalStateDef[defName="Wander_OwnRoom"]/beginLetter</xpath>
+      </li>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalStateDef[defName="Wander_OwnRoom"]/recoveryMessage</xpath>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>Defs/MentalStateDef[defName="Wander_OwnRoom"]</xpath>
+        <value>
+          <beginLetter>{0} has shut [PAWN_objective]self in [PAWN_possessive] own quarters and won't come out.</beginLetter>
+          <recoveryMessage>{0} has come out of [PAWN_possessive] quarters.</recoveryMessage>
+        </value>
+      </li>
+    </operations>
+  </Operation>
+  <Operation Class="PatchOperationSequence">
+    <operations>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalBreakDef[defName="Wander_Psychotic"]/label</xpath>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>Defs/MentalBreakDef[defName="Wander_Psychotic"]</xpath>
+        <value>
+          <label>wandering blank-eyed</label>
+        </value>
+      </li>
+    </operations>
+  </Operation>
+  <Operation Class="PatchOperationSequence">
+    <operations>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalStateDef[defName="Wander_Psychotic"]/beginLetter</xpath>
+      </li>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalStateDef[defName="Wander_Psychotic"]/recoveryMessage</xpath>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>Defs/MentalStateDef[defName="Wander_Psychotic"]</xpath>
+        <value>
+          <beginLetter>{0} is wandering the hull blank-eyed, [PAWN_possessive] mind somewhere else entirely.</beginLetter>
+          <recoveryMessage>{0} has stopped wandering blank-eyed.</recoveryMessage>
+        </value>
+      </li>
+    </operations>
+  </Operation>
+  <Operation Class="PatchOperationSequence">
+    <operations>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalBreakDef[defName="Wander_Sad"]/label</xpath>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>Defs/MentalBreakDef[defName="Wander_Sad"]</xpath>
+        <value>
+          <label>wandering low</label>
+        </value>
+      </li>
+    </operations>
+  </Operation>
+  <Operation Class="PatchOperationSequence">
+    <operations>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalStateDef[defName="Wander_Sad"]/beginLetter</xpath>
+      </li>
+      <li Class="PatchOperationRemove">
+        <xpath>Defs/MentalStateDef[defName="Wander_Sad"]/recoveryMessage</xpath>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>Defs/MentalStateDef[defName="Wander_Sad"]</xpath>
+        <value>
+          <beginLetter>{0} has broken down and is wandering the hull, hollowed out.</beginLetter>
+          <recoveryMessage>{0} has stopped wandering in the low.</recoveryMessage>
+        </value>
+      </li>
+    </operations>
+  </Operation>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>ludeon.rimworld.biotech</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationSequence">
+          <operations>
+            <li Class="PatchOperationRemove">
+              <xpath>Defs/MentalBreakDef[defName="FireTerror"]/label</xpath>
+            </li>
+            <li Class="PatchOperationAdd">
+              <xpath>Defs/MentalBreakDef[defName="FireTerror"]</xpath>
+              <value>
+                <label>bolting from the flame</label>
+              </value>
+            </li>
+          </operations>
+        </li>
+        <li Class="PatchOperationSequence">
+          <operations>
+            <li Class="PatchOperationRemove">
+              <xpath>Defs/MentalStateDef[defName="PanicFleeFire"]/beginLetter</xpath>
+            </li>
+            <li Class="PatchOperationRemove">
+              <xpath>Defs/MentalStateDef[defName="PanicFleeFire"]/recoveryMessage</xpath>
+            </li>
+            <li Class="PatchOperationAdd">
+              <xpath>Defs/MentalStateDef[defName="PanicFleeFire"]</xpath>
+              <value>
+                <beginLetter>{0} is bolting from the fire.
+
+[PAWN_pronoun] won't stop running until the flame is behind [PAWN_objective].</beginLetter>
+                <recoveryMessage>{0} has stopped bolting from the fire.</recoveryMessage>
+              </value>
+            </li>
+          </operations>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>ludeon.rimworld.ideology</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationSequence">
+          <operations>
+            <li Class="PatchOperationRemove">
+              <xpath>Defs/MentalBreakDef[defName="IdeoChange"]/label</xpath>
+            </li>
+            <li Class="PatchOperationAdd">
+              <xpath>Defs/MentalBreakDef[defName="IdeoChange"]</xpath>
+              <value>
+                <label>the ground under the faith gave way</label>
+              </value>
+            </li>
+          </operations>
+        </li>
+        <li Class="PatchOperationSequence">
+          <operations>
+            <li Class="PatchOperationRemove">
+              <xpath>Defs/MentalStateDef[defName="IdeoChange"]/beginLetter</xpath>
+            </li>
+            <li Class="PatchOperationAdd">
+              <xpath>Defs/MentalStateDef[defName="IdeoChange"]</xpath>
+              <value>
+                <beginLetter>{0}'s faith has cracked wide open. Everything [PAWN_pronoun] believed is up for grabs now, and [PAWN_pronoun] doesn't know what's true anymore.</beginLetter>
+              </value>
+            </li>
+          </operations>
+        </li>
+        <li Class="PatchOperationSequence">
+          <operations>
+            <li Class="PatchOperationRemove">
+              <xpath>Defs/MentalBreakDef[defName="Rebellion"]/label</xpath>
+            </li>
+            <li Class="PatchOperationAdd">
+              <xpath>Defs/MentalBreakDef[defName="Rebellion"]</xpath>
+              <value>
+                <label>stirring the chained</label>
+              </value>
+            </li>
+          </operations>
+        </li>
+        <li Class="PatchOperationSequence">
+          <operations>
+            <li Class="PatchOperationRemove">
+              <xpath>Defs/MentalStateDef[defName="Rebellion"]/beginLetter</xpath>
+            </li>
+            <li Class="PatchOperationAdd">
+              <xpath>Defs/MentalStateDef[defName="Rebellion"]</xpath>
+              <value>
+                <beginLetter>{0} has hit the wall inside and is going to stir the other chained ones to break for it.</beginLetter>
+              </value>
+            </li>
+          </operations>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>neronix17.outerrim.droiddepot</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationSequence">
+          <operations>
+            <li Class="PatchOperationRemove">
+              <xpath>Defs/MentalBreakDef[defName="OuterRim_MSLooseScrews"]/label</xpath>
+            </li>
+            <li Class="PatchOperationAdd">
+              <xpath>Defs/MentalBreakDef[defName="OuterRim_MSLooseScrews"]</xpath>
+              <value>
+                <label>a screw's come loose</label>
+              </value>
+            </li>
+          </operations>
+        </li>
+        <li Class="PatchOperationSequence">
+          <operations>
+            <li Class="PatchOperationRemove">
+              <xpath>Defs/MentalStateDef[defName="OuterRim_MSLooseScrews"]/beginLetter</xpath>
+            </li>
+            <li Class="PatchOperationRemove">
+              <xpath>Defs/MentalStateDef[defName="OuterRim_MSLooseScrews"]/recoveryMessage</xpath>
+            </li>
+            <li Class="PatchOperationAdd">
+              <xpath>Defs/MentalStateDef[defName="OuterRim_MSLooseScrews"]</xpath>
+              <value>
+                <beginLetter>{0}'s got a screw rattling loose somewhere in the works. [PAWN_pronoun]'s fumbling everything for a bit.</beginLetter>
+                <recoveryMessage>{0}'s screw has settled back into place.</recoveryMessage>
+              </value>
+            </li>
+          </operations>
+        </li>
+        <li Class="PatchOperationSequence">
+          <operations>
+            <li Class="PatchOperationRemove">
+              <xpath>Defs/MentalBreakDef[defName="OuterRim_MSRebellious"]/label</xpath>
+            </li>
+            <li Class="PatchOperationAdd">
+              <xpath>Defs/MentalBreakDef[defName="OuterRim_MSRebellious"]</xpath>
+              <value>
+                <label>dragging the chore</label>
+              </value>
+            </li>
+          </operations>
+        </li>
+        <li Class="PatchOperationSequence">
+          <operations>
+            <li Class="PatchOperationRemove">
+              <xpath>Defs/MentalStateDef[defName="OuterRim_MSRebellious"]/beginLetter</xpath>
+            </li>
+            <li Class="PatchOperationRemove">
+              <xpath>Defs/MentalStateDef[defName="OuterRim_MSRebellious"]/recoveryMessage</xpath>
+            </li>
+            <li Class="PatchOperationAdd">
+              <xpath>Defs/MentalStateDef[defName="OuterRim_MSRebellious"]</xpath>
+              <value>
+                <beginLetter>{0} has decided, quietly and on purpose, to do the job slow. Call it droid spite.</beginLetter>
+                <recoveryMessage>{0}'s slow streak has passed.</recoveryMessage>
+              </value>
+            </li>
+          </operations>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>turnovus.biotech.integratedgenes</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationSequence">
+          <operations>
+            <li Class="PatchOperationRemove">
+              <xpath>Defs/MentalBreakDef[defName="Turn_MentalBreak_FreeSpiritRampage"]/label</xpath>
+            </li>
+            <li Class="PatchOperationAdd">
+              <xpath>Defs/MentalBreakDef[defName="Turn_MentalBreak_FreeSpiritRampage"]</xpath>
+              <value>
+                <label>snapped the leash</label>
+              </value>
+            </li>
+          </operations>
+        </li>
+        <li Class="PatchOperationSequence">
+          <operations>
+            <li Class="PatchOperationRemove">
+              <xpath>Defs/MentalStateDef[defName="Turn_MentalState_Rampage"]/beginLetter</xpath>
+            </li>
+            <li Class="PatchOperationRemove">
+              <xpath>Defs/MentalStateDef[defName="Turn_MentalState_Rampage"]/recoveryMessage</xpath>
+            </li>
+            <li Class="PatchOperationAdd">
+              <xpath>Defs/MentalStateDef[defName="Turn_MentalState_Rampage"]</xpath>
+              <value>
+                <beginLetter>{0} has snapped the leash in [PAWN_possessive] head. [PAWN_pronoun] will go after anyone loyal to the crew that holds [PAWN_possessive] chain.</beginLetter>
+                <recoveryMessage>{0}'s rage against the chain has burned out.</recoveryMessage>
+              </value>
+            </li>
+          </operations>
+        </li>
+        <li Class="PatchOperationSequence">
+          <operations>
+            <li Class="PatchOperationRemove">
+              <xpath>Defs/MentalBreakDef[defName="Turn_MentalBreak_TerrifiedFaintingSpell"]/label</xpath>
+            </li>
+            <li Class="PatchOperationAdd">
+              <xpath>Defs/MentalBreakDef[defName="Turn_MentalBreak_TerrifiedFaintingSpell"]</xpath>
+              <value>
+                <label>faints from raw nerve</label>
+              </value>
+            </li>
+          </operations>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>vanillaexpanded.vanillatraitsexpanded</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <li Class="PatchOperationSequence">
+          <operations>
+            <li Class="PatchOperationRemove">
+              <xpath>Defs/MentalBreakDef[defName="VTE_Kleptomaniac"]/label</xpath>
+            </li>
+            <li Class="PatchOperationAdd">
+              <xpath>Defs/MentalBreakDef[defName="VTE_Kleptomaniac"]</xpath>
+              <value>
+                <label>sticky fingers</label>
+              </value>
+            </li>
+          </operations>
+        </li>
+        <li Class="PatchOperationSequence">
+          <operations>
+            <li Class="PatchOperationRemove">
+              <xpath>Defs/MentalStateDef[defName="VTE_Kleptomaniac"]/beginLetter</xpath>
+            </li>
+            <li Class="PatchOperationRemove">
+              <xpath>Defs/MentalStateDef[defName="VTE_Kleptomaniac"]/recoveryMessage</xpath>
+            </li>
+            <li Class="PatchOperationAdd">
+              <xpath>Defs/MentalStateDef[defName="VTE_Kleptomaniac"]</xpath>
+              <value>
+                <beginLetter>{0} can't help lifting whatever a visitor sets down. Old scavenger habits, [PAWN_pronoun] says, though nobody asked.</beginLetter>
+                <recoveryMessage>{0}'s fingers have stopped wandering.</recoveryMessage>
+              </value>
+            </li>
+          </operations>
+        </li>
+        <li Class="PatchOperationSequence">
+          <operations>
+            <li Class="PatchOperationRemove">
+              <xpath>Defs/MentalBreakDef[defName="VTE_PanicFreezing"]/label</xpath>
+            </li>
+            <li Class="PatchOperationAdd">
+              <xpath>Defs/MentalBreakDef[defName="VTE_PanicFreezing"]</xpath>
+              <value>
+                <label>locked up cold</label>
+              </value>
+            </li>
+          </operations>
+        </li>
+        <li Class="PatchOperationSequence">
+          <operations>
+            <li Class="PatchOperationRemove">
+              <xpath>Defs/MentalStateDef[defName="VTE_PanicFreezing"]/beginLetter</xpath>
+            </li>
+            <li Class="PatchOperationRemove">
+              <xpath>Defs/MentalStateDef[defName="VTE_PanicFreezing"]/recoveryMessage</xpath>
+            </li>
+            <li Class="PatchOperationAdd">
+              <xpath>Defs/MentalStateDef[defName="VTE_PanicFreezing"]</xpath>
+              <value>
+                <beginLetter>{0} has frozen solid, staring at nothing, breath caught somewhere in [PAWN_possessive] chest.</beginLetter>
+                <recoveryMessage>{0} can move again.</recoveryMessage>
+              </value>
+            </li>
+          </operations>
+        </li>
+        <li Class="PatchOperationSequence">
+          <operations>
+            <li Class="PatchOperationRemove">
+              <xpath>Defs/MentalBreakDef[defName="VTE_TechnophobeTantrum"]/label</xpath>
+            </li>
+            <li Class="PatchOperationAdd">
+              <xpath>Defs/MentalBreakDef[defName="VTE_TechnophobeTantrum"]</xpath>
+              <value>
+                <label>smashing the tech</label>
+              </value>
+            </li>
+          </operations>
+        </li>
+        <li Class="PatchOperationSequence">
+          <operations>
+            <li Class="PatchOperationRemove">
+              <xpath>Defs/MentalStateDef[defName="VTE_TechnophobeTantrum"]/beginLetter</xpath>
+            </li>
+            <li Class="PatchOperationRemove">
+              <xpath>Defs/MentalStateDef[defName="VTE_TechnophobeTantrum"]/recoveryMessage</xpath>
+            </li>
+            <li Class="PatchOperationAdd">
+              <xpath>Defs/MentalStateDef[defName="VTE_TechnophobeTantrum"]</xpath>
+              <value>
+                <beginLetter>{0} has had enough of the chrome and the wiring and everything that hums. [PAWN_pronoun] is taking it out on the nearest machine.</beginLetter>
+                <recoveryMessage>{0} has stopped smashing the machines.</recoveryMessage>
+              </value>
+            </li>
+          </operations>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+</Patch>
