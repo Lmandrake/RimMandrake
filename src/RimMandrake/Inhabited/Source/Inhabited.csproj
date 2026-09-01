@@ -74,6 +74,14 @@
       <HintPath>$(HarmonyDll)</HintPath>
       <Private>false</Private>
     </Reference>
+    <!-- DISTRICT_TEMPLATE_LIBRARY_1: GenStep_ComposeSettlementDistrict calls
+         into StructureInjections' RimplacePlan.Parse / GenStep_RimplacePlan.ApplyPlan
+         rather than reinventing plan-to-map replay. mandrake.rm.injections must
+         load before mandrake.rm.inhabited (see About.xml modDependencies/loadAfter) -->
+    <Reference Include="RimMandrakeStructureInjections">
+      <HintPath>..\..\StructureInjections\Assemblies\RimMandrakeStructureInjections.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
   </ItemGroup>
 
 </Project>

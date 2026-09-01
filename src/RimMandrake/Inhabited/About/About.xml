@@ -35,9 +35,14 @@ Design: design/Jawa/bridge/INHABITED_DESIGN.md</description>
       <displayName>Harmony</displayName>
       <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
     </li>
+    <li>
+      <packageId>mandrake.rm.injections</packageId>
+      <displayName>RimMandrake: Structure Injections</displayName>
+    </li>
   </modDependencies>
   <loadAfter>
     <li>brrainz.harmony</li>
     <li>Ludeon.RimWorld</li>
+    <li>mandrake.rm.injections</li>
   </loadAfter>
 </ModMetaData>
