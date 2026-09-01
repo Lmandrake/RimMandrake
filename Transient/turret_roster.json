@@ -1,0 +1,594 @@
+[
+{
+"defName": "Turret_AutoChargeBlaster",
+"label": "auto charge turret",
+"mod": "Core",
+"x": 2,
+"z": 2,
+"thingClass": "RimWorld.Building_TurretGun"
+},
+{
+"defName": "Turret_AutoInferno",
+"label": "auto inferno turret",
+"mod": "Core",
+"x": 2,
+"z": 2,
+"thingClass": "RimWorld.Building_TurretGun"
+},
+{
+"defName": "Turret_AutoMortar",
+"label": "auto mortar",
+"mod": "Core",
+"x": 2,
+"z": 2,
+"thingClass": "RimWorld.Building_TurretGun"
+},
+{
+"defName": "Turret_Autocannon",
+"label": "autocannon turret",
+"mod": "Core",
+"x": 2,
+"z": 2,
+"thingClass": "RimWorld.Building_TurretGun"
+},
+{
+"defName": "Turret_Sniper",
+"label": "uranium slug turret",
+"mod": "Core",
+"x": 2,
+"z": 2,
+"thingClass": "RimWorld.Building_TurretGun"
+},
+{
+"defName": "Turret_Mortar",
+"label": "mortar",
+"mod": "Core",
+"x": 2,
+"z": 2,
+"thingClass": "RimWorld.Building_TurretGun"
+},
+{
+"defName": "Turret_RocketswarmLauncher",
+"label": "rocketswarm launcher",
+"mod": "Core",
+"x": 2,
+"z": 2,
+"thingClass": "RimWorld.Building_TurretRocket"
+},
+{
+"defName": "BreadMoAM_Turret_LargeShotgun",
+"label": "large caliber shotgun turret",
+"mod": "Ancient mining industry",
+"x": 2,
+"z": 2,
+"thingClass": "RimWorld.Building_TurretGun"
+},
+{
+"defName": "Turret_Atomiser",
+"label": "Atomiser Turret",
+"mod": "Dedicated Turrets",
+"x": 2,
+"z": 2,
+"thingClass": "DedicatedTurrets.Building_DedicatedTurret"
+},
+{
+"defName": "Turret_Vaporiser",
+"label": "Vaporiser Turret",
+"mod": "Dedicated Turrets",
+"x": 2,
+"z": 2,
+"thingClass": "DedicatedTurrets.Building_DedicatedTurret"
+},
+{
+"defName": "Turret_Sludger",
+"label": "Sludger Turret",
+"mod": "Dedicated Turrets",
+"x": 2,
+"z": 2,
+"thingClass": "DedicatedTurrets.Building_DedicatedTurret"
+},
+{
+"defName": "Turret_Zapper",
+"label": "Zapper Turret",
+"mod": "Dedicated Turrets",
+"x": 2,
+"z": 2,
+"thingClass": "DedicatedTurrets.Building_DedicatedTurret"
+},
+{
+"defName": "RN2SWGun_EWeb_MG",
+"label": "EWebMG",
+"mod": "E-Web Heavy Repeating Blaster",
+"x": 2,
+"z": 2,
+"thingClass": "RimWorld.Building_TurretGun"
+},
+{
+"defName": "BigLaserCannon",
+"label": "Laser Cannon",
+"mod": "Laser Cannon",
+"x": 3,
+"z": 3,
+"thingClass": "RimworldLaserCannon.Building_LaserCannonTurret"
+},
+{
+"defName": "DrillTurret",
+"label": "drill turret",
+"mod": "MiningCo. DrillTurret (Continued)",
+"x": 3,
+"z": 3,
+"thingClass": "DrillTurret.Building_DrillTurret"
+},
+{
+"defName": "VFEI2_Vilelobber",
+"label": "vilelobber",
+"mod": "Vanilla Factions Expanded - Insectoids 2",
+"x": 2,
+"z": 2,
+"thingClass": "RimWorld.Building_TurretGun"
+},
+{
+"defName": "VFEI2_Thornworm",
+"label": "thornworm",
+"mod": "Vanilla Factions Expanded - Insectoids 2",
+"x": 2,
+"z": 2,
+"thingClass": "RimWorld.Building_TurretGun"
+},
+{
+"defName": "VFEPD_Bunsen",
+"label": "Bunsen",
+"mod": "Vanilla Furniture Expanded - Props and Decor",
+"x": 2,
+"z": 4,
+"thingClass": "VFEProps.Building_VehicleWithTurret"
+},
+{
+"defName": "VFEPD_Highwayman",
+"label": "Highwayman",
+"mod": "Vanilla Furniture Expanded - Props and Decor",
+"x": 2,
+"z": 4,
+"thingClass": "VFEProps.Building_VehicleWithTurret"
+},
+{
+"defName": "VFEPD_Roadkill",
+"label": "Roadkill",
+"mod": "Vanilla Furniture Expanded - Props and Decor",
+"x": 3,
+"z": 3,
+"thingClass": "VFEProps.Building_VehicleWithTurret"
+},
+{
+"defName": "VFEPD_Scytheman",
+"label": "Scytheman",
+"mod": "Vanilla Furniture Expanded - Props and Decor",
+"x": 2,
+"z": 4,
+"thingClass": "VFEProps.Building_VehicleWithTurret"
+},
+{
+"defName": "VFEPD_Toad",
+"label": "Toad",
+"mod": "Vanilla Furniture Expanded - Props and Decor",
+"x": 3,
+"z": 3,
+"thingClass": "VFEProps.Building_VehicleWithTurret"
+},
+{
+"defName": "VFEPD_Bulldog",
+"label": "Bulldog",
+"mod": "Vanilla Furniture Expanded - Props and Decor",
+"x": 3,
+"z": 5,
+"thingClass": "VFEProps.Building_VehicleWithTurret"
+},
+{
+"defName": "VFEPD_Mosquito",
+"label": "Mosquito",
+"mod": "Vanilla Furniture Expanded - Props and Decor",
+"x": 2,
+"z": 5,
+"thingClass": "VFEProps.Building_VehicleWithTurret"
+},
+{
+"defName": "VFEPD_Tango",
+"label": "Tango",
+"mod": "Vanilla Furniture Expanded - Props and Decor",
+"x": 3,
+"z": 5,
+"thingClass": "VFEProps.Building_VehicleWithTurret"
+},
+{
+"defName": "VFES_Turret_AntiAir",
+"label": "anti-air turret",
+"mod": "Vanilla Furniture Expanded - Security",
+"x": 2,
+"z": 2,
+"thingClass": "RimWorld.Building_TurretGun"
+},
+{
+"defName": "VFES_Turret_AutomatedMortar",
+"label": "automated mortar",
+"mod": "Vanilla Furniture Expanded - Security",
+"x": 2,
+"z": 2,
+"thingClass": "RimWorld.Building_TurretGun"
+},
+{
+"defName": "VFES_Turret_Artillery",
+"label": "artillery",
+"mod": "Vanilla Furniture Expanded - Security",
+"x": 3,
+"z": 3,
+"thingClass": "VFESecurity.Building_Artillery"
+},
+{
+"defName": "VFES_Turret_Catapult",
+"label": "catapult",
+"mod": "Vanilla Furniture Expanded - Security",
+"x": 3,
+"z": 3,
+"thingClass": "RimWorld.Building_TurretGun"
+},
+{
+"defName": "VFES_Turret_Ballista",
+"label": "ballista",
+"mod": "Vanilla Furniture Expanded - Security",
+"x": 2,
+"z": 2,
+"thingClass": "RimWorld.Building_TurretGun"
+},
+{
+"defName": "VFES_Turret_AutocannonDouble",
+"label": "double autocannon turret",
+"mod": "Vanilla Furniture Expanded - Security",
+"x": 2,
+"z": 2,
+"thingClass": "RimWorld.Building_TurretGun"
+},
+{
+"defName": "VFES_Turret_Minigun",
+"label": "minigun turret",
+"mod": "Vanilla Furniture Expanded - Security",
+"x": 2,
+"z": 2,
+"thingClass": "RimWorld.Building_TurretGun"
+},
+{
+"defName": "VFES_Turret_ChargeRailgun",
+"label": "charge railgun",
+"mod": "Vanilla Furniture Expanded - Security",
+"x": 2,
+"z": 2,
+"thingClass": "RimWorld.Building_TurretGun"
+},
+{
+"defName": "VFES_Turret_TeslaBlaster",
+"label": "tesla blaster",
+"mod": "Vanilla Furniture Expanded - Security",
+"x": 2,
+"z": 2,
+"thingClass": "RimWorld.Building_TurretGun"
+},
+{
+"defName": "VGE_PointDefenseTurret",
+"label": "point defense turret",
+"mod": "Vanilla Gravship Expanded - Chapter 1",
+"x": 3,
+"z": 3,
+"thingClass": "RimWorld.Building_TurretGun"
+},
+{
+"defName": "VGE_GaussGun",
+"label": "gauss gun",
+"mod": "Vanilla Gravship Expanded - Chapter 1",
+"x": 3,
+"z": 3,
+"thingClass": "VanillaGravshipExpanded.Building_GravshipTurretAutoAttack"
+},
+{
+"defName": "VGE_JavelinPod",
+"label": "javelin pod",
+"mod": "Vanilla Gravship Expanded - Chapter 1",
+"x": 3,
+"z": 3,
+"thingClass": "VanillaGravshipExpanded.Building_JavelinPod"
+},
+{
+"defName": "VGE_AnticraftCaster",
+"label": "anticraft caster",
+"mod": "Vanilla Gravship Expanded - Chapter 1",
+"x": 3,
+"z": 3,
+"thingClass": "VanillaGravshipExpanded.Building_AnticraftCaster"
+},
+{
+"defName": "VGE_MassDriver",
+"label": "mass driver",
+"mod": "Vanilla Gravship Expanded - Chapter 1",
+"x": 5,
+"z": 5,
+"thingClass": "VanillaGravshipExpanded.Building_EnemyMechTurret"
+},
+{
+"defName": "VGE_HeavyChargeAnnihilator",
+"label": "heavy charge annihilator",
+"mod": "Vanilla Gravship Expanded - Chapter 1",
+"x": 3,
+"z": 3,
+"thingClass": "RimWorld.Building_TurretGun"
+},
+{
+"defName": "VQE_AncientSpacerAutocannon",
+"label": "ancient spacer autocannon",
+"mod": "Vanilla Quests Expanded - Cryptoforge",
+"x": 2,
+"z": 2,
+"thingClass": "RimWorld.Building_TurretGun"
+},
+{
+"defName": "AA_BlackDefiler",
+"label": "black defiler",
+"mod": "Alpha Animals",
+"x": 2,
+"z": 2,
+"thingClass": "RimWorld.Building_TurretGun"
+},
+{
+"defName": "DP_Automortar",
+"label": "Automortar",
+"mod": "Dungeon Pack (Continued)",
+"x": 2,
+"z": 2,
+"thingClass": "RimWorld.Building_TurretGun"
+},
+{
+"defName": "FT_Turret_BunkerL",
+"label": "auto-turret sandbag nest",
+"mod": "Fortifications - Industrial",
+"x": 3,
+"z": 3,
+"thingClass": "RimWorld.Building_TurretGun"
+},
+{
+"defName": "FT_Turret_BunkerM",
+"label": "auto-turret bunker",
+"mod": "Fortifications - Industrial",
+"x": 3,
+"z": 3,
+"thingClass": "RimWorld.Building_TurretGun"
+},
+{
+"defName": "FT_Turret_BunkerC",
+"label": "auto-turret bunker",
+"mod": "Fortifications - Industrial",
+"x": 3,
+"z": 3,
+"thingClass": "RimWorld.Building_TurretGun"
+},
+{
+"defName": "FT_Turret_BunkerF",
+"label": "auto-turret military sandbag nest",
+"mod": "Fortifications - Industrial",
+"x": 3,
+"z": 3,
+"thingClass": "RimWorld.Building_TurretGun"
+},
+{
+"defName": "FT_TurretHexMortar",
+"label": "multi-barrel mortar launcher",
+"mod": "Fortifications - Industrial",
+"x": 3,
+"z": 3,
+"thingClass": "RimWorld.Building_TurretGun"
+},
+{
+"defName": "FT_TurretPrince",
+"label": "field howitzer",
+"mod": "Fortifications - Industrial",
+"x": 3,
+"z": 3,
+"thingClass": "RimWorld.Building_TurretGun"
+},
+{
+"defName": "FT_TurretEmpero",
+"label": "field cannon",
+"mod": "Fortifications - Industrial",
+"x": 3,
+"z": 3,
+"thingClass": "RimWorld.Building_TurretGun"
+},
+{
+"defName": "FT_TurretAA",
+"label": "anti-air gun",
+"mod": "Fortifications - Industrial",
+"x": 3,
+"z": 3,
+"thingClass": "RimWorld.Building_TurretGun"
+},
+{
+"defName": "FT_TurretQuadAA",
+"label": "quad anti-air gun",
+"mod": "Fortifications - Industrial",
+"x": 3,
+"z": 3,
+"thingClass": "RimWorld.Building_TurretGun"
+},
+{
+"defName": "FT_TurretAT",
+"label": "anti-tank gun",
+"mod": "Fortifications - Industrial",
+"x": 3,
+"z": 3,
+"thingClass": "RimWorld.Building_TurretGun"
+},
+{
+"defName": "Turret_GravBlaster",
+"label": "grav blaster turret",
+"mod": "GravTech",
+"x": 2,
+"z": 2,
+"thingClass": "RimWorld.Building_TurretGun"
+},
+{
+"defName": "GTbc_HugeGravBlaster",
+"label": "huge grav blaster",
+"mod": "GravTech - Big cannons",
+"x": 3,
+"z": 3,
+"thingClass": "als.gravtech.bc.Building_GravBlaster"
+},
+{
+"defName": "GTbc_GravliteDefenseTurret",
+"label": "gravlite defense turret",
+"mod": "GravTech - Big cannons",
+"x": 2,
+"z": 2,
+"thingClass": "RimWorld.Building_TurretGun"
+},
+{
+"defName": "GTbc_GravRailArtillery",
+"label": "grav rail artillery",
+"mod": "GravTech - Big cannons",
+"x": 5,
+"z": 5,
+"thingClass": "als.gravtech.bc.Building_GravRailArtillery"
+},
+{
+"defName": "GTbc_TheSingularityCannon",
+"label": "The Singularity Cannon",
+"mod": "GravTech - Big cannons",
+"x": 7,
+"z": 7,
+"thingClass": "als.gravtech.bc.Building_GravSingularityCannon"
+},
+{
+"defName": "VFEP_CrashedShip_Black",
+"label": "crashed ship",
+"mod": "Vanilla Factions Expanded - Pirates",
+"x": 5,
+"z": 3,
+"thingClass": "VFEPirates.Building_CrashedShip"
+},
+{
+"defName": "VFEP_CrashedShip_Green",
+"label": "crashed ship",
+"mod": "Vanilla Factions Expanded - Pirates",
+"x": 5,
+"z": 3,
+"thingClass": "VFEPirates.Building_CrashedShip"
+},
+{
+"defName": "VFEP_CrashedShip_Orange",
+"label": "crashed ship",
+"mod": "Vanilla Factions Expanded - Pirates",
+"x": 5,
+"z": 3,
+"thingClass": "VFEPirates.Building_CrashedShip"
+},
+{
+"defName": "VFEP_CrashedShip_Red",
+"label": "crashed ship",
+"mod": "Vanilla Factions Expanded - Pirates",
+"x": 5,
+"z": 3,
+"thingClass": "VFEPirates.Building_CrashedShip"
+},
+{
+"defName": "VFEP_Turret_FieldGun",
+"label": "field gun",
+"mod": "Vanilla Factions Expanded - Pirates",
+"x": 2,
+"z": 2,
+"thingClass": "RimWorld.Building_TurretGun"
+},
+{
+"defName": "VFEP_Turret_Cannon",
+"label": "cannon",
+"mod": "Vanilla Factions Expanded - Pirates",
+"x": 2,
+"z": 2,
+"thingClass": "RimWorld.Building_TurretGun"
+},
+{
+"defName": "VFEP_ShipChunkGauntletTurret",
+"label": "ship chunk gauntlet turret",
+"mod": "Vanilla Factions Expanded - Pirates",
+"x": 3,
+"z": 3,
+"thingClass": "RimWorld.Building_TurretGun"
+},
+{
+"defName": "OuterRim_MediumLaserCannon",
+"label": "medium laser cannon",
+"mod": "Outer Rim - Core",
+"x": 2,
+"z": 2,
+"thingClass": "TabulaRasa.Building_TurretGunSmart"
+},
+{
+"defName": "OuterRim_ProtonMortar",
+"label": "proton mortar",
+"mod": "Outer Rim - Core",
+"x": 2,
+"z": 2,
+"thingClass": "TabulaRasa.Building_TurretGunSmart"
+},
+{
+"defName": "OuterRim_Turbolaser",
+"label": "turbolaser",
+"mod": "Outer Rim - Core",
+"x": 2,
+"z": 2,
+"thingClass": "TabulaRasa.Building_TurretGunSmart"
+},
+{
+"defName": "OuterRim_AnaxesTurret",
+"label": "anaxes-class turbolaser",
+"mod": "Outer Rim - Core",
+"x": 3,
+"z": 3,
+"thingClass": "TabulaRasa.Building_TurretGunSmart"
+},
+{
+"defName": "OuterRim_HeavyImperialTurbolaser",
+"label": "heavy imperial turbolaser",
+"mod": "Outer Rim - Core",
+"x": 3,
+"z": 3,
+"thingClass": "TabulaRasa.Building_TurretGunSmart"
+},
+{
+"defName": "OuterRim_HeavyIonCannon",
+"label": "heavy ion cannon",
+"mod": "Outer Rim - Core",
+"x": 3,
+"z": 3,
+"thingClass": "TabulaRasa.Building_TurretGunSmart"
+},
+{
+"defName": "OuterRim_HeavyLaserCannon",
+"label": "heavy laser cannon",
+"mod": "Outer Rim - Core",
+"x": 3,
+"z": 3,
+"thingClass": "TabulaRasa.Building_TurretGunSmart"
+},
+{
+"defName": "OuterRim_HeavyTurbolaser",
+"label": "heavy turbolaser",
+"mod": "Outer Rim - Core",
+"x": 3,
+"z": 3,
+"thingClass": "TabulaRasa.Building_TurretGunSmart"
+},
+{
+"defName": "OuterRim_ProtonArtillery",
+"label": "proton artillery",
+"mod": "Outer Rim - Core",
+"x": 3,
+"z": 3,
+"thingClass": "TabulaRasa.Building_TurretGunSmart"
+}
+]

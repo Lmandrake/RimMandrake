@@ -1,0 +1,482 @@
+[
+ {
+  "rep": 0,
+  "fac": "Pirate",
+  "lordDelta": 0,
+  "pawns": 0,
+  "secs": 0.07,
+  "resolved": {
+   "incident": "RaidEnemy",
+   "points": 3000.0,
+   "faction": "Pirate",
+   "raidStrategy": "ImmediateAttack",
+   "raidArrivalMode": "EdgeWalkIn",
+   "spawnCenter": null
+  },
+  "substituted": false
+ },
+ {
+  "rep": 0,
+  "fac": "Empire",
+  "lordDelta": 1,
+  "pawns": 30,
+  "secs": 2.57,
+  "resolved": {
+   "incident": "RaidEnemy",
+   "points": 3000.0,
+   "faction": "Empire",
+   "raidStrategy": "ImmediateAttack",
+   "raidArrivalMode": "EdgeWalkIn",
+   "spawnCenter": null
+  },
+  "substituted": false
+ },
+ {
+  "rep": 0,
+  "fac": "Jawa_HuttCartel",
+  "lordDelta": 1,
+  "pawns": 34,
+  "secs": 0.58,
+  "resolved": {
+   "incident": "RaidEnemy",
+   "points": 3000.0,
+   "faction": "Jawa_HuttCartel",
+   "raidStrategy": "ImmediateAttack",
+   "raidArrivalMode": "EdgeWalkIn",
+   "spawnCenter": null
+  },
+  "substituted": true
+ },
+ {
+  "rep": 1,
+  "fac": "Pirate",
+  "lordDelta": 0,
+  "pawns": 0,
+  "secs": 0.07,
+  "resolved": {
+   "incident": "RaidEnemy",
+   "points": 3000.0,
+   "faction": "Pirate",
+   "raidStrategy": "ImmediateAttack",
+   "raidArrivalMode": "EdgeWalkIn",
+   "spawnCenter": null
+  },
+  "substituted": false
+ },
+ {
+  "rep": 1,
+  "fac": "Empire",
+  "lordDelta": 1,
+  "pawns": 30,
+  "secs": 2.62,
+  "resolved": {
+   "incident": "RaidEnemy",
+   "points": 3000.0,
+   "faction": "Empire",
+   "raidStrategy": "ImmediateAttack",
+   "raidArrivalMode": "EdgeWalkIn",
+   "spawnCenter": null
+  },
+  "substituted": false
+ },
+ {
+  "rep": 1,
+  "fac": "Jawa_HuttCartel",
+  "lordDelta": 1,
+  "pawns": 31,
+  "secs": 0.34,
+  "resolved": {
+   "incident": "RaidEnemy",
+   "points": 3000.0,
+   "faction": "Jawa_HuttCartel",
+   "raidStrategy": "ImmediateAttack",
+   "raidArrivalMode": "EdgeWalkIn",
+   "spawnCenter": null
+  },
+  "substituted": true
+ },
+ {
+  "rep": 2,
+  "fac": "Pirate",
+  "lordDelta": 0,
+  "pawns": 0,
+  "secs": 0.07,
+  "resolved": {
+   "incident": "RaidEnemy",
+   "points": 3000.0,
+   "faction": "Pirate",
+   "raidStrategy": "ImmediateAttack",
+   "raidArrivalMode": "EdgeWalkIn",
+   "spawnCenter": null
+  },
+  "substituted": false
+ },
+ {
+  "rep": 2,
+  "fac": "Empire",
+  "lordDelta": 1,
+  "pawns": 30,
+  "secs": 3.53,
+  "resolved": {
+   "incident": "RaidEnemy",
+   "points": 3000.0,
+   "faction": "Empire",
+   "raidStrategy": "ImmediateAttack",
+   "raidArrivalMode": "EdgeWalkIn",
+   "spawnCenter": null
+  },
+  "substituted": false
+ },
+ {
+  "rep": 2,
+  "fac": "Jawa_HuttCartel",
+  "lordDelta": 1,
+  "pawns": 37,
+  "secs": 4.65,
+  "resolved": {
+   "incident": "RaidEnemy",
+   "points": 3000.0,
+   "faction": "Jawa_HuttCartel",
+   "raidStrategy": "ImmediateAttack",
+   "raidArrivalMode": "EdgeWalkIn",
+   "spawnCenter": null
+  },
+  "substituted": true
+ },
+ {
+  "rep": 3,
+  "fac": "Pirate",
+  "lordDelta": 0,
+  "pawns": 0,
+  "secs": 0.07,
+  "resolved": {
+   "incident": "RaidEnemy",
+   "points": 3000.0,
+   "faction": "Pirate",
+   "raidStrategy": "ImmediateAttack",
+   "raidArrivalMode": "EdgeWalkIn",
+   "spawnCenter": null
+  },
+  "substituted": false
+ },
+ {
+  "rep": 3,
+  "fac": "Empire",
+  "lordDelta": 1,
+  "pawns": 31,
+  "secs": 3.82,
+  "resolved": {
+   "incident": "RaidEnemy",
+   "points": 3000.0,
+   "faction": "Empire",
+   "raidStrategy": "ImmediateAttack",
+   "raidArrivalMode": "EdgeWalkIn",
+   "spawnCenter": null
+  },
+  "substituted": false
+ },
+ {
+  "rep": 3,
+  "fac": "Jawa_HuttCartel",
+  "lordDelta": 1,
+  "pawns": 28,
+  "secs": 0.35,
+  "resolved": {
+   "incident": "RaidEnemy",
+   "points": 3000.0,
+   "faction": "Jawa_HuttCartel",
+   "raidStrategy": "ImmediateAttack",
+   "raidArrivalMode": "EdgeWalkIn",
+   "spawnCenter": null
+  },
+  "substituted": true
+ },
+ {
+  "rep": 4,
+  "fac": "Pirate",
+  "lordDelta": 0,
+  "pawns": 0,
+  "secs": 0.07,
+  "resolved": {
+   "incident": "RaidEnemy",
+   "points": 3000.0,
+   "faction": "Pirate",
+   "raidStrategy": "ImmediateAttack",
+   "raidArrivalMode": "EdgeWalkIn",
+   "spawnCenter": null
+  },
+  "substituted": false
+ },
+ {
+  "rep": 4,
+  "fac": "Empire",
+  "lordDelta": 1,
+  "pawns": 30,
+  "secs": 4.17,
+  "resolved": {
+   "incident": "RaidEnemy",
+   "points": 3000.0,
+   "faction": "Empire",
+   "raidStrategy": "ImmediateAttack",
+   "raidArrivalMode": "EdgeWalkIn",
+   "spawnCenter": null
+  },
+  "substituted": false
+ },
+ {
+  "rep": 4,
+  "fac": "Jawa_HuttCartel",
+  "lordDelta": 1,
+  "pawns": 30,
+  "secs": 0.32,
+  "resolved": {
+   "incident": "RaidEnemy",
+   "points": 3000.0,
+   "faction": "Jawa_HuttCartel",
+   "raidStrategy": "ImmediateAttack",
+   "raidArrivalMode": "EdgeWalkIn",
+   "spawnCenter": null
+  },
+  "substituted": true
+ },
+ {
+  "rep": 5,
+  "fac": "Pirate",
+  "lordDelta": 0,
+  "pawns": 0,
+  "secs": 0.07,
+  "resolved": {
+   "incident": "RaidEnemy",
+   "points": 3000.0,
+   "faction": "Pirate",
+   "raidStrategy": "ImmediateAttack",
+   "raidArrivalMode": "EdgeWalkIn",
+   "spawnCenter": null
+  },
+  "substituted": false
+ },
+ {
+  "rep": 5,
+  "fac": "Empire",
+  "lordDelta": 1,
+  "pawns": 28,
+  "secs": 2.88,
+  "resolved": {
+   "incident": "RaidEnemy",
+   "points": 3000.0,
+   "faction": "Empire",
+   "raidStrategy": "ImmediateAttack",
+   "raidArrivalMode": "EdgeWalkIn",
+   "spawnCenter": null
+  },
+  "substituted": false
+ },
+ {
+  "rep": 5,
+  "fac": "Jawa_HuttCartel",
+  "lordDelta": 1,
+  "pawns": 27,
+  "secs": 0.79,
+  "resolved": {
+   "incident": "RaidEnemy",
+   "points": 3000.0,
+   "faction": "Jawa_HuttCartel",
+   "raidStrategy": "ImmediateAttack",
+   "raidArrivalMode": "EdgeWalkIn",
+   "spawnCenter": null
+  },
+  "substituted": true
+ },
+ {
+  "rep": 6,
+  "fac": "Pirate",
+  "lordDelta": 0,
+  "pawns": 0,
+  "secs": 0.07,
+  "resolved": {
+   "incident": "RaidEnemy",
+   "points": 3000.0,
+   "faction": "Pirate",
+   "raidStrategy": "ImmediateAttack",
+   "raidArrivalMode": "EdgeWalkIn",
+   "spawnCenter": null
+  },
+  "substituted": false
+ },
+ {
+  "rep": 6,
+  "fac": "Empire",
+  "lordDelta": 1,
+  "pawns": 33,
+  "secs": 3.97,
+  "resolved": {
+   "incident": "RaidEnemy",
+   "points": 3000.0,
+   "faction": "Empire",
+   "raidStrategy": "ImmediateAttack",
+   "raidArrivalMode": "EdgeWalkIn",
+   "spawnCenter": null
+  },
+  "substituted": false
+ },
+ {
+  "rep": 6,
+  "fac": "Jawa_HuttCartel",
+  "lordDelta": 1,
+  "pawns": 40,
+  "secs": 0.54,
+  "resolved": {
+   "incident": "RaidEnemy",
+   "points": 3000.0,
+   "faction": "Jawa_HuttCartel",
+   "raidStrategy": "ImmediateAttack",
+   "raidArrivalMode": "EdgeWalkIn",
+   "spawnCenter": null
+  },
+  "substituted": true
+ },
+ {
+  "rep": 7,
+  "fac": "Pirate",
+  "lordDelta": 0,
+  "pawns": 0,
+  "secs": 0.09,
+  "resolved": {
+   "incident": "RaidEnemy",
+   "points": 3000.0,
+   "faction": "Pirate",
+   "raidStrategy": "ImmediateAttack",
+   "raidArrivalMode": "EdgeWalkIn",
+   "spawnCenter": null
+  },
+  "substituted": false
+ },
+ {
+  "rep": 7,
+  "fac": "Empire",
+  "lordDelta": 0,
+  "pawns": 0,
+  "secs": 0.09,
+  "resolved": {
+   "incident": "RaidEnemy",
+   "points": 3000.0,
+   "faction": "Empire",
+   "raidStrategy": "ImmediateAttack",
+   "raidArrivalMode": "EdgeWalkIn",
+   "spawnCenter": null
+  },
+  "substituted": false
+ },
+ {
+  "rep": 7,
+  "fac": "Jawa_HuttCartel",
+  "lordDelta": 1,
+  "pawns": 35,
+  "secs": 0.7,
+  "resolved": {
+   "incident": "RaidEnemy",
+   "points": 3000.0,
+   "faction": "Jawa_HuttCartel",
+   "raidStrategy": "ImmediateAttack",
+   "raidArrivalMode": "EdgeWalkIn",
+   "spawnCenter": null
+  },
+  "substituted": true
+ },
+ {
+  "rep": 8,
+  "fac": "Pirate",
+  "lordDelta": 0,
+  "pawns": 0,
+  "secs": 0.07,
+  "resolved": {
+   "incident": "RaidEnemy",
+   "points": 3000.0,
+   "faction": "Pirate",
+   "raidStrategy": "ImmediateAttack",
+   "raidArrivalMode": "EdgeWalkIn",
+   "spawnCenter": null
+  },
+  "substituted": false
+ },
+ {
+  "rep": 8,
+  "fac": "Empire",
+  "lordDelta": 1,
+  "pawns": 27,
+  "secs": 2.85,
+  "resolved": {
+   "incident": "RaidEnemy",
+   "points": 3000.0,
+   "faction": "Empire",
+   "raidStrategy": "ImmediateAttack",
+   "raidArrivalMode": "EdgeWalkIn",
+   "spawnCenter": null
+  },
+  "substituted": false
+ },
+ {
+  "rep": 8,
+  "fac": "Jawa_HuttCartel",
+  "lordDelta": 1,
+  "pawns": 37,
+  "secs": 5.11,
+  "resolved": {
+   "incident": "RaidEnemy",
+   "points": 3000.0,
+   "faction": "Jawa_HuttCartel",
+   "raidStrategy": "ImmediateAttack",
+   "raidArrivalMode": "EdgeWalkIn",
+   "spawnCenter": null
+  },
+  "substituted": true
+ },
+ {
+  "rep": 9,
+  "fac": "Pirate",
+  "lordDelta": 0,
+  "pawns": 0,
+  "secs": 0.07,
+  "resolved": {
+   "incident": "RaidEnemy",
+   "points": 3000.0,
+   "faction": "Pirate",
+   "raidStrategy": "ImmediateAttack",
+   "raidArrivalMode": "EdgeWalkIn",
+   "spawnCenter": null
+  },
+  "substituted": false
+ },
+ {
+  "rep": 9,
+  "fac": "Empire",
+  "lordDelta": 1,
+  "pawns": 34,
+  "secs": 3.07,
+  "resolved": {
+   "incident": "RaidEnemy",
+   "points": 3000.0,
+   "faction": "Empire",
+   "raidStrategy": "ImmediateAttack",
+   "raidArrivalMode": "EdgeWalkIn",
+   "spawnCenter": null
+  },
+  "substituted": false
+ },
+ {
+  "rep": 9,
+  "fac": "Jawa_HuttCartel",
+  "lordDelta": 1,
+  "pawns": 42,
+  "secs": 0.54,
+  "resolved": {
+   "incident": "RaidEnemy",
+   "points": 3000.0,
+   "faction": "Jawa_HuttCartel",
+   "raidStrategy": "ImmediateAttack",
+   "raidArrivalMode": "EdgeWalkIn",
+   "spawnCenter": null
+  },
+  "substituted": true
+ }
+]

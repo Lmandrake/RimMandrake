@@ -1,0 +1,432 @@
+{
+ "success": true,
+ "message": "11 of 11 def(s) resolved",
+ "requested": 11,
+ "foundCount": 11,
+ "notFound": [],
+ "malformed": [],
+ "fieldsAsked": [
+  "pawnGroupMakers",
+  "humanlikeFaction",
+  "raidsForbidden",
+  "permanentEnemy",
+  "hidden",
+  "temporary",
+  "maxPawnCostPerTotalPointsCurve",
+  "techLevel",
+  "canUseAvoidGrid",
+  "earliestRaidDays",
+  "raidArrivalLayerWhitelist",
+  "raidArrivalLayerBlacklist",
+  "allowedArrivalTemperatureRange",
+  "xenotypeSet",
+  "pawnGroupMakerKinds"
+ ],
+ "defs": [
+  {
+   "requested": "FactionDef/Pirate",
+   "found": true,
+   "defName": "Pirate",
+   "defType": "FactionDef",
+   "label": "Blackstar Company",
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "humanlikeFaction": true,
+    "hidden": false,
+    "pawnGroupMakers": [
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker"
+    ],
+    "canUseAvoidGrid": true,
+    "earliestRaidDays": 0.0,
+    "maxPawnCostPerTotalPointsCurve": [
+     "CurvePoint",
+     "CurvePoint",
+     "CurvePoint",
+     "CurvePoint",
+     "CurvePoint"
+    ],
+    "raidsForbidden": false,
+    "raidArrivalLayerWhitelist": [],
+    "raidArrivalLayerBlacklist": [],
+    "techLevel": "Spacer",
+    "permanentEnemy": true,
+    "temporary": "(no such field)",
+    "allowedArrivalTemperatureRange": "(no such field)",
+    "xenotypeSet": "(no such field)",
+    "pawnGroupMakerKinds": "(no such field)"
+   }
+  },
+  {
+   "requested": "FactionDef/Entities",
+   "found": true,
+   "defName": "Entities",
+   "defType": "FactionDef",
+   "label": "entities",
+   "modName": "Anomaly",
+   "packageId": "ludeon.rimworld.anomaly",
+   "fields": {
+    "humanlikeFaction": false,
+    "hidden": true,
+    "pawnGroupMakers": [
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker"
+    ],
+    "canUseAvoidGrid": false,
+    "earliestRaidDays": 0.0,
+    "maxPawnCostPerTotalPointsCurve": [
+     "CurvePoint",
+     "CurvePoint",
+     "CurvePoint"
+    ],
+    "raidsForbidden": false,
+    "raidArrivalLayerWhitelist": [],
+    "raidArrivalLayerBlacklist": [],
+    "techLevel": "Animal",
+    "permanentEnemy": false,
+    "temporary": "(no such field)",
+    "allowedArrivalTemperatureRange": "(no such field)",
+    "xenotypeSet": "(no such field)",
+    "pawnGroupMakerKinds": "(no such field)"
+   }
+  },
+  {
+   "requested": "FactionDef/AM_EnemyPirate",
+   "found": true,
+   "defName": "AM_EnemyPirate",
+   "defType": "FactionDef",
+   "label": "pirate scavenger",
+   "modName": "Ancient urban ruins",
+   "packageId": "xmb.ancienturbanruins.mo",
+   "fields": {
+    "humanlikeFaction": true,
+    "hidden": true,
+    "pawnGroupMakers": null,
+    "canUseAvoidGrid": true,
+    "earliestRaidDays": 0.0,
+    "maxPawnCostPerTotalPointsCurve": null,
+    "raidsForbidden": false,
+    "raidArrivalLayerWhitelist": [],
+    "raidArrivalLayerBlacklist": [],
+    "techLevel": "Spacer",
+    "permanentEnemy": true,
+    "temporary": "(no such field)",
+    "allowedArrivalTemperatureRange": "(no such field)",
+    "xenotypeSet": "(no such field)",
+    "pawnGroupMakerKinds": "(no such field)"
+   }
+  },
+  {
+   "requested": "FactionDef/TribalHostile",
+   "found": true,
+   "defName": "TribalHostile",
+   "defType": "FactionDef",
+   "label": "Tribal Hostiles",
+   "modName": "Dungeon Pack (Continued)",
+   "packageId": "mlie.dungeonpack",
+   "fields": {
+    "humanlikeFaction": true,
+    "hidden": true,
+    "pawnGroupMakers": [
+     "PawnGroupMaker"
+    ],
+    "canUseAvoidGrid": true,
+    "earliestRaidDays": 0.0,
+    "maxPawnCostPerTotalPointsCurve": [
+     "CurvePoint",
+     "CurvePoint"
+    ],
+    "raidsForbidden": true,
+    "raidArrivalLayerWhitelist": [],
+    "raidArrivalLayerBlacklist": [],
+    "techLevel": "Neolithic",
+    "permanentEnemy": true,
+    "temporary": "(no such field)",
+    "allowedArrivalTemperatureRange": "(no such field)",
+    "xenotypeSet": "(no such field)",
+    "pawnGroupMakerKinds": "(no such field)"
+   }
+  },
+  {
+   "requested": "FactionDef/DP_GenericHostile",
+   "found": true,
+   "defName": "DP_GenericHostile",
+   "defType": "FactionDef",
+   "label": "Hostile Faction",
+   "modName": "Dungeon Pack (Continued)",
+   "packageId": "mlie.dungeonpack",
+   "fields": {
+    "humanlikeFaction": true,
+    "hidden": true,
+    "pawnGroupMakers": [
+     "PawnGroupMaker"
+    ],
+    "canUseAvoidGrid": true,
+    "earliestRaidDays": 0.0,
+    "maxPawnCostPerTotalPointsCurve": [
+     "CurvePoint",
+     "CurvePoint"
+    ],
+    "raidsForbidden": true,
+    "raidArrivalLayerWhitelist": [],
+    "raidArrivalLayerBlacklist": [],
+    "techLevel": "Spacer",
+    "permanentEnemy": true,
+    "temporary": "(no such field)",
+    "allowedArrivalTemperatureRange": "(no such field)",
+    "xenotypeSet": "(no such field)",
+    "pawnGroupMakerKinds": "(no such field)"
+   }
+  },
+  {
+   "requested": "FactionDef/Salvagers",
+   "found": true,
+   "defName": "Salvagers",
+   "defType": "FactionDef",
+   "label": "salvagers",
+   "modName": "Odyssey",
+   "packageId": "ludeon.rimworld.odyssey",
+   "fields": {
+    "humanlikeFaction": true,
+    "hidden": true,
+    "pawnGroupMakers": [
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker"
+    ],
+    "canUseAvoidGrid": true,
+    "earliestRaidDays": 0.0,
+    "maxPawnCostPerTotalPointsCurve": [
+     "CurvePoint",
+     "CurvePoint",
+     "CurvePoint",
+     "CurvePoint",
+     "CurvePoint"
+    ],
+    "raidsForbidden": false,
+    "raidArrivalLayerWhitelist": [],
+    "raidArrivalLayerBlacklist": [],
+    "techLevel": "Spacer",
+    "permanentEnemy": true,
+    "temporary": "(no such field)",
+    "allowedArrivalTemperatureRange": "(no such field)",
+    "xenotypeSet": "(no such field)",
+    "pawnGroupMakerKinds": "(no such field)"
+   }
+  },
+  {
+   "requested": "FactionDef/Empire",
+   "found": true,
+   "defName": "Empire",
+   "defType": "FactionDef",
+   "label": "The Galactic Empire",
+   "modName": "Royalty",
+   "packageId": "ludeon.rimworld.royalty",
+   "fields": {
+    "humanlikeFaction": true,
+    "hidden": false,
+    "pawnGroupMakers": [
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker"
+    ],
+    "canUseAvoidGrid": true,
+    "earliestRaidDays": 0.0,
+    "maxPawnCostPerTotalPointsCurve": [
+     "CurvePoint",
+     "CurvePoint",
+     "CurvePoint",
+     "CurvePoint"
+    ],
+    "raidsForbidden": false,
+    "raidArrivalLayerWhitelist": [],
+    "raidArrivalLayerBlacklist": [],
+    "techLevel": "Ultra",
+    "permanentEnemy": false,
+    "temporary": "(no such field)",
+    "allowedArrivalTemperatureRange": "(no such field)",
+    "xenotypeSet": "(no such field)",
+    "pawnGroupMakerKinds": "(no such field)"
+   }
+  },
+  {
+   "requested": "FactionDef/Mechanoid",
+   "found": true,
+   "defName": "Mechanoid",
+   "defType": "FactionDef",
+   "label": "the Forgotten Arsenal",
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "humanlikeFaction": false,
+    "hidden": true,
+    "pawnGroupMakers": [
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker"
+    ],
+    "canUseAvoidGrid": false,
+    "earliestRaidDays": 45.0,
+    "maxPawnCostPerTotalPointsCurve": [
+     "CurvePoint",
+     "CurvePoint",
+     "CurvePoint"
+    ],
+    "raidsForbidden": false,
+    "raidArrivalLayerWhitelist": [],
+    "raidArrivalLayerBlacklist": [],
+    "techLevel": "Ultra",
+    "permanentEnemy": true,
+    "temporary": "(no such field)",
+    "allowedArrivalTemperatureRange": "(no such field)",
+    "xenotypeSet": "(no such field)",
+    "pawnGroupMakerKinds": "(no such field)"
+   }
+  },
+  {
+   "requested": "FactionDef/Insect",
+   "found": true,
+   "defName": "Insect",
+   "defType": "FactionDef",
+   "label": "hive",
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "humanlikeFaction": false,
+    "hidden": false,
+    "pawnGroupMakers": [
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker"
+    ],
+    "canUseAvoidGrid": false,
+    "earliestRaidDays": 0.0,
+    "maxPawnCostPerTotalPointsCurve": [
+     "CurvePoint",
+     "CurvePoint",
+     "CurvePoint",
+     "CurvePoint",
+     "CurvePoint",
+     "CurvePoint",
+     "CurvePoint"
+    ],
+    "raidsForbidden": false,
+    "raidArrivalLayerWhitelist": [],
+    "raidArrivalLayerBlacklist": [],
+    "techLevel": "Animal",
+    "permanentEnemy": false,
+    "temporary": "(no such field)",
+    "allowedArrivalTemperatureRange": "(no such field)",
+    "xenotypeSet": "(no such field)",
+    "pawnGroupMakerKinds": "(no such field)"
+   }
+  },
+  {
+   "requested": "FactionDef/AncientsHostile",
+   "found": true,
+   "defName": "AncientsHostile",
+   "defType": "FactionDef",
+   "label": "hostile ancients",
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "humanlikeFaction": true,
+    "hidden": true,
+    "pawnGroupMakers": [
+     "PawnGroupMaker"
+    ],
+    "canUseAvoidGrid": true,
+    "earliestRaidDays": 0.0,
+    "maxPawnCostPerTotalPointsCurve": [
+     "CurvePoint",
+     "CurvePoint"
+    ],
+    "raidsForbidden": true,
+    "raidArrivalLayerWhitelist": [],
+    "raidArrivalLayerBlacklist": [],
+    "techLevel": "Spacer",
+    "permanentEnemy": true,
+    "temporary": "(no such field)",
+    "allowedArrivalTemperatureRange": "(no such field)",
+    "xenotypeSet": "(no such field)",
+    "pawnGroupMakerKinds": "(no such field)"
+   }
+  },
+  {
+   "requested": "FactionDef/HoraxCult",
+   "found": true,
+   "defName": "HoraxCult",
+   "defType": "FactionDef",
+   "label": "horax cult",
+   "modName": "Anomaly",
+   "packageId": "ludeon.rimworld.anomaly",
+   "fields": {
+    "humanlikeFaction": true,
+    "hidden": true,
+    "pawnGroupMakers": [
+     "PawnGroupMaker",
+     "PawnGroupMaker"
+    ],
+    "canUseAvoidGrid": true,
+    "earliestRaidDays": 0.0,
+    "maxPawnCostPerTotalPointsCurve": [
+     "CurvePoint",
+     "CurvePoint"
+    ],
+    "raidsForbidden": true,
+    "raidArrivalLayerWhitelist": [],
+    "raidArrivalLayerBlacklist": [],
+    "techLevel": "Spacer",
+    "permanentEnemy": true,
+    "temporary": "(no such field)",
+    "allowedArrivalTemperatureRange": "(no such field)",
+    "xenotypeSet": "(no such field)",
+    "pawnGroupMakerKinds": "(no such field)"
+   }
+  }
+ ],
+ "ticksGame": 4236,
+ "operation": {
+  "OperationId": "op_5ffa00a7cb7c4796a803b5ebb3c16d8e",
+  "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+  "Status": 2,
+  "Success": true,
+  "StartedAtUtc": "2026-08-31T03:20:53.9206499+00:00",
+  "CompletedAtUtc": "2026-08-31T03:20:53.9877441+00:00",
+  "DurationMs": 67,
+  "Result": null,
+  "HasResult": true,
+  "ResultWasTruncated": false,
+  "Warnings": [],
+  "Error": null,
+  "Metadata": {}
+ }
+}

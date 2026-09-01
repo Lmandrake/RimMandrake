@@ -1,0 +1,128 @@
+{
+  "tier_counts": {
+    "ThoughtDef": {
+      "COMMON": 403,
+      "OCCASIONAL": 1262,
+      "DORMANT": 502
+    },
+    "MentalBreakDef": {
+      "COMMON": 22,
+      "OCCASIONAL": 11,
+      "DORMANT": 11
+    },
+    "XenotypeDef": {
+      "COMMON": 72,
+      "OCCASIONAL": 13,
+      "DORMANT": 54
+    }
+  },
+  "dormant_counts": {
+    "ThoughtDef": 502,
+    "MentalBreakDef": 11,
+    "XenotypeDef": 54
+  },
+  "dormant_examples": {
+    "ThoughtDef": [
+      [
+        "Royalty",
+        "PsychicHarmonization"
+      ],
+      [
+        "Anomaly",
+        "Inhumanizing_Required_Human"
+      ],
+      [
+        "Custom Ritual Framework",
+        "TerribleAdoption"
+      ],
+      [
+        "Big and Small - Framework",
+        "BS_DroneDied"
+      ],
+      [
+        "[AP] Hunting Meme",
+        "AP_TrophyHunter_ThoughtOne"
+      ],
+      [
+        "[RF] Rumor Has It.... (Continued)",
+        "SharedSecret"
+      ],
+      [
+        "Alpha Mechs",
+        "AM_ApoptosisHateAura"
+      ],
+      [
+        "Beliar Xenotype",
+        "BX_HomicidalThoughts"
+      ],
+      [
+        "Cybranian - Ideology Virtues",
+        "PreferredTrait"
+      ],
+      [
+        "Dark Ages : Beasts and Monsters",
+        "DA_UnnervingPresence"
+      ]
+    ],
+    "MentalBreakDef": [
+      [
+        "Royalty",
+        "WildDecree"
+      ],
+      [
+        "Anomaly",
+        "DarkVisions"
+      ],
+      [
+        "Graffiti Mod (Continued)",
+        "GraffitiMod_GraffitiPaintingSpreeBreak"
+      ],
+      [
+        "Alpha Genes",
+        "AG_Thalassophobia"
+      ]
+    ],
+    "XenotypeDef": [
+      [
+        "Beliar Xenotype",
+        "BX_Beliar"
+      ],
+      [
+        "Det's Xenotypes - Avaloi",
+        "DV_Avaloi"
+      ],
+      [
+        "Det's Xenotypes - Boglegs",
+        "DV_Bogleg"
+      ],
+      [
+        "Det's Xenotypes - Brawnum",
+        "DV_Brawnum"
+      ],
+      [
+        "Det's Xenotypes - Buzzers",
+        "DV_Buzzer"
+      ],
+      [
+        "Det's Xenotypes - Keshig",
+        "DV_Keshig"
+      ],
+      [
+        "Det's Xenotypes - Venators",
+        "DV_Venator"
+      ],
+      [
+        "Highborn Xenotype",
+        "HBX_Highborn"
+      ],
+      [
+        "Orc Clan + Xenotype",
+        "KAR_Orc"
+      ],
+      [
+        "Rimwars:Pureblood Xenotype",
+        "PureBlood"
+      ]
+    ]
+  }
+}

@@ -1,0 +1,393 @@
+# rimplace flat plan v1
+FOOTPRINT	100	100	16	12
+TERRAIN	101	101	Gravel
+TERRAIN	101	102	Gravel
+TERRAIN	101	103	Gravel
+TERRAIN	101	104	Gravel
+TERRAIN	101	105	Gravel
+TERRAIN	101	106	Gravel
+TERRAIN	101	107	Gravel
+TERRAIN	101	108	Gravel
+TERRAIN	101	109	Gravel
+TERRAIN	101	110	Gravel
+TERRAIN	102	101	Gravel
+TERRAIN	102	102	Gravel
+TERRAIN	102	103	Gravel
+TERRAIN	102	104	Gravel
+TERRAIN	102	105	Gravel
+TERRAIN	102	106	Gravel
+TERRAIN	102	107	Gravel
+TERRAIN	102	108	Gravel
+TERRAIN	102	109	Gravel
+TERRAIN	102	110	Gravel
+TERRAIN	103	101	Gravel
+TERRAIN	103	102	Gravel
+TERRAIN	103	103	Gravel
+TERRAIN	103	104	Gravel
+TERRAIN	103	105	Gravel
+TERRAIN	103	106	Gravel
+TERRAIN	103	107	Gravel
+TERRAIN	103	108	Gravel
+TERRAIN	103	109	Gravel
+TERRAIN	103	110	Gravel
+TERRAIN	104	101	Gravel
+TERRAIN	104	102	Gravel
+TERRAIN	104	103	Gravel
+TERRAIN	104	104	Gravel
+TERRAIN	104	105	Gravel
+TERRAIN	104	106	Gravel
+TERRAIN	104	107	Gravel
+TERRAIN	104	108	Gravel
+TERRAIN	104	109	Gravel
+TERRAIN	104	110	Gravel
+TERRAIN	105	101	Gravel
+TERRAIN	105	102	Gravel
+TERRAIN	105	103	Gravel
+TERRAIN	105	104	Gravel
+TERRAIN	105	105	Gravel
+TERRAIN	105	106	Gravel
+TERRAIN	105	107	Gravel
+TERRAIN	105	108	Gravel
+TERRAIN	105	109	Gravel
+TERRAIN	105	110	Gravel
+TERRAIN	106	101	Gravel
+TERRAIN	106	102	Gravel
+TERRAIN	106	103	Gravel
+TERRAIN	106	104	Gravel
+TERRAIN	106	105	Gravel
+TERRAIN	106	106	Gravel
+TERRAIN	106	107	Gravel
+TERRAIN	106	108	Gravel
+TERRAIN	106	109	Gravel
+TERRAIN	106	110	Gravel
+TERRAIN	108	101	Gravel
+TERRAIN	108	102	Gravel
+TERRAIN	108	103	Gravel
+TERRAIN	108	104	Gravel
+TERRAIN	108	105	Gravel
+TERRAIN	108	106	Gravel
+TERRAIN	108	107	Gravel
+TERRAIN	108	108	Gravel
+TERRAIN	108	109	Gravel
+TERRAIN	108	110	Gravel
+TERRAIN	109	101	Gravel
+TERRAIN	109	102	Gravel
+TERRAIN	109	103	Gravel
+TERRAIN	109	104	Gravel
+TERRAIN	109	105	Gravel
+TERRAIN	109	106	Gravel
+TERRAIN	109	107	Gravel
+TERRAIN	109	108	Gravel
+TERRAIN	109	109	Gravel
+TERRAIN	109	110	Gravel
+TERRAIN	110	101	Gravel
+TERRAIN	110	102	Gravel
+TERRAIN	110	103	Gravel
+TERRAIN	110	104	Gravel
+TERRAIN	110	105	Gravel
+TERRAIN	110	106	Gravel
+TERRAIN	110	107	Gravel
+TERRAIN	110	108	Gravel
+TERRAIN	110	109	Gravel
+TERRAIN	110	110	Gravel
+TERRAIN	111	101	Gravel
+TERRAIN	111	102	Gravel
+TERRAIN	111	103	Gravel
+TERRAIN	111	104	Gravel
+TERRAIN	111	105	Gravel
+TERRAIN	111	106	Gravel
+TERRAIN	111	107	Gravel
+TERRAIN	111	108	Gravel
+TERRAIN	111	109	Gravel
+TERRAIN	111	110	Gravel
+TERRAIN	112	101	Gravel
+TERRAIN	112	102	Gravel
+TERRAIN	112	103	Gravel
+TERRAIN	112	104	Gravel
+TERRAIN	112	105	Gravel
+TERRAIN	112	106	Gravel
+TERRAIN	112	107	Gravel
+TERRAIN	112	108	Gravel
+TERRAIN	112	109	Gravel
+TERRAIN	112	110	Gravel
+TERRAIN	113	101	Gravel
+TERRAIN	113	102	Gravel
+TERRAIN	113	103	Gravel
+TERRAIN	113	104	Gravel
+TERRAIN	113	105	Gravel
+TERRAIN	113	106	Gravel
+TERRAIN	113	107	Gravel
+TERRAIN	113	108	Gravel
+TERRAIN	113	109	Gravel
+TERRAIN	113	110	Gravel
+TERRAIN	114	101	Gravel
+TERRAIN	114	102	Gravel
+TERRAIN	114	103	Gravel
+TERRAIN	114	104	Gravel
+TERRAIN	114	105	Gravel
+TERRAIN	114	106	Gravel
+TERRAIN	114	107	Gravel
+TERRAIN	114	108	Gravel
+TERRAIN	114	109	Gravel
+TERRAIN	114	110	Gravel
+THING	Wall	100	100	0	BlocksSandstone
+THING	Wall	101	100	0	BlocksSandstone
+THING	Wall	102	100	0	BlocksSandstone
+THING	Wall	103	100	0	BlocksSandstone
+THING	Wall	105	100	0	BlocksSandstone
+THING	Wall	106	100	0	BlocksSandstone
+THING	Wall	107	100	0	BlocksSandstone
+THING	Wall	100	101	0	BlocksSandstone
+THING	Wall	107	101	0	BlocksSandstone
+THING	Wall	100	102	0	BlocksSandstone
+THING	Wall	107	102	0	BlocksSandstone
+THING	Wall	100	103	0	BlocksSandstone
+THING	Wall	107	103	0	BlocksSandstone
+THING	Wall	100	104	0	BlocksSandstone
+THING	Wall	107	104	0	BlocksSandstone
+THING	Wall	100	105	0	BlocksSandstone
+THING	Wall	107	105	0	BlocksSandstone
+THING	Wall	100	106	0	BlocksSandstone
+THING	Wall	100	107	0	BlocksSandstone
+THING	Wall	107	107	0	BlocksSandstone
+THING	Wall	100	108	0	BlocksSandstone
+THING	Wall	107	108	0	BlocksSandstone
+THING	Wall	100	109	0	BlocksSandstone
+THING	Wall	107	109	0	BlocksSandstone
+THING	Wall	100	110	0	BlocksSandstone
+THING	Wall	107	110	0	BlocksSandstone
+THING	Wall	100	111	0	BlocksSandstone
+THING	Wall	101	111	0	BlocksSandstone
+THING	Wall	102	111	0	BlocksSandstone
+THING	Wall	103	111	0	BlocksSandstone
+THING	Wall	104	111	0	BlocksSandstone
+THING	Wall	105	111	0	BlocksSandstone
+THING	Wall	106	111	0	BlocksSandstone
+THING	Wall	107	111	0	BlocksSandstone
+THING	Wall	108	100	0	BlocksSandstone
+THING	Wall	109	100	0	BlocksSandstone
+THING	Wall	110	100	0	BlocksSandstone
+THING	Wall	111	100	0	BlocksSandstone
+THING	Wall	112	100	0	BlocksSandstone
+THING	Wall	113	100	0	BlocksSandstone
+THING	Wall	114	100	0	BlocksSandstone
+THING	Wall	115	100	0	BlocksSandstone
+THING	Wall	115	101	0	BlocksSandstone
+THING	Wall	115	102	0	BlocksSandstone
+THING	Wall	115	103	0	BlocksSandstone
+THING	Wall	115	104	0	BlocksSandstone
+THING	Wall	115	105	0	BlocksSandstone
+THING	Wall	115	106	0	BlocksSandstone
+THING	Wall	115	107	0	BlocksSandstone
+THING	Wall	115	108	0	BlocksSandstone
+THING	Wall	115	109	0	BlocksSandstone
+THING	Wall	115	110	0	BlocksSandstone
+THING	Wall	108	111	0	BlocksSandstone
+THING	Wall	109	111	0	BlocksSandstone
+THING	Wall	110	111	0	BlocksSandstone
+THING	Wall	111	111	0	BlocksSandstone
+THING	Wall	112	111	0	BlocksSandstone
+THING	Wall	113	111	0	BlocksSandstone
+THING	Wall	114	111	0	BlocksSandstone
+THING	Wall	115	111	0	BlocksSandstone
+THING	Door	104	100	0	WoodLog
+THING	Door	107	106	0	WoodLog
+THING	Bedroll	101	101	0	WoodLog
+THING	Bedroll	103	101	0	WoodLog
+THING	TorchLamp	106	110	0	-
+THING	Table1x2c	108	101	0	WoodLog
+THING	DiningChair	109	101	0	WoodLog
+THING	ElectricStove	113	110	0	-
+THING	TorchLamp	111	110	0	-
+ROOF	100	100	RoofConstructed
+ROOF	100	101	RoofConstructed
+ROOF	100	102	RoofConstructed
+ROOF	100	103	RoofConstructed
+ROOF	100	104	RoofConstructed
+ROOF	100	105	RoofConstructed
+ROOF	100	106	RoofConstructed
+ROOF	100	107	RoofConstructed
+ROOF	100	108	RoofConstructed
+ROOF	100	109	RoofConstructed
+ROOF	100	110	RoofConstructed
+ROOF	100	111	RoofConstructed
+ROOF	101	100	RoofConstructed
+ROOF	101	101	RoofConstructed
+ROOF	101	102	RoofConstructed
+ROOF	101	103	RoofConstructed
+ROOF	101	104	RoofConstructed
+ROOF	101	105	RoofConstructed
+ROOF	101	106	RoofConstructed
+ROOF	101	107	RoofConstructed
+ROOF	101	108	RoofConstructed
+ROOF	101	109	RoofConstructed
+ROOF	101	110	RoofConstructed
+ROOF	101	111	RoofConstructed
+ROOF	102	100	RoofConstructed
+ROOF	102	101	RoofConstructed
+ROOF	102	102	RoofConstructed
+ROOF	102	103	RoofConstructed
+ROOF	102	104	RoofConstructed
+ROOF	102	105	RoofConstructed
+ROOF	102	106	RoofConstructed
+ROOF	102	107	RoofConstructed
+ROOF	102	108	RoofConstructed
+ROOF	102	109	RoofConstructed
+ROOF	102	110	RoofConstructed
+ROOF	102	111	RoofConstructed
+ROOF	103	100	RoofConstructed
+ROOF	103	101	RoofConstructed
+ROOF	103	102	RoofConstructed
+ROOF	103	103	RoofConstructed
+ROOF	103	104	RoofConstructed
+ROOF	103	105	RoofConstructed
+ROOF	103	106	RoofConstructed
+ROOF	103	107	RoofConstructed
+ROOF	103	108	RoofConstructed
+ROOF	103	109	RoofConstructed
+ROOF	103	110	RoofConstructed
+ROOF	103	111	RoofConstructed
+ROOF	104	100	RoofConstructed
+ROOF	104	101	RoofConstructed
+ROOF	104	102	RoofConstructed
+ROOF	104	103	RoofConstructed
+ROOF	104	104	RoofConstructed
+ROOF	104	105	RoofConstructed
+ROOF	104	106	RoofConstructed
+ROOF	104	107	RoofConstructed
+ROOF	104	108	RoofConstructed
+ROOF	104	109	RoofConstructed
+ROOF	104	110	RoofConstructed
+ROOF	104	111	RoofConstructed
+ROOF	105	100	RoofConstructed
+ROOF	105	101	RoofConstructed
+ROOF	105	102	RoofConstructed
+ROOF	105	103	RoofConstructed
+ROOF	105	104	RoofConstructed
+ROOF	105	105	RoofConstructed
+ROOF	105	106	RoofConstructed
+ROOF	105	107	RoofConstructed
+ROOF	105	108	RoofConstructed
+ROOF	105	109	RoofConstructed
+ROOF	105	110	RoofConstructed
+ROOF	105	111	RoofConstructed
+ROOF	106	100	RoofConstructed
+ROOF	106	101	RoofConstructed
+ROOF	106	102	RoofConstructed
+ROOF	106	103	RoofConstructed
+ROOF	106	104	RoofConstructed
+ROOF	106	105	RoofConstructed
+ROOF	106	106	RoofConstructed
+ROOF	106	107	RoofConstructed
+ROOF	106	108	RoofConstructed
+ROOF	106	109	RoofConstructed
+ROOF	106	110	RoofConstructed
+ROOF	106	111	RoofConstructed
+ROOF	107	100	RoofConstructed
+ROOF	107	101	RoofConstructed
+ROOF	107	102	RoofConstructed
+ROOF	107	103	RoofConstructed
+ROOF	107	104	RoofConstructed
+ROOF	107	105	RoofConstructed
+ROOF	107	106	RoofConstructed
+ROOF	107	107	RoofConstructed
+ROOF	107	108	RoofConstructed
+ROOF	107	109	RoofConstructed
+ROOF	107	110	RoofConstructed
+ROOF	107	111	RoofConstructed
+ROOF	108	100	RoofConstructed
+ROOF	108	101	RoofConstructed
+ROOF	108	102	RoofConstructed
+ROOF	108	103	RoofConstructed
+ROOF	108	104	RoofConstructed
+ROOF	108	105	RoofConstructed
+ROOF	108	106	RoofConstructed
+ROOF	108	107	RoofConstructed
+ROOF	108	108	RoofConstructed
+ROOF	108	109	RoofConstructed
+ROOF	108	110	RoofConstructed
+ROOF	108	111	RoofConstructed
+ROOF	109	100	RoofConstructed
+ROOF	109	101	RoofConstructed
+ROOF	109	102	RoofConstructed
+ROOF	109	103	RoofConstructed
+ROOF	109	104	RoofConstructed
+ROOF	109	105	RoofConstructed
+ROOF	109	106	RoofConstructed
+ROOF	109	107	RoofConstructed
+ROOF	109	108	RoofConstructed
+ROOF	109	109	RoofConstructed
+ROOF	109	110	RoofConstructed
+ROOF	109	111	RoofConstructed
+ROOF	110	100	RoofConstructed
+ROOF	110	101	RoofConstructed
+ROOF	110	102	RoofConstructed
+ROOF	110	103	RoofConstructed
+ROOF	110	104	RoofConstructed
+ROOF	110	105	RoofConstructed
+ROOF	110	106	RoofConstructed
+ROOF	110	107	RoofConstructed
+ROOF	110	108	RoofConstructed
+ROOF	110	109	RoofConstructed
+ROOF	110	110	RoofConstructed
+ROOF	110	111	RoofConstructed
+ROOF	111	100	RoofConstructed
+ROOF	111	101	RoofConstructed
+ROOF	111	102	RoofConstructed
+ROOF	111	103	RoofConstructed
+ROOF	111	104	RoofConstructed
+ROOF	111	105	RoofConstructed
+ROOF	111	106	RoofConstructed
+ROOF	111	107	RoofConstructed
+ROOF	111	108	RoofConstructed
+ROOF	111	109	RoofConstructed
+ROOF	111	110	RoofConstructed
+ROOF	111	111	RoofConstructed
+ROOF	112	100	RoofConstructed
+ROOF	112	101	RoofConstructed
+ROOF	112	102	RoofConstructed
+ROOF	112	103	RoofConstructed
+ROOF	112	104	RoofConstructed
+ROOF	112	105	RoofConstructed
+ROOF	112	106	RoofConstructed
+ROOF	112	107	RoofConstructed
+ROOF	112	108	RoofConstructed
+ROOF	112	109	RoofConstructed
+ROOF	112	110	RoofConstructed
+ROOF	112	111	RoofConstructed
+ROOF	113	100	RoofConstructed
+ROOF	113	101	RoofConstructed
+ROOF	113	102	RoofConstructed
+ROOF	113	103	RoofConstructed
+ROOF	113	104	RoofConstructed
+ROOF	113	105	RoofConstructed
+ROOF	113	106	RoofConstructed
+ROOF	113	107	RoofConstructed
+ROOF	113	108	RoofConstructed
+ROOF	113	109	RoofConstructed
+ROOF	113	110	RoofConstructed
+ROOF	113	111	RoofConstructed
+ROOF	114	100	RoofConstructed
+ROOF	114	101	RoofConstructed
+ROOF	114	102	RoofConstructed
+ROOF	114	103	RoofConstructed
+ROOF	114	104	RoofConstructed
+ROOF	114	105	RoofConstructed
+ROOF	114	106	RoofConstructed
+ROOF	114	107	RoofConstructed
+ROOF	114	108	RoofConstructed
+ROOF	114	109	RoofConstructed
+ROOF	114	110	RoofConstructed
+ROOF	114	111	RoofConstructed
+ROOF	115	100	RoofConstructed
+ROOF	115	101	RoofConstructed
+ROOF	115	102	RoofConstructed
+ROOF	115	103	RoofConstructed
+ROOF	115	104	RoofConstructed
+ROOF	115	105	RoofConstructed
+ROOF	115	106	RoofConstructed
+ROOF	115	107	RoofConstructed
+ROOF	115	108	RoofConstructed
+ROOF	115	109	RoofConstructed
+ROOF	115	110	RoofConstructed
+ROOF	115	111	RoofConstructed

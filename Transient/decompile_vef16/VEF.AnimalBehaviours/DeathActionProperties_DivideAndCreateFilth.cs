@@ -1,0 +1,20 @@
+using System.Collections.Generic;
+using Verse;
+
+namespace VEF.AnimalBehaviours;
+
+public class DeathActionProperties_DivideAndCreateFilth : DeathActionProperties
+{
+	public List<PawnKindDef> dividePawnKindOptions = new List<PawnKindDef>();
+
+	public ThingDef filthCreated;
+
+	public IntRange filthCountRange;
+
+	public SoundDef sound;
+
+	public DeathActionProperties_DivideAndCreateFilth()
+	{
+		base.workerClass = typeof(DeathActionWorker_DivideAndCreateFilth);
+	}
+}

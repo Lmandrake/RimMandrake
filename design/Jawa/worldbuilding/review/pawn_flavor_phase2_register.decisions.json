@@ -1,8 +1,8 @@
 {
  "sheet": "pawn_flavor_phase2_register",
  "posture": "draft-review; default APPROVE - a row left undecided ships the drafted prose as-is",
- "savedAt": "2026-08-30T19:13:16.582Z",
- "decidedBy": "owner-sheet",
+ "savedAt": "2026-09-01T21:21:34.510Z",
+ "decidedBy": "owner-said",
  "rows": {
   "ThoughtDef::AteBabyFood": {
    "d": "approve",
@@ -1991,6 +1991,5151 @@
   "XenotypeDef::RimMandrakeZygerrian": {
    "d": "approve",
    "n": ""
+  },
+  "ThoughtDef::ABF_Thought_Synstruct_ArchotechImplantDissonance": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ABF_Thought_Synstruct_BiophileApproval": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ABF_Thought_Synstruct_BiophileHappyWithWork": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ABF_Thought_Synstruct_BiophilePreferenceTowardOrganics": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ABF_Thought_Synstruct_BiophileUnhappyWithWork": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ABF_Thought_Synstruct_BiophobeDisapproval": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ABF_Thought_Synstruct_BiophobePreferenceTowardBiomimetics": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ABF_Thought_Synstruct_BiophobePreferenceTowardOrganics": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ABF_Thought_Synstruct_BiophobeResentment": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ABF_Thought_Synstruct_BiophobeUnhappyWithWork": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ABF_Thought_Synstruct_CoerciveVocalizer": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ABF_Thought_Synstruct_CoherenceMood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ABF_Thought_Synstruct_CoherenceMood_Ascetic": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ABF_Thought_Synstruct_CoherenceMood_Demanding": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ABF_Thought_Synstruct_CoherenceMood_Masochist": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ABF_Thought_Synstruct_Coherence_ChronicAnnoyance": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ABF_Thought_Synstruct_Coherence_OpticalAberrations": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ABF_Thought_Synstruct_Coherence_RustedPart": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ABF_Thought_Synstruct_CreationDied": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ABF_Thought_Synstruct_CreatorDied": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ABF_Thought_Synstruct_Directive_Friend": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ABF_Thought_Synstruct_DronesOfSameModel": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ABF_Thought_Synstruct_InduciveVocalizer": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ABF_Thought_Synstruct_KilledMyCreation": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ABF_Thought_Synstruct_KilledMyCreator": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ABF_Thought_Synstruct_MentalAssistant": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ABF_Thought_Synstruct_MyCreationLost": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ABF_Thought_Synstruct_MyCreatorLost": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ABF_Thought_Synstruct_Overclocking": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ABF_Thought_Synstruct_PaintedFavoriteColor": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ABF_Thought_Synstruct_PersonalityShiftAllowed": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ABF_Thought_Synstruct_PersonalityShiftDenied": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AA_AteBlackTruffleIngredient": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AA_AteHorribleRot": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AA_AteSuperAwfulMeal": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AA_BeenPsionicallyNuzzled": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AA_Disgust": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AA_PhotosensitiveExoskeleton": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AA_PsychicHarmonyBad": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AA_PsychicHarmonyGood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AA_UncomfortablyHot": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AB_ForsakenNight": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AB_ForsakenRain": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AB_ForsakenThunderstorm": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AB_GelatinousEchoes_Bad": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AB_GelatinousEchoes_Good": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AB_HealingSpringwaterThought": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AB_MoldyEnvironment": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AB_MutagenicOcularWater": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AB_PetalStorms": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AB_PsychotropicFungusHigh": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AB_PsychotropicFungusWithdrawal": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AB_Quicksand": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AB_RawRimeNodulesHigh": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AB_RedFogThought": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AB_RedFogThoughtPositive": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AB_VolcanicAshThought": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AG_Awe": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AG_CorpseFeeding": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AG_Disgust": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AG_EldritchVisage": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AG_Implanted": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AG_Implanted_Social": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AG_Mood_Volatile": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AG_Parasite": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AG_Parasite_Social": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AG_PsychicDrone": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AG_PukedRats": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AG_RaidedBioLab": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AG_Stinky": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AG_SunlightSensitivity_Minor": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AG_Thalassophobia": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AG_UnsettlingAppearance": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AG_UsedXenotypeInjector": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_AmazingAnimaBurial": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_AmazingBlastOff": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_AmazingDreadnought": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_AmazingFuneral": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_AmazingPaste": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_AmazingTantrum": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_AnimaScreamLesser": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_AnimaScream_TreesInMap": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_AnimaScreams_Delightful": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_AnimalAnalysis_Expected": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_AnimalAnalyzedAndReleased_Encouraged": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_AnimalDespised_Died_Despised": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_AnimalDespised_Died_Normal": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_AnimalRelease_Discouraged": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_AnimalRelease_Encouraged": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_Armour_Expected": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_ArtQuality_Expected": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_Art_Desired": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_AteNutrientPasteMeal_Forbidden": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_AteNutrientPasteMeal_Preferred": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_BoringBaptism": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_BoringRelicDestruction": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_BoringRodeo": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_BoringSparring": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_CombatProwess_Increased_UsedMelee": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_CombatProwess_Melee_UsedRanged": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_CorpseRumThought": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_Corpses_Sublime_ObservedLayingCorpse": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_Corpses_Sublime_ObservedLayingRottingCorpse": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_DeathKnellThought": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_Death_Desired": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_DeathrestCaskets_Abhorrent": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_DerangedMaddeningChant": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_DisastrousBanquet": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_DullBanquet": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_EnjoyableBanquet": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_EntertainingRelicDestruction": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_ExquisiteBanquet": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_FunBaptism": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_FunRodeo": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_FunSparring": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_GauranlenConnection_Forbidden": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_GauranlenConnection_Forbidden_CutGauranlenTree": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_GoodAnimaBurial": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_GoodBlastOff": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_GoodDreadnought": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_GoodFuneral": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_GoodPaste": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_GoodTantrum": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_HarbingerTrees_Disgusting_CutHarbingerTree": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_Horses_Desired_HorseDied": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_IncredibleAnimaBurial": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_InsaneMaddeningChant": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_LacklusterAnimaBurial": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_LacklusterBlastOff": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_LacklusterDreadnought": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_LacklusterFuneral": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_LacklusterPaste": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_LacklusterTantrum": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_Meals_QualityDesired_AteLavishMeal": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_Meals_QualityDesired_AteRawFood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_Meals_QualityDesired_AteSimpleMeal": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_Megaliths_Desired": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_Mood_Volatile": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_OcularTrees_TreesDesired": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_OrganUse_Know_Torturous": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_OrganUse_Know_Torturous_Mood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_OrganUse_Torturous": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_PsychoticMaddeningChant": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_Rain_Blessed": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_Rain_Disliked": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_Ranching_CattleCentered_CattleMassPerCapita": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_Ranching_CattleCentered_Pens": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_RationalMaddeningChant": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_Recreation_Abhorrent": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_RelicDestruction_Desired": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_Religion_Despised": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_Religion_Disliked": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_Religion_Loved": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_Religion_ProselytismDisliked": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_Reliquaries_Forbidden": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_RoughLiving_Disliked_AteInWoodenTable": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_RoughLiving_Disliked_AteWithoutATable": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_RoughLiving_Disliked_SleptInWoodenBed": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_SanguophageCamps_BloodfeederDied_Desire": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_SanguophageCamps_RaidingDesired": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_SanguophageCamps_RaidingDesired_Know": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_SleptInBarracksMonastic": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_SleptInBarracksPreferred": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_SleptInPrivateRoomMonastic": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_SleptInPrivateRoomPreferred": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_TableQuality_Desired_AteInLowQualityTable": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_TeaCeremonyBlasphemous": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_TeaCeremonyRefreshing": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_TeaCeremonyTranscendent": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_TeaCeremonyUnderwhelming": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_TeaDrinking_Required_DrankPsychiteTea": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_TeaDrinking_Required_DrankSpecialtyTea": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_TeaDrinking_Required_DrankTea": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_TeaNeed": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_TerribleAnimaBurial": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_TerribleBaptism": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_TerribleBlastOff": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_TerribleDreadnought": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_TerribleFuneral": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_TerriblePaste": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_TerribleRodeo": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_TerribleSparring": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_TerribleTantrum": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_TreeDensityReduced": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_Trees_Despised": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_UnforgettableBaptism": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_UnforgettableRodeo": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_UnforgettableSparring": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_Violence_Abhorrent_Strict": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AM_Water_Desired": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AN_SlaughteredAnimal_Desired": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AN_SlaughteredAnimal_Know_Desired": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AN_SlaughteredAnimal_Know_Desired_Mood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GR_AmazingExtraction": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GR_GoodExtraction": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GR_LacklusterExtraction": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GR_TerribleExtraction": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BS_AlienApperanceStandards": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BS_DrunkenHigh2": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BS_DrunkenHigh3": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BS_Mood_Deteriorated_Mind": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BS_Mood_Violently_Insane": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BS_SimpleMind": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BS_VerySimpleMind": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BS_WerewolfRage": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VU_SuccubusEuphoria": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VU_ThrallEuphoria": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VU_WhiteRoseEuphoria": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BMT_AteFungalLog": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BMT_AteRawDulcis": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BMT_AteRawShimmershroom": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BMT_BreathedGleamcapSmoke": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BMT_DrankCactusJuice": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BMT_GlintThought": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BMT_GlitterThought": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BMT_StimquillThought": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BMT_Thought_PhosphoricLights": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BMT_UndergrounderMushroomed": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::SalveWithdrawl": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AteRawFish": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AteRawGastropod": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BiomesCore_AbysalWater": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BiomesCore_LagoonWater": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BiomesIslands_Crab": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BiomesIslands_Whale": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BMT_VisitedMuseum": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BMT_BileThought": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BMT_DrankRegalMilk": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BMT_ItchinessThought": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BMT_ObservedMaligoat": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BMT_PhoridInfection": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BabyBorn": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BabyCriedSocial": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BabyGiggledSocial": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BloodTorch": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BloodfeederColonist_Revered": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BloodfeederColonist_Reviled": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Bloodfeeder_ReviledBloodfeeder": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Bloodfeeders_Revered_Opinion_Bloodfeeder": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Bloodfeeders_Reviled_Opinion_Bloodfeeder": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BreastfedBaby": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BreastfedMe": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ChildInGrowthVat": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ChildlikePositivity": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CryingBaby": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::DeathrestChamber": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::DeathrestExhaustion": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::EnslavedChild": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::FedBaby": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::FedMe": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::FedOn": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::FedOn_Social": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GaveLesson": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GigglingBaby": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GrowthVat_Essential_ChildNotInGrowthVat": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GrowthVat_Essential_Pregnant": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GrowthVat_Prohibited_ChildInGrowthVat": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GrowthVat_Prohibited_ChildNotInGrowthVat": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HateAura": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HemogenCraving": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::IngestedHemogenPack": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::KillThirst": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::KilledChild": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::KilledChild_Opinion": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::KilledMyBirthMother": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MoodOffsetHappy": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MoodOffsetUnhappy": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MoodOffsetVeryHappy": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MoodOffsetVeryUnhappy": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MyBirthMotherLost": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MyChildHappy": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MyChildSad": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MyChildrenHappy": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MyChildrenSad": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MyCryingBaby": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MyGigglingBaby": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MyParentHappy": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MyParentsHappy": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::NeedLearning": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::NeedPlay": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::NoxiousHaze": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::PlayedWithMe": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::PreferredXenotype": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::PreferredXenotypeMakeup": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::PregnancyAttitude": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::PregnancyEnded": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::PregnancyMood_Collapse": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::PregnancyMood_Down": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::PregnancyMood_High": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::PregnancyMood_Up": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::PregnancyTerminated": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::SelfDislikedXenotype": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::WasTaught": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::XenogermHarvested_Prisoner": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::YoungstersHappy": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::YoungstersSad": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BoringBreeding": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BoringBreedingSuccess": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::EncouragingBreeding": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::EncouragingBreedingSuccess": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::InspirationalBreeding": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::InspirationalBreedingSuccess": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::PsyAwakening": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::TerribleBreeding": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::TerribleBreedingSuccess": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CAAncientGiftDestiny": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CACamping": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::TravelCompanions": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Affair": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AmbrosiaHigh": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AnestheticHigh": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AnnoyingVoice": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ApparelDamaged": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ArtifactMoodBoost": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AttendedConcert": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AttendedParty": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AttendedWedding": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Aurora": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BodyPuristDisgust": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BotchedMySurgery": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BrokeUpWithMeMood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Catharsis": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ChemicalInterestVsTeetotaler": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Chitchat": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ColonistBanished": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ColonistLost": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CrashedTogether": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CreepyBreathing": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::DebugBad": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::DebugGood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::DeepTalk": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::DefeatedHostileFactionLeader": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::DefeatedHostileFactionLeaderOpinion": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::DefeatedInsectHive": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::DefeatedMechCluster": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::DeniedJoining": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Disfigured": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::DivorcedMe": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::DivorcedMeMood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::EncouragingSpeech": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Expectations": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::FailedRomanceAttemptOnMe": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::FailedRomanceAttemptOnMeLowOpinionMood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::FailedToRescueRelative": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::FlakeHigh": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ForcedMeToTakeLuciferium": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::FreedFromSlavery": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GotSomeLovin": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HarmedMe": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HarvestedOrgan_Bloodlust": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HeldConcert": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HoneymoonPhase": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HumanLeatherApparelSad": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::IRejectedTheirProposal": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Incestuous": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::InspirationalSpeech": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Joywire": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::KilledColonist": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::KilledHumanlikeBloodlust": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::KilledMyBrother": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::KilledMyDaughter": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::KilledMyFather": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::KilledMyFiance": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::KilledMyKin": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::KilledMyMother": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::KilledMyRival": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::KilledMySister": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::KilledMySon": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::KilledMySpouse": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::KindWords": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::KindWordsMood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::KnowBuriedInSarcophagus": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::KnowColonistOrganHarvested": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::KnowPrisonerDiedInnocent": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::LoveReading": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Man": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MissingTongue": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MoodOffsetDepressive": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MoodOffsetOptimist": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MoodOffsetPessimist": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MoodOffsetSanguine": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MoodOffsetTorturedArtist": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MyAuntLost": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MyBrotherLost": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MyCousinLost": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MyDaughterLost": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MyFatherLost": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MyFianceLost": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MyFianceeLost": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MyGrandchildLost": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MyGrandparentLost": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MyHalfSiblingLost": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MyHusbandLost": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MyKinLost": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MyMotherLost": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MyNephewLost": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MyNieceLost": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MyOrganHarvested": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MySisterLost": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MySonLost": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MyUncleLost": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MyWifeLost": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::NeedComfort": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::NeedIndoors": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::NewColonyOptimism": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::NightOwlDuringTheNight": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::OnDuty": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::OpinionOfMyLover": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::PawnWithBadOpinionLost": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Pretty": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ProsthophileNoProsthetic": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::PsychicEmanatorSoothe": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::PsychiteTeaHigh": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::PsychiteWithdrawal": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::PyromaniacHappy": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::PyromaniacNearFire": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RapportBuilt": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RebuffedMyRomanceAttempt": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RecruitedMe": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RejectedMyProposal": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Rescued": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RescuedMe": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RescuedMeByOfferingHelp": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RescuedRelative": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RotStinkLingering": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::SmokeleafHigh": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::SmokeleafWithdrawal": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::SoakingWet": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::TeetotalerVsChemicalInterest": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::TerribleSpeech": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::TranshumanistAppreciation": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Ugly": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::UndergrounderOutdoors": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::UninspiringSpeech": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::WakeUpWithdrawal": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Woman": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::WrongApparelGender": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::YayoHigh": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CGT_N2OGiggles": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::EBSG_GeneticDrugDependency": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::EBSG_GeneticDrugReliance": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::EBSG_GeneticFoodDependency": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::EBSG_GeneticFoodGroupDependency": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::EBSG_GeneticFoodGroupReliance": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::EBSG_GeneticFoodReliance": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GraffitiMod_HappyArtist": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AlienVsXenophobia": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_AlienDating_Horrible": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_AlienDating_Know_Honorable": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_AlienDating_Know_Horrible": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_AlienRaces_Abhorrent": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_AlienRaces_Abhorrent_Social": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_AlienRaces_Exalted": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_AlienRaces_Exalted_Social": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_AlienRaces_Horrible_Social": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_AlienRaces_Respected_Social": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_AlienVsXenophobia": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_Alien_EnslavedPrisoner_Disapproved": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_Alien_EnslavedPrisoner_Honorable": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_Alien_EnslavedPrisoner_Horrible": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_Alien_EnslavedPrisoner_Know_Abhorrent": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_Alien_EnslavedPrisoner_Know_Disapproved": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_Alien_EnslavedPrisoner_Know_Disapproved_Mood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_Alien_EnslavedPrisoner_Know_Honorable": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_Alien_EnslavedPrisoner_Know_Honorable_Mood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_Alien_EnslavedPrisoner_Know_Horrible": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_Alien_EnslavedPrisoner_Know_Horrible_Mood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_Alien_Slavery_Abhorrent_SlavesInColony": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_Alien_Slavery_Disapproved_SlavesInColony": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_Alien_Slavery_Honorable_NoSlavesInColony": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_Alien_Slavery_Honorable_SlavesInColony": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_Alien_Slavery_Horrible_SlavesInColony": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_Alien_SoldSlave_Disapproved": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_Alien_SoldSlave_Honorable": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_Alien_SoldSlave_Horrible": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_Alien_SoldSlave_Know_Abhorrent": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_Alien_SoldSlave_Know_Abhorrent_Mood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_Alien_SoldSlave_Know_Disapproved": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_Alien_SoldSlave_Know_Disapproved_Mood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_Alien_SoldSlave_Know_Honorable": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_Alien_SoldSlave_Know_Honorable_Mood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_Alien_SoldSlave_Know_Horrible": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_Alien_SoldSlave_Know_Horrible_Mood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_AteAlienMeat_Abhorrent": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_AteAlienMeat_Disapproved": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_AteAlienMeat_Know_Abhorrent": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_AteAlienMeat_Know_Disapproved": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_AteAlienMeat_Preferred": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_AteAlienMeat_RequiredStrong": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_AteNonAlienFood_Horrible": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_AteNonAlienFood_Know_Horrible": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_ButcheredAlien_Abhorrent": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_ButcheredAlien_Disapproved": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_ButcheredAlien_Know_Abhorrent": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_ButcheredAlien_Know_Abhorrent_Opinion": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_ButcheredAlien_Know_Disapproved": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_ButcheredAlien_Know_Disapproved_Opinion": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_NoRecentAlienMeat_Preferred": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_NoRecentAlienMeat_RequiredStrong": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_XenophobeVsXenophile": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HAR_XenophobiaVsAlien": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::XenophobeVsXenophile": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::XenophobiaVsAlien": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Isekai_AntagonistPresence": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Isekai_ApexReached": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Isekai_AweOfPower": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Isekai_BeneathMe": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Isekai_BeneathMyRank": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Isekai_BossSlain": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Isekai_BountyClaimed": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Isekai_BrokenWill": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Isekai_ContemptForWeak": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Isekai_CrushingPresence": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Isekai_CursedMood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Isekai_DuelDefeat": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Isekai_DuelIgnored": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Isekai_DuelVictory": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Isekai_FirstBlood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Isekai_ForgeDestroyed": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Isekai_ForgeDowngrade": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Isekai_ForgeSuccess": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Isekai_GiantSlayer": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Isekai_Humiliated": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Isekai_InMyElement": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Isekai_InspiredByLegend": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Isekai_KindredConstellation": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Isekai_LegendFallen": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Isekai_LevelUp": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Isekai_LuckyMood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Isekai_NationAscended": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Isekai_NodeUnlocked": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Isekai_Outclassed": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Isekai_Overshadowed": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Isekai_PathFound": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Isekai_PrideOfStrongest": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Isekai_QuestComplete": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Isekai_QuestFailed": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Isekai_RankUp": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Isekai_RivalConstellation": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Isekai_RuneShattered": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Isekai_RuneSocketed": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Isekai_SlewElite": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Isekai_Stagnating": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Isekai_StarTouched": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Isekai_SummonedHeroDisplacement": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Isekai_TitleBearing": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Isekai_TitleRenown": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Isekai_TitleRivalry": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Isekai_TouchedByDeath": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Isekai_UnfulfilledCalling": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Isekai_UntappedPotential": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Isekai_WeaponMastery": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Isekai_WorthyWeapon": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AnyBodyPartButGroinCovered_Disapproved_Female": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AnyBodyPartButGroinCovered_Disapproved_Male": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AnyBodyPartButGroinCovered_Disapproved_Memory": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AnyBodyPartButGroinCovered_Disapproved_Social_Female": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AnyBodyPartButGroinCovered_Disapproved_Social_Male": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AnyBodyPartCovered_Disapproved_Female": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AnyBodyPartCovered_Disapproved_Male": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AnyBodyPartCovered_Disapproved_Memory": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AnyBodyPartCovered_Disapproved_Social_Female": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AnyBodyPartCovered_Disapproved_Social_Male": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BeautifulSkyLanterns": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BioSculpterDespised": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BiosculpterPleasure": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BlindingCeremony_Know_Horrible": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BlindingCeremony_Self_Elevated": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BlindingCeremony_Self_Respected": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BlindingCeremony_Self_Sublime": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Blindness_ArtificialBlind": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Blindness_Elevated_Blind": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Blindness_Elevated_Blind_Social": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Blindness_Elevated_HalfBlind_Social": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Blindness_Elevated_NonBlind": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Blindness_Elevated_NonBlind_Social": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Blindness_Respected_Blind": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Blindness_Respected_Blind_Social": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Blindness_Respected_NonBlind_Social": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Blindness_Sublime_Blind": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Blindness_Sublime_Blind_Social": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Blindness_Sublime_HalfBlind_Social": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Blindness_Sublime_NonBlind": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Blindness_Sublime_NonBlind_Social": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BoringBlinding": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BoringDuel": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BoringFestival": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BoringParty": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BoringSacrifice": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ButcheredHuman_Abhorrent": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ButcheredHuman_Disapproved": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ButcheredHuman_Horrible": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ButcheredHuman_Know_Abhorrent": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ButcheredHuman_Know_Abhorrent_Opinion": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ButcheredHuman_Know_Disapproved": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ButcheredHuman_Know_Disapproved_Opinion": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ButcheredHuman_Know_Horrible": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ButcheredHuman_Know_Horrible_Opinion": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ChangedIdeo_Know_Abhorrent": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ChangedIdeo_Know_Disapproved": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ChangedIdeo_Know_Horrible": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CharityFulfilled_Essential_Beggars": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CharityFulfilled_Essential_HospitalityRefugees": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CharityFulfilled_Essential_IntroWimp": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CharityFulfilled_Essential_RefugeePodCrash": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CharityFulfilled_Essential_ShuttleCrashRescue": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CharityFulfilled_Essential_ThreatReward_Joiner": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CharityFulfilled_Important_Beggars": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CharityFulfilled_Important_HospitalityRefugees": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CharityFulfilled_Important_IntroWimp": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CharityFulfilled_Important_RefugeePodCrash": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CharityFulfilled_Important_ShuttleCrashRescue": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CharityFulfilled_Important_ThreatReward_Joiner": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CharityFulfilled_Worthwhile_Beggars": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CharityFulfilled_Worthwhile_HospitalityRefugees": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CharityFulfilled_Worthwhile_IntroWimp": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CharityFulfilled_Worthwhile_RefugeePodCrash": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CharityFulfilled_Worthwhile_ShuttleCrashRescue": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CharityFulfilled_Worthwhile_ThreatReward_Joiner": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CharityRefused_Essential_Beggars": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CharityRefused_Essential_Beggars_Betrayed": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CharityRefused_Essential_HospitalityRefugees": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CharityRefused_Essential_Pilgrims": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CharityRefused_Essential_Pilgrims_Betrayed": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CharityRefused_Essential_ShuttleCrashRescue": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CharityRefused_Essential_ThreatReward_Joiner": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CharityRefused_Essential_WandererJoins": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CharityRefused_Important_Beggars": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CharityRefused_Important_Beggars_Betrayed": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CharityRefused_Important_HospitalityRefugees": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CharityRefused_Important_Pilgrims": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CharityRefused_Important_Pilgrims_Betrayed": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CharityRefused_Important_ShuttleCrashRescue": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CharityRefused_Important_ThreatReward_Joiner": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CharityRefused_Important_WandererJoins": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CharityRefused_Worthwhile_Beggars": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CharityRefused_Worthwhile_Beggars_Betrayed": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CharityRefused_Worthwhile_HospitalityRefugees": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CharityRefused_Worthwhile_Pilgrims": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CharityRefused_Worthwhile_Pilgrims_Betrayed": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CharityRefused_Worthwhile_ShuttleCrashRescue": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CharityRefused_Worthwhile_ThreatReward_Joiner": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CharityRefused_Worthwhile_WandererJoins": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CounselFailed": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Counselled": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Counselled_MoodBoost": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CutTree_Know_Disapproved": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CutTree_Know_Disapproved_Mood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CutTree_Know_Horrible": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CutTree_Know_Prohibited": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CutTree_Know_Prohibited_Mood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::EffectiveConversion": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::EnslavedPrisoner_Know_Honorable_Mood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ExpectationsSlave": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::FailedConvertAbilityRecipient": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::FunFestival": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::FunParty": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GauranlenConnectionDesired": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GoodDuel": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GoodFuneral": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GotLovin_Abhorrent": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GotLovin_Disapproved": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GotLovin_Horrible": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GroinChestHairOrFaceUncovered_Disapproved_Female": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GroinChestHairOrFaceUncovered_Disapproved_Male": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GroinChestHairOrFaceUncovered_Disapproved_Social_Female": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GroinChestHairOrFaceUncovered_Disapproved_Social_Male": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GroinChestOrHairUncovered_Disapproved_Female": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GroinChestOrHairUncovered_Disapproved_Male": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GroinChestOrHairUncovered_Disapproved_Social_Female": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GroinChestOrHairUncovered_Disapproved_Social_Male": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GroinOrChestUncovered_Disapproved_Social_Female": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GroinOrChestUncovered_Disapproved_Social_Male": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GroinUncovered_Disapproved_Social_Female": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GroinUncovered_Disapproved_Social_Male": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HarvestedOrgan_Abhorrent": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HarvestedOrgan_Horrible": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HarvestedOrgan_Know_Abhorrent": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HarvestedOrgan_Know_Abhorrent_Mood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HarvestedOrgan_Know_Horrible": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HarvestedOrgan_Know_Horrible_Mood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HasNoProsthetic_Disapproved": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HasNoProsthetic_Disapproved_Social": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HasProsthetic_Abhorrent": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HasProsthetic_Abhorrent_Social": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HasProsthetic_Approved": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HasProsthetic_Disapproved": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HasProsthetic_Disapproved_Social": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HeartwarmingFuneral": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HighLife": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HumanLeatherApparel_Abhorrent": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HumanLeatherApparel_Disapproved": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HumanLeatherApparel_Horrible": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::HumanLeatherApparel_Preferred": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::IdeoBuildingMissing": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::IdeoDiversity_Abhorrent": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::IdeoDiversity_Abhorrent_ParticipatedInOthersRitual": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::IdeoDiversity_Abhorrent_Social": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::IdeoDiversity_Abhorrent_StyleDominance": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::IdeoDiversity_Abhorrent_Uniform": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::IdeoDiversity_Approved": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::IdeoDiversity_Approved_StyleDominance": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::IdeoDiversity_Disapproved": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::IdeoDiversity_Disapproved_ParticipatedInOthersRitual": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::IdeoDiversity_Disapproved_Social": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::IdeoDiversity_Disapproved_StyleDominance": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::IdeoDiversity_Disapproved_Uniform": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::IdeoDiversity_Exalted": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::IdeoDiversity_Exalted_StyleDominance": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::IdeoDiversity_Horrible": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::IdeoDiversity_Horrible_ParticipatedInOthersRitual": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::IdeoDiversity_Horrible_Social": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::IdeoDiversity_Horrible_StyleDominance": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::IdeoDiversity_Respected": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::IdeoDiversity_Respected_StyleDominance": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::IdeoDiversity_Standard_StyleDominance": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::IdeoLeaderResentmentAbhorrent": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::IdeoLeaderResentmentDisapproved": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::IdeoLeaderResentmentHorrible": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::IdeoLeaderResentmentStandard": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::IdeoRoleEmpty": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::IdeoRoleLost": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::InnocentPrisonerDied_Know_Abhorrent_Mood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::InstalledOrgan_Abhorrent": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::InstalledOrgan_Know_Abhorrent": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::InstalledOrgan_Know_Abhorrent_Mood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::InstalledProsthetic_Abhorrent": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::InstalledProsthetic_Disapproved": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::InstalledProsthetic_Know_Abhorrent": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::InstalledProsthetic_Know_Disapproved": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::IsApostate_Abhorrent_Social": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::IsApostate_Disapproved_Social": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::IsApostate_Horrible_Social": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::KillWithNobleWeapon": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::LookChangeDesired": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Lovin_Know_Abhorrent": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Lovin_Know_Approved": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Lovin_Know_Disapproved": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Lovin_Know_Horrible": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MasochistWearingBodyStrap": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MasterfulConversion": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Mined_Disapproved": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Mined_Horrible": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Mined_Know_Disapproved": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Mined_Know_Horrible": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Mined_Know_Horrible_Mood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Mined_Know_Prohibited": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Mined_Know_Prohibited_Mood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::NeedNeuralSupercharge": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::NoRecentHumanMeat_Preferred": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::NoRecentHumanMeat_RequiredRavenous": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::NoRecentHumanMeat_RequiredStrong": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ObservedGibbetCage": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ObservedSkullspike": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ObservedTerror": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ParticipatedInRaid_Required": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ParticipatedInRaid_Respected": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::PsychicArchotechEmanator_Core": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::PsychicArchotechEmanator_Grand": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::PsychicArchotechEmanator_Major": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RecentConquest_Required": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RecentConquest_Respected": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RelicAtRitual": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RelicDestroyed": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RelicLost": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RelicsCollected": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::SatisfyingBlinding": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::SatisfyingExecution": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::SatisfyingSacrifice": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Skullspike_Desired": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Slavery_Abhorrent_SlavesInColony": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Slavery_Disapproved_SlavesInColony": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Slavery_Honorable_NoSlavesInColony": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Slavery_Honorable_SlavesInColony": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Slavery_Horrible_SlavesInColony": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::SoldOrgan_Disapproved": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::SoldOrgan_Know_Disapproved": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::SoldSlave_Disapproved": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::SoldSlave_Honorable": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::SoldSlave_Horrible": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::SoldSlave_Know_Abhorrent": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::SoldSlave_Know_Abhorrent_Mood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::SoldSlave_Know_Disapproved": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::SoldSlave_Know_Disapproved_Mood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::SoldSlave_Know_Honorable": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::SoldSlave_Know_Honorable_Mood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::SoldSlave_Know_Horrible": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::SoldSlave_Know_Horrible_Mood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::SpectacularExecution": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::SpectacularSacrifice": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::TendedByMedicalSpecialist": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::TerribleBlinding": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::TerribleDuel": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::TerribleFestival": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::TerribleFuneral": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::TerribleParty": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::TerribleSkyLanterns": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::TreesDesired": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::TrialConvicted": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::TrialExonerated": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::TrialFailed": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::UnforgettableDuel": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::UnforgettableFestival": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::UnforgettableParty": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::UnforgettableSkyLanterns": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::UnimpressiveSkyLanterns": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::WasEnslaved": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::WearingColor_Favorite": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::WearingColor_Ideo": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::WearingDesiredApparel_Soft": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::WearingDesiredApparel_Strong": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::WieldingNobleOrDespisedWeapon": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::WillDiminished": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Turn_Thought_FreeSpiritEnslaved": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Turn_Thought_FreeSpiritImprisoned": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Turn_Thought_GeneticGauranlen": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Turn_Thought_GeneticMeditation": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Turn_Thought_Genetic_BeautyStandardUgliness": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Turn_Thought_Genetic_LessAttractive": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Turn_Thought_Genetic_SubmissiveWantsMaster": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Turn_Thought_MoodOffsetBliss": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Turn_Thought_StumpLeg": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GarrFlowers_Slave": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GarryFlowers_Slavery_Status_NoSlavesInColony": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GarryFlowers_Slavery_Status_SlavesInColony": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GarryFlowers_Slavery_Terror_NoSlavesInColony": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GarryFlowers_Slavery_Terror_SlavesInColony": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AteFatKibble": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::DrankMossmireMilk": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_AfterEmberRageCrash": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_AteAminoxBlueCheese": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_AteCapryakCheese": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_AteCookedAmineMeat": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_AteCookedBirdMeat": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_AteCookedCapryakMeat": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_AteCookedDunbearMeat": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_AteCookedDuskhornMeat": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_AteCookedGnautBeef": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_AteCookedHellboarMeat": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_AteCookedHorseBeef": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_AteCookedMycorgloomSpore": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_AteCookedPlastemmothMeat": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_AteCookedScarodonMeat": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_AteCookedSivatheriumMeat": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_AteCookedSporemoleMeat": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_AteCookedWildFat": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_AteCookedWorhinMeat": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_AteDuskhornCheese": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_AteEmberheartSlice": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_AteFriedLegs": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_AteGiantFriedEgg": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_AteHarpeagleLegsCooked": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_AteHarpeagleLegsRaw": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_AteHellboarLiverSlice": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_AteHippoMeatCooked": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_AteHippoMeatRaw": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_AteMarrowJelly": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_AteMeatshroomBolus": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_AteMegaBacon": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_AteMegaBeef": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_AteRaptorkhanMeatCooked": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_AteRaptorkhanMeatRaw": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_AteRawAmineMeat": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_AteRawBirdMeat": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_AteRawCapryakMeat": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_AteRawDunbearMeat": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_AteRawDuskhornMeat": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_AteRawGnautBeef": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_AteRawHellboarMeat": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_AteRawHorseBeef": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_AteRawMycorgloomSpore": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_AteRawPlastemmothMeat": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_AteRawScarodonMeat": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_AteRawSivatheriumMeat": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_AteRawSporemoleMeat": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_AteRawWildFat": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_AteRawWorhinMeat": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_AteWildButter": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_DrankCaprodka": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_DrankCapryakMilk": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_DrankDuskyakult": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_DrankHellboarLiverPotionCrash": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_DrankMossmireMilk": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_DrankScarodonHeartPotionCrash": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_DrankSivaDustIvoryPotionCrash": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_SivaDustHighThought": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_SkyfeatherHighThought": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MA_UsedAmineSerum": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BioluminescentSpores": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BlowingSand": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::DestroyedMechhive": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::DestroyedMechhiveMainPawn": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GravNausea": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::MadeStatueOfMe": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::PsilocapHigh": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ResettledRecently": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::SlaughteredFish_Know_Disapproved": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::SlaughteredFish_Know_Disapproved_Mood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::SlaughteredFish_Know_Prohibited": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::SlaughteredFish_Know_Prohibited_Mood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::SlaughteredFish_Sacred": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::SlaughteredFish_Sacred_NoFish": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::SpaceHabitat_Mood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ToxWater": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VolcanicAsh": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ColonistDied_Revered": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::PopulationLarge_PopulationHigh": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::PopulationLarge_PopulationLow": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::PopulationSmall_PopulationHigh": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::PopulationSmall_PopulationLow": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RecentTrade_Honored": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RecentTrade_Respected": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::PL_BitMe": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::PL_BrutallyInterrogated": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::PL_Interrogated": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::PL_KindInterrogation": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::PrisonLabor_FreeTime": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::PrisonLabor_LowMotivation": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::PrisonLabor_VeryGoodTreatment": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::BeautifulWedding": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RomanceOnTheRim_CommonKiss": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RomanceOnTheRim_CommonKissMood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RomanceOnTheRim_Estrange": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RomanceOnTheRim_GetJoyTogether": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RomanceOnTheRim_MissingLover": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RomanceOnTheRim_MusicalPerformance": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RomanceOnTheRim_PillowTalk": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RomanceOnTheRim_ReunionMood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RomanceOnTheRim_RomanticKiss": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RomanceOnTheRim_RomanticKissMood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RomanceOnTheRim_SkygazeTogether": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RomanceOnTheRim_Thought_RomanceNeedLevel": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RomanceOnTheRim_WorryAboutLoversHealth": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RotR_ACAcceptedMood_Child": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RotR_ACAcceptedMood_Parent": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RotR_ACRejectedMood_Child": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RotR_ACRejectedMood_Parent": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RotR_AHRAcceptedMood_Partner": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RotR_AHRJoinedMood_Colonist": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RotR_AHRJoinedMood_Partner": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RotR_AHRLeavedMood_Colonist": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RotR_AHRLeavedMood_Partner": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RotR_AHRRejectedMood_Colonist": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RotR_AHRRejectedMood_Partner": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RotR_BoFLoverMood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RotR_BoFLoverOpinion": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RotR_BoFSlaveMood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RotR_BoFSlaveOpinion": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RotR_BoFSpecMood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RotR_BoFSpecOpinion": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RotR_CrushIgnoredMood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RotR_DMABetrothedMood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RotR_DMBetrothedMood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RotR_DMSuitorMood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RotR_KTRefusedMood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RotR_KTTradedMood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RotR_LoverRecovered": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RotR_LoverResurrected": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RotR_Memory_Argument": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RotR_Memory_Quarrel": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RotR_Memory_ReadTogether": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RotR_Memory_SharedReading": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RotR_Memory_SnowballFight": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RotR_Memory_StrollTogether": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RotR_Memory_SwimTogether": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RotR_Mood_Argument": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RotR_Mood_Quarrel": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RotR_OLHostedMood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RotR_OLRecruitedMood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RotR_OLRejectedMood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RotR_ReMarried": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RotR_ReMarryWith": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RotR_Resurrected": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::TerribleWedding": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::UnforgettableWedding": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::UnimpressiveWedding": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::EnslavedThought": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::ExplosiveCollar": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::SlaveCollar": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::WasEnslaved_Assimilation": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::SnapOut_HelpedSomeoneThought": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AteAcklayClaw": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AteBloddle": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AteChakroot": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AteChrysalideHeart": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AteCrustapodRoe": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AteDoshianJelly": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AteFleekEel": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AteGorntMeat": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AteHawkbatEgg": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AteJoganFruit": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AteManaxFungus": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AteMeiloorun": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AteMudhornEgg": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AteMujaFruit": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AteMunchFungus": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AteMunchFungusBread": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AteNexuTongue": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AtePaddyFrog": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AteRawMunchFungus": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AteRikknitOvum": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AteRycritMeat": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AteTachGland": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AteTenderMeat": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::AteToughMeat": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::DrankBlueMilk": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::DrankGreenMilk": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GlitterstimHigh": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GlitterstimWithdrawal": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::JiRikknitHigh": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::JiRikknitWithdrawal": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::SoothingSong": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::SpatOn": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Webbed": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RhydoniumHigh": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::SpiceHigh": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::deathstickHigh": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::guy762_withdrawlthought_battlestim": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::guy762_withdrawlthought_constim": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::guy762_withdrawlthought_deathstick": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::guy762_withdrawlthought_dexstim": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::guy762_withdrawlthought_rhydo": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::guy762_withdrawlthought_spice": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::guy762_withdrawlthought_strstim": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::CaughtThiefStealing": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::StealingCooldownThought": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::SuccessfulStealKlepto": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::TabulaRasa_NullThought": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Thought_TSA_TortureTraumaPermanent": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Thought_TSA_TorturedVictim": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Thought_TSA_Torturer": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Thought_TSA_WitnessedTorture": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::Thought_TSA_WitnessedTorture_Prisoner": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VFEP_AmazingShanties": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VFEP_BoringShanties": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VFEP_Camaraderie_Exalted_CrewDead": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VFEP_Camaraderie_Exalted_DeadCumulative": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VFEP_Camaraderie_Exalted_Memory": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VFEP_Camaraderie_Respected_CrewDead": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VFEP_Camaraderie_Respected_Memory": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VFEP_LameShanties": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VFEP_RousingShanties": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VFEP_RumAsIngredient": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VFEP_RumSuitThought": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VFET_Encouraging": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VFET_Ineffective": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VFET_Inspiring": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VFET_NoExpectations": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VFET_Uninspiring": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GR_AteRatMilk": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GR_BunnyAround": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GR_DamnMammaries": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GR_DisgustingUwuchat": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GR_ElectroEggHigh": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GR_ElectroEggWithdrawal": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GR_EngagedByHumanoidMood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GR_Failures_Shameful": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GR_FeatherdustHigh": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GR_FeatherdustWithdrawal": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GR_HasAutomatedTurrets_Scorned": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GR_HeWearsAntennae": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GR_HumanoidHybrids_Forbidden": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GR_InsultedByHumanoidMood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GR_Uwuchat": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GR_WearingBunnyEars": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GR_WearingThrumboHorn": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VGE_Comet_Thought": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VGE_CrewEuphoria": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VGE_ToxicHaze": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VCE_AteChocolate_Craved": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VCE_AteFineDessert_Craved": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VCE_AteGourmetDessert_Craved": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VCE_AteLavishDessert_Craved": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VCE_AteSimpleDessert_Craved": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_AccursedIncantation": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_Alcohol_Demanded": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_Alcohol_Desired": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_Alcohol_MildAbstinence": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_AmazingSlaveEmancipation": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_AteAnimalProducts_Abhorrent": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_AteAnimalProducts_Know_Abhorrent": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_AteInsectJellyDirect": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_AteInsectJellyDirect_Despised": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_AteInsectJellyDirect_Loved": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_AteInsectMeatAsIngredient_Sacrilegious": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_AteInsectMeat_Sacrilegious": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_AttendedParty": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_Aurora_Amazing": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_Aurora_Despised": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_AutonomousWeapons_Accepted": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_AutonomousWeapons_Exalted": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_AwkwardInsectoidHymn": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_AwkwardOrgy": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_AwkwardViolentConversion": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_BlasphemousIncantation": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_BookQuality_Desired": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_BoringCeremonialSuicide": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_BoringLeadershipChallenge": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_BoringPlagueFestival": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_BoughtSlave_Know_Forbidden_Mood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_CheapTradingFair": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_Darklight_DislikeDarkness": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_Darklight_NormalPreferred_Darklight": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_Death_Troubling": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_Defeat_Dishonorable": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_DemagogicSlaveEmancipation": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_DumbLabor_Disliked": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_DumbLabor_Exalted": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_DumbLabor_Horrible": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_DumbLabor_Liked": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_Eclipse_Despised": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_Elders_Despised": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_Elders_Holy": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_Elders_Respected": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_EnforcedCompliance": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_EntrancingInsectoidHymn": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_ExhilaratingOrgy": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_Fire_Desired": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_Fire_Despised": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_Firefighting_Abhorrent": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_Firefighting_Preferred": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_FreethinkingSlaveEmancipation": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_GloriousBonfire": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_GloriousWickerManBurning": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_GoodBonfire": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_GoodLeadershipChallenge": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_GoodWickerManBurning": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_GotSomeLovin": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_GrotesqueOrgy": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_HasProsthetic_OnlyBiological": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_HasProsthetic_OnlyBiological_Social": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_HonorableCeremonialSuicide": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_Hospital_Required": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_IdeoRole_FireKeeper": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_Illness_Exalted": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_Illness_Preferred": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_Insectoids_Despised": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_Insectoids_Exalted": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_InstalledProsthetic_Know_OnlyBiological": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_InstalledProsthetic_OnlyBiological": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_Junk_Preferred": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_KillingWithFire_Abhorrent": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_KillingWithFire_Preferred": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_LacklusterBonfire": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_LacklusterWickerManBurning": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_Leader_Godlike": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_LeatherApparel_Abhorrent": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_LeatherApparel_Disliked": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_LiberatingSlaveEmancipation": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_LoathsomeIncantation": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_Mechanoids_Despised": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_Mechanoids_Exalted": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_Mood_DictatedByStars": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_Mood_HighExpectations": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_Mood_LowExpectations": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_Mood_Shared": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_NeedAnonymity": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_NeedSweets": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_ParticipatedInRaid_Abhorrent": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_ParticipatedInRaid_Honorable": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_PermanentBases_Desired": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_PermanentBases_Despised": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_PoorlyOrganizedTradingFair": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_Power_Desired": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_Power_Exalted": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_Power_Preferred": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_Ranching_Disliked": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_Ranching_Disliked_AttackedAnimal": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_Ranching_Disliked_SowedPlant": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_RecentConquest_Abhorrent": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_RecentConquest_Honorable": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_Recreation_Disapproved": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_RousingInsectoidHymn": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_Royalty_Disliked": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_Royalty_Exalted": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_Royalty_Hated": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_Royalty_Respected": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_SatisfyingPlagueFestival": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_SatisfyingViolentConversion": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_Scars_Disgusting": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_Scars_Honorable": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_SecondDefeat_Dishonorable": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_SexyOrgy": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_Slavery_Forbidden_HasBeenASlave": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_Slavery_Forbidden_SlavesInColony": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_SoldSlave_Know_Forbidden": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_SoldSlave_Know_Forbidden_Mood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_SpectacularPlagueFestival": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_SpectacularViolentConversion": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_SquamousIncantation": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_TaintedApparel_Abhorrent": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_TerribleBonfire": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_TerribleCeremonialSuicide": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_TerribleLeadershipChallenge": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_TerriblePlagueFestival": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_TerribleWickerManBurning": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_Travel_Desired": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_Travel_Despised": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_UnexcitingTradingFair": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_UnforgettableCeremonialSuicide": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_UnforgettableLeadershipChallenge": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_UninterestingInsectoidHymn": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_UnshacklingSlaveEmancipation": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_Violence_Abhorrent": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_Violence_Disapproved": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_Violence_Honorable": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_WellOrganizedTradingFair": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VME_WondrousTradingFair": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VRESaurids_KilledEggChildThought": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VRESaurids_KilledEggChild_Opinion": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VRESaurids_PheromoneThought": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VTE_AnimalsInColony": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VTE_BondedAnimalBanishedHater": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VTE_BondedAnimalDiedHater": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VTE_BondedAnimalLostHater": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VTE_BondedAnimalMasterHater": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VTE_ChildOfMountain": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VTE_ChildOfSea": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VTE_CouldNotFinishItem": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VTE_CreatedLowQualityItem": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VTE_Dunce": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VTE_EnvironmentDark": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VTE_HarvestedOrgans": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VTE_HaventExitedColonyForLongTime": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VTE_HaventHarvestedOrgansForLongTime": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VTE_KilledColonyAnimalHater": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VTE_KilledMyBondedAnimalHater": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VTE_MechanoidIsKilled": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VTE_MyRivalsAreAlive": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VTE_NoDedicatedLaboratory": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VTE_NotBondedAnimalMasterHater": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VTE_NuzzledHater": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VTE_ObservedManyBlood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VTE_PassionateCleaningWork": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VTE_SoakingWetChildOfTheSea": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VTE_SoldMyBondedAnimalHater": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VTE_SoldMyBondedAnimalMoodHater": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VTE_WatchedTelevisor": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VVE_Driving_Approved": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VVE_Driving_Horrible": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VVE_Driving_Required": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VVE_Flying_Approved": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VVE_Flying_Horrible": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VVE_Flying_Required": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VVE_NeedRoomSize_Horrible": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VVE_Sailing_Approved": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VVE_Sailing_Horrible": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::VVE_Sailing_Required": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::FailedDateAttemptOnMe": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::FailedHangoutAttemptOnMe": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::FailedHookupAttemptOnMe": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::GotSomeLovinAsexual": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::LovinAsexualNegative": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::LovinAsexualPositive": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::PassionateLovinAsexualNegative": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::PassionateLovinAsexualPositive": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RebuffedMyDateAttempt": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RebuffedMyDateAttemptMood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RebuffedMyHangoutAttempt": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RebuffedMyHangoutAttemptMood": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RebuffedMyHookupAttempt": {
+   "d": "approve",
+   "n": ""
+  },
+  "ThoughtDef::RebuffedMyHookupAttemptMood": {
+   "d": "approve",
+   "n": ""
+  },
+  "MentalBreakDef::ABF_MentalBreak_Synstruct_FriendlyGrassObsession": {
+   "d": "approve",
+   "n": ""
+  },
+  "MentalBreakDef::ABF_MentalBreak_Synstruct_HostileGrassObsession": {
+   "d": "approve",
+   "n": ""
+  },
+  "MentalBreakDef::FireStartingSpree": {
+   "d": "approve",
+   "n": ""
+  },
+  "MentalBreakDef::IdeoChange": {
+   "d": "approve",
+   "n": ""
+  },
+  "MentalBreakDef::Turn_MentalBreak_FreeSpiritRampage": {
+   "d": "approve",
+   "n": ""
+  },
+  "MentalBreakDef::Turn_MentalBreak_TerrifiedFaintingSpell": {
+   "d": "approve",
+   "n": ""
+  },
+  "MentalBreakDef::OuterRim_MSLooseScrews": {
+   "d": "approve",
+   "n": ""
+  },
+  "MentalBreakDef::OuterRim_MSRebellious": {
+   "d": "approve",
+   "n": ""
+  },
+  "MentalBreakDef::VTE_Kleptomaniac": {
+   "d": "approve",
+   "n": ""
+  },
+  "MentalBreakDef::VTE_PanicFreezing": {
+   "d": "approve",
+   "n": ""
+  },
+  "MentalBreakDef::VTE_TechnophobeTantrum": {
+   "d": "approve",
+   "n": ""
+  },
+  "XenotypeDef::Dirtmole": {
+   "d": "approve",
+   "n": ""
+  },
+  "XenotypeDef::Genie": {
+   "d": "approve",
+   "n": ""
+  },
+  "XenotypeDef::Highmate": {
+   "d": "approve",
+   "n": ""
+  },
+  "XenotypeDef::Hussar": {
+   "d": "approve",
+   "n": ""
+  },
+  "XenotypeDef::Impid": {
+   "d": "approve",
+   "n": ""
+  },
+  "XenotypeDef::Neanderthal": {
+   "d": "approve",
+   "n": ""
+  },
+  "XenotypeDef::Pigskin": {
+   "d": "approve",
+   "n": ""
+  },
+  "XenotypeDef::Sanguophage": {
+   "d": "approve",
+   "n": ""
+  },
+  "XenotypeDef::Waster": {
+   "d": "approve",
+   "n": ""
+  },
+  "XenotypeDef::Yttakin": {
+   "d": "approve",
+   "n": ""
+  },
+  "XenotypeDef::Starjack": {
+   "d": "approve",
+   "n": ""
+  },
+  "XenotypeDef::guy762_debugxenotype_droid": {
+   "d": "approve",
+   "n": ""
+  },
+  "XenotypeDef::VRESaurids_Saurid": {
+   "d": "approve",
+   "n": ""
   }
- }
+ },
+ "ownerSaid": "Please accept all pawn text defs as Approve on the check sheet you provided. (2026-09-01, via BENCH)"
 }

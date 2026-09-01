@@ -1,0 +1,303 @@
+{
+ "success": true,
+ "message": "7 of 7 def(s) resolved",
+ "requested": 7,
+ "foundCount": 7,
+ "notFound": [],
+ "malformed": [],
+ "fieldsAsked": [
+  "pawnGroupMakers",
+  "xenotypeSet",
+  "humanlikeFaction",
+  "canStageAttacks",
+  "raidsForbidden",
+  "maxPawnCostPerTotalPointsCurve",
+  "techLevel",
+  "permanentEnemy",
+  "hidden",
+  "canUseAvoidGrid",
+  "autoFlee",
+  "mustStartOneEnemy",
+  "allowedArrivalTemperatureRange"
+ ],
+ "defs": [
+  {
+   "requested": "FactionDef/Jawa_HuttCartel",
+   "found": true,
+   "defName": "Jawa_HuttCartel",
+   "defType": "FactionDef",
+   "label": "Hutt Cartel",
+   "modName": "Jawa Patches (local)",
+   "packageId": "mandrake.jawa.patches",
+   "fields": {
+    "humanlikeFaction": true,
+    "hidden": false,
+    "pawnGroupMakers": [
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker"
+    ],
+    "autoFlee": true,
+    "canStageAttacks": true,
+    "canUseAvoidGrid": true,
+    "maxPawnCostPerTotalPointsCurve": [
+     "CurvePoint",
+     "CurvePoint",
+     "CurvePoint",
+     "CurvePoint",
+     "CurvePoint"
+    ],
+    "raidsForbidden": false,
+    "techLevel": "Industrial",
+    "mustStartOneEnemy": false,
+    "permanentEnemy": false,
+    "xenotypeSet": "(no such field)",
+    "allowedArrivalTemperatureRange": "(no such field)"
+   }
+  },
+  {
+   "requested": "FactionDef/Jawa_IndigenousTribes",
+   "found": true,
+   "defName": "Jawa_IndigenousTribes",
+   "defType": "FactionDef",
+   "label": "Jawa Trade Moot",
+   "modName": "Jawa Patches (local)",
+   "packageId": "mandrake.jawa.patches",
+   "fields": {
+    "humanlikeFaction": true,
+    "hidden": false,
+    "pawnGroupMakers": [
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker"
+    ],
+    "autoFlee": true,
+    "canStageAttacks": true,
+    "canUseAvoidGrid": true,
+    "maxPawnCostPerTotalPointsCurve": [
+     "CurvePoint",
+     "CurvePoint",
+     "CurvePoint",
+     "CurvePoint",
+     "CurvePoint"
+    ],
+    "raidsForbidden": false,
+    "techLevel": "Neolithic",
+    "mustStartOneEnemy": false,
+    "permanentEnemy": false,
+    "xenotypeSet": "(no such field)",
+    "allowedArrivalTemperatureRange": "(no such field)"
+   }
+  },
+  {
+   "requested": "FactionDef/Jawa_Junkers",
+   "found": true,
+   "defName": "Jawa_Junkers",
+   "defType": "FactionDef",
+   "label": "the Junkers",
+   "modName": "Jawa Patches (local)",
+   "packageId": "mandrake.jawa.patches",
+   "fields": {
+    "humanlikeFaction": true,
+    "hidden": false,
+    "pawnGroupMakers": [
+     "PawnGroupMaker",
+     "PawnGroupMaker"
+    ],
+    "autoFlee": true,
+    "canStageAttacks": true,
+    "canUseAvoidGrid": true,
+    "maxPawnCostPerTotalPointsCurve": [
+     "CurvePoint",
+     "CurvePoint",
+     "CurvePoint",
+     "CurvePoint",
+     "CurvePoint"
+    ],
+    "raidsForbidden": false,
+    "techLevel": "Industrial",
+    "mustStartOneEnemy": false,
+    "permanentEnemy": false,
+    "xenotypeSet": "(no such field)",
+    "allowedArrivalTemperatureRange": "(no such field)"
+   }
+  },
+  {
+   "requested": "FactionDef/OutlanderCivil",
+   "found": true,
+   "defName": "OutlanderCivil",
+   "defType": "FactionDef",
+   "label": "Homestead Defense League",
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "humanlikeFaction": true,
+    "hidden": false,
+    "pawnGroupMakers": [
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker"
+    ],
+    "autoFlee": true,
+    "canStageAttacks": true,
+    "canUseAvoidGrid": true,
+    "maxPawnCostPerTotalPointsCurve": [
+     "CurvePoint",
+     "CurvePoint",
+     "CurvePoint",
+     "CurvePoint",
+     "CurvePoint"
+    ],
+    "raidsForbidden": true,
+    "techLevel": "Industrial",
+    "mustStartOneEnemy": false,
+    "permanentEnemy": false,
+    "xenotypeSet": "(no such field)",
+    "allowedArrivalTemperatureRange": "(no such field)"
+   }
+  },
+  {
+   "requested": "FactionDef/TribeCivil",
+   "found": true,
+   "defName": "TribeCivil",
+   "defType": "FactionDef",
+   "label": "Deep Desert Tribes",
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "humanlikeFaction": true,
+    "hidden": false,
+    "pawnGroupMakers": [
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker"
+    ],
+    "autoFlee": true,
+    "canStageAttacks": true,
+    "canUseAvoidGrid": true,
+    "maxPawnCostPerTotalPointsCurve": [
+     "CurvePoint",
+     "CurvePoint",
+     "CurvePoint",
+     "CurvePoint",
+     "CurvePoint"
+    ],
+    "raidsForbidden": false,
+    "techLevel": "Neolithic",
+    "mustStartOneEnemy": false,
+    "permanentEnemy": false,
+    "xenotypeSet": "(no such field)",
+    "allowedArrivalTemperatureRange": "(no such field)"
+   }
+  },
+  {
+   "requested": "FactionDef/Empire",
+   "found": true,
+   "defName": "Empire",
+   "defType": "FactionDef",
+   "label": "The Galactic Empire",
+   "modName": "Royalty",
+   "packageId": "ludeon.rimworld.royalty",
+   "fields": {
+    "humanlikeFaction": true,
+    "hidden": false,
+    "pawnGroupMakers": [
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker"
+    ],
+    "autoFlee": true,
+    "canStageAttacks": true,
+    "canUseAvoidGrid": true,
+    "maxPawnCostPerTotalPointsCurve": [
+     "CurvePoint",
+     "CurvePoint",
+     "CurvePoint",
+     "CurvePoint"
+    ],
+    "raidsForbidden": false,
+    "techLevel": "Ultra",
+    "mustStartOneEnemy": false,
+    "permanentEnemy": false,
+    "xenotypeSet": "(no such field)",
+    "allowedArrivalTemperatureRange": "(no such field)"
+   }
+  },
+  {
+   "requested": "FactionDef/Pirate",
+   "found": true,
+   "defName": "Pirate",
+   "defType": "FactionDef",
+   "label": "Blackstar Company",
+   "modName": "Core",
+   "packageId": "ludeon.rimworld",
+   "fields": {
+    "humanlikeFaction": true,
+    "hidden": false,
+    "pawnGroupMakers": [
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker",
+     "PawnGroupMaker"
+    ],
+    "autoFlee": true,
+    "canStageAttacks": true,
+    "canUseAvoidGrid": true,
+    "maxPawnCostPerTotalPointsCurve": [
+     "CurvePoint",
+     "CurvePoint",
+     "CurvePoint",
+     "CurvePoint",
+     "CurvePoint"
+    ],
+    "raidsForbidden": false,
+    "techLevel": "Spacer",
+    "mustStartOneEnemy": false,
+    "permanentEnemy": true,
+    "xenotypeSet": "(no such field)",
+    "allowedArrivalTemperatureRange": "(no such field)"
+   }
+  }
+ ],
+ "ticksGame": 4236,
+ "operation": {
+  "OperationId": "op_865b6ae66e104978a465a40e5cf86749",
+  "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-defs",
+  "Status": 2,
+  "Success": true,
+  "StartedAtUtc": "2026-08-31T01:02:10.800858+00:00",
+  "CompletedAtUtc": "2026-08-31T01:02:10.8660168+00:00",
+  "DurationMs": 65,
+  "Result": null,
+  "HasResult": true,
+  "ResultWasTruncated": false,
+  "Warnings": [],
+  "Error": null,
+  "Metadata": {}
+ }
+}

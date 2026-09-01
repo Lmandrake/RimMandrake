@@ -1,0 +1,11 @@
+using System.Collections.Generic;
+using Verse;
+
+namespace VEF.Weapons;
+
+public class SpinningLaserGunDef : LaserGunDef
+{
+	public List<GraphicData> frames;
+
+	public float rotationSpeed = 1f;
+}

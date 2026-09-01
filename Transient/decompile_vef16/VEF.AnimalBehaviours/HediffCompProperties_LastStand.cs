@@ -1,0 +1,13 @@
+using Verse;
+
+namespace VEF.AnimalBehaviours;
+
+public class HediffCompProperties_LastStand : HediffCompProperties
+{
+	public float finalCoolDownMultiplier = 2f;
+
+	public HediffCompProperties_LastStand()
+	{
+		base.compClass = typeof(HediffComp_LastStand);
+	}
+}

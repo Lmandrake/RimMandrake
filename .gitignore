@@ -243,14 +243,11 @@ world/view/*.svg
 
 # ---------------------------------------------------------------------------
 # Transient/ — output made to be LOOKED AT and then thrown away: contact sheets,
-# review pages, renders, one-off censuses, draft analysis. Owner's ruling
-# 2026-08-27: transient output is NOT tracked. Shelf life ~14 days;
+# review pages, renders, one-off censuses, draft analysis. Shelf life ~14 days;
 # `rimflow sweep --transient` lists stale files and never deletes.
-#
-# The README is the exception and stays tracked — the rule has to survive a
-# fresh clone even though nothing it governs does.
-Transient/*
-!Transient/README.md
+# Owner's ruling 2026-09-01: Transient/ IS tracked and pushed, so he can review
+# it on GitHub from another machine. (Supersedes the 2026-08-27 untracked rule.)
+# Per-file size cap still applies; nothing over ~50 MB.
 
 # Machine cache, logs and samples do not come into the repo at all — they go to
 # /tmp. Nothing in this repo should be written for a program to read later.

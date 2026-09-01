@@ -1,0 +1,70 @@
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Reflection;
+using System.Reflection.Emit;
+using HarmonyLib;
+using RimWorld;
+using Verse;
+
+namespace VEF.Pawns;
+
+[HarmonyPatch]
+internal static class VanillaExpandedFramework_JobDriver_Lovin_FinishAction_Highmates
+{
+	public static MethodInfo methodTarget;
+
+	[HarmonyPrepare]
+	public static bool Prepare(MethodBase method)
+	{
+		if (method != null)
+		{
+			return true;
+		}
+		if (ModLister.AnyModActiveNoSuffix(new List<string>(1) { "vanillaracesexpanded.highmate" }))
+		{
+			methodTarget = FindMethod();
+			return methodTarget != null;
+		}
+		return false;
+	}
+
+	private static MethodInfo FindMethod()
+	{
+		Type type = AccessTools.TypeByName("VanillaRacesExpandedHighmate.JobDriver_InitiateLovin");
+		if (type != null)
+		{
+			return AccessTools.GetDeclaredMethods(type).LastOrDefault((MethodInfo x) => x.Name.Contains("<MakeNewToils>") && x.ReturnType == typeof(void));
+		}
+		Log.Error("[VEF] Failed to patch VanillaRacesExpandedHighmate");
+		return null;
+	}
+
+	[HarmonyTargetMethod]
+	public static MethodBase TargetMethod()
+	{
+		return methodTarget;
+	}
+
+	private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions)
+	{
+		List<CodeInstruction> codes = instructions.ToList();
+		bool patched = false;
+		for (int i = 0; i < codes.Count; i++)
+		{
+			CodeInstruction code = codes[i];
+			yield return code;
+			if (code.opcode == OpCodes.Stloc_2 && CodeInstructionExtensions.LoadsField(codes[i - 3], AccessTools.Field(typeof(ThoughtDefOf), "GotSomeLovin"), false))
+			{
+				yield return new CodeInstruction(OpCodes.Ldarg_0, (object)null);
+				yield return new CodeInstruction(OpCodes.Ldloca_S, (object)2);
+				yield return new CodeInstruction(OpCodes.Call, (object)AccessTools.Method(typeof(VanillaExpandedFramework_JobDriver_Lovin_FinishAction_Vanilla), "DoLovinResult", (Type[])null, (Type[])null));
+				patched = true;
+			}
+		}
+		if (!patched)
+		{
+			Log.Error("[VEF] Failed to patch VanillaRacesExpandedHighmate");
+		}
+	}
+}

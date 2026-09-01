@@ -1,0 +1,788 @@
+{
+ "Pirate": {
+  "success": true,
+  "defName": "Pirate",
+  "defType": "FactionDef",
+  "label": "Blackstar Company",
+  "description": "Not a faction so much as one dangerous person with a name who is coming for you.\n\nIndependent hunters bound by a professional code, taking contracts rather than pillaging. The distinction matters to them. It will not matter to you when they arrive.",
+  "modName": "Core",
+  "packageId": "ludeon.rimworld",
+  "statBases": null,
+  "comps": null,
+  "extra": null,
+  "extraModelled": false,
+  "extraNote": "⚠️ `extra` is NOT modelled for FactionDef — this null means NOT INSPECTED, not 'absent'. Do not read a missing field as a missing value. Use jawa/get_defs with an explicit fields list to read this type.",
+  "ticksGame": 4236,
+  "operation": {
+   "OperationId": "op_14cf8b4927774f36a83d6e1bdd444c37",
+   "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-def",
+   "Status": 2,
+   "Success": true,
+   "StartedAtUtc": "2026-08-31T03:14:15.2047585+00:00",
+   "CompletedAtUtc": "2026-08-31T03:14:15.2539833+00:00",
+   "DurationMs": 49,
+   "Result": null,
+   "HasResult": true,
+   "ResultWasTruncated": false,
+   "Warnings": [],
+   "Error": null,
+   "Metadata": {}
+  }
+ },
+ "Empire": {
+  "success": true,
+  "defName": "Empire",
+  "defType": "FactionDef",
+  "label": "The Galactic Empire",
+  "description": "The occupier, and the only permanent enemy. Not hateful — procedural. Standardised infantry moved by drop-pod, security droids that were requisitioned rather than chosen, the rare Sith attached to nothing anyone can name, and a reach that is mostly orbital.\n\nIt does not want this world. It wants what leaves this world on schedule.\n\n<i><color=#66E0E4FF>Royalty</color></i>",
+  "modName": "Royalty",
+  "packageId": "ludeon.rimworld.royalty",
+  "statBases": null,
+  "comps": null,
+  "extra": null,
+  "extraModelled": false,
+  "extraNote": "⚠️ `extra` is NOT modelled for FactionDef — this null means NOT INSPECTED, not 'absent'. Do not read a missing field as a missing value. Use jawa/get_defs with an explicit fields list to read this type.",
+  "ticksGame": 4236,
+  "operation": {
+   "OperationId": "op_01a25f606e1b462081a690e493f5f18a",
+   "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-def",
+   "Status": 2,
+   "Success": true,
+   "StartedAtUtc": "2026-08-31T03:14:15.2549832+00:00",
+   "CompletedAtUtc": "2026-08-31T03:14:15.3208725+00:00",
+   "DurationMs": 65,
+   "Result": null,
+   "HasResult": true,
+   "ResultWasTruncated": false,
+   "Warnings": [],
+   "Error": null,
+   "Metadata": {}
+  }
+ },
+ "Jawa_HuttCartel": {
+  "success": true,
+  "defName": "Jawa_HuttCartel",
+  "defType": "FactionDef",
+  "label": "Hutt Cartel",
+  "description": "Wealthy, decentralised and entirely transactional. The Cartel owns the oases and sells water at whatever the buyer can be made to pay, and it holds the only non-Imperial orbital node on the planet — the door off-world, and the reason everyone keeps taking its calls.\n\nIt is hostile the way a creditor is hostile. Nothing about it is personal, and everything about it is negotiable.\n\n<i><color=#66E0E4FF>Jawa Patches (local)</color></i>",
+  "modName": "Jawa Patches (local)",
+  "packageId": "mandrake.jawa.patches",
+  "statBases": null,
+  "comps": null,
+  "extra": null,
+  "extraModelled": false,
+  "extraNote": "⚠️ `extra` is NOT modelled for FactionDef — this null means NOT INSPECTED, not 'absent'. Do not read a missing field as a missing value. Use jawa/get_defs with an explicit fields list to read this type.",
+  "ticksGame": 4236,
+  "operation": {
+   "OperationId": "op_ed84edbd5b4942df80ae6a8a22db3598",
+   "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-def",
+   "Status": 2,
+   "Success": true,
+   "StartedAtUtc": "2026-08-31T03:14:15.3208725+00:00",
+   "CompletedAtUtc": "2026-08-31T03:14:15.3869467+00:00",
+   "DurationMs": 66,
+   "Result": null,
+   "HasResult": true,
+   "ResultWasTruncated": false,
+   "Warnings": [],
+   "Error": null,
+   "Metadata": {}
+  }
+ },
+ "OutlanderCivil": {
+  "success": true,
+  "defName": "OutlanderCivil",
+  "defType": "FactionDef",
+  "label": "Homestead Defense League",
+  "description": "The most numerous and least centralised faction on the world — farmers on the dry flats, living off whatever their vaporators pull out of the night air.\n\nDecent, tired, and badly armed. They defend wells and they do not come looking for anyone.",
+  "modName": "Core",
+  "packageId": "ludeon.rimworld",
+  "statBases": null,
+  "comps": null,
+  "extra": null,
+  "extraModelled": false,
+  "extraNote": "⚠️ `extra` is NOT modelled for FactionDef — this null means NOT INSPECTED, not 'absent'. Do not read a missing field as a missing value. Use jawa/get_defs with an explicit fields list to read this type.",
+  "ticksGame": 4236,
+  "operation": {
+   "OperationId": "op_fb3930d3388742a58ac9c02d60d4dca1",
+   "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-def",
+   "Status": 2,
+   "Success": true,
+   "StartedAtUtc": "2026-08-31T03:14:15.3869467+00:00",
+   "CompletedAtUtc": "2026-08-31T03:14:15.4552893+00:00",
+   "DurationMs": 68,
+   "Result": null,
+   "HasResult": true,
+   "ResultWasTruncated": false,
+   "Warnings": [],
+   "Error": null,
+   "Metadata": {}
+  }
+ },
+ "CASacrilegHunters": {
+  "success": true,
+  "defName": "CASacrilegHunters",
+  "defType": "FactionDef",
+  "label": "Sacrileg Hunters",
+  "description": "A technologically well advanced faction which crashlanded on this rimworld with their generation ship. Their speciallization lies in retrieving old artifacts and hunting for treasure, which helped them enormously to get a quick foothold on this planet, which is covered with old structures.\n\n<i><color=#66E0E4FF>Caravan Adventures</color></i>",
+  "modName": "Caravan Adventures",
+  "packageId": "iforgotmysocks.caravanadventures",
+  "statBases": null,
+  "comps": null,
+  "extra": null,
+  "extraModelled": false,
+  "extraNote": "⚠️ `extra` is NOT modelled for FactionDef — this null means NOT INSPECTED, not 'absent'. Do not read a missing field as a missing value. Use jawa/get_defs with an explicit fields list to read this type.",
+  "ticksGame": 4236,
+  "operation": {
+   "OperationId": "op_2bf9b9421aff4914936951456881bbec",
+   "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-def",
+   "Status": 2,
+   "Success": true,
+   "StartedAtUtc": "2026-08-31T03:14:15.4562887+00:00",
+   "CompletedAtUtc": "2026-08-31T03:14:15.5230436+00:00",
+   "DurationMs": 66,
+   "Result": null,
+   "HasResult": true,
+   "ResultWasTruncated": false,
+   "Warnings": [],
+   "Error": null,
+   "Metadata": {}
+  }
+ },
+ "TribeCivil": {
+  "success": true,
+  "defName": "TribeCivil",
+  "defType": "FactionDef",
+  "label": "Deep Desert Tribes",
+  "description": "Territorial clans of the deep sand and the canyon country, for whom water is sacred and moisture farming is sacrilege — a theft from the world, committed in the open, every hour of every day.\n\nThey arrive fast, hit hard, and are gone.",
+  "modName": "Core",
+  "packageId": "ludeon.rimworld",
+  "statBases": null,
+  "comps": null,
+  "extra": null,
+  "extraModelled": false,
+  "extraNote": "⚠️ `extra` is NOT modelled for FactionDef — this null means NOT INSPECTED, not 'absent'. Do not read a missing field as a missing value. Use jawa/get_defs with an explicit fields list to read this type.",
+  "ticksGame": 4236,
+  "operation": {
+   "OperationId": "op_72c0555461464ec7bb001a4b4b2e35d4",
+   "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/get-def",
+   "Status": 2,
+   "Success": true,
+   "StartedAtUtc": "2026-08-31T03:14:15.5240394+00:00",
+   "CompletedAtUtc": "2026-08-31T03:14:15.5889624+00:00",
+   "DurationMs": 64,
+   "Result": null,
+   "HasResult": true,
+   "ResultWasTruncated": false,
+   "Warnings": [],
+   "Error": null,
+   "Metadata": {}
+  }
+ },
+ "_audit": {
+  "success": true,
+  "message": "2 of 711 tool-using kind(s) INTEND to arm and CANNOT: 2 whose tags match no loaded weapon, 0 that cannot afford the cheapest weapon their tags allow. (Not counted: 111 with no weaponTags and 9 with weaponMoney.max 0 - both are how a civilian or a child is kept unarmed.) ⚠️ 180 of those declare isFighter or combatPower >= 40 and carry NO weaponTags at all - a combat role that lost its tags looks exactly like a civilian here; see taglessButLooksLikeAFighter.",
+  "weaponPairsInGame": 1830,
+  "distinctWeaponTags": 400,
+  "kindsChecked": 711,
+  "skippedNonToolUser": 1026,
+  "counts": {
+   "emptyTagPool": 2,
+   "cannotAfford": 0,
+   "healthy": 409,
+   "byDesign_noWeaponTags": 111,
+   "byDesign_zeroBudget": 9,
+   "taglessButLooksLikeAFighter": 180
+  },
+  "taglessButLooksLikeAFighter": [
+   {
+    "kind": "WildMan",
+    "label": "wild man",
+    "race": "Human",
+    "isFighter": true,
+    "combatPower": 30.0
+   },
+   {
+    "kind": "Mech_Scyther",
+    "label": "scyther",
+    "race": "Mech_Scyther",
+    "isFighter": true,
+    "combatPower": 195.0
+   },
+   {
+    "kind": "Empire_Royal_NobleWimp",
+    "label": "noble",
+    "race": "Human",
+    "isFighter": true,
+    "combatPower": 40.0
+   },
+   {
+    "kind": "Tribal_Child_Fire",
+    "label": "villager",
+    "race": "Human",
+    "isFighter": true,
+    "combatPower": 30.0
+   },
+   {
+    "kind": "Sanguophage_Player",
+    "label": "sanguophage",
+    "race": "Human",
+    "isFighter": true,
+    "combatPower": 100.0
+   },
+   {
+    "kind": "Tribal_Child",
+    "label": "villager",
+    "race": "Human",
+    "isFighter": true,
+    "combatPower": 30.0
+   },
+   {
+    "kind": "Mech_Tunneler",
+    "label": "tunneler",
+    "race": "Mech_Tunneler",
+    "isFighter": true,
+    "combatPower": 325.0
+   },
+   {
+    "kind": "Mech_Paramedic",
+    "label": "paramedic",
+    "race": "Mech_Paramedic",
+    "isFighter": true,
+    "combatPower": 13.0
+   },
+   {
+    "kind": "Mech_Centurion",
+    "label": "centurion",
+    "race": "Mech_Centurion",
+    "isFighter": true,
+    "combatPower": 325.0
+   },
+   {
+    "kind": "Mech_Warqueen",
+    "label": "war queen",
+    "race": "Mech_Warqueen",
+    "isFighter": true,
+    "combatPower": 780.0
+   },
+   {
+    "kind": "LeatheryStranger",
+    "label": "leathery stranger",
+    "race": "CreepJoiner",
+    "isFighter": false,
+    "combatPower": 55.0
+   },
+   {
+    "kind": "DarkScholar",
+    "label": "dark scholar",
+    "race": "CreepJoiner",
+    "isFighter": false,
+    "combatPower": 55.0
+   },
+   {
+    "kind": "DealMaker",
+    "label": "deal maker",
+    "race": "CreepJoiner",
+    "isFighter": false,
+    "combatPower": 55.0
+   },
+   {
+    "kind": "Blindhealer",
+    "label": "blind healer",
+    "race": "CreepJoiner",
+    "isFighter": false,
+    "combatPower": 55.0
+   },
+   {
+    "kind": "TimelessOne",
+    "label": "timeless one",
+    "race": "CreepJoiner",
+    "isFighter": false,
+    "combatPower": 55.0
+   },
+   {
+    "kind": "CultEscapee",
+    "label": "cult escapee",
+    "race": "CreepJoiner",
+    "isFighter": false,
+    "combatPower": 55.0
+   },
+   {
+    "kind": "LoneGenius",
+    "label": "lone genius",
+    "race": "CreepJoiner",
+    "isFighter": false,
+    "combatPower": 55.0
+   },
+   {
+    "kind": "Nociosphere",
+    "label": "nociosphere",
+    "race": "Nociosphere",
+    "isFighter": true,
+    "combatPower": 800.0
+   },
+   {
+    "kind": "Metalhorror",
+    "label": "metalhorror",
+    "race": "Metalhorror",
+    "isFighter": true,
+    "combatPower": 3.40282347e+38
+   },
+   {
+    "kind": "Revenant",
+    "label": "revenant",
+    "race": "Revenant",
+    "isFighter": true,
+    "combatPower": 300.0
+   },
+   {
+    "kind": "Sightstealer",
+    "label": "sightstealer",
+    "race": "Sightstealer",
+    "isFighter": true,
+    "combatPower": 70.0
+   },
+   {
+    "kind": "Noctol",
+    "label": "noctol",
+    "race": "Noctol",
+    "isFighter": true,
+    "combatPower": 80.0
+   },
+   {
+    "kind": "Gorehulk",
+    "label": "gorehulk",
+    "race": "Gorehulk",
+    "isFighter": true,
+    "combatPower": 75.0
+   },
+   {
+    "kind": "Devourer",
+    "label": "devourer",
+    "race": "Devourer",
+    "isFighter": true,
+    "combatPower": 250.0
+   },
+   {
+    "kind": "Bulbfreak",
+    "label": "bulbfreak",
+    "race": "Bulbfreak",
+    "isFighter": true,
+    "combatPower": 360.0
+   },
+   {
+    "kind": "Fingerspike",
+    "label": "fingerspike",
+    "race": "Fingerspike",
+    "isFighter": true,
+    "combatPower": 25.0
+   },
+   {
+    "kind": "Toughspike",
+    "label": "toughspike",
+    "race": "Toughspike",
+    "isFighter": true,
+    "combatPower": 70.0
+   },
+   {
+    "kind": "Trispike",
+    "label": "trispike",
+    "race": "Trispike",
+    "isFighter": true,
+    "combatPower": 3.40282347e+38
+   },
+   {
+    "kind": "Dreadmeld",
+    "label": "dreadmeld",
+    "race": "Dreadmeld",
+    "isFighter": true,
+    "combatPower": 650.0
+   },
+   {
+    "kind": "ShamblerSwarmer",
+    "label": "shambler swarmer",
+    "race": "Human",
+    "isFighter": true,
+    "combatPower": 3.40282347e+38
+   },
+   {
+    "kind": "ShamblerSoldier",
+    "label": "shambler soldier",
+    "race": "Human",
+    "isFighter": true,
+    "combatPower": 3.40282347e+38
+   },
+   {
+    "kind": "ShamblerGorehulk",
+    "label": "gorehulk",
+    "race": "Gorehulk",
+    "isFighter": true,
+    "combatPower": 75.0
+   },
+   {
+    "kind": "Ghoul",
+    "label": "ghoul",
+    "race": "Human",
+    "isFighter": true,
+    "combatPower": 3.40282347e+38
+   },
+   {
+    "kind": "Drone_Hunter",
+    "label": "hunter drone",
+    "race": "Drone_Hunter",
+    "isFighter": true,
+    "combatPower": 75.0
+   },
+   {
+    "kind": "Drone_Wasp",
+    "label": "wasp",
+    "race": "Drone_Wasp",
+    "isFighter": true,
+    "combatPower": 25.0
+   },
+   {
+    "kind": "TradersGuild_Child",
+    "label": null,
+    "race": "Human",
+    "isFighter": false,
+    "combatPower": 45.0
+   },
+   {
+    "kind": "FFF_Dummy",
+    "label": "dummy",
+    "race": "Human",
+    "isFighter": true,
+    "combatPower": 85.0
+   },
+   {
+    "kind": "AM_Blitzkrieg",
+    "label": "blitzkrieg",
+    "race": "AM_Blitzkrieg",
+    "isFighter": false,
+    "combatPower": 123.499992
+   },
+   {
+    "kind": "AM_Mech_PristineAssembler",
+    "label": "pristine assembler",
+    "race": "AM_Mech_PristineAssembler",
+    "isFighter": false,
+    "combatPower": 325.0
+   },
+   {
+    "kind": "AM_Mech_PristineSlurrypede",
+    "label": "pristine slurrypede",
+    "race": "AM_Mech_PristineSlurrypede",
+    "isFighter": false,
+    "combatPower": 325.0
+   }
+  ],
+  "byDesign_noWeaponTags": [
+   {
+    "kind": "Colonist",
+    "label": "colonist",
+    "race": "Human"
+   },
+   {
+    "kind": "Tribesperson",
+    "label": "member",
+    "race": "Human"
+   },
+   {
+    "kind": "SpaceRefugee",
+    "label": "space refugee",
+    "race": "Human"
+   },
+   {
+    "kind": "SpaceRefugee_Clothed",
+    "label": "space refugee",
+    "race": "Human"
+   },
+   {
+    "kind": "Slave",
+    "label": "slave",
+    "race": "Human"
+   },
+   {
+    "kind": "Slave_Empire",
+    "label": "slave",
+    "race": "Human"
+   },
+   {
+    "kind": "Empire_Common_Lodger",
+    "label": "imperial citizen",
+    "race": "Human"
+   },
+   {
+    "kind": "Empire_Common_Laborer",
+    "label": "imperial laborer",
+    "race": "Human"
+   },
+   {
+    "kind": "Mech_Lifter",
+    "label": "lifter",
+    "race": "Mech_Lifter"
+   },
+   {
+    "kind": "Mech_Constructoid",
+    "label": "constructoid",
+    "race": "Mech_Constructoid"
+   },
+   {
+    "kind": "Mech_Fabricor",
+    "label": "fabricor",
+    "race": "Mech_Fabricor"
+   },
+   {
+    "kind": "Mech_Agrihand",
+    "label": "agrihand",
+    "race": "Mech_Agrihand"
+   },
+   {
+    "kind": "Mech_Cleansweeper",
+    "label": "cleansweeper",
+    "race": "Mech_Cleansweeper"
+   },
+   {
+    "kind": "Researcher",
+    "label": "researcher",
+    "race": "Human"
+   },
+   {
+    "kind": "CrewMember",
+    "label": "crew member",
+    "race": "Human"
+   },
+   {
+    "kind": "BS_ColonistXenoPlus",
+    "label": "colonist",
+    "race": "Human"
+   },
+   {
+    "kind": "BS_TribespersonXenoPlus",
+    "label": "member",
+    "race": "Human"
+   },
+   {
+    "kind": "BS_SpaceRefugeeXenoPlus",
+    "label": "space refugee",
+    "race": "Human"
+   },
+   {
+    "kind": "AM_Mech_Guttersnipe",
+    "label": "guttersnipe",
+    "race": "AM_Mech_Guttersnipe"
+   },
+   {
+    "kind": "AM_Mech_MasterChef",
+    "label": "culinarius",
+    "race": "AM_Mech_MasterChef"
+   },
+   {
+    "kind": "AM_PristineStrider",
+    "label": "pristine strider",
+    "race": "AM_PristineStrider"
+   },
+   {
+    "kind": "AM_Mech_TurboCleaner",
+    "label": "turbocleaner",
+    "race": "AM_Mech_TurboCleaner"
+   },
+   {
+    "kind": "VFET_Wildperson",
+    "label": "wild man",
+    "race": "Human"
+   },
+   {
+    "kind": "VGE_Astronaut",
+    "label": "astronaut",
+    "race": "VGE_Astronaut"
+   },
+   {
+    "kind": "VRESaurid_SauridMother",
+    "label": "Saurid Mother",
+    "race": "Human"
+   },
+   {
+    "kind": "VFEP_PirateColonist",
+    "label": "pirate",
+    "race": "Human"
+   },
+   {
+    "kind": "OuterRim_EscapedBattleDroid",
+    "label": "escaped battle droid",
+    "race": "OuterRim_BattleDroid"
+   },
+   {
+    "kind": "RimMandrakeAbednedo_Kind",
+    "label": "Abednedo",
+    "race": "Human"
+   },
+   {
+    "kind": "RimMandrakeAnzati_Kind",
+    "label": "Anzati",
+    "race": "Human"
+   },
+   {
+    "kind": "RimMandrakeAqualish_Kind",
+    "label": "Aqualish",
+    "race": "Human"
+   },
+   {
+    "kind": "RimMandrakeArkanian_Kind",
+    "label": "Arkanian",
+    "race": "Human"
+   },
+   {
+    "kind": "RimMandrakeBith_Kind",
+    "label": "Bith",
+    "race": "Human"
+   },
+   {
+    "kind": "RimMandrakeBothan_Kind",
+    "label": "Bothan",
+    "race": "Human"
+   },
+   {
+    "kind": "RimMandrakeCathar_Kind",
+    "label": "Cathar",
+    "race": "Human"
+   },
+   {
+    "kind": "RimMandrakeCerean_Kind",
+    "label": "Cerean",
+    "race": "Human"
+   },
+   {
+    "kind": "RimMandrakeChadraFan_Kind",
+    "label": "Chadra-Fan",
+    "race": "Human"
+   },
+   {
+    "kind": "RimMandrakeChagrian_Kind",
+    "label": "Chagrian",
+    "race": "Human"
+   },
+   {
+    "kind": "RimMandrakeChiss_Kind",
+    "label": "Chiss",
+    "race": "Human"
+   },
+   {
+    "kind": "RimMandrakeDathomirian_Kind",
+    "label": "Dathomirian",
+    "race": "Human"
+   },
+   {
+    "kind": "RimMandrakeDefel_Kind",
+    "label": "Defel",
+    "race": "Human"
+   }
+  ],
+  "byDesign_zeroBudget": [
+   {
+    "kind": "Villager_Child_Pig",
+    "label": "villager",
+    "tags": [
+     "Gun",
+     "MedievalMeleeBasic"
+    ]
+   },
+   {
+    "kind": "Villager_Child",
+    "label": "villager",
+    "tags": [
+     "Gun",
+     "MedievalMeleeBasic"
+    ]
+   },
+   {
+    "kind": "DV_Villager_Child_Buzzer",
+    "label": "villager",
+    "tags": [
+     "Gun",
+     "MedievalMeleeBasic"
+    ]
+   },
+   {
+    "kind": "VRESaurids_VillagerChild_Saurid",
+    "label": "villager",
+    "tags": [
+     "Gun",
+     "MedievalMeleeBasic"
+    ]
+   },
+   {
+    "kind": "OuterRim_ImperialArmy_PlayerStarter",
+    "label": "imperial army trooper",
+    "tags": [
+     "ORImperialStandardEarly"
+    ]
+   },
+   {
+    "kind": "OuterRim_ImperialArmy_PlayerRecruit",
+    "label": "imperial army trooper",
+    "tags": [
+     "ORImperialStandardEarly"
+    ]
+   },
+   {
+    "kind": "OuterRim_Stormtrooper_PlayerNoHelmet",
+    "label": "Stormtrooper",
+    "tags": [
+     "ORImperialStandard"
+    ]
+   },
+   {
+    "kind": "OuterRim_Stormtrooper_PlayerRecruit",
+    "label": "Stormtrooper",
+    "tags": [
+     "ORImperialStandard"
+    ]
+   },
+   {
+    "kind": "OuterRim_RebelInsurgent_PlayerNoHelmet",
+    "label": "rebel insurgent",
+    "tags": [
+     "ORRebelStandard"
+    ]
+   }
+  ],
+  "emptyTagPool": [
+   {
+    "kind": "DP_ArtilleryPirate",
+    "label": "Cannon Artillery",
+    "tags": [
+     "DP_CannonNoEquipTag"
+    ],
+    "weaponMoneyMax": 99999.0
+   },
+   {
+    "kind": "DP_RocketPirate",
+    "label": "Rocket Artillery",
+    "tags": [
+     "DP_RocketNoEquipTag"
+    ],
+    "weaponMoneyMax": 99999.0
+   }
+  ],
+  "cannotAfford": [],
+  "healthy": null,
+  "note": "weaponMoney is a CEILING - raise `max` above cheapestPrice. `min` only shifts the roll and never excludes a weapon. Price includes stuff.",
+  "ticksGame": 4236,
+  "operation": {
+   "OperationId": "op_88d9bca7c3fb44e4bd6d3fcefeea0e4c",
+   "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/pawn-kind-audit",
+   "Status": 2,
+   "Success": true,
+   "StartedAtUtc": "2026-08-31T03:14:15.589954+00:00",
+   "CompletedAtUtc": "2026-08-31T03:14:15.6641453+00:00",
+   "DurationMs": 74,
+   "Result": null,
+   "HasResult": true,
+   "ResultWasTruncated": false,
+   "Warnings": [],
+   "Error": null,
+   "Metadata": {}
+  }
+ }
+}

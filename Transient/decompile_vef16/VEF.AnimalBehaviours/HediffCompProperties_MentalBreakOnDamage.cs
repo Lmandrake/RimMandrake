@@ -1,0 +1,17 @@
+using Verse;
+
+namespace VEF.AnimalBehaviours;
+
+public class HediffCompProperties_MentalBreakOnDamage : HediffCompProperties
+{
+	public DamageDef damageTypeReceived;
+
+	public MentalBreakDef mentalBreak;
+
+	public string reason;
+
+	public HediffCompProperties_MentalBreakOnDamage()
+	{
+		base.compClass = typeof(HediffComp_MentalBreakOnDamage);
+	}
+}

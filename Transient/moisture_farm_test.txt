@@ -1,0 +1,135 @@
+# rimplace flat plan v1
+FOOTPRINT	100	100	20	20
+TERRAIN	109	109	Gravel
+TERRAIN	109	110	Gravel
+TERRAIN	109	111	Gravel
+TERRAIN	110	109	Gravel
+TERRAIN	110	110	Gravel
+TERRAIN	110	111	Gravel
+TERRAIN	111	109	Gravel
+TERRAIN	111	110	Gravel
+TERRAIN	111	111	Gravel
+THING	Wall	108	108	0	BlocksSandstone
+THING	Wall	109	108	0	BlocksSandstone
+THING	Wall	111	108	0	BlocksSandstone
+THING	Wall	112	108	0	BlocksSandstone
+THING	Wall	108	109	0	BlocksSandstone
+THING	Wall	112	109	0	BlocksSandstone
+THING	Wall	108	110	0	BlocksSandstone
+THING	Wall	112	110	0	BlocksSandstone
+THING	Wall	108	111	0	BlocksSandstone
+THING	Wall	112	111	0	BlocksSandstone
+THING	Wall	108	112	0	BlocksSandstone
+THING	Wall	109	112	0	BlocksSandstone
+THING	Wall	110	112	0	BlocksSandstone
+THING	Wall	111	112	0	BlocksSandstone
+THING	Wall	112	112	0	BlocksSandstone
+THING	Door	110	108	0	WoodLog
+THING	PrimitiveWell	110	110	0	-
+THING	KotOR_MoistureVaporator_big	117	110	0	-
+THING	KotOR_MoistureVaporator_big	114	116	0	-
+THING	KotOR_MoistureVaporator_big	107	116	0	-
+THING	KotOR_MoistureVaporator_big	103	110	0	-
+THING	KotOR_MoistureVaporator_big	106	104	0	-
+THING	KotOR_MoistureVaporator_big	114	104	0	-
+THING	Sandbags	100	100	0	-
+THING	Sandbags	100	119	0	-
+THING	Sandbags	101	100	0	-
+THING	Sandbags	101	119	0	-
+THING	Sandbags	102	100	0	-
+THING	Sandbags	102	119	0	-
+THING	Sandbags	103	100	0	-
+THING	Sandbags	103	119	0	-
+THING	Sandbags	104	100	0	-
+THING	Sandbags	104	119	0	-
+THING	Sandbags	105	100	0	-
+THING	Sandbags	105	119	0	-
+THING	Sandbags	106	100	0	-
+THING	Sandbags	106	119	0	-
+THING	Sandbags	107	100	0	-
+THING	Sandbags	107	119	0	-
+THING	Sandbags	108	100	0	-
+THING	Sandbags	108	119	0	-
+THING	Sandbags	109	100	0	-
+THING	Sandbags	109	119	0	-
+THING	Sandbags	110	100	0	-
+THING	Sandbags	110	119	0	-
+THING	Sandbags	111	100	0	-
+THING	Sandbags	111	119	0	-
+THING	Sandbags	112	100	0	-
+THING	Sandbags	112	119	0	-
+THING	Sandbags	113	100	0	-
+THING	Sandbags	113	119	0	-
+THING	Sandbags	114	100	0	-
+THING	Sandbags	114	119	0	-
+THING	Sandbags	115	100	0	-
+THING	Sandbags	115	119	0	-
+THING	Sandbags	116	100	0	-
+THING	Sandbags	116	119	0	-
+THING	Sandbags	117	100	0	-
+THING	Sandbags	117	119	0	-
+THING	Sandbags	118	100	0	-
+THING	Sandbags	118	119	0	-
+THING	Sandbags	119	100	0	-
+THING	Sandbags	119	119	0	-
+THING	Sandbags	100	101	0	-
+THING	Sandbags	119	101	0	-
+THING	Sandbags	100	102	0	-
+THING	Sandbags	119	102	0	-
+THING	Sandbags	100	103	0	-
+THING	Sandbags	119	103	0	-
+THING	Sandbags	100	104	0	-
+THING	Sandbags	119	104	0	-
+THING	Sandbags	100	105	0	-
+THING	Sandbags	119	105	0	-
+THING	Sandbags	100	106	0	-
+THING	Sandbags	119	106	0	-
+THING	Sandbags	100	107	0	-
+THING	Sandbags	119	107	0	-
+THING	Sandbags	100	108	0	-
+THING	Sandbags	119	108	0	-
+THING	Sandbags	100	109	0	-
+THING	Sandbags	119	109	0	-
+THING	Sandbags	100	110	0	-
+THING	Sandbags	119	110	0	-
+THING	Sandbags	100	111	0	-
+THING	Sandbags	119	111	0	-
+THING	Sandbags	100	112	0	-
+THING	Sandbags	119	112	0	-
+THING	Sandbags	100	113	0	-
+THING	Sandbags	119	113	0	-
+THING	Sandbags	100	114	0	-
+THING	Sandbags	119	114	0	-
+THING	Sandbags	100	115	0	-
+THING	Sandbags	119	115	0	-
+THING	Sandbags	100	116	0	-
+THING	Sandbags	119	116	0	-
+THING	Sandbags	100	117	0	-
+THING	Sandbags	119	117	0	-
+THING	Sandbags	100	118	0	-
+THING	Sandbags	119	118	0	-
+ROOF	108	108	RoofConstructed
+ROOF	108	109	RoofConstructed
+ROOF	108	110	RoofConstructed
+ROOF	108	111	RoofConstructed
+ROOF	108	112	RoofConstructed
+ROOF	109	108	RoofConstructed
+ROOF	109	109	RoofConstructed
+ROOF	109	110	RoofConstructed
+ROOF	109	111	RoofConstructed
+ROOF	109	112	RoofConstructed
+ROOF	110	108	RoofConstructed
+ROOF	110	109	RoofConstructed
+ROOF	110	110	RoofConstructed
+ROOF	110	111	RoofConstructed
+ROOF	110	112	RoofConstructed
+ROOF	111	108	RoofConstructed
+ROOF	111	109	RoofConstructed
+ROOF	111	110	RoofConstructed
+ROOF	111	111	RoofConstructed
+ROOF	111	112	RoofConstructed
+ROOF	112	108	RoofConstructed
+ROOF	112	109	RoofConstructed
+ROOF	112	110	RoofConstructed
+ROOF	112	111	RoofConstructed
+ROOF	112	112	RoofConstructed
