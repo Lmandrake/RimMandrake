@@ -28,8 +28,14 @@ shipped data (`RimFridge_PowerFactorSetting` requires itself).
 `hiddenPrerequisites` 57 · `requiredResearchBuilding` 226 ·
 `techprintCount>0` **448 of 515**.
 
-🔴 **The 448 is the sitting's biggest finding: Research Reinvented is already
-a live co-writer of the tree.** Vanilla `Electricity` in the resolved dump
+🔴 **The 448 is the sitting's biggest finding: SOMETHING is a live co-writer
+of the tree — but the RR attribution below is CORRECTED 2026-09-01:** two
+independent source reads (RR's vendored source + live workshop defs) find
+zero `techprintCount` writes in Research Reinvented — RR does not stamp
+techprints. The 448 techprint stamps in the resolved dump are REAL but
+UNATTRIBUTED pending re-measure; the substrate ruling (§6.2) stands
+regardless, and the co-writer-awareness rule below stands for whatever the
+writer turns out to be. Vanilla `Electricity` in the resolved dump
 carries `techprintCount: 1` and a prerequisite of `RR_ElectricityBasics` —
 `petetimessix.researchreinvented` (+ Stepping Stones, 10 rows) rewrites
 prereqs and stamps techprint fields across nearly everything at load. Any
