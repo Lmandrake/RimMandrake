@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-01T21:49:05Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-01T22:03:59Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -28,7 +28,7 @@ summary:  SPAWNPAWNSUBSTITUTESVANILLAKIND1 — "Spawned 2/2" delivered one of so
 prose:    infrastructure/state/items/SPAWN_PAWN_SUBSTITUTES_VANILLA_KIND_1.md
 
 ## WILD_ANIMALS_PADDED_LISTS_1 wildAnimals lists padded to 1024 by unidentified C# pass
-state:    doing  (BLOCKED)
+state:    doing
 row:      unassigned
 needs:    bridge
 target:   v1
@@ -71,15 +71,6 @@ target:   v1
 kind:     build
 summary:  Full spec: design/Jawa/worldbuilding/dungeonsarcspec.md §3. Summary:
 prose:    infrastructure/state/items/VAULT_DUNGEON_BUILD_1.md
-
-## PAWN_FLAVOR_PHASE2_PROSE_1 Phase 2 prep: lore-prose pass over ThoughtDef/MentalBreakDef/xenotype flavor - census + drafts + review sheet
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  Phase 2 prep per design/Jawa/pawnflavordesign.md § Open questions, item 6: a
-prose:    infrastructure/state/items/PAWN_FLAVOR_PHASE2_PROSE_1.md
 
 ## RIMMANDRAKE_PITS_BUILD_1 Build RimMandrake Pits: core framework mod (dig stages, terrain-mimic covers, mass triggers, struggle escape, fitting family, holding-platform pit cell) + campaign layer; first step is the spawn-mass quicktest matrix on the 22s minimal list
 state:    doing
@@ -207,17 +198,8 @@ kind:     build
 summary:  Full ruling: design/Jawa/wreckedmachinesresurrection.md (owner, 2026-08-31,
 prose:    infrastructure/state/items/BUILDING_THEFT_HAULER_1.md
 
-## WRECKED_MACHINES_RESURRECTION_1 Resurrect WreckedMachines: un-park, verify replaceTags runtime, re-point at ruled research grammar, prove the study loop live
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  Source: infrastructure/state/canon.yml wreckedmachines (owner,
-prose:    infrastructure/state/items/WRECKED_MACHINES_RESURRECTION_1.md
-
 ## LIVESTOCK_STARTER_TRIO_1 Livestock v1: onnik kiln-belly + karrask molt-plate + moornak grief-eater, shared-art batch
-state:    doing  (BLOCKED)
+state:    doing
 row:      unassigned
 needs:    offline
 target:   v1
@@ -248,35 +230,15 @@ blocked:  Tool read-back proven live on 480 spawns; remaining unknown is WHICH o
 summary:  SPAWNPAWNSUBSTITUTESVANILLAKIND1 — "Spawned 2/2" delivered one of something else
 prose:    infrastructure/state/items/SPAWN_PAWN_SUBSTITUTES_VANILLA_KIND_1.md
 
-## WILD_ANIMALS_PADDED_LISTS_1 wildAnimals lists padded to 1024 by unidentified C# pass
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     investigate
-blocked:  game DOWN, tool call needs a live game; deferred to next UP
-summary:  WILDANIMALSPADDEDLISTS1 — offline half done: mechanism strongly narrowed, exact patch still unnamed
-prose:    infrastructure/state/items/WILD_ANIMALS_PADDED_LISTS_1.md
-
 ## DROID_TILES_SOURED_TERRAIN_1 Free Droid Enclave tiles get polluted ground and fouled water (2026-08-04 doctrine, ruled alive)
 state:    proposed  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-blocked:  sequenced with Droidworks phase 3 (droid_system_build_spec.md line 186) — parked behind DROID_SYSTEM_BUILD_1 which needs owner to reopen
+blocked:  Engineering sequence, not an owner call: needs Droidworks Phase 3 (faction/goodwill layer); DROID_SYSTEM_BUILD_1 is live but only in Phase 0
 summary:  (no items/DROID_TILES_SOURED_TERRAIN_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DROID_TILES_SOURED_TERRAIN_1.md
-
-## LIVESTOCK_STARTER_TRIO_1 Livestock v1: onnik kiln-belly + karrask molt-plate + moornak grief-eater, shared-art batch
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-blocked:  mockup round generated (Transient/livestock_mockups/, 3 options x 3 creatures + sheets) but no decisions/picks file exists yet - item's own design says FOUNDRY builds defs against the picks, not before. Holding until picks land.
-summary:  Per the doc's rosters and §7.2 shared-art batching:
-prose:    infrastructure/state/items/LIVESTOCK_STARTER_TRIO_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
@@ -296,6 +258,16 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     design
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/FORSAKEN_CRAGS_FAUNA_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  Three pictures exist before their creatures do. Write one design row each —
 prose:    infrastructure/state/items/FORSAKEN_CRAGS_FAUNA_1.md
+
+## PAWN_FLAVOR_PHASE2_APPLY_1 Apply the 1,783 owner-approved Phase 2 flavor rows (ThoughtDef/MentalBreakDef/XenotypeDef label+description) as XML patches; validate_patch clean, cold-load clean
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     spec, verify and criteria all present
+summary:  - Source of the text: the proposed field per row in the generator's data
+prose:    infrastructure/state/items/PAWN_FLAVOR_PHASE2_APPLY_1.md
