@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  PyrelandsWeather_Stage0.xml     RimUtinni: Fire Ecology     2026-09-01
+  ============================================================================
+  FIRE_ECOLOGY_LOOP_1, unit 1 — "the loop": strip rain from the Pyrelands'
+  baseWeatherCommonalities, crank DryThunderstorm. Doc §1 Stage 0.
+
+  🔴 VERIFIED AGAINST THE RESOLVED LIVE DUMP, not guessed, per the item's own
+  "Watch out" — read directly 2026-09-01 from the RESOLVED capture
+  (DefDump/captures/2026-09-01T15-39-26Z, post-Research-Reinvented, 587
+  mods) AND cross-checked against the donor mod's own raw 1.6 XML
+  (zylle.MoreVanillaBiomes, workshop 1931453053,
+  1.6/Defs/BiomeDefs/ZBiome_Grasslands.xml): both agree exactly, so nothing
+  ELSE is patching this table today.
+
+  🔴 NO INHERITANCE TRAP HERE. ZBiome_Grasslands carries NO ParentName — it
+  is a complete, standalone BiomeDef, not inherited from an abstract parent.
+  baseWeatherCommonalities is declared directly on it, in the dictionary
+  shorthand form (`<Rain>1.5</Rain>`, not `<li><weather>.../weather></li>` —
+  WeatherCommonalityRecord.LoadDataFromXmlCustom reads the node NAME as the
+  weather def and its text as the commonality; this project's own
+  AshStorms_Pyrelands.xml already discovered and documented this exact
+  parse behaviour). The item's "inherited <li> cannot be patched away" trap
+  does not apply — checked, not assumed.
+
+  Live table before this patch (all 12 entries, RimSage + raw XML, both
+  agree): Clear 18, Fog 1, Rain 1.5, DryThunderstorm 2, RainyThunderstorm 2,
+  FoggyRain 0.5, SnowGentle 4, SnowHard 4, GrayPall 1 (Anomaly),
+  Windy 0.5 (Odyssey), Overcast 0.5 (Odyssey), TorrentialRain 0.5 (Odyssey).
+
+  Removed (all four rain-rated entries, R-H1's "no rain almost everywhere"):
+  Rain, RainyThunderstorm, FoggyRain, TorrentialRain. SnowGentle/SnowHard/
+  Fog/GrayPall/Windy/Overcast are NOT rain-rated (WeatherDef.rainRate <=
+  0.1f on all of them) and are left alone — the doc only asks to strip rain
+  and crank the storm, not scrub every non-Clear weather.
+
+  Cranked: DryThunderstorm 2 -> 35 and Clear 18 -> 55, matching the doc's own
+  target table (§1 Stage 0) almost exactly — "35% deliberately far above any
+  vanilla biome's thunderstorm share... the Pyrelands should feel like it is
+  always one bad roll from lighting up."
+
+  This does NOT touch AshStorms_Pyrelands.xml's own AB_VolcanicAsh addition
+  (Jawa_Patches, commonality 3, gated on Alpha Biomes) — untouched, additive,
+  no conflict; nor PyrelandsWeather_BlackRain.xml (same folder, adds
+  RSW_FE_BlackRain) — separate file, applied after this one loads.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>More Vanilla Biomes</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <li Class="PatchOperationRemove">
+          <xpath>Defs/BiomeDef[defName="ZBiome_Grasslands"]/baseWeatherCommonalities/Rain</xpath>
+        </li>
+        <li Class="PatchOperationRemove">
+          <xpath>Defs/BiomeDef[defName="ZBiome_Grasslands"]/baseWeatherCommonalities/RainyThunderstorm</xpath>
+        </li>
+        <li Class="PatchOperationRemove">
+          <xpath>Defs/BiomeDef[defName="ZBiome_Grasslands"]/baseWeatherCommonalities/FoggyRain</xpath>
+        </li>
+        <li Class="PatchOperationRemove">
+          <xpath>Defs/BiomeDef[defName="ZBiome_Grasslands"]/baseWeatherCommonalities/TorrentialRain</xpath>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/BiomeDef[defName="ZBiome_Grasslands"]/baseWeatherCommonalities/DryThunderstorm</xpath>
+          <value>
+            <DryThunderstorm>35</DryThunderstorm>
+          </value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/BiomeDef[defName="ZBiome_Grasslands"]/baseWeatherCommonalities/Clear</xpath>
+          <value>
+            <Clear>55</Clear>
+          </value>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>

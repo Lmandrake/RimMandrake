@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  PyrelandsGround_ScorchableTerrain.xml   RimUtinni: Fire Ecology  2026-09-01
+  ============================================================================
+  FIRE_ECOLOGY_LOOP_1, unit 3 (part 2 of 2 — AshLadder.xml in
+  RimMandrake: SW — Fire Ecology carries the ladder itself; this file is what
+  makes the Pyrelands actually MAPGEN with that ground instead of ordinary
+  Sand/Gravel/Soil/SoilRich).
+
+  Deliberately NOT a patch on the shared vanilla Sand/Gravel/Soil/SoilRich
+  TerrainDefs — those are used by nearly every biome on the planet, and
+  giving them Flammability+burnedDef would make EVERY biome's dirt start
+  converting to ash, not just the Pyrelands. Scope stays to the one biome
+  that opted in: this file repoints ZBiome_Grasslands' own
+  terrainsByFertility and terrainPatchMakers entries at RSW_FE_Ground_* (the
+  scorchable clones), positionally, verified against the raw donor XML read
+  2026-09-01 (zylle.MoreVanillaBiomes 1.6/Defs/BiomeDefs/ZBiome_Grasslands.xml):
+
+    terrainsByFertility  li[1]=Sand li[2]=Gravel li[3]=Soil li[4]=SoilRich
+    terrainPatchMakers/li[1]/thresholds  li[1]=SoilRich li[2]=Mud
+                                          li[3]=WaterShallow li[4]=WaterDeep
+
+  Only the SoilRich threshold inside terrainPatchMakers is repointed — Mud/
+  WaterShallow/WaterDeep are the biome's water features, not ground, and stay
+  vanilla (a burnt lakebed reads wrong; a burnt hillside doesn't).
+
+  ⚠️ ONLY AFFECTS NEWLY-GENERATED Pyrelands map tiles. A colony already
+  built on Ash'karr's frozen Pyrelands tiles keeps whatever terrain its map
+  already holds; this patch changes what a FRESH Pyrelands map generates
+  from here on. Flagged for the live quicktest, not assumed.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>More Vanilla Biomes</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/BiomeDef[defName="ZBiome_Grasslands"]/terrainsByFertility/li[1]/terrain</xpath>
+          <value><terrain>RSW_FE_Ground_Sand</terrain></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/BiomeDef[defName="ZBiome_Grasslands"]/terrainsByFertility/li[2]/terrain</xpath>
+          <value><terrain>RSW_FE_Ground_Gravel</terrain></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/BiomeDef[defName="ZBiome_Grasslands"]/terrainsByFertility/li[3]/terrain</xpath>
+          <value><terrain>RSW_FE_Ground_Soil</terrain></value>
+        </li>
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/BiomeDef[defName="ZBiome_Grasslands"]/terrainsByFertility/li[4]/terrain</xpath>
+          <value><terrain>RSW_FE_Ground_SoilRich</terrain></value>
+        </li>
+
+        <li Class="PatchOperationReplace">
+          <xpath>Defs/BiomeDef[defName="ZBiome_Grasslands"]/terrainPatchMakers/li[1]/thresholds/li[1]/terrain</xpath>
+          <value><terrain>RSW_FE_Ground_SoilRich</terrain></value>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>

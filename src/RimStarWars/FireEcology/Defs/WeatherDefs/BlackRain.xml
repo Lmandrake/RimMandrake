@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    Black Rain — the ash storm that follows and extinguishes a large fire.
+
+    THE TRIGGER IS 100% VANILLA, ZERO NEW CODE (RimSage,
+    Source/RimWorld/WeatherDecider.cs, verified 2026-09-01):
+
+    - Map.fireWatcher (Source/RimWorld/FireWatcher.cs) already tracks a
+      running `fireDanger` off every live Fire thing's fireSize and exposes
+      `LargeFireDangerPresent` once fireDanger > 90 — vanilla's own
+      "this is a BIG fire" flag, ticked every 426 ticks, no new state needed.
+    - WeatherDecider.CurrentWeatherCommonality (~line 185): "if
+      (map.fireWatcher.LargeFireDangerPresent && weather.rainRate > 0.1f)
+      num2 *= 15f;" — ANY weather with rainRate > 0.1 gets its commonality
+      multiplied FIFTEEN-FOLD the instant a large fire is burning (vanilla's
+      own existing ChanceFactorRainOnFire mechanic). Black Rain only needs
+      rainRate set and ordinary membership in the biome's weather table
+      (PyrelandsWeather_BlackRain.xml, RimUtinni: Fire Ecology) to inherit
+      that for free.
+    - WeatherDeciderTick (~line 71): LargeFireDangerPresent ALSO shrinks the
+      weather-check interval to 25% of normal, so the roll happens ~4x more
+      often while the fire is large — the switch arrives quickly once the
+      fire is big enough, not on the next lazy roll.
+    - Extinguishing is equally vanilla: Fire.TickInterval (Source/RimWorld/
+      Fire.cs:~309) already applies Extinguish damage to any rain-vulnerable
+      fire whenever map.weatherManager.RainRate > 0.01 — nothing reads Black
+      Rain specially, it "rains" and vanilla's own fire code does the rest.
+
+    No eventMakers on this one, deliberately — DryThunderstorm/
+    RainyThunderstorm both spawn WeatherEvent_LightningStrike; Black Rain is
+    the loop's full stop, not a fresh ignition source.
+
+    Kept rare outside a big fire (a low base baseWeatherCommonalities share)
+    so it reads as "the one time it rains" per R-H1/R-H2, not an ordinary
+    roll — see PyrelandsWeather_BlackRain.xml for the number.
+  -->
+
+  <WeatherDef>
+    <defName>RSW_FE_BlackRain</defName>
+    <label>black rain</label>
+    <description>A short, filthy downpour of ash-laden condensate, dragged out of a fire's own convection column. It blackens everything it touches, cuts visibility and accuracy, and puts out the fire it came from — the one time it truly rains here.</description>
+    <ambientSounds>
+      <li>Ambient_Rain</li>
+    </ambientSounds>
+    <durationRange>2500~6000</durationRange>
+    <favorability>VeryBad</favorability>
+    <isBad>true</isBad>
+    <accuracyMultiplier>0.55</accuracyMultiplier>
+    <moveSpeedMultiplier>0.85</moveSpeedMultiplier>
+    <perceivePriority>3</perceivePriority>
+    <rainRate>1.1</rainRate>
+    <overlayClasses>
+      <li>WeatherOverlay_Rain</li>
+      <li>WeatherOverlay_Fog</li>
+    </overlayClasses>
+    <skyColorsDay>
+      <sky>(0.22,0.20,0.20)</sky>
+      <shadow>(0.5,0.5,0.5)</shadow>
+      <overlay>(0.3,0.28,0.28)</overlay>
+      <saturation>0.4</saturation>
+    </skyColorsDay>
+    <skyColorsDusk>
+      <sky>(0.26,0.22,0.22)</sky>
+      <shadow>(0.5,0.5,0.5)</shadow>
+      <overlay>(0.25,0.22,0.22)</overlay>
+      <saturation>0.4</saturation>
+    </skyColorsDusk>
+    <skyColorsNightEdge>
+      <sky>(0.12,0.11,0.11)</sky>
+      <shadow>(0.4,0.4,0.4)</shadow>
+      <overlay>(0.18,0.16,0.16)</overlay>
+      <saturation>0.4</saturation>
+    </skyColorsNightEdge>
+    <skyColorsNightMid>
+      <sky>(0.12,0.11,0.11)</sky>
+      <shadow>(0.4,0.4,0.4)</shadow>
+      <overlay>(0.18,0.16,0.16)</overlay>
+      <saturation>0.4</saturation>
+    </skyColorsNightMid>
+    <temperatureRange>-40~999</temperatureRange>
+    <weatherThought>SoakingWet</weatherThought>
+    <windSpeedFactor>1.3</windSpeedFactor>
+    <windSpeedOffset>1.0</windSpeedOffset>
+  </WeatherDef>
+
+</Defs>

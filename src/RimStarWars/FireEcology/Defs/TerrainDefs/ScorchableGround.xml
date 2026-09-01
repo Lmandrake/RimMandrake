@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    Clones of vanilla Sand/Gravel/Soil/SoilRich, scoped to whatever biome's
+    terrainsByFertility/terrainPatchMakers actually reference them (wired by
+    RimUtinni: Fire Ecology onto the Pyrelands only) — NOT a patch on the
+    shared vanilla terrains themselves. Patching Flammability onto Soil/Sand
+    directly would make every biome on the planet that uses those terrains
+    start converting to ash, which is not what this item asked for. Cloning
+    keeps the blast radius to exactly the biome that opts in.
+
+    Stat values are copied from vanilla Terrain_Natural.xml (RimSage,
+    2026-09-01) so these read identically to ordinary ground until they burn.
+    The only additions are Flammability (FireUtility.Flammable() reads
+    StatDefOf.Flammability > 0.01, RimWorld/FireUtility.cs:206) and burnedDef,
+    which Verse/TerrainGrid.cs:609 and Fire.cs's TryBurnFloor already consume
+    with zero new code — Notify_TerrainBurned fires on ANY standing terrain
+    under a Fire thing each burn tick, not just constructed floors.
+  -->
+
+  <TerrainDef Name="RSW_FE_ScorchableGroundBase" Abstract="true">
+    <researchPrerequisites/>
+    <renderPrecedence>100</renderPrecedence>
+    <fertility>0</fertility>
+    <affordances>
+      <li>Light</li>
+      <li>Heavy</li>
+    </affordances>
+    <statBases>
+      <Beauty>0</Beauty>
+      <Flammability>0.6</Flammability>
+    </statBases>
+  </TerrainDef>
+
+  <TerrainDef ParentName="RSW_FE_ScorchableGroundBase">
+    <defName>RSW_FE_Ground_Sand</defName>
+    <label>sand</label>
+    <description>Loose, pale sand. Dry enough to carry a grass fire's heat straight down into it.</description>
+    <texturePath>Terrain/Surfaces/Sand</texturePath>
+    <color>(240, 220, 130)</color>
+    <fertility>0.05</fertility>
+    <passability>Standable</passability>
+    <pathCost>3</pathCost>
+    <burnedDef>RSW_FE_Ash_Trace</burnedDef>
+  </TerrainDef>
+
+  <TerrainDef ParentName="RSW_FE_ScorchableGroundBase">
+    <defName>RSW_FE_Ground_Gravel</defName>
+    <label>gravel</label>
+    <description>Loose stone chips over hardpan. Sparse fuel, but what grows in it still burns.</description>
+    <texturePath>Terrain/Surfaces/Gravel</texturePath>
+    <color>(140, 130, 120)</color>
+    <fertility>0.28</fertility>
+    <passability>Standable</passability>
+    <pathCost>2</pathCost>
+    <burnedDef>RSW_FE_Ash_Trace</burnedDef>
+  </TerrainDef>
+
+  <TerrainDef ParentName="RSW_FE_ScorchableGroundBase">
+    <defName>RSW_FE_Ground_Soil</defName>
+    <label>soil</label>
+    <description>Ordinary dirt, thick with dry grass roots that carry a fire's heat into the ground itself.</description>
+    <texturePath>Terrain/Surfaces/Soil</texturePath>
+    <color>(119, 96, 64)</color>
+    <fertility>0.7</fertility>
+    <passability>Standable</passability>
+    <pathCost>1</pathCost>
+    <burnedDef>RSW_FE_Ash_Trace</burnedDef>
+  </TerrainDef>
+
+  <TerrainDef ParentName="RSW_FE_ScorchableGroundBase">
+    <defName>RSW_FE_Ground_SoilRich</defName>
+    <label>rich soil</label>
+    <description>Dark, fertile dirt — R-H5's ash-fertilized ground, and the richest fuel bed on the savanna.</description>
+    <texturePath>Terrain/Surfaces/SoilRich</texturePath>
+    <color>(90, 69, 46)</color>
+    <fertility>1.4</fertility>
+    <passability>Standable</passability>
+    <pathCost>1</pathCost>
+    <burnedDef>RSW_FE_Ash_Trace</burnedDef>
+  </TerrainDef>
+
+</Defs>

@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    The loose surface-ash layer that rides on top of the AshLadder terrain
+    states. Vanilla's own DamageWorker_Flame already drops Filth_Ash
+    unconditionally on every fire tick everywhere (RimSage,
+    Source/Verse/DamageWorker_Flame.cs:29) — that keeps happening, untouched,
+    in every biome including this one.
+
+    This is a SEPARATE filth, spawned by the C# hook alongside a terrain-tier
+    escalation, carrying rainWashes=true — vanilla's own SteadyEnvironmentEffects
+    already washes any rainWashes filth away under ANY weather with rainRate>0
+    (Source/RimWorld/SteadyEnvironmentEffects.cs:124), including Black Rain.
+    That passive vanilla mechanic is what actually delivers "converts
+    accumulated ash to fast-clearing slurry" — see the note in AshLadder.xml
+    for what it does NOT reach (the terrain tiers themselves).
+  -->
+
+  <ThingDef ParentName="BaseFilth">
+    <defName>RSW_FE_Filth_LooseAsh</defName>
+    <label>loose ash</label>
+    <description>A drift of fine grey ash over the ground beneath it. A hard rain carries it off fast.</description>
+    <altitudeLayer>Filth</altitudeLayer>
+    <category>Filth</category>
+    <drawerType>MapMeshOnly</drawerType>
+    <filth>
+      <cleaningSound>Interact_CleanFilth</cleaningSound>
+      <ignoreFilthMultiplierStat>true</ignoreFilthMultiplierStat>
+      <disappearsInDays>6~9</disappearsInDays>
+      <rainWashes>true</rainWashes>
+      <cleaningWorkToReduceThickness>60</cleaningWorkToReduceThickness>
+      <canFilthAttach>true</canFilthAttach>
+      <maxThickness>4</maxThickness>
+    </filth>
+    <graphicData>
+      <graphicClass>Graphic_Cluster</graphicClass>
+      <shaderType>Transparent</shaderType>
+      <texPath>Things/Filth/Ash</texPath>
+      <color>(140, 136, 130, 200)</color>
+      <drawSize>3</drawSize>
+    </graphicData>
+    <statBases>
+      <Beauty>-8</Beauty>
+      <Cleanliness>-10</Cleanliness>
+    </statBases>
+    <thingClass>Filth</thingClass>
+    <useHitPoints>false</useHitPoints>
+  </ThingDef>
+
+</Defs>

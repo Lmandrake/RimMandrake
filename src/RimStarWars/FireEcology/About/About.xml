@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimMandrake: SW — Fire Ecology</name>
+  <packageId>mandrake.rsw.fireecology</packageId>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>The generic engine half of FIRE_ECOLOGY_LOOP_1 — a self-igniting desert-savanna fire ecology any Star Wars desert scenario could use unchanged: a scorchable-ground → ash-ladder terrain chain (trace → light → heavy → deep, real pathCost/fertility teeth, triggered by vanilla's own TerrainDef.burnedDef on flammable ground), a Black Rain WeatherDef that exploits vanilla's existing FireWatcher.LargeFireDangerPresent / WeatherDecider.ChanceFactorRainOnFire mechanism to follow and extinguish a large fire, fire-triggered scorch-fruit and fulgurites (one narrow Harmony hook: strike/burn-spawns-prop), and a salvaged firefoam sprayer + buildable firebreak strip.
+
+Campaign-specific wiring (which biome carries this, at what numbers) lives in RimUtinni: Fire Ecology (`mandrake.rut.fireecology`), which patches it onto the Pyrelands. This mod carries no Ash'karr/clan/story references — see `design/NAMING_SCHEME_PLAN.md`'s engine/content split.
+
+No creatures, no pyroconvective cell, no Tribes burn behavior — that's the rest of `design/Jawa/proposals/fire_ecology_deep_design.md`, awaiting PROPOSAL_SUITE_REVIEW_1.</description>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>brrainz.harmony</li>
+    <li>Ludeon.RimWorld</li>
+  </loadAfter>
+</ModMetaData>

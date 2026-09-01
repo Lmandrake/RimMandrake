@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    The trace -> light -> heavy -> deep ladder itself, doc §3
+    ("design/Jawa/proposals/fire_ecology_deep_design.md"). Each rung is
+    itself flammable with burnedDef pointing at the next rung, so a scar
+    that burns AGAIN (R-H3's freakish regrowth means it usually can, fast)
+    escalates the ladder — "a standing burn that migrates across itself
+    forever" made literal by vanilla's own burnedDef chain, zero new code.
+
+    pathCost climbs and fertility falls at each rung — the item's own
+    "movement slowed... solar-panel output dented... plants smothered" is
+    delivered through real, existing StatDefs any building/pawn already
+    reads (solar panels multiply output by the cell's sunlight, not
+    terrain, so "dented" here is honestly delivered as fertility/pathCost
+    only — see the build report for what this does NOT claim).
+
+    ⚠️ WHAT THIS DOES NOT CLAIM: there is no passive, ambient, XML-only
+    vanilla mechanism that reverts a TerrainDef back down the chain over
+    time or under a specific weather (TerrainDef.driesTo exists but is
+    consumed ONLY by CompTerrainPumpDry, a building comp, and
+    RoadDefGenStep_DryWithFallback, a mapgen-time road tool — RimSage,
+    Source/RimWorld/CompTerrainPumpDry.cs:64 and
+    Source/RimWorld/RoadDefGenStep_DryWithFallback.cs:16 — neither fires
+    passively during play). So Black Rain does NOT auto-clear deep ash
+    TERRAIN back to clean ground; that half of "converts accumulated ash
+    to fast-clearing slurry" is delivered instead through the loose
+    RSW_FE_Filth_LooseAsh layer (Filth_LooseAsh.xml, rainWashes=true) that
+    rides on top of these terrains, which vanilla's own
+    SteadyEnvironmentEffects DOES wash away passively under any rainRate
+    weather. Clearing the underlying HEAVY/DEEP terrain itself is left to
+    the player's firefoam sprayer (FirefoamSprayer.xml) — a deliberate,
+    flagged scope call, not an oversight.
+  -->
+
+  <TerrainDef Name="RSW_FE_AshBase" Abstract="true">
+    <researchPrerequisites/>
+    <renderPrecedence>101</renderPrecedence>
+    <texturePath>Terrain/Surfaces/RoughHewnRock</texturePath>
+    <passability>Standable</passability>
+    <affordances>
+      <li>Light</li>
+      <li>Heavy</li>
+    </affordances>
+  </TerrainDef>
+
+  <TerrainDef ParentName="RSW_FE_AshBase">
+    <defName>RSW_FE_Ash_Trace</defName>
+    <label>ash trace</label>
+    <description>A light dusting of ash where the fire passed through fast. Cosmetic — it will not slow you down, and it will not stop the ground burning again.</description>
+    <color>(150, 145, 138, 140)</color>
+    <fertility>0.5</fertility>
+    <pathCost>1</pathCost>
+    <statBases>
+      <Beauty>-2</Beauty>
+      <Flammability>0.6</Flammability>
+    </statBases>
+    <burnedDef>RSW_FE_Ash_Light</burnedDef>
+  </TerrainDef>
+
+  <TerrainDef ParentName="RSW_FE_AshBase">
+    <defName>RSW_FE_Ash_Light</defName>
+    <label>light ash</label>
+    <description>A real layer of ash, thick enough to slow root growth. Not yet thick enough to slow a person.</description>
+    <color>(120, 115, 108, 190)</color>
+    <fertility>0.25</fertility>
+    <pathCost>2</pathCost>
+    <statBases>
+      <Beauty>-4</Beauty>
+      <Flammability>0.4</Flammability>
+    </statBases>
+    <burnedDef>RSW_FE_Ash_Heavy</burnedDef>
+  </TerrainDef>
+
+  <TerrainDef ParentName="RSW_FE_AshBase">
+    <defName>RSW_FE_Ash_Heavy</defName>
+    <label>heavy ash</label>
+    <description>Ash banked deep enough to drag at every step and choke anything trying to grow through it. A repeatedly-burned scar looks like this.</description>
+    <color>(80, 76, 70, 230)</color>
+    <fertility>0.05</fertility>
+    <pathCost>9</pathCost>
+    <statBases>
+      <Beauty>-7</Beauty>
+      <Flammability>0.2</Flammability>
+    </statBases>
+    <burnedDef>RSW_FE_Ash_Deep</burnedDef>
+  </TerrainDef>
+
+  <TerrainDef ParentName="RSW_FE_AshBase">
+    <defName>RSW_FE_Ash_Deep</defName>
+    <label>deep ash</label>
+    <description>A dead grey drift, smothering enough that nothing grows through it and nothing burns it further. The scar's floor, until something clears it back to ground.</description>
+    <color>(48, 46, 43, 255)</color>
+    <fertility>0.0</fertility>
+    <pathCost>16</pathCost>
+    <statBases>
+      <Beauty>-10</Beauty>
+      <Flammability>0</Flammability>
+    </statBases>
+  </TerrainDef>
+
+</Defs>

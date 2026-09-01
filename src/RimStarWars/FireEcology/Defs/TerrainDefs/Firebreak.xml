@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    "A layable firebreak line" (doc §6) — a buildable TerrainDef, the same
+    mechanism vanilla already uses for every floor. Non-flammable ground
+    already IS a firebreak in vanilla: fire spreads by igniting flammable
+    plants/things/terrain in adjacent cells (RimWorld/FireUtility.cs), so a
+    Flammability-0 strip with no flammable plant on it is a real break with
+    no new code. "Temporary" is delivered narratively/cheaply (low cost,
+    Firefoam-tier research, no construction skill gate) rather than via a
+    real auto-decay — vanilla floors do not expire on a timer, and giving
+    this one a countdown would need a comp; the item's own point (stage a
+    controlled burn on your own schedule) does not require it to vanish on
+    its own, only to be cheap enough to lay and pull up at will.
+  -->
+
+  <TerrainDef ParentName="FlagstoneBase">
+    <defName>RSW_FE_FirebreakLine</defName>
+    <label>firebreak line</label>
+    <description>A thin strip of foam-hardened, ash-packed ground, sprayed down rather than built. Nothing flammable grows in it and fire will not cross it — the same trick the Deep Desert Tribes use to lay a controlled burn line, done with a sprayer instead of a walked-and-lit fuse.</description>
+    <texturePath>Terrain/Surfaces/RoughHewnRock</texturePath>
+    <color>(196, 188, 170)</color>
+    <fertility>0</fertility>
+    <pathCost>2</pathCost>
+    <designationCategory>Floors</designationCategory>
+    <constructionSkillPrerequisite>0</constructionSkillPrerequisite>
+    <researchPrerequisites>
+      <li>Firefoam</li>
+    </researchPrerequisites>
+    <costList>
+      <Chemfuel>2</Chemfuel>
+    </costList>
+    <statBases>
+      <WorkToBuild>120</WorkToBuild>
+      <Beauty>-2</Beauty>
+      <Flammability>0</Flammability>
+    </statBases>
+    <burnedDef/>
+  </TerrainDef>
+
+</Defs>

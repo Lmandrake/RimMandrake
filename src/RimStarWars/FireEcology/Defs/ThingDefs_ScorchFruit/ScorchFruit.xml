@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    Scorch-fruit — doc §4: "inert and worthless unburned; its casing requires
+    ignition heat to crack. The harvest window is during the burn or in the
+    minutes after... before Ember Snow or Black Rain seals it back into
+    ordinary soil."
+
+    Design: rather than a normally-growing wild plant gated by a runtime
+    "is fire nearby" check at harvest time (which vanilla has no XML hook
+    for — no Plant field reads GameCondition or nearby Fire things), this
+    plant simply DOES NOT EXIST until the C# hook spawns it (already at
+    harvestAfterGrowth, via the same fire-tick hook that places
+    RSW_FE_Filth_LooseAsh) directly on a burning cell. It never appears in
+    any biome's wildPlants list — RimUtinni: Fire Ecology does NOT add it
+    there, deliberately. "Inert and worthless unburned" is delivered by the
+    plant simply not existing unburned, which is stronger than a gate.
+
+    The closing half of the window ("before Ember Snow or Black Rain seals
+    it") is CompProperties_Rottable on the standing plant itself, same comp
+    class RawBerries' harvested item uses (RimSage, confirmed
+    Plant : ThingWithComps, so a comp on a live Plant is structurally legal)
+    — short daysToRotStart so an unharvested scorch-fruit plant destroys
+    itself within about a day.
+
+    ⚠️ UNVERIFIED, flagged not guessed: whether CompRottable's rot-tick
+    actually fires correctly on a live, growing Plant (as opposed to the
+    inert food items it's normally used on) has not been proven — no vanilla
+    Plant def does this, and it has not been loaded. This is exactly the
+    kind of thing the live quicktest needs to watch for.
+  -->
+
+  <ThingDef ParentName="PlantBase">
+    <defName>RSW_FE_Plant_ScorchFruit</defName>
+    <label>scorch-fruit pod</label>
+    <description>A woody seed-pod, sealed shut and inert until fire cracks its casing. Once cracked it ripens almost instantly on the heat alone — and goes soft and worthless again within a day if nothing picks it.</description>
+    <altitudeLayer>LowPlant</altitudeLayer>
+    <category>Plant</category>
+    <drawerType>MapMeshOnly</drawerType>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>1.1</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <graphicData>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shaderType>CutoutPlant</shaderType>
+      <texPath>Things/Plant/Ambrosia</texPath>
+      <color>(150, 70, 40)</color>
+      <shadowData>
+        <volume>(0.1, 0.2, 0.1)</volume>
+      </shadowData>
+    </graphicData>
+    <ingestible></ingestible>
+    <neverMultiSelect>false</neverMultiSelect>
+    <pathCost>14</pathCost>
+    <pathCostIgnoreRepeat>false</pathCostIgnoreRepeat>
+    <plant>
+      <fertilityMin>0.0</fertilityMin>
+      <fertilitySensitivity>0</fertilitySensitivity>
+      <soundHarvesting>Harvest_Standard</soundHarvesting>
+      <soundHarvestFinish>Harvest_Standard_Finish</soundHarvestFinish>
+      <sowTags/>
+      <sowResearchPrerequisites/>
+      <harvestWork>150</harvestWork>
+      <visualSizeRange>0.8~1.1</visualSizeRange>
+      <topWindExposure>0.1</topWindExposure>
+      <growDays>0.05</growDays>
+      <harvestYield>5</harvestYield>
+      <harvestTag>Standard</harvestTag>
+      <harvestAfterGrowth>0.01</harvestAfterGrowth>
+      <harvestedThingDef>RSW_FE_ScorchFruitYield</harvestedThingDef>
+      <wildOrder>2</wildOrder>
+      <purpose>Food</purpose>
+      <allowAutoCut>false</allowAutoCut>
+    </plant>
+    <selectable>true</selectable>
+    <statBases>
+      <Flammability>0</Flammability>
+      <BeautyOutdoors>1</BeautyOutdoors>
+      <MaxHitPoints>40</MaxHitPoints>
+      <Nutrition>0.5</Nutrition>
+    </statBases>
+    <thingCategories>
+      <li>Plants</li>
+    </thingCategories>
+    <thingClass>Plant</thingClass>
+    <tickerType>Normal</tickerType>
+    <useHitPoints>True</useHitPoints>
+  </ThingDef>
+
+  <ThingDef ParentName="PlantFoodRawBase">
+    <defName>RSW_FE_ScorchFruitYield</defName>
+    <label>scorch-fruit</label>
+    <description>A fire-cracked seed-pod's contents — sweet, faintly smoky, prized for having been worth the risk. Spoils fast; this was never meant to be stored.</description>
+    <allowedArchonexusCount>60</allowedArchonexusCount>
+    <altitudeLayer>Item</altitudeLayer>
+    <alwaysHaulable>true</alwaysHaulable>
+    <category>Item</category>
+    <comps>
+      <li Class="CompProperties_Forbiddable"></li>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>4</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <drawerType>MapMeshOnly</drawerType>
+    <drawGUIOverlay>true</drawGUIOverlay>
+    <graphicData>
+      <graphicClass>Graphic_Single</graphicClass>
+      <texPath>Things/Item/Resource/PlantFoodRaw/Berries</texPath>
+      <color>(150, 70, 40)</color>
+    </graphicData>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <ingestible>
+      <preferability>RawTasty</preferability>
+      <tasteThought></tasteThought>
+      <ingestEffect>EatVegetarian</ingestEffect>
+      <ingestSound>RawVegetable_Eat</ingestSound>
+      <foodType>VegetableOrFruit</foodType>
+    </ingestible>
+    <pathCost>14</pathCost>
+    <possessionCount>10</possessionCount>
+    <resourceReadoutPriority>Middle</resourceReadoutPriority>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <socialPropernessMatters>true</socialPropernessMatters>
+    <stackLimit>50</stackLimit>
+    <statBases>
+      <Beauty>-2</Beauty>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>1</Flammability>
+      <DeteriorationRate>10</DeteriorationRate>
+      <Mass>0.03</Mass>
+      <Nutrition>0.09</Nutrition>
+      <MarketValue>3.5</MarketValue>
+    </statBases>
+    <thingCategories>
+      <li>PlantFoodRaw</li>
+    </thingCategories>
+    <thingClass>ThingWithComps</thingClass>
+    <tickerType>Rare</tickerType>
+    <useHitPoints>true</useHitPoints>
+  </ThingDef>
+
+</Defs>

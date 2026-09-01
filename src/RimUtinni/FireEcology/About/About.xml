@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimMandrake: Utinni — Fire Ecology (Pyrelands)</name>
+  <packageId>mandrake.rut.fireecology</packageId>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Wires `mandrake.rsw.fireecology`'s generic desert fire-ecology engine onto THIS campaign's Pyrelands biome (`ZBiome_Grasslands`, from "More Vanilla Biomes" — zylle.morevanillabiomes): strips rain, cranks DryThunderstorm, adds Black Rain to the biome's weather table, swaps its ground terrain for the scorchable/ash-ladder family, and seeds scorch-fruit's spawn odds. FIRE_ECOLOGY_LOOP_1's v1 slice, per `infrastructure/state/items/FIRE_ECOLOGY_LOOP_1.md`.</description>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+    <li>
+      <packageId>mandrake.rsw.fireecology</packageId>
+      <displayName>RimMandrake: SW — Fire Ecology</displayName>
+    </li>
+    <li>
+      <packageId>zylle.morevanillabiomes</packageId>
+      <displayName>More Vanilla Biomes</displayName>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>mandrake.rsw.fireecology</li>
+    <li>zylle.morevanillabiomes</li>
+  </loadAfter>
+</ModMetaData>

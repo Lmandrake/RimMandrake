@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  PyrelandsWeather_BlackRain.xml   RimUtinni: Fire Ecology   2026-09-01
+  ============================================================================
+  FIRE_ECOLOGY_LOOP_1, unit 2 — wires RSW_FE_BlackRain (RimMandrake: SW —
+  Fire Ecology) into the Pyrelands' own weather table at a LOW base share,
+  same dictionary-shorthand xpath pattern as PyrelandsWeather_Stage0.xml
+  (apply AFTER that file — both are PatchOperationAdd/Replace against the
+  same list, load order inside one mod's Patches/ folder is alphabetical,
+  "BlackRain" > "Stage0" so this is safe).
+
+  Kept at commonality 1 deliberately — low enough that it almost never rolls
+  under ordinary Clear(55)/DryThunderstorm(35) dominance. It does not need a
+  bigger base number: WeatherDecider.CurrentWeatherCommonality's existing
+  ChanceFactorRainOnFire (15x, RimSage, WeatherDecider.cs:185) only fires
+  while map.fireWatcher.LargeFireDangerPresent is true, and at that moment
+  Black Rain is the ONLY rainRate>0.1 weather left in this table (Stage 0
+  removed all the others) — so it goes from "almost never" to "effectively
+  the next roll" exactly when a big fire is burning, and stays "almost
+  never" the rest of the time. See BlackRain.xml's own header for the full
+  mechanism citation.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>More Vanilla Biomes</li>
+    </mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <li Class="PatchOperationAdd">
+          <xpath>Defs/BiomeDef[defName="ZBiome_Grasslands"]/baseWeatherCommonalities</xpath>
+          <value>
+            <RSW_FE_BlackRain>1</RSW_FE_BlackRain>
+          </value>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>

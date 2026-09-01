@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    Fire-glass fulgurites — where lightning struck. Doc §4: "hooked straight
+    off the lightning-strike event: check the underlying terrain, roll to
+    spawn a mineable node... a pure exploration reward for having survived
+    being nearby, no combat attached."
+
+    ⚠️ SCOPE NOTE, not a guess: the doc says "mineable node." Vanilla's only
+    mineable-resource template (MineableJade etc, RimSage) is a full rock
+    VEIN — Impassable, wall-tile, mapgen-scattered, sized for a mountain
+    face. That shape is wrong for a single glassy prop a strike drops on
+    open sand. This ships as a walkable ground ITEM instead (ParentName
+    ResourceBase, same family as loose Jade/Silver lying on the ground) —
+    same "go see what it left, pure exploration reward" payoff, no invented
+    mining minigame for a decorative pickup. Spawned by the C# hook
+    (FireEcologyHook.cs) as a postfix on WeatherEvent_LightningStrike.DoStrike.
+  -->
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RSW_FE_Fulgurite</defName>
+    <label>fulgurite</label>
+    <description>Sand fused to glass by a lightning strike, hollow and branching where the bolt burrowed down before the heat gave out. Worthless to sell, satisfying to find.</description>
+    <allowedArchonexusCount>40</allowedArchonexusCount>
+    <altitudeLayer>Item</altitudeLayer>
+    <alwaysHaulable>true</alwaysHaulable>
+    <category>Item</category>
+    <comps>
+      <li Class="CompProperties_Forbiddable"></li>
+    </comps>
+    <drawerType>MapMeshOnly</drawerType>
+    <drawGUIOverlay>true</drawGUIOverlay>
+    <graphicData>
+      <texPath>Things/Item/Resource/Jade</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <color>(210, 225, 235, 235)</color>
+    </graphicData>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <pathCost>14</pathCost>
+    <resourceReadoutPriority>Middle</resourceReadoutPriority>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <smeltable>false</smeltable>
+    <soundDrop>ChunkRock_Drop</soundDrop>
+    <soundInteract>ChunkRock_Drop</soundInteract>
+    <stackLimit>25</stackLimit>
+    <statBases>
+      <Beauty>2</Beauty>
+      <MarketValue>3</MarketValue>
+      <Mass>0.4</Mass>
+      <Flammability>0</Flammability>
+    </statBases>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+    <thingClass>ThingWithComps</thingClass>
+    <useHitPoints>false</useHitPoints>
+  </ThingDef>
+
+</Defs>

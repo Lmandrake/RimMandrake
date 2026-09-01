@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    "A handheld foam/retardant sprayer... craftable early and cheaply so the
+    scorch-fruit window is reachable without losing a colonist to it" (doc
+    §6). Reflavor of vanilla's existing firefoam primitive per the doc's own
+    instruction, not new mechanics: the projectile reuses vanilla's real
+    DamageDefOf.Extinguish and spawns vanilla's own Filth_FireFoam
+    (RimSage — allowsFire=false, rainWashes=true already on that def), the
+    same filth FirefoamPopper and Bullet_Shell_Firefoam already place.
+    Smaller blast/shorter range than the mortar-shell firefoam popper, since
+    this is a carried tool a colonist aims, not an artillery shell.
+
+    The layable firebreak LINE is the separate buildable TerrainDef
+    (Firebreak.xml) laid via the ordinary floor-designator, not fired from
+    this weapon — matching the doc's "a temporary, consumable foam-sprayed
+    strip... letting the player stage a controlled burn on their own
+    schedule," a placement action, not a combat one.
+  -->
+
+  <ThingDef ParentName="BaseBullet">
+    <defName>RSW_FE_Bullet_FirefoamSplash</defName>
+    <label>firefoam splash</label>
+    <altitudeLayer>Projectile</altitudeLayer>
+    <category>Projectile</category>
+    <graphicData>
+      <shaderType>TransparentPostLight</shaderType>
+      <texPath>Things/Projectile/ShellFirefoam</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <neverMultiSelect>True</neverMultiSelect>
+    <projectile>
+      <damageDef>Extinguish</damageDef>
+      <speed>60</speed>
+      <explosionRadius>2.5</explosionRadius>
+      <soundExplode>Explosion_EMP</soundExplode>
+      <postExplosionSpawnThingDef>Filth_FireFoam</postExplosionSpawnThingDef>
+      <postExplosionSpawnChance>1</postExplosionSpawnChance>
+      <postExplosionSpawnThingCount>2</postExplosionSpawnThingCount>
+      <applyDamageToExplosionCellsNeighbors>true</applyDamageToExplosionCellsNeighbors>
+      <explosionEffect>ExtinguisherExplosion</explosionEffect>
+    </projectile>
+    <thingClass>Projectile_Explosive</thingClass>
+    <tickerType>Normal</tickerType>
+    <useHitPoints>False</useHitPoints>
+  </ThingDef>
+
+  <ThingDef ParentName="BaseHumanMakeableGun">
+    <defName>RSW_FE_FirefoamSprayer</defName>
+    <label>firefoam sprayer</label>
+    <description>A salvaged tank-and-nozzle rig, cobbled together from scrap rather than issued Imperial firefighting gear. It throws a short-ranged splash of retardant foam — enough to buy a colonist the seconds needed to walk into a scorch-fruit window and back out.</description>
+    <allowedArchonexusCount>10</allowedArchonexusCount>
+    <altitudeLayer>Item</altitudeLayer>
+    <alwaysHaulable>true</alwaysHaulable>
+    <category>Item</category>
+    <comps>
+      <li Class="CompProperties_Forbiddable"></li>
+      <li>
+        <compClass>CompEquippable</compClass>
+      </li>
+      <li Class="CompProperties_Biocodable"></li>
+    </comps>
+    <costList>
+      <Steel>40</Steel>
+      <Chemfuel>15</Chemfuel>
+    </costList>
+    <drawerType>MapMeshOnly</drawerType>
+    <drawGUIOverlay>true</drawGUIOverlay>
+    <equipmentType>Primary</equipmentType>
+    <graphicData>
+      <onGroundRandomRotateAngle>35</onGroundRandomRotateAngle>
+      <texPath>Things/Item/Equipment/WeaponRanged/Revolver</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <pathCost>14</pathCost>
+    <possessionCount>1</possessionCount>
+    <recipeMaker>
+      <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+      <workSkill>Crafting</workSkill>
+      <effectWorking>Smith</effectWorking>
+      <soundWorking>Recipe_Smith</soundWorking>
+      <recipeUsers>
+        <li>TableMachining</li>
+      </recipeUsers>
+      <researchPrerequisite>Firefoam</researchPrerequisite>
+      <skillRequirements>
+        <Crafting>2</Crafting>
+      </skillRequirements>
+      <displayPriority>400</displayPriority>
+    </recipeMaker>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <smeltable>true</smeltable>
+    <statBases>
+      <MaxHitPoints>80</MaxHitPoints>
+      <Flammability>0.3</Flammability>
+      <DeteriorationRate>2</DeteriorationRate>
+      <Beauty>-6</Beauty>
+      <SellPriceFactor>0.2</SellPriceFactor>
+      <WorkToMake>3000</WorkToMake>
+      <Mass>3.5</Mass>
+      <AccuracyTouch>0.95</AccuracyTouch>
+      <AccuracyShort>0.9</AccuracyShort>
+      <AccuracyMedium>0.7</AccuracyMedium>
+      <AccuracyLong>0.4</AccuracyLong>
+      <RangedWeapon_Cooldown>3.5</RangedWeapon_Cooldown>
+    </statBases>
+    <techLevel>Industrial</techLevel>
+    <thingCategories>
+      <li>WeaponsRanged</li>
+    </thingCategories>
+    <thingClass>ThingWithComps</thingClass>
+    <tickerType>Never</tickerType>
+    <tools>
+      <li>
+        <label>nozzle</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2.2</cooldownTime>
+      </li>
+    </tools>
+    <tradeTags>
+      <li>WeaponRanged</li>
+    </tradeTags>
+    <uiIconScale>1.4</uiIconScale>
+    <useHitPoints>true</useHitPoints>
+    <verbs>
+      <li>
+        <verbClass>Verb_Shoot</verbClass>
+        <hasStandardCommand>true</hasStandardCommand>
+        <defaultProjectile>RSW_FE_Bullet_FirefoamSplash</defaultProjectile>
+        <warmupTime>0.6</warmupTime>
+        <range>9.9</range>
+        <soundCast>Explosion_FirefoamPopper</soundCast>
+        <muzzleFlashScale>4</muzzleFlashScale>
+      </li>
+    </verbs>
+    <weaponClasses>
+      <li>Ranged</li>
+      <li>RangedLight</li>
+    </weaponClasses>
+    <weaponTags>
+      <li>Gun</li>
+      <li>SimpleGun</li>
+    </weaponTags>
+  </ThingDef>
+
+</Defs>
