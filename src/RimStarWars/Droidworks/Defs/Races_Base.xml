@@ -28,30 +28,25 @@
        not a race field — `PawnGenerator.cs` reads it, `RaceProperties` has
        no such field) and are fixed per-kind by the generator, not here.
 
-       🔴 `<fleshType>` is DELIBERATELY NOT SET HERE — do not add it back
-       without DROIDWORKS_ISFLESH_RELATIONS_CRASH_1 landing first. Live-tested
-       2026-08-30: `PawnComponentsUtility.AddAndRemoveDynamicComponents` only
-       allocates `pawn.relations` `if (pawn.RaceProps.IsFlesh)`, and
-       `IsFlesh == FleshType.isOrganic`. Setting `isOrganic:false` (the whole
-       point of the spec's own droid flesh type) leaves `pawn.relations` null
-       forever on a race that is ALSO Humanlike intelligence — and Humanlike
-       pawns go through full relation generation regardless, so
-       `PawnGenerator.GeneratePawnRelations`/`GenerateTraits` NREs on the null
-       tracker (`LovePartnerRelationUtility.HasAnyLovePartnerOfTheOppositeGender`,
-       `AlienRace.HarmonyPatches.GenerationChanceGenderless`) the moment a
-       droid is generated through a code path that runs it — which is any
-       normal raid/world-pawn spawn, not just this bridge tool. Confirmed
-       NOT specific to Droidworks: the already-shipped `OuterRim_BattleDroid`
-       (`Asimov_Automaton` fleshtype, `isOrganic:false` since
-       `Jawa_Doctrine/Patches/DroidsAreMachines.xml`, 2026-08-11) hit the
-       IDENTICAL crash, 10/10 in a batch test. This is a pre-existing latent
-       bug in the whole shipped droid roster, not something this item
-       introduced — see DROIDWORKS_ISFLESH_RELATIONS_CRASH_1. -->
+       ✅ `<fleshType>RSW_DW_FleshType_Droid</fleshType>` WIRED 2026-09-01 —
+       DROIDWORKS_ISFLESH_RELATIONS_CRASH_1 closed, live 60/60/0 failures
+       (commit `715aeb82`: 3 shipped droid races x faction null/none, 10 each,
+       including a faction with a real ideo — the exact reproducing
+       condition — pawn.relations proven non-null). The postfix on
+       `PawnComponentsUtility.CreateInitialComponents` (Jawa_Doctrine's
+       `JawaDoctrineCore.dll`) allocates `pawn.relations` for the
+       Humanlike-&&-!IsFlesh case vanilla leaves uncovered; every flesh pawn
+       and every true mechanoid keeps identical behavior. NOT yet re-verified
+       against THIS race specifically (the 60/60 batch tested the
+       already-shipped OuterRim/KotOR droids using the same IsFlesh gate, not
+       a Droidworks-native pawn) — owed to the next quicktest that actually
+       spawns a `DW_Race_*` pawn kind. -->
   <AlienRace.ThingDef_AlienRace Name="DW_Race_Base" ParentName="Human" Abstract="True">
     <race>
       <body>Human</body>
       <foodType>None</foodType>
       <needsRest>false</needsRest>
+      <fleshType>RSW_DW_FleshType_Droid</fleshType>
     </race>
     <alienRace>
       <generalSettings>
@@ -71,11 +66,8 @@
   </AlienRace.ThingDef_AlienRace>
 
   <!-- Our own droid flesh type, isOrganic:false from birth
-       (droid_system_build_spec.md §1). AUTHORED BUT NOT YET WIRED onto
-       DW_Race_Base — see the DROIDWORKS_ISFLESH_RELATIONS_CRASH_1 note above
-       DW_Race_Base for why. Wire `<fleshType>RSW_DW_FleshType_Droid</fleshType>`
-       back in once that item's relations-tracker fix lands. Mirrors vanilla
-       `Mechanoid`'s other
+       (droid_system_build_spec.md §1). WIRED onto DW_Race_Base 2026-09-01 —
+       see the note above DW_Race_Base. Mirrors vanilla `Mechanoid`'s other
        fields (corpseCategory, damageEffecter, genericWounds — reusing
        vanilla's own mech wound textures, no new art needed) so droids hit
        and rot like machines everywhere that checks fleshType rather than
