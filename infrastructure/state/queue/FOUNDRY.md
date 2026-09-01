@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-01T19:20:19Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-01T19:24:36Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -216,6 +216,15 @@ kind:     build
 summary:  Full ruling: design/Jawa/ownershipsettlementspec.md (owner sitting 2026-08-31),
 prose:    infrastructure/state/items/DISTRICT_TEMPLATE_LIBRARY_1.md
 
+## SETTLEMENT_VERBS_WAVE_1 v1 interaction verbs: crime suite, salvage-law gray zone, walkable commerce, social fabric
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  Full ruling: design/Jawa/ownershipsettlementspec.md (owner sitting 2026-08-31),
+prose:    infrastructure/state/items/SETTLEMENT_VERBS_WAVE_1.md
+
 ## BUILDING_THEFT_HAULER_1 Building-theft hauler droid: Droidworks heavy chassis that uninstalls and carries whole buildings off hostile maps
 state:    doing
 row:      unassigned
@@ -251,15 +260,6 @@ target:   v1
 kind:     build
 summary:  Per the doc's §1, §5, §8:
 prose:    infrastructure/state/items/WEATHER_SUITE_SLICE_1.md
-
-## SETTLEMENT_MANIFEST_BINDING_1 Bind SettlementManifestDef instances to WorldObject_InhabitedSettlement
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  Discovered during DISTRICTTEMPLATELIBRARY1's live-verify pass (2026-09-01):
-prose:    infrastructure/state/items/SETTLEMENT_MANIFEST_BINDING_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -326,13 +326,3 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/SONIC_WEAPONS_EXPANSION_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SONIC_WEAPONS_EXPANSION_1.md
-
-## SETTLEMENT_VERBS_WAVE_1 v1 interaction verbs: crime suite, salvage-law gray zone, walkable commerce, social fabric
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SETTLEMENT_VERBS_WAVE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/SETTLEMENT_VERBS_WAVE_1.md
