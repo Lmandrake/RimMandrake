@@ -66,30 +66,51 @@ Cherry Picker cut list read via `cherrypicker.py` (1,513 defs, live settings,
     and the cost mismatch is noted (see "expected FAILs" below).
 
 ## conflicts and open questions found (NOT decided here — flagged)
-1. 🔴 **`GravForge` is cut on the LIVE Cherry Picker settings file, but
-   canon.yml's `research_tree.shape_src` explicitly names it as staying in
-   THE SHIP tree.** This is a real, previously-undocumented conflict between
-   a content-moderation decision and the research-taxonomy ruling — not
-   something this item invented or resolved. `GravForge` is the prereq root
-   of most of the GravTech cluster; cutting it cascades: `GravTuning`,
-   `GravWeapon`, and `GravBionics` all directly prereq it and now show a
-   check-2 FAIL ("prereq is fate=cut"). **Needs the owner's attention**: was
-   `GravForge` cut deliberately (as part of some other item) or is this an
-   accident that should be reversed before `RESEARCH_TREE_NORMALIZATION_1`
-   executes?
-2. `GhoulInfusion` (Anomaly) is similarly on the live cut list despite being
-   on the taxonomy's own "22 confirmed-alive empty-cache" allowlist — smaller
-   blast radius (one downstream dependent, `GhoulEnhancements`, now FAILs
-   check 2), same class of conflict, same "not resolved here."
-3. **`GravWeapon`/`GravBionics` are the taxonomy doc's own named "one seam"**
-   (research_tree_taxonomy.md sec 5): `GravWeapon` unlocks a mix of personal
-   weapons (`GravRifle`, `GravBlaster`, `GravHammer`) AND ship hardpoints
-   (`Turret_GravBlaster`, `AdvShip_ShieldGenerator`); canon's explicit
-   Ship-tree list names `GravForge`/`GravTuning`/`AdvShipParts`/big-cannons
-   but NOT `GravWeapon` or `GravBionics`. Defaulted both to a conservative
-   tab (Armory / Trade & Craft respectively) with the ambiguity spelled out
-   in-row; the taxonomy doc itself says this split still "needs the explicit
-   ruling" — genuinely unresolved, not invented here.
+
+**Items 1-3 RESOLVED 2026-09-01** via owner question cards, recorded in
+`canon.yml` `research_tree.gravitic_seam_ruled`:
+
+1. ~~🔴 `GravForge` cut vs canon's Ship-tree ruling~~ — **turned out to be a
+   FALSE POSITIVE**, caught while implementing the fix: only
+   `ThingDef/GravForge` (the building) and `RecipeDef/Make_GravcoreGF` were
+   on the live Cherry Picker cut list, never `ResearchProjectDef/GravForge`
+   itself — the original check used an any-type name match
+   (`cuts.cut_name()`), not a typed one (`cuts.cut('ResearchProjectDef', …)`),
+   and both this item's first pass and the independent verification at
+   commit time made the same mistake. The RESEARCH was never actually
+   blocked. What genuinely needed the owner's call was the BUILDING/RECIPE
+   cut: "leave it in for now and we'll handle the anti-exponential another
+   way later" — restored `ThingDef/GravForge` +
+   `RecipeDef/Make_GravcoreGF` + `ThingDef/AdvShip_GravReactor` (the whole
+   functional cluster) on the live Cherry Picker settings. Manifest fate
+   corrected `cut` → `untouched`, tier filled in (`T4`, matching its GravTech
+   siblings).
+2. ~~`GhoulInfusion` cut vs the empty-cache allowlist~~ — **same false
+   positive**: only `RecipeDef/GhoulInfusion` was cut, never the research
+   project. Restored the recipe on Cherry Picker, but PLACEMENT-RESTRICTED
+   per the owner: "back in, but only in key places (like the dungeons). NOT
+   to occur randomly or by Anomaly timeclock progression." — whoever
+   authors ghoul dungeon content must hand-place the trigger, never wire it
+   to vanilla Anomaly's monolith/timeclock spawn system. Manifest fate
+   corrected `cut` → `untouched`, tier filled in (`T0`, cost-band fit).
+3. **`GravWeapon`/`GravBionics` seam — RULED, split (not left dual-tagged).**
+   Ship-hardpoint unlocks (`Turret_GravBlaster`/`AdvShip_ShieldGenerator`)
+   need a NEW Ship-tree research node prereq'd on `GravWeapon` — **not yet
+   authored**, named as a follow-on build item. Personal unlocks
+   (`GravRifle`/`GravBlaster`/`GravHammer`/`Apparel_GravPack`) stay on
+   `GravWeapon` in Armory, but are now FACTION-HELD: owner verbatim,
+   "associate this ultra-powerful GravTech as something only the Rust
+   Cathedral can grant as a boon. The weapon tech of the Rataka, rather
+   than their terraforming tech that the ship contains natively." —
+   `source_gate` set to `faction:RustCathedral_boon` in the manifest row;
+   the actual grant mechanism (bespoke quest/ritual reward vs. plain
+   `heldByFactionCategoryTags` stock) is NOT decided, flagged for
+   `TECHPRINT_FACTION_GATING_1`. **`GravBionics` was left AS-IS** (still
+   defaulted to Trade & Craft, not given the same faction gate) — the
+   owner's answer named `GravWeapon` specifically ("weapon tech"), and
+   `GravBionics` is bionic implants, not weapons; whether it should carry
+   the same Rust Cathedral gate is still an open question, spelled out in
+   its own row's note rather than assumed.
 4. **`KOTOR_Research_plasmaApplications`'s wiring into the blaster spine is
    unspecified.** `chains_ruled` names it as the spine's 4th tier ("guy762
    blasters/hvy/mini + plasma") but its live prereq
