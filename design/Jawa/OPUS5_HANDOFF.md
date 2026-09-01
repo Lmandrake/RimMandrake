@@ -216,3 +216,40 @@ and pushed; nothing below is open design — it is execution.**
 - Codex imagegen note: calls can run 3–7 min and the WSL-side timeout kill
   leaves the Windows codex.exe running — files land AFTER the wrapper
   reports failure. Check the output dir before re-rolling.
+
+## Third reboot addendum — 2026-09-01, BENCH (supersedes the "awaits the owner" list above)
+
+- **Three reviews are IN PROGRESS for the owner tonight; keep them fresh.**
+  1. Proposal suite (125 rows) — the sidecar server DIES with this session;
+     on wake, restart it and hand him the NEW url+token:
+     `cd design/Jawa/worldbuilding/review && python3 ~/.claude/skills/review-sheets/assets/serve_sheet.py --sheet proposal_suite_review.html --decisions proposal_suite_review.decisions.json --no-open`
+     The decisions file is committed with `touchedCount: 3` (savedAt
+     2026-09-01T15:24Z) — the page merges per row, his rows are safe. When he
+     says done: `--status`/`--overrides`, read overrules AS A GROUP, then
+     convert verdicts into items under PROPOSAL_SUITE_REVIEW_1.
+  2. Pawn-flavor phase-2 register (497 rows, FS-Access file link) — verify
+     the `savedAt`/touched stamp on its decisions file before consuming;
+     0/497 touched at last check is NOT a completed review.
+  3. Livestock picks — three sheets in `Transient/livestock_mockups/`
+     (`SHEET_onnik/karrask/moornak.png`); he names one index per animal;
+     generator `src/RimStarWars/Livestock/art/gen_livestock_mockups.py`.
+- **Sea-monster picks are RULED: keep ALL 18 as separate creatures**, BENCH
+  chooses alignment (SW-source variants). Only execution remains
+  (`SW_SEA_MONSTERS_ART_1`).
+- **Outgrown audit is RULED and applied**: Betures + Minotaur + RIMMSqol
+  dropped from the live ModsConfig and `modlists/ModsConfig.FULL.LATEST.xml`;
+  Astronomy/Stealing/WASDed kept. Next cold load's first string:
+  `wildAnimals` counts at authored size (~29, not 1024) ⇒ closes
+  WILD_ANIMALS_PADDED_LISTS_1 and triggers cast-biome EXCLUSIVITY (ruled).
+- **Ownership fabric ruled and specced** (`ownership_settlement_spec.md`,
+  canon `ownership_fabric`, two mods) — items filed for FOUNDRY.
+- **Green-lit and filed**: FIRE_ECOLOGY_LOOP_1 (built, live-deployed, owner
+  ruled LEAVE LIVE; hook fixes noted on the item), WEATHER_SUITE_SLICE_1
+  (built offline, awaits live pass), LIVESTOCK_STARTER_TRIO_1 (mockup round
+  first). Everything else in `design/Jawa/proposals/` waits on the sheet.
+- **Research normalization sitting RULED** (`research_tree_taxonomy.md` §7,
+  canon `research_tree.sitting_ruled/chains_ruled/tech_gating_ruled`); the
+  448-techprint stamp is REAL but UNATTRIBUTED (RR does not write it) —
+  re-measure owed to FOUNDRY; manifest lacks an `access_class` column.
+- Owner's two in-game eyeball checks still owed: Salvagers absent from the
+  faction UI; ISEKAI trait degree labels.

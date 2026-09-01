@@ -1,0 +1,884 @@
+{
+ "sheet": "proposal_suite_review",
+ "posture": "prefill-ships; untouched rows keep their pre-filled ladder position; cut is the only destructive verdict",
+ "savedAt": "2026-09-01T15:24:05.799Z",
+ "decidedBy": "owner-sheet",
+ "touchedCount": 3,
+ "rows": {
+  "tar:entrapment-hediff": {
+   "d": "v1",
+   "n": "",
+   "touched": false,
+   "prefill": "v1",
+   "doc": "tar_pits_deep_design.md"
+  },
+  "tar:sinking-render": {
+   "d": "v1",
+   "n": "",
+   "touched": true,
+   "prefill": "v2",
+   "doc": "tar_pits_deep_design.md"
+  },
+  "tar:stratified-dig-sites": {
+   "d": "v1",
+   "n": "Superb! The loot table is the fun part. Draw from fossils but also sealed alien eggs, technology, dead bodies with equipment intact, and story-rich objects. And of course Assailant and Forgotten Arsenal aspects.",
+   "touched": true,
+   "prefill": "v2",
+   "doc": "tar_pits_deep_design.md"
+  },
+  "tar:canal-flow-engineering": {
+   "d": "v1",
+   "n": "Don't make it finite, just make it slow to refill. This mechanic of fillable ooze will come in handy later.",
+   "touched": true,
+   "prefill": "v2",
+   "doc": "tar_pits_deep_design.md"
+  },
+  "tar:flood-and-ignite": {
+   "d": "v2",
+   "n": "",
+   "touched": false,
+   "prefill": "v2",
+   "doc": "tar_pits_deep_design.md"
+  },
+  "tar:tar-moats": {
+   "d": "dream",
+   "n": "",
+   "touched": false,
+   "prefill": "dream",
+   "doc": "tar_pits_deep_design.md"
+  },
+  "tar:tar-creatures": {
+   "d": "dream",
+   "n": "",
+   "touched": false,
+   "prefill": "dream",
+   "doc": "tar_pits_deep_design.md"
+  },
+  "tar:geyser-incident": {
+   "d": "v1",
+   "n": "",
+   "touched": false,
+   "prefill": "v1",
+   "doc": "tar_pits_deep_design.md"
+  },
+  "tar:pit-wakes-setpiece": {
+   "d": "dream",
+   "n": "",
+   "touched": false,
+   "prefill": "dream",
+   "doc": "tar_pits_deep_design.md"
+  },
+  "tar:chemfuel-economy": {
+   "d": "v2",
+   "n": "",
+   "touched": false,
+   "prefill": "v2",
+   "doc": "tar_pits_deep_design.md"
+  },
+  "gas:lake": {
+   "d": "v1",
+   "n": "",
+   "touched": false,
+   "prefill": "v1",
+   "doc": "propane_gas_deep_design.md"
+  },
+  "gas:vents": {
+   "d": "v1",
+   "n": "",
+   "touched": false,
+   "prefill": "v1",
+   "doc": "propane_gas_deep_design.md"
+  },
+  "gas:pipe-rupture": {
+   "d": "v2",
+   "n": "",
+   "touched": false,
+   "prefill": "v2",
+   "doc": "propane_gas_deep_design.md"
+  },
+  "gas:saturation": {
+   "d": "v1",
+   "n": "",
+   "touched": false,
+   "prefill": "v1",
+   "doc": "propane_gas_deep_design.md"
+  },
+  "gas:tanker-economy": {
+   "d": "v2",
+   "n": "",
+   "touched": false,
+   "prefill": "v2",
+   "doc": "propane_gas_deep_design.md"
+  },
+  "gas:lake-creature": {
+   "d": "v2",
+   "n": "",
+   "touched": false,
+   "prefill": "v2",
+   "doc": "propane_gas_deep_design.md"
+  },
+  "gas:tar-interplay": {
+   "d": "dream",
+   "n": "",
+   "touched": false,
+   "prefill": "dream",
+   "doc": "propane_gas_deep_design.md"
+  },
+  "gas:saturation-heist": {
+   "d": "dream",
+   "n": "",
+   "touched": false,
+   "prefill": "dream",
+   "doc": "propane_gas_deep_design.md"
+  },
+  "fir:dry-thunderstorm-loop": {
+   "d": "v1",
+   "n": "",
+   "touched": false,
+   "prefill": "v1",
+   "doc": "fire_ecology_deep_design.md"
+  },
+  "fir:pyroconvective-cell": {
+   "d": "v2",
+   "n": "",
+   "touched": false,
+   "prefill": "v2",
+   "doc": "fire_ecology_deep_design.md"
+  },
+  "fir:pyrocumulus-storm": {
+   "d": "dream",
+   "n": "",
+   "touched": false,
+   "prefill": "dream",
+   "doc": "fire_ecology_deep_design.md"
+  },
+  "fir:cinderclutch": {
+   "d": "v2",
+   "n": "",
+   "touched": false,
+   "prefill": "v2",
+   "doc": "fire_ecology_deep_design.md"
+  },
+  "fir:silhouette-hunter": {
+   "d": "dream",
+   "n": "",
+   "touched": false,
+   "prefill": "dream",
+   "doc": "fire_ecology_deep_design.md"
+  },
+  "fir:ember-swarm": {
+   "d": "dream",
+   "n": "",
+   "touched": false,
+   "prefill": "dream",
+   "doc": "fire_ecology_deep_design.md"
+  },
+  "fir:slagback": {
+   "d": "dream",
+   "n": "",
+   "touched": false,
+   "prefill": "dream",
+   "doc": "fire_ecology_deep_design.md"
+  },
+  "fir:ash-black-rain": {
+   "d": "v1",
+   "n": "",
+   "touched": false,
+   "prefill": "v1",
+   "doc": "fire_ecology_deep_design.md"
+  },
+  "fir:scorch-fruit": {
+   "d": "v1",
+   "n": "",
+   "touched": false,
+   "prefill": "v1",
+   "doc": "fire_ecology_deep_design.md"
+  },
+  "fir:tribes-fire-farmers": {
+   "d": "v2",
+   "n": "",
+   "touched": false,
+   "prefill": "v2",
+   "doc": "fire_ecology_deep_design.md"
+  },
+  "shd:thermal-veil": {
+   "d": "v1",
+   "n": "",
+   "touched": false,
+   "prefill": "v1",
+   "doc": "ship_shields_deep_design.md"
+  },
+  "shd:cryo-envelope": {
+   "d": "v2",
+   "n": "",
+   "touched": false,
+   "prefill": "v2",
+   "doc": "ship_shields_deep_design.md"
+  },
+  "shd:particulate-screen": {
+   "d": "v1",
+   "n": "",
+   "touched": false,
+   "prefill": "v1",
+   "doc": "ship_shields_deep_design.md"
+  },
+  "shd:spore-membrane": {
+   "d": "dream",
+   "n": "",
+   "touched": false,
+   "prefill": "dream",
+   "doc": "ship_shields_deep_design.md"
+  },
+  "shd:loadout-tradeoff": {
+   "d": "v1",
+   "n": "",
+   "touched": false,
+   "prefill": "v1",
+   "doc": "ship_shields_deep_design.md"
+  },
+  "shd:bubble-not-wall": {
+   "d": "v1",
+   "n": "",
+   "touched": false,
+   "prefill": "v1",
+   "doc": "ship_shields_deep_design.md"
+  },
+  "shd:shield-collapse-evacuate": {
+   "d": "v2",
+   "n": "",
+   "touched": false,
+   "prefill": "v2",
+   "doc": "ship_shields_deep_design.md"
+  },
+  "shd:no-hard-landing-gate": {
+   "d": "v1",
+   "n": "",
+   "touched": false,
+   "prefill": "v1",
+   "doc": "ship_shields_deep_design.md"
+  },
+  "wtr:two-tier-fork": {
+   "d": "v1",
+   "n": "",
+   "touched": false,
+   "prefill": "v1",
+   "doc": "water_economy_deep_design.md"
+  },
+  "wtr:detox-chain": {
+   "d": "v2",
+   "n": "",
+   "touched": false,
+   "prefill": "v2",
+   "doc": "water_economy_deep_design.md"
+  },
+  "wtr:water-anchored-districts": {
+   "d": "v1",
+   "n": "",
+   "touched": false,
+   "prefill": "v1",
+   "doc": "water_economy_deep_design.md"
+  },
+  "wtr:water-heist": {
+   "d": "v1",
+   "n": "",
+   "touched": false,
+   "prefill": "v1",
+   "doc": "water_economy_deep_design.md"
+  },
+  "wtr:aquifer-remembers": {
+   "d": "v2",
+   "n": "",
+   "touched": false,
+   "prefill": "v2",
+   "doc": "water_economy_deep_design.md"
+  },
+  "wtr:pool-guardians": {
+   "d": "v1",
+   "n": "",
+   "touched": false,
+   "prefill": "v1",
+   "doc": "water_economy_deep_design.md"
+  },
+  "wtr:water-diplomacy": {
+   "d": "v2",
+   "n": "",
+   "touched": false,
+   "prefill": "v2",
+   "doc": "water_economy_deep_design.md"
+  },
+  "wtr:rain-event": {
+   "d": "v2",
+   "n": "",
+   "touched": false,
+   "prefill": "v2",
+   "doc": "water_economy_deep_design.md"
+  },
+  "cav:ship-excluded": {
+   "d": "v1",
+   "n": "",
+   "touched": false,
+   "prefill": "v1",
+   "doc": "underground_caverns_deep_design.md"
+  },
+  "cav:expedition-loadout": {
+   "d": "v1",
+   "n": "",
+   "touched": false,
+   "prefill": "v1",
+   "doc": "underground_caverns_deep_design.md"
+  },
+  "cav:entrances": {
+   "d": "v1",
+   "n": "",
+   "touched": false,
+   "prefill": "v1",
+   "doc": "underground_caverns_deep_design.md"
+  },
+  "cav:dry-cistern-crosslink": {
+   "d": "v2",
+   "n": "",
+   "touched": false,
+   "prefill": "v2",
+   "doc": "underground_caverns_deep_design.md"
+  },
+  "cav:map-chain": {
+   "d": "v1",
+   "n": "",
+   "touched": false,
+   "prefill": "v1",
+   "doc": "underground_caverns_deep_design.md"
+  },
+  "cav:persistent-layers": {
+   "d": "v1",
+   "n": "",
+   "touched": false,
+   "prefill": "v1",
+   "doc": "underground_caverns_deep_design.md"
+  },
+  "cav:depth-ecology": {
+   "d": "v2",
+   "n": "",
+   "touched": false,
+   "prefill": "v2",
+   "doc": "underground_caverns_deep_design.md"
+  },
+  "cav:underground-factions": {
+   "d": "v2",
+   "n": "",
+   "touched": false,
+   "prefill": "v2",
+   "doc": "underground_caverns_deep_design.md"
+  },
+  "cav:vault-archetypes": {
+   "d": "v2",
+   "n": "",
+   "touched": false,
+   "prefill": "v2",
+   "doc": "underground_caverns_deep_design.md"
+  },
+  "cav:organism-cavern": {
+   "d": "dream",
+   "n": "",
+   "touched": false,
+   "prefill": "dream",
+   "doc": "underground_caverns_deep_design.md"
+  },
+  "cav:collapse-hazard-tool": {
+   "d": "v2",
+   "n": "",
+   "touched": false,
+   "prefill": "v2",
+   "doc": "underground_caverns_deep_design.md"
+  },
+  "cav:darkness-mechanic": {
+   "d": "v1",
+   "n": "",
+   "touched": false,
+   "prefill": "v1",
+   "doc": "underground_caverns_deep_design.md"
+  },
+  "god:entry-thresholds": {
+   "d": "v1",
+   "n": "",
+   "touched": false,
+   "prefill": "v1",
+   "doc": "god_modes_deep_design.md"
+  },
+  "god:strain-meter": {
+   "d": "v1",
+   "n": "",
+   "touched": false,
+   "prefill": "v1",
+   "doc": "god_modes_deep_design.md"
+  },
+  "god:exit-stacking-scars": {
+   "d": "v1",
+   "n": "",
+   "touched": false,
+   "prefill": "v1",
+   "doc": "god_modes_deep_design.md"
+  },
+  "god:announcement-layer": {
+   "d": "v1",
+   "n": "",
+   "touched": false,
+   "prefill": "v1",
+   "doc": "god_modes_deep_design.md"
+  },
+  "god:eighteen-mode-roster": {
+   "d": "v2",
+   "n": "",
+   "touched": false,
+   "prefill": "v2",
+   "doc": "god_modes_deep_design.md"
+  },
+  "god:open-market": {
+   "d": "v1",
+   "n": "",
+   "touched": false,
+   "prefill": "v1",
+   "doc": "god_modes_deep_design.md"
+  },
+  "god:long-walk": {
+   "d": "v1",
+   "n": "",
+   "touched": false,
+   "prefill": "v1",
+   "doc": "god_modes_deep_design.md"
+  },
+  "god:tenfold-reign": {
+   "d": "dream",
+   "n": "",
+   "touched": false,
+   "prefill": "dream",
+   "doc": "god_modes_deep_design.md"
+  },
+  "sky:shadow-line": {
+   "d": "v1",
+   "n": "",
+   "touched": false,
+   "prefill": "v1",
+   "doc": "skyhook_deep_design.md"
+  },
+  "sky:cargo-climbers": {
+   "d": "v1",
+   "n": "",
+   "touched": false,
+   "prefill": "v1",
+   "doc": "skyhook_deep_design.md"
+  },
+  "sky:tether-static": {
+   "d": "v2",
+   "n": "",
+   "touched": false,
+   "prefill": "v2",
+   "doc": "skyhook_deep_design.md"
+  },
+  "sky:pod-interception": {
+   "d": "v1",
+   "n": "",
+   "touched": false,
+   "prefill": "v1",
+   "doc": "skyhook_deep_design.md"
+  },
+  "sky:customs-heist": {
+   "d": "v2",
+   "n": "",
+   "touched": false,
+   "prefill": "v2",
+   "doc": "skyhook_deep_design.md"
+  },
+  "sky:vertical-society": {
+   "d": "v2",
+   "n": "",
+   "touched": false,
+   "prefill": "v2",
+   "doc": "skyhook_deep_design.md"
+  },
+  "sky:the-cut": {
+   "d": "v2",
+   "n": "",
+   "touched": false,
+   "prefill": "v2",
+   "doc": "skyhook_deep_design.md"
+  },
+  "sky:debris-corridor": {
+   "d": "dream",
+   "n": "",
+   "touched": false,
+   "prefill": "dream",
+   "doc": "skyhook_deep_design.md"
+  },
+  "sky:cult-prophecy": {
+   "d": "dream",
+   "n": "",
+   "touched": false,
+   "prefill": "dream",
+   "doc": "skyhook_deep_design.md"
+  },
+  "liv:onnik-kiln": {
+   "d": "v1",
+   "n": "",
+   "touched": false,
+   "prefill": "v1",
+   "doc": "ludicrous_livestock_deep_design.md"
+  },
+  "liv:drassik-smelter": {
+   "d": "v2",
+   "n": "",
+   "touched": false,
+   "prefill": "v2",
+   "doc": "ludicrous_livestock_deep_design.md"
+  },
+  "liv:karrask-molt": {
+   "d": "v1",
+   "n": "",
+   "touched": false,
+   "prefill": "v1",
+   "doc": "ludicrous_livestock_deep_design.md"
+  },
+  "liv:moornak-griefbomb": {
+   "d": "v2",
+   "n": "",
+   "touched": false,
+   "prefill": "v2",
+   "doc": "ludicrous_livestock_deep_design.md"
+  },
+  "liv:duskhide-herd": {
+   "d": "v2",
+   "n": "",
+   "touched": false,
+   "prefill": "v2",
+   "doc": "ludicrous_livestock_deep_design.md"
+  },
+  "liv:voltling-battery": {
+   "d": "v2",
+   "n": "",
+   "touched": false,
+   "prefill": "v2",
+   "doc": "ludicrous_livestock_deep_design.md"
+  },
+  "liv:coola-tend-narrate": {
+   "d": "v2",
+   "n": "",
+   "touched": false,
+   "prefill": "v2",
+   "doc": "ludicrous_livestock_deep_design.md"
+  },
+  "liv:grubbin-con": {
+   "d": "dream",
+   "n": "",
+   "touched": false,
+   "prefill": "dream",
+   "doc": "ludicrous_livestock_deep_design.md"
+  },
+  "liv:gorrath-stampede": {
+   "d": "dream",
+   "n": "",
+   "touched": false,
+   "prefill": "dream",
+   "doc": "ludicrous_livestock_deep_design.md"
+  },
+  "liv:hollowfoot-undermine": {
+   "d": "dream",
+   "n": "",
+   "touched": false,
+   "prefill": "dream",
+   "doc": "ludicrous_livestock_deep_design.md"
+  },
+  "cui:hazard-pantry": {
+   "d": "v1",
+   "n": "",
+   "touched": false,
+   "prefill": "v1",
+   "doc": "high_cuisine_deep_design.md"
+  },
+  "cui:vce-repoint": {
+   "d": "v1",
+   "n": "",
+   "touched": false,
+   "prefill": "v1",
+   "doc": "high_cuisine_deep_design.md"
+  },
+  "cui:diplomacy-claim": {
+   "d": "v2",
+   "n": "",
+   "touched": false,
+   "prefill": "v2",
+   "doc": "high_cuisine_deep_design.md"
+  },
+  "cui:ninefold-feast": {
+   "d": "dream",
+   "n": "",
+   "touched": false,
+   "prefill": "dream",
+   "doc": "high_cuisine_deep_design.md"
+  },
+  "cui:terroir-brewing": {
+   "d": "v2",
+   "n": "",
+   "touched": false,
+   "prefill": "v2",
+   "doc": "high_cuisine_deep_design.md"
+  },
+  "cui:chef-performance": {
+   "d": "v2",
+   "n": "",
+   "touched": false,
+   "prefill": "v2",
+   "doc": "high_cuisine_deep_design.md"
+  },
+  "cui:recipe-discovery": {
+   "d": "dream",
+   "n": "",
+   "touched": false,
+   "prefill": "dream",
+   "doc": "high_cuisine_deep_design.md"
+  },
+  "cui:preservation-vocab": {
+   "d": "v2",
+   "n": "",
+   "touched": false,
+   "prefill": "v2",
+   "doc": "high_cuisine_deep_design.md"
+  },
+  "cui:live-ingredient-tank": {
+   "d": "dream",
+   "n": "",
+   "touched": false,
+   "prefill": "dream",
+   "doc": "high_cuisine_deep_design.md"
+  },
+  "llm:protocol-droid-interpreter": {
+   "d": "v1",
+   "n": "",
+   "touched": false,
+   "prefill": "v1",
+   "doc": "llm_driven_mods_deep_design.md"
+  },
+  "llm:nine-voices-shrine": {
+   "d": "v2",
+   "n": "",
+   "touched": false,
+   "prefill": "v2",
+   "doc": "llm_driven_mods_deep_design.md"
+  },
+  "llm:god-call-daily-budget": {
+   "d": "v2",
+   "n": "",
+   "touched": false,
+   "prefill": "v2",
+   "doc": "llm_driven_mods_deep_design.md"
+  },
+  "llm:inhabited-rumor-dialogue": {
+   "d": "v1",
+   "n": "",
+   "touched": false,
+   "prefill": "v1",
+   "doc": "llm_driven_mods_deep_design.md"
+  },
+  "llm:rumor-prompt-injection-guard": {
+   "d": "v1",
+   "n": "",
+   "touched": false,
+   "prefill": "v1",
+   "doc": "llm_driven_mods_deep_design.md"
+  },
+  "llm:previously-on-recap": {
+   "d": "v1",
+   "n": "",
+   "touched": false,
+   "prefill": "v1",
+   "doc": "llm_driven_mods_deep_design.md"
+  },
+  "llm:salvage-with-history": {
+   "d": "v2",
+   "n": "",
+   "touched": false,
+   "prefill": "v2",
+   "doc": "llm_driven_mods_deep_design.md"
+  },
+  "llm:adaptive-quest-consequences": {
+   "d": "v2",
+   "n": "",
+   "touched": false,
+   "prefill": "v2",
+   "doc": "llm_driven_mods_deep_design.md"
+  },
+  "llm:silent-fallback-law": {
+   "d": "v1",
+   "n": "",
+   "touched": false,
+   "prefill": "v1",
+   "doc": "llm_driven_mods_deep_design.md"
+  },
+  "wea:terminator-storms": {
+   "d": "v1",
+   "n": "",
+   "touched": false,
+   "prefill": "v1",
+   "doc": "weather_suite_deep_design.md"
+  },
+  "wea:glass-storms": {
+   "d": "v2",
+   "n": "",
+   "touched": false,
+   "prefill": "v2",
+   "doc": "weather_suite_deep_design.md"
+  },
+  "wea:static-seasons": {
+   "d": "v2",
+   "n": "",
+   "touched": false,
+   "prefill": "v2",
+   "doc": "weather_suite_deep_design.md"
+  },
+  "wea:pressure-tides": {
+   "d": "dream",
+   "n": "",
+   "touched": false,
+   "prefill": "dream",
+   "doc": "weather_suite_deep_design.md"
+  },
+  "wea:dark-auroras": {
+   "d": "v1",
+   "n": "",
+   "touched": false,
+   "prefill": "v1",
+   "doc": "weather_suite_deep_design.md"
+  },
+  "wea:spore-blooms": {
+   "d": "v2",
+   "n": "",
+   "touched": false,
+   "prefill": "v2",
+   "doc": "weather_suite_deep_design.md"
+  },
+  "wea:mirage-events": {
+   "d": "dream",
+   "n": "",
+   "touched": false,
+   "prefill": "dream",
+   "doc": "weather_suite_deep_design.md"
+  },
+  "wea:forecasting-ladder": {
+   "d": "v1",
+   "n": "",
+   "touched": false,
+   "prefill": "v1",
+   "doc": "weather_suite_deep_design.md"
+  },
+  "sar:landmark-site": {
+   "d": "v1",
+   "n": "",
+   "touched": false,
+   "prefill": "v1",
+   "doc": "sarlacc_deep_design.md"
+  },
+  "sar:compile-digestion": {
+   "d": "dream",
+   "n": "",
+   "touched": false,
+   "prefill": "dream",
+   "doc": "sarlacc_deep_design.md"
+  },
+  "sar:evidence-feeding": {
+   "d": "v2",
+   "n": "",
+   "touched": false,
+   "prefill": "v2",
+   "doc": "sarlacc_deep_design.md"
+  },
+  "sar:tremor-disturbance": {
+   "d": "v1",
+   "n": "",
+   "touched": false,
+   "prefill": "v1",
+   "doc": "sarlacc_deep_design.md"
+  },
+  "sar:anomaly-draws": {
+   "d": "v2",
+   "n": "",
+   "touched": false,
+   "prefill": "v2",
+   "doc": "sarlacc_deep_design.md"
+  },
+  "sar:escape-quest": {
+   "d": "dream",
+   "n": "",
+   "touched": false,
+   "prefill": "dream",
+   "doc": "sarlacc_deep_design.md"
+  },
+  "sar:sky-seeding-myth": {
+   "d": "dream",
+   "n": "",
+   "touched": false,
+   "prefill": "dream",
+   "doc": "sarlacc_deep_design.md"
+  },
+  "sar:castings-economy": {
+   "d": "v2",
+   "n": "",
+   "touched": false,
+   "prefill": "v2",
+   "doc": "sarlacc_deep_design.md"
+  },
+  "sar:root-system-crosslink": {
+   "d": "dream",
+   "n": "",
+   "touched": false,
+   "prefill": "dream",
+   "doc": "sarlacc_deep_design.md"
+  },
+  "swt:junk-provenance": {
+   "d": "v1",
+   "n": "",
+   "touched": false,
+   "prefill": "v1",
+   "doc": "sw_mod_concepts_triage.md"
+  },
+  "swt:krayt-leviathans": {
+   "d": "dream",
+   "n": "",
+   "touched": false,
+   "prefill": "dream",
+   "doc": "sw_mod_concepts_triage.md"
+  },
+  "swt:underworld-reputation": {
+   "d": "v2",
+   "n": "",
+   "touched": false,
+   "prefill": "v2",
+   "doc": "sw_mod_concepts_triage.md"
+  },
+  "swt:cantina-social": {
+   "d": "v2",
+   "n": "",
+   "touched": false,
+   "prefill": "v2",
+   "doc": "sw_mod_concepts_triage.md"
+  },
+  "swt:holo-deception": {
+   "d": "v2",
+   "n": "",
+   "touched": false,
+   "prefill": "v2",
+   "doc": "sw_mod_concepts_triage.md"
+  },
+  "swt:imperial-bureaucracy": {
+   "d": "v2",
+   "n": "",
+   "touched": false,
+   "prefill": "v2",
+   "doc": "sw_mod_concepts_triage.md"
+  },
+  "swt:droid-repair-shop": {
+   "d": "dream",
+   "n": "",
+   "touched": false,
+   "prefill": "dream",
+   "doc": "sw_mod_concepts_triage.md"
+  }
+ }
+}
