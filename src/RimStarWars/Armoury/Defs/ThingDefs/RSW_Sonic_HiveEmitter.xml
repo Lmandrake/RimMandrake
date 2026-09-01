@@ -1,0 +1,156 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- New native content, SONIC_WEAPONS_EXPANSION_1 (not absorbed — RSW_ prefix per
+     design/NAMING_SCHEME_PLAN.md). A stationary Geonosian Foundry Hive defense
+     emplacement: "industrial manufacturer... sonic weapons, and droids doing the
+     dying. They do not spend on their own [defense]" (faction_equipment_guidance.md).
+     Follows Absorbed_OPTurret.xml's own Building_TurretGun + Verb_Shoot shape
+     (BuildingBase + Gun_ChargeBlasterHeavyBase, both vanilla Core abstracts) —
+     no new C#. The projectile reuses guy762_GrenadeDamage_sonic UNCHANGED (the
+     absorbed grenade's own explosive DamageDef) so the pulse's disorientation and
+     damage chain are identical to the existing hand-thrown sonic grenade; only the
+     delivery shape (turret-fired, no warmup, short periodic cooldown) is new.
+     Damage/radius sized to the Geonosian Foundry Hive turret-doctrine anchor (bio
+     FIAT 25, BLAST class, 1x1 -> volley 25 r3.9) already established for this
+     faction's other turrets (VFEI2_Thornspitter/Thornworm/Vilelobber, AA_BlackDefiler)
+     in design/Jawa/worldbuilding/review/turret_normalization_v1.md — this def is
+     hand-authored, not absorbed, so it is NOT added to Turrets_DamageDoctrine.xml
+     (that file's PatchOperationFindMod ops only retarget OTHER mods' turrets; a
+     natively-authored def just bakes the doctrine-consistent value in directly,
+     same as Absorbed_OPTurret.xml's own archotech turret already does).
+
+     Texture paths: vanilla Core texPaths (e.g. Turret_MiniTurret's own
+     Things/Building/Security/TurretMini_Base) are packed into the game's
+     resources.assets, NOT present as loose files under Data/Core/Textures in
+     this install (confirmed: Data/Core has no Textures/ or AssetBundles/ dir
+     at all, unlike the DLCs) — validate_patch.py's texPath-existence check
+     cannot see them and false-positives on any vanilla-only texPath. To keep
+     validate_patch.py clean without relying on that blind spot, both this
+     building and its gun instead reuse loose textures already confirmed on
+     disk within this exact absorbed pack (kotorsonrifle.png,
+     grenade_sonic.png) — placeholder art, flagged for FOUNDRY's dedicated
+     art pass; nothing renders magenta either way. -->
+<Defs>
+
+  <ThingDef ParentName="BaseGrenadeProjectile">
+    <defName>RSW_Bullet_Sonic_HivePulse</defName>
+    <label>sonic pulse</label>
+    <thingClass>Projectile_Explosive</thingClass>
+    <graphicData>
+      <texPath>Weapons/Projectiles/Grenades/grenade_sonic</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <projectile>
+      <explosionRadius>3.9</explosionRadius>
+      <damageDef>guy762_GrenadeDamage_sonic</damageDef>
+      <damageAmountBase>25</damageAmountBase>
+      <explosionDelay>0</explosionDelay>
+    </projectile>
+  </ThingDef>
+
+  <ThingDef ParentName="Gun_ChargeBlasterHeavyBase">
+    <defName>RSW_Gun_Sonic_HiveEmitter</defName>
+    <label>hive pulse emitter</label>
+    <description>The firing head of a Geonosian hive-defense emplacement. It has no aim to speak of — it does not need one — and instead washes the area around it in a periodic pulse of focused sound.</description>
+    <graphicData>
+      <texPath>kotorsonrifle</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <Mass>40</Mass>
+      <ShootingAccuracyTurret>1.0</ShootingAccuracyTurret>
+      <AccuracyTouch>1.0</AccuracyTouch>
+      <AccuracyShort>1.0</AccuracyShort>
+      <AccuracyMedium>1.0</AccuracyMedium>
+      <AccuracyLong>1.0</AccuracyLong>
+      <RangedWeapon_Cooldown>0.0</RangedWeapon_Cooldown>
+    </statBases>
+    <verbs>
+      <li>
+        <verbClass>Verb_Shoot</verbClass>
+        <hasStandardCommand>true</hasStandardCommand>
+        <defaultProjectile>RSW_Bullet_Sonic_HivePulse</defaultProjectile>
+        <warmupTime>0.0</warmupTime>
+        <range>12</range>
+        <defaultCooldownTime>0.05</defaultCooldownTime>
+        <forcedMissRadius>0</forcedMissRadius>
+        <burstShotCount>1</burstShotCount>
+        <ticksBetweenBurstShots>1</ticksBetweenBurstShots>
+        <soundCast>kotorsound_bowcaster1</soundCast>
+        <muzzleFlashScale>9</muzzleFlashScale>
+      </li>
+    </verbs>
+  </ThingDef>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RSW_Sonic_HiveEmitter</defName>
+    <label>hive pulse emitter</label>
+    <description>A fixed sonic emplacement built the Geonosian way: cheap, automated, and entirely willing to let the droids — or the emplacement itself — take the risk instead of a Geonosian. Every few seconds it pulses the area around it with disorienting sound, cracking bone and buckling eardrums well before anything gets close enough to matter.</description>
+    <thingClass>Building_TurretGun</thingClass>
+    <drawerType>MapMeshAndRealTime</drawerType>
+    <graphicData>
+      <texPath>Weapons/Projectiles/Grenades/grenade_sonic</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+      <damageData>
+        <rect>(0.2,0.2,0.6,0.6)</rect>
+      </damageData>
+      <shadowData>
+        <volume>(0.27,0.25,0.27)</volume>
+        <offset>(0,0,0)</offset>
+      </shadowData>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>300</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Beauty>-5</Beauty>
+      <WorkToBuild>2400</WorkToBuild>
+    </statBases>
+    <costList>
+      <Steel>150</Steel>
+      <Plasteel>40</Plasteel>
+      <ComponentIndustrial>6</ComponentIndustrial>
+      <ComponentSpacer>2</ComponentSpacer>
+    </costList>
+    <researchPrerequisites>
+      <li>guy762_ResearchKotOR_sonic</li>
+    </researchPrerequisites>
+    <drawHighlight>true</drawHighlight>
+    <drawHighlightOnlyForHostile>true</drawHighlightOnlyForHostile>
+    <altitudeLayer>Building</altitudeLayer>
+    <stealable>false</stealable>
+    <rotatable>true</rotatable>
+    <designationCategory>Security</designationCategory>
+    <size>(1,1)</size>
+    <tickerType>Normal</tickerType>
+    <constructionSkillPrerequisite>6</constructionSkillPrerequisite>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerTrader</compClass>
+        <shortCircuitInRain>false</shortCircuitInRain>
+        <basePowerConsumption>100</basePowerConsumption>
+      </li>
+      <li Class="CompProperties_Flickable" />
+      <li Class="CompProperties_Forbiddable" />
+    </comps>
+    <passability>PassThroughOnly</passability>
+    <pathCost>1</pathCost>
+    <fillPercent>0.5</fillPercent>
+    <hasTooltip>true</hasTooltip>
+    <placeWorkers>
+      <li>PlaceWorker_TurretTop</li>
+      <li>PlaceWorker_ShowTurretRadius</li>
+    </placeWorkers>
+    <killedLeavings>
+      <ChunkSlagSteel>1</ChunkSlagSteel>
+    </killedLeavings>
+    <building>
+      <ai_combatDangerous>true</ai_combatDangerous>
+      <turretGunDef>RSW_Gun_Sonic_HiveEmitter</turretGunDef>
+      <turretBurstCooldownTime>6</turretBurstCooldownTime>
+      <turretTopDrawSize>1.5</turretTopDrawSize>
+      <turretTopOffset>(0, 0.05)</turretTopOffset>
+    </building>
+    <uiIconScale>0.9</uiIconScale>
+  </ThingDef>
+
+</Defs>
