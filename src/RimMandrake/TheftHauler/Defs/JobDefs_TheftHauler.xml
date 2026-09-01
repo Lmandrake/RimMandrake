@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- ========================================================================
+       RM_TheftHaulUninstall — BUILDING_THEFT_HAULER_1. Backs
+       RimMandrake.TheftHauler.JobDriver_TheftHaulUninstall (Source/JobDriver_TheftHaulUninstall.cs),
+       a thin subclass of vanilla's own JobDriver_RemoveBuilding (same toils as
+       JobDriver_Uninstall — goto, work the uninstallWork stat, then
+       FinishedRemoving) that overrides only FinishedRemoving to fire the
+       ownership fabric's TakingEvent before calling the real
+       MinifyUtility.Uninstall(). Issued by
+       RimMandrake.TheftHauler.FloatMenuOptionProvider_TheftHaulUninstall's
+       right-click order — no WorkGiver, no automatic AI targeting: this is a
+       deliberate player-issued heist, not routine colony work.
+  ======================================================================== -->
+  <JobDef>
+    <defName>RM_TheftHaulUninstall</defName>
+    <driverClass>RimMandrake.TheftHauler.JobDriver_TheftHaulUninstall</driverClass>
+    <reportString>hauling away TargetA.</reportString>
+    <suspendable>false</suspendable>
+  </JobDef>
+
+</Defs>

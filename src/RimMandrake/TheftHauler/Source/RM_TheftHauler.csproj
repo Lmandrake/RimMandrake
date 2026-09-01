@@ -1,0 +1,75 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    BUILDING_THEFT_HAULER_1. Same shape as src/RimMandrake/Property/Source/
+    RM_Property.csproj (no Harmony reference — a JobDriver subclass and a
+    FloatMenuOptionProvider subclass are both picked up by vanilla's own
+    reflection-driven systems, same auto-pickup recipe RM_Property's
+    GameComponent uses; no Harmony patch, no static constructor hook needed
+    here either). Adds ONE reference RM_Property.csproj does not need: the
+    Property fabric's own compiled assembly, so this mod's C# can call
+    RimMandrake.Property.PropertyEngine.Fire/ClaimEngine.ResolveClaim
+    directly rather than reflecting into it. mandrake.rm.property is a
+    modDependency + loadAfter in About.xml so that assembly is guaranteed
+    loaded into the same AppDomain before this one's defs resolve.
+
+    Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\TheftHauler\Source\RM_TheftHauler.csproj -c Release
+
+    Output lands in ../Assemblies/, which is where RimWorld looks.
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>RimMandrakeTheftHauler</AssemblyName>
+    <RootNamespace>RimMandrake.TheftHauler</RootNamespace>
+    <Version>0.1.0</Version>
+
+    <OutputPath>..\Assemblies\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AssemblySearchPaths>$(AssemblySearchPaths);$(RimWorldManaged)</AssemblySearchPaths>
+
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <DebugType>none</DebugType>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(RimWorldManaged)' == ''">
+    <RimWorldManaged>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManaged>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="TheftHaulerExtension.cs" />
+    <Compile Include="TheftHaulerDefOf.cs" />
+    <Compile Include="JobDriver_TheftHaulUninstall.cs" />
+    <Compile Include="FloatMenuOptionProvider_TheftHaulUninstall.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(RimWorldManaged)\Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>$(RimWorldManaged)\UnityEngine.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="RimMandrakeProperty">
+      <HintPath>..\..\Property\Assemblies\RimMandrakeProperty.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>

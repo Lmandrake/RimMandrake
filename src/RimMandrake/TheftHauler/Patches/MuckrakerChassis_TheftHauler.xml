@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MuckrakerChassis_TheftHauler.xml     TheftHauler · BUILDING_THEFT_HAULER_1
+
+  The ONE wiring point between the generic engine (this mod) and the reused
+  Droidworks chassis (item spec: "reuse an existing Droidworks heavy chassis
+  ... do not invent a new race"). RSW_DW_Race_OuterRim_MuckrakerDroid (the
+  "Muckraker Crab Droid") is the largest-bodied concrete Droidworks race
+  measured across every Races_*.xml file (baseBodySize 1.2 — every other
+  concrete droid tops out at 1.0), and its DW_Family_Labour ancestry is a
+  work chassis, not a combat one — the closest existing fit to a "heavy
+  hauler" without inventing new art.
+
+  Adds RimMandrake.TheftHauler.TheftHaulerExtension as a NEW modExtensions
+  node directly on the concrete def. AlienRace.ThingDef_AlienRace inherits
+  DW_Family_Labour's own modExtensions (DroidworksExtension) via standard
+  RimWorld list-inheritance APPEND (no Inherit="False" here or on the
+  parent) — this patch's own li joins that list rather than replacing it,
+  so DroidworksExtension's power/energy tuning survives untouched.
+
+  MayRequire-gated: absent Droidworks, this file is a silent no-op and the
+  engine mod (JobDef/JobDriver/FloatMenuOptionProvider/marker class) stays
+  fully functional for any OTHER pawnkind a player or another content mod
+  marks directly with the extension.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod" MayRequire="mandrake.rsw.droidworks">
+    <mods>
+      <li>Droidworks</li>
+    </mods>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/AlienRace.ThingDef_AlienRace[defName="RSW_DW_Race_OuterRim_MuckrakerDroid"]</xpath>
+      <value>
+        <modExtensions>
+          <li Class="RimMandrake.TheftHauler.TheftHaulerExtension" />
+        </modExtensions>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

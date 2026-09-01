@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimMandrake: Theft Hauler</name>
+  <packageId>mandrake.rm.theft_hauler</packageId>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>BUILDING_THEFT_HAULER_1 — the heist verb: a pawn marked with RM_TheftHaulerExtension
+can uninstall ANY Building (not gated by the normal player-deconstruct/own-faction
+check) into a haulable MinifiedThing via a right-click float menu order, reusing
+vanilla's own uninstall-to-MinifiedThing machinery (JobDriver_RemoveBuilding,
+MinifyUtility.Uninstall). At the moment of uninstall it fires exactly one
+RimMandrake.Property.PropertyEngine.Fire TakingEvent(Act=Strip) unconditionally —
+PropertyEngine.Fire resolves the building's prior claim and authorization itself and is
+a no-op for an own-claim or unclaimed building, so a droid stripping its own colony's
+building stays silent, ordinary deconstruction.
+
+Carries no new droid art/chassis and no settlement/district integration (design/Jawa/
+wrecked_machines_resurrection.md's BUILDING_THEFT_HAULER_1 scope) — it is the generic
+"a marked pawn can steal a building" engine only, fully reusable off Star Wars content
+by any pawnkind an installed content mod chooses to mark. The included patch (MayRequire
+-gated) marks Droidworks' Muckraker Crab Droid chassis (the largest-bodied Droidworks
+race, RSW_DW_Race_OuterRim_MuckrakerDroid) as this pass's reused heavy hauler — no new
+race, per the item's own instruction to reuse an existing chassis.</description>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+    <li>
+      <packageId>mandrake.rm.property</packageId>
+      <displayName>RimMandrake: Property</displayName>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+    <li>mandrake.rm.property</li>
+    <li>mandrake.rsw.droidworks</li>
+  </loadAfter>
+</ModMetaData>
