@@ -106,7 +106,27 @@ async function writeFile(){
     el('savestate').className='err';
   }
 }
-function queueSave(){ cacheNow(); clearTimeout(saveTimer); saveTimer = setTimeout(writeFile, 1000); refreshCounts(); }
+let SC = null; const dirtyIds = new Set();
+function rowOp(id){ const r = find(id); const s = dec[id]||{};
+  return { d: s.d || r.ladder, n: s.n || '', touched: !!s.t, prefill: r.ladder, doc: docOf(id) }; }
+function docOf(id){ for (const d of DATA.docs) for (const r of d.rows) if (r.id===id) return d.file; }
+async function pushOps(){
+  if (!SC || !dirtyIds.size) return;
+  const ops = {}; for (const id of dirtyIds) ops[id] = rowOp(id);
+  const sent = [...dirtyIds]; dirtyIds.clear();
+  try{
+    const r = await fetch(SC.endpoints.post, {method:'POST',
+      headers:{'Content-Type':'application/json','X-Sheet-Token':SC.token},
+      body: JSON.stringify({ops})});
+    if (r.status===200){ el('savestate').textContent='sidecar ✓ saved '+new Date().toLocaleTimeString()+' · '+decidedCount()+' overrules'; el('savestate').className=''; }
+    else { for (const id of sent) dirtyIds.add(id);
+      const msg = {409:'refused a truncating write — kept pending', 423:'file is FROZEN — sheet is read-only', 403:'bad session token — reopen from the printed URL'}[r.status] || ('server said '+r.status);
+      el('savestate').textContent='⚠ '+msg; el('savestate').className='err'; }
+  }catch(e){ for (const id of sent) dirtyIds.add(id);
+    el('savestate').textContent='⚠ sidecar unreachable — changes pending, will retry'; el('savestate').className='err'; }
+}
+function queueSave(id){ if(id) dirtyIds.add(id); cacheNow(); clearTimeout(saveTimer);
+  saveTimer = setTimeout(()=>{ SC ? pushOps() : writeFile(); }, 1000); refreshCounts(); }
 
 // IndexedDB handle persistence
 function idb(){ return new Promise((res,rej)=>{ const r = indexedDB.open('sheet_handles',1);
@@ -181,8 +201,8 @@ function render(){
   el('list').innerHTML = html || '<div style="padding:30px;color:#7c8590">nothing matches the filters</div>';
   for (const row of el('list').querySelectorAll('.row')){
     const id = row.dataset.id;
-    row.querySelector('.dsel').onchange = e=>{ dec[id]=Object.assign(dec[id]||{n:''},{d:e.target.value,t:1}); e.target.classList.add('touched'); queueSave(); };
-    row.querySelector('.note').oninput = e=>{ dec[id]=Object.assign(dec[id]||{},{n:e.target.value,t:1,d:(dec[id]&&dec[id].d)||null}); if(!dec[id].d){const r2=find(id);dec[id].d=r2.ladder;} queueSave(); };
+    row.querySelector('.dsel').onchange = e=>{ dec[id]=Object.assign(dec[id]||{n:''},{d:e.target.value,t:1}); e.target.classList.add('touched'); queueSave(id); };
+    row.querySelector('.note').oninput = e=>{ dec[id]=Object.assign(dec[id]||{},{n:e.target.value,t:1,d:(dec[id]&&dec[id].d)||null}); if(!dec[id].d){const r2=find(id);dec[id].d=r2.ladder;} queueSave(id); };
   }
   measure(); refreshCounts();
 }
@@ -203,11 +223,25 @@ for (const b of document.querySelectorAll('[data-copy]')) b.onclick=async()=>{ c
   try{ await navigator.clipboard.writeText(n.textContent); const t=b.textContent; b.textContent='copied ✓'; setTimeout(()=>b.textContent=t,1200);}
   catch(e){ const r=document.createRange(); r.selectNode(n); getSelection().removeAllRanges(); getSelection().addRange(r); b.textContent='press Ctrl+C'; } };
 
-// boot: cache → maybe stored handle
+// boot: sidecar → stored handle → cache
 loadCache();
-(async()=>{ const h = await loadHandle();
-  if (h){ try{ if ((await h.queryPermission({mode:'readwrite'}))==='granted'){ await absorbExisting(h); fileHandle=h; }
-    else { el('savestate').textContent='file known — click "link file" to reconnect (browser needs one click after restart)'; } }catch(e){} }
+(async()=>{
+  if (window.__SIDECAR__){
+    SC = window.__SIDECAR__;
+    el('linkbtn').style.display='none';
+    el('p1').textContent = SC.decisionsPath;
+    try{
+      const r = await fetch(SC.endpoints.get, {headers:{'X-Sheet-Token':SC.token}});
+      if (r.ok){ const doc = await r.json(); let kept=0;
+        for (const [id,v] of Object.entries(doc.decisions||{})){ if(v && v.touched){ dec[id]={d:v.d,n:v.n||'',t:1}; kept++; } }
+        el('savestate').textContent = 'sidecar ✓ '+(kept?('kept your '+kept+' decisions, '):'')+'auto-saving to disk';
+      } else { el('savestate').textContent='sidecar answered '+r.status+' — decisions NOT loading, do not review yet'; el('savestate').className='err'; }
+    }catch(e){ el('savestate').textContent='sidecar unreachable — falling back to browser cache only'; el('savestate').className='err'; }
+  } else {
+    const h = await loadHandle();
+    if (h){ try{ if ((await h.queryPermission({mode:'readwrite'}))==='granted'){ await absorbExisting(h); fileHandle=h; }
+      else { el('savestate').textContent='file known — click "link file" to reconnect (browser needs one click after restart)'; } }catch(e){} }
+  }
   try{ setFold(localStorage.getItem(FOLDKEY)==='1'); }catch(e){ setFold(false); }
   render(); })();
 </script></body></html>
