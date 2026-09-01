@@ -1,8 +1,0 @@
-# -*- coding: utf-8 -*-
-import sys, io, json
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="replace")
-sys.path.insert(0, r"D:\Luke\dev\Rimworld\src\RimMandrake\Utils")
-from rimbridge_client import RimBridge, resolve_endpoint
-host, port, token = resolve_endpoint()
-with RimBridge(host, port, token, timeout=300) as rb:
-    print(json.dumps([t for t in rb.list_tools() if t.get("name") == "jawa/get_defs"], default=str)[:2500])
