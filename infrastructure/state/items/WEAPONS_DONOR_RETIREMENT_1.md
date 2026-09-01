@@ -265,8 +265,11 @@ first load-time proof of two already-built assemblies
 ## criteria
 - [x] AdditionalMods gap absorbed (44 files + 1 DLL) — kept from the incident.
 - [x] Two generator bugs found and fixed (stale path, `Name=` collision).
-- [ ] Stale-abstract fix rebuilt + redeployed (currently only the source
-      `Defs/` regenerated, not `JawaArmoury.dll`/the deployed mod copy).
+- [x] Stale-abstract fix rebuilt + redeployed — confirmed 2026-09-01: zero
+      `already used in this mod` / `GrenadeBeltBase`/`StealthField_Base`/
+      `StealthDeactivate_Base` lines in `Player.log` on tonight's consolidated
+      restart (picked up by one of the session's several `deploy_custom_mods.py`
+      passes; source and deployed copy both confirmed "in sync" tonight).
 - [x] 4 clean packs OFF, full-list cold load clean, as their own verified wave
       (591 -> 587, 2026-08-31/09-01; one fallout bug found in
       `WeaponTags_Renormalise.xml` and fixed, not yet re-verified with a
