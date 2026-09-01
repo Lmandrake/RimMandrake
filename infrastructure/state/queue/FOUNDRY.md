@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-01T22:03:59Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-01T22:13:12Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -125,15 +125,6 @@ target:   v1
 kind:     task
 summary:  design/Jawa/worldbuilding/colonyvisibilitystat.md, specifically
 prose:    infrastructure/state/items/COLONY_VISIBILITY_BUILD_1.md
-
-## SONIC_WEAPONS_EXPANSION_1 Creatively expand the Sonic weapon school with more sonic weaponry (owner-ruled follow-up, not urgent)
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  Owner ruling, 2026-09-01 (question card): asked to creatively expand the Sonic
-prose:    infrastructure/state/items/SONIC_WEAPONS_EXPANSION_1.md
 
 ## WEAPONS_DONOR_RETIREMENT_1 Retire the 6 weapon donor packs now that mandrake.rsw.armoury absorbed their content
 state:    doing
