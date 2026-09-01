@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimMandrake: Oracle</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.rm.oracle</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>The Oracle — in-game LLM wiring (design/RimMandrake/llm_ingame_wiring_spec.md), campaign-agnostic plumbing. This build is ORACLE_EXPERIMENT_SPIKE_1: the thin OpenAI-compatible client + ONE god-letter consumer (Ohm the All-Current, per design/RimMandrake/nine_voices_cast_bible.md), end to end, gated by two debug actions (Debug Actions Menu -> Oracle) rather than any live game trigger yet:
+
+"RimMandrake.Oracle: Selftest validator" runs the register lint against canned good/bad text with no network call.
+"RimMandrake.Oracle: Test Ohm letter" fires one real async call through OracleGameComponent against whatever endpoint is configured in Mod Settings (a local mock stub, or a real OpenAI-compatible cloud endpoint with an API key) and delivers a letter -- the model's text if it passes the register lint, the prescribed fallback if the call fails, times out, or the output is rejected. Nothing about this ships live to any consumer yet; the v1 posture (dormant vs consumer-live) is the owner's call after he sees this work.
+
+No Harmony, no def patches. Everything is opt-in through Mod Settings, defaults to a blank API key (silently falls back), and a global kill switch.</description>
+
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+  </loadAfter>
+</ModMetaData>

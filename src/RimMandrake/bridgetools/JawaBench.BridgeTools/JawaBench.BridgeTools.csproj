@@ -90,11 +90,20 @@
          classes), so shipping a second copy would give the process two HarmonyLib
          types and a patch registered against "ours" would not be the one that runs. -->
     <HarmonyDir Condition="'$(HarmonyDir)' == ''">C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies</HarmonyDir>
+    <!-- mandrake.rm.oracle is an ordinary RimWorld mod, deployed to the game's own
+         Mods\ folder like any other, and loaded by the mod loader well before
+         RimBridgeServer attaches its companions - so this resolves to the exact
+         bytes already sitting in the process, same reasoning as HarmonyDir above. -->
+    <OracleModDir Condition="'$(OracleModDir)' == ''">C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Oracle\Assemblies</OracleModDir>
   </PropertyGroup>
 
   <ItemGroup>
     <Reference Include="RimBridgeServer.Sdk">
       <HintPath>$(RimBridgeSdkDir)\RimBridgeServer.Sdk.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="RimMandrakeOracle">
+      <HintPath>$(OracleModDir)\RimMandrakeOracle.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="Assembly-CSharp">

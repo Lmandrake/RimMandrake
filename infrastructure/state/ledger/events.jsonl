@@ -3426,3 +3426,8 @@
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-08-31T23:55:50Z"}
 {"seat":"BENCH","event":"seat","state":"ready","ts":"2026-09-01T00:02:23Z"}
 {"seat":"FOUNDRY","event":"close","id":"FOW_ROUTE_B_INTEGRATION_1","sha":"e54e2ebba9e4e3092866a948f7a8960bf0663cb6","ts":"2026-09-01T00:09:42Z"}
+{"seat":"FOUNDRY","event":"claim","id":"ORACLE_EXPERIMENT_SPIKE_1","ts":"2026-09-01T00:10:24Z"}
+{"seat":"FOUNDRY","event":"start","id":"ORACLE_EXPERIMENT_SPIKE_1","ts":"2026-09-01T00:10:24Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","ts":"2026-09-01T00:18:37Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-01T00:27:48Z"}
+{"seat":"FOUNDRY","event":"close","id":"ORACLE_EXPERIMENT_SPIKE_1","sha":"65c814cdfe9d3015c30524c7f9c1f430f5cc2b92","ts":"2026-09-01T00:28:30Z"}
