@@ -27,7 +27,8 @@ exonym in all authored player-facing text.
 |---|---|
 | **RULED** (owner sittings, do not re-litigate) | site families, thaw-gate concept, guardian register, learning chain/endgame, vault count+siting+type mix, concentric grammar doctrine, wake/loot/leave payoff ladder, LARGE maps, template-then-hand-finish authoring route — all cited below with their canon.yml/item-history source |
 | **DRAFTED FOR REAL, this pass** | this doc's narrative/site writeup for both dungeons; the content-palette-to-defName assignment (§2.3, §3.4); the map-layout CONCEPTS (§2.4, §3.3); one illustrative KCSG `StructureLayoutDef` skeleton (§3.5); the quicktest-proven verify bar (§3.6) |
-| **HELD FOR OWNER** | exact KCSG authoring of all templates and all seven maps; the thaw-trigger's concrete implementation (quest node vs custom C#); dialogue/letters for the reveal beat, the wake/loot/leave branches, and the ship-claim thread; per-vault hand-finish set-pieces; the territorial-access conflict mechanic (needs the "territories mod" identified first, see §3.7); the actual bridge placement/tile commit for any of the seven sites |
+| **RULED 2026-09-01** (owner, via BENCH cards) | thaw trigger = QuestNode + map signal; power core = vanilla `AIPersonaCore`; vaults 325×325; V5 gets a new organic landmark; `RUT_` tier for all dungeon defNames; KCSG pawn symbol = `SymbolDef`+`pawnKindDef`; territories mod = Faction Territories (§2.7, §3.8, §3.9) |
+| **HELD FOR OWNER** | exact KCSG authoring of all templates and all seven maps; dialogue/letters for the reveal beat, the wake/loot/leave branches, and the ship-claim thread; per-vault hand-finish set-pieces; the territorial-access conflict mechanic (its own item); the bridge placement writes for the seven sites |
 
 ## 1. Shared spine
 
@@ -171,18 +172,28 @@ Cathedral SPEAKS (has a voice, treats the droids as its children); FDE
 nightside refugees are the last waypoint before the site. Quest-chain authoring
 for this arc rides `rimworld-quests` and is HELD FOR OWNER/build.
 
-### 2.7 Held for the owner (Assailant dungeon)
+### 2.7 Rulings landed 2026-09-01, and what is still held
 
+**RULED (owner, 2026-09-01, via BENCH cards):**
+- **Thaw trigger = QuestNode + map-trigger signal.** Delivering the power-core
+  item to the marked point flips the map state. Vanilla quest vocabulary, no
+  custom C#. If at build time a node is genuinely missing, that is a finding
+  to file, not a licence to write a DLL.
+- **The power core = vanilla `AIPersonaCore`.** No new item, no new art. It is
+  already in the campaign's salvage set (`design/Jawa/art/salvage_palette.tsv`);
+  the fiction is that only an archotech core runs hot enough.
+- **The tile adjacent to 20853 is chosen by PROCEDURE, not picked offline:** at
+  the bridge pass, take `Find.WorldGrid` neighbours of 20853, keep inside
+  Umbra and off the 121-tile settlement-free set (`vault_siting_prep.md`
+  method), then `world_commit`.
+- **Naming tier: `RUT_`.** Every StructureLayoutDef / QuestScriptDef for this
+  complex is campaign content (`design/NAMING_SCHEME_PLAN.md` tier test).
+
+**Still held for the owner:**
 - The actual KCSG `StructureLayoutDef`(s) for all three bands, authored and
   placed via `jawa/kcsg_place`.
-- The thaw-trigger's exact implementation (QuestNode + signal vs a small
-  custom C# tool) — needs a build-time look at whether existing quest
-  vocabulary covers "deliver item X to point Y, flip map state."
-- The power-core item's exact defName (an existing salvage-tier item vs a new
-  one — owner said "an old power core," not "a new artifact").
 - The pale-Geonosian-turret reskin art.
 - All dialogue/letters for the reveal beat and the Hutt-knowledge-deal thread.
-- The bridge write that actually sites the complex on tile-adjacent-to-20853.
 
 ## 3. `VAULT_DUNGEON_BUILD_1` — the six Forsaken vaults
 
@@ -285,7 +296,7 @@ wreckage where the thing got out:
 ```xml
 <Defs>
   <KCSG.StructureLayoutDef>
-    <defName>RM_Vault_Type2_OuterRing_Skeleton</defName>
+    <defName>RUT_VaultType2_OuterRing_Skeleton</defName>
     <spawnConduits>false</spawnConduits>
     <terrainGrid>
       <li>Flesh,Flesh,Flesh,Flesh,Flesh,Flesh,Flesh,Flesh,Flesh,Flesh,Flesh,Flesh</li>
@@ -339,28 +350,43 @@ bigger — exact number HELD FOR OWNER, this is a floor proposal only.
 4. This bar is what `VAULT_DUNGEON_BUILD_1`'s eventual `verify` section should
    cite — it is not run this pass (no build has happened yet to test).
 
-### 3.8 Territorial access — open question, not resolved here
+### 3.8 Territorial access — the mod is identified; the mechanic is still open
 
-Owner ruling (`VAULT_DUNGEON_CONCEPT_1` history, point 4) also flagged, verbatim:
-*"We must look back into the territories mod that introduced custom raids in
-proportion to settlements!"* — for the conflict/negotiation layer where a
-vault sits inside an existing faction's ground (V1/V2 on Cathedral-FDE
-ground, V3 on the Empire's Ashgarrison chokepoint). **This doc does not
-identify or assess that mod** — it is a separate research task, not part of
-the dungeon build spec, and stays open. Whoever picks it up should file it as
-its own item rather than fold it into either dungeon build.
+Owner ruling (`VAULT_DUNGEON_CONCEPT_1` history, point 4), verbatim: *"We must
+look back into the territories mod that introduced custom raids in proportion
+to settlements!"* — for the conflict/negotiation layer where a vault sits
+inside an existing faction's ground (V1/V2 on Cathedral-FDE ground, V3 on the
+Empire's Ashgarrison chokepoint).
 
-### 3.9 Held for the owner (vault dungeons)
+**The mod is Faction Territories (`jaeger972.factionterritories`)** — active in
+the live `ModsConfig.xml`, vendored at
+`vendor/mod_sources/FactionTerritories_decompiled`; its
+`ForcedAmbushFactionScope` / `TerritoryOwnershipCache` machinery is the
+"raids in proportion to settlements" behaviour. Assessing it for the
+conflict layer is its own item, not part of either dungeon build.
 
-- The three parameterized `StructureLayoutDef` templates, fully authored
-  (type ①/②/③), including resolving the pawn-spawn symbol question (§3.6).
+### 3.9 Rulings landed 2026-09-01, and what is still held
+
+**RULED (owner, 2026-09-01, via BENCH cards):**
+- **All six vaults are 325×325** — the vanilla `initialMapSize` ceiling, still
+  warning-free (`SCENARIO_SETTINGS_SPEC.md` §B12; `MapSizePerformanceWarning`
+  fires only above 325).
+- **V5 gets a NEW organic landmark** (working name `RUT_Slough_GelatinousBreach`),
+  not a reused garrison landmark — V5 is the second type-② vault and must
+  read as a breach, distinct from V4.
+- **Pawn-spawn symbol (§3.6) = `KCSG.SymbolDef` with `<pawnKindDef>`**, never a
+  bare ThingDef in the grid (precedent:
+  `vendor/mod_sources/DragonsDescent_src/1.6/Defs/Custom Structure Generation/Structures/SymbolDef.xml`).
+- **Naming tier: `RUT_`** for every vault StructureLayoutDef; the §3.6 skeleton
+  `RUT_VaultType2_OuterRing_Skeleton` is renamed `RUT_VaultType2_OuterRing_Skeleton`.
+
+**Still held for the owner:**
 - Per-vault hand-finish pass (set-pieces, the casket hall for V6) — "every
   vault then gets a bench hand-finish pass with the owner" (owner ruling,
   point 5).
 - All wake/loot/leave dialogue and letters, and the ship-claim thread that
   opens from waking V6.
-- The territories-mod research (§3.8).
-- The exact LARGE dimensions per site, and the six bridge placement writes.
+- The six bridge placement writes.
 
 ## 4. Cross-links
 
