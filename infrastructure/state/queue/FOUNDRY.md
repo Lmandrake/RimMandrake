@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-01T05:20:14Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-01T05:38:02Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -153,6 +153,15 @@ kind:     build
 summary:  design/Jawa/researchtreetaxonomy.md section 4 names 7 checks the
 prose:    infrastructure/state/items/RESEARCH_VALIDATOR_BUILD_1.md
 
+## RESEARCH_MANIFEST_DRAFT_1 Generate the draft research manifest: all 515 rows prefilled with fates from the sitting's rulings
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  (no items/RESEARCH_MANIFEST_DRAFT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/RESEARCH_MANIFEST_DRAFT_1.md
+
 ## WEAPONS_DONOR_RETIREMENT_1 Retire the 6 weapon donor packs now that mandrake.rsw.armoury absorbed their content
 state:    doing
 row:      unassigned
@@ -225,16 +234,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## RESEARCH_MANIFEST_DRAFT_1 Generate the draft research manifest: all 515 rows prefilled with fates from the sitting's rulings
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/RESEARCH_MANIFEST_DRAFT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/RESEARCH_MANIFEST_DRAFT_1.md
 
 ## TECHPRINT_FACTION_GATING_1 Code the four research access classes: common / faction-held techprints / jawa-special / ship-only
 state:    proposed

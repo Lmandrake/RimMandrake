@@ -69,8 +69,29 @@ restart has happened since (defs only parse at startup); ride the next
 restart for any reason and confirm zero `[Jawa Armoury Rebalance] Patch
 operation ... failed` lines.
 
+## 2026-09-01, second sitting — a twin bug in the SAME donor's OTHER file
+
+The first restart to verify the `Armoury_MeleePower.xml` fix showed
+`patch operations failed` drop from 7 to 6 (not to the 5 baseline) —
+`Armour_Penetration.xml` has the exact same
+`PatchOperationFindMod(Star Wars : The Force - Lightsaber)` gate wrapping
+its own per-variant `armorPenetration` tuning, same root cause (8 variants
+× 3 tools = 24 `PatchOperationConditional` blocks whose `nomatch` `Add`
+targets a `tools/li[label=...]` that doesn't exist on any of them either).
+`Force_ImbuedBlade` is NOT part of the dead set — it's a genuinely separate
+weapon (`ParentName="BaseWeapon"`, not `Force_LightsaberBase`) with its own
+real `<tools>` list, so its 3 armorPenetration ops still work. Removed the
+24 dead blocks the same way, kept `Force_LightsaberBase`'s 3 (all target
+`0.00`, lightsabers deliberately ignore armor per the file's own header
+comment). `validate_patch.py`: 0 errors, 101 warnings. Deployed.
+
 ## criteria
-- [x] Bad xpath(s) identified and fixed (or gated) — 21 dead operations
-      removed, the 3 real ones kept, `validate_patch.py` clean.
-- [ ] Cold-load confirms zero patch-failure lines for this mod — owed to
-      the next restart (not forced solo; low severity, rides along).
+- [x] Bad xpath(s) identified and fixed (or gated) — 21 dead operations in
+      `Armoury_MeleePower.xml` removed (first pass) + 24 more in
+      `Armour_Penetration.xml` (second pass, same donor mod, same root
+      cause), the valid base-level ones kept in both, `validate_patch.py`
+      clean on both files.
+- [ ] Cold-load confirms zero patch-failure lines for this mod — the first
+      restart confirmed `Armoury_MeleePower.xml`'s fix (its failure line is
+      gone); `Armour_Penetration.xml`'s fix is deployed but not yet
+      restart-verified.
