@@ -119,6 +119,43 @@ version-scoped, e.g. `1.6/Assemblies/`), confirm or rule out a `wildAnimals`
 field write via `strings`/decompile, and if confirmed, check whether it's
 gated by a settings toggle (worth knowing before proposing any fix).
 
+## 2026-09-01, subagent verdict: BOTH leads RULED OUT — the lead was a red herring
+`BSXeno.dll` actually ships from `RedMattis.BetterPrerequisites` (workshop
+`2925432336`, `1.6/Base/Assemblies/BSXeno.dll` — NOT from `BigSmall` or
+`BigSmall.Core`, which ship no assemblies at all). `strings | grep -i
+wildanimals` against every DLL in all 6 active RedMattis.* mods (BSXeno x2
+version dirs, BigAndSmall.dll, RedHealth.dll, GravshipSize.dll): **zero
+hits**. The transpiler name was coincidental, not evidence.
+
+**Broadened to a full sweep**: every active mod's packageId parsed from
+live `ModsConfig.xml`, joined to its workshop folder (first `<packageId>`
+in `About.xml`), all 5,403 DLLs under `workshop/content/294100/` found,
+filtered to 3,196 under currently-active folders, case-sensitive `strings |
+grep "wildAnimals"` across all of them. Real (non-dev-artifact) hits, none
+of them the mechanism:
+- `zylle.MoreVanillaBiomes`'s `VanillaBiomes.dll` — hit only in a stale,
+  unused `1.1/` copy; the loaded `1.6/Assemblies/` copy has no such string.
+- `m00nl1ght.GeologicalLandforms`'s `GeologicalLandforms.dll` —
+  `Patch_RimWorld_GenStep_Animals` reads `wildAnimals`/`AllWildAnimals` for
+  per-landform spawn weighting at MAP-GEN time, not DefGenerator/load time.
+  No "1024" literal in the DLL. Wrong mechanism (this is a spawn-time
+  filter, not a load-time list mutation).
+- `VFEInsectoids.dll`, this project's own `CherryPicker.dll`,
+  `GiddyUpCore.dll` — ordinary spawn/removal-time reads, unrelated.
+- Everything else was a mod author's bundled dev-reference copy of the
+  base game's own publicized `Assembly-CSharp.dll` (never loaded live).
+
+**Still unidentified.** Next-best leads, not yet tried: (a) the field
+access may not go through a literal `"wildAnimals"` string at all — a
+cross-assembly cached `FieldInfo`/expression-tree accessor, or RimWorld's
+own compiler-generated backing-field name, would both evade a `strings`
+search entirely; (b) re-run `jawa/harmony_patches` against
+`DefGenerator`/`DefDatabase\`1` more exhaustively — this pass only checked
+one type name per call and stopped at the first plausible-sounding lead
+rather than enumerating every patched method and checking each owner
+methodically. Left `doing` — offline half exhausted twice now, live half
+needs a more systematic (not lead-driven) pass.
+
 ## Prove it, once deployed
 `python.exe src/RimMandrake/bridgetools/prove_harmony_patches.py` — selftest already green
 (`python3 ... --selftest`, no game needed). Or by hand:
