@@ -5,7 +5,7 @@
 (no manifest existed yet); section 5's migration rules and section 6/7's
 "RULED by the owner" blocks are the normative source for fates. This item
 mechanically applies those rulings to every live `ResearchProjectDef`,
-producing `infrastructure/state/derived/research_manifest_draft.csv` for
+producing `infrastructure/output/research_manifest_draft.csv` for
 `research_manifest_validate.py` (built by `RESEARCH_VALIDATOR_BUILD_1`) to
 check. This is APPLYING already-made decisions, not making new ones — where
 the docs left a genuine gap, the row is flagged (note field) rather than
@@ -118,7 +118,7 @@ solo — surfaced for the owner, not resolved here.
 
 ## verify
 Ran `python3 src/RimMandrake/Utils/research_manifest_validate.py
-infrastructure/state/derived/research_manifest_draft.csv` twice (iterated
+infrastructure/output/research_manifest_draft.csv` twice (iterated
 once between runs).
 
 **Run 1** (initial mechanical pass): 258 FAIL total. Found 2 real manifest
