@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-01T17:32:09Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-01T18:06:38Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -224,15 +224,6 @@ target:   v1
 kind:     build
 summary:  Source: infrastructure/state/canon.yml wreckedmachines (owner,
 prose:    infrastructure/state/items/WRECKED_MACHINES_RESURRECTION_1.md
-
-## FIRE_ECOLOGY_LOOP_1 Fire ecology v1: self-igniting savanna loop, black rain, ash ladder, scorch-fruit, fulgurites, firebreak tools
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  Per the doc's §1 Stage 0, §3, §4, §6:
-prose:    infrastructure/state/items/FIRE_ECOLOGY_LOOP_1.md
 
 ## LIVESTOCK_STARTER_TRIO_1 Livestock v1: onnik kiln-belly + karrask molt-plate + moornak grief-eater, shared-art batch
 state:    doing  (BLOCKED)
