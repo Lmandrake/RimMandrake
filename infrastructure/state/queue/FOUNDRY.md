@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-01T18:06:38Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-01T18:08:05Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -207,6 +207,15 @@ kind:     build
 summary:  Full ruling: design/Jawa/ownershipsettlementspec.md (owner sitting 2026-08-31).
 prose:    infrastructure/state/items/SETTLEMENT_VISIT_LOOP_1.md
 
+## DISTRICT_TEMPLATE_LIBRARY_1 Authored Lua district template library + composition through rimplace - Junkers set first
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  Full ruling: design/Jawa/ownershipsettlementspec.md (owner sitting 2026-08-31),
+prose:    infrastructure/state/items/DISTRICT_TEMPLATE_LIBRARY_1.md
+
 ## BUILDING_THEFT_HAULER_1 Building-theft hauler droid: Droidworks heavy chassis that uninstalls and carries whole buildings off hostile maps
 state:    doing
 row:      unassigned
@@ -308,16 +317,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/SONIC_WEAPONS_EXPANSION_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SONIC_WEAPONS_EXPANSION_1.md
-
-## DISTRICT_TEMPLATE_LIBRARY_1 Authored Lua district template library + composition through rimplace - Junkers set first
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DISTRICT_TEMPLATE_LIBRARY_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DISTRICT_TEMPLATE_LIBRARY_1.md
 
 ## SETTLEMENT_VERBS_WAVE_1 v1 interaction verbs: crime suite, salvage-law gray zone, walkable commerce, social fabric
 state:    proposed
