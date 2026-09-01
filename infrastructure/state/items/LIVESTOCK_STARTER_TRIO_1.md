@@ -29,6 +29,14 @@ Per the doc's rosters and §7.2 shared-art batching:
    chroma-key alpha, silhouette-first), beast-normalization spirit (born
    normalized, no retrofit).
 
+## owner art rulings (2026-09-01)
+
+Onnik = option 2 · karrask = option 2 · moornak = option 3. Kept files and the
+full table: `src/RimStarWars/Livestock/art/mockups/PICKS.md`. Three rejects were
+PROMOTED, not dropped: karrask opt 3 → its own new creature; moornak opts 1+2 →
+"other crag creatures" (owner's term, family undefined) — each needs a design row
+before any build; none belongs to this item.
+
 ## verify
 
 Quicktest: spawn/tame each; (a) onnik full feed→fire→product cycle plus one
