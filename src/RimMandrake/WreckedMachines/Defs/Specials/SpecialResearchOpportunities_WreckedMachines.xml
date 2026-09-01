@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WreckedMachines — the RR "Analyse" study→unlock loop, WRECKED_MACHINES_
+  RESURRECTION_1.
+
+  This is DESIGN.md §2's own worked example (owner-ratified 2026-08-12 — "the
+  wreck is the main way to learn"), re-enabled rather than newly invented.
+  V2.md §8 named it as deferred-not-cancelled, and the mechanism it deferred
+  was already verified against files on disk (not just remembered): RR ships
+  its own use case (RR_autodoor, Door -> Autodoors) in
+  v1.6/Defs/Specials/SpecialResearchOpportunities_Core.xml, all ten
+  SpecialResearchOpportunityDef fields confirmed via `strings` on the shipped
+  ResearchReinvented.dll, and Analyse (not AnalyseProductionFacility) is the
+  right opportunityType because its picker,
+  JobPicker_AnalyseInPlaceOrMinified, lets a pawn study a thing WHERE IT
+  STANDS — the only behaviour an immovable wreck can support.
+  AnalyseProductionFacility needs a pawn WORKING AT the building
+  (JobPicker_NoJob) and is wrong for a wreck that has no work to give.
+
+  petetimessix.researchreinvented — confirmed ACTIVE, live ModsConfig.xml,
+  checked this session (also confirmed by TECHPRINT_FACTION_GATING_1 the same
+  night). MayRequire guards the def anyway in case a future minimal mod list
+  drops it for a quicktest.
+
+  `project` now points at RM_WM_AutomatedSmelterRestoration (this mod's own
+  Ship-tree project, ResearchProjects_WreckedMachines.xml) rather than
+  VFE_BasicFactories — the re-pointing WRECKED_MACHINES_RESURRECTION_1 made,
+  so studying the wreck credits the gate that actually unlocks OUR repaired
+  tier, not the untouched donor building's vanilla research.
+
+  ⚠️ NOT VERIFIED AT RUNTIME — reserved for the owner's own quicktest, not
+  attempted here (see infrastructure/state/items/
+  WRECKED_MACHINES_RESURRECTION_1.md "verify"):
+    1. That this opportunity actually surfaces in the research UI for a
+       colonist to take.
+    2. `targetIterations 5.0` under RR's default ReverseEngineering category
+       preset (DESIGN.md §2) — whether five study sessions feels right in
+       play is untested; the importanceMultiplier below is the first dial to
+       reach for if it needs retuning, since it is scoped to this def alone.
+    3. The bigger open question this whole mod rides on: whether the
+       `replaceTags` build-over (both tiers share WM_AutomatedSmelter) still
+       places correctly with Replace Stuff - Continued active, given its
+       Harmony postfix forces CanReplace false for any
+       IsNonDeconstructibleAttackableBuilding (DESIGN.md §4). It does NOT
+       apply here directly — v1's tiers ship deconstructible=true, so the
+       postfix's non-deconstructible condition never triggers — but confirm
+       this def's Analyse target (RM_WM_AutomatedSmelter_Wrecked) still
+       exists on the map to be studied AFTER a kludged/repaired build-over
+       has replaced it; if the wreck is gone, the opportunity has nothing
+       left to point at.
+-->
+<Defs>
+
+  <PeteTimesSix.ResearchReinvented.Defs.SpecialResearchOpportunityDef
+      ParentName="SpecialResearchOpportunityBase" MayRequire="petetimessix.researchreinvented">
+    <defName>RM_WM_AnalyseWreckedSmelter</defName>
+    <opportunityType>Analyse</opportunityType>
+    <project>RM_WM_AutomatedSmelterRestoration</project>
+    <things>
+      <li>RM_WM_AutomatedSmelter_Wrecked</li>
+    </things>
+  </PeteTimesSix.ResearchReinvented.Defs.SpecialResearchOpportunityDef>
+
+</Defs>

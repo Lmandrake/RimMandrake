@@ -44,5 +44,11 @@ arrangement, not a finished one.</description>
   <loadAfter>
     <li>OskarPotocki.VanillaFactionsExpanded.Core</li>
     <li>VanillaExpanded.VFEFactory</li>
+    <!-- Soft: RM_WM_AnalyseWreckedSmelter (Defs/Specials/) ParentNames
+         SpecialResearchOpportunityBase and is itself MayRequire-guarded, so
+         this mod loads fine without Research Reinvented present — but if it
+         IS present, its abstract parent must exist before we inherit from
+         it. WRECKED_MACHINES_RESURRECTION_1, 2026-09-01. -->
+    <li>petetimessix.researchreinvented</li>
   </loadAfter>
 </ModMetaData>

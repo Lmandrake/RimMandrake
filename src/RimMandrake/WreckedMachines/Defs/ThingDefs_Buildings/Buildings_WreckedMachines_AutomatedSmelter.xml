@@ -19,10 +19,22 @@
   CompProperties_Explosive — not a small radius, none at all. Whoever implements
   the detonation feature in TODO.md §1 must skip this def deliberately.
 
-  ⚠️ PROVISIONAL: costs and researchPrerequisites below implement the
-  *recommendation* in DESIGN.md §2, which the owner has NOT ratified. The
-  techprint gate the recommendation calls for does not exist yet. Revisit all
-  three <costList> and <researchPrerequisites> blocks when §2 is settled.
+  ✅ RESEARCH GATE RE-POINTED, WRECKED_MACHINES_RESURRECTION_1 (owner
+  ruling 2026-08-31, canon.yml wrecked_machines): the repaired tier's
+  researchPrerequisites now names RM_WM_AutomatedSmelterRestoration
+  (Defs/ResearchProjectDefs/ResearchProjects_WreckedMachines.xml), a new
+  Ship-tree project owned by this mod — NOT VFE_BasicFactories, which stays
+  the untouched donor building's own gate. See that file's header for the
+  full account, including the techprint-gate fork left OPEN (faction-held
+  is BLOCKED on TECHPRINT_FACTION_GATING_1; this pilot ships ungated rather
+  than guessing a faction).
+
+  ⚠️ STILL PROVISIONAL: the <costList> material amounts on all three tiers.
+  DESIGN.md §2 calls this the "still open" half of the recommendation (the
+  material cost of each rung, and the Survival Tools Reborn tool requirement
+  on Wrecked -> Kludged) and today's ruling did not touch it — only the
+  research/techprint half of §2 was in scope. Revisit costList when §2's
+  material-cost half is ratified.
 
   ⚠️ THIS IS THE v1 CUT (owner, 2026-08-12): "They will just be rubble for now."
   Two features that DESIGN.md still describes at length are DELIBERATELY ABSENT
@@ -296,13 +308,15 @@
     <replaceTags>
       <li>WM_AutomatedSmelter</li>
     </replaceTags>
-    <!-- PROVISIONAL (DESIGN.md §2, unratified): the recommendation puts this
-         rung behind the machine's real research gated by an EARNED TECHPRINT,
-         and warns that the techprint must remain the true lock because Research
-         Reinvented lets a player prototype and then stop researching. No
-         techprint def exists yet, so only the research is expressed here. -->
+    <!-- RE-POINTED, WRECKED_MACHINES_RESURRECTION_1 (owner ruling
+         2026-08-31): gates on OUR OWN Ship-tree restoration project, not
+         VFE's vanilla research — the ruling's "restoration rows live in THE
+         SHIP tree" and item 5's "keeps VFE-Factory's building untouched."
+         See ResearchProjects_WreckedMachines.xml for the full account and
+         the still-open techprint-gate fork (faction-held stays BLOCKED on
+         TECHPRINT_FACTION_GATING_1; shipped ungated rather than guessed). -->
     <researchPrerequisites>
-      <li>VFE_BasicFactories</li>
+      <li>RM_WM_AutomatedSmelterRestoration</li>
     </researchPrerequisites>
     <building>
       <relatedBuildCommands>

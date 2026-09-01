@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  WreckedMachines — restoration research, WRECKED_MACHINES_RESURRECTION_1.
+
+  Ruling this implements: canon.yml wrecked_machines (owner, 2026-08-31) says
+  "restoration rows live in THE SHIP tree (Rekko-neutral register)" — a
+  registration this mod owns, separate from VFE-Factory's own vanilla
+  VFE_BasicFactories gate (which stays completely untouched, per
+  design/Jawa/wrecked_machines_resurrection.md item 5: "the shipped state
+  keeps VFE-Factory's building untouched; the ship-or-retexture question
+  re-opens only after the pilot loop survives a live round").
+
+  ⚠️ RESEARCH_TREE_NORMALIZATION_1 has NOT executed yet ("after the droids
+  land", research_tree_taxonomy.md header). No ResearchTabDef named "THE SHIP"
+  exists in any loaded def today — the taxonomy doc's tab column is a planned
+  future categorization, not a live def. Inventing a <tab> reference to a def
+  that does not exist would be a load error. Instead this project carries the
+  same <tags><li>ShipRelated</li></tags> vanilla's own ShipResearchProjectBase
+  uses (Data/Core/Defs/ResearchProjectDefs/ResearchProjects_5_Ship.xml) — the
+  live, real convention for "this belongs to the ship cluster" — so the
+  normalization pass picks this def up automatically by content match, the
+  same way it already sweeps VFE_Manufacturing and the VGE systems rows
+  (research_manifest_draft.csv, all tagged "Ship tree: ... swept in by
+  content match"). When normalization executes and a real ResearchTabDef
+  exists, add <tab> here; do not guess its defName now.
+
+  Tier: T2 Forge by research_tree_taxonomy.md §2/§7 (late-Industrial cost
+  band 1600-3000, techLevel Industrial) — this is Jawa applied bodge-science
+  on ship-original systems, not the ship's own Spacer engineering.
+
+  🔴 TECHPRINT GATE — genuine design fork, not resolved here. The resurrection
+  spec (design/Jawa/wrecked_machines_resurrection.md item 2) says "the
+  techprint gate is the ruled faction-held access class." Investigated by
+  TECHPRINT_FACTION_GATING_1 (infrastructure/state/items/
+  TECHPRINT_FACTION_GATING_1.md): the faction-held mechanism itself is real
+  and pure-XML (ResearchProjectDef.heldByFactionCategoryTags +
+  StockGenerator_Techprints on a trader), but is BLOCKED — no design doc maps
+  ANY of the 12 campaign factions to a tech-alignment domain, and that item's
+  own brief says not to invent the mapping. This project therefore ships
+  WITHOUT techprintCount/heldByFactionCategoryTags — no techprint gate at
+  all, faction or otherwise. It is reachable by the RR Analyse study loop
+  (primary route) or by RR's own bench-theory overflow (slow fallback,
+  player-setting-dependent), per DESIGN.md §2's already-ratified mechanism.
+  Do NOT add a techprint requirement here by guessing a faction — when
+  TECHPRINT_FACTION_GATING_1 unblocks, revisit this def specifically.
+-->
+<Defs>
+
+  <ResearchProjectDef>
+    <defName>RM_WM_AutomatedSmelterRestoration</defName>
+    <label>automated smelter restoration</label>
+    <description>Study the wrecked automated smelter on the ship's own deck closely enough to understand how to rebuild it. This is not the smelter's original engineering — the Kolyska's makers already solved that — it is the Jawa's own accumulated, bodged, hard-won knowledge of how to bring a dead one back.\n\nStudying the wreck itself (Research Reinvented's Analyse) is the fast, primary route. Working it out from theory alone at a bench is possible but slow, and stays slow on purpose.</description>
+    <baseCost>2000</baseCost>
+    <techLevel>Industrial</techLevel>
+    <tags>
+      <li>ShipRelated</li>
+    </tags>
+    <!-- Off in open space, deliberately away from vanilla's Ship cluster
+         (X 19-22) and Main-tab crowding near the origin — cosmetic only,
+         revisit once a real research-tab layout exists. -->
+    <researchViewX>26</researchViewX>
+    <researchViewY>12</researchViewY>
+    <generalRules>
+      <rulesStrings>
+        <li>subject->the automated smelter's dead circuitry</li>
+        <li>subject_gerund->restoring wrecked ship machinery</li>
+      </rulesStrings>
+    </generalRules>
+  </ResearchProjectDef>
+
+</Defs>

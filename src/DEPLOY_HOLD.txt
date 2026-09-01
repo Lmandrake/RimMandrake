@@ -19,13 +19,6 @@
 Armoury/Patches/Warcasket_HazardRetune.xml   # owner: SHIP NEITHER, 2026-08-12
 Armoury/Patches/Armour_Ratings.xml           # owner: SHIP NEITHER, 2026-08-12
 
-# --- WreckedMachines: whole mod parked to v2 ------------------------------
-# Owner stood the mod down to v2 on 2026-08-12: v1 uses mangled metal salvage
-# role-played as broken machines, with Research Reinvented and VFE-Factory
-# unchanged. The work is finished and deliberately shelved, NOT abandoned —
-# custom_patches/WreckedMachines/V2.md is the register of what moved and why.
-WreckedMachines/*                                 # owner: parked to v2, 2026-08-12
-
 # ---- DesertVehicleReskin — HOLD LIFTED 2026-08-13, owner approved the art ----
 # The hold said "lift this when the owner approves the art — nothing else."
 # They did: "Eopie is reviewed! Ship it!", after the three owed fixes landed
