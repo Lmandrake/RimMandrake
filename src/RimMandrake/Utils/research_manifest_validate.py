@@ -583,19 +583,23 @@ def check_resolved_dump(live, active_ids):
                              "vanilla 'Electricity' ResearchProjectDef not found in the dump "
                              "- cannot confirm the dump is the resolved, post-patch state"))
         return issues
+    # techprintCount on vanilla projects is Configurable Techprints'
+    # (com.makeitso.configurabletechprints) stamp, NOT Research Reinvented's:
+    # neither RR DLL references the field (settled 2026-09-01). RR's own
+    # signature is the RR_ prerequisite it splices in.
     tp = elec.get("techprintCount") or 0
     prereqs = elec.get("prerequisites") or []
-    if tp > 0 and any(str(p).startswith("RR_") for p in prereqs):
+    if any(str(p).startswith("RR_") for p in prereqs):
         issues.append(Issue(INFO, "co-writer", "Electricity",
-                             "resolved-dump signature confirmed: techprintCount=%d, prereqs=%s "
-                             "- this IS Research Reinvented's post-load rewrite, not raw XML"
-                             % (tp, prereqs)))
+                             "resolved-dump signature confirmed: prereqs=%s (RR's splice); "
+                             "techprintCount=%d is Configurable Techprints', if active"
+                             % (prereqs, tp)))
     else:
         issues.append(Issue(FAIL, "co-writer", "Electricity",
-                             "techprintCount=%s, prereqs=%s - Research Reinvented's rewrite is "
-                             "NOT visible here. This dump looks RAW/PRE-PATCH; validating "
-                             "against it would produce a report that fights RR at load "
-                             "(taxonomy section 4, 'co-writer awareness')" % (tp, prereqs)))
+                             "prereqs=%s - Research Reinvented's RR_ splice is NOT visible "
+                             "here. This dump looks RAW/PRE-PATCH; validating against it "
+                             "would produce a report that fights RR at load "
+                             "(taxonomy section 4, 'co-writer awareness')" % (prereqs,)))
     return issues
 
 

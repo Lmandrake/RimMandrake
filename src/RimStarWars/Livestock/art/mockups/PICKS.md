@@ -7,7 +7,7 @@ Reviewed on GitHub from the SHEET_*.png contact sheets. Prompts per option are i
 |---|---|---|
 | onnik | **option 2** is the onnik. Options 1 and 3 dropped — "cartoonish". | `onnik_opt2.png` |
 | karrask | **option 2** is the karrask. | `karrask_opt2.png` |
-| karrask | option 3 **promoted to its own new creature** (unnamed, unspecified — needs a design row). Option 1 dropped. | `karrask_opt3.png` |
+| karrask | option 3 **promoted to its own new creature**: a **livestock animal genetically modified by the Helix faction** (owner, 2026-09-01; cast: `design/Jawa/bridge/INHABITED_CAST_HELIX.md`). Design row: FORSAKEN_CRAGS_FAUNA_1. Option 1 dropped. | `karrask_opt3.png` |
 | moornak | **option 3** is the moornak. | `moornak_opt3.png` |
 | moornak | options 1 and 2 **kept and promoted to other crag creatures** (the **Forsaken Crags** = `AB_RockyCrags`, the nightside ground biome, 26% of the nightside, −30…0 °C — owner, 2026-09-01; each needs a design row). | `moornak_opt1.png`, `moornak_opt2.png` |
 
