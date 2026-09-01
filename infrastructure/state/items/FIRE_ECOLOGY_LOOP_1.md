@@ -307,3 +307,57 @@ the owner, matching `WRECKED_MACHINES_RESURRECTION_1`'s split. §5 (Tribes
 observable burn behavior) and creatures/Pyroconvective Cell were correctly
 out of scope and not touched. Scorch-fruit is not wired into any biome's
 `wildPlants` list — deliberate, see unit 4.
+
+## 2026-09-01 (FOUNDRY) — live cold load, real Config errors found and fixed
+
+Added `mandrake.rsw.fireecology` + `mandrake.rut.fireecology` to
+`ModsConfig.xml`, deployed. **Hit a real deploy-tool bug first**: both mods'
+folders were named bare `FireEcology` (`src/RimStarWars/FireEcology`,
+`src/RimUtinni/FireEcology`) — `deploy_custom_mods.py` keys mods by bare
+basename across all tiers, so the RimUtinni scan silently clobbered the
+RimStarWars entry in its discovery dict and the engine mod (the C# hook,
+every real def) was never going to deploy at all. Renamed the RimUtinni
+folder to `PyrelandsFireEcology` (see the new project memory
+`deploy-tool-mod-folders-must-be-unique-across-tiers`); both mods now
+deploy independently, confirmed in sync.
+
+Cold-loaded the full 589-mod list. `harvest_log.py`: all standing baselines
+held (patch failures still at baseline 5, no new dead mods). But
+`Player.log` carried real Config errors `validate_patch.py`/`harvest_log.py`
+cannot see (a different, runtime-only class than patch failures):
+- `RSW_FE_Ash_Trace`/`Ash_Light`/`Ground_Sand`/`Ground_Gravel`/`Ground_Soil`/
+  `Ground_SoilRich`: "burnedDef is flammable" — `Verse/TerrainDef.cs`'s
+  `ConfigErrors()` flags any burnedDef target that is itself flammable,
+  because vanilla's convention treats burnedDef as a terminal state. This
+  is the ash-ladder's own INTENDED design (each rung's burnedDef points at
+  the next, so a re-burn escalates) — advisory only, confirmed via source
+  that `TerrainGrid.Notify_TerrainBurned` fires regardless of what this
+  check says. Documented in `AshLadder.xml`'s own header rather than
+  "fixed" away (fixing it would mean abandoning the chain mechanic).
+- `RSW_FE_Plant_ScorchFruit`/`RSW_FE_ScorchFruitYield`/`RSW_FE_FirefoamSprayer`:
+  "has duplicate thingCategory" — genuine authoring mistakes, real fixes:
+  removed the redundant explicit `<thingCategories>` blocks (all three
+  already inherit the correct category from their vanilla `ParentName`
+  chain — confirmed by reading `PlantBase`/`PlantFoodRawBase`/`BaseGun`'s
+  own declarations, not assumed).
+- `RSW_FE_FirefoamSprayer`: "verb 0: has incorrect forcedMiss settings;
+  explosive projectiles and only explosive projectiles should have forced
+  miss enabled" — genuine fix: `Verse/VerbProperties.cs`'s `ConfigErrors()`
+  requires `forcedMissRadius > 0` exactly when the projectile
+  `CausesExplosion` (ours does — `Projectile_Explosive`,
+  `explosionRadius 2.5`); the verb had no `forcedMissRadius` at all. Added
+  `<forcedMissRadius>1.5</forcedMissRadius>`.
+
+All three real fixes re-validated (`validate_patch.py`: 0 errors, 5
+warnings, unchanged) and redeployed. **Not yet re-verified against a fresh
+load** — defs only parse at startup, and this fix rode the same session's
+still-running instance rather than forcing a second cold load solo (low
+severity, cosmetic/advisory class, batches into whatever restart comes
+next).
+
+**Lesson for future FIRE_ECOLOGY/WEATHER_SUITE-style passes**: `validate_patch.py`
+and `harvest_log.py`'s patch-failure check do NOT see Config errors —
+they're a third class of finding (patch application vs. Config error vs.
+patch-operation failure), only visible by actually grepping a live
+`Player.log` for `^Config error in` after a real load. Static validation
+alone is not sufficient proof of a clean def.

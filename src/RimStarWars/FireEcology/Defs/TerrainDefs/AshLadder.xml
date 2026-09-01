@@ -2,6 +2,19 @@
 <Defs>
 
   <!--
+    🔴 EXPECTED, ACCEPTED CONFIG WARNING (confirmed live 2026-09-01):
+    "Config error in RSW_FE_Ash_Trace/Ash_Light: burnedDef is flammable" —
+    `Verse/TerrainDef.cs ConfigErrors()` flags ANY burnedDef target that is
+    itself flammable, because vanilla's own convention treats burnedDef as
+    a terminal end-state. This chain deliberately breaks that convention on
+    purpose (see below) — it is advisory only (ConfigErrors never blocks a
+    load or the mechanism itself; `TerrainGrid.Notify_TerrainBurned` fires
+    regardless of what the check says), not a bug. `RSW_FE_Ash_Deep` has no
+    burnedDef and is not itself flammable, so the chain still terminates
+    correctly — only the non-terminal rungs (Trace, Light; and the two
+    scorchable-ground bases whose burnedDef points at Trace) trip the
+    warning, exactly as many rungs as there are non-terminal links.
+
     The trace -> light -> heavy -> deep ladder itself, doc §3
     ("design/Jawa/proposals/fire_ecology_deep_design.md"). Each rung is
     itself flammable with burnedDef pointing at the next rung, so a scar

@@ -83,9 +83,6 @@
       <MaxHitPoints>40</MaxHitPoints>
       <Nutrition>0.5</Nutrition>
     </statBases>
-    <thingCategories>
-      <li>Plants</li>
-    </thingCategories>
     <thingClass>Plant</thingClass>
     <tickerType>Normal</tickerType>
     <useHitPoints>True</useHitPoints>
@@ -137,9 +134,6 @@
       <Nutrition>0.09</Nutrition>
       <MarketValue>3.5</MarketValue>
     </statBases>
-    <thingCategories>
-      <li>PlantFoodRaw</li>
-    </thingCategories>
     <thingClass>ThingWithComps</thingClass>
     <tickerType>Rare</tickerType>
     <useHitPoints>true</useHitPoints>
