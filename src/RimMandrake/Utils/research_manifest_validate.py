@@ -520,9 +520,13 @@ def check_coverage(rows, live, manifest_meta, dump_fp):
 # --------------------------------------------------------------- check 6
 
 def check_cycles(rows):
-    issues = []
     graph = {r["defName"]: list(r["prereqs"]) + list(r["hidden_prereqs"])
              for r in rows if r["fate"] != "cut"}
+    return _cycle_issues(graph)
+
+
+def _cycle_issues(graph):
+    issues = []
     WHITE, GRAY, BLACK = 0, 1, 2
     color = {n: WHITE for n in graph}
     reported = set()
@@ -595,6 +599,90 @@ def check_resolved_dump(live, active_ids):
     return issues
 
 
+# ------------------------------------------------------------ --inventory
+# No manifest exists yet for some captures (RESEARCH_MANIFEST_DRAFT_1 may be
+# stale or absent). This mode runs the dump/cherrypicker-only half of the 7
+# checks directly off the LIVE inventory - useful on its own, and proves the
+# two readers (dump JSON, cherrypicker.py) work before any manifest exists.
+
+def inventory_graph(live):
+    """{defName: prereqs+hidden_prereqs} for EVERY live def - the cycle check
+    needs no manifest, only the dump's own prerequisite fields."""
+    graph = {}
+    for dn, fields in live.items():
+        graph[dn] = list(fields.get("prerequisites") or []) + \
+                    list(fields.get("hiddenPrerequisites") or [])
+    return graph
+
+
+def inventory_orphans(live, cuts):
+    """Orphan/half-orphan scan against the live inventory alone (no manifest
+    rows to read a `fate` off of - every def is implicitly 'still in the
+    tree' until a manifest says otherwise)."""
+    issues = []
+    for dn, fields in live.items():
+        if cuts.cut_name(dn):
+            issues.append(Issue(INFO, "orphan", dn,
+                                 "the PROJECT ITSELF is on the Cherry Picker cut list "
+                                 "(still present in the dump - dump is pre-cut)"))
+            continue
+        cache = fields.get("cachedUnlockedDefs") or []
+        if not cache:
+            allowed = dn in EMPTY_CACHE_ALLOWLIST or dn.startswith(EMPTY_CACHE_ALLOWLIST_PREFIXES)
+            if not allowed:
+                issues.append(Issue(WARN, "orphan", dn,
+                                     "empty unlock cache and NOT on the confirmed-alive "
+                                     "allowlist - verify by hand (see research_tree_prep.md "
+                                     "section 1) before calling this row dead or alive"))
+            continue
+        live_unlocks = [u for u in cache if not cuts.cut_name(u)]
+        cut_ct = len(cache) - len(live_unlocks)
+        if not live_unlocks:
+            issues.append(Issue(FAIL, "orphan", dn,
+                                 "DEAD: all %d unlock(s) are on the cut list (%s)"
+                                 % (len(cache), ", ".join(cache[:6]))))
+        elif cut_ct:
+            issues.append(Issue(WARN, "orphan", dn,
+                                 "partial-cut: %d of %d unlocks cut - possible Mortars-class "
+                                 "half-orphan, check by hand" % (cut_ct, len(cache))))
+    return issues
+
+
+def run_inventory(dump, cherrypicker_choice, anyway):
+    """--inventory: report the live ResearchProjectDef inventory plus the
+    cycle/orphan/co-writer checks that need no manifest. Always exits 0 -
+    this mode is a report, not a pass/fail gate."""
+    man_path = dump / "manifest.json"
+    if not man_path.is_file():
+        sys.exit("no manifest.json at %s - not a def-dump capture" % dump)
+    man, active_ids = check_modlist(man_path, anyway)
+
+    cuts = (cherrypicker.from_log() if cherrypicker_choice == "log"
+            else cherrypicker.load(cherrypicker_choice))
+    print(cuts.provenance())
+
+    live, _ = load_research_dump(dump)
+    dump_fp = refresh.dump_fingerprint(str(dump)) or {}
+
+    print("\nMEASURED: %d live ResearchProjectDef (capture %s, %s mods, %s)"
+          % (len(live), dump_fp.get("hash", "UNMEASURED"),
+             dump_fp.get("modCount", man.get("modCount", "?")),
+             dump_fp.get("capturedUtc", man.get("capturedUtc", "?"))))
+
+    cycle_issues_all = _cycle_issues(inventory_graph(live))
+    known_loops = [i for i in cycle_issues_all if i.level == INFO]
+    cyc = report("cycle check (inventory)  ", cycle_issues_all)
+    orph = report("orphan check (inventory) ", inventory_orphans(live, cuts))
+    report("co-writer awareness      ", check_resolved_dump(live, active_ids))
+
+    print("\nHEADLINE: %d ResearchProjectDef · %d cycle(s) found (%d known self-loop, "
+          "%d other) · %d dead orphan(s) found from the inventory scan alone"
+          % (len(live), len(cyc) + len(known_loops), len(known_loops), len(cyc), len(orph)))
+    print("(no manifest was supplied - coverage/band/prereq/one-chain-per-form checks need "
+          "a manifest row per def; run without --inventory once one exists)")
+    return 0
+
+
 # ---------------------------------------------------------------- report
 
 CHECKS = [
@@ -623,7 +711,11 @@ def report(name, issues):
 def main():
     ap = argparse.ArgumentParser(description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("manifest", help="path to the manifest .csv or .json")
+    ap.add_argument("manifest", nargs="?", default=None,
+                     help="path to the manifest .csv or .json (omit with --inventory)")
+    ap.add_argument("--inventory", action="store_true",
+                     help="no manifest: report the live ResearchProjectDef inventory plus "
+                          "the cycle/orphan/co-writer checks that don't need one")
     ap.add_argument("--dump", default=str(DUMP), help="override the def-dump capture dir")
     ap.add_argument("--anyway", action="store_true",
                      help="report even though the dump does not match the live mod list "
@@ -633,6 +725,11 @@ def main():
     a = ap.parse_args()
 
     dump = Path(a.dump)
+    if a.inventory or a.manifest is None:
+        if a.manifest is not None:
+            print("(--inventory given with a manifest path - ignoring the manifest)")
+        return run_inventory(dump, a.cherrypicker, a.anyway)
+
     man_path = dump / "manifest.json"
     if not man_path.is_file():
         sys.exit("no manifest.json at %s - not a def-dump capture" % dump)

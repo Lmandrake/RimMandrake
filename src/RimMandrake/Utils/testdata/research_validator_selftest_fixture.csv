@@ -1,0 +1,18 @@
+# fingerprint=selftestfp0001 modCount=3 capturedUtc=2026-01-01T00:00:00Z
+defName,source_mod,fate,tab,tier,cost,prereqs,hidden_prereqs,source_gate,form,theology,merge_target,note
+Electricity,Core,keep,TradeCraft,T1,1000,,,,,drip,,check7 control - RR-resolved dump
+Machining,Core,keep,TradeCraft,T1,1200,,,,,drip,,check3 clean-pass control
+GoodProject,TestMod,keep,TradeCraft,T1,1000,,,,,drip,,generic alive control
+CutTargetProject,TestMod,keep,TradeCraft,T1,1000,,,,,drip,,DELIBERATE FAIL check1: its one unlock is cut -> orphan
+Bioregeneration,Core,keep,Scavenger,T0,500,,,,,pride-free,,on the empty-cache allowlist -> silent
+PrereqA,TestMod,keep,TradeCraft,T1,900,,,,,drip,,check2 clean-pass control (no prereqs)
+PrereqB,TestMod,keep,TradeCraft,T1,1100,PrereqA,,,,drip,,check2 clean-pass control (valid prereq)
+BadPrereqRow,TestMod,keep,TradeCraft,T1,1000,CutProject,,,,drip,,DELIBERATE FAIL check2: prereqs a fate=cut row
+CutProject,TestMod,cut,TradeCraft,T1,1000,,,,,drip,,the row BadPrereqRow illegally depends on
+RimFridge_PowerFactorSetting,RimFridge,keep,TradeCraft,T1,1000,RimFridge_PowerFactorSetting,,,,drip,,real shipped self-loop - must report INFO not FAIL
+CycleA,TestMod,keep,TradeCraft,T1,1000,CycleB,,,,drip,,DELIBERATE FAIL check6: synthetic 2-node cycle with CycleB
+CycleB,TestMod,keep,TradeCraft,T1,1000,CycleA,,,,drip,,other half of the synthetic cycle
+BandBad,TestMod,keep,TradeCraft,T0,50000,,,,,drip,,DELIBERATE FAIL check3: cost far outside T0's <=600 band
+TechMismatch,TestMod,keep,TradeCraft,T0,500,,,,,drip,,DELIBERATE FAIL check3: techLevel Ultra not in T0's mapping
+FormBlasterA,TestMod,keep,Armory,T3,4000,,,,blaster,drip,,DELIBERATE FAIL check4 (paired with FormBlasterB - two unlinked chains)
+FormBlasterB,TestMod,keep,Armory,T3,4000,,,,blaster,drip,,other half of the split blaster form
