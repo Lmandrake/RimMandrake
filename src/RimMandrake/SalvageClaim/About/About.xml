@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimMandrake: Salvage Claim</name>
+  <packageId>mandrake.rm.salvageclaim</packageId>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>SETTLEMENT_VERBS_WAVE_1, scoped to the salvage-law gray zone only (design/Jawa/ownership_settlement_spec.md item 9's four v1 verb families — crime suite, walkable commerce and social fabric are separate, unbuilt items). Adds ONE interaction: a right-click "pay claim fee" order any drafted or undrafted colonist can issue against a Thing (or a downed mechanoid/droid Pawn) they don't already own. Paying the fee — drawn from the acting pawn's own carried silver — fires RimMandrake.Property.PropertyEngine.Fire's TakingAct.Claim path unconditionally, which the fabric already fully implements (ClaimBasis.ClaimFeePaid, authorized by definition, no perception roll). The fee itself scales with the fabric's own two published numbers for the target — RecognizabilityUtility.Score and the resolved prior claim's decayed EffectiveStrength — so a fresh, highly-recognizable battlefield wreck costs more to claim than an old, forgettable one, and a downed droid's persistent identity keeps a floor under the price even once any prior claim has fully decayed.
+
+Carries no Star Wars content, no district/verb-suite content beyond this one interaction, and no RimUtinni tuning (the fee-scaling constants here are generic engine defaults, same spirit as RM_Property's own PropertyTuning.cs, not authored per-faction values). Crime suite (pickpocket/burglary/fencing/smuggling), walkable commerce (merchandise/haggling) and social fabric (rumors/sabacc/bribes) remain open work, filed as separate items when picked up — see design/Jawa/ownership_settlement_spec.md's sequenced execution list.</description>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+    <li>
+      <packageId>mandrake.rm.property</packageId>
+      <displayName>RimMandrake: Property</displayName>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+    <li>mandrake.rm.property</li>
+  </loadAfter>
+</ModMetaData>
