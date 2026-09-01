@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-01T03:09:11Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-01T03:30:46Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -257,3 +257,43 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/SONIC_WEAPONS_EXPANSION_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SONIC_WEAPONS_EXPANSION_1.md
+
+## PROPERTY_FABRIC_BUILD_1 Build RM_Property: the ownership/provenance/perception fabric mod - colony side first
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/PROPERTY_FABRIC_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PROPERTY_FABRIC_BUILD_1.md
+
+## SETTLEMENT_VISIT_LOOP_1 Inhabited visit loop: peaceful entry to named settlements, manifest, teardown, casing persistence
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SETTLEMENT_VISIT_LOOP_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SETTLEMENT_VISIT_LOOP_1.md
+
+## DISTRICT_TEMPLATE_LIBRARY_1 Authored Lua district template library + composition through rimplace - Junkers set first
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DISTRICT_TEMPLATE_LIBRARY_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DISTRICT_TEMPLATE_LIBRARY_1.md
+
+## SETTLEMENT_VERBS_WAVE_1 v1 interaction verbs: crime suite, salvage-law gray zone, walkable commerce, social fabric
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SETTLEMENT_VERBS_WAVE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SETTLEMENT_VERBS_WAVE_1.md

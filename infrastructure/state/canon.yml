@@ -1308,6 +1308,27 @@ research_tree:
     faction-holds-the-techprint IS the gate. Supersedes the
     cathedral/vault/hutt candidate-gate list as the general mechanism
     (those become faction/source assignments, not bespoke flags).
+ownership_fabric:
+  ruled: true
+  src: >
+    Owner, 2026-08-31, brainstorming sitting ("This is amazing! (two mods)"):
+    ownership + provenance + permissions + perception ship as ONE system in
+    TWO mods - RM_Property (mandrake.rm.property, campaign-blind fabric) +
+    Inhabited (visit loop, district maps, verbs); all taste is RimUtinni
+    data. Claims are a DECAYING VECTOR per Thing (claimant/strength/basis/
+    timestamp), decay rate set by recognizability; virtual by default,
+    recorded by exception. RESOLUTION FOLLOWS NARRATIVE PROXIMITY: faction
+    blob at distance, cast pawn up close, and the player colony is NOT a
+    faction - each colonist is their own claimant; the Clan holds only ship
+    + sustenance. Battle loot keeps its origin claim. Perception FULLY
+    HIDDEN, knowledge lives in people and propagates to the faction record
+    at the faction's security rate (Hutts excellent, Empire/Deepwater high,
+    Tuskens ~nil); consequences read the record only. Fully symmetric
+    (NPCs can wrong the player and vice versa). Settlement maps = authored
+    Lua DISTRICTS composed per named settlement. Build order: colony side
+    first; Junkers pilot town. Visit Settlements = study-and-replace,
+    retires when our loop lands. Spec:
+    design/Jawa/ownership_settlement_spec.md
 royalty:
   dead_ruled: true
   dead_src: >
