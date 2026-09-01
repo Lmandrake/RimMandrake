@@ -1329,6 +1329,22 @@ ownership_fabric:
     first; Junkers pilot town. Visit Settlements = study-and-replace,
     retires when our loop lands. Spec:
     design/Jawa/ownership_settlement_spec.md
+wrecked_machines:
+  resurrected: true
+  src: >
+    Owner, 2026-08-31, verbatim: "let's resurrect that now! Fix it. Make it
+    work in the new regime. Learning the tech from the ship not to just build
+    but to repair existing broken machinery to its glory is MUCH easier than
+    building from scratch, and about all the Jawa can do. Perhaps they always
+    have to repair large advanced machines/turrets if they have a hope to
+    make big things. Maybe they steal big things from colonies to have them
+    using powerful, strong droids to do so. A hauler droid that can steal
+    buildings is a fantastic idea! Use that too." => the 2026-08-12 park is
+    LIFTED. Doctrine: REPAIR-FIRST for large/advanced machines (scratch-build
+    withheld above a size/advancement line, tuned in data); wreck-study rides
+    RR-as-substrate; techprints follow the faction-held access classes;
+    building-theft via a Droidworks heavy hauler emitting ownership-fabric
+    TakingEvents. Spec: design/Jawa/wrecked_machines_resurrection.md
 royalty:
   dead_ruled: true
   dead_src: >

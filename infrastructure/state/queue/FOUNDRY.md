@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-01T05:47:07Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-01T05:56:01Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -294,3 +294,23 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/SETTLEMENT_VERBS_WAVE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SETTLEMENT_VERBS_WAVE_1.md
+
+## BUILDING_THEFT_HAULER_1 Building-theft hauler droid: Droidworks heavy chassis that uninstalls and carries whole buildings off hostile maps
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/BUILDING_THEFT_HAULER_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BUILDING_THEFT_HAULER_1.md
+
+## WRECKED_MACHINES_RESURRECTION_1 Resurrect WreckedMachines: un-park, verify replaceTags runtime, re-point at ruled research grammar, prove the study loop live
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/WRECKED_MACHINES_RESURRECTION_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WRECKED_MACHINES_RESURRECTION_1.md

@@ -5,15 +5,12 @@ SCRAP** decision in `design/Jawa/worldbuilding/ship_deck_plan.md`. That file is 
 authority on the campaign fiction and the repair ladder; this file owns only
 how the mod realises it._
 
-> ## 🛑 THIS MOD IS PARKED — the whole of it is v2
+> ## ✅ RESURRECTED — owner, 2026-08-31: "let's resurrect that now! Fix it."
 >
-> **Owner, 2026-08-12: stand down.** v1 uses mangled metal salvage on the ship,
-> role-played as broken machines, with Research Reinvented and VFE-Factory
-> driving progression unchanged. **No part of this mod ships in v1** — not the
-> tiers, not the art, not the repair loop, not any research.
->
-> `mandrake.rm.wreckedmachines` is undeployed and absent from `ModsConfig.xml`, and
-> that is the **intended** state. See `V2.md`.
+> The 2026-08-12 park is LIFTED. The successor design is
+> `design/Jawa/wrecked_machines_resurrection.md` (repair-first doctrine for
+> big machines, ruled research grammar, wreck seeding beyond the ship, the
+> building-theft hauler). Work rides WRECKED_MACHINES_RESURRECTION_1.
 >
 > ⚠️ **Everything below is still true and still correct.** It is a design that is
 > finished and waiting, not a design in progress. Read it as the brief for v2.
