@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!--
+    The compose-stub step — SETTLEMENT_VISIT_LOOP_1. order 850 runs it
+    after terrain/structures/scatterers (same reasoning as Inhabited_Cast's
+    order 900) and BEFORE the cast arrives, so InstantiateCast has a
+    "composed" (in v1: stubbed) place to be dropped into.
+
+    Named directly in Inhabited_SettlementMapGenerator's genSteps list;
+    unlike Inhabited_Cast, a settlement does not rely on a tile mutator's
+    extraGenSteps to bring this step into the list.
+  -->
+  <GenStepDef>
+    <defName>Inhabited_ComposeSettlementDistrict</defName>
+    <order>850</order>
+    <genStep Class="RimMandrake.Inhabited.GenStep_ComposeSettlementDistrict" />
+  </GenStepDef>
+
+</Defs>

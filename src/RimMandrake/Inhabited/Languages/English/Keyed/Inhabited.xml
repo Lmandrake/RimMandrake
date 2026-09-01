@@ -10,4 +10,7 @@
   <InhabitedLooted>looted</InhabitedLooted>
   <InhabitedSquatted>squatted</InhabitedSquatted>
 
+  <!-- SETTLEMENT_VISIT_LOOP_1: the departure-time gate-search hook. -->
+  <InhabitedGateSearched>The gate guards at {0} search your people on the way out.</InhabitedGateSearched>
+
 </LanguageData>

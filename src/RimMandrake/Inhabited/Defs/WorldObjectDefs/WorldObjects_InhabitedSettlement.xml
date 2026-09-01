@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!--
+    A named, visitable settlement — SETTLEMENT_VISIT_LOOP_1.
+
+    Distinct WorldObjectDef from Inhabited_Place (the wilderness PLACE from
+    INHABITED_DESIGN.md): that one relies on the tile-mutator layer for its
+    map structure and falls back to MapGeneratorDefOf.Encounter with no
+    <mapGenerator> named. A settlement instead names its own generator
+    (Inhabited_SettlementMapGenerator) so the compose-stub and cast steps run
+    without needing a tile mutator in the loop.
+  -->
+  <WorldObjectDef>
+    <defName>Inhabited_Settlement</defName>
+    <label>settlement</label>
+    <description>A named settlement. Somebody lives here, and you can walk in and walk out again.</description>
+    <worldObjectClass>RimMandrake.Inhabited.WorldObject_InhabitedSettlement</worldObjectClass>
+    <mapGenerator>Inhabited_SettlementMapGenerator</mapGenerator>
+    <texture>World/WorldObjects/TribalSettlement</texture>
+    <expandingIcon>true</expandingIcon>
+    <expandingIconPriority>20</expandingIconPriority>
+    <canHaveFaction>true</canHaveFaction>
+    <canHaveMap>true</canHaveMap>
+    <selectable>true</selectable>
+    <IncidentTargetTags>
+      <li>Map_Misc</li>
+    </IncidentTargetTags>
+    <inspectorTabs>
+      <li>WITab_Terrain</li>
+      <li>WITab_Planet</li>
+    </inspectorTabs>
+  </WorldObjectDef>
+
+</Defs>

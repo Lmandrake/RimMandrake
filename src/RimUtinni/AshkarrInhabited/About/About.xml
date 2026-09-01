@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimMandrake: Utinni — Inhabited (Ash'karr)</name>
+  <packageId>mandrake.rut.inhabited</packageId>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>The Junkers pilot settlement manifest for SETTLEMENT_VISIT_LOOP_1, naming an actual Ash'karr settlement: The Claim Jump (Jawa_Junkers, tile 16905, ZBiome_Badlands — squatting the worked-out mining fields the Geonosians did not finish; design/Jawa/worldbuilding/ASHKARR_WORLD_DEFINITION.md §7 / world/ASHKARR_WORLDMAP_settlements.csv row 44). Low security, forgiving, per the spec's "Junkers pilot: low security, forgiving": the security profile here waves leavers through.
+
+Data only — districts, cast slots and the security profile are schema instances of `mandrake.rm.inhabited`'s SettlementManifestDef/SecurityProfileDef. No district art (DISTRICT_TEMPLATE_LIBRARY_1), no verb tuning (SETTLEMENT_VERBS_WAVE_1), no claim math (RM_Property, untouched).</description>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+    <li>
+      <packageId>mandrake.rm.inhabited</packageId>
+      <displayName>Inhabited (local)</displayName>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>mandrake.rm.inhabited</li>
+  </loadAfter>
+</ModMetaData>

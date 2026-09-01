@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!--
+    SETTLEMENT_VISIT_LOOP_1's map generator.
+
+    genSteps is copied wholesale from the shipped `Encounter` MapGeneratorDef
+    (ParentName="MapCommonBase", read via RimSage 2026-09-01) rather than
+    inherited-and-appended: Def XML inheritance REPLACES a redeclared list
+    node wholesale, it does not merge it, so redeclaring <genSteps> under
+    ParentName="MapCommonBase" here is the only way to get "Encounter's steps
+    plus ours" without either duplicating every vanilla step or losing them.
+
+    Two entries added at the bottom: Inhabited_ComposeSettlementDistrict
+    (order 850) and Inhabited_Cast (order 900, the same GenStepDef the
+    wilderness Inhabited_Place engine uses, reused unchanged; see
+    WorldObject_InhabitedSettlement's class comment for why that is safe).
+    List POSITION does not matter: MapGenerator.GenerateMap sorts every
+    active step by its own GenStepDef.order before running any of them.
+  -->
+  <MapGeneratorDef ParentName="MapCommonBase">
+    <defName>Inhabited_SettlementMapGenerator</defName>
+    <genSteps>
+      <li>ElevationFertility</li>
+      <li>MutatorPostElevationFertility</li>
+      <li>Terrain</li>
+      <li>MutatorPostTerrain</li>
+      <li>Roads</li>
+      <li>RockChunks</li>
+      <li>MutatorCriticalStructures</li>
+      <li>MutatorNonCriticalStructures</li>
+      <li>ScatterRuinsSimple</li>
+      <li>SteamGeysers</li>
+      <li MayRequire="Ludeon.RimWorld.Ideology">ScatterRoadDebris</li>
+      <li MayRequire="Ludeon.RimWorld.Ideology">ScatterCaveDebris</li>
+      <li MayRequire="Ludeon.RimWorld.Ideology">AncientUtilityBuilding</li>
+      <li MayRequire="Ludeon.RimWorld.Ideology">MechanoidRemains</li>
+      <li MayRequire="Ludeon.RimWorld.Ideology">AncientTurret</li>
+      <li MayRequire="Ludeon.RimWorld.Ideology">AncientMechs</li>
+      <li MayRequire="Ludeon.RimWorld.Ideology">AncientLandingPad</li>
+      <li MayRequire="Ludeon.RimWorld.Ideology">AncientFences</li>
+      <li MayRequire="Ludeon.RimWorld.Ideology">AncientPipelineSection</li>
+      <li MayRequire="Ludeon.RimWorld.Ideology">AncientJunkClusters</li>
+      <li>FindPlayerStartSpot</li>
+      <li>ScenParts</li>
+      <li MayRequire="Ludeon.RimWorld.Biotech">Pollution</li>
+      <li MayRequire="Ludeon.RimWorld.Biotech">AncientPollutionJunk</li>
+      <li>Plants</li>
+      <li>Snow</li>
+      <li>MutatorFinal</li>
+      <li>Animals</li>
+      <li>Fog</li>
+      <li>RocksFromGrid_NoMinerals</li>
+      <!-- SETTLEMENT_VISIT_LOOP_1 additions -->
+      <li>Inhabited_ComposeSettlementDistrict</li>
+      <li>Inhabited_Cast</li>
+    </genSteps>
+  </MapGeneratorDef>
+
+</Defs>

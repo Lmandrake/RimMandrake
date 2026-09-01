@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!--
+    SETTLEMENT_VISIT_LOOP_1's one real manifest. The Claim Jump: Jawa_Junkers,
+    tile 16905, ZBiome_Badlands, "squatting the worked-out mining fields the
+    Geonosians did not finish" (world/ASHKARR_WORLDMAP_settlements.csv row
+    44). Chosen over the item's other three candidates (The Slagfield, The
+    Fuel Works, The Ore Moot, the last of which is actually Jawa Trade
+    Moot's anchor, not a Junkers seat; verified against the CSV, not the
+    item's own candidate prose) because "claim jump" is a real mining/
+    prospecting term for stealing someone's claim: thematically exact for
+    the ownership/theft fabric this settlement sits on top of.
+
+    Districts are the four DISTRICT_TEMPLATE_LIBRARY_1 already committed to
+    building first for the Junkers set (ownership_settlement_spec.md,
+    "Sequenced execution": "scrapyard, dwelling cluster, cantina block,
+    depot"). Sizes/adjacency are advisory schema, not authored layout; v1's
+    compose step reads only districts[0] and stubs everything else.
+
+    Cast slots are role-shaped and deliberately carry no castDef: no
+    InhabitedCastDef exists yet for any place (the 269-character roster in
+    CastRoster_JUNKERS.xml is individual CharacterDefs, not cast bundles),
+    and inventing one here would be authoring district content this item is
+    explicitly scoped out of.
+  -->
+  <RimMandrake.Inhabited.SettlementManifestDef>
+    <defName>Inhabited_Manifest_TheClaimJump</defName>
+    <label>The Claim Jump</label>
+    <description>A Junkers scrap-and-salvage seat squatting a worked-out Geonosian mining field. Low security, forgiving -- the gate waves you through both ways.</description>
+    <settlementName>The Claim Jump</settlementName>
+    <factionDefName>Jawa_Junkers</factionDefName>
+    <securityProfile>Inhabited_SecurityProfile_Junkers</securityProfile>
+    <districts>
+      <li>
+        <label>scrapyard</label>
+        <approxSize>(30, 30)</approxSize>
+        <adjacentTo>
+          <li>depot</li>
+        </adjacentTo>
+      </li>
+      <li>
+        <label>dwelling cluster</label>
+        <approxSize>(22, 22)</approxSize>
+        <adjacentTo>
+          <li>cantina block</li>
+        </adjacentTo>
+      </li>
+      <li>
+        <label>cantina block</label>
+        <approxSize>(16, 16)</approxSize>
+        <adjacentTo>
+          <li>dwelling cluster</li>
+        </adjacentTo>
+      </li>
+      <li>
+        <label>depot</label>
+        <approxSize>(18, 18)</approxSize>
+        <adjacentTo>
+          <li>scrapyard</li>
+        </adjacentTo>
+        <required>false</required>
+      </li>
+    </districts>
+    <castSlots>
+      <li>
+        <role>boss</role>
+        <district>scrapyard</district>
+        <count>1~1</count>
+      </li>
+      <li>
+        <role>trader</role>
+        <district>depot</district>
+        <count>1~1</count>
+      </li>
+      <li>
+        <role>salvager</role>
+        <district>scrapyard</district>
+        <count>3~6</count>
+      </li>
+      <li>
+        <role>resident</role>
+        <district>dwelling cluster</district>
+        <count>2~5</count>
+      </li>
+    </castSlots>
+  </RimMandrake.Inhabited.SettlementManifestDef>
+
+</Defs>

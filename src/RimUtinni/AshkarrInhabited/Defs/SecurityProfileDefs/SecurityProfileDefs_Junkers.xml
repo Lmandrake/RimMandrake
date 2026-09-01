@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!--
+    "Junkers pilot: low security, forgiving" (SETTLEMENT_VISIT_LOOP_1 spec).
+    They wave leavers through, no gate search, ever, in v1. Real per-faction
+    tuning across the other 12 factions (the Empire pats down, etc.) lands as
+    RimUtinni data with SETTLEMENT_VERBS_WAVE_1; this is the one instance this
+    item needs to prove the hook end-to-end.
+  -->
+  <RimMandrake.Inhabited.SecurityProfileDef>
+    <defName>Inhabited_SecurityProfile_Junkers</defName>
+    <label>Junkers gate posture</label>
+    <description>The Weight cares who is strong enough to hold what they carry, not who is carrying it out the gate. Nobody searches leavers at a Junkers seat.</description>
+    <searchesLeavers>false</searchesLeavers>
+    <searchChance>0</searchChance>
+  </RimMandrake.Inhabited.SecurityProfileDef>
+
+</Defs>
