@@ -204,6 +204,17 @@ crossref baseline (was 25) for confirmation it rises by exactly 3.
 after the WeaponTags fix — see cold-load verification below. `kotorcore`
 remains blocked on `DROID_DONOR_PATCH_GATE_1`, unchanged.
 
+**Also unblocked and deployed, same sitting**: `DEPLOY_HOLD.txt` was holding
+7 `mandrake.rsw.armoury` files (the eweb/opturret absorption — `Absorbed_Eweb*`,
+`Absorbed_OPTurret.xml`, `Turrets_DamageDoctrine.xml`, `Turrets_Renames.xml`)
+specifically pending "eweb/opturret retirement not done yet" — now done, so
+lifted the hold and deployed all 7 together (per the hold's own "lift
+together, never separately" note). Deployed mid-relaunch, timing against
+this load's def-read is unconfirmed — check the log for
+`RN2SWGun_EWeb_MG`/`Turret_AutoChargeBlaster_OP`-family defNames; if absent,
+one more restart picks them up, not urgent since eweb/opturret are already
+off regardless.
+
 ## verify
 1. ~~Extended generator(s) absorb the AdditionalMods gap~~ — done, kept.
 2. `validate_patch.py --defs` (Data + Mods + Workshop root + Armoury) on the

@@ -19,28 +19,6 @@
 Armoury/Patches/Warcasket_HazardRetune.xml   # owner: SHIP NEITHER, 2026-08-12
 Armoury/Patches/Armour_Ratings.xml           # owner: SHIP NEITHER, 2026-08-12
 
-# --- Jawa_Armoury: WEAPONS_ABSORPTION_WAVE_1 eweb/opturret absorption ------
-# maincrep.eweb and rpgwanderer.opturret are STILL ACTIVE in ModsConfig — the
-# item's own rule 5 defers pack retirement to a separate later step gated on
-# a full-list load proving zero missing-def errors. Deploying the absorbed
-# defs now (same defNames: RN2SWGun_EWeb_MG, EWebShot, Turret_AutoChargeBlaster_OP,
-# ...) while the source packs are still loaded would collide on duplicate
-# defNames. Turrets_DamageDoctrine.xml/Turrets_Renames.xml are held alongside
-# them for the same reason: this session's edit RETIRED their eweb/opturret
-# ops (baking the doctrine values into the absorbed defs instead) — deploying
-# that edit without the absorbed defs would drop the doctrine values entirely,
-# since neither route would be live. Holding both keeps the already-deployed
-# (pre-this-session) versions live, so eweb/opturret keep behaving exactly as
-# they did before this item, until retirement actually happens. Lift together,
-# never separately.
-Armoury/Defs/DamageDefs/Absorbed_Eweb_Damage.xml   # FOUNDRY: eweb/opturret retirement not done yet, 2026-08-30
-Armoury/Defs/HediffDefs/Absorbed_Eweb_Hediff.xml   # FOUNDRY: eweb/opturret retirement not done yet, 2026-08-30
-Armoury/Defs/SoundDefs/Absorbed_Eweb_Sounds.xml    # FOUNDRY: eweb/opturret retirement not done yet, 2026-08-30
-Armoury/Defs/ThingDefs/Absorbed_Eweb.xml           # FOUNDRY: eweb/opturret retirement not done yet, 2026-08-30
-Armoury/Defs/ThingDefs/Absorbed_OPTurret.xml       # FOUNDRY: eweb/opturret retirement not done yet, 2026-08-30
-Armoury/Patches/Turrets_DamageDoctrine.xml         # FOUNDRY: paired with the absorbed defs above, 2026-08-30
-Armoury/Patches/Turrets_Renames.xml                # FOUNDRY: paired with the absorbed defs above, 2026-08-30
-
 # --- WreckedMachines: whole mod parked to v2 ------------------------------
 # Owner stood the mod down to v2 on 2026-08-12: v1 uses mangled metal salvage
 # role-played as broken machines, with Research Reinvented and VFE-Factory
