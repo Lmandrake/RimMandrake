@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-01T17:07:49Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-01T17:15:09Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -195,7 +195,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     build
-summary:  (no items/PROPERTY_FABRIC_BUILD_1.md yet — write one when you have something to say)
+summary:  Source: design/Jawa/ownershipsettlementspec.md (owner, 2026-08-31
 prose:    infrastructure/state/items/PROPERTY_FABRIC_BUILD_1.md
 
 ## WRECKED_MACHINES_RESURRECTION_1 Resurrect WreckedMachines: un-park, verify replaceTags runtime, re-point at ruled research grammar, prove the study loop live

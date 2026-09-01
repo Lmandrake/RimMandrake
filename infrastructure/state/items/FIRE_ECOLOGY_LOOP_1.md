@@ -361,3 +361,51 @@ they're a third class of finding (patch application vs. Config error vs.
 patch-operation failure), only visible by actually grepping a live
 `Player.log` for `^Config error in` after a real load. Static validation
 alone is not sufficient proof of a clean def.
+
+## 2026-09-01 (FOUNDRY) — live quicktest, the core loop SEEN working
+
+Quicktest map (not Pyrelands — a generic biome; the weather-table half of
+this item, Pyrelands-specific, is untested this pass, only the RimStarWars-
+tier mechanism). Placed `RSW_FE_Ground_Sand` at one cell, `jawa/map_fire`
+(size 1.5, spreads readily), then `rimworld/step_game_ticks` in repeated
+~400-450-tick batches (each call time-boxes around there on this modlist)
+up to `ticksGame` 11,558 (~3.2 in-game minutes).
+
+**Observed, not inferred — screenshots not taken this pass (thing/terrain
+census used instead, per §2's "does this def load, spawn, and behave"
+standard, not a visual claim):**
+- `RSW_FE_Filth_LooseAsh` and `RSW_FE_Plant_ScorchFruit` both appeared
+  within the first ~2,200 ticks and kept accumulating (42 and 25
+  respectively by the end) — **the C# hook (`Patch_FireTick_AshAndScorchFruit`)
+  is confirmed firing live**, both its ash-dusting and scorch-fruit-seeding
+  halves.
+- **The ash-ladder chain climbed all the way to `RSW_FE_Ash_Heavy` AND
+  `RSW_FE_Ash_Deep`** (`jawa/get_terrain_batch`'s `distinctTerrains`) —
+  the FULL burnedDef escalation (Sand → Trace → Light → Heavy → Deep) fired
+  correctly through repeated re-burns, proving the intentional
+  "burnedDef is flammable" Config-error deviation genuinely works as
+  designed, not just theorized from source reading.
+- Fire count dropped 21 → 9 over the run as fuel was consumed — normal
+  vanilla fire lifecycle, no runaway/stuck-fire behavior observed.
+
+**Not tested this pass**: fulgurites (`Patch_LightningStrike_Fulgurite`) —
+no lightning-strike bridge tool found this session (checked
+`--list-tools` for "lightning"/"strike", none exists); would need a forced
+thunderstorm and a real strike event, more involved than the ticks-only
+approach above. Same file, same defensive pattern, same author as the
+proven fire-tick postfix — lower-risk to leave unverified than a
+freshly-authored mechanism would be, but still a genuine open item.
+Also not tested: Black Rain (Pyrelands-specific, needs that biome),
+firebreak/firefoam sprayer's actual use-in-anger, the terminator/aurora
+weather bands (`WEATHER_SUITE_SLICE_1`, built separately tonight).
+
+## criteria (updated)
+- [x] Weather-table strip + Black Rain wired — validated offline, not yet
+      live-tested on Pyrelands specifically.
+- [x] Ash-accumulation ladder — **live-proven end-to-end**, full chain
+      observed to the terminal Deep stage.
+- [x] Scorch-fruit fire-window spawn — **live-proven**, 25 instances
+      spawned via the fire-tick hook, none anywhere outside a fire.
+- [ ] Fulgurites — built, offline-validated, compiled, NOT live-observed.
+- [ ] Firefoam sprayer + firebreak — built, offline-validated, NOT
+      live-observed in actual use.
