@@ -239,7 +239,9 @@ match case-insensitively or it reads 0.
 3. ✅ **JDS Separatists become capturable** (owner) — one rule for all droids;
    supersedes the platform-forced half of the 2026-08-13 "never taken alive"
    ruling; wave 3 emits them like everyone.
-4. **When the v1 play-raw period ends** — build proceeds regardless (touches
-   no shipped pack); port-wave activation lands at a start-prep sitting with
-   the owner (Droidworks into ModsConfig, packs' retirement per the evidence
-   item).
+4. ✅ **When the v1 play-raw period ends** (owner, 2026-09-01, question card):
+   build starts NOW; port-wave activation happens "whenever the build + gate
+   work is ready" — no fixed milestone, once Phase 0-3 are quicktest-proven
+   and `DROID_DONOR_PATCH_GATE_1`'s patches are written and validated.
+
+**All four opens closed. Build greenlit — see `canon.yml` `droid_system`.**

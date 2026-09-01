@@ -1329,6 +1329,19 @@ ownership_fabric:
     first; Junkers pilot town. Visit Settlements = study-and-replace,
     retires when our loop lands. Spec:
     design/Jawa/ownership_settlement_spec.md
+droid_system:
+  build_greenlit: true
+  src: >
+    Owner, 2026-09-01, question card: "Yes, start now" — build proceeds
+    immediately (§8 of droid_system_build_spec.md already notes it touches
+    no shipped pack). Activation timing (port-wave into ModsConfig, old
+    donor packs' retirement): "whenever the build + gate work is ready" —
+    no fixed milestone, activate once Phase 0-3 are quicktest-proven and
+    DROID_DONOR_PATCH_GATE_1's patches are written and validated. All four
+    §8 opens now closed (three were already ruled 2026-08-29: name
+    Droidworks, chassis-family granularity, JDS Separatists capturable).
+    Un-parks DROID_SYSTEM_BUILD_1 and DROID_DONOR_PATCH_GATE_1.
+    Spec: design/Jawa/droid_system_build_spec.md
 wrecked_machines:
   resurrected: true
   src: >

@@ -20,7 +20,9 @@ with-charge, plus the edge-case matrix (caravan, pod, surgery-on-object,
 storyteller targeting, no-food-need, drafted at 0 power).
 
 ## Criteria
-- [ ] Owner rules the §8 opens (name, race granularity, JDS identity, port timing)
+- [x] Owner rules the §8 opens (name, race granularity, JDS identity, port timing)
+      — all four closed 2026-09-01 (three already ruled 2026-08-29); see
+      `canon.yml` `droid_system`. **Build greenlit, no longer parked.**
 - [ ] Phase 0 skeleton + pilot proven live
 - [ ] Port manifest MEASURED (census sweep) and waves 1-3 executed at save boundaries
 - [ ] Packs' redundant systems in Cherry Picker; DroidsAreMachines retired per-wave

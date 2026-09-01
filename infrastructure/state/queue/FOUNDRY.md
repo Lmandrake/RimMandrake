@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-01T07:13:50Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-01T15:08:44Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -189,6 +189,15 @@ kind:     build
 summary:  Source finding: design/Jawa/droidworksassumptions.md, item 3 (the
 prose:    infrastructure/state/items/DROID_DONOR_PATCH_GATE_1.md
 
+## WRECKED_MACHINES_RESURRECTION_1 Resurrect WreckedMachines: un-park, verify replaceTags runtime, re-point at ruled research grammar, prove the study loop live
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  (no items/WRECKED_MACHINES_RESURRECTION_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WRECKED_MACHINES_RESURRECTION_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -295,12 +304,32 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/BUILDING_THEFT_HAULER_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/BUILDING_THEFT_HAULER_1.md
 
-## WRECKED_MACHINES_RESURRECTION_1 Resurrect WreckedMachines: un-park, verify replaceTags runtime, re-point at ruled research grammar, prove the study loop live
+## FIRE_ECOLOGY_LOOP_1 Fire ecology v1: self-igniting savanna loop, black rain, ash ladder, scorch-fruit, fulgurites, firebreak tools
 state:    proposed
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/WRECKED_MACHINES_RESURRECTION_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/WRECKED_MACHINES_RESURRECTION_1.md
+thin:     spec, verify and criteria all present
+summary:  Per the doc's §1 Stage 0, §3, §4, §6:
+prose:    infrastructure/state/items/FIRE_ECOLOGY_LOOP_1.md
+
+## LIVESTOCK_STARTER_TRIO_1 Livestock v1: onnik kiln-belly + karrask molt-plate + moornak grief-eater, shared-art batch
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     spec, verify and criteria all present
+summary:  Per the doc's rosters and §7.2 shared-art batching:
+prose:    infrastructure/state/items/LIVESTOCK_STARTER_TRIO_1.md
+
+## WEATHER_SUITE_SLICE_1 Weather suite v1: terminator storm wall, dark-side auroras, tier 0-1 forecasting
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     spec, verify and criteria all present
+summary:  Per the doc's §1, §5, §8:
+prose:    infrastructure/state/items/WEATHER_SUITE_SLICE_1.md
