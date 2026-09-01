@@ -269,8 +269,17 @@ beside a live one contributes no candidates and costs nothing. ⛔ Do not clean 
   population at 119 un-tagged. The 60-tag vocabulary must be MEASURED off Core/DLC XML — which is
   what `weapon_tag_audit.py` does and what any re-derivation must also do.
 
-### What is still owed
-Only the next load, on the log and a fresh capture — **no bridge, no clicking**:
-- the four Ancient kinds and `OuterRim_ImperialTrader` resolve a non-empty `apparelTags` pool;
-- no new red error naming `ApparelTags_DeadTagRepair`;
-- re-run `apparel_tag_audit.py` with `siblings`: the 8 becomes **3** (the Rebel kinds).
+### What was owed — CONFIRMED 2026-09-01, closing
+All three confirmed against a fresh 586-mod capture (`WEAPONS_DONOR_RETIREMENT_1`'s
+consolidated restart, ridden for free — no dedicated load needed):
+- ✅ `AncientSoldierBoss`/`AncientSoldierBossN`/`AncientMallGuards`/`AncientSlaughter`
+  and `OuterRim_ImperialTrader` all resolve a non-empty `apparelTags` pool
+  (`apparel_tag_audit.py --verbose`: each shows `lost [...dead tag...] | keeps [...real tags...]`).
+- ✅ Zero `ApparelTags_DeadTagRepair` lines in `Player.log`.
+- ✅ `apparel_tag_audit.py --siblings`: exactly **3** kinds with every apparelTag
+  dead — `OuterRim_RebelJumpTrooper`, `OuterRim_RebelOfficer`, `OuterRim_RebelTrader`,
+  all sharing the dead `RebelApparel` tag, exactly as predicted (the 8 became 3).
+
+No new work needed; this item's own analysis already correctly attributed the
+gap to "no Rebel faction authored yet" — still true, still one line if that
+ever changes.
