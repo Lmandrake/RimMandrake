@@ -809,3 +809,48 @@ The tool did report `ok:false` and `success:false`; nobody read the field.
 
 **Generalises to:** any bridge write whose result carries a `was`/`now` read-back —
 assert on the read-back, not on `success`, and not on the absence of an exception.
+
+---
+
+## 🔴 A mod's own `[DebugAction]` methods do not surface through the bridge's debug-action tree
+
+**Symptom.** `rimworld/list_debug_action_roots` returns `rootCount: 0` even with
+`devModeEnabled: true`. `rimworld/list_debug_action_children {"path":"Actions"}` DOES
+return a real 344-entry tree and vanilla leaves inside it execute fine
+(`execute_debug_action {"path":"Actions\Spawn Pawn...\Pirate"}` worked), but neither
+listing it nor `rimworld/search_debug_actions {"query":"<anything from a custom mod>"}`
+ever finds a category registered by our own `[DebugAction(...)]` attributes — tried both
+`Actions\<Category>\<Label>` and bare `<Category>\<Label>`, both "Could not find debug
+action". Measured 2026-08-31 with a brand-new category (`RimMandrake.Oracle`) **and**
+with an already-shipped, previously-working one (`RimMandrake.Inhabited`, whose debug
+actions this project's own docs describe using) — `search_debug_actions {"query":
+"inhabited"}` and `{"query":"stuff roster"}` both returned `matchCount: 0` too. So this
+is not new-mod-specific: it reads as a general limitation of how the bridge's
+`RimWorldDebugActions`/`DebugActionsCapabilityModule` builds its tree, not anything about
+either mod's attributes, visibility, or `AllowedGameStates`.
+
+**Cause.** Not chased to ground — would mean reading `RimBridgeServer.RimWorldDebugActions`
+itself, out of scope for the session that hit it. The working theory, unverified: the
+bridge's tree-walker may only descend into vanilla's own named categories (hence "Actions"
+working) rather than doing a full `GenTypes.AllTypesWithAttribute<DebugActionAttribute>`
+sweep across every active mod's assemblies — or the walk it does do depends on something
+(the real in-game debug window having been opened at least once this session, populating
+a cache the bridge reads rather than builds) that a bridge-only session never triggers.
+Vendor source for `RimBridgeServer.RimWorldDebugActions` is not present in this checkout to
+confirm either way.
+
+✅ **Fix — skip the debug-action route entirely for a bridge-driven proof.** Add a normal
+`[Tool]` method to the JawaBench companion instead (the `rimbridge-companion` skill) that
+calls straight into the same code the `[DebugAction]` would have called. This is strictly
+more work (a companion rebuild/redeploy/restart cycle) but is the proven, unambiguous path
+— every other capability on the bridge already goes through `[Tool]`, none through
+`[DebugAction]` discovery. Do **not** conclude a mod's debug actions are broken from this —
+a human with Dev Mode open in the real client almost certainly still sees them; this trap
+is specifically about the bridge's own tree not finding them, and both isolated ends of
+that claim (a genuinely new category, and a previously-shipped one) failed the same way.
+
+**Generalises to:** if a human-facing debug-menu verification path is part of a build's own
+plan (as `design/RimMandrake/llm_ingame_wiring_spec.md` §4's "Ships as `selftest_*.py`-style
+gate" implicitly assumed a debug-action hook would be bridge-drivable), budget for it to be
+UNREACHABLE from the bridge and route the actual proof through a `[Tool]` instead — don't
+discover this mid-verification by re-guessing path strings.
