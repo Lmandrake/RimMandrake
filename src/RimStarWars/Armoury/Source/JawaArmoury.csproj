@@ -20,7 +20,16 @@
   -->
 
   <PropertyGroup>
-    <TargetFramework>net472</TargetFramework>
+    <!-- net48, not net472: Killathon.ArtificialBeings.SynCore's own DLL
+         declares itself built against 4.8, and the .NET SDK's reference
+         resolver refuses a lower-targeted project's reference to a
+         higher-targeted assembly outright (MSB3274 downgrades the reference
+         to unresolved, not just a warning). RimWorld's actual Mono runtime
+         does not enforce this distinction at runtime: every other mod
+         here (0Harmony included) already runs fine regardless of its
+         declared TFM, so raising OUR declared target is the correct fix,
+         not a real behavior change. -->
+    <TargetFramework>net48</TargetFramework>
     <LangVersion>latest</LangVersion>
     <AssemblyName>JawaArmoury</AssemblyName>
     <RootNamespace>JawaArmoury</RootNamespace>
@@ -106,6 +115,7 @@
     <Compile Include="JumppackForMeleeAI\JobDriver_CastJumpOnce.cs" />
     <Compile Include="JumppackForMeleeAI\JobGiver_AIMeleeJumppack.cs" />
     <Compile Include="JumppackForMeleeAI\Patch_JobGiver_AIFightEnemy.cs" />
+    <Compile Include="guy762_IonizationABF\DamageWorker_Ionize.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -127,6 +137,16 @@
     </Reference>
     <Reference Include="0Harmony">
       <HintPath>$(HarmonyDll)</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <!-- Killathon.ArtificialBeings.SynCore stays active (this pass never
+         retires it): guy762_IonizationABF\DamageWorker_Ionize.cs is a
+         verbatim port of guy762.mm.kotorcore's own AdditionalMods/MHC DLL,
+         which depends on ABF_Utils from this assembly. Compile-only, same
+         reasoning as 0Harmony above: at runtime the game has already loaded
+         ABF's own copy. -->
+    <Reference Include="Artificial Beings Framework">
+      <HintPath>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\3284097810\1.6\Assemblies\Artificial Beings Framework.dll</HintPath>
       <Private>false</Private>
     </Reference>
   </ItemGroup>
