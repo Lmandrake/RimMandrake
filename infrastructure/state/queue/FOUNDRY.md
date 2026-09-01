@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-01T18:08:05Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-01T18:58:56Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -327,3 +327,13 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/SETTLEMENT_VERBS_WAVE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SETTLEMENT_VERBS_WAVE_1.md
+
+## SETTLEMENT_MANIFEST_BINDING_1 Bind SettlementManifestDef instances to WorldObject_InhabitedSettlement
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     spec, verify and criteria all present
+summary:  Discovered during DISTRICTTEMPLATELIBRARY1's live-verify pass (2026-09-01):
+prose:    infrastructure/state/items/SETTLEMENT_MANIFEST_BINDING_1.md
