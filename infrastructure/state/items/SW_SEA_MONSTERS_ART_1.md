@@ -22,22 +22,24 @@ Process: owner's mockup loop — offline PNG options per creature, he picks, the
 palette passes; only then facings + validator + def work. Mockups live in
 `Transient/sea_monsters_mockups/` (review-once material).
 
-**Round-1 state, 2026-08-31:** all 18 mockups generated and valid; six labeled
-contact sheets await the owner's picks at
-`Transient/sea_monsters_mockups/SHEET_{opee,colo,sando,grazer,swarm,colossus}.png`.
-The generation prompts are BANKED in the repo at
-`src/RimStarWars/SeaBeasts/art/gen_sea_mockups.py` (skip-existing; rerunnable
-if Transient ages out). Codex trap: calls run 3–7 min some days and a killed
-WSL wrapper leaves codex.exe finishing the file anyway — check the dir before
-re-rolling.
+**Round 1 CLOSED by owner ruling, 2026-08-31: ALL 18 mockups kept, each its own
+creature** — *"it's all so good I want you to keep all of them and make them each
+their own creature. You pick how they align... Don't get rid of any of them."*
+The roster (BENCH's alignment, on his word) is
+`design/Jawa/worldbuilding/sea_beasts_roster.md`: 3 species per role — canon
+trio + variants, canon scalefish (mee/faa/laa), yobshrimp + originals, three
+original colossi. Mockups are now KEEPERS, committed at
+`src/RimStarWars/SeaBeasts/art/mockups/` (6a02f477); palette passes skipped.
+Generation prompts remain banked at
+`src/RimStarWars/SeaBeasts/art/gen_sea_mockups.py`.
 
 ## verify
 
-Round 1 closes when the owner has picked one concept per creature (or sent a
-role back for a re-roll). Final art closes only with a validator pass per facing
-and a PROVE/EXPECT/LIES plan committed beside each PNG.
+Final art closes only with a validator pass per facing and a PROVE/EXPECT/LIES
+plan committed beside each PNG.
 
 ## criteria
 
-Six picked concepts recorded here; sprite-skill contract honored (128 px/cell,
-chroma-key alpha, silhouette-first at display size).
+18 creatures per the roster doc; sprite-skill contract honored (128 px/cell,
+chroma-key alpha, silhouette-first at display size); defs sized per the roster
+table under beast-normalization Laws 3+4.
