@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-01T17:22:42Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-01T17:27:39Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -198,6 +198,15 @@ kind:     build
 summary:  Source: design/Jawa/ownershipsettlementspec.md (owner, 2026-08-31
 prose:    infrastructure/state/items/PROPERTY_FABRIC_BUILD_1.md
 
+## SETTLEMENT_VISIT_LOOP_1 Inhabited visit loop: peaceful entry to named settlements, manifest, teardown, casing persistence
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  Full ruling: design/Jawa/ownershipsettlementspec.md (owner sitting 2026-08-31).
+prose:    infrastructure/state/items/SETTLEMENT_VISIT_LOOP_1.md
+
 ## WRECKED_MACHINES_RESURRECTION_1 Resurrect WreckedMachines: un-park, verify replaceTags runtime, re-point at ruled research grammar, prove the study loop live
 state:    doing
 row:      unassigned
@@ -299,16 +308,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/SONIC_WEAPONS_EXPANSION_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SONIC_WEAPONS_EXPANSION_1.md
-
-## SETTLEMENT_VISIT_LOOP_1 Inhabited visit loop: peaceful entry to named settlements, manifest, teardown, casing persistence
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SETTLEMENT_VISIT_LOOP_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/SETTLEMENT_VISIT_LOOP_1.md
 
 ## DISTRICT_TEMPLATE_LIBRARY_1 Authored Lua district template library + composition through rimplace - Junkers set first
 state:    proposed
