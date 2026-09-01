@@ -1,4 +1,5 @@
 <!-- status: DRAFT PROPOSAL for owner review — brainstorm sitting 2026-08-31, not ruled. -->
+<!-- v1 SLICE GREEN-LIT by the owner 2026-09-01 (items FIRE_ECOLOGY_LOOP_1 / WEATHER_SUITE_SLICE_1 / LIVESTOCK_STARTER_TRIO_1); the remainder of this doc still awaits PROPOSAL_SUITE_REVIEW_1. -->
 # The sky as terrain — a weather vocabulary for a world that never turns
 
 Grounding docs: `research/Jawa/rimworld_weather_mod_concepts.md` (§7–§9, §19–§22,

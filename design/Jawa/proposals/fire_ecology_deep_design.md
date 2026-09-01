@@ -1,4 +1,5 @@
 <!-- status: DRAFT PROPOSAL for owner review — brainstorm sitting 2026-08-31, not ruled. -->
+<!-- v1 SLICE GREEN-LIT by the owner 2026-09-01 (items FIRE_ECOLOGY_LOOP_1 / WEATHER_SUITE_SLICE_1 / LIVESTOCK_STARTER_TRIO_1); the remainder of this doc still awaits PROPOSAL_SUITE_REVIEW_1. -->
 # The Pyrelands, made mechanical — fire as a place to be, not a place to flee
 
 Grounding docs: `design/Jawa/worldbuilding/hydrology_and_fire_ecology.md` (R-H3–R-H5,

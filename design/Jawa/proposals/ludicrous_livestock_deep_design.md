@@ -1,4 +1,5 @@
 <!-- status: DRAFT PROPOSAL for owner review — brainstorm sitting 2026-08-31, not ruled. -->
+<!-- v1 SLICE GREEN-LIT by the owner 2026-09-01 (items FIRE_ECOLOGY_LOOP_1 / WEATHER_SUITE_SLICE_1 / LIVESTOCK_STARTER_TRIO_1); the remainder of this doc still awaits PROPOSAL_SUITE_REVIEW_1. -->
 # Ludicrous livestock, deep design — a workbench with a heartbeat
 
 The owner's framing question, verbatim: *"What kinds of absolutely ludicrous
