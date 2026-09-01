@@ -32,8 +32,12 @@ weapon gate. Everything else is defs.
    absorbable if we ever need to own it): permanent-dark seafloor + lamps
    should produce the cone through its `NightVisionEffectiveness`/glow model,
    with a per-map view-range clamp as the fallback if configuration alone
-   overshoots. Verified during `FOW_ROUTE_B_INTEGRATION_1`'s quicktests; v1's
-   dark/lure mechanics (§2, §3) do not wait on it.
+   overshoots. `FOW_ROUTE_B_INTEGRATION_1` verified Route B itself (clean
+   boot, NWN fog rendering, CAI combat AI active) and found CAI's own
+   `CompProperties_Sighter` unproven under CAI-fog-off — see that doc's
+   closing notes — but did **not** build or test an actual lamp; the
+   glow-cone mechanism above is still unbuilt. v1's dark/lure mechanics
+   (§2, §3) do not wait on it either way.
 
 ## 1. Mod shape and naming (three-tier, per NAMING_SCHEME_PLAN)
 

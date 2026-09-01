@@ -3422,3 +3422,7 @@
 {"seat":"FOUNDRY","event":"claim","id":"FOW_ROUTE_B_INTEGRATION_1","ts":"2026-08-31T23:40:05Z"}
 {"seat":"FOUNDRY","event":"start","id":"FOW_ROUTE_B_INTEGRATION_1","ts":"2026-08-31T23:40:05Z"}
 {"seat":"BENCH","event":"seat","state":"ready","ts":"2026-08-31T23:41:16Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","ts":"2026-08-31T23:45:46Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-08-31T23:55:50Z"}
+{"seat":"BENCH","event":"seat","state":"ready","ts":"2026-09-01T00:02:23Z"}
+{"seat":"FOUNDRY","event":"close","id":"FOW_ROUTE_B_INTEGRATION_1","sha":"e54e2ebba9e4e3092866a948f7a8960bf0663cb6","ts":"2026-09-01T00:09:42Z"}

@@ -107,12 +107,45 @@ require dropping Search and Destroy or accepting a documented conflict; route C
 is unaffected. This is a ruling the route decision must carry.
 
 ## Next steps, in order
-1. Read `yuganxia/CAI-5000-continue`'s 1.6 sight source — settle the glow-LUT
-   question (one subagent, no game). *(in flight)*
+1. ~~Read `yuganxia/CAI-5000-continue`'s 1.6 sight source~~ — done, see the
+   ✅ SETTLED note above.
 2. ~~Grep our ModsConfig for Search-and-Destroy-class AI mods~~ — done, see
    the red flag above.
-3. Minimal-list quicktest (22 s cycle): enable per the chosen route, spawn a
-   night raid, LOOK at fog behavior + a `Sighter`-comp lamp; then a full-list
-   trial ride on an existing cold-load run sheet — never its own load.
-4. Fold the verdict into `depths_build_spec_v1.md` §0.2 (currently pointing
-   here).
+3. ✅ **Minimal-list quicktest — done, `FOW_ROUTE_B_INTEGRATION_1`,
+   2026-08-31.** `Krkr.rule56` + `Mlie.NWNRealFogOfWar` enabled on the 21-mod
+   FoW test list (minimal + both, ordered right after the DLCs, before
+   content mods — satisfies CAI's `loadAfter Ludeon.RimWorld[.Royalty]`),
+   `memegoddess.searchanddestroy` dropped. CAI's own fog toggle
+   (`FogOfWar_Enabled.15` in `Mod_3673768803_CombatAIMod.xml`, absent from a
+   default-settings dump so inferred from the DLL's own string table — not
+   confirmed against a Scribe read-back) set `False`. Two clean cold boots,
+   zero CAI/NWN/Krkr exceptions in `Player.log` either time.
+   - **Fog visuals**: confirmed by screenshot — NWN's own "Not visible area"
+     overlay renders (a smooth diagonal front, not CAI's 16×16 blocky
+     shader), consistent with CAI's fog engine being off and NWN driving.
+   - **Combat AI**: 3 debug-spawned Pirates pathed ~9 tiles toward the
+     colony over 2000 stepped ticks with no CAI errors — the AI is active
+     and driving hostiles. `jawa/fire_raid` itself produced zero arrivals on
+     this quicktest world (a known bridge trap, not a Route B defect — see
+     `skills/rimbridge/references/traps.md`); direct debug-spawn was used
+     instead.
+   - 🔴 **New finding, unresolved: `CompProperties_Sighter` (CAI's fixed-radius
+     reveal comp, the one the lamp-cone plan named) did not visibly reveal
+     fog around a spawned `CombatAI_TribalPoleCCTV`** with CAI's fog off.
+     Two live explanations, neither ruled out: (a) the comp's reveal only
+     runs through CAI's own `MapComponent_FogGrid`, which does not run when
+     `FogOfWar.Enable` is false — i.e. Sighter goes inert exactly when Route
+     B is active; or (b) the freshly spawned building had 0 fuel
+     (`CompProperties_Refuelable`, `consumeFuelOnlyWhenUsed`) and simply
+     wasn't "in use" yet. **Not chased further — `depths_build_spec_v1.md`
+     §0.2 had already routed the lamp-cone through NWN's own glow model
+     instead of Sighter, so this doesn't block anything; it just means
+     Sighter is confirmed unproven, not confirmed working, under Route B.**
+     Whoever builds the actual dive lamp should settle (a) vs (b) before
+     leaning on Sighter for anything, or just build on NWN's glow model as
+     already planned and skip the question.
+   - Full-list ride: the owner's live 593-mod list (592 + CAI + NWN − S&D) is
+     written to `ModsConfig.xml`. FOUNDRY cold-booted it to confirm before
+     handoff — bridge up, zero CAI/NWN/Krkr errors, no `incompatib*` warning;
+     ready for his next play session.
+4. Folded into `depths_build_spec_v1.md` §0.2.
