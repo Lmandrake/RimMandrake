@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-01T19:32:46Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-01T19:47:45Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -90,15 +90,6 @@ kind:     task
 summary:  Full specs, both ruled by the owner 2026-08-30: design/Jawa/coveredpittrapsspec.md
 prose:    infrastructure/state/items/RIMMANDRAKE_PITS_BUILD_1.md
 
-## DEPTHS_ODYSSEY_VERIFY_1 Odyssey source read gating the Depths: vacuum pipeline patchability, vacsuit stat gating, leak/flood-fill, orbital mapgen + arrival families; plus SwimmingKit 1.6 status and Lane-1 license checks
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  Answer, from source (RimSage searchdefs/searchsource/readcsharpsymbol against
-prose:    infrastructure/state/items/DEPTHS_ODYSSEY_VERIFY_1.md
-
 ## TILE_STRUCTURE_DESIGNS_1 Make and improve the promise/whisper structure designs per the roster (22+22): rimplace templates + GenStep_RimplacePlan responder (VERIFY terrain/roof ordering); coverage lint = no promise without responder
 state:    doing
 row:      unassigned
@@ -144,32 +135,14 @@ kind:     task
 summary:  design/Jawa/worldbuilding/colonyvisibilitystat.md, specifically
 prose:    infrastructure/state/items/COLONY_VISIBILITY_BUILD_1.md
 
-## RESEARCH_VALIDATOR_BUILD_1 Build the offline research-manifest validator per research_tree_taxonomy.md section 4
+## SONIC_WEAPONS_EXPANSION_1 Creatively expand the Sonic weapon school with more sonic weaponry (owner-ruled follow-up, not urgent)
 state:    doing
 row:      unassigned
 needs:    offline
 target:   v1
-kind:     build
-summary:  design/Jawa/researchtreetaxonomy.md section 4 names 7 checks the
-prose:    infrastructure/state/items/RESEARCH_VALIDATOR_BUILD_1.md
-
-## RESEARCH_MANIFEST_DRAFT_1 Generate the draft research manifest: all 515 rows prefilled with fates from the sitting's rulings
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  design/Jawa/researchtreetaxonomy.md section 3 defines the manifest schema
-prose:    infrastructure/state/items/RESEARCH_MANIFEST_DRAFT_1.md
-
-## TECHPRINT_FACTION_GATING_1 Code the four research access classes: common / faction-held techprints / jawa-special / ship-only
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  Source: infrastructure/state/canon.yml researchtree.techgatingruled
-prose:    infrastructure/state/items/TECHPRINT_FACTION_GATING_1.md
+kind:     task
+summary:  Owner ruling, 2026-09-01 (question card): asked to creatively expand the Sonic
+prose:    infrastructure/state/items/SONIC_WEAPONS_EXPANSION_1.md
 
 ## WEAPONS_DONOR_RETIREMENT_1 Retire the 6 weapon donor packs now that mandrake.rsw.armoury absorbed their content
 state:    doing
@@ -315,14 +288,4 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## SONIC_WEAPONS_EXPANSION_1 Creatively expand the Sonic weapon school with more sonic weaponry (owner-ruled follow-up, not urgent)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SONIC_WEAPONS_EXPANSION_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/SONIC_WEAPONS_EXPANSION_1.md
+_none._

@@ -1281,6 +1281,18 @@ research_tree:
     the punishing; bands only remove outliers). ROYALTY'S 19 cut rows:
     live unlocks release to LOOT-ONLY by default (found, not invented);
     per-row re-home exceptions at execution.
+  sonic_expansion_ruled: true
+  sonic_expansion_src: >
+    Owner, 2026-09-01, question card on SONIC_WEAPONS_EXPANSION_1: asked
+    to pick a direction for the "creatively expand" standing note above -
+    picked ALL THREE offered (new weapon shapes, a new signature mechanic,
+    more tiers of the existing archetypes), not "hold off." The sitting's
+    "thin Armory school" framing is now STALE and corrected in the item's
+    own spec: WEAPONS_ABSORPTION_WAVE_1 already absorbed 10 named single-
+    target sonic weapons and a sonic grenade (guy762_grenadebelt_sonic) from
+    guy762's KotOR content - the real gap is AOE/area content and anything
+    above rifle-class, not the school as a whole. Scoped item:
+    infrastructure/state/items/SONIC_WEAPONS_EXPANSION_1.md.
   chains_ruled: true
   chains_src: >
     Owner, 2026-08-31, sitting batch 2: BLASTER SPINE = KotOR's three-tier

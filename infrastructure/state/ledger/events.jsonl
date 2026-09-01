@@ -3576,3 +3576,5 @@
 {"seat":"OWNER","event":"claim","id":"TECHPRINT_FACTION_GATING_1","ownerSaid":"simply do with your own sub agent fanout in a token efficient manner","override":"OWNER may not `claim` TECHPRINT_FACTION_GATING_1 — it belongs to FOUNDRY. Filing work FOR another seat is normal; changing another seat's item is refused.","ts":"2026-09-01T19:42:45Z"}
 {"seat":"OWNER","event":"start","id":"TECHPRINT_FACTION_GATING_1","ownerSaid":"simply do with your own sub agent fanout in a token efficient manner","ts":"2026-09-01T19:42:45Z"}
 {"seat":"OWNER","event":"close","id":"DEPTHS_ODYSSEY_VERIFY_1","sha":"dae5d395","ownerSaid":"retire them as needed helpfully","override":"OWNER may not `close` DEPTHS_ODYSSEY_VERIFY_1 — it belongs to FOUNDRY. Filing work FOR another seat is normal; changing another seat's item is refused.","ts":"2026-09-01T19:42:45Z"}
+{"seat":"FOUNDRY","event":"claim","id":"SONIC_WEAPONS_EXPANSION_1","ts":"2026-09-01T19:47:45Z"}
+{"seat":"FOUNDRY","event":"start","id":"SONIC_WEAPONS_EXPANSION_1","ts":"2026-09-01T19:47:45Z"}
