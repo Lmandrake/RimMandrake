@@ -1,77 +1,77 @@
 {
  "sheet": "proposal_suite_review",
  "posture": "prefill-ships; untouched rows keep their pre-filled ladder position; cut is the only destructive verdict",
- "savedAt": "2026-09-01T15:24:05.799Z",
+ "savedAt": "2026-09-01T22:18:39.991Z",
  "decidedBy": "owner-sheet",
- "touchedCount": 3,
+ "touchedCount": 10,
  "rows": {
   "tar:entrapment-hediff": {
    "d": "v1",
-   "n": "",
-   "touched": false,
+   "n": "amazing defensibility of difficult areas, to be used by deep desert tribes and other primitives",
+   "touched": true,
    "prefill": "v1",
    "doc": "tar_pits_deep_design.md"
   },
   "tar:sinking-render": {
    "d": "v1",
-   "n": "",
+   "n": "Test of our ability to make meaningful animation. We should spend some good time on this to really demo what we know how to do, or perhaps study other mods that make custom animations to inspire ourselves.",
    "touched": true,
    "prefill": "v2",
    "doc": "tar_pits_deep_design.md"
   },
   "tar:stratified-dig-sites": {
    "d": "v1",
-   "n": "Superb! The loot table is the fun part. Draw from fossils but also sealed alien eggs, technology, dead bodies with equipment intact, and story-rich objects. And of course Assailant and Forgotten Arsenal aspects.",
+   "n": "This is pure gold. Fossils, dead bodies with inventory stuck on them, each one a piece of a story from the past that goes more ancient as you dig. But the digging gets slower and harder as you go. Would perhaps need to install a pump that removes the tar elsewhere on the map to enable the digging at all, while it continues to ooze in from deep sources below.",
    "touched": true,
    "prefill": "v2",
    "doc": "tar_pits_deep_design.md"
   },
   "tar:canal-flow-engineering": {
    "d": "v1",
-   "n": "Don't make it finite, just make it slow to refill. This mechanic of fillable ooze will come in handy later.",
+   "n": "This is a general new mechanic that we can use in many places. Dig channels that flood with water, ooze, slime, oil, tar, propane fuel... let's explore this deeply. Could be amazing realism. I'm inspired! This allows bases to dig trenches and flood them as a real defense. Will pay off in many more scenarios. This isn't Utinni or even Star Wars scope, this is general RimMaster level awesomeness mod.",
    "touched": true,
    "prefill": "v2",
    "doc": "tar_pits_deep_design.md"
   },
   "tar:flood-and-ignite": {
-   "d": "v2",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "Not kill outright, just burns like normal fire. But yes, toxic thick smoke that obscures and produces coughing and stinging eyes and stink.",
+   "touched": true,
    "prefill": "v2",
    "doc": "tar_pits_deep_design.md"
   },
   "tar:tar-moats": {
-   "d": "dream",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "nope, this is in! Pawns with goals inside a region make the call to go across it, while if there's any way around it they do so.",
+   "touched": true,
    "prefill": "dream",
    "doc": "tar_pits_deep_design.md"
   },
   "tar:tar-creatures": {
-   "d": "dream",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "Very star wars to reveal that a tar pit harbors a huge creature that not only thrives in tar but actually excretes it as a biological outcome. If captured, continues to do so at a very slow rate (not magical, very slow). However, even pits without one of these creatures still fill trenches and such from the tar sources deep underground.",
+   "touched": true,
    "prefill": "dream",
    "doc": "tar_pits_deep_design.md"
   },
   "tar:geyser-incident": {
    "d": "v1",
-   "n": "",
-   "touched": false,
+   "n": "Superb vile shock. Add creatures that consume tar too and run towards these events/moments. Able to mode through the tar easily unlike trapped creatures. They may like to eat tar-encrusted pawns too.",
+   "touched": true,
    "prefill": "v1",
    "doc": "tar_pits_deep_design.md"
   },
   "tar:pit-wakes-setpiece": {
-   "d": "dream",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "Totally! The things in ancient dangers are the source, but also egg forms of creatures that hatch when disturbed (tar beasts), as well as things people maliciously put down there (grenades/bombs). Especially if it's in the territory of a terrible faction that's vindictive against territory thieves.",
+   "touched": true,
    "prefill": "dream",
    "doc": "tar_pits_deep_design.md"
   },
   "tar:chemfuel-economy": {
-   "d": "v2",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "Yes, but it's slow and gross. Tar oozes out of the pipe joints. Only slowly produces chemfuel.",
+   "touched": true,
    "prefill": "v2",
    "doc": "tar_pits_deep_design.md"
   },
