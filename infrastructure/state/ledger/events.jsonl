@@ -3470,3 +3470,6 @@
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-01T04:45:52Z"}
 {"seat":"FOUNDRY","event":"note","id":"WILD_ANIMALS_PADDED_LISTS_1","text":"First live use of jawa/harmony_patches (now deployed): ruled out BiomeDef-direct patches. Strong unconfirmed lead on DefGenerator: RedMattis.BigSmall_Early/BSXeno transpiler 'InsertBeforeResolveAllWantedCrossReferences'. Handed off to a subagent to locate the actual dll and confirm via strings.","ts":"2026-09-01T04:46:05Z"}
 {"seat":"FOUNDRY","event":"note","id":"WILD_ANIMALS_PADDED_LISTS_1","text":"Subagent ruled out both leads: BSXeno.dll (from RedMattis.BetterPrerequisites, not BigSmall) has zero wildAnimals references; full 3196-dll sweep across all active mods found no mechanism. Still unidentified - needs a systematic DefGenerator patch enumeration, not lead-chasing.","ts":"2026-09-01T04:54:51Z"}
+{"seat":"FOUNDRY","event":"claim","id":"THOROUGH_RETAG_WEAPONS_ARMOUR_1","ts":"2026-09-01T04:58:47Z"}
+{"seat":"FOUNDRY","event":"start","id":"THOROUGH_RETAG_WEAPONS_ARMOUR_1","ts":"2026-09-01T04:58:47Z"}
+{"seat":"FOUNDRY","event":"close","id":"THOROUGH_RETAG_WEAPONS_ARMOUR_1","sha":"31e2c333","ts":"2026-09-01T04:59:14Z"}

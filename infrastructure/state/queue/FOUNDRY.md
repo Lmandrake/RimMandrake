@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-01T04:54:51Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-01T04:59:14Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -165,16 +165,6 @@ prose:    infrastructure/state/items/DROID_DONOR_PATCH_GATE_1.md
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
-
-## THOROUGH_RETAG_WEAPONS_ARMOUR_1 The thorough weapon and armour retag: the advice, the measured state, and the dump it is blocked on
-state:    ready  (BLOCKED)
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-blocked:  remaining check needs the NEXT cold load's Player.log + fresh capture; a restart is the owner's call (game-state-is-one-command-now), not FOUNDRY's to trigger for one item
-summary:  🔴 OWNER, 2026-08-22: "We need a THOROUGH retag of all the weapons and armor to ensure
-prose:    infrastructure/state/items/THOROUGH_RETAG_WEAPONS_ARMOUR_1.md
 
 ## SPAWN_PAWN_SUBSTITUTES_VANILLA_KIND_1 jawa/spawn_pawn reports 2/2 of the kind asked for and delivers one vanilla Colonist
 state:    doing  (BLOCKED)
