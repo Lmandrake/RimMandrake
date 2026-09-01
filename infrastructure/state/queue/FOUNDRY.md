@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-01T16:35:46Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-01T16:55:17Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -189,6 +189,15 @@ kind:     build
 summary:  Source finding: design/Jawa/droidworksassumptions.md, item 3 (the
 prose:    infrastructure/state/items/DROID_DONOR_PATCH_GATE_1.md
 
+## PROPERTY_FABRIC_BUILD_1 Build RM_Property: the ownership/provenance/perception fabric mod - colony side first
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  (no items/PROPERTY_FABRIC_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PROPERTY_FABRIC_BUILD_1.md
+
 ## WRECKED_MACHINES_RESURRECTION_1 Resurrect WreckedMachines: un-park, verify replaceTags runtime, re-point at ruled research grammar, prove the study loop live
 state:    doing
 row:      unassigned
@@ -206,6 +215,24 @@ target:   v1
 kind:     build
 summary:  Per the doc's §1 Stage 0, §3, §4, §6:
 prose:    infrastructure/state/items/FIRE_ECOLOGY_LOOP_1.md
+
+## LIVESTOCK_STARTER_TRIO_1 Livestock v1: onnik kiln-belly + karrask molt-plate + moornak grief-eater, shared-art batch
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  Per the doc's rosters and §7.2 shared-art batching:
+prose:    infrastructure/state/items/LIVESTOCK_STARTER_TRIO_1.md
+
+## WEATHER_SUITE_SLICE_1 Weather suite v1: terminator storm wall, dark-side auroras, tier 0-1 forecasting
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  Per the doc's §1, §5, §8:
+prose:    infrastructure/state/items/WEATHER_SUITE_SLICE_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -241,6 +268,16 @@ blocked:  sequenced with Droidworks phase 3 (droid_system_build_spec.md line 186
 summary:  (no items/DROID_TILES_SOURED_TERRAIN_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DROID_TILES_SOURED_TERRAIN_1.md
 
+## LIVESTOCK_STARTER_TRIO_1 Livestock v1: onnik kiln-belly + karrask molt-plate + moornak grief-eater, shared-art batch
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+blocked:  mockup round generated (Transient/livestock_mockups/, 3 options x 3 creatures + sheets) but no decisions/picks file exists yet - item's own design says FOUNDRY builds defs against the picks, not before. Holding until picks land.
+summary:  Per the doc's rosters and §7.2 shared-art batching:
+prose:    infrastructure/state/items/LIVESTOCK_STARTER_TRIO_1.md
+
 # WAITING ON A WINDOW — nothing is wrong
 
 _none._
@@ -262,16 +299,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/SONIC_WEAPONS_EXPANSION_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SONIC_WEAPONS_EXPANSION_1.md
-
-## PROPERTY_FABRIC_BUILD_1 Build RM_Property: the ownership/provenance/perception fabric mod - colony side first
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/PROPERTY_FABRIC_BUILD_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PROPERTY_FABRIC_BUILD_1.md
 
 ## SETTLEMENT_VISIT_LOOP_1 Inhabited visit loop: peaceful entry to named settlements, manifest, teardown, casing persistence
 state:    proposed
@@ -312,23 +339,3 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/BUILDING_THEFT_HAULER_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/BUILDING_THEFT_HAULER_1.md
-
-## LIVESTOCK_STARTER_TRIO_1 Livestock v1: onnik kiln-belly + karrask molt-plate + moornak grief-eater, shared-art batch
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     spec, verify and criteria all present
-summary:  Per the doc's rosters and §7.2 shared-art batching:
-prose:    infrastructure/state/items/LIVESTOCK_STARTER_TRIO_1.md
-
-## WEATHER_SUITE_SLICE_1 Weather suite v1: terminator storm wall, dark-side auroras, tier 0-1 forecasting
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     spec, verify and criteria all present
-summary:  Per the doc's §1, §5, §8:
-prose:    infrastructure/state/items/WEATHER_SUITE_SLICE_1.md
