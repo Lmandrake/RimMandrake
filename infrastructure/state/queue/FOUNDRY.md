@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-01T04:30:09Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-01T04:41:45Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -297,3 +297,13 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/SETTLEMENT_VERBS_WAVE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SETTLEMENT_VERBS_WAVE_1.md
+
+## LIGHTSABER_MELEE_PATCH_FAIL_1 Armoury_MeleePower.xml's lightsaber PatchOperationSequence fails against the live Star Wars: The Force - Lightsaber mod
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     spec, verify and criteria all present
+summary:  src/RimStarWars/Armoury/Patches/ArmouryMeleePower.xml (mod display name
+prose:    infrastructure/state/items/LIGHTSABER_MELEE_PATCH_FAIL_1.md

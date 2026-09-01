@@ -209,11 +209,42 @@ remains blocked on `DROID_DONOR_PATCH_GATE_1`, unchanged.
 `Absorbed_OPTurret.xml`, `Turrets_DamageDoctrine.xml`, `Turrets_Renames.xml`)
 specifically pending "eweb/opturret retirement not done yet" — now done, so
 lifted the hold and deployed all 7 together (per the hold's own "lift
-together, never separately" note). Deployed mid-relaunch, timing against
-this load's def-read is unconfirmed — check the log for
-`RN2SWGun_EWeb_MG`/`Turret_AutoChargeBlaster_OP`-family defNames; if absent,
-one more restart picks them up, not urgent since eweb/opturret are already
-off regardless.
+together, never separately" note). Deployed mid-relaunch — **confirmed via the live def dump (586 mods,
+captured this boot) that the timing race was lost**: `RSW_Turret_AutoChargeBlaster_OP`,
+`RSW_RN2SWGun_EWeb_MG`, `RSW_EWebShot` etc. are NOT in this boot's dump. Not
+urgent (eweb/opturret are already off regardless, this is purely additive
+content); will ride the next restart, whenever that happens.
+
+## 🔴 2026-09-01, consolidated restart — kotorweapons fix verified, one unrelated finding
+Bundled per the owner's three-assembly batching waiver (signatures written
+to `infrastructure/state/EXPECTED_FAILURES_next_load.md` before launch):
+kotorweapons re-verify (config, free) + bridgetools companion redeploy
+(adds `jawa/harmony_patches`, unblocks `WILD_ANIMALS_PADDED_LISTS_1`) +
+first load-time proof of two already-built assemblies
+(`mandrake.rm.graffiti`, `mandrake.rm.ninefold`).
+
+- `[JawaBench] ready: 306 tools, build e91f6b7c5763` — matches HEAD exactly.
+- `[JawaBench] context: modSet 586/e1489e27` — confirmed.
+- **`WeaponTags_Renormalise.xml` fix CONFIRMED working**: `Jawa_Patches ops`
+  check reads **0** (was 4-above-baseline before the fix). The 63-guard fix
+  holds.
+- No DEAD MOD / TYPE LOAD errors naming Graffiti or Ninefold — clean at
+  load time (no live pawn/save exercise this pass, that's still owed).
+- `stale saved data (Scribe)`: still just `Corpse_Titan`, pre-existing,
+  confirmed present in `Player-prev.log` too — unrelated.
+- `cross-reference (def loader)`: still exactly baseline 25, not the +3 I
+  expected from the 3 dangling kotorweapons `apparelRequired` refs — those
+  apparently resolve lazily at pawn-generation time, not at def-load /
+  main-menu time, so a main-menu-only check can't see them. Still an
+  accepted, tracked risk, just not one this kind of check will ever catch;
+  would need an actual pawn of `Jawa_Gamorrean_Enforcer` or the Mandalorian
+  NPC kind generated to prove either way.
+- **NEW, unrelated finding, filed separately**: `patch operations failed`
+  reads 7 (baseline 5), but the 2 above baseline are `[Jawa Armoury
+  Rebalance] PatchOperationFindMod(Star Wars : The Force - Lightsaber)
+  failed` in `Armoury_MeleePower.xml` — confirmed present in `Player-prev.log`
+  too (pre-existing, not caused by tonight's work, unrelated donor/file).
+  Filed as `LIGHTSABER_MELEE_PATCH_FAIL_1`.
 
 ## verify
 1. ~~Extended generator(s) absorb the AdditionalMods gap~~ — done, kept.
@@ -240,10 +271,14 @@ off regardless.
       (591 -> 587, 2026-08-31/09-01; one fallout bug found in
       `WeaponTags_Renormalise.xml` and fixed, not yet re-verified with a
       second load).
-- [ ] `guy762.kotorweapons` retirement, separately verified — BLOCKED, new
-      finding: needs its own patch-gate pass first (66 + 442 unguarded
-      defName references outside the absorbed content), not just a clean load.
-- [ ] `guy762.mm.kotorcore` retirement — blocked on `DROID_DONOR_PATCH_GATE_1`.
+- [x] `guy762.kotorweapons` retirement, separately verified — done: 63
+      unguarded `WeaponTags_Renormalise.xml` blocks gated, retired (586
+      mods), cold-load confirms the gate fix holds (`Jawa_Patches ops` 0).
+      Residual accepted risk: 3 dangling `apparelRequired` refs, un-provable
+      from a main-menu-only load (see 2026-09-01 note).
+- [ ] `guy762.mm.kotorcore` retirement — blocked on `DROID_DONOR_PATCH_GATE_1`
+      (itself entangled with the parked `DROID_SYSTEM_BUILD_1` — not
+      something to force through solo while the owner is AFK).
 - [x] Live incident: caught, reverted, verified clean, repo state reconciled
       (`ModsConfig.FULL.LATEST.xml` back to 593 mods, matching live).
 
