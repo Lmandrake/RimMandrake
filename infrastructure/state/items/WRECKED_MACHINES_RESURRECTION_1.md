@@ -183,6 +183,65 @@ attempted, reserved for the owner.
    deploy (`deploy_custom_mods.py --mod WreckedMachines --apply`) — neither
    done here, both prerequisites to a load at all.
 
+## 2026-09-01 (FOUNDRY) — live quicktest run, the big question answered
+
+Added `mandrake.rm.wreckedmachines` to `ModsConfig.xml` (positioned after
+`VanillaExpanded.VFEFactory` and `petetimessix.researchreinvented` per
+`About.xml`'s own `loadAfter`), deployed, cold-loaded the full 587-mod list
+clean (`harvest_log.py`: 0 new findings, all baselines held). Ran the
+quicktest on `rimworld-debug-testing`'s method — screenshots, not just a
+clean log, and the debug-log window cleared before each shot per the
+skill's own trap.
+
+**Verify item 1, the big one — RESOLVED, clean.** Spawned
+`RM_WM_AutomatedSmelter_Wrecked` at (125,120) on freshly-placed
+`VFEF_FactoryFloor` terrain (its `terrainAffordanceNeeded`), then
+`jawa/blueprint_place`'d `RM_WM_AutomatedSmelter_Kludged` at the SAME cell.
+**Accepted — `"placementCheck":{"accepted":true}`, no veto.** Replace
+Stuff - Continued (`memegoddess.replacestuff`) is active in this exact
+587-mod list, so this is the live answer to whether its `CanReplace`
+postfix ever fires here: it does not, matching DESIGN.md §4's own
+prediction (v1's tiers ship `deconstructible=true`, so the postfix's
+non-deconstructible condition never triggers). Confirmed the actual
+removal mechanism too — read `Verse/GenSpawn.cs` (RimSage): the replace
+happens in `GenSpawn.Spawn`'s default `WipeMode.Vanish` →
+`WipeExistingThings`, which checks `replaceTags` overlap — this fires on
+ANY spawn path, not just a completed construction frame. Proved it
+directly: `jawa/build_batch` god-spawned the Kludged tier at (125,120) and
+the response reported `"displaced":[{"destroyed":"RM_WM_AutomatedSmelter_Wrecked"}]`
+— **the wreck was actually wiped, not left duplicated.** Screenshots
+before/after (`wm_wrecked_smelter_zoom.png`,
+`wm_kludged_replaced2.png__cell_rect.png`) show correct, DISTINCT art at
+each tier (rusted/damaged wreck → an active-looking machine with hazard
+striping), not a placeholder.
+
+**Verify item 5, partially resolved — a real finding, not a bug.**
+`jawa/research_availability` on `RM_WM_AutomatedSmelterRestoration`
+reports **`techprintCount: 1`**, even though the authored XML sets no such
+field (C#'s `int techprintCount` defaults to 0). This is Research
+Reinvented's own load-time substrate rewrite stamping a techprint
+requirement onto the project by default — the SAME `RR_`-prefix-style
+mechanism `research_manifest_validate.py`'s check 7 already confirmed on
+vanilla `Electricity` earlier tonight. **This means the item's own earlier
+claim ("ships with no techprint gate at all") does not hold empirically** —
+RR's substrate imposes one regardless. This is not a defect: it is RR's
+"research is expensive, traded/studied items as costs" economy working
+exactly as the taxonomy ruling intends, and Analyse-granting-techprints
+(not yet tested — no colonist was given the study job this pass) is
+presumably how the gate is meant to be satisfied. `canStartNow: false`
+today for two reasons: the missing techprint AND
+`playerHasAnyAppropriateResearchBench: false` (no bench built on this
+scratch map — an ordinary, unrelated quicktest-map gap, not a finding).
+
+**Not tested this pass**: whether the Analyse opportunity actually offers
+a colonist job near the wreck (would need either real colonist AI time —
+slow, `rimworld/step_game_ticks` only advances ~400-1100 ticks per call
+before timing out on this modlist — or a more targeted RR-specific bridge
+query that wasn't found in the tool list this session). Item 3
+(research-tab rendering with no `<tab>`) and item 4 (five-study-session
+feel) also not tested — lower priority once item 1's mechanism risk is
+resolved.
+
 ## criteria
 - [x] Park lifted (`src/DEPLOY_HOLD.txt`), plan-only deploy confirms clean
       staging and correctly reports the one real remaining blocker
@@ -190,18 +249,24 @@ attempted, reserved for the owner.
 - [x] Pilot's research gate re-pointed at a new Ship-tree
       `ResearchProjectDef`, owned by this mod, VFE-Factory's own building
       left untouched.
-- [x] Techprint-gate design fork identified, explained, and left OPEN
-      (blocked on `TECHPRINT_FACTION_GATING_1`) rather than guessed.
+- [x] Techprint-gate design fork identified, explained — **and empirically
+      resolved 2026-09-01**: RR's own substrate imposes `techprintCount:1`
+      regardless of the XML, so "no gate" was never quite accurate; the
+      real gate is RR's economy + Analyse, working as designed. Faction
+      alignment (`TECHPRINT_FACTION_GATING_1`) is a SEPARATE, still-blocked
+      question about `heldByFactionCategoryTags`, not this one.
 - [x] RR Analyse `SpecialResearchOpportunityDef` authored from DESIGN.md's
       own verified template, re-pointed at the new project, validated
       against RR's real vendored source (`ParentName` + `opportunityType`
       both resolve).
 - [x] RR confirmed active in the live `ModsConfig.xml` this session.
+- [x] `ModsConfig.xml` entry + deploy — done 2026-09-01, cold-load clean.
+- [x] Live quicktest — **replaceTags/Replace Stuff conflict resolved clean**
+      (the ship criterion: "Ships when the pilot smelter loop runs
+      end-to-end in a quicktest" — the construction/replace half of that
+      loop now has), screenshots attached, gate mechanism understood.
 - [ ] Wreck-seeding hook — explicitly named as a follow-on
       (`TILE_STRUCTURE_DESIGNS_1`'s next batch + a live world-tile edit),
       not built tonight.
-- [ ] BLOCKED — live quicktest (replaceTags/Replace Stuff, Analyse surfacing
-      in UI, gate actually enforced) — reserved for the owner, not
-      attempted.
-- [ ] `ModsConfig.xml` entry + deploy — not done, out of this item's scope
-      by the brief.
+- [ ] Analyse opportunity's live job-assignment behavior — not tested this
+      pass, follow-on (see "not tested" above).
