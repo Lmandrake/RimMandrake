@@ -91,7 +91,7 @@ comment). `validate_patch.py`: 0 errors, 101 warnings. Deployed.
       `Armour_Penetration.xml` (second pass, same donor mod, same root
       cause), the valid base-level ones kept in both, `validate_patch.py`
       clean on both files.
-- [ ] Cold-load confirms zero patch-failure lines for this mod — the first
-      restart confirmed `Armoury_MeleePower.xml`'s fix (its failure line is
-      gone); `Armour_Penetration.xml`'s fix is deployed but not yet
-      restart-verified.
+- [x] Cold-load confirms zero patch-failure lines for this mod — confirmed
+      2026-09-01: `patch operations failed` back to baseline 5 (3 Intimacy +
+      1 Mining Outpost + 1 Biomes! Caverns, all pre-existing/unrelated).
+      Both files clean.
