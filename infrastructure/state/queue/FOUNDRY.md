@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-01T05:56:01Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-01T06:27:06Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -162,6 +162,15 @@ kind:     build
 summary:  design/Jawa/researchtreetaxonomy.md section 3 defines the manifest schema
 prose:    infrastructure/state/items/RESEARCH_MANIFEST_DRAFT_1.md
 
+## TECHPRINT_FACTION_GATING_1 Code the four research access classes: common / faction-held techprints / jawa-special / ship-only
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  Source: infrastructure/state/canon.yml researchtree.techgatingruled
+prose:    infrastructure/state/items/TECHPRINT_FACTION_GATING_1.md
+
 ## WEAPONS_DONOR_RETIREMENT_1 Retire the 6 weapon donor packs now that mandrake.rsw.armoury absorbed their content
 state:    doing
 row:      unassigned
@@ -234,16 +243,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## TECHPRINT_FACTION_GATING_1 Code the four research access classes: common / faction-held techprints / jawa-special / ship-only
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/TECHPRINT_FACTION_GATING_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/TECHPRINT_FACTION_GATING_1.md
 
 ## SONIC_WEAPONS_EXPANSION_1 Creatively expand the Sonic weapon school with more sonic weaponry (owner-ruled follow-up, not urgent)
 state:    proposed

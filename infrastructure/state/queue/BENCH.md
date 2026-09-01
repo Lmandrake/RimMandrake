@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-01T05:56:01Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-01T06:27:06Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -61,3 +61,13 @@ kind:     task
 thin:     no ## criteria
 summary:  Layer stack: design/Jawa/researchnormalizationprinciples.md (why) →
 prose:    infrastructure/state/items/RESEARCH_TREE_NORMALIZATION_1.md
+
+## PROPOSAL_SUITE_REVIEW_1 Owner review sitting over the 14-doc proposals suite in design/Jawa/proposals/
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/PROPOSAL_SUITE_REVIEW_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PROPOSAL_SUITE_REVIEW_1.md
