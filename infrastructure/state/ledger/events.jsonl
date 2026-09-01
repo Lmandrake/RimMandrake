@@ -3473,3 +3473,7 @@
 {"seat":"FOUNDRY","event":"claim","id":"THOROUGH_RETAG_WEAPONS_ARMOUR_1","ts":"2026-09-01T04:58:47Z"}
 {"seat":"FOUNDRY","event":"start","id":"THOROUGH_RETAG_WEAPONS_ARMOUR_1","ts":"2026-09-01T04:58:47Z"}
 {"seat":"FOUNDRY","event":"close","id":"THOROUGH_RETAG_WEAPONS_ARMOUR_1","sha":"31e2c333","ts":"2026-09-01T04:59:14Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-01T04:59:24Z"}
+{"seat":"FOUNDRY","event":"claim","id":"LIGHTSABER_MELEE_PATCH_FAIL_1","ts":"2026-09-01T05:01:02Z"}
+{"seat":"FOUNDRY","event":"start","id":"LIGHTSABER_MELEE_PATCH_FAIL_1","ts":"2026-09-01T05:01:03Z"}
+{"seat":"FOUNDRY","event":"note","id":"LIGHTSABER_MELEE_PATCH_FAIL_1","text":"Diagnosed and fixed: the donor mod dropped per-variant <tools> overrides entirely, all 7 named lightsabers now pure-inherit from Force_LightsaberBase, so the 21 per-variant Replace ops were guaranteed 0-match (not one bad xpath, the whole per-variant half). Removed the 21 dead ops, kept the 3 valid base-level ones. validate_patch.py clean, deployed. Not yet cold-load-verified (rides next restart).","ts":"2026-09-01T05:07:07Z"}

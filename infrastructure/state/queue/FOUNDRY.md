@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-01T04:59:14Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-01T05:07:07Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -162,6 +162,15 @@ kind:     build
 summary:  Source finding: design/Jawa/droidworksassumptions.md, item 3 (the
 prose:    infrastructure/state/items/DROID_DONOR_PATCH_GATE_1.md
 
+## LIGHTSABER_MELEE_PATCH_FAIL_1 Armoury_MeleePower.xml's lightsaber PatchOperationSequence fails against the live Star Wars: The Force - Lightsaber mod
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  src/RimStarWars/Armoury/Patches/ArmouryMeleePower.xml (mod display name
+prose:    infrastructure/state/items/LIGHTSABER_MELEE_PATCH_FAIL_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -287,13 +296,3 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/SETTLEMENT_VERBS_WAVE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SETTLEMENT_VERBS_WAVE_1.md
-
-## LIGHTSABER_MELEE_PATCH_FAIL_1 Armoury_MeleePower.xml's lightsaber PatchOperationSequence fails against the live Star Wars: The Force - Lightsaber mod
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     spec, verify and criteria all present
-summary:  src/RimStarWars/Armoury/Patches/ArmouryMeleePower.xml (mod display name
-prose:    infrastructure/state/items/LIGHTSABER_MELEE_PATCH_FAIL_1.md
