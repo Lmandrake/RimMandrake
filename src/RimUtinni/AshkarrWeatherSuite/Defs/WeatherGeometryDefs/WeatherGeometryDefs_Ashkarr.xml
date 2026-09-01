@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  WeatherGeometryDefs_Ashkarr.xml   RimUtinni: Weather Suite   2026-09-01
+  ============================================================================
+  The ONE PlanetGeometryDef instance this campaign ships. Every number below
+  is quoted from already-authored canon, none invented for this item — the
+  band membership is "authored as DATA against the real planet," per the
+  item's own criteria, not computed from any worldgen parameter (there is
+  no worldgen; the world is frozen).
+
+  substellarLat / substellarLon = (0, 0) — design/Jawa/worldbuilding/
+  ASHKARR_WORLD_DEFINITION.md §2b and the_one_map.md's own reconciliation:
+  "Substellar point = latitude 0.0, longitude 0.0," confirmed by
+  measurement (corr(T, angle from substellar) = -0.979 on the painted
+  world). Cross-checked against world/ASHKARR_WORLDMAP_tiles.csv row 0
+  directly: tile 0 sits at lat 58.2787, lon -90.0 and its own `arc` column
+  reads 90.0 — the great-circle formula WeatherGeometryUtility.
+  ArcFromSubstellar uses (acos(sin(lat0)sin(lat) + cos(lat0)cos(lat)cos(lon
+  - lon0)) with lat0=lon0=0) reproduces that exact 90.0 for the same tile.
+
+  terminatorBandMinArc/MaxArc = 63 / 117 — NOT a new number. This is the
+  exact terminator band the_one_map.md already reconciled ("the sea band
+  'normalised latitude 0.35-0.65' therefore means θ between 63° and 117°")
+  and the same band both named terminator seas actually sit in:
+  ASHKARR_WORLD_DEFINITION.md's Twilight Sea (arc 63->120) and Grey Sea
+  (arc 70-108). Measured against world/ASHKARR_WORLDMAP_tiles.csv
+  (2026-09-01, this item's own build): only 5 of ZBiome_Grasslands's 227
+  tiles (the Pyrelands, FIRE_ECOLOGY_LOOP_1's biome) fall in this band —
+  confirms the two items' data stay clear of each other; see this mod's own
+  Patches/ folder note.
+
+  nightsideBandMinArc = 117 — set at the terminator band's own outer edge
+  (not a separately-measured number) so no map ever carries both the
+  storm wall and an aurora — see WeatherSuiteHook.cs's own comment on this
+  field for the reasoning.
+  ============================================================================
+-->
+<Defs>
+
+  <RimMandrake.StarWars.WeatherSuite.PlanetGeometryDef>
+    <defName>RUT_WS_AshkarrGeometry</defName>
+    <substellarLat>0</substellarLat>
+    <substellarLon>0</substellarLon>
+    <terminatorBandMinArc>63</terminatorBandMinArc>
+    <terminatorBandMaxArc>117</terminatorBandMaxArc>
+    <nightsideBandMinArc>117</nightsideBandMinArc>
+  </RimMandrake.StarWars.WeatherSuite.PlanetGeometryDef>
+
+</Defs>

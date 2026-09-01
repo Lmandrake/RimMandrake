@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimMandrake: Utinni — Weather Suite (Ash'karr)</name>
+  <packageId>mandrake.rut.weathersuite</packageId>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Wires `mandrake.rsw.weathersuite`'s generic terminator-band/nightside-band engine onto THIS campaign's real, frozen planet: ships the one PlanetGeometryDef with Ash'karr's actual substellar point (lat 0, lon 0) and its actual band arcs (63-117 for the terminator storm wall, reusing the exact arc range already used to site the Twilight Sea and Grey Sea; 117+ for the dark-side aurora's nightside band), plus folk-sign flavor text on a handful of existing WeatherDefs. WEATHER_SUITE_SLICE_1's v1 slice, per `infrastructure/state/items/WEATHER_SUITE_SLICE_1.md`.</description>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+    <li>
+      <packageId>mandrake.rsw.weathersuite</packageId>
+      <displayName>RimMandrake: SW — Weather Suite</displayName>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>mandrake.rsw.weathersuite</li>
+  </loadAfter>
+</ModMetaData>

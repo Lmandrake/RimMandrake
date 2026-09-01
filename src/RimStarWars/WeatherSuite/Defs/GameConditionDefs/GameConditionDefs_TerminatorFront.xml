@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  GameConditionDefs_TerminatorFront.xml   RimStarWars: Weather Suite   2026-09-01
+  ============================================================================
+  WEATHER_SUITE_SLICE_1, unit 1 — the terminator storm wall. Doc §1's own
+  sketch: "GameConditionDef sketch — TerminatorFront... present on every map
+  that straddles the terminator band, every day, forever."
+
+  conditionClass reuses vanilla GameCondition_Flashstorm UNCHANGED (RimSage,
+  GameCondition_Flashstorm.cs) — periodic lightning strikes well above
+  ambient, exactly the doc's "lightning generation along the boundary line,
+  well above ambient." Same reuse trick as the Aurora reuse below: zero new
+  C# for the mechanical payload, only the geometric "which maps get this"
+  test is new (MapComponent_TerminatorBand, WeatherSuiteHook.cs).
+
+  Started PERMANENT (canBePermanent) by MapComponent_TerminatorBand on any
+  map whose tile sits in the RimUtinni-tier PlanetGeometryDef's terminator
+  band — never rolled by the storyteller as a random incident, so no
+  IncidentDef is defined for this condition.
+
+  Deliberately does NOT attempt a literal two-toned dust/haze curtain render
+  (the doc's "visible standing wall... dayside-hot on one face, nightside-
+  cold on the other" is cosmetic ambition beyond this hook's budget — see
+  WEATHER_SUITE_SLICE_1.md's build note). v1 ships the mechanical payload
+  (permanent elevated lightning + the letter on first arrival) only.
+  ============================================================================
+-->
+<Defs>
+
+  <GameConditionDef>
+    <defName>RSW_WS_TerminatorFront</defName>
+    <label>terminator front</label>
+    <description>The standing weather-wall where the dayside furnace meets the nightside cold. This front never moves and never passes — the map sits inside it permanently, and lightning strikes here well above ambient rates.</description>
+    <allowUnderground>false</allowUnderground>
+    <canBePermanent>true</canBePermanent>
+    <conditionClass>GameCondition_Flashstorm</conditionClass>
+    <endMessage>The terminator front has, impossibly, lifted.</endMessage>
+    <letterDef>NeutralEvent</letterDef>
+    <letterText>The standing front between dayside heat and nightside cold is active here. Expect elevated lightning for as long as this map straddles the terminator band — which, on this world, is forever.</letterText>
+    <preventRain>true</preventRain>
+  </GameConditionDef>
+
+</Defs>

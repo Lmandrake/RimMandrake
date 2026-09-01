@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimMandrake: SW — Weather Suite</name>
+  <packageId>mandrake.rsw.weathersuite</packageId>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>The generic engine half of WEATHER_SUITE_SLICE_1 — a fixed-geometry "arc from the substellar point" test any tidally-locked Star Wars planet could use unchanged (PlanetGeometryDef + MapComponent_TerminatorBand), a permanent terminator-front storm wall riding vanilla GameCondition_Flashstorm, a nightside-gated dark-side aurora riding vanilla GameCondition_Aurora/ThoughtWorker_Aurora unchanged, and a Tier-1 forecast-instrument ThingComp that reads the map's real weather-commonality table read-only (no RNG, so it can never desync the roll it reports on).
+
+Campaign-specific wiring (Ash'karr's real substellar point and band arcs, folk-sign flavor text) lives in RimUtinni: Weather Suite (`mandrake.rut.weathersuite`). This mod carries no Ash'karr/clan/story references — see `design/NAMING_SCHEME_PLAN.md`'s engine/content split.
+
+v1 slice only: terminator storms, dark-side auroras, Tier 0-1 forecasting. Glass storms, static seasons, pressure tides, spore blooms, mirages and Tier 2-4 forecasting are `design/Jawa/proposals/weather_suite_deep_design.md`'s v2/dream ladder, awaiting PROPOSAL_SUITE_REVIEW_1.</description>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+  </loadAfter>
+</ModMetaData>

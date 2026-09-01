@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  ThoughtDefs_DarkAurora.xml   RimStarWars: Weather Suite   2026-09-01
+  ============================================================================
+  workerClass reuses vanilla ThoughtWorker_Aurora UNCHANGED (RimSage,
+  ThoughtWorker_Aurora.cs) — it is already generic: it reads its OWN
+  ThoughtDef's `gameCondition` field rather than hardcoding vanilla's
+  `Aurora` defName, so pointing a new ThoughtDef at RSW_WS_DarkAurora with
+  this workerClass gets the exact same "outdoors, not roofed, not blind"
+  gating vanilla's aurora mood buff uses, for free.
+  ============================================================================
+-->
+<Defs>
+
+  <ThoughtDef>
+    <defName>RSW_WS_DarkAurora</defName>
+    <gameCondition>RSW_WS_DarkAurora</gameCondition>
+    <workerClass>ThoughtWorker_Aurora</workerClass>
+    <stages>
+      <li>
+        <label>dark-side aurora</label>
+        <description>The night sky is alive with color. Even out here, something is beautiful.</description>
+        <baseMoodEffect>14</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>

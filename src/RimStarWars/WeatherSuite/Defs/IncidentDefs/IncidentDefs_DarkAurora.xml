@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  IncidentDefs_DarkAurora.xml   RimStarWars: Weather Suite   2026-09-01
+  ============================================================================
+  Fires RSW_WS_DarkAurora. workerClass is IncidentWorker_NightsideAurora
+  (WeatherSuiteHook.cs), which subclasses vanilla IncidentWorker_Aurora and
+  adds exactly one requirement on top of everything vanilla Aurora already
+  checks (darkness, "won't end immediately"): at least one player-home map
+  sits in the geometry def's nightside band. No duplicated firing logic.
+
+  baseChance/durationDays/minRefireDays copied from vanilla's own Aurora
+  IncidentDef (RimSage) — this is deliberately not tuned rarer or commoner
+  for v1; the item spec asks for the event to exist and be nightside-gated,
+  not for a bespoke frequency curve.
+  ============================================================================
+-->
+<Defs>
+
+  <IncidentDef>
+    <defName>RSW_WS_DarkAurora</defName>
+    <label>dark-side aurora</label>
+    <baseChance>1.2</baseChance>
+    <canOccurOnAllPlanetLayers>true</canOccurOnAllPlanetLayers>
+    <category>Misc</category>
+    <durationDays>0.125~0.35</durationDays>
+    <gameCondition>RSW_WS_DarkAurora</gameCondition>
+    <letterDef>PositiveEvent</letterDef>
+    <letterLabel>Dark-side aurora</letterLabel>
+    <minRefireDays>15</minRefireDays>
+    <targetTags>
+      <li>World</li>
+    </targetTags>
+    <workerClass>RimMandrake.StarWars.WeatherSuite.IncidentWorker_NightsideAurora</workerClass>
+  </IncidentDef>
+
+</Defs>

@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  ThingDefs_WeatherInstrument.xml   RimStarWars: Weather Suite   2026-09-01
+  ============================================================================
+  WEATHER_SUITE_SLICE_1, unit 3 — Tier 1 of the doc's §8 forecasting ladder:
+  "thermometer, barometer, anemometer, a grounding-mast tap... crude
+  static-season and terminator-proximity warning; the FIRST thing worth
+  building on a terminator-band settlement." Tier 0 (folk signs, no
+  building) is the RimUtinni-tier flavor patch on existing WeatherDefs.
+
+  CompProperties_Forecaster / CompForecaster (WeatherSuiteHook.cs) is the
+  whole mechanism: CompInspectStringExtra() reads the map's REAL weather-
+  commonality table (same public fields WeatherDecider.
+  CurrentWeatherCommonality reads) on hover, never per-tick, never touching
+  Rand — see that class's own header for exactly what it can and cannot see.
+
+  No new art commissioned for v1 — reuses vanilla's own antenna/dish
+  silhouette (Things/Building/Misc/DropBeacon) rather than shipping a
+  magenta placeholder; a bespoke instrument-mast sprite is a v2 polish item,
+  not a blocker for the mechanism.
+  ============================================================================
+-->
+<Defs>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RSW_WS_WeatherInstrument</defName>
+    <label>weather instrument mast</label>
+    <description>A thermometer, barometer and anemometer bolted to a salvaged mast, wired to a grounding tap. It cannot see far ahead, but it reads what the sky is doing right now better than any pair of eyes — the first thing worth building anywhere the sky itself is a threat.</description>
+    <altitudeLayer>Building</altitudeLayer>
+    <building>
+      <destroySound>BuildingDestroyed_Metal_Small</destroySound>
+    </building>
+    <category>Building</category>
+    <comps>
+      <li Class="RimMandrake.StarWars.WeatherSuite.CompProperties_Forecaster" />
+    </comps>
+    <costList>
+      <Steel>20</Steel>
+    </costList>
+    <designationCategory>Misc</designationCategory>
+    <drawerType>MapMeshOnly</drawerType>
+    <fillPercent>0.15</fillPercent>
+    <filthLeaving>Filth_RubbleBuilding</filthLeaving>
+    <graphicData>
+      <texPath>Things/Building/Misc/DropBeacon</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shadowData>
+        <volume>(0.3, 0.2, 0.3)</volume>
+        <offset>(0,0,-0.1)</offset>
+      </shadowData>
+    </graphicData>
+    <leaveResourcesWhenKilled>false</leaveResourcesWhenKilled>
+    <minifiedDef>MinifiedThing</minifiedDef>
+    <pathCost>14</pathCost>
+    <repairEffect>Repair</repairEffect>
+    <rotatable>false</rotatable>
+    <selectable>true</selectable>
+    <soundImpactDefault>BulletImpact_Metal</soundImpactDefault>
+    <statBases>
+      <SellPriceFactor>0.5</SellPriceFactor>
+      <MaxHitPoints>60</MaxHitPoints>
+      <WorkToBuild>400</WorkToBuild>
+      <Flammability>0.5</Flammability>
+      <Mass>4</Mass>
+    </statBases>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <thingCategories>
+      <li>BuildingsMisc</li>
+    </thingCategories>
+    <thingClass>Building</thingClass>
+    <uiOrder>2150</uiOrder>
+  </ThingDef>
+
+</Defs>

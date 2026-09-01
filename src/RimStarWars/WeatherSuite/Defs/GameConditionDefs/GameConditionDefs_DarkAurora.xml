@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  GameConditionDefs_DarkAurora.xml   RimStarWars: Weather Suite   2026-09-01
+  ============================================================================
+  WEATHER_SUITE_SLICE_1, unit 2 — dark-side auroras. Doc §5: "the ONE
+  nightside weather event with zero cost... a genuine morale/mood buff for
+  pawns who witness it outdoors... a navigation aid: aurora-lit terrain
+  grants a partial sight-range restoration."
+
+  conditionClass reuses vanilla GameCondition_Aurora UNCHANGED (RimSage,
+  GameCondition_Aurora.cs) — it already does exactly this: +14 mood via its
+  paired ThoughtDef (below), and it brightens the sky toward a floor glow of
+  0.73 (SkyTarget()/Brightness()), which on an otherwise near-zero-visibility
+  nightside map IS the sight-range restoration the doc asks for — RimWorld's
+  own sight/visibility math already scales off ambient glow, so no separate
+  new mechanic is needed for that half of the doc's ask either.
+
+  What IS new: RSW_WS_DarkAurora is a SEPARATE GameConditionDef from
+  vanilla's own `Aurora` (never touched), fired by its own IncidentDef via
+  IncidentWorker_NightsideAurora (WeatherSuiteHook.cs), which requires a
+  player-home map in the RimUtinni geometry def's nightside band before it
+  can fire — vanilla Aurora stays available everywhere, unmodified; this is
+  purely additive.
+  ============================================================================
+-->
+<Defs>
+
+  <GameConditionDef>
+    <defName>RSW_WS_DarkAurora</defName>
+    <label>dark-side aurora</label>
+    <description>The deep night has no sun, but it is not without light. A magnetospheric aurora is lighting the sky — the one beauty this hemisphere owns for free.</description>
+    <allowUnderground>false</allowUnderground>
+    <canAffectAllPlanetLayers>true</canAffectAllPlanetLayers>
+    <canBePermanent>false</canBePermanent>
+    <conditionClass>GameCondition_Aurora</conditionClass>
+    <endMessage>The dark-side aurora is fading.</endMessage>
+    <letterDef>PositiveEvent</letterDef>
+    <letterText>A dark-side aurora is lighting up the night sky. It will boost the mood of anyone outside to see it, and brighten the ground enough to see by.</letterText>
+    <silencedByConditions>
+      <li MayRequire="Ludeon.RimWorld.Anomaly">UnnaturalDarkness</li>
+    </silencedByConditions>
+  </GameConditionDef>
+
+</Defs>

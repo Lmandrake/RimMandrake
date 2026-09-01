@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  AshkarrWeather_FolkSigns.xml   RimUtinni: Weather Suite   2026-09-01
+  ============================================================================
+  WEATHER_SUITE_SLICE_1, unit 3 — Tier 0 of the doc's §8 ladder: "folk signs
+  — none — observation only... animal behavior, sky color, static
+  crackle... free, always available, imprecise." This patch replaces
+  `description` only, on five VANILLA WeatherDefs (Clear, Fog,
+  DryThunderstorm, SnowGentle, SnowHard) — the register a Jawa scavenger
+  clan without instruments would actually read. Text quoted/paraphrased
+  from RimSage's own vanilla description as a base, folk-sign sentence
+  appended.
+
+  🔴 Deliberately does NOT reference static seasons, glass storms or the
+  "crackle means a static season" line from the deep design doc's §3 — that
+  system is v2, awaiting PROPOSAL_SUITE_REVIEW_1 (see WEATHER_SUITE_SLICE_1
+  .md's own header). Promising a mechanic that does not exist yet would be
+  a lie the flavor text tells the player.
+
+  🔑 NO COLLISION WITH FIRE_ECOLOGY_LOOP_1: that item's
+  PyrelandsWeather_Stage0.xml / PyrelandsWeather_BlackRain.xml patch
+  `BiomeDef[defName="ZBiome_Grasslands"]/baseWeatherCommonalities` — a
+  different def type entirely (BiomeDef, not WeatherDef) and a different
+  field (a commonality TABLE, not `description`). This patch never touches
+  BiomeDef and never touches any def carrying "ZBiome_Grasslands" in its
+  xpath. Checked before writing, not assumed.
+
+  These five WeatherDefs are GLOBAL vanilla core defs (Ludeon.RimWorld,
+  always loaded — no PatchOperationFindMod needed for THAT), but each
+  Replace is still wrapped in PatchOperationConditional so a future game
+  update or another mod's own override of `description` degrades to a
+  silent no-op instead of a red xpath-matched-nothing error, per
+  validate_patch.py's own advisory.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/WeatherDef[defName="Clear"]/description</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>Defs/WeatherDef[defName="Clear"]/description</xpath>
+      <value>
+        <description>A clear day. No penalties or modifiers. Folk sign: a still, colorless sky this close to the terminator rarely holds past nightfall — the old scavengers call a clear dayside sky "borrowed."</description>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/WeatherDef[defName="Fog"]/description</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>Defs/WeatherDef[defName="Fog"]/description</xpath>
+      <value>
+        <description>Fog reduces the accuracy of ranged weapons. Folk sign: fog this thick usually means you are close to the front where the heat meets the cold — the moisture came from somewhere colder than here.</description>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/WeatherDef[defName="DryThunderstorm"]/description</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>Defs/WeatherDef[defName="DryThunderstorm"]/description</xpath>
+      <value>
+        <description>Dry thunderstorms are dangerous because the lightning can start fires and there is no rain to put them out. Folk sign: count the gap between flash and crack — short and shortening means the storm is walking toward you, not past you.</description>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/WeatherDef[defName="SnowGentle"]/description</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>Defs/WeatherDef[defName="SnowGentle"]/description</xpath>
+      <value>
+        <description>Snow reduces the accuracy of ranged weapons, extinguishes fire, and slows people down. Folk sign: snow this gentle is the nightside's ordinary weather, not a warning — the animals here do not spook at it.</description>
+      </value>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/WeatherDef[defName="SnowHard"]/description</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>Defs/WeatherDef[defName="SnowHard"]/description</xpath>
+      <value>
+        <description>Snow reduces the accuracy of ranged weapons, extinguishes fire, and slows people down. Folk sign: when hard snow comes on fast and the wind turns, the deep-night cold behind it is worse than the snow itself — get inside before the wind, not after.</description>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
