@@ -270,3 +270,12 @@ resolved.
       not built tonight.
 - [ ] Analyse opportunity's live job-assignment behavior — not tested this
       pass, follow-on (see "not tested" above).
+
+## CLOSED 2026-09-01 (owner-said, sha `57d11470`)
+These last two boxes stay unchecked on purpose — the owner ruled them
+legitimate out-of-scope follow-ons, not blockers, and closed the item
+without them: wreck-seeding belongs to `TILE_STRUCTURE_DESIGNS_1`, Analyse
+job-assignment behavior is a separate live-AI question neither this item nor
+a later check found tooling to test (colonist AI too slow to simulate via
+`step_game_ticks`). The ship criterion — pilot smelter Wrecked→Kludged→
+Repaired loop live, wreck genuinely wiped not duplicated — is met.
