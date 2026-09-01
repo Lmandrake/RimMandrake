@@ -1,0 +1,80 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    PROPERTY_FABRIC_BUILD_1: the claim engine, recognizability, TakingEvent
+    spine, perception/propagation and faction record. No Harmony reference —
+    a plain GameComponent auto-picked-up by vanilla's Game.FillComponents
+    reflection scan (same recipe as Ninefold's GameComponent_Ninefold; no
+    registration code needed). No Defs, no XML — pure C# API other mods call
+    into (SETTLEMENT_VERBS_WAVE_1 and later).
+
+    Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\Property\Source\RM_Property.csproj -c Release
+
+    Output lands in ../Assemblies/, which is where RimWorld looks.
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>RimMandrakeProperty</AssemblyName>
+    <RootNamespace>RimMandrake.Property</RootNamespace>
+    <Version>0.1.0</Version>
+
+    <OutputPath>..\Assemblies\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AssemblySearchPaths>$(AssemblySearchPaths);$(RimWorldManaged)</AssemblySearchPaths>
+
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <DebugType>none</DebugType>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(RimWorldManaged)' == ''">
+    <RimWorldManaged>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManaged>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="ClaimantKind.cs" />
+    <Compile Include="ClaimantRef.cs" />
+    <Compile Include="ClaimBasis.cs" />
+    <Compile Include="ClaimRecord.cs" />
+    <Compile Include="ClaimRecordList.cs" />
+    <Compile Include="ClaimResolution.cs" />
+    <Compile Include="ClaimDecay.cs" />
+    <Compile Include="ClaimEngine.cs" />
+    <Compile Include="RecognizabilityUtility.cs" />
+    <Compile Include="PropertyTuning.cs" />
+    <Compile Include="TakingAct.cs" />
+    <Compile Include="TakingEvent.cs" />
+    <Compile Include="WitnessEntry.cs" />
+    <Compile Include="FactionRecord.cs" />
+    <Compile Include="PerceptionUtility.cs" />
+    <Compile Include="PropertyEvents.cs" />
+    <Compile Include="PropertyEngine.cs" />
+    <Compile Include="GameComponent_PropertyLedger.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(RimWorldManaged)\Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>$(RimWorldManaged)\UnityEngine.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>
