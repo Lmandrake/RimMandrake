@@ -138,6 +138,63 @@ territory now, not a quick patch to bolt onto this item.
 gap (above) is absorbed — nothing else active depends on IT the way
 `guy762.KotORDroids` depends on kotorcore.
 
+## 🔴 2026-08-31/09-01, WAVE 1 DONE — and a bigger kotorweapons blocker found
+Owner: *"wake agent foundry. Be brave! It's ok to change the mod list even
+though there was a scare."* Proceeded per this item's own verify plan §3.
+
+**Done, verified clean:**
+- Backed up `ModsConfig.xml` (`ModsConfig.PRESWAP.20260831_202013_pre_4pack_retirement.xml`,
+  591 mods — the doc's "593" above was already stale by 2 from unrelated
+  concurrent work; not a discrepancy in this pass).
+- Retired the 4 confirmed-clean packs: `maincrep.eweb`, `rpgwanderer.opturret`,
+  `m3.continued.jangodsoul.starwars.bti`, `sov.sith` (Sov.Sith). 591 -> 587
+  active mods, `ModsConfig.FULL.LATEST.xml` synced to match.
+- Cold-loaded via Steam (never the bare exe) to confirm. `[JawaBench] context:
+  modSet 587/d2806925` on the live bridge; `harvest_log.py` clean except two
+  genuinely NEW `[Jawa Patches (local)] PatchOperationConditional ... failed`
+  lines (below) — everything else at baseline (25 crossref, 1 Scribe/
+  `Corpse_Titan` — pre-existing, confirmed present in `Player-prev.log` too,
+  unrelated to this wave; 5 patchfail baseline unchanged).
+- **Found and fixed**: `src/SPLIT_Phase3/Jawa_Patches/Patches/WeaponTags_Renormalise.xml`
+  (generated, do-not-hand-edit) carried two dead entries whose target
+  ThingDef no longer exists at all: `Gun_ArchotechChargeBlasterHeavyTurret`
+  (owned by `rpgwanderer.opturret`, just retired — direct fallout of this
+  wave) and `RBME_EpsilonAxe` (owned by `tug.Minotaur`, already inactive
+  before this wave, unrelated but caught the same way). Hand-removed both
+  entries (a real generator regenerate is unsafe right now — the only dump
+  available is post-patch, see the file's own 2026-08-21 warning) and noted
+  why inline. Deployed (`deploy_custom_mods.py --mod Jawa_Patches --apply`).
+  **NOT yet re-verified with a second cold load** — low-risk, single-file,
+  named-string change; ride it into whatever load closes this item next.
+
+**🔴 NEW FINDING — `guy762.kotorweapons` is NOT a clean retirement, contrary
+to this item's own earlier verdict below ("no equivalent blocker... nothing
+else active depends on it").** Same class of bug as the opturret miss, but
+far bigger: grepping kotorweapons' own 636 defNames (from its live
+`1.6/Defs/`) against local content turned up dependencies *outside* the
+`Absorbed_KotorWeapons` copies (which are fine and expected to persist):
+- `WeaponTags_Renormalise.xml` (generated) — **66** kotorweapons defNames
+  tagged (bowcasters, blaster pistols, batons, vibroweapons, …). Retiring
+  kotorweapons reproduces the opturret failure 66 times over unless the file
+  is safely regenerated first (needs a genuinely offline/pre-patch dump —
+  the live one captured today is post-patch and unusable per the file's own
+  warning) or each entry is hand-gated.
+- `src/RimStarWars/Armoury/Patches/Armour_Ratings.xml`,
+  `Armour_Penetration.xml`, `Armoury_MeleePower.xml` — **102 / 288 / 52**
+  raw `guy762_` mentions respectively (mixed kotorcore+kotorweapons, not yet
+  split out), tuning damage/armor/penetration stats on ThingDefs these
+  patches assume are live, with **no `PatchOperationFindMod` guard** for
+  either KotOR donor anywhere in any of the three files.
+- Two Jawa_Patches PawnKindDef files also reference specific kotorweapons
+  gear by defName (`GamorreanPawnKinds.xml`, `JawaFactionRoster.xml`).
+
+**Verdict: kotorweapons needs its own patch-gate pass before it can retire —
+the same shape of work as `DROID_DONOR_PATCH_GATE_1`, not a "confirmed
+clean, isolated cold load" wave as step 4 below assumed.** Did not attempt
+the retirement this session; the risk of repeating the 2026-08-31 incident
+at 66x the scale outweighs finishing this item in one sitting. `kotorcore`
+remains blocked on `DROID_DONOR_PATCH_GATE_1` as before, unchanged.
+
 ## verify
 1. ~~Extended generator(s) absorb the AdditionalMods gap~~ — done, kept.
 2. `validate_patch.py --defs` (Data + Mods + Workshop root + Armoury) on the
@@ -159,8 +216,13 @@ gap (above) is absorbed — nothing else active depends on IT the way
 - [x] Two generator bugs found and fixed (stale path, `Name=` collision).
 - [ ] Stale-abstract fix rebuilt + redeployed (currently only the source
       `Defs/` regenerated, not `JawaArmoury.dll`/the deployed mod copy).
-- [ ] 4 clean packs OFF, full-list cold load clean, as their own verified wave.
-- [ ] `guy762.kotorweapons` retirement, separately verified.
+- [x] 4 clean packs OFF, full-list cold load clean, as their own verified wave
+      (591 -> 587, 2026-08-31/09-01; one fallout bug found in
+      `WeaponTags_Renormalise.xml` and fixed, not yet re-verified with a
+      second load).
+- [ ] `guy762.kotorweapons` retirement, separately verified — BLOCKED, new
+      finding: needs its own patch-gate pass first (66 + 442 unguarded
+      defName references outside the absorbed content), not just a clean load.
 - [ ] `guy762.mm.kotorcore` retirement — blocked on `DROID_DONOR_PATCH_GATE_1`.
 - [x] Live incident: caught, reverted, verified clean, repo state reconciled
       (`ModsConfig.FULL.LATEST.xml` back to 593 mods, matching live).

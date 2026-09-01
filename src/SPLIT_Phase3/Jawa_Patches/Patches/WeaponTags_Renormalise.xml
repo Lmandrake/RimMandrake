@@ -37,6 +37,13 @@
     reads as already-tagged and drops out of the eligible set. A regenerate today emits
     9 operations against the 154 here, silently deleting 145. weapon_tag_audit.py now
     REFUSES that write; see its `allow-shrink` flag and read the refusal before using it.
+
+    🔴 2026-08-31, WEAPONS_DONOR_RETIREMENT_1: hand-removed the two entries for
+    Gun_ArchotechChargeBlasterHeavyTurret (rpgwanderer.opturret, retired) and
+    RBME_EpsilonAxe (tug.Minotaur, already inactive) — both logged
+    `PatchOperationConditional ... failed` on a clean load because the target
+    ThingDef no longer exists at all. A future safe regenerate (offline dump,
+    never a post-patch live one) will not reintroduce them.
 -->
 
   <Operation Class="PatchOperationConditional">
@@ -504,18 +511,6 @@
     <nomatch Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="GS_Gaffi"]</xpath>
       <value><weaponTags><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></weaponTags></value>
-    </nomatch>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="Gun_ArchotechChargeBlasterHeavyTurret"]/weaponTags</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="Gun_ArchotechChargeBlasterHeavyTurret"]/weaponTags</xpath>
-      <value><li>AssaultRifle</li><li>SimpleGun</li></value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="Gun_ArchotechChargeBlasterHeavyTurret"]</xpath>
-      <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
     </nomatch>
   </Operation>
 
@@ -1020,18 +1015,6 @@
     <nomatch Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="OuterRim_TL50HeavyRepeaterBlaster"]</xpath>
       <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
-    </nomatch>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RBME_EpsilonAxe"]/weaponTags</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="RBME_EpsilonAxe"]/weaponTags</xpath>
-      <value><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="RBME_EpsilonAxe"]</xpath>
-      <value><weaponTags><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></weaponTags></value>
     </nomatch>
   </Operation>
 
