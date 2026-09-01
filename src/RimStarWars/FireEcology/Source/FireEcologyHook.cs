@@ -129,11 +129,19 @@ namespace RimMandrake.StarWars.FireEcology
     // rolls only, never per-frame.
     public static class Patch_FireTick_AshAndScorchFruit
     {
+        private const int ScorchFruitMapCap = 40;
+
         public static void Postfix(Fire __instance)
         {
             try
             {
                 if (__instance == null || !__instance.Spawned) return;
+                // Pawn/animal-attached fires (a burning colonist, a boomrat that
+                // caught) are not ground fires - skip them entirely, or a lit
+                // pawn dusts ash and seeds scorch-fruit along its whole running
+                // path (flavor-wrong, and an ignite-a-boomrat exploit for free
+                // fruit). BENCH review finding, 2026-09-01.
+                if (__instance.parent != null) return;
                 Map map = __instance.Map;
                 IntVec3 pos = __instance.Position;
                 if (map == null || !pos.InBounds(map)) return;
@@ -157,6 +165,13 @@ namespace RimMandrake.StarWars.FireEcology
                 if (Rand.Chance(0.0025f))
                 {
                     ThingDef fruitDef = DefDatabase<ThingDef>.GetNamedSilentFail("RSW_FE_Plant_ScorchFruit");
+                    // A map-wide burn runs hundreds of concurrent Fire things;
+                    // uncapped this seeds an orchard, not a harvest. BENCH
+                    // review finding, 2026-09-01.
+                    if (fruitDef != null && map.listerThings.ThingsOfDef(fruitDef).Count >= ScorchFruitMapCap)
+                    {
+                        fruitDef = null;
+                    }
                     if (fruitDef != null)
                     {
                         IntVec3 spot = IntVec3.Invalid;
