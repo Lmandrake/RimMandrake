@@ -61,6 +61,11 @@ namespace RimMandrake.Inhabited
 
             settlement.casing.RecordArrival(Find.TickManager.TicksGame);
 
+            if (settlement.manifest == null)
+            {
+                settlement.manifest = ResolveManifestByName(settlement.Label);
+            }
+
             string districtLabel = "placeholder district";
             if (settlement.manifest?.districts != null && settlement.manifest.districts.Count > 0
                 && !settlement.manifest.districts[0].label.NullOrEmpty())
@@ -82,6 +87,40 @@ namespace RimMandrake.Inhabited
                     + "' at " + settlement.LabelCap + " (visit #" + settlement.casing.visitCount
                     + ") -- no DISTRICT_TEMPLATE_LIBRARY_1 template wired for this label yet.");
             }
+        }
+
+        /// <summary>
+        /// SETTLEMENT_MANIFEST_BINDING_1: lazily binds a settlement to its
+        /// authored SettlementManifestDef by matching
+        /// <see cref="SettlementManifestDef.settlementName"/> against the
+        /// settlement's own <c>Label</c> -- <see cref="WorldObject_Inhabited.Label"/>
+        /// already implements "the given name if one was set, else the
+        /// WorldObjectDef's generic label" (WorldObject_Inhabited.cs), so
+        /// reading it here is the existing lookup idiom, not a second one.
+        /// Called only when <c>settlement.manifest</c> is still null: the
+        /// result persists via <c>Scribe_Defs.Look(ref manifest, "manifest")</c>
+        /// in WorldObject_InhabitedSettlement.ExposeData(), so a match is
+        /// resolved once, not re-searched every visit. A label with no
+        /// matching manifest returns null -- the caller's existing
+        /// manifest-null branch (the stub district path) handles that with no
+        /// special-casing needed here.
+        /// </summary>
+        private static SettlementManifestDef ResolveManifestByName(string settlementLabel)
+        {
+            if (settlementLabel.NullOrEmpty())
+            {
+                return null;
+            }
+
+            List<SettlementManifestDef> defs = DefDatabase<SettlementManifestDef>.AllDefsListForReading;
+            for (int i = 0; i < defs.Count; i++)
+            {
+                if (defs[i].settlementName == settlementLabel)
+                {
+                    return defs[i];
+                }
+            }
+            return null;
         }
 
         /// <summary>Resolves <paramref name="districtLabel"/> through
