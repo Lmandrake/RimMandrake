@@ -84,6 +84,41 @@ the same day. **Nothing is lost, no rogue build — just a flag.** Deploy this w
 `python.exe build.py --gm --apply` (game closed) to keep the GM pair live alongside the new
 tool; a bare `--apply` would legitimately drop them, same as any non-`--gm` build always has.
 
+## 2026-09-01, first live use of the tool (FOUNDRY, owner AFK)
+Deployed and called for real. `jawa/harmony_patches {typeName: "BiomeDef"}`
+returns exactly 2 methods, neither explaining the padding: `get_DrawMaterial`
+(rendering, irrelevant) and `CommonalityOfAnimal` (2 postfixes — Megafauna
+and AlphaAnimals both multiplying the RESULT float, cannot write 1024 raw
+`wildAnimals` records). **Rules out any BiomeDef-targeted patch as the
+mechanism** — confirms the item's own prediction that a `methodCount` with
+no smoking gun on `BiomeDef` itself means the padder acts through a
+different type.
+
+Tried `DefGenerator` next (the other candidate the item names) — 2 methods,
+several patches each, most unrelated by name/mod (DefNameLink,
+ResearchReinvented, ResourceDictionary, IsekaiLeveling, OuterRimDroids,
+MinifyEverything, Numbers, WorkTab). **One real lead**: owner
+`RedMattis.BigSmall_Early` (assembly `BSXeno`) has BOTH a postfix on
+`DefGenerator.GenerateImpliedDefs_Postfix` AND — more suggestively — a
+**transpiler** named `InsertBeforeResolveAllWantedCrossReferences` on
+`GenerateImpliedDefs_PreResolve`. The name alone is a strong match for
+"materialize weights into a list before cross-ref resolution," which is
+exactly the padding spec's own mechanism description. **NOT CONFIRMED** —
+could not locate the actual assembly on disk to grep for `wildAnimals`
+(checked `RedMattis.BigSmall` / workshop `2894397737`, content-only, no
+Assemblies folder; `RedMattis.BigSmall.Core` / workshop `2920751126`, same
+— no `.dll` found under either despite the bridge reporting live Harmony
+patches from `BSXeno`). The assembly must load from a folder/mechanism this
+pass didn't find (possibly a differently-versioned Assemblies path, or a
+"BSXeno" sub-mod bundled inside a sibling BigSmall-family workshop item not
+checked yet — there are ~10 RedMattis.BigSmall.* items in the active list).
+
+**Handed to a fresh pass/subagent to finish**: find the actual `BSXeno.dll`
+on disk (search all `RedMattis.*` workshop folders' `Assemblies/` — plural,
+version-scoped, e.g. `1.6/Assemblies/`), confirm or rule out a `wildAnimals`
+field write via `strings`/decompile, and if confirmed, check whether it's
+gated by a settings toggle (worth knowing before proposing any fix).
+
 ## Prove it, once deployed
 `python.exe src/RimMandrake/bridgetools/prove_harmony_patches.py` — selftest already green
 (`python3 ... --selftest`, no game needed). Or by hand:
