@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-01T03:59:23Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-01T04:28:54Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -159,7 +159,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     build
-summary:  (no items/DROID_DONOR_PATCH_GATE_1.md yet — write one when you have something to say)
+summary:  Source finding: design/Jawa/droidworksassumptions.md, item 3 (the
 prose:    infrastructure/state/items/DROID_DONOR_PATCH_GATE_1.md
 
 # BLOCKED — something is WRONG and someone must act
