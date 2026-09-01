@@ -171,6 +171,32 @@ containable: `enableRecruitOffer` is a per-feature mod setting (default
 **true**) — turn it off, keep everything else. Doctrine op, not a
 ModsConfig change.
 
+## Examine candidates — the remaining five ruled, 2026-08-31 (owner sitting, cards)
+
+- **`asp.halituisamaricanous` (Astronomy Style Pack) — KEEP.** Owner's call
+  against the drop recommendation; cosmetic style pack stays despite the fixed
+  ideo never granting its style category.
+- **`businburg.businfeatures` (Betures) — DROP.** Ten traits sampled with full
+  numbers at the sitting; Unkillable (0.25× incoming damage, stronger than
+  Tough) and Levitator (2.0× move speed) sit past vanilla scale, and the owner
+  dropped the whole mod rather than curate it. Removed from `ModsConfig.xml`
+  and `ModsConfig.FULL.LATEST.xml`; takes effect next restart.
+- **`tug.minotaur` (Roo's Minotaur Xenotype) — RETIRE, design extracted first**
+  (titans.fl precedent: not Star Wars canon). Extraction:
+  `design/Jawa/mods/minotaur_design_extraction.md` — Herculean gene package,
+  the See Red decaying-berserk burst (the standout), weapon-class gene gating
+  (C#-enforced, scaffold portable), and the middleman-hediff melee trick.
+  Removed from both mod lists; takes effect next restart.
+- **`amoruch.rimworldstealingmod` (Stealing Mod) — KEEP for now.** On-theme
+  pickpocketing. The owner holds a larger design ecosystem around Jawa
+  stealing in an external ChatGPT thread ("Jawa Stealing Lore") that agents
+  cannot read through the share link — capture owed when he exports it.
+- **`addvans.wasdedpawn` (WASDed Pawn) — KEEP.** Opt-in real-time pawn
+  control; zero footprint unless driven.
+
+All examine candidates are now ruled; the sitting this audit waited on is
+complete.
+
 ## Summary
 
 | bucket | count | action |

@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-01T02:22:49Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-01T03:09:11Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -53,15 +53,6 @@ target:   v1
 kind:     bug
 summary:  design/Jawa/droidsystembuildspec.md §2, state 3 ("Downed/off"): "buildup
 prose:    infrastructure/state/items/DROIDWORKS_POWEREDDOWN_NOT_WIRED_1.md
-
-## MOD_LIST_OUTGROWN_AUDIT_2 Outgrown-mod audit: whole 585 list, starting with They/Them(ants) and ISEKAI level-up - OWNER SEQUENCED FIRST
-state:    doing
-row:      1
-needs:    owner
-target:   v1
-kind:     task
-summary:  Two named leads first: They/Them (ants ruled OUT FOREVER — GAPS 11 2026-08-30;
-prose:    infrastructure/state/items/MOD_LIST_OUTGROWN_AUDIT_2.md
 
 ## ASSAILANT_DUNGEON_BUILD_1 Build the Assailant flesh dungeon: frozen first-impact complex, thaw-gated, deep Umbra
 state:    doing
@@ -159,7 +150,7 @@ row:      unassigned
 needs:    game-up
 target:   v1
 kind:     build
-summary:  Turn off maincrep.eweb, rpgwanderer.opturret,
+summary:  Retire the 6 weapon donor packs — 1 of 6 broke the owner's live game, reverted
 prose:    infrastructure/state/items/WEAPONS_DONOR_RETIREMENT_1.md
 
 ## DROID_DONOR_PATCH_GATE_1 Patch the 11 ungated ABF/Synstructs sites in absorbed KotOR content, the prerequisite before ABF/Synstructs/Asimov can retire
