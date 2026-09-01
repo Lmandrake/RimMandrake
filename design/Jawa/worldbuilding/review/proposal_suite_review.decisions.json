@@ -1,9 +1,9 @@
 {
  "sheet": "proposal_suite_review",
  "posture": "prefill-ships; untouched rows keep their pre-filled ladder position; cut is the only destructive verdict",
- "savedAt": "2026-09-01T22:18:39.991Z",
+ "savedAt": "2026-09-01T22:58:50.286Z",
  "decidedBy": "owner-sheet",
- "touchedCount": 10,
+ "touchedCount": 19,
  "rows": {
   "tar:entrapment-hediff": {
    "d": "v1",
@@ -77,64 +77,64 @@
   },
   "gas:lake": {
    "d": "v1",
-   "n": "",
-   "touched": false,
+   "n": "And exotic creatures within the lake. Could even be a wild underwater adventure WITHIN a propane lake (like the ocean biome we're building, but with stranger contents... and the ship must carefully lower itself into FUEL rather than water this time)",
+   "touched": true,
    "prefill": "v1",
    "doc": "propane_gas_deep_design.md"
   },
   "gas:vents": {
    "d": "v1",
-   "n": "",
-   "touched": false,
+   "n": "Puffing gas sometimes self-ignites, but doesn't deplete until the player starts actively pumping it out. That explains why the natural ones are even still there when the player arrives. removing the pumping apparatus should trigger a violent release map-wide that's very dangerously flammable until it clears by the wind.",
+   "touched": true,
    "prefill": "v1",
    "doc": "propane_gas_deep_design.md"
   },
   "gas:pipe-rupture": {
-   "d": "v2",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "There should be some valves that can be accessed to manually shut the pipe down on the map, or else the player just \"leaves it that way\" and wonders what happens. Huge negative faction relationship from this. (or positive if it was your mission to do so)",
+   "touched": true,
    "prefill": "v2",
    "doc": "propane_gas_deep_design.md"
   },
   "gas:saturation": {
    "d": "v1",
-   "n": "",
-   "touched": false,
+   "n": "Absolutely! During the massive gas release event it should be a transient condition. But there should be caverns where this is just perpetually true (a common occurrance on Earth in mines anyway). Also true witin the \"dead sarlacc\" type dungeons, along with rotstink gas.",
+   "touched": true,
    "prefill": "v1",
    "doc": "propane_gas_deep_design.md"
   },
   "gas:tanker-economy": {
-   "d": "v2",
-   "n": "",
-   "touched": false,
+   "d": "cut",
+   "n": "You're not extra flammable on the way home, just right next to that explosive lake... and you have to run long flexible pipes from your ship to the lake, because of your thrusters.",
+   "touched": true,
    "prefill": "v2",
    "doc": "propane_gas_deep_design.md"
   },
   "gas:lake-creature": {
-   "d": "v2",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "Of course it might! Not guaranteed, but often. And it should be seen moving around the lake as a submerged V-shaped wake trailing around, just to add suspense. If it sees the pawns/pipe, it approaches and attacks. But the loud pumping agitates them and makes them start to look around more swiftly. NOT the reason the propane lake is there, they just dwell within it.",
+   "touched": true,
    "prefill": "v2",
    "doc": "propane_gas_deep_design.md"
   },
   "gas:tar-interplay": {
-   "d": "dream",
-   "n": "",
-   "touched": false,
+   "d": "cut",
+   "n": "too much, no need",
+   "touched": true,
    "prefill": "dream",
    "doc": "propane_gas_deep_design.md"
   },
   "gas:saturation-heist": {
-   "d": "dream",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "Give them better weapons. Sonic from the genosians, for example. Or primitive javelains and catapults. Strictly non-flammable, non-temperature-based, non explosives. Vibro-weaponry.",
+   "touched": true,
    "prefill": "dream",
    "doc": "propane_gas_deep_design.md"
   },
   "fir:dry-thunderstorm-loop": {
    "d": "v1",
-   "n": "",
-   "touched": false,
+   "n": "Brief violent rain should be possible (to allow the grass to explosively regrow) but as you say always with lightning.",
+   "touched": true,
    "prefill": "v1",
    "doc": "fire_ecology_deep_design.md"
   },
