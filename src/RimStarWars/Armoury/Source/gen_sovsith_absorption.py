@@ -51,7 +51,7 @@ def _find_repo_root(start):
 
 
 _REPO_ROOT = _find_repo_root(os.path.dirname(__file__))
-ARMOURY_ROOT = os.path.join(_REPO_ROOT, "src", "Jawa", "Jawa_Armoury")
+ARMOURY_ROOT = os.path.join(_REPO_ROOT, "src", "RimStarWars", "Armoury")
 DEFS_ROOT = os.path.join(ARMOURY_ROOT, "Defs")
 TEX_ROOT = os.path.join(ARMOURY_ROOT, "Textures")
 LANG_ROOT = os.path.join(ARMOURY_ROOT, "Languages", "English", "Strings")

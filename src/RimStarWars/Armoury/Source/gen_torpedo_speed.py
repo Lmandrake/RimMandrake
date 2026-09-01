@@ -59,7 +59,7 @@ from def_inventory import build as build_offline, D_CONFIG, D_WORKSHOP, D_LOCAL,
 # same lesson in its own header; game_paths.LOCALLOW is the shared fix.
 import game_paths as _GP
 DUMP = os.path.join(_GP.DEF_DUMP, "defs", "ThingDef.json")
-OUT = os.path.join(_REPO_ROOT, "src", "Jawa", "Jawa_Armoury", "Patches",
+OUT = os.path.join(_REPO_ROOT, "src", "RimStarWars", "Armoury", "Patches",
                    "Armoury_TorpedoSpeed.xml")
 
 MARKERS = ("rocket", "missile", "torpedo")

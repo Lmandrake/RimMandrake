@@ -44,7 +44,7 @@ from def_diff import iter_live_defs
 from refresh import D_DUMP
 from patch_provenance import guard
 
-OUTDIR = os.path.join(ROOT, "src", "Jawa", "Jawa_Armoury", "Patches")
+OUTDIR = os.path.join(ROOT, "src", "RimStarWars", "Armoury", "Patches")
 ANIMALS = os.path.join(ROOT, "observed", "2026-08-13",
                        "inventory", "animals.csv")
 NL = "\n"

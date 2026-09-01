@@ -36,7 +36,7 @@ from def_diff import iter_live_defs
 # dump is present and only the interpreter is wrong. game_paths resolves it.
 import game_paths as _GP
 DUMP = os.path.join(_GP.DEF_DUMP, "defs", "ThingDef.json")
-PATCHES = os.path.join(_REPO_ROOT, "src", "Jawa", "Jawa_Armoury",
+PATCHES = os.path.join(_REPO_ROOT, "src", "RimStarWars", "Armoury",
                        "Patches", "*.xml")
 TORSO = 40.0
 

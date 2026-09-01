@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-01T00:44:58Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-01T02:22:49Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -44,15 +44,6 @@ target:   v1
 kind:     build
 summary:  design/Jawa/droidsystembuildspec.md — architecture (own DLL + HAR substrate,
 prose:    infrastructure/state/items/DROID_SYSTEM_BUILD_1.md
-
-## WEAPONS_ABSORPTION_WAVE_1 Absorb all SW weapons/gear content into Jawa_Armoury: defName-preserving, packs retire
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  Absorb all Star Wars weapons/gear content into JawaArmoury, defName-preserving, so the six
-prose:    infrastructure/state/items/WEAPONS_ABSORPTION_WAVE_1.md
 
 ## DROIDWORKS_POWEREDDOWN_NOT_WIRED_1 Ion buildup crossing threshold downs via vanilla JawaIon_Stun capMods only -- never adds the DW_PoweredDown hediff the state machine is built around
 state:    doing
@@ -161,6 +152,24 @@ target:   v1
 kind:     task
 summary:  design/Jawa/worldbuilding/colonyvisibilitystat.md, specifically
 prose:    infrastructure/state/items/COLONY_VISIBILITY_BUILD_1.md
+
+## WEAPONS_DONOR_RETIREMENT_1 Retire the 6 weapon donor packs now that mandrake.rsw.armoury absorbed their content
+state:    doing
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     build
+summary:  Turn off maincrep.eweb, rpgwanderer.opturret,
+prose:    infrastructure/state/items/WEAPONS_DONOR_RETIREMENT_1.md
+
+## DROID_DONOR_PATCH_GATE_1 Patch the 11 ungated ABF/Synstructs sites in absorbed KotOR content, the prerequisite before ABF/Synstructs/Asimov can retire
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  (no items/DROID_DONOR_PATCH_GATE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROID_DONOR_PATCH_GATE_1.md
 
 # BLOCKED — something is WRONG and someone must act
 

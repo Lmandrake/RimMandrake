@@ -178,7 +178,7 @@
     <workerClass>DamageWorker_AddInjury</workerClass>
     <externalViolence>true</externalViolence>
     <deathMessage>{0} has been shot to death.</deathMessage>
-    <hediff>RSW_Burn</hediff>
+    <hediff>Burn</hediff>
     <harmAllLayersUntilOutside>true</harmAllLayersUntilOutside>
     <impactSoundType>Bullet</impactSoundType>
     <armorCategory>Heat</armorCategory>
@@ -198,7 +198,7 @@
     <isExplosive>true</isExplosive>
     <deathMessage>{0} has been blasted to death.</deathMessage>
     <hediff>Shredded</hediff>
-    <hediffSkin>RSW_Burn</hediffSkin>
+    <hediffSkin>Burn</hediffSkin>
     <hediffSolid>Crack</hediffSolid>
     <makesBlood>false</makesBlood>
     <harmAllLayersUntilOutside>true</harmAllLayersUntilOutside>

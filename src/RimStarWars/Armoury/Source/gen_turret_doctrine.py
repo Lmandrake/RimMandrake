@@ -65,7 +65,7 @@ _REPO_ROOT = _find_repo_root(os.path.dirname(__file__))
 sys.path.insert(0, os.path.join(_REPO_ROOT, "src", "RimMandrake", "Utils"))
 from def_inventory import build as build_offline, D_CONFIG, D_WORKSHOP, D_LOCAL, D_DATA  # noqa: E402
 
-OUT = os.path.join(_REPO_ROOT, "src", "Jawa", "Jawa_Armoury", "Patches",
+OUT = os.path.join(_REPO_ROOT, "src", "RimStarWars", "Armoury", "Patches",
                    "Turrets_DamageDoctrine.xml")
 # VEF flamethrower streams live in their own def type; without it in the scan
 # two flame turrets read as "projectile not found" (found that the hard way).

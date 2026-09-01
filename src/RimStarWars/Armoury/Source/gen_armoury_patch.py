@@ -98,7 +98,7 @@ from patch_provenance import guard, OurWrites, Recorder
 # same lesson in its own header; game_paths.LOCALLOW is the shared fix.
 import game_paths as _GP
 DUMP = os.path.join(_GP.DEF_DUMP, "defs", "ThingDef.json")
-OUTDIR = os.path.join(_REPO_ROOT, "src", "Jawa", "Jawa_Armoury", "Patches")
+OUTDIR = os.path.join(_REPO_ROOT, "src", "RimStarWars", "Armoury", "Patches")
 
 # Mods whose HAND weapons sit on our ladder. Additive by design: dropping a mod
 # name in here is the whole cost of covering it.

@@ -84,7 +84,7 @@ def _find_repo_root(start):
 
 
 _REPO_ROOT = _find_repo_root(os.path.dirname(__file__))
-ARMOURY_ROOT = os.path.join(_REPO_ROOT, "src", "Jawa", "Jawa_Armoury")
+ARMOURY_ROOT = os.path.join(_REPO_ROOT, "src", "RimStarWars", "Armoury")
 DEFS_ROOT = os.path.join(ARMOURY_ROOT, "Defs")
 TEX_ROOT = os.path.join(ARMOURY_ROOT, "Textures")
 SOUND_ROOT = os.path.join(ARMOURY_ROOT, "Sounds")
@@ -168,6 +168,20 @@ def existing_defnames_in(defs_root, exclude_dir):
                 dn = el.find("defName")
                 if dn is not None and dn.text:
                     out[(el.tag, dn.text.strip())] = os.path.relpath(p, defs_root)
+                # 🔴 An abstract template (Name="X" Abstract="True") has NO
+                # <defName> child, so the check above never sees it -- but
+                # RimWorld's XML-inheritance node registry is keyed on Name=
+                # too, and two mods (or two absorption passes) registering
+                # the same Name= in the SAME final mod folder throws
+                # "Could not register node named X ... already used in this
+                # mod". Found live: guy762_GrenadeBeltBase/StealthField_Base/
+                # StealthDeactivate_Base absorbed independently by BOTH
+                # gen_kotorweapons_absorption.py and this generator (shared
+                # abstracts across the two source packs). Key namespaced
+                # ("Name:") so it can never collide with a real defName.
+                nm = el.attrib.get("Name")
+                if nm:
+                    out[(el.tag, "Name:" + nm)] = os.path.relpath(p, defs_root)
     return out
 
 
@@ -384,6 +398,14 @@ def main():
     R.note("%d source XML files under %s" % (len(src_files), SRC_DEFS))
 
     buckets = {}  # (rel_dir, filename) -> list[Element]
+    all_source_targets = set()  # every (rel_dir, out_filename) a source file COULD produce,
+    # even one whose every element gets dropped this run -- without this, a source file that
+    # goes from "some survivors" to "zero survivors" (e.g. a new collision-check catching what
+    # an old one missed) leaves its PREVIOUS run's output file on disk, stale and unlisted by
+    # buckets, so the write loop below silently never revisits it. Found live: GadgetApparel_
+    # KotORGrenadeBelts.xml and Hediff_Stealth.xml both went fully collision-dropped once the
+    # Name= check was added, and their yesterday's-mtime output files kept the old duplicate
+    # content until this fix deleted them explicitly.
     all_new_defnames = {}  # defName -> source file
     tex_paths, sound_paths, sound_folder_paths, rule_paths = set(), set(), set(), set()
     n_source_defs = 0
@@ -396,6 +418,7 @@ def main():
         rel_dir = os.path.dirname(rel)
         fn = os.path.basename(rel)
         out_filename = OUT_FILE_PREFIX + fn
+        all_source_targets.add((rel_dir, out_filename))
 
         parser = ET.XMLParser(target=ET.TreeBuilder(insert_comments=True))
         tree = ET.parse(src_path, parser=parser)
@@ -428,6 +451,25 @@ def main():
                     continue
                 all_new_defnames[key] = rel
 
+            # Same Name= collision check as existing_defnames_in(), for
+            # abstract templates with no <defName> -- see that function's
+            # comment for why this is a separate keyspace and why it's
+            # needed at all.
+            nm = el.attrib.get("Name")
+            if nm:
+                nkey = (el.tag, "Name:" + nm)
+                if nkey in existing:
+                    R.warn("Name=%r <%s> (from %s) COLLIDES with already-absorbed abstract %s -- SKIPPED"
+                           % (nm, el.tag, rel, existing[nkey]))
+                    n_dropped += 1
+                    continue
+                if nkey in all_new_defnames:
+                    R.warn("Name=%r <%s> (from %s) COLLIDES within this pack's own output (also in %s) -- SKIPPED"
+                           % (nm, el.tag, rel, all_new_defnames[nkey]))
+                    n_dropped += 1
+                    continue
+                all_new_defnames[nkey] = rel
+
             collect_paths(el, "texPath", tex_paths)
             collect_paths(el, "iconPath", tex_paths)
             collect_paths(el, "uiIconPath", tex_paths)
@@ -456,6 +498,16 @@ def main():
         src_relpath = os.path.join(rel_dir, filename[len(OUT_FILE_PREFIX):]) if rel_dir else filename[len(OUT_FILE_PREFIX):]
         write_defs_file(rel_dir, filename, elements, src_relpath)
 
+    # ------------------------------------------------- stale-file cleanup --
+    n_stale_removed = 0
+    for (rel_dir, filename) in sorted(all_source_targets - set(buckets.keys())):
+        stale_path = os.path.join(own_out_dir, rel_dir, filename) if rel_dir else os.path.join(own_out_dir, filename)
+        if os.path.isfile(stale_path):
+            os.remove(stale_path)
+            n_stale_removed += 1
+            R.note("removed STALE output %s -- every element from its source file is now collision-dropped"
+                   % os.path.relpath(stale_path, DEFS_ROOT))
+
     if blocked_manifest:
         manifest_path = os.path.join(own_out_dir, OUT_FILE_PREFIX + "BLOCKED_manifest.txt")
         os.makedirs(own_out_dir, exist_ok=True)
@@ -478,8 +530,8 @@ def main():
     print("\n=== summary ===")
     n_written = n_source_defs - n_dropped - n_blocked
     n_abstract = n_written - len(all_new_defnames)
-    print("source elements seen: %d; written to output: %d; blocked (unported kotorcore class or out-of-scope sub-framework): %d; dropped (collision): %d"
-          % (n_source_defs, n_written, n_blocked, n_dropped))
+    print("source elements seen: %d; written to output: %d; blocked (unported kotorcore class or out-of-scope sub-framework): %d; dropped (collision): %d; stale output files removed: %d"
+          % (n_source_defs, n_written, n_blocked, n_dropped, n_stale_removed))
     print("of those written, %d carry a defName, %d are Abstract/parent-only defs with none "
           "(kept for ParentName resolution, not a drop)" % (len(all_new_defnames), n_abstract))
     print("textures/icons: %d found+copied, %d MISSING" % (len(tex_seen), len(tex_missing)))
