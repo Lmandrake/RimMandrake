@@ -30,3 +30,36 @@ Owner rules each row on a review sheet (`review-sheets` skill; `check_sheet.py` 
 
 Three rows ruled; each promoted image has a named creature, a biome, and a
 build item or a dead mark.
+
+## 2026-09-01 (FOUNDRY) — three design rows written, sheet built, awaiting the owner's ruling
+
+Looked at all three mockups directly (not designed from the prompt text alone)
+before naming anything. Three names coined, none of them the owner's:
+
+- **Cindermare** (`moornak_opt1.png`) — wild threat, `AB_RockyCrags`. No mouth
+  in the art, so its kill mechanic is a cold-drain grip (saps body heat on
+  contact) rather than a bite; solitary and untameable, mane/hide harvested
+  only from a kill.
+- **Skarnix** (`moornak_opt2.png`) — wild threat, `AB_RockyCrags`. Cat-large
+  ambush stalker; valve is behavioral (will not cross firelight/a heated
+  space), so a lit camp neutralizes it rather than requiring combat stats.
+- **Tellurox** (`karrask_opt3.png`) — livestock, biome left general (owner's
+  promotion note only committed the two moornak options to the Forsaken
+  Crags, not this one). A genuine draft/pack beast, deliberately NOT another
+  molt-armor farm like karrask — its shell is permanent (grows with the
+  animal, never sheds), so first-rate plate only comes from slaughtering a
+  mature working animal. Keeps this from cannibalizing karrask's niche.
+
+Sheet: `design/Jawa/worldbuilding/review/forsaken_crags_fauna_sheet.html`
+(built off `review-sheets`' `sheet_template.html`, custom `RENDER` block for
+the full field table). `check_sheet.py`: **0 FAIL, 0 WARN, 28 ok**. All three
+rows pre-filled `approve` — that's FOUNDRY's call, not the owner's; every
+invented premise (the three names, Cindermare's feeding mechanism, Tellurox's
+un-pinned biome, Tellurox's permanent-shell differentiation from karrask) is
+declared in the sheet's own `CONFIG.invented` block, not buried.
+
+No decisions file exists yet — nobody has reviewed it. To open it:
+`python3 /home/mandrake/.claude/skills/review-sheets/assets/serve_sheet.py --sheet design/Jawa/worldbuilding/review/forsaken_crags_fauna_sheet.html --decisions design/Jawa/worldbuilding/review/forsaken_crags_fauna_sheet.decisions.json`
+Still open: the owner's ruling itself (approve/revise/cut per row), and —
+only after that — porting whichever names survive through the naming-scheme
+grammar into real defs. Item stays `doing`.
