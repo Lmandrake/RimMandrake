@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-01T00:28:30Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-01T00:44:58Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -216,4 +216,44 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-_none._
+Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
+
+## RESEARCH_VALIDATOR_BUILD_1 Build the offline research-manifest validator per research_tree_taxonomy.md section 4
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/RESEARCH_VALIDATOR_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/RESEARCH_VALIDATOR_BUILD_1.md
+
+## RESEARCH_MANIFEST_DRAFT_1 Generate the draft research manifest: all 515 rows prefilled with fates from the sitting's rulings
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/RESEARCH_MANIFEST_DRAFT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/RESEARCH_MANIFEST_DRAFT_1.md
+
+## TECHPRINT_FACTION_GATING_1 Code the four research access classes: common / faction-held techprints / jawa-special / ship-only
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/TECHPRINT_FACTION_GATING_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/TECHPRINT_FACTION_GATING_1.md
+
+## SONIC_WEAPONS_EXPANSION_1 Creatively expand the Sonic weapon school with more sonic weaponry (owner-ruled follow-up, not urgent)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SONIC_WEAPONS_EXPANSION_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SONIC_WEAPONS_EXPANSION_1.md

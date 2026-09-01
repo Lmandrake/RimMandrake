@@ -1269,6 +1269,45 @@ research_tree:
     CEILING: Ultra reachable, priced brutally - nothing forbidden, The Reach
     is the trap; colony techLevel set INDUSTRIAL so the vanilla cost
     multiplier does the anti-exponential work as economics, not walls.
+  sitting_ruled: true
+  sitting_src: >
+    Owner, 2026-08-31, question cards at the normalization sitting: SONIC
+    school KEPT as its own thin Armory school - and a standing note to
+    creatively EXPAND it later with more sonic weaponry (future item, not
+    this pass). MANIFEST ships in the CAMPAIGN LAYER (RimUtinni) - it
+    encodes campaign taste; the rewrite engine's home was not split out.
+    COST BANDS vanilla-like: T0 <=600, T1 600-1600, T2 1600-3000,
+    T3 3000-5000, T4 5000+ (RR techprints + the Industrial multiplier do
+    the punishing; bands only remove outliers). ROYALTY'S 19 cut rows:
+    live unlocks release to LOOT-ONLY by default (found, not invented);
+    per-row re-home exceptions at execution.
+  chains_ruled: true
+  chains_src: >
+    Owner, 2026-08-31, sitting batch 2: BLASTER SPINE = KotOR's three-tier
+    chain (guy762 blasters/hvy/mini + plasma), reflavored to campaign
+    register; OuterRim_Blastersmithing and VWE laser unlocks re-point onto
+    its tiers. IONIC survivor stands per canon vocabulary (JawaIon_Weaponry;
+    IW_IonChargeWeaponry + guy762 ion rows merge in). KINETIC = one thin
+    chain, uranium slug (Core) -> VFES_Railgun, expandable later like
+    Sonic. CHOICE SHAPE v1 = BREADTH ONLY: choice is which school/tab you
+    push next under real cost pressure; seven tabs + the non-linear Ship
+    tree deliver it, zero new mechanics (OR-prereqs and exclusive picks
+    both declined).
+  tech_gating_ruled: true
+  tech_gating_src: >
+    Owner, 2026-08-31, verbatim: "Add hooks that each of the factionally
+    held tech gates on items from that faction. That's why we wanted the
+    factions to be tech aligned strongly. Then there are commonly available
+    tech and Jawa specials they start with. Plus items only the ship can
+    release. Code all that up. But it could be as simple as who holds the
+    tech prints." => FOUR ACCESS CLASSES for every research row: common
+    (openly researchable) / faction-held (gated on items/techprints from
+    the tech-aligned faction that holds it) / jawa-special (known at start)
+    / ship-only (released by the Utinni - the memory_core gate).
+    Implementation may ride Research Reinvented's techprint economy:
+    faction-holds-the-techprint IS the gate. Supersedes the
+    cathedral/vault/hutt candidate-gate list as the general mechanism
+    (those become faction/source assignments, not bespoke flags).
 royalty:
   dead_ruled: true
   dead_src: >

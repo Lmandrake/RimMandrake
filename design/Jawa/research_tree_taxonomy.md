@@ -144,6 +144,15 @@ Checks, each with its false-pass named:
    INDUSTRIAL; the vanilla multiplier does the anti-exponential work as
    economics, not walls. Nothing forbidden; The Reach is the trap.
 
-Still open, small, for the normalization sitting itself: sonic school (fold
-into Kinetic or keep thin) · where the manifest ships (RimMandrake core vs
-campaign layer).
+## 7. RULED at the normalization sitting, 2026-08-31 — canon `research_tree.sitting_ruled` / `.chains_ruled` / `.tech_gating_ruled`
+
+Sonic school KEPT thin (creative expansion later: SONIC_WEAPONS_EXPANSION_1) ·
+manifest ships in RimUtinni · cost bands vanilla-like (T0 ≤600 / T1 600–1600 /
+T2 1600–3000 / T3 3000–5000 / T4 5000+) · Royalty unlocks loot-only by default ·
+blaster spine = KotOR 3-tier, reflavored; Outer Rim + VWE merge onto it ·
+kinetic = slug→railgun thin chain · choice shape v1 = breadth only ·
+tech gating = FOUR ACCESS CLASSES (common / faction-held via techprints /
+jawa-special / ship-only), superseding the cathedral/vault/hutt bespoke-flag
+candidates in §2 — see canon for the owner's verbatim. Execution items:
+RESEARCH_VALIDATOR_BUILD_1 · RESEARCH_MANIFEST_DRAFT_1 ·
+TECHPRINT_FACTION_GATING_1.
