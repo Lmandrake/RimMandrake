@@ -31,6 +31,18 @@ Owner rules each row on a review sheet (`review-sheets` skill; `check_sheet.py` 
 Three rows ruled; each promoted image has a named creature, a biome, and a
 build item or a dead mark.
 
+**Met, 2026-09-02.** Owner ruling: *"The forsaken review sheet is reviewed
+and approved."* All three `approve` (`forsaken_crags_fauna_sheet.decisions.json`,
+frozen). Tellurox carries an owner correction at ruling time — livestock
+"genetically modified by the Helix faction — origin and biome follow Helix,
+not 'general'" — which supersedes this file's own "biome left general"
+placeholder above; the real origin/biome (Ascendant Helix, `HorrorWastes`)
+is worked out in its own build item, not here. Two build items filed,
+splitting on shape (wild `AB_RockyCrags` threats vs. Helix-engineered
+livestock), not on a per-creature basis:
+- `FORSAKEN_CRAGS_PREDATORS_BUILD_1` — Cindermare + Skarnix.
+- `HELIX_TELLUROX_BUILD_1` — Tellurox, with the Helix lookup done.
+
 ## 2026-09-01 (FOUNDRY) — three design rows written, sheet built, awaiting the owner's ruling
 
 Looked at all three mockups directly (not designed from the prompt text alone)

@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T00:45:01Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-02T01:32:40Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -207,15 +207,6 @@ kind:     build
 summary:  Per the doc's §1, §5, §8:
 prose:    infrastructure/state/items/WEATHER_SUITE_SLICE_1.md
 
-## FORSAKEN_CRAGS_FAUNA_1 Forsaken Crags fauna: design rows for the two promoted moornak mockups (nightside AB_RockyCrags creatures) and the promoted karrask opt 3
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     design
-summary:  Three pictures exist before their creatures do. Write one design row each —
-prose:    infrastructure/state/items/FORSAKEN_CRAGS_FAUNA_1.md
-
 ## PAWN_FLAVOR_PHASE2_APPLY_1 Apply the 1,783 owner-approved Phase 2 flavor rows (ThoughtDef/MentalBreakDef/XenotypeDef label+description) as XML patches; validate_patch clean, cold-load clean
 state:    doing
 row:      unassigned
@@ -225,14 +216,14 @@ kind:     build
 summary:  - Source of the text: the proposed field per row in the generator's data
 prose:    infrastructure/state/items/PAWN_FLAVOR_PHASE2_APPLY_1.md
 
-## JAWA_PAWN_FLAVOR_PATCH_REGRESSION_1 Jawa Pawn Flavor: 123 PatchOperationRemove failures on the live 591/592-mod load
+## PAWN_FLAVOR_SILENT_NONAPPLY_1 Some PawnFlavorPhase2 rows report patch success but the live def keeps vanilla text
 state:    doing
 row:      unassigned
 needs:    offline
 target:   v1
-kind:     fix
-summary:  harvestlog.py's "patch operations failed" standing check read 128
-prose:    infrastructure/state/items/JAWA_PAWN_FLAVOR_PATCH_REGRESSION_1.md
+kind:     bug
+summary:  Confirmed via jawa/pawnthoughts on multiple live colonists (not a def dump — the
+prose:    infrastructure/state/items/PAWN_FLAVOR_SILENT_NONAPPLY_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -280,12 +271,22 @@ thin:     spec, verify and criteria all present
 summary:  jawa/inventorytransfer (mode=add) refused every attempt this session:
 prose:    infrastructure/state/items/BRIDGE_INVENTORY_TRANSFER_REFUSES_ALL_1.md
 
-## PAWN_FLAVOR_SILENT_NONAPPLY_1 Some PawnFlavorPhase2 rows report patch success but the live def keeps vanilla text
+## FORSAKEN_CRAGS_PREDATORS_BUILD_1 Build Cindermare + Skarnix, wild AB_RockyCrags threat pair
 state:    proposed
 row:      unassigned
 needs:    offline
 target:   v1
-kind:     bug
+kind:     build
 thin:     spec, verify and criteria all present
-summary:  Confirmed via jawa/pawnthoughts on multiple live colonists (not a def dump — the
-prose:    infrastructure/state/items/PAWN_FLAVOR_SILENT_NONAPPLY_1.md
+summary:  1. Cindermare (moornakopt1.png) — wild threat, ABRockyCrags. No mouth
+prose:    infrastructure/state/items/FORSAKEN_CRAGS_PREDATORS_BUILD_1.md
+
+## HELIX_TELLUROX_BUILD_1 Build Tellurox, Ascendant Helix labour-line livestock
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     spec, verify and criteria all present
+summary:  Tellurox (karraskopt3.png) — Ascendant Helix labour-line livestock,
+prose:    infrastructure/state/items/HELIX_TELLUROX_BUILD_1.md
