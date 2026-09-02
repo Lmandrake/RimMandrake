@@ -88,3 +88,53 @@ if the comp class doesn't resolve. `mandrake.rut.weathersuite` is pure XML
 `WeatherDef` description replaces) — any error naming `RSW_WS_TerminatorFront`/
 `RSW_WS_DarkAurora`/the folk-sign patch would be a def-level problem in that
 mod, not an assembly load failure in the engine mod.
+
+---
+
+## Load 3 (593 mods) — 2026-09-02, BENCH. THREE assemblies, owner's batch waiver.
+
+Deployed in this shutdown window, all three previously `Build succeeded` and none
+proven live. Written BEFORE launch, per §3: the waiver is affordable only because
+these three fail in *different* places, and that is worthless unless the
+distinctions exist on paper before the log does.
+
+Fingerprint of the load set at deploy time: `0d594d931ddff722`, 593 active mods,
+RimWorld 1.6.4871 rev591. New since the live dump: `mandrake.rm.loadtracer`.
+
+| # | assembly | deployed to | its own signature |
+|---|---|---|---|
+| 1 | `JawaBench.BridgeTools.dll` (companion, `--gm`) | `<RimWorld>\BridgeTools\JawaBench\` | the `[JawaBench] ready:` line |
+| 2 | `RimMandrakeStructureInjections.dll` | `Mods\StructureInjections\Assemblies\` | type names under `RimMandrake…StructureInjections` |
+| 3 | `RimDefDump.dll` | `Mods\RimDefDump\1.6\Assemblies\` | the `[RimDefDump]` prefix |
+
+**1 — JawaBench companion.** The build stamp is the real check, not a tool count.
+- ✅ PASS: a `[JawaBench] ready:` line exists AND its build stamp reads
+  **`acec5065`** (build.py named it: game copy was `e911f9e6be95`, this build
+  `acec5065627f`).
+- ❌ FAIL, old DLL still loaded: the stamp reads `e911f9e6` — the deploy did not
+  take, and every `jawa/*` result this session describes the previous build.
+- ❌ FAIL, did not load at all: no `[JawaBench] ready:` line, and `jawa/*` tools
+  absent from the bridge's tool list. ⚠️ The bridge itself will still answer
+  (`brrainz.rimbridgeserver` is a separate mod) — a live bridge is NOT proof the
+  companion loaded.
+
+**2 — StructureInjections.** Distinguishable because nothing else in this batch
+carries the `StructureInjections` namespace.
+- ❌ FAIL: any `TypeLoadException` / `Could not load type` / `Could not resolve
+  type` naming `GenStep_RimplacePlan`, `RimplacePlan`, or
+  `StructureInjectionsDebugActions`.
+- ✅ PASS (positive, not silence): the rimplace debug action places its build AT
+  the clicked cell — run a plan at (60,60) and expect it at (60,60), not
+  (160,160). That doubled coordinate IS the bug this deploy fixes, so the
+  observation is the proof.
+
+**3 — RimDefDump.** The one that changes what a session can do at all.
+- ❌ FAIL: no `[RimDefDump]` line at startup with the dump armed, or any type-load
+  error naming `RimDefDump` / `DefDumper`.
+- ✅ PASS (positive): `[RimDefDump]` writes a dump at the main menu (~27 s, ~1.2 GB)
+  AND the new on-demand debug action `Actions\RMDefDump\Dump defs now (all)`
+  exists — the second half is the actual deliverable, since a startup dump proves
+  only the old code path.
+
+⚠️ **Silence acquits none of them.** Each has an expected-PRESENT string above
+precisely because a no-op logs nothing, and "zero hits" is not "it worked".
