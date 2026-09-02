@@ -54,11 +54,13 @@ does not. This file must never grow its own renderer — two renderers is two an
 notes stale is not grounds for destroying them, and the listing is the whole product.
 """
 import argparse
+import calendar
 import json
 import os
 import re
 import subprocess
 import sys
+import time
 
 try:                                                    # python3 -m rimflow.cli
     from . import model, priority, probe
@@ -1125,18 +1127,96 @@ def cmd_seat(args, seat):
     return 0
 
 
+def _idle_seconds(ts):
+    """Seconds since an ISO ledger timestamp, or None if it cannot be read."""
+    if not ts:
+        return None
+    try:
+        return max(0, int(time.time() - calendar.timegm(
+            time.strptime(ts, "%Y-%m-%dT%H:%M:%SZ"))))
+    except (ValueError, TypeError):
+        return None
+
+
 def cmd_bridge(args, seat):
     _, w = load()
-    state = {"take": "taken", "release": "released"}[args.action]
-    # One driver at a time. Since redesign #4 (2026-08-27) either live window may
-    # drive, so the serialization lives here: a take while another seat holds the
-    # lock is refused with the route out, never queued.
-    if args.action == "take" and w.bridge_holder not in (None, seat):
-        die("bridge is held by %s — one driver at a time; it frees when they run "
-            "`rimflow bridge release`, and a wedged bridge is stuck, not crashed."
-            % w.bridge_holder)
-    _emit({"seat": seat, "event": "bridge", "state": state}, w, quiet=True)
-    print("bridge %s by %s" % (state, seat))
+    holder, since, purpose = w.bridge_holder, w.bridge_since, w.bridge_purpose
+
+    if args.action == "who":
+        # Re-derived from the ledger, so this answer is true even when the mirror is not.
+        model.write_bridge_file(holder, None, purpose, since)
+        if not holder:
+            print("bridge FREE — take it:  rimflow bridge take --for \"<what for>\"")
+        else:
+            idle = _idle_seconds(w.last_seen.get(holder))
+            print("bridge held by %s since %s%s%s"
+                  % (holder, since or "?",
+                     ("  for: " + purpose) if purpose else "",
+                     ("  (idle %d min)" % (idle // 60)) if idle is not None else ""))
+        return 0
+
+    if args.action == "give":
+        # 🔴 THE OWNER'S OWN SWITCH. He is not a seat and does not queue behind one:
+        # `bridge give FOUNDRY` moves it, `bridge give free` clears it, and both
+        # windows see the answer in the same file they already read.
+        to = (args.to or "").upper()
+        if to in ("FREE", "NOBODY", "NONE"):
+            _emit({"seat": holder or seat, "event": "bridge", "state": "released"}, w, quiet=True)
+            model.write_bridge_file(None, "OWNER", None, None,
+                                    note="cleared by the owner")
+            print("bridge FREE — the owner cleared it")
+            return 0
+        if to not in ("BENCH", "FOUNDRY"):
+            die("give it to BENCH, FOUNDRY, or `free`. Got %r." % args.to)
+        ev = {"seat": to, "event": "bridge", "state": "taken"}
+        if args.purpose:
+            ev["purpose"] = args.purpose
+        _emit(ev, w, quiet=True)
+        model.write_bridge_file(to, "OWNER", args.purpose, None,
+                                note="handed over by the owner")
+        print("bridge -> %s (the owner said so)" % to)
+        return 0
+
+    if args.action == "release":
+        _emit({"seat": seat, "event": "bridge", "state": "released"}, w, quiet=True)
+        model.write_bridge_file(None, seat)
+        print("bridge released by %s — it is now FREE for the other window" % seat)
+        return 0
+
+    # take. 🔑 ERR ON THE SIDE OF ALLOWING (owner, 2026-09-02). One driver at a time is
+    # about attributability, not about ownership, and the expensive failure here has
+    # never been two drivers — it is MUTUAL LOCKOUT: a window that crashed or ran out
+    # of context holds the lock forever and the other sits idle. So a take is refused
+    # ONLY while the holder is demonstrably alive (an event inside the staleness
+    # window), and even then the refusal hands over `--force` rather than a dead end.
+    if holder in (None, seat):
+        granted, why = True, None
+    else:
+        idle = _idle_seconds(w.last_seen.get(holder))
+        if args.force:
+            granted, why = True, "forced"
+        elif idle is None or idle >= model.BRIDGE_STALE_SECONDS:
+            granted, why = True, "%s went quiet%s" % (
+                holder, (" for %d min" % (idle // 60)) if idle is not None else "")
+        else:
+            die("bridge is held by %s and they are still working (last event %d min "
+                "ago%s).\n"
+                "  wait      — check again with: rimflow bridge who\n"
+                "  or take it — rimflow bridge take --force --for \"<what for>\"\n"
+                "It frees on its own after %d min of silence, and a wedged bridge is "
+                "stuck, not crashed."
+                % (holder, idle // 60,
+                   ("; for: " + purpose) if purpose else "",
+                   model.BRIDGE_STALE_SECONDS // 60))
+    ev = {"seat": seat, "event": "bridge", "state": "taken"}
+    if args.purpose:
+        ev["purpose"] = args.purpose
+    _emit(ev, w, quiet=True)
+    model.write_bridge_file(seat, seat, args.purpose, None,
+                            note=("taken from %s: %s" % (holder, why)) if why else None)
+    print("bridge taken by %s%s" % (seat, ("  (%s)" % why) if why else ""))
+    if not args.purpose:
+        print("  tip: --for \"<what for>\" tells the other window whether to wait.")
     return 0
 
 
@@ -1475,7 +1555,15 @@ def build_parser():
 
     s = add("bridge", "one driver at a time — two windows driving one game is unattributable",
             cmd_bridge)
-    s.add_argument("action", choices=("take", "release"))
+    s.add_argument("action", choices=("take", "release", "who", "give"))
+    s.add_argument("to", nargs="?",
+                   help="give only: BENCH | FOUNDRY | free")
+    s.add_argument("--for", dest="purpose",
+                   help="one line: what you are driving it FOR. The other window reads "
+                        "this to judge whether to wait or go do something else.")
+    s.add_argument("--force", action="store_true",
+                   help="take it even though another window holds it and is awake. "
+                        "Records that you did.")
 
     s = add("game", "OWNER only — announce the game state", cmd_game)
     s.add_argument("state", nargs="?", choices=model.GAME_STATES,

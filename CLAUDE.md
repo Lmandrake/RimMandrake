@@ -94,11 +94,33 @@ measure count <DefType>                             one line; never a bare numbe
 python3 skills/rimworld-modding/scripts/validate_patch.py <path> --defs ...
 ./src/RimMandrake/Utils/show.sh <path>              open it in Explorer
 ./game --said "<his words>" up|down|loading         the moment he says it; bare ./game measures
+./bridge [bench|foundry|free]                       OWNER ONLY — bare ./bridge says who has it
 python3 src/RimMandrake/rimflow/cli.py …            the ledger: file/claim/close/drop/verify
 node --check <file.js>                              Node 22 is installed user-local
 for f in $(find src -name selftest_\*.py); do python3 "$f" || echo "FAIL $f"; done
                                                      run every fast offline selftest before a commit
 ```
+
+## The bridge is passed through one file
+
+One window drives the live game at a time — not for ownership, for attributability.
+Who holds it is in **`infrastructure/state/BRIDGE`**, one glanceable line written by
+`rimflow bridge` and never by hand. It mirrors the ledger; `bridge who` re-derives it.
+
+```
+rimflow bridge who                        is it free? (also repairs the mirror)
+rimflow bridge take --for "<what for>"    request it — say what for, the other window reads it
+rimflow bridge release                    the moment you stop. Not at the end of the session
+```
+
+🔑 **It errs toward ALLOWING, never toward mutual lockout** (owner, 2026-09-02).
+A take is refused only while the holder is provably alive — an event within 45
+minutes; after that the lock is stale and the next window simply takes it, saying so.
+`take --force` always works and is recorded. **Nobody is coming to tell you it freed:
+if you want it, look again.** ⚠️ Do not message the other window — that channel is off.
+
+⭐ **The owner overrides both of you with `./bridge bench|foundry|free`**, and his word
+lands in the same file you already read.
 
 `broadcast.py` is the owner's tool; the game-state relay above is its only carve-out.
 🔴 Run commands yourself — a `!`-prefixed paste handed to the owner is the defect

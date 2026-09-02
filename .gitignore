@@ -255,3 +255,8 @@ world/view/*.svg
 # build outputs never ship
 src/**/bin/
 src/**/obj/
+
+# The bridge mirror is DERIVED from the ledger and rewritten on every take/release.
+# `rimflow bridge who` rebuilds it; the history lives in events.jsonl.
+infrastructure/state/BRIDGE
+infrastructure/state/BRIDGE.tmp

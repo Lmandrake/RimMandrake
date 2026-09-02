@@ -212,7 +212,10 @@ VERBS = {
     "seat":      {"who": "self",  "req": ("state",), "opt": ("reason", "item", "note")},
     # Either live window may drive; one at a time is enforced by cmd_bridge's holder
     # guard (redesign #4, 2026-08-27 — CHECK's monopoly retired with the seat).
-    "bridge":    {"who": ("BENCH", "FOUNDRY", "CHECK"), "req": ("state",), "opt": ()},
+    # `purpose` is what `--for` lands in: one line saying what the holder is driving
+    # it FOR, mirrored into infrastructure/state/BRIDGE so the other window can judge
+    # whether to wait or go offline. Optional — a take without one is still a take.
+    "bridge":    {"who": ("BENCH", "FOUNDRY", "CHECK"), "req": ("state",), "opt": ("purpose",)},
     # 🔑 `text` is what --note lands in, and it was MISSING here until
     # 2026-08-23: cmd_game has always set ev["text"], so every `rimflow game
     # --note` and every `./game up "note"` raised SchemaError instead. The flag
@@ -355,6 +358,66 @@ def validate(ev):
         raise SchemaError(
             "needs --to must be one of %s (got %r)" % (", ".join(NEEDS), ev.get("to")))
     return ev
+
+
+BRIDGE_FILE = os.path.join(STATE, "BRIDGE")
+
+# How long a holder may be silent before another window may simply take the bridge.
+# 🔑 The number exists to prevent MUTUAL LOCKOUT, which is the failure mode the owner
+# named (2026-09-02): a window that crashed, was closed, or ran out of context holds
+# the lock forever, and the other window sits idle waiting for a release that is never
+# coming. Staleness is measured against the holder's LAST LEDGER EVENT of any kind, so
+# a window that is working is never stolen from, and a window that is gone is never
+# in the way.
+BRIDGE_STALE_SECONDS = 45 * 60
+
+
+def write_bridge_file(holder, actor, purpose=None, since=None, note=None):
+    """Mirror the bridge lock into one glanceable line at infrastructure/state/BRIDGE.
+
+    🔑 A MIRROR, NOT A SECOND TRUTH. The ledger stays the only record; this file exists
+    because the two windows cannot message each other and should not have to replay a
+    ledger to answer "is the bridge free yet". `rimflow bridge who` re-derives it, so a
+    stale mirror is always one command from being corrected rather than something to
+    believe. Written here rather than in cli.py because every write in this system goes
+    through the module that owns the 9p lock discipline.
+    """
+    if holder:
+        line = "HELD    %s    since %s" % (holder, since or now())
+        if purpose:
+            line += "\nfor     %s" % purpose
+    else:
+        line = "FREE    since %s" % (since or now())
+        if actor:
+            line += "    (released by %s)" % actor
+    if note:
+        line += "\nnote    %s" % note
+    # ⚠️ Derived from the LEDGER IN USE, not from the module constant. `RIMFLOW_LEDGER`
+    # points the whole tool at a throwaway ledger for the selftests, and a mirror bound
+    # to the module constant wrote a synthetic test holder ("HELD CHECK") over the real
+    # file on the first run — the tests would have kept lying to two live windows.
+    led = os.environ.get("RIMFLOW_LEDGER")
+    target = (os.path.join(os.path.dirname(led), "BRIDGE") if led else BRIDGE_FILE)
+    body = (
+        "# WHO IS DRIVING THE LIVE RIMWORLD BRIDGE.\n"
+        "# Mirror of the rimflow ledger. Written by `rimflow bridge`, never by hand.\n"
+        "#   free?  ->  rimflow bridge take --for \"<what for>\"\n"
+        "#   held?  ->  do offline work. Nobody will come and tell you it freed; look again.\n"
+        "#   wrong? ->  rimflow bridge who   (re-derives this from the ledger)\n"
+        + line + "\n")
+    os.makedirs(os.path.dirname(target), exist_ok=True)
+    tmp = target + ".tmp"
+    fd = os.open(tmp, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o644)
+    try:
+        fcntl.flock(fd, fcntl.LOCK_EX)
+        try:
+            os.write(fd, body.encode("utf-8"))
+        finally:
+            fcntl.flock(fd, fcntl.LOCK_UN)
+    finally:
+        os.close(fd)
+    os.replace(tmp, target)
+    return body
 
 
 def append(ev, path=None):
@@ -506,6 +569,9 @@ class World(object):
         self.items = {}
         self.seats = {}                 # seat -> {"state":…, "reason":…, "item":…}
         self.bridge_holder = None
+        self.bridge_since = None        # ts of the take/release that set the line above
+        self.bridge_purpose = None      # what the holder said they were driving it FOR
+        self.last_seen = {}             # seat -> ts of its most recent event of any kind
         self.game = "DOWN"
         self.findings = {}              # name -> {"from":…, "type":…, "severity":…}
         self.errors = []                # refusals a replay found ALREADY IN the file
@@ -666,6 +732,10 @@ def _may(ev, item, world):
 
 def _apply(ev, index, world, strict=False):   # `strict` is the caller's concern
     verb, seat = ev["event"], ev["seat"]
+    # Every event is a sign of life from its seat. `bridge take` reads this to tell a
+    # window that is WORKING from one that is GONE, so it must count every verb, not
+    # just the bridge ones.
+    world.last_seen[seat] = ev["ts"]
     iid = ev.get("id")
     item = world.items.get(iid) if iid else None
 
@@ -707,7 +777,10 @@ def _apply(ev, index, world, strict=False):   # `strict` is the caller's concern
                              "at": ev["ts"]}
         return
     if verb == "bridge":
-        world.bridge_holder = seat if ev["state"] == "taken" else None
+        taken = ev["state"] == "taken"
+        world.bridge_holder = seat if taken else None
+        world.bridge_since = ev["ts"]
+        world.bridge_purpose = ev.get("purpose") if taken else None
         return
     if verb == "game":
         world.game = ev["state"]
