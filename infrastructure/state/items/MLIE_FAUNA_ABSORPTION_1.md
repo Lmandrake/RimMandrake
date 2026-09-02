@@ -74,14 +74,15 @@ generator run:
 3. **Wave C**: whatever remains of the ~150 creature `ThingDef`s once a full,
    non-scan-grade sweep of all 1,288 defNames is run (owed — the 2026-08-30
    survey was scan-grade only).
-4. **Explicitly OUT of scope for "creature absorption"**: the 589 `SoundDef`s,
-   `IdeoIconDef`s, and most of `BodyDef`/`ThoughtDef` — these likely support
-   the creatures (body definitions, sounds) rather than being separate
-   content; each wave's generator must decide per-defType whether a support
-   def rides with its creature or is dead weight once Mlie is gone (e.g. a
-   `BodyDef` a creature's `race.body` points to MUST come along; a `SoundDef`
-   for a roar/cry effect likely must too — check each creature's actual
-   dependency graph, don't drop something load-bearing).
+4. ~~Explicitly OUT of scope for "creature absorption": the 589 `SoundDef`s~~ —
+   **SUPERSEDED, owner ruling 2026-09-02: "Absorb all the sounds absolutely."**
+   All 589 `SoundDef`s are now IN SCOPE and DONE (see the 2026-09-02 pass
+   below) — decoupled from the geometry waves since audio has no gameplay
+   balance surface and moved independently. `IdeoIconDef`s and most of
+   `BodyDef`/`ThoughtDef` remain each wave's own call: a `BodyDef` a
+   creature's `race.body` points to MUST come along with that creature; check
+   each creature's actual dependency graph, don't drop something
+   load-bearing.
 
 Naming: `RSW_<Species>` for the primary `ThingDef`/`PawnKindDef` pair (e.g.
 `Bantha` → `RSW_Bantha`), a documented old-name → new-name map committed
@@ -112,6 +113,9 @@ item's own criteria.
 
 ## criteria
 
+- [x] All 589 sounds absorbed, offline-validated (owner ruling 2026-09-02;
+      see the 2026-09-02 sound-absorption pass below). Live cold-load proof
+      (clips actually play, no missing-audio errors) still owed.
 - [ ] Wave A (Bantha + Sarlacc family) absorbed, art extracted and
       re-pathed, offline-validated.
 - [ ] Wave B (next 8 highest-presence species) absorbed.
@@ -146,3 +150,80 @@ answers "what's actually load-bearing" precisely instead of by sample) —
 THEN generate Wave A's Bantha/Sarlacc defs with full knowledge of every
 BodyDef/SoundDef/ThoughtDef each one actually needs, rather than guessing per
 creature.
+
+## 2026-09-02 (FOUNDRY) — sound absorption, all 589, owner-ruled in scope
+
+Owner, verbatim, on being told what the 589 `SoundDef`s actually are (143+
+creatures × Angry/Wounded/Death/Call vocal sets, plus ~17 ability sounds —
+`Ability_WebShot`/`SwarmCall`/`ForceScream`/`Spit`/`Leap`/etc. — and one stray
+`Ingest_Glitterstim`): *"Absorb all the sounds absolutely."* This supersedes
+the item's earlier "SoundDefs are out of scope for creature absorption"
+framing (§ above, struck through) — decoupled from the geometry waves and
+done as its own pass, since audio has no gameplay-balance surface and no
+defName-collision risk beyond its own 589 names.
+
+**Extraction**: `extract_bundle.py` is texture-only (`Texture2D` filter,
+confirmed by reading its code) — no audio-extraction tool existed, so wrote
+`src/RimMandrake/Utils/extract_mlie_sounds.py`, a single-purpose script (not
+general machinery like `extract_bundle.py` — kept for provenance/re-run, not
+as a reusable tool) using UnityPy's `AudioClip.samples` (returns raw WAV
+bytes per clip, confirmed against the real bundle: `RIFF` header). Run via
+`python.exe` — UnityPy is only installed on the Windows side in this
+environment, not under WSL's `python3`.
+
+**Result**: 589/589 `AudioClip`s extracted, 0 failures, 93.1 MB total (589
+files, max single file 1.78 MB — well under the ~50 MB per-file limit, but
+the aggregate is a real, sizeable addition, flagged here rather than
+committed silently). One apparent def→audio mismatch investigated and
+resolved as a non-issue: `Pawn_Sarlacc_Call_Ambient` has no `AudioClip`
+literally named after it, because its `<clipPath>` deliberately reuses
+`SWanimals/Pawn_Sarlacc_Call` (a sustained ambient variant of the regular
+call, different volume/pitch/dist range) — confirmed present on disk, not a
+gap. **Genuinely 589/589 resolve.**
+
+**No OGG conversion** — this project's own absorbed audio elsewhere uses
+`.ogg` (`Armoury/Sounds/`), and 93 MB of WAV is larger than a Vorbis
+re-encode would be, but no `ffmpeg` (or any audio-encoding library) is
+available in this environment on either the WSL or Windows Python side
+(`pydub` installs but has no working backend without `ffmpeg`). RimWorld's
+Unity engine loads `.wav` natively, so this is not a functional blocker —
+just a real, disclosed size cost. Re-encoding to `.ogg` later (once `ffmpeg`
+is available) would shrink this without touching any def or defName.
+
+**New mod**: `src/RimStarWars/SWBestiary/` (`mandrake.rsw.swbestiary`,
+RimStarWars tier — general SW content, not Ash'karr-specific, distinct from
+`Livestock`'s small Cindermare/Skarnix mod). Chosen as the eventual home for
+this item's creature-geometry waves too (Wave A/B/C), so the audio lands in
+the right place from the start rather than needing a later move. **FOUNDRY's
+own naming call, not owner-specified — flag if a different mod name/split is
+wanted.**
+
+**Naming**: every `defName` gets a flat `RSW_` prefix (`Pawn_Bantha_Death` →
+`RSW_Pawn_Bantha_Death`), matching this item's own `RSW_<Species>` convention
+for the eventual ThingDefs. `<clipPath>` text is UNCHANGED (`SWanimals/...`)
+— the internal folder name inside our own `Sounds/` tree was kept identical
+to the donor's, so no per-entry clipPath rewrite was needed, only the
+defName. A full old-name → new-name map is committed at
+`infrastructure/state/facts/mlie_sound_defname_map.json` (589 entries) for
+traceability.
+
+**Validation**: every one of the 589 `<clipPath>` references checked
+programmatically against the extracted files on disk — 0 missing. `dotnet`
+N/A (XML-only, no C#). `validate_patch.py`: 0 errors, 0 warnings. 589/589
+`defName`s confirmed unique (no collision within the new file; a check
+against the live 1,505-key CherryPicker config / the rest of the active mod
+list's defNames is still owed, same as any other new content).
+
+**Deployed** (`deploy_custom_mods.py --mod SWBestiary --apply`, 591 files,
+clean — no folder-basename collision with any other tier, unlike the
+Fire-Ecology/WeatherSuite near-misses earlier this session). **Not enabled
+in `ModsConfig.xml`, no restart triggered.** Live proof owed: the game
+actually loads all 589 WAVs without a missing-clip/format error, and at
+least a sample plays audibly (or is confirmable via `Def.ConfigErrors()`/
+`harvest_log.py` clean, since a bad WAV encoding would likely surface as a
+load-time exception).
+
+**Not done, explicitly**: the creature `ThingDef`/`PawnKindDef` geometry
+(Waves A/B/C) — these 589 sounds now exist standalone, ready to attach the
+moment each creature's own def lands, per this item's existing wave plan.
+`IdeoIconDef`/`BodyDef`/`ThoughtDef` absorption is still each wave's own call.
