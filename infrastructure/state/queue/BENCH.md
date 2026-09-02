@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T16:51:28Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-02T17:03:38Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
-The first heading below is what `rimflow next --seat BENCH` returns. This file and that command call the same function, so they cannot disagree.
-
-## BRIDGE_INVENTORY_TRANSFER_REFUSES_ALL_1 jawa/inventory_transfer refuses to add ANY item to ANY pawn's inventory on the live 592-mod list
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     fix
-summary:  jawa/inventorytransfer (mode=add) refused every attempt this session:
-prose:    infrastructure/state/items/BRIDGE_INVENTORY_TRANSFER_REFUSES_ALL_1.md
+Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
 
 # IN PROGRESS
 
@@ -45,14 +36,14 @@ kind:     task
 summary:  Owner ruled 2026-08-31: all six §5 roles, and the three predator roles are the
 prose:    infrastructure/state/items/SW_SEA_MONSTERS_ART_1.md
 
-## BRIDGE_OVERRIDE_ATTRIBUTION_GAP_1 bridge give/forced-take don't record WHO/WHY in the permanent ledger event, only in the disposable BRIDGE mirror
+## BRIDGE_INVENTORY_TRANSFER_REFUSES_ALL_1 jawa/inventory_transfer refuses to add ANY item to ANY pawn's inventory on the live 592-mod list
 state:    doing
 row:      unassigned
-needs:    offline
+needs:    bridge
 target:   v1
-kind:     bug
-summary:  1. bridge give never marks the ledger event as an owner override.
-prose:    infrastructure/state/items/BRIDGE_OVERRIDE_ATTRIBUTION_GAP_1.md
+kind:     fix
+summary:  jawa/inventorytransfer (mode=add) refused every attempt this session:
+prose:    infrastructure/state/items/BRIDGE_INVENTORY_TRANSFER_REFUSES_ALL_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -89,13 +80,3 @@ kind:     task
 thin:     no ## criteria
 summary:  Layer stack: design/Jawa/researchnormalizationprinciples.md (why) →
 prose:    infrastructure/state/items/RESEARCH_TREE_NORMALIZATION_1.md
-
-## TEMPLATE_CANVAS_UNDECLARED_1 A rimplace template's required canvas size lives nowhere machine-readable, only in ad-hoc header comments and a runtime ctx:refuse
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     spec, verify and criteria all present
-summary:  Pick and build ONE real mechanism (not a comment convention) for a template
-prose:    infrastructure/state/items/TEMPLATE_CANVAS_UNDECLARED_1.md

@@ -156,6 +156,82 @@ rather than enumerating every patched method and checking each owner
 methodically. Left `doing` — offline half exhausted twice now, live half
 needs a more systematic (not lead-driven) pass.
 
+## 2026-09-02, systematic `jawa/harmony_patches` sweep (FOUNDRY) — the whole XML-load path is now clean
+
+Enumerated every patched method (not just one plausible-sounding one) on
+every type in the def-load/XML-inheritance pipeline, live, on the current
+582-mod set: `BiomeDef` (both methods — same as 09-01, nothing new),
+`DefGenerator` (both methods, full prefix/postfix/transpiler lists —
+confirms the `BSXeno`/`InsertBeforeResolveAllWantedCrossReferences`
+transpiler was the ONLY one there, already ruled out 09-01),
+`GenDefDatabase`, `DirectXmlLoader.DefFromNode`, `ShortHashGiver`, and all
+5 methods of `LoadedModManager` (`ParseAndProcessXML`, `ApplyPatches`,
+`get_ModHandles`, `ErrorCheckPatches`, `LoadModXML`).
+
+**One promising new lead, chased down and RULED OUT with hard evidence:**
+`Verse.LoadedModManager.ParseAndProcessXML` carries a transpiler,
+`PostInheritanceOperation.XmlInheritanceResolvePostfix.Transpiler`
+(owner `bs.postinheritanceoperation`, assembly `PostInheritanceOperation`,
+shipped inside Adaptive Storage Framework, workshop `3033901359`,
+`1.6/Assemblies/PostInheritanceOperation.dll`) — a generic framework
+(Bradson's "Patch Operation Collection") that lets a mod register a
+`PatchOperation` to run AFTER XmlInheritance resolves instead of before.
+The name alone was a strong match for "materialize data into a list after
+inheritance." Checked exhaustively:
+- The DLL itself (250 ASCII strings, tiny) has zero `wildAnimals`/`wildanimal`
+  hits and is pure framework plumbing (`ApplyWorker`, `XmlInheritance`,
+  `resolvedXmlNode` — no domain logic at all).
+- It's data-driven: a consuming mod configures it via its own Patches XML
+  (`<Operation Class="...PostInheritanceOperation...">`). Grepped **every
+  `.xml` file under both `workshop/content/294100/` (all ~1,315 mod
+  folders, active or not) and RimWorld's own `Mods/`** for the string
+  `PostInheritanceOperation` (case-insensitive, via `python.exe` — WSL's
+  `/mnt/c` grep against this many small files was too slow, ran >120s and
+  was abandoned): **exactly 3 hits, all three inside Adaptive Storage
+  Framework's own `Patches/` folder** (`AddStuffPropsToChunks.xml`,
+  `AdjustStoredWeaponRotation.xml`, `EnhanceFixedStorageSettings.xml`) —
+  storage/chunk/weapon-rotation patches, nothing biome- or animal-related.
+  **No other mod in the entire tree uses this framework at all.** Ruled out.
+
+**`Verse.XmlInheritance` itself carries ZERO Harmony patches** — confirmed
+by name (`XmlInheritance`) and by every one of its actual method names read
+from source (`Resolve`, `ResolveXmlNodeFor`,
+`RecursiveNodeCopyOverwriteElements`, `ResolveXmlNodesRecursively`,
+`TryRegisterAllFrom`): all return `methodCount: 0`. Nothing patches the
+inheritance resolver itself, at all, on this mod set.
+
+**Where this leaves the mechanism:** every method anywhere near the def
+load / XML-inheritance / def-generation pipeline that a Harmony patch could
+plausibly target has now been enumerated (not sampled) and none of them can
+write 1024 raw `wildAnimals` records — the two real leads this item has
+produced (`BSXeno`'s transpiler, `PostInheritanceOperation`'s transpiler)
+are both confirmed red herrings by direct evidence, not just "not found."
+**This strongly suggests the mechanism is NOT a Harmony patch at all** —
+`jawa/harmony_patches` can only see Harmony's patch table. A
+`[StaticConstructorOnStartup]` class, or a `Mod`-derived subclass's
+constructor (RimWorld calls both after defs finish loading, for
+settings/init work), can call ordinary reflection
+(`typeof(BiomeDef).GetField("wildAnimals", ...).SetValue(...)`) with no
+Harmony involvement whatsoever and would never show up in a patch-table
+scan — and a `nameof()`/literal string reference to `wildAnimals` inside
+such code WOULD still show up in a `strings` scan (already done, twice,
+across the full DLL tree, zero unexplained hits), which means if this
+theory is right the field name itself is likely built dynamically
+(concatenation, `Type.GetFields()` enumeration by attribute, reflection
+over `race.wildBiomes`'s own declaring type) rather than referenced
+literally — explaining why three independent full-tree string searches
+found nothing.
+
+**Concrete next step for whoever picks this up**: no bridge tool today
+enumerates `StaticConstructorOnStartup` classes or `Mod`-subclass
+constructors the way `jawa/harmony_patches` enumerates the Harmony patch
+table — that's the gap, not a de-prioritized lead. Building one (reflect
+`GenTypes.AllTypes`/`LoadedModManager.RunningMods` for
+`[StaticConstructorOnStartup]` and `Mod`-derived types, report which
+assembly/mod owns each) is the honest next step, not another `strings`
+pass — this item has now run three full-tree string/patch searches with
+nothing left to search that way.
+
 ## Prove it, once deployed
 `python.exe src/RimMandrake/bridgetools/prove_harmony_patches.py` — selftest already green
 (`python3 ... --selftest`, no game needed). Or by hand:
