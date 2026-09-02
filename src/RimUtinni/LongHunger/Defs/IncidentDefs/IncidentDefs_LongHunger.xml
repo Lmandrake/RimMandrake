@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Fired only from Quest_LongHunger.xml via QuestNode_CreateIncidents - not in the
+  natural storyteller pool (baseChance 0, no category weight anywhere else
+  references it). minThreatPoints/maxThreatPoints span the whole practical range
+  so QuestNode_CreateIncidents.TestRunInt never rejects it on the quest's own
+  `points` slate var - see RimWorld/QuestGen/QuestNode_CreateIncidents.cs
+  (RimSage, decompiled 1.6): TestRunInt fails the whole node if points falls
+  outside this range.
+-->
+<Defs>
+
+  <IncidentDef>
+    <defName>RUT_LongHungerSurfaces</defName>
+    <label>the Long Hunger surfaces</label>
+    <category>ThreatBig</category>
+    <workerClass>LongHunger.IncidentWorker_LongHungerSurfaces</workerClass>
+    <baseChance>0</baseChance>
+    <minThreatPoints>0</minThreatPoints>
+    <maxThreatPoints>99999</maxThreatPoints>
+    <!-- letterText/letterLabel deliberately omitted: IncidentWorker_LongHungerSurfaces
+         overrides TryExecuteWorker and sends its own letter directly rather than
+         going through the base class's def-driven SendStandardLetter, so those
+         fields would sit unused - see the C# file's own comment. -->
+  </IncidentDef>
+
+</Defs>

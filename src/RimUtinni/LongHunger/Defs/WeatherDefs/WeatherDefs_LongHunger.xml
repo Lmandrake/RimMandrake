@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  Atmosphere only, per setting_physics.md Part 5's VAST template ("a world
+  object with weather and music attached"). Not wired to the incident this
+  pass - a v2 hookup (fire it alongside RUT_LongHungerSurfaces via a
+  GameCondition, matching WeatherSuite's own GameConditionDef precedent) is
+  named in the item file rather than rushed here.
+-->
+<Defs>
+
+  <WeatherDef>
+    <defName>RUT_DuneHaze</defName>
+    <label>dune haze</label>
+    <isBad>true</isBad>
+    <description>The air over the empty ground shivers, thick with kicked-up sand that never quite settles.</description>
+    <temperatureRange>-999~999</temperatureRange>
+    <windSpeedFactor>2.2</windSpeedFactor>
+    <windSpeedOffset>1.5</windSpeedOffset>
+    <favorability>Bad</favorability>
+    <perceivePriority>2</perceivePriority>
+    <accuracyMultiplier>0.9</accuracyMultiplier>
+    <moveSpeedMultiplier>0.9</moveSpeedMultiplier>
+    <durationRange>2500~5000</durationRange>
+    <skyColorsDay>
+      <sky>(0.92,0.78,0.5)</sky>
+      <shadow>(0.9,0.84,0.68)</shadow>
+      <overlay>(0.78,0.62,0.36)</overlay>
+      <saturation>0.8</saturation>
+    </skyColorsDay>
+    <skyColorsDusk>
+      <sky>(0.88,0.66,0.32)</sky>
+      <shadow>(0.82,0.72,0.54)</shadow>
+      <overlay>(0.7,0.5,0.24)</overlay>
+      <saturation>0.76</saturation>
+    </skyColorsDusk>
+    <skyColorsNightEdge>
+      <sky>(0.36,0.3,0.2)</sky>
+      <shadow>(0.6,0.52,0.4)</shadow>
+      <overlay>(0.34,0.28,0.18)</overlay>
+      <saturation>0.7</saturation>
+    </skyColorsNightEdge>
+    <skyColorsNightMid>
+      <sky>(0.26,0.22,0.15)</sky>
+      <shadow>(0.48,0.42,0.32)</shadow>
+      <overlay>(0.26,0.22,0.14)</overlay>
+      <saturation>0.64</saturation>
+    </skyColorsNightMid>
+  </WeatherDef>
+
+</Defs>

@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!--
+  RUT_LongHunger - a Deep Desert leviathan contract. SANDWORM_MYTHOS_BUILD_1.
+
+  Written against skills/rimworld-quests/SKILL.md, mirroring the proven shape of
+  src/RimMandrake/StrandedQuest/Defs/QuestScriptDefs/Quest_Stranded.xml (GetMap ->
+  GetNearbySettlement/asker -> reward value -> Delay isQuestTimeout -> GiveRewards
+  + End). The one addition, QuestNode_CreateIncidents, is cited against real
+  decompiled source (RimSage, RimWorld/QuestGen/QuestNode_CreateIncidents.cs) -
+  not guessed.
+
+  THE SPEC IT WAS BUILT FROM (skill SS2):
+    ask         accept a salvage contract; the Long Hunger will surface on your
+                own map during the delay window, deal with it (fight, flee,
+                or just weather it out)
+    reason      a nearby settlement's salvage crew went silent near a Dunes
+                tile and wants to know why, without going themselves
+    choice      implicit in play, not scripted: engage the creature for its
+                loot (real risk, real reward) or stay clear and just collect
+                the contract fee - both are legitimate, both survivable
+    failure     nothing about the encounter itself can fail the quest (the
+                creature always eventually submerges on its own timer,
+                Thing.Tick handles that, see LongHungerThing.cs); the quest
+                itself can only fail if the settlement goes hostile or the map
+                is lost, same structural failure modes as Quest_Stranded
+    reward      standard points-scaled contract fee (Util_GetDefaultRewardValueFromPoints),
+                PLUS whatever salvage the creature drops on submerging - a
+                bonus outside the formal contract, handled locally by
+                LongHungerThing.Submerge(), not through the quest reward system
+    deadline    the delay is the shown quest timer; the OFFER expires in 2-4
+                days
+
+  v1 DELIBERATE SIMPLIFICATIONS, named not hidden (see the item file for the
+  full list):
+  - Home-map encounter, not a distant travel/site quest like the reference mod
+    (chezhou.creature.sandworm) - avoids the site-generation risk surface on a
+    pass with no bridge to live-test against.
+  - The Groundcaller (RUT_Groundcaller) is a normal buildable prop, not
+    mechanically wired to the quest's own timer via a custom activation signal
+    - the encounter fires on the quest's own accept-to-delay clock regardless
+      of whether the player ever builds one. A real "build it, then it starts
+      the clock" interactive loop is a named v2 improvement, not this pass's.
+-->
+<Defs>
+
+  <QuestScriptDef>
+    <defName>RUT_LongHungerContract</defName>
+
+    <rootSelectionWeight>0.4</rootSelectionWeight>
+    <rootMinPoints>0</rootMinPoints>
+    <rootMinProgressScore>3</rootMinProgressScore>
+    <minRefireDays>30</minRefireDays>
+    <expireDaysRange>2~4</expireDaysRange>
+    <defaultChallengeRating>3</defaultChallengeRating>
+    <everAcceptableInSpace>true</everAcceptableInSpace>
+
+    <questNameRules>
+      <rulesStrings>
+        <li>questName->RUT_LongHungerContract</li>
+        <li>questName->The Long Hunger</li>
+        <li>questName->Deep-Sand Contract</li>
+      </rulesStrings>
+    </questNameRules>
+
+    <questDescriptionRules>
+      <rulesStrings>
+        <li>questDescription->[asker_nameDef] of [faction_name] sends word through a courier: a salvage crew went out toward the empty ground three days ago and has not answered since. The old stories call that ground the Long Hunger's - nothing survives on it long enough to leave wreckage behind, which is precisely why nobody else will go.\n\n[asker_nameDef] asks you to draw it out instead of walking onto its ground: build a groundcaller, let it run, and be ready for what answers. The Long Hunger surfaces within [surfaceTicks_duration] of accepting, does what it does, and goes back under inside the hour. Whatever it has been hoarding is yours if you can reach it before the sand closes again.\n\n[asker_nameDef]'s fee is for the answer, not the salvage.[caravanNote]</li>
+
+        <li>caravanNote(canCaravan==False,priority=1)-> Your colony cannot reach [settlement_label] overland; word will have to reach you some other way.</li>
+        <li>caravanNote-></li>
+      </rulesStrings>
+    </questDescriptionRules>
+
+    <root Class="QuestNode_Sequence">
+      <nodes>
+
+        <li Class="QuestNode_GetMap" />
+
+        <li Class="QuestNode_GetNearbySettlement">
+          <storeAs>settlement</storeAs>
+          <storeFactionLeaderAs>asker</storeFactionLeaderAs>
+          <storeCanCaravanAs>canCaravan</storeCanCaravanAs>
+          <maxTileDistance>32</maxTileDistance>
+        </li>
+        <li Class="QuestNode_GetFactionOf">
+          <thing>$asker</thing>
+          <storeAs>faction</storeAs>
+        </li>
+
+        <li Class="QuestNode_SubScript">
+          <def>Util_GetDefaultRewardValueFromPoints</def>
+        </li>
+
+        <!-- The shown timer AND the encounter clock. 8-14 in-game hours. -->
+        <li Class="QuestNode_Set">
+          <name>surfaceTicks</name>
+          <value>$(randInt(8,14)*2500)</value>
+        </li>
+
+        <!-- points for QuestNode_CreateIncidents.TestRunInt - RUT_LongHungerSurfaces
+             spans 0..99999 so this can never fail that gate (see the IncidentDef's
+             own header comment). -->
+        <li Class="QuestNode_Set">
+          <name>encounterPoints</name>
+          <value>1400</value>
+        </li>
+
+        <li Class="QuestNode_CreateIncidents">
+          <incidentDef>RUT_LongHungerSurfaces</incidentDef>
+          <randomIncidents>1</randomIncidents>
+          <startOffsetTicks>$surfaceTicks</startOffsetTicks>
+          <duration>$surfaceTicks</duration>
+          <points>$encounterPoints</points>
+        </li>
+
+        <li Class="QuestNode_Delay">
+          <delayTicks>$surfaceTicks</delayTicks>
+          <isQuestTimeout>true</isQuestTimeout>
+          <inspectString TKey="InspectStringTimeLeft">Time left: {0}</inspectString>
+          <outSignalComplete>ContractDue</outSignalComplete>
+        </li>
+
+        <li Class="QuestNode_Letter">
+          <inSignal>ContractDue</inSignal>
+          <label TKey="LetterLabelLongHungerPaid">Contract closed</label>
+          <letterDef>PositiveEvent</letterDef>
+          <text TKey="LetterTextLongHungerPaid">The Long Hunger has gone back under. [asker_nameDef] considers the question answered and the contract fulfilled - whatever you took from the sand on the way is yours to keep, not theirs to ask about.</text>
+        </li>
+        <li Class="QuestNode_GiveRewards">
+          <inSignal>ContractDue</inSignal>
+          <parms>
+            <allowGoodwill>true</allowGoodwill>
+            <allowRoyalFavor>false</allowRoyalFavor>
+          </parms>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>ContractDue</inSignal>
+          <outcome>Success</outcome>
+          <sendStandardLetter>false</sendStandardLetter>
+        </li>
+
+        <li Class="QuestNode_End">
+          <inSignal>faction.BecameHostileToPlayer</inSignal>
+          <outcome>Fail</outcome>
+        </li>
+        <li Class="QuestNode_End">
+          <inSignal>map.MapRemoved</inSignal>
+          <outcome>Fail</outcome>
+        </li>
+
+      </nodes>
+    </root>
+  </QuestScriptDef>
+
+</Defs>

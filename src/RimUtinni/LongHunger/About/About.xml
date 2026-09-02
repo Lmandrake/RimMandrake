@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimUtinni: The Long Hunger</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.rut.longhunger</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Ash'karr campaign content: the Long Hunger, a VAST-tier dune leviathan with its own mythos, separate from the (unchanged) Krayt Dragon (SANDWORM_MYTHOS_BUILD_1). Ships RUT_LongHunger (a no-race Building-class world entity per setting_physics.md Part 5's ruled VAST template - erupts, pulses tremor damage, submerges dropping salvage), RUT_Groundcaller (a craftable summoning prop, v1 art placeholder), and RUT_LongHungerContract (the offering quest, mirroring src/RimMandrake/StrandedQuest's proven shape). Design borrowed from chezhou.creature.sandworm (LEVIATHANS:SANDWORM) per research/Jawa/sandworm_krayt_survey_2026-09-02.md; all code here is original, that mod's own ChezhouLib C# is closed/Workshop-only and not used. Uses Anomaly's PitGate texture as a placeholder for the creature's own art. Offline-authored and validated only - no live quicktest yet, see the item file.</description>
+
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld.Anomaly</packageId>
+      <displayName>Anomaly</displayName>
+    </li>
+  </modDependencies>
+
+  <loadAfter>
+    <li>Ludeon.RimWorld.Anomaly</li>
+  </loadAfter>
+</ModMetaData>
