@@ -51,12 +51,24 @@ namespace RimMandrake.StructureInjections
                 return;
             }
 
+            // 🔴 ApplyPlan's dx/dz are an OFFSET ADDED to each plan cell, not an origin.
+            // Passing the clicked cell straight through built the structure at
+            // click + footprint origin — 100 cells away for any plan whose FOOTPRINT
+            // starts at 100,100, which is all of them — while the log below cheerfully
+            // printed the cell you clicked. Measured live 2026-09-02: clicked (60,60),
+            // built at (160,160), and every verification against (60,60) read as a
+            // total failure of a GenStep that had in fact worked perfectly.
+            // Subtract the footprint so the plan lands WHERE YOU CLICKED.
+            int dx = c.x - (plan.HasFootprint ? plan.FootprintX : 0);
+            int dz = c.z - (plan.HasFootprint ? plan.FootprintZ : 0);
+
             int before = map.listerThings.AllThings.Count;
-            GenStep_RimplacePlan.ApplyPlan(map, plan, c.x, c.z, path);
+            GenStep_RimplacePlan.ApplyPlan(map, plan, dx, dz, path);
             int after = map.listerThings.AllThings.Count;
 
             Log.Message("[RMInjectDebug] RAN " + path
-                + " origin=" + c
+                + " clicked=" + c
+                + " offset=(" + dx + "," + dz + ")"
                 + " foundationCells=" + plan.Foundation.Count
                 + " terrainCells=" + plan.Terrain.Count
                 + " things=" + plan.Things.Count

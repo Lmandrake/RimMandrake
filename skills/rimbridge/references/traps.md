@@ -854,3 +854,33 @@ plan (as `design/RimMandrake/llm_ingame_wiring_spec.md` §4's "Ships as `selftes
 gate" implicitly assumed a debug-action hook would be bridge-drivable), budget for it to be
 UNREACHABLE from the bridge and route the actual proof through a `[Tool]` instead — don't
 discover this mid-verification by re-guessing path strings.
+
+## `get_cell_info` reports the FOUNDATION as `terrainDefName` (2026-09-02, BENCH)
+
+**Symptom.** Laid `Gravel` over 16 cells of Odyssey `Substructure`, then read them
+back: `terrainDefName: "Substructure"`, 0 of 16 correct. Reads exactly like a floor
+write that silently did nothing — the classic SetFoundation-refused failure.
+
+**It was fine.** `jawa/get_terrain_layers` on the same rect: `top: "Gravel"`,
+`foundation: "Substructure"`, `isSubstructure: true`, 16/16. `rimworld/get_cell_info`
+exposes ONE terrain string and, where a substructure exists, that string is the
+foundation — the floor above it is not reported at all and there is no field
+suggesting a second layer exists.
+
+**Fix.** 🔴 On any cell that might carry substructure, verify floors with
+`jawa/get_terrain_layers`, never `get_cell_info`. Its `terrainDefName` is not wrong,
+it is answering a different question with a plausible value.
+
+**Generalises to:** an instrument that returns ONE value for a thing the game stores
+as a STACK. The single value is never marked as partial, so the read looks complete.
+Before believing "the write did nothing", ask whether the reader can see the layer
+you wrote to at all.
+
+## ✅ ToolMap debug actions DO honour the bridge's x/z, even ones reading UI.MouseCell() (2026-09-02, BENCH)
+
+`StructureInjectionsDebugActions` is registered `DebugActionType.ToolMap` and its body
+calls `UI.MouseCell()` directly — no parameter plumbing. Passing `x`/`z` to
+`rimworld/execute_debug_action` still placed it at exactly the named cell
+(`origin=(60, 0, 60)` for `x:60, z:60`). So the bridge sets the cell the tool reads,
+and a ToolMap action written for a human mouse needs no adaptation to be driven.
+Confirmed twice, at two different cells, one of them 120 cells from the other.
