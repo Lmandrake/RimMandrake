@@ -205,3 +205,68 @@ authored across all three batches so far: no letter text in any god's
 register, none placed on a live tile. ~39 of 44 roster rows remain
 untouched. Left `doing`.
 
+## 2026-09-02 batch 4 (FOUNDRY) — three more rows, RSW+RUT
+
+Picked up offline while BENCH held the bridge with the owner chasing
+`COLD_LOAD_STALL_INTERMITTENT_1` — pure repo-content authoring, no
+deploy, no ModsConfig touch, same "one bridge driver at a time"
+discipline batch 3 followed.
+
+- **The Bantha Graveyard** (row 15, RSW) —
+  `design/Jawa/templates/bantha_graveyard.lua`. A loose, unbounded
+  scatter (no single center-of-menace, unlike the Krayt Graveyard's
+  crescent) of `BanthaHorn`/`Leather_Bantha`. `lint`: 0 findings.
+  `BanthaHorn`/`Leather_Bantha` confirmed 1 real hit each in the live
+  593-mod set (`mlie.starwarsanimalcollection`, `Items_Resource_
+  swanimal_Items.xml`) via a `validate_patch.py` `PatchOperationConditional`
+  probe — no `Ivory` ThingDef is reachable (`ProcessIvoryBantha`'s own
+  product is gated `MayRequire="LegendaryMinuteman.SimpleIvory"`,
+  confirmed NOT active: 0 hits in the live `ModsConfig.xml`), so the raw
+  horn trophy stands in for the roster's "ivory-scatter" read.
+- **The Mynock Roost** (row 18, RSW) —
+  `design/Jawa/templates/mynock_roost.lua`. Lightest row this batch, per
+  the roster's own "NEW light": chewed `PowerConduit` stubs,
+  `ChunkSlagSteel` debris, `Filth_AnimalFilth` grime, no walls. No
+  dedicated "mynock nest" ThingDef exists anywhere in the stack (checked
+  `mlie.starwarsanimalcollection`'s own Defs tree directly) — represented
+  through what the roost leaves behind instead. `lint`: 0 findings, all
+  3 defNames confirmed 1 real hit each.
+- **The Glass Sea** (row 16, RUT) — `design/Jawa/templates/glass_sea.lua`.
+  The batch's only pure-terrain row: `VolcanicRock_Smooth` core (Odyssey,
+  glassy/Beauty+2) with a rough `VolcanicRock` edge ring for a natural
+  fade, plus a sparse `ChunkSlagSteel` scatter added purely because the
+  engine's own lint rule 9 ("a plan that places nothing is a bug")
+  correctly cannot distinguish a deliberate terrain-only template from an
+  author forgetting to build anything — declared as an invented premise
+  on the review sheet, not silently added. `lint`: 0 findings, both
+  Odyssey terrain defNames + `ChunkSlagSteel` confirmed 1 real hit each.
+
+A tool bug found and worked around, not fixed: `rimplace`'s Lua `rng`
+table exposes only `int`/`chance`/`pick`, no `value()` — `mynock_roost.lua`
+first threw `attempt to call a nil value (field 'value')` at `lint` time;
+rewritten to nested `rng.chance()` calls. Worth a `rimplace` doc line for
+whoever authors the next batch.
+
+**Wiring**: `GenStepDefs_Batch4.xml` + `TileMutatorDefs_Batch4.xml` added
+to both existing tier mods (`mandrake.rsw.injections` for the two RSW
+rows, `mandrake.rut.injections` for Glass Sea) — same `extraGenSteps`
+responder shape every prior batch used. `validate_patch.py` against the
+live 593-mod dump: 0 errors, 0 warnings on both mods' full file sets (7
+files SW, 4 files RUT). `rimplace selftest`: 28/28, unaffected.
+
+Review sheet: `design/Jawa/worldbuilding/review/tile_structure_batch4_sheet.html`
+(`check_sheet.py`: 0 FAIL/0 WARN/27 ok, all 3 rows pre-filled `ship`, 4
+invented premises declared). No decisions file yet — nothing has been
+reviewed.
+
+**NOT deployed, NOT added to ModsConfig this pass** — deliberately, same
+discipline as batch 3, to avoid touching shared game state while BENCH/
+the owner were mid-diagnosis. Repo content only; deploy + enable + the
+live cold-load ordering proof all ride the next restart, alongside
+batches 1-3's still-open live-proof debt.
+
+Still not "shipped" by the roster's own §5 bar for any of the 11 rows
+authored across all four batches so far: no letter text in any god's
+register, none placed on a live tile. ~36 of 44 roster rows remain
+untouched. Left `doing`.
+

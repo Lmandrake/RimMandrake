@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- The Bantha Graveyard - structure_injection_roster.md PROMISE #15. -->
+  <GenStepDef>
+    <defName>RSW_GenStep_BanthaGraveyard</defName>
+    <genStep Class="RimMandrake.StructureInjections.GenStep_RimplacePlan">
+      <planFile>Templates/bantha_graveyard.txt</planFile>
+      <centerOnMap>true</centerOnMap>
+    </genStep>
+    <order>400</order>
+  </GenStepDef>
+
+  <!-- The Mynock Roost - structure_injection_roster.md PROMISE #18. -->
+  <GenStepDef>
+    <defName>RSW_GenStep_MynockRoost</defName>
+    <genStep Class="RimMandrake.StructureInjections.GenStep_RimplacePlan">
+      <planFile>Templates/mynock_roost.txt</planFile>
+      <centerOnMap>true</centerOnMap>
+    </genStep>
+    <order>400</order>
+  </GenStepDef>
+
+</Defs>

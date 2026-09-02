@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- structure_injection_roster.md batch 4, two PROMISE rows.
+       Responder mechanism per structure_injection_roster.md §0b: a
+       TileMutatorDef's extraGenSteps is the def-driven injection hook.
+       Same shape as batch 1-3's rows.
+
+       ⚠️ NOT YET PLACED on any Ash'karr tile for either row - a live
+       world-tile edit on the frozen map (bridge + world_commit), out of
+       scope for this pass, same deferral as every prior row.
+
+       Gating note: the roster's own §2 "gating" column names an ARC/
+       TERRITORY context for both rows (#15 herd routes, #18 cave-mouth
+       tiles), not a biome - a TileMutatorDef's biomeWhitelist cannot
+       encode a herd-route or cave-mouth-landform condition, so neither is
+       set here, same deferral batch 3's own comment already established
+       for its own arc-gated rows. -->
+
+  <!-- The Bantha Graveyard - PROMISE #15, Oomo. -->
+  <TileMutatorDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RSW_BanthaGraveyard</defName>
+    <label>bantha graveyard</label>
+    <description>A herd's old bone-ground - horns and hide left over many seasons, not one kill. Ivory and calm. Herds return in season; hunt them or shepherd them.</description>
+    <extraGenSteps>
+      <li>RSW_GenStep_BanthaGraveyard</li>
+    </extraGenSteps>
+  </TileMutatorDef>
+
+  <!-- The Mynock Roost - PROMISE #18, Zizzik. -->
+  <TileMutatorDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RSW_MynockRoost</defName>
+    <label>mynock roost</label>
+    <description>A cave-mouth den, chewed cable and slag scattered where the roost has been feeding. Power cables are food here.</description>
+    <extraGenSteps>
+      <li>RSW_GenStep_MynockRoost</li>
+    </extraGenSteps>
+  </TileMutatorDef>
+
+</Defs>
