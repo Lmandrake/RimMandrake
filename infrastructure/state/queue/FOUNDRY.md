@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T09:40:51Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-02T09:47:41Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -386,14 +386,4 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## DROIDWORKS_GENERATOR_NAMING_DRIFT_1 gen_droidworks_defs.py drifted from its own committed output: strips RSW_ defName prefix, 2 stale bare-namespace Class= strings (both fixed), DW_ROOT pointed at a deleted src/Jawa path (fixed)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DROIDWORKS_GENERATOR_NAMING_DRIFT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DROIDWORKS_GENERATOR_NAMING_DRIFT_1.md
+_none._

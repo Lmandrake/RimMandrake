@@ -855,14 +855,25 @@ def main():
         gfx = resolve_graphics(race, races_by_orig)
         colors = build_color_channels(race, mod)
 
-        dn = "DW_Race_" + orig
+        # 🔴 FIXED, DROIDWORKS_GENERATOR_NAMING_DRIFT_1 (2026-09-02): these three
+        # "DW_..." builds (here, the kind dn below) never carried the RSW_
+        # prefix the committed output actually uses. Root cause found via git
+        # log: commit aa759446 "Rename Phase 2a: text migration - 4904
+        # defName... replacements" rewrote every ALREADY-COMMITTED defName
+        # literal across the repo for the naming-scheme migration, but a
+        # generator that BUILDS a defName by string concatenation has no
+        # defName literal for a text-replace pass to find - so the source
+        # code silently fell out of sync with its own already-migrated
+        # output. A regen before this fix would have silently renamed every
+        # race/kind/custom-headtype defName back to the pre-scheme form.
+        dn = "RSW_DW_Race_" + orig
         race_dn[orig] = dn
         all_defnames.append(dn)
 
         head_defname = "RSW_DW_HeadType_Blank"
         headtype_block = None
         if gfx["head_stem"]:
-            head_defname = "DW_HeadType_" + orig
+            head_defname = "RSW_DW_HeadType_" + orig
             headtype_block = render_headtype(head_defname, gfx["head_stem"])
             all_defnames.append(head_defname)
         if headtype_block:
@@ -950,7 +961,7 @@ def main():
     unarmed = []
     for kind in kinds:
         orig = kind["defName"]
-        dn = "DW_" + orig
+        dn = "RSW_DW_" + orig  # DROIDWORKS_GENERATOR_NAMING_DRIFT_1, see the race dn comment above
         mod = kind["mod"]
         family = family_for_mod.get(mod)
         if family is None:
