@@ -21,6 +21,22 @@ already old, already fed.
 
 ---
 
+## 🔴 RULED — owner sitting, saved 2026-09-02 (review sheet, 9 rows, 2 cut)
+
+Verdicts and the owner's notes, verbatim (frozen source: `design/Jawa/worldbuilding/review/proposal_suite_review.decisions.json`; untouched rows keep their prefill — cut is the only destructive verdict):
+
+| row | ruling | owner's note (verbatim) |
+|---|---|---|
+| landmark-site | v1 | Nope. There should be many Sarlacc's, but they should be semi-permanent when they're really huge. But there are smaller, more mobile ones... |
+| ~~compile-digestion~~ | ⛔ **CUT** (was dream) | This is actually Star Wars lore, but it's bizarre and unsettling. I don't like it. But yes, within it, there are dungeons and trapped living things. But not like this. |
+| evidence-feeding | v2→**v1** | Seems more like a religious ceremony. A rite of offering and forgetting. I like it for that. |
+| tremor-disturbance | v1 | ABSOLUTELY. It must work like this, or else no one would go to the map. You can definitely sneak up on the Sarlacc. |
+| anomaly-draws | v2→**v1** | I like it! Might also re-occur for the Assailtant dungeon near the end and their massive bioweapon stuff. |
+| escape-quest | dream→**v1** | This must simply be true. Returning from "that place" leaves you permanently changed. Come up with many such explanations as to how, all disturbing and interesting. |
+| ~~sky-seeding-myth~~ | ⛔ **CUT** (was dream) | — |
+| castings-economy | v2→**v1** | I think maybe you're talking about Sarlacc pearls? |
+| root-system-crosslink | dream→**v1** | Yes, I think that's right. |
+
 ## 1. The pit as a permanent authored map feature
 
 The sarlacc is not a spawn. It is a **site**, in the same category as the

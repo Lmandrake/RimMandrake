@@ -24,6 +24,20 @@ one frozen Ash'karr map.
 
 ---
 
+## 🔴 RULED — owner sitting, saved 2026-09-02 (review sheet, 7 rows)
+
+Verdicts and the owner's notes, verbatim (frozen source: `design/Jawa/worldbuilding/review/proposal_suite_review.decisions.json`; untouched rows keep their prefill — cut is the only destructive verdict):
+
+| row | ruling | owner's note (verbatim) |
+|---|---|---|
+| junk-provenance | v1 | The more unique an item is, the more it can be remembered. Ownership should fade for all things, and the more generic the items the faster it decays. As you say, players only know of other ownership when they steal. Finding something in the desert carries the unknown threat that someone else thinks it's theirs... unless you're within their territory. Then they probably do. If they saw you. Did they see you? Who knows. |
+| krayt-leviathans | dream→**v1** | Keep the giant Krayt dragon just as it is, but create a NEW massive dune-style sandworm with its own mythos. Plenty of room for both. But Krayt dragons deserve their own treatment. Feel free to borrow from the giant worm mod to build another version for the Krayt. |
+| underworld-reputation | v2→**v1** | This is required for the Hutt dealings, so no reason you can't enter into this state with others. The hutt's just aim at it aggressively, offer it. |
+| cantina-social | v2→**v1** | Yet the bad leads can't just be disappointments. Something has to come of it. Maybe it allows you to righteously return and embarass the perpetrator, or flip the tables on them, or sell the false rumor to another later. The fun must continue! |
+| holo-deception | v2→**v1** | I super like this when the Jawa turn their newfound technological prowess to their normal pursuits. Deceptive holograms aboard the ship to evade boarders. |
+| imperial-bureaucracy | v2→**v1** | Wait, this is GREAT! The Jawa don't enter the settlements with their massive ship, they walk in from afar... so yes! There can be Imperial guards standing by monitoring the situation, and all of the verbs you just offered should be possible interactions. The locals might even cheer your resistance if you do, or just laugh. No such thing as binary "angry/content" town moods, make it interesting! |
+| droid-repair-shop | dream→**v1** | Gotta do this. And people bringing their broken droids for repair is so fun, there has to be a way to incorporate this somehow... |
+
 ## Full triage, section by section
 
 | § | Concept | Disposition | Note |

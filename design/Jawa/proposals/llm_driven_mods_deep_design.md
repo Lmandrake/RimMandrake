@@ -30,6 +30,22 @@ ever upgrades an event that already worked without it.
 
 ---
 
+## 🔴 RULED — owner sitting, saved 2026-09-02 (review sheet, 9 rows)
+
+Verdicts and the owner's notes, verbatim (frozen source: `design/Jawa/worldbuilding/review/proposal_suite_review.decisions.json`; untouched rows keep their prefill — cut is the only destructive verdict):
+
+| row | ruling | owner's note (verbatim) |
+|---|---|---|
+| protocol-droid-interpreter | v1→**v2** | I think yes on this if I understandcorrectly. I think you're suggesting some aliens will not speak the human tongue, and thus require protocol droids. That's... fascinating. This is a very deep concept and may require its own mod to capture all the ways it could go. I like it, I think. |
+| nine-voices-shrine | v2→**v1** | Close. More like this. One, two, or (rarely) three gods may speak: if they are very happy or very unhappy. Other gods that are not so extreme may just react nonverbally in the description, to indicate their reaction. Those who are slumbering or neutral need not be mentioned. Yes, the C# released the vector of deific moods to the LLM as well as the context. The reactions are not modular: they are blended together seamlessly. For example: God one is ANGRY and threatens the Jawa, but then God two is happy and notes positive things they have done and advises mercy, and God three enters then with a laugh and finds a compromise that is neither kind or unkind but poignant instead, lending them all to agree. |
+| god-call-daily-budget | v2→**v1** | It's good to have general caps but it doesn't need to quite this limited. Capping it to # per real-world hour or something is likely more relevant than per game day. And we will also be calling it at other times to make spawned pawns make more sense and have more flavor. |
+| inhabited-rumor-dialogue | v1 | I like it for now. Can start prescripted but if the LLM is available, it gets enriched. That's the general metric I'm thinking about: baseline prescripted stuff with LLM enrichment when available. |
+| rumor-prompt-injection-guard | v1 | Note sure what this means? |
+| previously-on-recap | v1 | That is awesome! Loads are infrequent and that's a very kind thing to do for the player. Can be in the narrator's voice again. |
+| salvage-with-history | v2→**v1** | This is a very neat idea, but it begs the question: Why is the game telling me about this one item so much? Whatever it says needs to be poignant and self-clarifying. Perhaps it is the item's "story" that is told in its appearance and where it was found, and thus it becomes a "keepsake" that is special to the one who found it (cue wistful soundtrack). |
+| adaptive-quest-consequences | v2→**v1** | I really like this. Essentially narrative context post-facto after major events, successes, failures, etc. I do intend to give the LLM the ability to arbitrate whether the game reacts as opposed to merely talking. Is it appropriate to modify goodwill now? Would it be poignant and appropriate to have a weather effect right now? Things like that. |
+| silent-fallback-law | v1 | Yes, always. The game must still be playable and fun without the LLM, just not as rich, nuanced, or reactive. |
+
 ## 1. Triage of the 30-concept survey
 
 Verdict key: **ADOPT** (already law/architecture, nothing to design) ·

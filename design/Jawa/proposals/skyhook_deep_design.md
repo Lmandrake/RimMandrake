@@ -29,6 +29,24 @@ activated by scripted quest state, never rolled or placed programmatically.
 throughout; where a section below reads like generation, it is a pre-built
 alternate state of an already-existing tile, swapped in once.
 
+## 🔴 RULED — owner sitting, saved 2026-09-02 (review sheet, 9 rows, 6 cut)
+
+⛔ **The doc's central premise is SUPERSEDED**: no geostationary space elevators on a tidally-locked world — a RENAME is owed. These are now very-high-altitude stations atop tapering repulsorlift towers (Bespin-style technology). The first sits over the Rust Cathedral: an old research station turned cargo redistribution center, industrially harvesting the planet's rare emitted gases, its automated manufacturing taken over by the Empire. Each station carries a docked ship whose weapons can hit anything leaving or approaching the planet but cannot enter the atmosphere — which is why the Utinni stays below their attack range. Most tether-mechanics rows are CUT accordingly; the surviving rows are v2.
+
+Verdicts and the owner's notes, verbatim (frozen source: `design/Jawa/worldbuilding/review/proposal_suite_review.decisions.json`; untouched rows keep their prefill — cut is the only destructive verdict):
+
+| row | ruling | owner's note (verbatim) |
+|---|---|---|
+| shadow-line | v1→**v2** | We need to rename these. Skyhooks in this context can no longer be traditional space elevator type geostationary objects due to the tidally locked nature. So instead these are going to have to be very high altitude stations with a tapering tower beneath them, Bespin style technology using repulsorlifts. This one should likely actually be over the Rust Cathedral, an old research station turned into a cargo redistribution center. High above the scorching temperature, the rare gases emitted from the planet are being harvested industrially. But the stations automated manufacturing has been taken over by the Empire. Each one has a ship handed upon it with weapons capable of shooting anyone leaving the planet or approaching. They cannot go into the atmosphere either, hence why the Utinni remains outside their attack range. |
+| ~~cargo-climbers~~ | ⛔ **CUT** (was v1) | makes no sense |
+| ~~tether-static~~ | ⛔ **CUT** (was v2) | — |
+| ~~pod-interception~~ | ⛔ **CUT** (was v1) | — |
+| customs-heist | v2 | — |
+| ~~vertical-society~~ | ⛔ **CUT** (was v2) | — |
+| ~~the-cut~~ | ⛔ **CUT** (was v2) | — |
+| debris-corridor | dream→**v2** | Rather than a cut, this would be sabotaging the repulsorlift system, causing it to crash terribly and create this super rich treasure salvage area. |
+| ~~cult-prophecy~~ | ⛔ **CUT** (was dream) | — |
+
 ## 1. The anchor site as a visitable map
 
 The tether is not a backdrop sprite. It is a **vertical presence rendered on a

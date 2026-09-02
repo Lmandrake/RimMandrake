@@ -16,6 +16,23 @@ below is wired to a meter the engine already tracks. Read this as: *what
 happens when an L-tier event refuses to resolve in one letter and lasts
 days instead.*
 
+## 🔴 RULED — owner sitting, saved 2026-09-02 (review sheet, 8 rows)
+
+⚠️ Two rows (strain-meter, exit-stacking-scars) are ruled v1 but the owner says the concepts were explained in language too coded to judge — a plain-language explanation is OWED to him before either is built.
+
+Verdicts and the owner's notes, verbatim (frozen source: `design/Jawa/worldbuilding/review/proposal_suite_review.decisions.json`; untouched rows keep their prefill — cut is the only destructive verdict):
+
+| row | ruling | owner's note (verbatim) |
+|---|---|---|
+| entry-thresholds | v1 | ABSOLUTELY! A warning gone unheeded MUST be responded to. Or an over-exuberant god radiating happiness, if courted too hard, again tips into unbalanced shock and disruption. Jawa must socially balance the gods, not tip them into wild abandon... or else. (But every stage should still be fun for the player, not just punative. That is a prerequisite. This should be modeled strongly after human psychology. Staying "too happy for too long" has its downsides too, making meaning hard to find, chasing endless dopamine highs... things like that, radiated out into the world.) |
+| strain-meter | v1 | I don't understand this and need it explained better to me. I think you're trying to talk about historesis of the mood model. |
+| exit-stacking-scars | v1 | Again, I have no idea what you mean here, too coded of language. More than one god should absolutely be able to get to exuberance, but yes these "alternative realities" that are entered could happen one at a time to keep it simple for the player, that makes sense. |
+| announcement-layer | v1 | Yes, this is excellent, to affirm to the player "leaving normal reality" and "returning to reality." It should be mapped to perception/psychological facts in the game too that are mappable through the UI. For example, "the very sky seems angry and red" (and thus it now is, yet is that just perception?) or "every drop of water tastes foul and bitter" (and thus it now is, and all the water indeed seems foul... but is it really?) |
+| eighteen-mode-roster | v2→**v1** | Gotta do it. This is a major design action that's deeply inportant. And critically: god punishment MUST NOT be the opposite of what they love, because that just makes the world be more ugly to them. Instead it must be denying the Jawa the thing the god loves, not granting its opposite. Anger as withdrawl of love. |
+| open-market | v1 | Love it. Too many traders can be seen to be too much in so many ways. Too many traders. Too many raids. Too much wealth. Too many "guests" showing up that really want to steal your stuff. Too many "offers" of alliance showing up that are really demands you come and trade with others or else suffer lowered faction... and you can only choose one of the three required presences. Things like that. Unwanted attention. And all those merchants keep shitting all over, dirtying your living spaces, even eating your food or losing control of their animals in your ship. Good god, make it stop! |
+| long-walk | v1 | Terrifying. Yet as they sleepwalk, perhaps they are also lead toward a reward buried in the sand, if they have the favor of a different god as well. See how the curse can also be fun? We must always strive to do both: consequences in game, but unfun must never be the consequence of anything. Interesting, stimulating must remain the goal. Especially since angering the gods should not be avoidable if we do it right, just manageable. |
+| tenfold-reign | dream | Fascinating, but we'd need to talk about this a LOT more. Almost sounds like the Jawa go into collective psychosis together, and who knows what actually happened after that... |
+
 ## 0. Prior art, and where it stops
 
 RimWorld already has the primitive — `GameConditionDef` — and two shipped

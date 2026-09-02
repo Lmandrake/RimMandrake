@@ -27,6 +27,21 @@ lore text; no defNames invented, only described in the register a def would carr
 
 ---
 
+## 🔴 RULED — owner sitting, saved 2026-09-02 (review sheet, 8 rows, 1 cut)
+
+Verdicts and the owner's notes, verbatim (frozen source: `design/Jawa/worldbuilding/review/proposal_suite_review.decisions.json`; untouched rows keep their prefill — cut is the only destructive verdict):
+
+| row | ruling | owner's note (verbatim) |
+|---|---|---|
+| terminator-storms | v1 | I like this! The free water is bleah... it wouldn't add up to anything significant. But the turbulence is real, and weak shields protect you eventually. |
+| glass-storms | v2→**v1** | Love this! Violent weather for the win. |
+| static-seasons | v2→**v1** | Except that I think this should add battery power while doing all the other things you said.  Accelerates the rate at which droids become... eccentric. |
+| pressure-tides | dream→**v2** | I don't know if we can incorporate assymetric gravship travel, but if we can, this is awesome. |
+| dark-auroras | v1 | Beautiful, and use the Aurora graphic effect but maximized in brightness and color. It should be awesome! |
+| spore-blooms | v2→**v1** | Yes! Awesome. Also poisons wildlife providing a lot of free meat. Hiding indoors helps a lot. |
+| ~~mirage-events~~ | ⛔ **CUT** (was dream) | doesn't add much |
+| forecasting-ladder | v1 | Mm... just have one or maybe two tiers only. But I do like this. The first one might just give advanced warning. The second allows them to be seen on the main map to give you more choice in the matter. |
+
 ## 1. Terminator storms — the permanent front you fly through, not around
 
 **The physics.** Ash'karr's dayside runs to +70 °C at the substellar point and its

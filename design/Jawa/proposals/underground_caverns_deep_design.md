@@ -20,6 +20,24 @@ discipline as every other landmark in `the_one_map.md`.
 
 ---
 
+## 🔴 RULED — owner sitting, saved 2026-09-02 (review sheet, 11 rows)
+
+Verdicts and the owner's notes, verbatim (frozen source: `design/Jawa/worldbuilding/review/proposal_suite_review.decisions.json`; untouched rows keep their prefill — cut is the only destructive verdict):
+
+| row | ruling | owner's note (verbatim) |
+|---|---|---|
+| expedition-loadout | v1 | Air should only be needed when going into vapor-filled areas, or special mask filters. |
+| entrances | v1 | Oh, I think there should be more than that. Animals make burrows deep into the rock. Lava tubes (active or ancient) in the volcanic mountains. Weird cryotubes on the night side. There can be lots of these. |
+| dry-cistern-crosslink | v2→**v1** | A settlement's aquifer should be very significant, not something the ship can drain. So cut the settlement acquifer idea. But I like your idea for a smaller dungeon that is currently flooded with toxic water, and pumping it out reveals the dungeon. That's pretty good. Could even have this be fairly routine for the lone beast-laden water source: pump out the water, then go in to collect its eggs and other treasures from its lair. That's a neat mechanic. Poisoning a settlement's acquifer should be a High Crime, making ALL the settlements turn against you. Something unthinkable and eventually reload-worthy. Unless they like to be hated I guess. The gods would have a massive reaction to this too. |
+| map-chain | v1 | Not sure about that instability, but yes let's avoid instability. |
+| persistent-layers | v1 | Correct. We don't want regenerating re-visit dungeons. If the game gets bogged down because of savegame size, we'll handle that later as its own issue. (and that will be pruning, collapsing mines, etc... not procedurally generated "new dungeons in the same spot") |
+| depth-ecology | v2→**dream** | This is wild and strange but also unlikely. That would be SO MUCH water pumping. Let's see if we really need this. |
+| underground-factions | v2→**dream** | — |
+| vault-archetypes | v2→**dream** | Not sure I get this one. |
+| organism-cavern | dream | Kinda feels like a sarlacc |
+| collapse-hazard-tool | v2→**v1** | This is a good mechanic, especially as engineered by the Genosians where their sonic weapons might not trigger it. Attacking them hurts yourself if you do it wrong. And natural caverns that grumble and moan are great tension. Regions of instability should have animated bits of dust trailing down to warn the player, as well as some piled sand accumulating below. |
+| darkness-mechanic | v1 | This is just needed in so many places. Beneath the water surface (ocean/lake biomes). Flooded dungeons. Forsaken Crags for sure. Night side in general. Light is what we bring because we need it, but in such great abundance compared to the local creatures we are like blazing beacons begging to be messed with. |
+
 ## 0. Why caverns, and why they matter more here than on a normal Rim world
 
 A tidally-locked desert world has almost nothing to hide behind on the

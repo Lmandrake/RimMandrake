@@ -31,6 +31,21 @@ adds zero weapons.
 
 ---
 
+## 🔴 RULED — owner sitting, saved 2026-09-02 (review sheet, 8 rows, 1 cut)
+
+Verdicts and the owner's notes, verbatim (frozen source: `design/Jawa/worldbuilding/review/proposal_suite_review.decisions.json`; untouched rows keep their prefill — cut is the only destructive verdict):
+
+| row | ruling | owner's note (verbatim) |
+|---|---|---|
+| thermal-veil | v1 | There are already shield mods for this we should leverage deeply. Find them and make them compatible with our mod stack. But thermal shields could be much cheaper than kinetic shields. Perhaps shields must be tuned as to what they can resist right now, and thermal shielding research allows you to tune to heat rejection. It would reflect all external heat outward with a mild mirror sheen to the shield, but also reflect all internal heat inward, so the temperature slowly climbs anyway... but not nearly as badly as it would in an active fire/volcano. Just use power for fuel, no need to invent a new fuel consumption here. Power does the trick. All shields are modulated plasma fields configured to interact with local matter in unique ways. |
+| cryo-envelope | v2→**v1** | The opposite of the thermal rejection shield: thermal absorptivity. Pulls in heat in both directions and allows the shields to start glowing with red-orange black body radiation, holding severe cold at bay. But slowly decreases the temperature within the ship... still better than the extreme cold of the night-side atmosphere. |
+| particulate-screen | v1 | Light kinetic deflectors handle wind, ash, vapor, bio contamination, spores, smoke, sand, and rain damage completely as well as repels small animals. |
+| ~~spore-membrane~~ | ⛔ **CUT** (was dream) | spores aren't magical, just particulates. |
+| loadout-tradeoff | v1 | I think they should be the same shields, you're just installing modules to increase their switching capacity/configuration. |
+| bubble-not-wall | v1 | Heavy shielding forms a solid-seeming shield, most true to form for Star Wars. Resists impactors, blaster fire, and large animal assault. Very energy intensive when struck and prone to overheating or even explosion when forcibly collapsed. (there are mods to draw from here, look them up and download them for study). |
+| shield-collapse-evacuate | v2→**v1** | This is sensible. Shields that are slowly failing due to an environmental stressor can predict and alert to let the crew return and leave. Slow pressing things move through all shields is long-standing canon, including the crew. This is why nothing "holds out water," it just doesn't work that way. |
+| no-hard-landing-gate | v1 | You got it! The environment is hostile and immediately goes to work on the ship. The ship will know what's visibly dangerous and will advise course of action, but no more than that. Its hull is thick and can take a lot of damage in most situations, so no environment is immediately lethal. Landing on lava should be the worst case causing immediate severe damage (don't do that). |
+
 ## 1. Why this is the anti-exponential answer, stated first
 
 The obvious failure mode for "the ship gets shields" is power creep: shields

@@ -21,6 +21,22 @@ merely tolerate paste), and the world-hazard docs cited inline in §3.
 
 ---
 
+## 🔴 RULED — owner sitting, saved 2026-09-02 (review sheet, 9 rows)
+
+Verdicts and the owner's notes, verbatim (frozen source: `design/Jawa/worldbuilding/review/proposal_suite_review.decisions.json`; untouched rows keep their prefill — cut is the only destructive verdict):
+
+| row | ruling | owner's note (verbatim) |
+|---|---|---|
+| hazard-pantry | v1 | YES! I really want there to be many strange pens, pits, aquariums, large bottles, cages, floating tethers... the bestiary for a star wars food culturing area should look absolutely amazing and bizarre. Need to think about how to animate it to look even more amazing. Cuisine should all have mild to major effects too, not necessarily intended to be "farmed" regularly so much as opportunistically prepared and enjoyed and rolled with. Good, bad, strange, and wonderful effects. Somewhat unreliable as well, to prevent min/maxing. |
+| vce-repoint | v1 | Absolutely, let's leverage what they have and reskin it to us. |
+| diplomacy-claim | v2→**v1** | This should be mostly a VERY big boon or VERY big bane, or else it's a weak "isn't this food nice." Menu should help you recognize what would do best here, not make the player remember a bunch of arcane lore. Likely requires a special "diplomatic meal" event or something to make this easier to remember. |
+| ninefold-feast | dream→**v1** | Should earn valuable information, communion with the gods, calming of wild diefic relations, and a general ce-centering on Jawaness for all. Should have many kinds of meals/ingredients that serve each god, not just one specific thing, or it won't ever happen. Could easily unlock another layer of ship trust, sharing of old technology, and other plot elements. (Helps calm the ship too, essentially, feel better about it's inherent new Jawaness). |
+| terroir-brewing | v2→**v1** | LOVE the idea that some of the cuisine manufacturing "works better" in different biomes or latitudes. The others should slowly tick along still, but some "supercharge" in the right conditions and really crank out or produce higher quality output. that's gold. |
+| chef-performance | v2→**v1** | The Feastboss. Cool role. Explore with me how we might do this. There is a feasting ideologion concept currently in play, but I don't remember being particularly impressed by it. But studying it might be useful. |
+| recipe-discovery | dream→**v1** | That is SO Jawa!!! Absolutely. Start with basic stuff, and progress up the tree. Ingest the "stuff on a stick" mod into our own version and jettison that mod eventually... it's rather silly anyway (I think there are two of them). Let's take what we need and release them. |
+| preservation-vocab | v2→**v1** | SO GOOD! Canning is terrestrial. This is awesome. Different food will need different preservation methods. And now we know why we want to go to the salt flats, or the tar pits, or sand dunes. Let's make everything salvageable commodoties! The ship should be absolutely full of weird stuff. I love the idea of piles of sand in a box, or a barrel of tar. So good. More than one method should work for each food type, maybe some work for all, just think about each one. Sand-oven should be sand-drying. |
+| live-ingredient-tank | dream→**v1** | YES! And a lot more like this. This is deep Star Wars cannon. Grabbing a squealing creature from a fish bowl and eating it live should get a big mood buff and honor especially the Hutt. Gotta be animated somehow. |
+
 ## 1. Reconciliation — what survives the overcomplete catalog, and what doesn't
 
 `star_wars_rimworld_cuisine_brewing_overcomplete_design.md` is explicitly

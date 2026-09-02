@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T05:24:44Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-02T05:26:54Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -269,6 +269,24 @@ target:   v1
 kind:     task
 summary:  STARWARSDONORSUNSET1 — retire the remaining third-party Star Wars donors
 prose:    infrastructure/state/items/STARWARS_DONOR_SUNSET_1.md
+
+## MLIE_FAUNA_ABSORPTION_1 Absorb Mlie starwarsanimalcollection: port ~150 creature defs before retiring the donor
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  (no items/MLIE_FAUNA_ABSORPTION_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/MLIE_FAUNA_ABSORPTION_1.md
+
+## DROID_KOTORDROIDS_PORT_WAVE1_1 Port guy762.kotordroids' 44 kinds/22 races onto the Droidworks platform (wave 1, pure XML)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  (no items/DROID_KOTORDROIDS_PORT_WAVE1_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROID_KOTORDROIDS_PORT_WAVE1_1.md
 
 # BLOCKED — something is WRONG and someone must act
 

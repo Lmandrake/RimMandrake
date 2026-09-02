@@ -28,13 +28,24 @@ described in the register the eventual def would carry.
 
 ---
 
-## 1. The loop, spelled out as numbers a weather table could hold
+## 🔴 RULED — owner sitting, saved 2026-09-02 (review sheet, 10 rows, 1 cut)
 
-> 🔴 **RULED v1 — owner, 2026-09-01 (review sheet), verbatim:** "Brief violent
-> rain should be possible (to allow the grass to explosively regrow) but as you
-> say always with lightning." ⇒ the loop's weather table gains a rare
-> short-lived violent-rain state, never without lightning. (Only this row of
-> the fire sheet is ruled so far; the sitting continues.)
+Verdicts and the owner's notes, verbatim (frozen source: `design/Jawa/worldbuilding/review/proposal_suite_review.decisions.json`; untouched rows keep their prefill — cut is the only destructive verdict):
+
+| row | ruling | owner's note (verbatim) |
+|---|---|---|
+| dry-thunderstorm-loop | v1 | Brief violent rain should be possible due to the intense steam (could we add animated steam rising from the river? That is an amazing idea, file a ticket on that alone!) But the rain as you say always with lightning. |
+| pyroconvective-cell | v2→**v1** | SO COOL! A conflaguration vortex forms driving the fire to burn faster, brighter, hotter, and generating violent lightning around the map until it dies from a lack of fuel. The lightning should simply come from the sky (not actually shoot out of the vortex), and an alert message should explain that the pyroconvection is driving ash-laiden clouds to create violent red-tinted lightning all around you. |
+| pyrocumulus-storm | dream→**v2** | Global weather mod is v2 |
+| cinderclutch | v2→**v1** | The eggs are buried in the ground by lore, but are actually not there yet until the fire happens. Then they randomly generate as the flames burn hot enough. They should be voracious, terrifying, then viciously mate, lay their eggs, and perish within a few days. They should be small but horrible. |
+| ~~silhouette-hunter~~ | ⛔ **CUT** (was dream) | Too nightmarish and magical for Star Wars. |
+| ember-swarm | dream→**v1** | A weather type! "A fire is nearby and casting burning embers and smoke everywhere." Fires just start to slowly appear in places, and the temperature rapidly raises and smoke reduces sight and ambient light. Tints the light orange dimly. |
+| slagback | dream→**v1** | Why not? A creature that is merely very hot during the day, but when it beds at night to rest its temperature climbs until it emits pulses of heat through radiative fins on its tail to ignite local fuel. Then it consumes the partially burnt plants and animals left behind as a scavenger. Also can defend itself with waves of painful heat and of course distracting local fires. Seems like this might be one of the "big ones" of the Pyrelands. |
+| ash-black-rain | v1 | Having thick ash like snow that piles up, covers things, creates health problems, chokes plants, and blows around in the wind would be fantastic! That blowing around in the wind is a really cool idea, especially if we could get some vortex-like action to look like real whipping wind around structures and mountains and vehicles. I love the image of the rare rain being black with soot, and then pushing all of the ash into the local ponds and rivers, staining them completely black for days. Black water. That's a really neat idea. |
+| scorch-fruit | v1 | Scorch fruit: could be underground fungus that swells onto the surface during the fire, much like a pinecone puffs up and shoots out its seeds in the fire. The rapidly growing fungus might have medicinal properties if eaten right away (can cure the uncurable like luciferium) but also infects you with strange fungal properties that don't go away (mild insanities, occasional sickness symptoms, sometimes emit weird flesh-fruit from your own body that count as your race's flesh-type). |
+| tribes-fire-farmers | v2→**v1** | Superb! When their raids show up, have them line up and start a Wall of Fire right at the players, even if they're not hostile. It's just what they do. If the players try to put out the fire they become hostile. If they share in the harvest but don't put out fire, they are tolerated. Alien culture and values for the win. |
+
+## 1. The loop, spelled out as numbers a weather table could hold
 
 R-H4 already names the mechanism: fire generates its own convection, the
 convection is dry, dry lightning strikes pre-heated ground surrounded by

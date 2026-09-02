@@ -15,6 +15,21 @@ per `ownership_settlement_spec.md` §8. No seed sweeps, no alternate planets.
 
 ---
 
+## 🔴 RULED — owner sitting, saved 2026-09-02 (review sheet, 8 rows)
+
+Verdicts and the owner's notes, verbatim (frozen source: `design/Jawa/worldbuilding/review/proposal_suite_review.decisions.json`; untouched rows keep their prefill — cut is the only destructive verdict):
+
+| row | ruling | owner's note (verbatim) |
+|---|---|---|
+| two-tier-fork | v1 | No, let's go with multi-tier (see below) |
+| detox-chain | v2→**v1** | Distilled, potable, fouled, toxic. Four kinds. Some machines will need distilled-level. Some animals need potable. Some animals can cope with fouled. Only exotic life can handle toxic. Super energy intensive to convert quickly, or low/no energy but slow using things like solar stills/material drip filters. |
+| water-anchored-districts | v1 | Absolutely, and how each race celebrates, protects, shared, or isolates its water is the most defining characteristic of the faction architecture and settlement design. It should be exceptionally rare to have an undefended potable water source in the wilderness. But it should be possible to build some slow natural filters using plant materials as disposable filters, solar stills for slow generation, etc. That hot desert sun is good for something at least. |
+| water-heist | v1 | Love this! Pumps are clearly a whole technology and prized possession... and they can also break down easily and  get jammed, needing repair in the middle of a heist to clear an restore. Filters seem like a consumable now. Futuristic magnetic pumps are much less clog prone than simple piston-pumps. |
+| aquifer-remembers | v2→**v1** | Draining a cistern will convert it from potable to fouled, then fouled to toxic, as water oozes in from the surrounding underground too swiftly to plate out impurities. Should be graphically made obvious what is happening. |
+| pool-guardians | v1 | Absolutely. It should be assumed that life has found every source of water and defended it. So a quiet oasis is like screaming a warning to the surrounding area: something is keeping this place free from animals. |
+| water-diplomacy | v2→**v1** | An adjustable water economy is a lovely idea. Settlements have water scarcity depending on too many variables to track, so might as well just have it fluctuate. Messages could go out for help: "Offering high barter for water, we're drying up here." This could be one of the first things the Jawa focus on early in the game. Water merchants with their massive ship and its ability to haul tanks around they're scrapping together. |
+| rain-event | v2→**v1** | Rather than once a year, it should simply be an irregular event. The violent turbulent atmosphere near the rivers sometimes belches out unexpected storms even in normally utterly arid locales... and it's simply assumed that fighting stops, fires stop, and everyone lays out their best collecting gear as they can. "Rain Quenches All Thirst" |
+
 ## 0. The two-tier water model
 
 | tier | what it is | who can drink it as-is | value |

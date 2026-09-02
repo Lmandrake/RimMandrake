@@ -15,26 +15,23 @@ fire?"* and *"perhaps there are creatures that live in even small pools (and
 propane, and tar) that emerge when disturbed... maybe that's why the stuff is
 there to begin with."* Both are expanded fully below, not summarized.
 
-## 🔴 RULED — owner sitting 2026-09-01 (review sheet, all ten tar rows answered)
 
-**Every tar concept is v1.** The §8 ladder below is restated to match; the old
-v2/dream placements for these rows are superseded. His notes are design content,
-verbatim:
+## 🔴 RULED — owner sitting, saved 2026-09-02 (review sheet, 10 rows)
+
+Verdicts and the owner's notes, verbatim (frozen source: `design/Jawa/worldbuilding/review/proposal_suite_review.decisions.json`; untouched rows keep their prefill — cut is the only destructive verdict):
 
 | row | ruling | owner's note (verbatim) |
 |---|---|---|
-| entrapment-hediff | v1 | "amazing defensibility of difficult areas, to be used by deep desert tribes and other primitives" |
-| sinking-render | v2→**v1** | "Test of our ability to make meaningful animation. We should spend some good time on this to really demo what we know how to do, or perhaps study other mods that make custom animations to inspire ourselves." |
-| stratified-dig-sites | v2→**v1** | "This is pure gold. Fossils, dead bodies with inventory stuck on them, each one a piece of a story from the past that goes more ancient as you dig. But the digging gets slower and harder as you go. Would perhaps need to install a pump that removes the tar elsewhere on the map to enable the digging at all, while it continues to ooze in from deep sources below." |
-| canal-flow-engineering | v2→**v1**, and 🔴 **promoted to a GENERAL RimMandrake-tier mechanic** | "This is a general new mechanic that we can use in many places. Dig channels that flood with water, ooze, slime, oil, tar, propane fuel... let's explore this deeply. Could be amazing realism. I'm inspired! This allows bases to dig trenches and flood them as a real defense. Will pay off in many more scenarios. This isn't Utinni or even Star Wars scope, this is general RimMaster level awesomeness mod." |
-| flood-and-ignite | v2→**v1** | "Not kill outright, just burns like normal fire. But yes, toxic thick smoke that obscures and produces coughing and stinging eyes and stink." |
-| tar-moats | dream→**v1** | "nope, this is in! Pawns with goals inside a region make the call to go across it, while if there's any way around it they do so." |
-| tar-creatures | dream→**v1** | "Very star wars to reveal that a tar pit harbors a huge creature that not only thrives in tar but actually excretes it as a biological outcome. If captured, continues to do so at a very slow rate (not magical, very slow). However, even pits without one of these creatures still fill trenches and such from the tar sources deep underground." |
-| geyser-incident | v1 | "Superb vile shock. Add creatures that consume tar too and run towards these events/moments. Able to mode through the tar easily unlike trapped creatures. They may like to eat tar-encrusted pawns too." |
-| pit-wakes-setpiece | dream→**v1** | "Totally! The things in ancient dangers are the source, but also egg forms of creatures that hatch when disturbed (tar beasts), as well as things people maliciously put down there (grenades/bombs). Especially if it's in the territory of a terrible faction that's vindictive against territory thieves." |
-| chemfuel-economy | v2→**v1** | "Yes, but it's slow and gross. Tar oozes out of the pipe joints. Only slowly produces chemfuel." |
-
----
+| entrapment-hediff | v1 | amazing defensibility of difficult areas, to be used by deep desert tribes and other primitives |
+| sinking-render | v2→**v1** | — |
+| stratified-dig-sites | v2→**v1** | Superb! The loot table is the fun part. Draw from fossils but also sealed alien eggs, technology, dead bodies with equipment intact, and story-rich objects. And of course Assailant and Forgotten Arsenal aspects. |
+| canal-flow-engineering | v2→**v1** | Don't make it finite, just make it slow to refill. This mechanic of fillable ooze will come in handy later. *(an earlier save this sitting also ruled this a GENERAL RimMandrake-tier mechanic — filed as FLUID_CANAL_MECHANIC_1)* |
+| flood-and-ignite | v2→**v1** | Not kill outright, just burns like normal fire. But yes, toxic thick smoke that obscures and produces coughing and stinging eyes and stink. |
+| tar-moats | dream→**v1** | nope, this is in! Pawns with goals inside a region make the call to go across it, while if there's any way around it they do so. |
+| tar-creatures | dream→**v1** | Very star wars to reveal that a tar pit harbors a huge creature that not only thrives in tar but actually excretes it as a biological outcome. If captured, continues to do so at a very slow rate (not magical, very slow). However, even pits without one of these creatures still fill trenches and such from the tar sources deep underground. |
+| geyser-incident | v1 | Superb vile shock. Add creatures that consume tar too and run towards these events/moments. Able to mode through the tar easily unlike trapped creatures. They may like to eat tar-encrusted pawns too. |
+| pit-wakes-setpiece | dream→**v1** | Totally! The things in ancient dangers are the source, but also egg forms of creatures that hatch when disturbed (tar beasts), as well as things people maliciously put down there (grenades/bombs). Especially if it's in the territory of a terrible faction that's vindictive against territory thieves. |
+| chemfuel-economy | v2→**v1** | Yes, but it's slow and gross. Tar oozes out of the pipe joints. Only slowly produces chemfuel. |
 
 ## 1. Prior art, and where we go past it
 
@@ -157,7 +154,10 @@ trench will, over hours, **fill that trench with tar**, exactly as asked.
 - **Grade matters.** Maps aren't ruled to carry per-tile elevation today, so
   the v1 slice fakes grade with a designated flow direction on the channel;
   true elevation-driven flow is a v2+ ask if the layout tooling grows one.
-- **Volume is finite per pit.** `CompTarReservoir` depletes as canals drain
+- ~~**Volume is finite per pit.**~~ ⛔ SUPERSEDED by the 2026-09-02 ruling:
+  *"Don't make it finite, just make it slow to refill."* Reservoirs refill
+  slowly from the deep sources; scarcity is rate, not stock. Original text
+  kept for the shape of the comp: `CompTarReservoir` depletes as canals drain
   it — a colony that floods its whole perimeter has spent a resource (fewer
   archaeology finds, dryer moats), not pulled a free lever.
 

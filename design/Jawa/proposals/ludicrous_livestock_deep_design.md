@@ -24,6 +24,25 @@ patched defNames, so role bands below are stated as comparisons ("ox-sized,"
 
 ---
 
+## 🔴 RULED — owner sitting, saved 2026-09-02 (review sheet, 10 rows)
+
+⚠️ Four rows (drassik-smelter, duskhide-herd, coola-tend-narrate, grubbin-con) are ruled v1 pending a fuller explanation the owner asked for — deliver it before building those four.
+
+Verdicts and the owner's notes, verbatim (frozen source: `design/Jawa/worldbuilding/review/proposal_suite_review.decisions.json`; untouched rows keep their prefill — cut is the only destructive verdict):
+
+| row | ruling | owner's note (verbatim) |
+|---|---|---|
+| onnik-kiln | v1 | The ceramic should be an art material that makes beautiful bricks, art pieces, etc. |
+| drassik-smelter | v2→**v1** | Interesting mechanic. I'm interested but I need to understand more what alloy means here. What are we sorting, and what are we getting? |
+| karrask-molt | v1 | Don't make it functional plate armor, that's too much. Instead it's a tough material (like chitin) that makes great armor or other highly durable items that's very easy to work and shape (but not very pretty). |
+| moornak-griefbomb | v2→**v1** | To make this worthwhile, it must be VERY powerful to absorb grief and restore calm. So make it attracted to and calming of mental breaks. An ominous shadow that follows unhappy people around. But its unsettling appearance also makes everyone mildly unsettled as well, a negative hediff that help make them unhappy enough to feed it. So it becomes a kind of parasite: you won't go crazy or collapse to madness, but neither will you ever be happy. Blessing and curse, and hard to get rid of. If you shoot it, massive mood consequences as you said. Player must get clever to trap it somewhere and leave it behind on a map. Traders will sell it but not buy it back. Should self-tame extremely readily and show up on the map already full of significant grief. Should last 30 days of suffering and mental breaks when it dies on the same map anywhere. Also makes creatures go manhunter at the same time... so not a good thing. |
+| duskhide-herd | v2→**v1** | I don't remember what the living herd warmth buff is, which creature? |
+| voltling-battery | v2→**v1** | This needs to be a new custom creature, but it's cool. A crystalline entity that absorbs sunlight and recharges batteries. But it's very delicate and could never survive on the dayside without protection. Comes from the night side but doesn't require the cold, just tolerates it. However, if protected, it starts to reproduce disturbingly quickly. That's the bane. |
+| coola-tend-narrate | v2→**v1** | Sounds neat, but I need to know more about this concept first. |
+| grubbin-con | dream→**v1** | Sounds neat, but I need to know more about this concept first. |
+| gorrath-stampede | dream→**v1** | A creature that allows you to point and click "Attack!" for the whole herd, but once you do, they are unstoppable and can even damage walls and structures as they ram them. Super angry big beast of some sort. I love the idea of a berserk charge as a Jawa's idea of training. Misfire shouldn't just be self-inflicted, that's not fun. Rather they start to trip over each other and just get hurt and scattered and angry. |
+| hollowfoot-undermine | dream→**v1** | This is cool. A big worm that grumbles along through the sand, unhappy but survivable out of the sand, and able to break down walls as you suggest. Won't hurt the gravship or metal walls, but will do on other materials. |
+
 ## 0. Prior art — what the workshop already proves, and where we go past it
 
 Surveyed against the adopted stack (full detail in `Livestock_Trade_Utility_Pets_v1.md`):

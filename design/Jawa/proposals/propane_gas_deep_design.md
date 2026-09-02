@@ -17,23 +17,21 @@ simply won't stop (pump is very far away). Or leaking propane pipes that fill
 a whole map with the stuff, making weapons fire too dangerous to entertain."*
 Every clause gets a full section below.
 
-## 🔴 RULED — owner sitting 2026-09-01 (review sheet, all eight gas rows answered)
 
-Six of eight to v1, **two CUT** (tanker economy, tar interplay). §9 ladder
-restated below. His notes are design content, verbatim:
+## 🔴 RULED — owner sitting, saved 2026-09-02 (review sheet, 8 rows, 2 cut)
+
+Verdicts and the owner's notes, verbatim (frozen source: `design/Jawa/worldbuilding/review/proposal_suite_review.decisions.json`; untouched rows keep their prefill — cut is the only destructive verdict):
 
 | row | ruling | owner's note (verbatim) |
 |---|---|---|
-| lake | v1 | "And exotic creatures within the lake. Could even be a wild underwater adventure WITHIN a propane lake (like the ocean biome we're building, but with stranger contents... and the ship must carefully lower itself into FUEL rather than water this time)" |
-| vents | v1 | "Puffing gas sometimes self-ignites, but doesn't deplete until the player starts actively pumping it out. That explains why the natural ones are even still there when the player arrives. removing the pumping apparatus should trigger a violent release map-wide that's very dangerously flammable until it clears by the wind." |
-| pipe-rupture | v2→**v1** | "There should be some valves that can be accessed to manually shut the pipe down on the map, or else the player just 'leaves it that way' and wonders what happens. Huge negative faction relationship from this. (or positive if it was your mission to do so)" |
-| saturation | v1 | "Absolutely! During the massive gas release event it should be a transient condition. But there should be caverns where this is just perpetually true (a common occurrance on Earth in mines anyway). Also true witin the 'dead sarlacc' type dungeons, along with rotstink gas." |
-| ~~tanker-economy~~ | ⛔ **CUT** (was v2) | "You're not extra flammable on the way home, just right next to that explosive lake... and you have to run long flexible pipes from your ship to the lake, because of your thrusters." — the premise (hazardous hauling runs) is wrong; refueling is done in place at the lake by pipe. |
-| lake-creature | v2→**v1** | "Of course it might! Not guaranteed, but often. And it should be seen moving around the lake as a submerged V-shaped wake trailing around, just to add suspense. If it sees the pawns/pipe, it approaches and attacks. But the loud pumping agitates them and makes them start to look around more swiftly. NOT the reason the propane lake is there, they just dwell within it." |
-| ~~tar-interplay~~ | ⛔ **CUT** (was dream) | "too much, no need" — §8's dual-hazard map does not get built. |
-| saturation-heist | dream→**v1** | "Give them better weapons. Sonic from the genosians, for example. Or primitive javelains and catapults. Strictly non-flammable, non-temperature-based, non explosives. Vibro-weaponry." |
-
----
+| lake | v1 | And exotic creatures within the lake. Could even be a wild underwater adventure WITHIN a propane lake (like the ocean biome we're building, but with stranger contents... and the ship must carefully lower itself into FUEL rather than water this time) |
+| vents | v1 | Puffing gas sometimes self-ignites, but doesn't deplete until the player starts actively pumping it out. That explains why the natural ones are even still there when the player arrives. removing the pumping apparatus should trigger a violent release map-wide that's very dangerously flammable until it clears by the wind. |
+| pipe-rupture | v2→**v1** | There should be some valves that can be accessed to manually shut the pipe down on the map, or else the player just "leaves it that way" and wonders what happens. Huge negative faction relationship from this. (or positive if it was your mission to do so) |
+| saturation | v1 | Absolutely! During the massive gas release event it should be a transient condition. But there should be caverns where this is just perpetually true (a common occurrance on Earth in mines anyway). Also true witin the "dead sarlacc" type dungeons, along with rotstink gas. |
+| ~~tanker-economy~~ | ⛔ **CUT** (was v2) | You're not extra flammable on the way home, just right next to that explosive lake... and you have to run long flexible pipes from your ship to the lake, because of your thrusters. |
+| lake-creature | v2→**v1** | Of course it might! Not guaranteed, but often. And it should be seen moving around the lake as a submerged V-shaped wake trailing around, just to add suspense. If it sees the pawns/pipe, it approaches and attacks. But the loud pumping agitates them and makes them start to look around more swiftly. NOT the reason the propane lake is there, they just dwell within it. |
+| ~~tar-interplay~~ | ⛔ **CUT** (was dream) | too much, no need |
+| saturation-heist | dream→**v1** | Give them better weapons. Sonic from the genosians, for example. Or primitive javelains and catapults. Strictly non-flammable, non-temperature-based, non explosives. Vibro-weaponry. |
 
 ## 1. Prior art, and where we go past it
 
