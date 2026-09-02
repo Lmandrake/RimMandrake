@@ -261,9 +261,9 @@ labor cost, or because the "value" is a fiction the buyer hasn't checked.
 The self-limiting valve here isn't cargo or danger — it's labor, spoilage,
 or reputation.
 
-### Coo'la — the story-milk doe
+### Coo'la — the wise-milk doe
 
-> ✅ **Product RULED (owner card, 2026-09-02): "Wise Milk"** — increases learning
+> ✅ **RULED (owner cards, 2026-09-02): the creature is the Coo'la; its product is "Wise Milk"** — increases learning
 > rate and soothes emotions when drunk; very expensive; the valve is the
 > constant social labor of entertaining the animal. The table below predates
 > the ruling where they differ.
