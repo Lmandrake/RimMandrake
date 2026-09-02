@@ -285,8 +285,14 @@ def build_groups(entries):
         match = ET.SubElement(fm, "match", {"Class": "PatchOperationSequence"})
         match_ops = ET.SubElement(match, "operations")
         for op in ops:
-            op.tag = "li"
-            op.set("Class", "PatchOperationSequence")
+            # op is already a correctly-classed <li> (PatchOperationSequence
+            # from seq_op(), PatchOperationConditional from stage_op()) -
+            # blindly overwriting Class here corrupted every stage_op()
+            # entry's outer wrapper to the wrong class (2026-09-02 incident,
+            # confirmed live: "doesn't correspond to any field in type
+            # PatchOperationSequence" on AM_TerribleDreadnought/
+            # FailedConvertAbilityInitiator/TrialFailed, which cascaded into
+            # every other FindMod gate in the file reporting failed too).
             match_ops.append(op)
         top.append(fm)
     return top

@@ -15,7 +15,6 @@
       <thinkTreeMain>Animal</thinkTreeMain>
       <thinkTreeConstant>AnimalConstant</thinkTreeConstant>
       <trainability>None</trainability>
-      <animalType>Special</animalType>
       <body>QuadrupedAnimalWithPawsAndTail</body>
       <predator>true</predator>
       <maxPreyBodySize>3.0</maxPreyBodySize>
@@ -128,7 +127,6 @@
       <thinkTreeMain>Animal</thinkTreeMain>
       <thinkTreeConstant>AnimalConstant</thinkTreeConstant>
       <trainability>None</trainability>
-      <animalType>Special</animalType>
       <body>QuadrupedAnimalWithPawsAndTail</body>
       <predator>true</predator>
       <maxPreyBodySize>1.4</maxPreyBodySize>

@@ -29,6 +29,28 @@ from assembly 'RimMandrakeProperty'` or a `TypeLoadException`/
 or stack. No XML `Config error in mandrake.rm.property` is expected (no
 Defs shipped) — if one appears, that itself is the anomaly.
 
+## Load 3 (593 mods) — 2026-09-02
+
+Two changes riding together: (a) `mandrake.rut.pawnflavor`'s
+`PawnFlavorPhase2_ThoughtDef.xml` regenerated with the `stage_op()` fix
+(XML-only, mod already active, config-class change — free per §3's table) and
+(b) newly enabling `mandrake.rsw.livestock` (one new assembly,
+`RimMandrakeLivestockRSW.dll`, `CompLightAversion` on Skarnix). XML-only +
+one new assembly batches fine (well under the three-assembly waiver), signature
+written first per §3.
+
+## RimMandrakeLivestockRSW.dll (`mandrake.rsw.livestock`)
+`CompLightAversion` lives in namespace `RimMandrake.StarWars.Livestock`
+(`src/RimStarWars/Livestock/Source/CompLightAversion.cs`), plus Cindermare's
+cold-drain via pure XML (`RSW_ColdDrainDamage`/`RSW_ColdDrain`, no C#). If
+broken, expect a line naming `RimMandrake.StarWars.Livestock` or
+`RimMandrakeLivestockRSW` specifically — a `TypeLoadException`/
+`ReflectionTypeLoadException` citing that assembly, or (since `CompLightAversion`
+is referenced from `RSW_Skarnix`'s `<comps>` list) a `Config error in
+mandrake.rsw.livestock` naming `RSW_Skarnix` if the comp class doesn't resolve.
+Cindermare is pure XML — any error naming `RSW_Cindermare` would be a
+different, def-level problem, not an assembly load failure.
+
 ## RimMandrakeTheftHauler.dll (`mandrake.rm.theft_hauler`)
 Ships a JobDef/JobDriver/marker class plus one `MayRequire="mandrake.rsw.droidworks"`-
 gated patch. **`mandrake.rsw.droidworks` is NOT active on this list** — the
