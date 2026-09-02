@@ -174,3 +174,38 @@ on reload. (d) already run above, clean.
 
 Not deployed, not committed, per scope: this is FOUNDRY's offline build for
 the owner's live pass.
+
+## 2026-09-02 — offline follow-up: honor the aurora-brightness ruling
+
+The design doc's RULED table (`weather_suite_deep_design.md`, saved
+2026-09-02 — **after** the 2026-09-01 build entry above) landed one new
+requirement the original build predates: *"Beautiful, and use the Aurora
+graphic effect but maximized in brightness and color. It should be
+awesome!"* The build as shipped reused vanilla `GameCondition_Aurora`
+UNCHANGED, whose palette/strength/brightness (`Colors[]`,
+`SkyColorStrength = 0.075f`, `OverlayColorStrength = 0.025f`,
+`BaseBrightness = 0.73f`) are all PRIVATE consts in `GameCondition_Aurora.cs`
+— no XML field exists to raise them, so honoring the ruling needed a small
+C# subclass, not a def tweak.
+
+Added `GameCondition_DarkAuroraMax` (`WeatherSuiteHook.cs`) — subclasses
+vanilla `GameCondition_Aurora`, overrides only `SkyTarget()` to push the
+color-lerp strength to full saturation (1.0 instead of 0.075/0.025) and the
+sky glow to vanilla's own public `MaxSunGlow` constant (0.5f, instead of the
+0.25f/0.73f floors) — color cycling, `ExposeData`, and the mood-buff
+plumbing are all inherited unchanged. `RSW_WS_DarkAurora`'s
+`conditionClass` in `GameConditionDefs_DarkAurora.xml` now points at the new
+class instead of vanilla's own. `dotnet build WeatherSuiteHook.csproj -c
+Release` — 0 warnings, 0 errors. Not deployed, not committed, not
+live-verified (needs a forced-aurora dev-tool look, same as the rest of this
+item's verify list — see (b) above; add "and does it visibly read as
+maximized brightness/color, not just vanilla" to that live check).
+
+No other RULED-table line changed anything already built: terminator-storms'
+note ("weak shields protect you eventually") is a v2/tech-ladder remark, not
+a v1 requirement; forecasting-ladder's note ("one or maybe two tiers... the
+first gives advanced warning, the second lets you see them on the main map")
+matches Tier 0 (folk signs) + Tier 1 (instrument) as already built — "main
+map" most plausibly reads as Tier 2's weather-station map overlay (doc §8),
+which is v2 scope, not this item's. Flagged under OPEN below rather than
+guessed at.
