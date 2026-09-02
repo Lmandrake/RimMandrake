@@ -3759,3 +3759,5 @@
 {"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-09-02T06:43:14Z"}
 {"seat":"BENCH","event":"bridge","state":"released","ts":"2026-09-02T06:43:32Z"}
 {"seat":"BENCH","event":"bridge","state":"taken","ts":"2026-09-02T06:44:47Z"}
+{"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-09-02T07:01:06Z"}
+{"seat":"FOUNDRY","event":"seat","state":"ready","note":"Reboot prep: heavy fan-out night (~20 items touched) - all committed/pushed, bridge released clean. Biggest open thread: COLD_LOAD_STATIC_CTOR_STALL_1, a real env-level cold-load hang reproducing on a known-good modlist, blocks WEATHER_SUITE_SLICE_1's live verify and any further restart until diagnosed. Several compiled-not-deployed companion/mod changes await a game-down window (get_defs deep-serialize, caravan-pawn lookup fix). Everything else landed offline-clean, live-verify owed - read each item's own last note, not this line, for specifics.","ts":"2026-09-02T07:01:18Z"}
