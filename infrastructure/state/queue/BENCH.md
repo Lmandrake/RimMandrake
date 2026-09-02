@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T14:11:13Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-02T14:13:53Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -42,17 +42,7 @@ _none._
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
-
-## SAVE_HOLDS_DEAD_TITAN_CORPSE_1 Save/Scribe references dead ThingDef Corpse_Titan - 'Titan' no longer exists in the 592-mod live def dump
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     bug
-waiting:  needs `bridge`, game is DOWN
-summary:  (no items/SAVE_HOLDS_DEAD_TITAN_CORPSE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/SAVE_HOLDS_DEAD_TITAN_CORPSE_1.md
+_none._
 
 # NOT THIS TARGET
 
@@ -71,3 +61,13 @@ kind:     task
 thin:     no ## criteria
 summary:  Layer stack: design/Jawa/researchnormalizationprinciples.md (why) →
 prose:    infrastructure/state/items/RESEARCH_TREE_NORMALIZATION_1.md
+
+## SAVEGAME_PURGE_KEEP_B_1 Purge all savegames except the two newest *_b (WORLDMAP_V1_original_b, gravship_scratch_b) - owner-ordered 2026-09-02, must run with the game up
+state:    proposed
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SAVEGAME_PURGE_KEEP_B_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SAVEGAME_PURGE_KEEP_B_1.md
