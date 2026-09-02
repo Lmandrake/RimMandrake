@@ -118,6 +118,52 @@ file-lock (`OSError [WinError 1224]`-class error, DLL memory-mapped by
 the in-flight load) — this build's C# will not be live until the NEXT
 restart, which I'm now authorized to trigger myself.
 
-**Still not built**: the viewer `ThoughtWorker`, the taunt-driven raid
-breach-bias hook, and all sacred/mural/jest/taunt/cant CONTENT beyond
-the one generic vandal mark (`mandrake.rut.marks`). Left `doing`.
+**Still not built**: all sacred/mural/jest/taunt/cant CONTENT beyond
+the one generic vandal mark (`mandrake.rut.marks`) — owner-voice work,
+not attempted here.
+
+## 2026-09-02 (FOUNDRY) — the two remaining mechanisms built (content still owed)
+
+Built both pieces named above as MECHANISM ONLY — no flavor text, no new
+ThingDef/ThoughtDef content, both designed to be driven entirely by fields
+`ModExtension_Graffiti` already carried:
+
+- **`ThoughtWorker_ViewedGraffitiMark`** (`Source/ThoughtWorker_ViewedGraffitiMark.cs`):
+  a reusable situational `ThoughtWorker`, pattern-verified against real
+  vanilla `RimWorld.ThoughtWorker_PyromaniacNearFlames` (room+radius scan,
+  same idiom). Scans an 8-cell radius for a mark whose
+  `ModExtension_Graffiti.viewerReactionThought` points back at `def` (the
+  ThoughtDef this worker instance is attached to) — so ANY future
+  Sacred/Mural/Jest/Taunt reaction ThoughtDef can reuse this one class by
+  setting `<thoughtClass>` to it and pointing its mark's
+  `viewerReactionThought` at itself. No content ThoughtDef ships yet.
+- **`BreachBiasHook`** (`Source/BreachBiasHook.cs`): Harmony postfix on
+  `Verse.AI.BreachingGrid.FindBuildingToBreach()` — the real, RimSage-
+  verified sole method `LordToil_AssaultColonyBreaching` calls to pick
+  which building a raid breaches (a pure nearest-with-most-reachable-sides
+  flood-fill, no existing scoring hook). If any live mark has
+  `ModExtension_Graffiti.breachLure = true`, the postfix looks for an
+  eligible breach target within its 9-cell footprint (same
+  `BreachingUtility.ShouldBreachBuilding`/`IsWorthBreachingBuilding`/
+  reachable-side gates the original algorithm used — never overrides
+  toward a building the original would have rejected) and substitutes it
+  in. Added `ModExtension_Graffiti.breachLure` (bool) for this.
+- Added a `HarmonyLib`/`0Harmony.dll` reference to `Graffiti.csproj`
+  (matching `FireEcologyHook.csproj`'s own pattern) — this mod's first
+  Harmony patch.
+- `dotnet build`: 0 warnings/0 errors. `validate_patch.py` (594-mod set,
+  Data+Mods+Workshop): 0 errors/0 warnings, all 6 files.
+- **Not deployed this pass**: the game is mid-restart (a sibling fork's
+  WeatherSuite verification), `mandrake.rm.graffiti` is already active,
+  and the assembly copy hit the expected `OSError` file-lock
+  (DLL memory-mapped by the running game) — same shape as the third
+  pass's own deploy-timing note. Compiled and committed, not yet copied
+  into the live `Mods/` folder; ride the next game-down window.
+
+**Still owed**: all content (sacred/mural/jest/taunt/cant text and defs,
+owner-voice), the deploy once the game is down, and a live quicktest
+proving both mechanisms actually fire (a colonist near a reaction mark
+gains the thought; a raid with a `breachLure` mark active actually
+breaches there) — cannot be tested without content defs to attach to, so
+this also needs at least one placeholder mark of each kind before a live
+proof is possible. Left `doing`.

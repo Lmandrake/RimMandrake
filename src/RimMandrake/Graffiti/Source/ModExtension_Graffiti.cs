@@ -15,14 +15,11 @@ namespace RimMandrake.Graffiti
     // ThingDef (sacred/mural/jest/taunt/cant) carries one of these in its
     // <modExtensions> list; nothing here invents a new Def XML tag.
     //
-    // WHAT IS WIRED vs TODO: this class is pure data - a category tag plus
-    // the fields future viewer/faction-reaction code will read. Nothing
-    // reads viewerReactionThought or factionReactionGoodwill yet (no
-    // ThoughtWorker, no faction-goodwill hook exists in code) - that is
-    // GRAFFITI_FRAMEWORK_BUILD_1's own remaining, larger build (the
-    // absorbed spree JobDriver/JoyGiver, the viewer ThoughtWorker, and the
-    // raid-AI breach-bias hook for taunts), deliberately not attempted
-    // solo this pass. See infrastructure/state/items/GRAFFITI_FRAMEWORK_BUILD_1.md.
+    // WHAT IS WIRED: viewerReactionThought is read by
+    // ThoughtWorker_ViewedGraffitiMark; breachLure is read by
+    // BreachBiasHook. Both are mechanism only - no content ThingDef/
+    // ThoughtDef ships with them (owner-voice work, a separate item). See
+    // infrastructure/state/items/GRAFFITI_FRAMEWORK_BUILD_1.md.
     public class ModExtension_Graffiti : DefModExtension
     {
         public GraffitiCategory category;
@@ -58,5 +55,11 @@ namespace RimMandrake.Graffiti
         // pantheon - a content pack wires the two together by reading this
         // field and calling Ninefold's GameComponent_Ninefold.ApplyDelta.
         public string godSatiationHook;
+
+        // §1 Taunt "Come And Take It": raiders bias toward breaching AT
+        // this mark's location - the raid-AI breach-bias hook
+        // (BreachBiasHook.cs) reads this flag generically. False for
+        // every family except a taunt mark built to funnel a breach.
+        public bool breachLure;
     }
 }

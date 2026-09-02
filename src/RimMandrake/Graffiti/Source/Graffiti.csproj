@@ -1,11 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <!--
-    GRAFFITI_FRAMEWORK_BUILD_1, data-layer slice only: ModExtension_Graffiti
-    + GraffitiCategory. No Harmony reference - a plain DefModExtension
-    through vanilla extension points, not a patch. The absorbed spree
-    JobDriver/JoyGiver, the viewer ThoughtWorker and the taunt breach-bias
-    hook are a separate, larger build - see the item file.
+    GRAFFITI_FRAMEWORK_BUILD_1: ModExtension_Graffiti + GraffitiCategory
+    (data layer), the absorbed spree JobDriver/JoyGiver, the viewer
+    ThoughtWorker (ThoughtWorker_ViewedGraffitiMark - generic, reads
+    ModExtension_Graffiti.viewerReactionThought, no content ThoughtDef
+    shipped here), and the taunt raid-AI breach-bias hook (BreachBiasHook -
+    Harmony postfix on Verse.AI.BreachingGrid.FindBuildingToBreach, reads
+    ModExtension_Graffiti.breachLure). Content (sacred/mural/jest/taunt/cant
+    text and defs) is a separate item - see GRAFFITI_FRAMEWORK_BUILD_1.md.
 
     Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
       "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\Graffiti\Source\Graffiti.csproj -c Release
@@ -36,6 +39,10 @@
     <RimWorldManaged>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManaged>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(HarmonyDll)' == ''">
+    <HarmonyDll>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HarmonyDll>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Include="GraffitiCategory.cs" />
     <Compile Include="ModExtension_Graffiti.cs" />
@@ -45,6 +52,8 @@
     <Compile Include="JoyGiver_PaintGraffiti.cs" />
     <Compile Include="MentalState_GraffitiSpree.cs" />
     <Compile Include="JobGiver_GraffitiPaintingSpree.cs" />
+    <Compile Include="ThoughtWorker_ViewedGraffitiMark.cs" />
+    <Compile Include="BreachBiasHook.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -62,6 +71,10 @@
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(HarmonyDll)</HintPath>
       <Private>false</Private>
     </Reference>
   </ItemGroup>
