@@ -43,3 +43,61 @@ refusal message.
 This blocked a real verification (`SETTLEMENT_VERBS_WAVE_1`'s pay-and-fire
 path) from completing — whoever picks this up should re-run that item's
 live test once fixed.
+
+## 2026-09-02 (FOUNDRY) — offline mechanism read; mod culprit NOT identified, static search abandoned
+
+Read the actual C# (`src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchPawnKitTools.cs`,
+the real `jawa/inventory_transfer` implementation — `JawaBenchPawnTools.cs`'s
+similarly-named inventory branch is a DIFFERENT tool, `jawa/pawn_kit`, not this
+one, don't confuse the two files again). It calls
+`p.inventory.innerContainer.TryAddOrTransfer(found, requested, true)` on the
+real `ThingOwner<Thing>` — company's own tool logic is correct and matches
+its own doc comment.
+
+Traced the real vanilla mechanism (`ThingOwner.TryAdd` → `CanAcceptAnyOf` →
+`GetCountCanAccept`, all read via RimSage against decompiled 1.6 source,
+`./Source/Verse/ThingOwner.cs`): `GetCountCanAccept` is `virtual`, and when
+`maxStacks == 999999` (the default, unlimited) it unconditionally returns
+`item.stackCount` — i.e. **a pristine, empty `Pawn_InventoryTracker` should
+ALWAYS accept a first item under vanilla rules.** A 100%-refusal across 2
+colonists, 2 unrelated defNames and counts 500→1 is therefore near-certainly
+either (a) a Harmony patch on the virtual `GetCountCanAccept`/`CanAcceptAnyOf`/
+`TryAdd` chain, or (b) something constructing `Pawn_InventoryTracker`'s
+container with a non-default `maxStacks`/capacity gate (a "no backpack, no
+capacity" pattern). This narrows the hypothesis from "some interaction" to
+"specifically a virtual-method override on this exact chain" — a real
+finding, not just restating the original suspicion.
+
+**Mod-culprit identification NOT completed.** Grepped
+`ModsConfig.FULL.LATEST.xml`'s 593 active packageIds for
+backpack/haul/inventory/capacity-shaped names and found 6 real candidates:
+`mlie.mercerbackpacks` (name strongly suggests exactly this "no backpack, no
+capacity" pattern — the single strongest lead), `mehni.pickupandhaul`
+(original suspicion), `fuu.autostriponhaul`, `memegoddess.buildfrominventory`,
+`haecriver.injuredcarry`, and our own `mandrake.rm.theft_hauler`. Could NOT
+confirm which one via static analysis: a full-text grep across the ~1300-mod
+Steam Workshop tree for `mercerbackpack`/`pickupandhaul` (both case-sensitive
+and `-i`) returned **zero hits over WSL/9p**, including on mods known to be
+installed and active — this filesystem path is not reliably greppable at this
+scale (consistent with this project's other documented 9p-slowness pain
+points), not evidence the mods are absent. `Player.log`/`Player-prev.log`
+don't log mod display names at startup in any greppable form either (checked
+against a known-active mod, `mehni.pickupandhaul`, as a control — zero hits
+there too, confirming this is a search-method failure, not a real absence).
+RimSage's source index (`mcp__rimsage__search_source`) only covers decompiled
+VANILLA game source, not mod assemblies — confirmed by a zero-hit control
+query. Abandoning the static hunt here per this item's own verify section's
+allowance to stop and hand off rather than loop.
+
+**What would resolve this in under a minute, live, that I could not do
+offline:** once the bridge is free, `Harmony.GetAllPatchedMethods()` compared
+against `AccessTools.Method(typeof(Verse.ThingOwner), "GetCountCanAccept")`
+(and `"TryAdd"`, `"CanAcceptAnyOf"`) will show — by name — exactly which
+mod's Harmony patch (if any) is intercepting this chain, instantly and
+authoritatively, no file-tree search needed. If nothing shows there, check
+whether `Pawn_InventoryTracker`'s `innerContainer.maxStacks` reads something
+other than `999999` on a live pristine colonist (reflect it via
+`jawa/thing_stats` or a raw field read if one exists) — that's the (b)
+hypothesis. Either check is a single bridge call once the bridge is free
+again; this is genuinely a live-diagnosis problem now, not a source-reading
+one.
