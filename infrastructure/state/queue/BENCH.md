@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T05:33:32Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-02T05:38:42Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -70,13 +70,3 @@ kind:     task
 thin:     no ## criteria
 summary:  Layer stack: design/Jawa/researchnormalizationprinciples.md (why) →
 prose:    infrastructure/state/items/RESEARCH_TREE_NORMALIZATION_1.md
-
-## SKYHOOK_BESPIN_REDESIGN_1 Rewrite+rename skyhook doc: repulsorlift high-altitude stations, first over Rust Cathedral, Empire-held, 6 rows cut
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SKYHOOK_BESPIN_REDESIGN_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/SKYHOOK_BESPIN_REDESIGN_1.md
