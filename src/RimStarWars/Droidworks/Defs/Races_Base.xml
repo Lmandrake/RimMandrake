@@ -41,6 +41,16 @@
        already-shipped OuterRim/KotOR droids using the same IsFlesh gate, not
        a Droidworks-native pawn) — owed to the next quicktest that actually
        spawns a `DW_Race_*` pawn kind. -->
+  <!-- DROID_KOTORDROIDS_PORT_WAVE1_1 (2026-09-02): wires the four
+       Droidworks recipes (RSW_DW_RebootDroid, RSW_DW_InstallRestrainingBolt,
+       RSW_DW_RemoveRestrainingBolt, RSW_DW_MemoryWipe) onto every generated
+       droid race in one place, closing the "recipeUsers wiring onto the
+       generated race defs is follow-up work" gap each of those RecipeDefs'
+       own header comments named. Inherit="False" defensively: ParentName=
+       "Human" gives no <recipes> list of its own to collide with today, but
+       the Cindermare/Skarnix <lifeStageAges> incident this same session
+       proved a silent list-append-not-replace bug is real and costly here,
+       not a hypothetical. -->
   <AlienRace.ThingDef_AlienRace Name="DW_Race_Base" ParentName="Human" Abstract="True">
     <race>
       <body>Human</body>
@@ -48,6 +58,12 @@
       <needsRest>false</needsRest>
       <fleshType>RSW_DW_FleshType_Droid</fleshType>
     </race>
+    <recipes Inherit="False">
+      <li>RSW_DW_RebootDroid</li>
+      <li>RSW_DW_InstallRestrainingBolt</li>
+      <li>RSW_DW_RemoveRestrainingBolt</li>
+      <li>RSW_DW_MemoryWipe</li>
+    </recipes>
     <alienRace>
       <generalSettings>
         <alienPartGenerator>
