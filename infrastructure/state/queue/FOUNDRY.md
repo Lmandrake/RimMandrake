@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T14:27:29Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-02T14:52:39Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -385,6 +385,6 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/QUEUE_ITEM_FILES_DECAY_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  rimflow has no hook forcing a close, or even a plain code commit that
 prose:    infrastructure/state/items/QUEUE_ITEM_FILES_DECAY_1.md
