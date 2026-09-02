@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T08:33:34Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-02T08:45:34Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -369,16 +369,6 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  Two consecutive restarts both hung indefinitely at the exact same point in
 prose:    infrastructure/state/items/COLD_LOAD_STATIC_CTOR_STALL_1.md
-
-## JAWA_SPAWN_KINDS_NO_RACE_1 Jawa_Spawn_Zygerrian/Yoder/Taung have no race + no combatPower — dead pawnkinds; plus RSW_Gun_Sonic_HiveEmitter forcedMiss and RSW_JawaIon_Stun stage order
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/JAWA_SPAWN_KINDS_NO_RACE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/JAWA_SPAWN_KINDS_NO_RACE_1.md
 
 ## HELIX_TELLUROX_SHELL_LOAD_CRASH_1 HelixTellurox crashes mod load to Core-only: a def parse error (MissingMethodException: default ctor for System.String) breaks RSW_TelluroxShell, whose null butcherProducts ref NREs corpse-gen
 state:    proposed

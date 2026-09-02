@@ -72,7 +72,12 @@
         <warmupTime>0.0</warmupTime>
         <range>12</range>
         <defaultCooldownTime>0.05</defaultCooldownTime>
-        <forcedMissRadius>0</forcedMissRadius>
+        <!-- RSW_Bullet_Sonic_HivePulse is Projectile_Explosive -> CausesExplosion=true.
+             VerbProperties.ConfigErrors (VerbProperties.cs:706) requires
+             forcedMissRadius>0 iff CausesExplosion; 0 here was a live Config Error
+             every load. 1.9 matches every other guy762_GrenadeDamage_sonic-chain
+             weapon in KotORGrenadeBelts.xml, not an invented value. -->
+        <forcedMissRadius>1.9</forcedMissRadius>
         <burstShotCount>1</burstShotCount>
         <ticksBetweenBurstShots>1</ticksBetweenBurstShots>
         <soundCast>kotorsound_bowcaster1</soundCast>

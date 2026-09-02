@@ -95,25 +95,25 @@
           </li>
         </capMods>
       </li>
-      <li>
-        <label>overloading</label>
-        <minSeverity>0.65</minSeverity>
-        <painFactor>0</painFactor>
-        <capMods>
-          <li>
-            <capacity>Consciousness</capacity>
-            <offset>-0.45</offset>
-          </li>
-          <li>
-            <capacity>Manipulation</capacity>
-            <offset>-0.40</offset>
-          </li>
-          <li>
-            <capacity>Moving</capacity>
-            <offset>-0.30</offset>
-          </li>
-        </capMods>
-      </li>
+      <!-- 🔴 RSW_JAWAION_STUN_STAGE_ORDER_1, fixed. HediffDef.StageAtSeverity
+           (HediffDef.cs:347-361) walks `stages` from the LAST index backward and
+           returns the first entry whose minSeverity <= current severity - it
+           trusts list order, not numeric minSeverity, so stages MUST be listed
+           ascending or a later-declared-but-lower-threshold entry silently
+           shadows an earlier one.
+
+           The DROIDWORKS_ION_GUARD_1 floor stage (minSeverity 0.5) was appended
+           AFTER "overloading" (0.65) instead of before it. Under backward-scan
+           that accidentally left "overloading" UNREACHABLE for any severity >=
+           0.5 (the floor stage, later in the list, always wins first) - which
+           happens to match the floor's own stated intent ("stays fully capped
+           ... until severity falls below 0.5", true on the way up through this
+           band as much as decaying down through it, since StageAtSeverity has no
+           notion of direction). Sorting the list back to ascending order without
+           also removing "overloading" would make it reachable again for 0.65-0.9
+           and REOPEN the weaker mid-band DROIDWORKS_ION_GUARD_1 was written to
+           close. So the dead stage is removed here, not just reordered - list is
+           now genuinely ascending AND behavior is unchanged from what shipped. -->
       <li>
         <!-- FLOOR STAGE, DROIDWORKS_ION_GUARD_1 (2026-08-30). Same setMax as
              "overloaded" below, at a LOWER minSeverity, so decay from 0.9 does

@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T08:33:34Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-02T08:45:34Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -61,3 +61,13 @@ kind:     task
 thin:     no ## criteria
 summary:  Layer stack: design/Jawa/researchnormalizationprinciples.md (why) →
 prose:    infrastructure/state/items/RESEARCH_TREE_NORMALIZATION_1.md
+
+## SAVE_HOLDS_DEAD_TITAN_CORPSE_1 Save/Scribe references dead ThingDef Corpse_Titan - 'Titan' no longer exists in the 592-mod live def dump
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SAVE_HOLDS_DEAD_TITAN_CORPSE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SAVE_HOLDS_DEAD_TITAN_CORPSE_1.md
