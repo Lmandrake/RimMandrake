@@ -98,6 +98,9 @@ measure count <DefType>                             one line; never a bare numbe
 python3 skills/rimworld-modding/scripts/validate_patch.py <path> --defs ...
 ./src/RimMandrake/Utils/show.sh <path>              open it in Explorer
 ./game --said "<his words>" up|down|loading         the moment he says it; bare ./game measures
+                                                     🔴 a REBOOT is yours to call, no asking
+                                                     (owner 2026-09-02) — bridge free first,
+                                                     then GAME_STATE_WORKFLOW.md's gates
 ./bridge [bench|foundry|free]                       OWNER ONLY — bare ./bridge says who has it
 python3 src/RimMandrake/rimflow/cli.py …            the ledger: file/claim/close/drop/verify
 node --check <file.js>                              Node 22 is installed user-local

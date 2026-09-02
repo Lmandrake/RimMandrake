@@ -41,6 +41,31 @@ about the cycle, this file wins; fix the window file in the same commit.
 the game is UP and are cleared automatically on `DOWN`, so no false urgency leaks
 forward.
 
+## 🔴 A REBOOT IS YOURS TO CALL — owner, 2026-09-02
+
+> *"When bridge is available go ahead and reboot. That should just be known at this
+> point."*
+
+**A window closes and relaunches the game itself, without asking**, whenever there is
+a reason to — a staged assembly deploy, a def/content change, a wedged game. Do not
+queue a restart behind him and do not ask permission for one. Announce it in your
+reply after the fact, not before it as a request.
+
+The two things that still gate it, and they are the only two:
+
+| gate | why |
+|---|---|
+| **The bridge must be free** (or yours) | someone else may be mid-drive; `rimflow bridge who`, then take it *for the reboot* so the reason is in the file they read |
+| **The window still costs ~25 min** | so spend it — `rimworld-load-round` §2/§3: decision strings and one signature per assembly, written BEFORE the game starts |
+
+⭐ Still run `./game --said "<his verbatim words>"` for each transition, exactly as
+below. The authorization changed who may *act*; it did not change how the state is
+recorded, and his words remain the provenance on the event.
+
+⛔ **What this does NOT unlock:** killing a game he is actively PLAYING. A debug or
+test map is disposable and no warning is owed; his campaign session is not. If you
+cannot tell which is loaded, that is the one case worth a one-line question.
+
 ## His phrases, and what you run
 
 The instant a game-state sentence arrives in your window, run the whole command —
