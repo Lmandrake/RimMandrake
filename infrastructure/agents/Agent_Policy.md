@@ -45,9 +45,12 @@ loud, and dangerous exactly where it is silent.
 
 Escalate the **model**, never the ceremony: a hard problem gets a smarter model on
 the same short leash. Put `model: opus` on an item you already know is hard;
-otherwise FOUNDRY starts at Sonnet and self-escalates after one failed attempt,
-noting it in the closing commit. External free workers (nemotron): candidate
-narrowing only, never conclusions, never writing — `research/FANOUT_WORKER_EVALUATION.md`.
+otherwise FOUNDRY starts at Sonnet and self-escalates after one failed attempt, or
+whenever the call itself is row 3 of the table above — triage and verification
+judgment with nobody else to catch it (a stale-drop ruling, grading a subagent's
+findings) — noting it in the closing commit. External free workers (nemotron):
+candidate narrowing only, never conclusions, never writing —
+`research/FANOUT_WORKER_EVALUATION.md`.
 
 ## Subagents — this is where the saving is
 
