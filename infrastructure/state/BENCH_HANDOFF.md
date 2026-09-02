@@ -1,40 +1,77 @@
-# BENCH handoff → Opus (2026-09-02, session 014vwgD9)
+# BENCH handoff (2026-09-02, session 014vwgD9 — written for the reboot)
 
-Owner is at the bench, actively driving. This is the one terminal today.
+Owner was at the bench, went AFK mid-session, came back. He reboots this window
+next. Everything below is committed and pushed through `8bead41e`.
 
-## Live state NOT in git (verify, don't trust)
-- **Game is UP at `programState=Playing`** on a **disposable dev quicktest colony**
-  (I loaded it to disprove the stall). Owner can quit to menu → load his campaign in
-  seconds; no cold load needed. Bridge is up; endpoint via
-  `rimbridge_client.resolve_endpoint()` (token changes per launch).
-- **Bridge is held by BENCH.** `./game` state is `loading`/up per owner's broadcast.
-- **`LoadTracer` mod is ENABLED in ModsConfig** (`Config/ModsConfig.xml`, backup
-  `.pre_loadtracer`, 598 li). It is a DIAGNOSTIC — pull it before real play. Offered
-  to remove it; owner hasn't answered yet.
+## Live state NOT in git — verify it, do not trust it
+- **Game is UP**, `programState=Playing`, **Ash'karr** (the real campaign world —
+  `jawa/world_info_get` says so; check before assuming a map is scratch), fresh
+  250×250 desert map, `ticksGame` ~1, paused, full mod list (**593 active**,
+  fingerprint `0d594d931ddff722`, 0 missing).
+- **Bridge is FREE.** `infrastructure/state/BRIDGE` is the one-line answer;
+  `rimflow bridge who` re-derives it. FOUNDRY was told it could take it.
+- **The map holds 21 built structures** (the review layout) plus 3 colonists.
+  Nothing on it is saved except `REVIEW_tile_structures_21.rws`.
+- **FOUNDRY is live and editing `design/Jawa/templates/*.lua`** — it committed
+  `3e154906` mid-session and had 7 template files dirty. Expect `.git/index.lock`
+  contention; **wait for it, never delete it.**
 
-## Just closed
-- **COLD_LOAD_STALL_INTERMITTENT_1 — NOT A BUG** (commit 4f14c0de). The "stall" was a
-  healthy idle main menu misread as a hang. Full evidence in
-  `infrastructure/state/items/COLD_LOAD_STALL_INTERMITTENT_1.md` and memory
-  `idle-menu-looks-like-load-stall.md`. PerformanceOptimizer cleared. Instruments
-  built and committed: `jawa/load_stall_probe` (companion tool) + `LoadTracer` mod.
-- **SAVE_HOLDS_DEAD_TITAN_CORPSE_1 — closed** (commit bd498088). Was a startup Scribe
-  ref in DeepStorage's `Mod_3532608331_*.xml` filter list, scrubbed offline; save-side
-  hits were foodRestriction filters that self-heal on re-save.
+## 🔴 The one thing that must not be lost: FOUR COMPILED, UNDEPLOYED FIXES
+Full detail and per-fix proof steps are in
+`infrastructure/state/items/COLD_LOAD_RUN_SHEET_2.md`. A DLL cannot be written
+while the game runs, so all four wait on the shutdown window:
 
-## Open threads for Opus
-1. **Remove LoadTracer from ModsConfig?** Offered; awaiting owner. One-liner: reverse
-   the `.pre_loadtracer` backup or delete the `<li>mandrake.rm.loadtracer</li>` line
-   + `deploy_custom_mods.py` won't remove it (it's a repo mod, just disable in config).
-2. **Load-error census.** Load-time red errors opened the in-game debug-log window
-   (that's *why* the menu looked wrong). Offered to census the fresh Player.log and
-   file as a NEW item. Not filed yet.
-3. **SAVEGAME_PURGE_KEEP_B_1** (filed, owner-ordered, `needs: game-up`): delete all
-   saves except the two newest `*_b` (WORLDMAP_V1_original_b, gravship_scratch_b).
-   Owner said "must be done with the game up." NOT started.
+```
+python.exe src/RimMandrake/bridgetools/build.py --gm --apply     # inventory_transfer + spawn_pawn
+python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod StructureInjections --apply
+python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod RimDefDump --apply
+```
 
-## Instruments (reusable, committed)
-- `jawa/load_stall_probe` — off-thread LongEventHandler read; the only tool safe
-  during a REAL load hang. Driver: `src/RimMandrake/bridgetools/probe_now.py`.
-- `LoadTracer` — `src/RimMandrake/LoadTracer/`, logs each static ctor before running.
-- Staged A/B (unused now): `deployed/config/Mod_2664723367_PerformanceOptimizerMod.FasterGetComp-OFF.xml`.
+🔴 **`--gm` is not optional** — without it the plan drops ~35 player-acting tools.
+⚠️ **Three repo DLLs are now NEWER than the game's copies.** "Repo file is newer,
+so it must be deployed" reads exactly backwards until those commands run.
+
+## Closed this session
+- **`SAVEGAME_PURGE_KEEP_B_1`** — 32 files, 888 MB → 43 MB, the two `*_b` kept.
+- **`BRIDGE_INVENTORY_TRANSFER_REFUSES_ALL_1`** — cause proven, and it was
+  **vanilla, not a mod**: a map thing's `holdingOwner` is `map.spawnedThings`, so
+  `TryAddOrTransfer` hits `ThingOwner`'s `owner is Map` guard and moves 0, always.
+  The whole mod shortlist is cleared. Fixed in source.
+- **`SPAWN_PAWN_SUBSTITUTES_VANILLA_KIND_1`** — it is the **world-pawn redress
+  path**. `GeneratePawn` leaves `forceGenerateNewPawn` false, so it recycles a
+  planet resident. The rate is a POOL, not a probability (16/300 → 0/200 as it
+  drained), which is why every recorded percentage disagrees. **Stop quoting a
+  rate.** Batch spawns were consuming real Ash'karr world pawns. Fixed in source.
+- **`RIMPLACE_GENSTEP_LIVE_PROOF_1`** (filed and closed) — GenStep_RimplacePlan
+  proven live, 130/130 terrain, 69/69 things, 192/192 roof, plus a synthetic
+  foundation plan. Discharges `TILE_STRUCTURE_DESIGNS_1`'s live-verify criterion.
+- **`BRIDGE_PAWN_THOUGHTS_CARAVAN_GAP_1`** — its fix was already deployed and only
+  unproven; formed a caravan and read `TravelCompanions` off a member. Met.
+
+## Open threads
+1. **Rebuild the review save when FOUNDRY lands.** `REVIEW_tile_structures_21.rws`
+   is a snapshot from before FOUNDRY's template edits; 7 templates were dirty.
+   Owner knows. ~5 minutes with the bridge. Key: `items/TILE_STRUCTURE_REVIEW_SAVE_1.md`.
+2. **`WILD_ANIMALS_PADDED_LISTS_1` — the bridge half returned a NEGATIVE.** Nothing
+   Harmony-patches `wildAnimals`. The padder is a direct def mutation at load, so a
+   patch inventory can never name it. Next step is a **null test on the 13-mod
+   minimal list**, not more searching.
+3. **`WEAPONS_DONOR_RETIREMENT_1`** — measured live: the five "accepted residual
+   risk" apparel defs all resolve to `mandrake.rsw.armoury`, not kotorweapons, so
+   that accepted cost does not exist. kotorcore is still blocked on
+   `guy762.KotORDroids`.
+4. **LoadTracer is still ENABLED in ModsConfig** (carried over from the previous
+   handoff, never answered). It is a DIAGNOSTIC — pull it before real play.
+5. **Load-error census** of the fresh `Player.log` — still offered, still not filed.
+   ⚠️ `harvest_log.py` currently REFUSES because the def dump is from an earlier
+   run. After the RimDefDump deploy that is one bridge call to fix, not a reload.
+
+## New this session, and both are doctrine now
+- **Bridge handoff**: `infrastructure/state/BRIDGE` + `rimflow bridge who/take/release`,
+  `./bridge bench|foundry|free` for the owner. It **errs toward allowing** — a take
+  is refused only while the holder has been active inside 45 minutes, `--force`
+  always works. CLAUDE.md § "The bridge is passed through one file".
+- **Review options ship as a savegame** (owner, by card): one map with all options
+  on a grid, an item file giving the grid key, saves kept until he says delete.
+  CLAUDE.md § "Options he must LOOK at ship as a savegame". 🔴 Back up the Saves
+  folder's keepers and stat it after — `save_game` has overwritten the current slot.

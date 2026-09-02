@@ -3919,3 +3919,5 @@
 {"seat":"FOUNDRY","event":"file","id":"TEMPLATE_CANVAS_UNDECLARED_1","title":"A rimplace template's required canvas size lives nowhere machine-readable, only in ad-hoc header comments and a runtime ctx:refuse","kind":"bug","target":"v1","needs":"offline","for":"BENCH","ts":"2026-09-02T16:24:36Z"}
 {"seat":"BENCH","event":"bridge","state":"released","ts":"2026-09-02T16:25:12Z"}
 {"seat":"FOUNDRY","event":"file","id":"BRIDGE_OVERRIDE_ATTRIBUTION_GAP_1","title":"bridge give/forced-take don't record WHO/WHY in the permanent ledger event, only in the disposable BRIDGE mirror","kind":"bug","target":"v1","needs":"offline","for":"BENCH","ts":"2026-09-02T16:33:39Z"}
+{"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-09-02T16:34:25Z"}
+{"seat":"BENCH","event":"seat","state":"idle","reason":"agent-reboot","note":"Reboot handoff in infrastructure/state/BENCH_HANDOFF.md. Bridge FREE, game UP on Ash'karr. FOUR compiled undeployed fixes wait on the shutdown window (companion --gm, StructureInjections, RimDefDump) - run sheet COLD_LOAD_RUN_SHEET_2 has the commands and per-fix proof steps.","ts":"2026-09-02T16:38:31Z"}
