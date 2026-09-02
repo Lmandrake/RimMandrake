@@ -64,3 +64,64 @@ Droidworks-specific quicktest tier, not this load. The three `## criteria` check
 need a dedicated Droidworks-tier quicktest load to verify (spawn a pilot chassis,
 ion-damage past 0.9, confirm `DW_PoweredDown` lands and does not self-clear, confirm
 `Recipe_RebootDroid` now has something to target) — not done this pass, still open.
+
+## 2026-09-02 (FOUNDRY) — actual root cause found, three real bugs fixed
+
+Opus code review (`feature-dev:code-reviewer`) of the whole ion/power-down
+state machine, verified against decompiled 1.6 source and the live deployed
+copy rather than trusted on prose. Found the mechanism was broken in THREE
+independent, compounding ways — this is very likely why the wiring "landed"
+but never actually worked when exercised:
+
+1. **The real root cause**: `NeedDefs_Droidworks.xml`'s `RSW_DW_Power`
+   `needClass` was the bare `Droidworks.Need_Power` — `GenTypes.
+   GetTypeInAnyAssembly` does exact matching only, never a namespace-suffix
+   match, against the real class `RimMandrake.StarWars.Droidworks.
+   Need_Power`. Resolved to null, every droid silently failed `AddNeed`
+   (caught and logged, not a crash), and NO droid ever had this need. That
+   killed the power-exhaustion route into `RSW_DW_PoweredDown` entirely,
+   both charger comps (`TryGetNeed<Need_Power>()` always null), and
+   `Recipe_RebootDroid`'s charge restore. One straggler from the C#
+   namespace migration that fixed everything else in this mod. **Fixed.**
+2. `HediffComp_IonOverloadsDroid`'s conversion threshold (0.9, the ion
+   hediff's TOP stage) sat above the actual Downed point (0.5, the
+   `DROIDWORKS_ION_GUARD_1` floor stage added 2026-08-30 specifically so
+   decay from 0.9 wouldn't un-down the pawn). Left a window where the
+   droid is Downed at 0.5, combat naturally stops (AI won't keep hitting a
+   Downed target), and buildup plateaus/decays back out before ever
+   reaching 0.9 — self-recovering exactly like the reported bug. **Fixed**
+   (threshold now 0.5, matching the actual Downed stage).
+3. The guard was `pawn.def.GetModExtension<DroidworksExtension>() != null`
+   — present only on `DW_Family_*` descendants — instead of this item's
+   own "Depends on" note's instruction to key on `DW_FleshType_Droid`.
+   Every non-Droidworks droid race silently failed the gate. **Fixed**
+   (now keys on `pawn.RaceProps.FleshType == DroidworksDefOf.
+   RSW_DW_FleshType_Droid`, added to `DroidworksDefOf`).
+
+Also fixed in the same pass: `RemoveHediff(parent)` ran BEFORE
+`AddHediff(RSW_DW_PoweredDown)`, leaving the droid with no
+Consciousness-capping hediff for one instant — `CheckForStateChange` fires
+a "no longer downed" message and can abort an in-flight rescue/capture job
+on that exact pawn mid-conversion. Reordered: add first, then remove.
+
+All fixes compile clean (`Droidworks.csproj`, 0/0). **Still open**: a
+fourth finding, more architectural — `DamageWorker_IonBuildup.
+ApplyMachineTier` re-applies vanilla EMP (a SEPARATE, self-clearing
+`StunHandler` stun) to every non-mechanoid non-flesh pawn, including
+droids, alongside the buildup hediff this comp watches. That dual-path
+behavior is itself deliberate and well-documented (2026-08-12/22/29
+comments in that file) — NOT touched here, since overriding it needs to
+be a live-tested decision, not a code-review-prose one. Flag for whoever
+runs the next Droidworks quicktest: does the vanilla EMP stun (not
+`RSW_JawaIon_Stun`) end and let the droid appear to "get back up" before
+the buildup-based conversion ever gets a chance? If so, that's a second,
+independent contributor to the original symptom beyond findings 1-3.
+
+Not fixed, filed separately as `DROIDWORKS_CHARGER_STATE_MACHINE_SWEEP_1`:
+chargers ignoring building power/switch state, chargers charging hostile/
+prisoner droids, `Recipe_RebootDroid` skipping `base.ApplyOnPawn`, and a
+per-tick O(hediffs) scan in `HediffComp_DWBoltResentment`.
+
+Deploy still owed — `Droidworks` mod is not in the live 587-mod ModsConfig
+this session; these fixes need a Droidworks-tier quicktest load to
+live-verify, matching the criteria below.

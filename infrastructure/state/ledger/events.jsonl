@@ -4010,3 +4010,9 @@
 {"seat":"FOUNDRY","event":"file","id":"BRIDGE_PAWNTOOLS_SILENT_SUCCESS_SWEEP_1","title":"opus code review of JawaBenchPawnTools/PawnKitTools.cs found 8 more silent-success/data-loss patterns beyond the 3 already fixed","kind":"bug","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-02T23:53:45Z"}
 {"seat":"FOUNDRY","event":"claim","id":"BRIDGE_PAWNTOOLS_SILENT_SUCCESS_SWEEP_1","ts":"2026-09-02T23:54:17Z"}
 {"seat":"FOUNDRY","event":"start","id":"BRIDGE_PAWNTOOLS_SILENT_SUCCESS_SWEEP_1","ts":"2026-09-02T23:54:17Z"}
+{"seat":"BENCH","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-09-02T23:54:51Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","ownerSaid":"If you have bridge go for it!","ts":"2026-09-02T23:54:59Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","ownerSaid":"Game is up","ts":"2026-09-02T23:55:08Z"}
+{"seat":"FOUNDRY","event":"file","id":"JAWABENCH_COMPANION_NOT_LOADING_1","title":"JawaBench companion never registers this restart - RimBridge starts clean but zero log trace of the companion, DLL is present and correctly sized","kind":"bug","target":"v1","needs":"bridge","for":"FOUNDRY","ts":"2026-09-02T23:56:33Z"}
+{"seat":"BENCH","event":"bridge","state":"released","ts":"2026-09-02T23:57:59Z"}
+{"seat":"FOUNDRY","event":"file","id":"DROIDWORKS_CHARGER_STATE_MACHINE_SWEEP_1","title":"opus review found 4 more Droidworks bugs beyond the power-down root cause: unpowered/hostile charging, reboot skips base surgery, O(hediffs) per-tick scan","kind":"bug","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-02T23:58:55Z"}

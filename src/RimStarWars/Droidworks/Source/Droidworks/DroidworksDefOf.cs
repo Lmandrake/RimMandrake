@@ -10,6 +10,7 @@ namespace RimMandrake.StarWars.Droidworks
         public static HediffDef RSW_DW_IonOverload;
         public static NeedDef RSW_DW_Power;
         public static JobDef RSW_DW_Recharge;
+        public static FleshTypeDef RSW_DW_FleshType_Droid;
 
         // DROIDWORKS_BOLT_CORE_1
         public static HediffDef RSW_DW_RestrainingBolt;

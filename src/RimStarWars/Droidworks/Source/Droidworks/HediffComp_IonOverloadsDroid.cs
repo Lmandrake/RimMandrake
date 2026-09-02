@@ -37,7 +37,15 @@ namespace RimMandrake.StarWars.Droidworks
     /// </summary>
     public class HediffComp_IonOverloadsDroid : HediffComp
     {
-        private const float OverloadThreshold = 0.9f; // RSW_JawaIon_Stun's own top "overloaded" stage minSeverity
+        // RSW_JawaIon_Stun's DROIDWORKS_ION_GUARD_1 FLOOR stage minSeverity, NOT
+        // its top "overloaded" stage (0.9). Both stages cap Consciousness
+        // identically, but the floor stage is where the droid actually becomes
+        // Downed - fixed 2026-09-02 (opus code review) after the original 0.9
+        // threshold left a window (Downed at 0.5, converted only at 0.9) where
+        // combat naturally stops (AI won't keep hitting a Downed target) and the
+        // buildup can plateau and decay back out before ever reaching 0.9,
+        // self-recovering exactly like the bug this comp exists to prevent.
+        private const float OverloadThreshold = 0.5f;
 
         public override void CompPostTick(ref float severityAdjustment)
         {
@@ -47,7 +55,11 @@ namespace RimMandrake.StarWars.Droidworks
             }
 
             Pawn pawn = parent.pawn;
-            if (pawn?.def?.GetModExtension<DroidworksExtension>() == null)
+            // Fixed 2026-09-02: was gated on GetModExtension<DroidworksExtension>(),
+            // present only on DW_Family_* descendants - every non-Droidworks droid
+            // race (Droid Depot, KotOR, JDS, ...) silently failed this gate with no
+            // log. Key on the actual "is this a droid" signal instead.
+            if (pawn?.RaceProps?.FleshType != DroidworksDefOf.RSW_DW_FleshType_Droid)
             {
                 return;
             }
@@ -57,8 +69,13 @@ namespace RimMandrake.StarWars.Droidworks
                 return; // already powered down some other way (e.g. Need_Power) — leave it alone
             }
 
-            pawn.health.RemoveHediff(parent);
+            // Fixed 2026-09-02: add DW_PoweredDown BEFORE removing parent. The old
+            // order left the droid with no Consciousness-capping hediff for one
+            // instant, which un-downs it mid-conversion (CheckForStateChange fires
+            // a "no longer downed" message and can abort an in-flight rescue/
+            // capture job on this exact pawn) before the replacement hediff lands.
             pawn.health.AddHediff(DroidworksDefOf.RSW_DW_PoweredDown);
+            pawn.health.RemoveHediff(parent);
         }
     }
 }

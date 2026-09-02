@@ -2,15 +2,25 @@
 <Defs>
 
   <!-- ========================================================================
-       RSW_DW_Power — the droid power need. Backs Droidworks.Need_Power
+       RSW_DW_Power — the droid power need. Backs
+       RimMandrake.StarWars.Droidworks.Need_Power
        (Source/Droidworks/Need_Power.cs). Falls at the race's
        DroidworksExtension.powerFallPerDay; at 0.02 the C# applies RSW_DW_PoweredDown
        via NeedInterval (state 3 — see HediffDefs_Droidworks.xml). Fields match a
        vanilla NeedDef shape 1:1 (RimWorld's own Chemical_* needs), not guessed.
+
+       🔴 FIXED 2026-09-02 (FOUNDRY, opus code review): needClass was the bare
+       "Droidworks.Need_Power" — GenTypes.GetTypeInAnyAssembly does EXACT
+       matching only, never a namespace-suffix match, so this resolved to null
+       and every droid silently failed AddNeed (caught, logged, swallowed) —
+       no droid ever had this need. The whole power-exhaustion route into
+       RSW_DW_PoweredDown, both charger comps, and Recipe_RebootDroid's charge
+       restore were all dead as a result. This was the actual root cause
+       DROIDWORKS_POWEREDDOWN_NOT_WIRED_1 was chasing.
   ======================================================================== -->
   <NeedDef>
     <defName>RSW_DW_Power</defName>
-    <needClass>Droidworks.Need_Power</needClass>
+    <needClass>RimMandrake.StarWars.Droidworks.Need_Power</needClass>
     <label>power</label>
     <description>Stored charge. A droid whose power runs out shuts down until someone reboots it.</description>
     <showOnNeedList>true</showOnNeedList>

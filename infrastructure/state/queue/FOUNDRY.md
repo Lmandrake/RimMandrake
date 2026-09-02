@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T23:54:17Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: BENCH
+as-of: 2026-09-02T23:58:55Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -396,4 +396,24 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-_none._
+Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
+
+## JAWABENCH_COMPANION_NOT_LOADING_1 JawaBench companion never registers this restart - RimBridge starts clean but zero log trace of the companion, DLL is present and correctly sized
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     bug
+thin:     spec, verify and criteria all present
+summary:  On the 2026-09-02 23:5x restart (BENCH's "land 2 mod removals + Inhabited.dll"
+prose:    infrastructure/state/items/JAWABENCH_COMPANION_NOT_LOADING_1.md
+
+## DROIDWORKS_CHARGER_STATE_MACHINE_SWEEP_1 opus review found 4 more Droidworks bugs beyond the power-down root cause: unpowered/hostile charging, reboot skips base surgery, O(hediffs) per-tick scan
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DROIDWORKS_CHARGER_STATE_MACHINE_SWEEP_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROIDWORKS_CHARGER_STATE_MACHINE_SWEEP_1.md
