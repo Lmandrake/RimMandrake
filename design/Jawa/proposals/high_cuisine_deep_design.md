@@ -32,7 +32,7 @@ Verdicts and the owner's notes, verbatim (frozen source: `design/Jawa/worldbuild
 | diplomacy-claim | v2→**v1** | This should be mostly a VERY big boon or VERY big bane, or else it's a weak "isn't this food nice." Menu should help you recognize what would do best here, not make the player remember a bunch of arcane lore. Likely requires a special "diplomatic meal" event or something to make this easier to remember. |
 | ninefold-feast | dream→**v1** | Should earn valuable information, communion with the gods, calming of wild diefic relations, and a general ce-centering on Jawaness for all. Should have many kinds of meals/ingredients that serve each god, not just one specific thing, or it won't ever happen. Could easily unlock another layer of ship trust, sharing of old technology, and other plot elements. (Helps calm the ship too, essentially, feel better about it's inherent new Jawaness). |
 | terroir-brewing | v2→**v1** | LOVE the idea that some of the cuisine manufacturing "works better" in different biomes or latitudes. The others should slowly tick along still, but some "supercharge" in the right conditions and really crank out or produce higher quality output. that's gold. |
-| chef-performance | v2→**v1** | The Feastboss. Cool role. Explore with me how we might do this. There is a feasting ideologion concept currently in play, but I don't remember being particularly impressed by it. But studying it might be useful. |
+| chef-performance | v2→**v1** | The Feastboss. Cool role. Explore with me how we might do this. There is a feasting ideologion concept currently in play, but I don't remember being particularly impressed by it. But studying it might be useful. *(✅ DESIGNED with owner 2026-09-02 — see §5.5 The Feastboss; replaces the existing feast ideoligion)* |
 | recipe-discovery | dream→**v1** | That is SO Jawa!!! Absolutely. Start with basic stuff, and progress up the tree. Ingest the "stuff on a stick" mod into our own version and jettison that mod eventually... it's rather silly anyway (I think there are two of them). Let's take what we need and release them. |
 | preservation-vocab | v2→**v1** | SO GOOD! Canning is terrestrial. This is awesome. Different food will need different preservation methods. And now we know why we want to go to the salt flats, or the tar pits, or sand dunes. Let's make everything salvageable commodoties! The ship should be absolutely full of weird stuff. I love the idea of piles of sand in a box, or a barrel of tar. So good. More than one method should work for each food type, maybe some work for all, just think about each one. Sand-oven should be sand-drying. |
 | live-ingredient-tank | dream→**v1** | YES! And a lot more like this. This is deep Star Wars cannon. Grabbing a squealing creature from a fish bowl and eating it live should get a big mood buff and honor especially the Hutt. Gotta be animated somehow. |
@@ -342,6 +342,87 @@ would already be diegetically owed). The Council's participation-bias rules
 apply unchanged: a pleased god's course is loud and blessed; a wrathful
 god's course (most likely Sh'kaar's or Zizzik's) is rare-but-possible to go
 wrong, which is the entire point of offering them anything at all.
+
+---
+
+## 5.5 The Feastboss — the impresario the Ninefold Feast runs on
+
+Designed with the owner in a bench session, 2026-09-02. His framing: *"The
+Feastboss. Cool role. Explore with me how we might do this."* Every ruling
+below is his, verbatim where quoted.
+
+**The problem it solves.** Vanilla's feast ritual is a passive gathering —
+everyone eats, everyone gets a mood buff, nothing is at stake. ✅ **RULED:
+that existing feasting ideoligion is REPLACED entirely** — stripped, not kept
+alongside. The Feastboss makes the feast a *performance with a skilled pawn's
+judgment at its center*, where the same Nine-Course meal (§5, Tier 4) can
+bless the clan or offend a god depending on who runs it and how they play the
+room.
+
+**What it is.** A permanent, titled ideoligion role — one Feastboss at a time,
+like the Moral Guide — but the title is **earned by cooking, never appointed**.
+✅ **RULED: won by a triumph, lost by a disaster.** A pawn who lands a
+genuinely ambitious feast claims the title; a public catastrophic failure (or
+death) loses it. The title tracks live reputation, not a menu assignment — the
+clan has a named impresario it rallies around, and watches fall.
+
+**The three-in-one binding — the counterweight, and the best part.** ✅
+**RULED: the Feastboss must personally be all three of these people at once,**
+skill-gated, with *"special dishes that open the role"* as the gate:
+
+1. **The exotic-animal tender.** The hazard-pantry and live-ingredient
+   creatures (§4, and the ruled live-ingredient tanks) are tended by the
+   Feastboss's own hand — the squirming, dangerous, wondrous bestiary is
+   *their* husbandry burden, not a separate animal-hauler's.
+2. **The cook.** They prepare the courses themselves — no delegating the
+   knife.
+3. **The impresario.** They read the room, reach for the dangerous gods, and
+   perform.
+
+⇒ This is a genuine opportunity cost: the Feastboss braids **animal husbandry
++ cooking + social/ritual performance** into one colonist across three skill
+trees. You give up a great generalist to have a great Feastboss, and the role
+is a bottleneck by design — there is exactly one throat through which the
+whole divine-cuisine system passes.
+
+**The core verbs — ✅ RULED all three, gated behind the role:**
+
+- **Read the gods.** The Feastboss surfaces which gods are hungry or wrathful
+  tonight and advises the menu. ⚠️ **Skill-gated and fallible** — a mediocre
+  Feastboss *misreads* which gods are angry, so reaching for a wrathful course
+  on bad intel is a live way disasters happen. Good intel is the reward for a
+  skilled impresario; a bad one flies blind and thinks they can see.
+- **Unlock the wrathful courses.** Anyone with the ingredients can cook the
+  *safe* god-courses (Ishko's darkness, Mob'Unloo's honest provenance). Only a
+  Feastboss can attempt the ones that can fail catastrophically — Ozzik's
+  most-ambitious dish, Zizzik's live-risk step, Sh'kaar's tableside
+  destruction (§5, Tier 4). A feast without a Feastboss is safe and small; a
+  feast with one can reach for the wrathful gods at all.
+- **Perform to rescue failures.** Their performance skill can convert a failed
+  course from a divine catastrophe into mere story. ⚠️ **The rescue burns
+  them** — a stacking exhaustion/strain hediff — so a feast that keeps going
+  wrong can break the impresario mid-service. The safety net has a floor.
+
+**Skin in the game.** The Feastboss bears the god's reaction in their own
+name: land a wrathful course and they gain standing (a "Feast-Crowned"
+reputation/mood); botch it and *they* take the scar — a hediff, a
+broken-reign ledger entry (`divine_satiation_engine.md`, the Reign-Scars
+pattern) written against them, the clan watching their impresario fail a god
+in public. The title has skin in the game, which is exactly what vanilla's
+feast lacks.
+
+**Where it plugs in.** The Feast is performed at the sacred center the Council
+of Voices already convenes at (§5's staging note); the Feastboss is the
+officiant role that ritual type has been missing. The wrathful-course
+risk/reward is the same `divine_satiation_engine.md` §5b event contract, now
+with a named pawn staking their standing on each attempt.
+
+**Build ladder for the role specifically:** (1) the titled role + the
+triumph-wins/disaster-loses tracking + the three-skill gate and the
+qualifying "opening dishes"; (2) read-the-gods advice surfaced through the
+menu, skill-gated fallible; (3) the wrathful-course unlock and the
+performance-rescue hediff. Tier 1 is the role existing; the feast itself
+(§5 Tier 4) is its own build.
 
 ---
 
