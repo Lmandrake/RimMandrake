@@ -50,6 +50,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
+import cherrypicker  # noqa: E402
 from game_paths import DEF_DUMP  # noqa: E402
 from genome_scan import (  # noqa: E402
     active_package_ids,
@@ -282,16 +283,45 @@ def build(args) -> int:
     gene_by_name = {g["defName"]: g for g in genes_raw}
     log(f"dump: {len(xenos)} xenotypes, {len(genes_raw)} genes")
 
-    rows = [x for x in xenos if x.get("packageId", "").lower() in CANDIDATE_PACKS]
-    excluded = Counter(x.get("modName", "?") for x in xenos
-                       if x.get("packageId", "").lower() not in CANDIDATE_PACKS)
-    log(f"rows: {len(rows)} selected, {sum(excluded.values())} excluded")
+    # 🔴 THE DEF DUMP IS PRE-CHERRY-PICKER: a xenotype or gene the owner already cut
+    # is still in it, unmarked, and this register decides which PACK to standardise
+    # on per species — showing a cut implementation as a live candidate would put a
+    # decision in front of the owner about content his game does not have.
+    # `DUMP_DERIVED_SHEETS_SHOW_CUT_1`, facts/dump-is-pre-cherrypicker.md. Same
+    # pattern as `animal_contact_sheet.py`: drop cut rows from the candidate set by
+    # default (a cut xenotype is not a live keep/cut decision, it is an already-made
+    # one) and say so, with a count, everywhere a human reads this — stderr AND the
+    # HTML page itself, since the owner opens the page directly rather than reading
+    # this tool's console output first.
+    cuts = cherrypicker.load()
+    xenos_kept, xenos_cut = cuts.filter(xenos, key=lambda x: ("XenotypeDef", x["defName"]))
+    log(cuts.provenance(len(xenos_cut)))
 
-    # Gene frequency across the selected rows only.
+    rows = [x for x in xenos_kept if x.get("packageId", "").lower() in CANDIDATE_PACKS]
+    rows_cut = [x for x in xenos_cut if x.get("packageId", "").lower() in CANDIDATE_PACKS]
+    excluded = Counter(x.get("modName", "?") for x in xenos_kept
+                       if x.get("packageId", "").lower() not in CANDIDATE_PACKS)
+    log(f"rows: {len(rows)} selected, {sum(excluded.values())} excluded, "
+        f"{len(rows_cut)} cut (Cherry Picker) and dropped from the candidate set")
+
+    # A cut GeneDef is neutered, not deleted (established by weapon_tag_audit.py's
+    # `weaponTags` case) — its record can still be present and still referenced by
+    # a KEPT xenotype's `genes` list. Exclude it from the columns a pack is judged
+    # on: a gene the game no longer has is not part of "which pack has more genes".
+    cut_genes = cuts.by_type.get("GeneDef", frozenset())
+
+    # Gene frequency across the selected, live rows only.
     freq = Counter()
+    cut_gene_refs = 0
     for x in rows:
         for g in x["fields"].get("genes") or []:
+            if g in cut_genes:
+                cut_gene_refs += 1
+                continue
             freq[g] += 1
+    if cut_genes:
+        log(f"genes: {len(cut_genes)} cut in total, {cut_gene_refs} references into "
+            f"them from the {len(rows)} candidate rows excluded from the columns")
 
     shared = {g for g, n in freq.items() if n >= args.min_shared}
     singles = {g for g in freq if g not in shared}
@@ -350,6 +380,15 @@ def build(args) -> int:
       f'built, not what the XML ships. Icons are the game\'s own, '
       f'{len(icons)} of {len(want_paths)} recovered '
       f'(vanilla and Outer Rim art lives inside Unity AssetBundles).</p>')
+    w(f'<p class="lede">{esc(cuts.provenance(len(xenos_cut)))}. '
+      f'{len(rows_cut)} of those cut xenotypes belong to a candidate pack and are '
+      f'NOT on this page &mdash; a cut xenotype is not a live pack-choice candidate, '
+      f'it is a decision already made. {cut_gene_refs} gene references from the '
+      f'{len(rows)} rows shown point at a cut GeneDef and are excluded from the '
+      f'columns the packs are compared on for the same reason.</p>'
+      if (xenos_cut or cut_gene_refs) else
+      f'<p class="lede">{esc(cuts.provenance(0))} &mdash; none of it touches a '
+      f'candidate xenotype or gene here.</p>')
 
     contested = [s for s in species_order if len(by_species[s]) > 1]
 
@@ -360,12 +399,14 @@ def build(args) -> int:
         members = [x for x in rows if x["packageId"].lower() == pid]
         if not members:
             continue
-        counts = sorted(len(x["fields"].get("genes") or []) for x in members)
+        counts = sorted(sum(1 for g in (x["fields"].get("genes") or [])
+                            if g not in cut_genes) for x in members)
         own = sum(
             1
             for x in members
             for g in (x["fields"].get("genes") or [])
-            if ((gene_by_name.get(g) or {}).get("packageId") or "").lower() == pid
+            if g not in cut_genes
+            and ((gene_by_name.get(g) or {}).get("packageId") or "").lower() == pid
         )
         gen = sum(1 for x in members
                   if (x["fields"].get("factionlessGenerationWeight") or 0) > 0)
@@ -455,6 +496,8 @@ def build(args) -> int:
         union: Counter = Counter()
         for x in impls:
             for g in x["fields"].get("genes") or []:
+                if g in cut_genes:
+                    continue
                 union[g] += 1
         cols = sorted(union, key=lambda g: (-union[g], glabel(g)))
         agreed = sum(1 for g in cols if union[g] == len(impls))
@@ -554,7 +597,8 @@ def build(args) -> int:
       f'as a file is included the same as any other.</p>')
     for s in uncontested:
         x = by_species[s][0]
-        have = sorted(x["fields"].get("genes") or [], key=glabel)
+        have = sorted((g for g in (x["fields"].get("genes") or []) if g not in cut_genes),
+                     key=glabel)
         pack_label, pack_cls = CANDIDATE_PACKS[x["packageId"].lower()]
         marker = ('<span class="star">&#9733;</span>' if s in ROSTER_SPECIES
                   else "&#9675;")

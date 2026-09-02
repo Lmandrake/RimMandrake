@@ -59,6 +59,7 @@ from pathlib import Path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from game_paths import DEF_DUMP  # noqa: E402
 import dump_projection  # noqa: E402
+import cherrypicker  # noqa: E402
 
 # 🔴 The db is at the DefDump ROOT, not inside the capture — it is derived, so
 # pruning a capture must never cost it. `DEF_DUMP` is the CAPTURE under the dated
@@ -202,6 +203,21 @@ def _net(effects) -> float:
 
 def xenotypes(conn: sqlite3.Connection, genes: dict[str, dict],
               cosmetic: dict[str, dict]) -> list[dict]:
+    """Every XenotypeDef in the dump, each tagged with whether Cherry Picker has
+    since cut it.
+
+    🔴 THE DUMP CAN BE STALE AGAINST CHERRY PICKER (`facts/dump-is-pre-cherrypicker.md`).
+    Measured on this campaign's 2026-09-02 capture: 0 of the current cut list's 1,509
+    keys are XenotypeDef, so this tags nothing today — but the check is wired in
+    rather than skipped, because "no xenotype has been cut yet" is a fact about
+    today's list, not a property of this tool. A gene the owner cuts is a different
+    story: the two GeneDefs on the live list (AG_MeatBurst,
+    Turn_Gene_FleshbeastBurster) are genuinely ABSENT from this capture's 3,866
+    GeneDef records, not present-and-neutered the way a cut ThingDef is
+    (`weapon_tag_audit.py`) — so a cut gene already drops out of `gene_list` lookups
+    here with no help needed, and is not re-checked.
+    """
+    cuts = cherrypicker.load()
     rows = []
     for def_name, label, mod_name, blob in conn.execute(
         "select def_name, label, mod_name, json from defs "
@@ -222,8 +238,9 @@ def xenotypes(conn: sqlite3.Connection, genes: dict[str, dict],
             "size": _net(effects) if effects else 1.0,
             "description": (fields.get("descriptionShort")
                             or fields.get("description") or "").strip(),
+            "cut": cuts.cut("XenotypeDef", def_name),
         })
-    return rows
+    return rows, cuts
 
 
 def cmd_genes(args) -> None:
@@ -247,10 +264,12 @@ def cmd_xenotypes(args) -> None:
     conn = _connect()
     genes = size_genes(conn)
     cosm = cosmetic_only_genes(conn, set(genes))
-    rows = xenotypes(conn, genes, cosm)
+    rows, cuts = xenotypes(conn, genes, cosm)
+    cut_n = sum(1 for r in rows if r["cut"])
     print(f"MEASURED {len(rows)} XenotypeDefs")
+    print(cuts.provenance(suppressed=cut_n))
     for row in rows:
-        flag = "BIG " if row["size"] >= 1 + BIG_ENOUGH else "    "
+        flag = "CUT " if row["cut"] else ("BIG " if row["size"] >= 1 + BIG_ENOUGH else "    ")
         note = ",".join(row["sizeGenes"]) or ("cosmetic:" + ",".join(row["cosmeticGenes"])
                                               if row["cosmeticGenes"] else "-")
         print(f"  {flag}{row['size']:>5}  {row['defName']:<32} {row['mod'][:30]:<30} {note}")
@@ -278,6 +297,7 @@ SPECIAL = "SPECIAL"      # big, but a giant weapon still reads wrong
 ALREADY = "ALREADY BIG"  # carries a mechanical size gene already
 SMALLER = "ALREADY SMALL"
 FOREIGN = "NOT OURS"
+CUT = "CUT"              # Cherry Picker has already removed this xenotype
 
 VERDICTS = {
     # ---- strong candidates -------------------------------------------------
@@ -332,6 +352,8 @@ OURS_PREFIXES = ("RimMandrake", "RSW_MandrakeJawa", "Jawa_", "guy762_")
 
 def verdict_for(row: dict) -> tuple[str, str]:
     name = row["defName"]
+    if row.get("cut"):
+        return CUT, "already cut by Cherry Picker — not in the shipped game, not a candidate"
     if name in VERDICTS:
         return VERDICTS[name]
     if row["size"] >= 1 + BIG_ENOUGH:
@@ -349,12 +371,14 @@ def cmd_shortlist(args) -> None:
     conn = _connect()
     genes = size_genes(conn)
     cosm = cosmetic_only_genes(conn, set(genes))
-    rows = xenotypes(conn, genes, cosm)
+    rows, cuts = xenotypes(conn, genes, cosm)
     order = {v: i for i, v in enumerate(
-        [STRONG, PLAUSIBLE, SPECIAL, TALL, ALREADY, HUMAN, NEVER, SMALLER, FOREIGN])}
+        [STRONG, PLAUSIBLE, SPECIAL, TALL, ALREADY, HUMAN, NEVER, SMALLER, FOREIGN, CUT])}
     for row in rows:
         row["verdict"], row["why"] = verdict_for(row)
     rows.sort(key=lambda r: (order[r["verdict"]], -r["size"], r["defName"]))
+    cut_n = sum(1 for r in rows if r["verdict"] == CUT)
+    print(cuts.provenance(suppressed=cut_n))
     if args.markdown:
         print("| xenotype | mod | size now | verdict | why |")
         print("|---|---|---:|---|---|")
@@ -376,22 +400,25 @@ def cmd_report(args) -> None:
     conn = _connect()
     genes = size_genes(conn)
     cosm = cosmetic_only_genes(conn, set(genes))
-    rows = xenotypes(conn, genes, cosm)
+    rows, cuts = xenotypes(conn, genes, cosm)
     cap = dict(conn.execute("select key, value from provenance"))
-    already = [r for r in rows if r["size"] >= 1 + BIG_ENOUGH]
+    live = [r for r in rows if not r["cut"]]
+    already = [r for r in live if r["size"] >= 1 + BIG_ENOUGH]
     print(f"# Xenotype size audit\n")
     print(f"Source: `{SQLITE}` — mods={cap.get('mod_count', '?')}"
           f"/{cap.get('modlist_fingerprint', '?')} "
           f"game={cap.get('game_version', '?')} "
           f"captured={cap.get('captured_utc', '?')}\n")
+    print(f"{cuts.provenance(suppressed=len(rows) - len(live))}\n")
     print(f"- {len(genes)} genes change mechanical body size.")
     print(f"- {len(cosm)} more change only the sprite and must not be confused with them.")
-    print(f"- {len(already)} of {len(rows)} xenotypes are already at or above "
+    print(f"- {len(already)} of {len(live)} live xenotypes are already at or above "
           f"bodySize {1 + BIG_ENOUGH}.\n")
     print("| xenotype | mod | size | size genes |")
     print("|---|---|---:|---|")
     for row in sorted(rows, key=lambda r: -r["size"]):
-        print(f"| `{row['defName']}` | {row['mod']} | {row['size']} | "
+        name = f"`{row['defName']}`" + (" **CUT**" if row["cut"] else "")
+        print(f"| {name} | {row['mod']} | {row['size']} | "
               f"{', '.join(f'`{g}`' for g in row['sizeGenes']) or '—'} |")
 
 

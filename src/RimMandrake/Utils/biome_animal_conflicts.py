@@ -91,6 +91,18 @@ def conflicts(capture):
             race_kinds[race].append(k["defName"])
 
     # (b) the animal's own list, mapped back to kinds
+    #
+    # 🔑 CHECKED 2026-09-02 (DUMP_DERIVED_SHEETS_SHOW_CUT_1 sweep): this capture is
+    # pre-Cherry-Picker in general, but Cherry Picker neuters a cut animal's
+    # `race.wildBiomes` to empty IN PLACE (same pattern as `weapon_tag_audit.py`
+    # stripping `weaponTags`) - measured on the 2026-09-02T19-36-08Z capture, 0 of
+    # 281 cut animals with a `race` block carry any `wildBiomes` entry, while the
+    # BIOME side (`a_side` above, `wildAnimals`) still lists 21,870 cut-pawnkind
+    # entries untouched. Since a reported conflict requires BOTH sides to name the
+    # same pair, a cut animal can never source the `b_side` half and this join
+    # cannot manufacture a phantom conflict from cut content - no cherrypicker.py
+    # filter is needed here. Re-measure before trusting this if Cherry Picker's
+    # neuter behaviour ever changes what it strips.
     b_side = collections.defaultdict(dict)      # biome -> {kind: raceDefName}
     for t in things["defs"]:
         race = t["fields"].get("race")

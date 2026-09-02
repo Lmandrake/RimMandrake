@@ -31,6 +31,13 @@ GRAMMAR - one statement per line, `#` starts a comment.
 floor here" (a hole). `@mod=` is the mod that
 SUPPLIES the def; --check reads the def dump and reports a name that has moved
 mods or vanished, which is how a palette fails silently when a mod leaves.
+
+⚠️ --check ALSO CONSULTS cherrypicker.py (2026-09-02, DUMP_DERIVED_SHEETS_SHOW_CUT_1).
+The def dump is captured before Cherry Picker removes anything, so a def a palette
+names can be present and correctly-typed in the dump and STILL be cut from the
+shipped game - the check would read clean while a build using this palette places a
+floor or wreck piece nobody will ever see in-game. A cut def is reported as its own
+CUT class, never folded into a clean pass.
 """
 
 import argparse
@@ -45,6 +52,9 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="repla
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
 PALETTE_DIR = os.path.join(REPO, "Palettes")
+
+sys.path.insert(0, HERE)
+import cherrypicker  # noqa: E402
 
 DEFAULT_DUMP = ("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/"
                 "RimWorld by Ludeon Studios/DefDump/defs.sqlite")
@@ -223,9 +233,11 @@ class Palette(object):
 # ------------------------------------------------------------------- checking
 
 def check(p, dump=DEFAULT_DUMP):
-    """Every def in the palette, against the def dump. Returns a list of problems."""
+    """Every def in the palette, against the def dump AND Cherry Picker's live cut
+    list. Returns (problems, cut_provenance_line)."""
     if not os.path.exists(dump):
-        return ["UNMEASURED: no def dump at %s - run refresh.py" % dump]
+        return ["UNMEASURED: no def dump at %s - run refresh.py" % dump], None
+    cuts = cherrypicker.load()
     want = {}
     for name in self_defs(p):
         want[name] = None
@@ -272,7 +284,13 @@ def check(p, dump=DEFAULT_DUMP):
         if declared and mods and declared not in mods:
             problems.append("MOVED    %-45s dump says %s, palette says %r"
                             % (name, "/".join(sorted(repr(m) for m in mods)), declared))
-    return problems
+            continue
+        # Present, correctly typed, correct mod - and STILL cut. The dump precedes
+        # Cherry Picker, so this is the one class none of the checks above can see.
+        if any(cuts.cut(dt, name) for dt, _ in rows):
+            problems.append("CUT      %-45s present in the dump, cut from the shipped "
+                            "game" % name)
+    return problems, cuts.provenance()
 
 
 def self_defs(p):
@@ -314,14 +332,17 @@ def main():
         print("  used  %s" % u)
 
     if a.check:
-        problems = check(p, a.dump)
+        problems, cut_provenance = check(p, a.dump)
         n = len(self_defs(p))
+        if cut_provenance:
+            print("\n%s" % cut_provenance)
         if problems:
-            print("\ncheck: %d problem(s) over %d defs" % (len(problems), n))
+            print("check: %d problem(s) over %d defs" % (len(problems), n))
             for x in problems:
                 print("  " + x)
             return 1
-        print("\ncheck: MEASURED %d of %d defs present, types and mods agree" % (n, n))
+        print("check: MEASURED %d of %d defs present, types and mods agree, none cut"
+              % (n, n))
     return 0
 
 

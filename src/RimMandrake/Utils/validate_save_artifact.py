@@ -35,14 +35,27 @@ WHAT IT DOES NOT DO
     chain broke). A clean run here means "no dangling names", which is necessary,
     not sufficient. The live check is still one dialog on a scratch map.
 
+⚠️ A REFERENCE THAT RESOLVES CAN STILL BE CUT (2026-09-02, DUMP_DERIVED_SHEETS_SHOW_CUT_1).
+    The def dump is captured BEFORE Cherry Picker removes anything
+    (`infrastructure/state/facts/dump-is-pre-cherrypicker.md`), so a def this artifact
+    names can resolve here — genuinely present in the dump, a real type — and still be
+    ABSENT from the owner's shipped game. That is the worst possible outcome for THIS
+    tool specifically: "no dangling names" reading as a pass on a `.rid` that bakes
+    unrecoverably at world creation. `cherrypicker.py` (this project's one Cherry
+    Picker reader) is consulted for every resolved reference; a resolved-but-cut name
+    is its own CUT class, distinct from both `missing` and `ok` — never folded into
+    either, per the same design rule as TYPE-MISMATCH above.
+
 USAGE
     python3 src/RimMandrake/Utils/validate_save_artifact.py <file> [<file> ...]
     python3 src/RimMandrake/Utils/validate_save_artifact.py <file> --json
     python3 src/RimMandrake/Utils/validate_save_artifact.py <file> --rebuild-index
 
 EXIT
-    0  every reference resolved
-    1  at least one reference resolved against no def type  (a real dangling name)
+    0  every reference resolved, none of them cut
+    1  at least one reference resolved against no def type (dangling), OR resolved
+       against a def Cherry Picker currently cuts (present in the dump, absent from
+       the shipped game — see above)
     2  could not measure — no dump, unreadable artifact, empty index
        NEVER conflate 2 with 0. An unmeasured artifact is not a passing one.
 """
@@ -58,6 +71,7 @@ from pathlib import Path
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from dump_manifest import dump_db          # noqa: E402
 from game_paths import DEF_DUMP            # noqa: E402
+import cherrypicker                        # noqa: E402
 
 DUMP = Path(DEF_DUMP)
 CACHE = Path(
@@ -322,8 +336,9 @@ def report(path, index, meta, as_json=False):
         print(f"UNMEASURED  {path}: {exc}", file=sys.stderr)
         return 2, None
 
+    cuts = cherrypicker.load()
     blind = set(meta.get("_emptyDefTypes", []))
-    missing, mismatch, unmeasurable, ok = [], [], [], 0
+    missing, mismatch, unmeasurable, cut, ok = [], [], [], [], 0
     for xpath, value in refs:
         want = EXPECTED.get(xpath)
         hits = index.get(value)
@@ -334,6 +349,14 @@ def report(path, index, meta, as_json=False):
             continue
         if not hits:
             missing.append({"path": xpath, "name": value})
+            continue
+        # A resolved reference can still be CUT — the dump is pre-Cherry-Picker, so
+        # "present here" and "present in the shipped game" are different claims. Any
+        # resolved type being on the live cut list makes this its own class, checked
+        # BEFORE counting toward `ok`: a cut-but-resolvable name is not a pass.
+        cut_types = [h[0] for h in hits if cuts.cut(h[0], value)]
+        if cut_types:
+            cut.append({"path": xpath, "name": value, "type": cut_types[0]})
             continue
         ok += 1
         if want and not any(h[0] == want for h in hits):
@@ -348,9 +371,11 @@ def report(path, index, meta, as_json=False):
     result = {
         "file": str(path),
         "dumpCapturedUtc": meta.get("capturedUtc"),
+        "cutListProvenance": cuts.provenance(),
         "referencesChecked": len(refs),
         "resolved": ok,
         "missing": missing,
+        "cut": cut,
         "typeMismatch": mismatch,
         "unmeasurable": unmeasurable,
         "dumpEmptyDefTypes": len(meta.get("_emptyDefTypes", [])),
@@ -359,16 +384,22 @@ def report(path, index, meta, as_json=False):
         "provenanceNoLongerActive": dropped,
     }
     if as_json:
-        return (1 if missing else 0), result
+        return (1 if (missing or cut) else 0), result
 
     name = Path(path).name
     print(f"\n=== {name}")
     print(f"    dump captured {meta.get('capturedUtc')}  ({len(index)} defNames indexed)")
+    print(f"    {cuts.provenance()}")
     print(f"    {ok}/{len(refs)} references resolve")
     if missing:
         print(f"    🔴 {len(missing)} RESOLVE AGAINST NO DEF TYPE — dangling:")
         for m in missing:
             print(f"        {m['name']}   at {m['path']}")
+    if cut:
+        print(f"    🔴 {len(cut)} resolve but are CUT — present in the dump, absent from "
+              f"the shipped game:")
+        for c in cut:
+            print(f"        {c['name']} ({c['type']})   at {c['path']}")
     if mismatch:
         print(f"    ⚠️  {len(mismatch)} resolve but not as the expected type:")
         for m in mismatch:
@@ -395,9 +426,9 @@ def report(path, index, meta, as_json=False):
             print(f"                not a defect unless a reference above is missing:")
             for d in dropped:
                 print(f"                    {d}")
-    if not missing:
-        print("    ✅ no dangling names")
-    return (1 if missing else 0), result
+    if not missing and not cut:
+        print("    ✅ no dangling names, none of them cut")
+    return (1 if (missing or cut) else 0), result
 
 
 def main():

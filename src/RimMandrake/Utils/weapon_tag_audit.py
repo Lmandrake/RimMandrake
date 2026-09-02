@@ -27,10 +27,10 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from game_paths import DEF_DUMP, LOCALLOW, MODS_CONFIG   # noqa: E402
 import dump_projection   # noqa: E402
+import cherrypicker   # noqa: E402
 
 DUMP = Path(DEF_DUMP)
 REPO = Path(__file__).resolve().parents[3]
-CUTS = REPO / "observed" / "inventory"
 
 # The vanilla tag vocabulary a pawn kind is likely to ask for. A surviving weapon that
 # carries none of these is invisible to every vanilla and most modded pawn kinds.
@@ -194,10 +194,40 @@ def check_modlist(man, anyway):
 
 
 def cut_set(category):
-    p = CUTS / ("decisions_%s.json" % category)
+    """Weapon defNames that are CURRENTLY on Cherry Picker's live cut list.
+
+    🔴 CHANGED 2026-09-02 (DUMP_DERIVED_SHEETS_SHOW_CUT_1 sweep), and this needed two
+    tries. `cherrypicker.py` is now the project's one INTENT reader and the first cut
+    swapped this function onto it alone — `return cherrypicker.load().names` — which
+    is WRONG here specifically: cherrypicker's list spans 8 def types (1,509 keys,
+    1,318 of them ThingDef — apparel, buildings, items, not just weapons), and once a
+    ThingDef IS cut it reads `weaponTags: []` in the capture whether it was ever a
+    weapon or not — RimWorld's own "weapon" classification flag doesn't survive the
+    neutering either (measured: 0 of the live-flagged-weapon defs are cut, because
+    cut strips the classification along with the tags). So neither the dump nor the
+    live flag can answer "was this cut def a weapon" any more, and testing the whole
+    1,509 against `weaponTags` counted 1,191 "neutered weapons" — mostly cut apparel
+    and buildings that were never weapons.
+
+    ⇒ The only surviving record of WEAPON IDENTITY for something Cherry Picker has
+    already neutered is `observed/inventory/decisions_weapons.json`, the owner's
+    weapon-specific keep/cut review (183 names, 2026-08-15) — kept here for identity
+    ONLY, intersected with cherrypicker's live list for CURRENCY, so a name the owner
+    has since restored (`Gun_Needle`: on the old decisions file, no longer on the
+    live Cherry Picker list) correctly drops out.
+
+    ⚠️ THIS IS STILL INTENT, NOT THE NEUTERED-CAPTURE REALITY. `audit()` never
+    subtracts this set from `tags["kept"]` (that was the corrected 2026-08-23 bug);
+    it is used only to explain a NEUTERED weapon and to exclude a cut weapon from
+    the retag-eligible set — both weapon-scoped questions.
+    """
+    cuts = cherrypicker.load()
+    print(cuts.provenance())
+    p = REPO / "observed" / "inventory" / ("decisions_%s.json" % category)
     if not p.is_file():
         return set()
-    return {c["defName"] for c in json.loads(p.read_text(encoding="utf-8"))["cut"]}
+    ever = {c["defName"] for c in json.loads(p.read_text(encoding="utf-8"))["cut"]}
+    return ever & cuts.names
 
 
 def audit(anyway=False):
@@ -248,6 +278,9 @@ def audit(anyway=False):
     # observed/build/WEAPON_TAGS_MATCH_NOTHING_1_offline.txt
     # 🔑 Asked of the NAMED cut list only. A cut weapon that still carries a tag is
     # not neutered, so the question is about ~200 defNames, never about 24,904.
+    # `cut` (see `cut_set()`) is already weapon-scoped — the decisions_weapons.json
+    # names, filtered live by cherrypicker.py — so this never mistakes a cut apparel
+    # or building for a disarmed gun.
     cut_now = dump_projection.defs_by_name(str(DUMP), "ThingDef", sorted(cut),
                                            ("weaponTags",))
     neutered = [dn for dn in sorted(cut)
