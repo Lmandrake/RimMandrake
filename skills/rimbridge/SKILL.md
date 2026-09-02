@@ -282,6 +282,8 @@ Full evidence in `references/capability-matrix.md`.
 | build anything | `apply_architect_designator` — rectangles, `dryRun` first |
 | clear ground | `jawa/destroy_batch`, or paint a terrain the plant cannot grow on (§5) |
 | advance time | `step_game_ticks` (exact) or `play_for` (wall-clock) |
+| reload edited XML defs, no restart | `jawa/hot_reload_defs` — 🔴 XML only, never C#; verify by reading the field back (owner's ruling 2026-09-01: default for tier-b iteration; canonical entry `skills/rimworld-modding/SKILL.md` §2) |
+| batch-read resolved defs | `jawa/get_defs` — `DefType/defName;…` pairs + reflective `fields`, dozens per call; ⚠️ scalar fields only |
 | see it | `take_screenshot` → absolute path you can read back |
 
 🔴 **`jawa/clear_ui` before every screenshot** — see §5.

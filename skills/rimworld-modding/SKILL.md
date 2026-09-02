@@ -86,6 +86,25 @@ A cold load is **23–30 minutes** past ~500 mods. **Arrive at the restart alrea
 confident** - a restart confirms a prediction, it does not conduct an experiment,
 and **"restart and see" is never an answer.**
 
+### 🔴 XML changes never buy a restart — hot-reload them (owner's ruling, 2026-09-01)
+
+`jawa/hot_reload_defs` on the live bridge runs the engine's own
+`PlayDataLoader.HotReloadDefs()`: every active mod's Defs re-read from XML on the
+RUNNING game — cross-refs re-resolved, implied defs regenerated, spawned things'
+comps re-matched to the new CompProperties. **The tier-b cycle is deploy →
+`jawa/hot_reload_defs` → read the changed field back with `jawa/get_defs`
+(batch reflective reads, dozens of defs per call) — seconds, zero loads.** Engage
+it by default for any Def/patch-XML iteration while a game is up. Period.
+
+* 🔴 **XML/Defs ONLY.** C#, Harmony and the companion DLL still need a real load.
+* ⚠️ **Verify after reload like any mutation** — `success: true` is not evidence
+  a def changed; read the field back and compare (`rimbridge` skill, the one law).
+* ⚠️ **Duration on the owner's full list is UNMEASURED** (2026-09-01; behavior read
+  from engine source, verified present on the live tool surface). The first
+  full-list trial happens at a moment the owner blesses, not silently mid-play.
+* `jawa/get_defs` is scalar-only for now — list/object fields come back as type
+  names — until a deep-serialize upgrade to that tool lands.
+
 **→ `skills/rimworld-load-round/SKILL.md` is the whole subject** and owns it: the
 13-mod minimal list that loads in 22 seconds, `modlist_swap.py`, batching by
 ambiguity, naming the log strings in advance, and harvesting the log. Read it before

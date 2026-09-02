@@ -20,6 +20,12 @@ MINUTE.** Everything below about hoarding a load still applies to the owner's re
 but for *tool and mechanism* work the scarcity is gone. Do not spend a 25-minute load
 proving something a 22-second one can prove.
 
+🔴 **And an XML-only change buys NO load at all (owner's ruling, 2026-09-01):**
+while a game is up, deploy → `jawa/hot_reload_defs` → read back with
+`jawa/get_defs`. The engine re-reads every active mod's Defs live — XML/Defs only,
+never C#/DLLs. Canonical entry: `skills/rimworld-modding/SKILL.md` §2. A load is
+now spent only on C#, mod-list changes, or what hot reload provably cannot reach.
+
 ```
 python3 src/RimMandrake/Utils/modlist_swap.py --status
 python3 src/RimMandrake/Utils/modlist_swap.py --minimal --restore   # add --apply
