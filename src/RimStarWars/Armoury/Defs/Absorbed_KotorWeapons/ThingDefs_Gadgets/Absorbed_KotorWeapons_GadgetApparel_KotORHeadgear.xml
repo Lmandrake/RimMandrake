@@ -12,6 +12,28 @@
      result. -->
 <Defs>
 
+<!--
+  🔴 ALL 11 HEADBANDS ARE DELIBERATELY INVISIBLE WHEN WORN — owner, 2026-09-02:
+  "Agreed. Invisible neural bands for now."
+
+  Every def below had a <wornGraphicPath> pointing at art that HAS NEVER EXISTED in
+  this repo or in the deployed copy: the donor mod guy762.mm.kotorcore, which would
+  have supplied SWApparel/Headbands/*_south|east|north, was never installed. Each
+  headband has only its *Item.png inventory icon.
+
+  So the paths are commented out, not deleted. RimWorld's ApparelGraphicRecordGetter
+  short-circuits on an empty WornGraphicPath (`rec = new ApparelGraphicRecord(null,
+  null); return false;`) — no draw, no error, no placeholder — which is visually
+  IDENTICAL to what these did before and stops the engine hunting for files that are
+  not there.
+
+  ⚠️ Do not "fix" this by restoring a path. The items still work: the neural band's
+  MentalBreakThreshold -0.2 / PainShockThreshold +0.2 is why they were kept. Restore a
+  line only when that headband's four facings actually ship — the intended path is
+  preserved beside each one so the art pass knows what to name the files.
+  ⚠️ These sit on EyeCover/Overhead layers, so their worn art takes DIRECTION suffixes
+  only and no _bodyType suffix (ApparelGraphicRecordGetter, the LastLayer branch).
+-->
   <ThingDef ParentName="guy762_HeadbandBase">
     <defName>guy762_Headband_verpine</defName>
     <label>Verpine ocular enhancer</label>
@@ -39,7 +61,7 @@
           <layer>84</layer>
         </defaultData>
       </drawData>
-      <wornGraphicPath>SWApparel/Headbands/verpineheadband</wornGraphicPath>
+      <!-- wornGraphicPath SWApparel/Headbands/verpineheadband — no art exists; see the header. Restore when its facings ship. -->
       <renderSkipFlags>
         <li>None</li>
       </renderSkipFlags>
@@ -100,7 +122,7 @@
       <ComponentSpacer>1</ComponentSpacer>
     </costList>
     <apparel>
-      <wornGraphicPath>SWApparel/Headbands/neuralband</wornGraphicPath>
+      <!-- wornGraphicPath SWApparel/Headbands/neuralband — no art exists; see the header. Restore when its facings ship. -->
       <renderSkipFlags>
         <li>None</li>
       </renderSkipFlags>
@@ -165,7 +187,7 @@
       <ComponentIndustrial>2</ComponentIndustrial>
     </costList>
     <apparel>
-      <wornGraphicPath>SWApparel/Headbands/lightscangoggles</wornGraphicPath>
+      <!-- wornGraphicPath SWApparel/Headbands/lightscangoggles — no art exists; see the header. Restore when its facings ship. -->
       <renderSkipFlags>
         <li>Eyes</li>
       </renderSkipFlags>
@@ -245,7 +267,7 @@
       <HackingSpeed MayRequire="Ludeon.RimWorld.Ideology">0.3</HackingSpeed>
     </equippedStatOffsets>
     <apparel>
-      <wornGraphicPath>SWApparel/Headbands/bothangoggles</wornGraphicPath>
+      <!-- wornGraphicPath SWApparel/Headbands/bothangoggles — no art exists; see the header. Restore when its facings ship. -->
       <renderSkipFlags>
         <li>Eyes</li>
       </renderSkipFlags>
@@ -298,7 +320,7 @@
       <MortarMissRadiusFactor>-0.4</MortarMissRadiusFactor>
     </equippedStatOffsets>
     <apparel>
-      <wornGraphicPath>SWApparel/Headbands/demovisor</wornGraphicPath>
+      <!-- wornGraphicPath SWApparel/Headbands/demovisor — no art exists; see the header. Restore when its facings ship. -->
       <renderSkipFlags>
         <li>Eyes</li>
       </renderSkipFlags>
@@ -363,7 +385,7 @@
       <ComponentSpacer>2</ComponentSpacer>
     </costList>
     <apparel>
-      <wornGraphicPath>SWApparel/Headbands/exchangevisor</wornGraphicPath>
+      <!-- wornGraphicPath SWApparel/Headbands/exchangevisor — no art exists; see the header. Restore when its facings ship. -->
       <renderSkipFlags>
         <li>Eyes</li>
       </renderSkipFlags>
@@ -414,7 +436,7 @@
       <MedicalTendSpeed>1</MedicalTendSpeed>
     </equippedStatOffsets>
     <apparel>
-      <wornGraphicPath>SWApparel/Headbands/medicalvisor</wornGraphicPath>
+      <!-- wornGraphicPath SWApparel/Headbands/medicalvisor — no art exists; see the header. Restore when its facings ship. -->
       <renderSkipFlags>
         <li>Eyes</li>
       </renderSkipFlags>
@@ -464,7 +486,7 @@
       <TradePriceImprovement>0.2</TradePriceImprovement>
     </equippedStatOffsets>
     <apparel>
-      <wornGraphicPath>SWApparel/Headbands/regalvisor</wornGraphicPath>
+      <!-- wornGraphicPath SWApparel/Headbands/regalvisor — no art exists; see the header. Restore when its facings ship. -->
       <renderSkipFlags>
         <li>None</li>
       </renderSkipFlags>
@@ -521,7 +543,7 @@
       <ResearchSpeed>0.2</ResearchSpeed>
     </equippedStatOffsets>
     <apparel>
-      <wornGraphicPath>SWApparel/Headbands/interfacevisor</wornGraphicPath>
+      <!-- wornGraphicPath SWApparel/Headbands/interfacevisor — no art exists; see the header. Restore when its facings ship. -->
       <renderSkipFlags>
         <li>Eyes</li>
       </renderSkipFlags>
@@ -579,7 +601,7 @@
       <ComponentIndustrial>2</ComponentIndustrial>
     </costList>
     <apparel>
-      <wornGraphicPath>SWApparel/Headbands/breathmask</wornGraphicPath>
+      <!-- wornGraphicPath SWApparel/Headbands/breathmask — no art exists; see the header. Restore when its facings ship. -->
       <renderSkipFlags>
         <li>Beard</li>
       </renderSkipFlags>
@@ -671,7 +693,7 @@
       <guy762_medpac_antidote>2</guy762_medpac_antidote>
     </costList>
     <apparel>
-      <wornGraphicPath>SWApparel/Headbands/stabilizermask</wornGraphicPath>
+      <!-- wornGraphicPath SWApparel/Headbands/stabilizermask — no art exists; see the header. Restore when its facings ship. -->
       <renderSkipFlags>
         <li>Beard</li>
         <li>Eyes</li>
