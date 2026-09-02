@@ -1,0 +1,119 @@
+# rimplace flat plan v1
+FOOTPRINT	0	0	12	9
+TERRAIN	1	1	Gravel
+TERRAIN	1	2	Gravel
+TERRAIN	1	3	Gravel
+TERRAIN	1	4	Gravel
+TERRAIN	2	1	Gravel
+TERRAIN	2	2	Gravel
+TERRAIN	2	3	Gravel
+TERRAIN	2	4	Gravel
+TERRAIN	3	1	Gravel
+TERRAIN	3	2	Gravel
+TERRAIN	3	3	Gravel
+TERRAIN	3	4	Gravel
+TERRAIN	4	1	Gravel
+TERRAIN	4	2	Gravel
+TERRAIN	4	3	Gravel
+TERRAIN	4	4	Gravel
+TERRAIN	5	1	Gravel
+TERRAIN	5	2	Gravel
+TERRAIN	5	3	Gravel
+TERRAIN	5	4	Gravel
+TERRAIN	6	1	Gravel
+TERRAIN	6	2	Gravel
+TERRAIN	6	3	Gravel
+TERRAIN	6	4	Gravel
+TERRAIN	7	1	Gravel
+TERRAIN	7	2	Gravel
+TERRAIN	7	3	Gravel
+TERRAIN	7	4	Gravel
+THING	Wall	0	0	0	BlocksSandstone
+THING	Wall	1	0	0	BlocksSandstone
+THING	Wall	2	0	0	BlocksSandstone
+THING	Wall	3	0	0	BlocksSandstone
+THING	Wall	5	0	0	BlocksSandstone
+THING	Wall	6	0	0	BlocksSandstone
+THING	Wall	7	0	0	BlocksSandstone
+THING	Wall	8	0	0	BlocksSandstone
+THING	Wall	0	1	0	BlocksSandstone
+THING	Wall	8	1	0	BlocksSandstone
+THING	Wall	0	2	0	BlocksSandstone
+THING	Wall	8	2	0	BlocksSandstone
+THING	Wall	0	3	0	BlocksSandstone
+THING	Wall	8	3	0	BlocksSandstone
+THING	Wall	0	4	0	BlocksSandstone
+THING	Wall	8	4	0	BlocksSandstone
+THING	Wall	0	5	0	BlocksSandstone
+THING	Wall	1	5	0	BlocksSandstone
+THING	Wall	2	5	0	BlocksSandstone
+THING	Wall	3	5	0	BlocksSandstone
+THING	Wall	4	5	0	BlocksSandstone
+THING	Wall	5	5	0	BlocksSandstone
+THING	Wall	6	5	0	BlocksSandstone
+THING	Wall	7	5	0	BlocksSandstone
+THING	Wall	8	5	0	BlocksSandstone
+THING	Door	4	0	0	WoodLog
+THING	Table1x2c	3	1	0	-
+THING	DiningChair	4	1	0	-
+THING	TorchLamp	1	1	0	-
+THING	Shelf	2	4	0	-
+THING	Steel	2	3	0	-
+THING	Shelf	4	4	0	-
+THING	ComponentIndustrial	4	3	0	-
+THING	Shelf	6	4	0	-
+THING	MedicineIndustrial	6	3	0	-
+ROOF	0	0	RoofConstructed
+ROOF	0	1	RoofConstructed
+ROOF	0	2	RoofConstructed
+ROOF	0	3	RoofConstructed
+ROOF	0	4	RoofConstructed
+ROOF	0	5	RoofConstructed
+ROOF	1	0	RoofConstructed
+ROOF	1	1	RoofConstructed
+ROOF	1	2	RoofConstructed
+ROOF	1	3	RoofConstructed
+ROOF	1	4	RoofConstructed
+ROOF	1	5	RoofConstructed
+ROOF	2	0	RoofConstructed
+ROOF	2	1	RoofConstructed
+ROOF	2	2	RoofConstructed
+ROOF	2	3	RoofConstructed
+ROOF	2	4	RoofConstructed
+ROOF	2	5	RoofConstructed
+ROOF	3	0	RoofConstructed
+ROOF	3	1	RoofConstructed
+ROOF	3	2	RoofConstructed
+ROOF	3	3	RoofConstructed
+ROOF	3	4	RoofConstructed
+ROOF	3	5	RoofConstructed
+ROOF	4	0	RoofConstructed
+ROOF	4	1	RoofConstructed
+ROOF	4	2	RoofConstructed
+ROOF	4	3	RoofConstructed
+ROOF	4	4	RoofConstructed
+ROOF	4	5	RoofConstructed
+ROOF	5	0	RoofConstructed
+ROOF	5	1	RoofConstructed
+ROOF	5	2	RoofConstructed
+ROOF	5	3	RoofConstructed
+ROOF	5	4	RoofConstructed
+ROOF	5	5	RoofConstructed
+ROOF	6	0	RoofConstructed
+ROOF	6	1	RoofConstructed
+ROOF	6	2	RoofConstructed
+ROOF	6	3	RoofConstructed
+ROOF	6	4	RoofConstructed
+ROOF	6	5	RoofConstructed
+ROOF	7	0	RoofConstructed
+ROOF	7	1	RoofConstructed
+ROOF	7	2	RoofConstructed
+ROOF	7	3	RoofConstructed
+ROOF	7	4	RoofConstructed
+ROOF	7	5	RoofConstructed
+ROOF	8	0	RoofConstructed
+ROOF	8	1	RoofConstructed
+ROOF	8	2	RoofConstructed
+ROOF	8	3	RoofConstructed
+ROOF	8	4	RoofConstructed
+ROOF	8	5	RoofConstructed

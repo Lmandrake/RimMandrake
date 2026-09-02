@@ -322,3 +322,52 @@ authored across all five batches so far: no letter text in any god's
 register, none placed on a live tile. ~33 of 44 roster rows remain
 untouched. Left `doing`.
 
+## 2026-09-02 batch 6 (FOUNDRY) — one more RUT row, full-belt/AFK
+
+Owner went AFK mid-session ("Full belt mode. Go as far as you can. Bench
+has the bridge right now.") — continuing solo, offline/repo-only, same
+discipline as every prior batch since BENCH still holds the bridge.
+
+- **The Imperial Waystation** (row 21, RUT) —
+  `design/Jawa/templates/imperial_waystation.lua`. A 9x6 walled/roofed
+  prefab: an administrative desk (`Table1x2c`/`DiningChair`/`TorchLamp`)
+  near the door, three stocked shelves along the back wall (`Steel`/
+  `ComponentIndustrial`/`MedicineIndustrial`). "loot and statecraft hooks;
+  pursuit heat rises on looting." **Caught and fixed a real footprint bug
+  first try**: `lint` reported a `DiningChair`/`Table1x2c` collision —
+  `Table1x2c` is 1 wide x 2 TALL, not 1x1 as its short name suggests; the
+  chair moved beside it instead of below it. `lint`: 0 findings after the
+  fix. Checked `AncientIndustrialShelf` as a more "Imperial ruin"-flavored
+  substitute first, but its own def says "offers nothing of value"
+  (`isInert=true`, `claimable=false`) — contradicts this row's own
+  "INTACT stores" framing, so plain functional `Shelf` was used instead.
+  All 7 defNames confirmed 1 real hit each in the live 593-mod set.
+
+**Two rows deliberately SKIPPED this pass, not silently dropped**:
+- Row 11, The Kiln — the roster's own gating column marks it "contested
+  per sacred-sites" (an Ohm-vs-Sh'kaar dispute). Reads as needing an owner
+  ruling before authoring, not a FOUNDRY call to make solo, especially
+  unattended.
+- Row 5, The Junkers' Field — its own gating line names a
+  "coastal_mesa-style authored pass" (the mapsynth pipeline), a different
+  tool from every other row in this program so far. Out of scope for a
+  rimplace-template batch; would need its own scoping pass.
+
+**Wiring**: `GenStepDefs_Batch6.xml` + `TileMutatorDefs_Batch6.xml` added
+to `mandrake.rut.injections` — same `extraGenSteps` shape every prior
+batch used.
+
+Review sheet: `design/Jawa/worldbuilding/review/tile_structure_batch6_sheet.html`
+(`check_sheet.py`: 0 FAIL/0 WARN/27 ok, 1 row pre-filled `ship`, 2 invented
+premises declared, including the two skips above named in the brief). No
+decisions file yet — nothing has been reviewed.
+
+**NOT deployed, NOT added to ModsConfig this pass** — same discipline as
+every prior batch. Repo content only.
+
+Still not "shipped" by the roster's own §5 bar for any of the 15 rows
+authored across all six batches so far: no letter text in any god's
+register, none placed on a live tile. ~32 of 44 roster rows remain
+untouched (2 of those explicitly held for an owner call, not just unpicked).
+Left `doing`.
+

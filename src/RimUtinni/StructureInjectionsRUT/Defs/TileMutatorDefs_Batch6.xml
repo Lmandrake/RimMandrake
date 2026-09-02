@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- structure_injection_roster.md batch 6, one PROMISE row.
+       Responder mechanism per structure_injection_roster.md §0b.
+       Same shape as batches 1-5.
+
+       ⚠️ NOT YET PLACED on any Ash'karr tile - a live world-tile edit on
+       the frozen map (bridge + world_commit), out of scope for this pass,
+       same deferral as every prior row.
+
+       Gating note: the roster's own §2 "gating" column names an ARC/LORE
+       context (#21 road/Empire reads), not a biome - a TileMutatorDef's
+       biomeWhitelist cannot express it, so it is unset here, same
+       deferral batches 3-5's own comments already established. -->
+
+  <!-- The Imperial Waystation - PROMISE #21, Ozzik. -->
+  <TileMutatorDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_ImperialWaystation</defName>
+    <label>the imperial waystation</label>
+    <description>A modular prefab outpost along an old Imperial road, its stores still intact. Loot and statecraft hooks; pursuit heat rises on looting.</description>
+    <extraGenSteps>
+      <li>RUT_GenStep_ImperialWaystation</li>
+    </extraGenSteps>
+  </TileMutatorDef>
+
+</Defs>
