@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>Load Tracer (local)</name>
+  <packageId>mandrake.rm.loadtracer</packageId>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Diagnostic instrument for COLD_LOAD_STALL_INTERMITTENT_1, not player-facing content. The cold load intermittently hangs forever, silent, somewhere between the last mod static constructor's own log line and the end-of-load asset unload. This mod replaces StaticConstructorOnStartupUtility.CallAll with a byte-identical loop that logs every [StaticConstructorOnStartup] type to Player.log before invoking it (via UnityEngine.Debug.Log directly, because Verse.Log's message cap would silence a 592-mod trace partway), and brackets the two stages that follow (FloatMenuMakerMap.Init, atlas baking). When the load stalls, the last line in Player.log names the culprit instead of leaving 19 minutes of silence. Remove from the mod list once the stall is attributed.</description>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>brrainz.harmony</li>
+    <li>Ludeon.RimWorld</li>
+  </loadAfter>
+</ModMetaData>
