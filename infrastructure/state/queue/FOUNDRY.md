@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T09:21:13Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-02T09:23:36Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -379,12 +379,12 @@ _none._
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
 
-## COLD_LOAD_STATIC_CTOR_STALL_1 Cold load hangs at StaticConstructorOnStartup checkpoint, reproduces on a known-good mod list
+## ATMOSPHERE_CONFIG_RESTORE_1 Restore glorious rings+thick-atmo config at the NEXT game-down gap (owner missed it)
 state:    proposed
 row:      unassigned
-needs:    game-up
+needs:    deploy
 target:   v1
 kind:     task
-thin:     spec, verify and criteria all present
-summary:  Two consecutive restarts both hung indefinitely at the exact same point in
-prose:    infrastructure/state/items/COLD_LOAD_STATIC_CTOR_STALL_1.md
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/ATMOSPHERE_CONFIG_RESTORE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ATMOSPHERE_CONFIG_RESTORE_1.md
