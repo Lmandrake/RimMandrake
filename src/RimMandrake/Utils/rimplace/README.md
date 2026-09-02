@@ -19,6 +19,7 @@ python3 -m venv ~/.local/venvs/rimlua
 cd /mnt/d/Luke/dev/Rimworld/src/RimMandrake/Utils
 P=~/.local/venvs/rimlua/bin/python
 
+$P -m rimplace minrect all                                # how big a canvas does each need?
 $P -m rimplace render  dwelling --rect 0,0,18,10 --rooms 3 --occupants 4
 $P -m rimplace lint    dwelling --rect 0,0,18,10 --rooms 3
 $P -m rimplace calls   dwelling --rect 0,0,18,10          # the jawa/* calls it would make

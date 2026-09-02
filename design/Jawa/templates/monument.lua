@@ -1,5 +1,4 @@
--- monument.lua - MIN_RECT: 2x2 (ctx:refuse below this; see dead_beacon.lua's
--- own header for why this line exists at all).
+-- monument.lua - canvas floor: see min_rect() below (`rimplace minrect monument`).
 -- "The Monument" (structure_injection_roster.md PROMISE #8,
 -- RimUtinni tier, Ozzik): a half-buried colossus and its plaza. "pride on
 -- claiming it; the pride-meter knows" - a single centerpiece statue, not a
@@ -19,6 +18,12 @@
 --     the "half-buried" read made physical rather than left as label text.
 --
 -- API available: ctx (see luaenv.Ctx), rect, params, rng, role(), note()
+
+-- The declared canvas floor; the engine checks it before build() runs
+-- (TEMPLATE_CANVAS_UNDECLARED_1). `rimplace minrect monument`.
+function min_rect(params)
+  return 2, 2   -- SculptureGrand's own 2x2 bounds; below this it lands outside
+end
 
 function build(ctx)
   -- SculptureGrand is 2x2 (verified against source, see header) - a

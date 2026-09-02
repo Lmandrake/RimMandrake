@@ -1,6 +1,5 @@
--- imperial_waystation.lua - MIN_RECT: 9x6 (ctx:refuse below this; see
--- dead_beacon.lua's own header for why this line exists at all - a
--- template's required canvas is otherwise recorded nowhere).
+-- imperial_waystation.lua - canvas floor: see min_rect() below (`rimplace
+-- minrect imperial_waystation`).
 -- "The Imperial Waystation" (structure_injection_
 -- roster.md PROMISE #21, RimUtinni tier, Ozzik): a modular prefab outpost
 -- along an old Imperial road, its stores still intact - unlike a ruin, this
@@ -23,6 +22,12 @@
 --     already the shipped precedent from toll_gap.lua's own toll house.
 --
 -- API available: ctx (see luaenv.Ctx), rect, params, rng, role(), note()
+
+-- The declared canvas floor; the engine checks it before build() runs
+-- (TEMPLATE_CANVAS_UNDECLARED_1). `rimplace minrect imperial_waystation`.
+function min_rect(params)
+  return 9, 6   -- store room + admin desk side by side, with their shared shell
+end
 
 function build(ctx)
   local W, H = 9, 6

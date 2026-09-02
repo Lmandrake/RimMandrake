@@ -12,7 +12,8 @@ import tempfile
 from pathlib import Path
 
 from .core import Palette, Rect
-from .luaenv import TemplateError, run_template
+from .luaenv import (TemplateError, TemplateTooSmall, declared_min_rect,
+                     run_template)
 from .contract import check_calls, tool_parameters
 from .plan import compile_calls, lint, render
 
@@ -339,13 +340,64 @@ def t_droids_no_beds():
 
 @case("a footprint too small for the rooms asked is REFUSED, not silently shrunk")
 def t_refuses_small():
+    """⭐ The guarantee is unchanged; WHERE it is enforced moved earlier. This used to
+    assert a `ctx:refuse` recorded mid-build. Since TEMPLATE_CANVAS_UNDECLARED_1 the
+    template DECLARES its floor and the engine refuses before build() runs at all —
+    strictly better, because the old path had already placed floor and props by the
+    time it noticed. Both are refusals; neither silently shrinks."""
     tpl = _TEMPLATES / "dwelling.lua"
     if not tpl.exists():
         return
     params = {"faction": "Jawa_IndigenousTribes", "rooms": 3, "occupants": 2}
-    p = run_template(tpl, Rect(0, 0, 8, 6), params, _pal(), 1)
+    try:
+        p = run_template(tpl, Rect(0, 0, 8, 6), params, _pal(), 1)
+    except TemplateTooSmall as e:
+        assert e.need == (16, 1), e.need      # 5n + 1 at rooms=3
+        return
     assert p.refusals, "a 8x6 rect silently accepted 3 rooms"
     assert len(p.rooms) != 3, "it built 3 rooms in a rect that cannot hold them"
+
+
+@case("a declared min_rect is checked BEFORE build(), and nothing is placed")
+def t_min_rect_precedes_build():
+    """🔑 TEMPLATE_CANVAS_UNDECLARED_1's whole point: caught upstream of build, not as
+    a renamed `ctx:refuse`. The proof is that no plan comes back at all — the old
+    behaviour returned a plan with terrain and props already in it."""
+    tpl = _TEMPLATES / "junkers_scrapyard.lua"
+    if not tpl.exists():
+        return
+    try:
+        run_template(tpl, Rect(0, 0, 16, 12), {}, _pal(), 1)
+    except TemplateTooSmall as e:
+        assert e.need == (16, 14), e.need
+        assert "16x12" in str(e), str(e)
+        return
+    raise AssertionError("a 16x12 rect built a template that declares 16x14")
+
+
+@case("a size-agnostic template declares nothing, and is not forced to")
+def t_no_min_rect_is_legal():
+    """⚠️ The regression this mechanism could have been: demanding a floor from every
+    template. Four are genuinely size-agnostic (scatter-only or terrain-led)."""
+    for name in ("bantha_graveyard", "mynock_roost", "glass_sea", "broken_ring"):
+        tpl = _TEMPLATES / f"{name}.lua"
+        if not tpl.exists():
+            continue
+        assert declared_min_rect(tpl, {}) is None, f"{name} grew a floor it never had"
+        run_template(tpl, Rect(0, 0, 16, 12), {}, _pal(), 1)   # must not raise
+
+
+@case("min_rect is answerable WITHOUT running build()")
+def t_min_rect_is_queryable():
+    """The gap named in the item: a TileMutatorDef author or a re-export script must
+    be able to ask how big a canvas a template needs without running it."""
+    tpl = _TEMPLATES / "dwelling.lua"
+    if not tpl.exists():
+        return
+    # params-dependent, which is why the convention is a function, not a constant
+    assert declared_min_rect(tpl, {"rooms": 1}) == (6, 1)
+    assert declared_min_rect(tpl, {"rooms": 2}) == (11, 1)
+    assert declared_min_rect(tpl, {"rooms": 3}) == (16, 1)
 
 
 def run_selftest() -> int:

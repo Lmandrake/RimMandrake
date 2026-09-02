@@ -18,6 +18,15 @@
 --
 -- API: ctx (luaenv.Ctx), rect, params, rng, role(), note()
 
+-- The declared canvas floor; the engine checks it before build() runs
+-- (TEMPLATE_CANVAS_UNDECLARED_1). `rimplace minrect hunting_lodge`.
+-- Derived from build()'s own arithmetic below, not measured empirically:
+--   width  (W - 8 apron) - (BAYS + 1 walls) >= BAYS * 5  ->  W >= 27
+--   height H >= 8 + 2 (shell + the cold room's north apron)
+function min_rect(params)
+  return 27, 10
+end
+
 function build(ctx)
   local p = params
   local x, z = rect.x, rect.z

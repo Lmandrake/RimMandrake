@@ -48,6 +48,13 @@ end
 -- ---------------------------------------------------------------------------
 -- the entry point
 -- ---------------------------------------------------------------------------
+-- The declared canvas floor; the engine checks it before build() runs
+-- (TEMPLATE_CANVAS_UNDECLARED_1). `rimplace minrect junkers_depot`.
+-- From build()'s own arithmetic: floor_h = h - office_h + 1 >= 8, office_h = 6.
+function min_rect(params)
+  return 10, 13
+end
+
 function build(ctx)
   local p = params
   local w, h = rect.w, rect.h

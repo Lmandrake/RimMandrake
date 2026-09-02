@@ -41,6 +41,12 @@ end
 -- ---------------------------------------------------------------------------
 -- the entry point
 -- ---------------------------------------------------------------------------
+-- The declared canvas floor; the engine checks it before build() runs
+-- (TEMPLATE_CANVAS_UNDECLARED_1). `rimplace minrect junkers_scrapyard`.
+function min_rect(params)
+  return 16, 14
+end
+
 function build(ctx)
   local p = params
   local w, h = rect.w, rect.h

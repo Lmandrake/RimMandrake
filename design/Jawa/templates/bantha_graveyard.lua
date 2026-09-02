@@ -1,6 +1,5 @@
--- bantha_graveyard.lua - MIN_RECT: none - scatter-only with a center
--- fallback, safe at any rect >=1x1 (see dead_beacon.lua's own header for
--- why this line exists at all).
+-- bantha_graveyard.lua - no canvas floor: scatter-only with a center fallback,
+-- safe at any rect >=1x1, so it declares no min_rect() (`rimplace minrect all`).
 -- "The Bantha Graveyard" (structure_injection_roster.md
 -- PROMISE #15, RimStarWars tier, Oomo): a herd's old bone-ground - horns and
 -- hide left behind over many seasons, not a single kill site. "ivory and

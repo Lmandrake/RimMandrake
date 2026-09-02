@@ -53,6 +53,13 @@ end
 -- ---------------------------------------------------------------------------
 -- the entry point
 -- ---------------------------------------------------------------------------
+-- The declared canvas floor; the engine checks it before build() runs
+-- (TEMPLATE_CANVAS_UNDECLARED_1). `rimplace minrect junkers_dwelling_cluster`.
+-- From build()'s own arithmetic: hut = min(floor(dim / 2) - 2, 7) >= 4, both axes.
+function min_rect(params)
+  return 12, 12
+end
+
 function build(ctx)
   local p = params
   local w, h = rect.w, rect.h

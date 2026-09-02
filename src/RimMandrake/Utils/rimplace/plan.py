@@ -432,6 +432,19 @@ def compile_flat(plan: BuildPlan) -> str:
     """
     lines = ["# rimplace flat plan v1"]
     fp = plan.meta.get("footprint")
+    # 🔑 A THIRD PARTY HOLDING ONLY THIS .txt can now read what it was baked at and
+    # what it needs. The rect is already a real directive (FOOTPRINT, parsed by
+    # RimplacePlan.cs and used by centerOnMap), so it was never actually missing —
+    # what was missing is the FLOOR, and these comment lines carry it to whoever is
+    # deciding whether this plan can be re-wired onto a different TileMutatorDef
+    # footprint. Comment lines are ignored by the mapgen parser by design.
+    lines.append("# template  %s (sha %s)"
+                 % (plan.meta.get("template", "?"),
+                    plan.meta.get("template_sha256", "?")))
+    mr = plan.meta.get("min_rect")
+    lines.append("# min_rect  %s   baked at %s"
+                 % ("%dx%d" % (mr[0], mr[1]) if mr else "none declared",
+                    "%dx%d" % (fp[2], fp[3]) if fp else "?"))
     if fp:
         lines.append(f"FOOTPRINT\t{fp[0]}\t{fp[1]}\t{fp[2]}\t{fp[3]}")
     for (x, z), d in sorted(plan.foundation.items()):

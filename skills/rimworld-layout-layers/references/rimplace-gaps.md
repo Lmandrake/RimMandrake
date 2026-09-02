@@ -55,6 +55,20 @@ exist, even though door *things* do.
 Globals: `role`, `note`, `rect`, `params`, `rng{int,chance,pick}`. That is the
 whole surface after the sandbox prelude.
 
+⭐ **A template may declare its own canvas floor: `function min_rect(params) return
+W, H end`**, a global the engine looks for the same way it looks for `build`. It is
+checked BEFORE `build()` runs, so an undersized rect raises `TemplateTooSmall` with
+nothing placed, and `rimplace minrect <template>|all` answers the question without
+building anything. It takes `params` because some floors depend on them —
+`dwelling.lua` needs `5 * rooms + 1` columns.
+
+⚠️ **A declared floor is a minimum, not a guarantee, and its absence is not a
+promise.** `build()` may still `ctx:refuse` a rect that clears the floor, for reasons
+no pair of numbers can express; and a template with no `min_rect` is either genuinely
+size-agnostic or simply has not had one written. Nothing forces a template to declare
+one — four of them (`bantha_graveyard`, `mynock_roost`, `glass_sea`, `broken_ring`)
+have no real minimum and must not grow a fake one.
+
 🔴 **No verb creates a network of any kind.** There is no `conduit()`, no
 `pipe()`, no `connect()`.
 

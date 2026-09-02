@@ -51,6 +51,20 @@ local function room_role_for(i, n, p, ctx)
   return "Storeroom"
 end
 
+-- ⭐ THE FLOOR DEPENDS ON params, which is why the mechanism is a function and not
+-- two constants in a header comment (TEMPLATE_CANVAS_UNDECLARED_1). split_bays needs
+-- n + 1 wall columns around n bays of at least min_w = 4, so the width floor is
+-- 5n + 1: 6 for one room, 11 for two, 16 for three.
+--
+-- ⚠️ HEIGHT IS 1 ON PURPOSE — this template declares no height floor, because it has
+-- none it can state: split_bays passes h through untouched, and the refusals that
+-- follow (a bed, a stove, a cooler that will not fit) are about a particular room's
+-- contents, not the canvas. A declared minimum is a floor, never a guarantee.
+function min_rect(params)
+  local n = math.max(1, math.min(3, params.rooms or 1))
+  return 5 * n + 1, 1
+end
+
 -- ---------------------------------------------------------------------------
 -- the entry point
 -- ---------------------------------------------------------------------------

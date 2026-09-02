@@ -1,6 +1,5 @@
--- mynock_roost.lua - MIN_RECT: none - scatter-only with a center fallback,
--- safe at any rect >=1x1 (see dead_beacon.lua's own header for why this
--- line exists at all).
+-- mynock_roost.lua - no canvas floor: scatter-only with a center fallback, safe
+-- at any rect >=1x1, so it declares no min_rect().
 -- "The Mynock Roost" (structure_injection_roster.md
 -- PROMISE #18, RimStarWars tier, Zizzik): a cave-mouth den where mynocks
 -- have been gnawing power cable for a season. "power cables are food here" -

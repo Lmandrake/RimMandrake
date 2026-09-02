@@ -16,6 +16,13 @@
 -- resolve through the existing palette. --tech Neolithic, same as the
 -- other three Junkers districts - no powered fixtures.
 
+-- The declared canvas floor; the engine checks it before build() runs
+-- (TEMPLATE_CANVAS_UNDECLARED_1). `rimplace minrect junkers_cantina_block`.
+-- From build()'s own arithmetic: main_h = h - keeper_h + 1 >= 8, keeper_h = 6.
+function min_rect(params)
+  return 10, 13
+end
+
 function build(ctx)
   local p = params
   local w, h = rect.w, rect.h

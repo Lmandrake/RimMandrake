@@ -32,6 +32,29 @@ for _, name in ipairs({%s}) do _G[name] = nil end
 """ % ", ".join(f'"{n}"' for n in _FORBIDDEN)
 
 
+class TemplateTooSmall(RuntimeError):
+    """The rect is below the minimum the template DECLARED, checked before build().
+
+    🔑 TEMPLATE_CANVAS_UNDECLARED_1. A template's required canvas used to live
+    nowhere a caller could read it: 4 of 21 templates drew nothing at the default
+    16x12 because each needed more room, and the only place that said so was a
+    `ctx:refuse()` fired mid-build, after floor and prop placement had already run.
+    `min_rect(params) -> w, h` is the declaration; this is what a caller gets
+    instead of a half-built plan.
+
+    ⚠️ A declared minimum is a FLOOR, not a guarantee. `build()` may still refuse a
+    rect that clears it, for reasons no single pair of numbers can express (a bed
+    that will not fit a particular room, a palette with no cooler). Nothing here
+    replaces `ctx:refuse` — it front-runs the one refusal that is purely about size.
+    """
+    def __init__(self, template, need, got):
+        self.template, self.need, self.got = template, need, got
+        super().__init__(
+            "%s needs at least %dx%d and was given %dx%d. It declares this itself "
+            "(`min_rect` in the template); nothing was built."
+            % (template, need[0], need[1], got[0], got[1]))
+
+
 class TemplateError(RuntimeError):
     pass
 
@@ -415,6 +438,16 @@ def run_template(path: str | Path, rect: Rect, params: dict,
     except Exception as e:
         raise TemplateError(f"{path.name}: {e}") from e
 
+    # 🔑 THE SIZE CHECK RUNS BEFORE build(), which is the whole point. See
+    # `TemplateTooSmall`. A template with no `min_rect` is not forced to grow one —
+    # several are genuinely size-agnostic (scatter-only, terrain-led), and demanding
+    # a declaration from those would be a regression, not a fix.
+    need = _declared_min(g, p, path.name)
+    if need is not None:
+        plan.meta["min_rect"] = list(need)
+        if rect.w < need[0] or rect.h < need[1]:
+            raise TemplateTooSmall(path.stem, need, (rect.w, rect.h))
+
     build = g["build"]
     if build is None:
         raise TemplateError(f"{path.name}: no global function build(ctx)")
@@ -424,3 +457,70 @@ def run_template(path: str | Path, rect: Rect, params: dict,
         raise TemplateError(f"{path.name}: build() raised: {e}") from e
 
     return plan
+
+
+def _declared_min(g, params_table, name):
+    """-> (w, h) the template declared, or None if it declares no floor.
+
+    The convention is `function min_rect(params) return W, H end`, mirroring
+    `build(ctx)`: a global the engine looks for, defined only by templates that
+    have a real floor. It takes `params` because some floors depend on them —
+    dwelling.lua needs `5 * rooms + 1` columns, so one pair of constants could
+    never have been the answer. A table `{w = .., h = ..}` is accepted too.
+    """
+    fn = g["min_rect"]
+    if fn is None:
+        return None
+    try:
+        got = fn(params_table)
+    except Exception as e:
+        raise TemplateError(f"{name}: min_rect() raised: {e}") from e
+    if got is None:
+        return None
+    if isinstance(got, tuple):
+        pair = got[:2]
+    elif hasattr(got, "__getitem__") and not isinstance(got, (int, float)):
+        pair = (got["w"] if got["w"] is not None else got[1],
+                got["h"] if got["h"] is not None else got[2])
+    else:
+        raise TemplateError(
+            f"{name}: min_rect() must return two numbers (`return W, H`) or a "
+            f"table {{w = .., h = ..}}; got {got!r}")
+    try:
+        w, h = int(pair[0]), int(pair[1])
+    except (TypeError, ValueError, IndexError) as e:
+        raise TemplateError(
+            f"{name}: min_rect() returned {pair!r}, which is not a width and a "
+            f"height") from e
+    if w < 1 or h < 1:
+        raise TemplateError(
+            f"{name}: min_rect() returned {w}x{h}. A floor below 1x1 is not a "
+            f"floor — return nothing at all if the template has no minimum.")
+    return (w, h)
+
+
+def declared_min_rect(path: str | Path, params: dict) -> tuple[int, int] | None:
+    """The template's declared minimum canvas, WITHOUT running build().
+
+    ⭐ This is the query TEMPLATE_CANVAS_UNDECLARED_1 exists for: a `TileMutatorDef`
+    author, a re-export script or a review-sheet build can ask "how big does this
+    footprint need to be" and get a number, instead of reading the Lua by hand or
+    discovering it empirically from a half-built plan.
+    """
+    from lupa import LuaRuntime
+
+    path = Path(path)
+    if not path.exists():
+        raise TemplateError(f"template not found: {path}")
+    L = LuaRuntime(unpack_returned_tuples=True, register_eval=False)
+    L.execute(_SANDBOX_PRELUDE)
+    g = L.globals()
+    p = L.table()
+    for k, v in (params or {}).items():
+        p[k] = v
+    g["params"] = p
+    try:
+        L.execute(path.read_text(encoding="utf-8"))
+    except Exception as e:
+        raise TemplateError(f"{path.name}: {e}") from e
+    return _declared_min(g, p, path.name)

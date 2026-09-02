@@ -1,6 +1,7 @@
 """rimplace - run a Lua structure template offline and see the house.
 
     render   run a template and DRAW it            (the debug loop)
+    minrect  how big a canvas does it need?        (asked without building)
     lint     run it and report what is wrong
     calls    emit the exact jawa/* bridge calls
     verify   check every defName against the live def dump
@@ -24,7 +25,8 @@ _HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(_HERE.parent))
 
 from rimplace.core import Palette, Rect                       # noqa: E402
-from rimplace.luaenv import TemplateError, run_template       # noqa: E402
+from rimplace.luaenv import (TemplateError, TemplateTooSmall,  # noqa: E402
+                             declared_min_rect, run_template)
 from rimplace.plan import (calls_summary, compile_calls,      # noqa: E402
                            compile_flat, lint, render)
 
@@ -60,6 +62,11 @@ def _build(a):
     rect = Rect(*[int(v) for v in a.rect.split(",")])
     try:
         return path, run_template(path, rect, _params(a), palette, a.seed)
+    except TemplateTooSmall as e:
+        # A size refusal is its own exit code (3), so a caller batching templates
+        # can tell "this needs a bigger canvas" from "this template is broken".
+        raise SystemExit(f"CANVAS TOO SMALL: {e}\n"
+                         f"  ask first:  rimplace minrect {path.stem}")
     except TemplateError as e:
         raise SystemExit(f"TEMPLATE ERROR: {e}")
 
@@ -133,7 +140,8 @@ def _paint_violations(plan):
 def main(argv=None):
     ap = argparse.ArgumentParser(prog="rimplace", description=__doc__,
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
-    ap.add_argument("command", choices=["render", "lint", "calls", "verify", "export", "selftest"])
+    ap.add_argument("command", choices=["render", "minrect", "lint", "calls",
+                                        "verify", "export", "selftest"])
     ap.add_argument("template", nargs="?", default="dwelling")
     ap.add_argument("--rect", default="0,0,16,12", help="x,z,w,h")
     ap.add_argument("--faction", default="Jawa_IndigenousTribes")
@@ -155,6 +163,26 @@ def main(argv=None):
     if a.command == "selftest":
         from rimplace.selftest import run_selftest
         return run_selftest()
+
+    if a.command == "minrect":
+        # ⭐ The only command that answers WITHOUT building. `--template all` sweeps
+        # the library, which is what a re-export or a TileMutatorDef wiring pass
+        # actually needs: one table of every footprint floor in the repo.
+        names = ([p for p in sorted(TEMPLATES.glob("*.lua"))]
+                 if a.template == "all" else [_resolve_template(a.template)])
+        for p in names:
+            try:
+                need = declared_min_rect(p, _params(a))
+            except TemplateError as e:
+                print(f"  {p.stem:<28} ERROR  {e}")
+                continue
+            print(f"  {p.stem:<28} {'%dx%d' % need if need else 'none declared'}")
+        if a.template == "all":
+            print("\n  'none declared' means the template declares no floor — either it is "
+                  "genuinely\n  size-agnostic, or nobody has written its `min_rect(params)` yet. "
+                  "It is NOT a\n  promise that any rect works, and a declared floor is a "
+                  "minimum, not a guarantee.")
+        return 0
 
     path, plan = _build(a)
 

@@ -1,7 +1,6 @@
--- dead_beacon.lua - MIN_RECT: 5x5 (below this, ctx:refuse fires, tested and
--- correct - see design/Jawa/worldbuilding/structure_injection_roster.md's
--- own TILE_STRUCTURE_REVIEW_SAVE_1 finding: nothing else records this, so
--- whoever exports/wires this template must respect this number by hand).
+-- dead_beacon.lua - canvas floor: see min_rect() below (`rimplace minrect
+-- dead_beacon`). TEMPLATE_CANVAS_UNDECLARED_1 made that number machine-readable;
+-- the engine now refuses an undersized rect before build() runs.
 -- "The Dead Beacon" (structure_injection_roster.md
 -- PROMISE #14, RimUtinni tier, Ishko vs Sh'kaar): a small lamp-room, cold
 -- and unpowered. "light the dark and see what answers" - "relighting it is
@@ -22,6 +21,13 @@
 --     rakatan_trace.lua/toll_gap.lua already use.
 --
 -- API available: ctx (see luaenv.Ctx), rect, params, rng, role(), note()
+
+-- The declared canvas floor. The engine calls this BEFORE build() and refuses an
+-- undersized rect there, so a caller can ask `rimplace minrect dead_beacon` instead
+-- of discovering the size from a half-built plan (TEMPLATE_CANVAS_UNDECLARED_1).
+function min_rect(params)
+  return 5, 5   -- the lamp room's own shell
+end
 
 function build(ctx)
   local W, H = 5, 5
