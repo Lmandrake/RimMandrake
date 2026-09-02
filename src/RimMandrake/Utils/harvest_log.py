@@ -145,15 +145,28 @@ CHECKS = [
     ("reflect", "DEAD MODS (type load)",
      r"ReflectionTypeLoadException|Could not resolve type with token", 0,
      "was 2+24 for RimAI; the load-order fix should take these to 0"),
+    # 🟢 2 -> 0 on the 2026-09-02 16:5x load (587 mods). The whole of baseline 2 was
+    # Onimods torches, and the owner removed that mod outright ("Silly mod") rather
+    # than ingesting it, because it turned out to ship load-bearing render C#. There
+    # is nothing left in this bucket: ANY hit is now NEW.
     ("defdiscard", "DEFS DISCARDED",
-     r"Exception loading def from file", 2,
-     "baseline 2 = Onimods torches (benign). Was 5; 3 were RimAI collateral"),
+     r"Exception loading def from file", 0,
+     "0 since onimods.electrictorches was removed 2026-09-02 (it WAS the whole "
+     "baseline of 2). Any hit is NEW - read the file it names"),
+    # 🟢 25 -> 0 on the same load, and this one was NOT predicted, so it was checked
+    # rather than cheered: the check read 25 against Player-prev.log minutes earlier,
+    # so the instrument works, and `Punch_HitBuilding` / `VWE_Tool_Whip` are now
+    # absent from the log entirely (BMT_ still appears 637 times, so that mod is very
+    # much present and simply no longer erroring).
+    # ⚠️ ATTRIBUTION UNPROVEN. The likeliest cause is the CastRoster XML regeneration
+    # that rode with the Inhabited namespace fix (INHABITED_CHARACTERDEF_NAMESPACE_GAP_1),
+    # which is exactly what the old note below predicted would clear the excess - but
+    # it went past 25 to 0, and nobody has demonstrated why. Do not write a cause into
+    # this note until someone has.
     ("crossref", "cross-reference (def loader)",
-     r"Could not resolve cross-reference", 25,
-     "16 Punch_HitBuilding + 1 VWE_Tool_Whip + 8 BMT_* = 25, all triaged. "
-     "2026-08-22 read 128: the excess 101 were ALL 'No RimWorld.SkillDef named li', "
-     "one per cast def discarded by CAST_ROSTER_SKILLS_DISCARDED_1. When that lands "
-     "this should fall straight back to 25 - if it does not, the remainder is NEW"),
+     r"Could not resolve cross-reference", 0,
+     "0 as of 2026-09-02 (was 25: 16 Punch_HitBuilding + 1 VWE_Tool_Whip + 8 BMT_*). "
+     "Verified real - the same check read 25 on the previous run's log. Any hit is NEW"),
     # Baseline stays 0, and as of 2026-08-22 that is a CLEANED zero rather than an
     # aspirational one. The 08-22 08:40 load read 8; all 8 were triaged to two CONFIG
     # artifacts remembering names from mods we cut or turned off, and both were then
@@ -227,11 +240,25 @@ CHECKS = [
     # regression if it's still exactly these same 12 plus something new. Do
     # not "fix" a BETTER reading by editing the number
     # back up.
+    # 🟢 36 -> 34 on the 2026-09-02 16:5x load, exactly as predicted: joseasoler.tradergen
+    # was removed on the owner's word and its 2 TG_Husbandry NRE lines went with it.
+    # 🔴 34 IS NOT CLEAN. Twelve of them are OURS and this load did not touch them.
+    # ⚠️ CORRECTED 2026-09-02, same day it was added. I introduced this check calling
+    # the 12 RSW_FE "burnedDef is flammable" lines "12 OURS ... a real defect" and
+    # filed FIRE_ECOLOGY_BURNEDDEF_FLAMMABLE_1 on them. FOUNDRY closed it within the
+    # hour by reading the mechanism I had not: `TerrainDef.ConfigErrors()` only YIELDS
+    # WARNING STRINGS and never gates a load, and `Notify_TerrainBurned` sets
+    # `burnedDef` unconditionally with no flammability check. Those 12 are the
+    # escalating-burn ladder working AS DESIGNED (`AshLadder.xml`), not a defect.
+    # 🔑 The lesson is the check's own: a config error means the def loaded and the
+    # ENGINE disapproves — it does NOT mean the def is wrong for our purposes. Read
+    # the mechanism before filing on a line this check surfaces.
     ("configerror", "def ConfigErrors (loaded but WRONG)",
-     r"Config error in |Exception in ConfigErrors\(\) of ", 36,
-     "36 = 12 OURS (RSW_FE burnedDef is flammable) + 18 Sign* + 2 TraderGen NRE + "
-     "2 vanilla FactionDef NRE + 2 techprint whitespace. Read with --show configerror. "
-     "A def with a config error LOADED and is WRONG - validate_patch cannot see this"),
+     r"Config error in |Exception in ConfigErrors\(\) of ", 34,
+     "34 = 12 INTENTIONAL (RSW_FE ash ladder, ruled not-a-defect aa9ab7fa - they will "
+     "never go away) + 18 Sign* + 2 vanilla FactionDef NRE + 2 techprint whitespace. "
+     "Read with --show configerror BEFORE filing anything: this check finds defs the "
+     "ENGINE disapproves of, which is not the same as defs that are wrong"),
     # Baseline 5, MEASURED 2026-08-12 by diffing the 568-mod load (18:18,
     # Player-prev.log) against the 573-mod load (21:09). Byte-for-byte the same
     # three mods, same ops, same counts - so the five mods added that day
@@ -323,11 +350,22 @@ EXPECTED = [
     # migration and the old bare `[Inhabited]` prefix stopped matching,
     # reading as a false MISSING while the mod was actually alive.
     ("Inhabited ready (READ THE COUNT)", r"\[RimMandrake\.Inhabited\] ready:"),
-    # ✅ ADDED 2026-08-23. JawaBench HAS a startup line now, so its absence is a
-    # real finding rather than a permanent false RED. Read the COUNT, not just
-    # the presence: `[JawaBench] ready: 121 tools, build d49eaf42545b`.
-    #   121 = the current build   ·   120 = vehicle_components missing
-    #   119 = the whole 2026-08-22 build never landed   ·   106 = never deployed
+    # ✅ ADDED 2026-08-23. Read the COUNT and the BUILD, not just the presence:
+    # `[JawaBench] ready: 307 tools, build aa9ab7fa3053`. The build hash is the
+    # stronger half — it says WHICH commit's DLL is live, which a tool count cannot.
+    #
+    # 🔴 IT IS NOT A STARTUP LINE, WHATEVER THIS COMMENT USED TO CLAIM. Measured
+    # twice on 2026-09-02: it is emitted by a LAZY module initializer that waits for
+    # the first `jawa/*` tool CALL, not for assembly load. So on a freshly loaded
+    # game that nobody has driven yet, this reads RED / MISSING and the companion is
+    # perfectly healthy. It fooled me on one load and cost a real investigation.
+    # ⇒ **Before treating a MISSING here as a finding, make one bridge call and
+    # re-run.** Only then does absence mean anything. The bridge answering proves
+    # nothing on its own — `brrainz.rimbridgeserver` is a separate mod that is up
+    # whether or not the companion loaded.
+    #     python.exe src/RimMandrake/Utils/rimbridge_client.py \
+    #         --call jawa/harmony_patches --json '{"typeName":"ThingOwner"}' \
+    #         --yes-i-know-this-is-live
     ("JawaBench ready (READ THE COUNT)", r"\[JawaBench\] ready:"),
 ]
 
