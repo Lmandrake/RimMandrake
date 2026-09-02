@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T05:38:42Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-02T06:11:29Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -363,3 +363,13 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/SANDWORM_MYTHOS_BUILD_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SANDWORM_MYTHOS_BUILD_1.md
+
+## COLD_LOAD_STATIC_CTOR_STALL_1 Cold load hangs at StaticConstructorOnStartup checkpoint, reproduces on a known-good mod list
+state:    proposed
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/COLD_LOAD_STATIC_CTOR_STALL_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/COLD_LOAD_STATIC_CTOR_STALL_1.md
