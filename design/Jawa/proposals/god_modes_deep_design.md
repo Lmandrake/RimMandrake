@@ -114,6 +114,39 @@ Fields: **Look** · **Rules** (2–3, behavioral not stat) · **Opportunity** ·
 **Cost/Yearning** · **Exit** · **Mechanics** (`GameConditionDef` + C# need) ·
 **Scar**.
 
+### 🔴 5.0 THE LAW OF WRATH — anger is withdrawal, not inversion (owner, 2026-09-02)
+
+Verbatim: *"god punishment MUST NOT be the opposite of what they love, because
+that just makes the world be more ugly to them. Instead it must be denying the
+Jawa the thing the god loves, not granting its opposite. Anger as withdrawal
+of love."*
+
+This is the governing constraint on every angry-lock below. Three clauses,
+ruled in a bench session 2026-09-02:
+
+1. **An angry mode WITHHOLDS the god's gift; it never grants the gift's ugly
+   opposite.** Ishko angry does not flood the map with light (that is
+   exposure, Sh'kaar's domain) — his darkness simply *stops hiding you*. Ohm
+   angry does not sabotage the machines (that is malfunction, Zizzik's domain)
+   — the ship simply *goes cold and inert*, the help withdrawn.
+2. **The world NOTICES the absence — the gap itself bites, but nothing
+   actively punishes.** No malus is the god striking you; the crops starve
+   because Oomo's water no longer blesses, the ship freezes because Ohm's
+   warmth withdrew. Consequence, never assault. (Owner card: "the world
+   notices the absence.")
+3. **The evil gods (Zizzik, Sh'kaar) INVERT the law, and this is already in
+   `divine_satiation_engine.md`:** their love is our misfortune, so to anger
+   them is to make them *go silent / slumber*. But slumber is itself a rising
+   pressure — *"kept sleeping too long, when he finally wakes he will be
+   HUNGRY and eager... explosive when he inevitably awakens. It is not safe to
+   keep him slumbering for eternity."* Same for both. So an evil god's "angry
+   mode" is a deepening quiet with a wake-clock underneath it, not a beating.
+
+**Audit result (2026-09-02):** ⑨-A Ozzik, ③-A Oomo and ⑥-A Ta'Baa already
+obeyed the law and are unchanged. ①-A Ishko, ②-A Ohm, ④-A Mob'Unloo and ⑤-A
+Rekko granted the ugly opposite and are REWRITTEN below to withhold instead.
+The evil-god modes (⑦, ⑧) are reframed as slumber-with-wake-pressure.
+
 ### ①-P Ishko — "The Unseen Reign" (pleased-lock)
 Look: exterior light caps at dusk-level, permanently blue-grey noon. Rules:
 no light source above a fixed low radius outdoors; sight radius cut equally
