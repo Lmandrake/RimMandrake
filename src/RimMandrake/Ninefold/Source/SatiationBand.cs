@@ -17,8 +17,8 @@ namespace RimMandrake.Ninefold
         {
             if (satiation >= 60f) return SatiationBand.Exalted;
             if (satiation >= 20f) return SatiationBand.Content;
-            if (satiation >= -19f) return SatiationBand.Neutral;
-            if (satiation >= -59f) return SatiationBand.Slighted;
+            if (satiation >= -20f) return SatiationBand.Neutral;
+            if (satiation >= -60f) return SatiationBand.Slighted;
             return SatiationBand.Wrathful;
         }
     }

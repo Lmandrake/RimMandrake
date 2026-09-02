@@ -70,7 +70,7 @@ namespace RimMandrake.Ninefold
         {
             int i = (int)god;
             satiation[i] = Mathf.Clamp(satiation[i] + amount, -100f, 100f);
-            if (reason != null)
+            if (reason != null && Prefs.DevMode)
                 Log.Message("[Ninefold] " + god + " satiation " +
                             (amount >= 0 ? "+" : "") + amount.ToString("F1") +
                             " (" + reason + ") -> " + satiation[i].ToString("F1") +
@@ -102,15 +102,19 @@ namespace RimMandrake.Ninefold
         public override void ExposeData()
         {
             base.ExposeData();
+            // ToLists() MUST run before Scribe_Collections.Look() on the Saving pass --
+            // Look() writes whatever satiationList/moodList already hold at the moment
+            // it runs. Populating after meant every save wrote either null (first save
+            // of a session) or the PREVIOUS save's snapshot.
+            if (Scribe.mode == LoadSaveMode.Saving)
+            {
+                ToLists();
+            }
             Scribe_Collections.Look(ref satiationList, "ninefoldSatiation", LookMode.Value);
             Scribe_Collections.Look(ref moodList, "ninefoldMood", LookMode.Value);
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
                 FromLists();
-            }
-            if (Scribe.mode == LoadSaveMode.Saving)
-            {
-                ToLists();
             }
         }
 
@@ -129,8 +133,15 @@ namespace RimMandrake.Ninefold
         {
             if (satiationList != null && satiationList.Count == GodExtensions.Count)
                 satiationList.CopyTo(satiation);
+            else if (satiationList != null)
+                Log.Warning("[Ninefold] saved satiation list has " + satiationList.Count +
+                    " entries, expected " + GodExtensions.Count + " -- discarding, all gods reset to 0.");
+
             if (moodList != null && moodList.Count == GodExtensions.Count)
                 moodList.CopyTo(mood);
+            else if (moodList != null)
+                Log.Warning("[Ninefold] saved mood list has " + moodList.Count +
+                    " entries, expected " + GodExtensions.Count + " -- discarding, all gods reset to 0.");
         }
     }
 }

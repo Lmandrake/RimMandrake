@@ -6,13 +6,25 @@
   <supportedVersions>
     <li>1.6</li>
   </supportedVersions>
-  <description>The safe core of the divine-satiation engine (design/Jawa/divine_satiation_engine.md), M0 slice only: a nine-god satiation/mood vector, the band ladder (Wrathful/Slighted/Neutral/Content/Exalted), and a per-god Mood random walk. Pure state - no live mutation, no raid math, no event hooks yet.
+  <description>The safe core of the divine-satiation engine (design/Jawa/divine_satiation_engine.md), M0 slice: a nine-god satiation/mood vector, the band ladder (Wrathful/Slighted/Neutral/Content/Exalted), a per-god Mood random walk, and five Harmony-patched event hooks (research completed, mental break started, birth outcome, building deconstructed, building repaired) binding real RimWorld events to ApplyDelta calls.
 
 This is the mod project the divine_satiation_engine.md spec explicitly noted did not exist ("no C# under src/RimMandrake/ references any of the nine gods or satiation"), and which design/Jawa/worldbuilding/colony_visibility_stat.md's own "safe core" build plan is blocked on. Creating it unblocks both.
 
-NOT shipped here (NINEFOLD_ENGINE_M0_1's other named pieces, deliberately left for a build-and-review session): the five easiest event hooks binding real RimWorld events to ApplyDelta calls, first-contact chains, and the signed corpus letters - the latter needs the owner's voice-text redline pass per the item's own note ("provisional voice approval; owner redlines live text"). Mood-walk amplitudes per god are a first-pass encoding of the spec's qualitative personality column, explicitly UNTUNED (design/Jawa/divine_satiation_engine.md §10 defers real tuning to a throwaway-save test rig).</description>
+NOT shipped here (NINEFOLD_ENGINE_M0_1's other named pieces, deliberately left for a later session): first-contact chains and the signed corpus letters - the latter needs the owner's voice-text redline pass per the item's own note ("provisional voice approval; owner redlines live text"). Mood-walk amplitudes and event magnitudes are a first-pass encoding of the spec's qualitative personality column, explicitly UNTUNED (design/Jawa/divine_satiation_engine.md §10 defers real tuning to a throwaway-save test rig).</description>
 
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
+    </li>
+  </modDependencies>
   <loadAfter>
+    <li>brrainz.harmony</li>
     <li>Ludeon.RimWorld</li>
   </loadAfter>
 </ModMetaData>
