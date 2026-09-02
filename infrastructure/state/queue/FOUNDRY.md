@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T02:27:12Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-02T02:29:28Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -298,3 +298,13 @@ kind:     bug
 thin:     spec, verify and criteria all present
 summary:  Any jawa/pawn tool that resolves a pawn by id/name should also try
 prose:    infrastructure/state/items/BRIDGE_PAWN_THOUGHTS_CARAVAN_GAP_1.md
+
+## MASS_VALIDATION_LADDER_1 Batched validation ladder: get_defs deep-serialize, manifest runner, hot-reload trial, first review environment
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/MASS_VALIDATION_LADDER_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/MASS_VALIDATION_LADDER_1.md

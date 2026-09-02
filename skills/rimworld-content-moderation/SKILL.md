@@ -9,6 +9,23 @@ Curating a 500+ mod stack down to one campaign's worth of content. The job is
 mostly **deciding**, and the decisions are mostly **visual**, so most of the work
 is getting the right thing in front of the person deciding.
 
+## 🔴 First: does a human belong in this review at all? (owner's ruling, 2026-09-01)
+
+"Don't use humans where a screenshot will do." The ladder in
+`infrastructure/VALIDATION_LADDER.md` binds every review: machine checks first
+(art presence, def resolution, log errors — never a human hunting magenta),
+**Fable evaluation** for art quality and thematic judgment beyond FOUNDRY's
+grade, and the owner ONLY for gameplay, fun, overall thematic coherence and UI.
+Anytime an agent can review something, it just does.
+
+**And when the owner does review OUR OWN builds, stage a REVIEW ENVIRONMENT,
+not a grid:** related content composed in context on a throwaway map — the
+animals inside a mock-up of their biome as a whole ecosystem, two dwellings in
+two faction styles with the resident race and its equipment, the biome's tile
+augmentor alongside. Grids are acceptable but do not show the interactions that
+need studying. Contact sheets (below) remain the right tool for mass keep/cut
+over EXISTING mod-stack content, where volume rules.
+
 ## Build a contact sheet. Do not send a list of defNames.
 
 A spreadsheet answers every question about an item except the one asked first:
