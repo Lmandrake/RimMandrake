@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T04:26:26Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-02T04:27:27Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -207,15 +207,6 @@ kind:     build
 summary:  Per the doc's §1, §5, §8:
 prose:    infrastructure/state/items/WEATHER_SUITE_SLICE_1.md
 
-## PAWN_FLAVOR_PHASE2_APPLY_1 Apply the 1,783 owner-approved Phase 2 flavor rows (ThoughtDef/MentalBreakDef/XenotypeDef label+description) as XML patches; validate_patch clean, cold-load clean
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  - Source of the text: the proposed field per row in the generator's data
-prose:    infrastructure/state/items/PAWN_FLAVOR_PHASE2_APPLY_1.md
-
 ## BRIDGE_INVENTORY_TRANSFER_REFUSES_ALL_1 jawa/inventory_transfer refuses to add ANY item to ANY pawn's inventory on the live 592-mod list
 state:    doing
 row:      unassigned
@@ -242,15 +233,6 @@ target:   v1
 kind:     build
 summary:  Tellurox (karraskopt3.png) — Ascendant Helix labour-line livestock,
 prose:    infrastructure/state/items/HELIX_TELLUROX_BUILD_1.md
-
-## PAWN_FLAVOR_STAGELESS_ADD_FAIL_1 Two Phase-2 flavor rows fail PatchOperationAdd: no literal stages/li[1] to anchor on
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  genpawnflavorphase2apply.py's seqop() wraps each field in a
-prose:    infrastructure/state/items/PAWN_FLAVOR_STAGELESS_ADD_FAIL_1.md
 
 ## BRIDGE_PAWN_THOUGHTS_CARAVAN_GAP_1 jawa/pawn_thoughts cannot read a caravan pawn - FindPawn only sees spawned map pawns
 state:    doing
