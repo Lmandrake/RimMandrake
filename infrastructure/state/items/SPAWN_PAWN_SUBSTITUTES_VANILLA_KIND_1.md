@@ -322,3 +322,15 @@ Subagent read (web source; ⚠️ subagent verdicts are evidence, spot-check bef
 - **New hypothesis from the read**: none of the four located patches CAN set Colonist, so if FactionLoadout is also clean, the substitution is engine fallback-on-exception — a patch side effect (gear strip, xenotype swap) throwing mid-generation and vanilla recovering with a default kind. That would put the culprit OUTSIDE the by-ref shortlist.
 
 ⇒ **The five-cell restart bisect is dead. Next cheapest steps, in order:** (1) decompile the local FactionLoadout DLL and read `PawnGenPatchIdeo.Prefix` (offline, free); (2) if clean, one live session with `jawa/unpatch` (see 2026-09-01 note above) on FactionLoadout only, ~1000 spawns; (3) grep Player.log for generation-path exceptions near a caught substitution — the fallback hypothesis predicts one.
+
+## 2026-09-01 (BENCH) — FactionLoadout DECOMPILED locally: the shortlisted prefix is clean, but the mod has a real KindDef-swap mechanism elsewhere
+
+`ilspycmd` (user-local, C:\Users\Mandrake\.dotnet\tools) read the live DLL
+(workshop 3063465133, 1.6/Assemblies/FactionLoadout.dll):
+- **`PawnGenPatchIdeo:Prefix` RULED OUT for direct substitution** — it writes only `request.FixedIdeo`, never `KindDef`. All FIVE by-ref shortlist entries are now ruled out for direct KindDef writes.
+- **But it can THROW**: `PawnKindEdit.GetEditsFor` dereferences `item.ParentEdit.Faction.Def` where `ParentEdit` comes from a `FirstOrDefault` and can be null; no try/catch in the prefix — an NRE propagates out of pawn generation. Feeds the fallback-on-exception hypothesis. Reachable code, not proven to fire.
+- 🔑 **New lead, off the shortlist**: `PawnKindEdit.ReplaceWith` / `replacementToOriginal` / `PawnKindApplicator.Apply` — FactionLoadout's deliberate kind-substitution mechanism, living in a class no by-ref signature scan could see. Follow-up decompile of the applicator + its call site is in flight (BENCH, 2026-09-01).
+
+Decompile command recorded above; output regenerable. The by-ref signature
+filter that built the original shortlist is now known to have a blind spot:
+a patch can swap kinds through its own applicator without a by-ref request.
