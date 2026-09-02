@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T03:25:58Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-02T03:58:01Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -313,4 +313,14 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-_none._
+Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
+
+## STARWARS_DONOR_SUNSET_1 Retire ALL remaining third-party Star Wars donors (12 mods, 4 waves; Mlie+TSDA first)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify
+summary:  Retire ALL remaining third-party Star Wars donor mods
+prose:    infrastructure/state/items/STARWARS_DONOR_SUNSET_1.md
