@@ -40,10 +40,52 @@ Generated from a live post-patch def dump; load last.</description>
       <displayName>Harmony</displayName>
       <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
     </li>
+    <li>
+      <packageId>guy762.mm.kotorcore</packageId>
+      <displayName>Star Wars KotOR Resources and Materials</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=3254370945</steamWorkshopUrl>
+    </li>
+    <li>
+      <packageId>oskarpotocki.vanillafactionsexpanded.core</packageId>
+      <displayName>Vanilla Expanded Framework</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2023507013</steamWorkshopUrl>
+    </li>
+    <li>
+      <packageId>adaptive.storage.framework</packageId>
+      <displayName>Adaptive Storage Framework</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=3033901359</steamWorkshopUrl>
+    </li>
+    <li>
+      <packageId>ebsg.framework</packageId>
+      <displayName>EBSG Framework</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=3112549163</steamWorkshopUrl>
+    </li>
+    <li>
+      <packageId>neronix17.outerrim.core</packageId>
+      <displayName>Outer Rim - Core</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2919227155</steamWorkshopUrl>
+    </li>
   </modDependencies>
   <!-- Harmony dependency added WEAPONS_ABSORPTION_WAVE_1 (2026-08-30): this mod's first
        C# (Source/), porting 7 load-bearing kotorcore comp classes; see items/
        WEAPONS_ABSORPTION_WAVE_1.md. -->
+  <!-- kotorcore/VEF/AdaptiveStorageFramework/EBSG/OuterRim Core dependencies added
+       ARMOURY_ABSORBED_FRAMEWORK_DEPS_1 (2026-09-02): a minimal-list sweep (BENCH)
+       measured that Defs/Absorbed_AdditionalMods/kotorcore/{VEF,AdaptiveStorageFramework,
+       EBSG}/*.xml reference those frameworks' own C# classes directly (Class=
+       "VEF.AnimalBehaviours...", etc.) with no MayRequire/LoadFolders gate -
+       donor kotorcore's own LoadFolders gated this content on framework presence,
+       and absorption dropped that gating, making it unconditional. Without the
+       framework: SWPotF_RaceDef_ysalamir's whole def is discarded (unresolvable
+       Class on a comp), guy762_SecretFloorPanel_BASE's ParentName misses, and
+       guy762 implant defs cascade ~60 cross-refs. Separately, RSW_EWebShot's
+       damageDef (OuterRim_Blaster) is defined by Outer Rim Core, not shipped here.
+       These declarations do not themselves prevent that crash (modDependencies is
+       advisory, not a load gate) - they make the requirement visible so
+       STARWARS_DONOR_SUNSET_1 or any future donor retirement / reduced mod list
+       does not silently break this content. Making the load itself resilient
+       (moving these files out of Defs/ into per-framework folders LoadFolders.xml
+       can gate) is a larger, separate restructuring - not done here. -->
   <!-- Corrected 2026-08-13. Both previous ids were WRONG and this whole block
        was therefore INERT: `guy762.starwarskotorweapons` and `Aoba.OuterRim.Core`
        match no installed mod (Aoba is Dead Man's Switch - wrong author entirely).

@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T08:50:03Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-02T08:56:24Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -388,13 +388,3 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  Two consecutive restarts both hung indefinitely at the exact same point in
 prose:    infrastructure/state/items/COLD_LOAD_STATIC_CTOR_STALL_1.md
-
-## ARMOURY_ABSORBED_FRAMEWORK_DEPS_1 Armoury absorbed defs carry silent hard deps on VEF/EBSG/AdaptiveStorage/kotorcore DLLs — not self-contained; donor-sunset risk
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/ARMOURY_ABSORBED_FRAMEWORK_DEPS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ARMOURY_ABSORBED_FRAMEWORK_DEPS_1.md
