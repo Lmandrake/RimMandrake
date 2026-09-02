@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T16:25:12Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-02T16:33:39Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -90,3 +90,13 @@ kind:     bug
 thin:     spec, verify and criteria all present
 summary:  Pick and build ONE real mechanism (not a comment convention) for a template
 prose:    infrastructure/state/items/TEMPLATE_CANVAS_UNDECLARED_1.md
+
+## BRIDGE_OVERRIDE_ATTRIBUTION_GAP_1 bridge give/forced-take don't record WHO/WHY in the permanent ledger event, only in the disposable BRIDGE mirror
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/BRIDGE_OVERRIDE_ATTRIBUTION_GAP_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BRIDGE_OVERRIDE_ATTRIBUTION_GAP_1.md
