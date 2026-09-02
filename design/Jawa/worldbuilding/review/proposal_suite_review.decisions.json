@@ -1,9 +1,12 @@
 {
  "sheet": "proposal_suite_review",
  "posture": "prefill-ships; untouched rows keep their pre-filled ladder position; cut is the only destructive verdict",
- "savedAt": "2026-09-01T22:58:50.286Z",
+ "savedAt": "2026-09-02T05:20:24.839Z",
  "decidedBy": "owner-sheet",
- "touchedCount": 19,
+ "frozen": true,
+ "frozenAt": "2026-09-02",
+ "frozenMeaning": "The owner finished the sitting and this file is his recovered copy-JSON export (the save sidecar was not running during review). It is the source of truth for PROPOSAL_SUITE_REVIEW_1; regenerating prefill over it destroys his decisions. Unfreeze only on his word.",
+ "touchedCount": 124,
  "rows": {
   "tar:entrapment-hediff": {
    "d": "v1",
@@ -14,21 +17,21 @@
   },
   "tar:sinking-render": {
    "d": "v1",
-   "n": "Test of our ability to make meaningful animation. We should spend some good time on this to really demo what we know how to do, or perhaps study other mods that make custom animations to inspire ourselves.",
+   "n": "",
    "touched": true,
    "prefill": "v2",
    "doc": "tar_pits_deep_design.md"
   },
   "tar:stratified-dig-sites": {
    "d": "v1",
-   "n": "This is pure gold. Fossils, dead bodies with inventory stuck on them, each one a piece of a story from the past that goes more ancient as you dig. But the digging gets slower and harder as you go. Would perhaps need to install a pump that removes the tar elsewhere on the map to enable the digging at all, while it continues to ooze in from deep sources below.",
+   "n": "Superb! The loot table is the fun part. Draw from fossils but also sealed alien eggs, technology, dead bodies with equipment intact, and story-rich objects. And of course Assailant and Forgotten Arsenal aspects.",
    "touched": true,
    "prefill": "v2",
    "doc": "tar_pits_deep_design.md"
   },
   "tar:canal-flow-engineering": {
    "d": "v1",
-   "n": "This is a general new mechanic that we can use in many places. Dig channels that flood with water, ooze, slime, oil, tar, propane fuel... let's explore this deeply. Could be amazing realism. I'm inspired! This allows bases to dig trenches and flood them as a real defense. Will pay off in many more scenarios. This isn't Utinni or even Star Wars scope, this is general RimMaster level awesomeness mod.",
+   "n": "Don't make it finite, just make it slow to refill. This mechanic of fillable ooze will come in handy later.",
    "touched": true,
    "prefill": "v2",
    "doc": "tar_pits_deep_design.md"
@@ -133,183 +136,183 @@
   },
   "fir:dry-thunderstorm-loop": {
    "d": "v1",
-   "n": "Brief violent rain should be possible (to allow the grass to explosively regrow) but as you say always with lightning.",
+   "n": "Brief violent rain should be possible due to the intense steam (could we add animated steam rising from the river? That is an amazing idea, file a ticket on that alone!) But the rain as you say always with lightning.",
    "touched": true,
    "prefill": "v1",
    "doc": "fire_ecology_deep_design.md"
   },
   "fir:pyroconvective-cell": {
-   "d": "v2",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "SO COOL! A conflaguration vortex forms driving the fire to burn faster, brighter, hotter, and generating violent lightning around the map until it dies from a lack of fuel. The lightning should simply come from the sky (not actually shoot out of the vortex), and an alert message should explain that the pyroconvection is driving ash-laiden clouds to create violent red-tinted lightning all around you.",
+   "touched": true,
    "prefill": "v2",
    "doc": "fire_ecology_deep_design.md"
   },
   "fir:pyrocumulus-storm": {
-   "d": "dream",
-   "n": "",
-   "touched": false,
+   "d": "v2",
+   "n": "Global weather mod is v2",
+   "touched": true,
    "prefill": "dream",
    "doc": "fire_ecology_deep_design.md"
   },
   "fir:cinderclutch": {
-   "d": "v2",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "The eggs are buried in the ground by lore, but are actually not there yet until the fire happens. Then they randomly generate as the flames burn hot enough. They should be voracious, terrifying, then viciously mate, lay their eggs, and perish within a few days. They should be small but horrible.",
+   "touched": true,
    "prefill": "v2",
    "doc": "fire_ecology_deep_design.md"
   },
   "fir:silhouette-hunter": {
-   "d": "dream",
-   "n": "",
-   "touched": false,
+   "d": "cut",
+   "n": "Too nightmarish and magical for Star Wars.",
+   "touched": true,
    "prefill": "dream",
    "doc": "fire_ecology_deep_design.md"
   },
   "fir:ember-swarm": {
-   "d": "dream",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "A weather type! \"A fire is nearby and casting burning embers and smoke everywhere.\" Fires just start to slowly appear in places, and the temperature rapidly raises and smoke reduces sight and ambient light. Tints the light orange dimly.",
+   "touched": true,
    "prefill": "dream",
    "doc": "fire_ecology_deep_design.md"
   },
   "fir:slagback": {
-   "d": "dream",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "Why not? A creature that is merely very hot during the day, but when it beds at night to rest its temperature climbs until it emits pulses of heat through radiative fins on its tail to ignite local fuel. Then it consumes the partially burnt plants and animals left behind as a scavenger. Also can defend itself with waves of painful heat and of course distracting local fires. Seems like this might be one of the \"big ones\" of the Pyrelands.",
+   "touched": true,
    "prefill": "dream",
    "doc": "fire_ecology_deep_design.md"
   },
   "fir:ash-black-rain": {
    "d": "v1",
-   "n": "",
-   "touched": false,
+   "n": "Having thick ash like snow that piles up, covers things, creates health problems, chokes plants, and blows around in the wind would be fantastic! That blowing around in the wind is a really cool idea, especially if we could get some vortex-like action to look like real whipping wind around structures and mountains and vehicles. I love the image of the rare rain being black with soot, and then pushing all of the ash into the local ponds and rivers, staining them completely black for days. Black water. That's a really neat idea.",
+   "touched": true,
    "prefill": "v1",
    "doc": "fire_ecology_deep_design.md"
   },
   "fir:scorch-fruit": {
    "d": "v1",
-   "n": "",
-   "touched": false,
+   "n": "Scorch fruit: could be underground fungus that swells onto the surface during the fire, much like a pinecone puffs up and shoots out its seeds in the fire. The rapidly growing fungus might have medicinal properties if eaten right away (can cure the uncurable like luciferium) but also infects you with strange fungal properties that don't go away (mild insanities, occasional sickness symptoms, sometimes emit weird flesh-fruit from your own body that count as your race's flesh-type).",
+   "touched": true,
    "prefill": "v1",
    "doc": "fire_ecology_deep_design.md"
   },
   "fir:tribes-fire-farmers": {
-   "d": "v2",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "Superb! When their raids show up, have them line up and start a Wall of Fire right at the players, even if they're not hostile. It's just what they do. If the players try to put out the fire they become hostile. If they share in the harvest but don't put out fire, they are tolerated. Alien culture and values for the win.",
+   "touched": true,
    "prefill": "v2",
    "doc": "fire_ecology_deep_design.md"
   },
   "shd:thermal-veil": {
    "d": "v1",
-   "n": "",
-   "touched": false,
+   "n": "There are already shield mods for this we should leverage deeply. Find them and make them compatible with our mod stack. But thermal shields could be much cheaper than kinetic shields. Perhaps shields must be tuned as to what they can resist right now, and thermal shielding research allows you to tune to heat rejection. It would reflect all external heat outward with a mild mirror sheen to the shield, but also reflect all internal heat inward, so the temperature slowly climbs anyway... but not nearly as badly as it would in an active fire/volcano. Just use power for fuel, no need to invent a new fuel consumption here. Power does the trick. All shields are modulated plasma fields configured to interact with local matter in unique ways.",
+   "touched": true,
    "prefill": "v1",
    "doc": "ship_shields_deep_design.md"
   },
   "shd:cryo-envelope": {
-   "d": "v2",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "The opposite of the thermal rejection shield: thermal absorptivity. Pulls in heat in both directions and allows the shields to start glowing with red-orange black body radiation, holding severe cold at bay. But slowly decreases the temperature within the ship... still better than the extreme cold of the night-side atmosphere.",
+   "touched": true,
    "prefill": "v2",
    "doc": "ship_shields_deep_design.md"
   },
   "shd:particulate-screen": {
    "d": "v1",
-   "n": "",
-   "touched": false,
+   "n": "Light kinetic deflectors handle wind, ash, vapor, bio contamination, spores, smoke, sand, and rain damage completely as well as repels small animals. ",
+   "touched": true,
    "prefill": "v1",
    "doc": "ship_shields_deep_design.md"
   },
   "shd:spore-membrane": {
-   "d": "dream",
-   "n": "",
-   "touched": false,
+   "d": "cut",
+   "n": "spores aren't magical, just particulates.",
+   "touched": true,
    "prefill": "dream",
    "doc": "ship_shields_deep_design.md"
   },
   "shd:loadout-tradeoff": {
    "d": "v1",
-   "n": "",
-   "touched": false,
+   "n": "I think they should be the same shields, you're just installing modules to increase their switching capacity/configuration.",
+   "touched": true,
    "prefill": "v1",
    "doc": "ship_shields_deep_design.md"
   },
   "shd:bubble-not-wall": {
    "d": "v1",
-   "n": "",
-   "touched": false,
+   "n": "Heavy shielding forms a solid-seeming shield, most true to form for Star Wars. Resists impactors, blaster fire, and large animal assault. Very energy intensive when struck and prone to overheating or even explosion when forcibly collapsed. (there are mods to draw from here, look them up and download them for study).",
+   "touched": true,
    "prefill": "v1",
    "doc": "ship_shields_deep_design.md"
   },
   "shd:shield-collapse-evacuate": {
-   "d": "v2",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "This is sensible. Shields that are slowly failing due to an environmental stressor can predict and alert to let the crew return and leave. Slow pressing things move through all shields is long-standing canon, including the crew. This is why nothing \"holds out water,\" it just doesn't work that way.",
+   "touched": true,
    "prefill": "v2",
    "doc": "ship_shields_deep_design.md"
   },
   "shd:no-hard-landing-gate": {
    "d": "v1",
-   "n": "",
-   "touched": false,
+   "n": "You got it! The environment is hostile and immediately goes to work on the ship. The ship will know what's visibly dangerous and will advise course of action, but no more than that. Its hull is thick and can take a lot of damage in most situations, so no environment is immediately lethal. Landing on lava should be the worst case causing immediate severe damage (don't do that).",
+   "touched": true,
    "prefill": "v1",
    "doc": "ship_shields_deep_design.md"
   },
   "wtr:two-tier-fork": {
    "d": "v1",
-   "n": "",
-   "touched": false,
+   "n": "No, let's go with multi-tier (see below)",
+   "touched": true,
    "prefill": "v1",
    "doc": "water_economy_deep_design.md"
   },
   "wtr:detox-chain": {
-   "d": "v2",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "Distilled, potable, fouled, toxic. Four kinds. Some machines will need distilled-level. Some animals need potable. Some animals can cope with fouled. Only exotic life can handle toxic. Super energy intensive to convert quickly, or low/no energy but slow using things like solar stills/material drip filters. ",
+   "touched": true,
    "prefill": "v2",
    "doc": "water_economy_deep_design.md"
   },
   "wtr:water-anchored-districts": {
    "d": "v1",
-   "n": "",
-   "touched": false,
+   "n": "Absolutely, and how each race celebrates, protects, shared, or isolates its water is the most defining characteristic of the faction architecture and settlement design. It should be exceptionally rare to have an undefended potable water source in the wilderness. But it should be possible to build some slow natural filters using plant materials as disposable filters, solar stills for slow generation, etc. That hot desert sun is good for something at least. ",
+   "touched": true,
    "prefill": "v1",
    "doc": "water_economy_deep_design.md"
   },
   "wtr:water-heist": {
    "d": "v1",
-   "n": "",
-   "touched": false,
+   "n": "Love this! Pumps are clearly a whole technology and prized possession... and they can also break down easily and  get jammed, needing repair in the middle of a heist to clear an restore. Filters seem like a consumable now. Futuristic magnetic pumps are much less clog prone than simple piston-pumps.",
+   "touched": true,
    "prefill": "v1",
    "doc": "water_economy_deep_design.md"
   },
   "wtr:aquifer-remembers": {
-   "d": "v2",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "Draining a cistern will convert it from potable to fouled, then fouled to toxic, as water oozes in from the surrounding underground too swiftly to plate out impurities. Should be graphically made obvious what is happening.",
+   "touched": true,
    "prefill": "v2",
    "doc": "water_economy_deep_design.md"
   },
   "wtr:pool-guardians": {
    "d": "v1",
-   "n": "",
-   "touched": false,
+   "n": "Absolutely. It should be assumed that life has found every source of water and defended it. So a quiet oasis is like screaming a warning to the surrounding area: something is keeping this place free from animals.",
+   "touched": true,
    "prefill": "v1",
    "doc": "water_economy_deep_design.md"
   },
   "wtr:water-diplomacy": {
-   "d": "v2",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "An adjustable water economy is a lovely idea. Settlements have water scarcity depending on too many variables to track, so might as well just have it fluctuate. Messages could go out for help: \"Offering high barter for water, we're drying up here.\" This could be one of the first things the Jawa focus on early in the game. Water merchants with their massive ship and its ability to haul tanks around they're scrapping together. ",
+   "touched": true,
    "prefill": "v2",
    "doc": "water_economy_deep_design.md"
   },
   "wtr:rain-event": {
-   "d": "v2",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "Rather than once a year, it should simply be an irregular event. The violent turbulent atmosphere near the rivers sometimes belches out unexpected storms even in normally utterly arid locales... and it's simply assumed that fighting stops, fires stop, and everyone lays out their best collecting gear as they can. \"Rain Quenches All Thirst\"",
+   "touched": true,
    "prefill": "v2",
    "doc": "water_economy_deep_design.md"
   },
@@ -322,561 +325,561 @@
   },
   "cav:expedition-loadout": {
    "d": "v1",
-   "n": "",
-   "touched": false,
+   "n": "Air should only be needed when going into vapor-filled areas, or special mask filters.",
+   "touched": true,
    "prefill": "v1",
    "doc": "underground_caverns_deep_design.md"
   },
   "cav:entrances": {
    "d": "v1",
-   "n": "",
-   "touched": false,
+   "n": "Oh, I think there should be more than that. Animals make burrows deep into the rock. Lava tubes (active or ancient) in the volcanic mountains. Weird cryotubes on the night side. There can be lots of these.",
+   "touched": true,
    "prefill": "v1",
    "doc": "underground_caverns_deep_design.md"
   },
   "cav:dry-cistern-crosslink": {
-   "d": "v2",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "A settlement's aquifer should be very significant, not something the ship can drain. So cut the settlement acquifer idea. But I like your idea for a smaller dungeon that is currently flooded with toxic water, and pumping it out reveals the dungeon. That's pretty good. Could even have this be fairly routine for the lone beast-laden water source: pump out the water, then go in to collect its eggs and other treasures from its lair. That's a neat mechanic. Poisoning a settlement's acquifer should be a High Crime, making ALL the settlements turn against you. Something unthinkable and eventually reload-worthy. Unless they like to be hated I guess. The gods would have a massive reaction to this too.",
+   "touched": true,
    "prefill": "v2",
    "doc": "underground_caverns_deep_design.md"
   },
   "cav:map-chain": {
    "d": "v1",
-   "n": "",
-   "touched": false,
+   "n": "Not sure about that instability, but yes let's avoid instability.",
+   "touched": true,
    "prefill": "v1",
    "doc": "underground_caverns_deep_design.md"
   },
   "cav:persistent-layers": {
    "d": "v1",
-   "n": "",
-   "touched": false,
+   "n": "Correct. We don't want regenerating re-visit dungeons. If the game gets bogged down because of savegame size, we'll handle that later as its own issue. (and that will be pruning, collapsing mines, etc... not procedurally generated \"new dungeons in the same spot\")",
+   "touched": true,
    "prefill": "v1",
    "doc": "underground_caverns_deep_design.md"
   },
   "cav:depth-ecology": {
-   "d": "v2",
-   "n": "",
-   "touched": false,
+   "d": "dream",
+   "n": "This is wild and strange but also unlikely. That would be SO MUCH water pumping. Let's see if we really need this.",
+   "touched": true,
    "prefill": "v2",
    "doc": "underground_caverns_deep_design.md"
   },
   "cav:underground-factions": {
-   "d": "v2",
+   "d": "dream",
    "n": "",
-   "touched": false,
+   "touched": true,
    "prefill": "v2",
    "doc": "underground_caverns_deep_design.md"
   },
   "cav:vault-archetypes": {
-   "d": "v2",
-   "n": "",
-   "touched": false,
+   "d": "dream",
+   "n": "Not sure I get this one.",
+   "touched": true,
    "prefill": "v2",
    "doc": "underground_caverns_deep_design.md"
   },
   "cav:organism-cavern": {
    "d": "dream",
-   "n": "",
-   "touched": false,
+   "n": "Kinda feels like a sarlacc",
+   "touched": true,
    "prefill": "dream",
    "doc": "underground_caverns_deep_design.md"
   },
   "cav:collapse-hazard-tool": {
-   "d": "v2",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "This is a good mechanic, especially as engineered by the Genosians where their sonic weapons might not trigger it. Attacking them hurts yourself if you do it wrong. And natural caverns that grumble and moan are great tension. Regions of instability should have animated bits of dust trailing down to warn the player, as well as some piled sand accumulating below.",
+   "touched": true,
    "prefill": "v2",
    "doc": "underground_caverns_deep_design.md"
   },
   "cav:darkness-mechanic": {
    "d": "v1",
-   "n": "",
-   "touched": false,
+   "n": "This is just needed in so many places. Beneath the water surface (ocean/lake biomes). Flooded dungeons. Forsaken Crags for sure. Night side in general. Light is what we bring because we need it, but in such great abundance compared to the local creatures we are like blazing beacons begging to be messed with.",
+   "touched": true,
    "prefill": "v1",
    "doc": "underground_caverns_deep_design.md"
   },
   "god:entry-thresholds": {
    "d": "v1",
-   "n": "",
-   "touched": false,
+   "n": "ABSOLUTELY! A warning gone unheeded MUST be responded to. Or an over-exuberant god radiating happiness, if courted too hard, again tips into unbalanced shock and disruption. Jawa must socially balance the gods, not tip them into wild abandon... or else. (But every stage should still be fun for the player, not just punative. That is a prerequisite. This should be modeled strongly after human psychology. Staying \"too happy for too long\" has its downsides too, making meaning hard to find, chasing endless dopamine highs... things like that, radiated out into the world.)",
+   "touched": true,
    "prefill": "v1",
    "doc": "god_modes_deep_design.md"
   },
   "god:strain-meter": {
    "d": "v1",
-   "n": "",
-   "touched": false,
+   "n": "I don't understand this and need it explained better to me. I think you're trying to talk about historesis of the mood model. ",
+   "touched": true,
    "prefill": "v1",
    "doc": "god_modes_deep_design.md"
   },
   "god:exit-stacking-scars": {
    "d": "v1",
-   "n": "",
-   "touched": false,
+   "n": "Again, I have no idea what you mean here, too coded of language. More than one god should absolutely be able to get to exuberance, but yes these \"alternative realities\" that are entered could happen one at a time to keep it simple for the player, that makes sense.",
+   "touched": true,
    "prefill": "v1",
    "doc": "god_modes_deep_design.md"
   },
   "god:announcement-layer": {
    "d": "v1",
-   "n": "",
-   "touched": false,
+   "n": "Yes, this is excellent, to affirm to the player \"leaving normal reality\" and \"returning to reality.\" It should be mapped to perception/psychological facts in the game too that are mappable through the UI. For example, \"the very sky seems angry and red\" (and thus it now is, yet is that just perception?) or \"every drop of water tastes foul and bitter\" (and thus it now is, and all the water indeed seems foul... but is it really?)",
+   "touched": true,
    "prefill": "v1",
    "doc": "god_modes_deep_design.md"
   },
   "god:eighteen-mode-roster": {
-   "d": "v2",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "Gotta do it. This is a major design action that's deeply inportant. And critically: god punishment MUST NOT be the opposite of what they love, because that just makes the world be more ugly to them. Instead it must be denying the Jawa the thing the god loves, not granting its opposite. Anger as withdrawl of love.",
+   "touched": true,
    "prefill": "v2",
    "doc": "god_modes_deep_design.md"
   },
   "god:open-market": {
    "d": "v1",
-   "n": "",
-   "touched": false,
+   "n": "Love it. Too many traders can be seen to be too much in so many ways. Too many traders. Too many raids. Too much wealth. Too many \"guests\" showing up that really want to steal your stuff. Too many \"offers\" of alliance showing up that are really demands you come and trade with others or else suffer lowered faction... and you can only choose one of the three required presences. Things like that. Unwanted attention. And all those merchants keep shitting all over, dirtying your living spaces, even eating your food or losing control of their animals in your ship. Good god, make it stop!",
+   "touched": true,
    "prefill": "v1",
    "doc": "god_modes_deep_design.md"
   },
   "god:long-walk": {
    "d": "v1",
-   "n": "",
-   "touched": false,
+   "n": "Terrifying. Yet as they sleepwalk, perhaps they are also lead toward a reward buried in the sand, if they have the favor of a different god as well. See how the curse can also be fun? We must always strive to do both: consequences in game, but unfun must never be the consequence of anything. Interesting, stimulating must remain the goal. Especially since angering the gods should not be avoidable if we do it right, just manageable.",
+   "touched": true,
    "prefill": "v1",
    "doc": "god_modes_deep_design.md"
   },
   "god:tenfold-reign": {
    "d": "dream",
-   "n": "",
-   "touched": false,
+   "n": "Fascinating, but we'd need to talk about this a LOT more. Almost sounds like the Jawa go into collective psychosis together, and who knows what actually happened after that...",
+   "touched": true,
    "prefill": "dream",
    "doc": "god_modes_deep_design.md"
   },
   "sky:shadow-line": {
-   "d": "v1",
-   "n": "",
-   "touched": false,
+   "d": "v2",
+   "n": "We need to rename these. Skyhooks in this context can no longer be traditional space elevator type geostationary objects due to the tidally locked nature. So instead these are going to have to be very high altitude stations with a tapering tower beneath them, Bespin style technology using repulsorlifts. This one should likely actually be over the Rust Cathedral, an old research station turned into a cargo redistribution center. High above the scorching temperature, the rare gases emitted from the planet are being harvested industrially. But the stations automated manufacturing has been taken over by the Empire. Each one has a ship handed upon it with weapons capable of shooting anyone leaving the planet or approaching. They cannot go into the atmosphere either, hence why the Utinni remains outside their attack range.",
+   "touched": true,
    "prefill": "v1",
    "doc": "skyhook_deep_design.md"
   },
   "sky:cargo-climbers": {
-   "d": "v1",
-   "n": "",
-   "touched": false,
+   "d": "cut",
+   "n": "makes no sense",
+   "touched": true,
    "prefill": "v1",
    "doc": "skyhook_deep_design.md"
   },
   "sky:tether-static": {
-   "d": "v2",
+   "d": "cut",
    "n": "",
-   "touched": false,
+   "touched": true,
    "prefill": "v2",
    "doc": "skyhook_deep_design.md"
   },
   "sky:pod-interception": {
-   "d": "v1",
+   "d": "cut",
    "n": "",
-   "touched": false,
+   "touched": true,
    "prefill": "v1",
    "doc": "skyhook_deep_design.md"
   },
   "sky:customs-heist": {
    "d": "v2",
    "n": "",
-   "touched": false,
+   "touched": true,
    "prefill": "v2",
    "doc": "skyhook_deep_design.md"
   },
   "sky:vertical-society": {
-   "d": "v2",
+   "d": "cut",
    "n": "",
-   "touched": false,
+   "touched": true,
    "prefill": "v2",
    "doc": "skyhook_deep_design.md"
   },
   "sky:the-cut": {
-   "d": "v2",
+   "d": "cut",
    "n": "",
-   "touched": false,
+   "touched": true,
    "prefill": "v2",
    "doc": "skyhook_deep_design.md"
   },
   "sky:debris-corridor": {
-   "d": "dream",
-   "n": "",
-   "touched": false,
+   "d": "v2",
+   "n": "Rather than a cut, this would be sabotaging the repulsorlift system, causing it to crash terribly and create this super rich treasure salvage area. ",
+   "touched": true,
    "prefill": "dream",
    "doc": "skyhook_deep_design.md"
   },
   "sky:cult-prophecy": {
-   "d": "dream",
+   "d": "cut",
    "n": "",
-   "touched": false,
+   "touched": true,
    "prefill": "dream",
    "doc": "skyhook_deep_design.md"
   },
   "liv:onnik-kiln": {
    "d": "v1",
-   "n": "",
-   "touched": false,
+   "n": "The ceramic should be an art material that makes beautiful bricks, art pieces, etc.",
+   "touched": true,
    "prefill": "v1",
    "doc": "ludicrous_livestock_deep_design.md"
   },
   "liv:drassik-smelter": {
-   "d": "v2",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "Interesting mechanic. I'm interested but I need to understand more what alloy means here. What are we sorting, and what are we getting?",
+   "touched": true,
    "prefill": "v2",
    "doc": "ludicrous_livestock_deep_design.md"
   },
   "liv:karrask-molt": {
    "d": "v1",
-   "n": "",
-   "touched": false,
+   "n": "Don't make it functional plate armor, that's too much. Instead it's a tough material (like chitin) that makes great armor or other highly durable items that's very easy to work and shape (but not very pretty).",
+   "touched": true,
    "prefill": "v1",
    "doc": "ludicrous_livestock_deep_design.md"
   },
   "liv:moornak-griefbomb": {
-   "d": "v2",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "To make this worthwhile, it must be VERY powerful to absorb grief and restore calm. So make it attracted to and calming of mental breaks. An ominous shadow that follows unhappy people around. But its unsettling appearance also makes everyone mildly unsettled as well, a negative hediff that help make them unhappy enough to feed it. So it becomes a kind of parasite: you won't go crazy or collapse to madness, but neither will you ever be happy. Blessing and curse, and hard to get rid of. If you shoot it, massive mood consequences as you said. Player must get clever to trap it somewhere and leave it behind on a map. Traders will sell it but not buy it back. Should self-tame extremely readily and show up on the map already full of significant grief. Should last 30 days of suffering and mental breaks when it dies on the same map anywhere. Also makes creatures go manhunter at the same time... so not a good thing.",
+   "touched": true,
    "prefill": "v2",
    "doc": "ludicrous_livestock_deep_design.md"
   },
   "liv:duskhide-herd": {
-   "d": "v2",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "I don't remember what the living herd warmth buff is, which creature?",
+   "touched": true,
    "prefill": "v2",
    "doc": "ludicrous_livestock_deep_design.md"
   },
   "liv:voltling-battery": {
-   "d": "v2",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "This needs to be a new custom creature, but it's cool. A crystalline entity that absorbs sunlight and recharges batteries. But it's very delicate and could never survive on the dayside without protection. Comes from the night side but doesn't require the cold, just tolerates it. However, if protected, it starts to reproduce disturbingly quickly. That's the bane. ",
+   "touched": true,
    "prefill": "v2",
    "doc": "ludicrous_livestock_deep_design.md"
   },
   "liv:coola-tend-narrate": {
-   "d": "v2",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "Sounds neat, but I need to know more about this concept first.",
+   "touched": true,
    "prefill": "v2",
    "doc": "ludicrous_livestock_deep_design.md"
   },
   "liv:grubbin-con": {
-   "d": "dream",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "Sounds neat, but I need to know more about this concept first.",
+   "touched": true,
    "prefill": "dream",
    "doc": "ludicrous_livestock_deep_design.md"
   },
   "liv:gorrath-stampede": {
-   "d": "dream",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "A creature that allows you to point and click \"Attack!\" for the whole herd, but once you do, they are unstoppable and can even damage walls and structures as they ram them. Super angry big beast of some sort. I love the idea of a berserk charge as a Jawa's idea of training. Misfire shouldn't just be self-inflicted, that's not fun. Rather they start to trip over each other and just get hurt and scattered and angry.",
+   "touched": true,
    "prefill": "dream",
    "doc": "ludicrous_livestock_deep_design.md"
   },
   "liv:hollowfoot-undermine": {
-   "d": "dream",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "This is cool. A big worm that grumbles along through the sand, unhappy but survivable out of the sand, and able to break down walls as you suggest. Won't hurt the gravship or metal walls, but will do on other materials. ",
+   "touched": true,
    "prefill": "dream",
    "doc": "ludicrous_livestock_deep_design.md"
   },
   "cui:hazard-pantry": {
    "d": "v1",
-   "n": "",
-   "touched": false,
+   "n": "YES! I really want there to be many strange pens, pits, aquariums, large bottles, cages, floating tethers... the bestiary for a star wars food culturing area should look absolutely amazing and bizarre. Need to think about how to animate it to look even more amazing. Cuisine should all have mild to major effects too, not necessarily intended to be \"farmed\" regularly so much as opportunistically prepared and enjoyed and rolled with. Good, bad, strange, and wonderful effects. Somewhat unreliable as well, to prevent min/maxing.",
+   "touched": true,
    "prefill": "v1",
    "doc": "high_cuisine_deep_design.md"
   },
   "cui:vce-repoint": {
    "d": "v1",
-   "n": "",
-   "touched": false,
+   "n": "Absolutely, let's leverage what they have and reskin it to us. ",
+   "touched": true,
    "prefill": "v1",
    "doc": "high_cuisine_deep_design.md"
   },
   "cui:diplomacy-claim": {
-   "d": "v2",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "This should be mostly a VERY big boon or VERY big bane, or else it's a weak \"isn't this food nice.\" Menu should help you recognize what would do best here, not make the player remember a bunch of arcane lore. Likely requires a special \"diplomatic meal\" event or something to make this easier to remember.",
+   "touched": true,
    "prefill": "v2",
    "doc": "high_cuisine_deep_design.md"
   },
   "cui:ninefold-feast": {
-   "d": "dream",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "Should earn valuable information, communion with the gods, calming of wild diefic relations, and a general ce-centering on Jawaness for all. Should have many kinds of meals/ingredients that serve each god, not just one specific thing, or it won't ever happen. Could easily unlock another layer of ship trust, sharing of old technology, and other plot elements. (Helps calm the ship too, essentially, feel better about it's inherent new Jawaness).",
+   "touched": true,
    "prefill": "dream",
    "doc": "high_cuisine_deep_design.md"
   },
   "cui:terroir-brewing": {
-   "d": "v2",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "LOVE the idea that some of the cuisine manufacturing \"works better\" in different biomes or latitudes. The others should slowly tick along still, but some \"supercharge\" in the right conditions and really crank out or produce higher quality output. that's gold.",
+   "touched": true,
    "prefill": "v2",
    "doc": "high_cuisine_deep_design.md"
   },
   "cui:chef-performance": {
-   "d": "v2",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "The Feastboss. Cool role. Explore with me how we might do this. There is a feasting ideologion concept currently in play, but I don't remember being particularly impressed by it. But studying it might be useful.",
+   "touched": true,
    "prefill": "v2",
    "doc": "high_cuisine_deep_design.md"
   },
   "cui:recipe-discovery": {
-   "d": "dream",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "That is SO Jawa!!! Absolutely. Start with basic stuff, and progress up the tree. Ingest the \"stuff on a stick\" mod into our own version and jettison that mod eventually... it's rather silly anyway (I think there are two of them). Let's take what we need and release them.",
+   "touched": true,
    "prefill": "dream",
    "doc": "high_cuisine_deep_design.md"
   },
   "cui:preservation-vocab": {
-   "d": "v2",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "SO GOOD! Canning is terrestrial. This is awesome. Different food will need different preservation methods. And now we know why we want to go to the salt flats, or the tar pits, or sand dunes. Let's make everything salvageable commodoties! The ship should be absolutely full of weird stuff. I love the idea of piles of sand in a box, or a barrel of tar. So good. More than one method should work for each food type, maybe some work for all, just think about each one. Sand-oven should be sand-drying.",
+   "touched": true,
    "prefill": "v2",
    "doc": "high_cuisine_deep_design.md"
   },
   "cui:live-ingredient-tank": {
-   "d": "dream",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "YES! And a lot more like this. This is deep Star Wars cannon. Grabbing a squealing creature from a fish bowl and eating it live should get a big mood buff and honor especially the Hutt. Gotta be animated somehow.",
+   "touched": true,
    "prefill": "dream",
    "doc": "high_cuisine_deep_design.md"
   },
   "llm:protocol-droid-interpreter": {
-   "d": "v1",
-   "n": "",
-   "touched": false,
+   "d": "v2",
+   "n": "I think yes on this if I understandcorrectly. I think you're suggesting some aliens will not speak the human tongue, and thus require protocol droids. That's... fascinating. This is a very deep concept and may require its own mod to capture all the ways it could go. I like it, I think.",
+   "touched": true,
    "prefill": "v1",
    "doc": "llm_driven_mods_deep_design.md"
   },
   "llm:nine-voices-shrine": {
-   "d": "v2",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "Close. More like this. One, two, or (rarely) three gods may speak: if they are very happy or very unhappy. Other gods that are not so extreme may just react nonverbally in the description, to indicate their reaction. Those who are slumbering or neutral need not be mentioned. Yes, the C# released the vector of deific moods to the LLM as well as the context. The reactions are not modular: they are blended together seamlessly. For example: God one is ANGRY and threatens the Jawa, but then God two is happy and notes positive things they have done and advises mercy, and God three enters then with a laugh and finds a compromise that is neither kind or unkind but poignant instead, lending them all to agree.",
+   "touched": true,
    "prefill": "v2",
    "doc": "llm_driven_mods_deep_design.md"
   },
   "llm:god-call-daily-budget": {
-   "d": "v2",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "It's good to have general caps but it doesn't need to quite this limited. Capping it to # per real-world hour or something is likely more relevant than per game day. And we will also be calling it at other times to make spawned pawns make more sense and have more flavor.",
+   "touched": true,
    "prefill": "v2",
    "doc": "llm_driven_mods_deep_design.md"
   },
   "llm:inhabited-rumor-dialogue": {
    "d": "v1",
-   "n": "",
-   "touched": false,
+   "n": "I like it for now. Can start prescripted but if the LLM is available, it gets enriched. That's the general metric I'm thinking about: baseline prescripted stuff with LLM enrichment when available.",
+   "touched": true,
    "prefill": "v1",
    "doc": "llm_driven_mods_deep_design.md"
   },
   "llm:rumor-prompt-injection-guard": {
    "d": "v1",
-   "n": "",
-   "touched": false,
+   "n": "Note sure what this means?",
+   "touched": true,
    "prefill": "v1",
    "doc": "llm_driven_mods_deep_design.md"
   },
   "llm:previously-on-recap": {
    "d": "v1",
-   "n": "",
-   "touched": false,
+   "n": "That is awesome! Loads are infrequent and that's a very kind thing to do for the player. Can be in the narrator's voice again.",
+   "touched": true,
    "prefill": "v1",
    "doc": "llm_driven_mods_deep_design.md"
   },
   "llm:salvage-with-history": {
-   "d": "v2",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "This is a very neat idea, but it begs the question: Why is the game telling me about this one item so much? Whatever it says needs to be poignant and self-clarifying. Perhaps it is the item's \"story\" that is told in its appearance and where it was found, and thus it becomes a \"keepsake\" that is special to the one who found it (cue wistful soundtrack).",
+   "touched": true,
    "prefill": "v2",
    "doc": "llm_driven_mods_deep_design.md"
   },
   "llm:adaptive-quest-consequences": {
-   "d": "v2",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "I really like this. Essentially narrative context post-facto after major events, successes, failures, etc. I do intend to give the LLM the ability to arbitrate whether the game reacts as opposed to merely talking. Is it appropriate to modify goodwill now? Would it be poignant and appropriate to have a weather effect right now? Things like that.",
+   "touched": true,
    "prefill": "v2",
    "doc": "llm_driven_mods_deep_design.md"
   },
   "llm:silent-fallback-law": {
    "d": "v1",
-   "n": "",
-   "touched": false,
+   "n": "Yes, always. The game must still be playable and fun without the LLM, just not as rich, nuanced, or reactive.",
+   "touched": true,
    "prefill": "v1",
    "doc": "llm_driven_mods_deep_design.md"
   },
   "wea:terminator-storms": {
    "d": "v1",
-   "n": "",
-   "touched": false,
+   "n": "I like this! The free water is bleah... it wouldn't add up to anything significant. But the turbulence is real, and weak shields protect you eventually.",
+   "touched": true,
    "prefill": "v1",
    "doc": "weather_suite_deep_design.md"
   },
   "wea:glass-storms": {
-   "d": "v2",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "Love this! Violent weather for the win.",
+   "touched": true,
    "prefill": "v2",
    "doc": "weather_suite_deep_design.md"
   },
   "wea:static-seasons": {
-   "d": "v2",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "Except that I think this should add battery power while doing all the other things you said.  Accelerates the rate at which droids become... eccentric.",
+   "touched": true,
    "prefill": "v2",
    "doc": "weather_suite_deep_design.md"
   },
   "wea:pressure-tides": {
-   "d": "dream",
-   "n": "",
-   "touched": false,
+   "d": "v2",
+   "n": "I don't know if we can incorporate assymetric gravship travel, but if we can, this is awesome.",
+   "touched": true,
    "prefill": "dream",
    "doc": "weather_suite_deep_design.md"
   },
   "wea:dark-auroras": {
    "d": "v1",
-   "n": "",
-   "touched": false,
+   "n": "Beautiful, and use the Aurora graphic effect but maximized in brightness and color. It should be awesome!",
+   "touched": true,
    "prefill": "v1",
    "doc": "weather_suite_deep_design.md"
   },
   "wea:spore-blooms": {
-   "d": "v2",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "Yes! Awesome. Also poisons wildlife providing a lot of free meat. Hiding indoors helps a lot.",
+   "touched": true,
    "prefill": "v2",
    "doc": "weather_suite_deep_design.md"
   },
   "wea:mirage-events": {
-   "d": "dream",
-   "n": "",
-   "touched": false,
+   "d": "cut",
+   "n": "doesn't add much",
+   "touched": true,
    "prefill": "dream",
    "doc": "weather_suite_deep_design.md"
   },
   "wea:forecasting-ladder": {
    "d": "v1",
-   "n": "",
-   "touched": false,
+   "n": "Mm... just have one or maybe two tiers only. But I do like this. The first one might just give advanced warning. The second allows them to be seen on the main map to give you more choice in the matter.",
+   "touched": true,
    "prefill": "v1",
    "doc": "weather_suite_deep_design.md"
   },
   "sar:landmark-site": {
    "d": "v1",
-   "n": "",
-   "touched": false,
+   "n": "Nope. There should be many Sarlacc's, but they should be semi-permanent when they're really huge. But there are smaller, more mobile ones...",
+   "touched": true,
    "prefill": "v1",
    "doc": "sarlacc_deep_design.md"
   },
   "sar:compile-digestion": {
-   "d": "dream",
-   "n": "",
-   "touched": false,
+   "d": "cut",
+   "n": "This is actually Star Wars lore, but it's bizarre and unsettling. I don't like it. But yes, within it, there are dungeons and trapped living things. But not like this.",
+   "touched": true,
    "prefill": "dream",
    "doc": "sarlacc_deep_design.md"
   },
   "sar:evidence-feeding": {
-   "d": "v2",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "Seems more like a religious ceremony. A rite of offering and forgetting. I like it for that.",
+   "touched": true,
    "prefill": "v2",
    "doc": "sarlacc_deep_design.md"
   },
   "sar:tremor-disturbance": {
    "d": "v1",
-   "n": "",
-   "touched": false,
+   "n": "ABSOLUTELY. It must work like this, or else no one would go to the map. You can definitely sneak up on the Sarlacc.",
+   "touched": true,
    "prefill": "v1",
    "doc": "sarlacc_deep_design.md"
   },
   "sar:anomaly-draws": {
-   "d": "v2",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "I like it! Might also re-occur for the Assailtant dungeon near the end and their massive bioweapon stuff.",
+   "touched": true,
    "prefill": "v2",
    "doc": "sarlacc_deep_design.md"
   },
   "sar:escape-quest": {
-   "d": "dream",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "This must simply be true. Returning from \"that place\" leaves you permanently changed. Come up with many such explanations as to how, all disturbing and interesting.",
+   "touched": true,
    "prefill": "dream",
    "doc": "sarlacc_deep_design.md"
   },
   "sar:sky-seeding-myth": {
-   "d": "dream",
+   "d": "cut",
    "n": "",
-   "touched": false,
+   "touched": true,
    "prefill": "dream",
    "doc": "sarlacc_deep_design.md"
   },
   "sar:castings-economy": {
-   "d": "v2",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "I think maybe you're talking about Sarlacc pearls?",
+   "touched": true,
    "prefill": "v2",
    "doc": "sarlacc_deep_design.md"
   },
   "sar:root-system-crosslink": {
-   "d": "dream",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "Yes, I think that's right. ",
+   "touched": true,
    "prefill": "dream",
    "doc": "sarlacc_deep_design.md"
   },
   "swt:junk-provenance": {
    "d": "v1",
-   "n": "",
-   "touched": false,
+   "n": "The more unique an item is, the more it can be remembered. Ownership should fade for all things, and the more generic the items the faster it decays. As you say, players only know of other ownership when they steal. Finding something in the desert carries the unknown threat that someone else thinks it's theirs... unless you're within their territory. Then they probably do. If they saw you. Did they see you? Who knows.",
+   "touched": true,
    "prefill": "v1",
    "doc": "sw_mod_concepts_triage.md"
   },
   "swt:krayt-leviathans": {
-   "d": "dream",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "Keep the giant Krayt dragon just as it is, but create a NEW massive dune-style sandworm with its own mythos. Plenty of room for both. But Krayt dragons deserve their own treatment. Feel free to borrow from the giant worm mod to build another version for the Krayt.",
+   "touched": true,
    "prefill": "dream",
    "doc": "sw_mod_concepts_triage.md"
   },
   "swt:underworld-reputation": {
-   "d": "v2",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "This is required for the Hutt dealings, so no reason you can't enter into this state with others. The hutt's just aim at it aggressively, offer it.",
+   "touched": true,
    "prefill": "v2",
    "doc": "sw_mod_concepts_triage.md"
   },
   "swt:cantina-social": {
-   "d": "v2",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "Yet the bad leads can't just be disappointments. Something has to come of it. Maybe it allows you to righteously return and embarass the perpetrator, or flip the tables on them, or sell the false rumor to another later. The fun must continue!",
+   "touched": true,
    "prefill": "v2",
    "doc": "sw_mod_concepts_triage.md"
   },
   "swt:holo-deception": {
-   "d": "v2",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "I super like this when the Jawa turn their newfound technological prowess to their normal pursuits. Deceptive holograms aboard the ship to evade boarders.",
+   "touched": true,
    "prefill": "v2",
    "doc": "sw_mod_concepts_triage.md"
   },
   "swt:imperial-bureaucracy": {
-   "d": "v2",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "Wait, this is GREAT! The Jawa don't enter the settlements with their massive ship, they walk in from afar... so yes! There can be Imperial guards standing by monitoring the situation, and all of the verbs you just offered should be possible interactions. The locals might even cheer your resistance if you do, or just laugh. No such thing as binary \"angry/content\" town moods, make it interesting!",
+   "touched": true,
    "prefill": "v2",
    "doc": "sw_mod_concepts_triage.md"
   },
   "swt:droid-repair-shop": {
-   "d": "dream",
-   "n": "",
-   "touched": false,
+   "d": "v1",
+   "n": "Gotta do this. And people bringing their broken droids for repair is so fun, there has to be a way to incorporate this somehow...",
+   "touched": true,
    "prefill": "dream",
    "doc": "sw_mod_concepts_triage.md"
   }
