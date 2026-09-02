@@ -226,9 +226,11 @@ def harvest_new(home: Path, before: set[Path]) -> list[Path]:
 # --------------------------------------------------------------------------
 
 def run_codex(prompt: str, images: list[Path], workdir: Path, timeout: int,
-              verbose: bool) -> tuple[int, str]:
+              verbose: bool, model: str | None = None) -> tuple[int, str]:
     cli = find_codex_cli()
     cmd = [str(cli), "exec", "--sandbox", "workspace-write", "--skip-git-repo-check"]
+    if model:
+        cmd += ["-m", model]
     for img in images:
         if not img.is_file():
             raise EnvError(f"Input image does not exist: {img}")
@@ -304,7 +306,8 @@ def do_image(args) -> int:
 
     before = snapshot_generated(home)
     started = time.time()
-    code, output = run_codex(prompt, images, workdir, args.timeout, args.verbose)
+    code, output = run_codex(prompt, images, workdir, args.timeout, args.verbose,
+                             getattr(args, "model", None))
     elapsed = time.time() - started
 
     if args.verbose and output:
@@ -385,6 +388,9 @@ def main() -> int:
                        help="request a flat key background, e.g. '#00ff00'. "
                             "Required for any asset that needs alpha.")
         p.add_argument("--timeout", type=int, default=DEFAULT_TIMEOUT_S)
+        p.add_argument("--model", default=None, metavar="MODEL",
+                       help="codex exec -m override; use when the default "
+                            "model reports 'at capacity'")
         p.add_argument("--force", action="store_true")
         p.add_argument("--dry-run", action="store_true",
                        help="print the resolved command and prompt, call nothing")

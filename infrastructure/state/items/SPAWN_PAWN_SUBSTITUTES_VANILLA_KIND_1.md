@@ -307,3 +307,9 @@ live mod-disable bisect with the fixed tool reading `kindActual` back.
       per candidate. Size it off the real ~0.8% rate: on the order of a thousand spawns per
       cell, not a few dozen.
 - [ ] Substitution at 0 for Empire and Blackstar kinds in normal play.
+
+## 2026-09-01 (BENCH) — the bisect may need ZERO restarts, and a source-ranking pass is running
+
+Two unblocks for the "restart per candidate" cost:
+1. **Runtime unpatch.** Harmony 2.x supports `Harmony.Unpatch(original, HarmonyPatchType.Prefix, "<owner-id>")` on a LIVE game — a small companion tool (`jawa/unpatch`, rimbridge-companion skill) could disable one candidate, spawn ~1000, re-patch, move to the next: the whole five-candidate bisect in ONE bridge sitting. ⚠️ HYPOTHESIS from Harmony's documented API — not yet proven against these five patches; a patch whose effect is cached at startup (e.g. one that rewrote a def) would not revert on unpatch, but all five candidates act per-call on the generation path, which is the case unpatching handles.
+2. **Rank before bisecting.** The five were shortlisted by SIGNATURE only; nobody read the five method BODIES. A source-read (BENCH subagent, in flight 2026-09-01) may rule candidates out or name the likely one, shrinking the bisect to 1–2 cells. Findings will land here.
