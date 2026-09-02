@@ -1,0 +1,22 @@
+{
+  "sheet": "forsaken_crags_fauna_sheet",
+  "posture": "whitelist",
+  "note": "Pre-fill written by BENCH 2026-09-01 so the sheet's file-link picker has a file to open; FOUNDRY's three approve prefills. Owner-touched rows carry savedBy/savedAt from the page.",
+  "decisions": {
+    "cindermare": {
+      "decision": "approve",
+      "note": "",
+      "prefill": "approve"
+    },
+    "skarnix": {
+      "decision": "approve",
+      "note": "",
+      "prefill": "approve"
+    },
+    "tellurox": {
+      "decision": "approve",
+      "note": "OWNER RULING (before sheet): a livestock animal genetically modified by the Helix faction \u2014 origin and biome follow Helix, not 'general'.",
+      "prefill": "approve"
+    }
+  }
+}
