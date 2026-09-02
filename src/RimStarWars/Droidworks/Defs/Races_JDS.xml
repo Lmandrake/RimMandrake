@@ -166,6 +166,13 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
+    <comps>
+      <!-- CompDroidDetonation, DROIDWORKS_DETONATION_ROLLOUT_1 (2026-09-02):
+           every energyDensity>0 race gets this, per its own family's
+           DroidworksExtension tuning (DROIDWORKS_FAMILY_LAYER_1). GNK proved
+           the wiring end to end; this is the rollout. -->
+      <li Class="RimMandrake.StarWars.Droidworks.CompProperties_DroidDetonation" />
+    </comps>
   </AlienRace.ThingDef_AlienRace>
   <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Heavy">
     <defName>RSW_DW_Race_JDSCIS_T1_Tactical_Droid</defName>
@@ -195,6 +202,13 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
+    <comps>
+      <!-- CompDroidDetonation, DROIDWORKS_DETONATION_ROLLOUT_1 (2026-09-02):
+           every energyDensity>0 race gets this, per its own family's
+           DroidworksExtension tuning (DROIDWORKS_FAMILY_LAYER_1). GNK proved
+           the wiring end to end; this is the rollout. -->
+      <li Class="RimMandrake.StarWars.Droidworks.CompProperties_DroidDetonation" />
+    </comps>
   </AlienRace.ThingDef_AlienRace>
   <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Heavy">
     <defName>RSW_DW_Race_JDSCIS_ST_Super_Tactical_Droid</defName>
@@ -224,6 +238,13 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
+    <comps>
+      <!-- CompDroidDetonation, DROIDWORKS_DETONATION_ROLLOUT_1 (2026-09-02):
+           every energyDensity>0 race gets this, per its own family's
+           DroidworksExtension tuning (DROIDWORKS_FAMILY_LAYER_1). GNK proved
+           the wiring end to end; this is the rollout. -->
+      <li Class="RimMandrake.StarWars.Droidworks.CompProperties_DroidDetonation" />
+    </comps>
   </AlienRace.ThingDef_AlienRace>
   <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Heavy">
     <defName>RSW_DW_Race_JDSCIS_B2_Super_Battle_Droid</defName>
@@ -253,6 +274,13 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
+    <comps>
+      <!-- CompDroidDetonation, DROIDWORKS_DETONATION_ROLLOUT_1 (2026-09-02):
+           every energyDensity>0 race gets this, per its own family's
+           DroidworksExtension tuning (DROIDWORKS_FAMILY_LAYER_1). GNK proved
+           the wiring end to end; this is the rollout. -->
+      <li Class="RimMandrake.StarWars.Droidworks.CompProperties_DroidDetonation" />
+    </comps>
   </AlienRace.ThingDef_AlienRace>
   <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Heavy">
     <defName>RSW_DW_Race_JDSCIS_B2_HA_Super_Battle_Droid</defName>
@@ -282,6 +310,13 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
+    <comps>
+      <!-- CompDroidDetonation, DROIDWORKS_DETONATION_ROLLOUT_1 (2026-09-02):
+           every energyDensity>0 race gets this, per its own family's
+           DroidworksExtension tuning (DROIDWORKS_FAMILY_LAYER_1). GNK proved
+           the wiring end to end; this is the rollout. -->
+      <li Class="RimMandrake.StarWars.Droidworks.CompProperties_DroidDetonation" />
+    </comps>
   </AlienRace.ThingDef_AlienRace>
   <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Battle">
     <defName>RSW_DW_Race_JDSCIS_AQ_Battle_Droid</defName>
@@ -399,6 +434,13 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
+    <comps>
+      <!-- CompDroidDetonation, DROIDWORKS_DETONATION_ROLLOUT_1 (2026-09-02):
+           every energyDensity>0 race gets this, per its own family's
+           DroidworksExtension tuning (DROIDWORKS_FAMILY_LAYER_1). GNK proved
+           the wiring end to end; this is the rollout. -->
+      <li Class="RimMandrake.StarWars.Droidworks.CompProperties_DroidDetonation" />
+    </comps>
   </AlienRace.ThingDef_AlienRace>
   <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Heavy">
     <defName>RSW_DW_Race_JDSCIS_DSD1_Dwarf_Spider_Droid</defName>
@@ -429,6 +471,13 @@
         </alienPartGenerator>
       </generalSettings>
     </alienRace>
+    <comps>
+      <!-- CompDroidDetonation, DROIDWORKS_DETONATION_ROLLOUT_1 (2026-09-02):
+           every energyDensity>0 race gets this, per its own family's
+           DroidworksExtension tuning (DROIDWORKS_FAMILY_LAYER_1). GNK proved
+           the wiring end to end; this is the rollout. -->
+      <li Class="RimMandrake.StarWars.Droidworks.CompProperties_DroidDetonation" />
+    </comps>
   </AlienRace.ThingDef_AlienRace>
   <AlienRace.ThingDef_AlienRace ParentName="DW_Family_Battle">
     <defName>RSW_DW_Race_JDSCIS_LR-57_Combat_Droid</defName>

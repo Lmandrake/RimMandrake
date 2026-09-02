@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T09:26:03Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-02T09:40:51Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
-The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## WILD_ANIMALS_PADDED_LISTS_1 wildAnimals lists padded to 1024 by unidentified C# pass
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     investigate
-summary:  WILDANIMALSPADDEDLISTS1 — offline half done: mechanism strongly narrowed, exact patch still unnamed
-prose:    infrastructure/state/items/WILD_ANIMALS_PADDED_LISTS_1.md
+Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
 
 # IN PROGRESS
 
@@ -35,6 +26,15 @@ target:   v1
 kind:     bug
 summary:  SPAWNPAWNSUBSTITUTESVANILLAKIND1 — "Spawned 2/2" delivered one of something else
 prose:    infrastructure/state/items/SPAWN_PAWN_SUBSTITUTES_VANILLA_KIND_1.md
+
+## WILD_ANIMALS_PADDED_LISTS_1 wildAnimals lists padded to 1024 by unidentified C# pass
+state:    doing
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     investigate
+summary:  WILDANIMALSPADDEDLISTS1 — offline half done: mechanism strongly narrowed, exact patch still unnamed
+prose:    infrastructure/state/items/WILD_ANIMALS_PADDED_LISTS_1.md
 
 ## DROID_SYSTEM_BUILD_1 Build the unifying droid mod per droid_system_spec.md (parked until the owner reopens)
 state:    doing
@@ -333,6 +333,15 @@ kind:     bug
 summary:  (no items/HELIX_TELLUROX_SHELL_LOAD_CRASH_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/HELIX_TELLUROX_SHELL_LOAD_CRASH_1.md
 
+## ATMOSPHERE_CONFIG_RESTORE_1 Restore glorious rings+thick-atmo config at the NEXT game-down gap (owner missed it)
+state:    doing
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+summary:  (no items/ATMOSPHERE_CONFIG_RESTORE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ATMOSPHERE_CONFIG_RESTORE_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -379,32 +388,12 @@ _none._
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
 
-## ATMOSPHERE_CONFIG_RESTORE_1 Restore glorious rings+thick-atmo config at the NEXT game-down gap (owner missed it)
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/ATMOSPHERE_CONFIG_RESTORE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ATMOSPHERE_CONFIG_RESTORE_1.md
-
-## DROIDWORKS_HEALTHSCALE_SENTINELS_1 Fix 7 remaining baseHealthScale=UNCERTAIN string sentinels in Races_OuterRim.xml (same fix as GNK)
+## DROIDWORKS_GENERATOR_NAMING_DRIFT_1 gen_droidworks_defs.py drifted from its own committed output: strips RSW_ defName prefix, 2 stale bare-namespace Class= strings (both fixed), DW_ROOT pointed at a deleted src/Jawa path (fixed)
 state:    proposed
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DROIDWORKS_HEALTHSCALE_SENTINELS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DROIDWORKS_HEALTHSCALE_SENTINELS_1.md
-
-## DROIDWORKS_DETONATION_ROLLOUT_1 Roll CompDroidDetonation out to the 17 remaining energyDensity>0 races (pattern proven on GNK)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DROIDWORKS_DETONATION_ROLLOUT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DROIDWORKS_DETONATION_ROLLOUT_1.md
+summary:  (no items/DROIDWORKS_GENERATOR_NAMING_DRIFT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROIDWORKS_GENERATOR_NAMING_DRIFT_1.md

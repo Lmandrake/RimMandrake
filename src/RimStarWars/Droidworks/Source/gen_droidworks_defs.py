@@ -89,7 +89,7 @@ def _find_repo_root(start):
 
 
 _REPO_ROOT = _find_repo_root(os.path.dirname(__file__))
-DW_ROOT = os.path.join(_REPO_ROOT, "src", "Jawa", "Droidworks")
+DW_ROOT = os.path.join(_REPO_ROOT, "src", "RimStarWars", "Droidworks")
 EXTRACTION_PATH = os.path.join(DW_ROOT, "Source", "extraction.json")
 TEX_ROOT = os.path.join(DW_ROOT, "Textures")
 DEFS_ROOT = os.path.join(DW_ROOT, "Defs")
@@ -163,14 +163,20 @@ def family_dn(family_key):
     return "DW_Family_" + FAMILY_DISPLAY[family_key]
 
 
+# 🔴 FIXED, DROIDWORKS_DETONATION_ROLLOUT_1 (2026-09-02): this was emitting
+# "Droidworks.CompProperties_DroidDetonation" — the class's real namespace is
+# RimMandrake.StarWars.Droidworks (CompDroidDetonation.cs:5, verified against
+# source, not guessed) per this project's own naming-scheme rule (C# namespaces
+# nest RimMandrake[.StarWars|.Utinni].<Mod>). A blind regenerate under the old
+# string would have silently broken GNK's Class resolution the moment this
+# generator was next run — caught here because the DW_ROOT path bug (below)
+# forced a real re-run to prove it, not because anyone was looking for it.
+DETONATION_COMP_LI = '      <li Class="RimMandrake.StarWars.Droidworks.CompProperties_DroidDetonation" />'
+
 # Races whose generated def must carry a <comps> block the generator does
-# not otherwise derive from extraction.json — currently just GNK's hand-
-# wired CompDroidDetonation (DROIDWORKS_PILOT_GONK_1: "the gonk detonates by
-# nature"). Rolling CompDroidDetonation out to every energyDensity>0 race
-# (Heavy/Power/Probe families) is a known follow-up, explicitly NOT done by
-# this table — see DROIDWORKS_FAMILY_LAYER_1's closing note. Teaching the
-# generator this one exception is what stops a blind regenerate from
-# reverting GNK's fix again (the exact trap that already happened once).
+# not otherwise derive from extraction.json — GNK's hand-wired
+# CompDroidDetonation (DROIDWORKS_PILOT_GONK_1: "the gonk detonates by
+# nature") plus its own explanatory comment, kept verbatim as history.
 COMPS_OVERRIDE = {
     "OuterRim_GNKDroid": [
         '      <!-- "the gonk detonates by nature" (BENCH). Pilot wiring: no other\n'
@@ -179,9 +185,22 @@ COMPS_OVERRIDE = {
         '           the mechanic was built (CompDroidDetonation.cs) but never wired to any\n'
         "           other def. This is the first race to prove the wiring works end to\n"
         "           end; rolling it out to the rest is a follow-up, not this item. -->",
-        '      <li Class="Droidworks.CompProperties_DroidDetonation" />',
+        DETONATION_COMP_LI,
     ],
 }
+
+# 🔴 DROIDWORKS_DETONATION_ROLLOUT_1: the rollout itself, computed rather than
+# hand-listed. Every race whose FAMILY carries energyDensity > 0 (Heavy,
+# Power, Probe — see FAMILY_TUNING) gets the same comp GNK proved, applied at
+# render time in main() rather than as a second hardcoded defName list that
+# could drift from FAMILY_TUNING/CHASSIS_PLAN the moment either changes.
+DETONATION_ROLLOUT_COMP = [
+    "      <!-- CompDroidDetonation, DROIDWORKS_DETONATION_ROLLOUT_1 (2026-09-02):",
+    "           every energyDensity>0 race gets this, per its own family's",
+    "           DroidworksExtension tuning (DROIDWORKS_FAMILY_LAYER_1). GNK proved",
+    "           the wiring end to end; this is the rollout. -->",
+    DETONATION_COMP_LI,
+]
 
 # orig race defName -> (bucket, note-or-None). Every one of the 57 races.
 CHASSIS_PLAN = {
@@ -503,7 +522,14 @@ def render_family_base(family_key, body_default, health_default):
             p.append("      <baseHealthScale>%s</baseHealthScale>" % health_default)
         p.append("    </race>")
     p.append("    <modExtensions>")
-    p.append('      <li Class="Droidworks.DroidworksExtension">')
+    # Same stale-namespace bug as DETONATION_COMP_LI above - real namespace is
+    # RimMandrake.StarWars.Droidworks (DroidworksModExtension.cs:3). The
+    # COMMITTED Races_Families.xml already had the correct string (someone
+    # hand-fixed it after a prior regen, or fixed it and never re-ran this);
+    # this generator would have reverted it back to broken the next time
+    # anyone regenerated for an unrelated reason. Caught by diffing this run
+    # against HEAD rather than trusting a clean exit code.
+    p.append('      <li Class="RimMandrake.StarWars.Droidworks.DroidworksExtension">')
     p.append("        <powerFallPerDay>%s</powerFallPerDay>" % power_fall)
     p.append("        <energyDensity>%s</energyDensity>" % energy_density)
     p.append("        <chassisClass>%d</chassisClass>" % class_int)
@@ -909,7 +935,12 @@ def main():
         rd["bodySize"] = body_override
         rd["healthScale"] = health_override
         rd["family_dn"] = family_dn(fam)
-        rd["comps_lines"] = COMPS_OVERRIDE.get(r["orig"])
+        if r["orig"] in COMPS_OVERRIDE:
+            rd["comps_lines"] = COMPS_OVERRIDE[r["orig"]]
+        elif FAMILY_TUNING[fam][1] > 0:
+            rd["comps_lines"] = DETONATION_ROLLOUT_COMP
+        else:
+            rd["comps_lines"] = None
 
         race_out[r["src_family"]].append(render_race(rd))
 
