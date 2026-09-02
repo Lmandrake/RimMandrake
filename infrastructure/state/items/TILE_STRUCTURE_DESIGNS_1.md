@@ -371,3 +371,38 @@ register, none placed on a live tile. ~32 of 44 roster rows remain
 untouched (2 of those explicitly held for an owner call, not just unpicked).
 Left `doing`.
 
+## 2026-09-02 (FOUNDRY) — code review of batches 4-6, two real findings fixed
+
+Owner asked for proactive code review of tonight's offline work. Ran
+`/code-review high` against the two new SelfTest `Program.cs` files and all
+7 batch-4/5/6 `.lua` templates. The SelfTest files checked out clean
+(`PickWinner`/`Specificity` confirmed byte-for-byte against `ClaimEngine.cs`,
+`BandFor`/`Adjust`/`ResetOnLaunch` confirmed against `GameComponent_
+ColonyVisibility.cs`, `GenDate.TicksPerDay` confirmed 60000). Two real
+findings against the templates, both fixed:
+
+- **`monument.lua`** had no minimum-footprint guard, unlike every sibling
+  template — on `rect.w == 1` its own bounds clamp pushed the 2x2
+  `SculptureGrand` centerpiece to `rect.x - 1`, ONE CELL OUTSIDE the
+  footprint, which `ctx:place` silently refuses rather than draws: the
+  plaza and rubble chunks would still build around a colossus that was
+  never placed. Added the same `ctx:refuse` minimum-footprint guard
+  `dead_beacon.lua`/`imperial_waystation.lua` already use. Re-linted at
+  1x1 (clean refusal), 2x2 (minimum valid, clean), and 16x16 (production
+  size, 0 findings, export byte-identical to before the fix — the guard
+  never engages at any size this row is actually meant to run at).
+- **`mynock_roost.lua`**'s three scatter chances (0.10/0.20/0.40) are
+  `elseif`-chained (structurally required — only one thing can occupy a
+  cell), which compounds them into real per-cell rates of 10%/18%/28.8%,
+  not the 10/20/40% the literals suggest — a future editor tuning one
+  branch would silently shift every later one's actual density too, with
+  no line anywhere near the edit showing why. Not a behavior bug (the
+  shipped density is what was intended and tested); added a comment
+  stating the actual compounded math so the next edit isn't surprised by
+  it. Export re-verified byte-identical to before.
+
+Both re-exported, `rimplace selftest` re-run (28/28), both mods' `Templates/`
+`.txt` diffed to confirm no change at the sizes already wired/committed —
+this was a defensive/clarity fix to code that had not yet caused a wrong
+result, not a rollback of anything shipped.
+

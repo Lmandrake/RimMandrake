@@ -26,6 +26,15 @@ function build(ctx)
   for x = rect.x, rect.x2 do
     for z = rect.z, rect.z2 do
       if not ctx:occupied(x, z) then
+        -- elseif-chained, not three independent rolls, because only ONE
+        -- thing can ever occupy a cell - each branch only gets evaluated
+        -- when every prior one already missed. That COMPOUNDS the literal
+        -- numbers below into lower actual per-cell rates (code-review
+        -- finding, 2026-09-02: read as flat 10/20/40%, the real rates are
+        -- 10% / 18% / 28.8% at these values) - editing an EARLIER branch's
+        -- chance silently shifts every later one's actual density too, not
+        -- just its own. Stated here so that surprise is on paper, not
+        -- rediscovered by a future edit.
         if rng.chance(0.10) then
           ctx:place("PowerConduit", x, z)
           conduits = conduits + 1

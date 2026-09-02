@@ -19,6 +19,20 @@
 -- API available: ctx (see luaenv.Ctx), rect, params, rng, role(), note()
 
 function build(ctx)
+  -- SculptureGrand is 2x2 (verified against source, see header) - a
+  -- footprint narrower than that has no legal cell for its own bounds
+  -- clamp to land on (code-review finding, 2026-09-02: on rect.w==1 the old
+  -- clamp pushed the statue to rect.x-1, ONE CELL OUTSIDE the footprint,
+  -- which ctx:place silently refuses rather than draws - the plaza and
+  -- rubble still built around a colossus that was never placed). Refuse
+  -- cleanly instead, same convention dead_beacon.lua/imperial_waystation.lua
+  -- already use for their own minimum footprints.
+  if rect.w < 2 or rect.h < 2 then
+    ctx:refuse("footprint", string.format(
+      "%dx%d cannot hold the 2x2 SculptureGrand centerpiece", rect.w, rect.h))
+    return
+  end
+
   local cx = rect.x + math.floor(rect.w / 2)
   local cz = rect.z + math.floor(rect.h / 2)
 
