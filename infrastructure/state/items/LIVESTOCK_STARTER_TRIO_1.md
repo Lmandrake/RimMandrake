@@ -62,3 +62,40 @@ Player.log clean.
 - Trainability/wildness numbers decide tameability at spawn — the census
   trap: a spawned "tame" test animal may substitute silently; verify the
   actual kind spawned (see census memory).
+
+## 2026-09-02 — scoping pass, nothing written (FOUNDRY, background fanout)
+
+0% built: no ThingDefs/PawnKindDefs/sprites for onnik/karrask/moornak exist
+anywhere in the repo, only design-doc rosters and owner-picked mockup PNGs.
+`src/RimStarWars/Livestock/` (`mandrake.rsw.livestock`) is currently
+entirely occupied by the sibling item `FORSAKEN_CRAGS_PREDATORS_BUILD_1`'s
+content (Cindermare/Skarnix) — no defName collision found (grepped for
+Onnik/Karrask/Moornak across `src`, empty), but this item and
+`FORSAKEN_CRAGS_PREDATORS_BUILD_1`/`HELIX_TELLUROX_BUILD_1` would share one
+mod package, which needs a naming/ownership call rather than a guess.
+
+Also: the design doc's own spec claims onnik "extends the proven
+urrak/vokka single-input template" — checked, urrak/vokka have zero
+implementation anywhere in `src`. Onnik's feed-cycle/cold-fire-failure
+mechanic needs a genuinely new custom `ThingComp`, not a reuse; not the
+small increment the spec's own framing suggested.
+
+**Two open questions, needs owner/BENCH before building moornak:**
+1. This item's own spec text (simple mood-buff + hidden ledger +
+   release-on-death) doesn't match a materially richer, LATER owner ruling
+   in the design doc's "RULED — owner sitting" table (same date,
+   2026-09-02): self-tames readily, arrives pre-loaded with grief, a
+   negative colony-wide "unsettled" hediff, 30-day release duration,
+   triggers manhunter on release, sells but never buys back, must be
+   trapped/abandoned. Unclear whether the later ruling supersedes this
+   item's spec or belongs to a still-deferred review pass.
+2. Shared-mod-folder ownership with `FORSAKEN_CRAGS_PREDATORS_BUILD_1` (see
+   above) — needs a naming decision before any file gets written into that
+   directory.
+
+Smallest safe next increment once unblocked: karrask alone, XML-only
+(`CompHasGatherableBodyResource` for the molt-plate harvest per the owner's
+2026-09-02 ruling — "tough material like chitin, easy to work, not pretty,"
+NOT wearable armor), additive-only filenames, ~1 hour. Onnik's comp is a
+separate half-day pass. Final sprite art stays deferred per the doc's own
+palette-pass sequence.
