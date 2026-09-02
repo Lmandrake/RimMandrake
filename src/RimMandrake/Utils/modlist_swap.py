@@ -129,16 +129,61 @@ def swap(src, apply_it):
     print("  verify: md5 %s" % md5(LIVE))
 
 
+def capture_full(apply_it):
+    """Adopt the live list as FULL.LATEST — the restore point must track deliberate changes.
+
+    🔴 WHY THIS EXISTS. FULL.LATEST is what `--restore` writes back, so every mod
+    add/removal made directly against the live file silently rots it, and `--restore`
+    then UNDOES that decision. Measured 2026-09-02: STARWARS_DONOR_SUNSET_1 retired
+    `starwars.themedsounds`, `m3.continued.jangodsoul.starwars.tsda` and `lumi.swlights`
+    from the live file with the owner's green light (ee675203) and left FULL.LATEST
+    holding all three — a `--restore` would have resurrected three deliberately
+    retired mods, and nothing anywhere would have said so.
+
+    ⚠️ This is deliberately NOT automatic. FULL.LATEST is the owner's list, and a
+    temporary debug mod pulled in for one investigation does not belong in it. Look at
+    the diff this prints and decide; that is the whole point of the command existing
+    separately from the swap.
+    """
+    live_ids, full_ids = mods(LIVE), mods(FULL) or []
+    if live_ids is None:
+        sys.exit("REFUSING: cannot read the live list at\n  %s" % LIVE)
+    added = [m for m in live_ids if m not in set(full_ids)]
+    dropped = [m for m in full_ids if m not in set(live_ids)]
+    print("  FULL.LATEST : %d active" % len(full_ids))
+    print("  live        : %d active" % len(live_ids))
+    for m in dropped:
+        print("    - %s   (in FULL.LATEST, NOT live — would be forgotten)" % m)
+    for m in added:
+        print("    + %s   (live only — would become part of the owner's list)" % m)
+    if not added and not dropped:
+        print("\n  identical mod sets. nothing to capture.")
+        return
+    if not apply_it:
+        print("\nplan only. Read those lines — a debug mod does not belong in the "
+              "owner's list.\nre-run with --apply")
+        return
+    arch = snapshot()
+    shutil.copy2(LIVE, FULL)
+    print("\n  archived old FULL.LATEST -> %s" % os.path.basename(arch))
+    print("  WROTE live -> FULL.LATEST (%d active)" % len(live_ids))
+
+
 def main():
     ap = argparse.ArgumentParser()
     g = ap.add_mutually_exclusive_group()
     g.add_argument("--status", action="store_true")
     g.add_argument("--minimal", action="store_true", help="swap to the minimal test list")
     g.add_argument("--restore", action="store_true", help="put the owner's full list back")
+    g.add_argument("--capture-full", action="store_true",
+                   help="adopt the live list as FULL.LATEST, after a deliberate mod change")
     ap.add_argument("--apply", action="store_true", help="actually write; default is plan only")
     a = ap.parse_args()
 
-    if a.minimal:
+    if a.capture_full:
+        print("CAPTURE THE LIVE LIST AS FULL.LATEST")
+        capture_full(a.apply)
+    elif a.minimal:
         print("SWAP TO MINIMAL")
         swap(MINIMAL, a.apply)
     elif a.restore:
