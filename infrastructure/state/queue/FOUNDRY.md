@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T05:27:59Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-02T05:28:17Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -322,4 +322,34 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-_none._
+Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
+
+## RIVER_STEAM_ANIMATION_1 Animated steam rising from the rivers (Pyrelands weather visual)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/RIVER_STEAM_ANIMATION_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/RIVER_STEAM_ANIMATION_1.md
+
+## SHIELD_MODS_LEVERAGE_1 Find existing shield mods, study and make compatible; tuned-plasma-field model per shd rulings
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SHIELD_MODS_LEVERAGE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SHIELD_MODS_LEVERAGE_1.md
+
+## STICK_FOOD_INGEST_1 Ingest the stuff-on-a-stick food mod(s) into our own recipe-discovery tree, then retire them
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/STICK_FOOD_INGEST_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/STICK_FOOD_INGEST_1.md
