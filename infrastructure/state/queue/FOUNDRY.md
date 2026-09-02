@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T08:45:34Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-02T08:50:03Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -324,6 +324,15 @@ kind:     build
 summary:  Identity: the Long Hunger — Deep Desert tribal lore for a colossal entity
 prose:    infrastructure/state/items/SANDWORM_MYTHOS_BUILD_1.md
 
+## HELIX_TELLUROX_SHELL_LOAD_CRASH_1 HelixTellurox crashes mod load to Core-only: a def parse error (MissingMethodException: default ctor for System.String) breaks RSW_TelluroxShell, whose null butcherProducts ref NREs corpse-gen
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  (no items/HELIX_TELLUROX_SHELL_LOAD_CRASH_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/HELIX_TELLUROX_SHELL_LOAD_CRASH_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -348,6 +357,16 @@ blocked:  Engineering sequence, not an owner call: needs Droidworks Phase 3 (fac
 summary:  (no items/DROID_TILES_SOURED_TERRAIN_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DROID_TILES_SOURED_TERRAIN_1.md
 
+## HELIX_TELLUROX_SHELL_LOAD_CRASH_1 HelixTellurox crashes mod load to Core-only: a def parse error (MissingMethodException: default ctor for System.String) breaks RSW_TelluroxShell, whose null butcherProducts ref NREs corpse-gen
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+blocked:  not reproducible offline: mandrake.rsw.helixtellurox is disabled in the live ModsConfig, and a full source-verified field/type audit of Races_Tellurox.xml found no defect; deployed the graphicClass drift fix (unrelated) but the crash needs the original log excerpt or a fresh bridge+restart isolated test to pin
+summary:  (no items/HELIX_TELLUROX_SHELL_LOAD_CRASH_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/HELIX_TELLUROX_SHELL_LOAD_CRASH_1.md
+
 # WAITING ON A WINDOW — nothing is wrong
 
 _none._
@@ -369,16 +388,6 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  Two consecutive restarts both hung indefinitely at the exact same point in
 prose:    infrastructure/state/items/COLD_LOAD_STATIC_CTOR_STALL_1.md
-
-## HELIX_TELLUROX_SHELL_LOAD_CRASH_1 HelixTellurox crashes mod load to Core-only: a def parse error (MissingMethodException: default ctor for System.String) breaks RSW_TelluroxShell, whose null butcherProducts ref NREs corpse-gen
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/HELIX_TELLUROX_SHELL_LOAD_CRASH_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/HELIX_TELLUROX_SHELL_LOAD_CRASH_1.md
 
 ## ARMOURY_ABSORBED_FRAMEWORK_DEPS_1 Armoury absorbed defs carry silent hard deps on VEF/EBSG/AdaptiveStorage/kotorcore DLLs — not self-contained; donor-sunset risk
 state:    proposed
