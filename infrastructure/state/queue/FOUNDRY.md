@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T07:43:53Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: BENCH
+as-of: 2026-09-02T08:01:21Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -389,3 +389,13 @@ kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/JAWA_SPAWN_KINDS_NO_RACE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/JAWA_SPAWN_KINDS_NO_RACE_1.md
+
+## HELIX_TELLUROX_SHELL_LOAD_CRASH_1 HelixTellurox crashes mod load to Core-only: a def parse error (MissingMethodException: default ctor for System.String) breaks RSW_TelluroxShell, whose null butcherProducts ref NREs corpse-gen
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/HELIX_TELLUROX_SHELL_LOAD_CRASH_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/HELIX_TELLUROX_SHELL_LOAD_CRASH_1.md
