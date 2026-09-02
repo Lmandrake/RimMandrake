@@ -118,3 +118,39 @@ build as the general fluid/canal mod (water, ooze, slime, oil, tar, propane),
 tar its first client. Second ruling folded in from the sheet's final save:
 reservoirs are NOT finite — slow refill from deep sources; scarcity is rate,
 not stock.
+
+## 2026-09-02 (FOUNDRY) — build/deploy confirmed; the whole engine was already
+## written but implements the SUPERSEDED finite-reservoir spec, not this ruling
+
+The full v1 engine listed in `## spec` above already exists on disk
+(`src/RimMandrake/FluidCanals/` — `FluidDef`, `RM_Channel_Empty`,
+`Designator_DigCanal`/`WorkGiver_DigCanal`/`JobDriver_DigCanal`,
+`CompFluidReservoir`, `Flood_FluidCanal` subclassing vanilla `Flood`,
+`RM_FluidSpring_Test`, the debug actions — all present, matching the spec
+1:1). Confirmed this pass:
+- `dotnet build RimMandrake_FluidCanals.csproj -c Release` — clean, 0/0.
+- `deploy_custom_mods.py --mod FluidCanals --apply` — deployed clean (DLL
+  was stale by build timestamp only, XML already in sync). **Mod is not
+  enabled in the live ModsConfig.xml** — never live-tested, per the item's
+  own "verify" section which already flagged this as owed.
+
+🔴 **`CompFluidReservoir.cs`'s actual implementation is the ORIGINAL
+one-shot/finite design** ("spends its whole volume spawning ONE
+Flood_FluidCanal — a single committed release, not a continuous drip",
+its own doc comment says so verbatim) — **this contradicts the ruling
+directly above**, which supersedes it same-day: "reservoirs are NOT finite
+— slow refill from deep sources; scarcity is rate, not stock." Not fixed
+this pass — reworking a one-shot-spend-and-self-destroy comp into a
+rate-limited continuous refill is a real architecture change (does the
+`Flood_FluidCanal` re-trigger periodically, or does the SAME flood object
+keep receiving volume over time rather than self-destroying at zero — that
+changes `Flood_FluidCanal.SpreadFlood`'s own exhaustion-detection path,
+not just `CompFluidReservoir`) and picking between those shapes is a design
+call, not a bounded bug fix. Flagging plainly rather than guessing a rate
+number or a re-trigger mechanism under the owner's name.
+
+**Next step, not done here**: BENCH/owner decides the refill mechanism
+shape (steady drip into the same flood vs. periodic re-flood vs. something
+else), then FOUNDRY reworks `CompFluidReservoir`/`Flood_FluidCanal`
+accordingly and this can finally get its owed live bridge-debug-action
+verification (mod would need enabling in ModsConfig first too).
