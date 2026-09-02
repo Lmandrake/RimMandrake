@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T02:49:30Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-02T02:53:48Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -308,3 +308,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/MASS_VALIDATION_LADDER_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/MASS_VALIDATION_LADDER_1.md
+
+## FLUID_CANAL_MECHANIC_1 General canal/fluid-flow mechanic, RimMandrake tier — dig channels that flood with water, ooze, slime, oil, tar, propane; tar pits are the first client
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/FLUID_CANAL_MECHANIC_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FLUID_CANAL_MECHANIC_1.md

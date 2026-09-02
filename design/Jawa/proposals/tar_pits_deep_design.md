@@ -15,6 +15,25 @@ fire?"* and *"perhaps there are creatures that live in even small pools (and
 propane, and tar) that emerge when disturbed... maybe that's why the stuff is
 there to begin with."* Both are expanded fully below, not summarized.
 
+## 🔴 RULED — owner sitting 2026-09-01 (review sheet, all ten tar rows answered)
+
+**Every tar concept is v1.** The §8 ladder below is restated to match; the old
+v2/dream placements for these rows are superseded. His notes are design content,
+verbatim:
+
+| row | ruling | owner's note (verbatim) |
+|---|---|---|
+| entrapment-hediff | v1 | "amazing defensibility of difficult areas, to be used by deep desert tribes and other primitives" |
+| sinking-render | v2→**v1** | "Test of our ability to make meaningful animation. We should spend some good time on this to really demo what we know how to do, or perhaps study other mods that make custom animations to inspire ourselves." |
+| stratified-dig-sites | v2→**v1** | "This is pure gold. Fossils, dead bodies with inventory stuck on them, each one a piece of a story from the past that goes more ancient as you dig. But the digging gets slower and harder as you go. Would perhaps need to install a pump that removes the tar elsewhere on the map to enable the digging at all, while it continues to ooze in from deep sources below." |
+| canal-flow-engineering | v2→**v1**, and 🔴 **promoted to a GENERAL RimMandrake-tier mechanic** | "This is a general new mechanic that we can use in many places. Dig channels that flood with water, ooze, slime, oil, tar, propane fuel... let's explore this deeply. Could be amazing realism. I'm inspired! This allows bases to dig trenches and flood them as a real defense. Will pay off in many more scenarios. This isn't Utinni or even Star Wars scope, this is general RimMaster level awesomeness mod." |
+| flood-and-ignite | v2→**v1** | "Not kill outright, just burns like normal fire. But yes, toxic thick smoke that obscures and produces coughing and stinging eyes and stink." |
+| tar-moats | dream→**v1** | "nope, this is in! Pawns with goals inside a region make the call to go across it, while if there's any way around it they do so." |
+| tar-creatures | dream→**v1** | "Very star wars to reveal that a tar pit harbors a huge creature that not only thrives in tar but actually excretes it as a biological outcome. If captured, continues to do so at a very slow rate (not magical, very slow). However, even pits without one of these creatures still fill trenches and such from the tar sources deep underground." |
+| geyser-incident | v1 | "Superb vile shock. Add creatures that consume tar too and run towards these events/moments. Able to mode through the tar easily unlike trapped creatures. They may like to eat tar-encrusted pawns too." |
+| pit-wakes-setpiece | dream→**v1** | "Totally! The things in ancient dangers are the source, but also egg forms of creatures that hatch when disturbed (tar beasts), as well as things people maliciously put down there (grenades/bombs). Especially if it's in the territory of a terrible faction that's vindictive against territory thieves." |
+| chemfuel-economy | v2→**v1** | "Yes, but it's slow and gross. Tar oozes out of the pipe joints. Only slowly produces chemfuel." |
+
 ---
 
 ## 1. Prior art, and where we go past it
@@ -285,31 +304,26 @@ rule.
 
 ---
 
-## 8. Build ladder
+## 8. Build ladder — RULED: everything is v1 (owner, 2026-09-01)
 
-**v1 slice** — provably fun with the smallest system:
-- `RUT_TarSurface`/`RUT_TarOpen` terrain with pathCost + flammability (data).
-- `RUT_TarStuck` hediff + `JobDriver_EscapeTar` — entrapment and rescue, no
-  sinking-render yet.
-- Raw tar as fuel/crafting reagent (§7.1–7.2), data only.
-- One authored tar-geyser one-shot incident (§6) as a hazard flavor event.
-- No canals, dig-site stratigraphy, or creatures — proves the terrain reads
-  as dangerous-and-interesting rather than a filter over sand.
+The old v1/v2/dream split is superseded by the sitting above: **all ten rows are
+v1.** What was a scope ladder is now a build SEQUENCE (FOUNDRY orders it;
+earlier stages still gate later ones technically, not by scope):
 
-**v2** — the canal spark, and the archaeology hook:
-- `Designator_DigCanal` + `CompTarReservoir` + spread `MapComponent` (§4a) —
-  the biggest build in the doc.
-- `RUT_Fire_Tar` slow-burn/smoke profile (§4c).
-- `RUT_TarDigSite` stratified system (§3), including a functional-machine
-  find type.
-- Tar-to-chemfuel refinery on the VEF `PipeNet` framework (§7.3).
-- Sinking render state for `RUT_TarStuck` (visual only).
-
-**Dream** — the full system, played out:
-- The tar-secretor creature (§5A) as a real subterranean presence with a
-  habitat/refill loop, not just a data flag.
-- Ambush tar-lurker PawnKind (§5B) seeded across authored pits.
-- "The pit wakes" deep-dig set-piece (§6), Ancient-Danger-shaped.
-- Tar moats as a recognized, ownership-legible defensive structure at a named
-  settlement — a place the player can point at and say "that's a tar base,"
-  which nothing in the workshop offers today.
+1. Terrain + entrapment: `RUT_TarSurface`/`RUT_TarOpen`, `RUT_TarStuck` hediff
+   + `JobDriver_EscapeTar`; raw tar as fuel/reagent (§7.1–7.2); tar-geyser
+   incident (§6) **plus the ruled tar-consumer creatures that run toward it**.
+2. Canal engineering (§4a) — 🔴 build as the GENERAL RimMandrake-tier
+   fluid/canal mod per the ruling (water, ooze, slime, oil, tar, propane), with
+   tar as its first client; `RUT_Fire_Tar` flood-and-ignite (§4c: normal-fire
+   lethality, toxic obscuring smoke); moats fall out of it (§4b).
+3. Archaeology: `RUT_TarDigSite` stratified digs (§3) **plus the ruled
+   tar-removal pump prerequisite** (dig enabled only while pumping against
+   deep-source ooze-in).
+4. Creatures: tar-secretor (§5A, slow non-magical excretion in captivity),
+   ambush lurker (§5B); chemfuel refinery (§7.3: slow, gross, oozing joints);
+   sinking-render for `RUT_TarStuck` — ruled a showcase: invest in real
+   animation, study animation mods first.
+5. "The pit wakes" set-piece (§6) with the ruled additions: tar-beast eggs
+   that hatch on disturbance, maliciously buried ordnance, vindictive-faction
+   territory flavor.

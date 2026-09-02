@@ -30,6 +30,12 @@ described in the register the eventual def would carry.
 
 ## 1. The loop, spelled out as numbers a weather table could hold
 
+> 🔴 **RULED v1 — owner, 2026-09-01 (review sheet), verbatim:** "Brief violent
+> rain should be possible (to allow the grass to explosively regrow) but as you
+> say always with lightning." ⇒ the loop's weather table gains a rare
+> short-lived violent-rain state, never without lightning. (Only this row of
+> the fire sheet is ruled so far; the sitting continues.)
+
 R-H4 already names the mechanism: fire generates its own convection, the
 convection is dry, dry lightning strikes pre-heated ground surrounded by
 grass that regrows freakishly fast (R-H3), and the new fire generates the

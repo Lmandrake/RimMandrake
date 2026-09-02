@@ -17,6 +17,22 @@ simply won't stop (pump is very far away). Or leaking propane pipes that fill
 a whole map with the stuff, making weapons fire too dangerous to entertain."*
 Every clause gets a full section below.
 
+## 🔴 RULED — owner sitting 2026-09-01 (review sheet, all eight gas rows answered)
+
+Six of eight to v1, **two CUT** (tanker economy, tar interplay). §9 ladder
+restated below. His notes are design content, verbatim:
+
+| row | ruling | owner's note (verbatim) |
+|---|---|---|
+| lake | v1 | "And exotic creatures within the lake. Could even be a wild underwater adventure WITHIN a propane lake (like the ocean biome we're building, but with stranger contents... and the ship must carefully lower itself into FUEL rather than water this time)" |
+| vents | v1 | "Puffing gas sometimes self-ignites, but doesn't deplete until the player starts actively pumping it out. That explains why the natural ones are even still there when the player arrives. removing the pumping apparatus should trigger a violent release map-wide that's very dangerously flammable until it clears by the wind." |
+| pipe-rupture | v2→**v1** | "There should be some valves that can be accessed to manually shut the pipe down on the map, or else the player just 'leaves it that way' and wonders what happens. Huge negative faction relationship from this. (or positive if it was your mission to do so)" |
+| saturation | v1 | "Absolutely! During the massive gas release event it should be a transient condition. But there should be caverns where this is just perpetually true (a common occurrance on Earth in mines anyway). Also true witin the 'dead sarlacc' type dungeons, along with rotstink gas." |
+| ~~tanker-economy~~ | ⛔ **CUT** (was v2) | "You're not extra flammable on the way home, just right next to that explosive lake... and you have to run long flexible pipes from your ship to the lake, because of your thrusters." — the premise (hazardous hauling runs) is wrong; refueling is done in place at the lake by pipe. |
+| lake-creature | v2→**v1** | "Of course it might! Not guaranteed, but often. And it should be seen moving around the lake as a submerged V-shaped wake trailing around, just to add suspense. If it sees the pawns/pipe, it approaches and attacks. But the loud pumping agitates them and makes them start to look around more swiftly. NOT the reason the propane lake is there, they just dwell within it." |
+| ~~tar-interplay~~ | ⛔ **CUT** (was dream) | "too much, no need" — §8's dual-hazard map does not get built. |
+| saturation-heist | dream→**v1** | "Give them better weapons. Sonic from the genosians, for example. Or primitive javelains and catapults. Strictly non-flammable, non-temperature-based, non explosives. Vibro-weaponry." |
+
 ---
 
 ## 1. Prior art, and where we go past it
@@ -289,30 +305,30 @@ set-pieces live:
 
 ---
 
-## 9. Build ladder
+## 9. Build ladder — RULED (owner, 2026-09-01): six rows v1, two cut
 
-**v1 slice** — provably fun with the smallest system:
-- `RUT_GasVent` (§3) with timed venting and a self-ignition roll — data-mostly.
-- One hand-placed nightside propane-lake tile (§2), harvested by a basic
-  hauling interaction — a resource node first, tanker-scale framing in v2.
-- `GasSaturationTracker` (§5) wired to just the vent's local density — proves
-  the "guns become dangerous" hook before pipes exist to feed it.
+The old v1/v2/dream split is superseded by the sitting above. A build SEQUENCE
+over the six live rows (FOUNDRY orders it):
 
-**v2** — the pipe-rupture spark, built out fully:
-- `CompPipeNetwork`/`CompPipeRupture` (§4) on an authored industrial map, the
-  standing jet and distant-pump shutoff as a `QuestScriptDef`.
-- Full saturation band table (§5) live across an entire authored map, with
-  the melee/stealth/EMP combat shift as a real playtested state.
-- Tanker-run economy (§6) formalized against the Utinni's real fuel-capacity
-  numbers.
-- Lake-margin creature (§7) with dormancy comp, tied to pumping/gunfire
-  disturbance.
+1. `RUT_GasVent` (§3) with the ruled model: self-igniting puffs, **no depletion
+   until actively pumped**, and pump-removal triggering a violent map-wide
+   flammable release that clears by wind.
+2. `GasSaturationTracker` (§5): transient during release events, **perpetual in
+   authored caverns and dead-sarlacc dungeons (with rotstink)**.
+3. `CompPipeNetwork`/`CompPipeRupture` (§4) with the ruled **on-map manual
+   shutoff valves** and the faction-relations consequence for leaving a rupture
+   running (negative — or positive when it was the mission).
+4. Nightside propane lake (§2) refueled **in place by long flexible pipes from
+   the grounded ship** (thruster standoff) — no tanker runs; plus the ruled
+   exotic in-lake creature population and the submerged-adventure framing
+   (ocean-biome tech, fuel medium).
+5. Lake-margin creature (§7): often-but-not-guaranteed, visible submerged
+   V-wake, attacks pawns/pipe on sight, agitated by pump noise; not the
+   lake's origin.
+6. Saturation heist (§5) with the ruled enemy loadout: strictly non-flammable /
+   non-thermal / non-explosive — Geonosian sonic, javelins, catapults,
+   vibro-weaponry.
 
-**Dream** — the full system, played out:
-- A named heist location built around §5's "saturation as opportunity" read
-  — guards constrained the same as the player, playable against
-  `ownership_settlement_spec.md`'s crime suite.
-- The tar/propane dual-hazard industrial map (§8) as a signature authored
-  location.
-- A flashover-tier saturation event (§5, 80%+) as a rare, telegraphed,
-  campaign-memorable set-piece — the map that gets talked about after the run.
+⛔ **Cut and not built:** tanker-run economy (§6) and the tar/propane
+dual-hazard map (§8) — see the RULED table. §6 and §8 stay in the doc as
+design record only; nothing downstream may cite them as planned work.
