@@ -3799,3 +3799,4 @@
 {"seat":"BENCH","event":"file","id":"PAWNFLAVOR_BREAK_LABEL_FIX_1","title":"PawnFlavor TargetedInsultingSpree label carried {0} — illegal chars config error on every list; fixed + deployed","kind":"task","target":"v1","for":"BENCH","ts":"2026-09-02T08:25:36Z"}
 {"seat":"BENCH","event":"claim","id":"PAWNFLAVOR_BREAK_LABEL_FIX_1","ts":"2026-09-02T08:25:36Z"}
 {"seat":"BENCH","event":"start","id":"PAWNFLAVOR_BREAK_LABEL_FIX_1","ts":"2026-09-02T08:25:37Z"}
+{"seat":"BENCH","event":"bridge","state":"released","ts":"2026-09-02T08:28:10Z"}
