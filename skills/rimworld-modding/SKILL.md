@@ -99,16 +99,18 @@ it by default for any Def/patch-XML iteration while a game is up. Period.
 * 🔴 **XML/Defs ONLY.** C#, Harmony and the companion DLL still need a real load.
 * ⚠️ **Verify after reload like any mutation** — `success: true` is not evidence
   a def changed; read the field back and compare (`rimbridge` skill, the one law).
-* 🔴 **DO NOT fire it on the owner's full (~592-mod) list — MEASURED 2026-09-02,
-  it HUNG the running game.** The call returned `success:true` in 0.1s, then the
-  engine went unresponsive re-loading every active mod's defs and rebuilding
-  render meshes, and the play UI was lost — an unrecoverable live hang requiring
-  a restart. The disk was unharmed (the trial edit had been reverted), so this
-  is a session hang, not corruption, but it costs a ~25-min cold load to recover.
-  ⇒ **Hot-reload is a MINIMAL-LIST tool only** (13 mods, where a full def reload
-  is seconds). On the full stack, an XML change still costs a real load. The
-  zero-restart cycle applies to tool/mechanism work on the minimal list, never to
-  the owner's play stack.
+* 🔴 **On the owner's full (~592-mod) list it went UNRESPONSIVE for minutes —
+  2026-09-02.** The call returned `success:true` in 0.1s, then the engine stopped
+  answering the bridge and the play UI went blank while it re-loaded every active
+  mod's defs and rebuilt render meshes. ⚠️ **Whether it RECOVERS is UNMEASURED:**
+  it was killed after ~4–5 min without proving it was dead — a full-stack reload
+  legitimately could blank the UI for many minutes (a cold load is ~25) and then
+  return. Do not repeat the earlier claim that it is "unrecoverable"; that was
+  stated without evidence. Disk was unharmed (trial edit reverted first).
+  ⇒ Until the recovery time is actually measured, **treat full-list hot-reload as
+  a multi-minute, UI-blanking operation of unknown ceiling — not a quick action.**
+  The zero-restart cycle is proven only for the minimal list (below); on the full
+  stack, budget it like a load until measured otherwise.
 * `jawa/get_defs` is scalar-only for now — list/object fields come back as type
   names — until a deep-serialize upgrade to that tool lands.
 
