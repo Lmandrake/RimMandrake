@@ -284,3 +284,18 @@ Studios\Config\ModsConfig.xml` directly (591 mods) and confirmed it matches
       criterion).
 - [ ] Cold-load-verified with ABF actually removed from the mod list — not
       done this pass (offline-only; needs a mod-list change and a restart).
+
+## 2026-09-02 — re-verification (FOUNDRY, background fanout)
+
+Re-ran `validate_patch.py` against the CURRENT live mod set (593 active,
+kotorweapons still inactive). Ops 1-5 (sites 1-6, kotorcore-side): clean
+info-level matches, unchanged, still current. **Ops 6-9 (sites 7-10, the
+trader stock removals) now report as ERROR ("matches 0 nodes")** —
+consistent with, not a regression from, this file's own 2026-08-31/09-01
+analysis: with `guy762.kotorweapons` inactive, its `TraderKindDef`s aren't
+in the loaded set at all, so those four `PatchOperationRemove`s correctly
+match nothing under current conditions (the file's earlier "0 errors/0
+warnings" note was likely run under different `--defs` scoping or while
+kotorweapons was briefly active). Not a new defect — still dormant-by-design,
+still fires correctly if kotorweapons is ever reactivated. No line drift
+found on any of the 10 sites.
