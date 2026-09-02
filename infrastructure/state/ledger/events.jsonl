@@ -4001,3 +4001,5 @@
 {"seat":"FOUNDRY","event":"claim","id":"FIRE_ECOLOGY_BURNEDDEF_FLAMMABLE_1","ts":"2026-09-02T23:33:29Z"}
 {"seat":"FOUNDRY","event":"start","id":"FIRE_ECOLOGY_BURNEDDEF_FLAMMABLE_1","ts":"2026-09-02T23:33:29Z"}
 {"seat":"FOUNDRY","event":"close","id":"FIRE_ECOLOGY_BURNEDDEF_FLAMMABLE_1","sha":"HEAD","ts":"2026-09-02T23:33:45Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ownerSaid":"If you have bridge go for it!","ts":"2026-09-02T23:34:24Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","ownerSaid":"Game is down","ts":"2026-09-02T23:34:26Z"}

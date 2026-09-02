@@ -81,3 +81,15 @@ re-register the tool set.
    "not found" refusal shape (no regression in the negative case).
 
 Item stays `doing` — no live proof yet.
+
+## 2026-09-02 — deployed at the game-DOWN window (FOUNDRY)
+
+`python.exe build.py --gm --apply` run the moment the owner said the game
+was down (BENCH was concurrently driving its own reboot for other mods on
+the same signal — this is a different target file,
+`BridgeTools/JawaBench/JawaBench.BridgeTools.dll`, no collision). Build
+succeeded 0/0, deployed clean. Commit-mismatch resolved
+(`acec5065627f` -> `aa9ab7fa3053`). Still owed once the game is back up:
+steps 2-4 from the note above (form a caravan, confirm pawn-by-id/name
+resolution, the `TravelCompanions` live-text check, the negative-case spot
+check).
