@@ -1,0 +1,104 @@
+# rimplace flat plan v1
+FOOTPRINT	0	0	16	12
+TERRAIN	6	4	Gravel
+TERRAIN	6	5	Gravel
+TERRAIN	6	6	Gravel
+TERRAIN	6	7	Gravel
+TERRAIN	6	8	Gravel
+TERRAIN	7	4	Gravel
+TERRAIN	7	5	Gravel
+TERRAIN	7	6	Gravel
+TERRAIN	7	7	Gravel
+TERRAIN	7	8	Gravel
+TERRAIN	8	4	Gravel
+TERRAIN	8	5	Gravel
+TERRAIN	8	6	Gravel
+TERRAIN	8	7	Gravel
+TERRAIN	8	8	Gravel
+TERRAIN	9	4	Gravel
+TERRAIN	9	5	Gravel
+TERRAIN	9	6	Gravel
+TERRAIN	9	7	Gravel
+TERRAIN	9	8	Gravel
+TERRAIN	10	4	Gravel
+TERRAIN	10	5	Gravel
+TERRAIN	10	6	Gravel
+TERRAIN	10	7	Gravel
+TERRAIN	10	8	Gravel
+THING	Wall	5	3	0	BlocksSandstone
+THING	Wall	6	3	0	BlocksSandstone
+THING	Wall	7	3	0	BlocksSandstone
+THING	Wall	9	3	0	BlocksSandstone
+THING	Wall	10	3	0	BlocksSandstone
+THING	Wall	11	3	0	BlocksSandstone
+THING	Wall	5	4	0	BlocksSandstone
+THING	Wall	11	4	0	BlocksSandstone
+THING	Wall	5	5	0	BlocksSandstone
+THING	Wall	11	5	0	BlocksSandstone
+THING	Wall	5	6	0	BlocksSandstone
+THING	Wall	11	6	0	BlocksSandstone
+THING	Wall	5	7	0	BlocksSandstone
+THING	Wall	11	7	0	BlocksSandstone
+THING	Wall	5	8	0	BlocksSandstone
+THING	Wall	11	8	0	BlocksSandstone
+THING	Wall	5	9	0	BlocksSandstone
+THING	Wall	6	9	0	BlocksSandstone
+THING	Wall	7	9	0	BlocksSandstone
+THING	Wall	8	9	0	BlocksSandstone
+THING	Wall	9	9	0	BlocksSandstone
+THING	Wall	10	9	0	BlocksSandstone
+THING	Wall	11	9	0	BlocksSandstone
+THING	Door	8	3	0	WoodLog
+THING	PrimitiveWell	10	8	0	-
+THING	Shelf	6	4	0	-
+THING	Shelf	9	4	0	-
+THING	TorchLamp	6	8	0	-
+ROOF	5	3	RoofConstructed
+ROOF	5	4	RoofConstructed
+ROOF	5	5	RoofConstructed
+ROOF	5	6	RoofConstructed
+ROOF	5	7	RoofConstructed
+ROOF	5	8	RoofConstructed
+ROOF	5	9	RoofConstructed
+ROOF	6	3	RoofConstructed
+ROOF	6	4	RoofConstructed
+ROOF	6	5	RoofConstructed
+ROOF	6	6	RoofConstructed
+ROOF	6	7	RoofConstructed
+ROOF	6	8	RoofConstructed
+ROOF	6	9	RoofConstructed
+ROOF	7	3	RoofConstructed
+ROOF	7	4	RoofConstructed
+ROOF	7	5	RoofConstructed
+ROOF	7	6	RoofConstructed
+ROOF	7	7	RoofConstructed
+ROOF	7	8	RoofConstructed
+ROOF	7	9	RoofConstructed
+ROOF	8	3	RoofConstructed
+ROOF	8	4	RoofConstructed
+ROOF	8	5	RoofConstructed
+ROOF	8	6	RoofConstructed
+ROOF	8	7	RoofConstructed
+ROOF	8	8	RoofConstructed
+ROOF	8	9	RoofConstructed
+ROOF	9	3	RoofConstructed
+ROOF	9	4	RoofConstructed
+ROOF	9	5	RoofConstructed
+ROOF	9	6	RoofConstructed
+ROOF	9	7	RoofConstructed
+ROOF	9	8	RoofConstructed
+ROOF	9	9	RoofConstructed
+ROOF	10	3	RoofConstructed
+ROOF	10	4	RoofConstructed
+ROOF	10	5	RoofConstructed
+ROOF	10	6	RoofConstructed
+ROOF	10	7	RoofConstructed
+ROOF	10	8	RoofConstructed
+ROOF	10	9	RoofConstructed
+ROOF	11	3	RoofConstructed
+ROOF	11	4	RoofConstructed
+ROOF	11	5	RoofConstructed
+ROOF	11	6	RoofConstructed
+ROOF	11	7	RoofConstructed
+ROOF	11	8	RoofConstructed
+ROOF	11	9	RoofConstructed

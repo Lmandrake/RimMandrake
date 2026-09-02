@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T00:01:34Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-02T00:07:30Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -225,6 +225,15 @@ kind:     build
 summary:  - Source of the text: the proposed field per row in the generator's data
 prose:    infrastructure/state/items/PAWN_FLAVOR_PHASE2_APPLY_1.md
 
+## JAWA_PAWN_FLAVOR_PATCH_REGRESSION_1 Jawa Pawn Flavor: 123 PatchOperationRemove failures on the live 591/592-mod load
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     fix
+summary:  harvestlog.py's "patch operations failed" standing check read 128
+prose:    infrastructure/state/items/JAWA_PAWN_FLAVOR_PATCH_REGRESSION_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -260,16 +269,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## JAWA_PAWN_FLAVOR_PATCH_REGRESSION_1 Jawa Pawn Flavor: 123 PatchOperationRemove failures on the live 591/592-mod load
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     fix
-thin:     spec, verify and criteria all present
-summary:  harvestlog.py's "patch operations failed" standing check read 128
-prose:    infrastructure/state/items/JAWA_PAWN_FLAVOR_PATCH_REGRESSION_1.md
 
 ## BRIDGE_INVENTORY_TRANSFER_REFUSES_ALL_1 jawa/inventory_transfer refuses to add ANY item to ANY pawn's inventory on the live 592-mod list
 state:    proposed

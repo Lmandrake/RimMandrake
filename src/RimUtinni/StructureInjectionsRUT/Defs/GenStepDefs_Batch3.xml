@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- structure_injection_roster.md batch 3, four PROMISE rows. Each
+       replays its own Templates/*.txt (rimplace export, seed 7) via
+       mandrake.rm.injections' GenStep_RimplacePlan. Order 400 matches the
+       batch 1/2 precedent (RSW_GenStep_MoistureFarm et al.) - these run
+       independently, one per tile, so a shared order value has no
+       collision risk between rows. -->
+
+  <GenStepDef>
+    <defName>RUT_GenStep_OasisShrine</defName>
+    <genStep Class="RimMandrake.StructureInjections.GenStep_RimplacePlan">
+      <planFile>Templates/oasis_shrine.txt</planFile>
+      <centerOnMap>true</centerOnMap>
+    </genStep>
+    <order>400</order>
+  </GenStepDef>
+
+  <GenStepDef>
+    <defName>RUT_GenStep_RakatanTrace</defName>
+    <genStep Class="RimMandrake.StructureInjections.GenStep_RimplacePlan">
+      <planFile>Templates/rakatan_trace.txt</planFile>
+      <centerOnMap>true</centerOnMap>
+    </genStep>
+    <order>400</order>
+  </GenStepDef>
+
+  <GenStepDef>
+    <defName>RUT_GenStep_Cistern</defName>
+    <genStep Class="RimMandrake.StructureInjections.GenStep_RimplacePlan">
+      <planFile>Templates/cistern.txt</planFile>
+      <centerOnMap>true</centerOnMap>
+    </genStep>
+    <order>400</order>
+  </GenStepDef>
+
+  <GenStepDef>
+    <defName>RUT_GenStep_TollGap</defName>
+    <genStep Class="RimMandrake.StructureInjections.GenStep_RimplacePlan">
+      <planFile>Templates/toll_gap.txt</planFile>
+      <centerOnMap>true</centerOnMap>
+    </genStep>
+    <order>400</order>
+  </GenStepDef>
+
+</Defs>

@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- structure_injection_roster.md batch 3, four PROMISE rows.
+       Responder mechanism per structure_injection_roster.md §0b: a
+       TileMutatorDef's extraGenSteps is the def-driven injection hook
+       (MapGenerator.cs concatenates them into the real genstep pipeline;
+       no Harmony involved). Same shape as batch 1/2's RSW_MoistureFarm/
+       RSW_KraytGraveyard/etc.
+
+       ⚠️ NOT YET PLACED on any Ash'karr tile for any of the four - a live
+       world-tile edit on the frozen map (bridge + world_commit), out of
+       scope for this pass, same deferral as every prior row. These defs
+       exist to prove the engine end to end; a LandmarkDef carrying each
+       (so the icon IS the promise) and the actual placement are follow-up
+       work.
+
+       Gating note: the roster's own §2 "gating" column names an ARC/TILE
+       CONTEXT for three of these four rows (#9 vault-adjacent tiles /
+       dungeons arc, #13 road tiles through cliffs, #19 terminator band),
+       not a biome - a TileMutatorDef's biomeWhitelist cannot encode arc
+       position or road/cliff adjacency, so none is set here; that
+       placement logic belongs to whichever future pass actually assigns
+       these to real tiles. Row #10's gating ("Oasis mutator tiles") means
+       this promise is meant to be assigned alongside an EXISTING Oasis
+       TileMutatorDef instance at placement time - also not something a
+       biomeWhitelist can express, same deferral. -->
+
+  <TileMutatorDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_OasisShrine</defName>
+    <label>oasis shrine</label>
+    <description>A spring-fed shrine, offering bowls set at each cardinal edge of the paved footing. Someone still tends it, or someone still remembers who did.</description>
+    <extraGenSteps>
+      <li>RUT_GenStep_OasisShrine</li>
+    </extraGenSteps>
+  </TileMutatorDef>
+
+  <TileMutatorDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_RakatanTrace</defName>
+    <label>rakatan trace</label>
+    <description>A sealed door faces a paved forecourt, angular glyphs flanking. Nothing opens yet. Everything is implied.</description>
+    <extraGenSteps>
+      <li>RUT_GenStep_RakatanTrace</li>
+    </extraGenSteps>
+  </TileMutatorDef>
+
+  <TileMutatorDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_Cistern</defName>
+    <label>the cistern</label>
+    <description>A single walled pump room over buried waterworks. The stair goes further down than the pumps need.</description>
+    <extraGenSteps>
+      <li>RUT_GenStep_Cistern</li>
+    </extraGenSteps>
+  </TileMutatorDef>
+
+  <TileMutatorDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_TollGap</defName>
+    <label>the toll gap</label>
+    <description>A toll house narrows the canyon passage either side with sandbag barriers. A defensible gap; ghosts of unpaid tolls.</description>
+    <extraGenSteps>
+      <li>RUT_GenStep_TollGap</li>
+    </extraGenSteps>
+  </TileMutatorDef>
+
+</Defs>

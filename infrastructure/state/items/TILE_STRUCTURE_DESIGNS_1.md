@@ -137,3 +137,71 @@ untouched. Left `doing`.
   of 3-5, render sheet, owner review) still stands for whoever picks this
   up next — this session did not try to force all 44 through solo.
 
+## 2026-09-01 batch 3 (FOUNDRY, fork) — four RUT-tier roster rows authored
+
+Picked up under BELT-mode ("Full belt. Continue. Don't stop."), pure offline
+authoring, no bridge/restart touched — a sibling fork was concurrently
+driving a live restart for unrelated mods, so ModsConfig and the bridge
+were deliberately left alone this pass.
+
+🔴 **This session's `defs.sqlite` capture is scoped to `ResearchProjectDef`
+only** (522 rows, no ThingDef/TerrainDef coverage — `rimplace verify`'s own
+known-answer self-check against `Human` correctly returns UNMEASURED, not a
+false pass). Worked around the same way `validate_patch.py` always resolves
+defNames: a throwaway `PatchOperationConditional` probe against the real
+on-disk `Data`/`Mods`/`Workshop` XML confirmed every defName used below
+exists exactly once, with its source file. This is not weaker than
+`rimplace verify` — it is the same authority that command reads from when
+the dump IS current.
+
+- **The Oasis Shrine** (row 10, RUT) — `design/Jawa/templates/oasis_shrine.lua`.
+  Open-air: spring (`PrimitiveWell`) centered in a paved ring, 4
+  offering-bowl stations (`SculptureSmall`), 2 `TorchLamp`. `lint`: 0
+  findings. defNames confirmed: `PrimitiveWell` (Dubs Bad Hygiene Lite),
+  `SculptureSmall`/`TorchLamp`/`PavedTile` (Core).
+- **The Rakatan Trace** (row 9, RUT) — `design/Jawa/templates/rakatan_trace.lua`.
+  A sealed `Wall`+`Door` on one footprint edge backing onto NOTHING (no
+  room ever declared past it — structurally sealed, matching "nothing
+  opens yet"), 2 `SculptureSmall` glyph markers, paved forecourt. `lint`: 0
+  findings. defNames confirmed: `Wall`/`Door`/`SculptureSmall`/`PavedTile`
+  (Core).
+- **The Cistern** (row 19, RUT) — `design/Jawa/templates/cistern.lua`. 7x7
+  walled/roofed pump room, `PrimitiveWell` off-center, 2 `Shelf` (caught
+  and fixed a footprint-collision lint error first — `Shelf` is 2x1, not
+  1x1, spacing corrected), 1 `TorchLamp`. The roster's own "the stair goes
+  further down than the pumps need" line is deliberately left as flavor
+  only — RimWorld has no basement/multi-level mechanic to model it with;
+  disclosed in the template's own note and the review sheet's invented-
+  rules panel, not silently dropped. `lint`: 0 findings after the fix.
+- **The Toll Gap** (row 13, RUT) — `design/Jawa/templates/toll_gap.lua`.
+  7x5 walled/roofed toll house (desk+chair facing the door, 2 `Shelf`,
+  `TorchLamp`), flanked by up to 6 `Sandbags` cells narrowing the passage.
+  Caught and fixed the same `Shelf` 2x1 collision as the Cistern, plus a
+  `TorchLamp`/`DiningChair` cell collision — both spacing errors, not
+  design changes. `lint`: 0 findings after the fix.
+
+**Wiring**: new tier mod `src/RimUtinni/StructureInjectionsRUT/`
+(`mandrake.rut.injections`, engine-dependent on `mandrake.rm.injections`,
+following `mandrake.rsw.injections`'s exact shape) —
+`GenStepDefs_Batch3.xml` + `TileMutatorDefs_Batch3.xml` give all four
+(`RUT_OasisShrine`, `RUT_RakatanTrace`, `RUT_Cistern`, `RUT_TollGap`) the
+same `extraGenSteps` responder wiring as every prior batch.
+`validate_patch.py`: 0 errors, 0 warnings on all 3 files. `rimplace
+selftest`: 28/28, unaffected.
+
+**NOT deployed, NOT added to ModsConfig this pass** — deliberately, to
+avoid racing the sibling fork's concurrent restart on unrelated mods (same
+"one bridge driver at a time" discipline). Repo content only; deploy +
+enable + the live cold-load ordering proof all ride the next restart,
+alongside batch 1/2's still-open live-proof debt.
+
+Review sheet: `design/Jawa/worldbuilding/review/tile_structure_batch3_sheet.html`
+(`check_sheet.py`: 0 FAIL/0 WARN/27 ok, all 4 rows pre-filled `ship`, 3
+invented premises declared). No decisions file yet — nothing has been
+reviewed.
+
+Still not "shipped" by the roster's own §5 bar for any of the 8 rows
+authored across all three batches so far: no letter text in any god's
+register, none placed on a live tile. ~39 of 44 roster rows remain
+untouched. Left `doing`.
+
