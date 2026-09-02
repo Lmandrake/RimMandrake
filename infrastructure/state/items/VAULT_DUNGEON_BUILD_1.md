@@ -91,3 +91,81 @@ without first identifying it — the owner's note names only its function
 ⚠️ **V5 has no landmark yet.** Sites V1–V4 and V6 sit on pre-authored
 `AncientGarrison`/`AncientLaunchSite`/`AncientWarehouse` landmarks; V5 needs
 one authored before it reads as a place rather than bare terrain.
+
+## 2026-09-02 (FOUNDRY) — three parameterized templates built, offline only
+
+**This item's own "Watch out" section above is STALE against
+`dungeons_arc_spec.md` §3.9 (rulings landed 2026-09-01, restated here since
+this file wasn't updated when they landed):** all six sites are **325×325**
+(not the 300 proposed here, vanilla `initialMapSize` ceiling, still
+warning-free); V5's landmark is **RULED** — new organic landmark, working
+name `RUT_Slough_GelatinousBreach`, not authored yet (that's a per-SITE
+hand-finish task, out of scope for template geometry, see below); the
+pawn-spawn symbol question is **RULED** — `KCSG.SymbolDef` with
+`<pawnKindDef>`; naming tier is **RULED** — `RUT_`; the "Territories mod" is
+**IDENTIFIED** — Faction Territories (`jaeger972.factionterritories`,
+vendored decompiled) — but assessing it for the conflict layer is
+confirmed its own separate item, not touched here. Template geometry
+authoring was never itself gated on the owner in §3.9's "still held" list
+(only the per-vault hand-finish pass, dialogue/letters, and the six bridge
+placements are) — so this pass proceeded.
+
+**Built**: `src/RimUtinni/VaultDungeons/` (`mandrake.rut.vaultdungeons`) —
+`Source/gen_vault_layouts.py` generates `Defs/StructureLayoutDefs_Vaults.xml`
+(three `KCSG.StructureLayoutDef`s, one per type) and
+`Defs/SymbolDefs_Vaults.xml` (9 `KCSG.SymbolDef`s). Each template is a
+concentric square grid — outer wall ring (single door) → garrison band
+(guardians/turrets scattered, never on the core footprint) → inner wall ring
+(single door, offset 90° from the outer door) → core. Verified
+programmatically (BFS over the actual generated grid, walls blocking): all
+three have exactly one outer opening and every core cell is reachable only
+by walking the full garrison band, never a straight line — the §3.7
+quicktest bar's "not skippable" requirement, checked at the geometry level
+now rather than left to the live pass to discover.
+
+**🔴 Real defect caught and fixed before shipping, worth recording as a
+lesson**: `KCSG.StructureLayoutDef.ResolveSymbols()` (read from
+`vendor/mod_sources/VanillaExpandedFramework-main/Source/KCSG/Defs/
+StructureLayoutDef.cs`) resolves **every** `layouts` grid cell via
+`DefDatabase<SymbolDef>.GetNamedSilentFail` — never a direct
+ThingDef/PawnKindDef lookup. The Dragon lair precedent file (`vendor/
+mod_sources/DragonsDescent_src/...StructureLayoutDef_Dragon_lair_1.xml`,
+itself wrapped in an XML comment) only "works" with bare names like `Slate`/
+`Wall_HardScale` because KCSG auto-generates one `SymbolDef` per
+ThingDef/PawnKindDef owned by an **official Ludeon package**
+(Core/Royalty/Ideology/Biotech/Anomaly/Odyssey) or
+`vanillaexpanded.vfepropsanddecor` (`StartupActions.cs`), with defName =
+the bare ThingDef/PawnKindDef name, or `{thing}_{stuff}` for a stuff-based
+building. A miss resolves to `null` **silently** (logged only to
+`StartupActions.AddToMissing`, no error, no crash) and that cell simply
+never spawns. First draft of this generator used bare third-party names
+(`AA_BlackJellyWall`, `GTbc_GravRailArtillery`, `Wall_HardScale` — the last
+one isn't even a real defName on this mod list, `DragonsDescent` being
+non-vendored-as-active content) — every one of those would have silently
+failed to place. Fixed: vanilla/DLC content (`Mech_Lancer`, `Mech_Centurion`,
+`Turret_AutoInferno`, `Turret_AutoMortar`, `Plasteel`, `Uranium`,
+`ComponentSpacer`, `Shard`, `Wall_Plasteel`) used bare, confirmed
+auto-symbol'd; every third-party/our-own def (the two GravTech cannons named
+explicitly in §3.3, the type-2 bioweapon/wreckage set from the item's own
+draft skeleton, `AA_GreenGoo`/`GR_Boomsnake` from `cast_assignment.csv`'s
+HorrorWastes roster, and `RUT_Jawa_RakataVaultSchooled` — its name is the
+closest match in the existing `RUT_Jawa_Rakata*` sleeper-backstory roster to
+"vault-sleeper", not independently re-confirmed against a specific §3.4
+citation) wrapped in an explicit `KCSG.SymbolDef`.
+
+**Not done, explicitly**:
+- No quicktest proof (§3.7's actual verify step — placement, screenshot,
+  layout-layers judgment) — no bridge this pass (a sibling fork held it).
+- V5's landmark authoring, all six real-site hand-finishing, wake/loot/leave
+  dialogue and letters, the six `world_commit` placements — all correctly
+  still HELD FOR OWNER per §3.9.
+- The two doctrine-turret defNames' own damage numbers are still
+  `turret_register` state `rework`, not final — using them here is a
+  defName/placement decision, not a balance one.
+- `RUT_Jawa_RakataVaultSchooled` as V6's specific sleeper is this pass's own
+  best-evidence pick from the existing backstory roster, not verified
+  against a named owner citation — flag for whoever does the V6 hand-finish.
+
+`validate_patch.py` (594-mod set): 0 errors, 0 warnings, both files.
+
+Commit: (recorded by the ledger note / next commit in this pass).

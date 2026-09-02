@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimUtinni: Vault Dungeons</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.rut.vaultdungeons</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Ash'karr campaign content for the six Forsaken vaults (VAULT_DUNGEON_BUILD_1, design/Jawa/worldbuilding/dungeons_arc_spec.md §3). Ships three parameterized KCSG StructureLayoutDef templates, one per vault type: RUT_VaultType1_MechanoidGarrison (Forgotten Arsenal held, doctrine turrets, materials/weapons-only core loot), RUT_VaultType2_FleshWeaponLoose (breached, bioweapon guardians, no direct loot), RUT_VaultType3_FrozenRakata (near-silent, a dormant sleeper at the core, wake/loot/leave mechanic not yet built). Each ring is authored per the owner-ruled concentric grammar (outer/garrison/core) and reachable only through its own ring, never skippable in a straight line. Not yet quicktest-proven (owed to the next bridge session) and not yet placed on any of the six real world tiles (owner hand-finish pass, held).</description>
+
+  <modDependencies>
+    <li>
+      <packageId>OskarPotocki.VanillaFactionsExpanded.Core</packageId>
+      <displayName>Vanilla Expanded Framework (KCSG)</displayName>
+    </li>
+  </modDependencies>
+
+  <loadAfter>
+    <li>OskarPotocki.VanillaFactionsExpanded.Core</li>
+  </loadAfter>
+</ModMetaData>
