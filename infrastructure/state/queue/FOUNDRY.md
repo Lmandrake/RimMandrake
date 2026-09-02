@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T22:30:24Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-02T22:32:19Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -377,6 +377,16 @@ blocked:  not reproducible offline: mandrake.rsw.helixtellurox is disabled in th
 summary:  (no items/HELIX_TELLUROX_SHELL_LOAD_CRASH_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/HELIX_TELLUROX_SHELL_LOAD_CRASH_1.md
 
+## ELECTRIC_TORCHES_INGEST_RETIRE_1 Ingest onimods.electrictorches into our own tier, then retire the mod
+state:    ready  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  Item assumed onimods.electrictorches is XML+art only; it is NOT. The mod ships CurentVersion/Assemblies/Onimods_ElectricTorches.dll (workshop id 3301583634) with live CompProperties_PoweredFireOverlay / CompPoweredDarklightOverlay / CompPoweredSanguophageMeetingFire classes (real PostDraw/PostSpawnSetup/CompTick bodies) that the two active torch/wall-torch ThingDefs (and their Ideology/Biotech variants) reference directly for their fire-overlay visual. This session may write XML/art but may not build or deploy a DLL, so a full ingest cannot complete without an owner decision: (a) port the C# comp too (needs a build+deploy window), or (b) XML-only ingest that drops the custom flame-overlay comp (uses stock CompProperties_Glower only, loses the flicker FX). The two broken ThoughtDefs (Onimods_Colored_DA_BloodflameSepulchralBrazier/StatueThoughts) are separately confirmed safe to drop outright: they chase VanillaFurnitureExpanded.ThoughtGiverByProximityDefExtension (absent) AND their target ThingDefs require Onimods.ColoredFire, a mod not in our active list, so the mechanism is dead weight regardless. Save check clean: grepped <def>NAME</def> for all 12 Onimods_Electric* defNames across WORLDMAP_V1_original_b.rws, gravship_scratch_b.rws, REVIEW_tile_structures_21.rws -- zero placements, no naming constraint blocks a defName choice whenever this proceeds.
+summary:  onimods.electrictorches ("Onimods - Electric Torches and Braziers") is a permanent
+prose:    infrastructure/state/items/ELECTRIC_TORCHES_INGEST_RETIRE_1.md
+
 # WAITING ON A WINDOW — nothing is wrong
 
 _none._
@@ -398,13 +408,3 @@ kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/SWAPPAREL_NEURALBAND_TEXTURE_MISSING_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SWAPPAREL_NEURALBAND_TEXTURE_MISSING_1.md
-
-## ELECTRIC_TORCHES_INGEST_RETIRE_1 Ingest onimods.electrictorches into our own tier, then retire the mod
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  onimods.electrictorches ("Onimods - Electric Torches and Braziers") is a permanent
-prose:    infrastructure/state/items/ELECTRIC_TORCHES_INGEST_RETIRE_1.md
