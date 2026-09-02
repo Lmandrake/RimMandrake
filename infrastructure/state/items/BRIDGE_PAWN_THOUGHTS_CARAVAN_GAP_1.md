@@ -39,3 +39,45 @@ another map, etc.) is reachable the same way. This is squarely
 A caravan pawn's thoughts are readable via the bridge without dissolving
 the caravan first, and the `TravelCompanions` live text check above
 passes or fails on real evidence (not blocked on tooling).
+
+## 2026-09-02 (FOUNDRY) — fix written and compiled, NOT deployed, not live-verified
+
+Confirmed the hypothesis exactly: `JawaBenchPawnTools.cs`'s `FindPawn` (shared by
+~20 tools including `jawa/pawn_thoughts`) builds its whole search list from
+`foreach (var m in maps) all.AddRange(m.mapPawns.AllPawnsSpawned)` — `Find.Maps`
+only, nothing else. `Find.WorldPawns.AllPawnsAlive` (confirmed real via RimSage,
+`RimWorld/Planet/WorldPawns.cs`) is the population that actually holds caravan
+members (`PassToWorld()` puts every caravan pawn there) and other off-map pawns.
+
+**Fix**: added a fallback block to `FindPawn` — when the existing map-pawn pass
+(id / `Thing_`-prefixed id / exact ThingID / name, unchanged, same order) finds
+nothing, it now tries the identical match sequence against
+`Find.WorldPawns.AllPawnsAlive` before giving up. A pawn matched on the map pass
+still returns from that pass exactly as before — no behavior change for any
+currently-working caller. A pawn matched on neither list gets an updated (but
+still clearly a "not found") error string naming both pool sizes searched.
+
+**Compiled, not deployed**: `python.exe build.py --gm` — Build succeeded, 0
+Warning(s), 0 Error(s), bundle ships only `JawaBench.BridgeTools.dll`. Deploy
+plan shows the expected commit-mismatch (game copy predates this change) — did
+NOT run `--apply`: the game is up and another FOUNDRY fork holds the bridge for
+an unrelated restart, and deploying a companion DLL needs the game DOWN (the OS
+holds the file open) plus a subsequent restart for RimBridgeServer to
+re-register the tool set.
+
+**Owed to the next game-down window + restart** (exact steps, per the
+`rimbridge-companion` skill's cycle):
+1. Kill RimWorld, `python.exe build.py --gm --apply`, relaunch via Steam.
+2. Form a caravan (`jawa/caravan_create`), confirm a member pawn now resolves
+   by id AND by name via `jawa/pawn_thoughts` (or any `jawa/pawn_*` tool) —
+   read back the actual pawn snapshot, not just absence-of-error.
+3. Re-run the motivating case: read `TravelCompanions`'s live stage/text on a
+   caravan member with low relationship — confirm it shows the Phase-2-approved
+   prose, not vanilla ("Third wheel" etc.). This is also
+   `PAWN_FLAVOR_SILENT_NONAPPLY_1`/`PAWN_FLAVOR_PHASE2_APPLY_1`'s own still-owed
+   live proof for their DLC/workshop-mod-owned rows — close those alongside this
+   one if it passes.
+4. Also spot-check that a genuinely nonexistent pawn id still returns the same
+   "not found" refusal shape (no regression in the negative case).
+
+Item stays `doing` — no live proof yet.

@@ -63,7 +63,35 @@ namespace JawaBench.BridgeTools
                  string.Equals(p.Name.ToStringFull, id, StringComparison.OrdinalIgnoreCase) ||
                  string.Equals(p.LabelShort, id, StringComparison.OrdinalIgnoreCase)));
             if (byName != null) return byName;
-            err = "No spawned pawn matching '" + id + "'. " + all.Count + " pawns are spawned. "
+
+            // 🔑 OFF-MAP FALLBACK (BRIDGE_PAWN_THOUGHTS_CARAVAN_GAP_1): a caravan member (or
+            // any other pawn currently "passed to world" - a prisoner in transit, a pawn on
+            // a map that isn't loaded) is never in mapPawns.AllPawnsSpawned above even though
+            // it clearly exists. WorldPawns.AllPawnsAlive covers exactly this population
+            // (caravans PassToWorld() every member) - try it before giving up. Same match
+            // order/rules as the map pass; a pawn present on BOTH lists (unlikely, but not
+            // impossible mid-transition) is already returned by the map pass above and never
+            // reaches here, so there is no double-match ambiguity to resolve.
+            var world = Find.WorldPawns != null ? Find.WorldPawns.AllPawnsAlive : null;
+            if (world != null)
+            {
+                int nw;
+                if (int.TryParse(id, out nw))
+                {
+                    var byIdW = world.FirstOrDefault(p => p.thingIDNumber == nw);
+                    if (byIdW != null) return byIdW;
+                }
+                var exactW = world.FirstOrDefault(p => string.Equals(p.ThingID, id, StringComparison.OrdinalIgnoreCase));
+                if (exactW != null) return exactW;
+                var byNameW = world.FirstOrDefault(p => p.Name != null &&
+                    (string.Equals(p.Name.ToStringShort, id, StringComparison.OrdinalIgnoreCase) ||
+                     string.Equals(p.Name.ToStringFull, id, StringComparison.OrdinalIgnoreCase) ||
+                     string.Equals(p.LabelShort, id, StringComparison.OrdinalIgnoreCase)));
+                if (byNameW != null) return byNameW;
+            }
+
+            err = "No spawned or world pawn matching '" + id + "'. " + all.Count + " pawns are spawned, "
+                  + (world != null ? world.Count.ToString() : "0") + " are world pawns (caravans, transit, etc.). "
                   + "Accepted: the bare thingID ('Human45731'), the same with a 'Thing_' prefix, "
                   + "the numeric thingIDNumber, or the pawn's name. jawa/list_pawns reports the bare form.";
             return null;

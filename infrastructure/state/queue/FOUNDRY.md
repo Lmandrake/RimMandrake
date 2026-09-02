@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T03:10:30Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-02T03:18:56Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -216,6 +216,15 @@ kind:     build
 summary:  - Source of the text: the proposed field per row in the generator's data
 prose:    infrastructure/state/items/PAWN_FLAVOR_PHASE2_APPLY_1.md
 
+## BRIDGE_INVENTORY_TRANSFER_REFUSES_ALL_1 jawa/inventory_transfer refuses to add ANY item to ANY pawn's inventory on the live 592-mod list
+state:    doing
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     fix
+summary:  jawa/inventorytransfer (mode=add) refused every attempt this session:
+prose:    infrastructure/state/items/BRIDGE_INVENTORY_TRANSFER_REFUSES_ALL_1.md
+
 ## FORSAKEN_CRAGS_PREDATORS_BUILD_1 Build Cindermare + Skarnix, wild AB_RockyCrags threat pair
 state:    doing
 row:      unassigned
@@ -242,6 +251,15 @@ target:   v1
 kind:     bug
 summary:  genpawnflavorphase2apply.py's seqop() wraps each field in a
 prose:    infrastructure/state/items/PAWN_FLAVOR_STAGELESS_ADD_FAIL_1.md
+
+## BRIDGE_PAWN_THOUGHTS_CARAVAN_GAP_1 jawa/pawn_thoughts cannot read a caravan pawn - FindPawn only sees spawned map pawns
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  Any jawa/pawn tool that resolves a pawn by id/name should also try
+prose:    infrastructure/state/items/BRIDGE_PAWN_THOUGHTS_CARAVAN_GAP_1.md
 
 ## MASS_VALIDATION_LADDER_1 Batched validation ladder: get_defs deep-serialize, manifest runner, hot-reload trial, first review environment
 state:    doing
@@ -295,24 +313,4 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## BRIDGE_INVENTORY_TRANSFER_REFUSES_ALL_1 jawa/inventory_transfer refuses to add ANY item to ANY pawn's inventory on the live 592-mod list
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     fix
-thin:     spec, verify and criteria all present
-summary:  jawa/inventorytransfer (mode=add) refused every attempt this session:
-prose:    infrastructure/state/items/BRIDGE_INVENTORY_TRANSFER_REFUSES_ALL_1.md
-
-## BRIDGE_PAWN_THOUGHTS_CARAVAN_GAP_1 jawa/pawn_thoughts cannot read a caravan pawn - FindPawn only sees spawned map pawns
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     spec, verify and criteria all present
-summary:  Any jawa/pawn tool that resolves a pawn by id/name should also try
-prose:    infrastructure/state/items/BRIDGE_PAWN_THOUGHTS_CARAVAN_GAP_1.md
+_none._
