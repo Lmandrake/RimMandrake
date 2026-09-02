@@ -1,4 +1,4 @@
-> ⛔ **SUPERSEDED** — the live version of this content: design/Jawa/reconciled_lore/01_campaign.md + design/Jawa/reconciled_lore/04_factions.md
+> ⛔ **SUPERSEDED** — the live version of this content: design/Jawa/reconciled_lore/01_campaign.md + design/Jawa/reconciled_lore/04_factions.md; the tower/tether PREMISE itself was replaced 2026-09-02 by repulsorlift spires: design/Jawa/proposals/skyhook_deep_design.md
 
 <!-- status: live -->
 # Orbital towers and the sky ladder — the Empire's way down

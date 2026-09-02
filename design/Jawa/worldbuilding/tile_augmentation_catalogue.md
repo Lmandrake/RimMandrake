@@ -365,10 +365,12 @@ a campaign nobody finished building.
 - ⚠️ **Not v1.** v1 ships one quest and three terrain overrides. This
   is a **v2 content pillar** and is recorded here so it is not re-derived.
 
-⭐ **The storyline half of this is now written** — the towers are the Empire's
-surface access and the Hutts pay to have them cut:
-`D:\Luke\dev\Rimworld\design\Jawa\worldbuilding\orbital_towers_and_the_sky_ladder.md`
-Skyhook and elevator variants are on the register there, `[v2]`.
+⭐ **The storyline half lives in the redesigned spire doc** — ⛔ skyhook,
+space-elevator and tether variants are DEAD (owner, 2026-09-02: no
+geostationary objects on a tidally-locked world). The Empire's surface access
+is now repulsorlift high-altitude stations, first over the Rust Cathedral:
+`design/Jawa/proposals/skyhook_deep_design.md` (all v2; the sabotage-crash
+salvage field replaces "cutting" anything).
 
 ---
 
