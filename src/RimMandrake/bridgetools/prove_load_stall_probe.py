@@ -27,10 +27,6 @@ def call(t, **p):
 def snap(label):
     out = {"label": label, "t": time.strftime("%H:%M:%S")}
     try:
-        out["ui_state"] = call("rimworld/get_ui_state")
-    except Exception as ex:
-        out["ui_state_error"] = repr(ex)
-    try:
         out["probe"] = call("jawa/load_stall_probe")
     except Exception as ex:
         out["probe_error"] = repr(ex)
@@ -41,14 +37,15 @@ print(json.dumps(a, indent=1)[:6000])
 time.sleep(30)
 b = snap("second")
 
-# name the spinner: biggest cpuSeconds delta between readings
+# name the spinner: biggest cpuSeconds delta between readings. A thread absent
+# from the first snapshot (not yet in its top-8) is treated as a 0s baseline so a
+# thread that only STARTS spinning during the 30s window still shows up here.
 try:
     ta = {t["id"]: t for t in a["probe"]["topThreads"]}
     rows = []
     for t in b["probe"]["topThreads"]:
-        prev = ta.get(t["id"])
-        if prev:
-            rows.append((t["cpuSeconds"] - prev["cpuSeconds"], t))
+        prev = ta.get(t["id"], {"cpuSeconds": 0})
+        rows.append((t["cpuSeconds"] - prev["cpuSeconds"], t))
     rows.sort(reverse=True, key=lambda r: r[0])
     print("\n=== cpuSeconds delta over 30s (top spinners) ===")
     for d, t in rows[:5]:

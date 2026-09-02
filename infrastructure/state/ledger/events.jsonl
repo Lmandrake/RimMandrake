@@ -3930,3 +3930,6 @@
 {"seat":"BENCH","event":"start","id":"BRIDGE_OVERRIDE_ATTRIBUTION_GAP_1","ts":"2026-09-02T16:45:01Z"}
 {"seat":"FOUNDRY","event":"file","id":"LOAD_STALL_PROBE_INSTRUMENT_GAPS_1","title":"Cold-load stall probe reports false confidence: dropped newly-spinning threads, main-thread-marshal call despite no-marshal docstring, reflection field-miss reads as null","kind":"bug","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-02T16:45:52Z"}
 {"seat":"FOUNDRY","event":"block","id":"SHIELD_MODS_LEVERAGE_1","reason":"source-verified both flagged caveats (point-defense speed curve confirmed backwards from canon; CompShieldField confirmed pawn-apparel not building-scale, no VEF hook into Odyssey's gravship shield slot) — needs a BENCH/owner design call on the building-scale foundation before the actual shield build item is filed","ts":"2026-09-02T16:49:43Z"}
+{"seat":"FOUNDRY","event":"claim","id":"LOAD_STALL_PROBE_INSTRUMENT_GAPS_1","ts":"2026-09-02T16:50:07Z"}
+{"seat":"FOUNDRY","event":"start","id":"LOAD_STALL_PROBE_INSTRUMENT_GAPS_1","ts":"2026-09-02T16:50:07Z"}
+{"seat":"FOUNDRY","event":"close","id":"LOAD_STALL_PROBE_INSTRUMENT_GAPS_1","sha":"HEAD","ts":"2026-09-02T16:51:28Z"}

@@ -56,3 +56,25 @@ after a stall-safe check.
 
 Findings 1-3 fixed and re-verified; 4-6 fixed or explicitly deferred with a
 one-line reason.
+
+## closed (FOUNDRY, 2026-09-02)
+
+1. Fixed: spinner-delta now treats a thread absent from the first snapshot as
+   a 0s baseline instead of dropping it.
+2. Fixed: dropped the `get_ui_state` call from `snap()` entirely — it was
+   never used in the script's actual output, only in the first debug dump,
+   so the docstring's no-marshal claim is now true rather than aspirational.
+3. Fixed: `currentEvent`/`executingToExecuteWhenFinished`/`eventThread` each
+   now distinguish "field not found" (added to `fieldErrors`, reported as
+   `UNMEASURED (field not found)`) from "field value is null" (reported as
+   `"null (...)"`).
+4-6: deferred — real but low-value: 4 needs an unusually small
+`maxStacks` to trigger (default is 999999), 5 is a misleading comment on
+dead code with no runtime effect, 6 is a reflection-cost nit with no
+functional bug. Not worth a separate pass; fix opportunistically if this
+file is touched again.
+
+Verified: `python.exe src/RimMandrake/bridgetools/build.py` compiles clean
+(plan-only, not deployed — the live companion has tools this build tree
+doesn't build with default flags, unrelated to this change). Python fix
+verified with `py_compile`.

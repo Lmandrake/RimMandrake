@@ -97,7 +97,9 @@ namespace JawaBench.BridgeTools
             // --- currentEvent: reflect every instance field generically ---
             object currentEvent = Grab("currentEvent", () =>
             {
-                var ce = lehType.GetField("currentEvent", PrivStatic)?.GetValue(null);
+                var fi = lehType.GetField("currentEvent", PrivStatic);
+                if (fi == null) { fieldErrors.Add("currentEvent: field not found on this engine build"); return (object)"UNMEASURED (field not found)"; }
+                var ce = fi.GetValue(null);
                 if (ce == null) return (object)"null (no long event running)";
                 var fields = new Dictionary<string, object>();
                 foreach (var f in ce.GetType().GetFields(BindingFlags.Instance | BindingFlags.NonPublic | BindingFlags.Public))
@@ -119,8 +121,12 @@ namespace JawaBench.BridgeTools
                 return (object)(q?.Count ?? -1);
             });
 
-            var executingWhenFinished = Grab("executingToExecuteWhenFinished",
-                () => lehType.GetField("executingToExecuteWhenFinished", PrivStatic)?.GetValue(null));
+            var executingWhenFinished = Grab("executingToExecuteWhenFinished", () =>
+            {
+                var fi = lehType.GetField("executingToExecuteWhenFinished", PrivStatic);
+                if (fi == null) { fieldErrors.Add("executingToExecuteWhenFinished: field not found on this engine build"); return (object)"UNMEASURED (field not found)"; }
+                return fi.GetValue(null);
+            });
 
             // --- the post-load action list: each pending delegate's identity ---
             object whenFinished = Grab("toExecuteWhenFinished", () =>
@@ -145,7 +151,9 @@ namespace JawaBench.BridgeTools
             // --- the async loader thread ---
             object eventThread = Grab("eventThread", () =>
             {
-                var t = lehType.GetField("eventThread", PrivStatic)?.GetValue(null) as Thread;
+                var fi = lehType.GetField("eventThread", PrivStatic);
+                if (fi == null) { fieldErrors.Add("eventThread: field not found on this engine build"); return (object)"UNMEASURED (field not found)"; }
+                var t = fi.GetValue(null) as Thread;
                 if (t == null) return (object)"null (no async event thread)";
                 string stack = null, stackErr = null;
                 try
