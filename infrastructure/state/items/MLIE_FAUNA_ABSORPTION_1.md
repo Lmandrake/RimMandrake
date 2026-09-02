@@ -227,3 +227,23 @@ load-time exception).
 (Waves A/B/C) — these 589 sounds now exist standalone, ready to attach the
 moment each creature's own def lands, per this item's existing wave plan.
 `IdeoIconDef`/`BodyDef`/`ThoughtDef` absorption is still each wave's own call.
+
+## WAV → OGG re-encode, same pass's follow-up
+
+The 589 clips shipped as raw WAV (93.1 MB) because no `ffmpeg` was available
+when they were first extracted — a real gap against this project's own
+convention (every other absorbed audio in the repo is `.ogg`, see
+`src/RimStarWars/Armoury/Sounds/BlasterSound/*.ogg`). Fixed same session:
+`imageio-ffmpeg` pip-installed on the Windows-side Python
+(`python.exe -m pip install imageio-ffmpeg`) bundles a real ffmpeg binary at
+`imageio_ffmpeg.get_ffmpeg_exe()` — worth remembering for any future
+audio-encoding need in this environment, since no system `ffmpeg` exists on
+either the WSL or Windows side otherwise.
+
+Re-encoded all 589 WAVs to `.ogg` (`libvorbis -q:a 4 -ar 44100`, matching the
+existing Armoury audio's 44.1kHz/vorbis shape) — **589/589 succeeded, 0
+failures**. `<clipPath>` values needed no change (extension-less, RimWorld
+resolves by basename). Deleted the WAV originals after confirming the OGG
+set. **Total footprint: 95 MB → 13 MB** (589 files, ~8x reduction).
+`validate_patch.py`: 0 errors/0 warnings. Redeployed with `--prune` to also
+remove the stale WAVs from the game's own `Mods/` copy, not just the repo.
