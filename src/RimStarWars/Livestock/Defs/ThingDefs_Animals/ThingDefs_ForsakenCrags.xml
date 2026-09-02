@@ -32,7 +32,7 @@
       <manhunterOnDamageChance>0.9</manhunterOnDamageChance>
       <gestationPeriodDays>16</gestationPeriodDays>
       <lifeExpectancy>18</lifeExpectancy>
-      <lifeStageAges>
+      <lifeStageAges Inherit="False">
         <li>
           <def>AnimalBaby</def>
           <minAge>0</minAge>
@@ -144,7 +144,7 @@
       <manhunterOnDamageChance>0.6</manhunterOnDamageChance>
       <gestationPeriodDays>9</gestationPeriodDays>
       <lifeExpectancy>10</lifeExpectancy>
-      <lifeStageAges>
+      <lifeStageAges Inherit="False">
         <li>
           <def>AnimalBaby</def>
           <minAge>0</minAge>

@@ -143,3 +143,55 @@ Criteria status: Cindermare's cold-drain mechanism ✅ proven. Everything
 else — Skarnix's valve, both creatures spawning safely as playable pawns,
 "both untameable" observed rather than assumed — remains open, and the
 label crash is now the blocking issue, not a missing observation.
+
+## 🔴 2026-09-02 (FOUNDRY) — root cause found and fixed, still owed a live re-verify
+
+Root-caused via the live def dump (`DefDump/captures/2026-09-02T03-38-43Z/animals.json`,
+captured during the session that first found the crash — resolved, post-patch
+data, not raw XML): `RSW_Cindermare`'s resolved `race.lifeStageAges` has **6
+entries**, not 3 — the first 3 are `ThingBaseWolf`'s own (`AnimalBaby`/
+`AnimalJuvenile` minAge 0.2/`AnimalAdult` minAge 0.5, dog sounds,
+`Data/Core/Defs/ThingDefs_Races/Races_Animal_WildCanines.xml` line ~35), the
+next 3 are our own re-declared block (minAge 0.25/0.6) — genuinely duplicated,
+not a scan artifact.
+
+**Mechanism, confirmed against the real decompiled source**
+(`Verse/Pawn_AgeTracker.cs`): `ThingDef ParentName="ThingBaseWolf"` already
+declares `<race><lifeStageAges>` (3 `<li>`); our own `ThingDefs_ForsakenCrags.xml`
+redeclared `<lifeStageAges>` again with our own 3 entries. RimWorld's XML
+inheritance **appends** a redeclared `List<T>` field rather than replacing it
+unless the tag carries `Inherit="False"` — neither of our two `<lifeStageAges>`
+blocks had it, so each resolved to 6.
+
+The **PawnKindDef** side did NOT double the same way: `AnimalKindBaseWolf`
+(the abstract `ParentName` both kinds use) declares no `<lifeStages>` of its
+own (confirmed: `combatPower`/`ecoSystemWeight` only,
+`Races_Animal_WildCanines.xml` line 148) — so our own 3-entry `<lifeStages>`
+block had nothing to append to and stayed at exactly 3.
+
+**The actual crash**: `Pawn_AgeTracker.RecalculateLifeStageIndex()` computes
+`cachedLifeStageIndex` by walking `pawn.RaceProps.lifeStageAges` (6 entries,
+valid indices 0-5) against the pawn's `growth`. `CurKindLifeStage` then does
+`pawn.kindDef.lifeStages[CurLifeStageIndex]` — indexing the KIND's 3-entry
+list with an index computed against the RACE's 6-entry list. Once growth is
+high enough that the walk lands on index 3, 4, or 5 (any of our own
+re-declared, duplicate stages), `kindDef.lifeStages[3..5]` throws
+`ArgumentOutOfRangeException` on a 3-element list — exactly the observed
+`System.ArgumentOutOfRangeException` in `get_CurKindLifeStage()`.
+
+**Fix**: added `Inherit="False"` to both `<lifeStageAges>` tags in
+`src/RimStarWars/Livestock/Defs/ThingDefs_Animals/ThingDefs_ForsakenCrags.xml`
+(Cindermare and Skarnix) so our own 3-entry block REPLACES `ThingBaseWolf`'s
+inherited 3, giving race=3/kind=3 again, matching `Wolf_Timber`'s own working
+shape. The `PawnKindDef` side needs no change — it was never doubled.
+
+`validate_patch.py` (594-mod set, both `ThingDefs_ForsakenCrags.xml` and
+`PawnKindDefs_ForsakenCrags.xml`): 0 errors, 0 warnings (one expected `info`
+note on `CompProperties_LightAversion` resolving to our own compiled class,
+unchanged from before). Deployed (`deploy_custom_mods.py --mod Livestock
+--apply`), file-copy only — `mandrake.rsw.livestock` stays OUT of
+`ModsConfig.xml` on purpose; this fix is reasoned from source and the real
+resolved-def evidence, but **not yet observed running** — the next bridge
+window should re-enable, spawn both creatures, and confirm `jawa/pawn_get`/
+`jawa/inspect_string` no longer throw before this item's remaining criteria
+(Skarnix's valve, both-untameable, both-spawn-safely) get checked off.
