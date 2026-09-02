@@ -193,6 +193,35 @@ CHECKS = [
     ("tex", "texture path failures",
      r"Failed to find any textures at", 0,
      "fires ONLY if ALL directions missing - a partial set is silent"),
+    # 🔴 ADDED 2026-09-02 (BENCH) BECAUSE THIS WHOLE CLASS WAS UNWATCHED, AND IT WAS
+    # HIDING OUR OWN BUGS. Def.ConfigErrors() runs after every patch and every
+    # inheritance resolve, so it is the ONLY reporter for "the def loaded, and it is
+    # wrong". Nothing above catches it: validate_patch.py passes clean, the patchfail
+    # baseline stays green, and the def is in the dump - it is simply misconfigured.
+    # This is the SECOND time the project has been bitten (the first cost 9 real
+    # ConfigErrors behind a clean validator, `facts/` has it); the difference now is
+    # that a standing check will not let it happen silently a third time.
+    #
+    # 🔴 MEASURED 36 on the 2026-09-02T19:36Z load (593 mods), and TWELVE ARE OURS:
+    #   12  RSW_FE_{Ash_Trace,Ash_Light,Ground_Sand,Ground_Gravel,Ground_Soil,
+    #       Ground_SoilRich} "burnedDef is flammable" x2 each -- OUR fire-ecology
+    #       terrain, a real defect, tracked separately. NOT benign.
+    #   18  Sign* "impassable, player-buildable building that can be shot/seen over"
+    #       x2 each, another mod's signs
+    #    2  TG_Husbandry -- TraderGen's own ConfigErrors() throws NRE (present since
+    #       at least 2026-08-26)
+    #    2  CannibalPirate / PirateYttakin ConfigErrors() NRE, vanilla FactionDefs,
+    #       some broad FactionDef patch, unattributed
+    #    2  Techprint_* "description has trailing whitespace"
+    # ⚠️ This baseline is a FLOOR TO DRIVE DOWN, not a target to preserve. When the
+    # 12 RSW_FE ones are fixed this reads BETTER and the baseline moves to 24 --
+    # that is the check working. Do not "fix" a BETTER reading by editing the number
+    # back up.
+    ("configerror", "def ConfigErrors (loaded but WRONG)",
+     r"Config error in |Exception in ConfigErrors\(\) of ", 36,
+     "36 = 12 OURS (RSW_FE burnedDef is flammable) + 18 Sign* + 2 TraderGen NRE + "
+     "2 vanilla FactionDef NRE + 2 techprint whitespace. Read with --show configerror. "
+     "A def with a config error LOADED and is WRONG - validate_patch cannot see this"),
     # Baseline 5, MEASURED 2026-08-12 by diffing the 568-mod load (18:18,
     # Player-prev.log) against the 573-mod load (21:09). Byte-for-byte the same
     # three mods, same ops, same counts - so the five mods added that day
