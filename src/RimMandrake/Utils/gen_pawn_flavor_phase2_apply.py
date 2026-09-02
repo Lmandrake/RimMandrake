@@ -48,8 +48,9 @@ authors' own convention of leaving a field blank when the vanilla original had
 nothing there, e.g. several MentalBreakDefs have no beginLetter at all).
 
 Every def-write group is wrapped in PatchOperationFindMod on the owning mod's
-packageId (read from the dump, not guessed), except ludeon.rimworld (Core,
-never inactive).
+DISPLAY NAME (dump field "modName" - PatchOperationFindMod's <mods> list is
+matched against ModMetaData.Name, never packageId; see build_groups()'s
+2026-09-02 correction note), except ludeon.rimworld (Core, never inactive).
 """
 import argparse
 import glob
@@ -146,17 +147,36 @@ def seq_op(parent_xpath, fields):
 
 
 def build_groups(entries):
-    """entries: list of (packageId, <li Class=...> element). Returns the
-    top-level list of <Operation>/<li> nodes for the Patch root, grouping
+    """entries: list of (packageId, modName, <li Class=...> element). Returns
+    the top-level list of <Operation>/<li> nodes for the Patch root, grouping
     same-packageId entries under one PatchOperationFindMod each (Core
-    ungated)."""
+    ungated).
+
+    CORRECTED 2026-09-02 (PAWN_FLAVOR_SILENT_NONAPPLY_1): PatchOperationFindMod's
+    <mods> list is matched by ModLister.HasActiveModWithName, which compares
+    against ModMetaData.Name (the mod's DISPLAY name - "Ideology", "Caravan
+    Adventures") via exact string equality (Verse source, IL-confirmed via
+    ilprobe) - never the packageId. The prior version of this generator wrote
+    the raw packageId (e.g. "ludeon.rimworld.ideology") into <li>, which can
+    never equal a display name, so HasActiveModWithName always returned false
+    and every non-Core FindMod block's <match> silently never ran - a much
+    larger blast radius than the two rows (TreesDesired, TravelCompanions)
+    that first surfaced it: every DLC- and workshop-mod-owned row across all
+    1,781 was affected, only Core-owned (ungated) rows ever actually landed.
+    Fixed by writing modName (already present per-def in the dump capture,
+    ModMetaData.get_Name's own DLC special case - Expansion.label when the
+    mod is a DLC, About.xml's <name> otherwise) instead of packageId. The
+    grouping key stays packageId (a stable identity), only the emitted <li>
+    text changes."""
     by_pkg = {}
+    names = {}
     order = []
-    for pkg, op in entries:
+    for pkg, modname, op in entries:
         if pkg not in by_pkg:
             by_pkg[pkg] = []
             order.append(pkg)
         by_pkg[pkg].append(op)
+        names.setdefault(pkg, modname)
     top = []
     for pkg in order:
         ops = by_pkg[pkg]
@@ -165,7 +185,7 @@ def build_groups(entries):
             continue
         fm = ET.Element("Operation", {"Class": "PatchOperationFindMod"})
         mods = ET.SubElement(fm, "mods")
-        ET.SubElement(mods, "li").text = pkg
+        ET.SubElement(mods, "li").text = names[pkg]
         match = ET.SubElement(fm, "match", {"Class": "PatchOperationSequence"})
         match_ops = ET.SubElement(match, "operations")
         for op in ops:
@@ -231,6 +251,7 @@ def main():
                 continue
             rec = thoughts[real]
             pkg = rec["packageId"]
+            modname = rec["modName"]
             stages = rec["fields"].get("stages") or []
             label = (p.get("label") or "").strip()
             desc = (p.get("description") or "").strip()
@@ -245,7 +266,7 @@ def main():
                 if desc:
                     fields["description"] = desc
                 if fields:
-                    thought_entries.append((pkg, seq_op(xp, fields)))
+                    thought_entries.append((pkg, modname, seq_op(xp, fields)))
             stats["ThoughtDef"] += 1
 
         elif deftype == "MentalBreakDef":
@@ -254,10 +275,11 @@ def main():
                 continue
             rec = mentalbreaks[defname]
             pkg = rec["packageId"]
+            modname = rec["modName"]
             label = (p.get("label") or "").strip()
             if label:
                 xp = 'Defs/MentalBreakDef[defName="%s"]' % defname
-                mb_entries.append((pkg, seq_op(xp, {"label": label})))
+                mb_entries.append((pkg, modname, seq_op(xp, {"label": label})))
             ms_name = rec["fields"].get("mentalState")
             begin = (p.get("beginLetter") or "").strip()
             recov = (p.get("recoveryMessage") or "").strip()
@@ -266,13 +288,14 @@ def main():
                     skipped.append((key, "linked MentalStateDef %s not found in dump" % ms_name))
                 else:
                     ms_pkg = mentalstates[ms_name]["packageId"]
+                    ms_modname = mentalstates[ms_name]["modName"]
                     xp = 'Defs/MentalStateDef[defName="%s"]' % ms_name
                     fields = {}
                     if begin:
                         fields["beginLetter"] = begin
                     if recov:
                         fields["recoveryMessage"] = recov
-                    mb_entries.append((ms_pkg, seq_op(xp, fields)))
+                    mb_entries.append((ms_pkg, ms_modname, seq_op(xp, fields)))
             stats["MentalBreakDef"] += 1
 
         elif deftype == "XenotypeDef":
@@ -282,6 +305,7 @@ def main():
                 continue
             rec = xenotypes[real]
             pkg = rec["packageId"]
+            modname = rec["modName"]
             label = (p.get("label") or "").strip()
             desc = (p.get("description") or "").strip()
             fields = {}
@@ -291,7 +315,7 @@ def main():
                 fields["description"] = desc
             if fields:
                 xp = 'Defs/XenotypeDef[defName="%s"]' % real
-                xeno_entries.append((pkg, seq_op(xp, fields)))
+                xeno_entries.append((pkg, modname, seq_op(xp, fields)))
             stats["XenotypeDef"] += 1
 
         else:

@@ -70,3 +70,82 @@ hypothesis and the next thing to check.
 - `PAWN_FLAVOR_PHASE2_APPLY_1`'s own "spot-check passes" criterion re-attempted with this
   understood — either these two rows are fixed, or the item's criteria is explicitly
   revised to accept a named, small residual list of non-landing rows.
+
+## ROOT CAUSE CONFIRMED AND FIXED, 2026-09-02
+
+**Not a third-mod collision, not a Harmony override, not a ThoughtStage cache** —
+all three were checked and ruled out first (scoped literal search across all 592
+active mod folders for both defNames: zero real hits besides the owning mod's own
+file and our patch; English `DefInjected` search: zero hits; `ilprobe` on
+`Thought::get_LabelCap`/`ThoughtStage::get_LabelCap`/`PostLoad`: no caching or
+reset path exists in base game code).
+
+**The real cause, IL-confirmed via `ilprobe` against `PatchOperationFindMod.ApplyWorker`
+and `ModLister.HasActiveModWithName`**: `PatchOperationFindMod`'s `<mods><li>` list is
+matched by exact `String` equality against **`ModMetaData.Name`** — the mod's
+DISPLAY name ("Ideology", "Caravan Adventures") — **never `packageId`**.
+`gen_pawn_flavor_phase2_apply.py` wrote the raw lowercase-dotted `packageId`
+(`ludeon.rimworld.ideology`) into every non-Core `<mods><li>`. That string can
+never equal a display name, so `HasActiveModWithName` always returned `false`
+and **every FindMod-gated block in the whole 1,781-row patch set silently never
+ran its `<match>` branch** — confirmed by grepping the deployed patch files:
+literally every `<mods><li>` across all three output files was packageId-shaped,
+zero exceptions. Only Core-owned rows (generator-exempted from the FindMod wrap
+entirely) were ever actually applying. This is a MUCH larger blast radius than
+the two rows that first surfaced it — every DLC- and workshop-mod-owned row was
+affected.
+
+**Fix**: `gen_pawn_flavor_phase2_apply.py`'s `build_groups()` now writes the
+def dump's own `modName` field (present per-record, already exactly
+`ModMetaData.Name` including the DLC special case — `Expansion.label` when the
+owning mod is a DLC, confirmed against `Data/Core/Defs/Misc/ExpansionDefs/ExpansionDefs.xml`
+whose `Ideology`/`Biotech`/etc. `<label>`s match `ExpansionDef` exactly). The
+entry tuples threaded through `build_groups` gained a `modName` field
+alongside `packageId` (grouping key stays `packageId`, only the emitted
+`<li>` text changed). Regenerated all 3 patch files (same 1,781/1,783 row
+count), `validate_patch.py`: 0 errors — and for the first time its own
+`PatchOperationFindMod` match-count lines report real hits against real mod
+names ("RimMandrake - Star Wars Races", "Odyssey", "Vanilla Races Expanded -
+Saurid", "Star Wars KotOR Resources and Materials", etc.), not silent zero.
+
+**Live cold load (592 mods) — positive, log-based proof the gate now genuinely
+opens, not just static reasoning**: before the fix, the `Ideology`/`EBSG
+Framework`-gated blocks produced ZERO log lines (the exact silent-no-op
+symptom this item was filed over). After the fix, on this SAME 592-mod live
+boot, those SAME blocks now throw real internal errors —
+`Verse.PatchOperationFindMod(Ideology): Error in <match>` with a full nested
+stack trace naming a specific failing defName inside it. That trace can only
+exist if `HasActiveModWithName("Ideology")` returned `true` and the engine
+actually walked into and executed the formerly-dead branch. This is exactly
+the positive observation this project's own doctrine asks for (a clean log
+proves nothing; here the log is NOT clean, and that is the proof).
+
+**One genuinely separate, narrower bug surfaced by this same load, once the
+gate finally opened enough to reach it** — filed on its own, not fixed here:
+[[PAWN_FLAVOR_STAGELESS_ADD_FAIL_1]] (`AnyBodyPartButGroinCovered_Disapproved_Female`
+in Ideology, `EBSG_GeneticDrugDependency` in EBSG Framework — `PatchOperationAdd`
+fails because `stages/li[1]` has no literal anchor at all, a different failure
+shape than the FindMod bug this item is about).
+
+**What is NOT confirmed by screenshot/live-text-read**: the exact two originally-
+reported rows (`TreesDesired`, `TravelCompanions`) specifically, because both
+require staging conditions a quicktest colony doesn't have by default —
+`TreesDesired` needs an ideoligion with the Trees precept; `TravelCompanions`
+only evaluates on a pawn actually inside a live caravan, and the bridge's own
+`jawa/pawn_thoughts` cannot reach a caravan pawn (confirmed by forming a real
+caravan and trying — `FindPawn` only searches spawned map pawns). Filed as its
+own bridge-tooling gap: [[BRIDGE_PAWN_THOUGHTS_CARAVAN_GAP_1]]. The FindMod
+mechanism fix is proven live at the class level (above); these two specific
+rows' displayed text is proven only by generator logic + offline patch content
+(both now correctly targeted, per direct inspection of the regenerated XML),
+not by a screenshot.
+
+**Root cause: named. General rule: `PatchOperationFindMod`'s `<mods>` list
+always takes the mod's registered NAME, never its packageId — read it off the
+def dump's `modName` field (or `ModMetaData.Name`/`ExpansionDef.label` for a
+DLC), never assume packageId works, and never trust `validate_patch.py`'s
+"0 errors" for a FindMod-wrapped patch without also checking it reports a real
+match count against a real mod name.** Closing this item: the FindMod bug
+itself is fixed and live-proven at the mechanism level; the two narrower
+follow-ons (stageless Add, bridge caravan-pawn gap) are filed separately
+rather than blocking this one open.

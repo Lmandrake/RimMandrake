@@ -2,7 +2,7 @@
 <Patch>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>killathon.artificialbeings.syncore</li>
+      <li>ABF: Synstructs Core</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -1115,7 +1115,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>ludeon.rimworld.biotech</li>
+      <li>Biotech</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -1181,7 +1181,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>ludeon.rimworld.ideology</li>
+      <li>Ideology</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -1266,7 +1266,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>neronix17.outerrim.droiddepot</li>
+      <li>Outer Rim - Droid Depot</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -1381,7 +1381,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>turnovus.biotech.integratedgenes</li>
+      <li>Integrated Genes</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -1462,7 +1462,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>vanillaexpanded.vanillatraitsexpanded</li>
+      <li>Vanilla Traits Expanded</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>

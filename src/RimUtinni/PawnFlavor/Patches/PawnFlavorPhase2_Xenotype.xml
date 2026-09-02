@@ -2,7 +2,7 @@
 <Patch>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>ludeon.rimworld.biotech</li>
+      <li>Biotech</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -385,7 +385,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>mandrake.jawa.patches</li>
+      <li>Jawa Patches (local)</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -428,7 +428,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>mandrake.rsw.starwarsraces</li>
+      <li>RimMandrake - Star Wars Races</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -2783,7 +2783,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>ludeon.rimworld.odyssey</li>
+      <li>Odyssey</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -2826,7 +2826,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>vanillaracesexpanded.saurid</li>
+      <li>Vanilla Races Expanded - Saurid</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -2869,7 +2869,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>guy762.mm.kotorcore</li>
+      <li>Star Wars KotOR Resources and Materials</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>

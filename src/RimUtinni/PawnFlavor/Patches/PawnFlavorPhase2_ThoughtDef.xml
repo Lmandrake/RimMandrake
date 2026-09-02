@@ -2,7 +2,7 @@
 <Patch>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>sarg.alphaanimals</li>
+      <li>Alpha Animals</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -351,7 +351,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>killathon.artificialbeings.syncore</li>
+      <li>ABF: Synstructs Core</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -2978,7 +2978,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>sarg.alphabiomes</li>
+      <li>Alpha Biomes</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -3565,7 +3565,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>sarg.alphagenes</li>
+      <li>Alpha Genes</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -4186,7 +4186,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>sarg.alphamemes</li>
+      <li>Alpha Memes</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -11335,7 +11335,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>ludeon.rimworld.ideology</li>
+      <li>Ideology</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -46908,7 +46908,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>erdelf.humanoidalienraces</li>
+      <li>Humanoid Alien Races</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -48991,7 +48991,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>mlie.starwarsanimalcollection</li>
+      <li>Star Wars Animal Collection (Continued)</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -50190,7 +50190,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>ludeon.rimworld.biotech</li>
+      <li>Biotech</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -54653,7 +54653,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>veterano.mythicages.megafaunabestiary</li>
+      <li>Mythic Ages: Megafauna Bestiary</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -57348,7 +57348,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>biomesteam.biomescore</li>
+      <li>Biomes! Core</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -57561,7 +57561,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>biomesteam.biomescaverns</li>
+      <li>Biomes! Caverns</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -57978,7 +57978,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>biomesteam.biomespollutedlands</li>
+      <li>Biomes! Polluted Lands</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -58157,7 +58157,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>biomesteam.biomesfossils</li>
+      <li>Biomes! Fossils</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -58506,7 +58506,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>redmattis.bigsmall.core</li>
+      <li>Big and Small - Genes &amp; More</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -59739,7 +59739,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>telardo.romanceontherim</li>
+      <li>Romance On The Rim</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -62808,7 +62808,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>ludeon.rimworld.odyssey</li>
+      <li>Odyssey</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -63667,7 +63667,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>gulmadred.breedingritual</li>
+      <li>Breeding Ritual</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -63982,7 +63982,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>iforgotmysocks.caravanadventures</li>
+      <li>Caravan Adventures</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -64263,7 +64263,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>greg.customgastypes</li>
+      <li>Custom Gas Types</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -64374,7 +64374,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>amoruch.rimworldstealingmod</li>
+      <li>Stealing Mod</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -64485,7 +64485,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>mlie.preceptsandmemes</li>
+      <li>Precepts and Memes (Continued)</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -64800,7 +64800,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>ebsg.framework</li>
+      <li>EBSG Framework</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -65013,7 +65013,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>tribeagle.simpleslaverycollars</li>
+      <li>Simple Slavery Collars</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -65464,7 +65464,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>divinederivative.romance</li>
+      <li>Way Better Romance</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -65949,7 +65949,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>vanillaexpanded.vgeneticse</li>
+      <li>Vanilla Genetics Expanded</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -66672,7 +66672,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>garryflowers.moreslaverystuff</li>
+      <li>More Slavery Stuff</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -66953,7 +66953,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>jellycreative.isekaileveling</li>
+      <li>ISEKAI RPG LEVELING</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -69478,7 +69478,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>mandrake.rsw.jawaikee</li>
+      <li>Jawa Ikee</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -69555,7 +69555,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>avius.prisonlabor</li>
+      <li>Prison Labor</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -69802,7 +69802,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>legator.prisonerrealism</li>
+      <li>Prisoner Realism</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -70287,7 +70287,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>mandrake.rsw.armoury</li>
+      <li>Jawa Armoury Rebalance</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -70874,7 +70874,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>mandrake.rsw.starwarsraces</li>
+      <li>RimMandrake - Star Wars Races</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -70917,7 +70917,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>weilbyte.snapout</li>
+      <li>Snap Out!</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -70960,7 +70960,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>neronix17.toolbox</li>
+      <li>Tabula Rasa</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -71003,7 +71003,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>tsa.torturepod</li>
+      <li>Torture Pod</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -71182,7 +71182,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>turnovus.biotech.integratedgenes</li>
+      <li>Integrated Genes</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -71803,7 +71803,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>vanillaexpanded.vbrewe</li>
+      <li>Vanilla Brewing Expanded</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -72526,7 +72526,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>vanillaexpanded.vcooke</li>
+      <li>Vanilla Cooking Expanded</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -73453,7 +73453,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>vanillaexpanded.vmemese</li>
+      <li>Vanilla Ideology Expanded - Memes and Structures</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -82574,7 +82574,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>oskarpotocki.vfe.pirates</li>
+      <li>Vanilla Factions Expanded - Pirates</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -83603,7 +83603,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>oskarpotocki.vfe.tribals</li>
+      <li>Vanilla Factions Expanded - Tribals</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -83782,7 +83782,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>vanillaexpanded.gravship</li>
+      <li>Vanilla Gravship Expanded - Chapter 1</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -83893,7 +83893,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>vanillaracesexpanded.saurid</li>
+      <li>Vanilla Races Expanded - Saurid</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -84004,7 +84004,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>vanillaexpanded.vanillatraitsexpanded</li>
+      <li>Vanilla Traits Expanded</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -85509,7 +85509,7 @@
   </Operation>
   <Operation Class="PatchOperationFindMod">
     <mods>
-      <li>oskarpotocki.vanillavehiclesexpanded</li>
+      <li>Vanilla Vehicles Expanded</li>
     </mods>
     <match Class="PatchOperationSequence">
       <operations>

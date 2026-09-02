@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T01:32:40Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-02T01:37:07Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -290,3 +290,23 @@ kind:     build
 thin:     spec, verify and criteria all present
 summary:  Tellurox (karraskopt3.png) — Ascendant Helix labour-line livestock,
 prose:    infrastructure/state/items/HELIX_TELLUROX_BUILD_1.md
+
+## PAWN_FLAVOR_STAGELESS_ADD_FAIL_1 Two Phase-2 flavor rows fail PatchOperationAdd: no literal stages/li[1] to anchor on
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     spec, verify and criteria all present
+summary:  genpawnflavorphase2apply.py's seqop() wraps each field in a
+prose:    infrastructure/state/items/PAWN_FLAVOR_STAGELESS_ADD_FAIL_1.md
+
+## BRIDGE_PAWN_THOUGHTS_CARAVAN_GAP_1 jawa/pawn_thoughts cannot read a caravan pawn - FindPawn only sees spawned map pawns
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     spec, verify and criteria all present
+summary:  Any jawa/pawn tool that resolves a pawn by id/name should also try
+prose:    infrastructure/state/items/BRIDGE_PAWN_THOUGHTS_CARAVAN_GAP_1.md
