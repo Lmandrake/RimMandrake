@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T05:29:42Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-02T05:33:32Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -350,6 +350,16 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/STICK_FOOD_INGEST_1.md yet — write one when you have something to say)
+thin:     no ## spec, no ## verify
+summary:  STICKFOODINGEST1 — measured ingest scope (BENCH, 2026-09-02)
 prose:    infrastructure/state/items/STICK_FOOD_INGEST_1.md
+
+## SANDWORM_MYTHOS_BUILD_1 New massive dune-style sandworm with its own mythos (Krayt stays as-is); borrow LEVIATHANS:SANDWORM architecture
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SANDWORM_MYTHOS_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SANDWORM_MYTHOS_BUILD_1.md

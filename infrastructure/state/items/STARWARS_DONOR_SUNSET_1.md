@@ -87,3 +87,13 @@ next wave. Never bundle waves 1 and 3 into one restart — different risk classe
    our fauna census/art-fix tooling actively depends on, no consistent
    defName prefix, art locked in an AssetBundle). Worth doing as a real
    absorption project, or is losing that fauna roster acceptable to just cut it?
+## Cross-finding from the sandworm/Krayt survey (BENCH, 2026-09-02)
+
+The campaign's giant Krayt Dragon SHIPS IN `mlie.starwarsanimalcollection`
+(fauna cast rows: animal_census.csv:484,535; BiomeCast_Ashkarr.xml:522,607),
+and the owner ruled it "keep just as it is" (swt:krayt-leviathans) — so the
+Mlie absorption wave MUST port the Krayt, it cannot lapse. ⭐ Subagent reports
+the mod is MIT-licensed on GitHub (⚠️ verify the license file before relying):
+if true, art and defs are legally portable, which cuts the Mlie absorption
+cost from "regenerate ~150 sprites" to "port and rename". Survey:
+research/Jawa/sandworm_krayt_survey_2026-09-02.md
