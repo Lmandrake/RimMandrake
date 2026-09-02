@@ -49,6 +49,13 @@ namespace RimMandrake.Ninefold
         {
         }
 
+        // Convenience accessor for the event hooks (Patch_*.cs) so every hook
+        // does not repeat the null-safe Current.Game?.GetComponent dance.
+        // Pure read -- returns null outside Playing (main menu, world screen),
+        // and every caller must handle that.
+        public static GameComponent_Ninefold Instance =>
+            Current.Game?.GetComponent<GameComponent_Ninefold>();
+
         public float GetSatiation(God god) => satiation[(int)god];
 
         public float GetMood(God god) => mood[(int)god];
