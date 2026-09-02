@@ -18,5 +18,11 @@
       "note": "OWNER RULING (before sheet): a livestock animal genetically modified by the Helix faction \u2014 origin and biome follow Helix, not 'general'.",
       "prefill": "approve"
     }
-  }
+  },
+  "decidedBy": "owner-said",
+  "ownerSaid": "The forsaken review sheet is reviewed and approved. (2026-09-01, via BENCH)",
+  "savedAt": "2026-09-02T01:20:02+00:00",
+  "frozen": true,
+  "frozenOn": "2026-09-02T01:20:02+00:00",
+  "frozenMeaning": "All three rows approved by the owner; Tellurox carries the Helix ruling. Further changes go through a new item, not this sheet."
 }
