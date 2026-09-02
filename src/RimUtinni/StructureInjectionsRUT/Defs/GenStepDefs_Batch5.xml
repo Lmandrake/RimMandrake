@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- The Monument - structure_injection_roster.md PROMISE #8. -->
+  <GenStepDef>
+    <defName>RUT_GenStep_Monument</defName>
+    <genStep Class="RimMandrake.StructureInjections.GenStep_RimplacePlan">
+      <planFile>Templates/monument.txt</planFile>
+      <centerOnMap>true</centerOnMap>
+    </genStep>
+    <order>400</order>
+  </GenStepDef>
+
+  <!-- The Dead Beacon - structure_injection_roster.md PROMISE #14. -->
+  <GenStepDef>
+    <defName>RUT_GenStep_DeadBeacon</defName>
+    <genStep Class="RimMandrake.StructureInjections.GenStep_RimplacePlan">
+      <planFile>Templates/dead_beacon.txt</planFile>
+      <centerOnMap>true</centerOnMap>
+    </genStep>
+    <order>400</order>
+  </GenStepDef>
+
+  <!-- The Broken Ring - structure_injection_roster.md PROMISE #20. -->
+  <GenStepDef>
+    <defName>RUT_GenStep_BrokenRing</defName>
+    <genStep Class="RimMandrake.StructureInjections.GenStep_RimplacePlan">
+      <planFile>Templates/broken_ring.txt</planFile>
+      <centerOnMap>true</centerOnMap>
+    </genStep>
+    <order>400</order>
+  </GenStepDef>
+
+</Defs>

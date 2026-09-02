@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- structure_injection_roster.md batch 5, three PROMISE rows.
+       Responder mechanism per structure_injection_roster.md §0b.
+       Same shape as batches 1-4.
+
+       ⚠️ NOT YET PLACED on any Ash'karr tile for any of the three - a live
+       world-tile edit on the frozen map (bridge + world_commit), out of
+       scope for this pass, same deferral as every prior row.
+
+       Gating note: the roster's own §2 "gating" column names an ARC/LORE/
+       FREQUENCY context for all three rows (#8 Ozzik's monument reads, #14
+       terminator band, #20 anywhere-but-rare), none of them a biome - a
+       TileMutatorDef's biomeWhitelist cannot express any of the three, so
+       none is set here, same deferral batch 3/4's own comments already
+       established for their own arc-gated rows. -->
+
+  <!-- The Monument - PROMISE #8, Ozzik. -->
+  <TileMutatorDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_Monument</defName>
+    <label>the monument</label>
+    <description>A half-buried colossus on its own paved plaza. Pride on claiming it; the pride-meter knows.</description>
+    <extraGenSteps>
+      <li>RUT_GenStep_Monument</li>
+    </extraGenSteps>
+  </TileMutatorDef>
+
+  <!-- The Dead Beacon - PROMISE #14, Ishko vs Sh'kaar. -->
+  <TileMutatorDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_DeadBeacon</defName>
+    <label>the dead beacon</label>
+    <description>A small lamp-room, cold and unpowered. Light the dark and see what answers - if anyone chooses to.</description>
+    <extraGenSteps>
+      <li>RUT_GenStep_DeadBeacon</li>
+    </extraGenSteps>
+  </TileMutatorDef>
+
+  <!-- The Broken Ring - PROMISE #20, Zizzik. -->
+  <TileMutatorDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_BrokenRing</defName>
+    <label>the broken ring</label>
+    <description>A segment of some orbital structure, fused into the ground, still rich with tech scrap. Everything salvaged from it carries his spark for a season.</description>
+    <extraGenSteps>
+      <li>RUT_GenStep_BrokenRing</li>
+    </extraGenSteps>
+  </TileMutatorDef>
+
+</Defs>

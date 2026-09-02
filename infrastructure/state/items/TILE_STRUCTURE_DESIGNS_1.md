@@ -270,3 +270,55 @@ authored across all four batches so far: no letter text in any god's
 register, none placed on a live tile. ~36 of 44 roster rows remain
 untouched. Left `doing`.
 
+## 2026-09-02 batch 5 (FOUNDRY) — three more RUT rows, after COLD_LOAD_STALL_INTERMITTENT_1 resolved
+
+Owner confirmed the cold-load-stall alarm was a false positive (idle main
+menu misread as a hang, closed `COLD_LOAD_STALL_INTERMITTENT_1` as not-a-bug —
+see `idle-menu-looks-like-load-stall` memory). BENCH still held the bridge
+for other work, so this pass stayed offline/repo-only, same discipline as
+every prior batch.
+
+- **The Monument** (row 8, RUT) — `design/Jawa/templates/monument.lua`. One
+  `SculptureGrand` (stuffed `BlocksGranite`) centered on a fully paved
+  plaza, a few `ChunkGranite` rubble pieces at its base for "half-buried."
+  `lint`: 0 findings. `SculptureGrand`/`BlocksGranite`/`ChunkGranite`
+  confirmed 1 real hit each in the live 593-mod set.
+- **The Dead Beacon** (row 14, RUT) — `design/Jawa/templates/dead_beacon.lua`.
+  A 5x5 walled/roofed lamp-room, one `StandingLamp` centered and
+  deliberately left UNWIRED to any power source — "relighting it is a
+  CHOICE" read mechanically as staying cold until a future player action
+  powers it, not a new comp/hediff. `lint`: 0 findings at 7x7 export size;
+  correctly refuses (not silently under-builds) below its 5x5 minimum.
+  `StandingLamp` confirmed 1 real hit.
+- **The Broken Ring** (row 20, RUT) — `design/Jawa/templates/broken_ring.lua`.
+  Terrain-led like `glass_sea.lua`: an off-center patch of
+  `AncientMegastructure` (Odyssey) as the fused hull segment itself, not a
+  prop sitting on ordinary ground, with `Steel`/`ComponentIndustrial`/
+  `ChunkSlagSteel` scrap densest directly over the hull. `lint`: 0
+  findings. All 4 defNames confirmed 1 real hit each.
+
+All defNames sourced from vanilla (RimSage-indexed) and independently
+cross-checked via a `validate_patch.py` `PatchOperationConditional` probe
+against the full live 593-mod set — 6/6 real, exactly one hit each.
+
+**Wiring**: `GenStepDefs_Batch5.xml` + `TileMutatorDefs_Batch5.xml` added to
+the existing `mandrake.rut.injections` mod — same `extraGenSteps` shape
+every prior batch used. `validate_patch.py` on the whole mod (now 6 Defs
+files + About): 0 errors, 0 warnings. `rimplace selftest`: 28/28,
+unaffected.
+
+Review sheet: `design/Jawa/worldbuilding/review/tile_structure_batch5_sheet.html`
+(`check_sheet.py`: 0 FAIL/0 WARN/27 ok, all 3 rows pre-filled `ship`, 3
+invented premises declared). No decisions file yet — nothing has been
+reviewed.
+
+**NOT deployed, NOT added to ModsConfig this pass** — same discipline as
+every prior batch. Repo content only; deploy + enable + the live cold-load
+ordering proof all ride the next restart, alongside batches 1-4's still-open
+live-proof debt.
+
+Still not "shipped" by the roster's own §5 bar for any of the 14 rows
+authored across all five batches so far: no letter text in any god's
+register, none placed on a live tile. ~33 of 44 roster rows remain
+untouched. Left `doing`.
+
