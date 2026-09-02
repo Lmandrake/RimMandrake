@@ -3,6 +3,15 @@
      roster: design/Jawa/worldbuilding/sea_beasts_roster.md, size 1.4). -->
 # Opee sea killer — facing set validation plan
 
+🔴 **The §2 LIES line below came true and is now ANSWERED.** `sea_beasts_def_spec.md`
+§5.1 ships `RSW_OpeeSeaKiller` at **drawSize 2.25**, not the 1.4 this canvas was
+budgeted from. 2.25 × 128 px/cell = 288 px ⇒ the correct canvas is **512x512**, and
+these four PNGs are 256x256. Not a blocker: RimWorld scales the texture to
+`drawSize`, so the sprite draws at the right footprint and is merely blockier than
+its two siblings (`CrimsonOpee`, `ShaleGorger`, both 512). Rebuilding it is two
+image calls through `../../tools/gen_sea_facings.py OpeeSeaKiller`; see
+`../README.md` for why that is currently blocked.
+
 Canvas: 256x256 per facing (1.4 cells x 128px/cell = 179.2px, rounded up to the
 next power of two = 256). No prior shipped reference exists for this creature —
 every check below is candidate-vs-candidate, not against a prior sprite.
