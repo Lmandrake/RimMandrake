@@ -3761,3 +3761,16 @@
 {"seat":"BENCH","event":"bridge","state":"taken","ts":"2026-09-02T06:44:47Z"}
 {"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-09-02T07:01:06Z"}
 {"seat":"FOUNDRY","event":"seat","state":"ready","note":"Reboot prep: heavy fan-out night (~20 items touched) - all committed/pushed, bridge released clean. Biggest open thread: COLD_LOAD_STATIC_CTOR_STALL_1, a real env-level cold-load hang reproducing on a known-good modlist, blocks WEATHER_SUITE_SLICE_1's live verify and any further restart until diagnosed. Several compiled-not-deployed companion/mod changes await a game-down window (get_defs deep-serialize, caravan-pawn lookup fix). Everything else landed offline-clean, live-verify owed - read each item's own last note, not this line, for specifics.","ts":"2026-09-02T07:01:18Z"}
+{"seat":"BENCH","event":"bridge","state":"released","ts":"2026-09-02T07:16:27Z"}
+{"seat":"BENCH","event":"bridge","state":"taken","ts":"2026-09-02T07:19:26Z"}
+{"seat":"FOUNDRY","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-09-02T07:20:30Z"}
+{"seat":"FOUNDRY","event":"claim","id":"RIVER_STEAM_ANIMATION_1","ts":"2026-09-02T07:20:43Z"}
+{"seat":"FOUNDRY","event":"start","id":"RIVER_STEAM_ANIMATION_1","ts":"2026-09-02T07:20:43Z"}
+{"seat":"FOUNDRY","event":"claim","id":"SHIELD_MODS_LEVERAGE_1","ts":"2026-09-02T07:20:44Z"}
+{"seat":"FOUNDRY","event":"start","id":"SHIELD_MODS_LEVERAGE_1","ts":"2026-09-02T07:20:44Z"}
+{"seat":"FOUNDRY","event":"claim","id":"STICK_FOOD_INGEST_1","ts":"2026-09-02T07:20:44Z"}
+{"seat":"FOUNDRY","event":"start","id":"STICK_FOOD_INGEST_1","ts":"2026-09-02T07:20:45Z"}
+{"seat":"FOUNDRY","event":"claim","id":"SANDWORM_MYTHOS_BUILD_1","ts":"2026-09-02T07:20:45Z"}
+{"seat":"FOUNDRY","event":"start","id":"SANDWORM_MYTHOS_BUILD_1","ts":"2026-09-02T07:20:46Z"}
+{"seat":"BENCH","event":"bridge","state":"released","ts":"2026-09-02T07:21:00Z"}
+{"seat":"FOUNDRY","event":"note","id":"SHIELD_MODS_LEVERAGE_1","text":"Ground-truthed BENCH's WebSearch-only survey against the live mod stack: VEF core + VFE-Security both confirmed ACTIVE (592-mod list), Odyssey's native gravship system active, but ED-Shields is NOT present anywhere on this machine (not active, not installed) - needs a Workshop subscribe before its module architecture can be studied from real source. Independently found neronix17.shieldgenerators (active) is a genuine local match but for the bubble-not-wall row, not the v1 thermal-veil/particulate-screen ladder - its TabulaRasa.Comp_Shield is kinetic/EMP-interception only, no heat/cold radius model exists in it or anywhere else found locally; its plasma-pipe-network comps are a useful power-economy precedent regardless. Did not duplicate BENCH's scoping, added as a grounding-check section. Left doing.","ts":"2026-09-02T07:23:41Z"}

@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T06:44:47Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: BENCH
+as-of: 2026-09-02T07:23:41Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -288,6 +288,42 @@ kind:     build
 summary:  design/Jawa/droidsystembuildspec.md §4/§7: guy762.kotordroids is
 prose:    infrastructure/state/items/DROID_KOTORDROIDS_PORT_WAVE1_1.md
 
+## RIVER_STEAM_ANIMATION_1 Animated steam rising from the rivers (Pyrelands weather visual)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  RIVERSTEAMANIMATION1 — technique scoped (BENCH, 2026-09-02)
+prose:    infrastructure/state/items/RIVER_STEAM_ANIMATION_1.md
+
+## SHIELD_MODS_LEVERAGE_1 Find existing shield mods, study and make compatible; tuned-plasma-field model per shd rulings
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  SHIELDMODSLEVERAGE1 — survey done, scoping (BENCH, 2026-09-02)
+prose:    infrastructure/state/items/SHIELD_MODS_LEVERAGE_1.md
+
+## STICK_FOOD_INGEST_1 Ingest the stuff-on-a-stick food mod(s) into our own recipe-discovery tree, then retire them
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  STICKFOODINGEST1 — measured ingest scope (BENCH, 2026-09-02)
+prose:    infrastructure/state/items/STICK_FOOD_INGEST_1.md
+
+## SANDWORM_MYTHOS_BUILD_1 New massive dune-style sandworm with its own mythos (Krayt stays as-is); borrow LEVIATHANS:SANDWORM architecture
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  (no items/SANDWORM_MYTHOS_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SANDWORM_MYTHOS_BUILD_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -323,46 +359,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## RIVER_STEAM_ANIMATION_1 Animated steam rising from the rivers (Pyrelands weather visual)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  RIVERSTEAMANIMATION1 — technique scoped (BENCH, 2026-09-02)
-prose:    infrastructure/state/items/RIVER_STEAM_ANIMATION_1.md
-
-## SHIELD_MODS_LEVERAGE_1 Find existing shield mods, study and make compatible; tuned-plasma-field model per shd rulings
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  SHIELDMODSLEVERAGE1 — survey done, scoping (BENCH, 2026-09-02)
-prose:    infrastructure/state/items/SHIELD_MODS_LEVERAGE_1.md
-
-## STICK_FOOD_INGEST_1 Ingest the stuff-on-a-stick food mod(s) into our own recipe-discovery tree, then retire them
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify
-summary:  STICKFOODINGEST1 — measured ingest scope (BENCH, 2026-09-02)
-prose:    infrastructure/state/items/STICK_FOOD_INGEST_1.md
-
-## SANDWORM_MYTHOS_BUILD_1 New massive dune-style sandworm with its own mythos (Krayt stays as-is); borrow LEVIATHANS:SANDWORM architecture
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SANDWORM_MYTHOS_BUILD_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/SANDWORM_MYTHOS_BUILD_1.md
 
 ## COLD_LOAD_STATIC_CTOR_STALL_1 Cold load hangs at StaticConstructorOnStartup checkpoint, reproduces on a known-good mod list
 state:    proposed
