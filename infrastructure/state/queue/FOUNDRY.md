@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T09:23:36Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-02T09:26:03Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -388,3 +388,23 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/ATMOSPHERE_CONFIG_RESTORE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/ATMOSPHERE_CONFIG_RESTORE_1.md
+
+## DROIDWORKS_HEALTHSCALE_SENTINELS_1 Fix 7 remaining baseHealthScale=UNCERTAIN string sentinels in Races_OuterRim.xml (same fix as GNK)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DROIDWORKS_HEALTHSCALE_SENTINELS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROIDWORKS_HEALTHSCALE_SENTINELS_1.md
+
+## DROIDWORKS_DETONATION_ROLLOUT_1 Roll CompDroidDetonation out to the 17 remaining energyDensity>0 races (pattern proven on GNK)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DROIDWORKS_DETONATION_ROLLOUT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROIDWORKS_DETONATION_ROLLOUT_1.md
