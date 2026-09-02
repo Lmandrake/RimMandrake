@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T14:13:53Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: free
+as-of: 2026-09-02T14:27:29Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -379,12 +379,12 @@ _none._
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
 
-## COLD_LOAD_STALL_INTERMITTENT_1 COLD_LOAD_STATIC_CTOR_STALL_1's closure was PREMATURE - the stall is intermittent, reproduced a 4th time
+## QUEUE_ITEM_FILES_DECAY_1 Commits that finish a queue item don't update its items/<ID>.md, so next/triage reads it as unstarted
 state:    proposed
 row:      unassigned
-needs:    owner
+needs:    offline
 target:   v1
 kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/COLD_LOAD_STALL_INTERMITTENT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/COLD_LOAD_STALL_INTERMITTENT_1.md
+summary:  (no items/QUEUE_ITEM_FILES_DECAY_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/QUEUE_ITEM_FILES_DECAY_1.md
