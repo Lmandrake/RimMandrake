@@ -97,3 +97,20 @@ the mod is MIT-licensed on GitHub (⚠️ verify the license file before relying
 if true, art and defs are legally portable, which cuts the Mlie absorption
 cost from "regenerate ~150 sprites" to "port and rename". Survey:
 research/Jawa/sandworm_krayt_survey_2026-09-02.md
+
+## Mlie dependency census — MEASURED (BENCH subagent, 2026-09-02)
+
+research/Jawa/mlie_dependency_census_2026-09-02.md: **135 of 160 creatures
+must port** (133 wild-spawn on Ashkarr via BiomeCast_Ashkarr.xml + 2
+load-bearing off-biome: Bantha as a faction pawnGroupMaker carrier, Fambaa
+patched by RimStarWars/SeasWaterline). 25 drop free (24 blanket-sweep-only +
+CorellianHound already MEASURED_DEAD). Confirms the scoping verdict: a real
+absorption project, not a quick win — though the reported MIT license (verify)
+means porting, not regenerating.
+
+**Two owner calls needed before porting starts:**
+1. `Nuna` is a defName COLLISION with vanilla Core; the dumped list resolves
+   to Mlie's version — confirm which Nuna ships (stats/art differ).
+2. Wampa and Acklay were cited in required_mods.md as adoption reasons but
+   have NO functional wiring in the cast — design intent never landed;
+   decide wire-them-in vs let-them-drop rather than silently losing them.
