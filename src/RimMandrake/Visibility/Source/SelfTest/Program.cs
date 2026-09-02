@@ -28,17 +28,21 @@
 // SafeAdjust/SafeResetOnLaunch's own narrow catch, every case below would
 // show as FAIL/ERROR, not ok.
 //
-// ⛔ NOT COVERED: GameComponent registration via Verse.Game.FillComponents
-// reflection, ExposeData/save-round-trip, the Harmony postfixes in
-// ColonyVisibilityRaidPatch.cs, and RecordTileDeparture()/
-// ApplyTileMemoryOnArrival() (both call Find.TickManager.TicksGame, which
-// is Current.Game?.tickManager - genuinely null with no running game, so
-// calling either for real throws NullReferenceException before any of
-// their own decay math runs; extracting just the decay formula the way
-// selftest_stun_scaling.py's Program.cs extracts StatPart_InverseBodySize's
-// transform is the honest next step here, not attempted this pass). All of
-// these need a running game or a deliberate extraction this pass did not
-// do.
+// SeasonsAway()/DecayedTileVisibility() (the tile-memory decay math, owner
+// card "halved per season away") ARE covered below - extracted out of
+// ApplyTileMemoryOnArrival specifically so this file could test them without
+// a running game, same pattern selftest_stun_scaling.py's Program.cs uses
+// for StatPart_InverseBodySize's transform.
+//
+// ⛔ STILL NOT COVERED: GameComponent registration via
+// Verse.Game.FillComponents reflection, ExposeData/save-round-trip, the
+// Harmony postfixes in ColonyVisibilityRaidPatch.cs (including
+// RecordTileDeparture()/ApplyTileMemoryOnArrival() themselves, which call
+// Find.TickManager.TicksGame - genuinely null with no running game), and
+// VisibilityToThreatCurve (lives in ColonyVisibilityRaidPatch.cs, which pulls
+// in HarmonyLib/RimWorld.Planet types this SelfTest project does not
+// reference - a separate, larger increment, not attempted this pass). All of
+// these need a running game or a deliberate extraction this pass did not do.
 //
 // Run:
 //   python3 src/RimMandrake/Utils/selftest_colony_visibility.py
@@ -212,6 +216,39 @@ namespace RimMandrake.Visibility.SelfTest
                 SafeResetOnLaunch(c); // 40 * 0.15 = 6, inside [5,15], not clamped
                 AssertClose(c.shipVisibility, 6f, "40*0.15=6 must land exactly, no clamp applies inside the band");
             });
+
+            // ------------------------------------ tile-memory decay math -----
+            // GenDate.TicksPerSeason = 900_000 (Verse constant, not guessed -
+            // matches the owner card's "halved per season away" wording and
+            // GameComponent_ColonyVisibility.cs's own doc comment).
+            const int ticksPerSeason = 900_000;
+
+            Case("SeasonsAway_zero_ticks_is_zero_seasons", () =>
+                AssertClose(GameComponent_ColonyVisibility.SeasonsAway(0), 0f, "0 ticks"));
+            Case("SeasonsAway_one_season_of_ticks_is_1", () =>
+                AssertClose(GameComponent_ColonyVisibility.SeasonsAway(ticksPerSeason), 1f, "900000 ticks"));
+            Case("SeasonsAway_negative_ticks_floors_at_zero", () =>
+                AssertClose(GameComponent_ColonyVisibility.SeasonsAway(-1000), 0f,
+                    "a negative elapsed time must not produce negative seasons"));
+
+            Case("DecayedTileVisibility_zero_elapsed_is_unchanged", () =>
+                AssertClose(GameComponent_ColonyVisibility.DecayedTileVisibility(80f, 0), 80f,
+                    "no time passed, no decay"));
+            Case("DecayedTileVisibility_one_season_is_halved", () =>
+                AssertClose(GameComponent_ColonyVisibility.DecayedTileVisibility(80f, ticksPerSeason), 40f,
+                    "owner card: halved per season away"));
+            Case("DecayedTileVisibility_two_seasons_is_quartered", () =>
+                AssertClose(GameComponent_ColonyVisibility.DecayedTileVisibility(80f, ticksPerSeason * 2), 20f,
+                    "two half-lives"));
+            Case("DecayedTileVisibility_half_season_is_between_full_and_half", () =>
+                AssertClose(GameComponent_ColonyVisibility.DecayedTileVisibility(100f, ticksPerSeason / 2),
+                    100f * (float)Math.Sqrt(0.5), "0.5^0.5 at the half-season mark", eps: 0.01f));
+            Case("DecayedTileVisibility_negative_elapsed_is_unchanged", () =>
+                AssertClose(GameComponent_ColonyVisibility.DecayedTileVisibility(50f, -1000), 50f,
+                    "should never happen in practice, but must not decay backwards"));
+            Case("DecayedTileVisibility_zero_departure_value_stays_zero", () =>
+                AssertClose(GameComponent_ColonyVisibility.DecayedTileVisibility(0f, ticksPerSeason), 0f,
+                    "a tile left at 0 has nothing to decay"));
 
             Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");
             return Fail.Count == 0 ? 0 : 1;

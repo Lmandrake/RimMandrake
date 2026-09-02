@@ -143,3 +143,22 @@ live-proven) AND the new tile-memory round trip (launch from a tile, let a
 season+ pass, return, confirm the dial bumps per the decay curve above).
 
 Left `doing`.
+
+## 2026-09-02 (FOUNDRY, background fanout) — decay math extracted and selftested
+
+Extracted `SeasonsAway()`/`DecayedTileVisibility()` as pure static methods
+out of `ApplyTileMemoryOnArrival` (no behavior change — the live path calls
+the same two functions now instead of inlining the formula), so the
+tile-memory decay math ("halved per season away") is testable without a
+running game, matching `selftest_stun_scaling.py`'s extraction pattern.
+Added 9 offline test cases. Verified independently:
+`python3 src/RimMandrake/Utils/selftest_colony_visibility.py` → 28/28
+passed (up from 19/19). Rebuilt the DLL, 0 warnings/0 errors.
+
+Remaining offline gap: `VisibilityToThreatCurve` in
+`ColonyVisibilityRaidPatch.cs` still isn't selftested — it lives in a file
+pulling in HarmonyLib/`RimWorld.Planet` types the SelfTest project doesn't
+reference, so extracting it cleanly is a separate ~30-60 min increment
+(add references or pull the curve into a dependency-free helper). Everything
+else remaining is live-quicktest-gated (per the note above) or blocked on
+unbuilt Ninefold infrastructure — not boundable offline work this pass.

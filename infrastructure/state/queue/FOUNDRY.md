@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T19:43:33Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-02T22:29:48Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -189,15 +189,6 @@ kind:     build
 summary:  Per the doc's rosters and §7.2 shared-art batching:
 prose:    infrastructure/state/items/LIVESTOCK_STARTER_TRIO_1.md
 
-## WEATHER_SUITE_SLICE_1 Weather suite v1: terminator storm wall, dark-side auroras, tier 0-1 forecasting
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  Per the doc's §1, §5, §8:
-prose:    infrastructure/state/items/WEATHER_SUITE_SLICE_1.md
-
 ## FORSAKEN_CRAGS_PREDATORS_BUILD_1 Build Cindermare + Skarnix, wild AB_RockyCrags threat pair
 state:    doing
 row:      unassigned
@@ -235,7 +226,7 @@ summary:  Full ladder design: infrastructure/VALIDATIONLADDER.md (owner-ruled,
 prose:    infrastructure/state/items/MASS_VALIDATION_LADDER_1.md
 
 ## FLUID_CANAL_MECHANIC_1 General canal/fluid-flow mechanic, RimMandrake tier — dig channels that flood with water, ooze, slime, oil, tar, propane; tar pits are the first client
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
@@ -347,6 +338,16 @@ blocked:  Engineering sequence, not an owner call: needs Droidworks Phase 3 (fac
 summary:  (no items/DROID_TILES_SOURED_TERRAIN_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DROID_TILES_SOURED_TERRAIN_1.md
 
+## FLUID_CANAL_MECHANIC_1 General canal/fluid-flow mechanic, RimMandrake tier — dig channels that flood with water, ooze, slime, oil, tar, propane; tar pits are the first client
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  reservoir refill mechanism (steady drip into the same flood vs periodic re-flood vs other) is an architecture decision, not a bounded fix - engine otherwise complete and compiles clean, blocked on BENCH/owner picking the refill shape before CompFluidReservoir/Flood_FluidCanal gets reworked
+summary:  FLUIDCANALMECHANIC1 — general canal/fluid-flow mechanic, RimMandrake tier
+prose:    infrastructure/state/items/FLUID_CANAL_MECHANIC_1.md
+
 ## SHIELD_MODS_LEVERAGE_1 Find existing shield mods, study and make compatible; tuned-plasma-field model per shd rulings
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -398,3 +399,13 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  onimods.electrictorches ("Onimods - Electric Torches and Braziers") is a permanent
 prose:    infrastructure/state/items/ELECTRIC_TORCHES_INGEST_RETIRE_1.md
+
+## WEATHER_SUITE_V1_PROMOTIONS_1 Glass-storms, static-seasons, spore-blooms promoted v2->v1 in weather_suite_deep_design.md (2026-09-02 PROPOSAL_SUITE_REVIEW_1) but unbuilt and untracked
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/WEATHER_SUITE_V1_PROMOTIONS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WEATHER_SUITE_V1_PROMOTIONS_1.md

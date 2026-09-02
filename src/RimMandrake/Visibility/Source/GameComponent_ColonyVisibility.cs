@@ -116,6 +116,32 @@ namespace RimMandrake.Visibility
         public const float DeltaLarge = 20f;
 
         /// <summary>
+        /// Pure elapsed-time term of the tile-memory decay (owner card:
+        /// "halved per season away"). Extracted so the decay math is
+        /// testable without a running game - GenDate.TicksPerSeason is a
+        /// plain constant, no Find.* call needed. Negative ticksAway (should
+        /// never happen in practice) floors at 0 seasons, i.e. no decay.
+        /// </summary>
+        public static float SeasonsAway(int ticksAway)
+        {
+            return Mathf.Max(0f, ticksAway) / (float)GenDate.TicksPerSeason;
+        }
+
+        /// <summary>
+        /// Pure tile-memory decay formula (owner card, 2026-08-31: "the
+        /// desert remembers, decaying... halved per season away"). Extracted
+        /// out of ApplyTileMemoryOnArrival so it can be selftested without a
+        /// running game - same pattern selftest_stun_scaling.py's Program.cs
+        /// uses to extract StatPart_InverseBodySize's transform. No Find.*
+        /// dependency: takes the elapsed ticks directly rather than reading
+        /// Find.TickManager itself.
+        /// </summary>
+        public static float DecayedTileVisibility(float visibilityAtDeparture, int ticksAway)
+        {
+            return visibilityAtDeparture * Mathf.Pow(0.5f, SeasonsAway(ticksAway));
+        }
+
+        /// <summary>
         /// Records the current dial value against a tile at the moment the
         /// ship LEAVES it (owner card: "the desert remembers"). Overwrites
         /// any prior memory of the same tile - only the most recent visit's
@@ -154,8 +180,8 @@ namespace RimMandrake.Visibility
             }
 
             int ticksAway = Find.TickManager.TicksGame - memory.departedTick;
-            float seasonsAway = Mathf.Max(0f, ticksAway) / (float)GenDate.TicksPerSeason;
-            float decayed = memory.visibilityAtDeparture * Mathf.Pow(0.5f, seasonsAway);
+            float seasonsAway = SeasonsAway(ticksAway);
+            float decayed = DecayedTileVisibility(memory.visibilityAtDeparture, ticksAway);
 
             if (decayed > shipVisibility)
             {
