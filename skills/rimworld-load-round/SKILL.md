@@ -23,9 +23,10 @@ proving something a 22-second one can prove.
 🔴 **An XML-only change buys no load ON THE MINIMAL LIST (owner's ruling
 2026-09-01; scope corrected by MEASUREMENT 2026-09-02):** deploy →
 `jawa/hot_reload_defs` → read back with `jawa/get_defs`, XML/Defs only, never
-C#/DLLs. ⚠️ **On the full ~592-mod game (2026-09-02) it went UI-blank/unresponsive for
-minutes; whether it recovers is UNMEASURED (killed too early to know).** Proven
-zero-restart only on the minimal list. Canonical entry: `skills/rimworld-modding/SKILL.md` §2.
+C#/DLLs. ✅ **PROVEN on minimal (2026-09-02): reload 0.04s, change live, revert 0.06s.**
+⚠️ On the full ~592-mod list it went UI-blank for minutes (same operation, just
+long — recovery unmeasured, killed too early). Minimal is the fast path; budget
+full-list reload like a load. Canonical entry: `skills/rimworld-modding/SKILL.md` §2.
 
 ```
 python3 src/RimMandrake/Utils/modlist_swap.py --status

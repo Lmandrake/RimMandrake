@@ -124,3 +124,9 @@ marker reverted before the hang; 0 markers left). ⇒ hot-reload is a
 MINIMAL-LIST tool only; the zero-restart L1 cycle in VALIDATION_LADDER.md
 applies to minimal-list tool work, NOT the owner's play stack. Doctrine
 corrected in rimworld-modding §2 and rimworld-load-round §0.
+
+# ✅ Hot-reload PROVEN on minimal (BENCH, 2026-09-02)
+Core Campfire description edited on disk → jawa/hot_reload_defs 0.04s →
+change read back LIVE via get_defs → revert reload 0.06s clean. Zero-restart
+L1 cycle confirmed for minimal-list tool work. Full-list scales to minutes
+(same op); earlier "unrecoverable" claim retracted — killed too early to know.

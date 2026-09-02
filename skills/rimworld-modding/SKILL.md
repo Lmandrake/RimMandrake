@@ -99,18 +99,22 @@ it by default for any Def/patch-XML iteration while a game is up. Period.
 * 🔴 **XML/Defs ONLY.** C#, Harmony and the companion DLL still need a real load.
 * ⚠️ **Verify after reload like any mutation** — `success: true` is not evidence
   a def changed; read the field back and compare (`rimbridge` skill, the one law).
-* 🔴 **On the owner's full (~592-mod) list it went UNRESPONSIVE for minutes —
-  2026-09-02.** The call returned `success:true` in 0.1s, then the engine stopped
-  answering the bridge and the play UI went blank while it re-loaded every active
-  mod's defs and rebuilt render meshes. ⚠️ **Whether it RECOVERS is UNMEASURED:**
-  it was killed after ~4–5 min without proving it was dead — a full-stack reload
-  legitimately could blank the UI for many minutes (a cold load is ~25) and then
-  return. Do not repeat the earlier claim that it is "unrecoverable"; that was
-  stated without evidence. Disk was unharmed (trial edit reverted first).
-  ⇒ Until the recovery time is actually measured, **treat full-list hot-reload as
-  a multi-minute, UI-blanking operation of unknown ceiling — not a quick action.**
-  The zero-restart cycle is proven only for the minimal list (below); on the full
-  stack, budget it like a load until measured otherwise.
+* ✅ **PROVEN on the 13/19-mod minimal list — 2026-09-02.** Edited a Core ThingDef
+  (`Campfire`) description on disk, called `jawa/hot_reload_defs`: returned in
+  **0.04 s**, the changed description read back **live** via `jawa/get_defs`
+  (`MARKER_TOOK_LIVE: True`), and the revert reload was **0.06 s, clean**. The
+  zero-restart cycle is real: deploy XML → hot_reload_defs → get_defs, seconds,
+  no load.
+* ⚠️ **On the full (~592-mod) list it went UI-blank/unresponsive for minutes,
+  same day.** The call returned `success:true` in 0.1 s but the engine then
+  stopped answering while re-loading every active mod's defs. It was killed after
+  ~4–5 min, so recovery is UNMEASURED — but given the minimal list completes the
+  identical operation in 0.04 s, the full-stack "hang" is most likely **the same
+  reload, just long** (it scales with mod count and blocks the main thread), and
+  probably would have recovered with patience. ⇒ **Full-list hot-reload is a
+  multi-minute, UI-blanking operation — usable, but budget it like a load and do
+  NOT fire it under the owner mid-play.** Minimal-list hot-reload is the fast path
+  and the one the zero-restart cycle is built on.
 * `jawa/get_defs` is scalar-only for now — list/object fields come back as type
   names — until a deep-serialize upgrade to that tool lands.
 
