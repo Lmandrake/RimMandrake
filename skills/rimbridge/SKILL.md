@@ -50,7 +50,10 @@ CHECK and that everyone else must ask it in chat. That seat is gone. **FOUNDRY
 now owns bridge driving directly**, per its own role file: `rimflow bridge
 take` before driving, `rimflow bridge release` the instant you stop — no
 chat message, no asking, no waiting on another seat's grant. BENCH does not
-drive the bridge as a matter of routine.
+drive the bridge as a matter of routine — **except L3 Fable-evaluation
+sittings** (`infrastructure/VALIDATION_LADDER.md`, owner 2026-09-01): a Fable
+seat stages, screenshots and judges through the bridge itself, take/release as
+above.
 
 ```
 python3 src/RimMandrake/rimflow/cli.py bridge take
