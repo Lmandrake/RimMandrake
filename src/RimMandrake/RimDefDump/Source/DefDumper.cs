@@ -6,6 +6,7 @@ using System.IO;
 using System.Reflection;
 using System.Text;
 using RimWorld;
+using LudeonTK;
 using Verse;
 
 namespace RimMandrake.RimDefDump
@@ -37,6 +38,34 @@ namespace RimMandrake.RimDefDump
                 Log.Error("[RimMandrake.RimDefDump] dump failed (game unaffected): " + ex);
             }
         }
+    }
+
+    /// <summary>
+    /// The same dump, on demand, without a 23-minute load.
+    ///
+    /// 🔴 Why this exists (BENCH, 2026-09-02): `Run()` only ever fired from
+    /// [StaticConstructorOnStartup], so the ONLY way to get a def dump matching the
+    /// live mod set was to restart the game — and a dump that does not match is
+    /// refused by every consumer (`harvest_log.py` refuses outright; a stale one
+    /// "prints as BETTER-than-baseline, indistinguishable from a real pass"). A
+    /// session that notices the dump is stale therefore had no move at all.
+    /// It does now: this is bridge-reachable via
+    /// `rimworld/execute_debug_action` and needs no map, no reload, no marker file
+    /// (the marker gates the STARTUP path, whose whole point is costing a load
+    /// nothing; asking for it here IS the request).
+    ///
+    /// Defs are fully loaded and cross-resolved by the time any game state exists,
+    /// so the photograph is the same one the startup path takes.
+    /// </summary>
+    public static class RimDefDumpDebugActions
+    {
+        [DebugAction("RMDefDump", "Dump defs now (all)",
+            allowedGameStates = AllowedGameStates.Entry | AllowedGameStates.Playing)]
+        private static void DumpAll() { DefDumper.RunOnDemand("all"); }
+
+        [DebugAction("RMDefDump", "Dump defs now (animals)",
+            allowedGameStates = AllowedGameStates.Entry | AllowedGameStates.Playing)]
+        private static void DumpAnimals() { DefDumper.RunOnDemand("animals"); }
     }
 
     public static class DefDumper
@@ -123,6 +152,33 @@ namespace RimMandrake.RimDefDump
                 Log.Warning("[RimMandrake.RimDefDump] could not read marker, defaulting to 'animals': " + ex.Message);
             }
 
+            RunWithMode(mode);
+        }
+
+        /// <summary>
+        /// The on-demand entry, reached from the debug menu and therefore from the
+        /// bridge. No marker check: the marker exists so a STARTUP never costs a
+        /// load anything it was not asked for, and clicking this IS the asking.
+        /// Swallows everything for the same reason the bootstrap does — a research
+        /// tool must never be why a session ends.
+        /// </summary>
+        public static void RunOnDemand(string mode)
+        {
+            try
+            {
+                mode = string.IsNullOrEmpty(mode) ? "all" : mode.Trim().ToLowerInvariant();
+                Log.Message("[RimMandrake.RimDefDump] ON-DEMAND dump requested, mode=" + mode);
+                RunWithMode(mode);
+            }
+            catch (Exception ex)
+            {
+                Log.Error("[RimMandrake.RimDefDump] on-demand dump failed (game unaffected): " + ex);
+            }
+        }
+
+        private static void RunWithMode(string mode)
+        {
+            string root = Path.Combine(GenFilePaths.SaveDataFolderPath, FolderName);
             bool dumpAll = mode == "all";
 
             DateTime now = DateTime.UtcNow;

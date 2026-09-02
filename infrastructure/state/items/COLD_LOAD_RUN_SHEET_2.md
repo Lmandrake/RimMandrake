@@ -237,3 +237,36 @@ validated 267/267). At next load with the ideo in play: PASS = The Salvation
 loads with all 4 memes visible and the settled-too-long mechanic armed; WATCH =
 any meme-cap complaint or a silently dropped meme (fixed-ideo loads usually
 bypass editor caps — verify, don't assume).
+
+## 🔴 DEPLOY BATCH staged 2026-09-02 (BENCH) — four fixes written and COMPILED, none deployed
+
+A DLL cannot be written while the game runs, so all four are waiting on the
+shutdown window. Every one is `Build succeeded`; none is proven live.
+
+```
+python.exe src/RimMandrake/bridgetools/build.py --gm --apply
+python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod StructureInjections --apply
+python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod RimDefDump --apply
+```
+
+🔴 **`--gm` is not optional on the companion build.** Without it the plan drops
+~35 player-acting tools (`jawa/game_condition`, `jawa/lord_*`, `jawa/map_fire`,
+`jawa/explosion_at`, …) and the guard that names them is working, not broken.
+
+| what | file | prove it by |
+|---|---|---|
+| `jawa/inventory_transfer` on a MAP thing | `JawaBenchPawnKitTools.cs` | spawn a `MealSurvivalPack`, add it to a colonist, expect `movedCount: 1` (it returned 0 for every map thing, always) |
+| `jawa/spawn_pawn` no longer redresses world pawns | `JawaBenchTerrainTools.cs` | 200 spawns into an authored faction, expect `substitutedCount: 0` and no Colonists |
+| rimplace debug action places where you CLICK | `StructureInjectionsDebugActions.cs` | run a plan at (60,60), expect the build AT (60,60), not (160,160) |
+| **def dump on demand, no reload** | `RimDefDump/Source/DefDumper.cs` | `Actions\RMDefDump\Dump defs now (all)` via the bridge, then `harvest_log.py` stops refusing |
+
+⭐ **The RimDefDump one changes what a session can do at all.** `DefDumper.Run()`
+fired only from `[StaticConstructorOnStartup]`, so the only way to get a dump
+matching the live mod set was a ~23-minute restart — and `harvest_log.py`
+refuses a stale dump outright ("prints as BETTER-than-baseline, indistinguishable
+from a real pass"). Any session that noticed the dump was stale had no move.
+After this deploy it is one bridge call from any map or the main menu.
+
+⚠️ **Deploy before trusting an mtime.** Three repo DLLs are now NEWER than the
+game's copies, so "the repo file is newer, it must be deployed" reads exactly
+backwards until these run.
