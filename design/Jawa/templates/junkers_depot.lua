@@ -98,6 +98,36 @@ function build(ctx)
   if ctx:has_role("LIGHT") then ctx:place_role_fit("LIGHT", floorBay.x + 1, floorBay.z + 1, floorBay.w - 2, floorBay.h - 2) end
   note(string.format("depot floor: %d shelving unit(s) in a grid, one receiving desk by the loading door", shelves))
 
+  -- ---- roof support pillar --------------------------------------------
+  -- a floor bay this wide (>=18) puts its own centre more than 6 cells from
+  -- any wall - vanilla's own roof-support radius, and rimplace's lint
+  -- checks for exactly that (roof-unsupported). One WALL-role pillar near
+  -- the geometric centre closes the gap; search outward for the first free
+  -- cell so it never lands on top of a shelf the grid above already placed.
+  if ctx:has_role("WALL") then
+    local cx, cz = ix + math.floor(iw / 2), iz + math.floor(ih / 2)
+    local placed = false
+    for r = 0, 3 do
+      for dz = -r, r do
+        for dx = -r, r do
+          if math.abs(dx) + math.abs(dz) == r then
+            local xx, zz = cx + dx, cz + dz
+            if ctx:in_bounds(xx, zz) and not ctx:occupied(xx, zz) then
+              ctx:place_role("WALL", xx, zz)
+              placed = true
+              break
+            end
+          end
+        end
+        if placed then break end
+      end
+      if placed then break end
+    end
+    if not placed then
+      ctx:refuse("WALL", "no free cell near centre for a roof-support pillar")
+    end
+  end
+
   -- SKETCH ONLY: see the function comment above. p.security_props is never
   -- set by this pilot's CLI params, so this call is always a no-op here.
   maybe_place_security(ctx, p, ix, iz)

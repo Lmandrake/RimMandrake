@@ -39,15 +39,23 @@ namespace RimMandrake.Inhabited
         /// relative to this mod's own Templates/ folder. Compiled offline from
         /// the authored Lua source (design/Jawa/templates/junkers_*.lua) via
         /// `rimplace export &lt;template&gt; --out Templates/&lt;name&gt;.txt`
-        /// (src/RimMandrake/Utils/rimplace). Only "scrapyard" is wired in this
-        /// pass -- "dwelling cluster", "cantina block" and "depot" have
-        /// authored+lint-clean Lua templates but are not yet exported/mapped
-        /// here; adding them is copying this one dictionary entry plus an
-        /// export run, not new engine work.</summary>
+        /// (src/RimMandrake/Utils/rimplace). All four Junkers district labels
+        /// are wired: "dwelling cluster" (22x22), "cantina block" (16x16) and
+        /// "depot" (18x18) were exported and added here alongside the
+        /// already-live "scrapyard" (30x30) -- rect sizes match each slot's
+        /// own `approxSize` in SettlementManifestDefs_TheClaimJump.xml, faction
+        /// Jawa_Junkers, tech Neolithic (the depot floor is explicitly
+        /// unpowered per its own template comment). Composing all four in one
+        /// map generation (multi-district spatial layout, not just resolving
+        /// districts[0]) remains DISTRICT_TEMPLATE_LIBRARY_1's stated stretch
+        /// goal, not done here.</summary>
         private static readonly Dictionary<string, string> TemplateFiles =
             new Dictionary<string, string>
             {
                 { "scrapyard", "junkers_scrapyard.txt" },
+                { "dwelling cluster", "junkers_dwelling_cluster.txt" },
+                { "cantina block", "junkers_cantina_block.txt" },
+                { "depot", "junkers_depot.txt" },
             };
 
         public override void Generate(Map map, GenStepParams parms)

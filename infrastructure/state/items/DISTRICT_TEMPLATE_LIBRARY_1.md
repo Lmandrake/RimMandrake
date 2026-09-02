@@ -80,3 +80,56 @@ at least one is wired into real map composition for The Claim Jump, replacing
 the placeholder stub for that slot. Full four-district composition in one
 map is a stretch goal, not a requirement — an honest partial (one real
 district, three still stubbed) is an acceptable, clearly-labeled v1.
+
+## 2026-09-02 (FOUNDRY) — found already mostly built; finished wiring the resolver
+
+**Stale-item trap avoided**: this file read as if nothing existed yet. It
+didn't — `git log` showed `e0671e1e` ("DISTRICT_TEMPLATE_LIBRARY_1: four
+Junkers district templates, wire scrapyard live") had already authored all
+four `.lua` templates (`junkers_scrapyard/_dwelling_cluster/_cantina_block/
+_depot.lua`, all in `design/Jawa/templates/`) AND already built the security
+props vocabulary (a `maybe_place_security()` sketch in `junkers_depot.lua`,
+gated on a param the Junkers pilot never sets — proven inert by construction,
+not omission) AND already wired `GenStep_ComposeSettlementDistrict.cs`'s
+`TemplateFiles` resolver with `scrapyard` live. Checked `git status` first —
+nothing mid-edit on these paths, this was a genuinely completed prior pass
+the item file just never recorded.
+
+**What this pass actually did:**
+- Re-verified all four templates at their manifest `approxSize`s (scrapyard
+  30x30, dwelling cluster 22x22, cantina block 16x16, depot 18x18, faction
+  `Jawa_Junkers`, tech `Neolithic`): `lint` 0 findings on three; **caught and
+  fixed a real bug** in `junkers_depot.lua` — an 18-wide floor bay put its own
+  centre >6 cells from any wall (vanilla's roof-support radius), which
+  `lint`'s `roof-unsupported` check correctly flagged. Fixed by placing one
+  `WALL`-role support pillar near the geometric centre, searching outward
+  cell-by-cell for the first unoccupied spot so it never lands on a shelf the
+  grid loop already placed. Re-lint: 0 findings.
+- `rimplace verify`: still UNMEASURED (def dump unreadable at
+  `DefDump/defs.sqlite` this session) — not a pass, correctly reported as such,
+  same as every other rimplace pass tonight.
+- Exported the three unwired templates to the runtime flat-plan format
+  (`rimplace export ... --out src/RimMandrake/Inhabited/Templates/*.txt`) and
+  added all three to `TemplateFiles`, so the resolver now covers all four
+  Junkers district labels, not just `scrapyard`. **Composing more than
+  `districts[0]` per visit is still not built** (no spatial multi-district
+  layout exists in `GenStep_ComposeSettlementDistrict.Generate` — genuinely
+  out of scope for this pass, a real engineering project of its own, left as
+  the stated stretch goal) — but the resolver itself is now complete, ready
+  for whichever future pass builds multi-district composition or a settlement
+  whose manifest orders its districts differently.
+- `dotnet build Inhabited.csproj -c Release`: 0 warnings, 0 errors.
+- Deployed: the three new `Templates/*.txt` files landed clean
+  (`deploy_custom_mods.py --mod Inhabited --apply`, confirmed via a second
+  plan-only run showing them no longer as drift). `Assemblies/Inhabited.dll`
+  hit the expected Windows file-lock (`OSError: [Errno 22]`) — the game is up
+  and mid-restart elsewhere this session; the compiled DLL is ready and will
+  deploy clean on the next shutdown window.
+- No new XML/defs added this pass, so `validate_patch.py` is N/A per the
+  item's own verify wording.
+
+**Still open, honestly**: live-quicktest-observed placement (any of the four
+districts actually generating real geometry on a map) is still owed to a
+future restart+bridge session — not attempted this pass, no bridge held.
+Full four-district spatial composition remains the stretch goal, unbuilt.
+Not closing.
