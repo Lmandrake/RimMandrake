@@ -169,7 +169,13 @@ def _emit(ev, world=None, quiet=False):
                 "\u2705 Acting as OWNER on his instruction, recorded on the event:\n"
                 "     \u201c%s\u201d\n" % said)
         if model.OVERRIDE_NOTICES:
-            ev["override"] = model.OVERRIDE_NOTICES[0]
+            # ⚠️ NEVER CLOBBER an override the caller already stamped. `cmd_bridge`
+            # sets one for an owner handover or a forced take; a permission bypass
+            # found here is a SECOND fact about the same event, and dropping either
+            # is exactly the silent-loss this field exists to prevent.
+            prior = ev.get("override")
+            ev["override"] = ("%s; %s" % (prior, model.OVERRIDE_NOTICES[0])
+                              if prior else model.OVERRIDE_NOTICES[0])
             sys.stderr.write(
                 "⚠️  OWNER OVERRIDE — the rule bypassed was: %s\n"
                 "    Allowed because you are the OWNER, and recorded on the event as "
@@ -1171,19 +1177,38 @@ def cmd_seat(args, seat):
 
 
 def _idle_seconds(ts):
-    """Seconds since an ISO ledger timestamp, or None if it cannot be read."""
+    """Seconds since an ISO ledger timestamp, or None if there is no readable one.
+
+    ⚠️ Parses through `_epoch` — ONE parser for one timestamp format. This used to
+    carry its own `strptime` with a stricter pattern (a trailing `Z` required) and a
+    different failure value, so a change to the ledger's stamp format could silently
+    move staleness behaviour with nothing to see near the edit. `_epoch` answers 0.0
+    for an unreadable stamp, which is 1970 rather than an idle time; that becomes
+    None here, which is what every caller already reads as "no evidence the holder
+    is alive" — so the failure semantics are unchanged, only the parser is shared.
+    """
     if not ts:
         return None
-    try:
-        return max(0, int(time.time() - calendar.timegm(
-            time.strptime(ts, "%Y-%m-%dT%H:%M:%SZ"))))
-    except (ValueError, TypeError):
+    e = _epoch(ts)
+    if not e:
         return None
+    return max(0, int(time.time() - e))
 
 
 def cmd_bridge(args, seat):
     _, w = load()
     holder, since, purpose = w.bridge_holder, w.bridge_since, w.bridge_purpose
+
+    # ⛔ `to` is a `give`-only positional that argparse accepts for every action.
+    # `rimflow bridge take BOGUS --for x` used to exit 0 and print success with the
+    # word silently discarded. A target nobody reads is a typo that looks like it
+    # worked, so refuse it here — argparse cannot make one positional conditional on
+    # another without a subparser per action.
+    if args.to and args.action != "give":
+        die("`bridge %s` takes no target, and %r was about to be ignored.\n"
+            "  a target is for `bridge give`:  rimflow bridge give BENCH|FOUNDRY|free\n"
+            "  what you probably meant:        rimflow bridge %s --for \"<what for>\""
+            % (args.action, args.to, args.action))
 
     if args.action == "who":
         # Re-derived from the ledger, so this answer is true even when the mirror is not.
@@ -1202,16 +1227,30 @@ def cmd_bridge(args, seat):
         # 🔴 THE OWNER'S OWN SWITCH. He is not a seat and does not queue behind one:
         # `bridge give FOUNDRY` moves it, `bridge give free` clears it, and both
         # windows see the answer in the same file they already read.
+        #
+        # 🔑 THE EVENT CARRIES WHO DID IT, not just the mirror. A `give` is emitted
+        # under the TARGET window's seat, because `_apply` reads `seat` as the new
+        # holder and the owner is not a window — which made an owner handover
+        # byte-identical to that window taking the bridge itself, with the real story
+        # only in `write_bridge_file(note=)`, a file the next bridge call overwrites.
+        # `override` is the field this system already uses for "a rule was crossed on
+        # purpose, and here is which one" (see `_emit` and `model._may`), so it is the
+        # field used here too rather than a third shape. `--owner-said` still stamps
+        # `ownerSaid` alongside it, from `_emit`, unchanged.
         to = (args.to or "").upper()
         if to in ("FREE", "NOBODY", "NONE"):
-            _emit({"seat": holder or seat, "event": "bridge", "state": "released"}, w, quiet=True)
+            _emit({"seat": holder or seat, "event": "bridge", "state": "released",
+                   "override": "the OWNER cleared the bridge%s"
+                               % (" off %s" % holder if holder else "")}, w, quiet=True)
             model.write_bridge_file(None, "OWNER", None, None,
                                     note="cleared by the owner")
             print("bridge FREE — the owner cleared it")
             return 0
         if to not in ("BENCH", "FOUNDRY"):
             die("give it to BENCH, FOUNDRY, or `free`. Got %r." % args.to)
-        ev = {"seat": to, "event": "bridge", "state": "taken"}
+        ev = {"seat": to, "event": "bridge", "state": "taken",
+              "override": "the OWNER handed the bridge to %s%s"
+                          % (to, " from %s" % holder if holder and holder != to else "")}
         if args.purpose:
             ev["purpose"] = args.purpose
         _emit(ev, w, quiet=True)
@@ -1254,6 +1293,15 @@ def cmd_bridge(args, seat):
     ev = {"seat": seat, "event": "bridge", "state": "taken"}
     if args.purpose:
         ev["purpose"] = args.purpose
+    # 🔑 A take that CROSSED SOMEONE goes on the event, not only into the mirror.
+    # Without this, `--force` while the holder was still working produced a ledger
+    # line indistinguishable from an ordinary uncontested take, and `events.jsonl` —
+    # this module's sole source of truth — could never answer "did that take cut
+    # across a live window". Same field as the owner override above, deliberately.
+    if why:
+        ev["override"] = (
+            "took the bridge with --force while %s still held it" % holder
+            if args.force else "took the bridge: %s" % why)
     _emit(ev, w, quiet=True)
     model.write_bridge_file(seat, seat, args.purpose, None,
                             note=("taken from %s: %s" % (holder, why)) if why else None)

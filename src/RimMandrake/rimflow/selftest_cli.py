@@ -294,6 +294,50 @@ def t_bridge_is_refused_for_a_non_window_seat():
     assert "bridge taken by CHECK" in ok("bridge", "take", seat="CHECK")
 
 
+def _bridge_events():
+    """Every bridge event in the throwaway ledger, oldest first."""
+    import json
+    with open(os.path.join(TMP, "events.jsonl"), encoding="utf-8") as fh:
+        return [e for e in (json.loads(l) for l in fh if l.strip())
+                if e.get("event") == "bridge"]
+
+
+def t_a_stray_target_on_bridge_take_is_an_error_not_a_no_op():
+    """⭐ `bridge take BOGUS` used to exit 0 and discard the word (argparse accepts the
+    `give`-only positional for every action). A typo that prints success is worse than
+    one that fails."""
+    fresh()
+    refused(("bridge", "take", "BOGUS", "--for", "x"), "takes no target",
+            "a stray target was silently swallowed by `bridge take`", seat="BENCH")
+    refused(("bridge", "release", "BENCH"), "takes no target",
+            "a stray target was silently swallowed by `bridge release`", seat="BENCH")
+
+
+def t_an_owner_give_and_a_forced_take_are_attributable_from_the_ledger_alone():
+    """🔴 BRIDGE_OVERRIDE_ATTRIBUTION_GAP_1. `events.jsonl` is this system's sole source
+    of truth, and both of these used to produce a line byte-identical to an ordinary
+    uncontested take — the real story lived only in the BRIDGE mirror, which the very
+    next bridge call overwrites. The question that must be answerable a year later is
+    'was this normal, or did someone cross a live holder, and who'."""
+    fresh()
+    ok("bridge", "take", "--for", "foundry work", seat="FOUNDRY")
+    ok("bridge", "take", "--force", "--for", "bench work", seat="BENCH")
+    ok("bridge", "give", "FOUNDRY", "--seat", "OWNER", "--for", "handover", seat=None)
+    ok("bridge", "give", "free", "--seat", "OWNER", seat=None)
+    evs = _bridge_events()
+    assert len(evs) == 4, evs
+    assert evs[0].get("override") is None, (
+        "an uncontested take must stay unmarked, or the marking means nothing: %s" % evs[0])
+    assert "--force" in (evs[1].get("override") or "") and "FOUNDRY" in evs[1]["override"], (
+        "a forced take across a live holder is invisible in the ledger: %s" % evs[1])
+    assert "OWNER" in (evs[2].get("override") or ""), (
+        "an owner handover reads as the target window taking it itself: %s" % evs[2])
+    assert evs[2]["seat"] == "FOUNDRY", (
+        "the holder must still be the target window — `_apply` reads `seat`: %s" % evs[2])
+    assert "OWNER" in (evs[3].get("override") or ""), (
+        "an owner clear reads as the holder releasing it itself: %s" % evs[3])
+
+
 def t_game_state_is_owner_only():
     fresh()
     refused(("game", "UP"), "only the OWNER announces game state",

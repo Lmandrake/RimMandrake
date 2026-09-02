@@ -323,8 +323,11 @@ def validate(ev):
                    verb,
                    " ".join("--%s <%s>" % (x.replace("_", "-"), x) for x in spec["req"])))
     # ⚠️ `override` is legal on EVERY verb because the OWNER may override every verb.
-    # It holds the rule he overrode, so the bypass is in the record rather than being
-    # invisible — see `_may`. No seat may set it; `_emit` stamps it.
+    # It holds the rule that was crossed, so the bypass is in the record rather than
+    # being invisible — see `_may`. No seat passes it on a command line: `_emit`
+    # stamps it from `OVERRIDE_NOTICES`, and `cmd_bridge` stamps it for the two
+    # bridge crossings `_may` cannot see (an OWNER `give`, which is emitted under the
+    # target window's seat, and a `--force`/stale take across a live holder).
     known = set(spec["req"]) | set(spec["opt"]) | {
         "ts", "seat", "event", "id", "caused_by", "override", "ownerSaid"}
     for f in ev:
