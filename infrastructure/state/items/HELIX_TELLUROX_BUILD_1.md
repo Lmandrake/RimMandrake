@@ -129,3 +129,36 @@ errors, all texPath-only (see above) — otherwise clean (0 structural
 errors). Deployed file-copy only (`deploy_custom_mods.py --mod
 HelixTellurox --apply`), not enabled in `ModsConfig.xml`, no restart
 triggered.
+
+## 2026-09-02 — sprite retry, 5 attempts, all failed: genuinely blocked, not skipped
+
+Ran the full retry budget (`skills/generating-images/scripts/codex_image.py
+generate`, `#00ff00` chroma-key, 120s cap per the `generating-rimworld-sprites`
+skill's own guidance): attempt 1 timed out (`codex exec exceeded 120s`),
+attempt 2 failed fast with `ERROR: Selected model is at capacity. Please try a
+different model.` (plus a `windows sandbox: helper_unknown_error` on the same
+run), attempts 3-5 all timed out identically. No image was ever produced —
+`ls` on the output directory after all 5 attempts is empty. This matches the
+prior pass's finding exactly; the blocker is real, reproducible, and not a
+one-off. `codex_image.py` has no `--model` override to route around a
+capacity-limited model. **Not retrying further this pass** — the skill's own
+guidance is spaced retries, not an unbounded loop, and 5 is past that budget.
+
+Applied one real, independently-useful fix while investigating: none of the
+three `lifeStages/li/bodyGraphicData` blocks declared
+`<graphicClass>Graphic_Single</graphicClass>` (the pattern the sibling
+Cindermare/Skarnix build uses for the same single-facing-art scope) — without
+it, RimWorld defaults an animal's body graphic to `Graphic_Multi`, which
+expects `_north`/`_south`/_east`/`_west` files and would silently fall back to
+drawing an unsuffixed base-path file for every direction if one ever landed
+without the four variants (the `generating-rimworld-sprites` skill's own
+documented "bare-path fallback" trap). Added `Graphic_Single` to all three
+life-stage entries now, before art exists, so the eventual single sprite
+actually renders correctly the first time rather than needing a second pass.
+`validate_patch.py` re-run after the fix: same 7 texPath-only errors as
+before (no new/different errors — the graphicClass edit is structurally
+inert until a texture exists), confirming the fix didn't regress anything.
+
+Biome-cast CSV still untouched, correctly — no art to reference. This item's
+art blocker is now the single remaining offline-addressable gap; everything
+else offline (defs, mechanism, validation) is done and correct.

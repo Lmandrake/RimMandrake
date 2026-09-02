@@ -162,6 +162,7 @@
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/Tellurox/Tellurox</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
           <drawSize>1.3</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
@@ -172,6 +173,7 @@
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/Tellurox/Tellurox</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
           <drawSize>2.0</drawSize>
         </bodyGraphicData>
         <dessicatedBodyGraphicData>
@@ -182,6 +184,7 @@
       <li>
         <bodyGraphicData>
           <texPath>Things/Pawn/Animal/Tellurox/Tellurox</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
           <drawSize>2.6</drawSize>
           <shadowData>
             <volume>(0.45, 0.3, 0.4)</volume>
