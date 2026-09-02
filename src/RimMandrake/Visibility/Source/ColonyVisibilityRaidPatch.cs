@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using HarmonyLib;
 using RimWorld;
 using RimWorld.Planet;
@@ -96,6 +98,141 @@ namespace RimMandrake.Visibility
                 harmony.Patch(launchTarget,
                     postfix: new HarmonyMethod(typeof(ColonyVisibilityRaidPatch), nameof(Postfix_ResetVisibilityOnLaunch)));
             }
+
+            // Tile-memory decay (owner card, "the desert remembers"): record
+            // the dial at the departure tile, restore a decayed fraction on
+            // arrival. Same launch choke point for departure; both arrival
+            // methods for the two ways a gravship trip ends (landing on an
+            // already-generated map vs. generating a brand new one).
+            var arriveExistingTarget = AccessTools.Method(typeof(GravshipUtility), nameof(GravshipUtility.ArriveExistingMap));
+            if (arriveExistingTarget == null)
+            {
+                Log.Error("[RimMandrake.Visibility] GravshipUtility.ArriveExistingMap not found by reflection - "
+                    + "vanilla API has moved. Tile-memory restore (existing map) NOT applied.");
+            }
+            else
+            {
+                harmony.Patch(arriveExistingTarget,
+                    postfix: new HarmonyMethod(typeof(ColonyVisibilityRaidPatch), nameof(Postfix_ApplyTileMemoryOnArrival)));
+            }
+
+            var arriveNewTarget = AccessTools.Method(typeof(GravshipUtility), nameof(GravshipUtility.ArriveNewMap));
+            if (arriveNewTarget == null)
+            {
+                Log.Error("[RimMandrake.Visibility] GravshipUtility.ArriveNewMap not found by reflection - "
+                    + "vanilla API has moved. Tile-memory restore (new map) NOT applied.");
+            }
+            else
+            {
+                harmony.Patch(arriveNewTarget,
+                    postfix: new HarmonyMethod(typeof(ColonyVisibilityRaidPatch), nameof(Postfix_ApplyTileMemoryOnArrival)));
+            }
+
+            // F17 interface layer, inspect-tag piece only (design doc §3.3):
+            // an extra gizmo on the grav engine showing the current band.
+            // The reign-calendar clause and band-crossing letters (§3.1/3.2)
+            // are NOT built here - both depend on Ninefold's own
+            // signed-letter/calendar infrastructure
+            // (NINEFOLD_ENGINE_M0_1: event hooks/corpus letters not built,
+            // reserved for the owner's voice redline), which doesn't exist
+            // in code yet. Firing an unsigned letter here would violate F9's
+            // "no unsigned crossings" rule the design doc itself cites -
+            // Notify_BandCrossed below is the wired trigger point for
+            // whoever builds that layer, deliberately inert until then.
+            var gizmoTarget = AccessTools.Method(typeof(Building_GravEngine), nameof(Building_GravEngine.GetGizmos));
+            if (gizmoTarget == null)
+            {
+                Log.Error("[RimMandrake.Visibility] Building_GravEngine.GetGizmos not found by reflection - "
+                    + "vanilla API has moved. Visibility inspect-tag gizmo NOT applied.");
+            }
+            else
+            {
+                harmony.Patch(gizmoTarget,
+                    postfix: new HarmonyMethod(typeof(ColonyVisibilityRaidPatch), nameof(Postfix_AddInspectGizmo)));
+            }
+        }
+
+        /// <summary>
+        /// Departure half of tile-memory decay - fires at the same launch
+        /// choke point as Postfix_ResetVisibilityOnLaunch, recording the
+        /// PRE-reset dial (order matters: this must read shipVisibility
+        /// before ResetOnLaunch clamps it to the 5-15 floor, so the memory
+        /// reflects what the tile actually looked like while occupied, not
+        /// the post-launch reset value).
+        /// </summary>
+        public static void Postfix_RecordTileMemoryOnLaunch(Building_GravEngine engine)
+        {
+            GameComponent_ColonyVisibility component = Current.Game?.GetComponent<GameComponent_ColonyVisibility>();
+            if (component == null || engine?.Map == null)
+            {
+                return;
+            }
+            component.RecordTileDeparture(engine.Map.Tile.tileId);
+        }
+
+        /// <summary>Arrival half of tile-memory decay - both ArriveExistingMap and ArriveNewMap resolve the
+        /// destination via gravship.destinationTile, set before either runs (GravshipUtility.TravelTo).</summary>
+        public static void Postfix_ApplyTileMemoryOnArrival(Gravship gravship)
+        {
+            GameComponent_ColonyVisibility component = Current.Game?.GetComponent<GameComponent_ColonyVisibility>();
+            if (component == null || gravship == null)
+            {
+                return;
+            }
+            component.ApplyTileMemoryOnArrival(gravship.destinationTile.tileId);
+        }
+
+        /// <summary>
+        /// F17 §3.3's inspect tag: "Clicking the colony's home structure...
+        /// shows the current band name plus, once unlocked, whichever god's
+        /// hand is heaviest" - the god-attribution half needs Ninefold's
+        /// godStates ledger (not built), so this ships band-name-only, with
+        /// the extension point named in the disabled reason rather than
+        /// silently doing nothing.
+        /// </summary>
+        public static void Postfix_AddInspectGizmo(ref IEnumerable<Gizmo> __result, Building_GravEngine __instance)
+        {
+            GameComponent_ColonyVisibility component = Current.Game?.GetComponent<GameComponent_ColonyVisibility>();
+            if (component == null)
+            {
+                return;
+            }
+
+            // Plain strings, not keyed .Translate() calls: no Languages/
+            // English XML exists for this mod yet, and a missing-key
+            // fallback would just print the raw key - authoring real
+            // localization is out of scope for this pass.
+            string desc = $"Colony Visibility: {component.shipVisibility:F0}/100 ({component.Band})\n\n"
+                + "How exposed this ship's presence is to the wider desert. Crosses bands at "
+                + "20/40/60/80. God-attribution (whose hand is heaviest right now) is not shown yet - "
+                + "reserved for Ninefold's godStates ledger.";
+            Command_Action gizmo = new Command_Action
+            {
+                defaultLabel = $"Visibility: {component.Band}",
+                defaultDesc = desc,
+                icon = TexCommand.Attack, // reused vanilla icon, no new art authored this pass
+                action = delegate
+                {
+                    Find.WindowStack.Add(new Dialog_MessageBox(desc));
+                },
+            };
+            __result = __result.Concat(new Gizmo[] { gizmo });
+        }
+
+        /// <summary>
+        /// F17 §3.2's band-crossing letter TRIGGER POINT - deliberately not
+        /// wired to Adjust() yet. Firing a real letter here needs F9's
+        /// signing/attribution (which god, per the divine_satiation_engine
+        /// ledger) and that ledger is Ninefold's own unbuilt TODO
+        /// (NINEFOLD_ENGINE_M0_1). An unsigned letter would violate F9's own
+        /// rule the design doc cites ("No unsigned crossings"), so this stays
+        /// a named, callable stub rather than fabricated flavor text.
+        /// Call from Adjust() (pass before/after Band) once a real signer
+        /// exists.
+        /// </summary>
+        public static void Notify_BandCrossed_NotYetWired(VisibilityBand before, VisibilityBand after)
+        {
+            // Intentionally inert. See doc comment.
         }
 
         /// <summary>
@@ -139,6 +276,13 @@ namespace RimMandrake.Visibility
         /// COLONY_VISIBILITY_STAT_1's build).</summary>
         public static void Postfix_ResetVisibilityOnLaunch(Building_GravEngine engine)
         {
+            // Tile-memory departure record happens FIRST, in the same
+            // postfix - it must read shipVisibility before ResetOnLaunch
+            // clamps it, and combining them into one method avoids relying
+            // on Harmony's cross-registration postfix ordering (unspecified
+            // when two separate harmony.Patch calls target the same
+            // method).
+            Postfix_RecordTileMemoryOnLaunch(engine);
             Current.Game?.GetComponent<GameComponent_ColonyVisibility>()?.ResetOnLaunch();
         }
     }

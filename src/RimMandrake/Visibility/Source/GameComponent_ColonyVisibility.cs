@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using RimWorld;
 using UnityEngine;
 using Verse;
 
@@ -31,6 +33,17 @@ namespace RimMandrake.Visibility
         /// </summary>
         public float ShkaarEscalationMultiplier = 1f;
 
+        /// <summary>
+        /// Tile-memory decay (owner card, 2026-08-31, verbatim: "the desert
+        /// remembers, decaying - a returned-to tile restores a decayed
+        /// fraction of its old Visibility, halved per season away, TUNE").
+        /// Keyed by PlanetTile.tileId. Written on gravship launch (the
+        /// departure point - see ColonyVisibilityRaidPatch's postfix on
+        /// GravshipUtility.GenerateGravship), read on arrival (postfixes on
+        /// GravshipUtility.ArriveNewMap/ArriveExistingMap).
+        /// </summary>
+        public Dictionary<int, TileVisibilityMemory> tileMemory = new Dictionary<int, TileVisibilityMemory>();
+
         public GameComponent_ColonyVisibility(Game game)
         {
         }
@@ -40,6 +53,11 @@ namespace RimMandrake.Visibility
             base.ExposeData();
             Scribe_Values.Look(ref shipVisibility, "shipVisibility", 10f);
             Scribe_Values.Look(ref ShkaarEscalationMultiplier, "shkaarEscalationMultiplier", 1f);
+            Scribe_Collections.Look(ref tileMemory, "tileMemory", LookMode.Value, LookMode.Deep);
+            if (Scribe.mode == LoadSaveMode.PostLoadInit && tileMemory == null)
+            {
+                tileMemory = new Dictionary<int, TileVisibilityMemory>();
+            }
         }
 
         public VisibilityBand Band => BandFor(shipVisibility);
@@ -96,6 +114,74 @@ namespace RimMandrake.Visibility
         public const float DeltaSmall = 3f;
         public const float DeltaMedium = 8f;
         public const float DeltaLarge = 20f;
+
+        /// <summary>
+        /// Records the current dial value against a tile at the moment the
+        /// ship LEAVES it (owner card: "the desert remembers"). Overwrites
+        /// any prior memory of the same tile - only the most recent visit's
+        /// value decays forward, not a running history.
+        /// </summary>
+        public void RecordTileDeparture(int tileId)
+        {
+            tileMemory[tileId] = new TileVisibilityMemory
+            {
+                visibilityAtDeparture = shipVisibility,
+                departedTick = Find.TickManager.TicksGame,
+            };
+            if (Prefs.DevMode)
+            {
+                Log.Message($"[ColonyVisibility] tile {tileId} memory recorded at {shipVisibility:F1}");
+            }
+        }
+
+        /// <summary>
+        /// Called on arrival at a tile. If the tile has a memory, decays it
+        /// by half per elapsed season (GenDate.TicksPerSeason - the owner's
+        /// stated curve, not a guessed constant) and, if the decayed value
+        /// exceeds the CURRENT dial, restores the difference via Adjust() -
+        /// "restores a decayed fraction of its old Visibility". A tile that
+        /// decayed below the current value changes nothing (the desert
+        /// remembers you less than it remembers wherever you've been since).
+        /// Does not consume the memory - a repeat visit re-decays from the
+        /// same recorded departure each time until the ship departs again
+        /// and overwrites it.
+        /// </summary>
+        public void ApplyTileMemoryOnArrival(int tileId)
+        {
+            if (!tileMemory.TryGetValue(tileId, out TileVisibilityMemory memory))
+            {
+                return;
+            }
+
+            int ticksAway = Find.TickManager.TicksGame - memory.departedTick;
+            float seasonsAway = Mathf.Max(0f, ticksAway) / (float)GenDate.TicksPerSeason;
+            float decayed = memory.visibilityAtDeparture * Mathf.Pow(0.5f, seasonsAway);
+
+            if (decayed > shipVisibility)
+            {
+                float delta = decayed - shipVisibility;
+                Adjust(delta, $"tile-memory restore at tile {tileId}: {memory.visibilityAtDeparture:F1} decayed "
+                    + $"{seasonsAway:F2} seasons -> {decayed:F1}");
+            }
+            else if (Prefs.DevMode)
+            {
+                Log.Message($"[ColonyVisibility] tile {tileId} memory ({decayed:F1} after {seasonsAway:F2} "
+                    + $"seasons) does not exceed current dial ({shipVisibility:F1}) - no restore");
+            }
+        }
+    }
+
+    /// <summary>Per-tile memory entry for GameComponent_ColonyVisibility.tileMemory.</summary>
+    public class TileVisibilityMemory : IExposable
+    {
+        public float visibilityAtDeparture;
+        public int departedTick;
+
+        public void ExposeData()
+        {
+            Scribe_Values.Look(ref visibilityAtDeparture, "visibilityAtDeparture");
+            Scribe_Values.Look(ref departedTick, "departedTick");
+        }
     }
 
     public enum VisibilityBand

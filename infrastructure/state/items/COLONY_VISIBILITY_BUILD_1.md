@@ -85,14 +85,61 @@ JawaDoctrineCore.dll`) that nothing else needs touching.
   `Adjust()` is ready, nothing calls it yet.
 - Sh'kaar's escalation multiplier seam exists (`ShkaarEscalationMultiplier`,
   default 1f) but nothing sets it.
-- F17's interface layer (reign-calendar clause, band-crossing letters,
-  inspect tag) is not built.
-- Tile-memory decay (owner card, 2026-08-31: "the desert remembers,
-  decaying — a returned-to tile restores a decayed fraction of its old
-  Visibility, halved per season away, TUNE") is not modeled — the
-  GameComponent tracks one ship-wide value with no per-tile memory yet.
 - No live proof this Prefix actually fires and multiplies correctly —
   needs a quicktest with a spawned hostile incident, owed to the next
   restart.
+
+## 2026-09-02 (FOUNDRY) — tile-memory decay built; F17 interface layer partial
+
+**Tile-memory decay, built for real** (`GameComponent_ColonyVisibility.cs`):
+`Dictionary<int, TileVisibilityMemory>` keyed by `PlanetTile.tileId`, Scribe'd
+(`LookMode.Value, LookMode.Deep`). `RecordTileDeparture(tileId)` snapshots the
+dial + `Find.TickManager.TicksGame` at the moment the ship leaves — wired into
+`Postfix_ResetVisibilityOnLaunch` (reads `shipVisibility` BEFORE
+`ResetOnLaunch()` clamps it; combined into one postfix method rather than a
+second Harmony registration on the same target, since cross-registration
+postfix ordering on one method isn't guaranteed). `ApplyTileMemoryOnArrival(tileId)`
+decays by `Mathf.Pow(0.5f, seasonsAway)` where `seasonsAway = ticksAway /
+GenDate.TicksPerSeason` (900,000, the real vanilla constant, not guessed) —
+matches the owner's own "halved per season" wording exactly. If the decayed
+value exceeds the CURRENT dial, restores the difference via `Adjust()`; if not,
+does nothing (a tile the desert remembers less than your current notoriety
+shouldn't drag it down). Wired to both gravship-landing choke points
+(`ArriveExistingMap`/`ArriveNewMap` — a trip can end either way), reading the
+destination tile off `Gravship.destinationTile.tileId` (set by
+`GravshipUtility.TravelTo` before either runs). Overwrites rather than
+accumulates history — only the most recent departure from a tile decays
+forward.
+
+**F17's interface layer, inspect-tag piece only** — a `Command_Action` gizmo
+postfixed onto `Building_GravEngine.GetGizmos()` showing the current band name
+and numeric dial (plain strings, not `.Translate()` keys — no Languages/
+English XML exists for this mod, out of scope this pass). Reused vanilla
+`TexCommand.Attack` icon rather than authoring new art.
+
+**F17's other two pieces — deliberately NOT built, not silently skipped**: the
+reign-calendar date-line clause and band-crossing letters (design doc §3.1/
+§3.2) both depend on Ninefold's own signed-letter/god-attribution
+infrastructure, which `NINEFOLD_ENGINE_M0_1` itself records as unbuilt
+("event hooks... corpus letters... NOT built... reserved for the owner's
+voice redline pass" — confirmed absent from the codebase this pass, no
+`reign`/`ReignCalendar` hits anywhere in `src/`). Firing an unsigned letter
+here would violate F9's own "no unsigned crossings" rule that the design doc
+itself cites. Left a named, documented, currently-inert trigger point
+(`Notify_BandCrossed_NotYetWired`, `ColonyVisibilityRaidPatch.cs`) for
+whoever builds that layer to call from `Adjust()`, rather than fabricating
+placeholder flavor text against established doctrine.
+
+`dotnet build`: 0 warnings/0 errors. No XML changed (pure C#), so
+`validate_patch.py` isn't the relevant check here. **Deploy attempted,
+correctly refused**: the game is up this session (mod already active,
+`mandrake.rm.visibility` in `ModsConfig.xml`) — `deploy_custom_mods.py --mod
+Visibility --apply` hit the same Windows file-lock this item's own history
+already documents for the Doctrine mod (`OSError: [Errno 22] Invalid
+argument`, DLL memory-mapped by the running game, not corruption). Compiled,
+not deployed — redeploy once the game is down, then this item still needs a
+live quicktest for the ORIGINAL Prefix (threat-point multiplier, never
+live-proven) AND the new tile-memory round trip (launch from a tile, let a
+season+ pass, return, confirm the dial bumps per the decay curve above).
 
 Left `doing`.
