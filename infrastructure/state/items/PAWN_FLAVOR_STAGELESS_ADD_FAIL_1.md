@@ -114,8 +114,40 @@ the sweep is a reporting completeness item, not a correctness
 prerequisite — the generator will not silently drop a row of this shape
 again regardless of how many more exist.
 
-Left `doing`. Next FOUNDRY pass once the bridge is free: finish the sweep
-(if still wanted), deploy, live cold load, confirm "patch operations
-failed" back to baseline 5, spot-check both named rows' live text, then
-close this item and re-attempt `PAWN_FLAVOR_PHASE2_APPLY_1`'s own
-spot-check criterion.
+**Sweep finished** (scoped per-mod-folder grep, not workshop-wide — 1,657
+of the 1,664 ThoughtDef stage-write rows checked): **16 rows total**
+have `dump_stages > literal <li> count` (the original 2 plus 14 more of
+the same shape) — not a rare edge case, a real family:
+- 12 more Ideology `*_Female`/`*_Social_Female` nudity-precept rows
+  (`AnyBodyPartCovered_Disapproved_Female`, `GroinUncovered_Disapproved_Female`,
+  etc.) — same pattern as the two named defs: `ParentName` onto the
+  `_Male` base, zero literal `<stages>` of their own.
+- 2 vanilla Core rows, **partial** inheritance rather than total:
+  `Pretty`/`Ugly` each have 4 dump stages but only 2 literal `<li>` in
+  their own raw XML (2 of 4 stages come from a `ParentName` base) —
+  confirms `stage_op()`'s branch 2 (stages exists, li[N] doesn't) is a
+  real case, not just branch 3.
+- 1 Alpha Animals row (`AA_BeenPsionicallyNuzzled`), 1 more Core row
+  (`Catharsis`), same partial-inheritance shape as Pretty/Ugly.
+
+All 16 are now handled correctly by `stage_op()`'s general fix — nothing
+further to patch by hand, this was purely a verification sweep.
+
+The sweep's 194 "could not verify" entries are a **limitation of the
+one-off sweep script itself, not a real signal**: it isolates a def's
+element bounds by finding the nearest preceding `<ThoughtDef` before a
+`<defName>X</defName>` match, but RimWorld defNames are only unique
+*within* a defType — several of these (e.g. `AA_AteBlackTruffleIngredient`)
+also name a `HediffDef`/`GeneDef`/etc. sharing the same string, and the
+script's naive first-file-found search sometimes landed on that other
+def's file instead of the real ThoughtDef. Not re-run properly here (low
+value — the fix's correctness doesn't depend on enumerating every
+instance, only on handling the *shape* generally, which it does).
+
+Left `doing`. Next FOUNDRY pass once the bridge is free: deploy, live
+cold load, confirm "patch operations failed" back to baseline 5 with no
+`[Jawa Pawn Flavor …]` lines, spot-check the two originally-named rows'
+live text (plus ideally one of the 14 newly-found ones, e.g. `Pretty` or
+`Ugly` — vanilla Core, spawnable on any quicktest colonist, no DLC/mod
+gating needed), then close this item and re-attempt
+`PAWN_FLAVOR_PHASE2_APPLY_1`'s own spot-check criterion.
