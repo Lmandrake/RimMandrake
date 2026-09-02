@@ -292,15 +292,10 @@ namespace JawaBench.BridgeTools
                 if (def == null) return Fail("No InspirationDef named '" + inspiration + "'.", new { suggestions = DefSuggestions<InspirationDef>(inspiration) });
 
                 var handler = p.mindState.inspirationHandler;
-                bool endedPrevious = false;
-                if (handler.Inspired)
-                {
-                    if (!force)
-                        return Fail(p.LabelShortCap + " is already inspired (" + handler.CurStateDef.defName + "). Pass force=true to end it first.");
-                    handler.EndInspiration(handler.CurState);
-                    endedPrevious = true;
-                }
 
+                // Every gate below must run BEFORE EndInspiration - ending the pawn's
+                // current inspiration is destructive, and a later Fail() here must not
+                // have already thrown it away.
                 if (p.health != null && p.health.hediffSet != null)
                 {
                     foreach (var h in p.health.hediffSet.hediffs)
@@ -310,7 +305,18 @@ namespace JawaBench.BridgeTools
                 if (def.Worker != null && !def.Worker.InspirationCanOccur(p))
                     return Fail(def.defName + ".Worker.InspirationCanOccur returned false for " + p.LabelShortCap + " - this inspiration's own conditions are not met.");
 
+                bool endedPrevious = false;
+                if (handler.Inspired)
+                {
+                    if (!force)
+                        return Fail(p.LabelShortCap + " is already inspired (" + handler.CurStateDef.defName + "). Pass force=true to end it first.");
+                    handler.EndInspiration(handler.CurState);
+                    endedPrevious = true;
+                }
+
                 bool started = handler.TryStartInspiration(def, string.IsNullOrEmpty(reason) ? null : reason, sendLetter);
+                if (!started && endedPrevious)
+                    return Fail("TryStartInspiration returned false AFTER ending " + p.LabelShortCap + "'s previous inspiration - the pawn now has none. This should not be reachable (both known gates already passed); if you hit this, the previous inspiration is gone and needs manual restoration.");
                 if (!started)
                     return Fail("TryStartInspiration returned false for an unnamed reason despite passing every check this tool can reproduce.");
 

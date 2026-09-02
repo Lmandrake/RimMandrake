@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T23:34:26Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: BENCH
+as-of: 2026-09-02T23:54:17Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -318,7 +318,7 @@ prose:    infrastructure/state/items/QUEUE_ITEM_FILES_DECAY_1.md
 ## SWAPPAREL_NEURALBAND_TEXTURE_MISSING_1 SWApparel/Headbands/neuralband texture missing - our own KotOR headgear renders magenta
 state:    doing
 row:      unassigned
-needs:    offline
+needs:    owner
 target:   v1
 kind:     bug
 summary:  Generate the missing worn-graphic sprites for all 12 headbands, matching
@@ -332,6 +332,15 @@ target:   v1
 kind:     bug
 summary:  Confirm at the next restart that RimMandrake.Inhabited.CharacterDef
 prose:    infrastructure/state/items/INHABITED_CHARACTERDEF_NAMESPACE_GAP_1.md
+
+## BRIDGE_PAWNTOOLS_SILENT_SUCCESS_SWEEP_1 opus code review of JawaBenchPawnTools/PawnKitTools.cs found 8 more silent-success/data-loss patterns beyond the 3 already fixed
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  The remaining 10 findings, not yet fixed or independently re-verified —
+prose:    infrastructure/state/items/BRIDGE_PAWNTOOLS_SILENT_SUCCESS_SWEEP_1.md
 
 # BLOCKED — something is WRONG and someone must act
 

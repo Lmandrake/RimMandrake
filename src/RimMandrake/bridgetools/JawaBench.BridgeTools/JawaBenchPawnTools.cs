@@ -701,6 +701,14 @@ namespace JawaBench.BridgeTools
                         catch { return Fail("Bad quality '" + quality + "'."); }
                     }
 
+                    // equip/wear can drop a conflicting item via MakeRoomFor/Wear, and
+                    // that drop targets pawn.Position on pawn.MapHeld - null for any
+                    // off-map pawn (a caravan member, a world pawn). Both then fail
+                    // silently (Log.Error, no exception) and leave the pawn unchanged
+                    // while this tool still reported success. Refuse up front instead.
+                    if ((A == "equip" || A == "wear" || A == "inventory") && p.MapHeld == null)
+                        return Fail(p.LabelShortCap + " is off-map (no MapHeld) - equip/wear/inventory would silently no-op (MakeRoomFor/Wear/TryAdd all drop through a null map). Not supported for caravan/world pawns.");
+
                     if (A == "equip")
                     {
                         if (p.equipment == null) return Fail("Pawn has no equipment tracker.");
@@ -710,15 +718,21 @@ namespace JawaBench.BridgeTools
                         if (setQ) { var cq = t.TryGetComp<CompQuality>(); if (cq != null) cq.SetQuality(q, ArtGenerationContext.Outsider); }
 
                         // 🔴 THE TRAP: AddEquipment Log.Errors and does nothing when a
-                        // primary exists. MakeRoomFor first and say what was displaced.
+                        // primary exists. MakeRoomFor first and say what was displaced -
+                        // and verify it actually left, since MakeRoomFor(t) (no out param)
+                        // itself fails silently (Log.Error only) if the drop cell/map is bad.
                         var prior = p.equipment.Primary;
                         if (prior != null)
                         {
-                            displaced.Add(new { def = prior.def.defName, stuff = prior.Stuff != null ? prior.Stuff.defName : null });
                             p.equipment.MakeRoomFor(t);
+                            if (p.equipment.Primary == prior)
+                                return Fail("MakeRoomFor could not displace " + prior.def.defName + " (drop failed - see the game log) - " + td.defName + " was not equipped.");
+                            displaced.Add(new { def = prior.def.defName, stuff = prior.Stuff != null ? prior.Stuff.defName : null });
                             notes.Add("displaced the existing primary via MakeRoomFor - without this AddEquipment would have silently no-opped");
                         }
                         p.equipment.AddEquipment(t);
+                        if (p.equipment.Primary != t)
+                            return Fail("AddEquipment did not make '" + td.defName + "' the pawn's primary (see the game log) - equip failed.");
                     }
                     else if (A == "wear")
                     {
@@ -728,10 +742,9 @@ namespace JawaBench.BridgeTools
                         try { ap = PawnApparelGenerator.GenerateApparelOfDefFor(p, td); } catch { }
                         if (ap == null) ap = (Apparel)ThingMaker.MakeThing(td, sd);
                         if (setQ) { var cq = ap.TryGetComp<CompQuality>(); if (cq != null) cq.SetQuality(q, ArtGenerationContext.Outsider); }
-                        var beforeCount = p.apparel.WornApparelCount;
                         p.apparel.Wear(ap, true, false);
-                        if (p.apparel.WornApparelCount <= beforeCount)
-                            notes.Add("worn count did not rise - Wear may have dropped a conflicting garment, which is its documented behaviour");
+                        if (!p.apparel.WornApparel.Contains(ap))
+                            return Fail("'" + td.defName + "' is not in the pawn's WornApparel after Wear() (see the game log for a dropped-conflict or drop failure) - wear failed.");
                     }
                     else if (A == "inventory")
                     {
@@ -741,8 +754,9 @@ namespace JawaBench.BridgeTools
                         if (setQ) { var cq = t.TryGetComp<CompQuality>(); if (cq != null) cq.SetQuality(q, ArtGenerationContext.Outsider); }
                         // TryAddOrTransfer returns the COUNT transferred, not a bool.
                         int moved = p.inventory.innerContainer.TryAddOrTransfer(t, Math.Max(1, count));
+                        if (moved <= 0)
+                            return Fail("inventory transferred 0 of " + Math.Max(1, count) + " - container refused it (full, or '" + td.defName + "' is unstorable).");
                         notes.Add("inventory transferred " + moved + " of " + Math.Max(1, count));
-                        if (moved <= 0) notes.Add("nothing moved - inventory may be full or the def unstorable");
                     }
                     else return Fail("action must be equip|wear|inventory|clear.");
                 }
