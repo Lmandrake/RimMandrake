@@ -19,6 +19,34 @@ Closes when: the manifest (all 515 rows, coverage-or-refuse) has passed the
 validator, the owner has reviewed the prefilled manifest as a review sheet
 (the last owner pass), and the retag is live with no orphaned unlocks.
 
+## criteria
+
+Written by BENCH 2026-09-02 from this item's own `## verify`, which already stated
+the closing conditions — the section was simply missing, and `next` was flagging the
+item THIN for it. Nothing here is a new decision; every ruling is already canon
+(`research_tree.shape_ruled` / `taxonomy_ruled` / `sitting_ruled` / `chains_ruled` /
+`tech_gating_ruled`).
+
+1. **Coverage, not a sample.** The manifest holds a row for all 515 research defs —
+   each either placed (tab + tier) or carrying an explicit refusal reason. A row that
+   is merely absent is a failure, never a pass: assert coverage against the inventory
+   rather than reading a healthy-looking count.
+2. **The validator passes against the RESOLVED post-RR dump**, whose fingerprint
+   matches the live mod set — not raw mod XML, and not a dump whose currency is
+   assumed. `cherrypicker.py` is the reader for what has been cut, because a Cherry
+   Picker cut is invisible to the dump.
+3. **The owner has reviewed the prefilled manifest as a review sheet.** This is the
+   one remaining owner pass and it cannot be delegated or inferred from a clean
+   validator run.
+4. **The retag is live with no orphaned unlocks** — every unlock still resolves after
+   the retag, and the 22 rows alive with empty unlock caches (prep §1 allowlist) are
+   still exactly those 22, not a larger set that grew during execution.
+5. **No defName was renamed**, anywhere, by anything.
+
+The three execution children (RESEARCH_VALIDATOR_BUILD_1 · RESEARCH_MANIFEST_DRAFT_1 ·
+TECHPRINT_FACTION_GATING_1, all FOUNDRY) close on their own criteria; this parent
+closes only when all five conditions above hold together.
+
 ## Watch out
 
 - Research Reinvented is the substrate (ruled) — every validation runs against
