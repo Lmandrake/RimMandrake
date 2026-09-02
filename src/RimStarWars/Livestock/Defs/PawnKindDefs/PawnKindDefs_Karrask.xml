@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- LIVESTOCK_STARTER_TRIO_1 - karrask PawnKindDef. Structural shape off
+     vanilla Alpaca's PawnKindDef (ParentName AnimalKindBase, RimSage
+     get_def_details) since karrask is tameable farm stock, not a wolf-
+     line predator like this mod's existing ForsakenCrags PawnKindDefs.
+     Single Graphic_Single texture per lifeStage at increasing drawSize,
+     matching this mod's own ForsakenCrags precedent - PLACEHOLDER texPath,
+     see ThingDefs_Karrask.xml's header; no file exists there yet. -->
+<Defs>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Karrask</defName>
+    <label>karrask</label>
+    <labelPlural>karrasks</labelPlural>
+    <race>RSW_Karrask</race>
+    <combatPower>45</combatPower>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <wildGroupSize>2~4</wildGroupSize>
+    <lifeStages>
+      <li>
+        <label>karrask pup</label>
+        <labelPlural>karrask pups</labelPlural>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Karrask/Karrask</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.9</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Karrask/Karrask</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>1.2</drawSize>
+          <shadowData>
+            <volume>(0.35, 0.35, 0.3)</volume>
+            <offset>(0,0,-0.15)</offset>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Karrask/Karrask</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>1.5</drawSize>
+          <shadowData>
+            <volume>(0.45, 0.45, 0.35)</volume>
+            <offset>(0,0,-0.15)</offset>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- LIVESTOCK_STARTER_TRIO_1 - karrask (molt-plate), the doc's own
+     "straightforward harvest-on-schedule" v1 entry
+     (design/Jawa/proposals/ludicrous_livestock_deep_design.md §"UTILITY
+     SYMBIOTES"). Zero new job types: the molt itself is vanilla
+     CompProperties_Shearable (the same class backing Sheep/Alpaca wool,
+     confirmed via RimSage get_def_details) driving the existing shear
+     job, and curing the raw shed into wearable plate is a plain bench
+     RecipeDef (RecipeDefs_Karrask.xml) - Bill work, not a new job.
+
+     Two-stage material is deliberate, per the owner's ruling on this row
+     ("Don't make it functional plate armor, that's too much. Instead
+     it's a tough material... very easy to work and shape (but not very
+     pretty)"): the raw shed (RSW_KarraskShedRaw, ResourceBase - no
+     stuffProps) is mechanically inert until cured into RSW_KarraskPlate
+     (LeatherBase - a real Stuff), matching the design doc's "a raw shed
+     is brittle and useless" line without needing any C# to enforce it -
+     a ThingDef with no stuffProps simply cannot be selected as apparel
+     Stuff.
+
+     Body/stat shape patterned off vanilla Alpaca (RimSage get_def_details:
+     AnimalThingBase, QuadrupedAnimalWithHooves is Alpaca's own body, but
+     karrask is "armadillo-to-pangolin... low and armored" so this uses
+     QuadrupedAnimalWithPawsAndTail instead - the same body already proven
+     in this mod for Cindermare). Mass = bodySize * 60 per
+     beast_normalization_spec's 60 kg/bs scale (0.6 * 60 = 36).
+
+     NOT live-verified this pass (offline defs-only build - see
+     LIVESTOCK_STARTER_TRIO_1's item file). texPath below is a PLACEHOLDER
+     naming the future sprite location - no file exists at that path yet.
+     art/mockups/PICKS.md already recorded the owner's pick (karrask_opt2)
+     but the shippable sprite itself (palette pass + generating-rimworld-
+     sprites contract) has not been generated. Do not deploy or load this
+     def until that art lands, or it will render as the engine's missing-
+     texture placeholder. -->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RSW_KarraskShedRaw</defName>
+    <label>raw karrask shed</label>
+    <description>A freshly molted karrask carapace plate, still flexible and faintly damp. Uncured, it is brittle and structurally useless - it has to be cured before it holds an edge or a shape. No stuffProps on this def is deliberate: nothing can be crafted from it until it becomes cured plate.</description>
+    <possessionCount>10</possessionCount>
+    <graphicData>
+      <texPath>Things/Item/Resource/Leather</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+      <drawSize>0.9</drawSize>
+      <color>(120,108,84)</color>
+    </graphicData>
+    <stackLimit>75</stackLimit>
+    <healthAffectsPrice>false</healthAffectsPrice>
+    <statBases>
+      <MaxHitPoints>50</MaxHitPoints>
+      <MarketValue>1.4</MarketValue>
+      <Mass>0.03</Mass>
+      <Flammability>0.4</Flammability>
+      <DeteriorationRate>3</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+  </ThingDef>
+
+  <ThingDef ParentName="LeatherBase">
+    <defName>RSW_KarraskPlate</defName>
+    <label>cured karrask plate</label>
+    <description>Chitin-like plate cured from a shed karrask carapace - tough, easy to work and shape into armor or other durable goods, but dull and unglamorous next to a dyed hide or a worked metal. What it lacks in prettiness it makes up in how little labor it takes to turn into something durable.</description>
+    <possessionCount>10</possessionCount>
+    <graphicData>
+      <texPath>Things/Item/Resource/Leather</texPath>
+      <color>(96,90,72)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>4.6</MarketValue>
+      <Mass>0.05</Mass>
+      <StuffPower_Armor_Sharp>1.55</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Blunt>1.2</StuffPower_Armor_Blunt>
+      <StuffPower_Insulation_Cold>22</StuffPower_Insulation_Cold>
+      <StuffPower_Insulation_Heat>10</StuffPower_Insulation_Heat>
+    </statBases>
+    <stuffProps>
+      <color>(96,90,72)</color>
+      <commonality>0.05</commonality>
+      <statFactors>
+        <Beauty>0.7</Beauty>
+        <WorkToMake>0.8</WorkToMake>
+      </statFactors>
+    </stuffProps>
+  </ThingDef>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RSW_Karrask</defName>
+    <label>karrask</label>
+    <description>A low, heavily plated grazer that forages mineral-rich rock lichen across the desert flats. Every molt cycle it sheds its entire carapace at once, curling into its molting corner for a day while the new plate hardens beneath - disturb it mid-molt and it turns aggressive, and the ruined shed is wasted. Left alone, the shed cures into some of the toughest, easiest-worked material a Jawa clan can get its hands on.</description>
+    <statBases>
+      <MoveSpeed>3.2</MoveSpeed>
+      <MarketValue>260</MarketValue>
+      <Mass>36</Mass>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <ComfyTemperatureMax>55</ComfyTemperatureMax>
+      <ArmorRating_Sharp>0.22</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.15</ArmorRating_Blunt>
+      <FilthRate>5</FilthRate>
+      <Wildness>0.35</Wildness>
+    </statBases>
+    <uiIconScale>1.2</uiIconScale>
+    <comps>
+      <li Class="CompProperties_Shearable">
+        <woolDef>RSW_KarraskShedRaw</woolDef>
+        <shearIntervalDays>15</shearIntervalDays>
+        <woolAmount>40</woolAmount>
+      </li>
+    </comps>
+    <race>
+      <thinkTreeMain>Animal</thinkTreeMain>
+      <thinkTreeConstant>AnimalConstant</thinkTreeConstant>
+      <trainability>None</trainability>
+      <body>QuadrupedAnimalWithPawsAndTail</body>
+      <herdAnimal>true</herdAnimal>
+      <baseBodySize>0.6</baseBodySize>
+      <baseHealthScale>1.15</baseHealthScale>
+      <baseHungerRate>0.2</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>Leather_Plain</leatherDef>
+      <leatherLabel>karrask hide</leatherLabel>
+      <meatLabel>karrask meat</meatLabel>
+      <roamMtbDays>5</roamMtbDays>
+      <gestationPeriodDays>10</gestationPeriodDays>
+      <lifeExpectancy>14</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.25</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.4</minAge>
+          <soundWounded>Pawn_Sheep_Wounded</soundWounded>
+          <soundDeath>Pawn_Sheep_Death</soundDeath>
+          <soundCall>Pawn_Sheep_Call</soundCall>
+          <soundAngry>Pawn_Sheep_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Herbivore_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>AnimalFarm</li>
+    </tradeTags>
+    <tools>
+      <li>
+        <label>head plate</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>8</power>
+        <cooldownTime>2.3</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+      <li>
+        <label>foreclaw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+    </tools>
+    <graphicData>
+      <!-- PLACEHOLDER texPath - see file header. -->
+      <texPath>Things/Pawn/Animal/Karrask/Karrask</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>1.5</drawSize>
+    </graphicData>
+    <useHitPoints>false</useHitPoints>
+  </ThingDef>
+
+</Defs>
