@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- HELIX_TELLUROX_BUILD_1. Tellurox — Ascendant Helix labour-line livestock,
+     HorrorWastes-native. karrask_opt3.png promoted mockup. Design row:
+     infrastructure/state/items/FORSAKEN_CRAGS_FAUNA_1.md (closed) and
+     infrastructure/state/items/HELIX_TELLUROX_BUILD_1.md (this build).
+
+     Registry name (invented, not owner-sourced — flag if he wants a
+     different Helix tie): "Helix Model GT-4". Per Alien_Bestiary.md's
+     vernacular/registry convention, the registry designation is lore-only
+     (description flavor), never the in-game <label> — Tellurox keeps its
+     vernacular name in the wild.
+
+     Shell mechanism: PERMANENT, non-molting — deliberately NOT a
+     CompHasGatherableBodyResource shear job (that is karrask's mechanism,
+     the opposite design). RSW_TelluroxShell is a bonus butcherProducts
+     entry only, alongside the animal's ordinary leather/meat — first-rate
+     plate comes only from slaughtering a mature working animal. -->
+<Defs>
+
+  <ThingDef ParentName="LeatherBase">
+    <defName>RSW_TelluroxShell</defName>
+    <label>tellurox shell plate</label>
+    <description>A single hexagonal plate cut from a mature tellurox's permanent shell. Unlike a molted carapace, this plate never regrew — the beast wore it for its whole working life, and it shows: dense, weather-scarred, harder than any farmed chitin. The Ascendant Helix bred tellurox for exactly this: an unshedding shell an animal grows into rather than sheds, armor that outlives the beast wearing it.</description>
+    <possessionCount>10</possessionCount>
+    <graphicData>
+      <texPath>Things/Item/Resource/Leather/Leather_Plain</texPath>
+      <color>(74,68,60)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>6.2</MarketValue>
+      <Mass>0.06</Mass>
+      <StuffPower_Armor_Sharp>1.65</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Blunt>1.3</StuffPower_Armor_Blunt>
+      <StuffPower_Insulation_Cold>34</StuffPower_Insulation_Cold>
+      <StuffPower_Insulation_Heat>6</StuffPower_Insulation_Heat>
+    </statBases>
+    <stuffProps>
+      <color>(74,68,60)</color>
+      <commonality>0.04</commonality>
+      <statFactors>
+        <Beauty>1.1</Beauty>
+        <WorkToMake>1.25</WorkToMake>
+      </statFactors>
+    </stuffProps>
+  </ThingDef>
+
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RSW_TelluroxRace</defName>
+    <label>tellurox</label>
+    <description>A bull-sized draft beast the Ascendant Helix engineered for the HorrorWastes' bioweapon-scarred cold. Its most striking feature never sheds: a single continuous shell grows with the animal from birth to death, plates locking edge to edge as it ages rather than molting in cycles like a karrask. A tellurox is armored for life the moment it is born, and the Helix bred it that way on purpose — this is hostile ground, and they wanted their beast of burden to survive it wearing its own armor.</description>
+    <statBases>
+      <MoveSpeed>2.8</MoveSpeed>
+      <MarketValue>420</MarketValue>
+      <Mass>85</Mass>
+      <ComfyTemperatureMin>-60</ComfyTemperatureMin>
+      <ComfyTemperatureMax>12</ComfyTemperatureMax>
+      <ArmorRating_Sharp>0.18</ArmorRating_Sharp>
+      <ArmorRating_Blunt>0.12</ArmorRating_Blunt>
+      <ToxicResistance>0.35</ToxicResistance>
+      <Wildness>0.3</Wildness>
+      <FilthRate>10</FilthRate>
+    </statBases>
+    <butcherProducts>
+      <li>
+        <thingDef>RSW_TelluroxShell</thingDef>
+        <count>6</count>
+      </li>
+    </butcherProducts>
+    <tools>
+      <li>
+        <label>head plate</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>9</power>
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.3</chanceFactor>
+      </li>
+      <li>
+        <label>left hoof</label>
+        <labelNoLocation>hoof</labelNoLocation>
+        <capacities>
+          <li>Blunt</li>
+          <li>Poke</li>
+        </capacities>
+        <power>9</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right hoof</label>
+        <labelNoLocation>hoof</labelNoLocation>
+        <capacities>
+          <li>Blunt</li>
+          <li>Poke</li>
+        </capacities>
+        <power>9</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightLeg</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithHooves</body>
+      <baseBodySize>2.6</baseBodySize>
+      <baseHealthScale>1.7</baseHealthScale>
+      <baseHungerRate>0.5</baseHungerRate>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <leatherDef>Leather_Plain</leatherDef>
+      <trainability>Intermediate</trainability>
+      <herdAnimal>true</herdAnimal>
+      <packAnimal>true</packAnimal>
+      <roamMtbDays>3</roamMtbDays>
+      <nuzzleMtbHours>32</nuzzleMtbHours>
+      <petness>0.12</petness>
+      <meatLabel>tellurox meat</meatLabel>
+      <gestationPeriodDays>10</gestationPeriodDays>
+      <lifeExpectancy>16</lifeExpectancy>
+      <soundEating>Herbivore_Eat</soundEating>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.25</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.4</minAge>
+          <soundWounded>Pawn_Muffalo_Wounded</soundWounded>
+          <soundDeath>Pawn_Muffalo_Death</soundDeath>
+          <soundCall>Pawn_Muffalo_Call</soundCall>
+          <soundAngry>Pawn_Muffalo_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <headPosPerRotation>
+        <li>(0.0, 0, 0.1)</li>
+        <li>(0.32, 0, 0)</li>
+        <li>(0.0, 0, -0.05)</li>
+        <li>(-0.32, 0, 0)</li>
+      </headPosPerRotation>
+    </race>
+    <tradeTags>
+      <li>AnimalFarm</li>
+      <li>AnimalExotic</li>
+    </tradeTags>
+  </ThingDef>
+
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Tellurox</defName>
+    <label>tellurox</label>
+    <race>RSW_TelluroxRace</race>
+    <combatPower>70</combatPower>
+    <ecoSystemWeight>0.18</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Tellurox/Tellurox</texPath>
+          <drawSize>1.3</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Muffalo/Dessicated_Muffalo</texPath>
+          <drawSize>1.3</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Tellurox/Tellurox</texPath>
+          <drawSize>2.0</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Muffalo/Dessicated_Muffalo</texPath>
+          <drawSize>2.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Tellurox/Tellurox</texPath>
+          <drawSize>2.6</drawSize>
+          <shadowData>
+            <volume>(0.45, 0.3, 0.4)</volume>
+            <offset>(0,0,0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Muffalo/Dessicated_Muffalo</texPath>
+          <drawSize>2.6</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

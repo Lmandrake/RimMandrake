@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimStarWars: Helix Tellurox</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.rsw.helixtellurox</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Tellurox — Ascendant Helix labour-line livestock, HELIX_TELLUROX_BUILD_1. Owner-approved design row from FORSAKEN_CRAGS_FAUNA_1 (karrask_opt3.png). A draft/pack beast with a PERMANENT, non-molting shell that grows with the animal: first-rate plate comes only from slaughtering a mature working animal, never a renewable shear cycle (deliberately the opposite of karrask's molt-armor design). Tameable, tradeable, HorrorWastes-native.
+
+NOT yet wired into HorrorWastes' curated wild-spawn cast (BiomeCast_Ashkarr.xml / cast_assignment.csv) — that roster is algorithmically scored (belong/standout/defence against the biome's sprite palette, design/Jawa/fauna/allocate_cast.py) and re-running the allocator churns 75% of the planet's fauna (measured, refill_cast.py's own header). Tellurox has no census/sprite_features row yet, so it is not a refill_cast.py candidate either. Wiring it in needs a deliberate, hand-placed single-row addition to cast_assignment.csv plus a regenerate of BiomeCast_Ashkarr.xml, diffed to a temp path first — not done in this pass.</description>
+</ModMetaData>
