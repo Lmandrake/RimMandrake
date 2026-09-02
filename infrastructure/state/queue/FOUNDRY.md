@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T08:28:23Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-02T08:33:34Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -323,15 +323,6 @@ target:   v1
 kind:     build
 summary:  Identity: the Long Hunger — Deep Desert tribal lore for a colossal entity
 prose:    infrastructure/state/items/SANDWORM_MYTHOS_BUILD_1.md
-
-## BIOME_CAST_REFS_BREAK_MAPGEN_1 Biome-cast cross-refs to donor creatures break local mapgen when donor is absent — scrub before any donor retirement; blocks rapid-minimal ecosystem preview
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  (no items/BIOME_CAST_REFS_BREAK_MAPGEN_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BIOME_CAST_REFS_BREAK_MAPGEN_1.md
 
 # BLOCKED — something is WRONG and someone must act
 

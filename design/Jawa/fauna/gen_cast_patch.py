@@ -263,7 +263,25 @@ def main():
 
     # wildAnimals takes a PawnKindDef. Read the roster so a ThingDef-only name is
     # caught here rather than as a cross-reference error on the next cold load.
+    #
+    # 🔴 ANIMALPKG (defName -> packageId), same pass: BIOME_CAST_REFS_BREAK_MAPGEN_1.
+    # A cast entry whose owning donor mod is absent leaves BiomeAnimalRecord.animal
+    # unresolved (DirectXmlCrossRefLoader never finds the PawnKindDef). BiomeDef.
+    # CommonalityOfAnimal (BiomeDef.cs:346-348) then does a plain
+    # `cachedAnimalCommonalities.Add(wildAnimals[i].animal, ...)` the first time
+    # ANYTHING asks this biome for a commonality - Dictionary.Add(null key) throws
+    # ArgumentNullException, and every mapgen path that reaches this biome
+    # (GenStep_Animals, WildAnimalSpawner, TileMutatorWorker_AnimalHabitat, the
+    # aggressive-animal and herd-migration incidents...) crashes instead of just
+    # spawning fewer animals. Confirmed from source, not inferred.
+    #
+    # ⚠️ Same caveat as PKG above: packageId in the dump can credit whoever last
+    # PATCHED the def rather than whoever DEFINED it. Unlike biomes, no independent
+    # "vanilla animal defs" cross-check exists yet - an imperfect gate here is still
+    # strictly safer than today's NONE, but a wrong packageId could gate an entry on
+    # the wrong mod's presence. Flagged, not solved, in this pass.
     PAWNKINDS = set()
+    ANIMALPKG = {}
     for cap in captures_newest_first():
         f = os.path.join(cap, 'defs', 'PawnKindDef.json')
         if not os.path.isfile(f):
@@ -271,6 +289,9 @@ def main():
         pl = json.load(open(f, encoding='utf-8'))
         pl = pl if isinstance(pl, list) else pl.get('defs')
         PAWNKINDS |= {x['defName'] for x in pl if isinstance(x, dict)}
+        for x in pl:
+            if isinstance(x, dict):
+                ANIMALPKG.setdefault(x['defName'], x.get('packageId'))
         break
     if not PAWNKINDS:
         sys.exit('no PawnKindDef.json in any capture - refusing to emit a cast that '
@@ -294,38 +315,16 @@ def main():
              '',
              '       Each biome\'s wildAnimals is REPLACED. The shipped lists hold ~1024 records',
              '       almost all at commonality 0. -->', '']
-    for b in sorted(byb, key=lambda x: -len(byb[x])):
-        pkg = PKG.get(b)
-        # A biome Core/DLC DEFINES never gets a MayRequire, however many mods have
-        # since patched it. See _vanilla_biomes() and the block above.
-        if VANILLA and b in VANILLA:
-            req = ''
-        else:
-            req = f' MayRequire="{pkg}"' if pkg and not str(pkg).startswith('ludeon.rimworld') else ''
-        # 🔴 WRAPPED IN A CONDITIONAL, NOT A BARE REPLACE - BIOME_CAST_APPLY_1, BUILD.
-        # A PatchOperationReplace whose xpath matches nothing is a RED ERROR every
-        # launch, not a silent no-op, and 25 bare ones is 25 errors.
-        # ⚠️ MayRequire is NOT enough on its own and that is this project's own rule:
-        # it checks that the MOD is present, never that the DEF still is. A biome
-        # renamed or removed upstream leaves MayRequire passing and the Replace
-        # erroring. The conditional tests the wildAnimals node itself - reality
-        # rather than intent - so it degrades to doing nothing.
-        # 🔑 There is deliberately NO <nomatch>: if the biome is absent we want the
-        # cast absent too, not added to something that was never cast.
-        xp = f'/Defs/BiomeDef[defName="{b}"]/wildAnimals'
-        parts.append(f'  <Operation Class="PatchOperationConditional"{req}>')
-        parts.append(f'    <xpath>{xp}</xpath>')
-        parts.append('    <match Class="PatchOperationReplace">')
-        parts.append(f'      <xpath>{xp}</xpath>')
-        parts.append('      <value>')
-        parts.append('        <wildAnimals>')
-        for r in sorted(byb[b], key=lambda r: (-float(r['commonality']), r['defName'])):
+    def _emit_rows(rows_, indent):
+        pad = ' ' * indent
+        lines = []
+        for r in sorted(rows_, key=lambda r: (-float(r['commonality']), r['defName'])):
             note = f"{r['band']}, {r['status']}"
             if CUT is not None and r['defName'] in CUT:
                 # Cut by the owner. Emitting it would write an entry the engine
                 # resolves to commonality 0 - registered and unspawnable.
                 cut_rows.append((b, r['defName']))
-                parts.append(f'          <!-- CUT {r["defName"]} - {r["label"]}:'
+                lines.append(f'{pad}<!-- CUT {r["defName"]} - {r["label"]}:'
                              f' removed by Cherry Picker, would read commonality 0 -->')
                 continue
             if r['defName'] not in PAWNKINDS:
@@ -333,7 +332,7 @@ def main():
                 # dangling cross-reference, not a fallback. Named, never dropped
                 # in silence.
                 skipped.append((b, r['defName']))
-                parts.append(f'          <!-- SKIPPED {r["defName"]} - {r["label"]}:'
+                lines.append(f'{pad}<!-- SKIPPED {r["defName"]} - {r["label"]}:'
                              f' not a PawnKindDef; wildAnimals cannot resolve it -->')
                 continue
             # 🔴 THE NODE NAME IS THE ANIMAL AND THE NODE TEXT IS THE COMMONALITY.
@@ -345,13 +344,71 @@ def main():
             # reports success. That shipped on 2026-08-22 and cost all 26 biomes
             # this file touches; see MAP_BIOMES_REMOVED_LIVE_1. The rule was
             # already written in Jawa_Patches/Patches/Ikee_Rename.xml lines 37-46.
-            parts.append(f'          <{r["defName"]}>{r["commonality"]}</{r["defName"]}>'
+            lines.append(f'{pad}<{r["defName"]}>{r["commonality"]}</{r["defName"]}>'
                          f' <!-- {r["label"]} - {note} -->')
+        return lines
+
+    for b in sorted(byb, key=lambda x: -len(byb[x])):
+        pkg = PKG.get(b)
+        # A biome Core/DLC DEFINES never gets a MayRequire, however many mods have
+        # since patched it. See _vanilla_biomes() and the block above.
+        if VANILLA and b in VANILLA:
+            biome_pkg = None
+        else:
+            biome_pkg = pkg if pkg and not str(pkg).startswith('ludeon.rimworld') else None
+        req = f' MayRequire="{biome_pkg}"' if biome_pkg else ''
+        # 🔴 WRAPPED IN A CONDITIONAL, NOT A BARE REPLACE - BIOME_CAST_APPLY_1, BUILD.
+        # A PatchOperationReplace whose xpath matches nothing is a RED ERROR every
+        # launch, not a silent no-op, and 25 bare ones is 25 errors.
+        # ⚠️ MayRequire is NOT enough on its own and that is this project's own rule:
+        # it checks that the MOD is present, never that the DEF still is. A biome
+        # renamed or removed upstream leaves MayRequire passing and the Replace
+        # erroring. The conditional tests the wildAnimals node itself - reality
+        # rather than intent - so it degrades to doing nothing.
+        # 🔑 There is deliberately NO <nomatch>: if the biome is absent we want the
+        # cast absent too, not added to something that was never cast.
+        xp = f'/Defs/BiomeDef[defName="{b}"]/wildAnimals'
+
+        # 🔴 PER-ANIMAL DONOR GATING - BIOME_CAST_REFS_BREAK_MAPGEN_1. Splitting the
+        # cast into a BASE Replace (vanilla/DLC/our-own entries only, always safe)
+        # plus one PatchOperationAdd PER DONOR MOD (MayRequire-gated on that mod's
+        # own packageId) means an absent donor's entries are cleanly never emitted
+        # into wildAnimals at all - not a dangling cross-ref waiting to crash
+        # CommonalityOfAnimal. See the ANIMALPKG comment above for the mechanism.
+        base_rows, donor_rows = [], collections.defaultdict(list)
+        for r in byb[b]:
+            apkg = ANIMALPKG.get(r['defName'])
+            if apkg and not str(apkg).startswith('ludeon.rimworld'):
+                donor_rows[apkg].append(r)
+            else:
+                base_rows.append(r)
+
+        parts.append(f'  <Operation Class="PatchOperationConditional"{req}>')
+        parts.append(f'    <xpath>{xp}</xpath>')
+        parts.append('    <match Class="PatchOperationReplace">')
+        parts.append(f'      <xpath>{xp}</xpath>')
+        parts.append('      <value>')
+        parts.append('        <wildAnimals>')
+        parts.extend(_emit_rows(base_rows, 10))
         parts.append('        </wildAnimals>')
         parts.append('      </value>')
         parts.append('    </match>')
         parts.append('  </Operation>')
         parts.append('')
+
+        for apkg in sorted(donor_rows):
+            dreq = ','.join(p for p in (biome_pkg, apkg) if p)
+            parts.append(f'  <Operation Class="PatchOperationConditional" MayRequire="{dreq}">'
+                         f'   <!-- donor: {apkg} -->')
+            parts.append(f'    <xpath>{xp}</xpath>')
+            parts.append('    <match Class="PatchOperationAdd">')
+            parts.append(f'      <xpath>{xp}</xpath>')
+            parts.append('      <value>')
+            parts.extend(_emit_rows(donor_rows[apkg], 8))
+            parts.append('      </value>')
+            parts.append('    </match>')
+            parts.append('  </Operation>')
+            parts.append('')
     # ================================================================
     # THE DE-DUP, EMITTED WITH THE CAST SO THE TWO CANNOT DRIFT
     # ================================================================
