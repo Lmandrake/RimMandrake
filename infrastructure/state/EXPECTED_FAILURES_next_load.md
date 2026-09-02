@@ -138,3 +138,45 @@ carries the `StructureInjections` namespace.
 
 ⚠️ **Silence acquits none of them.** Each has an expected-PRESENT string above
 precisely because a no-op logs nothing, and "zero hits" is not "it worked".
+
+---
+
+## Load 4 (587 mods) — 2026-09-02, BENCH. ONE assembly + two mod removals.
+
+Much simpler than load 3: a single assembly, so no batching waiver is in play, plus two
+config removals which carry no attribution risk (§3: config is free).
+
+Deployed: `Inhabited.dll` only. I read the full deploy plan and refused the rest — it
+holds other seats' unfinished work (Livestock/karrask, SWBestiary/bantha, FluidCanals,
+Graffiti, Ninefold), and deploying a peer's half-built mod under my own load is how a
+failure becomes unattributable.
+
+Removed from ModsConfig on the owner's word (589 → 587): `onimods.electrictorches`
+("Just drop electric torches then… Silly mod.") and `joseasoler.tradergen` ("Remove
+problematic trader gen."). Backup `ModsConfig.PRE_DROP_TORCHES_TRADERGEN.20260902_162902.xml`;
+`FULL.LATEST` captured to match so `--restore` cannot resurrect them.
+
+**1 — Inhabited (the assembly).**
+- ✅ PASS: `[RimMandrake.Inhabited] ready:` appears AND names a non-zero character
+  count — 269 authored CharacterDefs is the number the fix restores.
+- ❌ FAIL, the original bug: the line appears reading **0 characters**. That was the
+  whole defect — a pre-migration `<Inhabited.CharacterDef>` tag survived the C# move to
+  namespace `RimMandrake.Inhabited`, so the def loader silently dropped all 269 with no
+  fatal error and the mod booted empty.
+- ❌ FAIL, worse: no line at all, or a type-load error naming `RimMandrake.Inhabited`.
+- ⚠️ This is an UNCONDITIONAL startup line, NOT a lazy initializer — unlike JawaBench's
+  `ready:` line, which does not fire until the first tool call and fooled me on load 3.
+  Absence here means something, absence there did not.
+
+**2 — Two BETTER readings are expected, and a BETTER reading is the check working.**
+- `defdiscard` 2 → **0**. Baseline 2 was entirely Onimods torches, now removed. If it
+  still reads 2, the mod did not actually leave the list.
+- `configerror` 36 → **34**. Baseline 36 includes 2 `TG_Husbandry` NRE lines from
+  TraderGen, now removed. 🔴 The other 34 include **12 of ours** (`RSW_FE_*` burnedDef
+  is flammable) which this load does NOT fix — do not read 34 as clean.
+- 🔴 Update BOTH baseline notes in `harvest_log.py` in the same pass. A baseline still
+  naming a mod that is gone is worse than one that is merely wrong, because it teaches
+  the next reader to wave the check through.
+
+⚠️ The def dump is stale the moment this list changed (last capture was a 593-mod run).
+Armed for this load.
