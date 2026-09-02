@@ -46,14 +46,31 @@ duplicate `steamwebhelper` processes were found lingering
 exactly one `RimWorldWin64` and the normal Steam process tree). Not
 confirmed as the cause — a real hypothesis, not a finding.
 
+**Third run, per this item's own `## verify` (don't conclude from 2 data
+points alone)**: relaunched a THIRD time on the same untouched 592-mod list,
+no changes of any kind between attempts. **Reproduced again, same
+checkpoint** — "Finished transpiling 1409 methods" at 11:29:25 PM, ~20
+minutes with zero further log growth before being killed. 3/3 consecutive
+launches now stall at the identical point. This is no longer a single
+fluke sample — it is the environment's current, repeatable behavior.
+`ModsConfig.xml` was NOT auto-reset by this stall (still reads 592 after
+the kill) — unlike the earlier `animalType`/incompatible-mods incidents
+tonight, this failure mode does not trigger RimWorld's own recovery dialog;
+it is a silent hang, not an exception.
+
 Evidence preserved, do not delete:
 - `Player-stuck-weathersuite.log` (run 1, 594 mods)
-- `Player-stuck-baseline-592.log` (run 2, 592 mods, the isolation test)
-- both under `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\`
+- `Player-stuck-baseline-592.log` (run 2, 592 mods, isolation test)
+- `Player-stuck-baseline-592-attempt2.log` (run 3, 592 mods, third confirmation)
+- all three under `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\`
 
 `ModsConfig.xml` (live) and `ModsConfig.FULL.LATEST.xml` (repo) are both
 currently restored to the confirmed-592 pre-WeatherSuite state. The game is
-DOWN (both attempts killed) as of this note.
+DOWN (all three attempts killed) as of this note. **Not attempting a fourth
+restart solo** — three identical reproductions is enough to stop guessing;
+further diagnosis likely needs something outside what a bridge/log-reading
+seat can see (machine-level state: disk space, a pending Windows/Steam
+update holding a lock, thermal throttling, a stuck driver).
 
 ## verify
 
