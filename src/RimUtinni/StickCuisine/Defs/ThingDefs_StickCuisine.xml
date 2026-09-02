@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Absorbed from badoaks.meatonastick (workshop 3435027361) and
+  badoaks.meatonastick.expansion (workshop 3577333297) per STICK_FOOD_INGEST_1,
+  owner ruling 2026-09-02: "Ingest the stuff on a stick mod into our own
+  version and jettison that mod eventually... Let's take what we need and
+  release them." Both donor mods stay ACTIVE until retirement is executed
+  separately (this item's own ## verify still owes that step).
+
+  Parents (MealCookedIngredientless, ResourceBase, CookMealBase) are real
+  vanilla Core defs (Data/Core/Defs/ThingDefs_Items/Items_Food.xml),
+  confirmed on disk before use - not guessed.
+-->
+<Defs>
+
+  <ThingDef ParentName="ResourceBase">
+    <defName>RUT_Skewer</defName>
+    <label>skewer</label>
+    <description>A pointy stick made from wood. It can be used to skewer and cook food at a campfire.</description>
+    <graphicData>
+      <texPath>Items/RUT_Skewer/RUT_Skewer</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <tradeability>None</tradeability>
+    <statBases>
+      <MarketValue>0.12</MarketValue>
+      <Mass>0.0008</Mass>
+    </statBases>
+    <thingCategories>
+      <li>ResourcesRaw</li>
+    </thingCategories>
+  </ThingDef>
+
+  <ThingDef ParentName="MealCookedIngredientless">
+    <defName>RUT_MeatOnAStick</defName>
+    <label>meat on a stick</label>
+    <description>Meat skewered onto a stick and roasted over a fire.</description>
+    <graphicData>
+      <texPath>Things/Item/Meal/RUT_MeatOnAStick/RUT_MeatOnAStick</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>10</MarketValue>
+      <WorkToMake>190</WorkToMake>
+      <Nutrition>0.9</Nutrition>
+    </statBases>
+    <ingestible>
+      <preferability>MealSimple</preferability>
+      <ingestEffect>EatVegetarian</ingestEffect>
+      <ingestSound>Meal_Eat</ingestSound>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Ingredients">
+        <noIngredientsFoodKind>Meat</noIngredientsFoodKind>
+      </li>
+      <li Class="RimMandrake.Utinni.StickCuisine.CompProperties_NameGen" />
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="MealCookedIngredientless">
+    <defName>RUT_VegOnAStick</defName>
+    <label>veg on a stick</label>
+    <description>Vegetables skewered onto a stick and roasted over a fire.</description>
+    <graphicData>
+      <texPath>Things/Item/Meal/RUT_VegOnAStick/RUT_VegOnAStick</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>10</MarketValue>
+      <WorkToMake>190</WorkToMake>
+      <Nutrition>0.9</Nutrition>
+    </statBases>
+    <ingestible>
+      <preferability>MealSimple</preferability>
+      <ingestEffect>EatVegetarian</ingestEffect>
+      <ingestSound>Meal_Eat</ingestSound>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Ingredients">
+        <noIngredientsFoodKind>NonMeat</noIngredientsFoodKind>
+      </li>
+      <li Class="RimMandrake.Utinni.StickCuisine.CompProperties_NameGen" />
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="MealCookedIngredientless">
+    <defName>RUT_FungusOnAStick</defName>
+    <label>mushroom on a stick</label>
+    <description>Mushrooms skewered onto a stick and roasted over a fire.</description>
+    <graphicData>
+      <texPath>Things/Item/Meal/RUT_FungusOnAStick/RUT_FungusOnAStick</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>10</MarketValue>
+      <WorkToMake>190</WorkToMake>
+      <Nutrition>0.9</Nutrition>
+    </statBases>
+    <ingestible>
+      <preferability>MealSimple</preferability>
+      <ingestEffect>EatVegetarian</ingestEffect>
+      <ingestSound>Meal_Eat</ingestSound>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Ingredients">
+        <noIngredientsFoodKind>NonMeat</noIngredientsFoodKind>
+      </li>
+      <li Class="RimMandrake.Utinni.StickCuisine.CompProperties_NameGen" />
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="MealCookedIngredientless">
+    <defName>RUT_LittleMeatOnAStick</defName>
+    <label>a little bit of meat on a stick</label>
+    <description>A little bit of meat skewered onto a stick and roasted over a fire.</description>
+    <graphicData>
+      <texPath>Things/Item/Meal/RUT_LittleMeatOnAStick/RUT_LittleMeatOnAStick</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>10</MarketValue>
+      <WorkToMake>190</WorkToMake>
+      <Nutrition>0.45</Nutrition>
+    </statBases>
+    <ingestible>
+      <preferability>MealSimple</preferability>
+      <ingestEffect>EatVegetarian</ingestEffect>
+      <ingestSound>Meal_Eat</ingestSound>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Ingredients">
+        <noIngredientsFoodKind>Meat</noIngredientsFoodKind>
+      </li>
+      <li Class="RimMandrake.Utinni.StickCuisine.CompProperties_NameGen" />
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="MealCookedIngredientless">
+    <defName>RUT_BlendOnAStick</defName>
+    <label>a blend of meat and veg on a stick</label>
+    <description>A blend of meat and vegetables skewered onto a stick and roasted over a fire.</description>
+    <graphicData>
+      <texPath>Things/Item/Meal/RUT_BlendOnAStick/RUT_BlendOnAStick</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>10</MarketValue>
+      <WorkToMake>190</WorkToMake>
+      <Nutrition>0.9</Nutrition>
+    </statBases>
+    <ingestible>
+      <preferability>MealSimple</preferability>
+      <ingestEffect>EatVegetarian</ingestEffect>
+      <ingestSound>Meal_Eat</ingestSound>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Ingredients">
+        <splitTransferableFoodKind>true</splitTransferableFoodKind>
+      </li>
+      <li Class="RimMandrake.Utinni.StickCuisine.CompProperties_NameGen" />
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="MealCookedIngredientless" MayRequireAnyOf="Ludeon.RimWorld.Odyssey,vanillaexpanded.vcef">
+    <defName>RUT_FishOnAStick</defName>
+    <label>fish on a stick</label>
+    <description>Fish skewered onto a stick and roasted over a fire.</description>
+    <graphicData>
+      <texPath>Things/Item/Meal/RUT_FishOnAStick/RUT_FishOnAStick</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>10</MarketValue>
+      <WorkToMake>190</WorkToMake>
+      <Nutrition>0.9</Nutrition>
+    </statBases>
+    <ingestible>
+      <preferability>MealSimple</preferability>
+      <ingestEffect>EatVegetarian</ingestEffect>
+      <ingestSound>Meal_Eat</ingestSound>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Ingredients">
+        <noIngredientsFoodKind>Meat</noIngredientsFoodKind>
+      </li>
+      <li Class="RimMandrake.Utinni.StickCuisine.CompProperties_NameGen" />
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="MealCookedIngredientless">
+    <defName>RUT_FruitOnAStick</defName>
+    <label>fruit on a stick</label>
+    <description>Fruit skewered onto a stick and roasted over a fire.</description>
+    <graphicData>
+      <texPath>Things/Item/Meal/RUT_FruitOnAStick/RUT_FruitOnAStick</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>10</MarketValue>
+      <WorkToMake>190</WorkToMake>
+      <Nutrition>0.9</Nutrition>
+    </statBases>
+    <ingestible>
+      <preferability>MealSimple</preferability>
+      <ingestEffect>EatVegetarian</ingestEffect>
+      <ingestSound>Meal_Eat</ingestSound>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Ingredients">
+        <noIngredientsFoodKind>NonMeat</noIngredientsFoodKind>
+      </li>
+      <li Class="RimMandrake.Utinni.StickCuisine.CompProperties_NameGen" />
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="MealCookedIngredientless">
+    <defName>RUT_CookedSkewer</defName>
+    <label>cooked skewer</label>
+    <description>A cooked stick roasted over a fire. It does not hold any food, but you can still try eating it.
+
+Some moments in life make one wonder, "in just what direction is my life going?"</description>
+    <graphicData>
+      <texPath>Things/Item/Meal/RUT_CookedSkewer/RUT_CookedSkewer</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>1</MarketValue>
+      <WorkToMake>190</WorkToMake>
+      <Nutrition>0.01</Nutrition>
+    </statBases>
+    <ingestible>
+      <preferability>RawBad</preferability>
+      <tasteThought>RUT_AteEmptySkewer</tasteThought>
+      <ingestEffect>EatVegetarian</ingestEffect>
+      <ingestSound>RawVegetable_Eat</ingestSound>
+    </ingestible>
+    <comps>
+      <li Class="CompProperties_Ingredients">
+        <noIngredientsFoodKind>NonMeat</noIngredientsFoodKind>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

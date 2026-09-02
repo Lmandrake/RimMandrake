@@ -1,0 +1,844 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Absorbed from badoaks.meatonastick + badoaks.meatonastick.expansion per
+  STICK_FOOD_INGEST_1. CookMealBase is a real vanilla Core RecipeDef,
+  confirmed on disk before use.
+
+  IngredientValueGetter_ExcludeSkewer replaces the donor expansion's
+  un-sourced MOAS_Expansion.IngredientValueGetter_MeatlessStick - see that
+  C# file's header for why it's a reconstruction, not a byte-for-byte port.
+-->
+<Defs>
+
+  <!-- Base: meat only, no skewer resource required -->
+  <RecipeDef ParentName="CookMealBase">
+    <defName>RUT_CookMeatOnAStick</defName>
+    <label>cook meat on a stick</label>
+    <description>Cook raw meat over an open fire.</description>
+    <jobString>Cooking meat on a stick.</jobString>
+    <workSpeedStat>CookSpeed</workSpeedStat>
+    <requiredGiverWorkType>Cooking</requiredGiverWorkType>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_CookMeal</soundWorking>
+    <allowMixingIngredients>true</allowMixingIngredients>
+    <ingredientValueGetterClass>IngredientValueGetter_Nutrition</ingredientValueGetterClass>
+    <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li>MeatRaw</li>
+          </categories>
+        </filter>
+        <count>0.5</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <disallowedCategories>
+        <li>PlantFoodRaw</li>
+        <li>AnimalProductRaw</li>
+      </disallowedCategories>
+    </fixedIngredientFilter>
+    <products>
+      <RUT_MeatOnAStick>1</RUT_MeatOnAStick>
+    </products>
+    <workSkill>Cooking</workSkill>
+    <displayPriority>95</displayPriority>
+    <recipeUsers>
+      <li>Campfire</li>
+    </recipeUsers>
+  </RecipeDef>
+
+  <RecipeDef ParentName="CookMealBase">
+    <defName>RUT_CookMeatOnAStickBulk</defName>
+    <label>cook meat on a stick x4</label>
+    <description>Cook raw meat over an open fire (x4).</description>
+    <jobString>Cooking 4 meat on a stick.</jobString>
+    <workAmount>760</workAmount>
+    <workSpeedStat>CookSpeed</workSpeedStat>
+    <requiredGiverWorkType>Cooking</requiredGiverWorkType>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_CookMeal</soundWorking>
+    <allowMixingIngredients>true</allowMixingIngredients>
+    <ingredientValueGetterClass>IngredientValueGetter_Nutrition</ingredientValueGetterClass>
+    <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li>MeatRaw</li>
+          </categories>
+        </filter>
+        <count>2.0</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <disallowedCategories>
+        <li>PlantFoodRaw</li>
+        <li>AnimalProductRaw</li>
+      </disallowedCategories>
+    </fixedIngredientFilter>
+    <products>
+      <RUT_MeatOnAStick>4</RUT_MeatOnAStick>
+    </products>
+    <workSkill>Cooking</workSkill>
+    <displayPriority>96</displayPriority>
+    <recipeUsers>
+      <li>Campfire</li>
+    </recipeUsers>
+  </RecipeDef>
+
+  <!-- Skewer crafting -->
+  <RecipeDef>
+    <defName>RUT_CraftSkewers</defName>
+    <label>make skewer sticks from a log</label>
+    <description>Make skewer sticks from a log.</description>
+    <displayPriority>1</displayPriority>
+    <workAmount>300</workAmount>
+    <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
+    <effectWorking>Smelt</effectWorking>
+    <soundWorking>Recipe_Sculpt</soundWorking>
+    <jobString>Cutting wood into sticks.</jobString>
+    <workSkill>Crafting</workSkill>
+    <recipeUsers>
+      <li>CraftingSpot</li>
+    </recipeUsers>
+    <ingredients>
+      <li>
+        <filter>
+          <stuffCategoriesToAllow>
+            <li>Woody</li>
+          </stuffCategoriesToAllow>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <stuffCategoriesToAllow>
+        <li>Woody</li>
+      </stuffCategoriesToAllow>
+    </fixedIngredientFilter>
+    <products>
+      <RUT_Skewer>10</RUT_Skewer>
+    </products>
+  </RecipeDef>
+
+  <!-- Vegetables -->
+  <RecipeDef ParentName="CookMealBase">
+    <defName>RUT_CookVegOnAStick</defName>
+    <label>cook veg on a stick</label>
+    <description>Cook raw veg over an open fire.</description>
+    <jobString>Cooking vegetable skewer.</jobString>
+    <workSpeedStat>CookSpeed</workSpeedStat>
+    <requiredGiverWorkType>Cooking</requiredGiverWorkType>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_CookMeal</soundWorking>
+    <allowMixingIngredients>true</allowMixingIngredients>
+    <ingredientValueGetterClass>RimMandrake.Utinni.StickCuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
+    <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li>PlantFoodRaw</li>
+          </categories>
+        </filter>
+        <count>0.5</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RUT_Skewer</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <disallowedCategories>
+        <li>MeatRaw</li>
+        <li>AnimalProductRaw</li>
+        <li MayRequire="vanillaexpanded.vplantse">VCE_Fruit</li>
+      </disallowedCategories>
+      <disallowedThingDefs>
+        <li>RawAgave</li>
+        <li>RawBerries</li>
+      </disallowedThingDefs>
+    </fixedIngredientFilter>
+    <defaultIngredientFilter>
+      <categories>
+        <li>PlantFoodRaw</li>
+      </categories>
+    </defaultIngredientFilter>
+    <products>
+      <RUT_VegOnAStick>1</RUT_VegOnAStick>
+    </products>
+    <workSkill>Cooking</workSkill>
+    <displayPriority>97</displayPriority>
+    <recipeUsers>
+      <li>Campfire</li>
+    </recipeUsers>
+  </RecipeDef>
+
+  <RecipeDef ParentName="CookMealBase">
+    <defName>RUT_CookVegOnAStick4</defName>
+    <label>cook veg on a stick x4</label>
+    <description>Cook raw veg over an open fire (x4).</description>
+    <jobString>Cooking 4 vegetable skewers.</jobString>
+    <workAmount>760</workAmount>
+    <workSpeedStat>CookSpeed</workSpeedStat>
+    <requiredGiverWorkType>Cooking</requiredGiverWorkType>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_CookMeal</soundWorking>
+    <allowMixingIngredients>true</allowMixingIngredients>
+    <ingredientValueGetterClass>RimMandrake.Utinni.StickCuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
+    <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li>PlantFoodRaw</li>
+          </categories>
+        </filter>
+        <count>2.0</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RUT_Skewer</li>
+          </thingDefs>
+        </filter>
+        <count>4</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <disallowedCategories>
+        <li>MeatRaw</li>
+        <li>AnimalProductRaw</li>
+        <li MayRequire="vanillaexpanded.vplantse">VCE_Fruit</li>
+      </disallowedCategories>
+      <disallowedThingDefs>
+        <li>RawAgave</li>
+        <li>RawBerries</li>
+      </disallowedThingDefs>
+    </fixedIngredientFilter>
+    <defaultIngredientFilter>
+      <categories>
+        <li>PlantFoodRaw</li>
+      </categories>
+    </defaultIngredientFilter>
+    <products>
+      <RUT_VegOnAStick>4</RUT_VegOnAStick>
+    </products>
+    <workSkill>Cooking</workSkill>
+    <displayPriority>97</displayPriority>
+    <recipeUsers>
+      <li>Campfire</li>
+    </recipeUsers>
+  </RecipeDef>
+
+  <!-- Little meat -->
+  <RecipeDef ParentName="CookMealBase">
+    <defName>RUT_CookLittleMeatOnAStick</defName>
+    <label>cook a morsel of meat on a stick</label>
+    <description>Cook a morsel of meat over an open fire.</description>
+    <jobString>Cooking a morsel meat skewer.</jobString>
+    <workSpeedStat>CookSpeed</workSpeedStat>
+    <requiredGiverWorkType>Cooking</requiredGiverWorkType>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_CookMeal</soundWorking>
+    <allowMixingIngredients>true</allowMixingIngredients>
+    <ingredientValueGetterClass>RimMandrake.Utinni.StickCuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
+    <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li>MeatRaw</li>
+          </categories>
+        </filter>
+        <count>0.25</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RUT_Skewer</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <disallowedCategories>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">Fish</li>
+        <li>PlantFoodRaw</li>
+        <li>AnimalProductRaw</li>
+      </disallowedCategories>
+    </fixedIngredientFilter>
+    <products>
+      <RUT_LittleMeatOnAStick>1</RUT_LittleMeatOnAStick>
+    </products>
+    <workSkill>Cooking</workSkill>
+    <displayPriority>97</displayPriority>
+    <recipeUsers>
+      <li>Campfire</li>
+    </recipeUsers>
+  </RecipeDef>
+
+  <RecipeDef ParentName="CookMealBase">
+    <defName>RUT_CookLittleMeatOnAStick4</defName>
+    <label>cook a morsel of meat on a stick x4</label>
+    <description>Cook a morsel of meat over an open fire (x4).</description>
+    <jobString>Cooking 4 morsel meat skewers.</jobString>
+    <workAmount>760</workAmount>
+    <workSpeedStat>CookSpeed</workSpeedStat>
+    <requiredGiverWorkType>Cooking</requiredGiverWorkType>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_CookMeal</soundWorking>
+    <allowMixingIngredients>true</allowMixingIngredients>
+    <ingredientValueGetterClass>RimMandrake.Utinni.StickCuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
+    <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li>MeatRaw</li>
+          </categories>
+        </filter>
+        <count>1.0</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RUT_Skewer</li>
+          </thingDefs>
+        </filter>
+        <count>4</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <disallowedCategories>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">Fish</li>
+        <li>PlantFoodRaw</li>
+        <li>AnimalProductRaw</li>
+      </disallowedCategories>
+    </fixedIngredientFilter>
+    <products>
+      <RUT_LittleMeatOnAStick>4</RUT_LittleMeatOnAStick>
+    </products>
+    <workSkill>Cooking</workSkill>
+    <displayPriority>97</displayPriority>
+    <recipeUsers>
+      <li>Campfire</li>
+    </recipeUsers>
+  </RecipeDef>
+
+  <!-- Meat and vegetables -->
+  <RecipeDef ParentName="CookMealBase">
+    <defName>RUT_CookBlendedMeatOnAStick</defName>
+    <label>cook meat and veg on a stick</label>
+    <description>Cook meat and veg over an open fire.</description>
+    <jobString>Cooking meat and veg skewer.</jobString>
+    <workSpeedStat>CookSpeed</workSpeedStat>
+    <requiredGiverWorkType>Cooking</requiredGiverWorkType>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_CookMeal</soundWorking>
+    <allowMixingIngredients>true</allowMixingIngredients>
+    <ingredientValueGetterClass>RimMandrake.Utinni.StickCuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
+    <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li>MeatRaw</li>
+          </categories>
+        </filter>
+        <count>0.25</count>
+      </li>
+      <li>
+        <filter>
+          <categories>
+            <li>PlantFoodRaw</li>
+          </categories>
+        </filter>
+        <count>0.25</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RUT_Skewer</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <disallowedCategories>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">Fish</li>
+        <li>AnimalProductRaw</li>
+        <li MayRequire="vanillaexpanded.vplantse">VCE_Fruit</li>
+      </disallowedCategories>
+      <disallowedThingDefs>
+        <li>RawAgave</li>
+        <li>RawBerries</li>
+      </disallowedThingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RUT_BlendOnAStick>1</RUT_BlendOnAStick>
+    </products>
+    <workSkill>Cooking</workSkill>
+    <displayPriority>97</displayPriority>
+    <recipeUsers>
+      <li>Campfire</li>
+    </recipeUsers>
+  </RecipeDef>
+
+  <RecipeDef ParentName="CookMealBase">
+    <defName>RUT_CookBlendedMeatOnAStick4</defName>
+    <label>cook meat and veg on a stick x4</label>
+    <description>Cook meat and veg over an open fire (x4).</description>
+    <jobString>Cooking 4 meat and veg skewers.</jobString>
+    <workAmount>760</workAmount>
+    <workSpeedStat>CookSpeed</workSpeedStat>
+    <requiredGiverWorkType>Cooking</requiredGiverWorkType>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_CookMeal</soundWorking>
+    <allowMixingIngredients>true</allowMixingIngredients>
+    <ingredientValueGetterClass>RimMandrake.Utinni.StickCuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
+    <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li>MeatRaw</li>
+          </categories>
+        </filter>
+        <count>1.0</count>
+      </li>
+      <li>
+        <filter>
+          <categories>
+            <li>PlantFoodRaw</li>
+          </categories>
+        </filter>
+        <count>1.0</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RUT_Skewer</li>
+          </thingDefs>
+        </filter>
+        <count>4</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <disallowedCategories>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">Fish</li>
+        <li>AnimalProductRaw</li>
+        <li MayRequire="vanillaexpanded.vplantse">VCE_Fruit</li>
+      </disallowedCategories>
+      <disallowedThingDefs>
+        <li>RawAgave</li>
+        <li>RawBerries</li>
+      </disallowedThingDefs>
+    </fixedIngredientFilter>
+    <products>
+      <RUT_BlendOnAStick>4</RUT_BlendOnAStick>
+    </products>
+    <workSkill>Cooking</workSkill>
+    <displayPriority>97</displayPriority>
+    <recipeUsers>
+      <li>Campfire</li>
+    </recipeUsers>
+  </RecipeDef>
+
+  <!-- Fish -->
+  <RecipeDef MayRequireAnyOf="Ludeon.RimWorld.Odyssey,vanillaexpanded.vcef">
+    <defName>RUT_CookFishOnAStick</defName>
+    <label>cook fish on a stick</label>
+    <description>Cook fish over an open fire.</description>
+    <jobString>Cooking fish skewer.</jobString>
+    <workSpeedStat>CookSpeed</workSpeedStat>
+    <requiredGiverWorkType>Cooking</requiredGiverWorkType>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_CookMeal</soundWorking>
+    <allowMixingIngredients>true</allowMixingIngredients>
+    <ingredientValueGetterClass>RimMandrake.Utinni.StickCuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
+    <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li MayRequire="Ludeon.RimWorld.Odyssey">Fish</li>
+          </categories>
+        </filter>
+        <count>0.5</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RUT_Skewer</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <categories>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">Fish</li>
+      </categories>
+    </fixedIngredientFilter>
+    <defaultIngredientFilter>
+      <categories>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">Fish</li>
+      </categories>
+    </defaultIngredientFilter>
+    <products>
+      <RUT_FishOnAStick>1</RUT_FishOnAStick>
+    </products>
+    <workSkill>Cooking</workSkill>
+    <displayPriority>97</displayPriority>
+    <recipeUsers>
+      <li>Campfire</li>
+    </recipeUsers>
+  </RecipeDef>
+
+  <RecipeDef MayRequireAnyOf="Ludeon.RimWorld.Odyssey,vanillaexpanded.vcef">
+    <defName>RUT_CookFishOnAStick4</defName>
+    <label>cook fish on a stick x4</label>
+    <description>Cook fish over an open fire (x4).</description>
+    <jobString>Cooking 4 fish skewers.</jobString>
+    <workAmount>760</workAmount>
+    <workSpeedStat>CookSpeed</workSpeedStat>
+    <requiredGiverWorkType>Cooking</requiredGiverWorkType>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_CookMeal</soundWorking>
+    <allowMixingIngredients>true</allowMixingIngredients>
+    <ingredientValueGetterClass>RimMandrake.Utinni.StickCuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
+    <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li MayRequire="Ludeon.RimWorld.Odyssey">Fish</li>
+          </categories>
+        </filter>
+        <count>2.0</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RUT_Skewer</li>
+          </thingDefs>
+        </filter>
+        <count>4</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <categories>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">Fish</li>
+      </categories>
+    </fixedIngredientFilter>
+    <defaultIngredientFilter>
+      <categories>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">Fish</li>
+      </categories>
+    </defaultIngredientFilter>
+    <products>
+      <RUT_FishOnAStick>4</RUT_FishOnAStick>
+    </products>
+    <workSkill>Cooking</workSkill>
+    <displayPriority>97</displayPriority>
+    <recipeUsers>
+      <li>Campfire</li>
+    </recipeUsers>
+  </RecipeDef>
+
+  <!-- Fruit -->
+  <RecipeDef>
+    <defName>RUT_CookFruitOnAStick</defName>
+    <label>cook fruit on a stick</label>
+    <description>Cook fruit over an open fire.</description>
+    <jobString>Cooking fruit skewers.</jobString>
+    <workSpeedStat>CookSpeed</workSpeedStat>
+    <requiredGiverWorkType>Cooking</requiredGiverWorkType>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_CookMeal</soundWorking>
+    <allowMixingIngredients>true</allowMixingIngredients>
+    <ingredientValueGetterClass>RimMandrake.Utinni.StickCuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
+    <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li>PlantFoodRaw</li>
+          </categories>
+        </filter>
+        <count>0.5</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RUT_Skewer</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <categories>
+        <li MayRequire="vanillaexpanded.vplantse">VCE_Fruit</li>
+      </categories>
+      <thingDefs>
+        <li>RawAgave</li>
+        <li>RawBerries</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <defaultIngredientFilter>
+      <categories>
+        <li MayRequire="vanillaexpanded.vplantse">VCE_Fruit</li>
+      </categories>
+      <thingDefs>
+        <li>RawAgave</li>
+        <li>RawBerries</li>
+      </thingDefs>
+    </defaultIngredientFilter>
+    <products>
+      <RUT_FruitOnAStick>1</RUT_FruitOnAStick>
+    </products>
+    <workSkill>Cooking</workSkill>
+    <displayPriority>97</displayPriority>
+    <recipeUsers>
+      <li>Campfire</li>
+    </recipeUsers>
+  </RecipeDef>
+
+  <RecipeDef>
+    <defName>RUT_CookFruitOnAStick4</defName>
+    <label>cook fruit on a stick x4</label>
+    <description>Cook raw fruit over an open fire (x4).</description>
+    <jobString>Cooking 4 fruit skewers.</jobString>
+    <workAmount>760</workAmount>
+    <workSpeedStat>CookSpeed</workSpeedStat>
+    <requiredGiverWorkType>Cooking</requiredGiverWorkType>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_CookMeal</soundWorking>
+    <allowMixingIngredients>true</allowMixingIngredients>
+    <ingredientValueGetterClass>RimMandrake.Utinni.StickCuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
+    <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li>PlantFoodRaw</li>
+          </categories>
+        </filter>
+        <count>2</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RUT_Skewer</li>
+          </thingDefs>
+        </filter>
+        <count>4</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <categories>
+        <li MayRequire="vanillaexpanded.vplantse">VCE_Fruit</li>
+      </categories>
+      <thingDefs>
+        <li>RawAgave</li>
+        <li>RawBerries</li>
+      </thingDefs>
+    </fixedIngredientFilter>
+    <defaultIngredientFilter>
+      <categories>
+        <li MayRequire="vanillaexpanded.vplantse">VCE_Fruit</li>
+      </categories>
+      <thingDefs>
+        <li>RawAgave</li>
+        <li>RawBerries</li>
+      </thingDefs>
+    </defaultIngredientFilter>
+    <products>
+      <RUT_FruitOnAStick>4</RUT_FruitOnAStick>
+    </products>
+    <workSkill>Cooking</workSkill>
+    <displayPriority>97</displayPriority>
+    <recipeUsers>
+      <li>Campfire</li>
+    </recipeUsers>
+  </RecipeDef>
+
+  <!-- Fungus -->
+  <RecipeDef ParentName="CookMealBase">
+    <defName>RUT_CookFungusOnAStick</defName>
+    <label>cook mushroom on a stick</label>
+    <description>Cook mushrooms over an open fire.</description>
+    <jobString>Cooking mushroom skewer.</jobString>
+    <workSpeedStat>CookSpeed</workSpeedStat>
+    <requiredGiverWorkType>Cooking</requiredGiverWorkType>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_CookMeal</soundWorking>
+    <allowMixingIngredients>true</allowMixingIngredients>
+    <ingredientValueGetterClass>RimMandrake.Utinni.StickCuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
+    <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li>PlantFoodRaw</li>
+          </categories>
+        </filter>
+        <count>0.5</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RUT_Skewer</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <disallowedCategories>
+        <li>MeatRaw</li>
+        <li>AnimalProductRaw</li>
+      </disallowedCategories>
+    </fixedIngredientFilter>
+    <products>
+      <RUT_FungusOnAStick>1</RUT_FungusOnAStick>
+    </products>
+    <workSkill>Cooking</workSkill>
+    <displayPriority>97</displayPriority>
+    <recipeUsers>
+      <li>Campfire</li>
+    </recipeUsers>
+  </RecipeDef>
+
+  <RecipeDef ParentName="CookMealBase">
+    <defName>RUT_CookFungusOnAStick4</defName>
+    <label>cook mushroom on a stick x4</label>
+    <description>Cook mushrooms over an open fire (x4).</description>
+    <jobString>Cooking 4 mushroom skewers.</jobString>
+    <workAmount>760</workAmount>
+    <workSpeedStat>CookSpeed</workSpeedStat>
+    <requiredGiverWorkType>Cooking</requiredGiverWorkType>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_CookMeal</soundWorking>
+    <allowMixingIngredients>true</allowMixingIngredients>
+    <ingredientValueGetterClass>RimMandrake.Utinni.StickCuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
+    <ingredients>
+      <li>
+        <filter>
+          <categories>
+            <li>PlantFoodRaw</li>
+          </categories>
+        </filter>
+        <count>2.0</count>
+      </li>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RUT_Skewer</li>
+          </thingDefs>
+        </filter>
+        <count>4</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <disallowedCategories>
+        <li>MeatRaw</li>
+        <li>AnimalProductRaw</li>
+      </disallowedCategories>
+    </fixedIngredientFilter>
+    <products>
+      <RUT_FungusOnAStick>4</RUT_FungusOnAStick>
+    </products>
+    <workSkill>Cooking</workSkill>
+    <displayPriority>97</displayPriority>
+    <recipeUsers>
+      <li>Campfire</li>
+    </recipeUsers>
+  </RecipeDef>
+
+  <!-- Cooked (empty) sticks -->
+  <RecipeDef ParentName="CookMealBase">
+    <defName>RUT_CookEmptySkewer</defName>
+    <label>cook stick</label>
+    <description>Cook a stick over a fire.</description>
+    <jobString>Cooking stick.</jobString>
+    <workSpeedStat>CookSpeed</workSpeedStat>
+    <requiredGiverWorkType>Cooking</requiredGiverWorkType>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_CookMeal</soundWorking>
+    <allowMixingIngredients>true</allowMixingIngredients>
+    <ingredientValueGetterClass>RimMandrake.Utinni.StickCuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RUT_Skewer</li>
+          </thingDefs>
+        </filter>
+        <count>1</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <disallowedCategories>
+        <li>MeatRaw</li>
+        <li>AnimalProductRaw</li>
+        <li>PlantFoodRaw</li>
+      </disallowedCategories>
+    </fixedIngredientFilter>
+    <products>
+      <RUT_CookedSkewer>1</RUT_CookedSkewer>
+    </products>
+    <workSkill>Cooking</workSkill>
+    <displayPriority>97</displayPriority>
+    <recipeUsers>
+      <li>Campfire</li>
+    </recipeUsers>
+  </RecipeDef>
+
+  <RecipeDef ParentName="CookMealBase">
+    <defName>RUT_CookEmptySkewer4</defName>
+    <label>cook 4 sticks</label>
+    <description>Cook 4 sticks over a fire.</description>
+    <jobString>Cooking 4 sticks.</jobString>
+    <workAmount>760</workAmount>
+    <workSpeedStat>CookSpeed</workSpeedStat>
+    <requiredGiverWorkType>Cooking</requiredGiverWorkType>
+    <effectWorking>Cook</effectWorking>
+    <soundWorking>Recipe_CookMeal</soundWorking>
+    <allowMixingIngredients>true</allowMixingIngredients>
+    <ingredientValueGetterClass>RimMandrake.Utinni.StickCuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
+    <ingredients>
+      <li>
+        <filter>
+          <thingDefs>
+            <li>RUT_Skewer</li>
+          </thingDefs>
+        </filter>
+        <count>4</count>
+      </li>
+    </ingredients>
+    <fixedIngredientFilter>
+      <disallowedCategories>
+        <li>MeatRaw</li>
+        <li>AnimalProductRaw</li>
+        <li>PlantFoodRaw</li>
+      </disallowedCategories>
+    </fixedIngredientFilter>
+    <products>
+      <RUT_CookedSkewer>4</RUT_CookedSkewer>
+    </products>
+    <workSkill>Cooking</workSkill>
+    <displayPriority>97</displayPriority>
+    <recipeUsers>
+      <li>Campfire</li>
+    </recipeUsers>
+  </RecipeDef>
+
+  <!--
+    No ThingDef patch needed for Campfire/CraftingSpot: each RecipeDef's own
+    <recipeUsers> list above is the real wiring mechanism (RimWorld resolves
+    RecipeDef.recipeUsers -> the workbench's AllRecipes at startup) - the
+    same pattern both donor mods used, confirmed by reading their XML
+    directly. Redeclaring the vanilla Campfire/CraftingSpot ThingDefs here
+    (even meaning only to append) would risk discarding their real fields
+    the way a bare re-declaration does; not done.
+  -->
+
+</Defs>

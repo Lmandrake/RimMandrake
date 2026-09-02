@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Absorbed from badoaks.meatonastick.expansion per STICK_FOOD_INGEST_1. -->
+<Defs>
+
+  <ThoughtDef>
+    <defName>RUT_AteEmptySkewer</defName>
+    <showBubble>true</showBubble>
+    <icon>Things/Mote/ThoughtSymbol/Food</icon>
+    <durationDays>1</durationDays>
+    <stages>
+      <li>
+        <label>ate an empty skewer</label>
+        <description>I ate a cooked stick with no meat or vegetables. In just what direction is my life going...?</description>
+        <baseMoodEffect>-6</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+</Defs>

@@ -14,7 +14,67 @@ in-house (no license found — do not copy BadOaks art). Then both retire.
 `chrisb_` prefix inside the expansion suggests a third author's stick def is
 embedded — check attribution before reusing that name shape.
 
+## 2026-09-02 (FOUNDRY) — ported under RUT_, art deliberately not copied
+
+Built `mandrake.rut.stickcuisine` (`src/RimUtinni/StickCuisine/`), per this
+item's own scoping above: RUT_ prefix, RimUtinni tier. Ported both donor
+mods' full content:
+
+- 9 ThingDefs (`RUT_Skewer` + 8 meal variants: meat/veg/fungus/little/blend/
+  fish/fruit/cooked-empty), all `ParentName="MealCookedIngredientless"` or
+  `"ResourceBase"` (real vanilla Core abstracts, confirmed on disk before
+  use).
+- 17 RecipeDefs (base mod's 2 + expansion's 15, incl. the skewer-crafting
+  recipe and every ×4 bulk variant), wired via each `RecipeDef`'s own
+  `<recipeUsers>` (Campfire/CraftingSpot) — **not** a re-declared vanilla
+  ThingDef patch, which would have silently discarded Campfire's real
+  fields. Caught and removed a first-draft mistake that did exactly that
+  before it shipped.
+- 1 ThoughtDef (`RUT_AteEmptySkewer`).
+- Two small C# hooks (`RimMandrake.Utinni.StickCuisine`): `NameGenComp` is a
+  direct port of the base mod's own shipped `Source/MeatOnAStick_Naming/
+  NameGenComp.cs` ("Roasted X" label transform). `IngredientValueGetter_
+  ExcludeSkewer` is FOUNDRY's own reconstruction of the expansion's
+  un-sourced `MOAS_Expansion.IngredientValueGetter_MeatlessStick` (compiled
+  DLL only, no `Source/` shipped) — inferred intent (zero out the skewer's
+  nutrition contribution so it doesn't skew product-count math), not a
+  byte-for-byte decompile. Flagged in the file's own header.
+
+**Art**: NOT copied, per this item's own instruction (no license found on
+either donor mod). Textures folders exist but are empty; both `ThingDef`s
+and the loose PNGs were briefly copied in an early draft of this pass and
+then deliberately removed once this note's own earlier text was re-read —
+in-house sprite regeneration (`generating-rimworld-sprites` skill) is
+separate, still-owed work.
+
+`dotnet build`: 0 warnings/errors. `validate_patch.py`: 0 errors, 9 advisory
+warnings (all missing-texPath, expected and correctly non-fatal — the art
+gap is real, not a validator false positive this time). Deployed file-copy
+only, not enabled in ModsConfig, no restart, no live proof.
+
+**Recipe-discovery gating, a judgment call**: `high_cuisine_deep_design.md`
+§8 (recipe-discovery) is a big, not-yet-built system (physical cookbooks,
+rumors, district visits). §1's ruling table calls stick food "basic stuff"
+at the START of the progression, and both donor mods themselves unlock at
+the Campfire immediately, no research/discovery gate at all. FOUNDRY read
+"inside the recipe-discovery tree" as *belongs to that content family*, not
+*gated behind the not-yet-built discovery mechanism* — these recipes stay
+immediately available, matching the donors' own design and the "basic
+stuff" framing. Flagging this interpretation explicitly in case the owner
+meant something stricter.
+
+**`chrisb_` prefix note**: not independently re-investigated this pass: the
+expansion's own stick-craft def/recipe (`chrisb_moas_sticks`/
+`chrisb_Craft_moas_sticks`) used that prefix; our port renamed both to
+`RUT_Skewer`/`RUT_CraftSkewers`, so the attribution question this item
+raised no longer has a load-bearing defName riding on it, but the original
+donor mod's own author credit (if any) hasn't been separately verified.
+
 ## criteria
-- [ ] All stick foods reachable in our own mod; both badoaks mods retired
-      from the full list with a clean cold load; no cast/thought references
-      left dangling.
+- [ ] All stick foods reachable in our own mod — **defs done**, art still
+      owed (in-house regeneration), live spawn/cook proof still owed.
+- [ ] Both badoaks mods retired from the full list with a clean cold load —
+      not started; retirement is explicitly a LATER step per the owner's own
+      "jettison eventually" framing, not this pass's job.
+- [ ] No cast/thought references left dangling — not yet checked against a
+      live game (needs the retirement step first to even be testable).
