@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T03:59:29Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-02T04:01:57Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -285,7 +285,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-summary:  Retire ALL remaining third-party Star Wars donor mods
+summary:  STARWARSDONORSUNSET1 — retire the remaining third-party Star Wars donors
 prose:    infrastructure/state/items/STARWARS_DONOR_SUNSET_1.md
 
 # BLOCKED — something is WRONG and someone must act
