@@ -25,7 +25,7 @@ Verdicts and the owner's notes, verbatim (frozen source: `design/Jawa/worldbuild
 | entrapment-hediff | v1 | amazing defensibility of difficult areas, to be used by deep desert tribes and other primitives |
 | sinking-render | v2→**v1** | — |
 | stratified-dig-sites | v2→**v1** | Superb! The loot table is the fun part. Draw from fossils but also sealed alien eggs, technology, dead bodies with equipment intact, and story-rich objects. And of course Assailant and Forgotten Arsenal aspects. |
-| canal-flow-engineering | v2→**v1** | Don't make it finite, just make it slow to refill. This mechanic of fillable ooze will come in handy later. *(an earlier save this sitting also ruled this a GENERAL RimMandrake-tier mechanic — filed as FLUID_CANAL_MECHANIC_1)* |
+| canal-flow-engineering | v2→**v1** | Don't make it finite, just make it slow to refill. This mechanic of fillable ooze will come in handy later. *(✅ RimMandrake-tier promotion CONFIRMED by question card 2026-09-02 — FLUID_CANAL_MECHANIC_1 stands as the general fluid/canal mod, tar its first client)* |
 | flood-and-ignite | v2→**v1** | Not kill outright, just burns like normal fire. But yes, toxic thick smoke that obscures and produces coughing and stinging eyes and stink. |
 | tar-moats | dream→**v1** | nope, this is in! Pawns with goals inside a region make the call to go across it, while if there's any way around it they do so. |
 | tar-creatures | dream→**v1** | Very star wars to reveal that a tar pit harbors a huge creature that not only thrives in tar but actually excretes it as a biological outcome. If captured, continues to do so at a very slow rate (not magical, very slow). However, even pits without one of these creatures still fill trenches and such from the tar sources deep underground. |

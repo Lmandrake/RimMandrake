@@ -1,9 +1,7 @@
 <!-- status: REDESIGNED per the owner's 2026-09-02 sheet ruling (SKYHOOK_BESPIN_REDESIGN_1). The original space-elevator premise is dead; this file now describes repulsorlift high-altitude stations. Filename kept for link stability; the in-fiction rename below awaits the owner's word. -->
 # Repulsor spires — high-altitude stations on a world where nothing hangs in the sky
 
-⚠️ **"Repulsor spire" is a WORKING NAME invented by BENCH** — the owner ruled
-"we need to rename these" without choosing a name. His yes (or his name)
-lands here.
+✅ **"Repulsor Spires" RULED as the name** (owner, 2026-09-02, question card).
 
 **The ruling that remade this doc (owner, 2026-09-02, verbatim):** *"Skyhooks
 in this context can no longer be traditional space elevator type geostationary

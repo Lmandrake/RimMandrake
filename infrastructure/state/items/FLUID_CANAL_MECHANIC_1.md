@@ -111,3 +111,10 @@ reservoir demonstrably floods open ground with water over time from a
 finite volume, live-observed via the bridge — proving the general mechanism
 the owner asked for, with tar (and the rest of the fluid roster) explicitly
 left as the next item's job, not this one's.
+# FLUID_CANAL_MECHANIC_1 — tier confirmed (owner question card, 2026-09-02)
+
+RimMandrake-tier promotion STANDS despite the final sheet save's softer note:
+build as the general fluid/canal mod (water, ooze, slime, oil, tar, propane),
+tar its first client. Second ruling folded in from the sheet's final save:
+reservoirs are NOT finite — slow refill from deep sources; scarcity is rate,
+not stock.

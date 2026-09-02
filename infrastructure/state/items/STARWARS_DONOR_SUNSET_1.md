@@ -114,3 +114,15 @@ means porting, not regenerating.
 2. Wampa and Acklay were cited in required_mods.md as adoption reasons but
    have NO functional wiring in the cast — design intent never landed;
    decide wire-them-in vs let-them-drop rather than silently losing them.
+
+## Owner rulings via question cards, 2026-09-02 (BENCH)
+
+- **Lightsaber (`lee.theforce.lightsaber`): STAYS UPSTREAM** — the 2026-08-30
+  ruling reconfirmed; it is OUT of this ticket's scope. Do not absorb, do not
+  retire.
+- **Nuna collision: port Mlie's under a NEW name and keep both** — Mlie's
+  version becomes a distinct RUT_-prefixed species alongside vanilla Core's
+  Nuna; the collision dissolves in the port.
+- **Wampa + Acklay: WIRE THEM IN** — port both and give them real cast slots
+  (Wampa night-side; Acklay wherever fits), honoring the original adoption
+  intent that never landed.
