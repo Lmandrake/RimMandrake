@@ -201,6 +201,16 @@ live-verified (needs a forced-aurora dev-tool look, same as the rest of this
 item's verify list — see (b) above; add "and does it visibly read as
 maximized brightness/color, not just vanilla" to that live check).
 
+## 2026-09-02 — correction (FOUNDRY, code review before commit)
+
+The fork's first draft multiplied the lerped color by `glow` (floored at
+`MaxSunGlow=0.5f`) — that DIMS the color below vanilla's own 0.73 brightness
+floor at night, the opposite of "maximized brightness." Fixed: the color
+lerp is now unscaled (full strength, matching "maximized"); only the
+separate `glow:` parameter (the sky-glow/sight-range term, distinct from
+the color multiplier) stays floored at `MaxSunGlow`. Rebuilt, still 0
+warnings/0 errors.
+
 No other RULED-table line changed anything already built: terminator-storms'
 note ("weak shields protect you eventually") is a v2/tech-ladder remark, not
 a v1 requirement; forecasting-ladder's note ("one or maybe two tiers... the

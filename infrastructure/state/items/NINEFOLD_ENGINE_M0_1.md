@@ -55,3 +55,34 @@ exists yet... whichever mod the engine build lands in, name TBD") — that
 item can now target `mandrake.rm.ninefold`'s `Source/` directly.
 
 Left `doing`, not closed.
+
+## 🔴 LIVE WRITE COLLISION, 2026-09-02 — DO NOT BUILD OR COMMIT `Source/` UNTIL RESOLVED
+
+A FOUNDRY-dispatched subagent found TWO independent, concurrent, uncommitted
+implementations of the five event hooks sitting in
+`src/RimMandrake/Ninefold/Source/` at the same time, both wiring a Harmony
+instance with the SAME id `mandrake.rm.ninefold`:
+
+- **Convention A** (top-level files, ~15:30-15:32): `NinefoldMod.cs`
+  (`[StaticConstructorOnStartup]`, `harmony.PatchAll(...)`),
+  `EventMagnitude.cs`, and five `Patch_*.cs` files
+  (`Patch_BuildingDeconstructed`, `Patch_MentalBreakStarted`,
+  `Patch_ResearchCompleted`, `Patch_BirthOutcome`, `Patch_BuildingRepaired`).
+- **Convention B** (`Hooks/` subfolder, ~15:33): `NinefoldHarmonyInit.cs`
+  (also `[StaticConstructorOnStartup]`, also `new Harmony("mandrake.rm.ninefold")`)
+  + `NinefoldEventHooks.cs`, apparently covering the same five choke points.
+
+If both land, the same Harmony id patches the same methods twice — every
+hook fires twice per event (double satiation deltas on every
+birth/mental-break/research/deconstruct/repair). `Ninefold.csproj` and
+`GameComponent_Ninefold.cs` are also mid-edit, uncommitted, presumably by
+whichever side is wiring the surviving convention in.
+
+**Nobody has touched or deleted either side.** Per this project's own
+"don't delete suspected duplicates mid-flight" rule, resolving this needs
+whoever owns each side (or BENCH/owner, since this is two seats' work
+colliding) to pick ONE convention, delete the other, confirm
+`Ninefold.csproj` lists each surviving file exactly once, and do a clean
+build before anyone calls the event-hook slice done. **Do not build, deploy,
+or commit anything under `Ninefold/Source/` until this is settled** — a
+build right now tests an inconsistent, half-landed tree and proves nothing.

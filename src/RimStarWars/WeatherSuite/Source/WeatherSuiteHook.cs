@@ -198,6 +198,44 @@ namespace RimMandrake.StarWars.WeatherSuite
         }
     }
 
+    // Owner's ruling (design doc's RULED table, saved 2026-09-02 — AFTER
+    // this file's original v1 build on 2026-09-01): "use the Aurora graphic
+    // effect but maximized in brightness and color. It should be awesome!"
+    // Vanilla GameCondition_Aurora's palette/strength/brightness are
+    // hardcoded PRIVATE consts (Colors[], SkyColorStrength = 0.075f,
+    // OverlayColorStrength = 0.025f, BaseBrightness = 0.73f — RimSage,
+    // GameCondition_Aurora.cs) with no XML hook to raise them, so honoring
+    // the ruling needs this one small subclass rather than a def tweak.
+    // Reuses everything else from the base class unchanged (color cycling,
+    // ExposeData, mood/sight-range plumbing via SkyTarget's glow) and only
+    // overrides SkyTarget() to push color and brightness to their maximum:
+    // full color saturation (lerp factor 1.0 instead of 0.075/0.025),
+    // NOT scaled down by the base class's Brightness()/glow multiplier —
+    // 🔴 an earlier draft multiplied the lerped color by `glow` (floored at
+    // MaxSunGlow=0.5), which actually DIMS it below vanilla's own 0.73
+    // brightness floor at night — the opposite of "maximized". Color stays
+    // unscaled (full strength) here; only the `glow:` parameter itself
+    // (the separate sky-glow/sight-range term) is floored at MaxSunGlow.
+    public class GameCondition_DarkAuroraMax : GameCondition_Aurora
+    {
+        public override SkyTarget? SkyTarget(Map map)
+        {
+            if (map.GameConditionManager.IsAlwaysDarkOutside) return null;
+
+            Color currentColor = CurrentColor;
+            float glow = Mathf.Max(GenCelestial.CurCelestialSunGlow(map), MaxSunGlow);
+            return new SkyTarget(
+                colorSet: new SkyColorSet(
+                    Color.Lerp(Color.white, currentColor, 1f),
+                    new Color(0.92f, 0.92f, 0.92f),
+                    Color.Lerp(Color.white, currentColor, 1f),
+                    1f),
+                glow: glow,
+                lightsourceShineSize: 1f,
+                lightsourceShineIntensity: 1f);
+        }
+    }
+
     // Reuses vanilla IncidentWorker_Aurora wholesale (same darkness/timing
     // gating, same "will it end soon" check) and adds exactly one more
     // requirement: at least one player-home map sits in the geometry def's
