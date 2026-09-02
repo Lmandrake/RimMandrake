@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- The one fluid this v1 slice ships, chosen to prove genericity: reuses
+       vanilla's own WaterShallow terrain verbatim (real swim/extinguish/
+       freeze behavior, zero new art). Tar and the rest of the owner's named
+       roster (ooze, slime, oil, propane) are deliberately NOT authored here;
+       they are Utinni-tier content and belong in their own client mod once
+       this engine is live-proven, per this item's own scope note. -->
+  <RimMandrake.FluidCanals.FluidDef>
+    <defName>RM_Fluid_Water</defName>
+    <label>water</label>
+    <fullTerrain>WaterShallow</fullTerrain>
+    <volumePerTile>1</volumePerTile>
+  </RimMandrake.FluidCanals.FluidDef>
+
+</Defs>

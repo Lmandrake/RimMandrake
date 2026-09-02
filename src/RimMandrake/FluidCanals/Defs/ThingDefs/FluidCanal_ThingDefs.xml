@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- Invisible driver thing, same shape as vanilla SeasonalFlood and
+       TorrentialRainFlood: an ethereal Thing whose thingClass IS the
+       Flood subclass doing the spreading. -->
+  <ThingDef ParentName="EtherealThingBase">
+    <defName>RM_FluidCanalFlood</defName>
+    <category>Ethereal</category>
+    <drawerType>None</drawerType>
+    <selectable>false</selectable>
+    <thingClass>RimMandrake.FluidCanals.Flood_FluidCanal</thingClass>
+    <tickerType>Normal</tickerType>
+    <useHitPoints>false</useHitPoints>
+  </ThingDef>
+
+  <!-- v1 TEST source only: a placeable, indestructible marker building
+       that feeds one reservoir of water into whatever canal reaches it.
+       A real campaign-facing source (a spring, a tar seep, a pipe joint)
+       is content-mod territory, not this engine's job; flagged in the
+       item file as a deliberate placeholder, not a finished feature. -->
+  <ThingDef ParentName="BuildingBase">
+    <defName>RM_FluidSpring_Test</defName>
+    <label>test fluid spring</label>
+    <description>A v1 test-only marker. Feeds one reservoir of water into any canal that reaches it, then goes inert. Not a finished piece of content -- a real spring/seep/pipe-joint building belongs to a content mod built on this engine.</description>
+    <thingClass>Building</thingClass>
+    <category>Building</category>
+    <graphicData>
+      <texPath>Things/Building/Misc/DropBeacon</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+    </graphicData>
+    <size>(1,1)</size>
+    <passability>PassThroughOnly</passability>
+    <fillPercent>0.2</fillPercent>
+    <altitudeLayer>Building</altitudeLayer>
+    <useHitPoints>true</useHitPoints>
+    <statBases>
+      <MaxHitPoints>100</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Beauty>0</Beauty>
+    </statBases>
+    <selectable>true</selectable>
+    <neverMultiSelect>false</neverMultiSelect>
+    <comps>
+      <li Class="RimMandrake.FluidCanals.CompProperties_FluidReservoir">
+        <fluidDef>RM_Fluid_Water</fluidDef>
+        <volume>60</volume>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

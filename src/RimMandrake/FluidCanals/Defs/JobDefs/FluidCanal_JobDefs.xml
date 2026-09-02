@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <JobDef>
+    <defName>RM_DigCanalJob</defName>
+    <driverClass>RimMandrake.FluidCanals.JobDriver_DigCanal</driverClass>
+    <reportString>digging a canal.</reportString>
+    <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+  </JobDef>
+
+</Defs>

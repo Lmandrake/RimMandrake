@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- Empty, dug channel. Reuses Gravel's own texture (a freshly-turned,
+       stony-soil look); no bespoke art this pass, stated plainly per this
+       item's own scope note. Walkable, passable, not water, so vanilla's
+       own Flood.CanFloodPotentiallySpreadInto treats it as open ground a
+       flood can travel through. -->
+  <TerrainDef ParentName="NaturalTerrainBase">
+    <defName>RM_Channel_Empty</defName>
+    <label>dug channel</label>
+    <description>An empty channel, dug to carry whatever a reservoir feeds into it.</description>
+    <texturePath>Terrain/Surfaces/Gravel</texturePath>
+    <renderPrecedence>325</renderPrecedence>
+    <fertility>0</fertility>
+    <pathCost>6</pathCost>
+    <natural>true</natural>
+    <edgeType>FadeRough</edgeType>
+    <scatterType>Rocky</scatterType>
+    <affordances>
+      <li>Walkable</li>
+      <li>Light</li>
+      <li>Diggable</li>
+    </affordances>
+    <tags>
+      <li>Soil</li>
+    </tags>
+    <statBases>
+      <Beauty>-2</Beauty>
+    </statBases>
+  </TerrainDef>
+
+</Defs>

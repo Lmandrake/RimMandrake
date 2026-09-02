@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimMandrake Fluid Canals</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.rm.fluidcanals</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Dig a channel, let a fluid flow into it: a species- and
+biome-agnostic engine for canals that carry water, ooze, slime, oil, tar or
+fuel from a source into the terrain a colonist chooses.
+
+v1 slice (owner-ruled, 2026-09-01, "general RimMaster level" scope, promoted
+out of the tar-pits proposal's canal-flow-engineering row): dig a canal
+(`Designator_DigCanal`, a labor job on diggable soil), a `FluidDef` describing
+what a source carries, a `CompFluidReservoir` that seeds a flood once a canal
+reaches it, and `Flood_FluidCanal` (a `RimWorld.Flood` subclass — Odyssey's
+own flood-spread engine, reused rather than reinvented) that fills adjacent
+open ground with the fluid's terrain until the reservoir runs dry. Water is
+the one fluid shipped this pass, proving genericity; tar (the pass's own
+inspiration) is deliberately NOT included here — it is Utinni-tier content
+and belongs in its own client mod once this engine is live-proven.
+
+Deliberately smaller than the full canal vision: no elevation-driven grade
+(maps carry none yet), no custom fire subclass (vanilla ignition already
+works on any flammable terrain, so a fluid with flammability &gt; 0 needs
+nothing extra), no channel-only flow constraint (this pass floods outward
+across open passable ground from a canal-fed source, the same way vanilla's
+own SeasonalFlood does, not strictly along a dug channel — a v2 refinement).
+Requires Odyssey (Flood is Odyssey-gated in the base game).</description>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+    <li>
+      <packageId>Ludeon.RimWorld.Odyssey</packageId>
+      <displayName>RimWorld - Odyssey</displayName>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+    <li>Ludeon.RimWorld.Odyssey</li>
+  </loadAfter>
+</ModMetaData>

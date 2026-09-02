@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <WorkGiverDef>
+    <defName>RM_DigCanalWorkGiver</defName>
+    <label>dig canals</label>
+    <giverClass>RimMandrake.FluidCanals.WorkGiver_DigCanal</giverClass>
+    <workType>Mining</workType>
+    <verb>dig</verb>
+    <gerund>digging a canal</gerund>
+    <priorityInType>20</priorityInType>
+    <scanCells>true</scanCells>
+    <scanThings>false</scanThings>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+
+</Defs>

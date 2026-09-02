@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Ludeon.RimWorld</li>
+    </mods>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/DesignationCategoryDef[defName="Orders"]/specialDesignatorClasses</xpath>
+      <value>
+        <li>RimMandrake.FluidCanals.Designator_DigCanal</li>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>

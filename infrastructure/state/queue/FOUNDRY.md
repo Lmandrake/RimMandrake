@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T03:01:58Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-02T03:10:30Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -258,7 +258,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-summary:  (no items/FLUID_CANAL_MECHANIC_1.md yet — write one when you have something to say)
+summary:  FLUIDCANALMECHANIC1 — general canal/fluid-flow mechanic, RimMandrake tier
 prose:    infrastructure/state/items/FLUID_CANAL_MECHANIC_1.md
 
 # BLOCKED — something is WRONG and someone must act
