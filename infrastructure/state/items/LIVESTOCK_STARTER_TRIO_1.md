@@ -99,3 +99,31 @@ Smallest safe next increment once unblocked: karrask alone, XML-only
 NOT wearable armor), additive-only filenames, ~1 hour. Onnik's comp is a
 separate half-day pass. Final sprite art stays deferred per the doc's own
 palette-pass sequence.
+
+## 2026-09-02 — karrask built (concurrent collision), onnik/moornak still 0/3
+
+**Karrask is now structurally built** (`Defs/ThingDefs_Animals/ThingDefs_Karrask.xml`,
+`Defs/PawnKindDefs/PawnKindDefs_Karrask.xml`, `Defs/RecipeDefs/RecipeDefs_Karrask.xml`
+— all currently untracked, not yet committed by whoever wrote them): natural
+armor via ArmorRating stats, a `WorkToMake` stuff-property factor for
+"easy to work," a Crafting-gated cure recipe at tailoring benches.
+`validate_patch.py` clean except 6 expected `texPath` errors (no production
+sprite yet, only the owner-picked mockup). ⚠️ **A FOUNDRY-dispatched agent
+independently building the same karrask defs collided with whoever wrote
+the files above** — two workers targeted this item's same files at the same
+time; the agent's own content was overwritten mid-pass and it correctly did
+not revert the surviving (more complete) version, only removed one
+now-orphaned file of its own that would have duplicate-defName-collided
+(`ThingDefs_Items/ThingDefs_KarraskMaterials.xml`, never committed, no repo
+history to worry about).
+
+**Onnik's next increment, scoped**: a new custom `ThingComp` for the
+3-dose kiln-cycle feed mechanic (spaced doses over a day, cools/resets if
+underfed >1 day, mis-feed produces cracked/worthless ceramic) — one new
+comp, no new job type, follow this mod's existing comp-authoring pattern
+(`CompLightAversion.cs`). Medium build, roughly comparable in size to
+karrask's own pass.
+
+**Moornak stays blocked** on the same scope question raised above (this
+item's spec vs. the design doc's later, materially richer owner ruling) —
+not re-litigated here, still needs a call before anyone writes code for it.
