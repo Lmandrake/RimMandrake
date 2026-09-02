@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T17:03:38Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-02T19:17:41Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -39,29 +39,29 @@ prose:    infrastructure/state/items/SW_SEA_MONSTERS_ART_1.md
 ## BRIDGE_INVENTORY_TRANSFER_REFUSES_ALL_1 jawa/inventory_transfer refuses to add ANY item to ANY pawn's inventory on the live 592-mod list
 state:    doing
 row:      unassigned
-needs:    bridge
+needs:    deploy
 target:   v1
 kind:     fix
-summary:  jawa/inventorytransfer (mode=add) refused every attempt this session:
+summary:  🔴 SUPERSEDED — read "CAUSE PROVEN LIVE" at the bottom of this file first. The
 prose:    infrastructure/state/items/BRIDGE_INVENTORY_TRANSFER_REFUSES_ALL_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
-⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
-
-## SPAWN_PAWN_SUBSTITUTES_VANILLA_KIND_1 jawa/spawn_pawn reports 2/2 of the kind asked for and delivers one vanilla Colonist
-state:    ready  (BLOCKED)
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     bug
-blocked:  Tool read-back proven live on 480 spawns; remaining unknown is WHICH of 5 Harmony patches, needs a mod-disable bisect with a game restart per candidate (~1000 spawns per cell at the real 0.8% rate)
-summary:  SPAWNPAWNSUBSTITUTESVANILLAKIND1 — "Spawned 2/2" delivered one of something else
-prose:    infrastructure/state/items/SPAWN_PAWN_SUBSTITUTES_VANILLA_KIND_1.md
+_none._
 
 # WAITING ON A WINDOW — nothing is wrong
 
-_none._
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+
+## SPAWN_PAWN_SUBSTITUTES_VANILLA_KIND_1 jawa/spawn_pawn reports 2/2 of the kind asked for and delivers one vanilla Colonist
+state:    ready
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     bug
+waiting:  needs `deploy`, game is DOWN
+summary:  SPAWNPAWNSUBSTITUTESVANILLAKIND1 — "Spawned 2/2" delivered one of something else
+prose:    infrastructure/state/items/SPAWN_PAWN_SUBSTITUTES_VANILLA_KIND_1.md
 
 # NOT THIS TARGET
 
@@ -77,6 +77,16 @@ row:      unassigned
 needs:    owner
 target:   v1
 kind:     task
-thin:     no ## criteria
+thin:     spec, verify and criteria all present
 summary:  Layer stack: design/Jawa/researchnormalizationprinciples.md (why) →
 prose:    infrastructure/state/items/RESEARCH_TREE_NORMALIZATION_1.md
+
+## CORRECT_COLD_LOAD_1 Deploy batch in COLD_LOAD_RUN_SHEET_2 ran clean at the 2026-09-02 game-DOWN signal, still marked staged/undeployed
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/CORRECT_COLD_LOAD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/CORRECT_COLD_LOAD_1.md
