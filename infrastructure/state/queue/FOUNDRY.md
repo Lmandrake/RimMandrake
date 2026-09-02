@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-01T23:32:01Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-02T00:01:34Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -259,4 +259,24 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-_none._
+Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
+
+## JAWA_PAWN_FLAVOR_PATCH_REGRESSION_1 Jawa Pawn Flavor: 123 PatchOperationRemove failures on the live 591/592-mod load
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     fix
+thin:     spec, verify and criteria all present
+summary:  harvestlog.py's "patch operations failed" standing check read 128
+prose:    infrastructure/state/items/JAWA_PAWN_FLAVOR_PATCH_REGRESSION_1.md
+
+## BRIDGE_INVENTORY_TRANSFER_REFUSES_ALL_1 jawa/inventory_transfer refuses to add ANY item to ANY pawn's inventory on the live 592-mod list
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     fix
+thin:     spec, verify and criteria all present
+summary:  jawa/inventorytransfer (mode=add) refused every attempt this session:
+prose:    infrastructure/state/items/BRIDGE_INVENTORY_TRANSFER_REFUSES_ALL_1.md
