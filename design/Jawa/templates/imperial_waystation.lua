@@ -1,4 +1,7 @@
--- imperial_waystation.lua - "The Imperial Waystation" (structure_injection_
+-- imperial_waystation.lua - MIN_RECT: 9x6 (ctx:refuse below this; see
+-- dead_beacon.lua's own header for why this line exists at all - a
+-- template's required canvas is otherwise recorded nowhere).
+-- "The Imperial Waystation" (structure_injection_
 -- roster.md PROMISE #21, RimUtinni tier, Ozzik): a modular prefab outpost
 -- along an old Imperial road, its stores still intact - unlike a ruin, this
 -- one was left in working order. "loot and statecraft hooks; pursuit heat

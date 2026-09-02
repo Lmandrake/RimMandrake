@@ -1,4 +1,7 @@
--- bantha_graveyard.lua - "The Bantha Graveyard" (structure_injection_roster.md
+-- bantha_graveyard.lua - MIN_RECT: none - scatter-only with a center
+-- fallback, safe at any rect >=1x1 (see dead_beacon.lua's own header for
+-- why this line exists at all).
+-- "The Bantha Graveyard" (structure_injection_roster.md
 -- PROMISE #15, RimStarWars tier, Oomo): a herd's old bone-ground - horns and
 -- hide left behind over many seasons, not a single kill site. "ivory and
 -- calm; herds return in season - hunt or shepherd" - the roster's own line

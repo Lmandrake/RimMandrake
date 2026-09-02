@@ -1,4 +1,6 @@
--- monument.lua - "The Monument" (structure_injection_roster.md PROMISE #8,
+-- monument.lua - MIN_RECT: 2x2 (ctx:refuse below this; see dead_beacon.lua's
+-- own header for why this line exists at all).
+-- "The Monument" (structure_injection_roster.md PROMISE #8,
 -- RimUtinni tier, Ozzik): a half-buried colossus and its plaza. "pride on
 -- claiming it; the pride-meter knows" - a single centerpiece statue, not a
 -- building, matching the roster's "colossus icon" read: this is a landmark

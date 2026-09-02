@@ -1,4 +1,7 @@
--- broken_ring.lua - "The Broken Ring" (structure_injection_roster.md
+-- broken_ring.lua - MIN_RECT: none - terrain-led with a center fallback,
+-- safe at any rect >=1x1 (see dead_beacon.lua's own header for why this
+-- line exists at all).
+-- "The Broken Ring" (structure_injection_roster.md
 -- PROMISE #20, RimUtinni tier, Zizzik): a segment of some orbital
 -- structure, fallen and half-fused into the ground, still carrying rich
 -- tech scrap. "everything salvaged from it carries his spark for a season."

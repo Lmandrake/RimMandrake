@@ -1,4 +1,8 @@
--- dead_beacon.lua - "The Dead Beacon" (structure_injection_roster.md
+-- dead_beacon.lua - MIN_RECT: 5x5 (below this, ctx:refuse fires, tested and
+-- correct - see design/Jawa/worldbuilding/structure_injection_roster.md's
+-- own TILE_STRUCTURE_REVIEW_SAVE_1 finding: nothing else records this, so
+-- whoever exports/wires this template must respect this number by hand).
+-- "The Dead Beacon" (structure_injection_roster.md
 -- PROMISE #14, RimUtinni tier, Ishko vs Sh'kaar): a small lamp-room, cold
 -- and unpowered. "light the dark and see what answers" - "relighting it is
 -- a CHOICE" per the roster's own line: this template deliberately does NOT

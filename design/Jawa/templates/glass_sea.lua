@@ -1,4 +1,7 @@
--- glass_sea.lua - "The Glass Sea" (structure_injection_roster.md PROMISE #16,
+-- glass_sea.lua - MIN_RECT: none - pure terrain paint plus a center-fallback
+-- chunk, safe at any rect >=1x1 (see dead_beacon.lua's own header for why
+-- this line exists at all).
+-- "The Glass Sea" (structure_injection_roster.md PROMISE #16,
 -- RimUtinni tier, Sh'kaar): a stretch of fused sand, mirror-flat and blinding.
 -- "solar output soars; so does exposure" - a pure terrain read, no props, no
 -- walls/rooms - the simplest promise in this batch by design (the roster's

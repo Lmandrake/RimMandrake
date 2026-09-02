@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T16:21:09Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: BENCH
+as-of: 2026-09-02T16:25:12Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -80,3 +80,13 @@ kind:     task
 thin:     no ## criteria
 summary:  Layer stack: design/Jawa/researchnormalizationprinciples.md (why) →
 prose:    infrastructure/state/items/RESEARCH_TREE_NORMALIZATION_1.md
+
+## TEMPLATE_CANVAS_UNDECLARED_1 A rimplace template's required canvas size lives nowhere machine-readable, only in ad-hoc header comments and a runtime ctx:refuse
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     spec, verify and criteria all present
+summary:  Pick and build ONE real mechanism (not a comment convention) for a template
+prose:    infrastructure/state/items/TEMPLATE_CANVAS_UNDECLARED_1.md
