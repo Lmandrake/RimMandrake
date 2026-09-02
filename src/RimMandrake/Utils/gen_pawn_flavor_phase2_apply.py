@@ -51,6 +51,20 @@ Every def-write group is wrapped in PatchOperationFindMod on the owning mod's
 DISPLAY NAME (dump field "modName" - PatchOperationFindMod's <mods> list is
 matched against ModMetaData.Name, never packageId; see build_groups()'s
 2026-09-02 correction note), except ludeon.rimworld (Core, never inactive).
+
+CORRECTED 2026-09-02 (PAWN_FLAVOR_STAGELESS_ADD_FAIL_1): ThoughtDef stage
+writes no longer use seq_op directly - they use stage_op, which handles a
+stage li that doesn't exist LITERALLY at all (not just missing a field
+child), the common shape for a ThoughtDef that inherits its whole <stages>
+via ParentName (e.g. AnyBodyPartButGroinCovered_Disapproved_Female,
+EBSG_GeneticDrugDependency - raw-XML-confirmed, both declare only
+defName/gender or modExtensions, no <stages> node at all). seq_op's
+nomatch branch assumed the stage li already existed and only a FIELD
+under it was missing (PatchOperationAdd(xpath=stages/li[N])) - but Add's
+xpath must resolve to an existing node, so when li[N] itself is absent
+the Add fails the same way Remove did in the first regression. See
+stage_op()'s own docstring for the three-way conditional this replaced it
+with.
 """
 import argparse
 import glob
@@ -144,6 +158,88 @@ def seq_op(parent_xpath, fields):
         nvalue = ET.SubElement(nomatch, "value")
         ET.SubElement(nvalue, tag).text = text
     return seq
+
+
+def stage_op(defname, stage_index, fields):
+    """Write into ThoughtDef stages/li[stage_index]. Unlike seq_op's callers
+    (MentalBreakDef/MentalStateDef/XenotypeDef top-level def nodes, which
+    always exist once resolved against the dump), a stage li is not
+    guaranteed to exist literally: a ThoughtDef that inherits its whole
+    <stages> list via ParentName (never overriding it) has NEITHER a literal
+    <stages> nor any <li> child of its own. PAWN_FLAVOR_STAGELESS_ADD_FAIL_1,
+    IL/raw-XML-confirmed on AnyBodyPartButGroinCovered_Disapproved_Female
+    (Ideology) and EBSG_GeneticDrugDependency (EBSG Framework): seq_op's
+    nomatch branch did PatchOperationAdd(xpath=stages/li[N]) to add a missing
+    FIELD under an existing li - but PatchOperationAdd's xpath must resolve
+    to an EXISTING node to insert under, so when li[N] itself doesn't exist
+    the Add fails the same way PatchOperationRemove did in the earlier
+    regression (JAWA_PAWN_FLAVOR_PATCH_REGRESSION_1).
+
+    Three-way conditional, each branch decided by the live game's own xpath
+    evaluation against the true pre-patch tree (never guessed in Python):
+      1. li[stage_index] exists literally -> per-field Replace-or-Add, the
+         same shape seq_op already uses (kept identical for the common case).
+      2. li[stage_index] missing but <stages> exists -> Add a whole fresh
+         <li> under <stages> (appended at the end - PatchOperationAdd has no
+         positional insert, so a partially-declared stages list with a gap
+         before stage_index is not exactly addressable; unseen in practice
+         so far, both known cases have zero literal stages).
+      3. <stages> itself missing (the common inherited-wholesale case) -> Add
+         a whole fresh <stages><li>...</li></stages> under the ThoughtDef.
+    """
+    def_xpath = 'Defs/ThoughtDef[defName="%s"]' % defname
+    stages_xpath = def_xpath + "/stages"
+    li_xpath = stages_xpath + "/li[%d]" % stage_index
+
+    def fresh_li():
+        el = ET.Element("li")
+        for tag, text in fields.items():
+            ET.SubElement(el, tag).text = text
+        return el
+
+    # Branch 1: li exists -> identical per-field Replace/Add shape as seq_op.
+    li_exists = ET.Element("op", {"Class": "PatchOperationSequence"})
+    li_exists_ops = ET.SubElement(li_exists, "operations")
+    for tag, text in fields.items():
+        field_xpath = li_xpath + "/" + tag
+        cond = ET.SubElement(li_exists_ops, "li", {"Class": "PatchOperationConditional"})
+        ET.SubElement(cond, "xpath").text = field_xpath
+        match = ET.SubElement(cond, "match", {"Class": "PatchOperationReplace"})
+        ET.SubElement(match, "xpath").text = field_xpath
+        mvalue = ET.SubElement(match, "value")
+        ET.SubElement(mvalue, tag).text = text
+        nomatch = ET.SubElement(cond, "nomatch", {"Class": "PatchOperationAdd"})
+        ET.SubElement(nomatch, "xpath").text = li_xpath
+        nvalue = ET.SubElement(nomatch, "value")
+        ET.SubElement(nvalue, tag).text = text
+
+    # Branch 2: <stages> exists, li[stage_index] doesn't -> add a fresh li under it.
+    stages_exist_add = ET.Element("op", {"Class": "PatchOperationAdd"})
+    ET.SubElement(stages_exist_add, "xpath").text = stages_xpath
+    sv = ET.SubElement(stages_exist_add, "value")
+    sv.append(fresh_li())
+
+    # Branch 3: <stages> itself missing -> add a fresh <stages><li>...</li></stages>.
+    stages_missing_add = ET.Element("op", {"Class": "PatchOperationAdd"})
+    ET.SubElement(stages_missing_add, "xpath").text = def_xpath
+    dv = ET.SubElement(stages_missing_add, "value")
+    stages_el = ET.SubElement(dv, "stages")
+    stages_el.append(fresh_li())
+
+    stages_exist_add.tag = "match"
+    stages_missing_add.tag = "nomatch"
+    stages_cond = ET.Element("op", {"Class": "PatchOperationConditional"})
+    ET.SubElement(stages_cond, "xpath").text = stages_xpath
+    stages_cond.append(stages_exist_add)
+    stages_cond.append(stages_missing_add)
+
+    li_exists.tag = "match"
+    stages_cond.tag = "nomatch"
+    outer = ET.Element("li", {"Class": "PatchOperationConditional"})
+    ET.SubElement(outer, "xpath").text = li_xpath
+    outer.append(li_exists)
+    outer.append(stages_cond)
+    return outer
 
 
 def build_groups(entries):
@@ -259,14 +355,13 @@ def main():
                 skipped.append((key, "resolved def has zero stages (unexpected shape)"))
                 continue
             for i in range(len(stages)):
-                xp = 'Defs/ThoughtDef[defName="%s"]/stages/li[%d]' % (real, i + 1)
                 fields = {}
                 if label:
                     fields["label"] = label
                 if desc:
                     fields["description"] = desc
                 if fields:
-                    thought_entries.append((pkg, modname, seq_op(xp, fields)))
+                    thought_entries.append((pkg, modname, stage_op(real, i + 1, fields)))
             stats["ThoughtDef"] += 1
 
         elif deftype == "MentalBreakDef":

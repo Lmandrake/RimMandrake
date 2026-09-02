@@ -70,3 +70,52 @@ Both named rows land their approved text live (or are confirmed genuinely
 un-addable and explicitly dropped from the applied count with a reason),
 and the sweep above either finds no further instances or names how many
 there are.
+
+## 2026-09-02 — hypothesis confirmed, fix applied and validated; live pass deliberately withheld
+
+**Hypothesis confirmed against real raw XML for both named defs**, not
+assumed: `AnyBodyPartButGroinCovered_Disapproved_Female`
+(`Data/Ideology/Defs/PreceptDefs/Precepts_Nudity.xml`) declares only
+`<defName>`/`<gender>` under `ParentName="AnyBodyPartButGroinCovered_Disapproved"`
+— no literal `<stages>` node at all, the whole list is inherited.
+`EBSG_GeneticDrugDependency` (`ebsg.framework`,
+`1.6/Biotech/Defs/DependencyHediffs.xml`) is the same shape:
+`ParentName="EBSG_DependencyThoughtBase"`, only `<modExtensions>` of its
+own, no `<stages>`.
+
+**Fix**: `gen_pawn_flavor_phase2_apply.py` gained `stage_op()`, replacing
+`seq_op()` for ThoughtDef stage writes only (MentalBreakDef/MentalStateDef/
+XenotypeDef top-level def nodes always exist once resolved against the
+dump, so `seq_op` is untouched and correct for those). `stage_op()` is a
+three-way `PatchOperationConditional`: (1) `stages/li[N]` exists literally
+→ the same per-field Replace-or-Add `seq_op` already did, unchanged; (2)
+`stages` exists but `li[N]` doesn't → `PatchOperationAdd` a fresh `<li>`
+under `stages`; (3) `stages` itself doesn't exist → `PatchOperationAdd` a
+fresh `<stages><li>...</li></stages>` under the `ThoughtDef` itself. All
+three branches decided by the live game's own xpath evaluation, nothing
+guessed in Python.
+
+Regenerated: same row counts as before (1,781 of 1,783; 2 known-dead).
+`validate_patch.py --defs` (Data+Mods+Workshop, live `ModsConfig.xml`):
+clean. Only `PawnFlavorPhase2_ThoughtDef.xml` changed — `MentalBreak`/
+`Xenotype` outputs are byte-identical, as expected (`seq_op` untouched).
+
+**Not done this pass, deliberately**: the live cold load / `harvest_log.py`
+re-check / spot-check. BENCH was actively driving the bridge tonight
+("Bench has the bridge, not you" — relayed by the coordinator mid-task);
+this fork never took the bridge (confirmed: no `rimflow bridge take` call
+made) and stopped here rather than risk colliding with BENCH's live work.
+Also not done: the full sweep for further stageless-`<stages>` instances
+across all ~1,664 ThoughtDef stage-write rows — started (scoped per-mod
+grep, not a blind workshop-wide one) but did not finish inside this
+pass's time budget. Since the fix is structurally general (it handles ANY
+missing-`stages`/missing-`li[N]` shape, not just these two named defs),
+the sweep is a reporting completeness item, not a correctness
+prerequisite — the generator will not silently drop a row of this shape
+again regardless of how many more exist.
+
+Left `doing`. Next FOUNDRY pass once the bridge is free: finish the sweep
+(if still wanted), deploy, live cold load, confirm "patch operations
+failed" back to baseline 5, spot-check both named rows' live text, then
+close this item and re-attempt `PAWN_FLAVOR_PHASE2_APPLY_1`'s own
+spot-check criterion.
