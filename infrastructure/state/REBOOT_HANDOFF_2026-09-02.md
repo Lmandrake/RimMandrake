@@ -1,61 +1,46 @@
-# BENCH reboot handoff — 2026-09-02
+# BENCH reboot handoff — 2026-09-02 (second sitting, written at reboot prep)
 
-> **LOAD-HEALTH SWEEP: DONE 2026-09-02 (BENCH).** All 25 believed-clean mods scored
-> in 2 minimal loads: zero recovery resets, all sentinel defs resolve. WreckedMachines
-> clean with VEF+VFE-furniture+Factory. Campaign-real findings:
-> PAWNFLAVOR_BREAK_LABEL_FIX_1 (fixed+deployed), sonic forcedMiss (noted on
-> SONIC_WEAPONS_EXPANSION_1), ARMOURY_ABSORBED_FRAMEWORK_DEPS_1 (filed —
-> Armoury is NOT self-contained; donor-sunset risk). FireEcology burnedDef x6
-> already known in FIRE_ECOLOGY_LOOP_1. Full 592 restored + relaunched, dump armed.
+Owner went AFK to bed, then called the reboot. Everything below is committed and
+pushed; nothing lives only in scratch.
 
-Session paused by owner ("stop / prepare for agent reboot") mid load-health sweep.
-Machine state: full 592-mod config restored (md5 c9d20db5, verified); game is
-running on an 11-mod isolation list (harmless — relaunch picks up full). No
-background jobs. All prior work committed+pushed except what this handoff commits.
+## Machine state
+- Game UP on the full 592 list (md5 c9d20db5), owner's scratch gravship save
+  "Noodle Planetfall b" loaded — the ship freshly reprinted + repainted, map is
+  disposable. Bridge FREE. FOUNDRY was active tonight (Droidworks/Mlie work) —
+  check its recency before restarts.
+- Disk ModsConfig = FULL 592. Fresh def dump captured 2026-09-02T08-39-17Z
+  against the live 592; defDump marker DELETED (re-arm only on purpose).
+- Sweep tooling promoted to repo: `src/RimMandrake/Utils/loadsweep/`
+  (gen_config.py + sweep_load.sh; ~60s per minimal-list load cycle; poll
+  "Bridge token:", the JawaBench ready line is lazy).
 
-## In flight when stopped: LOAD-HEALTH SWEEP (not started, census done)
+## Done this session (all scored in the ledger / run sheet)
+- LOAD-HEALTH SWEEP 25/25 self-contained mods: zero resets, sentinels resolve.
+  WreckedMachines needs VEF + vfecore + vfefactory. HelixTellurox still OUT.
+- PawnFlavor `{0}`-label config error fixed + PROVEN absent on the full list.
+- Utinni scenario live proof PASS (1 Ikee bonded+Obedience, 6 MandrakeJawa).
+- Salvagers fold PASS; Salvation/VME_Nomad check RE-SCOPED to campaign creation
+  (WORLDMAP_V1's ideo is generated "Astropolitan", the .rid was never in play).
+- Gravship exporter round trip PROVEN on the current ship (export → raze →
+  print_gravship --offset 82,58 → 2865/2865); corrosion-halo walls applied
+  (587 verified); MEASURED: paint does NOT survive export — wall-colour scripts
+  are NOT superseded. Export snapshot: `world/_ship/exports/`.
+- Owner rulings landed: cast-only biomes (WILD_ANIMALS_PADDED_LISTS_1 →
+  FOUNDRY, ready) · drop the 10 entity cast entries · corrosion-plan re-emit
+  dismissed.
 
-Plan: put each SELF-CONTAINED custom mod on a clean dependency-complete minimal
-list, check (a) no "Resetting mods config" in Player.log (recovery reset =
-load-crash), (b) ConfigError sweep, (c) get_defs confirms defs loaded. Batch
-believed-clean mods; bisect any group that resets.
-
-🔴 EXCLUDE from test lists (break mapgen or need absent donors):
-- `mandrake.jawa.patches` (3 biome injectors), `mandrake.rsw.seaswaterline`
-  (1 biome injector) — ecosystem patches, unresolved BiomeAnimalRecord → mapgen NRE.
-- Any mod whose deps column named a non-mandrake mod NOT in the test list
-  (BeastNorm→Mlie, Droidworks→HAR, IonWeapons→OuterRim, StarWarsRaces→VFE/genetics,
-  etc.) — include the dep or skip the mod.
-
-TRUE self-contained (deps: none, no biome inj) — safe first batch:
-Armoury, AshkarrLandmarkArt, EmpirePursuit, FactionSlate, FireEcology,
-FluidCanals, Graffiti, HelixTellurox(⛔known crasher — keep OUT), JawaRules,
-IshkoDarkLandmarks, Livestock(fixed), Ninefold, Oracle, PawnFlavor, Pits,
-PlanetPresetPrime, PlantGrowth, Property, RimDefDump, RiverSteam, SWBestiary,
-StickCuisine, StrandedQuest, Visibility, WeatherSuite, WreckedMachines(→VFEFactory).
-
-Clean minimal base (proven this session): harmony, core+5 expansions,
-imranfish.xmlextensions, brrainz.rimbridgeserver + the mods under test.
-After any RimWorld recovery-reset, the disk config is wiped to Core-only(6) —
-REWRITE the intended list before relaunching.
-
-## Proven this session (all committed)
-- Rapid-minimal loop works end-to-end: found+fixed a load-crash in Livestock
-  (ForsakenCrags <wildness>/<leatherLabel> invalid RaceProperties fields →
-  corpse-gen NRE → recovery reset), spawned Cindermare/Skarnix live, custom art
-  renders (not magenta). Offline validate_patch was blind to it.
-- hot_reload_defs: PROVEN 0.04s on minimal; HANGS/unresponsive-for-minutes on
-  full 592 (recovery unmeasured — do NOT fire under owner mid-play).
-
-## Open items filed
-- HELIX_TELLUROX_SHELL_LOAD_CRASH_1 — shell def parse error (MissingMethodException
-  System.String ctor) → null butcherProducts → corpse NRE. Keep Tellurox OUT of loads.
-- JAWA_SPAWN_KINDS_NO_RACE_1 — Zygerrian/Yoder/Taung raceless + 2 weapon bugs.
-- BIOME_CAST_REFS_BREAK_MAPGEN_1 — donor-sunset forward risk.
-
-## Owed (design)
-- god_modes_deep_design.md §5.0 LAW OF WRATH written; the FOUR angry-mode
-  rewrites it calls for (①Ishko ②Ohm ④Mob ⑤Rekko → withhold-not-invert) are
-  NOT yet done. Evil-god slumber-pressure clause ruled, not yet applied to ⑦⑧.
-- Sea-monster fanout: Opee pilot PIPELINE-PROVEN (src/RimStarWars/SeaBeasts/art/final/);
-  17 more creatures ready to fan out; FIX codex_image.py harvest-on-timeout first.
+## Standing / waiting
+- ATMOSPHERE_CONFIG_RESTORE_1 — one copy in the next game-down gap restores the
+  glorious rings+thick-atmo config (repo: `deployed/config/…GLORIOUS….xml`).
+  Never write it while the game runs.
+- Donor sunset: Wave 1 = themedsounds + swlights + TSDA, ready for a game-down
+  gap with decision strings (see STARWARS_DONOR_SUNSET_1 notes). btd shippack
+  re-measured KEEP, excluded. Trap for all waves: absorbed XML naming a donor
+  DLL class is eaten silently when the donor leaves — sweep + minimal-list
+  proof load per wave.
+- Droids: critical path chokes on ONE Droidworks-enabled minimal quicktest
+  session (Phase 0 proof + POWEREDDOWN wiring + wave-1 recipes — batch them).
+  Offline meanwhile: DROIDWORKS_HEALTHSCALE_SENTINELS_1,
+  DROIDWORKS_DETONATION_ROLLOUT_1.
+- Next owner sitting: lee.theforce.lightsaber reconfirmation · droid
+  Humanlike-needs card (BENCH rec: suppress) · run-sheet §5 look-ats.
