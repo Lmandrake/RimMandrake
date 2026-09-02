@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T05:26:54Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-02T05:27:59Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -276,7 +276,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     build
-summary:  (no items/MLIE_FAUNA_ABSORPTION_1.md yet — write one when you have something to say)
+summary:  RimStarWars tier (RSW prefix, mandrake.rsw.<modname) — this is
 prose:    infrastructure/state/items/MLIE_FAUNA_ABSORPTION_1.md
 
 ## DROID_KOTORDROIDS_PORT_WAVE1_1 Port guy762.kotordroids' 44 kinds/22 races onto the Droidworks platform (wave 1, pure XML)
