@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T22:32:19Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: BENCH
+as-of: 2026-09-02T22:42:34Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
-The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## WEATHER_SUITE_V1_PROMOTIONS_1 Glass-storms, static-seasons, spore-blooms promoted v2->v1 in weather_suite_deep_design.md (2026-09-02 PROPOSAL_SUITE_REVIEW_1) but unbuilt and untracked
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  Three systems, each closer to its own item than one combined build —
-prose:    infrastructure/state/items/WEATHER_SUITE_V1_PROMOTIONS_1.md
+Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
 
 # IN PROGRESS
 

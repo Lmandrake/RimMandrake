@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T22:32:19Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: BENCH
+as-of: 2026-09-02T22:42:34Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
-The first heading below is what `rimflow next --seat BENCH` returns. This file and that command call the same function, so they cannot disagree.
-
-## SPAWN_PAWN_SUBSTITUTES_VANILLA_KIND_1 jawa/spawn_pawn reports 2/2 of the kind asked for and delivers one vanilla Colonist
-state:    ready
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     bug
-summary:  SPAWNPAWNSUBSTITUTESVANILLAKIND1 — "Spawned 2/2" delivered one of something else
-prose:    infrastructure/state/items/SPAWN_PAWN_SUBSTITUTES_VANILLA_KIND_1.md
+Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
 
 # IN PROGRESS
 
@@ -44,15 +35,6 @@ target:   v1
 kind:     task
 summary:  Owner ruled 2026-08-31: all six §5 roles, and the three predator roles are the
 prose:    infrastructure/state/items/SW_SEA_MONSTERS_ART_1.md
-
-## BRIDGE_INVENTORY_TRANSFER_REFUSES_ALL_1 jawa/inventory_transfer refuses to add ANY item to ANY pawn's inventory on the live 592-mod list
-state:    doing
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     fix
-summary:  🔴 SUPERSEDED — read "CAUSE PROVEN LIVE" at the bottom of this file first. The
-prose:    infrastructure/state/items/BRIDGE_INVENTORY_TRANSFER_REFUSES_ALL_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
