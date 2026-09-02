@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T00:07:30Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-02T00:45:01Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -279,3 +279,13 @@ kind:     fix
 thin:     spec, verify and criteria all present
 summary:  jawa/inventorytransfer (mode=add) refused every attempt this session:
 prose:    infrastructure/state/items/BRIDGE_INVENTORY_TRANSFER_REFUSES_ALL_1.md
+
+## PAWN_FLAVOR_SILENT_NONAPPLY_1 Some PawnFlavorPhase2 rows report patch success but the live def keeps vanilla text
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     spec, verify and criteria all present
+summary:  Confirmed via jawa/pawnthoughts on multiple live colonists (not a def dump — the
+prose:    infrastructure/state/items/PAWN_FLAVOR_SILENT_NONAPPLY_1.md

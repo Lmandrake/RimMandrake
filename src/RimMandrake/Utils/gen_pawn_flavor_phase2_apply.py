@@ -26,10 +26,23 @@ Emits three files under src/RimUtinni/PawnFlavor/Patches/:
                                        MentalStateDef.beginLetter/recoveryMessage
   PawnFlavorPhase2_Xenotype.xml     - XenotypeDef.label/description
 
-Every field write uses PatchOperationSequence(Remove-then-Add) so it is
-correct whether or not the raw XML for that def already defines the field
-(Remove no-ops harmlessly if absent; Add always leaves it set) - this sidesteps
-needing to know, per def, whether label/description is inherited vs literal.
+Every field write uses one PatchOperationConditional per field: Replace the
+literal node if the raw (pre-patch) XML already has it, Add it if not.
+CORRECTED 2026-09-01 (JAWA_PAWN_FLAVOR_PATCH_REGRESSION_1): the original
+version of this generator used PatchOperationSequence(Remove-then-Add) on the
+theory that "Remove no-ops harmlessly if absent" - that is FALSE.
+PatchOperationRemove.ApplyWorker returns false (a genuine failure, not a
+no-op) when its xpath matches zero nodes, and one failed step inside a
+PatchOperationSequence fails the whole sequence, silently dropping every
+field-write behind it. Confirmed live: 123 of 1,781 rows never actually
+resolved (vanilla MentalBreakDefs commonly ship with NO <label> at all -
+BedroomTantrum's is 3 lines, defName/mentalState only; many ThoughtDef
+stages carry <label> but no <description>), even though validate_patch.py
+reported the patch XML as structurally clean - it only checks well-formed
+XML, never executes a patch against a real def tree. The
+Conditional-per-field form sidesteps needing to know in Python, per def,
+whether label/description is inherited vs literal vs entirely absent; the
+live game's own xpath evaluation against the true raw tree decides.
 Only fields with non-empty drafted text are emitted (matches the draft
 authors' own convention of leaving a field blank when the vanilla original had
 nothing there, e.g. several MentalBreakDefs have no beginLetter at all).
@@ -110,19 +123,25 @@ def resolve_xeno(defname, xenos):
 
 
 def seq_op(parent_xpath, fields):
-    """PatchOperationSequence: Remove each field (no-op if absent) then Add
-    them all back together as one <li>. `fields` is an ordered dict of
-    tag -> text."""
+    """PatchOperationSequence of one PatchOperationConditional per field:
+    Replace the literal node if it exists in the raw XML, Add it under the
+    parent if it doesn't. `fields` is an ordered dict of tag -> text. See the
+    module docstring's 2026-09-01 correction for why this replaced a blind
+    Remove-then-Add."""
     seq = ET.Element("li", {"Class": "PatchOperationSequence"})
     ops = ET.SubElement(seq, "operations")
-    for tag in fields:
-        rm = ET.SubElement(ops, "li", {"Class": "PatchOperationRemove"})
-        ET.SubElement(rm, "xpath").text = parent_xpath + "/" + tag
-    add = ET.SubElement(ops, "li", {"Class": "PatchOperationAdd"})
-    ET.SubElement(add, "xpath").text = parent_xpath
-    value = ET.SubElement(add, "value")
     for tag, text in fields.items():
-        ET.SubElement(value, tag).text = text
+        field_xpath = parent_xpath + "/" + tag
+        cond = ET.SubElement(ops, "li", {"Class": "PatchOperationConditional"})
+        ET.SubElement(cond, "xpath").text = field_xpath
+        match = ET.SubElement(cond, "match", {"Class": "PatchOperationReplace"})
+        ET.SubElement(match, "xpath").text = field_xpath
+        mvalue = ET.SubElement(match, "value")
+        ET.SubElement(mvalue, tag).text = text
+        nomatch = ET.SubElement(cond, "nomatch", {"Class": "PatchOperationAdd"})
+        ET.SubElement(nomatch, "xpath").text = parent_xpath
+        nvalue = ET.SubElement(nomatch, "value")
+        ET.SubElement(nvalue, tag).text = text
     return seq
 
 

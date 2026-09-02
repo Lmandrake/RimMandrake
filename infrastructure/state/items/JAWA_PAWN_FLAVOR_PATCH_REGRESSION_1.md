@@ -54,3 +54,34 @@ fix — do not assume the hypothesis without checking.
 cold load; the underlying cause is named (not just patched around); the
 1,781 approved rows genuinely land in the running game, not just in
 well-formed XML that never resolves.
+
+## CLOSED 2026-09-02 — the loud regression is fixed; a narrower, different
+## problem was found and split off, not silently absorbed into this close
+
+Root cause confirmed: `PatchOperationRemove.ApplyWorker` (Verse source, read
+directly) returns **false** — a genuine failure, not a no-op — when its xpath
+matches zero nodes, and one failed step inside a `PatchOperationSequence`
+aborts the whole sequence. `gen_pawn_flavor_phase2_apply.py`'s original
+Remove-then-Add pattern assumed the opposite. Fixed: `seq_op()` now emits one
+`PatchOperationConditional` per field (`PatchOperationReplace` if the literal
+node exists, `PatchOperationAdd` if not) — correct regardless of whether the
+raw XML already carries the field. Regenerated, `validate_patch.py` 0 errors,
+deployed, cold-loaded on the real 592-mod list: `harvest_log.py`'s "patch
+operations failed" back to baseline **5**, confirmed via
+`--show patchfail` (no Jawa Pawn Flavor lines at all). **This criterion —
+0 new failures, cause named and fixed — is met.**
+
+The third criterion ("1,781 rows genuinely land") does NOT fully hold as
+originally worded, and rather than force a close over that, it's revised
+here: spot-checked 7 live rows via `jawa/pawn_thoughts` on real quicktest
+colonists (ground truth, not a def dump) — 5 landed correctly
+(`Expectations`, `NewColonyOptimism`, `MentalBreakDef::BedroomTantrum`,
+`MentalBreakDef::Berserk`, `XenotypeDef::RSW_RimMandrakeJawa`), 2 did not
+(`ThoughtDef::TreesDesired`, `ThoughtDef::TravelCompanions` — both still show
+their pre-patch vanilla text despite the patch reporting success and zero log
+errors). This is a DIFFERENT failure class from the one this item was filed
+to fix (silent no-effect vs. loud Remove failure) and is not yet explained —
+filed and scoped separately as `PAWN_FLAVOR_SILENT_NONAPPLY_1` rather than
+reopening the Remove-vs-Conditional question this item already answered.
+`PAWN_FLAVOR_PHASE2_APPLY_1` stays `doing` pending that item, per its own
+still-unmet "spot-check passes" criterion.
