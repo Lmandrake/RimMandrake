@@ -2,10 +2,14 @@
 
 **Read `infrastructure/agents/CHARTER.md`** — the whole process rulebook — and your
 own window file: `infrastructure/agents/BENCH.md` (with the owner) or
-`infrastructure/agents/FOUNDRY.md` (autonomous queue). Model ladder:
-`infrastructure/agents/Agent_Policy.md`. Game cycle:
+`infrastructure/agents/FOUNDRY.md` (autonomous queue). Game cycle:
 `infrastructure/GAME_STATE_WORKFLOW.md`. *(The four-seat POLICY.md system was
 superseded 2026-08-27 — redesign #4, `Fable_Review/`.)*
+
+**Models — owner, 2026-09-02: BENCH orchestrates on Opus, backgrounds DESIGN work
+to a Fable subagent, and steps every other subagent down to the cheapest tier that
+still has a catcher.** The ladder lives in `infrastructure/agents/Agent_Policy.md`
+and nowhere else; never restate a model choice outside it.
 
 ## 🔴 There is no worldgen feature, in any version — owner, 2026-08-15
 

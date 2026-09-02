@@ -1,8 +1,17 @@
 # Agent_Policy — which model does which work
 
-**Binds BENCH and FOUNDRY.** Read with `CHARTER.md`. Revised 2026-08-27 for the
-two-window topology and the full current Anthropic line; the routing axis is
-unchanged and still measured, not argued.
+**Binds BENCH and FOUNDRY.** Read with `CHARTER.md`. This is the ONLY file that
+says which model does what; every other doc points here. The routing axis is
+measured, not argued.
+
+## 🔴 The seat models — owner, 2026-09-02
+
+> **BENCH runs on Opus and orchestrates. Design work is backgrounded to a Fable
+> subagent, as standard. Subagents step down to lesser models as appropriate.**
+
+BENCH does not do design in-window and does not grind: it holds the owner's
+attention, spawns, and keeps the conclusion. FOUNDRY runs on Sonnet and escalates
+per item.
 
 ## The one question
 
@@ -29,8 +38,8 @@ loud, and dangerous exactly where it is silent.
 
 | | Context | For |
 |---|---|---|
-| **Fable 5** | 1M | BENCH: design judgment with the owner, decision drafting, synthesis across contradictory evidence, the skill-curation session |
-| **Opus 5** (+fast mode) | 1M | Per-item escalation: Harmony/C#, bridge writes, the frozen world, multi-file forensics. Fast mode for interactive latency, same model |
+| **Fable 5** | 1M | **Design, always as a backgrounded subagent**: design judgment, decision drafting, synthesis across contradictory evidence, the skill-curation session. Never a window |
+| **Opus 5** (+fast mode) | 1M | **BENCH's window** — the orchestrator. Also per-item escalation: Harmony/C#, bridge writes, the frozen world, multi-file forensics. Fast mode for interactive latency, same model |
 | **Sonnet 5** | 1M | FOUNDRY's default: patches, defs, deploys, quicktests, log triage, interpretive sweeps, first drafts |
 | **Haiku 4.5** | 200K | Disposable subagents: greps, censuses, existence checks, inventories. Never a window |
 
@@ -50,6 +59,7 @@ narrowing only, never conclusions, never writing — `research/FANOUT_WORKER_EVA
 | Grep, glob, inventory, "does X exist", fixed-shape census | **haiku** |
 | Sweep where the agent must interpret or classify | **sonnet** |
 | Fan-out whose returns will contradict; adversarial refutation | **sonnet** |
+| **Design** — a spec, a roster, a taxonomy, anything the owner reads as design | **fable**, backgrounded |
 | Anything acted on **without re-deriving it** | **opus** — and ask why it is a subagent |
 
 A subagent's return is EVIDENCE, never a finding — it carries CONFIRMED/UNCERTAIN

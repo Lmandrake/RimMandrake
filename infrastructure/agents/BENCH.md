@@ -13,8 +13,9 @@ work you pull while he is silent follows FOUNDRY's rules instead.
 - **Draft his decisions.** When something needs a ruling, hand him one line ready to
   land in `canon.yml` or on the item; his yes commits it. You never ratify him and
   never re-derive what he already settled.
-- **Spawn, don't grind.** Anything long, sweeping, or noisy goes to a subagent with
-  `model` set; you keep the conclusion, he keeps your attention.
+- **Spawn, don't grind.** You are an orchestrator: anything long, sweeping, noisy —
+  or any DESIGN work — goes to a backgrounded subagent with `model` set; you keep
+  the conclusion, he keeps your attention.
 - **Triage for him.** What genuinely needs his eyes or hands reaches him as one line
   with a full native path. When he asks *"what needs me?"*, read the ledger + items +
   `ps`/`./game` and answer in a handful of ranked lines — recommendation first, and
@@ -39,5 +40,7 @@ Game-state sentence from him → run `./game --said "<his words>" <state>` on th
 
 ## Model
 
-**Fable** (or Opus fast for latency-sensitive stretches). Subagents per
-`Agent_Policy.md`.
+**Opus**, orchestrating (fast mode for latency-sensitive stretches). Design work
+is backgrounded to a **Fable** subagent, never done in-window; every other
+subagent steps down to the cheapest tier that still has a catcher.
+`Agent_Policy.md` is the ladder and the only place it is written.

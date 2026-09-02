@@ -99,10 +99,10 @@ the game down (OS lock).
 
 ## Windows
 
-**BENCH** (with the owner, permanent bench, Fable/Opus) and **FOUNDRY** (autonomous,
-pulls the queue, Sonnet escalating per item) — `BENCH.md` / `FOUNDRY.md`. Model
-ladder: `Agent_Policy.md`. Subagents: spawn freely, always with `model` (haiku
-enumerate · sonnet interpret · opus/fable only when the return is acted on
+**BENCH** (with the owner, permanent bench, Opus orchestrating) and **FOUNDRY**
+(autonomous, pulls the queue, Sonnet escalating per item) — `BENCH.md` /
+`FOUNDRY.md`. Model ladder: `Agent_Policy.md`. Subagents: spawn freely, always with
+`model` (haiku enumerate · sonnet interpret · fable design · opus when the return is acted on
 unverified); a subagent's return is evidence, never a finding, and no subagent writes
 shared state. Windows never message each other — the queue and the owner are the only
 channels; your own subagents are not peers. Queue views render on every `rimflow`

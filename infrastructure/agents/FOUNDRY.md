@@ -48,5 +48,6 @@ python3 src/RimMandrake/rimflow/cli.py next --seat FOUNDRY
 ## Model
 
 **Sonnet** default. Escalate per item — `model: opus` on the item, or self-escalate
-after one failed attempt, noting it in the closing commit. Bridge writes and anything
-touching the frozen world: **Opus**, always. `Agent_Policy.md`.
+after one failed attempt, noting it in the closing commit. Design work goes to a
+backgrounded **Fable** subagent, the same as at BENCH. `Agent_Policy.md` is the
+ladder and the only place it is written; read it rather than a summary of it.
