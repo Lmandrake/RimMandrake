@@ -1,19 +1,25 @@
 #!/usr/bin/env python3
 """Wrapper for the C# selftest of GameComponent_ColonyVisibility
-(COLONY_VISIBILITY_STAT_1: src/RimUtinni/Doctrine/Source/DoctrineCore/
-ColonyVisibility.cs).
+(COLONY_VISIBILITY_BUILD_1: src/RimMandrake/Visibility/Source/
+GameComponent_ColonyVisibility.cs).
 
 Same shape as selftest_pit_logic.py, same reason: `selftest_*.py` is this
 project's established fast, offline, pre-commit test convention (see
 selftest_validate_patch.py), but the 0-100 -> five-band ladder and the
-Adjust() clamp are C#, not Python, and there is still no xUnit/NUnit
-precedent anywhere under src/. The actual test is a standalone net48
-console app - JawaDoctrineCore/SelfTest/ - that compiles the REAL
-ColonyVisibility.cs in directly (see that project's own header for exactly
-what is real vs. what a bare, no-game process cannot do, and how the one
-native-engine snag - Verse.Log.Message needing a real Unity runtime - was
-worked around without touching the production logic). This script is just
-the `python3 selftest_colony_visibility.py`-shaped door into it.
+Adjust()/ResetOnLaunch() clamps are C#, not Python, and there is still no
+xUnit/NUnit precedent anywhere under src/. The actual test is a standalone
+net48 console app - RimMandrake/Visibility/Source/SelfTest/ - that compiles
+the REAL GameComponent_ColonyVisibility.cs in directly (see that project's
+own header for exactly what is real vs. what a bare, no-game process cannot
+do, and how the one native-engine snag - Verse.Log.Message needing a real
+Unity runtime - was worked around without touching the production logic).
+This script is just the `python3 selftest_colony_visibility.py`-shaped door
+into it.
+
+Relocated 2026-09-02 (FOUNDRY): COLONY_VISIBILITY_BUILD_1 rehomed the real
+class from src/RimUtinni/Doctrine/Source/DoctrineCore/ColonyVisibility.cs
+into its own dedicated mod without moving this test, which silently broke
+(CS2001, source file not found) until this pass fixed it.
 
 dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path, so this script
 finds dotnet.exe and converts the repo path to a D-drive-style path first.
@@ -30,8 +36,8 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 # Utils -> RimMandrake -> src -> repo root.
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
 CSPROJ = os.path.join(
-    REPO, "src", "RimUtinni", "Doctrine", "Source", "DoctrineCore", "SelfTest",
-    "JawaDoctrineCore.SelfTest.csproj",
+    REPO, "src", "RimMandrake", "Visibility", "Source", "SelfTest",
+    "RimMandrakeVisibility.SelfTest.csproj",
 )
 
 DOTNET_CANDIDATES = [
@@ -59,7 +65,7 @@ def _to_windows_path(posix_path):
 
 def main():
     if not os.path.isfile(CSPROJ):
-        sys.exit("JawaDoctrineCore.SelfTest.csproj not found at %s — the SelfTest "
+        sys.exit("RimMandrakeVisibility.SelfTest.csproj not found at %s — the SelfTest "
                   "project moved or was never built" % CSPROJ)
 
     dotnet = _find_dotnet()

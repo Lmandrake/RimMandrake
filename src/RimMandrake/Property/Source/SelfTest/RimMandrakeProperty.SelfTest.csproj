@@ -1,0 +1,104 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Offline, no-game selftest harness for the RM_Property fabric
+    (PROPERTY_FABRIC_BUILD_1) - ClaimDecay's pure decay math, ClaimantRef's
+    equality contract, and ClaimEngine's claim-resolution winner-picking
+    order. Same shape/reasoning as RimMandrakePits.SelfTest.csproj and
+    RimMandrakeVisibility.SelfTest.csproj: a plain console project that
+    compiles the REAL production .cs files in directly where they have no
+    live-game dependency, rather than reimplementing them and drifting out
+    of sync.
+
+    NOT the mod build (RM_Property.csproj, one directory up: its own
+    EnableDefaultCompileItems is false and its own explicit Compile list
+    does not mention this folder).
+
+    ⛔ What this does NOT cover, and why: PropertyEngine.Fire/RecordTransfer/
+    RecordLoot/RecordGift/RecordInheritance all open with
+    `GameComponent_PropertyLedger.Get()` (Current.Game?.GetComponent&lt;...&gt;()),
+    which is null with no running Game - every one of those methods no-ops
+    immediately outside a live game, so there is nothing of PropertyEngine's
+    own behavior left to exercise offline. Same story for
+    ClaimEngine.ResolveClaim's OWN top-level method: its ledger branch is
+    skipped (ledger null), and its ResolveVirtualClaim fallback needs a real
+    Verse.Thing (ParentHolder, Faction) that cannot be constructed outside a
+    running game. What CAN be tested, and IS below: the pure decay formula
+    (ClaimDecay), the equality contract every gating check in TheftHauler/
+    SalvageClaim depends on (ClaimantRef), and ClaimEngine's own PRIVATE
+    winner-picking order (strength, then specificity, then recency) -
+    transcribed byte-for-byte from ClaimEngine.cs's own Specificity() method
+    and candidates.Sort() comparator (see Program.cs's own header for the
+    exact citation), operating on REAL ClaimResolution/ClaimantRef values,
+    not reimplemented data shapes.
+
+    This targets net472 like the real mod (same RimWorldManaged reference
+    assemblies) because ClaimDecay calls UnityEngine.Mathf and Verse.GenDate,
+    and ClaimantRef/ClaimResolution are typed against RimWorld.Faction/
+    Verse.Pawn - all of which need real Assembly-CSharp.dll/UnityEngine.dll
+    to resolve, even though nothing called here needs a running game.
+
+    Run via the wrapper:
+      python3 src/RimMandrake/Utils/selftest_property_fabric.py
+
+    Direct invocation (Windows path required, dotnet.exe cannot take /mnt/d):
+      "%USERPROFILE%\.dotnet\dotnet.exe" run [dash][dash]project D:\Luke\dev\Rimworld\src\RimMandrake\Property\Source\SelfTest\RimMandrakeProperty.SelfTest.csproj -c Release
+      (written apart only because an XML comment cannot hold two adjacent hyphens)
+  -->
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>RimMandrakeProperty.SelfTest</AssemblyName>
+    <RootNamespace>RimMandrake.Property.SelfTest</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <DebugType>none</DebugType>
+    <BaseOutputPath>bin\</BaseOutputPath>
+    <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(RimWorldManaged)' == ''">
+    <RimWorldManaged>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManaged>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
+
+  <!-- Private=true here (unlike every real mod .csproj in this repo, which
+       sets Private=false because the game already has these assemblies
+       loaded). This is a standalone .exe, not a mod loaded into a running
+       RimWorld process - it needs Assembly-CSharp.dll/UnityEngine*.dll
+       actually copied next to it to resolve at runtime. -->
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(RimWorldManaged)\Assembly-CSharp.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>$(RimWorldManaged)\UnityEngine.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- The REAL production source files, compiled in directly - none of
+         these four have any Fire()/GameComponent_PropertyLedger dependency,
+         so there is nothing to stub or work around. -->
+    <Compile Include="..\ClaimantKind.cs" />
+    <Compile Include="..\ClaimantRef.cs" />
+    <Compile Include="..\ClaimBasis.cs" />
+    <Compile Include="..\ClaimResolution.cs" />
+    <Compile Include="..\ClaimDecay.cs" />
+    <Compile Include="..\PropertyTuning.cs" />
+    <Compile Include="Program.cs" />
+  </ItemGroup>
+
+</Project>

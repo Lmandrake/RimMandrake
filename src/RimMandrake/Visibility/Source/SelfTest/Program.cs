@@ -1,43 +1,53 @@
-// Selftest for GameComponent_ColonyVisibility (COLONY_VISIBILITY_STAT_1).
+// Selftest for GameComponent_ColonyVisibility (COLONY_VISIBILITY_BUILD_1,
+// rehomed from the old COLONY_VISIBILITY_STAT_1 build - see this project's
+// own .csproj header for the relocation note).
 //
 // WHY THIS EXISTS: same offline-selftest discipline as
 // src/RimMandrake/Utils/selftest_validate_patch.py. The 0-100 -> five-band
-// ladder and the Adjust() clamp are exactly the kind of small pure-ish
-// logic that drifts silently across an edit - a shifted boundary or a
-// dropped clamp produces no error, it just quietly lets shipVisibility
-// wander outside [0,100] or reports the wrong band forever.
+// ladder and the Adjust()/ResetOnLaunch() clamps are exactly the kind of
+// small pure-ish logic that drifts silently across an edit - a shifted
+// boundary or a dropped clamp produces no error, it just quietly lets
+// shipVisibility wander outside [0,100] or reports the wrong band forever.
 //
 // WHAT IS REAL: BandFor(), the band ladder itself, is compiled straight
-// from the real ColonyVisibility.cs (see this project's .csproj) and
-// called directly - it is a plain static method with no Unity/game state
-// dependency beyond needing Verse.dll/UnityEngine.dll to RESOLVE the class
-// it lives on (GameComponent_ColonyVisibility derives from
-// Verse.GameComponent). Adjust()'s clamp is also called on a REAL
-// instance, not reimplemented - see below for how that instance gets built
-// without a running game.
+// from the real GameComponent_ColonyVisibility.cs (see this project's
+// .csproj) and called directly - it is a plain static method with no
+// Unity/game state dependency beyond needing Verse.dll/UnityEngine.dll to
+// RESOLVE the class it lives on (GameComponent_ColonyVisibility derives
+// from Verse.GameComponent). Adjust()'s and ResetOnLaunch()'s clamps are
+// also called on a REAL instance, not reimplemented - see below for how
+// that instance gets built without a running game.
 //
 // THE ONE RISK, PROVEN NOT TAKEN: GameComponent_ColonyVisibility's
 // constructor takes a Verse.Game and its body is empty (does not touch the
-// parameter) - confirmed by reading ColonyVisibility.cs before writing this
-// file, not assumed. Passing null for that Game and calling Adjust()
-// afterwards was the open question (does it dereference Prefs.DevMode /
-// Log.Message safely outside a running game?) - this file's own successful
-// run is the proof: if that had thrown, every Adjust() case below would
+// parameter) - confirmed by reading the real file before writing this one,
+// not assumed. Passing null for that Game and calling Adjust()/
+// ResetOnLaunch() afterwards was the open question (does it dereference
+// Prefs.DevMode / Log.Message safely outside a running game?) - this
+// file's own successful run is the proof: if that had thrown outside
+// SafeAdjust/SafeResetOnLaunch's own narrow catch, every case below would
 // show as FAIL/ERROR, not ok.
 //
 // ⛔ NOT COVERED: GameComponent registration via Verse.Game.FillComponents
-// reflection, ExposeData/save-round-trip, and the Harmony postfix in
-// ColonyVisibilityRaidPatch.cs that calls ResetOnLaunch() on a real launch.
-// Those need a running game.
+// reflection, ExposeData/save-round-trip, the Harmony postfixes in
+// ColonyVisibilityRaidPatch.cs, and RecordTileDeparture()/
+// ApplyTileMemoryOnArrival() (both call Find.TickManager.TicksGame, which
+// is Current.Game?.tickManager - genuinely null with no running game, so
+// calling either for real throws NullReferenceException before any of
+// their own decay math runs; extracting just the decay formula the way
+// selftest_stun_scaling.py's Program.cs extracts StatPart_InverseBodySize's
+// transform is the honest next step here, not attempted this pass). All of
+// these need a running game or a deliberate extraction this pass did not
+// do.
 //
 // Run:
 //   python3 src/RimMandrake/Utils/selftest_colony_visibility.py
 
 using System;
-using RimMandrake.Utinni.Doctrine;
+using RimMandrake.Visibility;
 using Verse;
 
-namespace RimMandrake.Utinni.Doctrine.SelfTest
+namespace RimMandrake.Visibility.SelfTest
 {
     internal static class Program
     {
@@ -74,25 +84,34 @@ namespace RimMandrake.Utinni.Doctrine.SelfTest
         // (`shipVisibility = Mathf.Clamp(...)` precedes the
         // `if (Prefs.DevMode && Band != before)` check - read in source before
         // writing this). In this bare, no-game process, Prefs.DevMode reads
-        // true (no saved prefs file to make it false, and there is no public
-        // setter that reliably flips it here - tried, still throws) and a
-        // band-crossing call then reaches Verse.Log.Message ->
-        // UnityEngine.StackTraceUtility.ExtractStackTrace(), an ECall that
-        // needs the real native Unity engine and throws SecurityException
-        // outside one. That is dev-console logging, not the clamp math this
-        // file exists to test, and the mutation this test cares about has
-        // already happened by the time it throws - so this swallows ONLY that
-        // specific exception and lets every case assert on the real resulting
-        // field value. ⚠️ If Adjust()'s own body were ever reordered so the
-        // assignment happened AFTER the log call, this would start passing
-        // against a stale (pre-mutation) shipVisibility instead of failing
-        // loudly - a real, accepted limitation of testing a live instance
-        // outside the engine that owns Log.Message.
+        // true (no saved prefs file to make it false) and a band-crossing call
+        // then reaches Verse.Log.Message -> an ECall that needs the real
+        // native Unity engine and throws SecurityException outside one. That
+        // is dev-console logging, not the clamp math this file exists to
+        // test, and the mutation this test cares about has already happened
+        // by the time it throws - so this swallows ONLY that specific
+        // exception and lets every case assert on the real resulting field
+        // value.
         private static void SafeAdjust(GameComponent_ColonyVisibility c, float delta, string reason)
         {
             try
             {
                 c.Adjust(delta, reason);
+            }
+            catch (System.Security.SecurityException)
+            {
+                // dev-log path only; the field mutation above it already ran.
+            }
+        }
+
+        // ResetOnLaunch() has the SAME shape as Adjust(): the clamp/assignment
+        // runs first, `if (Prefs.DevMode) Log.Message(...)` runs after - so
+        // the same narrow catch applies for the same reason.
+        private static void SafeResetOnLaunch(GameComponent_ColonyVisibility c)
+        {
+            try
+            {
+                c.ResetOnLaunch();
             }
             catch (System.Security.SecurityException)
             {
@@ -167,6 +186,31 @@ namespace RimMandrake.Utinni.Doctrine.SelfTest
                 SafeAdjust(c, 30f, "selftest: raise"); // 10 + 30 = 40
                 SafeAdjust(c, -15f, "selftest: lower"); // 40 - 15 = 25
                 AssertClose(c.shipVisibility, 25f, "a negative delta must lower shipVisibility");
+            });
+
+            // ----------------------------------------- ResetOnLaunch() clamping --
+            // shipVisibility = Clamp(shipVisibility * 0.15, 5, 15) - new coverage,
+            // this method did not exist when the original DoctrineCore-era test
+            // was written.
+            Case("ResetOnLaunch_floors_at_5_from_a_low_start", () =>
+            {
+                var c = new GameComponent_ColonyVisibility(null); // starts at 10
+                SafeResetOnLaunch(c); // 10 * 0.15 = 1.5, clamped up to the 5 floor
+                AssertClose(c.shipVisibility, 5f, "10*0.15=1.5 must clamp up to the 5 floor");
+            });
+            Case("ResetOnLaunch_ceilings_at_15_from_a_high_start", () =>
+            {
+                var c = new GameComponent_ColonyVisibility(null);
+                SafeAdjust(c, 90f, "selftest: raise to near-max"); // 10+90=100
+                SafeResetOnLaunch(c); // 100 * 0.15 = 15, exactly the ceiling
+                AssertClose(c.shipVisibility, 15f, "100*0.15=15 must land exactly at the ceiling, not clamp below it");
+            });
+            Case("ResetOnLaunch_scales_within_the_5_to_15_band", () =>
+            {
+                var c = new GameComponent_ColonyVisibility(null);
+                SafeAdjust(c, 30f, "selftest: raise"); // 10+30=40
+                SafeResetOnLaunch(c); // 40 * 0.15 = 6, inside [5,15], not clamped
+                AssertClose(c.shipVisibility, 6f, "40*0.15=6 must land exactly, no clamp applies inside the band");
             });
 
             Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");

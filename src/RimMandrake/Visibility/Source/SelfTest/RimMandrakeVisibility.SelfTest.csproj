@@ -2,15 +2,26 @@
 
   <!--
     COLONY_VISIBILITY_TEST_COVERAGE_1: offline, no game selftest harness for
-    GameComponent_ColonyVisibility's band ladder and Adjust() clamp. NOT the
-    mod build (JawaDoctrineCore.csproj, one directory up: its own Compile
-    Remove ..\**\*.cs plus Compile Include *.cs pattern excludes this
-    subfolder automatically - confirmed by reading the glob, not assumed).
+    GameComponent_ColonyVisibility's band ladder and Adjust()/ResetOnLaunch()
+    clamps. NOT the mod build (Visibility.csproj, one directory up: its own
+    Compile Remove ..\**\*.cs plus Compile Include *.cs pattern excludes
+    this subfolder automatically, same shape as RimMandrakePits.csproj).
 
-    This targets net48 like the real project (same RimWorldManaged
-    reference assemblies) because ColonyVisibility.cs's own class derives
-    from Verse.GameComponent and calls UnityEngine.Mathf - those need real
-    Assembly-CSharp.dll/UnityEngine.dll to resolve, even though nothing
+    Relocated 2026-09-02 (FOUNDRY): this project used to live at
+    src/RimUtinni/Doctrine/Source/DoctrineCore/SelfTest/ and test
+    ColonyVisibility.cs in that same directory (COLONY_VISIBILITY_STAT_1).
+    COLONY_VISIBILITY_BUILD_1 rehomed the real class into its own dedicated
+    mod (mandrake.rm.visibility, this directory's own GameComponent_
+    ColonyVisibility.cs) without moving or fixing the test, which silently
+    stopped building (CS2001, source file not found) until this pass.
+    Moved here so a SelfTest project always lives beside the file it tests,
+    same convention RimMandrakePits.SelfTest.csproj/JawaIonWeapons.SelfTest.csproj
+    already follow.
+
+    This targets net48 like the real project (same RimWorldManaged reference
+    assemblies) because GameComponent_ColonyVisibility derives from
+    Verse.GameComponent and calls UnityEngine.Mathf/Verse.Log - those need
+    real Assembly-CSharp.dll/UnityEngine.dll to resolve, even though nothing
     called here needs a running game (see Program.cs header for exactly
     what that means and does not mean).
 
@@ -18,7 +29,7 @@
       python3 src/RimMandrake/Utils/selftest_colony_visibility.py
 
     Direct invocation (Windows path required, dotnet.exe cannot take /mnt/d):
-      "%USERPROFILE%\.dotnet\dotnet.exe" run [dash][dash]project D:\Luke\dev\Rimworld\src\Jawa\Jawa_Doctrine\Source\DoctrineCore\SelfTest\JawaDoctrineCore.SelfTest.csproj -c Release
+      "%USERPROFILE%\.dotnet\dotnet.exe" run [dash][dash]project D:\Luke\dev\Rimworld\src\RimMandrake\Visibility\Source\SelfTest\RimMandrakeVisibility.SelfTest.csproj -c Release
       (written apart only because an XML comment cannot hold two adjacent hyphens)
   -->
 
@@ -26,8 +37,8 @@
     <OutputType>Exe</OutputType>
     <TargetFramework>net48</TargetFramework>
     <LangVersion>latest</LangVersion>
-    <AssemblyName>JawaDoctrineCore.SelfTest</AssemblyName>
-    <RootNamespace>JawaDoctrineCore.SelfTest</RootNamespace>
+    <AssemblyName>RimMandrakeVisibility.SelfTest</AssemblyName>
+    <RootNamespace>RimMandrake.Visibility.SelfTest</RootNamespace>
     <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
     <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
@@ -50,7 +61,7 @@
        RimWorld process - it needs Assembly-CSharp.dll/UnityEngine*.dll
        actually copied next to it to resolve at runtime, or every call that
        touches Verse.GameComponent/UnityEngine.Mathf throws
-       FileNotFoundException (confirmed: it did, before this was set). -->
+       FileNotFoundException. -->
   <ItemGroup>
     <Reference Include="Assembly-CSharp">
       <HintPath>$(RimWorldManaged)\Assembly-CSharp.dll</HintPath>
@@ -68,7 +79,7 @@
 
   <ItemGroup>
     <!-- The REAL production source file, compiled in directly. -->
-    <Compile Include="..\ColonyVisibility.cs" />
+    <Compile Include="..\GameComponent_ColonyVisibility.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
 
