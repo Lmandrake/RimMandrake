@@ -3621,7 +3621,19 @@ namespace JawaBench.BridgeTools
             string fields = null,
             [ToolParameter(Description = "Cap on how many defs to resolve.",
                 DefaultValue = 200)]
-            int limit = 200)
+            int limit = 200,
+            [ToolParameter(Description =
+                "MASS_VALIDATION_LADDER_1's deep-serialize upgrade. Off by default (byte-" +
+                "identical to the old behaviour: a list of non-scalar objects — e.g. " +
+                "ThoughtDef.stages, a List<ThoughtStage> — comes back as each item's bare " +
+                "TYPE NAME, 'ThoughtStage', not its data). deep=true walks one non-Def, " +
+                "non-scalar object's own public fields too (capped at 3 levels, so a " +
+                "field like stages[0].label is finally readable), recursing the same way " +
+                "into nested lists/objects. A Def reference is still returned as its " +
+                "defName even when deep=true — it never expands into the referenced def's " +
+                "own fields, which would make the payload unbounded.",
+                DefaultValue = false)]
+            bool deep = false)
         {
             if (string.IsNullOrWhiteSpace(defs))
                 return Fail("defs is required: 'DefType/defName' pairs separated by ';'.",
@@ -3696,7 +3708,7 @@ namespace JawaBench.BridgeTools
                         label = def.label,
                         modName = def.modContentPack?.Name,
                         packageId = def.modContentPack?.PackageId,
-                        fields = Scalars(def, want)
+                        fields = Scalars(def, want, deep)
                     });
                 }
 
@@ -4492,6 +4504,46 @@ namespace JawaBench.BridgeTools
             else grid.SetTerrain(cell, def);
         }
 
+        // MASS_VALIDATION_LADDER_1's deep-serialize upgrade. Recurses into a
+        // non-Def, non-scalar VALUE's own public fields, the same rules
+        // `Scalars` applies at its top level: scalar/string/enum/decimal
+        // returned verbatim, a Def collapses to its defName (never expands --
+        // that is how a def graph stays finite), a list recurses per item
+        // (capped at 64, same as `Scalars`), and everything else recurses one
+        // level deeper until `depth` runs out, at which point it degrades to
+        // a labelled placeholder rather than either crashing or silently
+        // vanishing (both worse than an honest "depth limit reached" string).
+        private static object DeepSerializeValue(object v, int depth)
+        {
+            if (v == null) return null;
+            if (v is Def d) return d.defName;
+            var t = v.GetType();
+            if (t.IsPrimitive || v is string || t.IsEnum || v is decimal)
+                return t.IsEnum ? v.ToString() : v;
+            if (v is System.Collections.IEnumerable seq && !(v is string))
+            {
+                var items = new List<object>();
+                foreach (var it in seq)
+                {
+                    items.Add(DeepSerializeValue(it, depth - 1));
+                    if (items.Count >= 64) break;
+                }
+                return items;
+            }
+            if (depth <= 0)
+                return "(" + t.Name + ", depth limit reached — ask for this field by name "
+                       + "on its own def/type if it needs to go deeper)";
+            var outp = new Dictionary<string, object>();
+            foreach (var f in t.GetFields(System.Reflection.BindingFlags.Public
+                                         | System.Reflection.BindingFlags.Instance))
+            {
+                object fv;
+                try { fv = f.GetValue(v); } catch { continue; }
+                outp[f.Name] = DeepSerializeValue(fv, depth - 1);
+            }
+            return outp;
+        }
+
         // Public instance fields of a CompProperties, filtered to values that are
         // meaningful in JSON. Reflection is the only route: CompProperties
         // subclasses are mod-defined and share no interface.
@@ -4499,7 +4551,13 @@ namespace JawaBench.BridgeTools
         // ⚠️ Scalars, strings, enums, Defs and LISTS of those. Anything else is
         // skipped rather than truncated -- a half-serialised object is worse
         // than an absent one, because it reads as data.
-        private static Dictionary<string, object> Scalars(object o, HashSet<string> want)
+        // `deep=false` (the default, and every call site before
+        // MASS_VALIDATION_LADDER_1) is BYTE-IDENTICAL to the original
+        // behaviour -- a non-scalar list item still comes back as its bare
+        // type name, a non-enumerable complex field is still dropped. Only
+        // `deep=true` (jawa/get_defs' own `deep` parameter) routes through
+        // `DeepSerializeValue` instead.
+        private static Dictionary<string, object> Scalars(object o, HashSet<string> want, bool deep = false)
         {
             var outp = new Dictionary<string, object>();
             if (o == null) return outp;
@@ -4528,11 +4586,20 @@ namespace JawaBench.BridgeTools
                         var it2 = it.GetType();
                         if (it2.IsPrimitive || it is string || it2.IsEnum)
                             items.Add(it2.IsEnum ? it.ToString() : it);
+                        else if (deep)
+                            items.Add(DeepSerializeValue(it, 3));
                         else items.Add(it2.Name);
                         if (items.Count >= 64) break;
                     }
                     outp[f.Name] = items;
+                    continue;
                 }
+                // A non-enumerable complex field (e.g. a plain struct/class
+                // field that is not a Def) used to be silently dropped here --
+                // no continue, the loop just moved on with nothing written.
+                // deep=true now serialises it instead of losing it outright;
+                // deep=false keeps the old silence for back-compat.
+                if (deep) outp[f.Name] = DeepSerializeValue(v, 3);
             }
             // 🔴 A NAMED field that is PRIVATE is still a real field, and used to
             // come back as "(no such field)" -- which reads as "this def has no

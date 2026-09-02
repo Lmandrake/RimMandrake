@@ -1,0 +1,11 @@
+{
+  "item": "SELFTEST_FIXTURE_1",
+  "note": "synthetic, for selftest_expectations_manifest.py only",
+  "checks": [
+    {"defType": "ThingDef", "defName": "RSW_Cindermare", "path": "wildness", "expected": 1.0},
+    {"defType": "ThingDef", "defName": "RSW_Cindermare", "path": "raceGroup", "expected": "wrong-on-purpose"},
+    {"defType": "ThingDef", "defName": "RSW_DoesNotExist", "path": "wildness", "expected": 1.0},
+    {"defType": "HediffDef", "defName": "RSW_ColdDrain", "path": "stages[0].label", "expected": "hypothermic shock"},
+    {"defType": "HediffDef", "defName": "RSW_ColdDrain", "path": "stages[9].label", "expected": "out of range on purpose"}
+  ]
+}

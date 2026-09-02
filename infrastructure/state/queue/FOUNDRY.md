@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T02:53:48Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-02T03:01:58Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -243,6 +243,24 @@ kind:     bug
 summary:  genpawnflavorphase2apply.py's seqop() wraps each field in a
 prose:    infrastructure/state/items/PAWN_FLAVOR_STAGELESS_ADD_FAIL_1.md
 
+## MASS_VALIDATION_LADDER_1 Batched validation ladder: get_defs deep-serialize, manifest runner, hot-reload trial, first review environment
+state:    doing
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+summary:  Full ladder design: infrastructure/VALIDATIONLADDER.md (owner-ruled,
+prose:    infrastructure/state/items/MASS_VALIDATION_LADDER_1.md
+
+## FLUID_CANAL_MECHANIC_1 General canal/fluid-flow mechanic, RimMandrake tier — dig channels that flood with water, ooze, slime, oil, tar, propane; tar pits are the first client
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/FLUID_CANAL_MECHANIC_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FLUID_CANAL_MECHANIC_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -298,23 +316,3 @@ kind:     bug
 thin:     spec, verify and criteria all present
 summary:  Any jawa/pawn tool that resolves a pawn by id/name should also try
 prose:    infrastructure/state/items/BRIDGE_PAWN_THOUGHTS_CARAVAN_GAP_1.md
-
-## MASS_VALIDATION_LADDER_1 Batched validation ladder: get_defs deep-serialize, manifest runner, hot-reload trial, first review environment
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/MASS_VALIDATION_LADDER_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/MASS_VALIDATION_LADDER_1.md
-
-## FLUID_CANAL_MECHANIC_1 General canal/fluid-flow mechanic, RimMandrake tier — dig channels that flood with water, ooze, slime, oil, tar, propane; tar pits are the first client
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/FLUID_CANAL_MECHANIC_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/FLUID_CANAL_MECHANIC_1.md

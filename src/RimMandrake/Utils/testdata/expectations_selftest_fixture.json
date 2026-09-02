@@ -1,0 +1,12 @@
+{
+  "ThingDef::RSW_Cindermare": {
+    "wildness": 1.0,
+    "raceGroup": "Predator"
+  },
+  "HediffDef::RSW_ColdDrain": {
+    "stages": [
+      {"label": "hypothermic shock", "minSeverity": 0.0},
+      {"label": "hypothermic collapse", "minSeverity": 0.6}
+    ]
+  }
+}
