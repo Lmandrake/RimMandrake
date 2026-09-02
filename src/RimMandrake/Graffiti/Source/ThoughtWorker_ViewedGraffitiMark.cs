@@ -58,10 +58,30 @@ namespace RimMandrake.Graffiti
                 for (int i = 0; i < thingList.Count; i++)
                 {
                     ModExtension_Graffiti ext = thingList[i].def.GetModExtension<ModExtension_Graffiti>();
-                    if (ext != null && ext.viewerReactionThought == def)
+                    if (ext == null || ext.viewerReactionThought != def)
                     {
-                        return thingList[i];
+                        continue;
                     }
+                    // Owner ruling #4 (graffiti_spec.md §7): "Cant renders as a
+                    // FAINT SCRAWL to outsiders - they see that marks exist,
+                    // never what they mean." RimWorld has one screen, not one
+                    // per pawn, so there is no separate graphic to swap - the
+                    // mark's Filth Thing renders identically for everyone
+                    // (that IS "they see it exists"). What ClanOnly withholds
+                    // is the MEANING layer: the reaction this worker grants.
+                    // A Public mark (Sacred/Mural/Jest/most Taunts) reads for
+                    // any viewer, same as before. GraffitiVisibility.ClanOnly
+                    // (Cant's own family default, §1⑤) is gated to the
+                    // player's own pawns - the mechanism-level stand-in for
+                    // "the clan" this RM-tier engine can use without a hard
+                    // dependency on the RSW-tier Jawa xenotype check
+                    // (JawaRules.IsJawa) a RUT content pack could still layer
+                    // on top later.
+                    if (ext.visibility == GraffitiVisibility.ClanOnly && p.Faction != Faction.OfPlayer)
+                    {
+                        continue;
+                    }
+                    return thingList[i];
                 }
             }
             return null;

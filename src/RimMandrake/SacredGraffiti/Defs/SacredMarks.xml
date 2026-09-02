@@ -48,6 +48,25 @@
       <Beauty>6</Beauty>
       <Cleanliness>-2</Cleanliness>
     </statBases>
+    <!-- GRAFFITI_FRAMEWORK_BUILD_1: wire this already-shipped mark into
+         mandrake.rm.graffiti's engine now that the data layer exists.
+         category=Sacred, supportsQuality=false (fixed single-quality per
+         spec §1/§3 - "the marks ARE the livery, painted", no quality roll),
+         hasSubject=false (no named colonist), godSatiationHook="Ishko"
+         matches RimMandrake.Ninefold.God's own enum member name (Source/
+         God.cs) - the string a future Ninefold-aware bridge reads to call
+         GameComponent_Ninefold.ApplyDelta. viewerReactionThought left unset:
+         no content ThoughtDef exists yet (owner-voice work, tracked in the
+         item file) - ThoughtWorker_ViewedGraffitiMark simply finds nothing
+         to match until one does. -->
+    <modExtensions>
+      <li Class="RimMandrake.Graffiti.ModExtension_Graffiti">
+        <category>Sacred</category>
+        <supportsQuality>false</supportsQuality>
+        <hasSubject>false</hasSubject>
+        <godSatiationHook>Ishko</godSatiationHook>
+      </li>
+    </modExtensions>
   </ThingDef>
 
 </Defs>

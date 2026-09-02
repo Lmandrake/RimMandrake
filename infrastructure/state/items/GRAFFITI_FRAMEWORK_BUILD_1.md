@@ -188,3 +188,33 @@ sacred marks exists (Ishko + demo RitualOutcomeEffect); 8 more sacred marks
 plus all mural/jest/taunt/cant content are unbuilt, ~34-asset art plan per
 spec §3. Estimated a half-day content-authoring session per family once
 someone owner-voiced writes the text.
+
+## 2026-09-02 (FOUNDRY, background fanout) — wired the existing Ishko mark into the reaction engine
+
+Two mechanism-boundary fixes, no new content text:
+
+1. **`SacredMarks.xml`**: the existing Ishko sacred mark ThingDef had no
+   `ModExtension_Graffiti` — nothing connected it to `mandrake.rm.graffiti`'s
+   engine despite the engine being fully built. Added the modExtension:
+   `category=Sacred`, `supportsQuality=false` (spec §1/§3: marks are the
+   livery, painted, no quality roll), `hasSubject=false`,
+   `godSatiationHook="Ishko"` (verified against `RimMandrake.Ninefold.God`'s
+   real enum member, `God.cs:8`). `viewerReactionThought` deliberately left
+   unset — no reaction ThoughtDef exists yet (owner-voice content), so
+   `ThoughtWorker_ViewedGraffitiMark` simply finds nothing to match until
+   one does.
+2. **`ThoughtWorker_ViewedGraffitiMark.cs`**: the viewer-reaction scan
+   didn't check `ModExtension_Graffiti.visibility` at all — a `ClanOnly`
+   mark (Cant's own family default per spec §1⑤, "outsiders see a mark
+   exists, never what it means") would have granted its reaction thought to
+   ANY viewer, not just the player's own pawns. Added the gate: a
+   `ClanOnly` mark's reaction thought is now withheld from non-player-faction
+   pawns (verified `GraffitiVisibility.ClanOnly` is real,
+   `GraffitiCategory.cs:19`). The mark's Filth Thing itself still renders
+   identically for everyone — that IS "they see it exists"; this only
+   withholds the meaning layer per the ruling.
+
+Both `Graffiti.csproj` and `SacredGraffiti.csproj` rebuild clean, 0/0. Not
+deployed (game is up), not live-verified — same content-gated blocker as
+above: nothing fires this reaction path until a real reaction ThoughtDef
+exists to attach.
