@@ -167,3 +167,24 @@ gains the thought; a raid with a `breachLure` mark active actually
 breaches there) — cannot be tested without content defs to attach to, so
 this also needs at least one placeholder mark of each kind before a live
 proof is possible. Left `doing`.
+
+## 2026-09-02 (FOUNDRY, offline audit pass) — mechanism confirmed complete, content boundary held
+
+Re-verified both mods compile clean (`dotnet.exe build`, 0/0 both
+`Graffiti.csproj` and `SacredGraffiti.csproj`) and re-confirmed the
+directory mapping from `About.xml` packageIds: `src/RimMandrake/Graffiti/`
+= `mandrake.rm.graffiti` (the engine — ModExtension, spree JobDriver/
+JoyGiver/MentalState/ThinkTree, ThoughtWorker, breach-bias Harmony hook, all
+generic per spec §2). `src/RimMandrake/SacredGraffiti/` is still packageId
+`mandrake.rm.sacredgraffiti`, the pre-rename precursor to `mandrake.rut.marks`
+per spec §5's own migration note — that rename hasn't executed yet, so no
+directory is `mandrake.rut.marks` today.
+
+No code written this pass — deliberately: the mechanism layer is ~100%
+built and every remaining task is content authoring reserved as owner-voice
+(text is spec-locked verbatim in the design doc), which three prior passes
+already drew a hard line against FOUNDRY writing. Content state: 1 of 9
+sacred marks exists (Ishko + demo RitualOutcomeEffect); 8 more sacred marks
+plus all mural/jest/taunt/cant content are unbuilt, ~34-asset art plan per
+spec §3. Estimated a half-day content-authoring session per family once
+someone owner-voiced writes the text.
