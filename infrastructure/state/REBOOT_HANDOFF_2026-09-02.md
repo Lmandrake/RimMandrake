@@ -1,5 +1,13 @@
 # BENCH reboot handoff — 2026-09-02
 
+> **LOAD-HEALTH SWEEP: DONE 2026-09-02 (BENCH).** All 25 believed-clean mods scored
+> in 2 minimal loads: zero recovery resets, all sentinel defs resolve. WreckedMachines
+> clean with VEF+VFE-furniture+Factory. Campaign-real findings:
+> PAWNFLAVOR_BREAK_LABEL_FIX_1 (fixed+deployed), sonic forcedMiss (noted on
+> SONIC_WEAPONS_EXPANSION_1), ARMOURY_ABSORBED_FRAMEWORK_DEPS_1 (filed —
+> Armoury is NOT self-contained; donor-sunset risk). FireEcology burnedDef x6
+> already known in FIRE_ECOLOGY_LOOP_1. Full 592 restored + relaunched, dump armed.
+
 Session paused by owner ("stop / prepare for agent reboot") mid load-health sweep.
 Machine state: full 592-mod config restored (md5 c9d20db5, verified); game is
 running on an 11-mod isolation list (harmless — relaunch picks up full). No

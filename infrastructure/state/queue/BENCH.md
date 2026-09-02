@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T08:05:50Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-02T08:25:37Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -35,6 +35,15 @@ target:   v1
 kind:     task
 summary:  Owner ruled 2026-08-31: all six §5 roles, and the three predator roles are the
 prose:    infrastructure/state/items/SW_SEA_MONSTERS_ART_1.md
+
+## PAWNFLAVOR_BREAK_LABEL_FIX_1 PawnFlavor TargetedInsultingSpree label carried {0} — illegal chars config error on every list; fixed + deployed
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/PAWNFLAVOR_BREAK_LABEL_FIX_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PAWNFLAVOR_BREAK_LABEL_FIX_1.md
 
 # BLOCKED — something is WRONG and someone must act
 

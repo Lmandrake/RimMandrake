@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T08:05:50Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-02T08:25:37Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -324,6 +324,15 @@ kind:     build
 summary:  Identity: the Long Hunger — Deep Desert tribal lore for a colossal entity
 prose:    infrastructure/state/items/SANDWORM_MYTHOS_BUILD_1.md
 
+## BIOME_CAST_REFS_BREAK_MAPGEN_1 Biome-cast cross-refs to donor creatures break local mapgen when donor is absent — scrub before any donor retirement; blocks rapid-minimal ecosystem preview
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  (no items/BIOME_CAST_REFS_BREAK_MAPGEN_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BIOME_CAST_REFS_BREAK_MAPGEN_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -370,16 +379,6 @@ thin:     spec, verify and criteria all present
 summary:  Two consecutive restarts both hung indefinitely at the exact same point in
 prose:    infrastructure/state/items/COLD_LOAD_STATIC_CTOR_STALL_1.md
 
-## BIOME_CAST_REFS_BREAK_MAPGEN_1 Biome-cast cross-refs to donor creatures break local mapgen when donor is absent — scrub before any donor retirement; blocks rapid-minimal ecosystem preview
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/BIOME_CAST_REFS_BREAK_MAPGEN_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BIOME_CAST_REFS_BREAK_MAPGEN_1.md
-
 ## JAWA_SPAWN_KINDS_NO_RACE_1 Jawa_Spawn_Zygerrian/Yoder/Taung have no race + no combatPower — dead pawnkinds; plus RSW_Gun_Sonic_HiveEmitter forcedMiss and RSW_JawaIon_Stun stage order
 state:    proposed
 row:      unassigned
@@ -399,3 +398,13 @@ kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/HELIX_TELLUROX_SHELL_LOAD_CRASH_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/HELIX_TELLUROX_SHELL_LOAD_CRASH_1.md
+
+## ARMOURY_ABSORBED_FRAMEWORK_DEPS_1 Armoury absorbed defs carry silent hard deps on VEF/EBSG/AdaptiveStorage/kotorcore DLLs — not self-contained; donor-sunset risk
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/ARMOURY_ABSORBED_FRAMEWORK_DEPS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ARMOURY_ABSORBED_FRAMEWORK_DEPS_1.md
