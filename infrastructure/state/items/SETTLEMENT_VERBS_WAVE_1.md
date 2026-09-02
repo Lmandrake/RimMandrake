@@ -1,3 +1,46 @@
+## 2026-09-02 (FOUNDRY) — correcting the record: this was ALREADY BUILT, 2026-09-01
+
+Same bookkeeping gap as `BUILDING_THEFT_HAULER_1` (see `QUEUE_ITEM_FILES_DECAY_1`):
+commit `ad778ef0` (2026-09-01) built the full salvage-law claim-fee gizmo
+under `src/RimMandrake/SalvageClaim/` and never wrote it up here, so this
+item file still read as pure spec/verify/criteria. Caught by `git log` on
+the folder name after `BUILDING_THEFT_HAULER_1`'s own near-miss, not by the
+queue tooling.
+
+**What's built** (packageId `mandrake.rm.salvageclaim`): a right-click
+`FloatMenuOptionProvider_PaySalvageClaim` order (chosen over a Gizmo for the
+same reason `TheftHauler`'s provider was — needs both a selected paying pawn
+and a clicked target Thing) that fires
+`PropertyEngine.Fire(TakingEvent(..., TakingAct.Claim, ...))`, gated off
+already-free-to-use (own claim / same-faction Commons — a narrow local copy
+of `PropertyEngine`'s own private authorization test, used only to decide
+whether to OFFER the gizmo; `Fire()` would still behave correctly without
+it). Fee scales via `SalvageClaimFeeUtility.ComputeFeeSilver` from
+`RecognizabilityUtility.Score` and the resolved prior claim's
+`EffectiveStrength` (5-350 silver, floor 0.2 recognizability-weight so a
+decayed claim on something recognizable never prices like a decayed claim on
+a steel bar) — reuses the fabric's own published numbers, no second pricing
+model. Silver is drawn from the acting pawn's own carried inventory only (v1
+simplification, documented in-file). The powered-down-droid case (item point
+3) is handled: `clickedThing is Pawn` falls through the same generic `Thing`
+path, gated to `Downed && RaceProps.IsMechanoid` (deliberately narrower than
+"any downed pawn" — a downed humanlike is vanilla's own
+arrest/rescue/capture territory, out of this pass's scope).
+
+**Re-verified this pass**: `deploy_custom_mods.py --mod SalvageClaim` reports
+in-sync (no rebuild needed, DLL already matches game copy); `mandrake.rm.
+salvageclaim` is active in the live 592-mod `ModsConfig.xml`. Not re-run:
+`validate_patch.py` (this mod ships no XML patches, only an About.xml and
+compiled C#, so there's nothing for that tool to check) and `dotnet build`
+(deploy already reported in-sync, unlike TheftHauler's stale DLL, so nothing
+to resync).
+
+**Not done, unchanged from the original build**: live-quicktest proof (pay
+the fee on an unclaimed/weakly-claimed wreck and on a downed droid pawn,
+confirm a `ClaimBasis.ClaimFeePaid` record lands) — needs a bridge session,
+not available tonight. Left `doing`, not closed, same as `BUILDING_THEFT_
+HAULER_1`.
+
 ## spec
 Full ruling: `design/Jawa/ownership_settlement_spec.md` (owner sitting 2026-08-31),
 item 9: "v1 verb families: crime suite (pickpocket, night burglary, fencing,
