@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T14:52:39Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: free
+as-of: 2026-09-02T16:17:01Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -17,15 +17,6 @@ Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED be
 # IN PROGRESS
 
 Started, and therefore not offered again. `rimflow close` or `rimflow block` moves them.
-
-## SPAWN_PAWN_SUBSTITUTES_VANILLA_KIND_1 jawa/spawn_pawn reports 2/2 of the kind asked for and delivers one vanilla Colonist
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     bug
-summary:  SPAWNPAWNSUBSTITUTESVANILLAKIND1 — "Spawned 2/2" delivered one of something else
-prose:    infrastructure/state/items/SPAWN_PAWN_SUBSTITUTES_VANILLA_KIND_1.md
 
 ## WILD_ANIMALS_PADDED_LISTS_1 wildAnimals lists padded to 1024 by unidentified C# pass
 state:    doing
@@ -207,15 +198,6 @@ kind:     build
 summary:  Per the doc's §1, §5, §8:
 prose:    infrastructure/state/items/WEATHER_SUITE_SLICE_1.md
 
-## BRIDGE_INVENTORY_TRANSFER_REFUSES_ALL_1 jawa/inventory_transfer refuses to add ANY item to ANY pawn's inventory on the live 592-mod list
-state:    doing
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     fix
-summary:  jawa/inventorytransfer (mode=add) refused every attempt this session:
-prose:    infrastructure/state/items/BRIDGE_INVENTORY_TRANSFER_REFUSES_ALL_1.md
-
 ## FORSAKEN_CRAGS_PREDATORS_BUILD_1 Build Cindermare + Skarnix, wild AB_RockyCrags threat pair
 state:    doing
 row:      unassigned
@@ -333,19 +315,18 @@ kind:     bug
 summary:  (no items/HELIX_TELLUROX_SHELL_LOAD_CRASH_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/HELIX_TELLUROX_SHELL_LOAD_CRASH_1.md
 
+## QUEUE_ITEM_FILES_DECAY_1 Commits that finish a queue item don't update its items/<ID>.md, so next/triage reads it as unstarted
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  rimflow has no hook forcing a close, or even a plain code commit that
+prose:    infrastructure/state/items/QUEUE_ITEM_FILES_DECAY_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
-
-## SPAWN_PAWN_SUBSTITUTES_VANILLA_KIND_1 jawa/spawn_pawn reports 2/2 of the kind asked for and delivers one vanilla Colonist
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     bug
-blocked:  Tool read-back proven live on 480 spawns; remaining unknown is WHICH of 5 Harmony patches, needs a mod-disable bisect with a game restart per candidate (~1000 spawns per cell at the real 0.8% rate)
-summary:  SPAWNPAWNSUBSTITUTESVANILLAKIND1 — "Spawned 2/2" delivered one of something else
-prose:    infrastructure/state/items/SPAWN_PAWN_SUBSTITUTES_VANILLA_KIND_1.md
 
 ## DROID_TILES_SOURED_TERRAIN_1 Free Droid Enclave tiles get polluted ground and fouled water (2026-08-04 doctrine, ruled alive)
 state:    proposed  (BLOCKED)
@@ -377,14 +358,4 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## QUEUE_ITEM_FILES_DECAY_1 Commits that finish a queue item don't update its items/<ID>.md, so next/triage reads it as unstarted
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     spec, verify and criteria all present
-summary:  rimflow has no hook forcing a close, or even a plain code commit that
-prose:    infrastructure/state/items/QUEUE_ITEM_FILES_DECAY_1.md
+_none._

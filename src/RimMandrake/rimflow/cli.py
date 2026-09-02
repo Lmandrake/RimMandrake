@@ -210,6 +210,45 @@ def head_sha():
     return git("rev-parse", "--short", "HEAD") or None
 
 
+def _undocumented_work_warning(item_id):
+    """-> a one-line warning, or None, for QUEUE_ITEM_FILES_DECAY_1's own gap:
+    a commit that finishes an item's work is not required to touch
+    items/<ID>.md, so the prose `show` just printed can read as "nothing
+    happened here" while real, committed work already exists. Measured
+    2026-09-02: BUILDING_THEFT_HAULER_1 and SETTLEMENT_VERBS_WAVE_1 were both
+    fully built and committed the night before, then both nearly re-built
+    from scratch by a later FOUNDRY pass (and a dedicated triage fork) that
+    had no way to tell "done" from "unstarted" except `git log` by hand.
+
+    Heuristic, not a structured item->source-path map (none exists): this
+    repo's commit messages near-universally open with "ID: what happened"
+    (checked against every commit cited by this session), so a substring
+    search for "<item_id>:" across full commit messages finds them without
+    needing to know WHERE an item's code lives. A commit body that happens to
+    mention a different item this way is the rare false positive this
+    advisory accepts — it never blocks anything, only tells `show`'s caller
+    to look before assuming.
+    """
+    out = git("log", "-F", "--grep=%s:" % item_id, "--name-only", "--format=%x01%H")
+    if not out:
+        return None
+    item_file = os.path.relpath(os.path.join(model.ITEMS, "%s.md" % item_id), model.ROOT)
+    hits = []
+    for rec in out.split("\x01")[1:]:
+        lines = [ln for ln in rec.splitlines() if ln.strip()]
+        if not lines:
+            continue
+        sha, files = lines[0], lines[1:]
+        hits.append((sha, item_file in files))
+    if hits and not any(touched for _, touched in hits):
+        shas = ", ".join(sha[:8] for sha, _ in hits[:3])
+        more = "" if len(hits) <= 3 else ", +%d more" % (len(hits) - 3)
+        return ("%d commit(s) cite %s (%s%s) but NONE touch %s — the prose below "
+                "may be stale. `git log --oneline -F --grep=\"%s:\"` before assuming "
+                "unstarted." % (len(hits), item_id, shas, more, item_file, item_id))
+    return None
+
+
 # ---------------------------------------------------------------------------
 # PROSE
 # ---------------------------------------------------------------------------
@@ -719,6 +758,10 @@ def cmd_show(args, seat):
         print("closed at %s" % it.closed_sha)
     if it.superseded_by:
         print("superseded by %s" % it.superseded_by)
+    if not it.closed_sha:
+        undoc = _undocumented_work_warning(it.id)
+        if undoc:
+            print("⚠️  %s" % undoc)
 
     prose = read_prose(it.id)
     print("\n--- items/%s.md ---" % it.id)

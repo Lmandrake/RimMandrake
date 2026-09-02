@@ -7,12 +7,21 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T14:52:39Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: free
+as-of: 2026-09-02T16:17:01Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
-Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
+The first heading below is what `rimflow next --seat BENCH` returns. This file and that command call the same function, so they cannot disagree.
+
+## BRIDGE_INVENTORY_TRANSFER_REFUSES_ALL_1 jawa/inventory_transfer refuses to add ANY item to ANY pawn's inventory on the live 592-mod list
+state:    ready
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     fix
+summary:  jawa/inventorytransfer (mode=add) refused every attempt this session:
+prose:    infrastructure/state/items/BRIDGE_INVENTORY_TRANSFER_REFUSES_ALL_1.md
 
 # IN PROGRESS
 
@@ -38,7 +47,17 @@ prose:    infrastructure/state/items/SW_SEA_MONSTERS_ART_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
-_none._
+⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
+
+## SPAWN_PAWN_SUBSTITUTES_VANILLA_KIND_1 jawa/spawn_pawn reports 2/2 of the kind asked for and delivers one vanilla Colonist
+state:    ready  (BLOCKED)
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     bug
+blocked:  Tool read-back proven live on 480 spawns; remaining unknown is WHICH of 5 Harmony patches, needs a mod-disable bisect with a game restart per candidate (~1000 spawns per cell at the real 0.8% rate)
+summary:  SPAWNPAWNSUBSTITUTESVANILLAKIND1 — "Spawned 2/2" delivered one of something else
+prose:    infrastructure/state/items/SPAWN_PAWN_SUBSTITUTES_VANILLA_KIND_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
@@ -61,13 +80,3 @@ kind:     task
 thin:     no ## criteria
 summary:  Layer stack: design/Jawa/researchnormalizationprinciples.md (why) →
 prose:    infrastructure/state/items/RESEARCH_TREE_NORMALIZATION_1.md
-
-## SAVEGAME_PURGE_KEEP_B_1 Purge all savegames except the two newest *_b (WORLDMAP_V1_original_b, gravship_scratch_b) - owner-ordered 2026-09-02, must run with the game up
-state:    proposed
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SAVEGAME_PURGE_KEEP_B_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/SAVEGAME_PURGE_KEEP_B_1.md
