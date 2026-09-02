@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T01:37:33Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-02T01:43:45Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -216,6 +216,33 @@ kind:     build
 summary:  - Source of the text: the proposed field per row in the generator's data
 prose:    infrastructure/state/items/PAWN_FLAVOR_PHASE2_APPLY_1.md
 
+## FORSAKEN_CRAGS_PREDATORS_BUILD_1 Build Cindermare + Skarnix, wild AB_RockyCrags threat pair
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  1. Cindermare (moornakopt1.png) — wild threat, ABRockyCrags. No mouth
+prose:    infrastructure/state/items/FORSAKEN_CRAGS_PREDATORS_BUILD_1.md
+
+## HELIX_TELLUROX_BUILD_1 Build Tellurox, Ascendant Helix labour-line livestock
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  Tellurox (karraskopt3.png) — Ascendant Helix labour-line livestock,
+prose:    infrastructure/state/items/HELIX_TELLUROX_BUILD_1.md
+
+## PAWN_FLAVOR_STAGELESS_ADD_FAIL_1 Two Phase-2 flavor rows fail PatchOperationAdd: no literal stages/li[1] to anchor on
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  genpawnflavorphase2apply.py's seqop() wraps each field in a
+prose:    infrastructure/state/items/PAWN_FLAVOR_STAGELESS_ADD_FAIL_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -261,36 +288,6 @@ kind:     fix
 thin:     spec, verify and criteria all present
 summary:  jawa/inventorytransfer (mode=add) refused every attempt this session:
 prose:    infrastructure/state/items/BRIDGE_INVENTORY_TRANSFER_REFUSES_ALL_1.md
-
-## FORSAKEN_CRAGS_PREDATORS_BUILD_1 Build Cindermare + Skarnix, wild AB_RockyCrags threat pair
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     spec, verify and criteria all present
-summary:  1. Cindermare (moornakopt1.png) — wild threat, ABRockyCrags. No mouth
-prose:    infrastructure/state/items/FORSAKEN_CRAGS_PREDATORS_BUILD_1.md
-
-## HELIX_TELLUROX_BUILD_1 Build Tellurox, Ascendant Helix labour-line livestock
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     spec, verify and criteria all present
-summary:  Tellurox (karraskopt3.png) — Ascendant Helix labour-line livestock,
-prose:    infrastructure/state/items/HELIX_TELLUROX_BUILD_1.md
-
-## PAWN_FLAVOR_STAGELESS_ADD_FAIL_1 Two Phase-2 flavor rows fail PatchOperationAdd: no literal stages/li[1] to anchor on
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     spec, verify and criteria all present
-summary:  genpawnflavorphase2apply.py's seqop() wraps each field in a
-prose:    infrastructure/state/items/PAWN_FLAVOR_STAGELESS_ADD_FAIL_1.md
 
 ## BRIDGE_PAWN_THOUGHTS_CARAVAN_GAP_1 jawa/pawn_thoughts cannot read a caravan pawn - FindPawn only sees spawned map pawns
 state:    proposed

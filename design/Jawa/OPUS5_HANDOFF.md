@@ -253,3 +253,36 @@ and pushed; nothing below is open design — it is execution.**
   re-measure owed to FOUNDRY; manifest lacks an `access_class` column.
 - Owner's two in-game eyeball checks still owed: Salvagers absent from the
   faction UI; ISEKAI trait degree labels.
+
+## Fourth reboot addendum — 2026-09-01 evening, BENCH (supersedes the third's review list)
+
+- **Proposal suite: 19 owner rulings are IN the decisions file and BAKED into the
+  page** (`proposal_suite_review.html`, `fd5223d3`). Two `cut`s: `gas:tar-interplay`
+  (real) and `gas:tanker-economy` (note reads as a correction — treat as v1 with the
+  correction unless he says otherwise). **Owed:** bank the 19 notes into
+  `tar_pits_deep_design.md` / `propane_gas_deep_design.md` / `fire_ecology_deep_design.md`
+  as "what IS", then items under PROPOSAL_SUITE_REVIEW_1. Read them as a group first:
+  canal-flow is ruled *RimMandrake-tier general mechanic*, not Utinni.
+- ⛔ **Sheet plumbing lesson, paid twice tonight:** a Save-As link picker TRUNCATES the
+  decisions file on "Replace" before the page reads it (19 rows → 3; recovered from
+  git). Every remaining sheet using `showSaveFilePicker` must switch to
+  `showOpenFilePicker`; `check_sheet.py` passes a sheet with no decisions file on disk
+  and with empty `sheetPath`/`decisionsPath` — three LESSONS_INBOX lines filed.
+- **Forsaken Crags fauna: RULED, all three approved** (Cindermare, Skarnix, Tellurox);
+  decisions frozen `decidedBy: owner-said`. **Tellurox = livestock genetically modified
+  by the Helix faction** (owner's words); FOUNDRY ports the three names into RUT_ defs.
+- **Techprint stamp attributed**: Configurable Techprints
+  (`com.makeitso.configurabletechprints`), 455/522 projects; NOT Research Reinvented
+  (no such symbol in either live RR DLL). Items noted; `research_manifest_validate.py`
+  check 7 corrected. TECHPRINT_FACTION_GATING_1 now routes through that mod's settings.
+- **Pawn flavor phase 2**: all 1,783 rows approved (owner-said); PAWN_FLAVOR_PHASE2_APPLY_1
+  shipped by FOUNDRY tonight; PAWN_FLAVOR_SILENT_NONAPPLY_1 closed.
+- **Dungeons rulings recorded** (`dungeons_arc_spec.md` §0/§2.7/§3.9): thaw = QuestNode +
+  map trigger; power core = vanilla `AIPersonaCore`; vaults 325×325; V5 = new organic
+  landmark. 13 straddle rows of the split map confirmed at proposed tiers.
+- **Transient/ is TRACKED AND PUSHED (standing rule)** — the owner reviews from another
+  machine. Two sweeps tonight removed ~165 MB; remaining `fire*/diag*/check*.py` are
+  2.7-day fire-ecology debug scripts, leave until they pass 3 days. Review dir lost 13
+  outmoded sheets + `art_biomes/`.
+- Still owed to the owner: nothing blocking. FOUNDRY released the bridge and stamped
+  seat-ready; four live passes authorized.

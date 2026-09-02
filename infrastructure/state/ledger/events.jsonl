@@ -3665,3 +3665,10 @@
 {"seat":"FOUNDRY","event":"close","id":"PAWN_FLAVOR_SILENT_NONAPPLY_1","sha":"88bdc34b","ts":"2026-09-02T01:37:32Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-02T01:37:33Z"}
 {"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-09-02T01:37:33Z"}
+{"seat":"FOUNDRY","event":"claim","id":"PAWN_FLAVOR_STAGELESS_ADD_FAIL_1","ts":"2026-09-02T01:38:14Z"}
+{"seat":"FOUNDRY","event":"start","id":"PAWN_FLAVOR_STAGELESS_ADD_FAIL_1","ts":"2026-09-02T01:38:14Z"}
+{"seat":"FOUNDRY","event":"claim","id":"FORSAKEN_CRAGS_PREDATORS_BUILD_1","ts":"2026-09-02T01:41:07Z"}
+{"seat":"FOUNDRY","event":"start","id":"FORSAKEN_CRAGS_PREDATORS_BUILD_1","ts":"2026-09-02T01:41:07Z"}
+{"seat":"FOUNDRY","event":"claim","id":"HELIX_TELLUROX_BUILD_1","ts":"2026-09-02T01:41:08Z"}
+{"seat":"FOUNDRY","event":"start","id":"HELIX_TELLUROX_BUILD_1","ts":"2026-09-02T01:41:08Z"}
+{"seat":"OWNER","event":"seat","state":"ready","note":"Reboot prep: fourth addendum in the handoff; Transient swept; crags ruled; proposal notes baked into the sheet","ownerSaid":"Prepare for agent restart","ts":"2026-09-02T01:43:45Z"}
