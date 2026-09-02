@@ -63,3 +63,28 @@ failure for `JobDefs_TheftHauler.xml`'s own defName(s). Because Droidworks
 is absent, this pass can only prove the engine loads clean — it CANNOT
 prove the theft job actually fires on a real droid (needs Droidworks
 active, out of scope for this load per the owner's strict two-mod scope).
+
+## Load 4 (594 mods) — 2026-09-02, WeatherSuite pair
+
+Enabling `mandrake.rsw.weathersuite` (engine, new assembly `WeatherSuiteHook.dll`)
++ `mandrake.rut.weathersuite` (Ash'karr content, XML-only, `loadAfter`
+`mandrake.rsw.weathersuite`, satisfied — inserted directly after it) together.
+`mandrake.rsw.livestock` (`RSW_Cindermare`/`RSW_Skarnix`) was DISABLED by the
+prior pass (593→592, live `Pawn_AgeTracker.get_CurKindLifeStage` crash on both
+defs, unresolved) — confirming it's still absent before launch is part of
+this load's own baseline check, not assumed.
+
+## WeatherSuiteHook.dll (`mandrake.rsw.weathersuite`)
+Confirmed from source (`src/RimStarWars/WeatherSuite/Source/WeatherSuiteHook.cs`):
+namespace `RimMandrake.StarWars.WeatherSuite`, types `PlanetGeometryDef`,
+`MapComponent_TerminatorBand`, `IncidentWorker_NightsideAurora`,
+`CompForecaster`/`CompProperties_Forecaster` (the `RSW_WS_WeatherInstrument`
+inspect-string reader). If broken, expect a line naming
+`RimMandrake.StarWars.WeatherSuite` or `WeatherSuiteHook` specifically — a
+`TypeLoadException`/`ReflectionTypeLoadException` citing that assembly, or
+a `Config error in mandrake.rsw.weathersuite` naming `RSW_WS_WeatherInstrument`
+if the comp class doesn't resolve. `mandrake.rut.weathersuite` is pure XML
+(one `PlanetGeometryDef`, 5 `PatchOperationConditional`-wrapped folk-sign
+`WeatherDef` description replaces) — any error naming `RSW_WS_TerminatorFront`/
+`RSW_WS_DarkAurora`/the folk-sign patch would be a def-level problem in that
+mod, not an assembly load failure in the engine mod.
