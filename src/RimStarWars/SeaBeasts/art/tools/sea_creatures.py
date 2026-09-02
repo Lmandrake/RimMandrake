@@ -19,8 +19,11 @@ RAW = "/mnt/d/Luke/dev/Rimworld/Transient/sea_raw"
 
 
 def canvas_for(draw_size: float) -> int:
+    # Floor 256: the skill's own table allows 128 OR 256 at drawSize 1.0, and
+    # the source art is ~1500px, so 256 costs nothing that isn't already paid
+    # for and keeps the small fish from going blocky when a player zooms.
     want = draw_size * 128.0
-    n = 128
+    n = 256
     while n < want and n < 1024:
         n *= 2
     return n
