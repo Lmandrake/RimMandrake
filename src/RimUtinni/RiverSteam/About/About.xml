@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimMandrake: Utinni — River Steam</name>
+  <packageId>mandrake.rut.riversteam</packageId>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Animated steam rising off river cells on the Pyrelands (`ZBiome_Grasslands`) — a pure ambience feature, no gameplay effect. Reuses vanilla's own "Steam" FleckDef and the same TerrainDef.IsRiver test SeasonalFlood already uses. RIVER_STEAM_ANIMATION_1, per `infrastructure/state/items/RIVER_STEAM_ANIMATION_1.md`.</description>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+  </modDependencies>
+</ModMetaData>
