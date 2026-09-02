@@ -64,6 +64,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
 sys.path.insert(0, HERE)
 from game_paths import DEF_DUMP  # noqa: E402
 import dump_projection  # noqa: E402
+import cherrypicker  # noqa: E402
 ROSTER_GEN = os.path.join(HERE, "gen_pawnkind_roster.py")
 ROSTER_XML = os.path.join(
     ROOT, "src", "Jawa", "Jawa_Patches", "Defs", "PawnKindDefs", "JawaFactionRoster.xml")
@@ -183,6 +184,20 @@ def load_weapons(dump):
     memory, not the clock — six fields per record instead of the whole record.
     `dump_projection.cost_graph` carries the numbers, and falls back to reading
     the JSON when no `defs.sqlite` exists.
+
+    🔑 CHECKED 2026-09-02 (DUMP_DERIVED_SHEETS_SHOW_CUT_1 sweep): this needs no
+    Cherry Picker filtering of its own, and the reason is structural, not
+    incidental. `tagged` — and therefore `by_tag`, and therefore every "cheapest
+    weapon" this tool ever names — comes ONLY from ThingDefs carrying a NON-EMPTY
+    `weaponTags` (see `dump_projection.weapon_cost_index`, which reads the
+    `def_tags` side table). `weapon_tag_audit.py` established that Cherry Picker
+    neuters a cut weapon in place, stripping `weaponTags` to `[]` rather than
+    deleting the def — so a genuinely cut weapon can never produce a `(defName,
+    tag)` pair here and never enters `by_tag` at all. A cut weapon cannot become
+    the "cheapest" answer for any tag, cannot inflate a pool count, and cannot be
+    reported as arming a kind that will not have it. Verified empirically against
+    the 2026-09-02T19:36:08Z capture: 0 of the defNames in `by_tag` are on
+    Cherry Picker's live cut list.
     """
     path = os.path.join(dump, "ThingDef.json")
     if not os.path.isfile(path):
@@ -219,11 +234,23 @@ def load_roster():
     declares min AND max explicitly so no `wm * 1.2` has to be inferred, and it
     cannot drift from itself. `drift_vs_shadow()` still reads `R` - only to report
     that the shadow has rotted, never to compute an answer from it.
+
+    ⚠️ ADDED 2026-09-02 (DUMP_DERIVED_SHEETS_SHOW_CUT_1 sweep): unlike the weapons
+    priced in `load_weapons()`, a PawnKindDef this project's OWN roster emits has
+    no structural immunity if Cherry Picker ever cuts it by name — the emitted XML
+    is ordinary Defs content once deployed, same as any mod's. None of the roster's
+    `Jawa_*` kinds are on the live cut list today (checked against
+    `cherrypicker.py --type PawnKindDef`: 7 cut, all vanilla/mod names, none
+    `Jawa_`), but a kind that WAS cut would otherwise be reported "NEVER ARMS" for
+    a pawn that can no longer spawn at all — wasted review time on a ghost, same
+    failure shape as the rest of this sweep. So this now checks and excludes,
+    loudly, rather than trusting today's zero to hold forever.
     """
     import xml.etree.ElementTree as ET
     if not os.path.isfile(ROSTER_XML):
         die("no emitted roster at " + ROSTER_XML)
-    rows = []
+    cuts = cherrypicker.load()
+    rows, cut_rows = [], []
     for d in ET.parse(ROSTER_XML).getroot():
         dn = d.findtext("defName")
         if not dn or not dn.startswith("Jawa_"):
@@ -233,10 +260,17 @@ def load_roster():
         tags = [li.text for li in wt] if wt is not None else []
         if not wm or "~" not in wm:
             continue
+        if cuts.cut("PawnKindDef", dn):
+            cut_rows.append(dn)
+            continue
         lo, hi = (float(x) for x in wm.split("~", 1))
         rows.append((dn, d.findtext("label") or dn, lo, hi, tags))
     if not rows:
         die("parsed no Jawa_ kinds out of " + ROSTER_XML)
+    print(cuts.provenance(suppressed=len(cut_rows)))
+    if cut_rows:
+        print("   CUT (Cherry Picker) and excluded - cannot spawn: %s"
+              % ", ".join(sorted(cut_rows)))
     return rows
 
 
