@@ -54,24 +54,12 @@ namespace RimMandrake.Visibility
     /// </summary>
     public static class ColonyVisibilityRaidPatch
     {
-        /// <summary>
-        /// Annex A's ruled curve (colony_visibility_stat.md §3 Annex A,
-        /// 2026-08-30 BENCH merge, closed by the 2026-08-31 owner ruling):
-        /// "first-guess curve 0→0.55 · 25→0.80 · 50→1.00 · 75→1.25 ·
-        /// 100→1.60". Supersedes the earlier §4.2 illustrative table
-        /// (0.3x..3.5x), which Annex A's own "replace, don't stack" note
-        /// obsoletes. Still explicitly NOT TUNED - §5's tuning protocol
-        /// (throwaway-save rig, measure at Visibility ∈ {0,25,50,75,100} ×
-        /// 3 wealth bands) has not been run.
-        /// </summary>
-        private static readonly SimpleCurve VisibilityToThreatCurve = new SimpleCurve
-        {
-            new CurvePoint(0f, 0.55f),
-            new CurvePoint(25f, 0.80f),
-            new CurvePoint(50f, 1.00f),
-            new CurvePoint(75f, 1.25f),
-            new CurvePoint(100f, 1.60f),
-        };
+        // Annex A's ruled curve (0→0.55 · 25→0.80 · 50→1.00 · 75→1.25 ·
+        // 100→1.60) now lives on GameComponent_ColonyVisibility.ThreatFactor
+        // (moved 2026-09-02, COLONY_VISIBILITY_BUILD_1: that file has no
+        // HarmonyLib/RimWorld.Planet dependency, so it can be selftested
+        // offline without pulling those references into the SelfTest
+        // project - this file's Prefix just consumes it below).
 
         public static void Apply(Harmony harmony)
         {
@@ -257,7 +245,7 @@ namespace RimMandrake.Visibility
             float visibility = component?.shipVisibility ?? 10f;
             float shkaarMultiplier = component?.ShkaarEscalationMultiplier ?? 1f;
 
-            float factor = VisibilityToThreatCurve.Evaluate(visibility) * shkaarMultiplier;
+            float factor = GameComponent_ColonyVisibility.ThreatFactor(visibility) * shkaarMultiplier;
             float before = parms.points;
             parms.points = Mathf.Clamp(parms.points * factor, StorytellerUtility.GlobalPointsMin(), 10000f);
 

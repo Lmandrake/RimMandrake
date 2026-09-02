@@ -250,6 +250,32 @@ namespace RimMandrake.Visibility.SelfTest
                 AssertClose(GameComponent_ColonyVisibility.DecayedTileVisibility(0f, ticksPerSeason), 0f,
                     "a tile left at 0 has nothing to decay"));
 
+            // ------------------------------------- ThreatFactor() curve ------
+            // Annex A's ruled anchors (colony_visibility_stat.md §3 Annex A):
+            // 0→0.55 · 25→0.80 · 50→1.00 · 75→1.25 · 100→1.60. Extracted onto
+            // this file 2026-09-02 (COLONY_VISIBILITY_BUILD_1) specifically so
+            // it's selftestable without pulling HarmonyLib/RimWorld.Planet
+            // into this project.
+            Case("ThreatFactor_at_0_is_055", () =>
+                AssertClose(GameComponent_ColonyVisibility.ThreatFactor(0f), 0.55f, "Hidden floor anchor"));
+            Case("ThreatFactor_at_25_is_080", () =>
+                AssertClose(GameComponent_ColonyVisibility.ThreatFactor(25f), 0.80f, "25 anchor"));
+            Case("ThreatFactor_at_50_is_100", () =>
+                AssertClose(GameComponent_ColonyVisibility.ThreatFactor(50f), 1.00f, "parity anchor"));
+            Case("ThreatFactor_at_75_is_125", () =>
+                AssertClose(GameComponent_ColonyVisibility.ThreatFactor(75f), 1.25f, "75 anchor"));
+            Case("ThreatFactor_at_100_is_160", () =>
+                AssertClose(GameComponent_ColonyVisibility.ThreatFactor(100f), 1.60f, "Exposed ceiling anchor"));
+            Case("ThreatFactor_interpolates_between_anchors", () =>
+                AssertClose(GameComponent_ColonyVisibility.ThreatFactor(12.5f), 0.675f,
+                    "halfway between the 0 and 25 anchors must lerp, not step"));
+            Case("ThreatFactor_below_0_clamps_to_the_055_floor", () =>
+                AssertClose(GameComponent_ColonyVisibility.ThreatFactor(-50f), 0.55f,
+                    "SimpleCurve.Evaluate clamps to the first point's y outside its domain (verified via RimSage)"));
+            Case("ThreatFactor_above_100_clamps_to_the_160_ceiling", () =>
+                AssertClose(GameComponent_ColonyVisibility.ThreatFactor(250f), 1.60f,
+                    "SimpleCurve.Evaluate clamps to the last point's y outside its domain (verified via RimSage)"));
+
             Console.WriteLine($"\n{Pass.Count}/{Pass.Count + Fail.Count} passed");
             return Fail.Count == 0 ? 0 : 1;
         }

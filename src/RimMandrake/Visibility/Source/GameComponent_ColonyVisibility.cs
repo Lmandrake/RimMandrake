@@ -116,6 +116,42 @@ namespace RimMandrake.Visibility
         public const float DeltaLarge = 20f;
 
         /// <summary>
+        /// Annex A's ruled threat-point multiplier curve
+        /// (design/Jawa/worldbuilding/colony_visibility_stat.md §3 Annex A,
+        /// 2026-08-30 BENCH merge, closed by the 2026-08-31 owner ruling):
+        /// "first-guess curve 0→0.55 · 25→0.80 · 50→1.00 · 75→1.25 ·
+        /// 100→1.60". Lives HERE, not in ColonyVisibilityRaidPatch.cs (where
+        /// the hostile-scoped Prefix that consumes it lives), because that
+        /// file pulls in HarmonyLib/RimWorld.Planet types the SelfTest
+        /// project does not reference - this file has no such dependency, so
+        /// moving the curve here (SimpleCurve/CurvePoint are plain Verse
+        /// types) makes it selftestable without a running game. Still
+        /// explicitly NOT TUNED - §5's tuning protocol (throwaway-save rig,
+        /// measure at Visibility ∈ {0,25,50,75,100} × 3 wealth bands) has
+        /// not been run.
+        /// </summary>
+        private static readonly SimpleCurve VisibilityToThreatCurve = new SimpleCurve
+        {
+            new CurvePoint(0f, 0.55f),
+            new CurvePoint(25f, 0.80f),
+            new CurvePoint(50f, 1.00f),
+            new CurvePoint(75f, 1.25f),
+            new CurvePoint(100f, 1.60f),
+        };
+
+        /// <summary>
+        /// Evaluates the ruled Visibility -> raid threat-point multiplier
+        /// curve above. Pure (SimpleCurve.Evaluate has no Find.*/Harmony
+        /// dependency - verified via RimSage, Verse/SimpleCurve.cs: it
+        /// clamps to the first/last point's y value outside [0,100], never
+        /// extrapolates or throws).
+        /// </summary>
+        public static float ThreatFactor(float visibility)
+        {
+            return VisibilityToThreatCurve.Evaluate(visibility);
+        }
+
+        /// <summary>
         /// Pure elapsed-time term of the tile-memory decay (owner card:
         /// "halved per season away"). Extracted so the decay math is
         /// testable without a running game - GenDate.TicksPerSeason is a
