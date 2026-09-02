@@ -11,11 +11,14 @@ All four land on one canvas at one animal size, then seacheck.py grades the set.
 
     python3 build_sea_facings.py CrimsonOpee [...]
 """
+import shutil
 import subprocess
 import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+sys.path.insert(0, "/mnt/d/Luke/dev/Rimworld/skills/generating-images/scripts")
+import pnglib  # noqa: E402
 from sea_creatures import CREATURES, FINAL, MOCKUPS, RAW, canvas_for  # noqa: E402
 
 HERE = Path(__file__).resolve().parent
@@ -32,6 +35,26 @@ def run(*args):
     return r.stdout
 
 
+def cut_key(src: Path, dst: Path) -> None:
+    """Chroma-key src into dst - UNLESS it already carries real alpha.
+
+    Two of the eighteen kept mockups (colo_opt2, sando_opt2) were banked with
+    the key already removed. chroma_key.py auto-detects its key from the
+    border, and their border is transparent BLACK, so it keys on black and eats
+    every dark pixel of the animal. It reports success and the set still passes
+    every offline check; the damage is only visible as a washed-out east/west
+    beside a solid south/north on the contact sheet. Detect the case instead.
+    """
+    w, h, px = pnglib.read_png(str(src))
+    corners = [px[3], px[(w - 1) * 4 + 3], px[(h - 1) * w * 4 + 3],
+               px[(h * w - 1) * 4 + 3]]
+    if max(corners) == 0:
+        shutil.copyfile(src, dst)
+        print(f"note: {src.name} already has alpha - copied, not keyed")
+        return
+    run(CHROMA, "--input", src, "--out", dst)
+
+
 def build(slug: str) -> int:
     stem, draw, _ = CREATURES[slug]
     n = canvas_for(draw)
@@ -42,7 +65,7 @@ def build(slug: str) -> int:
 
     cut = raw / f"{stem}_cut.png"
     if not cut.exists():
-        run(CHROMA, "--input", mock, "--out", cut)
+        cut_key(mock, cut)
     run(HERE / "seafit.py", "--input", cut, "--out", out / f"{slug}_west.png",
         "--canvas", n)
     run(HERE / "seafit.py", "--input", out / f"{slug}_west.png",
