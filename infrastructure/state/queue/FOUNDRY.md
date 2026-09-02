@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T09:47:41Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-02T10:22:14Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -333,15 +333,6 @@ kind:     bug
 summary:  (no items/HELIX_TELLUROX_SHELL_LOAD_CRASH_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/HELIX_TELLUROX_SHELL_LOAD_CRASH_1.md
 
-## ATMOSPHERE_CONFIG_RESTORE_1 Restore glorious rings+thick-atmo config at the NEXT game-down gap (owner missed it)
-state:    doing
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     task
-summary:  (no items/ATMOSPHERE_CONFIG_RESTORE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ATMOSPHERE_CONFIG_RESTORE_1.md
-
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -386,4 +377,14 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-_none._
+Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
+
+## COLD_LOAD_STALL_INTERMITTENT_1 COLD_LOAD_STATIC_CTOR_STALL_1's closure was PREMATURE - the stall is intermittent, reproduced a 4th time
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/COLD_LOAD_STALL_INTERMITTENT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/COLD_LOAD_STALL_INTERMITTENT_1.md

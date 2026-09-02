@@ -84,6 +84,51 @@ def _vanilla_biomes():
 
 
 
+def _anomaly_entity_pawnkinds():
+    """defNames of every PawnKindDef whose race is an Anomaly entity.
+
+    🔴 WILD_ANIMALS_PADDED_LISTS_1, owner ruling 2026-09-02: cast lists describe
+    only what can actually wild-spawn. RaceProperties.IsAnomalyEntity
+    (RaceProperties.cs:342) is true when ModsConfig.AnomalyActive and
+    fleshType is EntityMechanical, EntityFlesh or Fleshbeast - those never go
+    through WildAnimalSpawner regardless of commonality, so casting one is a
+    dead entry that reads as content and isn't. Verified against the live
+    dump, not guessed: exactly 10 hits in cast_assignment.csv today, matching
+    the owner's own count independently.
+
+    Returns an empty set (never None) if no capture is readable - the caller
+    then emits every row, same fail-open behaviour as an unreadable Cherry
+    Picker list would be wrong to imitate here since this is a correctness
+    fact, not a preference, but a totally silent capture failure elsewhere in
+    this file already halts the whole run before this is ever called.
+    """
+    for cap in captures_newest_first():
+        td_path = os.path.join(cap, 'defs', 'ThingDef.json')
+        pk_path = os.path.join(cap, 'defs', 'PawnKindDef.json')
+        if not (os.path.isfile(td_path) and os.path.isfile(pk_path)):
+            continue
+        td = json.load(open(td_path, encoding='utf-8'))
+        td = td if isinstance(td, list) else td.get('defs') or []
+        race_flesh = {}
+        for t in td:
+            if not isinstance(t, dict):
+                continue
+            race = (t.get('fields') or {}).get('race')
+            if isinstance(race, dict) and race.get('fleshType'):
+                race_flesh[t['defName']] = race['fleshType']
+        pk = json.load(open(pk_path, encoding='utf-8'))
+        pk = pk if isinstance(pk, list) else pk.get('defs') or []
+        out = set()
+        for x in pk:
+            if not isinstance(x, dict):
+                continue
+            racedef = (x.get('fields') or {}).get('race')
+            if race_flesh.get(racedef) in ('EntityMechanical', 'EntityFlesh', 'Fleshbeast'):
+                out.add(x['defName'])
+        return out
+    return set()
+
+
 def _animal_side_biomes():
     """biome -> {animal defName} taken from each RACE's own wildBiomes, off DISK.
 
@@ -296,8 +341,10 @@ def main():
     if not PAWNKINDS:
         sys.exit('no PawnKindDef.json in any capture - refusing to emit a cast that '
                  'cannot be checked against the pawnkind roster')
+    ENTITY = _anomaly_entity_pawnkinds()
     skipped = []
     cut_rows = []
+    entity_rows = []
 
     rows = list(csv.DictReader(open(os.path.join(FA, 'cast_assignment.csv'), encoding='utf-8')))
     byb = collections.defaultdict(list)
@@ -334,6 +381,14 @@ def main():
                 skipped.append((b, r['defName']))
                 lines.append(f'{pad}<!-- SKIPPED {r["defName"]} - {r["label"]}:'
                              f' not a PawnKindDef; wildAnimals cannot resolve it -->')
+                continue
+            if r['defName'] in ENTITY:
+                # Anomaly entity - RaceProperties.IsAnomalyEntity, never reached
+                # by WildAnimalSpawner. WILD_ANIMALS_PADDED_LISTS_1, owner ruling
+                # 2026-09-02: cast lists describe only what can actually wild-spawn.
+                entity_rows.append((b, r['defName']))
+                lines.append(f'{pad}<!-- ANOMALY ENTITY {r["defName"]} - {r["label"]}:'
+                             f' never wild-spawns, dropped by owner ruling -->')
                 continue
             # 🔴 THE NODE NAME IS THE ANIMAL AND THE NODE TEXT IS THE COMMONALITY.
             # BiomeAnimalRecord.LoadDataFromXmlCustom is
@@ -420,24 +475,44 @@ def main():
     # DIRECTION: always remove the ANIMAL-side wildBiomes entry, never our roster.
     # Nothing is lost in play - our own roster still spawns the animal in that biome,
     # at the commonality we chose.
+    #
+    # 🔴 BROADENED, WILD_ANIMALS_PADDED_LISTS_1 (owner ruling 2026-09-02): CAST
+    # BIOMES GO EXCLUSIVE - the cast IS the ecosystem. Used to be scoped to just
+    # the INTERSECTION with our own cast (true duplicates, an ArgumentException
+    # risk in BiomeDef.CommonalityOfAnimal - see below). Now it is every animal
+    # that reaches a cast biome via its OWN race.wildBiomes, cast or not: mlie.
+    # rimmsqol was confirmed (2026-09-02, before/after jawa/biome_probe: 1024
+    # wildAnimalCount padded -> 187 resolved on Desert the moment it was
+    # retired) to have been materializing this exact wildBiomes-side set INTO
+    # the raw wildAnimals list at load, at commonality 0 - so removing the
+    # source field is what actually starves it, not a biome-side edit (we do
+    # not own biome-side entries other mods' animals arrive through). Safe
+    # because our own cast never depends on an animal's wildBiomes field - it
+    # writes wildAnimals directly - so this can never remove anything we cast.
     aside = _animal_side_biomes()
     dups = []
     for b in sorted(byb):
-        cast_here = {r['defName'] for r in byb[b] if r['defName'] in PAWNKINDS}
-        for a in sorted(cast_here & aside.get(b, set())):
+        for a in sorted(aside.get(b, set())):
             dups.append((b, a))
     if dups:
         parts.append('  <!-- ============================================================')
-        parts.append('       DE-DUP: the animal-side wildBiomes entries our own roster')
-        parts.append('       collides with. Generated WITH the cast above, deliberately -')
-        parts.append('       a hand-maintained copy is what let 30 of these ship on')
-        parts.append('       2026-08-22. BIOME_CAST_DUPLICATE_ANIMALS_1.')
+        parts.append('       CAST-BIOME EXCLUSIVITY: every animal-side wildBiomes entry')
+        parts.append('       reaching a cast biome, cast or not. Generated WITH the cast')
+        parts.append('       above, deliberately - a hand-maintained copy is what let 30')
+        parts.append('       true duplicates ship on 2026-08-22 (BIOME_CAST_DUPLICATE_')
+        parts.append('       ANIMALS_1) before this section existed at all.')
         parts.append('')
-        parts.append('       Same animal reaching one biome from BOTH directions throws')
-        parts.append('       ArgumentException in BiomeDef.CommonalityOfAnimal, and the')
-        parts.append('       half-built cache it leaves behind silently zeroes every')
-        parts.append('       animal that would have registered after it - for the rest')
-        parts.append('       of the session, with no further error.')
+        parts.append('       Two reasons removal is correct here, not one:')
+        parts.append('       (1) an animal in OUR OWN cast reaching the same biome from')
+        parts.append('           BOTH directions throws ArgumentException in BiomeDef.')
+        parts.append('           CommonalityOfAnimal, and the half-built cache it leaves')
+        parts.append('           behind silently zeroes every animal that would have')
+        parts.append('           registered after it - for the rest of the session, with')
+        parts.append('           no further error.')
+        parts.append('       (2) a non-cast animal reaching a cast biome this way is')
+        parts.append('           exactly what cast-biome exclusivity forbids (owner ruling')
+        parts.append('           2026-09-02, WILD_ANIMALS_PADDED_LISTS_1) - the cast IS the')
+        parts.append('           ecosystem for these biomes, nothing else wild-spawns.')
         parts.append(f'       {len(dups)} pair(s) this run. Sourced from the mod XML on disk')
         parts.append('       AND from the newest def dump capture, because a collision a')
         parts.append('       PatchOperation creates exists in no def file at all - which is')
@@ -466,7 +541,7 @@ def main():
     parts.append('</Patch>')
     open(OUT, 'w', encoding='utf-8').write('\n'.join(parts))
     print(f"wrote {OUT}: {len(byb)} biomes, {len(rows)} records, "
-          f"{len(dups)} duplicate pair(s) de-duped")
+          f"{len(dups)} exclusivity pair(s) removed (wildBiomes-side)")
     nomay = [b for b in byb if not PKG.get(b)]
     if nomay:
         print(f"⚠️ no packageId resolved for: {nomay} - BUILD must confirm the MayRequire")
@@ -510,6 +585,13 @@ def main():
         print(f"⚠️ {len(skipped)} cast entries SKIPPED - not PawnKindDefs, so wildAnimals "
               f"could not resolve them:")
         for b, d in skipped:
+            print(f"     {b:<30} {d}")
+
+    if entity_rows:
+        print(f"\n🔴 {len(entity_rows)} cast entries are ANOMALY ENTITIES - never reached "
+              f"by WildAnimalSpawner, dropped per owner ruling (WILD_ANIMALS_PADDED_LISTS_1, "
+              f"2026-09-02):")
+        for b, d in entity_rows:
             print(f"     {b:<30} {d}")
 
 if __name__ == '__main__':

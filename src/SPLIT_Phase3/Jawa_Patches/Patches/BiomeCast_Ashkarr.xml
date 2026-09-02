@@ -1826,12 +1826,12 @@
       <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/wildAnimals</xpath>
       <value>
         <wildAnimals>
-          <Fingerspike>0.7</Fingerspike> <!-- fingerspike - small, dormant -->
-          <Noctol>0.4</Noctol> <!-- noctol - med, dormant -->
-          <Sightstealer>0.4</Sightstealer> <!-- sightstealer - med, dormant -->
-          <Toughspike>0.4</Toughspike> <!-- toughspike - med, dormant -->
-          <Chimera>0.18</Chimera> <!-- chimera - large, dormant -->
-          <Devourer>0.063</Devourer> <!-- devourer - huge, dormant -->
+          <!-- ANOMALY ENTITY Fingerspike - fingerspike: never wild-spawns, dropped by owner ruling -->
+          <!-- ANOMALY ENTITY Noctol - noctol: never wild-spawns, dropped by owner ruling -->
+          <!-- ANOMALY ENTITY Sightstealer - sightstealer: never wild-spawns, dropped by owner ruling -->
+          <!-- ANOMALY ENTITY Toughspike - toughspike: never wild-spawns, dropped by owner ruling -->
+          <!-- ANOMALY ENTITY Chimera - chimera: never wild-spawns, dropped by owner ruling -->
+          <!-- ANOMALY ENTITY Devourer - devourer: never wild-spawns, dropped by owner ruling -->
         </wildAnimals>
       </value>
     </match>
@@ -2620,11 +2620,11 @@
       <value>
         <wildAnimals>
           <Boomrat>1.0</Boomrat> <!-- boomrat - tiny, ours -->
-          <Fingerspike>0.7</Fingerspike> <!-- fingerspike - small, dormant -->
+          <!-- ANOMALY ENTITY Fingerspike - fingerspike: never wild-spawns, dropped by owner ruling -->
           <StoneCrab>0.7</StoneCrab> <!-- stone crab - small, dormant -->
-          <Gorehulk>0.18</Gorehulk> <!-- gorehulk - large, dormant -->
-          <Bulbfreak>0.05</Bulbfreak> <!-- bulbfreak - huge, dormant -->
-          <Dreadmeld>0.05</Dreadmeld> <!-- dreadmeld - huge, dormant -->
+          <!-- ANOMALY ENTITY Gorehulk - gorehulk: never wild-spawns, dropped by owner ruling -->
+          <!-- ANOMALY ENTITY Bulbfreak - bulbfreak: never wild-spawns, dropped by owner ruling -->
+          <!-- ANOMALY ENTITY Dreadmeld - dreadmeld: never wild-spawns, dropped by owner ruling -->
         </wildAnimals>
       </value>
     </match>
