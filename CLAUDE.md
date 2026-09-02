@@ -101,6 +101,26 @@ for f in $(find src -name selftest_\*.py); do python3 "$f" || echo "FAIL $f"; do
                                                      run every fast offline selftest before a commit
 ```
 
+## Options he must LOOK at ship as a savegame — owner, 2026-09-02
+
+*"Save user review options as save games."* A screenshot shows one angle of one
+thing; a save lets him walk it, zoom it, and read the tooltips. So when a pass
+produces options for him to judge in-world — structures, layouts, creatures,
+gear on a pawn — **build them and save the game.**
+
+- **One map, all options** (his ruling by card), laid out on a grid with enough
+  pitch that nothing overlaps, plus an item file giving the **grid key**: which
+  option is at which cell.
+- **Saves stay until he says delete.** Not auto-purged, not overwritten by the
+  next review.
+- 🔴 **Back up the Saves folder's keepers first and stat it afterwards.**
+  `rimworld/save_game` honoured `saveName` on 2026-09-02 and silently wrote the
+  CURRENT slot instead on 2026-08-24. Confirm a NEW file appeared and no
+  existing one changed size — do not trust the path it hands back.
+- ⚠️ Verify each option is actually THERE (`jawa/list_things` per slot) before
+  calling it a review. A placement log's `thingsSpawned` is a NET count and goes
+  negative when a build clears plants.
+
 ## The bridge is passed through one file
 
 One window drives the live game at a time — not for ownership, for attributability.
