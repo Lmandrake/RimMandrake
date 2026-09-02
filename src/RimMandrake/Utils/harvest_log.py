@@ -274,12 +274,16 @@ QUEUED = [
 # finding. The inverse of everything above, and easy to forget to look for.
 EXPECTED = [
     ("RimAI Core booted", r"\[RimAI\.Core\] All Parts Boot OK"),
-    # 🔴 Reads "[Inhabited] ready: N patches, C characters, ...". The COUNT is
-    # the finding, not the presence — on 2026-08-22 this line was present and
-    # said 193 against 294 CharacterDefs on disk, because all 101 that carry a
-    # <skills> block are discarded at load (CAST_ROSTER_SKILLS_DISCARDED_1).
-    # Read the number every time; a present line is not a passing one.
-    ("Inhabited ready (READ THE COUNT)", r"\[Inhabited\] ready:"),
+    # 🔴 Reads "[RimMandrake.Inhabited] ready: N patches, C characters, ...".
+    # The COUNT is the finding, not the presence — on 2026-08-22 this line was
+    # present and said 193 against 294 CharacterDefs on disk, because all 101
+    # that carry a <skills> block are discarded at load
+    # (CAST_ROSTER_SKILLS_DISCARDED_1). Read the number every time; a present
+    # line is not a passing one. Regex updated 2026-09-02 (FOUNDRY): the mod
+    # namespace moved to RimMandrake.Inhabited under the three-tier naming
+    # migration and the old bare `[Inhabited]` prefix stopped matching,
+    # reading as a false MISSING while the mod was actually alive.
+    ("Inhabited ready (READ THE COUNT)", r"\[RimMandrake\.Inhabited\] ready:"),
     # ✅ ADDED 2026-08-23. JawaBench HAS a startup line now, so its absence is a
     # real finding rather than a permanent false RED. Read the COUNT, not just
     # the presence: `[JawaBench] ready: 121 tools, build d49eaf42545b`.

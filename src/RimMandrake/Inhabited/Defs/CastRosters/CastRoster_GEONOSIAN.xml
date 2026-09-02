@@ -15,7 +15,7 @@
     none of the four and that is the specification, not missing data.
   -->
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Geonosian_ForemanSkRrikk</defName>
     <label>Foreman Sk'rrikk</label>
     <faction>GEONOSIAN</faction>
@@ -42,9 +42,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Geonosian_ClerkOvvGan</defName>
     <label>Clerk Ovv'gan</label>
     <faction>GEONOSIAN</faction>
@@ -71,9 +71,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Geonosian_Ttun</defName>
     <label>Ttun</label>
     <faction>GEONOSIAN</faction>
@@ -101,9 +101,9 @@
         <degreeName>Sanguine</degreeName>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Geonosian_GizzekVor</defName>
     <label>Gizzek Vor</label>
     <faction>GEONOSIAN</faction>
@@ -138,9 +138,9 @@
     <skills>
       <Crafting>16</Crafting>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Geonosian_RrekkTheReturned</defName>
     <label>Rrekk the Returned</label>
     <faction>GEONOSIAN</faction>
@@ -166,9 +166,9 @@
     <skills>
       <Melee>15</Melee>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Geonosian_SsuuraBell</defName>
     <label>Ssuura Bell</label>
     <faction>GEONOSIAN</faction>
@@ -202,9 +202,9 @@
     <skills>
       <Plants>15</Plants>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Geonosian_NurseDroneIpp</defName>
     <label>Nurse-drone Ipp</label>
     <faction>GEONOSIAN</faction>
@@ -234,9 +234,9 @@
     <skills>
       <Medicine>5</Medicine>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Geonosian_VekkaOfNoHive</defName>
     <label>Vekka of No Hive</label>
     <faction>GEONOSIAN</faction>
@@ -264,9 +264,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Geonosian_TheThingInSeamNine</defName>
     <label>The Thing in Seam Nine</label>
     <faction>GEONOSIAN</faction>
@@ -294,9 +294,9 @@
         <degreeName>Pessimist</degreeName>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Geonosian_AttendantQuRaa</defName>
     <label>Attendant Qu'raa</label>
     <faction>GEONOSIAN</faction>
@@ -319,9 +319,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Geonosian_LittlePoggur</defName>
     <label>Little Poggur</label>
     <faction>GEONOSIAN</faction>
@@ -349,9 +349,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Geonosian_QuartermasterTraxx</defName>
     <label>Quartermaster Traxx</label>
     <faction>GEONOSIAN</faction>
@@ -378,9 +378,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Geonosian_PicadorGhhen</defName>
     <label>Picador Ghhen</label>
     <faction>GEONOSIAN</faction>
@@ -410,9 +410,9 @@
     <skills>
       <Animals>16</Animals>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Geonosian_ArchdukeSunVekk</defName>
     <label>Archduke Sun Vekk</label>
     <faction>GEONOSIAN</faction>
@@ -443,9 +443,9 @@
       <Intellectual>18</Intellectual>
       <Social>16</Social>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Geonosian_OracleNnimm</defName>
     <label>Oracle Nnimm</label>
     <faction>GEONOSIAN</faction>
@@ -473,9 +473,9 @@
         <degreeName>Depressive</degreeName>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Geonosian_SlagwrightEbbKa</defName>
     <label>Slagwright Ebb'ka</label>
     <faction>GEONOSIAN</faction>
@@ -505,9 +505,9 @@
     <skills>
       <Artistic>19</Artistic>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Geonosian_CommunicantZzir</defName>
     <label>Communicant Zzir</label>
     <faction>GEONOSIAN</faction>
@@ -537,9 +537,9 @@
     <items>
       <li>BionicJaw</li>
     </items>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Geonosian_HollowKess</defName>
     <label>Hollow Kess</label>
     <faction>GEONOSIAN</faction>
@@ -566,9 +566,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Geonosian_AntennaKeeperRhud</defName>
     <label>Antenna-keeper Rhud</label>
     <faction>GEONOSIAN</faction>
@@ -599,9 +599,9 @@
     <skills>
       <Crafting>16</Crafting>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Geonosian_VerifierGrask</defName>
     <label>Verifier Grask</label>
     <faction>GEONOSIAN</faction>
@@ -628,9 +628,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Geonosian_ProofDroneIxxa</defName>
     <label>Proof-drone Ixxa</label>
     <faction>GEONOSIAN</faction>
@@ -661,9 +661,9 @@
     <skills>
       <Intellectual>20</Intellectual>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Geonosian_OldUmma</defName>
     <label>Old Umma</label>
     <faction>GEONOSIAN</faction>
@@ -690,9 +690,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Geonosian_MeckginMasterBoOl</defName>
     <label>Meckgin-master Bo'ol</label>
     <faction>GEONOSIAN</faction>
@@ -726,9 +726,9 @@
     <skills>
       <Artistic>15</Artistic>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Geonosian_HatchlingTikk</defName>
     <label>Hatchling Tikk</label>
     <faction>GEONOSIAN</faction>
@@ -755,9 +755,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Geonosian_DeepWalkerOnn</defName>
     <label>Deep-walker Onn</label>
     <faction>GEONOSIAN</faction>
@@ -784,6 +784,6 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
 </Defs>

@@ -15,7 +15,7 @@
     none of the four and that is the specification, not missing data.
   -->
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Droids_SixtyOne</defName>
     <label>Sixty-One</label>
     <faction>DROIDS</faction>
@@ -42,9 +42,9 @@
         <degreeName>Sanguine</degreeName>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Droids_NinthBarrel</defName>
     <label>Ninth Barrel</label>
     <faction>DROIDS</faction>
@@ -70,9 +70,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Droids_VessaCutNine</defName>
     <label>Vessa Cut-Nine</label>
     <faction>DROIDS</faction>
@@ -101,9 +101,9 @@
     <skills>
       <Medicine>18</Medicine>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Droids_Tuesday</defName>
     <label>Tuesday</label>
     <faction>DROIDS</faction>
@@ -130,9 +130,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Droids_TheThingInTrenchFour</defName>
     <label>The Thing In Trench Four</label>
     <faction>DROIDS</faction>
@@ -158,9 +158,9 @@
         <degreeName>Pessimist</degreeName>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Droids_QuartermasterBel</defName>
     <label>Quartermaster Bel</label>
     <faction>DROIDS</faction>
@@ -186,9 +186,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Droids_NinetySix</defName>
     <label>Ninety-Six</label>
     <faction>DROIDS</faction>
@@ -217,9 +217,9 @@
     <items>
       <li>Cloth</li>
     </items>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Droids_SumpTen</defName>
     <label>Sump-Ten</label>
     <faction>DROIDS</faction>
@@ -246,9 +246,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Droids_Chorus</defName>
     <label>Chorus</label>
     <faction>DROIDS</faction>
@@ -274,9 +274,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Droids_CaptainFourteen</defName>
     <label>Captain Fourteen</label>
     <faction>DROIDS</faction>
@@ -307,9 +307,9 @@
     <skills>
       <Shooting>20</Shooting>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Droids_HollowAda</defName>
     <label>Hollow Ada</label>
     <faction>DROIDS</faction>
@@ -336,9 +336,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Droids_Wallop</defName>
     <label>Wallop</label>
     <faction>DROIDS</faction>
@@ -370,9 +370,9 @@
     <skills>
       <Shooting>6</Shooting>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Droids_Nem</defName>
     <label>Nem</label>
     <faction>DROIDS</faction>
@@ -401,9 +401,9 @@
     <items>
       <li>BionicArm</li>
     </items>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Droids_Wader</defName>
     <label>Wader</label>
     <faction>DROIDS</faction>
@@ -429,9 +429,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Droids_LongNadd</defName>
     <label>Long Nadd</label>
     <faction>DROIDS</faction>
@@ -463,9 +463,9 @@
     <skills>
       <Shooting>17</Shooting>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Droids_GateLogFour</defName>
     <label>Gate Log Four</label>
     <faction>DROIDS</faction>
@@ -492,9 +492,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Droids_Ochre</defName>
     <label>Ochre</label>
     <faction>DROIDS</faction>
@@ -523,9 +523,9 @@
     <skills>
       <Artistic>2</Artistic>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Droids_TheMagnificentOro</defName>
     <label>The Magnificent Oro</label>
     <faction>DROIDS</faction>
@@ -556,9 +556,9 @@
       <Social>18</Social>
       <Artistic>16</Artistic>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Droids_SabbathArray</defName>
     <label>Sabbath Array</label>
     <faction>DROIDS</faction>
@@ -584,9 +584,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Droids_MercyNine</defName>
     <label>Mercy Nine</label>
     <faction>DROIDS</faction>
@@ -615,9 +615,9 @@
     <skills>
       <Intellectual>18</Intellectual>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Droids_Barrow</defName>
     <label>Barrow</label>
     <faction>DROIDS</faction>
@@ -643,9 +643,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Droids_GrandfatherKesh</defName>
     <label>Grandfather Kesh</label>
     <faction>DROIDS</faction>
@@ -678,9 +678,9 @@
     <skills>
       <Social>19</Social>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Droids_HouseholdSix</defName>
     <label>Household Six</label>
     <faction>DROIDS</faction>
@@ -707,9 +707,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Droids_Spillway</defName>
     <label>Spillway</label>
     <faction>DROIDS</faction>
@@ -737,9 +737,9 @@
         <degreeName>Optimist</degreeName>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Droids_Unaltered</defName>
     <label>Unaltered</label>
     <faction>DROIDS</faction>
@@ -765,6 +765,6 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
 </Defs>

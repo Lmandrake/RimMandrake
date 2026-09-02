@@ -7,12 +7,21 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T19:17:41Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: BENCH
+as-of: 2026-09-02T19:43:33Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
-Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
+The first heading below is what `rimflow next --seat BENCH` returns. This file and that command call the same function, so they cannot disagree.
+
+## SPAWN_PAWN_SUBSTITUTES_VANILLA_KIND_1 jawa/spawn_pawn reports 2/2 of the kind asked for and delivers one vanilla Colonist
+state:    ready
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     bug
+summary:  SPAWNPAWNSUBSTITUTESVANILLAKIND1 — "Spawned 2/2" delivered one of something else
+prose:    infrastructure/state/items/SPAWN_PAWN_SUBSTITUTES_VANILLA_KIND_1.md
 
 # IN PROGRESS
 
@@ -39,7 +48,7 @@ prose:    infrastructure/state/items/SW_SEA_MONSTERS_ART_1.md
 ## BRIDGE_INVENTORY_TRANSFER_REFUSES_ALL_1 jawa/inventory_transfer refuses to add ANY item to ANY pawn's inventory on the live 592-mod list
 state:    doing
 row:      unassigned
-needs:    deploy
+needs:    game-up
 target:   v1
 kind:     fix
 summary:  🔴 SUPERSEDED — read "CAUSE PROVEN LIVE" at the bottom of this file first. The
@@ -51,17 +60,7 @@ _none._
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
-
-## SPAWN_PAWN_SUBSTITUTES_VANILLA_KIND_1 jawa/spawn_pawn reports 2/2 of the kind asked for and delivers one vanilla Colonist
-state:    ready
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     bug
-waiting:  needs `deploy`, game is DOWN
-summary:  SPAWNPAWNSUBSTITUTESVANILLAKIND1 — "Spawned 2/2" delivered one of something else
-prose:    infrastructure/state/items/SPAWN_PAWN_SUBSTITUTES_VANILLA_KIND_1.md
+_none._
 
 # NOT THIS TARGET
 
@@ -87,6 +86,26 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/CORRECT_COLD_LOAD_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  infrastructure/state/items/COLDLOADRUNSHEET2.md's "🔴 DEPLOY BATCH staged
 prose:    infrastructure/state/items/CORRECT_COLD_LOAD_1.md
+
+## CHERRYPICKER_TWO_PROFILES_1 Two Cherry Picker profiles: ship (1509 cuts) and review (empty), swapped like modlist_swap.py
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  The measured position when this was filed. 1509 cuts live (cherrypicker.py
+prose:    infrastructure/state/items/CHERRYPICKER_TWO_PROFILES_1.md
+
+## FOG_REVIEW_SITTING_WITH_OWNER_1 Live sitting with the owner: turn off NWN Real Fog of War and confirm review passes are legible
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  The find this exists to act on: CAI is not the fog. He proposed dropping CAI 5000
+prose:    infrastructure/state/items/FOG_REVIEW_SITTING_WITH_OWNER_1.md

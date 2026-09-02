@@ -15,7 +15,7 @@
     none of the four and that is the specification, not missing data.
   -->
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Tusken_GhossaTalVaar</defName>
     <label>Ghossa Tal-Vaar</label>
     <faction>TUSKEN</faction>
@@ -42,9 +42,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Tusken_BokUr</defName>
     <label>Bok'ur</label>
     <faction>TUSKEN</faction>
@@ -72,9 +72,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Tusken_IshAal</defName>
     <label>Ish'aal</label>
     <faction>TUSKEN</faction>
@@ -107,9 +107,9 @@
     <skills>
       <Artistic>18</Artistic>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Tusken_RuumKa</defName>
     <label>Ruum'ka</label>
     <faction>TUSKEN</faction>
@@ -136,9 +136,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Tusken_ThaRaan</defName>
     <label>Tha'raan</label>
     <faction>TUSKEN</faction>
@@ -169,9 +169,9 @@
     <skills>
       <Animals>18</Animals>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Tusken_CorrinAleff</defName>
     <label>Corrin Aleff</label>
     <faction>TUSKEN</faction>
@@ -199,9 +199,9 @@
         <degreeName>Depressive</degreeName>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Tusken_VaasKa</defName>
     <label>Vaas'ka</label>
     <faction>TUSKEN</faction>
@@ -229,9 +229,9 @@
         <degreeName>Pessimist</degreeName>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Tusken_DhakkOrr</defName>
     <label>Dhakk Orr</label>
     <faction>TUSKEN</faction>
@@ -259,9 +259,9 @@
         <degreeName>Depressive</degreeName>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Tusken_IkriNass</defName>
     <label>Ikri Nass</label>
     <faction>TUSKEN</faction>
@@ -295,9 +295,9 @@
       <Crafting>15</Crafting>
       <Intellectual>14</Intellectual>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Tusken_NashraKul</defName>
     <label>Nashra Kul</label>
     <faction>TUSKEN</faction>
@@ -328,9 +328,9 @@
     <skills>
       <Intellectual>17</Intellectual>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Tusken_HarraGhul</defName>
     <label>Harra Ghul</label>
     <faction>TUSKEN</faction>
@@ -357,9 +357,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Tusken_UliSheek</defName>
     <label>Uli Sheek</label>
     <faction>TUSKEN</faction>
@@ -387,9 +387,9 @@
         <degreeName>Optimist</degreeName>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Tusken_GhurrVex</defName>
     <label>Ghurr Vex</label>
     <faction>TUSKEN</faction>
@@ -420,9 +420,9 @@
     <skills>
       <Crafting>18</Crafting>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Tusken_SheelIvarr</defName>
     <label>Sheel Ivarr</label>
     <faction>TUSKEN</faction>
@@ -450,9 +450,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Tusken_MekkaRu</defName>
     <label>Mekka Ru</label>
     <faction>TUSKEN</faction>
@@ -479,9 +479,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Tusken_Hurrum</defName>
     <label>Hurrum</label>
     <faction>TUSKEN</faction>
@@ -508,9 +508,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Tusken_BharrNu</defName>
     <label>Bharr Nu</label>
     <faction>TUSKEN</faction>
@@ -537,9 +537,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Tusken_WarChiefTorrGan</defName>
     <label>War Chief Torr'gan</label>
     <faction>TUSKEN</faction>
@@ -569,9 +569,9 @@
     <skills>
       <Intellectual>15</Intellectual>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Tusken_AnnShu</defName>
     <label>Ann'shu</label>
     <faction>TUSKEN</faction>
@@ -601,9 +601,9 @@
     <skills>
       <Intellectual>15</Intellectual>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Tusken_KuvvRaan</defName>
     <label>Kuvv Raan</label>
     <faction>TUSKEN</faction>
@@ -634,9 +634,9 @@
     <skills>
       <Construction>17</Construction>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Tusken_OrrGash</defName>
     <label>Orr'gash</label>
     <faction>TUSKEN</faction>
@@ -659,9 +659,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Tusken_ShaaNel</defName>
     <label>Shaa Nel</label>
     <faction>TUSKEN</faction>
@@ -689,9 +689,9 @@
     <skills>
       <Shooting>18</Shooting>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Tusken_Vurrk</defName>
     <label>Vurrk</label>
     <faction>TUSKEN</faction>
@@ -722,9 +722,9 @@
     <apparel>
       <li>guy762_TuskenMask</li>
     </apparel>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Tusken_EssKan</defName>
     <label>Ess'kan</label>
     <faction>TUSKEN</faction>
@@ -747,9 +747,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Tusken_TannRu</defName>
     <label>Tann'ru</label>
     <faction>TUSKEN</faction>
@@ -777,6 +777,6 @@
         <degreeName>Sanguine</degreeName>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
 </Defs>

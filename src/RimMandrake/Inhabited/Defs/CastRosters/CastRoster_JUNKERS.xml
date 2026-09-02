@@ -15,7 +15,7 @@
     none of the four and that is the specification, not missing data.
   -->
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Junkers_FenzikTrawl</defName>
     <label>Fenzik Trawl</label>
     <faction>JUNKERS</faction>
@@ -46,9 +46,9 @@
     <skills>
       <Intellectual>14</Intellectual>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Junkers_OssaGrell</defName>
     <label>Ossa Grell</label>
     <faction>JUNKERS</faction>
@@ -79,9 +79,9 @@
     <skills>
       <Artistic>14</Artistic>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Junkers_Weft</defName>
     <label>Weft</label>
     <faction>JUNKERS</faction>
@@ -112,9 +112,9 @@
       <Melee>14</Melee>
       <Social>1</Social>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Junkers_HakkoDunn</defName>
     <label>Hakko Dunn</label>
     <faction>JUNKERS</faction>
@@ -142,9 +142,9 @@
         <degreeName>Pessimist</degreeName>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Junkers_KaadRoTenthBreath</defName>
     <label>Kaad'ro Tenth-Breath</label>
     <faction>JUNKERS</faction>
@@ -171,9 +171,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Junkers_IlliwaSuum</defName>
     <label>Illiwa Suum</label>
     <faction>JUNKERS</faction>
@@ -201,9 +201,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Junkers_SkorrskTheTally</defName>
     <label>Skorrsk the Tally</label>
     <faction>JUNKERS</faction>
@@ -230,9 +230,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Junkers_VaghOro</defName>
     <label>Vagh Oro</label>
     <faction>JUNKERS</faction>
@@ -263,9 +263,9 @@
     <skills>
       <Melee>17</Melee>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Junkers_GrundaPell</defName>
     <label>Grunda Pell</label>
     <faction>JUNKERS</faction>
@@ -296,9 +296,9 @@
     <skills>
       <Mining>15</Mining>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Junkers_VeshKaa</defName>
     <label>Vesh'kaa</label>
     <faction>JUNKERS</faction>
@@ -325,9 +325,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Junkers_ModdRyel</defName>
     <label>Modd Ryel</label>
     <faction>JUNKERS</faction>
@@ -357,9 +357,9 @@
     <skills>
       <Artistic>16</Artistic>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Junkers_GruthaBakk</defName>
     <label>Grutha Bakk</label>
     <faction>JUNKERS</faction>
@@ -386,9 +386,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Junkers_Kessavor</defName>
     <label>Kessavor</label>
     <faction>JUNKERS</faction>
@@ -414,9 +414,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Junkers_BohrraZeel</defName>
     <label>Bohrra Zeel</label>
     <faction>JUNKERS</faction>
@@ -446,9 +446,9 @@
     <skills>
       <Melee>15</Melee>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Junkers_NossikRyl</defName>
     <label>Nossik Ryl</label>
     <faction>JUNKERS</faction>
@@ -479,9 +479,9 @@
     <skills>
       <Intellectual>16</Intellectual>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Junkers_PerraTolm</defName>
     <label>Perra Tolm</label>
     <faction>JUNKERS</faction>
@@ -508,9 +508,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Junkers_KetrisVahn</defName>
     <label>Ketris Vahn</label>
     <faction>JUNKERS</faction>
@@ -538,9 +538,9 @@
         <degreeName>Sanguine</degreeName>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Junkers_PrahSook</defName>
     <label>Prah Sook</label>
     <faction>JUNKERS</faction>
@@ -571,9 +571,9 @@
     <skills>
       <Cooking>14</Cooking>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Junkers_RuteBaan</defName>
     <label>Rute Baan</label>
     <faction>JUNKERS</faction>
@@ -600,9 +600,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Junkers_AtaiVosk</defName>
     <label>Atai Vosk</label>
     <faction>JUNKERS</faction>
@@ -625,9 +625,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Junkers_NibGurro</defName>
     <label>Nib Gurro</label>
     <faction>JUNKERS</faction>
@@ -655,9 +655,9 @@
         <degreeName>Sanguine</degreeName>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Junkers_Nrrsh</defName>
     <label>Nrrsh</label>
     <faction>JUNKERS</faction>
@@ -684,9 +684,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Junkers_OloVenn</defName>
     <label>Olo Venn</label>
     <faction>JUNKERS</faction>
@@ -714,9 +714,9 @@
         <degreeName>Pessimist</degreeName>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Junkers_GrummOda</defName>
     <label>Grumm Oda</label>
     <faction>JUNKERS</faction>
@@ -747,9 +747,9 @@
     <items>
       <li>Beer</li>
     </items>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Junkers_ZiriNask</defName>
     <label>Ziri Nask</label>
     <faction>JUNKERS</faction>
@@ -777,6 +777,6 @@
         <degreeName>Pretty</degreeName>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
 </Defs>

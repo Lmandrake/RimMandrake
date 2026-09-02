@@ -15,7 +15,7 @@
     none of the four and that is the specification, not missing data.
   -->
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Empire_GarrisonCommanderOvelTrask</defName>
     <label>Garrison Commander Ovel Trask</label>
     <faction>EMPIRE</faction>
@@ -42,9 +42,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Empire_Sixteen</defName>
     <label>Sixteen</label>
     <faction>EMPIRE</faction>
@@ -75,9 +75,9 @@
     <apparel>
       <li>OuterRim_StormtrooperHelmet</li>
     </apparel>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Empire_GateSergeantDennUbbo</defName>
     <label>Gate Sergeant Denn Ubbo</label>
     <faction>EMPIRE</faction>
@@ -104,9 +104,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Empire_ComplianceOfficerIvrekSasso</defName>
     <label>Compliance Officer Ivrek Sasso</label>
     <faction>EMPIRE</faction>
@@ -133,9 +133,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Empire_SupplySergeantMarlaQuist</defName>
     <label>Supply Sergeant Marla Quist</label>
     <faction>EMPIRE</faction>
@@ -163,9 +163,9 @@
         <degreeName>Pessimist</degreeName>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Empire_DrillInstructorHeskVaro</defName>
     <label>Drill Instructor Hesk Varo</label>
     <faction>EMPIRE</faction>
@@ -197,9 +197,9 @@
     <skills>
       <Melee>19</Melee>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Empire_TrooperBoAnder</defName>
     <label>Trooper Bo Ander</label>
     <faction>EMPIRE</faction>
@@ -233,9 +233,9 @@
       <Shooting>19</Shooting>
       <Intellectual>2</Intellectual>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Empire_ChaplainCorrectorNimCallo</defName>
     <label>Chaplain-Corrector Nim Callo</label>
     <faction>EMPIRE</faction>
@@ -263,9 +263,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Empire_SchoolmistressPerrinAleth</defName>
     <label>Schoolmistress Perrin Aleth</label>
     <faction>EMPIRE</faction>
@@ -288,9 +288,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Empire_RecordsOfficerHelaBrayne</defName>
     <label>Records Officer Hela Brayne</label>
     <faction>EMPIRE</faction>
@@ -317,9 +317,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Empire_ComptrollerIshOndoVell</defName>
     <label>Comptroller Ish Ondo Vell</label>
     <faction>EMPIRE</faction>
@@ -345,9 +345,9 @@
     <skills>
       <Intellectual>19</Intellectual>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Empire_ClerkDovaNissik</defName>
     <label>Clerk Dova Nissik</label>
     <faction>EMPIRE</faction>
@@ -375,9 +375,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Empire_CorporalRukHalley</defName>
     <label>Corporal Ruk Halley</label>
     <faction>EMPIRE</faction>
@@ -404,9 +404,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Empire_AuditorIyethSarran</defName>
     <label>Auditor Iyeth Sarran</label>
     <faction>EMPIRE</faction>
@@ -440,9 +440,9 @@
     <skills>
       <Intellectual>17</Intellectual>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Empire_PaymasterCorvoTarrid</defName>
     <label>Paymaster Corvo Tarrid</label>
     <faction>EMPIRE</faction>
@@ -470,9 +470,9 @@
         <degreeName>Pessimist</degreeName>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Empire_EnlistmentOfficerBannOdaru</defName>
     <label>Enlistment Officer Bann Odaru</label>
     <faction>EMPIRE</faction>
@@ -500,9 +500,9 @@
         <degreeName>Depressive</degreeName>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Empire_BandmasterOttelCrin</defName>
     <label>Bandmaster Ottel Crin</label>
     <faction>EMPIRE</faction>
@@ -529,9 +529,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Empire_InquisitorVaunt</defName>
     <label>Inquisitor Vaunt</label>
     <faction>EMPIRE</faction>
@@ -561,9 +561,9 @@
     <skills>
       <Melee>18</Melee>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Empire_PlantChiefWeylaTorr</defName>
     <label>Plant Chief Weyla Torr</label>
     <faction>EMPIRE</faction>
@@ -591,9 +591,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Empire_RationWardenSennetOvaal</defName>
     <label>Ration Warden Sennet Ovaal</label>
     <faction>EMPIRE</faction>
@@ -620,9 +620,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Empire_FitterKobboVunt</defName>
     <label>Fitter Kobbo Vunt</label>
     <faction>EMPIRE</faction>
@@ -655,9 +655,9 @@
     <skills>
       <Construction>18</Construction>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Empire_SentryOlloDamek</defName>
     <label>Sentry Ollo Damek</label>
     <faction>EMPIRE</faction>
@@ -684,9 +684,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Empire_OrbitWatchLieutenantKadiOrsin</defName>
     <label>Orbit-watch Lieutenant Kadi Orsin</label>
     <faction>EMPIRE</faction>
@@ -720,9 +720,9 @@
     <skills>
       <Intellectual>16</Intellectual>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Empire_RationPackInspectorFeynDoro</defName>
     <label>Ration-pack Inspector Feyn Doro</label>
     <faction>EMPIRE</faction>
@@ -750,9 +750,9 @@
         <degreeName>Depressive</degreeName>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Empire_CorporalTullAmey</defName>
     <label>Corporal Tull Amey</label>
     <faction>EMPIRE</faction>
@@ -779,6 +779,6 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
 </Defs>

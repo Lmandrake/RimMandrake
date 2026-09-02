@@ -105,7 +105,7 @@ sys.path.insert(0, HERE)
 from game_paths import DEF_DUMP  # noqa: E402
 
 CAST_DIR = os.path.join(ROOT, "design", "Jawa", "bridge")
-OUT_DIR = os.path.join(ROOT, "src", "Jawa", "Inhabited", "Defs", "CastRosters")
+OUT_DIR = os.path.join(ROOT, "src", "RimMandrake", "Inhabited", "Defs", "CastRosters")
 
 _DUMPS = [
     os.path.join(DEF_DUMP, "defs"),
@@ -500,7 +500,7 @@ def emit(people, faction, defnames):
             n += 1
         defnames.add(defname)
 
-        rows.append("  <Inhabited.CharacterDef>")
+        rows.append("  <RimMandrake.Inhabited.CharacterDef>")
         rows.append("    <defName>%s</defName>" % defname)
         rows.append("    <label>%s</label>" % escape(p["name"]))
         rows.append("    <faction>%s</faction>" % escape(faction))
@@ -580,7 +580,7 @@ def emit(people, faction, defnames):
             for sk in p["skills"]:
                 rows.append("      <%s>%d</%s>" % (sk["skill"], sk["level"], sk["skill"]))
             rows.append("    </skills>")
-        rows.append("  </Inhabited.CharacterDef>")
+        rows.append("  </RimMandrake.Inhabited.CharacterDef>")
         rows.append("")
     rows.append("</Defs>")
     return "\n".join(rows) + "\n"

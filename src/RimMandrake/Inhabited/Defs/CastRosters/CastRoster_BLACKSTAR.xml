@@ -15,7 +15,7 @@
     none of the four and that is the specification, not missing data.
   -->
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Blackstar_CaptainAurethSarVell</defName>
     <label>Captain Aureth Sar-Vell</label>
     <faction>BLACKSTAR</faction>
@@ -43,9 +43,9 @@
         <degreeName>CarefulShooter</degreeName>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Blackstar_BrotherAdjutantHoxxTenneb</defName>
     <label>Brother-Adjutant Hoxx Tenneb</label>
     <faction>BLACKSTAR</faction>
@@ -73,9 +73,9 @@
         <degreeName>Pessimist</degreeName>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Blackstar_NelSuntaRukhTheCrier</defName>
     <label>Nel Sunta Rukh, the Crier</label>
     <faction>BLACKSTAR</faction>
@@ -102,9 +102,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Blackstar_RegistrarIvveOdo</defName>
     <label>Registrar Ivve Odo</label>
     <faction>BLACKSTAR</faction>
@@ -131,9 +131,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Blackstar_MaKeshBruul</defName>
     <label>Ma'kesh Bruul</label>
     <faction>BLACKSTAR</faction>
@@ -165,9 +165,9 @@
       <Melee>17</Melee>
       <Shooting>2</Shooting>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Blackstar_ViddAnselm</defName>
     <label>Vidd Anselm</label>
     <faction>BLACKSTAR</faction>
@@ -201,9 +201,9 @@
       <Shooting>6</Shooting>
       <Intellectual>0</Intellectual>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Blackstar_TeskaVauntGrandSworn</defName>
     <label>Teska Vaunt, Grand Sworn</label>
     <faction>BLACKSTAR</faction>
@@ -237,9 +237,9 @@
     <skills>
       <Melee>18</Melee>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Blackstar_QuartermasterDolmPetrek</defName>
     <label>Quartermaster Dolm Petrek</label>
     <faction>BLACKSTAR</faction>
@@ -266,9 +266,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Blackstar_WexRhodaClauseNine</defName>
     <label>Wex Rhoda, "Clause Nine"</label>
     <faction>BLACKSTAR</faction>
@@ -296,9 +296,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Blackstar_BosunVurgoNakk</defName>
     <label>Bosun Vurgo Nakk</label>
     <faction>BLACKSTAR</faction>
@@ -329,9 +329,9 @@
     <skills>
       <Melee>14</Melee>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Blackstar_SszikVhan</defName>
     <label>Sszik Vhan</label>
     <faction>BLACKSTAR</faction>
@@ -363,9 +363,9 @@
     <skills>
       <Melee>17</Melee>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Blackstar_TobbetGraleThePenalty</defName>
     <label>Tobbet Grale, the Penalty</label>
     <faction>BLACKSTAR</faction>
@@ -393,9 +393,9 @@
         <degreeName>Sanguine</degreeName>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Blackstar_RuuneAdlai</defName>
     <label>Ruune Adlai</label>
     <faction>BLACKSTAR</faction>
@@ -427,9 +427,9 @@
     <skills>
       <Shooting>20</Shooting>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Blackstar_NekkArda</defName>
     <label>Nekk Arda</label>
     <faction>BLACKSTAR</faction>
@@ -463,9 +463,9 @@
     <skills>
       <Intellectual>18</Intellectual>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Blackstar_YenevvaPoll</defName>
     <label>Yenevva Poll</label>
     <faction>BLACKSTAR</faction>
@@ -499,9 +499,9 @@
       <Medicine>17</Medicine>
       <Shooting>3</Shooting>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Blackstar_MirriSett</defName>
     <label>Mirri Sett</label>
     <faction>BLACKSTAR</faction>
@@ -532,9 +532,9 @@
       <Crafting>17</Crafting>
       <Construction>15</Construction>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Blackstar_BeggoThrune</defName>
     <label>Beggo Thrune</label>
     <faction>BLACKSTAR</faction>
@@ -564,9 +564,9 @@
     <skills>
       <Shooting>0</Shooting>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Blackstar_UboTass</defName>
     <label>Ubo Tass</label>
     <faction>BLACKSTAR</faction>
@@ -594,9 +594,9 @@
         <degreeName>Sanguine</degreeName>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Blackstar_KessaRynWode</defName>
     <label>Kessa Ryn Wode</label>
     <faction>BLACKSTAR</faction>
@@ -628,9 +628,9 @@
       <li>BionicArm</li>
       <li>BionicEye</li>
     </items>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Blackstar_AdjusterUshetKelBa</defName>
     <label>Adjuster Ushet Kel Ba</label>
     <faction>BLACKSTAR</faction>
@@ -657,9 +657,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Blackstar_UnderwriterVessineRoal</defName>
     <label>Underwriter Vessine Roal</label>
     <faction>BLACKSTAR</faction>
@@ -686,9 +686,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Blackstar_KivTorrun</defName>
     <label>Kiv Torrun</label>
     <faction>BLACKSTAR</faction>
@@ -716,9 +716,9 @@
         <degreeName>Sanguine</degreeName>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Blackstar_SubAdjutantNeshHollo</defName>
     <label>Sub-Adjutant Nesh Hollo</label>
     <faction>BLACKSTAR</faction>
@@ -752,9 +752,9 @@
       <Shooting>0</Shooting>
       <Melee>0</Melee>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Blackstar_IppoNuum</defName>
     <label>Ippo Nuum</label>
     <faction>BLACKSTAR</faction>
@@ -781,9 +781,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Blackstar_AdannFerroTheRecoverer</defName>
     <label>Adann Ferro, the Recoverer</label>
     <faction>BLACKSTAR</faction>
@@ -811,6 +811,6 @@
         <degreeName>Pessimist</degreeName>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
 </Defs>

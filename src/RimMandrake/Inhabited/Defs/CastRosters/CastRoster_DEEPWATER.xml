@@ -15,7 +15,7 @@
     none of the four and that is the specification, not missing data.
   -->
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Deepwater_HighWardenOssoReeth</defName>
     <label>High Warden Osso Reeth</label>
     <faction>DEEPWATER</faction>
@@ -46,9 +46,9 @@
       <Intellectual>17</Intellectual>
       <Social>14</Social>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Deepwater_NossaraVekk</defName>
     <label>Nossara Vekk</label>
     <faction>DEEPWATER</faction>
@@ -75,9 +75,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Deepwater_ChaluBirNass</defName>
     <label>Chalu Bir-Nass</label>
     <faction>DEEPWATER</faction>
@@ -108,9 +108,9 @@
     <skills>
       <Social>16</Social>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Deepwater_ShaelasDuun</defName>
     <label>Shaelas Duun</label>
     <faction>DEEPWATER</faction>
@@ -142,9 +142,9 @@
       <Melee>15</Melee>
       <Social>13</Social>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Deepwater_PerrikOssoVane</defName>
     <label>Perrik Osso-Vane</label>
     <faction>DEEPWATER</faction>
@@ -177,9 +177,9 @@
     <skills>
       <Intellectual>16</Intellectual>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Deepwater_GrandTessek</defName>
     <label>Grand Tessek</label>
     <faction>DEEPWATER</faction>
@@ -209,9 +209,9 @@
     <skills>
       <Cooking>18</Cooking>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Deepwater_IlmaSook</defName>
     <label>Ilma Sook</label>
     <faction>DEEPWATER</faction>
@@ -243,9 +243,9 @@
       <Social>15</Social>
       <Intellectual>3</Intellectual>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Deepwater_WardenCaptainBoruuHalt</defName>
     <label>Warden-Captain Boruu Halt</label>
     <faction>DEEPWATER</faction>
@@ -277,9 +277,9 @@
     <skills>
       <Shooting>16</Shooting>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Deepwater_OldDuula</defName>
     <label>Old Duula</label>
     <faction>DEEPWATER</faction>
@@ -306,9 +306,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Deepwater_WardenKessoReeth</defName>
     <label>Warden Kesso Reeth</label>
     <faction>DEEPWATER</faction>
@@ -335,9 +335,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Deepwater_FennOttouk</defName>
     <label>Fenn Ottouk</label>
     <faction>DEEPWATER</faction>
@@ -365,9 +365,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Deepwater_QuartermasterBelNossik</defName>
     <label>Quartermaster Bel Nossik</label>
     <faction>DEEPWATER</faction>
@@ -394,9 +394,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Deepwater_AshaaOttouk</defName>
     <label>Ashaa Ottouk</label>
     <faction>DEEPWATER</faction>
@@ -426,9 +426,9 @@
     <skills>
       <Artistic>16</Artistic>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Deepwater_SergeantVurraDask</defName>
     <label>Sergeant Vurra Dask</label>
     <faction>DEEPWATER</faction>
@@ -460,9 +460,9 @@
       <Shooting>15</Shooting>
       <Intellectual>12</Intellectual>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Deepwater_TobbGrell</defName>
     <label>Tobb Grell</label>
     <faction>DEEPWATER</faction>
@@ -489,9 +489,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Deepwater_IllikSar</defName>
     <label>Illik Sar</label>
     <faction>DEEPWATER</faction>
@@ -522,9 +522,9 @@
       <Intellectual>17</Intellectual>
       <Crafting>14</Crafting>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Deepwater_OttikBirNass</defName>
     <label>Ottik Bir-Nass</label>
     <faction>DEEPWATER</faction>
@@ -552,9 +552,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Deepwater_WardenSethroVekk</defName>
     <label>Warden Sethro Vekk</label>
     <faction>DEEPWATER</faction>
@@ -582,9 +582,9 @@
         <degreeName>Depressive</degreeName>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Deepwater_MarrekOlDuun</defName>
     <label>Marrek Ol-Duun</label>
     <faction>DEEPWATER</faction>
@@ -611,9 +611,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Deepwater_HessaKur</defName>
     <label>Hessa Kur</label>
     <faction>DEEPWATER</faction>
@@ -640,9 +640,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Deepwater_BossoTharn</defName>
     <label>Bosso Tharn</label>
     <faction>DEEPWATER</faction>
@@ -669,9 +669,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Deepwater_QuellOttouk</defName>
     <label>Quell Ottouk</label>
     <faction>DEEPWATER</faction>
@@ -703,9 +703,9 @@
       <Crafting>17</Crafting>
       <Intellectual>14</Intellectual>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Deepwater_OldWenneth</defName>
     <label>Old Wenneth</label>
     <faction>DEEPWATER</faction>
@@ -732,9 +732,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Deepwater_DabbIllo</defName>
     <label>Dabb Illo</label>
     <faction>DEEPWATER</faction>
@@ -764,9 +764,9 @@
     <skills>
       <Artistic>14</Artistic>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Deepwater_SookNossik</defName>
     <label>Sook Nossik</label>
     <faction>DEEPWATER</faction>
@@ -793,6 +793,6 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
 </Defs>

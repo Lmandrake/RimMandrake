@@ -15,7 +15,7 @@
     none of the four and that is the specification, not missing data.
   -->
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Homestead_HighMarshalWennaDask</defName>
     <label>High Marshal Wenna Dask</label>
     <faction>HOMESTEAD</faction>
@@ -42,9 +42,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Homestead_OrdHalloway</defName>
     <label>Ord Halloway</label>
     <faction>HOMESTEAD</faction>
@@ -72,9 +72,9 @@
         <degreeName>Pessimist</degreeName>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Homestead_Vekshaa</defName>
     <label>Vekshaa</label>
     <faction>HOMESTEAD</faction>
@@ -106,9 +106,9 @@
     <items>
       <li>Flake</li>
     </items>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Homestead_OnkOnkDeshu</defName>
     <label>Onk-Onk-Deshu</label>
     <faction>HOMESTEAD</faction>
@@ -135,9 +135,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Homestead_PellOnasso</defName>
     <label>Pell Onasso</label>
     <faction>HOMESTEAD</faction>
@@ -168,9 +168,9 @@
     <skills>
       <Animals>16</Animals>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Homestead_UzzoOneEye</defName>
     <label>Uzzo One-Eye</label>
     <faction>HOMESTEAD</faction>
@@ -197,9 +197,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Homestead_MardaIlk</defName>
     <label>Marda Ilk</label>
     <faction>HOMESTEAD</faction>
@@ -230,9 +230,9 @@
       <Construction>15</Construction>
       <Social>14</Social>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Homestead_CaptainDuroVensk</defName>
     <label>Captain Duro Vensk</label>
     <faction>HOMESTEAD</faction>
@@ -263,9 +263,9 @@
     <skills>
       <Intellectual>16</Intellectual>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Homestead_HobbMerrit</defName>
     <label>Hobb Merrit</label>
     <faction>HOMESTEAD</faction>
@@ -293,9 +293,9 @@
         <degreeName>Pessimist</degreeName>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Homestead_KkitNabb</defName>
     <label>Kkit-Nabb</label>
     <faction>HOMESTEAD</faction>
@@ -323,9 +323,9 @@
         <degreeName>Sanguine</degreeName>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Homestead_BessaTrull</defName>
     <label>Bessa Trull</label>
     <faction>HOMESTEAD</faction>
@@ -348,9 +348,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Homestead_SevKaDorn</defName>
     <label>Sev'ka Dorn</label>
     <faction>HOMESTEAD</faction>
@@ -377,9 +377,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Homestead_ArdaFenn</defName>
     <label>Arda Fenn</label>
     <faction>HOMESTEAD</faction>
@@ -409,9 +409,9 @@
     <skills>
       <Intellectual>15</Intellectual>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Homestead_HoggoBarTesh</defName>
     <label>Hoggo Bar-Tesh</label>
     <faction>HOMESTEAD</faction>
@@ -443,9 +443,9 @@
       <Melee>15</Melee>
       <Social>14</Social>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Homestead_WennKaddo</defName>
     <label>Wenn Kaddo</label>
     <faction>HOMESTEAD</faction>
@@ -472,9 +472,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Homestead_IlvaPrute</defName>
     <label>Ilva Prute</label>
     <faction>HOMESTEAD</faction>
@@ -502,9 +502,9 @@
         <degreeName>Sanguine</degreeName>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Homestead_NessaHalloway</defName>
     <label>Nessa Halloway</label>
     <faction>HOMESTEAD</faction>
@@ -531,9 +531,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Homestead_TessaVorn</defName>
     <label>Tessa Vorn</label>
     <faction>HOMESTEAD</faction>
@@ -565,9 +565,9 @@
       <Construction>16</Construction>
       <Melee>11</Melee>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Homestead_EmmDorrow</defName>
     <label>Emm Dorrow</label>
     <faction>HOMESTEAD</faction>
@@ -597,9 +597,9 @@
     <items>
       <li>MedicineIndustrial</li>
     </items>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Homestead_OvettSarn</defName>
     <label>Ovett Sarn</label>
     <faction>HOMESTEAD</faction>
@@ -629,9 +629,9 @@
     <skills>
       <Crafting>17</Crafting>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Homestead_CabbaRessik</defName>
     <label>Cabba Ressik</label>
     <faction>HOMESTEAD</faction>
@@ -658,9 +658,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Homestead_RenAshek</defName>
     <label>Ren Ashek</label>
     <faction>HOMESTEAD</faction>
@@ -683,9 +683,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Homestead_OldSannit</defName>
     <label>Old Sannit</label>
     <faction>HOMESTEAD</faction>
@@ -720,9 +720,9 @@
     <skills>
       <Social>17</Social>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Homestead_TamOrrel</defName>
     <label>Tam Orrel</label>
     <faction>HOMESTEAD</faction>
@@ -750,9 +750,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Homestead_HallaVetch</defName>
     <label>Halla Vetch</label>
     <faction>HOMESTEAD</faction>
@@ -782,6 +782,6 @@
     <apparel>
       <li>guy762_Headband_rebreathermask</li>
     </apparel>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
 </Defs>

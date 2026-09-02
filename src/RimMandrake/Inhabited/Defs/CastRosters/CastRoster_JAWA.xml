@@ -15,7 +15,7 @@
     none of the four and that is the specification, not missing data.
   -->
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Jawa_ChiefGhekkUbbUbb</defName>
     <label>Chief Ghekk Ubb-Ubb</label>
     <faction>JAWA</faction>
@@ -42,9 +42,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Jawa_Wupp</defName>
     <label>Wupp</label>
     <faction>JAWA</faction>
@@ -72,9 +72,9 @@
         <degreeName>Sanguine</degreeName>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Jawa_OssikTheOutrider</defName>
     <label>Ossik the Outrider</label>
     <faction>JAWA</faction>
@@ -98,9 +98,9 @@
         <degreeName>Pessimist</degreeName>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Jawa_DeggoAteeka</defName>
     <label>Deggo Ateeka</label>
     <faction>JAWA</faction>
@@ -127,9 +127,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Jawa_BikkNkik</defName>
     <label>Bikk Nkik</label>
     <faction>JAWA</faction>
@@ -157,9 +157,9 @@
         <degreeName>Sanguine</degreeName>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Jawa_NurrTheHemCutter</defName>
     <label>Nurr the Hem-Cutter</label>
     <faction>JAWA</faction>
@@ -189,9 +189,9 @@
     <items>
       <li>Cloth</li>
     </items>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Jawa_SakkVor</defName>
     <label>Sakk Vor</label>
     <faction>JAWA</faction>
@@ -218,9 +218,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Jawa_YubbNagg</defName>
     <label>Yubb Nagg</label>
     <faction>JAWA</faction>
@@ -249,9 +249,9 @@
         <degreeName>Ugly</degreeName>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Jawa_Kutt</defName>
     <label>Kutt</label>
     <faction>JAWA</faction>
@@ -278,9 +278,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Jawa_KwikkTann</defName>
     <label>Kwikk Tann</label>
     <faction>JAWA</faction>
@@ -307,9 +307,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Jawa_FussikVukk</defName>
     <label>Fussik Vukk</label>
     <faction>JAWA</faction>
@@ -340,9 +340,9 @@
     <items>
       <li>Shell_HighExplosive</li>
     </items>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Jawa_RikkNkikTal</defName>
     <label>Rikk Nkik-Tal</label>
     <faction>JAWA</faction>
@@ -369,9 +369,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Jawa_TekkaVor</defName>
     <label>Tekka Vor</label>
     <faction>JAWA</faction>
@@ -401,9 +401,9 @@
     <apparel>
       <li>Apparel_Bandolier</li>
     </apparel>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Jawa_NommoGrish</defName>
     <label>Nommo Grish</label>
     <faction>JAWA</faction>
@@ -430,9 +430,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Jawa_MardoChell</defName>
     <label>Mardo Chell</label>
     <faction>JAWA</faction>
@@ -463,9 +463,9 @@
     <items>
       <li>ComponentIndustrial</li>
     </items>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Jawa_VessTikko</defName>
     <label>Vess Tikko</label>
     <faction>JAWA</faction>
@@ -496,9 +496,9 @@
       <Intellectual>16</Intellectual>
       <Social>14</Social>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Jawa_GruttTheOnce</defName>
     <label>Grutt the Once</label>
     <faction>JAWA</faction>
@@ -526,9 +526,9 @@
         <degreeName>Sanguine</degreeName>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Jawa_EkkNnn</defName>
     <label>Ekk Nnn</label>
     <faction>JAWA</faction>
@@ -558,9 +558,9 @@
     <skills>
       <Social>1</Social>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Jawa_ShamanIkkaSurAteeka</defName>
     <label>Shaman Ikka Sur-Ateeka</label>
     <faction>JAWA</faction>
@@ -587,9 +587,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Jawa_TekkiNkik</defName>
     <label>Tekki Nkik</label>
     <faction>JAWA</faction>
@@ -616,9 +616,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Jawa_UbbiSur</defName>
     <label>Ubbi Sur</label>
     <faction>JAWA</faction>
@@ -648,9 +648,9 @@
     <skills>
       <Crafting>15</Crafting>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Jawa_GrissaAteeka</defName>
     <label>Grissa Ateeka</label>
     <faction>JAWA</faction>
@@ -680,9 +680,9 @@
     <skills>
       <Cooking>17</Cooking>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Jawa_HobbTann</defName>
     <label>Hobb Tann</label>
     <faction>JAWA</faction>
@@ -709,9 +709,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Jawa_VekkGrish</defName>
     <label>Vekk Grish</label>
     <faction>JAWA</faction>
@@ -738,9 +738,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Jawa_NokkoUbb</defName>
     <label>Nokko Ubb</label>
     <faction>JAWA</faction>
@@ -771,6 +771,6 @@
       <li>BionicArm</li>
       <li>BionicEye</li>
     </items>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
 </Defs>

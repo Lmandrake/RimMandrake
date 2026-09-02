@@ -15,7 +15,7 @@
     none of the four and that is the specification, not missing data.
   -->
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Helix_DirectorYnnuSorneEhr</defName>
     <label>Director Ynnu Sorne-Ehr</label>
     <faction>HELIX</faction>
@@ -42,9 +42,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Helix_OssaFour</defName>
     <label>Ossa-Four</label>
     <faction>HELIX</faction>
@@ -71,9 +71,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Helix_PrimeGeneticistSeTaun</defName>
     <label>Prime Geneticist Se-Taun</label>
     <faction>HELIX</faction>
@@ -101,9 +101,9 @@
         <degreeName>Beautiful</degreeName>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Helix_AuditorKeshMubb</defName>
     <label>Auditor Kesh Mubb</label>
     <faction>HELIX</faction>
@@ -130,9 +130,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Helix_UnderDirectorFennAluu</defName>
     <label>Under-Director Fenn Aluu</label>
     <faction>HELIX</faction>
@@ -160,9 +160,9 @@
         <degreeName>Pessimist</degreeName>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Helix_PrithVane</defName>
     <label>Prith Vane</label>
     <faction>HELIX</faction>
@@ -189,9 +189,9 @@
       <Social>18</Social>
       <Medicine>12</Medicine>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Helix_PerfectIvarr</defName>
     <label>Perfect Ivarr</label>
     <faction>HELIX</faction>
@@ -219,9 +219,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Helix_RecorderOllunBex</defName>
     <label>Recorder Ollun Bex</label>
     <faction>HELIX</faction>
@@ -249,9 +249,9 @@
         <degreeName>Sanguine</degreeName>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Helix_OlloWen</defName>
     <label>Ollo Wen</label>
     <faction>HELIX</faction>
@@ -285,9 +285,9 @@
     <skills>
       <Medicine>16</Medicine>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Helix_Model9DLadder</defName>
     <label>Model 9-D "Ladder"</label>
     <faction>HELIX</faction>
@@ -315,9 +315,9 @@
         <degreeName>Sanguine</degreeName>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Helix_Model7BLedger</defName>
     <label>Model 7-B "Ledger"</label>
     <faction>HELIX</faction>
@@ -344,9 +344,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Helix_CuratorAdjunctVekkSilla</defName>
     <label>Curator-Adjunct Vekk Silla</label>
     <faction>HELIX</faction>
@@ -380,9 +380,9 @@
       <Melee>13</Melee>
       <Shooting>13</Shooting>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Helix_RecoveryTechOssikBram</defName>
     <label>Recovery-tech Ossik Bram</label>
     <faction>HELIX</faction>
@@ -413,9 +413,9 @@
       <Intellectual>16</Intellectual>
       <Social>14</Social>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Helix_StewardBoDukk</defName>
     <label>Steward Bo Dukk</label>
     <faction>HELIX</faction>
@@ -446,9 +446,9 @@
     <apparel>
       <li>Apparel_GasMask</li>
     </apparel>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Helix_RahDaOnn</defName>
     <label>Rah'da Onn</label>
     <faction>HELIX</faction>
@@ -475,9 +475,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Helix_VatTechMarrowOoBir</defName>
     <label>Vat-tech Marrow Oo'Bir</label>
     <faction>HELIX</faction>
@@ -508,9 +508,9 @@
       <Crafting>16</Crafting>
       <Social>2</Social>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Helix_AdjunctPellOrro</defName>
     <label>Adjunct Pell Orro</label>
     <faction>HELIX</faction>
@@ -538,9 +538,9 @@
         <degreeName>Pessimist</degreeName>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Helix_OssaThree</defName>
     <label>Ossa-Three</label>
     <faction>HELIX</faction>
@@ -567,9 +567,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Helix_IvoryNineSorne</defName>
     <label>Ivory Nine Sorne</label>
     <faction>HELIX</faction>
@@ -597,9 +597,9 @@
         <degreeName>Depressive</degreeName>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Helix_Model2CGrandmother</defName>
     <label>Model 2-C "Grandmother"</label>
     <faction>HELIX</faction>
@@ -627,9 +627,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Helix_UuKanat</defName>
     <label>Uu-Kanat</label>
     <faction>HELIX</faction>
@@ -655,9 +655,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Helix_Grrat</defName>
     <label>Grrat</label>
     <faction>HELIX</faction>
@@ -687,9 +687,9 @@
     <skills>
       <Social>15</Social>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Helix_HemBosk</defName>
     <label>Hem Bosk</label>
     <faction>HELIX</faction>
@@ -717,9 +717,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Helix_WenBosk</defName>
     <label>Wen Bosk</label>
     <faction>HELIX</faction>
@@ -750,9 +750,9 @@
     <skills>
       <Cooking>15</Cooking>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Helix_WardenSellaKro</defName>
     <label>Warden Sella Kro</label>
     <faction>HELIX</faction>
@@ -782,6 +782,6 @@
     <skills>
       <Melee>16</Melee>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
 </Defs>

@@ -15,7 +15,7 @@
     none of the four and that is the specification, not missing data.
   -->
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Hutt_BrukOleen</defName>
     <label>Bruk Oleen</label>
     <faction>HUTT</faction>
@@ -42,9 +42,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Hutt_FerrinOleen</defName>
     <label>Ferrin Oleen</label>
     <faction>HUTT</faction>
@@ -75,9 +75,9 @@
     <items>
       <li>Beer</li>
     </items>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Hutt_TennoVurr</defName>
     <label>Tenno Vurr</label>
     <faction>HUTT</faction>
@@ -107,9 +107,9 @@
     <skills>
       <Cooking>16</Cooking>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Hutt_PoulAddenAdden</defName>
     <label>Poul Adden-Adden</label>
     <faction>HUTT</faction>
@@ -137,9 +137,9 @@
         <degreeName>Sanguine</degreeName>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Hutt_MargraveSarrick</defName>
     <label>Margrave Sarrick</label>
     <faction>HUTT</faction>
@@ -172,9 +172,9 @@
       <Melee>15</Melee>
       <Crafting>13</Crafting>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Hutt_JatHessik</defName>
     <label>Jat Hessik</label>
     <faction>HUTT</faction>
@@ -209,9 +209,9 @@
     <skills>
       <Construction>15</Construction>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Hutt_OssukRell</defName>
     <label>Ossuk Rell</label>
     <faction>HUTT</faction>
@@ -238,9 +238,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Hutt_AddaWesh</defName>
     <label>Adda Wesh</label>
     <faction>HUTT</faction>
@@ -268,9 +268,9 @@
         <degreeName>ChemicalInterest</degreeName>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Hutt_Gand</defName>
     <label>Gand</label>
     <faction>HUTT</faction>
@@ -297,9 +297,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Hutt_BubaNokk</defName>
     <label>Buba Nokk</label>
     <faction>HUTT</faction>
@@ -327,9 +327,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Hutt_SenIlva</defName>
     <label>Sen Ilva</label>
     <faction>HUTT</faction>
@@ -359,9 +359,9 @@
     <skills>
       <Medicine>14</Medicine>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Hutt_OrrinKwaad</defName>
     <label>Orrin Kwaad</label>
     <faction>HUTT</faction>
@@ -389,9 +389,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Hutt_TikkaVosh</defName>
     <label>Tikka Vosh</label>
     <faction>HUTT</faction>
@@ -422,9 +422,9 @@
     <apparel>
       <li>Apparel_ClothMask</li>
     </apparel>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Hutt_FactorUmmuSekk</defName>
     <label>Factor Ummu Sekk</label>
     <faction>HUTT</faction>
@@ -451,9 +451,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Hutt_DennoFash</defName>
     <label>Denno Fash</label>
     <faction>HUTT</faction>
@@ -486,9 +486,9 @@
     <skills>
       <Plants>3</Plants>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Hutt_TobbTheLedgerSBoy</defName>
     <label>Tobb the Ledger's Boy</label>
     <faction>HUTT</faction>
@@ -516,9 +516,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Hutt_IssTheQuiet</defName>
     <label>Iss the Quiet</label>
     <faction>HUTT</faction>
@@ -544,9 +544,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Hutt_YeshAdden</defName>
     <label>Yesh Adden</label>
     <faction>HUTT</faction>
@@ -576,9 +576,9 @@
     <skills>
       <Cooking>15</Cooking>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Hutt_OldNabb</defName>
     <label>Old Nabb</label>
     <faction>HUTT</faction>
@@ -610,6 +610,6 @@
       <Shooting>2</Shooting>
       <Melee>2</Melee>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
 </Defs>

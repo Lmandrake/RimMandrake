@@ -15,7 +15,7 @@
     none of the four and that is the specification, not missing data.
   -->
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Wildsteam_ElderRrowhaan</defName>
     <label>Elder Rrowhaan</label>
     <faction>WILDSTEAM</faction>
@@ -42,9 +42,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Wildsteam_BekkaSunn</defName>
     <label>Bekka Sunn</label>
     <faction>WILDSTEAM</faction>
@@ -72,9 +72,9 @@
         <degreeName>Sanguine</degreeName>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Wildsteam_VaalOomTikaa</defName>
     <label>Vaal Oom-Tikaa</label>
     <faction>WILDSTEAM</faction>
@@ -101,9 +101,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Wildsteam_OssaKrail</defName>
     <label>Ossa Krail</label>
     <faction>WILDSTEAM</faction>
@@ -130,9 +130,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Wildsteam_TikkOfTheUnderline</defName>
     <label>Tikk of the Underline</label>
     <faction>WILDSTEAM</faction>
@@ -162,9 +162,9 @@
     <apparel>
       <li>Apparel_GasMask</li>
     </apparel>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Wildsteam_Grahnn</defName>
     <label>Grahnn</label>
     <faction>WILDSTEAM</faction>
@@ -195,9 +195,9 @@
       <Plants>20</Plants>
       <Intellectual>16</Intellectual>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Wildsteam_BoKesh</defName>
     <label>Bo Kesh</label>
     <faction>WILDSTEAM</faction>
@@ -230,9 +230,9 @@
     <skills>
       <Shooting>17</Shooting>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Wildsteam_MotherUlu</defName>
     <label>Mother Ulu</label>
     <faction>WILDSTEAM</faction>
@@ -259,9 +259,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Wildsteam_NessaDuun</defName>
     <label>Nessa Duun</label>
     <faction>WILDSTEAM</faction>
@@ -289,9 +289,9 @@
         <degreeName>Pessimist</degreeName>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Wildsteam_WardenZeshVool</defName>
     <label>Warden Zesh Vool</label>
     <faction>WILDSTEAM</faction>
@@ -323,9 +323,9 @@
       <Melee>16</Melee>
       <Plants>13</Plants>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Wildsteam_NnuPell</defName>
     <label>Nnu Pell</label>
     <faction>WILDSTEAM</faction>
@@ -355,9 +355,9 @@
     <apparel>
       <li>guy762_Headband_rebreathermask</li>
     </apparel>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Wildsteam_HakkoVurr</defName>
     <label>Hakko Vurr</label>
     <faction>WILDSTEAM</faction>
@@ -392,9 +392,9 @@
       <Intellectual>16</Intellectual>
       <Medicine>4</Medicine>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Wildsteam_TennGhosh</defName>
     <label>Tenn Ghosh</label>
     <faction>WILDSTEAM</faction>
@@ -425,9 +425,9 @@
       <Construction>18</Construction>
       <Intellectual>17</Intellectual>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Wildsteam_BoggoUmm</defName>
     <label>Boggo Umm</label>
     <faction>WILDSTEAM</faction>
@@ -460,9 +460,9 @@
       <Melee>12</Melee>
       <Shooting>2</Shooting>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Wildsteam_DrellAshk</defName>
     <label>Drell Ashk</label>
     <faction>WILDSTEAM</faction>
@@ -490,9 +490,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Wildsteam_SsuraKadd</defName>
     <label>Ssura Kadd</label>
     <faction>WILDSTEAM</faction>
@@ -519,9 +519,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Wildsteam_ShooBannAloo</defName>
     <label>Shoo Bann-Aloo</label>
     <faction>WILDSTEAM</faction>
@@ -551,9 +551,9 @@
     <skills>
       <Plants>18</Plants>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Wildsteam_WardenOfTheStairOhrra</defName>
     <label>Warden-of-the-Stair Ohrra</label>
     <faction>WILDSTEAM</faction>
@@ -580,9 +580,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Wildsteam_GrandmotherYekk</defName>
     <label>Grandmother Yekk</label>
     <faction>WILDSTEAM</faction>
@@ -614,9 +614,9 @@
       <Plants>18</Plants>
       <Intellectual>15</Intellectual>
     </skills>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Wildsteam_NikkoTheSapNamer</defName>
     <label>Nikko the Sap-Namer</label>
     <faction>WILDSTEAM</faction>
@@ -639,9 +639,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Wildsteam_KassVekk</defName>
     <label>Kass Vekk</label>
     <faction>WILDSTEAM</faction>
@@ -668,9 +668,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Wildsteam_RoodaTann</defName>
     <label>Rooda Tann</label>
     <faction>WILDSTEAM</faction>
@@ -698,9 +698,9 @@
         <degreeName>Depressive</degreeName>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Wildsteam_Rrogh</defName>
     <label>Rrogh</label>
     <faction>WILDSTEAM</faction>
@@ -728,9 +728,9 @@
         <degreeName>Pessimist</degreeName>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Wildsteam_PellYoon</defName>
     <label>Pell Yoon</label>
     <faction>WILDSTEAM</faction>
@@ -757,9 +757,9 @@
         <degree>0</degree>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
-  <Inhabited.CharacterDef>
+  <RimMandrake.Inhabited.CharacterDef>
     <defName>Inhabited_Wildsteam_YorrumPell</defName>
     <label>Yorrum Pell</label>
     <faction>WILDSTEAM</faction>
@@ -787,6 +787,6 @@
         <degreeName>Sanguine</degreeName>
       </li>
     </traits>
-  </Inhabited.CharacterDef>
+  </RimMandrake.Inhabited.CharacterDef>
 
 </Defs>
