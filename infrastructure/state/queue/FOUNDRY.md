@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T16:45:52Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-02T16:49:43Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -280,7 +280,7 @@ summary:  Pure ambience feature, no gameplay effect, no new art. mandrake.rut.ri
 prose:    infrastructure/state/items/RIVER_STEAM_ANIMATION_1.md
 
 ## SHIELD_MODS_LEVERAGE_1 Find existing shield mods, study and make compatible; tuned-plasma-field model per shd rulings
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
@@ -338,6 +338,16 @@ blocked:  Engineering sequence, not an owner call: needs Droidworks Phase 3 (fac
 summary:  (no items/DROID_TILES_SOURED_TERRAIN_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DROID_TILES_SOURED_TERRAIN_1.md
 
+## SHIELD_MODS_LEVERAGE_1 Find existing shield mods, study and make compatible; tuned-plasma-field model per shd rulings
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  source-verified both flagged caveats (point-defense speed curve confirmed backwards from canon; CompShieldField confirmed pawn-apparel not building-scale, no VEF hook into Odyssey's gravship shield slot) — needs a BENCH/owner design call on the building-scale foundation before the actual shield build item is filed
+summary:  SHIELDMODSLEVERAGE1 — survey done, scoping (BENCH, 2026-09-02)
+prose:    infrastructure/state/items/SHIELD_MODS_LEVERAGE_1.md
+
 ## HELIX_TELLUROX_SHELL_LOAD_CRASH_1 HelixTellurox crashes mod load to Core-only: a def parse error (MissingMethodException: default ctor for System.String) breaks RSW_TelluroxShell, whose null butcherProducts ref NREs corpse-gen
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -366,6 +376,6 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/LOAD_STALL_PROBE_INSTRUMENT_GAPS_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  Fix the two "instrument lies" defects; the rest are lower-priority cleanup,
 prose:    infrastructure/state/items/LOAD_STALL_PROBE_INSTRUMENT_GAPS_1.md

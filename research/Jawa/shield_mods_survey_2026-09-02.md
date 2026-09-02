@@ -376,10 +376,17 @@ this is desk research only.
 - SoS2 ship-shield numeric specifics (power draw, bubble radius, exact hull
   integration) — not surfaced at search-snippet depth; needs a direct source
   read of one of the current forks (copeland3300, KentHaeger, or tinygrox).
-- Whether VFE Security's point-defense intercept-by-speed formula is
-  correctly characterized as "slower = more interceptable" versus a possible
-  misreading of the source in this pass — worth a direct code read before
-  relying on the finding to rule the comp out.
+- ~~Whether VFE Security's point-defense intercept-by-speed formula is
+  correctly characterized as "slower = more interceptable"~~ — **CONFIRMED**
+  (FOUNDRY, 2026-09-02, direct read of `CompPointDefense.InterceptChance` in
+  `Vanilla-Expanded/VanillaFurnitureExpanded-Security` 1.6 source):
+  `chance = 0.98 * exp(-max(0, speed-30)/10)`, clamped `[0.05, 0.98]` — a
+  monotonically *decreasing* function of speed, so yes, slower projectiles
+  are more interceptable, exactly backwards from our canon. The curve is
+  hardcoded in the comp's `InterceptChance` method with no exposed multiplier
+  or exponent on `CompProperties_PointDefense` (only `interceptionRadius`,
+  `interceptionAttemptInterval`, `blacklistedProjectileDefs` are XML-tunable)
+  — inverting it means a new comp or a Harmony patch, not an XML retune.
 
 This survey used WebSearch/WebFetch only; several Steam Workshop pages
 returned JS-rendered shells rather than description text on fetch, so

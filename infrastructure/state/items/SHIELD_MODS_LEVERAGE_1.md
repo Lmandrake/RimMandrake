@@ -55,3 +55,47 @@ shields, even though the interception logic itself doesn't transfer to a
 thermal/cold gate. No local mod was found that already models a
 heat/cold-radius environmental gate — that comp is original work regardless
 of which foundation mod is chosen.
+
+## Source verification of BENCH's two flagged caveats (FOUNDRY, 2026-09-02)
+
+Direct read of `Vanilla-Expanded/VanillaFurnitureExpanded-Security` and
+`Vanilla-Expanded/VanillaExpandedFramework` GitHub source (1.6/main), not
+search snippets — this resumes the check the pre-reboot session started and
+lost:
+
+1. **Point-defense speed reading — CONFIRMED, not backwards.**
+   `CompPointDefense.InterceptChance` (VFE Security):
+   `chance = 0.98 * exp(-max(0, speed-30)/10)`, clamped `[0.05, 0.98]` — a
+   strictly decreasing function of speed, so slower projectiles genuinely
+   are more interceptable. That IS backwards from our
+   `shd:shield-collapse-evacuate` "slow things pass through" canon, exactly
+   as BENCH's survey worried. The curve is hardcoded inside
+   `InterceptChance` with nothing exposed on `CompProperties_PointDefense`
+   (only `interceptionRadius`, `interceptionAttemptInterval`,
+   `blacklistedProjectileDefs` are XML fields) — reusing this needs a new
+   comp or a Harmony patch over `InterceptChance`, not an XML retune.
+   Written up in `research/Jawa/shield_mods_survey_2026-09-02.md`'s open
+   questions.
+
+2. **`CompShieldField` is a PAWN-WORN shield, not a building/gravship one —
+   correction to the survey's "foundation" framing.** It lives at
+   `Source/VEF/Apparels/Comps/CompShieldField.cs`, driven by
+   `Apparel_Shield`/`JobDriver_EquipShield`/`PawnShieldGenerator` — a
+   `ThingComp : PawnGizmoProvider` meant for an apparel item a pawn equips
+   (the vanilla-style personal shield belt pattern), not a
+   `Building`/gravship-scale comp. VEF's Gravship-adjacent files
+   (`GravshipLaunchExtension`, the launch-confirmation/copy-cell-contents
+   Harmony patches) live in a completely separate `Buildings` namespace with
+   no reference to the Shield classes — there is no existing hook between
+   VEF's shield engine and Odyssey's native gravship shield slot. The
+   energy-drain-to-EMP-collapse behavior BENCH's survey wanted to borrow is
+   real and matches our ruling, but as a **personal-shield** precedent; the
+   environmental/gravship-scale shield needs its own `Building`-hosted comp
+   inspired by this pattern, not a fork of `CompShieldField` itself.
+
+**Net effect on the recommended shape:** point 1 stands as flagged (needs
+inverting, confirmed not a misreading). Point 2 changes the survey's
+"Foundation: VEF's shield engine" line from "fork/extend" to "study the
+energy/EMP pattern, build our own `Building`-scale comp" — this is a design
+call, not a FOUNDRY build decision; flagging for BENCH/owner before the
+actual shield build item is filed.
