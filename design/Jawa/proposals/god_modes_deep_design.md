@@ -18,7 +18,7 @@ days instead.*
 
 ## 🔴 RULED — owner sitting, saved 2026-09-02 (review sheet, 8 rows)
 
-⚠️ Two rows (strain-meter, exit-stacking-scars) are ruled v1 but the owner says the concepts were explained in language too coded to judge — a plain-language explanation is OWED to him before either is built.
+✅ The strain-meter and exit/stacking/scars explanations LANDED (owner card, 2026-09-02) — both rows stand as plain v1, nothing further owed.
 
 Verdicts and the owner's notes, verbatim (frozen source: `design/Jawa/worldbuilding/review/proposal_suite_review.decisions.json`; untouched rows keep their prefill — cut is the only destructive verdict):
 

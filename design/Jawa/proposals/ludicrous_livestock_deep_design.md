@@ -26,7 +26,7 @@ patched defNames, so role bands below are stated as comparisons ("ox-sized,"
 
 ## 🔴 RULED — owner sitting, saved 2026-09-02 (review sheet, 10 rows)
 
-⚠️ Four rows (drassik-smelter, duskhide-herd, coola-tend-narrate, grubbin-con) are ruled v1 pending a fuller explanation the owner asked for — deliver it before building those four.
+✅ Explanations delivered and RULED ON (owner card, 2026-09-02): drassik, duskhide and coo'la ACCEPTED (drassik glands Steel/Plasteel/Slag; coo'la upgraded — see its row); ⛔ GRUBBIN DROPPED.
 
 Verdicts and the owner's notes, verbatim (frozen source: `design/Jawa/worldbuilding/review/proposal_suite_review.decisions.json`; untouched rows keep their prefill — cut is the only destructive verdict):
 
@@ -38,8 +38,8 @@ Verdicts and the owner's notes, verbatim (frozen source: `design/Jawa/worldbuild
 | moornak-griefbomb | v2→**v1** | To make this worthwhile, it must be VERY powerful to absorb grief and restore calm. So make it attracted to and calming of mental breaks. An ominous shadow that follows unhappy people around. But its unsettling appearance also makes everyone mildly unsettled as well, a negative hediff that help make them unhappy enough to feed it. So it becomes a kind of parasite: you won't go crazy or collapse to madness, but neither will you ever be happy. Blessing and curse, and hard to get rid of. If you shoot it, massive mood consequences as you said. Player must get clever to trap it somewhere and leave it behind on a map. Traders will sell it but not buy it back. Should self-tame extremely readily and show up on the map already full of significant grief. Should last 30 days of suffering and mental breaks when it dies on the same map anywhere. Also makes creatures go manhunter at the same time... so not a good thing. |
 | duskhide-herd | v2→**v1** | I don't remember what the living herd warmth buff is, which creature? |
 | voltling-battery | v2→**v1** | This needs to be a new custom creature, but it's cool. A crystalline entity that absorbs sunlight and recharges batteries. But it's very delicate and could never survive on the dayside without protection. Comes from the night side but doesn't require the cold, just tolerates it. However, if protected, it starts to reproduce disturbingly quickly. That's the bane. |
-| coola-tend-narrate | v2→**v1** | Sounds neat, but I need to know more about this concept first. |
-| grubbin-con | dream→**v1** | Sounds neat, but I need to know more about this concept first. |
+| coola-tend-narrate | v2→**v1** | *(✅ upgraded by card 2026-09-02, verbatim:)* "The story milk should be improved. Rich luxurious Wise Milk increases learning rate and soothes emotions when drank. Very expensive. Very laborious to constantly socially entertain your milking animal." |
+| ~~grubbin-con~~ | ⛔ **CUT** (owner card 2026-09-02, overriding the sheet v1) | "Drop grubbing[sic]." Cut on full explanation — the con animal does not ship. |
 | gorrath-stampede | dream→**v1** | A creature that allows you to point and click "Attack!" for the whole herd, but once you do, they are unstoppable and can even damage walls and structures as they ram them. Super angry big beast of some sort. I love the idea of a berserk charge as a Jawa's idea of training. Misfire shouldn't just be self-inflicted, that's not fun. Rather they start to trip over each other and just get hurt and scattered and angry. |
 | hollowfoot-undermine | dream→**v1** | This is cool. A big worm that grumbles along through the sand, unhappy but survivable out of the sand, and able to break down walls as you suggest. Won't hurt the gravship or metal walls, but will do on other materials. |
 
@@ -263,6 +263,11 @@ or reputation.
 
 ### Coo'la — the story-milk doe
 
+> ✅ **Product RULED (owner card, 2026-09-02): "Wise Milk"** — increases learning
+> rate and soothes emotions when drunk; very expensive; the valve is the
+> constant social labor of entertaining the animal. The table below predates
+> the ruling where they differ.
+
 | | |
 |---|---|
 | Role band | Medium, doe-proportioned, gentle |
@@ -275,7 +280,7 @@ or reputation.
 | Art direction | Large, expressive ears angled forward, a soft attentive posture unlike any other grazer |
 | Canon note | Original |
 
-### Grubbin — the silver-eater
+### ~~Grubbin — the silver-eater~~ ⛔ CUT (owner card, 2026-09-02) — kept visible so the con-animal idea is not re-derived; it does not ship
 
 | | |
 |---|---|
