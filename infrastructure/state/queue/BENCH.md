@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T16:33:39Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-02T16:39:51Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -97,6 +97,6 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/BRIDGE_OVERRIDE_ATTRIBUTION_GAP_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  1. bridge give never marks the ledger event as an owner override.
 prose:    infrastructure/state/items/BRIDGE_OVERRIDE_ATTRIBUTION_GAP_1.md
