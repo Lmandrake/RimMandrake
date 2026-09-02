@@ -1,3 +1,7 @@
+<!-- RULED 2026-09-02 by the owner, card OK/BEACH/CUT -> **OK**: ship all 18 as
+     seafloor-map animals exactly as sea_beasts_def_spec.md specs them, zero C#.
+     SWIMMER_PATHGRID_FRAMEWORK_1 (the BEACH route) is NOT built. The routes below
+     stay as the record of what was weighed; they are not open options. -->
 <!-- status: DECISION CARD — SW_SEA_MONSTERS_ART_1, BENCH 2026-09-02. Supersedes
      sea_beasts_def_spec.md §4 routes A–C (route B, pathfinding.framework, is DEAD:
      repo archived, last push 2024-04-30, About.xml declares 1.4/1.5 only, no 1.6

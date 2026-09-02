@@ -1,4 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  SHIP PROFILE - the cut list the owner's campaign loads. Swap with
+  src/RimMandrake/Utils/cherrypicker_swap.py; REVIEW cuts nothing.
+
+  WHY EVERYTHING HERE IS CUT - owner, 2026-09-02, asked directly:
+    "I have only ever cut things for lore reasons. That is the entire
+     backfill justification."
+
+  That is the attribution for every key in this file, including the ~1140
+  that carry no batch record. It is a RULING, not an inference: do not
+  re-open "why was this cut" as an archaeology question. A cut made for any
+  OTHER reason is the exception and must say so at the point it is added.
+-->
 <SettingsBlock>
 	<ModSettings Class="CherryPicker.ModSettings_CherryPicker">
 		<keys>
