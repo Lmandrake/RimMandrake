@@ -93,3 +93,53 @@ below has been observed running**, per this item's own honesty bar.
   mechanism actually firing, and no `ModsConfig.xml` entry — all three
   "live-proven" criteria bullets above remain open. This item stays
   `doing`.
+
+## 🔴 2026-09-02 (FOUNDRY) — enabled, tested, found a severe defect, DISABLED again
+
+Enabled `mandrake.rsw.livestock` in `ModsConfig.xml` (593 mods), cold-loaded
+clean (no Config errors naming this mod). Then:
+
+- **Cindermare's cold-drain grip: PROVEN live.** `jawa/damage` with
+  `damageDef=RSW_ColdDrainDamage`, `amount=15` on a wild Iguana produced
+  `RSW_ColdDrain` (severity 12.0) confirmed via `jawa/pawn_get`'s raw
+  hediff list — the `DamageDef` → `HediffDef` chain genuinely fires. This
+  half of the item's criteria is met.
+- **🔴 Both creatures are UNPLAYABLE as spawned pawns — engine-level crash,
+  not a bridge quirk.** Any attempt to read either creature's label once
+  spawned (`jawa/inspect_string`, `jawa/pawn_get`, `jawa/list_pawns` once
+  it iterates far enough) throws `System.ArgumentOutOfRangeException` in
+  `Verse.Pawn_AgeTracker.get_CurKindLifeStage()` →
+  `RimWorld.GenLabel.BestKindLabel` → `Pawn.get_KindLabel`/
+  `get_LabelNoCount`/`get_LabelShort`. **100% reproducible**: 2 separate
+  Cindermare spawns + 2 separate Skarnix spawns, 4/4 crash identically on
+  first read. `Pawn.get_LabelShort` is called by ordinary vanilla UI
+  (hover tooltips, colonist/animal bar, any inspect pane) — this is not a
+  bridge-only problem, it would misbehave for any player who looks at one
+  of these animals.
+- **Root cause NOT found this pass.** Ruled out: a naive lifeStages/
+  lifeStageAges count mismatch — both defs have exactly 3 `lifeStageAges`
+  (race) and exactly 3 `lifeStages` (kind), matching each other AND
+  structurally mirroring vanilla `Wolf_Timber`'s own working 3/3 pattern
+  exactly (same `ParentName="ThingBaseWolf"`/`"AnimalKindBaseWolf"`
+  abstracts, confirmed by reading
+  `Data/Core/Defs/ThingDefs_Races/Races_Animal_WildCanines.xml` directly).
+  **Unconfirmed hypothesis**: some other active mod may patch
+  `race.lifeStageAges` broadly (adding a stage to many/all animal
+  `ThingDef`s) while only patching KNOWN vanilla `PawnKindDef`s' matching
+  `lifeStages` to keep pace — leaving brand-new custom kinds like ours
+  stage-count-mismatched at the RESOLVED (post-patch) level even though
+  our own raw XML is internally consistent. **Not verified** — next step
+  is comparing `RSW_Skarnix`'s resolved `race.lifeStageAges` count against
+  its `PawnKindDef.lifeStages` count via a live def dump (`jawa/get_defs`
+  is scalar-only and cannot see list lengths).
+- Skarnix's `CompLightAversion` was **never reached** — every read attempt
+  crashed before the mechanism could be observed.
+- **Disabled `mandrake.rsw.livestock` again** (back to 592 mods,
+  `ModsConfig.FULL.LATEST.xml` synced) pending a fix — this content is not
+  safe to leave live. Do not re-enable until the label crash is
+  root-caused and fixed.
+
+Criteria status: Cindermare's cold-drain mechanism ✅ proven. Everything
+else — Skarnix's valve, both creatures spawning safely as playable pawns,
+"both untameable" observed rather than assumed — remains open, and the
+label crash is now the blocking issue, not a missing observation.

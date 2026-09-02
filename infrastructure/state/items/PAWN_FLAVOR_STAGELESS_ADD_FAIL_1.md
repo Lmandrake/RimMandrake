@@ -151,3 +151,36 @@ live text (plus ideally one of the 14 newly-found ones, e.g. `Pretty` or
 `Ugly` — vanilla Core, spawnable on any quicktest colonist, no DLC/mod
 gating needed), then close this item and re-attempt
 `PAWN_FLAVOR_PHASE2_APPLY_1`'s own spot-check criterion.
+
+## 🔴 2026-09-02 (FOUNDRY) — SECOND bug found live, fixed, CLOSED
+
+The regenerated patch from the note above shipped a second, worse bug:
+`build_groups()` unconditionally stamped `Class="PatchOperationSequence"`
+onto every grouped operation before wrapping it in a `PatchOperationFindMod`
+— harmless while only `seq_op()` (already that class) fed the list, but
+`stage_op()` now feeds EVERY ThoughtDef stage row through the same path,
+and its outer wrapper is correctly `PatchOperationConditional` — the blind
+overwrite corrupted that class on (plausibly) all 1,664 ThoughtDef rows.
+Confirmed live on this session's cold load: `harvest_log.py` "patch
+operations failed" read **69** (baseline 5), `--show patchfail` showed
+`doesn't correspond to any field in type PatchOperationSequence` on
+`AM_TerribleDreadnought`/`FailedConvertAbilityInitiator`/`TrialFailed`,
+which cascaded into every OTHER `PatchOperationFindMod` gate in the same
+file reporting failed too (a parse-order cascade, not 60+ independent
+bugs). Fixed (removed the erroneous `op.set()`, commit `2526d0f5`),
+regenerated, `validate_patch.py` 0 errors/7872 advisory warnings,
+redeployed, cold-loaded again: **"patch operations failed" back to
+baseline 5.**
+
+Live spot-check via `jawa/pawn_memory`(add)/`jawa/pawn_thoughts`(read) on
+a real quicktest colonist: `TrialFailed` → "A failed accusation" (exact),
+`AM_TerribleDreadnought` → "The sealing failed completely" (exact),
+`FailedConvertAbilityInitiator` → correctly name-templated. Also, without
+forcing anything: `TravelCompanions` — one of the two rows
+`PAWN_FLAVOR_SILENT_NONAPPLY_1` originally found silently broken —
+naturally present on the same colonist reading "These people I travel
+with" (exact), proving the whole three-bug chain fixed end to end on a
+genuinely previously-broken row.
+
+Both named rows land, the general shape is proven (not just the two
+originals), the sweep's other instances ride the same fix. **Closed.**

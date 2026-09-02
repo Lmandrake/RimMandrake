@@ -67,3 +67,34 @@ cannot read one (filed `BRIDGE_PAWN_THOUGHTS_CARAVAN_GAP_1`). Two rows
 now KNOWN to still fail for an unrelated third reason (`PAWN_FLAVOR_STAGELESS_ADD_FAIL_1`).
 Left `doing` — the spot-check bar is genuinely not met yet, only reasoned about from
 strong indirect (log-level) evidence.
+
+## 🔴 2026-09-02 (FOUNDRY) — third bug in the chain, fixed; spot-check bar now met; CLOSED
+
+A THIRD bug surfaced on the next cold load attempt (`build_groups()`
+blindly overwriting every grouped operation's `Class` to
+`PatchOperationSequence`, corrupting `stage_op()`'s correct
+`PatchOperationConditional` outer wrapper on plausibly all 1,664
+ThoughtDef rows) — full writeup in `PAWN_FLAVOR_STAGELESS_ADD_FAIL_1`,
+fixed there (commit `2526d0f5`), regenerated, redeployed, re-verified
+clean on a fresh cold load (`harvest_log.py` "patch operations failed"
+back to baseline 5).
+
+**The spot-check bar this note left open is now met.** `TravelCompanions`
+(Caravan Adventures) — the exact DLC/workshop-owned row this item
+flagged as unproven, previously blocked on a caravan-pawn tooling gap —
+turned out reachable a different way: it appeared NATURALLY (no forcing)
+on a plain quicktest colonist via `jawa/pawn_thoughts`, reading "These
+people I travel with" — an exact match to the approved text. Also
+confirmed via `jawa/pawn_memory`(add): `TrialFailed` (Ideology) → "A
+failed accusation" (exact), `AM_TerribleDreadnought` (Alpha Memes) → "The
+sealing failed completely" (exact) — both genuinely non-Core-owned rows,
+both the class of row the FindMod bug broke, both now landing correctly.
+
+`TreesDesired`'s ideology-precept gap and `EBSG_GeneticDrugDependency`'s
+gene-context gap remain genuinely unattempted (no staging built for
+either this pass) — accepted as a small, named, honestly-disclosed
+residual rather than chased further; the mechanism class they belong to
+(FindMod-gated stage writes) is otherwise proven across four independent
+examples spanning three different owning packages. `harvest_log.py`:
+Player.log clean at baseline across every standing check. **Criteria met,
+closed.**
