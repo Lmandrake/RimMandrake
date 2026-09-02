@@ -406,8 +406,18 @@ def write_bridge_file(holder, actor, purpose=None, since=None, note=None):
         "#   wrong? ->  rimflow bridge who   (re-derives this from the ledger)\n"
         + line + "\n")
     os.makedirs(os.path.dirname(target), exist_ok=True)
-    tmp = target + ".tmp"
-    fd = os.open(tmp, os.O_WRONLY | os.O_CREAT | os.O_TRUNC, 0o644)
+    # 🔴 THE TEMP NAME MUST BE PER-CALL UNIQUE, NOT A FIXED "<target>.tmp".
+    # A shared tmp path means O_TRUNC (which fires at open(), BEFORE flock is even
+    # requested) truncates whatever a concurrent writer already wrote to the SAME
+    # inode — both fds name the same file, truncation is not fd-local. Two windows
+    # calling this within the same instant (exactly the BENCH/FOUNDRY scenario this
+    # file exists for) could interleave into a torn write, or have the second
+    # os.replace() raise FileNotFoundError chasing a tmp the first replace already
+    # renamed away. Found by code review, 2026-09-02, never actually hit live — but
+    # this is the same class of 9p write-tearing `append()`'s own docstring measures,
+    # and this function did not follow that established pattern.
+    tmp = "%s.tmp.%d.%d" % (target, os.getpid(), time.time_ns())
+    fd = os.open(tmp, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o644)
     try:
         fcntl.flock(fd, fcntl.LOCK_EX)
         try:

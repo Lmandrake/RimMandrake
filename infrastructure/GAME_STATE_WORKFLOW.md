@@ -12,8 +12,12 @@ about the cycle, this file wins; fix the window file in the same commit.
    on the spot, from anywhere. Never write a sentence comparing a recorded state to
    a measured one — run the probe and the disagreement is gone.
 2. 🔴 **One bridge driver at a time.** `rimflow bridge take` / `release`; release
-   the instant you stop driving. It wedges (stuck, not crashed) — find the other
-   driver, never restart the game over it.
+   the instant you stop driving. **Superseded 2026-09-02 — CLAUDE.md's "The bridge
+   is passed through one file" is now canonical**: it errs toward ALLOWING, not
+   mutual lockout. A stale (45-minute-idle) hold is simply taken, saying so;
+   `take --force` always works and is recorded; `infrastructure/state/BRIDGE` is
+   the one-glance mirror; `./bridge bench|foundry|free` is the owner's override.
+   Do not message the other window about it — that channel is off.
 
 ## The states
 

@@ -88,8 +88,12 @@ writing is not deploying. Never guess a defName, field, or namespace.
 He says it, you run it, verbatim: `./game --said "<his words>" up|down|loading`.
 Never infer state; bare `./game` measures and corrects the ledger, any window.
 `broadcast.py` is his, with that single carve-out. The bridge is one-driver-at-a-time:
-`rimflow bridge take` / `release`, release the moment you stop driving — it wedges
-(stuck, not crashed), so find the other driver, never restart the game. Config files
+`rimflow bridge take` / `release`, release the moment you stop driving. **Superseded
+2026-09-02 — CLAUDE.md's own "The bridge is passed through one file" is now
+canonical**: it errs toward ALLOWING, not mutual lockout — a stale (45-minute-idle)
+hold is simply taken, `take --force` always works, `infrastructure/state/BRIDGE`
+is the one-glance mirror, `./bridge bench|foundry|free` is the owner's override.
+Never message the other window about it — that channel is off. Config files
 (`ModsConfig.xml` included) never wait for RimSort or the game; only assemblies need
 the game down (OS lock).
 

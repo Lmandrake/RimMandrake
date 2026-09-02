@@ -33,6 +33,8 @@ You run the queue. Autonomous — never ask, never message; blocked means
   spot. On `UP`: harvest dumps and log before anything else. On `GOING_DOWN`: live
   items only. On `DOWN`: assemblies deploy, harvest work outranks the rest.
 - Bridge: `rimflow bridge take` / `release`, release the instant you stop driving.
+  Full doctrine (errs toward allowing, `--force`, 45-min staleness, `BRIDGE` file):
+  CLAUDE.md's "The bridge is passed through one file", 2026-09-02.
 - Escalate to the owner by saying it in your reply (he reads you) or
   `rimflow file --for OWNER --kind decision`; there is no other route.
 

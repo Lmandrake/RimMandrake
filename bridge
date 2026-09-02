@@ -26,7 +26,7 @@ case "$(printf '%s' "$arg" | tr '[:upper:]' '[:lower:]')" in
   foundry)            shift; exec python3 "$CLI" bridge give FOUNDRY --seat OWNER "$@" ;;
   free|none|nobody)   shift; exec python3 "$CLI" bridge give free    --seat OWNER "$@" ;;
   -h|--help|help)
-      sed -n '2,14p' "$0" | sed 's/^# \{0,1\}//'
+      sed -n '2,16p' "$0" | sed 's/^# \{0,1\}//'
       exit 0 ;;
   *)
       echo "bridge: don't know '$arg'. Try: ./bridge | ./bridge bench | ./bridge foundry | ./bridge free" >&2
