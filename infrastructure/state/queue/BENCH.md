@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T05:38:42Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-02T06:34:28Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -35,15 +35,6 @@ target:   v1
 kind:     task
 summary:  Owner ruled 2026-08-31: all six §5 roles, and the three predator roles are the
 prose:    infrastructure/state/items/SW_SEA_MONSTERS_ART_1.md
-
-## PROPOSAL_SUITE_REVIEW_1 Owner review sitting over the 14-doc proposals suite in design/Jawa/proposals/
-state:    doing
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-summary:  (no items/PROPOSAL_SUITE_REVIEW_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PROPOSAL_SUITE_REVIEW_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
