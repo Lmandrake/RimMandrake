@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimMandrake: SW — Forsaken Crags Fauna</name>
+  <packageId>mandrake.rsw.livestock</packageId>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>FORSAKEN_CRAGS_PREDATORS_BUILD_1 — Cindermare and Skarnix, two wild `AB_RockyCrags` threats promoted from owner-approved mockup art (`FORSAKEN_CRAGS_FAUNA_1`). Both untameable (wildness 1.0). Cindermare kills by a mouthless cold-drain grip (a real `RSW_ColdDrainDamage`/`RSW_ColdDrain` injury chain, not flavor text) rather than a bite. Skarnix avoids lit ground via `CompLightAversion`, a forced-Goto-to-darkness comp mirroring vanilla's own `HediffComp_Disorientation` force-job pattern.
+
+RimStarWars tier (world/planet fauna, not campaign-specific) per `NAMING_SCHEME_PLAN.md`.</description>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+  </loadAfter>
+</ModMetaData>

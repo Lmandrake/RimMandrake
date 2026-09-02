@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- FORSAKEN_CRAGS_PREDATORS_BUILD_1 - PawnKindDefs, structural shape off
+     vanilla Wolf_Timber (RimSage get_def_details). Single Graphic_Single
+     texture per creature for this v1 pass (art derived from the owner-
+     approved mockup, not a fresh 4-facing set) - each lifeStage reuses the
+     same texPath at increasing drawSize, same pattern Wolf_Timber uses. -->
+<Defs>
+
+  <PawnKindDef ParentName="AnimalKindBaseWolf">
+    <defName>RSW_Cindermare</defName>
+    <label>cindermare</label>
+    <labelPlural>cindermares</labelPlural>
+    <race>RSW_Cindermare</race>
+    <combatPower>140</combatPower>
+    <ecoSystemWeight>0.35</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <label>cindermare foal</label>
+        <labelPlural>cindermare foals</labelPlural>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Cindermare/Cindermare</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>1.3</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Cindermare/Cindermare</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>2.0</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.4, 0.3)</volume>
+            <offset>(0,0,-0.15)</offset>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Cindermare/Cindermare</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>2.6</drawSize>
+          <shadowData>
+            <volume>(0.5, 0.5, 0.35)</volume>
+            <offset>(0,0,-0.15)</offset>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+  <PawnKindDef ParentName="AnimalKindBaseWolf">
+    <defName>RSW_Skarnix</defName>
+    <label>skarnix</label>
+    <labelPlural>skarnixes</labelPlural>
+    <race>RSW_Skarnix</race>
+    <combatPower>65</combatPower>
+    <ecoSystemWeight>0.5</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <label>skarnix kit</label>
+        <labelPlural>skarnix kits</labelPlural>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Skarnix/Skarnix</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>0.9</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Skarnix/Skarnix</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>1.3</drawSize>
+        </bodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>Things/Pawn/Animal/Skarnix/Skarnix</texPath>
+          <graphicClass>Graphic_Single</graphicClass>
+          <drawSize>1.6</drawSize>
+          <shadowData>
+            <volume>(0.3, 0.3, 0.25)</volume>
+            <offset>(0,0,-0.12)</offset>
+          </shadowData>
+        </bodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+
+</Defs>

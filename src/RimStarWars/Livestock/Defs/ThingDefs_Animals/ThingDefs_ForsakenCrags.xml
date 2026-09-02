@@ -1,0 +1,196 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- FORSAKEN_CRAGS_PREDATORS_BUILD_1 - Cindermare + Skarnix, wild
+     AB_RockyCrags threats. Structural shape (race block, tools list)
+     patterned directly off vanilla Wolf_Timber (RimSage get_def_details),
+     not guessed. Both untameable: wildness 1.0 zeroes TameUtility's tame
+     chance outright (chance is multiplied by (1 - wildness)) rather than
+     relying on an unenforced flavor claim. -->
+<Defs>
+
+  <ThingDef ParentName="ThingBaseWolf">
+    <defName>RSW_Cindermare</defName>
+    <label>cindermare</label>
+    <description>A mouthless nightside predator, seven asymmetric eyes clustered above a damp black hide. It has no bite - it kills by grip, draining the warmth from whatever it holds until the cold itself is the wound. Solitary and untameable; its mane and hide are only ever taken from a kill, never sheared.</description>
+    <race>
+      <thinkTreeMain>Animal</thinkTreeMain>
+      <thinkTreeConstant>AnimalConstant</thinkTreeConstant>
+      <trainability>None</trainability>
+      <animalType>Special</animalType>
+      <body>QuadrupedAnimalWithPawsAndTail</body>
+      <predator>true</predator>
+      <maxPreyBodySize>3.0</maxPreyBodySize>
+      <petness>0</petness>
+      <wildness>1.0</wildness>
+      <baseBodySize>1.3</baseBodySize>
+      <baseHungerRate>0.22</baseHungerRate>
+      <baseHealthScale>1.15</baseHealthScale>
+      <foodType>CarnivoreAnimal</foodType>
+      <leatherDef>Leather_Wolf</leatherDef>
+      <leatherLabel>cindermare hide</leatherLabel>
+      <meatLabel>cindermare meat</meatLabel>
+      <nameOnTameChance>0</nameOnTameChance>
+      <manhunterOnTameFailChance>0.5</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>0.9</manhunterOnDamageChance>
+      <gestationPeriodDays>16</gestationPeriodDays>
+      <lifeExpectancy>18</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.25</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.6</minAge>
+          <soundWounded>Pawn_Dog_Injured</soundWounded>
+          <soundDeath>Pawn_Dog_Death</soundDeath>
+          <soundCall>Pawn_Dog_Call</soundCall>
+          <soundAngry>Pawn_Dog_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+    </race>
+    <statBases>
+      <Mass>110</Mass>
+      <Flammability>0.6</Flammability>
+      <LeatherAmount>65</LeatherAmount>
+      <ToxicResistance>0.6</ToxicResistance>
+      <MoveSpeed>4.6</MoveSpeed>
+      <MarketValue>520</MarketValue>
+      <ComfyTemperatureMin>-70</ComfyTemperatureMin>
+      <FilthRate>1.5</FilthRate>
+      <Wildness>1.0</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left claw</label>
+        <labelNoLocation>claw</labelNoLocation>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>9</power>
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+        <chanceFactor>0.4</chanceFactor>
+      </li>
+      <li>
+        <label>right claw</label>
+        <labelNoLocation>claw</labelNoLocation>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>9</power>
+        <cooldownTime>2.2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+        <chanceFactor>0.4</chanceFactor>
+      </li>
+      <li>
+        <label>cold-drain grip</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>14</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>1.2</chanceFactor>
+        <extraMeleeDamages>
+          <li>
+            <def>RSW_ColdDrainDamage</def>
+            <amount>6</amount>
+          </li>
+        </extraMeleeDamages>
+      </li>
+    </tools>
+    <tradeTags>
+      <li>AnimalFighter</li>
+    </tradeTags>
+    <comps>
+      <li>
+        <compClass>CompAttachBase</compClass>
+      </li>
+    </comps>
+    <graphicData>
+      <texPath>Things/Pawn/Animal/Cindermare/Cindermare</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>2.6</drawSize>
+    </graphicData>
+    <useHitPoints>false</useHitPoints>
+  </ThingDef>
+
+  <ThingDef ParentName="ThingBaseWolf">
+    <defName>RSW_Skarnix</defName>
+    <label>skarnix</label>
+    <description>A cat-large ambush stalker of the Forsaken Crags, its head crowded with a one-sided cluster of eyes. Skarnix will not cross firelight or a heated space - a lit camp neutralises it without a fight. Solitary and untameable.</description>
+    <race>
+      <thinkTreeMain>Animal</thinkTreeMain>
+      <thinkTreeConstant>AnimalConstant</thinkTreeConstant>
+      <trainability>None</trainability>
+      <animalType>Special</animalType>
+      <body>QuadrupedAnimalWithPawsAndTail</body>
+      <predator>true</predator>
+      <maxPreyBodySize>1.4</maxPreyBodySize>
+      <petness>0</petness>
+      <wildness>1.0</wildness>
+      <baseBodySize>0.7</baseBodySize>
+      <baseHungerRate>0.2</baseHungerRate>
+      <baseHealthScale>0.85</baseHealthScale>
+      <foodType>CarnivoreAnimal</foodType>
+      <leatherDef>Leather_Wolf</leatherDef>
+      <leatherLabel>skarnix hide</leatherLabel>
+      <meatLabel>skarnix meat</meatLabel>
+      <nameOnTameChance>0</nameOnTameChance>
+      <manhunterOnTameFailChance>0.4</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>0.6</manhunterOnDamageChance>
+      <gestationPeriodDays>9</gestationPeriodDays>
+      <lifeExpectancy>10</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.2</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.45</minAge>
+          <soundWounded>Pawn_Cat_Injured</soundWounded>
+          <soundDeath>Pawn_Cat_Death</soundDeath>
+          <soundCall>Pawn_Cat_Call</soundCall>
+          <soundAngry>Pawn_Cat_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+    </race>
+    <statBases>
+      <Mass>28</Mass>
+      <Flammability>0.7</Flammability>
+      <LeatherAmount>22</LeatherAmount>
+      <ToxicResistance>0.5</ToxicResistance>
+      <MoveSpeed>5.4</MoveSpeed>
+      <MarketValue>310</MarketValue>
+      <ComfyTemperatureMin>-60</ComfyTemperatureMin>
+      <FilthRate>1</FilthRate>
+      <Wildness>1.0</Wildness>
+    </statBases>
+    <comps>
+      <li>
+        <compClass>CompAttachBase</compClass>
+      </li>
+      <li Class="RimMandrake.StarWars.Livestock.CompProperties_LightAversion">
+        <fleeSearchRadius>10</fleeSearchRadius>
+        <fleeExpiryTicks>600</fleeExpiryTicks>
+      </li>
+    </comps>
+    <graphicData>
+      <texPath>Things/Pawn/Animal/Skarnix/Skarnix</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>1.6</drawSize>
+    </graphicData>
+    <useHitPoints>false</useHitPoints>
+  </ThingDef>
+
+</Defs>

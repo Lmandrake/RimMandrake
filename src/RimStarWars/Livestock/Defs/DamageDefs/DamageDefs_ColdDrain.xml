@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- FORSAKEN_CRAGS_PREDATORS_BUILD_1 - the DamageDef Cindermare's grip tool
+     deals. Mechanism (<hediff> field applying the wound as the injury
+     itself) confirmed real against this project's own
+     guy762_RangedDamage_sonic (src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/
+     DamageDefs/Absorbed_KotorCore_BlasterDamages.xml), not guessed. -->
+<Defs>
+
+  <DamageDef>
+    <defName>RSW_ColdDrainDamage</defName>
+    <label>cold drain</label>
+    <workerClass>DamageWorker_AddInjury</workerClass>
+    <externalViolence>true</externalViolence>
+    <deathMessage>{0} has been drained of warmth to death.</deathMessage>
+    <hediff>RSW_ColdDrain</hediff>
+    <harmAllLayersUntilOutside>false</harmAllLayersUntilOutside>
+    <impactSoundType>Blunt</impactSoundType>
+    <armorCategory>Blunt</armorCategory>
+    <makesBlood>false</makesBlood>
+    <overkillPctToDestroyPart>0~0.5</overkillPctToDestroyPart>
+    <isRanged>false</isRanged>
+    <makesAnimalsFlee>true</makesAnimalsFlee>
+    <defaultArmorPenetration>0</defaultArmorPenetration>
+    <defaultDamage>1</defaultDamage>
+  </DamageDef>
+
+</Defs>

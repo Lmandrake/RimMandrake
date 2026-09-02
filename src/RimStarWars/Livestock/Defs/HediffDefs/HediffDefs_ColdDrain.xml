@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- FORSAKEN_CRAGS_PREDATORS_BUILD_1 - Cindermare's cold-drain-grip kill
+     mechanic. The art has no mouth (source: moornak_opt1.png), so this
+     stands in for a bite: the wound record itself IS the cold-drain
+     injury, same shape as vanilla InjuryBase-derived Bruise/Bite/Stab. -->
+<Defs>
+
+  <HediffDef ParentName="InjuryBase">
+    <defName>RSW_ColdDrain</defName>
+    <label>cold-drain wound</label>
+    <description>Flesh drained of warmth by a Cindermare's grip. Aches like frostbite and is slow to heal.</description>
+    <hediffClass>Hediff_Injury</hediffClass>
+    <comps>
+      <li Class="HediffCompProperties_TendDuration">
+        <labelTendedWell>warmed</labelTendedWell>
+        <labelTendedWellInner>tended</labelTendedWellInner>
+        <labelSolidTendedWell>scarred over</labelSolidTendedWell>
+      </li>
+    </comps>
+    <injuryProps>
+      <painPerSeverity>0.018</painPerSeverity>
+      <averagePainPerSeverityPermanent>0.009</averagePainPerSeverityPermanent>
+      <canMerge>false</canMerge>
+      <destroyedLabel>Destroyed by cold</destroyedLabel>
+    </injuryProps>
+    <labelNoun>a cold-drain wound</labelNoun>
+    <labelNounPretty>{0} in the {1}</labelNounPretty>
+    <displayWound>true</displayWound>
+    <tendable>true</tendable>
+  </HediffDef>
+
+</Defs>
