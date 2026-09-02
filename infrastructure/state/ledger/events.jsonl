@@ -3998,3 +3998,6 @@
 {"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-09-02T23:29:59Z"}
 {"seat":"FOUNDRY","event":"claim","id":"SWAPPAREL_NEURALBAND_TEXTURE_MISSING_1","ts":"2026-09-02T23:31:00Z"}
 {"seat":"FOUNDRY","event":"start","id":"SWAPPAREL_NEURALBAND_TEXTURE_MISSING_1","ts":"2026-09-02T23:31:00Z"}
+{"seat":"FOUNDRY","event":"claim","id":"FIRE_ECOLOGY_BURNEDDEF_FLAMMABLE_1","ts":"2026-09-02T23:33:29Z"}
+{"seat":"FOUNDRY","event":"start","id":"FIRE_ECOLOGY_BURNEDDEF_FLAMMABLE_1","ts":"2026-09-02T23:33:29Z"}
+{"seat":"FOUNDRY","event":"close","id":"FIRE_ECOLOGY_BURNEDDEF_FLAMMABLE_1","sha":"HEAD","ts":"2026-09-02T23:33:45Z"}

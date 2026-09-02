@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T23:31:00Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-02T23:33:45Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -321,7 +321,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     bug
-summary:  (no items/SWAPPAREL_NEURALBAND_TEXTURE_MISSING_1.md yet — write one when you have something to say)
+summary:  Generate the missing worn-graphic sprites for all 12 headbands, matching
 prose:    infrastructure/state/items/SWAPPAREL_NEURALBAND_TEXTURE_MISSING_1.md
 
 ## INHABITED_CHARACTERDEF_NAMESPACE_GAP_1 cast_to_xml.py emitted bare <Inhabited.CharacterDef> after the C# class moved to RimMandrake.Inhabited — 269 authored characters silently failed to load
@@ -387,14 +387,4 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## FIRE_ECOLOGY_BURNEDDEF_FLAMMABLE_1 Six RSW_FE_* terrains declare a burnedDef that is itself flammable - 12 config errors every load
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/FIRE_ECOLOGY_BURNEDDEF_FLAMMABLE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/FIRE_ECOLOGY_BURNEDDEF_FLAMMABLE_1.md
+_none._

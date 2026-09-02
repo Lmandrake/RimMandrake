@@ -205,7 +205,15 @@ CHECKS = [
     # 🔴 MEASURED 36 on the 2026-09-02T19:36Z load (593 mods), and TWELVE ARE OURS:
     #   12  RSW_FE_{Ash_Trace,Ash_Light,Ground_Sand,Ground_Gravel,Ground_Soil,
     #       Ground_SoilRich} "burnedDef is flammable" x2 each -- OUR fire-ecology
-    #       terrain, a real defect, tracked separately. NOT benign.
+    #       terrain. CONFIRMED NOT A DEFECT (FOUNDRY, 2026-09-02, source-verified
+    #       via RimSage): `TerrainDef.ConfigErrors()` only ever `yield return`s a
+    #       string -- it cannot block a load or alter behavior for any def type.
+    #       `TerrainGrid.Notify_TerrainBurned` (Verse/TerrainGrid.cs:599) sets
+    #       `terrain.burnedDef` unconditionally, with no check on whether that
+    #       target is itself flammable -- exactly what AshLadder.xml's own
+    #       header already documents as the deliberate trace->light->heavy->deep
+    #       escalating-burn ladder (design/Jawa/proposals/fire_ecology_deep_design.md
+    #       §3), not an oversight. See FIRE_ECOLOGY_BURNEDDEF_FLAMMABLE_1 (closed).
     #   18  Sign* "impassable, player-buildable building that can be shot/seen over"
     #       x2 each, another mod's signs
     #    2  TG_Husbandry -- TraderGen's own ConfigErrors() throws NRE (present since
@@ -213,9 +221,11 @@ CHECKS = [
     #    2  CannibalPirate / PirateYttakin ConfigErrors() NRE, vanilla FactionDefs,
     #       some broad FactionDef patch, unattributed
     #    2  Techprint_* "description has trailing whitespace"
-    # ⚠️ This baseline is a FLOOR TO DRIVE DOWN, not a target to preserve. When the
-    # 12 RSW_FE ones are fixed this reads BETTER and the baseline moves to 24 --
-    # that is the check working. Do not "fix" a BETTER reading by editing the number
+    # ⚠️ This baseline is a FLOOR TO DRIVE DOWN for the 24 that AREN'T ours, not
+    # a target to preserve. The 12 RSW_FE ones are permanent, by design -- do
+    # NOT chase this number down to 24, and do not read a future 36 as
+    # regression if it's still exactly these same 12 plus something new. Do
+    # not "fix" a BETTER reading by editing the number
     # back up.
     ("configerror", "def ConfigErrors (loaded but WRONG)",
      r"Config error in |Exception in ConfigErrors\(\) of ", 36,
