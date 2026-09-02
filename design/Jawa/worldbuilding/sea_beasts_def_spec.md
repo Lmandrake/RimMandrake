@@ -346,9 +346,9 @@ Spd 3.0, MV 100, T 0/60, claws 8/2 ×2, bite 10/2.6, cP 40, Wild 0.5].
 
 | defName / label | bs | hs | hunger | Spd | MV | T | Wild | foodType | Tools | cP | eco | grp | drawSize |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| `RSW_Mee` "mee" | **0.15** | 0.2 | 0.08 | 4.5 | 25 | 0/50 | 0.9 | None (v1) | nip: Bite 2.5/2 [Mouth]; head: Blunt 1/1.5 [HeadAttackTool] (0.2) | 25 | 0.15 | 6~14 | 1.0 (legibility floor) |
-| `RSW_Faa` "faa" | **0.2** | 0.25 | 0.10 | **5.0** | 30 | 10/60 | 0.9 | CarnivoreAnimal + `canFishForFood` | bite: Bite 3/1.8 [Mouth]; head 1/1.5 (0.2) | 30 | 0.15 | 5~12 | 1.0 (legibility floor) |
-| `RSW_Laa` "laa" | **0.4** | 0.5 | 0.15 | 4.2 | **120** | −5/50 | 0.85 | None (v1) | tail slap: Blunt 4/2 [HeadAttackTool]; bite: Bite 5/2 [Mouth] | 45 | 0.2 | 3~6 | 1.2 (legibility floor) |
+| `RSW_Mee` "mee scalefish" | **0.15** | 0.2 | 0.08 | 4.5 | 25 | 0/50 | 0.9 | None (v1) | nip: Bite 2.5/2 [Mouth]; head: Blunt 1/1.5 [HeadAttackTool] (0.2) | 25 | 0.15 | 6~14 | 1.0 (legibility floor) |
+| `RSW_Faa` "faa scalefish" | **0.2** | 0.25 | 0.10 | **5.0** | 30 | 10/60 | 0.9 | CarnivoreAnimal + `canFishForFood` | bite: Bite 3/1.8 [Mouth]; head 1/1.5 (0.2) | 30 | 0.15 | 5~12 | 1.0 (legibility floor) |
+| `RSW_Laa` "laa scalefish" | **0.4** | 0.5 | 0.15 | 4.2 | **120** | −5/50 | 0.85 | None (v1) | tail slap: Blunt 4/2 [HeadAttackTool]; bite: Bite 5/2 [Mouth] | 45 | 0.2 | 3~6 | 1.2 (legibility floor) |
 
 `hunger` is authored for the day `foodType` flips; with `None` it is inert.
 **Meat:** `mlie.starwarsanimalcollection` (ACTIVE) already ships Odyssey fish
@@ -388,7 +388,7 @@ Wild 0.75], **Cobra** [bs 0.25, hs 0.5, predator maxPrey 0.35, venom-fangs
 
 | defName / label | body | bs | hs | hunger | Spd | MV | T | Arm B/S/H | Wild | predator/maxPrey | mhD/mhT | Tools | cP | eco | grp | drawSize |
 |---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
-| `RSW_Yobshrimp` "yobshrimp" | `BeetleLike` | **0.2** | 0.35 | 0.08 | 3.2 | 40 | −5/55 | 0.10/0.20/0 | 0.8 | no | 0.2/0 | mandibles: Bite 4/2 [Mouth]; head: Blunt 2/2 [HeadAttackTool] (0.2) | 30 | 0.15 | 6~12 | 1.0 (floor) |
+| `RSW_Yobshrimp` "pale yobshrimp" | `BeetleLike` | **0.2** | 0.35 | 0.08 | 3.2 | 40 | −5/55 | 0.10/0.20/0 | 0.8 | no | 0.2/0 | mandibles: Bite 4/2 [Mouth]; head: Blunt 2/2 [HeadAttackTool] (0.2) | 30 | 0.15 | 6~12 | 1.0 (floor) |
 | `RSW_SiltLamprey` "silt lamprey" | `Snake` | **0.2** | 0.3 | 0.10 | 3.8 | 45 | −10/50 | 0/0/0 | 0.85 | **yes / 0.35** | 0.5/0 | round maw: Bite 6/2 [Mouth]; head 1.5/1.5 (0.2) | 40 | 0.15 | 4~10 | 1.0 (floor) |
 | `RSW_RustNipper` "rust nipper" | `Crab` | **0.25** | 0.5 | 0.10 | 2.6 | 70 | 0/60 | **0.25/0.55/0.10** | 0.75 | no | **0.75/0** | left claw: Cut 7/2 [FrontLeftClaws]; right claw: Cut 7/2 [FrontRightClaws]; head 3/2 (0.2) | 60 | 0.2 | 4~9 | 1.0 (floor) |
 
@@ -401,7 +401,12 @@ defNames do not collide (`RSW_` prefix); the **label** "yobshrimp" does, and the
 roster's bs 0.2 is FIXED so the two are not the same animal. Default in this
 spec: ship `RSW_Yobshrimp` as above and Cherry-Pick or zero-commonality the
 SWAC one (`cherrypicker.py`, not a `Remove` patch — see the inherited-`<li>`
-lesson). OWNER CARD: keep both / cut SWAC's / rename ours "reef yobshrimp".
+lesson). ✅ **OWNER RULED 2026-09-02: "Rename as appropriate."** SWAC's stays; OURS is
+renamed. Label is now **"pale yobshrimp"** — it names the trait the art actually
+shows (a pale isopod) and the two are different animals anyway (bs 0.2 vs 0.4), so
+nothing is cut and no Cherry Picker key is needed. The same ruling renames the three
+scalefish to **"mee/faa/laa scalefish"**, because SWAC ships `swfish_Faa`/`swfish_Laa`
+as ITEMS whose labels would otherwise read identically to our live creatures.
 
 Descriptions:
 - **Yobshrimp** — *A pale, feather-antennaed isopod of the Naboo shallows that

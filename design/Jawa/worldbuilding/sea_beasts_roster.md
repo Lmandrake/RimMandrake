@@ -38,15 +38,15 @@ art source; no re-rolls.
 
 | art | creature | canon? | size | cast |
 |---|---|---|---|---|
-| `grazer_opt1` | **Mee** | CANON scalefish | 0.15 | Silver-blue schooling fish, biolum dot-line. The bulk protein of the shallows. |
-| `grazer_opt2` | **Faa** | CANON scalefish | 0.2 | Gold-olive scalefish, same biolum line — warm-water counterpart. |
-| `grazer_opt3` | **Laa** | CANON scalefish | 0.4 | The big ornate one: striped, streamer-finned, eye-spot false faces. Prized catch. |
+| `grazer_opt1` | **Mee scalefish** | CANON scalefish | 0.15 | Silver-blue schooling fish, biolum dot-line. The bulk protein of the shallows. |
+| `grazer_opt2` | **Faa scalefish** | CANON scalefish | 0.2 | Gold-olive scalefish, same biolum line — warm-water counterpart. |
+| `grazer_opt3` | **Laa scalefish** | CANON scalefish | 0.4 | The big ornate one: striped, streamer-finned, eye-spot false faces. Prized catch. |
 
 ## Scavenger swarm (≈0.2 each) — the bottom-feeders
 
 | art | creature | canon? | size | cast |
 |---|---|---|---|---|
-| `swarm_opt1` | **Yobshrimp** | CANON (Naboo) | 0.2 | Pale isopod, feather antennae — the carcass-stripper baseline. |
+| `swarm_opt1` | **Pale yobshrimp** | CANON (Naboo) | 0.2 | Pale isopod, feather antennae — the carcass-stripper baseline. |
 | `swarm_opt2` | **Silt lamprey** | original | 0.2 | Black round-maw eel; latches on live prey too — the swarm's nasty edge. |
 | `swarm_opt3` | **Rust nipper** | original | 0.25 | Red-shelled spiky crab, glowing eyes; armored, aggressive when massed. |
 
