@@ -4,6 +4,12 @@ Found 2026-09-01 while live-verifying `SETTLEMENT_VERBS_WAVE_1`'s claim-fee
 gizmo (needed a colonist carrying silver to test the "pay" path).
 
 ## spec
+🔴 **SUPERSEDED — read "CAUSE PROVEN LIVE" at the bottom of this file first.** The
+mod-interaction theory below is DEAD: the cause is vanilla's `owner is Map` guard,
+no mod is involved, and the fix is written and compiled. What remains is a DEPLOY
+at a shutdown window, not an investigation. This section is kept only because it
+is what was believed when the item was filed.
+
 `jawa/inventory_transfer` (`mode=add`) refused every attempt this session:
 2 different colonists (Dora `Thing_Human1073`, Vie `Thing_Human1077`), 2
 different item types (`Silver`, `MealSurvivalPack`), counts from 500 down
