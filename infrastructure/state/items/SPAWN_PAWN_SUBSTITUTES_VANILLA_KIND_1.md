@@ -334,3 +334,29 @@ Subagent read (web source; ⚠️ subagent verdicts are evidence, spot-check bef
 Decompile command recorded above; output regenerable. The by-ref signature
 filter that built the original shortlist is now known to have a blind spot:
 a patch can swap kinds through its own applicator without a by-ref request.
+
+## 2026-09-01 (BENCH) — applicator decompiled: deterministic, and our own rates EXCLUDE it; one hypothesis left standing
+
+`PawnKindApplicator.Apply` read from the same DLL: the `ReplaceWith` swap fires
+ONCE at mod-config-apply time, only when explicitly configured, with **no
+fallback branch** — an unresolvable replacement stays null and nothing swaps.
+🔑 And the 2026-08-30 measurements exclude even a shipped-preset configuration:
+a config-time rewrite is deterministic per kind, and we measured the SAME kind
+substituting 1–2/240 — a stochastic rate no deterministic mechanism produces.
+
+**State of the mystery: every direct-substitution candidate is ruled out** —
+all five by-ref patches (source), both FactionLoadout paths (decompile).
+**Standing hypothesis, now the only one: exception-during-generation →
+recovery with a default kind.** Supporting: FactionLoadout's unguarded NRE in
+`GetEditsFor` (reachable from an uncaught prefix), EBSG/BigAndSmall gear/gene
+side effects that can throw. Checked the two surviving Player logs: the three
+NREs in Player-prev.log are all startup ConfigErrors-time (Worldbuilder,
+TraderGen), not generation-time; the 08-30 session's log was not preserved.
+
+**Next live sitting (zero restarts):** batch-spawn with the fixed tool; the
+moment a row reads `kindSubstituted:true`, grep Player.log for a
+generation-time exception stack — the hypothesis PREDICTS one, naming the
+throwing mod frame. Then read the engine's catcher on that exact call chain to
+learn where `Colonist` comes from. If no exception accompanies a substitution,
+the hypothesis dies and the mechanism is something none of this pass imagined —
+record that honestly.
