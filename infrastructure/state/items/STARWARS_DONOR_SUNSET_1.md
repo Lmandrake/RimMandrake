@@ -126,3 +126,9 @@ means porting, not regenerating.
 - **Wampa + Acklay: WIRE THEM IN** — port both and give them real cast slots
   (Wampa night-side; Acklay wherever fits), honoring the original adoption
   intent that never landed.
+- **WAVE 1 GREEN-LIT (owner card, 2026-09-02): GO** on retiring
+  `starwars.themedsounds`, `m3.continued.jangodsoul.starwars.tsda`,
+  `lumi.swlights` — FOUNDRY executes, verification rides the next cold load,
+  no dedicated restart.
+- **Drassik glands RULED** (livestock, recorded here only as cross-ref):
+  Steel / Plasteel / Slag.

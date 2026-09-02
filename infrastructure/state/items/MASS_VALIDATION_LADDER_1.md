@@ -107,3 +107,9 @@ this pass:**
   nothing has used them for real content yet.
 
 Left `doing`.
+# Hot-reload full-list trial: blessed in principle (owner card, 2026-09-02)
+
+"Foundry currently has the bridge. Sorry. Need to do this later." ⇒ the trial
+is authorized; run it at the next window the bridge is free — take it via
+rimflow, time one hot_reload_defs on the full list, prove a def read
+before/after, release. Do not re-ask; the blessing stands.
