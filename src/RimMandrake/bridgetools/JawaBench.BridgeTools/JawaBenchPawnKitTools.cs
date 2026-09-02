@@ -11,8 +11,11 @@
 //     ModsConfig.BiotechActive is false OR the pawn has no matching gene - there is no
 //     exception and no return value to catch it. Both are gated here explicitly.
 //   * Pawn_InventoryTracker.TryAddAndUnforbid returns void and swallows the bool from
-//     ThingOwner.TryAdd. This file calls ThingOwner<Thing>.TryAddOrTransfer directly,
-//     which returns the COUNT actually moved, and reports it.
+//     ThingOwner.TryAdd. This file works on the COUNT actually moved, and reports it.
+//   * ThingOwner.TryAddOrTransfer CANNOT take a thing off the map: a spawned thing's
+//     holdingOwner is map.spawnedThings, so it routes into TryTransferToContainer, whose
+//     `owner is Map` guard returns 0 unconditionally. Measured live 2026-09-02 - it had
+//     read as "the container refused it" for a day. Map things are DeSpawn'd then TryAdd'd.
 //   * Pawn_InventoryTracker.RemoveCount touches at most ONE matching stack and returns
 //     void - if the def is spread over several stacks a single call can silently remove
 //     less than asked. This file measures Count(def) before/after and loops until the
@@ -605,11 +608,13 @@ namespace JawaBench.BridgeTools
             Description =
                 "Move a live thing INTO a pawn's inventory pack (mode='add'), or take a ThingDef " +
                 "OUT of it (mode='remove'). " +
-                "🔑 mode='add' calls ThingOwner<Thing>.TryAddOrTransfer(item, count) DIRECTLY rather " +
-                "than Pawn_InventoryTracker.TryAddAndUnforbid, because TryAddAndUnforbid returns void " +
-                "and swallows the bool that says whether anything actually moved. TryAddOrTransfer " +
-                "returns the COUNT actually moved, and that count - not a bool - is what this tool " +
-                "reports; a partial or zero move is visible, not hidden behind success:true. " +
+                "🔑 mode='add' works on the COUNT actually moved, not a bool - a partial or zero move is " +
+                "visible rather than hidden behind success:true, which is why it avoids " +
+                "Pawn_InventoryTracker.TryAddAndUnforbid (returns void, swallows the result). " +
+                "🔴 A thing lying on the MAP is despawned first and then TryAdd'd: a spawned thing's " +
+                "holdingOwner is map.spawnedThings, so TryAddOrTransfer alone hits vanilla's " +
+                "'Can't transfer items to or from Maps directly' guard and moves 0, every time. " +
+                "A thing already in a pawn's slots goes through TryAddOrTransfer unchanged. " +
                 "⚠ mode='remove' calls Pawn_InventoryTracker.RemoveCount, which touches at most ONE " +
                 "matching stack per call - if the def is split across several stacks a single call can " +
                 "silently remove less than asked. This tool measures Count(def) before and after and " +
@@ -661,10 +666,28 @@ namespace JawaBench.BridgeTools
                         if (comp != null) comp.Forbidden = false;
                     }
 
-                    int moved = p.inventory.innerContainer.TryAddOrTransfer(found, requested, true);
+                    // A map-spawned Thing's holdingOwner IS map.spawnedThings (Verse/Map.cs), so
+                    // TryAddOrTransfer routes into ThingOwner.TryTransferToContainer, whose
+                    // `owner is Map` guard returns 0 for every map thing, every time -
+                    // "Can't transfer items to or from Maps directly." Despawn the portion first
+                    // and TryAdd it, which is exactly what that warning tells you to do.
+                    int moved;
+                    if (found.Spawned)
+                    {
+                        var part = found.SplitOff(requested);
+                        if (part.Spawned) part.DeSpawn(DestroyMode.Vanish);
+                        moved = p.inventory.innerContainer.TryAdd(part, part.stackCount, true);
+                        if (moved <= 0 && !part.Destroyed && part.holdingOwner == null && p.Map != null)
+                            GenPlace.TryPlaceThing(part, p.Position, p.Map, ThingPlaceMode.Near);
+                    }
+                    else
+                    {
+                        moved = p.inventory.innerContainer.TryAddOrTransfer(found, requested, true);
+                    }
+
                     if (moved <= 0)
                         return Fail(string.Format(
-                            "TryAddOrTransfer moved 0 of {0} {1} into {2}'s inventory - the container refused it " +
+                            "Moved 0 of {0} {1} into {2}'s inventory - the container refused it " +
                             "(not acceptable, over capacity, or already there).", requested, found.def.defName, p.LabelShortCap));
 
                     return new

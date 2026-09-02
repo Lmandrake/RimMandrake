@@ -360,3 +360,56 @@ throwing mod frame. Then read the engine's catcher on that exact call chain to
 learn where `Colonist` comes from. If no exception accompanies a substitution,
 the hypothesis dies and the mechanism is something none of this pass imagined —
 record that honestly.
+
+## ✅ 2026-09-02 (BENCH) — IT IS THE WORLD-PAWN REDRESS PATH. The rate is a POOL, not a probability.
+
+Owner's read, live: *"isn't this how it substitutes humans from the colony's
+potential list for whatever pawn you're spawning, for a while at the beginning
+of a colony?"* — **yes, that is the family it belongs to**, and it is vanilla.
+
+`PawnGenerator.GeneratePawn(kind, faction)` leaves `forceGenerateNewPawn`
+FALSE. `GenerateOrRedressPawnInternal` then rolls
+`Rand.Chance(ChanceToRedressAnyWorldPawn(request))` and, on a hit, pulls an
+EXISTING pawn out of `Find.WorldPawns` via `GetValidCandidatesToRedress`
+instead of generating one. Our tool asked for a kind; the generator handed back
+a recycled planet resident.
+
+### measured, full list, one fresh desert map
+| arm | n | substituted |
+|---|---|---|
+| `Jawa_Hutt_Grunt` -> `Jawa_HuttCartel` (first batches) | 300 | **16 (5.3%)** |
+| same arm, once the pool was drained | 200 | **0** |
+| same kind -> faction `none` | 100 | 0 |
+| same kind -> faction `player` | 100 | 0 |
+| same kind -> `OutlanderCivil` / `Pirate` / `Empire` / `TribeCivil` | 400 | 0 |
+
+🔑 **The decay inside one session is the finding.** `IsValidCandidateToRedress`
+rejects any pawn whose `Faction != request.Faction`, and each redress consumes a
+candidate. So the rate is a function of how many redressable world pawns of that
+faction exist AT THAT MOMENT — which is why every number on record disagrees
+(~15%, then 0.42–0.83%, now 5.3% -> 0%). ⇒ **Rates are not comparable across
+sessions and should never have been treated as one. Stop quoting a percentage.**
+
+⚠️ Redress fires for vanilla factions too — their "fresh" spawns carried
+ThingIDs far below the current counter — but comes back with the RIGHT kind,
+because `RedressPawn` calls `pawn.ChangeKind(request.KindDef)`. Only the
+authored faction produced mismatches. `Pawn.ChangeKind` is Harmony-PREFIXED by
+HumanoidAlienRaces (`AlienRace.HarmonyPatches.ChangeKindPrefix`), the standing
+suspect for the kind not taking — **UNPROVEN, I did not establish that the
+prefix returns false.**
+
+### 🔴 The cost nobody had recorded: the tool was eating the planet
+A redress does not copy a world pawn, it TAKES it. Every substituted spawn
+removed a real resident of Ash'karr from `Find.WorldPawns` into a throwaway test
+map. Batch tests have been quietly draining faction populations.
+
+### fix — WRITTEN AND COMPILED, NOT YET DEPLOYED
+`JawaBenchTerrainTools.cs`: `jawa/spawn_pawn` now builds its request through the
+real constructor with `forceGenerateNewPawn: true` (the xenotype path folded
+into the same request). No redress ⇒ no substitution ⇒ no world-pawn theft.
+
+🔴 Deploy needs `--gm --apply` at a shutdown window (same window as
+BRIDGE_INVENTORY_TRANSFER_REFUSES_ALL_1).
+
+⇒ The mod-disable bisect this item was holding open is **not needed**: nothing
+had to be disabled, and the five-patch shortlist is moot.

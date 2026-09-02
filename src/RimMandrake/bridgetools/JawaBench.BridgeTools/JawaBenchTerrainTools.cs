@@ -1807,23 +1807,35 @@ namespace JawaBench.BridgeTools
                     Pawn pawn;
                     try
                     {
-                        // No xenotype asked for -> the ORIGINAL call, byte for byte.
-                        // A xenotype needs the request overload, and the request must
-                        // come from the real constructor: PawnGenerationRequest carries
-                        // _calledTheCorrectConstructor and ValidateAndFix logs
-                        // "was not created through the correct constructor" for a
-                        // default(...) or object-initialiser-only struct.
+                        // The request must come from the real constructor:
+                        // PawnGenerationRequest carries _calledTheCorrectConstructor and
+                        // ValidateAndFix logs "was not created through the correct
+                        // constructor" for a default(...) or object-initialiser-only struct.
                         // Context 2 = NonPlayer, which is what GeneratePawn(kind, faction)
                         // itself passes (ldc.i4.2 at IL_0004).
-                        pawn = xeno == null
-                            ? PawnGenerator.GeneratePawn(kind, fac)
-                            : PawnGenerator.GeneratePawn(
-                                new PawnGenerationRequest(kind, fac,
-                                                          PawnGenerationContext.NonPlayer)
-                                {
-                                    ForcedXenotype = xeno,
-                                    ForceBaselinerChance = 0f
-                                });
+                        //
+                        // 🔴 forceGenerateNewPawn: true, measured live 2026-09-02. The plain
+                        // GeneratePawn(kind, faction) leaves it FALSE, so GeneratePawn is
+                        // free to REDRESS AN EXISTING WORLD PAWN instead of making one
+                        // (PawnGenerator.GenerateOrRedressPawnInternal). Two costs, both
+                        // silent: RedressPawn's pawn.ChangeKind is Harmony-prefixed by HAR
+                        // and does not always take, which is the whole of
+                        // SPAWN_PAWN_SUBSTITUTES_VANILLA_KIND_1 -- the "substitute" is the
+                        // world pawn's own kind, usually Colonist; and every redress
+                        // CONSUMES a real pawn off the planet into a throwaway test map.
+                        // Measured: 16/300 substituted for an authored faction with a
+                        // stocked candidate pool, decaying to 0/200 as the pool emptied,
+                        // and 0/400 across four vanilla factions. A test instrument must
+                        // generate, never hijack.
+                        var req = new PawnGenerationRequest(
+                            kind, fac, PawnGenerationContext.NonPlayer, null,
+                            forceGenerateNewPawn: true);
+                        if (xeno != null)
+                        {
+                            req.ForcedXenotype = xeno;
+                            req.ForceBaselinerChance = 0f;
+                        }
+                        pawn = PawnGenerator.GeneratePawn(req);
                     }
                     catch (Exception ex)
                     {

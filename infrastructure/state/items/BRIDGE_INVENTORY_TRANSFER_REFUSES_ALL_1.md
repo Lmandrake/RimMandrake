@@ -101,3 +101,60 @@ other than `999999` on a live pristine colonist (reflect it via
 hypothesis. Either check is a single bridge call once the bridge is free
 again; this is genuinely a live-diagnosis problem now, not a source-reading
 one.
+
+## ✅ 2026-09-02 (BENCH) — CAUSE PROVEN LIVE, IT IS VANILLA, NO MOD IS INVOLVED
+
+Live on the owner's full list, fresh desert quicktest, `ticksGame 1`.
+
+**Reproduced in one call**, then named by the engine's own voice. Spawned a
+`MealSurvivalPack` at a pristine colonist's feet and asked for count 1:
+
+```
+success:false  "TryAddOrTransfer moved 0 of 1 MealSurvivalPack into Boy's inventory"
+```
+
+`rimbridge/list_logs` carries, tagged with THAT call's own operation id
+(`op_f1296190b340433fa9c24efff5eec30b`, so it is this call and not a neighbour):
+
+```
+[warning] Can't transfer items to or from Maps directly.
+          They must be spawned or despawned manually. Use TryAdd(item.SplitOff(count))
+```
+
+**Mechanism**, read in full rather than inferred:
+`Map.spawnedThings` IS a `ThingOwner<Thing>` (`Verse/Map.cs:512`), so a
+map-spawned thing has a NON-NULL `holdingOwner`. `ThingOwner.TryAddOrTransfer`
+therefore takes its first branch — `item.holdingOwner.TryTransferToContainer(...)`
+— and that method opens with
+
+```csharp
+if (owner is Map || otherContainer.owner is Map) { Log.Warning(...); return 0; }
+```
+
+⇒ **every map thing returns 0, always, for every pawn, def and count.** That is
+exactly the 100% refusal this item was filed for. The tool never reached
+`TryAdd`, so `GetCountCanAccept` and `maxStacks` were never consulted — the
+2026-09-02 hypothesis (a) and (b) are both DEAD, and so is the mod shortlist.
+
+**Cleared by measurement, not by argument:** `jawa/harmony_patches` on
+`ThingOwner` and `ThingOwner\`1` returns FOUR patches in the whole process —
+MinifyEverything on `DoTick`, NightmareCore on `NotifyAddedAndMergedWith`,
+CommonSense on `TryAdd`, and nothing at all on `GetCountCanAccept` /
+`CanAcceptAnyOf`. `mlie.mercerbackpacks`, `mehni.pickupandhaul` and the rest of
+the shortlist patch nothing in this chain. **No mod was ever involved.**
+
+### criteria MET — an item is in a live colonist's inventory
+Positive control on the same map: moved a worn `Apparel_BasicShirt` (holder =
+`Pawn_ApparelTracker`, not a Map) from Alenka into Boy — `movedCount: 1`, and an
+independent `jawa/thing_stats pawn=Boy slot=inventory` read it back sitting
+there. So the tool's non-map path was correct all along.
+
+### fix — WRITTEN AND COMPILED, NOT YET DEPLOYED
+`JawaBenchPawnKitTools.cs`: a spawned source is now `SplitOff(requested)` →
+`DeSpawn` → `TryAdd`, with `GenPlace.TryPlaceThing` putting the part back if the
+add still fails, so nothing leaks. Non-map sources keep the old path untouched.
+`Build succeeded` under `python.exe src/RimMandrake/bridgetools/build.py`.
+
+🔴 **Deploy needs `--gm --apply` and a shutdown window** — the DLL cannot be
+written while the game runs, and without `--gm` the plan drops ~35 player-acting
+tools (the guard naming them is the guard working, not a source/deploy drift).
