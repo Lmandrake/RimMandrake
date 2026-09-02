@@ -113,3 +113,14 @@ Left `doing`.
 is authorized; run it at the next window the bridge is free — take it via
 rimflow, time one hot_reload_defs on the full list, prove a def read
 before/after, release. Do not re-ask; the blessing stands.
+
+# 🔴 Hot-reload trial RESULT — full list HANGS (BENCH, 2026-09-02)
+
+Ran the blessed trial on the full ~592-mod list. `jawa/hot_reload_defs`
+returned success:true in 0.1s, then the game went UNRESPONSIVE re-loading all
+defs + rebuilding render meshes; the play UI was lost (owner: "I see no
+buttons"). Unrecoverable live hang, restart required. Disk unharmed (trial
+marker reverted before the hang; 0 markers left). ⇒ hot-reload is a
+MINIMAL-LIST tool only; the zero-restart L1 cycle in VALIDATION_LADDER.md
+applies to minimal-list tool work, NOT the owner's play stack. Doctrine
+corrected in rimworld-modding §2 and rimworld-load-round §0.

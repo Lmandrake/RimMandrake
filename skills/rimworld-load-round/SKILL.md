@@ -20,11 +20,12 @@ MINUTE.** Everything below about hoarding a load still applies to the owner's re
 but for *tool and mechanism* work the scarcity is gone. Do not spend a 25-minute load
 proving something a 22-second one can prove.
 
-🔴 **And an XML-only change buys NO load at all (owner's ruling, 2026-09-01):**
-while a game is up, deploy → `jawa/hot_reload_defs` → read back with
-`jawa/get_defs`. The engine re-reads every active mod's Defs live — XML/Defs only,
-never C#/DLLs. Canonical entry: `skills/rimworld-modding/SKILL.md` §2. A load is
-now spent only on C#, mod-list changes, or what hot reload provably cannot reach.
+🔴 **An XML-only change buys no load ON THE MINIMAL LIST (owner's ruling
+2026-09-01; scope corrected by MEASUREMENT 2026-09-02):** deploy →
+`jawa/hot_reload_defs` → read back with `jawa/get_defs`, XML/Defs only, never
+C#/DLLs. ⛔ **But hot_reload_defs HUNG the full ~592-mod game when measured
+2026-09-02** — it is a MINIMAL-LIST tool only. On the owner's play stack an XML
+change still costs a real load. Canonical entry: `skills/rimworld-modding/SKILL.md` §2.
 
 ```
 python3 src/RimMandrake/Utils/modlist_swap.py --status

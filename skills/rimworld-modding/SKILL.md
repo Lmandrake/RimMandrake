@@ -99,9 +99,16 @@ it by default for any Def/patch-XML iteration while a game is up. Period.
 * 🔴 **XML/Defs ONLY.** C#, Harmony and the companion DLL still need a real load.
 * ⚠️ **Verify after reload like any mutation** — `success: true` is not evidence
   a def changed; read the field back and compare (`rimbridge` skill, the one law).
-* ⚠️ **Duration on the owner's full list is UNMEASURED** (2026-09-01; behavior read
-  from engine source, verified present on the live tool surface). The first
-  full-list trial happens at a moment the owner blesses, not silently mid-play.
+* 🔴 **DO NOT fire it on the owner's full (~592-mod) list — MEASURED 2026-09-02,
+  it HUNG the running game.** The call returned `success:true` in 0.1s, then the
+  engine went unresponsive re-loading every active mod's defs and rebuilding
+  render meshes, and the play UI was lost — an unrecoverable live hang requiring
+  a restart. The disk was unharmed (the trial edit had been reverted), so this
+  is a session hang, not corruption, but it costs a ~25-min cold load to recover.
+  ⇒ **Hot-reload is a MINIMAL-LIST tool only** (13 mods, where a full def reload
+  is seconds). On the full stack, an XML change still costs a real load. The
+  zero-restart cycle applies to tool/mechanism work on the minimal list, never to
+  the owner's play stack.
 * `jawa/get_defs` is scalar-only for now — list/object fields come back as type
   names — until a deep-serialize upgrade to that tool lands.
 
