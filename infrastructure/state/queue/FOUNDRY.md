@@ -7,12 +7,21 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T09:17:56Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-02T09:21:13Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
-Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
+The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
+
+## WILD_ANIMALS_PADDED_LISTS_1 wildAnimals lists padded to 1024 by unidentified C# pass
+state:    ready
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     investigate
+summary:  WILDANIMALSPADDEDLISTS1 — offline half done: mechanism strongly narrowed, exact patch still unnamed
+prose:    infrastructure/state/items/WILD_ANIMALS_PADDED_LISTS_1.md
 
 # IN PROGRESS
 
@@ -26,15 +35,6 @@ target:   v1
 kind:     bug
 summary:  SPAWNPAWNSUBSTITUTESVANILLAKIND1 — "Spawned 2/2" delivered one of something else
 prose:    infrastructure/state/items/SPAWN_PAWN_SUBSTITUTES_VANILLA_KIND_1.md
-
-## WILD_ANIMALS_PADDED_LISTS_1 wildAnimals lists padded to 1024 by unidentified C# pass
-state:    doing
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     investigate
-summary:  WILDANIMALSPADDEDLISTS1 — offline half done: mechanism strongly narrowed, exact patch still unnamed
-prose:    infrastructure/state/items/WILD_ANIMALS_PADDED_LISTS_1.md
 
 ## DROID_SYSTEM_BUILD_1 Build the unifying droid mod per droid_system_spec.md (parked until the owner reopens)
 state:    doing
