@@ -130,5 +130,25 @@ means porting, not regenerating.
   `starwars.themedsounds`, `m3.continued.jangodsoul.starwars.tsda`,
   `lumi.swlights` — FOUNDRY executes, verification rides the next cold load,
   no dedicated restart.
+
+## Wave 1 EXECUTED (FOUNDRY, 2026-09-02, game UP)
+
+Backed up live `ModsConfig.xml` to
+`infrastructure/state/modlists/ModsConfig_2026-09-02_pre_starwars_wave1.xml`,
+then removed the three `<li>` entries by exact-tag match (all three found
+and removed cleanly, confirmed absent by re-grep afterward, remaining
+`<li>` count sane). `sync_mod_state.py --apply` refused (game is running,
+by design) — `ModsConfig.FULL.LATEST.xml`'s snapshot stays one cycle stale
+until the next natural sync; the live `ModsConfig.xml` itself, which is
+what the next load actually reads, is already correct.
+
+**Owed to the next cold load** (no dedicated restart needed per the
+owner's ruling — this rides whatever load happens next):
+- `harvest_log.py` baseline unchanged (no new DEAD MODS / cross-ref / patch
+  failures attributable to these three).
+- Confirm vanilla stock sounds return where `starwars.themedsounds`
+  re-pointed clips (its only content).
+- No world-save or def-load errors naming `lumi.swlights`' 3 ThingDefs or
+  TSDA's 59 defs.
 - **Drassik glands RULED** (livestock, recorded here only as cross-ref):
   Steel / Plasteel / Slag.
