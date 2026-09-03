@@ -25,6 +25,17 @@ namespace RimMandrake.Property
         // Tuskens ~nil) is exactly the RimUtinni override point.
         public const float DefaultPropagationRatePerDay = 1f / 3f;
 
+        // FactionRecord decay: a witnessed entry's contribution to
+        // GetSuspicion falls off linearly to zero over this many days from
+        // the witness tick, and is lazily pruned from the entries list once
+        // it gets there (spec item 6: "Decay is computed lazily" — never a
+        // scheduled tick). Without this, suspicion only accumulates and
+        // permanently saturates after a couple of witnessed events. 45 days
+        // sits alongside ClaimDecay's lifetimes above: long enough that a
+        // recent theft still reads as suspicious, short enough that nothing
+        // witnessed a campaign ago haunts a faction forever.
+        public const float SuspicionHalfLifeDays = 45f;
+
         // PerceptionUtility: how far (in cells) a conscious witness can spot
         // a taking, subject to line-of-sight. Generic default, not a
         // per-faction surveillance value.

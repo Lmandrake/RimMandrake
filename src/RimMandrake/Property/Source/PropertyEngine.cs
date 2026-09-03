@@ -92,9 +92,7 @@ namespace RimMandrake.Property
             evt.Witnesses = witnesses;
             if (witnesses.Count == 0) return; // nobody saw it - costs nothing, spec item 6
 
-            Faction witnessFaction = evt.Thing.MapHeld?.ParentFaction ?? Faction.OfPlayer;
             GameComponent_PropertyLedger ledger = GameComponent_PropertyLedger.Get();
-            FactionRecord record = ledger?.GetOrCreateFactionRecord(witnessFaction);
 
             Pawn ownerPawn = evt.PriorClaim.HasValue && evt.PriorClaim.Value.Claimant.Kind == ClaimantKind.Pawn
                 ? evt.PriorClaim.Value.Claimant.Pawn
@@ -104,7 +102,17 @@ namespace RimMandrake.Property
             {
                 Pawn witness = witnesses[i];
                 float confidence = PerceptionUtility.WitnessConfidence(witness, evt.Actor);
-                record?.RegisterWitness(evt.Actor, confidence, evt.Tick);
+
+                // Each witness's observation is filed under THEIR OWN
+                // faction, not the map's parent faction - a visiting trader
+                // or guest who personally sees a theft tells their own
+                // faction, not the player's. A witness with no faction has
+                // nobody to file the observation with.
+                if (witness.Faction != null)
+                {
+                    FactionRecord record = ledger?.GetOrCreateFactionRecord(witness.Faction);
+                    record?.RegisterWitness(evt.Actor, confidence, evt.Tick);
+                }
 
                 // Colony-side friction hook (spec item 4/10): the wronged
                 // party personally saw it happen.

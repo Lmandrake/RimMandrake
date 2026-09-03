@@ -36,8 +36,17 @@ namespace RimMandrake.Property
         // How much of this faction's accumulated knowledge about `suspect`
         // has propagated "to the top" by `nowTick` — 0..1, lazily computed,
         // never ticked. Consequences (not built by this fabric) read this.
+        //
+        // Each entry also decays linearly to zero over
+        // PropertyTuning.SuspicionHalfLifeDays from its witness tick — without
+        // this an entry's contribution never falls, and a couple of witnessed
+        // events permanently saturate suspicion at 1.0. Entries that have
+        // fully decayed are lazily pruned here (never on a scheduled tick),
+        // so `entries` doesn't grow unbounded for the life of the save.
         public float GetSuspicion(ClaimantRef suspect, int nowTick, float propagationRatePerDay = PropertyTuning.DefaultPropagationRatePerDay)
         {
+            PruneFullyDecayedEntries(nowTick);
+
             float total = 0f;
             for (int i = 0; i < entries.Count; i++)
             {
@@ -46,9 +55,26 @@ namespace RimMandrake.Property
 
                 float daysElapsed = (nowTick - e.TimestampTicks) / (float)GenDate.TicksPerDay;
                 float propagated = Mathf.Clamp01(daysElapsed * propagationRatePerDay);
-                total += e.Confidence * propagated;
+                float decay = Mathf.Clamp01(1f - daysElapsed / PropertyTuning.SuspicionHalfLifeDays);
+                total += e.Confidence * propagated * decay;
             }
             return Mathf.Clamp01(total);
+        }
+
+        // Drops entries whose decayed contribution has reached ~0 for every
+        // suspect, regardless of the propagation rate used to read them —
+        // decay is monotonic in elapsed time alone, so once an entry passes
+        // SuspicionHalfLifeDays it contributes nothing to any future read.
+        private void PruneFullyDecayedEntries(int nowTick)
+        {
+            for (int i = entries.Count - 1; i >= 0; i--)
+            {
+                float daysElapsed = (nowTick - entries[i].TimestampTicks) / (float)GenDate.TicksPerDay;
+                if (daysElapsed >= PropertyTuning.SuspicionHalfLifeDays)
+                {
+                    entries.RemoveAt(i);
+                }
+            }
         }
 
         // Convenience for a UI-free "does this faction know ANYTHING is

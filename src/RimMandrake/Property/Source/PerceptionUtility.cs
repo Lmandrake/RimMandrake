@@ -28,6 +28,11 @@ namespace RimMandrake.Property
             {
                 Pawn p = allSpawned[i];
                 if (p == actor || p.Dead || p.Downed || !p.Awake()) continue;
+                // Only a humanlike is capable of meaningfully reporting what
+                // it saw — a wild animal, tamed livestock, insect or
+                // mechanoid standing nearby is not a witness, even if it's
+                // technically present and awake.
+                if (p.RaceProps == null || !p.RaceProps.Humanlike) continue;
                 if (!p.Position.InHorDistOf(targetPos, radius)) continue;
                 if (!GenSight.LineOfSight(p.Position, targetPos, map)) continue;
 
