@@ -7,7 +7,12 @@ namespace RimMandrake.Ninefold
 {
     // design/Jawa/divine_satiation_engine.md §8b.B: "A colonist has a MENTAL
     // BREAK (berserk/daze/binge) -> ▲Zizzik (large -- the wrong spark in a
-    // mind, §⑦)."
+    // mind, §⑦), ↓Oomo if a food/water binge wastes stores."
+    //
+    // The ↓Oomo/binge half is NOT implemented here -- it needs the binge-
+    // specific MentalStateDef, not any break, and is out of scope for this
+    // hook (which only reads whether a break started, not which resources
+    // it wasted).
     //
     // Verified against decompiled source (RimSage): `MentalStateHandler.
     // TryStartMentalState` (Source/Verse/AI/MentalStateHandler.cs:91) is the

@@ -29,7 +29,7 @@ namespace RimMandrake.Ninefold
 
         // Per-god Mood walk amplitude, 0..1 relative scale, encoded from
         // §2's qualitative personality column (Ishko "steady, low-amplitude"
-        // through Sh'kaar/Zizzik "high-amplitude... never trust his calm").
+        // through Zizzik "high-amplitude... never trust his calm").
         // 🔴 UNTUNED -- §10 explicitly defers real tuning to a throwaway-save
         // test rig. These are a first-pass ordering, not measured values.
         private static readonly float[] MoodAmplitude =

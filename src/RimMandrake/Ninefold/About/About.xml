@@ -8,7 +8,7 @@
   </supportedVersions>
   <description>The safe core of the divine-satiation engine (design/Jawa/divine_satiation_engine.md), M0 slice: a nine-god satiation/mood vector, the band ladder (Wrathful/Slighted/Neutral/Content/Exalted), a per-god Mood random walk, and five Harmony-patched event hooks (research completed, mental break started, birth outcome, building deconstructed, building repaired) binding real RimWorld events to ApplyDelta calls.
 
-Other RimMandrake systems (e.g. the colony visibility dial) read this engine's satiation state to drive their own effects.
+Other RimMandrake systems (e.g. the colony visibility dial) name this engine's satiation state as their extension point; the wiring itself is not built yet.
 
 NOT shipped here (NINEFOLD_ENGINE_M0_1's other named pieces, deliberately left for a later session): first-contact chains and the signed corpus letters - the latter needs the owner's voice-text redline pass per the item's own note ("provisional voice approval; owner redlines live text"). Mood-walk amplitudes and event magnitudes are a first-pass encoding of the spec's qualitative personality column, explicitly UNTUNED (design/Jawa/divine_satiation_engine.md §10 defers real tuning to a throwaway-save test rig).</description>
 

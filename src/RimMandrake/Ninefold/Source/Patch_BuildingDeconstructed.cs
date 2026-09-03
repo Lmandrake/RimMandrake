@@ -22,20 +22,22 @@ namespace RimMandrake.Ninefold
     // the JobDriver base, Source/Verse/AI/JobDriver.cs:12,14) rather than
     // the protected `Target`/`Building` properties.
     //
-    // The instant god-mode deconstruct branch in
-    // `Designator_Deconstruct.DesignateThing` bypasses the job entirely and
-    // is deliberately NOT covered here -- it is a debug-only path.
+    // The instant deconstruct branch in `Designator_Deconstruct.DesignateThing`
+    // bypasses the job entirely and is NOT covered here. Not god-mode-only as
+    // originally assumed -- it also fires whenever `WorkToBuild == 0` or
+    // `def.IsFrame`, both reachable in ordinary play, so a zero-work building
+    // or an in-progress frame scrapped this way is a real (small) coverage
+    // gap, not a debug-only exclusion.
     //
     // Fires whenever the deconstruction is PERFORMED by a player-faction pawn
-    // (corrected 2026-09-02, re-review pass: this used to say "the player's
-    // OWN buildings", which the code below never checked - only pawn.Faction
-    // is examined, never the building's. That's deliberate, not a gap: a
+    // -- only `pawn.Faction` is examined, never the building's. Deliberate: a
     // scavenger clan deconstructing salvage/ruins it does not own is exactly
     // the "costly lever, resources now, Rekko's wrath later" case §8b.A
     // describes, and restricting to player-owned buildings would make this
     // barely fire at all for a campaign built around scrapping other
-    // people's wrecks). `!def.IsFrame` excludes an in-progress construction
-    // frame, which was never a "repairable" thing to begin with.
+    // people's wrecks. `!def.IsFrame` below is defensive rather than live
+    // filtering -- a frame takes the instant branch above and never reaches
+    // this postfix, per the same reachability note.
     [HarmonyPatch(typeof(JobDriver_Deconstruct), "FinishedRemoving")]
     public static class Patch_BuildingDeconstructed
     {
