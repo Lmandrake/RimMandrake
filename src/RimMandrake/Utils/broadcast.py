@@ -306,7 +306,8 @@ def record_game(state, text):
                 with open(os.path.join(REPO, ".claude", "session_roles", sid),
                           encoding="utf-8") as fh:
                     for w in fh.read().replace("-", " ").split():
-                        if w.upper() in ("DECIDE", "BUILD", "CHECK", "REP", "OWNER"):
+                        if w.upper() in ("BENCH", "FOUNDRY", "DECIDE", "BUILD", "CHECK",
+                                         "REP", "OWNER"):
                             ran_by = w.upper()
                             break
             except OSError:
