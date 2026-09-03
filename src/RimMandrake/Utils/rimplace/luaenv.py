@@ -393,13 +393,26 @@ class Ctx:
         return True
 
     def roof(self, x, z, defName=None):
+        """RIMPLACE_ROOF_ESCAPES_FOOTPRINT_1: `floor()` has always refused a
+        cell outside `self.rect`; this had no such check, so a template could
+        roof cells past its own declared footprint — onto whatever the map
+        placed next door — and nothing would say so."""
+        x, z = int(x), int(z)
+        if not self.rect.contains(x, z):
+            self.plan.refuse("roof", "outside the footprint", x, z)
+            return False
         self.plan.set_roof(x, z, str(defName or "RoofConstructed"))
         return True
 
     def roof_rect(self, x, z, w, h, defName=None):
+        """Cells actually roofed, mirroring `floor_rect` — the unconditional
+        `return True` here used to report success even when every cell in
+        the rect was refused."""
+        n = 0
         for xx, zz in Rect(int(x), int(z), int(w), int(h)).cells():
-            self.roof(xx, zz, defName)
-        return True
+            if self.roof(xx, zz, defName):
+                n += 1
+        return n
 
     def wall_rect(self, x, z, w, h, defName=None, stuff=None):
         """Walls around the PERIMETER of the rect. Returns cells placed.
