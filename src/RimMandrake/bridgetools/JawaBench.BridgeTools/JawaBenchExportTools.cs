@@ -114,6 +114,7 @@ namespace JawaBench.BridgeTools
                         var hq = h.TryGetComp<CompQuality>();
                         contents.Add(new
                         {
+                            id = h.ThingID,
                             def = h.def.defName,
                             stuff = h.Stuff == null ? null : h.Stuff.defName,
                             count = h.stackCount,
@@ -174,7 +175,7 @@ namespace JawaBench.BridgeTools
 
             return new
             {
-                id = t.thingIDNumber,
+                id = t.ThingID,
                 def = t.def.defName,
                 stuff = t.Stuff == null ? null : t.Stuff.defName,
                 x = t.Position.x,
@@ -353,7 +354,10 @@ namespace JawaBench.BridgeTools
 
                         int cap = Math.Max(1, td.stackLimit);
                         int requested = count;
-                        made.stackCount = Math.Min(count, cap);
+                        int intended = Math.Min(count, cap);
+                        made.stackCount = intended;
+                        var mq = made.TryGetComp<CompQuality>();
+                        string madeQuality = mq == null ? null : mq.Quality.ToString();
 
                         bool ok = owned.TryAdd(made, true);
                         if (!ok)
@@ -362,14 +366,17 @@ namespace JawaBench.BridgeTools
                             continue;
                         }
 
-                        var mq = made.TryGetComp<CompQuality>();
+                        // TryAdd(canMergeWithExistingStacks: true) can fully or partially merge
+                        // `made` into an existing stack, driving made.stackCount toward 0 (and
+                        // destroying `made`) even on success -- report the intended count, not
+                        // whatever is left of the (possibly now-destroyed) source Thing.
                         added.Add(new
                         {
                             def = td.defName,
                             stuff = stuffDef == null ? null : stuffDef.defName,
-                            quality = mq == null ? null : mq.Quality.ToString(),
+                            quality = madeQuality,
                             requestedCount = requested,
-                            addedCount = made.stackCount,
+                            addedCount = intended,
                             clampedToStackLimit = requested > cap
                         });
                     }

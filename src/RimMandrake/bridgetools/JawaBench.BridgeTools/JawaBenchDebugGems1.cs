@@ -99,11 +99,12 @@ namespace JawaBench.BridgeTools
 
                 int roofedBefore = 0;
                 var toDestroy = new List<object>();
+                var seenThingIds = new HashSet<int>();
                 foreach (var c in r)
                 {
                     if (c.Roofed(map)) roofedBefore++;
                     foreach (var t in c.GetThingList(map).ToList())
-                        if (t.def.destroyable)
+                        if (t.def.destroyable && seenThingIds.Add(t.thingIDNumber))
                             toDestroy.Add(new { thingId = t.ThingID, def = t.def.defName, label = t.LabelCap, category = t.def.category.ToString() });
                 }
 

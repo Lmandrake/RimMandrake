@@ -97,10 +97,10 @@ namespace JawaBench.BridgeTools
                     return Fail("No RecipeDef '" + recipeDefName + "'.",
                         DefSuggestions<RecipeDef>(recipeDefName));
 
-                bool compatible = recipe.recipeUsers != null && recipe.recipeUsers.Contains(thing.def);
+                bool compatible = thing.def.AllRecipes != null && thing.def.AllRecipes.Contains(recipe);
                 if (!compatible)
                     return Fail("RecipeDef '" + recipeDefName + "' is not usable on ThingDef '" +
-                                thing.def.defName + "' (not in recipe.recipeUsers).",
+                                thing.def.defName + "' (not in thing.def.AllRecipes).",
                         new { recipeUsers = recipe.recipeUsers?.Select(t => t.defName).ToList() });
 
                 BillRepeatModeDef mode = null;

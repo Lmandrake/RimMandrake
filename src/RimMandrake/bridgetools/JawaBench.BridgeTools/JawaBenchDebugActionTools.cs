@@ -130,7 +130,10 @@ namespace JawaBench.BridgeTools
             for (; i < total; i++)
             {
                 // Budget and cap are checked BEFORE each type, so the cost of one type is
-                // the most this can overshoot by.
+                // the most this can overshoot by. A limit hit INSIDE a type's method loop
+                // (below) also breaks here via this same check, on the type boundary, so
+                // `i` always names the first type NOT fully scanned - never a type left
+                // half-walked.
                 if (sw.ElapsedMilliseconds >= maxMillis) { truncated = true; stopReason = "budget"; break; }
                 if (limit > 0 && matches.Count >= limit) { truncated = true; stopReason = "limit"; break; }
                 if (cancellationToken.IsCancellationRequested) { truncated = true; stopReason = "cancelled"; break; }
@@ -206,9 +209,9 @@ namespace JawaBench.BridgeTools
                         requiresDlc = dlc,
                         hideInSubMenu = attr.hideInSubMenu
                     });
-
-                    if (limit > 0 && matches.Count >= limit) { truncated = true; stopReason = "limit"; break; }
                 }
+
+                if (limit > 0 && matches.Count >= limit) { truncated = true; stopReason = "limit"; break; }
             }
 
             sw.Stop();

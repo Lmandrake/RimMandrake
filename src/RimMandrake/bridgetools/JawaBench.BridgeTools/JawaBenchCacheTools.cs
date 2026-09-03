@@ -192,11 +192,13 @@ namespace JawaBench.BridgeTools
                 int biomeCached = 0, biomeStale = 0;
                 int minCached = 0, minStale = 0, maxCached = 0, maxStale = 0;
                 int newlyPopulated = 0;
+                int staleTileCount = 0;
                 var rows = new List<object>();
 
+                bool completed = true;
                 foreach (int id in ids)
                 {
-                    if (cancellationToken.IsCancellationRequested) break;
+                    if (cancellationToken.IsCancellationRequested) { completed = false; break; }
                     if (id < 0 || id >= grid.TilesCount)
                     {
                         if (refused.Count < 50) refused.Add(new { value = id, reason = "out of range" });
@@ -281,6 +283,10 @@ namespace JawaBench.BridgeTools
                         }
                     }
 
+                    if (anyStale)
+                    {
+                        staleTileCount++;
+                    }
                     if (anyStale && rows.Count < Math.Max(0, limit))
                     {
                         rows.Add(new
@@ -305,6 +311,7 @@ namespace JawaBench.BridgeTools
                 return (object)new
                 {
                     success = true,
+                    completed,
                     tilesScanned = scanned,
                     staleTotal,
                     hilliness = new { cached = hillCached, stale = hillStale },
@@ -314,13 +321,15 @@ namespace JawaBench.BridgeTools
                     newlyPopulated,
                     examples = rows,
                     exampleCap = limit,
-                    examplesTruncated = staleTotal > rows.Count,
+                    examplesTruncated = staleTileCount > rows.Count,
                     refusedCount = refused.Count,
                     refused,
                     populateRequested = populate,
-                    note = includeTemps
-                        ? "A non-zero staleTotal means a RELOAD is required; RimWorld has no reset for these caches."
-                        : "Temperature caches were NOT checked - pass includeTemps=true. A non-zero staleTotal means a RELOAD is required.",
+                    note = !completed
+                        ? "SCAN CANCELLED before every tile in `tiles`/the full sweep was checked - staleTotal/tilesScanned cover only the tiles reached, NOT the whole requested set. Treat this as inconclusive, not a pass."
+                        : includeTemps
+                            ? "A non-zero staleTotal means a RELOAD is required; RimWorld has no reset for these caches."
+                            : "Temperature caches were NOT checked - pass includeTemps=true. A non-zero staleTotal means a RELOAD is required.",
                     ticksGame = TicksGameSafe(),
                 };
             });
