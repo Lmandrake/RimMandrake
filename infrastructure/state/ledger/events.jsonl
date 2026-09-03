@@ -4132,3 +4132,9 @@
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-03T03:37:33Z"}
 {"seat":"FOUNDRY","event":"close","id":"DROIDWORKS_POWEREDDOWN_NOT_WIRED_1","sha":"222b5862","ts":"2026-09-03T03:38:12Z"}
 {"seat":"FOUNDRY","event":"close","id":"INHABITED_ROSTER_LIFECYCLE_SWEEP_1","sha":"34fedc85","ts":"2026-09-03T03:40:55Z"}
+{"seat":"FOUNDRY","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-09-03T03:42:26Z"}
+{"seat":"FOUNDRY","event":"claim","id":"BRIDGE_LISTPAWNS_GENETRACKER_NRE_1","ts":"2026-09-03T03:42:35Z"}
+{"seat":"FOUNDRY","event":"start","id":"BRIDGE_LISTPAWNS_GENETRACKER_NRE_1","ts":"2026-09-03T03:42:35Z"}
+{"seat":"FOUNDRY","event":"file","id":"FLUID_CANAL_FLOOD_LIVE_CHECK_1","title":"Watch a fluid-canal flood recede and give the floor back","kind":"task","target":"v1","needs":"deploy","spec":"/tmp/claude-1000/-mnt-d-Luke-dev-Rimworld/e5c63a3f-c935-4b0c-9086-a373cefb3608/scratchpad/fluidcanal_live_check_spec.md","caused_by":"FLUID_CANAL_FLOOD_TUNING_GAPS_1","for":"BENCH","ts":"2026-09-03T03:43:05Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"BRIDGE_LISTPAWNS_GENETRACKER_NRE_1: re-verify with Biotech active before fixing","ts":"2026-09-03T03:43:33Z"}
+{"seat":"FOUNDRY","event":"close","id":"FLUID_CANAL_FLOOD_TUNING_GAPS_1","sha":"747b0025","ts":"2026-09-03T03:43:53Z"}

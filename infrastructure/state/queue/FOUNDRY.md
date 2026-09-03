@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-03T03:40:55Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-03T03:43:53Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -324,15 +324,6 @@ kind:     bug
 summary:  Determine (live, via the bridge, not more code reading) whether an
 prose:    infrastructure/state/items/INHABITED_SETTLEMENT_MAPPARENT_GAP_1.md
 
-## FLUID_CANAL_FLOOD_TUNING_GAPS_1 opus review found FluidCanals floods are permanent/floor-destroying (undisclosed), can tick forever if boxed in, and MaxFloodDurationTicks is actually a rate divisor not a duration - needs a design pass, not a quick fix
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  1. Terrain overwrite is permanent and destructive; undisclosed.
-prose:    infrastructure/state/items/FLUID_CANAL_FLOOD_TUNING_GAPS_1.md
-
 ## SEABEAST_STARMAW_LANTERNWHALE_TEXTURES_MISSING_1 Starmaw and Lanternwhale have no textures in the repo or the deploy - 2 of 18 sea beasts draw as nothing
 state:    doing
 row:      unassigned
@@ -341,6 +332,15 @@ target:   v1
 kind:     bug
 summary:  RSWStarmaw (grid cell B2) and RSWLanternwhale (B3) have no textures deployed and
 prose:    infrastructure/state/items/SEABEAST_STARMAW_LANTERNWHALE_TEXTURES_MISSING_1.md
+
+## BRIDGE_LISTPAWNS_GENETRACKER_NRE_1 jawa/list_pawns NREs on any map with a non-genetic (droid) pawn -- Pawn_GeneTracker.XenotypeLabel getter throws
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  jawa/listpawns throws unconditionally once a pawn with no PawnGeneTracker
+prose:    infrastructure/state/items/BRIDGE_LISTPAWNS_GENETRACKER_NRE_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -437,13 +437,3 @@ kind:     build
 thin:     spec, verify and criteria all present
 summary:  Owner, 2026-09-02: "Man I wish the Autoopen of the error log was set to False by default"
 prose:    infrastructure/state/items/DEV_LOG_AUTOOPEN_SUPPRESS_1.md
-
-## BRIDGE_LISTPAWNS_GENETRACKER_NRE_1 jawa/list_pawns NREs on any map with a non-genetic (droid) pawn -- Pawn_GeneTracker.XenotypeLabel getter throws
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     spec, verify and criteria all present
-summary:  jawa/listpawns throws unconditionally once a pawn with no PawnGeneTracker
-prose:    infrastructure/state/items/BRIDGE_LISTPAWNS_GENETRACKER_NRE_1.md
