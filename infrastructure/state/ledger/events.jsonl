@@ -4097,3 +4097,6 @@
 {"seat":"FOUNDRY","event":"start","id":"RIMPLACE_ROOF_ESCAPES_FOOTPRINT_1","ts":"2026-09-03T03:00:12Z"}
 {"seat":"FOUNDRY","event":"close","id":"RIMPLACE_ROOF_ESCAPES_FOOTPRINT_1","sha":"6da13a4f","ts":"2026-09-03T03:01:25Z"}
 {"seat":"BENCH","event":"close","id":"LIVE_BIRTH_AND_HATCH_DEMO_1","sha":"c6615420","ts":"2026-09-03T03:02:17Z"}
+{"seat":"FOUNDRY","event":"claim","id":"HOT_RELOAD_DEFS_BREAKS_PAWNGEN_1","ts":"2026-09-03T03:02:52Z"}
+{"seat":"FOUNDRY","event":"start","id":"HOT_RELOAD_DEFS_BREAKS_PAWNGEN_1","ts":"2026-09-03T03:02:52Z"}
+{"seat":"FOUNDRY","event":"close","id":"HOT_RELOAD_DEFS_BREAKS_PAWNGEN_1","sha":"35bd8278","ts":"2026-09-03T03:03:24Z"}
