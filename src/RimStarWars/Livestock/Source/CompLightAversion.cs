@@ -37,6 +37,21 @@ namespace RimMandrake.StarWars.Livestock
     {
         private CompProperties_LightAversion Props => (CompProperties_LightAversion)props;
 
+        // Cooldown between forced flee-and-resume triggers, set well above
+        // fleeExpiryTicks (5x). Without this, resumeCurJobAfterwards: true
+        // requeues the interrupted job; if that job's target sits in a lit
+        // room with a dark cell in range, the pawn can livelock forever:
+        // flee -> Goto ends -> resumed job walks it back into the light ->
+        // next rare tick interrupts again, and the resumed job never gets a
+        // chance to actually complete.
+        private int nextFleeCheckTick = -1;
+
+        public override void PostExposeData()
+        {
+            base.PostExposeData();
+            Scribe_Values.Look(ref nextFleeCheckTick, "nextFleeCheckTick", -1);
+        }
+
         public override void CompTickRare()
         {
             Pawn pawn = parent as Pawn;
@@ -53,6 +68,14 @@ namespace RimMandrake.StarWars.Livestock
             // Already fleeing (or otherwise mid-Goto) - don't re-trigger every
             // rare tick, let the existing job run.
             if (pawn.CurJobDef == JobDefOf.Goto)
+            {
+                return;
+            }
+
+            // Cooldown after a previous forced flee - give the resumed job a
+            // real window to make progress before we can drag the pawn back
+            // into the dark again.
+            if (Find.TickManager.TicksGame < nextFleeCheckTick)
             {
                 return;
             }
@@ -83,6 +106,7 @@ namespace RimMandrake.StarWars.Livestock
             Job job = JobMaker.MakeJob(JobDefOf.Goto, dest);
             job.expiryInterval = Props.fleeExpiryTicks;
             pawn.jobs.StartJob(job, JobCondition.InterruptForced, null, resumeCurJobAfterwards: true);
+            nextFleeCheckTick = Find.TickManager.TicksGame + (Props.fleeExpiryTicks * 5);
         }
     }
 }
