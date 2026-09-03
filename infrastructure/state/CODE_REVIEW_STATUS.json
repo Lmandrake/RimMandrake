@@ -434,10 +434,20 @@
     "date": "2026-09-03",
     "sha": "9f6f93ea"
   },
+  "src/RimMandrake/Utils/build_jawavoice.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "d8cd2139"
+  },
   "src/RimMandrake/Utils/build_packageid_index.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "39cd22d5"
+  },
+  "src/RimMandrake/Utils/cast_hook_audit.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "d8cd2139"
   },
   "src/RimMandrake/Utils/cast_to_xml.py": {
     "cleanCount": 1,
@@ -497,6 +507,11 @@
   "src/RimMandrake/Utils/cherrypicker_swap.py": {
     "date": "2026-09-02",
     "sha": "d1c193ae"
+  },
+  "src/RimMandrake/Utils/code_review_status.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "f52addaf"
   },
   "src/RimMandrake/Utils/codebase_health_publish.py": {
     "cleanCount": 1,
@@ -608,6 +623,11 @@
     "date": "2026-09-03",
     "sha": "e5013227"
   },
+  "src/RimMandrake/Utils/install_wt_seat_profiles.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "7eabd2a4"
+  },
   "src/RimMandrake/Utils/jawaese.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -627,6 +647,11 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "39cd22d5"
+  },
+  "src/RimMandrake/Utils/mod_inventory.py": {
+    "cleanCount": 2,
+    "date": "2026-09-03",
+    "sha": "f52addaf"
   },
   "src/RimMandrake/Utils/modlist_swap.py": {
     "date": "2026-09-02",
@@ -652,6 +677,11 @@
     "date": "2026-09-03",
     "sha": "43884307"
   },
+  "src/RimMandrake/Utils/outline_faction_icons.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "d8cd2139"
+  },
   "src/RimMandrake/Utils/package_skill.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -661,6 +691,11 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "c67fed38"
+  },
+  "src/RimMandrake/Utils/print_gravship.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "d8cd2139"
   },
   "src/RimMandrake/Utils/reload_check.py": {
     "cleanCount": 1,
@@ -686,6 +721,11 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "5ac921b8"
+  },
+  "src/RimMandrake/Utils/rimworld_loadset.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "b8e4171c"
   },
   "src/RimMandrake/Utils/run_expectations.py": {
     "cleanCount": 1,
@@ -792,6 +832,11 @@
     "date": "2026-09-03",
     "sha": "39cd22d5"
   },
+  "src/RimMandrake/Utils/ship_dress.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "7eabd2a4"
+  },
   "src/RimMandrake/Utils/statusline.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -841,6 +886,11 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "43884307"
+  },
+  "src/RimMandrake/Utils/worldgeom.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "7eabd2a4"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchGenTools2.cs": {
     "cleanCount": 1,
