@@ -238,7 +238,12 @@ namespace JawaBench.BridgeTools
                         ? (fireTickAfter != fireTickBefore
                             ? "Fired AND recorded in StoryState.lastFireTicks - this is the difference from jawa/fire_incident."
                             : "Fired, but lastFireTicks did NOT move. Notify_IncidentFired only skips this when parms.forced is true or parms.target does not match this map's StoryState - neither should happen here, so this would itself be worth reporting upstream.")
-                        : "TryFire returned false - CanFireNow or TryExecute refused these parms.",
+                        : windowsOpened.Count > 0
+                            // A prefix that puts up a modal AND returns false lands here, not in the
+                            // blockedByDialog branch. Naming parms as the cause would be a guess that
+                            // contradicts the window this same call just watched appear.
+                            ? "TryFire returned false AND " + windowsOpened.Count + " window(s) opened across the call - do NOT read this as a parms refusal. Something interposed a modal; clear it with jawa/window_list_close and see windowsOpened[]."
+                            : "TryFire returned false - CanFireNow or TryExecute refused these parms.",
                     ticksGame = TicksGameSafe(),
                 };
             }).ConfigureAwait(false);
