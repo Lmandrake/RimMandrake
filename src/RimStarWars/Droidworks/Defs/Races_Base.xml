@@ -1,56 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
 
-  <!-- Droidworks race base — every DW_Race_* def emitted by
-       Source/gen_droidworks_defs.py ParentNames onto this ONE abstract def
-       (BENCH's spec: one base, not one per race). ParentName="Human" gives a
-       working race.body, needs and apparel slots for free — matches the
-       pattern used by other private HAR races that don't want a bespoke
-       BodyDef (e.g. XMT_Starbeast_AlienRace, workshop 3596077324: ParentName
-       ="Human", Class="AlienRace.ThingDef_AlienRace", no thingClass override,
-       no custom BodyDef). Concrete races override defName/label/description/
+  <!-- Droidworks race base. Concrete races descend through the family layer
+       (Races_Families.xml's DW_Family_* abstracts) onto this one, not
+       directly — see that file for why. ParentName="Human" gives a working
+       race.body, needs and apparel slots for free — matches the pattern used
+       by other private HAR races that don't want a bespoke BodyDef (e.g.
+       XMT_Starbeast_AlienRace, workshop 3596077324: ParentName="Human",
+       Class="AlienRace.ThingDef_AlienRace", no thingClass override, no
+       custom BodyDef). Concrete races override defName/label/description/
        race/alienRace/graphicPaths/generalSettings/modExtensions.
 
-       DROIDWORKS_FLESHTYPE_NEEDS_GAP_1 (2026-08-30): Food and Rest fixed
-       here — verified against decompiled 1.6 source, not guessed.
-       `Pawn_NeedsTracker.ShouldHaveNeed` special-cases exactly two needs:
-       `nd == NeedDefOf.Food -> pawn.RaceProps.EatsFood` (driven by
-       `<foodType>`) and `nd == NeedDefOf.Rest -> pawn.RaceProps.needsRest`.
-       Every other need (Mood/Joy/Beauty/Comfort/Expectations/...) falls
-       through to `true` unless a hediff/gene/trait/ideo explicitly disables
-       it. DELIBERATELY NOT touched here: this base keeps `intelligence`
-       Humanlike (inherited from ParentName="Human") specifically so the
-       "soul" layer (drift, module personality, long-unwiped droids are
-       PEOPLE — droid_system_build_spec.md Phase 3) has real Mood/Joy to
-       work with. Stripping those needs now would be a bigger design call
-       than this item's scope — flagged for the owner, not decided here.
-       Xenotype/genes are a SEPARATE mechanism (`PawnKindDef.xenotypeSet`,
-       not a race field — `PawnGenerator.cs` reads it, `RaceProperties` has
-       no such field) and are fixed per-kind by the generator, not here.
+       Food and Rest: `Pawn_NeedsTracker.ShouldHaveNeed` special-cases
+       exactly two needs — `nd == NeedDefOf.Food -> pawn.RaceProps.EatsFood`
+       (driven by `<foodType>`) and `nd == NeedDefOf.Rest ->
+       pawn.RaceProps.needsRest`. Every other need
+       (Mood/Joy/Beauty/Comfort/Expectations/...) falls through to `true`
+       unless a hediff/gene/trait/ideo explicitly disables it. DELIBERATELY
+       NOT touched here: this base keeps `intelligence` Humanlike (inherited
+       from ParentName="Human") specifically so the "soul" layer (drift,
+       module personality, long-unwiped droids are PEOPLE —
+       droid_system_build_spec.md Phase 3) has real Mood/Joy to work with.
+       Stripping those needs would be a bigger design call than this file's
+       scope — flagged for the owner, not decided here. Xenotype/genes are a
+       SEPARATE mechanism (`PawnKindDef.xenotypeSet`, not a race field —
+       `PawnGenerator.cs` reads it, `RaceProperties` has no such field) and
+       are fixed per-kind by the generator, not here.
 
-       ✅ `<fleshType>RSW_DW_FleshType_Droid</fleshType>` WIRED 2026-09-01 —
-       DROIDWORKS_ISFLESH_RELATIONS_CRASH_1 closed, live 60/60/0 failures
-       (commit `715aeb82`: 3 shipped droid races x faction null/none, 10 each,
-       including a faction with a real ideo — the exact reproducing
-       condition — pawn.relations proven non-null). The postfix on
-       `PawnComponentsUtility.CreateInitialComponents` (Jawa_Doctrine's
-       `JawaDoctrineCore.dll`) allocates `pawn.relations` for the
-       Humanlike-&&-!IsFlesh case vanilla leaves uncovered; every flesh pawn
-       and every true mechanoid keeps identical behavior. NOT yet re-verified
-       against THIS race specifically (the 60/60 batch tested the
-       already-shipped OuterRim/KotOR droids using the same IsFlesh gate, not
-       a Droidworks-native pawn) — owed to the next quicktest that actually
-       spawns a `DW_Race_*` pawn kind. -->
-  <!-- DROID_KOTORDROIDS_PORT_WAVE1_1 (2026-09-02): wires the four
-       Droidworks recipes (RSW_DW_RebootDroid, RSW_DW_InstallRestrainingBolt,
-       RSW_DW_RemoveRestrainingBolt, RSW_DW_MemoryWipe) onto every generated
-       droid race in one place, closing the "recipeUsers wiring onto the
-       generated race defs is follow-up work" gap each of those RecipeDefs'
-       own header comments named. Inherit="False" defensively: ParentName=
-       "Human" gives no <recipes> list of its own to collide with today, but
-       the Cindermare/Skarnix <lifeStageAges> incident this same session
-       proved a silent list-append-not-replace bug is real and costly here,
-       not a hypothetical. -->
+       `<fleshType>RSW_DW_FleshType_Droid</fleshType>` makes every droid
+       Humanlike-intelligence AND non-flesh, a combination vanilla's own
+       `PawnComponentsUtility.CreateInitialComponents` leaves with a null
+       `pawn.relations` (it only allocates one `if (pawn.RaceProps.IsFlesh)`,
+       and Humanlike pawn generation assumes every Humanlike has one).
+       RimMandrake.StarWars.Droidworks' own Harmony bootstrap
+       (Patch_ShouldHaveNeed_Power.cs / DroidworksNeedGateMod) carries a
+       postfix on that same method closing the gap, idempotent against
+       RimUtinni.Doctrine's identical fix for the already-shipped
+       OuterRim/KotOR droids should both mods be active together. -->
+  <!-- Wires the four Droidworks recipes (RSW_DW_RebootDroid,
+       RSW_DW_InstallRestrainingBolt, RSW_DW_RemoveRestrainingBolt,
+       RSW_DW_MemoryWipe) onto every droid race in one place; the RecipeDefs
+       themselves leave `recipeUsers` unset. No `Inherit="False"` — Human
+       itself declares 22 `<recipes>` (RemoveBodyPart, Euthanize, Anesthetize
+       and 19 DLC-gated others), and RimWorld's list inheritance appends
+       rather than replaces, so droids correctly keep those alongside the
+       four Droidworks-specific ones rather than losing them. -->
   <AlienRace.ThingDef_AlienRace Name="DW_Race_Base" ParentName="Human" Abstract="True">
     <race>
       <body>Human</body>
@@ -58,7 +52,7 @@
       <needsRest>false</needsRest>
       <fleshType>RSW_DW_FleshType_Droid</fleshType>
     </race>
-    <recipes Inherit="False">
+    <recipes>
       <li>RSW_DW_RebootDroid</li>
       <li>RSW_DW_InstallRestrainingBolt</li>
       <li>RSW_DW_RemoveRestrainingBolt</li>
@@ -82,8 +76,8 @@
   </AlienRace.ThingDef_AlienRace>
 
   <!-- Our own droid flesh type, isOrganic:false from birth
-       (droid_system_build_spec.md §1). WIRED onto DW_Race_Base 2026-09-01 —
-       see the note above DW_Race_Base. Mirrors vanilla `Mechanoid`'s other
+       (droid_system_build_spec.md §1). Wired onto DW_Race_Base above.
+       Mirrors vanilla `Mechanoid`'s other
        fields (corpseCategory, damageEffecter, genericWounds — reusing
        vanilla's own mech wound textures, no new art needed) so droids hit
        and rot like machines everywhere that checks fleshType rather than

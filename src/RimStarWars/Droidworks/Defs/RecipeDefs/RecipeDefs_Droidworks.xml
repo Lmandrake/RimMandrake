@@ -10,8 +10,7 @@
        targetsBodyPart=false recipe -- GetPartsToApplyOn is never called for
        this recipe). recipeUsers is left unset here: Races_Base.xml wires
        this recipe (and the other three below) onto DW_Race_Base's
-       <recipes Inherit="False"> instead, which every DW_Race_* pawn kind
-       inherits.
+       <recipes> instead, which every DW_Race_* race inherits.
 
        skillRequirements: the spec asked for "Crafting 4 or Medicine 4
        (either-or)". Vanilla RecipeDef.skillRequirements is an AND list, not OR -
@@ -121,7 +120,7 @@
        randomization via Verse.PawnGenerator.GenerateTraitsFor, relations via
        Pawn_RelationsTracker.ClearAllRelations, social memories via the same
        ISocialThought filter Anomaly's own Brainwipe ritual uses). Whole-pawn,
-       no race restriction of its own — wired onto every DW_Race_* pawn kind
+       no race restriction of its own — wired onto every DW_Race_* race
        via DW_Race_Base's <recipes> in Races_Base.xml, same as the other
        three Droidworks recipes.
        isViolation true — RecipeWorker.IsViolationOnPawn's own default logic
