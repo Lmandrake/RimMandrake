@@ -764,6 +764,10 @@ namespace JawaBench.BridgeTools
                 // `placed` counts spawn ATTEMPTS. A caller diffing placed against requested,
                 // which is exactly what an acceptance criterion does, sees a perfect run.
                 var displaced = new List<object>();
+                // PostPlace exceptions used to vanish into a bare `catch {}` - the def's
+                // real side effect (a wind turbine's placement logic, etc.) silently never
+                // ran and the op still counted as a full success. Record it instead.
+                var placeWorkerWarnings = new List<object>();
 
                 foreach (var raw in ops.Split(new[] { ';', '\n' }, StringSplitOptions.RemoveEmptyEntries))
                 {
@@ -859,7 +863,8 @@ namespace JawaBench.BridgeTools
                         // Some defs (wind turbines) do their side effects only here.
                         if (td.PlaceWorkers != null)
                             foreach (var pw in td.PlaceWorkers)
-                                try { pw.PostPlace(map, td, c, rot); } catch { }
+                                try { pw.PostPlace(map, td, c, rot); }
+                                catch (Exception e) { placeWorkerWarnings.Add(new { op, placeWorker = pw.GetType().Name, why = e.GetType().Name + ": " + e.Message }); }
 
                         if (spawned != null) { placed++; spawnedThings.Add(spawned); }
                         else failures.Add(new { op, why = "GenSpawn.Spawn returned null" });
@@ -903,6 +908,11 @@ namespace JawaBench.BridgeTools
                     failedCount = failures.Count, failed = failures,
                     displacedCount = displaced.Count,
                     displaced,
+                    // A spawn that "succeeded" can still have skipped a def's real side
+                    // effect (a wind turbine's placement hook, etc.) if PostPlace threw.
+                    // `placed` does not reflect that - check this list too.
+                    placeWorkerWarningsCount = placeWorkerWarnings.Count,
+                    placeWorkerWarnings,
                     message = lostToLaterOps > 0
                         ? placed + " spawned, " + survived + " SURVIVED - " + lostToLaterOps
                           + " were destroyed by a later op in this same batch. See displaced[]."
