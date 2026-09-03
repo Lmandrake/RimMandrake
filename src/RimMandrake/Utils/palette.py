@@ -287,7 +287,10 @@ def check(p, dump=DEFAULT_DUMP):
             continue
         # Present, correctly typed, correct mod - and STILL cut. The dump precedes
         # Cherry Picker, so this is the one class none of the checks above can see.
-        if any(cuts.cut(dt, name) for dt, _ in rows):
+        # Scoped to the palette's own expected type, same as the MOVED check above -
+        # a defName shared with an unrelated def type (GravshipHull, ChunkSlagSteel)
+        # must not read CUT here because THAT OTHER type was cut.
+        if any(cuts.cut(dt, name) for dt, _ in rows if not exp or dt == exp):
             problems.append("CUT      %-45s present in the dump, cut from the shipped "
                             "game" % name)
     return problems, cuts.provenance()
