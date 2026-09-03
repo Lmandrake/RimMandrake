@@ -40,10 +40,15 @@ python.exe D:\Luke\dev\Rimworld\src\RimMandrake\bridgetools\build.py --gm --appl
 | JAWA_SCENARIO_PARTS_1 | Jawa_UtinniStart spawns exactly one Ikee, Obedience-trained, Bonded — needs a NEW game start, could not run 2026-08-29 without tearing down the owner's loaded session |
 
 ## 3 — needs the GRAVSHIP SAVE loaded (BENCH_console_fixed.rws or successor)
+✅ **SCORED 2026-09-03 (BENCH via Opus agent, gravship_scratch_b live, game paused throughout):**
 | item | reading |
 |---|---|
-| EXPORTER round trip (owner sequencing: FIRST) | export_structure.py --rect 83,59,86,133 on the real megabone ship; the 2026-08-29 attempt exported desert rock — the ship is NOT on the fresh-start Ash'karr map |
-| hull repaint | ONLY after the round trip: repaint_hull.py --census, --plan world/_ship/v2/plan_corrosion_halo.json --apply, RE-EXPORT, confirm paint carries; then apply_wall_colors.py/apply_wall_stuff.py are superseded and deletable |
+| EXPORTER round trip | ✅ PASSED. Footprint re-derived independently from the Substructure foundation layer (4,281+36 cells, bbox x 83–168 z 59–191) → the historical rect `83,59,86,133` was CORRECT all along — the 2026-08-29 desert-rock export was the wrong MAP, not a wrong rect. Export: 3,195 things / 11,438 floor / 4,317 foundation (foundation matches the independent scan exactly); ship defs present: GravshipHull ×663 (MA_MegaBone 438, DinoChitin 213), GravEngine, GravFieldExtender ×9, 83 distinct defs. `Transient\gravship_roundtrip\pre_repaint.plan.json` |
+| hull repaint | ✅ PAINT CARRIES, verified 3 ways. Census before: 2,897 buildings 100% unpainted. Plan∩live-hull predicted 587 cells; apply reported painted 587 / verified 587 — matching the prediction, not self-grading. Census after: 587 painted across 8 colours; re-export carries 587 non-null `paint` rows with matching per-colour counts. `post_repaint.plan.json` + `census_pre/post.json` beside it. ⚠️ Applied to the LIVE MAP only — not saved. apply_wall_colors.py/apply_wall_stuff.py now supersedable (NOT yet deleted; references live in JawaBenchPaintTools.cs, repaint_hull.py docstring, both run sheets, gravship-layout SKILL.md "Dressing a printed ship" table) |
+
+Learned, worth keeping:
+- 🔑 **Derive the ship bbox from the Substructure foundation layer, never from GravshipHull things** — this map carries a 216-cell hull swatch band at x 10–67 z 200–205 that skews any hull-def bbox ~85 columns.
+- ⚠️ Roof + floor-colour exporter channels remain UNPROVEN: the ship is genuinely unroofed on this scratch map (`get_roof_batch` all-None + 5 spot cells), so this export can't exercise them.
 
 ## 4 — owner decisions surfaced 2026-08-29, still open
 - ~~Frozen OFFICIAL capture gone~~ RESOLVED before this line was read: registry
