@@ -1,33 +1,39 @@
 # RIMPLACE_LUA_EXECUTION_BUDGET_1 — a template can loop forever and wedge the tool
 
-Code review, 2026-09-02, on the `min_rect` work.
+## Fix
 
-## spec
+`_sandboxed_runtime()` in `src/RimMandrake/Utils/rimplace/luaenv.py` now installs
+a `debug.sethook` instruction-count hook — 5,000,000 instructions — before
+`_SANDBOX_PRELUDE` nils `debug` out of `_G`. The hook is a Lua closure that
+calls `error(...)`, not a Python callback: `debug.sethook` requires a real
+Lua function (`LUA_TFUNCTION`), and lupa exposes a Python callable to Lua as
+userdata with a `__call` metamethod, which fails that check with `"function
+expected, got POBJECT"` (confirmed by hand before settling on this shape).
+Because `sethook` is a VM-level registration rather than a name in the
+global table, nilling `debug` afterward stops a template from reaching
+`debug.sethook` itself without touching the hook already installed.
 
-`src/RimMandrake/Utils/rimplace/luaenv.py` runs template Lua with no instruction
-budget and no wall-clock limit. `function min_rect(params) while true do end end`
-hangs, and `rimplace minrect all` executes EVERY template in
-`design/Jawa/templates/`, so one bad file wedges the whole command with no output
-and no indication which template did it.
+5,000,000 instructions trips a runaway loop in ~10-20ms and does not touch
+any real workload — the largest measured legitimate build (a 500x500 nested
+loop, far bigger than any template's actual footprint) finishes in ~2ms.
 
-This matters more than it looks because templates are DATA and the file's own
-docstring promises they cannot harm the machine — a hang is a denial of service on
-exactly the shared tooling that promise covers.
+## Verify — all done by hand, not just read
 
-⚠️ The obvious lever is a `debug.sethook` instruction count, and `debug` is nil'd
-inside the sandbox on purpose. Set the hook from the PYTHON side, before the
-template chunk runs, so the template still cannot reach `debug` itself.
+- `debug.sethook(function() error("...") end, "", 5000000)` (mask `""`,
+  count-only) tripped a `while true do end` chunk in 0.010s, in an isolated
+  lupa/Lua 5.5 runtime, before touching `luaenv.py` at all.
+- After the edit: a template with `while true do end` in `min_rect(params)`
+  failed via `rimplace minrect <template>` — `min_rect() raised: ... exceeded
+  5000000 Lua instructions ...` — naming the template, exit 0 (a reported
+  error, not a hang).
+- A template with `while true do end` in `build(ctx)` failed the same way via
+  `rimplace render <template>` — `build() raised: ... exceeded 5000000 Lua
+  instructions ...` — exit 1.
+- `python3 -m rimplace selftest` (via `~/.local/venvs/rimlua/bin/python`):
+  **36/36 passed** (the file's docstring said 34/34 as of 2026-09-02; the
+  suite has since grown to 36 — no regression either way).
 
-Related: the sandbox hole closed the same day (`python` was reachable via lupa's
-builtins table, `102516c6`) — same file, same promise.
+## criteria — met
 
-## verify
-- A template with `while true do end` in `min_rect` and one in `build` both fail
-  with a clear error naming the template, within a bounded time.
-- `rimplace minrect all` still completes over the real library, and reports the
-  offending template rather than dying silently.
-- `rimplace selftest` still passes (34/34 as of 2026-09-02).
-
-## criteria
-No template can make a rimplace command run forever, and the failure names which
-template did it.
+No template can make a rimplace command run forever; the failure names which
+template did it and arrives in well under a second.

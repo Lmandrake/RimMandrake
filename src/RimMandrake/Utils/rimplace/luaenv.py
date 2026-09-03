@@ -49,6 +49,20 @@ _SANDBOX_PRELUDE = """
 for _, name in ipairs({%s}) do _G[name] = nil end
 """ % ", ".join(f'"{n}"' for n in _FORBIDDEN)
 
+# RIMPLACE_LUA_EXECUTION_BUDGET_1: `function min_rect(params) while true do end
+# end` used to wedge the whole process forever, with `rimplace minrect all`
+# running every template in the library and no output naming which one hung.
+# 5,000,000 Lua instructions trips a runaway loop in well under a hundredth of
+# a second; the largest real template build measured runs a few hundred
+# thousand.
+_INSTRUCTION_BUDGET = 5_000_000
+
+_BUDGET_HOOK = """
+debug.sethook(function()
+  error("exceeded %d Lua instructions without finishing - likely an infinite loop")
+end, "", %d)
+""" % (_INSTRUCTION_BUDGET, _INSTRUCTION_BUDGET)
+
 
 def _attribute_filter(obj, name, is_setting):
     """Refuse every dunder, and refuse writing ANY attribute, on the Python side.
@@ -94,6 +108,16 @@ def _sandboxed_runtime():
     from lupa import LuaRuntime
     L = LuaRuntime(unpack_returned_tuples=True, register_eval=False,
                    attribute_filter=_attribute_filter)
+    # The hook is installed HERE, before the prelude nils `debug` out of _G.
+    # debug.sethook is a VM-level registration, not a name lookup in the
+    # global table, so removing `debug` stops a template calling sethook
+    # itself without touching the hook already installed. It must be a Lua
+    # closure, not a Python callable passed in as an argument: debug.sethook
+    # requires a real Lua function (LUA_TFUNCTION) and lupa exposes a Python
+    # callable to Lua as userdata with a __call metamethod, which fails that
+    # check with "function expected, got POBJECT" — confirmed by hand before
+    # writing this.
+    L.execute(_BUDGET_HOOK)
     L.execute(_SANDBOX_PRELUDE)
     return L
 
