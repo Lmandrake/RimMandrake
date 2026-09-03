@@ -87,7 +87,6 @@ def lint_mod(mod: Path, tier: str, sanctioned: set):
                 if not ns.startswith(want) and not (vendored and ns.startswith(vendored)):
                     v.append(("namespace", f"{ns} != {want}{mod.name}"))
                     break
-            break
     for x in list(mod.rglob("*.xml")) + [c for c in mod.rglob("*.cs") if "/obj/" not in str(c)]:
         if x.name == "About.xml":
             continue
