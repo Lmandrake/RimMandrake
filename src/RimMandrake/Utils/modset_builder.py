@@ -278,6 +278,21 @@ def main():
         if game_running():
             print("REFUSING: RimWorld looks live. Exit first.")
             return 1
+        # FULL_BACKUP is a hardcoded snapshot, not re-derived from the live
+        # list. It silently drifts out of date as mods are added -- restoring
+        # it can UNDO mods the live ModsConfig currently has that this
+        # snapshot predates. Compare counts and say so; this does not decide
+        # which count is "right", only stops the loss from being invisible.
+        try:
+            live_n = len(ET.parse(CONFIG).getroot().find("activeMods").findall("li"))
+            backup_n = len(ET.parse(FULL_BACKUP).getroot().find("activeMods").findall("li"))
+            if backup_n < live_n:
+                print("  ! %s has %d mods; the live list currently has %d -- "
+                      "restoring will DROP %d mod(s) versus what is live now."
+                      % (os.path.relpath(FULL_BACKUP, ROOT), backup_n, live_n,
+                         live_n - backup_n))
+        except Exception:
+            pass
         shutil.copy2(FULL_BACKUP, CONFIG)
         print("restored the full mod list from %s" % os.path.relpath(FULL_BACKUP, ROOT))
         return 0
