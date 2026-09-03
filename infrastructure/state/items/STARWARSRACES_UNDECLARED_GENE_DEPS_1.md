@@ -1,68 +1,65 @@
 # STARWARSRACES_UNDECLARED_GENE_DEPS_1 — five real dependencies are not in About.xml
 
-Found 2026-09-03 while building a trimmed mod list for `LIVE_BIRTH_AND_HATCH_DEMO_1`.
-The owner watched the symptom happen and confirmed the fix.
+## Bisection — live, on the bridge, 2026-09-03
 
-## spec
+Owner approved a live restart bisection. Bridge taken, backed up the live
+ModsConfig.xml, built a trimmed test list programmatically (About.xml's 4
+*declared* deps + candidates, dependency-closed and load-ordered via
+`modset_builder.py`'s own `close_over`/`order`), and restarted RimWorld twice
+via the Steam-launch path (`launch-rimworld-via-steam-not-bare-exe`), polling
+`Player.log` for `Bridge token:` as the ready signal (~20s each).
 
-`src/RimStarWars/StarWarsRaces/About/About.xml` declares four `<modDependencies>`:
-Biotech, VEF, `Neronix17.Outland.Genetics`, `Turnovus.Biotech.IntegratedGenes`.
+**Restart 1** — declared deps + `RedMattis.BetterPrerequisites` +
+`RedMattis.BigSmall.Core` (the two the log named): `BigAndSmall.PawnExtension`
+and `BetterPrerequisites.GeneExtension` type-not-found errors both **gone**,
+and so were the 3 originally-reported cross-refs
+(`RSW_Head_hutt`/`RSW_Head_selkath`/`RSW_statgene_predator`) — those are
+RimStarWars's OWN gene defs, discarded whole by the missing-type bug, not
+content owned by another mod. `RedMattis.BigSmall` (races) and
+`RedMattis.Optional` were NOT in this list and nothing missed them.
 
-Its own `<description>` says more than that: *"Genes that belong to Biotech, Core,
-Outland Genetics, Integrated Genes, LFS Genes Expanded - Eyes and Big and Small remain
-theirs; those mods are dependencies and must stay installed."* **Those last two are
-never declared**, and `RedMattis.BetterPrerequisites` — whose `GeneExtension` the genes
-also use — is not mentioned at all.
+**Restart 2** — added `LazyFridayStudio.GenesExpandedEyes`: the six
+`Eyes_*_Reptile` cross-reference failures (referenced directly by
+`src/RimStarWars/StarWarsRaces/Defs/XenotypeDefs/RimMandrakeXenotypes.xml`,
+confirmed by grep) went to **zero**. Still no `RedMattis.BigSmall` or
+`RedMattis.Optional` in the list, and grepping every RSW def file for a
+gene/thing name owned by either turned up nothing — RSW never references
+their content directly.
 
-⇒ Any dependency-walking list builder (`modset_builder.py`, `ModsConfig.MINIMAL.xml`,
-a human reading About.xml) produces a list that loads StarWarsRaces **without** them.
+**Minimal sufficient set, measured: `RedMattis.BetterPrerequisites`,
+`RedMattis.BigSmall.Core`, `LazyFridayStudio.GenesExpandedEyes`.**
+`RedMattis.BigSmall` and `RedMattis.Optional` were carry-alongs from the
+original live fix, not required — corroborated independently: `About.xml`'s
+own `<loadAfter>` already listed exactly these same three RedMattis/LFS
+packageIds and neither of the other two, from whoever wired the ordering
+during the original live fix.
 
-## what that costs — measured live
+(One unrelated finding, out of scope: `RSW_statgene_PsyHarmonize` stayed
+unresolved throughout — RSW's own gene, not one of the 5 candidates. Left
+alone; not filed separately since nobody is blocked on it right now.)
 
-On a 23-mod list built exactly that way:
+## Fix
 
-```
-Exception loading def from file SW_Genes.xml:
-  System.ArgumentException: Could not find type named BigAndSmall.PawnExtension
-  System.ArgumentException: Could not find type named BetterPrerequisites.GeneExtension
-Could not resolve cross-reference to GeneDef RSW_Head_hutt   (wanter=requiredGenes)
-Could not resolve cross-reference to GeneDef RSW_Head_selkath (wanter=requiredGenes)
-Could not resolve cross-reference to GeneDef RSW_statgene_predator (wanter=genes)
-```
+Added the 3 measured dependencies to
+`src/RimStarWars/StarWarsRaces/About/About.xml`'s `<modDependencies>`
+(workshop IDs read from the installed mods themselves, not guessed):
+`RedMattis.BetterPrerequisites` (2925432336), `RedMattis.BigSmall.Core`
+(2920751126), `LazyFridayStudio.GenesExpandedEyes` (2922457045). Deployed with
+`deploy_custom_mods.py --mod StarWarsRaces --apply` (writing the repo file is
+not deploying it) and re-verified: `close_over(["mandrake.rsw.starwarsraces"])`
+now pulls in all three with zero missing.
 
-A missing `modExtension` type discards the **whole def**, silently
-(`modextension-missing-type-discards-def`). So the head-type genes went with them.
+`ModsConfig.MINIMAL.xml` does not include StarWarsRaces (checked) so nothing
+there needed a change.
 
-🔴 **The symptom is a RENDERING one and does not name a gene.** The owner, watching:
-*"the graphical images of the humans are blinking off and on around 0.3 Hz"* and
-*"Zooming out causes all the humans to reappear. Zooming in irregularly removes them
-until they are all invisible."* The cached texture atlas still had the pawns; the
-zoomed-in dynamic draw path did not. Nobody would connect that to a gene XML.
+## Cleanup
 
-**Fix, confirmed:** adding `RedMattis.BetterPrerequisites`, `RedMattis.BigSmall.Core`,
-`RedMattis.BigSmall`, `RedMattis.Optional`, `LazyFridayStudio.GenesExpandedEyes` took
-those log lines to **0** on the next load, and the owner confirmed: *"Correct analysis
-of blinking. All gone."*
-
-## Watch out
-
-⚠️ **`RedMattis.Optional` and `RedMattis.BigSmall` were added together with the other
-three, so the minimal sufficient set is UNMEASURED.** `BetterPrerequisites` and
-`BigSmall.Core` are the two the log actually named; the other three are plausible
-carry-alongs. Do not write all five into About.xml without testing which are needed —
-an over-declared dependency is a mod nobody can run without.
-
-⚠️ The full 589-mod list has all five active, so **this is invisible on the owner's
-stack** and only bites trimmed/minimal lists — which is exactly where tier-b tool work
-now happens, since hot-reload was retired (`HOT_RELOAD_DEFS_BREAKS_PAWNGEN_1`).
-
-## verify
-
-Build a list from About.xml's declared dependencies alone, load it, and grep the log
-for `Could not find type named BigAndSmall.PawnExtension` — expect present before the
-fix, absent after. Then bisect the five to find the minimal set before declaring them.
+Restored the live `ModsConfig.xml` from the pre-bisection backup (589 active
+mods) before closing RimWorld and releasing the bridge — confirmed on disk
+after the process exited, since RimWorld does not rewrite this file on exit.
 
 ## criteria
 
-`About.xml` declares every mod StarWarsRaces genuinely needs, tested one at a time, and
-`ModsConfig.MINIMAL.xml` (or whatever list carries StarWarsRaces) includes them.
+`About.xml` declares every mod StarWarsRaces genuinely needs, tested one at a
+time. Met — 3 of the original 5 candidates, each individually confirmed live,
+not all 5 blindly.

@@ -44,6 +44,21 @@ Contains no compiled code.</description>
       <displayName>Integrated Genes</displayName>
       <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2891845502</steamWorkshopUrl>
     </li>
+    <li>
+      <packageId>RedMattis.BetterPrerequisites</packageId>
+      <displayName>Big and Small - Framework</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2925432336</steamWorkshopUrl>
+    </li>
+    <li>
+      <packageId>RedMattis.BigSmall.Core</packageId>
+      <displayName>Big and Small - Genes &amp; More</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2920751126</steamWorkshopUrl>
+    </li>
+    <li>
+      <packageId>LazyFridayStudio.GenesExpandedEyes</packageId>
+      <displayName>[LFS] Genes Expanded - Eyes</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2922457045</steamWorkshopUrl>
+    </li>
   </modDependencies>
   <loadAfter>
     <li>Ludeon.RimWorld.Biotech</li>
