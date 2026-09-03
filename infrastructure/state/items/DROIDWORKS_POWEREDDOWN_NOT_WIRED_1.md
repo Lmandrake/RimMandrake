@@ -125,3 +125,42 @@ per-tick O(hediffs) scan in `HediffComp_DWBoltResentment`.
 Deploy still owed — `Droidworks` mod is not in the live 587-mod ModsConfig
 this session; these fixes need a Droidworks-tier quicktest load to
 live-verify, matching the criteria below.
+
+## 🔴 2026-09-02 (FOUNDRY, re-review pass) — the needClass fix above UNMASKED A GAME-ENDING BUG, now fixed
+
+A fresh full-file re-review (not a diff review — CLAUDE.md's "code isn't
+clean until a review says so") of the same file set found that fixing
+`RSW_DW_Power`'s `needClass` (the finding-1 fix above) exposed a second,
+independent, far worse defect that had been dormant only because the need
+never worked before: **`RSW_DW_Power` has no gating field at all** — no
+`minIntelligence`, `hediffRequiredAny`, `colonistsOnly`, `requiredComps`.
+Verified against `Pawn_NeedsTracker.ShouldHaveNeed` (RimSage): every gate
+defaults to a pass, so the method falls through to `return true;` for
+**every pawn in the game** — human, animal, mechanoid alike. Since only
+Droidworks race ThingDefs carry `Recipe_RebootDroid`, every other pawn
+would drain to 0 in ~1.5 in-game days and be **permanently, irrecoverably
+downed with no way to remove it**. Enabling this mod with the needClass
+fix alone, before this second fix, would have ended any game inside two
+days — including the owner's live campaign, if this mod were ever
+switched on without the follow-up.
+
+**Fixed**: added a Harmony dependency to `Droidworks.csproj` (this
+project's first) and `Patch_ShouldHaveNeed_Power.cs` — a postfix on the
+private `Pawn_NeedsTracker.ShouldHaveNeed` narrowing `RSW_DW_Power`
+specifically to `FleshType == RSW_DW_FleshType_Droid`. The NeedDef itself
+still has no native XML gate; the C# patch is the actual gate now.
+
+**Also fixed in the same pass** (finding 2 from the same re-review): the
+unpowered-charging fix only guarded `CompDWCharger.CompTick` (the
+radius>0 nimbus's passive path). The radius-0 sockets/docks are charged
+entirely by `JobDriver_DWRecharge`/`JobGiver_DWRecharge`, which never
+checked power/switch state — hoisted the check into a shared
+`CompDWCharger.IsOperational` property and applied it to the job-giver's
+candidate filter and the job driver's tick action (ends the job cleanly
+if the grid drops mid-charge), not just the comp's own tick.
+
+All fixes compile clean (`Droidworks.csproj`, 0/0, now with a Harmony
+reference). A third fresh full-file re-review is owed before this file
+set can be marked clean in `infrastructure/state/CODE_REVIEW_STATUS.json`
+— this is now the second time a fix in this exact file set introduced or
+unmasked something the previous pass missed.

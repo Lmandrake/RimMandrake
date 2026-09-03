@@ -49,6 +49,17 @@ namespace RimMandrake.StarWars.Droidworks
                     ReadyForNextToil();
                     return;
                 }
+                // Fixed 2026-09-02 (opus code review, re-review pass): this never
+                // checked power/switch state either - the grid dropping or the
+                // charger being flicked off mid-job kept charging for free. End
+                // the job the same way a missing comp already does, so the
+                // droid re-evaluates (JobGiver_DWRecharge's own IsUsableCharger
+                // now excludes an unpowered charger from being picked again).
+                if (!comp.IsOperational)
+                {
+                    ReadyForNextToil();
+                    return;
+                }
                 need.CurLevel += comp.Props.chargeRatePerHour / GenDate.TicksPerHour;
                 if (need.CurLevel >= 1f) ReadyForNextToil();
             };

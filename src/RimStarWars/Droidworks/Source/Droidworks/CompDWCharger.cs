@@ -33,6 +33,24 @@ namespace RimMandrake.StarWars.Droidworks
 
         public CompProperties_DWCharger Props => (CompProperties_DWCharger)props;
 
+        // Fixed 2026-09-02 (opus code review, re-review pass): the original fix
+        // only guarded this comp's own CompTick (the radius>0 nimbus path).
+        // RSW_DW_ChargeSocket/RSW_DW_ChargeDock (radius 0) are charged entirely
+        // by JobDriver_DWRecharge, which consulted nothing about power - a
+        // droid would path to and charge from an unpowered or switched-off
+        // socket. Hoisted here so both paths share one answer.
+        public bool IsOperational
+        {
+            get
+            {
+                CompPowerTrader powerComp = parent.GetComp<CompPowerTrader>();
+                if (powerComp != null && !powerComp.PowerOn) return false;
+                CompFlickable flickComp = parent.GetComp<CompFlickable>();
+                if (flickComp != null && !flickComp.SwitchIsOn) return false;
+                return true;
+            }
+        }
+
         public override void CompTick()
         {
             if (Props.radius <= 0f) return;
@@ -40,15 +58,7 @@ namespace RimMandrake.StarWars.Droidworks
 
             Map map = parent.Map;
             if (map == null) return;
-
-            // Fixed 2026-09-02 (opus code review): this comp never consulted the
-            // building's own power/switch state, so RSW_DW_ChargeNimbus (800 W
-            // CompPowerTrader + CompFlickable) charged every droid in radius while
-            // unpowered, grid-down, or switched off.
-            CompPowerTrader powerComp = parent.GetComp<CompPowerTrader>();
-            if (powerComp != null && !powerComp.PowerOn) return;
-            CompFlickable flickComp = parent.GetComp<CompFlickable>();
-            if (flickComp != null && !flickComp.SwitchIsOn) return;
+            if (!IsOperational) return;
 
             float gain = Props.chargeRatePerHour * ScanIntervalTicks / GenDate.TicksPerHour;
             foreach (Thing thing in GenRadial.RadialDistinctThingsAround(parent.Position, map, Props.radius, useCenter: true))

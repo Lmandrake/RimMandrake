@@ -17,6 +17,18 @@
        RSW_DW_PoweredDown, both charger comps, and Recipe_RebootDroid's charge
        restore were all dead as a result. This was the actual root cause
        DROIDWORKS_POWEREDDOWN_NOT_WIRED_1 was chasing.
+
+       🔴 THAT FIX UNMASKED A SEPARATE, WORSE BUG, fixed the same session
+       (re-review pass): this def has NO gating field — no minIntelligence,
+       hediffRequiredAny, colonistsOnly, requiredComps. Verified against
+       Pawn_NeedsTracker.ShouldHaveNeed: with every gate at its default, the
+       need reaches EVERY pawn in the game, not just droids — human,
+       animal, mechanoid alike. Since only droid race ThingDefs carry
+       Recipe_RebootDroid, every other pawn drains to 0 in ~1.5 in-game
+       days and is permanently, irrecoverably downed. Fixed with a Harmony
+       postfix, Patch_ShouldHaveNeed_Power.cs, narrowing this need to
+       FleshType == RSW_DW_FleshType_Droid — the NeedDef itself still has
+       no native gate, the C# patch is the actual gate.
   ======================================================================== -->
   <NeedDef>
     <defName>RSW_DW_Power</defName>

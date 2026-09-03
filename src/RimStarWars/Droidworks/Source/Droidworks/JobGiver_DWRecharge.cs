@@ -16,9 +16,14 @@ namespace RimMandrake.StarWars.Droidworks
     /// with invert="true" - the exact shape vanilla itself uses for its own
     /// below-threshold need-seeking (Idle Joy at 90%, Core/ThinkTreeDefs/
     /// Humanlike.xml), per BENCH's own instruction to mirror it rather than
-    /// invent a WorkGiver. Harmless on non-droid pawns: they carry no RSW_DW_Power
-    /// need, so TryGiveJob below returns null immediately and nothing else in
-    /// this class ever runs for them.
+    /// invent a WorkGiver. Harmless on non-droid pawns:
+    /// Patch_ShouldHaveNeed_Power.cs gates RSW_DW_Power to
+    /// FleshType == RSW_DW_FleshType_Droid, so TryGiveJob below returns null
+    /// immediately and nothing else in this class ever runs for them.
+    /// (Corrected 2026-09-02, re-review pass: this used to be true because
+    /// the need was broken and reached NOBODY, droids included - fixing
+    /// that exposed that the need had no gate at all and would have
+    /// reached EVERY pawn without this patch. See NeedDefs_Droidworks.xml.)
     /// </summary>
     public class JobGiver_DWRecharge : ThinkNode_JobGiver
     {
@@ -44,6 +49,11 @@ namespace RimMandrake.StarWars.Droidworks
         {
             CompDWCharger comp = t.TryGetComp<CompDWCharger>();
             if (comp == null || comp.Props.radius > 0f) return false;
+            // Fixed 2026-09-02 (opus code review, re-review pass): this never
+            // checked power/switch state, so a droid would path to and charge
+            // from an unpowered or switched-off socket/dock - the same defect
+            // the nimbus fix addressed, on the path that's actually primary.
+            if (!comp.IsOperational) return false;
             if (t.IsForbidden(pawn)) return false;
             return pawn.CanReserve(t);
         }

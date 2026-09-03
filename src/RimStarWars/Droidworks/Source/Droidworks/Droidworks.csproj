@@ -41,6 +41,16 @@
     <RimWorldManaged>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManaged>
   </PropertyGroup>
 
+  <!-- Harmony (0Harmony.dll), added 2026-09-02 for Patch_ShouldHaveNeed_Power -
+       RSW_DW_Power has no NeedDef-native gating field (no minIntelligence,
+       hediffRequiredAny, colonistsOnly, ...) that could restrict it to droids
+       without a code change, so a Harmony postfix on the private
+       Pawn_NeedsTracker.ShouldHaveNeed is the fix. Same HarmonyDll recipe as
+       src/RimMandrake/Ninefold/Source/Ninefold.csproj. -->
+  <PropertyGroup Condition="'$(HarmonyDll)' == ''">
+    <HarmonyDll>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HarmonyDll>
+  </PropertyGroup>
+
   <ItemGroup>
     <Compile Include="CompDroidDetonation.cs" />
     <Compile Include="CompDWCharger.cs" />
@@ -57,6 +67,7 @@
     <Compile Include="JobDriver_DWRecharge.cs" />
     <Compile Include="JobGiver_DWRecharge.cs" />
     <Compile Include="Need_Power.cs" />
+    <Compile Include="Patch_ShouldHaveNeed_Power.cs" />
     <Compile Include="Recipe_DWMemoryWipe.cs" />
     <Compile Include="Recipe_InstallRestrainingBolt.cs" />
     <Compile Include="Recipe_RebootDroid.cs" />
@@ -78,6 +89,10 @@
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
       <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(HarmonyDll)</HintPath>
       <Private>false</Private>
     </Reference>
   </ItemGroup>
