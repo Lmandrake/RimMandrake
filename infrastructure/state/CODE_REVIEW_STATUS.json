@@ -219,6 +219,11 @@
     "date": "2026-09-03",
     "sha": "ecc86a6f"
   },
+  "src/RimMandrake/Pits/Source/Debug/PitDebugActions.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "42c76948"
+  },
   "src/RimMandrake/Pits/Source/DigStage/Building_PitDigSite.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -333,6 +338,11 @@
     "cleanCount": 1,
     "date": "2026-09-02",
     "sha": "1a7b3aa1"
+  },
+  "src/RimMandrake/RimDefDump/Source/DefDumper.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "42c76948"
   },
   "src/RimMandrake/ToolBeltFix/Source/mirror_toolbelt_west.py": {
     "cleanCount": 1,
@@ -1381,6 +1391,11 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "66d742be"
+  },
+  "src/RimStarWars/JawaRules/Source/JawaRules.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "d075693a"
   },
   "src/RimStarWars/KotORBandolierNorthFix/Source/survey_broken_sets.py": {
     "cleanCount": 1,
