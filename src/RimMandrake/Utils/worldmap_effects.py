@@ -514,4 +514,4 @@ def _derive(f: dict) -> str:
     if not bits:
         return ("No mechanical effect found in the def — every gameplay field is at "
                 "its default, so this is appearance and flavour only.")
-    return ("Field-derived, not yet written up: " + "; ".join(bits) + ".").capitalize()
+    return "Field-derived, not yet written up: " + "; ".join(bits) + "."
