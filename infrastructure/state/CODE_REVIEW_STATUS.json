@@ -1142,6 +1142,11 @@
     "date": "2026-09-03",
     "sha": "af2d8daa"
   },
+  "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchMiscTools2.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "dc8febf8"
+  },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchNeedsTools.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -1182,6 +1187,11 @@
     "date": "2026-09-03",
     "sha": "8b25e71d"
   },
+  "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchSimTools.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "f10e21c4"
+  },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchSocietyTools.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -1201,6 +1211,11 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "af2d8daa"
+  },
+  "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchSwcpCharacterTools.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "f10e21c4"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchSystemTools.cs": {
     "cleanCount": 1,
