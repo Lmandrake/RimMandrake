@@ -103,8 +103,7 @@ def main():
         # only a REPLACE aimed at a non-combat group counts as touching it; a
         # re-declaration that restores vanilla's own kinds is the sanctioned route.
         touched = [xp for xp, v in combat_blocks(texts[f])
-                   if any(k in xp for k in ("Trader", "Peaceful", "Settlement"))
-                   and "Replace" not in "" ]
+                   if any(k in xp for k in ("Trader", "Peaceful", "Settlement"))]
         check(f"{f}: Trader/Peaceful/Settlement untouched", not touched,
               "; ".join(touched)[:160])
 
