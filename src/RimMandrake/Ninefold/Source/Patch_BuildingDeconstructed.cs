@@ -26,9 +26,16 @@ namespace RimMandrake.Ninefold
     // `Designator_Deconstruct.DesignateThing` bypasses the job entirely and
     // is deliberately NOT covered here -- it is a debug-only path.
     //
-    // Filtered to the player's own, non-blueprint buildings (`!def.IsFrame`
-    // excludes an in-progress construction frame, which was never a
-    // "repairable" thing to begin with).
+    // Fires whenever the deconstruction is PERFORMED by a player-faction pawn
+    // (corrected 2026-09-02, re-review pass: this used to say "the player's
+    // OWN buildings", which the code below never checked - only pawn.Faction
+    // is examined, never the building's. That's deliberate, not a gap: a
+    // scavenger clan deconstructing salvage/ruins it does not own is exactly
+    // the "costly lever, resources now, Rekko's wrath later" case §8b.A
+    // describes, and restricting to player-owned buildings would make this
+    // barely fire at all for a campaign built around scrapping other
+    // people's wrecks). `!def.IsFrame` excludes an in-progress construction
+    // frame, which was never a "repairable" thing to begin with.
     [HarmonyPatch(typeof(JobDriver_Deconstruct), "FinishedRemoving")]
     public static class Patch_BuildingDeconstructed
     {

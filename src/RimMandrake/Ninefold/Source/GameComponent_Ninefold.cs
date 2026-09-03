@@ -14,11 +14,8 @@ namespace RimMandrake.Ninefold
     // RimWorld choke points to its ApplyDelta. It does NOT ship: first-
     // contact chains or narrator corpus letters (NINEFOLD_ENGINE_M0_1's other
     // named pieces) -- those need real event-binding research and owner-
-    // reviewed voice text, not a solo pass. Corrected 2026-09-02, re-review
-    // pass: this comment used to say the event hooks were NOT shipped, which
-    // stopped being true the moment they were fixed and compiled the same
-    // day but nobody updated the one comment every reader of this class sees
-    // first. See infrastructure/state/items/NINEFOLD_ENGINE_M0_1.md.
+    // reviewed voice text, not a solo pass. See
+    // infrastructure/state/items/NINEFOLD_ENGINE_M0_1.md.
     public class GameComponent_Ninefold : GameComponent
     {
         // Satiation: -100..100, signed, free-floating, moves ONLY by
@@ -108,9 +105,8 @@ namespace RimMandrake.Ninefold
         {
             base.ExposeData();
             // ToLists() MUST run before Scribe_Collections.Look() on the Saving pass --
-            // Look() writes whatever satiationList/moodList already hold at the moment
-            // it runs. Populating after meant every save wrote either null (first save
-            // of a session) or the PREVIOUS save's snapshot.
+            // Look() writes whatever satiationList/moodList already hold at the
+            // moment it runs, so populating them after would scribe stale data.
             if (Scribe.mode == LoadSaveMode.Saving)
             {
                 ToLists();
