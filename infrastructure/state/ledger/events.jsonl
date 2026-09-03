@@ -4089,3 +4089,7 @@
 {"seat":"FOUNDRY","event":"start","id":"DEEPWATER_DEAD_GASMASK_TAG_1","ts":"2026-09-03T02:55:01Z"}
 {"seat":"FOUNDRY","event":"file","id":"PAWNKIND_ROSTER_BACKSTORY_DRIFT_1","title":"gen_pawnkind_roster.py KIT_PRE is missing backstoryFilters that 4 DroidDepot pawnkinds carry in the live XML","kind":"bug","target":"v1","needs":"offline","caused_by":"DEEPWATER_DEAD_GASMASK_TAG_1","for":"FOUNDRY","ts":"2026-09-03T02:56:43Z"}
 {"seat":"FOUNDRY","event":"close","id":"DEEPWATER_DEAD_GASMASK_TAG_1","sha":"53d630ae","ts":"2026-09-03T02:57:12Z"}
+{"seat":"FOUNDRY","event":"claim","id":"RIMPLACE_LUA_EXECUTION_BUDGET_1","ts":"2026-09-03T02:57:27Z"}
+{"seat":"FOUNDRY","event":"start","id":"RIMPLACE_LUA_EXECUTION_BUDGET_1","ts":"2026-09-03T02:57:30Z"}
+{"seat":"BENCH","event":"file","id":"STARWARSRACES_UNDECLARED_GENE_DEPS_1","title":"StarWarsRaces About.xml omits five real dependencies; without them the head genes are eaten and pawns stop rendering","kind":"bug","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-03T02:59:22Z"}
+{"seat":"FOUNDRY","event":"close","id":"RIMPLACE_LUA_EXECUTION_BUDGET_1","sha":"3ec7a6e1","ts":"2026-09-03T03:00:00Z"}

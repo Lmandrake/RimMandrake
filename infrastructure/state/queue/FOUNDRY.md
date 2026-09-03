@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-03T02:57:12Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-03T03:00:00Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -426,16 +426,6 @@ _none._
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
 
-## RIMPLACE_LUA_EXECUTION_BUDGET_1 A template's min_rect or build can loop forever; rimplace minrect all wedges with no output
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     spec, verify and criteria all present
-summary:  src/RimMandrake/Utils/rimplace/luaenv.py runs template Lua with no instruction
-prose:    infrastructure/state/items/RIMPLACE_LUA_EXECUTION_BUDGET_1.md
-
 ## RIMPLACE_ROOF_ESCAPES_FOOTPRINT_1 ctx:roof lays roof outside the template's own rect, and roof_rect always reports success
 state:    proposed
 row:      unassigned
@@ -465,3 +455,13 @@ kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/PAWNKIND_ROSTER_BACKSTORY_DRIFT_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PAWNKIND_ROSTER_BACKSTORY_DRIFT_1.md
+
+## STARWARSRACES_UNDECLARED_GENE_DEPS_1 StarWarsRaces About.xml omits five real dependencies; without them the head genes are eaten and pawns stop rendering
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/STARWARSRACES_UNDECLARED_GENE_DEPS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/STARWARSRACES_UNDECLARED_GENE_DEPS_1.md
