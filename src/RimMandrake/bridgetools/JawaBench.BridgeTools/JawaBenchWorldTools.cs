@@ -2017,7 +2017,8 @@ namespace JawaBench.BridgeTools
                 "what vanilla already placed rather than deleting and remaking it, so ids and " +
                 "the reference graph stay intact. Any field left null is untouched. " +
                 "Setting a faction that does not exist is refused rather than nulling it.",
-            ResultDescription = "success, changed, objects[] read back.")]
+            ResultDescription = "success (false if any id was not found or a field failed to write), " +
+                "changed, notFound[] (ids matching no live world object), errors[], objects[] read back.")]
         public static async Task<object> WorldObjectsSet(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -2050,9 +2051,11 @@ namespace JawaBench.BridgeTools
                     return Fail("Tile " + tile + " out of range.");
 
                 int changed = 0; var back = new List<object>(); var errors = new List<string>();
+                var matched = new HashSet<int>();
                 foreach (var o in Find.WorldObjects.AllWorldObjects.ToList())
                 {
                     if (o == null || !want.Contains(o.ID)) continue;
+                    matched.Add(o.ID);
                     try
                     {
                         if (tile >= 0) o.Tile = new PlanetTile(tile, Find.WorldGrid.Surface);
@@ -2069,9 +2072,16 @@ namespace JawaBench.BridgeTools
                     catch (Exception e) { errors.Add("Object " + o.ID + ": " + e.GetType().Name + ": " + e.Message); }
                 }
 
+                // Same silent-no-op shape jawa/world_objects_remove was fixed for: an id
+                // that matches no live world object used to vanish with no trace at all -
+                // not even an errors[] entry - leaving `success: true, changed: <requested>`
+                // as the answer to a typo'd or already-removed id.
+                var notFound = want.Where(q => !matched.Contains(q)).ToList();
+
                 return (object)new
                 {
-                    success = true, changed, requested = want.Count, errors,
+                    success = notFound.Count == 0 && errors.Count == 0,
+                    changed, requested = want.Count, notFound, errors,
                     note = "Call jawa/world_commit - FastTileFinder caches settlement tiles.",
                     objects = back, ticksGame = TicksGameSafe(),
                 };
