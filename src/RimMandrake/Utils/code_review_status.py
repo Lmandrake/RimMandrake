@@ -16,14 +16,34 @@ The log (`infrastructure/state/CODE_REVIEW_STATUS.json`) is owned by this
 script — do not hand-edit it, the same convention as the ledger.
 """
 import argparse
+import contextlib
+import fcntl
 import json
 import os
 import subprocess
 import sys
+import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
 LOG_PATH = os.path.join(ROOT, "infrastructure", "state", "CODE_REVIEW_STATUS.json")
+LOCK_PATH = LOG_PATH + ".lock"
+
+
+@contextlib.contextmanager
+def locked():
+    """Exclusive lock across a load-mutate-save critical section. This repo
+    is shared by two live agent windows (BENCH/FOUNDRY); without this, two
+    concurrent mark-clean calls on different files is a lost-update race —
+    whichever save() runs last wins and the other's entry silently vanishes."""
+    os.makedirs(os.path.dirname(LOCK_PATH), exist_ok=True)
+    fd = os.open(LOCK_PATH, os.O_WRONLY | os.O_CREAT, 0o644)
+    try:
+        fcntl.flock(fd, fcntl.LOCK_EX)
+        yield
+    finally:
+        fcntl.flock(fd, fcntl.LOCK_UN)
+        os.close(fd)
 
 
 def load():
@@ -34,9 +54,24 @@ def load():
 
 
 def save(data):
-    with open(LOG_PATH, "w", encoding="utf-8") as f:
-        json.dump(data, f, indent=2, sort_keys=True)
-        f.write("\n")
+    # Per-call unique tmp name + lock + os.replace, same discipline as
+    # rimflow.model.write_bridge_file / atomic_copy: a fixed "<path>.tmp"
+    # truncates whatever a concurrent writer already put there (O_TRUNC
+    # fires at open(), before any lock), and an interrupt mid-write must
+    # never leave truncated/partial JSON where load() will raise on it.
+    tmp = "%s.tmp.%d.%d" % (LOG_PATH, os.getpid(), time.time_ns())
+    fd = os.open(tmp, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o644)
+    try:
+        fcntl.flock(fd, fcntl.LOCK_EX)
+        try:
+            body = json.dumps(data, indent=2, sort_keys=True) + "\n"
+            os.write(fd, body.encode("utf-8"))
+            os.fsync(fd)
+        finally:
+            fcntl.flock(fd, fcntl.LOCK_UN)
+    finally:
+        os.close(fd)
+    os.replace(tmp, LOG_PATH)
 
 
 def repo_rel(path):
@@ -55,32 +90,63 @@ def commits_since(sha, relpath):
     return lines
 
 
+def working_tree_dirty(relpath):
+    """True if `relpath` has any uncommitted change (staged, unstaged, or
+    untracked). Returns None if git itself failed to answer (path outside
+    the repo, index lock contention, ...) — the caller must treat that as
+    "cannot prove clean", never as "no changes"."""
+    r = git(["status", "--porcelain", "--", relpath])
+    if r.returncode != 0:
+        return None
+    return bool(r.stdout.strip())
+
+
+def clean_state(rel, entry):
+    """Returns (state, detail) where state is CLEAN/DIRTY. `entry` may be
+    None (never marked). Shared by `check` and `list` so the two commands
+    cannot disagree about what CLEAN means."""
+    if entry is None:
+        return "DIRTY", "never marked clean"
+
+    dirty = working_tree_dirty(rel)
+    if dirty is None:
+        return "DIRTY", "git could not report working-tree status (path outside repo, or a lock)"
+    if dirty:
+        return "DIRTY", "uncommitted changes since the clean mark"
+
+    since = commits_since(entry["sha"], rel)
+    if since is None:
+        return "DIRTY", f"recorded sha {entry['sha']} not found — log is stale"
+    if len(since) > 0:
+        return "DIRTY", (f"{len(since)} commit(s) since clean at {entry['sha']} on {entry['date']}", since)
+    return "CLEAN", f"clean at {entry['sha']} on {entry['date']}"
+
+
 def cmd_check(paths):
     data = load()
     any_dirty = False
     for p in paths:
         rel = repo_rel(p)
-        entry = data.get(rel)
-        if entry is None:
-            print(f"DIRTY  {rel}  (never marked clean)")
+        state, detail = clean_state(rel, data.get(rel))
+        if state == "DIRTY":
             any_dirty = True
-            continue
-        since = commits_since(entry["sha"], rel)
-        if since is None:
-            print(f"DIRTY  {rel}  (recorded sha {entry['sha']} not found — log is stale)")
-            any_dirty = True
-        elif len(since) > 0:
-            print(f"DIRTY  {rel}  ({len(since)} commit(s) since clean at {entry['sha']} on {entry['date']}):")
-            for line in since:
-                print(f"         {line}")
-            any_dirty = True
+            if isinstance(detail, tuple):
+                msg, lines = detail
+                print(f"DIRTY  {rel}  ({msg}):")
+                for line in lines:
+                    print(f"         {line}")
+            else:
+                print(f"DIRTY  {rel}  ({detail})")
         else:
-            print(f"CLEAN  {rel}  (clean at {entry['sha']} on {entry['date']})")
+            print(f"CLEAN  {rel}  ({detail})")
     return 1 if any_dirty else 0
 
 
 def cmd_mark_clean(path, sha):
     rel = repo_rel(path)
+    if rel.startswith("../") or rel == "..":
+        print(f"FAIL: {rel} is outside the repo root.", file=sys.stderr)
+        return 2
     if not os.path.isfile(os.path.join(ROOT, rel)):
         print(f"FAIL: {rel} does not exist under the repo root.", file=sys.stderr)
         return 2
@@ -92,16 +158,23 @@ def cmd_mark_clean(path, sha):
         sha = r.stdout.strip()
     # Uncommitted changes to this exact file mean HEAD is not what will actually
     # ship - refuse rather than record a clean mark against a commit that
-    # doesn't reflect what was reviewed.
-    r = git(["status", "--porcelain", "--", rel])
-    if r.stdout.strip():
+    # doesn't reflect what was reviewed. A git FAILURE (index lock, bad path)
+    # must refuse too - empty stdout from a failed call is not proof of a
+    # clean working tree, and treating it as one is how a lock collision
+    # would have let a dirty file get marked clean.
+    dirty = working_tree_dirty(rel)
+    if dirty is None:
+        print(f"FAIL: git could not report status for {rel} (index lock? bad path?). Try again.", file=sys.stderr)
+        return 2
+    if dirty:
         print(f"FAIL: {rel} has uncommitted changes. Commit first, then mark-clean.", file=sys.stderr)
         return 2
     r = git(["log", "-1", "--format=%ad", "--date=short", sha])
     date = r.stdout.strip() if r.returncode == 0 else "unknown"
-    data = load()
-    data[rel] = {"sha": sha, "date": date}
-    save(data)
+    with locked():
+        data = load()
+        data[rel] = {"sha": sha, "date": date}
+        save(data)
     print(f"CLEAN  {rel}  recorded at {sha} ({date})")
     return 0
 
@@ -113,9 +186,9 @@ def cmd_list():
         return 0
     for rel in sorted(data):
         entry = data[rel]
-        since = commits_since(entry["sha"], rel)
-        state = "CLEAN" if since is not None and len(since) == 0 else "DIRTY (edited since)"
-        print(f"{state:22s} {rel}  ({entry['sha']}, {entry['date']})")
+        state, _ = clean_state(rel, entry)
+        label = state if state == "CLEAN" else "DIRTY (edited since / uncommitted)"
+        print(f"{label:35s} {rel}  ({entry['sha']}, {entry['date']})")
     return 0
 
 
