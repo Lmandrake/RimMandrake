@@ -56,7 +56,12 @@ def frontmatter(md: pathlib.Path) -> dict:
 def first_sentence(s: str, cap: int = 130) -> str:
     s = " ".join(s.split())
     # Not a naive split on ". " — descriptions are full of `.py`, `1.6` and `.md`.
-    m = re.search(r"(?<![A-Za-z0-9])\.(?=\s+[A-Z])", s)
+    # Those never match: the period there is not followed by whitespace+capital
+    # (an extension or version number continues in lowercase/digits), so the
+    # lookahead alone already protects them - no lookbehind needed, and the
+    # obvious one (excluding a preceding letter/digit) is wrong: it blocks
+    # every ordinary sentence, which ends in a word.
+    m = re.search(r"\.(?=\s+[A-Z])", s)
     if m:
         s = s[: m.start()]
     if len(s) <= cap:
