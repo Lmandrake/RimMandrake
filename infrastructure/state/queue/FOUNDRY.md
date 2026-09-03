@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-03T04:21:06Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-03T04:29:11Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -312,7 +312,7 @@ row:      unassigned
 needs:    game-up
 target:   v1
 kind:     task
-summary:  (no items/INHABITED_STOCK_ONTO_MAP_AND_FATE_1.md yet — write one when you have something to say)
+summary:  Three outcomes, decided here because the item filed none.
 prose:    infrastructure/state/items/INHABITED_STOCK_ONTO_MAP_AND_FATE_1.md
 
 ## DEV_LOG_AUTOOPEN_SUPPRESS_1 Suppress the dev-mode auto-open of the error log (no vanilla pref exists; Harmony prefix in JawaBench)
@@ -388,4 +388,14 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-_none._
+Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
+
+## INHABITED_TILEMUTATOR_NO_ENTRY_1 No TileMutatorDef anywhere names Inhabited_Cast -- the wilderness settlement-spawn route has no way in
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/INHABITED_TILEMUTATOR_NO_ENTRY_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/INHABITED_TILEMUTATOR_NO_ENTRY_1.md
