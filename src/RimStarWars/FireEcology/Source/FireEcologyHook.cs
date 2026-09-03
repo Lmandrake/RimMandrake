@@ -33,9 +33,10 @@ namespace RimMandrake.StarWars.FireEcology
             "RSW_FE_Ground_Sand", "Sand",
         };
 
-        private const float FulguriteChancePerStrike = 0.35f;
-        private const float ScorchFruitChancePerFireTick = 0.0025f;
-        private const int MinFireSizeForAshDusting = 1; // any live Fire counts
+        internal const float FulguriteChancePerStrike = 0.35f;
+        internal const float AshDustingChancePerFireTick = 0.02f;
+        internal const float ScorchFruitChancePerFireTick = 0.0025f;
+        internal const int MinFireSizeForAshDusting = 1; // any live Fire counts — not yet gated on; reserved for a future fire-size check
 
         static FireEcologyHookMod()
         {
@@ -109,7 +110,7 @@ namespace RimMandrake.StarWars.FireEcology
                 if (map == null || !strikeLoc.IsValid || !strikeLoc.InBounds(map)) return;
                 TerrainDef terrain = strikeLoc.GetTerrain(map);
                 if (!FireEcologyHookMod.IsSandFamily(terrain)) return;
-                if (!Rand.Chance(0.35f)) return; // FulguriteChancePerStrike, inlined: consts aren't accessible cross-class without exposing them
+                if (!Rand.Chance(FireEcologyHookMod.FulguriteChancePerStrike)) return;
 
                 ThingDef fulguriteDef = DefDatabase<ThingDef>.GetNamedSilentFail("RSW_FE_Fulgurite");
                 if (fulguriteDef == null) return; // mod not loaded / def missing — no-op, not a crash
@@ -126,12 +127,17 @@ namespace RimMandrake.StarWars.FireEcology
 
     // Postfix on the PROTECTED instance Fire.TickInterval(int delta). Runs
     // once per live Fire thing per tick-interval batch — cheap, low-chance
-    // rolls only, never per-frame.
+    // rolls only, never per-frame. `delta` is the batch's tick-interval size
+    // (GenTicks.GetCameraUpdateRate: 15 ticks off-screen, 1-5 up close), and
+    // Harmony binds our own `delta` parameter to it by name; both chances
+    // below are scaled by it so a watched fire and an unwatched fire roll at
+    // the same effective per-tick rate instead of the watched one rolling up
+    // to 15x more often.
     public static class Patch_FireTick_AshAndScorchFruit
     {
         private const int ScorchFruitMapCap = 40;
 
-        public static void Postfix(Fire __instance)
+        public static void Postfix(Fire __instance, int delta)
         {
             try
             {
@@ -153,7 +159,7 @@ namespace RimMandrake.StarWars.FireEcology
                 // unconditional Filth_Ash spawn (DamageWorker_Flame), does
                 // not replace it.
                 ThingDef ashFilth = DefDatabase<ThingDef>.GetNamedSilentFail("RSW_FE_Filth_LooseAsh");
-                if (ashFilth != null && Rand.Chance(0.02f))
+                if (ashFilth != null && Rand.Chance(FireEcologyHookMod.AshDustingChancePerFireTick * delta))
                 {
                     FilthMaker.TryMakeFilth(pos, map, ashFilth);
                 }
@@ -162,7 +168,7 @@ namespace RimMandrake.StarWars.FireEcology
                 // in a biome's ordinary wildPlants list). Plain 3x3 scan
                 // instead of a GenAdj/LINQ combinator: fewer ways to get the
                 // overload wrong, and this runs at most a few times a fire.
-                if (Rand.Chance(0.0025f))
+                if (Rand.Chance(FireEcologyHookMod.ScorchFruitChancePerFireTick * delta))
                 {
                     ThingDef fruitDef = DefDatabase<ThingDef>.GetNamedSilentFail("RSW_FE_Plant_ScorchFruit");
                     // A map-wide burn runs hundreds of concurrent Fire things;
