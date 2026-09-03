@@ -972,6 +972,10 @@ namespace JawaBench.BridgeTools
                     return (object)new { success = true, action = "query", total = dm.AllDesignations.Count(), returned = rows.Count, designations = rows, ticksGame = TicksGameSafe() };
                 }
 
+                if (A != "add" && A != "remove")
+                    return Fail("action must be add|remove|query, got '" + action + "' - every OTHER value fell " +
+                        "through to remove until this check existed, which could wipe designations over a whole rect.");
+
                 if (dd == null) return Fail("Give a DesignationDef for add/remove.");
                 CellRect r;
                 if (!TryRect(rect, map, out r, out err)) return Fail(err);
@@ -1385,15 +1389,15 @@ namespace JawaBench.BridgeTools
                     // for impassable terrain, an existing zone, or a blocking edifice, and
                     // a silently short zone is exactly the kind of failure that reads as
                     // success. Measured: a 6x6 stockpile took only 11 of 36 cells.
+                    // Zone.AddCell refuses by Log.Error + return, NEVER by throwing - a
+                    // refusal is detected here by checking membership before/after, not
+                    // by a catch that can never fire.
                     var refusedCells = new List<object>();
                     foreach (var c in r)
                     {
-                        try { z.AddCell(c); }
-                        catch (Exception ex)
-                        {
-                            if (refusedCells.Count < 12)
-                                refusedCells.Add(new { x = c.x, z = c.z, why = ex.Message, terrain = c.GetTerrain(map) != null ? c.GetTerrain(map).defName : null });
-                        }
+                        z.AddCell(c);
+                        if (!z.Cells.Contains(c) && refusedCells.Count < 12)
+                            refusedCells.Add(new { x = c.x, z = c.z, terrain = c.GetTerrain(map) != null ? c.GetTerrain(map).defName : null });
                     }
                     try { z.CheckContiguous(); notes.Add("CheckContiguous run after bulk AddCell"); } catch { }
                     int wanted1 = r.Area;
@@ -1425,14 +1429,19 @@ namespace JawaBench.BridgeTools
                     if (!TryRect(rect, map, out r, out err)) return Fail(err);
                     int n = 0, before2 = z.Cells.Count;
                     var refused2 = new List<object>();
+                    // Same non-throwing refusal shape as createZone above: AddCell/
+                    // RemoveCell never throw, so "n++ ran without an exception" cannot
+                    // distinguish an accepted cell from a refused one. Check membership
+                    // before/after instead.
                     foreach (var c in r)
                     {
-                        try { if (value) z.AddCell(c); else z.RemoveCell(c); n++; }
-                        catch (Exception ex)
-                        {
-                            if (refused2.Count < 12)
-                                refused2.Add(new { x = c.x, z = c.z, why = ex.Message, terrain = c.GetTerrain(map) != null ? c.GetTerrain(map).defName : null });
-                        }
+                        bool hadBefore = z.Cells.Contains(c);
+                        if (value) z.AddCell(c); else z.RemoveCell(c);
+                        bool hasAfter = z.Cells.Contains(c);
+                        bool wantedChange = value ? !hadBefore : hadBefore;
+                        if (hasAfter != hadBefore) n++;
+                        else if (wantedChange && refused2.Count < 12)
+                            refused2.Add(new { x = c.x, z = c.z, terrain = c.GetTerrain(map) != null ? c.GetTerrain(map).defName : null });
                     }
                     try { z.CheckContiguous(); } catch { }
                     return (object)new

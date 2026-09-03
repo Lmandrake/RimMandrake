@@ -203,22 +203,34 @@ namespace JawaBench.BridgeTools
 
                 list.Add(part);
 
+                // The part is already in Find.Scenario.parts by the time any of these
+                // run - an init call that throws leaves it added but half-initialized
+                // rather than rolling it back, so each is caught and reported rather
+                // than letting the first exception escape and hide that.
                 var initRan = new List<string>();
+                var initFailed = new List<object>();
                 foreach (var callName in wantedInits)
                 {
-                    switch (callName)
+                    try
                     {
-                        case "PostWorldGenerate":
-                            part.PostWorldGenerate(); initRan.Add("PostWorldGenerate"); break;
-                        case "PostGameStart":
-                            part.PostGameStart(); initRan.Add("PostGameStart"); break;
-                        case "PostMapGenerate":
-                            foreach (Map m in Find.Maps)
-                            {
-                                part.PostMapGenerate(m);
-                                initRan.Add("PostMapGenerate(" + m.uniqueID + ")");
-                            }
-                            break;
+                        switch (callName)
+                        {
+                            case "PostWorldGenerate":
+                                part.PostWorldGenerate(); initRan.Add("PostWorldGenerate"); break;
+                            case "PostGameStart":
+                                part.PostGameStart(); initRan.Add("PostGameStart"); break;
+                            case "PostMapGenerate":
+                                foreach (Map m in Find.Maps)
+                                {
+                                    part.PostMapGenerate(m);
+                                    initRan.Add("PostMapGenerate(" + m.uniqueID + ")");
+                                }
+                                break;
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        initFailed.Add(new { call = callName, why = e.GetType().Name + ": " + e.Message });
                     }
                 }
 
@@ -226,11 +238,13 @@ namespace JawaBench.BridgeTools
                 return (object)new
                 {
                     success = true, dryRun = false,
-                    added = DescribePart(part), fieldsApplied = applied, initRan,
+                    added = DescribePart(part), fieldsApplied = applied, initRan, initFailed,
                     partCount = readBack.Count,
                     parts = readBack.Select(DescribePart).ToList(),
-                    note = "Part appended and PostAdded() called. It scribes into the next save; " +
-                           "verify by saving and grepping the .rws for the class name.",
+                    note = "Part appended (PostAdded() is NOT called by this tool - only the " +
+                           "initCalls you named, listed in initRan; without one, the part sits idle " +
+                           "until whatever real lifecycle event fires it). It scribes into the next " +
+                           "save; verify by saving and grepping the .rws for the class name.",
                     ticksGame = TicksGameSafe(),
                 };
             });
