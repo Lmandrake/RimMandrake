@@ -341,8 +341,15 @@ def validate(ev):
         raise SchemaError("bridge state must be taken|released")
     if verb == "game" and ev["state"] not in GAME_STATES:
         raise SchemaError("game state must be one of %s" % ", ".join(GAME_STATES))
-    if verb == "file" and ev["for"] not in SEATS:
-        raise SchemaError("file --for must name a seat")
+    if verb in ("file", "spawn") and ev["for"] not in SEATS:
+        raise SchemaError("%s --for must name a seat" % verb)
+    # Without this, `rimflow spawn --for FOUNRDY ...` or `rimflow reassign X
+    # --to BULID` succeeded and wrote an item owned by a seat that does not
+    # exist: priority.rank() filters on item.owner, so no seat is ever
+    # offered it and `next` never mentions it — the item goes silently
+    # unofferable until someone notices and reassigns it back by hand.
+    if verb == "reassign" and ev["to"] not in SEATS:
+        raise SchemaError("reassign --to must name a seat")
     if verb == "verify" and ev["result"] not in ("pass", "fail", "partial"):
         raise SchemaError("verify result must be pass|fail|partial")
     cb = ev.get("caused_by")
