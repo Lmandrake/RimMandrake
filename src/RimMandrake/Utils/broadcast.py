@@ -330,6 +330,36 @@ def record_game(state, text):
     return None
 
 
+GAME_BLOCKED_NEEDS = ("game-up", "bridge", "harvest", "deploy")
+
+
+def seats_waiting_on_the_game():
+    """-> {SEAT} holding an open item that is actually blocked on the game, or None.
+
+    🔑 WHY A GAME-STATE ANNOUNCEMENT IS NARROWED (owner, 2026-09-02: *"It doesn't seem
+    to have a function anymore and can even distract."*). `rimflow next` MEASURES the
+    game itself now — `tasklist.exe`, and it corrects the ledger on its own — so for
+    UP and DOWN the announcement tells a window nothing it could not find out, and its
+    only remaining effect on a window mid-task is the interruption.
+
+    What survives is the one job measurement cannot do: WAKING a window that is sitting
+    on work it cannot start. That is exactly the set computed here.
+
+    ⚠️ `None` means "could not tell", and every caller must then deliver to EVERYONE.
+    A broadcast that silently reaches nobody because the ledger would not load is far
+    worse than one that is too loud — this mechanism exists so a blocked window learns
+    the game arrived, and failing closed would defeat it.
+    """
+    try:
+        sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake"))
+        from rimflow import model
+        w = model.replay(model.read(model.EVENTS))
+    except Exception:                            # noqa: BLE001 - never gate the send
+        return None
+    return {it.owner for it in w.open_items()
+            if it.owner and it.needs in GAME_BLOCKED_NEEDS}
+
+
 def main(argv):
     args, only, everywhere, sender = [], None, False, "OWNER"
     i = 0
@@ -380,13 +410,26 @@ def main(argv):
         err = record_game(state, text)
         print("  game -> %-12s %s" % (state, err or "recorded in the ledger"))
 
+    # ⭐ NARROWED, and only for a game-state sentence. An arbitrary message the owner
+    # types still reaches every window — he is addressing them, and only he can know
+    # who needs it. `--all` and `--to` are explicit and are never narrowed either.
+    waiting = None
+    if state and not everywhere and not isinstance(only, list):
+        waiting = seats_waiting_on_the_game()
+
     me = os.environ.get("CLAUDE_CODE_MESSAGING_SOCKET")
     for r in live:
+        name = r.get("name") or ""
         if me and r.get("messagingSocketPath") == me:
-            print("  %-18s skipped (this window)" % r.get("name"))
+            print("  %-18s skipped (this window)" % name)
+            continue
+        # A window's seat is the last word of its name — "AGENT BENCH" -> BENCH.
+        seat = name.upper().split()[-1] if name.split() else ""
+        if waiting is not None and seat not in waiting:
+            print("  %-18s not told (nothing of theirs is waiting on the game)" % name)
             continue
         err = send(r, text, sender)
-        print("  %-18s %s" % (r.get("name"), err or "delivered"))
+        print("  %-18s %s" % (name, err or "delivered"))
     return 0
 
 
