@@ -2,9 +2,9 @@
 //
 // WHY THIS EXISTS. Ship hull colouring had exactly two routes before this tool, and
 // both were workarounds: the dev "T: Set Color" UI tool (a measured ~380-invocation
-// per-game-session budget, then every FloatMenu silently misses - see
-// Utils/apply_wall_colors.py), or expressing colour as MATERIAL (the hull became
-// MegaBone/DinoChitin to fake a palette - Utils/apply_wall_stuff.py). The engine has
+// per-game-session budget, then every FloatMenu silently misses), or expressing
+// colour as MATERIAL (the hull became MegaBone/DinoChitin to fake a palette; the
+// scripts for both routes are deleted, driver: Utils/repaint_hull.py). The engine has
 // had the real thing all along: Building.ChangePaint(ColorDef) is the same mechanism
 // as the in-game paint designator - persistent (Scribe_Defs paintColorDef), visible
 // in the inspect pane as the paint colour, removable in play with the remove-paint

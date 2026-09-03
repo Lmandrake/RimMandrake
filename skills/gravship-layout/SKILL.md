@@ -256,7 +256,7 @@ to something that reads as a thousand-year-old ship, and they are all offline-fi
 |---|---|
 | `src/RimMandrake/Utils/gravship_floor_v2.py` | assigns a TerrainDef and a ColorDef to every deck cell from a seeded noise field, renders the result offline using swatches cut from live captures, and `--emit-plan` writes the whole scheme in MAP coordinates |
 | `src/RimMandrake/Utils/apply_floor_plan.py` | lays that plan on the live map — holes, floors, per-cell colour |
-| `src/RimMandrake/Utils/apply_wall_stuff.py` | colours the HULL with material rather than paint |
+| `src/RimMandrake/Utils/repaint_hull.py` | paints the HULL with the vanilla paint system (`jawa/paint_building`, one call per colour chunk; persistent, savegame-scribed). `--census` reads back; plan format `{"wallColor": {"<ColorDef>": [[x,z],...]}}` |
 | `src/RimMandrake/Utils/ship_dress.py` | Aurebesh word signage, landing pads, gutted bays, design notes as letters |
 
 🔑 **Three rules that came out of doing it**, each measured and each expensive:

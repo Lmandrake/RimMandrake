@@ -6,13 +6,9 @@ repaint_hull.py - paint the gravship hull with the VANILLA paint system.
     python.exe src/RimMandrake/Utils/repaint_hull.py --plan <plan.json> --apply
     python.exe src/RimMandrake/Utils/repaint_hull.py --census "83,59,86,133"       # read back
 
-Successor to BOTH earlier wall-colour routes, 2026-08-28:
-  * apply_wall_colors.py drove the dev "T: Set Color" UI tool - ~3 bridge calls per
-    wall and a measured ~380-invocation per-game-session budget, after which every
-    FloatMenu misses silently.
-  * apply_wall_stuff.py faked the palette in MATERIAL (MegaBone/DinoChitin hull),
-    because paint looked impossible at scale. The owner: "I'm not super happy that
-    my ship's walls are made of megabone."
+The dev "T: Set Color" UI route (~380-invocation session budget, then silent
+FloatMenu misses) and the colour-as-material route are both dead ends; this is
+the only wall-colour tool.
 
 `jawa/paint_building` (companion surface 239, built 2026-08-28) calls
 Building.ChangePaint(ColorDef) directly - the same persistent, savegame-scribed
@@ -21,7 +17,7 @@ per wall, no session budget, removable in play. GravshipHull inherits Wall's
 paintable=true, so the hull can be an HONEST material (Steel, Plasteel) and carry
 its Corrosion Halo as PAINT.
 
-The plan format is apply_wall_colors.py's: {"wallColor": {"<ColorDef>": [[x,z],...]}}.
+The plan format: {"wallColor": {"<ColorDef>": [[x,z],...]}}.
 Colour names must be real ColorDefs (63 Structure_* names ship in Core); a wrong
 name is refused by the tool with suggestions, never silently skipped.
 
@@ -55,7 +51,7 @@ def unwrap(r):
 
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--plan", help="wallColor plan JSON (apply_wall_colors.py format)")
+    ap.add_argument("--plan", help="wallColor plan JSON: {'wallColor': {'<ColorDef>': [[x,z],...]}}")
     ap.add_argument("--apply", action="store_true")
     ap.add_argument("--census", metavar="RECT",
                     help="no painting: report current paint by def/colour over 'x,z,w,h'")
