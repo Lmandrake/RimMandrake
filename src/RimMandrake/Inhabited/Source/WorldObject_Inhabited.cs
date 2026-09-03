@@ -202,6 +202,18 @@ namespace RimMandrake.Inhabited
 
             for (int i = fromPool; i < wanted.Count; i++)
             {
+                // Fixed 2026-09-02 (opus code review): must thread the upcoming
+                // character's gender into generation itself (fixedGender), not
+                // assign pawn.gender afterward in ApplyTo -- PawnGenerator picks
+                // body type, head, hair/beard and name from gender AT GENERATION
+                // TIME. A post-hoc reassignment changes only the label/pronouns
+                // and leaves a rolled-for-the-other-gender body/head/hair, which
+                // is what CharacterApplier.Spawn's own fixedGender arg already
+                // avoids for its callers -- this was the one path that didn't.
+                CharacterDef upcoming = (cast.characters != null && nextCharacter < cast.characters.Count)
+                    ? cast.characters[nextCharacter]
+                    : null;
+
                 Pawn p = PawnGenerator.GeneratePawn(new PawnGenerationRequest(
                     wanted[i],
                     Faction,
@@ -218,14 +230,15 @@ namespace RimMandrake.Inhabited
                     allowPregnant: false,
                     allowFood: true,
                     allowAddictions: true,
-                    inhabitant: true));
+                    inhabitant: true,
+                    fixedGender: upcoming?.gender));
                 if (p == null)
                 {
                     continue;
                 }
-                if (cast.characters != null && nextCharacter < cast.characters.Count)
+                if (upcoming != null)
                 {
-                    CharacterApplier.ApplyTo(p, cast.characters[nextCharacter]);
+                    CharacterApplier.ApplyTo(p, upcoming);
                     nextCharacter++;
                 }
                 if (!roster.TryAdd(p, canMergeWithExistingStacks: false))
@@ -288,8 +301,16 @@ namespace RimMandrake.Inhabited
         {
             // A place going away does not kill the people in it. Anyone still on
             // the roster becomes placeless and can turn up somewhere else.
+            //
+            // Fixed 2026-09-02 (opus code review): the guard used to also require
+            // Faction != null, gating the ENTIRE rescue on it despite
+            // DisplacedPool.Absorb already handling a null faction correctly. A
+            // factionless place (reachable from the shipped debug action, which
+            // can roll RandomNonHostileFaction(...) == null) lost every living
+            // resident with no log line, directly contradicting this method's own
+            // comment.
             DisplacedPool pool = DisplacedPool.Current;
-            if (pool != null && roster != null && roster.Count > 0 && Faction != null)
+            if (pool != null && roster != null && roster.Count > 0)
             {
                 List<Pawn> left = roster.InnerListForReading.ToList();
                 for (int i = 0; i < left.Count; i++)
