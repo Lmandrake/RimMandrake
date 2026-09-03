@@ -274,6 +274,13 @@ namespace JawaBench.BridgeTools
                     refusedTotal++;
                     if (refused.Count < 20) refused.Add(new { x = cx, z = cz, why });
                 };
+                // 🔴 SET_SUBSTRUCTURE_REMOVE_SKIPS_SILENTLY_1. action='remove' over a rect
+                // whose cells carry no foundation used to `continue` with no trace at all:
+                // the response read changed:0, refusedCount:0, cellsInRect:400, and there
+                // was nothing in it to say WHY nothing happened - indistinguishable from a
+                // rect the tool never visited. It is not a refusal (there was nothing to
+                // remove), so it gets its own counter rather than inflating refused[].
+                int nothingToRemove = 0;
 
                 foreach (var c in r)
                 {
@@ -290,7 +297,7 @@ namespace JawaBench.BridgeTools
                         }
                         else
                         {
-                            if (tg.FoundationAt(c) == null) continue;
+                            if (tg.FoundationAt(c) == null) { nothingToRemove++; continue; }
                             if (!tg.CanRemoveFoundationAt(c))
                             { addRefused(c.x, c.z, "CanRemoveFoundationAt false"); continue; }
                             tg.RemoveFoundation(c, doLeavings);
@@ -318,6 +325,7 @@ namespace JawaBench.BridgeTools
                     success = true,
                     action, changed,
                     cellsInRect = r.Area,
+                    cellsWithNoFoundation = nothingToRemove,
                     refusedCount = refusedTotal,
                     refusedListTruncated = refusedTotal > refused.Count,
                     refused,
@@ -383,6 +391,7 @@ namespace JawaBench.BridgeTools
                 // refused 300 cells reported refusedCount:20. Count every refusal, cap only
                 // the list shown back.
                 int refusedTotal = 0;
+                int expiryDropped = 0;
                 var refused = new List<object>();
                 Action<int, int, string> addRefused = (cx, cz, why) =>
                 {
@@ -398,6 +407,12 @@ namespace JawaBench.BridgeTools
                             case "under": tg.SetUnderTerrain(c, td); changed++; break;
                             case "temp":
                                 tg.SetTempTerrain(c, td); changed++;
+                                // 🔴 SET_TERRAIN_LAYER_EXPIRY_SILENTLY_DROPPED_1. When
+                                // map.tempTerrain is null the `&&` below skipped the queue and
+                                // the cell still counted as changed, so a caller who asked for
+                                // terrain lasting 500 ticks got PERMANENT temp terrain and a
+                                // clean success. Count the drops and report them.
+                                if (expireInTicks > 0 && map.tempTerrain == null) expiryDropped++;
                                 if (expireInTicks > 0 && map.tempTerrain != null)
                                     // Clamped because the sum is an int and it is SAVED:
                                     // TempTerrainManager writes the absolute tick into
@@ -442,6 +457,11 @@ namespace JawaBench.BridgeTools
                     refusedCount = refusedTotal,
                     refusedListTruncated = refusedTotal > refused.Count,
                     refused,
+                    expiryDropped,
+                    expiryNote = expiryDropped > 0
+                        ? "expireInTicks was IGNORED on " + expiryDropped + " cell(s): this map has no tempTerrain manager, "
+                          + "so that terrain is PERMANENT until something else removes it."
+                        : null,
                     note = "Run jawa/map_commit.",
                     cells = back, ticksGame = TicksGameSafe(),
                 };
@@ -668,11 +688,23 @@ namespace JawaBench.BridgeTools
                 if (count < 0) count = 0;
                 if (count > 65535) count = 65535;
 
+                // 🔴 SET_DEEP_RESOURCE_PARTIAL_WRITE_HIDDEN_1. The loop used to
+                // `return Fail("SetAt failed at ...")` on the first throwing cell. By then
+                // `changed` cells of the rect had ALREADY been written and stayed written,
+                // but the caller was handed success=false with no count - so the map held a
+                // half-authored ore body that the response said did not exist. Record the
+                // cell and carry on; the partial state is in the body either way.
                 int changed = 0;
+                int problemsTotal = 0;
+                var problems = new List<object>();
                 foreach (var c in r)
                 {
                     try { map.deepResourceGrid.SetAt(c, td, td == null ? 0 : count); changed++; }
-                    catch (Exception e) { return Fail("SetAt failed at " + c + ": " + e.Message); }
+                    catch (Exception e)
+                    {
+                        problemsTotal++;
+                        if (problems.Count < 20) problems.Add(new { x = c.x, z = c.z, why = e.GetType().Name + ": " + e.Message });
+                    }
                 }
 
                 var back = new List<object>();
@@ -682,7 +714,14 @@ namespace JawaBench.BridgeTools
                     var d = map.deepResourceGrid.ThingDefAt(c);
                     back.Add(new { x = c.x, z = c.z, def = d != null ? d.defName : null, count = map.deepResourceGrid.CountAt(c) });
                 }
-                return (object)new { success = true, cellsChanged = changed, cells = back, ticksGame = TicksGameSafe() };
+                return (object)new
+                {
+                    success = true, cellsChanged = changed, cellsInRect = r.Area,
+                    problemCount = problemsTotal,
+                    problemListTruncated = problemsTotal > problems.Count,
+                    problems,
+                    cells = back, ticksGame = TicksGameSafe()
+                };
             });
         }
 
@@ -777,8 +816,20 @@ namespace JawaBench.BridgeTools
                 QualityCategory q = QualityCategory.Normal; bool setQ = false;
                 if (!string.IsNullOrEmpty(quality))
                 {
-                    try { q = (QualityCategory)Enum.Parse(typeof(QualityCategory), quality.Trim(), true); setQ = true; }
-                    catch { return Fail("Bad quality '" + quality + "'. Awful|Poor|Normal|Good|Excellent|Masterwork|Legendary."); }
+                    // 🔴 BUILD_BATCH_QUALITY_ENUM_UNGATED_1. Enum.Parse accepts ANY NUMERIC
+                    // STRING for an enum and does not check it against the declared members -
+                    // QualityCategory is a byte enum, so quality="200" parsed cleanly to
+                    // (QualityCategory)200 and was handed to CompQuality.SetQuality, which
+                    // stores it verbatim. Every later reader (QualityUtility labels, stat
+                    // offsets, the save) then sees a value with no member behind it, and the
+                    // tool reported success. Enum.IsDefined is the check Parse does not do.
+                    object parsed = null;
+                    try { parsed = Enum.Parse(typeof(QualityCategory), quality.Trim(), true); }
+                    catch { parsed = null; }
+                    if (parsed == null || !Enum.IsDefined(typeof(QualityCategory), parsed))
+                        return Fail("Bad quality '" + quality + "'. Awful|Poor|Normal|Good|Excellent|Masterwork|Legendary "
+                                    + "(a bare number is NOT accepted - it would produce a quality with no member behind it).");
+                    q = (QualityCategory)parsed; setQ = true;
                 }
 
                 int placed = 0; var failures = new List<object>(); var spawnedThings = new List<Thing>();
@@ -790,6 +841,12 @@ namespace JawaBench.BridgeTools
                 // `placed` counts spawn ATTEMPTS. A caller diffing placed against requested,
                 // which is exactly what an acceptance criterion does, sees a perfect run.
                 var displaced = new List<object>();
+                // 🔴 BUILD_BATCH_QUALITY_SILENTLY_DROPPED_1. `quality` was applied only when
+                // the spawned thing has a CompQuality; a def without one (a Wall, a Conduit,
+                // most structures) took the parameter, ignored it and reported a clean
+                // success, so a caller who asked for Legendary got Normal-with-no-quality and
+                // nothing said so. Record the drops.
+                var qualityIgnored = new List<string>();
                 // PostPlace exceptions used to vanish into a bare `catch {}` - the def's
                 // real side effect (a wind turbine's placement logic, etc.) silently never
                 // ran and the op still counted as a full success. Record it instead.
@@ -828,6 +885,15 @@ namespace JawaBench.BridgeTools
                         // happens rather than a guess about footprints.
                         var occupied = GenAdj.OccupiedRect(c, rot, td.size);
                         var doomed = new List<Thing>();
+                        // 🔴 BUILD_BATCH_SAMEDEF_REPLACEMENT_UNREPORTED_1. The same def at the
+                        // same cell was skipped entirely - not refused, not reported - yet
+                        // GenSpawn.Spawn still wipes it, so displaced[] (documented as "naming
+                        // everything this batch destroyed") was missing a real destruction, and
+                        // when the victim came from an EARLIER op of this run the caller saw
+                        // survived < placed with nothing in displaced[] to explain it. It stays
+                        // OUT of the refusal set on purpose - re-stamping an identical layout is
+                        // legitimately idempotent - but it is now named.
+                        var replacedInPlace = new List<Thing>();
                         foreach (var cell in occupied)
                         {
                             if (!cell.InBounds(map)) continue;
@@ -836,7 +902,11 @@ namespace JawaBench.BridgeTools
                             {
                                 var other = here[i];
                                 if (other == null || other.Destroyed) continue;
-                                if (other.def == td && other.Position == c) continue;
+                                if (other.def == td && other.Position == c)
+                                {
+                                    if (!replacedInPlace.Contains(other)) replacedInPlace.Add(other);
+                                    continue;
+                                }
                                 if (GenSpawn.SpawningWipes(td, other.def) && !doomed.Contains(other))
                                     doomed.Add(other);
                             }
@@ -869,7 +939,18 @@ namespace JawaBench.BridgeTools
                                 z = d.Position.z,
                                 // The case that made this item: the thing destroyed was placed
                                 // by an EARLIER op of this same run, so `placed` counted it.
-                                placedByThisBatch = spawnedThings.Contains(d)
+                                placedByThisBatch = spawnedThings.Contains(d),
+                                sameDefReplacedInPlace = false
+                            });
+                        foreach (var d in replacedInPlace)
+                            displaced.Add(new
+                            {
+                                op,
+                                destroyed = d.def.defName,
+                                x = d.Position.x,
+                                z = d.Position.z,
+                                placedByThisBatch = spawnedThings.Contains(d),
+                                sameDefReplacedInPlace = true
                             });
 
                         // GenSpawn.Spawn below does WipeExistingThings(..., Vanish) itself.
@@ -879,6 +960,7 @@ namespace JawaBench.BridgeTools
                         {
                             var cq = t.TryGetComp<CompQuality>();
                             if (cq != null) cq.SetQuality(q, ArtGenerationContext.Outsider);
+                            else if (!qualityIgnored.Contains(td.defName)) qualityIgnored.Add(td.defName);
                         }
                         var spawned = GenSpawn.Spawn(t, c, map, rot);
 
@@ -914,6 +996,11 @@ namespace JawaBench.BridgeTools
                         hitPoints = t.def.useHitPoints ? (object)t.HitPoints : null,
                         maxHitPoints = t.def.useHitPoints ? (object)t.MaxHitPoints : null,
                         quality = (cq != null && t.TryGetQuality(out qq)) ? qq.ToString() : null,
+                        // 🔴 This read-back is of what the batch SPAWNED, not of what is on
+                        // the map: a later op in the same batch can have destroyed it, and
+                        // Thing.Position keeps answering afterwards. Listing a corpse as a
+                        // placed building is the same lie `survived` exists to expose.
+                        destroyed = t.Destroyed,
                     });
                 }
 
@@ -939,6 +1026,9 @@ namespace JawaBench.BridgeTools
                     // `placed` does not reflect that - check this list too.
                     placeWorkerWarningsCount = placeWorkerWarnings.Count,
                     placeWorkerWarnings,
+                    // A `quality` the def cannot carry is dropped, not applied. Named here
+                    // rather than left to be discovered in things[].
+                    qualityIgnoredForDefs = qualityIgnored,
                     message = lostToLaterOps > 0
                         ? placed + " spawned, " + survived + " SURVIVED - " + lostToLaterOps
                           + " were destroyed by a later op in this same batch. See displaced[]."
@@ -999,7 +1089,14 @@ namespace JawaBench.BridgeTools
                         reason = rep.Accepted ? null : rep.Reason;
                     }
                     catch (Exception e) { reason = e.GetType().Name + ": " + e.Message; }
-                    try { canSpawn = GenSpawn.CanSpawnAt(td, c, map, rr); } catch { }
+                    // A bare `catch {}` here reported canSpawn=false as though the engine had
+                    // answered no, when in fact it had thrown and nobody asked.
+                    try { canSpawn = GenSpawn.CanSpawnAt(td, c, map, rr); }
+                    catch (Exception e)
+                    {
+                        var thrown = "CanSpawnAt threw: " + e.GetType().Name + ": " + e.Message;
+                        reason = string.IsNullOrEmpty(reason) ? thrown : reason + " | " + thrown;
+                    }
 
                     var occ = map.thingGrid.ThingsListAtFast(c).Select(t => t.def.defName).Distinct().ToList();
                     if (canPlace) ok++;
@@ -1008,7 +1105,9 @@ namespace JawaBench.BridgeTools
                 return (object)new
                 {
                     success = true, def = td.defName, stuff = sd != null ? sd.defName : null,
-                    acceptableCells = ok, tested = cells.Count, godMode, cells,
+                    acceptableCells = ok, tested = cells.Count,
+                    cellsInRect = r.Area, truncated = cells.Count < r.Area,
+                    godMode, cells,
                     ticksGame = TicksGameSafe(),
                 };
             });
@@ -1054,11 +1153,20 @@ namespace JawaBench.BridgeTools
 
                 if (A == "query")
                 {
+                    // 🔴 DESIGNATE_BATCH_QUERY_TOTAL_IGNORES_FILTER_1. `total` used to be
+                    // dm.AllDesignations.Count() - EVERY designation on the map - while `rows`
+                    // was filtered to the requested DesignationDef. A query for Mine on a map
+                    // with 4 mine marks and 900 plan marks answered total:904, and a caller
+                    // reading total-vs-returned concluded its list was truncated when it was
+                    // complete. Count what was actually asked about, and report both.
                     var rows = new List<object>();
+                    int matching = 0, allDesignations = 0;
                     foreach (var d in dm.AllDesignations)
                     {
+                        allDesignations++;
                         if (dd != null && d.def != dd) continue;
-                        if (rows.Count >= Math.Max(1, limit)) break;
+                        matching++;
+                        if (rows.Count >= Math.Max(1, limit)) continue;
                         rows.Add(new
                         {
                             def = d.def.defName,
@@ -1066,7 +1174,16 @@ namespace JawaBench.BridgeTools
                             thing = d.target.HasThing ? d.target.Thing.def.defName : null,
                         });
                     }
-                    return (object)new { success = true, action = "query", total = dm.AllDesignations.Count(), returned = rows.Count, designations = rows, ticksGame = TicksGameSafe() };
+                    return (object)new
+                    {
+                        success = true, action = "query",
+                        filter = dd != null ? dd.defName : null,
+                        total = matching,
+                        totalAllDesignations = allDesignations,
+                        returned = rows.Count,
+                        truncated = matching > rows.Count,
+                        designations = rows, ticksGame = TicksGameSafe()
+                    };
                 }
 
                 if (A != "add" && A != "remove")
@@ -1078,6 +1195,12 @@ namespace JawaBench.BridgeTools
                 if (!TryRect(rect, map, out r, out err)) return Fail(err);
 
                 int added = 0, removed = 0, already = 0;
+                // 🔴 DESIGNATE_BATCH_PROBLEMS_CAPPED_1. `problems` is capped at 15 entries so
+                // the body stays small, and there was NO total beside it - the same capped-list
+                // lie already fixed in set_substructure_batch, set_terrain_layer and
+                // map_zones/paintZone. A rect that threw on 400 cells showed 15 problems and
+                // no sign there were any more. Count every one; cap only the display.
+                int problemsTotal = 0;
                 var problems = new List<object>();
 
                 // 🔴 TargetType DECIDES, and TargetType.Thing is the enum's ZERO - so every
@@ -1122,7 +1245,11 @@ namespace JawaBench.BridgeTools
                             else if (dm.DesignationAt(c, dd) != null) { dm.TryRemoveDesignation(c, dd); removed++; }
                         }
                     }
-                    catch (Exception e) { if (problems.Count < 15) problems.Add(new { x = c.x, z = c.z, why = e.GetType().Name + ": " + e.Message }); }
+                    catch (Exception e)
+                    {
+                        problemsTotal++;
+                        if (problems.Count < 15) problems.Add(new { x = c.x, z = c.z, why = e.GetType().Name + ": " + e.Message });
+                    }
                 }
 
                 return (object)new
@@ -1131,7 +1258,10 @@ namespace JawaBench.BridgeTools
                     added, removed, alreadyPresent = already,
                     targetType = dd.targetType.ToString(), targetedThings = wantThings,
                     note = targetNote,
-                    onThings, problems,
+                    onThings,
+                    problemCount = problemsTotal,
+                    problemListTruncated = problemsTotal > problems.Count,
+                    problems,
                     totalNow = dm.AllDesignations.Count(),
                     ticksGame = TicksGameSafe(),
                 };
@@ -1212,8 +1342,12 @@ namespace JawaBench.BridgeTools
 
                 var byDef = new Dictionary<string, int>();
                 int things = 0;
-                // PrefabDef.things is INTERNAL; GetThings() is the public route and it
-                // expands rects and position lists into one entry per cell.
+                // 🔴 PREFAB_CAPTURE_THINGCOUNT_ZERO_IS_A_LIE_1. GetThings() throwing used to
+                // leave `things` at 0 and put the reason in the GAME LOG only - so the bridge
+                // caller was handed thingCount:0 for a capture that may hold fifty things, and
+                // 0 is exactly what an empty capture reports. Ignorance is not zero: report
+                // null plus the error and let the caller decide.
+                string thingCountError = null;
                 try
                 {
                     foreach (var pair in pf.GetThings())
@@ -1224,7 +1358,11 @@ namespace JawaBench.BridgeTools
                         int c; byDef.TryGetValue(dn, out c); byDef[dn] = c + 1;
                     }
                 }
-                catch (Exception e) { Log.Warning("[JawaBench] prefab_capture: GetThings threw: " + e.Message); }
+                catch (Exception e)
+                {
+                    thingCountError = e.GetType().Name + ": " + e.Message;
+                    Log.Warning("[JawaBench] prefab_capture: GetThings threw: " + e.Message);
+                }
 
                 return (object)new
                 {
@@ -1233,7 +1371,9 @@ namespace JawaBench.BridgeTools
                     defName = pf.defName,
                     size = new { x = pf.size.x, z = pf.size.z },
                     capturedFrom = new { x = r.minX, z = r.minZ, w = r.Width, h = r.Height },
-                    thingCount = things,
+                    // null, not 0, when the count could not be taken - see thingCountError.
+                    thingCount = thingCountError == null ? (object)things : null,
+                    thingCountError,
                     copyAllThings, copyTerrain,
                     contents = byDef.OrderByDescending(k => k.Value).Take(25).ToDictionary(k => k.Key, k => k.Value),
                     note = "Session-only. Not in DefDatabase; does not survive a restart.",
@@ -1285,13 +1425,17 @@ namespace JawaBench.BridgeTools
                 if (!TryRot(rot, out rr)) return Fail("Bad rot '" + rot + "'.");
                 rr = PrefabUtility.ValidateRotation(pf, rr);
 
+                // BUILD_BATCH_FACTION_REJECTS_PLAYER_1 was fixed in jawa/build_batch and left
+                // unfixed here, so the same faction="player" that build_batch accepts came
+                // back "No FactionDef 'player'." from prefab_place. One grammar across the
+                // file, and the resolver already reports which one the caller reached for.
                 Faction fac = null;
                 if (!string.IsNullOrEmpty(faction))
                 {
-                    var fd = DefDatabase<FactionDef>.GetNamedSilentFail(faction.Trim());
-                    if (fd == null) return Fail("No FactionDef '" + faction + "'.", DefSuggestions<FactionDef>(faction));
-                    fac = Find.FactionManager.FirstFactionOfDef(fd);
-                    if (fac == null) return Fail("FactionDef '" + faction + "' exists but no such faction is in this world.");
+                    string ferr;
+                    fac = ResolveFactionAliasOrDef(faction, out ferr);
+                    if (fac == null && ferr != null)
+                        return Fail(ferr, DefSuggestions<FactionDef>(faction));
                 }
 
                 bool can;
@@ -1409,9 +1553,20 @@ namespace JawaBench.BridgeTools
                 CellRect r;
                 if (!TryRect(rect, map, out r, out err)) return Fail(err);
 
+                // 🔴 SET_GAS_GASTYPE_ENUM_UNGATED_1. Enum.Parse takes any numeric string
+                // without checking it names a member, so gasType="7" parsed to (GasType)7.
+                // GasGrid.AddGas's switch then hits `default:`, logs "Trying to add unknown
+                // gas type." and RETURNS - and the loop below still ran changed++ for every
+                // cell, so the tool reported a full rect gassed while the grid never moved.
+                // Enum.IsDefined is the check Parse does not do.
                 GasType gt;
-                try { gt = (GasType)Enum.Parse(typeof(GasType), (gasType ?? "").Trim(), true); }
-                catch { return Fail("Bad gasType '" + gasType + "'. Valid: " + string.Join(", ", Enum.GetNames(typeof(GasType)))); }
+                object gtParsed = null;
+                try { gtParsed = Enum.Parse(typeof(GasType), (gasType ?? "").Trim(), true); }
+                catch { gtParsed = null; }
+                if (gtParsed == null || !Enum.IsDefined(typeof(GasType), gtParsed))
+                    return Fail("Bad gasType '" + gasType + "'. Valid: " + string.Join(", ", Enum.GetNames(typeof(GasType)))
+                                + " (a bare number is NOT accepted - GasGrid.AddGas would log 'unknown gas type' and silently do nothing).");
+                gt = (GasType)gtParsed;
 
                 bool add = string.Equals(action, "add", StringComparison.OrdinalIgnoreCase);
                 bool clr = string.Equals(action, "clear", StringComparison.OrdinalIgnoreCase);
@@ -1434,12 +1589,33 @@ namespace JawaBench.BridgeTools
                         return Fail("DeadlifeDust requires Anomaly, which is not active. GasGrid.AddGas would silently no-op.");
                 }
 
-                int changed = 0;
+                // 🔴 SET_GAS_UNCHANGED_CELLS_COUNTED_1. AddGas's OTHER silent return is
+                // `!GasCanMoveTo(cell)` - a wall, or any Fillage.Full edifice, or a closed
+                // door - and every one of those used to run changed++. A rect over a built
+                // room reported every wall cell as gassed. Same on the clear side: a cell
+                // that already held none of the selected gas was counted as cleared.
+                // Count what the grid actually did, and name the refusals.
+                int changed = 0, unchanged = 0;
+                int refusedTotal = 0;
+                var refused = new List<object>();
+                Action<int, int, string> addRefused = (cx, cz, why) =>
+                {
+                    refusedTotal++;
+                    if (refused.Count < 20) refused.Add(new { x = cx, z = cz, why });
+                };
                 foreach (var c in r)
                 {
                     try
                     {
-                        if (add) { map.gasGrid.AddGas(c, gt, Math.Max(1, Math.Min(255, density))); changed++; }
+                        if (add)
+                        {
+                            if (!map.gasGrid.GasCanMoveTo(c))
+                            { addRefused(c.x, c.z, "GasCanMoveTo false - a full-fillage edifice or closed door is here, AddGas would silently no-op"); continue; }
+                            var before = map.gasGrid.DensitiesAt(c);
+                            map.gasGrid.AddGas(c, gt, Math.Max(1, Math.Min(255, density)));
+                            var after = map.gasGrid.DensitiesAt(c);
+                            if (after != before) changed++; else unchanged++;
+                        }
                         else
                         {
                             // 🔴 SET_GAS_CLEAR_WIPES_ALL_TYPES_1. GasGrid packs all FOUR gas
@@ -1457,24 +1633,41 @@ namespace JawaBench.BridgeTools
                             // itself; jawa/map_commit's flag set does not include Gas either.
                             var cur = map.gasGrid.DensitiesAt(c);
                             byte smoke = (byte)cur.x, tox = (byte)cur.y, rot = (byte)cur.z, dead = (byte)cur.w;
+                            bool had;
                             switch (gt)
                             {
-                                case GasType.BlindSmoke: smoke = 0; break;
-                                case GasType.ToxGas: tox = 0; break;
-                                case GasType.RotStink: rot = 0; break;
-                                case GasType.DeadlifeDust: dead = 0; break;
+                                case GasType.BlindSmoke: had = smoke != 0; smoke = 0; break;
+                                case GasType.ToxGas: had = tox != 0; tox = 0; break;
+                                case GasType.RotStink: had = rot != 0; rot = 0; break;
+                                case GasType.DeadlifeDust: had = dead != 0; dead = 0; break;
+                                default: had = false; break;
                             }
+                            if (!had) { unchanged++; continue; }
                             map.gasGrid.SetDirect(c, smoke, tox, rot, dead);
                             map.mapDrawer.MapMeshDirty(c, (ulong)MapMeshFlagDefOf.Gas);
                             changed++;
                         }
                     }
-                    catch (Exception e) { return Fail("Gas op failed at " + c + ": " + e.GetType().Name + ": " + e.Message); }
+                    catch (Exception e)
+                    {
+                        // 🔴 SET_GAS_PARTIAL_WRITE_REPORTED_AS_TOTAL_FAILURE_1. This used to
+                        // `return Fail(...)` on the first throwing cell, which told the caller
+                        // the call had failed while `changed` cells of the rect were already
+                        // gassed and stayed that way. A bridge caller then re-runs or assumes
+                        // nothing happened. Record the cell and carry on; the partial state is
+                        // reported in the body.
+                        addRefused(c.x, c.z, e.GetType().Name + ": " + e.Message);
+                    }
                 }
 
                 return (object)new
                 {
                     success = true, action, gasType = gt.ToString(), cellsChanged = changed,
+                    cellsUnchanged = unchanged,
+                    cellsInRect = r.Area,
+                    refusedCount = refusedTotal,
+                    refusedListTruncated = refusedTotal > refused.Count,
+                    refused,
                     validGasTypes = Enum.GetNames(typeof(GasType)),
                     ticksGame = TicksGameSafe(),
                 };
@@ -1531,8 +1724,18 @@ namespace JawaBench.BridgeTools
                 {
                     CellRect r;
                     if (!TryRect(rect, map, out r, out err)) return Fail(err);
+                    // 🔴 MAP_ZONES_ZONETYPE_FALLS_THROUGH_1. Every value that was not exactly
+                    // "growing" fell through to Zone_Stockpile, so zoneType="grow" or a typo
+                    // built a STOCKPILE and reported success - and a growing zone silently
+                    // dropped the `plant` argument with it. The same fall-through already
+                    // closed on designate_batch's action and set_weather_buildup's mode.
+                    var ZT = (zoneType ?? "").Trim();
+                    if (!ZT.Equals("growing", StringComparison.OrdinalIgnoreCase)
+                        && !ZT.Equals("stockpile", StringComparison.OrdinalIgnoreCase))
+                        return Fail("zoneType must be 'stockpile' or 'growing', got '" + zoneType + "'. "
+                                    + "Every other value used to build a stockpile silently.");
                     Zone z;
-                    if (zoneType.Equals("growing", StringComparison.OrdinalIgnoreCase))
+                    if (ZT.Equals("growing", StringComparison.OrdinalIgnoreCase))
                     {
                         var gz = new Zone_Growing(zm);
                         if (!string.IsNullOrEmpty(plant))
@@ -1544,7 +1747,14 @@ namespace JawaBench.BridgeTools
                         }
                         z = gz;
                     }
-                    else z = new Zone_Stockpile(StorageSettingsPreset.DefaultStockpile, zm);
+                    else
+                    {
+                        z = new Zone_Stockpile(StorageSettingsPreset.DefaultStockpile, zm);
+                        // `plant` on a stockpile is meaningless and used to be swallowed.
+                        if (!string.IsNullOrEmpty(plant))
+                            notes.Add("plant '" + plant + "' was IGNORED - a stockpile zone grows nothing. "
+                                      + "Pass zoneType='growing' if you meant a growing zone.");
+                    }
 
                     zm.RegisterZone(z);
                     // Report refusals rather than swallowing them: a silently short zone is
@@ -1715,11 +1925,21 @@ namespace JawaBench.BridgeTools
                     if (target == null) return Fail("No area '" + an + "'. Have: " +
                         string.Join(", ", am.AllAreas.Select(a => (string)a.Label).ToArray()));
 
-                    int n = 0;
-                    foreach (var c in r) { target[c] = value; n++; }
+                    // 🔴 MAP_ZONES_PAINTAREA_COUNTS_NOOPS_1. `cellsTouched` counted every cell
+                    // in the rect, whatever the area already held - Area.Set no-ops when the
+                    // value is unchanged - so painting Home over ground already in Home
+                    // reported the full rect as work done, and a caller diffing the number
+                    // against what it asked for could never see that nothing moved.
+                    int n = 0, alreadyThatValue = 0;
+                    foreach (var c in r)
+                    {
+                        if (target[c] == value) { alreadyThatValue++; continue; }
+                        target[c] = value; n++;
+                    }
                     return (object)new
                     {
-                        success = true, action = A, area = target.Label, cellsTouched = n,
+                        success = true, action = A, area = target.Label,
+                        cellsInRect = r.Area, cellsChanged = n, cellsAlreadySet = alreadyThatValue,
                         trueCount = target.TrueCount, ticksGame = TicksGameSafe(),
                     };
                 }
@@ -1811,13 +2031,16 @@ namespace JawaBench.BridgeTools
                 string M = (mode ?? "strict").Trim().ToLowerInvariant();
                 if (M != "strict" && M != "mine" && M != "bridge") return Fail("mode must be strict|mine|bridge.");
 
+                // Same one grammar as jawa/build_batch and jawa/prefab_place - 'player',
+                // 'hostile', 'none' or a FactionDef defName. Default stays the player.
                 Faction fac = Faction.OfPlayer;
                 if (!string.IsNullOrEmpty(faction))
                 {
-                    var fd = DefDatabase<FactionDef>.GetNamedSilentFail(faction.Trim());
-                    if (fd == null) return Fail("No FactionDef '" + faction + "'.");
-                    fac = Find.FactionManager.FirstFactionOfDef(fd);
-                    if (fac == null) return Fail("Faction '" + faction + "' is not in this world.");
+                    string ferr;
+                    var resolved = ResolveFactionAliasOrDef(faction, out ferr);
+                    if (resolved == null && ferr != null)
+                        return Fail(ferr, DefSuggestions<FactionDef>(faction));
+                    fac = resolved;   // 'none' resolves to null on purpose: unowned conduit.
                 }
 
                 // ---- pass 1: vanilla's own router - flood fill over placeability -------
@@ -1971,15 +2194,28 @@ namespace JawaBench.BridgeTools
                     };
 
                 // ---- commit -----------------------------------------------------------
+                // 🔴 CONNECT_CELLS_COMMIT_PHASE_UNGUARDED_1. Destroy and SetTerrain ran bare,
+                // so one throwing cell escaped the whole tool through InvokeAsync - after
+                // some edifices were already destroyed and some cells already bridged. The
+                // caller got an exception, not a report, and the map kept the half-cleared
+                // route this tool exists to refuse. Catch per cell and carry the damage in
+                // the body instead.
                 int cleared = 0, bridged = 0, placed = 0, skipped = 0;
                 foreach (var c in needMine)
                 {
-                    var ed = c.GetEdifice(map);
-                    if (ed != null) { ed.Destroy(DestroyMode.KillFinalize); cleared++; }
+                    try
+                    {
+                        var ed = c.GetEdifice(map);
+                        if (ed != null) { ed.Destroy(DestroyMode.KillFinalize); cleared++; }
+                    }
+                    catch (Exception e)
+                    { blocked.Add(new { x = c.x, z = c.z, why = "clearing failed: " + e.GetType().Name + ": " + e.Message }); }
                 }
                 foreach (var c in needBridge)
                 {
-                    map.terrainGrid.SetTerrain(c, bridgeDef); bridged++;
+                    try { map.terrainGrid.SetTerrain(c, bridgeDef); bridged++; }
+                    catch (Exception e)
+                    { blocked.Add(new { x = c.x, z = c.z, why = "bridging failed: " + e.GetType().Name + ": " + e.Message }); }
                 }
                 foreach (var c in route)
                 {
@@ -2007,7 +2243,17 @@ namespace JawaBench.BridgeTools
                 {
                     success = true, dryRun = false, route = routeKind, routeLength = route.Count,
                     placed, skipped, cleared, bridged,
+                    // 🔑 The LINE IS ONLY CONNECTED if every route cell ended up carrying the
+                    // thing. placed+skipped short of routeLength means a gap, and this tool's
+                    // whole promise is "after the call they really are connected" - so say it
+                    // outright rather than leaving the caller to subtract.
+                    connected = blocked.Count == 0 && (placed + skipped) == route.Count,
+                    problemCount = blocked.Count,
                     problems = blocked,
+                    message = (blocked.Count == 0 && (placed + skipped) == route.Count)
+                        ? null
+                        : "NOT CONNECTED: " + (route.Count - placed - skipped) + " of " + route.Count +
+                          " route cell(s) have no '" + td.defName + "'. See problems[].",
                     note = "Run jawa/map_commit. For power, consumers within 6 cells auto-connect; conduits themselves must be CONTIGUOUS, which the 4-connected route guarantees.",
                     ticksGame = TicksGameSafe(),
                 };
