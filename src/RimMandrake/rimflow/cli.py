@@ -217,10 +217,39 @@ def _stamp_owner_and_override(ev):
 
 
 def _emit(ev, world=None, quiet=False):
-    """check() then append(). The ONLY writer in this file."""
-    ev = {k: v for k, v in ev.items() if v not in (None, "", False)}
+    """check() then append(). The ONLY writer in this file.
+
+    🔴 THE CANDIDATE IS CHECKED AGAINST THE LEDGER AS IT STANDS NOW, NEVER AGAINST THE
+    CALLER'S SNAPSHOT. Every command opens with `load()` and then spends real time
+    before it writes — `next` shells out to the probe, `file` reads prose and runs
+    `_replaces`, `show` runs `git log` — while BENCH, FOUNDRY and their subagents all
+    drive this same CLI. Handing `check()` that snapshot meant another window's
+    `close`, `drop`, `claim` or `file` landing in the gap was INVISIBLE to the one
+    guard written to catch it: `_transition`'s terminal gate and `_apply_file`'s
+    duplicate-id gate both passed against a world that predated the other write, and
+    the resulting event went into an append-only file where non-strict replay can only
+    collect it into `world.errors` forever. The module docstring has always promised
+    that `check()` "replays the candidate against current state"; it now does.
+
+    ⚠️ This does NOT make check-then-append atomic — that needs the `flock` held across
+    both, which is `model.py`'s to give. It collapses the window from "however long the
+    command took" down to "one replay", which is the same trade `_bridge_take` makes
+    against the same race, for the same stated reason.
+
+    ⛔ `world` is accepted and DELIBERATELY NOT CONSULTED. Do not tidy it back into
+    `model.check(ev, world)` — the parameter is not the defect, trusting it was. It
+    stays because every call site reads better for naming the world it decided from,
+    and because several callers go on to use that world for their own output.
+    """
+    # 🔑 `v is not False`, NOT `v not in (None, "", False)`. `0 == False` in Python, so
+    # the old tuple test also stripped an integer 0 — a measured zero would have
+    # vanished from the event with nothing said, which is the silent-drop shape this
+    # whole system refuses at every other boundary. None and "" still go: `_apply_file`
+    # depends on the strip (see its `or`-not-`get`-default comment) so that a
+    # present-but-null key can never reach the projection.
+    ev = {k: v for k, v in ev.items() if v is not None and v != "" and v is not False}
     try:
-        model.check(ev, world)
+        model.check(ev, _replay_now())
         _stamp_owner_and_override(ev)
         model.append(ev, model.EVENTS)
     except model.LedgerError as e:
@@ -980,11 +1009,13 @@ OPEN_STATES_EXCLUDED = model.TERMINAL
 def _replay_now():
     """-> the World as the ledger stands RIGHT NOW, re-read from disk.
 
-    🔑 Four call sites re-read the ledger after `_emit` has appended to it, because the
-    `world` they were handed predates their own write and cannot answer "what state did
-    that leave the item in". They each spelled it `model.replay(model.read(model.EVENTS))`
-    and each would have raised a bare traceback on a torn ledger; here a torn ledger
-    gets the same verbatim refusal every other read path prints.
+    🔑 Several call sites re-read the ledger around `_emit`'s append, because the
+    `world` they were handed predates that write and cannot answer either "is this
+    still allowed" (`_emit` itself, before `check`) or "what state did that leave the
+    item in" (everyone after it). They each spelled it
+    `model.replay(model.read(model.EVENTS))` and each would have raised a bare
+    traceback on a torn ledger; here a torn ledger gets the same verbatim refusal
+    every other read path prints.
     """
     try:
         return model.replay(model.read(model.EVENTS))
@@ -1018,10 +1049,17 @@ def _replaces(args, seat, w):
                   w, quiet=True)
             print("%s -> superseded by %s." % (parent, args.id))
         except SystemExit:
-            print("⚠️  %s is filed, but %s was NOT superseded — it belongs to another seat."
+            # ⛔ DO NOT NAME A CAUSE HERE. This used to assert "— it belongs to another
+            # seat", which is only ONE of the things `_emit` refuses for: a seat
+            # boundary, yes, but equally a parent that went terminal in the gap, a
+            # schema refusal, or a torn ledger. `die()` has already printed the REAL
+            # refusal verbatim on stderr, and those messages are written at length
+            # precisely so the reader is told what to do instead; guessing over the top
+            # of one sends them after the wrong fix while the right one scrolls past.
+            print("⚠️  %s IS filed. %s was NOT superseded — the refusal above says why."
                   % (args.id, parent))
-            print("     python3 src/RimMandrake/rimflow/cli.py supersede %s --by %s"
-                  % (parent, args.id))
+            print("     fix that, then: python3 src/RimMandrake/rimflow/cli.py "
+                  "supersede %s --by %s" % (parent, args.id))
             raise
         return
     # No --replaces. Ask ONLY when the shape says a parent may be dying: this item
@@ -1666,7 +1704,18 @@ def cmd_artifact(args, seat):
     text, dangling, provided = art.accept(
         args.path, args.kind, official=args.official, by=seat.lower(),
         write=args.apply)
-    print(text if args.full else "\n".join(text.splitlines()[:44]))
+    # 🔴 A CUT REPORT SAYS IT WAS CUT, AND THE TWO NUMBERS SURVIVE THE CUT. The head of
+    # the report was printed at 44 lines with nothing to mark the edge, so a run whose
+    # dangling-reference section fell below line 44 read exactly like a run that found
+    # none — and `accept` hands back both counts, which this discarded. The counts are
+    # the answer the command exists to give; they now print whether or not the prose fit.
+    lines = text.splitlines()
+    print(text if args.full else "\n".join(lines[:44]))
+    if not args.full and len(lines) > 44:
+        print("... %d more line(s) NOT SHOWN. Re-run with --full for the whole report."
+              % (len(lines) - 44))
+    print("%d defName(s) readable in the artifact; %d cited name(s) DANGLING."
+          % (len(provided), len(dangling)))
     if not args.apply:
         print("\nDRY RUN — nothing registered, nothing filed, no report written.")
         print("Re-run with --apply to commit this.")
@@ -1878,7 +1927,12 @@ def build_parser():
     s.add_argument("--spec")
     s.add_argument("--this-deployment", dest="this_deployment", action="store_true",
                    help="jumps the queue; cleared automatically when the game leaves UP")
-    s.add_argument("--id", help="host item; derived from --from when possible")
+    # ⛔ NO `--id` HERE, and it is not an oversight to re-fix. `spawn` is in
+    # `model.ITEMLESS`: the verb refuses an `id` outright ("Its cause is `from` and its
+    # product is `name`"), and `cmd_spawn` has never read one. The flag was registered
+    # anyway until 2026-09-03, so `rimflow spawn --id FOO …` exited 0, printed success,
+    # and discarded the word — the same typo-that-looks-like-it-worked that
+    # `cmd_bridge` refuses `bridge take BOGUS` for. Gone, so argparse says so out loud.
 
     s = add("needs", "set WHEN an item can be worked (offline|deploy|game-up|bridge|"
             "harvest|owner)", cmd_needs)
@@ -2035,7 +2089,21 @@ def _resolve_command_seat(args):
     a seat that IS named is still validated, because a typo silently discarded is the
     same defect `bridge take BOGUS` was fixed for.
     """
-    said = (getattr(args, "owner_said", None) or "").strip()
+    raw = getattr(args, "owner_said", None)
+    said = (raw or "").strip()
+    # ⛔ AN EMPTY QUOTE IS NOT "NO QUOTE". `--owner-said ""` (or a shell that expanded a
+    # variable to nothing) used to fall straight through to ordinary seat resolution:
+    # the command ran under BENCH or FOUNDRY, the authorization the caller believed they
+    # had was silently absent, and the ledger recorded a seat acting on its own. Refuse,
+    # so the two cases can never be confused — the whole point of the flag is that his
+    # words, and only his words, are what lands on the event.
+    if raw is not None and not said:
+        die("`--owner-said` was passed with nothing in it.\n\n"
+            "An empty quote is not authorization, and it must not quietly become a "
+            "normal seat\ncommand — that would run under BENCH or FOUNDRY while you "
+            "believed it ran as OWNER.\n\n"
+            "  quote him   --owner-said \"<his words, verbatim>\"\n"
+            "  or drop it  and act as your own seat")
     if said:
         _check_owner_said(said)
         # Validated, then discarded: a named-but-wrong seat still refuses; a missing
