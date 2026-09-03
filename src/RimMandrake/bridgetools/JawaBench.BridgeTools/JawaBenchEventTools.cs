@@ -125,7 +125,9 @@ namespace JawaBench.BridgeTools
                 "they are what the storyteller actually uses to size the next raid. " +
                 "conditions[] covers BOTH the map manager and the world manager - each row " +
                 "carries scope ('map'|'world') and affectsThisMap.",
-            ResultDescription = "success, weather, conditions[] (def, scope, affectsThisMap, permanent, ticksLeft), threatPoints, wealth, storyteller.")]
+            ResultDescription = "success, weather, conditions[] (def, scope, affectsThisMap, permanent, ticksLeft), " +
+                "threatPoints, wealth, storyteller, readErrors[] - a NON-EMPTY readErrors means one of those is " +
+                "absent or a sentinel (threatPoints -1) because the read threw, never that the value is zero.")]
         public static async Task<object> WeatherGet(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -142,6 +144,12 @@ namespace JawaBench.BridgeTools
                 // world-scoped condition (a quest, a scenario part, or this file's own
                 // jawa/game_condition worldWide=true) was invisible to a tool that promises
                 // "every active game condition". Read both managers and label the scope.
+                // 🔴 IGNORANCE MUST NOT READ AS A MEASUREMENT. Every optional read below used
+                // to swallow its failure (to a Log.Warning nobody on the bridge can see, or to
+                // nothing at all), leaving an under-counted list or a -1 that a caller will
+                // happily put in a table. Collect the failures and ship them.
+                var readErrors = new List<string>();
+
                 var active = new List<object>();
                 try
                 {
@@ -165,10 +173,17 @@ namespace JawaBench.BridgeTools
                                 ticksLeft = c.Permanent ? -1 : c.TicksLeft,
                             });
                 }
-                catch (Exception e) { Log.Warning("[JawaBench] weather_get conditions: " + e.Message); }
+                catch (Exception e)
+                {
+                    Log.Warning("[JawaBench] weather_get conditions: " + e.Message);
+                    // conditions[] is now a PARTIAL list and activeConditionCount under-counts.
+                    readErrors.Add("conditions[] INCOMPLETE - the walk threw after " + active.Count +
+                                   " row(s), so activeConditionCount is a floor: " + e.GetType().Name + ": " + e.Message);
+                }
 
                 float threat = -1f;
-                try { threat = StorytellerUtility.DefaultThreatPointsNow(map); } catch { }
+                try { threat = StorytellerUtility.DefaultThreatPointsNow(map); }
+                catch (Exception e) { readErrors.Add("threatPoints UNREAD (-1 is not a measurement): " + e.GetType().Name + ": " + e.Message); }
 
                 object wealth = null;
                 try
@@ -176,7 +191,7 @@ namespace JawaBench.BridgeTools
                     var w = map.wealthWatcher;
                     wealth = new { total = w.WealthTotal, items = w.WealthItems, buildings = w.WealthBuildings, pawns = w.WealthPawns };
                 }
-                catch { }
+                catch (Exception e) { readErrors.Add("wealth UNREAD: " + e.GetType().Name + ": " + e.Message); }
 
                 object teller = null;
                 try
@@ -189,11 +204,13 @@ namespace JawaBench.BridgeTools
                         allowBigThreats = Find.Storyteller.difficulty != null ? (object)Find.Storyteller.difficulty.allowBigThreats : null,
                     };
                 }
-                catch { }
+                catch (Exception e) { readErrors.Add("storyteller UNREAD: " + e.GetType().Name + ": " + e.Message); }
 
                 return (object)new
                 {
                     success = true,
+                    // Non-empty means a field below is ABSENT or a sentinel, not zero.
+                    readErrors,
                     weather = new
                     {
                         current = wm.curWeather != null ? wm.curWeather.defName : null,
@@ -759,7 +776,11 @@ namespace JawaBench.BridgeTools
                                 "Use one of the listed types, or listTypes=true to see them.", available);
 
                 float r = Mathf.Clamp(radius, 0.1f, 50f);
-                if (r != radius) err = "radius clamped from " + radius + " to " + r;
+                // Its own variable, not MapOrNull's `err`. clampNote used to be whatever that
+                // out-param happened to hold, which is null only because MapOrNull nulls it on
+                // success today - the day it returns a non-fatal warning, this reports the
+                // radius as clamped when it was not.
+                string clampNote = r != radius ? "radius clamped from " + radius + " to " + r : null;
 
                 GasType? gt = null;
                 if (!string.IsNullOrEmpty(gas))
@@ -803,7 +824,7 @@ namespace JawaBench.BridgeTools
                     center = new { x, z }, damType = dd.defName, radius = r,
                     damage = damage < 0 ? (object)("def default (" + dd.defaultDamage + ")") : damage,
                     gas = gt.HasValue ? gt.Value.ToString() : null,
-                    clampNote = err,
+                    clampNote,
                     explosiveDamageDefs = available,
                     ticksGame = TicksGameSafe(),
                 };
