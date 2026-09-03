@@ -254,7 +254,10 @@ namespace JawaBench.BridgeTools
             CancellationToken cancellationToken,
             [ToolParameter(Description = "Destination world tile id (surface layer).")] int targetTile,
             [ToolParameter(Description = "Report what would happen without launching. DEFAULTS TRUE - pass false to actually fly.")] bool dryRun = true,
-            [ToolParameter(Description = "Launch quality 0..1: drives landing-outcome odds and cooldown, like the takeoff ritual's result.")] float quality = 1f,
+            [ToolParameter(Description = "Launch quality 0..1: sets engine.cooldownCompleteTick exactly as the takeoff ritual would " +
+                "(GravshipUtility.LaunchCooldownFromQuality). Does NOT roll a landing-outcome chance: this tool reproduces the " +
+                "vanilla 'DEV: Launch instantly' gizmo, which always launches with doNegativeOutcome=false - a real negative " +
+                "outcome only ever happens if it was already set on the engine's launchInfo before this call.")] float quality = 1f,
             [ToolParameter(Description = "Engine ThingID to assert, e.g. 'GravEngine64276'. Optional when only one engine exists.")] string expectEngineId = null)
         {
             return await ctx.MainThread.InvokeAsync(() =>
@@ -356,24 +359,32 @@ namespace JawaBench.BridgeTools
                 if (rot > 3) return Fail("rot must be 0..3.");
 
                 var rotBefore = marker.GravshipRotation;
-                bool moved = false;
+                bool rotationChanged = false;
                 if (rot >= 0 && marker.GravshipRotation.AsInt != rot)
                 {
                     marker.GravshipRotation = new Rot4(rot);
-                    moved = true;
+                    rotationChanged = true;
                 }
+
+                // 🔴 THE BOUNDS CHECK RUNS EVEN WHEN ONLY rot WAS PASSED. GravshipCells
+                // depends on rotation, so a rotation-only call at the marker's EXISTING
+                // position can push cells off the map exactly like a move can - checking
+                // only inside the x/z branch let a bare rotation slip through unchecked
+                // and reach PlaceGravshipInMap with out-of-bounds cells at landing.
+                var targetPos = (x >= 0 && z >= 0) ? new IntVec3(x, 0, z) : marker.Position;
+                foreach (var c in marker.GravshipCells)
+                    if (!(c + targetPos).InBounds(markerMap))
+                    {
+                        // The rotation changed GravshipCells, so it had to be applied
+                        // before this check could be made - put it back on refusal.
+                        if (rotationChanged) marker.GravshipRotation = rotBefore;
+                        return Fail("Ship cell " + (c + targetPos) + " would be out of map bounds at that position.");
+                    }
+
+                bool moved = rotationChanged;
                 if (x >= 0 && z >= 0)
                 {
-                    var pos = new IntVec3(x, 0, z);
-                    foreach (var c in marker.GravshipCells)
-                        if (!(c + pos).InBounds(markerMap))
-                        {
-                            // The rotation changed GravshipCells, so it had to be applied
-                            // before this check could be made - put it back on refusal.
-                            marker.GravshipRotation = rotBefore;
-                            return Fail("Ship cell " + (c + pos) + " would be out of map bounds at that position.");
-                        }
-                    marker.Position = pos;
+                    marker.Position = targetPos;
                     marker.Notify_Moved();
                     moved = true;
                 }
