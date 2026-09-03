@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ============================================================================
+  Armoury_LightsaberCraftingCut.xml         Jawa_Armoury · authored 2026-09-03
+  ============================================================================
+  LIGHTSABER_RECIPE_GATE_1
+
+  Owner, 2026-09-03, on the research-tree v4 pass: "they won't be teaching
+  how to make lightsabers. Nobody will. That's not tech in this scenario."
+  v4 accordingly cut the ResearchProjectDefs
+  guy762_ResearchKotOR_lightsabers/_advsabers/_saberparts/_jedi. Cutting the
+  RESEARCH does not stop the CRAFTING: lee.theforce.lightsaber
+  (workshop 3466124712) ships its own crafting recipes on an abstract parent,
+  `Lightsaber_Crafting`, that eight concrete recipes inherit by ParentName —
+  none of the eight override `recipeUsers`.
+
+  WHAT THE RESOLVED DUMP ACTUALLY SHOWS - read from the RESOLVED state, not
+  the raw donor file, per this item's own criteria
+  ============================================================================
+  guy762.KotORWeapons (absorbed into this mod, WEAPONS_DONOR_RETIREMENT_1)
+  shipped its OWN compatibility patch for this exact donor
+  (Absorbed_AdditionalMods/kotorweapons/TheForceLightsabers/..._Patch_
+  KotORLightsaberRecipes.xml, gated IfModActive="lee.theforce.lightsaber",
+  active on the live 589-mod list) that already overrides the abstract
+  parent's `recipeUsers` to [FabricationBench, guy762_KotORWorkbench] and
+  adds `researchPrerequisite=guy762_ResearchKotOR_lightsabers` to each of the
+  eight children — NOT the raw donor's own
+  MicroelectronicsBasics/ElectricSmithy/FueledSmithy/TableMachining. Verified
+  against `defs/RecipeDef.json` in capture 2026-09-03T07-26-04Z (589 mods,
+  fingerprint-matched): `Force_CraftLightsaberSingle` resolves with
+  `researchPrerequisite: guy762_ResearchKotOR_lightsabers`,
+  `recipeUsers: [FabricationBench, guy762_KotORWorkbench]`.
+
+  So once the v4 cuts land, this recipe's OWN researchPrerequisite is a
+  dangling reference to a research project that no longer exists — which
+  resolves to null, not to "unresearched forever". A null
+  researchPrerequisite reads as NO PREREQUISITE, so the hole this item found
+  is not "still needs unrelated tech", it is "needs no research at all"
+  once the cut research project is gone. Removing `recipeUsers` on the
+  shared abstract parent closes it regardless of which research field ends
+  up governing it — a recipe attached to zero benches cannot be queued from
+  any bench, independent of research state, and this is the ONE field
+  neither the raw donor's own file nor the absorbed compat patch's overrides
+  touch per-child, so removing it here on the parent removes it for all
+  eight inheritors in one place. Order relative to the absorbed compat
+  patch's own PatchOperationReplace on this same xpath does not matter:
+  whichever runs first, this Remove is the one that is still standing when
+  inheritance resolves, because a PatchOperationReplace targeting a node
+  this Remove has already deleted matches nothing and is a silent no-op
+  (project doctrine: PatchOperationReplace/Conditional/FindMod all return
+  true on no match), and if this Remove runs second it simply deletes
+  whatever the Replace most recently wrote.
+
+  ITEMS ARE UNTOUCHED - migration rule 5
+  ============================================================================
+  This removes ONLY `recipeUsers` from the shared RecipeDef parent. Every
+  lightsaber ThingDef, its stats, its market value and its lootability are
+  completely unaffected — a lightsaber still exists, still drops from a
+  body, still trades. Only MAKING one, at any bench, goes away.
+
+  SAFETY
+  ======
+  Gated on `lee.theforce.lightsaber` being active at all via
+  PatchOperationFindMod (this patch is meaningless without that donor); NOT
+  additionally wrapped in a PatchOperationConditional on the xpath existing,
+  deliberately — if `Lightsaber_Crafting` or its `recipeUsers` node is ever
+  renamed upstream, this should show up as a validate_patch.py xpath-miss,
+  not vanish as a second silent no-op stacked on top of the first gate.
+  ============================================================================
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods>
+      <li>Star Wars : The Force - Lightsaber</li>
+    </mods>
+    <match Class="PatchOperationRemove">
+      <xpath>Defs/RecipeDef[@Name="Lightsaber_Crafting"]/recipeUsers</xpath>
+    </match>
+  </Operation>
+
+</Patch>
