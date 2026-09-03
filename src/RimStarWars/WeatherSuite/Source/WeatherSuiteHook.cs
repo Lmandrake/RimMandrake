@@ -241,35 +241,59 @@ namespace RimMandrake.StarWars.WeatherSuite
     // "maximized", and the SECOND time this exact regression shape (fix
     // one axis, break brightness on another) has landed here.
     //
+    // 🔴 FIXED AGAIN 2026-09-02 (opus code review, second pass): the
+    // previous attempt shared ONE heavy lerp (0.5) between sky AND
+    // overlay, and floored "brightness" at `Mathf.Max(1f, sunGlow)` —
+    // which is always exactly 1f (sunGlow never exceeds 1), so it was
+    // really just `Lerp(white, C, 0.5)` with no multiplier at all. For
+    // the low-green colours (index 5/6/7 in vanilla's Colors[] — (0,0,1),
+    // (0.87,0,1), (0.75,0,1)) that is DARKER in the R/G channels than
+    // vanilla's `Lerp(white, C, 0.075) * 0.73`, backwards from "maximized".
+    // Reusing that same heavy lerp for the OVERLAY colour (vanilla lerps
+    // overlay only 0.025 — near-white) also darkened rendered terrain
+    // under a blue/violet aurora.
+    //
     // Vanilla's own SkyTarget is `Lerp(white, color, 0.075) *
-    // Brightness(map)` where the private Brightness() floors at 0.73.
-    // This keeps that same shape — a tint scaled by a luminance floor —
-    // but pushes BOTH terms up: a much stronger lerp (0.5, so no channel
-    // can reach 0 — lerping a 0-channel colour 50% toward white floors it
-    // at 0.5) and a luminance multiplier floored at 1.0 rather than 0.73.
-    // `glow:` (the separate sky-glow/sight-range term, unrelated to this
-    // colour math) stays floored at MaxSunGlow as before.
+    // Brightness(map)` for the sky and `Lerp(white, color, 0.025) *
+    // Brightness(map)` for the overlay, where private Brightness() is
+    // `Max(0.73, CurCelestialSunGlow(map))`. This fix keeps the sky and
+    // overlay as two SEPARATE lerps (sky noticeably more saturated than
+    // vanilla, since "maximized colour" is the actual ask; overlay close
+    // to vanilla's own near-white amount so terrain doesn't darken), and
+    // replaces the always-1f brightness with a FIXED multiplier above
+    // vanilla's 0.73-to-1.0 range so the sky is genuinely brighter, not
+    // merely un-dimmed — clamped per-channel so it can't blow out past
+    // pure white. `glow:` floors at 0.25 (vanilla's own private `Glow`
+    // const), not at `MaxSunGlow` (0.5) — see AuroraGlowFloor below.
     public class GameCondition_DarkAuroraMax : GameCondition_Aurora
     {
-        private const float MaxSaturationLerp = 0.5f;   // vanilla uses 0.075/0.025
-        private const float MaxBrightness = 1f;          // vanilla's Brightness() floors at 0.73
+        private const float SkySaturationLerp = 0.35f;     // vanilla sky: 0.075f
+        private const float OverlaySaturationLerp = 0.05f; // vanilla overlay: 0.025f
+        private const float SkyBrightness = 1.15f;         // fixed; vanilla's Brightness() ranges 0.73-1.0
+        private const float AuroraGlowFloor = 0.25f;        // vanilla's private `Glow` const — NOT MaxSunGlow
 
         public override SkyTarget? SkyTarget(Map map)
         {
             if (map.GameConditionManager.IsAlwaysDarkOutside) return null;
 
             Color currentColor = CurrentColor;
-            float brightness = Mathf.Max(MaxBrightness, GenCelestial.CurCelestialSunGlow(map));
-            float glow = Mathf.Max(GenCelestial.CurCelestialSunGlow(map), MaxSunGlow);
+            Color sky = ClampToOne(Color.Lerp(Color.white, currentColor, SkySaturationLerp) * SkyBrightness);
+            Color overlay = ClampToOne(Color.Lerp(Color.white, currentColor, OverlaySaturationLerp) * SkyBrightness);
+            float glow = Mathf.Max(GenCelestial.CurCelestialSunGlow(map), AuroraGlowFloor);
             return new SkyTarget(
                 colorSet: new SkyColorSet(
-                    Color.Lerp(Color.white, currentColor, MaxSaturationLerp) * brightness,
+                    sky,
                     new Color(0.92f, 0.92f, 0.92f),
-                    Color.Lerp(Color.white, currentColor, MaxSaturationLerp) * brightness,
+                    overlay,
                     1f),
                 glow: glow,
                 lightsourceShineSize: 1f,
                 lightsourceShineIntensity: 1f);
+        }
+
+        private static Color ClampToOne(Color c)
+        {
+            return new Color(Mathf.Min(c.r, 1f), Mathf.Min(c.g, 1f), Mathf.Min(c.b, 1f), c.a);
         }
     }
 
