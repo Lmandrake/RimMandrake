@@ -1,4 +1,34 @@
 {
+  "src/RimMandrake/DesertVehicleReskin/Source/preview_derived_facings.py": {
+    "cleanCount": 1,
+    "date": "2026-09-02",
+    "sha": "14ea427e"
+  },
+  "src/RimMandrake/DesertVehicleReskin/Source/preview_tint.py": {
+    "cleanCount": 1,
+    "date": "2026-09-02",
+    "sha": "1a7b3aa1"
+  },
+  "src/RimMandrake/DesertVehicleReskin/Source/recolour_ronto.py": {
+    "cleanCount": 1,
+    "date": "2026-09-02",
+    "sha": "1a7b3aa1"
+  },
+  "src/RimMandrake/DesertVehicleReskin/Source/trim_to_band_aspect.py": {
+    "cleanCount": 1,
+    "date": "2026-09-02",
+    "sha": "14ea427e"
+  },
+  "src/RimMandrake/ResearchKitEastFix/Source/mirror_research_kit_easts.py": {
+    "cleanCount": 1,
+    "date": "2026-09-02",
+    "sha": "1a7b3aa1"
+  },
+  "src/RimMandrake/Utils/apply_race_factions.py": {
+    "cleanCount": 1,
+    "date": "2026-09-02",
+    "sha": "14ea427e"
+  },
   "src/RimMandrake/Utils/cherrypicker_swap.py": {
     "date": "2026-09-02",
     "sha": "d1c193ae"
@@ -7,8 +37,88 @@
     "date": "2026-09-02",
     "sha": "d1c193ae"
   },
+  "src/RimMandrake/Utils/gen_pawn_flavor_phase2_register.py": {
+    "cleanCount": 1,
+    "date": "2026-09-02",
+    "sha": "9b556d77"
+  },
+  "src/RimMandrake/Utils/grade_authored_kinds_trial.py": {
+    "cleanCount": 1,
+    "date": "2026-09-02",
+    "sha": "1a7b3aa1"
+  },
   "src/RimMandrake/Utils/modlist_swap.py": {
     "date": "2026-09-02",
     "sha": "d1c193ae"
+  },
+  "src/RimMandrake/Utils/naming_lint.py": {
+    "cleanCount": 1,
+    "date": "2026-09-02",
+    "sha": "14ea427e"
+  },
+  "src/RimMandrake/Utils/save_played_tiles.py": {
+    "cleanCount": 1,
+    "date": "2026-09-02",
+    "sha": "9b556d77"
+  },
+  "src/RimMandrake/Utils/selftest_colony_visibility.py": {
+    "cleanCount": 1,
+    "date": "2026-09-02",
+    "sha": "1a7b3aa1"
+  },
+  "src/RimMandrake/Utils/selftest_pit_logic.py": {
+    "cleanCount": 1,
+    "date": "2026-09-02",
+    "sha": "1a7b3aa1"
+  },
+  "src/RimMandrake/Utils/selftest_property_fabric.py": {
+    "cleanCount": 1,
+    "date": "2026-09-02",
+    "sha": "1a7b3aa1"
+  },
+  "src/RimStarWars/BlastDoorFrameAsyncFix/Source/verify_frameasync_east.py": {
+    "cleanCount": 1,
+    "date": "2026-09-02",
+    "sha": "b4095fb8"
+  },
+  "src/RimStarWars/KotORBandolierNorthFix/Source/survey_broken_sets.py": {
+    "cleanCount": 1,
+    "date": "2026-09-02",
+    "sha": "1a7b3aa1"
+  },
+  "src/RimStarWars/KotORBandolierNorthFix/Source/survey_donor_north.py": {
+    "cleanCount": 1,
+    "date": "2026-09-02",
+    "sha": "b4095fb8"
+  },
+  "src/RimStarWars/KotORBandolierNorthFix/Source/test_mask_recipe.py": {
+    "cleanCount": 1,
+    "date": "2026-09-02",
+    "sha": "14ea427e"
+  },
+  "src/RimStarWars/SeaBeasts/art/gen_sea_mockups.py": {
+    "cleanCount": 1,
+    "date": "2026-09-02",
+    "sha": "42372c35"
+  },
+  "src/RimStarWars/SeaBeasts/art/tools/build_sea_facings.py": {
+    "cleanCount": 1,
+    "date": "2026-09-02",
+    "sha": "14ea427e"
+  },
+  "src/RimStarWars/SeaBeasts/art/tools/seacheck.py": {
+    "cleanCount": 1,
+    "date": "2026-09-02",
+    "sha": "14ea427e"
+  },
+  "src/RimStarWars/SeaBeasts/art/tools/write_sea_plan.py": {
+    "cleanCount": 1,
+    "date": "2026-09-02",
+    "sha": "1a7b3aa1"
+  },
+  "src/SPLIT_Phase3/Jawa_Patches/Source/build_claim_rumour.py": {
+    "cleanCount": 1,
+    "date": "2026-09-02",
+    "sha": "1a7b3aa1"
   }
 }
