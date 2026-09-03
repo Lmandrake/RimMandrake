@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-03T00:56:15Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-03T02:03:13Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -62,16 +62,6 @@ thin:     spec, verify and criteria all present
 summary:  Layer stack: design/Jawa/researchnormalizationprinciples.md (why) →
 prose:    infrastructure/state/items/RESEARCH_TREE_NORMALIZATION_1.md
 
-## CHERRYPICKER_TWO_PROFILES_1 Two Cherry Picker profiles: ship (1509 cuts) and review (empty), swapped like modlist_swap.py
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  The measured position when this was filed. 1509 cuts live (cherrypicker.py
-prose:    infrastructure/state/items/CHERRYPICKER_TWO_PROFILES_1.md
-
 ## FOG_REVIEW_SITTING_WITH_OWNER_1 Live sitting with the owner: turn off NWN Real Fog of War and confirm review passes are legible
 state:    proposed
 row:      unassigned
@@ -81,3 +71,33 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  The find this exists to act on: CAI is not the fog. He proposed dropping CAI 5000
 prose:    infrastructure/state/items/FOG_REVIEW_SITTING_WITH_OWNER_1.md
+
+## CONFIG_SWAP_ATOMIC_WRITES_1 Both profile swappers write live game config with a bare copy2 - an interrupt truncates it
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     spec, verify and criteria all present
+summary:  src/RimMandrake/Utils/cherrypickerswap.py and
+prose:    infrastructure/state/items/CONFIG_SWAP_ATOMIC_WRITES_1.md
+
+## BRIDGE_TAKE_TOCTOU_AND_EPOCH_SENTINEL_1 bridge take is TOCTOU, and _epoch's 0.0 sentinel forces a distress score on one malformed ts
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     spec, verify and criteria all present
+summary:  Both in src/RimMandrake/rimflow/cli.py.
+prose:    infrastructure/state/items/BRIDGE_TAKE_TOCTOU_AND_EPOCH_SENTINEL_1.md
+
+## LIVE_BIRTH_AND_HATCH_DEMO_1 Drive the whole reproduction chain live: show pregnancy, induce birth, lay an egg, hatch it into a baby Jawa
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  1 — Show pregnancy. Get a pawn visibly pregnant and read the state back.
+prose:    infrastructure/state/items/LIVE_BIRTH_AND_HATCH_DEMO_1.md
