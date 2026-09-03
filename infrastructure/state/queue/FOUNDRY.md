@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-03T04:32:58Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: BENCH
+as-of: 2026-09-03T07:29:16Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -324,6 +324,24 @@ kind:     build
 summary:  Owner, 2026-09-02: "Man I wish the Autoopen of the error log was set to False by default"
 prose:    infrastructure/state/items/DEV_LOG_AUTOOPEN_SUPPRESS_1.md
 
+## INHABITED_TILEMUTATOR_NO_ENTRY_1 No TileMutatorDef anywhere names Inhabited_Cast -- the wilderness settlement-spawn route has no way in
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  The Inhabited mod's own class comments describe two routes onto a map: a proper
+prose:    infrastructure/state/items/INHABITED_TILEMUTATOR_NO_ENTRY_1.md
+
+## RIVER_LINK_ORDER_SELFTEST_DRIFT_1 selftest_river_link_order: produced/accepted link sets disagree since the rename migration
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  (no items/RIVER_LINK_ORDER_SELFTEST_DRIFT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/RIVER_LINK_ORDER_SELFTEST_DRIFT_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -378,6 +396,26 @@ blocked:  confirmed via engine source that WorldObject_Inhabited doesn't derive 
 summary:  Determine (live, via the bridge, not more code reading) whether an
 prose:    infrastructure/state/items/INHABITED_SETTLEMENT_MAPPARENT_GAP_1.md
 
+## INHABITED_TILEMUTATOR_NO_ENTRY_1 No TileMutatorDef anywhere names Inhabited_Cast -- the wilderness settlement-spawn route has no way in
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+blocked:  authored RM_InhabitedPlace (TileMutatorDefs_Inhabited.xml, 75204205), Defs deployed; live check needs bridge (held by BENCH for FOG_REVIEW_SITTING_WITH_OWNER_1) + game DOWN to redeploy the stale Assemblies/Inhabited.dll and GenStepDefs (missing RM_InhabitedStock, undeployed since a prior session)
+summary:  The Inhabited mod's own class comments describe two routes onto a map: a proper
+prose:    infrastructure/state/items/INHABITED_TILEMUTATOR_NO_ENTRY_1.md
+
+## RIVER_LINK_ORDER_SELFTEST_DRIFT_1 selftest_river_link_order: produced/accepted link sets disagree since the rename migration
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+blocked:  not a code bug in the emitter - it's a stale-fixture mismatch. Ran the selftest: 266 produced vs 292 accepted rows, tile IDs in disjoint ranges, River/Creek type flips. git log on world/ASHKARR_WORLDMAP_links.csv+tiles.csv shows 15+ recent hand-authoring commits actively moving rivers/craters/terrain (crater relocated, Kiln pan added, river death point moved) since the 'accepted' links.csv was captured. This is Ash'karr world-authoring territory - memory doctrine says worldmap doc/fixture updates go WITH the owner, never a solo sweep, and world/ASHKARR_WORLDMAP_tiles.csv is frozen accepted_for_v1. Needs the owner to decide: refresh the accepted links.csv fixture to match the current hand-edited river network, or is there a real emitter bug independent of the terrain edits. Not something FOUNDRY should decide or fix unilaterally.
+summary:  (no items/RIVER_LINK_ORDER_SELFTEST_DRIFT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/RIVER_LINK_ORDER_SELFTEST_DRIFT_1.md
+
 # WAITING ON A WINDOW — nothing is wrong
 
 _none._
@@ -390,12 +428,22 @@ _none._
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
 
-## INHABITED_TILEMUTATOR_NO_ENTRY_1 No TileMutatorDef anywhere names Inhabited_Cast -- the wilderness settlement-spawn route has no way in
+## KOTOR_HEADBAND_DANGLING_REFS_1 guy762_Headband_* apparel cut but KotOR Droids still references/patches them: 23 dangling crossrefs + 1 failed PatchOperationAdd
 state:    proposed
 row:      unassigned
-needs:    offline
+needs:    harvest
 target:   v1
 kind:     bug
-thin:     spec, verify and criteria all present
-summary:  The Inhabited mod's own class comments describe two routes onto a map: a proper
-prose:    infrastructure/state/items/INHABITED_TILEMUTATOR_NO_ENTRY_1.md
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/KOTOR_HEADBAND_DANGLING_REFS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/KOTOR_HEADBAND_DANGLING_REFS_1.md
+
+## DEFDUMP_ONDEMAND_BRIDGE_UNREACHABLE_1 RMDefDump on-demand DebugAction not fireable via bridge: plain Action-type custom leaves absent from the debug tree
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DEFDUMP_ONDEMAND_BRIDGE_UNREACHABLE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DEFDUMP_ONDEMAND_BRIDGE_UNREACHABLE_1.md

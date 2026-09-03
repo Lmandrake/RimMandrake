@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-03T05:06:57Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-03T07:29:16Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -17,24 +17,6 @@ Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED be
 # IN PROGRESS
 
 Started, and therefore not offered again. `rimflow close` or `rimflow block` moves them.
-
-## COLD_LOAD_RUN_SHEET_2 Next window run sheet: scenario-tool deploy, pursuit install, ship round trip
-state:    doing
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     task
-summary:  The next batched window scores everything below, then this closes and a fresh sheet is
-prose:    infrastructure/state/items/COLD_LOAD_RUN_SHEET_2.md
-
-## SW_SEA_MONSTERS_ART_1 SW sea-monster art pass with the owner: the Naboo trench trio + creature roles from depths_concept.md, born under beast-normalization Laws 3+4, tier RimStarWars
-state:    doing
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-summary:  Owner ruled 2026-08-31: all six §5 roles, and the three predator roles are the
-prose:    infrastructure/state/items/SW_SEA_MONSTERS_ART_1.md
 
 ## FLUID_CANAL_FLOOD_LIVE_CHECK_1 Watch a fluid-canal flood recede and give the floor back
 state:    doing
@@ -70,13 +52,3 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  Layer stack: design/Jawa/researchnormalizationprinciples.md (why) →
 prose:    infrastructure/state/items/RESEARCH_TREE_NORMALIZATION_1.md
-
-## GAME_STATE_BROADCAST_NARROWING_1 Narrow the game-state broadcast to windows that are actually blocked on the game
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     decision
-thin:     spec, verify and criteria all present
-summary:  He is right about the half he named, and the reason is measurable. rimflow next
-prose:    infrastructure/state/items/GAME_STATE_BROADCAST_NARROWING_1.md
