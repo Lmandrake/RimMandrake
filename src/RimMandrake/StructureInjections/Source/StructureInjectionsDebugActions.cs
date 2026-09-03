@@ -1,3 +1,5 @@
+using System.IO;
+using System.Linq;
 using LudeonTK;
 using Verse;
 
@@ -13,17 +15,20 @@ namespace RimMandrake.StructureInjections
     {
         private const string CAT = "RMInject";
 
-        // Absolute path so the debug tool needs no modContentPack/GenStepDef
-        // plumbing at all -- it is a standalone proof of ApplyPlan(), not a
-        // simulation of the production planFile-resolution path (that path
-        // is exercised for real once a promise's TileMutatorDef/GenStepDef
-        // wiring exists).
+        // Same packageId as About/About.xml -- there is no GenStepDef here to
+        // hand us def.modContentPack, so this looks the ModContentPack up the
+        // same way DefDumper enumerates mods (LoadedModManager.RunningModsListForReading),
+        // then resolves via RootDir exactly like GenStep_RimplacePlan.Generate()
+        // does. Templates/ ships inside the mod, so this works on any machine
+        // and survives a Transient/ sweep.
+        private const string PackageId = "mandrake.rm.injections";
+
         [DebugAction(CAT, "Run plan: dwelling_test.txt",
             allowedGameStates = AllowedGameStates.PlayingOnMap,
             actionType = DebugActionType.ToolMap)]
         private static void RunDwellingTest()
         {
-            RunAt(@"D:\Luke\dev\Rimworld\Transient\dwelling_test.txt");
+            RunAt(ResolveTemplatePath("dwelling_test.txt"));
         }
 
         [DebugAction(CAT, "Run plan: moisture_farm_test.txt",
@@ -31,11 +36,25 @@ namespace RimMandrake.StructureInjections
             actionType = DebugActionType.ToolMap)]
         private static void RunMoistureFarmTest()
         {
-            RunAt(@"D:\Luke\dev\Rimworld\Transient\moisture_farm_test.txt");
+            RunAt(ResolveTemplatePath("moisture_farm_test.txt"));
+        }
+
+        private static string ResolveTemplatePath(string fileName)
+        {
+            var modRoot = LoadedModManager.RunningModsListForReading
+                .FirstOrDefault(m => m.PackageId == PackageId)?.RootDir;
+            if (string.IsNullOrEmpty(modRoot))
+            {
+                Log.Error("[RMInjectDebug] mod " + PackageId + " not found in RunningModsListForReading; cannot resolve " + fileName);
+                return null;
+            }
+            return Path.Combine(modRoot, "Templates", fileName);
         }
 
         private static void RunAt(string path)
         {
+            if (path == null) { return; }
+
             Map map = Find.CurrentMap;
             if (map == null) { Log.Message("[RMInjectDebug] NO_MAP"); return; }
 
