@@ -174,6 +174,15 @@ def sessions():
     return sorted(out, key=lambda r: r.get("name") or "")
 
 
+def in_repo(rec):
+    """Is this window sitting in THIS repo? ⚠️ `os.path.realpath("")` returns the
+    CALLER's cwd, so `realpath(rec.get("cwd") or "")` read a record with no cwd as
+    in-repo whenever broadcast is run from the repo — which is always, via `./game`.
+    A window we cannot place is not here."""
+    cwd = rec.get("cwd")
+    return bool(cwd) and os.path.realpath(cwd) == os.path.realpath(REPO)
+
+
 TAG = "cross-session-message"
 
 # 🔴 READ OFF THE INSTALLED CLI, ~/.local/share/claude/versions/2.1.238 — undocumented
@@ -370,24 +379,41 @@ def main(argv):
             everywhere = True
         elif a == "--list":
             only = "\x00list"
-        elif a == "--to" and i + 1 < len(argv):
+        elif a in ("--to", "--from"):
+            # ⛔ A FLAG MISSING ITS VALUE IS A MISTYPED COMMAND, NEVER A WORD OF THE
+            # MESSAGE — fixed 2026-09-03. `--to`/`--from` used to be guarded by
+            # `and i + 1 < len(argv)`, so a trailing `--to` fell through to `args` and
+            # `broadcast.py "Game is up" --to` announced *"Game is up --to"* to EVERY
+            # window instead of the one asked for: wrong text and wrong recipients, with
+            # nothing said. Same class as the `./game up --help` broadcast of 2026-08-25.
+            if i + 1 >= len(argv):
+                print("%s takes a value, e.g. %s BENCH" % (a, a), file=sys.stderr)
+                return 2
             i += 1
-            only = [x.strip().upper() for x in argv[i].split(",") if x.strip()]
-        elif a == "--from" and i + 1 < len(argv):
-            i += 1
-            sender = argv[i]
+            if a == "--to":
+                only = [x.strip().upper() for x in argv[i].split(",") if x.strip()]
+                if not only:
+                    print("--to names no window", file=sys.stderr)
+                    return 2
+            else:
+                sender = argv[i]
+        elif a.startswith("--"):
+            # A mistyped flag (`--al`) otherwise becomes message text AND silently
+            # changes who is reached. Refusing costs nothing; the owner types prose.
+            print("unknown option %r.  --all | --list | --to <names> | --from <name>" % a,
+                  file=sys.stderr)
+            return 2
         else:
             args.append(a)
         i += 1
 
     live = sessions()
     if not everywhere:
-        live = [r for r in live
-                if os.path.realpath(r.get("cwd") or "") == os.path.realpath(REPO)]
+        live = [r for r in live if in_repo(r)]
 
     if only == "\x00list":
         for r in sessions():
-            here = "  " if os.path.realpath(r.get("cwd") or "") == os.path.realpath(REPO) else " *"
+            here = "  " if in_repo(r) else " *"
             print("%s %-18s %-9s pid%-8s %s"
                   % (here, r.get("name"), r.get("status"), r.get("pid"), r.get("cwd")))
         print("\n  (* = outside this repo; needs --all)")
@@ -400,16 +426,23 @@ def main(argv):
 
     if isinstance(only, list):
         live = [r for r in live if any(k in (r.get("name") or "").upper() for k in only)]
-    if not live:
-        print("no live sessions matched")
-        return 1
-
     # 🔑 Record BEFORE delivering. A seat woken by this message will run
     # `rimflow next` within the second, and it must read the new state, not the old one.
+    # 🔴 AND BEFORE THE NO-RECIPIENT EXIT — fixed 2026-09-03. This block sat *after*
+    # `if not live: return 1`, so `./game up` with no agent window open in this repo
+    # (or a `--to` naming a window that had since exited) announced nothing AND recorded
+    # nothing, exiting 1 with only "no live sessions matched" to show for it. The stamp
+    # is the half that does not depend on anyone listening, and losing it is exactly the
+    # failure this mechanism exists to end: the board reading DOWN for a whole session
+    # while RimWorld was running.
     state = game_state_in(text)
     if state:
         err = record_game(state, text)
         print("  game -> %-12s %s" % (state, err or "recorded in the ledger"))
+
+    if not live:
+        print("no live sessions matched")
+        return 1
 
     # ⭐ NARROWED, and only for a game-state sentence. An arbitrary message the owner
     # types still reaches every window — he is addressing them, and only he can know
