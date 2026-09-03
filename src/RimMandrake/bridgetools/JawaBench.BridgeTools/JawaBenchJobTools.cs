@@ -20,7 +20,8 @@
 //       ⚠️ `design/Jawa/bridge/BRIDGE_CAPABILITY_ROSTER.md` calls this absent.
 //       It is not. Read the source, not the older doc.
 //   Verse.AreaManager.Home/.BuildRoof/.NoRoof/.SnowOrSandClear/.PollutionClear,
-//       Verse.Area indexer (this[IntVec3]) and Area.Clear()
+//       Verse.Area indexer (this[IntVec3]). ⚠️ NOT Area.Clear() - see the note
+//       in jawa/paint_area on the caches it writes behind.
 //   Verse.AI.Pawn_JobTracker.TryTakeOrderedJob(Job, JobTag?, bool)/
 //       .StopAll(bool,bool)/.EndCurrentJob(JobCondition,bool,bool)/
 //       .ClearQueuedJobs(bool)/.IsCurrentJobPlayerInterruptible()
@@ -657,6 +658,15 @@ namespace JawaBench.BridgeTools
 
                 if (!string.IsNullOrWhiteSpace(label)) area.SetLabel(label.Trim());
 
+                // Area_Allowed.SetLabel enforces nothing (RimWorld/Area_Allowed.cs) and only
+                // the auto-generated "Area N" default is de-duplicated, in the constructor.
+                // Uniqueness matters here because every label lookup in this file is a
+                // FirstOrDefault: with two areas sharing a label, jawa/paint_area and
+                // jawa/set_player_settings would silently address whichever sorts first and
+                // report a clean success against the wrong one.
+                var sameLabel = map.areaManager.AllAreas
+                    .Count(a => a != area && string.Equals(a.Label, area.Label, StringComparison.OrdinalIgnoreCase));
+
                 var stillThere = map.areaManager.AllAreas.Contains(area);
                 return new
                 {
@@ -664,13 +674,21 @@ namespace JawaBench.BridgeTools
                     id = area.ID,
                     label = area.Label,
                     allowedAreaCountNow = map.areaManager.AllAreas.OfType<Area_Allowed>().Count(),
+                    labelCollisions = sameLabel,
+                    note = sameLabel > 0
+                        ? $"⚠️ {sameLabel} other area(s) on this map already carry the label " +
+                          $"'{area.Label}'. Label lookups here are FirstOrDefault, so " +
+                          "jawa/paint_area and jawa/set_player_settings can no longer tell them " +
+                          $"apart and may address a different area than id {area.ID}. Rename one, " +
+                          "or address this area by creating it with a unique label."
+                        : null,
                 };
             }, cancellationToken).ConfigureAwait(false);
         }
 
         // =====================================================================
         // jawa/paint_area - Home/BuildRoof/NoRoof/SnowOrSandClear/PollutionClear
-        //                   /Allowed areas, Area indexer + Area.Clear()
+        //                   /Allowed areas, Area indexer (never Area.Clear())
         // =====================================================================
 
         [Tool(
@@ -681,7 +699,9 @@ namespace JawaBench.BridgeTools
                 "indexer (Area.this[IntVec3]). ops format 'x,z,w,h' separated by ';' " +
                 "(same shape as jawa/set_terrain_batch's ops, minus the def prefix). " +
                 "value=false clears the listed cells instead of setting them; " +
-                "clearAreaFirst empties the WHOLE area (Area.Clear()) before painting.",
+                "clearAreaFirst empties the WHOLE area before painting - cell by cell "
+                + "through the same setter, NOT via Area.Clear(), which writes the grid behind "
+                + "the pathfinder and filth-lister caches that depend on it.",
             ResultDescription =
                 "Every written cell read back off the area afterward (area[cell] == " +
                 "value), never assumed from the call returning. requested/setCount/" +
@@ -699,7 +719,8 @@ namespace JawaBench.BridgeTools
                 DefaultValue = true)]
             bool value = true,
             [ToolParameter(Description =
-                "Empty the WHOLE area (Area.Clear()) before painting the listed cells.",
+                "Empty the WHOLE area before painting the listed cells. clearedCells reports "
+                + "how many were true beforehand.",
                 DefaultValue = false)]
             bool clearAreaFirst = false,
             [ToolParameter(Description =
@@ -762,7 +783,31 @@ namespace JawaBench.BridgeTools
                     target = created;
                 }
 
-                if (clearAreaFirst) target.Clear();
+                // 🔴 Area.Clear() WRITES THE GRID BEHIND EVERY CACHE THAT DEPENDS ON IT
+                // (2026-09-03 opus review). Verse/Area.cs: Clear() is
+                //     innerGrid.Clear(); Drawer.SetDirty();
+                // and nothing else. The per-cell path - Area.Set - additionally calls
+                // MarkDirty(c), which is what notifies Map.pathFinder.MapData
+                // (Notify_AreaDelta) and the cell's Region (Notify_AreaChanged); and
+                // Area_Home overrides Set to also call
+                // Map.listerFilthInHomeArea.Notify_HomeAreaChanged. Clear() reaches none of
+                // them. Nothing in vanilla calls Area.Clear() on a live map, so nothing in
+                // vanilla ever pays for that. Clearing the home area this way left the filth
+                // lister holding cells that are no longer home - colonists keep taking
+                // cleaning jobs outside the area indefinitely - and clearing an allowed area
+                // left the pathfinder's area data stale for restricted pawns. Worst of all,
+                // this tool's own read-back could not see it: target[c] reads innerGrid
+                // directly, so every cell verified clean while the derived caches lied.
+                //
+                // Cleared cell by cell instead, through the same setter the painting below
+                // uses. ActiveCells iterates the live grid, so it is snapshotted first.
+                var clearedCells = 0;
+                if (clearAreaFirst)
+                {
+                    var wasTrue = target.ActiveCells.ToList();
+                    foreach (var c in wasTrue) target[c] = false;
+                    clearedCells = wasTrue.Count;
+                }
 
                 var size = map.Size;
                 var requested = 0;
@@ -801,6 +846,7 @@ namespace JawaBench.BridgeTools
                     setCount,
                     failedVerify,
                     outOfBounds,
+                    clearedCells,
                     trueCountNow = target.TrueCount,
                 };
             }, cancellationToken).ConfigureAwait(false);
