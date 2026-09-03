@@ -277,6 +277,8 @@ namespace JawaBench.BridgeTools
                 var def = DefDatabase<ThingDef>.GetNamedSilentFail(plantDef.Trim());
                 if (def == null)
                     return Fail($"Unknown ThingDef '{plantDef}'.");
+                if (def.plant == null)
+                    return Fail($"ThingDef '{def.defName}' is not a plant (no plant properties) - a grower set to it will never sow.");
 
                 settable.SetPlantDefToGrow(def);
                 var readBack = settable.GetPlantDefToGrow();

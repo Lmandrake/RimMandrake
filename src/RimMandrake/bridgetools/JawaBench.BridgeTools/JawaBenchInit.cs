@@ -197,13 +197,19 @@ namespace JawaBench.BridgeTools
             }
         }
 
+        // Digests the [Tool("jawa/...")] NAME, not the C# method identifier -
+        // renaming the tool string (the actual rename risk: RimBridgeServer
+        // dispatches on that string, per build.py's own read of the
+        // attribute) left the method name untouched and produced a
+        // byte-identical digest, defeating the entire "115 tools cannot tell
+        // you one was renamed" reasoning this line exists for.
         private static System.Collections.Generic.IEnumerable<string> ToolNames(Type[] types)
         {
             return types
-                .SelectMany(t => t.GetMethods(BindingFlags.Public | BindingFlags.Static |
-                                              BindingFlags.NonPublic | BindingFlags.Instance))
-                .Where(m => m.GetCustomAttributes(typeof(ToolAttribute), inherit: false).Length > 0)
-                .Select(m => m.DeclaringType?.Name + "." + m.Name)
+                .SelectMany(t => t.GetMethods(BindingFlags.Public | BindingFlags.Static))
+                .Select(m => new { m, attr = m.GetCustomAttribute<ToolAttribute>(inherit: false) })
+                .Where(x => x.attr != null)
+                .Select(x => x.attr.Name)
                 .OrderBy(x => x, StringComparer.Ordinal);
         }
 
@@ -222,8 +228,7 @@ namespace JawaBench.BridgeTools
         private static int CountTools(Type[] types)
         {
             return types
-                .SelectMany(t => t.GetMethods(BindingFlags.Public | BindingFlags.Static |
-                                              BindingFlags.NonPublic | BindingFlags.Instance))
+                .SelectMany(t => t.GetMethods(BindingFlags.Public | BindingFlags.Static))
                 .Count(m => m.GetCustomAttributes(typeof(ToolAttribute), inherit: false).Length > 0);
         }
     }

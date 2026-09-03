@@ -27,7 +27,8 @@
 //   KCSG/Utils/GenOption.cs           GetAllMineableIn(CellRect, Map) - registers
 //                                     mineable resources under the footprint before
 //                                     Generate runs; every KCSG debug action calls
-//                                     this between CleanRect and Generate
+//                                     this FIRST, before CleanRect (which reads the
+//                                     dictionary this call primes) and Generate
 //   KCSG/Utils/SymbolUtils.cs         Generate(this SymbolDef, StructureLayoutDef,
 //                                     Map, IntVec3, Faction, ThingDef) - SymbolDef
 //                                     itself has no Generate() either
