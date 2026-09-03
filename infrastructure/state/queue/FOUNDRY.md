@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-03T03:36:32Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-03T03:38:12Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -44,15 +44,6 @@ target:   v1
 kind:     task
 summary:  (no items/DROID_TILES_SOURED_TERRAIN_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DROID_TILES_SOURED_TERRAIN_1.md
-
-## DROIDWORKS_POWEREDDOWN_NOT_WIRED_1 Ion buildup crossing threshold downs via vanilla JawaIon_Stun capMods only -- never adds the DW_PoweredDown hediff the state machine is built around
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  design/Jawa/droidsystembuildspec.md §2, state 3 ("Downed/off"): "buildup
-prose:    infrastructure/state/items/DROIDWORKS_POWEREDDOWN_NOT_WIRED_1.md
 
 ## ASSAILANT_DUNGEON_BUILD_1 Build the Assailant flesh dungeon: frozen first-impact complex, thaw-gated, deep Umbra
 state:    doing
@@ -455,3 +446,13 @@ kind:     build
 thin:     spec, verify and criteria all present
 summary:  Owner, 2026-09-02: "Man I wish the Autoopen of the error log was set to False by default"
 prose:    infrastructure/state/items/DEV_LOG_AUTOOPEN_SUPPRESS_1.md
+
+## BRIDGE_LISTPAWNS_GENETRACKER_NRE_1 jawa/list_pawns NREs on any map with a non-genetic (droid) pawn -- Pawn_GeneTracker.XenotypeLabel getter throws
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     spec, verify and criteria all present
+summary:  jawa/listpawns throws unconditionally once a pawn with no PawnGeneTracker
+prose:    infrastructure/state/items/BRIDGE_LISTPAWNS_GENETRACKER_NRE_1.md
