@@ -1072,6 +1072,11 @@
     "date": "2026-09-03",
     "sha": "46ac7699"
   },
+  "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchPawnTools.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "2d25fefc"
+  },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchPipeTools.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
