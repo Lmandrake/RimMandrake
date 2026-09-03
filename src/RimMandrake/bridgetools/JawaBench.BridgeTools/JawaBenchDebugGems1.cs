@@ -134,8 +134,13 @@ namespace JawaBench.BridgeTools
                 "CELL in the rect, unconditionally. No collision check, no wipe - a cell " +
                 "already occupied gets an overlapping spawn (matches the engine's own debug " +
                 "tool exactly, which does the same thing). Use jawa/wipe_cell or " +
-                "jawa/clear_area first if the rect is not already empty.",
-            ResultDescription = "success, rect, thingDef, cellsFilled.")]
+                "jawa/clear_area first if the rect is not already empty. " +
+                "🔴 GenDebug.SpawnArea discards each per-cell GenSpawn.Spawn() return value, " +
+                "and Spawn() returns null WITHOUT THROWING on out-of-bounds or a failed " +
+                "def.CanSpawnAt(cell, rot, map) check (Verse/GenSpawn.cs) - so this tool spawns " +
+                "cell-by-cell itself instead of delegating to GenDebug.SpawnArea, and " +
+                "cellsFilled counts only cells whose Spawn() actually returned a spawned Thing.",
+            ResultDescription = "success, rect, thingDef, cellsRequested, cellsFilled, failed[] (x, z, reason).")]
         public static async Task<object> SpawnFillArea(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -155,15 +160,25 @@ namespace JawaBench.BridgeTools
                 var def = DefDatabase<ThingDef>.GetNamedSilentFail(thingDef.Trim());
                 if (def == null) return Fail("No ThingDef '" + thingDef + "'.", DefSuggestions<ThingDef>(thingDef));
 
-                try { GenDebug.SpawnArea(r, map, def); }
-                catch (Exception e) { return Fail("GenDebug.SpawnArea threw " + e.GetType().Name + ": " + e.Message); }
+                int filled = 0;
+                var failed = new List<object>();
+                foreach (var c in r)
+                {
+                    Thing spawned;
+                    try { spawned = GenSpawn.Spawn(def, c, map); }
+                    catch (Exception e) { failed.Add(new { x = c.x, z = c.z, reason = e.GetType().Name + ": " + e.Message }); continue; }
+                    if (spawned != null && spawned.Spawned) filled++;
+                    else failed.Add(new { x = c.x, z = c.z, reason = "GenSpawn.Spawn returned null (CanSpawnAt refused or out of bounds)" });
+                }
 
                 return new
                 {
                     success = true,
                     rect = new { x = r.minX, z = r.minZ, w = r.Width, h = r.Height },
                     thingDef = def.defName,
-                    cellsFilled = r.Area,
+                    cellsRequested = r.Area,
+                    cellsFilled = filled,
+                    failed,
                     ticksGame = TicksGameSafe()
                 };
             }).ConfigureAwait(false);
