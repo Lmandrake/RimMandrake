@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-03T15:35:23Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: BENCH
+as-of: 2026-09-03T15:50:50Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -475,3 +475,13 @@ kind:     bug
 thin:     spec, verify and criteria all present
 summary:  Make "run every selftest before commit" actually run every selftest inside a normal
 prose:    infrastructure/state/items/SELFTEST_SWEEP_EXCEEDS_COMMIT_BUDGET_1.md
+
+## FLUID_CANAL_DEBUG_SURFACE_1 FluidCanals [DebugAction]s never register in a live game
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/FLUID_CANAL_DEBUG_SURFACE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FLUID_CANAL_DEBUG_SURFACE_1.md

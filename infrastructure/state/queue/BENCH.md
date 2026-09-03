@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-03T15:35:23Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: BENCH
+as-of: 2026-09-03T15:50:50Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -28,7 +28,7 @@ summary:  Layer stack: design/Jawa/researchnormalizationprinciples.md (why) →
 prose:    infrastructure/state/items/RESEARCH_TREE_NORMALIZATION_1.md
 
 ## FLUID_CANAL_FLOOD_LIVE_CHECK_1 Watch a fluid-canal flood recede and give the floor back
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    deploy
 target:   v1
@@ -38,7 +38,17 @@ prose:    infrastructure/state/items/FLUID_CANAL_FLOOD_LIVE_CHECK_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
-_none._
+⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
+
+## FLUID_CANAL_FLOOD_LIVE_CHECK_1 Watch a fluid-canal flood recede and give the floor back
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+blocked:  blocked on FLUID_CANAL_DEBUG_SURFACE_1: the mod's debug actions do not register in a live game, so none of the three readings can be taken. All else proven ready: deploy in sync (9 files), assembly loads, minimal-list swap+restore clean (589->20->589, md5 identical), game down, bridge released.
+summary:  FLUIDCANALFLOODTUNINGGAPS1 findings 1/2/3 were fixed in code and
+prose:    infrastructure/state/items/FLUID_CANAL_FLOOD_LIVE_CHECK_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
