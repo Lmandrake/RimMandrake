@@ -253,13 +253,18 @@ def _selftest(save_path, dump_dir=DEFAULT_DUMP):
     cen = g.census()
     for k, v in list(cen.items())[:8]:
         print("   %-26s %d" % (k, v))
-    # round-trip: re-encode untouched and confirm every array survives
-    tmp = save_path + ".roundtrip"
-    g.write(tmp)
-    h = WorldGrid(tmp, dump_dir)
-    same = all(h.arrays[k] == g.arrays[k] for k in g.arrays)
+    # round-trip: re-encode each array in memory and decode it straight back.
+    # write() is retired (raises SystemExit unconditionally), so this checks
+    # _encode()/_decode() symmetry directly - no save file is touched.
+    same = True
+    for name, arr in g.arrays.items():
+        width = SCALARS[name]
+        fmt = "<%d%s" % (len(arr), "H" if width == 2 else "B")
+        raw = struct.pack(fmt, *arr)
+        back = list(struct.unpack(fmt, _decode(_encode(raw))))
+        if back != arr:
+            same = False
     print("round-trip    %s" % ("IDENTICAL" if same else "🔴 MISMATCH"))
-    os.remove(tmp)
     return same
 
 
