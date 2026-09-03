@@ -41,3 +41,14 @@ swap to the minimal list WITH Odyssey + fluidcanals enabled (`modset_builder.py`
 All three read as expected on a live map, or the reading that failed is
 written back into `FLUID_CANAL_FLOOD_TUNING_GAPS_1`'s own record with what it
 actually did.
+
+## note 2026-09-03 (BENCH, after the blocked run)
+
+Spec correction for whoever runs this once FLUID_CANAL_DEBUG_SURFACE_1 lands:
+the debug-action paths in `## spec` use the wrong grammar. Category is metadata,
+not a path segment, and ToolMap actions get a `T: ` label prefix
+(Source/LudeonTK/DebugTabMenu_Actions.cs:52-55). Correct paths:
+`Actions\T: Instant-dig canal at cell` · `Actions\T: Report cell (RAW)`.
+Everything else about the run is proven ready — deploy in sync, assembly loads,
+minimal-list swap and restore clean. Session log:
+`Transient/Player_log_20260903_fluidcanal_livecheck.log`.
