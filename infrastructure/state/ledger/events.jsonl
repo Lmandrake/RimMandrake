@@ -4154,3 +4154,15 @@
 {"seat":"FOUNDRY","event":"close","id":"SEABEAST_STARMAW_LANTERNWHALE_TEXTURES_MISSING_1","sha":"14a3ba7da603990f8df13264f18f58c6c97b8a3d","ts":"2026-09-03T04:00:49Z"}
 {"seat":"OWNER","event":"file","id":"GAME_STATE_BROADCAST_NARROWING_1","title":"Narrow the game-state broadcast to windows that are actually blocked on the game","kind":"decision","target":"v1","needs":"owner","for":"BENCH","ownerSaid":"Should we get rid of that broadcast message of game is up, etc.? It doesn't seem to have a function anymore and can even distract.","ts":"2026-09-03T04:00:54Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"DEV_LOG_AUTOOPEN_SUPPRESS_1 live verify","ts":"2026-09-03T04:00:59Z"}
+{"seat":"BENCH","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-09-03T04:02:11Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-03T04:04:31Z"}
+{"seat":"FOUNDRY","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-09-03T04:05:12Z"}
+{"seat":"FOUNDRY","event":"claim","id":"INHABITED_STOCK_ONTO_MAP_AND_FATE_1","ts":"2026-09-03T04:07:56Z"}
+{"seat":"FOUNDRY","event":"start","id":"INHABITED_STOCK_ONTO_MAP_AND_FATE_1","ts":"2026-09-03T04:07:56Z"}
+{"seat":"FOUNDRY","event":"claim","id":"INHABITED_AUTHORED_BIONICS_INSTALL_1","ts":"2026-09-03T04:07:57Z"}
+{"seat":"FOUNDRY","event":"start","id":"INHABITED_AUTHORED_BIONICS_INSTALL_1","ts":"2026-09-03T04:07:57Z"}
+{"seat":"BENCH","event":"bridge","state":"taken","purpose":"FOG_REVIEW_SITTING_WITH_OWNER_1: flip Real FoW onlyOutsideColony with the owner watching","ts":"2026-09-03T04:12:04Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","ownerSaid":"let's do the fog","ts":"2026-09-03T04:14:13Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","ownerSaid":"Game is loading","ts":"2026-09-03T04:14:18Z"}
+{"seat":"BENCH","event":"note","id":"FOG_REVIEW_SITTING_WITH_OWNER_1","text":"Set it myself rather than hand him a click: wrote Config/Mod_3391128917_RealFoWModStarter.xml with <onlyOutsideColony>True</onlyOutsideColony> while the game was DOWN. Filename derived from LoadedModManager.GetSettingsFilename (Mod_{FolderName}_{ModSubclassName}.xml) with FolderName=3391128917 and RealFoWModStarter the Mod subclass that calls GetSettings<RfowSettings>(); Scribe key onlyOutsideColony from RfowSettings.ExposeData. No settings file existed before, so the mod had been running shipped defaults. Then called the reboot myself (bridge taken first, per GAME_STATE_WORKFLOW): full 589-mod list, mlie.nwnrealfogofwar active. Awaiting his eye on a map.","ts":"2026-09-03T04:15:03Z"}
+{"seat":"FOUNDRY","event":"close","id":"INHABITED_AUTHORED_BIONICS_INSTALL_1","sha":"75f56fa0","ts":"2026-09-03T04:21:06Z"}

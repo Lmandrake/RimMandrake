@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-03T04:00:54Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: free
+as-of: 2026-09-03T04:21:06Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -306,6 +306,15 @@ kind:     bug
 summary:  Determine (live, via the bridge, not more code reading) whether an
 prose:    infrastructure/state/items/INHABITED_SETTLEMENT_MAPPARENT_GAP_1.md
 
+## INHABITED_STOCK_ONTO_MAP_AND_FATE_1 Spawn a place's stock onto its map, collect it back, and wire InhabitedFate to it
+state:    doing
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+summary:  (no items/INHABITED_STOCK_ONTO_MAP_AND_FATE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/INHABITED_STOCK_ONTO_MAP_AND_FATE_1.md
+
 ## DEV_LOG_AUTOOPEN_SUPPRESS_1 Suppress the dev-mode auto-open of the error log (no vanilla pref exists; Harmony prefix in JawaBench)
 state:    doing
 row:      unassigned
@@ -379,24 +388,4 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## INHABITED_STOCK_ONTO_MAP_AND_FATE_1 Spawn a place's stock onto its map, collect it back, and wire InhabitedFate to it
-state:    proposed
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/INHABITED_STOCK_ONTO_MAP_AND_FATE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/INHABITED_STOCK_ONTO_MAP_AND_FATE_1.md
-
-## INHABITED_AUTHORED_BIONICS_INSTALL_1 Install the bionic half of CharacterDef.items instead of skipping it
-state:    proposed
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/INHABITED_AUTHORED_BIONICS_INSTALL_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/INHABITED_AUTHORED_BIONICS_INSTALL_1.md
+_none._
