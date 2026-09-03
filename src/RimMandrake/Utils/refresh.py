@@ -17,7 +17,7 @@ The artefacts, and what each costs to rebuild:
   observed/2026-08-13/inventory/*.csv        offline scan          seconds
   contact_sheets/             offline + Pillow      seconds
   DefDump/ (the live dump)    A FULL GAME LOAD      ~23 minutes
-  Jawa_Armoury/Patches/*.xml  reads the live dump   seconds, but needs a
+  Armoury/Patches/*.xml       reads the live dump   seconds, but needs a
                                                     CURRENT dump to be right
   def_diff outputs            needs both            seconds
 
@@ -119,7 +119,7 @@ INVENTORY = os.path.join(ROOT, "observed", "2026-08-13",
                          "inventory")
 STAMP = os.path.join(INVENTORY, "GENERATED_FROM.json")
 SHEETS = os.path.join(INVENTORY, "contact_sheets")
-ARMOURY = os.path.join(ROOT, "src", "Jawa", "Jawa_Armoury")
+ARMOURY = os.path.join(ROOT, "src", "RimStarWars", "Armoury")
 
 # The three roots a mod folder can actually live under. A packageId that
 # resolves to none of them is LISTED BUT NOT INSTALLED.
@@ -796,8 +796,8 @@ def status(fp, steps_failed=False):
     have_patches = os.path.isdir(patch_dir) and any(
         f.endswith(".xml") for f in os.listdir(patch_dir))
     patch_state = ("current" if (have_patches and dfp and dfp["hash"] == fp["hash"])
-                   else "STALE" if have_patches else "missing")
-    rows.append(("Jawa_Armoury/Patches", "-" if have_patches else "missing",
+                   else "STALE" if have_patches else "MISSING")
+    rows.append(("Armoury/Patches", "-" if have_patches else "missing",
                  patch_state, "--patches (needs a current dump)"))
 
     print("\n=== ARTEFACTS ===")
