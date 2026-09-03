@@ -59,11 +59,16 @@
     <defaultLabelColor>(0.55, 0.75, 1.0)</defaultLabelColor>
     <scenarioCanAdd>false</scenarioCanAdd>
     <maxSeverity>1.0</maxSeverity>
+    <!-- HediffDef.initialSeverity defaults to 0.5 -- without this, every fresh
+         hediff is born at 0.5 (the "overloaded" floor stage below, Consciousness
+         capped at 0.10) and DamageWorker_IonBuildup.cs's `hediff.Severity += severity`
+         adds on top of that instead of starting from 0. One bolt would down a
+         pawn outright. -->
+    <initialSeverity>0</initialSeverity>
     <isBad>true</isBad>
     <comps>
       <!-- Decay: severity falls ~0.3/day (~0.0125/hour) so a downed target
-           stays down for hours rather than minutes. Was -1.2 (DROIDWORKS_ION_GUARD_1,
-           2026-08-30, droid_ruling.md §5 Option A item 2). -->
+           stays down for hours rather than minutes. -->
       <li Class="HediffCompProperties_SeverityPerDay">
         <severityPerDay>-0.3</severityPerDay>
       </li>
