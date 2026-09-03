@@ -53,7 +53,7 @@ sitting decides RR's fate outright (§6.6).
 | **The Machine** | the droid branch, gathered and VISIBLE: Droid Depot, Outer Rim droid rows, droid bionics — the Ohm/Oomo flashpoint the player walks into knowingly | ↑Ohm, ↓Oomo per completion |
 | **THE SHIP** | the ruled non-linear tree: gravtech cluster, VGE systems, ShipReactor, VFE_Manufacturing, drill-laser pair, ship weaponry, Memory Core chain (hidden until the ship surfaces them — research as revelation) | Rekko-NEUTRAL for restoration rows; Ozzik-weighted for beyond-spec rows |
 | **The Reach** | spacer/ultra/archotech: the temptation tab, visibly pride-marked — the archite ladder lives here when its v2 rethink lands | the trap's teeth |
-| **(Anomaly)** | engine-forced tab, playstyle-gated; rows left in place — bioferrite/containment must stay researchable for the Assailant/sarlacc exception | untouched |
+| **(Anomaly)** | engine-forced tab, playstyle-gated — all 42 rows CUT (owner, 2026-09-03): repurposed content, not a player tree. The Assailant/sarlacc exception reaches its content by a non-research route (`ANOMALY_EXCEPTION_ACCESS_1`), never by research | all cut |
 
 The research screen becomes the temptation diagram: left-to-right is the
 ambition gradient, and the two pride-marked tabs LOOK different (tab naming
@@ -134,8 +134,9 @@ Checks, each with its false-pass named:
    beats `guy762_ResearchKotOR_ion`); non-weapon rows re-tiered in place.
 4. Every merge re-points the LOSER's unlocks onto the survivor before the
    loser dies — an unlock must never be orphaned by our own normalization.
-5. Anomaly rows: untouched (playstyle-gated; exception content stays
-   reachable).
+5. Anomaly rows: all 42 CUT (owner, 2026-09-03). Exception content stays
+   reachable by a non-research route — `ANOMALY_EXCEPTION_ACCESS_1` resolves
+   it, and that must land before the cut ships.
 6. Nothing renames a defName, ever (saves + mod C# break invisibly).
 
 ## 6. RULED by the owner, 2026-08-31 (question cards) — canon `research_tree.taxonomy_ruled`
