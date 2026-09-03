@@ -94,6 +94,16 @@ python3 src/RimMandrake/Utils/code_review_status.py list               every rec
   that first clean mark, review the whole file — never just the diff.
 - A single edit after `mark-clean` makes the file DIRTY again — `check` will say
   so and name the commits.
+- **Before spending a review on a file, check it is still reachable** — owner,
+  2026-09-03: old scripts sit around long after they stop mattering. A Python
+  file with no importer, no `python3 <it>` in any doc/hook/script, and no CLI
+  entry point is a DEAD-FILE candidate; a `.cs` file dropped from the `.csproj`
+  or with no live caller (reflection-registered bridge tools included — grep
+  the tool-name string, not just C# call sites) is the same. Say what you
+  checked. **Don't delete on a grep alone — verify, then file it** (or drop
+  it, if it's plainly gone) rather than spending a full review on code nobody
+  runs. A file only a human runs by hand can look unused to a naive grep and
+  not be.
 
 ## What is where
 
