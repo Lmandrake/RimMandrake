@@ -339,7 +339,14 @@ namespace RimMandrake.Pits
             CompPitFitting fit = pit.GetComp<CompPitFitting>();
             sb.Append(" fitting=").Append(fit == null ? "none" : fit.Props.fittingType.ToString());
 
-            // Standing mass, computed exactly as CompPitCoverTrigger computes it.
+            // Standing mass, computed exactly as CompPitCoverTrigger.RunScan does:
+            // RunScan only counts a pawn whose faction differs from the pit's own
+            // (see CompPitCoverTrigger.cs - "nothing here excluded the parent's
+            // own faction" is the bug it fixed for the real trigger; a colonist
+            // crossing their own armed pit does not count toward the sum). This
+            // report used to sum EVERY standing pawn regardless of faction, so it
+            // could show WOULD_SPRING=true for a colonist load the real trigger
+            // would never spring on.
             float summed = 0f;
             int standing = 0;
             if (map != null)
@@ -351,14 +358,20 @@ namespace RimMandrake.Pits
                     {
                         if (here[i] is Pawn p && !p.Dead)
                         {
-                            standing++;
+                            bool counted = p.Faction != pit.Faction;
                             float m = p.GetStatValue(StatDefOf.Mass);
-                            summed += m;
+                            if (counted)
+                            {
+                                standing++;
+                                summed += m;
+                            }
                             sb.Append("\n  STANDING ").Append(p.def.defName)
                               .Append(" id=").Append(p.ThingID)
                               .Append(" mass=").Append(m.ToString("F2"))
                               .Append(" bodySize=").Append(p.BodySize.ToString("F2"))
-                              .Append(" downed=").Append(p.Downed);
+                              .Append(" downed=").Append(p.Downed)
+                              .Append(" faction=").Append(p.Faction?.GetUniqueLoadID() ?? "none")
+                              .Append(" counted=").Append(counted);
                         }
                     }
                 }
