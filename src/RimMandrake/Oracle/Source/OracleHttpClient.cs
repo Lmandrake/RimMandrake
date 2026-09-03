@@ -38,11 +38,20 @@ namespace RimMandrake.Oracle
 
             string url = baseUrl.TrimEnd('/') + "/chat/completions";
 
-            using (var cts = new CancellationTokenSource(TimeSpan.FromSeconds(timeoutSeconds)))
+            // Each attempt gets its OWN CancellationTokenSource with a fresh
+            // timeout window. A CTS built once outside the loop is already
+            // cancelled by the time a second attempt runs, so that attempt
+            // would fault instantly -- the retry would buy nothing for the
+            // one case it exists for.
+            for (int attempt = 0; attempt < 2; attempt++)
             {
-                Exception lastError = null;
-                for (int attempt = 0; attempt < 2; attempt++)
+                using (var cts = new CancellationTokenSource(TimeSpan.FromSeconds(timeoutSeconds)))
                 {
+                    // Set only for a non-2xx HTTP response (as opposed to a
+                    // transport-level failure below) so the two catch blocks
+                    // below can tell which kind of HttpRequestException they
+                    // are looking at without inspecting its message text.
+                    HttpRequestException statusError = null;
                     try
                     {
                         using (var req = new HttpRequestMessage(HttpMethod.Post, url))
@@ -56,22 +65,50 @@ namespace RimMandrake.Oracle
                             using (var resp = await Client.SendAsync(req, cts.Token).ConfigureAwait(false))
                             {
                                 string respBody = await resp.Content.ReadAsStringAsync().ConfigureAwait(false);
-                                if (!resp.IsSuccessStatusCode)
+                                if (resp.IsSuccessStatusCode)
                                 {
-                                    throw new HttpRequestException(
-                                        "Oracle: HTTP " + (int)resp.StatusCode + " -- " + Truncate(respBody, 300));
+                                    return ExtractContent(respBody);
                                 }
-                                return ExtractContent(respBody);
+
+                                int statusCode = (int)resp.StatusCode;
+                                statusError = new HttpRequestException(
+                                    "Oracle: HTTP " + statusCode + " -- " + Truncate(respBody, 300));
+
+                                // Only 408/429 are worth a second try -- every
+                                // other 4xx/5xx (401, 400, 404, ...) will fail
+                                // identically on retry, so looping just doubles
+                                // the billable call and the latency for nothing.
+                                bool retryableStatus = statusCode == 408 || statusCode == 429;
+                                if (!retryableStatus)
+                                {
+                                    throw statusError;
+                                }
                             }
                         }
                     }
-                    catch (Exception e)
+                    catch (TaskCanceledException e)
                     {
-                        lastError = e;
+                        // The token that just fired belongs to THIS attempt's
+                        // timeout window -- looping again would not be a fresh
+                        // chance, cts.Token is already cancelled. Fail now.
+                        throw new TimeoutException(
+                            "Oracle: request timed out after " + timeoutSeconds + "s", e);
+                    }
+                    catch (HttpRequestException) when (statusError == null && attempt == 0)
+                    {
+                        // Transport-level failure (DNS, connection refused,
+                        // TLS) rather than an HTTP response -- genuinely
+                        // transient, worth the one retry the loop allows.
+                    }
+
+                    if (statusError != null)
+                    {
+                        if (attempt == 1) throw statusError;
+                        // else: a retryable status on the first attempt -- fall through and loop again.
                     }
                 }
-                throw lastError ?? new Exception("Oracle: request failed with no exception captured");
             }
+            throw new Exception("Oracle: request failed with no exception captured");
         }
 
         /// <summary>
@@ -94,8 +131,23 @@ namespace RimMandrake.Oracle
             if (contentIdx < 0) throw new FormatException("Oracle: no \"content\" key after message in response");
 
             int colon = responseBody.IndexOf(':', contentIdx);
-            int quoteStart = responseBody.IndexOf('"', colon + 1);
-            if (colon < 0 || quoteStart < 0) throw new FormatException("Oracle: malformed \"content\" value");
+            if (colon < 0) throw new FormatException("Oracle: malformed \"content\" value");
+
+            // Walk past whitespace to the first real character of the value
+            // and check it is actually the opening quote of a JSON string.
+            // Skipping straight to the next '"' (as before) is wrong when the
+            // value is `null`, a number, or an object -- it finds the OPENING
+            // QUOTE OF THE NEXT KEY instead and returns that key's name as if
+            // it were model output. "content":null is a normal shape for
+            // reasoning models, tool-call turns, and various OpenAI-compatible
+            // local servers, so this has to fail loudly, not guess.
+            int i = colon + 1;
+            while (i < responseBody.Length && char.IsWhiteSpace(responseBody[i])) i++;
+            if (i >= responseBody.Length || responseBody[i] != '"')
+            {
+                throw new FormatException("Oracle: 'content' was not a JSON string (got null or a non-string value)");
+            }
+            int quoteStart = i;
 
             string raw = ExtractJsonStringLiteral(responseBody, quoteStart);
             string content = JsonUnescape(raw);
