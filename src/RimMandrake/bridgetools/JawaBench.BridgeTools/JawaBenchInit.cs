@@ -125,6 +125,16 @@ namespace JawaBench.BridgeTools
                     catch { }
                 }
 
+                // DEV_LOG_AUTOOPEN_SUPPRESS_1. Same lazy-init reasoning as the arg guard
+                // above: fires on the first jawa/ tool call, by which point Harmony is
+                // certainly loaded. Suppressed by default per the owner's own ask.
+                try { JawaBenchLogAutoOpenSuppress.Install(); }
+                catch (Exception le)
+                {
+                    try { Log.Warning("[JawaBench] log auto-open suppressor install threw: " + le.Message); }
+                    catch { }
+                }
+
                 // ⭐ A SECOND LINE, AND IT IS THE ONE THAT PAYS LATER. Owner's ask,
                 // 2026-08-23: print state that makes a log debuggable months from now,
                 // not just proof that the assembly loaded.
