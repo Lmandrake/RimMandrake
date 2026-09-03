@@ -327,6 +327,12 @@ namespace JawaBench.BridgeTools
                         if (existing != null) { existing.Duration = existing.TicksPassed; notes.Add("weather lock ended (Duration = TicksPassed; there is no EndNow())"); }
                         else notes.Add("no weather lock was active");
                     }
+                    // 🔴 With no WeatherController def this branch USED TO DO NOTHING AND SAY
+                    // NOTHING: unlock=true alone then returned success:true, lockInForce:false
+                    // and an EMPTY notes[], which reads as "the lock was removed" when in fact
+                    // the tool could not even look for one.
+                    else notes.Add("⚠ GameConditionDef 'WeatherController' does not exist in this game, so NO unlock was attempted. " +
+                                   "lockInForce:false below means 'could not check', not 'no lock'.");
                 }
 
                 if (!string.IsNullOrEmpty(weather))
@@ -527,7 +533,16 @@ namespace JawaBench.BridgeTools
                     var b = spawnCenter.Split(','); int x, z;
                     if (b.Length != 2 || !int.TryParse(b[0].Trim(), out x) || !int.TryParse(b[1].Trim(), out z))
                         return Fail("spawnCenter must be 'x,z'.");
-                    parms.spawnCenter = new IntVec3(x, 0, z);
+                    var sc = new IntVec3(x, 0, z);
+                    // Every other cell parameter in this file is bounds-checked; this one was
+                    // not. An off-map spawnCenter is not refused by the arrival mode - it is
+                    // silently discarded or throws deep inside the worker, and either way the
+                    // raid does not arrive where the caller asked while `resolved` echoes the
+                    // cell back as though it had been honoured.
+                    if (!sc.InBounds(map))
+                        return Fail("spawnCenter " + spawnCenter + " is out of bounds on this " +
+                                    map.Size.x + "x" + map.Size.z + " map.");
+                    parms.spawnCenter = sc;
                 }
 
                 // Same trap as raid_preview: CanFireNow and the strategy workers need a
@@ -749,8 +764,15 @@ namespace JawaBench.BridgeTools
                 GasType? gt = null;
                 if (!string.IsNullOrEmpty(gas))
                 {
-                    try { gt = (GasType)Enum.Parse(typeof(GasType), gas.Trim(), true); }
-                    catch { return Fail("Bad gas '" + gas + "'. Valid: " + string.Join(", ", Enum.GetNames(typeof(GasType)))); }
+                    // 🔴 Enum.Parse ACCEPTS A NUMBER. "99" parses without throwing and yields
+                    // (GasType)99, which DoExplosion happily takes and which leaves no gas at
+                    // all - while this tool echoed gas:"99" back as if it had worked. Same
+                    // shape as the fixes in jawa/time_speed_set and jawa/faction_relations_set:
+                    // Enum.IsDefined is what rejects it.
+                    GasType parsedGas;
+                    if (!Enum.TryParse(gas.Trim(), true, out parsedGas) || !Enum.IsDefined(typeof(GasType), parsedGas))
+                        return Fail("Bad gas '" + gas + "'. Valid: " + string.Join(", ", Enum.GetNames(typeof(GasType))));
+                    gt = parsedGas;
                 }
 
                 ThingDef spawn = null;
@@ -798,7 +820,8 @@ namespace JawaBench.BridgeTools
                 "rect. " +
                 "⚠️ Fire SPREAD cannot be forced - Fire.TrySpread is protected. A fireSize " +
                 "above 1.0 makes spread far likelier, which is the only lever.",
-            ResultDescription = "success, cellsTried, firesStarted, firesExtinguished.")]
+            ResultDescription = "success, cellsTried, firesStarted, firesExtinguished, cellsFailed, " +
+                "errors[] (a capped SAMPLE - cellsFailed is the true count, errorsTruncated says when it was cut).")]
         public static async Task<object> MapFire(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -816,7 +839,26 @@ namespace JawaBench.BridgeTools
                 bool ext = string.Equals(action, "extinguish", StringComparison.OrdinalIgnoreCase);
                 if (!start && !ext) return Fail("action must be start|extinguish.");
 
+                // 🔴 TryRect CLIPS rather than refuses, so a rect entirely off the map comes
+                // back with minX > maxX and iterates ZERO cells - and this tool reported
+                // success:true, cellsTried:0, firesStarted:0, which reads as "the map would
+                // not take fire" rather than "you asked about cells that do not exist".
+                // ⚠️ Test Width and Height, NOT Area: Area is Width * Height, so a rect that
+                // clips away on BOTH axes multiplies two negatives back into a positive.
+                if (r.Width <= 0 || r.Height <= 0)
+                    return Fail("Rect '" + rect + "' clips to nothing inside this " + map.Size.x + "x" + map.Size.z +
+                                " map, so no cell was touched. Give a rect that overlaps the map.");
+
                 int tried = 0, started = 0, doused = 0;
+                // 🔴 A mid-loop `return Fail(...)` THREW AWAY THE FIRES ALREADY LIT. The
+                // caller was told the call failed while the map was burning, with no count
+                // of what had already happened and no way to find the cells. Record the
+                // failure against its cell and keep going; the counts below are then true.
+                // ⚠️ failed is the TRUE count; cellErrors is a capped SAMPLE of it. Reporting
+                // the capped list's length as the count is the lie that was fixed in
+                // JawaBenchMapTools.cs (406eff08) - do not collapse these two back together.
+                int failed = 0;
+                var cellErrors = new List<object>();
                 foreach (var c in r)
                 {
                     tried++;
@@ -831,17 +873,25 @@ namespace JawaBench.BridgeTools
                             foreach (var t in map.thingGrid.ThingsListAtFast(c).ToList())
                             {
                                 var f = t as Fire;
-                                if (f != null) { f.Destroy(); doused++; }
+                                if (f != null && !f.Destroyed) { f.Destroy(); doused++; }
                             }
                         }
                     }
-                    catch (Exception e) { return Fail("Fire op failed at " + c + ": " + e.Message); }
+                    catch (Exception e)
+                    {
+                        failed++;
+                        if (cellErrors.Count < 50)
+                            cellErrors.Add(new { cell = new { x = c.x, z = c.z }, error = e.GetType().Name + ": " + e.Message });
+                    }
                 }
 
                 return (object)new
                 {
                     success = true, action, cellsTried = tried,
                     firesStarted = started, firesExtinguished = doused,
+                    cellsFailed = failed,
+                    errors = cellErrors,
+                    errorsTruncated = failed > cellErrors.Count,
                     note = start && started < tried
                         ? (tried - started) + " cells refused - RimWorld's ChanceToStartFireIn gates on flammability and wetness. Not a failure."
                         : null,
@@ -860,7 +910,8 @@ namespace JawaBench.BridgeTools
                 "⚠️ A skyfaller whose container refuses the inner thing destroys it with a " +
                 "Log.Error and still falls, so the container is READ BACK after the drop and " +
                 "innerThingCarried says whether it actually made it.",
-            ResultDescription = "success, what was dropped and where, innerThingCarried, generatedContents[], notes[].")]
+            ResultDescription = "success (= skyfallerSpawned, read back off the map), skyfallerSpawned, " +
+                "what was dropped and where, innerThingCarried, generatedContents[], notes[].")]
         public static async Task<object> MapSkyfaller(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -886,6 +937,7 @@ namespace JawaBench.BridgeTools
 
                 var notes = new List<string>();
                 bool carried = false;
+                bool spawned = false;
                 object generatedContents = null;
                 try
                 {
@@ -903,8 +955,15 @@ namespace JawaBench.BridgeTools
                         // 🔴 SkyfallerMaker.MakeSkyfaller Log.Errors and DESTROYS an inner
                         // thing its container refuses - the skyfaller still spawns, empty, and
                         // this tool used to report success with innerThing echoed back.
+                        spawned = sk != null && sk.Spawned;
                         carried = sk != null && sk.innerContainer != null && sk.innerContainer.Count > 0;
-                        if (!carried)
+                        // ⚠️ A null/unspawned skyfaller is NOT the container refusing the inner
+                        // thing, and blaming the container for it was a wrong reason confidently
+                        // reported. Separate the two readings.
+                        if (!spawned)
+                            notes.Add("⚠ NOTHING FELL. SpawnSkyfaller returned " + (sk == null ? "null" : "an unspawned skyfaller") +
+                                      " for '" + sd.defName + "' at " + c0 + " - the drop did not happen at all.");
+                        else if (!carried)
                             notes.Add("⚠ '" + sd.defName + "' REFUSED '" + it.defName + "'. RimWorld destroyed it and the skyfaller is falling EMPTY.");
                     }
                     else if (sd == ThingDefOf.MeteoriteIncoming)
@@ -913,19 +972,34 @@ namespace JawaBench.BridgeTools
                         // IncidentWorker_MeteoriteImpact fills it from ThingSetMakerDefOf.Meteorite.
                         var contents = ThingSetMakerDefOf.Meteorite.root.Generate();
                         var sk = SkyfallerMaker.SpawnSkyfaller(sd, contents, c0, map);
+                        spawned = sk != null && sk.Spawned;
                         carried = sk != null && sk.innerContainer != null && sk.innerContainer.Count > 0;
                         generatedContents = contents.Select(t => new { def = t.def.defName, count = t.stackCount }).ToList();
-                        notes.Add(carried
-                            ? "filled from ThingSetMakerDefOf.Meteorite, as IncidentWorker_MeteoriteImpact does"
-                            : "⚠ the meteorite is falling EMPTY - nothing was accepted into its container.");
+                        notes.Add(!spawned
+                            ? "⚠ NOTHING FELL. SpawnSkyfaller returned " + (sk == null ? "null" : "an unspawned skyfaller") + " - the meteorite did not arrive."
+                            : carried
+                                ? "filled from ThingSetMakerDefOf.Meteorite, as IncidentWorker_MeteoriteImpact does"
+                                : "⚠ the meteorite is falling EMPTY - nothing was accepted into its container.");
                     }
-                    else SkyfallerMaker.SpawnSkyfaller(sd, c0, map);
+                    else
+                    {
+                        // The bare branch reported success:true without ever reading back
+                        // whether a skyfaller had actually appeared on the map.
+                        var sk = SkyfallerMaker.SpawnSkyfaller(sd, c0, map);
+                        spawned = sk != null && sk.Spawned;
+                        if (!spawned)
+                            notes.Add("⚠ NOTHING FELL. SpawnSkyfaller returned " + (sk == null ? "null" : "an unspawned skyfaller") +
+                                      " for '" + sd.defName + "' at " + c0 + ".");
+                    }
                 }
                 catch (Exception e) { return Fail("SpawnSkyfaller threw: " + e.GetType().Name + ": " + e.Message); }
 
                 return (object)new
                 {
-                    success = true, skyfaller = sd.defName,
+                    // success is the READ-BACK, not the fact that SpawnSkyfaller returned.
+                    success = spawned,
+                    skyfallerSpawned = spawned,
+                    skyfaller = sd.defName,
                     at = new { x, z }, innerThing, count,
                     innerThingCarried = carried,
                     generatedContents,
@@ -975,14 +1049,27 @@ namespace JawaBench.BridgeTools
                 var gs = new List<object>();
                 foreach (var d in DefDatabase<GatheringDef>.AllDefsListForReading)
                 {
-                    bool canNow = false, canIgnoring = false;
-                    try { canNow = d.CanExecute(map, null); } catch { }
-                    try { canIgnoring = d.CanExecute(map, null, true); } catch { }
+                    // 🔴 A THROWN CanExecute USED TO READ AS A PLAIN 'no'. Both catches
+                    // swallowed to false, so a modded GatheringDef whose worker NREs was
+                    // indistinguishable from one the gates legitimately refuse - and this
+                    // tool is sold as "the fastest way to find out why a party will not
+                    // start", so it was answering that question with the wrong reason.
+                    bool canNow = false, canIgnoring = false; string checkError = null;
+                    try { canNow = d.CanExecute(map, null); }
+                    catch (Exception e) { checkError = "CanExecute threw: " + e.GetType().Name + ": " + e.Message; }
+                    try { canIgnoring = d.CanExecute(map, null, true); }
+                    catch (Exception e)
+                    {
+                        if (checkError == null)
+                            checkError = "CanExecute(ignoreConditions) threw: " + e.GetType().Name + ": " + e.Message;
+                    }
                     gs.Add(new
                     {
                         def = d.defName,
                         canExecuteNow = canNow,
                         canExecuteIgnoringConditions = canIgnoring,
+                        // Non-null means the false above is IGNORANCE, not a refusal.
+                        checkError,
                         respectTimetable = d.respectTimetable,
                         hasDuty = d.duty != null,
                     });
@@ -1053,7 +1140,19 @@ namespace JawaBench.BridgeTools
                     return Fail("MarriageCeremony has no `duty` of its own and its LordJob hardcodes Party's toils. Use jawa/social_marry, which also handles the mandatory Fiance relation.");
 
                 Pawn org = null;
-                if (!string.IsNullOrEmpty(organizer)) { string e2; org = FindPawn(organizer, out e2); if (org == null) return Fail(e2); }
+                if (!string.IsNullOrEmpty(organizer))
+                {
+                    string e2; org = FindPawn(organizer, out e2);
+                    if (org == null) return Fail(e2);
+                    // Same guard jawa/ritual_start already carries. FindPawn reaches world
+                    // pawns and pawns held in caskets, vats and loaded pods; their Map is
+                    // null and their Position is stale or (0,0,0), so GatheringWorker would
+                    // hunt a spot around a cell nobody stands on - on the WRONG map - and
+                    // this tool would report started:true for a party in nowhere.
+                    if (!org.Spawned || org.Map != map)
+                        return Fail("'" + organizer + "' resolved to " + org.LabelShort +
+                                    ", who is not spawned on the current map, so there is no cell to gather at.");
+                }
 
                 var notes = new List<string>();
                 if (!force)
@@ -1131,6 +1230,19 @@ namespace JawaBench.BridgeTools
                     }
                     else
                     {
+                        // 🔴 CHECKED BEFORE THE RELATIONS ARE TOUCHED, not after. `map` above is
+                        // `a.Map ?? b.Map`, so a pawn in a cryptosleep casket, a growth vat or a
+                        // loaded drop pod (all of which FindPawn reaches, with Map null) passed
+                        // that null-check on the OTHER pawn's map and the ceremony lord was built
+                        // around someone who is not there. Doing it here also means a refusal
+                        // leaves the pair's Lover/Spouse relations untouched - below this point
+                        // they are destroyed to make room for Fiance and are NOT put back.
+                        if (!a.Spawned || !b.Spawned || a.Map != b.Map)
+                            return Fail("A ceremony needs both pawns spawned on the same map. " +
+                                        a.LabelShort + (a.Spawned ? " is on " + (a.Map != null ? a.Map.ToString() : "no map") : " is NOT spawned") + "; " +
+                                        b.LabelShort + (b.Spawned ? " is on " + (b.Map != null ? b.Map.ToString() : "no map") : " is NOT spawned") + ". " +
+                                        "Pass ceremony=false to marry them outright instead - that needs no map.");
+
                         // The ceremony re-derives the partner from the Fiance relation and
                         // IGNORES the second argument, so the relation must exist first.
                         foreach (var d in new[] { PawnRelationDefOf.Lover, PawnRelationDefOf.Spouse })
@@ -1142,7 +1254,9 @@ namespace JawaBench.BridgeTools
                         if (!started)
                             notes.Add("TryStartMarriageCeremony returned FALSE. It already bypasses the game conditions, so what is left is: " +
                                       "both fiances must pass PawnCanStartOrContinueGathering (not bleeding, not drafted, not asleep, not in a lord), " +
-                                      "and a marriage site must be findable.");
+                                      "and a marriage site must be findable. ⚠ THE RELATION EDITS ABOVE STAND - any Lover/Spouse relation was " +
+                                      "already destroyed and Fiance already set, and a failed ceremony does not undo them. Read notes[] and " +
+                                      "relations[] to see exactly what was changed before retrying.");
                         else
                             notes.Add("ceremony lord created - the pair walk to the site and the marriage happens in the ceremony's own job, not here");
                     }
@@ -1297,7 +1411,8 @@ namespace JawaBench.BridgeTools
                 "ShouldExistWithoutPawns => true, so a party or ritual that nobody joined is " +
                 "NOT culled - it sits on the map until its timer expires, blocking new " +
                 "gatherings (AllowStartNewGatherings). List first, then remove by index.",
-            ResultDescription = "success, lords[] before, removed.")]
+            ResultDescription = "success, lords[] before, removed (ATTEMPTS that did not throw), " +
+                "removeFailed/removeErrors[] (including a post-check row when a lord survived RemoveLord silently), lordsAfter.")]
         public static async Task<object> SocialCancel(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -1323,19 +1438,61 @@ namespace JawaBench.BridgeTools
                     faction = l.faction != null ? l.faction.def.defName : null,
                 }).ToList();
 
+                // 🔴 ANY action but 'remove' USED TO FALL THROUGH TO 'list' AND STILL REPORT
+                // success:true WITH removed:0. A typo'd or wrong-cased action ("delete",
+                // "cancel", "clear") therefore read as "removal ran and there was nothing to
+                // remove" - the stuck lord this tool exists to clear was still sitting there.
+                // Every sibling action-switch in this file (map_fire, game_condition) refuses
+                // an unknown verb; this one now does too.
+                bool doList = string.Equals(action, "list", StringComparison.OrdinalIgnoreCase);
+                bool doRemove = string.Equals(action, "remove", StringComparison.OrdinalIgnoreCase);
+                if (!doList && !doRemove)
+                    return Fail("action must be list|remove (got '" + action + "').", rows);
+
                 int removed = 0;
-                if (string.Equals(action, "remove", StringComparison.OrdinalIgnoreCase))
+                // 🔴 RemoveLord's exception was swallowed to a Log.Warning nobody on the
+                // bridge can read, so `removed` under-counted with NOTHING in the result
+                // saying a lord had refused to go - the caller saw removed:1 of 3 and no
+                // reason. Record each failure against its lord.
+                var removeErrors = new List<object>();
+                if (doRemove)
                 {
                     var targets = all
                         ? lm.lords.Where(l => isSocial(l)).ToList()
                         : (index >= 0 && index < lm.lords.Count ? new List<Lord> { lm.lords[index] } : new List<Lord>());
                     if (targets.Count == 0) return Fail("Nothing to remove. Give all=true or a valid index from 'list'.", rows);
-                    foreach (var l in targets) { try { lm.RemoveLord(l); removed++; } catch (Exception e) { Log.Warning("[JawaBench] RemoveLord: " + e.Message); } }
+                    foreach (var l in targets)
+                    {
+                        try { lm.RemoveLord(l); removed++; }
+                        catch (Exception e)
+                        {
+                            Log.Warning("[JawaBench] RemoveLord: " + e.Message);
+                            removeErrors.Add(new
+                            {
+                                index = lm.lords.IndexOf(l),
+                                job = l.LordJob != null ? l.LordJob.GetType().Name : "(null)",
+                                error = e.GetType().Name + ": " + e.Message
+                            });
+                        }
+                    }
+                    // A lord that survived RemoveLord without throwing is a third reading the
+                    // counter cannot give: count what is actually gone off the manager.
+                    int stillThere = targets.Count(l => lm.lords.Contains(l));
+                    if (stillThere > 0)
+                        removeErrors.Add(new
+                        {
+                            index = -1,
+                            job = "(post-check)",
+                            error = stillThere + " of " + targets.Count + " targeted lords are STILL on the manager after RemoveLord returned. "
+                                  + "Treat 'removed' as attempts, not as lords gone."
+                        });
                 }
 
                 return (object)new
                 {
                     success = true, action, removed,
+                    removeFailed = removeErrors.Count,
+                    removeErrors,
                     lordsBefore = rows.Count, lordsAfter = lm.lords.Count,
                     lords = rows, ticksGame = TicksGameSafe(),
                 };
