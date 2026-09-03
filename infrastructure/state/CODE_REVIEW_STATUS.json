@@ -34,6 +34,136 @@
     "date": "2026-09-02",
     "sha": "14ea427e"
   },
+  "src/RimMandrake/Inhabited/Source/CharacterApplier.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "7b9f17a9"
+  },
+  "src/RimMandrake/Inhabited/Source/CharacterDef.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "7b9f17a9"
+  },
+  "src/RimMandrake/Inhabited/Source/DebugActions_Inhabited.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "7b9f17a9"
+  },
+  "src/RimMandrake/Inhabited/Source/DisplacedPool.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "7b9f17a9"
+  },
+  "src/RimMandrake/Inhabited/Source/GateSearchHook.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "7b9f17a9"
+  },
+  "src/RimMandrake/Inhabited/Source/GenStep_ComposeSettlementDistrict.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "7b9f17a9"
+  },
+  "src/RimMandrake/Inhabited/Source/GenStep_InhabitedStock.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "7b9f17a9"
+  },
+  "src/RimMandrake/Inhabited/Source/InhabitedCastDef.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "7b9f17a9"
+  },
+  "src/RimMandrake/Inhabited/Source/InhabitedDefOf.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "7b9f17a9"
+  },
+  "src/RimMandrake/Inhabited/Source/InhabitedFateWorker.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "7b9f17a9"
+  },
+  "src/RimMandrake/Inhabited/Source/InhabitedMod.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "7b9f17a9"
+  },
+  "src/RimMandrake/Inhabited/Source/InhabitedPlaceDef.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "7b9f17a9"
+  },
+  "src/RimMandrake/Inhabited/Source/InhabitedReport.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "7b9f17a9"
+  },
+  "src/RimMandrake/Inhabited/Source/InhabitedStock.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "7b9f17a9"
+  },
+  "src/RimMandrake/Inhabited/Source/JobGiver_SleepAtNight.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "7b9f17a9"
+  },
+  "src/RimMandrake/Inhabited/Source/LordJob_Inhabited.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "7b9f17a9"
+  },
+  "src/RimMandrake/Inhabited/Source/LordToil_InhabitedRoutine.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "7b9f17a9"
+  },
+  "src/RimMandrake/Inhabited/Source/MapComponent_InhabitedWatch.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "7b9f17a9"
+  },
+  "src/RimMandrake/Inhabited/Source/Patch_BeggarsFromPool.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "7b9f17a9"
+  },
+  "src/RimMandrake/Inhabited/Source/Patch_MapRemoval.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "7b9f17a9"
+  },
+  "src/RimMandrake/Inhabited/Source/Patch_SettlementDeparture.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "7b9f17a9"
+  },
+  "src/RimMandrake/Inhabited/Source/SecurityProfileDef.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "7b9f17a9"
+  },
+  "src/RimMandrake/Inhabited/Source/SettlementCasing.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "7b9f17a9"
+  },
+  "src/RimMandrake/Inhabited/Source/SettlementManifestDef.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "7b9f17a9"
+  },
+  "src/RimMandrake/Inhabited/Source/WorldObject_Inhabited.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "7b9f17a9"
+  },
+  "src/RimMandrake/Inhabited/Source/WorldObject_InhabitedSettlement.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "7b9f17a9"
+  },
   "src/RimMandrake/Ninefold/Source/EventMagnitude.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
