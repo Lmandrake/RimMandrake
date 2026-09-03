@@ -164,7 +164,7 @@ def t_every_full_xpath_feature_takes_the_lxml_branch_and_still_matches():
         return
     for xp in (
         'Defs/XenotypeDef[contains(defName, "Wookiee")]',
-        'Defs/XenotypeDef[starts-with(defName, "RimMandrakeW")]',
+        'Defs/XenotypeDef[starts-with(defName, "RSW_RimMandrakeW")]',
         'Defs/XenotypeDef[defName="RSW_RimMandrakeWookiee" or defName="NoSuchDef"]',
         'Defs/XenotypeDef[not(defName="RSW_RimMandrakeJawa")]',
     ):
