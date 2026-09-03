@@ -164,3 +164,51 @@ reference). A third fresh full-file re-review is owed before this file
 set can be marked clean in `infrastructure/state/CODE_REVIEW_STATUS.json`
 — this is now the second time a fix in this exact file set introduced or
 unmasked something the previous pass missed.
+
+## 2026-09-03 (FOUNDRY) — live-verified on a Droidworks-tier quicktest, criteria met
+
+Built a trimmed test list (`mandrake.rsw.droidworks` + `mandrake.rsw.ionweapons`,
+dependency-closed via `modset_builder.py`'s own `close_over`/`order`, no named tier
+existed for this so one was built ad hoc), Steam-relaunched, `rimworld/start_debug_game_ready`
+to a playable quicktest map, took the bridge.
+
+Spawned `RSW_DW_OuterRim_GNKDroid` (renamed from the item's original `DW_OuterRim_GNKDroid`
+by the tier-grammar migration — `jawa/spawn_pawn` refused the old name and suggested the
+real one) via `jawa/spawn_pawn`, hit it with `RSW_JawaIon_Damage` x20 via `jawa/damage`
+(`allowColonists: true`). Immediately after: hediff count went 1→2 but `RSW_DW_PoweredDown`
+was NOT yet present — **the game was paused** (`start_debug_game_ready`'s default
+`pauseOnLoad`), and `HediffComp_IonOverloadsDroid` is tick-driven, so nothing had run yet.
+Stepped 250 ticks (`rimworld/step_game_ticks`): `RSW_DW_PoweredDown` (severity 1.0) appeared
+and `RSW_JawaIon_Stun` was gone — confirms the "add first, then remove" reordering fix from
+the 2026-09-02 pass landed correctly, and confirms `PatchOperationFindMod`'s `<mods><li>Jawa
+Ion Weapons (local)</li></mods>` genuinely matched (verified independently via `jawa/get_defs`
+on `HediffDef/RSW_JawaIon_Stun` — 2 comps present, the second being the patched-in
+`HediffCompProperties_IonOverloadsDroid`). `MoveSpeed` read via `jawa/pawn_stats` was 0.15
+c/s against a ~1.9 base — the Consciousness cap is genuinely suppressing the pawn, not just
+a hediff sitting inert.
+
+Stepped 2000 more ticks (2251 total): `RSW_DW_PoweredDown` unchanged at severity 1.0, no
+self-recovery — matches the "no decay, floor stage" spec.
+
+**Criteria:**
+- [x] Crossing the ion threshold adds `DW_PoweredDown` — confirmed live.
+- [x] Does not self-recover once `JawaIon_Stun` decays away — confirmed live (2251 ticks,
+      no change; `JawaIon_Stun` itself is gone entirely, removed by the fix's own logic).
+- [x] `Recipe_RebootDroid`'s `GetPartsToApplyOn` gate (`HasHediff(DW_PoweredDown)`) now has
+      something real to key on — confirmed the hediff is genuinely present on the pawn.
+      **Not driven end-to-end** (no colonist actually ran the recipe through a real medical
+      job) — the gate's precondition is proven satisfiable, not the full recipe execution.
+      If that matters later, it's a quick follow-up, not a new investigation.
+
+Found one new, unrelated bug in passing: `jawa/list_pawns` NREs unconditionally (any
+`includeHealth` value) once a non-genetic pawn (this droid) is on the map —
+`Pawn_GeneTracker.get_XenotypeLabel()` throws. Filed separately as
+`BRIDGE_LISTPAWNS_GENETRACKER_NRE_1`, not fixed here (different file, different item).
+
+Cleaned up: killed the test RimWorld process, restored the live `ModsConfig.xml` from a
+pre-test backup (589 mods, confirmed on disk after exit), released the bridge. The pawn
+and quicktest map are disposable debug state, nothing saved.
+
+**Still owed, not done here:** the "third fresh full-file re-review" this file's own
+2026-09-02 section flagged before `CODE_REVIEW_STATUS.json` can mark this file set clean.
+Live behavior is now proven correct; a code-quality re-read is a separate, narrower task.
