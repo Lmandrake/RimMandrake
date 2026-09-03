@@ -42,6 +42,11 @@
     "date": "2026-09-02",
     "sha": "fe90ab46"
   },
+  "src/RimMandrake/Utils/gen_pawnkind_roster.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "453a5c7b"
+  },
   "src/RimMandrake/Utils/genome_matrix_build.py": {
     "cleanCount": 1,
     "date": "2026-09-02",
