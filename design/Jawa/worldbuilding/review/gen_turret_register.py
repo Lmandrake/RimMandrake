@@ -133,8 +133,6 @@ for t in small:
     is_sniper = "sniper" in label.lower() or "sniper" in dn.lower()
     if dn in PLAN_1X1:
         grp, tech, user, state, note = PLAN_1X1[dn]
-        if dn.startswith("HMC_Wall") or dn == "ShipWallMountMiniTurret":
-            note = (note + " · " if note else "") + WALL_WARNING
     elif dd == "Bullet" and not is_sniper:
         grp, tech, user, state = "Small Emplacements — CUT: bullets rule", "slugthrower (bullets)", "Nobody (cut)", "cut"
         note = "CUT by the owner's rule: obviously uses bullets (no sniper exception applies)"
@@ -147,6 +145,11 @@ for t in small:
     else:
         grp, tech, user, state = "Small Emplacements — keep and rework", dd, "Common / multiple", "undecided"
         note = "no rule matched — deliberately open"
+    # wall-mount safety note applies regardless of which branch classified this
+    # turret (e.g. ShipWallMountMiniTurret is not a PLAN_1X1 key, so it was
+    # falling through to the bullets-rule branch and never getting the warning)
+    if dn.startswith("HMC_Wall") or dn == "ShipWallMountMiniTurret":
+        note = (note + " · " if note else "") + WALL_WARNING
     rows.append({
         "defName": dn, "label": label, "mod": t["mod"], "size": "1x1",
         "group": grp, "stats": eff, "desc": t.get("desc") or "",
