@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!--
+    INHABITED_TILEMUTATOR_NO_ENTRY_1: the wilderness Inhabited_Place route's only
+    way in. WorldObjects_Inhabited.xml says it plainly: "This def places the
+    company; the mutator places the set", but until this def existed, no
+    TileMutatorDef anywhere named Inhabited_Cast or RM_InhabitedStock, so
+    MapGeneratorDefOf.Encounter ran with neither GenStep in its list. A place
+    could hold a full roster and a full larder and still generate an empty map.
+
+    ⚠️ Per GenSteps_Inhabited.xml's own warning: naming Inhabited_Cast without
+    RM_InhabitedStock generates people with no goods, silently. Both are here.
+
+    No chanceOnNonLandmarkTile: this campaign has no worldgen
+    (design/Jawa/worldbuilding/the_one_map.md) so nothing should roll this by
+    chance. It is assigned to a specific Ash'karr tile by hand, through the
+    bridge's world-editing tools, the same way RSW_MoistureFarm is.
+  -->
+  <TileMutatorDef>
+    <defName>RM_InhabitedPlace</defName>
+    <label>inhabited place</label>
+    <description>Someone has made a home of this ground.</description>
+    <extraGenSteps>
+      <li>Inhabited_Cast</li>
+      <li>RM_InhabitedStock</li>
+    </extraGenSteps>
+  </TileMutatorDef>
+
+</Defs>
