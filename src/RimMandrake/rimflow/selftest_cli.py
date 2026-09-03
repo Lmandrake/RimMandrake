@@ -28,13 +28,32 @@ import os
 import shutil
 import subprocess
 import sys
+import threading
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 CLI = os.path.join(HERE, "cli.py")
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
-TMP = os.path.join(REPO, ".rimflow_selftest_cli")      # under the repo, ON 9p, on purpose
+TMP_ROOT = os.path.join(REPO, ".rimflow_selftest_cli")  # under the repo, ON 9p, on purpose
 
 PASS, FAIL = [], []
+_print_lock = threading.Lock()
+_tls = threading.local()
+
+
+def _tmp():
+    """This CASE's own scratch dir under TMP_ROOT — never the shared root itself.
+
+    Cases run concurrently, each still driving the CLI as real subprocesses (see this
+    file's own header on why that must stay true, never in-process calls).
+    PARALLELIZE_SELFTEST_CLI_INTERNAL_1: the 43 cases (each driving one or more real
+    `cli.py` subprocess spawns) used to share ONE hardcoded `TMP`, wiped by `fresh()`
+    at the top of each case — which made them logically independent already, just
+    unable to run at the same time without racing on that one directory. Giving each
+    case its own subtree under `TMP_ROOT` is the whole fix; nothing about what a case
+    tests, or that it drives the CLI as a subprocess, changes.
+    """
+    return _tls.dir
 
 
 def body(out):
@@ -51,21 +70,23 @@ def case(name, fn):
     try:
         fn()
         PASS.append(name)
-        print("ok    %s" % name)
+        msg = "ok    %s" % name
     except AssertionError as e:
         FAIL.append(name)
-        print("FAIL  %s\n        %s" % (name, e))
+        msg = "FAIL  %s\n        %s" % (name, e)
     except Exception as e:
         FAIL.append(name)
-        print("FAIL  %s\n        unexpected %s: %s" % (name, type(e).__name__, e))
+        msg = "FAIL  %s\n        unexpected %s: %s" % (name, type(e).__name__, e)
+    with _print_lock:
+        print(msg)
 
 
 # ---------------------------------------------------------------------------
 def env(seat="BUILD", **over):
     e = {k: v for k, v in os.environ.items()
          if k not in ("RIMFLOW_SEAT", "AGENT_SEAT", "CLAUDE_SESSION_ID")}
-    e["RIMFLOW_LEDGER"] = os.path.join(TMP, "events.jsonl")
-    e["RIMFLOW_ITEMS"] = os.path.join(TMP, "items")
+    e["RIMFLOW_LEDGER"] = os.path.join(_tmp(), "events.jsonl")
+    e["RIMFLOW_ITEMS"] = os.path.join(_tmp(), "items")
     if seat:
         e["RIMFLOW_SEAT"] = seat
     e.update(over)
@@ -101,7 +122,7 @@ def refused(args, needle, why, seat="BUILD", env_=None):
 
 
 def prose(iid, spec="do the thing", verify="run it", criteria="it works"):
-    d = os.path.join(TMP, "items")
+    d = os.path.join(_tmp(), "items")
     os.makedirs(d, exist_ok=True)
     with open(os.path.join(d, "%s.md" % iid), "w", encoding="utf-8") as fh:
         fh.write("## spec\n%s\n\n## verify\n%s\n\n## criteria\n%s\n"
@@ -109,9 +130,11 @@ def prose(iid, spec="do the thing", verify="run it", criteria="it works"):
 
 
 def fresh():
-    """Wipe the throwaway ledger between cases so each one states its own premise."""
-    shutil.rmtree(TMP, ignore_errors=True)
-    os.makedirs(os.path.join(TMP, "items"), exist_ok=True)
+    """Wipe this case's own throwaway ledger so each fresh() call states its own
+    premise (some cases call it more than once)."""
+    d = _tmp()
+    shutil.rmtree(d, ignore_errors=True)
+    os.makedirs(os.path.join(d, "items"), exist_ok=True)
 
 
 # ---------------------------------------------------------------------------
@@ -135,7 +158,7 @@ def t_a_free_bridge_offer_says_how_to_take_it():
     ok("game", "UP", "--owner-said", "game up", seat="OWNER")
     ok("file", "BRIDGE_OFFER_HINT_1", "--for", "CHECK", "--title", "drive the bridge",
        "--needs", "bridge")
-    open(os.path.join(TMP, "items", "BRIDGE_OFFER_HINT_1.md"), "w").write(
+    open(os.path.join(_tmp(), "items", "BRIDGE_OFFER_HINT_1.md"), "w").write(
         "## spec\nx\n## verify\ny\n## criteria\nz\n")
     ok("claim", "BRIDGE_OFFER_HINT_1", seat="CHECK")
     out = ok("next", "--seat", "CHECK", seat="CHECK")
@@ -302,7 +325,7 @@ def _bridge_events():
     read. Raising there made a passing assertion look like a broken test.
     """
     import json
-    p = os.path.join(TMP, "events.jsonl")
+    p = os.path.join(_tmp(), "events.jsonl")
     if not os.path.exists(p):
         return []
     with open(p, encoding="utf-8") as fh:
@@ -312,7 +335,7 @@ def _bridge_events():
 
 def _mirror_holder():
     """Who the BRIDGE mirror names, or None for FREE. The file is beside the ledger."""
-    p = os.path.join(TMP, "BRIDGE")
+    p = os.path.join(_tmp(), "BRIDGE")
     if not os.path.exists(p):
         return None
     for line in open(p, encoding="utf-8"):
@@ -388,7 +411,7 @@ def t_one_malformed_timestamp_cannot_promote_an_item():
         "the premise is broken: a just-claimed item already scores ≥3, so this case "
         "cannot show the bad stamp doing anything:\n%s" % before)
 
-    p = os.path.join(TMP, "events.jsonl")
+    p = os.path.join(_tmp(), "events.jsonl")
     lines = [json.loads(l) for l in open(p, encoding="utf-8") if l.strip()]
     hit = 0
     for e in lines:
@@ -609,7 +632,7 @@ def t_owner_may_reassign_and_is_told_that_he_overrode():
     assert "OVERRIDE" in err.upper(), (
         "the override was silent. He asked to be able to override AND to be warned; "
         "an unannounced bypass is the failure mode, not the bypass.\n  stderr: %r" % err)
-    led = open(os.path.join(TMP, "events.jsonl")).read()
+    led = open(os.path.join(_tmp(), "events.jsonl")).read()
     assert '"override"' in led, (
         "the override is not in the ledger. A year later it must read as a deliberate "
         "crossing of a seat boundary, not as a boundary that never existed.")
@@ -761,10 +784,10 @@ def t_the_queue_views_are_rendered_beside_the_ledger_in_use():
         "a write rendered the throwaway ledger's queue views into the REPO ROOT "
         "(%s / %s). The whole point of RIMFLOW_LEDGER is that a test touches nothing "
         "real." % (repo_queue, repo_derived))
-    assert os.path.isdir(os.path.join(TMP, "queue")), (
+    assert os.path.isdir(os.path.join(_tmp(), "queue")), (
         "nothing was rendered beside the ledger in use — the views are now silently "
         "not published at all, which is the other half of the same defect: %s"
-        % sorted(os.listdir(TMP)))
+        % sorted(os.listdir(_tmp())))
 
 
 def t_state_root_is_derived_by_shape_not_by_counting_dirnames():
@@ -850,7 +873,7 @@ def t_owner_said_authorizes_where_no_seat_is_configured():
     fresh()
     out = ok("game", "UP", "--owner-said", "game up", env=env(seat=None))
     assert "game is UP" in out, out
-    led = open(os.path.join(TMP, "events.jsonl"), encoding="utf-8").read()
+    led = open(os.path.join(_tmp(), "events.jsonl"), encoding="utf-8").read()
     assert '"ownerSaid":"game up"' in led.replace(", ", ",").replace('" : "', '":"'), (
         "his words are the authorization and must be ON the event: %s" % led)
     refused(("game", "UP", "--seat", "NOTASEAT", "--owner-said", "game up"),
@@ -959,8 +982,8 @@ def t_the_real_ledger_was_never_touched():
     sys.path.insert(0, os.path.dirname(HERE))
     m = importlib.import_module("rimflow.model")
     real = m.EVENTS
-    assert not real.startswith(TMP), real
-    assert os.path.abspath(real) != os.path.abspath(os.path.join(TMP, "events.jsonl"))
+    assert not real.startswith(TMP_ROOT), real
+    assert os.path.abspath(real) != os.path.abspath(os.path.join(_tmp(), "events.jsonl"))
     if os.path.exists(real):
         with open(real, encoding="utf-8") as fh:
             body = fh.read()
@@ -974,11 +997,27 @@ def t_the_real_ledger_was_never_touched():
 
 CASES = [(k[2:], v) for k, v in sorted(globals().items()) if k.startswith("t_")]
 
-if __name__ == "__main__":
+
+def _run_case(name, fn):
+    """Give this case its own directory under TMP_ROOT before running it, so it can
+    run concurrently with every other case without racing on a shared one."""
+    _tls.dir = os.path.join(TMP_ROOT, name)
+    shutil.rmtree(_tls.dir, ignore_errors=True)
+    os.makedirs(os.path.join(_tls.dir, "items"), exist_ok=True)
     try:
-        for name, fn in CASES:
-            case(name, fn)
+        case(name, fn)
     finally:
-        shutil.rmtree(TMP, ignore_errors=True)
+        shutil.rmtree(_tls.dir, ignore_errors=True)
+
+
+if __name__ == "__main__":
+    shutil.rmtree(TMP_ROOT, ignore_errors=True)
+    try:
+        with ThreadPoolExecutor(max_workers=12) as pool:
+            futures = [pool.submit(_run_case, name, fn) for name, fn in CASES]
+            for f in as_completed(futures):
+                f.result()  # surface a harness-level exception, not just a case failure
+    finally:
+        shutil.rmtree(TMP_ROOT, ignore_errors=True)
     print("\n%d/%d passed" % (len(PASS), len(PASS) + len(FAIL)))
     sys.exit(1 if FAIL else 0)
