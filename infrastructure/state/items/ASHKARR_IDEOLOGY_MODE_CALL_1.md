@@ -1,3 +1,10 @@
+> ⛔ SUPERSEDED BY `CORRECT_ASHKARR_IDEOLOGY_1`. The trade below is a FALSE ONE: the
+> "world creation only" clause in *Why this reaches you and not DECIDE* is wrong.
+> `FactionIdeosTracker.ChooseOrGenerateIdeo` is an ordinary public method that assigns a
+> faction's ideo on a running save, and `IdeoGenerator.MakeFixedIdeo` never sets the
+> per-Ideo `classicMode` flag the leader-title route actually reads. Read the successor
+> before acting on anything here; the readings of what IS in the world stay correct.
+
 # ASHKARR_IDEOLOGY_MODE_CALL_1 — 🔴 for the OWNER. The twelve ideoligions are not in the world.
 
 Measured live and on disk, 2026-08-26, seat CHECK.
