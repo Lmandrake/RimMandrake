@@ -7,6 +7,14 @@
 
 # Recovery drafts — the 84 earlier cuts
 
+> 🔴 **A CUT REMOVES A `ResearchProjectDef` AND NOTHING ELSE** — owner,
+> 2026-09-03: *"I did not cut the anomaly content. I only cut the players
+> ability to research that tech tree."* Every ThingDef, PawnKindDef, building,
+> creature and piece of map content stays in the game for the campaign's own
+> repurposing. Where this document reads as though cut content is gone, it is
+> wrong and this line governs. `research_tree_taxonomy.md` migration rule 5.
+
+
 **Scope.** The 114 ruled research cuts split 30 / 84. The v2 proposal gave a
 recover line to its 30 NEW cuts. These are the other **84**, from
 `restructured_model_v2.json` (`fate2 == "cut"`, empty `recover`):

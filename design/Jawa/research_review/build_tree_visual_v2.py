@@ -258,6 +258,12 @@ w('</table></div>')
 
 # ── new cuts ─────────────────────────────────────────────────────────────────
 w('<h2>Cut this pass — and what each cut can give back</h2>')
+w('<div class="panel" style="margin:0 0 16px;border-left:3px solid var(--rust)"><p style="margin:0">'
+  '<b>What “cut” means here:</b> a cut removes a <span style="font-family:\'IBM Plex Mono\',monospace;font-size:12px">'
+  'ResearchProjectDef</span> from the player’s tree — <b>and nothing else</b>. Every thing, building, creature and piece '
+  'of map content it unlocked stays in the game for our own repurposing: the sarlacc, the Assailant dungeons, the '
+  'terminator/night-side creatures. Measured against the live cut list, the whole containment and bioferrite economy '
+  '(holding platforms, inhibitors, harvesters, Bioferrite itself) is present and uncut.</p></div>')
 w(f'<p class="sub">{len(newcut)} further rows leave the trees under the aggressive-filter directive. Every card carries a <b>recover line</b>: how the underlying GAMEPLAY could return without the non-canon weirdness — or an honest “dead.” The v1 cuts ({len(oldcut)}: Anomaly 42 · Royalty 19 · Dungeon 10 · measured-dead 8 · Big &amp; Small 5) are unchanged and listed in the v1 visual.</p>')
 w('<div class="cuts">')
 claimed = set()

@@ -7,6 +7,14 @@
 
 # Thirteen trees — research restructure, vision pass v2
 
+> 🔴 **A CUT REMOVES A `ResearchProjectDef` AND NOTHING ELSE** — owner,
+> 2026-09-03: *"I did not cut the anomaly content. I only cut the players
+> ability to research that tech tree."* Every ThingDef, PawnKindDef, building,
+> creature and piece of map content stays in the game for the campaign's own
+> repurposing. Where this document reads as though cut content is gone, it is
+> wrong and this line governs. `research_tree_taxonomy.md` migration rule 5.
+
+
 **What changed from v1:** six trees → thirteen; 30 new cuts (each with a
 recover line); tier now DERIVES from the ruled cost band (`tier = band(cost)`),
 which makes band conformance real and turns every felt-tier disagreement into an
