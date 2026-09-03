@@ -301,11 +301,21 @@ class Ctx:
 
     def can_place(self, name, x, z, rot=0):
         """Would the WHOLE footprint fit here, inside the rect and clear of
-        everything already placed? Ask before laying anything multi-cell."""
+        everything already placed? Ask before laying anything multi-cell.
+
+        🔴 Must mirror every gate `place()` itself checks, or a caller that
+        loops "first cell can_place approves" (`place_role_fit`) commits to a
+        cell `place()` then refuses, and the loop stops dead instead of
+        trying the next cell. `buildable()` was missing here — silent no-op
+        only once a site model exists (today `site` is always None, so this
+        was unreachable), but the gap was real.
+        """
         d = self.role(str(name)) or str(name)
         if d is None:
             return False
         x, z = int(x), int(z)
+        if not self.buildable(x, z):
+            return False
         cells = self.footprint_of(d, x, z, rot)
         if cells is None:
             return self.rect.contains(x, z) and not self.occupied(x, z)
