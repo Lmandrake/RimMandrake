@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-03T02:13:12Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: BENCH
+as-of: 2026-09-03T02:56:43Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -360,6 +360,15 @@ kind:     bug
 summary:  1. Terrain overwrite is permanent and destructive; undisclosed.
 prose:    infrastructure/state/items/FLUID_CANAL_FLOOD_TUNING_GAPS_1.md
 
+## DEEPWATER_DEAD_GASMASK_TAG_1 Jawa_Deepwater_* keep KotORHeadband_gasmask in apparelTags after the headbands were cut - dead tag, and the generator is the real source
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  (no items/DEEPWATER_DEAD_GASMASK_TAG_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DEEPWATER_DEAD_GASMASK_TAG_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -426,16 +435,6 @@ _none._
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
 
-## DEEPWATER_DEAD_GASMASK_TAG_1 Jawa_Deepwater_* keep KotORHeadband_gasmask in apparelTags after the headbands were cut - dead tag, and the generator is the real source
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DEEPWATER_DEAD_GASMASK_TAG_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DEEPWATER_DEAD_GASMASK_TAG_1.md
-
 ## RIMPLACE_LUA_EXECUTION_BUDGET_1 A template's min_rect or build can loop forever; rimplace minrect all wedges with no output
 state:    proposed
 row:      unassigned
@@ -455,3 +454,23 @@ kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/RIMPLACE_ROOF_ESCAPES_FOOTPRINT_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/RIMPLACE_ROOF_ESCAPES_FOOTPRINT_1.md
+
+## HOT_RELOAD_DEFS_BREAKS_PAWNGEN_1 jawa/hot_reload_defs runs, then no pawn can be generated - HairDef missing from a Type-keyed dictionary
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     spec, verify and criteria all present
+summary:  jawa/hotreloaddefs was called to pick up a mod added to ModsConfig after launch.
+prose:    infrastructure/state/items/HOT_RELOAD_DEFS_BREAKS_PAWNGEN_1.md
+
+## PAWNKIND_ROSTER_BACKSTORY_DRIFT_1 gen_pawnkind_roster.py KIT_PRE is missing backstoryFilters that 4 DroidDepot pawnkinds carry in the live XML
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/PAWNKIND_ROSTER_BACKSTORY_DRIFT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PAWNKIND_ROSTER_BACKSTORY_DRIFT_1.md

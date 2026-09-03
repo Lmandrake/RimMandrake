@@ -1642,7 +1642,6 @@ KIT = {
       <apparelTags>
       <li>EVA</li>
       <li>Vacsuit</li>
-      <li>KotORHeadband_gasmask</li>
     </apparelTags>
       <!-- sealed-suit divers carry rations and real medicine, not herbs -->
     <inventoryOptions>
@@ -1692,7 +1691,6 @@ KIT = {
       <apparelTags>
       <li>EVA</li>
       <li>Vacsuit</li>
-      <li>KotORHeadband_gasmask</li>
     </apparelTags>
       <!-- sealed-suit divers carry rations and real medicine, not herbs -->
     <inventoryOptions>
@@ -1742,7 +1740,6 @@ KIT = {
       <apparelTags>
       <li>EVA</li>
       <li>Vacsuit</li>
-      <li>KotORHeadband_gasmask</li>
     </apparelTags>
       <!-- sealed-suit divers carry rations and real medicine, not herbs -->
     <inventoryOptions>
@@ -1792,7 +1789,6 @@ KIT = {
       <apparelTags>
       <li>EVA</li>
       <li>Vacsuit</li>
-      <li>KotORHeadband_gasmask</li>
     </apparelTags>
       <!-- sealed-suit divers carry rations and real medicine, not herbs -->
     <inventoryOptions>

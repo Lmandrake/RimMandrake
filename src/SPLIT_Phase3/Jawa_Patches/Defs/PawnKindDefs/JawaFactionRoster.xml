@@ -1517,7 +1517,6 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <apparelTags>
       <li>EVA</li>
       <li>Vacsuit</li>
-      <li>KotORHeadband_gasmask</li>
     </apparelTags>
       <!-- sealed-suit divers carry rations and real medicine, not herbs -->
     <inventoryOptions>
@@ -1578,7 +1577,6 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <apparelTags>
       <li>EVA</li>
       <li>Vacsuit</li>
-      <li>KotORHeadband_gasmask</li>
     </apparelTags>
       <!-- sealed-suit divers carry rations and real medicine, not herbs -->
     <inventoryOptions>
@@ -1639,7 +1637,6 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <apparelTags>
       <li>EVA</li>
       <li>Vacsuit</li>
-      <li>KotORHeadband_gasmask</li>
     </apparelTags>
       <!-- sealed-suit divers carry rations and real medicine, not herbs -->
     <inventoryOptions>
@@ -1700,7 +1697,6 @@ silent; the weapon tags above are the opposite and fail in silence. Check both.
       <apparelTags>
       <li>EVA</li>
       <li>Vacsuit</li>
-      <li>KotORHeadband_gasmask</li>
     </apparelTags>
       <!-- sealed-suit divers carry rations and real medicine, not herbs -->
     <inventoryOptions>
