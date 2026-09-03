@@ -298,3 +298,19 @@ After this deploy it is one bridge call from any map or the main menu.
 ⚠️ **Deploy before trusting an mtime.** Three repo DLLs are now NEWER than the
 game's copies, so "the repo file is newer, it must be deployed" reads exactly
 backwards until these run.
+
+## THE BIG DUMP LOAD — decision strings written 2026-09-03 BEFORE launch (BENCH; owner: "deploy everything and reload the big mod list so we can finally get our big dump")
+
+Shutdown window pays: companion `build.py --gm --apply` + every drifted mod via
+`deploy_custom_mods.py --apply`. Launch via `steam.exe -applaunch 294100`, full list.
+1. **Startup dump**: marker read `all` pre-launch. PASS = `[RimDefDump]` in Player.log
+   and a NEW capture dir under `DefDump\captures\` timestamped this load, fingerprint
+   matching the live 578 list. FAIL = no capture, or capture missing def-type files
+   vs the 527-file baseline.
+2. **On-demand dump action** (the 🔴 owed proof): PASS = `Actions\RMDefDump\Dump defs
+   now (all)` present in the live debug tree (it was measured ABSENT on the old DLL)
+   AND firing it from the bridge writes a SECOND fresh capture with no reload.
+3. **Companion**: ready-line tool count == deployed DLL surface (measure both via
+   `prove_new_tools.py --census`; quote neither).
+4. **Deploy**: post-apply `deploy_custom_mods.py` prints "Everything in sync"; any
+   mod it refuses is named here, not silently retried.
