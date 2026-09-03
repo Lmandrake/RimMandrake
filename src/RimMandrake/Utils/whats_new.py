@@ -180,9 +180,15 @@ def advance_marker(seat, sha):
     old = read_marker(seat)
     try:
         os.makedirs(os.path.dirname(marker_path(seat)), exist_ok=True)
-        if old:
+    except OSError:
+        return False
+    if old:
+        try:
             with open(marker_path(seat, prev=True), "w", encoding="utf-8") as fh:
                 fh.write(old + "\n")
+        except OSError:
+            pass                # the .prev write is best-effort, per the docstring above
+    try:
         with open(marker_path(seat), "w", encoding="utf-8") as fh:
             fh.write(sha + "\n")
         return True
