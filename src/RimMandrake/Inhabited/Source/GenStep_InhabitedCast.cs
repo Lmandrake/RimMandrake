@@ -51,7 +51,18 @@ namespace RimMandrake.Inhabited
             ThingOwner<Pawn> roster = place.roster;
             if (roster == null || roster.Count == 0)
             {
-                place.state = InhabitedState.Abandoned;
+                // Only Inhabited may become Abandoned here. Looted and Squatted
+                // are ALSO empty of people and already say more than "abandoned"
+                // does -- Looted is written by InhabitedFateWorker.Apply when the
+                // larder went with them, and nothing recomputes it, so
+                // overwriting it lost the distinction permanently and the world
+                // map then drew "0 souls fled . stock spoiling" over a place the
+                // player had stripped. Patch_MapRemoval, the other writer of this
+                // field, already guards exactly this way.
+                if (place.state == InhabitedState.Inhabited)
+                {
+                    place.state = InhabitedState.Abandoned;
+                }
                 return;
             }
 
