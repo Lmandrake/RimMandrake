@@ -4146,3 +4146,10 @@
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"INHABITED_CHARACTERDEF_NAMESPACE_GAP_1: confirm next load shows nonzero character count","ts":"2026-09-03T03:46:53Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-03T03:47:39Z"}
 {"seat":"FOUNDRY","event":"close","id":"INHABITED_CHARACTERDEF_NAMESPACE_GAP_1","sha":"ad705ebc","ts":"2026-09-03T03:48:01Z"}
+{"seat":"FOUNDRY","event":"claim","id":"DEV_LOG_AUTOOPEN_SUPPRESS_1","ts":"2026-09-03T03:59:44Z"}
+{"seat":"FOUNDRY","event":"start","id":"DEV_LOG_AUTOOPEN_SUPPRESS_1","ts":"2026-09-03T03:59:45Z"}
+{"seat":"BENCH","event":"claim","id":"FLUID_CANAL_FLOOD_LIVE_CHECK_1","ts":"2026-09-03T03:59:57Z"}
+{"seat":"BENCH","event":"start","id":"FLUID_CANAL_FLOOD_LIVE_CHECK_1","ts":"2026-09-03T03:59:58Z"}
+{"seat":"BENCH","event":"note","id":"FLUID_CANAL_FLOOD_LIVE_CHECK_1","text":"Deployed mandrake.rm.fluidcanals at 2026-09-02 20:5x (2 files: RimMandrakeFluidCanals.dll + Defs/FluidDefs/FluidCanal_Fluids.xml, deploy tool reported VERIFIED in sync). DLL mtime 20:37 is newer than every .cs under Source/, so the binary carries the finding 1/2/3 fixes. REMAINING before the watch can run: mandrake.rm.fluidcanals is NOT enabled in ModsConfig and is NOT in ModsConfig.MINIMAL.xml (19 mods) - it must be added to the list the test loads, plus Odyssey (already in MINIMAL). Left unedited deliberately: MINIMAL is shared with FOUNDRY's live tests and the owner was away.","ts":"2026-09-03T04:00:34Z"}
+{"seat":"FOUNDRY","event":"close","id":"SEABEAST_STARMAW_LANTERNWHALE_TEXTURES_MISSING_1","sha":"14a3ba7da603990f8df13264f18f58c6c97b8a3d","ts":"2026-09-03T04:00:49Z"}
+{"seat":"OWNER","event":"file","id":"GAME_STATE_BROADCAST_NARROWING_1","title":"Narrow the game-state broadcast to windows that are actually blocked on the game","kind":"decision","target":"v1","needs":"owner","for":"BENCH","ownerSaid":"Should we get rid of that broadcast message of game is up, etc.? It doesn't seem to have a function anymore and can even distract.","ts":"2026-09-03T04:00:54Z"}

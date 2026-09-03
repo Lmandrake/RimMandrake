@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-03T03:48:01Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-03T04:00:54Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -306,14 +306,14 @@ kind:     bug
 summary:  Determine (live, via the bridge, not more code reading) whether an
 prose:    infrastructure/state/items/INHABITED_SETTLEMENT_MAPPARENT_GAP_1.md
 
-## SEABEAST_STARMAW_LANTERNWHALE_TEXTURES_MISSING_1 Starmaw and Lanternwhale have no textures in the repo or the deploy - 2 of 18 sea beasts draw as nothing
+## DEV_LOG_AUTOOPEN_SUPPRESS_1 Suppress the dev-mode auto-open of the error log (no vanilla pref exists; Harmony prefix in JawaBench)
 state:    doing
 row:      unassigned
-needs:    offline
+needs:    deploy
 target:   v1
-kind:     bug
-summary:  RSWStarmaw (grid cell B2) and RSWLanternwhale (B3) have no textures deployed and
-prose:    infrastructure/state/items/SEABEAST_STARMAW_LANTERNWHALE_TEXTURES_MISSING_1.md
+kind:     build
+summary:  Owner, 2026-09-02: "Man I wish the Autoopen of the error log was set to False by default"
+prose:    infrastructure/state/items/DEV_LOG_AUTOOPEN_SUPPRESS_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -400,13 +400,3 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/INHABITED_AUTHORED_BIONICS_INSTALL_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/INHABITED_AUTHORED_BIONICS_INSTALL_1.md
-
-## DEV_LOG_AUTOOPEN_SUPPRESS_1 Suppress the dev-mode auto-open of the error log (no vanilla pref exists; Harmony prefix in JawaBench)
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     build
-thin:     spec, verify and criteria all present
-summary:  Owner, 2026-09-02: "Man I wish the Autoopen of the error log was set to False by default"
-prose:    infrastructure/state/items/DEV_LOG_AUTOOPEN_SUPPRESS_1.md
