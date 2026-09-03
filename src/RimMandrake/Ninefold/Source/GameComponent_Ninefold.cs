@@ -9,7 +9,8 @@ namespace RimMandrake.Ninefold
     // event-driven deltas, the fickle-Mood random walk, the ritual scoring,
     // and ALL voice narration -- pure read/compute/text. No live mutation."
     //
-    // This class ships the VECTOR + BAND LADDER + MOOD WALK, and the five
+    // This class ships the VECTOR + MOOD WALK (the band ladder itself is
+    // `SatiationBand.cs`; `GetBand` below just delegates to it), and the five
     // Harmony-patched event hooks (Patch_*.cs, this same assembly) bind real
     // RimWorld choke points to its ApplyDelta. It does NOT ship: first-
     // contact chains or narrator corpus letters (NINEFOLD_ENGINE_M0_1's other

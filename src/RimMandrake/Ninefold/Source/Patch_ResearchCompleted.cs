@@ -4,20 +4,18 @@ using HarmonyLib;
 
 namespace RimMandrake.Ninefold
 {
-    // design/Jawa/divine_satiation_engine.md, Matrix ⑨ Ozzik: "DEEDS +
-    // (every advancement feeds him regardless): research completed..."
+    // design/Jawa/divine_satiation_engine.md:920: "Research pleases Ohm
+    // (bold machine-advance) AND Ozzik (the pride of knowing) -- a shared
+    // input, one of the few." Matrix ⑨ Ozzik: "DEEDS + (every advancement
+    // feeds him regardless): research completed..."
     //
     // Verified against decompiled source (RimSage), not guessed:
     // `ResearchManager.FinishProject` (Source/RimWorld/ResearchManager.cs:403)
     // is the single call site every completed research project passes
     // through, for the player only -- ResearchManager is Find.ResearchManager,
     // there is no AI-faction instance to filter out.
-    // (No compile-time delegate proof here, unlike the other four hooks --
-    // ResearchManager.FinishProject is an instance method on a sealed class
-    // with no visible public constructor guarantee, and instantiating a
-    // throwaway ResearchManager just to bind a delegate is not worth the
-    // risk. [HarmonyPatch] with nameof() still catches an outright rename;
-    // Harmony's own PatchAll logs a load-time error if the signature moves.)
+    // [HarmonyPatch] binds by nameof(), same as the other four hooks --
+    // Harmony errors at load if the signature moves.
     //
     // 🔴 FinishProject recurses into unfinished prerequisites (calls itself
     // per prerequisite before finishing `proj` itself), and has no
@@ -46,6 +44,8 @@ namespace RimMandrake.Ninefold
 
             comp.ApplyDelta(God.Ozzik, EventMagnitude.Large,
                 "research completed: " + proj.defName);
+            comp.ApplyDelta(God.Ohm, EventMagnitude.Small,
+                "research completed (shared input): " + proj.defName);
         }
     }
 }

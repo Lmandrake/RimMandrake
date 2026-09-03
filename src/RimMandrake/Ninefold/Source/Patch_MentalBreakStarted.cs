@@ -1,3 +1,5 @@
+using System.Collections.Generic;
+using System.Linq;
 using RimWorld;
 using Verse;
 using Verse.AI;
@@ -16,11 +18,16 @@ namespace RimMandrake.Ninefold
     //
     // Verified against decompiled source (RimSage): `MentalStateHandler.
     // TryStartMentalState` (Source/Verse/AI/MentalStateHandler.cs:91) is the
-    // single call site every mental break (and manhunter/panic-flee state)
-    // passes through, `bool __result` tells us whether it actually started
-    // (many calls no-op: already in a state, tutorial mode, blocked by a
-    // hediff), and the owning pawn is the handler's private `pawn` field,
-    // reachable via Harmony's `___pawn` convention.
+    // single call site every mental STATE passes through -- not just breaks.
+    // `Pawn_InteractionsTracker.TryInteractWith` starts `SocialFighting`
+    // through the same method on both participants, and `LordToil_PanicFlee`
+    // starts `PanicFlee` the same way; §8b gives social fights their OWN row
+    // (▲Zizzik, ↓Mob'Unloo -- a bond damaged, not this hook's pair), so both
+    // are excluded here rather than double-counted under the wrong gods.
+    // `BreakStateDefs` is built once from every `MentalBreakDef.mentalState`
+    // in the database, which is exactly the set of states a real break can
+    // start (as opposed to manhunter/panic-flee/social-fighting, none of
+    // which is a `MentalBreakDef`).
     //
     // Filtered to the player's own humanlike colonists only -- a wild
     // animal's manhunter state or a hostile raider's berserk is not the
@@ -28,10 +35,19 @@ namespace RimMandrake.Ninefold
     [HarmonyPatch(typeof(MentalStateHandler), nameof(MentalStateHandler.TryStartMentalState))]
     public static class Patch_MentalBreakStarted
     {
+        private static HashSet<MentalStateDef> breakStateDefs;
+
+        private static HashSet<MentalStateDef> BreakStateDefs =>
+            breakStateDefs ??= new HashSet<MentalStateDef>(
+                DefDatabase<MentalBreakDef>.AllDefs
+                    .Select(b => b.mentalState)
+                    .Where(s => s != null));
+
         [HarmonyPostfix]
         public static void Postfix(bool __result, MentalStateDef stateDef, Pawn ___pawn)
         {
             if (!__result) return;
+            if (stateDef == null || !BreakStateDefs.Contains(stateDef)) return;
             if (___pawn == null || !___pawn.RaceProps.Humanlike) return;
             if (___pawn.Faction != Faction.OfPlayer) return;
 
@@ -39,7 +55,7 @@ namespace RimMandrake.Ninefold
             if (comp == null) return;
 
             comp.ApplyDelta(God.Zizzik, EventMagnitude.Large,
-                "mental break: " + ___pawn.LabelShortCap + " -> " + stateDef?.defName);
+                "mental break: " + ___pawn.LabelShortCap + " -> " + stateDef.defName);
         }
     }
 }

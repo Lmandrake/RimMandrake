@@ -9,8 +9,8 @@ namespace RimMandrake.Ninefold
     // 🔴 UNTUNED -- a first-pass ordering only, same status as
     // GameComponent_Ninefold.MoodAmplitude. §10 explicitly defers real
     // tuning to a throwaway-save test rig; these are just SMALL < MEDIUM <
-    // LARGE placeholders so the five hooks below have something concrete to
-    // call.
+    // LARGE placeholders so the five hooks (Patch_*.cs) have something
+    // concrete to call.
     public static class EventMagnitude
     {
         public const float Small = 3f;

@@ -23,11 +23,9 @@ namespace RimMandrake.Ninefold
     // the protected `Target`/`Building` properties.
     //
     // The instant deconstruct branch in `Designator_Deconstruct.DesignateThing`
-    // bypasses the job entirely and is NOT covered here. Not god-mode-only as
-    // originally assumed -- it also fires whenever `WorkToBuild == 0` or
-    // `def.IsFrame`, both reachable in ordinary play, so a zero-work building
-    // or an in-progress frame scrapped this way is a real (small) coverage
-    // gap, not a debug-only exclusion.
+    // (god mode, `WorkToBuild == 0`, or `def.IsFrame`) bypasses the job and is
+    // NOT covered here. The latter two are reachable in ordinary play, so a
+    // zero-work building or a scrapped frame is a real (small) coverage gap.
     //
     // Fires whenever the deconstruction is PERFORMED by a player-faction pawn
     // -- only `pawn.Faction` is examined, never the building's. Deliberate: a

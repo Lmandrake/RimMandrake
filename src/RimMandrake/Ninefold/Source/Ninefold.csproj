@@ -4,7 +4,7 @@
     NINEFOLD_ENGINE_M0_1: the nine-god satiation/mood vector, band ladder,
     Mood random walk, plus the five event hooks (the top-level Patch_*.cs
     files below) binding real RimWorld choke points to ApplyDelta.
-    Harmony (0Harmony.dll) is now a dependency for the hooks, same recipe as
+    Harmony (0Harmony.dll) is a dependency for the hooks, same recipe as
     src/RimMandrake/Visibility/Source/Visibility.csproj. Every reference is
     Private=false: nothing but our own DLL may land next to the mod.
 
