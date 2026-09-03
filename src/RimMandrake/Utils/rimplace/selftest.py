@@ -231,6 +231,58 @@ def t_sandbox_cannot_write_a_file():
         "the filesystem — find it and nil it in _FORBIDDEN." % probe)
 
 
+@case("SANDBOX: no route out through the LIVE PYTHON OBJECTS handed to the template")
+def t_sandbox_no_attribute_walk():
+    """🔴 THE ONE ABOVE WAS ALSO TOO NARROW, AND FOR THE SAME REASON. It probes the
+    single route its author had just closed (`python.builtins`), so it passed on
+    2026-09-02 while FOUR other routes wrote a file to disk. `ctx`, `role` and
+    `rng.int` are live Python objects, and lupa exposes their attributes: nilling
+    names in `_G` cannot touch `ctx.__class__.__init__.__globals__`.
+
+    ⇒ Every escape below is a MEASURED one — each wrote a file before
+    `luaenv._attribute_filter` existed. Any new object handed into the Lua globals
+    must keep them all failing.
+    """
+    import os as _os, tempfile
+    probe = _os.path.join(tempfile.gettempdir(), "rimplace_attrwalk_probe.txt")
+    routes = {
+        "ctx.__class__": 'local g=c.__class__.__init__.__globals__ '
+                         'g["__builtins__"]["open"](%r,"w")',
+        "ctx.plan.__class__": 'local g=c.plan.__class__.__init__.__globals__ '
+                              'g["__builtins__"]["open"](%r,"w")',
+        "role.__self__": 'local g=role.__self__.__class__.__init__.__globals__ '
+                         'g["__builtins__"]["open"](%r,"w")',
+        "rng.int.__self__ -> the module's own Path":
+            'local g=rng.int.__self__.__class__.__init__.__globals__ '
+            'g["Path"](%r):write_text("x")',
+    }
+    for name, body in routes.items():
+        if _os.path.exists(probe):
+            _os.remove(probe)
+        # pcall so a refusal inside Lua does not mask the thing being measured:
+        # the assertion is about the FILE, never about the error text.
+        src = ("function build(c) pcall(function() " + (body % probe) + " end) end")
+        try:
+            _run(src)
+        except TemplateError:
+            pass
+        assert not _os.path.exists(probe), (
+            "SANDBOX BREACH via %s: a template wrote %s. A live Python object in the "
+            "Lua globals is walkable again — check luaenv._attribute_filter is still "
+            "passed to every LuaRuntime." % (name, probe))
+
+
+@case("SANDBOX: a template cannot SET an attribute on an engine object")
+def t_sandbox_no_attribute_write():
+    """Templates are DATA. One that could assign `ctx.rect` would rewrite the engine's
+    own bounds mid-build, and every later refusal would be measured against it."""
+    try:
+        p = _run("function build(c) c.rect = nil end")
+    except TemplateError:
+        return                    # refused, as it must be
+    raise AssertionError("a template assigned to ctx.rect; the plan built was %r" % p)
+
+
 @case("min_rect: a floor is rounded UP, never truncated")
 def t_min_rect_ceils():
     """A computed 6.5 truncated to 6 declares a floor SMALLER than the real one, so an

@@ -50,6 +50,54 @@ for _, name in ipairs({%s}) do _G[name] = nil end
 """ % ", ".join(f'"{n}"' for n in _FORBIDDEN)
 
 
+def _attribute_filter(obj, name, is_setting):
+    """Refuse every dunder, and refuse writing ANY attribute, on the Python side.
+
+    🔴 NILLING NAMES IN `_G` NEVER CLOSED THE SANDBOX, BECAUSE WE HAND LUA LIVE
+    PYTHON OBJECTS. `ctx`, `role` and `rng.int` are a Ctx, a bound method and a bound
+    method; lupa exposes their attributes to Lua, so with no filter a template walks
+
+        ctx.__class__.__init__.__globals__.Path("/anywhere"):write_text(...)
+        ctx.plan.__class__.__init__.__globals__["__builtins__"]["open"](...)
+        role.__self__.__class__.__init__.__globals__ ...
+
+    and reaches `open`, `__import__` and this module's own `Path`. Demonstrated by
+    behaviour on 2026-09-02: all four routes created a file on disk with `os`, `io`,
+    `python`, `require`, `load` and `debug` all nil. The 2026-09-02 `python` fix and
+    its behavioural selftest both closed exactly the one route they knew about —
+    which is the same mistake the name-list tests made, one level up.
+
+    ⚠️ THE FILTER IS THE FENCE; `_FORBIDDEN` IS A CONVENIENCE. Underscore-prefixed
+    names are refused wholesale rather than a denylist of `__class__`/`__globals__`,
+    because a denylist is the thing that keeps failing here. Templates only ever call
+    the public API (`ctx:place`, `ctx.rect`, `rng.int`), so nothing legitimate is lost.
+
+    ⚠️ `is_setting` is refused outright. A template that could assign to `ctx.rect` or
+    `ctx.plan` would rewrite the engine's own state mid-build, and no template has any
+    reason to: everything a template may change goes through a method on Ctx.
+    """
+    if is_setting:
+        raise AttributeError(
+            "templates are DATA and may not set attributes on engine objects "
+            "(tried to set %r on %s)" % (name, type(obj).__name__))
+    if name.startswith("_"):
+        raise AttributeError(
+            "sandbox: %r is not reachable from a template. Underscore attributes are "
+            "the route out of the sandbox and are refused on every object; use the "
+            "documented ctx: API." % (name,))
+    return name
+
+
+def _sandboxed_runtime():
+    """The ONE place a LuaRuntime is constructed. Two existed and only one was
+    reviewed; a second construction site is a second sandbox to keep in step."""
+    from lupa import LuaRuntime
+    L = LuaRuntime(unpack_returned_tuples=True, register_eval=False,
+                   attribute_filter=_attribute_filter)
+    L.execute(_SANDBOX_PRELUDE)
+    return L
+
+
 class TemplateTooSmall(RuntimeError):
     """The rect is below the minimum the template DECLARED, checked before build().
 
@@ -389,6 +437,24 @@ class Ctx:
         self.plan.refuse(str(what), str(reason))
 
 
+def _require_lupa():
+    """Import lupa, or raise the TemplateError that says how to get it.
+
+    `declared_min_rect` used to `from lupa import LuaRuntime` bare, so the one query
+    a caller makes BEFORE building — "how big does this template need to be" — failed
+    with a raw ImportError traceback while `run_template` gave the venv recipe.
+    """
+    try:
+        import lupa  # noqa: F401
+    except ImportError as e:                                   # pragma: no cover
+        raise TemplateError(
+            "lupa (Lua runtime) is not importable. Create it with:\n"
+            "  python3 -m venv ~/.local/venvs/rimlua\n"
+            "  ~/.local/venvs/rimlua/bin/pip install lupa\n"
+            "then run this tool with ~/.local/venvs/rimlua/bin/python"
+        ) from e
+
+
 def _lua_rect(L, rect: Rect):
     t = L.table()
     t["x"], t["z"], t["w"], t["h"] = rect.x, rect.z, rect.w, rect.h
@@ -399,16 +465,7 @@ def _lua_rect(L, rect: Rect):
 def run_template(path: str | Path, rect: Rect, params: dict,
                  palette: Palette, seed: int, site=None) -> BuildPlan:
     """Execute a Lua template and return the BuildPlan it produced."""
-    try:
-        from lupa import LuaRuntime
-    except ImportError as e:                                   # pragma: no cover
-        raise TemplateError(
-            "lupa (Lua runtime) is not importable. Create it with:\n"
-            "  python3 -m venv ~/.local/venvs/rimlua\n"
-            "  ~/.local/venvs/rimlua/bin/pip install lupa\n"
-            "then run this tool with ~/.local/venvs/rimlua/bin/python"
-        ) from e
-
+    _require_lupa()
     path = Path(path)
     if not path.exists():
         raise TemplateError(f"template not found: {path}")
@@ -429,8 +486,7 @@ def run_template(path: str | Path, rect: Rect, params: dict,
     rng = SeededRng(seed)
     ctx = Ctx(plan, rect, params, palette, rng, site)
 
-    L = LuaRuntime(unpack_returned_tuples=True, register_eval=False)
-    L.execute(_SANDBOX_PRELUDE)
+    L = _sandboxed_runtime()
 
     g = L.globals()
     g["ctx"] = ctx
@@ -538,13 +594,11 @@ def declared_min_rect(path: str | Path, params: dict) -> tuple[int, int] | None:
     footprint need to be" and get a number, instead of reading the Lua by hand or
     discovering it empirically from a half-built plan.
     """
-    from lupa import LuaRuntime
-
+    _require_lupa()
     path = Path(path)
     if not path.exists():
         raise TemplateError(f"template not found: {path}")
-    L = LuaRuntime(unpack_returned_tuples=True, register_eval=False)
-    L.execute(_SANDBOX_PRELUDE)
+    L = _sandboxed_runtime()
     g = L.globals()
     p = L.table()
     for k, v in (params or {}).items():
