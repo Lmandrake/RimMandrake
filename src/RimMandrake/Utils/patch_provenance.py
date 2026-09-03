@@ -67,6 +67,7 @@ LEDGER = os.path.join(ROOT, "observed", "2026-08-13",
 # "<!-- MA_ClawSaber / blade AP 0.24 -> 0.00 -->"
 # "<!-- AG_Forsaken_Hood [powered] ArmorRating_Sharp -> 1.40 -->"   (no original)
 _ARROW = re.compile(r"(-?\d+(?:\.\d+)?)\s*->\s*(-?\d+(?:\.\d+)?)\s*$")
+_TOKEN = re.compile(r"<!--(.*?)-->|<xpath>(.*?)</xpath>", re.S)
 
 
 def our_package_ids():
@@ -74,12 +75,17 @@ def our_package_ids():
 
     Discovered, never hardcoded: a hardcoded list is wrong the day someone adds
     a mod, and being wrong here means silently trusting contaminated values.
+
+    Walked at any depth under CUSTOM, not assumed to sit one level down: mods
+    live at src/<Tier>/<Mod>/About/About.xml under the three-tier layout, and a
+    fixed one-level scan found zero of them -- which made every "contaminated"
+    check silently read PRISTINE.
     """
     out = {}
     if not os.path.isdir(CUSTOM):
         return out
-    for name in sorted(os.listdir(CUSTOM)):
-        about = os.path.join(CUSTOM, name, "About", "About.xml")
+    for dirpath, _dirnames, _filenames in os.walk(CUSTOM):
+        about = os.path.join(dirpath, "About", "About.xml")
         if not os.path.isfile(about):
             continue
         try:
@@ -87,8 +93,26 @@ def our_package_ids():
         except ET.ParseError:
             continue
         if pid:
-            out[pid.strip().lower()] = name
+            out[pid.strip().lower()] = os.path.basename(dirpath)
     return out
+
+
+def _patch_files():
+    """Every *.xml under any Patches/ directory anywhere under CUSTOM.
+
+    Walked, not assumed to sit one level down: mods live at
+    src/<Tier>/<Mod>/Patches under the three-tier layout, and a fixed-depth
+    scan found none of them -- silently making every xpath in the repo read
+    as "we do not write here".
+    """
+    if not os.path.isdir(CUSTOM):
+        return
+    for dirpath, _dirnames, filenames in os.walk(CUSTOM):
+        if os.path.basename(dirpath) != "Patches":
+            continue
+        for fn in sorted(filenames):
+            if fn.endswith(".xml"):
+                yield os.path.join(dirpath, fn)
 
 
 class DumpStatus(object):
@@ -162,22 +186,15 @@ class OurWrites(object):
         self.originals = dict(ledger if ledger is not None else load_ledger())
 
     def _scan(self):
-        for mod in sorted(os.listdir(CUSTOM)) if os.path.isdir(CUSTOM) else []:
-            pdir = os.path.join(CUSTOM, mod, "Patches")
-            if not os.path.isdir(pdir):
+        for path in _patch_files():
+            try:
+                root = ET.parse(path).getroot()
+            except ET.ParseError:
                 continue
-            for fn in sorted(os.listdir(pdir)):
-                if not fn.endswith(".xml"):
-                    continue
-                path = os.path.join(pdir, fn)
-                try:
-                    root = ET.parse(path).getroot()
-                except ET.ParseError:
-                    continue
-                for xp in root.iter("xpath"):
-                    if xp.text:
-                        self.by_xpath.setdefault(
-                            xp.text.strip(), {"file": "%s/%s" % (mod, fn)})
+            for xp in root.iter("xpath"):
+                if xp.text:
+                    self.by_xpath.setdefault(
+                        xp.text.strip(), {"file": os.path.relpath(path, CUSTOM)})
 
     def writes(self, xpath):
         return xpath in self.by_xpath
@@ -254,22 +271,25 @@ def bootstrap():
     written to the ledger, never consulted again.
     """
     rec = Recorder()
-    for mod in sorted(os.listdir(CUSTOM)) if os.path.isdir(CUSTOM) else []:
-        pdir = os.path.join(CUSTOM, mod, "Patches")
-        if not os.path.isdir(pdir):
-            continue
-        for fn in sorted(os.listdir(pdir)):
-            if not fn.endswith(".xml"):
+    for path in _patch_files():
+        with io.open(path, encoding="utf-8") as fh:
+            text = fh.read()
+        # Pair each comment with the first <xpath> that follows it. Scanned as
+        # a single sequential token stream, not a combined comment+xpath
+        # regex: that combined form let an EARLIER non-arrow comment (e.g.
+        # every file's header) swallow the very next operation's own
+        # comment+xpath as unmatched filler text, silently dropping the first
+        # entry of every generated patch file.
+        pending = None
+        for m in _TOKEN.finditer(text):
+            comment, xpath = m.group(1), m.group(2)
+            if xpath is not None:
+                if pending is not None:
+                    rec.record(xpath.strip(), pending)
+                pending = None
                 continue
-            with io.open(os.path.join(pdir, fn), encoding="utf-8") as fh:
-                text = fh.read()
-            # Pair each comment with the first <xpath> that follows it.
-            for m in re.finditer(r"<!--(.*?)-->(.*?)<xpath>(.*?)</xpath>",
-                                 text, re.S):
-                arrow = _ARROW.search(m.group(1).strip())
-                if not arrow or "<!--" in m.group(2):
-                    continue
-                rec.record(m.group(3).strip(), float(arrow.group(1)))
+            arrow = _ARROW.search(comment.strip())
+            pending = float(arrow.group(1)) if arrow else None
     rec.save("bootstrapped from generated patch comments")
     return rec
 
