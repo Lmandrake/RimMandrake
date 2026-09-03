@@ -1,12 +1,20 @@
 <#
-launch_fleet.ps1 — open the two agent windows, each Windows Terminal window placed.
+launch_fleet.ps1 — open the three agent windows, each Windows Terminal window placed.
 
-    LEFT   AGENT BENCH   (green — with the owner)
-    RIGHT  AGENT FOUNDRY (amber — the autonomous queue)
+    TOP-LEFT     HESTIA        (separate project, D:\Luke\dev\Hestia)
+    BOTTOM-LEFT  AGENT BENCH   (green — with the owner)
+    BOTTOM-RIGHT AGENT FOUNDRY (amber — the autonomous queue)
 
 Redesign #4, 2026-08-27: the four-seat fleet (DECIDE/CHECK/BUILD/REP quadrants) is
 retired, the status board stays removed, and the queue publisher loop is gone too —
 rimflow renders the queue views on every write, so nothing needs a background loop.
+
+Third window added 2026-09-03: HESTIA joined the fleet. Its placement is not a
+formula split like BENCH/FOUNDRY below — it is hardcoded to the exact rect the
+owner had it at by hand (top-left, not a clean quadrant: there's an 8px gap above
+BENCH/FOUNDRY and empty screen to its right for other apps). If the owner resizes
+it again and wants that new size kept, re-measure and update $place by hand —
+there is no "capture current layout" mode in this script.
 
 WHY THE WINDOWS ARE MOVED RATHER THAN SIZED AT LAUNCH
 =====================================================
@@ -36,9 +44,9 @@ USAGE
     powershell -NoProfile -ExecutionPolicy Bypass -File launch_fleet.ps1
     ... -Gap 8               # pixels between tiles (default 0, flush)
     ... -Seats BENCH         # open a subset, in the same places
-    ... -Test                # same four windows, running `cmd` instead of a seat,
-                             # so the layout can be tuned without starting four
-                             # Claude sessions. They are titled `AGENT X [test]`.
+    ... -Test                # same windows, running `cmd` instead of a seat, so
+                             # the layout can be tuned without starting real
+                             # sessions. Titled `<name> [test]`, e.g. `HESTIA [test]`.
     ... -CloseTest           # close every test tile; live seats are untouched,
                              # because the marker is what it matches on.
 
@@ -46,7 +54,7 @@ Normally invoked by the Desktop shortcut written by install_fleet_shortcut.py.
 #>
 param(
     [int]$Gap = 0,
-    [string[]]$Seats = @('FOUNDRY', 'BENCH'),
+    [string[]]$Seats = @('HESTIA', 'FOUNDRY', 'BENCH'),
     [int]$TimeoutSec = 30,
     [switch]$Test,
     [switch]$CloseTest
@@ -126,13 +134,30 @@ $work = New-Object Fleet+RECT
 $X = $work.L; $Y = $work.T
 $W = $work.R - $work.L; $H = $work.B - $work.T
 
-$halfW = [int](($W - $Gap) / 2)
-$rightX = $X + $W - $halfW
-
-# Two full-height halves: BENCH left (where the owner works), FOUNDRY right.
+# All three rects below are literal — the exact DWM extended-frame-bounds
+# measured on 2026-09-03 on the 3840x2160 @200% display, per the owner's
+# instruction to open at their CURRENT sizes rather than a recomputed split.
+# None of the three scale with the work area any more (HESTIA never did, and
+# BENCH/FOUNDRY's old halfW/full-height formula is gone now that HESTIA takes
+# the top-left). If the owner reshapes any of these three and wants the new
+# size kept, re-measure with DWM extended frame bounds (not GetWindowRect,
+# which includes the invisible resize border) and update the numbers below —
+# there is no "capture current layout" mode in this script.
 $place = [ordered]@{
-    BENCH   = @($X,      $Y, $halfW, $H)
-    FOUNDRY = @($rightX, $Y, $halfW, $H)
+    HESTIA  = @($X + 39,   $Y + 13,   1873, 1114)
+    BENCH   = @($X,        $Y + 1135, 1920, 929)
+    FOUNDRY = @($X + 1920, $Y + 1135, 1920, 929)
+}
+
+# The wt profile name IS the live window title (no --title override on a real
+# launch — see below), so this has to match each profile exactly. HESTIA's wt
+# profile is named plain "HESTIA" (a separate project, not part of the
+# "AGENT <seat>" fleet naming), not "AGENT HESTIA" — don't collapse this back
+# to a single "AGENT $seat" format string.
+$titleFor = [ordered]@{
+    HESTIA  = 'HESTIA'
+    BENCH   = 'AGENT BENCH'
+    FOUNDRY = 'AGENT FOUNDRY'
 }
 
 $wt = "$env:LOCALAPPDATA\Microsoft\WindowsApps\wt.exe"
@@ -143,7 +168,7 @@ foreach ($seat in $Seats) {
     # exactly like a LIVE seat, and closing the test fleet would close a running
     # session. The search below uses this same string, so the wait-and-place path
     # under test is still the real one.
-    $title = if ($Test) { "AGENT $seat [test]" } else { "AGENT $seat" }
+    $title = if ($Test) { "$($titleFor[$seat]) [test]" } else { $titleFor[$seat] }
     $r = $place[$seat]
 
     # Any window already carrying this title is a seat that is ALREADY OPEN.
@@ -185,6 +210,6 @@ foreach ($seat in $Seats) {
 
 # Leave the focus where the owner starts: BENCH, the window that works with him.
 $focus = if ($Seats -contains 'BENCH') { 'BENCH' } else { $Seats[-1] }
-$last = if ($Test) { "AGENT $focus [test]" } else { "AGENT $focus" }
+$last = if ($Test) { "$($titleFor[$focus]) [test]" } else { $titleFor[$focus] }
 $f = [Fleet]::WindowsTitled($last)
 if ($f) { [void][Fleet]::SetForegroundWindow(@($f)[0]) }

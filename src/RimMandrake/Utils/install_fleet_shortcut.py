@@ -2,20 +2,21 @@
 """install_fleet_shortcut.py — one double-click opens the whole fleet, tiled.
 
 Writes a Desktop shortcut that runs `launch_fleet.ps1`, which opens one Windows
-Terminal window per agent and places them side by side:
+Terminal window per agent and places them at their fixed positions:
 
-    LEFT  AGENT BENCH        RIGHT  AGENT FOUNDRY
+    TOP-LEFT HESTIA   BOTTOM-LEFT AGENT BENCH   BOTTOM-RIGHT AGENT FOUNDRY
 
-All launch behaviour lives in the .ps1 — the profiles it names are the ones
-`install_wt_seat_profiles.py` writes, which already carry the colour, tab title,
-`AGENT_SEAT` and the `claude_bounded.sh --name 'AGENT <SEAT>'` line. This script
-only writes the shortcut.
+All launch behaviour lives in the .ps1 — the AGENT BENCH/AGENT FOUNDRY profiles
+it names are the ones `install_wt_seat_profiles.py` writes, which already carry
+the colour, tab title, `AGENT_SEAT` and the `claude_bounded.sh --name 'AGENT
+<SEAT>'` line; HESTIA is a separate project's own profile (D:/Luke/dev/Hestia),
+not something this repo's tooling writes. This script only writes the shortcut.
 
 WHY A .lnk AND NOT A .bat
 =========================
 A batch file goes through cmd and flashes a console window on every click. The
 shortcut runs `powershell.exe` directly with `-WindowStyle Hidden`, so the only
-windows that appear are the four seats.
+windows that appear are the three seats.
 
 The Explorer properties dialog caps the Target field at 260 characters, but the
 .lnk format does not and WScript.Shell writes the field directly — which is why
@@ -79,10 +80,10 @@ def main():
         "$s.Arguments = '%s';"
         "$s.WorkingDirectory = '%s';"
         # The icon is Windows Terminal's, not PowerShell's: what the shortcut
-        # opens is four terminals, and the icon is how it is found on a busy
+        # opens is three terminals, and the icon is how it is found on a busy
         # Desktop.
         "$s.IconLocation = '%s,0';"
-        "$s.Description = 'Open the two RimWorld agent windows, tiled';"
+        "$s.Description = 'Open the fleet: HESTIA + the two RimWorld agent windows, tiled';"
         "$s.Save()"
     ) % (lnk, PS, arguments.replace("'", "''"), REPO_WIN, WT)
 
