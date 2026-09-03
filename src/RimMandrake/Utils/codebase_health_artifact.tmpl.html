@@ -1,0 +1,373 @@
+<title>Repo Health Treemap</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.9.0/d3.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3-weighted-voronoi@1.1.3/build/d3-weighted-voronoi.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3-voronoi-map@2.1.1/build/d3-voronoi-map.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/d3-voronoi-treemap@1.1.2/build/d3-voronoi-treemap.min.js"></script>
+<style>
+:root{
+  --ground:#eaeef2; --panel:#f6f8fa; --ink:#10161c; --ink-2:#4a5560; --ink-3:#77828d;
+  --rule:#cdd6de; --rule-2:#dde4ea;
+  --red:#c0392f; --blue:#2f6cc0; --green:#2b8a52; --grey:#98a2ad; --unk:#b98b1e;
+  --accent:#1f6f6b;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ground:#0d1319; --panel:#141c24; --ink:#e2e9f0; --ink-2:#a3b0bd; --ink-3:#6f7c89;
+    --rule:#25313c; --rule-2:#1b242d;
+    --red:#e0655a; --blue:#5d97e8; --green:#4fb37a; --grey:#6d7885; --unk:#d6a83c;
+    --accent:#4fb3ad;
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0d1319; --panel:#141c24; --ink:#e2e9f0; --ink-2:#a3b0bd; --ink-3:#6f7c89;
+  --rule:#25313c; --rule-2:#1b242d;
+  --red:#e0655a; --blue:#5d97e8; --green:#4fb37a; --grey:#6d7885; --unk:#d6a83c;
+  --accent:#4fb3ad;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--ground);color:var(--ink);
+  font-family:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,sans-serif;
+  font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1180px;margin:0 auto;padding:32px 24px 72px}
+h1{font-size:26px;font-weight:600;letter-spacing:-.015em;margin:0;text-wrap:balance}
+.sub{color:var(--ink-2);margin:6px 0 0;max-width:66ch}
+.mono{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
+.eyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);
+  font-weight:500;margin:0 0 10px}
+
+/* ---- the finding strip: this is the page's thesis, so it gets the weight ---- */
+.finding{margin:26px 0 0;padding:20px 22px;border:1px solid var(--rule);
+  border-left:4px solid var(--unk);background:var(--panel);border-radius:3px;
+  display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:center}
+.finding .num{font-family:"IBM Plex Mono",monospace;font-size:52px;line-height:1;
+  font-weight:500;color:var(--unk);font-variant-numeric:tabular-nums}
+.finding p{margin:0;color:var(--ink-2);max-width:70ch}
+.finding strong{color:var(--ink);font-weight:600}
+
+.bar{display:flex;height:34px;margin:26px 0 10px;border-radius:3px;overflow:hidden;
+  border:1px solid var(--rule)}
+.bar span{display:block}
+.barkey{display:flex;flex-wrap:wrap;gap:18px 26px;margin:0 0 26px;
+  font-size:13px;color:var(--ink-2)}
+.barkey b{color:var(--ink);font-weight:600;font-variant-numeric:tabular-nums}
+.sw{display:inline-block;width:11px;height:11px;border-radius:2px;margin-right:7px;
+  vertical-align:baseline;border:1px solid rgba(0,0,0,.18)}
+
+.legend{border:1px solid var(--rule);border-radius:3px;background:var(--panel);
+  padding:18px 20px;margin:0 0 26px}
+.legend ol{margin:10px 0 0;padding-left:20px;color:var(--ink-2);font-size:13.5px}
+.legend li{margin:5px 0}
+.legend li b{color:var(--ink)}
+
+.tools{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin:0 0 12px}
+button{font:inherit;font-size:13px;padding:7px 15px;border-radius:3px;cursor:pointer;
+  border:1px solid var(--rule);background:transparent;color:var(--ink-2)}
+button[aria-pressed="true"]{background:var(--ink);color:var(--ground);border-color:var(--ink)}
+button:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.hint{color:var(--ink-3);font-size:12.5px;margin-left:auto}
+
+.stage{position:relative;border:1px solid var(--rule);border-radius:3px;
+  background:var(--panel);overflow:hidden}
+svg{display:block;width:100%;height:auto}
+.cell{stroke:var(--panel);stroke-width:.5px}
+.cell:hover{stroke:var(--ink);stroke-width:1.5px}
+.vcell{stroke:rgba(255,255,255,.55);stroke-width:1px}
+:root[data-theme="dark"] .vcell{stroke:rgba(0,0,0,.35)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .vcell{stroke:rgba(0,0,0,.35)}}
+.vgroup{fill:none;stroke:#0b0f13;stroke-width:2.6px;stroke-linejoin:round;pointer-events:none}
+:root[data-theme="dark"] .vgroup{stroke:#000}
+.vlabel{font-family:"IBM Plex Sans",sans-serif;fill:#12181e;pointer-events:none;
+  paint-order:stroke;stroke:rgba(255,255,255,.7);stroke-width:2px;font-weight:500}
+.vglabel{font-family:"IBM Plex Sans",sans-serif;fill:#0b0f13;pointer-events:none;
+  paint-order:stroke;stroke:rgba(255,255,255,.85);stroke-width:3.2px;
+  font-weight:600;letter-spacing:.02em}
+.vrim{fill:none;stroke:var(--ink-3);stroke-width:1px}
+.tip{position:absolute;pointer-events:none;background:var(--ink);color:var(--ground);
+  padding:8px 11px;border-radius:3px;font-size:12px;max-width:420px;opacity:0;
+  transition:opacity .1s;font-family:"IBM Plex Mono",monospace;line-height:1.45;z-index:5}
+.tip .w{color:var(--grey);display:block;margin-top:4px}
+.fallback{padding:22px;color:var(--ink-2);font-size:13.5px}
+
+h2{font-size:17px;font-weight:600;margin:38px 0 4px;letter-spacing:-.01em}
+.reds{margin:14px 0 0;border-top:1px solid var(--rule-2)}
+.reds div{display:grid;grid-template-columns:1fr auto;gap:16px;padding:8px 2px;
+  border-bottom:1px solid var(--rule-2);font-size:13px;align-items:baseline}
+.reds .p{font-family:"IBM Plex Mono",monospace;word-break:break-all;color:var(--ink)}
+.reds .l{color:var(--ink-3);font-variant-numeric:tabular-nums;white-space:nowrap}
+.reds .why{grid-column:1/-1;color:var(--ink-3);font-size:12px;margin-top:-2px}
+footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--rule);
+  color:var(--ink-3);font-size:12.5px}
+.caveat{border-left:3px solid var(--red);padding:2px 0 2px 14px;margin:16px 0;
+  color:var(--ink-2);font-size:13.5px;max-width:72ch}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <p class="eyebrow">RimWorld repo · squarified &amp; Voronoi treemap</p>
+  <h1>Repo Health Treemap</h1>
+  <p class="sub">Every code file in <span class="mono">D:\Luke\dev\Rimworld</span>, sized by
+  lines and coloured by review state. Generated from the working tree at
+  <span class="mono" id="head"></span>.</p>
+
+  <div class="finding">
+    <div class="num">0</div>
+    <p><strong>Not one file has ever been marked review-clean.</strong> The doctrine exists —
+    <span class="mono">CODE_REVIEW_STATUS.json</span> is named as the only thing that makes a
+    file clean — but the file does not exist, and the recorded-entry count is zero. So the
+    green band below is empty, and that is a true reading, not a broken tool.</p>
+  </div>
+
+  <div class="bar" id="bar"></div>
+  <div class="barkey" id="barkey"></div>
+
+  <div class="legend">
+    <p class="eyebrow" style="margin:0">Colour precedence — first match wins</p>
+    <ol>
+      <li><b style="color:var(--red)">Red</b> — an open ledger item of kind bug/defect/fix names this file. <b>Red beats clean:</b> a reviewed file with an open bug is still red.</li>
+      <li><b style="color:var(--blue)">Blue</b> — in dev: uncommitted in the working tree, or named by an open item that is <span class="mono">doing</span>.</li>
+      <li><b style="color:var(--green)">Green</b> — review-clean, with zero commits since the recorded review.</li>
+      <li><b style="color:var(--unk)">Hatched</b> — unmeasured. Status could not be determined.</li>
+      <li><b style="color:var(--grey)">Grey</b> — dirty, and <em>measured</em> to be dirty. Never a stand-in for "don't know".</li>
+    </ol>
+  </div>
+
+  <div class="caveat">Items carry no path field, so red means <em>an open bug's prose names this
+  file</em>. Command invocations and the verify/criteria sections are filtered out, but a few
+  incidental mentions survive — <span class="mono">validate_patch.py</span> is red because a
+  Droidworks defect mentions it, not because it is broken. Every red cell names its item, so
+  the claim is checkable. One open bug names no file and colours nothing.</div>
+
+  <div class="tools">
+    <button id="bSq" aria-pressed="true">Squarified</button>
+    <button id="bVo" aria-pressed="false">Voronoi</button>
+    <span class="hint" id="hint">1,583 files · hover a cell</span>
+  </div>
+  <div class="stage" id="stage"><div class="tip" id="tip"></div></div>
+
+  <h2>The 37 files an open bug names</h2>
+  <div class="reds" id="reds"></div>
+
+  <footer>
+    Generated <span id="gen" class="mono"></span> by
+    <span class="mono">src/RimMandrake/Utils/codebase_health.py</span>. Squarified layout by
+    d3 7.9.0; Voronoi by d3-voronoi-treemap 1.1.2, aggregated to directories because a
+    1,583-cell weighted Voronoi is not readable.
+  </footer>
+</div>
+
+<script id="data" type="application/json">__DATA__</script>
+<script>
+(function(){
+  var D = JSON.parse(document.getElementById("data").textContent);
+  var C = {r:"--red", b:"--blue", n:"--green", y:"--grey", u:"--unk"};
+  var NAME = {r:"known bug", b:"in dev", n:"review-clean", y:"dirty (measured)", u:"unmeasured"};
+  var ORDER = ["r","b","n","u","y"];
+  function col(k){ return getComputedStyle(document.documentElement)
+                     .getPropertyValue(C[k]||"--grey").trim(); }
+  document.getElementById("head").textContent = D.head;
+  document.getElementById("gen").textContent = D.generated;
+
+  // ---- summary bar, sized by LINES (the same weight the treemap uses) -------
+  var byK = {}; D.rows.forEach(function(r){
+    byK[r[2]] = byK[r[2]] || {f:0,l:0}; byK[r[2]].f++; byK[r[2]].l += r[1]; });
+  var totalL = D.rows.reduce(function(a,r){return a+r[1];},0);
+  var bar = document.getElementById("bar"), key = document.getElementById("barkey");
+  ORDER.forEach(function(k){
+    var v = byK[k]; if(!v) return;
+    var s = document.createElement("span");
+    s.style.width = (100*v.l/totalL)+"%"; s.style.background = col(k);
+    s.title = NAME[k]; bar.appendChild(s);
+  });
+  ORDER.forEach(function(k){
+    var v = byK[k] || {f:0,l:0};
+    var d = document.createElement("div");
+    d.innerHTML = '<span class="sw" style="background:'+col(k)+'"></span>'+
+      NAME[k]+' — <b>'+v.f.toLocaleString()+'</b> files, <b>'+v.l.toLocaleString()+'</b> lines';
+    key.appendChild(d);
+  });
+
+  // ---- build the hierarchy -------------------------------------------------
+  var root = {name:"repo", children:[]}, index = {"":root};
+  D.rows.forEach(function(r){
+    var parts = r[0].split("/"), acc = "";
+    var node = root;
+    for(var i=0;i<parts.length-1;i++){
+      acc = acc ? acc+"/"+parts[i] : parts[i];
+      if(!index[acc]){ index[acc] = {name:parts[i], children:[]}; node.children.push(index[acc]); }
+      node = index[acc];
+    }
+    node.children.push({name:parts[parts.length-1], path:r[0], loc:r[1], s:r[2], why:r[3]});
+  });
+
+  var stage = document.getElementById("stage"), tip = document.getElementById("tip");
+  var W = 1130, H = 620;
+  function svg(){
+    var old = stage.querySelector("svg"); if(old) old.remove();
+    var f = stage.querySelector(".fallback"); if(f) f.remove();
+    var s = d3.select(stage).append("svg")
+      .attr("viewBox","0 0 "+W+" "+H).attr("preserveAspectRatio","xMidYMid meet");
+    return s;
+  }
+  function show(e, html){
+    tip.innerHTML = html; tip.style.opacity = 1;
+    var b = stage.getBoundingClientRect();
+    var x = e.clientX - b.left + 14, y = e.clientY - b.top + 14;
+    if(x > b.width - 440) x = b.width - 440;
+    tip.style.left = Math.max(4,x)+"px"; tip.style.top = y+"px";
+  }
+  function hide(){ tip.style.opacity = 0; }
+
+  function squarified(){
+    var h = d3.hierarchy(root).sum(function(d){return d.loc||0;})
+              .sort(function(a,b){return b.value-a.value;});
+    d3.treemap().tile(d3.treemapSquarify).size([W,H]).paddingInner(.5).round(true)(h);
+    var g = svg().append("g");
+    g.selectAll("rect").data(h.leaves()).enter().append("rect")
+      .attr("class","cell")
+      .attr("x",function(d){return d.x0;}).attr("y",function(d){return d.y0;})
+      .attr("width",function(d){return Math.max(0,d.x1-d.x0);})
+      .attr("height",function(d){return Math.max(0,d.y1-d.y0);})
+      .attr("fill",function(d){return col(d.data.s);})
+      .on("mousemove",function(e,d){
+        show(e,"<b>"+d.data.path+"</b><br>"+d.data.loc.toLocaleString()+" lines · "+
+             NAME[d.data.s]+(d.data.why?'<span class="w">'+d.data.why+"</span>":""));})
+      .on("mouseleave",hide);
+    document.getElementById("hint").textContent =
+      h.leaves().length.toLocaleString()+" files · hover a cell";
+  }
+
+  function voronoi(){
+    // ---- NESTED, like a continent/country map: top-level directory = the region
+    // (heavy black outline, one big label), the files inside it = the cells.
+    // A flat 1,583-cell weighted Voronoi is a smear, so each region keeps its
+    // largest files by name and folds the tail into one honest remainder cell.
+    var groups = {};
+    D.rows.forEach(function(r){
+      var top = r[0].split("/")[0];
+      (groups[top] || (groups[top] = [])).push(r);
+    });
+    var tree = {name:"repo", children:[]};
+    Object.keys(groups).forEach(function(top){
+      var files = groups[top].slice().sort(function(a,b){return b[1]-a[1];});
+      var groupLoc = files.reduce(function(a,r){return a+r[1];},0);
+      var keep = files.slice(0, 34), tail = files.slice(34);
+      var kids = keep.map(function(r){
+        return {name:r[0].split("/").pop(), path:r[0], loc:r[1], s:r[2], why:r[3]};
+      });
+      if(tail.length){
+        var c = {}; tail.forEach(function(r){ c[r[2]] = (c[r[2]]||0) + r[1]; });
+        kids.push({name:"+"+tail.length, loc:tail.reduce(function(a,r){return a+r[1];},0),
+                   s: ORDER.filter(function(x){return c[x];})[0] || "y",
+                   why:tail.length+" smaller files in "+top+"/, folded together",
+                   path:top+"/ (remainder)"});
+      }
+      tree.children.push({name:top, loc:groupLoc, children:kids});
+    });
+    tree.children.sort(function(a,b){return b.loc-a.loc;});
+
+    try{
+      var vt = (window.d3 && d3.voronoiTreemap) ? d3.voronoiTreemap() : null;
+      if(!vt) throw new Error("d3-voronoi-treemap did not load");
+      var R = Math.min(W,H)/2 - 8, cx = W/2, cy = H/2, poly = [];
+      for(var i=0;i<96;i++){
+        var t = 2*Math.PI*i/96; poly.push([cx+R*Math.cos(t), cy+R*Math.sin(t)]);
+      }
+      var seed = 7; function prng(){ seed = (seed*16807)%2147483647; return (seed-1)/2147483646; }
+      var h = d3.hierarchy(tree).sum(function(d){return d.loc||0;});
+      vt.clip(poly).prng(prng)(h);
+
+      var s = svg(), g = s.append("g");
+      s.append("circle").attr("class","vrim").attr("cx",cx).attr("cy",cy).attr("r",R);
+
+      function area(p){                     // shoelace, for label fitting
+        var a = 0; for(var i=0,n=p.length;i<n;i++){
+          var q = p[(i+1)%n]; a += p[i][0]*q[1] - q[0]*p[i][1]; } return Math.abs(a)/2;
+      }
+      // leaves first, then the region outlines on top so the black reads unbroken
+      g.selectAll("path.vcell").data(h.leaves()).enter().append("path")
+        .attr("class","vcell")
+        .attr("d",function(d){return "M"+d.polygon.join("L")+"Z";})
+        .attr("fill",function(d){
+          // hue carries STATUS, which is the whole point of the page; lightness
+          // separates neighbours inside a region the way the reference map does.
+          var base = d3.color(col(d.data.s));
+          var rank = d.parent ? d.parent.children.indexOf(d) : 0;
+          return base.brighter(0.55 * (rank % 4) / 3).formatHex();
+        })
+        .on("mousemove",function(e,d){
+          show(e,"<b>"+(d.data.path||d.data.name)+"</b><br>"+
+               d.data.loc.toLocaleString()+" lines · "+NAME[d.data.s]+
+               (d.data.why?'<span class="w">'+d.data.why+"</span>":""));})
+        .on("mouseleave",hide);
+
+      g.selectAll("path.vgroup").data(h.children||[]).enter().append("path")
+        .attr("class","vgroup")
+        .attr("d",function(d){return "M"+d.polygon.join("L")+"Z";});
+
+      // file labels, only where the cell can hold them
+      g.selectAll("text.vlabel").data(h.leaves().filter(function(d){
+          return area(d.polygon) > 1500; }))
+        .enter().append("text").attr("class","vlabel")
+        .attr("x",function(d){return d.polygon.site.x;})
+        .attr("y",function(d){return d.polygon.site.y;})
+        .attr("text-anchor","middle").attr("dy",".32em")
+        .attr("font-size",function(d){
+          return Math.max(8, Math.min(15, Math.sqrt(area(d.polygon))/5.2))+"px"; })
+        .text(function(d){
+          var a = area(d.polygon), n = d.data.name;
+          var room = Math.floor(Math.sqrt(a) / 4.4);
+          return n.length <= room ? n : (room > 3 ? n.slice(0, room-1)+"…" : "");
+        });
+
+      // region labels, above the file labels
+      g.selectAll("text.vglabel").data((h.children||[]).filter(function(d){
+          return area(d.polygon) > 9000; }))
+        .enter().append("text").attr("class","vglabel")
+        .attr("x",function(d){return d.polygon.site.x;})
+        .attr("y",function(d){return d.polygon.site.y;})
+        .attr("text-anchor","middle").attr("dy",".32em")
+        .attr("font-size",function(d){
+          return Math.max(12, Math.min(24, Math.sqrt(area(d.polygon))/9))+"px"; })
+        .text(function(d){return d.data.name+"/";});
+
+      document.getElementById("hint").textContent =
+        (h.children||[]).length+" top-level directories · "+
+        h.leaves().length+" cells · hover for the file";
+    }catch(err){
+      var old = stage.querySelector("svg"); if(old) old.remove();
+      var f = document.createElement("div");
+      f.className = "fallback";
+      f.innerHTML = "<b>The Voronoi layout could not render.</b><br>"+
+        "Its plugin did not load or threw: <span class='mono'>"+
+        String(err.message||err).replace(/</g,"&lt;")+"</span><br><br>"+
+        "The squarified layout above is unaffected, and the full offline page at "+
+        "<span class='mono'>Transient\\codebase_health.html</span> carries both.";
+      stage.appendChild(f);
+      document.getElementById("hint").textContent = "Voronoi unavailable";
+    }
+  }
+
+  var bSq = document.getElementById("bSq"), bVo = document.getElementById("bVo");
+  function pick(which){
+    bSq.setAttribute("aria-pressed", which==="sq");
+    bVo.setAttribute("aria-pressed", which==="vo");
+    hide(); (which==="sq" ? squarified : voronoi)();
+  }
+  bSq.onclick = function(){ pick("sq"); };
+  bVo.onclick = function(){ pick("vo"); };
+  pick("sq");
+
+  // ---- the actionable list -------------------------------------------------
+  var reds = D.rows.filter(function(r){return r[2]==="r";})
+                   .sort(function(a,b){return b[1]-a[1];});
+  var box = document.getElementById("reds");
+  reds.forEach(function(r){
+    var d = document.createElement("div");
+    d.innerHTML = '<span class="p">'+r[0]+'</span><span class="l">'+
+      r[1].toLocaleString()+' lines</span>'+
+      (r[3] ? '<span class="why">'+r[3].replace(/</g,"&lt;")+'</span>' : "");
+    box.appendChild(d);
+  });
+})();
+</script>
