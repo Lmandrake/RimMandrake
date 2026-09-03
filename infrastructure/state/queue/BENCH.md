@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-03T00:52:18Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-03T00:56:15Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -61,16 +61,6 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  Layer stack: design/Jawa/researchnormalizationprinciples.md (why) →
 prose:    infrastructure/state/items/RESEARCH_TREE_NORMALIZATION_1.md
-
-## CORRECT_COLD_LOAD_1 Deploy batch in COLD_LOAD_RUN_SHEET_2 ran clean at the 2026-09-02 game-DOWN signal, still marked staged/undeployed
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  infrastructure/state/items/COLDLOADRUNSHEET2.md's "🔴 DEPLOY BATCH staged
-prose:    infrastructure/state/items/CORRECT_COLD_LOAD_1.md
 
 ## CHERRYPICKER_TWO_PROFILES_1 Two Cherry Picker profiles: ship (1509 cuts) and review (empty), swapped like modlist_swap.py
 state:    proposed

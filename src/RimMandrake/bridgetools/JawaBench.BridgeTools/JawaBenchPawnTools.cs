@@ -304,6 +304,12 @@ namespace JawaBench.BridgeTools
                 string err; var p = FindPawn(pawn, out err);
                 if (p == null) return Fail(err);
                 if (p.story == null) return Fail("Pawn has no story tracker.");
+                // Fixed 2026-09-02 (opus code review): with neither argument set,
+                // this fell all the way to success=true having written nothing -
+                // SetPawnIdentity/SetPawnAppearance in this same file already
+                // guard this shape.
+                if (string.IsNullOrEmpty(childhood) && string.IsNullOrEmpty(adulthood))
+                    return Fail("Give childhood and/or adulthood - nothing to change.");
 
                 var before = new
                 {
@@ -907,7 +913,16 @@ namespace JawaBench.BridgeTools
                     if (td == null) return Fail("No ThoughtDef '" + thought + "'.", DefSuggestions<ThoughtDef>(thought));
                     if (p.needs.mood == null) return Fail("Pawn has no mood need, so it cannot hold thoughts.");
                     Pawn other = null;
-                    if (!string.IsNullOrEmpty(otherPawn)) { string e2; other = FindPawn(otherPawn, out e2); }
+                    // Fixed 2026-09-02 (opus code review): a mistyped otherPawn's
+                    // lookup error was discarded, so it silently fell through as
+                    // "no otherPawn given" - the one message guaranteed to send
+                    // the caller looking in the wrong place. PawnRelations/
+                    // PawnRomance in this same file already Fail(e2) here.
+                    if (!string.IsNullOrEmpty(otherPawn))
+                    {
+                        string e2; other = FindPawn(otherPawn, out e2);
+                        if (other == null) return Fail(e2);
+                    }
                     if (td.IsSocial && other == null)
                         return Fail("'" + td.defName + "' is a SOCIAL thought and needs an otherPawn. Without one RimWorld drops it silently.");
                     p.needs.mood.thoughts.memories.TryGainMemory(td, other);
@@ -1434,7 +1449,19 @@ namespace JawaBench.BridgeTools
                         if (ad.IsPsycast && p.GetPsylinkLevel() <= 0)
                             notes.Add("⚠️ this pawn has NO psylink - the psycast is present but casting is gated on psyfocus band, so it may be unusable");
                     }
-                    else { p.abilities.RemoveAbility(ad); notes.Add("removed " + ad.defName); }
+                    else
+                    {
+                        // Fixed 2026-09-02 (opus code review): RemoveAbility only
+                        // touches p.abilities' own directly-granted list - it
+                        // silently no-ops on a hediff/apparel/role-granted ability
+                        // (a different collection, read via AllAbilitiesForReading)
+                        // and this reported "removed" unconditionally either way.
+                        bool hadDirect = p.abilities.GetAbility(ad, false) != null;
+                        p.abilities.RemoveAbility(ad);
+                        if (hadDirect) notes.Add("removed " + ad.defName);
+                        else notes.Add("'" + ad.defName + "' was not in this pawn's directly-granted abilities " +
+                            "(may be hediff/apparel/role-granted, which RemoveAbility cannot touch) - nothing removed.");
+                    }
                 }
                 else if (A == "psyfocus")
                 {
@@ -1632,7 +1659,14 @@ namespace JawaBench.BridgeTools
                     var sd = DefDatabase<MentalStateDef>.GetNamedSilentFail(state.Trim());
                     if (sd == null) return Fail("No MentalStateDef '" + state + "'.", DefSuggestions<MentalStateDef>(state));
                     Pawn other = null;
-                    if (!string.IsNullOrEmpty(otherPawn)) { string e2; other = FindPawn(otherPawn, out e2); }
+                    // Fixed 2026-09-02 (opus code review): a mistyped otherPawn's
+                    // lookup error was discarded, so TryStartMentalState ran with
+                    // other=null as though no target was ever requested.
+                    if (!string.IsNullOrEmpty(otherPawn))
+                    {
+                        string e2; other = FindPawn(otherPawn, out e2);
+                        if (other == null) return Fail(e2);
+                    }
                     try
                     {
                         started = p.mindState.mentalStateHandler.TryStartMentalState(sd, "forced via bridge", forced, forceWake, false, other);

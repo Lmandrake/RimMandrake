@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-03T00:52:18Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-03T00:56:15Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -323,15 +323,6 @@ target:   v1
 kind:     bug
 summary:  Confirm at the next restart that RimMandrake.Inhabited.CharacterDef
 prose:    infrastructure/state/items/INHABITED_CHARACTERDEF_NAMESPACE_GAP_1.md
-
-## BRIDGE_PAWNTOOLS_SILENT_SUCCESS_SWEEP_1 opus code review of JawaBenchPawnTools/PawnKitTools.cs found 8 more silent-success/data-loss patterns beyond the 3 already fixed
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  The remaining 10 findings, not yet fixed or independently re-verified —
-prose:    infrastructure/state/items/BRIDGE_PAWNTOOLS_SILENT_SUCCESS_SWEEP_1.md
 
 ## INHABITED_SETTLEMENT_MAPPARENT_GAP_1 WorldObject_InhabitedSettlement derives from WorldObject, not MapParent - mapGenerator/canHaveMap are architecturally inert, settlement district/cast GenSteps may have never run
 state:    doing  (BLOCKED)

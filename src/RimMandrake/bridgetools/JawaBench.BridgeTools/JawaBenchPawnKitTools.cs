@@ -105,6 +105,13 @@ namespace JawaBench.BridgeTools
                 var p = FindPawn(pawn, out perr);
                 if (p == null) return Fail(perr ?? "No pawn.");
                 if (p.skills == null) return Fail(p.LabelShortCap + " has no Pawn_SkillTracker (not a skill-bearing pawn kind).");
+                // Fixed 2026-09-02 (opus code review): GetNamedSilentFail has no
+                // null guard of its own - Dictionary.TryGetValue(null) throws
+                // ArgumentNullException, so an omitted skill crashed inside the
+                // main-thread hop instead of returning a clean Fail. Every lookup
+                // in the sibling file already guards this; this file was the
+                // only offender, at 4 sites.
+                if (string.IsNullOrEmpty(skill)) return Fail("Give a SkillDef.");
 
                 var sDef = DefDatabase<SkillDef>.GetNamedSilentFail(skill);
                 if (sDef == null) return Fail("No SkillDef named '" + skill + "'.", new { suggestions = DefSuggestions<SkillDef>(skill) });
@@ -232,6 +239,7 @@ namespace JawaBench.BridgeTools
                 var p = FindPawn(pawn, out perr);
                 if (p == null) return Fail(perr ?? "No pawn.");
                 if (p.abilities == null) return Fail(p.LabelShortCap + " has no Pawn_AbilityTracker.");
+                if (string.IsNullOrEmpty(ability)) return Fail("Give an AbilityDef.");
 
                 var def = DefDatabase<AbilityDef>.GetNamedSilentFail(ability);
                 if (def == null) return Fail("No AbilityDef named '" + ability + "'.", new { suggestions = DefSuggestions<AbilityDef>(ability) });
@@ -287,6 +295,7 @@ namespace JawaBench.BridgeTools
                 if (p == null) return Fail(perr ?? "No pawn.");
                 if (p.mindState == null || p.mindState.inspirationHandler == null)
                     return Fail(p.LabelShortCap + " has no InspirationHandler.");
+                if (string.IsNullOrEmpty(inspiration)) return Fail("Give an InspirationDef.");
 
                 var def = DefDatabase<InspirationDef>.GetNamedSilentFail(inspiration);
                 if (def == null) return Fail("No InspirationDef named '" + inspiration + "'.", new { suggestions = DefSuggestions<InspirationDef>(inspiration) });
@@ -548,6 +557,14 @@ namespace JawaBench.BridgeTools
 
                 if (all)
                 {
+                    // Fixed 2026-09-02 (opus code review): LockAll/UnlockAll on an
+                    // empty WornApparel is a harmless no-op, and this returned
+                    // success=true with items=[] regardless - indistinguishable
+                    // from "locked everything". The single-item path 30 lines
+                    // below already Fail()s the equivalent "nothing matching"
+                    // case.
+                    if (p.apparel.WornApparel.Count == 0)
+                        return Fail(p.LabelShortCap + " wears nothing to " + (locked ? "lock" : "unlock") + ".");
                     if (locked) p.apparel.LockAll(); else p.apparel.UnlockAll();
                     var items = p.apparel.WornApparel.Select(a => (object)new
                     {
@@ -660,6 +677,12 @@ namespace JawaBench.BridgeTools
                     string terr;
                     var found = FindLiveThingById(thing, out terr);
                     if (found == null) return Fail(terr);
+                    // Fixed 2026-09-02 (opus code review): FindLiveThingById scans
+                    // map.listerThings.AllThings, which includes Pawns. Confusing
+                    // the `thing` and `pawn` id parameters (same string shape) with
+                    // no guard here would SplitOff(1) a PAWN and add it to another
+                    // pawn's inventory - reported as a normal successful transfer.
+                    if (found is Pawn) return Fail("'" + thing + "' resolved to a PAWN, not an item - use jawa/pawn_* tools for pawns.");
                     if (found.stackCount <= 0) return Fail("'" + thing + "' resolved to a thing with stackCount <= 0.");
 
                     int requested = count > 0 ? Math.Min(count, found.stackCount) : found.stackCount;
@@ -678,13 +701,31 @@ namespace JawaBench.BridgeTools
                     // "Can't transfer items to or from Maps directly." Despawn the portion first
                     // and TryAdd it, which is exactly what that warning tells you to do.
                     int moved;
+                    bool partDestroyed = false;
                     if (found.Spawned)
                     {
                         var part = found.SplitOff(requested);
                         if (part.Spawned) part.DeSpawn(DestroyMode.Vanish);
                         moved = p.inventory.innerContainer.TryAdd(part, part.stackCount, true);
-                        if (moved <= 0 && !part.Destroyed && part.holdingOwner == null && p.Map != null)
-                            GenPlace.TryPlaceThing(part, p.Position, p.Map, ThingPlaceMode.Near);
+                        // Fixed 2026-09-02 (opus code review): p.Map is null for any
+                        // off-map pawn (a caravan member, a world pawn - reachable
+                        // since jawa/pawn_* tools' FindPawn fallback added today),
+                        // so the rescue never fired for one and `part` - already
+                        // split off a map stack and despawned - was orphaned with
+                        // no holder. p.MapHeld/p.PositionHeld cover the off-map
+                        // case too; if there's genuinely no map at all, destroy the
+                        // orphan and say so rather than silently losing it.
+                        if (moved <= 0 && !part.Destroyed && part.holdingOwner == null)
+                        {
+                            var rescueMap = p.MapHeld;
+                            if (rescueMap != null)
+                                GenPlace.TryPlaceThing(part, p.PositionHeld, rescueMap, ThingPlaceMode.Near);
+                            else
+                            {
+                                part.Destroy(DestroyMode.Vanish);
+                                partDestroyed = true;
+                            }
+                        }
                     }
                     else
                     {
@@ -692,9 +733,14 @@ namespace JawaBench.BridgeTools
                     }
 
                     if (moved <= 0)
-                        return Fail(string.Format(
-                            "Moved 0 of {0} {1} into {2}'s inventory - the container refused it " +
-                            "(not acceptable, over capacity, or already there).", requested, found.def.defName, p.LabelShortCap));
+                        return Fail(partDestroyed
+                            ? string.Format(
+                                "Moved 0 of {0} {1} into {2}'s inventory, AND the split-off portion was " +
+                                "DESTROYED - {2} has no map (fully off-map, no MapHeld) so there was nowhere " +
+                                "to put it back.", requested, found.def.defName, p.LabelShortCap)
+                            : string.Format(
+                                "Moved 0 of {0} {1} into {2}'s inventory - the container refused it " +
+                                "(not acceptable, over capacity, or already there).", requested, found.def.defName, p.LabelShortCap));
 
                     return new
                     {
@@ -713,6 +759,7 @@ namespace JawaBench.BridgeTools
                 if (m == "remove")
                 {
                     if (count <= 0) return Fail("remove mode needs a positive 'count'.");
+                    if (string.IsNullOrEmpty(thingDef)) return Fail("Give a ThingDef.");
                     var def = DefDatabase<ThingDef>.GetNamedSilentFail(thingDef);
                     if (def == null) return Fail("No ThingDef named '" + thingDef + "'.", new { suggestions = DefSuggestions<ThingDef>(thingDef) });
 
