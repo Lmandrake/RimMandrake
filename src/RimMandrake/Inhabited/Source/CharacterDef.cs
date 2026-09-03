@@ -165,7 +165,11 @@ namespace RimMandrake.Inhabited
             {
                 yield return "neither age, serviceYears nor ageText";
             }
-            for (int i = 0; i < traits.Count; i++)
+            // Fixed 2026-09-02 (opus code review, re-review pass): traits defaults
+            // to an empty list, but an explicit `<traits IsNull="True" />` in a
+            // def would still null it out and NRE here, same shape as the two
+            // sibling ConfigErrors() methods in this mod.
+            for (int i = 0; traits != null && i < traits.Count; i++)
             {
                 CharacterTrait t = traits[i];
                 if (t?.def == null)

@@ -113,7 +113,12 @@ namespace RimMandrake.Inhabited
             }
             if (districts.NullOrEmpty())
             {
+                // Fixed 2026-09-02 (opus code review, re-review pass): the loop
+                // below dereferenced districts.Count unconditionally - a NullRef
+                // inside def validation itself if districts is genuinely null
+                // (IsNull="True" in XML), not just empty.
                 yield return "no districts: a settlement manifest with no districts describes nothing";
+                yield break;
             }
             for (int i = 0; i < districts.Count; i++)
             {

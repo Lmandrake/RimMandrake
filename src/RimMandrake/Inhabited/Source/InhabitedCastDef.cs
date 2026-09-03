@@ -83,15 +83,24 @@ namespace RimMandrake.Inhabited
             {
                 yield return "no roles: a cast with nobody in it is not a cast";
             }
-            for (int i = 0; i < roles.Count; i++)
+            else
             {
-                if (roles[i].kind == null)
+                // Fixed 2026-09-02 (opus code review, re-review pass): this loop
+                // used to run unconditionally and dereference roles.Count even
+                // when roles is genuinely null (IsNull="True" in XML) - a NullRef
+                // inside def validation itself. Gated on the same NullOrEmpty
+                // check above instead of an early yield break, since the
+                // castSize check below must still run either way.
+                for (int i = 0; i < roles.Count; i++)
                 {
-                    yield return "role " + i + " has no kind";
-                }
-                else if (roles[i].count.min < 0)
-                {
-                    yield return "role " + i + " (" + roles[i].kind.defName + ") has a negative count";
+                    if (roles[i].kind == null)
+                    {
+                        yield return "role " + i + " has no kind";
+                    }
+                    else if (roles[i].count.min < 0)
+                    {
+                        yield return "role " + i + " (" + roles[i].kind.defName + ") has a negative count";
+                    }
                 }
             }
             if (castSize.min < 1)
