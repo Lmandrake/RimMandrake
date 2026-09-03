@@ -51,7 +51,7 @@ import jawaese
 _HERE = os.path.dirname(os.path.abspath(__file__))
 _REPO = os.path.abspath(os.path.join(_HERE, "..", "..", ".."))
 SRC = os.path.join(_REPO, "vendor", "mod_sources", "_speakup_src_1p6")
-OUT = os.path.join(_REPO, "src", "Jawa", "JawaVoice")
+OUT = os.path.join(_REPO, "src", "RimStarWars", "JawaVoice")
 if not os.path.isdir(os.path.join(SRC, "Defs")):
     raise SystemExit(
         "build_jawavoice: no SpeakUp snapshot at %s\n"
