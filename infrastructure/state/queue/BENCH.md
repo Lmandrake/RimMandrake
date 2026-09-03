@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-03T03:18:02Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: free
+as-of: 2026-09-03T04:00:59Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -35,6 +35,15 @@ target:   v1
 kind:     task
 summary:  Owner ruled 2026-08-31: all six §5 roles, and the three predator roles are the
 prose:    infrastructure/state/items/SW_SEA_MONSTERS_ART_1.md
+
+## FLUID_CANAL_FLOOD_LIVE_CHECK_1 Watch a fluid-canal flood recede and give the floor back
+state:    doing
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+summary:  FLUIDCANALFLOODTUNINGGAPS1 findings 1/2/3 were fixed in code and
+prose:    infrastructure/state/items/FLUID_CANAL_FLOOD_LIVE_CHECK_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -71,3 +80,13 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  The find this exists to act on: CAI is not the fog. He proposed dropping CAI 5000
 prose:    infrastructure/state/items/FOG_REVIEW_SITTING_WITH_OWNER_1.md
+
+## GAME_STATE_BROADCAST_NARROWING_1 Narrow the game-state broadcast to windows that are actually blocked on the game
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     decision
+thin:     spec, verify and criteria all present
+summary:  He is right about the half he named, and the reason is measurable. rimflow next
+prose:    infrastructure/state/items/GAME_STATE_BROADCAST_NARROWING_1.md
