@@ -724,6 +724,235 @@ def t_the_bench_scan_is_refused_to_a_seat_that_could_game_it():
     ok("next", "--bench", seat="OWNER")
 
 
+def _cli():
+    """The cli module itself, for the handful of units that are worth calling directly.
+
+    ⚠️ Everything that can be driven as a COMMAND is driven as a command — see this
+    file's own opening note on why. These in-process cases are for pure functions whose
+    inputs a subprocess cannot reach: a path shape that only occurs on another machine's
+    layout, a staleness decision that would otherwise need two racing windows and a
+    45-minute clock, a counting rule buried three sections deep in a printed report.
+    """
+    import importlib
+    sys.path.insert(0, os.path.dirname(HERE))
+    return importlib.import_module("rimflow.cli")
+
+
+def t_the_queue_views_are_rendered_beside_the_ledger_in_use():
+    """🔴 EVERY WRITE RENDERED THE SYNTHETIC QUEUES INTO THE REPO ROOT.
+
+    `_emit` derived its output root as `dirname(dirname(EVENTS))`, which is right for
+    `infrastructure/state/ledger/events.jsonl` and one level too high for the throwaway
+    ledger THIS FILE builds — so `<repo>/queue/BENCH.md` and
+    `<repo>/derived/queue_preview/` were created and rewritten on every selftest run:
+    untracked, not gitignored, sitting at the top of the tree where a careless
+    `git add` would sweep test fixtures into the repo. Measured 2026-09-03, four files.
+
+    ⭐ Asserts BOTH halves. That the real repo is untouched is the safety property; that
+    the throwaway root DID get its views is what proves the render still happens at all
+    — a fix that simply stopped rendering would pass the first assertion alone.
+    """
+    fresh()
+    repo_queue = os.path.join(REPO, "queue")
+    repo_derived = os.path.join(REPO, "derived")
+    before = (os.path.exists(repo_queue), os.path.exists(repo_derived))
+    ok("file", "RENDER_ROOT_PROBE_1", "--for", "BENCH", "--title", "t")
+    assert (os.path.exists(repo_queue), os.path.exists(repo_derived)) == before, (
+        "a write rendered the throwaway ledger's queue views into the REPO ROOT "
+        "(%s / %s). The whole point of RIMFLOW_LEDGER is that a test touches nothing "
+        "real." % (repo_queue, repo_derived))
+    assert os.path.isdir(os.path.join(TMP, "queue")), (
+        "nothing was rendered beside the ledger in use — the views are now silently "
+        "not published at all, which is the other half of the same defect: %s"
+        % sorted(os.listdir(TMP)))
+
+
+def t_state_root_is_derived_by_shape_not_by_counting_dirnames():
+    """The unit under the case above. Two layouts, one rule, no repo involved."""
+    cli = _cli()
+    assert cli._state_root("/x/infrastructure/state/ledger/events.jsonl") == \
+        "/x/infrastructure/state", "the real layout must still resolve to STATE"
+    assert cli._state_root("/x/.rimflow_selftest_cli/events.jsonl") == \
+        "/x/.rimflow_selftest_cli", (
+            "a ledger that is NOT inside a `ledger/` directory publishes beside itself, "
+            "never one level up into whatever happens to contain it")
+
+
+def t_going_down_does_not_claim_to_clear_this_deployment():
+    """🔴 THE CLI ANNOUNCED A CLEARING THE MODEL DOES NOT PERFORM.
+
+    `model._apply` clears `--this-deployment` on entering DOWN and ONLY on DOWN — the
+    narrowing is deliberate, because GOING_DOWN is exactly when the flag is most
+    load-bearing: the window is closing and the this-deployment list is what a seat
+    works first. `cmd_game` still said "every --this-deployment flag is now cleared" for
+    every state that was not UP, so at GOING_DOWN a seat was told its urgent list had
+    just been emptied while every flag was still set.
+
+    ⭐ Read through `show`, not `next`: `show` is READ_ONLY and never measures the live
+    machine, so this case cannot be moved by whether RimWorld happens to be running.
+    """
+    fresh()
+    ok("file", "DEPLOYMENT_FLAG_HOST_1", "--for", "CHECK", "--title", "t")
+    ok("game", "UP", seat="OWNER")
+    ok("spawn", "--from", "DEPLOYMENT_FLAG_HOST_1", "--for", "CHECK",
+       "--name", "DEPLOYMENT_FLAG_PROBE_1", "--this-deployment", seat="CHECK")
+    out = ok("game", "GOING_DOWN", seat="OWNER")
+    assert "cleared" not in out, (
+        "GOING_DOWN announced a clearing that did not happen — the flag is still set "
+        "and the seat was told otherwise: %s" % out)
+    assert "THIS DEPLOYMENT" in ok("show", "DEPLOYMENT_FLAG_PROBE_1"), (
+        "the premise moved: GOING_DOWN now really does clear the flag, and the "
+        "message this case guards would have been right all along")
+    out = ok("game", "DOWN", seat="OWNER")
+    assert "cleared" in out, (
+        "DOWN stopped saying it clears the flags, and DOWN is the state that does: %s"
+        % out)
+    assert "THIS DEPLOYMENT" not in ok("show", "DEPLOYMENT_FLAG_PROBE_1")
+
+
+def t_the_bench_scan_sees_a_spawned_item():
+    """🔴 EVERY ITEM BORN OF A FINDING WAS INVISIBLE TO THE OWNER'S OWN BOARD.
+
+    `_apply`'s spawn branch never sets `target`, so a spawned item carries `None` —
+    which `priority.rank()` explicitly admits (`it.target not in (None, target)`) and
+    `cmd_bench` did not (`i.target == args.target`). So `next` would offer an item that
+    the triage the owner reads insisted did not exist, in all four of its sections, and
+    neither screen said anything.
+    """
+    fresh()
+    ok("file", "SPAWN_VISIBILITY_HOST_1", "--for", "BENCH", "--title", "host")
+    ok("spawn", "--from", "SPAWN_VISIBILITY_HOST_1", "--for", "BENCH",
+       "--name", "SPAWNED_UNBLOCKED_ITEM_1", seat="BENCH")
+    out = ok("next", "--bench", seat="BENCH")
+    assert "SPAWNED_UNBLOCKED_ITEM_1" in out, (
+        "a spawned item is missing from the BENCH scan entirely — it has no `target`, "
+        "and the scan filtered on equality where the priority engine admits None:\n%s"
+        % out)
+    ripe = out.split("\nRIPE")[1].split("IN TROUBLE")[0]
+    assert "SPAWNED_UNBLOCKED_ITEM_1" in ripe, (
+        "counted but not RIPE — unblocked offline proposed work is the definition:\n%s"
+        % ripe)
+
+
+def t_owner_said_authorizes_where_no_seat_is_configured():
+    """🔴 THE ROUTE THROUGH EVERY REFUSAL WAS ITSELF REFUSED.
+
+    CHARTER.md and the global rules both send an agent to `--owner-said "<his verbatim
+    words>"` when a guard refuses it. `main` resolved the seat FIRST, so a window with
+    no `RIMFLOW_SEAT`, no `AGENT_SEAT` and no session role file was told *"I cannot tell
+    which seat I am, and I will not guess"* on a command the owner had just told it to
+    run — with the words that settle the question sitting unread on the same line.
+
+    ⚠️ This grants nothing new: `--seat OWNER --owner-said "…"` was always accepted. And
+    a seat that IS named is still validated, because a typo silently discarded is the
+    same defect `bridge take BOGUS` was fixed for.
+    """
+    fresh()
+    out = ok("game", "UP", "--owner-said", "game up", env=env(seat=None))
+    assert "game is UP" in out, out
+    led = open(os.path.join(TMP, "events.jsonl"), encoding="utf-8").read()
+    assert '"ownerSaid":"game up"' in led.replace(", ", ",").replace('" : "', '":"'), (
+        "his words are the authorization and must be ON the event: %s" % led)
+    refused(("game", "UP", "--seat", "NOTASEAT", "--owner-said", "game up"),
+            "not one of", "a typo'd --seat was silently discarded because a quote "
+            "was also present", env_=env(seat=None))
+    refused(("game", "UP", "--owner-said", "yes"), "not the agreement",
+            "bare assent stood in for an instruction", env_=env(seat=None))
+    refused(("game", "UP", "--owner-said", "should the game be up?"), "is a question",
+            "a question stood in for an instruction", env_=env(seat=None))
+
+
+def t_bridge_give_refuses_a_target_that_is_not_a_window():
+    """`give` writes the OWNER's name onto a permanent event; the target must be real.
+
+    ⭐ And `give free` must work when the bridge is ALREADY free — it is the one
+    command he reaches for when he does not know who holds it, so it may not depend on
+    someone holding it. That path emits under OWNER rather than under a window, which
+    is the branch `model._may` refuses and the owner override then admits.
+    """
+    fresh()
+    refused(("bridge", "give", "SOMEWHERE"), "give it to BENCH", "the owner's switch "
+            "accepted a target that is not a window", seat="OWNER")
+    assert not _bridge_events(), "a refused give still wrote to the ledger"
+    out = ok("bridge", "give", "free", seat="OWNER")
+    assert "FREE" in out, out
+    assert _ledger_holder() is None and _mirror_holder() is None, (
+        "clearing an already-free bridge left a holder behind: ledger=%r mirror=%r"
+        % (_ledger_holder(), _mirror_holder()))
+
+
+def t_the_take_rule_frees_a_silent_holder_and_protects_a_working_one():
+    """The staleness rule, as a unit — the one decision that decides mutual lockout.
+
+    🔑 Driving this as commands would need two windows and a 45-minute clock, so the
+    rule was only ever exercised through its uncontested branch. `_take_decision` is
+    pure, so every branch is one line here, including the one that matters most:
+    `idle is None` means NO EVIDENCE THE HOLDER IS ALIVE and must read as STALE. Read
+    the other way round, an unreadable timestamp wedges the bridge forever — which is
+    exactly the failure the owner named on 2026-09-02.
+    """
+    cli = _cli()
+    import importlib
+    m = importlib.import_module("rimflow.model")
+    stale = m.BRIDGE_STALE_SECONDS
+    assert cli._take_decision(None, "BENCH", None, False, None) == (None, None), (
+        "an uncontested take must be granted and left UNMARKED, or the marking on a "
+        "contested one means nothing")
+    assert cli._take_decision("BENCH", "BENCH", 5, False, None) == (None, None), (
+        "re-taking your own lock is not a crossing")
+    why, refusal = cli._take_decision("FOUNDRY", "BENCH", 60, False, None)
+    assert refusal and "--force" in refusal, (
+        "a live holder refused with no way through — mutual lockout is the expensive "
+        "failure here, not two drivers: %r" % refusal)
+    why, refusal = cli._take_decision("FOUNDRY", "BENCH", stale, False, None)
+    assert refusal is None and why and "quiet" in why, (
+        "a holder silent for the whole staleness window still held the lock: %r" % why)
+    why, refusal = cli._take_decision("FOUNDRY", "BENCH", None, False, None)
+    assert refusal is None and why, (
+        "an unreadable last-seen stamp read as a LIVE holder. No evidence that a "
+        "window is alive is not evidence that it is: %r / %r" % (why, refusal))
+    why, refusal = cli._take_decision("FOUNDRY", "BENCH", 1, True, None)
+    assert refusal is None and why == "forced", (
+        "--force must always land, and must always be marked: %r" % why)
+
+
+def t_the_distress_counters_measure_direction_and_recency():
+    """The two loops inside `next --bench`'s score, which nothing could reach before.
+
+    🔑 `_upstream_reassigns` counts DIRECTION, not reassignments: the fact file's top
+    thrashing item had 11 reassignments and closed in 1.0 h, while upstream-reassigned
+    items live 10.5 h against 1.5 h. `_notes_since_last_commit` resets on every event
+    carrying a sha, which is what makes "2 notes and no commit since" mean something
+    and "2 notes across a month of commits" mean nothing.
+    """
+    cli = _cli()
+    import types
+
+    def score(evs):
+        return cli._upstream_reassigns(
+            types.SimpleNamespace(history=list(range(len(evs)))), evs)
+
+    assert score([{"event": "file", "for": "CHECK", "seat": "BENCH"},
+                  {"event": "reassign", "to": "BUILD", "seat": "BENCH"}]) == 1, (
+        "CHECK -> BUILD is a seat handing work back up the conveyor and must count")
+    assert score([{"event": "file", "for": "BUILD", "seat": "BENCH"},
+                  {"event": "reassign", "to": "CHECK", "seat": "BENCH"}]) == 0, (
+        "downstream is the conveyor WORKING (0.55x, protective) and must not score")
+    assert score([{"event": "reassign", "to": "BUILD", "seat": "BENCH"}]) == 0, (
+        "`reassign` carries no `from`, so an item whose FIRST event is one has no "
+        "previous owner to infer direction from — it must score 0, never guess")
+
+    def notes(evs):
+        return cli._notes_since_last_commit(
+            types.SimpleNamespace(history=list(range(len(evs)))), evs)
+
+    assert notes([{"event": "note"}, {"event": "note"}]) == (2, 0)
+    assert notes([{"event": "note"}, {"event": "note"},
+                  {"event": "close", "sha": "abc1234"}, {"event": "note"}]) == (1, 1), (
+        "the note counter must RESET on a commit, or talk-without-work fires on any "
+        "item that has ever been chatty")
+
+
 def t_the_real_ledger_was_never_touched():
     """🔴 The whole point of RIMFLOW_LEDGER. If this fails, everything above lied."""
     import importlib

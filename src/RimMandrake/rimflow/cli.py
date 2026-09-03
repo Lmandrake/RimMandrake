@@ -117,7 +117,15 @@ def _role_file_seat():
     return None
 
 
-def resolve_seat(explicit):
+def resolve_seat(explicit, required=True):
+    """-> the ambient seat, in the documented order.
+
+    ⚠️ `required=False` answers None instead of refusing when NOTHING names a seat, and
+    exists for exactly one caller: `--owner-said`, where his verbatim words are the
+    authorization and the seat is therefore already decided. A seat that IS named is
+    still validated on that path — a typo silently discarded is its own defect — which
+    is why this is a flag on the one resolver rather than a second copy of the order.
+    """
     for src, val in (("RIMFLOW_SEAT", os.environ.get("RIMFLOW_SEAT")),
                      ("--seat", explicit),
                      ("AGENT_SEAT", os.environ.get("AGENT_SEAT")),
@@ -129,6 +137,8 @@ def resolve_seat(explicit):
             die("%s says the seat is %r, which is not one of %s."
                 % (src, val, ", ".join(model.SEATS)))
         return val
+    if not required:
+        return None
     die("REFUSED: I cannot tell which seat I am, and I will not guess.\n"
         "  `seat` is on every event, every permission check reads it, and the ledger "
         "is append-only —\n"
@@ -152,46 +162,89 @@ def load():
     return evs, w
 
 
+def _state_root(events_path):
+    """-> the `infrastructure/state`-equivalent root for the ledger IN USE.
+
+    🔴 DERIVED BY SHAPE, NOT BY COUNTING TWO DIRNAMES. This used to be a flat
+    `dirname(dirname(EVENTS))`, which is right for the real layout
+    (`…/infrastructure/state/ledger/events.jsonl`) and WRONG for the throwaway one
+    `selftest_cli.py` builds (`<repo>/.rimflow_selftest_cli/events.jsonl`, one level
+    shallower). So every write the CLI selftest performed rendered its SYNTHETIC queue
+    views into `<repo>/queue/` and `<repo>/derived/queue_preview/` — untracked, not
+    gitignored, sitting at the top of the repo where a careless `git add` would sweep
+    them in. Measured 2026-09-03: four such files, rewritten on every run.
+
+    🔑 `model.write_bridge_file` derives its own mirror target as `dirname(led)` when
+    the ledger is redirected, so testing the SHAPE is also what keeps the BRIDGE mirror
+    and the queue views in the same root instead of two different ones.
+    """
+    d = os.path.dirname(os.path.abspath(events_path))
+    return os.path.dirname(d) if os.path.basename(d) == "ledger" else d
+
+
+def _stamp_owner_and_override(ev):
+    """Stamp `ownerSaid` / `override` onto an event that has just passed `check()`.
+
+    Split out of `_emit` (2026-09-03) because it is the one part of the writer that
+    touches no disk: given a model state it is a pure transform of the event dict, so
+    it can be exercised without a ledger. Mutates and returns `ev`.
+    """
+    # 🔴 The OWNER overrode a seat rule (2026-08-22 ruling — see `model._may`).
+    # STAMP it before appending and WARN on stderr: he asked to be able to
+    # override, and to be told when he did. Silent power is the failure mode here,
+    # not the override itself. `check()` deep-copies the event, so the notice comes
+    # back on the module, not on `ev`.
+    said = getattr(model, "OWNER_SAID", "")
+    if said:
+        ev["ownerSaid"] = said
+        sys.stderr.write(
+            "✅ Acting as OWNER on his instruction, recorded on the event:\n"
+            "     “%s”\n" % said)
+    if model.OVERRIDE_NOTICES:
+        # ⚠️ NEVER CLOBBER an override the caller already stamped. `cmd_bridge`
+        # sets one for an owner handover or a forced take; a permission bypass
+        # found here is a SECOND fact about the same event, and dropping either
+        # is exactly the silent-loss this field exists to prevent.
+        prior = ev.get("override")
+        ev["override"] = ("%s; %s" % (prior, model.OVERRIDE_NOTICES[0])
+                          if prior else model.OVERRIDE_NOTICES[0])
+        sys.stderr.write(
+            "⚠️  OWNER OVERRIDE — the rule bypassed was: %s\n"
+            "    Allowed because you are the OWNER, and recorded on the event as "
+            "`override` so the ledger shows you crossed a seat boundary on purpose.\n"
+            % model.OVERRIDE_NOTICES[0])
+    return ev
+
+
 def _emit(ev, world=None, quiet=False):
     """check() then append(). The ONLY writer in this file."""
     ev = {k: v for k, v in ev.items() if v not in (None, "", False)}
     try:
         model.check(ev, world)
-        # 🔴 The OWNER overrode a seat rule (2026-08-22 ruling — see `model._may`).
-        # STAMP it before appending and WARN on stderr: he asked to be able to
-        # override, and to be told when he did. Silent power is the failure mode here,
-        # not the override itself. `check()` deep-copies the event, so the notice comes
-        # back on the module, not on `ev`.
-        said = getattr(model, "OWNER_SAID", "")
-        if said:
-            ev["ownerSaid"] = said
-            sys.stderr.write(
-                "\u2705 Acting as OWNER on his instruction, recorded on the event:\n"
-                "     \u201c%s\u201d\n" % said)
-        if model.OVERRIDE_NOTICES:
-            # ⚠️ NEVER CLOBBER an override the caller already stamped. `cmd_bridge`
-            # sets one for an owner handover or a forced take; a permission bypass
-            # found here is a SECOND fact about the same event, and dropping either
-            # is exactly the silent-loss this field exists to prevent.
-            prior = ev.get("override")
-            ev["override"] = ("%s; %s" % (prior, model.OVERRIDE_NOTICES[0])
-                              if prior else model.OVERRIDE_NOTICES[0])
-            sys.stderr.write(
-                "⚠️  OWNER OVERRIDE — the rule bypassed was: %s\n"
-                "    Allowed because you are the OWNER, and recorded on the event as "
-                "`override` so the ledger shows you crossed a seat boundary on purpose.\n"
-                % model.OVERRIDE_NOTICES[0])
+        _stamp_owner_and_override(ev)
         model.append(ev, model.EVENTS)
     except model.LedgerError as e:
         die(str(e))                     # verbatim, non-zero — see the module docstring
     if not quiet:
         print("%s %s%s" % (ev["event"], ev.get("id", ""),
                            "" if ev.get("id") else "(" + str(ev.get("state", "")) + ")"))
-    # Render-on-write (owner, 2026-08-27): every mutation rewrites the queue views in
-    # the same command, so a view can never be staler than the ledger. This replaced
-    # the 60 s queue_publisher.sh loop and everything that existed to detect its
-    # death. ~160 ms per event; best-effort — a render failure must never eat the
-    # append that already happened, so it warns and moves on.
+    _rerender_queue_views()
+    return ev
+
+
+def _rerender_queue_views():
+    """Rebuild the queue views beside the ledger IN USE. Best-effort; never raises.
+
+    Render-on-write (owner, 2026-08-27): every mutation rewrites the queue views in
+    the same command, so a view can never be staler than the ledger. This replaced
+    the 60 s queue_publisher.sh loop and everything that existed to detect its death.
+    ~160 ms per event — a render failure must never eat the append that already
+    happened, so it warns and moves on.
+
+    Split out of `_emit` (2026-09-03) so the root it publishes into is decided by one
+    named function with one test on it, rather than by an expression buried inside the
+    only writer in the file.
+    """
     try:
         try:
             from . import render as _render
@@ -202,11 +255,9 @@ def _emit(ev, world=None, quiet=False):
         # Without passing events_path/queue_root explicitly, a redirected
         # RIMFLOW_LEDGER (selftest_cli.py's whole point: "runs end-to-end
         # with no risk to the real one") still renders the REAL queue/*.md
-        # from the synthetic test ledger. STATE root is derived the same way
-        # model.write_bridge_file derives its own mirror target, and it
-        # matches both the real layout (STATE/ledger/events.jsonl) and the
-        # throwaway layout selftest_render.py builds by hand.
-        state_root = os.path.dirname(os.path.dirname(model.EVENTS))
+        # from the synthetic test ledger. ⚠️ And getting the ROOT wrong is the
+        # same defect wearing a different hat — see `_state_root`.
+        state_root = _state_root(model.EVENTS)
         s = _render.render(events_path=model.EVENTS, overwrite_queues=True,
                            queue_root=os.path.join(state_root, "queue"),
                            out_dir=os.path.join(state_root, "derived", "queue_preview"),
@@ -223,7 +274,6 @@ def _emit(ev, world=None, quiet=False):
     except Exception as e:                                    # noqa: BLE001
         sys.stderr.write("⚠️  queue views not re-rendered (%s) — run "
                          "render.py --overwrite-queues by hand\n" % e)
-    return ev
 
 
 def git(*args):
@@ -461,6 +511,50 @@ def _age_hours(ts, now):
     return (now - e) / 3600.0
 
 
+def _upstream_reassigns(it, evs):
+    """-> how many times this item was handed BACK up the conveyor.
+
+    ⚠️ `reassign` records no `from` — 0 of 73 events carry one, and
+    `facts/distress_signals.md` names that as the one line that would sharpen the whole
+    index. Until it does, DIRECTION is INFERRED from the previous owner, and an item
+    whose first event is a reassign has no previous owner to infer from and scores zero.
+
+    🔑 Direction is the whole signal, not the COUNT of reassignments: the fact file's
+    top thrashing item had 11 reassignments and closed in 1.0 h, while upstream-
+    reassigned items live 10.5 h against 1.5 h. Split out of `_distress` (2026-09-03)
+    because it is the one part of the score with a real inference in it.
+    """
+    up, prev = 0, None
+    for i in it.history:
+        ev = evs[i]
+        if ev.get("verb") == "reassign" or ev.get("event") == "reassign":
+            to_ = ev.get("to") or ev.get("for")
+            if prev and (prev, to_) in _UPSTREAM:
+                up += 1
+            prev = to_ or prev
+        elif ev.get("for") or ev.get("seat"):
+            prev = ev.get("for") or prev
+    return up
+
+
+def _notes_since_last_commit(it, evs):
+    """-> (notes written since the last commit, commits ever). Talk without work.
+
+    🔑 The note counter RESETS on every event carrying a `sha`, which is what makes
+    "2 notes and no commit since" mean something and "2 notes over a month of commits"
+    mean nothing. Both numbers are returned because `_distress` reads the second one
+    too — a `doing` item with no commit at all is a separate signal.
+    """
+    notes = commits = 0
+    for i in it.history:
+        ev = evs[i]
+        if ev.get("event") == "note" or ev.get("verb") == "note":
+            notes += 1
+        if ev.get("sha"):
+            notes, commits = 0, commits + 1
+    return notes, commits
+
+
 def _distress(it, evs, p90, now):
     """-> (score, [reasons]) on the measured coarse index. ≥3 is the believe-it line."""
     score, why = 0, []
@@ -481,21 +575,7 @@ def _distress(it, evs, p90, now):
         score += 1
         why.append("needs %s" % it.needs)
 
-    up = 0
-    prev = None
-    for i in it.history:
-        ev = evs[i]
-        if ev.get("verb") == "reassign" or ev.get("event") == "reassign":
-            to_ = ev.get("to") or ev.get("for")
-            # ⚠️ `reassign` records no `from` — 0 of 73, and the fact file names this as
-            # the one line that would sharpen the whole index. Until it does, direction
-            # is INFERRED from the previous owner, and an item whose first event is a
-            # reassign has no previous owner to infer from.
-            if prev and (prev, to_) in _UPSTREAM:
-                up += 1
-            prev = to_ or prev
-        elif ev.get("for") or ev.get("seat"):
-            prev = ev.get("for") or prev
+    up = _upstream_reassigns(it, evs)
     if up:
         score += 2 * up
         why.append("%d upstream reassign%s (2.28×)" % (up, "" if up == 1 else "es"))
@@ -507,13 +587,7 @@ def _distress(it, evs, p90, now):
             score += 2
             why.append("%.0f h old, p90 for a %s is %.0f h" % (age, it.kind or "task", line))
 
-    notes = commits = 0
-    for i in it.history:
-        ev = evs[i]
-        if ev.get("event") == "note" or ev.get("verb") == "note":
-            notes += 1
-        if ev.get("sha"):
-            notes, commits = 0, commits + 1
+    notes, commits = _notes_since_last_commit(it, evs)
     if notes >= 2:
         score += 2
         why.append("%d notes since the last commit — talk without work (3.20×)" % notes)
@@ -554,7 +628,14 @@ def cmd_bench(args, seat):
     import time
     now = time.time()
     p90 = _p90_by_kind(w, evs)
-    open_ = [i for i in w.open_items() if not args.target or i.target == args.target]
+    # 🔴 `in (None, target)`, EXACTLY AS `priority.rank()` FILTERS. This read
+    # `i.target == args.target`, and a spawned item carries `target = None` — `_apply`'s
+    # spawn branch never sets one — so every item born of a finding was missing from ALL
+    # FOUR sections of the triage: the per-seat counts, RIPE, IN TROUBLE and NEEDS HIM.
+    # ⚠️ The two filters disagreeing is the failure: `next` would offer an item that the
+    # board the owner reads insisted did not exist, and neither screen would say so.
+    open_ = [i for i in w.open_items()
+             if not args.target or i.target in (None, args.target)]
 
     print("(game %s, bridge %s)  %d open" % (w.game, w.bridge_holder or "free", len(open_)))
 
@@ -888,7 +969,27 @@ def cmd_why(args, seat):
 # ---------------------------------------------------------------------------
 # WRITERS — every one of these is one event
 # ---------------------------------------------------------------------------
-OPEN_STATES_EXCLUDED = ("done", "dropped", "superseded")
+# ⛔ NOT A SECOND COPY OF `model.TERMINAL`. This was a literal
+# `("done", "dropped", "superseded")` written out here, which is the shape this file's
+# own docstring forbids — a rule written twice is a rule that will disagree with
+# itself, and the terminal set is the one list where disagreeing means either reviving
+# a closed item or refusing a live one. Kept as a NAME because two call sites read it.
+OPEN_STATES_EXCLUDED = model.TERMINAL
+
+
+def _replay_now():
+    """-> the World as the ledger stands RIGHT NOW, re-read from disk.
+
+    🔑 Four call sites re-read the ledger after `_emit` has appended to it, because the
+    `world` they were handed predates their own write and cannot answer "what state did
+    that leave the item in". They each spelled it `model.replay(model.read(model.EVENTS))`
+    and each would have raised a bare traceback on a torn ledger; here a torn ledger
+    gets the same verbatim refusal every other read path prints.
+    """
+    try:
+        return model.replay(model.read(model.EVENTS))
+    except model.LedgerError as e:
+        die(str(e))
 
 
 def _replaces(args, seat, w):
@@ -899,7 +1000,7 @@ def _replaces(args, seat, w):
     owed an in-game raid-tier check. Auto-closing would have dropped that silently, which
     is the exact failure `supersede --by` exists to prevent. So this asks; it never assumes.
     """
-    items = model.replay(model.read(model.EVENTS)).items
+    items = _replay_now().items
     parent = args.replaces
     if parent:
         it = items.get(parent)
@@ -1006,7 +1107,7 @@ def _simple(verb, extra=()):
         for field, attr in extra:
             ev[field] = getattr(args, attr, None)
         _emit(ev, w, quiet=True)
-        it = model.replay(model.read(model.EVENTS)).items.get(args.id)
+        it = _replay_now().items.get(args.id)
         print("%s %s -> %s" % (verb, args.id, it.state if it else "?"))
         # `drop` and `supersede` end an item just as `close` does, and anything waiting on
         # it is just as stranded — more so, since a dropped blocker will never deliver.
@@ -1030,9 +1131,12 @@ def _announce_unblocks(target):
     what the blocked item was actually waiting for. The seat still confirms. This only
     makes the information arrive at the one moment it is free.
     """
+    # ⚠️ NOT `_replay_now()`, on purpose. This is an ADVISORY printed after a close that
+    # has already landed, so a ledger it cannot read must leave the close reported and
+    # exit quietly — `_replay_now` would `die(2)` and make a successful close look failed.
     try:
         st = model.replay(model.read(model.EVENTS))
-    except Exception:
+    except Exception:                                            # noqa: BLE001
         return
     waiting = [it for it in st.items.values()
                if getattr(it, "blocked", False)
@@ -1120,7 +1224,7 @@ def cmd_verify(args, seat):
     _emit({"seat": seat, "event": "verify", "id": args.id, "result": args.result,
            "config": args.config, "evidence": args.evidence,
            "sha": args.sha or head_sha()}, w, quiet=True)
-    it = model.replay(model.read(model.EVENTS)).items[args.id]
+    it = _replay_now().items[args.id]
     r = it.runs[-1]
     print("%s recorded, result %s. IMMUTABLE — %s is not reopened."
           % (r.name, r.result, args.id))
@@ -1259,130 +1363,141 @@ def _mirror_from_ledger(actor, note=None):
     return w3.bridge_holder
 
 
-def cmd_bridge(args, seat):
-    _, w = load()
-    holder, since, purpose = w.bridge_holder, w.bridge_since, w.bridge_purpose
-
-    # ⛔ `to` is a `give`-only positional that argparse accepts for every action.
-    # `rimflow bridge take BOGUS --for x` used to exit 0 and print success with the
-    # word silently discarded. A target nobody reads is a typo that looks like it
-    # worked, so refuse it here — argparse cannot make one positional conditional on
-    # another without a subparser per action.
-    if args.to and args.action != "give":
-        die("`bridge %s` takes no target, and %r was about to be ignored.\n"
-            "  a target is for `bridge give`:  rimflow bridge give BENCH|FOUNDRY|free\n"
-            "  what you probably meant:        rimflow bridge %s --for \"<what for>\""
-            % (args.action, args.to, args.action))
-
-    if args.action == "who":
-        # Re-derived from the ledger, so this answer is true even when the mirror is not.
-        model.write_bridge_file(holder, None, purpose, since)
-        if not holder:
-            print("bridge FREE — take it:  rimflow bridge take --for \"<what for>\"")
-        else:
-            idle = _idle_seconds(w.last_seen.get(holder))
-            print("bridge held by %s since %s%s%s"
-                  % (holder, since or "?",
-                     ("  for: " + purpose) if purpose else "",
-                     ("  (idle %d min)" % (idle // 60)) if idle is not None else ""))
+def _bridge_who(w, holder, since, purpose):
+    """`bridge who` — the answer, re-derived, plus the mirror repaired on the way."""
+    # Re-derived from the ledger, so this answer is true even when the mirror is not.
+    model.write_bridge_file(holder, None, purpose, since)
+    if not holder:
+        print("bridge FREE — take it:  rimflow bridge take --for \"<what for>\"")
         return 0
+    idle = _idle_seconds(w.last_seen.get(holder))
+    print("bridge held by %s since %s%s%s"
+          % (holder, since or "?",
+             ("  for: " + purpose) if purpose else "",
+             ("  (idle %d min)" % (idle // 60)) if idle is not None else ""))
+    return 0
 
-    if args.action == "give":
-        # 🔴 THE OWNER'S OWN SWITCH. He is not a seat and does not queue behind one:
-        # `bridge give FOUNDRY` moves it, `bridge give free` clears it, and both
-        # windows see the answer in the same file they already read.
-        #
-        # 🔑 THE EVENT CARRIES WHO DID IT, not just the mirror. A `give` is emitted
-        # under the TARGET window's seat, because `_apply` reads `seat` as the new
-        # holder and the owner is not a window — which made an owner handover
-        # byte-identical to that window taking the bridge itself, with the real story
-        # only in `write_bridge_file(note=)`, a file the next bridge call overwrites.
-        # `override` is the field this system already uses for "a rule was crossed on
-        # purpose, and here is which one" (see `_emit` and `model._may`), so it is the
-        # field used here too rather than a third shape. `--owner-said` still stamps
-        # `ownerSaid` alongside it, from `_emit`, unchanged.
-        # 🔴 THE OWNER GATE. `give` emits under the TARGET window's seat so `_apply`
-        # records the right holder — which means `model._may` sees BENCH/FOUNDRY, never
-        # OWNER, and never fires. So this branch had NO permission check at all: any
-        # window could run `bridge give` and write "the OWNER handed the bridge to X"
-        # into an append-only ledger, bypassing staleness and `--force` on the way.
-        # ⚠️ Stamping `override` here (2026-09-02) is what made that forgery DURABLE —
-        # it put a false claim in the one field this system treats as evidence of a
-        # deliberate crossing. Caught in review the same day. The gate is the fix; the
-        # stamp is only honest behind it.
-        if seat != "OWNER":
-            die("`bridge give` is the OWNER's switch, and you are %s.\n\n"
-                "It writes his name onto a permanent ledger event, so a window may not "
-                "run it —\nnot even to hand the bridge over politely.\n\n"
-                "  take it yourself   rimflow bridge take --for \"<what for>\"\n"
-                "  holder still awake rimflow bridge take --force --for \"<what for>\"\n"
-                "  release your own   rimflow bridge release\n\n"
-                "If HE told you to move it, quote him and it is recorded as his:\n"
-                "  rimflow bridge give <seat> --owner-said \"<his verbatim words>\""
-                % seat)
-        to = (args.to or "").upper()
-        if to in ("FREE", "NOBODY", "NONE"):
-            _emit({"seat": holder or seat, "event": "bridge", "state": "released",
-                   "override": "the OWNER cleared the bridge%s"
-                               % (" off %s" % holder if holder else "")}, w, quiet=True)
-            _mirror_from_ledger("OWNER", note="cleared by the owner")
-            print("bridge FREE — the owner cleared it")
-            return 0
-        if to not in ("BENCH", "FOUNDRY"):
-            die("give it to BENCH, FOUNDRY, or `free`. Got %r." % args.to)
-        ev = {"seat": to, "event": "bridge", "state": "taken",
-              "override": "the OWNER handed the bridge to %s%s"
-                          % (to, " from %s" % holder if holder and holder != to else "")}
-        if args.purpose:
-            ev["purpose"] = args.purpose
-        _emit(ev, w, quiet=True)
-        _mirror_from_ledger("OWNER", note="handed over by the owner")
-        print("bridge -> %s (the owner said so)" % to)
+
+def _bridge_give(args, seat, w, holder):
+    """`bridge give` — the OWNER's own switch, and nobody else's.
+
+    🔴 THE OWNER'S OWN SWITCH. He is not a seat and does not queue behind one:
+    `bridge give FOUNDRY` moves it, `bridge give free` clears it, and both windows see
+    the answer in the same file they already read.
+
+    🔑 THE EVENT CARRIES WHO DID IT, not just the mirror. A `give` is emitted under the
+    TARGET window's seat, because `_apply` reads `seat` as the new holder and the owner
+    is not a window — which made an owner handover byte-identical to that window taking
+    the bridge itself, with the real story only in `write_bridge_file(note=)`, a file
+    the next bridge call overwrites. `override` is the field this system already uses
+    for "a rule was crossed on purpose, and here is which one" (see `_emit` and
+    `model._may`), so it is the field used here too rather than a third shape.
+    `--owner-said` still stamps `ownerSaid` alongside it, from `_emit`, unchanged.
+
+    🔴 THE OWNER GATE. Emitting under the TARGET seat means `model._may` sees
+    BENCH/FOUNDRY, never OWNER, and never fires — so this branch had NO permission
+    check at all: any window could run `bridge give` and write "the OWNER handed the
+    bridge to X" into an append-only ledger, bypassing staleness and `--force` on the
+    way. ⚠️ Stamping `override` here (2026-09-02) is what made that forgery DURABLE, by
+    putting a false claim in the one field this system treats as evidence of a
+    deliberate crossing. Caught in review the same day. The gate is the fix; the stamp
+    is only honest behind it.
+    """
+    if seat != "OWNER":
+        die("`bridge give` is the OWNER's switch, and you are %s.\n\n"
+            "It writes his name onto a permanent ledger event, so a window may not "
+            "run it —\nnot even to hand the bridge over politely.\n\n"
+            "  take it yourself   rimflow bridge take --for \"<what for>\"\n"
+            "  holder still awake rimflow bridge take --force --for \"<what for>\"\n"
+            "  release your own   rimflow bridge release\n\n"
+            "If HE told you to move it, quote him and it is recorded as his:\n"
+            "  rimflow bridge give <seat> --owner-said \"<his verbatim words>\""
+            % seat)
+    to = (args.to or "").upper()
+    if to in ("FREE", "NOBODY", "NONE"):
+        _emit({"seat": holder or seat, "event": "bridge", "state": "released",
+               "override": "the OWNER cleared the bridge%s"
+                           % (" off %s" % holder if holder else "")}, w, quiet=True)
+        _mirror_from_ledger("OWNER", note="cleared by the owner")
+        print("bridge FREE — the owner cleared it")
         return 0
+    if to not in ("BENCH", "FOUNDRY"):
+        die("give it to BENCH, FOUNDRY, or `free`. Got %r." % args.to)
+    ev = {"seat": to, "event": "bridge", "state": "taken",
+          "override": "the OWNER handed the bridge to %s%s"
+                      % (to, " from %s" % holder if holder and holder != to else "")}
+    if args.purpose:
+        ev["purpose"] = args.purpose
+    _emit(ev, w, quiet=True)
+    _mirror_from_ledger("OWNER", note="handed over by the owner")
+    print("bridge -> %s (the owner said so)" % to)
+    return 0
 
-    if args.action == "release":
-        # ⚠️ `_apply` clears the holder for ANY `released` event, whoever sent it — so a
-        # window can free a lock it does not hold. That stays ALLOWED, deliberately:
-        # this system errs toward freeing a wedged bridge, never toward mutual lockout.
-        # What was wrong is that it happened UNRECORDED. Stamp it, like every other
-        # crossing (review finding, 2026-09-02).
-        ev = {"seat": seat, "event": "bridge", "state": "released"}
-        if holder and holder != seat:
-            ev["override"] = "released the bridge out from under %s" % holder
-        _emit(ev, w, quiet=True)
-        _mirror_from_ledger(seat)
-        if holder and holder != seat:
-            print("bridge released by %s — it was held by %s, and that is on the event"
-                  % (seat, holder))
-        else:
-            print("bridge released by %s — it is now FREE for the other window" % seat)
-        return 0
 
-    # take. 🔑 ERR ON THE SIDE OF ALLOWING (owner, 2026-09-02). One driver at a time is
-    # about attributability, not about ownership, and the expensive failure here has
-    # never been two drivers — it is MUTUAL LOCKOUT: a window that crashed or ran out
-    # of context holds the lock forever and the other sits idle. So a take is refused
-    # ONLY while the holder is demonstrably alive (an event inside the staleness
-    # window), and even then the refusal hands over `--force` rather than a dead end.
-    if holder in (None, seat):
-        granted, why = True, None
+def _bridge_release(seat, w, holder):
+    """`bridge release` — allowed even on someone else's lock, but never unrecorded.
+
+    ⚠️ `_apply` clears the holder for ANY `released` event, whoever sent it — so a
+    window can free a lock it does not hold. That stays ALLOWED, deliberately: this
+    system errs toward freeing a wedged bridge, never toward mutual lockout. What was
+    wrong is that it happened UNRECORDED. Stamp it, like every other crossing (review
+    finding, 2026-09-02).
+    """
+    ev = {"seat": seat, "event": "bridge", "state": "released"}
+    crossed = bool(holder and holder != seat)
+    if crossed:
+        ev["override"] = "released the bridge out from under %s" % holder
+    _emit(ev, w, quiet=True)
+    _mirror_from_ledger(seat)
+    if crossed:
+        print("bridge released by %s — it was held by %s, and that is on the event"
+              % (seat, holder))
     else:
-        idle = _idle_seconds(w.last_seen.get(holder))
-        if args.force:
-            granted, why = True, "forced"
-        elif idle is None or idle >= model.BRIDGE_STALE_SECONDS:
-            granted, why = True, "%s went quiet%s" % (
-                holder, (" for %d min" % (idle // 60)) if idle is not None else "")
-        else:
-            die("bridge is held by %s and they are still working (last event %d min "
-                "ago%s).\n"
-                "  wait      — check again with: rimflow bridge who\n"
-                "  or take it — rimflow bridge take --force --for \"<what for>\"\n"
-                "It frees on its own after %d min of silence, and a wedged bridge is "
-                "stuck, not crashed."
-                % (holder, idle // 60,
-                   ("; for: " + purpose) if purpose else "",
-                   model.BRIDGE_STALE_SECONDS // 60))
+        print("bridge released by %s — it is now FREE for the other window" % seat)
+    return 0
+
+
+def _take_decision(holder, seat, idle, force, purpose):
+    """-> (why, refusal). `why` is what to stamp on the event; `refusal` is a message.
+
+    🔑 ERR ON THE SIDE OF ALLOWING (owner, 2026-09-02). One driver at a time is about
+    attributability, not about ownership, and the expensive failure here has never been
+    two drivers — it is MUTUAL LOCKOUT: a window that crashed or ran out of context
+    holds the lock forever and the other sits idle. So a take is refused ONLY while the
+    holder is demonstrably alive (an event inside the staleness window), and even then
+    the refusal hands over `--force` rather than a dead end.
+
+    ⚠️ `idle is None` means NO EVIDENCE THE HOLDER IS ALIVE — an unreadable or absent
+    last-seen stamp — and it must read as stale, not as freshly active. `_idle_seconds`
+    answers None rather than `_epoch`'s 1970 sentinel precisely so this branch can be
+    written that way round; inverting it would wedge the bridge on a bad timestamp.
+
+    Pure, so the whole staleness rule is testable without two processes racing.
+    """
+    if holder in (None, seat):
+        return None, None
+    if force:
+        return "forced", None
+    if idle is None or idle >= model.BRIDGE_STALE_SECONDS:
+        return "%s went quiet%s" % (
+            holder, (" for %d min" % (idle // 60)) if idle is not None else ""), None
+    return None, (
+        "bridge is held by %s and they are still working (last event %d min ago%s).\n"
+        "  wait      — check again with: rimflow bridge who\n"
+        "  or take it — rimflow bridge take --force --for \"<what for>\"\n"
+        "It frees on its own after %d min of silence, and a wedged bridge is "
+        "stuck, not crashed."
+        % (holder, idle // 60, ("; for: " + purpose) if purpose else "",
+           model.BRIDGE_STALE_SECONDS // 60))
+
+
+def _bridge_take(args, seat, w, holder, purpose):
+    """`bridge take` — the contended path, and the only one with a race in it."""
+    why, refusal = _take_decision(
+        holder, seat, _idle_seconds(w.last_seen.get(holder)) if holder else None,
+        args.force, purpose)
+    if refusal:
+        die(refusal)
     ev = {"seat": seat, "event": "bridge", "state": "taken"}
     if args.purpose:
         ev["purpose"] = args.purpose
@@ -1395,19 +1510,19 @@ def cmd_bridge(args, seat):
         ev["override"] = (
             "took the bridge with --force while %s still held it" % holder
             if args.force else "took the bridge: %s" % why)
-    # 🔴 RE-DERIVE THE HOLDER RIGHT BEFORE WRITING. `granted` above was decided
-    # against the world `load()` read at the TOP of this function, and nothing
+    # 🔴 RE-DERIVE THE HOLDER RIGHT BEFORE WRITING. The decision above was taken
+    # against the world `load()` read at the TOP of this command, and nothing
     # holds a lock across that decision — two windows racing `bridge take` at
-    # the same instant could both see `holder is None`, both compute
-    # `granted=True`, and both append a "taken" event, the exact double-driver
-    # failure this whole mechanism exists to prevent. This does not make the
-    # check-then-write atomic (that needs a lock held across the full decision,
-    # which is a larger change than this review pass should make to the core
-    # ledger primitives) — but it collapses the race window from "the time
-    # between two windows' load() calls" down to "the time between this
-    # re-check and _emit's own write", which is what actually matters: the
-    # loser of the original race now sees the winner's already-recorded event
-    # here and backs off with a clear message, rather than silently colliding.
+    # the same instant could both see `holder is None` and both append a "taken"
+    # event, the exact double-driver failure this whole mechanism exists to
+    # prevent. This does not make the check-then-write atomic (that needs a lock
+    # held across the full decision, which is a larger change than a review pass
+    # should make to the core ledger primitives) — but it collapses the race
+    # window from "the time between two windows' load() calls" down to "the time
+    # between this re-check and _emit's own write", which is what actually
+    # matters: the loser of the original race now sees the winner's
+    # already-recorded event here and backs off with a clear message, rather
+    # than silently colliding.
     if not args.force:
         _, w2 = load()
         fresh_holder = w2.bridge_holder
@@ -1430,6 +1545,33 @@ def cmd_bridge(args, seat):
     if not args.purpose:
         print("  tip: --for \"<what for>\" tells the other window whether to wait.")
     return 0
+
+
+def cmd_bridge(args, seat):
+    """Dispatch only. Each action is its own function so the take rule — the one piece
+    with a real race in it — can be read and tested without the other three."""
+    _, w = load()
+    holder, since, purpose = w.bridge_holder, w.bridge_since, w.bridge_purpose
+
+    # ⛔ `to` is a `give`-only positional that argparse accepts for every action.
+    # `rimflow bridge take BOGUS --for x` used to exit 0 and print success with the
+    # word silently discarded. A target nobody reads is a typo that looks like it
+    # worked, so refuse it here — argparse cannot make one positional conditional on
+    # another without a subparser per action.
+    if args.to and args.action != "give":
+        die("`bridge %s` takes no target, and %r was about to be ignored.\n"
+            "  a target is for `bridge give`:  rimflow bridge give BENCH|FOUNDRY|free\n"
+            "  what you probably meant:        rimflow bridge %s --for \"<what for>\""
+            % (args.action, args.to, args.action))
+
+    if args.action == "who":
+        return _bridge_who(w, holder, since, purpose)
+    if args.action == "give":
+        return _bridge_give(args, seat, w, holder)
+    if args.action == "release":
+        return _bridge_release(seat, w, holder)
+    return _bridge_take(args, seat, w, holder, purpose)
+
 
 
 def sync_game_state(w, seat, announce=True):
@@ -1488,7 +1630,15 @@ def cmd_game(args, seat):
     print("game is %s" % args.state)
     if note:
         print("  note: %s" % note)
-    if args.state != "UP":
+    # 🔴 DOWN AND ONLY DOWN, because that is what `model._apply` actually does.
+    # This read `!= "UP"` and announced a clearing that had not happened for
+    # GOING_DOWN, LOADING and DEPLOYING. The clearing itself was narrowed to DOWN
+    # deliberately — GOING_DOWN is the moment the flag is most load-bearing, since
+    # that is when a seat drops everything postponable and works the this-deployment
+    # list before the window shuts — and this line was left behind, telling the seat
+    # its urgent list had just been emptied at exactly the moment it had not.
+    # ⚠️ One sentence in one place; if `_apply`'s rule ever moves, this moves with it.
+    if args.state == "DOWN":
         print("every --this-deployment flag is now cleared.")
     return 0
 
@@ -1571,18 +1721,24 @@ def cmd_sweep(args, seat):
 # render / reindex — NOT MINE. render.py belongs to another agent.
 # ---------------------------------------------------------------------------
 def _render_module():
+    """-> rimflow.render, or None if that file does not exist yet.
+
+    ⚠️ The outer `except ImportError` used to retry `from rimflow import render` after
+    that exact import had already raised — dead code that could only fail a second
+    time, and it made the two-shim pattern look like three cases. The two shims that
+    matter are the ones every other import in this file uses: relative for
+    `python3 -m rimflow.cli`, absolute for the script path every seat actually types.
+    """
     try:
-        try:
-            from . import render                                # noqa: F401
-        except ImportError:
-            from rimflow import render                          # noqa: F401
+        from . import render                                    # noqa: F401
         return render
     except ImportError:
-        try:
-            from rimflow import render                          # noqa: F401
-            return render
-        except ImportError:
-            return None
+        pass
+    try:
+        from rimflow import render                              # noqa: F401
+        return render
+    except ImportError:
+        return None
 
 
 def _delegate(fnname):
@@ -1833,6 +1989,70 @@ def _norm_said(said):
     return " ".join("".join(c for c in said.lower() if c.isalnum() or c.isspace()).split())
 
 
+def _check_owner_said(said):
+    """Refuse a quote that is not an INSTRUCTION. Returns None, or `die`s.
+
+    Extracted from `main` (2026-09-03) so both guards can be exercised directly
+    instead of only through a whole command.
+    """
+    # ⛔ A quote too short to be a quote is not authorization. This is the only
+    # guard: it stops `--owner-said yes` standing in for something he never said.
+    # ⛔ A QUESTION IS NOT AN INSTRUCTION. Caught within a minute of shipping this
+    # flag: REP dropped an item quoting the owner ASKING what he could knock out.
+    # The quote must be him telling you to do THIS, not him talking nearby.
+    if said.rstrip().endswith("?"):
+        die("`--owner-said` must quote an INSTRUCTION, and %r is a question.\n\n"
+            "The owner asking about a thing is not the owner authorizing it. Quote "
+            "the words\nwhere he told you to act; if there are none, act as your "
+            "own seat and say whose\ncall it was, or ask him.\n" % said[:80])
+    # \U0001f534 OWNER, 2026-08-22: the floor used to be a blunt `len < 12`, and it
+    # refused HIS OWN documented phrases — "game UP" is 7 characters and "game is
+    # up", the example printed in CLAUDE.md, is 10. He said *"Simply do (1) right
+    # now"*. \u26d4 The guard's REAL job was never length: it was to stop
+    # `--owner-said yes` standing in for an instruction he never gave. So reject
+    # bare ASSENT, which is him agreeing to something said elsewhere, and let a
+    # short but complete instruction through.
+    if _norm_said(said) in ASSENT_ONLY:
+        die("`--owner-said` must quote the INSTRUCTION, not the agreement.\n%r is "
+            "him assenting to something YOU said; the ledger would record your "
+            "words as his.\n\nQuote the sentence that says what to do — "
+            "'game up' is fine, 'yes' is not.\n" % said)
+
+
+def _resolve_command_seat(args):
+    """-> the seat this invocation acts under. Refuses rather than guessing.
+
+    🔴 HIS QUOTE DECIDES THE SEAT, AND IT IS READ FIRST. The order used to be
+    seat-then-quote, so a window with no ambient seat was refused outright — *"I
+    cannot tell which seat I am, and I will not guess"* — on a command the OWNER had
+    just told it to run, while the verbatim words that answer the question sat unread
+    on the same command line. CHARTER.md and the global rules both send an agent to
+    `--owner-said` as THE route through a refusal; being refused by the seat guard on
+    the way to it is the one outcome that makes that instruction impossible to follow.
+
+    ⚠️ THIS GRANTS NOTHING NEW. `--seat OWNER --owner-said "…"` was always accepted,
+    so the old ordering refused exactly one case: nobody had configured a window. And
+    a seat that IS named is still validated, because a typo silently discarded is the
+    same defect `bridge take BOGUS` was fixed for.
+    """
+    said = (getattr(args, "owner_said", None) or "").strip()
+    if said:
+        _check_owner_said(said)
+        # Validated, then discarded: a named-but-wrong seat still refuses; a missing
+        # one no longer does, because his words are the authorization.
+        resolve_seat(getattr(args, "seat", None), required=False)
+        model.OWNER_SAID = said
+        return "OWNER"
+    # `show`, `why` and `sweep` never write, so they must not refuse for want of a
+    # seat — debugging the queue is exactly what you do when your window is misconfigured.
+    if args.cmd in READ_ONLY:
+        seat = (os.environ.get("RIMFLOW_SEAT") or getattr(args, "seat", None)
+                or os.environ.get("AGENT_SEAT") or _role_file_seat() or "BUILD")
+        seat = seat.strip().upper()
+        return seat if seat in model.SEATS else "BUILD"
+    return resolve_seat(getattr(args, "seat", None))
+
+
 def main(argv=None):
     _bind_paths()
     p = build_parser()
@@ -1840,43 +2060,8 @@ def main(argv=None):
     if not getattr(args, "cmd", None):
         p.print_help()
         return 1
-    # `show`, `why` and `sweep` never write, so they must not refuse for want of a
-    # seat — debugging the queue is exactly what you do when your window is misconfigured.
-    if args.cmd in READ_ONLY:
-        seat = (os.environ.get("RIMFLOW_SEAT") or getattr(args, "seat", None)
-                or os.environ.get("AGENT_SEAT") or _role_file_seat() or "BUILD")
-        seat = seat.strip().upper()
-        if seat not in model.SEATS:
-            seat = "BUILD"
-    else:
-        seat = resolve_seat(getattr(args, "seat", None))
-    said = (getattr(args, "owner_said", None) or "").strip()
-    if said:
-        # ⛔ A quote too short to be a quote is not authorization. This is the only
-        # guard: it stops `--owner-said yes` standing in for something he never said.
-        # ⛔ A QUESTION IS NOT AN INSTRUCTION. Caught within a minute of shipping this
-        # flag: REP dropped an item quoting the owner ASKING what he could knock out.
-        # The quote must be him telling you to do THIS, not him talking nearby.
-        if said.rstrip().endswith("?"):
-            die("`--owner-said` must quote an INSTRUCTION, and %r is a question.\n\n"
-                "The owner asking about a thing is not the owner authorizing it. Quote "
-                "the words\nwhere he told you to act; if there are none, act as your "
-                "own seat and say whose\ncall it was, or ask him.\n" % said[:80])
-        # \U0001f534 OWNER, 2026-08-22: the floor used to be a blunt `len < 12`, and it
-        # refused HIS OWN documented phrases — "game UP" is 7 characters and "game is
-        # up", the example printed in CLAUDE.md, is 10. He said *"Simply do (1) right
-        # now"*. \u26d4 The guard's REAL job was never length: it was to stop
-        # `--owner-said yes` standing in for an instruction he never gave. So reject
-        # bare ASSENT, which is him agreeing to something said elsewhere, and let a
-        # short but complete instruction through.
-        if _norm_said(said) in ASSENT_ONLY:
-            die("`--owner-said` must quote the INSTRUCTION, not the agreement.\n%r is "
-                "him assenting to something YOU said; the ledger would record your "
-                "words as his.\n\nQuote the sentence that says what to do — "
-                "'game up' is fine, 'yes' is not.\n" % said)
-        seat = "OWNER"
-        model.OWNER_SAID = said
-    return args.fn(args, seat) or 0
+    return args.fn(args, _resolve_command_seat(args)) or 0
+
 
 
 if __name__ == "__main__":
