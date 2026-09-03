@@ -409,6 +409,56 @@
     "date": "2026-09-03",
     "sha": "39cd22d5"
   },
+  "src/RimMandrake/Utils/cast_to_xml.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "377864eb"
+  },
+  "src/RimMandrake/Utils/check_canon.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "377864eb"
+  },
+  "src/RimMandrake/Utils/check_declarations.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "377864eb"
+  },
+  "src/RimMandrake/Utils/check_doc_links.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "377864eb"
+  },
+  "src/RimMandrake/Utils/check_git_locks.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "377864eb"
+  },
+  "src/RimMandrake/Utils/check_load.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "377864eb"
+  },
+  "src/RimMandrake/Utils/check_refs.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "46ac7699"
+  },
+  "src/RimMandrake/Utils/check_sprite.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "46ac7699"
+  },
+  "src/RimMandrake/Utils/cherrypick_build.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "46ac7699"
+  },
+  "src/RimMandrake/Utils/cherrypick_review.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "46ac7699"
+  },
   "src/RimMandrake/Utils/cherrypicker_swap.py": {
     "date": "2026-09-02",
     "sha": "d1c193ae"
@@ -591,10 +641,30 @@
     "date": "2026-09-03",
     "sha": "39cd22d5"
   },
+  "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchHarmonyInspect.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "46ac7699"
+  },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchInit.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "359b0b2c"
+  },
+  "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchLogAutoOpenSuppress.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "46ac7699"
+  },
+  "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchOracleTools.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "46ac7699"
+  },
+  "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchPaintTools.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "46ac7699"
   },
   "src/RimMandrake/bridgetools/prove_load_stall_probe.py": {
     "cleanCount": 1,
