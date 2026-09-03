@@ -52,7 +52,14 @@ namespace RimMandrake.Pits
                 List<Thing> thingsHere = cell.GetThingList(map);
                 for (int i = 0; i < thingsHere.Count; i++)
                 {
-                    if (thingsHere[i] is Pawn p && !p.Dead)
+                    // Unlike vanilla Building_Trap (KnowsOfTrap / a near-zero
+                    // SpringChance for the trap's own faction), nothing here
+                    // excluded the parent's own faction -- a colonist crossing
+                    // their own armed pit sprang it exactly as readily as a
+                    // raider, and the def is Standable/pathCost 30, so colonists
+                    // route straight over it. A trap that captures its own
+                    // colony is not the intended "raider trap" use case.
+                    if (thingsHere[i] is Pawn p && !p.Dead && p.Faction != parent.Faction)
                     {
                         onCover.Add(p);
                         summedMass += p.GetStatValue(StatDefOf.Mass);

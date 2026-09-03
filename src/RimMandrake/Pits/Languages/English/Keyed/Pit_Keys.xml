@@ -13,6 +13,8 @@
   <RMPits_ArmCoverDesc>Cover this pit so it triggers once {0} kg of standing mass crosses it.</RMPits_ArmCoverDesc>
   <RMPits_Uncover>Uncover</RMPits_Uncover>
   <RMPits_UncoverDesc>Remove the cover. The pit becomes a plain open hole again.</RMPits_UncoverDesc>
+  <RMPits_Release>Release</RMPits_Release>
+  <RMPits_ReleaseDesc>Pull the pit's occupant out. They are placed on the ground nearby.</RMPits_ReleaseDesc>
 
   <RMPits_IgnitePit>Ignite</RMPits_IgnitePit>
   <RMPits_IgnitePitDesc>Set the oil-soaked pit alight.</RMPits_IgnitePitDesc>

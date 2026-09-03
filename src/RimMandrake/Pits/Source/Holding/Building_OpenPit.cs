@@ -154,6 +154,24 @@ namespace RimMandrake.Pits
             {
                 foreach (Gizmo g in fitting.GetIgniteGizmo(this)) yield return g;
             }
+
+            // Without this, the only way an occupant leaves is a random struggle
+            // roll (RunStruggleInterval) -- there was no player-facing way to pull
+            // someone out at all.
+            if (Sprung)
+            {
+                yield return new Command_Action
+                {
+                    defaultLabel = "RMPits_Release".Translate(),
+                    defaultDesc = "RMPits_ReleaseDesc".Translate(),
+                    icon = TexCommand.ForbidOff, // placeholder icon; art pass owed
+                    action = delegate
+                    {
+                        Pawn p = HeldPawn;
+                        if (p != null) EjectPawn(p);
+                    },
+                };
+            }
         }
 
         private Command_Action ArmGizmo(PitCoverTier tier, string labelKey)
@@ -235,14 +253,44 @@ namespace RimMandrake.Pits
         protected override void Tick()
         {
             base.Tick();
+            // A pawn moved into innerContainer is despawned, which removes it from
+            // the map's own tick lists -- vanilla Building_Casket.Tick() ticks its
+            // contents for exactly this reason. Without this, a held pawn's
+            // needs/hediffs/health never advance: exposure never reaches
+            // heatstroke, hunger never drops, bleeding never progresses.
+            innerContainer.DoTick();
             if (Sprung && this.IsHashIntervalTick(PitEscapeUtility.StruggleIntervalTicks))
             {
                 RunStruggleInterval();
             }
         }
 
+        // Without this, Thing.Destroy (a mortar hit, melee, fire -- the pit is
+        // useHitPoints, not deconstructible) drops the held pawn on nobody:
+        // Thing.Destroy does not walk IThingHolder contents, so an occupant is
+        // never spawned, never killed, never sent to world pawns. It just stops
+        // existing.
+        public override void Destroy(DestroyMode mode = DestroyMode.Vanish)
+        {
+            Map map = Map;
+            IntVec3 pos = Position;
+            if (map != null && innerContainer != null && innerContainer.Count > 0)
+            {
+                innerContainer.TryDropAll(pos, map, ThingPlaceMode.Near);
+            }
+            base.Destroy(mode);
+        }
+
+        // Building_PitCell overrides this to true while its gate is closed -
+        // a closed gate is a physical barrier, not just a hard escape roll,
+        // so a held pawn should not even attempt (or be charged a failed-
+        // attempt cost for) an escape while it holds.
+        protected virtual bool EscapeBlocked => false;
+
         internal void RunStruggleInterval()
         {
+            if (EscapeBlocked) return;
+
             CompPitFitting fitting = GetComp<CompPitFitting>();
             List<Pawn> occupants = new List<Pawn>();
             for (int i = 0; i < innerContainer.Count; i++)

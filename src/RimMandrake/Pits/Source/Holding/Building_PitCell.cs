@@ -36,6 +36,14 @@ namespace RimMandrake.Pits
 
         public bool GateClosed => covered;
 
+        // A closed gate is the whole point of Building_PitCell (section 6's
+        // gated prisoner pit) - without this, RunStruggleInterval never
+        // consulted it at all, so a gated cell escaped exactly as easily as
+        // an ungated pit and EjectPawn dropped the prisoner outside any
+        // prison room, sending them straight into an escape attempt of
+        // their own.
+        protected override bool EscapeBlocked => GateClosed;
+
         // No Print override needed: Building_OpenPit.Print already only
         // camouflages a def carrying CompPitCoverTrigger, which this def
         // never does - it always shows its own def graphic.
@@ -51,21 +59,26 @@ namespace RimMandrake.Pits
 
         private void ApplyExposure()
         {
-            Pawn held = HeldPawn;
-            if (held == null || held.Dead) return;
+            // RM_PitCell_Double holds up to 2 (MaxOccupants) - HeldPawn only
+            // ever returns innerContainer[0], which left a second occupant
+            // exempt from exposure entirely while the gate was open.
+            for (int i = 0; i < innerContainer.Count; i++)
+            {
+                if (!(innerContainer[i] is Pawn held) || held.Dead) continue;
 
-            if (!GateClosed)
-            {
-                // Uncovered = actively harsh: the unsetting sun beats straight
-                // down. Placeholder severity rate - the spec names the
-                // direction and the theology feed (campaign layer), not a
-                // tuned number.
-                HealthUtility.AdjustSeverity(held, RMPits_HediffDefOf.RM_PitExposure, 0.01f);
-            }
-            else
-            {
-                // The cover is the mercy: exposure recedes while closed.
-                HealthUtility.AdjustSeverity(held, RMPits_HediffDefOf.RM_PitExposure, -0.02f);
+                if (!GateClosed)
+                {
+                    // Uncovered = actively harsh: the unsetting sun beats straight
+                    // down. Placeholder severity rate - the spec names the
+                    // direction and the theology feed (campaign layer), not a
+                    // tuned number.
+                    HealthUtility.AdjustSeverity(held, RMPits_HediffDefOf.RM_PitExposure, 0.01f);
+                }
+                else
+                {
+                    // The cover is the mercy: exposure recedes while closed.
+                    HealthUtility.AdjustSeverity(held, RMPits_HediffDefOf.RM_PitExposure, -0.02f);
+                }
             }
         }
 
@@ -148,9 +161,13 @@ namespace RimMandrake.Pits
 
         internal void FeedHeldPawn()
         {
-            Pawn p = HeldPawn;
-            if (p?.needs?.food == null) return;
-            p.needs.food.CurLevel = p.needs.food.MaxLevel;
+            for (int i = 0; i < innerContainer.Count; i++)
+            {
+                if (innerContainer[i] is Pawn p && p.needs?.food != null)
+                {
+                    p.needs.food.CurLevel = p.needs.food.MaxLevel;
+                }
+            }
         }
 
         public override void ExposeData()
