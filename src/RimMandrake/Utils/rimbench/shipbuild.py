@@ -79,6 +79,9 @@ import sys
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(
     os.path.dirname(os.path.abspath(__file__))))))
 MAPS = os.path.join(REPO, "src", "RimMandrake", "mapsynth")
+RUNS = os.path.join(MAPS, "runs")     # generated artifacts (.npy/.json) land here,
+                                       # not in MAPS itself — gitignored, regenerated
+                                       # by build_designs.py / build_sheet_15.py
 OUT = os.path.join(REPO, "design", "Jawa", "worldbuilding", "ship_build")
 
 # ---------------------------------------------------------------- the legend
@@ -171,14 +174,14 @@ NODE_CELLS = set()
 def load_grid():
     """The hull, re-run from its generator rather than read from a stale copy."""
     import numpy as np
-    npy = os.path.join(MAPS, "design_15_falcon_halo_hollow.npy")
+    npy = os.path.join(RUNS, "design_15_falcon_halo_hollow.npy")
     if not os.path.isfile(npy):
         raise IOError("missing %s — run src/RimMandrake/mapsynth/build_designs.py first" % npy)
     return np.load(npy)
 
 
 def load_elements():
-    p = os.path.join(MAPS, "build_sheet_15.json")
+    p = os.path.join(RUNS, "build_sheet_15.json")
     return json.load(open(p, encoding="utf-8"))["elements"]
 
 
@@ -206,7 +209,7 @@ SHEET_SHA256 = "1182c13597ae5bdf24bdb44317fa45f49e5ca0606a2ac4aeed16c0f83aab60da
 def sheet_fingerprint():
     """sha256 over the sheet's ELEMENTS, canonicalised — formatting-independent."""
     import hashlib
-    els = json.load(open(os.path.join(MAPS, "build_sheet_15.json"),
+    els = json.load(open(os.path.join(RUNS, "build_sheet_15.json"),
                          encoding="utf-8"))["elements"]
     canon = json.dumps(els, sort_keys=True, separators=(",", ":"))
     return hashlib.sha256(canon.encode()).hexdigest()
