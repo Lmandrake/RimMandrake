@@ -394,6 +394,11 @@
     "date": "2026-09-03",
     "sha": "e5013227"
   },
+  "src/RimMandrake/Utils/ashkarr_populate.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "891d0852"
+  },
   "src/RimMandrake/Utils/ashkarr_regate_rain.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -443,6 +448,11 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "39cd22d5"
+  },
+  "src/RimMandrake/Utils/build_salvation_rid.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "891d0852"
   },
   "src/RimMandrake/Utils/cast_hook_audit.py": {
     "cleanCount": 1,
@@ -707,6 +717,11 @@
     "date": "2026-09-03",
     "sha": "fb248793"
   },
+  "src/RimMandrake/Utils/palette.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "891d0852"
+  },
   "src/RimMandrake/Utils/patch_provenance.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -802,6 +817,11 @@
     "date": "2026-09-03",
     "sha": "39cd22d5"
   },
+  "src/RimMandrake/Utils/selftest_checkers.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "e70744ea"
+  },
   "src/RimMandrake/Utils/selftest_codebase_health.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -882,6 +902,11 @@
     "date": "2026-09-03",
     "sha": "39cd22d5"
   },
+  "src/RimMandrake/Utils/thing_contact_sheet.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "891d0852"
+  },
   "src/RimMandrake/Utils/validate_ideoligion.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -922,10 +947,25 @@
     "date": "2026-09-02",
     "sha": "69ea9703"
   },
+  "src/RimMandrake/Utils/whats_new.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "891d0852"
+  },
+  "src/RimMandrake/Utils/world_biomes.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "e70744ea"
+  },
   "src/RimMandrake/Utils/world_graph.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "39cd22d5"
+  },
+  "src/RimMandrake/Utils/world_relief.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "891d0852"
   },
   "src/RimMandrake/Utils/world_settle.py": {
     "cleanCount": 1,
@@ -941,6 +981,16 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "7eabd2a4"
+  },
+  "src/RimMandrake/Utils/worldmap_effects.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "891d0852"
+  },
+  "src/RimMandrake/Utils/worldmap_prefill.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "891d0852"
   },
   "src/RimMandrake/Utils/xenotype_size_audit.py": {
     "cleanCount": 1,
