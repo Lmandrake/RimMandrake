@@ -95,6 +95,11 @@
          RimBridgeServer attaches its companions - so this resolves to the exact
          bytes already sitting in the process, same reasoning as HarmonyDir above. -->
     <OracleModDir Condition="'$(OracleModDir)' == ''">C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\Oracle\Assemblies</OracleModDir>
+    <!-- mandrake.rm.rimdefdump, same reasoning as OracleModDir: an ordinary mod, already
+         loaded by the time RimBridgeServer attaches. DEFDUMP_ONDEMAND_BRIDGE_UNREACHABLE_1 -
+         JawaBenchDefDumpTools.cs calls DefDumper.RunOnDemand directly instead of going
+         through either bridge's debug-action surface. -->
+    <RimDefDumpModDir Condition="'$(RimDefDumpModDir)' == ''">C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\RimDefDump\1.6\Assemblies</RimDefDumpModDir>
   </PropertyGroup>
 
   <ItemGroup>
@@ -104,6 +109,10 @@
     </Reference>
     <Reference Include="RimMandrakeOracle">
       <HintPath>$(OracleModDir)\RimMandrakeOracle.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="RimDefDump">
+      <HintPath>$(RimDefDumpModDir)\RimDefDump.dll</HintPath>
       <Private>false</Private>
     </Reference>
     <Reference Include="Assembly-CSharp">
@@ -132,6 +141,8 @@
            Text="RimBridgeServer.Sdk.dll not found at $(RimBridgeSdkDir). Is RimBridgeServer subscribed? Pass /p:RimBridgeSdkDir=... " />
     <Error Condition="!Exists('$(HarmonyDir)\0Harmony.dll')"
            Text="0Harmony.dll not found at $(HarmonyDir). Is the Harmony mod subscribed? Pass /p:HarmonyDir=... " />
+    <Error Condition="!Exists('$(RimDefDumpModDir)\RimDefDump.dll')"
+           Text="RimDefDump.dll not found at $(RimDefDumpModDir). Is mandrake.rm.rimdefdump deployed? Pass /p:RimDefDumpModDir=... " />
   </Target>
 
 </Project>
