@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-03T17:51:08Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-03T17:51:35Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -350,15 +350,6 @@ target:   v1
 kind:     task
 summary:  (no items/DIRTY_CODE_REVIEW_STANDING_LOOP_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DIRTY_CODE_REVIEW_STANDING_LOOP_1.md
-
-## DIRTY_CODE_REVIEW_LOOP_RESTART_2 resume standing code-review sweep after agent restart
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     continuity
-summary:  DIRTYCODEREVIEWLOOPRESTART2
-prose:    infrastructure/state/items/DIRTY_CODE_REVIEW_LOOP_RESTART_2.md
 
 # BLOCKED — something is WRONG and someone must act
 
