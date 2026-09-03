@@ -52,8 +52,9 @@ SOURCES
                        three counts. No bridge, no game needed — this is the mode to use
                        when someone else holds the bridge.
 `--live`               Calls the bridge for the export plus the per-tile scalars and the
-                       feature table, so `region`, `water`, `river_flow` and the extra
-                       columns are MEASURED too.
+                       feature table, so `region`, `water` and the extra columns are
+                       MEASURED too. ⛔ `river_flow` stays CARRIED even here — RimWorld
+                       stores no flow scalar anywhere, so no live source will ever fill it.
 
 ⛔ THE BRIDGE BELONGS TO CHECK. `--live` is not the default and never will be. Run the
 offline mode against an export file unless the bridge is yours.
