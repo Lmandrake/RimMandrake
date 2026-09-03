@@ -509,10 +509,22 @@ namespace JawaBench.BridgeTools
                 "(which respects whether the terrain accepts it) and everything else through " +
                 "GenSpawn, so a generator does not have to know which is which. " +
                 "`stuff` and `rot` apply to the WHOLE call, so batch by material and " +
-                "facing: every steel wall in one call, every east-facing door in the next.",
+                "facing: every steel wall in one call, every east-facing door in the next. " +
+                "⚠️ `count` is a STACK SIZE, not a repeat: a def that cannot stack " +
+                "(stackLimit 1 — walls, doors, most buildings) yields exactly ONE thing " +
+                "however large the count, and that shortfall is now reported and FAILS the " +
+                "verdict rather than reading as full success. To place five walls, give " +
+                "five ops.",
             ResultDescription =
                 "Returns spawned/failed counts, per-def totals, and the reason each failure " +
-                "was rejected. Verified by reading the cell back, not by absence of throw.")]
+                "was rejected. Verified by reading the cell back, not by absence of throw. " +
+                "⚠️ Read `thingsPlaced`, not `spawned`: `spawned` counts OPS that succeeded, " +
+                "`thingsPlaced` counts things (stackCount read back off the spawned thing). " +
+                "`thingsShort` is what a stack-size request could not deliver. " +
+                "`cellsOutOfBounds` now enters `success`. Filth is the one kind that cannot " +
+                "be counted: FilthMaker.TryMakeFilth loops `count` THICKENING passes and " +
+                "returns one bool for all of them, so a filth op contributes its requested " +
+                "count and a pass that hit maxThickness is invisible.")]
         public static async Task<object> SpawnBatch(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -570,7 +582,13 @@ namespace JawaBench.BridgeTools
                     return Fail("No current map. Load a game first.");
 
                 var size = map.Size;
-                int spawned = 0, failed = 0, outOfBounds = 0;
+                int spawned = 0, failed = 0, outOfBounds = 0, overLimit = 0;
+                // Things, not ops. Fixed 2026-09-02 (opus code review): every
+                // number this tool reported was a count of OPS, so a five-deep
+                // stack request that could only deliver one read as "spawned 1
+                // of 1 requested" and success:true.
+                long thingsRequested = 0, thingsPlaced = 0, thingsShort = 0;
+                foreach (var p in parsed) thingsRequested += p.W < 1 ? 1 : p.W;
                 var perDef = new Dictionary<string, int>();
                 var errors = new List<object>();
                 var resolved = new Dictionary<string, ThingDef>(StringComparer.OrdinalIgnoreCase);
@@ -612,6 +630,10 @@ namespace JawaBench.BridgeTools
                         continue;
                     }
 
+                    // How many THINGS this op actually put on the map, set by
+                    // whichever branch below runs. -1 means the op did not get
+                    // as far as placing anything.
+                    var placedThings = -1;
                     try
                     {
                         if (def.IsFilth)
@@ -620,8 +642,18 @@ namespace JawaBench.BridgeTools
                             // terrain does not accept filth (water, for one). Going
                             // through GenSpawn instead produces filth that the game
                             // did not agree to and cannot clean up properly.
+                            // ⚠️ THE ONE KIND THAT CANNOT BE COUNTED. Read out
+                            // of RimWorld/FilthMaker.cs (1.6): the count
+                            // overload runs `count` THICKENING passes and ORs
+                            // their results into one bool, so a pass that hit
+                            // Filth.CanBeThickened=false is indistinguishable
+                            // from one that worked. The requested count is the
+                            // only number available; ResultDescription says so.
                             if (FilthMaker.TryMakeFilth(cell, map, def, count))
+                            {
                                 spawned++;
+                                placedThings = count;
+                            }
                             else
                             {
                                 failed++;
@@ -673,20 +705,59 @@ namespace JawaBench.BridgeTools
                                 continue;
                             }
                             spawned++;
+                            // A vehicle is one vehicle. Vehicles do not stack,
+                            // so a count above 1 is a shortfall like any other.
+                            placedThings = 1;
                         }
                         else
                         {
                             var thing = ThingMaker.MakeThing(def, def.MadeFromStuff ? stuffDef : null);
-                            if (thing.def.stackLimit > 1) thing.stackCount = count;
+                            // `count` is a STACK SIZE. Only a stackable def can
+                            // honour it, and this used to leave stackCount at 1
+                            // for everything else while still counting the OP as
+                            // a full success -- 'Wall:10,20,5' spawned one wall
+                            // and said "spawned 1 of 1 requested". The count is
+                            // still applied exactly as before; what changed is
+                            // that the shortfall is now measured below and enters
+                            // the verdict.
+                            //
+                            // NOT clamped to stackLimit on purpose: over-limit
+                            // stacks are long-standing behaviour that callers may
+                            // depend on, and silently dropping goods would be a
+                            // worse bug than the one being fixed. Counted into
+                            // `stacksOverLimit` so it is at least visible.
+                            if (thing.def.stackLimit > 1)
+                            {
+                                thing.stackCount = count;
+                                if (count > thing.def.stackLimit) overLimit++;
+                            }
                             // rot is range-checked at entry rather than trusted here:
                             // Rot4 normalises whatever it is handed, so an out-of-range
                             // value would silently become a DIFFERENT valid rotation
                             // instead of an error -- a wrong-facing door with no
                             // complaint anywhere.
                             GenSpawn.Spawn(thing, cell, map, new Rot4(rot));
-                            if (thing.Spawned) spawned++;
+                            if (thing.Spawned)
+                            {
+                                spawned++;
+                                // Read the RAW field back rather than trusting
+                                // what was written into it a moment ago.
+                                placedThings = thing.stackCount < 1 ? 1 : thing.stackCount;
+                            }
                             else
                             {
+                                // ✅ NOT the absorbed-stack false negative it looks
+                                // like. Checked against 1.6 Verse/GenSpawn.cs on
+                                // 2026-09-02: GenSpawn.Spawn(Thing,...) never
+                                // merges into an existing stack -- it sets
+                                // Position and calls SpawnSetup, and its own
+                                // trailing guard (`if (newThing.Spawned &&
+                                // newThing.stackCount == 0)`) proves it expects
+                                // Spawned to be true on success. Stack absorption
+                                // lives in GenPlace.TryPlaceDirect
+                                // (Verse/GenPlace.cs:335, TryAbsorbStack), which
+                                // this tool does not call. So !Spawned here is a
+                                // real failure and must stay one.
                                 failed++;
                                 if (errors.Count < 10)
                                     errors.Add(new
@@ -698,8 +769,26 @@ namespace JawaBench.BridgeTools
                             }
                         }
 
-                        perDef.TryGetValue(def.defName, out var n);
-                        perDef[def.defName] = n + 1;
+                        if (placedThings > 0)
+                        {
+                            thingsPlaced += placedThings;
+                            if (placedThings < count)
+                            {
+                                var missing = count - placedThings;
+                                thingsShort += missing;
+                                if (errors.Count < 10)
+                                    errors.Add(new
+                                    {
+                                        op = i, def = def.defName, x = op.X, z = op.Z,
+                                        error = $"asked for {count}, placed {placedThings}: " +
+                                                $"{def.defName} has stackLimit " +
+                                                $"{def.stackLimit} and cannot hold a stack " +
+                                                "that size. Give one op per thing."
+                                    });
+                            }
+                            perDef.TryGetValue(def.defName, out var n);
+                            perDef[def.defName] = n + placedThings;
+                        }
                     }
                     catch (Exception e)
                     {
@@ -713,16 +802,33 @@ namespace JawaBench.BridgeTools
                     }
                 }
 
+                // Fixed 2026-09-02 (opus code review), two ways:
+                //   * outOfBounds incremented a counter and never entered the
+                //     verdict, so ten ops with five off-map returned success.
+                //   * a stack request the def could not hold (thingsShort) was
+                //     invisible: the op succeeded, so the call read as clean.
+                var ok = failed == 0 && outOfBounds == 0 && thingsShort == 0 && spawned > 0;
                 return new
                 {
-                    success = failed == 0 && spawned > 0,
+                    success = ok,
                     message =
-                        $"Spawned {spawned} of {parsed.Count} requested" +
+                        $"Placed {thingsPlaced} thing(s) of {thingsRequested} requested " +
+                        $"across {spawned} of {parsed.Count} op(s)" +
                         (failed > 0 ? $", {failed} failed" : "") +
-                        (outOfBounds > 0 ? $", {outOfBounds} outside the map" : "") + ".",
+                        (thingsShort > 0
+                            ? $", {thingsShort} NOT PLACED (stack too large for the def)"
+                            : "") +
+                        (outOfBounds > 0 ? $", {outOfBounds} outside the map" : "") +
+                        (overLimit > 0
+                            ? $", {overLimit} stack(s) written ABOVE their stackLimit"
+                            : "") + ".",
                     opsRequested = parsed.Count,
                     spawned,
                     failed,
+                    thingsRequested,
+                    thingsPlaced,
+                    thingsShort,
+                    stacksOverLimit = overLimit,
                     cellsOutOfBounds = outOfBounds,
                     perDef = perDef.OrderByDescending(kv => kv.Value)
                                    .Take(12).ToDictionary(kv => kv.Key, kv => kv.Value),
@@ -1074,7 +1180,15 @@ namespace JawaBench.BridgeTools
                 "Placing a plant through an ordinary spawn gives you a sprout at growth 0 — " +
                 "this sets the growth stage too, which is the difference between a seedling " +
                 "and a tree. ops format 'PlantDef:x,z,w,h' separated by ';'. Use plantDef " +
-                "'CLEAR' (or clearOnly) to remove vegetation without planting anything.",
+                "'CLEAR' (or clearOnly) to remove vegetation without planting anything. " +
+                "🔴 `clearFirst` CLEARS THE WHOLE RECT, NOT JUST THE CELLS IT REPLANTS. " +
+                "The clear runs before the `density` gate, so density=0.3 with " +
+                "clearFirst=true (the default) wipes 100% of existing vegetation and " +
+                "replants 30% — the rect ends up 30% covered, not 30% ADDED. That is " +
+                "deliberate: it is what makes a re-run idempotent (the same seed repaints " +
+                "the same cells and nothing accumulates), and `cleared` always reports the " +
+                "true number destroyed. Pass clearFirst=false to scatter ADDITIVELY over " +
+                "what is already growing.",
             ResultDescription =
                 "Returns planted / cleared / rejected counts with the reason each cell was " +
                 "rejected. Rejections are real evidence, not noise: a cell whose terrain " +
@@ -1092,13 +1206,19 @@ namespace JawaBench.BridgeTools
             float growth = 1.0f,
             [ToolParameter(Description =
                 "Fraction of cells in each rect to plant, 0..1. 1 fills solidly; lower " +
-                "values scatter deterministically from `seed` so a re-run is idempotent.",
+                "values scatter deterministically from `seed` so a re-run is idempotent. " +
+                "⚠️ This gates PLANTING only, never clearing: with clearFirst=true the " +
+                "whole rect is stripped first and this fraction is what grows back.",
                 DefaultValue = 1.0)]
             float density = 1.0f,
             [ToolParameter(Description = "Seed for the density scatter.", DefaultValue = 0)]
             int seed = 0,
             [ToolParameter(Description =
-                "Remove existing plants in each cell before planting.", DefaultValue = true)]
+                "Remove existing plants before planting. 🔴 EVERY cell of the rect, not " +
+                "only the cells `density` selects — the clear happens before the gate. " +
+                "density=0.3 with this on leaves the rect 30% covered having destroyed " +
+                "everything that was there; `cleared` reports how many. false scatters " +
+                "additively and destroys nothing.", DefaultValue = true)]
             bool clearFirst = true)
         {
             if (string.IsNullOrWhiteSpace(ops))
@@ -1172,6 +1292,16 @@ namespace JawaBench.BridgeTools
                             }
                             var cell = new IntVec3(cx, 0, cz);
 
+                            // ORDER IS DELIBERATE, and it is the sharp edge of this
+                            // tool (opus code review 2026-09-02, kept as-is and
+                            // documented instead). The clear runs BEFORE the density
+                            // gate, so density<1 with clearFirst strips the whole
+                            // rect and regrows a fraction. Reversing it would make
+                            // density mean "add to what is there", which is a
+                            // different tool and would break every caller that uses
+                            // this one to THIN vegetation to a target coverage. Both
+                            // Description and the clearFirst parameter say so, and
+                            // `cleared` reports the real number either way.
                             if (clearFirst || clearOnly)
                             {
                                 var here = map.thingGrid.ThingsListAtFast(cell).ToList();
@@ -2725,7 +2855,8 @@ namespace JawaBench.BridgeTools
                 "enclosure, boardability and trap tests: 'walk a pawn there and see' is a " +
                 "whole class of live test, and none of it was runnable before this. " +
                 "⚠️ A paused game cannot move a pawn; unpause=true briefly sets Normal speed " +
-                "and restores the previous speed when done.",
+                "and restores the previous speed when done — including when the wait is " +
+                "cancelled or times out, which is what `speedRestored` reports.",
             ResultDescription =
                 "Per pawn: the start cell, the READ-BACK end cell, arrived, moved, the " +
                 "straight-line distance before and after, canReach computed BEFORE the order, " +
@@ -2819,6 +2950,7 @@ namespace JawaBench.BridgeTools
             var startTicks = 0;
             TimeSpeed speedBefore = TimeSpeed.Paused;
             var speedChanged = false;
+            var speedRestored = false;
 
             var setup = await ctx.MainThread.InvokeAsync<object>(() =>
             {
@@ -2907,155 +3039,198 @@ namespace JawaBench.BridgeTools
             }, cancellationToken).ConfigureAwait(false);
             if (setup != null) return setup;
 
-            // ---- the wait. Polled in game TICKS, not wall clock: the same
-            // 300 ticks is 5 s at Normal and well under 1 s at Ultrafast, so a
-            // fixed Task.Delay would either truncate the walk or waste a minute.
-            var polls = 0;
-            var elapsedMs = 0;
-            var ticksNow = startTicks;
-            var timedOut = false;
-            while (true)
+            // 🔴 THE SPEED MUST COME BACK EVEN WHEN THE CALL DOES NOT.
+            // Fixed 2026-09-02 (opus code review). The restore lived only in
+            // the final InvokeAsync below, and everything between here and it
+            // can throw: ThrowIfCancellationRequested, Task.Delay(ct), and the
+            // InvokeAsync calls themselves all raise on cancellation. A
+            // cancelled wait therefore left the game running at Normal speed
+            // with the caller told nothing -- the campaign clock advancing
+            // because a bridge call was interrupted.
+            try
             {
-                cancellationToken.ThrowIfCancellationRequested();
-                if (ticksNow - startTicks >= waitTicks) break;
-                if (elapsedMs >= timeoutSeconds * 1000) { timedOut = true; break; }
-                await Task.Delay(100, cancellationToken).ConfigureAwait(false);
-                elapsedMs += 100;
-                polls++;
-                ticksNow = await ctx.MainThread.InvokeAsync(
-                    () => TicksGameSafe(),
-                    cancellationToken).ConfigureAwait(false);
-            }
-
-            return await ctx.MainThread.InvokeAsync<object>(() =>
-            {
-                var tm = Find.TickManager;
-                if (speedChanged && tm != null) tm.CurTimeSpeed = speedBefore;
-
-                var rows = new List<object>();
-                var arrived = 0;
-                var moved = 0;
-                var leftDrafted = new List<string>();
-
-                foreach (var pawn in pawns)
+                // ---- the wait. Polled in game TICKS, not wall clock: the same
+                // 300 ticks is 5 s at Normal and well under 1 s at Ultrafast, so a
+                // fixed Task.Delay would either truncate the walk or waste a minute.
+                var polls = 0;
+                var elapsedMs = 0;
+                var ticksNow = startTicks;
+                var timedOut = false;
+                while (true)
                 {
-                    var id = pawn.ThingID;
-                    var start = starts.TryGetValue(id, out var s) ? s : IntVec3.Invalid;
-                    var gone = !pawn.Spawned || pawn.Destroyed;
-                    var end = gone ? IntVec3.Invalid : pawn.Position;
-                    var here = !gone && end == dest;
-                    if (here) arrived++;
-                    if (!gone && end != start) moved++;
-
-                    if (undraftAfter && pawn.drafter != null && pawn.drafter.Drafted)
-                        pawn.drafter.Drafted = false;
-                    if (pawn.drafter != null && pawn.drafter.Drafted) leftDrafted.Add(id);
-
-                    var ok = accepted.TryGetValue(id, out var acc) && acc;
-                    var canGo = reachable.TryGetValue(id, out var r) && r;
-                    var pathDest = (!gone && pawn.pather != null && pawn.pather.Moving)
-                        ? pawn.pather.Destination.Cell
-                        : IntVec3.Invalid;
-
-                    string note = null;
-                    if (gone) note = "Pawn is no longer spawned on this map.";
-                    else if (here) note = null;
-                    else if (!ok) note =
-                        "TryTakeOrderedJob REFUSED the order. Its only refusal path is " +
-                        "IsCurrentJobPlayerInterruptible: the current job is flagged " +
-                        "playerInterruptible=false, its driver refuses interruption, or the " +
-                        "pawn is on fire.";
-                    else if (!canGo) note =
-                        "Order accepted but the cell was UNREACHABLE when it was issued " +
-                        "(CanReach false). The Goto job was taken and then failed in the " +
-                        "pather — this is exactly the case the accept bool cannot see.";
-                    else if (ticksNow - startTicks <= 0) note =
-                        "The game did not tick. Nothing could move.";
-                    else if (pawn.Downed) note = "Pawn is downed; it cannot walk.";
-                    else if (pawn.pather != null && pawn.pather.Moving) note =
-                        "Still walking — en route, not stalled. Re-read with a larger " +
-                        "waitTicks, or call again with waitTicks=0 to sample the position.";
-                    else note =
-                        "Order accepted, cell reachable, ticks advanced, and the pawn is not " +
-                        "moving. Something ended the job — check the pawn's current job.";
-
-                    var dxS = start.x - dest.x; var dzS = start.z - dest.z;
-                    var dxE = end.x - dest.x;   var dzE = end.z - dest.z;
-                    rows.Add(new
-                    {
-                        id,
-                        name = pawn.LabelShortCap,
-                        kind = pawn.kindDef?.defName,
-                        drafted = pawn.drafter != null && pawn.drafter.Drafted,
-                        hasDrafter = pawn.drafter != null,
-                        requested = new { x = dest.x, z = dest.z },
-                        start = new { x = start.x, z = start.z },
-                        end = gone ? null : new { x = end.x, z = end.z },
-                        arrived = here,
-                        moved = !gone && end != start,
-                        distanceBefore = Math.Round(Math.Sqrt(dxS * dxS + dzS * dzS), 2),
-                        distanceAfter = gone
-                            ? -1.0
-                            : Math.Round(Math.Sqrt(dxE * dxE + dzE * dzE), 2),
-                        canReach = canGo,
-                        orderAccepted = ok,
-                        stillMoving = !gone && pawn.pather != null && pawn.pather.Moving,
-                        pathDestination = pathDest.IsValid
-                            ? new { x = pathDest.x, z = pathDest.z }
-                            : null,
-                        curJob = gone ? null : pawn.CurJobDef?.defName,
-                        downed = !gone && pawn.Downed,
-                        note
-                    });
+                    cancellationToken.ThrowIfCancellationRequested();
+                    if (ticksNow - startTicks >= waitTicks) break;
+                    if (elapsedMs >= timeoutSeconds * 1000) { timedOut = true; break; }
+                    await Task.Delay(100, cancellationToken).ConfigureAwait(false);
+                    elapsedMs += 100;
+                    polls++;
+                    ticksNow = await ctx.MainThread.InvokeAsync(
+                        () => TicksGameSafe(),
+                        cancellationToken).ConfigureAwait(false);
                 }
 
-                var ticksElapsed = ticksNow - startTicks;
-                var where = target != null
-                    ? $"({dest.x},{dest.z}), the interaction cell of {target.LabelShortCap}"
-                    : $"({dest.x},{dest.z})";
-                var msg = $"{arrived}/{rows.Count} pawn(s) standing on {where} after " +
-                          $"{ticksElapsed} tick(s); {moved} moved at all.";
-                if (ticksElapsed <= 0)
-                    msg += " ⚠️ THE GAME DID NOT TICK — nothing here is a movement result. " +
-                           (unpause
-                               ? "Speed was raised but no ticks landed; the game may be " +
-                                 "force-paused (a dialog is open) or not running."
-                               : "Pass unpause=true, or set the speed yourself first.");
-                else if (timedOut)
-                    msg += $" ⚠️ Timed out at {timeoutSeconds}s with only {ticksElapsed} of " +
-                           $"{waitTicks} ticks elapsed.";
-                if (drafterMissing.Count > 0)
-                    msg += $" {drafterMissing.Count} pawn(s) have no drafter and were ordered " +
-                           "undrafted.";
-                if (leftDrafted.Count > 0)
-                    msg += $" ⚠️ LEFT DRAFTED: {string.Join(", ", leftDrafted)}. " +
-                           "Pass undraftAfter=true or undraft them yourself.";
-
-                return new
+                return await ctx.MainThread.InvokeAsync<object>(() =>
                 {
-                    success = rows.Count > 0 && arrived == rows.Count && ticksElapsed > 0,
-                    message = msg,
-                    arrivedCount = arrived,
-                    movedCount = moved,
-                    pawnCount = rows.Count,
-                    destination = new { x = dest.x, z = dest.z },
-                    targetId = target?.ThingID,
-                    targetLabel = target?.LabelShortCap,
-                    targetDef = target?.def?.defName,
-                    pathEndMode = peMode.ToString(),
-                    ticksElapsed,
-                    ticksRequested = waitTicks,
-                    timedOut,
-                    polls,
-                    waitedSeconds = Math.Round(elapsedMs / 1000.0, 1),
-                    speedBefore = speedBefore.ToString(),
-                    speedRestored = speedChanged,
-                    leftDrafted,
-                    noDrafter = drafterMissing,
-                    pawns = rows,
-                    ticksGame = tm?.TicksGame ?? -1
-                };
-            }, cancellationToken).ConfigureAwait(false);
+                    var tm = Find.TickManager;
+                    if (speedChanged && tm != null)
+                    {
+                        tm.CurTimeSpeed = speedBefore;
+                        speedRestored = true;
+                    }
+
+                    var rows = new List<object>();
+                    var arrived = 0;
+                    var moved = 0;
+                    var leftDrafted = new List<string>();
+
+                    foreach (var pawn in pawns)
+                    {
+                        var id = pawn.ThingID;
+                        var start = starts.TryGetValue(id, out var s) ? s : IntVec3.Invalid;
+                        var gone = !pawn.Spawned || pawn.Destroyed;
+                        var end = gone ? IntVec3.Invalid : pawn.Position;
+                        var here = !gone && end == dest;
+                        if (here) arrived++;
+                        if (!gone && end != start) moved++;
+
+                        if (undraftAfter && pawn.drafter != null && pawn.drafter.Drafted)
+                            pawn.drafter.Drafted = false;
+                        if (pawn.drafter != null && pawn.drafter.Drafted) leftDrafted.Add(id);
+
+                        var ok = accepted.TryGetValue(id, out var acc) && acc;
+                        var canGo = reachable.TryGetValue(id, out var r) && r;
+                        var pathDest = (!gone && pawn.pather != null && pawn.pather.Moving)
+                            ? pawn.pather.Destination.Cell
+                            : IntVec3.Invalid;
+
+                        string note = null;
+                        if (gone) note = "Pawn is no longer spawned on this map.";
+                        else if (here) note = null;
+                        else if (!ok) note =
+                            "TryTakeOrderedJob REFUSED the order. Its only refusal path is " +
+                            "IsCurrentJobPlayerInterruptible: the current job is flagged " +
+                            "playerInterruptible=false, its driver refuses interruption, or the " +
+                            "pawn is on fire.";
+                        else if (!canGo) note =
+                            "Order accepted but the cell was UNREACHABLE when it was issued " +
+                            "(CanReach false). The Goto job was taken and then failed in the " +
+                            "pather — this is exactly the case the accept bool cannot see.";
+                        else if (ticksNow - startTicks <= 0) note =
+                            "The game did not tick. Nothing could move.";
+                        else if (pawn.Downed) note = "Pawn is downed; it cannot walk.";
+                        else if (pawn.pather != null && pawn.pather.Moving) note =
+                            "Still walking — en route, not stalled. Re-read with a larger " +
+                            "waitTicks, or call again with waitTicks=0 to sample the position.";
+                        else note =
+                            "Order accepted, cell reachable, ticks advanced, and the pawn is not " +
+                            "moving. Something ended the job — check the pawn's current job.";
+
+                        var dxS = start.x - dest.x; var dzS = start.z - dest.z;
+                        var dxE = end.x - dest.x;   var dzE = end.z - dest.z;
+                        rows.Add(new
+                        {
+                            id,
+                            name = pawn.LabelShortCap,
+                            kind = pawn.kindDef?.defName,
+                            drafted = pawn.drafter != null && pawn.drafter.Drafted,
+                            hasDrafter = pawn.drafter != null,
+                            requested = new { x = dest.x, z = dest.z },
+                            start = new { x = start.x, z = start.z },
+                            end = gone ? null : new { x = end.x, z = end.z },
+                            arrived = here,
+                            moved = !gone && end != start,
+                            distanceBefore = Math.Round(Math.Sqrt(dxS * dxS + dzS * dzS), 2),
+                            distanceAfter = gone
+                                ? -1.0
+                                : Math.Round(Math.Sqrt(dxE * dxE + dzE * dzE), 2),
+                            canReach = canGo,
+                            orderAccepted = ok,
+                            stillMoving = !gone && pawn.pather != null && pawn.pather.Moving,
+                            pathDestination = pathDest.IsValid
+                                ? new { x = pathDest.x, z = pathDest.z }
+                                : null,
+                            curJob = gone ? null : pawn.CurJobDef?.defName,
+                            downed = !gone && pawn.Downed,
+                            note
+                        });
+                    }
+
+                    var ticksElapsed = ticksNow - startTicks;
+                    var where = target != null
+                        ? $"({dest.x},{dest.z}), the interaction cell of {target.LabelShortCap}"
+                        : $"({dest.x},{dest.z})";
+                    var msg = $"{arrived}/{rows.Count} pawn(s) standing on {where} after " +
+                              $"{ticksElapsed} tick(s); {moved} moved at all.";
+                    if (ticksElapsed <= 0)
+                        msg += " ⚠️ THE GAME DID NOT TICK — nothing here is a movement result. " +
+                               (unpause
+                                   ? "Speed was raised but no ticks landed; the game may be " +
+                                     "force-paused (a dialog is open) or not running."
+                                   : "Pass unpause=true, or set the speed yourself first.");
+                    else if (timedOut)
+                        msg += $" ⚠️ Timed out at {timeoutSeconds}s with only {ticksElapsed} of " +
+                               $"{waitTicks} ticks elapsed.";
+                    if (drafterMissing.Count > 0)
+                        msg += $" {drafterMissing.Count} pawn(s) have no drafter and were ordered " +
+                               "undrafted.";
+                    if (leftDrafted.Count > 0)
+                        msg += $" ⚠️ LEFT DRAFTED: {string.Join(", ", leftDrafted)}. " +
+                               "Pass undraftAfter=true or undraft them yourself.";
+
+                    return new
+                    {
+                        success = rows.Count > 0 && arrived == rows.Count && ticksElapsed > 0,
+                        message = msg,
+                        arrivedCount = arrived,
+                        movedCount = moved,
+                        pawnCount = rows.Count,
+                        destination = new { x = dest.x, z = dest.z },
+                        targetId = target?.ThingID,
+                        targetLabel = target?.LabelShortCap,
+                        targetDef = target?.def?.defName,
+                        pathEndMode = peMode.ToString(),
+                        ticksElapsed,
+                        ticksRequested = waitTicks,
+                        timedOut,
+                        polls,
+                        waitedSeconds = Math.Round(elapsedMs / 1000.0, 1),
+                        speedBefore = speedBefore.ToString(),
+                        speedRestored,
+                        leftDrafted,
+                        noDrafter = drafterMissing,
+                        pawns = rows,
+                        ticksGame = tm?.TicksGame ?? -1
+                    };
+                }, cancellationToken).ConfigureAwait(false);
+            }
+            finally
+            {
+                // Only if the normal path did not already do it. CancellationToken
+                // is deliberately NOT passed: this runs precisely when the caller's
+                // token is already cancelled, and handing it in would refuse the
+                // one call that has to land.
+                if (speedChanged && !speedRestored)
+                {
+                    try
+                    {
+                        await ctx.MainThread.InvokeAsync(() =>
+                        {
+                            var tmRestore = Find.TickManager;
+                            if (tmRestore != null) tmRestore.CurTimeSpeed = speedBefore;
+                            return 0;
+                        }).ConfigureAwait(false);
+                    }
+                    catch (Exception ex)
+                    {
+                        // Nowhere left to report it -- the response is already gone or
+                        // never coming. The log is the only surface, and silence here
+                        // would be the exact defect this block exists to fix.
+                        Log.Warning("[JawaBench] jawa/order_pawn could not restore game " +
+                                    "speed to " + speedBefore + " after an interrupted " +
+                                    "wait: " + ex.GetType().Name + ": " + ex.Message);
+                    }
+                }
+            }
         }
 
         // ---- jawa/world_stats ------------------------------------------------
@@ -4532,6 +4707,19 @@ namespace JawaBench.BridgeTools
         /// without a reload. Terrain lives in the map mesh, which is cached per
         /// section, so an unrefreshed cell can be correct in the grid and still
         /// look untouched on screen.</summary>
+        // ✅ TERRAIN-ONLY IS CORRECT, and a review has now raised this twice.
+        // set_roof_batch calls this for its `refresh` parameter and this dirties
+        // only MapMeshFlagDefOf.Terrain, which looks like roof changes never
+        // redraw. They do: checked against 1.6 Verse/RoofGrid.cs:90-104 on
+        // 2026-09-02, RoofGrid.SetRoof SELF-DIRTIES --
+        //     map.mapDrawer.MapMeshDirty(c, MapMeshFlagDefOf.Roofs);
+        //     map.glowGrid.DirtyCell(c);
+        //     map.regionGrid.GetValidRegionAt_NoRebuild(c)?.District
+        //         .Notify_RoofChanged();
+        // -- inside the `if (roofGrid[...] != def)` guard, i.e. on exactly the
+        // cells set_roof_batch changes (it skips before==want itself). So the
+        // Roofs flag, the light grid and the district are all already handled by
+        // the engine and adding .Roofs here would be redundant, not a fix.
         private static void RefreshRect(Map map, int x, int z, int width, int height)
         {
             var drawer = map.mapDrawer;
@@ -6482,7 +6670,8 @@ namespace JawaBench.BridgeTools
             ResultDescription =
                 "Returns success, path, tiles, and the neighbour counts seen - a geodesic " +
                 "sphere must show exactly 12 tiles with 5 neighbours and the rest with 6, " +
-                "which is a self-check on the dump.")]
+                "which is a self-check on the dump. A write that fails is reported as a " +
+                "failure with the reason, never as an unhandled throw.")]
         public static async Task<object> WorldNeighbors(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -6490,22 +6679,31 @@ namespace JawaBench.BridgeTools
                 "Output CSV path. Absolute path recommended; its directory is created.")]
             string path = null)
         {
-            return await ctx.MainThread.InvokeAsync(() =>
+            // PHASE 1 / PHASE 2, same split as jawa/world_tile_export and for the
+            // same reason (opus code review 2026-09-02: this tool formatted and
+            // wrote ~120,000 rows INSIDE InvokeAsync, holding the main thread for
+            // the whole disk write, and with no try/catch around it -- a full disk
+            // or a bad path threw out of the main-thread pump instead of returning
+            // a refusal). Only the grid READ needs the main thread. Formatting the
+            // rows and pushing them at a disk touches no game state, so the main
+            // thread is released first and the simulation and renderer keep going.
+            var gathered = await ctx.MainThread.InvokeAsync<object>(() =>
             {
                 if (Find.World == null || Find.WorldGrid == null)
                     return Fail("No world is loaded. Load or generate a world first.");
 
                 var grid = Find.WorldGrid;
                 int count = grid.TilesCount;
-                var outPath = string.IsNullOrEmpty(path)
-                    ? Path.Combine(GenFilePaths.SaveDataFolderPath, "world_neighbors.csv")
-                    : path;
-                var dir = Path.GetDirectoryName(outPath);
-                if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
-                    Directory.CreateDirectory(dir);
+                if (count <= 0) return Fail($"World grid reports {count} tiles.");
 
-                var sb = new StringBuilder();
-                sb.Append("tile,n0,n1,n2,n3,n4,n5\n");
+                // A flat int[] rather than a list of lists: 119,904 tiles x 6 is
+                // one 2.9 MB allocation instead of 120,000 small ones, and every
+                // allocation made in here is a tick the simulation does not get.
+                // -1 fills the sixth slot of a pentagon, exactly as before.
+                var flat = new int[(long)count * 6 > int.MaxValue ? 0 : count * 6];
+                if (flat.Length == 0)
+                    return Fail($"World grid reports {count} tiles, too many to dump.");
+
                 // 1.6 replaced the bare int tile id with RimWorld.Planet.PlanetTile
                 // (the world is layered now - surface, orbit - so a tile carries its
                 // layer). The compiler caught this; nothing here was guessed.
@@ -6513,31 +6711,95 @@ namespace JawaBench.BridgeTools
                 var degrees = new Dictionary<int, int>();
                 for (int i = 0; i < count; i++)
                 {
+                    if ((i & 1023) == 0) cancellationToken.ThrowIfCancellationRequested();
                     buf.Clear();
                     grid.GetTileNeighbors(i, buf);
                     int d = buf.Count;
                     degrees[d] = degrees.TryGetValue(d, out var had) ? had + 1 : 1;
-                    sb.Append(i.ToString(CultureInfo.InvariantCulture));
                     for (int k = 0; k < 6; k++)
-                    {
-                        sb.Append(',');
-                        sb.Append((k < d ? buf[k].tileId : -1).ToString(CultureInfo.InvariantCulture));
-                    }
-                    sb.Append('\n');
+                        flat[i * 6 + k] = k < d ? buf[k].tileId : -1;
                 }
-                File.WriteAllText(outPath, sb.ToString());
 
-                return (object)new
+                return new NeighborHarvest
                 {
-                    success = true,
-                    path = outPath,
-                    tiles = count,
-                    degrees = degrees.OrderBy(kv => kv.Key)
-                                     .Select(kv => new { neighbours = kv.Key, tiles = kv.Value })
-                                     .ToList(),
-                    ticksGame = TicksGameSafe(),
+                    Count = count,
+                    Flat = flat,
+                    Degrees = degrees,
                 };
-            });
+            }, cancellationToken).ConfigureAwait(false);
+
+            // Fail() passes straight through: it is the only other thing phase 1
+            // can return, and re-wrapping it would lose its message.
+            if (!(gathered is NeighborHarvest harvest)) return gathered;
+
+            // PHASE 2 - resolve the path, format, write. No game state below.
+            string outPath;
+            try
+            {
+                outPath = string.IsNullOrEmpty(path)
+                    ? Path.Combine(GenFilePaths.SaveDataFolderPath, "world_neighbors.csv")
+                    : path;
+                var dir = Path.GetDirectoryName(outPath);
+                if (!string.IsNullOrEmpty(dir) && !Directory.Exists(dir))
+                    Directory.CreateDirectory(dir);
+            }
+            catch (Exception ex)
+            {
+                return Fail($"Could not resolve output path: {ex.Message}", new { path });
+            }
+
+            long bytes;
+            try
+            {
+                // Streamed, not built into one giant string first: the old
+                // StringBuilder held the whole ~2 MB file in memory and then
+                // File.WriteAllText copied it again.
+                using (var sw = new StreamWriter(outPath, false, new UTF8Encoding(false), 1 << 20))
+                {
+                    sw.Write("tile,n0,n1,n2,n3,n4,n5\n");
+                    var flat = harvest.Flat;
+                    for (int i = 0; i < harvest.Count; i++)
+                    {
+                        if ((i & 1023) == 0) cancellationToken.ThrowIfCancellationRequested();
+                        sw.Write(i.ToString(CultureInfo.InvariantCulture));
+                        for (int k = 0; k < 6; k++)
+                        {
+                            sw.Write(',');
+                            sw.Write(flat[i * 6 + k].ToString(CultureInfo.InvariantCulture));
+                        }
+                        sw.Write('\n');
+                    }
+                }
+                bytes = new FileInfo(outPath).Length;
+            }
+            catch (Exception ex)
+            {
+                return Fail($"Write failed: {ex.Message}", new { path = outPath });
+            }
+
+            return new
+            {
+                success = true,
+                message = $"Wrote neighbour ordering for {harvest.Count} tiles to {outPath}.",
+                path = outPath,
+                tiles = harvest.Count,
+                bytesWritten = bytes,
+                degrees = harvest.Degrees.OrderBy(kv => kv.Key)
+                                 .Select(kv => new { neighbours = kv.Key, tiles = kv.Value })
+                                 .ToList(),
+                ticksGame = await ctx.MainThread.InvokeAsync(
+                    () => TicksGameSafe()).ConfigureAwait(false),
+            };
+        }
+
+        // What jawa/world_neighbors' phase 1 hands to phase 2. Neighbours are a
+        // flat int[] of 6 per tile (-1 padding the twelve pentagons) so the whole
+        // grid is one allocation made on the main thread rather than 120,000.
+        private sealed class NeighborHarvest
+        {
+            public int Count;
+            public int[] Flat;
+            public Dictionary<int, int> Degrees;
         }
 
         private static int TicksGameSafe() =>
