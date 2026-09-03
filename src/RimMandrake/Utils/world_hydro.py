@@ -275,8 +275,12 @@ def systems(flow, g, recv, water, playa, lake, elev, nb):
     for term, members in mouths.items():
         peak = max(flow[m] for m in members)
         nxt = int(recv[term])
+        # the trace loop above stops the INSTANT it sees water/lake ahead, so
+        # `term` is the shoreline tile just upstream of it - the water/lake
+        # flag to check is on `nxt`, not `term`. playa is the exception: a
+        # playa is the dying tile itself, so that check stays on `term`.
         kind = ("ocean" if (nxt >= 0 and water[nxt]) else
-                "lake" if lake[term] else
+                "lake" if (nxt >= 0 and lake[nxt]) else
                 "salt" if playa[term] else "land")
         out.append((peak, len(members), kind, term))
     out.sort(reverse=True)
@@ -326,7 +330,7 @@ def render(elev, water, rain, g, playa, lake, V, nb, size=520, pad=14):
         for lvl in (1, 2, 3):
             sub[gg == lvl] = RIVER_COL[lvl]
         sub[playa[near]] = (232, 226, 206)          # salt
-        sub[lake[near]] = (44, 92, 168) if False else (46, 96, 172)
+        sub[lake[near]] = (46, 96, 172)
         tile[inside] = sub
         img[y0:y0 + size, x0:x0 + size] = tile
     out[0:H] = img
