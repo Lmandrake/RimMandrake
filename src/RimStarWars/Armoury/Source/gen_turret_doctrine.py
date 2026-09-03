@@ -31,7 +31,7 @@ turret_normalization_v1.md. Roster: canon.yml turrets.official_roster.
 
 Shared-projectile trap (armoury lesson #1): a projectile or DamageDef used by
 anything that is NOT this turret's gun is never patched in place — it gets a
-cloned def (Jawa_TD_<turret>) and the gun is retargeted at the clone.
+cloned def (RSW_Jawa_TD_<turret>) and the gun is retargeted at the clone.
 
 Declarer trap (armoury lesson #2): every in-place write goes to the def's OWN
 raw element. A node the def does not declare itself is Added into its own
@@ -352,7 +352,7 @@ def main():
             proj_write(em, ds, turret, prec, per_shot, radius, retype, xtag=ptag)
         else:
             # clone, bake values in, retarget this gun only
-            new_name = "Jawa_TD_" + turret
+            new_name = "RSW_Jawa_TD_" + turret
             c = clone_def(prec, new_name)
             ok = set_child(c, "projectile", "damageAmountBase", per_shot)
             if radius is not None:
