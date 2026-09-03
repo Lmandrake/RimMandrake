@@ -9,11 +9,16 @@ namespace RimMandrake.Ninefold
     // event-driven deltas, the fickle-Mood random walk, the ritual scoring,
     // and ALL voice narration -- pure read/compute/text. No live mutation."
     //
-    // This class ships the VECTOR + BAND LADDER + MOOD WALK only. It does
-    // NOT ship: the five event hooks, first-contact chains, or narrator
-    // corpus letters (NINEFOLD_ENGINE_M0_1's other named pieces) -- those
-    // need real event-binding research and owner-reviewed voice text, not a
-    // solo pass. See infrastructure/state/items/NINEFOLD_ENGINE_M0_1.md.
+    // This class ships the VECTOR + BAND LADDER + MOOD WALK, and the five
+    // Harmony-patched event hooks (Patch_*.cs, this same assembly) bind real
+    // RimWorld choke points to its ApplyDelta. It does NOT ship: first-
+    // contact chains or narrator corpus letters (NINEFOLD_ENGINE_M0_1's other
+    // named pieces) -- those need real event-binding research and owner-
+    // reviewed voice text, not a solo pass. Corrected 2026-09-02, re-review
+    // pass: this comment used to say the event hooks were NOT shipped, which
+    // stopped being true the moment they were fixed and compiled the same
+    // day but nobody updated the one comment every reader of this class sees
+    // first. See infrastructure/state/items/NINEFOLD_ENGINE_M0_1.md.
     public class GameComponent_Ninefold : GameComponent
     {
         // Satiation: -100..100, signed, free-floating, moves ONLY by

@@ -39,13 +39,16 @@ approval; owner redlines live text" — an explicit owner-review step).
 - Builds clean (0 warnings, 0 errors), deployed, added to `ModsConfig.xml`.
 
 **Explicitly NOT done:**
-- Mood-walk amplitudes are a first-pass encoding of §2's qualitative
-  personality column (Ishko "steady, low-amplitude" through Zizzik
-  "high-amplitude... never trust his calm"), not measured — §10 itself
-  defers real tuning to a throwaway-save test rig.
-- The five event hooks, first-contact chains, and corpus letters are
-  NOT built. Building the letters solo would mean finalizing voice text
-  the item's own spec reserves for the owner's redline pass.
+- Mood-walk amplitudes AND event magnitudes are a first-pass encoding of
+  §2's qualitative personality column (Ishko "steady, low-amplitude"
+  through Zizzik "high-amplitude... never trust his calm"), not measured —
+  §10 itself defers real tuning to a throwaway-save test rig.
+- First-contact chains and corpus letters are NOT built. Building the
+  letters solo would mean finalizing voice text the item's own spec
+  reserves for the owner's redline pass. **The five event hooks ARE now
+  built** (see the resolved-collision note below) — corrected 2026-09-02,
+  this line used to say they weren't, which stopped being true the same
+  day.
 - No live proof yet that the GameComponent actually attaches and ticks —
   owed to the next restart, same as this session's other new mods.
 
@@ -56,33 +59,26 @@ item can now target `mandrake.rm.ninefold`'s `Source/` directly.
 
 Left `doing`, not closed.
 
-## 🔴 LIVE WRITE COLLISION, 2026-09-02 — DO NOT BUILD OR COMMIT `Source/` UNTIL RESOLVED
+## Event hooks: built, reviewed, fixed — see NINEFOLD_ENGINE_M0_1's own state above
 
-A FOUNDRY-dispatched subagent found TWO independent, concurrent, uncommitted
-implementations of the five event hooks sitting in
-`src/RimMandrake/Ninefold/Source/` at the same time, both wiring a Harmony
-instance with the SAME id `mandrake.rm.ninefold`:
+The write collision this section used to describe (two concurrent
+implementations of the five event hooks, "Convention A" top-level
+`Patch_*.cs` files vs. "Convention B" `Hooks/` subfolder, both wiring a
+Harmony instance under the same id) is resolved: Convention A survived,
+Convention B was deleted, `Ninefold.csproj` lists each surviving file
+exactly once, and the tree has built and compiled clean multiple times
+since. `Ninefold/Source/` is safe to build, deploy and commit.
 
-- **Convention A** (top-level files, ~15:30-15:32): `NinefoldMod.cs`
-  (`[StaticConstructorOnStartup]`, `harmony.PatchAll(...)`),
-  `EventMagnitude.cs`, and five `Patch_*.cs` files
-  (`Patch_BuildingDeconstructed`, `Patch_MentalBreakStarted`,
-  `Patch_ResearchCompleted`, `Patch_BirthOutcome`, `Patch_BuildingRepaired`).
-- **Convention B** (`Hooks/` subfolder, ~15:33): `NinefoldHarmonyInit.cs`
-  (also `[StaticConstructorOnStartup]`, also `new Harmony("mandrake.rm.ninefold")`)
-  + `NinefoldEventHooks.cs`, apparently covering the same five choke points.
-
-If both land, the same Harmony id patches the same methods twice — every
-hook fires twice per event (double satiation deltas on every
-birth/mental-break/research/deconstruct/repair). `Ninefold.csproj` and
-`GameComponent_Ninefold.cs` are also mid-edit, uncommitted, presumably by
-whichever side is wiring the surviving convention in.
-
-**Nobody has touched or deleted either side.** Per this project's own
-"don't delete suspected duplicates mid-flight" rule, resolving this needs
-whoever owns each side (or BENCH/owner, since this is two seats' work
-colliding) to pick ONE convention, delete the other, confirm
-`Ninefold.csproj` lists each surviving file exactly once, and do a clean
-build before anyone calls the event-hook slice done. **Do not build, deploy,
-or commit anything under `Ninefold/Source/` until this is settled** — a
-build right now tests an inconsistent, half-landed tree and proves nothing.
+Two full-file opus code reviews have since run against this same Source/
+tree (2026-09-02): the first found and fixed 7 real bugs (a Scribe
+ordering bug that silently lost all save state, a missing Harmony
+dependency declaration, a research-hook multi-fire bug, stale
+documentation, unconditional debug logging, a band-boundary asymmetry,
+a silent-discard-on-mismatch bug); the second (a fresh re-review, not a
+diff review) found the band-boundary fix from the first pass was itself
+wrong in the opposite direction and corrected it, plus 3 more stale-
+documentation defects (this file included) that asserted the event hooks
+weren't built after they were. Per `CLAUDE.md`'s "Code isn't clean until
+a review says so" — this file set is not yet marked clean in
+`infrastructure/state/CODE_REVIEW_STATUS.json`; it needs one more
+full-file pass with zero findings before it earns that.
