@@ -31,7 +31,15 @@ public class JobDriver_EnterKoltoTank : JobDriver
             void Action()
             {
                 actor.DeSpawn();
-                pod.TryAcceptThing(actor);
+                // Building_KoltoTank.TryAcceptThing refuses (power off, out of
+                // kolto, or another pawn beat this one in) AFTER the DeSpawn
+                // above already removed the actor from the map - a discarded
+                // false here leaves the pawn held by no ThingOwner and on no
+                // map, permanently.
+                if (!pod.TryAcceptThing(actor))
+                {
+                    GenSpawn.Spawn(actor, pod.Position, pod.Map);
+                }
             }
             if (!pod.def.building.isPlayerEjectable)
             {

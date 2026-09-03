@@ -12,11 +12,17 @@ namespace JumppackForMeleeAI;
 [HarmonyPatch(typeof(JobGiver_AIFightEnemy), "TryGiveJob")]
 public static class Patch_JobGiver_AIFightEnemy
 {
-    public static int patchCount;
-
     [HarmonyTranspiler]
     private static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator generator)
     {
+        // LOCAL, not a static field: Harmony re-runs every transpiler on a
+        // target method whenever any mod adds a further patch to it later
+        // (ordinary for JobGiver_AIFightEnemy.TryGiveJob, which combat/AI
+        // mods routinely touch). A static counter left at 2 from the first
+        // run would skip the melee injection entirely on the second run AND
+        // disable the "< 2" failure warning below that exists to catch
+        // exactly this.
+        int patchCount = 0;
         List<CodeInstruction> list = instructions.ToList();
         MethodInfo isMeleeAttackGetter = AccessTools.Method(typeof(VerbProperties), "get_IsMeleeAttack");
         MethodInfo localTargetInfoImplicit = AccessTools.Method(typeof(LocalTargetInfo), "op_Implicit", new[] { typeof(Thing) });

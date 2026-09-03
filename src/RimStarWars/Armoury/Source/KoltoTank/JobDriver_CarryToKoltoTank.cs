@@ -52,7 +52,15 @@ public class JobDriver_CarryToKoltoTank : JobDriver
         {
             initAction = delegate
             {
-                DropPod.TryAcceptThing(Takee);
+                // TryAcceptThing can still refuse here (power cut / kolto ran dry
+                // between the float-menu offer and arrival) even though
+                // DropPod.Accepts(Takee) passed earlier - Accepts does not check
+                // power or fuel. A discarded false silently ends the job with the
+                // patient still in the carrier's arms and no drop.
+                if (!DropPod.TryAcceptThing(Takee))
+                {
+                    pawn.carryTracker.TryDropCarriedThing(pawn.Position, ThingPlaceMode.Near, out _);
+                }
             },
             defaultCompleteMode = ToilCompleteMode.Instant
         };

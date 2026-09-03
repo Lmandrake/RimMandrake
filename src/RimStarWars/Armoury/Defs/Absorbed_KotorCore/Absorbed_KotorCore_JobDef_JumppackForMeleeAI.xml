@@ -18,8 +18,8 @@
 
   <JobDef>
     <defName>CastJumpOnce</defName>
-    <!--driverClass>JumppackForMeleeAI.JobDriver_CastJumpOnce</driverClass>
-    <allowOpportunisticPrefix>false</allowOpportunisticPrefix-->
+    <driverClass>JumppackForMeleeAI.JobDriver_CastJumpOnce</driverClass>
+    <allowOpportunisticPrefix>false</allowOpportunisticPrefix>
   </JobDef>
 
 </Defs>
