@@ -39,6 +39,11 @@
     "date": "2026-09-02",
     "sha": "14ea427e"
   },
+  "src/RimMandrake/Utils/cast_to_xml.py": {
+    "cleanCount": 1,
+    "date": "2026-09-02",
+    "sha": "69ea9703"
+  },
   "src/RimMandrake/Utils/cherrypicker_swap.py": {
     "date": "2026-09-02",
     "sha": "d1c193ae"
@@ -62,10 +67,20 @@
     "date": "2026-09-02",
     "sha": "58b4dab3"
   },
+  "src/RimMandrake/Utils/genome_matrix_build.py": {
+    "cleanCount": 1,
+    "date": "2026-09-02",
+    "sha": "3569bca9"
+  },
   "src/RimMandrake/Utils/grade_authored_kinds_trial.py": {
     "cleanCount": 1,
     "date": "2026-09-02",
     "sha": "1a7b3aa1"
+  },
+  "src/RimMandrake/Utils/harvest_log.py": {
+    "cleanCount": 1,
+    "date": "2026-09-02",
+    "sha": "d92ee4cc"
   },
   "src/RimMandrake/Utils/modlist_swap.py": {
     "date": "2026-09-02",
@@ -86,6 +101,16 @@
     "date": "2026-09-02",
     "sha": "9249d7d3"
   },
+  "src/RimMandrake/Utils/research_manifest_validate.py": {
+    "cleanCount": 1,
+    "date": "2026-09-02",
+    "sha": "57d19e08"
+  },
+  "src/RimMandrake/Utils/rimplace/luaenv.py": {
+    "cleanCount": 1,
+    "date": "2026-09-02",
+    "sha": "3569bca9"
+  },
   "src/RimMandrake/Utils/rimplace/plan.py": {
     "cleanCount": 1,
     "date": "2026-09-02",
@@ -100,6 +125,11 @@
     "cleanCount": 1,
     "date": "2026-09-02",
     "sha": "1a7b3aa1"
+  },
+  "src/RimMandrake/Utils/selftest_frozen_dumps.py": {
+    "cleanCount": 1,
+    "date": "2026-09-02",
+    "sha": "83437c48"
   },
   "src/RimMandrake/Utils/selftest_pit_logic.py": {
     "cleanCount": 1,
@@ -121,15 +151,40 @@
     "date": "2026-09-02",
     "sha": "58b4dab3"
   },
+  "src/RimMandrake/Utils/weapon_tag_audit.py": {
+    "cleanCount": 1,
+    "date": "2026-09-02",
+    "sha": "69ea9703"
+  },
   "src/RimMandrake/Utils/xenotype_size_audit.py": {
     "cleanCount": 1,
     "date": "2026-09-02",
     "sha": "c3f8e8ea"
   },
+  "src/RimMandrake/rimflow/render.py": {
+    "cleanCount": 1,
+    "date": "2026-09-02",
+    "sha": "d92ee4cc"
+  },
+  "src/RimMandrake/rimflow/selftest_cli.py": {
+    "cleanCount": 1,
+    "date": "2026-09-02",
+    "sha": "d92ee4cc"
+  },
   "src/RimStarWars/Armoury/Source/gen_additionalmods_absorption.py": {
     "cleanCount": 1,
     "date": "2026-09-02",
     "sha": "ee0b3ad6"
+  },
+  "src/RimStarWars/Armoury/Source/gen_armour_patch.py": {
+    "cleanCount": 1,
+    "date": "2026-09-02",
+    "sha": "69ea9703"
+  },
+  "src/RimStarWars/Armoury/Source/gen_armoury_patch.py": {
+    "cleanCount": 1,
+    "date": "2026-09-02",
+    "sha": "d92ee4cc"
   },
   "src/RimStarWars/Armoury/Source/gen_jds_armory_absorption.py": {
     "cleanCount": 1,
