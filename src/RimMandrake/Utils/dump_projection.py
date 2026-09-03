@@ -95,10 +95,32 @@ def sqlite_path(dump_root: str) -> str | None:
     for base in cands:
         cand = os.path.join(base, "defs.sqlite")
         if os.path.isfile(cand):
+            if not _sqlite_usable(cand):
+                continue        # stray/corrupt file, not the real db - keep looking
             if _sqlite_describes(cand, root):
                 return cand
             return None            # stale -> caller falls back to the capture's JSON
     return None
+
+
+def _sqlite_usable(path: str) -> bool:
+    """Is this actually an openable defs.sqlite, not a stray or truncated file?
+
+    🔴 MEASURED 2026-09-03: a capture folder carried a 0-byte `defs.sqlite`.
+    SQLite reads a zero-length file as a valid, empty database, so it passed
+    `os.path.isfile` and `_sqlite_describes` (which swallows the resulting
+    "no such table: provenance" as "no provenance to contradict" and returns
+    True) and got handed back as the real db. Every caller then crashed with
+    `OperationalError: no such table: defs/def_tags` instead of falling back
+    to the capture's JSON. Reject anything that cannot answer the cheapest
+    real query before it is ever treated as a candidate.
+    """
+    try:
+        with _connect(path) as conn:
+            conn.execute("select 1 from defs limit 1")
+        return True
+    except Exception:
+        return False
 
 
 _WARNED = set()
