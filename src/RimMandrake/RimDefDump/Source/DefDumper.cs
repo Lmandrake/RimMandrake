@@ -181,6 +181,14 @@ namespace RimMandrake.RimDefDump
             string root = Path.Combine(GenFilePaths.SaveDataFolderPath, FolderName);
             bool dumpAll = mode == "all";
 
+            // A marker holding "ALL_DEFS", "full" or a typo used to fall through to
+            // the animals-only pass without a word. The manifest records `mode`
+            // verbatim so nothing downstream is poisoned, but the person who asked
+            // for every def deserves to be told they did not get them.
+            if (mode != "all" && mode != "animals")
+                Log.Warning("[RimMandrake.RimDefDump] unrecognised mode '" + mode + "' — the only modes are "
+                            + "'all' and 'animals'. Running the ANIMALS-ONLY pass; defs/ will not be written.");
+
             DateTime now = DateTime.UtcNow;
             CapturedUtc = now.ToString("yyyy-MM-ddTHH:mm:ssZ");
             string captureId = now.ToString("yyyy-MM-ddTHH-mm-ssZ");
@@ -424,10 +432,12 @@ namespace RimMandrake.RimDefDump
                 // rather than assuming defs/AbilityDef.json is it.
                 w.Name("defTypes");
                 w.StartArray();
+                int publishedTypes = 0;
                 for (int i = 0; i < typeEntries.Count; i++)
                 {
                     DefTypeEntry e = typeEntries[i];
                     if (e.file == null) continue;
+                    publishedTypes++;
                     w.StartObject();
                     w.Prop("name", e.type.Name);
                     w.Prop("fullName", e.type.FullName);
@@ -444,7 +454,11 @@ namespace RimMandrake.RimDefDump
                 w.StartArray();
                 for (int i = 0; i < collisions.Count; i++) w.Str(collisions[i]);
                 w.EndArray();
-                w.Prop("defTypeCount", typeEntries.Count);
+                // The number of types that actually LANDED IN A FILE — equal to the
+                // length of the defTypes array above, never the count of types merely
+                // seen. A type that failed is in defTypeWriteFailures instead, so
+                // defTypeCount + defTypeWriteFailures.length = types found.
+                w.Prop("defTypeCount", publishedTypes);
 
                 // A type whose write threw mid-file is correctly ABSENT from
                 // both defCounts and defTypes above — there is no file to point
@@ -480,11 +494,17 @@ namespace RimMandrake.RimDefDump
             // move stats around, so a null here is data, not an error.
             var stats = new List<StatDef>();
             var statNames = new List<string>();
+            var statsMissing = new List<string>();
             for (int i = 0; i < AnimalStats.Length; i++)
             {
                 StatDef sd = DefDatabase<StatDef>.GetNamedSilentFail(AnimalStats[i]);
                 if (sd != null) { stats.Add(sd); statNames.Add(AnimalStats[i]); }
+                else statsMissing.Add(AnimalStats[i]);
             }
+            if (statsMissing.Count > 0)
+                Log.Warning("[RimMandrake.RimDefDump] " + statsMissing.Count + " of " + AnimalStats.Length
+                            + " AnimalStats did not resolve and are absent from every animal's stats object: "
+                            + string.Join(", ", statsMissing.ToArray()));
 
             List<PawnKindDef> allKinds = DefDatabase<PawnKindDef>.AllDefsListForReading;
 
@@ -493,6 +513,20 @@ namespace RimMandrake.RimDefDump
                 var w = new JsonWriter(sw, IndentBulkFiles);
                 w.StartObject();
                 w.Prop("capturedUtc", CapturedUtc);
+
+                // ⛔ Which of AnimalStats resolved, and which did not. A StatDef this mod
+                // set does not have is simply ABSENT from every animal's `stats` object,
+                // and an absent key reads downstream as "not applicable" — identical to a
+                // stat the dumper failed to look up. Naming the misses is the only thing
+                // that separates them. Same rule as PropOrError.
+                w.Name("statsResolved");
+                w.StartArray();
+                for (int i = 0; i < statNames.Count; i++) w.Str(statNames[i]);
+                w.EndArray();
+                w.Name("statsMissing");
+                w.StartArray();
+                for (int i = 0; i < statsMissing.Count; i++) w.Str(statsMissing[i]);
+                w.EndArray();
 
                 // --- animals -------------------------------------------------
                 int nAnimals = 0;
@@ -591,6 +625,10 @@ namespace RimMandrake.RimDefDump
                 // guesses at conflicts. Here the game has already merged them,
                 // so this list settles what actually spawns where.
                 int nPairs = 0;
+                var biomeFailures = new List<string>();
+                // Resolve the reflection field BEFORE the loop, so the flag written after
+                // it means "the dumper could look" even when there are zero biomes.
+                bool declaredReadable = EnsureWildAnimalsField();
                 w.Name("biomeAnimals");
                 w.StartArray();
                 List<BiomeDef> biomes = DefDatabase<BiomeDef>.AllDefsListForReading;
@@ -602,6 +640,10 @@ namespace RimMandrake.RimDefDump
                     catch (Exception ex)
                     {
                         Log.Warning("[RimMandrake.RimDefDump] biome " + b.defName + " AllWildAnimals threw: " + ex.Message);
+                        // ⛔ Without this the biome contributes zero rows and biomeCount
+                        // still counts it, so a reader sees "this biome has no wild
+                        // animals" where the truth is "the dumper could not ask".
+                        biomeFailures.Add(b.defName + ": " + ex.GetType().Name + ": " + ex.Message);
                         continue;
                     }
                     // The record's own field, so a reader can tell what the DEF SAYS from
@@ -653,6 +695,18 @@ namespace RimMandrake.RimDefDump
                 }
                 w.EndArray();
 
+                // The biomes that produced NO rows because the engine threw, not because
+                // they hold no animals. biomeCount counts them; biomeAnimals does not.
+                w.Name("biomeFailures");
+                w.StartArray();
+                for (int i = 0; i < biomeFailures.Count; i++) w.Str(biomeFailures[i]);
+                w.EndArray();
+
+                // false ⇒ every commonalityDeclared in this file is null because the
+                // dumper could not read BiomeDef.wildAnimals, NOT because nothing
+                // declares a commonality. UNMEASURED is not 0.
+                w.Prop("commonalityDeclaredReadable", declaredReadable);
+
                 w.Prop("animalCount", nAnimals);
                 w.Prop("corpseDefsSkipped", nCorpsesSkipped);
                 w.Prop("biomeCount", biomes.Count);
@@ -665,7 +719,9 @@ namespace RimMandrake.RimDefDump
                 Log.Message("[RimMandrake.RimDefDump] animals=" + nAnimals
                             + " (skipped " + nCorpsesSkipped + " generated corpse defs)"
                             + " biomes=" + biomes.Count
-                            + " biomeAnimalPairs=" + nPairs);
+                            + " (" + biomeFailures.Count + " threw and produced no rows)"
+                            + " biomeAnimalPairs=" + nPairs
+                            + " statsMissing=" + statsMissing.Count);
             }
         }
 
@@ -707,7 +763,12 @@ namespace RimMandrake.RimDefDump
         private static FieldInfo wildAnimalsField;
         private static bool wildAnimalsFieldResolved;
 
-        private static Dictionary<PawnKindDef, float> DeclaredWildAnimals(BiomeDef b)
+        /// <summary>
+        /// Resolve the field once. Returns whether it CAN be read, which animals.json
+        /// publishes as `commonalityDeclaredReadable` — a false there is the difference
+        /// between "nothing declares a commonality" and "the dumper could not look".
+        /// </summary>
+        private static bool EnsureWildAnimalsField()
         {
             if (!wildAnimalsFieldResolved)
             {
@@ -719,7 +780,12 @@ namespace RimMandrake.RimDefDump
                                 + "commonalityDeclared will be null for every row. The field was "
                                 + "renamed or made public; fix DeclaredWildAnimals().");
             }
-            if (wildAnimalsField == null) return null;
+            return wildAnimalsField != null;
+        }
+
+        private static Dictionary<PawnKindDef, float> DeclaredWildAnimals(BiomeDef b)
+        {
+            if (!EnsureWildAnimalsField()) return null;
 
             var list = wildAnimalsField.GetValue(b) as IList;
             if (list == null) return null;
@@ -761,6 +827,10 @@ namespace RimMandrake.RimDefDump
         //                           "<FullName>.json". Ties break on
         //                           core-assembly-first, then ordinal FullName,
         //                           so the mapping is deterministic across runs.
+        // Stem still taken       -> "<stem>__<assembly>.json". Every stem is claimed
+        //                           case-insensitively against one set, because NTFS
+        //                           folds case and a namespace-less type's FullName IS
+        //                           its Name — two more routes to one file, one winner.
         // manifest.json gains a "defTypes" array giving fullName, assembly,
         // file and count for every type, and "defTypeCollisions" naming the
         // groups, so a reader can always find where a type actually landed.
@@ -805,9 +875,31 @@ namespace RimMandrake.RimDefDump
                 catch (Exception ex)
                 {
                     Log.Warning("[RimMandrake.RimDefDump] cannot enumerate " + defType.FullName + ": " + ex.Message);
+                    // ⛔ A type dropped HERE never reaches entries, so it is absent from
+                    // defCounts, from defTypes and from defs/ alike — indistinguishable
+                    // from a type that was never a def type at all. Same rule as the
+                    // pass-2 failures below: a gap gets reported, never left to look
+                    // like an absence.
+                    writeFailures.Add(new DefTypeWriteFailure
+                    {
+                        typeFullName = defType.FullName,
+                        file = null,
+                        error = "count: " + ex.GetType().Name + ": " + ex.Message,
+                    });
                     continue;
                 }
-                if (n < 0) continue;
+                if (n < 0)
+                {
+                    Log.Warning("[RimMandrake.RimDefDump] " + defType.FullName
+                                + " exposes neither DefCount nor AllDefs; nothing can be written for it");
+                    writeFailures.Add(new DefTypeWriteFailure
+                    {
+                        typeFullName = defType.FullName,
+                        file = null,
+                        error = "count: DefDatabase<T> exposes neither DefCount nor AllDefs",
+                    });
+                    continue;
+                }
                 entries.Add(new DefTypeEntry
                 {
                     type = defType,
@@ -829,12 +921,26 @@ namespace RimMandrake.RimDefDump
                 group.Add(entries[i]);
             }
 
-            foreach (KeyValuePair<string, List<DefTypeEntry>> kv in byName)
+            // 🔑 Stems are claimed against ONE reserved set, not per group, because a
+            // per-group assignment cannot see two ways two types still end up in one file:
+            //   * NTFS is CASE-INSENSITIVE. Two def types whose simple names differ only
+            //     in case fall into two different groups and would both claim
+            //     "<Name>.json" — one file, one winner, silently: exactly the overwrite
+            //     this whole scheme was written to stop.
+            //   * A def type declared in NO namespace has FullName == Name, so the loser
+            //     of its own collision group would be handed the stem the winner holds.
+            // Groups are walked in ordinal key order so the mapping stays deterministic
+            // across runs, which is the property the tie-breaks below exist for.
+            var assignedStems = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            var groupKeys = new List<string>(byName.Keys);
+            groupKeys.Sort(StringComparer.Ordinal);
+
+            foreach (string key in groupKeys)
             {
-                List<DefTypeEntry> group = kv.Value;
+                List<DefTypeEntry> group = byName[key];
                 if (group.Count == 1)
                 {
-                    group[0].file = kv.Key + ".json";
+                    group[0].file = ReserveStem(assignedStems, key, group[0], collisions) + ".json";
                     continue;
                 }
 
@@ -848,11 +954,12 @@ namespace RimMandrake.RimDefDump
                 var names = new List<string>();
                 for (int i = 0; i < group.Count; i++)
                 {
-                    group[i].file = (i == 0 ? kv.Key : SafeFileName(group[i].type.FullName)) + ".json";
+                    string stem = i == 0 ? key : SafeFileName(group[i].type.FullName);
+                    group[i].file = ReserveStem(assignedStems, stem, group[i], collisions) + ".json";
                     names.Add(group[i].type.FullName + "=" + group[i].count + "->" + group[i].file);
                 }
-                collisions.Add(kv.Key + ": " + string.Join(", ", names.ToArray()));
-                Log.Warning("[RimMandrake.RimDefDump] def type name collision — " + kv.Key + ": "
+                collisions.Add(key + ": " + string.Join(", ", names.ToArray()));
+                Log.Warning("[RimMandrake.RimDefDump] def type name collision — " + key + ": "
                             + string.Join(", ", names.ToArray()));
             }
 
@@ -867,9 +974,16 @@ namespace RimMandrake.RimDefDump
                 catch (Exception ex)
                 {
                     Log.Warning("[RimMandrake.RimDefDump] cannot enumerate " + defType.FullName + ": " + ex.Message);
+                    RecordTypeSkipped(writeFailures, entry, "enumerate: " + ex.GetType().Name + ": " + ex.Message);
                     continue;
                 }
-                if (defs == null) continue;
+                if (defs == null)
+                {
+                    Log.Warning("[RimMandrake.RimDefDump] " + defType.FullName
+                                + " exposes no readable AllDefs; no file written");
+                    RecordTypeSkipped(writeFailures, entry, "enumerate: DefDatabase<T>.AllDefs is not readable");
+                    continue;
+                }
 
                 int n = 0;
                 string path = Path.Combine(dir, entry.file);
@@ -909,16 +1023,7 @@ namespace RimMandrake.RimDefDump
                         Log.Warning("[RimMandrake.RimDefDump] also failed deleting the partial "
                                     + path + ": " + delEx.Message);
                     }
-                    writeFailures.Add(new DefTypeWriteFailure
-                    {
-                        typeFullName = defType.FullName,
-                        file = entry.file,
-                        error = ex.GetType().Name + ": " + ex.Message,
-                    });
-                    // No file exists for this type any more — WriteManifest already
-                    // skips e.file == null entries, so this keeps defTypes from
-                    // reporting a file (and a stale pass-1 count) that isn't real.
-                    entry.file = null;
+                    RecordTypeSkipped(writeFailures, entry, ex.GetType().Name + ": " + ex.Message);
                     continue;
                 }
                 entry.count = n;
@@ -931,6 +1036,47 @@ namespace RimMandrake.RimDefDump
 
             Log.Message("[RimMandrake.RimDefDump] wrote " + counts.Count + " def-type files to " + dir
                         + " (" + collisions.Count + " simple-name collisions disambiguated)");
+        }
+
+        /// <summary>
+        /// Claim a unique file stem, CASE-INSENSITIVELY, so no two def types can ever
+        /// share a file. Returns <paramref name="stem"/> untouched in the ordinary case —
+        /// every existing reader of defs/ThingDef.json is unaffected — and only a genuine
+        /// clash gets an assembly suffix, which is written into `defTypeCollisions` so a
+        /// reader is never left guessing which type a file holds.
+        /// </summary>
+        private static string ReserveStem(HashSet<string> assigned, string stem,
+                                          DefTypeEntry e, List<string> collisions)
+        {
+            if (assigned.Add(stem)) return stem;
+
+            string asm = SafeFileName(e.type.Assembly.GetName().Name);
+            string candidate = stem + "__" + asm;
+            for (int i = 2; !assigned.Add(candidate); i++) candidate = stem + "__" + asm + "_" + i;
+
+            collisions.Add(stem + ": file stem already claimed — " + e.type.FullName
+                           + " -> " + candidate + ".json");
+            Log.Warning("[RimMandrake.RimDefDump] def-type file stem '" + stem + "' was already claimed; "
+                        + e.type.FullName + " goes to " + candidate + ".json instead of overwriting it");
+            return candidate;
+        }
+
+        /// <summary>
+        /// A type that reached pass 2 and produced no file.
+        /// ⛔ Clearing <c>entry.file</c> is the load-bearing half: WriteManifest skips a
+        /// null-file entry, so without it `defTypes` advertises a file that does not exist
+        /// carrying pass 1's count — the manifest claiming more than the capture holds.
+        /// </summary>
+        private static void RecordTypeSkipped(List<DefTypeWriteFailure> writeFailures,
+                                              DefTypeEntry entry, string error)
+        {
+            writeFailures.Add(new DefTypeWriteFailure
+            {
+                typeFullName = entry.type.FullName,
+                file = entry.file,
+                error = error,
+            });
+            entry.file = null;
         }
 
         /// <summary>

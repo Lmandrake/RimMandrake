@@ -143,6 +143,7 @@ collision, not an absence.
 |---|---|
 | simple name is unique (517 of 532) | `<Name>.json`, exactly as before — every existing reader of `defs/ThingDef.json` is unaffected |
 | simple name collides | the type holding the **most defs** keeps `<Name>.json`; the others get `<FullName>.json`, e.g. `VFECore.Abilities.AbilityDef.json` |
+| the stem is *still* taken | `<stem>__<assembly>.json`. Stems are claimed **case-insensitively** against one set, because NTFS folds case and a namespace-less type's `FullName` **is** its `Name` — two more routes to two types in one file |
 
 Ties break core-assembly-first, then ordinal `FullName`, so the mapping is
 deterministic run to run. Every def-type file now also carries
@@ -154,6 +155,20 @@ deterministic run to run. Every def-type file now also carries
 - `defTypeCollisions` — the groups, named loudly.
 - `defCounts` is now keyed on the **file stem**, so it can no longer report one
   type's count under another type's name.
+- `defTypeWriteFailures` — every type that produced **no file**, with the error:
+  one that could not be counted, one whose `DefDatabase<T>` exposed no `AllDefs`,
+  and one whose write threw partway (its partial file is deleted). ⛔ Without this
+  a vanished type and a type that was never a def type read identically.
+- `defTypeCount` is the number of types that actually **landed in a file** — the
+  length of `defTypes`. `defTypeCount + defTypeWriteFailures.length` = types found.
+
+`animals.json` carries the same distinction for its own gaps: `statsResolved` /
+`statsMissing` (a `StatDef` that did not resolve is absent from every animal's
+`stats` object, which would otherwise read as "not applicable"), `biomeFailures`
+(a biome whose `AllWildAnimals` threw contributes no rows yet still counts in
+`biomeCount`), and `commonalityDeclaredReadable` — **false means every
+`commonalityDeclared` is null because `BiomeDef.wildAnimals` could not be
+reflected**, not because nothing declares a commonality.
 
 ## How the reflector survives the live object graph
 
