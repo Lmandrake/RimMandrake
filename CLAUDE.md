@@ -74,6 +74,17 @@ Explicit paths, never `git add -A`/`.`/`-a` (hook-enforced). Push immediately af
 committing; rejected push → `git pull --rebase`, never `--force`. Never a file over
 ~50 MB.
 
+## Code isn't clean until a review says so
+
+- **A file that has not been reviewed clean is dirty**, no matter how many fixes
+  it's had. A fixed finding is not the same as a reviewed-clean file — re-review
+  after every fix, not just once.
+- **Diff-scoped (incremental) review is only valid after the whole file has come
+  back clean from a full review at least once.** Before that first clean pass,
+  review the whole file — never just the diff.
+- The exit condition is a review pass with zero significant findings, not "a
+  review happened."
+
 ## What is where
 
 ```
