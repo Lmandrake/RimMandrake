@@ -424,62 +424,6 @@ D = {
 }
 
 # ---------------------------------------------------------------------------
-data = json.loads(re.search(r'^const DATA = (\[.*\]);$',
-                            HTML.read_text(encoding="utf-8"), re.M).group(1))
-
-names = {r["defName"] for r in data}
-missing = sorted(names - set(D))
-extra   = sorted(set(D) - names)
-if missing or extra:
-    print("MISSING (%d): %s" % (len(missing), missing[:40]))
-    print("EXTRA   (%d): %s" % (len(extra), extra[:40]))
-    sys.exit(1)
-
-whitelisted, rejected, notes, items = [], [], {}, {}
-seen = set()
-for r in data:
-    dn = r["defName"]
-    st, note = D[dn]
-    if dn not in seen:
-        seen.add(dn)
-        if st == K: whitelisted.append(dn)
-        elif st == R: rejected.append(dn)
-        if note: notes[dn] = note
-    items[dn] = {"state": "whitelisted" if st == K else "rejected" if st == R else "undecided",
-                 "note": note, "label": r["label"], "mod": r["mod"],
-                 "type": r["type"], "occurrences": r["n"]}
-
-payload = {
-    "posture": "whitelist",
-    "meaning": "ONLY defNames in `whitelisted` may exist on the planet. "
-               "Everything else in `universe` is stripped, whether it was "
-               "rejected on purpose or never looked at.",
-    "source": "PRE-FILLED for the owner to REVIEW, not to decide from scratch. "
-              "Setting: Tatooine-like Star Wars desert world, Jawa scavenger clan fleeing the "
-              "Empire, serious tone save for Jawa slapstick; ~17% ocean, Geonosians present, "
-              "possibly tidally locked. `undecided` here is DELIBERATE: the call is genuinely open.",
-    "world": "prefill",
-    "universeSize": len(data),
-    "whitelistedCount": len(whitelisted),
-    "strippedCount": len(data) - sum(1 for r in data if D[r["defName"]][0] == K),
-    "whitelisted": whitelisted, "rejected": rejected,
-    "notes": notes, "items": items,
-    "universe": [r["defName"] for r in data],
-}
-OUT.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
-
-rows_k = sum(1 for r in data if D[r["defName"]][0] == K)
-rows_r = sum(1 for r in data if D[r["defName"]][0] == R)
-occ = [r for r in data if r["n"] > 0]
-ok = sum(1 for r in occ if D[r["defName"]][0] == K)
-orj = sum(1 for r in occ if D[r["defName"]][0] == R)
-print("rows   %d  keep %d  rej %d  undecided %d" % (len(data), rows_k, rows_r, len(data)-rows_k-rows_r))
-print("uniq   %d  keep %d  rej %d  undecided %d"
-      % (len(seen), len(whitelisted), len(rejected), len(seen)-len(whitelisted)-len(rejected)))
-print("occurs %d  keep %d  rej %d  undecided %d" % (len(occ), ok, orj, len(occ)-ok-orj))
-print("wrote", OUT)
-
-# ---------------------------------------------------------------------------
 # 🔴 THE CONTESTED CALLS. Each of these is defensible both ways, so the note is
 # prefixed with a warning marker and the sheet's "⚠ flagged for review" filter
 # pulls exactly this set. Reviewing these ~20 rows is worth more than skimming
@@ -518,8 +462,72 @@ def apply_flags(decisions):
         if not d:
             continue
         note = d.get("note", "")
-        if note.startswith("\u26a0") or note.startswith("UNSURE"):
+        if note.startswith("⚠") or note.startswith("UNSURE"):
             continue
-        d["note"] = "\u26a0 %s | %s" % (why, note) if note else "\u26a0 %s" % why
+        d["note"] = "⚠ %s | %s" % (why, note) if note else "⚠ %s" % why
         n += 1
     return n
+
+
+# ---------------------------------------------------------------------------
+data = json.loads(re.search(r'^const DATA = (\[.*\]);$',
+                            HTML.read_text(encoding="utf-8"), re.M).group(1))
+
+names = {r["defName"] for r in data}
+missing = sorted(names - set(D))
+extra   = sorted(set(D) - names)
+if missing or extra:
+    print("MISSING (%d): %s" % (len(missing), missing[:40]))
+    print("EXTRA   (%d): %s" % (len(extra), extra[:40]))
+    sys.exit(1)
+
+whitelisted, rejected, notes, items = [], [], {}, {}
+seen = set()
+for r in data:
+    dn = r["defName"]
+    st, note = D[dn]
+    if dn not in seen:
+        seen.add(dn)
+        if st == K: whitelisted.append(dn)
+        elif st == R: rejected.append(dn)
+        if note: notes[dn] = note
+    items[dn] = {"state": "whitelisted" if st == K else "rejected" if st == R else "undecided",
+                 "note": note, "label": r["label"], "mod": r["mod"],
+                 "type": r["type"], "occurrences": r["n"]}
+
+flagged_n = apply_flags(items)
+for dn, it in items.items():
+    if it["note"]:
+        notes[dn] = it["note"]
+
+payload = {
+    "posture": "whitelist",
+    "meaning": "ONLY defNames in `whitelisted` may exist on the planet. "
+               "Everything else in `universe` is stripped, whether it was "
+               "rejected on purpose or never looked at.",
+    "source": "PRE-FILLED for the owner to REVIEW, not to decide from scratch. "
+              "Setting: Tatooine-like Star Wars desert world, Jawa scavenger clan fleeing the "
+              "Empire, serious tone save for Jawa slapstick; ~17% ocean, Geonosians present, "
+              "possibly tidally locked. `undecided` here is DELIBERATE: the call is genuinely open.",
+    "world": "prefill",
+    "universeSize": len(data),
+    "whitelistedCount": len(whitelisted),
+    "strippedCount": len(data) - sum(1 for r in data if D[r["defName"]][0] == K),
+    "whitelisted": whitelisted, "rejected": rejected,
+    "notes": notes, "items": items,
+    "universe": [r["defName"] for r in data],
+}
+OUT.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
+
+rows_k = sum(1 for r in data if D[r["defName"]][0] == K)
+rows_r = sum(1 for r in data if D[r["defName"]][0] == R)
+occ = [r for r in data if r["n"] > 0]
+ok = sum(1 for r in occ if D[r["defName"]][0] == K)
+orj = sum(1 for r in occ if D[r["defName"]][0] == R)
+print("rows   %d  keep %d  rej %d  undecided %d" % (len(data), rows_k, rows_r, len(data)-rows_k-rows_r))
+print("uniq   %d  keep %d  rej %d  undecided %d"
+      % (len(seen), len(whitelisted), len(rejected), len(seen)-len(whitelisted)-len(rejected)))
+print("occurs %d  keep %d  rej %d  undecided %d" % (len(occ), ok, orj, len(occ)-ok-orj))
+print("flagged %d contested calls prefixed with the warning marker" % flagged_n)
+print("wrote", OUT)
+
