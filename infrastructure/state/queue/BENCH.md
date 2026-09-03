@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-03T03:05:25Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-03T03:18:02Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -71,13 +71,3 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  The find this exists to act on: CAI is not the fog. He proposed dropping CAI 5000
 prose:    infrastructure/state/items/FOG_REVIEW_SITTING_WITH_OWNER_1.md
-
-## BRIDGE_TAKE_TOCTOU_AND_EPOCH_SENTINEL_1 bridge take is TOCTOU, and _epoch's 0.0 sentinel forces a distress score on one malformed ts
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     spec, verify and criteria all present
-summary:  Both in src/RimMandrake/rimflow/cli.py.
-prose:    infrastructure/state/items/BRIDGE_TAKE_TOCTOU_AND_EPOCH_SENTINEL_1.md
