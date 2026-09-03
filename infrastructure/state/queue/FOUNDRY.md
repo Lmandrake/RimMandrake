@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-03T03:25:15Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: free
+as-of: 2026-09-03T03:33:11Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -341,15 +341,6 @@ target:   v1
 kind:     bug
 summary:  Bugs:
 prose:    infrastructure/state/items/INHABITED_ROSTER_LIFECYCLE_SWEEP_1.md
-
-## BRIDGE_TERRAINTOOLS_REMAINING_FINDINGS_1 opus review of JawaBenchTerrainTools.cs found 8 more findings beyond the 4 already fixed (destroy_batch, roof pair, coordinate-shift, missing cell caps)
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  Important:
-prose:    infrastructure/state/items/BRIDGE_TERRAINTOOLS_REMAINING_FINDINGS_1.md
 
 ## FLUID_CANAL_FLOOD_TUNING_GAPS_1 opus review found FluidCanals floods are permanent/floor-destroying (undisclosed), can tick forever if boxed in, and MaxFloodDurationTicks is actually a rate divisor not a duration - needs a design pass, not a quick fix
 state:    doing

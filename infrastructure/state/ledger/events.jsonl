@@ -4121,3 +4121,5 @@
 {"seat":"FOUNDRY","event":"claim","id":"DROID_TILES_SOURED_TERRAIN_1","ts":"2026-09-03T03:21:17Z"}
 {"seat":"FOUNDRY","event":"start","id":"DROID_TILES_SOURED_TERRAIN_1","ts":"2026-09-03T03:21:17Z"}
 {"seat":"FOUNDRY","event":"close","id":"QUEUE_ITEM_FILES_DECAY_1","sha":"5190ddcb","ts":"2026-09-03T03:25:15Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"DROIDWORKS_POWEREDDOWN_NOT_WIRED_1 live verify: ion-down a pilot chassis, confirm DW_PoweredDown sticks","ts":"2026-09-03T03:31:35Z"}
+{"seat":"FOUNDRY","event":"close","id":"BRIDGE_TERRAINTOOLS_REMAINING_FINDINGS_1","sha":"03a2adab","ts":"2026-09-03T03:33:11Z"}
