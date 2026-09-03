@@ -495,6 +495,29 @@ def append(ev, path=None):
     return offset
 
 
+def _read_lines(path):
+    # Shared lock, so a reader cannot observe a write mid-flight — append()
+    # takes LOCK_EX for the duration of its write, and this is the reader's
+    # half of that same discipline. Advisory locks only bind other callers
+    # that also take one, which every writer in this module does.
+    fd = os.open(path, os.O_RDONLY)
+    try:
+        try:
+            fcntl.flock(fd, fcntl.LOCK_SH)
+        except OSError:
+            pass  # DrvFs/9p may refuse advisory locks; best-effort.
+        try:
+            with os.fdopen(os.dup(fd), encoding="utf-8") as fh:
+                return fh.readlines()
+        finally:
+            try:
+                fcntl.flock(fd, fcntl.LOCK_UN)
+            except OSError:
+                pass
+    finally:
+        os.close(fd)
+
+
 def read(path=None):
     """-> [event]. A malformed line is REPORTED, never skipped silently.
 
@@ -506,18 +529,37 @@ def read(path=None):
     path = path or EVENTS
     if not os.path.exists(path):
         return out
-    with open(path, encoding="utf-8") as fh:
-        for i, line in enumerate(fh):
-            line = line.strip()
-            if not line:
-                continue
-            try:
-                out.append(json.loads(line))
-            except ValueError as e:
-                raise LedgerError(
-                    "%s line %d is not valid JSON (%s). The ledger is append-only, so "
-                    "this is almost certainly a torn write — do NOT edit around it; "
-                    "look at the tail and repair it deliberately." % (path, i + 1, e))
+    lines = _read_lines(path)
+    for i, line in enumerate(lines):
+        line = line.strip()
+        if not line:
+            continue
+        try:
+            out.append(json.loads(line))
+        except ValueError as e:
+            # The shared lock above rules out a write caught mid-flight for
+            # every OTHER writer in this module, but it cannot see one that
+            # bypassed the lock (a lock refused by the filesystem, or a
+            # future writer that forgets to take it) — and only the LAST
+            # line can ever be a genuinely in-flight append, since this file
+            # is append-only. So: re-read once, but only for a failure on
+            # the tail; a bad line earlier in the file is real corruption,
+            # not a race, and retrying would just hide it behind a random
+            # chance of catching the writer between flock calls.
+            if i == len(lines) - 1:
+                retry = _read_lines(path)
+                if len(retry) > i:
+                    retried = retry[i].strip()
+                    if retried:
+                        try:
+                            out.append(json.loads(retried))
+                            continue
+                        except ValueError:
+                            pass
+            raise LedgerError(
+                "%s line %d is not valid JSON (%s). The ledger is append-only, so "
+                "this is almost certainly a torn write — do NOT edit around it; "
+                "look at the tail and repair it deliberately." % (path, i + 1, e))
     return out
 
 
