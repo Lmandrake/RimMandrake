@@ -98,6 +98,13 @@ namespace JawaBench.BridgeTools
 
             if (width < 1 || height < 1)
                 return Fail($"width and height must be >= 1, got {width}x{height}.");
+            // Fixed 2026-09-02 (opus code review): every batch tool in this file
+            // caps total cells before the main-thread hop (this project has
+            // already lost a colony to a main-thread livelock) - this single-rect
+            // tool had no upper bound at all. A fat-fingered width/height held the
+            // main thread for width*height iterations with nothing to stop it.
+            if ((long)width * height > MaxCells)
+                return Fail($"Too many cells: {(long)width * height} > {MaxCells}. Split the call.");
 
             // Everything below touches the live Map, so all of it runs on the
             // main thread and none of it runs anywhere else.
@@ -767,6 +774,19 @@ namespace JawaBench.BridgeTools
                     .Select(s => s.Trim()), StringComparer.OrdinalIgnoreCase);
             var all = wanted.Contains("All");
 
+            // Fixed 2026-09-02 (opus code review): an unrecognized category token
+            // (e.g. "Buildings" plural, or "Tree") silently matched nothing and
+            // still reported success - validate against the real enum up front,
+            // the same pattern jawa/list_things already uses for ThingRequestGroup.
+            if (!all)
+            {
+                var validNames = Enum.GetNames(typeof(ThingCategory));
+                var bad = wanted.Where(w => !validNames.Contains(w, StringComparer.OrdinalIgnoreCase)).ToList();
+                if (bad.Count > 0)
+                    return Fail($"Not a ThingCategory: {string.Join(", ", bad)}.",
+                        new { valid = validNames });
+            }
+
             List<ParsedOp> parsed;
             var parseErrors = new List<string>();
             if (!TryParseOps(rects, "_", out parsed, parseErrors))
@@ -788,7 +808,7 @@ namespace JawaBench.BridgeTools
                 var size = map.Size;
                 var perCategory = new Dictionary<string, int>();
                 var samples = new List<object>();
-                int destroyed = 0, skippedPawns = 0;
+                int destroyed = 0, skippedPawns = 0, outOfBounds = 0;
                 var seen = new HashSet<IntVec3>();
 
                 foreach (var op in parsed)
@@ -799,7 +819,7 @@ namespace JawaBench.BridgeTools
                         for (var dz = 0; dz < op.H; dz++)
                         {
                             int cx = op.X + dx, cz = op.Z + dz;
-                            if (cx < 0 || cz < 0 || cx >= size.x || cz >= size.z) continue;
+                            if (cx < 0 || cz < 0 || cx >= size.x || cz >= size.z) { outOfBounds++; continue; }
                             var cell = new IntVec3(cx, 0, cz);
                             if (!seen.Add(cell)) continue;      // overlapping rects
 
@@ -825,13 +845,20 @@ namespace JawaBench.BridgeTools
                     }
                 }
 
+                // Fixed 2026-09-02 (opus code review): was unconditional success=true,
+                // so a rect entirely off the map (destroyed=0, cellsExamined=0)
+                // reported the exact same success shape as a real destroy.
+                bool ok = seen.Count > 0 && outOfBounds == 0;
                 return new
                 {
-                    success = true,
-                    message =
-                        $"Destroyed {destroyed} thing(s) across {seen.Count} cell(s)" +
-                        (skippedPawns > 0 ? $"; {skippedPawns} pawn(s) left alone" : "") + ".",
+                    success = ok,
+                    message = ok
+                        ? $"Destroyed {destroyed} thing(s) across {seen.Count} cell(s)" +
+                          (skippedPawns > 0 ? $"; {skippedPawns} pawn(s) left alone" : "") + "."
+                        : $"{outOfBounds} cell(s) were off-map" +
+                          (seen.Count > 0 ? $"; destroyed {destroyed} thing(s) across the remaining {seen.Count} cell(s)" : "; nothing examined") + ".",
                     cellsExamined = seen.Count,
+                    outOfBounds,
                     destroyed,
                     pawnsSkipped = skippedPawns,
                     perCategory,
@@ -1647,17 +1674,39 @@ namespace JawaBench.BridgeTools
             if (!TryParseOps(rect, "_", out parsed, errs) || parsed.Count != 1)
                 return Fail("rect must be a single 'x,z,w,h'.", new { errors = errs });
 
+            // Fixed 2026-09-02 (opus code review): every batch tool in this file
+            // caps total cells before the main-thread hop; this single-rect tool
+            // had none at all.
+            if ((long)parsed[0].W * parsed[0].H > MaxCells)
+                return Fail($"Too many cells: {(long)parsed[0].W * parsed[0].H} > {MaxCells}. Split the call.");
+
             return await ctx.MainThread.InvokeAsync<object>(() =>
             {
                 var map = Find.CurrentMap;
                 if (map == null) return Fail("No current map. Load a game first.");
                 var op = parsed[0];
+                // Fixed 2026-09-02: was unconditional success=true even when
+                // map.mapDrawer is null (RefreshRect no-ops silently in that case)
+                // - the exact "reports success, changed nothing" shape, in a tool
+                // whose only job is this one side effect.
+                if (map.mapDrawer == null)
+                    return Fail("Map has no mapDrawer - nothing was dirtied.");
                 RefreshRect(map, op.X, op.Z, op.W, op.H);
+                var size = map.Size;
+                int inBounds = 0;
+                for (var dx = 0; dx < op.W; dx++)
+                    for (var dz = 0; dz < op.H; dz++)
+                    {
+                        int cx = op.X + dx, cz = op.Z + dz;
+                        if (cx >= 0 && cz >= 0 && cx < size.x && cz < size.z) inBounds++;
+                    }
+                if (inBounds == 0)
+                    return Fail($"The whole {op.W}x{op.H} rect at ({op.X},{op.Z}) is off-map - nothing was dirtied.");
                 return new
                 {
                     success = true,
-                    message = $"Dirtied the map mesh over {op.W}x{op.H} at ({op.X},{op.Z}).",
-                    cells = op.W * op.H
+                    message = $"Dirtied the map mesh over {inBounds} in-bounds cell(s) of {op.W}x{op.H} at ({op.X},{op.Z}).",
+                    cells = inBounds
                 };
             }, cancellationToken).ConfigureAwait(false);
         }
@@ -4138,7 +4187,7 @@ namespace JawaBench.BridgeTools
 
                 var perDef = new Dictionary<string, int>();
                 var errors = new List<object>();
-                int changed = 0, failedVerify = 0, outOfBounds = 0;
+                int changed = 0, failedVerify = 0, outOfBounds = 0, inBounds = 0;
                 var dirty = new HashSet<IntVec3>();
 
                 foreach (var op in parsed)
@@ -4154,6 +4203,7 @@ namespace JawaBench.BridgeTools
                                 outOfBounds++;
                                 continue;
                             }
+                            inBounds++;
 
                             var before = grid.RoofAt(c);
                             if (before == want) continue;   // no-op, and no redraw owed
@@ -4192,11 +4242,17 @@ namespace JawaBench.BridgeTools
                         RefreshRect(map, op.X, op.Z, op.W, op.H);
                 }
 
+                // Fixed 2026-09-02 (opus code review): outOfBounds never entered the
+                // verdict, so a rect entirely off the map (or x/z transposed on a
+                // non-square map) reported success with cellsChanged=0.
+                bool ok = failedVerify == 0 && inBounds > 0;
                 return new
                 {
-                    success = failedVerify == 0,
-                    message = $"Roofed {changed} cell(s) across {parsed.Count} op(s)" +
-                              (failedVerify > 0 ? $", {failedVerify} FAILED VERIFY." : "."),
+                    success = ok,
+                    message = !ok && inBounds == 0
+                        ? $"All {outOfBounds} cell(s) were off-map."
+                        : $"Roofed {changed} cell(s) across {parsed.Count} op(s)" +
+                          (failedVerify > 0 ? $", {failedVerify} FAILED VERIFY." : "."),
                     opsRequested = parsed.Count,
                     cellsChanged = changed,
                     cellsFailedVerify = failedVerify,
@@ -4278,10 +4334,19 @@ namespace JawaBench.BridgeTools
                 foreach (var v in found.Values)
                     if (!distinct.Contains(v)) distinct.Add(v);
 
+                // Fixed 2026-09-02 (opus code review): was unconditional success=true,
+                // matching get_terrain_batch's own bug (fixed alongside) rather than
+                // its sibling jawa/get_terrain_batch's honest success = found.Count > 0.
+                // This pair is documented as a capture/restore pair - an empty
+                // capture that reports success "restores" nothing and reads as a
+                // clean revert.
+                bool ok = found.Count > 0;
                 return new
                 {
-                    success = true,
-                    message = $"Read {found.Count} cell(s), {distinct.Count} distinct roof(s).",
+                    success = ok,
+                    message = ok
+                        ? $"Read {found.Count} cell(s), {distinct.Count} distinct roof(s)."
+                        : $"All {outOfBounds} cell(s) were off-map; nothing read.",
                     ops = RunLengthEncode(found),
                     cellsRead = found.Count,
                     cellsOutOfBounds = outOfBounds,
@@ -4397,7 +4462,14 @@ namespace JawaBench.BridgeTools
                     continue;
                 }
 
-                var nums = coordPart.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries);
+                // Fixed 2026-09-02 (opus code review): RemoveEmptyEntries silently
+                // collapsed an empty field ("10,,3,4") into 3 numbers instead of 4,
+                // shifting every field after the gap - z became 3, w became 4, h
+                // defaulted to 1, and the whole thing parsed and verified "clean" at
+                // the wrong position/size. StringSplitOptions.None + int.TryParse
+                // failing on "" turns that into the parse error it always should
+                // have been.
+                var nums = coordPart.Split(new[] { ',' }, StringSplitOptions.None);
                 if (nums.Length < 2 || nums.Length > 4)
                 {
                     if (errors.Count < 10)
