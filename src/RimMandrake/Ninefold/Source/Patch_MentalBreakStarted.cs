@@ -25,9 +25,14 @@ namespace RimMandrake.Ninefold
     // (▲Zizzik, ↓Mob'Unloo -- a bond damaged, not this hook's pair), so both
     // are excluded here rather than double-counted under the wrong gods.
     // `BreakStateDefs` is built once from every `MentalBreakDef.mentalState`
-    // in the database, which is exactly the set of states a real break can
-    // start (as opposed to manhunter/panic-flee/social-fighting, none of
-    // which is a `MentalBreakDef`).
+    // in the database, which covers every real break EXCEPT the ones that
+    // drive a `workerClass` instead of a `mentalState` -- `Catatonic` is the
+    // one reachable by a player humanlike (`RunWild` is animal-only, already
+    // excluded by the Humanlike filter below). `MentalBreakWorker_Catatonic.
+    // TryStart` never calls `TryStartMentalState` at all (it applies
+    // `HediffDefOf.CatatonicBreakdown` directly and returns true
+    // unconditionally), so it needs its own patch below rather than a
+    // `BreakStateDefs` entry.
     //
     // Filtered to the player's own humanlike colonists only -- a wild
     // animal's manhunter state or a hostile raider's berserk is not the
@@ -48,14 +53,41 @@ namespace RimMandrake.Ninefold
         {
             if (!__result) return;
             if (stateDef == null || !BreakStateDefs.Contains(stateDef)) return;
-            if (___pawn == null || !___pawn.RaceProps.Humanlike) return;
-            if (___pawn.Faction != Faction.OfPlayer) return;
+
+            MentalBreakUtility.ApplyBreakDelta(___pawn, stateDef.defName);
+        }
+    }
+
+    // `MentalBreakWorker_Catatonic.TryStart` bypasses `TryStartMentalState`
+    // entirely (Verse.AI/MentalBreakWorker_Catatonic.cs:16-21) -- a direct
+    // `AddHediff(HediffDefOf.CatatonicBreakdown)` with an unconditional
+    // `return true`. Patched separately (not via the base virtual
+    // `MentalBreakWorker.TryStart`, which every `mentalState`-carrying break
+    // also runs through and would double-count).
+    [HarmonyPatch(typeof(MentalBreakWorker_Catatonic), nameof(MentalBreakWorker_Catatonic.TryStart))]
+    public static class Patch_CatatonicBreakStarted
+    {
+        [HarmonyPostfix]
+        public static void Postfix(bool __result, Pawn pawn)
+        {
+            if (!__result) return;
+
+            MentalBreakUtility.ApplyBreakDelta(pawn, "Catatonic");
+        }
+    }
+
+    internal static class MentalBreakUtility
+    {
+        public static void ApplyBreakDelta(Pawn pawn, string breakLabel)
+        {
+            if (pawn == null || !pawn.RaceProps.Humanlike) return;
+            if (pawn.Faction != Faction.OfPlayer) return;
 
             GameComponent_Ninefold comp = GameComponent_Ninefold.Instance;
             if (comp == null) return;
 
             comp.ApplyDelta(God.Zizzik, EventMagnitude.Large,
-                "mental break: " + ___pawn.LabelShortCap + " -> " + stateDef.defName);
+                "mental break: " + pawn.LabelShortCap + " -> " + breakLabel);
         }
     }
 }
