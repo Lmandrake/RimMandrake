@@ -93,3 +93,30 @@ succeeded 0/0, deployed clean. Commit-mismatch resolved
 steps 2-4 from the note above (form a caravan, confirm pawn-by-id/name
 resolution, the `TravelCompanions` live-text check, the negative-case spot
 check).
+
+## 2026-09-03 (FOUNDRY) — live-verified, core fix proven; TravelCompanions text check still blocked on tooling
+
+On a trimmed quicktest list (Core/Harmony/Biotech/Droidworks/IonWeapons/Bridge —
+no Caravan Adventures), formed a caravan of 2 colonists via `jawa/caravan_create`
+(`Thing_Human283`, `Thing_Human289`). `jawa/pawn_thoughts` on the now off-map
+caravan member:
+
+- By id (`Thing_Human283`): succeeds, reads real thoughts (`NewColonyOptimism`,
+  `Expectations`) — this exact call refused before the fix.
+- By name (`Blas`): succeeds identically.
+- Negative case (`NoSuchPawnXYZ123`): still refuses cleanly, and the refusal
+  message now correctly names BOTH pools searched ("15 pawns are spawned, 20
+  are world pawns") — no regression in the not-found shape.
+
+**Core criterion met**: a caravan pawn's thoughts are readable via the bridge
+without dissolving the caravan first.
+
+**Still genuinely blocked, not done here**: the `TravelCompanions`-specific
+live-text check needs Caravan Adventures active, which this trimmed list
+doesn't carry — that's the DLC/workshop-mod-owned row this item said to close
+"alongside this one if it passes," and it's a different, still-open check
+(`PAWN_FLAVOR_SILENT_NONAPPLY_1`/`PAWN_FLAVOR_PHASE2_APPLY_1`), not this
+item's own scope. Not closing those.
+
+Cleaned up: killed the test process, restored `ModsConfig.xml` (589 mods,
+confirmed on disk after exit), released the bridge.
