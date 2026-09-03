@@ -4305,3 +4305,6 @@
 {"seat":"FOUNDRY","event":"claim","id":"DEFDUMP_ONDEMAND_BRIDGE_UNREACHABLE_1","ts":"2026-09-03T22:20:34Z"}
 {"seat":"FOUNDRY","event":"start","id":"DEFDUMP_ONDEMAND_BRIDGE_UNREACHABLE_1","ts":"2026-09-03T22:20:34Z"}
 {"seat":"FOUNDRY","event":"close","id":"DEFDUMP_ONDEMAND_BRIDGE_UNREACHABLE_1","sha":"0b68b28c","ts":"2026-09-03T22:23:43Z"}
+{"seat":"FOUNDRY","event":"claim","id":"VANILLA_COUNT_PSEUDO_DEF_1","ts":"2026-09-03T22:44:01Z"}
+{"seat":"FOUNDRY","event":"start","id":"VANILLA_COUNT_PSEUDO_DEF_1","ts":"2026-09-03T22:44:02Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-03T22:45:38Z"}

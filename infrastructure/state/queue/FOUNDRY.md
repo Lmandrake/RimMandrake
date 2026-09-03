@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-03T22:23:43Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-03T22:45:38Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -360,6 +360,15 @@ kind:     task
 summary:  Measured 2026-09-03 on the 20-mod minimal list, dev quicktest map. The
 prose:    infrastructure/state/items/FLUID_CANAL_DEBUG_SURFACE_1.md
 
+## VANILLA_COUNT_PSEUDO_DEF_1 A mod writes vanilla count-class pseudo-defs (MealSimple10/Chemfuel60/Steel75/Silver120/ComponentIndustrial12) as defNames instead of Def+count
+state:    doing
+row:      unassigned
+needs:    harvest
+target:   v1
+kind:     bug
+summary:  VANILLACOUNTPSEUDODEF1
+prose:    infrastructure/state/items/VANILLA_COUNT_PSEUDO_DEF_1.md
+
 ## DIRTY_CODE_REVIEW_LOOP_RESTART_4 resume standing code-review sweep after next agent reboot
 state:    doing
 row:      unassigned
@@ -453,14 +462,4 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## VANILLA_COUNT_PSEUDO_DEF_1 A mod writes vanilla count-class pseudo-defs (MealSimple10/Chemfuel60/Steel75/Silver120/ComponentIndustrial12) as defNames instead of Def+count
-state:    proposed
-row:      unassigned
-needs:    harvest
-target:   v1
-kind:     bug
-thin:     spec, verify and criteria all present
-summary:  Identify which mod/file emits these five (or more — the harvest only sampled)
-prose:    infrastructure/state/items/VANILLA_COUNT_PSEUDO_DEF_1.md
+_none._
