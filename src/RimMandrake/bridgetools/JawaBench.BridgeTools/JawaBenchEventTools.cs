@@ -1206,7 +1206,24 @@ namespace JawaBench.BridgeTools
                          "Classic_DrumParty and Classic_DanceParty survive; Festival, Trial, Conversion and the rest do not.)"));
 
                 Pawn org = null;
-                if (!string.IsNullOrEmpty(organizer)) { string e2; org = FindPawn(organizer, out e2); }
+                if (!string.IsNullOrEmpty(organizer))
+                {
+                    // Fixed 2026-09-03 (opus follow-up review): FindPawn's error was
+                    // DISCARDED and the code fell through to "pick any colonist", so a
+                    // typo'd organizer ran the ritual under a different pawn at a
+                    // different cell and reported success with that pawn's name. The
+                    // identical defect was fixed twice in JawaBenchPawnTools.cs, and
+                    // jawa/social_gathering_start in this same file already Fail(e2)s.
+                    string e2; org = FindPawn(organizer, out e2);
+                    if (org == null) return Fail(e2);
+                    // FindPawn now also reaches world pawns and pawns held in caskets,
+                    // vats and loaded pods. Their Position is stale or (0,0,0) and their
+                    // Map is null, so target below would be a cell nobody stands on and
+                    // TryExecuteOn would build the lord on the wrong map.
+                    if (!org.Spawned || org.Map != map)
+                        return Fail("'" + organizer + "' resolved to " + org.LabelShort +
+                                    ", who is not spawned on the current map, so there is no cell to hold the ritual at.");
+                }
                 if (org == null) org = map.mapPawns.FreeColonistsSpawned.FirstOrDefault();
                 if (org == null) return Fail("No free colonist to organise it.");
 
@@ -1248,7 +1265,9 @@ namespace JawaBench.BridgeTools
                     lordsBefore = before, lordsAfter = after,
                     note = after > before
                         ? "Ritual lord created. TryExecuteOn is void, so the lord count is the evidence, not a return value."
-                        : "No new lord appeared - TryExecuteOn fails SILENTLY. Treat this as a failure.",
+                        : "No new lord appeared - TryExecuteOn fails SILENTLY. Its first act is to re-run "
+                          + "CanStartRitualNow with the assignments' forced roles, a stricter check than the one "
+                          + "this tool ran, and it returns without a word when that refuses.",
                     ticksGame = TicksGameSafe(),
                 };
             });
