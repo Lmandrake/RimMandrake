@@ -1355,6 +1355,27 @@ def cmd_bridge(args, seat):
         ev["override"] = (
             "took the bridge with --force while %s still held it" % holder
             if args.force else "took the bridge: %s" % why)
+    # 🔴 RE-DERIVE THE HOLDER RIGHT BEFORE WRITING. `granted` above was decided
+    # against the world `load()` read at the TOP of this function, and nothing
+    # holds a lock across that decision — two windows racing `bridge take` at
+    # the same instant could both see `holder is None`, both compute
+    # `granted=True`, and both append a "taken" event, the exact double-driver
+    # failure this whole mechanism exists to prevent. This does not make the
+    # check-then-write atomic (that needs a lock held across the full decision,
+    # which is a larger change than this review pass should make to the core
+    # ledger primitives) — but it collapses the race window from "the time
+    # between two windows' load() calls" down to "the time between this
+    # re-check and _emit's own write", which is what actually matters: the
+    # loser of the original race now sees the winner's already-recorded event
+    # here and backs off with a clear message, rather than silently colliding.
+    if not args.force:
+        _, w2 = load()
+        fresh_holder = w2.bridge_holder
+        if fresh_holder not in (None, seat) and fresh_holder != holder:
+            die("bridge was just taken by %s (a moment ago) — someone else won this race.\n"
+                "  check again    rimflow bridge who\n"
+                "  cut across it  rimflow bridge take --force --for \"<what for>\""
+                % fresh_holder)
     _emit(ev, w, quiet=True)
     model.write_bridge_file(seat, seat, args.purpose, None,
                             note=("taken from %s: %s" % (holder, why)) if why else None)
