@@ -47,6 +47,11 @@
     "date": "2026-09-03",
     "sha": "453a5c7b"
   },
+  "src/RimMandrake/Utils/gen_races_mod.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "66d742be"
+  },
   "src/RimMandrake/Utils/genome_matrix_build.py": {
     "cleanCount": 1,
     "date": "2026-09-02",
@@ -145,6 +150,11 @@
     "cleanCount": 1,
     "date": "2026-09-02",
     "sha": "b4095fb8"
+  },
+  "src/RimStarWars/Droidworks/Source/gen_droidworks_defs.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "66d742be"
   },
   "src/RimStarWars/KotORBandolierNorthFix/Source/survey_broken_sets.py": {
     "cleanCount": 1,
