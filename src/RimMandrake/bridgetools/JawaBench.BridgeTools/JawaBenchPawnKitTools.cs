@@ -702,6 +702,7 @@ namespace JawaBench.BridgeTools
                     // and TryAdd it, which is exactly what that warning tells you to do.
                     int moved;
                     bool partDestroyed = false;
+                    bool partRescued = false;
                     if (found.Spawned)
                     {
                         var part = found.SplitOff(requested);
@@ -724,9 +725,9 @@ namespace JawaBench.BridgeTools
                             // undestroyed: a genuinely orphaned Thing, while the Fail() below
                             // still said "the container refused it" as if it were findable
                             // somewhere. Check the return; destroy-and-say-so is the fallback.
-                            bool rescued = rescueMap != null
+                            partRescued = rescueMap != null
                                 && GenPlace.TryPlaceThing(part, p.PositionHeld, rescueMap, ThingPlaceMode.Near);
-                            if (!rescued)
+                            if (!partRescued)
                             {
                                 part.Destroy(DestroyMode.Vanish);
                                 partDestroyed = true;
@@ -744,9 +745,21 @@ namespace JawaBench.BridgeTools
                                 "Moved 0 of {0} {1} into {2}'s inventory, AND the split-off portion was " +
                                 "DESTROYED - {2} has no map (fully off-map, no MapHeld) so there was nowhere " +
                                 "to put it back.", requested, found.def.defName, p.LabelShortCap)
-                            : string.Format(
-                                "Moved 0 of {0} {1} into {2}'s inventory - the container refused it " +
-                                "(not acceptable, over capacity, or already there).", requested, found.def.defName, p.LabelShortCap));
+                            : partRescued
+                                // Fixed 2026-09-03 (follow-up review): a rescued part is not
+                                // lost, but the Fail() text below said only "the container
+                                // refused it" with no hint that the item now sits on the
+                                // ground rather than at its original spot - a caller who
+                                // trusted that phrasing could go looking for it back where
+                                // `thing` originally was. Name where it actually landed.
+                                ? string.Format(
+                                    "Moved 0 of {0} {1} into {2}'s inventory - the container refused it, " +
+                                    "so the split-off portion was placed on the ground near {2} ({3}) instead. " +
+                                    "Nothing lost, but it did not end up in the inventory.",
+                                    requested, found.def.defName, p.LabelShortCap, p.PositionHeld)
+                                : string.Format(
+                                    "Moved 0 of {0} {1} into {2}'s inventory - the container refused it " +
+                                    "(not acceptable, over capacity, or already there).", requested, found.def.defName, p.LabelShortCap));
 
                     return new
                     {
