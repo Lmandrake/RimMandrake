@@ -80,3 +80,28 @@ Next launch's Player.log:
 
 Next load's log shows a nonzero character count on the `[RimMandrake.Inhabited]
 ready:` line and no `CharacterDef` resolution errors.
+
+## 2026-09-03 (FOUNDRY) — deployed and live-verified, criteria met
+
+Deployed `Assemblies/Inhabited.dll` (`deploy_custom_mods.py --mod Inhabited --apply`,
+now that the game was down) — `VERIFIED in sync`. Live round on a trimmed
+Core/Harmony/Bridge/Inhabited(+injections) list:
+
+```
+[RimMandrake.Inhabited] ready: 2 patches, 294 characters, 0 places, 0 casts.
+```
+
+**PASS**: 294 characters (matches the regenerated count), zero `Type
+...CharacterDef is not a Def type` errors anywhere in the log. Several
+`Could not resolve cross-reference ... ThingDef named <weapon>` lines remain
+(`DV_MeleeWeapon_SerratedScimitar`, `OuterRim_DLT19HeavyBlasterRifle`, etc.) —
+expected and out of scope: the trimmed test list doesn't carry the weapon-
+donor mods those characters' authored gear references. This item's own
+criteria was specifically about `CharacterDef` TYPE resolution, which is
+fixed; a missing weapon def in a deliberately minimal list is not a
+regression of it.
+
+`0 places, 0 casts` not investigated — outside this item's stated criteria.
+
+Cleaned up: killed the test process, restored `ModsConfig.xml` (589 mods,
+confirmed on disk), released the bridge.
