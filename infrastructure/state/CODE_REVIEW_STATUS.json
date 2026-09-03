@@ -434,6 +434,11 @@
     "date": "2026-09-03",
     "sha": "e5013227"
   },
+  "src/RimMandrake/Utils/ashkarr_paint.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "df166bc9"
+  },
   "src/RimMandrake/Utils/ashkarr_populate.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -832,6 +837,11 @@
     "date": "2026-09-03",
     "sha": "39cd22d5"
   },
+  "src/RimMandrake/Utils/rimplace/luaenv.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "df166bc9"
+  },
   "src/RimMandrake/Utils/rimplace/plan.py": {
     "cleanCount": 1,
     "date": "2026-09-02",
@@ -1081,6 +1091,11 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "af66b41c"
+  },
+  "src/RimMandrake/WreckedMachines/Source/fit_sprite.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "df166bc9"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchArgGuard.cs": {
     "cleanCount": 1,
@@ -1361,6 +1376,11 @@
     "cleanCount": 1,
     "date": "2026-09-02",
     "sha": "69ea9703"
+  },
+  "src/RimStarWars/Armoury/Source/gen_armoury_patch.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "682b62fa"
   },
   "src/RimStarWars/Armoury/Source/gen_jds_armory_absorption.py": {
     "cleanCount": 1,
