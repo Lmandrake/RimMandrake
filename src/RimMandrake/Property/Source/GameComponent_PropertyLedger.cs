@@ -63,6 +63,23 @@ namespace RimMandrake.Property
         {
             if (thing == null || record == null) return;
 
+            // The ledger keys on the Thing INSTANCE. A stackable item does not
+            // preserve instance identity: TryAbsorbStack merges a hauled stack
+            // into a resident one and Destroy()s the hauled Thing (the record
+            // dies with it, then produces the destroyed-key warning this class
+            // already purges for), and SplitOff mints a brand-new Thing with no
+            // ledger entry at all (the split-off half is claim-free). Recording
+            // a claim on a stackable item is therefore unreliable rather than
+            // wrong, and unreliable-but-silent is worse than refused: a claim
+            // basis worth recording (a theft, a purchase) is exactly the kind
+            // of thing a player would notice going missing.
+            if (thing.def.stackLimit > 1 && Prefs.DevMode)
+            {
+                Log.Warning("[RimMandrake.Property] Recording a claim on a stackable Thing (" + thing.def.defName
+                    + ", stackLimit " + thing.def.stackLimit + ") - the claim will be lost on the next stack "
+                    + "merge and will not follow a SplitOff. Known limitation, not yet solved.");
+            }
+
             if (!claimRecords.TryGetValue(thing, out ClaimRecordList list))
             {
                 list = new ClaimRecordList();
@@ -92,9 +109,36 @@ namespace RimMandrake.Property
             return false;
         }
 
+        // Nothing else ever removes a destroyed Thing's key. Without this, a
+        // stolen-and-then-eaten meal (or any claimed Thing that is later
+        // destroyed) keeps its Dictionary<Thing,...> entry forever:
+        // Scribe_References logs a warning saving a reference to a destroyed
+        // thing, and the vanilla dictionary-rebuild on load logs an error and
+        // drops that entry (silently losing the paired record) while keeping
+        // the destroyed Thing rooted in memory in the meantime. Called on the
+        // Saving pass only, before Scribe_Collections.Look runs.
+        private void PurgeDestroyedThingKeys()
+        {
+            List<Thing> dead = null;
+            foreach (Thing t in claimRecords.Keys)
+            {
+                if (t == null || t.Destroyed)
+                {
+                    (dead ??= new List<Thing>()).Add(t);
+                }
+            }
+            if (dead == null) return;
+            foreach (Thing t in dead) claimRecords.Remove(t);
+        }
+
         public override void ExposeData()
         {
             base.ExposeData();
+
+            if (Scribe.mode == LoadSaveMode.Saving)
+            {
+                PurgeDestroyedThingKeys();
+            }
 
             Scribe_Collections.Look(
                 ref claimRecords, "claimRecords", LookMode.Reference, LookMode.Deep,

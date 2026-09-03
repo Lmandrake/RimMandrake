@@ -26,6 +26,7 @@ namespace RimMandrake.Property
                 for (int i = 0; i < records.Count; i++)
                 {
                     ClaimRecord rec = records[i];
+                    if (IsGhost(rec.Claimant)) continue;
                     int age = nowTick - rec.TimestampTicks;
                     float strength = ClaimDecay.EffectiveStrength(rec.InitialStrength, age, recognizability);
                     if (strength <= 0f) continue;
@@ -52,6 +53,19 @@ namespace RimMandrake.Property
 
             return candidates[0];
         }
+
+        // A recorded claim's Pawn/Faction reference can go null after the
+        // record itself survives a save/load - a dead non-colonist raider
+        // Discard()ed from the save, or (in principle) a faction removed
+        // with a mod. Kind still says Pawn/Commons, so without this an
+        // unresolvable claimant becomes a "ghost owner": it scores the
+        // highest Specificity() of any claimant kind, so ClaimEngine picks
+        // it as the winner, and PropertyEngine.IsAuthorized then compares
+        // against it and finds no actor that ever equals it - the thing is
+        // permanently unauthorized to use by anyone.
+        private static bool IsGhost(ClaimantRef c) =>
+            (c.Kind == ClaimantKind.Pawn && c.Pawn == null) ||
+            (c.Kind == ClaimantKind.Commons && c.Faction == null);
 
         private static int Specificity(ClaimantRef c)
         {
