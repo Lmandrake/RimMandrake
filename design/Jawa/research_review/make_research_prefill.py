@@ -30,11 +30,16 @@ import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.abspath(os.path.join(HERE, "..", "..", ".."))
+sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
+from game_paths import LOCALLOW                                    # noqa: E402
+
 TEMPLATE = os.path.expanduser("~/.claude/skills/review-sheets/assets/sheet_template.html")
 MANIFEST = os.path.join(REPO, "infrastructure/output/research_manifest_draft.csv")
-DUMP = ("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/"
-        "RimWorld by Ludeon Studios/DefDump/captures/2026-09-03T06-10-14Z/"
-        "defs/ResearchProjectDef.json")
+# Frozen to this one capture on purpose — the review sheet's ruling must stay pinned
+# to the dump it was built against, never silently drift to whatever DEF_DUMP resolves
+# to next (a newer capture).
+DUMP = os.path.join(LOCALLOW, "DefDump", "captures", "2026-09-03T06-10-14Z",
+                     "defs", "ResearchProjectDef.json")
 SHEET = os.path.join(HERE, "research_manifest_review.html")
 DPATH = os.path.join(HERE, "research_review_decisions.json")
 

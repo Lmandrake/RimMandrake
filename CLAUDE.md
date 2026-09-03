@@ -135,8 +135,12 @@ python3 skills/rimworld-modding/scripts/validate_patch.py <path> --defs ...
 ./bridge [bench|foundry|free]                       OWNER ONLY — bare ./bridge says who has it
 python3 src/RimMandrake/rimflow/cli.py …            the ledger: file/claim/close/drop/verify
 node --check <file.js>                              Node 22 is installed user-local
-for f in $(find src -name selftest_\*.py); do python3 "$f" || echo "FAIL $f"; done
-                                                     run every fast offline selftest before a commit
+python3 src/RimMandrake/Utils/run_selftests.py      run every selftest before a commit — parallel,
+                                                     explicit N/N, never silently truncated
+                                                     (SELFTEST_SWEEP_EXCEEDS_COMMIT_BUDGET_1: the
+                                                     old serial `for` loop exceeded the 120s tool
+                                                     timeout and printed a partial run that read
+                                                     as green)
 ```
 
 ## Options he must LOOK at ship as a savegame — owner, 2026-09-02
