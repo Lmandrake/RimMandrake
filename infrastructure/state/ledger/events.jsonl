@@ -4100,3 +4100,7 @@
 {"seat":"FOUNDRY","event":"claim","id":"HOT_RELOAD_DEFS_BREAKS_PAWNGEN_1","ts":"2026-09-03T03:02:52Z"}
 {"seat":"FOUNDRY","event":"start","id":"HOT_RELOAD_DEFS_BREAKS_PAWNGEN_1","ts":"2026-09-03T03:02:52Z"}
 {"seat":"FOUNDRY","event":"close","id":"HOT_RELOAD_DEFS_BREAKS_PAWNGEN_1","sha":"35bd8278","ts":"2026-09-03T03:03:24Z"}
+{"seat":"FOUNDRY","event":"claim","id":"PAWNKIND_ROSTER_BACKSTORY_DRIFT_1","ts":"2026-09-03T03:03:43Z"}
+{"seat":"FOUNDRY","event":"start","id":"PAWNKIND_ROSTER_BACKSTORY_DRIFT_1","ts":"2026-09-03T03:03:44Z"}
+{"seat":"BENCH","event":"file","id":"SEABEAST_STARMAW_LANTERNWHALE_TEXTURES_MISSING_1","title":"Starmaw and Lanternwhale have no textures in the repo or the deploy - 2 of 18 sea beasts draw as nothing","kind":"bug","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-03T03:04:44Z"}
+{"seat":"FOUNDRY","event":"close","id":"PAWNKIND_ROSTER_BACKSTORY_DRIFT_1","sha":"2acf7b35","ts":"2026-09-03T03:05:05Z"}

@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-03T03:03:24Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-03T03:05:05Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -426,16 +426,6 @@ _none._
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
 
-## PAWNKIND_ROSTER_BACKSTORY_DRIFT_1 gen_pawnkind_roster.py KIT_PRE is missing backstoryFilters that 4 DroidDepot pawnkinds carry in the live XML
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/PAWNKIND_ROSTER_BACKSTORY_DRIFT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PAWNKIND_ROSTER_BACKSTORY_DRIFT_1.md
-
 ## STARWARSRACES_UNDECLARED_GENE_DEPS_1 StarWarsRaces About.xml omits five real dependencies; without them the head genes are eaten and pawns stop rendering
 state:    proposed
 row:      unassigned
@@ -445,3 +435,13 @@ kind:     bug
 thin:     spec, verify and criteria all present
 summary:  src/RimStarWars/StarWarsRaces/About/About.xml declares four <modDependencies:
 prose:    infrastructure/state/items/STARWARSRACES_UNDECLARED_GENE_DEPS_1.md
+
+## SEABEAST_STARMAW_LANTERNWHALE_TEXTURES_MISSING_1 Starmaw and Lanternwhale have no textures in the repo or the deploy - 2 of 18 sea beasts draw as nothing
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     spec, verify and criteria all present
+summary:  RSWStarmaw (grid cell B2) and RSWLanternwhale (B3) have no textures deployed and
+prose:    infrastructure/state/items/SEABEAST_STARMAW_LANTERNWHALE_TEXTURES_MISSING_1.md
