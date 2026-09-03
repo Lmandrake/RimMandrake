@@ -339,6 +339,16 @@
     "date": "2026-09-03",
     "sha": "359b0b2c"
   },
+  "src/RimMandrake/Utils/animal_inventory.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "f2fdef82"
+  },
+  "src/RimMandrake/Utils/animal_live_diff.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "ee52aad9"
+  },
   "src/RimMandrake/Utils/apparel_tag_audit.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -383,6 +393,11 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "e5013227"
+  },
+  "src/RimMandrake/Utils/ashkarr_landmarks.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "0f770555"
   },
   "src/RimMandrake/Utils/ashkarr_layer_nightside.py": {
     "cleanCount": 1,
@@ -528,6 +543,11 @@
     "date": "2026-09-03",
     "sha": "fb248793"
   },
+  "src/RimMandrake/Utils/def_inventory.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "f2fdef82"
+  },
   "src/RimMandrake/Utils/deploy_custom_mods.py": {
     "cleanCount": 1,
     "date": "2026-09-02",
@@ -567,6 +587,11 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "9f6f93ea"
+  },
+  "src/RimMandrake/Utils/extract_bundle_textures.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "ee52aad9"
   },
   "src/RimMandrake/Utils/extract_mlie_sounds.py": {
     "cleanCount": 1,
