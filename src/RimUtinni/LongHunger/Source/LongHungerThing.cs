@@ -33,6 +33,13 @@ namespace LongHunger
         private int ticksSinceSpawn = 0;
         private int nextPulseAt = PulseIntervalTicks;
 
+        public override void ExposeData()
+        {
+            base.ExposeData();
+            Scribe_Values.Look(ref ticksSinceSpawn, "ticksSinceSpawn", 0);
+            Scribe_Values.Look(ref nextPulseAt, "nextPulseAt", PulseIntervalTicks);
+        }
+
         public override void SpawnSetup(Map map, bool respawningAfterLoad)
         {
             base.SpawnSetup(map, respawningAfterLoad);
@@ -100,12 +107,15 @@ namespace LongHunger
             }
             Map map = Map;
             IntVec3 dropCell = Position;
-            Destroy(DestroyMode.Vanish);
 
+            // Generate the loot BEFORE destroying self: if ThingSetMaker_Sum.Generate
+            // throws for any reason, the entity would otherwise already be gone and
+            // the salvage lost silently.
             List<Thing> loot = ThingSetMakerDefOf.Reward_ItemsStandard.root.Generate(new ThingSetMakerParams
             {
                 totalMarketValueRange = new FloatRange(600f, 1400f),
             });
+            Destroy(DestroyMode.Vanish);
             foreach (Thing item in loot)
             {
                 GenPlace.TryPlaceThing(item, dropCell, map, ThingPlaceMode.Near);
