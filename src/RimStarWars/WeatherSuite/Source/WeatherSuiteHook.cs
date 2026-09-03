@@ -15,7 +15,13 @@ namespace RimMandrake.StarWars.WeatherSuite
     // reused for two purposes:
     //   1. MapComponent_TerminatorBand — on map init, starts a PERMANENT
     //      GameCondition on any map whose tile sits in the terminator band,
-    //      and sends a one-time "you crossed the front" letter.
+    //      and sends a "you crossed the front" letter once per MAP (not
+    //      once per game — corrected 2026-09-02, opus code review: the
+    //      flag is MapComponent state, so a caravan camp, quest site or
+    //      enemy settlement inside the band gets its own letter the first
+    //      time it's entered. Left as-is: a fresh warning for each new
+    //      place in a hazardous permanent-storm region reads as intended,
+    //      not spam — reconsider only if the owner disagrees on sight).
     //   2. IncidentWorker_NightsideAurora — gates vanilla's own Aurora
     //      incident (reused via a new GameConditionDef pointing at the SAME
     //      GameCondition_Aurora class) to nightside-band maps only.
@@ -90,6 +96,14 @@ namespace RimMandrake.StarWars.WeatherSuite
             PlanetGeometryDef geo = ActiveGeometry;
             if (geo == null) return -1f;
             if (Find.WorldGrid == null) return -1f;
+            // Fixed 2026-09-02 (opus code review): vanilla WorldGrid.LongLatOf
+            // silently substitutes the player's home tile for an invalid one
+            // (pocket maps - Anomaly's undercave and similar - carry an invalid
+            // PlanetTile). Left unguarded, every pocket map would inherit the
+            // HOME colony's band membership, including a permanent
+            // GameCondition_Flashstorm bypassing this def's own allowUnderground
+            // gate, with no exception to catch.
+            if (!tile.Valid) return -1f;
 
             Vector2 longLat = Find.WorldGrid.LongLatOf(tile);
             float lat = longLat.y * Mathf.Deg2Rad;
@@ -116,7 +130,13 @@ namespace RimMandrake.StarWars.WeatherSuite
             PlanetGeometryDef geo = ActiveGeometry;
             if (geo == null) return false;
             float arc = ArcFromSubstellar(tile);
-            return arc >= geo.nightsideBandMinArc;
+            // Fixed 2026-09-02 (opus code review): TileInTerminatorBand uses
+            // `<= terminatorBandMaxArc`, and on Ash'karr's geometry def
+            // terminatorBandMaxArc == nightsideBandMinArc (117). A tile at
+            // exactly that arc satisfied both bands, breaking the "never both
+            // at once" invariant this header claims. Exclusive here so the two
+            // bands share a single dividing line instead of overlapping on it.
+            return arc > geo.nightsideBandMinArc;
         }
 
         public static bool MapInTerminatorBand(Map map)
@@ -207,28 +227,45 @@ namespace RimMandrake.StarWars.WeatherSuite
     // GameCondition_Aurora.cs) with no XML hook to raise them, so honoring
     // the ruling needs this one small subclass rather than a def tweak.
     // Reuses everything else from the base class unchanged (color cycling,
-    // ExposeData, mood/sight-range plumbing via SkyTarget's glow) and only
-    // overrides SkyTarget() to push color and brightness to their maximum:
-    // full color saturation (lerp factor 1.0 instead of 0.075/0.025),
-    // NOT scaled down by the base class's Brightness()/glow multiplier —
-    // 🔴 an earlier draft multiplied the lerped color by `glow` (floored at
-    // MaxSunGlow=0.5), which actually DIMS it below vanilla's own 0.73
-    // brightness floor at night — the opposite of "maximized". Color stays
-    // unscaled (full strength) here; only the `glow:` parameter itself
-    // (the separate sky-glow/sight-range term) is floored at MaxSunGlow.
+    // ExposeData, mood/sight-range plumbing via SkyTarget's glow).
+    //
+    // 🔴 FIXED AGAIN 2026-09-02 (opus code review, verified against
+    // GameCondition_Aurora's real SkyTarget()): the previous attempt at
+    // this fix used `Color.Lerp(Color.white, currentColor, 1f)` — full
+    // saturation with NO brightness multiplier at all. Every one of
+    // vanilla's 8 aurora colours has at least one channel at exactly 0
+    // (Colors[], GameCondition_Aurora.cs), so lerping all the way to pure
+    // saturation zeroes that channel outright — e.g. (0,0,1) instead of
+    // vanilla's near-white ~(0.68,0.68,0.73) tint. That is OBJECTIVELY
+    // DARKER than vanilla in two of three channels, the opposite of
+    // "maximized", and the SECOND time this exact regression shape (fix
+    // one axis, break brightness on another) has landed here.
+    //
+    // Vanilla's own SkyTarget is `Lerp(white, color, 0.075) *
+    // Brightness(map)` where the private Brightness() floors at 0.73.
+    // This keeps that same shape — a tint scaled by a luminance floor —
+    // but pushes BOTH terms up: a much stronger lerp (0.5, so no channel
+    // can reach 0 — lerping a 0-channel colour 50% toward white floors it
+    // at 0.5) and a luminance multiplier floored at 1.0 rather than 0.73.
+    // `glow:` (the separate sky-glow/sight-range term, unrelated to this
+    // colour math) stays floored at MaxSunGlow as before.
     public class GameCondition_DarkAuroraMax : GameCondition_Aurora
     {
+        private const float MaxSaturationLerp = 0.5f;   // vanilla uses 0.075/0.025
+        private const float MaxBrightness = 1f;          // vanilla's Brightness() floors at 0.73
+
         public override SkyTarget? SkyTarget(Map map)
         {
             if (map.GameConditionManager.IsAlwaysDarkOutside) return null;
 
             Color currentColor = CurrentColor;
+            float brightness = Mathf.Max(MaxBrightness, GenCelestial.CurCelestialSunGlow(map));
             float glow = Mathf.Max(GenCelestial.CurCelestialSunGlow(map), MaxSunGlow);
             return new SkyTarget(
                 colorSet: new SkyColorSet(
-                    Color.Lerp(Color.white, currentColor, 1f),
+                    Color.Lerp(Color.white, currentColor, MaxSaturationLerp) * brightness,
                     new Color(0.92f, 0.92f, 0.92f),
-                    Color.Lerp(Color.white, currentColor, 1f),
+                    Color.Lerp(Color.white, currentColor, MaxSaturationLerp) * brightness,
                     1f),
                 glow: glow,
                 lightsourceShineSize: 1f,
