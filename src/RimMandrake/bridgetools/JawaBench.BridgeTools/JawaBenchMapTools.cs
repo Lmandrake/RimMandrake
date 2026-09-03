@@ -375,7 +375,14 @@ namespace JawaBench.BridgeTools
                             case "temp":
                                 tg.SetTempTerrain(c, td); changed++;
                                 if (expireInTicks > 0 && map.tempTerrain != null)
-                                    map.tempTerrain.QueueRemoveTerrain(c, Find.TickManager.TicksGame + expireInTicks);
+                                    // Clamped because the sum is an int and it is SAVED:
+                                    // TempTerrainManager writes the absolute tick into
+                                    // terrainToRemoveTicks, and an overflowed one goes
+                                    // negative, which the queue reads as "already due" - the
+                                    // terrain vanishes on the next tick instead of lasting
+                                    // longer. 36,000,000 ticks is 600 in-game days.
+                                    map.tempTerrain.QueueRemoveTerrain(c,
+                                        Find.TickManager.TicksGame + Math.Min(expireInTicks, 36000000));
                                 break;
                             case "color": tg.SetTerrainColor(c, cd); changed++; break;
                             case "removetop":
@@ -711,7 +718,7 @@ namespace JawaBench.BridgeTools
             [ToolParameter(Description = "Who owns the buildings. A FactionDef defName, OR the aliases 'player' / 'hostile' / 'none' that jawa/spawn_pawn takes. Empty = no faction.")] string faction = null,
             [ToolParameter(Description = "Awful|Poor|Normal|Good|Excellent|Masterwork|Legendary.")] string quality = null,
             [ToolParameter(Description = "Hit points. -1 leaves the PostMake roll.")] int hitPoints = -1,
-            [ToolParameter(Description = "Wipe whatever occupies the cell first. Default true.")] bool wipeExisting = true,
+            [ToolParameter(Description = "Default true: a spawn destroys whatever it lands on, because RimWorld has no non-wiping spawn. Set false to REFUSE such an op instead - same effect as refuseIfDisplaces.")] bool wipeExisting = true,
             [ToolParameter(Description = "Read back at most this many things. Default 8.")] int readBack = 8,
             [ToolParameter(Description = "REFUSE any op that would destroy something already standing, instead of wiping it. Off by default, because a door legitimately replaces the wall in its cell. Turn it on when a generator's output must not eat itself.")] bool refuseIfDisplaces = false)
         {
@@ -804,12 +811,20 @@ namespace JawaBench.BridgeTools
                                     doomed.Add(other);
                             }
                         }
-                        if (doomed.Count > 0 && refuseIfDisplaces)
+                        // 🔴 wipeExisting=false CANNOT mean "spawn without destroying": every
+                        // WipeMode wipes (Vanish/FullRefund/VanishOrMoveAside) and
+                        // GenSpawn.Spawn defaults to Vanish, so the old explicit
+                        // WipeExistingThings call was a duplicate of what Spawn does anyway
+                        // and clearing the flag changed nothing at all. The only honest
+                        // reading of "do not wipe" is "do not place it, then" - the same
+                        // refusal refuseIfDisplaces already gives.
+                        if (doomed.Count > 0 && (refuseIfDisplaces || !wipeExisting))
                         {
                             failures.Add(new
                             {
                                 op,
-                                why = "refuseIfDisplaces: placing this would destroy "
+                                why = (refuseIfDisplaces ? "refuseIfDisplaces" : "wipeExisting=false")
+                                      + ": placing this would destroy "
                                       + doomed.Count + " existing thing(s): "
                                       + string.Join(", ", doomed.Select(d => d.def.defName + "@" + d.Position.x + "," + d.Position.z).ToArray())
                             });
@@ -827,8 +842,7 @@ namespace JawaBench.BridgeTools
                                 placedByThisBatch = spawnedThings.Contains(d)
                             });
 
-                        if (wipeExisting) GenSpawn.WipeExistingThings(c, rot, td, map, DestroyMode.Vanish);
-
+                        // GenSpawn.Spawn below does WipeExistingThings(..., Vanish) itself.
                         var t = ThingMaker.MakeThing(td, useStuff);
                         if (fac != null) t.SetFactionDirect(fac);
                         if (setQ)
@@ -1252,7 +1266,10 @@ namespace JawaBench.BridgeTools
                     return (object)new
                     {
                         success = can,
-                        checkedOnly = true,
+                        // Not always a dry run: this branch is also the REFUSAL path, and
+                        // reporting checkedOnly=true there told the caller nothing had been
+                        // attempted when in fact a real placement had just been turned down.
+                        checkedOnly = checkOnly,
                         canSpawn = can,
                         message = can ? null : "CanSpawnPrefab refused at " + pos + " rot " + rr.AsInt + " - blocked cells or unsuitable terrain.",
                         prefab = pf.defName,
@@ -1853,6 +1870,15 @@ namespace JawaBench.BridgeTools
                 if (M == "mine" && needBridge.Count > 0)
                     return Fail("REFUSING: the route crosses " + needBridge.Count + " bridgeable water cell(s). Use mode='bridge'.");
 
+                // Resolve the bridge BEFORE the commit phase. The mining loop runs first, so
+                // discovering a missing Bridge def down there would leave edifices already
+                // destroyed and then lay conduit over open water - the half-laid line this
+                // tool exists to refuse.
+                var bridgeDef = needBridge.Count > 0 ? DefDatabase<TerrainDef>.GetNamedSilentFail("Bridge") : null;
+                if (needBridge.Count > 0 && bridgeDef == null)
+                    return Fail("REFUSING: the route needs " + needBridge.Count + " bridged cell(s) but there is no " +
+                                "TerrainDef 'Bridge' in this game. Nothing was changed.");
+
                 if (dryRun)
                     return (object)new
                     {
@@ -1870,10 +1896,8 @@ namespace JawaBench.BridgeTools
                     var ed = c.GetEdifice(map);
                     if (ed != null) { ed.Destroy(DestroyMode.KillFinalize); cleared++; }
                 }
-                var bridgeDef = DefDatabase<TerrainDef>.GetNamedSilentFail("Bridge");
                 foreach (var c in needBridge)
                 {
-                    if (bridgeDef == null) break;
                     map.terrainGrid.SetTerrain(c, bridgeDef); bridged++;
                 }
                 foreach (var c in route)
