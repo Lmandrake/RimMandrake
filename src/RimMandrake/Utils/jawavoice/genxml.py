@@ -53,7 +53,7 @@ if __name__ == "__main__":
                   "SLIGHT: sidelong, muttered, walking away"))
     out.append("")
     out.append("</Patch>")
-    dest = os.path.join(_REPO_ROOT, "src", "Jawa", "JawaVoice", "Patches",
+    dest = os.path.join(_REPO_ROOT, "src", "RimStarWars", "JawaVoice", "Patches",
                         "JawaVoice_Insults.xml")
     io.open(dest, "w", encoding="utf-8", newline="\n").write("\n".join(out) + "\n")
     n = (len(v5.INSULT) + len(v5.SLIGHT))
