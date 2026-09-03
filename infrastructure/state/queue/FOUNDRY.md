@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-03T07:29:16Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-03T14:25:26Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -342,6 +342,15 @@ kind:     bug
 summary:  (no items/RIVER_LINK_ORDER_SELFTEST_DRIFT_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/RIVER_LINK_ORDER_SELFTEST_DRIFT_1.md
 
+## DIRTY_CODE_REVIEW_STANDING_LOOP_1 Standing FOUNDRY code-review loop in progress per owner (keep going, bit by bit) - 12 waves in, ~230 ledger entries, ~55 real bugs found, self-continuing via /loop, not blocked on anything
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/DIRTY_CODE_REVIEW_STANDING_LOOP_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DIRTY_CODE_REVIEW_STANDING_LOOP_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -447,3 +456,13 @@ kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DEFDUMP_ONDEMAND_BRIDGE_UNREACHABLE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DEFDUMP_ONDEMAND_BRIDGE_UNREACHABLE_1.md
+
+## SELFTEST_SWEEP_EXCEEDS_COMMIT_BUDGET_1 pre-commit selftest sweep (~112s+, cli.py alone >60s) exceeds its timeout and silently skips tests
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     spec, verify and criteria all present
+summary:  Make "run every selftest before commit" actually run every selftest inside a normal
+prose:    infrastructure/state/items/SELFTEST_SWEEP_EXCEEDS_COMMIT_BUDGET_1.md
