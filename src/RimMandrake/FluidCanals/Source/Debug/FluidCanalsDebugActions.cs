@@ -53,7 +53,14 @@ namespace RimMandrake.FluidCanals
                 CompFluidReservoir res = t.TryGetComp<CompFluidReservoir>();
                 if (res != null)
                 {
-                    sb.Append(" [reservoir fluid=").Append(res.Props.fluidDef?.defName ?? "NULL")
+                    // Fixed 2026-09-02 (opus code review): fluidDef/volume are
+                    // static Props config that never change - printed next to
+                    // nothing live, they read like live state and aren't. spent
+                    // is the one real runtime field; without it, re-triggering an
+                    // already-spent reservoir reported identically to a fresh
+                    // one, in the tool meant to verify exactly that distinction.
+                    sb.Append(" [reservoir spent=").Append(res.Spent)
+                      .Append(" fluid=").Append(res.Props.fluidDef?.defName ?? "NULL")
                       .Append(" volume=").Append(res.Props.volume.ToString("F1")).Append(']');
                 }
                 if (t is Flood_FluidCanal flood)

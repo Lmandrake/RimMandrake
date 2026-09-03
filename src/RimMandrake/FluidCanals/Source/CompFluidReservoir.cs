@@ -12,6 +12,11 @@ namespace RimMandrake.FluidCanals
 	{
 		private bool spent;
 
+		// Exposed 2026-09-02 (opus code review) for the bridge debug-report
+		// surface -- the only genuine per-instance runtime state this comp
+		// carries; Props is shared immutable XML config and never changes.
+		public bool Spent => spent;
+
 		public CompProperties_FluidReservoir Props => (CompProperties_FluidReservoir)props;
 
 		public override void PostExposeData()

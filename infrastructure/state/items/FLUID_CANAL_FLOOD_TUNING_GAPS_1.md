@@ -94,3 +94,22 @@ perf-only, no correctness stake.
 1 gets an explicit owner ruling (documented either way). 2+3 get a real
 tuning decision, not a guessed number. 4 and 6 fixed. 5 and 7 noted/
 deferred with reasons.
+
+## Partial progress 2026-09-02 (FOUNDRY)
+
+Fixed 4 and 6:
+- `WorkGiver_DigCanal.HasJobOnCell` now re-checks terrain (mirroring
+  `Designator_DigCanal.CanDesignateCell`'s own gate) before handing out a
+  job, and deletes the designation if a live flood already converted the
+  cell — breaks the dig/flood oscillation instead of burning 3200 work
+  per cycle.
+- Exposed `CompFluidReservoir.Spent` and added it to the debug cell
+  report, next to the fluid/volume config it was previously printed
+  alone next to (which never changes and read like live state).
+
+Compiles clean (`RimMandrake_FluidCanals.csproj`, 0/0).
+
+**Still open**: 1 (permanent floor destruction, owner call), 2+3 (the
+immortal-flood-if-boxed-in bug and the rate/duration tuning it's
+entangled with — needs a real tuning pass, not a guess), 5 (perf, no
+correctness stake, deferred), 7 (informational only, no action needed).
