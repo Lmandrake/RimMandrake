@@ -2814,9 +2814,11 @@ namespace JawaBench.BridgeTools
                 if (want.Count == 0) return Fail("Give 'ids'.");
 
                 int removed = 0; var errors = new List<string>(); var gone = new List<object>();
+                var matched = new HashSet<int>();
                 foreach (var o in Find.WorldObjects.AllWorldObjects.ToList())
                 {
                     if (o == null || !want.Contains(o.ID)) continue;
+                    matched.Add(o.ID);
                     gone.Add(WorldObjectRow(o));
                     try
                     {
@@ -2830,9 +2832,29 @@ namespace JawaBench.BridgeTools
                         catch (Exception e2) { errors.Add("id " + o.ID + ": " + e2.Message); }
                     }
                 }
+
+                // 🔴 The read-back the Description promises, which this tool did not
+                // actually do: WorldObject.Destroy() and WorldObjectsHolder.Remove()
+                // both return void and both bail out with a Log.Error rather than
+                // throwing, so a method completing is not evidence the object is gone.
+                var stillThere = Find.WorldObjects.AllWorldObjects
+                    .Where(q => q != null && matched.Contains(q.ID))
+                    .Select(q => q.ID).Distinct().ToList();
+                // 🔴 And an id that matched NOTHING used to vanish without a word,
+                // leaving `success: true, removed: 0` as the answer to a typo.
+                var notFound = want.Where(q => !matched.Contains(q)).ToList();
+
                 return (object)new
                 {
-                    success = true, removed, requested = want.Count, errors,
+                    success = notFound.Count == 0 && stillThere.Count == 0 && errors.Count == 0,
+                    message = notFound.Count == 0 && stillThere.Count == 0
+                        ? "removed " + removed + " of " + want.Count + " requested."
+                        : "⚠️ removed " + removed + " of " + want.Count + " requested; "
+                          + notFound.Count + " id(s) matched no world object"
+                          + (stillThere.Count > 0 ? ", " + stillThere.Count + " still present after the call" : "")
+                          + ".",
+                    removed, requested = want.Count, errors,
+                    notFound, stillPresentAfterRemoval = stillThere,
                     removedObjects = gone,
                     totalWorldObjects = Find.WorldObjects.AllWorldObjects.Count,
                     ticksGame = TicksGameSafe(),
@@ -2881,17 +2903,48 @@ namespace JawaBench.BridgeTools
         // Accepts a defName, or "Player"/"PlayerColony" for Faction.OfPlayer.
         // The defName/name split has already cost calls in this project, so the
         // failure path names the difference rather than leaving it to a guess.
-        private static Faction ResolveFactionArg(string s)
+        // 🔴 EVERY live faction matching, not the first one. A world routinely holds
+        // several factions of ONE FactionDef, so a defName is not an address: a write
+        // aimed at "OutlanderCivil" would silently land on whichever of them the
+        // FactionManager listed first and report success. Callers that WRITE must
+        // refuse an ambiguous name; the escape hatch is the faction's own Name, which
+        // is per-faction, and it is only consulted when no defName matched.
+        private static List<Faction> ResolveFactionArgAll(string s)
         {
-            if (string.IsNullOrWhiteSpace(s)) return null;
+            var found = new List<Faction>();
+            if (string.IsNullOrWhiteSpace(s)) return found;
             s = s.Trim();
             if (string.Equals(s, "Player", StringComparison.OrdinalIgnoreCase)
                 || string.Equals(s, "PlayerColony", StringComparison.OrdinalIgnoreCase))
-                return Faction.OfPlayer;
+            {
+                var p = Faction.OfPlayerSilentFail;
+                if (p != null) found.Add(p);
+                return found;
+            }
             var fm = Find.FactionManager;
-            if (fm == null) return null;
-            return fm.AllFactions.FirstOrDefault(
-                q => string.Equals(q?.def?.defName, s, StringComparison.OrdinalIgnoreCase));
+            if (fm == null) return found;
+            found.AddRange(fm.AllFactions.Where(
+                q => q != null && string.Equals(q.def?.defName, s, StringComparison.OrdinalIgnoreCase)));
+            if (found.Count == 0)
+                found.AddRange(fm.AllFactions.Where(
+                    q => q != null && string.Equals(q.Name, s, StringComparison.OrdinalIgnoreCase)));
+            return found;
+        }
+
+        private static Faction ResolveFactionArg(string s)
+        {
+            return ResolveFactionArgAll(s).FirstOrDefault();
+        }
+
+        // null when the argument names exactly one faction. Otherwise the refusal,
+        // carrying the per-faction Names that CAN address them one at a time.
+        private static object AmbiguousFaction(string asked)
+        {
+            var hits = ResolveFactionArgAll(asked);
+            if (hits.Count <= 1) return null;
+            return Fail($"'{asked}' names {hits.Count} live factions - a FactionDef is not an " +
+                        "address. Pass the faction's Name instead so the write lands where you meant.",
+                new { names = hits.Select(q => q.Name).ToList(), defName = hits[0].def?.defName });
         }
 
         private static object FactionNotFound(string asked)
@@ -3036,7 +3089,13 @@ namespace JawaBench.BridgeTools
 
                         // Only walk each unordered pair once for the asymmetry
                         // check, or every disagreement is reported twice.
-                        if (string.CompareOrdinal(a.def.defName, b.def.defName) < 0)
+                        // 🔴 loadID, NOT defName. A world routinely holds SEVERAL live
+                        // factions of one FactionDef - that is why the engine's own
+                        // lookup is named FirstFactionOfDef - and CompareOrdinal returns
+                        // 0 for both orderings of such a pair, so neither direction
+                        // passed this gate and the headline check silently never ran on
+                        // them. loadID is unique per faction.
+                        if (a.loadID < b.loadID)
                         {
                             var d = PairAsymmetry(a, b);
                             if (d != null) asym.Add(d);
@@ -3161,10 +3220,21 @@ namespace JawaBench.BridgeTools
                 var b = ResolveFactionArg(other);
                 if (b == null) return FactionNotFound(other);
                 if (a == b) return Fail("A faction has no relation with itself.");
+                // This tool WRITES. Silently picking the first of several same-def
+                // factions would leave the rest untouched under a success reply.
+                var ambA = AmbiguousFaction(faction); if (ambA != null) return ambA;
+                var ambB = AmbiguousFaction(other); if (ambB != null) return ambB;
 
                 var wantKind = !string.IsNullOrWhiteSpace(kind);
                 FactionRelationKind parsed = default;
-                if (wantKind && !Enum.TryParse(kind.Trim(), true, out parsed))
+                // 🔴 Enum.TryParse ALSO accepts a bare number and returns true for a value
+                // the enum never declared - "7" parses as (FactionRelationKind)7. Nothing
+                // downstream catches it: FactionRelation.kind is a plain field written by
+                // Scribe_Values, RelationKindWith returns rel.kind unfiltered, and the
+                // read-back below would compare "7" to "7" and report the write a SUCCESS.
+                // The savegame would then carry a relation kind no engine switch handles.
+                if (wantKind && (!Enum.TryParse(kind.Trim(), true, out parsed)
+                                 || !Enum.IsDefined(typeof(FactionRelationKind), parsed)))
                     return Fail($"'{kind}' is not a FactionRelationKind.",
                         new { valid = Enum.GetNames(typeof(FactionRelationKind)) });
 
@@ -3825,9 +3895,10 @@ namespace JawaBench.BridgeTools
                 "Refuse unless WorldGrid.TilesCount equals this. 0 = no check.", DefaultValue = 0)]
             int expectTiles = 0,
             [ToolParameter(Description =
-                "Remove EVERY existing settlement first. Off by default - leaves the " +
-                "generated roster in place and adds to it, which is almost never what an " +
-                "authored import wants. Turn it on for a clean roster.", DefaultValue = false)]
+                "Remove every existing settlement first, EXCEPT any owned by the player or " +
+                "carrying a map - destroying one of those orphans its map. Off by default - " +
+                "leaves the generated roster in place and adds to it, which is almost never " +
+                "what an authored import wants. Turn it on for a clean roster.", DefaultValue = false)]
             bool clearExisting = false)
         {
             return await ctx.MainThread.InvokeAsync<object>(() =>
@@ -3876,6 +3947,9 @@ namespace JawaBench.BridgeTools
                 }
 
                 int before = Find.WorldObjects.Settlements.Count;
+                var playerFac = Faction.OfPlayerSilentFail;
+                int clearable = Find.WorldObjects.Settlements
+                    .Count(q => !((playerFac != null && q.Faction == playerFac) || q.HasMap));
                 if (refused.Count > 0)
                     return Fail("REFUSING the whole import: " + refused.Count + " of " + csv.Rows.Count +
                                 " row(s) do not resolve. Nothing was created. Fix the rows, or the " +
@@ -3886,21 +3960,44 @@ namespace JawaBench.BridgeTools
                     return new
                     {
                         success = true, dryRun = true, rows = csv.Rows.Count,
-                        wouldCreate = plan.Count, wouldRemove = clearExisting ? before : 0,
+                        wouldCreate = plan.Count, wouldRemove = clearExisting ? clearable : 0,
+                        wouldKeepPlayerOwned = clearExisting ? before - clearable : 0,
                         settlementsNow = before,
                         factions = plan.Select(q => q.Key.def.defName).Distinct().ToList(),
                         note = "DRY RUN - nothing was written. Every row resolved to a live faction. Pass apply=true.",
                         ticksGame = TicksGameSafe(),
                     };
 
-                int removed = 0;
+                int removed = 0, keptPlayer = 0;
+                int created = 0, skippedOccupied = 0; var failures = new List<object>();
                 if (clearExisting)
                 {
+                    var player = Faction.OfPlayerSilentFail;
                     foreach (var st in Find.WorldObjects.Settlements.ToList())
-                    { try { st.Destroy(); removed++; } catch { } }
+                    {
+                        // 🔴 "EVERY existing settlement" cannot mean the player's own.
+                        // MapParent.Destroy does NOT refuse when a map is attached - it
+                        // calls Notify_LeftBehind on every thing and destroys the world
+                        // object anyway, orphaning the colony's map. An authoring import
+                        // run against a live campaign would delete the player's base.
+                        if ((player != null && st.Faction == player) || st.HasMap)
+                        {
+                            keptPlayer++;
+                            continue;
+                        }
+                        // An empty catch here hid the difference between "cleared" and
+                        // "refused to clear" and left the count quietly short.
+                        try { st.Destroy(); removed++; }
+                        catch (Exception e)
+                        {
+                            if (failures.Count < 25)
+                                failures.Add(new { tile = (int)st.Tile, name = st.Name,
+                                                   error = "clearExisting: Destroy() threw " +
+                                                           e.GetType().Name + ": " + e.Message });
+                        }
+                    }
                 }
 
-                int created = 0, skippedOccupied = 0; var failures = new List<object>();
                 foreach (var kv in plan)
                 {
                     // ⚠️ Without this, importing onto a world that still has its
@@ -3941,9 +4038,13 @@ namespace JawaBench.BridgeTools
                     success = failures.Count == 0 && nullFaction == 0 && skippedOccupied == 0,
                     message = "created " + created + ", removed " + removed + "; settlements " +
                               before + " -> " + after +
+                              (keptPlayer > 0 ? "  (" + keptPlayer + " player-owned or mapped " +
+                                                "settlement(s) were NOT cleared - destroying one " +
+                                                "orphans its map.)" : "") +
                               (nullFaction > 0 ? "  🔴 " + nullFaction + " HAVE A NULL FACTION and will be " +
                                                  "destroyed on the next load." : ""),
                     rows = csv.Rows.Count, created, removed, skippedOccupied,
+                    keptPlayerOwned = keptPlayer,
                     settlementsBefore = before, settlementsAfter = after,
                     nullFactionSettlements = nullFaction,
                     failures,
