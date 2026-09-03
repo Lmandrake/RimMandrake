@@ -162,8 +162,12 @@ def main():
                 if frozenset((down, up)) in have:
                     continue
                 have.add(frozenset((down, up)))
-                # a stream gains a little as it descends; Creek is the honest default
-                d = "River" if (len(p) - i) > 8 else "Creek"
+                # a stream gains a little as it descends; Creek is the honest default.
+                # `i` is tiles descended from the source (p[0]) to this edge's
+                # downstream tile - NOT `len(p) - i`, which is the same distance
+                # measured from the mouth and mislabels the SOURCE end "River" on
+                # a long path instead of the end nearest the mouth.
+                d = "River" if i > 8 else "Creek"
                 new_links.append(["river", str(down), str(up), d])
             for i, t in enumerate(p):
                 if T[t]["water"] == 1:
