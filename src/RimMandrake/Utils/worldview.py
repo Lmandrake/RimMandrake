@@ -76,7 +76,15 @@ def read_links(grid, kind, dump_dir=DEFAULT_DUMP):
     The adjacency byte is a slot into the origin tile's ENGINE neighbour order, so
     the target cannot be recovered without worldgeom. A slot pointing past the end
     of a pentagon's neighbour list is reported as a broken entry rather than
-    silently wrapped."""
+    silently wrapped.
+
+    🔴 A defName hash the dump table does not have is the SAME failure as an
+    unresolved biome hash (WorldGrid.unresolved()): a stale/mismatched def dump for
+    this save. Unlike biomes, that used to be invisible here - names.get() just
+    printed the placeholder "?<hash>" as if it were a real defName, with no signal
+    anywhere in the report that the table and the save disagree. Every hash not in
+    `names` is now collected and returned so the caller can surface it the same way
+    biomes already are."""
     o_name, a_name, d_name, def_type = LINKS[kind]
     text, lo, hi = grid.text, grid.surf_lo, grid.surf_hi
 
@@ -90,21 +98,23 @@ def read_links(grid, kind, dump_dir=DEFAULT_DUMP):
 
     ob, ab, db = blob(o_name), blob(a_name), blob(d_name)
     if ob is None or ab is None or db is None:
-        return [], []
+        return [], [], []
     origins = list(struct.unpack("<%dI" % (len(ob) // 4), ob))
     slots = list(ab)
     hashes = list(struct.unpack("<%dH" % (len(db) // 2), db))
     names, _ = load_hash_table(def_type, dump_dir)
 
     geom = grid.geom
-    good, broken = [], []
+    good, broken, unresolved = [], [], set()
     for o, s, h in zip(origins, slots, hashes):
+        if h not in names:
+            unresolved.add(h)
         ns = geom.neighbours(o)
         if s >= len(ns):
             broken.append({"origin": o, "slot": s, "def": names.get(h, "?%d" % h)})
             continue
         good.append((o, ns[s], names.get(h, "?%d" % h), s))
-    return good, broken
+    return good, broken, sorted(unresolved)
 
 
 def read_river_distances(grid):
@@ -165,8 +175,10 @@ class PlanetView(object):
         self.water_biome_set = wb
         self.is_water = np.array([b in wb for b in self.biome])
 
-        self.rivers, self.rivers_broken = read_links(self.grid, "river", dump_dir)
-        self.roads, self.roads_broken = read_links(self.grid, "road", dump_dir)
+        self.rivers, self.rivers_broken, self.rivers_unresolved = read_links(
+            self.grid, "river", dump_dir)
+        self.roads, self.roads_broken, self.roads_unresolved = read_links(
+            self.grid, "road", dump_dir)
         self.river_dist = read_river_distances(self.grid)
 
         self.settlements = self.objs.settlements()
@@ -397,6 +409,7 @@ def characterise(pv):
         },
         "rivers": {
             "edges": len(pv.rivers), "broken_entries": pv.rivers_broken,
+            "unresolved_hashes": pv.rivers_unresolved,
             "by_def": dict(Counter(d for _, _, d, _ in pv.rivers).most_common()),
             "tiles_touched": len(river_tiles),
             "networks": len(rnets),
@@ -410,6 +423,7 @@ def characterise(pv):
         },
         "roads": {
             "edges": len(pv.roads), "broken_entries": pv.roads_broken,
+            "unresolved_hashes": pv.roads_unresolved,
             "by_def": dict(Counter(d for _, _, d, _ in pv.roads).most_common()),
             "tiles_touched": len({t for o, u, _, _ in pv.roads for t in (o, u)}),
             "networks": len(dnets),
@@ -499,6 +513,11 @@ def print_report(r):
         if r[kind]["broken_entries"]:
             say("   🔴 %d %s entries point at a slot the tile has no neighbour in"
                 % (len(r[kind]["broken_entries"]), kind))
+        if r[kind]["unresolved_hashes"]:
+            say("   🔴 %d unresolved %s defName hash(es) %s - the def dump does not "
+                "match this save"
+                % (len(r[kind]["unresolved_hashes"]), kind[:-1],
+                   r[kind]["unresolved_hashes"][:8]))
     say()
     s = r["settlements"]
     say("SETTLE  %d settlements · %d coastal · %d on a river · %d on a road"
@@ -726,6 +745,7 @@ class BundlePlanet(object):
                     self.mutators[int(r["tile"])] = names
         self.water_biome_set = {"Ocean", "Lake", "SeaIce"}
         self.rivers_broken = self.roads_broken = []
+        self.rivers_unresolved = self.roads_unresolved = []
         self.river_dist = None
         self.other_objects = {}
 
