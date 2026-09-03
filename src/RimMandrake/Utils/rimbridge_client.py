@@ -438,7 +438,13 @@ class RimBridge:
             node = descriptor.get(key)
             if isinstance(node, dict):
                 props = node.get("properties")
-                if isinstance(props, dict) and props:
+                if isinstance(props, dict):
+                    # An EMPTY dict is a real, common shape (51/432 live tools,
+                    # rimworld/get_game_info among them) meaning "declares zero
+                    # params" - not "no schema found". The old `and props` here
+                    # made every such tool read UNCHECKED, silently disabling the
+                    # unknown-parameter guard on exactly the tools where a typo'd
+                    # key is most likely: one that takes no real arguments at all.
                     return set(props.keys())
                 if node and "properties" not in node and all(isinstance(k, str) for k in node):
                     # a bare {name: spec} map rather than a JSON-Schema object
