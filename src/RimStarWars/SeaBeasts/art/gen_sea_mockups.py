@@ -2,7 +2,7 @@
 """Round-1 mockup generation for SW_SEA_MONSTERS_ART_1.
 
 18 options (6 creatures x 3), side-profile concept PNGs on a chroma key.
-Serial-per-worker, 2 workers, 120s timeout, one retry per call.
+Serial (1 worker), 420s timeout, one retry per call.
 """
 import subprocess, sys, time
 from concurrent.futures import ThreadPoolExecutor
