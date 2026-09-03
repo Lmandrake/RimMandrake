@@ -293,7 +293,7 @@ def main():
     plans.append(("Ascendant Helix", "Jawa_AscendantHelix", HELIX_NAMES, HELIX_WHY,
                   hx, a.helix, False))
 
-    new_s, new_lm, name_i = [], [], {}
+    new_s, new_lm, name_i, well_for = [], [], {}, {}
     for faction, fdef, names, why, cand, want, wants_well in plans:
         placed = 0
         for t in farthest_first(cand, occupied, nb, T, min(want, len(names)), MIN_SPACING):
@@ -317,6 +317,7 @@ def main():
             if well is not None:
                 lm_tiles.add(well)
                 new_lm.append({"tile": str(well), "landmark": "Oasis", "why": OASIS_WHY})
+                well_for[names[placed]] = well
             placed += 1
         print("  %-26s %2d new  (asked %d)" % (faction, placed, want))
 
@@ -343,6 +344,11 @@ def main():
     if unreachable:
         drop = {n for n, _ in unreachable}
         new_s = [x for x in new_s if x["name"] not in drop]
+        # a dropped settlement's well is dropped with it - otherwise an Oasis whose
+        # "why" says "dug for the holding beside it" gets written beside no holding.
+        dropped_wells = {well_for[n] for n in drop if n in well_for}
+        new_lm = [r for r in new_lm if int(r["tile"]) not in dropped_wells]
+        lm_tiles -= dropped_wells
         for name, t in unreachable:
             occupied.discard(t)
         print("\n  DROPPED %d unreachable site(s): %s" % (len(unreachable), sorted(drop)))
