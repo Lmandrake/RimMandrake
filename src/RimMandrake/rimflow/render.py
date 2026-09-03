@@ -48,6 +48,7 @@ Stdlib only.
     python3 src/RimMandrake/rimflow/render.py reindex --verify
     python3 src/RimMandrake/rimflow/render.py bench --events 2000
 """
+import fcntl
 import json
 import os
 import re
@@ -326,10 +327,24 @@ def queue_view(world, seat, events, target="v1", ctx=None):
 # WRITING
 # ---------------------------------------------------------------------------
 def _write(path, text):
+    # Same tmp-name/lock discipline as model.write_bridge_file, and for the
+    # same reason: a shared "<path>.tmp" truncates whatever a concurrent
+    # writer already put there (O_TRUNC fires at open(), before any lock),
+    # or its os.replace() can chase a name the other writer already renamed
+    # away. _emit() (cli.py) calls this on EVERY ledger write, so any two
+    # concurrent `rimflow` invocations from BENCH and FOUNDRY collide here.
     os.makedirs(os.path.dirname(path), exist_ok=True)
-    with open(path + ".tmp", "w", encoding="utf-8") as fh:
-        fh.write(text)
-    os.replace(path + ".tmp", path)
+    tmp = "%s.tmp.%d.%d" % (path, os.getpid(), time.time_ns())
+    fd = os.open(tmp, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o644)
+    try:
+        fcntl.flock(fd, fcntl.LOCK_EX)
+        try:
+            os.write(fd, text.encode("utf-8"))
+        finally:
+            fcntl.flock(fd, fcntl.LOCK_UN)
+    finally:
+        os.close(fd)
+    os.replace(tmp, path)
 
 
 def _queue_path(seat, root=None):
