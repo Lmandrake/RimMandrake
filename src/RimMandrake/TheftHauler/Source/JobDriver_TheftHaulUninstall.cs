@@ -1,5 +1,6 @@
 using RimWorld;
 using Verse;
+using Verse.AI;
 using RimMandrake.Property;
 
 namespace RimMandrake.TheftHauler
@@ -54,9 +55,26 @@ namespace RimMandrake.TheftHauler
                 // rather than duplicate the own/not-own test out here.
                 PropertyEngine.Fire(new TakingEvent(building, ClaimantRef.OfPawn(pawn),
                     TakingAct.Strip, Find.TickManager.TicksGame));
+
+                MinifiedThing minified = building.Uninstall();
+                pawn.records.Increment(RecordDefOf.ThingsUninstalled);
+
+                // The float menu and reportString both promise a HAUL, not
+                // just an uninstall — MinifyUtility.Uninstall only drops the
+                // MinifiedThing on the ground at the building's own position.
+                // Queue the actual carry as the pawn's next job (same
+                // enqueue-on-current-job pattern as vanilla's
+                // JobInBedUtility), so the crate doesn't just sit where the
+                // building used to be.
+                if (minified != null)
+                {
+                    Job haulJob = HaulAIUtility.HaulToStorageJob(pawn, minified, forced: true);
+                    if (haulJob != null)
+                    {
+                        pawn.jobs.jobQueue.EnqueueFirst(haulJob);
+                    }
+                }
             }
-            building.Uninstall();
-            pawn.records.Increment(RecordDefOf.ThingsUninstalled);
         }
     }
 }
