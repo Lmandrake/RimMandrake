@@ -63,7 +63,7 @@ namespace JawaBench.BridgeTools
             ResultDescription =
                 "success, tilesCount (surface), layerCount, and a layers[] array of " +
                 "{ layerId, def, label, tilesCount, isRootSurface, radius, viewAngle, " +
-                "subdivisions, isSpace }.")]
+                "averageTileSize, isSpace, scenarioTag }.")]
         public static async Task<object> WorldLayers(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken)
@@ -302,6 +302,19 @@ namespace JawaBench.BridgeTools
                     && !rainfall.HasValue && !swampiness.HasValue && !pollution.HasValue)
                     return Fail("Nothing to write - every field was null.");
 
+                // 🔴 swampiness and pollution are QUANTIZED BY THE SAVEGAME, not merely
+                // conventionally 0-1: SurfaceLayer.ExposeData serializes swampiness as
+                // (byte)Clamp(round(v*255),0,255) and pollution as
+                // (ushort)Clamp(round(v*65535),0,65535). An out-of-range write therefore
+                // lives in memory, is read back by this tool and CONFIRMED by
+                // world_tile_validate, and then silently becomes 0 or 1 on the next load.
+                // Vanilla's own writers (WorldGenStep_Pollution) Clamp01 for this reason.
+                var clamped = new List<string>();
+                if (swampiness.HasValue && (swampiness.Value < 0f || swampiness.Value > 1f))
+                { clamped.Add("swampiness " + swampiness.Value + " -> " + Mathf.Clamp01(swampiness.Value)); swampiness = Mathf.Clamp01(swampiness.Value); }
+                if (pollution.HasValue && (pollution.Value < 0f || pollution.Value > 1f))
+                { clamped.Add("pollution " + pollution.Value + " -> " + Mathf.Clamp01(pollution.Value)); pollution = Mathf.Clamp01(pollution.Value); }
+
                 var ids = new List<int>();
                 var errors = new List<string>();
                 if (!string.IsNullOrEmpty(tiles))
@@ -346,6 +359,7 @@ namespace JawaBench.BridgeTools
                     written,
                     requested = ids.Count,
                     errors,
+                    clamped,
                     note = "Nothing is visible until jawa/world_commit runs.",
                     tiles = back,
                     ticksGame = TicksGameSafe(),
@@ -675,7 +689,7 @@ namespace JawaBench.BridgeTools
                 var unknownBiomes = new HashSet<string>();
                 var biomeCache = new Dictionary<string, BiomeDef>(StringComparer.OrdinalIgnoreCase);
                 var sample = new List<object>();
-                int applied = 0, wouldApply = 0, biomeSkipped = 0, skipped = 0, rows = 0;
+                int applied = 0, wouldApply = 0, biomeSkipped = 0, skipped = 0, rows = 0, clampedCells = 0;
 
                 foreach (var row in csv.Rows)
                 {
@@ -731,8 +745,14 @@ namespace JawaBench.BridgeTools
                     if (elevS != null && F(elevS, out fv)) t.elevation = fv;
                     if (tempS != null && F(tempS, out fv)) t.temperature = fv;
                     if (rainS != null && F(rainS, out fv)) t.rainfall = fv;
-                    if (swS != null && F(swS, out fv)) t.swampiness = fv;
-                    if (poS != null && F(poS, out fv)) t.pollution = fv;
+                    // Clamped for the same reason as world_tile_set: the savegame stores
+                    // swampiness in one byte and pollution in one ushort, both scaled from
+                    // 0-1, so anything outside that range is silently lost on the next load
+                    // while every read-back and the validator report it as having landed.
+                    if (swS != null && F(swS, out fv))
+                    { if (fv < 0f || fv > 1f) clampedCells++; t.swampiness = Mathf.Clamp01(fv); }
+                    if (poS != null && F(poS, out fv))
+                    { if (fv < 0f || fv > 1f) clampedCells++; t.pollution = Mathf.Clamp01(fv); }
                     if (hiS != null) { Hilliness h; if (TryHilliness(hiS, out h)) t.hilliness = h; }
                     applied++;
                 }
@@ -748,6 +768,7 @@ namespace JawaBench.BridgeTools
                     wouldApply,
                     biomeSkipped,
                     skipped,
+                    clampedCells,
                     tilesCount = grid.TilesCount,
                     unknownBiomes = unknownBiomes.ToList(),
                     note = apply
@@ -820,6 +841,11 @@ namespace JawaBench.BridgeTools
                     if (s2 != null && F(s2, out fv) && Math.Abs(t.rainfall - fv) > tolerance) { bad.Add("rainfall:" + t.rainfall + "!=" + fv); bump("rainfall"); }
                     s2 = Cell(csv, row, "swampiness");
                     if (s2 != null && F(s2, out fv) && Math.Abs(t.swampiness - fv) > 0.02f) { bad.Add("swampiness:" + t.swampiness + "!=" + fv); bump("swampiness"); }
+                    // world_tile_import writes pollution; without this the validator reported
+                    // a pollution-only mismatch as a MATCH and "prove the import took" was a lie
+                    // for that column. 0-1 scale, so the swampiness tolerance, not `tolerance`.
+                    s2 = Cell(csv, row, "pollution");
+                    if (s2 != null && F(s2, out fv) && Math.Abs(t.pollution - fv) > 0.02f) { bad.Add("pollution:" + t.pollution + "!=" + fv); bump("pollution"); }
                     s2 = Cell(csv, row, "hilliness");
                     if (s2 != null) { Hilliness h; if (TryHilliness(s2, out h) && t.hilliness != h) { bad.Add("hilliness:" + t.hilliness + "!=" + h); bump("hilliness"); } }
 
@@ -1160,9 +1186,12 @@ namespace JawaBench.BridgeTools
                 "(kind is 'river' or 'road'; a and b are adjacent tile ids). Rivers are " +
                 "laid before roads, and rivers are applied IN FILE ORDER so the file must " +
                 "already be mouth-first. Dry run by default; pass apply=true. " +
-                "Optionally clears existing links on the touched tiles first. " +
+                "Non-adjacent pairs are REFUSED: OverlayRiver/OverlayRoad do not check " +
+                "adjacency and would write a link between distant tiles on both endpoints. " +
+                "clearFirst clears existing links on the touched tiles AND the mirror entries " +
+                "on their neighbours, so nothing is left one-sided. " +
                 "Does not redraw; call jawa/world_commit after.",
-            ResultDescription = "success, dryRun, rows, rivers, roads, refused[], unknownDefs[].")]
+            ResultDescription = "success, dryRun, rows, rivers, roads, nonAdjacentRefused, refused[], unknownDefs[].")]
         public static async Task<object> WorldLinksImport(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -1204,17 +1233,46 @@ namespace JawaBench.BridgeTools
                 {
                     var touched = new HashSet<int>();
                     foreach (var p in pending) { touched.Add(p.Item2); touched.Add(p.Item3); }
+
+                    // A link lives on BOTH endpoints. Clearing only the tiles the CSV names
+                    // left the mirror entry alive on every neighbour the CSV did NOT name -
+                    // manufacturing exactly the asymmetric corruption world_links_validate
+                    // hunts for. Collect the far endpoints first, then strip their mirrors.
+                    foreach (var id in touched.ToList())
+                    {
+                        string e; var t = SurfaceTileAt(id, out e);
+                        if (t == null) continue;
+                        var far = new List<int>();
+                        if (t.potentialRivers != null) far.AddRange(t.potentialRivers.Select(l => l.neighbor.tileId));
+                        if (t.potentialRoads != null) far.AddRange(t.potentialRoads.Select(l => l.neighbor.tileId));
+                        foreach (var f in far.Distinct())
+                        {
+                            if (touched.Contains(f)) continue;   // cleared wholesale below
+                            string e2; var tf = SurfaceTileAt(f, out e2);
+                            if (tf == null) continue;
+                            if (tf.potentialRivers != null && tf.potentialRivers.RemoveAll(l => l.neighbor.tileId == id) > 0
+                                && tf.potentialRivers.Count == 0) tf.riverDist = 0;
+                            if (tf.potentialRoads != null) tf.potentialRoads.RemoveAll(l => l.neighbor.tileId == id);
+                        }
+                    }
+
                     foreach (var id in touched)
                     {
                         string e; var t = SurfaceTileAt(id, out e);
                         if (t == null) continue;
                         if (t.potentialRivers != null) t.potentialRivers.Clear();
                         if (t.potentialRoads != null) t.potentialRoads.Clear();
+                        // No river links left means no river: a stale nonzero riverDist would
+                        // otherwise survive and poison OverlayRiver's max(riverDist, prev+1)
+                        // for every river laid below. Same reset world_links_clear does.
+                        t.riverDist = 0;
                     }
                 }
 
                 // Rivers first, in file order (mouth-first is the file's responsibility),
                 // then roads - matching the order vanilla's own worldgen steps use.
+                var inbrs = new List<PlanetTile>();
+                int nonAdjacent = 0;
                 foreach (var pass in new[] { true, false })
                     foreach (var p in pending)
                     {
@@ -1222,6 +1280,20 @@ namespace JawaBench.BridgeTools
                         string e1, e2;
                         var ta = SurfaceTileAt(p.Item2, out e1); var tb = SurfaceTileAt(p.Item3, out e2);
                         if (ta == null || tb == null) { if (refused.Count < 30) refused.Add(new { from = p.Item2, to = p.Item3, why = e1 ?? e2 }); continue; }
+
+                        // WorldGrid.OverlayRiver/OverlayRoad do NOT check adjacency - read from
+                        // the 1.6 source - so a CSV naming two distant tiles would write a link
+                        // between non-neighbours on both endpoints, which is one of the very
+                        // corruptions world_links_validate reports as nonAdjacent[]. The
+                        // single-pair sibling world_links_set has always gated this; the
+                        // importer did not, so the bulk route was the unguarded one.
+                        inbrs.Clear(); grid.GetTileNeighbors(p.Item2, inbrs);
+                        if (!inbrs.Any(x => x.tileId == p.Item3))
+                        {
+                            nonAdjacent++;
+                            if (refused.Count < 30) refused.Add(new { from = p.Item2, to = p.Item3, why = "not adjacent" });
+                            continue;
+                        }
 
                         if (p.Item1)
                         {
@@ -1243,6 +1315,7 @@ namespace JawaBench.BridgeTools
                 {
                     success = true, dryRun = !apply, path, rows, rivers, roads,
                     clearedFirst = clearFirst && apply,
+                    nonAdjacentRefused = nonAdjacent,
                     unknownDefs = unknown.ToList(), refused,
                     note = apply ? "Written. Call jawa/world_commit." : "DRY RUN - pass apply=true.",
                     ticksGame = TicksGameSafe(),
@@ -1257,8 +1330,14 @@ namespace JawaBench.BridgeTools
                 "mirror entry is MISSING on the far endpoint (asymmetric, the classic " +
                 "corruption), links to non-adjacent tiles, links HIDDEN by their tile's " +
                 "biome (allowRoads/allowRivers false), and river mouths - river tiles with " +
-                "no water-covered neighbour. Optionally compares against a links CSV.",
-            ResultDescription = "success, riverEntries, roadEntries, asymmetric[], nonAdjacent[], hidden[], landlockedRivers.")]
+                "no water-covered neighbour. Give a links CSV (kind,a,b,def) in 'path' and it " +
+                "also reports which of its edges are MISSING from the live world or carry a " +
+                "different def - the proof that jawa/world_links_import actually landed.",
+            ResultDescription =
+                "success, riverEntries, roadEntries, asymmetricCount/nonAdjacentCount/" +
+                "hiddenByBiomeCount (TRUE totals, not capped), the matching asymmetric[], " +
+                "nonAdjacent[], hiddenByBiome[] example lists capped at 'limit', " +
+                "landlockedRiverTiles, and csv{} when a path was given.")]
         public static async Task<object> WorldLinksValidate(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -1272,6 +1351,11 @@ namespace JawaBench.BridgeTools
                 int n = grid.TilesCount;
 
                 var asym = new List<object>(); var nonAdj = new List<object>(); var hidden = new List<object>();
+                // The example lists are capped at `limit`; the COUNTS must not be. Reporting
+                // asym.Count made a planet with 5,000 asymmetric links read as exactly `limit`
+                // of them - a saturated instrument that says "nearly clean" about a wreck.
+                // world_mutators_audit already keeps a separate uncapped counter; match it.
+                int asymN = 0, nonAdjN = 0, hiddenN = 0;
                 int riverEntries = 0, roadEntries = 0, riverTiles = 0, landlocked = 0;
                 var nbrs = new List<PlanetTile>();
 
@@ -1285,10 +1369,16 @@ namespace JawaBench.BridgeTools
                     var b = t.PrimaryBiome;
                     if (b != null)
                     {
-                        if (!b.allowRivers && hasRiver && hidden.Count < limit)
-                            hidden.Add(new { tile = i, kind = "river", biome = b.defName, links = t.potentialRivers.Count });
-                        if (!b.allowRoads && t.potentialRoads != null && t.potentialRoads.Count > 0 && hidden.Count < limit)
-                            hidden.Add(new { tile = i, kind = "road", biome = b.defName, links = t.potentialRoads.Count });
+                        if (!b.allowRivers && hasRiver)
+                        {
+                            hiddenN++;
+                            if (hidden.Count < limit) hidden.Add(new { tile = i, kind = "river", biome = b.defName, links = t.potentialRivers.Count });
+                        }
+                        if (!b.allowRoads && t.potentialRoads != null && t.potentialRoads.Count > 0)
+                        {
+                            hiddenN++;
+                            if (hidden.Count < limit) hidden.Add(new { tile = i, kind = "road", biome = b.defName, links = t.potentialRoads.Count });
+                        }
                     }
 
                     nbrs.Clear(); grid.GetTileNeighbors(i, nbrs);
@@ -1298,10 +1388,10 @@ namespace JawaBench.BridgeTools
                         {
                             riverEntries++;
                             int far = l.neighbor.tileId;
-                            if (!nbrs.Any(x => x.tileId == far)) { if (nonAdj.Count < limit) nonAdj.Add(new { tile = i, to = far, kind = "river" }); continue; }
+                            if (!nbrs.Any(x => x.tileId == far)) { nonAdjN++; if (nonAdj.Count < limit) nonAdj.Add(new { tile = i, to = far, kind = "river" }); continue; }
                             var tf = (far >= 0 && far < n) ? grid[far] as SurfaceTile : null;
                             bool mirror = tf != null && tf.potentialRivers != null && tf.potentialRivers.Any(x => x.neighbor.tileId == i);
-                            if (!mirror && asym.Count < limit) asym.Add(new { tile = i, to = far, kind = "river", def = l.river != null ? l.river.defName : null });
+                            if (!mirror) { asymN++; if (asym.Count < limit) asym.Add(new { tile = i, to = far, kind = "river", def = l.river != null ? l.river.defName : null }); }
                         }
 
                     if (t.potentialRoads != null)
@@ -1309,10 +1399,10 @@ namespace JawaBench.BridgeTools
                         {
                             roadEntries++;
                             int far = l.neighbor.tileId;
-                            if (!nbrs.Any(x => x.tileId == far)) { if (nonAdj.Count < limit) nonAdj.Add(new { tile = i, to = far, kind = "road" }); continue; }
+                            if (!nbrs.Any(x => x.tileId == far)) { nonAdjN++; if (nonAdj.Count < limit) nonAdj.Add(new { tile = i, to = far, kind = "road" }); continue; }
                             var tf = (far >= 0 && far < n) ? grid[far] as SurfaceTile : null;
                             bool mirror = tf != null && tf.potentialRoads != null && tf.potentialRoads.Any(x => x.neighbor.tileId == i);
-                            if (!mirror && asym.Count < limit) asym.Add(new { tile = i, to = far, kind = "road", def = l.road != null ? l.road.defName : null });
+                            if (!mirror) { asymN++; if (asym.Count < limit) asym.Add(new { tile = i, to = far, kind = "road", def = l.road != null ? l.road.defName : null }); }
                         }
 
                     // A river tile with no water neighbour is a candidate "reaches no sea".
@@ -1322,13 +1412,77 @@ namespace JawaBench.BridgeTools
                         landlocked++;
                 }
 
+                // The documented CSV comparison. Until 2026-09-03 `path` was declared,
+                // documented as "Optionally compares against a links CSV", and then never
+                // read: passing a file produced success=true and no comparison at all.
+                object csvReport = null;
+                if (!string.IsNullOrEmpty(path))
+                {
+                    string cerr; var csv = ReadTileCsv2(path, out cerr, requireTileColumn: false);
+                    if (csv == null) csvReport = new { path, error = cerr };
+                    else if (!csv.Col.ContainsKey("kind") || !csv.Col.ContainsKey("a") || !csv.Col.ContainsKey("b") || !csv.Col.ContainsKey("def"))
+                        csvReport = new { path, error = "Links CSV needs columns kind,a,b,def. Header: " + string.Join(",", csv.Header.ToArray()) };
+                    else
+                    {
+                        int cRows = 0, cPresent = 0, cMissing = 0, cWrongDef = 0, cMalformed = 0;
+                        var missing = new List<object>(); var wrongDef = new List<object>();
+                        foreach (var row in csv.Rows)
+                        {
+                            cRows++;
+                            var k = Cell(csv, row, "kind"); var aS = Cell(csv, row, "a");
+                            var bS = Cell(csv, row, "b"); var dS = Cell(csv, row, "def");
+                            int ca, cb;
+                            if (k == null || aS == null || bS == null || dS == null
+                                || !int.TryParse(aS, out ca) || !int.TryParse(bS, out cb))
+                            { cMalformed++; continue; }
+
+                            bool isRiver = k.Equals("river", StringComparison.OrdinalIgnoreCase);
+                            var ta = (ca >= 0 && ca < n) ? grid[ca] as SurfaceTile : null;
+                            if (ta == null) { cMissing++; if (missing.Count < limit) missing.Add(new { row = cRows, a = ca, b = cb, kind = k, why = "no such surface tile" }); continue; }
+
+                            // Read the raw potential* lists, never the biome-filtered views:
+                            // a biome with allowRivers=false hides a link that is really there.
+                            string liveDef = null; bool found = false;
+                            if (isRiver)
+                            {
+                                if (ta.potentialRivers != null)
+                                    foreach (var l in ta.potentialRivers)
+                                        if (l.neighbor.tileId == cb) { found = true; liveDef = l.river != null ? l.river.defName : null; break; }
+                            }
+                            else if (ta.potentialRoads != null)
+                                foreach (var l in ta.potentialRoads)
+                                    if (l.neighbor.tileId == cb) { found = true; liveDef = l.road != null ? l.road.defName : null; break; }
+
+                            if (!found) { cMissing++; if (missing.Count < limit) missing.Add(new { row = cRows, a = ca, b = cb, kind = k, expected = dS }); }
+                            else if (!string.Equals(liveDef, dS, StringComparison.OrdinalIgnoreCase))
+                            { cWrongDef++; if (wrongDef.Count < limit) wrongDef.Add(new { row = cRows, a = ca, b = cb, kind = k, live = liveDef, expected = dS }); }
+                            else cPresent++;
+                        }
+                        csvReport = new
+                        {
+                            path,
+                            rows = cRows,
+                            present = cPresent,
+                            missing = cMissing,
+                            wrongDef = cWrongDef,
+                            malformed = cMalformed,
+                            matchPct = cRows > 0 ? Math.Round(100.0 * cPresent / cRows, 2) : 0.0,
+                            missingExamples = missing,
+                            wrongDefExamples = wrongDef,
+                            note = "Compared against the RAW potential* lists, not the biome-filtered views.",
+                        };
+                    }
+                }
+
                 return (object)new
                 {
                     success = true,
                     tilesScanned = n,
                     riverEntries, roadEntries, riverTiles,
-                    asymmetricCount = asym.Count, nonAdjacentCount = nonAdj.Count,
-                    hiddenByBiomeCount = hidden.Count,
+                    asymmetricCount = asymN, nonAdjacentCount = nonAdjN,
+                    hiddenByBiomeCount = hiddenN,
+                    examplesCapped = limit,
+                    csv = csvReport,
                     landlockedRiverTiles = landlocked,
                     landlockedNote = "Not automatically a defect - the owner ruled low-accumulation rivers MAY die in playas or salt pans; only high-accumulation trunks must reach a sea.",
                     asymmetric = asym, nonAdjacent = nonAdj, hiddenByBiome = hidden,
@@ -1665,10 +1819,13 @@ namespace JawaBench.BridgeTools
                 "⚠️ AddLandmark ALSO rolls the def's mutatorChances and comboLandmarkMutators " +
                 "onto the tile, so this is a mutator write as well - the read-back shows both. " +
                 "⚠️ It no-ops entirely without Odyssey. " +
-                "🔴 LandmarkDef.IsValidTile refuses a tile that already holds a SETTLEMENT, an " +
-                "existing landmark, an impassable biome or hilliness, or a mutator with " +
-                "preventsLandmarks. Place landmarks BEFORE settlements. Pass checkValid=true " +
-                "to have that verdict reported rather than discovering it as a silent no-op.",
+                "🔴 AddLandmark itself does NOT consult LandmarkDef.IsValidTile (read from the " +
+                "1.6 source) - it assigns unconditionally and OVERWRITES any landmark already " +
+                "on the tile. IsValidTile is worldgen's gate, and it rejects a tile holding a " +
+                "SETTLEMENT, an existing landmark, an impassable biome or hilliness, or a " +
+                "mutator with preventsLandmarks. Place landmarks BEFORE settlements, and leave " +
+                "checkValid=true so that verdict is reported before this tool overrides it. " +
+                "'forced' only bypasses IsValidTile for the def's REQUIRED mutator chances.",
             ResultDescription = "success, added, removed, validity[], and a read-back per tile.")]
         public static async Task<object> WorldLandmarksSet(
             IRimBridgeContext ctx,
@@ -2284,7 +2441,13 @@ namespace JawaBench.BridgeTools
 
                 if (name != null) { w.name = name; changed.Add("name"); }
                 if (seedString != null) { w.seedString = seedString; changed.Add("seedString"); }
-                if (pollution.HasValue) { w.pollution = pollution.Value; changed.Add("pollution"); }
+                // Clamped: WorldInfo.pollution is the planet-wide 0-1 dial the generator reads.
+                if (pollution.HasValue)
+                {
+                    float p = Mathf.Clamp01(pollution.Value);
+                    w.pollution = p;
+                    changed.Add(p == pollution.Value ? "pollution" : "pollution (clamped " + pollution.Value + " -> " + p + ")");
+                }
 
                 if (overallPopulation != null)
                 {
