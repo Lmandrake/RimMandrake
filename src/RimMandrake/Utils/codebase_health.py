@@ -171,7 +171,10 @@ def review_verdicts(paths):
         if entry is None:
             verdicts[p] = "dirty"          # measured: no entry has ever been recorded
             continue
-        since = CRS.commits_since(entry["sha"], p)
+        # .get, not ["sha"]: an entry carrying no sha cannot be measured, which
+        # is the same answer as one whose sha no longer resolves — UNMEASURED.
+        # Subscripting instead kills the whole board on one malformed entry.
+        since = CRS.commits_since(entry.get("sha"), p)
         if since is None:
             verdicts[p] = "unknown"        # recorded sha does not resolve; log is stale
         elif since:
@@ -971,7 +974,16 @@ def main(argv=None):
         loc, measured = count_lines(os.path.join(ROOT, p))
         if not measured:
             est_loc += 1
-            loc = max(1, os.path.getsize(os.path.join(ROOT, p)) // 60)
+            # count_lines() answers (0, False) for a file it could not OPEN as
+            # well as one it could not DECODE, and `git ls-files` still lists a
+            # tracked file deleted from the working tree — so getsize() is
+            # called on paths that are gone, and raises. Falling back to 1 line
+            # reports that one file UNMEASURED; without it a single `rm` takes
+            # the whole board down with a traceback.
+            try:
+                loc = max(1, os.path.getsize(os.path.join(ROOT, p)) // 60)
+            except OSError:
+                loc = 1
         # A pre-existing entry with no `cleanCount` (recorded before that field
         # existed) has still been marked clean at least once — default it to 1,
         # not 0, or a legacy entry silently reads as "never reviewed".
