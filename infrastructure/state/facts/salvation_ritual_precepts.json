@@ -1,0 +1,48 @@
+{
+  "fact": "The Salvation carries 26 Precept_Ritual precepts; there is no engine cap on ritual count",
+  "measured": "2026-09-03",
+  "measured_by": "BENCH",
+  "method": "XML parse (ElementTree) of the .rid, counting li[@Class='Precept_Ritual'] — not grep; a raw class-name grep overcounts by matching nested refs",
+  "sources": {
+    "repo": "src/Jawa/ideoligion/The Salvation.rid",
+    "live": "C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\RimWorld by Ludeon Studios\\Ideos\\The Salvation.rid",
+    "identical": true,
+    "size_bytes": 150270
+  },
+  "counts": {
+    "Precept_Ritual": 26,
+    "Precept_GravshipLaunch": 3,
+    "Precept_RoleSingle": 3,
+    "Precept_Building": 2,
+    "Precept_RitualSeat": 1,
+    "Precept_Weapon": 1,
+    "Precept_Apparel": 1,
+    "Precept_Relic": 1
+  },
+  "cap": {
+    "claim_checked": "a '6-ritual cap' was assumed by the v2 design pass",
+    "verdict": "NO SUCH ENGINE CAP",
+    "evidence": "Source/RimWorld/PreceptDef.cs:46 `public int maxCount = 1` is per-PreceptDef (how many instances of THAT precept one ideo may hold), not a global ritual limit. No global ritual-count limit found in source.",
+    "consequence": "ritual count is not a constraint on the ritual-tech design; 26 already exist"
+  },
+  "design_finding": {
+    "headline": "Tech-advancement-as-ritual ALREADY EXISTS in the owner's ideo, unnoticed",
+    "detail": "Five of the 26 are VFET_AdvanceToNeolithic / Medieval / Industrial / Spacer / Ultra — Vanilla Factions Expanded Tribals' tech-advance rituals. The owner's 'could Jawa rituals become a sort of tech' idea has a working precedent already installed in The Salvation.",
+    "bears_on": "RESEARCH_TREE_NORMALIZATION_1 ritual-tech proposal (The Rites tree)"
+  },
+  "campaign_authored_rituals": [
+    "AM_ScrapRitual (Profitting Jubilee)",
+    "Funeral (Scavenging Burial)",
+    "QuarterlyReport (Wealthy Records)",
+    "Festival (Scrounging Revel)",
+    "LightsaberPracticeDuel (Blade Dance of Redemption)"
+  ],
+  "off_register_candidates": {
+    "note": "not a ruling — flagged for the owner's thematic filtering pass",
+    "rows": [
+      "AnimaTreeLinking / TreeConnection — psychic tree rituals on a desert world with no anima trees",
+      "ThroneSpeech — a Royalty ritual, live in the ideo while Royalty is ruled dead",
+      "Trial / TrialMentalState / TrialPrisoner — three near-identical 'trial' rituals"
+    ]
+  }
+}
