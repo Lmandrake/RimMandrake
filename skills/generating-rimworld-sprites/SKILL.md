@@ -25,6 +25,21 @@ cell occupancy for modern, high quality art."*
 
     texture edge (px)  =  drawSize (cells)  x  128        then round UP to a power of two
 
+⭐ **THE CEILING IS THE GENERATOR, NOT THE RULE — owner, 2026-09-02: "Accept, amend the
+contract."** 128 px/cell is the target, and it stops being achievable once
+`drawSize × 128` exceeds what the image model actually renders. The model returns about
+**1.5 megapixels natively**, so a canvas beyond ~1024–1280 px is upscaling: a bigger file
+carrying interpolated pixels, not more detail. Measured on the sea-beast colossi
+(`drawSize` 12–20, which 128 px/cell would put at 2048): they shipped at **1024, i.e.
+85–96 px/cell**, and that is CORRECT, not a shortfall.
+
+⇒ **For any creature whose 128 px/cell target lands above ~1280 px, ship the largest
+canvas the generator fills with real detail and STATE the achieved px/cell in that
+creature's `PLAN.md`.** Do not round up to a power of two you cannot fill. A reviewer
+seeing 85 px/cell on a leviathan is looking at the ceiling, not at sloppy work.
+⚠️ This is an exception for the LARGE end only. Nothing here licenses shipping a 1.0-cell
+animal at 64 px — below the ceiling, 128 px/cell still binds.
+
 🔑 **`drawSize` is measured in CELLS and is completely independent of pixel resolution.**
 Raising a texture from 256 to 1024 changes nothing about the creature's footprint, its
 collision, or any def — it occupies exactly the same ground and simply stops being blocky.

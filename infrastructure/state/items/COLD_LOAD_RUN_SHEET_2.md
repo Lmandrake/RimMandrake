@@ -238,10 +238,22 @@ loads with all 4 memes visible and the settled-too-long mechanic armed; WATCH =
 any meme-cap complaint or a silently dropped meme (fixed-ideo loads usually
 bypass editor caps — verify, don't assume).
 
-## 🔴 DEPLOY BATCH staged 2026-09-02 (BENCH) — four fixes written and COMPILED, none deployed
+## ✅ DEPLOY BATCH of 2026-09-02 — ALL DEPLOYED AND SCORED (was: staged, none deployed)
 
-A DLL cannot be written while the game runs, so all four are waiting on the
-shutdown window. Every one is `Build succeeded`; none is proven live.
+Corrected 2026-09-02 by BENCH (CORRECT_COLD_LOAD_1). Everything below ran at the
+game-DOWN signal and then across two cold loads; this section is kept because the
+commands and the prove-it column are still the record of what was checked.
+
+| what | state |
+|---|---|
+| `jawa/inventory_transfer` on a MAP thing | ✅ PROVEN LIVE — movedCount 1, confirmed by an independent `jawa/thing_stats` read-back. Item closed |
+| `jawa/spawn_pawn` no longer redresses world pawns | ✅ PROVEN LIVE — 150 spawns, 0 substitutions, 0 Colonists. Item closed |
+| rimplace debug action places where you CLICK | ✅ PROVEN LIVE — clicked (60,60) built at (61,61); (161,161) untouched |
+| def dump on demand, no reload | ✅ DEPLOYED — startup capture confirmed (527 def-type files); the on-demand debug action is still UNPROVEN |
+
+🔴 The ONE thing still owed from this batch: nobody has fired
+`Actions\RMDefDump\Dump defs now (all)` from the bridge. The startup path proves the
+old code, not the new capability — and that capability is the whole point of it.
 
 ```
 python.exe src/RimMandrake/bridgetools/build.py --gm --apply
