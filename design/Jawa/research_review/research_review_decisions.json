@@ -1,0 +1,2618 @@
+{
+  "posture": "fate-review",
+  "criterion": "Fates ruled by the taxonomy sitting (design/Jawa/research_tree_taxonomy.md) \u2014 not a metric. This sheet collects overrides of those rulings.",
+  "generatedBy": "make_research_prefill.py",
+  "manifestFingerprint": "c2960afd (586-label) \u2014 defName set MATCHES live 589 world exactly",
+  "decisions": {
+    "CameraSecurityAdvanced": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "CameraSecurity": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "WatchTelescope": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "ABF_ResearchProject_Synstruct_CoreAssistants": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "ABF_ResearchProject_Synstruct_InterchangeableParts": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "ABF_ResearchProject_Synstruct_Infrastructure": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "ABF_ResearchProject_Synstruct_Optimization": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "ABF_ResearchProject_Synstruct_Stimulators": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "ABF_ResearchProject_Synstruct_Ultraparts": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "AM_Cryptoharmonization": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "AM_HeavyMechtech": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "AM_WorkerStandardMechtech": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "AM_MechanoidBeamcasting": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "AM_QuantumPulseMessaging": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "AM_StandardMechtech": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "AM_UltraHeavyMechtech": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "AM_VoidLinkConnectivity": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "BreadMoAM_AncientMiningTechniques": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "AM_RecyclingAssembly": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "DisruptorFlares": {
+      "decision": "cut",
+      "prefill": "cut",
+      "note": ""
+    },
+    "AdvancedPsychicRituals": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "AtmosphericHeater": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "BioferriteExtraction": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "BioferriteGenerator": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "BioferriteHarvesting": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "BioferriteShaping": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "BioferriteIgnition": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "BlissLobotomy": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "BloodRain": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "Brainwipe": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "Chronophagy": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "DeadlifeDust": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "DeathRefusal": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "SummonAnimals": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "SummonShamblers": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "Electroharvester": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "EntityContainment": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "FrenzyInducer": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "GhoulEnhancements": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "GhoulInfusion": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "GhoulResurrection": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "InsanityWeaponry": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "JuggernautSerum": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "MetalbloodSerum": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "MindNumbSerum": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "MutationWeaponry": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "NeurosisPulse": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "Philophagy": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "PleasurePulse": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "SummonPitGate": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "ProximityDetector": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "Psychophagy": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "RevenantInvisibility": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "SecurityDoor": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "SerumSynthesis": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "SkipAbductionPlayer": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "SleepSuppressor": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "SummonFleshbeastsPlayer": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "TurretPack": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "BasicPsychicRituals": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VoidSculptures": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "Asimov_WirelessCharging": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "KibbleDispenser": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "BS_AndroidConversion": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "BS_AnimalGrowthSerums": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "BS_ArchiteGeneScience": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "BS_GeneScience": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "BS_MadScienceField": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "BMT_CrystalIncubator": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "BMT_ResearchMushrooms": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "BMT_AdvancedFungi": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "BMT_Paleontology": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "Archogenetics": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "BasicMechtech": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "Deathrest": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "FertilityProcedures": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "GeneProcessor": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "GrowthVats": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "HighMechtech": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "StandardMechtech": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "ToxGas": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "ToxifierGenerator": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "ToxFiltration": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "UltraMechtech": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "WastepackAtomizer": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "Xenogermination": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "SniperTurret": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "IEDs": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "ShipEngine": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "AdvancedFabrication": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "AirConditioning": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "HeavyTurrets": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "Autodoors": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "TubeTelevision": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "Batteries": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "Brewing": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "BiofuelRefining": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "Bionics": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "BlowbackOperation": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "CarpetMaking": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "Electricity": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "Cocoa": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "ComplexClothing": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "FlatscreenTelevision": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "ComplexFurniture": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "Cryptosleep": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "DeepDrilling": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "Devilstrand": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "DrugProduction": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "Fabrication": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "Firefoam": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "FlakArmor": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "FoamTurret": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "GasOperation": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "GoJuiceProduction": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "Greatbow": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "GroundPenetratingScanner": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "GunTurrets": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "Gunsmithing": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "HospitalBed": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "Hydroponics": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "LongBlades": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "LongRangeMineralScanner": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "ShipComputerCore": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "Machining": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "PoweredArmor": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "MedicineProduction": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "MicroelectronicsBasics": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "MoisturePump": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "Mortars": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "MultiAnalyzer": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "MultibarrelWeapons": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "NutrientPaste": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "PassiveCooler": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "GeothermalPower": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "Pemmican": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "PenoxycylineProduction": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "PlateArmor": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "PrecisionRifling": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "Prosthetics": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "PsychiteRefining": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "PsychoidBrewing": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "ChargedShot": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "ReconArmor": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "RecurveBow": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "WatermillGenerator": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "RocketswarmLauncher": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "ColoredLights": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "ShieldBelt": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "Smithing": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "SmokepopBelt": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "SolarPanels": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "ShipBasics": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "ShipSensorCluster": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "ShipReactor": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "SterileMaterials": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "Stonecutting": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "PackagedSurvivalMeal": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "TransportPod": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "TreeSowing": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "ShipCryptosleep": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VitalsMonitor": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "WakeUpProduction": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "CGT_VXGasProduction": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "CGT_HalothaneGasProduction": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "CGT_MustardGasProduction": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "CGT_N2OGasProduction": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "CGT_TearGasProduction": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "CGT_WeaponizedGasIEDs": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "CGT_WeaponizedGasShells": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "DA_BloodflameCatacomb": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "DA_Catacombs": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "DedicatedDefenceSystems": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "ProjectHeron_Gates": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "ProjectHeron_RemoteDoors": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "ProjectHeron_Curtains": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "ProjectHeron_Swdoors": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "ProjectHeron_BlastDoors": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "ProjectHeron_PrisonDoors": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "HotTubs": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "ModernFixtures": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "AdvancedShowers": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "Saunas": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "AdvancedToilets": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "DP_RGiveArea50": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "DP_RGiveArea52": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "DP_RGiveGrandWalls": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "DP_RGiveExcavation": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "DP_RGiveMaze": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "DP_RGiveNinja": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "DP_RGivePrivate": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "DP_RGiveSunCult": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "DP_RGivePirateBay": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "DP_RGiveThrumboValley": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "Res_Projectors": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "FT_ENIAC": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "FT_Chemistry": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "FT_Concrete": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "FT_HeavyArtillery": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "FT_IndustrialCannon": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "FT_Lathe": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "AdvShipParts": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "GravBionics": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "GravForge": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "GravWeapon": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "GravTuning": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "BlackHole_GT": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "GTbc_BigCannons": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "HAZN_SmallTrap": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "Bioregeneration": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "Biosculpting": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "NeuralSupercharger": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "IW_IonChargeWeaponry": {
+      "decision": "merge",
+      "prefill": "merge",
+      "note": ""
+    },
+    "MM_Research_Repulsor": {
+      "decision": "cut",
+      "prefill": "cut",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_revan": {
+      "decision": "cut",
+      "prefill": "cut",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_exile": {
+      "decision": "cut",
+      "prefill": "cut",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_ion": {
+      "decision": "merge",
+      "prefill": "merge",
+      "note": ""
+    },
+    "MM_Research_AncientShipDesigns": {
+      "decision": "reflavor",
+      "prefill": "reflavor",
+      "note": ""
+    },
+    "MM_Research_CWShipDesigns": {
+      "decision": "reflavor",
+      "prefill": "reflavor",
+      "note": ""
+    },
+    "MM_Research_EmpireShipDesigns": {
+      "decision": "reflavor",
+      "prefill": "reflavor",
+      "note": ""
+    },
+    "KOTOR_Research_plasmaApplications": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_blasters": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_miniblasters": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_hvyblasters": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_sonic": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "KOTOR_Research_AdvImplants": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "KOTOR_Research_AdvPhysiology": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_advsabers": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "KOTOR_Research_AdvMunitions": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "KOTOR_Research_MoistureVaporator": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "KOTOR_Research_Baradium": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_bastila": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_handmaiden": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_canderous": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_carth": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_czerka": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "KOTOR_Research_Durasteel": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_echanishields": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_exchange": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_goto": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_hkequipment": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "KOTOR_Research_HoloRec": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_jawa": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_jedi": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "KOTOR_Research_Instruments": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_jolee": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_juhani": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_hutts": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "KOTOR_Research_Kolto": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_kreia": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_lightsabers": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_saberparts": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_luxa": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_malak": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_mando": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_vao": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "KOTOR_Research_Implants": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_nihilus": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "KOTOR_Research_TableRec": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "KOTOR_Research_Lobot": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "KOTOR_Research_AdvMaterials": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_republic": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "KOTOR_Research_FuelProcessing": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_sion": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_sith": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "KOTOR_Research_Spice": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "KOTOR_Research_cloaking": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_teethree": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "KOTOR_Research_plasma": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_tusken": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "KOTOR_Research_UltraComponent": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_visas": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_wookiee": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_bigZ": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_advupgrade": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_workbench": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_disruptor": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_droidblasters": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_bluntmelee": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_eshields": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_exupgrade": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_hvyarmor": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_lgtarmor": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_midarmor": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_lgtcannons": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_uncraftable": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_vibroweapons": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "RSW_JawaIon_Weaponry": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "Jewelry": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "LaserSculpting": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "MinesAutomated_ResearchProjectDef_minecraft": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "ResearchAlertSpeaker": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "ResearchDrillTurret": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "ResearchDrillTurretEfficientDrilling": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "ResearchMobileMineralSonar": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "ResearchMobileMineralSonarEnhancedScan": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "MechUtility": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "AdvancedGravtech": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "BasicGravtech": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "BeamWeapons": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "Fishing": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "HeavyBridges": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "HunterDrones": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "OrbitalTech": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "Shuttles": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "StandardGravtech": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "OuterRim_Blastersmithing": {
+      "decision": "merge",
+      "prefill": "merge",
+      "note": ""
+    },
+    "OuterRim_HeavyInstallations": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "OuterRim_HeavyTurrets": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "OuterRim_HypertechFabrication": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "OuterRim_LightInstallations": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "OuterRim_LightTurrets": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "OuterRim_MediumInstallations": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "OuterRim_MediumTurrets": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "OuterRim_Armoursmithing": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "OuterRim_Explosives": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "OuterRim_HeavyArmour": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "OuterRim_HeavyWeaponry": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "OuterRim_Jetpacks": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "OuterRim_StimBelts": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "OuterRim_TechBelts": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "OuterRim_Vambraces": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "OuterRim_DroidReplacementPartsAdv": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "OuterRim_DroidAdvancedSys": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "OuterRim_AssassinDroids": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "OuterRim_AstromechDroids": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "OuterRim_BattleDroids": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "OuterRim_DroidEngineering": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "OuterRim_DroidEnergySys": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "OuterRim_LaborDroids": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "OuterRim_MaintenanceDroids": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "OuterRim_MedicalDroids": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "OuterRim_DroidReplacementPartsOver": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "OuterRim_PowerDroids": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "OuterRim_ProtocolDroids": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "OuterRim_DroidReplacementParts": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "OuterRim_SecurityDroids": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "OuterRim_DroidWeaponSys": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "RG_BerryCultivation": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "RG_MushroomCultivation": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "RR_EMP": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "RR_BasicCraftingFacilities": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "RR_PowerGenerators": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "RR_ElectricityBasics": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "RR_BasicFoodPrep": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "RR_HeatingElements": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "RR_IncendiaryWeapons": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "RR_LateralThinking": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "RR_Organization": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "RR_BasicApparel": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "BoneRefineII": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "BoneRefine": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "RimAI_AI_Level1": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "RimAI_AI_Level2": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "RimAI_AI_Level3": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "RimAI_Subspace_Gravitic_Penetration": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "RimAI_GW_Communication": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "RimFridge_PowerFactorSetting": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "SynthyleneAdvComponents": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "ArtificialFloors": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "ChemfuelRefining": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "DeepOilWells": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "OilDrilling": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "HyperweaveProduction": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "Napalm": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "NeutroamineProduction": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "PlasteelProduction": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "SynthamideProduction": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "SynthamideCompositeProduction": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "SynthreadProduction": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "SynthyleneProduction": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "SynthyleneComponents": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "RR_Furniture": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "RR_lighting": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "RR_Rugs": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "RR_Storage": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "ArtificialMetabolism": {
+      "decision": "cut",
+      "prefill": "cut",
+      "note": ""
+    },
+    "BrainWiring": {
+      "decision": "cut",
+      "prefill": "cut",
+      "note": ""
+    },
+    "CataphractArmor": {
+      "decision": "cut",
+      "prefill": "cut",
+      "note": ""
+    },
+    "CircadianInfluence": {
+      "decision": "cut",
+      "prefill": "cut",
+      "note": ""
+    },
+    "CompactWeaponry": {
+      "decision": "cut",
+      "prefill": "cut",
+      "note": ""
+    },
+    "FleshShaping": {
+      "decision": "cut",
+      "prefill": "cut",
+      "note": ""
+    },
+    "Gunlink": {
+      "decision": "cut",
+      "prefill": "cut",
+      "note": ""
+    },
+    "Harp": {
+      "decision": "cut",
+      "prefill": "cut",
+      "note": ""
+    },
+    "Harpsichord": {
+      "decision": "cut",
+      "prefill": "cut",
+      "note": ""
+    },
+    "HealingFactors": {
+      "decision": "cut",
+      "prefill": "cut",
+      "note": ""
+    },
+    "JumpPack": {
+      "decision": "cut",
+      "prefill": "cut",
+      "note": ""
+    },
+    "MolecularAnalysis": {
+      "decision": "cut",
+      "prefill": "cut",
+      "note": ""
+    },
+    "NeuralComputation": {
+      "decision": "cut",
+      "prefill": "cut",
+      "note": ""
+    },
+    "NobleApparel": {
+      "decision": "cut",
+      "prefill": "cut",
+      "note": ""
+    },
+    "Piano": {
+      "decision": "cut",
+      "prefill": "cut",
+      "note": ""
+    },
+    "VenomSynthesis": {
+      "decision": "cut",
+      "prefill": "cut",
+      "note": ""
+    },
+    "RoyalApparel": {
+      "decision": "cut",
+      "prefill": "cut",
+      "note": ""
+    },
+    "SkinHardening": {
+      "decision": "cut",
+      "prefill": "cut",
+      "note": ""
+    },
+    "SpecializedLimbs": {
+      "decision": "cut",
+      "prefill": "cut",
+      "note": ""
+    },
+    "ShieldGen_AdvancedShieldTech": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "ShieldGen_BasicShieldTech": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "ShieldGen_PortableShieldTech": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "ScuttlebugsBiology": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_iondamp": {
+      "decision": "merge",
+      "prefill": "merge",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_hk": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_droidsith": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_droidcombatadv": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_droidlaboradv": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_droidutilityadv": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_droidassassin": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_droidassault": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_deflectors": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_droidarmor": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_droidshields": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_droidtech": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_hvyshields": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_droidsimple": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_droidintel": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "Biohacking": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "Tinkering": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "TormentMaster_CranialPinResearch": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "OilPourCageResearch": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "MushroomSoil": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "DetColumnRes": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "OrbitalTradeColumnRes": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "UtilityPanelsRes": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VAE_SterileAttire": {
+      "decision": "cut",
+      "prefill": "cut",
+      "note": ""
+    },
+    "VAE_CasualWear": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VAE_FormalWear": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VAE_MilitaryClothing": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VAE_WorkAttire": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VBE_LiquorBrewing": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VBE_MixologyResearch": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VCE_Canning": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VCE_CheeseMaking": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VCE_DeepFrying": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VCE_CondimentsResearch": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VCE_Grilling": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VCE_SoupCooking": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VCE_StewCooking": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VFEI2_BasicHivetech": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VFEI2_ExoticHivetech": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VFEI2_StandardHivetech": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VFEP_SweatFermentation": {
+      "decision": "cut",
+      "prefill": "cut",
+      "note": ""
+    },
+    "VFEP_AdvancedWarcaskets": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VFEP_SpacerWarcasketWeaponry": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VFEP_SpacerWarcaskets": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VFEP_SpecialisedWarcaskets": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VFEP_WarcasketRemoval": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VFEP_WarcasketWeaponry": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VFEP_Warcaskets": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VFET_Agriculture": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VFET_AnimalHandling": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VFET_Bow": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VFET_Construction": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VFET_Cultivation": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VFET_Culture": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VFET_Fire": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VFET_Furniture": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VFET_Hunting": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VFET_Medicine": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VFET_Mining": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VFET_Tribalwear": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VFET_Weapons": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "MF_RoyalFurniture": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "MF_BasicFurniture": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "MF_ModernFurniture": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "MF_WasteDisposal": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VFE_Res_ArtfulDisplay": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VFE_Res_WallCarvings": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VFE_Res_Holograms": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VFE_Res_Monuments": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VFE_Res_Obelisk": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VFE_Res_Pottery": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VFE_Res_Rugs": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VFE_Res_Statues": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VFE_Res_Wallpapers": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VFE_BasicFactories": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VFE_ComplexFactories": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VFE_Res_AdvancedHydroponics": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VFE_Res_FarmingTechniques": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VFE_Res_Sprinkler": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VFE_AdvancedBatteries": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VFE_AdvancedPowerSources": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VFE_IndustrialGenerators": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VFE_NuclearPower": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VFE_TidalPower": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VFE_Manufacturing": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VFES_Railgun": {
+      "decision": "keep",
+      "prefill": "keep",
+      "note": ""
+    },
+    "VFES_ConcealedDefenses": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VFES_EMPCannon": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VFES_RepulsorTechnology": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VFES_SiegeEquipment": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "SpacerElectronics": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "SpacerFurniture": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "GR_GeneticAlteration": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "GR_HybridImplantology": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "GR_GeneticCompatibility": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "GR_GeneticEngineering": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "GR_GeneticDuplication": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "GR_GeneticMechahybridization": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VGE_AstrofuelRefining": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VGE_CompactWorkspaces": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VGE_GravshipLiving": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VGE_GravshipPower": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VGE_GravshipWeaponry": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VGE_HeatDissipation": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VGE_OxygenNetwork": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VHGE_GasExtraction": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VCE_SucculentSowing": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VVE_AerialVehicles": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VVE_BasicVehicles": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VVE_CombatVehicles": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VVE_ComplexVehicles": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VWE_LaserTargetingSystems": {
+      "decision": "merge",
+      "prefill": "merge",
+      "note": ""
+    },
+    "VWE_HeavyWeapons": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VWE_TrenchWarfare": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "VWE_LaserWeapons": {
+      "decision": "merge",
+      "prefill": "merge",
+      "note": ""
+    },
+    "VWE_MakeshiftWeapons": {
+      "decision": "cut",
+      "prefill": "cut",
+      "note": ""
+    },
+    "MatterToEnergyConversion": {
+      "decision": "cut",
+      "prefill": "cut",
+      "note": ""
+    },
+    "WallStuff": {
+      "decision": "cut",
+      "prefill": "cut",
+      "note": ""
+    },
+    "RM_WM_AutomatedSmelterRestoration": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "SpacerCCTV": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "TribalCCTV": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "IndustrialCCTV": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    },
+    "SpaceBase_Explorer_Furniture": {
+      "decision": "untouched",
+      "prefill": "untouched",
+      "note": ""
+    }
+  }
+}
