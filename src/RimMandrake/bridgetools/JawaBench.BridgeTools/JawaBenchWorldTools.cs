@@ -3053,6 +3053,7 @@ namespace JawaBench.BridgeTools
                             // notification ourselves - note 4, the difference
                             // between a number changing and the game moving.
                             var prevA = relAB.kind;
+                            var prevB = relBA != null ? relBA.kind : prevA;
                             relAB.kind = parsed;
                             if (both && relBA != null) relBA.kind = parsed;
 
@@ -3063,7 +3064,12 @@ namespace JawaBench.BridgeTools
                             if (both && relBA != null)
                             {
                                 bool sentB;
-                                b.Notify_RelationKindChanged(a, prevA, sendLetter,
+                                // B's own PRIOR kind, not A's - this tool exists in part to
+                                // repair exactly the case where the two records disagree
+                                // (see the class header), so on that case this notify must
+                                // not tell B's faction that its own record changed from A's
+                                // kind, which it never actually held.
+                                b.Notify_RelationKindChanged(a, prevB, sendLetter,
                                     "Set by jawa/faction_relations_set.",
                                     GlobalTargetInfo.Invalid, out sentB);
                             }

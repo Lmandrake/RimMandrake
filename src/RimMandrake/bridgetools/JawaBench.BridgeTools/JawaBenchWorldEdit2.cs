@@ -295,14 +295,21 @@ namespace JawaBench.BridgeTools
 
                 var rect = GenAdj.OccupiedRect(cell, rotation, def.Size);
                 var hit = new List<object>();
+                var hitMinifiable = new List<bool>();
+                var seenThingIds = new HashSet<int>();
                 bool wouldWipe = false;
                 foreach (var c in rect)
                 {
+                    // thingGrid registers a multi-cell thing at EVERY cell it occupies,
+                    // so a 3x3 building would otherwise be added 9 times and inflate
+                    // both `affected` and the wouldWipeAnything companion count.
                     foreach (var th in map.thingGrid.ThingsAt(c).ToList())
                     {
                         if (!GenSpawn.SpawningWipes(def, th.def)) continue;
+                        if (!seenThingIds.Add(th.thingIDNumber)) continue;
                         wouldWipe = true;
                         hit.Add(new { thingId = th.ThingID, def = th.def != null ? th.def.defName : null, label = th.LabelCap, category = th.def != null ? th.def.category.ToString() : null });
+                        hitMinifiable.Add(th.def != null && th.def.Minifiable);
                     }
                 }
 
@@ -339,7 +346,10 @@ namespace JawaBench.BridgeTools
                     rot,
                     thingDef = def.defName,
                     wouldWipeAnything = wouldWipe,
-                    affected = hit.Select(o => new { row = o, refunded = refund }).ToList(),
+                    // GenSpawn.WipeAndRefundExistingThings only minifies-and-replaces a
+                    // Minifiable thing; everything else (walls, floors, plants, most
+                    // items) is DESTROYED regardless of `refund`.
+                    affected = hit.Select((o, i) => new { row = o, refunded = refund && hitMinifiable[i] }).ToList(),
                     ticksGame = TicksGameSafe()
                 };
             }).ConfigureAwait(false);

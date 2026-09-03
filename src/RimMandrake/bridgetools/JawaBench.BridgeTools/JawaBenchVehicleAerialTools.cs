@@ -269,6 +269,8 @@ namespace JawaBench.BridgeTools
                 string cellErr;
                 if (!TryParseCell(at, out cell, out cellErr))
                     return Fail(cellErr);
+                if (!cell.InBounds(map))
+                    return Fail("Cell " + cell + " is out of bounds for this map.");
 
                 Type makerType = GenTypes.GetTypeInAnyAssembly("Vehicles.AirdropSkyfallerMaker");
                 Type propsType = GenTypes.GetTypeInAnyAssembly("Vehicles.AirdropProperties");
@@ -304,14 +306,17 @@ namespace JawaBench.BridgeTools
 
                         object skyfaller = make.Invoke(null, new object[] { airdropDef, contents, props });
                         if (skyfaller == null) return Fail("MakeAirdrop returned null.");
-                        GenSpawn.Spawn((Thing)skyfaller, cell, map);
+                        Thing skyfallerThing = (Thing)skyfaller;
+                        GenSpawn.Spawn(skyfallerThing, cell, map);
+                        if (!skyfallerThing.Spawned)
+                            return Fail("GenSpawn.Spawn failed for the airdrop skyfaller at " + cell + " - it exists but is not placed on the map.");
 
                         return new
                         {
                             success = true,
                             kind,
                             at = new { x = cell.x, z = cell.z },
-                            spawned = new { thingId = ((Thing)skyfaller).ThingID, def = skyfallerDefName },
+                            spawned = new { thingId = skyfallerThing.ThingID, def = skyfallerDefName },
                             contents = contents.Select(c => new { def = c.def.defName, stackCount = c.stackCount }).ToList(),
                         };
                     }
@@ -331,14 +336,19 @@ namespace JawaBench.BridgeTools
 
                         object skyfaller = make.Invoke(null, new object[] { airdropDef, p, props });
                         if (skyfaller == null) return Fail("MakeAirdrop returned null.");
-                        GenSpawn.Spawn((Thing)skyfaller, cell, map);
+                        Thing skyfallerThing = (Thing)skyfaller;
+                        GenSpawn.Spawn(skyfallerThing, cell, map);
+                        if (!skyfallerThing.Spawned)
+                            return Fail("GenSpawn.Spawn failed for the airdrop skyfaller at " + cell + " - " +
+                                p.LabelShortCap + " was already handed to MakeAirdrop as its payload; check the " +
+                                "pawn's state directly rather than trusting this call's success.");
 
                         return new
                         {
                             success = true,
                             kind,
                             at = new { x = cell.x, z = cell.z },
-                            spawned = new { thingId = ((Thing)skyfaller).ThingID, def = skyfallerDefName },
+                            spawned = new { thingId = skyfallerThing.ThingID, def = skyfallerDefName },
                             pawn = new { thingId = p.ThingID, label = p.LabelShortCap },
                         };
                     }

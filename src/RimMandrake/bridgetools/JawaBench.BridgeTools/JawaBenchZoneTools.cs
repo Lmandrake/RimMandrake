@@ -153,6 +153,18 @@ namespace JawaBench.BridgeTools
                 var changed = new List<string>();
                 var refused = new List<object>();
 
+                // Validated BEFORE any mutation below - previously this was checked
+                // last, so a bad priority string returned Fail over a filter that
+                // disallowAll/disallow/allow had already rewritten in place.
+                StoragePriority? parsedPriority = null;
+                if (priority != null)
+                {
+                    StoragePriority pr;
+                    if (!Enum.TryParse(priority.Trim(), true, out pr))
+                        return Fail($"Unknown priority '{priority}'.", new { accepted = Enum.GetNames(typeof(StoragePriority)) });
+                    parsedPriority = pr;
+                }
+
                 if (disallowAll)
                 {
                     settings.filter.SetDisallowAll();
@@ -185,18 +197,15 @@ namespace JawaBench.BridgeTools
                     }
                 }
 
-                if (priority != null)
+                if (parsedPriority.HasValue)
                 {
-                    StoragePriority pr;
-                    if (!Enum.TryParse(priority.Trim(), true, out pr))
-                        return Fail($"Unknown priority '{priority}'.", new { accepted = Enum.GetNames(typeof(StoragePriority)) });
-                    settings.Priority = pr;
-                    changed.Add("priority:" + pr);
+                    settings.Priority = parsedPriority.Value;
+                    changed.Add("priority:" + parsedPriority.Value);
                 }
 
-                if (changed.Count == 0 && refused.Count == 0)
-                    return Fail("Nothing to do: pass at least one of priority/allow/disallow/disallowAll, or read-only is intended - in which case this IS the read.");
-
+                // No priority/allow/disallow/disallowAll given: this IS the read (the
+                // tool's own Description says so) - fall through to the same payload
+                // a mutating call gets, rather than reporting Fail on a legitimate read.
                 var buildingParent = parent as Building_Storage;
                 var sharedGroup = buildingParent != null && buildingParent.storageGroup != null;
 

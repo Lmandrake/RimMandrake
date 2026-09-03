@@ -545,9 +545,15 @@ namespace JawaBench.BridgeTools
                 try { p.guest.SetGuestStatus(newHost, gs); }
                 catch (Exception e) { return Fail("SetGuestStatus threw " + e.GetType().Name + ": " + e.Message); }
 
+                // SetGuestStatus returns void and bails out (a Log.Error, no exception)
+                // on the invalid combinations - Guest status with a host hostile to the
+                // pawn's own faction, and newHost == pawn.Faction - so a throw-free call
+                // is not proof it actually applied. Read the after-state back instead.
+                bool applied = p.guest.GuestStatus == gs && p.guest.HostFaction == newHost;
+
                 return new
                 {
-                    success = true,
+                    success = applied,
                     pawn = p.LabelShortCap,
                     hostFactionBefore = hostBefore != null ? hostBefore.Name : null,
                     hostFactionAfter = p.guest.HostFaction != null ? p.guest.HostFaction.Name : null,
@@ -555,6 +561,9 @@ namespace JawaBench.BridgeTools
                     guestStatusAfter = p.guest.GuestStatus.ToString(),
                     resistanceAfter = gs == GuestStatus.Prisoner ? (float?)p.guest.resistance : null,
                     willAfter = gs == GuestStatus.Prisoner ? (float?)p.guest.will : null,
+                    note = applied ? null : "REFUSED by the engine (not thrown) - SetGuestStatus silently no-ops " +
+                        "when guestStatus=Guest and newHost is hostile to the pawn's own faction, or when " +
+                        "newHost == pawn.Faction.",
                     ticksGame = TicksGameSafe()
                 };
             }).ConfigureAwait(false);

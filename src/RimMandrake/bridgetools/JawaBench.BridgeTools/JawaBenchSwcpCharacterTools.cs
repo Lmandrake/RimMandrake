@@ -369,6 +369,10 @@ namespace JawaBench.BridgeTools
                 if (pawn == null) return Fail("GetOrGenPawn returned no pawn.");
 
                 IntVec3 cell = (x.HasValue && z.HasValue) ? new IntVec3(x.Value, 0, z.Value) : map.Center;
+                if (!cell.InBounds(map))
+                    return Fail("Cell " + cell + " is out of bounds for this map. GenSpawn.Spawn logs and " +
+                        "returns null on an out-of-bounds cell rather than throwing, which for " +
+                        "forceRespawn=true would leave this singleton character DESPAWNED with no way back.");
 
                 bool moved = false;
                 if (pawn.Spawned)
@@ -376,14 +380,19 @@ namespace JawaBench.BridgeTools
                     if (forceRespawn)
                     {
                         pawn.DeSpawn(DestroyMode.Vanish);
-                        GenSpawn.Spawn(pawn, cell, map, WipeMode.Vanish);
+                        Pawn respawned = GenSpawn.Spawn(pawn, cell, map, WipeMode.Vanish) as Pawn;
+                        if (respawned == null || !pawn.Spawned)
+                            return Fail("GenSpawn.Spawn failed after despawning " + pawn.LabelShortCap +
+                                " for the move - the character is now UNSPAWNED. Cell was " + cell + ".");
                         moved = true;
                     }
                     // else: became spawned concurrently since the pre-check - report as-is, don't move it.
                 }
                 else
                 {
-                    GenSpawn.Spawn(pawn, cell, map, WipeMode.Vanish);
+                    Pawn spawned = GenSpawn.Spawn(pawn, cell, map, WipeMode.Vanish) as Pawn;
+                    if (spawned == null || !pawn.Spawned)
+                        return Fail("GenSpawn.Spawn failed for " + pawn.LabelShortCap + " at " + cell + ".");
                 }
 
                 return new
