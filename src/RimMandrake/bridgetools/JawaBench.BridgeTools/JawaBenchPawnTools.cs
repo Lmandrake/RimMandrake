@@ -47,50 +47,64 @@ namespace JawaBench.BridgeTools
             // either rather than making the caller know which tool produced the string.
             if (id.StartsWith("Thing_", StringComparison.OrdinalIgnoreCase) && id.Length > 6)
                 id = id.Substring(6);
+            // One match pass, run over each population in turn. Same order and rules
+            // everywhere: thingIDNumber, then ThingID, then any of the name forms.
+            var searchId = id;
+            Func<List<Pawn>, Pawn> pick = pool =>
+            {
+                if (pool == null || pool.Count == 0) return null;
+                int nn;
+                if (int.TryParse(searchId, out nn))
+                {
+                    var byNum = pool.FirstOrDefault(p => p.thingIDNumber == nn);
+                    if (byNum != null) return byNum;
+                }
+                var byThingId = pool.FirstOrDefault(p => string.Equals(p.ThingID, searchId, StringComparison.OrdinalIgnoreCase));
+                if (byThingId != null) return byThingId;
+                return pool.FirstOrDefault(p => p.Name != null &&
+                    (string.Equals(p.Name.ToStringShort, searchId, StringComparison.OrdinalIgnoreCase) ||
+                     string.Equals(p.Name.ToStringFull, searchId, StringComparison.OrdinalIgnoreCase) ||
+                     string.Equals(p.LabelShort, searchId, StringComparison.OrdinalIgnoreCase)));
+            };
+
             var maps = Find.Maps ?? new List<Map>();
             var all = new List<Pawn>();
             foreach (var m in maps) all.AddRange(m.mapPawns.AllPawnsSpawned);
-            int n;
-            if (int.TryParse(id, out n))
+            var spawnedHit = pick(all);
+            if (spawnedHit != null) return spawnedHit;
+
+            // 🔑 CONTAINED PAWNS (2026-09-03 opus code review): a pawn in a cryptosleep
+            // casket, a growth vat, a biosculpter, a loaded transport pod or shuttle, or
+            // one being carried by another pawn is NOT in AllPawnsSpawned and is NOT a
+            // world pawn either, so it fell through BOTH passes and every pawn tool in
+            // this file answered "no such pawn" for a colonist that is plainly on the map.
+            // MapPawns.AllPawnsUnspawned is exactly that population (GetAllThingsRecursively
+            // over the map's holders, alsoGetSpawnedThings:false, dead pawns dropped), so
+            // it cannot double-match the spawned pass above.
+            // ⚠️ Its getter hands back a SHARED buffer that the NEXT read clears - copy it
+            // out per map rather than holding the reference across the loop.
+            var held = new List<Pawn>();
+            foreach (var m in maps)
             {
-                var byId = all.FirstOrDefault(p => p.thingIDNumber == n);
-                if (byId != null) return byId;
+                var un = m.mapPawns.AllPawnsUnspawned;
+                if (un != null) held.AddRange(un);
             }
-            var exact = all.FirstOrDefault(p => string.Equals(p.ThingID, id, StringComparison.OrdinalIgnoreCase));
-            if (exact != null) return exact;
-            var byName = all.FirstOrDefault(p => p.Name != null &&
-                (string.Equals(p.Name.ToStringShort, id, StringComparison.OrdinalIgnoreCase) ||
-                 string.Equals(p.Name.ToStringFull, id, StringComparison.OrdinalIgnoreCase) ||
-                 string.Equals(p.LabelShort, id, StringComparison.OrdinalIgnoreCase)));
-            if (byName != null) return byName;
+            var heldHit = pick(held);
+            if (heldHit != null) return heldHit;
 
             // 🔑 OFF-MAP FALLBACK (BRIDGE_PAWN_THOUGHTS_CARAVAN_GAP_1): a caravan member (or
             // any other pawn currently "passed to world" - a prisoner in transit, a pawn on
             // a map that isn't loaded) is never in mapPawns.AllPawnsSpawned above even though
             // it clearly exists. WorldPawns.AllPawnsAlive covers exactly this population
-            // (caravans PassToWorld() every member) - try it before giving up. Same match
-            // order/rules as the map pass; a pawn present on BOTH lists (unlikely, but not
-            // impossible mid-transition) is already returned by the map pass above and never
-            // reaches here, so there is no double-match ambiguity to resolve.
+            // (caravans PassToWorld() every member) - try it before giving up. A pawn present
+            // on BOTH lists (unlikely, but not impossible mid-transition) is already returned
+            // by a pass above and never reaches here, so there is no ambiguity to resolve.
             var world = Find.WorldPawns != null ? Find.WorldPawns.AllPawnsAlive : null;
-            if (world != null)
-            {
-                int nw;
-                if (int.TryParse(id, out nw))
-                {
-                    var byIdW = world.FirstOrDefault(p => p.thingIDNumber == nw);
-                    if (byIdW != null) return byIdW;
-                }
-                var exactW = world.FirstOrDefault(p => string.Equals(p.ThingID, id, StringComparison.OrdinalIgnoreCase));
-                if (exactW != null) return exactW;
-                var byNameW = world.FirstOrDefault(p => p.Name != null &&
-                    (string.Equals(p.Name.ToStringShort, id, StringComparison.OrdinalIgnoreCase) ||
-                     string.Equals(p.Name.ToStringFull, id, StringComparison.OrdinalIgnoreCase) ||
-                     string.Equals(p.LabelShort, id, StringComparison.OrdinalIgnoreCase)));
-                if (byNameW != null) return byNameW;
-            }
+            var worldHit = pick(world);
+            if (worldHit != null) return worldHit;
 
-            err = "No spawned or world pawn matching '" + id + "'. " + all.Count + " pawns are spawned, "
+            err = "No pawn matching '" + id + "'. " + all.Count + " pawns are spawned, "
+                  + held.Count + " are held on a map (caskets, growth vats, pods, carried), "
                   + (world != null ? world.Count.ToString() : "0") + " are world pawns (caravans, transit, etc.). "
                   + "Accepted: the bare thingID ('Human45731'), the same with a 'Thing_' prefix, "
                   + "the numeric thingIDNumber, or the pawn's name. jawa/list_pawns reports the bare form.";
@@ -540,11 +554,21 @@ namespace JawaBench.BridgeTools
                 };
                 var changed = new List<string>();
 
+                // Fixed 2026-09-03 (opus code review): the range was documented ("0-1") and
+                // enforced nowhere. float.TryParse accepts "NaN" and "Infinity" and any
+                // magnitude, and UnityEngine.Color's constructor does not clamp - so
+                // skinColor="NaN,NaN,NaN" wrote a NaN colour into skinColorOverride, which
+                // this tool's own Description notes is the SAVED field. The pawn then renders
+                // wrong for the rest of the save and no later valid value repairs the one
+                // already written. Reject out of range instead; both call sites already say
+                // "must be 'r,g,b' with 0-1 floats".
+                Func<float, bool> unit = v => v >= 0f && v <= 1f;   // false for NaN and Infinity
                 Func<string, Color?> parseCol = str =>
                 {
                     var b = (str ?? "").Split(',');
                     float r0, g0, b0;
-                    if (b.Length == 3 && float.TryParse(b[0], out r0) && float.TryParse(b[1], out g0) && float.TryParse(b[2], out b0))
+                    if (b.Length == 3 && float.TryParse(b[0], out r0) && float.TryParse(b[1], out g0) && float.TryParse(b[2], out b0)
+                        && unit(r0) && unit(g0) && unit(b0))
                         return new Color(r0, g0, b0);
                     return null;
                 };
@@ -1048,6 +1072,14 @@ namespace JawaBench.BridgeTools
                     if (target == null) return Fail("No ideoligion named '" + ideo + "'. Available: " +
                         (all == null ? "(none)" : string.Join(" | ", all.Select(i => i.name).ToArray())));
                     p.ideo.SetIdeo(target);
+                    // Fixed 2026-09-03 (opus code review): Pawn_IdeoTracker.SetIdeo's FIRST
+                    // line is `if (this.ideo == ideo || pawn.DevelopmentalStage.Baby()) return;`
+                    // - so on a baby it writes nothing and says nothing. This tool's own
+                    // Description already warned that it "no-ops on babies" and then reported
+                    // success anyway. Verify the write the way PawnGear verifies equip/wear.
+                    if (p.Ideo != target)
+                        return Fail("SetIdeo did not take on " + p.LabelShortCap + " - Pawn_IdeoTracker.SetIdeo returns silently " +
+                                    "on a BABY. The pawn is still on '" + (p.Ideo != null ? p.Ideo.name : "(none)") + "'.");
                     notes.Add("SetIdeo randomises certainty and may strip spouse/bond relations - that is vanilla, not us");
                 }
                 else if (A == "certainty")
@@ -1282,6 +1314,28 @@ namespace JawaBench.BridgeTools
                 if (p == null) return Fail(err);
                 if (p.ageTracker == null) return Fail("Pawn has no age tracker.");
                 const long YEAR = 3600000L;
+
+                // 🔴 UNBOUNDED INPUT (2026-09-03 opus code review). Both writes below are
+                // float -> long tick maths landing in a SAVED field, and neither the engine
+                // nor this tool bounded them:
+                //  * DebugSetAge walks ONE BirthdayBiological per year of the jump - a stat
+                //    lookup, a hediff-giver roll and possibly a letter EACH - so a big
+                //    forward value hangs the game in that loop and buries the colony under
+                //    one letter per birthday.
+                //  * Above ~2.5e12 years the float*long product leaves long's range, and a
+                //    cast of an out-of-range float is UNDEFINED in unchecked C# (long.MinValue
+                //    on x86). AgeBiologicalTicks would then hold a negative age, and
+                //    AgeChronologicalTicks' setter writes birthAbsTicks = TicksAbs - value,
+                //    so the pawn's saved birth date wraps to garbage. Infinity does the same.
+                // Neither is undone by passing a sane value afterwards, so bound the input
+                // BEFORE anything is written - which also stops a bad chronological value
+                // landing after the biological write already took.
+                const float MAX_YEARS = 10000f;
+                if (biologicalYears > MAX_YEARS || chronologicalYears > MAX_YEARS)
+                    return Fail("Age out of range: max " + MAX_YEARS + " years (biologicalYears=" + biologicalYears +
+                                ", chronologicalYears=" + chronologicalYears + "). DebugSetAge walks one BirthdayBiological " +
+                                "per year, so a large forward jump freezes the game, and the tick maths overflows long " +
+                                "well before the pawn would be meaningful.");
 
                 var before = new
                 {
