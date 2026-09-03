@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-03T14:25:26Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-03T15:09:48Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -17,6 +17,15 @@ Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED be
 # IN PROGRESS
 
 Started, and therefore not offered again. `rimflow close` or `rimflow block` moves them.
+
+## RESEARCH_TREE_NORMALIZATION_1 Restructure ALL research for the whole game - full normalization pass, after the droids land
+state:    doing
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+summary:  Layer stack: design/Jawa/researchnormalizationprinciples.md (why) →
+prose:    infrastructure/state/items/RESEARCH_TREE_NORMALIZATION_1.md
 
 ## FLUID_CANAL_FLOOD_LIVE_CHECK_1 Watch a fluid-canal flood recede and give the floor back
 state:    doing
@@ -41,14 +50,4 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## RESEARCH_TREE_NORMALIZATION_1 Restructure ALL research for the whole game - full normalization pass, after the droids land
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  Layer stack: design/Jawa/researchnormalizationprinciples.md (why) →
-prose:    infrastructure/state/items/RESEARCH_TREE_NORMALIZATION_1.md
+_none._
