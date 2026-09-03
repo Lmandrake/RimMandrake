@@ -40,8 +40,10 @@
 //   Vehicles.LaunchProtocol
 //     .Release()               METHOD   public virtual
 //   Vehicles.VehicleMod.settings.main.deployOnLanding  -- best-effort read (defaults
-//     false if the chain does not resolve); gates whether a landed vehicle's colonists
-//     auto-deploy, matching the debug action's own check.
+//     TRUE if the chain does not resolve, matching SectionMain's own field initializer
+//     and Scribe default - VF ships this ON, so a broken read must not silently flip it
+//     off); gates whether a landed vehicle's colonists auto-deploy, matching the debug
+//     action's own check.
 //   Vehicles.AirdropSkyfallerMaker
 //     .MakeAirdrop(AirdropDef, List<Thing>, in AirdropProperties)  public static -> AirdropSkyfaller
 //     .MakeAirdrop(AirdropDef, Thing,        in AirdropProperties)  public static -> AirdropSkyfaller
@@ -222,6 +224,12 @@ namespace JawaBench.BridgeTools
             });
         }
 
+        /// <summary>
+        /// VF's own default is TRUE (SectionMain.deployOnLanding = true, and its Scribe
+        /// default is the same) - so an unresolved or unreadable chain must fall back to
+        /// true, not false, or this tool silently reverses the shipped behaviour on any
+        /// vehicle it force-lands whenever the read fails.
+        /// </summary>
         private static bool ReadDeployOnLandingSetting()
         {
             try
@@ -230,11 +238,11 @@ namespace JawaBench.BridgeTools
                 object settings = modType?.GetField("settings", VfPubStatic)?.GetValue(null);
                 object main = FieldOrNull(settings, "main");
                 object flag = FieldOrNull(main, "deployOnLanding");
-                return flag is bool b && b;
+                return !(flag is bool b) || b;
             }
             catch (Exception)
             {
-                return false;
+                return true;
             }
         }
 
