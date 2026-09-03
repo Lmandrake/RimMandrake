@@ -299,7 +299,32 @@ After this deploy it is one bridge call from any map or the main menu.
 game's copies, so "the repo file is newer, it must be deployed" reads exactly
 backwards until these run.
 
-## THE BIG DUMP LOAD — decision strings written 2026-09-03 BEFORE launch (BENCH; owner: "deploy everything and reload the big mod list so we can finally get our big dump")
+## ✅ THE BIG DUMP LOAD — SCORED 2026-09-03 (BENCH, AFK batch, game up build e9373f4f)
+
+- ✅ **THE BIG DUMP EXISTS** (the owner's ask): startup capture
+  `DefDump\captures\2026-09-03T06-10-14Z\` — 525 def-type files, manifest
+  modCount 589, mode=all, gameVersion 1.6.4871 rev591, capturedUtc matches this
+  load. Fingerprint current. `refresh.py` downstream is now unblocked.
+- ✅ **Deploy batch clean**: 102 files across ~15 mods deployed at the shutdown
+  window; two repo files had illegal `--` inside XML comments (Droidworks recipe,
+  IonStun hediff) — the deploy guard caught both, fixed + committed, redeployed;
+  "Everything in sync". Load carried zero TypeLoad/ReflectionTypeLoad failures;
+  every EXPECTED_FAILURES signature stayed silent.
+- ✅ **Companion**: 308 tools registered (status diagnostics), no companion errors.
+- ❌ **On-demand dump action UNREACHABLE via bridge** — spun out to
+  `DEFDUMP_ONDEMAND_BRIDGE_UNREACHABLE_1`. Startup path proves the dump code;
+  the bridge cannot fire the plain-Action-type debug leaf (RMInject, also plain
+  category, equally absent). Not a load failure — a bridge-surface gap.
+- ⚠️ **Harvest, 2 new RED, NEITHER tonight's regression**: crossref 23 + patchfail
+  6 are all the `guy762_Headband_*` KotOR family (cut defs, dangling refs + one
+  failed KotOR-Droids patch) plus vanilla count-class pseudo-defs → filed
+  `KOTOR_HEADBAND_DANGLING_REFS_1`. Zero `mandrake.*` in either bucket.
+
+🔒 This sheet's purpose — get the fresh big dump — is FULFILLED; the one owed
+capability (on-demand fire) now lives in its own item. A fresh run sheet is filed
+next batched window (COLD_LOAD_RUN_SHEET_3).
+
+### decision strings written 2026-09-03 BEFORE launch (kept as the record)
 
 Shutdown window pays: companion `build.py --gm --apply` + every drifted mod via
 `deploy_custom_mods.py --apply`. Launch via `steam.exe -applaunch 294100`, full list.
