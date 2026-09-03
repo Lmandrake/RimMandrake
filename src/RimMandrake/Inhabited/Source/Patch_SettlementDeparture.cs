@@ -10,10 +10,16 @@ namespace RimMandrake.Inhabited
     /// and for the same reason: the map is about to be torn down, and this is
     /// the last instant it still exists as "the settlement the player is
     /// leaving". A second [HarmonyPrefix] on the same target coexists cleanly
-    /// with the base engine's recall patch -- Harmony runs every prefix bound
-    /// to a method, order between them does not matter here because this
-    /// patch only reads the settlement and its manifest, never the map's
-    /// pawns (recall's job).
+    /// with Patch_MapRemoval's recall -- Harmony runs every prefix bound to a
+    /// method.
+    ///
+    /// ⚠️ THE ORDER BETWEEN THE TWO IS DECLARED, NOT LEFT TO CHANCE. Today this
+    /// patch only reads the settlement and its manifest, so either order would
+    /// do; the moment a gate search wants to know WHO is leaving it has to run
+    /// while the cast is still standing on the map, and the recall empties the
+    /// map. So this takes Priority.First and Patch_MapRemoval takes
+    /// Priority.Last -- Harmony runs the higher priority first -- rather than
+    /// resting on the registration order of two classes in one assembly.
     ///
     /// A Harmony patch that matches nothing throws at startup rather than
     /// silently doing nothing -- see Patch_MapRemoval's own note on why that
@@ -25,6 +31,7 @@ namespace RimMandrake.Inhabited
         private static readonly System.Action<Game, Map, bool> TargetSignatureProof =
             (game, map, notifyPlayer) => game.DeinitAndRemoveMap(map, notifyPlayer);
 
+        [HarmonyPriority(Priority.First)]
         [HarmonyPrefix]
         public static void FireGateSearch(Map map)
         {

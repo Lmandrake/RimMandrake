@@ -13,11 +13,15 @@ namespace RimMandrake.Inhabited
     /// trader): a small IExposable+IThingHolder that takes the parent and is
     /// deep-scribed by it.
     ///
-    /// The contents are deliberately reachable by anyone standing on the map:
-    /// Thing.IsForbidden returns false for any non-player faction, so a hungry
-    /// cast WILL raid the colony's stockpile, and a player can equally walk off
-    /// with the place's food. Under this design that is not a hole to plug -- it
-    /// is the audible click before a cast leaves.
+    /// 🔴 THE CONTENTS NEVER REACH A MAP YET. Fill() runs once at cast
+    /// instantiation and the things sit in this holder, scribed with the world
+    /// object; no GenStep spawns them and no teardown collects them back. The
+    /// design wants them on the ground and reachable -- Thing.IsForbidden returns
+    /// false for any non-player faction, so a hungry cast would raid the colony's
+    /// stockpile and the player could equally walk off with the place's food, and
+    /// that theft is meant to be the audible click before a cast leaves. Building
+    /// that is INHABITED_STOCK_ONTO_MAP_AND_FATE_1; until it lands, this class is
+    /// a ledger.
     /// </summary>
     public class InhabitedStock : IExposable, IThingHolder
     {

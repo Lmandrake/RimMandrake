@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
@@ -158,70 +159,133 @@ namespace RimMandrake.Inhabited
         }
 
         /// <summary>
-        /// Remove and return up to <paramref name="count"/> of a faction's
-        /// placeless, longest-waiting first. This is the ONLY way anyone leaves the
-        /// pool, and it runs at cast instantiation, never on a tick.
+        /// Everyone eligible for a draw, longest-waiting first. The filter differs
+        /// between the two draw routes below; the ordering never does.
         /// </summary>
-        public List<Pawn> Draw(Faction faction, int count)
+        private List<Pawn> Candidates(Func<Pawn, bool> filter)
         {
-            List<Pawn> drawn = new List<Pawn>();
-            if (count <= 0 || placeless == null || placeless.Count == 0)
+            if (placeless == null || placeless.Count == 0)
             {
-                return drawn;
+                return new List<Pawn>();
             }
-            List<Pawn> candidates = placeless.InnerListForReading
-                .Where(p => p != null && !p.Dead && p.Faction == faction)
+            return placeless.InnerListForReading
+                .Where(p => p != null && !p.Dead && filter(p))
                 .OrderBy(p => displacedAt.TryGetValue(p.thingIDNumber, out int o) ? o : int.MaxValue)
                 .ToList();
-            for (int i = 0; i < candidates.Count && drawn.Count < count; i++)
-            {
-                Pawn p = candidates[i];
-                if (!placeless.Remove(p))
-                {
-                    continue;
-                }
-                reasons.Remove(p.thingIDNumber);
-                origins.Remove(p.thingIDNumber);
-                displacedAt.Remove(p.thingIDNumber);
-                drawn.Add(p);
-            }
-            return drawn;
         }
 
         /// <summary>
-        /// Remove and return up to <paramref name="count"/> of the placeless
-        /// REGARDLESS of faction, longest-waiting first.
+        /// Hand one person to a destination, and forget them here ONLY once the
+        /// destination has taken them.
         ///
-        /// For the beggars at the player's own gate. Beggars do not belong to an
-        /// existing faction -- the quest builds a hidden temporary one -- so the
-        /// faction-scoped Draw above cannot serve them, and the point of the
-        /// feature is precisely that the people at the gate came from anywhere the
-        /// player has been.
+        /// ⛔ THIS IS WHY THERE IS NO PLAIN `Draw` RETURNING A LIST. A method that
+        /// removed a pawn from the pool and handed it back left an instant in which
+        /// that person belonged nowhere -- not in the pool, not in a roster, not
+        /// spawned, not a world pawn -- and anything that went wrong in the caller
+        /// during that instant deleted them permanently, because nothing that saves
+        /// the game could see them. Every draw carries its own destination and puts
+        /// the pawn back, with their reason and their place in the queue intact, on
+        /// any refusal or exception.
         /// </summary>
-        public List<Pawn> DrawAny(int count)
+        private bool TryHandOver(Pawn p, Func<Pawn, bool> destination)
         {
-            List<Pawn> drawn = new List<Pawn>();
-            if (count <= 0 || placeless == null || placeless.Count == 0)
+            if (p == null || placeless == null || !placeless.Remove(p))
             {
-                return drawn;
+                return false;
             }
-            List<Pawn> candidates = placeless.InnerListForReading
-                .Where(p => p != null && !p.Dead && p.RaceProps != null && p.RaceProps.Humanlike)
-                .OrderBy(p => displacedAt.TryGetValue(p.thingIDNumber, out int o) ? o : int.MaxValue)
-                .ToList();
-            for (int i = 0; i < candidates.Count && drawn.Count < count; i++)
+            bool taken;
+            try
             {
-                Pawn p = candidates[i];
-                if (!placeless.Remove(p))
+                taken = destination(p);
+            }
+            catch
+            {
+                PutBack(p);
+                throw;
+            }
+            if (!taken)
+            {
+                PutBack(p);
+                return false;
+            }
+            reasons.Remove(p.thingIDNumber);
+            origins.Remove(p.thingIDNumber);
+            displacedAt.Remove(p.thingIDNumber);
+            return true;
+        }
+
+        /// <summary>
+        /// Undo a hand-over the destination refused. The metadata is cleared only
+        /// on success above, so this restores the reason, the origin and the place
+        /// in the queue exactly as they were.
+        /// </summary>
+        private void PutBack(Pawn p)
+        {
+            if (!placeless.TryAdd(p, canMergeWithExistingStacks: false))
+            {
+                Log.Error("[RimMandrake.Inhabited] could not return " + p.ToStringSafe()
+                          + " to the displaced pool; they are now held nowhere and will not be saved.");
+            }
+        }
+
+        /// <summary>
+        /// Move up to <paramref name="count"/> of a faction's placeless straight
+        /// into <paramref name="destination"/>, longest-waiting first, and report
+        /// how many arrived. Anyone the destination refuses simply stays in the
+        /// pool. Optionally appends the people who moved to
+        /// <paramref name="arrived"/>, for a caller that wants to name them.
+        ///
+        /// This is the ONLY way anyone leaves the pool for a roster, and it runs at
+        /// cast instantiation, never on a tick.
+        /// </summary>
+        public int DrawInto(Faction faction, int count, ThingOwner<Pawn> destination,
+            List<Pawn> arrived = null)
+        {
+            if (count <= 0 || destination == null)
+            {
+                return 0;
+            }
+            List<Pawn> candidates = Candidates(p => p.Faction == faction);
+            int moved = 0;
+            for (int i = 0; i < candidates.Count && moved < count; i++)
+            {
+                if (!TryHandOver(candidates[i], p => destination.TryAdd(p, canMergeWithExistingStacks: false)))
                 {
                     continue;
                 }
-                reasons.Remove(p.thingIDNumber);
-                origins.Remove(p.thingIDNumber);
-                displacedAt.Remove(p.thingIDNumber);
-                drawn.Add(p);
+                arrived?.Add(candidates[i]);
+                moved++;
             }
-            return drawn;
+            return moved;
+        }
+
+        /// <summary>
+        /// Hand ONE of the placeless, REGARDLESS of faction, to a caller that
+        /// registers them somewhere this class cannot reach. Returns the person, or
+        /// null if nobody was waiting or the caller refused them -- in which case
+        /// they are still in the pool, unchanged.
+        ///
+        /// For the beggars at the player's own gate. Beggars do not belong to an
+        /// existing faction -- the quest builds a hidden temporary one -- so the
+        /// faction-scoped draw above cannot serve them, and the point of the
+        /// feature is precisely that the people at the gate came from anywhere the
+        /// player has been.
+        /// </summary>
+        public Pawn DrawAnyInto(Func<Pawn, bool> destination)
+        {
+            if (destination == null)
+            {
+                return null;
+            }
+            List<Pawn> candidates = Candidates(p => p.RaceProps != null && p.RaceProps.Humanlike);
+            for (int i = 0; i < candidates.Count; i++)
+            {
+                if (TryHandOver(candidates[i], destination))
+                {
+                    return candidates[i];
+                }
+            }
+            return null;
         }
 
         /// <summary>How many of a faction are waiting. Used to size a draw.</summary>

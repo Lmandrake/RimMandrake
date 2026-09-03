@@ -130,7 +130,12 @@ namespace RimMandrake.Inhabited
         /// <summary>
         /// Carried OR installed, and the prose does not distinguish -- bionics are
         /// written here too. Which it is, is CharacterApplier's call, not the
-        /// parser's. 27 characters have any.
+        /// parser's, and CharacterApplier splits them on `ThingDef.isTechHediff`.
+        ///
+        /// ⚠️ Only the CARRIED half is applied today. Installing a bionic means
+        /// resolving this ThingDef to a RecipeDef and then to a BodyPartRecord on
+        /// the particular body, which is a feature rather than a field read:
+        /// INHABITED_AUTHORED_BIONICS_INSTALL_1. 27 characters have any.
         /// </summary>
         public List<ThingDef> items = new List<ThingDef>();
 
@@ -143,6 +148,11 @@ namespace RimMandrake.Inhabited
         public List<SkillGain> skills = new List<SkillGain>();
 
         // ---- owed by DECIDE, deliberately empty ----
+        //
+        // ⚠️ `pawnKind` IS read -- CharacterApplier.Spawn prefers it over the
+        // caller's fallback. `xenotype` is read by nothing, and will not be until
+        // DECIDE answers it; there is no point wiring an applier for a field that
+        // is null on all 294.
 
         public XenotypeDef xenotype;
         public PawnKindDef pawnKind;

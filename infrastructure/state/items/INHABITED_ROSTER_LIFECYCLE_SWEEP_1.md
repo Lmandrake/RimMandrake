@@ -113,3 +113,101 @@ Still open: 1-4 (pool-draw orphaning, GenStep order collision — blocked
 on `INHABITED_SETTLEMENT_MAPPARENT_GAP_1`, role misalignment, recall
 gap), 5-6 (stock/fate and authored-kit doc-vs-code gaps, need an explicit
 ruling), 9 (Harmony priority hardening, low urgency).
+
+## Closing pass 2026-09-02 (FOUNDRY)
+
+2-6 and 9 done; 1 stays deferred. `Inhabited.csproj` builds Release
+clean, 0 warnings 0 errors, after every change. ⚠️ NOTHING HERE HAS BEEN
+SEEN RUNNING — this pass was compile-verified only, no deploy and no
+game. The live settlement-visit check the `## verify` section wants is
+still owed for 2, 3, 4 and 9, and now for 6 as well.
+
+**2 fixed — pool-draw orphaning, closed at the source.** Took the
+"atomic transfer" option rather than patching three call sites.
+`DisplacedPool.Draw`/`DrawAny` are GONE and cannot be called again;
+`DrawInto(faction, count, ThingOwner<Pawn>, arrived)` and
+`DrawAnyInto(Func<Pawn,bool>)` replace them. Both go through one private
+`TryHandOver`, which removes from the pool, runs the destination, and
+puts the pawn back — reason, origin and queue position intact, because
+the metadata is cleared only on success — on a refusal *or an exception*.
+There is now no instant in which a drawn person belongs nowhere. All
+three call sites converted (`WorldObject_Inhabited.InstantiateCast`,
+`Patch_BeggarsFromPool`, `DebugActions_Inhabited`); the debug action's
+"ROSTER REFUSED" line is gone because a refusal now just leaves them in
+the pool and shows as a smaller count.
+
+**3 fixed — the pool fills the TAIL.** The generation loop runs
+`for (i = 0; i < wanted.Count - fromPool; i++)` instead of
+`for (i = fromPool; ...)`. `InhabitedCastDef.roles`' own doc says leaders
+and traders are written first and the trim cuts from the back to protect
+them, so the front of `wanted` is exactly the part that must still be
+generated. `nextCharacter` correctly stays at 0 — the authored characters
+were always meant to land on the freshly generated pawns, and that half
+was never the bug.
+
+**4 fixed — but NOT the way the review's prose proposed.** Verified two
+things in the 1.6 source first: `LordJob.ShouldRemovePawn` returns `true`
+by default and `LordJob_Inhabited` does not override it, so
+`Lord.Notify_PawnLost` drops any merely-DOWNED resident out of the lord;
+and `MapPawns.AllPawnsSpawned` excludes a carried pawn, which is why
+`MapDeiniter.PassPawnsToWorld` itself walks `AllPawns`. So the finding is
+real and it is the COMMON case (any firefight casualty), not an edge.
+
+⛔ The suggested fix — "route non-matching non-player-faction pawns into
+`DisplacedPool`" — was rejected as over-broad: at `DeinitAndRemoveMap`
+the map still holds raiders, traders, visitors and wildlife, and that
+rule would have absorbed all of them. Instead the place now keeps a
+`List<int> onTheGround` ledger of thingIDNumbers, written by
+`GenStep_InhabitedCast` as it spawns each resident (the roster EMPTIES on
+spawn, so while a map exists nothing else records who belongs here) and
+cleared by the recall. `Patch_MapRemoval` walks `AllPawns`, matches by
+that ledger, and uses `TryAddOrTransfer` (a carried pawn already has a
+`holdingOwner`, which plain `TryAdd` refuses). Carve-outs match
+`PassPawnsToWorld`'s own: a resident recruited or held prisoner by the
+player is NOT taken back. A save written before the ledger existed falls
+back to the old lord test. The pool is still the last resort if the
+roster refuses, and that path logs.
+
+**5 ruled: correct the docs, do not build the feature.** Confirmed
+`InhabitedFate` is read by nothing anywhere in the mod, and `stock` is
+filled and scribed but never spawned or collected. Spawning stock onto a
+map and firing FATE off its destruction is a gameplay feature with its
+own map-generation and teardown halves, not a bug fix, so it is out of
+scope here and filed as `INHABITED_STOCK_ONTO_MAP_AND_FATE_1`. Four doc
+comments that asserted the unbuilt behaviour now state what IS:
+`InhabitedPlaceDef.larder`, the `InhabitedFate` enum,
+`WorldObject_Inhabited.stock` and the `InhabitedStock` class header, each
+naming the new item.
+
+**6 ruled: wire most of it, defer the one part that needs a live check.**
+The two files did contradict each other, and the data is real
+(`OuterRim_A280Blaster`, `guy762_TuskenMask`, `Crafting 16`), so
+"deliberate simplification" was not credible. `CharacterApplier.ApplyTo`
+now applies `skills` (set the named outliers only, skip
+`TotallyDisabled`), `weapon` (`DestroyAllEquipment` first —
+`AddEquipment` does not replace a primary, it logs an error), `apparel`
+(`ApparelUtility.HasPartsToWear` checked so the warning can name the
+CHARACTER, `dropReplacedApparel: false` since the pawn is off-map), and
+the CARRIED half of `items`.
+
+⛔ Deferred: the INSTALLED half. `items` mixes Beer and Ambrosia with
+`BionicLeg`/`BionicArm`/`BionicJaw`, split here on `ThingDef.isTechHediff`.
+Installing one means resolving a ThingDef → RecipeDef → BodyPartRecord on
+that particular body, which fails silently when it fails and cannot be
+verified without a game — exactly the shape this item exists to stop
+shipping. Filed as `INHABITED_AUTHORED_BIONICS_INSTALL_1`; the skip is
+documented in both files. `xenotype` stays unapplied and is now
+documented as such — it is null on all 294, so an applier would be dead
+code.
+
+**9 fixed.** `Patch_SettlementDeparture.FireGateSearch` takes
+`[HarmonyPriority(Priority.First)]` and `Patch_MapRemoval.RecallInhabitants`
+takes `[HarmonyPriority(Priority.Last)]` — Harmony runs the higher
+priority first, so the gate search sees the cast still standing and the
+recall (which empties the map) runs after it. Both class comments
+updated; the SettlementDeparture one said "order between them does not
+matter here", which is no longer the contract.
+
+**1 still deferred, untouched**, exactly as recorded above: it needs the
+scope call on `INHABITED_SETTLEMENT_MAPPARENT_GAP_1` before anyone knows
+whether the GenStep is reachable at all.

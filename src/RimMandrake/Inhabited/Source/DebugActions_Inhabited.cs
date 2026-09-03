@@ -210,16 +210,18 @@ namespace RimMandrake.Inhabited
             {
                 return;
             }
-            List<Pawn> drawn = pool.Draw(place.Faction, 3);
+            // Fixed 2026-09-02 (opus code review): this used to draw first and add
+            // second, and print "ROSTER REFUSED" for anyone the roster would not
+            // take -- at which point that person was out of the pool, in no roster
+            // and unsaveable. A refusal now simply leaves them in the pool and
+            // shows up as a smaller count.
+            List<Pawn> arrived = new List<Pawn>();
+            int moved = pool.DrawInto(place.Faction, 3, place.roster, arrived);
             StringBuilder sb = new StringBuilder();
-            sb.AppendLine("[RimMandrake.Inhabited] drew " + drawn.Count + "; pool now " + pool.Count + ".");
-            for (int i = 0; i < drawn.Count; i++)
+            sb.AppendLine("[RimMandrake.Inhabited] drew " + moved + "; pool now " + pool.Count + ".");
+            for (int i = 0; i < arrived.Count; i++)
             {
-                sb.AppendLine("  " + Describe(drawn[i]));
-                if (!place.roster.TryAdd(drawn[i], canMergeWithExistingStacks: false))
-                {
-                    sb.AppendLine("    ROSTER REFUSED");
-                }
+                sb.AppendLine("  " + Describe(arrived[i]));
             }
             Log.Message(sb.ToString().TrimEndNewlines());
         }

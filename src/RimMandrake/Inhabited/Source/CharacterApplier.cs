@@ -6,20 +6,34 @@ using Verse;
 namespace RimMandrake.Inhabited
 {
     /// <summary>
-    /// Makes a generated pawn into one of the 269 authored people.
+    /// Makes a generated pawn into one of the 294 authored people.
     ///
-    /// ⭐ WHAT IT APPLIES, and the list is short on purpose: the NAME and the
-    /// TRAITS. Those are the two things the prose actually carries as data, and
-    /// they are also the two that do the work — a name worth saying is the single
-    /// strongest predictor that a player will remember somebody, and the trouble
-    /// trait is the thing they will later narrate as the reason.
+    /// ⭐ WHAT IT APPLIES: the NAME, the TRAITS, the GENDER, and the kit the prose
+    /// earns — `weapon`, `apparel`, `skills`, and the CARRIED half of `items`. The
+    /// name and the trouble trait still do most of the work (a name worth saying is
+    /// the strongest single predictor that a player remembers somebody), but the
+    /// kit is authored data with a defined meaning, and parsing it and then
+    /// throwing it away was a lie CharacterDef told about this file.
     ///
-    /// ⛔ WHAT IT DOES NOT APPLY, AND MUST NOT GUESS: xenotype, pawnKind, apparel
-    /// and skills. The prose does not carry them, DECIDE owes them, and a guessed
-    /// xenotype ships a wrong-looking person into a world that is built once and
-    /// frozen. `childhood` and `adult` stay authored TEXT rather than becoming
-    /// BackstoryDefs, for the same reason — a backstory carries skill gains and
-    /// work disables, which nobody has decided.
+    /// ⚠️ `skills` are OUTLIERS ONLY — an absent skill means "ordinary", not
+    /// "unknown", so what is named is SET and everything else keeps the level
+    /// generation rolled.
+    ///
+    /// ⛔ WHAT IT STILL DOES NOT APPLY, and neither claims to:
+    ///
+    ///   * `xenotype` and `pawnKind` — the prose does not carry them, DECIDE owes
+    ///     them, and a guessed xenotype ships a wrong-looking person into a world
+    ///     that is built once and frozen. Both fields are empty by design.
+    ///   * The INSTALLED half of `items`. `items` mixes carried goods (Beer,
+    ///     Ambrosia, a Drum) with bionics (BionicLeg, BionicArm, BionicJaw) and the
+    ///     prose does not distinguish. Carried is done here; installing a bionic
+    ///     means resolving a ThingDef to a RecipeDef and then to a BodyPartRecord
+    ///     on this particular body, which is a feature with its own failure modes
+    ///     and needs a live check — INHABITED_AUTHORED_BIONICS_INSTALL_1. Until
+    ///     then `isTechHediff` entries are skipped, knowingly.
+    ///   * `childhood` and `adult`, which stay authored TEXT rather than becoming
+    ///     BackstoryDefs — a backstory carries skill gains and work disables, which
+    ///     nobody has decided.
     ///
     /// ⚠️ Traits are REPLACED, not added to. A generated pawn arrives with rolled
     /// traits, and leaving them would let a character written as `Ascetic` also be
@@ -102,7 +116,135 @@ namespace RimMandrake.Inhabited
                 pawn.gender = character.gender.Value;
             }
 
+            ApplySkills(pawn, character);
+            ApplyWeapon(pawn, character);
+            ApplyApparel(pawn, character);
+            ApplyCarriedItems(pawn, character);
+
             return true;
+        }
+
+        /// <summary>
+        /// The authored skill levels, and ONLY those. 8 is average and is never
+        /// written, so a skill absent from the def keeps whatever generation rolled
+        /// for it rather than being flattened to a default.
+        /// </summary>
+        private static void ApplySkills(Pawn pawn, CharacterDef character)
+        {
+            if (pawn.skills == null || character.skills.NullOrEmpty())
+            {
+                return;
+            }
+            for (int i = 0; i < character.skills.Count; i++)
+            {
+                SkillGain gain = character.skills[i];
+                if (gain?.skill == null)
+                {
+                    continue;
+                }
+                SkillRecord record = pawn.skills.GetSkill(gain.skill);
+
+                // A skill the backstory disables reads 0 whatever is written into
+                // it, so setting one would only look like it worked.
+                if (record == null || record.TotallyDisabled)
+                {
+                    continue;
+                }
+                record.Level = gain.amount;
+                record.xpSinceLastLevel = 0f;
+            }
+        }
+
+        /// <summary>Their one signature weapon, replacing whatever was rolled.</summary>
+        private static void ApplyWeapon(Pawn pawn, CharacterDef character)
+        {
+            if (character.weapon == null || pawn.equipment == null)
+            {
+                return;
+            }
+            if (!character.weapon.IsWeapon)
+            {
+                Log.Warning("[RimMandrake.Inhabited] " + character.defName + " (" + character.label
+                            + ") authors " + character.weapon.defName
+                            + " as a weapon, but it is not one. Fix the cast file.");
+                return;
+            }
+
+            // Destroy first. Pawn_EquipmentTracker.AddEquipment does not replace a
+            // primary -- it logs an error and drops the new one on the floor -- and
+            // generation has usually already armed this pawn.
+            pawn.equipment.DestroyAllEquipment();
+            if (!(ThingMaker.MakeThing(character.weapon, GenStuff.DefaultStuffFor(character.weapon))
+                    is ThingWithComps weapon))
+            {
+                return;
+            }
+            pawn.equipment.AddEquipment(weapon);
+        }
+
+        /// <summary>What they wear, on top of what generation dressed them in.</summary>
+        private static void ApplyApparel(Pawn pawn, CharacterDef character)
+        {
+            if (pawn.apparel == null || character.apparel.NullOrEmpty())
+            {
+                return;
+            }
+            for (int i = 0; i < character.apparel.Count; i++)
+            {
+                ThingDef def = character.apparel[i];
+                if (def == null || !def.IsApparel)
+                {
+                    continue;
+                }
+                if (!ApparelUtility.HasPartsToWear(pawn, def))
+                {
+                    // Pawn_ApparelTracker.Wear checks this itself and warns, but it
+                    // can only name the pawn. Name the CHARACTER, which is what an
+                    // author has to go and fix.
+                    Log.Warning("[RimMandrake.Inhabited] " + character.defName + " (" + character.label
+                                + ") authors " + def.defName
+                                + ", which this body has no parts to wear.");
+                    continue;
+                }
+                if (!(ThingMaker.MakeThing(def, GenStuff.DefaultStuffFor(def)) is Apparel apparel))
+                {
+                    continue;
+                }
+
+                // Nothing is dropped: this pawn is generated off-map, into a roster,
+                // and has no floor to drop a replaced garment onto.
+                pawn.apparel.Wear(apparel, dropReplacedApparel: false);
+            }
+        }
+
+        /// <summary>
+        /// The carried half of `items`. ⛔ `isTechHediff` entries -- the bionics --
+        /// are SKIPPED, not carried in a pocket: see the class comment and
+        /// INHABITED_AUTHORED_BIONICS_INSTALL_1.
+        /// </summary>
+        private static void ApplyCarriedItems(Pawn pawn, CharacterDef character)
+        {
+            if (pawn.inventory == null || character.items.NullOrEmpty())
+            {
+                return;
+            }
+            for (int i = 0; i < character.items.Count; i++)
+            {
+                ThingDef def = character.items[i];
+                if (def == null || def.isTechHediff)
+                {
+                    continue;
+                }
+                Thing item = ThingMaker.MakeThing(def, GenStuff.DefaultStuffFor(def));
+                if (item == null)
+                {
+                    continue;
+                }
+                if (!pawn.inventory.innerContainer.TryAdd(item))
+                {
+                    item.Destroy();
+                }
+            }
         }
 
         /// <summary>

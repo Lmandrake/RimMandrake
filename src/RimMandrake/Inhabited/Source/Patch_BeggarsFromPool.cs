@@ -68,26 +68,33 @@ namespace RimMandrake.Inhabited
                 return true;
             }
 
-            List<Pawn> drawn = pool.DrawAny(1);
-            if (drawn.Count == 0)
+            // Fixed 2026-09-02 (opus code review): the placement runs INSIDE the
+            // draw. The old shape took the pawn out of the pool first and only
+            // then re-factioned and registered them, so anything that threw in
+            // between left a person belonging nowhere -- out of the pool, not yet
+            // a world pawn -- and nothing that saves the game could see them.
+            Pawn pawn = pool.DrawAnyInto(delegate (Pawn p)
+            {
+                // Into the quest's hidden beggar faction. Everything that makes
+                // this person recognisable rides along untouched.
+                if (request.Faction != null && p.Faction != request.Faction)
+                {
+                    p.SetFaction(request.Faction);
+                }
+
+                // The same bookkeeping the original does, in the same order.
+                // Skipping it would leave a pawn the quest system does not know it
+                // owns.
+                QuestGen.AddToGeneratedPawns(p);
+                if (!p.IsWorldPawn())
+                {
+                    Find.WorldPawns.PassToWorld(p);
+                }
+                return true;
+            });
+            if (pawn == null)
             {
                 return true;
-            }
-            Pawn pawn = drawn[0];
-
-            // Into the quest's hidden beggar faction. Everything that makes this
-            // person recognisable rides along untouched.
-            if (request.Faction != null && pawn.Faction != request.Faction)
-            {
-                pawn.SetFaction(request.Faction);
-            }
-
-            // The same bookkeeping the original does, in the same order. Skipping
-            // it would leave a pawn the quest system does not know it owns.
-            QuestGen.AddToGeneratedPawns(pawn);
-            if (!pawn.IsWorldPawn())
-            {
-                Find.WorldPawns.PassToWorld(pawn);
             }
 
             __result = pawn;

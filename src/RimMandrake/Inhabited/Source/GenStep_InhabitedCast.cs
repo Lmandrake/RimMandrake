@@ -61,6 +61,11 @@ namespace RimMandrake.Inhabited
             Lord lord = LordMaker.MakeNewLord(place.Faction,
                 new LordJob_Inhabited(home, work, place.placeDef), map);
 
+            // The roster empties as the cast spawns, so from here until the recall
+            // this ledger is the ONLY record of who belongs to this place. See
+            // WorldObject_Inhabited.onTheGround for why the lord is not enough.
+            place.onTheGround.Clear();
+
             // Copy first: spawning removes each pawn from the owner we are reading.
             List<Pawn> arriving = roster.InnerListForReading.ToList();
             for (int i = 0; i < arriving.Count; i++)
@@ -77,6 +82,7 @@ namespace RimMandrake.Inhabited
                 IntVec3 cell = CellFinder.RandomSpawnCellForPawnNear(work, map);
                 GenSpawn.Spawn(p, cell, map);
                 lord.AddPawn(p);
+                place.onTheGround.Add(p.thingIDNumber);
             }
         }
 

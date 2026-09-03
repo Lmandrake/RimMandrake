@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
+using RimWorld;
 using RimWorld.Planet;
 using Verse;
 using Verse.AI.Group;
@@ -43,6 +44,13 @@ namespace RimMandrake.Inhabited
         private static readonly System.Action<Game, Map, bool> TargetSignatureProof =
             (game, map, notifyPlayer) => game.DeinitAndRemoveMap(map, notifyPlayer);
 
+        /// <summary>
+        /// ⚠️ RUNS LAST among this mod's prefixes on this target, deliberately --
+        /// see Patch_SettlementDeparture, which must still be able to see the cast
+        /// standing on the map when it fires. Harmony runs the higher priority
+        /// first, so the recall that empties the map takes Priority.Last.
+        /// </summary>
+        [HarmonyPriority(Priority.Last)]
         [HarmonyPrefix]
         public static void RecallInhabitants(Map map)
         {
@@ -56,23 +64,49 @@ namespace RimMandrake.Inhabited
                 return;
             }
 
-            List<Pawn> ours = map.mapPawns.AllPawnsSpawned
-                .Where(p => p != null
-                            && !p.Dead
-                            && p.GetLord() != null
-                            && p.GetLord().LordJob is LordJob_Inhabited)
+            // Fixed 2026-09-02 (opus code review): AllPawns, not AllPawnsSpawned,
+            // and matched by identity rather than by lord. Two engine facts, both
+            // read out of the 1.6 source rather than assumed:
+            //
+            //   * LordJob.ShouldRemovePawn returns TRUE by default and
+            //     LordJob_Inhabited does not override it, so Lord.Notify_PawnLost
+            //     drops any resident who is merely DOWNED. Keying the recall on
+            //     "still under a LordJob_Inhabited lord" therefore abandoned every
+            //     casualty of an ordinary firefight.
+            //   * MapPawns.AllPawnsSpawned excludes a downed pawn being CARRIED --
+            //     they live in the carrier's ThingOwner, and MapDeiniter's own
+            //     PassPawnsToWorld walks AllPawns for exactly that reason.
+            //
+            // Either way the pawn fell through to PassPawnsToWorld, became an
+            // ordinary world pawn and was collected by WorldPawnGC: off the roster
+            // with no log line, and indistinguishable from having died.
+            List<Pawn> ours = map.mapPawns.AllPawns
+                .Where(p => p != null && !p.Dead && BelongsHere(place, p))
                 .ToList();
 
+            DisplacedPool pool = DisplacedPool.Current;
             for (int i = 0; i < ours.Count; i++)
             {
                 Pawn p = ours[i];
                 p.DeSpawnOrDeselect();
-                if (!place.roster.TryAdd(p, canMergeWithExistingStacks: false))
+
+                // TryAddOrTransfer, not TryAdd: a carried resident is still held by
+                // the carrier, and ThingOwner.TryAdd refuses anything that already
+                // has a holdingOwner.
+                if (place.roster.TryAddOrTransfer(p, canMergeWithExistingStacks: false))
                 {
-                    Log.Warning("[RimMandrake.Inhabited] could not return " + p.LabelShort + " to the roster of "
-                                + place.LabelCap + "; they are left to the world.");
+                    continue;
                 }
+                if (pool != null && pool.Absorb(p, place.Faction, DisplacedReason.Fled, place.LabelCap))
+                {
+                    Log.Warning("[RimMandrake.Inhabited] " + p.LabelShort + " would not go back on the roster of "
+                                + place.LabelCap + "; they are placeless instead.");
+                    continue;
+                }
+                Log.Warning("[RimMandrake.Inhabited] could not return " + p.LabelShort + " to the roster of "
+                            + place.LabelCap + "; they are left to the world.");
             }
+            place.onTheGround.Clear();
 
             // No death record, no memorial, no ledger, no counter. The roster IS
             // the survivors and the absence is the memory.
@@ -80,6 +114,30 @@ namespace RimMandrake.Inhabited
             {
                 place.state = InhabitedState.Abandoned;
             }
+        }
+
+        /// <summary>
+        /// Is this one of the people the place put on the ground, and is he still
+        /// the place's to take back?
+        /// </summary>
+        private static bool BelongsHere(WorldObject_Inhabited place, Pawn p)
+        {
+            // Recruited, or arrested and held prisoner. They left the roster by an
+            // event the player watched happen; taking them back at the door would
+            // be theft, and PassPawnsToWorld already carves out exactly this pair.
+            if (p.Faction == Faction.OfPlayer || p.HostFaction == Faction.OfPlayer)
+            {
+                return false;
+            }
+            if (place.onTheGround != null && place.onTheGround.Contains(p.thingIDNumber))
+            {
+                return true;
+            }
+
+            // A save written before the ledger existed carries an empty list, and
+            // the lord is what the recall used to key on.
+            Lord lord = p.GetLord();
+            return lord != null && lord.LordJob is LordJob_Inhabited;
         }
     }
 }

@@ -8,6 +8,11 @@ namespace RimMandrake.Inhabited
     /// What could end a cast. The default is nothing: they live here.
     /// Flight is CAUSED, never scheduled -- every value below names a cause,
     /// not a timer.
+    ///
+    /// 🔴 DECLARED, NOT WIRED. `InhabitedPlaceDef.fate` is the only field of this
+    /// type and no code in this mod reads it, so every value below is at present a
+    /// statement of intent that changes nothing in play. Making a cause fire is
+    /// INHABITED_STOCK_ONTO_MAP_AND_FATE_1.
     /// </summary>
     public enum InhabitedFate
     {
@@ -73,10 +78,18 @@ namespace RimMandrake.Inhabited
         /// harvest, even a colonist. Fighting that is not worth it.
         ///
         /// So a place has a mess and a paste vat, a farmstead a granary, a Tusken
-        /// camp a herd -- and all of it is visible, stealable and destroyable.
-        /// Burn the granary and the cast does not starve to death in front of the
-        /// player: they leave. That is FATE firing for a cause the player created,
-        /// with no new code at all.
+        /// camp a herd.
+        ///
+        /// 🔴 WHAT THIS TABLE DOES TODAY, AND IT IS LESS THAN THAT PARAGRAPH USED
+        /// TO CLAIM. `WorldObject_Inhabited.InstantiateCast` pours this table into
+        /// the place's `InhabitedStock`, which is scribed with the world object and
+        /// nothing else. NOTHING spawns those things onto a generated map and
+        /// nothing collects them back at teardown, so the larder is BOOKKEEPING,
+        /// not scenery: it cannot be seen, stolen or burned, and the `fate` field
+        /// above is read by no code in this mod at all. "Burn the granary and they
+        /// leave, with no new code" describes the intended design, not the build --
+        /// spawning stock and firing FATE off it is
+        /// INHABITED_STOCK_ONTO_MAP_AND_FATE_1.
         /// </summary>
         public List<ThingDefCountClass> larder = new List<ThingDefCountClass>();
 

@@ -51,7 +51,11 @@ namespace RimMandrake.Inhabited
         /// <summary>The people. Real pawns, held off-map, frozen.</summary>
         public ThingOwner<Pawn> roster;
 
-        /// <summary>Trade goods AND the larder. Visible, stealable, destroyable.</summary>
+        /// <summary>
+        /// Trade goods AND the larder. ⚠️ Held and scribed only -- nothing spawns
+        /// it onto a map, so it is not yet visible, stealable or destroyable. See
+        /// InhabitedPlaceDef.larder and INHABITED_STOCK_ONTO_MAP_AND_FATE_1.
+        /// </summary>
         public InhabitedStock stock;
 
         /// <summary>What the world map reports.</summary>
@@ -63,6 +67,24 @@ namespace RimMandrake.Inhabited
         /// abandoned, not restocked.
         /// </summary>
         public bool castInstantiated;
+
+        /// <summary>
+        /// The thingIDNumber of everyone this place has put on the ground for the
+        /// visit in progress, written by GenStep_InhabitedCast and cleared by the
+        /// recall.
+        ///
+        /// ⭐ WHY THIS EXISTS AT ALL. Spawning the cast EMPTIES the roster -- a
+        /// pawn cannot be in a ThingOwner and on a map at the same time -- so
+        /// while a map exists there is no other record of who belongs here. The
+        /// recall used to key on "still under a LordJob_Inhabited lord", and
+        /// LordJob.ShouldRemovePawn returns true by default, so the engine drops
+        /// any resident who is merely DOWNED out of the lord. Every one of them
+        /// then fell through to MapDeiniter.PassPawnsToWorld, became an ordinary
+        /// world pawn, and was collected by WorldPawnGC -- off the roster with no
+        /// log line and indistinguishable from the recorded-dead case, which is
+        /// the one thing "the roster IS the survivors" cannot survive.
+        /// </summary>
+        public List<int> onTheGround = new List<int>();
 
         private string nameInt;
 
@@ -115,6 +137,7 @@ namespace RimMandrake.Inhabited
             Scribe_Deep.Look(ref stock, "stock", this);
             Scribe_Values.Look(ref state, "state", InhabitedState.Inhabited);
             Scribe_Values.Look(ref castInstantiated, "castInstantiated", defaultValue: false);
+            Scribe_Collections.Look(ref onTheGround, "onTheGround", LookMode.Value);
             Scribe_Values.Look(ref nameInt, "name");
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
@@ -125,6 +148,10 @@ namespace RimMandrake.Inhabited
                 if (stock == null)
                 {
                     stock = new InhabitedStock(this);
+                }
+                if (onTheGround == null)
+                {
+                    onTheGround = new List<int>();
                 }
             }
         }
@@ -185,14 +212,13 @@ namespace RimMandrake.Inhabited
             DisplacedPool pool = DisplacedPool.Current;
             if (pool != null && Faction != null)
             {
-                List<Pawn> drawn = pool.Draw(Faction, wanted.Count);
-                for (int i = 0; i < drawn.Count; i++)
-                {
-                    if (roster.TryAdd(drawn[i], canMergeWithExistingStacks: false))
-                    {
-                        fromPool++;
-                    }
-                }
+                // Fixed 2026-09-02 (opus code review): DrawInto transfers straight
+                // into the roster, so there is no instant in which a drawn person
+                // is out of the pool and not yet anywhere else. The old shape
+                // returned a list and orphaned anyone the roster then refused --
+                // not in the pool, not in a roster, not spawned, not a world pawn,
+                // and therefore never saved.
+                fromPool = pool.DrawInto(Faction, wanted.Count, roster);
             }
 
             // Authored people go to the freshly generated pawns only. Anyone drawn
@@ -200,7 +226,14 @@ namespace RimMandrake.Inhabited
             // the one thing the pool exists for.
             int nextCharacter = 0;
 
-            for (int i = fromPool; i < wanted.Count; i++)
+            // Fixed 2026-09-02 (opus code review): the pool fills the TAIL of
+            // `wanted`, not its head. The trim above cuts from the back precisely
+            // because leaders and traders are written FIRST, so the front of the
+            // list is the part that must still be generated -- drawing into the
+            // head silently cost a place receiving displaced people its authored
+            // leader and trader pawnkinds, and misaligned every authored character
+            // against the role it was written for.
+            for (int i = 0; i < wanted.Count - fromPool; i++)
             {
                 // Fixed 2026-09-02 (opus code review): must thread the upcoming
                 // character's gender into generation itself (fixedGender), not
