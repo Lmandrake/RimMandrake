@@ -14,8 +14,16 @@ temperature falls with angular distance from it (corr -0.98 on both the painted 
 and the vanilla source it came from). So `theta` below - degrees from the substellar
 point - is the planet's real coordinate. 0 = noon, 90 = terminator, 180 = midnight.
 
-    python3 src/RimMandrake/Utils/ashkarr_paint.py            # build + report
-    python3 src/RimMandrake/Utils/ashkarr_paint.py --write    # splice into the save
+    python3 src/RimMandrake/Utils/ashkarr_paint.py            # build + report, THEN WRITE
+                                                               # the bundle CSVs (refused
+                                                               # outright while the tiles
+                                                               # CSV is marked frozen; see
+                                                               # _refuse_if_frozen() below).
+                                                               # There is no dry-run flag and
+                                                               # no `--write` gate any more -
+                                                               # __main__ always calls
+                                                               # write_bundle() once it gets
+                                                               # past the freeze check.
 
 What it fixes, all five visible in the first worldview.py render of the old painter:
 compass-circle seas · comb-toothed rivers · rectangular roads · concentric biome
@@ -339,6 +347,14 @@ TROUGHS = [
     ("scald_gate",   [(49, 180), (44, 182), (39, 184)], -1250, 3.0),  # the crater breach
 ]
 NIGHT_ARC = 100.0        # past this, liquid water does not exist on this planet
+
+# 🔴 build() below hard-codes basin_of==0 / sea_id==0 to mean "the Scald" (the crater
+# floor lift and the whole scald_water/rain-source plumbing) instead of looking the name
+# up. That is a silent-miscount trap: reorder BASINS and every one of those lines keeps
+# running, against the wrong basin, with no error - a different lake gets the crater
+# floor lift and the Scald gets none. This assertion is the tripwire.
+assert BASINS[0][0] == "Scald", (
+    "BASINS[0] must be Scald - build() indexes basin_of==0 / sea_id==0 assuming it")
 
 
 def ab_vec(arc, bear):
