@@ -104,6 +104,22 @@ namespace JawaBench.BridgeTools
             catch (Exception) { return null; }
         }
 
+        /// <summary>
+        /// Property counterpart to GmReadPrivateField - used for CompHasGatherableBodyResource's
+        /// protected abstract ResourceDef, which is overridden as an expression-bodied property in
+        /// each concrete comp (CompMilkable, CompShearable) with no backing field to read directly.
+        /// FlattenHierarchy so the override declared on the runtime type is found even though the
+        /// property is declared abstract on the base type.
+        /// </summary>
+        private static object GmReadPrivateProperty(Type declaringType, object obj, string name)
+        {
+            if (declaringType == null || obj == null) return null;
+            PropertyInfo pi = declaringType.GetProperty(name, BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance | BindingFlags.FlattenHierarchy);
+            if (pi == null) return null;
+            try { return pi.GetValue(obj, null); }
+            catch (Exception) { return null; }
+        }
+
         // ================================================================
         //  Storyteller, incidents & quests
         // ================================================================
@@ -866,10 +882,19 @@ namespace JawaBench.BridgeTools
                 "derives from CompHasGatherableBodyResource (CompMilkable, CompShearable, ...) - its " +
                 "'fullness' field is PROTECTED with no public setter, so this sets it by reflection to " +
                 "targetFullness, then optionally calls the public Gathered(doer) to actually place the " +
-                "resource now, same as a real harvest interaction (including its AnimalGatherYield roll).",
+                "resource now, same as a real harvest interaction (including its AnimalGatherYield roll). " +
+                "🔴 Gathered(doer) calls GenPlace.TryPlaceThing INTERNALLY and discards its bool return - a " +
+                "failed placement (no free spot near doer) only logs a Verse.Log.Error line that no try/catch " +
+                "here can see, and fullness is zeroed either way. gatherNow therefore verifies placement by " +
+                "diffing the map's on-hand stack of the comp's ResourceDef (read by reflection, no public " +
+                "getter) across the call, rather than trusting fullnessAfterGather==0 to mean 'placed'. doer " +
+                "must be spawned on the SAME map as the animal - Gathered places at doer.Position/doer.Map, " +
+                "not the animal's, so a cross-map doer is refused rather than silently misplacing the resource.",
             ResultDescription =
-                "success, pawn, mode, and either eggProduced (thing, stackCount) / fertilized (withMale), " +
-                "or fullnessBefore/After plus gatheredThing when gatherNow was used.")]
+                "success, pawn, mode, and either eggProduced (thing, stackCount, placed) / fertilized " +
+                "(withMale), or fullnessBefore/After plus gatheredThing {doer, fullnessAfterGather, " +
+                "resourceDef, resourcePlacedOnMap, note} when gatherNow was used - resourcePlacedOnMap is " +
+                "null (unverified) only if ResourceDef could not be resolved by reflection.")]
         public static async Task<object> AnimalResourceForce(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -980,9 +1005,48 @@ namespace JawaBench.BridgeTools
                         }
                         if (doerPawn == null) return Fail("gatherNow=true needs a 'doer' pawn (or a free colonist on " + p.LabelShortCap + "'s map) - Gathered(Pawn) is not null-safe.");
 
+                        // CompHasGatherableBodyResource.Gathered places the resource at doer.Position on
+                        // doer.Map, not near the animal - an explicit 'doer' that is unspawned or on a
+                        // different map would silently place the resource somewhere never asked for.
+                        if (!doerPawn.Spawned || doerPawn.Map != p.Map)
+                            return Fail("doer pawn '" + doerPawn.LabelShortCap + "' is not spawned on " + p.LabelShortCap +
+                                        "'s map. Gathered(Pawn) places the resource at the DOER's position/map, not the " +
+                                        "animal's - refusing rather than silently placing it somewhere unexpected.");
+
+                        // 🔴 VERIFIED AGAINST SOURCE (RimWorld/CompHasGatherableBodyResource.cs): Gathered(doer)
+                        // calls GenPlace.TryPlaceThing itself and DISCARDS its bool return - a failed placement
+                        // (no free spot near the doer) produces only a Verse.Log.Error line inside TryPlaceThing,
+                        // which does NOT throw, so a try/catch around Gathered() cannot see it. fullness is
+                        // unconditionally zeroed by Gathered() regardless of whether the Thing it created ever
+                        // landed on the map, so fullnessAfterGather==0 alone cannot tell "gathered" from
+                        // "created then dropped nowhere". ResourceDef is protected with no public getter, so it
+                        // is read by reflection (GmReadPrivateProperty) to diff the map's on-hand stack of that
+                        // def across the call - the only way to observe TryPlaceThing's outcome from outside.
+                        ThingDef resourceDef = GmReadPrivateProperty(comp.GetType(), comp, "ResourceDef") as ThingDef;
+                        int stackBefore = (resourceDef != null && p.Map != null) ? p.Map.listerThings.ThingsOfDef(resourceDef).Sum(t => t.stackCount) : 0;
+
                         try { comp.Gathered(doerPawn); }
                         catch (Exception e) { return Fail("Gathered threw: " + e.GetType().Name + ": " + e.Message); }
-                        gatheredThing = new { doer = doerPawn.LabelShortCap, fullnessAfterGather = comp.Fullness };
+
+                        int stackAfter = (resourceDef != null && p.Map != null) ? p.Map.listerThings.ThingsOfDef(resourceDef).Sum(t => t.stackCount) : 0;
+                        bool? resourcePlacedOnMap = resourceDef != null ? (bool?)(stackAfter > stackBefore) : null;
+
+                        gatheredThing = new
+                        {
+                            doer = doerPawn.LabelShortCap,
+                            fullnessAfterGather = comp.Fullness,
+                            resourceDef = resourceDef != null ? resourceDef.defName : null,
+                            resourcePlacedOnMap,
+                            note = resourceDef == null
+                                ? "Could not resolve this comp's ResourceDef by reflection - Gathered() ran, but whether anything actually landed on the map is UNVERIFIED."
+                                : (resourcePlacedOnMap == true
+                                    ? null
+                                    : "No new " + resourceDef.defName + " appeared on the map's stock after Gathered(). Either the " +
+                                      "AnimalGatherYield roll wasted the yield (normal, by design - see Verse's ThrowText mote) or " +
+                                      "GenPlace.TryPlaceThing found no free spot near " + doerPawn.LabelShortCap + " and silently " +
+                                      "dropped the Thing it created - Gathered() discards TryPlaceThing's return value, so the engine " +
+                                      "itself cannot distinguish these two cases either."),
+                        };
                     }
 
                     return new
