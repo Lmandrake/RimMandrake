@@ -1,7 +1,13 @@
 #!/usr/bin/env python3
 """expectations_manifest.py - the ONE manifest format for MASS_VALIDATION_LADDER_1's
-L1 tier ("deploy -> jawa/hot_reload_defs -> jawa/get_defs -> offline diff against
-an expectations manifest", skills/rimworld-modding/SKILL.md #2).
+L1 tier ("deploy -> minimal-list restart (22s) -> jawa/get_defs -> offline diff
+against an expectations manifest", skills/rimworld-modding/SKILL.md #2).
+
+NOTE: this docstring used to name jawa/hot_reload_defs as the L1 step. That call was
+RETIRED by the owner on 2026-09-03 as unstable - on a 589-mod list it hung the bridge
+five minutes and left the game unable to generate any pawn while reporting healthy
+(HOT_RELOAD_DEFS_BREAKS_PAWNGEN_1). Nothing in THIS file depended on it: the manifest
+format and runner only care that the live state is current when jawa/get_defs reads it.
 
 WHY THIS EXISTS
 ===============

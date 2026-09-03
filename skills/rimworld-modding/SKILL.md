@@ -86,37 +86,60 @@ A cold load is **23–30 minutes** past ~500 mods. **Arrive at the restart alrea
 confident** - a restart confirms a prediction, it does not conduct an experiment,
 and **"restart and see" is never an answer.**
 
-### 🔴 XML changes never buy a restart — hot-reload them (owner's ruling, 2026-09-01)
+### ⛔ HOT RELOAD IS RETIRED — do not call `jawa/hot_reload_defs` (owner's ruling, 2026-09-03)
 
-`jawa/hot_reload_defs` on the live bridge runs the engine's own
-`PlayDataLoader.HotReloadDefs()`: every active mod's Defs re-read from XML on the
-RUNNING game — cross-refs re-resolved, implied defs regenerated, spawned things'
-comps re-matched to the new CompProperties. **The tier-b cycle is deploy →
-`jawa/hot_reload_defs` → read the changed field back with `jawa/get_defs`
-(batch reflective reads, dozens of defs per call) — seconds, zero loads.** Engage
-it by default for any Def/patch-XML iteration while a game is up. Period.
+> *"I recommend we give up on hot reload xml capability as unstable. … let's retire
+> that capability as desirable for now and possibly forever."*
 
-* 🔴 **XML/Defs ONLY.** C#, Harmony and the companion DLL still need a real load.
-* ⚠️ **Verify after reload like any mutation** — `success: true` is not evidence
-  a def changed; read the field back and compare (`rimbridge` skill, the one law).
-* ✅ **PROVEN on the 13/19-mod minimal list — 2026-09-02.** Edited a Core ThingDef
-  (`Campfire`) description on disk, called `jawa/hot_reload_defs`: returned in
-  **0.04 s**, the changed description read back **live** via `jawa/get_defs`
-  (`MARKER_TOOK_LIVE: True`), and the revert reload was **0.06 s, clean**. The
-  zero-restart cycle is real: deploy XML → hot_reload_defs → get_defs, seconds,
-  no load.
-* ⚠️ **On the full (~592-mod) list it went UI-blank/unresponsive for minutes,
-  same day.** The call returned `success:true` in 0.1 s but the engine then
-  stopped answering while re-loading every active mod's defs. It was killed after
-  ~4–5 min, so recovery is UNMEASURED — but given the minimal list completes the
-  identical operation in 0.04 s, the full-stack "hang" is most likely **the same
-  reload, just long** (it scales with mod count and blocks the main thread), and
-  probably would have recovered with patience. ⇒ **Full-list hot-reload is a
-  multi-minute, UI-blanking operation — usable, but budget it like a load and do
-  NOT fire it under the owner mid-play.** Minimal-list hot-reload is the fast path
-  and the one the zero-restart cycle is built on.
-* `jawa/get_defs` is scalar-only for now — list/object fields come back as type
-  names — until a deep-serialize upgrade to that tool lands.
+**This supersedes the 2026-09-01 ruling that made hot-reload the default for
+tier-b XML iteration.** That ruling is dead; the text below is what replaced it.
+
+🔑 **The replacement is the minimal-list restart, and it costs almost nothing.**
+Deploy the XML, restart on the 19-mod minimal list (**22 seconds**, plus ~5 s for a
+quicktest world), read the field back. That is the tier-b cycle now. The whole
+reason hot-reload looked worth having was to save a load, and on the minimal list
+there is barely a load to save.
+
+**Why it was retired — measured, on the full 589-mod list, 2026-09-03:**
+
+* The call **ran** (the first time it was ever observed to complete through the
+  bridge — the earlier full-list trial was killed at 4–5 min). It hung the bridge
+  for **~5 minutes**, then answered normally.
+* Afterwards **no pawn of any kind could be generated.** `jawa/spawn_pawn` returned
+  `NullReferenceException` for Muffalo, Hare, Colonist, Tribesperson and Villager
+  alike — animals included, faction or none. Vanilla's own
+  `Actions\Spawn Pawn...\Colonist` gave the real message the bridge swallows:
+  **`The given key 'RimWorld.HairDef' was not present in the dictionary`.**
+* 🔴 **It is not the def database and nothing reports the damage.**
+  `HairDef/Shaved`, `BodyTypeDef/Male`, `ThingDef/Human` all still resolved; a
+  Type-keyed index the pawn generator walks did not. The game reads healthy
+  (`programState: Playing`, `playable: true`, `mapDataReady: true`) right up until
+  something tries to make a pawn. Full evidence:
+  `infrastructure/state/items/HOT_RELOAD_DEFS_BREAKS_PAWNGEN_1.md`.
+* ⚠️ **The 2026-09-02 minimal-list PASS was real** (Core `Campfire` description
+  edited, reloaded in 0.04 s, read back live, reverted clean) — and it is exactly
+  why this is retired rather than merely gated. A capability that passes cleanly on
+  19 mods and silently destroys pawn generation on 589 cannot be trusted by the
+  seat that has to decide which situation it is in.
+* Independent corroboration is **weak, and that changes nothing** — the owner
+  retired it on our own measurement. What the web has: community unease about
+  patch/load-order fidelity across a reload, third-party mods existing to replace
+  the built-in button, and a Steam thread titled *"Don't push that botton called
+  'Hot Reload Defs'"* with no developer reply. Nobody has published this defect.
+
+**What this ruling does NOT change:**
+
+* ✅ **`jawa/get_defs` stands** — batch reflective def reads are unaffected and
+  remain the way to check what the running game actually holds. (Still scalar-only;
+  list/object fields come back as type names.)
+* ✅ **XML changes still never justify a *full-list* restart.** The answer moved
+  from hot-reload to the minimal list, not to a 25-minute load.
+* ✅ **C#/Harmony/companion-DLL work is untouched** — that always needed a real
+  load and still does.
+
+**How to check this landed:** `jawa/hot_reload_defs` appears in no run sheet,
+ladder or skill as a step to take. If a doc still tells you to call it, it predates
+2026-09-03 and this section beats it.
 
 **→ `skills/rimworld-load-round/SKILL.md` is the whole subject** and owns it: the
 13-mod minimal list that loads in 22 seconds, `modlist_swap.py`, batching by

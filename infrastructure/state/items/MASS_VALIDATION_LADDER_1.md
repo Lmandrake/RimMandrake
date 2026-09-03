@@ -12,7 +12,7 @@ questions."*
 ## spec
 
 Full ladder design: `infrastructure/VALIDATION_LADDER.md` (owner-ruled,
-2026-09-01) — L0 offline / L1 resolved-live (hot-reload + `jawa/get_defs` +
+2026-09-01) — L0 offline / L1 resolved-live (minimal-list restart + `jawa/get_defs` +
 manifest diff) / L2 behavior gauntlet (batched quicktest, art proven by
 machine) / L3 Fable evaluation (art/style/thematic judgment, bridge in
 Fable's own hands) / L4 human (gameplay/fun/thematic coherence/UI only).
@@ -25,7 +25,8 @@ Per `VALIDATION_LADDER.md`'s own `## Criteria (for MASS_VALIDATION_LADDER_1)`:
 - A batch of builds validates through L2 in one bridge sitting, zero restarts.
 - `jawa/get_defs` reads nested fields (stages etc.) after its upgrade.
 - One manifest format, one runner; no bespoke V&V scripts per item.
-- One measured `hot_reload_defs` trial on the full list, owner-blessed.
+- ~~One measured `hot_reload_defs` trial on the full list, owner-blessed.~~
+  ⛔ **VOID — it ran 2026-09-03 and the capability was RETIRED on its result.**
 - First review environment staged and reviewed by the owner.
 
 ## criteria
@@ -130,3 +131,22 @@ Core Campfire description edited on disk → jawa/hot_reload_defs 0.04s →
 change read back LIVE via get_defs → revert reload 0.06s clean. Zero-restart
 L1 cycle confirmed for minimal-list tool work. Full-list scales to minutes
 (same op); earlier "unrecoverable" claim retracted — killed too early to know.
+
+
+# ⛔ HOT RELOAD RETIRED — owner's ruling, 2026-09-03
+
+*"I recommend we give up on hot reload xml capability as unstable. … let's retire
+that capability as desirable for now and possibly forever."*
+
+The second full-list trial COMPLETED where the 2026-09-02 one was killed: ~5 minutes
+of hung bridge, then a game that answered every read correctly and could not generate
+a single pawn — `jawa/spawn_pawn` NRE'd on Muffalo, Hare, Colonist, Tribesperson and
+Villager alike, and vanilla's own debug spawn named the cause:
+`The given key 'RimWorld.HairDef' was not present in the dictionary`. The defs
+themselves all still resolved, so a Type-keyed index is what the reload broke.
+Evidence: `infrastructure/state/items/HOT_RELOAD_DEFS_BREAKS_PAWNGEN_1.md`.
+
+⇒ **L1 is now: deploy → minimal-list restart (22 s) → `jawa/get_defs` → offline diff
+against the expectations manifest.** The ladder loses nothing; a 22-second restart was
+always most of what hot-reload was saving. `expectations_manifest.py` and its runner
+are unaffected — only the step that produced the live state changed.

@@ -13,13 +13,20 @@ can answer it.**
 XML lint, `validate_patch.py --live --defs`, selftests, texture validators.
 Already exists; runs before anything touches the game.
 
-## L1 — Resolved-live (the workhorse; seconds, zero restarts for XML)
+## L1 — Resolved-live (the workhorse; ~22 s per cycle for XML)
 
-Deploy XML → `jawa/hot_reload_defs` (one call) → `jawa/get_defs` batch reads →
-offline diff against the build's **expectations manifest**. Every build item
+Deploy XML → **restart on the 19-mod minimal list (22 s)** → `jawa/get_defs` batch
+reads → offline diff against the build's **expectations manifest**. Every build item
 ships one (defName/field → expected); one shared runner consumes them all.
 Canonical cycle: `skills/rimworld-modding/SKILL.md` §2.
 Blocked on: deep-serialize upgrade to `jawa/get_defs` (scalar-only today).
+
+> ⛔ **The `jawa/hot_reload_defs` step is DEAD** — retired by the owner 2026-09-03
+> as unstable. It hung a 589-mod game for 5 minutes and left it unable to generate
+> any pawn (`HairDef` missing from a Type-keyed index), reporting healthy throughout:
+> `infrastructure/state/items/HOT_RELOAD_DEFS_BREAKS_PAWNGEN_1.md`. L1 loses no
+> ground — a minimal-list restart is 22 seconds, so "zero restarts" was worth less
+> than it sounded.
 
 ## L2 — Behavior gauntlet (batched per bridge sitting)
 
@@ -66,5 +73,7 @@ the bridge on a throwaway map, everything already machine-passed at L0–L3.
 - A batch of builds validates through L2 in one bridge sitting, zero restarts.
 - `jawa/get_defs` reads nested fields (stages etc.) after its upgrade.
 - One manifest format, one runner; no bespoke V&V scripts per item.
-- One measured `hot_reload_defs` trial on the full list, owner-blessed.
+- ~~One measured `hot_reload_defs` trial on the full list, owner-blessed.~~
+  ⛔ **VOID — the trial ran 2026-09-03 and the capability was retired on its result**
+  (owner's ruling; `skills/rimworld-modding/SKILL.md` §2). Nothing is owed here.
 - First review environment staged and reviewed by the owner.

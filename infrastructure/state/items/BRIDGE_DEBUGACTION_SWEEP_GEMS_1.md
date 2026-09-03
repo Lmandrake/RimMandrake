@@ -1,5 +1,14 @@
 # BRIDGE_DEBUGACTION_SWEEP_GEMS_1 — first harvest of a full [DebugAction] sweep
 
+> ⛔ **This item's headline finding has been REVERSED. `jawa/hot_reload_defs` is
+> RETIRED** — owner's ruling, 2026-09-03, as unstable. Everything below that calls it
+> a PASS and "the headline finding" was true of the test that was run and is no longer
+> a recommendation: on the full 589-mod list it hangs the bridge ~5 minutes and leaves
+> the game unable to generate any pawn (`HairDef` missing from a Type-keyed index),
+> reporting healthy throughout. Do not act on the hot-reload rows. Ruling:
+> `skills/rimworld-modding/SKILL.md` §2. Evidence:
+> `HOT_RELOAD_DEFS_BREAKS_PAWNGEN_1`. **The item's other gems are unaffected.**
+
 Filed 2026-08-29, FOUNDRY. Owner asked why `GenDebug.ClearArea` never showed up in any
 prior roster pass, "this should have shown up in the very first bridge building."
 Root cause found and it's structural, not carelessness on one pass: every prior

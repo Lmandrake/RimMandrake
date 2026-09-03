@@ -285,7 +285,7 @@ Full evidence in `references/capability-matrix.md`.
 | build anything | `apply_architect_designator` — rectangles, `dryRun` first |
 | clear ground | `jawa/destroy_batch`, or paint a terrain the plant cannot grow on (§5) |
 | advance time | `step_game_ticks` (exact) or `play_for` (wall-clock) |
-| reload edited XML defs, no restart | `jawa/hot_reload_defs` — 🔴 XML only, never C#; verify by reading the field back (owner's ruling 2026-09-01: default for tier-b iteration; canonical entry `skills/rimworld-modding/SKILL.md` §2) |
+| reload edited XML defs, no restart | ⛔ **NOTHING — `jawa/hot_reload_defs` is RETIRED** (owner, 2026-09-03: unstable). It hung a 589-mod game 5 min and left it unable to generate any pawn while reporting healthy. Restart on the 19-mod minimal list instead: 22 s. Canonical entry `skills/rimworld-modding/SKILL.md` §2 |
 | batch-read resolved defs | `jawa/get_defs` — `DefType/defName;…` pairs + reflective `fields`, dozens per call; ⚠️ scalar fields only |
 | see it | `take_screenshot` → absolute path you can read back |
 

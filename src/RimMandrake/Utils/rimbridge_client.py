@@ -133,9 +133,44 @@ BRIDGE_VERSION = "1.0"
 # Anything not on this list is assumed to mutate the game until proven otherwise.
 READ_ONLY_PREFIXES = ("list_", "get_", "search_", "find_", "compile_", "ping")
 
+# Tools the owner has RETIRED. The bridge still registers them; we refuse to be the
+# thing that calls one. A doc saying "don't" is read by whoever already looked it up;
+# this is read by whoever didn't.
+RETIRED_TOOLS = {
+    "jawa/hot_reload_defs": (
+        "RETIRED by the owner on 2026-09-03 as unstable.\n"
+        "  Measured on the 589-mod list: it hung the bridge ~5 minutes, then left the\n"
+        "  game unable to generate ANY pawn - jawa/spawn_pawn NRE'd on Muffalo, Hare,\n"
+        "  Colonist, Tribesperson and Villager alike, and vanilla's own debug spawn\n"
+        "  named it: \"The given key 'RimWorld.HairDef' was not present in the\n"
+        "  dictionary\". Every health flag read green throughout.\n"
+        "  DO INSTEAD: deploy the XML and restart on the 19-mod minimal list - 22\n"
+        "  seconds - then read the field back with jawa/get_defs.\n"
+        "  Ruling: skills/rimworld-modding/SKILL.md #2.\n"
+        "  Evidence: infrastructure/state/items/HOT_RELOAD_DEFS_BREAKS_PAWNGEN_1.md\n"
+        "  To run the sanctioned re-test (MINIMAL LIST ONLY, where a broken game costs\n"
+        "  22 s): set RIMBRIDGE_ALLOW_RETIRED=jawa/hot_reload_defs in the environment."
+    ),
+}
+
+
+def _retired(tool):
+    """The refusal text for a retired tool, or None. Honours the explicit override."""
+    why = RETIRED_TOOLS.get(tool)
+    if why is None:
+        return None
+    allowed = os.environ.get("RIMBRIDGE_ALLOW_RETIRED", "")
+    if tool in [t.strip() for t in allowed.split(",") if t.strip()]:
+        return None
+    return why
+
 
 class RimBridgeError(RuntimeError):
     """A GABP-level failure: bad handshake, transport break, or tool error."""
+
+
+class RetiredToolError(RimBridgeError):
+    """The tool exists on the bridge and the owner has retired it. See RETIRED_TOOLS."""
 
 
 class UnknownParameterError(RimBridgeError):
@@ -453,6 +488,9 @@ class RimBridge:
         unknown-parameter guard first (BRIDGE_DROPS_UNKNOWN_PARAMS_1). Pass
         check=False only when you mean to send a key the schema does not declare.
         """
+        why = _retired(tool)
+        if why is not None:
+            raise RetiredToolError("%s is RETIRED - refusing to call it.\n  %s" % (tool, why))
         if check:
             unchecked = self.check_params(tool, params)
             if unchecked:

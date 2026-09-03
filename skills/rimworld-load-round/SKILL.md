@@ -20,13 +20,15 @@ MINUTE.** Everything below about hoarding a load still applies to the owner's re
 but for *tool and mechanism* work the scarcity is gone. Do not spend a 25-minute load
 proving something a 22-second one can prove.
 
-🔴 **An XML-only change buys no load ON THE MINIMAL LIST (owner's ruling
-2026-09-01; scope corrected by MEASUREMENT 2026-09-02):** deploy →
-`jawa/hot_reload_defs` → read back with `jawa/get_defs`, XML/Defs only, never
-C#/DLLs. ✅ **PROVEN on minimal (2026-09-02): reload 0.04s, change live, revert 0.06s.**
-⚠️ On the full ~592-mod list it went UI-blank for minutes (same operation, just
-long — recovery unmeasured, killed too early). Minimal is the fast path; budget
-full-list reload like a load. Canonical entry: `skills/rimworld-modding/SKILL.md` §2.
+⛔ **An XML-only change is proven by a MINIMAL-LIST RESTART, not by hot-reload
+(owner's ruling 2026-09-03).** Deploy → restart minimal (22 s) → read back with
+`jawa/get_defs`. **`jawa/hot_reload_defs` is retired as unstable** — it hung a
+589-mod game for 5 minutes and left it unable to generate any pawn while every
+health flag still read green. ⚠️ Its clean minimal-list pass (0.04 s, 2026-09-02)
+was real and is *why* it is retired rather than gated: a call that behaves on 19
+mods and destroys pawn generation on 589 cannot be trusted by the seat deciding
+which case it is in. Canonical entry: `skills/rimworld-modding/SKILL.md` §2;
+evidence: `infrastructure/state/items/HOT_RELOAD_DEFS_BREAKS_PAWNGEN_1.md`.
 
 ```
 python3 src/RimMandrake/Utils/modlist_swap.py --status
