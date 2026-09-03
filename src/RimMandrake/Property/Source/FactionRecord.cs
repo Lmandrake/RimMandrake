@@ -87,7 +87,8 @@ namespace RimMandrake.Property
                 WitnessEntry e = entries[i];
                 float daysElapsed = (nowTick - e.TimestampTicks) / (float)GenDate.TicksPerDay;
                 float propagated = Mathf.Clamp01(daysElapsed * propagationRatePerDay);
-                if (e.Confidence * propagated >= threshold) return true;
+                float decay = Mathf.Clamp01(1f - daysElapsed / PropertyTuning.SuspicionHalfLifeDays);
+                if (e.Confidence * propagated * decay >= threshold) return true;
             }
             return false;
         }
