@@ -562,7 +562,16 @@ def fit_one(short, tier, filename, apply_changes, close_radius=CLOSE_RADIUS):
 
     raw_dir = os.path.join(machine_dir, tier, "_raw")
     os.makedirs(raw_dir, exist_ok=True)
-    shutil.move(cand_path, os.path.join(raw_dir, filename))
+    raw_path = os.path.join(raw_dir, filename)
+    if os.path.exists(raw_path):
+        raise FitError("refusing to move %s over the existing raw copy at %s — "
+                       "this file was very likely already fitted once (the "
+                       "candidate at %s is probably the CONFORMED sprite, not "
+                       "a fresh original). Re-running --apply would silently "
+                       "destroy the true original. Move or remove the existing "
+                       "_raw/ file first if you really mean to re-fit."
+                       % (cand_path, raw_path, cand_path))
+    shutil.move(cand_path, raw_path)
     write_rgba(cand_path, sw, sh, out)
     print("     WROTE    %s   (original preserved in %s/_raw/)" % (filename, tier))
     return {"file": filename, "tier": tier, "iou": reg["iou"], "notes": notes,
