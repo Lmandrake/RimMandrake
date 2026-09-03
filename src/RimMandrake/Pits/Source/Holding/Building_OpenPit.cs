@@ -211,7 +211,7 @@ namespace RimMandrake.Pits
         // Buildings dirties the linked/buildings layers instead, so the section
         // was never regenerated and the pre-arm print stayed on screen. Both
         // flags are sent because a pit is also a Building.
-        protected void DirtyMapMesh()
+        internal void DirtyMapMesh()
         {
             Map?.mapDrawer.MapMeshDirty(Position,
                 (ulong)MapMeshFlagDefOf.Things | (ulong)MapMeshFlagDefOf.Buildings);

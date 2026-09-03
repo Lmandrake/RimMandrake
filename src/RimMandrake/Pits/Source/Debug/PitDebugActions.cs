@@ -241,7 +241,7 @@ namespace RimMandrake.Pits
             Building_PitCell cell = PitCellAt(c);
             if (cell == null) { Log.Message("[RMPitsDebug] NO_PITCELL at " + c); return; }
             cell.covered = !cell.covered;
-            cell.DirtyMapMesh(cell.Map);
+            cell.DirtyMapMesh();
             Log.Message("[RMPitsDebug] GATE " + (cell.GateClosed ? "CLOSED" : "OPEN") + " at " + c);
         }
 
