@@ -64,6 +64,7 @@ USAGE
 
 import argparse
 import json
+import math
 import os
 import statistics
 import sys
@@ -78,8 +79,12 @@ def percentile(sorted_vals, pct):
     matter, and nearest-rank never invents a latency that was not observed."""
     if not sorted_vals:
         return None
+    # 🔴 was `int(round(x + 0.5))`: Python 3's round() is round-half-to-even, not
+    # round-half-up, so that idiom silently picked the WRONG rank whenever
+    # pct/100*len landed on an exact odd integer (e.g. p99 of 500 samples chose
+    # rank 496 instead of 495). ceil() has no such parity trap.
     k = max(0, min(len(sorted_vals) - 1,
-                   int(round(pct / 100.0 * len(sorted_vals) + 0.5)) - 1))
+                   math.ceil(pct / 100.0 * len(sorted_vals)) - 1))
     return sorted_vals[k]
 
 
