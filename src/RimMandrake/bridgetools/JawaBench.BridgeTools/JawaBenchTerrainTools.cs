@@ -594,7 +594,29 @@ namespace JawaBench.BridgeTools
                 var resolved = new Dictionary<string, ThingDef>(StringComparer.OrdinalIgnoreCase);
                 ThingDef stuffDef = string.IsNullOrWhiteSpace(stuff)
                     ? null
-                    : DefDatabase<ThingDef>.GetNamedSilentFail(stuff);
+                    : DefDatabase<ThingDef>.GetNamedSilentFail(stuff.Trim());
+                // 🔴 A `stuff` the database does not have -- a typo, or a material
+                // from a mod that is not loaded -- used to arrive at ThingMaker as
+                // null. Verse/ThingMaker.cs:8-31 does NOT refuse that: for a
+                // MadeFromStuff def it logs an error and SUBSTITUTES
+                // GenStuff.DefaultStuffFor(def), and it substitutes the same default
+                // for a def that exists but is not a stuff. So a wall run asked for
+                // in plasteel came back in steel with success:true, full per-def
+                // counts and no error row -- every wall of a build silently the
+                // wrong material, and a layout audit reading it as clean. Refuse
+                // before anything is spawned.
+                if (!string.IsNullOrWhiteSpace(stuff))
+                {
+                    if (stuffDef == null)
+                        return Fail($"No ThingDef named '{stuff}' to use as stuff. RimWorld " +
+                                    "would have substituted the def's DEFAULT material and " +
+                                    "this tool would have reported success.",
+                            new { suggestions = DefSuggestions<ThingDef>(stuff) });
+                    if (!stuffDef.IsStuff)
+                        return Fail($"'{stuffDef.defName}' is not a stuff (material). RimWorld " +
+                                    "would have substituted the def's DEFAULT material and " +
+                                    "this tool would have reported success.");
+                }
 
                 for (var i = 0; i < parsed.Count; i++)
                 {
@@ -1410,6 +1432,24 @@ namespace JawaBench.BridgeTools
         {
             if (string.IsNullOrWhiteSpace(damageDef))
                 return Fail("damageDef is required.");
+            // 🔴 `amount` was unvalidated in BOTH directions, and 1.6 fails
+            // differently on each:
+            //   0  -- Verse/Thing.cs:1477 TakeDamage returns an empty
+            //         DamageResult immediately on `dinfo.Amount == 0f`. This tool
+            //         still counted the target as hit and returned success:true
+            //         with "Damaged 1 thing(s)": a hit that never landed.
+            //   <0 -- Verse/DamageWorker.cs:151 computes
+            //         `totalDamageDealt = Mathf.Min(victim.HitPoints,
+            //         GenMath.RoundRandom(num))`, which for a negative amount is
+            //         negative, and line 152 then runs `victim.HitPoints -=` it.
+            //         The thing REPAIRS past its MaxHitPoints; hitPointsInt is
+            //         scribed by Thing.ExposeData, so the over-full value goes
+            //         into the savegame. No in-game UI can express either value.
+            if (amount <= 0f)
+                return Fail($"amount must be > 0, got {amount}. RimWorld ignores 0 damage " +
+                            "outright (the call would report a hit that never landed), and a " +
+                            "NEGATIVE amount raises the target's hit points above its maximum " +
+                            "and saves that value.");
             if (string.IsNullOrWhiteSpace(thingId) && (x < 0 || z < 0))
                 return Fail("Give either thingId, or both x and z.");
 
@@ -1426,6 +1466,23 @@ namespace JawaBench.BridgeTools
                             .Where(d => d.defName.ToLowerInvariant().Contains(damageDef.ToLowerInvariant()))
                             .Select(d => d.defName).Take(10).ToList()
                     });
+
+                // Resolve the body part ONCE, up front. It used to be resolved
+                // inside the per-target loop and a name the database does not have
+                // was dropped on the floor: `part` stayed null, TakeDamage then
+                // rolled a RANDOM part, and nothing in the response said so -- a
+                // typo'd bodyPart read as a clean targeted hit. Resolving here also
+                // puts the refusal BEFORE any target has been damaged.
+                BodyPartDef bpDef = null;
+                if (!string.IsNullOrWhiteSpace(bodyPart))
+                {
+                    bpDef = DefDatabase<BodyPartDef>.GetNamedSilentFail(bodyPart.Trim());
+                    if (bpDef == null)
+                        return Fail($"No BodyPartDef named '{bodyPart}'. RimWorld would have " +
+                                    "hit a RANDOM part instead and this tool would have " +
+                                    "reported a targeted hit.",
+                            new { suggestions = DefSuggestions<BodyPartDef>(bodyPart) });
+                }
 
                 var targets = new List<Thing>();
                 if (!string.IsNullOrWhiteSpace(thingId))
@@ -1474,7 +1531,7 @@ namespace JawaBench.BridgeTools
                 }
 
                 var results = new List<object>();
-                int hit = 0, skipped = 0;
+                int hit = 0, skipped = 0, partMissing = 0;
                 foreach (var thing in targets)
                 {
                     cancellationToken.ThrowIfCancellationRequested();
@@ -1487,12 +1544,15 @@ namespace JawaBench.BridgeTools
                     }
 
                     BodyPartRecord part = null;
-                    if (!string.IsNullOrWhiteSpace(bodyPart) && pawn != null)
+                    if (bpDef != null && pawn != null)
                     {
-                        var bpDef = DefDatabase<BodyPartDef>.GetNamedSilentFail(bodyPart);
-                        if (bpDef != null)
-                            part = pawn.health.hediffSet.GetNotMissingParts()
-                                       .FirstOrDefault(b => b.def == bpDef);
+                        part = pawn.health?.hediffSet?.GetNotMissingParts()
+                                   .FirstOrDefault(b => b.def == bpDef);
+                        // The def is real but THIS body has no such part (wrong
+                        // race, or it is already missing). TakeDamage then rolls a
+                        // random part, so the hit is real but it is not the hit
+                        // that was asked for -- say so instead of implying it was.
+                        if (part == null) partMissing++;
                     }
 
                     var before = thing.HitPoints;
@@ -1506,6 +1566,11 @@ namespace JawaBench.BridgeTools
                         id = thing.ThingID,
                         def = thing.def?.defName,
                         isPawn = pawn != null,
+                        bodyPartRequested = bpDef?.defName,
+                        bodyPartHit = part?.def?.defName,
+                        // false means the requested part is not on this body and the
+                        // engine picked a random one.
+                        bodyPartTargeted = bpDef == null || part != null,
                         hitPointsBefore = before,
                         hitPointsAfter = thing.Destroyed ? 0 : thing.HitPoints,
                         destroyed = thing.Destroyed,
@@ -1525,11 +1590,17 @@ namespace JawaBench.BridgeTools
                 {
                     success = hit > 0,
                     message = $"Damaged {hit} thing(s) with {ddef.defName} {amount}" +
-                              (skipped > 0 ? $"; {skipped} player colonist(s) skipped (allowColonists=false)" : "") + ".",
+                              (skipped > 0 ? $"; {skipped} player colonist(s) skipped (allowColonists=false)" : "") +
+                              (partMissing > 0
+                                  ? $"; ⚠️ {partMissing} target(s) have no '{bpDef?.defName}' " +
+                                    "part, so the engine hit a RANDOM part on those"
+                                  : "") + ".",
                     damageDef = ddef.defName,
                     harmsHealth = ddef.harmsHealth,
                     targetsHit = hit,
                     colonistsSkipped = skipped,
+                    bodyPartRequested = bpDef?.defName,
+                    bodyPartNotOnTarget = partMissing,
                     // ⚠️ `results` is the per-thing list. A retired seat parsed `targets`,
                     // got nothing, and read it as "the ion did nothing" -- caught
                     // only because the CONTROL row was empty too. Aliased so the
@@ -2123,21 +2194,47 @@ namespace JawaBench.BridgeTools
             var spawned = map.mapPawns.AllPawnsSpawned.ToList();
             if (string.Equals(sel, "all", StringComparison.OrdinalIgnoreCase))
                 return spawned;
+            // 🔴 FreeColonistsSpawned, not FreeColonists. MapPawns.FreeColonists is
+            // FreeHumanlikesOfFaction over AllPawns, and AllPawns is AllPawnsSpawned
+            // PLUS AllPawnsUnspawned (Verse/MapPawns.cs:110-144) -- so 'colonists'
+            // silently reached colonists held in cryptosleep caskets, growth vats and
+            // loaded pods while 'all' above did not, and every tool that calls this
+            // helper documents itself as operating on SPAWNED pawns. The asymmetry
+            // bit hardest on jawa/set_pawn_rotation, which writes debugRotLocked:
+            // Thing.ExposeData scribes it, so a held pawn locked via 'colonists'
+            // could not be released again via 'all' and stayed locked across a save
+            // and load.
             if (string.Equals(sel, "colonists", StringComparison.OrdinalIgnoreCase))
-                return map.mapPawns.FreeColonists.ToList();
+                return map.mapPawns.FreeColonistsSpawned.ToList();
 
             var found = new List<Pawn>();
             var missing = new List<string>();
-            foreach (var id in sel.Split(',').Select(q => q.Trim()).Where(q => q.Length > 0))
+            foreach (var raw in sel.Split(',').Select(q => q.Trim()).Where(q => q.Length > 0))
             {
+                // The same id grammar FindPawn accepts everywhere else in this
+                // assembly: the bare ThingID ('Human45731'), the 'Thing_'-prefixed
+                // form several bridge tools hand back, or the numeric
+                // thingIDNumber. This helper took the bare form ONLY, so an id
+                // pasted straight out of another tool's response was refused as a
+                // pawn that does not exist (BRIDGE_ARG_SHAPES_INCONSISTENT_1 row 1).
+                var id = raw;
+                if (id.StartsWith("Thing_", StringComparison.OrdinalIgnoreCase) && id.Length > 6)
+                    id = id.Substring(6);
                 var p = spawned.FirstOrDefault(
                     q => string.Equals(q.ThingID, id, StringComparison.OrdinalIgnoreCase));
-                if (p == null) missing.Add(id); else found.Add(p);
+                if (p == null && int.TryParse(id, out var idNum))
+                    p = spawned.FirstOrDefault(q => q.thingIDNumber == idNum);
+                if (p == null) missing.Add(raw); else found.Add(p);
             }
 
             if (missing.Count > 0)
             {
-                error = Fail($"No spawned pawn on this map with id: {string.Join(", ", missing)}.",
+                error = Fail($"No spawned pawn on this map with id: {string.Join(", ", missing)}. " +
+                             "Accepted: the bare thingID ('Human45731'), the same with a 'Thing_' " +
+                             "prefix, or the numeric thingIDNumber. jawa/list_pawns reports the " +
+                             "bare form. ⚠️ Only SPAWNED pawns are reachable here: a pawn in a " +
+                             "cryptosleep casket, a growth vat or a loaded pod is out of scope " +
+                             "for these tools.",
                     new
                     {
                         missing,
