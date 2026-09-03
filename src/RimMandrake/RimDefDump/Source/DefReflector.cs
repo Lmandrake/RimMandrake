@@ -61,12 +61,31 @@ namespace RimMandrake.RimDefDump
         // defs, so field lists are resolved once per type and cached.
         private static readonly Dictionary<Type, FieldInfo[]> fieldCache = new Dictionary<Type, FieldInfo[]>();
 
+        /// <summary>
+        /// Types whose field list could NOT be read in full, and why. Reading
+        /// FieldInfo.FieldType resolves the field's type, which throws
+        /// (TypeLoadException / FileNotFoundException) when that type lives in
+        /// an assembly that never loaded — a soft mod dependency is exactly
+        /// this shape, and the mod's own class loads fine because .NET resolves
+        /// field types lazily. Type.GetFields can throw for the same reason.
+        ///
+        /// Unguarded that escapes FieldsOf -> WriteObjectBody -> WriteDef, and
+        /// the caller in DefDumper deletes the whole def type's file: one bad
+        /// field on one mod's class costs every def of that type. Guarded, the
+        /// gap costs one field and is REPORTED as $fieldsError rather than
+        /// leaving the record silently short.
+        /// </summary>
+        private static readonly Dictionary<Type, string> fieldErrors = new Dictionary<Type, string>();
+
+        private static readonly FieldInfo[] NoFields = new FieldInfo[0];
+
         private static FieldInfo[] FieldsOf(Type t)
         {
             FieldInfo[] cached;
             if (fieldCache.TryGetValue(t, out cached)) return cached;
 
             var keep = new List<FieldInfo>();
+            string error = null;
             // DeclaredOnly plus a manual base walk, so we get fields from every
             // level of the hierarchy without duplicates where a subclass hides a
             // base field with `new`. DeclaredOnly alone does NOT do this: it
@@ -81,8 +100,17 @@ namespace RimMandrake.RimDefDump
             var claimed = new HashSet<string>();
             for (Type cur = t; cur != null && cur != typeof(object); cur = cur.BaseType)
             {
-                FieldInfo[] fields = cur.GetFields(BindingFlags.Public | BindingFlags.NonPublic
-                                                   | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+                FieldInfo[] fields;
+                try
+                {
+                    fields = cur.GetFields(BindingFlags.Public | BindingFlags.NonPublic
+                                           | BindingFlags.Instance | BindingFlags.DeclaredOnly);
+                }
+                catch (Exception ex)
+                {
+                    error = Note(error, cur.Name + ".GetFields: " + ex.GetType().Name);
+                    continue;
+                }
                 for (int i = 0; i < fields.Length; i++)
                 {
                     FieldInfo f = fields[i];
@@ -91,14 +119,29 @@ namespace RimMandrake.RimDefDump
                     // without adding information.
                     if (f.Name.IndexOf('<') >= 0) continue;
                     if (SkippedFieldNames.Contains(f.Name)) continue;
-                    if (IsSkippedType(f.FieldType)) continue;
+                    // f.FieldType is a type RESOLUTION, not a lookup - see
+                    // fieldErrors above for why it throws and what it costs.
+                    bool skipped;
+                    try { skipped = IsSkippedType(f.FieldType); }
+                    catch (Exception ex)
+                    {
+                        error = Note(error, f.Name + ": " + ex.GetType().Name);
+                        continue;
+                    }
+                    if (skipped) continue;
                     if (!claimed.Add(f.Name)) continue;
                     keep.Add(f);
                 }
             }
             FieldInfo[] arr = keep.ToArray();
             fieldCache[t] = arr;
+            if (error != null) fieldErrors[t] = error;
             return arr;
+        }
+
+        private static string Note(string soFar, string msg)
+        {
+            return soFar == null ? msg : soFar + "; " + msg;
         }
 
         /// <summary>
@@ -329,13 +372,26 @@ namespace RimMandrake.RimDefDump
             if (asDict != null)
             {
                 w.StartArray();
-                foreach (DictionaryEntry e in asDict)
+                // Same two guards as the sequence branch below, for the same
+                // reasons: a mod dictionary can throw while enumerating (or
+                // hand back an enumerator whose entries are not
+                // DictionaryEntry), and an unbounded one would be written in
+                // full. An unguarded throw here does not just lose this value -
+                // it escapes with the array still open, and DefDumper answers
+                // that by deleting the whole def type's file.
+                try
                 {
-                    w.StartObject();
-                    w.Name("key"); WriteValue(w, e.Key, depth + 1, maxDepth, path);
-                    w.Name("value"); WriteValue(w, e.Value, depth + 1, maxDepth, path);
-                    w.EndObject();
+                    int n = 0;
+                    foreach (DictionaryEntry e in asDict)
+                    {
+                        if (n++ >= MaxSequenceItems) { w.Str("<truncated>"); break; }
+                        w.StartObject();
+                        w.Name("key"); WriteValue(w, e.Key, depth + 1, maxDepth, path);
+                        w.Name("value"); WriteValue(w, e.Value, depth + 1, maxDepth, path);
+                        w.EndObject();
+                    }
                 }
+                catch (Exception ex) { w.Str("<enumerate-failed:" + ex.GetType().Name + ">"); }
                 w.EndArray();
                 return;
             }
@@ -376,36 +432,58 @@ namespace RimMandrake.RimDefDump
             Type t = obj.GetType();
             bool tracked = !t.IsValueType;
             if (tracked) path.Add(obj);
-
-            w.StartObject();
-
-            // Record the concrete type, because it is often the entire content
-            // of an entry: knowing a comps element is CompProperties_Milkable is
-            // exactly what the animal inventory wants to know.
-            w.Prop("$type", t.Name);
-
-            FieldInfo[] fields = FieldsOf(t);
-            for (int i = 0; i < fields.Length; i++)
+            // finally, not a trailing call: an exception escaping this body
+            // would otherwise leave obj on the path forever, and every later
+            // RemoveAt pops the wrong entry - the cycle guard then reports
+            // <cycle:...> for objects that are not in one, silently dropping
+            // real content from the rest of the dump.
+            try
             {
-                FieldInfo f = fields[i];
-                object val;
-                try { val = f.GetValue(obj); }
-                catch (Exception ex)
+                w.StartObject();
+
+                // Record the concrete type, because it is often the entire content
+                // of an entry: knowing a comps element is CompProperties_Milkable is
+                // exactly what the animal inventory wants to know.
+                w.Prop("$type", t.Name);
+
+                FieldInfo[] fields;
+                string fieldsError;
+                try { fields = FieldsOf(t); fieldsError = FieldsErrorOf(t); }
+                catch (Exception ex) { fields = NoFields; fieldsError = "FieldsOf: " + ex.GetType().Name; }
+                // A short field list is never left silent.
+                if (fieldsError != null) w.Prop("$fieldsError", fieldsError);
+
+                for (int i = 0; i < fields.Length; i++)
                 {
+                    FieldInfo f = fields[i];
+                    object val;
+                    try { val = f.GetValue(obj); }
+                    catch (Exception ex)
+                    {
+                        w.Name(f.Name);
+                        w.Str("<read-failed:" + ex.GetType().Name + ">");
+                        continue;
+                    }
+                    if (val == null) continue; // omit nulls; these files are big enough
+
                     w.Name(f.Name);
-                    w.Str("<read-failed:" + ex.GetType().Name + ">");
-                    continue;
+                    try { WriteValue(w, val, depth + 1, maxDepth, path); }
+                    catch (Exception ex) { w.Str("<write-failed:" + ex.GetType().Name + ">"); }
                 }
-                if (val == null) continue; // omit nulls; these files are big enough
 
-                w.Name(f.Name);
-                try { WriteValue(w, val, depth + 1, maxDepth, path); }
-                catch (Exception ex) { w.Str("<write-failed:" + ex.GetType().Name + ">"); }
+                w.EndObject();
             }
+            finally
+            {
+                if (tracked) path.RemoveAt(path.Count - 1);
+            }
+        }
 
-            w.EndObject();
-
-            if (tracked) path.RemoveAt(path.Count - 1);
+        private static string FieldsErrorOf(Type t)
+        {
+            string err;
+            if (fieldErrors.TryGetValue(t, out err)) return err;
+            return null;
         }
 
         /// <summary>
