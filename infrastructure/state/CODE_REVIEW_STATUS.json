@@ -688,6 +688,11 @@
     "date": "2026-09-03",
     "sha": "35c29544"
   },
+  "src/RimMandrake/Utils/landmark_art.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "584e2884"
+  },
   "src/RimMandrake/Utils/lint_links.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
