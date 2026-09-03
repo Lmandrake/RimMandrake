@@ -59,7 +59,7 @@
     <defaultLabelColor>(0.55, 0.75, 1.0)</defaultLabelColor>
     <scenarioCanAdd>false</scenarioCanAdd>
     <maxSeverity>1.0</maxSeverity>
-    <!-- HediffDef.initialSeverity defaults to 0.5 -- without this, every fresh
+    <!-- HediffDef.initialSeverity defaults to 0.5 - without this, every fresh
          hediff is born at 0.5 (the "overloaded" floor stage below, Consciousness
          capped at 0.10) and DamageWorker_IonBuildup.cs's `hediff.Severity += severity`
          adds on top of that instead of starting from 0. One bolt would down a
