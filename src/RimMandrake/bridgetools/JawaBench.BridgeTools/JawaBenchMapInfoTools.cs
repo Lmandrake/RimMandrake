@@ -122,10 +122,12 @@ namespace JawaBench.BridgeTools
                 "⛔ Does NOT tell you the map is settled. mapParent is null on a scratch " +
                 "quicktest map and that is normal.",
             ResultDescription =
-                "success, tile (the world tile id - the field nothing else reported), mapId, " +
+                "success, tile (the world tile id - the field nothing else reported), " +
+                "tileValid (false on a pocket map, where 'tile' is a sentinel and not a " +
+                "place you can aim world_tile_set at), mapId, " +
                 "sizeX/sizeZ/cellCount, tileInfo{biome,hilliness,elevation,rainfall," +
-                "swampiness,temperature,pollution,waterCovered}, mapBiome + mapBiomeLabel, " +
-                "elevation, rainfall, swampiness, temperature (the tile's baseline), " +
+                "swampiness,temperature,pollution,waterCovered,isSurfaceTile}, mapBiome + " +
+                "mapBiomeLabel, " +
                 "outdoorTempNow (the seasonal reading a pawn actually feels), latitude, " +
                 "longitude, season, mapParent {defName, label, faction} or null, " +
                 "playerSettlementsOnThisTile (a COUNT - a quicktest can have two), " +
@@ -176,13 +178,21 @@ namespace JawaBench.BridgeTools
                                 isSurfaceTile = st != null,
                             };
                         }
-                        var ll = grid.LongLatOf(map.Tile);
-                        lon = ll.x; lat = ll.y; haveLatLon = true;
                     }
                     catch (Exception e)
                     {
                         tileBlock = new { unreadable = e.GetType().Name + ": " + e.Message };
                     }
+
+                    // SEPARATE try. Folded into the one above, a throw out of LongLatOf
+                    // overwrote a tileBlock that had ALREADY been read successfully, so a
+                    // lat/long failure destroyed a good tile measurement.
+                    try
+                    {
+                        var ll = grid.LongLatOf(map.Tile);
+                        lon = ll.x; lat = ll.y; haveLatLon = true;
+                    }
+                    catch { haveLatLon = false; }
                 }
 
                 object parent = null;
@@ -219,6 +229,10 @@ namespace JawaBench.BridgeTools
                 {
                     success = true,
                     tile = tileId,
+                    // A pocket map's Map.Tile is not a real planet tile, and its id is a
+                    // SENTINEL. Reported as a flag rather than left to read as a measurement:
+                    // world_tile_set aimed at an invalid tile lands nowhere.
+                    tileValid = map.Tile.Valid,
                     mapId = map.uniqueID,
                     sizeX = map.Size.x,
                     sizeZ = map.Size.z,

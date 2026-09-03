@@ -114,7 +114,9 @@ namespace JawaBench.BridgeTools
                 "Read every Tale in TaleManager - TaleManager.AllTalesListForReading. Each " +
                 "carries def, customLabel (the only free text a Tale exposes), date, hidden, " +
                 "Unused, InterestLevel, ShortSummary. Read-only.",
-            ResultDescription = "success, count, tales[] (id, def, customLabel, ageTicksApprox, unused, interestLevel, shortSummary).")]
+            ResultDescription = "success, totalCount (every Tale the manager holds), returned (rows after " +
+                "the filter and the limit), tales[] (id, def, customLabel, date, ageTicks, hidden, unused, " +
+                "interestLevel, shortSummary).")]
         public static async Task<object> TaleList(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -128,13 +130,23 @@ namespace JawaBench.BridgeTools
                 cancellationToken.ThrowIfCancellationRequested();
                 if (Find.TaleManager == null) return Fail("No active TaleManager - is a game loaded?");
 
+                // Enumerable.Take returns an EMPTY sequence for a non-positive count, so an
+                // unguarded limit<=0 would answer "success, 0 tales" on a colony full of them.
+                if (limit <= 0) return Fail("'limit' must be 1 or more; " + limit + " would return no rows while reporting success.");
+
                 var all = Find.TaleManager.AllTalesListForReading;
                 var filtered = onlyWithCustomLabel ? all.Where(t => !string.IsNullOrEmpty(t.customLabel)) : all.AsEnumerable();
+                // Tale.AgeTicks is TicksAbs - date, so it is meaningless on a tale whose date
+                // was never set (the -1 default); report the raw date alongside it either way.
+                int ticksAbs = Find.TickManager != null ? Find.TickManager.TicksAbs : 0;
                 var rows = filtered.Take(limit).Select(t => new
                 {
                     id = t.id,
                     def = t.def != null ? t.def.defName : null,
                     customLabel = t.customLabel,
+                    date = t.date,
+                    ageTicks = t.date >= 0 && Find.TickManager != null ? (int?)(ticksAbs - t.date) : null,
+                    hidden = t.hidden,
                     unused = t.Unused,
                     interestLevel = t.InterestLevel,
                     shortSummary = t.ShortSummary
@@ -276,7 +288,16 @@ namespace JawaBench.BridgeTools
                 "GoodwillSituationManager.GetSituations/GetMaxGoodwill/GetNaturalGoodwill for " +
                 "one faction (permanent-enemy status, ideology conflicts, and any other " +
                 "GoodwillSituationDef currently in effect). Extends jawa/faction_goodwill_check " +
-                "with the BREAKDOWN, not just the number. Read-only.",
+                "with the BREAKDOWN, not just the number. " +
+                "⛔ REFUSES on a faction with Faction.HasGoodwill == false (hidden, or temporary): " +
+                "GoodwillSituationManager.Recalculate returns early for those, leaving an EMPTY " +
+                "situation list, and GetMaxGoodwill/GetNaturalGoodwill then hand back their " +
+                "sentinels 100 and 0 - which read exactly like a measured 'uncapped, unaffected'. " +
+                "⚠️ NOT strictly read-only. GetSituations recomputes on a cache miss, and the " +
+                "cache is empty until GoodwillManagerTick first runs (TicksGame % 1000), so on a " +
+                "just-loaded or paused game this call can drive the engine's own hostility-" +
+                "threshold check early and fire its letter. It only brings forward what the next " +
+                "tick would do; it never invents a change.",
             ResultDescription =
                 "success, faction, maxGoodwill, naturalGoodwillOffset, situations[] (defName, " +
                 "label, maxGoodwill, naturalGoodwillOffset).")]
@@ -297,6 +318,16 @@ namespace JawaBench.BridgeTools
                 var fac = Find.FactionManager.FirstFactionOfDef(fd);
                 if (fac == null) return Fail("FactionDef '" + faction + "' exists but no such faction is in this world.");
                 if (fac.IsPlayer) return Fail("'" + faction + "' resolved to the player faction - goodwill situations are only tracked for other factions.");
+                // GoodwillSituationManager.Recalculate is `if (!other.HasGoodwill) return;` over a
+                // cleared list, so an ungated call here would report maxGoodwill 100 /
+                // naturalGoodwillOffset 0 / situations [] for a hidden or temporary faction - the
+                // manager's sentinels, indistinguishable from a real reading.
+                if (!fac.HasGoodwill)
+                    return Fail("'" + faction + "' has Faction.HasGoodwill == false (hidden=" + fac.Hidden
+                        + ", temporary=" + fac.temporary + "), so no goodwill situation is tracked for it. "
+                        + "Every number this tool could return would be the manager's sentinel "
+                        + "(maxGoodwill 100, naturalGoodwillOffset 0, no situations), not a measurement.",
+                        new { faction = fac.Name, hidden = fac.Hidden, temporary = fac.temporary, defHidden = fac.def != null && fac.def.hidden });
 
                 var mgr = Find.GoodwillSituationManager;
                 if (mgr == null) return Fail("No active GoodwillSituationManager.");

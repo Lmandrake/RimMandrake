@@ -52,6 +52,20 @@
 // colour bands are hard-coded float thresholds against `Efficiency`. So this tool
 // reports the float and does not invent a tier.
 //
+// 🔴 "IS IT DAMAGED" IS `HealthPercent < 1`, NEVER `Efficiency < 1`.
+// `Efficiency` is `props.efficiency.Evaluate(HealthPercent)` against a def-authored
+// LinearCurve, and Vehicle Framework's OWN DEFAULT curve (VehicleComponentProperties
+// .ResolveReferences) is FLAT AT 1.0 across the top of its range:
+//     (0,0) (0.25,0) (0.4,0.4) (0.7,0.7) (0.85,1) (1,1)
+// so every component between 85% and 100% health evaluates to exactly 1.0. Counting
+// damage off Efficiency therefore reported an undamaged vehicle for up to 15% damage
+// on EVERY component - the silent-success failure this file exists to avoid. Vehicle
+// Framework itself asks the same question as
+// `VehicleStatHandler.NeedsRepairs => components.Any(c => c.HealthPercent < 1)`,
+// and that is what damagedCount / damagedOnly / worstHealthPercent use here.
+// `worstEfficiency` is still reported: it is the CAPABILITY reading (what the damage
+// actually costs the vehicle), which is a different question from "is it hurt".
+//
 // THREAD AFFINITY: same rule as every other file here. Everything that touches
 // game state is inside ctx.MainThread.InvokeAsync and nothing else is.
 
@@ -136,15 +150,20 @@ namespace JawaBench.BridgeTools
             ResultDescription =
                 "success, isVehicle, pawn identity, componentCount, and per component: key, " +
                 "label, health, maxHealth, healthPercent, efficiency, depth. Also " +
-                "damagedCount and worstEfficiency, which are the two numbers that answer " +
-                "'is this thing hurt' without reading the rows. In list mode: vehicles[] " +
-                "with thingId, label, componentCount, damagedCount, worstEfficiency.")]
+                "damagedCount and worstHealthPercent, which are the two numbers that answer " +
+                "'is this thing hurt' without reading the rows, plus worstEfficiency, which " +
+                "is what the damage COSTS - a different question. ⚠️ Damage is judged on " +
+                "healthPercent, never efficiency: Vehicle Framework's default efficiency " +
+                "curve is flat at 1.0 from 85% health upward, so efficiency reports an " +
+                "undamaged vehicle at 86% health. In list mode: vehicles[] with thingId, " +
+                "label, def, componentCount, damagedCount, worstHealthPercent, " +
+                "worstEfficiency, note.")]
         public static async Task<object> VehicleComponents(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
             [ToolParameter(Description = "Pawn id, thingId or name. Omit to list every spawned vehicle instead.")]
             string pawn = null,
-            [ToolParameter(Description = "Only return components whose efficiency is below 1.0. Counts always cover all of them. Default false.")]
+            [ToolParameter(Description = "Only return components that are DAMAGED, i.e. healthPercent below 1.0 - the same test Vehicle Framework's own NeedsRepairs uses. Counts always cover all of them. Default false.")]
             bool damagedOnly = false)
         {
             return await ctx.MainThread.InvokeAsync(() =>
@@ -166,7 +185,8 @@ namespace JawaBench.BridgeTools
                             label = p.LabelShortCap,
                             def = p.def != null ? p.def.defName : null,
                             componentCount = comps == null ? 0 : comps.Count,
-                            damagedCount = comps == null ? 0 : CountDamaged(comps),
+                            damagedCount = comps == null ? (int?)null : CountDamaged(comps),
+                            worstHealthPercent = comps == null ? (float?)null : WorstHealthPercent(comps),
                             worstEfficiency = comps == null ? (float?)null : WorstEfficiency(comps),
                             note = err2,
                         });
@@ -220,7 +240,7 @@ namespace JawaBench.BridgeTools
                 var rows = new List<object>();
                 foreach (object row in components)
                 {
-                    if (!damagedOnly || EfficiencyOf(row) < 1f) rows.Add(row);
+                    if (!damagedOnly || HealthPercentOf(row) < 1f) rows.Add(row);
                 }
 
                 return new
@@ -233,6 +253,7 @@ namespace JawaBench.BridgeTools
                     def = v.def != null ? v.def.defName : null,
                     componentCount = components.Count,
                     damagedCount = CountDamaged(components),
+                    worstHealthPercent = WorstHealthPercent(components),
                     worstEfficiency = WorstEfficiency(components),
                     returned = rows.Count,
                     components = rows,
@@ -300,21 +321,42 @@ namespace JawaBench.BridgeTools
             catch (Exception) { return null; }
         }
 
-        /// <summary>Efficiency of a row built by ReadComponents; 1.0 when unknown.</summary>
-        private static float EfficiencyOf(object row)
+        /// <summary>
+        /// Read one float off a row built by ReadComponents; 1.0 when it cannot be read,
+        /// because an unreadable component must not be counted as damage it may not have.
+        /// </summary>
+        private static float RowFloat(object row, string name)
         {
-            object e = row.GetType().GetProperty("efficiency", PubInst) == null
-                ? null
-                : row.GetType().GetProperty("efficiency", PubInst).GetValue(row, null);
-            float? f = AsFloat(e);
+            PropertyInfo pi = row == null ? null : row.GetType().GetProperty(name, PubInst);
+            float? f = AsFloat(pi == null ? null : pi.GetValue(row, null));
             return f.HasValue ? f.Value : 1f;
         }
+
+        /// <summary>Efficiency of a row - what the damage COSTS, not whether there is any.</summary>
+        private static float EfficiencyOf(object row) { return RowFloat(row, "efficiency"); }
+
+        /// <summary>
+        /// healthPercent of a row - THE damage test. See the header: efficiency is flat at
+        /// 1.0 across the top of Vehicle Framework's default curve and cannot answer this.
+        /// </summary>
+        private static float HealthPercentOf(object row) { return RowFloat(row, "healthPercent"); }
 
         private static int CountDamaged(List<object> rows)
         {
             int n = 0;
-            foreach (object r in rows) if (EfficiencyOf(r) < 1f) n++;
+            foreach (object r in rows) if (HealthPercentOf(r) < 1f) n++;
             return n;
+        }
+
+        private static float WorstHealthPercent(List<object> rows)
+        {
+            float worst = 1f;
+            foreach (object r in rows)
+            {
+                float h = HealthPercentOf(r);
+                if (h < worst) worst = h;
+            }
+            return worst;
         }
 
         private static float WorstEfficiency(List<object> rows)
