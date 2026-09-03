@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-03T19:31:22Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: free
+as-of: 2026-09-03T19:37:56Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -351,6 +351,15 @@ kind:     task
 summary:  (no items/DIRTY_CODE_REVIEW_STANDING_LOOP_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DIRTY_CODE_REVIEW_STANDING_LOOP_1.md
 
+## FLUID_CANAL_DEBUG_SURFACE_1 FluidCanals [DebugAction]s never register in a live game
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Measured 2026-09-03 on the 20-mod minimal list, dev quicktest map. The
+prose:    infrastructure/state/items/FLUID_CANAL_DEBUG_SURFACE_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -446,16 +455,6 @@ kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DEFDUMP_ONDEMAND_BRIDGE_UNREACHABLE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DEFDUMP_ONDEMAND_BRIDGE_UNREACHABLE_1.md
-
-## FLUID_CANAL_DEBUG_SURFACE_1 FluidCanals [DebugAction]s never register in a live game
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  Measured 2026-09-03 on the 20-mod minimal list, dev quicktest map. The
-prose:    infrastructure/state/items/FLUID_CANAL_DEBUG_SURFACE_1.md
 
 ## DIRTY_CODE_REVIEW_LOOP_RESTART_3 resume standing code-review sweep after next agent reboot
 state:    proposed

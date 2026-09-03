@@ -4270,3 +4270,8 @@
 {"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-09-03T19:23:41Z"}
 {"seat":"FOUNDRY","event":"file","id":"PARALLELIZE_SELFTEST_CLI_INTERNAL_1","title":"selftest_cli.py's 87 real-subprocess cases run serially (~150s+ solo) and are the sweep's long pole; parallelize internally without losing real-subprocess fidelity","kind":"task","target":"v1","needs":"offline","caused_by":"SELFTEST_SWEEP_EXCEEDS_COMMIT_BUDGET_1","for":"FOUNDRY","ts":"2026-09-03T19:24:28Z"}
 {"seat":"FOUNDRY","event":"close","id":"SELFTEST_SWEEP_EXCEEDS_COMMIT_BUDGET_1","sha":"171ebf61","ts":"2026-09-03T19:31:22Z"}
+{"seat":"FOUNDRY","event":"claim","id":"FLUID_CANAL_DEBUG_SURFACE_1","ts":"2026-09-03T19:32:03Z"}
+{"seat":"FOUNDRY","event":"start","id":"FLUID_CANAL_DEBUG_SURFACE_1","ts":"2026-09-03T19:32:03Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"FLUID_CANAL_DEBUG_SURFACE_1 live verify + DEFDUMP_ONDEMAND_BRIDGE_UNREACHABLE_1 + VANILLA_COUNT_PSEUDO_DEF_1 harvest, minimal-list quicktest batch","ts":"2026-09-03T19:37:13Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","ownerSaid":"When bridge is available go ahead and reboot. That should just be known at this point.","ts":"2026-09-03T19:37:44Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","ownerSaid":"Game is loading","ts":"2026-09-03T19:37:56Z"}
