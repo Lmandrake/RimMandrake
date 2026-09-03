@@ -342,7 +342,12 @@ class WorldObjects(object):
     def landmarks(self):
         lo, hi, ks, vs = self._landmark_spans()
         keys = re.findall(r"<li>(-?\d+),(\d+)</li>", self.text[ks[0]:ks[1]])
-        vals = re.findall(r"<li>\s*<def>(.*?)</def>\s*<name>(.*?)</name>\s*</li>",
+        # ⚠️ Not every value li ends right after </name> - some carry a trailing
+        # field too (e.g. <isComboLandmark>True</isComboLandmark>). A regex that
+        # demanded </li> right after </name> silently dropped those entries from
+        # findall(), which then shifted every LATER landmark onto the WRONG key
+        # via zip() - found empirically: 4 of 6 saves in world/ hit this.
+        vals = re.findall(r"<li>\s*<def>(.*?)</def>\s*<name>(.*?)</name>.*?</li>",
                           self.text[vs[0]:vs[1]], re.S)
         return [{"tile": int(t), "layer": int(l), "def": d, "name": n}
                 for (t, l), (d, n) in zip(keys, vals)]
@@ -375,7 +380,7 @@ class WorldObjects(object):
             return m.group(0) if n != idx else m.group(0).replace(
                 "<def>%s</def>" % marks[idx]["def"], "<def>%s</def>" % new_defname, 1)
 
-        seg2 = re.sub(r"<li>\s*<def>.*?</def>\s*<name>.*?</name>\s*</li>", sub, seg, flags=re.S)
+        seg2 = re.sub(r"<li>\s*<def>.*?</def>\s*<name>.*?</name>.*?</li>", sub, seg, flags=re.S)
         self.text = self.text[:vs[0]] + seg2 + self.text[vs[1]:]
         return {"tile": tile, "was": marks[idx]["def"], "now": new_defname}
 
