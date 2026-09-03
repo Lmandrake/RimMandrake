@@ -69,12 +69,15 @@ Deployed (`deploy_custom_mods.py --mod Armoury --apply`, verified in sync).
 hits exactly the one node intended
 (`Star Wars : The Force - Lightsaber: LightsaberRecipe.xml`).
 
-Not yet done, needs a live reload with the v4 research cuts actually applied:
-confirm no player-buildable bench offers any `Force_CraftLightsaber*` recipe
-in the RESOLVED post-cut dump. The dump checked against here (`07-26-04Z`)
-predates the v4 pass (made ~21:00 the same day), so it could only verify the
-patch's mechanism (the xpath hits, the field is gone), not the final
-post-cut-and-repatch resolved state.
+**Live-verified, post-v4-cut, FOUNDRY 2026-09-03 22:44Z**: fresh full-589-mod
+restart (the same restart used for DEFDUMP_ONDEMAND_BRIDGE_UNREACHABLE_1),
+`jawa/get_defs` on `RecipeDef/Force_CraftLightsaberSingle` reads
+`recipeUsers: null`. Uncraftable at any bench, confirmed on the resolved
+live game, not a dump snapshot. (`researchPrerequisite` now reads back as
+the raw donor's own `MicroelectronicsBasics` rather than the absorbed
+compat patch's `guy762_ResearchKotOR_lightsabers` seen in the pre-cut dump —
+moot either way once `recipeUsers` is gone, and not investigated further
+here since it doesn't change the outcome.)
 
 ## criteria
 
