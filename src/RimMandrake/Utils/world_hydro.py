@@ -283,7 +283,7 @@ def systems(flow, g, recv, water, playa, lake, elev, nb):
     return out
 
 
-def audit(flow, g, recv, water, playa, lake, nb):
+def audit(flow, g, recv, water, playa, lake, nb, filled):
     """The sanity pass. It is the point of the whole rebuild that this runs BEFORE
     anyone looks at the planet."""
     bad_trunks = []
@@ -292,7 +292,12 @@ def audit(flow, g, recv, water, playa, lake, nb):
         ends_ok = j >= 0 and (water[j] or lake[j] or g[j] > 0 or playa[j])
         if not (ends_ok or playa[i] or lake[i]):
             bad_trunks.append(int(i))
-    uphill = 0
+    # 🔴 was a hardcoded 0, never computed - the print always claimed "0 (must be
+    # 0)" regardless of the real data. route()'s receiver choice already guards
+    # against picking an uphill neighbour, so this re-checks that invariant held
+    # rather than trusting it silently.
+    has_recv = np.flatnonzero(recv >= 0)
+    uphill = int((filled[recv[has_recv]] > filled[has_recv]).sum())
     print("rivers: creek %d  river %d  huge %d  (%d tiles carry water)"
           % ((g == 1).sum(), (g == 2).sum(), (g == 3).sum(), (g > 0).sum()))
     print("playas (a river's budget ran out on land): %d" % playa.sum())
@@ -372,7 +377,7 @@ def main():
                     lake[j] = True
     playa = playa & ~lake
     g = grade(flow, water)
-    bad = audit(flow, g, recv, water, playa, lake, nb)
+    bad = audit(flow, g, recv, water, playa, lake, nb, filled)
 
     sysroll = systems(flow, g, recv, water, playa, lake, elev, nb)
     majors = [x for x in sysroll if x[2] == "ocean" and x[0] >= RIVER]
