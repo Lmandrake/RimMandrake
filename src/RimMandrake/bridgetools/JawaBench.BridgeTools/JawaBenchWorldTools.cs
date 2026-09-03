@@ -2100,7 +2100,7 @@ namespace JawaBench.BridgeTools
                 var onWater = new List<object>(); var onImpass = new List<object>();
                 var stacked = new List<object>();
                 var perTile = new Dictionary<int, int>();
-                int nullFacN = 0, badTileN = 0, waterN = 0, impassN = 0;
+                int nullFacN = 0, badTileN = 0, waterN = 0, impassN = 0, stackedN = 0;
 
                 foreach (var o in Find.WorldObjects.AllWorldObjects)
                 {
@@ -2134,9 +2134,16 @@ namespace JawaBench.BridgeTools
                     }
                 }
 
+                // 🔴 `stacked` is capped at `limit` for the examples list; the COUNT must
+                // not be, or a planet with 200 stacked tiles reads as exactly `limit` of
+                // them - the same saturated-instrument bug already fixed for asymmetric/
+                // nonAdjacent/hiddenByBiome in jawa/world_links_validate.
                 foreach (var kv in perTile)
-                    if (kv.Value > 1 && stacked.Count < limit)
-                        stacked.Add(new { tile = kv.Key, settlements = kv.Value });
+                    if (kv.Value > 1)
+                    {
+                        stackedN++;
+                        if (stacked.Count < limit) stacked.Add(new { tile = kv.Key, settlements = kv.Value });
+                    }
 
                 return (object)new
                 {
@@ -2148,7 +2155,7 @@ namespace JawaBench.BridgeTools
                     badTileCount = badTileN,
                     settlementsOnWater = waterN,
                     settlementsOnImpassable = impassN,
-                    stackedTiles = stacked.Count,
+                    stackedTiles = stackedN,
                     nullFaction = nullFac, badTile = badTile,
                     onWater = onWater, onImpassable = onImpass, stacked,
                     ticksGame = TicksGameSafe(),
@@ -2450,13 +2457,23 @@ namespace JawaBench.BridgeTools
                     changed.Add(p == pollution.Value ? "pollution" : "pollution (clamped " + pollution.Value + " -> " + p + ")");
                 }
 
+                // 🔴 Same shape as the fix on jawa/faction_relations_set: Enum.Parse ALSO
+                // accepts a bare number and returns a value the enum never declared -
+                // "99" parses as (OverallPopulation)99. Enum.TryParse alone would have
+                // let that through and reported success off a read-back that just
+                // echoes the same undefined value back. Not scribed, so it cannot
+                // corrupt a save, but it is still live game state other code reads
+                // this session (population/storyteller scaling) - refuse it instead.
                 if (overallPopulation != null)
                 {
                     if (!allowNonPersistent) refused.Add("overallPopulation (not scribed - pass allowNonPersistent=true)");
                     else
                     {
-                        try { w.overallPopulation = (OverallPopulation)Enum.Parse(typeof(OverallPopulation), overallPopulation, true); changed.Add("overallPopulation [NOT PERSISTED]"); }
-                        catch { refused.Add("overallPopulation: '" + overallPopulation + "' is not an OverallPopulation value"); }
+                        OverallPopulation parsedPop;
+                        if (Enum.TryParse(overallPopulation.Trim(), true, out parsedPop)
+                            && Enum.IsDefined(typeof(OverallPopulation), parsedPop))
+                        { w.overallPopulation = parsedPop; changed.Add("overallPopulation [NOT PERSISTED]"); }
+                        else refused.Add("overallPopulation: '" + overallPopulation + "' is not an OverallPopulation value");
                     }
                 }
                 if (landmarkDensity != null)
@@ -2464,8 +2481,11 @@ namespace JawaBench.BridgeTools
                     if (!allowNonPersistent) refused.Add("landmarkDensity (not scribed - pass allowNonPersistent=true)");
                     else
                     {
-                        try { w.landmarkDensity = (LandmarkDensity)Enum.Parse(typeof(LandmarkDensity), landmarkDensity, true); changed.Add("landmarkDensity [NOT PERSISTED]"); }
-                        catch { refused.Add("landmarkDensity: '" + landmarkDensity + "' is not a LandmarkDensity value"); }
+                        LandmarkDensity parsedDen;
+                        if (Enum.TryParse(landmarkDensity.Trim(), true, out parsedDen)
+                            && Enum.IsDefined(typeof(LandmarkDensity), parsedDen))
+                        { w.landmarkDensity = parsedDen; changed.Add("landmarkDensity [NOT PERSISTED]"); }
+                        else refused.Add("landmarkDensity: '" + landmarkDensity + "' is not a LandmarkDensity value");
                     }
                 }
 
@@ -2664,7 +2684,7 @@ namespace JawaBench.BridgeTools
                 // Settlements
                 var settOnWater = new List<object>(); var settImpass = new List<object>();
                 var settNoRoad = new List<object>(); var stacked = new List<object>();
-                int sW = 0, sI = 0, sNR = 0;
+                int sW = 0, sI = 0, sNR = 0, sStack = 0;
                 var perTile = new Dictionary<int, int>();
                 if (Find.WorldObjects != null)
                     foreach (var st in Find.WorldObjects.Settlements)
@@ -2681,9 +2701,18 @@ namespace JawaBench.BridgeTools
                         bool road = t.potentialRoads != null && t.potentialRoads.Count > 0;
                         if (!road) { sNR++; if (settNoRoad.Count < limit) settNoRoad.Add(new { tile = tid, name = st.Name, faction = st.Faction != null ? st.Faction.def.defName : null }); }
                     }
-                foreach (var kv in perTile) if (kv.Value > 1 && stacked.Count < limit) stacked.Add(new { tile = kv.Key, settlements = kv.Value });
+                // 🔴 `stacked` is capped at `limit` for the examples list; the COUNT must
+                // not be, or a planet with 200 stacked tiles reads as exactly `limit` of
+                // them - the same saturated-instrument bug already fixed for asymmetric/
+                // nonAdjacent/hiddenByBiome in jawa/world_links_validate.
+                foreach (var kv in perTile)
+                    if (kv.Value > 1)
+                    {
+                        sStack++;
+                        if (stacked.Count < limit) stacked.Add(new { tile = kv.Key, settlements = kv.Value });
+                    }
 
-                int totalFindings = staleMarineN + wbolN + lbsN + islandN + lushN + trunkSystemsNoSea + sW + sI + sNR + stacked.Count;
+                int totalFindings = staleMarineN + wbolN + lbsN + islandN + lushN + trunkSystemsNoSea + sW + sI + sNR + sStack;
 
                 return (object)new
                 {
@@ -2711,7 +2740,7 @@ namespace JawaBench.BridgeTools
                         settlementsOnWater = new { count = sW, examples = settOnWater },
                         settlementsOnImpassable = new { count = sI, examples = settImpass },
                         settlementsWithNoRoad = new { count = sNR, examples = settNoRoad },
-                        stackedSettlements = new { count = stacked.Count, examples = stacked },
+                        stackedSettlements = new { count = sStack, examples = stacked },
                         lushBiomesOffRiver = new { count = lushN, checked_ = lush.ToList(), note = "Nile-style ruling: a 1-2 tile lush band follows EVERY river. Lush terrain away from one is the defect.", examples = lushOffRiver },
                     },
                     ticksGame = TicksGameSafe(),
