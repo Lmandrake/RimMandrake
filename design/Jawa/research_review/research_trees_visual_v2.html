@@ -1,0 +1,734 @@
+<title>Thirteen Trees</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Oswald:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+:root{
+  --sand:#f2ecdf; --panel:#fbf8f1; --line:#e2d8c4; --line2:#efe8d8;
+  --ink:#1e1a12; --ink2:#5c5341; --ink3:#8a7d63;
+  --amber:#b97d2e; --rust:#a8503f; --keep:#3f7d54; --reflavor:#3f6f9c; --merge:#a07a2a; --gold:#8a7020;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --sand:#14110b; --panel:#1c1810; --line:#33291a; --line2:#241d12;
+  --ink:#ece3d1; --ink2:#b3a688; --ink3:#7d7159;
+  --amber:#d69a44; --rust:#d17762; --keep:#5cae76; --reflavor:#6a9bd6; --merge:#d1a24a; --gold:#c7a94a;
+}}
+:root[data-theme="dark"]{
+  --sand:#14110b; --panel:#1c1810; --line:#33291a; --line2:#241d12;
+  --ink:#ece3d1; --ink2:#b3a688; --ink3:#7d7159;
+  --amber:#d69a44; --rust:#d17762; --keep:#5cae76; --reflavor:#6a9bd6; --merge:#d1a24a; --gold:#c7a94a;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--sand);color:var(--ink);
+  font-family:"IBM Plex Sans",system-ui,sans-serif;font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1380px;margin:0 auto;padding:34px 22px 80px}
+.eyebrow{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);font-weight:500}
+h1{font-family:"Oswald",sans-serif;font-weight:600;font-size:clamp(30px,5vw,46px);letter-spacing:.01em;margin:.28em 0 .1em;text-wrap:balance;line-height:1.02}
+.lede{color:var(--ink2);max-width:70ch;margin:.4em 0 0;font-size:16px}
+.stats{display:flex;flex-wrap:wrap;gap:26px;margin:26px 0 6px;font-family:"IBM Plex Mono",monospace}
+.stat b{font-family:"Oswald",sans-serif;font-size:30px;font-weight:600;display:block;line-height:1;font-variant-numeric:tabular-nums}
+.stat span{font-size:11px;letter-spacing:.09em;text-transform:uppercase;color:var(--ink3)}
+.stat .r{color:var(--rust)} .stat .g{color:var(--keep)} .stat .a{color:var(--amber)}
+.principle{border-left:3px solid var(--amber);padding:6px 0 6px 16px;margin:26px 0 8px;color:var(--ink);max-width:78ch}
+h2{font-family:"Oswald",sans-serif;font-weight:500;font-size:24px;letter-spacing:.02em;margin:44px 0 4px}
+.sub{color:var(--ink3);font-size:13px;margin:0 0 16px;max-width:90ch}
+.scroll{overflow-x:auto;padding-bottom:8px}
+.matrix{display:grid;grid-template-columns:64px repeat(13,minmax(128px,1fr));gap:1px;background:var(--line);border:1px solid var(--line);min-width:1860px}
+.mh{background:var(--panel);padding:8px 9px 9px}
+.mh .tn{font-family:"Oswald",sans-serif;font-weight:600;font-size:13.5px;letter-spacing:.02em;display:flex;align-items:center;gap:6px;line-height:1.15}
+.mh .dot{width:8px;height:8px;border-radius:2px;flex:none}
+.mh .th{font-size:10px;color:var(--ink3);margin-top:3px;line-height:1.3}
+.mh .ct{font-family:"IBM Plex Mono",monospace;font-size:10px;color:var(--ink2);margin-top:4px;font-variant-numeric:tabular-nums}
+.corner{background:var(--panel)}
+.trow{background:var(--panel);padding:8px 8px;display:flex;flex-direction:column;gap:1px}
+.trow .tt{font-family:"Oswald",sans-serif;font-weight:600;font-size:14px}
+.trow .tc{font-family:"IBM Plex Mono",monospace;font-size:9.5px;color:var(--ink3)}
+.cell{background:var(--panel);padding:6px 6px;display:flex;flex-wrap:wrap;gap:3px;align-content:flex-start}
+.chip{font-family:"IBM Plex Mono",monospace;font-size:10px;line-height:1.3;padding:2px 5px;border-radius:3px;background:var(--line2);color:var(--ink2);border:1px solid transparent;white-space:normal;max-width:100%}
+.chip.keep{border-color:var(--keep);color:var(--ink)}
+.chip.reflavor{border-color:var(--reflavor);color:var(--ink)}
+.chip.recost{border-color:var(--amber);color:var(--ink)}
+.chip.proposed{border:1px dashed var(--gold);color:var(--ink);background:transparent}
+.legend{display:flex;flex-wrap:wrap;gap:16px;margin:14px 0 0;font-size:12px;color:var(--ink2);font-family:"IBM Plex Mono",monospace}
+.legend .k{display:inline-flex;align-items:center;gap:6px}
+.legend .b{width:20px;height:12px;border-radius:3px;border:1px solid;background:var(--line2)}
+.cuts{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;margin-top:18px}
+.cutcard{background:var(--panel);border:1px solid var(--line);border-radius:7px;padding:15px 16px}
+.cutcard.flag{border-left:3px solid var(--rust)}
+.cutcard h3{font-family:"Oswald",sans-serif;font-weight:600;font-size:17px;margin:0;display:flex;justify-content:space-between;align-items:baseline;gap:10px}
+.cutcard h3 .n{font-family:"IBM Plex Mono",monospace;color:var(--rust);font-size:20px;font-variant-numeric:tabular-nums}
+.cutcard .src{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink3);margin:3px 0 8px}
+.cutcard p{margin:0 0 9px;font-size:13.5px;color:var(--ink);line-height:1.5}
+.recover{font-size:12.5px;color:var(--keep);margin:0 0 9px;padding-left:10px;border-left:2px solid var(--keep)}
+.cutlist{list-style:none;margin:0;padding:8px 0 0;border-top:1px dashed var(--line);font-size:12.5px;line-height:1.55}
+.cutlist li{margin:0 0 4px;break-inside:avoid}
+.cutlist b{font-weight:600;color:var(--ink)}
+.cutlist .dn{font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--ink3)}
+.cutcard.wide{grid-column:1/-1}
+.cutcard.wide .cutlist{columns:3;column-gap:26px}
+@media(max-width:900px){.cutcard.wide .cutlist{columns:2}}
+@media(max-width:600px){.cutcard.wide .cutlist{columns:1}}
+table.rc{border-collapse:collapse;font-size:12.5px;margin-top:14px;min-width:640px}
+table.rc th{font-family:"Oswald",sans-serif;font-weight:600;text-align:left;padding:6px 14px 6px 0;border-bottom:1px solid var(--line);font-size:13px}
+table.rc td{padding:5px 14px 5px 0;border-bottom:1px solid var(--line2);vertical-align:top}
+table.rc .mono{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink2)}
+table.rc .up{color:var(--rust)} table.rc .down{color:var(--keep)}
+.panel{background:var(--panel);border:1px solid var(--line);border-radius:7px;padding:18px 20px;margin-top:14px;max-width:96ch}
+.panel h3{font-family:"Oswald",sans-serif;font-weight:600;font-size:16px;margin:0 0 6px}
+.panel p{margin:0 0 10px;font-size:14px}
+.opt{border-left:3px solid var(--line);padding:2px 0 2px 14px;margin:0 0 12px}
+.opt.rec{border-left-color:var(--keep)}
+.opt b{font-weight:600}
+.opt .tag{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--keep)}
+.tos{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:14px;margin-top:18px}
+.to{background:var(--panel);border:1px solid var(--line);border-radius:7px;padding:14px 16px}
+.to h3{font-family:"Oswald",sans-serif;font-weight:600;font-size:15px;margin:0 0 6px}
+.to p{margin:0 0 8px;font-size:13px;color:var(--ink2)}
+.to .rec{font-size:12px;font-family:"IBM Plex Mono",monospace;color:var(--keep)}
+.foot{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);color:var(--ink3);font-size:12.5px;font-family:"IBM Plex Mono",monospace;line-height:1.7}
+a{color:var(--amber)}
+.vquote{font-style:italic;color:var(--ink2)}
+</style>
+<div class="wrap">
+<div class="eyebrow">Research normalization · vision pass v2 · PROPOSAL — nothing here is ruled</div>
+<h1>Thirteen trees</h1>
+<p class="lede">The six trees, re-split along the clan’s own taxonomy: weapons by the <b>physics of how they kill</b>, droids along the <b>Ohm/Oomo fault</b>, the ship re-armed as the exotic payoff, the trap slimmed to what actually tempts — and one new tree for the liturgy. Tier is now <b>derived from the ruled cost band</b>, so every felt-tier disagreement became an explicit re-cost you can veto row by row.</p>
+<div class="stats">
+<div class="stat"><b>522</b><span>live projects</span></div>
+<div class="stat"><b class="g">402</b><span>kept, in the trees</span></div>
+<div class="stat"><b class="r">84+30</b><span>cut (v1 + this pass)</span></div>
+<div class="stat"><b>6</b><span>merged</span></div>
+<div class="stat"><b class="a">28</b><span>re-costs proposed</span></div>
+<div class="stat"><b>13</b><span>trees</span></div>
+</div>
+<div class="principle">v1 fixed <b>tab follows content</b>. v2 adds the other half: <b>tier follows cost, and cost is a design decision.</b> Where a row’s price put it in a tier that reads wrong — ship systems at 100 points, ultra capstones at 500 — the fix is an explicit re-cost (amber border, ▲▼ in the table below), never a silent re-label.</div>
+<h2>The thirteen trees</h2>
+<p class="sub">Columns left→right are the ambition gradient; rows are the cost-band tiers. Hover a chip for its source mod and any re-cost. Dashed gold chips are PROPOSED new projects that do not exist yet.</p>
+<div class="scroll"><div class="matrix">
+<div class="mh corner"></div>
+<div class="mh"><div class="tn"><span class="dot" style="background:#c2a06a"></span>Scavenger</div><div class="th">the pride-free floor — fire, water, food, hide, door, trap</div><div class="ct">44 projects</div></div>
+<div class="mh"><div class="tn"><span class="dot" style="background:#b98a4e"></span>The Hearth</div><div class="th">comfort &amp; culture — cooking, brew, furniture, art, music, cloth</div><div class="ct">49 projects</div></div>
+<div class="mh"><div class="tn"><span class="dot" style="background:#a8764e"></span>The Refinery</div><div class="th">what sand and wreck become — fuels, chems, drugs, ores, synthetics</div><div class="ct">52 projects</div></div>
+<div class="mh"><div class="tn"><span class="dot" style="background:#bd6f4e"></span>The Workshop</div><div class="th">making &amp; mending — smithing, machining, electronics, vehicles, power</div><div class="ct">54 projects</div></div>
+<div class="mh"><div class="tn"><span class="dot" style="background:#8a8a6a"></span>Powder &amp; Slug</div><div class="th">kills by MASS — guns, cannon, mortars, blades, the Watch</div><div class="ct">36 projects</div></div>
+<div class="mh"><div class="tn"><span class="dot" style="background:#c25a4a"></span>Blasterworks</div><div class="th">kills by HEAT — the blaster spine, plasma, beam, tibanna</div><div class="ct">16 projects</div></div>
+<div class="mh"><div class="tn"><span class="dot" style="background:#9c6b8a"></span>The Strange Schools</div><div class="th">kills by STRANGER physics — ion, sonic, vibro, relics, saber</div><div class="ct">11 projects</div></div>
+<div class="mh"><div class="tn"><span class="dot" style="background:#7089a0"></span>The Shell</div><div class="th">not dying — armors, shields, warcaskets, the maker doctrines</div><div class="ct">39 projects</div></div>
+<div class="mh"><div class="tn"><span class="dot" style="background:#6f9083"></span>Droidsmith</div><div class="th">Ohm&#x27;s hands — labor droids, parts, mechtech, drones</div><div class="ct">29 projects</div></div>
+<div class="mh"><div class="tn"><span class="dot" style="background:#5f8a74"></span>The Waking Mind</div><div class="th">the flashpoint — war droids, the AI ladder, positronic minds</div><div class="ct">27 projects</div></div>
+<div class="mh"><div class="tn"><span class="dot" style="background:#4a7d86"></span>THE SHIP</div><div class="th">the Utinni herself — gravtech, her systems, her guns, her memory</div><div class="ct">29 projects</div></div>
+<div class="mh"><div class="tn"><span class="dot" style="background:#8a6b9c"></span>The Reach</div><div class="th">the trap — flesh, genes, bionics, archotech, priced brutally</div><div class="ct">16 projects</div></div>
+<div class="mh"><div class="tn"><span class="dot" style="background:#a08a3a"></span>The Rites</div><div class="th">NEW — the liturgy: researching how to speak to the gods</div><div class="ct">5 proposed</div></div>
+<div class="trow"><div class="tt">T0</div><div class="tc">≤600</div></div>
+<div class="cell">
+<span class="chip" title="Vanilla Factions Expanded - Tribals">agriculture</span>
+<span class="chip" title="Core">air conditioning</span>
+<span class="chip" title="Vanilla Factions Expanded - Tribals">animal handling</span>
+<span class="chip" title="Core">autodoor</span>
+<span class="chip" title="ReGrowth 2">berry cultivation</span>
+<span class="chip" title="Vanilla Factions Expanded - Tribals">bow</span>
+<span class="chip" title="Vanilla Factions Expanded - Tribals">construction</span>
+<span class="chip" title="Research Reinvented: Stepping Stones">crafting facilities</span>
+<span class="chip" title="Vanilla Factions Expanded - Tribals">cultivation</span>
+<span class="chip" title="Vanilla Factions Expanded - Tribals">fire</span>
+<span class="chip" title="Core">firefoam</span>
+<span class="chip" title="Odyssey">fishing</span>
+<span class="chip" title="Research Reinvented: Stepping Stones">food preparation</span>
+<span class="chip" title="Core">greatbow</span>
+<span class="chip" title="Research Reinvented: Stepping Stones">heating elements</span>
+<span class="chip" title="Doors Expanded">hinges and gates</span>
+<span class="chip" title="Vanilla Factions Expanded - Tribals">hunting</span>
+<span class="chip" title="Better Kibble">Kibble Dispenser</span>
+<span class="chip" title="Research Reinvented: Stepping Stones">lateral thinking</span>
+<span class="chip" title="Vanilla Factions Expanded - Tribals">medicine</span>
+<span class="chip" title="Vanilla Factions Expanded - Tribals">mining</span>
+<span class="chip" title="ReGrowth 2">mushroom cultivation</span>
+<span class="chip" title="Research Reinvented: Stepping Stones">organization</span>
+<span class="chip" title="Core">passive cooler</span>
+<span class="chip" title="Core">pemmican</span>
+<span class="chip" title="Roots of Rimworld">primitive lighting</span>
+<span class="chip" title="Roots of Rimworld">primitive rugs</span>
+<span class="chip" title="Roots of Rimworld">primitive storage vessels</span>
+<span class="chip" title="Doors Expanded Star Wars edition">prisoner containment</span>
+<span class="chip" title="Core">recurve bow</span>
+<span class="chip" title="Research Reinvented: Stepping Stones">simple apparel</span>
+<span class="chip" title="Doors Expanded">simple curtains</span>
+<span class="chip" title="Hunting Traps">Small trap</span>
+<span class="chip" title="Vanilla Factions Expanded - Tribals">tribalwear</span>
+<span class="chip" title="Vanilla Factions Expanded - Tribals">weapons</span>
+</div>
+<div class="cell">
+<span class="chip" title="Vanilla Furniture Expanded">basic furniture</span>
+<span class="chip" title="Core">beer brewing</span>
+<span class="chip" title="Vanilla Cooking Expanded">canning</span>
+<span class="chip" title="Vanilla Furniture Expanded - Art">carvings</span>
+<span class="chip" title="Vanilla Apparel Expanded">casual wear</span>
+<span class="chip" title="Core">complex clothing</span>
+<span class="chip" title="Core">complex furniture</span>
+<span class="chip" title="Vanilla Factions Expanded - Tribals">culture</span>
+<span class="chip" title="Vanilla Cooking Expanded">deep frying</span>
+<span class="chip" title="Vanilla Cooking Expanded">food condiments</span>
+<span class="chip" title="Vanilla Apparel Expanded">formal wear</span>
+<span class="chip" title="Vanilla Factions Expanded - Tribals">furniture</span>
+<span class="chip" title="Vanilla Cooking Expanded">grilling</span>
+<span class="chip" title="Jewelry">Jewelry</span>
+<span class="chip" title="Dubs Bad Hygiene Lite">modern bathroom fixtures</span>
+<span class="chip" title="Core">nutrient paste</span>
+<span class="chip" title="Vanilla Furniture Expanded - Art">obelisks</span>
+<span class="chip" title="Vanilla Furniture Expanded - Art">pottery</span>
+<span class="chip" title="Roots of Rimworld">primitive furniture</span>
+<span class="chip" title="Dubs Bad Hygiene Lite">saunas</span>
+<span class="chip" title="Core">semiconductor lights</span>
+<span class="chip" title="Vanilla Cooking Expanded">soup cooking</span>
+<span class="chip" title="Vanilla Cooking Expanded - Stews">stew cooking</span>
+<span class="chip" title="Core">survival meals</span>
+</div>
+<div class="cell">
+<span class="chip" title="Fortifications - Industrial">chemistry</span>
+<span class="chip" title="Core">drug production</span>
+<span class="chip" title="Rimefeller">Napalm</span>
+<span class="chip" title="Biomes! Fossils">paleontology</span>
+<span class="chip" title="Core">penoxycyline</span>
+<span class="chip" title="Core">psychite refining</span>
+<span class="chip" title="Core">psychoid brewing</span>
+<span class="chip" title="Core">sterile materials</span>
+<span class="chip" title="Biotech">tox gas</span>
+<span class="chip" title="Biotech">toxifier generator</span>
+<span class="chip" title="Core">wake-up production</span>
+</div>
+<div class="cell">
+<span class="chip" title="Core">battery</span>
+<span class="chip" title="Core">circuitry</span>
+<span class="chip" title="Fortifications - Industrial">concrete</span>
+<span class="chip" title="Research Reinvented: Stepping Stones">dynamos</span>
+<span class="chip" title="Research Reinvented: Stepping Stones">electricity</span>
+<span class="chip" title="Vanilla Furniture Expanded - Farming">farming techniques</span>
+<span class="chip" title="Fortifications - Industrial">industrial lathe</span>
+<span class="chip" title="Core">solar panel</span>
+<span class="chip" title="Vanilla Furniture Expanded - Farming">sprinklers</span>
+<span class="chip" title="Core">stonecutting</span>
+</div>
+<div class="cell">
+<span class="chip" title="MiningCo. Alert speaker (Continued)">alert speaker</span>
+<span class="chip" title="[1.6] CAI 5000 - Advanced AI + Fog Of War (continued)">Animal Warning System</span>
+<span class="chip" title="[1.6] CAI 5000 - Advanced AI + Fog Of War (continued)">Automated Camera System</span>
+<span class="chip" title="Core">blowback operation</span>
+<span class="chip" title="Core">gun turrets</span>
+<span class="chip" title="Core">gunsmithing</span>
+<span class="chip" title="Core">IEDs</span>
+<span class="chip" title="Core">long blades</span>
+<span class="chip" title="(NWN) Real Fog of War (Continued)">watch telescope</span>
+</div>
+<div class="cell">
+<span class="chip" title="Research Reinvented: Stepping Stones">incendiary weapons</span>
+</div>
+<div class="cell">
+<span class="chip keep" title="Jawa Ion Weapons (local) · keep (ruled)">Jawa ion weaponry</span>
+</div>
+<div class="cell">
+<span class="chip" title="Core">plate armor</span>
+<span class="chip" title="Core">smokepop packs</span>
+</div>
+<div class="cell">
+<span class="chip" title="Biotech">basic mechtech</span>
+<span class="chip" title="Star Wars KotOR Resources and Materials">droid shields</span>
+<span class="chip" title="Alpha Mechs">light alpha mechs</span>
+<span class="chip" title="Alpha Mechs">standard alpha mechs</span>
+</div>
+<div class="cell">
+</div>
+<div class="cell">
+<span class="chip" title="Odyssey">basic gravtech</span>
+<span class="chip" title="Odyssey">orbital tech</span>
+</div>
+<div class="cell">
+<span class="chip" title="Biotech">growth vats</span>
+<span class="chip" title="Core">prosthetics</span>
+</div>
+<div class="cell">
+<span class="chip proposed" title="PROPOSED — RUT_Rites_ScrapShrine · cost 400">The Scrap Shrine</span>
+</div>
+<div class="trow"><div class="tt">T1</div><div class="tc">600–1600</div></div>
+<div class="cell">
+<span class="chip" title="Jawa Armoury Rebalance">Atmospheric Moisture Collection</span>
+<span class="chip" title="Vanilla Factions Expanded - Insectoids 2">basic hivetech</span>
+<span class="chip" title="Biomes! Caverns">mushroom mastery</span>
+<span class="chip" title="Doors Expanded">remote doors</span>
+<span class="chip" title="Biomes! Caverns">specialized fungi</span>
+<span class="chip" title="Vanilla Factions Expanded - Insectoids 2">standard hivetech</span>
+<span class="chip" title="Doors Expanded Star Wars edition">Star Wars Doors</span>
+<span class="chip" title="Vanilla Plants Expanded - Succulents">succulent sowing</span>
+</div>
+<div class="cell">
+<span class="chip" title="Vanilla Furniture Expanded - Art">artful display</span>
+<span class="chip" title="Vanilla Furniture Expanded">artisan furniture</span>
+<span class="chip" title="Core">carpet-making</span>
+<span class="chip" title="Vanilla Cooking Expanded">cheese making</span>
+<span class="chip" title="Core">cocoa</span>
+<span class="chip" title="Core">devilstrand</span>
+<span class="chip" title="Jawa Armoury Rebalance">Holographic Recreation</span>
+<span class="chip" title="Jawa Armoury Rebalance">Jizz Instruments</span>
+<span class="chip" title="Vanilla Brewing Expanded">liquor brewing</span>
+<span class="chip" title="Vanilla Apparel Expanded">military clothing</span>
+<span class="chip" title="Vanilla Brewing Expanded">mixology</span>
+<span class="chip" title="Vanilla Furniture Expanded">modern furniture</span>
+<span class="chip" title="Jawa Armoury Rebalance">Pazaak</span>
+<span class="chip" title="Dubs Bad Hygiene Lite">power showers</span>
+<span class="chip" title="Vanilla Furniture Expanded - Art">rugs</span>
+<span class="chip" title="Dubs Bad Hygiene Lite">smart toilets</span>
+<span class="chip" title="Vanilla Furniture Expanded - Spacer Module">spacer furniture</span>
+<span class="chip" title="Vanilla Furniture Expanded - Art">statues</span>
+<span class="chip" title="Core">tree sowing</span>
+<span class="chip" title="Vanilla Furniture Expanded - Art">wallpapers</span>
+<span class="chip" title="Vanilla Furniture Expanded">waste disposal</span>
+<span class="chip" title="Vanilla Apparel Expanded">work attire</span>
+</div>
+<div class="cell">
+<span class="chip" title="Rim of Madness - Bones Unofficial Fix">advanced bone refining</span>
+<span class="chip" title="Rimefeller">Artificial Flooring</span>
+<span class="chip" title="Core">biofuel refining</span>
+<span class="chip" title="Rim of Madness - Bones Unofficial Fix">bone refining</span>
+<span class="chip" title="Rimefeller">Chemfuel Refining</span>
+<span class="chip" title="Biomes! Caverns">crystallization</span>
+<span class="chip" title="Core">deep drilling</span>
+<span class="chip" title="Jawa Armoury Rebalance">Durasteel production</span>
+<span class="chip" title="Core">go-juice production</span>
+<span class="chip" title="Core">ground-penetrating scanner</span>
+<span class="chip" title="Jawa Armoury Rebalance">Kolto Applications</span>
+<span class="chip" title="Core">medicine production</span>
+<span class="chip" title="Mines 2.0">minecraft</span>
+<span class="chip" title="MiningCo. MMS (Continued)">mobile mineral sonar</span>
+<span class="chip" title="MiningCo. MMS (Continued)">mobile mineral sonar: enhanced scan</span>
+<span class="chip" title="Custom Gas Types">mustard gas production</span>
+<span class="chip" title="Custom Gas Types">nitrous oxide production</span>
+<span class="chip" title="Rimefeller">Synthylene</span>
+<span class="chip" title="Custom Gas Types">tear gas production</span>
+</div>
+<div class="cell">
+<span class="chip" title="Vanilla Vehicles Expanded">aerial vehicles</span>
+<span class="chip" title="Core">basic electronics</span>
+<span class="chip recost" title="Jawa Armoury Rebalance · re-cost 8000→1600: &#x27;basic upgrading&#x27; at 8000 vs &#x27;expert&#x27; at 6000 is inverted; basic opens the bench">basic upgrading</span>
+<span class="chip" title="Vanilla Vehicles Expanded">basic vehicles</span>
+<span class="chip" title="Tinkering Bench and Biohacking Station">Biocode Hacking</span>
+<span class="chip" title="Vanilla Vehicles Expanded">combat vehicles</span>
+<span class="chip" title="Vanilla Vehicles Expanded">complex vehicles</span>
+<span class="chip" title="Fortifications - Industrial">ENIAC</span>
+<span class="chip" title="Odyssey">heavy bridges</span>
+<span class="chip" title="Core">hospital bed</span>
+<span class="chip" title="Core">hydroponics</span>
+<span class="chip" title="Jewelry">Laser Sculpting Table</span>
+<span class="chip" title="Core">machining</span>
+<span class="chip" title="Core">moisture pump</span>
+<span class="chip" title="Ancient urban ruins">Recycling assembly</span>
+<span class="chip" title="Core">renewable energy</span>
+<span class="chip" title="Core">smithing</span>
+<span class="chip" title="[MUS]太空基地家具Space Base Furniture">SpaceBase Furniture</span>
+<span class="chip" title="Tinkering Bench and Biohacking Station">Tinkering</span>
+<span class="chip" title="Core">transport pod</span>
+</div>
+<div class="cell">
+<span class="chip" title="(NWN) Real Fog of War (Continued)">Advanced camera lens</span>
+<span class="chip" title="Jawa Armoury Rebalance">Advanced Munitions</span>
+<span class="chip" title="Core">autocannon turret</span>
+<span class="chip" title="Vanilla Furniture Expanded - Security">concealed defenses</span>
+<span class="chip" title="Utility Columns">defence columns</span>
+<span class="chip" title="Core">foam turret</span>
+<span class="chip" title="Core">gas operation</span>
+<span class="chip" title="Fortifications - Industrial">industrial cannons</span>
+<span class="chip" title="Core">precision rifling</span>
+<span class="chip" title="(NWN) Real Fog of War (Continued)">Security camera</span>
+<span class="chip" title="Vanilla Furniture Expanded - Security">siege equipment</span>
+<span class="chip" title="Vanilla Weapons Expanded">trench warfare</span>
+<span class="chip" title="Custom Gas Types">weaponized gas IEDs</span>
+<span class="chip" title="Custom Gas Types">weaponized gas shells</span>
+</div>
+<div class="cell">
+<span class="chip keep" title="Jawa Armoury Rebalance · keep (ruled)">compact blaster weaponry</span>
+<span class="chip keep" title="Jawa Armoury Rebalance · keep (ruled)">heavy blaster weaponry</span>
+<span class="chip" title="Outer Rim - Core">Light Installations</span>
+<span class="chip keep" title="Jawa Armoury Rebalance · keep (ruled)">Plasma Applications</span>
+</div>
+<div class="cell">
+<span class="chip" title="Vanilla Furniture Expanded - Security">electromagnetic pulse</span>
+<span class="chip" title="Research Reinvented: Stepping Stones">EMP weapons</span>
+</div>
+<div class="cell">
+<span class="chip" title="Core">flak armor</span>
+<span class="chip" title="Jawa Armoury Rebalance">Jawa equipment</span>
+<span class="chip" title="Core">shields</span>
+<span class="chip" title="Jawa Armoury Rebalance">Tusken Raider equipment</span>
+</div>
+<div class="cell">
+<span class="chip" title="Alpha Mechs">heavy alpha mechs</span>
+<span class="chip" title="Odyssey">hunter drone</span>
+<span class="chip" title="ABF: Synstructs Core">interchangeable parts</span>
+<span class="chip" title="Biotech">standard mechtech</span>
+<span class="chip" title="ABF: Synstructs Core">synstruct infrastructure</span>
+<span class="chip" title="ABF: Synstructs Core">synstruct stimulators</span>
+</div>
+<div class="cell">
+<span class="chip" title="ABF: Synstructs Core">core assistants</span>
+<span class="chip" title="Jawa Armoury Rebalance">droid-mounted weapons</span>
+<span class="chip" title="RimAI Core (BETA)">gravitational-wave communication</span>
+<span class="chip" title="ABF: Synstructs Core">ultra parts</span>
+</div>
+<div class="cell">
+<span class="chip" title="MiningCo. DrillTurret (Continued)">drill turret</span>
+<span class="chip" title="MiningCo. DrillTurret (Continued)">efficient drilling</span>
+<span class="chip" title="Odyssey">shuttle</span>
+</div>
+<div class="cell">
+<span class="chip" title="Ideology">biosculpting</span>
+<span class="chip" title="Biotech">fertility procedures</span>
+<span class="chip" title="Biotech">gene processor</span>
+<span class="chip" title="Ideology">neural supercharger</span>
+<span class="chip" title="Space Worms (Continued)">Xenobiology</span>
+<span class="chip" title="Biotech">xenogenetics</span>
+</div>
+<div class="cell">
+<span class="chip proposed" title="PROPOSED — RUT_Rites_ConduitChoir · cost 1200">Conduit Choir</span>
+</div>
+<div class="trow"><div class="tt">T2</div><div class="tc">1600–3000</div></div>
+<div class="cell">
+<span class="chip" title="Vanilla Factions Expanded - Insectoids 2">exotic hivetech</span>
+</div>
+<div class="cell">
+<span class="chip" title="Vanilla Furniture Expanded - Art">holograms</span>
+<span class="chip" title="Dubs Bad Hygiene Lite">hot tubs</span>
+<span class="chip" title="Vanilla Furniture Expanded - Art">monuments</span>
+</div>
+<div class="cell">
+<span class="chip" title="Rimefeller">Advanced Synthylene Components</span>
+<span class="chip" title="Rimefeller">Drill for oil</span>
+<span class="chip" title="Vanilla Helixien Gas Expanded">gas extraction</span>
+<span class="chip" title="Custom Gas Types">halothane production</span>
+<span class="chip" title="Ancient mining industry">industrial mining techniques</span>
+<span class="chip" title="Core">long-range scanners</span>
+<span class="chip" title="Tunneler Expanded">Mushroom Soil</span>
+<span class="chip" title="Jawa Armoury Rebalance">Reinforced Materials</span>
+<span class="chip" title="Jawa Armoury Rebalance">Spice Applications</span>
+<span class="chip" title="Rimefeller">Synthamide</span>
+<span class="chip" title="Rimefeller">Synthread</span>
+<span class="chip" title="Rimefeller">Synthylene Components</span>
+<span class="chip" title="Biotech">toxin filtration</span>
+</div>
+<div class="cell">
+<span class="chip" title="Vanilla Furniture Expanded - Power">advanced battery</span>
+<span class="chip" title="Vanilla Furniture Expanded - Power">advanced power sources</span>
+<span class="chip" title="Vanilla Furniture Expanded - Farming">artificial ecosystems</span>
+<span class="chip" title="Wrecked Machines">automated smelter restoration</span>
+<span class="chip" title="Core">complex electronics</span>
+<span class="chip" title="EGI Holograms and Projectors">holo-projection</span>
+<span class="chip" title="Vanilla Furniture Expanded - Power">industrial generators</span>
+<span class="chip" title="Core">microelectronics</span>
+<span class="chip" title="Vanilla Furniture Expanded - Spacer Module">spacer electronics</span>
+<span class="chip" title="Utility Columns">utility columns</span>
+<span class="chip" title="Utility Columns">utility wall pads</span>
+<span class="chip" title="Core">vitals monitor</span>
+</div>
+<div class="cell">
+<span class="chip" title="[1.6] CAI 5000 - Advanced AI + Fog Of War (continued)">Advanced Light Sensor</span>
+<span class="chip" title="Doors Expanded Star Wars edition">blast doors</span>
+<span class="chip" title="Dedicated Turrets">Dedicated Defence Systems</span>
+<span class="chip" title="Outer Rim - Core">explosives</span>
+<span class="chip" title="Fortifications - Industrial">heavy artillery</span>
+<span class="chip" title="Vanilla Weapons Expanded">heavy weapons</span>
+<span class="chip" title="Core">mortars</span>
+<span class="chip" title="Core">multibarrel weapons</span>
+<span class="chip keep" title="Vanilla Furniture Expanded - Security · keep (ruled)">railgun</span>
+<span class="chip" title="Core">rocketswarm launcher</span>
+<span class="chip keep" title="Core · keep (ruled)">uranium slug turret</span>
+</div>
+<div class="cell">
+<span class="chip keep" title="Jawa Armoury Rebalance · keep (ruled)">blaster weaponry</span>
+<span class="chip" title="Outer Rim - Core">Light Turrets</span>
+<span class="chip" title="Outer Rim - Core">Medium Installations</span>
+<span class="chip" title="Outer Rim - Core">Medium Turrets</span>
+<span class="chip" title="Core">pulse-charged munitions</span>
+</div>
+<div class="cell">
+<span class="chip keep" title="Jawa Armoury Rebalance · keep (ruled)">sonic weaponry</span>
+<span class="chip" title="Jawa Armoury Rebalance">vibration weaponry</span>
+</div>
+<div class="cell">
+<span class="chip" title="Outer Rim - Core">armoursmithing</span>
+<span class="chip" title="Jawa Armoury Rebalance">Czerka equipment</span>
+<span class="chip" title="Jawa Armoury Rebalance">Echani energy shielding</span>
+<span class="chip recost" title="Jawa Armoury Rebalance · re-cost 800→3000: Jedi apparel above mid-game">Jedi apparel</span>
+<span class="chip" title="Jawa Armoury Rebalance">Kajidic equipment</span>
+<span class="chip" title="Jawa Armoury Rebalance">light armors</span>
+<span class="chip" title="Jawa Armoury Rebalance">Republic equipment</span>
+<span class="chip" title="Vanilla Factions Expanded - Pirates">spacer warcasket weaponry</span>
+<span class="chip" title="Outer Rim - Core">stim belts</span>
+<span class="chip" title="Outer Rim - Core">tech belts</span>
+<span class="chip" title="Outer Rim - Core">vambraces</span>
+<span class="chip" title="Vanilla Factions Expanded - Pirates">warcasket weaponry</span>
+<span class="chip" title="Vanilla Factions Expanded - Pirates">warcaskets (salvaged shells only)</span>
+</div>
+<div class="cell">
+<span class="chip" title="Star Wars KotOR Resources and Materials">adv. labor droids</span>
+<span class="chip" title="Star Wars KotOR Resources and Materials">adv. utility droids</span>
+<span class="chip" title="Outer Rim - Droid Depot">Advanced Parts</span>
+<span class="chip" title="Outer Rim - Droid Depot">Advanced Systems</span>
+<span class="chip" title="Outer Rim - Droid Depot">Astromech Droids</span>
+<span class="chip" title="Star Wars KotOR Resources and Materials">droid armor plating</span>
+<span class="chip" title="Outer Rim - Droid Depot">Energy Systems</span>
+<span class="chip" title="Outer Rim - Droid Depot">Labor Droids</span>
+<span class="chip" title="Outer Rim - Droid Depot">Maintenance Droids</span>
+<span class="chip" title="More Utility Packs (Continued)">Mechanoid Utility Packs</span>
+<span class="chip" title="Outer Rim - Droid Depot">Medical Droids</span>
+<span class="chip" title="Outer Rim - Droid Depot">Overclocked Parts</span>
+<span class="chip" title="Outer Rim - Droid Depot">Power Droids</span>
+<span class="chip" title="Outer Rim - Droid Depot">Protocol Droids</span>
+<span class="chip" title="Outer Rim - Droid Depot">Replacement Parts</span>
+<span class="chip recost" title="Star Wars KotOR Resources and Materials · re-cost 7500→2500: &#x27;simple droids&#x27; at 7500 above &#x27;adv. droids&#x27; at 2500 is inverted">simple droids</span>
+</div>
+<div class="cell">
+<span class="chip" title="Star Wars KotOR Resources and Materials">adv. combat droids</span>
+<span class="chip" title="Outer Rim - Droid Depot">Assassin Droids</span>
+<span class="chip" title="Star Wars KotOR Resources and Materials">assassin droids</span>
+<span class="chip" title="Outer Rim - Droid Depot">Battle Droids</span>
+<span class="chip" title="Biotech">high mechtech</span>
+<span class="chip recost" title="RimAI Core (BETA) · re-cost 3000→2500: AI ladder spreads T2→T4 instead of stacking in T3">RimAI - Level 1 Artificial Intelligence</span>
+<span class="chip" title="Outer Rim - Droid Depot">Security Droids</span>
+<span class="chip" title="RimAI Core (BETA)">Subspace gravitic penetration</span>
+<span class="chip" title="Alpha Mechs">ultra-heavy alpha mechs</span>
+<span class="chip" title="Outer Rim - Droid Depot">Weapon Systems</span>
+</div>
+<div class="cell">
+<span class="chip" title="Core">machine persuasion</span>
+<span class="chip" title="Core">vacuum cryptosleep casket</span>
+</div>
+<div class="cell">
+<span class="chip" title="Jawa Armoury Rebalance">Adv. Physiology</span>
+<span class="chip" title="Biotech">archogenetics</span>
+<span class="chip" title="Core">bionic replacements</span>
+<span class="chip" title="Core">cryptosleep casket</span>
+</div>
+<div class="cell">
+<span class="chip proposed" title="PROPOSED — RUT_Rites_GodSpeakerArray · cost 2600">God-Speaker Array</span>
+</div>
+<div class="trow"><div class="tt">T3</div><div class="tc">3000–5000</div></div>
+<div class="cell">
+</div>
+<div class="cell">
+</div>
+<div class="cell">
+<span class="chip" title="Rimefeller">Hyperweave</span>
+<span class="chip" title="Rimefeller">Neutroamine</span>
+<span class="chip" title="Rimefeller">Plasteel</span>
+<span class="chip" title="Jawa Armoury Rebalance">Rhydonium Fuel Processing</span>
+<span class="chip" title="Rimefeller">Synthamide Composite</span>
+<span class="chip" title="Custom Gas Types">VX nerve agent production</span>
+<span class="chip" title="Biotech">wastepack atomizer</span>
+</div>
+<div class="cell">
+<span class="chip" title="Core">advanced fabrication</span>
+<span class="chip" title="Jawa Armoury Rebalance">advanced upgrading</span>
+<span class="chip" title="Vanilla Furniture Expanded - Factory">basic factories</span>
+<span class="chip" title="Core">fabrication</span>
+<span class="chip" title="Core">multi-analyzer</span>
+<span class="chip" title="Vanilla Furniture Expanded - Power">nuclear power</span>
+<span class="chip" title="Core">passive generators</span>
+<span class="chip" title="Vanilla Furniture Expanded - Power">tidal power</span>
+</div>
+<div class="cell">
+<span class="chip" title="Jawa Armoury Rebalance">Baradium Explosives</span>
+<span class="chip" title="Jawa Armoury Rebalance">mounted cannons</span>
+</div>
+<div class="cell">
+<span class="chip" title="Odyssey">beam weapons</span>
+<span class="chip" title="Outer Rim - Core">Heavy Installations</span>
+<span class="chip" title="Outer Rim - Core">Heavy Turrets</span>
+<span class="chip" title="Outer Rim - Core">heavy weaponry</span>
+<span class="chip" title="Jawa Armoury Rebalance">Tibanna Processing</span>
+</div>
+<div class="cell">
+<span class="chip" title="Jawa Armoury Rebalance">energy field weaponry</span>
+</div>
+<div class="cell">
+<span class="chip" title="Vanilla Factions Expanded - Pirates">advanced warcaskets</span>
+<span class="chip" title="Star Wars KotOR Resources and Materials">deflector shields</span>
+<span class="chip" title="Jawa Armoury Rebalance">Exchange equipment</span>
+<span class="chip" title="Outer Rim - Core">heavy armour</span>
+<span class="chip" title="Star Wars KotOR Resources and Materials">heavy shield generators</span>
+<span class="chip" title="Outer Rim - Core">jetpacks</span>
+<span class="chip" title="Jawa Armoury Rebalance">medium armors</span>
+<span class="chip" title="Shield Generators">portable shield tech</span>
+<span class="chip" title="Vanilla Factions Expanded - Pirates">specialised warcaskets</span>
+</div>
+<div class="cell">
+<span class="chip" title="Outer Rim - Droid Depot">Droid Engineering</span>
+<span class="chip" title="Star Wars KotOR Resources and Materials">droid upgrades</span>
+</div>
+<div class="cell">
+<span class="chip" title="Star Wars KotOR Resources and Materials">assault droids</span>
+<span class="chip recost" title="RimAI Core (BETA) · re-cost 6000→4000: AI ladder spread">RimAI - Level 2 Artificial Intelligence</span>
+<span class="chip" title="Star Wars KotOR Resources and Materials">Sith war droids</span>
+<span class="chip" title="ABF: Synstructs Core">synstruct optimization</span>
+<span class="chip" title="Biotech">ultra mechtech</span>
+</div>
+<div class="cell">
+<span class="chip reflavor" title="Jawa Armoury Rebalance · reflavor">Ancient Era Ship Designs</span>
+<span class="chip recost" title="Vanilla Gravship Expanded - Chapter 1 · re-cost 400→3200: ship endgame pricing">astrofuel refining</span>
+<span class="chip reflavor" title="Jawa Armoury Rebalance · reflavor">Clone Wars Era Ship Designs</span>
+<span class="chip recost" title="Vanilla Gravship Expanded - Chapter 1 · re-cost 400→3200: ship endgame pricing">compact workspaces</span>
+<span class="chip reflavor" title="Jawa Armoury Rebalance · reflavor">Empire Era Ship Designs</span>
+<span class="chip recost" title="Vanilla Gravship Expanded - Chapter 1 · re-cost 100→3200: ship systems are the endgame grind, not 100-point freebies">gravship living</span>
+<span class="chip recost" title="Vanilla Gravship Expanded - Chapter 1 · re-cost 100→3200: ship endgame pricing">gravship power</span>
+<span class="chip recost" title="Vanilla Gravship Expanded - Chapter 1 · re-cost 400→4200: ship guns are a payoff">gravship weaponry</span>
+<span class="chip recost" title="Vanilla Gravship Expanded - Chapter 1 · re-cost 400→3200: ship endgame pricing">heat dissipation</span>
+<span class="chip recost" title="Vanilla Gravship Expanded - Chapter 1 · re-cost 100→3200: ship endgame pricing">oxygen network</span>
+<span class="chip recost" title="Odyssey · re-cost 1500→3400: mid-ship milestone">standard gravtech</span>
+<span class="chip" title="Core">starflight basics</span>
+<span class="chip" title="Core">starflight sensors</span>
+</div>
+<div class="cell">
+<span class="chip" title="Jawa Armoury Rebalance">Adv. Modular Implant Systems</span>
+<span class="chip" title="Ideology">bioregeneration</span>
+</div>
+<div class="cell">
+<span class="chip proposed" title="PROPOSED — RUT_Rites_HullLiturgy · cost 4000">Liturgy of the Hull</span>
+</div>
+<div class="trow"><div class="tt">T4</div><div class="tc">5000+</div></div>
+<div class="cell">
+</div>
+<div class="cell">
+</div>
+<div class="cell">
+<span class="chip" title="Rimefeller">Deep Wells</span>
+<span class="chip" title="Jawa Armoury Rebalance">Ultra Component Fabrication</span>
+</div>
+<div class="cell">
+<span class="chip" title="Vanilla Furniture Expanded - Factory">complex factories</span>
+<span class="chip" title="Jawa Armoury Rebalance">expert upgrading</span>
+<span class="chip" title="Outer Rim - Core">Hypertech Fabrication</span>
+<span class="chip" title="Vanilla Furniture Expanded - Security">repulsor technology</span>
+</div>
+<div class="cell">
+</div>
+<div class="cell">
+<span class="chip" title="Jawa Armoury Rebalance">disruptor weaponry</span>
+</div>
+<div class="cell">
+<span class="chip recost" title="Jawa Armoury Rebalance · re-cost 2000→8000: deeper still">Advanced Lightsaber assembly</span>
+<span class="chip recost" title="GravTech · re-cost 1400→6000: gravitic personal weapons — Rakatan relic school, priced as relics">grav weapon</span>
+<span class="chip recost" title="Jawa Armoury Rebalance · re-cost 800→6000: a Jawa building a lightsaber is endgame hubris, not an 800-point stop">Lightsaber assembly</span>
+<span class="chip" title="Jawa Armoury Rebalance">Lightsaber components</span>
+<span class="chip" title="Jawa Armoury Rebalance">Stygium Cloaking Devices</span>
+</div>
+<div class="cell">
+<span class="chip" title="Shield Generators">advanced shield tech</span>
+<span class="chip" title="Shield Generators">basic shield tech</span>
+<span class="chip" title="Jawa Armoury Rebalance">energy shielding</span>
+<span class="chip" title="Jawa Armoury Rebalance">heavy armors</span>
+<span class="chip" title="Jawa Armoury Rebalance">Mandalorian equipment</span>
+<span class="chip" title="Core">marine armor</span>
+<span class="chip" title="Core">recon armor</span>
+<span class="chip" title="Jawa Armoury Rebalance">Sith equipment</span>
+<span class="chip" title="Vanilla Factions Expanded - Pirates">spacer warcaskets</span>
+<span class="chip" title="Vanilla Factions Expanded - Pirates">warcasket removal</span>
+<span class="chip" title="Jawa Armoury Rebalance">Wookiee equipment</span>
+</div>
+<div class="cell">
+<span class="chip" title="Asimov">wireless charging</span>
+</div>
+<div class="cell">
+<span class="chip recost" title="Alpha Mechs · re-cost 500→5500: ultra mech capstones priced as capstones">crypto-harmonization</span>
+<span class="chip" title="Star Wars KotOR Resources and Materials">HK-51 assassin droids</span>
+<span class="chip recost" title="Alpha Mechs · re-cost 500→5500: ultra mech capstone">mechanoid beamcasting</span>
+<span class="chip" title="Jawa Armoury Rebalance">Positronic Brain</span>
+<span class="chip recost" title="Alpha Mechs · re-cost 500→5500: ultra mech capstone">quantum pulse messaging</span>
+<span class="chip recost" title="RimAI Core (BETA) · re-cost 9000→8000: AI ladder spread">RimAI - Level 3 Artificial Intelligence</span>
+<span class="chip" title="Star Wars KotOR Resources and Materials">specialist droids</span>
+<span class="chip recost" title="Alpha Mechs · re-cost 500→5500: ultra mech capstone">voidlink connectivity</span>
+</div>
+<div class="cell">
+<span class="chip recost" title="Odyssey · re-cost 2500→6000: the deep ship milestone">advanced gravtech</span>
+<span class="chip recost" title="GravTech · re-cost 2000→6500: exotic grav industry">advanced ship parts</span>
+<span class="chip recost" title="GravTech - Big cannons · re-cost 1800→7000: the ship&#x27;s big guns are a late payoff">big cannons</span>
+<span class="chip recost" title="GravTech · re-cost 1000→5500: exotic grav industry">grav forge</span>
+<span class="chip" title="Core">Johnson-Tanaka drive</span>
+<span class="chip" title="Vanilla Furniture Expanded - Production">Manufacturing</span>
+<span class="chip recost" title="GravTech · re-cost 1600→6000: exotic grav industry">precise grav tuning</span>
+<span class="chip" title="Core">starship reactor</span>
+<span class="chip recost" title="GravTech · re-cost 2800→9000: taming a black hole is the tree&#x27;s crown">taming a Black Hole</span>
+</div>
+<div class="cell">
+<span class="chip recost" title="GravTech · re-cost 1400→6000: grav bionics are Reach-grade flesh-tech">grav bionics</span>
+<span class="chip" title="Jawa Armoury Rebalance">Modular Implant Systems</span>
+</div>
+<div class="cell">
+<span class="chip proposed" title="PROPOSED — RUT_Rites_GodsSpeakBack · cost 8000">The Gods Speak Back</span>
+</div>
+</div></div>
+<div class="legend"><span class="k"><span class="b" style="border-color:var(--keep)"></span>keep (ruled)</span><span class="k"><span class="b" style="border-color:var(--reflavor)"></span>reflavor</span><span class="k"><span class="b" style="border-color:var(--amber)"></span>re-cost proposed</span><span class="k"><span class="b" style="border:1px dashed var(--gold);background:transparent"></span>PROPOSED new project</span><span class="k"><span class="b"></span>untouched</span></div>
+<h2>The 28 re-costs</h2>
+<p class="sub">Every one is a real balance change to a base cost (Research Reinvented’s techprint economy multiplies on top). Veto row by row.</p>
+<div class="scroll"><table class="rc"><tr><th>project</th><th>defName</th><th>old → new</th><th>why</th></tr>
+<tr><td><b>simple droids</b> <span class="mono">Droidsmith</span></td><td class="mono">guy762_ResearchKotOR_droidsimple</td><td class="mono">7,500 → 2,500 <span class="down">▼</span></td><td>&#x27;simple droids&#x27; at 7500 above &#x27;adv. droids&#x27; at 2500 is inverted</td></tr>
+<tr><td><b>advanced gravtech</b> <span class="mono">THE SHIP</span></td><td class="mono">AdvancedGravtech</td><td class="mono">2,500 → 6,000 <span class="up">▲</span></td><td>the deep ship milestone</td></tr>
+<tr><td><b>advanced ship parts</b> <span class="mono">THE SHIP</span></td><td class="mono">AdvShipParts</td><td class="mono">2,000 → 6,500 <span class="up">▲</span></td><td>exotic grav industry</td></tr>
+<tr><td><b>astrofuel refining</b> <span class="mono">THE SHIP</span></td><td class="mono">VGE_AstrofuelRefining</td><td class="mono">400 → 3,200 <span class="up">▲</span></td><td>ship endgame pricing</td></tr>
+<tr><td><b>big cannons</b> <span class="mono">THE SHIP</span></td><td class="mono">GTbc_BigCannons</td><td class="mono">1,800 → 7,000 <span class="up">▲</span></td><td>the ship&#x27;s big guns are a late payoff</td></tr>
+<tr><td><b>compact workspaces</b> <span class="mono">THE SHIP</span></td><td class="mono">VGE_CompactWorkspaces</td><td class="mono">400 → 3,200 <span class="up">▲</span></td><td>ship endgame pricing</td></tr>
+<tr><td><b>grav forge</b> <span class="mono">THE SHIP</span></td><td class="mono">GravForge</td><td class="mono">1,000 → 5,500 <span class="up">▲</span></td><td>exotic grav industry</td></tr>
+<tr><td><b>gravship living</b> <span class="mono">THE SHIP</span></td><td class="mono">VGE_GravshipLiving</td><td class="mono">100 → 3,200 <span class="up">▲</span></td><td>ship systems are the endgame grind, not 100-point freebies</td></tr>
+<tr><td><b>gravship power</b> <span class="mono">THE SHIP</span></td><td class="mono">VGE_GravshipPower</td><td class="mono">100 → 3,200 <span class="up">▲</span></td><td>ship endgame pricing</td></tr>
+<tr><td><b>gravship weaponry</b> <span class="mono">THE SHIP</span></td><td class="mono">VGE_GravshipWeaponry</td><td class="mono">400 → 4,200 <span class="up">▲</span></td><td>ship guns are a payoff</td></tr>
+<tr><td><b>heat dissipation</b> <span class="mono">THE SHIP</span></td><td class="mono">VGE_HeatDissipation</td><td class="mono">400 → 3,200 <span class="up">▲</span></td><td>ship endgame pricing</td></tr>
+<tr><td><b>oxygen network</b> <span class="mono">THE SHIP</span></td><td class="mono">VGE_OxygenNetwork</td><td class="mono">100 → 3,200 <span class="up">▲</span></td><td>ship endgame pricing</td></tr>
+<tr><td><b>precise grav tuning</b> <span class="mono">THE SHIP</span></td><td class="mono">GravTuning</td><td class="mono">1,600 → 6,000 <span class="up">▲</span></td><td>exotic grav industry</td></tr>
+<tr><td><b>standard gravtech</b> <span class="mono">THE SHIP</span></td><td class="mono">StandardGravtech</td><td class="mono">1,500 → 3,400 <span class="up">▲</span></td><td>mid-ship milestone</td></tr>
+<tr><td><b>taming a Black Hole</b> <span class="mono">THE SHIP</span></td><td class="mono">BlackHole_GT</td><td class="mono">2,800 → 9,000 <span class="up">▲</span></td><td>taming a black hole is the tree&#x27;s crown</td></tr>
+<tr><td><b>grav bionics</b> <span class="mono">The Reach</span></td><td class="mono">GravBionics</td><td class="mono">1,400 → 6,000 <span class="up">▲</span></td><td>grav bionics are Reach-grade flesh-tech</td></tr>
+<tr><td><b>Jedi apparel</b> <span class="mono">The Shell</span></td><td class="mono">guy762_ResearchKotOR_jedi</td><td class="mono">800 → 3,000 <span class="up">▲</span></td><td>Jedi apparel above mid-game</td></tr>
+<tr><td><b>Advanced Lightsaber assembly</b> <span class="mono">The Strange Schools</span></td><td class="mono">guy762_ResearchKotOR_advsabers</td><td class="mono">2,000 → 8,000 <span class="up">▲</span></td><td>deeper still</td></tr>
+<tr><td><b>Lightsaber assembly</b> <span class="mono">The Strange Schools</span></td><td class="mono">guy762_ResearchKotOR_lightsabers</td><td class="mono">800 → 6,000 <span class="up">▲</span></td><td>a Jawa building a lightsaber is endgame hubris, not an 800-point stop</td></tr>
+<tr><td><b>grav weapon</b> <span class="mono">The Strange Schools</span></td><td class="mono">GravWeapon</td><td class="mono">1,400 → 6,000 <span class="up">▲</span></td><td>gravitic personal weapons — Rakatan relic school, priced as relics</td></tr>
+<tr><td><b>RimAI - Level 1 Artificial Intelligence</b> <span class="mono">The Waking Mind</span></td><td class="mono">RimAI_AI_Level1</td><td class="mono">3,000 → 2,500 <span class="down">▼</span></td><td>AI ladder spreads T2→T4 instead of stacking in T3</td></tr>
+<tr><td><b>RimAI - Level 2 Artificial Intelligence</b> <span class="mono">The Waking Mind</span></td><td class="mono">RimAI_AI_Level2</td><td class="mono">6,000 → 4,000 <span class="down">▼</span></td><td>AI ladder spread</td></tr>
+<tr><td><b>RimAI - Level 3 Artificial Intelligence</b> <span class="mono">The Waking Mind</span></td><td class="mono">RimAI_AI_Level3</td><td class="mono">9,000 → 8,000 <span class="down">▼</span></td><td>AI ladder spread</td></tr>
+<tr><td><b>crypto-harmonization</b> <span class="mono">The Waking Mind</span></td><td class="mono">AM_Cryptoharmonization</td><td class="mono">500 → 5,500 <span class="up">▲</span></td><td>ultra mech capstones priced as capstones</td></tr>
+<tr><td><b>mechanoid beamcasting</b> <span class="mono">The Waking Mind</span></td><td class="mono">AM_MechanoidBeamcasting</td><td class="mono">500 → 5,500 <span class="up">▲</span></td><td>ultra mech capstone</td></tr>
+<tr><td><b>quantum pulse messaging</b> <span class="mono">The Waking Mind</span></td><td class="mono">AM_QuantumPulseMessaging</td><td class="mono">500 → 5,500 <span class="up">▲</span></td><td>ultra mech capstone</td></tr>
+<tr><td><b>voidlink connectivity</b> <span class="mono">The Waking Mind</span></td><td class="mono">AM_VoidLinkConnectivity</td><td class="mono">500 → 5,500 <span class="up">▲</span></td><td>ultra mech capstone</td></tr>
+<tr><td><b>basic upgrading</b> <span class="mono">The Workshop</span></td><td class="mono">guy762_ResearchKotOR_workbench</td><td class="mono">8,000 → 1,600 <span class="down">▼</span></td><td>&#x27;basic upgrading&#x27; at 8000 vs &#x27;expert&#x27; at 6000 is inverted; basic opens the bench</td></tr>
+</table></div>
+<h2>Cut this pass — and what each cut can give back</h2>
+<p class="sub">30 further rows leave the trees under the aggressive-filter directive. Every card carries a <b>recover line</b>: how the underlying GAMEPLAY could return without the non-canon weirdness — or an honest “dead.” The v1 cuts (84: Anomaly 42 · Royalty 19 · Dungeon 10 · measured-dead 8 · Big &amp; Small 5) are unchanged and listed in the v1 visual.</p>
+<div class="cuts">
+<div class="cutcard flag wide"><h3>Hero relic catalogs<span class="n">18</span></h3><div class="src">Fable proposal · owner reviews</div><p>Every row priced 100,000,000 by its own author — flagged unreachable — and each names a KotOR hero 4,000 years off era. Gear catalogs, not research.</p><div class="recover">recover? the items stay as loot; the best belong to Memory-Core quest rewards and trade finds</div><ul class="cutlist"><li><b>Bastila Shan&#x27;s equipment</b> <span class="dn">guy762_ResearchKotOR_bastila</span></li><li><b>Brianna&#x27;s equipment</b> <span class="dn">guy762_ResearchKotOR_handmaiden</span></li><li><b>Canderous Ordo&#x27;s equipment</b> <span class="dn">guy762_ResearchKotOR_canderous</span></li><li><b>Carth Onasi&#x27;s equipment</b> <span class="dn">guy762_ResearchKotOR_carth</span></li><li><b>G0-T0&#x27;s equipment</b> <span class="dn">guy762_ResearchKotOR_goto</span></li><li><b>HK-47&#x27;s equipment</b> <span class="dn">guy762_ResearchKotOR_hkequipment</span></li><li><b>Jolee Bindo&#x27;s equipment</b> <span class="dn">guy762_ResearchKotOR_jolee</span></li><li><b>Juhani&#x27;s equipment</b> <span class="dn">guy762_ResearchKotOR_juhani</span></li><li><b>Kreia&#x27;s equipment</b> <span class="dn">guy762_ResearchKotOR_kreia</span></li><li><b>Luxa&#x27;s equipment</b> <span class="dn">guy762_ResearchKotOR_luxa</span></li><li><b>Malak&#x27;s equipment</b> <span class="dn">guy762_ResearchKotOR_malak</span></li><li><b>Mission Vao&#x27;s equipment</b> <span class="dn">guy762_ResearchKotOR_vao</span></li><li><b>Nihilus&#x27; equipment</b> <span class="dn">guy762_ResearchKotOR_nihilus</span></li><li><b>Sion&#x27;s equipment</b> <span class="dn">guy762_ResearchKotOR_sion</span></li><li><b>T3-M4&#x27;s equipment</b> <span class="dn">guy762_ResearchKotOR_teethree</span></li><li><b>uncraftable weapons</b> <span class="dn">guy762_ResearchKotOR_uncraftable</span></li><li><b>Visas Marr&#x27;s equipment</b> <span class="dn">guy762_ResearchKotOR_visas</span></li><li><b>Zaalbar&#x27;s equipment</b> <span class="dn">guy762_ResearchKotOR_bigZ</span></li></ul></div>
+<div class="cutcard flag"><h3>VGE genetics<span class="n">6</span></h3><div class="src">Fable proposal · owner reviews</div><p>The gene-splicing laboratory register — 'strange genetic stuff the players won't even care about.'</p><div class="recover">recover? the creature-crafting GAMEPLAY returns v2 as an Oomo-sanctioned beast-breeding rite — hatchery, not laboratory</div><ul class="cutlist"><li><b>genetic alteration</b> <span class="dn">GR_GeneticAlteration</span></li><li><b>genetic augmentation</b> <span class="dn">GR_HybridImplantology</span></li><li><b>genetic compatibility</b> <span class="dn">GR_GeneticCompatibility</span></li><li><b>genetic creation</b> <span class="dn">GR_GeneticEngineering</span></li><li><b>genetic duplication</b> <span class="dn">GR_GeneticDuplication</span></li><li><b>genetic mechahybridization</b> <span class="dn">GR_GeneticMechahybridization</span></li></ul></div>
+<div class="cutcard"><h3>Deathrest<span class="n">1</span></h3><div class="src">Fable proposal · owner reviews</div><p>The vampire type case — sanguophage dormancy in a Jawa clan story.</p><div class="recover">recover? v2 &#x27;long-sleep cradle&#x27; ship structure if the dormancy gameplay is ever wanted</div><ul class="cutlist"><li><b>deathrest</b> <span class="dn">Deathrest</span></li></ul></div>
+<div class="cutcard"><h3>Torment Master<span class="n">2</span></h3><div class="src">Fable proposal · owner reviews</div><p>Torture-dungeon register, off the campaign's tone entirely.</p><div class="recover">recover? dead, nothing worth recovering</div><ul class="cutlist"><li><b>Cranial Pin Implant</b> <span class="dn">TormentMaster_CranialPinResearch</span></li><li><b>Oil-Pour Cage</b> <span class="dn">OilPourCageResearch</span></li></ul></div>
+<div class="cutcard"><h3>Dark Ages crypts<span class="n">2</span></h3><div class="src">Fable proposal · owner reviews</div><p>Gothic crypt register on a desert world.</p><div class="recover">recover? mass-interment gameplay could return as sand-tomb vaults in the clan idiom</div><ul class="cutlist"><li><b>bloodflame</b> <span class="dn">DA_BloodflameCatacomb</span></li><li><b>catacombs</b> <span class="dn">DA_Catacombs</span></li></ul></div>
+<div class="cutcard"><h3>Dev-row hygiene<span class="n">1</span></h3><div class="src">Fable proposal · owner reviews</div><p>RimFridge power-factor row: cost 0, unlocks nothing, and the dump's one measured self-loop (requires itself).</p><div class="recover">recover? dead, nothing worth recovering</div><ul class="cutlist"><li><b>Power Factor Setting for RimFridge</b> <span class="dn">RimFridge_PowerFactorSetting</span></li></ul></div>
+</div>
+<h2>The Rites — researching the liturgy</h2>
+<p class="sub vquote">“Could they research better shipwide rituals that would be more ideologically active and powerful as they learn from their shipboard gods?”</p>
+<div class="panel">
+<p>Yes — and most of it needs no C#. Two engine facts shape it: the ideoligion <b>bakes at world creation</b> (XML cannot add rituals to a live ideo; the campaign’s <span class="mono" style="font-family:'IBM Plex Mono',monospace">The Salvation.rid</span> is not fluid today), and ritual <b>outcome quality is computed from data</b> — the engine’s <i>RitualOutcomeComp_RoomStat</i> and <i>RitualOutcomeComp_BuildingsPresent</i> read the ritual room and named buildings in it (both VERIFIED in source). So research that unlocks better liturgy <b>buildings</b> makes every ritual measurably stronger through the vanilla quality table.</p>
+<div class="opt rec"><span class="tag">recommended · XML-only</span><br><b>A — the liturgy infrastructure ladder.</b> Five projects (dashed gold in the matrix): Scrap Shrine → Conduit Choir → God-Speaker Array → Liturgy of the Hull → The Gods Speak Back. Each unlocks ritual buildings; a patch adds their quality comps to the campaign rituals’ outcome defs. Better moods, better rewards, fewer disasters — zero new mechanics, zero theology coupling (canon §6.3 holds). The T3/T4 projects are ship-only / memory-gated: the deep liturgy is <b>revealed by the Utinni, not derived</b> — research-as-revelation applied to worship.</div>
+<div class="opt"><span class="tag" style="color:var(--amber)">small C# · needs one ruling</span><br><b>B — the gods answer.</b> Completing a Rites project grants ideo development points, so the player reforms in new rituals/precepts — research literally funds doctrinal growth. Requires ruling The Salvation FLUID (a real campaign decision: fluid ideos can drift). Sits cleanly on top of A.</div>
+<div class="opt"><span class="tag" style="color:var(--ink3)">big C# · parked</span><br><b>C — ranked rites.</b> Per-ritual rank in a WorldComponent, research raises it, a Harmony postfix scales outcomes. Most powerful, most coupling; v2 only if A+B under-deliver.</div>
+</div>
+<h2>Royalty’s inspiration — does tech gate the world?</h2>
+<div class="panel">
+<p><b>No — the campaign already ruled the stronger inversion: the world gates tech.</b> The sitting’s four access classes (common · faction-held via techprints · jawa-special · ship-only) are exactly the Royalty idea worth keeping — progression bound to <b>standing and place</b> rather than points — without its literal permits. Faction-held techprints are the permit: the high tree ends up gated on who you trade with, raid, or befriend (TECHPRINT_FACTION_GATING_1 executes this). Ship-only is the title: the Utinni is the throne room, and her memory decides what you may know next.</p>
+<p>The Dungeon Pack cut set the boundary from the other side: research must never unlock a <i>place</i>. Places unlock <b>research</b> — the Memory-Core reveal, a vault’s schematics — which is already canon. Recommendation: no new world gate; add an <span style="font-family:'IBM Plex Mono',monospace;font-size:12px">access</span> column to the manifest so the gate is data.</p>
+</div>
+<h2>Trade-offs — for your later review</h2>
+<p class="sub">Each is a real decision with a stated recommendation. None is ruled by this page.</p>
+<div class="tos">
+<div class="to"><h3>1 · Thirteen tabs vs six</h3><p>Wider tab strip in the research screen (wraps at small UI scale) vs thirteen readable guilds. Middle option: 9 — fold the weapon trees to two (mass/energy), Rites into Reach.</p><div class="rec">recommend: thirteen</div></div>
+<div class="to"><h3>2 · Tier = cost band, enforced</h3><p>28 real price changes vs keeping techLevel tiers and the felt-wrongness (Light Installations in T4, ship systems at 100 points).</p><div class="rec">recommend: enforce</div></div>
+<div class="to"><h3>3 · VGE genetics</h3><p>Cut wholesale (loses creature-crafting gameplay) vs keep a small Flesh tree (keeps the lab register).</p><div class="rec">recommend: cut; recover v2 as Oomo beast-breeding rites</div></div>
+<div class="to"><h3>4 · Hero catalogs</h3><p>Cut 18 rows vs a Memory-Core relic-hunt chain. The relic hunt is attractive — but it is quest design, not research rows.</p><div class="rec">recommend: cut now; relic hunt as a quest-layer item</div></div>
+<div class="to"><h3>5 · Lightsabers</h3><p>Kept, re-costed as endgame hubris (peak Ozzik: a Jawa building a Jedi&#x27;s weapon) vs cut as non-Jawa.</p><div class="rec">recommend: kept — owner&#x27;s call</div></div>
+<div class="to"><h3>6 · Maker doctrines</h3><p>Czerka/Mando/Hutt/Tusken… equipment catalogs as a Shell sub-chain (&#x27;we learn each maker&#x27;s ways&#x27;) vs a 14th tree.</p><div class="rec">recommend: sub-chain</div></div>
+<div class="to"><h3>7 · Ritual mechanism size</h3><p>A: XML-only liturgy ladder · B: +development points (needs The Salvation ruled FLUID — it is not today) · C: ranked rites in C#.</p><div class="rec">recommend: A now; B behind a fluidity ruling</div></div>
+<div class="to"><h3>8 · Warcaskets</h3><p>Salvaged power-armor shells fit the register; the pirate flavor text does not.</p><div class="rec">recommend: keep + reflavor pass</div></div>
+<div class="to"><h3>9 · Droid Depot&#x27;s flat catalog</h3><p>Sixteen rows all cost 2,000 → all land T2: a wall, not a ladder. Re-costing into 1,600→5,000 touches 16 more rows.</p><div class="rec">recommend: re-cost at manifest draft</div></div>
+<div class="to"><h3>10 · The Anomaly-exception debt</h3><p>The 42-row Anomaly cut removed the research route the sarlacc/Assailant exception relied on. That content needs a non-research route (item grant / Memory-Core event) BEFORE the cut ships.</p><div class="rec">recommend: resolve at execution — hard gate</div></div>
+</div>
+<div class="foot">Vision pass v2, Fable design agent, 2026-09-03 — built from restructured_model_v2.json (coverage: 522 = 84 v1-cut + 6 merge + 30 new-cut + 402 placed, asserted at generation). Prose: design/Jawa/research_review/twelve_trees_proposal.md. Tier bands: T0 ≤600 · T1 ≤1600 · T2 ≤3000 · T3 ≤5000 · T4 5000+. No defName renamed; cuts are Cherry Picker cuts; merges re-point unlocks first. Reflavor text still deliberately held — structure first.<br>Next: your read — the roster, the 30 cuts, the 28 re-costs, the Rites, the ten trade-offs.</div>
+</div>
