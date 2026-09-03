@@ -66,6 +66,7 @@ copies of one field is the single failure this whole design is aimed at.
 
 Stdlib only, and no daemon. Everything is a file in git.
 """
+import copy
 import fcntl
 import json
 import os
@@ -278,22 +279,54 @@ def now():
 # ---------------------------------------------------------------------------
 # WRITING
 # ---------------------------------------------------------------------------
-def validate(ev):
-    """Refuse a malformed event BEFORE it reaches the file.
+# 🔑 THE CHECKS ARE SEPARATE FUNCTIONS SO EACH CAN BE TESTED ON ITS OWN, and
+# `validate` below is the ORDER they run in. The order is not incidental: the message
+# a caller sees is the FIRST refusal its event trips, and several are pinned by name in
+# the selftests. Add a check by adding a function AND a line in `validate`.
+UNIVERSAL_FIELDS = ("ts", "seat", "event", "id", "caused_by", "override", "ownerSaid")
 
-    🔑 There is no repair path for a bad line: the ledger is append-only, so a wrong
-    event can only be corrected by a later `admin` event, never removed. Validation
-    is therefore the last point at which a mistake is cheap.
-    """
+
+def _check_verb(ev):
+    """-> the verb's spec. Refuses a verb the vocabulary does not contain."""
     verb = ev.get("event")
     spec = VERBS.get(verb)
     if not spec:
         raise SchemaError("unknown verb %r. The vocabulary is %d verbs and adding one "
                           "is a design change: %s"
                           % (verb, len(VERBS), ", ".join(sorted(VERBS))))
+    return spec
+
+
+def _check_seat(ev):
     seat = ev.get("seat")
     if seat not in SEATS:
         raise SchemaError("seat %r is not one of %s" % (seat, ", ".join(SEATS)))
+
+
+def _check_stamp(ev):
+    """Every event carries a `ts`, and a missing one must REFUSE rather than crash.
+
+    🔴 WITHOUT THIS THE REFUSAL WAS A KeyError. `_apply` reads `ev["ts"]`
+    unconditionally — `world.last_seen`, `item.created_at`, every `Run` — so one line
+    missing the stamp raised KeyError, which is NOT a `LedgerError`, so
+    `replay(strict=False)` could not collect it and EVERY tool that reads the ledger
+    died on that one line. That is precisely the one-bad-line-breaks-everything
+    failure non-strict replay exists to prevent, and an append-only file cannot have
+    the bad line taken back out. `append()` and `check()` both stamp BEFORE
+    validating, so nothing written through this module ever reaches this refusal; a
+    line that does was written by something that bypassed the lock.
+    """
+    ts = ev.get("ts")
+    if not ts or not isinstance(ts, str):
+        raise SchemaError(
+            "every event needs a `ts` string and this one has %r. `append()` and "
+            "`check()` stamp it for you — a line without one was written by something "
+            "that bypassed them, and the whole projection reads it." % (ts,))
+
+
+def _check_item_reference(ev):
+    """An itemless verb must NOT name an item; every other verb MUST name a legal one."""
+    verb = ev["event"]
     if verb in ITEMLESS:
         if ev.get("id"):
             raise SchemaError(
@@ -301,15 +334,16 @@ def validate(ev):
                     verb,
                     " Its cause is `from` and its product is `name`."
                     if verb == "spawn" else ""))
-        if verb == "spawn" and not ID_RE.match(str(ev["name"])):
-            raise SchemaError("spawn --name must be THREE_DESCRIPTIVE_WORDS_# "
-                              "(got %r)" % ev["name"])
-    else:
-        iid = ev.get("id")
-        if not iid or not ID_RE.match(str(iid)):
-            raise SchemaError(
-                "`%s` needs an id matching THREE_DESCRIPTIVE_WORDS_# (got %r). "
-                "Legacy IDs like B58 still resolve and are never renamed." % (verb, iid))
+        return
+    iid = ev.get("id")
+    if not iid or not ID_RE.match(str(iid)):
+        raise SchemaError(
+            "`%s` needs an id matching THREE_DESCRIPTIVE_WORDS_# (got %r). "
+            "Legacy IDs like B58 still resolve and are never renamed." % (verb, iid))
+
+
+def _check_required(ev, spec):
+    verb = ev["event"]
     for f in spec["req"]:
         if ev.get(f) in (None, ""):
             raise SchemaError(
@@ -322,19 +356,35 @@ def validate(ev):
                    ", ".join("--" + x.replace("_", "-") for x in spec["opt"]) or "(none)",
                    verb,
                    " ".join("--%s <%s>" % (x.replace("_", "-"), x) for x in spec["req"])))
+
+
+def _check_no_unknown_fields(ev, spec):
     # ⚠️ `override` is legal on EVERY verb because the OWNER may override every verb.
     # It holds the rule that was crossed, so the bypass is in the record rather than
     # being invisible — see `_may`. No seat passes it on a command line: `_emit`
     # stamps it from `OVERRIDE_NOTICES`, and `cmd_bridge` stamps it for the two
     # bridge crossings `_may` cannot see (an OWNER `give`, which is emitted under the
     # target window's seat, and a `--force`/stale take across a live holder).
-    known = set(spec["req"]) | set(spec["opt"]) | {
-        "ts", "seat", "event", "id", "caused_by", "override", "ownerSaid"}
+    known = set(spec["req"]) | set(spec["opt"]) | set(UNIVERSAL_FIELDS)
     for f in ev:
         if f not in known:
             raise SchemaError(
                 "`%s` has no field %r. Prose belongs in items/<ID>.md, not in the "
-                "ledger — a scalar that exists in two places drifts." % (verb, f))
+                "ledger — a scalar that exists in two places drifts."
+                % (ev["event"], f))
+
+
+def _check_enums(ev):
+    """The closed vocabularies.
+
+    ⚠️ RUNS AFTER `_check_required`, and that is what makes the direct `ev[...]` reads
+    below safe: every field named here is in its verb's `req`, so a missing one has
+    already been refused with a message naming the flag. `spawn`'s name-shape check
+    used to run BEFORE that, reading `ev["name"]` directly — so `spawn` with no
+    `--name` raised KeyError rather than the refusal, and KeyError is not a
+    LedgerError, so non-strict replay could not collect it either.
+    """
+    verb = ev["event"]
     if verb == "seat" and ev["state"] not in ("ready", "busy", "idle"):
         raise SchemaError("seat state must be ready|busy|idle")
     if verb == "bridge" and ev["state"] not in ("taken", "released"):
@@ -343,6 +393,9 @@ def validate(ev):
         raise SchemaError("game state must be one of %s" % ", ".join(GAME_STATES))
     if verb in ("file", "spawn") and ev["for"] not in SEATS:
         raise SchemaError("%s --for must name a seat" % verb)
+    if verb == "spawn" and not ID_RE.match(str(ev["name"])):
+        raise SchemaError("spawn --name must be THREE_DESCRIPTIVE_WORDS_# "
+                          "(got %r)" % ev["name"])
     # Without this, `rimflow spawn --for FOUNRDY ...` or `rimflow reassign X
     # --to BULID` succeeded and wrote an item owned by a seat that does not
     # exist: priority.rank() filters on item.owner, so no seat is ever
@@ -352,12 +405,18 @@ def validate(ev):
         raise SchemaError("reassign --to must name a seat")
     if verb == "verify" and ev["result"] not in ("pass", "fail", "partial"):
         raise SchemaError("verify result must be pass|fail|partial")
+
+
+def _check_caused_by(ev):
     cb = ev.get("caused_by")
     if cb is not None and not (ID_RE.match(str(cb)) or RUN_RE.match(str(cb))):
         raise SchemaError(
             "caused_by must NAME the cause — an item id, a finding name, or a run like "
             "C40/run-3@full-578 — not a line number. Line numbers do not survive the "
             "monthly roll of events.jsonl. Got %r" % (cb,))
+
+
+def _check_needs(ev):
     n = ev.get("needs")
     if n and n not in NEEDS:
         raise SchemaError("needs must be one of %s" % ", ".join(NEEDS))
@@ -367,6 +426,29 @@ def validate(ev):
     if ev.get("event") == "needs" and ev.get("to") not in NEEDS:
         raise SchemaError(
             "needs --to must be one of %s (got %r)" % (", ".join(NEEDS), ev.get("to")))
+
+
+def validate(ev):
+    """Refuse a malformed event BEFORE it reaches the file.
+
+    🔑 There is no repair path for a bad line: the ledger is append-only, so a wrong
+    event can only be corrected by a later `admin` event, never removed. Validation
+    is therefore the last point at which a mistake is cheap.
+
+    ⛔ EVERY REFUSAL RAISED FROM HERE IS A `LedgerError`, and nothing below may raise a
+    KeyError, an AttributeError or a TypeError on a hand-written line. `replay()`
+    catches only `LedgerError`; anything else takes down every tool that reads the
+    ledger instead of being collected into `world.errors`.
+    """
+    spec = _check_verb(ev)
+    _check_seat(ev)
+    _check_stamp(ev)
+    _check_item_reference(ev)
+    _check_required(ev, spec)
+    _check_no_unknown_fields(ev, spec)
+    _check_enums(ev)
+    _check_caused_by(ev)
+    _check_needs(ev)
     return ev
 
 
@@ -382,16 +464,31 @@ BRIDGE_FILE = os.path.join(STATE, "BRIDGE")
 BRIDGE_STALE_SECONDS = 45 * 60
 
 
-def write_bridge_file(holder, actor, purpose=None, since=None, note=None):
-    """Mirror the bridge lock into one glanceable line at infrastructure/state/BRIDGE.
+# The five comment lines every mirror opens with. ⚠️ Their COUNT is asserted by
+# `selftest_bridge_file_concurrency.py`, which proves the final file is one writer's
+# complete body by checking exactly where the status line lands.
+BRIDGE_HEADER = (
+    "# WHO IS DRIVING THE LIVE RIMWORLD BRIDGE.\n"
+    "# Mirror of the rimflow ledger. Written by `rimflow bridge`, never by hand.\n"
+    "#   free?  ->  rimflow bridge take --for \"<what for>\"\n"
+    "#   held?  ->  do offline work. Nobody will come and tell you it freed; look again.\n"
+    "#   wrong? ->  rimflow bridge who   (re-derives this from the ledger)\n")
 
-    🔑 A MIRROR, NOT A SECOND TRUTH. The ledger stays the only record; this file exists
-    because the two windows cannot message each other and should not have to replay a
-    ledger to answer "is the bridge free yet". `rimflow bridge who` re-derives it, so a
-    stale mirror is always one command from being corrected rather than something to
-    believe. Written here rather than in cli.py because every write in this system goes
-    through the module that owns the 9p lock discipline.
+
+def bridge_mirror_path():
+    """Where the mirror goes for the LEDGER IN USE.
+
+    ⚠️ Derived from the ledger in use, not from the module constant. `RIMFLOW_LEDGER`
+    points the whole tool at a throwaway ledger for the selftests, and a mirror bound
+    to the module constant wrote a synthetic test holder ("HELD CHECK") over the real
+    file on the first run — the tests would have kept lying to two live windows.
     """
+    led = os.environ.get("RIMFLOW_LEDGER")
+    return os.path.join(os.path.dirname(led), "BRIDGE") if led else BRIDGE_FILE
+
+
+def bridge_body(holder, actor, purpose=None, since=None, note=None):
+    """The exact bytes the mirror should hold. Pure, so it is testable without a disk."""
     if holder:
         line = "HELD    %s    since %s" % (holder, since or now())
         if purpose:
@@ -402,42 +499,67 @@ def write_bridge_file(holder, actor, purpose=None, since=None, note=None):
             line += "    (released by %s)" % actor
     if note:
         line += "\nnote    %s" % note
-    # ⚠️ Derived from the LEDGER IN USE, not from the module constant. `RIMFLOW_LEDGER`
-    # points the whole tool at a throwaway ledger for the selftests, and a mirror bound
-    # to the module constant wrote a synthetic test holder ("HELD CHECK") over the real
-    # file on the first run — the tests would have kept lying to two live windows.
-    led = os.environ.get("RIMFLOW_LEDGER")
-    target = (os.path.join(os.path.dirname(led), "BRIDGE") if led else BRIDGE_FILE)
-    body = (
-        "# WHO IS DRIVING THE LIVE RIMWORLD BRIDGE.\n"
-        "# Mirror of the rimflow ledger. Written by `rimflow bridge`, never by hand.\n"
-        "#   free?  ->  rimflow bridge take --for \"<what for>\"\n"
-        "#   held?  ->  do offline work. Nobody will come and tell you it freed; look again.\n"
-        "#   wrong? ->  rimflow bridge who   (re-derives this from the ledger)\n"
-        + line + "\n")
-    os.makedirs(os.path.dirname(target), exist_ok=True)
-    # 🔴 THE TEMP NAME MUST BE PER-CALL UNIQUE, NOT A FIXED "<target>.tmp".
-    # A shared tmp path means O_TRUNC (which fires at open(), BEFORE flock is even
-    # requested) truncates whatever a concurrent writer already wrote to the SAME
-    # inode — both fds name the same file, truncation is not fd-local. Two windows
-    # calling this within the same instant (exactly the BENCH/FOUNDRY scenario this
-    # file exists for) could interleave into a torn write, or have the second
-    # os.replace() raise FileNotFoundError chasing a tmp the first replace already
-    # renamed away. Found by code review, 2026-09-02, never actually hit live — but
-    # this is the same class of 9p write-tearing `append()`'s own docstring measures,
-    # and this function did not follow that established pattern.
+    return BRIDGE_HEADER + line + "\n"
+
+
+def _write_atomically(target, body):
+    """Replace `target` with `body` in one rename, leaving no litter behind on failure.
+
+    🔴 THE TEMP NAME MUST BE PER-CALL UNIQUE, NOT A FIXED "<target>.tmp".
+    A shared tmp path means O_TRUNC (which fires at open(), BEFORE flock is even
+    requested) truncates whatever a concurrent writer already wrote to the SAME
+    inode — both fds name the same file, truncation is not fd-local. Two windows
+    calling this within the same instant (exactly the BENCH/FOUNDRY scenario this
+    file exists for) could interleave into a torn write, or have the second
+    os.replace() raise FileNotFoundError chasing a tmp the first replace already
+    renamed away. Found by code review, 2026-09-02, never actually hit live — but
+    this is the same class of 9p write-tearing `append()`'s own docstring measures.
+
+    ⚠️ AND THE TEMP FILE IS UNLINKED IF ANYTHING FAILS. A unique name fixes the race
+    and creates a second problem: every failed write left a `BRIDGE.tmp.<pid>.<ns>`
+    behind, in a directory that is IN GIT, where the next `git status` shows it as
+    untracked state nobody can attribute. Found by code review, 2026-09-03.
+    """
     tmp = "%s.tmp.%d.%d" % (target, os.getpid(), time.time_ns())
-    fd = os.open(tmp, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o644)
     try:
-        fcntl.flock(fd, fcntl.LOCK_EX)
+        fd = os.open(tmp, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o644)
         try:
-            os.write(fd, body.encode("utf-8"))
+            fcntl.flock(fd, fcntl.LOCK_EX)
+            try:
+                blob = body.encode("utf-8")
+                written = os.write(fd, blob)
+                if written != len(blob):
+                    raise LedgerError(
+                        "short write to %s: %d of %d bytes; the mirror was NOT "
+                        "replaced." % (target, written, len(blob)))
+            finally:
+                fcntl.flock(fd, fcntl.LOCK_UN)
         finally:
-            fcntl.flock(fd, fcntl.LOCK_UN)
-    finally:
-        os.close(fd)
-    os.replace(tmp, target)
+            os.close(fd)
+        os.replace(tmp, target)
+    except BaseException:
+        try:
+            os.unlink(tmp)
+        except OSError:
+            pass
+        raise
     return body
+
+
+def write_bridge_file(holder, actor, purpose=None, since=None, note=None):
+    """Mirror the bridge lock into one glanceable line at infrastructure/state/BRIDGE.
+
+    🔑 A MIRROR, NOT A SECOND TRUTH. The ledger stays the only record; this file exists
+    because the two windows cannot message each other and should not have to replay a
+    ledger to answer "is the bridge free yet". `rimflow bridge who` re-derives it, so a
+    stale mirror is always one command from being corrected rather than something to
+    believe. Written here rather than in cli.py because every write in this system goes
+    through the module that owns the 9p lock discipline.
+    """
+    target = bridge_mirror_path()
+    body = bridge_body(holder, actor, purpose, since, note)
+    os.makedirs(os.path.dirname(target), exist_ok=True)
+    return _write_atomically(target, body)
 
 
 def append(ev, path=None):
@@ -461,9 +583,13 @@ def append(ev, path=None):
 
     The returned offset is a convenience for the CURRENT file only. Do not store it.
     """
+    # 🔑 STAMP FIRST, THEN VALIDATE. `validate` now REFUSES an event with no `ts`
+    # (see `_check_stamp`: a stamp-less line made `_apply` raise KeyError, which
+    # non-strict replay cannot collect), and callers legitimately hand this function
+    # an unstamped dict. Validating before stamping would refuse every one of them.
+    ev.setdefault("ts", now())
     validate(ev)
     path = path or EVENTS
-    ev.setdefault("ts", now())
     line = json.dumps(ev, separators=(",", ":"), ensure_ascii=False) + "\n"
     blob = line.encode("utf-8")
     if len(blob) >= PIPE_BUF:
@@ -792,47 +918,88 @@ def _may(ev, item, world):
     raise PermissionError_(reason)
 
 
-def _apply(ev, index, world, strict=False):   # `strict` is the caller's concern
-    verb, seat = ev["event"], ev["seat"]
-    # Every event is a sign of life from its seat. `bridge take` reads this to tell a
-    # window that is WORKING from one that is GONE, so it must count every verb, not
-    # just the bridge ones.
-    world.last_seen[seat] = ev["ts"]
-    iid = ev.get("id")
-    item = world.items.get(iid) if iid else None
+def _transition(item, state):
+    """The lifecycle gate, and the ONLY thing that assigns `item.state`.
 
-    if verb == "file":
-        if item is not None:
-            raise SchemaError("%s already exists (filed at line %d)"
-                              % (iid, item.created_index + 1))
-        item = Item(iid, index)
-        item.title, item.kind, item.owner = ev["title"], ev["kind"], ev["for"]
-        item.row, item.target = ev.get("row"), ev.get("target", "v1")
-        item.needs = ev.get("needs", "offline")
-        item.created_at = ev["ts"]
-        item.caused_by = ev.get("caused_by")
-        world.items[iid] = item
+    Lifted out of `_apply` (2026-09-03) so the state machine can be exercised on a bare
+    `Item` without building a world and a ledger around it. Behaviour unchanged.
+    """
+    if state == item.state:
         return
+    pair = (item.state, state)
+    if pair in FORBIDDEN:
+        raise TransitionError("%s: %s -> %s refused. %s"
+                              % (item.id, item.state, state, FORBIDDEN[pair]))
+    if item.state in TERMINAL:
+        raise TransitionError(
+            "%s: %s -> %s refused. `%s` is terminal and cannot be reopened, "
+            "revived or restarted — the record of it standing IS the deliverable. "
+            "File a NEW item and link it with caused_by."
+            % (item.id, item.state, state, item.state))
+    item.state = state
 
-    if verb not in ITEMLESS and item is None:
-        raise SchemaError("%s names item %s, which has never been filed" % (verb, iid))
-    _may(ev, item, world)
 
-    if verb == "spawn":
-        new = Item(ev["name"], index)
-        new.title = ev.get("title") or ev["name"]
-        new.kind = ev.get("kind", "task")
-        new.owner = ev["for"]
-        new.needs = ev.get("needs", "offline")
-        new.this_deployment = bool(ev.get("this_deployment"))
-        new.created_at, new.caused_by = ev["ts"], ev["from"]
-        # The spawn IS the new item's first history entry. Without this the item
-        # renders with "history (0 events)" while plainly existing, which reads as a
-        # gap in the record rather than as its beginning.
-        new.history.append(index)
-        world.items[ev["name"]] = new
-        return
+def _apply_file(ev, index, world):
+    """`file` — the ordinary way an item comes into existence."""
+    iid = ev["id"]
+    existing = world.items.get(iid)
+    if existing is not None:
+        raise SchemaError("%s already exists (filed at line %d)"
+                          % (iid, existing.created_index + 1))
+    item = Item(iid, index)
+    item.title, item.kind, item.owner = ev["title"], ev["kind"], ev["for"]
+    item.row, item.target = ev.get("row"), ev.get("target", "v1")
+    item.needs = ev.get("needs", "offline")
+    item.created_at = ev["ts"]
+    item.caused_by = ev.get("caused_by")
+    # 🔑 THE FILING IS THE ITEM'S FIRST HISTORY ENTRY — the same reason `spawn` records
+    # its own, and it was missing here until 2026-09-03. Three live items rendered
+    # "history (0 events)" while plainly existing, which reads as a gap in the record
+    # rather than as its beginning. It also cost `cli._distress`'s reassign-direction
+    # heuristic outright: that loop seeds the previous owner from an event carrying a
+    # `for`, and for a FILED item the only such event was the one not in the list — so
+    # `prev` stayed None and an upstream reassign could never be counted.
+    item.history.append(index)
+    world.items[iid] = item
+    return item
 
+
+def _apply_spawn(ev, index, world):
+    """`spawn` — an item born from a finding, a run or another item."""
+    name = ev["name"]
+    clash = world.items.get(name)
+    if clash is not None:
+        # 🔴 SPAWN USED TO OVERWRITE. `world.items[name] = new` replaced whatever was
+        # already there, so `spawn --name <a live item>` silently discarded that item's
+        # state, history, runs and findings from every derived view while the ledger
+        # still held both halves — the projection quietly disagreeing with the truth,
+        # which is the single failure this whole design exists to end. `file` has always
+        # refused this; `spawn` did not. Never hit live (checked across all 4217 events,
+        # 2026-09-03); found by code review the same day.
+        raise SchemaError(
+            "%s already exists (created at line %d). `spawn` CREATES an item — "
+            "spawning onto a live one would replace its state, history, runs and "
+            "findings in every view while the ledger still holds both. Give the new "
+            "item its own name, or `note` the existing one."
+            % (name, clash.created_index + 1))
+    new = Item(name, index)
+    new.title = ev.get("title") or name
+    new.kind = ev.get("kind", "task")
+    new.owner = ev["for"]
+    new.needs = ev.get("needs", "offline")
+    new.this_deployment = bool(ev.get("this_deployment"))
+    new.created_at, new.caused_by = ev["ts"], ev["from"]
+    # The spawn IS the new item's first history entry. Without this the item
+    # renders with "history (0 events)" while plainly existing, which reads as a
+    # gap in the record rather than as its beginning.
+    new.history.append(index)
+    world.items[name] = new
+    return new
+
+
+def _apply_itemless(ev, seat, world):
+    """`seat`, `bridge`, `game` — the three verbs that describe the WORLD, not an item."""
+    verb = ev["event"]
     if verb == "seat":
         world.seats[seat] = {"state": ev["state"], "reason": ev.get("reason"),
                              "item": ev.get("item"), "note": ev.get("note"),
@@ -859,20 +1026,11 @@ def _apply(ev, index, world, strict=False):   # `strict` is the caller's concern
                 it.this_deployment = False
         return
 
-    def to(state):
-        if state == item.state:
-            return
-        pair = (item.state, state)
-        if pair in FORBIDDEN:
-            raise TransitionError("%s: %s -> %s refused. %s"
-                                  % (item.id, item.state, state, FORBIDDEN[pair]))
-        if item.state in TERMINAL:
-            raise TransitionError(
-                "%s: %s -> %s refused. `%s` is terminal and cannot be reopened, "
-                "revived or restarted — the record of it standing IS the deliverable. "
-                "File a NEW item and link it with caused_by."
-                % (item.id, item.state, state, item.state))
-        item.state = state
+
+def _apply_item_verb(ev, index, item, seat, world):
+    """Every verb that MUTATES an item that already exists."""
+    verb = ev["event"]
+    to = lambda state: _transition(item, state)          # noqa: E731 — one short alias
 
     if verb == "claim":
         item.owner = seat
@@ -895,8 +1053,19 @@ def _apply(ev, index, world, strict=False):   # `strict` is the caller's concern
         # exist. They are simply not a precondition for doing the work.
         to("doing")
     elif verb == "block":
-        if item.state == "done":
-            raise TransitionError(FORBIDDEN[("done", "blocked")])
+        # 🔑 TERMINAL MEANS TERMINAL, and this guard named ONE of the three terminal
+        # states. `block` does not route through `_transition` (blocked is a flag, not a
+        # state), so it carried its own check — hardcoded to `done`, which left a
+        # `dropped` or `superseded` item blockable. That is the exact shape the comment
+        # over `TERMINAL` warns about: a list of pairs fails open on the pair nobody
+        # thought of. Corrected 2026-09-03 to the terminal SET, keeping the named `done`
+        # sentence, which says the useful thing.
+        if item.state in TERMINAL:
+            raise TransitionError(
+                FORBIDDEN.get((item.state, "blocked"))
+                or "%s: `%s` is terminal, and blocking says work is STUCK — this "
+                   "item's record is finished. File a NEW item for whatever is stuck "
+                   "and link it with caused_by." % (item.id, item.state))
         item.blocked = True
         item.blocked_reason, item.blocked_on = ev["reason"], ev.get("on")
     elif verb == "unblock":
@@ -951,6 +1120,37 @@ def _apply(ev, index, world, strict=False):   # `strict` is the caller's concern
         pass
 
     item.history.append(index)
+
+
+def _apply(ev, index, world, strict=False):   # `strict` is the caller's concern
+    """Fold ONE event into the world. The dispatcher; every branch is its own function.
+
+    🔑 THE ORDER OF THE THREE GATES IS LOAD-BEARING and is why `file` sits above them:
+    `file` creates the item it names, so "which has never been filed" cannot apply to
+    it, and its `who` is "any", so `_may` has nothing to say. Everything else must find
+    its item first (or be itemless) and pass `_may` before it touches anything.
+    """
+    verb, seat = ev["event"], ev["seat"]
+    # Every event is a sign of life from its seat. `bridge take` reads this to tell a
+    # window that is WORKING from one that is GONE, so it must count every verb, not
+    # just the bridge ones.
+    world.last_seen[seat] = ev["ts"]
+    iid = ev.get("id")
+    item = world.items.get(iid) if iid else None
+
+    if verb == "file":
+        _apply_file(ev, index, world)
+        return
+    if verb not in ITEMLESS and item is None:
+        raise SchemaError("%s names item %s, which has never been filed" % (verb, iid))
+    _may(ev, item, world)
+    if verb == "spawn":
+        _apply_spawn(ev, index, world)
+        return
+    if verb in ITEMLESS:
+        _apply_itemless(ev, seat, world)
+        return
+    _apply_item_verb(ev, index, item, seat, world)
 
 
 # 🔴 A CACHE, BECAUSE ON THIS FILESYSTEM AN open() IS 0.8 ms.
@@ -1031,10 +1231,21 @@ def check(ev, world=None, path=None):
     is the only way to catch a transition refusal — validate() alone cannot know that
     an item is already closed.
     """
-    del OVERRIDE_NOTICES[:]             # per-call; the CLI drains it after we return
+    # 🔴 CLEAR AFTER THE REPLAY, NEVER BEFORE IT. `replay()` runs `_may` over every
+    # event already in the file, so each historical OWNER override APPENDS to this same
+    # module-level list — clearing first and replaying second left the candidate's own
+    # notice buried behind years of them, and `_emit` reads `OVERRIDE_NOTICES[0]`. It
+    # would have stamped a stale, unrelated rule onto the `override` field of a
+    # permanent ledger event: the one field this system treats as evidence that a
+    # boundary was crossed on purpose, carrying the wrong boundary. Not reachable
+    # through today's CLI (every `_emit` passes a pre-replayed world), which is exactly
+    # why it survived — found by code review 2026-09-03.
     if world is None:
         world = replay(path=path)
-    validate(ev)
-    import copy
-    _apply(dict(ev, ts=ev.get("ts") or now()), 0, copy.deepcopy(world), True)
+    del OVERRIDE_NOTICES[:]             # per-call; the CLI drains it after we return
+    # Stamp before validating: `validate` refuses an event with no `ts` (see
+    # `_check_stamp`) and callers hand this function unstamped dicts.
+    stamped = dict(ev, ts=ev.get("ts") or now())
+    validate(stamped)
+    _apply(stamped, 0, copy.deepcopy(world), True)
     return True
