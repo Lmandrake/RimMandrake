@@ -510,7 +510,7 @@ def run_category(ds, category, tex_index, dir_index, a, bundle_index=None):
 
     index_rows, page_files = [], []
     t = time.perf_counter()
-    if not a.no_image and placed:
+    if placed and not a.no_image:
         from PIL import Image
         fonts = {"title": load_font(19, bold=True), "sub": load_font(13),
                  "tag": load_font(11, bold=True), "name": load_font(13, bold=True),
@@ -532,6 +532,17 @@ def run_category(ds, category, tex_index, dir_index, a, bundle_index=None):
             page_files.append(name)
             index_rows.extend(done)
             img.close()
+    elif placed:
+        # --no-image skips PIL entirely (that decode is what it exists to skip),
+        # but the index CSV is still "the actionable half" per the module
+        # docstring, and it needs no pixels to be right — page/row/col are pure
+        # arithmetic over `placed`. Without this the index CSV came out empty
+        # and the "placed: 0" summary line contradicted its own blank% figure.
+        for i, c in enumerate(placed):
+            page_no, i_in_page = divmod(i, per_page)
+            r, col = divmod(i_in_page, a.cols)
+            c["page"], c["row"], c["col"] = page_no + 1, r, col
+            index_rows.append(c)
     t_render = time.perf_counter() - t
 
     # A planned cell whose PNG would not decode stays in the INDEX (it occupies a
