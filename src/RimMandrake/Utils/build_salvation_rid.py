@@ -20,6 +20,7 @@ the owner can load both in the ideo browser and compare.
 """
 
 import argparse
+import xml.etree.ElementTree as ET
 import os
 import re
 import shutil
@@ -68,6 +69,15 @@ MEME_ADDITIONS = ["AM_Fertility"]
 # design/Jawa/worldbuilding/ideoligion/APPROVED.md (Founding Ion Blaster). Verified 2026-08-14: no `Precept_<ID>` anywhere
 # in the file references 6558 or 6559, so both blocks lift out cleanly.
 RELICS_TO_CUT = ["Trade-Hood", "Endcrux"]
+
+# Owner ruled 2026-09-03: "Throne speech certainly does not belong. Nor do anima
+# tree rituals." All three are engine-attached utility rituals — visible false,
+# countsTowardsPreceptLimit false — that fire only when a Throne, anima tree or
+# Gauranlen tree exists. A Royalty ritual has no place while Royalty is ruled
+# dead, and a desert world has no anima trees. Verified: no ritual seat, role,
+# building, style or obligation references any of the three; cut_precept's
+# dangling-reference assertion is the guard.
+RITUALS_TO_CUT = ["throne speech", "anima tree linking", "tree connection ritual"]
 
 # The surviving relic keeps a generator name; the lore gives it a real one.
 RELIC_RENAME = ("Scavenging Relic", "The Founding Ion Blaster")
@@ -207,18 +217,31 @@ def cut_precept(text: str, name: str) -> tuple[str, str]:
     i = text.find(needle)
     if i < 0:
         fail(f"precept {name!r} not found")
-    start = text.rfind("\t\t\t<li", 0, i)
-    end = text.find("\t\t\t</li>\n", i)
+    start = text.rfind("\n\t\t\t<li", 0, i)
+    # Anchor the closer at LINE START. "\t\t\t</li>\n" also matches inside a
+    # deeper-indented closer ("\t\t\t\t\t\t</li>" ends with three tabs then
+    # </li>), which bounded ritual blocks short and produced mismatched tags —
+    # silently, because every post-condition below is string-level. The relics
+    # escaped only because nothing nested closed before their own </li>.
+    close = "\n\t\t\t</li>\n"
+    end = text.find(close, i)
     if start < 0 or end < 0:
         fail(f"could not bound the <li> for {name!r}")
-    end += len("\t\t\t</li>\n")
+    start += 1                      # keep the newline on the preceding line
+    end += len(close)
     block = text[start:end]
     m = re.search(r"<ID>(\d+)</ID>", block)
     pid = m.group(1) if m else "?"
-    refs = text.count(f"Precept_{pid}")
+    # Count refs in what SURVIVES the cut, not in the whole file: a precept's
+    # own obligationTargetFilter carries <parent>Precept_<its own ID></parent>,
+    # which leaves with the block and is not a dangling reference. Counting the
+    # original text failed every precept that self-references (the two relics
+    # happened to have none, so this never fired until the 2026-09-03 ritual cuts).
+    remaining = text[:start] + text[end:]
+    refs = remaining.count(f"Precept_{pid}")
     if refs:
         fail(f"{name!r} (ID {pid}) still has {refs} inbound Precept_{pid} references")
-    return text[:start] + text[end:], pid
+    return remaining, pid
 
 
 def rename_precept(text: str, old: str, new: str) -> str:
@@ -339,6 +362,11 @@ def main() -> None:
     text = rename_precept(text, *RELIC_RENAME)
     report.append(f"  {RELIC_RENAME[0]!r} -> {RELIC_RENAME[1]!r}")
 
+    report += ["rituals:"]
+    for name in RITUALS_TO_CUT:
+        text, pid = cut_precept(text, name)
+        report.append(f"  -{name} (ID {pid}, 0 inbound refs)")
+
     if PRECEPT_SWAPS:
         text, log = swap_precepts(text, PRECEPT_SWAPS)
         report += ["precepts changed:"] + log
@@ -359,6 +387,13 @@ def main() -> None:
             fail(f"dangling reference Precept_{ref} - it points at a cut precept")
     if "<savedideo>" not in text or "</savedideo>" not in text:
         fail("root element damaged")
+    # The checks above are all string-level: a mis-bounded cut yields mismatched
+    # tags and passes every one of them, writing a .rid the game cannot load.
+    # Parse it.
+    try:
+        ET.fromstring(text)
+    except ET.ParseError as e:
+        fail(f"result is not well-formed XML: {e}")
 
     print("\n".join(report))
     print(f"\n{original_len:,} -> {len(text):,} bytes · {len(ids)} precepts · IDs unique · no dangling refs")
