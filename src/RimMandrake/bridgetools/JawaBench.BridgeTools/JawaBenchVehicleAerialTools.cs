@@ -195,7 +195,24 @@ namespace JawaBench.BridgeTools
                             IntVec3 pos = thing.Position;
                             Map thingMap = thing.Map;
                             Rot4 rot = thing.Rotation;
-                            GenSpawn.Spawn((Thing)vehicle, pos, thingMap, rot);
+                            Thing vehicleThing = (Thing)vehicle;
+                            GenSpawn.Spawn(vehicleThing, pos, thingMap, rot);
+                            // 🔴 GenSpawn.Spawn logs and returns null instead of throwing when
+                            // the vehicle's own (possibly multi-cell, possibly rotated) occupied
+                            // rect doesn't fit at the skyfaller's position - the skyfaller being
+                            // in-bounds does not guarantee the vehicle's footprint is. Destroying
+                            // the skyfaller below would then orphan the vehicle: VehicleSkyfaller
+                            // .DeSpawn only releases the position claim when !vehicle.Spawned, so
+                            // an unspawned vehicle would end up held nowhere - never on a map,
+                            // never in any component, lost from the save. Same class of bug as
+                            // the airdrop skyfaller fix below: gate on Spawned, don't destroy the
+                            // one thing still holding the vehicle when the spawn didn't take.
+                            if (!vehicleThing.Spawned)
+                            {
+                                errors.Add("GenSpawn.Spawn failed for vehicle at " + pos + " on map " + thingMap.uniqueID
+                                    + " - it exists but is not placed; the skyfaller was left in place holding it.");
+                                continue;
+                            }
 
                             if (deployOnLanding)
                             {
