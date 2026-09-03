@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rsw.seabeasts</packageId>
+  <name>RimMandrake - SW Sea Beasts</name>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>SW_SEA_MONSTERS_ART_1 — 18 Naboo/Star Wars sea creatures across six roles: silt ambushers (the opee family), harpooners (the colo family), leviathans (the sando family), shoal grazers (the canon scalefish), a scavenger swarm, and colossal filter-feeder neutrals. Every stat, tool and lifeStage is calibrated in `design/Jawa/worldbuilding/sea_beasts_def_spec.md` against a named vanilla animal and the 1.6 C# source.
+
+Ships as plain seafloor-map animals per the ruled aquatic-movement decision (aquatic_movement_routes.md, OK card, 2026-09-02): zero C#, no swimmer pathgrid. The five vanilla water fields (waterSeeker, waterCellCost, canFishForFood, moveSpeedFactorByTerrainTag, swimmingGraphicData) let them swim shallow water on any map today; they do not yet wild-spawn (no wildBiomes — RM_SeafloorBiome does not exist yet), so all 18 are dev/bridge-spawn only until that biome ships.
+
+Two of the eighteen — Starmaw and Lanternwhale — have no art yet (ChatGPT usage limit stopped generation mid-set, see `art/final/README.md`); their defs are complete and their texPath already points at the folder the art will land in.
+
+RimStarWars tier per NAMING_SCHEME_PLAN.md.</description>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld.Odyssey</packageId>
+      <displayName>Odyssey</displayName>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+    <li>Ludeon.RimWorld.Odyssey</li>
+    <li>mlie.starwarsanimalcollection</li>
+  </loadAfter>
+</ModMetaData>
