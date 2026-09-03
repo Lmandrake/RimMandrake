@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-03T03:43:53Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: FOUNDRY
+as-of: 2026-09-03T03:46:00Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -207,15 +207,6 @@ kind:     build
 summary:  Tellurox (karraskopt3.png) — Ascendant Helix labour-line livestock,
 prose:    infrastructure/state/items/HELIX_TELLUROX_BUILD_1.md
 
-## BRIDGE_PAWN_THOUGHTS_CARAVAN_GAP_1 jawa/pawn_thoughts cannot read a caravan pawn - FindPawn only sees spawned map pawns
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  Any jawa/pawn tool that resolves a pawn by id/name should also try
-prose:    infrastructure/state/items/BRIDGE_PAWN_THOUGHTS_CARAVAN_GAP_1.md
-
 ## MASS_VALIDATION_LADDER_1 Batched validation ladder: get_defs deep-serialize, manifest runner, hot-reload trial, first review environment
 state:    doing
 row:      unassigned
@@ -332,15 +323,6 @@ target:   v1
 kind:     bug
 summary:  RSWStarmaw (grid cell B2) and RSWLanternwhale (B3) have no textures deployed and
 prose:    infrastructure/state/items/SEABEAST_STARMAW_LANTERNWHALE_TEXTURES_MISSING_1.md
-
-## BRIDGE_LISTPAWNS_GENETRACKER_NRE_1 jawa/list_pawns NREs on any map with a non-genetic (droid) pawn -- Pawn_GeneTracker.XenotypeLabel getter throws
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  jawa/listpawns throws unconditionally once a pawn with no PawnGeneTracker
-prose:    infrastructure/state/items/BRIDGE_LISTPAWNS_GENETRACKER_NRE_1.md
 
 # BLOCKED — something is WRONG and someone must act
 

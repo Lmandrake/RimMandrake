@@ -4138,3 +4138,6 @@
 {"seat":"FOUNDRY","event":"file","id":"FLUID_CANAL_FLOOD_LIVE_CHECK_1","title":"Watch a fluid-canal flood recede and give the floor back","kind":"task","target":"v1","needs":"deploy","spec":"/tmp/claude-1000/-mnt-d-Luke-dev-Rimworld/e5c63a3f-c935-4b0c-9086-a373cefb3608/scratchpad/fluidcanal_live_check_spec.md","caused_by":"FLUID_CANAL_FLOOD_TUNING_GAPS_1","for":"BENCH","ts":"2026-09-03T03:43:05Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"BRIDGE_LISTPAWNS_GENETRACKER_NRE_1: re-verify with Biotech active before fixing","ts":"2026-09-03T03:43:33Z"}
 {"seat":"FOUNDRY","event":"close","id":"FLUID_CANAL_FLOOD_TUNING_GAPS_1","sha":"747b0025","ts":"2026-09-03T03:43:53Z"}
+{"seat":"FOUNDRY","event":"drop","id":"BRIDGE_LISTPAWNS_GENETRACKER_NRE_1","reason":"stale-drop: re-tested live with Biotech DLC active (my original 9-mod test list omitted it) -- RSW_DW_Race_OuterRim_GNKDroid lists fine via jawa/list_pawns, hasGenes:true, xenotype:Baseliner. XenotypeDefOf.Baseliner is Biotech-defined; without Biotech it resolves null and Xenotype.label NREs -- that's a missing-DLC artifact of my test list, not a bridge bug","ts":"2026-09-03T03:44:45Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-03T03:45:32Z"}
+{"seat":"FOUNDRY","event":"close","id":"BRIDGE_PAWN_THOUGHTS_CARAVAN_GAP_1","sha":"1ee5b480","ts":"2026-09-03T03:46:00Z"}
