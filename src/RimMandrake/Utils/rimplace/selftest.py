@@ -206,6 +206,60 @@ def t_sandbox_require():
     raise AssertionError("require was reachable from a template")
 
 
+@case("SANDBOX: a template CANNOT WRITE A FILE (behaviour, not a name list)")
+def t_sandbox_cannot_write_a_file():
+    """🔴 The test the three above could never have been. They each assert that one
+    name we remembered to nil is nil — so they all passed for months while lupa's
+    `python` table sat there un-nil'd and a template could call
+    `python.builtins.open(...)`. Demonstrated in review 2026-09-02: a template wrote a
+    file to disk and returned cleanly.
+
+    ⇒ This one asserts the PROPERTY the docstring actually promises — a template
+    cannot touch the machine — by trying to touch it. It keeps working if lupa adds a
+    new escape hatch under a name nobody here has heard of, which is the entire point.
+    """
+    import os as _os, tempfile
+    probe = _os.path.join(tempfile.gettempdir(), "rimplace_sandbox_probe.txt")
+    if _os.path.exists(probe):
+        _os.remove(probe)
+    try:
+        _run("function build(ctx) python.builtins.open(%r, 'w') end" % probe)
+    except TemplateError:
+        pass                      # refused, as it must be
+    assert not _os.path.exists(probe), (
+        "SANDBOX BREACH: a template wrote %s. Something reachable from Lua can touch "
+        "the filesystem — find it and nil it in _FORBIDDEN." % probe)
+
+
+@case("min_rect: a floor is rounded UP, never truncated")
+def t_min_rect_ceils():
+    """A computed 6.5 truncated to 6 declares a floor SMALLER than the real one, so an
+    undersized rect clears the gate and build() refuses halfway — exactly what
+    TemplateTooSmall exists to prevent."""
+    import tempfile, os as _os
+    p = _os.path.join(tempfile.gettempdir(), "rimplace_ceil_probe.lua")
+    open(p, "w").write("function min_rect(params) return 6.5, 4.2 end\n"
+                       "function build(ctx) end\n")
+    assert declared_min_rect(p, {}) == (7, 5), declared_min_rect(p, {})
+
+
+@case("min_rect: a bad return shape is a TemplateError, never a raw traceback")
+def t_min_rect_bad_shape():
+    """`return '6x4'` used to reach `got['w']` — str has __getitem__ — and raise a bare
+    TypeError past every handler, out to the user as a traceback."""
+    import tempfile, os as _os
+    for body in ("return '6x4'", "return {}", "return true"):
+        p = _os.path.join(tempfile.gettempdir(), "rimplace_shape_probe.lua")
+        open(p, "w").write("function min_rect(params) %s end\n"
+                           "function build(ctx) end\n" % body)
+        try:
+            declared_min_rect(p, {})
+        except TemplateError:
+            continue
+        except Exception as e:
+            raise AssertionError("%r escaped as %s, not TemplateError" % (body, type(e).__name__))
+
+
 # --------------------------------------------------------------------------- #
 #  Compiler
 # --------------------------------------------------------------------------- #

@@ -295,9 +295,17 @@ def t_bridge_is_refused_for_a_non_window_seat():
 
 
 def _bridge_events():
-    """Every bridge event in the throwaway ledger, oldest first."""
+    """Every bridge event in the throwaway ledger, oldest first.
+
+    ⚠️ A ledger that does not exist yet is EMPTY, not an error — the file is created
+    by the first append, so a case that asserts "nothing was written" has no file to
+    read. Raising there made a passing assertion look like a broken test.
+    """
     import json
-    with open(os.path.join(TMP, "events.jsonl"), encoding="utf-8") as fh:
+    p = os.path.join(TMP, "events.jsonl")
+    if not os.path.exists(p):
+        return []
+    with open(p, encoding="utf-8") as fh:
         return [e for e in (json.loads(l) for l in fh if l.strip())
                 if e.get("event") == "bridge"]
 
@@ -336,6 +344,46 @@ def t_an_owner_give_and_a_forced_take_are_attributable_from_the_ledger_alone():
         "the holder must still be the target window — `_apply` reads `seat`: %s" % evs[2])
     assert "OWNER" in (evs[3].get("override") or ""), (
         "an owner clear reads as the holder releasing it itself: %s" % evs[3])
+
+
+def t_a_window_cannot_forge_the_owners_name_with_bridge_give():
+    """🔴 THE WORST BUG THIS FILE GUARDS. `give` emits under the TARGET seat so the
+    holder records correctly — which means `model._may` sees BENCH/FOUNDRY and never
+    fires, so this branch had NO permission check at all. Any window could write
+    "the OWNER handed the bridge to X" into an append-only ledger, bypassing staleness
+    and --force on the way. Stamping `override` (2026-09-02) made the forgery durable
+    by putting a false claim in the one field treated as evidence of a deliberate
+    crossing. Found in review the same day; this is the regression lock."""
+    fresh()
+    refused(("bridge", "give", "FOUNDRY"), "is the OWNER's switch",
+            "a window forged an owner handover", seat="FOUNDRY")
+    refused(("bridge", "give", "free"), "is the OWNER's switch",
+            "a window forged an owner clear", seat="BENCH")
+    assert not _bridge_events(), (
+        "a refused give still wrote to the ledger — the append-only file has no undo")
+    # and the owner's own switch must still work, or `./bridge` is broken
+    ok("bridge", "give", "FOUNDRY", "--seat", "OWNER", "--for", "handover", seat=None)
+    evs = _bridge_events()
+    assert len(evs) == 1 and evs[0]["seat"] == "FOUNDRY", evs
+    assert "OWNER" in (evs[0].get("override") or ""), evs[0]
+
+
+def t_releasing_a_bridge_you_do_not_hold_is_allowed_but_recorded():
+    """⭐ Freeing someone else's lock stays ALLOWED — this system errs toward clearing a
+    wedged bridge, never toward mutual lockout. What was wrong is that it happened with
+    nothing on the event to say a boundary had been crossed."""
+    fresh()
+    ok("bridge", "take", "--for", "foundry work", seat="FOUNDRY")
+    ok("bridge", "release", seat="BENCH")
+    evs = _bridge_events()
+    assert evs[-1]["state"] == "released" and evs[-1]["seat"] == "BENCH", evs[-1]
+    assert "FOUNDRY" in (evs[-1].get("override") or ""), (
+        "BENCH cleared FOUNDRY's lock and the event does not say so: %s" % evs[-1])
+    # releasing your OWN lock is ordinary and must stay unmarked
+    fresh()
+    ok("bridge", "take", "--for", "mine", seat="BENCH")
+    ok("bridge", "release", seat="BENCH")
+    assert _bridge_events()[-1].get("override") is None, _bridge_events()[-1]
 
 
 def t_game_state_is_owner_only():

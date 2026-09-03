@@ -1237,6 +1237,25 @@ def cmd_bridge(args, seat):
         # purpose, and here is which one" (see `_emit` and `model._may`), so it is the
         # field used here too rather than a third shape. `--owner-said` still stamps
         # `ownerSaid` alongside it, from `_emit`, unchanged.
+        # 🔴 THE OWNER GATE. `give` emits under the TARGET window's seat so `_apply`
+        # records the right holder — which means `model._may` sees BENCH/FOUNDRY, never
+        # OWNER, and never fires. So this branch had NO permission check at all: any
+        # window could run `bridge give` and write "the OWNER handed the bridge to X"
+        # into an append-only ledger, bypassing staleness and `--force` on the way.
+        # ⚠️ Stamping `override` here (2026-09-02) is what made that forgery DURABLE —
+        # it put a false claim in the one field this system treats as evidence of a
+        # deliberate crossing. Caught in review the same day. The gate is the fix; the
+        # stamp is only honest behind it.
+        if seat != "OWNER":
+            die("`bridge give` is the OWNER's switch, and you are %s.\n\n"
+                "It writes his name onto a permanent ledger event, so a window may not "
+                "run it —\nnot even to hand the bridge over politely.\n\n"
+                "  take it yourself   rimflow bridge take --for \"<what for>\"\n"
+                "  holder still awake rimflow bridge take --force --for \"<what for>\"\n"
+                "  release your own   rimflow bridge release\n\n"
+                "If HE told you to move it, quote him and it is recorded as his:\n"
+                "  rimflow bridge give <seat> --owner-said \"<his verbatim words>\""
+                % seat)
         to = (args.to or "").upper()
         if to in ("FREE", "NOBODY", "NONE"):
             _emit({"seat": holder or seat, "event": "bridge", "state": "released",
@@ -1260,9 +1279,21 @@ def cmd_bridge(args, seat):
         return 0
 
     if args.action == "release":
-        _emit({"seat": seat, "event": "bridge", "state": "released"}, w, quiet=True)
+        # ⚠️ `_apply` clears the holder for ANY `released` event, whoever sent it — so a
+        # window can free a lock it does not hold. That stays ALLOWED, deliberately:
+        # this system errs toward freeing a wedged bridge, never toward mutual lockout.
+        # What was wrong is that it happened UNRECORDED. Stamp it, like every other
+        # crossing (review finding, 2026-09-02).
+        ev = {"seat": seat, "event": "bridge", "state": "released"}
+        if holder and holder != seat:
+            ev["override"] = "released the bridge out from under %s" % holder
+        _emit(ev, w, quiet=True)
         model.write_bridge_file(None, seat)
-        print("bridge released by %s — it is now FREE for the other window" % seat)
+        if holder and holder != seat:
+            print("bridge released by %s — it was held by %s, and that is on the event"
+                  % (seat, holder))
+        else:
+            print("bridge released by %s — it is now FREE for the other window" % seat)
         return 0
 
     # take. 🔑 ERR ON THE SIDE OF ALLOWING (owner, 2026-09-02). One driver at a time is

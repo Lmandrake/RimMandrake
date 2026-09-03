@@ -10,22 +10,40 @@ plan.py matters as much as this file.
 
 🔴 THE SANDBOX IS NOT OPTIONAL. Templates are DATA. A template that can open a
 socket or delete a file is a template that can do it on someone else's machine
-when we ship one. `os`, `io`, `require`, `dofile`, `loadfile`, `load` and
-`package` are all removed. This is cheap to do now and impossible to retrofit
-once templates are being shared.
+when we ship one. `os`, `io`, `require`, `dofile`, `loadfile`, `load`, `package`
+and — the one that actually mattered — **`python`** are all removed. This is
+cheap to do now and impossible to retrofit once templates are being shared.
+
+⚠️ Until 2026-09-02 this paragraph was FALSE. lupa injects a `python` table
+whenever `register_builtins` is on, which it is by default, so a template could
+reach `python.builtins.open(...)` no matter what else was nil'd. Verify the
+sandbox by BEHAVIOUR — try to write a file and assert it fails — never by
+listing names, because the list cannot contain the name you forgot.
 """
 from __future__ import annotations
 
 import hashlib
+import math
 from pathlib import Path
 
 from .core import BuildPlan, Palette, Rect, SeededRng
 
 # Removed from the template environment. `load`/`loadstring` go too: they are
 # the standard way back out of a sandbox that only removed the obvious names.
+#
+# 🔴 `python` IS THE ONE THAT MATTERED, AND IT WAS MISSING UNTIL 2026-09-02.
+# lupa injects a `python` table whenever `register_builtins` is on — and it is on by
+# default; `register_eval=False` turns off `python.eval`, NOT the table. So a template
+# could reach `python.builtins.__import__("os").system(...)` or `python.builtins.open`
+# and every name below was irrelevant. Demonstrated in review: a template wrote a file
+# to disk and returned a clean value. Templates are DATA, and this file's own docstring
+# promises they cannot touch the machine — that promise was false for as long as it
+# existed. ⚠️ The three SANDBOX selftests asserted exactly the three names they nil'd,
+# which is why nobody noticed: a test that checks the list you wrote cannot find the
+# entry you forgot. The selftest now probes `python` by BEHAVIOUR, not by name.
 _FORBIDDEN = ("os", "io", "package", "require", "dofile", "loadfile",
               "load", "loadstring", "collectgarbage", "debug", "rawset",
-              "rawget", "setmetatable", "getmetatable")
+              "rawget", "setmetatable", "getmetatable", "python")
 
 _SANDBOX_PRELUDE = """
 for _, name in ipairs({%s}) do _G[name] = nil end
@@ -477,17 +495,30 @@ def _declared_min(g, params_table, name):
         raise TemplateError(f"{name}: min_rect() raised: {e}") from e
     if got is None:
         return None
+    # ⚠️ EVERY shape that is not two numbers or a table must land as a TemplateError.
+    # `return '6x4'` used to take the table branch — `str` has `__getitem__` — and then
+    # `got["w"]` raised a bare TypeError that escaped this function, escaped
+    # `cli._build`'s handlers, and reached the user as a traceback.
     if isinstance(got, tuple):
         pair = got[:2]
-    elif hasattr(got, "__getitem__") and not isinstance(got, (int, float)):
-        pair = (got["w"] if got["w"] is not None else got[1],
-                got["h"] if got["h"] is not None else got[2])
-    else:
+    elif isinstance(got, (str, bytes, int, float)) or not hasattr(got, "__getitem__"):
         raise TemplateError(
             f"{name}: min_rect() must return two numbers (`return W, H`) or a "
             f"table {{w = .., h = ..}}; got {got!r}")
+    else:
+        try:
+            pair = (got["w"] if got["w"] is not None else got[1],
+                    got["h"] if got["h"] is not None else got[2])
+        except Exception as e:
+            raise TemplateError(
+                f"{name}: min_rect() returned something table-like that carries "
+                f"neither w/h nor [1]/[2] ({got!r})") from e
+    # 🔑 CEIL, NEVER int(). A computed floor of 6.5 truncated to 6 declares a minimum
+    # SMALLER than the real one, so a 6-wide rect passes this gate and build() then
+    # refuses halfway — which is the exact failure TemplateTooSmall exists to front-run.
+    # A floor must always round UP.
     try:
-        w, h = int(pair[0]), int(pair[1])
+        w, h = math.ceil(float(pair[0])), math.ceil(float(pair[1]))
     except (TypeError, ValueError, IndexError) as e:
         raise TemplateError(
             f"{name}: min_rect() returned {pair!r}, which is not a width and a "

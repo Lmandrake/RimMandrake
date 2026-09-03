@@ -144,12 +144,33 @@ def capture_ship(apply_it):
     if not ks:
         sys.exit("REFUSING: the live list is EMPTY, so capturing it as SHIP would\n"
                  "throw away the campaign's cuts. Load the ship profile first.")
+    have = keys(SHIP) or []
+    # ⚠️ AN EMPTY LIST WAS NEVER THE ONLY DANGEROUS SHAPE. A live list of 3 keys — a
+    # partial write, or someone mid-edit in the mod's own settings window — passed the
+    # guard above and replaced a 1509-key curated profile, which then existed only in
+    # git. Refuse any capture that would lose most of what SHIP already holds; the
+    # owner can still force it by deleting SHIP first, deliberately.
+    if have and len(ks) < len(have) * 0.5:
+        sys.exit("REFUSING: the live list has %d cuts and SHIP holds %d. Capturing "
+                 "would discard\nmore than half of a curated profile.\n\n"
+                 "  If the live list really is the new truth, delete\n    %s\n"
+                 "  and run this again — that deletion is the deliberate act."
+                 % (len(ks), len(have), SHIP))
     print("  live     : %d cuts" % len(ks))
+    print("  SHIP now : %d cuts" % len(have) if have else "  SHIP now : (none yet)")
     print("  would be : %s" % SHIP)
     if not apply_it:
         print("\nplan only. re-run with --apply")
         return
     os.makedirs(STORE, exist_ok=True)
+    # 🔴 ARCHIVE THE EXISTING SHIP FIRST. `swap()` snapshots before every write and this
+    # did not, so the one command that overwrites the curated profile was the one with
+    # no backup behind it (review finding, 2026-09-02).
+    if have:
+        stamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+        dst = os.path.join(STORE, "CherryPicker.SHIP.PRECAPTURE.%s.xml" % stamp)
+        shutil.copy2(SHIP, dst)
+        print("  archived : %s (%d cuts)" % (os.path.basename(dst), len(have)))
     shutil.copy2(LIVE, SHIP)
     if not os.path.exists(REVIEW):
         with open(REVIEW, "w", encoding="utf-8") as f:

@@ -159,13 +159,40 @@ def capture_full(apply_it):
     if not added and not dropped:
         print("\n  identical mod sets. nothing to capture.")
         return
+    # 🔴 REFUSE WHILE MINIMAL IS LIVE. Capturing then would replace the owner's real
+    # restore point with the 13-mod test list, and `--restore` — the one command that
+    # is supposed to undo that — would put the test list back. Recovery would be git
+    # alone. Found in review 2026-09-02; `cherrypicker_swap.capture_ship` had the
+    # analogous guard from the start and this did not.
+    if which_is_live().startswith("MINIMAL"):
+        sys.exit("REFUSING: the MINIMAL test list is live. Capturing it as FULL.LATEST "
+                 "would destroy\nthe owner's real restore point and make --restore "
+                 "restore the test list.\n\n  put his list back first:  "
+                 "modlist_swap.py --restore --apply")
     if not apply_it:
         print("\nplan only. Read those lines — a debug mod does not belong in the "
               "owner's list.\nre-run with --apply")
         return
-    arch = snapshot()
+    # ⚠️ ARCHIVE **FULL**, NOT LIVE. This used to call snapshot(), which archives the
+    # LIVE file — then overwrote FULL with that same live content and printed
+    # "archived old FULL.LATEST". The old restore point was never copied anywhere and
+    # the message said it had been. A backup that is a copy of the NEW content is
+    # worse than no backup, because it stops you reaching for git.
+    arch = None
+    if os.path.exists(FULL):
+        stamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+        arch = os.path.join(STORE, "ModsConfig.FULL.PRECAPTURE.%s.xml" % stamp)
+        if not any(md5(os.path.join(STORE, n)) == md5(FULL)
+                   for n in os.listdir(STORE)
+                   if n.lower().endswith(".xml") and n != os.path.basename(FULL)
+                   and os.path.isfile(os.path.join(STORE, n))):
+            shutil.copy2(FULL, arch)
+        else:
+            arch = None
+            print("  archive : skipped, the old FULL.LATEST is already kept elsewhere")
     shutil.copy2(LIVE, FULL)
-    print("\n  archived old FULL.LATEST -> %s" % os.path.basename(arch))
+    if arch:
+        print("\n  archived the OLD FULL.LATEST -> %s" % os.path.basename(arch))
     print("  WROTE live -> FULL.LATEST (%d active)" % len(live_ids))
 
 

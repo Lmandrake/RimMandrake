@@ -89,6 +89,15 @@ DEFAULT_MANIFEST = os.path.join(DEF_DUMP, "manifest.json")
 DEFAULT_PREVLOG = PREV_LOG
 
 # ---------------------------------------------------------------------------
+# 🔴 THE BLOCK BELOW IS HISTORY, NOT CURRENT. Superseded 2026-09-02.
+# It predicts `crossref EXPECT 25` and `defdiscard EXPECT 2`; both now baseline **0**
+# in CHECKS, measured on the 587-mod load after onimods.electrictorches was removed
+# and the cross-reference errors cleared. A reader who trusts the numbers below is
+# wrong by 25. It is kept only because its METHOD is worth copying — an a-priori
+# prediction from patch structure, confirmed a-posteriori from the previous run's log,
+# written down BEFORE the load so "the mod removal explains it" could not be reached
+# for afterwards. Copy the discipline; take the numbers from CHECKS.
+# ---------------------------------------------------------------------------
 # ⏳ BASELINES vs THE 573 STACK — read before trusting a number below
 # ---------------------------------------------------------------------------
 # Every baseline here was measured on a stack that INCLUDED
@@ -253,12 +262,26 @@ CHECKS = [
     # 🔑 The lesson is the check's own: a config error means the def loaded and the
     # ENGINE disapproves — it does NOT mean the def is wrong for our purposes. Read
     # the mechanism before filing on a line this check surfaces.
+    # 🔴 THIS BASELINE COUNTS LINES, AND 15 OF THE 19 DEFS EMIT TWO LINES EACH.
+    # Re-derived from the 2026-09-02 16:5x log after review challenged the arithmetic:
+    # 34 lines / 19 distinct defs — RSW_FE_* (6) and Sign* (9) appear TWICE each,
+    # CannibalPirate / PirateYttakin / two Techprint_* appear once.
+    # ⚠️ WHY THE DOUBLING HAPPENS IS UNKNOWN. `TerrainDef.ConfigErrors()` and
+    # `ThingDef.ConfigErrors()` each yield their message ONCE per def, and one
+    # `Log.Error` is one Player.log line — so the engine appears to run the pass twice
+    # for those types, and nobody here has proven why. DO NOT write a cause into this
+    # note until someone has.
+    # ⇒ The consequence that matters: if the engine ever runs ONE pass, this reads ~19
+    # and prints "BETTER — update the docs" while NOTHING has been fixed. A drop toward
+    # 19 means the pass count changed; a drop to 22 (say) means a def was actually
+    # fixed. Read `--show configerror` and count DEFS before believing either.
     ("configerror", "def ConfigErrors (loaded but WRONG)",
      r"Config error in |Exception in ConfigErrors\(\) of ", 34,
-     "34 = 12 INTENTIONAL (RSW_FE ash ladder, ruled not-a-defect aa9ab7fa - they will "
-     "never go away) + 18 Sign* + 2 vanilla FactionDef NRE + 2 techprint whitespace. "
-     "Read with --show configerror BEFORE filing anything: this check finds defs the "
-     "ENGINE disapproves of, which is not the same as defs that are wrong"),
+     "34 LINES over 19 defs (15 of them logged twice - mechanism unexplained). "
+     "6 RSW_FE ash-ladder terrains are INTENTIONAL (ruled not-a-defect, aa9ab7fa); "
+     "9 Sign* are another mod's; 2 vanilla FactionDef NRE; 2 techprint whitespace. "
+     "Read --show configerror BEFORE filing: this finds defs the ENGINE disapproves "
+     "of, which is not the same as defs that are wrong"),
     # Baseline 5, MEASURED 2026-08-12 by diffing the 568-mod load (18:18,
     # Player-prev.log) against the 573-mod load (21:09). Byte-for-byte the same
     # three mods, same ops, same counts - so the five mods added that day
