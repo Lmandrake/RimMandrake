@@ -144,7 +144,7 @@ LIMITATIONS — read these before believing a number
   * MayRequire is evaluated only on the def's OWN root node, not on inherited
     <li> children. A def gated by a MayRequire on an ancestor is not bucketed.
 
-SELF-TEST — 70 assertions, two phases
+SELF-TEST — 71 assertions, two phases
 =====================================
     python src/RimMandrake/Utils/def_diff.py --selftest
 
@@ -210,10 +210,15 @@ SENTINEL_PREFIXES = (
 
 # XML machinery that describes a node's place in the inheritance graph rather
 # than any field of the def. def_inventory strips these from resolved elements
-# already, but a def's OWN attributes survive onto `.element`.
+# already, but a def's OWN attributes survive onto `.element`. NOTE: @Class is
+# deliberately NOT here — unlike these, it is real field data (which concrete
+# C# class a comp/verb/li is), and compare_def()/live_step() below have their
+# own special-case handling to diff it against the live "$type". Filtering it
+# here at every depth (not just root) silently discarded it before that
+# handling could ever see it.
 SKIP_ATTR_KEYS = frozenset((
     "@ParentName", "@Name", "@Abstract", "@Inherit",
-    "@MayRequire", "@MayRequireAnyOf", "@Class",
+    "@MayRequire", "@MayRequireAnyOf",
 ))
 # defName is the join key; comparing it against itself proves nothing.
 SKIP_ROOT_KEYS = frozenset(("defName",))
@@ -1262,6 +1267,21 @@ def _synth_live_dir(tmp):
                     "label": "test gun", "category": "Item",
                     "verbs": [{"$type": "VerbProperties",
                                "defaultProjectile": "Bullet_Test"}]}},
+        # 12b. a patch swapped which C# class a comp instantiates -> a real
+        #     delta, not silence. This is the case that proves the @Class vs
+        #     $type special-case actually fires (it was dead code until it
+        #     was fixed: SKIP_ATTR_KEYS filtered "@Class" out of the offline
+        #     flatten at every depth, not just the root, so the comparison
+        #     below never even saw a path to compare).
+        {"defName": "ClassSwapBeast", "defType": "ThingDef",
+         "defTypeFull": "Verse.ThingDef", "label": "class swap beast",
+         "shortHash": 1515, "modName": "Core", "packageId": "ludeon.rimworld",
+         "is": {"weapon": False, "apparel": False, "pawn": True,
+                "animal": True, "category": "Pawn"},
+         "fields": {"$type": "ThingDef", "defName": "ClassSwapBeast",
+                    "label": "class swap beast", "category": "Pawn",
+                    "comps": [{"$type": "CompProperties_Shearable"}],
+                    "race": {"$type": "RaceProperties", "intelligence": "Animal"}}},
         # 12. a patch appended two comps -> a list-length delta
         {"defName": "ListBeast", "defType": "ThingDef",
          "defTypeFull": "Verse.ThingDef", "label": "list beast",
@@ -1370,6 +1390,13 @@ def _synth_offline():
                <category>Item</category>
                <verbs><li><defaultProjectile>Bullet_Test</defaultProjectile></li></verbs>
              </ThingDef>""", modName="Core", shortHashCandidate=1313),
+        # the offline Class= names one comp, the live $type names another
+        T("""<ThingDef>
+               <defName>ClassSwapBeast</defName><label>class swap beast</label>
+               <category>Pawn</category>
+               <comps><li Class="CompProperties_Milkable"><milkDef>Milk</milkDef></li></comps>
+               <race><intelligence>Animal</intelligence></race>
+             </ThingDef>""", modName="Core", shortHashCandidate=1515),
         # one comp offline, three live -> a #count delta
         T("""<ThingDef>
                <defName>ListBeast</defName><label>list beast</label>
@@ -1522,8 +1549,8 @@ def selftest():
 
         checks = [
             # ---- streaming reader ----
-            ("streaming reader found every live ThingDef", st_thing["liveDefs"] == 12),
-            ("streaming reader handles a second type", totals["liveDefs"] == 14),
+            ("streaming reader found every live ThingDef", st_thing["liveDefs"] == 13),
+            ("streaming reader handles a second type", totals["liveDefs"] == 15),
             # ---- presence classification ----
             ("clean match is 'both'", TD("Muffalo")["status"] == "both"),
             ("patched def still matches", TD("Thrumbo")["status"] == "both"),
@@ -1579,8 +1606,12 @@ def selftest():
              "comps.#count: 1 -> 3" in TD("ListBeast")["deltas"]),
             ("Class= vs $type agrees on the short name",
              "@Class" not in TD("ListBeast")["deltas"]),
-            ("defs-with-deltas tallied", totals["defsWithDeltas"] == 3
-             and totals["deltaTotal"] == 4),
+            ("a patched comp Class is caught, not silently skipped",
+             TD("ClassSwapBeast")["deltaCount"] == 1
+             and "comps.0.@Class: CompProperties_Milkable -> CompProperties_Shearable"
+                 in TD("ClassSwapBeast")["deltas"]),
+            ("defs-with-deltas tallied", totals["defsWithDeltas"] == 4
+             and totals["deltaTotal"] == 5),
             ("a non-ThingDef type diffs too, and int-vs-float agrees",
              by[("RecipeDef", "CookMeal")]["status"] == "both"
              and by[("RecipeDef", "CookMeal")]["deltaCount"] == 0),
@@ -1591,25 +1622,25 @@ def selftest():
              "weapon" in TD("WeaponMisfit")["categoryMismatches"]),
             ("a correct classification stays 'both'", TD("Gun_Test")["status"] == "both"),
             # Calibration is only meaningful on MATCHED defs — a live_only def
-            # has no offline guess to score, so the 12 live ThingDefs yield 10
-            # evaluations, not 12.
+            # has no offline guess to score, so the 13 live ThingDefs yield 11
+            # evaluations, not 13.
             ("accuracy is scored over matched defs only",
-             acc["weapon"]["evaluated"] == 10),
+             acc["weapon"]["evaluated"] == 11),
             ("the miss is a false NEGATIVE, not a false positive",
              acc["weapon"]["falseNegative"] == 1
              and acc["weapon"]["falsePositive"] == 0
-             and acc["weapon"]["accuracy"] == 0.9),
+             and abs(acc["weapon"]["accuracy"] - 10.0 / 11.0) < 1e-3),
             ("a flag missing from `is` is simply not scored",
              acc["meleeWeapon"]["evaluated"] == 4),
             ("ranged weapon guessed right",
              acc["rangedWeapon"]["falsePositive"] == 0),
             ("animal category is near-perfect offline",
-             acc["animal"]["accuracy"] >= 0.9 and acc["animal"]["liveYes"] == 8),
+             acc["animal"]["accuracy"] >= 0.9 and acc["animal"]["liveYes"] == 9),
             ("accuracy is a fraction", 0.0 <= acc["weapon"]["accuracy"] <= 1.0),
             ("pawn-only flags absent in `is` count as False",
-             acc["pawn"]["liveYes"] == 8),
+             acc["pawn"]["liveYes"] == 9),
             ("category_mismatch is not double-counted as both",
-             st_thing["both"] + st_thing["category_mismatch"] == 10),
+             st_thing["both"] + st_thing["category_mismatch"] == 11),
             # ---- output ----
             ("CSV round-trips every row", len(csv_rows) == len(rows)),
             ("CSV carries the status column",
