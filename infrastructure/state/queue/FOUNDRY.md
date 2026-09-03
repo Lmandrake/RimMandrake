@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-03T17:51:35Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-03T19:12:31Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -437,16 +437,6 @@ _none._
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
 
-## KOTOR_HEADBAND_DANGLING_REFS_1 guy762_Headband_* apparel cut but KotOR Droids still references/patches them: 23 dangling crossrefs + 1 failed PatchOperationAdd
-state:    proposed
-row:      unassigned
-needs:    harvest
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/KOTOR_HEADBAND_DANGLING_REFS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/KOTOR_HEADBAND_DANGLING_REFS_1.md
-
 ## DEFDUMP_ONDEMAND_BRIDGE_UNREACHABLE_1 RMDefDump on-demand DebugAction not fireable via bridge: plain Action-type custom leaves absent from the debug tree
 state:    proposed
 row:      unassigned
@@ -486,3 +476,13 @@ kind:     continuity
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  DIRTYCODEREVIEWLOOPRESTART3
 prose:    infrastructure/state/items/DIRTY_CODE_REVIEW_LOOP_RESTART_3.md
+
+## VANILLA_COUNT_PSEUDO_DEF_1 A mod writes vanilla count-class pseudo-defs (MealSimple10/Chemfuel60/Steel75/Silver120/ComponentIndustrial12) as defNames instead of Def+count
+state:    proposed
+row:      unassigned
+needs:    harvest
+target:   v1
+kind:     bug
+thin:     spec, verify and criteria all present
+summary:  Identify which mod/file emits these five (or more — the harvest only sampled)
+prose:    infrastructure/state/items/VANILLA_COUNT_PSEUDO_DEF_1.md
