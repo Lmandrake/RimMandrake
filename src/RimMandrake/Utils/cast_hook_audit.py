@@ -41,7 +41,7 @@ import xml.etree.ElementTree as ET
 
 REPO = os.path.abspath(os.path.join(os.path.dirname(os.path.abspath(__file__)),
                                     "..", "..", ".."))
-ROSTERS = os.path.join(REPO, "src", "Jawa", "Inhabited", "Defs", "CastRosters", "*.xml")
+ROSTERS = os.path.join(REPO, "src", "RimMandrake", "Inhabited", "Defs", "CastRosters", "*.xml")
 
 # ---------------------------------------------------------------------------
 # THE CUE TABLE — hook language that PROMISES a mechanic.
@@ -132,7 +132,7 @@ def load():
         except ET.ParseError as e:
             print("⚠️  %s did not parse: %s" % (os.path.basename(path), e), file=sys.stderr)
             continue
-        for d in root.findall("Inhabited.CharacterDef"):
+        for d in root.findall("RimMandrake.Inhabited.CharacterDef"):
             traits = []
             for li in d.findall("./traits/li"):
                 name = li.findtext("def") or "?"
