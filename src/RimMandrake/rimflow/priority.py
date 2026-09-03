@@ -137,12 +137,70 @@ def next_item(world, seat, target="v1", ctx=None):
     return r[0] if r else None
 
 
+def state_reason(it):
+    """Why this item's `state` keeps it out of `rank()`, or None if it is `ready`.
+
+    Split out of `why_not` so the one sentence a stuck seat reads can be exercised
+    without building a world around it.
+    """
+    if it.state == "ready":
+        return None
+    if it.state == "proposed":
+        # 🔴 NOT A GATE, AND THIS LINE USED TO SAY IT WAS. Until 2026-09-03 it read
+        # "items/<ID>.md is missing ## spec …, so it cannot enter `ready`", which is
+        # the completeness gate the owner ordered removed on 2026-08-21 — *"make
+        # everyone able to work on anything in their queue independent of the V&V plan
+        # attached right away"*. `model._apply_item_verb`'s `claim` has not enforced it
+        # since, and selftest_model pins its absence in two places; only this sentence
+        # survived, in the ONE command a stuck seat runs to find out what to do. A
+        # removed gate that still answers the "why can't I work this" question has not
+        # been removed. Missing sections are reported as INFORMATION, never a reason.
+        miss = model._missing(it)
+        thin = ("  Thin: no %s — worth writing, never a precondition."
+                % ", ".join("## " + m for m in miss)) if miss else ""
+        return ("state is `proposed` — nobody has claimed it yet. `rimflow claim %s` "
+                "makes it yours and offerable.%s" % (it.id, thin))
+    if it.state == "done":
+        return ("closed at %s. It will never be offered again — that is the "
+                "point of an append-only record." % (it.closed_sha or "?"))
+    return "state is `%s`." % it.state
+
+
+def needs_reason(it, world, seat, ctx=None):
+    """Why this item's `needs` window is shut, in words that say whether to WAIT.
+
+    🔑 Never say "will reopen" about a window that only reopens if a HUMAN acts. A
+    bridge held by another seat, or free and untaken, is a thing to DO, not a thing to
+    wait for, and saying otherwise is what stranded this item for days.
+    """
+    holder = (ctx or {}).get("bridge_holder", world.bridge_holder)
+    if it.needs == "bridge" and seat not in BRIDGE_SEATS:
+        return ("needs `bridge`, and %s cannot hold the lock — one driver at a "
+                "time (CHARTER.md). Hand it to a live window: "
+                "`rimflow reassign %s --to FOUNDRY`." % (seat, it.id))
+    if it.needs == "bridge" and world.game in LIVE and holder and holder != seat:
+        return ("needs `bridge`, and %s is holding it. This is NOT blocked and it "
+                "will NOT reopen on its own — it reopens when %s runs "
+                "`rimflow bridge release`." % (holder, holder))
+    # ⚠️ Deliberately NOT special-cased: `needs: bridge` while the game is DOWN.
+    # There the stock wording is TRUE — the window really does reopen on its own,
+    # when the game next comes up. Only a LIVE game with the lock unavailable is
+    # the case that never reopens by itself. Rewriting the game-DOWN message too
+    # was an over-reach and selftest_cli caught it.
+    return ("needs `%s`, and the game is %s. ⚠️ This is NOT blocked — nothing "
+            "is wrong, the window is simply closed and will reopen."
+            % (it.needs, world.game))
+
+
 def why_not(world, seat, iid, target="v1", ctx=None):
     """Why is this item not being offered? One reason per line, in filter order.
 
     ⭐ This is the command that stops the guessing. "It is not in my queue" was
     unanswerable before, because the queue was prose; here every filter can say
     exactly why it rejected an item, and the answer is the same for everyone.
+
+    ⚠️ The filters below are `rank()`'s, in `rank()`'s order. If one of them stops
+    matching, `why` starts explaining a decision `next` did not make.
     """
     it = world.items.get(iid)
     if it is None:
@@ -151,17 +209,9 @@ def why_not(world, seat, iid, target="v1", ctx=None):
     if it.owner != seat:
         out.append("owned by %s, not %s. Filing work for another seat is normal; "
                    "working it is not." % (it.owner, seat))
-    if it.state != "ready":
-        if it.state == "proposed":
-            miss = model._missing(it)
-            out.append("state is `proposed`: items/%s.md is missing %s, so it cannot "
-                       "enter `ready`." % (iid, " and ".join("## " + m for m in miss))
-                       if miss else "state is `proposed` and has not been claimed.")
-        elif it.state == "done":
-            out.append("closed at %s. It will never be offered again — that is the "
-                       "point of an append-only record." % (it.closed_sha or "?"))
-        else:
-            out.append("state is `%s`." % it.state)
+    state = state_reason(it)
+    if state:
+        out.append(state)
     if it.blocked:
         out.append("BLOCKED: %s%s" % (it.blocked_reason,
                                       (" (on %s)" % it.blocked_on) if it.blocked_on else ""))
@@ -169,26 +219,5 @@ def why_not(world, seat, iid, target="v1", ctx=None):
         out.append("targeted at %s, and the active version is %s. That is a planning "
                    "decision, not a defect." % (it.target, target))
     if not satisfiable(it, world, ctx, seat):
-        # 🔑 Never say "will reopen" about a window that only reopens if a HUMAN acts.
-        # A bridge held by another seat, or free and untaken, is a thing to DO, not a
-        # thing to wait for, and saying otherwise is what stranded this item for days.
-        holder = (ctx or {}).get("bridge_holder", world.bridge_holder)
-        if it.needs == "bridge" and seat not in BRIDGE_SEATS:
-            out.append("needs `bridge`, and %s cannot hold the lock — one driver at a "
-                       "time (CHARTER.md). Hand it to a live window: "
-                       "`rimflow reassign %s --to FOUNDRY`."
-                       % (seat, iid))
-        elif it.needs == "bridge" and world.game in LIVE and holder and holder != seat:
-            out.append("needs `bridge`, and %s is holding it. This is NOT blocked and it "
-                       "will NOT reopen on its own — it reopens when %s runs "
-                       "`rimflow bridge release`." % (holder, holder))
-        # ⚠️ Deliberately NOT special-cased: `needs: bridge` while the game is DOWN.
-        # There the stock wording is TRUE — the window really does reopen on its own,
-        # when the game next comes up. Only a LIVE game with the lock unavailable is
-        # the case that never reopens by itself. Rewriting the game-DOWN message too
-        # was an over-reach and selftest_cli caught it.
-        else:
-            out.append("needs `%s`, and the game is %s. ⚠️ This is NOT blocked — nothing "
-                       "is wrong, the window is simply closed and will reopen."
-                       % (it.needs, world.game))
+        out.append(needs_reason(it, world, seat, ctx))
     return out or ["It IS being offered. Check `rimflow next --seat %s`." % seat]

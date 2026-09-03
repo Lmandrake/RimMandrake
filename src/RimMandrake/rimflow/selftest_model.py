@@ -269,6 +269,46 @@ def t_claim_always_reaches_ready():
         "claim parked a prose-less item in `proposed` — the removed gate is back")
 
 
+def t_why_does_not_reinstate_the_completeness_gate_in_words():
+    """🔴 THE GATE SURVIVED IN THE ONE COMMAND A STUCK SEAT RUNS.
+
+    `model` stopped enforcing completeness on 2026-08-21 and the two cases above pin
+    it. But until 2026-09-03 `priority.why_not` still answered a thin `proposed` item
+    with "items/<ID>.md is missing ## spec and ## verify and ## criteria, so it cannot
+    enter `ready`" — a precondition that had not existed for thirteen days, stated to
+    the seat asking why it could not work the item. A removed gate that still ANSWERS
+    THE QUESTION has not been removed, so the wording is pinned here beside the
+    behaviour it used to contradict.
+
+    ⚠️ Asserted as a PROPERTY, not only a string: the same replay proves the claim the
+    old sentence denied. A message test alone would let the two drift apart again.
+    """
+    evs = [filed("THIN_BUT_CLAIMABLE_1", for_="BUILD")]
+    w = model.replay(evs, strict=True)
+    said = " ".join(priority.why_not(w, "BUILD", "THIN_BUT_CLAIMABLE_1"))
+    assert model._missing(w.items["THIN_BUT_CLAIMABLE_1"]), (
+        "the fixture grew a prose file; this case needs a THIN item to mean anything")
+    assert "cannot enter" not in said and "cannot be claimed" not in said, (
+        "`why` still states the completeness gate the owner removed: %s" % said)
+    assert "rimflow claim THIN_BUT_CLAIMABLE_1" in said, (
+        "`why` named no way forward. The seat ran this command precisely to find out "
+        "what to DO, and claiming is the answer: %s" % said)
+    # …and the thing the old sentence called impossible:
+    w2 = model.replay(evs + [ev(seat="BUILD", event="claim",
+                                id="THIN_BUT_CLAIMABLE_1")], strict=True)
+    assert w2.items["THIN_BUT_CLAIMABLE_1"].state == "ready", (
+        "one claim did NOT reach ready — if this ever fails, the gate is genuinely "
+        "back and the message above is the smaller problem")
+
+
+def t_why_reports_a_thin_item_as_information_not_a_reason():
+    """The missing sections still get named — as a heads-up, in the shape cli.py's
+    `_nothing` already uses ("offered anyway, but something was left unsaid")."""
+    w = model.replay([filed("ALSO_THIN_HERE_1", for_="BUILD")], strict=True)
+    said = " ".join(priority.why_not(w, "BUILD", "ALSO_THIN_HERE_1"))
+    assert "## spec" in said and "never a precondition" in said, said
+
+
 def t_complete_item_can_start():
     os.makedirs(model.ITEMS, exist_ok=True)
     with open(os.path.join(model.ITEMS, "FULL_ITEM_HERE_1.md"), "w") as fh:

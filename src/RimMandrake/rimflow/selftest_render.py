@@ -288,6 +288,86 @@ def t_diff_summary_names_what_only_the_queue_has():
     assert d["in_ledger_only"] == ["ONLY_IN_THE_LEDGER_1"], d
 
 
+def t_view_ids_is_exactly_what_the_file_holds():
+    """⭐ THE PROPERTY THAT STOPS A SECOND PARTITION EVER APPEARING.
+
+    `render()`'s drift table has to name the ids a view carries, and for months it
+    computed them a second way. So `view_ids()` is asserted against the ONLY authority
+    there can be: the item headings in the file that was actually written. Every
+    section is populated below, because a partition can only disagree where it splits.
+    """
+    file_item("RANKED_AND_OFFERED_1", row=1)
+    file_item("STARTED_AND_RUNNING_1", row=2)
+    emit(seat="FOUNDRY", event="start", id="STARTED_AND_RUNNING_1")
+    file_item("BLOCKED_ON_SOMETHING_1", row=3)
+    emit(seat="FOUNDRY", event="block", id="BLOCKED_ON_SOMETHING_1", reason="stuck")
+    file_item("WAITING_FOR_THE_GAME_1", row=4, needs="game-up")
+    file_item("AIMED_AT_VERSION_TWO_1", row=5)
+    emit(seat="FOUNDRY", event="retarget", id="AIMED_AT_VERSION_TWO_1", to="v2")
+    prose("NEVER_CLAIMED_AT_ALL_1")
+    emit(seat="BENCH", event="file", id="NEVER_CLAIMED_AT_ALL_1", title="t",
+         kind="task", **{"for": "FOUNDRY"})
+    render.render(quiet=True)
+    world, _ = render.build()
+    got = render.view_ids(world, "FOUNDRY")
+    on_disk = render.queue_item_ids(os.path.join(render.PREVIEW, "FOUNDRY.md"))
+    assert got == on_disk, (
+        "view_ids() and the rendered file disagree — the second partition is back.\n"
+        "  view_ids only: %s\n  file only    : %s"
+        % (sorted(got - on_disk), sorted(on_disk - got)))
+    assert len(got) == 6, sorted(got)
+
+
+def t_the_drift_table_counts_the_preview_not_every_item_ever_owned():
+    """🔴 THE TABLE INVENTED DRIFT THAT DID NOT EXIST.
+
+    `in_ledger_only` was `{i.id for i in world.items.values() if i.owner == seat}` —
+    every item the seat had EVER owned — while the column it feeds is headed
+    `preview`, and the view carries no closed items at all (owner's ruling
+    2026-08-26: "anything done is GONE"). On the live 709-item ledger that printed
+    "BENCH preview 67 | queue 2" about two files holding the same two items, and
+    "FOUNDRY preview 193 | queue 39" where 154 of the 193 had closed. `_print_render`'s
+    own comment warned against exactly this and the code below it did it anyway.
+    """
+    file_item("STILL_OPEN_AND_READY_1", row=1)
+    file_item("LONG_SINCE_FINISHED_1", row=2)
+    emit(seat="FOUNDRY", event="close", id="LONG_SINCE_FINISHED_1", sha="abc1234")
+    # The published queue holds exactly what a view of this ledger holds: no drift.
+    with open(os.path.join(render.QUEUE, "FOUNDRY.md"), "w", encoding="utf-8") as fh:
+        fh.write("## STILL_OPEN_AND_READY_1 t\nstate: ready\n")
+    s = render.render(quiet=True)
+    d = [x for x in s["diffs"] if x["seat"] == "FOUNDRY"][0]
+    assert d["in_ledger_only"] == [] and d["in_queue_only"] == [], (
+        "a closed item was reported as drift between two files that agree: %s" % d)
+    assert d["both"] == 1, d
+    on_disk = render.queue_item_ids(os.path.join(render.PREVIEW, "FOUNDRY.md"))
+    assert len(d["in_ledger_only"]) + d["both"] == len(on_disk), (
+        "the `preview` column does not count the preview: %d vs %d headings"
+        % (len(d["in_ledger_only"]) + d["both"], len(on_disk)))
+
+
+def t_bench_actually_renders_items_into_the_views():
+    """🔴 A BENCHMARK WHOSE SUBJECT IS ABSENT.
+
+    `bench()` round-robined its synthetic items across DECIDE/BUILD/CHECK — none of
+    them in `VIEW_SEATS` — and closed every one in the same breath. Both rendered
+    views were empty at every size, `summary()` was never called, and the `views`
+    stage timed two file writes: 400 events reported 20.5 ms for zero item lines,
+    against 68.0 ms once the items were actually there. It could only ever come in
+    under target.
+    """
+    d = os.path.join(render.DERIVED, ".bench")
+    rc, out = quiet(lambda: render.bench(200))
+    assert rc == 0, out
+    assert "rendered into the views" in out, (
+        "bench no longer says how many items it rendered — that count is the thing "
+        "that makes an empty benchmark visible: %s" % out)
+    n = int(out.split("(", 1)[1].split(" rendered")[0])
+    assert n > 0, ("bench rendered %d items into the views; its `views` timing is "
+                   "measuring two empty files.\n%s" % (n, out))
+    assert not os.path.exists(d), "bench left its scratch tree behind"
+
+
 def t_prose_headings_are_not_counted_as_items():
     """`## 🔴 OWNER RULINGS…` is a section, not an item, and must not gate the guard."""
     with open(os.path.join(render.QUEUE, "FOUNDRY.md"), "w", encoding="utf-8") as fh:
