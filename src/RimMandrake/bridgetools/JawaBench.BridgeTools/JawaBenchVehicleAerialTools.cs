@@ -22,6 +22,11 @@
 //     JawaBenchKcsgTools.cs calling the exact CleanRect->Generate sequence.
 //   Vehicles.World.VehicleWorldObjectsHolder : Verse.WorldComponent (vanilla base)
 //     .AerialVehicles         PROPERTY -> List<AerialVehicleInFlight>
+//   Vehicles.World.AerialVehicleInFlight -- namespace is Vehicles.World, NOT Vehicles.
+//     GenTypes.GetTypeInAnyAssembly matches on the EXACT full name (Assembly.GetType) and
+//     only falls back through Verse/RimWorld namespaces, so a wrong namespace here does not
+//     degrade: it returns null and the whole tool refuses as "Vehicle Framework not loaded".
+//     Verified against the shipped 1.6 Vehicles.dll metadata, not just the source tree.
 //   Vehicles.VehicleSkyfaller : Verse.Thing (public abstract)  -- the SECOND half of
 //     "Ground All Aerial Vehicles": skyfallers already mid-arrival/departure on a map,
 //     distinct from the AerialVehicleInFlight world objects above.
@@ -120,11 +125,11 @@ namespace JawaBench.BridgeTools
             return await ctx.MainThread.InvokeAsync(() =>
             {
                 Type holderType = GenTypes.GetTypeInAnyAssembly("Vehicles.World.VehicleWorldObjectsHolder");
-                Type aerialType = GenTypes.GetTypeInAnyAssembly("Vehicles.AerialVehicleInFlight");
+                Type aerialType = GenTypes.GetTypeInAnyAssembly("Vehicles.World.AerialVehicleInFlight");
                 Type patchDebugType = GenTypes.GetTypeInAnyAssembly("Vehicles.Patch_Debug");
                 if (holderType == null || aerialType == null || patchDebugType == null)
                     return Fail("Vehicle Framework is not loaded (Vehicles.World.VehicleWorldObjectsHolder / "
-                        + "Vehicles.AerialVehicleInFlight / Vehicles.Patch_Debug not found).");
+                        + "Vehicles.World.AerialVehicleInFlight / Vehicles.Patch_Debug not found).");
 
                 MethodInfo landMethod = patchDebugType.GetMethod("DebugLandAerialVehicle", VfPubStatic,
                     null, new[] { aerialType }, null);

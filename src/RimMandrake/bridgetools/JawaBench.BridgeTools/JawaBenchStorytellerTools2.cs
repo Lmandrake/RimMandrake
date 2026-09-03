@@ -186,7 +186,7 @@ namespace JawaBench.BridgeTools
                 "Set TickManager.CurTimeSpeed persistently (Paused/Normal/Fast/Superfast/Ultrafast) - " +
                 "unlike jawa/time_pin_normal_speed, this does not expire; it sits at the tier of " +
                 "jawa/time_set_ticks, an ungated utility lever, not an incident.",
-            ResultDescription = "success, speedBefore, speedAfter.")]
+            ResultDescription = "success, speedBefore, speedAfter, note when the engine refused the write.")]
         public static async Task<object> SetGameSpeed(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -199,19 +199,33 @@ namespace JawaBench.BridgeTools
                 var tm = Find.TickManager;
                 if (tm == null) return Fail("No active TickManager - is a game loaded?");
 
+                // Enum.TryParse accepts the raw NUMBER too ("9" parses as (TimeSpeed)9), and
+                // curTimeSpeed is scribed into the save. An undefined value makes
+                // TickManager.TickRateMultiplier fall to its default and return -1f, i.e. a
+                // negative TickInterval, persisted. Enum.IsDefined is what rejects it.
                 TimeSpeed s;
-                if (string.IsNullOrWhiteSpace(speed) || !Enum.TryParse(speed.Trim(), true, out s))
+                if (string.IsNullOrWhiteSpace(speed) || !Enum.TryParse(speed.Trim(), true, out s)
+                    || !Enum.IsDefined(typeof(TimeSpeed), s))
                     return Fail("'" + speed + "' is not a TimeSpeed. Accepted: " + string.Join(", ", Enum.GetNames(typeof(TimeSpeed))));
 
                 TimeSpeed before = tm.CurTimeSpeed;
                 try { tm.CurTimeSpeed = s; }
                 catch (Exception e) { return Fail("Setting CurTimeSpeed threw " + e.GetType().Name + ": " + e.Message); }
 
+                // The setter is not a plain assignment: it silently drops the write when
+                // TickManager.PlayerCanControl is false (gravship landing-area confirmation
+                // in progress, or Game.PlayerHasControl false). Read it back rather than
+                // reporting success for a write the engine discarded.
+                bool applied = tm.CurTimeSpeed == s;
+
                 return new
                 {
-                    success = true,
+                    success = applied,
                     speedBefore = before.ToString(),
                     speedAfter = tm.CurTimeSpeed.ToString(),
+                    note = applied ? null : "REFUSED by the engine (not thrown) - TickManager.CurTimeSpeed's " +
+                        "setter discards the write while the player has no time control (gravship " +
+                        "landing-area confirmation in progress, or Game.PlayerHasControl false).",
                     ticksGame = TicksGameSafe()
                 };
             }).ConfigureAwait(false);
@@ -425,8 +439,12 @@ namespace JawaBench.BridgeTools
 
                 if (!string.IsNullOrWhiteSpace(quality))
                 {
+                    // Enum.TryParse also accepts the raw NUMBER ("99" parses as
+                    // (QualityCategory)99). CompQuality.qualityInt is scribed, and
+                    // QualityUtility.GetLabel throws ArgumentException on an undefined value -
+                    // so an unchecked parse writes a save that throws in the inspect pane.
                     QualityCategory q;
-                    if (!Enum.TryParse(quality.Trim(), true, out q))
+                    if (!Enum.TryParse(quality.Trim(), true, out q) || !Enum.IsDefined(typeof(QualityCategory), q))
                         return Fail("'" + quality + "' is not a QualityCategory. Accepted: " + string.Join(", ", Enum.GetNames(typeof(QualityCategory))));
                     var cq = t.TryGetComp<CompQuality>();
                     if (cq == null) skipped.Add("quality (no CompQuality)");
@@ -464,7 +482,18 @@ namespace JawaBench.BridgeTools
                     if (sdef == null) return Fail("No ThingStyleDef '" + style + "'.", DefSuggestions<ThingStyleDef>(style));
                     var cs = t.TryGetComp<CompStyleable>();
                     if (cs == null) skipped.Add("style (no CompStyleable)");
-                    else { cs.styleDef = sdef; changed.Add("style"); }
+                    else
+                    {
+                        // NOT cs.styleDef = sdef: the raw field write leaves Thing.styleGraphicInt
+                        // (the cached style Graphic, Thing.Graphic) and CompStyleable
+                        // .cachedStyleCategoryDef stale, so the thing keeps drawing the OLD style
+                        // until a save/reload. Thing's own StyleDef setter nulls styleGraphicInt
+                        // and SetStyleDef nulls cachedStyleCategoryDef; Notify_ColorChanged then
+                        // dirties the map mesh so a map-mesh-drawn thing actually repaints.
+                        t.StyleDef = sdef;
+                        t.Notify_ColorChanged();
+                        changed.Add("style");
+                    }
                 }
 
                 if (changed.Count == 0 && skipped.Count == 0)
@@ -503,10 +532,13 @@ namespace JawaBench.BridgeTools
                 "jawa/set_pawn_backstory or jawa/set_pawn_appearance. Refuses (Log.Error inside " +
                 "the engine call, surfaced here rather than swallowed) if guestStatus=Guest and " +
                 "the pawn's own faction is hostile to newHost, or newHost equals the pawn's own " +
-                "faction.",
+                "faction. For guestStatus=Slave the engine routes hostFaction to pawn.SetFaction " +
+                "and deliberately leaves HostFaction null, so hostFactionAfter=null there is a " +
+                "SUCCESS, not a refusal.",
             ResultDescription =
                 "success, pawn, hostFactionBefore/After, guestStatusBefore/After, " +
-                "resistanceAfter and willAfter (Prisoner only, freshly rolled by the engine call).")]
+                "resistanceAfter and willAfter (Prisoner only, freshly rolled by the engine call), " +
+                "and note when the engine refused without throwing.")]
         public static async Task<object> PawnSetGuestStatus(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -525,7 +557,8 @@ namespace JawaBench.BridgeTools
                 if (p.guest == null) return Fail(p.LabelShortCap + " has no Pawn_GuestTracker (guest is null) - not a humanlike pawn?");
 
                 GuestStatus gs;
-                if (string.IsNullOrWhiteSpace(guestStatus) || !Enum.TryParse(guestStatus.Trim(), true, out gs))
+                if (string.IsNullOrWhiteSpace(guestStatus) || !Enum.TryParse(guestStatus.Trim(), true, out gs)
+                    || !Enum.IsDefined(typeof(GuestStatus), gs))
                     return Fail("'" + guestStatus + "' is not a GuestStatus. Accepted: " + string.Join(", ", Enum.GetNames(typeof(GuestStatus))));
 
                 Faction newHost = null;
@@ -549,7 +582,14 @@ namespace JawaBench.BridgeTools
                 // on the invalid combinations - Guest status with a host hostile to the
                 // pawn's own faction, and newHost == pawn.Faction - so a throw-free call
                 // is not proof it actually applied. Read the after-state back instead.
-                bool applied = p.guest.GuestStatus == gs && p.guest.HostFaction == newHost;
+                //
+                // Slave is the exception: the engine's last line is
+                //   hostFactionInt = ((guestStatus != GuestStatus.Slave) ? newHost : null);
+                // so a SUCCESSFUL enslavement always leaves HostFaction null (newHost went to
+                // pawn.SetFaction instead). Comparing against newHost there reports a completed
+                // enslavement as success=false with a "REFUSED by the engine" note that is false.
+                Faction expectedHost = gs == GuestStatus.Slave ? null : newHost;
+                bool applied = p.guest.GuestStatus == gs && p.guest.HostFaction == expectedHost;
 
                 return new
                 {
