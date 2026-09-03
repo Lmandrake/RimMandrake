@@ -122,8 +122,10 @@ namespace JawaBench.BridgeTools
                 "Read the weather and every active game condition, plus what the storyteller " +
                 "currently believes the colony is worth. Read-only and safe on a live game. " +
                 "⭐ `threatPoints` and the wealth breakdown are not exposed anywhere else - " +
-                "they are what the storyteller actually uses to size the next raid.",
-            ResultDescription = "success, weather, conditions[], threatPoints, wealth, storyteller.")]
+                "they are what the storyteller actually uses to size the next raid. " +
+                "conditions[] covers BOTH the map manager and the world manager - each row " +
+                "carries scope ('map'|'world') and affectsThisMap.",
+            ResultDescription = "success, weather, conditions[] (def, scope, affectsThisMap, permanent, ticksLeft), threatPoints, wealth, storyteller.")]
         public static async Task<object> WeatherGet(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -135,17 +137,33 @@ namespace JawaBench.BridgeTools
                 if (map == null) return Fail(err);
                 var wm = map.weatherManager;
 
+                // 🔴 GameConditionManager.ActiveConditions IS MANAGER-LOCAL - it never walks
+                // Parent. A map manager's Parent is Find.World.gameConditionManager, so a
+                // world-scoped condition (a quest, a scenario part, or this file's own
+                // jawa/game_condition worldWide=true) was invisible to a tool that promises
+                // "every active game condition". Read both managers and label the scope.
                 var active = new List<object>();
                 try
                 {
-                    foreach (var c in map.gameConditionManager.ActiveConditions)
-                        active.Add(new
-                        {
-                            def = c.def.defName, label = c.LabelCap,
-                            permanent = c.Permanent,
-                            ticksPassed = c.TicksPassed,
-                            ticksLeft = c.Permanent ? -1 : c.TicksLeft,
-                        });
+                    var managers = new List<KeyValuePair<string, GameConditionManager>>
+                    {
+                        new KeyValuePair<string, GameConditionManager>("map", map.gameConditionManager)
+                    };
+                    var worldMgr = Find.World != null ? Find.World.gameConditionManager : null;
+                    if (worldMgr != null && worldMgr != map.gameConditionManager)
+                        managers.Add(new KeyValuePair<string, GameConditionManager>("world", worldMgr));
+
+                    foreach (var mgr in managers)
+                        foreach (var c in mgr.Value.ActiveConditions)
+                            active.Add(new
+                            {
+                                def = c.def.defName, label = c.LabelCap,
+                                scope = mgr.Key,
+                                affectsThisMap = c.CanApplyOnMap(map),
+                                permanent = c.Permanent,
+                                ticksPassed = c.TicksPassed,
+                                ticksLeft = c.Permanent ? -1 : c.TicksLeft,
+                            });
                 }
                 catch (Exception e) { Log.Warning("[JawaBench] weather_get conditions: " + e.Message); }
 
@@ -365,7 +383,7 @@ namespace JawaBench.BridgeTools
             CancellationToken cancellationToken,
             [ToolParameter(Description = "'start' | 'end'.")] string action = "start",
             [ToolParameter(Description = "GameConditionDef name.")] string condition = null,
-            [ToolParameter(Description = "Duration in ticks. 0 uses the def default.")] int durationTicks = 0,
+            [ToolParameter(Description = "Duration in ticks. <=0 uses 60000 (one in-game day) - GameConditionDef carries NO default duration.")] int durationTicks = 0,
             [ToolParameter(Description = "Make it permanent.")] bool permanent = false,
             [ToolParameter(Description = "Apply world-wide instead of to this map.")] bool worldWide = false)
         {
@@ -390,11 +408,23 @@ namespace JawaBench.BridgeTools
                 {
                     var existing = mgr.GetActiveCondition(cd);
                     if (existing != null) { existing.Duration = existing.TicksPassed; notes.Add("replaced an already-active instance"); }
+                    // 🔴 THERE IS NO "def default duration". GameConditionDef has no duration
+                    // field at all, and GameCondition.Expired is
+                    // `TicksGame > startTick + Duration` - so MakeCondition(cd, 0) registered
+                    // a condition that DIED ON THE NEXT TICK while this tool reported
+                    // success:true "for its default duration". Vanilla's own AddGameCondition
+                    // debug action always supplies Permanent or an explicit tick count; so
+                    // does this now.
+                    const int DefaultConditionTicks = 60000; // one in-game day
+                    int useTicks = durationTicks > 0 ? durationTicks : DefaultConditionTicks;
                     GameCondition c = permanent
                         ? GameConditionMaker.MakeConditionPermanent(cd)
-                        : GameConditionMaker.MakeCondition(cd, durationTicks > 0 ? durationTicks : 0);
+                        : GameConditionMaker.MakeCondition(cd, useTicks);
                     mgr.RegisterCondition(c);
-                    notes.Add("registered " + cd.defName + (permanent ? " PERMANENT" : (durationTicks > 0 ? " for " + durationTicks + " ticks" : " for its default duration")));
+                    notes.Add("registered " + cd.defName + (permanent
+                        ? " PERMANENT"
+                        : " for " + useTicks + " ticks"
+                          + (durationTicks > 0 ? "" : " (durationTicks was not given; GameConditionDef has no default duration and a 0 would expire next tick)")));
                 }
                 else if (A == "end")
                 {
@@ -824,10 +854,13 @@ namespace JawaBench.BridgeTools
             "jawa/map_skyfaller",
             Description =
                 "*** ACTS ON THE LIVE MAP *** Drop a skyfaller - meteorite, drop pod, shuttle - " +
-                "at a cell. Default is a mineral meteorite with generated contents. " +
-                "⚠️ A skyfaller def given the wrong kind of inner thing destroys it with a " +
-                "Log.Error, so innerThing is validated against the def first.",
-            ResultDescription = "success, what was dropped and where.")]
+                "at a cell. Default is a mineral meteorite, filled from " +
+                "ThingSetMakerDefOf.Meteorite exactly as IncidentWorker_MeteoriteImpact does - " +
+                "a bare MeteoriteIncoming carries NOTHING and leaves no mineral behind. " +
+                "⚠️ A skyfaller whose container refuses the inner thing destroys it with a " +
+                "Log.Error and still falls, so the container is READ BACK after the drop and " +
+                "innerThingCarried says whether it actually made it.",
+            ResultDescription = "success, what was dropped and where, innerThingCarried, generatedContents[], notes[].")]
         public static async Task<object> MapSkyfaller(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -851,6 +884,9 @@ namespace JawaBench.BridgeTools
                 if (sd.skyfaller == null)
                     return Fail("'" + sd.defName + "' is not a skyfaller (its def has no <skyfaller> block).");
 
+                var notes = new List<string>();
+                bool carried = false;
+                object generatedContents = null;
                 try
                 {
                     if (!string.IsNullOrEmpty(innerThing))
@@ -858,8 +894,30 @@ namespace JawaBench.BridgeTools
                         var it = DefDatabase<ThingDef>.GetNamedSilentFail(innerThing.Trim());
                         if (it == null) return Fail("No ThingDef '" + innerThing + "'.", DefSuggestions<ThingDef>(innerThing));
                         var t = ThingMaker.MakeThing(it, it.MadeFromStuff ? GenStuff.DefaultStuffFor(it) : null);
-                        t.stackCount = Math.Max(1, count);
-                        SkyfallerMaker.SpawnSkyfaller(sd, t, c0, map);
+                        // A stackCount above the def's stackLimit is an illegal stack that
+                        // survives into the savegame, so clamp rather than trust the caller.
+                        int want = Mathf.Clamp(count, 1, Math.Max(1, it.stackLimit));
+                        if (want != count) notes.Add("count clamped from " + count + " to " + want + " (" + it.defName + " stackLimit " + it.stackLimit + ")");
+                        t.stackCount = want;
+                        var sk = SkyfallerMaker.SpawnSkyfaller(sd, t, c0, map);
+                        // 🔴 SkyfallerMaker.MakeSkyfaller Log.Errors and DESTROYS an inner
+                        // thing its container refuses - the skyfaller still spawns, empty, and
+                        // this tool used to report success with innerThing echoed back.
+                        carried = sk != null && sk.innerContainer != null && sk.innerContainer.Count > 0;
+                        if (!carried)
+                            notes.Add("⚠ '" + sd.defName + "' REFUSED '" + it.defName + "'. RimWorld destroyed it and the skyfaller is falling EMPTY.");
+                    }
+                    else if (sd == ThingDefOf.MeteoriteIncoming)
+                    {
+                        // A bare MeteoriteIncoming carries nothing and leaves no mineral.
+                        // IncidentWorker_MeteoriteImpact fills it from ThingSetMakerDefOf.Meteorite.
+                        var contents = ThingSetMakerDefOf.Meteorite.root.Generate();
+                        var sk = SkyfallerMaker.SpawnSkyfaller(sd, contents, c0, map);
+                        carried = sk != null && sk.innerContainer != null && sk.innerContainer.Count > 0;
+                        generatedContents = contents.Select(t => new { def = t.def.defName, count = t.stackCount }).ToList();
+                        notes.Add(carried
+                            ? "filled from ThingSetMakerDefOf.Meteorite, as IncidentWorker_MeteoriteImpact does"
+                            : "⚠ the meteorite is falling EMPTY - nothing was accepted into its container.");
                     }
                     else SkyfallerMaker.SpawnSkyfaller(sd, c0, map);
                 }
@@ -869,6 +927,9 @@ namespace JawaBench.BridgeTools
                 {
                     success = true, skyfaller = sd.defName,
                     at = new { x, z }, innerThing, count,
+                    innerThingCarried = carried,
+                    generatedContents,
+                    notes,
                     ticksGame = TicksGameSafe(),
                 };
             });
