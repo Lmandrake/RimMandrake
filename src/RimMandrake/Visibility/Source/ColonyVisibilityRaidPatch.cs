@@ -83,7 +83,14 @@ namespace RimMandrake.Visibility
             }
             else
             {
+                // Prefix, not postfix: GenerateGravship despawns the grav engine
+                // (Thing.DeSpawn inside Gravship's own ctor / CopyCellContents)
+                // before returning, so engine.Map is already null by the time any
+                // postfix on this method runs. Harmony guarantees every prefix
+                // runs before the original, so this is the last point the engine
+                // is still on its map.
                 harmony.Patch(launchTarget,
+                    prefix: new HarmonyMethod(typeof(ColonyVisibilityRaidPatch), nameof(Prefix_RecordTileMemoryOnLaunch)),
                     postfix: new HarmonyMethod(typeof(ColonyVisibilityRaidPatch), nameof(Postfix_ResetVisibilityOnLaunch)));
             }
 
@@ -141,14 +148,14 @@ namespace RimMandrake.Visibility
         }
 
         /// <summary>
-        /// Departure half of tile-memory decay - fires at the same launch
-        /// choke point as Postfix_ResetVisibilityOnLaunch, recording the
-        /// PRE-reset dial (order matters: this must read shipVisibility
-        /// before ResetOnLaunch clamps it to the 5-15 floor, so the memory
-        /// reflects what the tile actually looked like while occupied, not
-        /// the post-launch reset value).
+        /// Departure half of tile-memory decay - a PREFIX on GenerateGravship
+        /// (see the registration comment above for why), so it runs before
+        /// Postfix_ResetVisibilityOnLaunch and reads shipVisibility before
+        /// ResetOnLaunch clamps it to the 5-15 floor - the memory reflects
+        /// what the tile actually looked like while occupied, not the
+        /// post-launch reset value.
         /// </summary>
-        public static void Postfix_RecordTileMemoryOnLaunch(Building_GravEngine engine)
+        public static void Prefix_RecordTileMemoryOnLaunch(Building_GravEngine engine)
         {
             GameComponent_ColonyVisibility component = Current.Game?.GetComponent<GameComponent_ColonyVisibility>();
             if (component == null || engine?.Map == null)
@@ -260,17 +267,12 @@ namespace RimMandrake.Visibility
         /// once per successful gravship launch - GenerateGravship is the
         /// moment the ship map is actually detached and turned into a
         /// Gravship world object (verified via RimSage,
-        /// Source/RimWorld/GravshipUtility.cs, carried over unchanged from
-        /// COLONY_VISIBILITY_STAT_1's build).</summary>
+        /// Source/RimWorld/GravshipUtility.cs). The tile-memory departure
+        /// record (Prefix_RecordTileMemoryOnLaunch) runs first, as a prefix
+        /// on the same method, and reads shipVisibility before this clamps
+        /// it.</summary>
         public static void Postfix_ResetVisibilityOnLaunch(Building_GravEngine engine)
         {
-            // Tile-memory departure record happens FIRST, in the same
-            // postfix - it must read shipVisibility before ResetOnLaunch
-            // clamps it, and combining them into one method avoids relying
-            // on Harmony's cross-registration postfix ordering (unspecified
-            // when two separate harmony.Patch calls target the same
-            // method).
-            Postfix_RecordTileMemoryOnLaunch(engine);
             Current.Game?.GetComponent<GameComponent_ColonyVisibility>()?.ResetOnLaunch();
         }
     }
