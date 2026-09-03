@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+# post-commit — keep the codebase health map current without anyone remembering to.
+#
+# Owner's rule, 2026-09-02: rebuild "once per hour (if many changes are occurring) or
+# upon change (if it's been longer than an hour)". The RULE lives in
+# codebase_health_publish.py, not here — this hook only gives it a heartbeat. It exits
+# 3 and does nothing on the vast majority of commits.
+#
+# INSTALL (it is not version-controlled where git looks for it):
+#   ln -sf ../../src/RimMandrake/Utils/git_hooks/post-commit .git/hooks/post-commit
+#
+# 🔴 THREE RULES A post-commit HOOK IN THIS REPO MUST FOLLOW, and all three are here:
+#
+#  1. NEVER BLOCK THE COMMIT. Four threads commit into this checkout constantly. The
+#     rebuild walks ~1,600 files, so it goes to the BACKGROUND and the hook returns
+#     immediately. A hook that adds seconds to every commit gets deleted by whoever
+#     is trying to work.
+#  2. NEVER FAIL THE COMMIT. The commit already happened; post-commit's exit code is
+#     ignored by git, but a noisy failure trains people to `--no-verify` everything.
+#     Errors go to a log, not to the terminal.
+#  3. NEVER COMMIT ANYTHING. This hook fires inside a commit; writing to the index
+#     from here would recurse or, worse, sweep a peer's staged work into the next
+#     commit. It writes only to Transient/ and its own state file, both untracked or
+#     committed deliberately by a human later.
+#
+# ⚠️ It does NOT republish the artifact — that needs Claude in the loop. The published
+# page is refreshed by whoever is at the bench; the local file is always current.
+
+REPO="$(git rev-parse --show-toplevel 2>/dev/null)" || exit 0
+[ -n "$REPO" ] || exit 0
+
+LOG="$REPO/Transient/codebase_health_hook.log"
+mkdir -p "$REPO/Transient" 2>/dev/null
+
+# Detached from the commit: no stdin, output to the log, and the shell does not wait.
+(
+  cd "$REPO" || exit 0
+  printf '\n=== %s  %s\n' "$(date -u +%Y-%m-%dT%H:%M:%SZ)" "$(git rev-parse --short HEAD 2>/dev/null)"
+  python3 src/RimMandrake/Utils/codebase_health_publish.py
+  printf 'exit %s\n' "$?"
+) >>"$LOG" 2>&1 </dev/null &
+
+exit 0
