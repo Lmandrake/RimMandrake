@@ -167,6 +167,7 @@ def main():
             body = f.read(a.max_chars)
         if not a.keep_comments:
             body = re.sub(r"<!--.*?-->", "", body, flags=re.S)
+            body = re.sub(r"(?m)^\s*#.*$\n?", "", body)   # whole-line '#' comments
             body = re.sub(r"\n\s*\n+", "\n", body)
         # 1-indexed line numbers so EVIDENCE is checkable against the real file
         body = "\n".join(f"{i+1}: {l}" for i, l in enumerate(body.splitlines()))
