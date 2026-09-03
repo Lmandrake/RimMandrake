@@ -112,7 +112,7 @@ DISTRO = "Ubuntu"
 # other three never notice. Full evidence: observed/2026-08-14_wsl_oom.md.
 # Arguments pass through untouched, so `--name` still does its job below.
 LAUNCH = ("/mnt/d/Luke/dev/Rimworld/src/RimMandrake/Utils/claude_bounded.sh "
-          "--dangerously-skip-permissions --name 'AGENT {seat}' --model {model}")
+          "--dangerously-skip-permissions --name '{label}' --model {model}")
 
 # Hue-distinct and legible on Campbell's near-black background.
 # Redesign #4 (2026-08-27): two windows. BENCH keeps BUILD's green, FOUNDRY keeps
@@ -166,6 +166,10 @@ def seat_guid(seat):
 def build(seat):
     colour, model, _, home = SEATS[seat]
     home_wsl, home_win = home if home else (REPO_WSL, REPO_WIN)
+    # ⭐ `AGENT` is this fleet's prefix, so only a seat of this fleet carries it
+    # (owner, 2026-09-02, on HESTIA: "Just HESTIA"). The label is the tab name AND
+    # the `--name` peers address, and those two must not drift apart.
+    label = f"AGENT {seat}" if not home else seat
     scheme = dict(CAMPBELL, name=f"Seat {seat}", foreground=colour,
                   cursorColor=colour)
     # A LOGIN shell, so the owner's PATH applies and `claude` resolves exactly as
@@ -176,11 +180,11 @@ def build(seat):
     # login shell that still carries AGENT_SEAT, rather than closing the window.
     export = "" if home else f"export AGENT_SEAT={seat} && "
     inner = (f"cd {home_wsl} && {export}"
-             f"{LAUNCH.format(seat=seat, model=model)}; exec $SHELL -l")
+             f"{LAUNCH.format(label=label, model=model)}; exec $SHELL -l")
     profile = {
         "guid": seat_guid(seat),
-        "name": f"AGENT {seat}",
-        "tabTitle": f"AGENT {seat}",
+        "name": label,
+        "tabTitle": label,
         "commandline": f'wsl.exe -d {DISTRO} -- bash -lc "{inner}"',
         "startingDirectory": home_win,
         "colorScheme": f"Seat {seat}",
@@ -263,7 +267,8 @@ def main():
           f"{updated} to update, {removed} retired profile(s) to remove, "
           f"{len(SEATS)} scheme(s) synced")
     for seat, (colour, model, why, home) in SEATS.items():
-        print(f"  AGENT {seat:<8} {colour}  model {model:<15} tab+text  {why}")
+        label = f"AGENT {seat}" if not home else seat
+        print(f"  {label:<14} {colour}  model {model:<15} tab+text  {why}")
         if home:
             print(f"  {'':<14}opens in {home[1]}, and does NOT export AGENT_SEAT")
     if args.font_size:
