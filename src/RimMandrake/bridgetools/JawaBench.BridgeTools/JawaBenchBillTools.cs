@@ -158,10 +158,14 @@ namespace JawaBench.BridgeTools
         [Tool(
             "jawa/bill_list",
             Description =
-                "READ ONLY. Lists every Bill on a workbench/billable thing's BillStack, in " +
-                "order (index matches jawa/bill_remove's billIndex). Reports ShouldDoNow() " +
-                "live, so a caller can tell 'suspended' from 'active but target already met' " +
-                "from 'active and will actually run next' without re-deriving the logic.",
+                "Lists every Bill on a workbench/billable thing's BillStack, in order (index " +
+                "matches jawa/bill_remove's billIndex). Adds, removes and changes nothing. " +
+                "Reports ShouldDoNow() live, so a caller can tell 'suspended' from 'active but " +
+                "target already met' from 'active and will actually run next' without " +
+                "re-deriving the logic. ⚠️ Not strictly side-effect-free: Bill_Production." +
+                "ShouldDoNow() re-evaluates the bill's own self-managed `paused` flag as it " +
+                "runs (sets it under TargetCount+pauseWhenSatisfied, clears it otherwise) - " +
+                "the same write the game performs every time a pawn looks for work.",
             ResultDescription =
                 "success, thingId, thingDefName, billCount, bills[] of {index, recipeDefName, " +
                 "label, suspended, repeatMode, repeatCount, targetCount, shouldDoNow}.")]

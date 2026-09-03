@@ -48,8 +48,11 @@ namespace JawaBench.BridgeTools
                 "silently blocking every later call - a failure this project has hit before.",
             ResultDescription =
                 "list: success, count, windows[] (index, type, optionalTitle, layer, ID, " +
-                "isDebug, forcePause). close: success, closedCount, closed[] (type, " +
-                "optionalTitle), stillOpenCount.")]
+                "isDebug, forcePause). close: success (false if ANY target survived), " +
+                "closedCount, closed[] (type, optionalTitle), refusedCount, refused[] - a " +
+                "window whose own OnCloseRequest() vetoed the close, verified against the " +
+                "stack AFTER the call rather than assumed from Close() returning - plus " +
+                "refusedNote and stillOpenCount.")]
         public static async Task<object> WindowListClose(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -119,20 +122,35 @@ namespace JawaBench.BridgeTools
                     }
 
                     var closed = new List<object>();
+                    var refused = new List<object>();
                     foreach (var w in targets)
                     {
                         string t = w.GetType().FullName;
                         string title = w.optionalTitle;
-                        try { w.Close(doCloseSound); closed.Add(new { type = t, optionalTitle = title }); }
+                        try { w.Close(doCloseSound); }
                         catch (Exception e) { return Fail("Close() threw " + e.GetType().Name + ": " + e.Message + " on " + t, new { closedSoFar = closed }); }
+                        // 🔴 Window.Close(bool) is a one-liner over WindowStack.TryRemove(this, sound)
+                        // and THROWS AWAY its bool. TryRemove changes nothing and returns false when
+                        // the window's own OnCloseRequest() vetoes (Page_ModsConfig overrides it in
+                        // vanilla; mod windows commonly do) or when the window already left the stack.
+                        // A stuck modal is precisely what this tool exists for and precisely what
+                        // vetoes, so verify against the stack instead of trusting the call.
+                        if (stack.Windows.Contains(w)) refused.Add(new { type = t, optionalTitle = title });
+                        else closed.Add(new { type = t, optionalTitle = title });
                     }
 
                     return new
                     {
-                        success = true,
+                        success = refused.Count == 0,
                         action = "close",
                         closedCount = closed.Count,
                         closed,
+                        refusedCount = refused.Count,
+                        refused,
+                        refusedNote = refused.Count > 0
+                            ? "Still on the stack after Close(): the window's own OnCloseRequest() " +
+                              "refused, or it was already gone. Window.Close() cannot force these."
+                            : null,
                         stillOpenCount = stack.Windows.Count,
                         ticksGame = TicksGameSafe()
                     };

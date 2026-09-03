@@ -53,8 +53,11 @@ namespace JawaBench.BridgeTools
                 "read off-thread while loading mutates them - a fieldError entry means that one " +
                 "read failed, not that the tool is broken; call again.",
             ResultDescription =
-                "success, programState, coreStaticAssetsLoaded, currentEvent{...fields, " +
-                "eventActionMethod}, queuedEventCount, executingToExecuteWhenFinished, " +
+                "success, programState, coreStaticAssetsLoaded, currentEvent (every field of " +
+                "LongEventHandler's QueuedLongEvent by its OWN name - eventAction, " +
+                "eventActionEnumerator, eventTextKey, eventText, doAsynchronously, levelToLoad, " +
+                "...; delegate-valued ones render as 'Type.Method [assembly]'), " +
+                "queuedEventCount (-1 if the field is gone), executingToExecuteWhenFinished, " +
                 "toExecuteWhenFinished[] of {declaringType, method, assembly}, eventThread" +
                 "{alive, state, managedId, stackTrace|stackTraceError}, topThreads[] of " +
                 "{id, cpuSeconds, state, waitReason}, fieldErrors[].")]
