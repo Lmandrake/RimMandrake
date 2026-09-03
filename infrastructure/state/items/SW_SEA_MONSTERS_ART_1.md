@@ -33,6 +33,19 @@ original colossi. Mockups are now KEEPERS, committed at
 Generation prompts remain banked at
 `src/RimStarWars/SeaBeasts/art/gen_sea_mockups.py`.
 
+## CLOSED 2026-09-03 — live review sitting with the owner (BENCH)
+
+All 18 beasts staged live on `gravship_scratch_b` (full 578 list, the load
+carrying FOUNDRY's 18/18 texture deploy): one of each kind spawned on a role×species
+grid west of the ship, `spawn_pawn` requested=actual 18/18, zero substitutions.
+**Owner's verdict at the screen: "They look great!"** — the positive render check
+the texture item left owed (Starmaw constellation flank, Lanternwhale tendrils)
+observed in-game by the owner himself; Player.log carries zero
+`Failed to find any textures` lines on this load. Criteria check: 18 creatures per
+roster ✓; 18 PLAN.md beside the art ✓; baseBodySize in-band per role table
+(opee 1.4–2.0, colo 2.6–3.6, sando 12–20, scalefish 0.15–0.4, swarm 0.2–0.25,
+colossi 32/36/40) ✓. Beasts left on the map (disposable scratch state), game paused.
+
 ## verify
 
 Final art closes only with a validator pass per facing and a PROVE/EXPECT/LIES

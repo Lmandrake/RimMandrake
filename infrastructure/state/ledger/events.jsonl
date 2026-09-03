@@ -4182,3 +4182,4 @@
 {"seat":"BENCH","event":"seat","state":"ready","ts":"2026-09-03T05:18:24Z"}
 {"seat":"BENCH","event":"bridge","state":"taken","purpose":"FLUID_CANAL_FLOOD_LIVE_CHECK_1 quicktest","ts":"2026-09-03T05:18:53Z"}
 {"seat":"OWNER","event":"close","id":"GAME_STATE_BROADCAST_NARROWING_1","sha":"d6ccb31e","ownerSaid":"Leave it as is","override":"OWNER may not `close` GAME_STATE_BROADCAST_NARROWING_1 — it belongs to BENCH. Filing work FOR another seat is normal; changing another seat's item is refused.","ts":"2026-09-03T05:26:56Z"}
+{"seat":"OWNER","event":"close","id":"SW_SEA_MONSTERS_ART_1","sha":"7b546f9b","ownerSaid":"They look great!","override":"OWNER may not `close` SW_SEA_MONSTERS_ART_1 — it belongs to BENCH. Filing work FOR another seat is normal; changing another seat's item is refused.","ts":"2026-09-03T05:35:58Z"}

@@ -884,3 +884,17 @@ calls `UI.MouseCell()` directly — no parameter plumbing. Passing `x`/`z` to
 (`origin=(60, 0, 60)` for `x:60, z:60`). So the bridge sets the cell the tool reads,
 and a ToolMap action written for a human mouse needs no adaptation to be driven.
 Confirmed twice, at two different cells, one of them 120 cells from the other.
+
+### 🔴 Closing the ESCAPE MENU resumes the game at its previous speed
+The paused state you read while `RimWorld.MainTabWindow_Menu` (the Esc menu) is open
+is the MENU's pause, not a real speed-0. `rimworld/close_window {"windowType":
+"MainTabWindow_Menu"}` closed it and the sim resumed at the owner's underlying speed
+instantly — ~1,300 ticks ran before it was caught (2026-09-03, gravship_scratch_b,
+18 freshly spawned wild predators on the map; no losses, by luck). `jawa/clear_ui`
+does NOT close this window (`closedCount: 0`, listed in `remaining`) — same family
+as the Dialog_NodeTree entry above. Also: `set_time_speed 0` during a forced-speed
+stretch can report "Paused" while ticks still advance — verify with two
+`jawa/time_clock` reads and RETRY; the second call stuck.
+**Fix:** `set_time_speed 0` and VERIFY the freeze BEFORE `close_window` on the menu.
+**Generalises to:** any pause you observed while a modal was open is unproven the
+moment that modal closes.
