@@ -2035,7 +2035,8 @@ namespace JawaBench.BridgeTools
                 {
                     var fd = DefDatabase<FactionDef>.GetNamedSilentFail(faction.Trim());
                     if (fd == null) return Fail("No FactionDef '" + faction + "'.", DefSuggestions<FactionDef>(faction));
-                    fac = Find.FactionManager.FirstFactionOfDef(fd);
+                    fac = ResolveLiveFactionOfDefOrFail(fd, faction, out var ambFail);
+                    if (ambFail != null) return ambFail;
                     if (fac == null)
                         return Fail("FactionDef '" + faction + "' exists but no such faction was generated in THIS world. " +
                                     "Refusing rather than leaving the object factionless - a null-faction Settlement is destroyed on load.");
@@ -2755,7 +2756,8 @@ namespace JawaBench.BridgeTools
                 {
                     var fd = DefDatabase<FactionDef>.GetNamedSilentFail(faction.Trim());
                     if (fd == null) return Fail("No FactionDef '" + faction + "'.", DefSuggestions<FactionDef>(faction));
-                    fac = Find.FactionManager.FirstFactionOfDef(fd);
+                    fac = ResolveLiveFactionOfDefOrFail(fd, faction, out var ambFail);
+                    if (ambFail != null) return ambFail;
                     if (fac == null)
                         return Fail("FactionDef '" + faction + "' exists but no such faction was generated in THIS world. " +
                                     "Live: " + string.Join(", ", Find.FactionManager.AllFactionsVisible.Select(z => z.def.defName).Take(20).ToArray()));
@@ -2934,6 +2936,31 @@ namespace JawaBench.BridgeTools
         private static Faction ResolveFactionArg(string s)
         {
             return ResolveFactionArgAll(s).FirstOrDefault();
+        }
+
+        // Same silent-corruption shape as the write guard above: FactionManager's OWN
+        // FirstFactionOfDef silently returns the FIRST live faction of a def when a world
+        // holds several - which this file's own header comment calls "routine", not an
+        // edge case. WorldObjectsSet, WorldObjectsAdd and WorldSettlementsImport all
+        // resolved a FactionDef to a live Faction this way and then WROTE it (re-faction,
+        // create, or import), so an ambiguous def used to land silently on whichever
+        // faction FactionManager happened to list first and report success. Refuse
+        // instead, the same way AmbiguousFaction refuses a write on the relations tools.
+        private static Faction ResolveLiveFactionOfDefOrFail(FactionDef fd, string askedDefName, out object fail)
+        {
+            fail = null;
+            if (fd == null) return null;
+            var matches = Find.FactionManager.AllFactions.Where(q => q != null && q.def == fd).ToList();
+            if (matches.Count > 1)
+            {
+                fail = Fail($"FactionDef '{askedDefName}' matches {matches.Count} live factions in this " +
+                            "world - FirstFactionOfDef would silently pick one and land the write on the " +
+                            "wrong faction. Use jawa/world_objects_get or jawa/faction_relations_get to find " +
+                            "the specific faction and its own Name, if the tool you are using accepts one.",
+                    new { defName = askedDefName, names = matches.Select(q => q.Name).ToList() });
+                return null;
+            }
+            return matches.Count == 1 ? matches[0] : null;
         }
 
         // null when the argument names exactly one faction. Otherwise the refusal,
@@ -3921,6 +3948,7 @@ namespace JawaBench.BridgeTools
                 var plan = new List<KeyValuePair<Faction, KeyValuePair<int, string>>>();
                 var refused = new List<object>();
                 var factionCache = new Dictionary<string, Faction>(StringComparer.OrdinalIgnoreCase);
+                var factionAmbiguous = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
                 for (int r = 0; r < csv.Rows.Count; r++)
                 {
                     var row = csv.Rows[r];
@@ -3935,13 +3963,28 @@ namespace JawaBench.BridgeTools
                     if (!factionCache.TryGetValue(fdName ?? "", out fac))
                     {
                         var fd = DefDatabase<FactionDef>.GetNamedSilentFail((fdName ?? "").Trim());
-                        fac = fd == null ? null : Find.FactionManager.FirstFactionOfDef(fd);
+                        // Same silent-corruption shape fixed on the faction-relations tools:
+                        // a world routinely holds SEVERAL live factions of one FactionDef, and
+                        // FirstFactionOfDef would silently pick one - landing a settlement on
+                        // the wrong faction under a success reply. Treat it as unresolved for
+                        // this row rather than guessing, so the all-or-nothing refusal below
+                        // catches it like any other bad row. Cached alongside the faction so a
+                        // repeated faction_def reports the same reason every time.
+                        object facAmbFail = null;
+                        fac = fd == null ? null : ResolveLiveFactionOfDefOrFail(fd, fdName, out facAmbFail);
+                        if (fac == null && facAmbFail != null) factionAmbiguous.Add(fdName ?? "");
                         factionCache[fdName ?? ""] = fac;
                     }
                     if (fac == null)
-                    { refused.Add(new { row = r + 2, name = nm, factionDef = fdName,
-                                        reason = "no LIVE faction of that def in this world - a settlement " +
-                                                 "with a null faction is destroyed on load" }); continue; }
+                    {
+                        var reason = factionAmbiguous.Contains(fdName ?? "")
+                            ? "faction_def '" + fdName + "' names more than one live faction in this world - " +
+                              "picking the first would silently land on the wrong one"
+                            : "no LIVE faction of that def in this world - a settlement " +
+                              "with a null faction is destroyed on load";
+                        refused.Add(new { row = r + 2, name = nm, factionDef = fdName, reason });
+                        continue;
+                    }
                     plan.Add(new KeyValuePair<Faction, KeyValuePair<int, string>>(
                         fac, new KeyValuePair<int, string>(tile, nm)));
                 }
