@@ -644,7 +644,16 @@ namespace JawaBench.BridgeTools
             [ToolParameter(Description = "Send the usual title-change letter. Default true.")]
             bool sendLetter = true,
             [ToolParameter(Description = "Absolute favor (setFavor) or signed delta (gainFavor).")]
-            int? favor = null)
+            int? favor = null,
+            [ToolParameter(Description =
+                "For action=setTitle with grantRewards=true: when jumping straight to a mid-tier " +
+                "title on a titleless (or lower-titled) pawn, SetTitle's own ApplyRewardsForTitle " +
+                "normally grants the reward for EVERY intermediate title between the pawn's current " +
+                "one and the new one, not just the new title - that IS Pawn_RoyaltyTracker.SetTitle's " +
+                "own default (rewardsOnlyForNewestTitle=false), matched here. Pass true to restrict " +
+                "rewards to just the newest title being granted. Ignored for removeTitle, which " +
+                "already forces grantRewards off.")]
+            bool rewardsOnlyForNewestTitle = false)
         {
             return await ctx.MainThread.InvokeAsync<object>(() =>
             {
@@ -673,7 +682,7 @@ namespace JawaBench.BridgeTools
                         if (string.IsNullOrWhiteSpace(title)) return Fail("action=setTitle needs 'title' (a RoyalTitleDef defName).");
                         var td = DefDatabase<RoyalTitleDef>.GetNamedSilentFail(title.Trim());
                         if (td == null) return Fail($"No RoyalTitleDef '{title}'.", new { suggestions = DefSuggestions<RoyalTitleDef>(title) });
-                        p.royalty.SetTitle(fac, td, grantRewards, false, sendLetter);
+                        p.royalty.SetTitle(fac, td, grantRewards, rewardsOnlyForNewestTitle, sendLetter);
                         break;
                     }
                     case "removetitle":

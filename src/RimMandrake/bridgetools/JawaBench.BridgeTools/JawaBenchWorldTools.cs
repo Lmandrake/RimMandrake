@@ -643,7 +643,10 @@ namespace JawaBench.BridgeTools
                 "different My Little Planet subcount shifts every tile id and would silently " +
                 "paint the wrong planet. Does not redraw; call jawa/world_commit after.",
             ResultDescription =
-                "success, dryRun, rows, applied, skipped, unknownBiomes[], errors[], sample[].")]
+                "success, dryRun, rows, applied (rows actually written, real runs only), " +
+                "wouldApply (rows that WOULD write, dry runs only), biomeSkipped (rows refused " +
+                "outright for an unresolved biome name - nothing in the row was written), " +
+                "skipped, unknownBiomes[], errors[], sample[].")]
         public static async Task<object> WorldTileImport(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -672,7 +675,7 @@ namespace JawaBench.BridgeTools
                 var unknownBiomes = new HashSet<string>();
                 var biomeCache = new Dictionary<string, BiomeDef>(StringComparer.OrdinalIgnoreCase);
                 var sample = new List<object>();
-                int applied = 0, skipped = 0, rows = 0;
+                int applied = 0, wouldApply = 0, biomeSkipped = 0, skipped = 0, rows = 0;
 
                 foreach (var row in csv.Rows)
                 {
@@ -690,6 +693,7 @@ namespace JawaBench.BridgeTools
 
                     BiomeDef bd = null;
                     var bname = Cell(csv, row, "biome");
+                    bool biomeUnresolved = false;
                     if (bname != null)
                     {
                         if (!biomeCache.TryGetValue(bname, out bd))
@@ -697,7 +701,7 @@ namespace JawaBench.BridgeTools
                             bd = DefDatabase<BiomeDef>.GetNamedSilentFail(bname);
                             biomeCache[bname] = bd;
                         }
-                        if (bd == null) unknownBiomes.Add(bname);
+                        if (bd == null) { unknownBiomes.Add(bname); biomeUnresolved = true; }
                     }
 
                     float fv;
@@ -711,7 +715,17 @@ namespace JawaBench.BridgeTools
                     if (sample.Count < Math.Max(0, sampleRows))
                         sample.Add(new { tile = id, biome = bname, elev = elevS, temp = tempS, rain = rainS, hilliness = hiS, swampiness = swS });
 
-                    if (!apply) { applied++; continue; }
+                    // Match world_tile_set's stricter behavior: an unresolved biome refuses
+                    // the whole row rather than silently writing the other columns while the
+                    // biome field it named the tile's identity by stays untouched.
+                    if (biomeUnresolved)
+                    {
+                        biomeSkipped++;
+                        if (errors.Count < 20) errors.Add("Row " + rows + ": unknown biome '" + bname + "', row not written");
+                        continue;
+                    }
+
+                    if (!apply) { wouldApply++; continue; }
 
                     if (bd != null) t.PrimaryBiome = bd;
                     if (elevS != null && F(elevS, out fv)) t.elevation = fv;
@@ -731,12 +745,15 @@ namespace JawaBench.BridgeTools
                     header = string.Join(",", csv.Header.ToArray()),
                     rows,
                     applied,
+                    wouldApply,
+                    biomeSkipped,
                     skipped,
                     tilesCount = grid.TilesCount,
                     unknownBiomes = unknownBiomes.ToList(),
                     note = apply
                         ? "Written. Nothing is visible until jawa/world_commit runs."
-                        : "DRY RUN - nothing was written. Pass apply=true.",
+                        : "DRY RUN - nothing was written. Pass apply=true. 'wouldApply' rows would " +
+                          "have written; 'biomeSkipped' rows would have been refused for an unknown biome.",
                     errors,
                     sample,
                     ticksGame = TicksGameSafe(),
@@ -1068,7 +1085,15 @@ namespace JawaBench.BridgeTools
                     if (doRivers && ta.potentialRivers != null)
                     {
                         int n = ta.potentialRivers.RemoveAll(l => b < 0 || l.neighbor.tileId == b);
-                        if (n > 0) { removed += n; touched.Add(a); }
+                        if (n > 0)
+                        {
+                            removed += n; touched.Add(a);
+                            // A tile with no river links left is a tile with no river:
+                            // riverDist defaults to 0 on a fresh SurfaceTile (SurfaceTile.cs),
+                            // so an empty potentialRivers must not leave a stale nonzero
+                            // riverDist behind for map gen and world_links_get to trip over.
+                            if (ta.potentialRivers.Count == 0) ta.riverDist = 0;
+                        }
                     }
                     if (doRoads && ta.potentialRoads != null)
                     {
@@ -3866,6 +3891,16 @@ namespace JawaBench.BridgeTools
 
                 int n = grid.TilesCount;
                 int removed = 0;
+
+                // Baseline BEFORE this call writes anything, so success can be judged
+                // against what THIS call was supposed to add rather than the grid's raw
+                // absolute counts - with clearExisting=false, pre-existing features and
+                // named tiles are still there afterwards and would otherwise make the
+                // equality check below fail even when every new row landed correctly.
+                int featuresBefore = wf.features.Count;
+                int namedBefore = 0;
+                for (int i = 0; i < n; i++) { var t0 = grid[i]; if (t0 != null && t0.feature != null) namedBefore++; }
+
                 if (clearExisting)
                 {
                     // Clear membership in ONE grid pass, then drop the features.
@@ -3922,9 +3957,16 @@ namespace JawaBench.BridgeTools
                 }
                 int liveNamed = counts.Values.Sum();
 
+                // clearExisting already zeroed the live grid, so the "before" baseline
+                // for that path IS zero; clearExisting=false carries the pre-existing
+                // counts captured above forward instead of comparing against them raw.
+                int featuresBaseline = clearExisting ? 0 : featuresBefore;
+                int namedBaseline = clearExisting ? 0 : namedBefore;
+
                 return new
                 {
-                    success = liveNamed == assigned && wf.features.Count == byName.Count,
+                    success = liveNamed == namedBaseline + assigned
+                           && wf.features.Count == featuresBaseline + byName.Count,
                     message = "created " + byName.Count + " region(s), removed " + removed +
                               ", assigned " + assigned + " tile(s); grid reports " + liveNamed +
                               " named tile(s) across " + wf.features.Count + " feature(s).",
