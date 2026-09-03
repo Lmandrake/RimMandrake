@@ -289,13 +289,26 @@ namespace JawaBench.BridgeTools
                 };
                 var before = snapshot();
 
-                bool defChanged = false;
+                // 🔴 BOTH defs are resolved BEFORE either is written. Resolving difficultyDef inline
+                // meant an unknown DifficultyDef returned Fail with st.def ALREADY swapped and
+                // Notify_DefChanged() never reached - leaving the live game running a NEW
+                // StorytellerDef against the PREVIOUS def's storytellerComps, and reporting that to
+                // the caller as a clean failure that changed nothing.
+                StorytellerDef sd = null;
                 if (!string.IsNullOrWhiteSpace(storytellerDef))
                 {
-                    var sd = DefDatabase<StorytellerDef>.GetNamedSilentFail(storytellerDef.Trim());
+                    sd = DefDatabase<StorytellerDef>.GetNamedSilentFail(storytellerDef.Trim());
                     if (sd == null) return Fail("No StorytellerDef '" + storytellerDef + "'.", DefSuggestions<StorytellerDef>(storytellerDef));
-                    if (st.def != sd) { st.def = sd; defChanged = true; }
                 }
+                DifficultyDef dd = null;
+                if (!string.IsNullOrWhiteSpace(difficultyDef))
+                {
+                    dd = DefDatabase<DifficultyDef>.GetNamedSilentFail(difficultyDef.Trim());
+                    if (dd == null) return Fail("No DifficultyDef '" + difficultyDef + "'.", DefSuggestions<DifficultyDef>(difficultyDef));
+                }
+
+                bool defChanged = false;
+                if (sd != null && st.def != sd) { st.def = sd; defChanged = true; }
 
                 // 🔴 Storyteller.difficultyDef is ONLY a label (stat reports, MainTabWindow_History)
                 // and the StatPart_Difficulty key. Every number the game actually plays by - threatScale,
@@ -306,16 +319,25 @@ namespace JawaBench.BridgeTools
                 // make this tool report success for a swap that did not happen.
                 bool difficultyValuesCopied = false;
                 bool difficultyIsCustom = false;
-                if (!string.IsNullOrWhiteSpace(difficultyDef))
+                bool difficultyDefChanged = false;
+                if (dd != null)
                 {
-                    var dd = DefDatabase<DifficultyDef>.GetNamedSilentFail(difficultyDef.Trim());
-                    if (dd == null) return Fail("No DifficultyDef '" + difficultyDef + "'.", DefSuggestions<DifficultyDef>(difficultyDef));
+                    difficultyDefChanged = st.difficultyDef != dd;
                     st.difficultyDef = dd;
                     difficultyIsCustom = dd.isCustom;
                     if (!dd.isCustom && st.difficulty != null)
                     {
                         try { st.difficulty.CopyFrom(dd); difficultyValuesCopied = true; }
-                        catch (Exception e) { return Fail("difficultyDef was set but Difficulty.CopyFrom threw: " + e.GetType().Name + ": " + e.Message + " - the storyteller is now in a MIXED state (new def, old values)."); }
+                        catch (Exception e)
+                        {
+                            // The def is written and the values are not. Still run Notify_DefChanged
+                            // if the STORYTELLER def moved, or the comps would be left belonging to
+                            // the previous storyteller for the rest of the game.
+                            if (defChanged) { try { st.Notify_DefChanged(); } catch (Exception) { } }
+                            return Fail("difficultyDef was set but Difficulty.CopyFrom threw: " + e.GetType().Name + ": " + e.Message +
+                                        " - the storyteller is now in a MIXED state (new def, old values)." +
+                                        (defChanged ? " storytellerDef was ALSO already swapped to " + st.def.defName + "; Notify_DefChanged() was run so its comps are at least consistent." : ""));
+                        }
                     }
                 }
 
@@ -326,6 +348,7 @@ namespace JawaBench.BridgeTools
                 else if (!string.IsNullOrWhiteSpace(storytellerDef)) notes.Add("storytellerDef was already this value - Notify_DefChanged was NOT called.");
                 if (difficultyValuesCopied) notes.Add("Storyteller.difficulty.CopyFrom(def) applied the new difficulty's VALUES - the def field alone is only a label.");
                 else if (difficultyIsCustom) notes.Add("That DifficultyDef is isCustom=true, so its (empty) values were NOT copied over Storyteller.difficulty - the live custom values stand. Edit them with jawa/difficulty_tune.");
+                else if (difficultyDefChanged) notes.Add("difficultyDef was written but Storyteller.difficulty is null, so no values could be copied onto it - ONLY the label moved and no gameplay number changed.");
                 if (notes.Count == 0) notes.Add(string.IsNullOrWhiteSpace(storytellerDef) && string.IsNullOrWhiteSpace(difficultyDef)
                     ? "No arguments given - this was a read."
                     : "Nothing changed.");
@@ -425,16 +448,26 @@ namespace JawaBench.BridgeTools
                     try { q2.Accept(by); }
                     catch (Exception e) { return Fail("Accept threw: " + e.GetType().Name + ": " + e.Message); }
 
+                    // Quest.Accept() -> Initiate() sends the Initiate signal SYNCHRONOUSLY, and a
+                    // QuestPart is free to End the quest inside that signal - a quest that accepts
+                    // and immediately resolves lands on EndedSuccess/EndedFailed, not Ongoing.
+                    // Requiring Ongoing reported success=false for an accept that fully worked.
                     var stateAfter = q2.State;
                     return new
                     {
-                        success = stateAfter == QuestState.Ongoing,
+                        success = stateAfter != QuestState.NotYetAccepted,
                         action = "accept",
                         questId = q2.id,
                         questName = q2.name,
                         accepter = by != null ? by.LabelShortCap : null,
                         stateBefore = stateBefore.ToString(),
                         stateAfter = stateAfter.ToString(),
+                        endedImmediately = stateAfter != QuestState.NotYetAccepted && stateAfter != QuestState.Ongoing,
+                        note = stateAfter == QuestState.NotYetAccepted
+                            ? "Accept() ran but the quest is STILL NotYetAccepted - it did nothing. Report this: the pre-check said the state was acceptable."
+                            : stateAfter != QuestState.Ongoing
+                                ? "Accepted, then a QuestPart ended it inside the Initiate signal in the same call - final state " + stateAfter + "."
+                                : null,
                         ticksGame = TicksGameSafe(),
                     };
                 }
@@ -503,6 +536,14 @@ namespace JawaBench.BridgeTools
                 var w = map.wealthWatcher;
                 if (w == null) return Fail("This map has no WealthWatcher.");
 
+                // 🔴 ForceRecount's FIRST statement is `if (!allowDuringInit && ProgramState != Playing)
+                // { Log.Error(...); return; }` - it does not throw, so the try/catch below cannot see
+                // it and the tool would report success=true for a recount that never ran. Refuse
+                // with the real reason instead.
+                if (!allowDuringInit && Current.ProgramState != ProgramState.Playing)
+                    return Fail("ForceRecount would Log.Error and return WITHOUT recounting: Current.ProgramState is " +
+                                Current.ProgramState + ", not Playing. Pass allowDuringInit=true to force it anyway.");
+
                 Func<object> snapshot = () => new
                 {
                     total = w.WealthTotal,
@@ -549,6 +590,15 @@ namespace JawaBench.BridgeTools
                 var after = snapshot();
                 object lastCountTickAfter = GmReadPrivateField(typeof(WealthWatcher), w, "lastCountTick");
 
+                // 🔴 lastCountTick is `private float`, and ForceRecount stamps it with the CURRENT
+                // TicksGame. A recount that lands on the same tick as the previous one therefore
+                // leaves the stamp unmoved - a bare before!=after comparison reports recounted=false
+                // for a recount that demonstrably ran. The stamp matching "now" is the positive
+                // evidence; a moved stamp is reported separately as the weaker of the two.
+                bool stampMoved = !Equals(lastCountTickBefore, lastCountTickAfter);
+                int ticksNow = TicksGameSafe();
+                bool stampIsNow = lastCountTickAfter is float && ticksNow >= 0 && Math.Abs((float)lastCountTickAfter - ticksNow) < 0.5f;
+
                 return (object)new
                 {
                     success = true,
@@ -556,11 +606,15 @@ namespace JawaBench.BridgeTools
                     after,
                     preStateReadByReflection = preStateRead,
                     lastCountTick = new { before = lastCountTickBefore, after = lastCountTickAfter },
-                    recounted = !Equals(lastCountTickBefore, lastCountTickAfter),
+                    recounted = stampMoved || stampIsNow,
+                    lastCountTickMoved = stampMoved,
+                    lastCountTickIsThisTick = stampIsNow,
                     note = preStateRead
-                        ? null
+                        ? (stampMoved || stampIsNow
+                            ? null
+                            : "recounted=false: ForceRecount returned but lastCountTick neither moved nor matches the current tick. Either the private field layout changed or something is intercepting ForceRecount - the 'after' numbers may be stale.")
                         : "'before' is null - WealthWatcher's private field layout has changed, so no honest pre-recount reading could be taken. 'after' is still real.",
-                    ticksGame = TicksGameSafe(),
+                    ticksGame = ticksNow,
                 };
             }).ConfigureAwait(false);
         }
@@ -600,9 +654,91 @@ namespace JawaBench.BridgeTools
                     });
                     continue;
                 }
+                // Lord.AddPawnInternal ALSO Log.Errors and drops on `ownedPawns.Contains(p)`, so
+                // naming the same pawn twice ("Bob,Bob") used to pass this pre-check twice and then
+                // vanish inside MakeNewLord - requested=2, memberCount=1, refused[] empty.
+                if (found.Contains(p))
+                {
+                    refused.Add(new
+                    {
+                        pawn = tok,
+                        reason = "DuplicateInRequest",
+                        message = p.LabelShortCap + " was named more than once. Lord.AddPawnInternal Log.Errors and " +
+                                  "drops a pawn the Lord already controls - refusing the extra copy instead."
+                    });
+                    continue;
+                }
                 found.Add(p);
             }
             return found;
+        }
+
+        /// <summary>
+        /// Names every pawn that was handed to LordMaker but is NOT in the resulting Lord's
+        /// ownedPawns. The pre-check above covers the cases observable from outside; AddPawnInternal
+        /// can still Log.Error-and-drop for a reason we did not model, and MakeNewLord surfaces that
+        /// only as a smaller member count. A count that does not add up, with no names attached, is
+        /// exactly the silent drop this bridge exists to catch.
+        /// </summary>
+        private static List<object> LordMembersNotAdded(Lord lord, List<Pawn> requested)
+        {
+            var missing = new List<object>();
+            if (lord == null || requested == null) return missing;
+            foreach (var p in requested)
+            {
+                if (lord.ownedPawns != null && lord.ownedPawns.Contains(p)) continue;
+                var other = p.GetLord();
+                missing.Add(new
+                {
+                    pawn = p.LabelShortCap,
+                    reason = "DroppedByLord",
+                    message = "Handed to LordMaker but absent from the new Lord's ownedPawns" +
+                              (other != null && other != lord
+                                  ? " - it belongs to a different Lord (job " + (other.LordJob != null ? other.LordJob.GetType().Name : "(null)") + ")."
+                                  : ". Lord.AddPawnInternal only Log.Errors when it drops a pawn - the reason is in the game log.")
+                });
+            }
+            return missing;
+        }
+
+        /// <summary>
+        /// LordMaker.MakeNewLord calls map.lordManager.AddLord(lord) BEFORE SetJob/GotoToil. If
+        /// either throws - a modded LordJob's CreateGraph, a Harmony patch - the Lord is already
+        /// registered on the map with no job and no toil, and LordManagerTick will fault on it every
+        /// tick for the rest of the game. Nothing in the engine unwinds that, so the tool that
+        /// created it must. Returns how many were removed.
+        /// </summary>
+        private static int RemoveLordsAddedSince(Map map, int countBefore)
+        {
+            if (map == null || map.lordManager == null || map.lordManager.lords == null) return 0;
+            var lords = map.lordManager.lords;
+            int removed = 0;
+            for (int guard = 0; guard < 64 && lords.Count > countBefore; guard++)
+            {
+                var orphan = lords[lords.Count - 1];
+                // Lord.Cleanup() dereferences curJob UNGUARDED while walking ownedPawns, so a Lord
+                // that died before SetJob ran would throw straight back out of RemoveLord. Detach
+                // the pawns first so that loop is empty, then take the engine path.
+                try
+                {
+                    if (orphan.ownedPawns != null)
+                    {
+                        foreach (var op in orphan.ownedPawns)
+                            if (op != null && op.lord == orphan) op.lord = null;
+                        orphan.ownedPawns.Clear();
+                    }
+                }
+                catch (Exception) { }
+                try { map.lordManager.RemoveLord(orphan); }
+                catch (Exception) { }
+                if (lords.Count > countBefore && lords[lords.Count - 1] == orphan)
+                {
+                    try { if (!lords.Remove(orphan)) break; }
+                    catch (Exception) { break; }
+                }
+                removed++;
+            }
+            return removed;
         }
 
 #if JAWA_GM_TOOLS
@@ -687,11 +823,24 @@ namespace JawaBench.BridgeTools
                 }
                 catch (Exception e) { return Fail("LordJob_DefendPoint threw: " + e.GetType().Name + ": " + e.Message); }
 
+                // MakeNewLord registers the Lord with lordManager before it can fail - snapshot the
+                // count so a throw does not leave a jobless Lord ticking on this map forever.
+                int lordsBefore = map.lordManager.lords.Count;
                 Lord lord;
                 try { lord = LordMaker.MakeNewLord(fac, job, map, found); }
-                catch (Exception e) { return Fail("MakeNewLord threw: " + e.GetType().Name + ": " + e.Message); }
-                if (lord == null) return Fail("MakeNewLord returned null.");
+                catch (Exception e)
+                {
+                    int unwound = RemoveLordsAddedSince(map, lordsBefore);
+                    return Fail("MakeNewLord threw: " + e.GetType().Name + ": " + e.Message +
+                                " - " + unwound + " half-built Lord(s) were removed from this map's lordManager so nothing is left ticking without a job.");
+                }
+                if (lord == null)
+                {
+                    int unwound = RemoveLordsAddedSince(map, lordsBefore);
+                    return Fail("MakeNewLord returned null." + (unwound > 0 ? " " + unwound + " half-built Lord(s) were removed from lordManager." : ""));
+                }
 
+                var notAdded = LordMembersNotAdded(lord, found);
                 return (object)new
                 {
                     success = true,
@@ -702,6 +851,7 @@ namespace JawaBench.BridgeTools
                     memberCount = lord.ownedPawns.Count,
                     members = lord.ownedPawns.Select(p => p.LabelShortCap).ToList(),
                     refused,
+                    notAdded,
                     ticksGame = TicksGameSafe(),
                 };
             }).ConfigureAwait(false);
@@ -774,11 +924,24 @@ namespace JawaBench.BridgeTools
                 }
                 catch (Exception e) { return Fail("LordJob_AssaultColony threw: " + e.GetType().Name + ": " + e.Message); }
 
+                // MakeNewLord registers the Lord with lordManager before it can fail - snapshot the
+                // count so a throw does not leave a jobless Lord ticking on this map forever.
+                int lordsBefore = map.lordManager.lords.Count;
                 Lord lord;
                 try { lord = LordMaker.MakeNewLord(fac, job, map, found); }
-                catch (Exception e) { return Fail("MakeNewLord threw: " + e.GetType().Name + ": " + e.Message); }
-                if (lord == null) return Fail("MakeNewLord returned null.");
+                catch (Exception e)
+                {
+                    int unwound = RemoveLordsAddedSince(map, lordsBefore);
+                    return Fail("MakeNewLord threw: " + e.GetType().Name + ": " + e.Message +
+                                " - " + unwound + " half-built Lord(s) were removed from this map's lordManager so nothing is left ticking without a job.");
+                }
+                if (lord == null)
+                {
+                    int unwound = RemoveLordsAddedSince(map, lordsBefore);
+                    return Fail("MakeNewLord returned null." + (unwound > 0 ? " " + unwound + " half-built Lord(s) were removed from lordManager." : ""));
+                }
 
+                var notAdded = LordMembersNotAdded(lord, found);
                 return (object)new
                 {
                     success = true,
@@ -789,6 +952,7 @@ namespace JawaBench.BridgeTools
                     members = lord.ownedPawns.Select(p => p.LabelShortCap).ToList(),
                     flags = new { canKidnap, canTimeoutOrFlee, sappers, useAvoidGridSmart, canSteal, breachers, canPickUpOpportunisticWeapons },
                     refused,
+                    notAdded,
                     ticksGame = TicksGameSafe(),
                 };
             }).ConfigureAwait(false);
@@ -836,10 +1000,17 @@ namespace JawaBench.BridgeTools
 
                 float pts = points > 0f ? points : StorytellerUtility.DefaultThreatPointsNow(map);
 
+                // 🔴 TryFindAggressiveAnimalKind is NOT deterministic and NOT side-effect-free: it runs
+                // TryRandomElementByWeight, Rand.Value and Rand.Chance off the GLOBAL Rand state. A
+                // "read-only" preview that advances the game's RNG stream changes every later roll in
+                // the colony. Push/pop the state so this tool really is read-only, exactly as
+                // Lord.SetJob does around its own graph seeding.
                 PawnKindDef kind = null;
                 bool found;
+                Rand.PushState();
                 try { found = AggressiveAnimalIncidentUtility.TryFindAggressiveAnimalKind(pts, map, out kind); }
                 catch (Exception e) { return Fail("TryFindAggressiveAnimalKind threw: " + e.GetType().Name + ": " + e.Message); }
+                finally { Rand.PopState(); }
 
                 int? count = null;
                 if (found)
@@ -858,7 +1029,7 @@ namespace JawaBench.BridgeTools
                     combatPower = kind != null ? (float?)kind.combatPower : null,
                     count,
                     note = found
-                        ? "This is the SAME resolution IncidentWorker_AggressiveAnimals would use right now. Fire the real incident with jawa/fire_incident incidentDef=ManhunterPack."
+                        ? "ONE DRAW from the same weighted resolution IncidentWorker_AggressiveAnimals uses - the pick is random, so calling this again can name a different species. Fire the real incident with jawa/fire_incident incidentDef=ManhunterPack; it will roll its own. The global Rand state was pushed/popped, so this preview did not perturb the colony's RNG."
                         : "No aggressive-animal PawnKindDef qualifies at these points on this map's biome(s) - that is a real answer, not a bridge failure.",
                     ticksGame = TicksGameSafe(),
                 };
@@ -984,16 +1155,21 @@ namespace JawaBench.BridgeTools
                     var comp = p.AllComps != null ? p.AllComps.OfType<CompHasGatherableBodyResource>().FirstOrDefault() : null;
                     if (comp == null) return Fail(p.LabelShortCap + " has no CompHasGatherableBodyResource (no CompMilkable/CompShearable/etc.).");
 
+                    // 🔴 float.NaN passes BOTH clamp comparisons (every comparison against NaN is
+                    // false), so an unvalidated targetFullness would be written straight into the
+                    // comp's protected field. fullness += num keeps NaN forever, ActiveAndFull
+                    // (fullness >= 1f) is false forever, and it survives into the save.
+                    if (float.IsNaN(targetFullness) || float.IsInfinity(targetFullness))
+                        return Fail("targetFullness must be a real number in 0..1, got " + targetFullness +
+                                    ". Writing NaN/Infinity into the comp's fullness would permanently break it - refusing.");
                     float clamped = targetFullness < 0f ? 0f : (targetFullness > 1f ? 1f : targetFullness);
-                    float fullnessBefore = comp.Fullness;
-                    bool forced = GmWritePrivateField(typeof(CompHasGatherableBodyResource), comp, "fullness", clamped);
-                    if (!forced) return Fail("Could not set CompHasGatherableBodyResource.fullness by reflection - field layout may have changed.");
-                    float fullnessAfterForce = comp.Fullness;
 
-                    object gatheredThing = null;
+                    // 🔴 Resolve and validate the doer BEFORE writing fullness. Doing it after meant
+                    // every doer refusal below returned Fail with the animal's fullness ALREADY
+                    // rewritten - a reported total failure that had in fact half-run.
+                    Pawn doerPawn = null;
                     if (gatherNow)
                     {
-                        Pawn doerPawn = null;
                         if (!string.IsNullOrWhiteSpace(doer))
                         {
                             string derr; doerPawn = FindPawn(doer, out derr);
@@ -1008,11 +1184,22 @@ namespace JawaBench.BridgeTools
                         // CompHasGatherableBodyResource.Gathered places the resource at doer.Position on
                         // doer.Map, not near the animal - an explicit 'doer' that is unspawned or on a
                         // different map would silently place the resource somewhere never asked for.
-                        if (!doerPawn.Spawned || doerPawn.Map != p.Map)
+                        // (p unspawned means p.Map is null, which this same test refuses: Gathered also
+                        // dereferences parent.Map for the wasted-yield mote.)
+                        if (!doerPawn.Spawned || doerPawn.Map != p.Map || p.Map == null)
                             return Fail("doer pawn '" + doerPawn.LabelShortCap + "' is not spawned on " + p.LabelShortCap +
                                         "'s map. Gathered(Pawn) places the resource at the DOER's position/map, not the " +
                                         "animal's - refusing rather than silently placing it somewhere unexpected.");
+                    }
 
+                    float fullnessBefore = comp.Fullness;
+                    bool forced = GmWritePrivateField(typeof(CompHasGatherableBodyResource), comp, "fullness", clamped);
+                    if (!forced) return Fail("Could not set CompHasGatherableBodyResource.fullness by reflection - field layout may have changed.");
+                    float fullnessAfterForce = comp.Fullness;
+
+                    object gatheredThing = null;
+                    if (gatherNow)
+                    {
                         // 🔴 VERIFIED AGAINST SOURCE (RimWorld/CompHasGatherableBodyResource.cs): Gathered(doer)
                         // calls GenPlace.TryPlaceThing itself and DISCARDS its bool return - a failed placement
                         // (no free spot near the doer) produces only a Verse.Log.Error line inside TryPlaceThing,
@@ -1026,7 +1213,12 @@ namespace JawaBench.BridgeTools
                         int stackBefore = (resourceDef != null && p.Map != null) ? p.Map.listerThings.ThingsOfDef(resourceDef).Sum(t => t.stackCount) : 0;
 
                         try { comp.Gathered(doerPawn); }
-                        catch (Exception e) { return Fail("Gathered threw: " + e.GetType().Name + ": " + e.Message); }
+                        catch (Exception e)
+                        {
+                            return Fail("Gathered threw: " + e.GetType().Name + ": " + e.Message +
+                                        " - NOT a no-op: fullness was already forced from " + fullnessBefore + " to " + fullnessAfterForce +
+                                        " before the call, and it now reads " + comp.Fullness + ". Some resource may have been placed.");
+                        }
 
                         int stackAfter = (resourceDef != null && p.Map != null) ? p.Map.listerThings.ThingsOfDef(resourceDef).Sum(t => t.stackCount) : 0;
                         bool? resourcePlacedOnMap = resourceDef != null ? (bool?)(stackAfter > stackBefore) : null;
