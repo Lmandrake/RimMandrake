@@ -84,6 +84,20 @@ namespace RimMandrake.RimDefDump
             writer.Write(v.ToString("R", CultureInfo.InvariantCulture));
         }
 
+        // A `float` routed through Number(double) gets widened to double BEFORE
+        // round-trip formatting, and that widening is where the noise comes
+        // from: 0.1f is not exactly representable in either width, but the two
+        // roundings differ, so "R" on the widened value prints every digit of
+        // that difference (0.1f -> "0.10000000149011612" instead of "0.1").
+        // Formatting the float directly, at its own precision, is what makes
+        // "R" round-trip losslessly the way it's supposed to.
+        public void Number(float v)
+        {
+            Separate();
+            if (float.IsNaN(v) || float.IsInfinity(v)) { writer.Write("null"); return; }
+            writer.Write(v.ToString("R", CultureInfo.InvariantCulture));
+        }
+
         public void Number(long v)
         {
             Separate();
@@ -159,6 +173,7 @@ namespace RimMandrake.RimDefDump
                 case TypeCode.UInt64:
                     Number((double)Convert.ToUInt64(v, CultureInfo.InvariantCulture)); return true;
                 case TypeCode.Single:
+                    Number((float)v); return true;
                 case TypeCode.Double:
                 case TypeCode.Decimal:
                     Number(Convert.ToDouble(v, CultureInfo.InvariantCulture)); return true;

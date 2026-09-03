@@ -69,7 +69,16 @@ namespace RimMandrake.RimDefDump
             var keep = new List<FieldInfo>();
             // DeclaredOnly plus a manual base walk, so we get fields from every
             // level of the hierarchy without duplicates where a subclass hides a
-            // base field with `new`.
+            // base field with `new`. DeclaredOnly alone does NOT do this: it
+            // returns each level's own declaration separately, so a `new`-hidden
+            // field is seen once from the derived type and once from the base.
+            // `claimed` is what actually removes the duplicate — a name already
+            // taken by a more-derived level (walk order is derived -> base) is
+            // skipped at every base level below it, so only the derived value
+            // survives and no JSON object ends up with the same key written
+            // twice (which would let the base value win on a last-key-wins
+            // parser instead of the derived one that's actually in effect).
+            var claimed = new HashSet<string>();
             for (Type cur = t; cur != null && cur != typeof(object); cur = cur.BaseType)
             {
                 FieldInfo[] fields = cur.GetFields(BindingFlags.Public | BindingFlags.NonPublic
@@ -83,6 +92,7 @@ namespace RimMandrake.RimDefDump
                     if (f.Name.IndexOf('<') >= 0) continue;
                     if (SkippedFieldNames.Contains(f.Name)) continue;
                     if (IsSkippedType(f.FieldType)) continue;
+                    if (!claimed.Add(f.Name)) continue;
                     keep.Add(f);
                 }
             }

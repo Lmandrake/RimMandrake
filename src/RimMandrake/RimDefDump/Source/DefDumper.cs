@@ -214,11 +214,12 @@ namespace RimMandrake.RimDefDump
             var counts = new List<KeyValuePair<string, int>>();
             var typeEntries = new List<DefTypeEntry>();
             var collisions = new List<string>();
+            var writeFailures = new List<DefTypeWriteFailure>();
             long animalMs = TimeIt(() => WriteAnimals(writing));
             long allMs = 0;
-            if (dumpAll) allMs = TimeIt(() => WriteAllDefs(writing, counts, typeEntries, collisions));
+            if (dumpAll) allMs = TimeIt(() => WriteAllDefs(writing, counts, typeEntries, collisions, writeFailures));
 
-            WriteManifest(writing, mode, counts, typeEntries, collisions,
+            WriteManifest(writing, mode, counts, typeEntries, collisions, writeFailures,
                           total.ElapsedMilliseconds, animalMs, allMs);
 
             // 🔑 THE RENAME IS WHAT MAKES THE CAPTURE EXIST. Everything above wrote into
@@ -365,6 +366,7 @@ namespace RimMandrake.RimDefDump
                                           List<KeyValuePair<string, int>> counts,
                                           List<DefTypeEntry> typeEntries,
                                           List<string> collisions,
+                                          List<DefTypeWriteFailure> writeFailures,
                                           long totalMs, long animalMs, long allMs)
         {
             using (StreamWriter sw = Open(Path.Combine(root, "manifest.json")))
@@ -443,6 +445,26 @@ namespace RimMandrake.RimDefDump
                 for (int i = 0; i < collisions.Count; i++) w.Str(collisions[i]);
                 w.EndArray();
                 w.Prop("defTypeCount", typeEntries.Count);
+
+                // A type whose write threw mid-file is correctly ABSENT from
+                // both defCounts and defTypes above — there is no file to point
+                // to and no count worth trusting — but "absent from two lists"
+                // and "never existed" read identically to a downstream reader.
+                // This is the one place that says so out loud, so a type that
+                // silently vanished from the dump is distinguishable from a
+                // type that was never a def type at all.
+                w.Name("defTypeWriteFailures");
+                w.StartArray();
+                for (int i = 0; i < writeFailures.Count; i++)
+                {
+                    DefTypeWriteFailure f = writeFailures[i];
+                    w.StartObject();
+                    w.Prop("type", f.typeFullName);
+                    w.Prop("file", f.file);
+                    w.Prop("error", f.error);
+                    w.EndObject();
+                }
+                w.EndArray();
 
                 w.EndObject();
             }
@@ -751,8 +773,20 @@ namespace RimMandrake.RimDefDump
             public string file;
         }
 
+        /// <summary>Recorded when a def type's own file throws partway through
+        /// writing — see DUMPER_SWALLOWS_CACHE_THROW_1 above `PropOrError`: a
+        /// gap must be reported, never left to look like the type just wasn't
+        /// there.</summary>
+        private sealed class DefTypeWriteFailure
+        {
+            public string typeFullName;
+            public string file;
+            public string error;
+        }
+
         private static void WriteAllDefs(string root, List<KeyValuePair<string, int>> counts,
-                                         List<DefTypeEntry> entries, List<string> collisions)
+                                         List<DefTypeEntry> entries, List<string> collisions,
+                                         List<DefTypeWriteFailure> writeFailures)
         {
             string dir = Path.Combine(root, "defs");
             Directory.CreateDirectory(dir);
@@ -865,6 +899,26 @@ namespace RimMandrake.RimDefDump
                 catch (Exception ex)
                 {
                     Log.Warning("[RimMandrake.RimDefDump] failed writing " + defType.FullName + ": " + ex.Message);
+                    // The StreamWriter above may have flushed a partial, syntactically
+                    // broken object before throwing. A file that looks like JSON but
+                    // isn't is worse than no file — delete it rather than leave debris
+                    // a later reader could try to parse.
+                    try { if (File.Exists(path)) File.Delete(path); }
+                    catch (Exception delEx)
+                    {
+                        Log.Warning("[RimMandrake.RimDefDump] also failed deleting the partial "
+                                    + path + ": " + delEx.Message);
+                    }
+                    writeFailures.Add(new DefTypeWriteFailure
+                    {
+                        typeFullName = defType.FullName,
+                        file = entry.file,
+                        error = ex.GetType().Name + ": " + ex.Message,
+                    });
+                    // No file exists for this type any more — WriteManifest already
+                    // skips e.file == null entries, so this keeps defTypes from
+                    // reporting a file (and a stale pass-1 count) that isn't real.
+                    entry.file = null;
                     continue;
                 }
                 entry.count = n;
