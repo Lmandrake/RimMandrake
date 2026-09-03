@@ -4093,3 +4093,6 @@
 {"seat":"FOUNDRY","event":"start","id":"RIMPLACE_LUA_EXECUTION_BUDGET_1","ts":"2026-09-03T02:57:30Z"}
 {"seat":"BENCH","event":"file","id":"STARWARSRACES_UNDECLARED_GENE_DEPS_1","title":"StarWarsRaces About.xml omits five real dependencies; without them the head genes are eaten and pawns stop rendering","kind":"bug","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-03T02:59:22Z"}
 {"seat":"FOUNDRY","event":"close","id":"RIMPLACE_LUA_EXECUTION_BUDGET_1","sha":"3ec7a6e1","ts":"2026-09-03T03:00:00Z"}
+{"seat":"FOUNDRY","event":"claim","id":"RIMPLACE_ROOF_ESCAPES_FOOTPRINT_1","ts":"2026-09-03T03:00:12Z"}
+{"seat":"FOUNDRY","event":"start","id":"RIMPLACE_ROOF_ESCAPES_FOOTPRINT_1","ts":"2026-09-03T03:00:12Z"}
+{"seat":"FOUNDRY","event":"close","id":"RIMPLACE_ROOF_ESCAPES_FOOTPRINT_1","sha":"6da13a4f","ts":"2026-09-03T03:01:25Z"}
