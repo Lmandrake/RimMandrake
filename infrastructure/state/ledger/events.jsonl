@@ -4265,3 +4265,8 @@
 {"seat":"FOUNDRY","event":"start","id":"KOTOR_HEADBAND_DANGLING_REFS_1","ts":"2026-09-03T19:01:11Z"}
 {"seat":"FOUNDRY","event":"file","id":"VANILLA_COUNT_PSEUDO_DEF_1","title":"A mod writes vanilla count-class pseudo-defs (MealSimple10/Chemfuel60/Steel75/Silver120/ComponentIndustrial12) as defNames instead of Def+count","kind":"bug","target":"v1","needs":"harvest","caused_by":"KOTOR_HEADBAND_DANGLING_REFS_1","for":"FOUNDRY","ts":"2026-09-03T19:11:34Z"}
 {"seat":"FOUNDRY","event":"close","id":"KOTOR_HEADBAND_DANGLING_REFS_1","sha":"cfd26b81","ts":"2026-09-03T19:12:31Z"}
+{"seat":"FOUNDRY","event":"claim","id":"SELFTEST_SWEEP_EXCEEDS_COMMIT_BUDGET_1","ts":"2026-09-03T19:12:52Z"}
+{"seat":"FOUNDRY","event":"start","id":"SELFTEST_SWEEP_EXCEEDS_COMMIT_BUDGET_1","ts":"2026-09-03T19:12:53Z"}
+{"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-09-03T19:23:41Z"}
+{"seat":"FOUNDRY","event":"file","id":"PARALLELIZE_SELFTEST_CLI_INTERNAL_1","title":"selftest_cli.py's 87 real-subprocess cases run serially (~150s+ solo) and are the sweep's long pole; parallelize internally without losing real-subprocess fidelity","kind":"task","target":"v1","needs":"offline","caused_by":"SELFTEST_SWEEP_EXCEEDS_COMMIT_BUDGET_1","for":"FOUNDRY","ts":"2026-09-03T19:24:28Z"}
+{"seat":"FOUNDRY","event":"close","id":"SELFTEST_SWEEP_EXCEEDS_COMMIT_BUDGET_1","sha":"171ebf61","ts":"2026-09-03T19:31:22Z"}
