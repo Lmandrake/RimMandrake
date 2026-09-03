@@ -115,7 +115,11 @@ namespace JawaBench.BridgeTools
                 "missing framework as data rather than throwing.",
             ResultDescription =
                 "success, frameworkPresent, modeBefore/modeAfter (defNames), requested, " +
-                "switched, availableModes[] (defName + label + hasWorldLayer), worldRendered, " +
+                "switchRequested (the framework call was made) and switched (currentMapMode " +
+                "ACTUALLY moved - false with a refusal string when the framework deferred the " +
+                "switch behind an in-flight regeneration), availableModes[] (defName + label + " +
+                "hasWorldLayer, which is false for a mode that draws no overlay and null only " +
+                "when the property could not be read), worldRendered, " +
                 "regenerateNow, regenBusy, regeneratingMode, tilesPrepared, tilesToPrepare, " +
                 "ticksGame. On an unknown mapModeDefName: success false and availableModes[] " +
                 "so the caller can see what it could have asked for.")]
@@ -179,26 +183,30 @@ namespace JawaBench.BridgeTools
                 var available = modes.Select(m =>
                 {
                     Def d = MmfModeDef(m);
-                    object worldLayer = null;
+                    // MapMode.WorldLayerClass returns def.worldLayerClass, which is legitimately
+                    // NULL for a mode that draws no overlay (the framework itself warns about
+                    // exactly that). So a null return is the answer "false", not "unknown" -
+                    // hasWorldLayer stays null only when the property is missing or throws.
+                    bool? hasWorldLayer = null;
                     try
                     {
                         PropertyInfo wl = m.GetType().GetProperty("WorldLayerClass", MmfPublicInstance);
-                        worldLayer = wl?.GetValue(m, null);
+                        if (wl != null) hasWorldLayer = wl.GetValue(m, null) != null;
                     }
-                    catch (Exception) { /* reported as hasWorldLayer null below */ }
+                    catch (Exception) { /* stays null: unknown, not false */ }
                     return new
                     {
                         defName = d?.defName,
                         label = d?.label,
                         modeClass = m.GetType().FullName,
-                        hasWorldLayer = worldLayer == null ? (bool?)null : true
+                        hasWorldLayer
                     };
                 }).ToList();
 
                 object before = currentField.GetValue(comp);
                 string modeBefore = MmfDefName(MmfModeDef(before));
 
-                bool switched = false;
+                bool switchInvoked = false;
                 string refusal = null;
 
                 if (!string.IsNullOrEmpty(mapModeDefName))
@@ -235,7 +243,7 @@ namespace JawaBench.BridgeTools
                         try
                         {
                             mi.Invoke(comp, new[] { target });
-                            switched = true;
+                            switchInvoked = true;
                         }
                         catch (TargetInvocationException tie)
                         {
@@ -256,6 +264,18 @@ namespace JawaBench.BridgeTools
                 // Read the RAW field back after the call, never the value we hoped for.
                 object after = currentField.GetValue(comp);
                 string modeAfter = MmfDefName(MmfModeDef(after));
+
+                // `switched` is EVIDENCE, not "the invoke returned". RequestMapModeSwitch is
+                // void and fire-and-forgets an async Task that, when a world regeneration is
+                // already in flight, interrupts it and AWAITS it before calling SwitchMapMode -
+                // so currentMapMode is still the old mode when the call returns.
+                bool switched = switchInvoked && !ReferenceEquals(before, after);
+                if (switchInvoked && !switched && refusal == null)
+                    refusal =
+                        "The switch was requested but currentMapMode has not moved yet: the " +
+                        "framework defers it behind an in-flight world regeneration (its own " +
+                        "request path interrupts the running task and awaits it before " +
+                        "switching). Poll until regenBusy is false, then read this tool again.";
 
                 bool? regenerateNow = null;
                 if (regenNowField != null)
@@ -289,6 +309,7 @@ namespace JawaBench.BridgeTools
                     success = true,
                     frameworkPresent = true,
                     requested = mapModeDefName,
+                    switchRequested = switchInvoked,
                     switched,
                     refusal,
                     modeBefore,

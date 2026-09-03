@@ -30,6 +30,17 @@ namespace JawaBench.BridgeTools
             return _scenarioPartsField?.GetValue(s) as List<ScenPart>;
         }
 
+        /// <summary>
+        /// Every ScenPart the scenario ACTUALLY has. Scenario.AllParts yields
+        /// playerFaction, then surfaceLayer, then the private `parts` list - so the two
+        /// ScenParts Scenario keeps in dedicated fields (ScenPart_PlayerFaction and the
+        /// surface ScenPart_PlanetLayer) are invisible to anything that reads `parts`
+        /// alone. Both are always present in a running game: Scenario.ConfigErrors()
+        /// flags either being null, and CopyForEditing dereferences both unconditionally.
+        /// </summary>
+        private static List<ScenPart> ScenarioAllParts(Scenario s) =>
+            s.AllParts.Where(p => p != null).ToList();
+
         private static object DescribePart(ScenPart p)
         {
             var fields = new Dictionary<string, object>();
@@ -57,8 +68,13 @@ namespace JawaBench.BridgeTools
             Description =
                 "Read the RUNNING game's scenario: name and every ScenPart with its class, " +
                 "def and scalar/Def-valued fields (read via reflection - the raw fields, not " +
-                "a summary string). Read-only and safe on a live game.",
-            ResultDescription = "success, scenarioName, parts[] {className, def, summary}.")]
+                "a summary string). Enumerates Scenario.AllParts, so the two ScenParts kept " +
+                "in dedicated fields rather than the parts list - playerFaction and " +
+                "surfaceLayer - are reported too. Read-only and safe on a live game.",
+            ResultDescription =
+                "success, scenarioName, partCount (AllParts), appendablePartCount (the " +
+                "mutable parts list, which is smaller by the two dedicated ones), " +
+                "parts[] {className, def, summary}.")]
         public static async Task<object> ScenarioPartsGet(
             IRimBridgeContext ctx, CancellationToken cancellationToken)
         {
@@ -68,12 +84,14 @@ namespace JawaBench.BridgeTools
                     return Fail("No game / scenario is loaded.");
                 var list = ScenarioPartsList(Find.Scenario);
                 if (list == null) return Fail("Could not reflect Scenario.parts.");
+                var all = ScenarioAllParts(Find.Scenario);
                 return (object)new
                 {
                     success = true,
                     scenarioName = Find.Scenario.name,
-                    partCount = list.Count,
-                    parts = list.Select(DescribePart).ToList(),
+                    partCount = all.Count,
+                    appendablePartCount = list.Count,
+                    parts = all.Select(DescribePart).ToList(),
                     ticksGame = TicksGameSafe(),
                 };
             });
@@ -91,7 +109,10 @@ namespace JawaBench.BridgeTools
                 "(pass allowDuplicate=true to override). ⚠ Removing a part has no tool; that is " +
                 "a savegame edit by design.",
             ResultDescription =
-                "success, added {className, def, summary}, partCount, parts[] read back.")]
+                "success, added {className, def, summary}, partCount, parts[] read back off " +
+                "Scenario.AllParts (so playerFaction and surfaceLayer are in it). On a dry " +
+                "run: wouldAdd, fieldsApplied, wouldRun - and initCalls is validated there " +
+                "too, so a dry run never reports success for a call the real one refuses.")]
         public static async Task<object> ScenarioPartAdd(
             IRimBridgeContext ctx, CancellationToken cancellationToken,
             [ToolParameter(Description = "Full class name, e.g. 'RimMandrake.Utinni.EmpirePursuit.ScenPart_RuthlessPursuingMechanoids'.")]
@@ -119,11 +140,15 @@ namespace JawaBench.BridgeTools
 
                 var list = ScenarioPartsList(Find.Scenario);
                 if (list == null) return Fail("Could not reflect Scenario.parts.");
-                if (!allowDuplicate && list.Any(p => p.GetType() == partType))
+                // Checked against AllParts, not the parts list: ScenPart_PlayerFaction and
+                // the surface ScenPart_PlanetLayer live in dedicated Scenario fields, so a
+                // parts-only check would let a second one through and report success.
+                var allBefore = ScenarioAllParts(Find.Scenario);
+                if (!allowDuplicate && allBefore.Any(p => p.GetType() == partType))
                     return Fail("A " + partType.Name + " is already in the scenario. " +
                                 "Pass allowDuplicate=true to add another.",
-                                new { existing = list.Where(p => p.GetType() == partType)
-                                                     .Select(DescribePart).ToList() });
+                                new { existing = allBefore.Where(p => p.GetType() == partType)
+                                                          .Select(DescribePart).ToList() });
 
                 ScenPartDef def = null;
                 if (!string.IsNullOrEmpty(defName))
@@ -182,15 +207,9 @@ namespace JawaBench.BridgeTools
                     }
                 }
 
-                if (dryRun)
-                    return (object)new
-                    {
-                        success = true, dryRun = true,
-                        wouldAdd = DescribePart(part), fieldsApplied = applied,
-                        note = "DRY RUN - nothing was added. Pass dryRun=false to mutate.",
-                        ticksGame = TicksGameSafe(),
-                    };
-
+                // Validated BEFORE the dryRun return: a dry run that reported success for an
+                // initCalls value the real call would refuse is a dry run that lied about
+                // what would happen.
                 var wantedInits = (initCalls ?? "").Split(';')
                     .Select(s => s.Trim()).Where(s => s.Length > 0).ToList();
                 var unknown = wantedInits
@@ -200,6 +219,16 @@ namespace JawaBench.BridgeTools
                     return Fail("Unknown initCalls: " + string.Join(", ", unknown) +
                                 ". Allowed: PostWorldGenerate, PostGameStart, PostMapGenerate. " +
                                 "Nothing was added.");
+
+                if (dryRun)
+                    return (object)new
+                    {
+                        success = true, dryRun = true,
+                        wouldAdd = DescribePart(part), fieldsApplied = applied,
+                        wouldRun = wantedInits,
+                        note = "DRY RUN - nothing was added. Pass dryRun=false to mutate.",
+                        ticksGame = TicksGameSafe(),
+                    };
 
                 list.Add(part);
 
@@ -234,7 +263,7 @@ namespace JawaBench.BridgeTools
                     }
                 }
 
-                var readBack = ScenarioPartsList(Find.Scenario);
+                var readBack = ScenarioAllParts(Find.Scenario);
                 return (object)new
                 {
                     success = true, dryRun = false,
