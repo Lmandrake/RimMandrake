@@ -75,14 +75,15 @@ def _live_defs(manifest: em.Manifest) -> dict:
     host, port, token = resolve_endpoint()
     with RimBridge(host=host, port=port, token=token) as bridge:
         for defType, names in by_type.items():
-            resp = bridge.call("jawa/get_defs",
-                                {"defType": defType, "defNames": sorted(names)})
-            # jawa/get_defs today: {"defName": {...scalar fields...}, ...} per type.
-            # If the wire shape differs, fail loud rather than silently mis-map.
-            fields_by_name = resp if isinstance(resp, dict) else resp.get("defs", resp)
-            for name in names:
-                if name in fields_by_name:
-                    out[(defType, name)] = fields_by_name[name]
+            # jawa/get_defs takes `defs` as ';'-separated 'DefType/defName' pairs
+            # and returns {"rows": [{"defName":..., "found":..., "fields": {...}}, ...]}
+            # - NOT a {defType, defNames} request / bare {defName: fields} response.
+            defs_arg = ";".join("%s/%s" % (defType, n) for n in sorted(names))
+            resp = bridge.call("jawa/get_defs", {"defs": defs_arg})
+            rows = resp.get("rows", []) if isinstance(resp, dict) else []
+            for row in rows:
+                if row.get("found") and row.get("defName") in names:
+                    out[(defType, row["defName"])] = row.get("fields", {})
     return out
 
 
