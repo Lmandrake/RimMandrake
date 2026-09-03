@@ -1391,6 +1391,23 @@ namespace JawaBench.BridgeTools
                 bool clr = string.Equals(action, "clear", StringComparison.OrdinalIgnoreCase);
                 if (!add && !clr) return Fail("action must be add|clear.");
 
+                // 🔴 SET_GAS_TOXDEADLIFE_SILENT_NOOP_1. GasGrid.AddGas gates ToxGas behind
+                // ModLister.CheckBiotech and DeadlifeDust behind ModLister.CheckAnomaly - both
+                // log an error and silently RETURN, never throw. Nothing upstream of AddGas
+                // checked that, so 'action=add, gasType=ToxGas' (ToxGas is also the DEFAULT
+                // gasType) on a non-Biotech game used to add changed++ for every cell while
+                // AddGas did nothing at all - the exact "gate reported, never thrown" contract
+                // this section's own header comment states, broken for this one tool. Check
+                // and report before the loop, the same way sand/Odyssey is already gated in
+                // jawa/set_weather_buildup.
+                if (add)
+                {
+                    if (gt == GasType.ToxGas && !ModsConfig.BiotechActive)
+                        return Fail("ToxGas requires Biotech, which is not active. GasGrid.AddGas would silently no-op.");
+                    if (gt == GasType.DeadlifeDust && !ModsConfig.AnomalyActive)
+                        return Fail("DeadlifeDust requires Anomaly, which is not active. GasGrid.AddGas would silently no-op.");
+                }
+
                 int changed = 0;
                 foreach (var c in r)
                 {
@@ -1399,13 +1416,29 @@ namespace JawaBench.BridgeTools
                         if (add) { map.gasGrid.AddGas(c, gt, Math.Max(1, Math.Min(255, density))); changed++; }
                         else
                         {
-                            // 🔴 ClearCellUnsafe is the ONE GasGrid write that does not dirty
-                            // the mesh - that is what "Unsafe" names. AddGas, Debug_ClearAll
-                            // and GravshipPlacementUtility all dirty MapMeshFlagDefOf.Gas
-                            // themselves; without this the data is zeroed and the cloud stays
-                            // on screen until something unrelated redraws that section, and
-                            // jawa/map_commit's flag set does not include Gas either.
-                            map.gasGrid.ClearCellUnsafe(c);
+                            // 🔴 SET_GAS_CLEAR_WIPES_ALL_TYPES_1. GasGrid packs all FOUR gas
+                            // types into one uint per cell (BlindSmoke|ToxGas<<8|RotStink<<16|
+                            // DeadlifeDust<<24 - see GasGrid.SetDirect). ClearCellUnsafe zeroes
+                            // that whole packed uint, so `action=clear, gasType=RotStink` used
+                            // to silently erase ToxGas/BlindSmoke/DeadlifeDust at the same cell
+                            // too - the caller asked to clear one gas and three others vanished
+                            // with no report. Read all four back, zero only the selected one,
+                            // and write the rest back unchanged - the same read-modify-write
+                            // AddGas itself does one type at a time.
+                            //
+                            // ClearCellUnsafe is still the ONE GasGrid write that does not dirty
+                            // the mesh - that is what "Unsafe" names - so this still dirties it
+                            // itself; jawa/map_commit's flag set does not include Gas either.
+                            var cur = map.gasGrid.DensitiesAt(c);
+                            byte smoke = (byte)cur.x, tox = (byte)cur.y, rot = (byte)cur.z, dead = (byte)cur.w;
+                            switch (gt)
+                            {
+                                case GasType.BlindSmoke: smoke = 0; break;
+                                case GasType.ToxGas: tox = 0; break;
+                                case GasType.RotStink: rot = 0; break;
+                                case GasType.DeadlifeDust: dead = 0; break;
+                            }
+                            map.gasGrid.SetDirect(c, smoke, tox, rot, dead);
                             map.mapDrawer.MapMeshDirty(c, (ulong)MapMeshFlagDefOf.Gas);
                             changed++;
                         }
