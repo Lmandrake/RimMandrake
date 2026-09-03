@@ -62,4 +62,47 @@ namespace RimMandrake.Graffiti
         // every family except a taunt mark built to funnel a breach.
         public bool breachLure;
     }
+
+    // Fixed 2026-09-02 (opus code review): "there are zero Log. calls in the
+    // whole of Graffiti/Source/" - every mis-wire in this extension's data was
+    // silent by construction, the exact "a patch that matches nothing logs
+    // nothing" shape CLAUDE.md warns about. DefModExtension has no ConfigErrors
+    // hook of its own, so this walks every ThingDef carrying one at startup and
+    // names the two known mis-wire shapes instead of leaving them to be
+    // discovered by a mark that quietly never reacts to anything.
+    [StaticConstructorOnStartup]
+    internal static class ModExtension_Graffiti_Validator
+    {
+        static ModExtension_Graffiti_Validator()
+        {
+            foreach (ThingDef def in DefDatabase<ThingDef>.AllDefsListForReading)
+            {
+                ModExtension_Graffiti ext = def.GetModExtension<ModExtension_Graffiti>();
+                if (ext == null) continue;
+
+                if (ext.visibility == GraffitiVisibility.ClanOnly && ext.viewerReactionThought == null)
+                {
+                    Log.Warning("[RimMandrake.Graffiti] " + def.defName +
+                        " sets visibility=ClanOnly but has no viewerReactionThought - " +
+                        "the gate has nothing to grant and will never do anything.");
+                }
+            }
+            foreach (ThoughtDef td in DefDatabase<ThoughtDef>.AllDefsListForReading)
+            {
+                if (td.workerClass != typeof(ThoughtWorker_ViewedGraffitiMark)) continue;
+                bool anyMarkPointsHere = false;
+                foreach (ThingDef def in DefDatabase<ThingDef>.AllDefsListForReading)
+                {
+                    ModExtension_Graffiti ext = def.GetModExtension<ModExtension_Graffiti>();
+                    if (ext != null && ext.viewerReactionThought == td) { anyMarkPointsHere = true; break; }
+                }
+                if (!anyMarkPointsHere)
+                {
+                    Log.Warning("[RimMandrake.Graffiti] " + td.defName +
+                        " uses ThoughtWorker_ViewedGraffitiMark but no mark's " +
+                        "ModExtension_Graffiti.viewerReactionThought points at it - unreachable.");
+                }
+            }
+        }
+    }
 }

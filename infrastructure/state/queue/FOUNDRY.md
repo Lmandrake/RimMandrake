@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-03T00:27:27Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-03T00:32:35Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -377,6 +377,15 @@ target:   v1
 kind:     bug
 summary:  1. Terrain overwrite is permanent and destructive; undisclosed.
 prose:    infrastructure/state/items/FLUID_CANAL_FLOOD_TUNING_GAPS_1.md
+
+## GRAFFITI_SPREE_MINOR_FINDINGS_1 opus review found 3 minor Graffiti findings: dropped donor workerClass, think-tree paints before food/rest, stale tickerType
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  1. MentalStateDefsGraffiti.xml's port of the donor mod's
+prose:    infrastructure/state/items/GRAFFITI_SPREE_MINOR_FINDINGS_1.md
 
 # BLOCKED — something is WRONG and someone must act
 

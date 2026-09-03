@@ -4040,3 +4040,6 @@
 {"seat":"FOUNDRY","event":"file","id":"FLUID_CANAL_FLOOD_TUNING_GAPS_1","title":"opus review found FluidCanals floods are permanent/floor-destroying (undisclosed), can tick forever if boxed in, and MaxFloodDurationTicks is actually a rate divisor not a duration - needs a design pass, not a quick fix","kind":"bug","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-03T00:26:52Z"}
 {"seat":"FOUNDRY","event":"claim","id":"FLUID_CANAL_FLOOD_TUNING_GAPS_1","ts":"2026-09-03T00:27:27Z"}
 {"seat":"FOUNDRY","event":"start","id":"FLUID_CANAL_FLOOD_TUNING_GAPS_1","ts":"2026-09-03T00:27:27Z"}
+{"seat":"FOUNDRY","event":"file","id":"GRAFFITI_SPREE_MINOR_FINDINGS_1","title":"opus review found 3 minor Graffiti findings: dropped donor workerClass, think-tree paints before food/rest, stale tickerType","kind":"bug","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-03T00:32:20Z"}
+{"seat":"FOUNDRY","event":"claim","id":"GRAFFITI_SPREE_MINOR_FINDINGS_1","ts":"2026-09-03T00:32:34Z"}
+{"seat":"FOUNDRY","event":"start","id":"GRAFFITI_SPREE_MINOR_FINDINGS_1","ts":"2026-09-03T00:32:35Z"}
