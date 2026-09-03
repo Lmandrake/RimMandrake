@@ -48,8 +48,15 @@
 //                                             faction=null): returns the SAME pawn
 //                                             on every call after the first - a
 //                                             SINGLETON per CharacterDef, generated
-//                                             once, applies definitions+roles, then
-//                                             PassToWorld. THIS is the capability
+//                                             once, applies DEFINITIONS ONLY (never
+//                                             roles - ApplyRole is called from one
+//                                             place in the whole assembly, the
+//                                             faction-leader Harmony patch in
+//                                             Patches.cs), then PassToWorld. Its
+//                                             `forcedFaction` argument is dead: the
+//                                             body never reads it, always taking
+//                                             FirstFactionOfDef(charDef.faction).
+//                                             THIS is the capability
 //                                             jawa/spawn_pawn cannot express: it
 //                                             always rolls a fresh pawn.
 //   UniqueCharacter : IExposable              def (CharacterDef), pawn (Pawn) - both
@@ -114,7 +121,15 @@ namespace JawaBench.BridgeTools
             trackerType = GenTypes.GetTypeInAnyAssembly("SWCP.Core.UniqueCharactersTracker");
             if (trackerType == null) return null;
             PropertyInfo pi = trackerType.GetProperty("Instance", BindingFlags.Public | BindingFlags.Static);
-            return pi?.GetValue(null);
+            object inst = pi?.GetValue(null);
+            if (inst == null) return null;
+            // 🔴 `Instance` is a static assigned in the WorldComponent's constructor and in
+            // FinalizeInit, and NEVER cleared. Quit a game to the main menu and it still
+            // points at the DEAD world's tracker, so an ungated read reports a discarded
+            // game's roster as live state. WorldComponent.world is the tell.
+            if (Current.Game == null || Current.Game.World == null) return null;
+            if (!ReferenceEquals(FieldOrNullAny(inst, "world"), Current.Game.World)) return null;
+            return inst;
         }
 
         /// <summary>
@@ -166,8 +181,11 @@ namespace JawaBench.BridgeTools
                 "own named-character ROSTER, distinct from any generic PawnKindDef. Each " +
                 "CharacterDef bundles a pawnKind, faction, optional xenotype, a list of " +
                 "appearance/story/title/unique-item DEFINITIONS applied on generation, and " +
-                "zero or more ROLES (e.g. CharacterRole_FactionLeader, which makes the drawn " +
-                "pawn that faction's leader and syncs its ideo). READ ONLY - generates " +
+                "zero or more ROLES (e.g. CharacterRole_FactionLeader, whose ApplyRole would " +
+                "make a pawn that faction's leader and sync its ideo - but SWCP only ever " +
+                "calls ApplyRole from its own faction-leader patch, never from GetOrGenPawn, " +
+                "so roleTypes[] is what the def DECLARES, not what any drawn pawn HAS). " +
+                "READ ONLY - generates " +
                 "nothing. When a World is loaded this also reports each character's LIVE " +
                 "tracked state, read straight from UniqueCharactersTracker's own private " +
                 "roster field: whether it has EVER been drawn (tracked), whether that pawn " +
@@ -273,10 +291,16 @@ namespace JawaBench.BridgeTools
                 "by defName - UniqueCharactersTracker.GetOrGenPawn, the mod's own SINGLETON " +
                 "roster mechanic. NOT a duplicate of jawa/spawn_pawn: each CharacterDef maps " +
                 "to AT MOST ONE persistent Pawn for the whole game - the first call GENERATES " +
-                "it (applying its appearance/story/title/unique-item definitions and any " +
-                "roles, e.g. CharacterRole_FactionLeader makes it that faction's leader and " +
-                "syncs its ideo), and every later call reuses the SAME pawn rather than " +
-                "rolling a fresh one. If that pawn is already spawned somewhere this REFUSES " +
+                "it (applying its appearance/story/title/unique-item DEFINITIONS), and every " +
+                "later call reuses the SAME pawn rather than rolling a fresh one. " +
+                "🔴 ROLES ARE NOT APPLIED. GetOrGenPawn only runs " +
+                "CharacterDefinitionUtils.ApplyRequestDefinitions/ApplyPawnDefinitions; " +
+                "CharacterRole.ApplyRole is called from exactly one place in SWCP_Core - its " +
+                "own faction-leader Harmony patch, which additionally gates on " +
+                "PawnIsValid and on the pawn already belonging to that faction. So a " +
+                "CharacterRole_FactionLeader character drawn through this tool is NOT made " +
+                "faction leader and its ideo is NOT synced. " +
+                "If that pawn is already spawned somewhere this REFUSES " +
                 "to move it unless forceRespawn=true. Refuses by name if SWCP_Core.dll is not " +
                 "loaded or if 'character' is not a real CharacterDef defName.",
             ResultDescription =

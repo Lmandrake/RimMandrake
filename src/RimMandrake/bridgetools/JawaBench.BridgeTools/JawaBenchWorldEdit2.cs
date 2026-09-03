@@ -51,6 +51,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using RimBridgeServer.Sdk;
@@ -73,8 +74,12 @@ namespace JawaBench.BridgeTools
                 "already reads it, nothing on this bridge wrote it before now. ⚠️ Nothing in " +
                 "the engine validates the result against head type, body type or life stage - " +
                 "an off-gender combination 'works' and simply looks wrong. Call " +
-                "jawa/set_pawn_appearance afterward if the head/body should match.",
-            ResultDescription = "success, pawn, genderBefore, genderAfter.")]
+                "jawa/set_pawn_appearance afterward if the head/body should match. " +
+                "🔴 The write alone does not dirty the renderer, so this tool calls " +
+                "Drawer.renderer.SetAllGraphicsDirty() afterwards - without it an animal with " +
+                "femaleGraphicData keeps drawing its old-gender sprite, and every pawn keeps " +
+                "its cached portrait, for the rest of the session.",
+            ResultDescription = "success, pawn, genderBefore, genderAfter, rendererDirtied.")]
         public static async Task<object> SetPawnGender(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -97,12 +102,23 @@ namespace JawaBench.BridgeTools
                 Gender before = p.gender;
                 p.gender = g;
 
+                // PawnRenderNode resolves its graphic from pawn.gender ONCE and
+                // PawnRenderTree caches the resolved node (PawnRenderNode_AnimalPart and
+                // _AnimalPart_Body pick femaleGraphicData off it; PortraitsCache keys off
+                // the resolved tree). SetAllGraphicsDirty -> renderTree.SetDirty() is the
+                // only thing that re-resolves them - the same rule jawa/set_pawn_appearance
+                // already follows for head/body/hair.
+                bool dirtied = false;
+                try { p.Drawer.renderer.SetAllGraphicsDirty(); dirtied = true; }
+                catch (Exception e) { Log.Warning("[JawaBench] SetAllGraphicsDirty failed: " + e.Message); }
+
                 return new
                 {
                     success = true,
                     pawn = p.LabelShortCap,
                     genderBefore = before.ToString(),
                     genderAfter = p.gender.ToString(),
+                    rendererDirtied = dirtied,
                     ticksGame = TicksGameSafe()
                 };
             }).ConfigureAwait(false);
@@ -221,6 +237,15 @@ namespace JawaBench.BridgeTools
                 }
                 else if (string.Equals(m, "draw", StringComparison.OrdinalIgnoreCase))
                 {
+                    // CompPowerBattery.DrawPower is a bare `storedEnergy -= amount` with only
+                    // a below-zero guard. A NEGATIVE draw therefore ADDS energy with no
+                    // AmountCanAccept clamp, no efficiency scaling and no error, pushing
+                    // storedEnergy past storedEnergyMax - which then powers the base off a
+                    // battery the UI reports as over-full until a save/load clamps it in
+                    // PostExposeData. 'add' already refuses negatives; so does this now.
+                    if (value < 0f)
+                        return Fail("'draw' requires a non-negative value; CompPowerBattery.DrawPower would ADD it " +
+                                    "unclamped, past storedEnergyMax. Use mode='add' to charge.");
                     comp.DrawPower(value);
                 }
                 else
@@ -398,7 +423,11 @@ namespace JawaBench.BridgeTools
                 {
                     string err; var map = MapOrNull(out err);
                     if (map == null) return Fail(err);
-                    e = map.listerBuildings.AllBuildingsColonistOfClass<Building_GravEngine>().FirstOrDefault();
+                    // allBuildingsColonist holds PLAYER-FACTION buildings only, so a derelict
+                    // or quest-site gravship engine is invisible to AllBuildingsColonistOfClass
+                    // and would read as "no engine on this map" while one is standing there.
+                    e = map.listerBuildings.AllBuildingsColonistOfClass<Building_GravEngine>().FirstOrDefault()
+                        ?? map.listerBuildings.allBuildingsNonColonist.OfType<Building_GravEngine>().FirstOrDefault();
                     if (e == null) return Fail("No Building_GravEngine on the current map. Give 'engine' explicitly, or check another map.");
                 }
 
@@ -439,12 +468,18 @@ namespace JawaBench.BridgeTools
                 "Dry-run N days of the storyteller's plan with NO game time spent - " +
                 "StorytellerUtility.DebugGetFutureIncidents(numTestDays, currentMapOnly, ...), " +
                 "the exact call behind the storyteller-select page's own 'test' button. " +
-                "Read-only: it rolls the same RNG path a real playthrough would, but fires " +
-                "nothing and changes no game state.",
+                "Fires nothing: it rolls the same RNG path a real playthrough would, and the " +
+                "engine restores TicksGame, the incident queue and every StoryState itself. " +
+                "🔴 What the engine does NOT restore is Storyteller.recentIncidentsAnomaly / " +
+                "recentAnomalyIncidentFactor - DebugGetFutureIncidents calls " +
+                "RecordIncidentFired per forecast incident and those two fields are SCRIBED, " +
+                "so an unguarded forecast permanently skews the live anomaly incident chance. " +
+                "This tool snapshots and restores them (anomalyStateRestored).",
             ResultDescription =
                 "success, numTestDays, currentMapOnly, threatBigCount, totalIncidents, " +
-                "byIncidentDef[] (defName, count), incidents[] (defName, points, faction, " +
-                "target) capped at 200 with incidentsTruncated if more fired in the forecast.")]
+                "anomalyStateRestored, byIncidentDef[] (defName, count), incidents[] (defName, " +
+                "points, faction, target) capped at 200 with incidentsTruncated if more fired " +
+                "in the forecast.")]
         public static async Task<object> ForecastIncidents(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -459,6 +494,31 @@ namespace JawaBench.BridgeTools
                 if (Current.Game == null || Current.Game.storyteller == null) return Fail("No active game/storyteller.");
                 if (currentMapOnly && Find.CurrentMap == null) return Fail("No current map, and currentMapOnly=true.");
                 if (numTestDays < 1) return Fail("numTestDays must be at least 1.");
+                // The engine loops numTestDays*60 intervals synchronously on the main thread
+                // (and overflows int past ~35.8M days). A four-digit request wedges the game.
+                if (numTestDays > 1000) return Fail("numTestDays must be 1000 or less - DebugGetFutureIncidents runs " +
+                                                   numTestDays + "*60 storyteller intervals synchronously on the main thread.");
+
+                var storyteller = Current.Game.storyteller;
+                // 🔴 DebugGetFutureIncidents restores TicksGame, the incident queue and every
+                // StoryState - but it also calls Storyteller.RecordIncidentFired for each
+                // forecast incident, and that writes recentIncidentsAnomaly /
+                // recentAnomalyIncidentFactor, both SCRIBED in Storyteller.ExposeData and
+                // never put back. Snapshot the QUEUE'S CONTENTS, not just its reference:
+                // RecordIncidentFired mutates the same object in place.
+                const BindingFlags privInst = BindingFlags.NonPublic | BindingFlags.Instance;
+                FieldInfo fAnomQueue = typeof(Storyteller).GetField("recentIncidentsAnomaly", privInst);
+                FieldInfo fAnomFactor = typeof(Storyteller).GetField("recentAnomalyIncidentFactor", privInst);
+                Queue<bool> savedAnomQueue = null;
+                object savedAnomFactor = null;
+                bool anomalyStateRestored = false;
+                try
+                {
+                    var live = fAnomQueue != null ? fAnomQueue.GetValue(storyteller) as Queue<bool> : null;
+                    savedAnomQueue = live == null ? null : new Queue<bool>(live);
+                    if (fAnomFactor != null) savedAnomFactor = fAnomFactor.GetValue(storyteller);
+                }
+                catch (Exception) { fAnomQueue = null; fAnomFactor = null; }
 
                 Dictionary<IIncidentTarget, int> incCountsForTarget;
                 int[] incCountsForComp;
@@ -473,6 +533,16 @@ namespace JawaBench.BridgeTools
                 catch (Exception e)
                 {
                     return Fail("StorytellerUtility.DebugGetFutureIncidents threw " + e.GetType().Name + ": " + e.Message);
+                }
+                finally
+                {
+                    try
+                    {
+                        if (fAnomQueue != null) fAnomQueue.SetValue(storyteller, savedAnomQueue);
+                        if (fAnomFactor != null) fAnomFactor.SetValue(storyteller, savedAnomFactor);
+                        anomalyStateRestored = fAnomQueue != null && fAnomFactor != null;
+                    }
+                    catch (Exception e) { Log.Warning("[JawaBench] forecast_incidents could not restore anomaly state: " + e.Message); }
                 }
 
                 var byDef = allIncidents
@@ -497,6 +567,7 @@ namespace JawaBench.BridgeTools
                     currentMapOnly,
                     threatBigCount,
                     totalIncidents = allIncidents.Count,
+                    anomalyStateRestored,
                     byIncidentDef = byDef,
                     incidents = rows,
                     incidentsTruncated = allIncidents.Count > cap,
