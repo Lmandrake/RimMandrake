@@ -42,3 +42,24 @@ interval-gated math still accumulates the same total per day).
 
 All 4 fixed, or explicitly triaged with the check that ruled a fix
 unnecessary named.
+
+## Closed 2026-09-02 (FOUNDRY)
+
+1-2. Fixed: `CompDWCharger.CompTick` now bails on `CompPowerTrader.PowerOn
+   == false` / `CompFlickable.SwitchIsOn == false` before the radial scan,
+   and skips `pawn.HostileTo(parent.Faction)` targets.
+3. **Checked, NOT a bug** — verified `RecipeWorker.ApplyOnPawn` (RimSage):
+   it's an empty virtual method (`{}`), so calling `base.ApplyOnPawn`
+   would do nothing. `RSW_DW_RebootDroid` also sets no
+   `surgeryOutcomeEffect`, so `CheckSurgeryFail` (which the review implied
+   was being skipped) would short-circuit to `false` immediately even if
+   called. Nothing is actually lost by the current implementation — the
+   review's specific attribution (which base method, what it does) was
+   wrong, same class of miss as the already-caught `Patch_BeggarsFromPool`
+   finding.
+4. Fixed: `HediffComp_DWBoltResentment.CompPostTick` gated to a 60-tick
+   interval (`IsHashIntervalTick`), gain scaled ×60 to compensate, matching
+   `HediffComp_PoweredDown`'s existing cheaper shape.
+
+Compiles clean (`Droidworks.csproj`, 0/0). Live verify rides the same
+Droidworks-tier quicktest load owed to `DROIDWORKS_POWEREDDOWN_NOT_WIRED_1`.

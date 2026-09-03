@@ -38,17 +38,25 @@ namespace RimMandrake.StarWars.Droidworks
         public HediffCompProperties_DWBoltResentment Props =>
             (HediffCompProperties_DWBoltResentment)props;
 
+        // Fixed 2026-09-02 (opus code review): this comp does a linear HasHediff()
+        // scan every single tick, forever, for any pawn that ever wore a bolt
+        // (the hediff is deliberately never removed - see the class doc above).
+        // Gated to a 60-tick interval with the per-tick gain scaled up by 60 to
+        // match, the way HediffComp_PoweredDown already does.
+        private const int ScanIntervalTicks = 60;
+
         public override void CompPostTick(ref float severityAdjustment)
         {
             severityAdjustment = 0f; // never decay, never rise on its own - only this method moves it
 
             Pawn p = Pawn;
             if (p == null || p.Dead) return;
+            if (!p.IsHashIntervalTick(ScanIntervalTicks)) return;
             if (p.RaceProps == null || p.RaceProps.intelligence != Intelligence.Humanlike) return;
             if (!p.health.hediffSet.HasHediff(DroidworksDefOf.RSW_DW_RestrainingBolt)) return;
 
-            float gainPerTick = Props.severityPerDayWhileBolted / GenDate.TicksPerDay;
-            parent.Severity = Mathf.Min(parent.def.maxSeverity, parent.Severity + gainPerTick);
+            float gainPerInterval = Props.severityPerDayWhileBolted / GenDate.TicksPerDay * ScanIntervalTicks;
+            parent.Severity = Mathf.Min(parent.def.maxSeverity, parent.Severity + gainPerInterval);
         }
     }
 }

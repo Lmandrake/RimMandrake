@@ -4028,3 +4028,7 @@
 {"seat":"FOUNDRY","event":"start","id":"JAWABENCH_COMPANION_NOT_LOADING_1","ts":"2026-09-03T00:03:32Z"}
 {"seat":"FOUNDRY","event":"close","id":"JAWABENCH_COMPANION_NOT_LOADING_1","sha":"HEAD","ts":"2026-09-03T00:03:32Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-03T00:03:38Z"}
+{"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-09-03T00:12:46Z"}
+{"seat":"FOUNDRY","event":"claim","id":"DROIDWORKS_CHARGER_STATE_MACHINE_SWEEP_1","ts":"2026-09-03T00:12:50Z"}
+{"seat":"FOUNDRY","event":"start","id":"DROIDWORKS_CHARGER_STATE_MACHINE_SWEEP_1","ts":"2026-09-03T00:12:51Z"}
+{"seat":"FOUNDRY","event":"close","id":"DROIDWORKS_CHARGER_STATE_MACHINE_SWEEP_1","sha":"HEAD","ts":"2026-09-03T00:15:01Z"}

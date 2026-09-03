@@ -41,10 +41,22 @@ namespace RimMandrake.StarWars.Droidworks
             Map map = parent.Map;
             if (map == null) return;
 
+            // Fixed 2026-09-02 (opus code review): this comp never consulted the
+            // building's own power/switch state, so RSW_DW_ChargeNimbus (800 W
+            // CompPowerTrader + CompFlickable) charged every droid in radius while
+            // unpowered, grid-down, or switched off.
+            CompPowerTrader powerComp = parent.GetComp<CompPowerTrader>();
+            if (powerComp != null && !powerComp.PowerOn) return;
+            CompFlickable flickComp = parent.GetComp<CompFlickable>();
+            if (flickComp != null && !flickComp.SwitchIsOn) return;
+
             float gain = Props.chargeRatePerHour * ScanIntervalTicks / GenDate.TicksPerHour;
             foreach (Thing thing in GenRadial.RadialDistinctThingsAround(parent.Position, map, Props.radius, useCenter: true))
             {
                 if (!(thing is Pawn pawn)) continue;
+                // Fixed 2026-09-02: no hostility filter meant a raiding battle droid
+                // or a deliberately-starved prisoner got topped off for free.
+                if (pawn.HostileTo(parent.Faction)) continue;
                 Need_Power need = pawn.needs?.TryGetNeed<Need_Power>();
                 if (need == null || need.CurLevel >= 1f) continue;
                 need.CurLevel += gain;
