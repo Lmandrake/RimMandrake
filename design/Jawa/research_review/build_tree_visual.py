@@ -64,6 +64,19 @@ cutb = defaultdict(list)
 for m in cut:
     cutb[bucket(m)].append(m)
 
+# full per-row verdicts for the measured-dead bucket — model reasons are truncated
+# at 80 chars; these are research_tree_prep.md §1 verbatim.
+DEAD_WHY = {
+    "VAE_SterileAttire":        "all 3 unlocks cut (DoctorScrubs, LabCoat, SurgicalMask)",
+    "VWE_MakeshiftWeapons":     "all 6 unlocks cut (the VWE_Gun_Makeshift* guns)",
+    "VFEP_SweatFermentation":   "its 1 unlock (VFEP_Apparel_Rumsuit) is cut",
+    "MM_Research_Repulsor":     "0 unlocks mod-wide — whole mod tree grepped, nothing references it",
+    "guy762_ResearchKotOR_revan": "author-flagged dead: baseCost 99,999,999, techprintCommonality 0",
+    "guy762_ResearchKotOR_exile": "author-flagged dead: same unobtainable base",
+    "WallStuff":                "author-flagged dead: “No Longer needed, just left for now so it doesn't cause errors.”",
+    "MatterToEnergyConversion": "author-flagged dead: same description, same mod",
+}
+
 # ── render ───────────────────────────────────────────────────────────────────
 def esc(s):
     return html.escape(str(s))
@@ -167,6 +180,18 @@ h2{font-family:"Oswald",sans-serif;font-weight:500;font-size:24px;letter-spacing
 .cutcard .src{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.05em;
   text-transform:uppercase;color:var(--ink3);margin:3px 0 8px}
 .cutcard p{margin:0 0 9px;font-size:13.5px;color:var(--ink);line-height:1.5}
+.cutlist{list-style:none;margin:0;padding:8px 0 0;border-top:1px dashed var(--line);
+  columns:1;font-size:12.5px;line-height:1.55}
+.cutlist li{margin:0 0 4px;break-inside:avoid}
+.cutlist b{font-weight:600;color:var(--ink)}
+.cutlist .dn{font-family:"IBM Plex Mono",monospace;font-size:10.5px;color:var(--ink3)}
+.cutlist .modn{font-size:11px;color:var(--ink3)}
+.cutlist .why1{font-size:11.5px;color:var(--ink2);margin:1px 0 5px;padding-left:10px;
+  border-left:2px solid var(--line)}
+.cutcard.wide{grid-column:1/-1}
+.cutcard.wide .cutlist{columns:3;column-gap:26px}
+@media(max-width:900px){.cutcard.wide .cutlist{columns:2}}
+@media(max-width:600px){.cutcard.wide .cutlist{columns:1}}
 .cutcard .ex{font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--ink3);
   line-height:1.6;word-break:break-word}
 .foot{margin-top:44px;padding-top:16px;border-top:1px solid var(--line);
@@ -233,11 +258,21 @@ for b in order:
         continue
     n, why, src = CUT_INFO[b]
     flag = " flag" if b in ("Anomaly", "Dungeon Pack") else ""
-    ex = ", ".join(esc(m["label"]) for m in cutb[b][:6])
-    if len(cutb[b]) > 6:
-        ex += f" …(+{len(cutb[b]) - 6})"
+    if len(cutb[b]) > 12:
+        flag += " wide"
+    rows = sorted(cutb[b], key=lambda x: (x["mod"], x["label"]))
+    mods = {m["mod"] for m in rows}
+    lis = []
+    for m in rows:
+        modn = f'<span class="modn"> · {esc(m["mod"])}</span>' if len(mods) > 1 else ""
+        extra = ""
+        if m["defName"] in DEAD_WHY:
+            extra = f'<div class="why1">{esc(DEAD_WHY[m["defName"]])}</div>'
+        lis.append(f'<li><b>{esc(m["label"])}</b> <span class="dn">{esc(m["defName"])}</span>'
+                   f'{modn}{extra}</li>')
+    ex = '<ul class="cutlist">' + "".join(lis) + "</ul>"
     w(f'<div class="cutcard{flag}"><h3>{esc(b)}<span class="n">{n}</span></h3>'
-      f'<div class="src">{esc(src)}</div><p>{why}</p><div class="ex">{ex}</div></div>')
+      f'<div class="src">{esc(src)}</div><p>{why}</p>{ex}</div>')
 w('</div>')
 
 # merges note
