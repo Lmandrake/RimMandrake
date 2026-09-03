@@ -122,3 +122,19 @@ GravshipAstronautFix/Textures/Things/Structures/GravshipGenebank/GravshipGeneban
 #    and of the check that caught it: two correct patches, one merged behaviour
 #    that neither seat designed.
 
+
+# --- SeaBeasts: the art SOURCE tree never ships ------------------------------
+# 2026-09-02 (BENCH). `src/RimStarWars/SeaBeasts/art/` holds the owner's kept
+# mockups, the per-creature `final/` masters, contact sheets, PLAN.md files and
+# the generation tools. RimWorld reads `Textures/`, and the shipping copies of
+# these PNGs already live there — so `art/` is pure source.
+#
+# Caught on its first deploy: --apply wrote 169 files and 44 MB of it was this
+# tree. Harmless to the game (it ignores an unknown top-level folder) and wrong
+# anyway: a deployed mod should carry what the game loads and nothing else, or
+# every future size check and every "is this in sync" answer is measuring
+# somebody's working material.
+# ⚠️ NOT a candidate for lifting. This is not art pending a ruling; it is source
+# that has a rendered destination. If a facing set is missing from Textures/,
+# copy THAT file — do not lift this hold.
+SeaBeasts/art/*   # BENCH: art SOURCE, never shipped; Textures/ carries the game copies

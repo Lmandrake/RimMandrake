@@ -180,3 +180,52 @@ problematic trader gen."). Backup `ModsConfig.PRE_DROP_TORCHES_TRADERGEN.2026090
 
 ⚠️ The def dump is stale the moment this list changed (last capture was a 593-mod run).
 Armed for this load.
+
+---
+
+## Load 5 (588 mods) — 2026-09-02, BENCH. NEW MOD + the REVIEW profile.
+
+🔴 **THIS LOAD CANNOT SCORE BASELINES, AND THAT IS DELIBERATE.** It runs under the
+Cherry Picker **REVIEW** profile (0 cuts instead of 1509), so 1509 previously-absent
+defs are present and every count in `harvest_log.py` will move — `configerror`,
+`crossref`, `defdiscard`, `patchfail`, all of it. A RED on this load means nothing
+until the numbers are re-derived, and I am not re-baselining off it. The next
+ordinary SHIP load does the scoring. Owner approved spending the window this way
+(FOUNDRY is offline, which is when a cold load is cheapest).
+
+Two independent things ride it, and they are distinguishable:
+
+**1 — the REVIEW profile actually loads.** The last thing owed on
+`CHERRYPICKER_TWO_PROFILES_1`. Built and round-tripped, but INERT until a game starts
+under it, so it has never been proven.
+- ✅ PASS: the game reaches the main menu, and Cherry Picker's own log line reports
+  removing **nothing** (its removal list is empty or absent).
+- ❌ FAIL: it errors on an empty `<keys />`, or removes content anyway — which would
+  mean the file it reads is not the one the swap writes.
+- ⚠️ A clean menu is NOT sufficient. Positive check: a def the SHIP profile cuts must
+  be PRESENT in the fresh dump. `Turret_MiniTurret` is a known cut with a recorded
+  sentinel — it should exist on this load and not on the next.
+
+**2 — the 18 sea-beast defs resolve.** New mod `mandrake.rsw.seabeasts` at position
+322, deliberately AFTER `mandrake.rsw.beastnorm`: a PatchOperation only sees defs
+from mods loaded before it, so beastnorm loading first means it CANNOT retrofit these.
+They are born normalized under Laws 3+4 and a retrofit is what the item forbids.
+- ✅ PASS: the fresh dump contains all 18 `RSW_*` ThingDefs and their 18 PawnKindDefs.
+- ❌ FAIL: `Could not resolve cross-reference` naming any `RSW_` def, or a body/tool
+  def they cite; or fewer than 18 present, which means a def was silently discarded.
+- ⚠️ EXPECTED, NOT A FAILURE: missing-texture complaints for **Starmaw** and
+  **Lanternwhale**. Their art does not exist yet (generation hit a usage limit) and
+  their texPaths deliberately point where it will live. Every OTHER sea beast's
+  textures must resolve — a complaint naming any of the other 16 IS a failure.
+- ⚠️ `validate_patch.py` already passes on all 6 def files except the colossi one,
+  which fails exactly 12 checks: 2 creatures × 3 lifeStages × 2 graphic fields. That
+  count is the fingerprint of the missing art and nothing else; 13 would be new.
+
+⚠️ Baby/juvenile `drawSize` for all 18 is INTERPOLATED (~0.55×/0.80× of adult, the
+ratio across four vanilla marine animals), not a spec number — the spec gives adult
+only. It is a structural fill-in for a required 3-stage array and the owner has not
+ruled on it.
+
+🔴 AFTER THIS LOAD: swap back with `cherrypicker_swap.py --ship --apply`. Leaving the
+machine on REVIEW is the one unacceptable outcome — the owner's campaign would run
+with 1509 cut things restored.
