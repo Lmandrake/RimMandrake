@@ -1296,7 +1296,19 @@ KIT = {
       <li>Warcasket</li>
       <li>WarcasketAll</li>
       <li>WarcasketVeteran</li>
-    </apparelDisallowTags>""",
+    </apparelDisallowTags>
+    <backstoryFilters>
+      <li>
+        <categories>
+          <li>JawaBSC_FDECathedral</li>
+        </categories>
+      </li>
+      <li>
+        <categories>
+          <li>JawaBSC_FDENightside</li>
+        </categories>
+      </li>
+    </backstoryFilters>""",
  'Jawa_Droid_Heavy': """    <weaponMoney>1400~1680</weaponMoney>
     <apparelMoney>200~240</apparelMoney>
     <initialResistanceRange>12~18</initialResistanceRange>
@@ -1338,7 +1350,19 @@ KIT = {
       <li>Warcasket</li>
       <li>WarcasketAll</li>
       <li>WarcasketVeteran</li>
-    </apparelDisallowTags>""",
+    </apparelDisallowTags>
+    <backstoryFilters>
+      <li>
+        <categories>
+          <li>JawaBSC_FDECathedral</li>
+        </categories>
+      </li>
+      <li>
+        <categories>
+          <li>JawaBSC_FDENightside</li>
+        </categories>
+      </li>
+    </backstoryFilters>""",
  'Jawa_Droid_Specialist': """    <weaponMoney>1200~1440</weaponMoney>
     <apparelMoney>180~216</apparelMoney>
     <initialResistanceRange>14~22</initialResistanceRange>
@@ -1379,7 +1403,19 @@ KIT = {
       <li>Warcasket</li>
       <li>WarcasketAll</li>
       <li>WarcasketVeteran</li>
-    </apparelDisallowTags>""",
+    </apparelDisallowTags>
+    <backstoryFilters>
+      <li>
+        <categories>
+          <li>JawaBSC_FDECathedral</li>
+        </categories>
+      </li>
+      <li>
+        <categories>
+          <li>JawaBSC_FDENightside</li>
+        </categories>
+      </li>
+    </backstoryFilters>""",
  'Jawa_Droid_Leader': """    <weaponMoney>1800~2160</weaponMoney>
     <apparelMoney>600~720</apparelMoney>
     <initialResistanceRange>20~30</initialResistanceRange>
@@ -1423,7 +1459,19 @@ KIT = {
       <li>Warcasket</li>
       <li>WarcasketAll</li>
       <li>WarcasketVeteran</li>
-    </apparelDisallowTags>""",
+    </apparelDisallowTags>
+    <backstoryFilters>
+      <li>
+        <categories>
+          <li>JawaBSC_FDECathedral</li>
+        </categories>
+      </li>
+      <li>
+        <categories>
+          <li>JawaBSC_FDENightside</li>
+        </categories>
+      </li>
+    </backstoryFilters>""",
  'Jawa_Wildsteam_Grunt': """    <weaponMoney>1300~1560</weaponMoney>
     <apparelMoney>150~180</apparelMoney>
     <initialResistanceRange>8~14</initialResistanceRange>
