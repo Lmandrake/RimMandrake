@@ -65,7 +65,21 @@ namespace RimMandrake.Inhabited
                 List<Trait> existing = new List<Trait>(pawn.story.traits.allTraits);
                 for (int i = 0; i < existing.Count; i++)
                 {
-                    pawn.story.traits.RemoveTrait(existing[i]);
+                    // ⛔ A GENE'S TRAIT CANNOT BE REMOVED -- ONLY THE GENE CAN.
+                    // TraitSet.RemoveTrait ends with
+                    // `if (trait.sourceGene != null) pawn.genes.RemoveGene(...)`,
+                    // so wiping the rolled traits wholesale silently DELETED the
+                    // genes behind them: a character generated on a xenotype whose
+                    // genes carry forcedTraits lost those genes, and with them the
+                    // stats and abilities that are the xenotype. This mod does not
+                    // author xenotype (the field is deliberately empty, DECIDE owes
+                    // it), so what generation rolled for the body is not ours to
+                    // undo. The authored traits go on top; the conflict check
+                    // below still refuses -- loudly -- any that cannot coexist.
+                    if (existing[i]?.sourceGene == null)
+                    {
+                        pawn.story.traits.RemoveTrait(existing[i]);
+                    }
                 }
                 for (int i = 0; i < character.traits.Count; i++)
                 {

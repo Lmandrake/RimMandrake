@@ -237,6 +237,24 @@ namespace RimMandrake.Inhabited
         /// </summary>
         public void InstantiateCast()
         {
+            // ⛔ NOTHING TO INSTANTIATE IS NOT THE SAME AS HAVING INSTANTIATED
+            // NOTHING, and latching the flag over the difference made a place
+            // permanently sterile. placeDef is assigned in exactly one place --
+            // GenStep_ComposeSettlementDistrict -- so a place reaches this with a
+            // null archetype whenever that step did not run or did not bind: the
+            // whole wilderness RM_InhabitedPlace tile-mutator route, which has no
+            // compose step at all, and any settlement whose manifest name failed
+            // to match on the FIRST visit. The flag then said "done" over an
+            // unfilled larder and an unrolled cast, and because it is only ever
+            // read as `if (!castInstantiated)`, no later visit -- and no later
+            // authoring of the manifest or the archetype -- could reach this
+            // method again. Returning without latching costs three field reads a
+            // visit and leaves the place recoverable.
+            if (placeDef == null && Cast == null)
+            {
+                return;
+            }
+
             castInstantiated = true;
 
             // Fixed 2026-09-03 (INHABITED_STOCK_ONTO_MAP_AND_FATE_1): the stock
@@ -445,9 +463,21 @@ namespace RimMandrake.Inhabited
                     {
                         continue;
                     }
-                    if (roster.Remove(p))
+                    if (!roster.Remove(p))
                     {
-                        pool.Absorb(p, Faction, DisplacedReason.Fled, LabelCap);
+                        continue;
+                    }
+                    if (!pool.Absorb(p, Faction, DisplacedReason.Fled, LabelCap)
+                        && !roster.TryAdd(p, canMergeWithExistingStacks: false))
+                    {
+                        // Absorb refuses a destroyed pawn and a pool that will
+                        // not take them, and this loop had already taken them off
+                        // the roster -- so they were held by nothing, which no
+                        // Scribe path reaches and no save can carry.
+                        // InhabitedFateWorker.Apply guards its identical loop this
+                        // way; this copy and the debug one did not.
+                        Log.Error("[RimMandrake.Inhabited] " + p.LabelShort + " left " + LabelCap
+                                  + " and has nowhere to be; they are lost.");
                     }
                 }
             }
