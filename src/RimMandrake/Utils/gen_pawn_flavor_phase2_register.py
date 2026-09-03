@@ -139,10 +139,14 @@ def render_html(rows, prefill):
     prefill_json = json.dumps(prefill)
     tpl = open(os.path.join(os.path.dirname(__file__),
                             "pawn_flavor_phase2_register_template.html"), encoding="utf-8").read()
+    # __DEC_NATIVE__/__HTML_NATIVE__ land in plain <code> HTML text (and its
+    # "copy path" button reads that same text) — not a JS string literal, so
+    # escaping backslashes here doubled every one in the path shown to and
+    # copied by the owner.
     return (tpl.replace("/*__DATA__*/[]", data_json)
                .replace("/*__PREFILL__*/{}", prefill_json)
-               .replace("__DEC_NATIVE__", DEC_NATIVE.replace("\\", "\\\\"))
-               .replace("__HTML_NATIVE__", HTML_NATIVE.replace("\\", "\\\\")))
+               .replace("__DEC_NATIVE__", DEC_NATIVE)
+               .replace("__HTML_NATIVE__", HTML_NATIVE))
 
 
 if __name__ == "__main__":
