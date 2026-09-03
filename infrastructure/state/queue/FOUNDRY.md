@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-03T00:32:35Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-03T00:52:18Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -315,15 +315,6 @@ kind:     bug
 summary:  rimflow has no hook forcing a close, or even a plain code commit that
 prose:    infrastructure/state/items/QUEUE_ITEM_FILES_DECAY_1.md
 
-## SWAPPAREL_NEURALBAND_TEXTURE_MISSING_1 SWApparel/Headbands/neuralband texture missing - our own KotOR headgear renders magenta
-state:    doing
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     bug
-summary:  Generate the missing worn-graphic sprites for all 12 headbands, matching
-prose:    infrastructure/state/items/SWAPPAREL_NEURALBAND_TEXTURE_MISSING_1.md
-
 ## INHABITED_CHARACTERDEF_NAMESPACE_GAP_1 cast_to_xml.py emitted bare <Inhabited.CharacterDef> after the C# class moved to RimMandrake.Inhabited — 269 authored characters silently failed to load
 state:    doing
 row:      unassigned
@@ -377,15 +368,6 @@ target:   v1
 kind:     bug
 summary:  1. Terrain overwrite is permanent and destructive; undisclosed.
 prose:    infrastructure/state/items/FLUID_CANAL_FLOOD_TUNING_GAPS_1.md
-
-## GRAFFITI_SPREE_MINOR_FINDINGS_1 opus review found 3 minor Graffiti findings: dropped donor workerClass, think-tree paints before food/rest, stale tickerType
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  1. MentalStateDefsGraffiti.xml's port of the donor mod's
-prose:    infrastructure/state/items/GRAFFITI_SPREE_MINOR_FINDINGS_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -451,4 +433,14 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-_none._
+Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
+
+## DEEPWATER_DEAD_GASMASK_TAG_1 Jawa_Deepwater_* keep KotORHeadband_gasmask in apparelTags after the headbands were cut - dead tag, and the generator is the real source
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DEEPWATER_DEAD_GASMASK_TAG_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DEEPWATER_DEAD_GASMASK_TAG_1.md

@@ -40,3 +40,21 @@ convention before deciding whether to change it.
 
 All 3 resolved (fixed or explicitly decided-to-keep with the reasoning
 recorded).
+
+## Closed 2026-09-02 (FOUNDRY)
+
+1. **Checked, kept as-is.** `JobGiver_GraffitiPaintingSpree.TryGiveJob`
+   already returns `null` cleanly when `TryFindWallMarkCell` finds nothing
+   paintable, so the ThinkTree falls through to `JobGiver_WanderColony` —
+   a graceful degrade, not a crash or a stuck pawn. Porting a dedicated
+   `MentalStateWorker` subclass would be new C# surface for a case already
+   handled one layer down; not worth the added risk for this pass.
+2. Fixed: `ThinkTreeDefs_Graffiti.xml` now puts the food/rest
+   `ThinkNode_PrioritySorter` before `JobGiver_GraffitiPaintingSpree`,
+   matching vanilla's own `MentalStateNonCritical` ordering.
+3. Fixed: removed `RM_BaseGraffiti`'s `<tickerType>Normal</tickerType>` —
+   confirmed against vanilla's `BaseFilth` (Filth_Various.xml), which sets
+   none for plain `Filth` thingClass.
+
+XML well-formedness confirmed (no build step for raw defs). Deployed
+directly.

@@ -12,7 +12,11 @@
        the item file, not done blind in this pass. -->
   <ThingDef Name="RM_BaseGraffiti" Abstract="True">
     <thingClass>Filth</thingClass>
-    <tickerType>Normal</tickerType>
+    <!-- No tickerType (fixed 2026-09-02, opus review re-review pass): the
+         donor's Filth_Graffiti subclass needed Normal, plain vanilla Filth
+         (BaseFilth, Data/Core/Defs/ThingDefs_Misc/Filth_Various.xml) sets
+         none - a free per-tick virtual call on every mark with nothing
+         behind it. -->
     <category>Filth</category>
     <altitudeLayer>BuildingOnTop</altitudeLayer>
     <useHitPoints>false</useHitPoints>

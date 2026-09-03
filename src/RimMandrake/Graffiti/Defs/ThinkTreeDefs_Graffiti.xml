@@ -10,7 +10,13 @@
         <li Class="ThinkNode_ConditionalMentalState">
           <state>RM_GraffitiPaintingSpreeState</state>
           <subNodes>
-            <li Class="RimMandrake.Graffiti.JobGiver_GraffitiPaintingSpree" />
+            <!-- Fixed 2026-09-02 (opus code review, re-review pass): food/rest
+                 now come BEFORE the paint giver, matching vanilla's own
+                 MentalStateNonCritical subtree order
+                 (Data/Core/Defs/ThinkTreeDefs/SubTrees_Misc.xml). The
+                 original order (byte-identical to the donor mod this was
+                 ported from) let a spree pawn paint through the whole
+                 25000-45000 tick duration instead of eating or sleeping. -->
             <li Class="ThinkNode_PrioritySorter">
               <subNodes>
                 <li Class="JobGiver_GetFood">
@@ -21,6 +27,7 @@
                 </li>
               </subNodes>
             </li>
+            <li Class="RimMandrake.Graffiti.JobGiver_GraffitiPaintingSpree" />
             <li Class="JobGiver_WanderColony" />
           </subNodes>
         </li>
