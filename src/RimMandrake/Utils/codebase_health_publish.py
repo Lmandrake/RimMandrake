@@ -20,14 +20,21 @@ in the working tree", so a fingerprint built from `HEAD` alone would sit still
 through exactly the edits the page exists to show. The fingerprint is HEAD plus a
 hash of `git status --porcelain`.
 
+⚠️ The fingerprint recorded is the one measured BEFORE the build, not after. The
+build writes into `Transient/`, which `git status` reports, so re-measuring after
+would fold this run's own output into the state — and, worse, would swallow any
+real edit that landed while the generator ran. One spurious rebuild the first time
+those output files appear is the cheaper error.
+
     codebase_health_publish.py            # check, and rebuild only if the rule says so
     codebase_health_publish.py --force    # rebuild regardless (still records the run)
     codebase_health_publish.py --check    # say what it WOULD do; write nothing
 
 Exit codes are the point when a scheduler drives this:
     0  rebuilt — the caller should republish the artifact
+       (with --check: WOULD rebuild. --check never writes, so never republish on it)
     3  skipped — nothing to do, do NOT republish
-    1  something failed
+    1  something failed, including "git could not be read" — never assume unchanged
 """
 from __future__ import annotations
 
@@ -55,14 +62,51 @@ CODE = {"red": "r", "blue": "b", "green": "n", "grey": "y", "unmeasured": "u"}
 
 
 def sh(*args):
-    return subprocess.run(args, cwd=REPO, capture_output=True, text=True).stdout.strip()
+    """Run a command and return stdout — or None if it failed.
+
+    🔴 A FAILURE MUST NOT LOOK LIKE AN EMPTY ANSWER. This used to return
+    `.stdout.strip()` unconditionally, so a `git status` that lost the race for
+    `index.lock` — an everyday event with four agent threads on one checkout —
+    came back as `""`, indistinguishable from a clean tree. The fingerprint then
+    silently described a repo state that did not exist, and the rule this whole
+    file implements ("rebuild only when the repo changed") was deciding on it.
+    """
+    r = subprocess.run(args, cwd=REPO, capture_output=True, text=True)
+    return None if r.returncode != 0 else r.stdout.strip()
 
 
 def fingerprint():
-    """HEAD + the working tree. Either moving is a real change to this picture."""
+    """HEAD + the working tree. Either moving is a real change to this picture.
+
+    Returns None when git could not be read at all — the caller must not treat
+    that as "nothing changed".
+    """
     head = sh("git", "rev-parse", "HEAD")
     dirty = sh("git", "status", "--porcelain")
+    if head is None or dirty is None:
+        return None
     return hashlib.sha256((head + "\n" + dirty).encode("utf-8")).hexdigest()[:16]
+
+
+def write_atomic(path, text):
+    """Temp beside the target, then `os.replace` — the shape `write_bridge_file` uses.
+
+    Both files this writes are read by something else: the page by whoever publishes
+    the artifact, and the state file by the next run of this script, which decides
+    from it whether to rebuild at all. A truncated page publishes as a blank map; a
+    truncated state file at least fails loudly into `load_state`'s except.
+    """
+    tmp = "%s.tmp.%d.%d" % (path, os.getpid(), time.time_ns())
+    try:
+        with open(tmp, "w", encoding="utf-8") as fh:
+            fh.write(text)
+        os.replace(tmp, path)
+    except BaseException:
+        try:
+            os.unlink(tmp)
+        except OSError:
+            pass
+        raise
 
 
 def load_state():
@@ -74,11 +118,18 @@ def load_state():
 
 
 def flatten(node, rows):
-    """The generator's tree -> one compact row per file: path, lines, status, why."""
+    """The generator's tree -> one compact row per file: path, lines, status, why.
+
+    ⚠️ `"loc" in node`, NOT `node.get("loc")`. A truthiness test dropped every
+    zero-line file — the three empty `__init__.py` package markers — so the page
+    drew 1585 tiles while its own header, fed by the generator's `counts.total`,
+    said 1588 files. A health map that silently omits files is the one thing it
+    must never be (review finding, 2026-09-02).
+    """
     if node.get("children"):
         for c in node["children"]:
             flatten(c, rows)
-    elif node.get("loc"):
+    elif "loc" in node:
         rows.append([node["path"], node["loc"],
                      CODE.get(node.get("status", "grey"), "u"),
                      (node.get("why") or [""])[0][:110]])
@@ -86,11 +137,22 @@ def flatten(node, rows):
 
 
 def build():
-    subprocess.run([sys.executable, GEN], cwd=REPO, check=True,
-                   stdout=subprocess.DEVNULL)
+    # A traceback here would be read as "the publisher is broken" when the generator
+    # is the thing that failed, and its stderr has already said why.
+    r = subprocess.run([sys.executable, GEN], cwd=REPO, stdout=subprocess.DEVNULL)
+    if r.returncode != 0:
+        sys.exit("REFUSING: %s exited %d. Its error is above; nothing was published."
+                 % (os.path.basename(GEN), r.returncode))
     with open(JSON_OUT, encoding="utf-8") as fh:
         src = json.load(fh)
     rows = flatten(src["tree"], [])
+    # 🔴 COVERAGE, NOT A SPOT CHECK. The page's header count comes from the
+    # generator and its tiles come from `rows`; nothing else would ever notice
+    # them drifting apart, and the drift is invisible on a 1588-tile map.
+    total = src["counts"].get("total")
+    if total is not None and len(rows) != total:
+        sys.exit("REFUSING: flattened %d rows but the generator scanned %d files. "
+                 "The map would be missing tiles it claims to show." % (len(rows), total))
     payload = json.dumps({"head": src["head"], "generated": src["generated"],
                           "counts": src["counts"], "reviewEntries": src["reviewEntries"],
                           "loc": src["loc"], "rows": rows}, separators=(",", ":"))
@@ -105,8 +167,7 @@ def build():
     if "__DATA__" not in page:
         sys.exit("REFUSING: %s has no __DATA__ placeholder." % TMPL)
     os.makedirs(os.path.dirname(PAGE_OUT), exist_ok=True)
-    with open(PAGE_OUT, "w", encoding="utf-8") as fh:
-        fh.write(page.replace("__DATA__", payload))
+    write_atomic(PAGE_OUT, page.replace("__DATA__", payload))
     return src["counts"], len(rows)
 
 
@@ -118,6 +179,13 @@ def main():
     a = ap.parse_args()
 
     st, fp, now = load_state(), fingerprint(), time.time()
+    if fp is None:
+        # 🔴 UNMEASURED, NOT UNCHANGED. Skipping here would quietly stop the page ever
+        # updating again for as long as git stayed unreadable, with exit 3 ("nothing to
+        # do") telling the scheduler everything was fine.
+        print("FAIL: git could not be read (rev-parse or status failed), so 'has the "
+              "repo changed' is UNMEASURED. Not guessing.", file=sys.stderr)
+        return 1
     age = now - st.get("ts", 0)
     changed = fp != st.get("fingerprint")
 
@@ -136,9 +204,10 @@ def main():
         return 0
 
     counts, n = build()
-    with open(STATE, "w", encoding="utf-8") as fh:
-        json.dump({"ts": now, "fingerprint": fp, "counts": counts,
-                   "iso": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now))}, fh, indent=1)
+    os.makedirs(os.path.dirname(STATE), exist_ok=True)
+    write_atomic(STATE, json.dumps(
+        {"ts": now, "fingerprint": fp, "counts": counts,
+         "iso": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now))}, indent=1) + "\n")
     print("REBUILT %d files — red %d, blue %d, green %d, grey %d, unmeasured %d"
           % (n, counts.get("red", 0), counts.get("blue", 0), counts.get("green", 0),
              counts.get("grey", 0), counts.get("unmeasured", 0)))

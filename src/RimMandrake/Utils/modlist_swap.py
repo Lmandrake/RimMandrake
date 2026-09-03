@@ -1,8 +1,10 @@
 #!/usr/bin/env python3
-"""Swap RimWorld's live mod list between the owner's full 583 and a minimal test set.
+"""Swap RimWorld's live mod list between the owner's full list and a minimal test set.
 
-CHECK owns this. The point is that a cold load with 583 mods is ~25 minutes, and the
-worldmap bridge work needs many reloads. A minimal list makes a reload cheap.
+CHECK owns this. The point is that a cold load on the owner's list is ~25 minutes, and
+the worldmap bridge work needs many reloads. A minimal list makes a reload cheap.
+⚠️ The active count is not written here on purpose — `--status` measures it. Every doc
+that hardcoded it (583, 578, 585) was wrong within days of being written.
 
 🔴 The owner's real list is infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml.
    --restore puts it back. Never leave the machine on the minimal list.
@@ -12,11 +14,12 @@ worldmap bridge work needs many reloads. A minimal list makes a reload cheap.
     modlist_swap.py --minimal --apply
     modlist_swap.py --restore --apply
 """
-import argparse, hashlib, os, shutil, sys, datetime
+import argparse, hashlib, os, sys, datetime
 import xml.etree.ElementTree as ET
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from game_paths import MODS_CONFIG  # noqa: E402
+from atomic_copy import atomic_copy  # noqa: E402  temp+os.replace; never a bare copy2
 
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 LIVE = MODS_CONFIG
@@ -34,17 +37,34 @@ def md5(p):
 
 
 def mods(p):
+    """The active mod ids, in order, or None if the file is missing or unreadable.
+
+    ⚠️ A HALF-WRITTEN OR EMPTY `<li/>` MUST NOT BE A TRACEBACK. RimWorld, RimSort and
+    Steam all rewrite this file and none of them tells the others; a torn read used to
+    come out of here as `ParseError` or `AttributeError: 'NoneType' has no 'strip'`,
+    which reads as a broken tool rather than as "look at your config". None means
+    unreadable, and every caller already has a path for that.
+    """
     if not os.path.exists(p):
         return None
-    root = ET.parse(p).getroot()
+    try:
+        root = ET.parse(p).getroot()
+    except ET.ParseError:
+        return None
     am = root.find("activeMods")
-    return [li.text.strip() for li in am.findall("li")] if am is not None else []
+    if am is None:
+        return []
+    return [li.text.strip() for li in am.findall("li") if li.text and li.text.strip()]
 
 
 def describe(p, label):
+    if not os.path.exists(p):
+        return "%-9s MISSING  %s" % (label, p)
     m = mods(p)
     if m is None:
-        return "%-9s MISSING  %s" % (label, p)
+        # Present but unparseable is a different fact from absent, and the difference
+        # decides whether you go looking for a deleted file or a truncated one.
+        return "%-9s UNREADABLE (present, will not parse)  %s" % (label, p)
     return "%-9s %4d active  md5 %s" % (label, len(m), md5(p))
 
 
@@ -95,6 +115,7 @@ def snapshot():
     matters: `ModsConfig.FULL.20260819_201527.xml` looked like a duplicate for a
     day and is in fact the only surviving copy of the 578-mod list.
     """
+    os.makedirs(STORE, exist_ok=True)
     live_hash = md5(LIVE)
     for name in sorted(os.listdir(STORE)):
         if not name.lower().endswith(".xml"):
@@ -105,7 +126,9 @@ def snapshot():
             return existing
     stamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
     dst = os.path.join(STORE, "ModsConfig.PRESWAP.%s.xml" % stamp)
-    shutil.copy2(LIVE, dst)
+    # Atomic even here: a half-written archive would be counted as a kept copy by the
+    # md5 sweep above on the next swap, and the real backup would then be skipped.
+    atomic_copy(LIVE, dst)
     print("  snapshot : %s" % os.path.basename(dst))
     return dst
 
@@ -113,17 +136,27 @@ def snapshot():
 def swap(src, apply_it):
     if not os.path.exists(src):
         sys.exit("REFUSING: %s does not exist. Build it first." % src)
-    n_src, n_live = len(mods(src)), len(mods(LIVE) or [])
+    src_ids = mods(src)
+    if src_ids is None:
+        sys.exit("REFUSING: %s will not parse. Do not write it over the live list." % src)
+    n_src, n_live = len(src_ids), len(mods(LIVE) or [])
     print("  live now : %d active (%s)" % (n_live, which_is_live()))
     print("  would be : %d active  <- %s" % (n_src, src))
     if not apply_it:
         print("\nplan only. re-run with --apply")
         return
-    if md5(src) == md5(LIVE):
+    # ⚠️ `md5(LIVE)` used to be called with no existence check, so a missing config
+    # turned --apply into a FileNotFoundError traceback instead of doing the one thing
+    # that is obviously right: write the list, with nothing to snapshot.
+    if not os.path.exists(LIVE):
+        print("\n  no live file to archive — writing %s fresh." % os.path.basename(src))
+        arch = "(nothing — there was no live file)"
+    elif md5(src) == md5(LIVE):
         print("\nalready identical. nothing written.")
         return
-    arch = snapshot()
-    shutil.copy2(src, LIVE)
+    else:
+        arch = snapshot()
+    atomic_copy(src, LIVE)
     print("\n  archived live -> %s" % arch)
     print("  WROTE %s -> live  (%d active)" % (os.path.basename(src), n_src))
     print("  verify: md5 %s" % md5(LIVE))
@@ -186,11 +219,11 @@ def capture_full(apply_it):
                    for n in os.listdir(STORE)
                    if n.lower().endswith(".xml") and n != os.path.basename(FULL)
                    and os.path.isfile(os.path.join(STORE, n))):
-            shutil.copy2(FULL, arch)
+            atomic_copy(FULL, arch)
         else:
             arch = None
             print("  archive : skipped, the old FULL.LATEST is already kept elsewhere")
-    shutil.copy2(LIVE, FULL)
+    atomic_copy(LIVE, FULL)
     if arch:
         print("\n  archived the OLD FULL.LATEST -> %s" % os.path.basename(arch))
     print("  WROTE live -> FULL.LATEST (%d active)" % len(live_ids))
@@ -207,6 +240,14 @@ def main():
     ap.add_argument("--apply", action="store_true", help="actually write; default is plan only")
     a = ap.parse_args()
 
+    # `--apply` is a modifier, not a mode. On its own it used to print the status page
+    # and exit 0 — a command that looks like it did something and did nothing.
+    if a.apply and not (a.minimal or a.restore or a.capture_full):
+        sys.exit("REFUSING: --apply on its own has nothing to apply. Say which:\n"
+                 "  --minimal --apply       swap to the minimal test list\n"
+                 "  --restore --apply       put the owner's full list back\n"
+                 "  --capture-full --apply  adopt the live list as FULL.LATEST")
+
     if a.capture_full:
         print("CAPTURE THE LIVE LIST AS FULL.LATEST")
         capture_full(a.apply)
@@ -220,9 +261,18 @@ def main():
         print(describe(LIVE, "LIVE"))
         print(describe(FULL, "FULL"))
         print(describe(MINIMAL, "MINIMAL"))
-        print("\nlive currently matches: %s" % which_is_live())
-        if which_is_live() == "MINIMAL":
+        live = which_is_live()
+        print("\nlive currently matches: %s" % live)
+        # 🔴 startswith, NEVER ==. `which_is_live` returns "MINIMAL (same mods and
+        # order; file reformatted, e.g. by RimSort)" for the case its own docstring
+        # says is the COMMON one, and an `==` test silently withheld this alarm in
+        # exactly that case — the test list live, and nothing on screen saying so
+        # (review finding, 2026-09-02). `capture_full` already used startswith.
+        if live.startswith("MINIMAL"):
             print("🔴 THE OWNER'S LIST IS NOT LOADED. --restore --apply before he plays.")
+        elif live.startswith("UNRECOGNISED"):
+            print("⚠️ The live list is neither stored list. If that change was deliberate:\n"
+                  "   modlist_swap.py --capture-full --apply")
 
 
 if __name__ == "__main__":

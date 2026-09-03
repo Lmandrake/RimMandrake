@@ -30,11 +30,12 @@ in his game. Under REVIEW they genuinely are present, and the dump is honest aga
 load. Writing this file while the game runs changes nothing in the running game and is
 not a way to un-cut something you are looking at.
 """
-import argparse, datetime, hashlib, os, shutil, sys
+import argparse, datetime, hashlib, os, sys
 import xml.etree.ElementTree as ET
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from game_paths import MODS_CONFIG  # noqa: E402
+from atomic_copy import atomic_copy  # noqa: E402  temp+os.replace; never a bare copy2
 
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__)))))
 # Cherry Picker writes its settings beside ModsConfig.xml, named for its workshop id.
@@ -75,28 +76,36 @@ def keys(p):
         return None
     if node is None:
         return []
-    return [li.text.strip() for li in node.findall("li") if li.text]
+    return [li.text.strip() for li in node.findall("li") if li.text and li.text.strip()]
 
 
 def by_type(ks):
+    """{def type: how many cuts}. A key is "<DefType>/<defName>"; anything else is "?"."""
     out = {}
     for k in ks:
-        out[k.split("/", 1)[0] if "/" in k else "?"] = out.get(k.split("/", 1)[0] if "/" in k else "?", 0) + 1
+        t = k.split("/", 1)[0] if "/" in k else "?"
+        out[t] = out.get(t, 0) + 1
     return out
 
 
 def describe(p, label):
+    if not os.path.exists(p):
+        return "%-7s MISSING  %s" % (label, p)
     ks = keys(p)
     if ks is None:
-        return "%-7s MISSING  %s" % (label, p)
+        # Present but unparseable is a different fact from absent, and the difference
+        # decides whether you go looking for a deleted file or a truncated one.
+        return "%-7s UNREADABLE (present, will not parse)  %s" % (label, p)
     top = ", ".join("%s %d" % (t, n) for t, n in sorted(by_type(ks).items(), key=lambda x: -x[1])[:4])
     return "%-7s %5d cuts  %s%s" % (label, len(ks), ("[" + top + "]  ") if ks else "", md5(p)[:8])
 
 
 def which_is_live():
+    if not os.path.exists(LIVE):
+        return "NO LIVE FILE"
     live = keys(LIVE)
     if live is None:
-        return "NO LIVE FILE"
+        return "LIVE FILE UNREADABLE"
     for path, name in ((SHIP, "SHIP"), (REVIEW, "REVIEW")):
         if os.path.exists(path) and keys(path) == live:
             return name if md5(path) == md5(LIVE) else "%s (same keys; file reformatted by the game)" % name
@@ -113,7 +122,9 @@ def snapshot():
             print("  snapshot : skipped, identical to %s" % name)
             return name
     dst = "CherryPicker.PRESWAP.%s.xml" % datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
-    shutil.copy2(LIVE, os.path.join(STORE, dst))
+    # Atomic even here: a half-written archive would be counted as a kept copy by the
+    # md5 sweep above on the next swap, and the real backup would then be skipped.
+    atomic_copy(LIVE, os.path.join(STORE, dst))
     print("  snapshot : %s" % dst)
     return dst
 
@@ -122,18 +133,28 @@ def swap(src, label, apply_it):
     if not os.path.exists(src):
         sys.exit("REFUSING: %s does not exist.\n"
                  "  First run?  cherrypicker_swap.py --capture-ship --apply" % src)
+    src_keys = keys(src)
+    if src_keys is None:
+        sys.exit("REFUSING: %s will not parse. Do not write it over the live settings." % src)
     print("  live now : %d cuts (%s)" % (len(keys(LIVE) or []), which_is_live()))
-    print("  would be : %d cuts  <- %s" % (len(keys(src)), os.path.basename(src)))
+    print("  would be : %d cuts  <- %s" % (len(src_keys), os.path.basename(src)))
     if not apply_it:
         print("\nplan only. re-run with --apply")
         return
-    if keys(src) == keys(LIVE):
+    # ⚠️ `snapshot()` md5s LIVE with no existence check, so a machine where Cherry
+    # Picker's settings window has never been opened — no settings file at all — turned
+    # --apply into a FileNotFoundError traceback instead of simply writing the profile.
+    if not os.path.exists(LIVE):
+        print("\n  no live settings file to archive — writing %s fresh." % label)
+        arch = "(nothing — Cherry Picker had no settings file)"
+    elif src_keys == keys(LIVE):
         print("\nalready this profile. nothing written.")
         return
-    arch = snapshot()
-    shutil.copy2(src, LIVE)
+    else:
+        arch = snapshot()
+    atomic_copy(src, LIVE)
     print("\n  archived live -> %s" % arch)
-    print("  WROTE %s -> live (%d cuts)" % (label, len(keys(LIVE))))
+    print("  WROTE %s -> live (%d cuts)" % (label, len(src_keys)))
     print("  🔴 INERT until the next game start — Cherry Picker applies its list at load.")
 
 
@@ -169,12 +190,16 @@ def capture_ship(apply_it):
     if have:
         stamp = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
         dst = os.path.join(STORE, "CherryPicker.SHIP.PRECAPTURE.%s.xml" % stamp)
-        shutil.copy2(SHIP, dst)
+        atomic_copy(SHIP, dst)
         print("  archived : %s (%d cuts)" % (os.path.basename(dst), len(have)))
-    shutil.copy2(LIVE, SHIP)
+    atomic_copy(LIVE, SHIP)
     if not os.path.exists(REVIEW):
-        with open(REVIEW, "w", encoding="utf-8") as f:
+        # Temp+replace, not a bare open(): a truncated REVIEW is a file `--review`
+        # would later try to make live.
+        tmp = "%s.tmp.%d" % (REVIEW, os.getpid())
+        with open(tmp, "w", encoding="utf-8") as f:
             f.write(EMPTY)
+        os.replace(tmp, REVIEW)
         print("  wrote    : %s (empty — cuts nothing)" % os.path.basename(REVIEW))
     print("  wrote    : %s (%d cuts)" % (os.path.basename(SHIP), len(ks)))
 
@@ -189,6 +214,14 @@ def main():
                    help="adopt the current live list as the SHIP profile (first run)")
     ap.add_argument("--apply", action="store_true", help="actually write; default is plan only")
     a = ap.parse_args()
+
+    # `--apply` is a modifier, not a mode. On its own it used to print the status page
+    # and exit 0 — a command that looks like it did something and did nothing.
+    if a.apply and not (a.ship or a.review or a.capture_ship):
+        sys.exit("REFUSING: --apply on its own has nothing to apply. Say which:\n"
+                 "  --review --apply        cut nothing (review and testing)\n"
+                 "  --ship --apply          the campaign's cut list\n"
+                 "  --capture-ship --apply  adopt the live list as SHIP")
 
     if a.capture_ship:
         print("CAPTURE THE LIVE LIST AS THE SHIP PROFILE")
