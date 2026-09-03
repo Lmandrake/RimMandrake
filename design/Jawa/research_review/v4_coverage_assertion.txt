@@ -1,0 +1,45 @@
+========================================================================
+RESEARCH_TREE_NORMALIZATION_1 — v4 coverage assertion
+========================================================================
+rows in  : 522
+defNames : 522 unique, no duplicates
+v4 fields: tab4/tier4/fate4/access4/cost4/prereqs4 present on all 522
+fate4    : {'untouched': 386, 'keep': 8, 'cut': 118, 'merge': 6, 'reflavor': 4}  (sum 522)
+new cuts : 4 (saber/Force), each with a recover line -> ['guy762_ResearchKotOR_lightsabers', 'guy762_ResearchKotOR_advsabers', 'guy762_ResearchKotOR_saberparts', 'guy762_ResearchKotOR_jedi']
+placed   : 398   unplaced (cut/merge): 124
+trees    : 16   per-tree sum 398 == placed 398
+            54  The Workshop
+            52  The Refinery
+            49  The Hearth
+            41  Scavenger
+            37  Powder & Slug
+            34  The Unbolting   [LOCKED -> Jawa_FreeDroidEnclaves / tag FreeDroidEnclaves]
+            32  The Shell
+            29  THE SHIP
+            18  Blasterworks
+            10  The Waking Mind
+             9  Droidsmith   ⚠ below viability (<10)
+             8  The Reach   ⚠ below viability (<10)
+             8  The Ascendant Ladder   [LOCKED -> Jawa_AscendantHelix / tag AscendantHelix]   ⚠ below viability (<10)
+             7  The Strange Schools   ⚠ below viability (<10)
+             6  The Junker Yards   [LOCKED -> Jawa_Junkers / tag Pirate]   ⚠ below viability (<10)
+             4  The Foundry Hive   [LOCKED -> Jawa_GeonosianFoundryHive / tag GeonosianHive]   ⚠ below viability (<10)
+bands    : all 398 placed rows conform to T0<=600 T1<=1600 T2<=3000 T3<=5000 T4>5000
+recosts  : 2 PROPOSED in v4 -> OuterRim_DroidReplacementParts 2000->1200, Asimov_WirelessCharging 8000->1600
+repoints : 7 PROPOSED in v4 -> ABF_ResearchProject_Synstruct_InterchangeableParts, OuterRim_DroidReplacementParts, OuterRim_DroidEnergySys, OuterRim_DroidWeaponSys, guy762_ResearchKotOR_droidarmor, guy762_ResearchKotOR_droidshields, AM_MechanoidBeamcasting
+boundary : 56 droid rows -> {'repair': 6, 'construction': 34, 'weapon': 3, 'control': 4, 'gear': 3, 'mind': 6}
+           by tree -> {'Droidsmith': 9, 'The Unbolting': 34, 'Powder & Slug': 1, 'The Waking Mind': 10, 'Blasterworks': 2}
+lowtier  : all 9 general droid rows are 'repair' or 'gear', common, and <= T2
+locked   : all 34 rows in The Unbolting are 'construction'; no construction row is anywhere else
+           tier spread -> {'T0': 2, 'T1': 5, 'T2': 19, 'T3': 6, 'T4': 2}
+access4  : {'common': 328, 'n/a': 124, 'faction:Jawa_AscendantHelix': 10, 'faction:Jawa_FreeDroidEnclaves': 34, 'faction:Jawa_GeonosianFoundryHive': 4, 'faction:Jawa_Junkers': 6, 'faction:Empire': 5, 'faction:Pirate': 2, 'faction:Jawa_HuttCartel': 2, 'faction:Jawa_WildsteamClan': 1, 'jawa-special': 2, 'faction:TribeCivil': 1, 'ship-only': 3}  (sum 522)
+holders  : 65 faction-held rows, 9 distinct holders, all present on the planet
+gateleak : 0  (no common/jawa-special/ship-only row requires a locked row)
+crosslock: 0  (no locked row depends on a differently-locked row)
+orphans  : 2 prereq references to non-surviving rows -> ['MM_Research_Repulsor', 'VAE_SterileAttire']  (all pre-existing; 0 new)
+saberleak: 2 surviving COMMON rows still unlock Force_ recipes -> ['Smithing', 'MicroelectronicsBasics']
+           (lee.theforce.lightsaber's own RecipeDefs hang off MicroelectronicsBasics/Smithing;
+            a RecipeDef edit, NOT a research cut — execution item, see the doc)
+========================================================================
+COVERAGE: 522 in, 522 accounted. ASSERTIONS PASSED.
+========================================================================
