@@ -443,26 +443,40 @@ namespace JawaBench.BridgeTools
                 if (map == null) return Fail(err);
                 var fg = map.fogGrid;
                 string A = (action ?? "").Trim().ToLowerInvariant();
-                int changed = 0;
+
+                // 🔴 COUNT, do not assume. unfogAll used to report map.Area and refog the
+                // whole rect area, whatever the fog had actually been - FogGrid.ClearAllFog
+                // and FogGrid.Refog both flip only the cells whose state differs, so a refog
+                // over already-fogged ground reported hundreds of cells changed and did
+                // nothing. floodUnfog reported -1 because "the engine decides", which the
+                // engine does - and a before/after count is how you read its answer.
+                int foggedBefore = 0;
+                foreach (var c in map.AllCells) if (fg.IsFogged(c)) foggedBefore++;
 
                 try
                 {
-                    if (A == "unfogall") { fg.ClearAllFog(); changed = map.Area; }
+                    if (A == "unfogall") fg.ClearAllFog();
                     else if (A == "floodunfog")
                     {
                         int x, z;
                         var b = (cell ?? "").Split(',');
                         if (b.Length != 2 || !int.TryParse(b[0].Trim(), out x) || !int.TryParse(b[1].Trim(), out z))
                             return Fail("Give cell as 'x,z' for floodUnfog.");
-                        fg.FloodUnfogAdjacent(new IntVec3(x, 0, z), sendLetters);
-                        changed = -1;   // engine decides how many
+                        var c0 = new IntVec3(x, 0, z);
+                        // CellToIndex wraps rather than throwing: x=-1 resolves to a real cell
+                        // one row down, so an unchecked out-of-bounds cell unfogs the WRONG
+                        // place and reports success.
+                        if (!c0.InBounds(map))
+                            return Fail("Cell " + x + "," + z + " is out of bounds. This map is " +
+                                        map.Size.x + " x " + map.Size.z + ".");
+                        fg.FloodUnfogAdjacent(c0, sendLetters);
                     }
                     else
                     {
                         CellRect r;
                         if (!TryRect(rect, map, out r, out err)) return Fail(err);
-                        if (A == "unfog") { foreach (var c in r) { if (fg.IsFogged(c)) { fg.Unfog(c); changed++; } } }
-                        else if (A == "refog") { fg.Refog(r); changed = r.Area; }
+                        if (A == "unfog") { foreach (var c in r) if (fg.IsFogged(c)) fg.Unfog(c); }
+                        else if (A == "refog") fg.Refog(r);
                         else return Fail("action must be unfog|unfogAll|refog|floodUnfog.");
                     }
                 }
@@ -473,7 +487,9 @@ namespace JawaBench.BridgeTools
 
                 return (object)new
                 {
-                    success = true, action = A, cellsChanged = changed,
+                    success = true, action = A,
+                    cellsChanged = Math.Abs(fogged - foggedBefore),
+                    foggedCellsBefore = foggedBefore,
                     foggedCellsNow = fogged, mapArea = map.Area,
                     ticksGame = TicksGameSafe(),
                 };
@@ -508,7 +524,13 @@ namespace JawaBench.BridgeTools
                     return Fail("Sand requires Odyssey, which is not active. The snowGrid is always available; sandGrid is not.");
 
                 string M = (mode ?? "").Trim().ToLowerInvariant();
+                // Every value that is not 'add' or 'radial' used to fall through to SetDepth,
+                // so a typo silently wrote an ABSOLUTE depth over the whole rect - the same
+                // trap jawa/designate_batch already closed on its own action parameter.
+                if (M != "set" && M != "add" && M != "radial")
+                    return Fail("mode must be set|add|radial, got '" + mode + "'.");
                 int changed = 0;
+                IntVec3 radialCenter = IntVec3.Invalid;
 
                 try
                 {
@@ -518,6 +540,7 @@ namespace JawaBench.BridgeTools
                         if (b.Length != 2 || !int.TryParse(b[0].Trim(), out x) || !int.TryParse(b[1].Trim(), out z))
                             return Fail("Give centre as 'x,z' for radial.");
                         var c0 = new IntVec3(x, 0, z);
+                        radialCenter = c0;
                         if (sand) WeatherBuildupUtility.AddSandRadial(c0, map, radius, depth);
                         else WeatherBuildupUtility.AddSnowRadial(c0, map, radius, depth);
                         changed = -1;
@@ -538,18 +561,37 @@ namespace JawaBench.BridgeTools
 
                 var back = new List<object>();
                 {
+                    // 🔴 Read back WHERE THE WRITE LANDED. In radial mode `rect` is null, so
+                    // this used to sample cell 0,0 - the map corner, nowhere near the pile -
+                    // and `cells` is the only evidence the caller gets, because cellsChanged
+                    // is -1 for a radial. Sample outward from the centre instead.
                     CellRect rr;
-                    if (TryRect(rect ?? "0,0,1,1", map, out rr, out err))
-                        foreach (var c in rr)
+                    bool haveRect = (M == "radial" && radialCenter.IsValid)
+                        ? TryRect(radialCenter.x + "," + radialCenter.z + ",1,1", map, out rr, out err)
+                        : TryRect(rect, map, out rr, out err);
+                    if (haveRect)
+                    {
+                        var sampled = new List<IntVec3>();
+                        if (M == "radial")
                         {
-                            if (back.Count >= Math.Max(0, readBack)) break;
+                            int want = Math.Max(0, readBack);
+                            int n = GenRadial.NumCellsInRadius(Math.Max(1f, radius));
+                            for (int i = 0; i < n && sampled.Count < want; i++)
+                            {
+                                var c = radialCenter + GenRadial.RadialPattern[i];
+                                if (c.InBounds(map)) sampled.Add(c);
+                            }
+                        }
+                        else foreach (var c in rr) { if (sampled.Count >= Math.Max(0, readBack)) break; sampled.Add(c); }
+
+                        foreach (var c in sampled)
                             back.Add(new
                             {
                                 x = c.x, z = c.z,
                                 snow = map.snowGrid.GetDepth(c),
                                 sand = ModsConfig.OdysseyActive && map.sandGrid != null ? (object)map.sandGrid.GetDepth(c) : null,
                             });
-                        }
+                    }
                 }
 
                 return (object)new
@@ -928,17 +970,22 @@ namespace JawaBench.BridgeTools
                 "Add or remove Designations directly - Mine, Deconstruct, HarvestPlant, " +
                 "CutPlant, Haul, SmoothWall, SmoothFloor, Plan, Hunt, Tame, Slaughter, " +
                 "Flick, Strip and the rest - with no cursor and no drag tool. " +
-                "action='add' | 'remove' | 'query'. Cell designations take a rect; thing " +
-                "designations resolve against whatever occupies each cell. " +
+                "action='add' | 'remove' | 'query'. Always give a rect: the DesignationDef's " +
+                "own targetType decides what the rect means - a CELL designation (Mine, " +
+                "SmoothFloor, Plan) marks the cells, a THING designation (Deconstruct, " +
+                "HarvestPlant, Hunt, Flick, Strip - most of them) marks every thing standing " +
+                "in them. " +
                 "⚠️ AddDesignation logs a red error on double-add, so this queries first.",
-            ResultDescription = "success, added, removed, existing[], and the designation list.")]
+            ResultDescription =
+                "success, added, removed, alreadyPresent, targetType and targetedThings "
+                + "(which of the two readings of the rect was used), problems[], totalNow.")]
         public static async Task<object> DesignateBatch(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
             [ToolParameter(Description = "'add' | 'remove' | 'query'.")] string action = "add",
             [ToolParameter(Description = "DesignationDef name, e.g. Mine, Deconstruct, HarvestPlant.")] string designation = null,
             [ToolParameter(Description = "Rect 'x,z,w,h'.")] string rect = null,
-            [ToolParameter(Description = "Target things in the cell rather than the cell itself. Default auto.")] bool onThings = false,
+            [ToolParameter(Description = "FORCE targeting the things in each cell. Leave false: the DesignationDef's own targetType already decides, and this tool follows it.")] bool onThings = false,
             [ToolParameter(Description = "Max rows returned. Default 40.")] int limit = 40)
         {
             return await ctx.MainThread.InvokeAsync(() =>
@@ -983,11 +1030,27 @@ namespace JawaBench.BridgeTools
                 int added = 0, removed = 0, already = 0;
                 var problems = new List<object>();
 
+                // 🔴 TargetType DECIDES, and TargetType.Thing is the enum's ZERO - so every
+                // DesignationDef that does not declare targetType is a THING designation,
+                // and 17 of vanilla's 27 are (Deconstruct, HarvestPlant, CutPlant, Haul,
+                // Hunt, Tame, Slaughter, Flick, Strip ... all of them named in this tool's
+                // own description). DesignationManager.AddDesignation dereferences
+                // `newDes.target.Thing.SetForbidden(...)` for those, so handing it a CELL
+                // target throws NullReferenceException on every cell in the rect. This used
+                // to be the DEFAULT path while the parameter claimed "Default auto".
+                bool wantThings = onThings || dd.targetType == TargetType.Thing;
+                if (onThings && dd.targetType == TargetType.Cell)
+                    return Fail("'" + dd.defName + "' is a CELL designation (targetType=Cell); it cannot be " +
+                                "attached to a Thing. Drop onThings and give a rect.");
+                string targetNote = dd.targetType == TargetType.Thing
+                    ? "'" + dd.defName + "' is a THING designation - the rect selects cells and each thing in them is designated."
+                    : "'" + dd.defName + "' is a CELL designation - the rect's cells are designated directly.";
+
                 foreach (var c in r)
                 {
                     try
                     {
-                        if (onThings)
+                        if (wantThings)
                         {
                             foreach (var t in map.thingGrid.ThingsListAtFast(c).ToList())
                             {
@@ -1016,6 +1079,8 @@ namespace JawaBench.BridgeTools
                 {
                     success = true, action = A, designation = dd.defName,
                     added, removed, alreadyPresent = already,
+                    targetType = dd.targetType.ToString(), targetedThings = wantThings,
+                    note = targetNote,
                     onThings, problems,
                     totalNow = dm.AllDesignations.Count(),
                     ticksGame = TicksGameSafe(),
@@ -1305,7 +1370,18 @@ namespace JawaBench.BridgeTools
                     try
                     {
                         if (add) { map.gasGrid.AddGas(c, gt, Math.Max(1, Math.Min(255, density))); changed++; }
-                        else { map.gasGrid.ClearCellUnsafe(c); changed++; }
+                        else
+                        {
+                            // 🔴 ClearCellUnsafe is the ONE GasGrid write that does not dirty
+                            // the mesh - that is what "Unsafe" names. AddGas, Debug_ClearAll
+                            // and GravshipPlacementUtility all dirty MapMeshFlagDefOf.Gas
+                            // themselves; without this the data is zeroed and the cloud stays
+                            // on screen until something unrelated redraws that section, and
+                            // jawa/map_commit's flag set does not include Gas either.
+                            map.gasGrid.ClearCellUnsafe(c);
+                            map.mapDrawer.MapMeshDirty(c, (ulong)MapMeshFlagDefOf.Gas);
+                            changed++;
+                        }
                     }
                     catch (Exception e) { return Fail("Gas op failed at " + c + ": " + e.GetType().Name + ": " + e.Message); }
                 }
@@ -1337,7 +1413,7 @@ namespace JawaBench.BridgeTools
             [ToolParameter(Description = "'stockpile' or 'growing' for createZone.")] string zoneType = "stockpile",
             [ToolParameter(Description = "Zone label for paint/delete.")] string zone = null,
             [ToolParameter(Description = "Rect 'x,z,w,h'.")] string rect = null,
-            [ToolParameter(Description = "Area name for paintArea: Home | NoRoof | BuildRoof | SnowOrSandClear.")] string area = null,
+            [ToolParameter(Description = "Area for paintArea: Home | NoRoof | BuildRoof | SnowOrSandClear | PollutionClear (Biotech), or the label of an allowed area.")] string area = null,
             [ToolParameter(Description = "For paintArea/paintZone: true adds, false removes.")] bool value = true,
             [ToolParameter(Description = "Plant def for a growing zone.")] string plant = null)
         {
@@ -1385,19 +1461,51 @@ namespace JawaBench.BridgeTools
                     else z = new Zone_Stockpile(StorageSettingsPreset.DefaultStockpile, zm);
 
                     zm.RegisterZone(z);
-                    // Report refusals rather than swallowing them: a cell can be refused
-                    // for impassable terrain, an existing zone, or a blocking edifice, and
-                    // a silently short zone is exactly the kind of failure that reads as
-                    // success. Measured: a 6x6 stockpile took only 11 of 36 cells.
-                    // Zone.AddCell refuses by Log.Error + return, NEVER by throwing - a
-                    // refusal is detected here by checking membership before/after, not
-                    // by a catch that can never fire.
+                    // Report refusals rather than swallowing them: a silently short zone is
+                    // exactly the kind of failure that reads as success. Measured: a 6x6
+                    // stockpile took only 11 of 36 cells.
+                    //
+                    // 🔴 Zone.AddCell refuses ONLY two things - a cell already in THIS zone,
+                    // and a thing with CanOverlapZones=false - and it refuses by Log.Error +
+                    // return, never by throwing. It does NOT refuse a cell ANOTHER zone
+                    // already owns: it overwrites zoneManager's zoneGrid while the old zone
+                    // keeps that cell in its own list, so two zones claim it. That divergence
+                    // is written to the save, ZoneManager.RebuildZoneGrid re-derives ownership
+                    // from list order on every LOAD, and RemoveCell on either zone clears the
+                    // grid cell for both. Vanilla's Designator_ZoneAdd never adds an owned
+                    // cell (it does `unsetCells.RemoveAll(c => ZoneAt(c) != null)`), and its
+                    // IsZoneableCell is the engine's own predicate for fogged cells, the
+                    // 5-cell no-zone map edge, and zone-incompatible things. Use both.
                     var refusedCells = new List<object>();
                     foreach (var c in r)
                     {
+                        var owner = zm.ZoneAt(c);
+                        if (owner != null && owner != z)
+                        {
+                            if (refusedCells.Count < 12)
+                                refusedCells.Add(new { x = c.x, z = c.z, why = "already owned by zone '" + owner.label + "'" });
+                            continue;
+                        }
+                        var zr = Designator_ZoneAdd.IsZoneableCell(c, map);
+                        if (!zr.Accepted)
+                        {
+                            if (refusedCells.Count < 12)
+                                refusedCells.Add(new { x = c.x, z = c.z, why = string.IsNullOrEmpty(zr.Reason)
+                                    ? "not zoneable - fogged, within 5 cells of the map edge, or a zone-incompatible thing is here"
+                                    : zr.Reason });
+                            continue;
+                        }
                         z.AddCell(c);
                         if (!z.Cells.Contains(c) && refusedCells.Count < 12)
-                            refusedCells.Add(new { x = c.x, z = c.z, terrain = c.GetTerrain(map) != null ? c.GetTerrain(map).defName : null });
+                            refusedCells.Add(new { x = c.x, z = c.z, why = "Zone.AddCell refused (see the log)" });
+                    }
+                    // A registered zone with no cells is litter that outlives the call and
+                    // gets saved. Vanilla registers only once it has a cell to put in.
+                    if (z.Cells.Count == 0)
+                    {
+                        zm.DeregisterZone(z);
+                        return Fail("NOTHING was zoned - every cell in " + rect + " was refused, so the zone was not created.",
+                                    new { cellsRequested = r.Area, refusedCells });
                     }
                     try { z.CheckContiguous(); notes.Add("CheckContiguous run after bulk AddCell"); } catch { }
                     int wanted1 = r.Area;
@@ -1433,15 +1541,46 @@ namespace JawaBench.BridgeTools
                     // RemoveCell never throw, so "n++ ran without an exception" cannot
                     // distinguish an accepted cell from a refused one. Check membership
                     // before/after instead.
+                    // ⚠️ Both also log a RED ERROR on a no-op call - AddCell on a cell the
+                    // zone already has, RemoveCell on one it does not - so a paint over a
+                    // rect that only partly overlaps the zone used to flood the log. Only
+                    // call the one that has work to do.
+                    // 🔴 And the ownership guard from createZone applies here too: AddCell
+                    // does not refuse a cell another zone owns, it silently steals the
+                    // zoneGrid entry and leaves both zones listing it.
                     foreach (var c in r)
                     {
                         bool hadBefore = z.Cells.Contains(c);
-                        if (value) z.AddCell(c); else z.RemoveCell(c);
+                        if (value)
+                        {
+                            if (!hadBefore)
+                            {
+                                var owner = zm.ZoneAt(c);
+                                if (owner != null && owner != z)
+                                {
+                                    if (refused2.Count < 12)
+                                        refused2.Add(new { x = c.x, z = c.z, why = "already owned by zone '" + owner.label + "'" });
+                                    continue;
+                                }
+                                var zr = Designator_ZoneAdd.IsZoneableCell(c, map);
+                                if (!zr.Accepted)
+                                {
+                                    if (refused2.Count < 12)
+                                        refused2.Add(new { x = c.x, z = c.z, why = string.IsNullOrEmpty(zr.Reason)
+                                            ? "not zoneable - fogged, within 5 cells of the map edge, or a zone-incompatible thing is here"
+                                            : zr.Reason });
+                                    continue;
+                                }
+                                z.AddCell(c);
+                            }
+                        }
+                        else if (hadBefore) z.RemoveCell(c);
+
                         bool hasAfter = z.Cells.Contains(c);
                         bool wantedChange = value ? !hadBefore : hadBefore;
                         if (hasAfter != hadBefore) n++;
                         else if (wantedChange && refused2.Count < 12)
-                            refused2.Add(new { x = c.x, z = c.z, terrain = c.GetTerrain(map) != null ? c.GetTerrain(map).defName : null });
+                            refused2.Add(new { x = c.x, z = c.z, why = "Zone." + (value ? "AddCell" : "RemoveCell") + " refused (see the log)" });
                     }
                     try { z.CheckContiguous(); } catch { }
                     return (object)new
@@ -1466,6 +1605,14 @@ namespace JawaBench.BridgeTools
                     if (an.Equals("Home", StringComparison.OrdinalIgnoreCase)) target = am.Home;
                     else if (an.Equals("NoRoof", StringComparison.OrdinalIgnoreCase)) target = am.NoRoof;
                     else if (an.Equals("BuildRoof", StringComparison.OrdinalIgnoreCase)) target = am.BuildRoof;
+                    // 🔑 The fixed areas are reached by TYPE, never by Label. Area.Label is a
+                    // TRANSLATED string - Area_SnowOrSandClear's is "SnowAndSandClear" or
+                    // "SnowClear" translated, never the token this parameter documents - so
+                    // the Label fallback below can never match 'SnowOrSandClear'. Only
+                    // Area_Allowed, whose label the player types, is found that way.
+                    else if (an.Equals("SnowOrSandClear", StringComparison.OrdinalIgnoreCase)
+                          || an.Equals("SnowClear", StringComparison.OrdinalIgnoreCase)) target = am.SnowOrSandClear;
+                    else if (an.Equals("PollutionClear", StringComparison.OrdinalIgnoreCase)) target = am.PollutionClear;
                     else target = am.AllAreas.FirstOrDefault(a => string.Equals(a.Label, an, StringComparison.OrdinalIgnoreCase));
                     if (target == null) return Fail("No area '" + an + "'. Have: " +
                         string.Join(", ", am.AllAreas.Select(a => (string)a.Label).ToArray()));
