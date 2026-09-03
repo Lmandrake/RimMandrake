@@ -67,7 +67,7 @@ import dump_projection  # noqa: E402
 import cherrypicker  # noqa: E402
 ROSTER_GEN = os.path.join(HERE, "gen_pawnkind_roster.py")
 ROSTER_XML = os.path.join(
-    ROOT, "src", "Jawa", "Jawa_Patches", "Defs", "PawnKindDefs", "JawaFactionRoster.xml")
+    ROOT, "src", "SPLIT_Phase3", "Jawa_Patches", "Defs", "PawnKindDefs", "JawaFactionRoster.xml")
 
 _DUMPS = [
     os.path.join(DEF_DUMP, "defs"),
