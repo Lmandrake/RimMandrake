@@ -99,3 +99,17 @@ inspection).
 All 9 fixed, corrected, or explicitly deferred with a reason — same rigor
 as the already-fixed findings: verify against engine source before
 trusting the review's prose.
+
+## Partial progress 2026-09-02 (FOUNDRY)
+
+- **7 fixed**: all three `ConfigErrors()` NREs (SettlementManifestDef,
+  InhabitedCastDef, CharacterDef) guarded against a genuinely-null list.
+- **8 checked, no change made**: the STUB log line already prints
+  `settlement.LabelCap`, exactly what `ResolveManifestByName` matches
+  against — re-reading the code, this is already adequately diagnosable;
+  no missing log detail identified.
+
+Still open: 1-4 (pool-draw orphaning, GenStep order collision — blocked
+on `INHABITED_SETTLEMENT_MAPPARENT_GAP_1`, role misalignment, recall
+gap), 5-6 (stock/fate and authored-kit doc-vs-code gaps, need an explicit
+ruling), 9 (Harmony priority hardening, low urgency).
