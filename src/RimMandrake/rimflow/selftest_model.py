@@ -759,6 +759,315 @@ def t_every_field_the_cli_emits_is_in_its_schema():
     assert checked >= 4, "found only %d emitted fields; the walker stopped matching" % checked
 
 
+# ---------------------------------------------------------------------------
+# THE REFUSAL MUST BE A REFUSAL, NOT A CRASH — code review, 2026-09-03.
+#
+# 🔴 `replay(strict=False)` catches `LedgerError` and nothing else. That is deliberate
+# and it is the whole reason every downstream tool keeps working when the append-only
+# file contains a mistake nobody can take back out. It also means any OTHER exception
+# raised out of `validate` or `_apply` is not a refusal at all — it is `rimflow next`,
+# `rimflow board`, the renderer and every seat's queue view dying together on one bad
+# line, with no way to make them start again. Two of those existed.
+# ---------------------------------------------------------------------------
+def t_spawn_without_a_name_refuses_instead_of_crashing():
+    """`validate` read `ev["name"]` before the required-field loop had run."""
+    refuses(lambda: model.validate(ev(seat="BUILD", event="spawn",
+                                      **{"from": "A_B_1", "for": "BUILD"})),
+            "requires --name",
+            "a `spawn` with no --name raised KeyError. KeyError is not a LedgerError, "
+            "so replay(strict=False) could not collect it and every reader of the "
+            "ledger died on that one line")
+    # and the shape check itself still bites, now from behind the required-field loop
+    refuses(lambda: model.validate(ev(seat="BUILD", event="spawn",
+                                      **{"from": "A_B_1", "for": "BUILD",
+                                         "name": "has spaces"})),
+            "three_descriptive_words", "a spawn name with spaces was accepted")
+
+
+def t_an_event_with_no_ts_is_refused_not_crashed():
+    """🔑 `_apply` reads `ev["ts"]` unconditionally — last_seen, created_at, every Run."""
+    bare = {"seat": "BUILD", "event": "note", "id": "STAMPLESS_NEIGHBOUR_1", "text": "x"}
+    refuses(lambda: model.validate(dict(bare)), "ts",
+            "an event with no `ts` was accepted, and `_apply` then raised KeyError — "
+            "which replay(strict=False) cannot collect")
+
+    w = model.replay([filed("STAMPLESS_NEIGHBOUR_1"), dict(bare)])   # non-strict
+    assert len(w.errors) == 1, w.errors
+    assert "STAMPLESS_NEIGHBOUR_1" in w.items, (
+        "one stamp-less line took the whole replay down; an append-only file WILL "
+        "contain mistakes and every downstream tool must still work")
+
+    # ⚠️ And nothing legitimate ever meets that refusal: both writers stamp first.
+    auto = {"seat": "DECIDE", "event": "file", "id": "AUTOSTAMPED_ITEM_HERE_1",
+            "title": "t", "kind": "task", "for": "BUILD"}
+    model.append(auto, os.path.join(TMP, "stamped.jsonl"))
+    assert auto.get("ts"), "append() must STAMP an unstamped event, never refuse it"
+    model.check({"seat": "BUILD", "event": "note", "id": "STAMPLESS_NEIGHBOUR_1",
+                 "text": "x"}, model.replay([filed("STAMPLESS_NEIGHBOUR_1")]))
+
+
+# One canonical, valid event per verb. Every verb in VERBS must appear — the assertion
+# at the end of the fuzz case is what stops a new verb being added without one.
+CANONICAL = {
+    "file":      dict(seat="DECIDE", id="A_B_1", title="t", kind="task", **{"for": "BUILD"}),
+    "claim":     dict(seat="BUILD", id="A_B_1"),
+    "start":     dict(seat="BUILD", id="A_B_1"),
+    "block":     dict(seat="BUILD", id="A_B_1", reason="x"),
+    "unblock":   dict(seat="BUILD", id="A_B_1"),
+    "verify":    dict(seat="BUILD", id="A_B_1", result="pass", config="full-578"),
+    "finding":   dict(seat="BUILD", id="A_B_1", type="integration", severity="high",
+                      name="F_B_1", **{"from": "A_B_1"}),
+    "spawn":     dict(seat="BUILD", name="N_B_1", **{"from": "A_B_1", "for": "BUILD"}),
+    "retarget":  dict(seat="BUILD", id="A_B_1", to="v2"),
+    "needs":     dict(seat="BUILD", id="A_B_1", to="offline"),
+    "reassign":  dict(seat="DECIDE", id="A_B_1", to="CHECK"),
+    "close":     dict(seat="BUILD", id="A_B_1", sha="abc1234"),
+    "drop":      dict(seat="BUILD", id="A_B_1", reason="x"),
+    "supersede": dict(seat="BUILD", id="A_B_1", by="B_C_1"),
+    "note":      dict(seat="BUILD", id="A_B_1", text="x"),
+    "seat":      dict(seat="BUILD", state="idle"),
+    "bridge":    dict(seat="BENCH", state="taken"),
+    "game":      dict(seat="OWNER", state="UP"),
+}
+
+
+def t_no_mangled_event_can_raise_anything_but_a_ledger_error():
+    """⭐ THE GENERAL FORM OF THE TWO BUGS ABOVE, so the next one cannot ship either.
+
+    Both were the same shape: a check reading `ev["field"]` directly on a field that a
+    hand-written or truncated line need not carry. Enumerating them by hand is how the
+    first two were missed, so this mangles every field of every verb three ways —
+    absent, `None`, and the wrong type — and asserts that whatever comes back out is a
+    LedgerError, never a KeyError, TypeError or AttributeError.
+
+    ⚠️ It asserts the same of `replay(strict=False)`, which is where the consequence
+    actually lands: not "the caller sees a tidy message" but "the board still renders".
+    """
+    assert set(CANONICAL) == set(model.VERBS), (
+        "every verb needs a canonical event here, and %r has none — a verb nothing "
+        "fuzzes is a verb whose next `ev[\"field\"]` read goes untested"
+        % sorted(set(model.VERBS) - set(CANONICAL)))
+    host = filed("A_B_1", for_="BUILD")
+    checked = 0
+    for verb, base in sorted(CANONICAL.items()):
+        base = ev(event=verb, **base)
+        mangled = []
+        for f in list(base):
+            for bad in ({}, {f: None}, {f: 17}):
+                v = dict(base)
+                v.pop(f) if not bad else v.update(bad)
+                mangled.append(v)
+        for v in mangled:
+            checked += 1
+            try:
+                model.validate(dict(v))
+            except model.LedgerError:
+                pass
+            except Exception as e:                                 # noqa: BLE001
+                raise AssertionError(
+                    "validate(%r) raised %s: %s — only LedgerError is a REFUSAL; "
+                    "anything else escapes replay(strict=False) and kills every tool "
+                    "that reads the ledger" % (v, type(e).__name__, e))
+            try:
+                model.replay([dict(host), dict(v)])                # non-strict
+            except model.LedgerError as e:
+                raise AssertionError(
+                    "replay(strict=False) RAISED on %r (%s). Non-strict replay must "
+                    "collect, never raise: the event is already in an append-only "
+                    "file and cannot be removed" % (v, e))
+            except Exception as e:                                 # noqa: BLE001
+                raise AssertionError(
+                    "replay(strict=False) died with %s on %r: %s"
+                    % (type(e).__name__, v, e))
+    assert checked >= 150, "the mangler stopped generating variants (%d)" % checked
+
+
+# ---------------------------------------------------------------------------
+# SILENT REPLACEMENT AND SILENT GAPS IN THE PROJECTION
+# ---------------------------------------------------------------------------
+def t_spawn_onto_a_live_item_is_refused():
+    """🔴 `spawn` OVERWROTE. `file` has always refused a duplicate id; `spawn` did not,
+    and `world.items[name] = new` simply replaced whatever was there — discarding that
+    item's state, history, runs and findings from every derived view while the ledger
+    still held both halves. A projection quietly disagreeing with the truth is the one
+    failure this whole design exists to end. Never hit live; found by review 2026-09-03.
+    """
+    evs = [filed("ALREADY_ALIVE_HERE_1", for_="BUILD"),
+           ev(seat="BUILD", event="start", id="ALREADY_ALIVE_HERE_1"),
+           ev(seat="BUILD", event="spawn",
+              **{"from": "ALREADY_ALIVE_HERE_1", "for": "CHECK",
+                 "name": "ALREADY_ALIVE_HERE_1"})]
+    refuses(lambda: model.replay(evs, strict=True), "already exists",
+            "a spawn replaced a live item of the same name")
+    it = model.replay(evs).items["ALREADY_ALIVE_HERE_1"]        # non-strict
+    assert it.state == "doing" and it.owner == "BUILD", (
+        "the refused spawn still clobbered the live item: state %r owner %r"
+        % (it.state, it.owner))
+    assert len(it.history) == 2, (
+        "the live item's history was replaced by the spawn's: %r" % it.history)
+
+
+def t_filing_is_the_items_first_history_entry():
+    """⚠️ `spawn` records its own creating event and `file` did not, so a just-filed
+    item rendered `history (0 events)` while plainly existing — a gap in the record
+    rather than its beginning, which is the exact wording the spawn branch already
+    carried. Three live items were in that state on 2026-09-03. It also silently cost
+    `cli._distress`'s reassign-direction heuristic: that loop seeds the previous owner
+    from an event carrying a `for`, and for a FILED item the only such event was the
+    one missing from the list.
+    """
+    lone = model.replay([filed("ONLY_EVER_FILED_HERE_1")],
+                        strict=True).items["ONLY_EVER_FILED_HERE_1"]
+    assert lone.history == [0], (
+        "a just-filed item reports `history (%d events)` — its own filing is missing"
+        % len(lone.history))
+    evs = [filed("HAS_A_BEGINNING_HERE_1", for_="BUILD"),
+           ev(seat="BUILD", event="claim", id="HAS_A_BEGINNING_HERE_1")]
+    it = model.replay(evs, strict=True).items["HAS_A_BEGINNING_HERE_1"]
+    assert it.history == [0, 1], it.history
+    assert it.history[0] == it.created_index, (
+        "history must OPEN with the creating event, the way spawn's does")
+
+
+# ---------------------------------------------------------------------------
+# TERMINAL MEANS TERMINAL — the general rule, not a list of pairs
+# ---------------------------------------------------------------------------
+def t_block_is_refused_on_every_terminal_state():
+    """⚠️ `block` does not route through the transition gate (blocked is a FLAG, not a
+    state), so it carried its own guard — hardcoded to `done`. A `dropped` or
+    `superseded` item was therefore blockable, which is precisely the failure the
+    comment over `TERMINAL` names: a list of pairs fails open on the pair nobody thought
+    of. Corrected to the terminal SET, 2026-09-03.
+    """
+    for verb, kw, state, needle in (
+            ("close", {"sha": "abc1234"}, "done", "closed"),
+            ("drop", {"reason": "no"}, "dropped", "terminal"),
+            ("supersede", {"by": "SUCCESSOR_ITEM_HERE_1"}, "superseded", "terminal")):
+        iid = "TERMINAL_%s_ITEM_1" % state.upper()
+        evs = [filed(iid, for_="BUILD"), ev(seat="BUILD", event=verb, id=iid, **kw)]
+        assert model.replay(evs, strict=True).items[iid].state == state
+        blocked = evs + [ev(seat="BUILD", event="block", id=iid, reason="x")]
+        refuses(lambda e=blocked: model.replay(e, strict=True), needle,
+                "a %s item was blocked — blocking says work is STUCK, and this "
+                "item's record is finished" % state)
+
+
+def t_transition_is_a_unit_and_terminal_means_terminal():
+    """The state machine, lifted out of `_apply` so it can be exercised on a bare Item.
+
+    🔑 The value of it being a unit is exactly this case: every terminal state against
+    every reopening target, with no ledger, no world and no seat rules in the way — and
+    the assertion that a REFUSED transition leaves the item where it was.
+    """
+    for term in model.TERMINAL:
+        for target in ("proposed", "ready", "doing"):
+            it = model.Item("BARE_ITEM_HERE_1", 0)
+            it.state = term
+            try:
+                model._transition(it, target)
+            except model.TransitionError:
+                assert it.state == term, (
+                    "the refusal still moved the item to %r" % it.state)
+                continue
+            raise AssertionError("%s -> %s was allowed" % (term, target))
+    it = model.Item("BARE_ITEM_HERE_2", 0)
+    for s in ("ready", "doing", "done"):
+        model._transition(it, s)
+    assert it.state == "done", it.state
+    model._transition(it, "done")           # a no-op, not a refusal
+    assert it.state == "done"
+
+
+# ---------------------------------------------------------------------------
+# THE OVERRIDE NOTICE MUST DESCRIBE **THIS** EVENT
+# ---------------------------------------------------------------------------
+def t_check_reports_only_the_candidates_own_override():
+    """🔴 `check()` cleared OVERRIDE_NOTICES and THEN replayed the ledger into it.
+
+    `_may` appends a notice for every OWNER override it sees, and `replay` walks the
+    whole file — so the list `check()` handed back opened with a historical override,
+    possibly years old, and `_emit` reads `OVERRIDE_NOTICES[0]`. It would have stamped
+    an unrelated rule onto the `override` field of a permanent ledger event: the one
+    field this system treats as evidence that a boundary was crossed on purpose,
+    carrying the wrong boundary. Not reachable through today's CLI — every `_emit` hands
+    `check()` a world it already replayed — which is exactly why it survived.
+    """
+    p = os.path.join(TMP, "overrides.jsonl")
+    model.append(filed("AN_OLD_OVERRIDE_HERE_1", for_="BUILD"), p)
+    model.append(ev(seat="OWNER", event="drop", id="AN_OLD_OVERRIDE_HERE_1",
+                    reason="an owner override from long ago"), p)
+    model.append(filed("THE_CANDIDATES_ITEM_1", for_="BUILD"), p)
+
+    model.check(ev(seat="OWNER", event="drop", id="THE_CANDIDATES_ITEM_1",
+                   reason="the candidate"), path=p)
+    notices = list(model.OVERRIDE_NOTICES)
+    assert len(notices) == 1, (
+        "check() returned %d notices; the ledger's own history leaked into the list "
+        "the CLI stamps onto the event: %r" % (len(notices), notices))
+    assert "THE_CANDIDATES_ITEM_1" in notices[0], (
+        "the notice names %r, not the event being checked — `_emit` stamps "
+        "OVERRIDE_NOTICES[0] onto the ledger as the rule that was crossed"
+        % notices[0])
+
+
+# ---------------------------------------------------------------------------
+# THE BRIDGE MIRROR — pure units, and no litter in a directory that is in git
+# ---------------------------------------------------------------------------
+def t_the_bridge_body_is_a_pure_function_of_its_arguments():
+    """⚠️ The five-line header's COUNT is load-bearing: `selftest_bridge_file_concurrency`
+    proves the final file is one writer's COMPLETE body by checking where the status
+    line lands. A header that grows silently turns that proof into a green no-op."""
+    held = model.bridge_body("BENCH", None, purpose="driving the map",
+                             since="2026-09-02T00:00:00Z")
+    lines = held.splitlines()
+    assert len(lines) == 7, held
+    assert lines[5] == "HELD    BENCH    since 2026-09-02T00:00:00Z", held
+    assert lines[6] == "for     driving the map", held
+    free = model.bridge_body(None, "FOUNDRY", since="2026-09-02T00:00:00Z")
+    assert free.splitlines()[5] == \
+        "FREE    since 2026-09-02T00:00:00Z    (released by FOUNDRY)", free
+    noted = model.bridge_body("BENCH", None, since="x", note="handed over by the owner")
+    assert noted.splitlines()[-1] == "note    handed over by the owner", noted
+    assert noted.endswith("\n"), "the mirror must end in a newline"
+
+
+def t_the_mirror_follows_the_ledger_in_use():
+    """🔴 A mirror bound to the module constant wrote a synthetic test holder over the
+    REAL BRIDGE file — the tests would have kept lying to two live windows."""
+    saved = os.environ.pop("RIMFLOW_LEDGER", None)
+    try:
+        assert model.bridge_mirror_path() == model.BRIDGE_FILE
+        os.environ["RIMFLOW_LEDGER"] = os.path.join(TMP, "ledger", "events.jsonl")
+        assert model.bridge_mirror_path() == os.path.join(TMP, "ledger", "BRIDGE"), (
+            "a redirected ledger still mirrored to the real BRIDGE file")
+    finally:
+        os.environ.pop("RIMFLOW_LEDGER", None)
+        if saved is not None:
+            os.environ["RIMFLOW_LEDGER"] = saved
+
+
+def t_a_failed_mirror_write_leaves_no_tmp_and_no_damage():
+    """⚠️ The per-call-unique tmp name that fixed the concurrent-truncation race left
+    every FAILED write behind as `BRIDGE.tmp.<pid>.<ns>` — in infrastructure/state,
+    which is in git, as untracked state nobody can attribute. And the good mirror must
+    survive a failed rewrite: a half-written answer to "who is driving" is worse than
+    the previous one."""
+    d = os.path.join(TMP, "mirror")
+    os.makedirs(d, exist_ok=True)
+    target = os.path.join(d, "BRIDGE")
+    model._write_atomically(target, "HELD    BENCH\n")
+    try:
+        model._write_atomically(target, "\ud800")       # cannot be encoded as UTF-8
+    except Exception:                                    # noqa: BLE001
+        pass
+    else:
+        raise AssertionError("an unencodable body was reported as written")
+    strays = sorted(n for n in os.listdir(d) if ".tmp." in n)
+    assert not strays, "a failed write left %r behind, in a directory that is in git" % strays
+    with open(target, encoding="utf-8") as fh:
+        assert fh.read() == "HELD    BENCH\n", "the failed write damaged the good mirror"
+
+
 CASES = [(k[2:], v) for k, v in sorted(globals().items()) if k.startswith("t_")]
 
 if __name__ == "__main__":
