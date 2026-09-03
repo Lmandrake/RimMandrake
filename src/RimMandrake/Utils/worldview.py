@@ -211,16 +211,30 @@ class PlanetView(object):
 
     def _factions(self):
         """Index -> {def, name}. The Nth record IS Faction_N - the records carry no
-        loadID, and the highest reference in the file matches the record count."""
+        loadID, and the highest reference in the file matches the record count.
+
+        🔴 The player's own faction record (always present) has no <name> tag - its
+        display name lives elsewhere. A single regex requiring <def> immediately
+        followed by <name> skips that record entirely and then keeps scanning
+        forward, so its <def> and the NEXT faction's <name> get spliced into one
+        garbage match and every faction after it shifts off by one. Split into
+        per-record blocks first, then read <def> and <name> from each block
+        independently so a missing <name> yields None instead of stealing a
+        neighbour's."""
         t = self.objs.text
         i = t.find("<allFactions>")
         if i < 0:
             return {}
         seg = t[i:t.find("</allFactions>", i)]
+        starts = [m.start() for m in re.finditer(r"<li>\s*<leader>", seg)]
+        bounds = starts + [len(seg)]
         out = {}
-        for k, m in enumerate(re.finditer(r"<li>\s*<leader>.*?<def>(.*?)</def>\s*"
-                                          r"<name>(.*?)</name>", seg, re.S)):
-            out["Faction_%d" % k] = {"def": m.group(1), "name": m.group(2), "index": k}
+        for k, (a, b) in enumerate(zip(bounds, bounds[1:])):
+            block = seg[a:b]
+            dm = re.search(r"<def>(.*?)</def>", block, re.S)
+            nm = re.search(r"<name>(.*?)</name>", block, re.S)
+            out["Faction_%d" % k] = {"def": dm.group(1) if dm else None,
+                                     "name": nm.group(1) if nm else None, "index": k}
         return out
 
     # -- derived ------------------------------------------------------------
