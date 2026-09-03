@@ -125,9 +125,19 @@ LAUNCH = ("/mnt/d/Luke/dev/Rimworld/src/RimMandrake/Utils/claude_bounded.sh "
 # file including a /model saved default, which is the point: opening the tab is
 # the whole startup, and a seat never inherits whatever model the last session
 # left behind. In-session /model still switches live when an item needs more.
+#
+# ⭐ THE FOURTH FIELD IS A HOME OVERRIDE, and `None` means "a RimWorld seat".
+# HESTIA (owner, 2026-09-02) is a window in this fleet's tab strip but NOT a seat
+# of this project — her work is the separate Hestia project — so she gets the same
+# launch mechanics and a different working directory, and `AGENT_SEAT` is NOT
+# exported for her. That variable is what makes `.claude/hooks/set_session_title.py`
+# inject `infrastructure/agents/<SEAT>.md` and hand a window this project's identity;
+# exporting it for a window that is not a seat here would tell her she is one.
 SEATS = {
-    "BENCH":   ("#7BC96F", "claude-fable-5", "green — with the owner, permanent bench"),
-    "FOUNDRY": ("#E5A03C", "sonnet", "amber — the autonomous queue window"),
+    "BENCH":   ("#7BC96F", "claude-fable-5", "green — with the owner, permanent bench", None),
+    "FOUNDRY": ("#E5A03C", "sonnet", "amber — the autonomous queue window", None),
+    "HESTIA":  ("#FFC83D", "claude-fable-5", "gold-amber — the Hestia project, not a seat here",
+                ("/mnt/d/Luke/dev/Hestia", r"D:\Luke\dev\Hestia")),
 }
 
 # Profiles from the retired four-seat fleet, removed on --apply.
@@ -154,7 +164,8 @@ def seat_guid(seat):
 
 
 def build(seat):
-    colour, model, _ = SEATS[seat]
+    colour, model, _, home = SEATS[seat]
+    home_wsl, home_win = home if home else (REPO_WSL, REPO_WIN)
     scheme = dict(CAMPBELL, name=f"Seat {seat}", foreground=colour,
                   cursorColor=colour)
     # A LOGIN shell, so the owner's PATH applies and `claude` resolves exactly as
@@ -163,14 +174,15 @@ def build(seat):
     # spawns inherit it — that variable is the whole zero-typing mechanism.
     # Claude Code is NOT exec'd into: when the owner quits it the tab drops to a
     # login shell that still carries AGENT_SEAT, rather than closing the window.
-    inner = (f"cd {REPO_WSL} && export AGENT_SEAT={seat} && "
+    export = "" if home else f"export AGENT_SEAT={seat} && "
+    inner = (f"cd {home_wsl} && {export}"
              f"{LAUNCH.format(seat=seat, model=model)}; exec $SHELL -l")
     profile = {
         "guid": seat_guid(seat),
         "name": f"AGENT {seat}",
         "tabTitle": f"AGENT {seat}",
         "commandline": f'wsl.exe -d {DISTRO} -- bash -lc "{inner}"',
-        "startingDirectory": REPO_WIN,
+        "startingDirectory": home_win,
         "colorScheme": f"Seat {seat}",
         "tabColor": colour,
         # false let `wsl.exe` overwrite the tab with its own path. See the
@@ -250,8 +262,10 @@ def main():
     print(f"{'APPLY' if args.apply else 'PLAN'}: {added} profile(s) to add, "
           f"{updated} to update, {removed} retired profile(s) to remove, "
           f"{len(SEATS)} scheme(s) synced")
-    for seat, (colour, model, why) in SEATS.items():
-        print(f"  AGENT {seat:<8} {colour}  model {model:<7} tab+text  {why}")
+    for seat, (colour, model, why, home) in SEATS.items():
+        print(f"  AGENT {seat:<8} {colour}  model {model:<15} tab+text  {why}")
+        if home:
+            print(f"  {'':<14}opens in {home[1]}, and does NOT export AGENT_SEAT")
     if args.font_size:
         print(f"  font size: {args.font_size:g} pt -> profiles.defaults, so EVERY "
               f"window, not just the seats")
