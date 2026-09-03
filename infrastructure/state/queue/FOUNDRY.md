@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-03T22:19:47Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-03T22:23:43Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -454,16 +454,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## DEFDUMP_ONDEMAND_BRIDGE_UNREACHABLE_1 RMDefDump on-demand DebugAction not fireable via bridge: plain Action-type custom leaves absent from the debug tree
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DEFDUMP_ONDEMAND_BRIDGE_UNREACHABLE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DEFDUMP_ONDEMAND_BRIDGE_UNREACHABLE_1.md
 
 ## VANILLA_COUNT_PSEUDO_DEF_1 A mod writes vanilla count-class pseudo-defs (MealSimple10/Chemfuel60/Steel75/Silver120/ComponentIndustrial12) as defNames instead of Def+count
 state:    proposed
