@@ -182,6 +182,22 @@ def needs_reason(it, world, seat, ctx=None):
         return ("needs `bridge`, and %s is holding it. This is NOT blocked and it "
                 "will NOT reopen on its own — it reopens when %s runs "
                 "`rimflow bridge release`." % (holder, holder))
+    # 🔴 `harvest` AND `owner` ARE NOT FUNCTIONS OF GAME STATE, and the stock sentence
+    # below told every seat that they were: "needs `harvest`, and the game is UP …
+    # the window is simply closed and will reopen" is false twice over — the game
+    # state is not the reason, and nothing reopens either window on its own. That is
+    # the same defect the bridge branch above was written to cure (a wrong reason
+    # strands the item and the seat believes waiting is the right move), left in place
+    # for the two `needs` values whose gate `BY_GAME` reads out of `ctx`, not `g`.
+    if it.needs == "harvest":
+        return ("needs `harvest`, and no harvest is pending. ⚠️ NOT blocked, and NOT "
+                "about the game: it opens when a log is actually mined, which is a "
+                "thing to DO. If it never needed one, `rimflow needs %s --to offline`."
+                % it.id)
+    if it.needs == "owner":
+        return ("needs `owner`, and the mode is afk — he is not at the keyboard. "
+                "⚠️ NOT blocked, and NOT about the game: it reopens when he is back, "
+                "not when the game moves. Take offline work and leave this filed.")
     # ⚠️ Deliberately NOT special-cased: `needs: bridge` while the game is DOWN.
     # There the stock wording is TRUE — the window really does reopen on its own,
     # when the game next comes up. Only a LIVE game with the lock unavailable is

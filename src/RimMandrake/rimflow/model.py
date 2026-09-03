@@ -484,7 +484,11 @@ def bridge_mirror_path():
     file on the first run — the tests would have kept lying to two live windows.
     """
     led = os.environ.get("RIMFLOW_LEDGER")
-    return os.path.join(os.path.dirname(led), "BRIDGE") if led else BRIDGE_FILE
+    # `or "."` because `dirname("events.jsonl")` is "", and `makedirs("")` raises
+    # FileNotFoundError — which is not a LedgerError, so it takes the tool down
+    # instead of naming a rule. A bare filename in RIMFLOW_LEDGER is a legal thing
+    # for a test or a one-off to set.
+    return os.path.join(os.path.dirname(led) or ".", "BRIDGE") if led else BRIDGE_FILE
 
 
 def bridge_body(holder, actor, purpose=None, since=None, note=None):
@@ -558,7 +562,7 @@ def write_bridge_file(holder, actor, purpose=None, since=None, note=None):
     """
     target = bridge_mirror_path()
     body = bridge_body(holder, actor, purpose, since, note)
-    os.makedirs(os.path.dirname(target), exist_ok=True)
+    os.makedirs(os.path.dirname(target) or ".", exist_ok=True)
     return _write_atomically(target, body)
 
 
@@ -597,7 +601,7 @@ def append(ev, path=None):
             "event is %d bytes; O_APPEND is only atomic below %d, and a torn line "
             "corrupts the ledger irrecoverably. Move the prose into items/%s.md."
             % (len(blob), PIPE_BUF, ev.get("id", "<ID>")))
-    os.makedirs(os.path.dirname(path), exist_ok=True)
+    os.makedirs(os.path.dirname(path) or ".", exist_ok=True)   # see bridge_mirror_path
     fd = os.open(path, os.O_WRONLY | os.O_CREAT | os.O_APPEND, 0o644)
     try:
         # ⛔ DO NOT REMOVE THE LOCK "because O_APPEND is atomic". It is, on ext4 and
@@ -922,8 +926,29 @@ def _transition(item, state):
     """The lifecycle gate, and the ONLY thing that assigns `item.state`.
 
     Lifted out of `_apply` (2026-09-03) so the state machine can be exercised on a bare
-    `Item` without building a world and a ledger around it. Behaviour unchanged.
+    `Item` without building a world and a ledger around it.
+
+    🔴 A SECOND `close`/`drop`/`supersede` IS REFUSED, and it used to be a silent
+    success. The `state == item.state` short-circuit below sat ABOVE the terminal
+    check, so `done -> done` returned early and `_apply_item_verb` carried straight on
+    to `item.closed_sha = ev["sha"]` — the projection quietly adopted the SECOND sha
+    (and `supersede` the second `by`, and `close` cleared a `blocked` flag) while the
+    ledger held both events. `rimflow close X` on an item closed days ago by another
+    seat exited 0 and printed "X closed at <sha>", so the seat had no way to learn it
+    had closed nothing. Fired FOUR times in the live ledger (two `close`, one `drop`,
+    one `supersede`), measured 2026-09-03; those four now surface in `world.errors`,
+    which is what that list is for — refusals found ALREADY IN an append-only file.
+    ⛔ Do not "fix" them by loosening this back: the first record is the one that
+    stands, and the terminal rule is only worth anything if it also refuses the pair
+    nobody thought of — see the comment over `TERMINAL`.
     """
+    if item.state in TERMINAL and state == item.state:
+        raise TransitionError(
+            "%s is already `%s`, and this would be a SECOND one. The first record "
+            "stands — a repeat cannot be told apart from the original in any view, "
+            "but it would silently replace the sha, the reason or the successor the "
+            "projection reports. If something more happened, file a NEW item and link "
+            "it with caused_by." % (item.id, item.state))
     if state == item.state:
         return
     pair = (item.state, state)
@@ -948,8 +973,14 @@ def _apply_file(ev, index, world):
                           % (iid, existing.created_index + 1))
     item = Item(iid, index)
     item.title, item.kind, item.owner = ev["title"], ev["kind"], ev["for"]
-    item.row, item.target = ev.get("row"), ev.get("target", "v1")
-    item.needs = ev.get("needs", "offline")
+    # ⚠️ `or`, not a get() default. A key that is PRESENT AND NULL — which `append()`
+    # accepts and only `cli._emit`'s strip happens to prevent — makes `get(k, default)`
+    # hand back None, and a `needs` of None matches nothing in `priority.BY_GAME`: the
+    # item fails open into UNKNOWN_NEEDS and is offered with no window check at all,
+    # reported as an unrecognised `needs` nobody can grep for. The default belongs to
+    # the projection, not to the presence of a key.
+    item.row, item.target = ev.get("row"), ev.get("target") or "v1"
+    item.needs = ev.get("needs") or "offline"
     item.created_at = ev["ts"]
     item.caused_by = ev.get("caused_by")
     # 🔑 THE FILING IS THE ITEM'S FIRST HISTORY ENTRY — the same reason `spawn` records
@@ -984,9 +1015,9 @@ def _apply_spawn(ev, index, world):
             % (name, clash.created_index + 1))
     new = Item(name, index)
     new.title = ev.get("title") or name
-    new.kind = ev.get("kind", "task")
+    new.kind = ev.get("kind") or "task"          # `or`, not a get() default — see _apply_file
     new.owner = ev["for"]
-    new.needs = ev.get("needs", "offline")
+    new.needs = ev.get("needs") or "offline"
     new.this_deployment = bool(ev.get("this_deployment"))
     new.created_at, new.caused_by = ev["ts"], ev["from"]
     # The spawn IS the new item's first history entry. Without this the item
@@ -1110,7 +1141,15 @@ def _apply_item_verb(ev, index, item, seat, world):
     elif verb == "close":
         to("done")
         item.closed_sha = ev["sha"]
+        # ⚠️ ALL THREE, exactly as `unblock` does it. Clearing the flag and leaving the
+        # reason behind left 23 live items projecting `blocked False` with a stale
+        # `blocked_reason` still attached (measured 2026-09-03). Every reader gates on
+        # the flag today, so nothing was displaying it — which is the definition of a
+        # trap: the invariant "not blocked ⇒ no reason" held everywhere except here,
+        # and the first view that reads the reason without the flag would report a
+        # closed item as stuck on something that was resolved by the close.
         item.blocked = False
+        item.blocked_reason = item.blocked_on = None
     elif verb == "drop":
         to("dropped")
     elif verb == "supersede":

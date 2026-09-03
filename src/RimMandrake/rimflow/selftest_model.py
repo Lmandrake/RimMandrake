@@ -1014,8 +1014,28 @@ def t_transition_is_a_unit_and_terminal_means_terminal():
     for s in ("ready", "doing", "done"):
         model._transition(it, s)
     assert it.state == "done", it.state
-    model._transition(it, "done")           # a no-op, not a refusal
-    assert it.state == "done"
+    # 🔴 REPEATING A TERMINAL STATE IS A REFUSAL, and this line pinned it as a no-op
+    # until 2026-09-03. It was pinning the short-circuit the lift-out inherited, not a
+    # ruling: `state == item.state` returned before the terminal check, so a SECOND
+    # `close` fell through to `item.closed_sha = ev["sha"]` and the projection quietly
+    # adopted the newer sha (a second `supersede`, the newer successor) while the
+    # ledger kept both events — and `rimflow close X` on an item another seat closed
+    # days ago exited 0 printing "closed at <sha>". Four such events are in the live
+    # ledger. Terminal has to fail closed on the pair nobody thought of, which is what
+    # the comment over `model.TERMINAL` says and what the `block` fix did the same day.
+    try:
+        model._transition(it, "done")
+    except model.TransitionError:
+        assert it.state == "done"
+    else:
+        raise AssertionError("done -> done was allowed: a second close silently "
+                             "replaces the recorded sha")
+    # A NON-terminal repeat stays a no-op — `claim` on an already-`ready` item, and
+    # `reassign`'s `to('ready')`, both land here and must not refuse.
+    live = model.Item("BARE_ITEM_HERE_3", 0)
+    model._transition(live, "ready")
+    model._transition(live, "ready")
+    assert live.state == "ready", live.state
 
 
 # ---------------------------------------------------------------------------
