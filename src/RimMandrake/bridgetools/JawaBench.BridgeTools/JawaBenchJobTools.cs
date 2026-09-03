@@ -40,10 +40,12 @@
 //   - Pawn_WorkSettings.SetPriority itself refuses (Log.Error, priorities[w]
 //     left untouched) when priority != 0 and the work type is disabled for
 //     that pawn. Checked BEFORE writing, reported either way.
-//   - Pawn_JobTracker.TryTakeOrderedJob refuses when
-//     IsCurrentJobPlayerInterruptible() is false (current job flagged
-//     non-interruptible, its driver refuses, or the pawn is on fire) and
-//     returns false rather than throwing - reported, never swallowed.
+//   - Pawn_JobTracker.TryTakeOrderedJob (Verse/AI/Pawn_JobTracker.cs:891) returns
+//     false for exactly ONE reason: job.TryMakePreToilReservations failed. When
+//     IsCurrentJobPlayerInterruptible() is false it does NOT refuse - it falls
+//     through to ClearQueuedJobs + EnqueueLast and returns TRUE, so the order
+//     runs after the current job instead of replacing it. jawa/ordered_job reports
+//     both, because a caller told "refused" would go hunting for a fire.
 //   - Pawn_DraftController.Drafted has no refusal path of its own; the game's
 //     OWN drafting gizmo is disabled by Lord.AllowsDrafting(pawn) before the
 //     setter is ever called, so jawa/set_draft checks that AcceptanceReport
@@ -382,34 +384,83 @@ namespace JawaBench.BridgeTools
                     bill = stack[billIndex];
                 }
 
+                var bpOrNull = bill as Bill_Production;
+
+                // 🔴 VALIDATE EVERYTHING BEFORE WRITING ANYTHING. This block used to write
+                // suspended, then repeatMode, then repeatCount/targetCount, and only THEN
+                // parse storeMode and the quality names - so a call that came back
+                // success:false had already half-reconfigured the bill and persisted it to
+                // the savegame. Nothing below this comment touches the bill.
+                if (bpOrNull == null &&
+                    (repeatMode != null || repeatCount.HasValue || targetCount.HasValue
+                     || qualityMin != null || qualityMax != null))
+                    return Fail(
+                        $"Bill on '{giverId}' is a {bill.GetType().Name}, not a " +
+                        "Bill_Production - repeatMode/repeatCount/targetCount/quality " +
+                        "do not exist on it. NOTHING was changed.",
+                        new { suspendedNow = bill.suspended });
+
+                BillRepeatModeDef rmDef = null;
+                if (repeatMode != null && !TryParseRepeatMode(repeatMode, out rmDef))
+                    return Fail($"Unknown repeatMode '{repeatMode}'.", new
+                    { accepted = new[] { "repeatcount", "targetcount", "forever" } });
+
+                // The game's own +/- buttons clamp both at zero (Bill_Production.cs
+                // DoConfigInterface, Mathf.Max(0, ...)). A negative one here would be
+                // scribed straight into the save and leave the bill permanently unable to
+                // satisfy itself, with nothing in the UI to show why.
+                if (repeatCount.HasValue && repeatCount.Value < 0)
+                    return Fail($"repeatCount must be >= 0, got {repeatCount.Value}.");
+                if (targetCount.HasValue && targetCount.Value < 0)
+                    return Fail($"targetCount must be >= 0, got {targetCount.Value}.");
+
+                BillStoreModeDef smDef = null;
+                ISlotGroup grp = null;
+                if (storeMode != null)
+                {
+                    if (!TryParseStoreMode(storeMode, out smDef))
+                        return Fail($"Unknown storeMode '{storeMode}'.", new
+                        { accepted = new[] { "dropfloor", "beststockpile", "specificstockpile" } });
+                    if (smDef == BillStoreModeDefOf.SpecificStockpile)
+                    {
+                        string sgErr;
+                        grp = ResolveSlotGroup(map, storeTargetId, out sgErr);
+                        if (grp == null) return Fail(sgErr);
+                    }
+                }
+
+                QualityRange? newQuality = null;
+                if (qualityMin != null || qualityMax != null)
+                {
+                    // bpOrNull is non-null here: the guard above already refused quality
+                    // arguments on a non-Bill_Production.
+                    var min = bpOrNull.qualityRange.min;
+                    var max = bpOrNull.qualityRange.max;
+                    if (qualityMin != null && !Enum.TryParse(qualityMin.Trim(), true, out min))
+                        return Fail($"Unknown qualityMin '{qualityMin}'.", new
+                        { accepted = Enum.GetNames(typeof(QualityCategory)) });
+                    if (qualityMax != null && !Enum.TryParse(qualityMax.Trim(), true, out max))
+                        return Fail($"Unknown qualityMax '{qualityMax}'.", new
+                        { accepted = Enum.GetNames(typeof(QualityCategory)) });
+                    // QualityRange.Includes is `q >= min && q <= max` with no guard of its own
+                    // (RimWorld/QualityRange.cs), so an inverted band matches NOTHING: the bill
+                    // silently stops accepting every ingredient and just never runs again. The
+                    // in-game two-handle slider cannot produce one; this tool could.
+                    if (min > max)
+                        return Fail(
+                            $"qualityMin ({min}) is above qualityMax ({max}). QualityRange.Includes " +
+                            "is min<=q<=max, so an inverted band matches no ingredient at all and " +
+                            "the bill would silently never run. Nothing was changed.");
+                    newQuality = new QualityRange(min, max);
+                }
+
+                // ---- validation done; writes start here ----
                 if (suspended.HasValue) bill.suspended = suspended.Value;
 
-                if (!(bill is Bill_Production bp))
+                if (bpOrNull == null)
                 {
                     // Store mode is on the base Bill class; the rest is not.
-                    if (repeatMode != null || repeatCount.HasValue || targetCount.HasValue
-                        || qualityMin != null || qualityMax != null)
-                        return Fail(
-                            $"Bill on '{giverId}' is a {bill.GetType().Name}, not a " +
-                            "Bill_Production - repeatMode/repeatCount/targetCount/quality " +
-                            "do not exist on it. suspended (if passed) WAS applied.",
-                            new { suspendedNow = bill.suspended });
-
-                    if (storeMode != null)
-                    {
-                        BillStoreModeDef smDef0;
-                        if (!TryParseStoreMode(storeMode, out smDef0))
-                            return Fail($"Unknown storeMode '{storeMode}'.", new
-                            { accepted = new[] { "dropfloor", "beststockpile", "specificstockpile" } });
-                        ISlotGroup grp0 = null;
-                        if (smDef0 == BillStoreModeDefOf.SpecificStockpile)
-                        {
-                            string sgErr;
-                            grp0 = ResolveSlotGroup(map, storeTargetId, out sgErr);
-                            if (grp0 == null) return Fail(sgErr);
-                        }
-                        bill.SetStoreMode(smDef0, grp0);
-                    }
+                    if (smDef != null) bill.SetStoreMode(smDef, grp);
 
                     return new
                     {
@@ -420,45 +471,12 @@ namespace JawaBench.BridgeTools
                     };
                 }
 
-                if (repeatMode != null)
-                {
-                    BillRepeatModeDef rmDef;
-                    if (!TryParseRepeatMode(repeatMode, out rmDef))
-                        return Fail($"Unknown repeatMode '{repeatMode}'.", new
-                        { accepted = new[] { "repeatcount", "targetcount", "forever" } });
-                    bp.repeatMode = rmDef;
-                }
+                var bp = bpOrNull;
+                if (rmDef != null) bp.repeatMode = rmDef;
                 if (repeatCount.HasValue) bp.repeatCount = repeatCount.Value;
                 if (targetCount.HasValue) bp.targetCount = targetCount.Value;
-
-                if (storeMode != null)
-                {
-                    BillStoreModeDef smDef;
-                    if (!TryParseStoreMode(storeMode, out smDef))
-                        return Fail($"Unknown storeMode '{storeMode}'.", new
-                        { accepted = new[] { "dropfloor", "beststockpile", "specificstockpile" } });
-                    ISlotGroup grp = null;
-                    if (smDef == BillStoreModeDefOf.SpecificStockpile)
-                    {
-                        string sgErr;
-                        grp = ResolveSlotGroup(map, storeTargetId, out sgErr);
-                        if (grp == null) return Fail(sgErr);
-                    }
-                    bp.SetStoreMode(smDef, grp);
-                }
-
-                if (qualityMin != null || qualityMax != null)
-                {
-                    var min = bp.qualityRange.min;
-                    var max = bp.qualityRange.max;
-                    if (qualityMin != null && !Enum.TryParse(qualityMin.Trim(), true, out min))
-                        return Fail($"Unknown qualityMin '{qualityMin}'.", new
-                        { accepted = Enum.GetNames(typeof(QualityCategory)) });
-                    if (qualityMax != null && !Enum.TryParse(qualityMax.Trim(), true, out max))
-                        return Fail($"Unknown qualityMax '{qualityMax}'.", new
-                        { accepted = Enum.GetNames(typeof(QualityCategory)) });
-                    bp.qualityRange = new QualityRange(min, max);
-                }
+                if (smDef != null) bp.SetStoreMode(smDef, grp);
+                if (newQuality.HasValue) bp.qualityRange = newQuality.Value;
 
                 var group = bp.GetSlotGroup();
                 return new
@@ -571,6 +589,13 @@ namespace JawaBench.BridgeTools
         {
             if (string.IsNullOrWhiteSpace(ops))
                 return Fail("ops is required, e.g. '10,20,5,5;30,30,2,2'.");
+            // Blank 'area' with createIfMissing used to fall through ResolveAreaByKindOrLabel's
+            // "No area given." into TryMakeNewAllowed and then area.Trim() on a null string:
+            // an NRE AFTER an Area_Allowed had already been created, burning one of the map's
+            // ten allowed-area slots into the savegame with a null label.
+            if (string.IsNullOrWhiteSpace(area))
+                return Fail("area is required: 'home', 'roof', 'noroof', 'snow', 'pollution', " +
+                            "or the label of an Allowed area (createIfMissing needs a label to give it).");
 
             List<ParsedOp> parsed;
             var parseErrors = new List<string>();
@@ -658,11 +683,13 @@ namespace JawaBench.BridgeTools
                 "player-order path jawa/order_pawn uses for Goto specifically, opened up " +
                 "to arbitrary jobs (hauling, cleaning, sowing, using a bill giver, ...). " +
                 "targetA/targetB each come from a ThingID OR an x/z cell; omit both of a " +
-                "pair for a job that needs no target. ⚠️ TryTakeOrderedJob refuses when " +
-                "IsCurrentJobPlayerInterruptible() is false - current job flagged " +
-                "non-interruptible, its driver refuses, or the pawn is on fire - and that " +
-                "refusal is reported, not swallowed. A TRUE return only means the job was " +
-                "ENQUEUED; this waits waitTicks game ticks and reads curJob back " +
+                "pair for a job that needs no target. ⚠️ TryTakeOrderedJob returns false for " +
+                "exactly ONE reason - job.TryMakePreToilReservations failed, i.e. the pawn " +
+                "could not reserve the target - and that refusal is reported, not swallowed. " +
+                "It does NOT refuse a non-interruptible pawn: it enqueues the job LAST and " +
+                "returns true, so the order runs after the current job rather than replacing " +
+                "it (interruptibleBefore says which happened). A TRUE return only means the " +
+                "job was ENQUEUED; this waits waitTicks game ticks and reads curJob back " +
                 "afterward, same discipline as jawa/order_pawn. " +
                 "🔑 Sow / Replant / PlantSeed REQUIRE plantDef - their driver dereferences " +
                 "Job.plantDefToSow in its first toil, and this tool refuses rather than " +
@@ -671,7 +698,9 @@ namespace JawaBench.BridgeTools
                 "accepted (TryTakeOrderedJob's own bool) and interruptibleBefore, plus " +
                 "beforeJobDef/afterJobDef read back after the wait and " +
                 "nowRunningRequested (afterJobDef == the JobDef you asked for). success " +
-                "requires both accepted and nowRunningRequested. Also plantDefToSow (what " +
+                "requires both accepted and nowRunningRequested - so a job legitimately " +
+                "QUEUED behind a non-interruptible current job, or queued on purpose with " +
+                "queue:true, reads success:false; queueLength and note say so. Also plantDefToSow (what " +
                 "was actually set on the Job) and pausedDuringWait - 🔑 when that is true " +
                 "NO ticks passed, ticksElapsed is 0 by definition, and the read-back proves " +
                 "NOTHING about whether the job would run.")]
@@ -826,12 +855,31 @@ namespace JawaBench.BridgeTools
 
                 string note = null;
                 if (!accepted)
-                    note = "TryTakeOrderedJob REFUSED: IsCurrentJobPlayerInterruptible() was " +
-                           "false (current job non-interruptible, its driver refuses, or the pawn is on fire).";
+                    // Read out of Verse/AI/Pawn_JobTracker.cs:891-961: every one of the three
+                    // branches returns true unless job.TryMakePreToilReservations(pawn,
+                    // errorOnFailed: true) returns false, which is the ONLY false return in the
+                    // method. Non-interruptibility does NOT cause one - see the note below.
+                    note = "TryTakeOrderedJob returned false, which in 1.6 has exactly one cause: " +
+                           "job.TryMakePreToilReservations failed, i.e. the pawn could not reserve " +
+                           "this job's target(s) - another pawn already holds the reservation, or the " +
+                           "target/cell is not reservable for this job. RimWorld also logged a warning " +
+                           "naming the pawn and job. Nothing about interruptibility, drafting or fire " +
+                           "makes this call return false.";
                 else if (!nowRunningRequested)
                     note = $"Job was accepted (enqueued) but curJob after {waitTicks} tick(s) is " +
                            $"'{afterJobDef ?? "(none)"}', not '{jdefName}' - it may have finished, " +
                            "failed immediately, or be queued rather than current." +
+                           (!interruptibleBefore
+                               ? " 🔑 THE PAWN WAS NOT PLAYER-INTERRUPTIBLE when the order was issued "
+                                 + $"(it was running '{beforeJobDef ?? "(none)"}'), so TryTakeOrderedJob "
+                                 + "enqueued this job LAST instead of replacing the current one. It is "
+                                 + "waiting its turn, not lost - queueLength shows it. Stop the current "
+                                 + "job (jawa/stop_job) first if you meant to pre-empt."
+                               : "") +
+                           (queue
+                               ? " 🔑 You passed queue:true, so a non-current curJob is the REQUESTED "
+                                 + "outcome; check queueLength rather than this field."
+                               : "") +
                            (pausedDuringWait
                                ? " ⚠️ THE GAME WAS PAUSED for this wait, so NO ticks passed and this "
                                  + "reading proves nothing about whether the job would run. Unpause, or "
@@ -1010,7 +1058,11 @@ namespace JawaBench.BridgeTools
                     requested = priority,
                     readBack,
                     manualPrioritiesOn,
-                    note = !manualPrioritiesOn && priority > 0
+                    // GetPriority's override is gated on pawn.RaceProps.Humanlike
+                    // (RimWorld/Pawn_WorkSettings.cs:164) - a Biotech mech's readBack is the
+                    // real stored number even with useWorkPriorities off, so this warning
+                    // must not fire for one.
+                    note = !manualPrioritiesOn && priority > 0 && pawn.RaceProps.Humanlike
                         ? "useWorkPriorities is OFF: GetPriority returns 3 for any active " +
                           "work type regardless of the value written. readBack does not " +
                           "prove the requested number stuck; it proves only active vs off."
@@ -1247,6 +1299,17 @@ namespace JawaBench.BridgeTools
                         string merr;
                         var m = FindPawn(masterId, out merr);
                         if (m == null) return Fail(merr);
+                        // 🔴 Pawn_PlayerSettings.Master's setter dereferences pawn.training
+                        // UNGUARDED (RimWorld/Pawn_PlayerSettings.cs:55). A Pawn_TrainingTracker
+                        // only exists for intelligence <= 1, factioned, non-mechanoid pawns
+                        // (RimWorld/PawnComponentsUtility.cs:357) - so every humanlike colonist
+                        // has training == null and this threw a raw NullReferenceException out
+                        // of the tool instead of the documented Obedience report.
+                        if (pawn.training == null)
+                            return Fail(
+                                $"{pawn.LabelShortCap} has no Pawn_TrainingTracker, so it cannot " +
+                                "have a master - Pawn_PlayerSettings.Master's setter would throw. " +
+                                "Masters are for trainable animals, not humanlikes or mechanoids.");
                         pawn.playerSettings.Master = m;
                         if (pawn.playerSettings.Master != m)
                             notes.Add(
