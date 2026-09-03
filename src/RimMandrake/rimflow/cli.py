@@ -421,7 +421,14 @@ def _p90_by_kind(w, evs):
         last = evs[it.history[-1]].get("ts")
         if not last:
             continue
-        h = (_epoch(last) - _epoch(it.created_at)) / 3600.0
+        # ⚠️ Either stamp being unreadable poisons the p90 for a whole KIND, which then
+        # scores every item of that kind. `_epoch`'s 0.0 is 1970: an unreadable
+        # `created_at` alone yields a ~495,000 h "life" that sails past the `h >= 0`
+        # guard and lands in the percentile.
+        e_last, e_made = _epoch(last), _epoch(it.created_at)
+        if not e_last or not e_made:
+            continue
+        h = (e_last - e_made) / 3600.0
         if h >= 0:
             lives[it.kind or "task"].append(h)
     out = {}
@@ -439,13 +446,28 @@ def _epoch(ts):
         return 0.0
 
 
+def _age_hours(ts, now):
+    """Hours between `ts` and `now`, or None if the stamp is unreadable.
+
+    🔴 NEVER SUBTRACT `_epoch` DIRECTLY IN A SCORE. Its failure value is 0.0, which is
+    1970, so one malformed `ts` anywhere in the ledger became an age of ~495,000 h and
+    forced a distress score onto whichever item owned it — silently reordering the
+    queue with nothing on screen to say why. Every age used for scoring goes through
+    here, and callers treat None as "no evidence", exactly as `_idle_seconds` does.
+    """
+    e = _epoch(ts)
+    if not e:
+        return None
+    return (now - e) / 3600.0
+
+
 def _distress(it, evs, p90, now):
     """-> (score, [reasons]) on the measured coarse index. ≥3 is the believe-it line."""
     score, why = 0, []
 
     if it.blocked:
-        age = (now - _epoch(_last_ts(it, evs, "block"))) / 3600.0
-        if age > 24:
+        age = _age_hours(_last_ts(it, evs, "block"), now)
+        if age is not None and age > 24:
             score += 3
             why.append("blocked %.0f h, unresolved" % age)
         else:
@@ -479,9 +501,9 @@ def _distress(it, evs, p90, now):
         why.append("%d upstream reassign%s (2.28×)" % (up, "" if up == 1 else "es"))
 
     if it.created_at:
-        age = (now - _epoch(it.created_at)) / 3600.0
+        age = _age_hours(it.created_at, now)
         line = p90.get(it.kind or "task")
-        if line and age > line:
+        if line and age is not None and age > line:
             score += 2
             why.append("%.0f h old, p90 for a %s is %.0f h" % (age, it.kind or "task", line))
 
@@ -499,8 +521,8 @@ def _distress(it, evs, p90, now):
     if it.state == "doing":
         claimed = _last_ts(it, evs, "claim", "start")
         if claimed and not commits:
-            age = (now - _epoch(claimed)) / 3600.0
-            if age > 24:
+            age = _age_hours(claimed, now)
+            if age is not None and age > 24:
                 score += 2
                 why.append("claimed %.0f h ago, no commit since" % age)
 
@@ -1217,6 +1239,26 @@ def _idle_seconds(ts):
     return max(0, int(time.time() - e))
 
 
+def _mirror_from_ledger(actor, note=None):
+    """Rewrite the BRIDGE mirror from a FRESH replay, and answer who the ledger says holds it.
+
+    🔴 THE MIRROR IS WRITTEN FROM THE LEDGER, NEVER FROM INTENT. Every branch below used
+    to mirror the holder it had just decided on — so a take that lost a race appended
+    its event (harmless: the ledger's last event wins) and then wrote ITS OWN name into
+    the file, leaving the one glanceable line naming a different window than the ledger.
+    `bridge who` re-derived correctly, but only for someone already doubting the answer,
+    and a mirror nobody can believe at a glance is the whole point thrown away.
+
+    🔑 This is a mirror fix, not a lock: it never refuses a take, in keeping with the
+    ruling that this system errs toward ALLOWING (owner, 2026-09-02). The loser of a
+    race is told who won; it is not told no.
+    """
+    _, w3 = load()
+    model.write_bridge_file(w3.bridge_holder, actor, w3.bridge_purpose,
+                            w3.bridge_since, note=note)
+    return w3.bridge_holder
+
+
 def cmd_bridge(args, seat):
     _, w = load()
     holder, since, purpose = w.bridge_holder, w.bridge_since, w.bridge_purpose
@@ -1283,8 +1325,7 @@ def cmd_bridge(args, seat):
             _emit({"seat": holder or seat, "event": "bridge", "state": "released",
                    "override": "the OWNER cleared the bridge%s"
                                % (" off %s" % holder if holder else "")}, w, quiet=True)
-            model.write_bridge_file(None, "OWNER", None, None,
-                                    note="cleared by the owner")
+            _mirror_from_ledger("OWNER", note="cleared by the owner")
             print("bridge FREE — the owner cleared it")
             return 0
         if to not in ("BENCH", "FOUNDRY"):
@@ -1295,8 +1336,7 @@ def cmd_bridge(args, seat):
         if args.purpose:
             ev["purpose"] = args.purpose
         _emit(ev, w, quiet=True)
-        model.write_bridge_file(to, "OWNER", args.purpose, None,
-                                note="handed over by the owner")
+        _mirror_from_ledger("OWNER", note="handed over by the owner")
         print("bridge -> %s (the owner said so)" % to)
         return 0
 
@@ -1310,7 +1350,7 @@ def cmd_bridge(args, seat):
         if holder and holder != seat:
             ev["override"] = "released the bridge out from under %s" % holder
         _emit(ev, w, quiet=True)
-        model.write_bridge_file(None, seat)
+        _mirror_from_ledger(seat)
         if holder and holder != seat:
             print("bridge released by %s — it was held by %s, and that is on the event"
                   % (seat, holder))
@@ -1377,8 +1417,15 @@ def cmd_bridge(args, seat):
                 "  cut across it  rimflow bridge take --force --for \"<what for>\""
                 % fresh_holder)
     _emit(ev, w, quiet=True)
-    model.write_bridge_file(seat, seat, args.purpose, None,
-                            note=("taken from %s: %s" % (holder, why)) if why else None)
+    won = _mirror_from_ledger(
+        seat, note=("taken from %s: %s" % (holder, why)) if why else None)
+    if won != seat:
+        # A take landed between our re-check above and our own append. Both events are
+        # in the ledger, the later one holds, and the mirror now says so.
+        print("bridge is held by %s — they took it in the same instant you did.\n"
+              "  your take IS on the ledger; theirs landed after it, so it stands.\n"
+              "  cut across it  rimflow bridge take --force --for \"<what for>\"" % won)
+        return 0
     print("bridge taken by %s%s" % (seat, ("  (%s)" % why) if why else ""))
     if not args.purpose:
         print("  tip: --for \"<what for>\" tells the other window whether to wait.")

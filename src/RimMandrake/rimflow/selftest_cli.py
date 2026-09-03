@@ -310,6 +310,104 @@ def _bridge_events():
                 if e.get("event") == "bridge"]
 
 
+def _mirror_holder():
+    """Who the BRIDGE mirror names, or None for FREE. The file is beside the ledger."""
+    p = os.path.join(TMP, "BRIDGE")
+    if not os.path.exists(p):
+        return None
+    for line in open(p, encoding="utf-8"):
+        if line.startswith("HELD"):
+            return line.split()[1]
+        if line.startswith("FREE"):
+            return None
+    return None
+
+
+def _ledger_holder():
+    evs = _bridge_events()
+    if not evs:
+        return None
+    last = evs[-1]
+    return last["seat"] if last.get("state") == "taken" else None
+
+
+def t_the_bridge_mirror_never_disagrees_with_the_ledger_under_concurrent_takes():
+    """🔴 BRIDGE_TAKE_TOCTOU_AND_EPOCH_SENTINEL_1. Every branch used to mirror the holder
+    it had just DECIDED on, so a take that lost a race appended its event (harmless —
+    the ledger's last event wins) and then wrote its own name into the one line both
+    windows read at a glance. `bridge who` re-derived correctly, but only for someone
+    who already doubted the answer.
+
+    ⭐ ASSERTS THE INVARIANT, NOT THE RACE. Which window wins is timing, and a test that
+    demanded a particular winner would be flaky for the wrong reason. What must hold
+    every time, whoever wins, is that the mirror says what the ledger says.
+
+    🔑 It also asserts NOBODY IS LEFT AT A DEAD END: this system errs toward allowing a
+    take (owner, 2026-09-02). A loser may be refused — that is the same answer a live
+    holder always gets — but the refusal must hand over `--force`, never just "no".
+    """
+    # ⭐ THE `--force` ARM IS THE ONE THAT PROVES IT. A plain take re-derives the holder
+    # just before writing and usually backs off, so the plain arm rarely reaches the
+    # code this case exists to cover; `--force` skips that re-check by design, so both
+    # windows always append and one always loses — measured 15/15, and pre-fix each of
+    # those 15 wrote the LOSER's own name into the mirror.
+    for forced in (True, True, False, False, False, False):
+        fresh()
+        argv = ["bridge", "take"] + (["--force"] if forced else [])
+        procs = [subprocess.Popen(
+            [sys.executable, CLI] + argv + ["--for", "race %s" % s],
+            stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env(s), cwd=REPO)
+            for s in ("BENCH", "FOUNDRY")]
+        outs = [p.communicate() for p in procs]
+        for p, (o, e) in zip(procs, outs):
+            blob = o.decode("utf-8", "replace") + e.decode("utf-8", "replace")
+            assert p.returncode == 0 or "--force" in blob, (
+                "a racing take was refused with no way through — mutual lockout is the "
+                "expensive failure here, not two drivers: %s" % blob)
+        assert _mirror_holder() == _ledger_holder(), (
+            "the BRIDGE mirror says %r and the ledger's last event says %r — the one "
+            "glanceable line is exactly the thing that must not lie"
+            % (_mirror_holder(), _ledger_holder()))
+
+
+def t_one_malformed_timestamp_cannot_promote_an_item():
+    """🔴 BRIDGE_TAKE_TOCTOU_AND_EPOCH_SENTINEL_1, half two. `_epoch` answers 0.0 for an
+    unreadable stamp, which is 1970 — so a single bad `ts` anywhere in the ledger read
+    as an age of ~495,000 h and forced a distress score, silently reordering the queue
+    with nothing on screen to say why. An unreadable stamp is NO EVIDENCE, not evidence
+    of enormous age."""
+    import json
+    fresh()
+    prose("MALFORMED_TS_PROBE_1")
+    ok("file", "MALFORMED_TS_PROBE_1", "--for", "BENCH", "--title", "probe",
+       "--needs", "offline", "--kind", "task")
+    ok("claim", "MALFORMED_TS_PROBE_1", seat="BENCH")
+    ok("start", "MALFORMED_TS_PROBE_1", seat="BENCH")
+    before = ok("next", "--bench", seat="BENCH")
+    assert "MALFORMED_TS_PROBE_1" not in before.split("IN TROUBLE")[1].split("NEEDS HIM")[0], (
+        "the premise is broken: a just-claimed item already scores ≥3, so this case "
+        "cannot show the bad stamp doing anything:\n%s" % before)
+
+    p = os.path.join(TMP, "events.jsonl")
+    lines = [json.loads(l) for l in open(p, encoding="utf-8") if l.strip()]
+    hit = 0
+    for e in lines:
+        if e.get("verb") == "claim" or e.get("event") == "claim":
+            e["ts"] = "not-a-timestamp"
+            hit += 1
+    assert hit, "no claim event to corrupt — the ledger shape changed: %s" % lines
+    with open(p, "w", encoding="utf-8") as fh:
+        for e in lines:
+            fh.write(json.dumps(e) + "\n")
+
+    after = ok("next", "--bench", seat="BENCH")
+    trouble = after.split("IN TROUBLE")[1].split("NEEDS HIM")[0]
+    assert "MALFORMED_TS_PROBE_1" not in trouble, (
+        "one unreadable timestamp promoted an item into IN TROUBLE:\n%s" % trouble)
+    assert "495" not in trouble and "1970" not in trouble, (
+        "a 1970 sentinel reached the reasons a seat reads:\n%s" % trouble)
+
+
 def t_a_stray_target_on_bridge_take_is_an_error_not_a_no_op():
     """⭐ `bridge take BOGUS` used to exit 0 and discard the word (argparse accepts the
     `give`-only positional for every action). A typo that prints success is worse than
