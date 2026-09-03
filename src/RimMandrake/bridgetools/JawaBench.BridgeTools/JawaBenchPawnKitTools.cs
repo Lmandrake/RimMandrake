@@ -718,9 +718,15 @@ namespace JawaBench.BridgeTools
                         if (moved <= 0 && !part.Destroyed && part.holdingOwner == null)
                         {
                             var rescueMap = p.MapHeld;
-                            if (rescueMap != null)
-                                GenPlace.TryPlaceThing(part, p.PositionHeld, rescueMap, ThingPlaceMode.Near);
-                            else
+                            // Fixed 2026-09-03 (opus code review): TryPlaceThing's bool return
+                            // was discarded - if it found no valid nearby cell (e.g. every cell
+                            // around p.PositionHeld blocked), `part` stayed unspawned, unheld and
+                            // undestroyed: a genuinely orphaned Thing, while the Fail() below
+                            // still said "the container refused it" as if it were findable
+                            // somewhere. Check the return; destroy-and-say-so is the fallback.
+                            bool rescued = rescueMap != null
+                                && GenPlace.TryPlaceThing(part, p.PositionHeld, rescueMap, ThingPlaceMode.Near);
+                            if (!rescued)
                             {
                                 part.Destroy(DestroyMode.Vanish);
                                 partDestroyed = true;
