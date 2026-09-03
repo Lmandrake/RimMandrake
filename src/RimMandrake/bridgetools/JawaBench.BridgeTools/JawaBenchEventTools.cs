@@ -1173,7 +1173,9 @@ namespace JawaBench.BridgeTools
                 "🔴 RitualBehaviorWorker.TryExecuteOn is VOID AND FAILS SILENTLY, so this " +
                 "calls CanStartRitualNow first and returns its reason string rather than " +
                 "claiming success. Roles are auto-filled via FillPawns.",
-            ResultDescription = "success, started, blockedBecause, participants, lords after.")]
+            ResultDescription = "success, started, precept, organizer, participants, lordsBefore/lordsAfter, note. " +
+                "A refusal is the shared Fail() shape (success:false, message, details) - there is no separate " +
+                "blockedBecause field; CanStartRitualNow's reason is in message.")]
         public static async Task<object> RitualStart(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
