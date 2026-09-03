@@ -150,6 +150,7 @@ import os
 import random
 import sys
 import time
+import zlib
 from collections import defaultdict
 
 # Layer 1. Load-set resolution, the single parse of every def file, and
@@ -282,12 +283,17 @@ def mod_color(name):
     """
     Deterministic accent colour per mod name.
 
-    Same trick as Savegame_mapview.color_for_index, but keyed on the NAME rather
-    than an index so a mod keeps its colour across runs and across pages even
-    when the roster changes. Saturation is kept low and value high so the strip
-    reads as a grouping cue, not as data.
+    Keyed on the NAME rather than an index so a mod keeps its colour across
+    runs and across pages even when the roster changes. Saturation is kept low
+    and value high so the strip reads as a grouping cue, not as data.
+
+    🔴 zlib.crc32, NOT the builtin hash(): Python randomises str hash() per
+    process (PYTHONHASHSEED) unless pinned, so the same mod name got a
+    DIFFERENT accent colour on every run — exactly what "keeps its colour
+    across runs" above promises NOT to happen. crc32 is stable across
+    processes and interpreters.
     """
-    h = (hash(name) & 0xFFFF) / 65535.0
+    h = (zlib.crc32(name.encode("utf-8")) & 0xFFFF) / 65535.0
     r, g, b = colorsys.hsv_to_rgb(h, 0.45, 0.78)
     return (int(r * 255), int(g * 255), int(b * 255))
 
@@ -1202,6 +1208,23 @@ def main(argv=None):
             page_files.append(name)
             index_rows.extend(done)
             img.close()
+    elif merged:
+        # --no-image skips PIL entirely (that decode is what it exists to
+        # skip), but the index CSV is still "the actionable half" per the
+        # module docstring, and it needs no pixels to be right — page/row/col
+        # are pure arithmetic over `merged`, the same maths render_page uses.
+        # Without this branch index_rows stayed [] for the whole run, so
+        # --no-image silently wrote an EMPTY animal_sheet_index.csv while the
+        # console summary still reported real placed/missing counts. Mirrors
+        # the identical fix already carried in thing_contact_sheet.py's
+        # run_category for this same bug.
+        for i, c in enumerate(merged):
+            if c.get("_ph"):
+                continue
+            page_no, i_in_page = divmod(i, per_page)
+            r, col = divmod(i_in_page, a.cols)
+            c["page"], c["row"], c["col"] = page_no + 1, r, col
+            index_rows.append(c)
     t_render = time.perf_counter() - t
 
     # A cell we planned but whose PNG would not decode stays in the index (it
