@@ -972,7 +972,11 @@ def main(argv=None):
         if not measured:
             est_loc += 1
             loc = max(1, os.path.getsize(os.path.join(ROOT, p)) // 60)
-        clean_count = (log.get(p) or {}).get("cleanCount", 0)
+        # A pre-existing entry with no `cleanCount` (recorded before that field
+        # existed) has still been marked clean at least once — default it to 1,
+        # not 0, or a legacy entry silently reads as "never reviewed".
+        entry = log.get(p)
+        clean_count = (entry.get("cleanCount") or 1) if entry else 0
         status, why = classify(p, measured, wt, doing_files, bug_files,
                                verdicts[p], wt_known, ledger_known, clean_count)
         counts[status] += 1
