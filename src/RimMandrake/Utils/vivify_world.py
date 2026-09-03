@@ -355,7 +355,7 @@ def live_meta():
              "overallTemperature", "overallPopulation", "pollution", "factionCount")}
 
 
-def diff(rows, reference):
+def diff(rows, reference, prov):
     """Where the live world disagrees with what we authored, column by column.
 
     🔑 This is the reason to run the tool even when nothing is written: an authored
@@ -376,7 +376,7 @@ def diff(rows, reference):
         for col in BASE_COLUMNS:
             if col == "tile" or col in ("arc", "bearing"):
                 continue
-            if col in ("water", "river_flow", "region"):
+            if col in ("water", "river_flow", "region") and prov.get(col) != MEASURED:
                 continue           # carried from the reference; comparing is circular
             a, b = ref.get(col, ""), row.get(col, "")
             if col in NUMERIC:
@@ -458,7 +458,7 @@ def main():
     print("MEASURED %d tiles from %s" % (len(rows), a.from_export or source_note))
 
     if reference:
-        compared, counts, examples = diff(rows, reference)
+        compared, counts, examples = diff(rows, reference, prov)
         print("\ncompared %d tiles against %s" % (compared, ref_path))
         if not counts:
             print("  ✅ the live world matches the authored bundle on every compared "
