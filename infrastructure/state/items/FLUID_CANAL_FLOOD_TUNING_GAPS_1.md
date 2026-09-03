@@ -113,3 +113,92 @@ Compiles clean (`RimMandrake_FluidCanals.csproj`, 0/0).
 immortal-flood-if-boxed-in bug and the rate/duration tuning it's
 entangled with — needs a real tuning pass, not a guess), 5 (perf, no
 correctness stake, deferred), 7 (informational only, no action needed).
+
+## Owner ruling + findings 1, 2, 3 closed 2026-09-02 (FOUNDRY)
+
+**Owner ruling on finding 1, verbatim, 2026-09-02:** *floods must become
+recoverable, matching vanilla's SeasonalFlood pattern* — `SetTempTerrain`
+instead of the permanent `SetTerrain`, not permanent floor destruction.
+
+Implemented, and it carried 2 and 3 with it — the three are one change, not
+three:
+
+**1 — recoverable.** `Flood_FluidCanal.SpreadFlood` now writes the map's
+TEMPORARY terrain layer (`terrainGrid.SetTempTerrain` +
+`tempTerrain.QueueRemoveTerrain`), exactly as `RimWorld.SeasonalFlood` does.
+`TerrainGrid.TerrainAt` returns the temp layer first, so a flooded cell reads
+and behaves as water while it stands; `RemoveTempTerrain` clears `tempGrid`
+and the cell's real terrain — a dug channel, a constructed floor — is back
+untouched. `FluidDef.fullTerrain` is accordingly renamed `floodTerrain` and
+`RM_Fluid_Water` repointed from `WaterShallow` to vanilla's own
+`ShallowFloodwater` (the temporary sibling, carrying the plant-sparing `Flood`
+tag). `SetTempTerrain` hard-refuses a terrain without `<temporary>true</temporary>`,
+so `FluidDef.ConfigErrors` rejects one at load and `CompFluidReservoir.TrySpend`
+refuses one at the moment of use.
+
+⚠️ **`TempTerrainProps.destroysFloors` is deliberately NOT set**, against the
+first reading of "a flood is destructive, just recoverable". Read
+`TerrainGrid.SetTempTerrain`: that flag MOVES `underGrid` into `topGrid` and
+nulls `underGrid`, and `RemoveTempTerrain` never puts it back — it is
+permanent floor destruction with the water receding on top, i.e. precisely
+what this ruling removes. Vanilla's `ShallowFloodwater` carries no
+`tempTerrain` block for the same reason.
+
+**3 — rate decoupled from duration, the finding's own preferred remedy.**
+`MaxFloodDurationTicks` was a flat 30000 and base `Flood` divides it by
+`estimatedFloodedTiles` to get the expand interval, so the "duration" was
+really a rate divisor: 30000/12 = one tile per 2500 ticks. Now inverted —
+`FluidDef.ticksPerTile` is the real per-fluid rate knob and
+`MaxFloodDurationTicks => ticksPerTile * estimatedFloodedTiles` is derived
+from it, so the base class's own division returns exactly `ticksPerTile` and
+`FloodingTicks` is a genuine duration again. `estimatedFloodedTiles` is also
+corrected in `SpawnSetup` to the tiles the reservoir can actually pay for
+(`volume / volumePerTile`) instead of base's `seedCells × 12`, which is 12 for
+any single-seeded release regardless of volume.
+
+**2 — the immortal boxed-in flood.** `Tick` now destroys the flood past
+`spawnedTick + 2 × FloodingTicks`. This is the cutoff finding 3 said would
+"actively break normal operation" — and it would have, while
+`MaxFloodDurationTicks` was a rate divisor. It is safe only *because* 3 was
+fixed first: `FloodingTicks` is now exactly the time needed to place every
+tile the reservoir can pay for, and the flood gets an equal grace on top for
+cells that open up late (a pawn digging through, a wall coming down), which is
+the one legitimate reason a healthy flood runs past its own budget. No
+reflection needed — `noPossibleCell` is still private and still unread. An
+expired flood leaks nothing: every tile it placed was queued for removal on
+the map's own `TempTerrainManager`, which is independent of the flood Thing.
+
+**The numbers, and why they are not guesses.** Both are per-fluid XML fields,
+so a fluid that should behave differently says so without a code change.
+`floodedTicks` 300000 is the midpoint of vanilla `SeasonalFlood`'s own
+`FloodedTicksRange` (240000–360000) — the pattern the owner named.
+`ticksPerTile` 60 (one in-game minute per tile) is the flow rate of water
+running down a channel and sits in the same tens-of-ticks band vanilla's own
+`Flood` engine works out to on a real map; a viscous fluid (tar, ooze) sets it
+far higher. A 60-volume spring now spreads ~60 tiles in ~1.5 in-game hours and
+the water drains ~5 days later, against the old ~2.5 in-game DAYS to spread
+and never draining at all.
+
+**Consequence the owner may want to rule on separately:** a canal's water is
+now transient by construction — it recedes. That is the direct and intended
+consequence of "recoverable", but it means this engine produces no standing
+canal water today. If permanent-once-settled water is wanted, that is a
+second, additive mechanic (a "settled" terrain the temp layer resolves to via
+`TempTerrainProps.terrainOnRemoved`), not a reversal of this ruling.
+
+Debug surface extended for exactly this change: `Report cell (RAW)` now prints
+`tempTerrain=` and `underneath=` (recoverability is invisible to `GetTerrain`,
+which returns the temp layer) and `expiresAtTick`/`nowTick` on a flood.
+
+Compiles clean (`RimMandrake_FluidCanals.csproj`, 0 warnings / 0 errors).
+
+🔴 **Owed: live verification.** Not deployed, not watched — nobody has seen a
+flood recede or a floor come back. Filed for BENCH as
+`FLUID_CANAL_FLOOD_LIVE_CHECK_1`, carrying the three decision strings
+(temp-layer read, observed rate, boxed-in expiry) written BEFORE the launch.
+A quicktest on the minimal mod list is enough; this needs no cold load.
+
+**Remaining findings, unchanged:** 5 (perf — `Notify_CanalCellOpened` scans
+`AllThings`; no correctness stake, revisit only if canal digging becomes a
+common large-batch action), 7 (informational; the refill-model note stands
+should a refill model ever be ruled).

@@ -2,16 +2,25 @@
 <Defs>
 
   <!-- The one fluid this v1 slice ships, chosen to prove genericity: reuses
-       vanilla's own WaterShallow terrain verbatim (real swim/extinguish/
-       freeze behavior, zero new art). Tar and the rest of the owner's named
-       roster (ooze, slime, oil, propane) are deliberately NOT authored here;
-       they are Utinni-tier content and belong in their own client mod once
-       this engine is live-proven, per this item's own scope note. -->
+       vanilla's own ShallowFloodwater terrain verbatim (real swim/extinguish
+       behavior, the plant-sparing "Flood" tag, zero new art). Tar and the rest
+       of the owner's named roster (ooze, slime, oil, propane) are deliberately
+       NOT authored here; they are Utinni-tier content and belong in their own
+       client mod once this engine is live-proven, per this item's own scope
+       note.
+
+       floodTerrain MUST be temporary=true (see FluidDef.ConfigErrors).
+       ShallowFloodwater is the temporary sibling of WaterShallow, and is
+       exactly what vanilla's own SeasonalFlood lays down: a release is
+       destructive while it stands but recoverable, per the owner's
+       2026-09-02 ruling. -->
   <RimMandrake.FluidCanals.FluidDef>
     <defName>RM_Fluid_Water</defName>
     <label>water</label>
-    <fullTerrain>WaterShallow</fullTerrain>
+    <floodTerrain>ShallowFloodwater</floodTerrain>
     <volumePerTile>1</volumePerTile>
+    <ticksPerTile>60</ticksPerTile>
+    <floodedTicks>300000</floodedTicks>
   </RimMandrake.FluidCanals.FluidDef>
 
 </Defs>

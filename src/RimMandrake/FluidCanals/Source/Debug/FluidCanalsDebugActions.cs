@@ -44,6 +44,13 @@ namespace RimMandrake.FluidCanals
             sb.Append("[RMFluidCanalsDebug] REPORT_CELL pos=").Append(c);
             sb.Append(" terrain=").Append(c.GetTerrain(map).defName);
             sb.Append(" isWater=").Append(c.GetTerrain(map).IsWater);
+            // A flood now writes the TEMPORARY terrain layer (owner ruling
+            // 2026-09-02: recoverable, per vanilla SeasonalFlood), so the one
+            // question live verification has to answer about a flooded cell is
+            // "what comes back when it drains" -- which GetTerrain, returning
+            // the temp layer first, cannot show on its own.
+            sb.Append(" tempTerrain=").Append(map.terrainGrid.TempTerrainAt(c)?.defName ?? "none");
+            sb.Append(" underneath=").Append(map.terrainGrid.TopTerrainAt(c).defName);
 
             List<Thing> here = c.GetThingList(map);
             for (int i = 0; i < here.Count; i++)
@@ -67,7 +74,9 @@ namespace RimMandrake.FluidCanals
                 {
                     sb.Append(" [flood spawned=").Append(flood.Spawned)
                       .Append(" floodedTileCount=").Append(flood.FloodedTileCount)
-                      .Append(" remainingVolume=").Append(flood.RemainingVolume.ToString("F1")).Append(']');
+                      .Append(" remainingVolume=").Append(flood.RemainingVolume.ToString("F1"))
+                      .Append(" expiresAtTick=").Append(flood.ExpiresAtTick)
+                      .Append(" nowTick=").Append(Find.TickManager.TicksGame).Append(']');
                 }
             }
             Log.Message(sb.ToString());

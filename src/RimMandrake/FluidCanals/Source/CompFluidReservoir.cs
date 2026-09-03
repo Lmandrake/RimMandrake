@@ -62,7 +62,7 @@ namespace RimMandrake.FluidCanals
 				return;
 			}
 			// Fixed 2026-09-02 (opus code review): a misconfigured fluidDef (typo'd
-			// XML reference, or one missing fullTerrain) left this inert forever
+			// XML reference, or one missing floodTerrain) left this inert forever
 			// with nothing in the log -- indistinguishable from "the notify never
 			// fired", the exact failure mode this mod's own live verification
 			// needs to be able to tell apart.
@@ -72,10 +72,21 @@ namespace RimMandrake.FluidCanals
 					"'s CompProperties_FluidReservoir has no fluidDef set.", parent.thingIDNumber ^ 0x1);
 				return;
 			}
-			if (Props.fluidDef.fullTerrain == null)
+			if (Props.fluidDef.floodTerrain == null)
 			{
 				Log.ErrorOnce("[RimMandrake.FluidCanals] " + Props.fluidDef.defName +
-					" has no fullTerrain set.", parent.thingIDNumber ^ 0x2);
+					" has no floodTerrain set.", parent.thingIDNumber ^ 0x2);
+				return;
+			}
+			// TerrainGrid.SetTempTerrain hard-refuses a terrain without
+			// <temporary>true</temporary>, so this fluid would spend the whole
+			// reservoir flooding precisely nothing. FluidDef.ConfigErrors says so
+			// at load; this says so at the moment of use, where a live test looks.
+			if (!Props.fluidDef.floodTerrain.temporary)
+			{
+				Log.ErrorOnce("[RimMandrake.FluidCanals] " + Props.fluidDef.defName + "'s floodTerrain " +
+					Props.fluidDef.floodTerrain.defName + " is not temporary -- it can never be flooded onto a cell.",
+					parent.thingIDNumber ^ 0x4);
 				return;
 			}
 			spent = true;
