@@ -4032,3 +4032,6 @@
 {"seat":"FOUNDRY","event":"claim","id":"DROIDWORKS_CHARGER_STATE_MACHINE_SWEEP_1","ts":"2026-09-03T00:12:50Z"}
 {"seat":"FOUNDRY","event":"start","id":"DROIDWORKS_CHARGER_STATE_MACHINE_SWEEP_1","ts":"2026-09-03T00:12:51Z"}
 {"seat":"FOUNDRY","event":"close","id":"DROIDWORKS_CHARGER_STATE_MACHINE_SWEEP_1","sha":"HEAD","ts":"2026-09-03T00:15:01Z"}
+{"seat":"FOUNDRY","event":"file","id":"BRIDGE_TERRAINTOOLS_REMAINING_FINDINGS_1","title":"opus review of JawaBenchTerrainTools.cs found 8 more findings beyond the 4 already fixed (destroy_batch, roof pair, coordinate-shift, missing cell caps)","kind":"bug","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-03T00:23:59Z"}
+{"seat":"FOUNDRY","event":"claim","id":"BRIDGE_TERRAINTOOLS_REMAINING_FINDINGS_1","ts":"2026-09-03T00:24:19Z"}
+{"seat":"FOUNDRY","event":"start","id":"BRIDGE_TERRAINTOOLS_REMAINING_FINDINGS_1","ts":"2026-09-03T00:24:19Z"}
