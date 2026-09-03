@@ -4015,6 +4015,29 @@ namespace JawaBench.BridgeTools
                         continue;
                     }
 
+                    // 🔴 DefDatabase<T> is `where T : Def`, and MakeGenericType
+                    // THROWS on a constraint violation rather than returning null
+                    // -- out of the main-thread lambda, killing the whole batch and
+                    // reporting only "violates the constraint of type parameter 'T'"
+                    // with no mention of which entry did it. The names that reach
+                    // here are ordinary: `Faction/Empire`, `Thing/Steel`,
+                    // `Pawn/Bob` all resolve to real RimWorld types that are not
+                    // Defs. A batch audit must not lose 21 good rows to one bad
+                    // one -- that is the exact failure this tool was built to end.
+                    if (!typeof(Def).IsAssignableFrom(dbType))
+                    {
+                        rows.Add(new
+                        {
+                            requested = raw, found = false, defType = typeName,
+                            defName,
+                            error = $"'{typeName}' resolves to {dbType.FullName}, which is "
+                                  + "not a Def. Name a Def TYPE (ThingDef, PawnKindDef, "
+                                  + "FactionDef, ...), not a runtime class."
+                        });
+                        notFound.Add(raw);
+                        continue;
+                    }
+
                     var db = typeof(DefDatabase<>).MakeGenericType(dbType);
                     var get = db.GetMethod("GetNamedSilentFail",
                         System.Reflection.BindingFlags.Public
@@ -5185,8 +5208,15 @@ namespace JawaBench.BridgeTools
                     // fields cannot get a total that is silently a subset.
                     count = rows.Count,
                     countReturned = rows.Count,
-                    countAllIncludingHidden = rows.Count + hiddenSkipped + truncated,
-                    isCompleteList = hiddenSkipped == 0 && truncated == 0,
+                    // `filtered` counts too. It was left out, so a call with a
+                    // defName filter reported countAllIncludingHidden=1 and
+                    // isCompleteList=true -- the world's whole faction roster read
+                    // as one faction, which is precisely the subset-as-total the
+                    // shape above was added to make impossible.
+                    countAllIncludingHidden =
+                        rows.Count + hiddenSkipped + truncated + filtered,
+                    isCompleteList =
+                        hiddenSkipped == 0 && truncated == 0 && filtered == 0,
                     settlementsTotal,
                     hiddenSkipped,
                     filtered,
@@ -6284,7 +6314,27 @@ namespace JawaBench.BridgeTools
                         var rel = target.RelationWith(player, false);
                         if (rel == null)
                             return Fail("Faction has no relation record with the player.");
+                        // 🔴 A BARE `rel.baseGoodwill = n` IS HALF A WRITE, and the
+                        // half it skips is the half this tool exists for.
+                        // Faction relations are stored on BOTH factions and both
+                        // records are Scribed, so writing one side persists an
+                        // ASYMMETRIC relation into the savegame. And `kind` is not
+                        // derived from goodwill on read -- it is a stored field the
+                        // engine recomputes at every write via
+                        // CheckKindThresholds (goodwill <= -75 => Hostile). Without
+                        // that, goodwill=-100 left kind=Neutral, hostileToPlayer
+                        // false, and the aimed raid still unaimable -- while the
+                        // read-back below said success, because it re-read the one
+                        // field it had just written.
+                        // Mirrors Faction::TryAffectGoodwillWith (RimWorld/Faction.cs
+                        // 601-613): write both baseGoodwill fields, then let the
+                        // engine reconcile kind on both sides and notify.
                         rel.baseGoodwill = goodwill;
+                        var mirror = player.RelationWith(target, true);
+                        if (mirror != null) mirror.baseGoodwill = goodwill;
+                        target.Notify_GoodwillSituationsChanged(
+                            player, sendLetter,
+                            "Set by jawa/set_faction_relation for testing.", null);
                     }
 
                     if (wantKind)
