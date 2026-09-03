@@ -170,7 +170,14 @@ namespace JawaBench.BridgeTools
             string name = null;
             try
             {
-                if (method == null || arguments == null || arguments.Count == 0) return;
+                if (method == null || arguments == null) return;
+
+                // Counted BEFORE the zero-argument early-out. `Bound` is reported as
+                // callsObserved ("calls observed at all"), and skipping the empty-
+                // dictionary case made it undercount every no-argument tool call -
+                // an instrument reporting a number it does not actually mean.
+                Interlocked.Increment(ref Bound);
+                if (arguments.Count == 0) return;
 
                 var declared = new HashSet<string>(
                     method.GetParameters().Select(p => p.Name), StringComparer.OrdinalIgnoreCase);
@@ -182,7 +189,6 @@ namespace JawaBench.BridgeTools
                     unknown.Add(k);
                 }
 
-                Interlocked.Increment(ref Bound);
                 if (unknown == null) return;
 
                 accepted = method.GetParameters().Select(p => p.Name).ToList();

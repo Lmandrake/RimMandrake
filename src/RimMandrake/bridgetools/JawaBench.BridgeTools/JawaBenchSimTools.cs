@@ -691,14 +691,34 @@ namespace JawaBench.BridgeTools
                 var td = DefDatabase<TrainableDef>.GetNamedSilentFail((trainable ?? "").Trim());
                 if (td == null) return Fail("No TrainableDef '" + trainable + "'.", DefSuggestions<TrainableDef>(trainable));
 
-                // The set this call is DOCUMENTED to touch, so the readback matches
-                // what SetWantedRecursive actually walks rather than guessing.
-                var touched = new List<TrainableDef> { td };
-                if (wanted && td.prerequisites != null) touched.AddRange(td.prerequisites);
-                if (!wanted)
+                // The set this call actually touches, so the readback matches what
+                // SetWantedRecursive walks rather than guessing.
+                // Fixed 2026-09-03 (opus code review): this used to collect ONE level
+                // (td's direct prerequisites, or the defs directly depending on td),
+                // but Pawn_TrainingTracker.SetWantedRecursive recurses - setting
+                // Release wanted also sets Obedience AND Tameness. The readback
+                // silently omitted every def past the first hop while its own
+                // ResultDescription promised "every def SetWantedRecursive is
+                // documented to touch". Transitive closure, with a visited guard so a
+                // cyclic prerequisite graph cannot hang the readback.
+                var touched = new List<TrainableDef>();
+                var pending = new Queue<TrainableDef>();
+                pending.Enqueue(td);
+                while (pending.Count > 0)
                 {
-                    touched.AddRange(DefDatabase<TrainableDef>.AllDefsListForReading
-                        .Where(t => t.prerequisites != null && t.prerequisites.Contains(td)));
+                    var cur = pending.Dequeue();
+                    if (cur == null || touched.Contains(cur)) continue;
+                    touched.Add(cur);
+                    if (wanted)
+                    {
+                        if (cur.prerequisites != null)
+                            foreach (var pre in cur.prerequisites) pending.Enqueue(pre);
+                    }
+                    else
+                    {
+                        foreach (var dep in DefDatabase<TrainableDef>.AllDefsListForReading)
+                            if (dep.prerequisites != null && dep.prerequisites.Contains(cur)) pending.Enqueue(dep);
+                    }
                 }
 
                 Func<List<object>> snapshot = () => touched.Distinct()

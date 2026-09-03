@@ -579,13 +579,20 @@ namespace JawaBench.BridgeTools
 
                 var projectBefore = rm.GetProject(kd);
                 var knowledgeBefore = projectBefore != null ? rm.GetKnowledge(projectBefore) : 0f;
+                // Fixed 2026-09-03 (opus code review): ResearchManager.FinishProject
+                // does NOT clear the category's current anomaly project, so
+                // GetProject(category) keeps returning an ALREADY-finished one until
+                // the player picks another. Reading IsFinished only AFTER the call
+                // therefore reported projectFinishedByThisCall=true on every later
+                // poke at a project this call did not finish.
+                var finishedBefore = projectBefore != null && projectBefore.IsFinished;
 
                 rm.ApplyKnowledge(kd, amount);
 
                 var projectAfter = rm.GetProject(kd);
                 var knowledgeAfter = projectAfter != null ? rm.GetKnowledge(projectAfter)
                     : (projectBefore != null ? rm.GetKnowledge(projectBefore) : 0f);
-                var finished = projectBefore != null && projectBefore.IsFinished;
+                var finished = !finishedBefore && projectBefore != null && projectBefore.IsFinished;
 
                 return new
                 {
@@ -742,7 +749,7 @@ namespace JawaBench.BridgeTools
                 "rather than silently writing a stuff field the def's stats will never read.",
             ResultDescription =
                 "success, thing, stuffBefore/stuffAfter, hitPointsBefore/After, maxHitPointsBefore/" +
-                "After, hpRatioPreserved (hitPointsAfter/maxHitPointsAfter vs the ratio before), " +
+                "After, hpRatioBefore/hpRatioAfter (the damage ratio, preserved across the change), " +
                 "marketValueBefore/After as an independent instrument that the change took.")]
         public static async Task<object> SetStuff(
             IRimBridgeContext ctx,

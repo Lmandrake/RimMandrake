@@ -751,7 +751,9 @@ namespace JawaBench.BridgeTools
                         mode = m,
                         requestedCount = requested,
                         movedCount = moved,
-                        thing = new { defName = found.def.defName },
+                        // Fixed 2026-09-03 (opus code review): the ResultDescription
+                        // promises thing{id, defName} and only defName was returned.
+                        thing = new { id = found.ThingID, defName = found.def.defName },
                         ticksGame = TicksGameSafe()
                     };
                 }
