@@ -339,6 +339,11 @@
     "date": "2026-09-03",
     "sha": "359b0b2c"
   },
+  "src/RimMandrake/Utils/apparel_tag_audit.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "35c29544"
+  },
   "src/RimMandrake/Utils/apply_floor_plan.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -507,6 +512,16 @@
     "date": "2026-09-03",
     "sha": "43884307"
   },
+  "src/RimMandrake/Utils/game_paths.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "35c29544"
+  },
+  "src/RimMandrake/Utils/gen_pawn_flavor_phase2_register.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "35c29544"
+  },
   "src/RimMandrake/Utils/gen_pawnkind_roster.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -516,6 +531,11 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "66d742be"
+  },
+  "src/RimMandrake/Utils/genome_art_cache.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "35c29544"
   },
   "src/RimMandrake/Utils/genome_matrix_build.py": {
     "cleanCount": 1,
@@ -532,6 +552,11 @@
     "date": "2026-09-02",
     "sha": "d92ee4cc"
   },
+  "src/RimMandrake/Utils/ideology_palette.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "35c29544"
+  },
   "src/RimMandrake/Utils/inhabited_soak.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -541,6 +566,11 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "e5013227"
+  },
+  "src/RimMandrake/Utils/jawaese.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "35c29544"
   },
   "src/RimMandrake/Utils/migrate_names.py": {
     "cleanCount": 1,
@@ -621,10 +651,20 @@
     "date": "2026-09-03",
     "sha": "e5013227"
   },
+  "src/RimMandrake/Utils/selftest_expectations_manifest.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "35c29544"
+  },
   "src/RimMandrake/Utils/selftest_frozen_dumps.py": {
     "cleanCount": 1,
     "date": "2026-09-02",
     "sha": "83437c48"
+  },
+  "src/RimMandrake/Utils/selftest_one_path_seam.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "35c29544"
   },
   "src/RimMandrake/Utils/selftest_pit_logic.py": {
     "cleanCount": 1,
