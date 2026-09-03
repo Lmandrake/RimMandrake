@@ -65,7 +65,7 @@
       <li Class="CompProperties_Flickable"/>
       <li Class="CompProperties_Forbiddable"/>
       <li Class="RimMandrake.StarWars.Droidworks.CompProperties_DWCharger">
-        <chargeRatePerHour>25</chargeRatePerHour>
+        <chargePercentPerHour>25</chargePercentPerHour>
         <radius>0</radius>
       </li>
     </comps>
@@ -118,7 +118,7 @@
       <li Class="CompProperties_Flickable"/>
       <li Class="CompProperties_Forbiddable"/>
       <li Class="RimMandrake.StarWars.Droidworks.CompProperties_DWCharger">
-        <chargeRatePerHour>40</chargeRatePerHour>
+        <chargePercentPerHour>40</chargePercentPerHour>
         <radius>0</radius>
       </li>
     </comps>
@@ -166,7 +166,7 @@
       <li Class="CompProperties_Flickable"/>
       <li Class="CompProperties_Forbiddable"/>
       <li Class="RimMandrake.StarWars.Droidworks.CompProperties_DWCharger">
-        <chargeRatePerHour>15</chargeRatePerHour>
+        <chargePercentPerHour>15</chargePercentPerHour>
         <radius>6.9</radius>
       </li>
     </comps>

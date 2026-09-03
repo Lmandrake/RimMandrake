@@ -9,7 +9,7 @@ namespace RimMandrake.StarWars.Droidworks
     /// A droid stands at a RSW_DW_ChargeSocket/RSW_DW_ChargeDock (radius-0 chargers only
     /// - RSW_DW_ChargeNimbus charges passively via CompDWCharger.CompTick, no job)
     /// while Need_Power.CurLevel rises at the charger's
-    /// CompProperties_DWCharger.chargeRatePerHour. Shaped like
+    /// CompProperties_DWCharger.chargePercentPerHour. Shaped like
     /// JobDriver_Refuel's goto-then-wait-and-tick pattern rather than
     /// JobDriver_LayDown's - no sleep, no bed thoughts, no posture machinery
     /// this system needs; standing at the interaction cell is enough for v1
@@ -60,7 +60,11 @@ namespace RimMandrake.StarWars.Droidworks
                     ReadyForNextToil();
                     return;
                 }
-                need.CurLevel += comp.Props.chargeRatePerHour / GenDate.TicksPerHour;
+                // Fixed 2026-09-02 (opus code review, pass 3): was chargeRatePerHour
+                // consumed as a raw fraction-of-bar-per-hour - a "rate" of 25 refilled
+                // an empty droid in ~100 ticks. See CompProperties_DWCharger's own
+                // header for the full writeup.
+                need.CurLevel += comp.Props.chargePercentPerHour / 100f / GenDate.TicksPerHour;
                 if (need.CurLevel >= 1f) ReadyForNextToil();
             };
             yield return charge;

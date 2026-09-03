@@ -13,24 +13,28 @@ namespace RimMandrake.StarWars.Droidworks
     /// via Patches/IonBuildup_PowersDownDroid.xml (FindMod-gated on "Jawa Ion
     /// Weapons (local)" — a no-op if that mod isn't active).
     ///
-    /// Until DROIDWORKS_ISFLESH_RELATIONS_CRASH_1 lands, DW_ race droids inherit
-    /// Human's organic fleshType (see Races_Base.xml's header note), so
-    /// DamageWorker_IonBuildup.Apply() treats them exactly like a flesh pawn:
-    /// RSW_JawaIon_Stun accumulates and its own capMods cap Consciousness, downing the
-    /// pawn — but that hediff self-decays (HediffCompProperties_SeverityPerDay),
-    /// so an ion-overloaded droid just wobbles back up on its own like a person
-    /// would, never touching RSW_DW_PoweredDown (the persistent, reboot-only state
-    /// the rest of the droid state machine — Need_Power, Recipe_RebootDroid — is
-    /// built around).
+    /// Corrected 2026-09-02, pass 3: DW_ race droids are non-flesh
+    /// (Races_Base.xml sets fleshType RSW_DW_FleshType_Droid, not Human's
+    /// organic one). DamageWorker_IonBuildup gates its RSW_JawaIon_Stun buildup
+    /// on IsMechanoid (droids are deliberately NOT FleshTypeDefOf.Mechanoid, so
+    /// they still accumulate it) and separately applies the vanilla EMP tier
+    /// (ApplyMachineTier) to every non-flesh pawn including droids — both fire.
+    /// RSW_JawaIon_Stun's own capMods cap Consciousness, downing the pawn, but
+    /// that hediff self-decays (HediffCompProperties_SeverityPerDay), so an
+    /// ion-overloaded droid just wobbles back up on its own like a person
+    /// would, never touching RSW_DW_PoweredDown (the persistent, reboot-only
+    /// state the rest of the droid state machine — Need_Power,
+    /// Recipe_RebootDroid — is built around).
     ///
     /// This comp closes that gap without any cross-assembly build dependency
     /// (RimMandrake.StarWars.JawaIonWeapons.dll never references RimMandrake.StarWars.Droidworks.dll or vice versa; the
     /// XML <comps> Class="" attribute resolves by reflection across whichever
     /// assemblies happen to be loaded, so RimWorld only requires DROIDWORKS
     /// itself to be active — exactly what the FindMod gate already guarantees).
-    /// Once RSW_JawaIon_Stun's severity reaches its own top "overloaded" stage
-    /// (minSeverity 0.9, HediffDefs_JawaIonStun.xml), a pawn that carries a
-    /// DroidworksExtension (i.e. is a DW_ race droid) gets swapped over: the
+    /// Once RSW_JawaIon_Stun's severity reaches its FLOOR "overloaded" stage
+    /// (minSeverity 0.5, the same Consciousness cap as the top 0.9 stage —
+    /// DROIDWORKS_ION_GUARD_1, HediffDefs_JawaIonStun.xml), a pawn whose
+    /// RaceProps.FleshType is RSW_DW_FleshType_Droid gets swapped over: the
     /// buildup hediff is removed and RSW_DW_PoweredDown is applied in its place, so
     /// the droid stays down until Recipe_RebootDroid reboots it, matching every
     /// other route into state 3.

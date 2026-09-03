@@ -4,7 +4,7 @@ using Verse;
 namespace RimMandrake.StarWars.Droidworks
 {
     /// <summary>
-    /// { chargeRatePerHour, radius } per DROIDWORKS_CHARGING_TRIO_1's spec.
+    /// { chargePercentPerHour, radius } per DROIDWORKS_CHARGING_TRIO_1's spec.
     /// radius 0 (RSW_DW_ChargeSocket, RSW_DW_ChargeDock): the building only charges
     /// whichever droid is actively docked there via JobDriver_DWRecharge - this
     /// comp's own CompTick is a no-op for those, by design (see below).
@@ -13,7 +13,17 @@ namespace RimMandrake.StarWars.Droidworks
     /// </summary>
     public class CompProperties_DWCharger : CompProperties
     {
-        public float chargeRatePerHour = 8f;
+        // Renamed from chargeRatePerHour 2026-09-02 (opus code review, pass 3):
+        // Need.MaxLevel is 1f, and the old name/value pair (e.g. 25) was consumed
+        // directly as fraction-of-bar-per-hour by the code below, which meant a
+        // rate of "25" refilled an empty droid in 1/25th of an hour (~2.5 real
+        // seconds at 1x speed) - the whole power need was decorative, and every
+        // charger tier (25/40/15) was indistinguishable because all three were
+        // instantaneous. The XML values (25, 40, 15) were always intended as
+        // PERCENT per hour, matching the shipped description text ("slowly top
+        // off") and the owner's ruling (combat droids once/day, protocol up to a
+        // month) - the field is now named and divided accordingly.
+        public float chargePercentPerHour = 8f;
         public float radius = 0f;
 
         public CompProperties_DWCharger() => compClass = typeof(CompDWCharger);
@@ -21,7 +31,7 @@ namespace RimMandrake.StarWars.Droidworks
 
     /// <summary>
     /// Backs CompProperties_DWCharger. The active (job-driven) half of charging
-    /// lives entirely in JobDriver_DWRecharge, which reads Props.chargeRatePerHour
+    /// lives entirely in JobDriver_DWRecharge, which reads Props.chargePercentPerHour
     /// straight off the building it targets - a radius-0 charger never needs this
     /// comp to tick. The passive nimbus aura below is this comp's only job.
     /// No visuals (sparks/lightning/glow) - explicitly deferred per
@@ -60,7 +70,7 @@ namespace RimMandrake.StarWars.Droidworks
             if (map == null) return;
             if (!IsOperational) return;
 
-            float gain = Props.chargeRatePerHour * ScanIntervalTicks / GenDate.TicksPerHour;
+            float gain = Props.chargePercentPerHour / 100f * ScanIntervalTicks / GenDate.TicksPerHour;
             foreach (Thing thing in GenRadial.RadialDistinctThingsAround(parent.Position, map, Props.radius, useCenter: true))
             {
                 if (!(thing is Pawn pawn)) continue;
