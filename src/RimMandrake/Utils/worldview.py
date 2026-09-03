@@ -137,7 +137,16 @@ def water_biomes(dump_dir=DEFAULT_DUMP):
     path = os.path.join(dump_dir, "BiomeDef.json")
     try:
         data = json.load(open(path, encoding="utf-8"))
-    except Exception:
+    except Exception as e:
+        # 🔴 Fixed 2026-09-03: this used to fall back to the three vanilla water
+        # biomes with no signal anywhere - a modded ocean/lake biome would then
+        # render as ordinary land, with nothing in the report or on stdout saying
+        # the dump read failed. Every other def-dump mismatch in this file (biome,
+        # river, road hashes) surfaces through `unresolved`; this one has no per-tile
+        # hash to carry that flag, so it prints instead of staying silent.
+        print("WARNING worldview: could not read %s (%s) - water classification "
+              "falls back to Ocean/Lake/SeaIce only; a modded water biome will "
+              "render as land" % (path, e), file=sys.stderr)
         return out
     defs = data if isinstance(data, list) else data.get("defs", data)
     for d in defs:
@@ -660,7 +669,7 @@ class BundlePlanet(object):
     able to draw the map from `world/ashkarr_*.csv` alone. Same surface as
     PlanetView, so every layer, projection and legend works unchanged."""
 
-    def __init__(self, stem):
+    def __init__(self, stem, extra_water=(), no_water=()):
         import csv as _csv
         import json as _json
         rows = list(_csv.DictReader(open(stem + "_tiles.csv", encoding="utf-8")))
@@ -674,6 +683,18 @@ class BundlePlanet(object):
         self.rain = np.array([float(r["rain_mm"]) for r in rows])
         self.arc = np.array([float(r["arc"]) for r in rows])
         self.is_water = np.array([r["water"] == "1" for r in rows])
+        # 🔴 Fixed 2026-09-03: --water-biome/--not-water-biome were accepted by
+        # argparse for a bundle the same as for a .rws save, but this constructor
+        # never took them - they silently did nothing to a bundle render, with no
+        # error and no note in the report. The bundle's "water" column is the
+        # authoritative per-tile source (finer-grained than biome name alone, see
+        # water_biome_set below), so an override here still has to act on it.
+        if extra_water or no_water:
+            biome_arr = np.array(self.biome)
+            if extra_water:
+                self.is_water = self.is_water | np.isin(biome_arr, list(extra_water))
+            if no_water:
+                self.is_water = self.is_water & ~np.isin(biome_arr, list(no_water))
         self.grid = type("G", (), {"arrays": {"tilePollution": [0] * self.n}})()
         # 🔑 Hilliness and swampiness are DESIGN, so they come from the bundle. They
         # used to be derived here, which put a decision about the planet inside the
@@ -743,7 +764,16 @@ class BundlePlanet(object):
                 names = [x for x in (r["mutators"] or "").split(";") if x]
                 if names:
                     self.mutators[int(r["tile"])] = names
-        self.water_biome_set = {"Ocean", "Lake", "SeaIce"}
+        # 🔴 Fixed 2026-09-03: this was hardcoded to the three vanilla water biomes,
+        # while `self.is_water` above is the bundle's own per-tile "water" column -
+        # a DIFFERENT, finer-grained source that also marks some Wasteland/Badlands/
+        # AridShrubland/Desert/AB_MiasmicMangrove/AB_RockyCrags tiles as water on the
+        # live Ash'karr bundle. The two never agreed: water_tiles/water_pct/bodies
+        # in the report came from is_water, but every census row's "water" flag and
+        # the printed "definition" came from this hardcoded set, so a biome could be
+        # flooded on the map and reported as dry land in the same report.json.
+        # Deriving it from is_water instead makes both sides of the report agree.
+        self.water_biome_set = {self.biome[t] for t in range(self.n) if self.is_water[t]}
         self.rivers_broken = self.roads_broken = []
         self.rivers_unresolved = self.roads_unresolved = []
         self.river_dist = None
@@ -957,6 +987,23 @@ def draw_panel(svg, pv, proj, y0, layer, show, tooltips, corners, shade):
         svg.add('<path d="%s" fill="none" stroke="#2a1c10" stroke-width="%.1f" '
                 'opacity="0.55"/>' % (" ".join(d), 1.6 * sc))
 
+    # 🔴 Fixed 2026-09-03: the mutator layer was read from the bundle and counted
+    # in the legend header ("%d mutated tiles") since 873d08f9, but nothing ever
+    # drew it - the count implied a visible layer that did not exist, so the map
+    # looked complete while silently omitting every mutator. Outlined the same way
+    # mountains are, one colour per tile with its mutator names on hover.
+    if "mutators" in show and getattr(pv, "mutators", None):
+        for t, names in pv.mutators.items():
+            if t >= pv.n:
+                continue
+            xy, vis = proj.project(corners[t], ref=g.vec[t])
+            if not vis or (xy[:, 0].max() - xy[:, 0].min()) > proj.w * 0.4:
+                continue
+            d = "M" + " ".join("%.1f %.1f" % (x, y) for x, y in xy) + "Z"
+            svg.add('<path d="%s" fill="none" stroke="#ff2fd8" stroke-width="%.1f" '
+                    'opacity="0.8"><title>mutators: %s</title></path>'
+                    % (d, 1.3 * sc, esc(", ".join(names))))
+
     if "coast" in show:
         d = []
         for t, k in pv.coast_edges():
@@ -1130,8 +1177,8 @@ def draw_panel(svg, pv, proj, y0, layer, show, tooltips, corners, shade):
 
 
 def render(pv, layer="biome", projection="equirect", width=2400, center=(0.0, 0.0),
-           tooltips=True, show=("rivers", "roads", "settlements", "coast", "labels",
-                                "grid", "mountains"),
+           tooltips=True, show=("rivers", "roads", "settlements", "landmarks", "coast",
+                                "labels", "grid", "mountains", "mutators"),
            out_path=None, sheet=True, relief=True):
     """The review sheet: rectangular map on top, legend, equal-area map beneath.
 
@@ -1236,7 +1283,9 @@ def render(pv, layer="biome", projection="equirect", width=2400, center=(0.0, 0.
                 '<tspan fill="#8e8d85">Wasteland = dead salt plain</tspan> &#160;'
                 '<tspan fill="#2f7fb5">Lake = hypersaline pool / the Scald</tspan> &#160;'
                 'outlined hexes = mountainous  ·  '
-                '<tspan fill="#ffd75e">\u2295 landmark</tspan></text>' % (kx, ky))
+                '<tspan fill="#ffd75e">\u2295 landmark</tspan> &#160;'
+                '<tspan fill="#ff2fd8">outlined hex = tile mutator</tspan></text>'
+                % (kx, ky))
 
     svg.add("</g>")
 
@@ -1269,11 +1318,21 @@ def rasterise(svg_path, width=None):
     def win_path(p):
         p = os.path.abspath(p)
         return p[5].upper() + ":" + p[6:] if p.startswith("/mnt/") else p
-    subprocess.run([exe, "--headless", "--disable-gpu", "--hide-scrollbars",
-                    "--window-size=" + win, "--screenshot=" + win_path(png).replace("/", "\\"),
-                    "file:///" + win_path(svg_path).replace("\\", "/")],
-                   capture_output=True, timeout=300)
-    return png if os.path.exists(png) else None
+    proc = subprocess.run([exe, "--headless", "--disable-gpu", "--hide-scrollbars",
+                           "--window-size=" + win,
+                           "--screenshot=" + win_path(png).replace("/", "\\"),
+                           "file:///" + win_path(svg_path).replace("\\", "/")],
+                          capture_output=True, timeout=300)
+    if os.path.exists(png):
+        return png
+    # 🔴 Fixed 2026-09-03: this used to swallow the subprocess result entirely, so a
+    # found-but-failing Chrome (bad window size, sandbox refusal, wrong path) printed
+    # the exact same "no Chrome found" message main() gives for an absent binary -
+    # the two very different failures were indistinguishable from stdout.
+    print("worldview: %s ran (exit %d) but wrote no %s\n%s" % (
+        exe, proc.returncode, png,
+        (proc.stderr or b"").decode("utf-8", "replace")[-2000:]), file=sys.stderr)
+    return None
 
 
 # ==========================================================================
@@ -1292,7 +1351,8 @@ def main():
     ap.add_argument("--width", type=int, default=2400)
     ap.add_argument("--no-tooltips", action="store_true",
                     help="merge hexes by colour: much smaller file, no hover")
-    ap.add_argument("--hide", default="", help="comma list of rivers,roads,settlements,landmarks,coast,labels")
+    ap.add_argument("--hide", default="",
+                    help="comma list of rivers,roads,settlements,landmarks,mutators,coast,labels")
     ap.add_argument("--water-biome", action="append", default=[],
                     help="treat this biome as water too (repeatable)")
     ap.add_argument("--not-water-biome", action="append", default=[])
@@ -1307,7 +1367,7 @@ def main():
     if a.save.endswith(".rws"):
         pv = PlanetView(a.save, a.dump, a.water_biome, a.not_water_biome)
     else:
-        pv = BundlePlanet(a.save)
+        pv = BundlePlanet(a.save, a.water_biome, a.not_water_biome)
     rep = characterise(pv)
     if not a.quiet:
         print_report(rep)
@@ -1336,7 +1396,8 @@ def main():
     print("\nreport  %s" % jpath)
 
     if not a.report_only:
-        show = {"rivers", "roads", "settlements", "landmarks", "coast", "labels", "grid", "mountains"}
+        show = {"rivers", "roads", "settlements", "landmarks", "mutators",
+                "coast", "labels", "grid", "mountains"}
         show -= {s.strip() for s in a.hide.split(",") if s.strip()}
         lat, lon = (float(x) for x in a.center.split(","))
         svg = os.path.join(a.out, "%s.%s.%s.svg" % (stem, a.layer, a.projection))
@@ -1345,7 +1406,8 @@ def main():
         print("map     %s  (%.1f MB)" % (svg, os.path.getsize(svg) / 1e6))
         if a.png:
             png = rasterise(svg, a.width)
-            print("png     %s" % (png or "no Chrome found - open the svg in a browser"))
+            print("png     %s" % (png or "not written - see stderr, or open the svg "
+                                        "in a browser"))
 
 
 if __name__ == "__main__":
