@@ -1027,6 +1027,11 @@
     "date": "2026-09-03",
     "sha": "891d0852"
   },
+  "src/RimMandrake/Utils/worldmap_review.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "51d41c87"
+  },
   "src/RimMandrake/Utils/xenotype_size_audit.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
