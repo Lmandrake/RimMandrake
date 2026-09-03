@@ -52,9 +52,10 @@ namespace RimMandrake.Inhabited
         public ThingOwner<Pawn> roster;
 
         /// <summary>
-        /// Trade goods AND the larder. ⚠️ Held and scribed only -- nothing spawns
-        /// it onto a map, so it is not yet visible, stealable or destroyable. See
-        /// InhabitedPlaceDef.larder and INHABITED_STOCK_ONTO_MAP_AND_FATE_1.
+        /// Trade goods AND the larder, off-map. Real Things: GenStep_InhabitedStock
+        /// puts them on the ground at every visit and Patch_MapRemoval takes back
+        /// what is left, so this holder is the place's remaining goods rather than
+        /// a running total of them. See InhabitedPlaceDef.larder.
         /// </summary>
         public InhabitedStock stock;
 
@@ -86,6 +87,47 @@ namespace RimMandrake.Inhabited
         /// </summary>
         public List<int> onTheGround = new List<int>();
 
+        /// <summary>
+        /// The thingIDNumber of every stack the place's stock landed as for the
+        /// visit in progress. Same idea as <see cref="onTheGround"/> and the same
+        /// reason: the holder is emptied onto the map, so while a map exists this
+        /// is the only record of which stacks came out of it.
+        ///
+        /// ⚠️ A FLOOR, NOT A CENSUS -- see InhabitedStock.DumpOnto. A split or
+        /// merged stack gets an ID that was never written here, which is why
+        /// <see cref="StockArea"/> exists alongside it.
+        /// </summary>
+        public List<int> stockOnTheGround = new List<int>();
+
+        /// <summary>Where the goods were put down this visit. Invalid until a map
+        /// has generated. Scribed so the recall can still find the area after a
+        /// save/load taken mid-visit.</summary>
+        public IntVec3 stockSpot = IntVec3.Invalid;
+
+        /// <summary>Half-width of the stock area around <see cref="stockSpot"/>.
+        /// ThingPlaceMode.Near walks outward from the anchor, so the area has to
+        /// be wider than the drop itself or the tail of a large larder lands
+        /// outside its own granary.</summary>
+        public int stockRadius = 8;
+
+        /// <summary>Total stackCount that reached the ground this visit. The
+        /// denominator for "most of the granary is gone".</summary>
+        public int stockSpawnedCount;
+
+        /// <summary>
+        /// A cause named by <see cref="InhabitedFate"/> has fired. Detected live
+        /// by MapComponent_InhabitedWatch during the visit; ACTED ON at teardown
+        /// by InhabitedFateWorker.Apply -- see that method for why the two are
+        /// separated rather than the cast walking off the map in front of the
+        /// player.
+        /// </summary>
+        public bool threatened;
+
+        /// <summary>The translation key of the cause that fired. Kept so a later
+        /// letter or inspect line can say WHICH, and so a save carries the reason
+        /// rather than just the fact.</summary>
+        public string threatReason;
+
         private string nameInt;
 
         public WorldObject_Inhabited()
@@ -114,6 +156,11 @@ namespace RimMandrake.Inhabited
         /// <summary>True if anyone in the cast deals.</summary>
         public bool HasTrader => Cast?.roles != null && Cast.roles.Any(r => r != null && r.trades);
 
+        /// <summary>Where the place's goods lie on a generated map, as an area
+        /// rather than a point. Empty until a map has generated.</summary>
+        public CellRect StockArea =>
+            stockSpot.IsValid ? CellRect.CenteredOn(stockSpot, stockRadius) : CellRect.Empty;
+
         public ThingOwner GetDirectlyHeldThings()
         {
             return roster;
@@ -138,6 +185,12 @@ namespace RimMandrake.Inhabited
             Scribe_Values.Look(ref state, "state", InhabitedState.Inhabited);
             Scribe_Values.Look(ref castInstantiated, "castInstantiated", defaultValue: false);
             Scribe_Collections.Look(ref onTheGround, "onTheGround", LookMode.Value);
+            Scribe_Collections.Look(ref stockOnTheGround, "stockOnTheGround", LookMode.Value);
+            Scribe_Values.Look(ref stockSpot, "stockSpot", IntVec3.Invalid);
+            Scribe_Values.Look(ref stockRadius, "stockRadius", 8);
+            Scribe_Values.Look(ref stockSpawnedCount, "stockSpawnedCount", 0);
+            Scribe_Values.Look(ref threatened, "threatened", defaultValue: false);
+            Scribe_Values.Look(ref threatReason, "threatReason");
             Scribe_Values.Look(ref nameInt, "name");
             if (Scribe.mode == LoadSaveMode.PostLoadInit)
             {
@@ -152,6 +205,17 @@ namespace RimMandrake.Inhabited
                 if (onTheGround == null)
                 {
                     onTheGround = new List<int>();
+                }
+                if (stockOnTheGround == null)
+                {
+                    stockOnTheGround = new List<int>();
+                }
+                // A zero or negative radius makes StockArea a single cell or an
+                // empty one -- narrower than the drop it has to cover, so the
+                // recall would leave goods behind rather than fail loudly.
+                if (stockRadius <= 0)
+                {
+                    stockRadius = 8;
                 }
             }
         }
@@ -174,6 +238,15 @@ namespace RimMandrake.Inhabited
         public void InstantiateCast()
         {
             castInstantiated = true;
+
+            // Fixed 2026-09-03 (INHABITED_STOCK_ONTO_MAP_AND_FATE_1): the stock
+            // fill used to sit at the BOTTOM of this method, below the early
+            // return for "no cast". A place with a larder and no InhabitedCastDef
+            // -- which is every place in this build set, since no cast defs are
+            // authored yet -- therefore got no goods either, and the larder table
+            // could not be exercised at all. Nothing about a granary depends on
+            // somebody living in it.
+            FillStock();
 
             InhabitedCastDef cast = Cast;
             if (cast == null || cast.roles.NullOrEmpty())
@@ -279,10 +352,29 @@ namespace RimMandrake.Inhabited
                     p.Destroy();
                 }
             }
+        }
 
-            if (placeDef != null && stock != null)
+        /// <summary>
+        /// Stock the holder from the archetype's tables. Runs once, inside
+        /// InstantiateCast, before the cast is rolled.
+        ///
+        /// ⚖️ THE TRADE TABLE IS GATED ON A DEALER AND THE LARDER IS NOT, which
+        /// is InhabitedPlaceDef.stock's own documented meaning ("trade goods held
+        /// for a cast that contains a dealer") finally enforced. Sustenance is
+        /// what a place HAS; merchandise is what a dealer BROUGHT, and a place
+        /// with nobody to sell it has no reason to be sitting on it -- least of
+        /// all now that the goods land on the ground where the player can take
+        /// them.
+        /// </summary>
+        private void FillStock()
+        {
+            if (placeDef == null || stock == null)
             {
-                stock.Fill(placeDef.larder);
+                return;
+            }
+            stock.Fill(placeDef.larder);
+            if (HasTrader)
+            {
                 stock.Fill(placeDef.stock);
             }
         }

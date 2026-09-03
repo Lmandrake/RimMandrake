@@ -13,4 +13,15 @@
   <!-- SETTLEMENT_VISIT_LOOP_1: the departure-time gate-search hook. -->
   <InhabitedGateSearched>The gate guards at {0} search your people on the way out.</InhabitedGateSearched>
 
+  <!-- INHABITED_STOCK_ONTO_MAP_AND_FATE_1: the causes that end a cast. Shown as
+       a message the moment the cause fires; the cast is actually gone when the
+       player leaves the map, so every line says so rather than implying the
+       people are walking away in front of them. {0} is the place. -->
+  <InhabitedFateBurned>{0}: their stores are burning. These people will not be here when you come back.</InhabitedFateBurned>
+  <InhabitedFateRobbed>{0}: their stores are all but gone. These people will not be here when you come back.</InhabitedFateRobbed>
+  <InhabitedFateHarmed>{0}: you have put their people on the ground. They will not be here when you come back.</InhabitedFateHarmed>
+  <InhabitedFateHostile>{0} has turned on you. They will not be here when you come back.</InhabitedFateHostile>
+  <InhabitedFateGravship>{0}: a gravship has come out of the sky over them. They will not be here when you come back.</InhabitedFateGravship>
+  <InhabitedFateTransient>{0} was only ever passing through. They will be gone when you leave.</InhabitedFateTransient>
+
 </LanguageData>

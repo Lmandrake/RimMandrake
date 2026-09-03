@@ -31,6 +31,15 @@
     <settlementName>The Claim Jump</settlementName>
     <factionDefName>Jawa_Junkers</factionDefName>
     <securityProfile>Inhabited_SecurityProfile_Junkers</securityProfile>
+
+    <!-- INHABITED_STOCK_ONTO_MAP_AND_FATE_1: what this settlement IS as a
+         place. The archetype (routine radii, sleep hours, larder, trade table,
+         fate) lives in the RimMandrake tier because none of it is campaign
+         content; naming it here is the only route by which a settlement ever
+         gets an InhabitedPlaceDef at all. The Claim Jump takes the scrapyard
+         seat, whose fate is FleeIfThreatened: squatters on somebody else's
+         worked-out claim have nothing invested in staying. -->
+    <place>RM_InhabitedPlace_Scrapyard</place>
     <districts>
       <li>
         <label>scrapyard</label>

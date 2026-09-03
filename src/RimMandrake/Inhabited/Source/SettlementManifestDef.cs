@@ -105,6 +105,23 @@ namespace RimMandrake.Inhabited
         /// value and reads as "never searches" -- see GateSearchHook.</summary>
         public SecurityProfileDef securityProfile;
 
+        /// <summary>
+        /// What the settlement IS as a place: routine radii, sleep hours, the
+        /// larder and trade tables, and the FATE that could end its cast.
+        ///
+        /// 🔑 THE ONLY ROUTE BY WHICH A SETTLEMENT EVER GETS AN InhabitedPlaceDef.
+        /// Nothing else in this mod assigns WorldObject_Inhabited.placeDef, so
+        /// before INHABITED_STOCK_ONTO_MAP_AND_FATE_1 added this field every
+        /// settlement ran on the field's own defaults with an empty larder and no
+        /// fate -- the archetype layer was authored, reachable by XML, and bound
+        /// to nothing. GenStep_ComposeSettlementDistrict copies it onto the world
+        /// object at map generation.
+        ///
+        /// Null stays legitimate: an unmanifested settlement, or one whose place
+        /// archetype has not been authored, generates exactly as it did before.
+        /// </summary>
+        public InhabitedPlaceDef place;
+
         public override IEnumerable<string> ConfigErrors()
         {
             foreach (string e in base.ConfigErrors())

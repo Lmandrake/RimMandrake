@@ -108,12 +108,37 @@ namespace RimMandrake.Inhabited
             }
             place.onTheGround.Clear();
 
+            // INHABITED_STOCK_ONTO_MAP_AND_FATE_1. The goods come back the same
+            // way the people do, at the same instant and for the same reason: a
+            // Thing still spawned here is enumerable, and one step later
+            // MapDeiniter has begun and the map is being disposed with everything
+            // on it. What the player ate, burned or carried off is simply not
+            // there to collect, so no loss is recorded anywhere -- the holder's
+            // contents afterwards ARE the place's remaining goods.
+            if (place.stock != null)
+            {
+                int back = place.stock.CollectFrom(map, place.StockArea, place.stockOnTheGround);
+                if (place.stockSpawnedCount > 0 || back > 0)
+                {
+                    Log.Message("[RimMandrake.Inhabited] took back " + back + " of "
+                                + place.stockSpawnedCount + " goods from " + place.LabelCap + ".");
+                }
+            }
+            place.stockSpawnedCount = 0;
+            place.stockSpot = IntVec3.Invalid;
+
             // No death record, no memorial, no ledger, no counter. The roster IS
             // the survivors and the absence is the memory.
             if (place.SoulCount == 0 && place.state == InhabitedState.Inhabited)
             {
                 place.state = InhabitedState.Abandoned;
             }
+
+            // ⚠️ LAST, AND NOTHING MAY FOLLOW IT. A fired Transient fate destroys
+            // the world object. Everything above has to have finished first: the
+            // fate empties the roster this method has just refilled, and judges
+            // Looted-vs-Abandoned on the stock it has just collected.
+            InhabitedFateWorker.Apply(place);
         }
 
         /// <summary>

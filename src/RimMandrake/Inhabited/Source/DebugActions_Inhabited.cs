@@ -63,9 +63,42 @@ namespace RimMandrake.Inhabited
             place.Tile = tile;
             place.SetFaction(Find.FactionManager.RandomNonHostileFaction(allowNonHumanlike: false));
             place.Name = "Test place";
+
+            // INHABITED_STOCK_ONTO_MAP_AND_FATE_1: a place with no archetype has
+            // no larder and no fate, so every stock and fate action below would
+            // silently do nothing on it. The first authored archetype is the
+            // sensible default; the picker action can change it.
+            place.placeDef = DefDatabase<InhabitedPlaceDef>.AllDefsListForReading.FirstOrDefault();
+
             Find.WorldObjects.Add(place);
             Log.Message("[RimMandrake.Inhabited] created " + place.LabelCap + " at tile " + tile
-                        + " for " + (place.Faction?.Name ?? "no faction") + ".");
+                        + " for " + (place.Faction?.Name ?? "no faction")
+                        + ", archetype " + (place.placeDef?.defName ?? "NONE (no InhabitedPlaceDef loaded)") + ".");
+        }
+
+        [DebugAction(Cat, "Set place archetype", allowedGameStates = AllowedGameStates.Playing)]
+        private static void SetPlaceDef()
+        {
+            WorldObject_Inhabited place = FindPlace();
+            if (place == null)
+            {
+                return;
+            }
+            List<InhabitedPlaceDef> all = DefDatabase<InhabitedPlaceDef>.AllDefsListForReading.ToList();
+            if (all.Count == 0)
+            {
+                Log.Error("[RimMandrake.Inhabited] no InhabitedPlaceDefs loaded.");
+                return;
+            }
+            Dialog_DebugOptionListLister.ShowSimpleDebugMenu(all, d => d.defName,
+                delegate (InhabitedPlaceDef d)
+                {
+                    place.placeDef = d;
+                    place.castInstantiated = false;
+                    place.stock?.GetDirectlyHeldThings().ClearAndDestroyContents();
+                    Log.Message("[RimMandrake.Inhabited] " + place.LabelCap + " is now a " + d.defName
+                                + " (fate " + d.fate + "); its cast and stock will re-roll.");
+                });
         }
 
         [DebugAction(Cat, "Stuff roster (3 pawns)", allowedGameStates = AllowedGameStates.Playing)]
@@ -224,6 +257,97 @@ namespace RimMandrake.Inhabited
                 sb.AppendLine("  " + Describe(arrived[i]));
             }
             Log.Message(sb.ToString().TrimEndNewlines());
+        }
+
+        // ------------------------------------------------------------------
+        // INHABITED_STOCK_ONTO_MAP_AND_FATE_1. These drive the stock/fate cycle
+        // by hand on whatever map is open.
+        //
+        // 🔑 WHY THEY EXIST RATHER THAN "GENERATE A MAP AND LOOK". Neither route
+        // that would run GenStep_InhabitedStock is reachable in play today, and
+        // both blockers predate this work: WorldObject_InhabitedSettlement is not
+        // a MapParent, so its map generator never runs
+        // (INHABITED_SETTLEMENT_MAPPARENT_GAP_1), and no TileMutatorDef anywhere
+        // in the build set names Inhabited_Cast, so the wilderness route has no
+        // way in either. These actions exercise the same InhabitedStock and
+        // InhabitedFateWorker calls the GenStep and the teardown patch make, on a
+        // quicktest map, without waiting on either gap.
+        // ------------------------------------------------------------------
+
+        [DebugAction(Cat, "Stock: dump onto this map", allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void DumpStock()
+        {
+            WorldObject_Inhabited place = FindPlace();
+            Map map = Find.CurrentMap;
+            if (place == null || map == null)
+            {
+                return;
+            }
+            if (!place.castInstantiated)
+            {
+                place.InstantiateCast();
+            }
+            if (place.stock == null || place.stock.Count == 0)
+            {
+                Log.Warning("[RimMandrake.Inhabited] " + place.LabelCap + " holds no goods. Its archetype is "
+                            + (place.placeDef?.defName ?? "NONE") + "; check its larder table.");
+                return;
+            }
+
+            place.stockOnTheGround.Clear();
+            place.stockSpot = map.Center.Standable(map) ? map.Center : CellFinder.RandomNotEdgeCell(12, map);
+            place.stockSpawnedCount = place.stock.DumpOnto(map, place.stockSpot, place.stockOnTheGround);
+            Log.Message("[RimMandrake.Inhabited] dumped " + place.stockSpawnedCount + " goods in "
+                        + place.stockOnTheGround.Count + " stacks at " + place.stockSpot
+                        + "; the holder now has " + place.stock.Count + " left.");
+        }
+
+        [DebugAction(Cat, "Stock: collect from this map", allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void CollectStock()
+        {
+            WorldObject_Inhabited place = FindPlace();
+            Map map = Find.CurrentMap;
+            if (place == null || map == null || place.stock == null)
+            {
+                return;
+            }
+            int before = place.stockSpawnedCount;
+            int back = place.stock.CollectFrom(map, place.StockArea, place.stockOnTheGround);
+            place.stockSpawnedCount = 0;
+            place.stockSpot = IntVec3.Invalid;
+            Log.Message("[RimMandrake.Inhabited] took back " + back + " of " + before
+                        + "; the holder now has " + place.stock.TotalStackCount + " in "
+                        + place.stock.Count + " stacks.");
+        }
+
+        [DebugAction(Cat, "Fate: test the cause now", allowedGameStates = AllowedGameStates.PlayingOnMap)]
+        private static void TestFate()
+        {
+            WorldObject_Inhabited place = FindPlace();
+            Map map = Find.CurrentMap;
+            if (place == null || map == null)
+            {
+                return;
+            }
+            string cause = InhabitedFateWorker.DetectCause(place, map);
+            Log.Message("[RimMandrake.Inhabited] fate=" + (place.placeDef?.fate.ToString() ?? "NO ARCHETYPE")
+                        + "  cause=" + (cause ?? "none")
+                        + "  threatened=" + place.threatened
+                        + "  stockArea=" + place.StockArea
+                        + "  spawned=" + place.stockSpawnedCount
+                        + "  onMap=" + InhabitedStock.CountOnMap(map, place.StockArea, place.stockOnTheGround));
+        }
+
+        [DebugAction(Cat, "Fate: fire the consequence now", allowedGameStates = AllowedGameStates.Playing)]
+        private static void ApplyFate()
+        {
+            WorldObject_Inhabited place = FindPlace();
+            if (place == null)
+            {
+                return;
+            }
+            place.threatened = true;
+            InhabitedFateWorker.Apply(place);
         }
 
         [DebugAction(Cat, "Spawn authored character", allowedGameStates = AllowedGameStates.PlayingOnMap)]

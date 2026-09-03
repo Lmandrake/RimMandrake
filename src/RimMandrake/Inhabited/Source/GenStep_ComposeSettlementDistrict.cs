@@ -74,6 +74,18 @@ namespace RimMandrake.Inhabited
                 settlement.manifest = ResolveManifestByName(settlement.Label);
             }
 
+            // INHABITED_STOCK_ONTO_MAP_AND_FATE_1: the manifest is what binds a
+            // settlement to its place archetype, and this runs before
+            // Inhabited_Cast (900), which is where InstantiateCast reads the
+            // larder and the trade table off it. Assigned every generation rather
+            // than once: the placeDef is authored data, so a re-authored manifest
+            // should take effect on the next visit, and it is scribed on the
+            // world object only so a save taken mid-visit still knows the fate.
+            if (settlement.manifest?.place != null)
+            {
+                settlement.placeDef = settlement.manifest.place;
+            }
+
             string districtLabel = "placeholder district";
             if (settlement.manifest?.districts != null && settlement.manifest.districts.Count > 0
                 && !settlement.manifest.districts[0].label.NullOrEmpty())
@@ -194,6 +206,21 @@ namespace RimMandrake.Inhabited
             }
 
             GenStep_RimplacePlan.ApplyPlan(map, plan, dx, dz, fileName);
+
+            // INHABITED_STOCK_ONTO_MAP_AND_FATE_1: publish where the district
+            // actually landed, so GenStep_InhabitedStock (order 910) can put the
+            // place's goods INSIDE it instead of guessing at the map centre.
+            // A MapGenerator var rather than a field on this GenStep: GenStep
+            // instances are shared per GenStepDef and the two steps are separate
+            // objects, and MapGenerator's var bag is the shipped channel between
+            // steps of one generation (GenStep_ReserveGravshipArea uses it for
+            // "UsedRects" the same way).
+            if (plan.HasFootprint)
+            {
+                MapGenerator.SetVar(GenStep_InhabitedStock.DistrictRectVar,
+                    new CellRect(plan.FootprintX + dx, plan.FootprintZ + dz,
+                        plan.FootprintW, plan.FootprintH));
+            }
             return true;
         }
     }

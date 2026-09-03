@@ -54,6 +54,9 @@
       <!-- SETTLEMENT_VISIT_LOOP_1 additions -->
       <li>Inhabited_ComposeSettlementDistrict</li>
       <li>Inhabited_Cast</li>
+      <!-- INHABITED_STOCK_ONTO_MAP_AND_FATE_1: order 910, after the cast (900)
+           because the cast step is what fills the stock holder. -->
+      <li>RM_InhabitedStock</li>
     </genSteps>
   </MapGeneratorDef>
 

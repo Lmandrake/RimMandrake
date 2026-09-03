@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!--
+    INHABITED_STOCK_ONTO_MAP_AND_FATE_1: the first InhabitedPlaceDef that has
+    ever existed.
+
+    WHY ONE SHIPS WITH A STOCK ITEM AT ALL. The larder, the trade table and the
+    fate all live on InhabitedPlaceDef, and until this file there were ZERO
+    defs of that type in the build set and no code anywhere that assigned
+    WorldObject_Inhabited.placeDef. Every field on the archetype therefore ran
+    on its C# default with an empty larder, and code that spawns a larder onto
+    a map would have been unreachable by construction. This def plus the new
+    SettlementManifestDef.place field are what make the feature reachable in
+    play; the full archetype table ("expect six to eight real archetypes",
+    InhabitedPlaceDef's own class comment) is not this item's to author.
+
+    RM_ prefix: NEW defNames take the three-tier grammar in
+    design/NAMING_SCHEME_PLAN.md (RimMandrake tier - a scrap-seat archetype is
+    not campaign content). The Inhabited_* names around it migrate under
+    NAMING_SCHEME_EXECUTION_1 rather than being renamed ahead of it.
+  -->
+  <RimMandrake.Inhabited.InhabitedPlaceDef>
+    <defName>RM_InhabitedPlace_Scrapyard</defName>
+    <label>scrapyard seat</label>
+    <description>A squatted salvage yard. What it has, it dug out of somebody else's ruin, and it keeps the lot within sight of where its people sleep.</description>
+
+    <!-- The headline case: burn the granary and they leave. Chosen over
+         Resident deliberately - a scrap seat is exactly the kind of place that
+         has nothing invested and nowhere it has to stay. -->
+    <fate>FleeIfThreatened</fate>
+
+    <workRadius>16</workRadius>
+    <homeRadius>10</homeRadius>
+    <sleepStartHour>22</sleepStartHour>
+    <wakeHour>6</wakeHour>
+
+    <!-- Counts are per-def stack sizes, not rations: nothing replenishes them
+         and what comes back off the map is what the place has next visit. Each
+         is at or under its ThingDef's own stackLimit (steel 75, chemfuel 150,
+         component 50, simple meal 10, silver 500), though InhabitedStock.Fill
+         splits anything larger rather than writing an oversized stack. -->
+    <larder>
+      <li>
+        <thingDef>MealSimple</thingDef>
+        <count>10</count>
+      </li>
+      <li>
+        <thingDef>Chemfuel</thingDef>
+        <count>60</count>
+      </li>
+      <li>
+        <thingDef>Steel</thingDef>
+        <count>75</count>
+      </li>
+    </larder>
+
+    <!-- Merchandise, and it only appears if the cast actually has a dealer -
+         see WorldObject_Inhabited.FillStock. No InhabitedCastDef is authored
+         anywhere yet, so today this table is correctly skipped. -->
+    <stock>
+      <li>
+        <thingDef>ComponentIndustrial</thingDef>
+        <count>12</count>
+      </li>
+      <li>
+        <thingDef>Silver</thingDef>
+        <count>120</count>
+      </li>
+    </stock>
+
+    <stockLabel>salvage</stockLabel>
+  </RimMandrake.Inhabited.InhabitedPlaceDef>
+
+</Defs>

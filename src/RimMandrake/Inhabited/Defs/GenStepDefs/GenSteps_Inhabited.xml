@@ -16,4 +16,30 @@
     <genStep Class="RimMandrake.Inhabited.GenStep_InhabitedCast" />
   </GenStepDef>
 
+  <!--
+    INHABITED_STOCK_ONTO_MAP_AND_FATE_1: the place's larder and trade goods,
+    put on the ground as real Things.
+
+    order 910 runs it AFTER Inhabited_Cast (900) and that ordering is
+    load-bearing, not tidiness: WorldObject_Inhabited.InstantiateCast is what
+    fills the stock holder, and the cast step is what calls it. Dropping first
+    would empty a holder that is still empty.
+
+    ⚠️ ANY TileMutatorDef THAT NAMES Inhabited_Cast MUST NAME THIS TOO. The
+    wilderness PLACE path reaches a GenStep only through a mutator's
+    <extraGenSteps>; a mutator listing the cast and not the stock generates
+    people with no goods, silently. The settlement path is wired in
+    Inhabited_SettlementMapGenerator's genSteps list.
+
+    RM_ prefix, unlike its Inhabited_* siblings: NEW defNames take the
+    three-tier grammar in design/NAMING_SCHEME_PLAN.md (RimMandrake tier), and
+    the older names migrate under NAMING_SCHEME_EXECUTION_1 rather than being
+    renamed ahead of it.
+  -->
+  <GenStepDef>
+    <defName>RM_InhabitedStock</defName>
+    <order>910</order>
+    <genStep Class="RimMandrake.Inhabited.GenStep_InhabitedStock" />
+  </GenStepDef>
+
 </Defs>

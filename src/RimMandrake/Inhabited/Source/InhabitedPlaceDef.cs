@@ -9,10 +9,16 @@ namespace RimMandrake.Inhabited
     /// Flight is CAUSED, never scheduled -- every value below names a cause,
     /// not a timer.
     ///
-    /// 🔴 DECLARED, NOT WIRED. `InhabitedPlaceDef.fate` is the only field of this
-    /// type and no code in this mod reads it, so every value below is at present a
-    /// statement of intent that changes nothing in play. Making a cause fire is
-    /// INHABITED_STOCK_ONTO_MAP_AND_FATE_1.
+    /// WIRED. InhabitedFateWorker.DetectCause turns each value below into a real
+    /// test on a live map, MapComponent_InhabitedWatch runs it during the visit,
+    /// and InhabitedFateWorker.Apply acts on it at teardown -- the cast goes to
+    /// the DisplacedPool and the place reads Abandoned or Looted from then on.
+    ///
+    /// ⏱️ CAUSE AND CONSEQUENCE ARE SEPARATED BY THE VISIT. Nobody walks off the
+    /// map in front of the player; the place is empty the next time they come.
+    /// InhabitedFateWorker's class comment has the engine reason (Pawn.ExitMap
+    /// hands a non-player pawn to WorldPawns, and WorldPawnGC then eats the
+    /// roster) and names what a visible walk-off would take.
     /// </summary>
     public enum InhabitedFate
     {
@@ -29,7 +35,19 @@ namespace RimMandrake.Inhabited
         Transient
     }
 
-    /// <summary>What the world map reports about a place.</summary>
+    /// <summary>
+    /// What the world map reports about a place. Drawn by
+    /// WorldObject_Inhabited.GetInspectString.
+    ///
+    /// Written in three places: GenStep_InhabitedCast and Patch_MapRemoval both
+    /// set Abandoned when nobody is left, and InhabitedFateWorker.Apply picks
+    /// Abandoned or Looted by whether the larder survived.
+    ///
+    /// ⚠️ Squatted is DECLARED, NOT WRITTEN. Nothing sets it, because nothing in
+    /// this mod yet moves a second party into an emptied place -- it is the state
+    /// a later "somebody else has taken it over" feature will write, and inventing
+    /// a trigger for it here would have been a guess.
+    /// </summary>
     public enum InhabitedState
     {
         Inhabited,
@@ -80,20 +98,25 @@ namespace RimMandrake.Inhabited
         /// So a place has a mess and a paste vat, a farmstead a granary, a Tusken
         /// camp a herd.
         ///
-        /// 🔴 WHAT THIS TABLE DOES TODAY, AND IT IS LESS THAN THAT PARAGRAPH USED
-        /// TO CLAIM. `WorldObject_Inhabited.InstantiateCast` pours this table into
-        /// the place's `InhabitedStock`, which is scribed with the world object and
-        /// nothing else. NOTHING spawns those things onto a generated map and
-        /// nothing collects them back at teardown, so the larder is BOOKKEEPING,
-        /// not scenery: it cannot be seen, stolen or burned, and the `fate` field
-        /// above is read by no code in this mod at all. "Burn the granary and they
-        /// leave, with no new code" describes the intended design, not the build --
-        /// spawning stock and firing FATE off it is
-        /// INHABITED_STOCK_ONTO_MAP_AND_FATE_1.
+        /// WHAT THIS TABLE DOES. `WorldObject_Inhabited.InstantiateCast` pours it
+        /// into the place's `InhabitedStock` once, `GenStep_InhabitedStock` (order
+        /// 910) drops the whole holder onto every generated map inside the
+        /// composed district, and `Patch_MapRemoval` takes back whatever is still
+        /// there when the player leaves. So the larder IS scenery: it can be seen,
+        /// eaten, stolen and burned, and "burn the granary and they leave"
+        /// is the `fate` field above reading the very same goods.
+        ///
+        /// ⚠️ THESE ARE COUNTS OF A STACK, NOT A DAILY RATION. Nothing replenishes
+        /// them and nothing consumes them on a schedule -- what comes back off the
+        /// map is what the place has next time. A place the player strips stays
+        /// stripped.
         /// </summary>
         public List<ThingDefCountClass> larder = new List<ThingDefCountClass>();
 
-        /// <summary>Trade goods held for a cast that contains a dealer.</summary>
+        /// <summary>Trade goods held for a cast that contains a dealer. ⚖️ Gated
+        /// on exactly that: WorldObject_Inhabited.FillStock skips this table when
+        /// no role in the cast has `trades`, so a place with nobody to sell is not
+        /// left sitting on merchandise the player can walk off with.</summary>
         public List<ThingDefCountClass> stock = new List<ThingDefCountClass>();
 
         /// <summary>Short phrase for the census line: "oil", "water", "salvage".</summary>
