@@ -211,7 +211,11 @@ namespace JawaBench.BridgeTools
                     });
                 }
 
-                if (limit > 0 && matches.Count >= limit) { truncated = true; stopReason = "limit"; break; }
+                // ⛔ No limit re-check here. Breaking at the BOTTOM of the body leaves `i` naming
+                // the type just FULLY scanned, so resumeFromType would re-walk it and the caller
+                // would get its matches twice (and scannedTypes would undercount by one). The
+                // top-of-loop check above catches the same condition one iteration later with `i`
+                // already advanced - which is the invariant this loop documents and relies on.
             }
 
             sw.Stop();
