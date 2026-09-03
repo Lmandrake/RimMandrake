@@ -762,6 +762,11 @@
     "date": "2026-09-03",
     "sha": "d8cd2139"
   },
+  "src/RimMandrake/Utils/refresh.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "5e515a27"
+  },
   "src/RimMandrake/Utils/reload_check.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
