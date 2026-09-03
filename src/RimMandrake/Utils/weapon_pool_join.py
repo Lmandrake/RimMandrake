@@ -63,12 +63,11 @@ from __future__ import annotations
 import argparse
 import json
 import os
-import sqlite3
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
-from game_paths import DUMP_ROOT  # noqa: E402
+import dump_projection  # noqa: E402
 import weapon_affordability as WA  # noqa: E402
 
 # The 23 kinds roll_arm_harvest_2026-08-28.json measured bare (>0 of 5 rolls bare).
@@ -86,54 +85,40 @@ BARE_23 = [
 ]
 
 
-def _sqlite_defs_path():
-    # defs.sqlite lives at DUMP_ROOT, the flat root - NOT under DEF_DUMP, which
-    # `game_paths.py` resolves to the newest dated captures/<id>/ subfolder.
-    # FLAT_MANIFEST_READER_SWEEP_1 is the general form of this trap; this file
-    # had it too on first write, caught by every kind reading "ranged 0".
-    p = os.path.join(DUMP_ROOT, "defs.sqlite")
-    if not os.path.isfile(p):
-        return None
-    return p
-
-
 class _VerbChanceLookup:
     """IsRangedWeapon + generateAllowChance, fetched by name, cached. Same shape as
-    weapon_affordability._LazyCostIndex - a name is queried at most once."""
+    weapon_affordability._LazyCostIndex, and routed through the same
+    `dump_projection.defs_by_name` every other tool here trusts - not a raw
+    `sqlite3.connect` of our own, which would read `defs.sqlite` with no
+    staleness check at all: `dump_projection.sqlite_path()` refuses (and falls
+    back to the capture's own JSON) when the database describes an OLDER
+    capture than the one being asked about, which is exactly the trap
+    `weapon_tag_audit.py` hit on 2026-08-23 (see dump_projection.py's
+    `_sqlite_describes`)."""
 
-    def __init__(self, db_path):
-        self._conn = sqlite3.connect("file:%s?mode=ro" % db_path, uri=True) if db_path else None
+    def __init__(self, dump_root):
+        self._dump_root = dump_root
         self._cache = {}
 
     def get(self, defname):
         if defname in self._cache:
             return self._cache[defname]
-        if self._conn is None:
-            rec = (None, None)
+        rec = dump_projection.defs_by_name(
+            self._dump_root, "ThingDef", [defname],
+            ("verbs", "generateAllowChance")).get(defname)
+        if rec is None:
+            out = (None, None)
         else:
-            row = self._conn.execute(
-                "select json_extract(json, '$.fields.verbs'), "
-                "json_extract(json, '$.fields.generateAllowChance') "
-                "from defs where def_type = 'ThingDef' and def_name = ?",
-                (defname,)).fetchone()
-            if row is None:
-                rec = (None, None)
-            else:
-                verbs_raw, gac = row
-                is_ranged = False
-                if verbs_raw:
-                    try:
-                        verbs = json.loads(verbs_raw)
-                    except ValueError:
-                        verbs = []
-                    for v in verbs or []:
-                        vc = (v or {}).get("verbClass") or ""
-                        if "MeleeAttack" not in vc:
-                            is_ranged = True
-                            break
-                rec = (is_ranged, 1.0 if gac is None else float(gac))
-        self._cache[defname] = rec
-        return rec
+            is_ranged = False
+            for v in rec.get("verbs") or []:
+                vc = (v or {}).get("verbClass") or ""
+                if "MeleeAttack" not in vc:
+                    is_ranged = True
+                    break
+            gac = rec.get("generateAllowChance")
+            out = (is_ranged, 1.0 if gac is None else float(gac))
+        self._cache[defname] = out
+        return out
 
 
 def main():
@@ -149,11 +134,7 @@ def main():
     by_tag = WA.load_weapons(dump)               # {tag: [(defName, price|None, computed)]}
     roster = {dn: (label, lo, hi, tags) for dn, label, lo, hi, tags in WA.load_roster()}
 
-    db = _sqlite_defs_path()
-    if db is None:
-        print("⚠️  no defs.sqlite at %s/defs.sqlite - IsRangedWeapon/generateAllowChance "
-              "cannot be read; run refresh.py." % DUMP_ROOT, file=sys.stderr)
-    vc = _VerbChanceLookup(db)
+    vc = _VerbChanceLookup(dump)
 
     missing_from_roster = [k for k in want if k not in roster]
     if missing_from_roster:
