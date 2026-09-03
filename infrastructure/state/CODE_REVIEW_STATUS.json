@@ -24,6 +24,141 @@
     "date": "2026-09-02",
     "sha": "14ea427e"
   },
+  "src/RimMandrake/Ninefold/Source/EventMagnitude.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "ecc86a6f"
+  },
+  "src/RimMandrake/Ninefold/Source/GameComponent_Ninefold.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "ecc86a6f"
+  },
+  "src/RimMandrake/Ninefold/Source/God.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "ecc86a6f"
+  },
+  "src/RimMandrake/Ninefold/Source/NinefoldMod.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "ecc86a6f"
+  },
+  "src/RimMandrake/Ninefold/Source/Patch_BirthOutcome.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "ecc86a6f"
+  },
+  "src/RimMandrake/Ninefold/Source/Patch_BuildingDeconstructed.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "ecc86a6f"
+  },
+  "src/RimMandrake/Ninefold/Source/Patch_BuildingRepaired.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "ecc86a6f"
+  },
+  "src/RimMandrake/Ninefold/Source/Patch_MentalBreakStarted.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "ecc86a6f"
+  },
+  "src/RimMandrake/Ninefold/Source/Patch_ResearchCompleted.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "ecc86a6f"
+  },
+  "src/RimMandrake/Ninefold/Source/SatiationBand.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "ecc86a6f"
+  },
+  "src/RimMandrake/Pits/Source/DigStage/Building_PitDigSite.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "ecc86a6f"
+  },
+  "src/RimMandrake/Pits/Source/DigStage/CompPitDigStage.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "ecc86a6f"
+  },
+  "src/RimMandrake/Pits/Source/DigStage/CompProperties_PitDigStage.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "ecc86a6f"
+  },
+  "src/RimMandrake/Pits/Source/DigStage/JobDriver_DigPitDeeper.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "ecc86a6f"
+  },
+  "src/RimMandrake/Pits/Source/DigStage/PitDepthTier.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "ecc86a6f"
+  },
+  "src/RimMandrake/Pits/Source/DigStage/WorkGiver_DigPitDeeper.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "ecc86a6f"
+  },
+  "src/RimMandrake/Pits/Source/Escape/PitEscapeUtility.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "ecc86a6f"
+  },
+  "src/RimMandrake/Pits/Source/Fitting/CompPitFitting.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "ecc86a6f"
+  },
+  "src/RimMandrake/Pits/Source/Fitting/CompProperties_PitFitting.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "ecc86a6f"
+  },
+  "src/RimMandrake/Pits/Source/Fitting/PitFittingType.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "ecc86a6f"
+  },
+  "src/RimMandrake/Pits/Source/Holding/Building_PitCell.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "ecc86a6f"
+  },
+  "src/RimMandrake/Pits/Source/RimMandrakePits_DefOf.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "ecc86a6f"
+  },
+  "src/RimMandrake/Pits/Source/SelfTest/Program.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "ecc86a6f"
+  },
+  "src/RimMandrake/Pits/Source/TerrainMimic/Building_TerrainMimicCover.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "ecc86a6f"
+  },
+  "src/RimMandrake/Pits/Source/Trigger/CompPitCoverTrigger.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "ecc86a6f"
+  },
+  "src/RimMandrake/Pits/Source/Trigger/CompProperties_PitCoverTrigger.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "ecc86a6f"
+  },
+  "src/RimMandrake/Pits/Source/Trigger/PitCoverTier.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "ecc86a6f"
+  },
   "src/RimMandrake/Property/Source/ClaimEngine.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
