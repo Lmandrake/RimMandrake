@@ -101,6 +101,13 @@ footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--rule);
 .caveat{border-left:3px solid var(--red);padding:2px 0 2px 14px;margin:16px 0;
   color:var(--ink-2);font-size:13.5px;max-width:72ch}
 @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+.recids{margin:14px 0 0;border-top:1px solid var(--rule-2)}
+.recids div{display:grid;grid-template-columns:1fr auto;gap:16px;padding:8px 2px;
+  border-bottom:1px solid var(--rule-2);font-size:13px;align-items:baseline}
+.recids .p{font-family:"IBM Plex Mono",monospace;word-break:break-all;color:var(--ink)}
+.recids .c{color:#e0793f;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+.badge{pointer-events:none;font-size:8px;font-weight:700;fill:#12141a}
+.badge-bg{pointer-events:none;fill:#e0793f;stroke:rgba(0,0,0,.35);stroke-width:.5}
 </style>
 
 <div class="wrap">
@@ -147,6 +154,12 @@ footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--rule);
 
   <h2>The 37 files an open bug names</h2>
   <div class="reds" id="reds"></div>
+
+  <h2 id="recidH">Reviewed clean, dirty again</h2>
+  <p class="sub" id="recidSub">A file only lands here after at least one real
+  <span class="mono">mark-clean</span> — the orange ×N badge on a grey cell in the
+  map above is this same count.</p>
+  <div class="recids" id="recids"></div>
 
   <footer>
     Generated <span id="gen" class="mono"></span> by
@@ -197,7 +210,7 @@ footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--rule);
       if(!index[acc]){ index[acc] = {name:parts[i], children:[]}; node.children.push(index[acc]); }
       node = index[acc];
     }
-    node.children.push({name:parts[parts.length-1], path:r[0], loc:r[1], s:r[2], why:r[3]});
+    node.children.push({name:parts[parts.length-1], path:r[0], loc:r[1], s:r[2], why:r[3], cycles:r[4]||0});
   });
 
   var stage = document.getElementById("stage"), tip = document.getElementById("tip");
@@ -233,6 +246,22 @@ footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--rule);
         show(e,"<b>"+d.data.path+"</b><br>"+d.data.loc.toLocaleString()+" lines · "+
              NAME[d.data.s]+(d.data.why?'<span class="w">'+d.data.why+"</span>":""));})
       .on("mouseleave",hide);
+
+    // reviewed-then-dirty-again badge: small orange ×N chip, top-right corner,
+    // only where the cell is big enough to hold it.
+    var recidCells = h.leaves().filter(function(d){
+      return d.data.cycles>0 && d.x1-d.x0>18 && d.y1-d.y0>11; });
+    function bw(d){ return 9+String(d.data.cycles).length*5.5; }
+    g.selectAll("rect.badgebg").data(recidCells).enter().append("rect")
+      .attr("class","badge-bg")
+      .attr("x",function(d){return d.x1-bw(d);}).attr("y",function(d){return d.y0;})
+      .attr("width",bw).attr("height",10).attr("rx",2);
+    g.selectAll("text.badge").data(recidCells).enter().append("text")
+      .attr("class","badge")
+      .attr("x",function(d){return d.x1-bw(d)/2;}).attr("y",function(d){return d.y0+7.5;})
+      .attr("text-anchor","middle")
+      .text(function(d){return "×"+d.data.cycles;});
+
     document.getElementById("hint").textContent =
       h.leaves().length.toLocaleString()+" files · hover a cell";
   }
@@ -368,6 +397,22 @@ footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--rule);
       r[1].toLocaleString()+' lines</span>'+
       (r[3] ? '<span class="why">'+r[3].replace(/</g,"&lt;")+'</span>' : "");
     box.appendChild(d);
+  });
+
+  // ---- files reviewed clean at least once, dirty again since ---------------
+  var RECID = D.recidivists || [];
+  document.getElementById("recidH").textContent =
+    RECID.length ? "Reviewed clean, dirty again — "+RECID.length+" file(s)"
+                 : "Reviewed clean, dirty again — none";
+  if(RECID.length === 0){
+    document.getElementById("recidSub").textContent =
+      "Empty is the good reading here: every file this repo has ever marked clean is still clean.";
+  }
+  var rbox = document.getElementById("recids");
+  RECID.forEach(function(r){
+    var d = document.createElement("div");
+    d.innerHTML = '<span class="p">'+r.path+'</span><span class="c">×'+r.cycles+'</span>';
+    rbox.appendChild(d);
   });
 })();
 </script>

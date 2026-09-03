@@ -1,19 +1,22 @@
 #!/usr/bin/env python3
 """Rebuild the codebase-health artifact page — but only when it is worth rebuilding.
 
-Owner's rule, 2026-09-02: *"regenerated once per hour (if many changes are occurring)
-or upon change (if it's been longer than an hour)"*.
+Owner's rule, SUPERSEDED 2026-09-03: ceiling lowered from one rebuild/hour to one
+rebuild/5min ("regenerate the board up to every 5 minutes"). The original
+2026-09-02 rule — *"regenerated once per hour (if many changes are occurring) or
+upon change (if it's been longer than an hour)"* — is the same shape, just a
+tighter MIN_INTERVAL; nothing else about the condition changed.
 
 Both halves are ONE condition, and this is it:
 
     regenerate  ⇔  the repo has changed since the last build
                    AND at least MIN_INTERVAL has passed since the last build
 
-During a busy stretch that yields exactly one rebuild an hour, however many commits
-land. During a quiet stretch the hour has long since passed, so the next change is
-picked up on the very next check. Nothing regenerates when nothing changed — a
-picture identical to the last one is not worth a run, and republishing it would put
-a meaningless new version on the artifact.
+During a busy stretch that yields at most one rebuild per MIN_INTERVAL, however
+many commits land. During a quiet stretch MIN_INTERVAL has long since passed, so
+the next change is picked up on the very next check. Nothing regenerates when
+nothing changed — a picture identical to the last one is not worth a run, and
+republishing it would put a meaningless new version on the artifact.
 
 🔑 CHANGE MEANS THE WORKING TREE, NOT JUST HEAD. Blue on that page is "uncommitted
 in the working tree", so a fingerprint built from `HEAD` alone would sit still
@@ -54,7 +57,7 @@ STATE = os.path.join(REPO, "infrastructure", "state", "codebase_health_last.json
 JSON_OUT = os.path.join(REPO, "Transient", "codebase_health.json")
 PAGE_OUT = os.path.join(REPO, "Transient", "codebase_health_artifact.html")
 
-MIN_INTERVAL = 3600          # seconds. The owner's "once per hour" ceiling.
+MIN_INTERVAL = 300           # seconds. The owner's ceiling, lowered from 3600 2026-09-03.
 
 # The page's status codes. `green` and `grey` both start with "g", which is exactly
 # the kind of collision that turns a health map into a lie, so they are spelled out.
@@ -132,7 +135,8 @@ def flatten(node, rows):
     elif "loc" in node:
         rows.append([node["path"], node["loc"],
                      CODE.get(node.get("status", "grey"), "u"),
-                     (node.get("why") or [""])[0][:110]])
+                     (node.get("why") or [""])[0][:110],
+                     node.get("cycles", 0)])
     return rows
 
 
@@ -155,7 +159,9 @@ def build():
                  "The map would be missing tiles it claims to show." % (len(rows), total))
     payload = json.dumps({"head": src["head"], "generated": src["generated"],
                           "counts": src["counts"], "reviewEntries": src["reviewEntries"],
-                          "loc": src["loc"], "rows": rows}, separators=(",", ":"))
+                          "loc": src["loc"], "rows": rows,
+                          "recidivists": src.get("recidivists", [])},
+                         separators=(",", ":"))
     # ⚠️ The data rides inside <script type="application/json">, so a literal
     # "</script>" anywhere in a path or a reason would end the block early and
     # silently truncate the page. Refuse rather than publish a half-page.

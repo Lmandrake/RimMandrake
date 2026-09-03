@@ -173,9 +173,16 @@ def cmd_mark_clean(path, sha):
     date = r.stdout.strip() if r.returncode == 0 else "unknown"
     with locked():
         data = load()
-        data[rel] = {"sha": sha, "date": date}
+        prior = data.get(rel) or {}
+        # cleanCount: how many times THIS path has ever been marked clean. A
+        # file already dirty again despite N prior clean marks is exactly the
+        # "reviewed and it keeps coming back dirty" signal the health board
+        # surfaces — see codebase_health.py's classify().
+        clean_count = prior.get("cleanCount", 0) + 1
+        data[rel] = {"sha": sha, "date": date, "cleanCount": clean_count}
         save(data)
-    print(f"CLEAN  {rel}  recorded at {sha} ({date})")
+    print(f"CLEAN  {rel}  recorded at {sha} ({date})"
+          + (f"  [clean mark #{clean_count}]" if clean_count > 1 else ""))
     return 0
 
 
@@ -188,7 +195,9 @@ def cmd_list():
         entry = data[rel]
         state, _ = clean_state(rel, entry)
         label = state if state == "CLEAN" else "DIRTY (edited since / uncommitted)"
-        print(f"{label:35s} {rel}  ({entry['sha']}, {entry['date']})")
+        cc = entry.get("cleanCount", 1)
+        streak = f"  [x{cc}]" if cc > 1 else ""
+        print(f"{label:35s} {rel}  ({entry['sha']}, {entry['date']}){streak}")
     return 0
 
 

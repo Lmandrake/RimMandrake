@@ -377,7 +377,12 @@ def count_lines(abspath):
 # -------------------------------------------------------------------- colours
 
 def classify(path, loc_measured, uncommitted, doing_files, bug_files, verdict,
-             wt_known, ledger_known):
+             wt_known, ledger_known, clean_count=0):
+    """`clean_count` is how many times `code_review_status.py mark-clean` has
+    ever recorded this exact path (0 if it never has). A file currently grey
+    with clean_count > 0 has been reviewed clean before and drifted dirty
+    again since — the recidivism the board now surfaces, not just "never
+    looked at"."""
     reasons = []
     if ledger_known and path in bug_files:
         return "red", ["open bug item: " + ", ".join(sorted(set(bug_files[path]))[:4])]
@@ -399,6 +404,9 @@ def classify(path, loc_measured, uncommitted, doing_files, bug_files, verdict,
         return "green", ["review recorded clean, zero commits since"]
     if verdict == "unknown":
         return "unmeasured", ["a review entry exists but its recorded sha does not resolve"]
+    if clean_count > 0:
+        return "grey", ["reviewed and marked clean %d× before — dirty again every time"
+                        % clean_count]
     return "grey", ["no review entry has ever been recorded for this path"]
 
 
@@ -517,6 +525,11 @@ table.n td{padding:2px 0;color:var(--dim)}
 table.n td:last-child{text-align:right;color:var(--ink);font-variant-numeric:tabular-nums}
 .warn{border-left:2px solid var(--unk);padding-left:9px;color:var(--dim);font-size:11.5px}
 code{font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#c3cbdb}
+.recid{display:grid;grid-template-columns:1fr auto;gap:8px;padding:3px 0;font-size:11.5px}
+.recid .p{font-family:ui-monospace,Menlo,monospace;color:var(--ink);word-break:break-all}
+.recid .c{color:#ff8a5c;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+.badge{pointer-events:none;font-size:9px;font-weight:700;fill:#12141a}
+.badge-bg{pointer-events:none;fill:#ff8a5c;stroke:rgba(0,0,0,.4);stroke-width:.5}
 </style></head><body>
 <div id="app">
   <header>
@@ -535,6 +548,7 @@ code{font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#c3cbdb}
       <section><h2>Colour, by precedence</h2><div id="legend"></div></section>
       <section><h2>This run</h2><div id="stats"></div></section>
       <section><h2>Unmapped open bugs</h2><div id="unmapped"></div></section>
+      <section><h2>Reviewed, dirty again</h2><div id="recid"></div></section>
       <section><h2>Reading it</h2>
         <div class="rule"><i style="background:transparent"></i><span>
         Area is lines of code. Click a cell to descend, the breadcrumb to come back.
@@ -639,6 +653,26 @@ if(DATA.items.unmappedBugIds.length === 0){
     "<b>" + DATA.items.unmappedBugIds.length + "</b> open bug item(s) name no resolvable file path, "
     + "so they colour nothing red:<br><br>"
     + DATA.items.unmappedBugIds.map(i=>"<code>"+i+"</code>").join("<br>"));
+}
+
+/* ---- files reviewed clean at least once, currently dirty again ---- */
+const recid = d3.select("#recid");
+const RECID = DATA.recidivists || [];
+if(RECID.length === 0){
+  recid.append("div").attr("class","rule").append("span")
+    .text("None. Every file ever marked clean is still clean.");
+} else {
+  recid.append("div").attr("class","rule").append("span").html(
+    "<b>"+RECID.length+"</b> file(s) went clean, then dirty again — the little orange "
+    + "×N badge on a grey cell is this same count.");
+  RECID.slice(0, 40).forEach(r=>{
+    const row = recid.append("div").attr("class","recid");
+    row.append("span").attr("class","p").text(r.path);
+    row.append("span").attr("class","c").text("×"+r.cycles);
+  });
+  if(RECID.length > 40){
+    recid.append("div").attr("class","warn").text("+ "+(RECID.length-40)+" more.");
+  }
 }
 
 /* ---- tree helpers ---- */
@@ -750,6 +784,20 @@ function renderSquarified(w,h){
       while(this.getComputedTextLength()>max && t.length>1){t=t.slice(0,-1);this.textContent=t;}
       if(this.getComputedTextLength()>max) this.textContent="";
     });
+
+  // reviewed-then-dirty-again badge: a small orange ×N chip in the top-right
+  // corner, only where the cell is big enough to hold one.
+  const recidCells = root.leaves().filter(d=>d.data.cycles>0 && d.x1-d.x0>20 && d.y1-d.y0>12);
+  const bw = d=>10+String(d.data.cycles).length*6;
+  g.selectAll("rect.badgebg").data(recidCells)
+    .join("rect").attr("class","badge-bg")
+    .attr("x",d=>d.x1-bw(d)).attr("y",d=>d.y0)
+    .attr("width",bw).attr("height",11).attr("rx",2);
+  g.selectAll("text.badge").data(recidCells)
+    .join("text").attr("class","badge")
+    .attr("x",d=>d.x1-bw(d)/2).attr("y",d=>d.y0+8.5)
+    .attr("text-anchor","middle")
+    .text(d=>"×"+d.data.cycles);
 }
 
 /* ---- collapse a subtree so the Voronoi solver stays tractable ---- */
@@ -918,18 +966,23 @@ def main(argv=None):
     leaves, counts, loc_by = [], dict.fromkeys(STATUSES, 0), dict.fromkeys(STATUSES, 0)
     total_loc = 0
     est_loc = 0
+    recidivists = []
     for p in paths:
         loc, measured = count_lines(os.path.join(ROOT, p))
         if not measured:
             est_loc += 1
             loc = max(1, os.path.getsize(os.path.join(ROOT, p)) // 60)
+        clean_count = (log.get(p) or {}).get("cleanCount", 0)
         status, why = classify(p, measured, wt, doing_files, bug_files,
-                               verdicts[p], wt_known, ledger_known)
+                               verdicts[p], wt_known, ledger_known, clean_count)
         counts[status] += 1
         loc_by[status] += loc
         total_loc += loc
         leaves.append({"name": os.path.basename(p), "path": p, "loc": loc,
-                       "status": status, "why": why})
+                       "status": status, "why": why, "cycles": clean_count})
+        if status == "grey" and clean_count > 0:
+            recidivists.append({"path": p, "loc": loc, "cycles": clean_count})
+    recidivists.sort(key=lambda r: (-r["cycles"], -r["loc"]))
 
     head = git(["rev-parse", "--short", "HEAD"]).stdout.strip() or "unknown"
     payload = {
@@ -941,6 +994,7 @@ def main(argv=None):
         "loc": dict(loc_by, total=total_loc),
         "locEstimatedFiles": est_loc,
         "reviewEntries": len(log),
+        "recidivists": recidivists,
         "items": istats,
         "workingTreeKnown": wt_known,
         "ledgerKnown": ledger_known,
@@ -959,6 +1013,9 @@ def main(argv=None):
                  {"red": "known bug", "blue": "in dev", "green": "review-clean",
                   "grey": "dirty (measured)", "unmeasured": "could not determine"}[s]))
     print("  review entries recorded: %d" % len(log))
+    if recidivists:
+        print("  reviewed-then-dirty-again: %d file(s), worst is x%d (%s)"
+              % (len(recidivists), recidivists[0]["cycles"], recidivists[0]["path"]))
     print("  open items %d, open bugs %d (%d mapped to a file, %d naming none)"
           % (istats["openItems"], istats["openBugs"],
              istats["bugsMapped"], istats["bugsUnmapped"]))
