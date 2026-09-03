@@ -49,9 +49,26 @@ namespace RimMandrake.Pits
         // deepening pass reads at roughly the same pace as demolishing a
         // similarly-sized wall - a placeholder the quicktest matrix should
         // sanity-check, not a tuned value.
+        //
+        // Tier-scaled (previously flat 2200f regardless of tier, despite
+        // taking tier as a parameter - a Chasm's extra stages costing the
+        // same as a Deep pit's is wrong on its face). No other tier-scaled
+        // method here gives a single clean ratio to mirror exactly (MaxBodySize
+        // goes to float.MaxValue for Chasm), so this uses a modest, roughly-
+        // 1.5x-per-step scaling off the original 2200f Deep baseline: Shallow
+        // is lower (RequiredStages == 1 means Shallow never actually calls
+        // this today, but keep it consistent for when a modded def changes
+        // that), Deep keeps the original calibrated value, Chasm is higher to
+        // reflect its heavier, shoring-supported dig.
         public static float WorkPerAdditionalStage(this PitDepthTier tier)
         {
-            return 2200f;
+            switch (tier)
+            {
+                case PitDepthTier.Shallow: return 1500f;
+                case PitDepthTier.Deep: return 2200f;
+                case PitDepthTier.Chasm: return 3300f;
+                default: return 2200f;
+            }
         }
     }
 }

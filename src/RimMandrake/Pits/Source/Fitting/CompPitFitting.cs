@@ -74,12 +74,26 @@ namespace RimMandrake.Pits
 
         private bool CanSwim(Pawn p)
         {
-            // No vanilla "aquatic" RaceProperties flag was found in-source to key
-            // this off; PawnUtility/RaceProperties expose no such field. Rather
-            // than invent one, this is a naming-convention heuristic
-            // (defName/label contains a marker) that quietly does nothing for
-            // any race that does not opt in - flagged as an open question in
-            // the item file, not a resolved mechanic.
+            // No vanilla "aquatic" RaceProperties flag exists to key this off,
+            // and confirmed (2026-09-02) that no vanilla BodyDef defName contains
+            // "aquatic" either - so the substring heuristic below was previously
+            // matching nothing at all, ever, for any real race in the game.
+            //
+            // Vanilla itself has a real per-life-stage swim signal, just not on
+            // RaceProperties/BodyDef: Pawn.DrawNonHumanlikeSwimmingGraphic
+            // (Verse/Pawn.cs) decides whether to render the swimming sprite by
+            // checking ageTracker.CurKindLifeStage.swimmingGraphicData != null -
+            // e.g. Seal/SeaLion set this on their PawnKindDef life stages. Use
+            // the same signal here as the primary check. CurKindLifeStage logs
+            // an error and returns null for humanlike pawns (Pawn_AgeTracker.cs),
+            // so it's gated behind !Humanlike. The old naming-convention
+            // substring check is kept as a secondary OR for any modded race that
+            // opts in that way without wiring up real swim art.
+            if (p?.RaceProps != null && !p.RaceProps.Humanlike
+                && p.ageTracker?.CurKindLifeStage?.swimmingGraphicData != null)
+            {
+                return true;
+            }
             return p.RaceProps?.body?.defName != null && p.RaceProps.body.defName.ToLowerInvariant().Contains("aquatic");
         }
 

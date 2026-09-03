@@ -154,6 +154,13 @@ namespace RimMandrake.Pits
             Pawn p = AssignedPrisoner;
             if (p == null || !p.Spawned || Map == null) return;
 
+            // Unlike Building_OpenPit.Spring() (a mass-trigger event where everyone
+            // standing on the cover at once is deliberately uncapped - see the class
+            // doc), this is a single player-triggered placement. Nothing stops it
+            // being clicked again after the cell is already full, so refuse rather
+            // than silently overfilling past MaxOccupants.
+            if (innerContainer.Count >= MaxOccupants) return;
+
             if (p.Spawned) p.DeSpawn(DestroyMode.Vanish);
             innerContainer.TryAddOrTransfer(p);
             HealthUtility.AdjustSeverity(p, RMPits_HediffDefOf.RM_PinnedInPit, 0.1f);
