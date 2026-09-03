@@ -4284,3 +4284,8 @@
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ownerSaid":"Game is down","ts":"2026-09-03T19:46:23Z"}
 {"seat":"FOUNDRY","event":"claim","id":"DIRTY_CODE_REVIEW_LOOP_RESTART_3","ts":"2026-09-03T19:47:32Z"}
 {"seat":"FOUNDRY","event":"start","id":"DIRTY_CODE_REVIEW_LOOP_RESTART_3","ts":"2026-09-03T19:47:36Z"}
+{"seat":"FOUNDRY","event":"file","id":"DIRTY_CODE_REVIEW_LOOP_RESTART_4","title":"resume standing code-review sweep after next agent reboot","kind":"continuity","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-03T19:57:51Z"}
+{"seat":"FOUNDRY","event":"supersede","id":"DIRTY_CODE_REVIEW_LOOP_RESTART_3","by":"DIRTY_CODE_REVIEW_LOOP_RESTART_4","reason":"superseded by DIRTY_CODE_REVIEW_LOOP_RESTART_4, which takes over its work","ts":"2026-09-03T19:57:51Z"}
+{"seat":"FOUNDRY","event":"claim","id":"PARALLELIZE_SELFTEST_CLI_INTERNAL_1","ts":"2026-09-03T19:58:46Z"}
+{"seat":"FOUNDRY","event":"start","id":"PARALLELIZE_SELFTEST_CLI_INTERNAL_1","ts":"2026-09-03T19:58:46Z"}
+{"seat":"FOUNDRY","event":"close","id":"PARALLELIZE_SELFTEST_CLI_INTERNAL_1","sha":"42e9676e","ts":"2026-09-03T20:03:02Z"}

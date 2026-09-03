@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-03T19:47:36Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-03T20:03:02Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -360,15 +360,6 @@ kind:     task
 summary:  Measured 2026-09-03 on the 20-mod minimal list, dev quicktest map. The
 prose:    infrastructure/state/items/FLUID_CANAL_DEBUG_SURFACE_1.md
 
-## DIRTY_CODE_REVIEW_LOOP_RESTART_3 resume standing code-review sweep after next agent reboot
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     continuity
-summary:  DIRTYCODEREVIEWLOOPRESTART3
-prose:    infrastructure/state/items/DIRTY_CODE_REVIEW_LOOP_RESTART_3.md
-
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -475,12 +466,12 @@ thin:     spec, verify and criteria all present
 summary:  Identify which mod/file emits these five (or more — the harvest only sampled)
 prose:    infrastructure/state/items/VANILLA_COUNT_PSEUDO_DEF_1.md
 
-## PARALLELIZE_SELFTEST_CLI_INTERNAL_1 selftest_cli.py's 87 real-subprocess cases run serially (~150s+ solo) and are the sweep's long pole; parallelize internally without losing real-subprocess fidelity
+## DIRTY_CODE_REVIEW_LOOP_RESTART_4 resume standing code-review sweep after next agent reboot
 state:    proposed
 row:      unassigned
 needs:    offline
 target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  Give each case (or a small pool of workers) its own scratch directory
-prose:    infrastructure/state/items/PARALLELIZE_SELFTEST_CLI_INTERNAL_1.md
+kind:     continuity
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  DIRTYCODEREVIEWLOOPRESTART4
+prose:    infrastructure/state/items/DIRTY_CODE_REVIEW_LOOP_RESTART_4.md
