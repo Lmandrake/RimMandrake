@@ -660,12 +660,12 @@ namespace RuthlessPursuingMechanoids
                 if (!Disabled)
                 {
                     DebugUtility.DebugLog($"Disabling pursuit for faction {PursuitFaction?.Name ?? "null"}");
-                    if (PursuitFaction.deactivated || PursuitFaction.defeated)
+                    if (PursuitFaction != null && (PursuitFaction.deactivated || PursuitFaction.defeated))
                     {
                         /* Send letter saying the faction was defeated, and thus pursuit is ceasing */
                         Find.LetterStack.ReceiveLetter("LetterLabelRuthlessFactionDefeated".Translate(PursuitFaction.NameColored), "LetterTextRuthlessFactionDefeated".Translate(PursuitFaction.NameColored), LetterDefOf.PositiveEvent);
                     }
-                    else if (!FactionIsPermanentEnemy && !FactionUtility.HostileTo(PursuitFaction, Faction.OfPlayer))
+                    else if (PursuitFaction != null && !FactionIsPermanentEnemy && !FactionUtility.HostileTo(PursuitFaction, Faction.OfPlayer))
                     {
                         /* Send letter saying that pursuit is ceasing due to improved faction relations */
                         DisabledDueToRelations = true;
