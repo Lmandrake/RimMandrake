@@ -41,9 +41,26 @@ from .core import BuildPlan, Palette, Rect, SeededRng
 # existed. ⚠️ The three SANDBOX selftests asserted exactly the three names they nil'd,
 # which is why nobody noticed: a test that checks the list you wrote cannot find the
 # entry you forgot. The selftest now probes `python` by BEHAVIOUR, not by name.
+#
+# 🔴 `pcall`/`xpcall` DEFEAT THE INSTRUCTION BUDGET, AND THIS WAS NEVER TESTED WITH
+# ONE. RIMPLACE_LUA_EXECUTION_BUDGET_1's own verification only tried a bare
+# `while true do end` — `debug.sethook`'s count hook fires by calling Lua's
+# `error()`, and a Lua error raised from a hook is caught by an ordinary
+# enclosing `pcall` exactly like any other runtime error. `while true do
+# pcall(function() while true do end end) end` therefore catches the
+# "exceeded N instructions" error every N instructions FOREVER — confirmed by
+# hand: 21 outer iterations and 10.5 million inner loop turns in well under a
+# second, no sign of stopping on its own. Removing `pcall`/`xpcall` from the
+# template environment is the only place in Lua's own semantics that closes
+# this: with no `pcall` reachable, the hook's `error()` is never caught by
+# anything and always reaches `run_template`'s handler as a loud TemplateError.
+# This also closes half of the OTHER standing risk this file worries about —
+# a template that swallows a real error and does nothing instead of failing
+# loud — since `pcall` was the only way a template could do that at all.
 _FORBIDDEN = ("os", "io", "package", "require", "dofile", "loadfile",
               "load", "loadstring", "collectgarbage", "debug", "rawset",
-              "rawget", "setmetatable", "getmetatable", "python")
+              "rawget", "setmetatable", "getmetatable", "python",
+              "pcall", "xpcall")
 
 _SANDBOX_PRELUDE = """
 for _, name in ipairs({%s}) do _G[name] = nil end
