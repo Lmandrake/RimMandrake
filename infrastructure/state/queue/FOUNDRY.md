@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-03T00:56:15Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-03T02:13:12Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -435,3 +435,23 @@ kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DEEPWATER_DEAD_GASMASK_TAG_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DEEPWATER_DEAD_GASMASK_TAG_1.md
+
+## RIMPLACE_LUA_EXECUTION_BUDGET_1 A template's min_rect or build can loop forever; rimplace minrect all wedges with no output
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     spec, verify and criteria all present
+summary:  src/RimMandrake/Utils/rimplace/luaenv.py runs template Lua with no instruction
+prose:    infrastructure/state/items/RIMPLACE_LUA_EXECUTION_BUDGET_1.md
+
+## RIMPLACE_ROOF_ESCAPES_FOOTPRINT_1 ctx:roof lays roof outside the template's own rect, and roof_rect always reports success
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/RIMPLACE_ROOF_ESCAPES_FOOTPRINT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/RIMPLACE_ROOF_ESCAPES_FOOTPRINT_1.md
