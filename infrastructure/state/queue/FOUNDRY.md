@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-03T04:29:11Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: BENCH
+as-of: 2026-09-03T04:32:04Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -396,6 +396,6 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/INHABITED_TILEMUTATOR_NO_ENTRY_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  The Inhabited mod's own class comments describe two routes onto a map: a proper
 prose:    infrastructure/state/items/INHABITED_TILEMUTATOR_NO_ENTRY_1.md
