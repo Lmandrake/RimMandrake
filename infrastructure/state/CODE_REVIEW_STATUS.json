@@ -538,10 +538,20 @@
     "date": "2026-09-03",
     "sha": "f52addaf"
   },
+  "src/RimMandrake/Utils/codebase_health.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "09f1d751"
+  },
   "src/RimMandrake/Utils/codebase_health_publish.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "fb248793"
+  },
+  "src/RimMandrake/Utils/def_diff.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "695161ea"
   },
   "src/RimMandrake/Utils/def_inventory.py": {
     "cleanCount": 1,
@@ -1081,6 +1091,11 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "e515c1e9"
+  },
+  "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchTerrainTools.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "695161ea"
   },
   "src/RimMandrake/bridgetools/prove_load_stall_probe.py": {
     "cleanCount": 1,
