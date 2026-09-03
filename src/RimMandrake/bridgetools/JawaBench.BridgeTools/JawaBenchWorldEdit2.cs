@@ -289,7 +289,13 @@ namespace JawaBench.BridgeTools
                 "these are the things actually wiped, with 'refunded' true only for a Building " +
                 "(materials or, if Minifiable, the object itself land nearby) or an Item " +
                 "(relocated, not destroyed) when refund=true - a wiped Plant is always " +
-                "refunded=false, nothing comes back.")]
+                "refunded=false, nothing comes back. ⚠️ 'refunded' reflects the CATEGORY, not a " +
+                "confirmed placement: GenPlace.TryPlaceThing(..., ThingPlaceMode.Near) must find " +
+                "a free cell OUTSIDE the whole new footprint (not just the old cell) to actually " +
+                "land the leavings/relocated item - in a tightly packed or fully enclosed area " +
+                "that search can fail, and the engine then destroys the item/minified thing with " +
+                "nothing recovered. This tool does not re-verify placement after the call; treat " +
+                "refunded=true as 'the engine attempted a refund', not a guarantee it landed.")]
         public static async Task<object> WipeCell(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -389,6 +395,11 @@ namespace JawaBench.BridgeTools
                     // is still destroyed, only its materials survive. refunded=true for an
                     // Item means it was relocated intact, not destroyed at all. Plants (and
                     // anything else) get neither: refunded=false.
+                    // NOT re-verified: GenPlace.TryPlaceThing(Near) can still fail to find a
+                    // free cell outside the whole new footprint (crowded/enclosed area), in
+                    // which case the engine destroys the leavings/minified thing with nothing
+                    // recovered - refunded=true here means "the engine attempted it", not a
+                    // confirmed landing.
                     affected = hit.Select((o, i) => new { row = o, refunded = refund && hitRefundable[i] }).ToList(),
                     ticksGame = TicksGameSafe()
                 };
