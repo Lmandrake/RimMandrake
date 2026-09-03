@@ -404,6 +404,11 @@
     "date": "2026-09-03",
     "sha": "e5013227"
   },
+  "src/RimMandrake/Utils/build_packageid_index.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "39cd22d5"
+  },
   "src/RimMandrake/Utils/cherrypicker_swap.py": {
     "date": "2026-09-02",
     "sha": "d1c193ae"
@@ -452,9 +457,29 @@
     "date": "2026-09-03",
     "sha": "e5013227"
   },
+  "src/RimMandrake/Utils/migrate_names.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "39cd22d5"
+  },
   "src/RimMandrake/Utils/modlist_swap.py": {
     "date": "2026-09-02",
     "sha": "d1c193ae"
+  },
+  "src/RimMandrake/Utils/naming_lint.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "39cd22d5"
+  },
+  "src/RimMandrake/Utils/repaint_hull.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "39cd22d5"
+  },
+  "src/RimMandrake/Utils/rimbridge_lineup.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "39cd22d5"
   },
   "src/RimMandrake/Utils/rimplace/plan.py": {
     "cleanCount": 1,
@@ -475,6 +500,16 @@
     "cleanCount": 1,
     "date": "2026-09-02",
     "sha": "9b556d77"
+  },
+  "src/RimMandrake/Utils/selftest_broadcast_frame.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "39cd22d5"
+  },
+  "src/RimMandrake/Utils/selftest_check_doc_links.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "39cd22d5"
   },
   "src/RimMandrake/Utils/selftest_codebase_health.py": {
     "cleanCount": 1,
@@ -516,6 +551,16 @@
     "date": "2026-09-03",
     "sha": "e5013227"
   },
+  "src/RimMandrake/Utils/set_planet_subcount.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "39cd22d5"
+  },
+  "src/RimMandrake/Utils/test_resolve_texture.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "39cd22d5"
+  },
   "src/RimMandrake/Utils/validate_save_artifact.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -540,6 +585,11 @@
     "cleanCount": 1,
     "date": "2026-09-02",
     "sha": "69ea9703"
+  },
+  "src/RimMandrake/Utils/world_graph.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "39cd22d5"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchInit.cs": {
     "cleanCount": 1,
