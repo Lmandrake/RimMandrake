@@ -489,7 +489,6 @@ namespace JawaBench.BridgeTools
                         if (existing != null) return Fail("'" + cd.defName + "' is already on this ideo's style list (priority " + existing.priority + "). Remove it first to change priority.");
                         if (dryRun) return new { success = true, dryRun = true, action = A, ideo = new { target.id, target.name }, category = cd.defName, priority };
                         target.thingStyleCategories.Add(new ThingStyleCategoryWithPriority(cd, priority));
-                        try { target.SortStyleCategories(); } catch { }
                     }
                     else
                     {
@@ -497,6 +496,20 @@ namespace JawaBench.BridgeTools
                         if (dryRun) return new { success = true, dryRun = true, action = A, ideo = new { target.id, target.name }, category = cd.defName };
                         target.thingStyleCategories.Remove(existing);
                     }
+
+                    // EVERY vanilla path that mutates thingStyleCategories follows the mutation with
+                    // BOTH of these, and neither is optional (IdeoUIUtility.cs add/remove/replace,
+                    // IdeoFoundation.Init, Dialog_StyleSelection):
+                    //   SortStyleCategories()      -> also RecachePossibleBuildables(), which is what
+                    //                                 the architect menu reads (DesignationCategoryDef).
+                    //   style.ResetStylesForThingDef() -> flushes IdeoStyleTracker.styleForThingDef,
+                    //                                 a MEMOIZING dictionary that never re-resolves an
+                    //                                 entry once written, and that is Scribed into the
+                    //                                 savegame. Without the flush every ThingDef already
+                    //                                 looked up stays bound to the OLD category list
+                    //                                 forever - on disk - while this tool reports success.
+                    try { target.SortStyleCategories(); } catch { }
+                    try { if (target.style != null) target.style.ResetStylesForThingDef(); } catch { }
 
                     return new { success = true, action = A, ideo = new { target.id, target.name }, styles = listStyles(), ticksGame = TicksGameSafe() };
                 }
@@ -622,8 +635,9 @@ namespace JawaBench.BridgeTools
                 "(AllColonistsThere - true when abandoning here would leave every free colonist with " +
                 "nowhere else on the map layer) and refuses unless force=true.",
             ResultDescription =
-                "success, mode, and for settlement: label, wasHomeMap, destroyed; for map: tile, " +
-                "mapIndex, parentDef, stillHasMaps.")]
+                "success, mode, and for settlement: label, hasMap (a map was generated here), " +
+                "wasHomeMap (that map was the player's - both read BEFORE the abandon), destroyed; " +
+                "for map: tile, mapIndex, parentDef, stillHasMaps.")]
         public static async Task<object> SettlementRemove(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -653,13 +667,17 @@ namespace JawaBench.BridgeTools
                     bool allColonistsThere;
                     try { allColonistsThere = SettlementAbandonUtility.AllColonistsThere(mp); } catch { allColonistsThere = false; }
                     bool hasMap = mp.Map != null;
+                    // Captured BEFORE Abandon: mp.Map is gone afterward, so this cannot be
+                    // recomputed. "had a generated map" is NOT the same thing as "was the player's
+                    // home map" - every raided enemy settlement and quest site has a map too.
+                    bool wasHomeMap = hasMap && mp.Map.IsPlayerHome;
 
                     if (allColonistsThere && !force)
                         return Fail("AllColonistsThere is true for '" + mp.Label + "' - the vanilla UI DISABLES 'Abandon Home' here " +
                                     "because every free colonist on this map layer has nowhere else to be. Pass force=true to override.");
 
                     if (dryRun)
-                        return new { success = true, dryRun = true, mode = M, label = mp.Label, wasHomeMap = hasMap && mp.Map.IsPlayerHome, allColonistsThere };
+                        return new { success = true, dryRun = true, mode = M, label = mp.Label, hasMap, wasHomeMap, allColonistsThere };
 
                     try { mp.Abandon(wasGravshipLaunch: false); }
                     catch (Exception e) { return Fail("Abandon threw: " + e.GetType().Name + ": " + e.Message); }
@@ -670,7 +688,8 @@ namespace JawaBench.BridgeTools
                         success = mp.Destroyed,
                         mode = M,
                         label = mp.Label,
-                        wasHomeMap = hasMap,
+                        hasMap,
+                        wasHomeMap,
                         destroyed = mp.Destroyed,
                         ticksGame = TicksGameSafe()
                     };
@@ -722,9 +741,11 @@ namespace JawaBench.BridgeTools
                 "⚠️ The API takes NO sendMessage parameter - CaravanExitMapUtility's default " +
                 "(sendMessage=true) always applies, so the vanilla 'formed caravan' Message always " +
                 "fires. " +
-                "🔑 FormAndCreateCaravan returns void - this tool identifies the resulting Caravan " +
-                "by finding which live Caravan now contains the resolved pawns, rather than trusting " +
-                "the call succeeded.",
+                "🔑 FormAndCreateCaravan returns void - this tool snapshots the live Caravan ids " +
+                "BEFORE the call and then looks for a NEW one holding the resolved pawns, rather " +
+                "than trusting the call succeeded. A caravan that already held them is never " +
+                "accepted as the result: MakeCaravan always builds a fresh Caravan, so an older one " +
+                "proves the call did nothing.",
             ResultDescription =
                 "success, pawnCount, refused[] (pawn tokens that did not resolve), caravanId, name, " +
                 "tile, destTile, pathed.")]
@@ -812,12 +833,24 @@ namespace JawaBench.BridgeTools
                         .FirstOrDefault(c => !existingCaravanIds.Contains(c.ID) && found.Any(p => c.ContainsPawn(p)))
                     : null;
                 if (resultCaravan == null)
-                    resultCaravan = Find.WorldObjects != null
+                {
+                    // NO FALLBACK TO A PRE-EXISTING CARAVAN. CaravanMaker.MakeCaravan ALWAYS builds a
+                    // fresh Caravan and there is no merge-into-an-existing path anywhere under
+                    // FormAndCreateCaravan, so a caravan that already held these pawns before the call
+                    // proves the call did NOTHING - ExitMapAndCreateCaravan returns null early when
+                    // GenWorldClosest.TryFindClosestPassableTile finds no passable tile near exitFromTile.
+                    // Reporting that older caravan as this call's result was a false success.
+                    var preExisting = Find.WorldObjects != null
                         ? Find.WorldObjects.AllWorldObjects.OfType<Caravan>().FirstOrDefault(c => found.Any(p => c.ContainsPawn(p)))
                         : null;
-
-                if (resultCaravan == null)
-                    return Fail("FormAndCreateCaravan ran but no live Caravan now contains any resolved pawn - it may have merged into an existing caravan at the exit tile, or every pawn failed to exit.", new { refused });
+                    return Fail(
+                        "FormAndCreateCaravan created no new Caravan" +
+                        (preExisting != null
+                            ? " - the resolved pawns are still in the PRE-EXISTING caravan #" + preExisting.ID + " (" + preExisting.Name + "), which this call did not make."
+                            : " and no live Caravan contains any resolved pawn.") +
+                        " ExitMapAndCreateCaravan bails out before doing anything when no passable tile can be found near exit tile " + exitTileId + ".",
+                        new { refused, preExistingCaravanId = preExisting != null ? (int?)preExisting.ID : null });
+                }
 
                 return new
                 {
