@@ -397,17 +397,39 @@ namespace JawaBench.BridgeTools
                         object skyfaller = make.Invoke(null, new object[] { airdropDef, p, props });
                         if (skyfaller == null) return Fail("MakeAirdrop returned null.");
                         Thing skyfallerThing = (Thing)skyfaller;
+                        // AirdropSkyfaller ultimately derives from the vanilla RimWorld.Skyfaller
+                        // (confirmed in source), so this cast is direct - no reflection needed,
+                        // same as SkyfallerMaker.SpawnSkyfaller's return value elsewhere in the
+                        // companion.
+                        var sk = skyfallerThing as Skyfaller;
+
+                        // Fixed 2026-09-03 (follow-up review): MakeAirdrop's own
+                        // ThingOwner.TryAddOrTransfer(p) call (inside VF, before we ever get
+                        // here - see the comment above) has no exception and no signal back to
+                        // us if it refuses p. p is already despawned by that point (VF does
+                        // that unconditionally before the add attempt), so a refused add would
+                        // leave p held nowhere and NOT inside skyfallerThing - while
+                        // skyfallerThing is still a perfectly valid, p-less Skyfaller that
+                        // GenSpawn.Spawn below would happily place, reporting success on a pawn
+                        // that is actually orphaned. Verify p is really inside the container
+                        // BEFORE trusting the spawn outcome to mean "p is on its way", same
+                        // principle as gating on .Spawned rather than a clean call.
+                        if (sk?.innerContainer == null || !sk.innerContainer.Contains(p))
+                        {
+                            bool recoveredEarly = !p.Destroyed && p.holdingOwner == null
+                                && GenPlace.TryPlaceThing(p, originalPos, originalMap, ThingPlaceMode.Near);
+                            return Fail("AirdropSkyfallerMaker.MakeAirdrop did not place " + p.LabelShortCap +
+                                " into the new skyfaller's innerContainer (VF's own TryAddOrTransfer refused it) - " +
+                                (recoveredEarly
+                                    ? p.LabelShortCap + " was recovered and respawned at its original position " + originalPos + "."
+                                    : "FAILED TO RECOVER " + p.LabelShortCap + " - check the pawn's state directly, it may be lost."));
+                        }
+
                         GenSpawn.Spawn(skyfallerThing, cell, map);
                         if (!skyfallerThing.Spawned)
                         {
-                            // AirdropSkyfaller ultimately derives from the vanilla RimWorld.Skyfaller
-                            // (confirmed in source), so this cast is direct - no reflection needed,
-                            // same as SkyfallerMaker.SpawnSkyfaller's return value elsewhere in the
-                            // companion.
-                            var sk = skyfallerThing as Skyfaller;
-                            bool recovered = false;
-                            if (sk?.innerContainer != null && sk.innerContainer.Contains(p))
-                                recovered = sk.innerContainer.TryDrop(p, originalPos, originalMap, ThingPlaceMode.Near, out _);
+                            bool recovered = sk.innerContainer.Contains(p)
+                                && sk.innerContainer.TryDrop(p, originalPos, originalMap, ThingPlaceMode.Near, out _);
 
                             return Fail("GenSpawn.Spawn failed for the airdrop skyfaller at " + cell + " - " +
                                 (recovered
