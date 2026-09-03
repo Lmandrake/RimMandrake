@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-03T02:56:43Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-03T02:57:12Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -359,15 +359,6 @@ target:   v1
 kind:     bug
 summary:  1. Terrain overwrite is permanent and destructive; undisclosed.
 prose:    infrastructure/state/items/FLUID_CANAL_FLOOD_TUNING_GAPS_1.md
-
-## DEEPWATER_DEAD_GASMASK_TAG_1 Jawa_Deepwater_* keep KotORHeadband_gasmask in apparelTags after the headbands were cut - dead tag, and the generator is the real source
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  (no items/DEEPWATER_DEAD_GASMASK_TAG_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DEEPWATER_DEAD_GASMASK_TAG_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
