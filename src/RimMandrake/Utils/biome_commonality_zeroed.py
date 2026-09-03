@@ -61,7 +61,7 @@ import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.normpath(os.path.join(HERE, "..", "..", ".."))
-CAST_PATCH = os.path.join(REPO, "src", "Jawa", "Jawa_Patches", "Patches", "BiomeCast_Ashkarr.xml")
+CAST_PATCH = os.path.join(REPO, "src", "SPLIT_Phase3", "Jawa_Patches", "Patches", "BiomeCast_Ashkarr.xml")
 
 sys.path.insert(0, os.path.join(REPO, "design", "Jawa", "fauna"))
 import cherrypicker                                            # noqa: E402 — same dir
