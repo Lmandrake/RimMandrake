@@ -39,7 +39,18 @@ namespace RimMandrake.FluidCanals
 
 		protected override void Tick()
 		{
-			if (fluidDef == null || remainingVolume <= 0f)
+			// Fixed 2026-09-02 (opus code review): a fluidDef that vanished (a
+			// removed mod, a save-compat gap) silently destroyed this flood every
+			// tick with nothing in the log -- indistinguishable from ordinary
+			// volume exhaustion. Only log the genuinely-unexpected case.
+			if (fluidDef == null)
+			{
+				Log.ErrorOnce("[RimMandrake.FluidCanals] a Flood_FluidCanal has no fluidDef " +
+					"(a removed mod's FluidDef?) -- destroying.", thingIDNumber ^ 0x3);
+				Destroy();
+				return;
+			}
+			if (remainingVolume <= 0f)
 			{
 				Destroy();
 				return;

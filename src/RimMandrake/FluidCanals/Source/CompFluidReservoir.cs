@@ -1,3 +1,4 @@
+using System.Linq;
 using Verse;
 
 namespace RimMandrake.FluidCanals
@@ -24,14 +25,25 @@ namespace RimMandrake.FluidCanals
 		/// adjacent (8-way) to the new cell and not yet spent.</summary>
 		public static void Notify_CanalCellOpened(Map map, IntVec3 cell)
 		{
-			foreach (Thing thing in map.listerThings.AllThings)
+			// Fixed 2026-09-02 (opus code review): map.listerThings.AllThings is
+			// the LIVE backing list, not a copy. TrySpend below spawns a new
+			// Flood_FluidCanal onto this same map, which mutates that exact list
+			// mid-enumeration -- InvalidOperationException, on the only path that
+			// does anything in this whole mod. .ToList() snapshots it first.
+			//
+			// Also fixed: the adjacency check used thing.Position (the building's
+			// origin cell only), so a multi-cell reservoir would never trigger
+			// from most of its own footprint. OccupiedRect().ExpandedBy(1) covers
+			// the whole building plus its 8-way border, matching what "adjacent
+			// to a dug cell" should mean regardless of building size.
+			foreach (Thing thing in map.listerThings.AllThings.ToList())
 			{
 				CompFluidReservoir comp = thing.TryGetComp<CompFluidReservoir>();
 				if (comp == null || comp.spent)
 				{
 					continue;
 				}
-				if (thing.Position.DistanceToSquared(cell) <= 2)
+				if (thing.OccupiedRect().ExpandedBy(1).Contains(cell))
 				{
 					comp.TrySpend(cell);
 				}
@@ -40,8 +52,25 @@ namespace RimMandrake.FluidCanals
 
 		private void TrySpend(IntVec3 seedCell)
 		{
-			if (spent || Props.fluidDef == null || Props.fluidDef.fullTerrain == null)
+			if (spent)
 			{
+				return;
+			}
+			// Fixed 2026-09-02 (opus code review): a misconfigured fluidDef (typo'd
+			// XML reference, or one missing fullTerrain) left this inert forever
+			// with nothing in the log -- indistinguishable from "the notify never
+			// fired", the exact failure mode this mod's own live verification
+			// needs to be able to tell apart.
+			if (Props.fluidDef == null)
+			{
+				Log.ErrorOnce("[RimMandrake.FluidCanals] " + parent.def.defName +
+					"'s CompProperties_FluidReservoir has no fluidDef set.", parent.thingIDNumber ^ 0x1);
+				return;
+			}
+			if (Props.fluidDef.fullTerrain == null)
+			{
+				Log.ErrorOnce("[RimMandrake.FluidCanals] " + Props.fluidDef.defName +
+					" has no fullTerrain set.", parent.thingIDNumber ^ 0x2);
 				return;
 			}
 			spent = true;

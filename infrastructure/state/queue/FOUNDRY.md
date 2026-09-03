@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-03T00:24:19Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-03T00:27:27Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -368,6 +368,15 @@ target:   v1
 kind:     bug
 summary:  Important:
 prose:    infrastructure/state/items/BRIDGE_TERRAINTOOLS_REMAINING_FINDINGS_1.md
+
+## FLUID_CANAL_FLOOD_TUNING_GAPS_1 opus review found FluidCanals floods are permanent/floor-destroying (undisclosed), can tick forever if boxed in, and MaxFloodDurationTicks is actually a rate divisor not a duration - needs a design pass, not a quick fix
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  1. Terrain overwrite is permanent and destructive; undisclosed.
+prose:    infrastructure/state/items/FLUID_CANAL_FLOOD_TUNING_GAPS_1.md
 
 # BLOCKED — something is WRONG and someone must act
 

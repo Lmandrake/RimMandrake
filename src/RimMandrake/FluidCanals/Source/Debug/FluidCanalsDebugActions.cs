@@ -21,6 +21,11 @@ namespace RimMandrake.FluidCanals
             IntVec3 c = UI.MouseCell();
             Map map = Find.CurrentMap;
             if (map == null) return;
+            // Fixed 2026-09-02 (opus code review): UI.MouseCell() returns off-map
+            // cells freely when zoomed out; c.GetTerrain(map) below has no bounds
+            // check and throws IndexOutOfRangeException on one, in the primary
+            // verification tool for this whole mod.
+            if (!c.InBounds(map)) { Log.Message("[RMFluidCanalsDebug] " + c + " is off-map."); return; }
             map.terrainGrid.SetTerrain(c, RimMandrakeFluidCanals_DefOf.RM_Channel_Empty);
             CompFluidReservoir.Notify_CanalCellOpened(map, c);
             Log.Message("[RMFluidCanalsDebug] INSTANT_DIG at " + c
