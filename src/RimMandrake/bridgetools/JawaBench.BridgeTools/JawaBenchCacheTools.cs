@@ -276,10 +276,16 @@ namespace JawaBench.BridgeTools
                     if (populate)
                     {
                         if (!hCached.HasValue) { var _ = t.HillinessLabel; newlyPopulated++; }
+                        // ⚠️ tmpHasSecondaryBiome is filled ONLY by Tile.Biomes, and Biomes is an
+                        // ITERATOR - touching the property runs none of its body. It must be
+                        // enumerated. Without this the secondary-biome cache is never armed, so
+                        // the arm/repaint/re-audit cycle reports secondaryBiome.stale = 0 forever,
+                        // which is indistinguishable from a pass.
+                        if (!bCached.HasValue) { foreach (BiomeDef unused in t.Biomes) { } newlyPopulated++; }
                         if (includeTemps)
                         {
-                            if (!minC.HasValue) { var _ = t.MinTemperature; }
-                            if (!maxC.HasValue) { var _ = t.MaxTemperature; }
+                            if (!minC.HasValue) { var _ = t.MinTemperature; newlyPopulated++; }
+                            if (!maxC.HasValue) { var _ = t.MaxTemperature; newlyPopulated++; }
                         }
                     }
 
