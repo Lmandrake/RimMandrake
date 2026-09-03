@@ -23,8 +23,8 @@
        droid, no bill, no ingredient (see the driver's own header for why) —
        mirrors OuterRim_RestrainDroid's own JobDriver_RestrainDroid per
        droid_ruling.md section 3. Wiring a float-menu option / WorkGiver to
-       actually ISSUE this job is left as follow-up, same precedent
-       RSW_DW_RebootDroid's own header set (recipe defined, wiring deferred).
+       actually ISSUE this job is left as follow-up — unlike the recipe
+       defs, this JobDef has no def-level wiring point to attach to.
   ======================================================================== -->
   <JobDef>
     <defName>RSW_DW_ClampBolt</defName>

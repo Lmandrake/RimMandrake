@@ -9,7 +9,7 @@
     (DROIDWORKS_DLL_COMPILE_1).
 
     Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\Jawa\Droidworks\Source\Droidworks\Droidworks.csproj -c Release
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimStarWars\Droidworks\Source\Droidworks\Droidworks.csproj -c Release
 
     Output lands in ../../Assemblies/ (Source/Droidworks/../../Assemblies =
     Droidworks/Assemblies/), which is where RimWorld looks.

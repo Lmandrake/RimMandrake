@@ -4,17 +4,14 @@
   <!-- ========================================================================
        RSW_DW_RebootDroid — the outside-help reboot. Backs
        RimMandrake.StarWars.Droidworks.Recipe_RebootDroid (Source/Droidworks/Recipe_RebootDroid.cs),
-       whose AvailableOnNow/CompletableEver already gate eligibility on
-       HasHediff(RSW_DW_PoweredDown) in C# (fixed 2026-09-02, pass 3 -
-       GetPartsToApplyOn is a dead gate for a targetsBodyPart=false recipe,
-       never called by HealthCardUtility/Bill_Medical) - so this recipe needs
-       no race/body restriction of its own to be correct, which is exactly why
-       v0 leaves recipeUsers unset (generic):
-       no Droidworks race ThingDef exists yet (DROIDWORKS_DEF_GENERATOR_1 hasn't
-       run), so there is nothing real to name here, and inventing a defName would
-       be exactly the guess this project's doctrine forbids. Wiring
-       <recipes><li>RSW_DW_RebootDroid</li></recipes> onto the generated race defs is
-       follow-up work for whoever builds on DROIDWORKS_DEF_GENERATOR_1's output.
+       whose AvailableOnNow/CompletableEver gate eligibility on
+       HasHediff(RSW_DW_PoweredDown) in C# (AvailableOnNow reaches the
+       operations menu via HealthCardUtility's AvailableReport call for a
+       targetsBodyPart=false recipe -- GetPartsToApplyOn is never called for
+       this recipe). recipeUsers is left unset here: Races_Base.xml wires
+       this recipe (and the other three below) onto DW_Race_Base's
+       <recipes Inherit="False"> instead, which every DW_Race_* pawn kind
+       inherits.
 
        skillRequirements: the spec asked for "Crafting 4 or Medicine 4
        (either-or)". Vanilla RecipeDef.skillRequirements is an AND list, not OR -
@@ -124,9 +121,9 @@
        randomization via Verse.PawnGenerator.GenerateTraitsFor, relations via
        Pawn_RelationsTracker.ClearAllRelations, social memories via the same
        ISocialThought filter Anomaly's own Brainwipe ritual uses). Whole-pawn,
-       no race restriction (same v0 precedent RSW_DW_RebootDroid/
-       RSW_DW_InstallRestrainingBolt already set — recipeUsers wiring onto the
-       generated race defs is follow-up work, not this item's scope).
+       no race restriction of its own — wired onto every DW_Race_* pawn kind
+       via DW_Race_Base's <recipes> in Races_Base.xml, same as the other
+       three Droidworks recipes.
        isViolation true — RecipeWorker.IsViolationOnPawn's own default logic
        already means "violation unless performed on your own faction's pawn",
        which is exactly right here: wiping your own droid is not a violation,
