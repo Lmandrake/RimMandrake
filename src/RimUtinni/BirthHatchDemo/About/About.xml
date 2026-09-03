@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rut.birthhatchdemo</packageId>
+  <name>RimMandrake: Utinni — Birth &amp; Hatch Demo</name>
+  <author>Mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld.Biotech</packageId>
+      <displayName>Biotech</displayName>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+    <li>Ludeon.RimWorld.Biotech</li>
+  </loadAfter>
+  <description>A DEMONSTRATION mod, not campaign content. It exists to answer one
+question the owner asked on 2026-09-02: can the bridge drive RimWorld's whole
+reproduction chain — pregnancy, induced birth, an egg laid, and that egg hatching into
+a baby Jawa? LIVE_BIRTH_AND_HATCH_DEMO_1. Delete it once the answer is recorded.</description>
+</ModMetaData>

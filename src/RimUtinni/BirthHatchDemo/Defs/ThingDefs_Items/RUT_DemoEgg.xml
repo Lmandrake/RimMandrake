@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  🔴 DEMONSTRATION CONTENT, NOT CAMPAIGN CANON. Jawas do not lay eggs; this def
+  exists only to prove what CompHatcher can be pointed at, for
+  LIVE_BIRTH_AND_HATCH_DEMO_1 (owner, 2026-09-02: "hatch the egg into a baby Jawa").
+
+  🔑 WHY THIS WORKS, read in the 1.6 source rather than assumed:
+    · CompProperties_Hatcher.hatcherPawn is a PawnKindDef — NOT an animal-only field,
+      so a humanlike kind is a legal target (CompProperties_Hatcher.cs:9).
+    · CompHatcher builds its PawnGenerationRequest with DevelopmentalStage.Newborn
+      (CompHatcher.cs:85), so whatever hatches arrives as a BABY by construction.
+      "A baby Jawa" is exactly what this field already produces.
+
+  ⚠️ TWO THINGS TO WATCH WHEN THIS IS FIRED
+   1. CompHatcher.cs:85 passes `forceGenerateNewPawn: false`. That is the SAME defect
+      that made jawa/spawn_pawn hand back recycled world pawns and quietly drain
+      Ash'karr's faction populations (SPAWN_PAWN_SUBSTITUTES_VANILLA_KIND_1, fixed and
+      proven 2026-09-02). Vanilla's hatcher still has it. So check the hatchee's
+      ThingID against the live counter before calling the baby NEW — a redressed world
+      pawn would look like a success.
+   2. CompHatcher.cs:54 reads the hatcherPawn's own race for CompProperties_EggLayer.
+      A humanlike has none, so that lookup returns null. Watch for it.
+
+  Parent EggFertBase and the comp shape are copied from Core's EggChickenFertilized
+  (Data/Core/Defs/ThingDefs_Items/Items_Resource_AnimalProduct.xml), not invented.
+-->
+<Defs>
+
+  <ThingDef ParentName="EggFertBase">
+    <defName>RUT_DemoEggJawa</defName>
+    <label>jawa egg (demo)</label>
+    <description>A demonstration object. Not a thing that exists on Ash'karr, and not
+part of the campaign: it is here so someone can watch an egg hatch a newborn and prove
+the engine does what the source says it does. It hatches in a few hours rather than
+days, because nobody wants to wait for a proof.</description>
+    <possessionCount>1</possessionCount>
+    <graphicData>
+      <color>(214, 188, 130)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>7.0</MarketValue>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Hatcher">
+        <!-- 0.1 day ~= 2.4 in-game hours: long enough to be a real hatch, short
+             enough to watch on a fast clock. -->
+        <hatcherDaystoHatch>0.1</hatcherDaystoHatch>
+        <hatcherPawn>RSW_Jawa</hatcherPawn>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>
