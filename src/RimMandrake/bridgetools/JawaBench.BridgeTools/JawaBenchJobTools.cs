@@ -285,6 +285,23 @@ namespace JawaBench.BridgeTools
                 settable.SetPlantDefToGrow(def);
                 var readBack = settable.GetPlantDefToGrow();
 
+                // 🔴 SET_CROP_NO_SOWTAG_CHECK_1 (2026-09-03 sonnet fallback review).
+                // PlantUtility.CanSowOnGrower (RimWorld/PlantUtility.cs:284) is a UI-only
+                // filter - it gates Command_SetPlantToGrow's float-menu options, nothing
+                // else. Zone_Growing.SetPlantDefToGrow / Building_PlantGrower.SetPlantDefToGrow
+                // both just store the field with NO validation; CanAcceptSowNow() never checks
+                // it either (Zone_Growing's is a bare `return true`); and neither
+                // WorkGiver_GrowerSow nor JobDriver_PlantSow re-check it downstream - both only
+                // call ThingDef.CanNowPlantAt (fertility/temperature/terrain/blocking), which
+                // also skips it. So an incompatible assignment is NOT refused anywhere in the
+                // engine and WILL actually grow: a plant with an empty sowTags list
+                // (PlantProperties.Sowable => !sowTags.NullOrEmpty(), true of most wild-only
+                // flora) or one missing this grower's tag (a soil-only crop set on a hydroponics
+                // basin, or the reverse) quietly sows something the game's own UI would never
+                // offer. Reported here, not blocked - this tool already exposes more than the
+                // UI does elsewhere (see jawa/new_allowed_area's header note).
+                var sowTagCompatible = PlantUtility.CanSowOnGrower(def, settable);
+
                 return new
                 {
                     success = readBack == def,
@@ -294,6 +311,15 @@ namespace JawaBench.BridgeTools
                     identity = settable is Zone zn ? zn.label
                         : settable is Thing th ? th.ThingID : null,
                     canAcceptSowNow = settable.CanAcceptSowNow(),
+                    sowTagCompatible,
+                    note = !sowTagCompatible
+                        ? $"CanSowOnGrower is false for '{def.defName}' on this " +
+                          $"{settable.GetType().Name} - the game's own crop-select menu would " +
+                          "never offer this combination (wrong sowTag for this grower type, or " +
+                          "the plant is not player-sowable at all). Nothing in the engine " +
+                          "actually refuses it though: it will grow anyway. This is a real gap " +
+                          "in what the UI would let you choose, not a failed write."
+                        : null,
                 };
             }, cancellationToken).ConfigureAwait(false);
         }
@@ -763,6 +789,35 @@ namespace JawaBench.BridgeTools
                 var pawn = FindPawn(pawnId, out perr);
                 if (pawn == null) return Fail(perr);
                 if (pawn.jobs == null) return Fail($"'{pawnId}' has no Pawn_JobTracker.");
+
+                // 🔴 OFF-MAP / CONTAINED PAWN GUARD (2026-09-03 sonnet fallback review).
+                // FindPawn (JawaBenchPawnTools.cs) was widened tonight to also match held
+                // pawns (caskets, growth vats, pods, carried) and world pawns (caravans,
+                // transit) - neither is Spawned, so Thing.Map returns null for both
+                // (Verse/Thing.cs: the Map getter is gated on mapIndexOrState >= 0, i.e.
+                // Spawned). Most JobDrivers dereference pawn.Map UNGUARDED in
+                // TryMakePreToilReservations - e.g. JobDriver_Goto.cs:13 is
+                // `pawn.Map.pawnDestinationReservationManager.Reserve(...)` - so ordering a
+                // job on either population throws a raw NRE out of TryTakeOrderedJob instead
+                // of the clean Fail() this tool promises everywhere else. Caught before
+                // MakeJob is even called. A pawn spawned on a DIFFERENT loaded map is also
+                // refused: targetA/targetB and x/z are resolved against Find.CurrentMap
+                // (ResolveTarget below), so a cross-map order would reserve/path against the
+                // wrong map's grids.
+                if (!pawn.Spawned)
+                    return Fail(
+                        $"'{pawnId}' is not Spawned (it is contained - casket/vat/pod/carried " +
+                        "- or a world pawn - caravan/transit) and has no Map. Job drivers " +
+                        "dereference pawn.Map unguarded (e.g. JobDriver_Goto) and would NRE " +
+                        "instead of failing cleanly. jawa/ordered_job only works on a pawn " +
+                        "spawned on a loaded map.",
+                        new { spawned = pawn.Spawned, mapHeld = pawn.MapHeld?.ToString() });
+                if (pawn.Map != map)
+                    return Fail(
+                        $"'{pawnId}' is spawned on map '{pawn.Map}', not the current map " +
+                        $"'{map}'. targetA/targetB (and x/z) are resolved against " +
+                        "Find.CurrentMap, so this order would reserve/path against the wrong " +
+                        "map's grids. Switch to that map first.");
 
                 var jd = DefDatabase<JobDef>.GetNamedSilentFail(jobDef.Trim());
                 if (jd == null) return Fail($"Unknown JobDef '{jobDef}'.");
