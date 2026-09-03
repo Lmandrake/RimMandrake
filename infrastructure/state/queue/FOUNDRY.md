@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-03T03:18:02Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-03T03:25:15Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -35,6 +35,15 @@ target:   v1
 kind:     build
 summary:  design/Jawa/droidsystembuildspec.md — architecture (own DLL + HAR substrate,
 prose:    infrastructure/state/items/DROID_SYSTEM_BUILD_1.md
+
+## DROID_TILES_SOURED_TERRAIN_1 Free Droid Enclave tiles get polluted ground and fouled water (2026-08-04 doctrine, ruled alive)
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/DROID_TILES_SOURED_TERRAIN_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROID_TILES_SOURED_TERRAIN_1.md
 
 ## DROIDWORKS_POWEREDDOWN_NOT_WIRED_1 Ion buildup crossing threshold downs via vanilla JawaIon_Stun capMods only -- never adds the DW_PoweredDown hediff the state machine is built around
 state:    doing
@@ -306,15 +315,6 @@ kind:     bug
 summary:  (no items/HELIX_TELLUROX_SHELL_LOAD_CRASH_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/HELIX_TELLUROX_SHELL_LOAD_CRASH_1.md
 
-## QUEUE_ITEM_FILES_DECAY_1 Commits that finish a queue item don't update its items/<ID>.md, so next/triage reads it as unstarted
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  rimflow has no hook forcing a close, or even a plain code commit that
-prose:    infrastructure/state/items/QUEUE_ITEM_FILES_DECAY_1.md
-
 ## INHABITED_CHARACTERDEF_NAMESPACE_GAP_1 cast_to_xml.py emitted bare <Inhabited.CharacterDef> after the C# class moved to RimMandrake.Inhabited — 269 authored characters silently failed to load
 state:    doing
 row:      unassigned
@@ -360,12 +360,21 @@ kind:     bug
 summary:  1. Terrain overwrite is permanent and destructive; undisclosed.
 prose:    infrastructure/state/items/FLUID_CANAL_FLOOD_TUNING_GAPS_1.md
 
+## SEABEAST_STARMAW_LANTERNWHALE_TEXTURES_MISSING_1 Starmaw and Lanternwhale have no textures in the repo or the deploy - 2 of 18 sea beasts draw as nothing
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  RSWStarmaw (grid cell B2) and RSWLanternwhale (B3) have no textures deployed and
+prose:    infrastructure/state/items/SEABEAST_STARMAW_LANTERNWHALE_TEXTURES_MISSING_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
 
 ## DROID_TILES_SOURED_TERRAIN_1 Free Droid Enclave tiles get polluted ground and fouled water (2026-08-04 doctrine, ruled alive)
-state:    proposed  (BLOCKED)
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
@@ -424,14 +433,4 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## SEABEAST_STARMAW_LANTERNWHALE_TEXTURES_MISSING_1 Starmaw and Lanternwhale have no textures in the repo or the deploy - 2 of 18 sea beasts draw as nothing
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     spec, verify and criteria all present
-summary:  RSWStarmaw (grid cell B2) and RSWLanternwhale (B3) have no textures deployed and
-prose:    infrastructure/state/items/SEABEAST_STARMAW_LANTERNWHALE_TEXTURES_MISSING_1.md
+_none._

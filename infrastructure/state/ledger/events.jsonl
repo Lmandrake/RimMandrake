@@ -4116,3 +4116,8 @@
 {"seat":"BENCH","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-09-03T03:17:43Z"}
 {"seat":"BENCH","event":"close","id":"BRIDGE_TAKE_TOCTOU_AND_EPOCH_SENTINEL_1","sha":"a2d8a0aa","ts":"2026-09-03T03:17:53Z"}
 {"seat":"FOUNDRY","event":"close","id":"STARWARSRACES_UNDECLARED_GENE_DEPS_1","sha":"9274831f","ts":"2026-09-03T03:18:02Z"}
+{"seat":"FOUNDRY","event":"claim","id":"SEABEAST_STARMAW_LANTERNWHALE_TEXTURES_MISSING_1","ts":"2026-09-03T03:19:45Z"}
+{"seat":"FOUNDRY","event":"start","id":"SEABEAST_STARMAW_LANTERNWHALE_TEXTURES_MISSING_1","ts":"2026-09-03T03:19:45Z"}
+{"seat":"FOUNDRY","event":"claim","id":"DROID_TILES_SOURED_TERRAIN_1","ts":"2026-09-03T03:21:17Z"}
+{"seat":"FOUNDRY","event":"start","id":"DROID_TILES_SOURED_TERRAIN_1","ts":"2026-09-03T03:21:17Z"}
+{"seat":"FOUNDRY","event":"close","id":"QUEUE_ITEM_FILES_DECAY_1","sha":"5190ddcb","ts":"2026-09-03T03:25:15Z"}
