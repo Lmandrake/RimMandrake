@@ -945,6 +945,25 @@ def _condition_ok(li: ET.Element, active: set[str]) -> bool:
     return True
 
 
+def _version_key(vstr: str):
+    """'1.5' -> (1, 5) for numeric ordering; None if not bare MAJOR.MINOR."""
+    m = re.match(r"^(\d+)\.(\d+)$", vstr)
+    return (int(m.group(1)), int(m.group(2))) if m else None
+
+
+def _block_folders(block: ET.Element, mod_dir: str, active: set[str]) -> list[str]:
+    """<li> entries of one LoadFolders version block -> resolved, existing paths."""
+    folders: list[str] = []
+    for li in block.findall("li"):
+        if not _condition_ok(li, active):
+            continue
+        rel = _norm_rel(li.text)
+        p = os.path.join(mod_dir, *rel.split("/")) if rel else mod_dir
+        if os.path.isdir(p) and p not in folders:
+            folders.append(p)
+    return folders
+
+
 def resolve_load_folders(mod_dir: str, version: str, active: set[str]) -> list[str]:
     """
     The content folders this mod contributes at the target game version.
@@ -955,25 +974,48 @@ def resolve_load_folders(mod_dir: str, version: str, active: set[str]) -> list[s
 
     Without one (or without a block for this version): <mod>/<version> if it
     exists, else the mod root.
+
+    🔴 A LoadFolders.xml with no block for the CURRENT version is not the same
+    as no LoadFolders.xml at all. `ModContentPack.InitLoadFolders` falls back
+    to the highest version block <= current, then to a `<default>` block,
+    before it ever falls through to guessing a same-named folder on disk.
+    Measured 2026-09-03 (rimworld_loadset.py, this function's sibling copy):
+    5 active mods declare only older versions while also shipping an
+    UNDECLARED same-named folder for the current version on disk — the naive
+    "no exact block" fallback would validate against that dead folder instead
+    of the older block RimWorld actually loads.
     """
     lf = os.path.join(mod_dir, "LoadFolders.xml")
-    folders: list[str] = []
 
     if version and os.path.isfile(lf):
         root = parse_xml(lf)
         if root is not None:
-            block = root.find(f"v{version}")
-            if block is not None:
-                for li in block.findall("li"):
-                    if not _condition_ok(li, active):
-                        continue
-                    rel = _norm_rel(li.text)
-                    p = os.path.join(mod_dir, *rel.split("/")) if rel else mod_dir
-                    if os.path.isdir(p) and p not in folders:
-                        folders.append(p)
-                return folders
+            blocks: dict[str, ET.Element] = {}
+            for c in root:
+                tag = c.tag.lower()
+                if tag.startswith("v"):
+                    tag = tag[1:]
+                blocks.setdefault(tag, c)
 
-    # No LoadFolders.xml: the game loads the mod ROOT *and* the versioned
+            exact = blocks.get(version)
+            if exact is not None and len(exact.findall("li")) > 0:
+                return _block_folders(exact, mod_dir, active)
+
+            cur = _version_key(version)
+            if cur is not None:
+                candidates = [(k, b) for k, b in blocks.items()
+                             if k != "default" and _version_key(k) is not None
+                             and _version_key(k) <= cur]
+                if candidates:
+                    _, best = max(candidates, key=lambda kv: _version_key(kv[0]))
+                    return _block_folders(best, mod_dir, active)
+
+            default = blocks.get("default")
+            if default is not None:
+                return _block_folders(default, mod_dir, active)
+
+    # No LoadFolders.xml, or one with no exact/older/default block at all:
+    # the game loads the mod ROOT *and* the versioned
     # folder, not one or the other. Getting this wrong silently hides content,
     # which for a validator means false "target not found" verdicts.
     #
@@ -989,7 +1031,7 @@ def resolve_load_folders(mod_dir: str, version: str, active: set[str]) -> list[s
     # Order: root first, then versioned, so a version-specific override wins
     # over the root's copy of the same def under last-in-wins.
     versioned = os.path.join(mod_dir, version) if version else ""
-    folders.append(mod_dir)
+    folders = [mod_dir]
     if versioned and os.path.isdir(versioned) and versioned != mod_dir:
         folders.append(versioned)
     return folders

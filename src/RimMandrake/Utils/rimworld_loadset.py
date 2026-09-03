@@ -198,6 +198,25 @@ def _condition_ok(li, active):
     return True
 
 
+def _version_key(vstr):
+    """'1.5' -> (1, 5) for numeric ordering; None if not bare MAJOR.MINOR."""
+    m = re.match(r"^(\d+)\.(\d+)$", vstr)
+    return (int(m.group(1)), int(m.group(2))) if m else None
+
+
+def _block_folders(block, mod_dir, active):
+    """<li> entries of one LoadFolders version block -> resolved, existing paths."""
+    folders = []
+    for li in block.findall("li"):
+        if not _condition_ok(li, active):
+            continue
+        rel = _norm_rel(li.text)
+        p = os.path.join(mod_dir, *rel.split("/")) if rel else mod_dir
+        if os.path.isdir(p) and p not in folders:
+            folders.append(p)
+    return folders
+
+
 def resolve_load_folders(mod_dir, version, active):
     """
     The content folders this mod contributes at the target game version.
@@ -205,26 +224,49 @@ def resolve_load_folders(mod_dir, version, active):
     With a LoadFolders.xml: the <v{major.minor}> block, every <li> whose
     condition holds. Without one: <mod>/<version> if present, else the mod root.
     ElementTree drops comments, so commented-out entries are free to ignore.
+
+    🔴 A LoadFolders.xml with no block for the CURRENT version is not the same
+    as no LoadFolders.xml at all. `ModContentPack.InitLoadFolders` falls back
+    to the highest version block <= current, then to a `<default>` block,
+    before it ever falls through to guessing a same-named folder on disk.
+    Measured 2026-09-03: 5 active mods declare only older versions (e.g.
+    Det's Xenotypes - Avaloi tops out at v1.5) while also shipping an
+    UNDECLARED same-named `1.6/` folder on disk. The naive "no exact block"
+    fallback below would have scanned that dead 1.6/ folder — content the
+    live game never loads — instead of the v1.5 block RimWorld actually uses.
     """
     lf = os.path.join(mod_dir, "LoadFolders.xml")
-    folders = []
 
     if version and os.path.isfile(lf):
         root = parse_xml(lf)
         if root is not None:
-            block = root.find("v%s" % version)
-            if block is not None:
-                for li in block.findall("li"):
-                    if not _condition_ok(li, active):
-                        continue
-                    rel = _norm_rel(li.text)
-                    p = os.path.join(mod_dir, *rel.split("/")) if rel else mod_dir
-                    if os.path.isdir(p) and p not in folders:
-                        folders.append(p)
-                return folders
+            blocks = {}
+            for c in root:
+                tag = c.tag.lower()
+                if tag.startswith("v"):
+                    tag = tag[1:]
+                blocks.setdefault(tag, c)
 
-    # No LoadFolders.xml: the game loads the mod ROOT *and* the versioned
-    # folder, not one or the other. Getting this wrong silently hides content.
+            exact = blocks.get(version)
+            if exact is not None and len(exact.findall("li")) > 0:
+                return _block_folders(exact, mod_dir, active)
+
+            cur = _version_key(version)
+            if cur is not None:
+                candidates = [(k, b) for k, b in blocks.items()
+                             if k != "default" and _version_key(k) is not None
+                             and _version_key(k) <= cur]
+                if candidates:
+                    _, best = max(candidates, key=lambda kv: _version_key(kv[0]))
+                    return _block_folders(best, mod_dir, active)
+
+            default = blocks.get("default")
+            if default is not None:
+                return _block_folders(default, mod_dir, active)
+
+    # No LoadFolders.xml, or one with no exact/older/default block at all: the
+    # game loads the mod ROOT *and* the versioned folder, not one or the
+    # other. Getting this wrong silently hides content.
     #
     # Measured on the 562-mod stack (2026-08-10): 35 active mods ship a root
     # Defs/ alongside a version folder — RIMMSqol (178 defs), Way Better
@@ -239,7 +281,7 @@ def resolve_load_folders(mod_dir, version, active):
     # Order: root first, then versioned, so a version-specific override wins
     # over the root's copy of the same def under last-in-wins.
     versioned = os.path.join(mod_dir, version) if version else ""
-    folders.append(mod_dir)
+    folders = [mod_dir]
     if versioned and os.path.isdir(versioned) and versioned != mod_dir:
         folders.append(versioned)
     return folders
