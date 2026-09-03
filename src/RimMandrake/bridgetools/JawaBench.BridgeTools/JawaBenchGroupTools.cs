@@ -717,10 +717,19 @@ namespace JawaBench.BridgeTools
                 "combat against its defenders. 🔴 Attack() itself calls " +
                 "AffectRelationsOnAttacked -> Faction.TryAffectGoodwillWith INSIDE the engine " +
                 "call - this tool does NOT apply a second goodwill hit; the delta reported here " +
-                "IS that one. Refuses same-faction pairs.",
+                "IS that one. Refuses same-faction pairs. " +
+                "🔴 READ attackCompleted. When the settlement has NO MAP yet - the usual case - " +
+                "SettlementUtility.Attack only QUEUES the work as a LongEvent and returns immediately; " +
+                "QueueLongEvent enqueues and never runs inline, so AttackNow (the map generation, the " +
+                "caravan entering, and AffectRelationsOnAttacked with it) has not run by the time this " +
+                "call returns. attackCompleted=false means the after-readings are pre-attack values and " +
+                "goodwillHitApplied is null, not false - re-read with jawa/faction_relations_get once " +
+                "the loading screen clears.",
             ResultDescription =
-                "success, caravan, settlement, settlementFaction, beforeKind/afterKind " +
-                "(FactionRelationKind), beforeGoodwill/afterGoodwill, goodwillHitApplied.")]
+                "success (the attack was accepted), attackCompleted (false = queued as a LongEvent and " +
+                "not yet run), caravan, settlement, settlementFaction, beforeKind/afterKind " +
+                "(FactionRelationKind), beforeGoodwill/afterGoodwill, goodwillHitApplied - the last " +
+                "three are null when attackCompleted is false, because nothing has happened yet.")]
         public static async Task<object> SettlementAttack(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -759,16 +768,25 @@ namespace JawaBench.BridgeTools
                         ticksGame = TicksGameSafe()
                     };
 
+                // 🔴 SettlementUtility.Attack runs AttackNow INLINE only when the settlement already has
+                // a map. With no map it calls LongEventHandler.QueueLongEvent, which merely enqueues -
+                // it never executes inline, even with doAsynchronously:false. So on the common path
+                // nothing has happened yet when Attack() returns: no map, no caravan entry, and no
+                // AffectRelationsOnAttacked. Reading goodwill here would report an unchanged number and
+                // make the tool say the attack landed with no relations hit.
+                bool ranInline = settlement.HasMap;
+
                 try { SettlementUtility.Attack(car, settlement); }
                 catch (Exception e) { return Fail("Attack threw: " + e.GetType().Name + ": " + e.Message); }
 
-                string afterKind = sf != null ? sf.PlayerRelationKind.ToString() : null;
-                int? afterGoodwill = sf != null && Faction.OfPlayer != null ? (int?)Faction.OfPlayer.GoodwillWith(sf) : null;
+                string afterKind = ranInline && sf != null ? sf.PlayerRelationKind.ToString() : null;
+                int? afterGoodwill = ranInline && sf != null && Faction.OfPlayer != null ? (int?)Faction.OfPlayer.GoodwillWith(sf) : null;
 
                 return new
                 {
                     success = true,
                     dryRun = false,
+                    attackCompleted = ranInline,
                     caravan = car.Label,
                     settlement = settlement.Label,
                     settlementFaction = sf != null ? sf.def.defName : null,
@@ -776,8 +794,10 @@ namespace JawaBench.BridgeTools
                     afterKind,
                     beforeGoodwill,
                     afterGoodwill,
-                    goodwillHitApplied = beforeGoodwill != afterGoodwill,
-                    note = "The goodwill delta above is the hit Attack() applied internally via AffectRelationsOnAttacked - not a separate write.",
+                    goodwillHitApplied = ranInline ? (bool?)(beforeGoodwill != afterGoodwill) : null,
+                    note = ranInline
+                        ? "The settlement already had a map, so Attack() ran inline. The goodwill delta above is the hit it applied internally via AffectRelationsOnAttacked - not a separate write."
+                        : "🔴 QUEUED, NOT DONE. The settlement had no map, so Attack() only enqueued a LongEvent - the map generation, the caravan entering and the goodwill hit all run on the next LongEventHandler update, after this call returned. afterKind/afterGoodwill/goodwillHitApplied are null because nothing has happened yet; re-read with jawa/faction_relations_get once the loading screen clears.",
                     ticksGame = TicksGameSafe()
                 };
             }).ConfigureAwait(false);

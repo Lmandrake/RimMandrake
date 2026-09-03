@@ -239,10 +239,17 @@ namespace JawaBench.BridgeTools
                 "else on this bridge can write either field. This is distinct from jawa/difficulty_tune, " +
                 "which edits fields ON the difficulty OBJECT (threatScale etc.) without changing which " +
                 "StorytellerDef or DifficultyDef is active. Give neither argument to just read the " +
-                "current values.",
+                "current values. " +
+                "🔴 Setting difficultyDef ALSO copies that def's values into Storyteller.difficulty " +
+                "(Difficulty.CopyFrom), exactly as StorytellerUI does - the def field on its own is only " +
+                "a label and a StatPart_Difficulty key; every gameplay number is read off the Difficulty " +
+                "OBJECT, so writing the def alone would change nothing the game plays by. A def with " +
+                "isCustom=true is the one exception: its values are whatever jawa/difficulty_tune left " +
+                "there, so nothing is copied over them.",
             ResultDescription =
-                "success, before/after {storytellerDef, difficultyDef}, and whether Notify_DefChanged " +
-                "was called (only when storytellerDef actually changed).")]
+                "success, before/after {storytellerDef, difficultyDef, threatScale}, whether " +
+                "Notify_DefChanged was called (only when storytellerDef actually changed), and " +
+                "difficultyValuesCopied - whether Storyteller.difficulty took the new def's values.")]
         public static async Task<object> StorytellerSwap(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -258,11 +265,13 @@ namespace JawaBench.BridgeTools
                 var st = Find.Storyteller;
                 if (st == null) return Fail("Find.Storyteller is null - is a game loaded?");
 
-                var before = new
+                Func<object> snapshot = () => new
                 {
                     storytellerDef = st.def != null ? st.def.defName : null,
                     difficultyDef = st.difficultyDef != null ? st.difficultyDef.defName : null,
+                    threatScale = st.difficulty != null ? (float?)st.difficulty.threatScale : null,
                 };
+                var before = snapshot();
 
                 bool defChanged = false;
                 if (!string.IsNullOrWhiteSpace(storytellerDef))
@@ -271,30 +280,48 @@ namespace JawaBench.BridgeTools
                     if (sd == null) return Fail("No StorytellerDef '" + storytellerDef + "'.", DefSuggestions<StorytellerDef>(storytellerDef));
                     if (st.def != sd) { st.def = sd; defChanged = true; }
                 }
+
+                // 🔴 Storyteller.difficultyDef is ONLY a label (stat reports, MainTabWindow_History)
+                // and the StatPart_Difficulty key. Every number the game actually plays by - threatScale,
+                // cropYieldFactor, researchSpeedFactor, allowBigThreats, ... - is read off
+                // Storyteller.difficulty, the Difficulty VALUE object. StorytellerUI, which is what
+                // Page_SelectStorytellerInGame drives, does `difficultyValues.CopyFrom(allDef)` alongside
+                // `difficulty = allDef`; writing the def alone changes nothing but a label, which would
+                // make this tool report success for a swap that did not happen.
+                bool difficultyValuesCopied = false;
+                bool difficultyIsCustom = false;
                 if (!string.IsNullOrWhiteSpace(difficultyDef))
                 {
                     var dd = DefDatabase<DifficultyDef>.GetNamedSilentFail(difficultyDef.Trim());
                     if (dd == null) return Fail("No DifficultyDef '" + difficultyDef + "'.", DefSuggestions<DifficultyDef>(difficultyDef));
                     st.difficultyDef = dd;
+                    difficultyIsCustom = dd.isCustom;
+                    if (!dd.isCustom && st.difficulty != null)
+                    {
+                        try { st.difficulty.CopyFrom(dd); difficultyValuesCopied = true; }
+                        catch (Exception e) { return Fail("difficultyDef was set but Difficulty.CopyFrom threw: " + e.GetType().Name + ": " + e.Message + " - the storyteller is now in a MIXED state (new def, old values)."); }
+                    }
                 }
 
                 if (defChanged) st.Notify_DefChanged();
+
+                var notes = new List<string>();
+                if (defChanged) notes.Add("Notify_DefChanged() re-initialized storytellerComps for the new def.");
+                else if (!string.IsNullOrWhiteSpace(storytellerDef)) notes.Add("storytellerDef was already this value - Notify_DefChanged was NOT called.");
+                if (difficultyValuesCopied) notes.Add("Storyteller.difficulty.CopyFrom(def) applied the new difficulty's VALUES - the def field alone is only a label.");
+                else if (difficultyIsCustom) notes.Add("That DifficultyDef is isCustom=true, so its (empty) values were NOT copied over Storyteller.difficulty - the live custom values stand. Edit them with jawa/difficulty_tune.");
+                if (notes.Count == 0) notes.Add(string.IsNullOrWhiteSpace(storytellerDef) && string.IsNullOrWhiteSpace(difficultyDef)
+                    ? "No arguments given - this was a read."
+                    : "Nothing changed.");
 
                 return (object)new
                 {
                     success = true,
                     before,
-                    after = new
-                    {
-                        storytellerDef = st.def != null ? st.def.defName : null,
-                        difficultyDef = st.difficultyDef != null ? st.difficultyDef.defName : null,
-                    },
+                    after = snapshot(),
                     notifyDefChangedCalled = defChanged,
-                    note = defChanged
-                        ? "Notify_DefChanged() re-initialized storytellerComps for the new def."
-                        : (string.IsNullOrWhiteSpace(storytellerDef) && string.IsNullOrWhiteSpace(difficultyDef)
-                            ? "No arguments given - this was a read."
-                            : "storytellerDef unchanged (already this value, or only difficultyDef was given) - Notify_DefChanged was NOT called."),
+                    difficultyValuesCopied,
+                    note = string.Join(" ", notes.ToArray()),
                     ticksGame = TicksGameSafe(),
                 };
             }).ConfigureAwait(false);
@@ -441,7 +468,11 @@ namespace JawaBench.BridgeTools
             ResultDescription =
                 "success, before/after {total, items, buildings, floorsOnly, pawns, healthTotal}, and " +
                 "lastCountTick (private field, read by reflection) before/after so a caller can tell the " +
-                "recount actually ran rather than reusing a value the property getter already had.")]
+                "recount actually ran rather than reusing a value the property getter already had. " +
+                "🔴 The whole 'before' block is read off the PRIVATE fields, not the public getters: " +
+                "WealthTotal/WealthItems/... each call RecountIfNeeded() and would therefore perform the " +
+                "recount themselves, leaving before==after and lastCountTick unmoved - the tool would " +
+                "report recounted=false in precisely the case where a recount had just happened.")]
         public static async Task<object> WealthRecount(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -466,8 +497,35 @@ namespace JawaBench.BridgeTools
                     healthTotal = w.HealthTotal,
                 };
 
-                var before = snapshot();
+                // 🔴 Do NOT touch the public getters for the "before" reading. Every one of
+                // WealthTotal/WealthItems/WealthBuildings/WealthFloorsOnly/WealthPawns/HealthTotal calls
+                // RecountIfNeeded(), which runs a FULL ForceRecount() once the cache is >5000 ticks stale -
+                // the exact case this tool exists for. Reading them first would do the recount, so the
+                // explicit ForceRecount below would move nothing and `recounted` would report false while
+                // a recount had in fact just happened. The pre-state comes off the private fields instead.
                 object lastCountTickBefore = GmReadPrivateField(typeof(WealthWatcher), w, "lastCountTick");
+                object rItems = GmReadPrivateField(typeof(WealthWatcher), w, "wealthItems");
+                object rBuildings = GmReadPrivateField(typeof(WealthWatcher), w, "wealthBuildings");
+                object rPawns = GmReadPrivateField(typeof(WealthWatcher), w, "wealthPawns");
+                object rFloors = GmReadPrivateField(typeof(WealthWatcher), w, "wealthFloorsOnly");
+                object rHealth = GmReadPrivateField(typeof(WealthWatcher), w, "totalHealth");
+                bool preStateRead = rItems is float && rBuildings is float && rPawns is float && rFloors is float && rHealth is int;
+
+                float fItems = rItems is float ? (float)rItems : 0f;
+                float fBuildings = rBuildings is float ? (float)rBuildings : 0f;
+                float fPawns = rPawns is float ? (float)rPawns : 0f;
+                float fFloors = rFloors is float ? (float)rFloors : 0f;
+                object before = preStateRead
+                    ? (object)new
+                    {
+                        total = fItems + fBuildings + fPawns,
+                        items = fItems,
+                        buildings = fBuildings,
+                        floorsOnly = fFloors,
+                        pawns = fPawns,
+                        healthTotal = (int)rHealth,
+                    }
+                    : null;
 
                 try { w.ForceRecount(allowDuringInit); }
                 catch (Exception e) { return Fail("ForceRecount threw: " + e.GetType().Name + ": " + e.Message); }
@@ -480,8 +538,12 @@ namespace JawaBench.BridgeTools
                     success = true,
                     before,
                     after,
+                    preStateReadByReflection = preStateRead,
                     lastCountTick = new { before = lastCountTickBefore, after = lastCountTickAfter },
                     recounted = !Equals(lastCountTickBefore, lastCountTickAfter),
+                    note = preStateRead
+                        ? null
+                        : "'before' is null - WealthWatcher's private field layout has changed, so no honest pre-recount reading could be taken. 'after' is still real.",
                     ticksGame = TicksGameSafe(),
                 };
             }).ConfigureAwait(false);
@@ -792,9 +854,14 @@ namespace JawaBench.BridgeTools
             Description =
                 "Force an animal's gatherable body resource to be ready NOW, instead of waiting on its " +
                 "CompTick timer. mode='egg' drives CompEggLayer: eggAction='produce' sets the PRIVATE " +
-                "eggProgress field to 1 by reflection (so CanLayNow is honestly true, avoiding the " +
-                "Log.Error CompEggLayer.ProduceEgg() throws when called while !Active/not ready) and then " +
-                "calls ProduceEgg(), placing the resulting egg Thing next to the animal; eggAction='fertilize' " +
+                "eggProgress field to 1 by reflection (so CanLayNow is honestly true rather than the lay " +
+                "being forced mid-cycle) and then calls ProduceEgg(), placing the resulting egg Thing next " +
+                "to the animal - ProduceEgg builds the Thing but does NOT place it. " +
+                "⚠️ eggProgress has NO bearing on CompEggLayer.Active, which is gender / " +
+                "CurLifeStage.milkable / Sterile() / IsShambler only; ProduceEgg logs 'LayEgg while not " +
+                "Active' and then produces the egg ANYWAY, so a male or immature animal still yields an " +
+                "egg plus a red log line. A null egg means only that eggCountRange rolled 0. " +
+                "eggAction='fertilize' " +
                 "calls Fertilize(withMale) directly. mode='gatherable' targets whichever comp on the pawn " +
                 "derives from CompHasGatherableBodyResource (CompMilkable, CompShearable, ...) - its " +
                 "'fullness' field is PROTECTED with no public setter, so this sets it by reflection to " +
