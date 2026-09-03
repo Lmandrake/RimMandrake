@@ -339,6 +339,11 @@
     "date": "2026-09-03",
     "sha": "359b0b2c"
   },
+  "src/RimMandrake/Utils/animal_contact_sheet.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "d17af88d"
+  },
   "src/RimMandrake/Utils/animal_inventory.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -1042,6 +1047,11 @@
     "date": "2026-09-03",
     "sha": "51d41c87"
   },
+  "src/RimMandrake/Utils/worldview.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "d4993d9e"
+  },
   "src/RimMandrake/Utils/xenotype_size_audit.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -1281,6 +1291,21 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "359b0b2c"
+  },
+  "src/RimMandrake/rimflow/cli.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "3d60b716"
+  },
+  "src/RimMandrake/rimflow/model.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "3089b753"
+  },
+  "src/RimMandrake/rimflow/priority.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "3089b753"
   },
   "src/RimMandrake/rimflow/render.py": {
     "cleanCount": 1,
