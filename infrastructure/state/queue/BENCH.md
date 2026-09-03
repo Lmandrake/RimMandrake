@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-03T04:32:58Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: BENCH
+as-of: 2026-09-03T05:06:57Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -70,16 +70,6 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  Layer stack: design/Jawa/researchnormalizationprinciples.md (why) →
 prose:    infrastructure/state/items/RESEARCH_TREE_NORMALIZATION_1.md
-
-## FOG_REVIEW_SITTING_WITH_OWNER_1 Live sitting with the owner: turn off NWN Real Fog of War and confirm review passes are legible
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  The find this exists to act on: CAI is not the fog. He proposed dropping CAI 5000
-prose:    infrastructure/state/items/FOG_REVIEW_SITTING_WITH_OWNER_1.md
 
 ## GAME_STATE_BROADCAST_NARROWING_1 Narrow the game-state broadcast to windows that are actually blocked on the game
 state:    proposed
