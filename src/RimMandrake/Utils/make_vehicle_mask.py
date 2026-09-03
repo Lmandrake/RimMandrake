@@ -183,6 +183,11 @@ def main():
             return 1
         agree = dis = 0
         for i in range(0, len(v), 4):
+            if d[i + 3] <= ALPHA:
+                continue        # background: transparent in the art, never rendered -
+                                 # the mask's colour there is a don't-care and comparing
+                                 # it drowns the real signal (measured 11.54% -> 98.65%
+                                 # once restricted to the art's own opaque pixels)
             a, b = classify(derived, i), classify(v, i)
             if a == b:
                 agree += 1
