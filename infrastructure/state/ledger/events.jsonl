@@ -4131,3 +4131,4 @@
 {"seat":"FOUNDRY","event":"file","id":"BRIDGE_LISTPAWNS_GENETRACKER_NRE_1","title":"jawa/list_pawns NREs on any map with a non-genetic (droid) pawn -- Pawn_GeneTracker.XenotypeLabel getter throws","kind":"bug","target":"v1","needs":"offline","caused_by":"DROIDWORKS_POWEREDDOWN_NOT_WIRED_1","for":"FOUNDRY","ts":"2026-09-03T03:37:03Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-03T03:37:33Z"}
 {"seat":"FOUNDRY","event":"close","id":"DROIDWORKS_POWEREDDOWN_NOT_WIRED_1","sha":"222b5862","ts":"2026-09-03T03:38:12Z"}
+{"seat":"FOUNDRY","event":"close","id":"INHABITED_ROSTER_LIFECYCLE_SWEEP_1","sha":"34fedc85","ts":"2026-09-03T03:40:55Z"}

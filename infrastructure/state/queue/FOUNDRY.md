@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-03T03:38:12Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-03T03:40:55Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -323,15 +323,6 @@ target:   v1
 kind:     bug
 summary:  Determine (live, via the bridge, not more code reading) whether an
 prose:    infrastructure/state/items/INHABITED_SETTLEMENT_MAPPARENT_GAP_1.md
-
-## INHABITED_ROSTER_LIFECYCLE_SWEEP_1 opus review found 6 more real Inhabited bugs (pool-draw orphaning, GenStep order collision, role misalignment) plus 3 doc-vs-code gaps (stock/fate/kit fields inert)
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  Bugs:
-prose:    infrastructure/state/items/INHABITED_ROSTER_LIFECYCLE_SWEEP_1.md
 
 ## FLUID_CANAL_FLOOD_TUNING_GAPS_1 opus review found FluidCanals floods are permanent/floor-destroying (undisclosed), can tick forever if boxed in, and MaxFloodDurationTicks is actually a rate divisor not a duration - needs a design pass, not a quick fix
 state:    doing
