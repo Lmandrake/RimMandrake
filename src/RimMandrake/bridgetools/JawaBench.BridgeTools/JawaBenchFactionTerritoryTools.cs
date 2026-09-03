@@ -209,6 +209,39 @@ namespace JawaBench.BridgeTools
                 }
 
                 object before = ReadAll();
+
+                // 🔴 FactionTerritoriesSettings applies its own Mathf.Clamp calls inside
+                // ExposeData, under `Scribe.mode == PostLoadInit` ONLY - never on Write() and
+                // never on assignment. So an out-of-range value written here is applied to the
+                // live algorithm, persisted to the mod's XML, reported in after{} - and then
+                // silently snaps back to the clamp the NEXT time the game loads settings. That
+                // makes after{} a number the game will not keep, which is exactly the failure
+                // this tool exists to avoid. Refuse up front, before ANY field is written, so a
+                // rejected call also cannot leave a half-applied settings object behind.
+                // Ranges below are the mod's own, read out of the decompiled ExposeData.
+                var outOfRange = new List<string>();
+                void CheckRange(string fieldName, double? v, double lo, double hi)
+                {
+                    if (v.HasValue && (v.Value < lo || v.Value > hi))
+                        outOfRange.Add($"{fieldName}={v.Value} (allowed {lo}..{hi})");
+                }
+                CheckRange("radiusSteps", radiusSteps, 1, 200);
+                CheckRange("variationSteps", variationSteps, 0, 100);
+                CheckRange("roadMovementDifficultyPercent", roadMovementDifficultyPercent, 0, 200);
+                CheckRange("terrainDifficultyImpactPercent", terrainDifficultyImpactPercent, 0, 200);
+                CheckRange("impassableHillinessOffset", impassableHillinessOffset, 0, 1000);
+                CheckRange("settlementUncontestedRange", settlementUncontestedRange, 0, 20);
+                if (outOfRange.Count > 0)
+                {
+                    return Fail(
+                        "Refusing - value(s) outside the mod's own clamp range: " +
+                        string.Join("; ", outOfRange) +
+                        ". FactionTerritoriesSettings clamps these on LOAD only, so writing one would " +
+                        "take effect live, persist to the mod's XML, and then snap back on the next " +
+                        "load - after{} would report a value the game does not keep. Nothing was written.",
+                        new { modPresent = true, before, outOfRange });
+                }
+
                 var changed = new List<string>();
                 var missingFields = new List<string>();
 
