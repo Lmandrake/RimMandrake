@@ -15,21 +15,37 @@ immediately after it at position 12: **`Mlie.NWNRealFogOfWar`** — "(NWN) Real 
 
 ⇒ Dropping CAI would cost the whole combat AI and remove no fog at all.
 
-**What to do, with him at the bench:**
-- NWN exposes its own toggle in the mod-settings window (its DLL carries `RfowSettings`
-  with an enable/disable field and a `DoSettingsWindowContents`). **No
-  `Mod_3391128917_*.xml` exists**, so the mod has never been opened and is running its
-  shipped default — for a fog mod, fog-on.
-- ⚠️ UNMEASURED: whether the toggle takes effect live or needs a restart. The field
-  reads like a per-frame render check rather than a Harmony install gate, which usually
-  means live — but that is an inference, not a reading. Budget for a restart.
-- He looks. The question is only ever answerable by his eye: *is a review pass legible
-  now?*
+**⚠️ THE SWITCH IS NOT AN ENABLE/DISABLE FIELD.** Measured 2026-09-02 by decompiling
+`3391128917\1.6\Assemblies\rimworld-mod-real-fow.dll` (ilspycmd): `RfowSettings` has **no
+global on/off** — its 27 settings are all tuning (view ranges, `fogAlpha`, `fogFadeSpeed`,
+`mapRevealAtStart`, hearing, audio muffling). The earlier line here claiming an
+enable/disable field was an inference from a strings dump, and it was wrong.
 
-**If it is live**, this is free and the answer is a settings toggle flipped per pass. **If
-it needs a restart**, it becomes a profile the way the Cherry Picker cut list did
-(`CHERRYPICKER_TWO_PROFILES_1`) — and the two should then be flipped together, since a
-review pass wants both no fog and no cuts.
+**The switch that actually exists is `onlyOutsideColony`** — labelled *"Only show fog on
+non-colony maps"* (`Languages/English/Keyed/Preference.xml`). It is a complete off switch
+for colony maps, on BOTH halves of the mod, which is why it is the right one:
+- `SectionLayerFoVLayer.Visible` returns false → the fog overlay is not drawn.
+- `MapComponentSeenFog.IsShown` returns **true unconditionally** on a player-home map →
+  `CompHideFromPlayer.hasPartShownToPlayer()` always passes, so nothing is hidden.
+  `FoWThingUtils.FowIsVisible` short-circuits the same way.
+
+✅ **MEASURED: it is LIVE, no restart.** Closing the settings window calls
+`ModSettings.ExposeData` → `applySettings()` → `mapDrawer.RegenerateEverythingNow()` on
+every map (`RfowSettings.cs:357-373, 408`). So this never becomes a profile, and the
+`CHERRYPICKER_TWO_PROFILES_1` pairing is not needed for it.
+
+⚠️ **One residue to watch when he looks.** The mesh regeneration redraws the fog; it does
+not itself walk things back out of `CompHiddenable.Hidden`. A non-player thing already
+hidden un-hides on its next `UpdateVisibility` (position change or force check), so a
+few may linger invisible until something nudges them. If that shows, a save/load of the
+map settles it — it is not the toggle failing.
+
+**What to do, with him at the bench:** Options → Mod settings → *(NWN) Real Fog of War
+(Continued)* → tick **"Only show fog on non-colony maps"** → close the window. Then he
+looks. The question is only ever answerable by his eye: *is a review pass legible now?*
+
+**No `Mod_3391128917_*.xml` exists**, so the mod has never been opened and is running its
+shipped defaults — fog on. Closing the settings window once will create that file.
 
 ## verify
 He looks at a map with the toggle off and says whether it is reviewable. Nothing else
