@@ -116,7 +116,6 @@ import argparse
 import csv
 import io
 import json
-import os
 import sys
 import xml.etree.ElementTree as ET
 from pathlib import Path
@@ -215,9 +214,9 @@ def check_modlist(man_path, anyway):
     else:
         print("dump matches the live list: %d mods, captured %s"
               % (n, man.get("capturedUtc", "?")))
-    active_ids = {li.text.strip().lower() for li in ET.parse(MODS_CONFIG).getroot()
-                  .find("activeMods") if li.text} if os.path.isfile(MODS_CONFIG) else set()
-    return man, active_ids
+    # `live` above IS this same set, from the same parse of the same file - a second
+    # ET.parse(MODS_CONFIG) here reread and rebuilt it for no reason.
+    return man, live
 
 
 # ---------------------------------------------------------------- manifest
