@@ -16,7 +16,9 @@ from sea_creatures import CREATURES, FINAL, TELL, canvas_for  # noqa: E402
 
 FACINGS = ("south", "east", "north", "west")
 
-DOC = """<!-- SW_SEA_MONSTERS_ART_1 — offline art only. No def written, nothing deployed.
+DOC = """<!-- SW_SEA_MONSTERS_ART_1 — the facing set. The shipping copies live in
+     src/RimStarWars/SeaBeasts/Textures/Things/Pawn/Animal/SeaBeasts/{slug}/;
+     art/ is DEPLOY_HOLD'd source (src/DEPLOY_HOLD.txt) and never ships.
      Approved concept: src/RimStarWars/SeaBeasts/art/mockups/{stem}.png (KEPT by the
      owner 2026-08-31; this set must read as the SAME animal and was not re-rolled).
      Roster: design/Jawa/worldbuilding/sea_beasts_roster.md · def spec:
@@ -58,15 +60,15 @@ Measured on the committed PNGs:
 |---|---|---|---|---|---|
 {rows}
 
-## 2. In game — owed, blocked on the def
+## 2. In game — owed
 
-No `{defname}` ThingDef exists yet; the def spec is written but no XML is authored,
-so there is nothing to spawn. When it is:
+The `{defname}` ThingDef and PawnKindDef are authored under
+`src/RimStarWars/SeaBeasts/Defs/ThingDefs_Races/`, so there is something to spawn:
 
 ```
 PROVE    spawn {defname} on a quicktest map, select it, and rotate it through
-         all four facings at default zoom (drawSize {draw} ⇒ roughly {cells} cells
-         across the screen)
+         all four facings at default zoom (adult drawSize {draw} ⇒ roughly {cells}
+         cells across the screen)
 EXPECT   {tell} — visible on south, east and west; hidden on north, which shows
          only the back
 LIES     Graphic_Multi's bare-path fallback: Graphic_Multi.Init calls

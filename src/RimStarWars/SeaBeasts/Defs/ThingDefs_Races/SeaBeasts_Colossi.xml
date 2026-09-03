@@ -5,11 +5,10 @@
      game does not model, so EatsFood is false and they carry no food need
      (Pawn_NeedsTracker.cs:358) — same mechanism as the scalefish.
 
-     RSW_Starmaw and RSW_Lanternwhale have NO ART YET (generation stopped on
-     a ChatGPT usage limit — see art/final/README.md). Their texPath already
-     points at Things/Pawn/Animal/SeaBeasts/<Slug>/<Slug>, the folder the
-     4-facing set will land in once generated — nothing here needs renaming
-     when that happens. -->
+     All three carry a full 4-facing set under
+     Things/Pawn/Animal/SeaBeasts/<Slug>/<Slug>. Graphic_Multi fails SILENTLY
+     on a missing facing — it renders nothing and no magenta fires — so any
+     edit to a texPath here must keep all four files together. -->
 <Defs>
 
   <ThingDef ParentName="AnimalThingBase">
