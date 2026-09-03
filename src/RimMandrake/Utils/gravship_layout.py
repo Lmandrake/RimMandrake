@@ -209,7 +209,7 @@ class Layout(object):
                     ET.SubElement(tEl, "compSettings", NULL)
         ET.SubElement(root, "width").text = str(self.width)
         ET.SubElement(root, "height").text = str(self.height)
-        if self.gravEngineX is not None:
+        if self.gravEngineX is not None and self.gravEngineZ is not None:
             ET.SubElement(root, "gravEngineX").text = str(self.gravEngineX)
             ET.SubElement(root, "gravEngineZ").text = str(self.gravEngineZ)
         ET.SubElement(root, "defName").text = self.defName
@@ -252,7 +252,6 @@ class Layout(object):
                 if c.things and not c.foundationDef:
                     bad.append("thing at (%d,%d) with no foundation -- it will "
                                "not be part of the ship" % (x, z))
-                    break
         return bad
 
 
