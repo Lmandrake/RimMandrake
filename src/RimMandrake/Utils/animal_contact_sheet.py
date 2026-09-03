@@ -568,7 +568,17 @@ def resolve_texture(tex_path, index, bundle_index=None, own_pkg=None):
         best = None
         for i, suf in enumerate(BUNDLE_SUFFIXES + BUNDLE_VARIANT_SUFFIXES
                                 + BUNDLE_CAPITAL_SUFFIXES):
-            for src, have_dirs, path in bundle_index.get(stem + suf, ()):
+            # ⚠️ `.lower()` is load-bearing here exactly as it is for the loose
+            # capital-variant rung above: every bundle_index key is lowercased
+            # by _container_segs, but BUNDLE_CAPITAL_SUFFIXES is the literal
+            # uppercase tuple. Without it `stem + suf` never matches any key,
+            # so every capital-letter variant silently skipped this ranked
+            # ladder (own-mod-first, trailing_score, suffix order) and fell
+            # through to the unranked alt_stems fallback below, which breaks
+            # ties on bundle-CSV insertion order rather than mod ownership —
+            # the exact wrong-mod-sprite bug this file's own-mod-first rule
+            # exists to prevent.
+            for src, have_dirs, path in bundle_index.get(stem + suf.lower(), ()):
                 is_own = 1 if (own and src == own) else 0
                 score = trailing_score(want_dirs, have_dirs)
                 # Cross-source needs a reason. Either the paths agree, or the
