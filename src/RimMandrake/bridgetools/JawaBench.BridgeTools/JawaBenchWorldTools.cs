@@ -791,7 +791,9 @@ namespace JawaBench.BridgeTools
                 "RimWorld and would confirm writes that never landed). Use after " +
                 "jawa/world_tile_import to prove the import actually took.",
             ResultDescription =
-                "success, rows, matched, mismatched, byField{}, diffs[] (capped).")]
+                "success, rows, checkedRows, skipped (rows whose tile id was unparseable or " +
+                "out of range - EXCLUDED from matched/mismatched, so they cannot silently " +
+                "deflate matchPct), matched, mismatched, byField{}, diffs[] (capped), errors[].")]
         public static async Task<object> WorldTileValidate(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -809,9 +811,10 @@ namespace JawaBench.BridgeTools
                 var csv = ReadTileCsv(path, out err);
                 if (csv == null) return Fail(err);
 
-                int rows = 0, matched = 0, mismatched = 0;
+                int rows = 0, matched = 0, mismatched = 0, skipped = 0;
                 var byField = new Dictionary<string, int>();
                 var diffs = new List<object>();
+                var errors = new List<string>();
                 Action<string> bump = f => { int n; byField.TryGetValue(f, out n); byField[f] = n + 1; };
 
                 foreach (var row in csv.Rows)
@@ -819,10 +822,19 @@ namespace JawaBench.BridgeTools
                     if (maxRows > 0 && rows >= maxRows) break;
                     rows++;
 
+                    // 🔴 A row whose tile id is unparseable or out of range used to just
+                    // `continue` here - not matched, not mismatched, not in any errors list.
+                    // `rows` still counted it, so matchPct = matched/rows silently deflated
+                    // on every such row while nothing in the reply said why. This is the tool
+                    // that exists to "prove the import actually took" - a planet reimported
+                    // onto the wrong tile count would have every row skip exactly this way
+                    // and still read as a partial match instead of a total miss.
                     int id; var ids = Cell(csv, row, "tile");
-                    if (ids == null || !int.TryParse(ids, out id)) continue;
+                    if (ids == null || !int.TryParse(ids, out id))
+                    { skipped++; if (errors.Count < 20) errors.Add("Row " + rows + ": bad tile id '" + ids + "'"); continue; }
                     string e2; var t = SurfaceTileAt(id, out e2);
-                    if (t == null) continue;
+                    if (t == null)
+                    { skipped++; if (errors.Count < 20) errors.Add("Row " + rows + ": " + e2); continue; }
 
                     var bad = new List<string>();
                     float fv;
@@ -858,18 +870,24 @@ namespace JawaBench.BridgeTools
                     }
                 }
 
+                int checkedRows = matched + mismatched;
                 return (object)new
                 {
                     success = true,
                     path,
                     rows,
+                    checkedRows,
+                    skipped,
                     matched,
                     mismatched,
-                    matchPct = rows > 0 ? Math.Round(100.0 * matched / rows, 2) : 0.0,
+                    // Denominator is CHECKED rows, not raw file rows: a row this tool never
+                    // actually compared must not silently count against the score.
+                    matchPct = checkedRows > 0 ? Math.Round(100.0 * matched / checkedRows, 2) : 0.0,
                     tolerance,
                     byField,
                     readRawFields = true,
                     diffs,
+                    errors,
                     ticksGame = TicksGameSafe(),
                 };
             });
@@ -1071,7 +1089,8 @@ namespace JawaBench.BridgeTools
                 "on BOTH endpoints or the link survives from the other side. " +
                 "Clears every link on the named tiles, or only the segment between a " +
                 "specific pair when 'to' is given. Does not redraw; call jawa/world_commit.",
-            ResultDescription = "success, removedEntries, tilesTouched, and a read-back.")]
+            ResultDescription = "success, removedEntries, tilesTouched, notFound[] (requested " +
+                "ids matching no live surface tile), and a read-back.")]
         public static async Task<object> WorldLinksClear(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -1128,8 +1147,18 @@ namespace JawaBench.BridgeTools
                     }
                 };
 
+                // 🔴 Same shape as the fix on jawa/world_objects_set: an id in `tiles`/
+                // `range`/`to` that matches no live surface tile used to vanish inside
+                // clearPair's own `if (ta == null) return;` with NO trace anywhere - this
+                // tool did not even declare an errors/notFound field to catch it in. A
+                // typo'd or out-of-range id silently cleared nothing and still reported
+                // `success: true`.
+                var notFound = new List<int>();
+
                 if (to >= 0 && ids.Count == 1)
                 {
+                    string e1; if (SurfaceTileAt(ids[0], out e1) == null) notFound.Add(ids[0]);
+                    string e2; if (SurfaceTileAt(to, out e2) == null && !notFound.Contains(to)) notFound.Add(to);
                     clearPair(ids[0], to);
                     clearPair(to, ids[0]);
                 }
@@ -1139,7 +1168,7 @@ namespace JawaBench.BridgeTools
                     {
                         // Collect the far endpoints first, then clear their mirrors.
                         string e; var t = SurfaceTileAt(id, out e);
-                        if (t == null) continue;
+                        if (t == null) { notFound.Add(id); continue; }
                         var far = new List<int>();
                         if (doRivers && t.potentialRivers != null) far.AddRange(t.potentialRivers.Select(l => l.neighbor.tileId));
                         if (doRoads && t.potentialRoads != null) far.AddRange(t.potentialRoads.Select(l => l.neighbor.tileId));
@@ -1158,8 +1187,9 @@ namespace JawaBench.BridgeTools
 
                 return (object)new
                 {
-                    success = true, kind, removedEntries = removed,
+                    success = notFound.Count == 0, kind, removedEntries = removed,
                     tilesTouched = touched.Count,
+                    notFound,
                     note = "Both endpoints were cleared. Nothing is visible until jawa/world_commit.",
                     tiles = back, ticksGame = TicksGameSafe(),
                 };
@@ -2273,7 +2303,8 @@ namespace JawaBench.BridgeTools
                 "centerOnTile to have it computed from a tile instead. " +
                 "Sets Find.WorldFeatures.textsCreated=false so the label text is rebuilt - " +
                 "without that the OLD text keeps drawing however the data changed.",
-            ResultDescription = "success, action, featureId, tilesAssigned, feature read back.")]
+            ResultDescription = "success, action, featureId, tilesAssigned, notFound[] " +
+                "(requested ids matching no live surface tile), feature read back.")]
         public static async Task<object> WorldFeaturesSet(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -2349,10 +2380,17 @@ namespace JawaBench.BridgeTools
                     if (bits.Length == 2 && int.TryParse(bits[0].Trim(), out a) && int.TryParse(bits[1].Trim(), out b))
                         for (int i = Math.Min(a, b); i <= Math.Max(a, b); i++) ids.Add(i);
                 }
+                // 🔴 Same shape as the fix on jawa/world_objects_set: a tile id in `tiles`/
+                // `range` that matches no live surface tile used to vanish inside a bare
+                // `if (t == null) continue;` with no trace anywhere - this tool did not
+                // declare an errors/notFound field to catch it in, so `tilesAssigned` just
+                // read low with no way to tell whether that was a typo'd id or the biome
+                // import genuinely naming fewer tiles than expected.
+                var notFound = new List<int>();
                 foreach (var id in ids)
                 {
                     string e; var t = SurfaceTileAt(id, out e);
-                    if (t == null) continue;
+                    if (t == null) { notFound.Add(id); continue; }
                     t.feature = f; assigned++;
                 }
 
@@ -2363,9 +2401,10 @@ namespace JawaBench.BridgeTools
 
                 return (object)new
                 {
-                    success = true, action = create ? "create" : "update",
+                    success = notFound.Count == 0, action = create ? "create" : "update",
                     featureId = f.uniqueID,
                     tilesAssigned = assigned,
+                    notFound,
                     feature = new
                     {
                         uniqueID = f.uniqueID,
