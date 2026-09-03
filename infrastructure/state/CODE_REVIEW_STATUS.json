@@ -1117,6 +1117,11 @@
     "date": "2026-09-03",
     "sha": "8b25e71d"
   },
+  "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchLoadStallProbe.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "9437c787"
+  },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchLogAutoOpenSuppress.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
