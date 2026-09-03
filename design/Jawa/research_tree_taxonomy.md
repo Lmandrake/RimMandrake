@@ -53,7 +53,7 @@ sitting decides RR's fate outright (§6.6).
 | **The Machine** | the droid branch, gathered and VISIBLE: Droid Depot, Outer Rim droid rows, droid bionics — the Ohm/Oomo flashpoint the player walks into knowingly | ↑Ohm, ↓Oomo per completion |
 | **THE SHIP** | the ruled non-linear tree: gravtech cluster, VGE systems, ShipReactor, VFE_Manufacturing, drill-laser pair, ship weaponry, Memory Core chain (hidden until the ship surfaces them — research as revelation) | Rekko-NEUTRAL for restoration rows; Ozzik-weighted for beyond-spec rows |
 | **The Reach** | spacer/ultra/archotech: the temptation tab, visibly pride-marked — the archite ladder lives here when its v2 rethink lands | the trap's teeth |
-| **(Anomaly)** | engine-forced tab, playstyle-gated — all 42 rows CUT (owner, 2026-09-03): repurposed content, not a player tree. The Assailant/sarlacc exception reaches its content by a non-research route (`ANOMALY_EXCEPTION_ACCESS_1`), never by research | all cut |
+| **(Anomaly)** | engine-forced tab — all 42 RESEARCH ROWS cut (owner, 2026-09-03): the player cannot research this tree. **The content is NOT cut** and stays for campaign repurposing (sarlacc, Assailant dungeons, terminator/night-side creatures). Player access to the containment buildings comes by a non-research route (`ANOMALY_EXCEPTION_ACCESS_1`) | rows cut, content kept |
 
 The research screen becomes the temptation diagram: left-to-right is the
 ambition gradient, and the two pride-marked tabs LOOK different (tab naming
@@ -134,10 +134,18 @@ Checks, each with its false-pass named:
    beats `guy762_ResearchKotOR_ion`); non-weapon rows re-tiered in place.
 4. Every merge re-points the LOSER's unlocks onto the survivor before the
    loser dies — an unlock must never be orphaned by our own normalization.
-5. Anomaly rows: all 42 CUT (owner, 2026-09-03). Exception content stays
-   reachable by a non-research route — `ANOMALY_EXCEPTION_ACCESS_1` resolves
-   it, and that must land before the cut ships.
-6. Nothing renames a defName, ever (saves + mod C# break invisibly).
+5. 🔴 **A CUT REMOVES A `ResearchProjectDef`. NOTHING ELSE** (owner,
+   2026-09-03, correcting a misreading that ran through v1 and v2): *"I did not
+   cut the anomaly content. I only cut the players ability to research that tech
+   tree."* The ThingDefs, PawnKindDefs, buildings, creatures and map content a
+   cut row unlocked all **stay in the game**, for the campaign's own
+   repurposing — the sarlacc, the Assailant dungeons, the terminator/night-side
+   creatures. Never Cherry-Pick a thing because its research row died.
+6. Anomaly rows: all 42 research rows CUT (owner, 2026-09-03) under rule 5 —
+   the tab leaves the player's tree, the content stays ours.
+   `ANOMALY_EXCEPTION_ACCESS_1` gives the player a non-research route to the
+   containment buildings, and must land before the cut ships.
+7. Nothing renames a defName, ever (saves + mod C# break invisibly).
 
 ## 6. RULED by the owner, 2026-08-31 (question cards) — canon `research_tree.taxonomy_ruled`
 

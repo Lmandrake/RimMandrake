@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-03T16:34:30Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-03T17:50:05Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -69,5 +69,5 @@ needs:    owner
 target:   v1
 kind:     task
 thin:     spec, verify and criteria all present
-summary:  VERIFIED against design/Jawa/researchtreetaxonomy.md:56 as it stood before
+summary:  🔑 The content was never cut (owner, 2026-09-03): "I did not cut the anomaly
 prose:    infrastructure/state/items/ANOMALY_EXCEPTION_ACCESS_1.md
