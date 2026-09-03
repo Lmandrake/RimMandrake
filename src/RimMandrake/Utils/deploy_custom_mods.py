@@ -71,6 +71,14 @@ def mod_dirs():
         for n in sorted(os.listdir(d)):
             p = os.path.join(d, n)
             if os.path.isfile(os.path.join(p, "About", "About.xml")):
+                if n in out:
+                    # Two tiers using the same bare folder name collide silently
+                    # here otherwise — the second tier scanned wins with no
+                    # warning, and the loser is never deployed and never
+                    # appears in the plan. This has bitten before (two mods
+                    # both named FireEcology in different tiers).
+                    sys.exit("deploy_custom_mods.py: duplicate mod folder name "
+                             "%r in both %s and %s — rename one." % (n, out[n], p))
                 out[n] = p
     return out
 
@@ -299,11 +307,30 @@ def main():
         print("pulling %d file(s) from the game copy into the repo:" % len(new + changed))
         for r in new + changed:
             print("   ", r)
-        copy(src, dst, new + changed)
+        pulled = copy(src, dst, new + changed)
+        if pulled == 0:
+            # copy() already printed its own "REFUSING TO DEPLOY: malformed
+            # XML" — the likely case for --pull specifically, since its whole
+            # purpose is rescuing a hand-edit made directly in the Mods
+            # folder. Without this check nothing was actually copied and the
+            # command still printed "done" and exited 0.
+            print("nothing was pulled — fix the malformed file in the game copy and re-run.")
+            return 1
         print("done — review with `git diff` before committing")
         return 0
 
-    names = args.mod or sorted(mod_dirs())
+    known_mods = mod_dirs()
+    if args.mod:
+        # mod_dir() falls back to a guessed path for an unknown name rather
+        # than raising, so a typo'd --mod used to sail through: tree() on the
+        # nonexistent guessed dir returns an empty set, `gone` becomes EVERY
+        # deployed file for that name, and --apply --prune would delete the
+        # entire deployed mod folder. Refuse before any of that can happen.
+        unknown = [n for n in args.mod if n not in known_mods]
+        if unknown:
+            sys.exit("deploy_custom_mods.py: no such mod in the repo: %s\n"
+                     "  known mods: %s" % (", ".join(unknown), ", ".join(sorted(known_mods))))
+    names = args.mod or sorted(known_mods)
     holds = load_holds()
     print("repo : %s" % SRC_ROOT)
     print("game : %s" % mods_dir)
@@ -312,6 +339,8 @@ def main():
           % (len(holds), pretty(HOLD_FILE)))
 
     drift = False
+    any_leftover = False   # apply-mode exit code; unlike `drift`, NEVER reset by a
+                           # later mod's clean verify — see the return statement below.
     wrote = 0
     for name in names:
         src = mod_dir(name)
@@ -383,8 +412,11 @@ def main():
                      "; kept — use --prune to delete, or --pull to rescue"))
 
         if args.apply:
-            copy(src, dst, new + changed)
-            wrote += len(new) + len(changed)
+            # copy() returns 0 (having already printed its own refusal) rather
+            # than the requested count when the source XML is malformed —
+            # `wrote` must reflect what actually happened, not what was asked
+            # for, or a refused deploy still prints "Deployed N file(s)."
+            wrote += copy(src, dst, new + changed)
             if args.prune:
                 wrote += len(gone)
                 for r in gone:
@@ -402,6 +434,8 @@ def main():
                                  else "STILL DIFFERS: %s" % leftover))
             if not leftover:
                 drift = False
+            else:
+                any_leftover = True
         print()
 
     # A hold that no longer matches anything is the same failure shape as a
@@ -444,7 +478,13 @@ def main():
         print("Drift found. Re-run with --apply to deploy.")
     else:
         print("Everything in sync.")
-    return 1 if drift else 0
+    # `drift` is a single accumulator across every mod in the loop and gets
+    # RESET by a later mod's clean verify (`drift = False` above) — reused
+    # here for the plan-mode message, which is a per-run summary and fine as
+    # a single flag, but wrong for the apply-mode exit code, which promises
+    # "0 when repo and game agree" per this module's own docstring. Use the
+    # accumulator that is never reset once any mod's post-deploy verify fails.
+    return 1 if (any_leftover if args.apply else drift) else 0
 
 
 if __name__ == "__main__":
