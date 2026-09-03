@@ -1047,6 +1047,11 @@
     "date": "2026-09-03",
     "sha": "46cc98d3"
   },
+  "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchArgGuard.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "46567cc0"
+  },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchBillTools.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -1056,6 +1061,11 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "0706a2c8"
+  },
+  "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchDebugActionTools.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "46567cc0"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchDiagnosticTools.cs": {
     "cleanCount": 1,
@@ -1076,6 +1086,11 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "e515c1e9"
+  },
+  "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchGravshipTools.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "2424e896"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchGroupTools.cs": {
     "cleanCount": 1,
