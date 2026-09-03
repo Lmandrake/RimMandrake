@@ -643,9 +643,14 @@ namespace RuthlessPursuingMechanoids
                 {
                     /* Roll the raidtimer first, and use that as the ceiling for the warning timer. The warning timer is what signals the alert, after all, so if the
                      * raid hits before the warning, then it might not be clear to the player that they're dealing with the ruthless pursuit raid. */
-                    int rawRaidDelay = forceMinimum ? RaidDelayRange.min : RaidDelayRange.RandomInRange;
+                    /* Floored at TickInterval, same as the isFirstPeriod branch above: RaidDelayRange (and, for a WarningDelayHours >= RaidDelayHours
+                     * "hardcore" setup, WarningDelayRange) has no lower clamp of its own, so a variance >= mean rolled through the scenario editor UI
+                     * (RaidDelayVarianceHours' own bound is 0-14400 regardless of RaidDelayHours) can otherwise yield a zero or negative raw delay.
+                     * That sets mapRaidTimers/mapWarningTimers to a tick at-or-before "now", which TimerIntervalTick can never match again once the
+                     * next Tick() has passed it — permanently stalling that map's raid or warning letter instead of ever firing it. */
+                    int rawRaidDelay = Math.Max(forceMinimum ? RaidDelayRange.min : RaidDelayRange.RandomInRange, TickInterval);
                     mapRaidTimers[map] = Find.TickManager.TicksGame + Mathf.RoundToInt(rawRaidDelay * shadowMult);
-                    int rawWarningDelay = forceMinimum ? WarningDelayRange.min : WarningDelayRange.RandomInRange;
+                    int rawWarningDelay = Math.Max(forceMinimum ? WarningDelayRange.min : WarningDelayRange.RandomInRange, TickInterval);
                     mapWarningTimers[map] = Math.Min(Find.TickManager.TicksGame + Mathf.RoundToInt(rawWarningDelay * shadowMult), mapRaidTimers[map]);
                 }
                 DebugUtility.DebugLog($"Starting Timers for faction {PursuitFaction.Name} | Warning timer: {mapWarningTimers[map]} Raid timer: {mapRaidTimers[map]} Current Tick: {Find.TickManager.TicksGame} Force Minimum: {forceMinimum} Shadow Multiplier: {shadowMult} ({map.Biome?.defName ?? "null biome"})");
