@@ -787,7 +787,7 @@ function renderSquarified(w,h){
 
   // reviewed-then-dirty-again badge: a small orange ×N chip in the top-right
   // corner, only where the cell is big enough to hold one.
-  const recidCells = root.leaves().filter(d=>d.data.cycles>0 && d.x1-d.x0>20 && d.y1-d.y0>12);
+  const recidCells = root.leaves().filter(d=>d.data.status==="grey" && d.data.cycles>0 && d.x1-d.x0>20 && d.y1-d.y0>12);
   const bw = d=>10+String(d.data.cycles).length*6;
   g.selectAll("rect.badgebg").data(recidCells)
     .join("rect").attr("class","badge-bg")
