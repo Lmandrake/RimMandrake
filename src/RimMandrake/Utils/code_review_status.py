@@ -10,6 +10,7 @@ significant findings does, recorded here with `mark-clean`.
 
     python3 src/RimMandrake/Utils/code_review_status.py check <path> [<path> ...]
     python3 src/RimMandrake/Utils/code_review_status.py mark-clean <path> [--sha <sha>]
+    python3 src/RimMandrake/Utils/code_review_status.py reopen <path> [<path> ...] --reason "…"
     python3 src/RimMandrake/Utils/code_review_status.py list
 
 The log (`infrastructure/state/CODE_REVIEW_STATUS.json`) is owned by this
@@ -186,6 +187,37 @@ def cmd_mark_clean(path, sha):
     return 0
 
 
+def cmd_reopen(paths, reason):
+    """Undo a clean mark: a fix is not a review. Finding a bug and fixing it
+    means the file was DIRTY and someone edited it - it does not mean a
+    full-file review found nothing, which is the only thing mark-clean is
+    allowed to certify. `reopen` puts a path back to "never marked clean" so
+    it must survive a genuine follow-up review (only minor comments at most)
+    before mark-clean can be called on it again. `--reason` is required and
+    goes to stdout / the caller's commit message, not into the ledger itself
+    - git history is this repo's provenance, not a second copy of it here."""
+    if not reason or not reason.strip():
+        print("FAIL: --reason is required - say why this is being reopened.", file=sys.stderr)
+        return 2
+    with locked():
+        data = load()
+        changed = []
+        for path in paths:
+            rel = repo_rel(path)
+            if rel in data:
+                del data[rel]
+                changed.append(rel)
+        if changed:
+            save(data)
+    for rel in changed:
+        print(f"REOPENED  {rel}  ({reason})")
+    for path in paths:
+        rel = repo_rel(path)
+        if rel not in changed:
+            print(f"(already not clean)  {rel}")
+    return 0
+
+
 def cmd_list():
     data = load()
     if not data:
@@ -212,11 +244,17 @@ def main():
     p_mark.add_argument("path")
     p_mark.add_argument("--sha", default=None, help="defaults to current HEAD")
 
+    p_reopen = sub.add_parser("reopen", help="undo a clean mark - a fix is not a review")
+    p_reopen.add_argument("paths", nargs="+")
+    p_reopen.add_argument("--reason", required=True, help="why this is being reopened")
+
     sub.add_parser("list", help="show every recorded entry and its current state")
 
     args = ap.parse_args()
     if args.cmd == "check":
         sys.exit(cmd_check(args.paths))
+    elif args.cmd == "reopen":
+        sys.exit(cmd_reopen(args.paths, args.reason))
     elif args.cmd == "mark-clean":
         sys.exit(cmd_mark_clean(args.path, args.sha))
     elif args.cmd == "list":
