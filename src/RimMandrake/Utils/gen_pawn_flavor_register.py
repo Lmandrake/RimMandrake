@@ -41,6 +41,10 @@ FACTION_OF_CAT = {
     "JawaBSC_Blackstar": "Blackstar Company",
     "JawaBSC_Moot": "Jawa Trade Moot",
     "JawaBSC_Deepwater": "Deepwater Compact",
+    "JawaBSC_FDECathedral": "Free Droid Enclaves",
+    "JawaBSC_FDENightside": "Free Droid Enclaves",
+    "VQE_AncientPatient": "Forsaken vaults",
+    "VQE_Experiment": "Forsaken vaults",
 }
 
 SHIPPED_TRAIT_FACTION = {
@@ -49,6 +53,14 @@ SHIPPED_TRAIT_FACTION = {
     "RUT_Jawa_Numbered": ("Galactic Empire", "Bonds slowly, insult-immune - a designation, not a name."),
     "RUT_Jawa_Laconic": ("Blackstar Company", "Says little; social chill, unshakable under fire."),
     "RUT_Jawa_PodracerReflexes": ("Cross-faction seed families", "A-family: speed and dodge up, ranged aim down, reckless."),
+    "RUT_Jawa_ReapsTheFlames": ("Deep Desert Tribes", "No fear of fire; burning the Pyrelands reveals food and clears outsiders - doctrine, not cruelty."),
+    "RUT_Jawa_AshJudgment": ("Deep Desert Tribes", "+0.5 ConversionPower (Ideology); reads who belongs after the burning."),
+    "RUT_Jawa_ShoreHardened": ("the Junkers", "+0.3 ToxicResistance; grew up breathing whatever the tide brought in."),
+    "RUT_Jawa_StillTemper": ("the Junkers", "Mood tied to colony fuel stores/idle stills - flavor only, needs a C# hook."),
+    "RUT_Jawa_LineTapper": ("the Junkers", "-8 ComfyTemperatureMin; walked the FDE fuel lines tapping fuel for the Junkers."),
+    "RUT_Jawa_NightsideHardy": ("Free Droid Enclaves", "-15/-5 ComfyTemperature, -0.05 move speed; nightside-cold hardened, worse in heat."),
+    "RUT_Jawa_DirtyBurnerAffinity": ("Free Droid Enclaves", "Near-immune to toxins; burns whatever unfiltered fuel the nightside dark provides."),
+    "RUT_Jawa_FreedomScarred": ("Free Droid Enclaves", "Shared FDE trait: distrust of bolt-users, comfort near free droids - relational half needs C#."),
 }
 
 # DESIGNED rows: (faction, layer, name, does, status, contested, note)
