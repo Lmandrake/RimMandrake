@@ -1,8 +1,18 @@
 {
+  ".claude/hooks/queue_lint.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "5ac921b8"
+  },
   "design/Jawa/fauna/gen_cast_patch.py": {
     "cleanCount": 1,
     "date": "2026-09-02",
     "sha": "58b4dab3"
+  },
+  "skills/rimworld-start-prep/scripts/sync_mod_state.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "5ac921b8"
   },
   "src/RimMandrake/DesertVehicleReskin/Source/preview_derived_facings.py": {
     "cleanCount": 1,
@@ -231,6 +241,11 @@
     "date": "2026-09-02",
     "sha": "ee0b3ad6"
   },
+  "src/RimMandrake/Utils/rimplace/selftest.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "5ac921b8"
+  },
   "src/RimMandrake/Utils/save_played_tiles.py": {
     "cleanCount": 1,
     "date": "2026-09-02",
@@ -255,6 +270,16 @@
     "cleanCount": 1,
     "date": "2026-09-02",
     "sha": "1a7b3aa1"
+  },
+  "src/RimMandrake/Utils/validate_save_artifact.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "5ac921b8"
+  },
+  "src/RimMandrake/Utils/w9_run.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "5ac921b8"
   },
   "src/RimMandrake/Utils/weapon_tag_audit.py": {
     "cleanCount": 1,
