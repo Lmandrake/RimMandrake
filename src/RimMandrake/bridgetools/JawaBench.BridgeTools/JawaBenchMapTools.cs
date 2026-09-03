@@ -262,7 +262,18 @@ namespace JawaBench.BridgeTools
 
                 var tg = map.terrainGrid;
                 int changed = 0;
+                // 🔴 SET_SUBSTRUCTURE_REFUSEDCOUNT_CAPPED_1. `refused` is capped at 20
+                // entries so the response body stays small, but `refusedCount` used to be
+                // `refused.Count` - the SAME capped list - so a rect refusing 400 cells
+                // reported refusedCount:20 as if that were the true total. refusedTotal is
+                // incremented on every refusal, uncapped; the list stays capped for display.
+                int refusedTotal = 0;
                 var refused = new List<object>();
+                Action<int, int, string> addRefused = (cx, cz, why) =>
+                {
+                    refusedTotal++;
+                    if (refused.Count < 20) refused.Add(new { x = cx, z = cz, why });
+                };
 
                 foreach (var c in r)
                 {
@@ -273,7 +284,7 @@ namespace JawaBench.BridgeTools
                             // SetFoundation errors when under-terrain is present; check first
                             // so the caller gets a reason instead of a red log line.
                             if (tg.UnderTerrainAt(c) != null)
-                            { if (refused.Count < 20) refused.Add(new { x = c.x, z = c.z, why = "cell has under-terrain; strip the floor first" }); continue; }
+                            { addRefused(c.x, c.z, "cell has under-terrain; strip the floor first"); continue; }
                             tg.SetFoundation(c, sub);
                             changed++;
                         }
@@ -281,14 +292,14 @@ namespace JawaBench.BridgeTools
                         {
                             if (tg.FoundationAt(c) == null) continue;
                             if (!tg.CanRemoveFoundationAt(c))
-                            { if (refused.Count < 20) refused.Add(new { x = c.x, z = c.z, why = "CanRemoveFoundationAt false" }); continue; }
+                            { addRefused(c.x, c.z, "CanRemoveFoundationAt false"); continue; }
                             tg.RemoveFoundation(c, doLeavings);
                             changed++;
                         }
                     }
                     catch (Exception e)
                     {
-                        if (refused.Count < 20) refused.Add(new { x = c.x, z = c.z, why = e.GetType().Name + ": " + e.Message });
+                        addRefused(c.x, c.z, e.GetType().Name + ": " + e.Message);
                     }
                 }
 
@@ -307,7 +318,8 @@ namespace JawaBench.BridgeTools
                     success = true,
                     action, changed,
                     cellsInRect = r.Area,
-                    refusedCount = refused.Count,
+                    refusedCount = refusedTotal,
+                    refusedListTruncated = refusedTotal > refused.Count,
                     refused,
                     note = "substructureGrid.MarkDirty() called. Run jawa/map_commit for regions, pathing and the mesh.",
                     cells = back,
@@ -364,7 +376,19 @@ namespace JawaBench.BridgeTools
                 }
                 else if (L != "removetop") return Fail("layer must be under|temp|color|removeTop.");
 
-                int changed = 0; var refused = new List<object>();
+                int changed = 0;
+                // 🔴 SET_TERRAIN_LAYER_REFUSEDCOUNT_CAPPED_1. Same trap as
+                // jawa/set_substructure_batch: `refused` is capped at 20 for display, and
+                // `refusedCount` used to just be refused.Count - so a removeTop pass that
+                // refused 300 cells reported refusedCount:20. Count every refusal, cap only
+                // the list shown back.
+                int refusedTotal = 0;
+                var refused = new List<object>();
+                Action<int, int, string> addRefused = (cx, cz, why) =>
+                {
+                    refusedTotal++;
+                    if (refused.Count < 20) refused.Add(new { x = cx, z = cz, why });
+                };
                 foreach (var c in r)
                 {
                     try
@@ -387,13 +411,13 @@ namespace JawaBench.BridgeTools
                             case "color": tg.SetTerrainColor(c, cd); changed++; break;
                             case "removetop":
                                 if (!tg.CanRemoveTopLayerAt(c))
-                                { if (refused.Count < 20) refused.Add(new { x = c.x, z = c.z, why = "CanRemoveTopLayerAt false" }); break; }
+                                { addRefused(c.x, c.z, "CanRemoveTopLayerAt false"); break; }
                                 tg.RemoveTopLayer(c, doLeavings); changed++;
                                 break;
                         }
                     }
                     catch (Exception e)
-                    { if (refused.Count < 20) refused.Add(new { x = c.x, z = c.z, why = e.GetType().Name + ": " + e.Message }); }
+                    { addRefused(c.x, c.z, e.GetType().Name + ": " + e.Message); }
                 }
 
                 var back = new List<object>();
@@ -415,7 +439,9 @@ namespace JawaBench.BridgeTools
                 return (object)new
                 {
                     success = true, layer = L, changed, cellsInRect = r.Area,
-                    refusedCount = refused.Count, refused,
+                    refusedCount = refusedTotal,
+                    refusedListTruncated = refusedTotal > refused.Count,
+                    refused,
                     note = "Run jawa/map_commit.",
                     cells = back, ticksGame = TicksGameSafe(),
                 };
@@ -1596,7 +1622,19 @@ namespace JawaBench.BridgeTools
                     CellRect r;
                     if (!TryRect(rect, map, out r, out err)) return Fail(err);
                     int n = 0, before2 = z.Cells.Count;
+                    // 🔴 MAP_ZONES_PAINTZONE_REFUSEDCOUNT_CAPPED_1. `refused2` is capped at
+                    // 12 for display, and `refusedCount` below used to be refused2.Count -
+                    // the same capped list - so a paint over a big rect that refused 200
+                    // cells reported refusedCount:12. refusedTotal2 counts every refusal,
+                    // uncapped; the list stays capped for display, matching createZone's
+                    // (already-correct) wanted1 - z.Cells.Count approach above.
+                    int refusedTotal2 = 0;
                     var refused2 = new List<object>();
+                    Action<int, int, string> addRefused2 = (cx, cz, why) =>
+                    {
+                        refusedTotal2++;
+                        if (refused2.Count < 12) refused2.Add(new { x = cx, z = cz, why });
+                    };
                     // Same non-throwing refusal shape as createZone above: AddCell/
                     // RemoveCell never throw, so "n++ ran without an exception" cannot
                     // distinguish an accepted cell from a refused one. Check membership
@@ -1618,17 +1656,15 @@ namespace JawaBench.BridgeTools
                                 var owner = zm.ZoneAt(c);
                                 if (owner != null && owner != z)
                                 {
-                                    if (refused2.Count < 12)
-                                        refused2.Add(new { x = c.x, z = c.z, why = "already owned by zone '" + owner.label + "'" });
+                                    addRefused2(c.x, c.z, "already owned by zone '" + owner.label + "'");
                                     continue;
                                 }
                                 var zr = Designator_ZoneAdd.IsZoneableCell(c, map);
                                 if (!zr.Accepted)
                                 {
-                                    if (refused2.Count < 12)
-                                        refused2.Add(new { x = c.x, z = c.z, why = string.IsNullOrEmpty(zr.Reason)
-                                            ? "not zoneable - fogged, within 5 cells of the map edge, or a zone-incompatible thing is here"
-                                            : zr.Reason });
+                                    addRefused2(c.x, c.z, string.IsNullOrEmpty(zr.Reason)
+                                        ? "not zoneable - fogged, within 5 cells of the map edge, or a zone-incompatible thing is here"
+                                        : zr.Reason);
                                     continue;
                                 }
                                 z.AddCell(c);
@@ -1639,8 +1675,8 @@ namespace JawaBench.BridgeTools
                         bool hasAfter = z.Cells.Contains(c);
                         bool wantedChange = value ? !hadBefore : hadBefore;
                         if (hasAfter != hadBefore) n++;
-                        else if (wantedChange && refused2.Count < 12)
-                            refused2.Add(new { x = c.x, z = c.z, why = "Zone." + (value ? "AddCell" : "RemoveCell") + " refused (see the log)" });
+                        else if (wantedChange)
+                            addRefused2(c.x, c.z, "Zone." + (value ? "AddCell" : "RemoveCell") + " refused (see the log)");
                     }
                     try { z.CheckContiguous(); } catch { }
                     return (object)new
@@ -1648,7 +1684,9 @@ namespace JawaBench.BridgeTools
                         success = true, action = A, zone = z.label,
                         cellsAttempted = r.Area, cellsAccepted = n,
                         zoneCellsBefore = before2, zoneCellsAfter = z.Cells.Count,
-                        refusedCount = refused2.Count, refusedCells = refused2,
+                        refusedCount = refusedTotal2,
+                        refusedListTruncated = refusedTotal2 > refused2.Count,
+                        refusedCells = refused2,
                         note = z.Cells.Count == before2 && r.Area > 0
                             ? "NOTHING CHANGED - every cell was refused. Stockpile zones reject impassable terrain, cells already zoned, and blocking edifices."
                             : null,
@@ -1951,8 +1989,16 @@ namespace JawaBench.BridgeTools
                     {
                         var t = ThingMaker.MakeThing(td, sd);
                         t.SetFactionDirect(fac);
-                        GenSpawn.Spawn(t, c, map, Rot4.North, WipeMode.Vanish);
-                        placed++;
+                        // 🔴 CONNECT_CELLS_SPAWN_NOT_GATED_1. GenSpawn.Spawn returns null (and
+                        // just logs, never throws) on an out-of-bounds cell or a thing that
+                        // ends up with 0 stackCount - it does not always throw on failure. The
+                        // return value used to be discarded and `placed++` ran unconditionally,
+                        // so a spawn the engine itself refused was still counted as placed -
+                        // the same "gate on real success" trap jawa/build_batch already closed
+                        // on its own spawn path. Check the return like build_batch does.
+                        var spawned = GenSpawn.Spawn(t, c, map, Rot4.North, WipeMode.Vanish);
+                        if (spawned != null) placed++;
+                        else blocked.Add(new { x = c.x, z = c.z, why = "GenSpawn.Spawn returned null" });
                     }
                     catch (Exception e) { blocked.Add(new { x = c.x, z = c.z, why = e.Message }); }
                 }
