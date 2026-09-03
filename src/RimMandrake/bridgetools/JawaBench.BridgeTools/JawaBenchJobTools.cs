@@ -115,6 +115,16 @@ namespace JawaBench.BridgeTools
                 return null;
             }
 
+            // A half-given cell (x set, z left at its -1 default, or the reverse) used to
+            // fall straight through to the generic "give either target or x/z" message,
+            // which reads as "you gave nothing" when the caller in fact gave half a cell.
+            if ((x >= 0) != (z >= 0))
+            {
+                err = $"Give BOTH x and z, or neither - got x={x}, z={z}. " +
+                      "One coordinate on its own is not a cell.";
+                return null;
+            }
+
             if (x >= 0 && z >= 0)
             {
                 var c = new IntVec3(x, 0, z);
@@ -132,6 +142,20 @@ namespace JawaBench.BridgeTools
                   "building ThingID) or 'x'/'z' (a cell).";
             return null;
         }
+
+        /// <summary>The keywords ResolveAreaByKindOrLabel consumes BEFORE it ever looks
+        /// at a label. An Area_Allowed created with one of these as its label is
+        /// permanently unaddressable through this file - the switch always wins - so
+        /// creating one is refused rather than burning one of the map's ten allowed-area
+        /// slots into the savegame on a name nothing can ever find again.</summary>
+        private static readonly string[] ReservedAreaKeywords =
+        {
+            "home", "roof", "buildroof", "noroof", "snow", "snoworsandclear",
+            "pollution", "pollutionclear",
+        };
+
+        private static bool IsReservedAreaKeyword(string s) =>
+            ReservedAreaKeywords.Contains((s ?? "").Trim().ToLowerInvariant());
 
         /// <summary>A standard keyword ("home"/"roof"/"noroof"/"snow"/"pollution")
         /// or the exact label of any area on the map, allowed areas included.</summary>
@@ -172,13 +196,32 @@ namespace JawaBench.BridgeTools
                       "(a storage building ThingID or a stockpile zone label).";
                 return null;
             }
+            // GetSlotGroup() is nullable on the interface (a minified or otherwise
+            // unspawned storage parent, or a modded ISlotGroupParent that builds its group
+            // lazily). Returning null here with err STILL null made the caller's
+            // `if (grp == null) return Fail(sgErr);` produce a failure with a null message -
+            // a refusal that tells the caller nothing at all.
             var thing = map.listerThings.AllThings.FirstOrDefault(
                 t => string.Equals(t.ThingID, s, StringComparison.OrdinalIgnoreCase));
-            if (thing is ISlotGroupParent sgpThing) return sgpThing.GetSlotGroup();
+            if (thing is ISlotGroupParent sgpThing)
+            {
+                var g = sgpThing.GetSlotGroup();
+                if (g == null)
+                    err = $"'{s}' is a {thing.GetType().Name} (an ISlotGroupParent) but its " +
+                          "GetSlotGroup() returned null - it has no slot group to store into.";
+                return g;
+            }
 
             var zone = map.zoneManager.AllZones.FirstOrDefault(
                 z => string.Equals(z.label, s, StringComparison.OrdinalIgnoreCase));
-            if (zone is ISlotGroupParent sgpZone) return sgpZone.GetSlotGroup();
+            if (zone is ISlotGroupParent sgpZone)
+            {
+                var g = sgpZone.GetSlotGroup();
+                if (g == null)
+                    err = $"Zone '{s}' is a {zone.GetType().Name} (an ISlotGroupParent) but its " +
+                          "GetSlotGroup() returned null - it has no slot group to store into.";
+                return g;
+            }
 
             err = $"No storage building or stockpile zone matching '{s}' " +
                   "(checked spawned ThingIDs and zone labels).";
@@ -221,6 +264,19 @@ namespace JawaBench.BridgeTools
                     th => string.Equals(th.ThingID, id, StringComparison.OrdinalIgnoreCase));
                 if (t == null) { err = $"No spawned thing on this map with id '{id}'."; return null; }
                 return new LocalTargetInfo(t);
+            }
+            // 🔴 A HALF-GIVEN CELL WAS A SILENT NO-TARGET (2026-09-03 opus review).
+            // x=42 with z left at its -1 default failed `x >= 0 && z >= 0`, fell to the
+            // `return null` below, and - because err was also null - was read by the caller
+            // as "no target was requested". jawa/ordered_job then built a targetless job and
+            // reported accepted:true with nothing anywhere in the result naming the
+            // coordinate it threw away.
+            if ((x >= 0) != (z >= 0))
+            {
+                err = $"Give BOTH x and z, or neither - got x={x}, z={z}. " +
+                      "One coordinate on its own is not a cell, and was being silently " +
+                      "discarded as 'no target'.";
+                return null;
             }
             if (x >= 0 && z >= 0)
             {
@@ -417,13 +473,27 @@ namespace JawaBench.BridgeTools
                 // parse storeMode and the quality names - so a call that came back
                 // success:false had already half-reconfigured the bill and persisted it to
                 // the savegame. Nothing below this comment touches the bill.
+                //
+                // 🔴 storeMode belongs in this refusal too (2026-09-03 opus review).
+                // Bill.SetStoreMode on the BASE class is
+                //     Log.ErrorOnce("Tried to set store mode of a non-production bill")
+                // and returns - it writes nothing (RimWorld/Bill.cs:452) - and base
+                // Bill.GetStoreMode() is a bare `return BillStoreModeDefOf.BestStockpile`
+                // (RimWorld/Bill.cs:442), a constant, not a stored field. The old code
+                // called the no-op on a non-Bill_Production bill and then read that
+                // constant back as its "read-back", returning success:true with
+                // storeMode:"BestStockpile". For a caller who asked for beststockpile that
+                // is an exactly-matching verified write that never happened.
                 if (bpOrNull == null &&
                     (repeatMode != null || repeatCount.HasValue || targetCount.HasValue
-                     || qualityMin != null || qualityMax != null))
+                     || qualityMin != null || qualityMax != null || storeMode != null))
                     return Fail(
                         $"Bill on '{giverId}' is a {bill.GetType().Name}, not a " +
-                        "Bill_Production - repeatMode/repeatCount/targetCount/quality " +
-                        "do not exist on it. NOTHING was changed.",
+                        "Bill_Production - repeatMode/repeatCount/targetCount/quality/storeMode " +
+                        "do not exist on it (Bill.SetStoreMode is a Log.ErrorOnce no-op on the " +
+                        "base class and Bill.GetStoreMode() is a hard-coded BestStockpile " +
+                        "constant, so any read-back would be a fiction). NOTHING was changed. " +
+                        "suspended is the only field configurable on this bill.",
                         new { suspendedNow = bill.suspended });
 
                 BillRepeatModeDef rmDef = null;
@@ -462,10 +532,18 @@ namespace JawaBench.BridgeTools
                     // arguments on a non-Bill_Production.
                     var min = bpOrNull.qualityRange.min;
                     var max = bpOrNull.qualityRange.max;
-                    if (qualityMin != null && !Enum.TryParse(qualityMin.Trim(), true, out min))
+                    // Enum.TryParse accepts ANY integer literal, defined or not: "99" parses
+                    // clean to (QualityCategory)99. That value would go straight into
+                    // bp.qualityRange, be scribed into the savegame, and index
+                    // QualityUtility's per-category label/colour arrays out of bounds in the
+                    // bill UI. Enum.IsDefined is what rejects it - same pattern as
+                    // JawaBenchStorytellerTools2.cs.
+                    if (qualityMin != null && (!Enum.TryParse(qualityMin.Trim(), true, out min)
+                                               || !Enum.IsDefined(typeof(QualityCategory), min)))
                         return Fail($"Unknown qualityMin '{qualityMin}'.", new
                         { accepted = Enum.GetNames(typeof(QualityCategory)) });
-                    if (qualityMax != null && !Enum.TryParse(qualityMax.Trim(), true, out max))
+                    if (qualityMax != null && (!Enum.TryParse(qualityMax.Trim(), true, out max)
+                                               || !Enum.IsDefined(typeof(QualityCategory), max)))
                         return Fail($"Unknown qualityMax '{qualityMax}'.", new
                         { accepted = Enum.GetNames(typeof(QualityCategory)) });
                     // QualityRange.Includes is `q >= min && q <= max` with no guard of its own
@@ -485,15 +563,19 @@ namespace JawaBench.BridgeTools
 
                 if (bpOrNull == null)
                 {
-                    // Store mode is on the base Bill class; the rest is not.
-                    if (smDef != null) bill.SetStoreMode(smDef, grp);
-
+                    // storeMode is refused above on this branch, so nothing here writes and
+                    // nothing here reads GetStoreMode() - see the note on that guard for why
+                    // reading it would have been a fabricated read-back.
                     return new
                     {
                         success = true,
                         billType = bill.GetType().Name,
                         suspended = bill.suspended,
-                        storeMode = bill.GetStoreMode()?.defName,
+                        storeMode = (string)null,
+                        note = $"Store mode is not a real field on a {bill.GetType().Name}; " +
+                               "Bill.GetStoreMode() returns a hard-coded BestStockpile constant " +
+                               "on the base class, so it is reported as null rather than as a " +
+                               "value that would look read back but mean nothing.",
                     };
                 }
 
@@ -550,6 +632,19 @@ namespace JawaBench.BridgeTools
             {
                 var map = Find.CurrentMap;
                 if (map == null) return Fail("No current map. Load a game first.");
+
+                // Refused BEFORE TryMakeNewAllowed, not after: Area_Allowed.SetLabel does no
+                // validation of its own, and an area labelled with a standard keyword is
+                // unreachable through ResolveAreaByKindOrLabel forever after (the switch
+                // consumes the keyword first), so jawa/paint_area and
+                // jawa/set_player_settings could never address it. It would just sit in the
+                // savegame occupying one of the map's ten allowed-area slots.
+                if (IsReservedAreaKeyword(label))
+                    return Fail(
+                        $"'{label.Trim()}' is a reserved area keyword (home, roof, buildroof, " +
+                        "noroof, snow, snoworsandclear, pollution, pollutionclear). An Allowed " +
+                        "area with that label could never be addressed again - every tool here " +
+                        "resolves the keyword to the standard area first. Nothing was created.");
 
                 var before = map.areaManager.AllAreas.OfType<Area_Allowed>().Count();
                 Area_Allowed area;
@@ -645,6 +740,19 @@ namespace JawaBench.BridgeTools
                 if (target == null)
                 {
                     if (!createIfMissing) return Fail(err);
+                    // 🔴 The four standard kinds always exist, so createIfMissing "never
+                    // applies" to them - except that ONE of them can resolve to null:
+                    // AreaManager.PollutionClear is null without Biotech, and
+                    // ResolveAreaByKindOrLabel returns null-with-err for it. The old code
+                    // fell through and created an Area_Allowed labelled "pollution", burning
+                    // an allowed-area slot into the savegame on a label the keyword switch
+                    // would always shadow - so the next call created another one, and the
+                    // one after that another, none of them ever found.
+                    if (IsReservedAreaKeyword(area))
+                        return Fail(
+                            $"'{area.Trim()}' is a standard area kind, not an Allowed-area label, " +
+                            "so createIfMissing will not invent one for it. It resolved to null " +
+                            $"for another reason: {err}");
                     Area_Allowed created;
                     if (!map.areaManager.TryMakeNewAllowed(out created))
                         return Fail(
@@ -824,7 +932,10 @@ namespace JawaBench.BridgeTools
                 jdefName = jd.defName;
 
                 JobTag tag;
-                if (!Enum.TryParse(string.IsNullOrWhiteSpace(jobTag) ? "Misc" : jobTag.Trim(), true, out tag))
+                // Enum.TryParse takes any integer literal, so "77" would parse clean to
+                // (JobTag)77 and be stored on the queued job. IsDefined is the rejection.
+                if (!Enum.TryParse(string.IsNullOrWhiteSpace(jobTag) ? "Misc" : jobTag.Trim(), true, out tag)
+                    || !Enum.IsDefined(typeof(JobTag), tag))
                     return Fail($"Unknown JobTag '{jobTag}'.",
                         new { accepted = Enum.GetNames(typeof(JobTag)) });
 
@@ -833,6 +944,20 @@ namespace JawaBench.BridgeTools
                 if (a == null && errA != null) return Fail(errA);
                 var b = ResolveTarget(map, targetBId, targetBX, targetBZ, out errB);
                 if (b == null && errB != null) return Fail(errB);
+
+                // 🔴 targetB WITHOUT targetA was silently discarded (2026-09-03 opus review).
+                // JobMaker has no B-without-A overload, so the ternary below fell to the
+                // no-target MakeJob(jd) and threw the caller's targetB away with no errors[]
+                // entry, no note and no field in the result naming it. The job then went to a
+                // driver whose targetA is an invalid LocalTargetInfo, came back
+                // accepted:true, and died in its first toil - the exact shape this tool
+                // exists to expose.
+                if (!a.HasValue && b.HasValue)
+                    return Fail(
+                        "targetB was given without targetA. Job targets are positional - "
+                        + "JobMaker has no B-without-A overload - so this job would have been "
+                        + "built with NO targets at all and your targetB silently dropped. "
+                        + "Give targetAId, or targetAX and targetAZ.");
 
                 // ORDERED_JOB_CANNOT_SOW_1, measured live 2026-08-26 and read from 1.6
                 // source, not inferred. JobDriver_PlantSow's FIRST toil is
@@ -1009,8 +1134,12 @@ namespace JawaBench.BridgeTools
                         break;
                     case "endcurrent":
                         JobCondition cond;
+                        // Enum.TryParse accepts any integer literal; JobCondition drives
+                        // switch statements all over the job system that silently take their
+                        // default branch on an undefined value. IsDefined rejects it.
                         if (!Enum.TryParse(string.IsNullOrWhiteSpace(jobCondition) ? "InterruptForced" : jobCondition.Trim(),
-                                true, out cond))
+                                true, out cond)
+                            || !Enum.IsDefined(typeof(JobCondition), cond))
                             return Fail($"Unknown JobCondition '{jobCondition}'.",
                                 new { accepted = Enum.GetNames(typeof(JobCondition)) });
                         pawn.jobs.EndCurrentJob(cond, true, canReturnToPool);
@@ -1168,6 +1297,7 @@ namespace JawaBench.BridgeTools
                 {
                     if (drafted.Value)
                     {
+                        // Lord.AllowsDrafting is applied to the draft gizmo in Pawn.cs:4595.
                         var lord = pawn.GetLord();
                         AcceptanceReport allow = lord != null ? lord.AllowsDrafting(pawn) : AcceptanceReport.WasAccepted;
                         if (!allow.Accepted)
@@ -1175,16 +1305,56 @@ namespace JawaBench.BridgeTools
                                 "Lord.AllowsDrafting refused: " +
                                 (string.IsNullOrEmpty(allow.Reason) ? "(no reason given)" : allow.Reason),
                                 new { lordJob = lord?.LordJob?.GetType().Name });
+
+                        // 🔴 The other THREE refusals the game's own gizmo applies, which this
+                        // tool claimed to mirror and did not (2026-09-03 opus review).
+                        // Pawn_DraftController.GetGizmos disables the toggle on pawn.Downed
+                        // ("IsIncapped"), on pawn.Deathresting, and - Biotech, colony mech - on
+                        // a failing MechanitorUtility.CanDraftMech. The Drafted SETTER has no
+                        // refusal of its own: it clears the job queue, sets draftedInt and
+                        // ends the current job regardless. So drafting a downed pawn through
+                        // this tool produced a drafted-and-incapacitated pawn the game itself
+                        // can never make, reported as a clean success.
+                        if (pawn.Downed)
+                            return Fail(
+                                $"{pawn.LabelShortCap} is Downed. The game's own draft gizmo is " +
+                                "disabled ('IsIncapped') in this state, but Pawn_DraftController's " +
+                                "Drafted setter has no refusal of its own and would have produced a " +
+                                "drafted, incapacitated pawn. Nothing was changed.");
+                        if (pawn.Deathresting)
+                            return Fail(
+                                $"{pawn.LabelShortCap} is deathresting. The draft gizmo is disabled " +
+                                "('IsDeathresting') in this state and the setter would not refuse. " +
+                                "Nothing was changed.");
+                        if (ModsConfig.BiotechActive && pawn.IsColonyMech)
+                        {
+                            AcceptanceReport mechOk = MechanitorUtility.CanDraftMech(pawn);
+                            if (!mechOk.Accepted)
+                                return Fail(
+                                    "MechanitorUtility.CanDraftMech refused: " +
+                                    (string.IsNullOrEmpty(mechOk.Reason)
+                                        ? "(no reason given - this mech has no overseer)"
+                                        : mechOk.Reason) +
+                                    " The draft gizmo is disabled for the same reason. Nothing was changed.");
+                        }
                     }
                     pawn.drafter.Drafted = drafted.Value;
                 }
+                // Order matters and is deliberate: the Drafted setter forces fireAtWillInt
+                // back to true on every actual change (Pawn_DraftController.cs), so a
+                // fireAtWill written before it would be silently overwritten.
                 if (fireAtWill.HasValue) pawn.drafter.FireAtWill = fireAtWill.Value;
 
+                var draftedNow = pawn.drafter.Drafted;
+                var fireAtWillNow = pawn.drafter.FireAtWill;
                 return new
                 {
-                    success = true,
-                    drafted = pawn.drafter.Drafted,
-                    fireAtWill = pawn.drafter.FireAtWill,
+                    // success is the read-back, not the fact that the setters were called -
+                    // the same rule the rest of this file follows.
+                    success = (!drafted.HasValue || draftedNow == drafted.Value)
+                              && (!fireAtWill.HasValue || fireAtWillNow == fireAtWill.Value),
+                    drafted = draftedNow,
+                    fireAtWill = fireAtWillNow,
                 };
             }, cancellationToken).ConfigureAwait(false);
         }
@@ -1317,13 +1487,22 @@ namespace JawaBench.BridgeTools
 
                 var notes = new List<string>();
 
+                // 🔴 VALIDATE AND RESOLVE EVERYTHING BEFORE WRITING ANYTHING (2026-09-03 opus
+                // review). This block used to write the allowed area, then the master, and
+                // only THEN parse medCare and hostilityResponse - so a call that came back
+                // success:false had already changed and persisted the pawn's area and/or
+                // master, and the Fail() said nothing whatever about it. Exactly the defect
+                // jawa/configure_bill was fixed for above. Nothing below this comment touches
+                // the pawn until the "writes start here" line.
+
+                Area resolvedArea = null;
+                var clearArea = false;
+                var areaIsNoOp = false;
                 if (area != null)
                 {
                     if (pawn.MapHeld == null)
                     {
-                        notes.Add(
-                            "AreaRestrictionInPawnCurrentMap's setter is a no-op when " +
-                            "pawn.MapHeld is null. Nothing was changed.");
+                        areaIsNoOp = true;
                     }
                     else
                     {
@@ -1331,29 +1510,30 @@ namespace JawaBench.BridgeTools
                         if (string.Equals(a, "none", StringComparison.OrdinalIgnoreCase)
                             || string.Equals(a, "clear", StringComparison.OrdinalIgnoreCase))
                         {
-                            pawn.playerSettings.AreaRestrictionInPawnCurrentMap = null;
+                            clearArea = true;
                         }
                         else
                         {
                             string aerr;
-                            var resolved = ResolveAreaByKindOrLabel(pawn.MapHeld, a, out aerr);
-                            if (resolved == null) return Fail(aerr);
-                            pawn.playerSettings.AreaRestrictionInPawnCurrentMap = resolved;
+                            resolvedArea = ResolveAreaByKindOrLabel(pawn.MapHeld, a, out aerr);
+                            if (resolvedArea == null) return Fail(aerr);
                         }
                     }
                 }
 
+                Pawn newMaster = null;
+                var clearMaster = false;
                 if (masterId != null)
                 {
                     if (string.Equals(masterId.Trim(), "none", StringComparison.OrdinalIgnoreCase))
                     {
-                        pawn.playerSettings.Master = null;
+                        clearMaster = true;
                     }
                     else
                     {
                         string merr;
-                        var m = FindPawn(masterId, out merr);
-                        if (m == null) return Fail(merr);
+                        newMaster = FindPawn(masterId, out merr);
+                        if (newMaster == null) return Fail(merr);
                         // 🔴 Pawn_PlayerSettings.Master's setter dereferences pawn.training
                         // UNGUARDED (RimWorld/Pawn_PlayerSettings.cs:55). A Pawn_TrainingTracker
                         // only exists for intelligence <= 1, factioned, non-mechanoid pawns
@@ -1365,31 +1545,60 @@ namespace JawaBench.BridgeTools
                                 $"{pawn.LabelShortCap} has no Pawn_TrainingTracker, so it cannot " +
                                 "have a master - Pawn_PlayerSettings.Master's setter would throw. " +
                                 "Masters are for trainable animals, not humanlikes or mechanoids.");
-                        pawn.playerSettings.Master = m;
-                        if (pawn.playerSettings.Master != m)
-                            notes.Add(
-                                $"Master setter silently refused: {pawn.LabelShortCap} has not " +
-                                "learned the Obedience trainable. No change made.");
                     }
                 }
 
+                // Enum.TryParse accepts any integer literal: "42" parses clean to
+                // (MedicalCareCategory)42, which is a public field scribed straight into the
+                // savegame and used as an index into MedicalCareUtility's per-category
+                // texture/label arrays every time the pawn's UI draws. IsDefined rejects it.
+                MedicalCareCategory? newMedCare = null;
                 if (medCare != null)
                 {
                     MedicalCareCategory mc;
-                    if (!Enum.TryParse(medCare.Trim(), true, out mc))
+                    if (!Enum.TryParse(medCare.Trim(), true, out mc)
+                        || !Enum.IsDefined(typeof(MedicalCareCategory), mc))
                         return Fail($"Unknown MedicalCareCategory '{medCare}'.",
                             new { accepted = Enum.GetNames(typeof(MedicalCareCategory)) });
-                    pawn.playerSettings.medCare = mc;
+                    newMedCare = mc;
                 }
 
+                HostilityResponseMode? newHostility = null;
                 if (hostilityResponse != null)
                 {
                     HostilityResponseMode hr;
-                    if (!Enum.TryParse(hostilityResponse.Trim(), true, out hr))
+                    if (!Enum.TryParse(hostilityResponse.Trim(), true, out hr)
+                        || !Enum.IsDefined(typeof(HostilityResponseMode), hr))
                         return Fail($"Unknown HostilityResponseMode '{hostilityResponse}'.",
                             new { accepted = Enum.GetNames(typeof(HostilityResponseMode)) });
-                    pawn.playerSettings.hostilityResponse = hr;
+                    newHostility = hr;
                 }
+
+                // ---- validation done; writes start here ----
+                if (areaIsNoOp)
+                    notes.Add(
+                        "AreaRestrictionInPawnCurrentMap's setter is a no-op when " +
+                        "pawn.MapHeld is null. Nothing was changed.");
+                else if (clearArea)
+                    pawn.playerSettings.AreaRestrictionInPawnCurrentMap = null;
+                else if (resolvedArea != null)
+                    pawn.playerSettings.AreaRestrictionInPawnCurrentMap = resolvedArea;
+
+                if (clearMaster)
+                {
+                    pawn.playerSettings.Master = null;
+                }
+                else if (newMaster != null)
+                {
+                    pawn.playerSettings.Master = newMaster;
+                    if (pawn.playerSettings.Master != newMaster)
+                        notes.Add(
+                            $"Master setter silently refused: {pawn.LabelShortCap} has not " +
+                            "learned the Obedience trainable. No change made.");
+                }
+
+                if (newMedCare.HasValue) pawn.playerSettings.medCare = newMedCare.Value;
+                if (newHostility.HasValue) pawn.playerSettings.hostilityResponse = newHostility.Value;
 
                 return new
                 {
