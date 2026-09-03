@@ -189,16 +189,23 @@ def _net(effects) -> float:
     Offsets add, factors multiply.  This is the game's own order for these two
     stats and it is only ever indicative -- a real pawn's size also depends on
     its race's base and its life stage.
+
+    All offsets are summed first, THEN the factors are multiplied in -- not
+    applied in list order.  A xenotype combining two genes (offset+factor
+    each) interleaves offset,factor,offset,factor in `effects`; applying that
+    sequentially multiplies before the second offset is in, which is not what
+    the engine does and understates or overstates the net size.
     """
-    size = 1.0
+    offset_sum = 0.0
+    factor_product = 1.0
     for kind, _stat, val in effects:
         if val is None:
             continue
         if kind == "offset":
-            size += float(val)
+            offset_sum += float(val)
         else:
-            size *= float(val)
-    return round(size, 3)
+            factor_product *= float(val)
+    return round((1.0 + offset_sum) * factor_product, 3)
 
 
 def xenotypes(conn: sqlite3.Connection, genes: dict[str, dict],
