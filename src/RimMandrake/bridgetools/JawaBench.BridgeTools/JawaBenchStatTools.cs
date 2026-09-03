@@ -217,8 +217,12 @@ namespace JawaBench.BridgeTools
                 "Room.Role and Room.GetStat check statsAndRoleDirty and RECOMPUTE when the game has " +
                 "marked the room changed, so the property is the current value, not a stale one. Do " +
                 "not reach for the private fields here. " +
-                "⚠ A cell outside a room, or in the great outdoors, returns a row with " +
-                "isOutdoors true rather than an error - 'there is no room here' is an answer.",
+                "⚠ ZERO ROOMS IS A SUCCESS, AND IT HAS TWO DIFFERENT CAUSES - read the counts, do not " +
+                "read rooms[] alone. A cell in the great outdoors DOES have a Room, and it is SKIPPED by " +
+                "default: it appears only in outdoorsSkipped unless you pass includeOutdoors. A cell with " +
+                "no passable region at all (inside a wall, solid rock) has no Room and is skipped without " +
+                "being counted anywhere. So roomsFound 0 with outdoorsSkipped 0 means every cell you named " +
+                "was impassable, NOT that the building failed to enclose anything.",
             ResultDescription =
                 "success, roomsFound, and rooms[]: id, role, roleLabel, cellCount, temperature, " +
                 "openRoofCount, properRoom, psychologicallyOutdoors, isOutdoors, sampleCell, and " +

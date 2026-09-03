@@ -647,7 +647,12 @@ namespace JawaBench.BridgeTools
                 "Clear a StatWorker's cache - required after editing quality, stuff or hediffs out from " +
                 "under a stat the game already cached, or a stale value keeps reading. With 'thing', " +
                 "calls StatWorker.ClearCacheForThing(thing) (that one thing's entry only); without it, " +
-                "calls StatWorker.DeleteStatCache() (the WHOLE cache for that stat, every thing). Name " +
+                "calls StatWorker.TryClearCache() (the WHOLE cache for that stat, every thing). " +
+                "🔴 TryClearCache, NOT DeleteStatCache: DeleteStatCache NULLS immutableStatCache, and " +
+                "StatWorker.GetValue dereferences that field with NO null check on the stat.immutable " +
+                "path - so every later read of an immutable stat, anywhere in the game, would throw " +
+                "NullReferenceException for the rest of the session. The engine only ever calls it from " +
+                "StatDef.ResetStaticData, which sets stat.immutable=false in the same loop. Name " +
                 "stats with 'stats'; leave it empty to bust every StatDef's cache (heavy, but this is a " +
                 "diagnostic tool, not a hot path).",
             ResultDescription = "success, mode ('perThing' or 'wholeCache'), thing (if given), statsCleared[], count.")]
@@ -699,7 +704,7 @@ namespace JawaBench.BridgeTools
                     try
                     {
                         if (t != null) sd.Worker.ClearCacheForThing(t);
-                        else sd.Worker.DeleteStatCache();
+                        else sd.Worker.TryClearCache();
                         cleared.Add(sd.defName);
                     }
                     catch (Exception ex) { refused.Add(new { stat = sd.defName, reason = ex.GetType().Name, message = ex.Message }); }
@@ -732,7 +737,12 @@ namespace JawaBench.BridgeTools
                 "write) can be clobbered by whatever the game itself holds at exit; even with Save() " +
                 "called, a later normal exit re-saves the game's own in-memory copy, which is this same " +
                 "value unless something else changed it meanwhile. " +
-                "⚠ Turning devMode OFF also clears logVerbose, resetModsConfigOnCrash and DebugSettings.godMode - that is Prefs' own setter, not this tool.",
+                "⚠ Turning devMode OFF also clears logVerbose, resetModsConfigOnCrash and DebugSettings.godMode - that is Prefs' own setter, not this tool. " +
+                "🔴 autosaveIntervalDays must be > 0 and autosavesCount >= 1, ENFORCED HERE because Prefs " +
+                "clamps NEITHER and both are written straight to Prefs.xml: interval 0 rounds " +
+                "AutosaveIntervalTicks to 0 and autosaves EVERY TICK, and count < 1 makes " +
+                "Autosaver.AutoSaveNames() empty so NewAutosaveFileName's MinBy throws on every autosave. " +
+                "Vanilla's own options menu only ever offers 0.05-14 days and a 1-25 slider.",
             ResultDescription = "success, before, after, saved (true if Prefs.Save() was called, i.e. any setter was given).")]
         public static async Task<object> PrefsTool(
             IRimBridgeContext ctx,
@@ -751,6 +761,21 @@ namespace JawaBench.BridgeTools
             return await ctx.MainThread.InvokeAsync<object>(() =>
             {
                 cancellationToken.ThrowIfCancellationRequested();
+
+                // 🔴 Refuse before writing anything. Prefs has no clamp on either of these
+                // (Verse/Prefs.cs just assigns and calls Apply()), the vanilla UI is the only
+                // thing that ever bounded them, and Prefs.Save() below persists whatever lands
+                // here to Prefs.xml - so a bad value outlives the session.
+                if (autosaveIntervalDays.HasValue && !(autosaveIntervalDays.Value > 0f))
+                    return Fail("autosaveIntervalDays must be > 0, got " + autosaveIntervalDays.Value
+                                + ". Prefs does not clamp it; Autosaver.AutosaveIntervalTicks would round to 0 "
+                                + "and the game would autosave EVERY TICK, and Prefs.Save() would persist that "
+                                + "to Prefs.xml. Vanilla's option menu only offers 0.05 to 14.");
+                if (autosavesCount.HasValue && autosavesCount.Value < 1)
+                    return Fail("autosavesCount must be >= 1, got " + autosavesCount.Value
+                                + ". Prefs does not clamp it; Autosaver.AutoSaveNames() would yield nothing and "
+                                + "NewAutosaveFileName's MinBy would throw 'Sequence contains no elements' on every "
+                                + "autosave, persisted to Prefs.xml. Vanilla's slider is 1 to 25.");
 
                 Func<object> snapshot = () => new
                 {
