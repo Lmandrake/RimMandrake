@@ -8,11 +8,13 @@ namespace MinePocket;
 public class MinePocketJob : JobDriver
 {
     private int useDuration = 60;
+    private bool trapSprang;
 
     public override void ExposeData()
     {
         base.ExposeData();
         Scribe_Values.Look(ref useDuration, "useDuration", 0);
+        Scribe_Values.Look(ref trapSprang, "trapSprang", false);
     }
 
     public override bool TryMakePreToilReservations(bool errorOnFailed)
@@ -33,16 +35,31 @@ public class MinePocketJob : JobDriver
     protected override IEnumerable<Toil> MakeNewToils()
     {
         this.FailOnIncapable(PawnCapacityDefOf.Manipulation);
+
+        // Rolled ONCE, here, not re-checked every tick: AddFailCondition
+        // registers a GLOBAL fail condition that JobDriver evaluates once per
+        // tick for the whole job (confirmed against JobDriver.
+        // CheckCurrentToilEndOrFail), so a delegate re-calling Rand.Chance
+        // turned the intended single "did the defuser slip?" roll into
+        // 1 - p^n over however many ticks the wait/prepare toils take.
+        Toil rollSpring = ToilMaker.MakeToil("MakeNewToils");
+        rollSpring.initAction = delegate
+        {
+            trapSprang = !Rand.Chance(pawn.GetStatValue(StatDefOf.PawnTrapSpringChance));
+        };
+        rollSpring.defaultCompleteMode = ToilCompleteMode.Instant;
+        yield return rollSpring;
+
         yield return Toils_Goto.GotoThing(TargetIndex.A, TargetThingA.def.hasInteractionCell ? PathEndMode.InteractionCell : PathEndMode.Touch);
         yield return PrepareToUse();
-        AddFailCondition(() => !Rand.Chance(pawn.GetStatValue(StatDefOf.PawnTrapSpringChance)));
+        AddFailCondition(() => trapSprang);
 
         Toil predefuse = ToilMaker.MakeToil("MakeNewToils");
         predefuse.initAction = delegate
         {
             if (pawn.health.capacities.GetLevel(PawnCapacityDefOf.Manipulation) < 0.6f)
             {
-                TargetThingA.TryGetComp<CompExplosive>().StartWick();
+                TargetThingA.TryGetComp<CompExplosive>()?.StartWick();
             }
         };
         predefuse.defaultCompleteMode = ToilCompleteMode.Instant;

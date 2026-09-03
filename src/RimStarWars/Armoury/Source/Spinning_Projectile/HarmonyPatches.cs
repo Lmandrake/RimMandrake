@@ -3,6 +3,15 @@ using Verse;
 
 namespace Spinning_Projectile;
 
+// 🔴 KNOWN GAP: nothing in this assembly ever sets ThingComp_ReturningWeapon.
+// IsThrowingWeapon to true - no ThingDef points a Verb at
+// SpinningWeaponProjectile, and no Verb class for launching one was ported
+// (the absorption carried the projectile/mote/comp but not whatever Verb
+// the donor DLL used to fire it - not decompiled, not guessed). The postfix
+// below is therefore currently a no-op even once it actually runs: this fix
+// only closes the half of the bug that WAS reachable (the patch never
+// applying at all), not the half that makes the feature complete.
+[StaticConstructorOnStartup]
 internal class HarmonyPatches
 {
     [HarmonyPatch(typeof(PawnRenderUtility), "CarryWeaponOpenly")]
@@ -24,15 +33,18 @@ internal class HarmonyPatches
 
     public static Harmony harmonyPatch;
 
+    // A class with an explicit static constructor is NOT beforefieldinit, so
+    // without [StaticConstructorOnStartup] on the class (above) this cctor
+    // only runs on first access to the type - and nothing in the assembly
+    // ever references HarmonyPatches, so it never ran at all and the
+    // postfix above was never applied.
     static HarmonyPatches()
     {
         harmonyPatch = new Harmony("Weapon_Spinning_Projectile");
-        // Ported source used bare PatchAll(), safe when this mod was its own
-        // assembly. Merged into JawaArmoury.dll alongside SelfHediffVerb's own
-        // PatchAll(), a bare PatchAll() here would double-scan the whole
-        // assembly for [HarmonyPatch] classes and patch SelfHediffVerb's too.
-        // Scoped to this mod's own nested class to preserve the original,
-        // narrower effect.
+        // Scoped to this mod's own nested class, not a bare PatchAll(): the
+        // assembly hosts several unrelated [HarmonyPatch] classes with their
+        // own entry points (SelfHediffVerb's own PatchAll among them), and a
+        // bare PatchAll() here would double-scan and double-patch those too.
         harmonyPatch.CreateClassProcessor(typeof(PawnRenderUtility_CarryWeaponOpenly_Postfix)).Patch();
     }
 }

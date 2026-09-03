@@ -35,7 +35,12 @@ public class MoteWeaponReturn : MoteThrown
     protected override void TimeInterval(float deltaTime)
     {
         base.TimeInterval(deltaTime);
-        if (originalLauncher == null || originalLauncher.Destroyed)
+        // originalLauncher.Destroyed is false for a killed-but-not-yet-corpse-
+        // destroyed pawn (Pawn.Kill despawns into a Corpse; Destroyed stays
+        // false), so a thrower who dies or is downed mid-flight reaches the
+        // block below with equipment already dropped - equipment.Primary is
+        // null, not equipment itself.
+        if (originalLauncher == null || originalLauncher.Destroyed || originalLauncher.equipment?.Primary == null)
         {
             return;
         }
@@ -47,8 +52,11 @@ public class MoteWeaponReturn : MoteThrown
         Vector3 toLauncher = originalLauncher.Position.ToVector3Shifted() - exactPosition;
         Vector3 normalized = toLauncher.normalized;
         float speed = ticksPerFrame * 1.1f;
-        float angle = speed * normalized.AngleFlat();
-        SetVelocity(angle, speed);
+        // Vector3.AngleFlat() already returns a heading in DEGREES, which is
+        // exactly what SetVelocity(float angle, float speed) wants - the old
+        // `speed * normalized.AngleFlat()` scaled that heading by ~8.8x,
+        // wrapping mod 360 into an unrelated direction almost every tick.
+        SetVelocity(normalized.AngleFlat(), speed);
         exactPosition += velocity * deltaTime;
         if (CheckCollisionWithLauncher())
         {
