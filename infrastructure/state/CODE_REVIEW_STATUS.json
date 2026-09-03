@@ -24,6 +24,31 @@
     "date": "2026-09-02",
     "sha": "14ea427e"
   },
+  "src/RimMandrake/Property/Source/ClaimEngine.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "08e80429"
+  },
+  "src/RimMandrake/Property/Source/ClaimRecord.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "08e80429"
+  },
+  "src/RimMandrake/Property/Source/ClaimRecordList.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "08e80429"
+  },
+  "src/RimMandrake/Property/Source/ClaimResolution.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "08e80429"
+  },
+  "src/RimMandrake/Property/Source/PropertyEngine.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "08e80429"
+  },
   "src/RimMandrake/ResearchKitEastFix/Source/mirror_research_kit_easts.py": {
     "cleanCount": 1,
     "date": "2026-09-02",

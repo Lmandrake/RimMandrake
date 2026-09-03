@@ -8,6 +8,13 @@ commit since — is DIRTY. There is no other way to earn CLEAN: fixing a
 finding does not clean a file, only a full-file review returning zero
 significant findings does, recorded here with `mark-clean`.
 
+🔴 This is not a Python-only tool. It covers ANY file that contributes to
+what the game actually loads — .py tooling, .cs mod source, .xml Defs and
+Patches alike. "Code isn't clean until a review says so" (CLAUDE.md) never
+said Python; do not narrow it. Owner ruling 2026-09-03, after an agent was
+told mid-review not to mark-clean a .cs file "because C# isn't in scope
+yet" — it always was.
+
     python3 src/RimMandrake/Utils/code_review_status.py check <path> [<path> ...]
     python3 src/RimMandrake/Utils/code_review_status.py mark-clean <path> [--sha <sha>]
     python3 src/RimMandrake/Utils/code_review_status.py reopen <path> [<path> ...] --reason "…"
