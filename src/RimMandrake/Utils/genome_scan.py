@@ -375,10 +375,10 @@ def main() -> int:
         {k: v for k, v in templates.items() if not v["_abstract"]}, fillers)
     for k, v in generated.items():
         genes.setdefault(k, v)
-    log(f"genes: {len(genes)} ({len(generated)} generated from templates)")
 
     genes = {k: v for k, v in genes.items() if not v.get("_abstract")}
     xenotypes = {k: v for k, v in xenotypes.items() if not v.get("_abstract")}
+    log(f"genes: {len(genes)} ({len(generated)} generated from templates)")
     log(f"xenotypes: {len(xenotypes)}")
 
     tex = build_texture_index(mod_dirs, active)
