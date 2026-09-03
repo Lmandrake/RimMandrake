@@ -612,16 +612,30 @@ def resolve_texture(tex_path, index, bundle_index=None, own_pkg=None):
         # entry rather than a filename. Measured: without this pass, 10 of the
         # 190 calibration plants stayed unresolved — every one of them either a
         # capital-letter or an infix form that only exists in a bundle.
+        # 🔴 RANKED, NOT FIRST-MATCH — this rung used to `return` the first
+        # candidate that passed the filter, which is exactly the ordering bug
+        # rule 1 above exists to prevent: with a permissive (containerless)
+        # cross-mod candidate ahead of the def's OWN-mod candidate in
+        # bundle_index's insertion order, the wrong mod's sprite won silently.
+        # Rank like every other rung here — own mod first, then trailing_score
+        # — and keep the earliest-tried alt_stems form as the tie-break, same
+        # as `-i` does in the suffix ladder above.
         alt_stems = [stem + c.lower() for c in VARIANT_LETTERS]
         s_head, s_sep, s_tail = stem.rpartition("_")
         if s_sep and s_head:
             alt_stems += [s_head + c.lower() + "_" + s_tail for c in VARIANT_LETTERS]
-        for alt in alt_stems:
+        best_var = None
+        for ai, alt in enumerate(alt_stems):
             for src, have_dirs, path in bundle_index.get(alt, ()):
-                if not (own and src == own) and blind is False and \
-                        trailing_score(want_dirs, have_dirs) <= 0 and have_dirs:
+                is_own = 1 if (own and src == own) else 0
+                score = trailing_score(want_dirs, have_dirs)
+                if not is_own and not blind and score <= 0 and have_dirs:
                     continue
-                return path, "<bundlevar:%s>" % alt
+                rank = (is_own, score, -ai)
+                if best_var is None or rank > best_var[0]:
+                    best_var = (rank, path, alt)
+        if best_var:
+            return best_var[1], "<bundlevar:%s>" % best_var[2]
 
         want_full = tuple(parts)          # texPath INCLUDING its last segment,
                                           # which here is a directory name
@@ -629,10 +643,15 @@ def resolve_texture(tex_path, index, bundle_index=None, own_pkg=None):
         for src, have_dirs, cstem, path in bundle_index.by_dir.get(stem, ()):
             if cstem.endswith("_m"):
                 continue
-            score = trailing_score(want_full, have_dirs)
-            if score <= 0 and have_dirs:
-                continue
             is_own = 1 if (own and src == own) else 0
+            score = trailing_score(want_full, have_dirs)
+            # 🔴 own-mod bypass, same as every other rung. Without `not is_own`
+            # here, a def's OWN mod could be filtered out of this rung purely
+            # for disagreeing on directory naming, while a same-score-or-worse
+            # candidate from a DIFFERENT mod stayed eligible — the reverse of
+            # rule 1 above ("own mod beats every other, whatever their paths").
+            if not is_own and score <= 0 and have_dirs:
+                continue
             # ⚠️ MIN over a NEGATED key, not max. Highest agreement first, then
             # own mod — but the tie-break must take the FIRST variant
             # alphabetically (`busha`), and a plain `max` on the tuple would take
@@ -983,17 +1002,21 @@ def render_page(cells, page_no, page_count, args, fonts, tile, stamp):
             mods_here.append(c["modName"])
     span = mods_here[0] if len(mods_here) == 1 else "%s \u2192 %s" % (
         mods_here[0], mods_here[-1])
-    n_draw = sum(1 for c in cells if not c.get("_ph"))
 
     draw.text((MARGIN, 14), "RimWorld animal contact sheet \u2014 page %d of %d"
               % (page_no, page_count), font=fonts["title"], fill=FG_TITLE)
-    draw.text((MARGIN, 38), fit_text(
-        draw, "%d sprites  \u00b7  %d mods: %s  \u00b7  %s"
-        % (n_draw, len(mods_here), span, stamp),
-        fonts["sub"], page_w - 2 * MARGIN), font=fonts["sub"], fill=FG_SUB)
 
     placed_rows = []
     prev_mod = None
+    # Counted from what actually decoded, not from how many cells were
+    # PLANNED. The sub-line header used to report `n_draw` \u2014 planned cells \u2014
+    # computed before any PNG was opened, so a page with undecodable PNGs
+    # (drawn as a red X, see below) still claimed "N sprites" for a count
+    # that included the X's. That is exactly the "looks complete while wrong"
+    # failure this sheet exists to avoid, since a red X on a busy page is
+    # easy to miss but a header count is what gets quoted. Drawn after the
+    # loop below, once the true count is known.
+    n_ok = 0
     for i, c in enumerate(cells):
         if c.get("_ph"):
             # Position consumed, drawing deferred. prev_mod is deliberately NOT
@@ -1022,6 +1045,7 @@ def render_page(cells, page_no, page_count, args, fonts, tile, stamp):
                       fill=(190, 80, 80), width=2)
             c["imageW"] = c["imageH"] = ""
         else:
+            n_ok += 1
             c["imageW"], c["imageH"] = sprite.width, sprite.height
             fitted = fit_sprite(sprite, cw - 8, well_h - 8 - TAG_H, args.max_upscale)
             px = x0 + (cw - fitted.width) // 2
@@ -1056,6 +1080,11 @@ def render_page(cells, page_no, page_count, args, fonts, tile, stamp):
 
         c["page"], c["row"], c["col"] = page_no, r, col
         placed_rows.append(c)
+
+    draw.text((MARGIN, 38), fit_text(
+        draw, "%d sprites  ·  %d mods: %s  ·  %s"
+        % (n_ok, len(mods_here), span, stamp),
+        fonts["sub"], page_w - 2 * MARGIN), font=fonts["sub"], fill=FG_SUB)
 
     return img, placed_rows
 
