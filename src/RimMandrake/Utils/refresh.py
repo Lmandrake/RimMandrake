@@ -820,8 +820,20 @@ def status(fp, steps_failed=False):
     # anyone on a ~23-minute load: that load would produce a dump matching the CURRENT
     # mod list, which is the opposite of what a frozen design target is for.
     needs_load = any(r[2] in ("STALE", "MISSING") and r[3] == "GAME LOAD" for r in rows)
+    # 🔴 REPLACED must never fall through to "Everything is current." It is
+    # neither STALE/MISSING (so needs_load misses it) nor REBUILD, so without
+    # this check the frozen-dump replacement the row above exists to announce
+    # (see the comment at the REPLACED row) went unannounced by the one line
+    # most readers actually look at.
+    replaced = [r for r in rows if r[2] == "REPLACED"]
     print("\n=== VERDICT ===")
-    if needs_load:
+    if replaced:
+        print("  🔴 THE FROZEN DESIGN TARGET WAS SILENTLY REPLACED ON DISK.")
+        for name, src, _state, how in replaced:
+            print("     %-24s %s" % (name, src))
+        print("     %s. Not staleness — a game load or --offline/--patches will not fix it."
+              % replaced[0][3])
+    elif needs_load:
         print("  A GAME LOAD IS REQUIRED to refresh the live dump (~23 min).")
         print("  Arm it first:")
         print("     echo all > \"%s\"" % os.path.join(D_DUMP, "dump_request.txt"))
