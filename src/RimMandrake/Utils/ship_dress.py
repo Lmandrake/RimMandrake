@@ -19,7 +19,8 @@ PHASES, each independently runnable so a save can sit between any two:
            Spaceports_ShuttleLandingPad laid in each, corner beacons, grate lip.
   gut      three bays lose their working machines to ruins and slag. The Aurebesh
            word stays. That contrast IS the story.
-  breach   the largest blister eats the hull itself, not just the deck.
+  breach   never implemented - not a valid --phase choice below. The blister
+           damage described in NOTES was done separately, by hand.
   notes    my own out-of-world reasoning, as named ZONES - a zone label renders on
            the map, which is the only text this game will draw where you can read it.
 
@@ -268,7 +269,7 @@ def do_save(rb, name):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--phase", action="append", default=[],
-                    choices=["labels", "pads", "gut", "breach", "notes"])
+                    choices=["labels", "pads", "gut", "notes"])
     ap.add_argument("--save")
     ap.add_argument("--shot")
     args = ap.parse_args()
