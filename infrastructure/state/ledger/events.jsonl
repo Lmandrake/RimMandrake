@@ -4123,3 +4123,8 @@
 {"seat":"FOUNDRY","event":"close","id":"QUEUE_ITEM_FILES_DECAY_1","sha":"5190ddcb","ts":"2026-09-03T03:25:15Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"DROIDWORKS_POWEREDDOWN_NOT_WIRED_1 live verify: ion-down a pilot chassis, confirm DW_PoweredDown sticks","ts":"2026-09-03T03:31:35Z"}
 {"seat":"FOUNDRY","event":"close","id":"BRIDGE_TERRAINTOOLS_REMAINING_FINDINGS_1","sha":"03a2adab","ts":"2026-09-03T03:33:11Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","ownerSaid":"game is up","ts":"2026-09-03T03:33:37Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","ownerSaid":"Game is up","ts":"2026-09-03T03:33:49Z"}
+{"seat":"FOUNDRY","event":"file","id":"INHABITED_STOCK_ONTO_MAP_AND_FATE_1","title":"Spawn a place's stock onto its map, collect it back, and wire InhabitedFate to it","kind":"task","target":"v1","needs":"game-up","caused_by":"INHABITED_ROSTER_LIFECYCLE_SWEEP_1","for":"FOUNDRY","ts":"2026-09-03T03:35:56Z"}
+{"seat":"FOUNDRY","event":"file","id":"INHABITED_AUTHORED_BIONICS_INSTALL_1","title":"Install the bionic half of CharacterDef.items instead of skipping it","kind":"task","target":"v1","needs":"game-up","caused_by":"INHABITED_ROSTER_LIFECYCLE_SWEEP_1","for":"FOUNDRY","ts":"2026-09-03T03:35:57Z"}
+{"seat":"OWNER","event":"file","id":"DEV_LOG_AUTOOPEN_SUPPRESS_1","title":"Suppress the dev-mode auto-open of the error log (no vanilla pref exists; Harmony prefix in JawaBench)","kind":"build","target":"v1","needs":"deploy","for":"FOUNDRY","ownerSaid":"Man I wish the Autoopen of the error log was set to False by default","ts":"2026-09-03T03:36:32Z"}

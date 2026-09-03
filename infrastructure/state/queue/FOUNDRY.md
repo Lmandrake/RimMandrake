@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-03T03:33:11Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: FOUNDRY
+as-of: 2026-09-03T03:36:32Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -424,4 +424,34 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-_none._
+Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
+
+## INHABITED_STOCK_ONTO_MAP_AND_FATE_1 Spawn a place's stock onto its map, collect it back, and wire InhabitedFate to it
+state:    proposed
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/INHABITED_STOCK_ONTO_MAP_AND_FATE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/INHABITED_STOCK_ONTO_MAP_AND_FATE_1.md
+
+## INHABITED_AUTHORED_BIONICS_INSTALL_1 Install the bionic half of CharacterDef.items instead of skipping it
+state:    proposed
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/INHABITED_AUTHORED_BIONICS_INSTALL_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/INHABITED_AUTHORED_BIONICS_INSTALL_1.md
+
+## DEV_LOG_AUTOOPEN_SUPPRESS_1 Suppress the dev-mode auto-open of the error log (no vanilla pref exists; Harmony prefix in JawaBench)
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     build
+thin:     spec, verify and criteria all present
+summary:  Owner, 2026-09-02: "Man I wish the Autoopen of the error log was set to False by default"
+prose:    infrastructure/state/items/DEV_LOG_AUTOOPEN_SUPPRESS_1.md
