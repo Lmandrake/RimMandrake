@@ -62,6 +62,7 @@
 // phantom tool name and refuses the next deploy.
 
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -128,7 +129,9 @@ namespace JawaBench.BridgeTools
                 "success, modPresent, before{} and after{} (every known field's value), " +
                 "changed[] (field names actually written), noopField (terrainDifficultyImpactPercent, " +
                 "always present so a caller never mistakes it for live), persisted, " +
-                "regenerated, ticksGame.")]
+                "regenerated (true only when RequestRegenerateInternal actually ran - checked, not " +
+                "just invoked without an exception), regenerateNote (why not, when false and a " +
+                "regenerate was requested), ticksGame.")]
         public static async Task<object> FactionTerritorySettings(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -288,6 +291,7 @@ namespace JawaBench.BridgeTools
                 }
 
                 bool regenerated = false;
+                string regenerateNote = null;
                 if (changed.Count > 0 && regenerate)
                 {
                     // RequestRegenerateInternal, NOT RequestRegenerate. RequestRegenerate (the
@@ -301,16 +305,59 @@ namespace JawaBench.BridgeTools
                     // is the synchronous, main-thread, pause-safe path (MapModeComponent.RegenerateNow(),
                     // the exact call jawa/world_map_mode already uses for a mode switch) with the
                     // same clearCache behaviour, so this never needs the sim to tick.
-                    Type utilType = FtType("FactionTerritories.FactionTerritoriesUtility");
-                    MethodInfo regenMethod = utilType?.GetMethod("RequestRegenerateInternal", FtPublicStatic);
-                    if (regenMethod != null)
+                    //
+                    // 🔴 RequestRegenerateInternal itself (FactionTerritoriesUtility.cs) returns
+                    // silently, with NO exception, when MapModeComponent.Instance is null (no
+                    // game loaded yet) or when no MapMode_FactionTerritories is registered in
+                    // instance.mapModes - reflection's Invoke() would still succeed in both cases,
+                    // which is exactly the "success for something else" pattern this DLL's review
+                    // has already fixed four times over. Check the same precondition the method
+                    // itself checks, the same discipline JawaBenchMapModeTools.cs already uses for
+                    // this framework, so `regenerated` means an actual regeneration ran.
+                    Type compType = FtType("MapModeFramework.MapModeComponent");
+                    object mmfInstance = compType?.GetField("Instance", FtPublicStatic)?.GetValue(null);
+                    bool hasFactionTerritoriesMode = false;
+                    if (mmfInstance != null)
                     {
-                        try { regenMethod.Invoke(null, new object[] { true }); regenerated = true; }
-                        catch (Exception e)
+                        object modesRaw = compType.GetField("mapModes", FtPublicInstance)?.GetValue(mmfInstance);
+                        Type ftModeType = FtType("FactionTerritories.MapMode_FactionTerritories");
+                        if (modesRaw is IEnumerable modesEnum && ftModeType != null)
                         {
-                            return Fail(
-                                "FactionTerritoriesUtility.RequestRegenerateInternal threw: " + e.Message,
-                                new { modPresent = true, before, changed, persisted });
+                            foreach (object m in modesEnum)
+                                if (ftModeType.IsInstanceOfType(m)) { hasFactionTerritoriesMode = true; break; }
+                        }
+                    }
+
+                    if (mmfInstance == null)
+                    {
+                        regenerateNote = "MapModeComponent.Instance is null - no game is loaded, so " +
+                            "there is no live view to refresh. The settings change above is still " +
+                            "written and persisted; it will apply once a game is loaded.";
+                    }
+                    else if (!hasFactionTerritoriesMode)
+                    {
+                        regenerateNote = "No MapMode_FactionTerritories is registered in " +
+                            "MapModeComponent.mapModes, so RequestRegenerateInternal would be a " +
+                            "no-op. The settings change above is still written and persisted.";
+                    }
+                    else
+                    {
+                        Type utilType = FtType("FactionTerritories.FactionTerritoriesUtility");
+                        MethodInfo regenMethod = utilType?.GetMethod("RequestRegenerateInternal", FtPublicStatic);
+                        if (regenMethod == null)
+                        {
+                            regenerateNote = "FactionTerritoriesUtility.RequestRegenerateInternal did " +
+                                "not resolve - the mod's API changed and this tool needs updating.";
+                        }
+                        else
+                        {
+                            try { regenMethod.Invoke(null, new object[] { true }); regenerated = true; }
+                            catch (Exception e)
+                            {
+                                return Fail(
+                                    "FactionTerritoriesUtility.RequestRegenerateInternal threw: " + e.Message,
+                                    new { modPresent = true, before, changed, persisted });
+                            }
                         }
                     }
                 }
@@ -326,6 +373,7 @@ namespace JawaBench.BridgeTools
                     noopField = "terrainDifficultyImpactPercent",
                     persisted,
                     regenerated,
+                    regenerateNote,
                     ticksGame = TicksGameSafe(),
                 };
             }).ConfigureAwait(false);
