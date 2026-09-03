@@ -132,10 +132,11 @@ namespace RimMandrake.Inhabited
         /// written here too. Which it is, is CharacterApplier's call, not the
         /// parser's, and CharacterApplier splits them on `ThingDef.isTechHediff`.
         ///
-        /// ⚠️ Only the CARRIED half is applied today. Installing a bionic means
-        /// resolving this ThingDef to a RecipeDef and then to a BodyPartRecord on
-        /// the particular body, which is a feature rather than a field read:
-        /// INHABITED_AUTHORED_BIONICS_INSTALL_1. 27 characters have any.
+        /// Both halves are applied: carried goes into the inventory, and a bionic
+        /// is installed by the route vanilla itself uses at generation time
+        /// (`PawnTechHediffsGenerator.InstallPart`) -- the ThingDef resolves
+        /// against `pawn.def.AllRecipes`, and the recipe's own worker picks the
+        /// body part. 27 characters have any; 7 of those 27 author a bionic.
         /// </summary>
         public List<ThingDef> items = new List<ThingDef>();
 

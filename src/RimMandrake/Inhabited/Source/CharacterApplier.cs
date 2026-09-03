@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using RimWorld;
 using RimWorld.Planet;
@@ -9,11 +10,13 @@ namespace RimMandrake.Inhabited
     /// Makes a generated pawn into one of the 294 authored people.
     ///
     /// ⭐ WHAT IT APPLIES: the NAME, the TRAITS, the GENDER, and the kit the prose
-    /// earns — `weapon`, `apparel`, `skills`, and the CARRIED half of `items`. The
-    /// name and the trouble trait still do most of the work (a name worth saying is
-    /// the strongest single predictor that a player remembers somebody), but the
-    /// kit is authored data with a defined meaning, and parsing it and then
-    /// throwing it away was a lie CharacterDef told about this file.
+    /// earns — `weapon`, `apparel`, `skills`, and BOTH halves of `items`: the
+    /// carried goods go into the inventory and the `isTechHediff` entries are
+    /// installed on the body. The name and the trouble trait still do most of the
+    /// work (a name worth saying is the strongest single predictor that a player
+    /// remembers somebody), but the kit is authored data with a defined meaning,
+    /// and parsing it and then throwing it away was a lie CharacterDef told about
+    /// this file.
     ///
     /// ⚠️ `skills` are OUTLIERS ONLY — an absent skill means "ordinary", not
     /// "unknown", so what is named is SET and everything else keeps the level
@@ -24,13 +27,6 @@ namespace RimMandrake.Inhabited
     ///   * `xenotype` and `pawnKind` — the prose does not carry them, DECIDE owes
     ///     them, and a guessed xenotype ships a wrong-looking person into a world
     ///     that is built once and frozen. Both fields are empty by design.
-    ///   * The INSTALLED half of `items`. `items` mixes carried goods (Beer,
-    ///     Ambrosia, a Drum) with bionics (BionicLeg, BionicArm, BionicJaw) and the
-    ///     prose does not distinguish. Carried is done here; installing a bionic
-    ///     means resolving a ThingDef to a RecipeDef and then to a BodyPartRecord
-    ///     on this particular body, which is a feature with its own failure modes
-    ///     and needs a live check — INHABITED_AUTHORED_BIONICS_INSTALL_1. Until
-    ///     then `isTechHediff` entries are skipped, knowingly.
     ///   * `childhood` and `adult`, which stay authored TEXT rather than becoming
     ///     BackstoryDefs — a backstory carries skill gains and work disables, which
     ///     nobody has decided.
@@ -117,6 +113,14 @@ namespace RimMandrake.Inhabited
             }
 
             ApplySkills(pawn, character);
+
+            // ⚠️ BEFORE the weapon and the apparel, deliberately. Installing an
+            // artificial part runs Pawn_HealthTracker.RestorePart on the natural
+            // one first (Recipe_InstallArtificialBodyPart.ApplyOnPawn), so a part
+            // this pawn was generated without comes BACK -- and both
+            // ApparelUtility.HasPartsToWear and the equipment tracker's capacity
+            // checks read the body as it stands when they run.
+            ApplyInstalledItems(pawn, character);
             ApplyWeapon(pawn, character);
             ApplyApparel(pawn, character);
             ApplyCarriedItems(pawn, character);
@@ -218,9 +222,8 @@ namespace RimMandrake.Inhabited
         }
 
         /// <summary>
-        /// The carried half of `items`. ⛔ `isTechHediff` entries -- the bionics --
-        /// are SKIPPED, not carried in a pocket: see the class comment and
-        /// INHABITED_AUTHORED_BIONICS_INSTALL_1.
+        /// The carried half of `items`. `isTechHediff` entries are not carried in
+        /// a pocket -- ApplyInstalledItems puts them in the body instead.
         /// </summary>
         private static void ApplyCarriedItems(Pawn pawn, CharacterDef character)
         {
@@ -245,6 +248,170 @@ namespace RimMandrake.Inhabited
                     item.Destroy();
                 }
             }
+        }
+
+        /// <summary>
+        /// RecipeWorker.ApplyOnPawn wants an ingredient list and none of the
+        /// surgery workers read it when `billDoer` is null. Shared and never
+        /// written to, exactly as PawnTechHediffsGenerator.emptyIngredientsList is.
+        /// </summary>
+        private static readonly List<Thing> NoIngredients = new List<Thing>();
+
+        /// <summary>
+        /// The INSTALLED half of `items` -- the bionics. `items` mixes carried
+        /// goods (Beer, Ambrosia, a Drum) with parts (BionicArm, BionicEye,
+        /// BionicJaw, BionicLeg) because the prose does not distinguish, and the
+        /// split is `ThingDef.isTechHediff`, which is what `BodyPartBionicBase`
+        /// and its siblings set (Core/HediffDefs/BodyParts/Hediffs_BodyParts_Base.xml).
+        ///
+        /// ⭐ THE PRECEDENT IS VANILLA'S OWN, and it is deliberately copied rather
+        /// than invented: `PawnTechHediffsGenerator.InstallPart` is how the engine
+        /// puts a bionic into a pawn who has no surgeon, no operating table, no
+        /// bleeding and no recovery -- exactly our situation, since an authored
+        /// character is materialised off-map into a roster. It resolves the
+        /// ThingDef by asking which of the RACE'S OWN recipes takes it as an
+        /// ingredient, then asks that recipe's worker which parts of THIS body it
+        /// may apply to, then calls ApplyOnPawn with a null billDoer.
+        ///
+        /// ⚠️ Every failure here is named out loud. Nothing about this chain is
+        /// guaranteed by the type system: a modded race whose ThingDef carries no
+        /// surgery recipes, a body def with no Jaw, a second bionic arm on a pawn
+        /// who already has two -- all of them are a silent no-op in vanilla, and
+        /// the whole reason this was deferred once is that a silent no-op here is
+        /// indistinguishable from working.
+        /// </summary>
+        private static void ApplyInstalledItems(Pawn pawn, CharacterDef character)
+        {
+            if (pawn.health == null || pawn.def == null || character.items.NullOrEmpty())
+            {
+                return;
+            }
+            for (int i = 0; i < character.items.Count; i++)
+            {
+                ThingDef def = character.items[i];
+                if (def == null || !def.isTechHediff)
+                {
+                    continue;
+                }
+                InstallPart(pawn, character, def);
+            }
+        }
+
+        /// <summary>
+        /// Put one `isTechHediff` ThingDef into <paramref name="pawn"/>, or say
+        /// why it could not go in. Modelled on PawnTechHediffsGenerator.InstallPart.
+        /// </summary>
+        private static void InstallPart(Pawn pawn, CharacterDef character, ThingDef partDef)
+        {
+            // ⭐ `pawn.def.AllRecipes` -- not `DefDatabase<RecipeDef>.AllDefs` -- is
+            // what makes this race-correct: AllRecipes is the ThingDef's own
+            // `recipes` plus every RecipeDef whose `recipeUsers` names it, so a
+            // recipe that cannot be performed on this body is never considered.
+            // InstallBionicArm's recipeUsers is <li>Human</li>, which is why a
+            // droid or a modded chassis simply gets the warning below.
+            //
+            // `addsHediff != null` is ours, not vanilla's: RecipeDef.IsIngredient
+            // is a pure ingredient-filter test and would happily match a recipe
+            // that removes or replaces rather than installs, and
+            // Recipe_InstallArtificialBodyPart.ApplyOnPawn dereferences
+            // `recipe.addsHediff.hediffClass` unconditionally.
+            List<RecipeDef> candidates = new List<RecipeDef>();
+            List<RecipeDef> onThisBody = pawn.def.AllRecipes;
+            for (int i = 0; i < onThisBody.Count; i++)
+            {
+                RecipeDef r = onThisBody[i];
+                if (r?.addsHediff != null && r.IsIngredient(partDef))
+                {
+                    candidates.Add(r);
+                }
+            }
+
+            RecipeDef chosen = null;
+            BodyPartRecord chosenPart = null;
+            List<BodyPartRecord> free = new List<BodyPartRecord>();
+            for (int i = 0; i < candidates.Count && chosen == null; i++)
+            {
+                RecipeDef r = candidates[i];
+
+                // `targetsBodyPart` defaults TRUE (RecipeDef.cs:105); the false case
+                // is a whole-pawn hediff and takes a null part, as vanilla does.
+                if (!r.targetsBodyPart)
+                {
+                    chosen = r;
+                    break;
+                }
+
+                // ⭐ THIS is where "already occupied" is decided, and the engine
+                // decides it, not us. Recipe_InstallArtificialBodyPart and
+                // Recipe_InstallImplant both override GetPartsToApplyOn with a
+                // validator that rejects a part already carrying this hediff, a
+                // part whose parent is missing, and a part under an existing added
+                // part. So a character authored with two bionic arms gets both
+                // shoulders and one authored with three gets a warning on the
+                // third -- no replace, no stacking, no bespoke occupancy test.
+                free.Clear();
+                foreach (BodyPartRecord p in r.Worker.GetPartsToApplyOn(pawn, r))
+                {
+                    free.Add(p);
+                }
+                if (free.Count == 0)
+                {
+                    continue;
+                }
+
+                // Vanilla picks at random among the valid parts and so do we: which
+                // shoulder wears the bionic arm is not authored, and the pawn this
+                // is being applied to was itself rolled.
+                chosen = r;
+                chosenPart = free.RandomElement();
+            }
+
+            if (chosen != null)
+            {
+                try
+                {
+                    // billDoer null: no surgery roll, no tale, no ideoligion event,
+                    // and no violation reported. With `pawn.Map` also null -- an
+                    // authored character is built off-map -- ApplyOnPawn takes its
+                    // `pawn.health.RestorePart(part)` branch and nothing is spawned
+                    // on any floor.
+                    chosen.Worker.ApplyOnPawn(pawn, chosenPart, null, NoIngredients, null);
+                }
+                catch (Exception e)
+                {
+                    // A throw here would abort the whole cast instantiation and
+                    // take a settlement's population with it. One person missing an
+                    // arm is survivable; a place with nobody in it is not.
+                    Log.Error("[RimMandrake.Inhabited] installing " + partDef.defName + " on "
+                              + character.defName + " (" + character.label + ") via "
+                              + chosen.defName + " threw: " + e);
+                }
+                return;
+            }
+
+            // Not every tech hediff is surgical. A mechlink or a psychic amplifier
+            // is a usable item that installs itself through a comp, and vanilla
+            // falls back to exactly this. None of the 294 author one today.
+            CompProperties_UseEffectInstallImplant implant =
+                partDef.GetCompProperties<CompProperties_UseEffectInstallImplant>();
+            if (implant?.hediffDef != null)
+            {
+                List<BodyPartRecord> named = implant.bodyPart == null
+                    ? null
+                    : pawn.RaceProps.body.GetPartsWithDef(implant.bodyPart);
+                pawn.health.AddHediff(implant.hediffDef, named.NullOrEmpty() ? null : named.RandomElement());
+                return;
+            }
+
+            // Name the CHARACTER, because that is the file an author has to go and
+            // fix, and say WHICH of the two ways it failed.
+            Log.Warning("[RimMandrake.Inhabited] " + character.defName + " (" + character.label
+                        + ") authors " + partDef.defName + ", which was NOT installed: "
+                        + (candidates.Count == 0
+                            ? "no recipe on " + pawn.def.defName + " takes it as an ingredient"
+                            : "no free body part on this " + pawn.RaceProps.body.defName
+                              + " body for " + candidates[0].defName)
+                        + ".");
         }
 
         /// <summary>
