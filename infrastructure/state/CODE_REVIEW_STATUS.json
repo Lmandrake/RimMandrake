@@ -339,6 +339,21 @@
     "date": "2026-09-03",
     "sha": "359b0b2c"
   },
+  "src/RimMandrake/Utils/apply_floor_plan.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "43884307"
+  },
+  "src/RimMandrake/Utils/apply_race_factions.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "43884307"
+  },
+  "src/RimMandrake/Utils/ashkarr_clamp_rain.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "43884307"
+  },
   "src/RimMandrake/Utils/ashkarr_dry_jungle.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -472,6 +487,11 @@
     "date": "2026-09-02",
     "sha": "fe90ab46"
   },
+  "src/RimMandrake/Utils/doc_claims.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "43884307"
+  },
   "src/RimMandrake/Utils/export_structure.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -481,6 +501,11 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "359b0b2c"
+  },
+  "src/RimMandrake/Utils/game_focus.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "43884307"
   },
   "src/RimMandrake/Utils/gen_pawnkind_roster.py": {
     "cleanCount": 1,
@@ -497,10 +522,20 @@
     "date": "2026-09-02",
     "sha": "3569bca9"
   },
+  "src/RimMandrake/Utils/grade_authored_kinds_trial.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "43884307"
+  },
   "src/RimMandrake/Utils/harvest_log.py": {
     "cleanCount": 1,
     "date": "2026-09-02",
     "sha": "d92ee4cc"
+  },
+  "src/RimMandrake/Utils/inhabited_soak.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "43884307"
   },
   "src/RimMandrake/Utils/install_fleet_shortcut.py": {
     "cleanCount": 1,
@@ -520,6 +555,11 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "39cd22d5"
+  },
+  "src/RimMandrake/Utils/neolithic_floor_roster.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "43884307"
   },
   "src/RimMandrake/Utils/repaint_hull.py": {
     "cleanCount": 1,
@@ -550,6 +590,11 @@
     "cleanCount": 1,
     "date": "2026-09-02",
     "sha": "9b556d77"
+  },
+  "src/RimMandrake/Utils/score_biome_load.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "43884307"
   },
   "src/RimMandrake/Utils/selftest_broadcast_frame.py": {
     "cleanCount": 1,
@@ -641,6 +686,16 @@
     "date": "2026-09-03",
     "sha": "39cd22d5"
   },
+  "src/RimMandrake/Utils/world_shape.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "43884307"
+  },
+  "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchGenTools2.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "e515c1e9"
+  },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchHarmonyInspect.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -665,6 +720,11 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "46ac7699"
+  },
+  "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchPipeTools.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "e515c1e9"
   },
   "src/RimMandrake/bridgetools/prove_load_stall_probe.py": {
     "cleanCount": 1,
