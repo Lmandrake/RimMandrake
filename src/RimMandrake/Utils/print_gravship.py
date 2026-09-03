@@ -227,12 +227,21 @@ def main():
         print("terrain    changed %d failedVerify %d (want %d)"
               % (changed, failed, len(terrain)))
 
-        # 3. things, grouped by stuff (a per-CALL parameter), largest first
+        # 3. things, largest first. `stuff` is a per-CALL parameter, so batches
+        # are only merged across CONSECUTIVE things sharing the same stuff -
+        # bucketing by stuff across the whole list (as this used to do) would
+        # finish one stuff's items before starting the next, which reorders a
+        # smaller item of stuff B ahead of a larger item of stuff A and lets
+        # build_batch silently wipe the smaller one that landed first.
         placed = 0
-        bystuff = collections.OrderedDict()
-        for area, d, x, z, rot, stuff in things:
-            bystuff.setdefault(stuff, []).append("%s:%d,%d,%d" % (d, x, z, rot))
-        for stuff, ops in bystuff.items():
+        i = 0
+        while i < len(things):
+            stuff = things[i][5]
+            j = i
+            ops = []
+            while j < len(things) and things[j][5] == stuff:
+                ops.append("%s:%d,%d,%d" % (things[j][1], things[j][2], things[j][3], things[j][4]))
+                j += 1
             for part in chunks(ops, BUILD_CHUNK):
                 p = {"ops": ";".join(part), "readBack": 0}
                 if stuff:
@@ -243,6 +252,7 @@ def main():
                 placed += r.get("placed") or 0
                 for f in (r.get("failed") or [])[:5]:
                     print("   build failed:", f)
+            i = j
         print("things     placed(reported) %d of %d" % (placed, len(things)))
 
         m = rb.call("jawa/map_commit", {})
