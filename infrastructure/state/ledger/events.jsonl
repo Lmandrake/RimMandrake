@@ -4282,3 +4282,5 @@
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","ownerSaid":"When bridge is available go ahead and reboot. That should just be known at this point.","ts":"2026-09-03T19:46:19Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-03T19:46:19Z"}
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ownerSaid":"Game is down","ts":"2026-09-03T19:46:23Z"}
+{"seat":"FOUNDRY","event":"claim","id":"DIRTY_CODE_REVIEW_LOOP_RESTART_3","ts":"2026-09-03T19:47:32Z"}
+{"seat":"FOUNDRY","event":"start","id":"DIRTY_CODE_REVIEW_LOOP_RESTART_3","ts":"2026-09-03T19:47:36Z"}

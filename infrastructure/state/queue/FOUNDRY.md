@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-03T19:46:23Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-03T19:47:36Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -360,6 +360,15 @@ kind:     task
 summary:  Measured 2026-09-03 on the 20-mod minimal list, dev quicktest map. The
 prose:    infrastructure/state/items/FLUID_CANAL_DEBUG_SURFACE_1.md
 
+## DIRTY_CODE_REVIEW_LOOP_RESTART_3 resume standing code-review sweep after next agent reboot
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     continuity
+summary:  DIRTYCODEREVIEWLOOPRESTART3
+prose:    infrastructure/state/items/DIRTY_CODE_REVIEW_LOOP_RESTART_3.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -455,16 +464,6 @@ kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DEFDUMP_ONDEMAND_BRIDGE_UNREACHABLE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DEFDUMP_ONDEMAND_BRIDGE_UNREACHABLE_1.md
-
-## DIRTY_CODE_REVIEW_LOOP_RESTART_3 resume standing code-review sweep after next agent reboot
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     continuity
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  DIRTYCODEREVIEWLOOPRESTART3
-prose:    infrastructure/state/items/DIRTY_CODE_REVIEW_LOOP_RESTART_3.md
 
 ## VANILLA_COUNT_PSEUDO_DEF_1 A mod writes vanilla count-class pseudo-defs (MealSimple10/Chemfuel60/Steel75/Silver120/ComponentIndustrial12) as defNames instead of Def+count
 state:    proposed
