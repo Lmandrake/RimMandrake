@@ -1777,6 +1777,14 @@ def _render_module():
     time, and it made the two-shim pattern look like three cases. The two shims that
     matter are the ones every other import in this file uses: relative for
     `python3 -m rimflow.cli`, absolute for the script path every seat actually types.
+
+    🔴 "NOT THERE" AND "WOULD NOT IMPORT" ARE DIFFERENT ANSWERS. An `ImportError` raised
+    from INSIDE render.py — a dependency it cannot find, a name it imports that moved —
+    looks identical here to the file being absent, and `_delegate` then told the seat
+    "render.py does not exist yet ... it is another agent's file", which is a sentence
+    about a file sitting right there on disk. The reader goes looking for a missing
+    module while the real traceback is the thing they needed. So the absence is
+    established by LOOKING, and anything else is re-raised with its own message.
     """
     try:
         from . import render                                    # noqa: F401
@@ -1786,7 +1794,14 @@ def _render_module():
     try:
         from rimflow import render                              # noqa: F401
         return render
-    except ImportError:
+    except ImportError as e:
+        if os.path.exists(os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                                       "render.py")):
+            die("rimflow/render.py IS on disk but would not import: %s\n\n"
+                "That is a break inside render.py or something it imports — not a "
+                "missing file, and\nnot the ledger, which is untouched. Run "
+                "`python3 -c \"import rimflow.render\"` for the\nfull traceback, or "
+                "ask its owner." % e)
         return None
 
 
