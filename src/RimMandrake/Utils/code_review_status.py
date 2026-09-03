@@ -70,16 +70,27 @@ def save(data):
     tmp = "%s.tmp.%d.%d" % (LOG_PATH, os.getpid(), time.time_ns())
     fd = os.open(tmp, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o644)
     try:
-        fcntl.flock(fd, fcntl.LOCK_EX)
         try:
-            body = json.dumps(data, indent=2, sort_keys=True) + "\n"
-            os.write(fd, body.encode("utf-8"))
-            os.fsync(fd)
+            fcntl.flock(fd, fcntl.LOCK_EX)
+            try:
+                body = json.dumps(data, indent=2, sort_keys=True) + "\n"
+                os.write(fd, body.encode("utf-8"))
+                os.fsync(fd)
+            finally:
+                fcntl.flock(fd, fcntl.LOCK_UN)
         finally:
-            fcntl.flock(fd, fcntl.LOCK_UN)
-    finally:
-        os.close(fd)
-    os.replace(tmp, LOG_PATH)
+            os.close(fd)
+        os.replace(tmp, LOG_PATH)
+    except BaseException:
+        # The unique tmp name means a leaked file is never overwritten and so
+        # never noticed — it just accumulates untracked next to the log, in a
+        # directory `git add` is aimed at by hand. Take it with us on any
+        # failure; os.replace has either happened (tmp gone) or has not.
+        try:
+            os.unlink(tmp)
+        except OSError:
+            pass
+        raise
 
 
 def repo_rel(path):
@@ -158,12 +169,38 @@ def cmd_mark_clean(path, sha):
     if not os.path.isfile(os.path.join(ROOT, rel)):
         print(f"FAIL: {rel} does not exist under the repo root.", file=sys.stderr)
         return 2
+    # A path git does not track has no commit to anchor a clean mark to, and
+    # the working-tree check below cannot see it either: `git status` stays
+    # silent on an IGNORED file, so one would record CLEAN and then read CLEAN
+    # for ever, no edit ever making it dirty again. (`vendor/mod_sources/**` is
+    # ignored, and this tool's docstring puts .cs mod source in scope.)
+    if git(["ls-files", "--error-unmatch", "--", rel]).returncode != 0:
+        print(f"FAIL: {rel} is not tracked by git — commit it first, or it can "
+              "never be measured dirty again.", file=sys.stderr)
+        return 2
     if sha is None:
         r = git(["rev-parse", "--short", "HEAD"])
         if r.returncode != 0 or not r.stdout.strip():
             print("FAIL: could not resolve HEAD.", file=sys.stderr)
             return 2
         sha = r.stdout.strip()
+    else:
+        # An unvalidated --sha is recorded verbatim. A typo poisons the entry
+        # permanently: every later `check` says "recorded sha not found — log is
+        # stale", which reads as a repo fault rather than a bad argument, and the
+        # bogus mark still burned a cleanCount increment on the health board.
+        r = git(["rev-parse", "--verify", "--short", "%s^{commit}" % sha])
+        if r.returncode != 0 or not r.stdout.strip():
+            print(f"FAIL: --sha {sha} does not resolve to a commit.", file=sys.stderr)
+            return 2
+        sha = r.stdout.strip()
+        # And it must be an ancestor of HEAD. `git log <sha>..HEAD` is empty for
+        # any sha HEAD can already reach FROM, so a mark against a commit ahead
+        # of HEAD would read CLEAN no matter what HEAD's copy of the file says.
+        if git(["merge-base", "--is-ancestor", sha, "HEAD"]).returncode != 0:
+            print(f"FAIL: --sha {sha} is not an ancestor of HEAD; a clean mark "
+                  "there could never be measured dirty.", file=sys.stderr)
+            return 2
     # Uncommitted changes to this exact file mean HEAD is not what will actually
     # ship - refuse rather than record a clean mark against a commit that
     # doesn't reflect what was reviewed. A git FAILURE (index lock, bad path)
@@ -206,20 +243,37 @@ def cmd_reopen(paths, reason):
     if not reason or not reason.strip():
         print("FAIL: --reason is required - say why this is being reopened.", file=sys.stderr)
         return 2
+    # Validate every path BEFORE touching the log. Without this a typo prints
+    # the reassuring "(already not clean)" and exits 0 while the file the
+    # operator meant to retract stays marked CLEAN — a silent no-op in the one
+    # command whose entire job is undoing a wrong clean mark.
+    rels = []
+    for path in paths:
+        rel = repo_rel(path)
+        if rel.startswith("../") or rel == "..":
+            print(f"FAIL: {rel} is outside the repo root.", file=sys.stderr)
+            return 2
+        if not os.path.isfile(os.path.join(ROOT, rel)):
+            print(f"FAIL: {rel} does not exist under the repo root.", file=sys.stderr)
+            return 2
+        rels.append(rel)
     with locked():
         data = load()
         changed = []
-        for path in paths:
-            rel = repo_rel(path)
+        for rel in rels:
             if rel in data:
+                # NOTE: this drops the entry's cleanCount with it, so a reopened
+                # file's "reviewed, then dirty again" streak restarts at 1 on the
+                # health board. Keeping the count would need a sha-less stub
+                # entry, and codebase_health.review_verdicts() reads entry["sha"]
+                # unguarded — not a change to make inside a review pass.
                 del data[rel]
                 changed.append(rel)
         if changed:
             save(data)
     for rel in changed:
         print(f"REOPENED  {rel}  ({reason})")
-    for path in paths:
-        rel = repo_rel(path)
+    for rel in rels:
         if rel not in changed:
             print(f"(already not clean)  {rel}")
     return 0

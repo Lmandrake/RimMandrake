@@ -75,7 +75,13 @@ RATIFIED = os.path.join(REPO, "deployed", "config", "v1_freeze",
 
 _KEY = re.compile(r"<li>\s*([^<>/\s]+)\s*/\s*([^<>\s]+?)\s*</li>")
 # Cherry Picker's own report lines: "	 - ThingDef/Cat," one per removal.
-_LOG = re.compile(r"^\s*-\s*([A-Za-z]+)/([^,\s]+),?\s*$")
+# ⚠️ The type charset must stay as wide as `_KEY`'s. It is a C# class name, and
+# modded def types carry underscores and digits (`ThingDef_AlienRace`). A type
+# this fails to match is not skipped — `from_log` BREAKS on the first
+# non-matching non-blank line, so one such def truncates the removal block and
+# silently UNDER-reports the cuts. That is the direction this module exists to
+# kill: a sheet then shows the owner defs the game no longer has.
+_LOG = re.compile(r"^\s*-\s*([A-Za-z_][A-Za-z0-9_]*)/([^,\s]+),?\s*$")
 _LI = re.compile(r"<li>\s*(.*?)\s*</li>", re.S)
 
 
@@ -206,7 +212,9 @@ def from_log(path=None):
 
 def main(argv=None):
     import argparse
-    ap = argparse.ArgumentParser(description=__doc__.split("\n")[2])
+    # [1], not [2]: the docstring opens with a newline, so [0] is empty and the
+    # title line is [1] — [2] printed the sentence's second half as the summary.
+    ap = argparse.ArgumentParser(description=__doc__.split("\n")[1])
     ap.add_argument("--source", choices=("auto", "live", "ratified", "log"),
                     default="auto")
     ap.add_argument("--type", default="", help="list the cut names of one def type")
