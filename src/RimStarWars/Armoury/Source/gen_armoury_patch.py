@@ -161,7 +161,7 @@ ARTILLERY_MIN_RADIUS = 1.5
 # And it must hit like a siege piece, not merely splash. Set at the emplacement
 # band's own ceiling: below 200 a fixed gun is a defence turret by our own
 # definition, so it belongs on 40-200 and not on a rung that starts at 250.
-ARTILLERY_MIN_DAMAGE = 100
+ARTILLERY_MIN_DAMAGE = 200
 
 
 def dn_mod_is_yautja(w):
