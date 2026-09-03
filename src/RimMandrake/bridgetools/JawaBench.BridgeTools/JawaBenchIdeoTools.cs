@@ -99,6 +99,19 @@ namespace JawaBench.BridgeTools
 
             return await ctx.MainThread.InvokeAsync(() =>
             {
+                // ChooseOrGenerateIdeo's FIRST branch is `!ModsConfig.IdeologyActive ||
+                // parms.forceNoExpansionIdeo` -> GenerateNoExpansionIdeo -> GenerateClassicIdeo,
+                // which ignores fixedIdeo/deities/name/description/requiredPreceptsOnly outright.
+                // Without this guard the tool would return success:true having assigned a CLASSIC
+                // ideo instead of the FactionDef's authored one. The faction.ideos null check
+                // below cannot catch it: FactionGenerator builds a FactionIdeosTracker for every
+                // humanlikeFaction regardless of whether Ideology is active.
+                if (!ModsConfig.IdeologyActive)
+                    return Fail("Ideology is NOT active. ChooseOrGenerateIdeo would take its " +
+                                "no-expansion branch and generate a CLASSIC ideo, ignoring " +
+                                "fixedIdeo, deityPresets, ideoName and requiredPreceptsOnly - " +
+                                "refusing rather than reporting success for the wrong ideo.");
+
                 var fd = DefDatabase<FactionDef>.GetNamedSilentFail(factionDefName.Trim());
                 if (fd == null)
                     return Fail("No FactionDef '" + factionDefName + "'.",
@@ -114,7 +127,7 @@ namespace JawaBench.BridgeTools
                                 "faction was generated in this world.");
                 if (faction.ideos == null)
                     return Fail("Faction '" + faction.Name + "' has no FactionIdeosTracker - " +
-                                "is Ideology active? (ModsConfig.IdeologyActive)");
+                                "FactionGenerator only builds one for humanlikeFaction defs.");
 
                 var oldIdeo = faction.ideos.PrimaryIdeo;
 
@@ -249,8 +262,11 @@ namespace JawaBench.BridgeTools
             ResultDescription =
                 "success, factionDefName, targetIdeoName, targetIdeoId, pawnsMatched, " +
                 "reassigned, skippedSameIdeo, skippedNoChange (SetIdeo ran but the ideo did " +
-                "not change - e.g. a baby), noIdeoTracker, truncated (true if pawnsMatched > " +
-                "limit), results[] of {pawnId, name, before, after, outcome}.")]
+                "not change - e.g. a baby), noIdeoTracker, truncated (the cap stopped it " +
+                "before the end - call again to continue), results[] of {pawnId, name, " +
+                "before, after, outcome} for the pawns that were actually worked on. Pawns " +
+                "already on the target ideo, and pawns with no ideo tracker, are COUNTED " +
+                "only - they do no work, so they get no row and do not consume `limit`.")]
         public static async Task<object> PawnIdeoReassign(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -301,18 +317,18 @@ namespace JawaBench.BridgeTools
                     .ToList();
 
                 int reassigned = 0, skippedSame = 0, skippedNoChange = 0, noTracker = 0;
+                int processed = 0;
+                bool truncated = false;
                 var results = new List<object>();
-                foreach (var pawn in matched.Take(limit))
+                // A pawn that needs no work must NOT consume the cap. Charging the cap for
+                // them (matched.Take(limit)) made a faction bigger than `limit` impossible to
+                // finish: every later call re-visited the same first `limit` pawns, found them
+                // already converted, and never reached the tail.
+                foreach (var pawn in matched)
                 {
                     if (pawn.ideo == null)
                     {
                         noTracker++;
-                        results.Add(new
-                        {
-                            pawnId = pawn.thingIDNumber, name = pawn.LabelShortCap,
-                            before = (string)null, after = (string)null,
-                            outcome = "no_ideo_tracker"
-                        });
                         continue;
                     }
 
@@ -320,14 +336,11 @@ namespace JawaBench.BridgeTools
                     if (before == targetIdeo)
                     {
                         skippedSame++;
-                        results.Add(new
-                        {
-                            pawnId = pawn.thingIDNumber, name = pawn.LabelShortCap,
-                            before = before?.name, after = before?.name,
-                            outcome = "skipped_same_ideo"
-                        });
                         continue;
                     }
+
+                    if (processed >= limit) { truncated = true; break; }
+                    processed++;
 
                     pawn.ideo.SetIdeo(targetIdeo);
                     var after = pawn.ideo.Ideo;
@@ -353,7 +366,7 @@ namespace JawaBench.BridgeTools
                     skippedSameIdeo = skippedSame,
                     skippedNoChange,
                     noIdeoTracker = noTracker,
-                    truncated = matched.Count > limit,
+                    truncated,
                     results,
                     ticksGame = TicksGameSafe()
                 };

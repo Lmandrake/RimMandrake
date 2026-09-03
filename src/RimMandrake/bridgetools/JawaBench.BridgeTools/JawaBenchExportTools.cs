@@ -194,6 +194,34 @@ namespace JawaBench.BridgeTools
             };
         }
 
+        // FindLiveThingById sees only SPAWNED things plus pawn equipment/apparel/inventory.
+        // A thing sitting in a container's ThingOwner is NOT spawned, so it is invisible to
+        // it - yet that is exactly what jawa/export_things reports as `contents` and what
+        // jawa/set_quality's description says it can address. Same one-level-deep walk
+        // Row() does, so the two agree on which ids are addressable.
+        private static Thing FindHeldThingById(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id)) return null;
+            var tok = id.Trim();
+            var bare = tok.StartsWith("Thing_", StringComparison.OrdinalIgnoreCase) && tok.Length > 6
+                ? tok.Substring(6) : tok;
+
+            foreach (var m in Find.Maps ?? new List<Map>())
+            {
+                var all = m.listerThings.AllThings;
+                for (int i = 0; i < all.Count; i++)
+                {
+                    var holder = all[i] as IThingHolder;
+                    if (holder == null || all[i] is Pawn) continue;
+                    var held = holder.GetDirectlyHeldThings();
+                    if (held == null) continue;
+                    foreach (var h in held)
+                        if (string.Equals(h.ThingID, bare, StringComparison.OrdinalIgnoreCase)) return h;
+                }
+            }
+            return null;
+        }
+
         // ================================================================
         //  jawa/set_quality, jawa/container_fill - the REPLAY half of the
         //  identity-grade export above. PLACER_IDENTITY_REPLAY_1, 2026-08-29:
@@ -230,7 +258,7 @@ namespace JawaBench.BridgeTools
                 if (Current.Game == null) return Fail("No game loaded.");
 
                 string terr;
-                var t = FindLiveThingById(thing, out terr);
+                var t = FindLiveThingById(thing, out terr) ?? FindHeldThingById(thing);
                 if (t == null) return Fail(terr);
 
                 var cq = t.TryGetComp<CompQuality>();

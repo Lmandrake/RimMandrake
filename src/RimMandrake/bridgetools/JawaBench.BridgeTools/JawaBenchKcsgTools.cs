@@ -106,14 +106,19 @@ namespace JawaBench.BridgeTools
                 "KCSG's own debug menu uses (CleanRect -> GetAllMineableIn -> Generate for " +
                 "structures; ResolveParams+SettlementGenUtils.Generate for settlements; " +
                 "SymbolUtils.Generate for one symbol; TileUtils.Generate for a tiled complex). " +
-                "layoutType='structure': fills 'rect' with a named StructureLayoutDef. " +
+                "layoutType='structure': places a named StructureLayoutDef centred on 'rect'. " +
+                "The rect actually used is always the layout's OWN size (KCSG cannot render " +
+                "into any other), so 'at' may differ from what you asked for - 'requested' " +
+                "reports the rect you gave. " +
                 "layoutType='settlement': fills 'rect' with a named SettlementLayoutDef (full " +
                 "base: buildings + defenses + stockpile, per that def's own options). " +
                 "layoutType='tiled': places a TiledStructureDef centered on 'point'. " +
                 "layoutType='symbol': places ONE SymbolDef at 'point' (building, item, pawn " +
                 "spawner, whatever that symbol resolves to). Refuses by name if KCSG is not " +
                 "loaded (VanillaExpandedFramework's core mod) rather than a null-reference.",
-            ResultDescription = "success, layoutType, defName, at (rect or point), threw (if the KCSG call itself threw).")]
+            ResultDescription = "success, layoutType, defName, at (rect or point), and for " +
+                "layoutType='structure' also requested (the rect you asked for). On any " +
+                "refusal or a throw inside KCSG: success=false plus a message naming it.")]
         public static async Task<object> KcsgPlace(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -146,6 +151,25 @@ namespace JawaBench.BridgeTools
                     CellRect r;
                     if (!TryRect(rect, map, out r, out err)) return Fail(err);
 
+                    // 🔴 The rect MUST be the layout's own size. KCSG's debug action never
+                    // passes an arbitrary one - it builds CellRect.CenteredOn(cell, sizes.x,
+                    // sizes.z) - and neither call below tolerates any other size:
+                    //   CleanRect indexes layout._roofGrid[srcCoords.z, srcCoords.x] with x/z
+                    //   walked over the RECT's width/height, so a rect BIGGER than the layout
+                    //   throws IndexOutOfRange part-way through cleaning (things already
+                    //   destroyed, roof grid half-updated);
+                    //   Generate centres the layout with offset = (rect.Width - sizes.x) / 2,
+                    //   so a rect SMALLER than the layout goes negative and draws the structure
+                    //   outside the cells CleanRect just prepared.
+                    // TryRect also ClipInsideMap()s, which silently shrinks a rect near the map
+                    // edge into exactly that second case. Re-size from the layout, centred on
+                    // what the caller asked for, and report the rect actually used.
+                    var requested = new { x = r.minX, z = r.minZ, w = r.Width, h = r.Height };
+                    var sizesProp = defType.GetProperty("Sizes", KcsgInst);
+                    if (sizesProp != null && sizesProp.GetValue(layoutDef) is IntVec2 sizes
+                        && sizes.x > 0 && sizes.z > 0)
+                        r = CellRect.CenteredOn(r.CenterCell, sizes.x, sizes.z);
+
                     var layoutUtils = KcsgType("LayoutUtils");
                     var genOption = KcsgType("GenOption");
                     if (layoutUtils == null || genOption == null) return Fail("KCSG.LayoutUtils/GenOption not found.");
@@ -174,7 +198,7 @@ namespace JawaBench.BridgeTools
                     }
                     catch (Exception e) { return Fail("KCSG generation threw " + e.GetType().Name + ": " + (e.InnerException?.Message ?? e.Message)); }
 
-                    return new { success = true, layoutType = "structure", defName = layoutDef.defName, at = new { x = r.minX, z = r.minZ, w = r.Width, h = r.Height }, ticksGame = TicksGameSafe() };
+                    return new { success = true, layoutType = "structure", defName = layoutDef.defName, at = new { x = r.minX, z = r.minZ, w = r.Width, h = r.Height }, requested, ticksGame = TicksGameSafe() };
                 }
 
                 if (lt == "settlement")
