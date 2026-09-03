@@ -489,6 +489,11 @@
     "date": "2026-09-03",
     "sha": "46ac7699"
   },
+  "src/RimMandrake/Utils/cherrypicker.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "8e8fe001"
+  },
   "src/RimMandrake/Utils/cherrypicker_swap.py": {
     "date": "2026-09-02",
     "sha": "d1c193ae"
@@ -537,6 +542,11 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "359b0b2c"
+  },
+  "src/RimMandrake/Utils/first_light.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "8e8fe001"
   },
   "src/RimMandrake/Utils/game_focus.py": {
     "cleanCount": 1,
@@ -603,6 +613,11 @@
     "date": "2026-09-03",
     "sha": "35c29544"
   },
+  "src/RimMandrake/Utils/lint_links.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "8e8fe001"
+  },
   "src/RimMandrake/Utils/make_vehicle_mask.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -641,6 +656,11 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "fb248793"
+  },
+  "src/RimMandrake/Utils/preload_check.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "c67fed38"
   },
   "src/RimMandrake/Utils/reload_check.py": {
     "cleanCount": 1,
@@ -696,6 +716,11 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "39cd22d5"
+  },
+  "src/RimMandrake/Utils/selftest_check_canon.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "8e8fe001"
   },
   "src/RimMandrake/Utils/selftest_check_doc_links.py": {
     "cleanCount": 1,
@@ -757,6 +782,11 @@
     "date": "2026-09-03",
     "sha": "e5013227"
   },
+  "src/RimMandrake/Utils/selftest_validate_patch.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "8e8fe001"
+  },
   "src/RimMandrake/Utils/set_planet_subcount.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -791,6 +821,11 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "5ac921b8"
+  },
+  "src/RimMandrake/Utils/weapon_pool_join.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "8e8fe001"
   },
   "src/RimMandrake/Utils/weapon_tag_audit.py": {
     "cleanCount": 1,
