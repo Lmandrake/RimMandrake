@@ -25,10 +25,13 @@ from __future__ import annotations
 
 import json
 import sqlite3
+import sys
 from pathlib import Path
 
-DUMP_SQLITE = Path("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/"
-                   "RimWorld by Ludeon Studios/DefDump/defs.sqlite")
+sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
+from game_paths import DUMP_ROOT  # noqa: E402
+
+DUMP_SQLITE = Path(DUMP_ROOT) / "defs.sqlite"
 
 # PipeSystem (Vanilla Expanded Framework) and Rimefeller pipes carry their
 # resource the same way a conduit carries power: the pipe piece IS the

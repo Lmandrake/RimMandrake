@@ -55,9 +55,9 @@ PALETTE_DIR = os.path.join(REPO, "Palettes")
 
 sys.path.insert(0, HERE)
 import cherrypicker  # noqa: E402
+from game_paths import DUMP_ROOT  # noqa: E402
 
-DEFAULT_DUMP = ("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/"
-                "RimWorld by Ludeon Studios/DefDump/defs.sqlite")
+DEFAULT_DUMP = os.path.join(DUMP_ROOT, "defs.sqlite")
 
 BLOCK = re.compile(r"^```palette\s*$(.*?)^```\s*$", re.M | re.S)
 

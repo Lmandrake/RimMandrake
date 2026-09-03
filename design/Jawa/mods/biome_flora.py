@@ -43,8 +43,9 @@ import argparse, collections, csv, json, os, sqlite3, sys, textwrap
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
-DB = ("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/"
-      "RimWorld by Ludeon Studios/DefDump/defs.sqlite")
+sys.path.insert(0, os.path.join(ROOT, "src", "RimMandrake", "Utils"))
+from game_paths import DUMP_ROOT  # noqa: E402
+DB = os.path.join(DUMP_ROOT, "defs.sqlite")
 TILES = os.path.join(ROOT, 'world', 'ASHKARR_WORLDMAP_tiles.csv')
 PATCH = os.path.join(ROOT, 'src', 'Jawa', 'Jawa_Patches', 'Patches', 'BiomeFlora_Ashkarr.xml')
 POOL = os.path.join(HERE, 'plant_pool.csv')

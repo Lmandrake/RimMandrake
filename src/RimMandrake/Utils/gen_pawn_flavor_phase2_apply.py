@@ -78,8 +78,8 @@ PROSE_JSON = os.path.join(ROOT, "infrastructure", "output", "pawn_flavor_phase2_
 DECISIONS_JSON = os.path.join(ROOT, "design", "Jawa", "worldbuilding", "review",
                                "pawn_flavor_phase2_register.decisions.json")
 OUT_DIR = os.path.join(ROOT, "src", "RimUtinni", "PawnFlavor", "Patches")
-DUMP_ROOT_WIN = r"C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\DefDump\captures"
-DUMP_ROOT_WSL = "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/captures"
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from game_paths import CAPTURES  # noqa: E402
 
 # Resolved by hand this pass (2026-09-01) - see module docstring. Left explicit
 # rather than fuzzy-matched at runtime: fuzzy matching a defName rename is
@@ -101,7 +101,7 @@ XENO_DEAD = {"MandrakeJawa"}  # stale duplicate of the RimMandrakeJawa row; that
 def find_capture(explicit):
     if explicit:
         return explicit
-    root = DUMP_ROOT_WSL if os.path.isdir(DUMP_ROOT_WSL) else DUMP_ROOT_WIN
+    root = CAPTURES
     caps = sorted(glob.glob(os.path.join(root, "*")))
     caps = [c for c in caps if os.path.isdir(c) and os.path.exists(os.path.join(c, "manifest.json"))]
     if not caps:

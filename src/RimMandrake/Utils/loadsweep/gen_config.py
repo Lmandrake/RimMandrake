@@ -1,8 +1,11 @@
 #!/usr/bin/env python3
 """Write a ModsConfig.xml for a sweep batch: base + listed packageIds."""
-import sys, xml.etree.ElementTree as ET
+import os, sys, xml.etree.ElementTree as ET
 
-LIVE = "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Config/ModsConfig.xml"
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+from game_paths import MODS_CONFIG  # noqa: E402
+
+LIVE = MODS_CONFIG
 BASE = [
     "brrainz.harmony",
     "ludeon.rimworld",

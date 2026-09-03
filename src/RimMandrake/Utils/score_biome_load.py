@@ -22,8 +22,10 @@ cannot detect that failure on its own.
 """
 import glob, io, json, os, sys
 
-BASE = ("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/"
-        "RimWorld by Ludeon Studios")
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from game_paths import LOCALLOW  # noqa: E402
+
+BASE = LOCALLOW
 LOG = os.path.join(BASE, "Player.log")
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(
     os.path.dirname(os.path.abspath(__file__)))))  # Utils -> RimMandrake -> src -> repo

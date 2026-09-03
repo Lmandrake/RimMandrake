@@ -25,11 +25,14 @@ the file after every launch before generating a world.
 Verify by reading <subdivisions> back out of the saved world, never by trusting
 the slider - the slider shows the value that is about to be overwritten.
 """
+import os
 import re
 import sys
 
-PRESET = ("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/"
-          "RimWorld by Ludeon Studios/Worldbuilder/TidallyLocked/Preset.xml")
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from game_paths import LOCALLOW  # noqa: E402
+
+PRESET = LOCALLOW + "/Worldbuilder/TidallyLocked/Preset.xml"
 FIELD = "myLittlePlanetSubcount"
 
 # Worldbuilder's Page_CreateWorldParams_Reset_Patch reads these off the preset and

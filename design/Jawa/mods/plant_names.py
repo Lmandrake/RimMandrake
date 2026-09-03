@@ -34,8 +34,9 @@ import argparse, json, os, sqlite3, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
-DB = ("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/"
-      "RimWorld by Ludeon Studios/DefDump/defs.sqlite")
+sys.path.insert(0, os.path.join(ROOT, "src", "RimMandrake", "Utils"))
+from game_paths import DUMP_ROOT  # noqa: E402
+DB = os.path.join(DUMP_ROOT, "defs.sqlite")
 PATCH = os.path.join(ROOT, 'src', 'Jawa', 'Jawa_Patches', 'Patches', 'PlantNames_Ashkarr.xml')
 
 # defName -> (new label, register, the note that justifies it)

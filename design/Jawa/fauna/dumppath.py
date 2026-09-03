@@ -5,8 +5,14 @@ The dumper moved from <DefDump>/defs/ to <DefDump>/captures/<id>/defs/ on 2026-0
 FileNotFoundError - which is the good outcome. The bad one would have been a stale copy
 still sitting at the old path and being read as current.
 """
-import os, glob
-BASE = "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump"
+import os, sys, glob
+
+HERE = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
+sys.path.insert(0, os.path.join(ROOT, "src", "RimMandrake", "Utils"))
+from game_paths import DUMP_ROOT  # noqa: E402
+
+BASE = DUMP_ROOT
 
 def dump_root():
     caps = sorted(glob.glob(os.path.join(BASE, 'captures', '*')))

@@ -45,8 +45,8 @@ import json
 import os
 import sys
 
-CAPTURES = ("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/"
-            "RimWorld by Ludeon Studios/DefDump/captures")
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from game_paths import CAPTURES  # noqa: E402
 
 
 def newest_capture(root=CAPTURES):

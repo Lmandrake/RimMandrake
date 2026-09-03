@@ -29,11 +29,11 @@ from rimplace.luaenv import (TemplateError, TemplateTooSmall,  # noqa: E402
                              declared_min_rect, run_template)
 from rimplace.plan import (calls_summary, compile_calls,      # noqa: E402
                            compile_flat, lint, render)
+from game_paths import DUMP_ROOT                              # noqa: E402
 
 REPO = _HERE.parents[3]
 TEMPLATES = REPO / "design" / "Jawa" / "templates"
-DUMP_SQLITE = Path("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/"
-                   "RimWorld by Ludeon Studios/DefDump/defs.sqlite")
+DUMP_SQLITE = Path(DUMP_ROOT) / "defs.sqlite"
 
 
 def _resolve_template(name: str) -> Path:

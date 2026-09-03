@@ -72,8 +72,10 @@ exists, `temp_min_c` and `temp_max_c` write empty and read UNMEASURED.
 USAGE
 =====
     # offline, against an export already on disk
+    # <DefDump> is whatever `python3 src/RimMandrake/Utils/game_paths.py` prints
+    # for "DefDump root" — spelling it out here is how this example goes stale.
     python3 src/RimMandrake/Utils/vivify_world.py \
-        --from-export "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/DefDump/world_tiles_raven.csv" \
+        --from-export "<DefDump>/world_tiles_raven.csv" \
         --reference world/ASHKARR_WORLDMAP --out world/ASHKARR_VIVIFIED
 
     # what changed between what we asked for and what the game made

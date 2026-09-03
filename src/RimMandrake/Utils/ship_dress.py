@@ -42,9 +42,7 @@ sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding="utf-8", errors="repla
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 from rimbridge_client import RimBridge, resolve_endpoint     # noqa: E402
-
-SAVES = ("C:\\Users\\Mandrake\\AppData\\LocalLow\\Ludeon Studios\\"
-         "RimWorld by Ludeon Studios\\Saves")
+from game_paths import SAVES                                 # noqa: E402
 WORD = "OuterRim_AurebeshWord%s"
 SIZES = json.load(open(os.path.join(HERE, "..", "..", "..", "observed", "def_sizes.json")))
 

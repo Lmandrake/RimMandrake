@@ -33,9 +33,9 @@ from collections import defaultdict
 HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 import cherrypicker                                            # noqa: E402
+from game_paths import DUMP_ROOT                                # noqa: E402
 
-DB = ("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/"
-      "RimWorld by Ludeon Studios/DefDump/defs.sqlite")
+DB = os.path.join(DUMP_ROOT, "defs.sqlite")
 
 # 🔑 What counts as the floor. NOT "everything at techLevel Neolithic" - that set
 # includes 30 tusks, horns and survival tools that are weapons only because the engine

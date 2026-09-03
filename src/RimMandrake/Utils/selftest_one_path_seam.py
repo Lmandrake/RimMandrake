@@ -60,8 +60,15 @@ EXEMPT = {
 }
 
 # Disposed-of code and vendored trees are not maintained and are not in scope.
+#
+# ⭐ `Transient/` is in this list for the same reason as `observed/`: CLAUDE.md
+# defines it as output a human reads once and then bins, untracked and swept at
+# ~14 days. A throwaway script that names a capture folder by hand is doing the
+# right thing — it is a note about ONE capture, not code anyone maintains — and
+# holding it to the seam would either delete honest scratch work or teach the
+# next seat to add exemptions, which is how this list becomes the new problem.
 SKIP_DIRS = (".git", "infrastructure/disposing", "node_modules", "__pycache__",
-             "observed", "src/RimMandrake/bridgetools/obj",
+             "observed", "Transient", "src/RimMandrake/bridgetools/obj",
              "src/RimMandrake/bridgetools/bin")
 
 LITERAL = re.compile(r"""(?xi)

@@ -89,7 +89,13 @@ def main():
                   "the file; clear the matrix cell rather than passing --thaw-frozen."
                   % fn)
             continue
-        for m in re.finditer(r"<defName>([\w.]+)</defName>", s):
+        # 🔴 Scan a comment-stripped copy: JawaJunkers.xml quotes core's own
+        # `<defName>Pirate</defName>` inside an explanatory comment, and "Pirate"
+        # is a real key in `per` (a VANILLA faction) - matching it here hijacked
+        # the xenotypeSet just written for Jawa_Junkers and overwrote it with
+        # Pirate's weights. Comments are never a real defName.
+        s_scan = re.sub(r"<!--.*?-->", "", s, flags=re.S)
+        for m in re.finditer(r"<defName>([\w.]+)</defName>", s_scan):
             fac = m.group(1)
             if fac not in per:
                 continue

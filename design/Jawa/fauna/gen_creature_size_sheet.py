@@ -36,6 +36,8 @@ import base64, collections, csv, glob, json, os, sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
+sys.path.insert(0, os.path.join(ROOT, "src", "RimMandrake", "Utils"))
+from game_paths import DUMP_ROOT  # noqa: E402
 CAST = os.path.join(HERE, 'cast_assignment.csv')
 FEAT = os.path.join(HERE, 'sprite_features.csv')
 SPR = os.path.join(HERE, 'sprites')
@@ -43,8 +45,7 @@ OUT = os.path.join(HERE, 'creature_size_review.html')
 DEC = os.path.join(HERE, 'creature_size_decisions.json')
 DEC_WIN = r'D:\Luke\dev\Rimworld\design\Jawa\fauna\creature_size_decisions.json'
 
-DUMP = ("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/"
-        "RimWorld by Ludeon Studios/DefDump")
+DUMP = DUMP_ROOT
 
 BANDS = ['SUPER', 'huge', 'large', 'med', 'small', 'tiny']
 

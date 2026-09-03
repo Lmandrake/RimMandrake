@@ -16,8 +16,11 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[3]
 MAP = ROOT / "infrastructure/state/naming_rename_map.csv"
-MODSCONFIG = Path("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/"
-                  "RimWorld by Ludeon Studios/Config/ModsConfig.xml")
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from game_paths import MODS_CONFIG  # noqa: E402
+
+MODSCONFIG = Path(MODS_CONFIG)
 EXTS = {".xml", ".cs", ".py", ".md", ".sh", ".csproj", ".lua"}
 SKIP_DIRS = {".git", "obj", "bin", "runs"}
 
