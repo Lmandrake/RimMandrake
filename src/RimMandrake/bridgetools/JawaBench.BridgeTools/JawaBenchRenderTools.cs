@@ -393,6 +393,41 @@ namespace JawaBench.BridgeTools
         // ================================================================
         //  jawa/anomaly_containment
         // ================================================================
+
+        // SystemToolsFindThing walks spawned things plus pawn equipment/apparel/inventory
+        // and NOTHING ELSE. An entity that is actually ON a holding platform is DESPAWNED
+        // into Building_HoldingPlatform.innerContainer (that is why the platform implements
+        // IThingHolderWithDrawnPawn and draws the pawn itself), so it appears in neither
+        // list - and that is precisely the state jawa/anomaly_containment exists to read.
+        // Fall back to a recursive walk of every map's thing holders (platforms, caskets,
+        // carry trackers) before reporting the entity as missing. alsoGetSpawnedThings is
+        // false because SystemToolsFindThing already covered the spawned lister.
+        private static Thing FindThingIncludingContainers(string id, out string err)
+        {
+            var t = SystemToolsFindThing(id, out err);
+            if (t != null || string.IsNullOrWhiteSpace(id) || Find.Maps == null) return t;
+
+            var tok = id.Trim();
+            var bare = tok.StartsWith("Thing_", StringComparison.OrdinalIgnoreCase) ? tok.Substring(6) : tok;
+            var contained = new List<Thing>();
+            foreach (var m in Find.Maps)
+            {
+                try
+                {
+                    ThingOwnerUtility.GetAllThingsRecursively(
+                        m, ThingRequest.ForGroup(ThingRequestGroup.Everything), contained,
+                        true, null, false);
+                }
+                catch { continue; }
+                for (int i = 0; i < contained.Count; i++)
+                {
+                    var h = contained[i];
+                    if (h != null && (h.ThingID == tok || h.ThingID == bare)) { err = null; return h; }
+                }
+            }
+            return null;
+        }
+
         [Tool(
             "jawa/anomaly_containment",
             Description =
@@ -406,7 +441,9 @@ namespace JawaBench.BridgeTools
                 "hauling/capture interaction (WorkGiver + JobDriver) out of scope for a direct field write; " +
                 "only containmentMode and study state are touched. " +
                 "⚠ ⚠ REQUIRES ModsConfig.AnomalyActive. A thing with no CompHoldingPlatformTarget is " +
-                "REFUSED BY NAME, not reported as an empty containment state.",
+                "REFUSED BY NAME, not reported as an empty containment state. " +
+                "🔑 The entity is found whether it is loose on the map or DESPAWNED inside a holding " +
+                "platform's container - a held entity is in no map thing list at all.",
             ResultDescription =
                 "success, thing, containmentMode, canBeCaptured, canStudy, studiedAtHoldingPlatform, " +
                 "currentlyHeldOnPlatform, isEscaping, extractBioferrite, heldPlatform (id or null), " +
@@ -438,7 +475,7 @@ namespace JawaBench.BridgeTools
                     return Fail("ModsConfig.AnomalyActive is false. Containment/study comps do not exist without the Anomaly DLC.");
 
                 string terr;
-                var t = SystemToolsFindThing(thing, out terr);
+                var t = FindThingIncludingContainers(thing, out terr);
                 if (t == null) return Fail(terr ?? "No thing.");
                 var twc = t as ThingWithComps;
                 if (twc == null) return Fail(t.ThingID + " is not a ThingWithComps.");
