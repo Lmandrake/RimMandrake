@@ -573,10 +573,20 @@
     "date": "2026-09-03",
     "sha": "35c29544"
   },
+  "src/RimMandrake/Utils/gen_pawn_flavor_phase2_apply.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "4de5c0cf"
+  },
   "src/RimMandrake/Utils/gen_pawn_flavor_phase2_register.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "35c29544"
+  },
+  "src/RimMandrake/Utils/gen_pawn_flavor_register.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "4de5c0cf"
   },
   "src/RimMandrake/Utils/gen_pawnkind_roster.py": {
     "cleanCount": 1,
@@ -687,6 +697,11 @@
     "date": "2026-09-03",
     "sha": "fb248793"
   },
+  "src/RimMandrake/Utils/patch_provenance.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "46cc98d3"
+  },
   "src/RimMandrake/Utils/preload_check.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -706,6 +721,16 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "39cd22d5"
+  },
+  "src/RimMandrake/Utils/research_manifest_validate.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "4de5c0cf"
+  },
+  "src/RimMandrake/Utils/rimbridge_client.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "4de5c0cf"
   },
   "src/RimMandrake/Utils/rimbridge_lineup.py": {
     "cleanCount": 1,
@@ -867,6 +892,11 @@
     "date": "2026-09-03",
     "sha": "5ac921b8"
   },
+  "src/RimMandrake/Utils/weapon_affordability.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "46cc98d3"
+  },
   "src/RimMandrake/Utils/weapon_pool_join.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -882,6 +912,11 @@
     "date": "2026-09-03",
     "sha": "39cd22d5"
   },
+  "src/RimMandrake/Utils/world_settle.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "4de5c0cf"
+  },
   "src/RimMandrake/Utils/world_shape.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -891,6 +926,11 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "7eabd2a4"
+  },
+  "src/RimMandrake/Utils/xenotype_size_audit.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "46cc98d3"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchGenTools2.cs": {
     "cleanCount": 1,
