@@ -8,7 +8,7 @@ decision (needs `owner`) or a bridge pass any seat can run once the bridge frees
 
 - Engine room: 23×23 octagon x116–138 / z139–161, door S at (127,139), corridor
   N gap x126–128 at z161. Shrine: 6 Brazier (aisle x125/x129 at z141/144/147),
-  6 AncientLamp ring, SteleLarge at (127,145), 2 AncientSystemRack (122/132,158),
+  6 AncientLamp ring, 2 AncientSystemRack (122/132,158),
   2 AncientTerminal (124/130,159). Substructure verified under all 422 cells.
 - Computer-core vault x119–125 / z168–174 ON substructure (flies with the ship),
   AncientBlastDoor at (125,171): AncientCommsConsole, 2 AncientTerminal,
@@ -24,8 +24,9 @@ decision (needs `owner`) or a bridge pass any seat can run once the bridge frees
 
 1. **Vault roof** — currently open sky so the interior is visible. One word
    ("roof it") → `jawa/set_roof_batch` RoofConstructed over x120–124 / z169–173.
-2. **Stele inscription** — SteleLarge at (127,145) carries a Sign comp. Drafts
-   for the owner to pick from or reject (Jawa machine-worship register):
+2. **Stele inscription** — ⛔ DEAD. The owner REMOVED the stele (2026-09-02);
+   measured absent from the map and from `gravship_scratch_b.rws`. There is nothing
+   to inscribe. The drafts are kept only in case a later stele wants them:
    - "IT SLEEPS. FEED IT NOTHING. ASK IT NOTHING."
    - "The Engine remembers every hand that touched it. Touch it politely."
    - "HOME is the noise it makes when it is not angry."
