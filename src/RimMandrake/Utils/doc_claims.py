@@ -16,13 +16,17 @@ from pathlib import Path
 def claims(text: str):
     out, buf, in_fence, fence_hdr = [], [], False, None
     heading = ""
+    in_table = False
 
     def flush(kind="prose"):
-        nonlocal buf
+        nonlocal buf, in_table
         body = "\n".join(buf).strip()
         buf = []
+        was_table, in_table = in_table, False
         if not body:
             return
+        if kind == "prose" and was_table:
+            kind = "table"
         if kind == "prose":
             # one claim per sentence-ish bullet or paragraph line
             for part in re.split(r"(?<=[.!?])\s+(?=[A-Z🔴⛔✅⚠️🔑⭐📌])", body):
@@ -44,7 +48,7 @@ def claims(text: str):
         if line.startswith("#"):
             flush(); heading = line.lstrip("#").strip(); continue
         if line.strip().startswith("|"):
-            buf.append(line); continue
+            buf.append(line); in_table = True; continue
         if not line.strip():
             flush(); continue
         buf.append(line)
