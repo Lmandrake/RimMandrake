@@ -1,0 +1,44 @@
+{
+  "fact": "XML baseCost IS what the player pays for research — but Configurable Techprints ships a dormant rewrite one checkbox from invalidating every cost band",
+  "measured": "2026-09-03",
+  "measured_by": "BENCH (sonnet agent; the two load-bearing claims re-checked by BENCH)",
+  "why_it_matters": "RESEARCH_TREE_NORMALIZATION_1 assigns tier from cost band. If anything rescales cost at runtime, the band is a lie for those rows. research_tree_taxonomy.md §4 names this as the band check's known false-pass.",
+  "vanilla": {
+    "verdict": "baseCost is what the player pays",
+    "evidence": [
+      "Verse/ResearchProjectDef.cs — the Cost getter returns baseCost directly",
+      "RimWorld/ResearchManager.cs — AddProgress / FinishProject / IsFinished all compare against baseCost",
+      "CostApparent/ProgressApparent apply CostFactor(TechLevel) to the DISPLAYED number only for a faction below the project's techLevel; never written back, never checked by IsFinished",
+      "Difficulty.researchSpeedFactor (ResearchManager.ResearchPerformed) scales the per-tick progress ADDED, not baseCost"
+    ]
+  },
+  "the_one_writer": {
+    "mod": "Configurable Techprints",
+    "packageId": "com.makeitso.configurabletechprints",
+    "workshop": "2876747024",
+    "write": "ConfigurableTechprints.DefProcessors.ResearchProjectDefProcessor::ApplyTechprintSettingsAndReport IL_0093-0095 -> stfld ResearchProjectDef::baseCost",
+    "when": "Harmony prefix on DefGenerator.GenerateImpliedDefs_PreResolve — load time, once",
+    "gate": "only runs when the player enables the 'Modify Base Costs' setting; CTModSettings::SetDefaults has ModifyBaseCosts=false, ResearchBaseCostMultiplier=1.0",
+    "state_in_this_install": {
+      "active_in_modsconfig": true,
+      "settings_file_present": false,
+      "consequence": "runs at defaults = INERT today; costs are untouched"
+    },
+    "the_trap": "Toggling that one checkbox silently rewrites baseCost across the board and invalidates every tier this pass assigns. Nothing warns; the tier table would simply be wrong. Re-check this fact before trusting any band report, and treat a changed Config folder as invalidating it.",
+    "second_path": "ProcessCustomTechprint carries a per-project TechprintData::baseCost override independent of the toggle; the CustomTechprints dict is empty by default and unused here"
+  },
+  "cleared": [
+    "Research Reinvented (2868392160) — read-only baseCost access, no writes across 1501 methods",
+    "Research Reinvented: Stepping Stones (2868389782) — zero baseCost references",
+    "Cherry Picker (3521312241) — no baseCost string at all",
+    "Triumphant Research (3647618250) — 0 hits / 34 methods",
+    "Nice Research Tab (3773496046) — read-only, JSON export",
+    "Tech Level Enforcement (3430230860) — reads rp.baseCost for a completion check, no write"
+  ],
+  "confidence": {
+    "vanilla_mechanism": "high — read from source",
+    "configurable_techprints": "high — IL-verified write, verified default-off, no settings file on disk",
+    "no_other_writer": "medium-high — a static IL sweep cannot catch a write reached by reflection with a runtime-built string. Raising it means a live spot-check: offline baseCost vs a JawaBench read with the full mod list loaded.",
+    "not_checked": "the ~570 active mods not matching research/techprint/cherry by name or packageId"
+  }
+}

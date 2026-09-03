@@ -240,6 +240,13 @@ w('<div class="legend">'
 # ── re-costs ─────────────────────────────────────────────────────────────────
 w('<h2>The 28 re-costs</h2>')
 w('<p class="sub">Every one is a real balance change to a base cost (Research Reinvented’s techprint economy multiplies on top). Veto row by row.</p>')
+w('<div class="panel" style="margin:0 0 16px"><p style="margin:0"><b>Checked before you rule:</b> the XML cost <b>is</b> what the player pays — '
+  '<span style="font-family:\'IBM Plex Mono\',monospace;font-size:12px">ResearchProjectDef.Cost</span> returns '
+  '<span style="font-family:\'IBM Plex Mono\',monospace;font-size:12px">baseCost</span> directly, and difficulty scales research '
+  '<i>speed</i>, never the cost (VERIFIED in source). Research Reinvented, Cherry Picker and five other research mods write it nowhere. '
+  '<b>One exception:</b> <i>Configurable Techprints</i> is active and ships a real load-time rewrite of every baseCost — dormant, because '
+  'its “Modify Base Costs” setting defaults off and this install has no settings file for it. Ticking that one checkbox would silently '
+  'invalidate every tier on this page.</p></div>')
 w('<div class="scroll"><table class="rc"><tr><th>project</th><th>defName</th><th>old → new</th><th>why</th></tr>')
 for m in sorted(recost, key=lambda x: (x["tab2"] or "", x["label"])):
     old, new = int(m["cost"]), int(m["cost2"])
