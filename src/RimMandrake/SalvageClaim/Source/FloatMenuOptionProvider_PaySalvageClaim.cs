@@ -65,6 +65,23 @@ namespace RimMandrake.SalvageClaim
                 if (!targetPawn.Downed) return null;
                 if (targetPawn.RaceProps == null || !targetPawn.RaceProps.IsMechanoid) return null;
             }
+            else
+            {
+                // Nothing gated the TARGET KIND before this point - only "not the
+                // actor" and "spawned". ClaimEngine.ResolveVirtualClaim only ever
+                // suppresses the offer for Faction-owned things (colony property),
+                // so with no gate here every wild plant, rock chunk, unowned ruin
+                // item and enemy corpse under the cursor (all Faction == null) got
+                // offered a paid salvage claim. Scope this to what a "salvage
+                // claim" actually means: a real, valuable, ownable Item or
+                // Building, not the map itself.
+                if (clickedThing.def.category != ThingCategory.Item && clickedThing.def.category != ThingCategory.Building)
+                    return null;
+                if (clickedThing.def.building != null && clickedThing.def.building.isNaturalRock)
+                    return null;
+                if (clickedThing.MarketValue <= 0f)
+                    return null;
+            }
 
             ClaimantRef actorRef = ClaimantRef.OfPawn(actor);
             int tick = Find.TickManager.TicksGame;
