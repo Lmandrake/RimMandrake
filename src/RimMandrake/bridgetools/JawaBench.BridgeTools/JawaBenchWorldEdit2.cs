@@ -286,8 +286,10 @@ namespace JawaBench.BridgeTools
             ResultDescription =
                 "success, dryRun, point, rot, thingDef, wouldWipeAnything, affected[] " +
                 "(thingId, def, label, category) - populated in both modes; in dryRun=false " +
-                "these are the things actually wiped, with 'refunded' true/false per the " +
-                "'refund' argument.")]
+                "these are the things actually wiped, with 'refunded' true only for a Building " +
+                "(materials or, if Minifiable, the object itself land nearby) or an Item " +
+                "(relocated, not destroyed) when refund=true - a wiped Plant is always " +
+                "refunded=false, nothing comes back.")]
         public static async Task<object> WipeCell(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -320,7 +322,7 @@ namespace JawaBench.BridgeTools
 
                 var rect = GenAdj.OccupiedRect(cell, rotation, def.Size);
                 var hit = new List<object>();
-                var hitMinifiable = new List<bool>();
+                var hitRefundable = new List<bool>();
                 var seenThingIds = new HashSet<int>();
                 bool wouldWipe = false;
                 foreach (var c in rect)
@@ -334,7 +336,18 @@ namespace JawaBench.BridgeTools
                         if (!seenThingIds.Add(th.thingIDNumber)) continue;
                         wouldWipe = true;
                         hit.Add(new { thingId = th.ThingID, def = th.def != null ? th.def.defName : null, label = th.LabelCap, category = th.def != null ? th.def.category.ToString() : null });
-                        hitMinifiable.Add(th.def != null && th.def.Minifiable);
+                        // GenSpawn.Refund() (called by WipeAndRefundExistingThings for anything
+                        // that isn't ThingCategory.Item) runs GenLeaving.DoLeavingsFor with
+                        // DestroyMode.Refund whenever the thing isn't minified-and-relocated -
+                        // and CanBuildingLeaveResources returns TRUE for ANY Building under
+                        // DestroyMode.Refund (GetBuildingResourcesLeaveCalculator gives back
+                        // count=>count, ie. 100%), not just Minifiable ones. A wiped wall is
+                        // destroyed but its full material cost lands on the ground either way.
+                        // Items are DeSpawn+TryPlaceThing'd nearby, not destroyed, so they too
+                        // come through intact. Only a Plant (or anything neither Building nor
+                        // Item - Filth, etc.) is actually destroyed with nothing given back.
+                        hitRefundable.Add(th.def != null &&
+                            (th.def.category == ThingCategory.Item || th.def.category == ThingCategory.Building));
                     }
                 }
 
@@ -371,10 +384,12 @@ namespace JawaBench.BridgeTools
                     rot,
                     thingDef = def.defName,
                     wouldWipeAnything = wouldWipe,
-                    // GenSpawn.WipeAndRefundExistingThings only minifies-and-replaces a
-                    // Minifiable thing; everything else (walls, floors, plants, most
-                    // items) is DESTROYED regardless of `refund`.
-                    affected = hit.Select((o, i) => new { row = o, refunded = refund && hitMinifiable[i] }).ToList(),
+                    // refunded=true for a Building means its full resource cost (or, if
+                    // Minifiable, the minified object itself) lands nearby - the building
+                    // is still destroyed, only its materials survive. refunded=true for an
+                    // Item means it was relocated intact, not destroyed at all. Plants (and
+                    // anything else) get neither: refunded=false.
+                    affected = hit.Select((o, i) => new { row = o, refunded = refund && hitRefundable[i] }).ToList(),
                     ticksGame = TicksGameSafe()
                 };
             }).ConfigureAwait(false);
