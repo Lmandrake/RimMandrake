@@ -2282,3 +2282,29 @@ visible instead of expiring in silence.
 
 📏 **The measured inventory is `infrastructure/state/facts/naming_inventory.md`** — the
 full census, so whoever writes the spec never pays for it again.
+
+---
+
+## REALISTIC_FLUID_DYNAMICS_1 — water that actually sloshes
+
+Owner, 2026-09-02, explicitly not-v1: real fluid mechanics for FluidCanals — water
+flowing through canals and pooling in basins in a way that looks and behaves like an
+actual fluid, not a cellular flood-fill. `v1`'s `Flood_FluidCanal` (see
+`FLUID_CANAL_FLOOD_TUNING_GAPS_1`) subclasses vanilla's own `Flood`/`SeasonalFlood`
+cellular spread — a seed cell radiating outward tile-by-tile on a timer, no notion of
+volume conservation between connected bodies, no pressure, no flow direction, no
+settling to a common level. That's the honest v1 shape: cheap, robust, ships.
+
+The dream is upstream of that: canals and basins as connected VOLUMES that actually
+conserve and redistribute fluid — a reservoir draining into a canal network fills
+connected basins toward a common level, a breach empties the high side into the low
+side at a rate that reads as flow rather than tile-flood-fill, damming/blocking a
+canal visibly backs water up rather than just refusing further spread. Impressive to
+WATCH, not just mechanically present — this is squarely the "iterate by LOOKING"
+territory (`Agent_Policy.md`) other art/world work already lives in.
+
+Not scoped, not designed, not estimated. No engine survey done for whether RimWorld's
+grid can support this without a real simulation layer (a cellular-automaton water
+model, a proper flow-network solve, or leaning on some existing framework mod's fluid
+system if one exists) — that's the first real work whenever this gets opened, not
+assumed here.
