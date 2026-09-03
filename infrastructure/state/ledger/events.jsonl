@@ -4141,3 +4141,8 @@
 {"seat":"FOUNDRY","event":"drop","id":"BRIDGE_LISTPAWNS_GENETRACKER_NRE_1","reason":"stale-drop: re-tested live with Biotech DLC active (my original 9-mod test list omitted it) -- RSW_DW_Race_OuterRim_GNKDroid lists fine via jawa/list_pawns, hasGenes:true, xenotype:Baseliner. XenotypeDefOf.Baseliner is Biotech-defined; without Biotech it resolves null and Xenotype.label NREs -- that's a missing-DLC artifact of my test list, not a bridge bug","ts":"2026-09-03T03:44:45Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-03T03:45:32Z"}
 {"seat":"FOUNDRY","event":"close","id":"BRIDGE_PAWN_THOUGHTS_CARAVAN_GAP_1","sha":"1ee5b480","ts":"2026-09-03T03:46:00Z"}
+{"seat":"FOUNDRY","event":"claim","id":"INHABITED_CHARACTERDEF_NAMESPACE_GAP_1","ts":"2026-09-03T03:46:48Z"}
+{"seat":"FOUNDRY","event":"start","id":"INHABITED_CHARACTERDEF_NAMESPACE_GAP_1","ts":"2026-09-03T03:46:48Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"INHABITED_CHARACTERDEF_NAMESPACE_GAP_1: confirm next load shows nonzero character count","ts":"2026-09-03T03:46:53Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-03T03:47:39Z"}
+{"seat":"FOUNDRY","event":"close","id":"INHABITED_CHARACTERDEF_NAMESPACE_GAP_1","sha":"ad705ebc","ts":"2026-09-03T03:48:01Z"}

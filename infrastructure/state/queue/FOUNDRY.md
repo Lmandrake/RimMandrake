@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-03T03:46:00Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-03T03:48:01Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -296,15 +296,6 @@ target:   v1
 kind:     bug
 summary:  (no items/HELIX_TELLUROX_SHELL_LOAD_CRASH_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/HELIX_TELLUROX_SHELL_LOAD_CRASH_1.md
-
-## INHABITED_CHARACTERDEF_NAMESPACE_GAP_1 cast_to_xml.py emitted bare <Inhabited.CharacterDef> after the C# class moved to RimMandrake.Inhabited — 269 authored characters silently failed to load
-state:    doing
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     bug
-summary:  Confirm at the next restart that RimMandrake.Inhabited.CharacterDef
-prose:    infrastructure/state/items/INHABITED_CHARACTERDEF_NAMESPACE_GAP_1.md
 
 ## INHABITED_SETTLEMENT_MAPPARENT_GAP_1 WorldObject_InhabitedSettlement derives from WorldObject, not MapParent - mapGenerator/canHaveMap are architecturally inert, settlement district/cast GenSteps may have never run
 state:    doing  (BLOCKED)
