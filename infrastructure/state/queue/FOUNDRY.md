@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-03T03:05:05Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-03T03:05:25Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -360,6 +360,15 @@ kind:     bug
 summary:  1. Terrain overwrite is permanent and destructive; undisclosed.
 prose:    infrastructure/state/items/FLUID_CANAL_FLOOD_TUNING_GAPS_1.md
 
+## STARWARSRACES_UNDECLARED_GENE_DEPS_1 StarWarsRaces About.xml omits five real dependencies; without them the head genes are eaten and pawns stop rendering
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  src/RimStarWars/StarWarsRaces/About/About.xml declares four <modDependencies:
+prose:    infrastructure/state/items/STARWARSRACES_UNDECLARED_GENE_DEPS_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -425,16 +434,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## STARWARSRACES_UNDECLARED_GENE_DEPS_1 StarWarsRaces About.xml omits five real dependencies; without them the head genes are eaten and pawns stop rendering
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     spec, verify and criteria all present
-summary:  src/RimStarWars/StarWarsRaces/About/About.xml declares four <modDependencies:
-prose:    infrastructure/state/items/STARWARSRACES_UNDECLARED_GENE_DEPS_1.md
 
 ## SEABEAST_STARMAW_LANTERNWHALE_TEXTURES_MISSING_1 Starmaw and Lanternwhale have no textures in the repo or the deploy - 2 of 18 sea beasts draw as nothing
 state:    proposed

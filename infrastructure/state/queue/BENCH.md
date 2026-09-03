@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-03T02:13:12Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: BENCH
+as-of: 2026-09-03T03:05:25Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -81,13 +81,3 @@ kind:     bug
 thin:     spec, verify and criteria all present
 summary:  Both in src/RimMandrake/rimflow/cli.py.
 prose:    infrastructure/state/items/BRIDGE_TAKE_TOCTOU_AND_EPOCH_SENTINEL_1.md
-
-## LIVE_BIRTH_AND_HATCH_DEMO_1 Drive the whole reproduction chain live: show pregnancy, induce birth, lay an egg, hatch it into a baby Jawa
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  1 — Show pregnancy. Get a pawn visibly pregnant and read the state back.
-prose:    infrastructure/state/items/LIVE_BIRTH_AND_HATCH_DEMO_1.md
