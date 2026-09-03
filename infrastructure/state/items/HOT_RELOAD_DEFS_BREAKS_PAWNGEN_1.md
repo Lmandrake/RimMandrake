@@ -82,3 +82,20 @@ game costs 22 seconds — never on the full list.
 The mechanism is named from source, not guessed; and `jawa/hot_reload_defs` either
 repairs the index itself or refuses/warns loudly enough that nobody calls it on a full
 stack expecting a working game afterwards.
+
+## resolved — already met, no new work needed
+
+Picked up 2026-09-03 from the FOUNDRY queue and found already done: the SAME commit
+that filed this item (`f3bad330`) also retired the tool. `src/RimMandrake/Utils/rimbridge_client.py`'s
+`RETIRED_TOOLS["jawa/hot_reload_defs"]` refuses the call outright with the exact
+evidence this item recorded, names the sanctioned replacement (deploy → minimal-list
+restart, 22s → `jawa/get_defs`), and requires `RIMBRIDGE_ALLOW_RETIRED=jawa/hot_reload_defs`
+to override. `skills/rimworld-modding/SKILL.md` §2 carries the same ruling.
+`infrastructure/VALIDATION_LADDER.md` was updated in the same commit.
+
+The **"refuses/warns loudly" branch of criteria is met** — the owner's ruling (quoted
+in the skill file) went further than repair-or-warn and retired the capability
+outright, which supersedes the need to name the exact Type-keyed dictionary from
+source. Naming it would only matter if someone meant to fix hot-reload rather than
+retire it, and the owner ruled the opposite. Closing with no new commit; verified by
+reading `rimbridge_client.py` directly, not by re-running the call.
