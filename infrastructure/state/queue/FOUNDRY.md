@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-02T23:58:55Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-03T00:02:48Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -342,6 +342,24 @@ kind:     bug
 summary:  The remaining 10 findings, not yet fixed or independently re-verified —
 prose:    infrastructure/state/items/BRIDGE_PAWNTOOLS_SILENT_SUCCESS_SWEEP_1.md
 
+## INHABITED_SETTLEMENT_MAPPARENT_GAP_1 WorldObject_InhabitedSettlement derives from WorldObject, not MapParent - mapGenerator/canHaveMap are architecturally inert, settlement district/cast GenSteps may have never run
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     bug
+summary:  Determine (live, via the bridge, not more code reading) whether an
+prose:    infrastructure/state/items/INHABITED_SETTLEMENT_MAPPARENT_GAP_1.md
+
+## INHABITED_ROSTER_LIFECYCLE_SWEEP_1 opus review found 6 more real Inhabited bugs (pool-draw orphaning, GenStep order collision, role misalignment) plus 3 doc-vs-code gaps (stock/fate/kit fields inert)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  Bugs:
+prose:    infrastructure/state/items/INHABITED_ROSTER_LIFECYCLE_SWEEP_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -386,6 +404,16 @@ blocked:  not reproducible offline: mandrake.rsw.helixtellurox is disabled in th
 summary:  (no items/HELIX_TELLUROX_SHELL_LOAD_CRASH_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/HELIX_TELLUROX_SHELL_LOAD_CRASH_1.md
 
+## INHABITED_SETTLEMENT_MAPPARENT_GAP_1 WorldObject_InhabitedSettlement derives from WorldObject, not MapParent - mapGenerator/canHaveMap are architecturally inert, settlement district/cast GenSteps may have never run
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     bug
+blocked:  confirmed via engine source that WorldObject_Inhabited doesn't derive from MapParent, so mapGenerator/canHaveMap are inert - but the fix is a base-class change with save-compat stakes, needs live confirmation of the actual consequence first, then an owner/BENCH call on scope (WorldObject_Inhabited itself vs only the Settlement subclass)
+summary:  Determine (live, via the bridge, not more code reading) whether an
+prose:    infrastructure/state/items/INHABITED_SETTLEMENT_MAPPARENT_GAP_1.md
+
 # WAITING ON A WINDOW — nothing is wrong
 
 _none._
@@ -414,6 +442,6 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DROIDWORKS_CHARGER_STATE_MACHINE_SWEEP_1.md yet — write one when you have something to say)
+thin:     spec, verify and criteria all present
+summary:  1. CompDWCharger.CompTick (CompDWCharger.cs:36-52) checks only
 prose:    infrastructure/state/items/DROIDWORKS_CHARGER_STATE_MACHINE_SWEEP_1.md
