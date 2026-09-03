@@ -531,8 +531,7 @@ code{font-family:ui-monospace,Menlo,monospace;font-size:11px;color:#c3cbdb}
 .recid{display:grid;grid-template-columns:1fr auto;gap:8px;padding:3px 0;font-size:11.5px}
 .recid .p{font-family:ui-monospace,Menlo,monospace;color:var(--ink);word-break:break-all}
 .recid .c{color:#ff8a5c;font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
-.badge{pointer-events:none;font-size:9px;font-weight:700;fill:#12141a}
-.badge-bg{pointer-events:none;fill:#ff8a5c;stroke:rgba(0,0,0,.4);stroke-width:.5}
+.badge{pointer-events:none;font-size:6.5px;font-weight:700;fill:#fff;paint-order:stroke;stroke:rgba(0,0,0,.6);stroke-width:.7px}
 </style></head><body>
 <div id="app">
   <header>
@@ -666,8 +665,8 @@ if(RECID.length === 0){
     .text("None. Every file ever marked clean is still clean.");
 } else {
   recid.append("div").attr("class","rule").append("span").html(
-    "<b>"+RECID.length+"</b> file(s) went clean, then dirty again — the little orange "
-    + "×N badge on a grey cell is this same count.");
+    "<b>"+RECID.length+"</b> file(s) went clean, then dirty again — the small number "
+    + "in a cell's top-right corner is this same count.");
   RECID.slice(0, 40).forEach(r=>{
     const row = recid.append("div").attr("class","recid");
     row.append("span").attr("class","p").text(r.path);
@@ -788,19 +787,14 @@ function renderSquarified(w,h){
       if(this.getComputedTextLength()>max) this.textContent="";
     });
 
-  // reviewed-then-dirty-again badge: a small orange ×N chip in the top-right
-  // corner, only where the cell is big enough to hold one.
+  // reviewed-then-dirty-again streak: a small number in the top-right corner,
+  // only where the cell is big enough to hold one.
   const recidCells = root.leaves().filter(d=>d.data.status==="grey" && d.data.cycles>0 && d.x1-d.x0>20 && d.y1-d.y0>12);
-  const bw = d=>10+String(d.data.cycles).length*6;
-  g.selectAll("rect.badgebg").data(recidCells)
-    .join("rect").attr("class","badge-bg")
-    .attr("x",d=>d.x1-bw(d)).attr("y",d=>d.y0)
-    .attr("width",bw).attr("height",11).attr("rx",2);
   g.selectAll("text.badge").data(recidCells)
     .join("text").attr("class","badge")
-    .attr("x",d=>d.x1-bw(d)/2).attr("y",d=>d.y0+8.5)
-    .attr("text-anchor","middle")
-    .text(d=>"×"+d.data.cycles);
+    .attr("x",d=>d.x1-2.5).attr("y",d=>d.y0+8)
+    .attr("text-anchor","end")
+    .text(d=>d.data.cycles);
 }
 
 /* ---- collapse a subtree so the Voronoi solver stays tractable ---- */
