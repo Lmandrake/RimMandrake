@@ -4023,3 +4023,8 @@
 {"seat":"FOUNDRY","event":"start","id":"INHABITED_ROSTER_LIFECYCLE_SWEEP_1","ts":"2026-09-03T00:02:41Z"}
 {"seat":"FOUNDRY","event":"start","id":"INHABITED_SETTLEMENT_MAPPARENT_GAP_1","ts":"2026-09-03T00:02:47Z"}
 {"seat":"FOUNDRY","event":"block","id":"INHABITED_SETTLEMENT_MAPPARENT_GAP_1","reason":"confirmed via engine source that WorldObject_Inhabited doesn't derive from MapParent, so mapGenerator/canHaveMap are inert - but the fix is a base-class change with save-compat stakes, needs live confirmation of the actual consequence first, then an owner/BENCH call on scope (WorldObject_Inhabited itself vs only the Settlement subclass)","ts":"2026-09-03T00:02:48Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"JAWABENCH_COMPANION_NOT_LOADING_1: quick diagnostic - confirm bridge responds, check if any jawa/* tools registered","ts":"2026-09-03T00:03:08Z"}
+{"seat":"FOUNDRY","event":"claim","id":"JAWABENCH_COMPANION_NOT_LOADING_1","ts":"2026-09-03T00:03:31Z"}
+{"seat":"FOUNDRY","event":"start","id":"JAWABENCH_COMPANION_NOT_LOADING_1","ts":"2026-09-03T00:03:32Z"}
+{"seat":"FOUNDRY","event":"close","id":"JAWABENCH_COMPANION_NOT_LOADING_1","sha":"HEAD","ts":"2026-09-03T00:03:32Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-03T00:03:38Z"}
