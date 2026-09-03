@@ -613,6 +613,7 @@ def main():
     defnames = set()
     total = 0
     written = []
+    pending = []
     kit = {"weapon": 0, "apparel": 0, "item": 0, "skills": 0}
     kitted = 0
 
@@ -622,11 +623,14 @@ def main():
         total += len(people)
         xml = emit(people, faction, defnames)
         out = os.path.join(OUT_DIR, "CastRoster_%s.xml" % faction)
-        if args.write:
-            os.makedirs(OUT_DIR, exist_ok=True)
-            with open(out, "w", encoding="utf-8", newline="\n") as fh:
-                fh.write(xml)
-            written.append(out)
+        # 🔴 Do NOT write here. A trait/degree/skill that failed to resolve is
+        # dropped from `people` by parse_traits/parse_skills but still leaves
+        # `problems` non-empty; writing unconditionally at this point put the
+        # silently-incomplete XML on disk even though the run then reports
+        # problems and exits 2 -- the exact "soft failure" the docstring above
+        # says must never happen. Writes are deferred until every file has
+        # parsed clean; see the `if problems` gate below.
+        pending.append((out, xml))
         for p in people:
             kit["weapon"] += 1 if p["weapon"] else 0
             kit["apparel"] += 1 if p["apparel"] else 0
@@ -654,10 +658,16 @@ def main():
         for p in problems:
             print("  " + p)
         print("\nA trait that does not resolve is the one thing here that must fail.")
+        print("Nothing written." if args.write else "Nothing written (report only).")
         return 1
 
     print("every trait and degree resolved against the dump.")
     if args.write:
+        os.makedirs(OUT_DIR, exist_ok=True)
+        for out, xml in pending:
+            with open(out, "w", encoding="utf-8", newline="\n") as fh:
+                fh.write(xml)
+            written.append(out)
         print("wrote %d file(s) to %s" % (len(written), OUT_DIR))
     else:
         print("nothing written. Re-run with --write.")
