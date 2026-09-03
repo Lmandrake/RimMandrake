@@ -162,6 +162,23 @@ namespace JawaBench.BridgeTools
                     try
                     {
                         landMethod.Invoke(null, new[] { aerial });
+                        // 🔴 DebugLandAerialVehicle (read from source) has a silent no-op path:
+                        // "no player Settlement on the world" logs a Log.Error and returns
+                        // WITHOUT throwing and WITHOUT calling ClearAndDestroy - the only place
+                        // it actually removes the vehicle from this same AerialVehicles list.
+                        // Invoke() not throwing is therefore not proof of landing; re-check the
+                        // live list for this exact object instead of trusting a clean Invoke,
+                        // same principle as gating a spawn on .Spawned rather than on the call
+                        // not throwing.
+                        bool stillInFlight = PropOrNull(holder, "AerialVehicles") is IEnumerable afterList
+                            && afterList.Cast<object>().Any(a => ReferenceEquals(a, aerial));
+                        if (stillInFlight)
+                        {
+                            errors.Add("DebugLandAerialVehicle did not land " + (aerial?.ToString() ?? "an aerial vehicle")
+                                + " - it is still in flight (VF logs this internally, most likely no player Settlement "
+                                + "exists on the world to land it at); not counted as landed.");
+                            continue;
+                        }
                         landedFromWorld++;
                     }
                     catch (Exception ex)
@@ -359,6 +376,19 @@ namespace JawaBench.BridgeTools
                         if (!map.mapPawns.FreeColonists.Contains(p))
                             return Fail("'" + pawn + "' is not a free colonist on the current map - the debug action only lists those.");
 
+                        // Read from source (AirdropSkyfallerMaker.MakeAirdrop, single-Thing
+                        // overload -> the List<Thing> overload with packIntoContainer=false):
+                        // it DeSpawns p from wherever it is RIGHT NOW and puts it straight into
+                        // the new skyfaller's innerContainer, before this method ever calls
+                        // GenSpawn.Spawn. So if that GenSpawn.Spawn fails below, p is not
+                        // "still on the map somewhere" - it is trapped inside an unspawned,
+                        // otherwise-unreferenced Thing that nothing tracks once this call
+                        // returns. Same class of bug as the vehicle-orphan fix in
+                        // VehicleGroundAerial (commit 2424e896), but for a live colonist:
+                        // capture where it came from so it can be recovered, not just reported.
+                        IntVec3 originalPos = p.Position;
+                        Map originalMap = p.MapHeld ?? map;
+
                         MethodInfo make = makerType.GetMethod("MakeAirdrop", VfPubStatic, null,
                             new[] { airdropDefType, typeof(Thing), propsType.MakeByRefType() }, null);
                         if (make == null)
@@ -369,9 +399,21 @@ namespace JawaBench.BridgeTools
                         Thing skyfallerThing = (Thing)skyfaller;
                         GenSpawn.Spawn(skyfallerThing, cell, map);
                         if (!skyfallerThing.Spawned)
+                        {
+                            // AirdropSkyfaller ultimately derives from the vanilla RimWorld.Skyfaller
+                            // (confirmed in source), so this cast is direct - no reflection needed,
+                            // same as SkyfallerMaker.SpawnSkyfaller's return value elsewhere in the
+                            // companion.
+                            var sk = skyfallerThing as Skyfaller;
+                            bool recovered = false;
+                            if (sk?.innerContainer != null && sk.innerContainer.Contains(p))
+                                recovered = sk.innerContainer.TryDrop(p, originalPos, originalMap, ThingPlaceMode.Near, out _);
+
                             return Fail("GenSpawn.Spawn failed for the airdrop skyfaller at " + cell + " - " +
-                                p.LabelShortCap + " was already handed to MakeAirdrop as its payload; check the " +
-                                "pawn's state directly rather than trusting this call's success.");
+                                (recovered
+                                    ? p.LabelShortCap + " was recovered and respawned at its original position " + originalPos + "."
+                                    : "FAILED TO RECOVER " + p.LabelShortCap + " from the failed skyfaller - check the pawn's state directly, it may be lost."));
+                        }
 
                         return new
                         {
