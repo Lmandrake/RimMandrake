@@ -34,6 +34,49 @@ namespace JawaBench.BridgeTools
 {
     public sealed partial class JawaBenchTerrainTools
     {
+        /// <summary>
+        /// Parse a comma-separated tile-id list. ⛔ Refuses rather than dropping, on both
+        /// counts that produced a confident wrong number here:
+        ///  * an entry that is not an integer used to be SKIPPED, so 'abc' alone left the
+        ///    list empty and the tool fell through to a WHOLE-PLANET SWEEP, answering a
+        ///    different question than the one asked;
+        ///  * an id outside 0..tilesCount used to be skipped inside the loop while still
+        ///    counting toward tilesTested, so an out-of-range tile was reported as tested
+        ///    and refused when it had never been looked at.
+        /// An empty or blank list means "sweep", which is the documented default.
+        /// </summary>
+        private static bool TryParseTileIds(string tiles, int tilesCount, out List<int> ids, out string err)
+        {
+            ids = new List<int>();
+            err = null;
+            var bad = new List<string>();
+            var outOfRange = new List<string>();
+            foreach (var part in (tiles ?? "").Split(','))
+            {
+                var s = part.Trim();
+                if (s.Length == 0) continue;
+                int v;
+                if (!int.TryParse(s, System.Globalization.NumberStyles.Integer,
+                                  System.Globalization.CultureInfo.InvariantCulture, out v))
+                { bad.Add(s); continue; }
+                if (v < 0 || v >= tilesCount) { outOfRange.Add(s); continue; }
+                ids.Add(v);
+            }
+            if (bad.Count > 0)
+            {
+                err = "Not tile ids: " + string.Join(", ", bad.ToArray()) +
+                      ". Give comma-separated integers, or leave 'tiles' empty to sweep the planet.";
+                return false;
+            }
+            if (outOfRange.Count > 0)
+            {
+                err = "Tile id(s) outside 0.." + (tilesCount - 1) + ": " +
+                      string.Join(", ", outOfRange.ToArray()) + ".";
+                return false;
+            }
+            return true;
+        }
+
         // ====================================================================
         //  WHY CAN'T I CLICK THAT TILE
         // ====================================================================
@@ -67,9 +110,8 @@ namespace JawaBench.BridgeTools
                 if (Find.World == null || grid == null) return Fail("No world is loaded.");
                 var surface = grid.Surface;
 
-                var ids = new List<int>();
-                foreach (var part in (tiles ?? "").Split(','))
-                { int v; if (int.TryParse(part.Trim(), out v)) ids.Add(v); }
+                List<int> ids; string idErr;
+                if (!TryParseTileIds(tiles, grid.TilesCount, out ids, out idErr)) return Fail(idErr);
                 bool sweep = ids.Count == 0;
                 if (sweep) { for (int i = 0; i < grid.TilesCount; i++) ids.Add(i); }
 
@@ -164,9 +206,8 @@ namespace JawaBench.BridgeTools
                                 "internals moved. This tool must be re-anchored against the current " +
                                 "source before its numbers are trusted.");
 
-                var ids = new List<int>();
-                foreach (var part in (tiles ?? "").Split(','))
-                { int v; if (int.TryParse(part.Trim(), out v)) ids.Add(v); }
+                List<int> ids; string idErr;
+                if (!TryParseTileIds(tiles, grid.TilesCount, out ids, out idErr)) return Fail(idErr);
                 bool sweep = ids.Count == 0;
                 if (sweep) { for (int i = 0; i < grid.TilesCount; i++) ids.Add(i); }
 
@@ -339,8 +380,10 @@ namespace JawaBench.BridgeTools
                 "ideo's title side by side so they cannot be confused. " +
                 "Reads only; changes nothing.",
             ResultDescription =
-                "per-faction rows: effectiveTitle, defTitle, ideoTitle, whether the ideo " +
-                "overrode the def, and the leader's name if one exists.")]
+                "per-faction rows: effectiveTitle, defTitle, defTitleFemale, " +
+                "defTitleEffective and ideoTitle - the last two already resolved for the " +
+                "LEADER'S GENDER, the way the engine resolves them - plus leaderIsFemale, " +
+                "whether the ideo overrode the def, and the leader's name if one exists.")]
         public static async Task<object> FactionLeaderGet(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -362,18 +405,38 @@ namespace JawaBench.BridgeTools
                     if (!includeHidden && f.Hidden) continue;
                     if (want.Count > 0 && !want.Contains(f.def.defName)) continue;
 
+                    // 🔑 Faction.LeaderTitle, argument for argument:
+                    //   gate on ideo.leaderTitleMale ALONE - an ideo carrying only a female
+                    //   title never overrides the def - and then return the title matching
+                    //   the LEADER'S GENDER, from the ideo or the def as the gate decides.
+                    // Reading the male title unconditionally made a female-led faction
+                    // report effectiveTitle "Empress" beside ideoTitle "Emperor" and
+                    // ideoOverrodeDef false, i.e. exactly the confusion this tool exists
+                    // to remove.
+                    bool female = f.leader != null && f.leader.gender == Gender.Female;
                     string ideoTitle = null;
+                    bool ideoSupplies = false;
                     try
                     {
                         var ideo = f.ideos != null ? f.ideos.PrimaryIdeo : null;
-                        if (ideo != null) ideoTitle = ideo.leaderTitleMale;
+                        if (ideo != null)
+                        {
+                            ideoSupplies = !string.IsNullOrEmpty(ideo.leaderTitleMale);
+                            ideoTitle = female ? ideo.leaderTitleFemale : ideo.leaderTitleMale;
+                        }
                     }
                     catch { }
 
                     string effective = null;
                     try { effective = f.LeaderTitle; } catch (Exception ex) { effective = "ERROR: " + ex.Message; }
 
-                    bool ideoWon = !string.IsNullOrEmpty(ideoTitle) && ideoTitle != f.def.leaderTitle;
+                    string defTitleEffective =
+                        female && !string.IsNullOrEmpty(f.def.leaderTitleFemale)
+                            ? f.def.leaderTitleFemale
+                            : f.def.leaderTitle;
+
+                    bool ideoWon = ideoSupplies &&
+                                   !string.Equals(ideoTitle, defTitleEffective, StringComparison.Ordinal);
                     if (ideoWon) overridden++;
 
                     rows.Add(new
@@ -383,6 +446,8 @@ namespace JawaBench.BridgeTools
                         effectiveTitle = effective,
                         defTitle = f.def.leaderTitle,
                         defTitleFemale = f.def.leaderTitleFemale,
+                        defTitleEffective,
+                        leaderIsFemale = female,
                         ideoTitle,
                         ideoOverrodeDef = ideoWon,
                         leader = f.leader != null ? f.leader.Name?.ToStringFull : null,

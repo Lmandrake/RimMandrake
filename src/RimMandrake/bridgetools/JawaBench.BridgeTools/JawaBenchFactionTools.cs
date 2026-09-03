@@ -304,9 +304,18 @@ namespace JawaBench.BridgeTools
 
                     if (!dryRun)
                     {
-                        // The setter is a plain field write with no notify of any
-                        // kind, so the read-back below is the whole verification.
-                        f.Name = clearing ? null : after;
+                        // 🔴 NULLING THE FIELD FALLS BACK TO def.LabelCap, NOT fixedName:
+                        //     public string Name { get { if (HasName) return name; return def.LabelCap; } }
+                        // So on a faction whose def carries a fixedName, writing null
+                        // DESTROYS the stored name and leaves the world wearing the LABEL -
+                        // the exact damage the corrected AuthoredName above exists to stop -
+                        // and the read-back below would then report "write did not take"
+                        // AFTER the loss, as though nothing had happened.
+                        // ⇒ Only null it when that genuinely yields the authored name;
+                        // otherwise write the authored name explicitly.
+                        bool inheritGivesAuthored =
+                            string.Equals(authored, defLabel, StringComparison.Ordinal);
+                        f.Name = clearing && inheritGivesAuthored ? null : after;
                     }
 
                     string readBack = dryRun ? after : f.Name;

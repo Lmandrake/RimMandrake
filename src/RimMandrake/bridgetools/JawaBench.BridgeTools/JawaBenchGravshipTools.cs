@@ -291,6 +291,11 @@ namespace JawaBench.BridgeTools
                 engine.launchInfo = new LaunchInfo { quality = Mathf.Clamp01(quality), doNegativeOutcome = false };
                 WorldComponent_GravshipController.DestroyTreesAroundSubstructure(engine.Map, engine.ValidSubstructure);
                 Find.World.renderer.wantedMode = WorldRenderMode.None;
+                // 🔑 Read the fuel BEFORE burning it. Reported after ConsumeFuel, fuelAboard
+                // is the remainder, under the same name jawa/gravship_launch_check uses for
+                // the pre-burn load - so a caller checking cost against aboard reads a
+                // launch that had barely enough as one that could not have flown.
+                float fuelAboardBefore = engine.TotalFuel;
                 engine.ConsumeFuel(target);
                 Find.GravshipController.InitiateTakeoff(engine, target);
 
@@ -299,7 +304,7 @@ namespace JawaBench.BridgeTools
                     success = true, launched = true, dryRun = false,
                     engineId = engine.ThingID,
                     originTile = engine.Map.Tile.tileId, targetTile,
-                    fuelCost = cost, fuelAboard = engine.TotalFuel, distance = dist,
+                    fuelCost = cost, fuelAboard = fuelAboardBefore, distance = dist,
                     originMapWillBeDestroyed = !anchor,
                     nextState = "cutscene -> travel -> landing marker; poll jawa/gravship_status, then jawa/gravship_land",
                     ticksGame = TicksGameSafe(),
@@ -344,20 +349,30 @@ namespace JawaBench.BridgeTools
                 }
                 if (marker == null) return Fail("Controller reports a pending landing but no marker was found on any map.");
 
+                // ⛔ EVERY ARGUMENT CHECK RUNS BEFORE THE FIRST MUTATION. Rotating the
+                // marker and only then refusing a half-given x/z pair would leave the ship
+                // turned by a call that reported failure.
+                if ((x >= 0) != (z >= 0)) return Fail("Pass both x and z, or neither.");
+                if (rot > 3) return Fail("rot must be 0..3.");
+
+                var rotBefore = marker.GravshipRotation;
                 bool moved = false;
-                if (rot >= 0)
+                if (rot >= 0 && marker.GravshipRotation.AsInt != rot)
                 {
-                    if (rot > 3) return Fail("rot must be 0..3.");
                     marker.GravshipRotation = new Rot4(rot);
                     moved = true;
                 }
-                if (x >= 0 || z >= 0)
+                if (x >= 0 && z >= 0)
                 {
-                    if (x < 0 || z < 0) return Fail("Pass both x and z, or neither.");
                     var pos = new IntVec3(x, 0, z);
                     foreach (var c in marker.GravshipCells)
                         if (!(c + pos).InBounds(markerMap))
+                        {
+                            // The rotation changed GravshipCells, so it had to be applied
+                            // before this check could be made - put it back on refusal.
+                            marker.GravshipRotation = rotBefore;
                             return Fail("Ship cell " + (c + pos) + " would be out of map bounds at that position.");
+                        }
                     marker.Position = pos;
                     marker.Notify_Moved();
                     moved = true;
@@ -419,6 +434,37 @@ namespace JawaBench.BridgeTools
                     outcome = def.defName;
                 }
                 Current.Game.Gravship = null;
+
+                // 🔴 LandingEnded DOES NOT ONLY CLEAR THE MARKER. It also nulls the
+                // controller's own gravship, map, terrainCapture and moveDesignator, and
+                // the public landingMap. Clearing landingMarker alone (above) ends the
+                // confirmation prompt and nothing else - and `IsGravshipTravelling` is
+                // `gravship != null`, a field still holding the ship this method just
+                // placed. Left set, jawa/gravship_status reports the ship as FOREVER IN
+                // FLIGHT, jawa/gravship_launch refuses every later launch as "already
+                // travelling", and ExposeData writes Scribe_References to a Gravship and a
+                // takeoff Map that nothing else references any more.
+                // Done here, at the point LandingEnded does it: the placement calls above
+                // run in vanilla while these fields are still populated.
+                foreach (var ctrlField in new[] { "gravship", "map", "landingMap", "terrainCapture", "moveDesignator" })
+                {
+                    try
+                    {
+                        var cf = typeof(WorldComponent_GravshipController).GetField(ctrlField,
+                            System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic |
+                            System.Reflection.BindingFlags.Instance);
+                        if (cf == null)
+                        {
+                            Log.Warning("[JawaBench] gravship_land: no controller field '" + ctrlField +
+                                        "' - RimWorld's internals moved; the controller is left mid-landing.");
+                            continue;
+                        }
+                        cf.SetValue(Find.GravshipController, null);
+                    }
+                    catch (Exception ex)
+                    { Log.Warning("[JawaBench] gravship_land: could not clear " + ctrlField + ": " + ex.Message); }
+                }
+
                 Find.Scenario.PostGravshipLanded(markerMap);
                 try
                 {

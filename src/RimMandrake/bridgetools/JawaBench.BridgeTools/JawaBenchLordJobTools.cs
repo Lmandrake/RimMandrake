@@ -222,7 +222,25 @@ namespace JawaBench.BridgeTools
                     { err = "Cell " + c + " is outside the map (" + map.Size.x + "x" + map.Size.z + ")."; return false; }
                     return true;
                 }
-                if (target == typeof(Map)) { value = map; return true; }
+                if (target == typeof(Map))
+                {
+                    // ⛔ This branch is only reached when the caller WROTE map=<something>.
+                    // Binding the current map regardless of what they wrote is the silent
+                    // drop this whole file is written against - and it would then be listed
+                    // in argumentsBound as though it had been honoured. The Lord lives on
+                    // one map; name that one or omit the argument to have it filled in.
+                    int mapId;
+                    if (map == null ||
+                        !int.TryParse(text, NumberStyles.Integer, CultureInfo.InvariantCulture, out mapId) ||
+                        mapId != map.uniqueID)
+                    {
+                        err = "'" + text + "' does not name this Lord's map. Pass its uniqueID (" +
+                              (map != null ? map.uniqueID.ToString(CultureInfo.InvariantCulture) : "none") +
+                              "), or omit the argument entirely and it is bound automatically.";
+                        return false;
+                    }
+                    value = map; return true;
+                }
                 if (typeof(Def).IsAssignableFrom(target))
                 {
                     var found = GenDefDatabase.GetDefSilentFail(target, text, false);
