@@ -88,8 +88,10 @@ namespace JawaBench.BridgeTools
                 "downed/dead state is re-evaluated immediately after (default true).",
             ResultDescription =
                 "success, the part restored, whether it was actually missing beforehand, and " +
-                "the pawn's hediff list read back afterward - a silent no-op is impossible to " +
-                "mistake for success because missingBefore/missingAfter are both reported.")]
+                "the pawn's hediff list read back afterward. A silent no-op is impossible to " +
+                "mistake for success: missingBefore/missingAfter AND hediffCountBefore/hediffCount " +
+                "are all reported, and 'changed' is true if either pair moved - a part that was " +
+                "not missing shows its work only in the hediff count.")]
         public static async Task<object> PawnRestorePart(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -114,6 +116,10 @@ namespace JawaBench.BridgeTools
                 if (part == null) return Fail(perr);
 
                 bool missingBefore = p.health.hediffSet.PartIsMissing(part);
+                // RestorePart's main effect on a part that is NOT missing is wiping the hediffs on
+                // it and every child part, which PartIsMissing cannot see - without a hediff count
+                // taken BEFORE, that whole case reads identically to a no-op.
+                int hediffCountBefore = p.health.hediffSet.hediffs.Count;
 
                 Hediff exception = null;
                 if (!string.IsNullOrEmpty(keepHediff))
@@ -139,7 +145,8 @@ namespace JawaBench.BridgeTools
                     keptHediff = exception != null ? exception.def.defName : null,
                     missingBefore,
                     missingAfter,
-                    changed = missingBefore != missingAfter,
+                    hediffCountBefore,
+                    changed = missingBefore != missingAfter || hediffCountBefore != p.health.hediffSet.hediffs.Count,
                     downed = p.Downed,
                     dead = p.Dead,
                     hediffCount = p.health.hediffSet.hediffs.Count,
@@ -159,13 +166,13 @@ namespace JawaBench.BridgeTools
                 "simulation entirely). All three mutate health in place and return nothing, " +
                 "so this reads p.Downed/p.Dead back afterward rather than assuming the call " +
                 "worked.",
-            ResultDescription = "success, action, downed/dead BEFORE and AFTER (so a no-op is visible), and a health snapshot.")]
+            ResultDescription = "success, action, downed/dead BEFORE and AFTER (so a no-op is visible), allowBleedingWoundsHonoured (false for 'dead' and 'kill' - see the parameter), and a health snapshot.")]
         public static async Task<object> PawnForceIncapacitate(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
             [ToolParameter(Description = "Pawn id or name.")] string pawn = null,
             [ToolParameter(Description = "'downed' | 'dead' | 'kill'.")] string action = "downed",
-            [ToolParameter(Description = "Allow bleeding wounds (downed/dead only). Default true.")]
+            [ToolParameter(Description = "Allow bleeding wounds. ⚠️ action='downed' ONLY - HealthUtility.DamageUntilDead(Pawn, DamageDef, ThingDef, BodyPartGroupDef) has no such parameter and Pawn.Kill deals no damage at all, so this is silently ignored for 'dead' and 'kill'. The result says which. Default true.")]
             bool allowBleedingWounds = true)
         {
             return await ctx.MainThread.InvokeAsync(() =>
@@ -186,6 +193,7 @@ namespace JawaBench.BridgeTools
                 {
                     success = true,
                     action = A,
+                    allowBleedingWoundsHonoured = A == "downed" ? (bool?)allowBleedingWounds : null,
                     downedBefore, deadBefore,
                     downedAfter = p.Downed,
                     deadAfter = p.Dead,
@@ -210,7 +218,7 @@ namespace JawaBench.BridgeTools
         public static async Task<object> PawnResurrect(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
-            [ToolParameter(Description = "Pawn id or name (a dead pawn - a corpse or world pawn).")] string pawn = null,
+            [ToolParameter(Description = "Pawn id or name of a DEAD pawn. Searched for among spawned pawns, world pawns alive or dead, and the inner pawn of every corpse on every map - including corpses held inside graves, caskets and containers.")] string pawn = null,
             [ToolParameter(Description = "RestorePart every missing/destroyed body part. Default true.")]
             bool restoreMissingParts = true,
             [ToolParameter(Description = "Chance [0-1] of a scar hediff per restored part. Default 0.")]
@@ -228,26 +236,40 @@ namespace JawaBench.BridgeTools
             {
                 string err; var p = FindPawn(pawn, out err);
                 Pawn target = p;
-                if (target == null)
+                if (target == null && !string.IsNullOrEmpty(pawn))
                 {
-                    // FindPawn only walks spawned map pawns; a fresh corpse's inner pawn or a
-                    // world pawn is very likely what a "resurrect" call actually means, so try those too.
-                    if (!string.IsNullOrEmpty(pawn))
+                    // 🔴 THE CORPSE IS A CONTAINER. FindPawn walks spawned map pawns and
+                    // WorldPawns.AllPawnsAlive - a dead pawn is in NEITHER. Pawn.Kill despawns the
+                    // pawn and hands it to a Corpse (Verse/Pawn.cs), and only a pawn separately
+                    // passed to the world reaches WorldPawns, so the single commonest resurrect
+                    // target - a fresh corpse lying on the map, or one in a grave, casket or
+                    // container - used to read back as "no pawn matching". Search the dead world
+                    // pawns AND every corpse's InnerPawn, recursively through thing holders.
+                    string id = pawn.Trim();
+                    if (id.StartsWith("Thing_", StringComparison.OrdinalIgnoreCase) && id.Length > 6)
+                        id = id.Substring(6);
+                    int n; bool numeric = int.TryParse(id, out n);
+                    Func<Pawn, bool> matches = x =>
+                        x != null && ((numeric && x.thingIDNumber == n)
+                        || string.Equals(x.ThingID, id, StringComparison.OrdinalIgnoreCase)
+                        || (x.Name != null && (string.Equals(x.Name.ToStringShort, id, StringComparison.OrdinalIgnoreCase) ||
+                                               string.Equals(x.Name.ToStringFull, id, StringComparison.OrdinalIgnoreCase))));
+
+                    var worldPawns = Find.WorldPawns != null ? Find.WorldPawns.AllPawnsAliveOrDead : null;
+                    if (worldPawns != null) target = worldPawns.FirstOrDefault(x => matches(x));
+
+                    if (target == null)
                     {
-                        int n; string id = pawn.Trim();
-                        var worldPawns = Find.WorldPawns != null ? Find.WorldPawns.AllPawnsAliveOrDead : null;
-                        if (worldPawns != null)
+                        var corpses = new List<Corpse>();
+                        foreach (var m in (Find.Maps ?? new List<Map>()))
                         {
-                            target = int.TryParse(id, out n)
-                                ? worldPawns.FirstOrDefault(x => x.thingIDNumber == n)
-                                : worldPawns.FirstOrDefault(x =>
-                                    string.Equals(x.ThingID, id, StringComparison.OrdinalIgnoreCase) ||
-                                    (x.Name != null && (string.Equals(x.Name.ToStringShort, id, StringComparison.OrdinalIgnoreCase) ||
-                                                         string.Equals(x.Name.ToStringFull, id, StringComparison.OrdinalIgnoreCase))));
+                            ThingOwnerUtility.GetAllThingsRecursively(m, ThingRequest.ForGroup(ThingRequestGroup.Corpse), corpses, true);
+                            var hit = corpses.FirstOrDefault(c => c != null && matches(c.InnerPawn));
+                            if (hit != null) { target = hit.InnerPawn; break; }
                         }
                     }
                 }
-                if (target == null) return Fail(err ?? ("No pawn matching '" + pawn + "', spawned or in the world pawn pool."));
+                if (target == null) return Fail("No pawn matching '" + pawn + "' among spawned pawns, world pawns (alive or dead), or the inner pawn of any corpse on any map (including corpses inside graves, caskets and other containers).");
                 if (!target.Dead) return Fail("Pawn '" + target.LabelShortCap + "' is not Dead - TryResurrect logs an error and does nothing to a living pawn.");
                 if (target.Discarded) return Fail("Pawn '" + target.LabelShortCap + "' is Discarded - TryResurrect refuses discarded pawns.");
 
@@ -327,13 +349,17 @@ namespace JawaBench.BridgeTools
             "jawa/pawn_thoughts",
             Description =
                 "Every MOOD thought currently affecting a pawn, via " +
-                "ThoughtHandler.GetAllMoodThoughts (memories + situational thoughts, " +
-                "deduplicated by stack group) and ThoughtHandler.TotalMoodOffset() for the " +
-                "grand total. READ ONLY - it changes nothing, except that it calls " +
+                "ThoughtHandler.GetAllMoodThoughts (memories with a non-zero mood offset, plus " +
+                "the active situational thoughts) and ThoughtHandler.TotalMoodOffset() for the " +
+                "grand total. ⚠️ GetAllMoodThoughts is NOT deduplicated - several thoughts of one " +
+                "stack group are each listed, so the per-thought moodOffset values do NOT sum to " +
+                "totalMoodOffset, which RimWorld builds from DISTINCT groups with each group's " +
+                "stackedEffectMultiplier falloff applied. distinctGroupCount says how many groups " +
+                "the total was actually assembled from. READ ONLY - it changes nothing, except that it calls " +
                 "Notify_SituationalThoughtsDirty() FIRST so the situational half is not " +
                 "reading a stale cache (situational thoughts otherwise only refresh every " +
                 "100 ticks or on the next natural poke).",
-            ResultDescription = "success, totalMoodOffset, thoughtCount, and per thought: def, label, moodOffset, isSocial, otherPawn (social only), stage.")]
+            ResultDescription = "success, totalMoodOffset, thoughtCount (raw, undeduplicated), distinctGroupCount (the stack groups totalMoodOffset was built from), and per thought: def, label, moodOffset, isSocial, otherPawn (social only), stage.")]
         public static async Task<object> PawnThoughts(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -351,6 +377,8 @@ namespace JawaBench.BridgeTools
 
                 var raw = new List<Thought>();
                 handler.GetAllMoodThoughts(raw);
+                var distinct = new List<Thought>();
+                handler.GetDistinctMoodThoughtGroups(distinct);
 
                 var rows = raw.Select(t =>
                 {
@@ -372,6 +400,7 @@ namespace JawaBench.BridgeTools
                     totalMoodOffset = handler.TotalMoodOffset(),
                     curMoodLevel = p.needs.mood.CurLevel,
                     thoughtCount = rows.Count,
+                    distinctGroupCount = distinct.Count,
                     thoughts = rows,
                     ticksGame = TicksGameSafe(),
                 };

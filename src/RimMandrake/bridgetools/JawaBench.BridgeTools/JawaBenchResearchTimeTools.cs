@@ -163,9 +163,13 @@ namespace JawaBench.BridgeTools
             Description =
                 "Edit which project is being researched or how far along it is. Three " +
                 "actions in one tool because they are the same small ResearchManager surface: " +
-                "'add' calls AddProgress(project, amount) - partial progress, clamped to the " +
-                "project's Cost; if this finishes the project, AddProgress calls FinishProject " +
-                "internally (which itself calls ReapplyAllMods). 'set_current' calls " +
+                "'add' calls AddProgress(project, amount) - partial progress, upper-clamped to the " +
+                "project's Cost (there is NO lower clamp: a negative amount really does subtract, " +
+                "and can go below zero); if this finishes the project, AddProgress calls FinishProject " +
+                "internally (which itself calls ReapplyAllMods). ⛔ 'add' REFUSES a project with " +
+                "baseCost 0 (an Anomaly knowledge project): AddProgress writes the plain progress " +
+                "dictionary while GetProgress/IsFinished read anomalyKnowledge for those, so the add " +
+                "would vanish under a reported success - use research_finish_project instead. 'set_current' calls " +
                 "SetCurrentProject(project) - makes it the active research (only takes effect " +
                 "if baseCost > 0). 'stop' calls StopProject(project) - clears it as the active " +
                 "project if, and only if, it currently is one. This tool always calls " +
@@ -209,6 +213,19 @@ namespace JawaBench.BridgeTools
                             sourcePawn = FindPawn(source, out ferr);
                             if (sourcePawn == null) return Fail("source: " + ferr);
                         }
+                        // 🔴 AddProgress WRITES THE WRONG STORE FOR A KNOWLEDGE PROJECT.
+                        // ResearchManager.AddProgress (ResearchManager.cs:213) writes the plain
+                        // `progress` dictionary unconditionally, but GetProgress (:190) reads
+                        // `anomalyKnowledge` instead whenever baseCost <= 0 and knowledgeCost > 0,
+                        // and returns a flat 0f when Anomaly is inactive. So on any project whose
+                        // Cost does not come from baseCost, the add lands where nothing ever reads
+                        // it: progress stays 0, IsFinished never flips, and the tool would report
+                        // success having changed nothing observable. Refuse instead.
+                        if (proj.baseCost <= 0f)
+                            return Fail("'" + proj.defName + "' has baseCost 0 (its Cost comes from knowledgeCost=" + proj.knowledgeCost
+                                + "). ResearchManager.AddProgress writes the plain progress dictionary, but GetProgress and IsFinished read the "
+                                + "anomalyKnowledge dictionary for such a project - the add would be stored where nothing reads it and the project "
+                                + "would never finish, under a reported success. Use jawa/research_finish_project, which routes to anomalyKnowledge correctly.");
                         Find.ResearchManager.AddProgress(proj, amount, sourcePawn);
                         Find.ResearchManager.ReapplyAllMods();
                         reapplied = true;
@@ -242,12 +259,20 @@ namespace JawaBench.BridgeTools
             Description =
                 "Add techprints to a project via ResearchManager.AddTechprints(project, " +
                 "amount) - the gate is ResearchProjectDef.TechprintRequirementMet, which stays " +
-                "false (blocking CanStartNow) until enough are applied. AddTechprints clamps " +
-                "the stored count to the project's TechprintCount, so over-granting is safe. " +
+                "false (blocking CanStartNow) until enough are applied. ⛔ AddTechprints DOES NOT " +
+                "reliably clamp: it caps at TechprintCount only on the branch where the project " +
+                "already has a stored entry, and stores the raw amount on the FIRST grant " +
+                "(ResearchManager.cs:292) - and it has no lower clamp at all, so a negative would " +
+                "be stored and would BLOCK the project. THIS TOOL does the clamping instead: " +
+                "amount is refused if negative and reduced to whatever is still needed, so the " +
+                "stored count never exceeds TechprintCount. It also refuses when TechprintCount is " +
+                "0 - either the project needs none, or Royalty is inactive and ResearchProjectDef " +
+                "reports 0 for every project - rather than storing a number nothing will read. " +
                 "This does not touch progress, but ReapplyAllMods() is still called afterward " +
                 "for consistency with every other write in this file.",
             ResultDescription =
-                "success, amountRequested, techprintsBefore, project snapshot read back after " +
+                "success, amountRequested, amountApplied (after the clamp - 0 means the project was " +
+                "already fully techprinted), techprintsBefore, project snapshot read back after " +
                 "the write (techprintsApplied, techprintCount, techprintRequirementMet), " +
                 "reapplyUnlocksCalled=true.")]
         public static async Task<object> ResearchGrantTechprints(
@@ -255,7 +280,7 @@ namespace JawaBench.BridgeTools
             CancellationToken cancellationToken,
             [ToolParameter(Description = "ResearchProjectDef defName.")]
             string project,
-            [ToolParameter(Description = "Techprints to add. Clamped server-side to the project's TechprintCount.")]
+            [ToolParameter(Description = "Techprints to add. Must be >= 0. Clamped by THIS TOOL to whatever the project still needs, because AddTechprints itself only clamps once an entry already exists.")]
             int amount)
         {
             return await ctx.MainThread.InvokeAsync(() =>
@@ -266,14 +291,28 @@ namespace JawaBench.BridgeTools
                 ResearchProjectDef proj = FindResearchProject(project, out perr);
                 if (proj == null) return Fail(perr);
 
+                if (amount < 0)
+                    return Fail("amount must be >= 0. AddTechprints has no lower clamp - a negative store leaves TechprintRequirementMet false and blocks the project.");
+
+                int need = proj.TechprintCount;
+                if (need <= 0)
+                    return Fail(ModLister.RoyaltyInstalled
+                        ? "'" + proj.defName + "' requires no techprints (TechprintCount is 0) - there is nothing to grant."
+                        : "Techprints are a Royalty system and Royalty is not active, so ResearchProjectDef.TechprintCount reports 0 for every project and PostLoad has already zeroed techprintCount. A grant would be stored and never read - refusing rather than reporting a success that changes nothing.");
+
                 int before = Find.ResearchManager.GetTechprints(proj);
-                Find.ResearchManager.AddTechprints(proj, amount);
+                // AddTechprints (ResearchManager.cs:292) caps at TechprintCount only when an entry
+                // already exists; the first grant is `techprints.Add(proj, amount)` and stores the
+                // raw number. Clamp here so the documented "over-granting is safe" is actually true.
+                int applied = Mathf.Clamp(amount, 0, Mathf.Max(0, need - before));
+                if (applied > 0) Find.ResearchManager.AddTechprints(proj, applied);
                 Find.ResearchManager.ReapplyAllMods();
 
                 return new
                 {
                     success = true,
                     amountRequested = amount,
+                    amountApplied = applied,
                     techprintsBefore = before,
                     reapplyUnlocksCalled = true,
                     result = ResearchProjectSnapshot(proj),
@@ -372,14 +411,22 @@ namespace JawaBench.BridgeTools
         [Tool(
             "jawa/research_availability",
             Description =
-                "READ ONLY. Answers 'can this project be started, and if not, why not' - " +
-                "ResearchProjectDef.CanStartNow, .PrerequisitesCompleted, " +
-                ".PlayerHasAnyAppropriateResearchBench and .TechprintRequirementMet, plus the " +
-                "unfinished prerequisites and the required bench/facility defNames so a caller " +
-                "does not have to cross-reference the def separately. Changes nothing.",
+                "READ ONLY. Answers 'can this project be started, and if not, why not' - and " +
+                "reports EVERY ONE of CanStartNow's gates, not a subset: isFinished, " +
+                ".PrerequisitesCompleted, .TechprintRequirementMet, the bench requirement " +
+                "(.PlayerHasAnyAppropriateResearchBench, which CanStartNow only consults when " +
+                "requiredResearchBuilding is set - benchRequired says whether it counts), " +
+                ".PlayerMechanitorRequirementMet (Biotech), .AnalyzedThingsRequirementsMet " +
+                "(Anomaly study), .InspectionRequirementsMet (Odyssey grav engine) and .IsHidden " +
+                "(Anomaly entity codex). With any of those missing, canStartNow could read false " +
+                "while every reported reason read satisfied. Plus the unfinished prerequisites and " +
+                "the required bench/facility defNames so a caller does not have to cross-reference " +
+                "the def separately. Changes nothing.",
             ResultDescription =
                 "success, project snapshot, canStartNow, prerequisitesCompleted, " +
-                "playerHasAnyAppropriateResearchBench, techprintRequirementMet, " +
+                "playerHasAnyAppropriateResearchBench, benchRequired, techprintRequirementMet, " +
+                "playerMechanitorRequirementMet, analyzedThingsRequirementsMet, " +
+                "inspectionRequirementsMet, isHidden, " +
                 "unfinishedPrerequisites[], requiredResearchBuilding (defName or null), " +
                 "requiredResearchFacilities[] (defNames).")]
         public static async Task<object> ResearchAvailability(
@@ -407,7 +454,15 @@ namespace JawaBench.BridgeTools
                     canStartNow = proj.CanStartNow,
                     prerequisitesCompleted = proj.PrerequisitesCompleted,
                     playerHasAnyAppropriateResearchBench = proj.PlayerHasAnyAppropriateResearchBench,
+                    benchRequired = proj.requiredResearchBuilding != null,
                     techprintRequirementMet = proj.TechprintRequirementMet,
+                    // The four gates CanStartNow also applies. Without them a caller could see
+                    // canStartNow=false with every other reason reading satisfied and no way to
+                    // find out which one actually refused.
+                    playerMechanitorRequirementMet = proj.PlayerMechanitorRequirementMet,
+                    analyzedThingsRequirementsMet = proj.AnalyzedThingsRequirementsMet,
+                    inspectionRequirementsMet = proj.InspectionRequirementsMet,
+                    isHidden = proj.IsHidden,
                     unfinishedPrerequisites = unfinishedPrereqs,
                     requiredResearchBuilding = proj.requiredResearchBuilding != null ? proj.requiredResearchBuilding.defName : null,
                     requiredResearchFacilities = proj.requiredResearchFacilities != null
@@ -477,6 +532,10 @@ namespace JawaBench.BridgeTools
             return await ctx.MainThread.InvokeAsync(() =>
             {
                 if (Current.Game == null || Find.TickManager == null) return Fail("No game loaded.");
+                // DebugSetTicksGame is a raw field assignment with no validation (TickManager.cs:507).
+                // A negative TicksGame poisons TicksAbs (ticksGameInt + gameStartAbsTick),
+                // TicksSinceSettle, and every date, age, growth and MTB calculation derived from them.
+                if (ticks < 0) return Fail("ticks must be >= 0 - DebugSetTicksGame assigns the counter raw, and a negative TicksGame corrupts TicksAbs, TicksSinceSettle and every date/age/growth figure derived from them.");
                 var tm = Find.TickManager;
                 int before = tm.TicksGame;
                 tm.DebugSetTicksGame(ticks);
@@ -499,17 +558,18 @@ namespace JawaBench.BridgeTools
                 ".Season(absTicks, Vector2). Defaults to the current map's location " +
                 "(Find.WorldGrid.LongLatOf(map.Tile)) and the current absolute tick " +
                 "(TickManager.TicksAbs) - pass latitude/longitude and/or ticksAbs to probe a " +
-                "different place or moment instead. Fails if neither a current map nor an " +
-                "explicit latitude+longitude is available.",
+                "different place or moment instead. Latitude and longitude come as a PAIR: one " +
+                "without the other is refused rather than quietly answering for the current map. " +
+                "Fails if neither a current map nor an explicit latitude+longitude is available.",
             ResultDescription =
                 "success, absTicksUsed, latitude, longitude, dateFullString, quadrum (string), " +
                 "season (string), source (\"current map\" or \"explicit lat/long\").")]
         public static async Task<object> TimeDateAt(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
-            [ToolParameter(Description = "Latitude. Omit, with longitude, to use the current map's location.")]
+            [ToolParameter(Description = "Latitude. Give it together with longitude, or omit BOTH to use the current map's location - one alone is refused, not silently ignored.")]
             float? latitude = null,
-            [ToolParameter(Description = "Longitude. Omit, with latitude, to use the current map's location.")]
+            [ToolParameter(Description = "Longitude. Give it together with latitude, or omit BOTH to use the current map's location - one alone is refused, not silently ignored.")]
             float? longitude = null,
             [ToolParameter(Description = "Absolute tick to read the date at. Omit for the current moment (TickManager.TicksAbs).")]
             long? ticksAbs = null)
@@ -517,6 +577,12 @@ namespace JawaBench.BridgeTools
             return await ctx.MainThread.InvokeAsync(() =>
             {
                 if (Current.Game == null || Find.TickManager == null) return Fail("No game loaded.");
+
+                // One coordinate alone used to be silently discarded in favour of the current map's
+                // location - a date for the wrong place, returned under a success.
+                if (latitude.HasValue != longitude.HasValue)
+                    return Fail("Give BOTH latitude and longitude, or neither. A lone " + (latitude.HasValue ? "latitude" : "longitude")
+                        + " cannot locate anything, and falling back to the current map would answer for a different place than the one you asked about.");
 
                 float lat, lon;
                 string source;
