@@ -255,6 +255,17 @@ commands and the prove-it column are still the record of what was checked.
 `Actions\RMDefDump\Dump defs now (all)` from the bridge. The startup path proves the
 old code, not the new capability — and that capability is the whole point of it.
 
+⛔ **CANNOT be scored on the 2026-09-03 live session (BENCH, measured):** the action
+is NOT registered in the running game — full `Actions` tree walked via
+`list_debug_action_children` (629 visible children), zero RMDefDump/defs-now hits.
+Cause found on disk: repo `RimDefDump.dll` rebuilt 2026-09-03 02:25 UTC, game copy
+is the 2026-09-02 16:24 UTC one, and `deploy_custom_mods.py --mod RimDefDump`
+reports drift — the deploy after the rebuild never ran. The game launched 04:31 UTC
+with the old DLL. **Owed at next game-DOWN:**
+`python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod RimDefDump --apply`,
+then fire the action on the next load (works from main menu — Entry is an allowed
+game state, no map needed).
+
 ```
 python.exe src/RimMandrake/bridgetools/build.py --gm --apply
 python3 src/RimMandrake/Utils/deploy_custom_mods.py --mod StructureInjections --apply

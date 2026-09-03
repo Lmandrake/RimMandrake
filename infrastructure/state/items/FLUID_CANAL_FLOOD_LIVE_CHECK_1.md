@@ -28,6 +28,14 @@ spring. Read cells with `Actions\RMFluidCanals\Report cell (RAW)`.
    and the tiles it did place must still drain on schedule afterwards — the
    removals live on the map's `TempTerrainManager`, not on the flood.
 
+## note 2026-09-03 (BENCH)
+
+Deploy state measured: `FluidCanals` repo↔game **in sync (9 files)** but
+`mandrake.rm.fluidcanals` is **not in the active ModsConfig** — the live session
+(full 578 list, gravship_scratch_b) cannot run this. Rides the next game-DOWN:
+swap to the minimal list WITH Odyssey + fluidcanals enabled (`modset_builder.py`),
+22 s load, then the three verify steps. Do not spend a full-list session on it.
+
 ## criteria
 
 All three read as expected on a live map, or the reading that failed is
