@@ -197,7 +197,29 @@ def _emit(ev, world=None, quiet=False):
             from . import render as _render
         except ImportError:
             from rimflow import render as _render       # script invocation
-        _render.render(overwrite_queues=True, quiet=True)
+        # 🔴 render.QUEUE/DERIVED/PREVIEW bind at import from model.STATE and
+        # `_bind_paths()` never touches them — only model.EVENTS/model.ITEMS.
+        # Without passing events_path/queue_root explicitly, a redirected
+        # RIMFLOW_LEDGER (selftest_cli.py's whole point: "runs end-to-end
+        # with no risk to the real one") still renders the REAL queue/*.md
+        # from the synthetic test ledger. STATE root is derived the same way
+        # model.write_bridge_file derives its own mirror target, and it
+        # matches both the real layout (STATE/ledger/events.jsonl) and the
+        # throwaway layout selftest_render.py builds by hand.
+        state_root = os.path.dirname(os.path.dirname(model.EVENTS))
+        s = _render.render(events_path=model.EVENTS, overwrite_queues=True,
+                           queue_root=os.path.join(state_root, "queue"),
+                           out_dir=os.path.join(state_root, "derived", "queue_preview"),
+                           quiet=True)
+        # quiet=True means render() never prints its own refusal (the census
+        # guard against overwriting the queues from a shorter ledger) — _emit
+        # ignoring the return value meant that refusal, which render.py's own
+        # comments call "the whole safety property of this module", could
+        # fire silently: every subsequent write would stop publishing the
+        # queue views with nothing said, and both windows would keep reading
+        # a frozen file.
+        if s.get("refused"):
+            sys.stderr.write("🔴 " + s["refused"] + "\n")
     except Exception as e:                                    # noqa: BLE001
         sys.stderr.write("⚠️  queue views not re-rendered (%s) — run "
                          "render.py --overwrite-queues by hand\n" % e)
