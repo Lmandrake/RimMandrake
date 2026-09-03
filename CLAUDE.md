@@ -76,14 +76,24 @@ committing; rejected push → `git pull --rebase`, never `--force`. Never a file
 
 ## Code isn't clean until a review says so
 
-- **A file that has not been reviewed clean is dirty**, no matter how many fixes
-  it's had. A fixed finding is not the same as a reviewed-clean file — re-review
-  after every fix, not just once.
-- **Diff-scoped (incremental) review is only valid after the whole file has come
-  back clean from a full review at least once.** Before that first clean pass,
-  review the whole file — never just the diff.
-- The exit condition is a review pass with zero significant findings, not "a
-  review happened."
+**Every file in this repo is dirty by default — including files nobody has
+touched today.** The only way a file is CLEAN is a recorded entry in
+`infrastructure/state/CODE_REVIEW_STATUS.json` (owned by
+`code_review_status.py`, never hand-edited) with zero commits against that
+path since the recorded commit. No entry, or any commit since — DIRTY.
+
+```
+python3 src/RimMandrake/Utils/code_review_status.py check <path>...   CLEAN/DIRTY, with the commits since if dirty
+python3 src/RimMandrake/Utils/code_review_status.py mark-clean <path>  only after a full-file review finds nothing — refuses on uncommitted changes
+python3 src/RimMandrake/Utils/code_review_status.py list               every recorded entry and its current state
+```
+
+- **Fixing a finding does not clean a file.** Only a full-file review returning
+  zero significant findings does, recorded with `mark-clean`.
+- **Diff-scoped (incremental) review is only valid once a file is CLEAN.** Before
+  that first clean mark, review the whole file — never just the diff.
+- A single edit after `mark-clean` makes the file DIRTY again — `check` will say
+  so and name the commits.
 
 ## What is where
 
