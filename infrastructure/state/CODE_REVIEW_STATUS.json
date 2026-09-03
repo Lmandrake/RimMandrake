@@ -274,6 +274,11 @@
     "date": "2026-09-03",
     "sha": "ecc86a6f"
   },
+  "src/RimMandrake/Pits/Source/Holding/Building_OpenPit.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "af66b41c"
+  },
   "src/RimMandrake/Pits/Source/Holding/Building_PitCell.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -343,6 +348,11 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "42c76948"
+  },
+  "src/RimMandrake/RimDefDump/Source/DefReflector.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "dc7d9d40"
   },
   "src/RimMandrake/ToolBeltFix/Source/mirror_toolbelt_west.py": {
     "cleanCount": 1,
@@ -1067,6 +1077,11 @@
     "date": "2026-09-03",
     "sha": "46cc98d3"
   },
+  "src/RimMandrake/Visibility/Source/ColonyVisibilityRaidPatch.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "af66b41c"
+  },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchArgGuard.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -1451,6 +1466,11 @@
     "cleanCount": 1,
     "date": "2026-09-02",
     "sha": "ccb9e9ba"
+  },
+  "src/RimUtinni/EmpirePursuit/Source/RuthlessPursuingMechanoids.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "dc7d9d40"
   },
   "src/RimUtinni/PawnFlavor/Patches/PawnFlavorPhase2_MentalBreak.xml": {
     "cleanCount": 1,
