@@ -827,6 +827,11 @@
     "date": "2026-09-03",
     "sha": "4de5c0cf"
   },
+  "src/RimMandrake/Utils/rimbench/shipbuild.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "2b988f1c"
+  },
   "src/RimMandrake/Utils/rimbridge_client.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -1007,6 +1012,11 @@
     "date": "2026-09-03",
     "sha": "e5013227"
   },
+  "src/RimMandrake/Utils/vivify_world.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "2b988f1c"
+  },
   "src/RimMandrake/Utils/w9_run.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -1041,6 +1051,11 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "39cd22d5"
+  },
+  "src/RimMandrake/Utils/world_hydro.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "2b988f1c"
   },
   "src/RimMandrake/Utils/world_relief.py": {
     "cleanCount": 1,
@@ -1426,6 +1441,11 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "66d742be"
+  },
+  "src/RimStarWars/JawaIonWeapons/Source/VehicleTier/VehicleIonPatches.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "2b385860"
   },
   "src/RimStarWars/JawaRules/Source/JawaRules.cs": {
     "cleanCount": 1,
