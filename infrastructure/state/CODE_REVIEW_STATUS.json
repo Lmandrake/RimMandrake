@@ -523,6 +523,11 @@
     "date": "2026-09-02",
     "sha": "fe90ab46"
   },
+  "src/RimMandrake/Utils/design_doc_render.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "eb2cdddd"
+  },
   "src/RimMandrake/Utils/doc_claims.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -612,6 +617,11 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "43884307"
+  },
+  "src/RimMandrake/Utils/gravship_floor_v2.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "858dbd2f"
   },
   "src/RimMandrake/Utils/harvest_log.py": {
     "cleanCount": 1,
@@ -871,6 +881,11 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "39cd22d5"
+  },
+  "src/RimMandrake/Utils/validate_ideoligion.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "858dbd2f"
   },
   "src/RimMandrake/Utils/validate_save_artifact.py": {
     "cleanCount": 1,
