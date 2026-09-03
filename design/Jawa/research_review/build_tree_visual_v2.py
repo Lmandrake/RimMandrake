@@ -7,6 +7,7 @@ twelve_trees_proposal.md — this page IS that doc, made walkable.
 """
 import html
 import json
+import re
 from collections import defaultdict
 
 M = json.load(open("design/Jawa/research_review/restructured_model_v2.json"))
@@ -140,6 +141,11 @@ h2{font-family:"Oswald",sans-serif;font-weight:500;font-size:24px;letter-spacing
 .cuts{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:14px;margin-top:18px}
 .cutcard{background:var(--panel);border:1px solid var(--line);border-radius:7px;padding:15px 16px}
 .cutcard.flag{border-left:3px solid var(--rust)}
+.cutcard.rec{border-left:3px solid var(--keep)}
+.cutcard.loot{border-left:3px solid var(--merge)}
+.cutcard.dead{border-left:3px solid var(--line);opacity:.72}
+.cutcard.rec .src{color:var(--keep)}
+.cutcard.loot .src{color:var(--merge)}
 .cutcard h3{font-family:"Oswald",sans-serif;font-weight:600;font-size:17px;margin:0;display:flex;justify-content:space-between;align-items:baseline;gap:10px}
 .cutcard h3 .n{font-family:"IBM Plex Mono",monospace;color:var(--rust);font-size:20px;font-variant-numeric:tabular-nums}
 .cutcard .src{font-family:"IBM Plex Mono",monospace;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink3);margin:3px 0 8px}
@@ -263,6 +269,67 @@ w('</div>')
 unclaimed = [m for m in newcut if m["defName"] not in claimed]
 if unclaimed:
     w(f'<p class="sub">⚠ unbucketed new cuts (bug if nonempty): {", ".join(m["defName"] for m in unclaimed)}</p>')
+
+# ── recoveries from the 84 v1 cuts ───────────────────────────────────────────
+# parsed from recovery_drafts.md so the doc stays the single source
+REC_DOC = "design/Jawa/research_review/recovery_drafts.md"
+try:
+    _doc = open(REC_DOC, encoding="utf-8").read()
+except OSError:
+    _doc = ""
+rec_clusters = []
+if _doc:
+    roster = {}
+    rb = re.search(r"```roster\n(.*?)```", _doc, re.S)
+    if rb:
+        for line in rb.group(1).strip().splitlines():
+            parts = line.split()
+            if len(parts) >= 3 and parts[0].isdigit():
+                roster[int(parts[0])] = (parts[1], parts[2:])
+    for mt in re.finditer(r"^## (\d+)\.\s+(.*?)\s+—\s+([A-Z-]+(?:, as a pointer)?)\s+\((\d+) rows?\)$",
+                          _doc, re.M):
+        cid, title, verdict, n = int(mt.group(1)), mt.group(2), mt.group(3), int(mt.group(4))
+        body = _doc[mt.end():]
+        nxt = re.search(r"^## \d+\.", body, re.M)
+        body = body[:nxt.start()] if nxt else body
+        # RECOVER clusters carry "**The draft.**"; DEAD/LOOT-ONLY carry their
+        # verdict as a bolded "Dead because…" / plain paragraph instead
+        dm = (re.search(r"\*\*The draft\.?\*\*\s*(.+?)(?:\n\n|\Z)", body, re.S)
+              or re.search(r"\*\*(?:Dead because[^*]*)\*\*\s*(.+?)(?:\n\n|\Z)", body, re.S))
+        if dm:
+            draft = re.sub(r"\s+", " ", dm.group(1)).strip()
+        else:
+            def _is_prose(p):
+                p = p.strip()
+                if not p or set(p) <= set("-—*_ "):
+                    return False                      # rule / separator
+                # a roster line is only backticked names, costs and separators
+                return bool(re.sub(r"`[^`]*`|\([^)]*\)|[·,;\s]", "", p))
+            paras = [p for p in re.split(r"\n\n", body.strip()) if _is_prose(p)]
+            draft = re.sub(r"\s+", " ", paras[0]).strip() if paras else ""
+        draft = re.sub(r"[*`]", "", draft)
+        if len(draft) > 400:
+            draft = draft[:397].rsplit(" ", 1)[0] + "…"
+        rec_clusters.append((cid, title, verdict.split(",")[0], n,
+                             roster.get(cid, ("", []))[1], draft))
+if rec_clusters:
+    nrec = sum(c[3] for c in rec_clusters if c[2] == "RECOVER")
+    ndead = sum(c[3] for c in rec_clusters if c[2] == "DEAD")
+    nloot = sum(c[3] for c in rec_clusters if c[2] == "LOOT-ONLY")
+    w('<h2>What the 84 earlier cuts could give back</h2>')
+    w(f'<p class="sub">The v1 cuts stay cut — this asks the owner\'s other question: what GAMEPLAY did each carry, '
+      f'and can it re-enter stripped of the weirdness? {nrec} rows recover, {nloot} are loot-only, {ndead} are '
+      f'honestly dead. Grouped by idea, not by row — the bioferrite chain is one economy, not six recoveries.</p>')
+    w('<div class="cuts">')
+    for cid, title, verdict, n, names, draft in rec_clusters:
+        cls = {"RECOVER": " rec", "LOOT-ONLY": " loot"}.get(verdict, " dead")
+        wide = " wide" if len(names) > 10 else ""
+        lis = "".join(f'<li><span class="dn">{esc(x)}</span></li>' for x in names)
+        w(f'<div class="cutcard{cls}{wide}"><h3>{esc(title)}<span class="n">{n}</span></h3>'
+          f'<div class="src">{esc(verdict)}</div>'
+          + (f'<p>{esc(draft)}</p>' if draft else '')
+          + f'<ul class="cutlist">{lis}</ul></div>')
+    w('</div>')
 
 # ── the rites ────────────────────────────────────────────────────────────────
 w('<h2>The Rites — researching the liturgy</h2>')
