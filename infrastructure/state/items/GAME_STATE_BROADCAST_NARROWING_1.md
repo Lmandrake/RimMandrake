@@ -1,4 +1,11 @@
-# GAME_STATE_BROADCAST_NARROWING_1 — 🔴 needs one word from the owner
+# GAME_STATE_BROADCAST_NARROWING_1 — RULED 2026-09-03: leave it as is
+
+**Owner's ruling (question card, 2026-09-03): "Leave it as is."** The broadcast
+keeps announcing every state to every other window, unchanged. The draft
+narrowing below was NOT adopted; it stays as the record of what was considered.
+Nothing to build, nothing to propagate — no doc instructs the narrowing.
+
+# (superseded draft below — 🔴 needed one word from the owner)
 
 Owner, 2026-09-02: *"Should we get rid of that broadcast message of game is up, etc.?
 It doesn't seem to have a function anymore and can even distract."*
