@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_ShipMemory_ContainmentGate.xml   RimUtinni: Ship Memory   ANOMALY_EXCEPTION_ACCESS_1
+
+  Per-def: remove the vanilla `researchPrerequisites` (the row that no longer
+  exists once the v4 research cut lands — spec §1 "why the removal patch is
+  mandatory even with the gate": IsResearchFinished is checked BEFORE
+  discoveryPrerequisites, so a dangling reference would hide these buildings
+  forever no matter what the GameComponent reveals) and add
+  `discoveryPrerequisites` pointing at the one gate def
+  (RUT_ShipMemory_Containment). Six ThingDefs plus one TerrainDef
+  (BioferritePlate) — table verified against the merged Anomaly defs,
+  design/Jawa/anomaly_exception_access_spec.md §2.
+
+  ⚠️ Ordering vs the cut (item criterion 1): this mod must deploy and be
+  verified BEFORE the taxonomy's research-row cut lands, so the cut removes
+  rows nothing still references. See item criterion 1 and spec §1 "ordering".
+
+  Wrapped in PatchOperationFindMod so this is a silent no-op without Anomaly
+  active, matching the convention already used against the Anomaly folder
+  name in src/RimStarWars/Armoury/Patches/Armour_Leather.xml and
+  Armoury_RangedDamage.xml.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>Anomaly</li></mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+
+        <!-- HoldingPlatform: EntityContainment -> reveal gate -->
+        <li Class="PatchOperationRemove">
+          <xpath>Defs/ThingDef[defName="HoldingPlatform"]/researchPrerequisites</xpath>
+        </li>
+        <li Class="PatchOperationAdd">
+          <xpath>Defs/ThingDef[defName="HoldingPlatform"]</xpath>
+          <value>
+            <discoveryPrerequisites>
+              <li>RUT_ShipMemory_Containment</li>
+            </discoveryPrerequisites>
+          </value>
+        </li>
+
+        <!-- ElectricInhibitor: EntityContainment -> reveal gate -->
+        <li Class="PatchOperationRemove">
+          <xpath>Defs/ThingDef[defName="ElectricInhibitor"]/researchPrerequisites</xpath>
+        </li>
+        <li Class="PatchOperationAdd">
+          <xpath>Defs/ThingDef[defName="ElectricInhibitor"]</xpath>
+          <value>
+            <discoveryPrerequisites>
+              <li>RUT_ShipMemory_Containment</li>
+            </discoveryPrerequisites>
+          </value>
+        </li>
+
+        <!-- ShardInhibitor: EntityContainment -> reveal gate -->
+        <li Class="PatchOperationRemove">
+          <xpath>Defs/ThingDef[defName="ShardInhibitor"]/researchPrerequisites</xpath>
+        </li>
+        <li Class="PatchOperationAdd">
+          <xpath>Defs/ThingDef[defName="ShardInhibitor"]</xpath>
+          <value>
+            <discoveryPrerequisites>
+              <li>RUT_ShipMemory_Containment</li>
+            </discoveryPrerequisites>
+          </value>
+        </li>
+
+        <!-- BioferriteHarvester: BioferriteHarvesting -> reveal gate -->
+        <li Class="PatchOperationRemove">
+          <xpath>Defs/ThingDef[defName="BioferriteHarvester"]/researchPrerequisites</xpath>
+        </li>
+        <li Class="PatchOperationAdd">
+          <xpath>Defs/ThingDef[defName="BioferriteHarvester"]</xpath>
+          <value>
+            <discoveryPrerequisites>
+              <li>RUT_ShipMemory_Containment</li>
+            </discoveryPrerequisites>
+          </value>
+        </li>
+
+        <!-- Electroharvester: Electroharvester -> reveal gate -->
+        <li Class="PatchOperationRemove">
+          <xpath>Defs/ThingDef[defName="Electroharvester"]/researchPrerequisites</xpath>
+        </li>
+        <li Class="PatchOperationAdd">
+          <xpath>Defs/ThingDef[defName="Electroharvester"]</xpath>
+          <value>
+            <discoveryPrerequisites>
+              <li>RUT_ShipMemory_Containment</li>
+            </discoveryPrerequisites>
+          </value>
+        </li>
+
+        <!-- BioferriteGenerator: BioferriteGenerator -> reveal gate -->
+        <li Class="PatchOperationRemove">
+          <xpath>Defs/ThingDef[defName="BioferriteGenerator"]/researchPrerequisites</xpath>
+        </li>
+        <li Class="PatchOperationAdd">
+          <xpath>Defs/ThingDef[defName="BioferriteGenerator"]</xpath>
+          <value>
+            <discoveryPrerequisites>
+              <li>RUT_ShipMemory_Containment</li>
+            </discoveryPrerequisites>
+          </value>
+        </li>
+
+        <!-- BioferritePlate (TerrainDef): BioferriteShaping -> reveal gate -->
+        <li Class="PatchOperationRemove">
+          <xpath>Defs/TerrainDef[defName="BioferritePlate"]/researchPrerequisites</xpath>
+        </li>
+        <li Class="PatchOperationAdd">
+          <xpath>Defs/TerrainDef[defName="BioferritePlate"]</xpath>
+          <value>
+            <discoveryPrerequisites>
+              <li>RUT_ShipMemory_Containment</li>
+            </discoveryPrerequisites>
+          </value>
+        </li>
+
+      </operations>
+    </match>
+  </Operation>
+
+</Patch>

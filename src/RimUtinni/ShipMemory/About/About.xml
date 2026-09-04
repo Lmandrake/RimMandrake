@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimUtinni: Ship Memory — the Chains Below</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.rut.shipmemory</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>ANOMALY_EXCEPTION_ACCESS_1 — the Memory-Core revelation. The owner cut the player's
+research route into the Anomaly containment/bioferrite economy, not the content itself
+("I did not cut the anomaly content. I only cut the players ability to research that tech
+tree." — 2026-09-03). This mod grants access the ruled way: a `discoveryPrerequisites` reveal
+gate, not a hidden research row. Patches HoldingPlatform, ElectricInhibitor, ShardInhibitor,
+BioferriteHarvester, Electroharvester, BioferriteGenerator and BioferritePlate to drop their
+vanilla researchPrerequisites and gate on one never-spawned key item instead
+(RUT_ShipMemory_Containment). A single GameComponent reveals all seven the moment the clan
+ties down its first live beast, stockpiles 50+ Bioferrite, or the Assailant dungeon's core
+signals it — one `ChoiceLetter`, no quest, no research tab entry. Full spec:
+design/Jawa/anomaly_exception_access_spec.md.</description>
+
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld.Anomaly</packageId>
+      <displayName>Anomaly</displayName>
+    </li>
+  </modDependencies>
+
+  <loadAfter>
+    <li>Ludeon.RimWorld.Anomaly</li>
+  </loadAfter>
+</ModMetaData>

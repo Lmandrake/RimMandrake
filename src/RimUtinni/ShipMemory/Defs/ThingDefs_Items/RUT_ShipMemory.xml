@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_ShipMemory.xml   RimUtinni: Ship Memory   ANOMALY_EXCEPTION_ACCESS_1
+
+  The gate def. Never spawned, never traded, never in a category — it exists
+  only as a key in Verse.HiddenItemsManager so `discoveryPrerequisites` on the
+  seven patched buildables (RUT_ShipMemory_ContainmentGate.xml) has something
+  to point at. `hiddenWhileUndiscovered=true` is what seeds the entry; the
+  GameComponent's one call to `Find.HiddenItemsManager.SetDiscovered` flips it.
+  Per spec §5: no thingCategories (so it never enters a stockpile filter tree),
+  no tradeTags, no thingSetMakerTags.
+-->
+<Defs>
+
+  <ThingDef>
+    <defName>RUT_ShipMemory_Containment</defName>
+    <label>memory: the chains below</label>
+    <description>What the Utinni remembers of holding living things. Not an object.</description>
+    <thingClass>ThingWithComps</thingClass>
+    <category>Item</category>
+    <hiddenWhileUndiscovered>true</hiddenWhileUndiscovered>
+    <tradeability>None</tradeability>
+    <destroyOnDrop>true</destroyOnDrop>
+    <selectable>false</selectable>
+    <graphicData>
+      <texPath>Things/Item/Special/AIPersonaCore</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>0</MarketValue>
+      <Mass>0.01</Mass>
+    </statBases>
+  </ThingDef>
+
+</Defs>
