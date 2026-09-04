@@ -26,17 +26,20 @@ public class Building_KoltoTank : Building_Casket, ISuspendableThingHolder, IThi
 
     private Pawn pawn;
 
-    // Hardcoded in the decompiled source, NOT wired to CompProperties_KoltoTank's
-    // own ticksBetweenHealing XML field despite that field's name -- SpawnSetup
-    // never assigns it from Props, and the source KotORResource_Kolto.xml never
-    // sets it either (Props.ticksBetweenHealing floats at its 0f default there).
-    // Preserved as the literal constant the original actually runs on, not
-    // "fixed" to read the dead XML field -- doing so would divide by that 0f.
+    // Base is one vanilla in-game hour (2500 ticks); SpawnSetup below scales
+    // it by Props.multiplier. The shipped KoltoTank def sets multiplier=2.5,
+    // giving 6250 ticks (2.5 hours), matching the ThingDef's own description
+    // ("heal one random injury per 2.5 hours") and the multiplier field's own
+    // XML comment ("this multiplier * in-game hour = time to heal"). Until
+    // this fix, multiplier was never read anywhere in the port, so the tank
+    // healed on a flat 2500-tick (1-hour) cadence -- 2.5x faster than intended.
+    // This is NOT the same field as CompProperties_KoltoTank.ticksBetweenHealing
+    // (a second, still-genuinely-dead XML field that floats at 0f in every
+    // shipped def and is deliberately left unread here -- reading it would
+    // divide by that 0f).
     private int ticksBetweenHealing = 2500;
 
     public KoltoTankState state = KoltoTankState.Empty;
-
-    public float fillPct;
 
     private HediffDef hediffOnExit;
 
@@ -77,7 +80,6 @@ public class Building_KoltoTank : Building_Casket, ISuspendableThingHolder, IThi
     {
         base.SpawnSetup(map, respawningAfterLoad);
         forbiddable = GetComp<CompForbiddable>();
-        fillPct = 0f;
         if (KoltoTankComp != null)
         {
             string exitName = KoltoTankComp.Props.hediffOnExit;
@@ -89,6 +91,10 @@ public class Building_KoltoTank : Building_Casket, ISuspendableThingHolder, IThi
             if (!string.IsNullOrEmpty(entryName))
             {
                 hediffOnEntry = DefDatabase<HediffDef>.GetNamed(entryName, false);
+            }
+            if (KoltoTankComp.Props.multiplier > 0f)
+            {
+                ticksBetweenHealing = Mathf.RoundToInt(2500f * KoltoTankComp.Props.multiplier);
             }
         }
         refuelableComp = GetComp<CompRefuelable>();
@@ -218,7 +224,6 @@ public class Building_KoltoTank : Building_Casket, ISuspendableThingHolder, IThi
             SoundStarter.PlayOneShot(SoundDefOf.CryptosleepCasket_Eject, SoundInfo.InMap(new TargetInfo(Position, Map)));
         }
         state = KoltoTankState.Empty;
-        fillPct = 0f;
         pawn = null;
         KoltoTankComp.SetEmpty();
         base.EjectContents();
@@ -228,7 +233,6 @@ public class Building_KoltoTank : Building_Casket, ISuspendableThingHolder, IThi
     {
         base.ExposeData();
         Scribe_Values.Look(ref state, "state", KoltoTankState.Empty);
-        Scribe_Values.Look(ref fillPct, "fillPct", 0f);
         Scribe_References.Look(ref pawn, "containedPawn");
         if (Scribe.mode == LoadSaveMode.PostLoadInit)
         {

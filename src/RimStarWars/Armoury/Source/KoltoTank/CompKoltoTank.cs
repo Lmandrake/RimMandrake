@@ -119,15 +119,4 @@ public class CompKoltoTank : ThingComp
         request.rotation = barRotation;
         GenDraw.DrawFillableBar(request);
     }
-
-    public void DrawInnerPawn(Pawn pawn, Vector3 drawPos, Rot4 rotation)
-    {
-        if (pawn == null)
-        {
-            return;
-        }
-        float bob = Mathf.Sin(Find.TickManager.TicksGame * 0.05f) * 0.1f;
-        drawPos.z += bob;
-        pawn.Drawer.renderer.RenderPawnAt(drawPos, rotation, true);
-    }
 }
