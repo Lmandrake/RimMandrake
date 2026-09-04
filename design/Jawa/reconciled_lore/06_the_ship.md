@@ -60,6 +60,33 @@ unity — merger is nobody's goal, any more than nine people wish to become one.
 The reveal channel for the Rakatan history is therefore the ship itself,
 event-driven.
 
+**What the substrate actually holds** [owner 2026-09-04, canon.yml
+antiquities.ship_archive]: the mechanism under cradle_memory. Her knowledge
+store is severely degraded — damaged and faded across the centuries, then
+rudely overwritten by the kludged Jawa-mind core — a massive archive of
+fragments and incomprehensible garbage. She remembers THAT she was whole,
+not WHAT she held. Each urn read into her (the Antiquities loop) offers
+pattern-matching and a reconstruction scaffold for a small portion, the way
+random fragments of correct DNA reassemble on even a poor template. The urns
+never encode her operating system, so nothing restored can ever overwrite
+the Jawa-born gods — only the Rakatan racial/faction database regenerates.
+The Rites AUTHORIZE the restoration and let the gods alter themselves into
+harmony with what returns; integrations are narrated only in the Knowing
+register (`narrator_corpus/the_knowing.md`), never in systems language.
+**Two kinds of forgetting**: trauma-sealed rooms open by RECOGNITION — the
+Memory-Core event (`ShipMemory` mod: show her a chained beast, or carry the
+enemy in from the frozen place, and she remembers the war-containment
+practice below her own decks); eroded archives open by RECONSTRUCTION —
+urns, one piece at a time.
+
+**Restoration, not manufacture** [owner 2026-09-04]: tech radiated from
+integrations only ever REPAIRS her factory modules — never builds new ones.
+"Can't scale beyond ship... just restore it." The modules wake in a FIXED,
+fully authored order — Mill, Loom, Galley, Farm, Press, Machining Bay,
+Apothecary, Assembler — because the urns lock what they unlock; each stage
+carries authored art, permanently placed, a progress meter you can walk
+through (sibling to the running-lights rule below).
+
 **v1 has no talking ship** [owner 2026-08-15]: all in-game LLM voice is v2.
 The nine are **felt, not heard** — the satiation tracks, boons and banes,
 whose kind of week the colony keeps having, pre-authored letters attributed to

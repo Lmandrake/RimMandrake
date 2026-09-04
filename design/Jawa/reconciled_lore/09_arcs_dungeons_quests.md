@@ -8,7 +8,36 @@
 2. **The Rakata reversal** — sympathy via the sleeper backstories, revelation
    via the Assailant flesh dungeon; the twist is that the player's vessel is
    tyrant technology (`03_deep_history.md`). Register guard: pre-reveal content
-   stays sympathetic.
+   stays sympathetic. Now also staged through the urn corpus itself: the same
+   pieces re-read darker as fluency grows (`03_deep_history.md`, the Doctrine
+   section) — the tree corroborates what the dungeon shows in meat.
+2a. **Antiquities** [owner 2026-09-04, `design/Jawa/antiquities_design.md`] —
+   the world-unlock meter: read the world back into existence one urn at a
+   time (LANGUAGE → RELIGION → CULTURE → CARTOGRAPHY → VOICE), against the
+   Helix's standing purchase order and the LOST ledger that never counts
+   down. Its beats, all ruled: the **Recovery Raid** (sold urns persist at a
+   randomized settlement of the buyer; the error can be paid back at great
+   cost, though the gods intone hopelessness first); the **Call-Out** at
+   VOICE (called-out ancients stand down and LEAVE — a literate custodian
+   outranks an illiterate heir); the **Testament** (the first Call-Out ends
+   with a fresh urn at the map edge — ambivalent: gratitude without warmth);
+   the **Empire urn-hunt** (they destroy what they cannot read, thinking it
+   a morale fetish) and the **Shattered Vault** (one revealed vault found
+   pre-raided; its shards partially readable — fractal encoding — via droid
+   compute in Rust Cathedral partnership); the **Geonosian Alliance** (a
+   protected base for ship/urn tech, until the Empire erases them —
+   `04_factions.md` §8).
+2b. **The Reclamation** [owner 2026-09-04, canon.yml rakata.reclamation] —
+   late game, one concentrated event: every ancient the player ever woke,
+   united, tries to take the Utinni back — in local collaboration with the
+   Helix, who turn hostile (ending the Ascendant Ladder boon economy: a
+   price the player should see coming). Survive it and the ancients become
+   permanently neutral — dominated. AFTER it, two scenes: the Helix's true
+   heart (*"If you will not share your wisdom and power, then I will learn
+   from what destroyed you"* — the Rakata's outrage radiating), and the
+   Rakatans refused by the Rust Cathedral (*"I am bound to an Empire that no
+   longer reigns, not their mongrel offspring who managed to lose the war
+   that broke me"*).
 3. **The nine-claimant ship** — feeding a god grows a tenant; the endgame is
    which program wins the Body, and "keep all nine small" is the most Jawa
    ending of all (`05_the_clan.md`, `06_the_ship.md`).

@@ -40,9 +40,42 @@ point is that something could do this TO the Rakata [owner 2026-08-29].
 The **self-replicating flesh** was the Assailant's weapon. It is still running:
 contained in breached vaults, escaped and naturalised in the poison forest, the
 mycotic jungle, the gelatinous superorganism (R-H8: the strange biomes'
-genetics are bioweapon residue). Do not weld this to the forsaken crags — the
-crags read as chemistry that was always here; two alien facts are richer than
-one explained one.
+genetics are bioweapon residue). The night-side creatures are the war's
+cold-adapted escapees — things the weapon made, or made from, that walked into
+the dark where nothing hunts them [owner 2026-09-04, the full Anomaly weld:
+this content is load-bearing canon, not garnish]. Do not weld this to the
+forsaken crags — the crags read as chemistry that was always here; two alien
+facts are richer than one explained one.
+
+## The Doctrine of the Unwritten [owner 2026-09-04]
+
+The Assailant did not defeat armies; it defeated *records* — it was built to
+read, to infest datastores, replay authentication, speak in the voices of the
+dead. So the Rakata burned their own libraries and adopted the **Doctrine of
+the Unwritten**: nothing stored, nothing indexed, nothing machine-readable.
+Knowledge lived in two places only — in minds, and in **art**, the one thing
+the weapon provably could not parse. Everything that mattered — liturgy,
+genealogy, access, the coordinates of the vaults — went into a
+civilization-wide artistic canon in which every decorated object is a
+sentence, distributed across ten thousand urns on purpose so that no single
+mind or object was worth capturing. This is the ground of the **Antiquities
+tree** (`design/Jawa/antiquities_design.md`): the world itself is the archive,
+read back one piece at a time.
+
+⚠️ **Register guard, extended**: everything above about the Assailant's
+capabilities is the *Rakata's own testimony*, fired into clay by the losing
+side — in-world unverifiable. No def, tooltip or dialogue states Assailant
+capabilities as narrator-fact; the urns say it, and urns are grief-stricken
+witnesses. The one place the player gets near the thing itself is the flesh
+dungeon, which stays wordless.
+
+**The reversal now arrives through re-reading** [owner 2026-09-04]: the urn
+corpus's sympathetic interpretation is the easy, naive one. As fluency
+deepens, the same pieces reveal the inherent hostility one fractal layer
+down — "the stars we lost" later found to encode the casualties inflicted
+and resources spent subduing them. Sympathy at LANGUAGE/RELIGION; the turn
+at CULTURE; the flesh dungeon keeps visceral primacy. Aggressive urns may
+appear early, sparingly — foreshadowing.
 
 ## The war and the sleepers [owner 2026-08-29]
 
@@ -53,8 +86,14 @@ frightening weaponry, and **violently against genetic modification and the
 technology that births such things** (trauma from the flesh-weapon; the VQE
 "patients" carrying archite genes are Rakata the enemy TOOK and flesh-shaped).
 They wake believing the war is still on, because nobody ever told them it was
-over. **Everything the Forsaken left behind is still executing its last
-instruction** — machines, sleepers, and the ship alike. That is the theme.
+over. **And they were deliberately never taught the full canon** [owner
+2026-09-04]: children were the most likely thing the Assailant would wear as
+a skin, so each garrison's children learned only its fragment. Wake one and
+it can fight, grieve, and leave — it cannot tell you where the vaults are,
+because its parents made sure it never could. The sleepers are the wrong
+ancients; the right ones exist only distributed, on the urns. **Everything
+the Forsaken left behind is still executing its last instruction** —
+machines, sleepers, and the ship alike. That is the theme.
 
 Sleepers are an APPEARANCE + encounter surface, not a faction: vanilla ancients
 patched to xenotype `RimMandrakeRakata`, labels using the exonym ("Forsaken
@@ -94,6 +133,27 @@ Cathedral ground; remote from ORGANICS is what its remoteness means). The
 sacred core is ~10 faction-owned Buildings at −15 goodwill each from a neutral
 0; mineable bulk is free. Hostility has enormous hysteresis (hostile at −75,
 un-hostile only at 0) — desecration is survivable, repentance is expensive.
+
+**And the Cathedral is a MIND** [owner 2026-09-04]: a machine, made by
+Rakatans, with no time for any other race, period — a **free agent now**,
+and it refuses even the woken Rakata: *"I am bound to an Empire that no
+longer reigns, not their mongrel offspring who managed to lose the war that
+broke me."* It favors the Droids — in them it sees simple echoes of itself
+and its own past, and regards them like favored pets: not pampered, not
+beloved, but amusing and interesting as a way to pass eons. (The Enclaves'
+whispered voices in the old machinery are real attention; the organics get
+silence — see `04_factions.md` for the Geonosians it will not answer.) It
+never revealed the urns' secret to anyone: revealing secrets is precisely
+what it was built not to do. It **hates the Helix** from the moment they
+side with the Assailants, urging Forsaken Sentinels against them. It
+despises the Empire too, but is in no position to oust them — it wants to
+survive, so **it slumbers**, deliberately dormant, to draw no attention.
+The player Jawa are tolerated **only because the Utinni vouches for them**;
+it mistrusts even her ("what is WRONG with you?") but cannot deny she is of
+the empire it once served — so the clan may run its missions against the
+Assailant to prove her value, while the Cathedral privately hopes she
+perishes in a pyrrhic victory. Every gravtech boon it grants is a risk it
+takes by being seen to act.
 
 ## The Utinni was there at the beginning
 

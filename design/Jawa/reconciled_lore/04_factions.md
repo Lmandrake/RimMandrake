@@ -105,21 +105,44 @@ unsentimental ransom; an enslaved warden must be plumbed for.
 **Ore Seams** (bought whole by a silicax concern a century ago; when the
 company pulled out the queen would not leave — *that refusal IS Meckgin*: a
 hive whose work is unfinished cannot stop) and the **Plateau** (a splinter
-colony worshipping the Rakatan ruins' Founder machinery, nine years trying to
-commune with its AI, and failing — the live tension). Buried against the sun;
-idleness is the beginning of the end of the world. **Formally ALLIED with the
-Free Droid Enclaves, with trade** —
-the cruellest ground on the planet is the one place with a functioning peace.
-No trade with the player; no ransom, no rescue; prisoners become labour.
+colony worshipping the Rust Cathedral's machinery, nine years trying to
+commune with it, and failing — and the failure has ONE cause [owner
+2026-09-04]: **they are organic, and the Cathedral is not.** It has no time
+for any other race, period; it favors the Droids as echoes of itself. The
+Geonosians — hive-minds who love to build, longing for exactly such a god —
+are **cast-off worshipers, cultists to an ambivalent god that prefers its
+pets**, and the pets are, to Geonosian eyes, infuriatingly crude). When the
+urn secret propagates they bid heavily for antiquities too, but **they have
+no scaffold to place them on** — their urn-decked effigies draw even less
+comment than before. Buried against the sun; idleness is the beginning of
+the end of the world. **Formally ALLIED with the Free Droid Enclaves, with
+trade** — the cruellest ground on the planet is the one place with a
+functioning peace, and allying with the god's favored pets is the closest to
+the god the Hive has ever been allowed. No trade with the player at start;
+no ransom, no rescue; prisoners become labour. **The Alliance arc** [owner
+2026-09-04]: unsung and desperate, they will trade a powerful protected base
+for ship/urn technology — almost too good to be true, and it begins to
+work, until the Empire catches wind and utterly destroys their settlements.
+Geonosians just don't understand politics at all.
 
 **9 · Ascendant Helix.** A small, obscenely wealthy gene-cult: the body is a
 rough draft, the species a project, and the supremacy points INWARD at its own
 manufactured underclass (the Made). It does not raid; it **retrieves**. Sited
 on the bioweapon biomes because the living residue is the only surviving
-specimen of the Assailant's craft — they carry Rakatan blood and are studying
-the thing that nearly exterminated their ancestors, on the ground where it
-happened. Containment response is a standing pawn group. Escaped Assets are
-hunted alive.
+specimen of the Assailant's craft. **Their blood is real and their kinship is
+forged** [owner 2026-09-04]: a diluted thread of genuine descent persists —
+Rakata who adapted by merging with other races — but the woken ancestors no
+longer respect or value what they became, and the Helix spliced recovered
+Rakatan sequence into their germline to claim the rest, calling it descent
+(their theology performed on themselves; Rakatan kinship was carried in
+literacy, not base pairs, which is why the ship can tell). **Cast-off,
+denied, distant grandchildren** — and the rejection is the wound that turns
+them, after the Reclamation fails, to the Assailants' residue in so many
+words: *"If you will not share your wisdom and power, then I will learn from
+what destroyed you."* They buy every antiquity offered, paying MORE for
+unread pieces (a child would want the reading), brute-forcing a canon
+engineered to resist exactly that. Containment response is a standing pawn
+group. Escaped Assets are hunted alive.
 
 **10 · Blackstar Company.** One dangerous person with a name — **one outfit,
 never a genus** [ruled 2026-08-22]; the vanilla `Pirate` vessel keeps
@@ -131,6 +154,16 @@ enemy. Hostile when someone paid them; never otherwise.
 **11 · Jawa Trade Moot.** The player's own people at civilizational scale —
 `05_the_clan.md`. Trade Moot pawns are kin: enslaving them is the taboo the
 colony itself feels; the Moot ransoms generously and REMEMBERS, both ways.
+**On the ship, publicly ambivalent** [owner 2026-09-04]: "Look, you're kin,
+but WTF are you doing in that huge ship attracting Empire and Hutt hatred?!
+Stay away please... unless it's safe right now?" — and then, secretly, the
+Moot finds ways to trade with the ship anyway: kinship among the Jawa IS
+respected and protected, so long as it doesn't cost them publicly and bring
+down ruin. Cute, touching, and irritating, just like the Jawa. Once the
+clan's urn project becomes known, the Moot is the **urn-finders' network** —
+kin caravans surface pieces below market ("a page in strange hands is a debt
+on the whole clan"), covert at first (night caravans, dead drops),
+normalizing as the clan's standing grows. The Moot finds; it does not mint.
 
 **12 · the Junkers.** [owner 2026-08-30, canon.yml junkers] Rich in BAD
 water (the terminator seas are theirs and non-potable); distillation is

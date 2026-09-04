@@ -9,9 +9,12 @@
 # reconciled_lore — the consolidated canon
 
 One directory that answers "what is true in this campaign" without reading 110
-documents. Every ruling through **2026-08-29** is ingested (turret doctrine,
-Droidworks, Rakata dark-half, ion doctrine, research-tree deferral, shop-as-
-quest-pack included).
+documents. Every ruling through **2026-09-04** is ingested (the canon
+reintegration sitting included: Antiquities and the Doctrine of the Unwritten,
+the degraded-archive ship canon, the sixteen-tree roster, the Helix lineage,
+the Rust Cathedral mind, the Reclamation, the Geonosian story — see
+`infrastructure/state/canon.yml` for the ruling entries and
+`design/Jawa/canon_reintegration_plan.md` for the sitting).
 
 ## Reading order
 
