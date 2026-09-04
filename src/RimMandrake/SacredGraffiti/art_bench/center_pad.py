@@ -2,9 +2,7 @@
 """Crop a cutout to its subject bbox (alpha>=8), scale to fit within a target
 box centered on a square canvas with margin, and write the result."""
 import sys
-from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[3] / "SacredGraffiti"))
 sys.path.insert(0, "/mnt/d/Luke/dev/Rimworld/skills/generating-images/scripts")
 import pnglib  # noqa: E402
 
