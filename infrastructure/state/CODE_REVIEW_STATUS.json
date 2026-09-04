@@ -494,6 +494,16 @@
     "date": "2026-09-03",
     "sha": "0fb4936c"
   },
+  "src/RimMandrake/SacredGraffiti/art_bench/center_pad.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "250be7a3"
+  },
+  "src/RimMandrake/SalvageClaim/Source/FloatMenuOptionProvider_PaySalvageClaim.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "57ce5707"
+  },
   "src/RimMandrake/SalvageClaim/Source/SalvageClaimFeeUtility.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -514,10 +524,25 @@
     "date": "2026-09-03",
     "sha": "9c1523eb"
   },
+  "src/RimMandrake/TheftHauler/Source/FloatMenuOptionProvider_TheftHaulUninstall.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "57ce5707"
+  },
   "src/RimMandrake/TheftHauler/Source/JobDriver_TheftHaulUninstall.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "ceeaebb1"
+  },
+  "src/RimMandrake/TheftHauler/Source/TheftHaulerDefOf.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "57ce5707"
+  },
+  "src/RimMandrake/TheftHauler/Source/TheftHaulerExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "57ce5707"
   },
   "src/RimMandrake/ToolBeltFix/Source/mirror_toolbelt_west.py": {
     "cleanCount": 1,
@@ -2182,6 +2207,21 @@
     "date": "2026-09-03",
     "sha": "dc7d9d40"
   },
+  "src/RimUtinni/EmpirePursuit/Source/ScenPartDef_RuthlessPursuit.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "57ce5707"
+  },
+  "src/RimUtinni/EmpirePursuit/Source/Settings.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "57ce5707"
+  },
+  "src/RimUtinni/EmpirePursuit/Source/Utilities.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "57ce5707"
+  },
   "src/RimUtinni/PawnFlavor/Patches/PawnFlavorPhase2_MentalBreak.xml": {
     "cleanCount": 1,
     "date": "2026-09-02",
@@ -2201,6 +2241,16 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "0fb4936c"
+  },
+  "src/RimUtinni/PlantGrowth/Source/PlantGrowthConfig.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "250be7a3"
+  },
+  "src/RimUtinni/PlantGrowth/Source/PlantGrowthSettingsDef.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "250be7a3"
   },
   "src/RimUtinni/VaultDungeons/Source/gen_vault_layouts.py": {
     "cleanCount": 1,
