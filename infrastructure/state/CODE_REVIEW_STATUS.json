@@ -324,6 +324,16 @@
     "date": "2026-09-02",
     "sha": "14ea427e"
   },
+  "src/RimMandrake/FluidCanals/Defs/DesignationDefs/FluidCanal_Designations.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "71cceeb1"
+  },
+  "src/RimMandrake/FluidCanals/Defs/JobDefs/FluidCanal_JobDefs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "71cceeb1"
+  },
   "src/RimMandrake/FluidCanals/Source/CompFluidReservoir.cs": {
     "cleanCount": 1,
     "date": "2026-09-04",
@@ -368,6 +378,16 @@
     "cleanCount": 1,
     "date": "2026-09-04",
     "sha": "43f96b1b"
+  },
+  "src/RimMandrake/Graffiti/Defs/JobDefs_Graffiti.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "71cceeb1"
+  },
+  "src/RimMandrake/Graffiti/Defs/JoyGiverDefs_Graffiti.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "71cceeb1"
   },
   "src/RimMandrake/Graffiti/Source/BreachBiasHook.cs": {
     "cleanCount": 1,
@@ -649,6 +669,21 @@
     "date": "2026-09-04",
     "sha": "43f96b1b"
   },
+  "src/RimMandrake/Pits/Defs/DesignationDefs/Pit_Designations.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "71cceeb1"
+  },
+  "src/RimMandrake/Pits/Defs/JobDefs/Pit_JobDefs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "71cceeb1"
+  },
+  "src/RimMandrake/Pits/Defs/WorkGiverDefs/Pit_WorkGivers.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "71cceeb1"
+  },
   "src/RimMandrake/Pits/Source/Debug/PitDebugActions.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -898,6 +933,11 @@
     "cleanCount": 1,
     "date": "2026-09-04",
     "sha": "43f96b1b"
+  },
+  "src/RimMandrake/StrandedQuest/Defs/HistoryEventDefs/HistoryEvents_Stranded.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "71cceeb1"
   },
   "src/RimMandrake/StructureInjections/Source/GenStep_RimplacePlan.cs": {
     "cleanCount": 1,
@@ -2877,6 +2917,11 @@
     "date": "2026-09-03",
     "sha": "d075693a"
   },
+  "src/RimStarWars/JawaVoice/Patches/JawaVoice_animals.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "71cceeb1"
+  },
   "src/RimStarWars/KotORBandolierNorthFix/Source/build_north.py": {
     "cleanCount": 1,
     "date": "2026-09-04",
@@ -2946,6 +2991,11 @@
     "cleanCount": 1,
     "date": "2026-09-02",
     "sha": "1a7b3aa1"
+  },
+  "src/RimStarWars/StructureInjectionsSW/Defs/GenStepDefs_MoistureFarm.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "71cceeb1"
   },
   "src/RimStarWars/WeatherSuite/Source/WeatherSuiteHook.cs": {
     "cleanCount": 1,
@@ -3027,6 +3077,11 @@
     "date": "2026-09-03",
     "sha": "250be7a3"
   },
+  "src/RimUtinni/RiverSteam/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "71cceeb1"
+  },
   "src/RimUtinni/RiverSteam/Source/RiverSteamHook.cs": {
     "cleanCount": 1,
     "date": "2026-09-04",
@@ -3062,6 +3117,11 @@
     "date": "2026-09-04",
     "sha": "46cdec42"
   },
+  "src/RimUtinni/StickCuisine/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "71cceeb1"
+  },
   "src/RimUtinni/StickCuisine/Source/StickCuisine/IngredientValueGetter_ExcludeSkewer.cs": {
     "cleanCount": 1,
     "date": "2026-09-04",
@@ -3076,6 +3136,11 @@
     "cleanCount": 1,
     "date": "2026-09-04",
     "sha": "43f96b1b"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Defs/GenStepDefs_Batch4.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "71cceeb1"
   },
   "src/RimUtinni/VaultDungeons/Source/gen_vault_layouts.py": {
     "cleanCount": 1,
