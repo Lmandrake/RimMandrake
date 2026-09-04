@@ -62,6 +62,8 @@ def kotor_gates():
     for folder in KOTOR_FOLDERS:
         base = WORKSHOP / folder
         if not base.exists():
+            print("warning: KotOR folder %s missing - gear-gate annotations will "
+                  "be incomplete for its rows" % base)
             continue
         for p in base.rglob("Defs/**/*.xml"):
             try:
@@ -128,8 +130,15 @@ def main() -> int:
     items, seen = [], set()
 
     def add(row, group, effect, prefill="accept", **flags):
+        # First category wins; a row also qualifying later (e.g. a NEW row that
+        # is also faction-held) keeps its first group but the later pass's info
+        # is appended to the effect line rather than silently dropped.
         if row["defName"] in seen:
-            return
+            for it in items:
+                if it["id"] == row["defName"]:
+                    it["effect"] += " · also: " + group
+                    break
+            return True
         seen.add(row["defName"])
         dn = row["defName"]
         g = gates.get(dn)
@@ -149,34 +158,37 @@ def main() -> int:
             it["contested"] = True
         it.update(flags)
         items.append(it)
+        return False
 
+    # counts below are of rows actually RENDERED in each group (post-dedup),
+    # so the briefHtml's numbers always match the page.
     # 1. new rows (Rites / Antiquities) - show these first
     n_new = 0
     for r in rows:
         if r["defName"] in old:
             continue
-        n_new += 1
-        add(
+        if not add(
             r,
             "NEW rows - The Rites & Antiquities (authored 2026-09-04)",
             "NEW %s %s, cost %s - %s" % (r["tab"], r["tier"], r["cost"], cut_reason(r["note"])),
-        )
+        ):
+            n_new += 1
 
     # 2. faction-held rows, grouped by holder
     n_fh, n_defaulted = 0, 0
     for r in rows:
         if r["access"] != "faction-held":
             continue
-        n_fh += 1
         inferred = "no specific sitting ruling found" in r["note"]
-        n_defaulted += inferred
-        add(
+        if not add(
             r,
             "Faction-held by %s - earned via techprints, never bought" % (r["holder"] or "?"),
             "%s %s cost %s - locked behind %s techprints. accept = ships locked to this holder"
             % (r["tab"], r["tier"], r["cost"], r["holder"] or "?"),
             inferred=inferred,
-        )
+        ):
+            n_fh += 1
+            n_defaulted += inferred
 
     # 3. fate changed since the 09-03 prefill (all untouched -> cut today)
     n_cut = 0
@@ -184,12 +196,12 @@ def main() -> int:
         o = old.get(r["defName"])
         if not o or o["prefill"] == r["fate"]:
             continue
-        n_cut += 1
-        add(
+        if not add(
             r,
             cut_group(r["note"]),
             "was '%s' on 09-03, now '%s'. %s" % (o["prefill"], r["fate"], cut_reason(r["note"])),
-        )
+        ):
+            n_cut += 1
 
     prefill_decisions = {
         it["id"]: {"decision": it["prefill"], "prefill": it["prefill"], "note": ""}
@@ -215,16 +227,24 @@ def main() -> int:
         )
     else:
         # merge: new row keys in, dropped rows out, his decisions untouched
+        # Back up before any destructive merge: a row transiently absent from
+        # the manifest would otherwise take the owner's recorded decision with
+        # it, permanently and silently.
+        backup = OUT_DECISIONS.with_suffix(".json.premerge-bak")
+        backup.write_text(OUT_DECISIONS.read_text())
         doc = json.loads(OUT_DECISIONS.read_text())
         dec = doc.get("decisions", {})
         live = {it["id"] for it in items}
-        for k in [k for k in dec if k not in live]:
+        dropped = [k for k in dec if k not in live]
+        for k in dropped:
             del dec[k]
         for k, v in prefill_decisions.items():
             dec.setdefault(k, v)
         doc["decisions"] = dec
         OUT_DECISIONS.write_text(json.dumps(doc, indent=2) + "\n")
-        print("MERGED decisions (sheet had been touched): his choices preserved")
+        print("MERGED decisions (sheet had been touched): his choices preserved; "
+              "%d dropped row(s) %s; pre-merge backup at %s"
+              % (len(dropped), dropped[:6], backup.name))
 
     config = {
         "sheetId": "research_delta_20260904",
@@ -269,22 +289,19 @@ def main() -> int:
     }
 
     html = TEMPLATE.read_text()
-    html = html.replace(
-        '<script id="CONFIG" type="application/json">',
-        '<script id="CONFIG" type="application/json">\n', 1
-    )
     import re
 
-    html = re.sub(
-        r'(<script id="CONFIG" type="application/json">).*?(</script>)',
-        lambda m: m.group(1) + "\n" + json.dumps(config, indent=2) + "\n" + m.group(2),
-        html, count=1, flags=re.S,
-    )
-    html = re.sub(
-        r'(<script id="ITEMS" type="application/json">).*?(</script>)',
-        lambda m: m.group(1) + "\n" + json.dumps(items, indent=1) + "\n" + m.group(2),
-        html, count=1, flags=re.S,
-    )
+    for block, payload, indent in (("CONFIG", config, 2), ("ITEMS", items, 1)):
+        pat = r'(<script id="%s" type="application/json">).*?(</script>)' % block
+        html, n = re.subn(
+            pat,
+            lambda m, p=payload, i=indent: m.group(1) + "\n" + json.dumps(p, indent=i) + "\n" + m.group(2),
+            html, count=1, flags=re.S,
+        )
+        if n != 1:
+            sys.exit("REFUSING: template's %s block not found (matched %d) - the "
+                     "sheet template markup changed; a silent no-op here ships a "
+                     "data-less sheet." % (block, n))
     OUT_SHEET.write_text(html)
     print(
         "rows: %d (%d new, %d faction-held [%d inferred], %d cut-delta) -> %s"

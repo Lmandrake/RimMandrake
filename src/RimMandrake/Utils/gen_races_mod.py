@@ -1767,9 +1767,12 @@ def verify():
     pours, prefs, pparents = set(), {}, set()
     for _patchroot in PATCHES:
         _o, _r, _p, _ = scan_defs(_patchroot)
+        _root = os.path.basename(_patchroot)
         pours |= set(_o)
         for _t, _who in _r.items():
-            prefs.setdefault(_t, set()).update(_who)
+            # provenance carries the actual mod folder (UtinniPatches /
+            # StarWarsPatches), not the retired Jawa_Patches name
+            prefs.setdefault(_t, set()).update(_root + "/" + w for w in _who)
         pparents |= set(_p)
     known = ours | pours
 
@@ -1777,8 +1780,7 @@ def verify():
             if t not in ours and t in owner and owner[t] <= DEPARTING}
     pdead = {t: v for t, v in prefs.items()
              if t not in known and t in owner and owner[t] <= DEPARTING}
-    dead.update({t: {"Jawa_Patches/" + w for w in v}
-                 for t, v in pdead.items()})
+    dead.update(pdead)
     ext_parents = sorted(p for p in parents if "@" + p not in ours)
     # A ParentName names a Name= attribute, which never appears in the def dump
     # -- so the dump cannot say who owns one. The donors' own XML can. A patch
