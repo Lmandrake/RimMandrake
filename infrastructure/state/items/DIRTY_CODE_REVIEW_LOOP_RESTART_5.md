@@ -1,5 +1,7 @@
 # DIRTY_CODE_REVIEW_LOOP_RESTART_5
 
+**Superseded by `DIRTY_CODE_REVIEW_LOOP_RESTART_6`.**
+
 Continuity note for resuming the standing dirty-code-review loop (FOUNDRY).
 Successor to `DIRTY_CODE_REVIEW_LOOP_RESTART_4` (resumed this session,
 closed below). This session also cleared the entire immediately-offered
