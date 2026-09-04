@@ -92,15 +92,49 @@ def sqlite_path(dump_root: str) -> str | None:
     parent = os.path.dirname(root)
     if os.path.basename(parent) == "captures":
         cands.append(os.path.dirname(parent))
+    against = _capture_to_check(root)
     for base in cands:
         cand = os.path.join(base, "defs.sqlite")
         if os.path.isfile(cand):
             if not _sqlite_usable(cand):
                 continue        # stray/corrupt file, not the real db - keep looking
-            if _sqlite_describes(cand, root):
+            if _sqlite_describes(cand, against):
                 return cand
-            return None            # stale -> caller falls back to the capture's JSON
+            # stale -> caller falls back to the JSON. Keep looking anyway: a stray
+            # stale db beside a capture must not hide the real one at the root.
     return None
+
+
+def _capture_to_check(root: str) -> str:
+    """The folder whose `manifest.json` states what the caller is asking about.
+
+    🔴 MEASURED 2026-09-03: `sqlite_path(DUMP_ROOT)` handed back a db describing
+    `2026-09-02T19:36:08Z` while `sqlite_path(DEF_DUMP)` — the newest capture,
+    `2026-09-04T02:23:44Z` — correctly refused it. The DefDump ROOT carries no
+    `manifest.json` under the dated layout, so `_sqlite_describes` found nothing
+    to contradict and passed a two-day-old database as fresh. Two calls about the
+    same dump, opposite answers, and the unchecked one is the one that lies.
+
+    ⚠️ This is reachable without anyone passing the root by hand:
+    `game_paths.DEF_DUMP` is `newest_capture() or DUMP_ROOT`, so the day retention
+    prunes the last capture the guard turns itself off for every caller.
+
+    At the root, "this dump" means the CURRENT capture — the same thing
+    `game_paths.newest_capture()` means — so check against that. Capture ids are
+    ISO-8601, so lexicographic max is chronological max.
+    """
+    if os.path.isfile(os.path.join(root, "manifest.json")):
+        return root
+    caps = os.path.join(root, "captures")
+    try:
+        names = sorted(os.listdir(caps), reverse=True)
+    except OSError:
+        return root
+    for name in names:
+        cap = os.path.join(caps, name)
+        if os.path.isfile(os.path.join(cap, "manifest.json")):
+            return cap
+    return root
 
 
 def _sqlite_usable(path: str) -> bool:
