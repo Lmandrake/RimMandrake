@@ -9,8 +9,13 @@ Surfaced by the standing code-review sweep (`DIRTY_CODE_REVIEW_LOOP_RESTART_6`,
 `Projectile_SpawnMine.cs` are code-correct — verified near-verbatim matches
 of vanilla's own `Verb_LaunchProjectileStaticOneUse`/`Projectile_SpawnsThing`
 idioms against decompiled RimWorld source. `CompDefuse.cs` and
-`MinePocketDefExtension.cs` (siblings, not yet independently reviewed) are
-the other two files in this cluster.
+`MinePocketDefExtension.cs` (siblings) are the other two files in this
+cluster — now independently reviewed (2026-09-03): both are code-correct
+(a minimal `ThingComp` float-menu and a plain `DefModExtension` holder,
+no logic bugs) but confirmed unreachable by the same test — no `ThingDef`
+in the mod's XML (repo source or the deployed live copy) adds `CompDefuse`
+as a comp or `MinePocketDefExtension` as a modExtension. Left DIRTY in
+`CODE_REVIEW_STATUS.json` on purpose, matching their siblings.
 
 **Zero XML anywhere in the mod references any of the four**: no weapon's
 `verbClass` is `Verb_ShootMine`, no `ProjectileDef`'s `thingClass` is

@@ -1707,6 +1707,16 @@
     "date": "2026-09-03",
     "sha": "c131ce7b"
   },
+  "src/RimStarWars/Armoury/Source/MinePocket/MineDefOfs.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "70cd2206"
+  },
+  "src/RimStarWars/Armoury/Source/MinePocket/MinePocketJob.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "70cd2206"
+  },
   "src/RimStarWars/Armoury/Source/SecondaryMineableYield/ModExtension_SecondaryMineableYield.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -1716,6 +1726,11 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "c131ce7b"
+  },
+  "src/RimStarWars/Armoury/Source/SecondaryMineableYield/SecondaryYieldEntry.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "70cd2206"
   },
   "src/RimStarWars/Armoury/Source/SelfHediffVerb/CompProperties_VerbWithCooltime.cs": {
     "cleanCount": 1,
@@ -1771,6 +1786,16 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "4e362542"
+  },
+  "src/RimStarWars/Armoury/Source/census_turrets.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "70cd2206"
+  },
+  "src/RimStarWars/Armoury/Source/compare_ladder.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "70cd2206"
   },
   "src/RimStarWars/Armoury/Source/gen_additionalmods_absorption.py": {
     "cleanCount": 1,
@@ -1846,6 +1871,11 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "da780c23"
+  },
+  "src/RimStarWars/Armoury/Source/selftest_absorption_generators.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "70cd2206"
   },
   "src/RimStarWars/BlastDoorFrameAsyncFix/Source/render_review.py": {
     "cleanCount": 1,
