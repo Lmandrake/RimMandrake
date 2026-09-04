@@ -104,6 +104,18 @@ namespace RimMandrake.RimDefDump
             writer.Write(v.ToString(CultureInfo.InvariantCulture));
         }
 
+        // A ulong routed through Number(double) (as TryWriteSimple used to do)
+        // silently loses precision above 2^53 — the exact "instrument that
+        // lies with a number" failure mode this dump exists to avoid. Integer
+        // text has no such ceiling, and json.loads on the Python side parses
+        // an integer literal (no '.', no exponent) as an arbitrary-precision
+        // int, so writing the exact digits is both correct and lossless.
+        public void Number(ulong v)
+        {
+            Separate();
+            writer.Write(v.ToString(CultureInfo.InvariantCulture));
+        }
+
         public void Str(string v)
         {
             Separate();
@@ -116,6 +128,13 @@ namespace RimMandrake.RimDefDump
         public void Prop(string name, bool v) { Name(name); Bool(v); }
         public void Prop(string name, long v) { Name(name); Number(v); }
         public void Prop(string name, double v) { Name(name); Number(v); }
+
+        // Without this overload a bare `float` argument (e.g. DefDumper's
+        // BiomeAnimalRecord.commonality, itself a float) implicitly widens to
+        // double and hits exactly the round-trip noise Number(float)'s own
+        // comment exists to avoid ("0.35" -> "0.3499999...") — the widening
+        // happens at the call site instead of inside the writer, silently.
+        public void Prop(string name, float v) { Name(name); Number(v); }
 
         private void WriteString(string s)
         {
@@ -171,7 +190,7 @@ namespace RimMandrake.RimDefDump
                 case TypeCode.Int64:
                     Number(Convert.ToInt64(v, CultureInfo.InvariantCulture)); return true;
                 case TypeCode.UInt64:
-                    Number((double)Convert.ToUInt64(v, CultureInfo.InvariantCulture)); return true;
+                    Number(Convert.ToUInt64(v, CultureInfo.InvariantCulture)); return true;
                 case TypeCode.Single:
                     Number((float)v); return true;
                 case TypeCode.Double:
