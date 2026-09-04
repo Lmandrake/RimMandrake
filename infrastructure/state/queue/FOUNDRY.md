@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-04T02:26:27Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-04T02:28:36Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -483,3 +483,13 @@ kind:     investigate
 thin:     spec, verify and criteria all present
 summary:  Not yet written — this item exists to hold the finding, not to prescribe
 prose:    infrastructure/state/items/MINEPOCKET_CONTENT_UNWIRED_1.md
+
+## ARMOURY_SOUND_PATHS_RSW_PREFIX_1 18 Armoury blaster sounds silently resolve to nothing - RSW_ prefix is on the clipPath, not the file
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     spec, verify and criteria all present
+summary:  MEASURED by BENCH 2026-09-03 against src/RimStarWars/Armoury/, after the live
+prose:    infrastructure/state/items/ARMOURY_SOUND_PATHS_RSW_PREFIX_1.md
