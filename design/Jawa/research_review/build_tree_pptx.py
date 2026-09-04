@@ -4,12 +4,18 @@
 Owner's request, 2026-09-04: *"a Powerpoint presentation with each technology
 as a small box I can shuffle around. Each of the current tech trees should be
 their own slide. Array the little boxes in the order of technology bin
-development left (primitive) to right (advanced)."*
+development left (primitive) to right (advanced)."* Revised same day:
+*"all the technologies an identically defined width (smallest of current
+options). Recolor each box according to the kind of thing it is."*
 
 Reads restructured_model_v4.json (same source as build_tree_visual_v4.py) and
 writes research_trees_boxes.pptx. Each research row is one INDIVIDUAL shape —
-movable, editable, deletable in PowerPoint or Google Slides. Boxes sit in five
-tier columns (T0 primitive … T4 advanced), cost-sorted within a tier.
+movable, editable, deletable in PowerPoint or Google Slides. Boxes are all one
+width, sit in five tier columns (T0 primitive … T4 advanced, cost-sorted
+within a tier), and are colored by CATEGORY of what they unlock (weapon,
+apparel, vehicles, power, droids, …) — slide 1 is the legend. Category comes
+from keyword rules over label+unlocks with a per-tree fallback; it is a
+review aid, not a ruling — the owner corrects by recoloring a box.
 
 ⚠️ Once the owner has shuffled the deck, the .pptx holds HIS decisions and this
 generator must not be re-run over it — write to a new filename instead.
@@ -18,7 +24,9 @@ Run from repo root:  python3 design/Jawa/research_review/build_tree_pptx.py
 """
 import json
 import os
+import re
 import sys
+from collections import Counter
 
 from pptx import Presentation
 from pptx.util import Inches, Pt, Emu
@@ -56,10 +64,50 @@ TIERS = ["T0", "T1", "T2", "T3", "T4"]
 TIER_LABEL = {"T0": "T0 · ≤600", "T1": "T1 · 600–1600",
               "T2": "T2 · 1600–3000", "T3": "T3 · 3000–5000",
               "T4": "T4 · 5000+"}
-# Bin gradient, light (primitive) -> dark (advanced); text stays dark.
+# Bin gradient for the COLUMN HEADERS only — boxes are colored by category.
 TIER_FILL = {"T0": "f2ead9", "T1": "e8dcc0", "T2": "ddcda6",
              "T3": "cdb989", "T4": "bda36c"}
 
+# ---------------------------------------------------------------- categories
+# (name, fill, keyword regex) — first match wins, tested against
+# "label | unlock defNames" lowercased. Fallback per tree below.
+CATEGORIES = [
+    ("droids",       "7fcfc3", r"droid|mechanoid|positronic|automaton|robot|astromech|protocol|servitor|mech_"),
+    ("space",        "92b4e3", r"gravship|grav |gravtech|grav_|orbital|starflight|vacuum|hyperdrive|starship|shuttle|spacedrive|_ship|ship_"),
+    ("vehicles",     "f0a860", r"vehicle|blueprint|speeder|rover|wheel|aircraft|helicopter|boat|raft|caravan"),
+    ("security",     "a8b8a0", r"turret|trap|ied|fortif|sandbag|barricade|dugout|trench|defen[cs]e|firefoam|foam pop"),
+    ("weapon",       "e59896", r"weapon|gun|rifle|pistol|blaster|cannon|mortar|sword|blade|saber|sabre|bow\b|spear|melee|ammo|ammunition|grenade|launcher|vibro|slug|revolver|carbine|smg|shotgun|minigun|staff|baton|electrostaff|disruptor"),
+    ("apparel",      "c7a3d6", r"armor|armour|apparel|clothing|tailor|vest|helmet|warcasket|shield|suit\b|garb|robe|fatigues|plate\b|mask\b"),
+    ("power",        "f2dd7c", r"power|electric|battery|batteries|solar|geothermal|watermill|reactor|generator|conduit|turbine|dynamo"),
+    ("biological",   "9ecf8e", r"bionic|prosthe|gene\b|genes|geneti|xeno|biosculpt|medicine|medical|hospital|surgery|implant|organ|drug|penoxy|neutroamine|psychite|wake-up|go-juice|serum|healroot|anesthe"),
+    ("industry",     "c4a884", r"machining|fabricat|smith|smelt|refin|chemfuel|chemistry|processor|factory|assembly|milling|drill|mining|deep drill|extractor|processing|kiln|forge|foundry"),
+    ("culture",      "e3a8c4", r"art\b|artistic|music|instrument|furniture|recreation|joy\b|sculpt|decorat|carpet|floor|drapes|lamp|brazier|television|chess|jewel|sauna|hot ?tub|curtain|torch|lighting"),
+    ("life_support", "f0d9b8", r"nutrition|cooking|stove|meal|farming|agricultur|hydroponic|crop|plant_|plant |brewing|brewery|preserv|freezer|refrigerat|water|well\b|fire\b|firecraft|bedroll|heating|cooling|cooler|air condition|survival|kibble|dispenser|cultivat|animal|devilstrand|cocoa|grill|fry|cheese|bathroom|shower|sink\b|door|gate|bridge|storage|urn\b|paste|moisture"),
+    ("equipment",    "d8c8b8", r"tool|gadget|pack\b|utility|comms|communicat|sensor|scanner|analyzer|radar|goggles|binocular|tinker|hack|vitals"),
+]
+GENERAL = ("general", "c8c8c8")
+TREE_FALLBACK = {
+    "Powder & Slug": "weapon", "Blasterworks": "weapon",
+    "The Strange Schools": "weapon", "The Shell": "apparel",
+    "Droidsmith": "droids", "The Unbolting": "droids",
+    "The Waking Mind": "droids", "THE SHIP": "space",
+    "The Refinery": "industry", "The Junker Yards": "apparel",
+    "The Foundry Hive": "droids", "The Ascendant Ladder": "biological",
+}
+CAT_FILL = {n: f for n, f, *_ in CATEGORIES}
+CAT_FILL[GENERAL[0]] = GENERAL[1]
+_RULES = [(n, re.compile(rx)) for n, _f, rx in CATEGORIES]
+
+
+def categorize(m):
+    hay = (m["label"] + " | " + " ".join(m.get("unlocks") or [])).lower()
+    for name, rx in _RULES:
+        if rx.search(hay):
+            return name
+    return TREE_FALLBACK.get(m["tab4"], GENERAL[0])
+
+
+# ---------------------------------------------------------------- geometry
 SLIDE_W, SLIDE_H = Inches(13.333), Inches(7.5)
 HEADER_H = Inches(0.72)
 TIERBAR_H = Inches(0.26)
@@ -67,6 +115,10 @@ MARGIN = Inches(0.12)
 BOX_H = Emu(int(Inches(0.30)))
 VGAP = Emu(int(Inches(0.045)))
 HGAP = Emu(int(Inches(0.06)))
+COL_W = (SLIDE_W - 2 * MARGIN) // 5
+# 🔑 ONE width for every box — the smallest of v1's options (its 3-across case).
+SUB_COLS = 3
+BOX_W = (COL_W - HGAP - (SUB_COLS - 1) * HGAP) // SUB_COLS
 
 
 def rgb(hexstr):
@@ -123,16 +175,61 @@ def add_box(slide, x, y, w, h, text, fill, line, font_pt, bold=False,
     return box
 
 
+def font_for(label):
+    n = len(label)
+    return 8 if n <= 14 else (7 if n <= 28 else 6)
+
+
+def legend_slide(prs, counts):
+    slide = prs.slides.add_slide(prs.slide_layouts[6])
+    add_box(slide, 0, 0, SLIDE_W, HEADER_H, "", "2b2418", "2b2418", 10,
+            shape=MSO_SHAPE.RECTANGLE)
+    title = slide.shapes.add_textbox(MARGIN, Emu(0), SLIDE_W - 2 * MARGIN, HEADER_H)
+    tf = title.text_frame
+    tf.vertical_anchor = MSO_ANCHOR.MIDDLE
+    p = tf.paragraphs[0]
+    r = p.add_run(); r.text = "Legend — box color = what the tech unlocks"
+    r.font.size = Pt(22); r.font.bold = True; r.font.color.rgb = rgb("d8cfc0")
+    no_autofit(tf)
+    names = [n for n, _f, _rx in CATEGORIES] + [GENERAL[0]]
+    y0 = HEADER_H + Inches(0.35)
+    chip_w, chip_h = Inches(1.5), Inches(0.4)
+    for i, name in enumerate(names):
+        col, row = divmod(i, 7)
+        x = MARGIN + Inches(0.3) + col * Inches(4.2)
+        y = y0 + row * (chip_h + Inches(0.22))
+        add_box(slide, x, y, chip_w, chip_h, name, CAT_FILL[name], "6b5f4a", 12)
+        lbl = slide.shapes.add_textbox(x + chip_w + Inches(0.15), y,
+                                       Inches(2.4), chip_h)
+        tf = lbl.text_frame
+        tf.vertical_anchor = MSO_ANCHOR.MIDDLE
+        p = tf.paragraphs[0]
+        r = p.add_run(); r.text = "%d techs" % counts.get(name, 0)
+        r.font.size = Pt(11); r.font.color.rgb = rgb("5a5147")
+        no_autofit(tf)
+    note = slide.shapes.add_textbox(MARGIN + Inches(0.3), SLIDE_H - Inches(0.9),
+                                    SLIDE_W - Inches(1), Inches(0.6))
+    p = note.text_frame.paragraphs[0]
+    r = p.add_run()
+    r.text = ("Columns run T0 (primitive) left → T4 (advanced) right, cost-sorted "
+              "within a tier. Colors are keyword-derived — recolor a box to correct it.")
+    r.font.size = Pt(11); r.font.color.rgb = rgb("5a5147")
+    no_autofit(note.text_frame)
+
+
 def build():
     M = json.load(open(MODEL, encoding="utf-8"))
     surv = [m for m in M if m.get("tab4")]
     by_tab = {}
     for m in surv:
+        m["_cat"] = categorize(m)
         by_tab.setdefault(m["tab4"], []).append(m)
+    counts = Counter(m["_cat"] for m in surv)
 
     prs = Presentation()
     prs.slide_width, prs.slide_height = SLIDE_W, SLIDE_H
     blank = prs.slide_layouts[6]
+    legend_slide(prs, counts)
 
     listed = {t for t, _, _ in TREES}
     roster = list(TREES) + [(t, "888888", "(tab not in the roster — check the model)")
@@ -158,38 +255,33 @@ def build():
         r2.font.size = Pt(11); r2.font.color.rgb = rgb("d8cfc0")
         no_autofit(tf)
 
-        # Five tier columns.
-        col_w = (SLIDE_W - 2 * MARGIN) // 5
         top = HEADER_H + Emu(int(Inches(0.06)))
         area_top = top + TIERBAR_H + VGAP
         area_h = SLIDE_H - area_top - MARGIN
         rows_per_col = int((area_h + VGAP) // (BOX_H + VGAP))
 
         for ti, tier in enumerate(TIERS):
-            cx = MARGIN + col_w * ti
-            add_box(slide, cx, top, col_w - HGAP, TIERBAR_H, TIER_LABEL[tier],
+            cx = MARGIN + COL_W * ti
+            add_box(slide, cx, top, COL_W - HGAP, TIERBAR_H, TIER_LABEL[tier],
                     TIER_FILL[tier], accent, 9, bold=True)
             members = sorted((m for m in rows if tier_of(m) == tier),
                              key=lambda m: (cost_of(m), m["label"]))
-            # 1 or 2 sub-columns inside the tier column, filled top-down.
-            subs = 1 if len(members) <= rows_per_col else 2
-            sub_w = (col_w - HGAP - (subs - 1) * HGAP) // subs
+            if len(members) > SUB_COLS * rows_per_col:
+                raise SystemExit("tier %s of %s holds %d boxes; capacity %d — "
+                                 "shrink BOX_H" % (tier, tab, len(members),
+                                                   SUB_COLS * rows_per_col))
             for i, m in enumerate(members):
                 sc, sr = divmod(i, rows_per_col)
-                if sc >= subs:  # overflow: shrink pitch by thirds column
-                    sc, sr = 2, i - 2 * rows_per_col
-                    if sc * (sub_w + HGAP) + sub_w > col_w:
-                        sub_w = (col_w - HGAP - 2 * HGAP) // 3
-                x = cx + sc * (sub_w + HGAP)
+                x = cx + sc * (BOX_W + HGAP)
                 y = area_top + sr * (BOX_H + VGAP)
-                fs = 8 if len(m["label"]) <= 34 else 7
-                add_box(slide, x, y, sub_w, BOX_H, m["label"],
-                        TIER_FILL[tier], accent, fs)
+                add_box(slide, x, y, BOX_W, BOX_H, m["label"],
+                        CAT_FILL[m["_cat"]], accent, font_for(m["label"]))
                 total_placed += 1
 
     prs.save(OUT)
-    print("wrote %s: %d slides, %d boxes placed / %d surviving rows"
-          % (OUT, len(prs.slides.__iter__.__self__._sldIdLst), total_placed, len(surv)))
+    print("wrote %s: %d slides (1 legend + trees), %d boxes / %d surviving rows"
+          % (OUT, len(prs.slides._sldIdLst), total_placed, len(surv)))
+    print("categories:", ", ".join("%s %d" % (k, v) for k, v in counts.most_common()))
     if total_placed != len(surv):
         print("MISMATCH: %d rows did not land on any slide" % (len(surv) - total_placed))
         sys.exit(1)
