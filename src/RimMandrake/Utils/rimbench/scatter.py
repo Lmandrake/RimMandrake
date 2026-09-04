@@ -151,7 +151,6 @@ def ring(cells, inner, outer):
 
 def rim_band(cx, cz, radius, width=0.15, **kw):
     """Convenience: the raised rim of a crater or the wall line of a cavern."""
-    lo = max(0.0, 1.0 - (radius * (1.0 + width)) / radius)
     return ring(radial_field(cx, cz, radius, **kw), 0.001, width)
 
 

@@ -94,7 +94,7 @@ def main():
         # is added. NEXT_RELOAD.md §20 depends on this working with no setup step.
         import re
         roster = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "..", "..",
-                              "src", "Jawa", "Jawa_Patches", "Defs", "PawnKindDefs",
+                              "src", "SPLIT_Phase3", "Jawa_Patches", "Defs", "PawnKindDefs",
                               "JawaFactionRoster.xml")
         roster = os.path.normpath(roster)
         src = open(roster, encoding="utf-8").read()

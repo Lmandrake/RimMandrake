@@ -60,6 +60,17 @@ def noise(x, z, seed):
     return (h % 10007) / 10007.0
 
 
+def _spawn(defName, x, z, placed, key):
+    """Spawn one thing and count it only if the bridge confirms success.
+
+    `success: true` means the tool RAN, not that the thing landed -- filth
+    ops legitimately fail over water (see place.py). Counting every attempt
+    regardless of the reply overstates the crater whenever a spawn is refused.
+    """
+    if rb.call("rimworld/spawn_thing", defName=defName, x=x, z=z).get("success"):
+        placed[key] += 1
+
+
 def paint(cx, cz, R=12, seed=7, squash=0.82, ray_dir=0.6):
     placed = {"ash": 0, "rubble": 0, "slag": 0}
     span = int(R * 1.7) + 1
@@ -79,27 +90,27 @@ def paint(cx, cz, R=12, seed=7, squash=0.82, ray_dir=0.6):
 
             if d < 0.30:
                 if n < 0.92:
-                    rb.call("rimworld/spawn_thing", defName=ASH, x=x, z=z); placed["ash"] += 1
+                    _spawn(ASH, x, z, placed, "ash")
                 if n > 0.80:
-                    rb.call("rimworld/spawn_thing", defName=SLAG, x=x, z=z); placed["slag"] += 1
+                    _spawn(SLAG, x, z, placed, "slag")
             elif d < 0.65:
                 if n < 0.72:
-                    rb.call("rimworld/spawn_thing", defName=ASH, x=x, z=z); placed["ash"] += 1
+                    _spawn(ASH, x, z, placed, "ash")
                 if n > 0.88:
-                    rb.call("rimworld/spawn_thing", defName=RUBBLE, x=x, z=z); placed["rubble"] += 1
+                    _spawn(RUBBLE, x, z, placed, "rubble")
             elif d < 1.00:
                 if n < 0.34:
-                    rb.call("rimworld/spawn_thing", defName=ASH, x=x, z=z); placed["ash"] += 1
+                    _spawn(ASH, x, z, placed, "ash")
                 if n > 0.62:
-                    rb.call("rimworld/spawn_thing", defName=RUBBLE, x=x, z=z); placed["rubble"] += 1
+                    _spawn(RUBBLE, x, z, placed, "rubble")
                 if n > 0.94:
-                    rb.call("rimworld/spawn_thing", defName=SLAG, x=x, z=z); placed["slag"] += 1
+                    _spawn(SLAG, x, z, placed, "slag")
             elif d < 1.60:
                 fade = (1.60 - d) / 0.60
                 if n < 0.30 * fade * ray:
-                    rb.call("rimworld/spawn_thing", defName=RUBBLE, x=x, z=z); placed["rubble"] += 1
+                    _spawn(RUBBLE, x, z, placed, "rubble")
                 if n > 1.0 - 0.10 * fade * ray:
-                    rb.call("rimworld/spawn_thing", defName=SLAG, x=x, z=z); placed["slag"] += 1
+                    _spawn(SLAG, x, z, placed, "slag")
     return placed
 
 
