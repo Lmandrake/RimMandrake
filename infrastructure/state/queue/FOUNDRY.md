@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-04T21:10:15Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-04T21:17:03Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -361,13 +361,22 @@ summary:  Every load of the full 589-mod list logs the same 31 Config error in �
 prose:    infrastructure/state/items/LOAD_CONFIG_ERROR_SWEEP_1.md
 
 ## INHABITED_SETTLEMENT_PRODUCER_GAP_1 Nothing in the game ever constructs an Inhabited_Settlement world object — no producer exists
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     bug
-summary:  (no items/INHABITED_SETTLEMENT_PRODUCER_GAP_1.md yet — write one when you have something to say)
+summary:  Filed thin (no spec/verify/criteria). Researched and written down by FOUNDRY,
 prose:    infrastructure/state/items/INHABITED_SETTLEMENT_PRODUCER_GAP_1.md
+
+## COLD_LOAD_RUN_SHEET_3 Run sheet for the next full-list cold load - research retag proof is the first entry
+state:    doing
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     task
+summary:  (no items/COLD_LOAD_RUN_SHEET_3.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/COLD_LOAD_RUN_SHEET_3.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -412,6 +421,16 @@ kind:     task
 blocked:  owner: do not build yet - expansion/review sitting in progress
 summary:  (no items/ANTIQUITIES_TREE_BUILD_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/ANTIQUITIES_TREE_BUILD_1.md
+
+## INHABITED_SETTLEMENT_PRODUCER_GAP_1 Nothing in the game ever constructs an Inhabited_Settlement world object — no producer exists
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+blocked:  code written + committed (211e16d0), builds clean; needs game-up to live-verify a WorldObject_InhabitedSettlement actually gets created via the bridge - see item's ## verify
+summary:  Filed thin (no spec/verify/criteria). Researched and written down by FOUNDRY,
+prose:    infrastructure/state/items/INHABITED_SETTLEMENT_PRODUCER_GAP_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
