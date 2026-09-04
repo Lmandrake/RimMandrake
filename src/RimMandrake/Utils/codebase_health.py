@@ -100,6 +100,11 @@ EXCLUDE_PREFIXES = (
     "deployed/",
     ".git/",
     "research/",  # AI-workforce research notes, not reviewed code (owner, 2026-09-04)
+    "world/",  # per-session live-bridge provenance scripts, not maintained code — each
+               # subdir with a README self-declares "throwaway"/"nothing here is
+               # regenerable"; the rest are cited the same way from design docs as
+               # docstring-carries-the-reasoning session records (FOUNDRY, 2026-09-04,
+               # DIRTY_CODE_REVIEW_LOOP_RESTART_8 follow-on — 211 files, world/_lf/README.md)
 )
 EXCLUDE_PARTS = ("__pycache__", "node_modules", "/bin/", "/obj/")
 
