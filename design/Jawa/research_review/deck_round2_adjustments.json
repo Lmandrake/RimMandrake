@@ -1,0 +1,272 @@
+{
+ "meta": {
+  "what": "BENCH round-2 improvements layered ON TOP of owner_deck_answers_20260904.json \u2014 tier spreads only, per the owner's instruction to spread technologies across tiers on every slide except Scavenger (his exemplar). Owner placements (his 28 tier moves, 16 tree moves, 8 removals) are never overridden.",
+  "date": "2026-09-04",
+  "removals_beyond_owner": [],
+  "keep_with_rename": [
+   {
+    "defName_label": "mechanoid beamcasting",
+    "why": "owner 2026-09-04: 'beamcasting is a weapon tech? We might want to keep that then.' The MechDisruptor weapon stands; the mech-command helm/booster halves go dead with mechanitors out \u2014 rewrite scope for later."
+   },
+   {
+    "defName_label": "Mechanoid Utility Packs",
+    "why": "owner 2026-09-04: 'the utility packs might still be fun, renamed' \u2014 generic jump/utility packs once de-mech-branded."
+   }
+  ],
+  "design_rationale": {
+   "The Hearth": "was 23/21/3/0/0 \u2014 a wall of cheap comfort. Now climbs: campfire floor (T0) -> crafted comfort and dress (T1) -> powered/modern living (T2) -> luxury (T3). Each tier purchase visibly upgrades daily life.",
+   "The Unbolting": "was 0/3/17/5/2 with every droid at T2 \u2014 one purchase bought the whole robot age. Now a liberation ladder: humble workers (T1) -> civilian specialists (T2) -> military and advanced parts (T3) -> legends (T4).",
+   "The Waking Mind": "was 6 rows stacked at T4. The AI ladder now climbs steadily; the c=500 comms/warcasket kit spreads T1-T3 instead of squatting at the top.",
+   "Powder & Slug": "top of the tree was empty (T3:2, T4:0) \u2014 nothing to aspire to. Heaviest ordnance now caps the tree.",
+   "The Foundry Hive": "4 rows, two tiers. Now one per tier T1-T4 with sonic weaponry as the tree's T4 signature prize.",
+   "untouched": "Scavenger (owner's exemplar), The Refinery, The Workshop, Blasterworks, The Strange Schools, The Shell, THE SHIP (endgame top-heavy is right), The Reach, The Junker Yards, The Ascendant Ladder (already spread 3/2/2/1)."
+  }
+ },
+ "tier_moves": [
+  {
+   "label": "saunas",
+   "tree": "The Hearth",
+   "to": "T1"
+  },
+  {
+   "label": "semiconductor lights",
+   "tree": "The Hearth",
+   "to": "T1"
+  },
+  {
+   "label": "complex furniture",
+   "tree": "The Hearth",
+   "to": "T1"
+  },
+  {
+   "label": "food condiments",
+   "tree": "The Hearth",
+   "to": "T1"
+  },
+  {
+   "label": "obelisks",
+   "tree": "The Hearth",
+   "to": "T1"
+  },
+  {
+   "label": "Jewelry",
+   "tree": "The Hearth",
+   "to": "T1"
+  },
+  {
+   "label": "casual wear",
+   "tree": "The Hearth",
+   "to": "T1"
+  },
+  {
+   "label": "deep frying",
+   "tree": "The Hearth",
+   "to": "T1"
+  },
+  {
+   "label": "canning",
+   "tree": "The Hearth",
+   "to": "T1"
+  },
+  {
+   "label": "formal wear",
+   "tree": "The Hearth",
+   "to": "T1"
+  },
+  {
+   "label": "modern bathroom fixtures",
+   "tree": "The Hearth",
+   "to": "T2"
+  },
+  {
+   "label": "statues",
+   "tree": "The Hearth",
+   "to": "T2"
+  },
+  {
+   "label": "wallpapers",
+   "tree": "The Hearth",
+   "to": "T2"
+  },
+  {
+   "label": "mixology",
+   "tree": "The Hearth",
+   "to": "T2"
+  },
+  {
+   "label": "artisan furniture",
+   "tree": "The Hearth",
+   "to": "T2"
+  },
+  {
+   "label": "modern furniture",
+   "tree": "The Hearth",
+   "to": "T2"
+  },
+  {
+   "label": "waste disposal",
+   "tree": "The Hearth",
+   "to": "T2"
+  },
+  {
+   "label": "smart toilets",
+   "tree": "The Hearth",
+   "to": "T2"
+  },
+  {
+   "label": "power showers",
+   "tree": "The Hearth",
+   "to": "T2"
+  },
+  {
+   "label": "military clothing",
+   "tree": "The Hearth",
+   "to": "T2"
+  },
+  {
+   "label": "devilstrand",
+   "tree": "The Hearth",
+   "to": "T2"
+  },
+  {
+   "label": "hot tubs",
+   "tree": "The Hearth",
+   "to": "T3"
+  },
+  {
+   "label": "monuments",
+   "tree": "The Hearth",
+   "to": "T3"
+  },
+  {
+   "label": "Maintenance Droids",
+   "tree": "The Unbolting",
+   "to": "T1"
+  },
+  {
+   "label": "Labor Droids",
+   "tree": "The Unbolting",
+   "to": "T1"
+  },
+  {
+   "label": "Power Droids",
+   "tree": "The Unbolting",
+   "to": "T1"
+  },
+  {
+   "label": "simple droids",
+   "tree": "The Unbolting",
+   "to": "T1"
+  },
+  {
+   "label": "adv. labor droids",
+   "tree": "The Unbolting",
+   "to": "T2"
+  },
+  {
+   "label": "adv. utility droids",
+   "tree": "The Unbolting",
+   "to": "T2"
+  },
+  {
+   "label": "Advanced Parts",
+   "tree": "The Unbolting",
+   "to": "T3"
+  },
+  {
+   "label": "Advanced Systems",
+   "tree": "The Unbolting",
+   "to": "T3"
+  },
+  {
+   "label": "Overclocked Parts",
+   "tree": "The Unbolting",
+   "to": "T3"
+  },
+  {
+   "label": "adv. combat droids",
+   "tree": "The Unbolting",
+   "to": "T3"
+  },
+  {
+   "label": "assassin droids",
+   "tree": "The Unbolting",
+   "to": "T3"
+  },
+  {
+   "label": "Assassin Droids",
+   "tree": "The Unbolting",
+   "to": "T3"
+  },
+  {
+   "label": "Battle Droids",
+   "tree": "The Unbolting",
+   "to": "T3"
+  },
+  {
+   "label": "Sith war droids",
+   "tree": "The Unbolting",
+   "to": "T4"
+  },
+  {
+   "label": "crypto-harmonization",
+   "tree": "The Waking Mind",
+   "to": "T1"
+  },
+  {
+   "label": "quantum pulse messaging",
+   "tree": "The Waking Mind",
+   "to": "T2"
+  },
+  {
+   "label": "mechanoid beamcasting",
+   "tree": "The Waking Mind",
+   "to": "T2"
+  },
+  {
+   "label": "voidlink connectivity",
+   "tree": "The Waking Mind",
+   "to": "T3"
+  },
+  {
+   "label": "heavy weapons",
+   "tree": "Powder & Slug",
+   "to": "T3"
+  },
+  {
+   "label": "railgun",
+   "tree": "Powder & Slug",
+   "to": "T3"
+  },
+  {
+   "label": "uranium slug turret",
+   "tree": "Powder & Slug",
+   "to": "T3"
+  },
+  {
+   "label": "rocketswarm launcher",
+   "tree": "Powder & Slug",
+   "to": "T3"
+  },
+  {
+   "label": "Baradium Explosives",
+   "tree": "Powder & Slug",
+   "to": "T4"
+  },
+  {
+   "label": "exotic hivetech",
+   "tree": "The Foundry Hive",
+   "to": "T3"
+  },
+  {
+   "label": "sonic weaponry",
+   "tree": "The Foundry Hive",
+   "to": "T4"
+  },
+  {
+   "label": "standard hivetech",
+   "tree": "The Foundry Hive",
+   "to": "T2"
+  }
+ ]
+}

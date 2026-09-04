@@ -8,8 +8,12 @@ development left (primitive) to right (advanced)."* Revised same day:
 *"all the technologies an identically defined width (smallest of current
 options). Recolor each box according to the kind of thing it is."*
 
-Reads restructured_model_v4.json (same source as build_tree_visual_v4.py) and
-writes research_trees_boxes.pptx. Each research row is one INDIVIDUAL shape —
+Round 3 (2026-09-04): layers owner_deck_answers_20260904.json (the owner's
+shuffled deck, extracted — HIS trees/tiers/removals, authoritative) and
+deck_round2_adjustments.json (BENCH tier spreads on the bunched trees) over
+restructured_model_v4.json, then writes research_trees_boxes.pptx.
+Border language: THICK border = an owner placement (his move), DASHED = a
+BENCH round-2 tier spread, thin solid = unmoved from v4. Each research row is one INDIVIDUAL shape —
 movable, editable, deletable in PowerPoint or Google Slides. Boxes are all one
 width, sit in five tier columns (T0 primitive … T4 advanced, cost-sorted
 within a tier), and are colored by CATEGORY of what they unlock (weapon,
@@ -33,11 +37,14 @@ from pptx.util import Inches, Pt, Emu
 from pptx.dml.color import RGBColor
 from pptx.enum.text import PP_ALIGN, MSO_ANCHOR
 from pptx.enum.shapes import MSO_SHAPE
+from pptx.enum.dml import MSO_LINE_DASH_STYLE as MSO_LINE_DASH
 from pptx.oxml.ns import qn
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 MODEL = os.path.join(HERE, "restructured_model_v4.json")
-OUT = os.path.join(HERE, "research_trees_boxes.pptx")
+ANSWERS = os.path.join(HERE, "owner_deck_answers_20260904.json")
+ADJUST = os.path.join(HERE, "deck_round2_adjustments.json")
+OUT = os.path.join(HERE, "research_trees_boxes_round3.pptx")
 
 # Slide order and accents — same roster as build_tree_visual_v4.py.
 TREES = [
@@ -126,7 +133,7 @@ def rgb(hexstr):
 
 
 def tier_of(m):
-    return m.get("tier4") or m.get("tier3") or m.get("tier2") or m.get("tier") or "T0"
+    return m.get("_tier") or m.get("tier4") or m.get("tier3") or "T0"
 
 
 def cost_of(m):
@@ -219,11 +226,30 @@ def legend_slide(prs, counts):
 
 def build():
     M = json.load(open(MODEL, encoding="utf-8"))
-    surv = [m for m in M if m.get("tab4")]
+    ans = {r["defName"]: r for r in
+           json.load(open(ANSWERS, encoding="utf-8"))["rows"]}
+    adj = json.load(open(ADJUST, encoding="utf-8"))
+    adj_by = {(a["tree"], a["label"]): a["to"] for a in adj["tier_moves"]}
+    surv = []
+    for m in M:
+        if not m.get("tab4"):
+            continue
+        a = ans.get(m["defName"])
+        if a is None:
+            raise SystemExit("no owner answer for %s" % m["defName"])
+        if a["removed"]:
+            continue                      # owner's transparent mark: OUT
+        m["_tree"] = a["owner_tree"]
+        m["_owner_moved"] = (a["owner_tree"] != a["orig_tree"]
+                             or a["owner_tier"] != a["orig_tier"])
+        to = adj_by.get((m["_tree"], m["label"]))
+        m["_adjusted"] = to is not None and to != a["owner_tier"]
+        m["_tier"] = to or a["owner_tier"]
+        surv.append(m)
     by_tab = {}
     for m in surv:
         m["_cat"] = categorize(m)
-        by_tab.setdefault(m["tab4"], []).append(m)
+        by_tab.setdefault(m["_tree"], []).append(m)
     counts = Counter(m["_cat"] for m in surv)
 
     prs = Presentation()
@@ -274,8 +300,13 @@ def build():
                 sc, sr = divmod(i, rows_per_col)
                 x = cx + sc * (BOX_W + HGAP)
                 y = area_top + sr * (BOX_H + VGAP)
-                add_box(slide, x, y, BOX_W, BOX_H, m["label"],
-                        CAT_FILL[m["_cat"]], accent, font_for(m["label"]))
+                b = add_box(slide, x, y, BOX_W, BOX_H, m["label"],
+                            CAT_FILL[m["_cat"]], accent, font_for(m["label"]))
+                if m.get("_owner_moved"):
+                    b.line.width = Pt(2.25)
+                elif m.get("_adjusted"):
+                    b.line.width = Pt(1.5)
+                    b.line.dash_style = MSO_LINE_DASH.DASH
                 total_placed += 1
 
     prs.save(OUT)
