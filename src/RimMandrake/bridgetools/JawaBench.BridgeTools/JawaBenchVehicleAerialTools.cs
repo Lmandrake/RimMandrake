@@ -161,6 +161,12 @@ namespace JawaBench.BridgeTools
                 {
                     try
                     {
+                        // AerialVehicleInFlight.Vehicle is a public property over a private
+                        // field that ClearAndDestroy NULLS - so the only chance to get a
+                        // handle on the vehicle is BEFORE the call, and without one the
+                        // list-membership check below cannot tell landing from loss.
+                        Thing vehicleBefore = PropOrNull(aerial, "Vehicle") as Thing;
+
                         landMethod.Invoke(null, new[] { aerial });
                         // 🔴 DebugLandAerialVehicle (read from source) has a silent no-op path:
                         // "no player Settlement on the world" logs a Log.Error and returns
@@ -179,6 +185,31 @@ namespace JawaBench.BridgeTools
                                 + "exists on the world to land it at); not counted as landed.");
                             continue;
                         }
+
+                        // 🔴 Leaving the AerialVehicles list is not the same as landing.
+                        // DebugLandAerialVehicle (read from source) spawns the arriving
+                        // skyfaller and THEN calls ClearAndDestroy() unconditionally - and
+                        // GenSpawn.Spawn logs-and-returns-null rather than throwing when the
+                        // vehicle's occupied rect does not fit, which VF's own last-resort
+                        // `cell = CellFinder.RandomCell(map)` fallback never checks. In that
+                        // case SpawnSetup (and with it VehicleSkyfaller.PackVehicle, the only
+                        // thing that puts the vehicle in the skyfaller's ThingOwner) never
+                        // runs, then ClearAndDestroy sets vehicle=null and innerContainer
+                        // .Clear()s - which REMOVES rather than destroys - leaving a live
+                        // VehiclePawn spawned nowhere and held by nothing, while the world
+                        // object it used to hang off is gone. The list check above passes in
+                        // exactly that case, so gate on the VEHICLE, not on list membership.
+                        if (vehicleBefore != null && !vehicleBefore.Spawned && vehicleBefore.holdingOwner == null)
+                        {
+                            errors.Add("DebugLandAerialVehicle destroyed the in-flight world object for "
+                                + vehicleBefore.LabelShortCap + " but the vehicle landed NOWHERE - it is neither "
+                                + "spawned on a map nor held in any container (most likely VF's fallback "
+                                + "CellFinder.RandomCell gave a cell the vehicle's footprint does not fit, and "
+                                + "GenSpawn.Spawn returned null without throwing). Not counted as landed; the "
+                                + "vehicle is orphaned and will be lost on save - recover or discard it deliberately.");
+                            continue;
+                        }
+
                         landedFromWorld++;
                     }
                     catch (Exception ex)

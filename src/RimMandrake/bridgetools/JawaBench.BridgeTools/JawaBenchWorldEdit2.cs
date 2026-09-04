@@ -416,10 +416,16 @@ namespace JawaBench.BridgeTools
                 "Read a Building_GravEngine's substructure in full: ValidSubstructure and " +
                 "AllConnectedSubstructure (both cell sets, not just the COUNT " +
                 "jawa/gravship_status already reports), plus the support budget - " +
-                "GetStatValue(StatDefOf.SubstructureSupport), the cell cap " +
-                "GravshipUtility.GetConnectedSubstructure was given when it computed " +
-                "AllConnectedSubstructure. Read-only. Omit 'engine' to use the first " +
-                "Building_GravEngine on the current map.",
+                "GetStatValue(StatDefOf.SubstructureSupport), which is the cell cap on " +
+                "VALID substructure only; AllConnectedSubstructure is computed uncapped " +
+                "(int.MaxValue) and outside the footprint check, so connectedCount > " +
+                "supportBudget is normal and means the ship is over its support. " +
+                "Genuinely read-only: the two same-named PROPERTIES are NOT (both run " +
+                "UpdateSubstructureIfNeeded, which regenerates three SectionLayers and can " +
+                "open the gravship-naming MODAL), so this runs " +
+                "GravshipUtility.GetConnectedSubstructure itself with the engine's own " +
+                "arguments. Omit 'engine' to use the first Building_GravEngine on the " +
+                "current map.",
             ResultDescription =
                 "success, engine (thingId, label), supportBudget, validCount, connectedCount, " +
                 "validCells[] and connectedCells[] (each capped at 2000 with cellsTruncated " +
@@ -457,13 +463,36 @@ namespace JawaBench.BridgeTools
                     if (e == null) return Fail("No Building_GravEngine on the current map. Give 'engine' explicitly, or check another map.");
                 }
 
-                HashSet<IntVec3> valid, connected;
-                try { valid = e.ValidSubstructure; connected = e.AllConnectedSubstructure; }
-                catch (Exception ex) { return Fail("Reading substructure threw " + ex.GetType().Name + ": " + ex.Message); }
+                // GravshipUtility.GetConnectedSubstructure Log.Errors and hands back an EMPTY
+                // set for an unspawned engine, which would read here as "this gravship has no
+                // substructure" rather than "you asked the wrong question".
+                if (!e.Spawned || e.Destroyed)
+                    return Fail("'" + e.LabelCap + "' is not spawned on a map (minified, in a caravan, or destroyed) - "
+                              + "substructure is only defined for a spawned engine.");
 
                 float budget;
                 try { budget = e.GetStatValue(StatDefOf.SubstructureSupport); }
                 catch (Exception ex) { return Fail("GetStatValue(SubstructureSupport) threw " + ex.GetType().Name + ": " + ex.Message); }
+
+                // 🔴 Building_GravEngine.ValidSubstructure / .AllConnectedSubstructure ARE NOT
+                // READ-ONLY ACCESSORS. Both run UpdateSubstructureIfNeeded, which (a) clears
+                // substructureDirty and RegenerateLayerNow()s three SectionLayers, and (b) can
+                // `Find.WindowStack.Add(new Dialog_NamePlayerGravship(this))` - a MODAL - on any
+                // player-faction engine that is still unnamed, past 90 valid cells, once
+                // gravEngineInspected is researched. Nothing calls that path on a tick (Tick()
+                // does not), so a bridge read is exactly what fires it, there is nobody at the
+                // screen to dismiss it, and a stale modal blocks every later bridge call.
+                // Compute the two sets with the same two calls UpdateSubstructureIfNeeded itself
+                // makes (Building_GravEngine.cs:444-445, identical arguments) so the numbers are
+                // the engine's own and this tool is really the read-only it advertises.
+                var valid = new HashSet<IntVec3>();
+                var connected = new HashSet<IntVec3>();
+                try
+                {
+                    GravshipUtility.GetConnectedSubstructure(e, connected, int.MaxValue, requireInsideFootprint: false);
+                    GravshipUtility.GetConnectedSubstructure(e, valid, (int)budget);
+                }
+                catch (Exception ex) { return Fail("GravshipUtility.GetConnectedSubstructure threw " + ex.GetType().Name + ": " + ex.Message); }
 
                 if (maxCells < 0) maxCells = 0;
                 var validList = valid.Select(c => new { x = c.x, z = c.z }).ToList();
