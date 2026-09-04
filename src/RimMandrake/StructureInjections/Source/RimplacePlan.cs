@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 
 namespace RimMandrake.StructureInjections
 {
@@ -98,18 +97,6 @@ namespace RimMandrake.StructureInjections
                 }
             }
             return plan;
-        }
-
-        public IEnumerable<string> DefNames()
-        {
-            foreach (var c in Foundation) yield return c.DefName;
-            foreach (var c in Terrain) yield return c.DefName;
-            foreach (var t in Things)
-            {
-                yield return t.DefName;
-                if (t.Stuff != null) yield return t.Stuff;
-            }
-            foreach (var c in Roof) yield return c.DefName;
         }
     }
 }
