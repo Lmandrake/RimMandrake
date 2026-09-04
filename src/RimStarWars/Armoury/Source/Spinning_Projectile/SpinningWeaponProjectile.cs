@@ -5,6 +5,15 @@ using Verse;
 
 namespace Spinning_Projectile;
 
+// 🔴 KNOWN GAP (same incomplete feature documented in HarmonyPatches.cs): no
+// ThingDef named "Mote_LightSaberReturn" exists anywhere in this mod's XML
+// (verified across the whole src tree). Impact() below is unreachable today
+// (nothing sets thingClass to SpinningWeaponProjectile, so no Verb ever fires
+// one - same check), but if that Verb is ever wired up, ThingDef.Named() will
+// log an error and return null, and the very next line (mote.exactPosition =
+// ...) will NullReferenceException on every throw. Not fixed here: it needs a
+// new mote ThingDef (graphic/sound/mote category), which is content
+// authoring, not a code-review fix.
 [StaticConstructorOnStartup]
 public class SpinningWeaponProjectile : Projectile
 {
