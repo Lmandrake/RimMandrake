@@ -1592,25 +1592,95 @@
     "date": "2026-09-03",
     "sha": "da780c23"
   },
+  "src/RimStarWars/Armoury/Source/CrystalFormations/GenStep_ScatterLightsaberCrystals.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "246700a6"
+  },
+  "src/RimStarWars/Armoury/Source/InstantHealingDrug/CompProperties_DrugInstantHeal.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "246700a6"
+  },
+  "src/RimStarWars/Armoury/Source/InstantHealingDrug/InstantHealingDrug.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "246700a6"
+  },
+  "src/RimStarWars/Armoury/Source/JumppackForMeleeAI/JobDriver_CastJumpOnce.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "e056475f"
+  },
   "src/RimStarWars/Armoury/Source/JumppackForMeleeAI/JobGiver_AIMeleeJumppack.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "12ad4c44"
+  },
+  "src/RimStarWars/Armoury/Source/JumppackForMeleeAI/JumpJobDefOf.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "e056475f"
+  },
+  "src/RimStarWars/Armoury/Source/JumppackForMeleeAI/JumppackForMeleeAI.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "e056475f"
   },
   "src/RimStarWars/Armoury/Source/JumppackForMeleeAI/Patch_JobGiver_AIFightEnemy.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "a6c78782"
   },
+  "src/RimStarWars/Armoury/Source/KoltoTank/CompProperties_KoltoTank.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "2a1b73cc"
+  },
+  "src/RimStarWars/Armoury/Source/KoltoTank/CompProperties_SecondLayer.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "2a1b73cc"
+  },
+  "src/RimStarWars/Armoury/Source/KoltoTank/CompSecondLayer.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "2a1b73cc"
+  },
+  "src/RimStarWars/Armoury/Source/KoltoTank/HARFleshCheck.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "9c6daf17"
+  },
+  "src/RimStarWars/Armoury/Source/KoltoTank/JobDriver_CarryToKoltoTank.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "9c6daf17"
+  },
+  "src/RimStarWars/Armoury/Source/KoltoTank/JobDriver_EnterKoltoTank.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "9c6daf17"
+  },
   "src/RimStarWars/Armoury/Source/KoltoTank/KoltoTankPatches.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "ec953fe5"
   },
+  "src/RimStarWars/Armoury/Source/KoltoTank/Kolto_DefOf.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "9c6daf17"
+  },
   "src/RimStarWars/Armoury/Source/MentalBreakBlocker/BlockMentalBreakCause.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "c131ce7b"
+  },
+  "src/RimStarWars/Armoury/Source/MentalBreakBlocker/MentalBreakBlocker.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "e056475f"
   },
   "src/RimStarWars/Armoury/Source/MentalBreakBlocker/ModExtension_MentalBreakBlocker.cs": {
     "cleanCount": 1,
