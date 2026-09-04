@@ -110,4 +110,20 @@ for _a in "$@"; do
 done
 [ $# -gt 0 ] && sentence="$sentence — $*"
 
+# ── MODLIST GUARD ────────────────────────────────────────────────────────────
+# Owner ruled 2026-09-03, after a load that put him in a 20-mod TEST game: warn
+# loudly whenever a state is announced and the live list is not his FULL one.
+# WARN, never refuse and never auto-restore — a deliberate minimal-list test load
+# is legitimate, and silently rewriting another window's setup would be worse
+# than the problem. RimWorld reads ModsConfig.xml only at startup, so this is
+# only actionable BEFORE the launch, which is exactly when it prints.
+# It never blocks: any failure here is silent and the announcement proceeds.
+"$here/src/RimMandrake/Utils/modlist_swap.py" --status 2>/dev/null | grep -q 'live currently matches: FULL' || {
+    printf '\033[1;31m'
+    echo "  ⚠ MODLIST IS NOT THE OWNER'S FULL LIST — this launch will not be his campaign."
+    printf '\033[0m'
+    "$here/src/RimMandrake/Utils/modlist_swap.py" --status 2>/dev/null | tail -4 | sed 's/^/    /'
+    echo "    restore before he plays:  python3 src/RimMandrake/Utils/modlist_swap.py --restore --apply"
+} 2>/dev/null
+
 exec python3 "$bc" "$sentence"
