@@ -18,6 +18,7 @@ His three worked examples, verbatim in substance:
 | **Rust Cathedral / droids** | use of a metal cathedral where players can leave things | **droid enforcers** guard it | leaving urns there makes the gods much happier (a sanctum, not a warehouse); the shard-reconstruction compute partnership (§8.1 of the Antiquities doc) lives here too |
 | **Moisture Farmers** | a secret canyon base, with a small outpost outside to protect it | the outpost garrison | — |
 | **Deepwater faction** | an underwater base opportunity | **trained deep-sea creatures** | — |
+| **Geonosian Foundry Hive** (RULED 2026-09-04, the Alliance arc — canon_reintegration_plan.md C1) | the Hive builds the player a powerful protected base, in trade for ship/urn technology | the Hive itself — tunnels, bio spitters, numbers | **TRAGIC AND TEMPORARY BY DESIGN**: it seems almost too good to be true, begins to work, and then the Empire catches wind and utterly destroys their settlements. "Geonosians just don't understand politics at all." |
 
 The pattern: one earned base per major questline, each with a
 faction-flavored guardian mechanism, each functioning as protected off-ship

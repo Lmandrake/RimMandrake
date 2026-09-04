@@ -177,18 +177,49 @@ recorded here once: Anomaly can never be unpicked from this campaign.
 
 ## C. Thin areas — grown, in the campaign's voice
 
-**C1 · The Foundry Hive ↔ the door-music.** Canon already contains the weld
-and nobody has struck it: the Plateau colony has spent **nine years failing
-to commune with the Founder machinery** (04_factions §8), and the urn
-grammar's imagery domains already include **door-music — codes as melody**
-(antiquities §4.3; urn #4's door-chime tones). The Geonosians are trying to
-*talk to a lock* without the songbook. Growth: the Hive becomes Antiquities'
-second customer — not buying urns but buying **readings** (acoustic
-transcriptions), paying in hivetech and sonic craft; the sonic school's
-expansion (`sonic_expansion_ruled`) gains its campaign meaning: **sonic
-weaponry is applied door-music** — the Choir of Conduits weaponized. Meckgin
-meets the canon: a hive whose work is unfinished, finally hearing what the
-work was.
+**C1 · The Geonosians and the machine that keeps its own counsel — RULED
+(owner, 2026-09-04, replacing the door-music weld entirely; door-music is
+REMOVED from the canon, the urn grammar, and the tree identities).** The
+owner's story, near-verbatim, now canon:
+
+The Plateau colony's nine-year communion failure has one cause: **they are
+organic, and the Rust Cathedral is not.** The Cathedral is a MACHINE, made
+by Rakatans, and it has no time for any other race, period. The Geonosians —
+hive-minds who love to build — long for it precisely because of what they
+are; that longing moves the Cathedral not at all. They are **cast-off
+worshipers, cultists to an ambivalent god** — a god that favors, of all
+things, the Droids: much simpler, cruder, *infuriatingly ridiculous* in
+Geonosian eyes. **In the Droids the Cathedral sees simple echoes of itself
+and its own past, and regards them as favored pets — not pampered, not
+beloved, but amusing and interesting as a way to pass eons.** (C2's
+"whispered voices deep in the old machinery" is thereby recast: the whispers
+are REAL attention. The droids get whispers; the organics get silence.)
+
+When the urn secret propagates ("the urns contain secrets of the
+ancients... WHAT?!"), the Geonosians bid heavily for urns too — **but they
+have no scaffold to place them on.** Their hives and effigies, now
+incorporating urns, still draw no reaction from the Cathedral — more absurd
+than ever in its eyes, still not worthy of comment. And the Cathedral never
+revealed the urns' secret to anyone, ever: revealing secrets is precisely
+what it was built not to do — so why should it show any reaction at all?
+
+Two late-game consequences, both ruled: the Cathedral **HATES the Helix from
+the moment they side with the Assailants** (the G2 betrayal beat), urging
+**Forsaken Sentinels** to assault them. And when the woken **Rakatans
+themselves** seek relations with it, they are refused in the campaign's
+coldest line, his verbatim: *"I am bound to an Empire that no longer reigns,
+not their mongrel offspring who managed to lose the war that broke me."*
+**The Cathedral is a free agent now — just like the Droids.**
+
+The Geonosians remain unsung and desperate — which is the player's opening:
+**the Geonosian Alliance arc.** Offer them technology from the ship/urns and
+they will help build a powerful protected base (the bases seed gains a
+fourth, tragic entry). It seems almost too good to be true if taken — and it
+begins to work — **until the Empire catches wind of it and utterly destroys
+their settlements.** "Geonosians just don't understand politics at all."
+The formal Hive–Enclave alliance (04_factions §8) stands and sharpens:
+allying with the god's favored pets is the closest to the god the Hive has
+ever been allowed.
 
 **C2 · The Free Droid Enclaves were already reading.** 04_factions §5: the
 Cathedral congregation "learning ancient tech from **whispered voices deep in
@@ -255,8 +286,8 @@ ruled); Oomo takes the genealogies; Mob'Unloo prices every sale (and the
 Recovery Raid is his theology — the deal unwound); Ta'Baa takes CARTOGRAPHY;
 Zizzik stirs at Assailant content; Sh'kaar feeds on war-grief registers;
 Ozzik is the Helix's mirror and the temptation quest's voice; Ohm hears the
-door-music. The reaction table is DATA in the manifest layer, one row per
-(axis-D register × god).
+resonance in the hull. The reaction table is DATA in the manifest layer, one
+row per (axis-D register × god).
 
 **D3 · The bases are one mechanism wearing three faiths.** Protected off-ship
 storage = a `RM_Depot` world-object mechanism (claims, guardians, capacity)
@@ -333,9 +364,11 @@ the clan RE-DERIVING a dead industry from salvage, tier by tier.
 
 7. **The Strange Schools** — *kills by stranger physics — and now, by
 canon.* Thin (7 rows) on purpose until the sonic expansion lands; C1 gives
-the school its meaning: sonic is applied door-music, ion is the Jawa's own
-mercy-physics (disable-and-take; `05_the_clan` weapon doctrine), vibro/relic/
-saber are recovered strangeness. Gate mix: common + faction (Hive sonic).
+the school its meaning: sonic is the Hive's own resonance craft — a
+hive-mind's native engineering, stridulation scaled to weaponry — ion is the
+Jawa's own mercy-physics (disable-and-take; `05_the_clan` weapon doctrine),
+vibro/relic/saber are recovered strangeness. Gate mix: common + faction
+(Hive sonic). *(door-music removed per C1's ruling.)*
 
 8. **The Shell** — *not dying, as doctrine.* Common; the maker-doctrine tree.
 Warcasket content interfaces the Junker Yards (their signature stays theirs).
@@ -379,9 +412,11 @@ boon is the Helix showing off exactly the craft the Doctrine died refusing to
 write down — the tab where the player pays forged heirs for real power. The
 Reach's mirror; the pair should be visually adjacent in the tab bar.
 
-16. **The Foundry Hive** — *hivetech and the door-music, bought from the one
-faction at peace.* Faction-held (Hive, who trade); C1's readings-for-hivetech
-economy. Sonic capstone stays its T4 prize.
+16. **The Foundry Hive** — *hivetech and resonance craft, bought from the
+cast-off cultists.* Faction-held (Hive, who trade); their desperation is the
+economy — they pay well because almost nobody else will deal with them, and
+the Alliance arc (C1) can deepen the relationship into a protected base,
+briefly. Sonic capstone stays its T4 prize.
 
 17. **The Unbolting** — *building droids at all — a liberation rite paid one
 freed droid at a time.* Faction-held (Enclaves); tonight's ladder (workers →

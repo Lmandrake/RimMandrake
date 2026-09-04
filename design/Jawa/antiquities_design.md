@@ -220,7 +220,7 @@ Generation composes each narrative from four axes (data-driven lists,
 assembled by a small C# text builder or, v1, ~200 curated fragments in defs):
 
 - **A. Imagery domain** (what is depicted): tide-mechanics of a locked world
-  · gene-braids and decanting · door-music (codes as melody) · the Choir of
+  · gene-braids and decanting · maker's marks and workshop lineages · the Choir of
   Conduits · war-grief · orbital shepherding · the Scald's spill · null-bands
   (deliberate blankness).
 - **B. Formal device** (how meaning is carried): sacred repetition counts ·
@@ -272,11 +272,12 @@ register the other nine follow):
    figure kneels, hands open, depicted deliberately without a mouth, and
    the diamond seal over its face is twice as thick as anywhere else.*
 4. *Seventeen interlocking spirals; the seventeenth is wrong. The error,
-   read against the canon, yields four tones. The clan has heard the
-   Utinni's door-chime make three of them. Each spiral's groove-wall
-   carries sub-ridging too fine for the eye that your scanner renders as a
-   dense, regular signal in no known encoding — kilometers of it, coiled
-   into a handspan of clay.*
+   read against the canon, resolves into a maker's mark — and the clan has
+   seen that mark before, stamped deep in the Utinni's keel plates where
+   only the crawlspace welders go. The same workshop. Each spiral's
+   groove-wall carries sub-ridging too fine for the eye that your scanner
+   renders as a dense, regular signal in no known encoding — kilometers of
+   it, coiled into a handspan of clay.*
 5. *A child's grave-good: a toy engine, anatomically perfect, every part
    labeled in the civic register except the core, which is labeled in no
    register at all — a word appearing on no other object in the world. The
