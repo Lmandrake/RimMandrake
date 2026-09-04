@@ -2492,6 +2492,36 @@
     "date": "2026-09-03",
     "sha": "250be7a3"
   },
+  "src/RimUtinni/ShipMemory/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "46cdec42"
+  },
+  "src/RimUtinni/ShipMemory/Defs/ThingDefs_Items/RUT_ShipMemory.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "46cdec42"
+  },
+  "src/RimUtinni/ShipMemory/Languages/English/Keyed/RUT_ShipMemory.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "46cdec42"
+  },
+  "src/RimUtinni/ShipMemory/Patches/RUT_ShipMemory_ContainmentGate.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "46cdec42"
+  },
+  "src/RimUtinni/ShipMemory/Source/GameComponent_ShipMemory.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "46cdec42"
+  },
+  "src/RimUtinni/ShipMemory/Source/RimMandrake.Utinni.ShipMemory.csproj": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "46cdec42"
+  },
   "src/RimUtinni/VaultDungeons/Source/gen_vault_layouts.py": {
     "cleanCount": 1,
     "date": "2026-09-02",
