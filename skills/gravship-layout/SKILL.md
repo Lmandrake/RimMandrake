@@ -215,6 +215,16 @@ hand-written XML into that folder is enough to make it selectable: no mod, no
 **So the round trip is: author → drop in `Config/GravshipExport` → start a new
 game with a gravship-arrival scenario → the ship appears on the choose page.**
 
+### 🔴 The landing chain can wedge forever under bridge automation — save first
+
+Driving an arrival through to a landed ship (past the choose page, into the
+game's own landing sequence) is not safe to automate blind: vanilla's landing
+chain runs camera-pan callbacks and captures that can hang **before the ship is
+even placed**, and once it starts the choose-page's ship marker is **consumed**
+— there is no retry, no cancel. The only way out is a save reload. **Save the
+game before driving any landing test, always, not after it looks stuck**
+(2026-08-28).
+
 ### ⭐ SUPERSEDED 2026-08-27 — a layout CAN be stamped onto a live map today
 
 **`src/RimMandrake/Utils/print_gravship.py` does it, and it never touches
@@ -269,7 +279,11 @@ to something that reads as a thousand-year-old ship, and they are all offline-fi
   takes any Metallic stuff and stuff carries colour, so one `jawa/build_batch` per
   material does permanently what 2,300 dev-tool calls could not. ⚠️ Rebuilding a wall
   cell wipes the conduits sharing it — re-place them from the layout, which is the
-  authority for where they were.
+  authority for where they were. 🔴 **Paint would not have survived export anyway** —
+  `ShipLayoutDefV2` carries no colour field at all (§"Fields this project has never
+  seen populated": `ShipThingEntry` has `stuffDef`, nothing else colour-shaped), and
+  a re-export after a `jawa/paint_building` repaint measured **zero** colour matches
+  (2026-09-02). Stuff is the only durable colour a layout round-trip preserves.
 * **The floor is the ship's autobiography, so label it.** Outer Rim ships 36 Aurebesh
   word decals — 2×1, `Standable`, `altitudeLayer Floor`, so they lie on the deck and
   pawns walk over them. Naming each bay for what it USED to be, and leaving the sign
@@ -364,7 +378,13 @@ connected, engine capacity `4,680 -> 51,480`.
 4. **PIPE ASTROFUEL** from the tank to the thrusters **and to the grav engine**.
    A console reading `Stored astrofuel: 250 / 250` while thrusters read
    `Astrofuel net excess/stored in network: 0 l/d / 0 l` means fuel exists and is
-   not plumbed to them.
+   not plumbed to them. ⚠️ **On the VGE modlist this is enforced, not cosmetic**:
+   a `CanBeActive` postfix keeps a thruster inactive until its astrofuel **pipe
+   net** actually holds fuel — and vanilla's own inspect string still shows the
+   generic "Not connected to grav engine" rather than naming the fuel gate.
+   `ChemfuelTank` is the astrofuel storage; `VGE_AstrofuelPipe` is what connects
+   it into the network — placing the tank near a thruster is not piping it
+   (measured 2026-08-29).
 
 ### 🔴 The error string lies about the cause
 
@@ -442,7 +462,12 @@ The way this particular check lies. Four measured here:
   substructure while its exclusion zone contains NO substructure** — 1×5 behind a
   `SmallThruster`, 2×7 behind a `LargeThruster`. `validate()` checks foundations
   and engine coordinates and never looks at that rectangle, so a clean validator
-  run is not a clearance check (`gravship_flight_invariants.md` §5).
+  run is not a clearance check (`gravship_flight_invariants.md` §5). 🔴 The zone
+  rotates to the side **OPPOSITE** the facing — offset `(0,0,-5)·rot` for the
+  `GravshipThruster`'s 1×5 — so a **rot-South thruster's zone lands NORTH**,
+  across the pad it stands on, and reads `Blocked by substructure` forever. Face
+  each thruster **away from the ship edge**, not toward open space as intuition
+  suggests (measured 2026-08-29).
 - **Floors that survive export and vanish on a Sketch spawn.** Terrain is
   re-applied by the arrival Postfix (`HarmonyPatch_DoGravship.cs:~157`), *not* by
   `BuildFromLayout` — so a mid-game import lands the structure bare and **nothing

@@ -6,25 +6,75 @@
 This is an index, not doctrine — the tier rule and the promotion test live in
 `design/README.md` and are written by hand.
 
+⚠️ **31 doc(s) carry no `<!-- status: -->` line and show `—` below.** Unmarked is not the same as live: it means nobody has said.
+
 ### `design/`
 
 | doc | title | status |
 |---|---|---|
+| `FABLE_WINDOW_PROPOSITION.md` | What to spend Fable on while we have it | ? proposition for the owner — bench, 2026-08-31, answering his high-priority ask |
+| `NAMING_SCHEME_PLAN.md` | The Three-Tier Naming Scheme — RimMandrake / RimStarWars / RimUtinni | ? live — the three-tier naming scheme plan. ruled in principle by the owner 2026-08-30 |
 | `V2_DREAMS.md` | V2 — dreams and hopes | ☁ aspirational |
 
 ### `design/Jawa/`
 
 | doc | title | status |
 |---|---|---|
+| `OPUS5_HANDOFF.md` | Handoff — continuing the Salvation layer without Fable | ? live — written by the fable seat at the close of the 2026-08-30 handoff sprint (fable_handoff_sprint_1). audience |
+| `anomaly_exception_access_spec.md` | Anomaly exception access — the Memory-Core revelation (buildable spec) | — |
+| `antiquities_design.md` | ANTIQUITIES — the tree you dig up one urn at a time | ? ruled (owner, 2026-09-04, by card) and revised same day by the
+     owner's comment pass, ingested throughout |
 | `build_plan.md` | build_plan.md — the execution strategy (how we actually build this) |  |
+| `canon_reintegration_plan.md` | Canon reintegration — the plan | ? planning doc for owner review (bench/fable canon-reintegration
+     pass, 2026-09-04, on the owner's instruction |
+| `cantina_kitchen_spec.md` | The Cantina Kitchen — Star Wars food is animal food | ? spec — cantina_kitchen_spec_1, bench 2026-08-31, green-lit by the owner (tier 2).
+     source register |
 | `carbonite_trophy_mod.md` | Custom Carbonite Trophy Mod — PARKED DESIGN (author fresh for 1.6) | ☁ aspirational |
 | `concept.md` | concept.md — Portable Campaign Brief |  |
+| `covered_pit_traps_spec.md` | Covered Pits — the earth that swallows (first-class mod spec) | ? draft — bench proposal for owner ruling, 2026-08-30. item |
+| `devotional_sacrifice_catalog.md` | The Devotional Sacrifice Catalog — sacrifice-as-play (F11 ruling) | ? draft — bench proposal for owner ruling, 2026-08-30. item |
+| `divine_dilemma_events.md` | Divine Dilemma Events — twelve three-cornered arguments (F6) | ? draft — bench proposal for owner ruling, 2026-08-30. item |
 | `divine_satiation_engine.md` | The Divine-Satiation Engine — design (agent G) |  |
+| `droid_census_2026-08-29.md` | Droid verb census — what the accepted mods actually ship (2026-08-29) | ? live — phase 0 of droid_system_embrace_1 |
 | `droid_ruling.md` | Droid ruling — ion, capture, and what detonates |  |
+| `droid_system_build_spec.md` | Droidworks — buildable spec (v1 of the build) | ? live — the buildable engineering spec for droid_system_build_1.
+     reopened by the owner 2026-08-29 ("we've fallen in love with the full droid
+     item... fully work it out into a buildable spec... we will not build on any
+     one of the packs... borrow from them and make our own... port all the
+     droids in the game to that one platform").
+     design intent lives in droid_system_spec.md (unparked, still authoritative
+     for what) |
+| `droid_system_spec.md` | The Droid System — spec | ? reopened 2026-08-29 (owner |
+| `droidworks_assumptions.md` | Droidworks — assumptions awaiting the owner | ? live — the owner asked for this list verbatim, 2026-08-29 |
 | `explosion_energy_model.md` | Explosion energy model — everything detonates, scaled by energy density | ☁ aspirational |
+| `faction_semipermanent_bases_seed.md` | Faction semi-permanent bases — a trust-earned place to put your stuff | ? seed (owner concept, 2026-09-04, given during the antiquities
+     comment pass |
+| `first_contact_chains.md` | First Contact — the nine unveilings | ? draft — bench proposal for owner ruling, 2026-08-30. item |
 | `first_live_access.md` | first_live_access.md — Day-One Runbook (the first real build steps) |  |
+| `folk_gesture_mechanics.md` | Folk Gesture Micro-Mechanics — the four promoted | ? draft — bench, 2026-08-30, per the door ruling promoting four folk gestures to micro-mechanics (item fable_handoff_sprint_1 tail). lore of record |
+| `force_system_inventory.md` | lee.theforce.lightsaber — black-box behavioral inventory | — |
 | `force_users_build_spec.md` | Force users — build spec for Jedi and Sith raid leaders | ☁ aspirational |
+| `god_intercession_spec.md` | Intercession — managing the gods against each other | ? draft — bench proposal for owner ruling, 2026-08-30. item |
+| `graffiti_spec.md` | Graffiti — the clan that writes on the world | ? draft — bench full design for owner ruling, 2026-08-31. item |
+| `ideoligion_precept_removals.md` | Removing ThroneSpeech, AnimaTreeLinking, TreeConnection from The Salvation | — |
+| `ownership_settlement_spec.md` | Ownership, theft and settlement interaction — the ruled design | ? ruled design spec — owner brainstorming sitting 2026-08-31 ("superb! ...
+     this is amazing! (two mods)"). research input |
 | `parked_mod_concepts.md` | parked_mod_concepts.md — mod ideas worth building later | ☁ aspirational |
+| `pawn_flavor_design.md` | Pawn Flavor — backstories, childhoods, traits (design in progress) | ? live — bench working design, pawn_flavor_starwars_1 |
+| `race_regen_architecture.md` | Race regeneration — from migration to authorship | ? architecture spec — race_regen_architecture_1, bench 2026-08-31, green-lit (tier 2).
+     executes v2_dreams "regenerate the races from scratch" as an architecture, not yet a content
+     pass. generator anatomy measured 2026-08-31 (pipeline map in the item's commit) |
+| `research_normalization_principles.md` | Research Normalization — principles before surgery | ? draft — fable handoff sprint 2026-08-30, item fable_handoff_sprint_1 |
+| `research_tree_prep.md` | Research tree prep — for RESEARCH_TREE_NORMALIZATION_1 | — |
+| `research_tree_taxonomy.md` | Research tree taxonomy — the execution grammar | ? decision doc — research_taxonomy_draft_1, bench 2026-08-31, green-lit by the owner.
+     third layer of the research-normalization stack |
+| `salvation_engine_build_spec.md` | The Salvation Engine — build spec | ? draft — fable handoff sprint 2026-08-30, item fable_handoff_sprint_1 |
+| `salvation_engine_review.md` | The Nine, Reviewed — BENCH critical assessment of the pantheon + matrix |  |
+| `sw_ownership_survey.md` | Star Wars mod ownership survey — measured facts only | — |
+| `trap_renaissance_spec.md` | The Trap Renaissance — Jawa trapcraft made FUN | ? live — shape ratified by the owner 2026-08-30 ("yes to all you propose") |
+| `waking_mind_ai_deep_dive.md` | The Waking Mind — what "AI" is on this planet, and where it should live | ? analysis for owner review (bench/fable fork, 2026-09-04), ordered
+     by the owner during the canon-reintegration g6 ruling |
+| `wrecked_machines_resurrection.md` | WreckedMachines resurrected — repair is the Jawa road to big machines | ? ruled resurrection — owner, 2026-08-31 |
 
 ### `design/Jawa/art/`
 
@@ -41,7 +91,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 
 | doc | title | status |
 |---|---|---|
-| `BRIDGE_CAPABILITY_ROSTER.md` | The live-bridge capability roster — what is POSSIBLE, for the owner to cull |  |
+| `BRIDGE_CAPABILITY_ROSTER.md` | The live-bridge capability roster — what is POSSIBLE, for the owner to cull | ? superseded |
 | `INHABITED_CAST_BLACKSTAR.md` | `Inhabited` — cast 06: the Blackstar Company |  |
 | `INHABITED_CAST_DEEPWATER.md` | `Inhabited` — cast 12: the Deepwater Compact |  |
 | `INHABITED_CAST_DROIDS.md` | `Inhabited` — cast 04: the Free Droid Enclaves |  |
@@ -57,6 +107,14 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `INHABITED_DESIGN.md` | `Inhabited` — somebody lives here |  |
 | `INHABITED_SPECIES_TEXTURE.md` | `Inhabited` — species texture, for authoring working-class characters |  |
 | `LIVING_NPC_TEMPLATES.md` | Living NPCs on a map — template catalogue | → superseded `INHABITED_DESIGN.md` |
+| `ROSTER_VS_BUILT_2026-08-26.md` | Roster vs. built — the 2026-08-26 walk | — |
+| `STRUCTURE_TEMPLATE_ENGINE_SPEC.md` | The structure template engine — building a dwelling from a file | ? draft — check, 2026-08-22. three approaches for downselect |
+
+### `design/Jawa/fauna/`
+
+| doc | title | status |
+|---|---|---|
+| `CREATURE_RESIZE_LIST.md` | The creature resize list — approved for v1 | — |
 
 ### `design/Jawa/mods/`
 
@@ -66,15 +124,97 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `REGROWTH_BOILING_LIFT_SPEC.md` | REGROWTH_BOILING_LIFT_SPEC.md — the boiling water and the boiling rain, kept; the mod, dropped | ☁ aspirational |
 | `agent_supersession_audit.md` | agent_supersession_audit.md — "does a mod already do this?" |  |
 | `armoury_keeplist.md` | armoury_keeplist.md — the proposed weapon roster |  |
+| `cai_fog_deep_dive_2026-08-31.md` | CAI 5000 fog-of-war deep dive | ? evidence + decision menu — cai_fog_deep_dive_1, bench 2026-08-31.
+     owner's brief, verbatim |
 | `cherry_picker_killlist.md` | Cherry Picker Kill-List — Gravship Expedition (DRAFT / candidate) |  |
 | `concept_defnames.md` | concept_defnames.md — verified defName / ID vocabulary (companion to concept.md) |  |
 | `forbidden_mods.md` | Forbidden Mods — Gravship Expedition Campaign |  |
+| `minotaur_design_extraction.md` | Roo's Minotaur Xenotype — mechanisms extracted before retirement | ? retire — design reference extracted from roo's minotaur xenotype before its removal (owner ruling 2026-08-31). not star wars canon |
 | `mod_config_rulings.md` | mod_config_rulings.md — accept/reject rulings and configuration guidance |  |
+| `neolithic_floor.md` | The neolithic floor — "bows and knives, for anyone" | — |
 | `outer_rim_cherrypick_list.md` | Outer Rim → Custom 1.6 Sub-Mod — CHERRY-PICK DEF LIST (Task A) |  |
+| `outgrown_audit_2026-08-30.md` | Outgrown-mod audit — 2026-08-30 | ? evidence for a bench sitting — no rulings made here, per the item's own scope |
+| `ownership_mods_research.md` | Jawa Ownership, Theft, and Settlement Interaction in RimWorld | — |
+| `plant_harvest_coverage.md` | Plant harvest coverage on Ash'karr — what a cut would cost | — |
+| `plant_walk_list.md` | The plant walk — where to stand, and what to look at when you get there | — |
 | `repurposed_graphics.md` | repurposed_graphics.md — turned off, but the ART may still be worth having |  |
 | `required_mods.md` | Required Mods — Gravship Expedition Campaign |  |
+| `ruthless_faction_pursuit.md` | Ruthless Faction Pursuit — configuring endless Empire pursuit | — |
+| `titans_design_extraction.md` | Titans mod — what made it scary, extracted before retirement | ? live — design reference extracted from titans.fl before its retirement (mod_list_outgrown_audit_2, owner ruling 2026-08-31). not star wars canon |
+| `underwater_donor_scan_2026-08-31.md` | Underwater donor scan — beyond the first three | ? evidence — owner-commissioned scan, 2026-08-31. extends depths_concept.md §10.
+     lens |
 | `world_interest_and_mech_danger.md` | Making the World More Interesting — Deadlier Mechs, Crazy Animals, Unusual Threats |  |
 | `yautja_mod_audit.md` | yautja_mod_audit.md — what `[AB] Xenotype: Yautja` actually brings |  |
+
+### `design/Jawa/narrator_corpus/`
+
+| doc | title | status |
+|---|---|---|
+| `judgement_and_council.md` | Narrator Corpus — Judgement at Landing & the Council of Voices | ? draft — fable handoff sprint tail, 2026-08-30 |
+| `narrator_frame.md` | The Narrator Frame — voice bible, livery, and letter templates (v1 corpus) | ? draft — fable handoff sprint 2026-08-30, item fable_handoff_sprint_1 |
+| `the_knowing.md` | The Knowing — the integration-letter register | ? canon register — f1 catch-up 2026-09-04, from the owner's
+     antiquities comment pass (canon.yml antiquities.ship_archive) and the
+     nine-god roster (divine_satiation_engine.md §2). sixth corpus file |
+| `triad_body.md` | Narrator Corpus — the Body triad (Oomo · Ohm · Rekko) | ? draft — fable handoff sprint 2026-08-30, item fable_handoff_sprint_1 |
+| `triad_fall.md` | Narrator Corpus — the Fall Triad (Zizzik · Sh'kaar · Ozzik) | ? draft — fable handoff sprint 2026-08-30, item fable_handoff_sprint_1 |
+| `triad_path.md` | Narrator Corpus — The Path Triad (Ishko · Ta'Baa · Mob'Unloo) | ? draft — fable handoff sprint 2026-08-30, item fable_handoff_sprint_1 |
+
+### `design/Jawa/proposals/`
+
+| doc | title | status |
+|---|---|---|
+| `fire_ecology_deep_design.md` | The Pyrelands, made mechanical — fire as a place to be, not a place to flee | ? draft proposal for owner review — brainstorm sitting 2026-08-31, not ruled. |
+| `god_modes_deep_design.md` | Reign-Modes — when a god stops sending letters and starts rewriting the world | ? draft proposal for owner review — brainstorm sitting 2026-08-31, not ruled. |
+| `high_cuisine_deep_design.md` | High cuisine, deep design — meals are statements | ? draft proposal for owner review — brainstorm sitting 2026-08-31, not ruled. |
+| `llm_driven_mods_deep_design.md` | The Oracle, cast wide — sparse LLM consumers for the whole campaign | ? draft proposal for owner review — brainstorm sitting 2026-08-31, not ruled. |
+| `ludicrous_livestock_deep_design.md` | Ludicrous livestock, deep design — a workbench with a heartbeat | ? draft proposal for owner review — brainstorm sitting 2026-08-31, not ruled. |
+| `propane_gas_deep_design.md` | Propane and gas, deep design — a fuel field the size of a sea, and the danger IS the fuel | ? draft proposal for owner review — brainstorm sitting 2026-08-31, not ruled. |
+| `sarlacc_deep_design.md` | The Sarlacc, deep design — a landmark that digests centuries | ? draft proposal for owner review — brainstorm sitting 2026-08-31, not ruled. |
+| `ship_shields_deep_design.md` | Environmental shields — gating access to the planet, not winning fights | ? draft proposal for owner review — brainstorm sitting 2026-08-31, not ruled. |
+| `skyhook_deep_design.md` | Repulsor spires — high-altitude stations on a world where nothing hangs in the sky | ? redesigned per the owner's 2026-09-02 sheet ruling (skyhook_bespin_redesign_1). the original space-elevator premise is dead |
+| `sw_mod_concepts_triage.md` | Star Wars mod concepts — full triage, and 7 taken deep | ? draft proposal for owner review — brainstorm sitting 2026-08-31, not ruled. |
+| `tar_pits_deep_design.md` | Tar pits, deep design — what a Jawa does with a hole full of the past | ? draft proposal for owner review — brainstorm sitting 2026-08-31, not ruled. |
+| `underground_caverns_deep_design.md` | Underground caverns deep design — the desert's dungeon vocabulary | ? draft proposal for owner review — brainstorm sitting 2026-08-31, not ruled. |
+| `water_economy_deep_design.md` | Water economy deep design — the heist, the siege, and the thing in the pool | ? draft proposal for owner review — brainstorm sitting 2026-08-31, not ruled. |
+| `weather_suite_deep_design.md` | The sky as terrain — a weather vocabulary for a world that never turns | ? draft proposal for owner review — brainstorm sitting 2026-08-31, not ruled. |
+
+### `design/Jawa/reconciled_lore/`
+
+| doc | title | status |
+|---|---|---|
+| `00_README.md` | reconciled_lore — the consolidated canon | ? parallel build — emitted 2026-08-29/30 by bench on the owner's
+     instruction |
+| `01_campaign.md` | The campaign — Flight of the Utinni | — |
+| `02_world.md` | Ash'karr — The Sundered | — |
+| `03_deep_history.md` | Deep history — the Rakata, the Assailant, and what still runs | — |
+| `04_factions.md` | The thirteen factions | — |
+| `05_the_clan.md` | The clan — Jawa society, The Salvation, and the nine gods | — |
+| `06_the_ship.md` | The ship — The Utinni, born Kolyska | — |
+| `07_physics_and_arms.md` | Physics and arms — the laws, and every armament ruling to date | — |
+| `08_droids.md` | Droids — the five states and Droidworks | — |
+| `09_arcs_dungeons_quests.md` | The designed arcs, dungeons and quests | — |
+| `FUTURE_VECTORS.md` | Future vectors — where v2 wants to go | — |
+| `GAPS.md` | Open questions — the unsettled ledger | — |
+
+### `design/Jawa/research_review/`
+
+| doc | title | status |
+|---|---|---|
+| `droid_and_saber_rulings.md` | Droid and saber rulings — research restructure, v4 | ? proposal — research_tree_normalization_1 vision pass v4, fable design agent,
+     2026-09-03, on the owner's rulings of the same day (droid construction is the droid
+     faction's |
+| `faction_locked_trees.md` | Faction-locked trees — research restructure, v3 | ? proposal — research_tree_normalization_1 vision pass v3, 2026-09-03, on the
+     owner's directive of the same day ("split out some racial specifics into their own
+     trees... all things warcasket is uniquely [junker]... the sonic weaponry is another
+     of those for the [geonosians]... please identify other 'faction ally locked' groups").
+     nothing here is ruled. companion artifacts |
+| `functionless_tech_candidates.md` | Functionless tech — repurposing candidates | — |
+| `recovery_drafts.md` | Recovery drafts — the 84 earlier cuts | ? proposal — research_tree_normalization_1 recovery pass, fable design agent,
+     2026-09-03, on the owner's directive |
+| `twelve_trees_proposal.md` | Thirteen trees — research restructure, vision pass v2 | ? proposal — research_tree_normalization_1 vision pass v2, fable design agent
+     2026-09-03, on the owner's directive of the same day ("around 12 trees, rebalance,
+     aggressive thematic filtering, weapons by physics, ritual-tech, royalty question").
+     nothing here is ruled. companion artifacts |
 
 ### `design/Jawa/worldbuilding/`
 
@@ -89,19 +229,32 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `Livestock_Trade_Utility_Pets_v1.md` | The Livestock Trade — Utility, Pet & Companion Creatures | ☁ aspirational |
 | `PLANT_GROWTH_SPEC.md` | PLANT_GROWTH_SPEC.md — freakish plant growth, specified for build |  |
 | `PRE_WORLDGEN_GATE.md` | Before the owner generates the world — what is actually owed |  |
+| `REGIONS_THAT_LIE.md` | Regions that lie about themselves — audit, 2026-08-23 |  |
 | `SCENARIO_SETTINGS_SPEC.md` | SCENARIO_SETTINGS_SPEC.md — every setting the campaign start needs, and WHEN it is fixed |  |
 | `SCENARIO_SPEC.md` | SCENARIO_SPEC.md — how the campaign starts |  |
 | `WORLDMAP_BRIDGE_SURFACE.md` | The worldmap bridge surface — every element, and read/write/validate for each |  |
 | `WORLD_REDRAFT.md` | Rebuilding the keeper world, by hand |  |
+| `aquatic_movement_routes.md` | Aquatic movement — the honest menu, post-Pathfinding-Framework | ? decision card — sw_sea_monsters_art_1, bench 2026-09-02. supersedes
+     sea_beasts_def_spec.md §4 routes a–c (route b, pathfinding.framework, is dead |
+| `beast_normalization_spec.md` | Beast Normalization — size, mass, and casual lethality | ? draft — bench synthesis of the three-arm beast fan-out, 2026-08-31. owner's law |
 | `biome_and_fauna_roster.md` | biome_and_fauna_roster.md — which biomes, which beasts, and what makes each tile feel like itself | ☁ aspirational |
+| `biome_flora_rosters.md` | Ash'karr's flora — what grows where, and why | — |
 | `biome_review_comments.md` | biome_review_comments.md — DECIDE's read of the owner's biome cuts |  |
 | `biome_terrain_palette.md` | biome_terrain_palette.md — Authoritative Biome + Terrain Palette |  |
 | `cherrypick_inbox.md` | Cherry Picker inbox — everything ruled OFF so far |  |
 | `cherrypick_resolved.md` | Cherry Picker — the resolved target list |  |
+| `colony_visibility_stat.md` | Colony Visibility — the shared dial (F18 design, COLONY_VISIBILITY_STAT_1) |  |
+| `creature_abilities_inventory.md` | What our creatures can already DO — the strange-behaviour inventory | — |
+| `creature_names_ashkarr.md` | Creature names for Ash'karr — killing the Latin | — |
+| `depths_build_spec_v1.md` | The Depths — v1 "Dive expeditions" build spec | ? ruled — both §0 questions answered by the owner 2026-08-31 (question cards).
+     executes |
+| `depths_concept.md` | The Depths — underwater as space, dark for a whole new reason | ? draft — bench concept for owner ruling, 2026-08-31. tier |
 | `desert_world_design.md` | desert_world_design.md — Consequential-Landing Design (risk/reward per terrain) |  |
 | `droid_chassis_coverage.md` | Droid chassis — what we have, what one subscribe buys, what needs art |  |
 | `droid_taxonomy.md` | The three droid families, and what each is FOR |  |
+| `dungeons_arc_spec.md` | The dungeons arc — Assailant complex + six Forsaken vaults |  |
 | `enrichment_agents.md` | enrichment_agents.md — the world-enrichment agent catalogue | ☁ aspirational |
+| `faction_equipment_clusters.md` | Faction equipment clusters — the palette, and who draws from it | ? draft |
 | `faction_equipment_guidance.md` | Faction equipment guidance — tech, money and flavour |  |
 | `faction_religions.md` | Eleven religions, seeded — every one a position on the light |  |
 | `faction_religions_spec.md` | Eleven religions, buildable — the encoding layer |  |
@@ -116,22 +269,40 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `jawa_crew_personas.md` | Jawa Crew Personas — the Five Founders |  |
 | `jawa_dialogue_source_audit.md` | Jawa Dialogue and Translation Corpus — Source-Audited |  |
 | `jawa_society.md` | Jawa society — slavery, reproduction, the life-cycle, and what they carry |  |
+| `landmark_art_direction.md` | Landmark art direction — Ash'karr | — |
+| `named_places_draft.md` | NAMED PLACES — draft set for the owner to veto | ? superseded |
 | `orbital_towers_and_the_sky_ladder.md` | Orbital towers and the sky ladder — the Empire's way down |  |
 | `pawnkind_roster.md` | The pawn-kind roster — 48 kinds, and what each one carries |  |
 | `restraining_bolt_doctrine.md` | The restraint bolt — making the campaign's moral problem cost something | → superseded `restraining_bolt_technical.md` |
 | `restraining_bolt_technical.md` | Restraining bolts — the technical spec |  |
+| `rimworld_worldmap_loadsavecreate.md` | Making ONE world, keeping it, and shipping it | — |
 | `row8_build_order.md` | row8_build_order.md — the gravship build, step by step |  |
+| `sacred_sites_pass_1.md` | SACRED SITES — the F16 tile pass (SACRED_SITES_PASS_1) |  |
+| `sarlacc_spec.md` | The Sarlacc — unified spec: the event above, the dungeon below | ? spec — sarlacc_spec_session_1, bench 2026-08-31, green-lit by the owner with scope
+     widened verbatim |
+| `sea_beasts_def_spec.md` | Sea beasts — def design spec (18 creatures) | ? design spec (def-level, machine-checkable) — sw_sea_monsters_art_1,
+     bench 2026-09-02. names + bodysize are the ruled roster
+     (sea_beasts_roster.md, owner 2026-08-31) and are fixed here. every other
+     number is calibrated against a named vanilla def read from the 1.6 install
+     xml (data/core|odyssey|anomaly/defs/thingdefs_races) and the c# source via
+     rimsage, and sized under beast_normalization_spec.md laws 1–4. no xml is
+     written by this doc. tier rimstarwars (mandrake.rsw.*, rsw_). |
+| `sea_beasts_family_review_grid_key.md` | Sea-beast family review save — grid key | — |
+| `sea_beasts_roster.md` | Sea beasts roster — 18 creatures, six roles, three each | ? ruled roster — sw_sea_monsters_art_1, owner 2026-08-31 |
 | `setting_physics.md` | setting_physics.md — the physical laws of this universe |  |
 | `setup_checklist.md` | setup_checklist.md — Game Setup Decision Checklist (work through live) |  |
 | `ship_deck_plan.md` | ship_deck_plan.md — The Ruined Vessel: deck plan + repair-progression design |  |
 | `ship_designs.md` | ship_designs.md — Gravship topology: chosen hull + candidate menu (expanded limits) |  |
 | `ship_distinctive_features.md` | ship_distinctive_features.md — the Kolyska's identity layer |  |
 | `ship_legacy_armoury.md` | The ship's legacy armoury — laser weapons as inherited technology |  |
+| `structure_injection_roster.md` | Structure Injection Roster — Promises & Whispers | ? draft — bench roster for foundry design iteration, 2026-08-31. frame |
 | `the_forgotten_war.md` | the_forgotten_war.md — the war that ended this world, and what it left |  |
 | `the_one_map.md` | THE ONE MAP — Ash'karr, hand-authored once |  |
+| `the_seas.md` | The Seas of Ash'karr — the filling program | ? draft — bench synthesis of the three-arm seas fan-out, 2026-08-31. owner |
 | `tidally_locked_world.md` | The world is TIDALLY LOCKED — and it explains everything |  |
 | `tile_augmentation_catalogue.md` | tile_augmentation_catalogue.md — the concrete augmentation catalogue |  |
 | `v1_quest_the_claim.md` | "The Claim" — the v1 quest, specified |  |
+| `vault_siting_prep.md` | Vault siting prep — for the VAULT_DUNGEON_CONCEPT_1 owner sitting |  |
 | `water_doctrine.md` | Water doctrine — the master resource, finally decided |  |
 | `what_the_machines_are.md` | What the machines are |  |
 | `worldgen_interactive_build_concepts.md` | worldgen_interactive_build_concepts.md — new content the world painting asks for |  |
@@ -156,6 +327,7 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | doc | title | status |
 |---|---|---|
 | `religions_repair_sheet.md` | Religions repair sheet — the 9 INVALID entries, option by option | → superseded `faction_religions_spec.md` |
+| `turret_normalization_v1.md` | Turret normalization v1 — worksheet (PROPOSAL, not yet patched) | — |
 
 ### `design/Jawa/worldbuilding/ship_build/`
 
@@ -172,10 +344,15 @@ This is an index, not doctrine — the tier rule and the promotion test live in
 | `beautiful_tilemap.md` | Beautiful_Tilemap — concept spec | ☁ aspirational |
 | `coastal_mesa_rationale.md` | Coastal Mesa — LLM-authored map improvement |  |
 | `faction_authoring_mechanism.md` | faction_authoring_mechanism.md — How we make rich, differentiated factions |  |
+| `llm_ingame_wiring_spec.md` | The Oracle — in-game LLM wiring | ? spec — llm_ingame_wiring_1, bench 2026-08-31, green-lit by the owner, verbatim |
 | `llm_stack_assessment.md` | llm_stack_assessment.md — how far the live LLM stack gets us |  |
 | `llm_voice_preauthoring.md` | llm_voice_preauthoring.md — paste-ready LLM voice prompts (RimAI + RimDialogue) |  |
 | `map_authoring_decision.md` | Map authoring: RimBridge vs save-editing — the decision |  |
 | `music_protocol.md` | music_protocol.md — adding our own music to the gravship campaign |  |
+| `nine_voices_cast_bible.md` | The Nine Voices — cast bible for the thing in the walls | ? cast bible — nine_voices_cast_bible_1, bench 2026-08-31, green-lit by the owner.
+     supersedes llm_voice_preauthoring.md part a (the single cradle-mind persona), which r-w6
+     invalidated. part b (dynamic jawaese) of that doc is untouched and still live.
+     sources |
 | `ollama.md` | ollama.md — installing Ollama on Windows |  |
 | `rimbridge.md` | rimbridge.md — living context on RimBridgeServer (live game modification) |  |
 | `rimtalk_analysis.md` | rimtalk_analysis.md — RimTalk adoption analysis | → superseded `llm_stack_assessment.md` |

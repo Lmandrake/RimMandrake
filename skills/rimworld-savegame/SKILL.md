@@ -109,6 +109,15 @@ by exactly 1 on negative hashes. Verified against the live dump: BiomeDef 66/66,
 RoofDef 6/6, TerrainDef 1,227/1,238 (the 11 misses all +1, collision-bumped). The
 dump's own `shortHash` field is ground truth — prefer it to computing.
 
+⚠️ **Same mod SET is necessary, not sufficient — `modCount` says nothing about def
+CONTENT.** `validate_save_artifact.py` resolves against the newest DefDump capture;
+a capture whose manifest `modCount` matches the live mod set can still hold
+PRE-rename defNames, because the capturing session's in-memory defs predate the
+edit. Measured: it reported 6 genes missing from a `.xtp` xenotype preset that
+existed correctly on disk — the capture, not the preset, was stale. Check the
+capture's timestamp against the rename commit, not just its `modCount`, before
+trusting a validator's verdict (2026-08-31, FOUNDRY).
+
 ## 6. 🔴 `fogGrid` — leave it untouched
 
 **Do not add `fogGrid` to `savemap.py`'s `GRIDS` table.** Every other row is 2-byte

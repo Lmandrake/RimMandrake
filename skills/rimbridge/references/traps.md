@@ -136,6 +136,8 @@ a **stale companion DLL**: rebuild and redeploy with the game closed
 **Symptom:** at the main menu, **every** `jawa/*` tool returns a bare `Object reference not set to an instance of an object`. No tool name, no field, no hint that the cause is "there is no game". `jawa/get_def ThingDef/Steel` — a call that had worked all day — failed exactly like the brand-new `BiomeDef` branch, which is what proved it was environmental rather than a fresh bug.
 **Cause:** almost every tool in the companion ends `ticksGame = Find.TickManager?.TicksGame ?? -1`. That **looks** null-guarded and is not. `Find.TickManager` compiles to `call Current::get_Game` then `ldfld Game::tickManager` — 11 bytes of IL with no null check. **With no game loaded, the GETTER throws before `?.` is ever reached**: the operator protects the value it returns, not the call that produces it. One unguarded property in a response field kills every tool that includes it.
 **Fix:** ✅ **DONE 2026-08-14 — `TicksGameSafe()`, one helper, all 25 sites** (build md5 `d3ace1f6…`, 28 tools; deploys at the next shutdown window). `Current.Game != null && Find.TickManager != null ? Find.TickManager.TicksGame : -1` — `&&` short-circuits, so the getter is never touched until `Current.Game` is known non-null. Until that build is deployed, **the companion needs a GAME, not merely a map**: a quicktest fixes it instantly.
+🔴 **`jawa/get_defs` takes SEMICOLON-separated `DefType/defName` pairs.** A comma-separated list resolves as ONE malformed entry and reports `success: true` with `foundCount 0` — the unknown-separator failure is invisible because the call still succeeds (2026-08-30).
+
 🔴 **Measured live at `programState: Entry`, and the live shape is worse than the IL suggested.** `jawa/get_defs` on two `RulePackDef`s returned a bare NRE whose stack names `<GetDefs>b__2 [0x002d4]` — the **response-construction** line, not the def lookup. **The defs had resolved correctly; the tool threw the right answer away while packing it.** So the symptom is not "the call could not run" but "the call ran, succeeded, and destroyed its own result" — and the message names nothing at all. ⚠️ **Defs are parsed once at startup and are not re-read when a game begins**, so every def question is answerable at the main menu and this bug is what made a whole class of no-game checks look impossible. It cost a real one: a retired seat's `maybeApostrophe` check had a closing window and could not be fired. ⚠️ Note the corollary for the run sheet — "this check needs no map" and "this check needs no game" are different claims, and a def read that is genuinely map-independent is still game-dependent.
 **Recurs when:** any `Find.X` in a response field. `Find.CurrentMap` is safe (it null-checks internally); `Find.TickManager`, `Find.World` and friends dereference `Current.Game` and are not. ⚠️ Generalises past C#: **a null-safe operator on the last link of a chain says nothing about the links before it**, and the tidier the line reads the less likely anyone is to check. Measured live 2026-08-14 by comparing a known-good call against a new one — **keep a control you already trust in reach, because it converts "my new code is broken" into "the environment changed" in one call.**
 
@@ -189,6 +191,7 @@ Collected 2026-08-13; each one cost a seat time before it was written down.
 - **WSL cannot reach the bridge at all** — RimBridge binds Windows loopback and WSL2 is NAT-mode. Run `python.exe`, never `python3`. This is not a timeout, it is no route.
 - **`rimworld/set_camera_zoom` takes `{"rootSize": <number>}`** — a number, not a zoom name. `{"zoom": "Furthest"}` is an unknown key: dropped silently, `success: true`, camera does not move.
 - **`rimworld/execute_gizmo` takes `{"gizmoId": "<id>"}`, not an index**, and the id changes every time the selection changes. Re-list; never cache one.
+- 🔴 **Loose gizmo LABEL matching executes the WRONG gizmo with `success: true`** — matching on `'fill'` hit "Allow manual refill" and filled nothing. Match the exact prefix (e.g. `"DEBUG: Fill"`), never a bare substring (2026-08-29, BENCH).
 - **`rimworld/update_mod_settings` wants `values` as a DICT** — `{"gravEngineSupport": 4500}`. A list of pairs returns *"At least one settings path/value pair is required."*
 - **`jawa/damage` takes `thingId`**, not `targetId`/`pawnId`/`id`. **`jawa/destroy_batch` takes `categories`**, plural.
 - ⭐ **The pattern behind half of these: an unknown parameter name is DROPPED SILENTLY before the tool runs**, so a wrong name is indistinguishable from an omitted one and the call reports success. When a call succeeds and nothing happens, suspect the parameter NAME before suspecting the game.
@@ -348,6 +351,24 @@ loop written around it never exits, while the game sat fully loaded the whole ti
 
 **To wait out a load, poll `rimworld/get_game_info` for `status == "game_loaded"`** and a
 `ticksGame` that answers. That is the postcondition.
+
+🔴 **It can also lie about a load that never happened.** Called right after a killed
+`start_debug_game_ready`, it returned `success: true` + "game data is available and is
+paused for automation" while `programState` was `Entry` and `hasCurrentGame` was `false` —
+it loaded nothing. A plain `rimworld/load_game` from a settled Entry then worked in 4 s.
+**Assert on `programState == "Playing"`, never on the load call's own `success`.**
+
+## A game can wedge on "Loading world." forever, and nothing on the bridge recovers it
+
+2026-08-30, FOUNDRY. Bridge itself stayed healthy (~15 ms `rimbridge/ping`) while the game
+sat on a "Loading world." long event that never completed: `get_game_info` answered
+`game_loaded` with `mapCount 0` and `ticksGame` frozen, `go_to_main_menu` NREd, and
+`Root_Play` threw every frame. `start_debug_game_ready` and `load_game` both did nothing.
+`take_screenshot` still worked and is what identified it — every data-side readiness call
+lied or crashed.
+
+⇒ **Not recoverable from the bridge.** The owner has to restart. Treat a frozen `ticksGame`
+plus a healthy ping as the signature, and screenshot before concluding anything else.
 
 ## `rimworld/save_game` DOES honour a filename — under `saveName`
 
@@ -624,6 +645,28 @@ ran; arrival is a later tick, and on a paused game it is a tick you must supply 
 
 ---
 
+## Doctrine-verify 2026-08-29: turret and explosion combat tests need three separate fixes, none of them the def
+
+**A PAUSED explosion reads as a no-op.** `jawa/explosion_at` succeeds, an `Explosion` Thing
+appears, and nothing is damaged until `step_game_ticks` runs it. Judging the result at call
+time files a working tool as broken (2026-08-30, FOUNDRY).
+
+**Turret combat tests need all three of these, or nothing engages:**
+* `spawn_thing` leaves a turret **factionless** — set `PlayerColony` (or the appropriate
+  faction) explicitly or it never engages anything.
+* **Spawned hostiles RUSH the turret into its minimum-range dead zone.** Spawn slow or far
+  targets, not adjacent ones, or the turret never fires a shot worth measuring.
+* `step_game_ticks` **does run turret AI** even under a stepped pause — a slug turret fired
+  during a stepped-tick test, so "paused" is not "inert" for anything already spawned and
+  targetable.
+
+**And the def dump cannot settle a numeric patch here at all:** it serialises NO projectile
+block and no `DamageDef.defaultDamage`, and `jawa/get_def` has no projectile field either.
+Numeric weapon-patch verification needs the mod-XML + validator + log chain, or live fire —
+not a def read.
+
+---
+
 ## 🔴 `jawa/set_faction_relation` CANNOT make a neutral faction hostile — 2026-08-27, BUILD
 
 **Symptom.** `jawa/set_faction_relation {faction, kind:"Hostile", goodwill:-100}` returns
@@ -690,6 +733,13 @@ though the window was ignoring the mouse. Verify on `get_ui_state` afterwards:
 **Generalises to:** "the game ignores my clicks" is a WINDOW-STACK read, not a restart.
 get_ui_state first; click_ui_target goes through the UI event system, not the mouse,
 so it works where the physical cursor cannot.
+
+### 🔴 `rimworld/start_debug_game_ready` called with a `forcePause` modal on the stack killed the process
+
+2026-08-31, FOUNDRY. A `Verse.Dialog_NodeTree` (the same forcePause-modal family as above)
+sat on the window stack when `start_debug_game_ready` was called — the result was
+`ConnectionResetError`, the RimWorld process gone, clean log, one occurrence, not isolated
+further. **Clear dialogs with `jawa/window_list_close` before starting a map**, never after.
 
 ## get_cell_info returns empty things + terrain None while the thing verifiably exists (2026-08-29)
 
@@ -809,6 +859,13 @@ The tool did report `ok:false` and `success:false`; nobody read the field.
 
 **Generalises to:** any bridge write whose result carries a `was`/`now` read-back —
 assert on the read-back, not on `success`, and not on the absence of an exception.
+
+**Confirmed again 2026-08-31, FOUNDRY.** A script that read only `success` fired
+`jawa/set_faction_relation kind=Hostile` at seven factions and had all seven silently
+substituted — the tool had already answered `success: false` and *"⚠️ READ-BACK DOES
+NOT MATCH THE REQUEST — the engine overrode it"* every time, with `kind {was, now,
+asked, ok:false}` right there. **It is not a silent no-op — it is a refusal the caller
+did not read.**
 
 ---
 

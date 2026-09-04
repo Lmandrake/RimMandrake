@@ -177,6 +177,22 @@ warning; a file the generator cannot touch is a fix.
 the guard reporting a real difference — the honest response is to find out what the
 12 are, not to lower the bar to get a build out.
 
+## 6c. 🔴 The registry entry is not a backup — verify the frozen artifact ITSELF still exists
+
+Measured (BENCH, 2026-08-29): the frozen OFFICIAL capture directory was deleted out
+from under its own registry entry, and nothing noticed until `refresh.py` reported
+**REPLACED** — the tool that reads the registry has no way to know the thing it
+points at is gone until it goes looking for a fresh capture instead.
+
+**A registry line records that a freeze happened, not that the frozen thing is still
+there.** `.keep` only protects a directory while the directory exists — it does not
+recreate it, and does not alert anyone when it is gone.
+
+⇒ **At session start, check the frozen artifact's directory (or file) is actually
+present on disk — not just that its registry entry says `frozen: true`.** The
+registry and the artifact can silently diverge, and the registry keeps answering as
+if nothing happened.
+
 ## 7. Candidates in this repo
 
 | artifact | state |

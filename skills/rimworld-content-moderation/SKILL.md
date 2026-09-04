@@ -196,6 +196,37 @@ looked like it might make Core's camel shearable — a real functional change to
 vanilla. It turned out to belong to the mod's own camel. Verify; do not assume
 either way.
 
+## 🔴 Biome-cast and ecosystem patches cannot ride a reduced mod list
+
+Self-contained content — a weapon, a creature, a building, a weather event —
+degrades gracefully on a trimmed mod list, so a rapid-minimal preview genuinely
+previews it. **A biome cast, fauna cast or animal-tolerance patch does not**,
+because it wires cross-references into a live donor set, and two independent
+failure paths turn one missing donor into a dead map:
+
+- **`BiomeDef.ConfigErrors()` throws NRE on an unresolved `BiomeAnimalRecord` /
+  `BiomePlantRecord`** — a biome-cast entry pointing at a creature or plant the
+  current mod list does not supply. This is not a graceful no-op: it breaks MAP
+  GENERATION entirely. Measured on the bench tier 2026-09-02: 399 cross-ref
+  failures, mapgen died.
+- **`BiomeDef.CommonalityOfAnimal`'s cache build —
+  `cachedAnimalCommonalities.Add(wildAnimals[i].animal, ...)` — has no null
+  check.** A SINGLE unresolved cross-ref anywhere in a biome's `wildAnimals` list
+  throws `ArgumentNullException` the first time anything asks that biome for a
+  commonality, breaking every mapgen path that touches it
+  (`BIOME_CAST_REFS_BREAK_MAPGEN_1`, 2026-09-02, FOUNDRY).
+
+⇒ A biome-cast patch mixing many donor mods into one unconditional `Replace` is a
+live grenade against any future donor retirement — **gate each donor's entries
+behind their own `MayRequire`**, so retiring one donor cannot orphan another
+donor's entries sitting in the same list.
+
+⇒ **FORWARD RISK before retiring any donor mod** (Biomes!, Alpha Animals,
+GeneticRim, …): local mapgen — settlement and quicktest maps, which generate
+even under a frozen world — breaks unless biome-cast refs to the retired
+creatures are scrubbed FIRST. "All its animals are cut" (below) is not the same
+audit as "nothing still cross-references it from a biome cast".
+
 ## Traps that make a cut do nothing, or break the game
 
 - 🔴 **Cutting a weapon can empty a `weaponTag`, and a pawn kind whose only tag

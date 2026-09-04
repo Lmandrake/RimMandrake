@@ -98,7 +98,7 @@ loads under the same name; only its location moved.
 | `calibrating-binary-formats` | Decode an opaque binary or packed numeric format by making the producing application print its own value for a record you can… |
 | `deciding-and-superseding` | Issuing a ruling that survives contact with other agents — recording a decision so it is executable, propagating it into every… |
 | `editing-images` | Modifies an existing image with a text prompt by attaching it to Codex's built-in $imagegen tool, then verifies what actually… |
-| `efficient-subagents` | Decide whether to spawn a subagent, and how to scope, feed and bound it so it returns 1-2k tokens instead of flooding the parent.… |
+| `efficient-subagents` | Decide whether to spawn a subagent, and how to scope, feed and bound it so it returns 1-2k tokens instead of flooding the parent |
 | `frozen-artifacts` | Protect a file that holds a human's decisions from the generator that would silently regenerate over it — and, more often, decide… |
 | `generating-images` | Generates raster images from a text prompt by driving the Codex CLI's built-in $imagegen tool, then retrieves, inspects and… |
 | `generating-rimworld-sprites` | Produces RimWorld-ready sprite art that matches an existing reference asset — correct canvas, real alpha, silhouette inside the… |
@@ -109,16 +109,17 @@ loads under the same name; only its location moved.
 | `rimworld-content-moderation` | Deciding what content stays in a RimWorld campaign out of a large mod stack — building contact sheets of real sprites straight… |
 | `rimworld-debug-testing` | Testing anything in RimWorld without spending a cold load — starting and destroying throwaway dev quicktest colonies through the… |
 | `rimworld-deploy` | Writing a file is not deploying it — RimWorld loads C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods\<ModName>, never… |
-| `rimworld-ideoligion` | Design, author, validate and judge RimWorld ideoligions. There is no IdeoDef — an Ideo is a runtime object, and the only XML… |
-| `rimworld-load-round` | How to spend a RimWorld cold load — and how to stop needing one. A 13-mod minimal list loads in 22 SECONDS against ~25 minutes on… |
+| `rimworld-ideoligion` | Design, author, validate and judge RimWorld ideoligions |
+| `rimworld-layout-layers` | Assess a RimWorld structure on its INDEPENDENT LAYERS - power circuits, mod pipe networks (Helixien gas, chemfuel, deepchem… |
+| `rimworld-load-round` | How to spend a RimWorld cold load — and how to stop needing one |
 | `rimworld-modding` | Author, patch, validate and debug RimWorld mods — XML PatchOperations, custom Defs, C#/Harmony assemblies, def inheritance that… |
-| `rimworld-quests` | Design, author, validate and debug RimWorld quests. A quest is a QuestScriptDef whose node tree runs ONCE at offer time and… |
-| `rimworld-savegame` | Reading, grepping and editing a RimWorld `.rws` savegame — plain XML plus base64/raw-DEFLATE map grids of 2-byte def shortHashes.… |
+| `rimworld-quests` | Design, author, validate and debug RimWorld quests |
+| `rimworld-savegame` | Reading, grepping and editing a RimWorld `.rws` savegame — plain XML plus base64/raw-DEFLATE map grids of 2-byte def shortHashes |
 | `rimworld-scenario-building` | Authoring a RimWorld scenario and the game-creation settings around it — ScenarioDefs, .rsc scenario files, ScenParts, Custom… |
 | `rimworld-start-prep` | Getting the mod list and load order into the state you actually intend BEFORE RimWorld launches — the three uncoordinated writers… |
-| `rimworld-world-editing` | Drive RimWorld's WORLD screen from the bridge - the planet map at Page_SelectStartingSite, after a world is generated and before… |
-| `rimworld-xenotypes` | Authoring, moving, spawning and debugging RimWorld xenotypes and the genes that give them a face. A XenotypeDef is a list of gene… |
-| `verify-before-you-escalate` | Run the one command that settles a written claim before acting on it, escalating it, or raising an alarm about it. Use when a… |
+| `rimworld-world-editing` | Author RimWorld's PLANET from the bridge - tiles, biomes, elevation, rivers, roads, mutators, landmarks, named regions and… |
+| `rimworld-xenotypes` | Authoring, moving, spawning and debugging RimWorld xenotypes and the genes that give them a face |
+| `verify-before-you-escalate` | Run the one command that settles a written claim before acting on it, escalating it, or raising an alarm about it |
 <!-- doc_roster:END -->
 
 ⚠️ **Editing `skills/<name>/` is not shipping it.** Claude Code installs from a

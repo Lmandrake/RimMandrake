@@ -170,3 +170,17 @@ first, and let it decide which record you calibrate on.
 Fahrenheit would have handed you a wrong bias with total confidence. Check the display
 units and the display rounding before treating a screen number as ground truth — "6.7"
 is one decimal place, so it constrains the decode to ±0.05, not exactly.
+
+## 8. 🔴 A calibration rots when its SOURCE legitimately grows
+
+A calibration anchored today is not anchored forever. The rimplace known-answer
+contract check was correct the day it was written — anchored against the companion
+tool's parameter set as it stood then. When the tool later grew a new parameter, the
+calibration was not touched in the same change, and the contract check quietly kept
+reporting **UNMEASURED** for a full day before anyone connected the two.
+
+⇒ **A calibration and the thing it calibrates are one change, not two.** Whenever a
+companion tool, API or format gains a field or parameter, update the calibration
+that anchors it in the SAME commit — never as a follow-up. "The calibration still
+passes" means nothing until you have checked it still covers the *current* parameter
+set, not the one it was written against.

@@ -225,6 +225,19 @@ echoes the request either way and never says it was overridden.**
 ⇒ **Census the ARRIVALS.** `jawa/list_pawns` before and after, diff the ids, group by `factionName`.
 A raid test that reads `resolved` has not verified which faction raided.
 
+## 🔴 `executed: true` with nothing spawned can be a MODAL DIALOG a mod pushed instead of the action
+
+A bridge call reporting `executed: true` with no arrivals is not proof the incident engine
+ran and chose zero — it can be a mod's own modal swallowing the call instead. Diff
+`jawa/window_list_close` across the call before theorising about the engine
+(`SIX_FACTIONS_NEVER_RAID_1`: cost days, and a per-world saved cooldown made the symptom
+flip between sessions).
+
+✅ **Fixed at the tool.** `jawa/fire_raid`, `jawa/fire_incident`, `jawa/storyteller_fire` and
+`jawa/raid_shape_fire` now diff `Find.WindowStack` by `Window.ID` across the firing and
+return `windowsOpened[]` + `blockedByDialog`; `success` is `executed && !blockedByDialog`.
+**Read `blockedByDialog` before `executed`** (`FIRE_RAID_REPORTS_MODAL_1`).
+
 ## 🔴 `rimworld/set_time_speed` — reports the speed it set, and the game stays PAUSED
 
 Measured 2026-08-26, quicktest map, no window forcing pause.
@@ -249,6 +262,11 @@ a few real seconds. A speed that "was set" is not a game that is running.
 `{ticks: 600}` → `status completed, completedTicks 600`, and `ticksGame` 5696 → **6296**. It is one
 tick per Unity frame, so ~3 000 ticks is a few seconds of wall clock — budget for it, but it actually
 advances the simulation. Any test that needs time to pass should use it, not the speed control.
+
+✅ **`jawa/set_game_speed` actually moves time and is the other reliable route** — ticks +177
+over 3 real seconds at Normal, 0 when Paused (2026-08-30, FOUNDRY). Prefer it over
+`rimworld/set_time_speed` above; verify either one by tick DELTA across wall-clock, never the
+return value.
 
 ## 🔴 `jawa/list_pawns` — `job` and `drafted` are ALWAYS null
 

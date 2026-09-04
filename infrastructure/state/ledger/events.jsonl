@@ -4472,3 +4472,8 @@
 {"seat":"BENCH","event":"close","id":"FLUID_CANAL_FLOOD_LIVE_CHECK_1","sha":"c4edccb5","ts":"2026-09-04T20:08:29Z"}
 {"seat":"BENCH","event":"close","id":"CORRECT_FLUID_CANAL_1","sha":"c4edccb5","ts":"2026-09-04T20:08:30Z"}
 {"seat":"BENCH","event":"note","id":"FLUID_CANAL_DEBUG_SURFACE_1","text":"BENCH 2026-09-04 (c4edccb5): jawa/type_probe built+run live — FluidCanalsDebugActions IS in GenTypes.AllTypes (identity match, attrs resolve, isAllowedNow=true) in the SAME load where the host tree search returns 0 for canal/RMFluidCanals; jawa/debug_actions (AllTypes walker) finds both. Loss pinned to the cached debug TREE build, not registration/state gates. Also refuted offline: ReflectionTypeLoadException fallback (0 unfiltered log hits). Live-check unblocked via canal_dig/canal_cell_report bypass; criteria 1+2 here still open.","ts":"2026-09-04T20:08:31Z"}
+{"seat":"BENCH","event":"seat","state":"ready","ts":"2026-09-04T20:12:02Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"live-verify WorldObject_Inhabited MapParent rebase, INHABITED_SETTLEMENT_MAPPARENT_GAP_1","ts":"2026-09-04T20:18:49Z"}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"FOUNDRY","ownerSaid":"When bridge is available go ahead and reboot. That should just be known at this point.","ts":"2026-09-04T20:19:40Z"}
+{"seat":"FOUNDRY","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-09-04T20:20:14Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","ownerSaid":"When bridge is available go ahead and reboot. That should just be known at this point.","ts":"2026-09-04T20:20:20Z"}

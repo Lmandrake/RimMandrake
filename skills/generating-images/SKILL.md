@@ -199,6 +199,15 @@ Three lines. If it does not fit, the item is really two items.
 - **The consumer is stale.** The generation succeeded and the reviewer opened
   the previous file at the same path. Give the full path and its mtime with the
   hand-off.
+- **The auto-detected key matches banked alpha, not the flat background.** On two
+  mockups banked WITH alpha, the border pixels sampled as transparent BLACK, so
+  `chroma_key.py`'s auto-detect took that as the key and keyed out every dark pixel
+  of the subject. The validator reported **0 REJECT** — it only measures the
+  output's shape, not whether the subject survived. Only a contact sheet, looked
+  at, showed the wreckage (AbyssalColo and ElderSando washed out beside solid
+  siblings). Detection for this case was added in `build_sea_facings.py`
+  (`f66246a7`) — check whether the border sample is already transparent before
+  trusting an auto-detected key on art that may already carry alpha.
 
 ### Worked example
 

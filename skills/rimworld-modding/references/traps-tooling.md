@@ -66,6 +66,32 @@ What goes in, and what does not: `references/traps.md`.
 
 ---
 
+### A repo-wide rename pass cannot touch a generator that BUILDS the string it should have renamed
+**Symptom:** a naming-scheme migration text-replaces every defName/namespace
+LITERAL across the repo, validates clean, and looks complete — but
+`gen_droidworks_defs.py` kept emitting the pre-migration prefix, a stale bare
+namespace (twice) and a stripped defName, from a source file the sweep had
+already "migrated." Four separate drifts in one generator, found only because
+someone eventually re-ran it.
+**Cause:** the sweep matches literal occurrences of the old string. A generator
+that **concatenates** it — `"DW_Race_" + orig`, a namespace built from a prefix
+constant plus a suffix — has no literal old-prefix string sitting next to the
+migrated one for the sweep to catch; the code silently falls out of sync with
+its own already-migrated output, and nothing notices until the generator
+actually runs again.
+**Fix:** after any repo-wide rename pass, **grep every code generator for the
+old prefix/namespace/path separately from the XML sweep** — a generator is a
+distinct search target, not covered by sweeping the defs it produces. Prove the
+fix by **regenerating and diffing the output to empty against HEAD**, not by
+reading the generator's source: reading the code confirms the string is
+right-looking, not that the emitted defs match.
+**Recurs when:** any migration, rename or reformat pass over a repo that also
+contains code which builds the migrated strings at runtime — templates, string
+formatting, path concatenation. The XML/data sweep and the generator-code sweep
+are two different jobs and must be run and verified separately.
+
+---
+
 ### The def dump is `{defType, defs, count}`, not a bare list
 **Symptom:** `for d in json.load(open('ThingDef.json'))` yields string keys; `isinstance(d, dict)` is always False and the index comes out empty.
 **Fix:** index `raw['defs']`. `statBases` and `description` are absent from the dump by design.

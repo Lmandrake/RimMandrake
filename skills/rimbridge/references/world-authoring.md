@@ -63,6 +63,14 @@ trunk on a hand-made planet is anomalous against the engine's own generator.
 must reach a sea; low-accumulation rivers may die in playas and salt pans. `world_lint`
 floods river components and judges each by its largest def.
 
+## `jawa/world_map_mode` — a screenshot taken on the call's return photographs the OLD mode
+
+A `MapModeFramework` planet view mode is switched by
+`MapModeComponent.Instance.RequestMapModeSwitch(mapMode)`, and `jawa/world_map_mode` now
+drives it. The switch only sets `regenerateNow` — the border mesh rebuilds later in the
+render loop, so a `take_screenshot` fired right on the call's return still shows the
+previous mode. Give the render loop a beat (or step a frame/tick) before capturing.
+
 ## Things worth knowing
 
 * **Layers come from the SCENARIO** (`ScenPart_PlanetLayer`), not worldgen params. A

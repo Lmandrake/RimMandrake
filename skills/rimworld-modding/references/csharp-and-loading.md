@@ -153,6 +153,24 @@ serialise through `ExposeData` and travel with the save file. Static fields do
 not, and a static that survives a save/load boundary is a bug waiting for a
 second colony.
 
+### Two more silent-absence traps, this time on `Building`
+
+**`BuildingBase` never sets `tickerType`, so it defaults to `TickerType.Never`.**
+Any custom `Building` whose mechanic lives in `Tick()` or `CompTick()` is
+**silently dead** — no error, comps present, fields correct, nothing ever runs.
+Measured: a pit trap's mass-sum trigger did not fire across 200 ticks with an
+immobilised pawn standing on it. Add `<tickerType>Normal</tickerType>` (or
+`Rare`/`Long` if the mechanic can tolerate it) to the def, and prove the fix by
+testing the real tick path over real ticks — not by a forced debug call, which
+proves only that the method itself is reachable.
+
+**To make a `Thing` re-run its own `Print()`, dirty `MapMeshFlagDefOf.Things`**
+(what `Verse/Thing.cs DirtyMapMesh` uses). `MapMeshFlagDefOf.Buildings` dirties
+the linked/buildings mesh layers instead, so the old print stays on screen
+**forever, with no error** — a terrain-mimic cover looked completely
+unimplemented because of one wrong flag. The two `MapMeshFlagDef`s are not
+interchangeable even though both sound like "redraw this building."
+
 ---
 
 ## 5. Harmony

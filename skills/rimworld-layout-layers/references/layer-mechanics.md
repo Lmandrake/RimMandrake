@@ -106,6 +106,11 @@ disables with `"MessageMustBePlacedOnSubstructure"`. Also gated on it:
 `Building_GravEngine.ValidSubstructureAt`, `CompGravshipThruster.IsBlocked`,
 `PlaceWorker_BuildingsValidOverSubstructure`, `PlaceWorker_InvalidOverSubstructure`.
 
+🪤 **`CompFacility` links form ONCE, at the facility's spawn, and never retry.**
+A gravship thruster whose exclusion zone touches substructure at spawn time
+stays permanently unlinked even after the zone later clears — the link is not
+re-evaluated, so waiting fixes nothing. Destroy and rebuild the thing. (2026-08-28)
+
 **Bare vs covered, testably:** `TerrainDef.layerable` decides whether a new top
 terrain preserves the old into `underGrid`; `TerrainDef.isFoundation` marks the
 foundation layer; `IsFloor` / `IsCarpet` separate constructed floors from bare

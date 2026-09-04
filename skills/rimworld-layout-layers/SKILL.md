@@ -291,6 +291,14 @@ project's instrument register exists to catch.
   "sealed" nursery that tracked outdoor temperature to the decimal.
   🔑 **Always read `room_get.openRoofCount` after the first tick**, never the
   roof writer's own count.
+- 🪤 **`jawa/set_substructure_batch` reports `success` + `cellsFailedVerify: 0`
+  while silently skipping every cell whose floor already wrote under-terrain**,
+  and is silently refused outright on floor terrain. The writer's own count is
+  not evidence: read the foundation back — count `isSubstructure` via
+  `jawa/get_terrain_layers` against the rect. Measured: AncientConcrete ruins
+  left 75/400 gravship pad cells bare, every one reading "Not connected to grav
+  engine". Recovery: `jawa/set_terrain_layer` `layer=removeTop`, then `set`,
+  then re-floor / repaint the holes to `Soil`. (BENCH 2026-08-28/29)
 - 🪤 **A heat wave is the cheap way to make a hot tile**, and temperature
   results must be read at *equilibrium*. **Two in-game hours (~5,000 ticks) is
   enough** — owner, 2026-08-26. Longer runs buy nothing and start throwing quest

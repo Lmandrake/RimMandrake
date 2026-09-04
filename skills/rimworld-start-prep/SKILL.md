@@ -295,6 +295,24 @@ dozens of phantom missing mods.
 
 ---
 
+## 4a. A packageId rename leaves every SAVED mod list a landmine
+
+A rename does not just touch the LIVE `ModsConfig.xml` — it invalidates every list
+saved as a snapshot: `ModsConfig.FULL.LATEST.xml`, `ModsConfig.MINIMAL.xml`, and
+RimSort's own `dbs/userRules.json` + `dbs/ignore.json`. Each of these is a bare id
+list, and 🔴 **RimWorld drops an unrecognised id at startup silently — the
+`activeMods` COUNT never changes.** A script that compares counts (§7's
+verification, or `modlist_swap.py --status`) reads UNRECOGNISED, the exact same
+word it uses when the owner adds a genuinely new mod. A count cannot tell a
+rename apart from an addition, and the dropped mod's content simply does not
+load — no error, no red text.
+
+**Resolve every id in every saved list against every installed `About/About.xml`
+packageId**, not just the live file, after any rename. Measured 2026-08-31,
+FOUNDRY, `RENAME_VERIFY_WINDOW_1`.
+
+---
+
 ## 5. The safe ordering
 
 Follow this and none of the above can bite. The ordering exists because each step

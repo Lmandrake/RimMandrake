@@ -108,7 +108,7 @@ RimWorld's own `Set terrain (rect)` and `Clear area (rect)` still return
 | `jawa/set_terrain_batch` | **many rects in one call** — this is the one a generator uses |
 | `jawa/get_terrain_batch` | **read many cells in one call**, answering in the same ops grammar `set_terrain_batch` accepts — so a capture replays straight back as a restore |
 | `jawa/spawn_batch` | **many things in one call**. Routes filth through `FilthMaker` (which declines cells whose terrain refuses filth) and everything else through `GenSpawn` |
-| `jawa/destroy_batch` | **the first working direct destruction primitive.** Filter by category — `Plant`, `Item`, `Filth`, `Building`, `All`. **Never destroys pawns**, whatever you pass |
+| `jawa/destroy_batch` | **the first working direct destruction primitive.** Filter by category — `Plant`, `Item`, `Filth`, `Building`, `All`. **Never destroys pawns**, whatever you pass. ⚠️ **Also reports success and changes NOTHING on `hitPoints:-1` buildings** (e.g. `AncientHeatVent`) — same dead route as `jawa/damage` below; use `execute_debug_action {"path": "Actions\T: Destroy"}` with `x`/`z`, then verify via `get_cell_info`'s `cell.things`. 🔴 **On stuffed walls it drops the full material leavings as ground items** (37 MegaBone hull cells → 217 Steel stacks) — a silent colony-wealth injection that skews raid points; sweep items after any structural demolition (2026-08-28) |
 | `jawa/set_plants` | plant vegetation at a chosen growth stage; a refused cell reports why |
 | `jawa/refresh_rect` | dirty the map mesh over a rect **without painting**. Paint many rects with `refresh=false`, then dirty the region once |
 
@@ -116,12 +116,12 @@ RimWorld's own `Set terrain (rect)` and `Clear area (rect)` still return
 
 | tool | use |
 |---|---|
-| `jawa/list_pawns` | every pawn on the map — **hostiles and animals too**, not just colonists. `rimworld/list_colonists` and `ResolvePawn` are player-side only |
+| `jawa/list_pawns` | every pawn on the map — **hostiles and animals too**, not just colonists. `rimworld/list_colonists` and `ResolvePawn` are player-side only. 🔴 **NRE'd** (`success:false`, "Object reference not set") on a fresh `start_debug_game_ready` map, both whole-map and rect-scoped, while `rimworld/list_colonists` answered fine — do not read an empty pawn list from it as "nothing spawned" (2026-08-30, FOUNDRY) |
 | `jawa/clear_ui` | 🔴 **call this before EVERY screenshot.** The Debug log window covers the centre of the screen — exactly where `jump_camera_to_cell` puts the subject — so a shot taken without it photographs the log, not the map. All twelve art screenshots of the 2026-08-14 session were lost to this and had to be re-shot. Closing the log by hand does not hold: auto-open-on-error reopens it. `rimbench.core.look()` calls it automatically |
 | `jawa/list_things` | **the ThingID of a non-pawn** — the id `jawa/damage thingId=`, `jawa/order_pawn targetId=` and the destroy tools all demand and nothing else could produce. Filter by `defName` (comma list), `rect` or `group`. 🔴 **A zero is a filter result, not an empty map**: read `scanned` beside it, and `countMatched` beside `countReturned`. Before this, the only source of a ThingID was a human clicking the object, and the `NoPathToPilotConsole` v1 gate was SKIPPED on 2026-08-14 for exactly that |
 | `jawa/get_def` | a def **as the game resolved it**, after patches and parent inheritance: `statBases`, comps with class names, and the mod that supplied it. The offline dump serialises none of that and has produced two wrong conclusions. 🔴 **Any question of the form "does this def have X" is a LIVE question** — a mod restamps defs at load and nothing about that is visible in the XML: `GravEngine` carries `CompProperties_Power` / `CompPowerPlantGravEngine` that `Buildings_Gravship.xml` does not show, so "none of these need power" was wrong off a clean grep. Use the disk for structure and names only. ⚠️ The reader is **blind to properties and privates** — `Scalars()` enumerates `Public \| Instance` **fields** only, so `BiomeDef`'s `wildAnimals`, `pollutionWildAnimals` and `diseases` (private) and `AllWildAnimals` (property) are invisible, and a requested field comes back `"(no such field)"` whether it is misspelled or merely unreachable. Check the instrument can SEE a field (`meta.py <Type>` in `ilprobe`) before calling a conclusion "judged from def fields" |
-| `jawa/drain_log` | recent log messages. `effects.logs` structurally cannot see anything logged **during `step_game_ticks`** |
-| `jawa/damage` | graduated damage to **anything, including hostiles**, via `Thing.TakeDamage`. The debug menu's `Apply damage...` is inert and player-side only. ⚠️ **`amount` is a request, not a result** — a single instance is capped by the body part it hits plus armour, so `amount=400` landed as `totalDamageDealt: 32.0` and the pawn lived. Read the delivered quantity back, and for cleanup loop until `dead`/`destroyed` with exhausted attempts as a loud failure |
+| `jawa/drain_log` | recent log messages. `effects.logs` structurally cannot see anything logged **during `step_game_ticks`**. ⚠️ **`contains` returned a STALE first message on every call** — per-action log capture was wrong three times running. Read `effects.logs` off the **mutating call's own response** instead; it is per-call and correct (2026-08-30, FOUNDRY) |
+| `jawa/damage` | graduated damage to **anything, including hostiles**, via `Thing.TakeDamage`. The debug menu's `Apply damage...` is inert and player-side only. ⚠️ **`amount` is a request, not a result** — a single instance is capped by the body part it hits plus armour, so `amount=400` landed as `totalDamageDealt: 32.0` and the pawn lived. Read the delivered quantity back, and for cleanup loop until `dead`/`destroyed` with exhausted attempts as a loud failure. ⚠️ **Reports success and changes nothing against `hitPoints:-1` buildings** — use `execute_debug_action {"path": "Actions\T: Destroy"}` with `x`/`z` instead. ⚠️ **A pawn inside a `ThingOwner` (carried, in a container) is not on the map** — `jawa/damage` answers *"No thing with id X on this map"*; reach it another way (2026-08-30, FOUNDRY) |
 | `jawa/spawn_pawn` | a pawn **in a chosen faction** — `player` \| `hostile` \| `none` \| a FactionDef. The debug menu always spawns player-side, which is how a "hostile" test ends up standing in your colony. `xenotype` forces a XenotypeDef **at generation time** via `PawnGenerationRequest.ForcedXenotype`, which `PawnGenerator` checks first and returns on, so it beats the kind's and the faction's own rolls. ⚠️ **Never pass `"hostile"`** — it resolves by `FirstOrDefault` and lands on Insect/Hive, where a humanlike pawn throws inside `PawnGenerator.GeneratePawn` (*"Humanlike pawn X was added to non-humanlike faction hive"*) and looks like an intermittent unrelated failure. Name the FactionDef |
 | `jawa/list_factions` | every faction on the world, hidden ones included. Read `countAllIncludingHidden`, **never** `countReturned` — `includeHidden` defaults false and the visible subset read 34 against a true 54 |
 
@@ -246,6 +246,19 @@ mesh dirtying and region dirtying.
 
 For speed on a big batch, wrap the spawn loop in `regionAndRoomUpdater.Enabled = false` and
 `using (map.pathing.DisableIncrementalScope())`.
+
+## 🔴 `jawa/map_drop` targeting the CURRENT map crashes the whole process
+
+Measured 2026-09-01, FOUNDRY. `map_drop` on a map with active colonists and jobs
+running — the CURRENT map — crashed RimWorld outright instead of switching
+`CurrentMap` to whatever is left, which is exactly what its own doc promises
+("switches CurrentMap to whatever is left"). That promise was only ever tested
+on a disposable quicktest map with an idle/fresh colony, not a busy one.
+
+⇒ **No safe path exists yet** for reading a NON-current generated map's contents
+either — `jawa/list_things` and siblings only ever answer for `Find.CurrentMap` —
+so dropping the busy current map to force a switch is not a workaround. Treat
+`map_drop` as tested only for an idle/fresh map with nothing running on it.
 
 ## ⭐ Prefabs — copy and paste regions of map
 

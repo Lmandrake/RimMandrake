@@ -119,6 +119,28 @@ everything that failed above was *writing*. The measured pool, its ranking, and 
 abstention clause that removes most fabrication are in
 `research/FANOUT_WORKER_EVALUATION.md`.
 
+## Long-running and background subagents
+
+🔴 **A subagent given a long-running command can deadlock waiting for a
+"notification" that only the parent's harness delivers.** Measured 2026-08-31: one
+delegate burned 232k tokens and 109 tool calls over 36 minutes, reported nothing,
+and twice relaunched runs the parent had already killed — after two explicit
+stand-downs. The tell is a final message like *"I'll hold here until the
+notifications arrive."* A subagent has no `Monitor`-style wakeup of its own; waiting
+silently is not a strategy, it is a hang. ⇒ **Brief delegates that THEY must poll
+their own output and report partial results.**
+
+**Two agents writing output to the same path with `>` interleaves and truncates
+it**, and the corrupted file reads as a stalled run rather than a collision. ⇒ Give
+every background run a **unique output path**, and have a process identify ITSELF
+with `readlink /proc/<pid>/fd/1` rather than trusting its own argv — a
+heredoc-launched script carries its own source text in argv, which also breaks
+pattern-matched kills (`pgrep -f <script>` can match the parent shell too).
+
+⇒ Also: **check `pgrep` / `readlink /proc/<pid>/fd/1` for duplicate work before
+assuming a slow run is just slow** — a second copy racing on the same output path is
+a more likely explanation than "it's still thinking."
+
 ## Limits that actually exist
 
 - **20 concurrent** subagents per session, then `Concurrent subagent limit

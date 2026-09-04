@@ -44,6 +44,11 @@ elsewhere:
   type X` as a **version-drift** report, not a typo: the mod predates the game,
   the value is dropped, the def loads anyway, and the instance count is the
   severity (eight of them = eight races quietly wrong). Wikis lag by a version.
+  ⚠️ That "loads anyway" is not universal: `<wildness>`/`<leatherLabel>` inside
+  `<race>` parse-fail as warnings but leave the `RaceProperties` malformed enough
+  to NRE downstream during corpse-gen `PreResolve` — which crashes the **whole
+  mod load**, not just that one def. `references/traps-xml-and-defs.md` has the
+  mechanism.
 
 When you find the ground truth, **quote its file path and the exact snippet in a
 comment at the top of the patch**, with a date. Future-you re-reads that comment
@@ -259,6 +264,16 @@ a file-wide rename of the xenotype also rewrote three `pawnGroupMakers` entries 
 an unresolvable `kind` there is **discarded at load with nothing in the log.** Name
 the xpath or parent element you are changing, then count references before and
 after: a xenotype swap touches one or two nodes, not eleven.
+
+The same blind find-and-replace also hits `<texPath>` values that happen to equal
+the old defName — a string match cannot tell "this is the identifier" from "this is
+a coincidentally-identical path." A defName rename turned `Thermal_Detonator_Thowable`
+and `ECD_Grenade_Thowable` into `RSW_*` in their own `texPath`, while the PNGs on disk
+kept the old names; both are `Graphic_Single`, so both would have rendered magenta.
+The def-level checks all passed — `texPath` is a free-text field, not a
+cross-reference, so nothing resolves it at patch time. **After any bulk rename,
+resolve every `texPath` against the files actually on disk**, not just against the
+renamed defs.
 
 **`MayRequire` and `PatchOperationFindMod` check the mod, not the def.**
 `MayRequire="VanillaExpanded.VWE"` passes as long as VWE is installed — even if

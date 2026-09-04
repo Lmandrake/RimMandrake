@@ -266,6 +266,37 @@ ones that opted out by redeclaring.
 
 ---
 
+## Invalid `RaceProperties` fields don't just get dropped — they can crash the whole mod load
+
+**Symptom:** `<wildness>` and `<leatherLabel>` written INSIDE `<race>` — plausible
+1.4-era fields, neither valid on 1.6 `RaceProperties` (`wildness` is
+`StatDefOf.Wildness` in `<statBases>`; `leatherLabel` doesn't exist at all).
+They parse-fail as ordinary `XML error: <field> doesn't correspond to any field`
+warnings, the kind `SKILL.md` §1 calls harmless version-drift. Here they were not:
+the whole mod load crashed and RimWorld auto-reset `ModsConfig.xml` to
+Core-only, logging `"Resetting mods config and trying again."`
+**Cause:** the malformed field leaves `RaceProperties` in a state that NREs
+`ThingDefGenerator_Corpses.CalculateMarketValue` during corpse-gen `PreResolve`
+— a step that runs for every race, unconditionally, while defs are still
+loading. `validate_patch.py`/offline validation cannot see it: nothing about the
+XML is malformed by its own rules, and the crash is two steps removed, inside
+implied-def generation. Only a live load surfaces it. Also found in the same
+pass: `CalculateMarketValue`'s only *unguarded* null path is
+`butcherProducts[i].thingDef` — a butcher-product def that itself fails to
+parse (e.g. a bad `HelixTellurox` shell def) NREs the identical way.
+**Fix:** validate every `<race>` field against the live `RaceProperties` field
+list before shipping, not against memory of an older version. When a load
+recovers with only Core+expansions active and no crash you caused, check the
+log for `"Resetting mods config"` first — that is the auto-recovery firing, not
+your own config write silently failing (§ traps-mods-and-managers.md has the
+matching entry for reading that state correctly). After a reset, the intended
+mod list must be rewritten before the next launch; the reset persists to disk.
+**Recurs when:** authoring or copying any `<race>` block from an older guide or
+an unresolved-version mod — a rapid minimal-list load catches this in one
+launch where the full 589-mod stack buries it in noise.
+
+---
+
 ## Every humanlike `PawnKindDef` owes `initialResistanceRange` and `initialWillRange`
 
 Omit them and the game logs, per kind, per load:

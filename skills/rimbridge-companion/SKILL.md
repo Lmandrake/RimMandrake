@@ -35,6 +35,11 @@ Guessing an API costs a build cycle; guessing a *behaviour* costs a session.
 🔴 **Never guess a defName either** — 1,225 BackstoryDefs, 2,129 ThoughtDefs, 336
 TileMutatorDefs. Read the def dump.
 
+🔑 **A near-miss existing tool beats a new one.** `jawa/get_defs` reads DefType/defName
+pairs plus reflective fields in one call, but is **SCALAR-only** — no nested list/object
+fields (a `ThoughtDef.stages` array, say). That gap is a deep-serialize upgrade to
+`get_defs`, not grounds to write a parallel tool (BENCH, 2026-09-01).
+
 ---
 
 ## 1. The cycle — about ONE MINUTE
@@ -108,7 +113,7 @@ gate `fire_incident` and `send_letter` use.
 
 ---
 
-## 3. The nine design rules, each learned by getting it wrong
+## 3. The ten design rules, each learned by getting it wrong
 
 1. 🔴 **Report refusals; never `catch {}`.** My own zone builder swallowed `AddCell`
    refusals and a 6×6 stockpile silently took 11 of 36 cells while reporting success —
@@ -140,6 +145,11 @@ gate `fire_incident` and `send_letter` use.
 9. **Avoid `jawa/` prefixes in prose inside descriptions.** `build.py` scans the assembly
    for `jawa/...` literals; a docstring saying *"the `jawa/world_*` family"* created a
    phantom tool named `jawa/world_` and the next build refused to deploy.
+10. **Test the empty-collection path, not just the happy one.** `Letter.lookTargets` is a
+    `LookTargets` CLASS field, null on any letter with no targets; `jawa/letter_list`
+    dereferenced `.IsValid` unguarded and only ever ran while the letter stack was
+    non-empty. A read tool that has not been exercised on an empty result has not been
+    tested (FOUNDRY 2026-08-30).
 
 ---
 
@@ -154,6 +164,16 @@ gate `fire_incident` and `send_letter` use.
 
 `--allow-tool-removal` exists but **verify the loss is a phantom before using it** — count
 the real `[Tool(` attributes in source first.
+
+🔑 **Two byte-scans, two different tolerances.** `verify_gm_gate` (the `--gm` check) must
+be **exact** — it matches LENGTH-PREFIXED tool names in the compiled blob, because a bare
+substring match on `jawa/fire_incident` merely MENTIONED in another tool's `Description`
+blocked every default (non-`--gm`) deploy until this was fixed (2026-08-28). Calibrate any
+such scan against a known true-positive AND a known true-negative, in both directions.
+`tool_surface()` (the tool-count census) is deliberately looser and IS an upper bound —
+it matches a name quoted in prose too — so a `==`-count check against it fails forever;
+subtract a named `PHANTOMS` set instead of widening the tolerance
+(`prove_stat_and_room.py`'s `PHANTOMS = {"jawa/revoke", "jawa/anomaly_"}`).
 
 ---
 

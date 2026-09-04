@@ -45,6 +45,39 @@ PlanetLayer/Orbit are Odyssey types. A leaner list silently has no landmarks.
 🔴 **`brrainz.rimbridgeserver` is not optional** — without it there is no bridge at all,
 however the companion DLL is deployed.
 
+### Automated sweeps across many mod-list batches: `loadsweep/`
+
+`src/RimMandrake/Utils/loadsweep/` (`gen_config.py` + `sweep_load.sh`) is a repo
+tool that runs the write-config → restart-via-Steam → poll → grep-verdicts cycle
+for you, ~60 s/cycle on the minimal list — feed it a batch file of extra
+packageIds and it launches, waits, and prints the standing failure counts
+(`config_errors`, `crossref_errors`, `patch_failed`, `typeload`, `recovery_hits`)
+without you watching the load land.
+
+⚠️ **Poll `"Bridge token:"` in `Player.log`, not the lazy JawaBench ready line.**
+JawaBench's own "ready" marker only appears on the FIRST tool call
+(`jawabench-init-line-is-lazy.md`), so waiting for it can hang a sweep forever on
+a load that is actually up. `Bridge token:` is written at bridge start and is
+the correct ready signal; `sweep_load.sh` also watches for `"Recovered from
+incompatible or corrupted mods"` as the failure terminator.
+
+⚠️ **A load stuck at 6 active mods (Core + five expansions) is RimWorld's own
+corrupted-mods RECOVERY RESET, not your config write failing.** Check the log for
+`"Resetting mods config and trying again"`. **The reset persists to disk** —
+`ModsConfig.xml` now genuinely holds 6 mods — so rewrite your intended batch
+before relaunching; retrying the same launch just reproduces the reset.
+
+🟢 **Rapid QA win: sweep the ConfigError lines on every minimal/tier load, not
+just a full one.** `Def.ConfigErrors()` runs after every patch and inheritance
+resolve and catches real bugs offline `validate_patch.py` cannot see — measured
+catching dead pawnkinds with no race (`RaceProperties` unresolved), a bad
+`forcedMiss`, and thought stages out of `minSeverity` order, all in ~2 s on a
+live load. `sweep_load.sh` already greps `^Config error in`; §8's
+`harvest_log.py --show configerror` reads the same class of line on a full load
+— read the mechanism note there (a config error means the def loaded and the
+ENGINE disapproves, not necessarily that it's wrong for our purposes) before
+filing anything this sweep surfaces.
+
 ### ⚠️ What the minimal list CANNOT do
 
 * **It cannot reproduce the 21,872-tile geometry.** `ferny.Worldbuilder` is absent, and
@@ -67,6 +100,14 @@ where you form one. Defs, `About.xml`, `ModsConfig.xml`, the workshop tree and t
 live def dump are ordinary files — reading them beats a manager's UI, and beats
 launching. If the question truly needs the running game, it goes in your queue for
 the next load, not into a launch of its own.
+
+🔴 **The same discipline runs the other way for an intermittent bug: finding an
+already-successful load in progress does NOT prove a reproducible stall is
+fixed.** `COLD_LOAD_STATIC_CTOR_STALL_1` was closed on exactly that evidence —
+then a genuinely FRESH restart, caused deliberately, reproduced the identical
+stall a 4th time (same checkpoint, same CPU-climbing-but-stuck signature).
+Intermittent bugs need a restart YOU cause, not a state you happened to inherit
+already working.
 
 ## 2. Write the decision strings BEFORE launching
 

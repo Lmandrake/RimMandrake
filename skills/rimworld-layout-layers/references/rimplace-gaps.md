@@ -55,6 +55,11 @@ exist, even though door *things* do.
 Globals: `role`, `note`, `rect`, `params`, `rng{int,chance,pick}`. That is the
 whole surface after the sandbox prelude.
 
+🪤 **There is no `rng.value()`** — only `int`, `chance`, `pick`. For a weighted
+pick, nest `rng.chance()` calls rather than reaching for a uniform-float API
+that does not exist: `if rng.chance(0.3) then A elseif rng.chance(0.5) then B
+else C end` gives roughly a 30/35/35 split.
+
 ⭐ **A template may declare its own canvas floor: `function min_rect(params) return
 W, H end`**, a global the engine looks for the same way it looks for `build`. It is
 checked BEFORE `build()` runs, so an undersized rect raises `TemplateTooSmall` with
