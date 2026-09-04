@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-04T21:52:18Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-04T22:06:07Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -350,15 +350,6 @@ target:   v1
 kind:     task
 summary:  Every load of the full 589-mod list logs the same 31 Config error in … lines
 prose:    infrastructure/state/items/LOAD_CONFIG_ERROR_SWEEP_1.md
-
-## ANTIQUITIES_TREE_BUILD_1 Build Antiquities: tree, urns, reading loop, narrative fragments (slices 1-2 first)
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  Owner-unblocked 2026-09-04 (ledger: "the expansion/review sitting the block
-prose:    infrastructure/state/items/ANTIQUITIES_TREE_BUILD_1.md
 
 ## COLD_LOAD_RUN_SHEET_3 Run sheet for the next full-list cold load - research retag proof is the first entry
 state:    doing
