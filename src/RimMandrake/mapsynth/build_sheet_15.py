@@ -67,7 +67,9 @@ MACHINES = {
     'E': [('Assembler',5,5,5),('Alloy Forge',5,5,4),('Neutro Synth',5,3,3)],
     'F': [('Medicine Granulator',5,3,4),('Machining Bay',5,5,4)],
 }
-HOT = {'B','E'}; BOOSTER=(3,1); HEATSINK=(2,2); N_HEATSINK=4; N_BOOSTER=1
+HOT = {'B','E'}  # thermal spine (booster+heatsink rects, offsets, counts) is hardcoded
+                 # inline in step 5 below — BOOSTER/HEATSINK/N_HEATSINK/N_BOOSTER constants
+                 # here were dead (unreferenced), removed
 IO = {nm: io for machs in MACHINES.values() for (nm,w,h,io) in machs}
 
 def spaced_pack(sub, rects):
