@@ -4308,3 +4308,5 @@
 {"seat":"FOUNDRY","event":"claim","id":"VANILLA_COUNT_PSEUDO_DEF_1","ts":"2026-09-03T22:44:01Z"}
 {"seat":"FOUNDRY","event":"start","id":"VANILLA_COUNT_PSEUDO_DEF_1","ts":"2026-09-03T22:44:02Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-03T22:45:38Z"}
+{"seat":"FOUNDRY","event":"file","id":"DIRTY_CODE_REVIEW_LOOP_RESTART_5","title":"resume standing code-review sweep after next agent reboot","kind":"continuity","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-04T00:06:01Z"}
+{"seat":"FOUNDRY","event":"supersede","id":"DIRTY_CODE_REVIEW_LOOP_RESTART_4","by":"DIRTY_CODE_REVIEW_LOOP_RESTART_5","reason":"superseded by DIRTY_CODE_REVIEW_LOOP_RESTART_5, which takes over its work","ts":"2026-09-04T00:06:01Z"}
