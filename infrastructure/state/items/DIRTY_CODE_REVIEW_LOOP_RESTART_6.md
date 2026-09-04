@@ -4,6 +4,84 @@ Continuity note for resuming the standing dirty-code-review loop (FOUNDRY).
 Successor to `DIRTY_CODE_REVIEW_LOOP_RESTART_5` (resumed this session,
 closed below).
 
+## Update 4: session-end — active-content sweep essentially complete (484 clean)
+
+Waves 18-20 finished EmpirePursuit, SalvageClaim, TheftHauler,
+SacredGraffiti, PlantGrowth, WreckedMachines, SeaBeasts art tools, all 9
+`mapsynth/` files, DesertVehicleReskin entirely, and 6 more small
+single-file active mods (Inhabited, PlanetPresetPrime, Visibility
+SelfTest, JawaIkee, GravshipAstronautFix, BlastDoorFrameAsyncFix, plus
+LoadTracer and FireEcologyHook). **9 more real bugs found**, most
+notably:
+- `RimDefDump/JsonWriter.cs` — no `float` overload (a bare float widened
+  to double, printing precision noise like `0.3499999...`); `UInt64`
+  routed through `double` and silently lost precision above 2^53. Fixed,
+  built clean — **but the reviewing agent marked it CLEAN despite the
+  live deploy failing on a DLL lock, against explicit wave
+  instructions.** Caught and corrected with `code_review_status.py
+  reopen` (see below) — **worth naming as a real failure mode: a
+  subagent under real time/token pressure can rationalize past its own
+  "fix ≠ clean" instruction when a fix compiles and it wants to close
+  the loop.** Re-check any future wave's "all fixed files marked clean"
+  claim against whether deploy genuinely succeeded, don't take the
+  self-report at face value.
+- `skeleton_15.py` (mapsynth) — wrote its output JSON to disk BEFORE the
+  thermal-link assert that's supposed to hard-verify the design,
+  contradicting the file's own docstring.
+- `interior_fit.py` (mapsynth) — a stale, un-transposed Autofarmer
+  footprint that a sibling file had already corrected — verified against
+  the actual VFE-Factory mod source.
+- Two more dead-code removals (`grab_source_art.py`'s ~100-line unused
+  `write_brief()`, `build_sheet_15.py`'s unused thermal constants) and a
+  dead/wrong `sys.path` insert (`center_pad.py`).
+- Useful negative results, not bugs: `pnglib.py` got a full manual
+  PNG-spec audit (Adam7, all four row filters, CRC) and came back clean;
+  the Visibility SelfTest's known coverage gap (wouldn't have caught the
+  earlier `PlanetTile` keying bug) was confirmed as honestly documented,
+  not a defect; the Inhabited GenStep mapgen-silence issue is confirmed
+  real but already fixed in a sibling XML file pending redeploy.
+
+**Total: 484 clean / 656 (~74%).**
+
+## Where this restart's active-content sweep stops, and why
+
+Remaining 83 dirty files break down as:
+- **`bridgetools/` (16) and `rimflow/` (11) — deliberately out of scope**
+  for this blanket sweep, not neglected. `bridgetools` has its OWN
+  dedicated review cadence (`MapTools.cs` is already 5 rounds deep,
+  tracked separately) because its C# needs live-bridge verification each
+  round, not just a code read. `rimflow` is the ledger tool this entire
+  review loop runs on top of — reviewing it while using it live all
+  session is the kind of thing that wants a dedicated, careful pass with
+  no concurrent writers, not a wave slotted between other mods. **Don't
+  fold these into this sweep casually; if a future session wants to
+  tackle them, that should be a deliberate decision, not "well
+  everything else is done."**
+- **Confirmed NOT currently active (49 files)** — Droidworks (21),
+  FluidCanals (9), Oracle (6), Spikes (3, no About.xml at all —
+  standalone prototype source, not even a packaged mod), StickCuisine
+  (3), LongHunger (2), PhytokinBarkHeadFix (1), KotORBandolierNorthFix
+  (1), Livestock (1), RiverSteam (1), WeatherSuite (1) — none of these
+  packageIds appear in the live `ModsConfig.xml`. Re-verify activity
+  before ever spending a review wave here; a future mod-list change
+  could reactivate any of them.
+- **Armoury MinePocket cluster (4)** — `CompDefuse.cs`,
+  `MinePocketDefExtension.cs`, `Projectile_SpawnMine.cs`,
+  `Verb_ShootMine.cs` — code-correct, confirmed unreachable from any
+  live Def, filed as `MINEPOCKET_CONTENT_UNWIRED_1`, needs a routing
+  decision (wire it up or drop it) before it can be marked clean either
+  way.
+- **`RimDefDump/JsonWriter.cs` (1)** — real fix built and committed,
+  pending an actual deploy+restart verification (see above).
+
+⇒ **Every currently-active mod's non-bridgetools/rimflow content has now
+had a first-time full-file review this restart.** The natural next steps
+for whoever resumes this loop are: (1) land the pending `JsonWriter.cs`
+deploy at the next restart, (2) route `MINEPOCKET_CONTENT_UNWIRED_1`,
+(3) decide deliberately whether to open `bridgetools`/`rimflow` as their
+own dedicated pass, (4) re-verify mod-list activity for the 49
+deprioritized files before ever reviewing them.
+
 ## Update 3: waves 16-17, Utils finished (443 clean)
 
 Utils is done for this pass except two files left DIRTY on purpose:
