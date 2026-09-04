@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-04T02:07:20Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-04T02:10:34Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -60,14 +60,4 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## ANOMALY_EXCEPTION_ACCESS_1 The sarlacc/Assailant exception needs a non-research route before the Anomaly cut ships
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  🔑 The content was never cut (owner, 2026-09-03): "I did not cut the anomaly
-prose:    infrastructure/state/items/ANOMALY_EXCEPTION_ACCESS_1.md
+_none._
