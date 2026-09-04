@@ -89,6 +89,11 @@
     "date": "2026-09-03",
     "sha": "f9da3de0"
   },
+  "src/RimMandrake/Graffiti/Source/ModExtension_Graffiti.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "a6c78782"
+  },
   "src/RimMandrake/Graffiti/Source/RMGraffitiDefOf.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -498,6 +503,11 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "8a24dcd7"
+  },
+  "src/RimMandrake/StructureInjections/Source/RimplacePlan.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "a6c78782"
   },
   "src/RimMandrake/StructureInjections/Source/StructureInjectionsDebugActions.cs": {
     "cleanCount": 1,
@@ -1267,6 +1277,11 @@
     "date": "2026-09-03",
     "sha": "8a24dcd7"
   },
+  "src/RimMandrake/Visibility/Source/GameComponent_ColonyVisibility.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "a6c78782"
+  },
   "src/RimMandrake/Visibility/Source/VisibilityModInit.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -1552,10 +1567,40 @@
     "date": "2026-09-03",
     "sha": "359b0b2c"
   },
+  "src/RimStarWars/Armoury/Source/JumppackForMeleeAI/JobGiver_AIMeleeJumppack.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "12ad4c44"
+  },
+  "src/RimStarWars/Armoury/Source/JumppackForMeleeAI/Patch_JobGiver_AIFightEnemy.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "a6c78782"
+  },
   "src/RimStarWars/Armoury/Source/KoltoTank/KoltoTankPatches.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "ec953fe5"
+  },
+  "src/RimStarWars/Armoury/Source/MentalBreakBlocker/BlockMentalBreakCause.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "c131ce7b"
+  },
+  "src/RimStarWars/Armoury/Source/MentalBreakBlocker/ModExtension_MentalBreakBlocker.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "c131ce7b"
+  },
+  "src/RimStarWars/Armoury/Source/SecondaryMineableYield/ModExtension_SecondaryMineableYield.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "c131ce7b"
+  },
+  "src/RimStarWars/Armoury/Source/SecondaryMineableYield/SecondaryMineableYield.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "c131ce7b"
   },
   "src/RimStarWars/Armoury/Source/gen_additionalmods_absorption.py": {
     "cleanCount": 1,
