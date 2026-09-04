@@ -4,7 +4,72 @@ Continuity note for resuming the standing dirty-code-review loop (FOUNDRY).
 Successor to `DIRTY_CODE_REVIEW_LOOP_RESTART_5` (resumed this session,
 closed below).
 
-## Code-review state at handoff
+## Update: session continued past the first restart ("Keep going")
+
+After the handoff below was written, the owner said "Keep going" and the
+sweep continued into Armoury proper: waves 12-13 (34 more files, 2
+sub-waves), 6 more real bugs found/fixed, and a SECOND restart to land
+them (single-assembly `JawaArmoury.dll` this time — much lower
+attribution risk than the first restart's 4-assembly batch). Total now
+**400 clean / 656 (~61%)**.
+
+Bugs found in waves 12-13, all fixed, built, deployed, and live-verified
+this session:
+- `TCED_TryGiveJob_Patch.cs` (InstantHealingDrug) — missing null-guard on
+  a reflection field-get (`VSH_inDangerField`); would NRE on a version
+  mismatch, not currently observed but now safe.
+- `Building_KoltoTank.cs`/`CompKoltoTank.cs` — `CompProperties_KoltoTank.multiplier`
+  (2.5, from the shipped def) was never read; the tank healed 2.5x FASTER
+  than its own description promised. Now correctly scaled.
+- `FloatMenuOptionProvider_CarryToKoltoTank.cs` — `Drafted => false`
+  blocked carrying a downed ally to a Kolto Tank during combat, the exact
+  situation the building exists for. Now `true`, matching every other
+  custom float-menu provider in this repo and vanilla's own analog.
+- `MoteWeaponReturn.cs` (Spinning_Projectile) — double-integrated
+  position update (base.TimeInterval + a redundant manual add) made
+  returning-weapon motes travel ~2x too fast; also fixed two leaked-mote
+  paths (owner-lost, null-graphic) that never destroyed the mote.
+- `SpinningWeaponProjectile.cs` — documented (not fixed, unreachable) a
+  dangling `ThingDef.Named("Mote_LightSaberReturn")` reference that would
+  NRE if this projectile class were ever actually wired to a live def.
+
+**Second-restart procedure notes** (same shape as the first, see below,
+but worth recording what differed):
+- This load took much longer wall-clock than the first (~26 min vs ~5
+  min) despite being the "simple" single-assembly batch — the game-up
+  bridge-ready gate (watching for `Bridge token:`) is NOT the same gate
+  as `[JawaBench] ready: N tools` appearing in the log. The bridge's GABP
+  server can be fully up and accepting connections well before the
+  `[JawaBench] ready` line prints — **that line is lazy-initialized on
+  first tool call, not at assembly load** (matches the existing
+  `jawabench-init-line-is-lazy` lesson). A session without direct
+  rimbridge MCP tool access (this one didn't have it configured) cannot
+  force that line to appear by waiting longer — waiting for `Bridge
+  token:` is the correct, sufficient gate; do not also gate on
+  `[JawaBench] ready` unless you can actually place a tool call to
+  trigger it.
+- `harvest_log.py`'s "JawaBench ready (READ THE COUNT)" check reading
+  MISSING right after a restart is very often just this same timing
+  artifact, not a real failure — cross-check against `Bridge token:`
+  and zero `InvalidProgramException`/`TypeLoadException`/recovery-reset
+  hits before treating it as a problem.
+- **`infrastructure/state/DefDump/dump_request.txt` was left armed since
+  2026-09-02** (mode `all`) and fired a ~700MB, multi-minute full def
+  capture on BOTH restarts this session — a large, real contributor to
+  load time that has nothing to do with the code changes being verified.
+  Deleted after this restart. **Anyone arming that marker for a genuine
+  capture must delete it again afterward**, per the load-round skill's
+  own warning — it is not self-consuming and this session paid for that
+  twice before catching it.
+- A brief scare mid-load: the log went ~5 minutes with zero new lines
+  after "Finished transpiling N methods", which looked like a stall.
+  `tasklist.exe` showed climbing CPU time and RAM jumping from ~3.4GB to
+  ~17.7GB — genuine work (the def-dump capture above, confirmed via its
+  `manifest.json` and growing capture directory), not a hang. **Before
+  concluding a load is stuck, check process CPU time deltas and the
+  DefDump capture directory's growth before considering a kill.**
+
+## Code-review state at first-restart handoff (below), now superseded by the update above
 
 `infrastructure/state/CODE_REVIEW_STATUS.json`: **360 clean entries** (was
 311 at the last restart — the single biggest jump of this loop so far).
@@ -189,21 +254,27 @@ explicitly saying not to. No harm either time (no push race), but if a
 third instance happens, stop fighting it in the prompt text and just
 accept a subagent push is not actually costly here.
 
-## Next-session priority order
+## Next-session priority order (updated after the "Keep going" continuation)
 
-1. **Keep broadening into Armoury** — the largest single pool (~50 files
-   still dirty after this session's 8). Same method as always: `check`
-   before reviewing, confirm the mod is genuinely active in the live
-   `ModsConfig.xml`, watch for the recurring bug class (a Harmony patch
-   targeting a mismatched signature — this session found one real
-   instance of exactly that, in `Patch_JobGiver_AIFightEnemy.cs`, so it's
-   not a hypothetical risk in this mod specifically).
-2. **Route or file the MinePocket dead-content finding** (see above)
-   before it's forgotten — either wire `Verb_ShootMine`/
+1. **Keep broadening into Armoury** — down to ~30 dirty files after
+   waves 12-13 (was ~50). Untouched sub-features as of this update:
+   CompExtraSounds' `DefModExtension_ExtraSounds` wiring gap (noted but
+   not a bug, still worth a glance if that folder is revisited), and
+   there are still root-level `Source/*.py` files (census_turrets.py,
+   compare_ladder.py, selftest_absorption_generators.py) never checked.
+   Same method as always: `check` before reviewing, confirm the mod is
+   genuinely active in `ModsConfig.xml`, watch for the recurring bug
+   class (a Harmony patch/transpiler targeting a mismatched injection
+   point or signature — this session found TWO real instances of exactly
+   that, `Patch_JobGiver_AIFightEnemy.cs` and `MoteWeaponReturn.cs`, so
+   it is a proven, not hypothetical, risk in this mod).
+2. **`MINEPOCKET_CONTENT_UNWIRED_1` is now filed** (see item file) —
+   don't re-discover it, just route it: wire `Verb_ShootMine`/
    `Projectile_SpawnMine`/`CompDefuse`/`MinePocketDefExtension` to a real
-   Def, or open a DEAD-FILE queue item for them.
+   Def, or open a DEAD-FILE removal.
 3. Utils (39 dirty at last count, central tooling — budget `opus` for
-   anything touching deploy/rimflow internals specifically).
+   anything touching deploy/rimflow internals specifically). Still
+   untouched this whole restart.
 4. Finish the mods this session only partially touched: EmpirePursuit
    (3 files left), SalvageClaim, TheftHauler, SacredGraffiti, PlantGrowth,
    Doctrine (each has more files than the one reviewed this session).
@@ -216,8 +287,13 @@ accept a subagent push is not actually costly here.
    scripts are one-off human-run tools — confirm reachability (referenced
    by any doc/skill, or run only by hand?) before spending a review slot;
    not automatic DEAD-FILE candidates just because grep finds no importer.
-8. Scale: 656 `.cs`/`.py` files under `src/`, **360 clean (~54.9%)**.
-   Still explicitly multi-session per the owner — never claim finished.
+8. **If a next session needs to verify the KoltoTank healing-rate or
+   drafted-carry fixes in-game (not just log-verified), it needs a
+   session with actual rimbridge MCP tool access — this one didn't have
+   it configured and could only verify via the log/build/deploy chain,
+   not a live dev-spawn check.**
+9. Scale: 656 `.cs`/`.py` files under `src/`, **400 clean (~61%)**. Still
+   explicitly multi-session per the owner — never claim finished.
 
 ## Non-review state at handoff
 
