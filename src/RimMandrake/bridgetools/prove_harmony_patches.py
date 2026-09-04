@@ -71,12 +71,29 @@ def prove(s, have):
               bool(patches) and any(p.get("patchAssembly") for p in patches),
               str([(p.get("owner"), p.get("patchAssembly")) for p in patches]))
 
-    # Second call: filtered to the one method, must be a subset of the first.
+    # Second call: filtered to the one method. A `<=` compare against the
+    # unfiltered count is satisfied by a no-op filter too -- the unfiltered
+    # response always equals itself, so "methodCount did not GROW" can never
+    # catch "the filter did nothing". Assert what the filter actually claims
+    # instead: every returned row IS the requested method, the reported count
+    # matches how many rows actually came back, and (when no patch on this
+    # method exists at all) the filter narrows all the way to empty rather
+    # than silently falling back to the unfiltered list.
     r2 = s.call("jawa/harmony_patches", typeName="BiomeDef",
                 methodName="CommonalityOfAnimal")
-    check("  ...and the methodName filter narrows the result",
-          ok(r2) and (r2 or {}).get("methodCount", 0) <= (r or {}).get("methodCount", 99),
-          "methodCount=%s" % (r2 or {}).get("methodCount"))
+    methods2 = (r2 or {}).get("methods") or []
+    count_matches_rows = ok(r2) and (r2 or {}).get("methodCount") == len(methods2)
+    if target is None:
+        check("  ...and the methodName filter narrows the result",
+              count_matches_rows and not methods2,
+              "methodCount=%s (no CommonalityOfAnimal patch exists to filter to)"
+              % (r2 or {}).get("methodCount"))
+    else:
+        check("  ...and the methodName filter narrows the result",
+              count_matches_rows and bool(methods2)
+              and all(m.get("method") == "CommonalityOfAnimal" for m in methods2),
+              "methodCount=%s methods=%s" % ((r2 or {}).get("methodCount"),
+                                             [m.get("method") for m in methods2]))
 
 
 # ------------------------------------------------------------------- selftest
