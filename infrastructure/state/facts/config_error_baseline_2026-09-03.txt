@@ -1,0 +1,30 @@
+CONFIG ERROR BASELINE — full 589-mod list, 2026-09-03
+  Config error in ...            : 31  (12 ours, 19 third-party)
+  Could not resolve cross-ref    : 5
+
+OURS — ACCEPTED, do not fix (owner 2026-09-03): the Fire Ecology ash ladder
+    Config error in RSW_FE_Ash_Light: burnedDef is flammable
+    Config error in RSW_FE_Ash_Trace: burnedDef is flammable
+    Config error in RSW_FE_Ground_Gravel: burnedDef is flammable
+    Config error in RSW_FE_Ground_Sand: burnedDef is flammable
+    Config error in RSW_FE_Ground_Soil: burnedDef is flammable
+    Config error in RSW_FE_Ground_SoilRich: burnedDef is flammable
+
+THIRD-PARTY — filed for a low-priority sweep
+  x2 Config error in SignWoodenMulti: impassable, player-buildable building that can be shot/seen over.
+  x2 Config error in SignPanelWood: impassable, player-buildable building that can be shot/seen over.
+  x2 Config error in SignCairn: impassable, player-buildable building that can be shot/seen over.
+  x2 Config error in SignObelisk: impassable, player-buildable building that can be shot/seen over.
+  x2 Config error in SignSlab: impassable, player-buildable building that can be shot/seen over.
+  x2 Config error in SignPanel: impassable, player-buildable building that can be shot/seen over.
+  x2 Config error in SignNature: impassable, player-buildable building that can be shot/seen over.
+  x2 Config error in SignBillboard: impassable, player-buildable building that can be shot/seen over.
+  x2 Config error in SignRoadLED: impassable, player-buildable building that can be shot/seen over.
+  x1 Config error in Techprint_RR_lighting: description has trailing whitespace
+
+CROSS-REFERENCE FAILURES
+  x1 Could not resolve cross-reference: No Verse.ThingDef named MealSimple10 found to give to Verse.ThingDefCountCl
+  x1 Could not resolve cross-reference: No Verse.ThingDef named Chemfuel60 found to give to Verse.ThingDefCountClas
+  x1 Could not resolve cross-reference: No Verse.ThingDef named Steel75 found to give to Verse.ThingDefCountClass (
+  x1 Could not resolve cross-reference: No Verse.ThingDef named ComponentIndustrial12 found to give to Verse.ThingD
+  x1 Could not resolve cross-reference: No Verse.ThingDef named Silver120 found to give to Verse.ThingDefCountClass

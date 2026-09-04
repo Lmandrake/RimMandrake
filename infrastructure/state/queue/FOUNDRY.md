@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-04T04:48:09Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-04T04:49:12Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -483,3 +483,13 @@ kind:     bug
 thin:     spec, verify and criteria all present
 summary:  MEASURED by BENCH 2026-09-03 against src/RimStarWars/Armoury/, after the live
 prose:    infrastructure/state/items/ARMOURY_SOUND_PATHS_RSW_PREFIX_1.md
+
+## LOAD_CONFIG_ERROR_SWEEP_1 The 19 third-party config errors, with a frozen baseline so new ones are visible
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     spec, verify and criteria all present
+summary:  Every load of the full 589-mod list logs the same 31 Config error in … lines
+prose:    infrastructure/state/items/LOAD_CONFIG_ERROR_SWEEP_1.md

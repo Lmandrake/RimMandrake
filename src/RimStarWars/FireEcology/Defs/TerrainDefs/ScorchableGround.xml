@@ -2,6 +2,22 @@
 <Defs>
 
   <!--
+    🔴 EXPECTED, ACCEPTED CONFIG WARNING — owner ruled "accept", 2026-09-03.
+    Each of these four logs "Config error in RSW_FE_Ground_<x>: burnedDef is
+    flammable" on every load, because their burnedDef (RSW_FE_Ash_Trace) is
+    itself flammable — which is the whole point: ground burns to trace ash,
+    and trace ash burns onward down the ladder in AshLadder.xml (0.6 -> 0.4
+    -> 0.2 -> 0, terminating at RSW_FE_Ash_Deep). Vanilla's ConfigErrors()
+    assumes burnedDef is terminal and complains; it is advisory only and
+    never blocks the load or the mechanism.
+    ⛔ DO NOT "FIX" THIS BY ZEROING Flammability OR CLEARING burnedDef.
+    That deletes the fire ecology this mod exists to provide. Twelve log
+    lines are the accepted price. AshLadder.xml carries the same note for
+    the ash half of the chain.
+
+  -->
+
+  <!--
     Clones of vanilla Sand/Gravel/Soil/SoilRich, scoped to whatever biome's
     terrainsByFertility/terrainPatchMakers actually reference them (wired by
     RimUtinni: Fire Ecology onto the Pyrelands only) — NOT a patch on the
