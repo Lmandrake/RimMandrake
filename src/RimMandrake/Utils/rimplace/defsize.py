@@ -141,20 +141,34 @@ def load(refresh: bool = False, verbose: bool = False) -> dict:
     return idx
 
 
+# GenAdj.AdjustForRotation's (num, num2) center-shift table, reference=North
+# (the single-arg OccupiedRect overload Thing uses always passes North). The
+# shift only applies on the axis whose (already rotation-swapped) size is
+# EVEN - verified against Verse/GenAdj.cs's AdjustForRotation via rimsage.
+_ROT_SHIFT = {0: (0, 0), 1: (0, -1), 2: (-1, -1), 3: (-1, 0)}
+
+
 def footprint(defName: str, x: int, z: int, rot: int, sizes: dict):
     """The cells this thing occupies, or None if its size is unknown.
 
-    RimWorld rotates the footprint on odd rotations (1 = east, 3 = west), and
-    the origin cell is the one the game is given: for even sizes the extra cell
-    extends north/east, matching GenAdj.OccupiedRect.
+    RimWorld rotates the footprint on odd rotations (1 = east, 3 = west). For
+    EVEN sizes the extra cell does NOT always extend north/east - the engine
+    (GenAdj.AdjustForRotation) shifts the origin depending on which way the
+    thing is rotated, and only on the axis that is even. Rotated East or
+    South, or West with an even swapped width, this used to place the whole
+    footprint one cell off from what the game actually occupies
+    (DEFSIZE_ROTATION_SHIFT_MISSING_1).
     """
     s = sizes.get(defName)
     if not s:
         return None
     w, h = (s[1], s[0]) if rot in (1, 3) else (s[0], s[1])
-    x0 = x - (w - 1) // 2
-    z0 = z - (h - 1) // 2
-    return {(x0 + dx, z0 + dz) for dx in range(w) for dz in range(h)}
+    dx, dz = _ROT_SHIFT.get(rot, (0, 0))
+    cx = x + (dx if w % 2 == 0 else 0)
+    cz = z + (dz if h % 2 == 0 else 0)
+    x0 = cx - (w - 1) // 2
+    z0 = cz - (h - 1) // 2
+    return {(x0 + dx2, z0 + dz2) for dx2 in range(w) for dz2 in range(h)}
 
 
 if __name__ == "__main__":
