@@ -142,9 +142,10 @@ Checks, each with its false-pass named:
    repurposing — the sarlacc, the Assailant dungeons, the terminator/night-side
    creatures. Never Cherry-Pick a thing because its research row died.
 6. Anomaly rows: all 42 research rows CUT (owner, 2026-09-03) under rule 5 —
-   the tab leaves the player's tree, the content stays ours.
-   `ANOMALY_EXCEPTION_ACCESS_1` gives the player a non-research route to the
-   containment buildings, and must land before the cut ships.
+   the tab leaves the player's tree, the content stays ours. The player reaches
+   the containment buildings by the **Memory-Core revelation event** (ruled
+   2026-09-03, `ANOMALY_EXCEPTION_ACCESS_1`), which must land before the cut
+   ships.
 7. Nothing renames a defName, ever (saves + mod C# break invisibly).
 
 ## 6. RULED by the owner, 2026-08-31 (question cards) — canon `research_tree.taxonomy_ruled`
