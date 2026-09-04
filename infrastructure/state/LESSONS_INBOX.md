@@ -11,3 +11,4 @@ rest were already covered where they belonged.*
 
 ---
 - `git diff <symlinked dir>` shows NOTHING — a pathspec naming `.claude/skills/<name>` (a symlink) matches only the link file, so the target's real changes are silently absent; diff the real `skills/<name>` path (BENCH 2026-09-04, curation pass).
+- The <li> trap third sighting: Inhabited larder/stock, found via the log line naming the WANTER (Verse.ThingDefCountClass) - read the wanter before building instruments; vanilla error lines already attribute.
