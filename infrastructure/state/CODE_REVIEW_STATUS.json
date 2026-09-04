@@ -1,18 +1,253 @@
 {
-  ".claude/hooks/queue_lint.py": {
+  ".claude/hooks/bench_mode.py": {
     "cleanCount": 1,
-    "date": "2026-09-03",
-    "sha": "5ac921b8"
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  ".claude/hooks/block_agent_without_model.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  ".claude/hooks/block_blanket_git_stage.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  ".claude/hooks/block_blind_scan.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  ".claude/hooks/block_canon_contradiction.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  ".claude/hooks/block_paste_handoff.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  ".claude/hooks/block_peer_messages.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  ".claude/hooks/queue_lint.py": {
+    "cleanCount": 2,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  ".claude/hooks/selftest_block_agent_without_model.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  ".claude/hooks/selftest_block_blanket_git_stage.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  ".claude/hooks/selftest_block_blind_scan.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  ".claude/hooks/selftest_block_canon_contradiction.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  ".claude/hooks/selftest_block_peer_messages.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  ".claude/hooks/selftest_documented_commands.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  ".claude/hooks/selftest_queue_lint.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  ".claude/hooks/selftest_warn_skill_unwired.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  ".claude/hooks/selftest_warn_unclosed_queue_item.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  ".claude/hooks/set_session_title.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  ".claude/hooks/warn_skill_unwired.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  ".claude/hooks/warn_unclosed_queue_item.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "design/Jawa/art/preview_gravship_rust.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "design/Jawa/art/salvage_filter.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "design/Jawa/art/scan_graphics.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "design/Jawa/bridge/capability_roster_data.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "design/Jawa/fauna/allocate_cast.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "design/Jawa/fauna/animal_tolerances.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "design/Jawa/fauna/biome_fit.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "design/Jawa/fauna/dumppath.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
   },
   "design/Jawa/fauna/gen_cast_patch.py": {
     "cleanCount": 1,
     "date": "2026-09-02",
     "sha": "58b4dab3"
   },
+  "design/Jawa/fauna/gen_creature_art_sheet.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "design/Jawa/fauna/gen_creature_size_sheet.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "design/Jawa/fauna/gen_name_patch.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "design/Jawa/fauna/refill_cast.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "design/Jawa/mods/biome_flora.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "design/Jawa/mods/plant_harvest_coverage.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "design/Jawa/mods/plant_names.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "design/Jawa/mods/plant_tolerances.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "design/Jawa/mods/plant_walk_list.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "design/Jawa/mods/xenotype_tolerances.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "design/Jawa/worldbuilding/review/gen_proposal_suite_sheet.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "skills/deciding-and-superseding/scripts/stale_directives.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "skills/generating-images/scripts/chroma_key.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "skills/generating-images/scripts/codex_image.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "skills/generating-images/scripts/pnglib.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "skills/generating-images/scripts/preview_alpha.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "skills/generating-rimworld-sprites/scripts/conform_sprite.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "skills/generating-rimworld-sprites/scripts/contact_sheet.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "skills/generating-rimworld-sprites/scripts/validate_sprite.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
   "skills/rimworld-start-prep/scripts/sync_mod_state.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "5ac921b8"
+  },
+  "skills/validate_skills.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
   },
   "src/RimMandrake/DesertVehicleReskin/Source/Fuel/FuelDebugActions.cs": {
     "cleanCount": 1,
@@ -89,6 +324,51 @@
     "date": "2026-09-02",
     "sha": "14ea427e"
   },
+  "src/RimMandrake/FluidCanals/Source/CompFluidReservoir.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "src/RimMandrake/FluidCanals/Source/CompProperties_FluidReservoir.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "src/RimMandrake/FluidCanals/Source/Debug/FluidCanalsDebugActions.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "src/RimMandrake/FluidCanals/Source/Designator_DigCanal.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "src/RimMandrake/FluidCanals/Source/Flood_FluidCanal.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "src/RimMandrake/FluidCanals/Source/FluidDef.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "src/RimMandrake/FluidCanals/Source/JobDriver_DigCanal.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "src/RimMandrake/FluidCanals/Source/RimMandrakeFluidCanals_DefOf.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "src/RimMandrake/FluidCanals/Source/WorkGiver_DigCanal.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
   "src/RimMandrake/Graffiti/Source/BreachBiasHook.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -145,9 +425,9 @@
     "sha": "b294390b"
   },
   "src/RimMandrake/Inhabited/Source/CharacterApplier.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "sha": "7b9f17a9"
+    "cleanCount": 2,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
   },
   "src/RimMandrake/Inhabited/Source/CharacterDef.cs": {
     "cleanCount": 1,
@@ -270,9 +550,9 @@
     "sha": "7b9f17a9"
   },
   "src/RimMandrake/Inhabited/Source/WorldObject_Inhabited.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "sha": "7b9f17a9"
+    "cleanCount": 2,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
   },
   "src/RimMandrake/Inhabited/Source/WorldObject_InhabitedSettlement.cs": {
     "cleanCount": 1,
@@ -333,6 +613,41 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "ecc86a6f"
+  },
+  "src/RimMandrake/Oracle/Source/DebugActions_Oracle.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "src/RimMandrake/Oracle/Source/OracleGameComponent.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "src/RimMandrake/Oracle/Source/OracleHttpClient.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "src/RimMandrake/Oracle/Source/OracleRegisterBlocks.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "src/RimMandrake/Oracle/Source/OracleSettings.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "src/RimMandrake/Oracle/Source/OracleValidator.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "src/RimMandrake/PhytokinBarkHeadFix/Source/make_bark_female_wide_east.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
   },
   "src/RimMandrake/Pits/Source/Debug/PitDebugActions.cs": {
     "cleanCount": 1,
@@ -544,6 +859,11 @@
     "date": "2026-09-03",
     "sha": "dc7d9d40"
   },
+  "src/RimMandrake/RimDefDump/Source/JsonWriter.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
   "src/RimMandrake/SacredGraffiti/Source/SacredGraffiti.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -563,6 +883,21 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "ceeaebb1"
+  },
+  "src/RimMandrake/Spikes/Spike1_TerrainMimic.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "src/RimMandrake/Spikes/Spike2_PitCellHolding.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "src/RimMandrake/Spikes/Spike3_ThreatPointReplace.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
   },
   "src/RimMandrake/StructureInjections/Source/GenStep_RimplacePlan.cs": {
     "cleanCount": 1,
@@ -699,6 +1034,11 @@
     "date": "2026-09-03",
     "sha": "e5013227"
   },
+  "src/RimMandrake/Utils/ashkarr_settle.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
   "src/RimMandrake/Utils/ashkarr_shore_and_ice.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -750,9 +1090,9 @@
     "sha": "39cd22d5"
   },
   "src/RimMandrake/Utils/build_salvation_rid.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "sha": "891d0852"
+    "cleanCount": 2,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
   },
   "src/RimMandrake/Utils/cast_hook_audit.py": {
     "cleanCount": 1,
@@ -800,9 +1140,9 @@
     "sha": "46ac7699"
   },
   "src/RimMandrake/Utils/cherrypick_build.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "sha": "46ac7699"
+    "cleanCount": 2,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
   },
   "src/RimMandrake/Utils/cherrypick_review.py": {
     "cleanCount": 1,
@@ -824,9 +1164,9 @@
     "sha": "f52addaf"
   },
   "src/RimMandrake/Utils/codebase_health.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "sha": "09f1d751"
+    "cleanCount": 2,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
   },
   "src/RimMandrake/Utils/codebase_health_publish.py": {
     "cleanCount": 1,
@@ -1009,9 +1349,9 @@
     "sha": "43884307"
   },
   "src/RimMandrake/Utils/install_fleet_shortcut.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "sha": "e5013227"
+    "cleanCount": 2,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
   },
   "src/RimMandrake/Utils/install_wt_seat_profiles.py": {
     "cleanCount": 1,
@@ -1143,9 +1483,9 @@
     "sha": "d8cd2139"
   },
   "src/RimMandrake/Utils/refresh.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "sha": "5e515a27"
+    "cleanCount": 2,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
   },
   "src/RimMandrake/Utils/reload_check.py": {
     "cleanCount": 1,
@@ -1158,9 +1498,9 @@
     "sha": "39cd22d5"
   },
   "src/RimMandrake/Utils/research_manifest_validate.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "sha": "4de5c0cf"
+    "cleanCount": 2,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
   },
   "src/RimMandrake/Utils/rimbench/__init__.py": {
     "cleanCount": 1,
@@ -1358,9 +1698,9 @@
     "sha": "35c29544"
   },
   "src/RimMandrake/Utils/selftest_frozen_dumps.py": {
-    "cleanCount": 1,
-    "date": "2026-09-02",
-    "sha": "83437c48"
+    "cleanCount": 2,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
   },
   "src/RimMandrake/Utils/selftest_one_path_seam.py": {
     "cleanCount": 1,
@@ -1378,9 +1718,9 @@
     "sha": "1a7b3aa1"
   },
   "src/RimMandrake/Utils/selftest_research_validator.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "sha": "c057fb96"
+    "cleanCount": 2,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
   },
   "src/RimMandrake/Utils/selftest_sound_paths.py": {
     "cleanCount": 1,
@@ -1957,10 +2297,40 @@
     "date": "2026-09-03",
     "sha": "93d7b641"
   },
+  "src/RimMandrake/rimflow/__init__.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "src/RimMandrake/rimflow/artifact.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "src/RimMandrake/rimflow/board_labels.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "src/RimMandrake/rimflow/board_viz.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
   "src/RimMandrake/rimflow/cli.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "3d60b716"
+  },
+  "src/RimMandrake/rimflow/github_mirror.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "src/RimMandrake/rimflow/github_project.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
   },
   "src/RimMandrake/rimflow/model.py": {
     "cleanCount": 1,
@@ -1972,10 +2342,15 @@
     "date": "2026-09-03",
     "sha": "3089b753"
   },
-  "src/RimMandrake/rimflow/render.py": {
+  "src/RimMandrake/rimflow/probe.py": {
     "cleanCount": 1,
-    "date": "2026-09-02",
-    "sha": "d92ee4cc"
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "src/RimMandrake/rimflow/render.py": {
+    "cleanCount": 2,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
   },
   "src/RimMandrake/rimflow/selftest_bridge_file_concurrency.py": {
     "cleanCount": 1,
@@ -1983,9 +2358,29 @@
     "sha": "359b0b2c"
   },
   "src/RimMandrake/rimflow/selftest_cli.py": {
+    "cleanCount": 2,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "src/RimMandrake/rimflow/selftest_concurrency.py": {
     "cleanCount": 1,
-    "date": "2026-09-02",
-    "sha": "d92ee4cc"
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "src/RimMandrake/rimflow/selftest_model.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "src/RimMandrake/rimflow/selftest_probe.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "src/RimMandrake/rimflow/selftest_render.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
   },
   "src/RimMandrake/rimflow/selftest_undocumented_work.py": {
     "cleanCount": 1,
@@ -2332,6 +2727,111 @@
     "date": "2026-09-03",
     "sha": "359b0b2c"
   },
+  "src/RimStarWars/Droidworks/Source/BoltCore/BoltCorePatches.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "src/RimStarWars/Droidworks/Source/Droidworks/CompDWCharger.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "src/RimStarWars/Droidworks/Source/Droidworks/CompDWDataSpike.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "src/RimStarWars/Droidworks/Source/Droidworks/CompDroidDetonation.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "src/RimStarWars/Droidworks/Source/Droidworks/CompTargetable_DWDataSpike.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "src/RimStarWars/Droidworks/Source/Droidworks/DroidworksBoltUtility.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "src/RimStarWars/Droidworks/Source/Droidworks/DroidworksDefOf.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "src/RimStarWars/Droidworks/Source/Droidworks/DroidworksModExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "src/RimStarWars/Droidworks/Source/Droidworks/HediffComp_DWBoltResentment.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "src/RimStarWars/Droidworks/Source/Droidworks/HediffComp_IonOverloadsDroid.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "src/RimStarWars/Droidworks/Source/Droidworks/HediffComp_PoweredDown.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "src/RimStarWars/Droidworks/Source/Droidworks/JobDriver_DWClampBolt.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "src/RimStarWars/Droidworks/Source/Droidworks/JobDriver_DWDataSpike.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "src/RimStarWars/Droidworks/Source/Droidworks/JobDriver_DWRecharge.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "src/RimStarWars/Droidworks/Source/Droidworks/JobGiver_DWRecharge.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "src/RimStarWars/Droidworks/Source/Droidworks/Need_Power.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "src/RimStarWars/Droidworks/Source/Droidworks/Patch_ShouldHaveNeed_Power.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "src/RimStarWars/Droidworks/Source/Droidworks/Recipe_DWMemoryWipe.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "src/RimStarWars/Droidworks/Source/Droidworks/Recipe_InstallRestrainingBolt.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "src/RimStarWars/Droidworks/Source/Droidworks/Recipe_RebootDroid.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "src/RimStarWars/Droidworks/Source/Droidworks/Recipe_RemoveRestrainingBolt.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
   "src/RimStarWars/Droidworks/Source/gen_droidworks_defs.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -2377,6 +2877,11 @@
     "date": "2026-09-03",
     "sha": "d075693a"
   },
+  "src/RimStarWars/KotORBandolierNorthFix/Source/build_north.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
   "src/RimStarWars/KotORBandolierNorthFix/Source/survey_broken_sets.py": {
     "cleanCount": 1,
     "date": "2026-09-02",
@@ -2391,6 +2896,11 @@
     "cleanCount": 1,
     "date": "2026-09-02",
     "sha": "14ea427e"
+  },
+  "src/RimStarWars/Livestock/Source/CompLightAversion.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
   },
   "src/RimStarWars/Livestock/art/gen_livestock_mockups.py": {
     "cleanCount": 1,
@@ -2437,6 +2947,11 @@
     "date": "2026-09-02",
     "sha": "1a7b3aa1"
   },
+  "src/RimStarWars/WeatherSuite/Source/WeatherSuiteHook.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
   "src/RimUtinni/Doctrine/Source/DoctrineCore/DoctrinePatches.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -2472,6 +2987,16 @@
     "date": "2026-09-03",
     "sha": "57ce5707"
   },
+  "src/RimUtinni/LongHunger/Source/IncidentWorker_LongHungerSurfaces.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "src/RimUtinni/LongHunger/Source/LongHungerThing.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
   "src/RimUtinni/PawnFlavor/Patches/PawnFlavorPhase2_MentalBreak.xml": {
     "cleanCount": 1,
     "date": "2026-09-02",
@@ -2502,6 +3027,11 @@
     "date": "2026-09-03",
     "sha": "250be7a3"
   },
+  "src/RimUtinni/RiverSteam/Source/RiverSteamHook.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
   "src/RimUtinni/ShipMemory/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-04",
@@ -2531,6 +3061,21 @@
     "cleanCount": 1,
     "date": "2026-09-04",
     "sha": "46cdec42"
+  },
+  "src/RimUtinni/StickCuisine/Source/StickCuisine/IngredientValueGetter_ExcludeSkewer.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "src/RimUtinni/StickCuisine/Source/StickCuisine/NameGenComp.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
+  },
+  "src/RimUtinni/StickCuisine/Source/StickCuisine/StickCuisineDefOf.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "43f96b1b"
   },
   "src/RimUtinni/VaultDungeons/Source/gen_vault_layouts.py": {
     "cleanCount": 1,

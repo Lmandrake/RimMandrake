@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-04T10:15:23Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-04T10:15:59Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -360,6 +360,15 @@ kind:     bug
 summary:  VANILLACOUNTPSEUDODEF1
 prose:    infrastructure/state/items/VANILLA_COUNT_PSEUDO_DEF_1.md
 
+## LOAD_CONFIG_ERROR_SWEEP_1 The 19 third-party config errors, with a frozen baseline so new ones are visible
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Every load of the full 589-mod list logs the same 31 Config error in … lines
+prose:    infrastructure/state/items/LOAD_CONFIG_ERROR_SWEEP_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -435,16 +444,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## LOAD_CONFIG_ERROR_SWEEP_1 The 19 third-party config errors, with a frozen baseline so new ones are visible
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  Every load of the full 589-mod list logs the same 31 Config error in … lines
-prose:    infrastructure/state/items/LOAD_CONFIG_ERROR_SWEEP_1.md
 
 ## VALIDATE_PATCH_BLIND_SPOTS_1 validate_patch.py: MayRequire never recognized as a guard, vanilla-packed-asset texPaths false-ERROR, Defs-path li-in-dict check gap
 state:    proposed
