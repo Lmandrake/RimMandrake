@@ -26,13 +26,10 @@
      beast_normalization_spec's 60 kg/bs scale (0.6 * 60 = 36).
 
      NOT live-verified this pass (offline defs-only build - see
-     LIVESTOCK_STARTER_TRIO_1's item file). texPath below is a PLACEHOLDER
-     naming the future sprite location - no file exists at that path yet.
-     art/mockups/PICKS.md already recorded the owner's pick (karrask_opt2)
-     but the shippable sprite itself (palette pass + generating-rimworld-
-     sprites contract) has not been generated. Do not deploy or load this
-     def until that art lands, or it will render as the engine's missing-
-     texture placeholder. -->
+     LIVESTOCK_STARTER_TRIO_1's item file). Sprite generated
+     (KARRASK_ART_MISSING_1) at Textures/Things/Pawn/Animal/Karrask/Karrask.png,
+     conformed from the owner's picked mockup (art/mockups/PICKS.md,
+     karrask_opt2). Not yet deployed/load-tested. -->
 <Defs>
 
   <ThingDef ParentName="ResourceBase">
@@ -175,7 +172,7 @@
       </li>
     </tools>
     <graphicData>
-      <!-- PLACEHOLDER texPath - see file header. -->
+      <!-- see file header: KARRASK_ART_MISSING_1 -->
       <texPath>Things/Pawn/Animal/Karrask/Karrask</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>1.5</drawSize>

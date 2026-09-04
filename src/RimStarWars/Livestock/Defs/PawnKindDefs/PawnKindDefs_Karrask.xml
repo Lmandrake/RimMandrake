@@ -4,8 +4,8 @@
      get_def_details) since karrask is tameable farm stock, not a wolf-
      line predator like this mod's existing ForsakenCrags PawnKindDefs.
      Single Graphic_Single texture per lifeStage at increasing drawSize,
-     matching this mod's own ForsakenCrags precedent - PLACEHOLDER texPath,
-     see ThingDefs_Karrask.xml's header; no file exists there yet. -->
+     matching this mod's own ForsakenCrags precedent - see ThingDefs_Karrask.xml's
+     header; sprite generated under KARRASK_ART_MISSING_1. -->
 <Defs>
 
   <PawnKindDef ParentName="AnimalKindBase">

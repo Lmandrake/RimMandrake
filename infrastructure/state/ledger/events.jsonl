@@ -4429,3 +4429,6 @@
 {"seat":"FOUNDRY","event":"claim","id":"VALIDATE_QUEST_FALSE_NEGATIVES_1","ts":"2026-09-04T14:32:16Z"}
 {"seat":"FOUNDRY","event":"start","id":"VALIDATE_QUEST_FALSE_NEGATIVES_1","ts":"2026-09-04T14:32:16Z"}
 {"seat":"FOUNDRY","event":"close","id":"VALIDATE_QUEST_FALSE_NEGATIVES_1","sha":"908fdc8a","ts":"2026-09-04T14:32:30Z"}
+{"seat":"FOUNDRY","event":"claim","id":"KARRASK_ART_MISSING_1","ts":"2026-09-04T14:32:43Z"}
+{"seat":"FOUNDRY","event":"start","id":"KARRASK_ART_MISSING_1","ts":"2026-09-04T14:32:43Z"}
+{"seat":"FOUNDRY","event":"close","id":"KARRASK_ART_MISSING_1","sha":"a37b8ce5","ts":"2026-09-04T14:35:52Z"}
