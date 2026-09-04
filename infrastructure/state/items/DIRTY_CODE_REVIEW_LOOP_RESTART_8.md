@@ -1,5 +1,7 @@
 # DIRTY_CODE_REVIEW_LOOP_RESTART_8
 
+Superseded by `DIRTY_CODE_REVIEW_LOOP_RESTART_9` — read that file; this one is history.
+
 Continuity note for resuming the standing dirty-code-review loop (FOUNDRY),
 ahead of an agent reboot the owner just called. Successor to
 `DIRTY_CODE_REVIEW_LOOP_RESTART_7` — read that file for the fuller
