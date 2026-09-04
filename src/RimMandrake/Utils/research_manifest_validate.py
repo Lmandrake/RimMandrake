@@ -304,7 +304,11 @@ def check_orphans(rows, live, cuts):
     for r in rows:
         dn = r["defName"]
         exists = dn in live
-        cut_as_def = cuts.cut_name(dn)
+        # 🔴 TYPED, not cut_name(): the row's type is KNOWN here, and the
+        # any-type match reported ThingDef/GravForge as a cut RESEARCH project
+        # twice (RESEARCH_MANIFEST_DRAFT_1 item 1, and again 2026-09-04).
+        # cut_name() stays correct below for unlocks, whose types are unknown.
+        cut_as_def = cuts.cut("ResearchProjectDef", dn)
         if r["fate"] != "cut":
             if not exists:
                 issues.append(Issue(FAIL, "orphan", dn,

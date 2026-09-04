@@ -96,6 +96,11 @@ class StubCuts:
     def cut_name(self, name):
         return name in self._cut
 
+    def cut(self, deftype, name):
+        # The stub's cut set is untyped; the typed query degrades to the name
+        # match, which is exactly what the tests' fixtures intend.
+        return name in self._cut
+
     def provenance(self):
         return "stub cuts: %d name(s), selftest fixture (no live settings file read)" % len(self._cut)
 

@@ -1,0 +1,2796 @@
+{
+ "meta": {
+  "what": "THE FROZEN research deck, 2026-09-04 \u2014 the owner's final word on tree + tier for every surviving research row, extracted from research_trees_boxes.pptx after his last edits ('leave it there for now... proceed as though this is now the frozen version').",
+  "authority": "OWNER. Downstream build work (manifest, retag, re-cost) reads THIS file. The deck pptx copy is research_trees_boxes.FROZEN_20260904.pptx.",
+  "frozen": "Nothing regenerates this file. A future owner deck pass supersedes it with a new dated file and a pointer here.",
+  "composition": "398 rows total: 390 placed (tree+tier), 8 removed (all mechanoid research \u2014 mechanitors out entirely)."
+ },
+ "rows": [
+  {
+   "defName": "RR_LateralThinking",
+   "label": "lateral thinking",
+   "tree": "Scavenger",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "RR_Organization",
+   "label": "organization",
+   "tree": "Scavenger",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "RR_BasicFoodPrep",
+   "label": "food preparation",
+   "tree": "Scavenger",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "RR_BasicApparel",
+   "label": "simple apparel",
+   "tree": "Scavenger",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "VFET_Agriculture",
+   "label": "agriculture",
+   "tree": "Scavenger",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "VFET_AnimalHandling",
+   "label": "animal handling",
+   "tree": "Scavenger",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "VFET_Construction",
+   "label": "construction",
+   "tree": "Scavenger",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "RR_BasicCraftingFacilities",
+   "label": "crafting facilities",
+   "tree": "Scavenger",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "VFET_Cultivation",
+   "label": "cultivation",
+   "tree": "Scavenger",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "VFET_Fire",
+   "label": "fire",
+   "tree": "Scavenger",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "VFET_Hunting",
+   "label": "hunting",
+   "tree": "Scavenger",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "VFET_Mining",
+   "label": "mining",
+   "tree": "Scavenger",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "VFET_Tribalwear",
+   "label": "tribalwear",
+   "tree": "Scavenger",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "VFET_Weapons",
+   "label": "weapons",
+   "tree": "Scavenger",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "VFET_Bow",
+   "label": "bow",
+   "tree": "Scavenger",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "VFET_Medicine",
+   "label": "medicine",
+   "tree": "Scavenger",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "HAZN_SmallTrap",
+   "label": "Small trap",
+   "tree": "Scavenger",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "Fishing",
+   "label": "fishing",
+   "tree": "Scavenger",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "ProjectHeron_Gates",
+   "label": "hinges and gates",
+   "tree": "Scavenger",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "ProjectHeron_Curtains",
+   "label": "simple curtains",
+   "tree": "Scavenger",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "RR_HeatingElements",
+   "label": "heating elements",
+   "tree": "Scavenger",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "RR_lighting",
+   "label": "primitive lighting",
+   "tree": "Scavenger",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "RR_Rugs",
+   "label": "primitive rugs",
+   "tree": "Scavenger",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "RR_Storage",
+   "label": "primitive storage vessels",
+   "tree": "Scavenger",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "PassiveCooler",
+   "label": "passive cooler",
+   "tree": "Scavenger",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "RG_MushroomCultivation",
+   "label": "mushroom cultivation",
+   "tree": "Scavenger",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "ProjectHeron_PrisonDoors",
+   "label": "prisoner containment",
+   "tree": "Scavenger",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "KibbleDispenser",
+   "label": "Kibble Dispenser",
+   "tree": "Scavenger",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "RecurveBow",
+   "label": "recurve bow",
+   "tree": "Scavenger",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "AirConditioning",
+   "label": "air conditioning",
+   "tree": "Scavenger",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "Pemmican",
+   "label": "pemmican",
+   "tree": "Scavenger",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "RG_BerryCultivation",
+   "label": "berry cultivation",
+   "tree": "Scavenger",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "BMT_ResearchMushrooms",
+   "label": "mushroom mastery",
+   "tree": "Scavenger",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "ProjectHeron_Swdoors",
+   "label": "Star Wars Doors",
+   "tree": "Scavenger",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "VCE_SucculentSowing",
+   "label": "succulent sowing",
+   "tree": "Scavenger",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "Autodoors",
+   "label": "autodoor",
+   "tree": "Scavenger",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "Firefoam",
+   "label": "firefoam",
+   "tree": "Scavenger",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "Greatbow",
+   "label": "greatbow",
+   "tree": "Scavenger",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "ProjectHeron_RemoteDoors",
+   "label": "remote doors",
+   "tree": "Scavenger",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "KOTOR_Research_MoistureVaporator",
+   "label": "Atmospheric Moisture Collection",
+   "tree": "Scavenger",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "OuterRim_DroidReplacementParts",
+   "label": "Replacement Parts",
+   "tree": "Scavenger",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "ABF_ResearchProject_Synstruct_InterchangeableParts",
+   "label": "interchangeable parts",
+   "tree": "Scavenger",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "BMT_AdvancedFungi",
+   "label": "specialized fungi",
+   "tree": "Scavenger",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "ABF_ResearchProject_Synstruct_Stimulators",
+   "label": "synstruct stimulators",
+   "tree": "Scavenger",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "OuterRim_DroidEnergySys",
+   "label": "Energy Systems",
+   "tree": "Scavenger",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "guy762_ResearchKotOR_droidshields",
+   "label": "droid shields",
+   "tree": "Scavenger",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "Asimov_WirelessCharging",
+   "label": "wireless charging",
+   "tree": "Scavenger",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "guy762_ResearchKotOR_droidarmor",
+   "label": "droid armor plating",
+   "tree": "Scavenger",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "MechUtility",
+   "label": "Mechanoid Utility Packs",
+   "tree": "Scavenger",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "TreeSowing",
+   "label": "tree sowing",
+   "tree": "Scavenger",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "VFET_Furniture",
+   "label": "furniture",
+   "tree": "The Hearth",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "VFET_Culture",
+   "label": "culture",
+   "tree": "The Hearth",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "MF_BasicFurniture",
+   "label": "basic furniture",
+   "tree": "The Hearth",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "RR_Furniture",
+   "label": "primitive furniture",
+   "tree": "The Hearth",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "VCE_StewCooking",
+   "label": "stew cooking",
+   "tree": "The Hearth",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "Brewing",
+   "label": "beer brewing",
+   "tree": "The Hearth",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "VCE_Grilling",
+   "label": "grilling",
+   "tree": "The Hearth",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "NutrientPaste",
+   "label": "nutrient paste",
+   "tree": "The Hearth",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "VCE_SoupCooking",
+   "label": "soup cooking",
+   "tree": "The Hearth",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "VFE_Res_Pottery",
+   "label": "pottery",
+   "tree": "The Hearth",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "PackagedSurvivalMeal",
+   "label": "survival meals",
+   "tree": "The Hearth",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "ComplexClothing",
+   "label": "complex clothing",
+   "tree": "The Hearth",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "Saunas",
+   "label": "saunas",
+   "tree": "The Hearth",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "ColoredLights",
+   "label": "semiconductor lights",
+   "tree": "The Hearth",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "ComplexFurniture",
+   "label": "complex furniture",
+   "tree": "The Hearth",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "VFE_Res_WallCarvings",
+   "label": "carvings",
+   "tree": "The Hearth",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "VCE_CondimentsResearch",
+   "label": "food condiments",
+   "tree": "The Hearth",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "VFE_Res_Obelisk",
+   "label": "obelisks",
+   "tree": "The Hearth",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "Jewelry",
+   "label": "Jewelry",
+   "tree": "The Hearth",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "VCE_Canning",
+   "label": "canning",
+   "tree": "The Hearth",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "VAE_CasualWear",
+   "label": "casual wear",
+   "tree": "The Hearth",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "VCE_DeepFrying",
+   "label": "deep frying",
+   "tree": "The Hearth",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "VAE_FormalWear",
+   "label": "formal wear",
+   "tree": "The Hearth",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "VBE_LiquorBrewing",
+   "label": "liquor brewing",
+   "tree": "The Hearth",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "VCE_CheeseMaking",
+   "label": "cheese making",
+   "tree": "The Hearth",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "CarpetMaking",
+   "label": "carpet-making",
+   "tree": "The Hearth",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "KOTOR_Research_Instruments",
+   "label": "Jizz Instruments",
+   "tree": "The Hearth",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "KOTOR_Research_TableRec",
+   "label": "Pazaak",
+   "tree": "The Hearth",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "VFE_Res_ArtfulDisplay",
+   "label": "artful display",
+   "tree": "The Hearth",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "Cocoa",
+   "label": "cocoa",
+   "tree": "The Hearth",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "VFE_Res_Rugs",
+   "label": "rugs",
+   "tree": "The Hearth",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "VAE_WorkAttire",
+   "label": "work attire",
+   "tree": "The Hearth",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "ModernFixtures",
+   "label": "modern bathroom fixtures",
+   "tree": "The Hearth",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "MF_RoyalFurniture",
+   "label": "artisan furniture",
+   "tree": "The Hearth",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "Devilstrand",
+   "label": "devilstrand",
+   "tree": "The Hearth",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "MF_ModernFurniture",
+   "label": "modern furniture",
+   "tree": "The Hearth",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "AdvancedShowers",
+   "label": "power showers",
+   "tree": "The Hearth",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "VBE_MixologyResearch",
+   "label": "mixology",
+   "tree": "The Hearth",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "VAE_MilitaryClothing",
+   "label": "military clothing",
+   "tree": "The Hearth",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "VFE_Res_Statues",
+   "label": "statues",
+   "tree": "The Hearth",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "VFE_Res_Wallpapers",
+   "label": "wallpapers",
+   "tree": "The Hearth",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "MF_WasteDisposal",
+   "label": "waste disposal",
+   "tree": "The Hearth",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "AdvancedToilets",
+   "label": "smart toilets",
+   "tree": "The Hearth",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "SpacerFurniture",
+   "label": "spacer furniture",
+   "tree": "The Hearth",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "VFE_Res_Monuments",
+   "label": "monuments",
+   "tree": "The Hearth",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "HotTubs",
+   "label": "hot tubs",
+   "tree": "The Hearth",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "PsychiteRefining",
+   "label": "psychite refining",
+   "tree": "The Refinery",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "Napalm",
+   "label": "Napalm",
+   "tree": "The Refinery",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "FT_Chemistry",
+   "label": "chemistry",
+   "tree": "The Refinery",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "DrugProduction",
+   "label": "drug production",
+   "tree": "The Refinery",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "BMT_Paleontology",
+   "label": "paleontology",
+   "tree": "The Refinery",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "PenoxycylineProduction",
+   "label": "penoxycyline",
+   "tree": "The Refinery",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "PsychoidBrewing",
+   "label": "psychoid brewing",
+   "tree": "The Refinery",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "ToxifierGenerator",
+   "label": "toxifier generator",
+   "tree": "The Refinery",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "SterileMaterials",
+   "label": "sterile materials",
+   "tree": "The Refinery",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "ToxGas",
+   "label": "tox gas",
+   "tree": "The Refinery",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "WakeUpProduction",
+   "label": "wake-up production",
+   "tree": "The Refinery",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "BiofuelRefining",
+   "label": "biofuel refining",
+   "tree": "The Refinery",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "CGT_N2OGasProduction",
+   "label": "nitrous oxide production",
+   "tree": "The Refinery",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "CGT_TearGasProduction",
+   "label": "tear gas production",
+   "tree": "The Refinery",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "ArtificialFloors",
+   "label": "Artificial Flooring",
+   "tree": "The Refinery",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "KOTOR_Research_Durasteel",
+   "label": "Durasteel production",
+   "tree": "The Refinery",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "KOTOR_Research_Kolto",
+   "label": "Kolto Applications",
+   "tree": "The Refinery",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "BoneRefine",
+   "label": "bone refining",
+   "tree": "The Refinery",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "DeepDrilling",
+   "label": "deep drilling",
+   "tree": "The Refinery",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "GoJuiceProduction",
+   "label": "go-juice production",
+   "tree": "The Refinery",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "GroundPenetratingScanner",
+   "label": "ground-penetrating scanner",
+   "tree": "The Refinery",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "MinesAutomated_ResearchProjectDef_minecraft",
+   "label": "minecraft",
+   "tree": "The Refinery",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "ResearchMobileMineralSonarEnhancedScan",
+   "label": "mobile mineral sonar: enhanced scan",
+   "tree": "The Refinery",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "BMT_CrystalIncubator",
+   "label": "crystallization",
+   "tree": "The Refinery",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "ChemfuelRefining",
+   "label": "Chemfuel Refining",
+   "tree": "The Refinery",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "SynthyleneProduction",
+   "label": "Synthylene",
+   "tree": "The Refinery",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "BoneRefineII",
+   "label": "advanced bone refining",
+   "tree": "The Refinery",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "MedicineProduction",
+   "label": "medicine production",
+   "tree": "The Refinery",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "ResearchMobileMineralSonar",
+   "label": "mobile mineral sonar",
+   "tree": "The Refinery",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "CGT_MustardGasProduction",
+   "label": "mustard gas production",
+   "tree": "The Refinery",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "VHGE_GasExtraction",
+   "label": "gas extraction",
+   "tree": "The Refinery",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "SynthreadProduction",
+   "label": "Synthread",
+   "tree": "The Refinery",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "BreadMoAM_AncientMiningTechniques",
+   "label": "industrial mining techniques",
+   "tree": "The Refinery",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "LongRangeMineralScanner",
+   "label": "long-range scanners",
+   "tree": "The Refinery",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "ToxFiltration",
+   "label": "toxin filtration",
+   "tree": "The Refinery",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "OilDrilling",
+   "label": "Drill for oil",
+   "tree": "The Refinery",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "MushroomSoil",
+   "label": "Mushroom Soil",
+   "tree": "The Refinery",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "KOTOR_Research_AdvMaterials",
+   "label": "Reinforced Materials",
+   "tree": "The Refinery",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "SynthyleneComponents",
+   "label": "Synthylene Components",
+   "tree": "The Refinery",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "CGT_HalothaneGasProduction",
+   "label": "halothane production",
+   "tree": "The Refinery",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "SynthyleneAdvComponents",
+   "label": "Advanced Synthylene Components",
+   "tree": "The Refinery",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "KOTOR_Research_Spice",
+   "label": "Spice Applications",
+   "tree": "The Refinery",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "SynthamideProduction",
+   "label": "Synthamide",
+   "tree": "The Refinery",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "HyperweaveProduction",
+   "label": "Hyperweave",
+   "tree": "The Refinery",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "PlasteelProduction",
+   "label": "Plasteel",
+   "tree": "The Refinery",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "SynthamideCompositeProduction",
+   "label": "Synthamide Composite",
+   "tree": "The Refinery",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "CGT_VXGasProduction",
+   "label": "VX nerve agent production",
+   "tree": "The Refinery",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "NeutroamineProduction",
+   "label": "Neutroamine",
+   "tree": "The Refinery",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "KOTOR_Research_FuelProcessing",
+   "label": "Rhydonium Fuel Processing",
+   "tree": "The Refinery",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "WastepackAtomizer",
+   "label": "wastepack atomizer",
+   "tree": "The Refinery",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "DeepOilWells",
+   "label": "Deep Wells",
+   "tree": "The Refinery",
+   "tier": "T4",
+   "removed": false
+  },
+  {
+   "defName": "KOTOR_Research_UltraComponent",
+   "label": "Ultra Component Fabrication",
+   "tree": "The Refinery",
+   "tier": "T4",
+   "removed": false
+  },
+  {
+   "defName": "FT_Concrete",
+   "label": "concrete",
+   "tree": "The Workshop",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "RR_PowerGenerators",
+   "label": "dynamos",
+   "tree": "The Workshop",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "VFE_Res_FarmingTechniques",
+   "label": "farming techniques",
+   "tree": "The Workshop",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "Stonecutting",
+   "label": "stonecutting",
+   "tree": "The Workshop",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "Batteries",
+   "label": "battery",
+   "tree": "The Workshop",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "Electricity",
+   "label": "circuitry",
+   "tree": "The Workshop",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "RR_ElectricityBasics",
+   "label": "electricity",
+   "tree": "The Workshop",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "FT_Lathe",
+   "label": "industrial lathe",
+   "tree": "The Workshop",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "VFE_Res_Sprinkler",
+   "label": "sprinklers",
+   "tree": "The Workshop",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "SolarPanels",
+   "label": "solar panel",
+   "tree": "The Workshop",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "AM_RecyclingAssembly",
+   "label": "Recycling assembly",
+   "tree": "The Workshop",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "Hydroponics",
+   "label": "hydroponics",
+   "tree": "The Workshop",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "WatermillGenerator",
+   "label": "renewable energy",
+   "tree": "The Workshop",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "Smithing",
+   "label": "smithing",
+   "tree": "The Workshop",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "LaserSculpting",
+   "label": "Laser Sculpting Table",
+   "tree": "The Workshop",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "HeavyBridges",
+   "label": "heavy bridges",
+   "tree": "The Workshop",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "FT_ENIAC",
+   "label": "ENIAC",
+   "tree": "The Workshop",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "SpaceBase_Explorer_Furniture",
+   "label": "SpaceBase Furniture",
+   "tree": "The Workshop",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "Tinkering",
+   "label": "Tinkering",
+   "tree": "The Workshop",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "TubeTelevision",
+   "label": "basic electronics",
+   "tree": "The Workshop",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "VVE_BasicVehicles",
+   "label": "basic vehicles",
+   "tree": "The Workshop",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "Machining",
+   "label": "machining",
+   "tree": "The Workshop",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "TransportPod",
+   "label": "transport pod",
+   "tree": "The Workshop",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "HospitalBed",
+   "label": "hospital bed",
+   "tree": "The Workshop",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "MoisturePump",
+   "label": "moisture pump",
+   "tree": "The Workshop",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "Biohacking",
+   "label": "Biocode Hacking",
+   "tree": "The Workshop",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "VVE_AerialVehicles",
+   "label": "aerial vehicles",
+   "tree": "The Workshop",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "VVE_CombatVehicles",
+   "label": "combat vehicles",
+   "tree": "The Workshop",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "VVE_ComplexVehicles",
+   "label": "complex vehicles",
+   "tree": "The Workshop",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "guy762_ResearchKotOR_workbench",
+   "label": "basic upgrading",
+   "tree": "The Workshop",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "VFE_IndustrialGenerators",
+   "label": "industrial generators",
+   "tree": "The Workshop",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "VFE_AdvancedBatteries",
+   "label": "advanced battery",
+   "tree": "The Workshop",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "RM_WM_AutomatedSmelterRestoration",
+   "label": "automated smelter restoration",
+   "tree": "The Workshop",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "FlatscreenTelevision",
+   "label": "complex electronics",
+   "tree": "The Workshop",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "MicroelectronicsBasics",
+   "label": "microelectronics",
+   "tree": "The Workshop",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "SpacerElectronics",
+   "label": "spacer electronics",
+   "tree": "The Workshop",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "OrbitalTradeColumnRes",
+   "label": "utility columns",
+   "tree": "The Workshop",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "UtilityPanelsRes",
+   "label": "utility wall pads",
+   "tree": "The Workshop",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "VFE_AdvancedPowerSources",
+   "label": "advanced power sources",
+   "tree": "The Workshop",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "VitalsMonitor",
+   "label": "vitals monitor",
+   "tree": "The Workshop",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "GeothermalPower",
+   "label": "passive generators",
+   "tree": "The Workshop",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "VFE_TidalPower",
+   "label": "tidal power",
+   "tree": "The Workshop",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "VFE_NuclearPower",
+   "label": "nuclear power",
+   "tree": "The Workshop",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "AdvancedFabrication",
+   "label": "advanced fabrication",
+   "tree": "The Workshop",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "guy762_ResearchKotOR_advupgrade",
+   "label": "advanced upgrading",
+   "tree": "The Workshop",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "Fabrication",
+   "label": "fabrication",
+   "tree": "The Workshop",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "MultiAnalyzer",
+   "label": "multi-analyzer",
+   "tree": "The Workshop",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "VFE_BasicFactories",
+   "label": "basic factories",
+   "tree": "The Workshop",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "VFE_ComplexFactories",
+   "label": "complex factories",
+   "tree": "The Workshop",
+   "tier": "T4",
+   "removed": false
+  },
+  {
+   "defName": "guy762_ResearchKotOR_exupgrade",
+   "label": "expert upgrading",
+   "tree": "The Workshop",
+   "tier": "T4",
+   "removed": false
+  },
+  {
+   "defName": "LongBlades",
+   "label": "long blades",
+   "tree": "Powder & Slug",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "TribalCCTV",
+   "label": "Animal Warning System",
+   "tree": "Powder & Slug",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "IEDs",
+   "label": "IEDs",
+   "tree": "Powder & Slug",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "ResearchAlertSpeaker",
+   "label": "alert speaker",
+   "tree": "Powder & Slug",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "BlowbackOperation",
+   "label": "blowback operation",
+   "tree": "Powder & Slug",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "GunTurrets",
+   "label": "gun turrets",
+   "tree": "Powder & Slug",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "Gunsmithing",
+   "label": "gunsmithing",
+   "tree": "Powder & Slug",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "WatchTelescope",
+   "label": "watch telescope",
+   "tree": "Powder & Slug",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "IndustrialCCTV",
+   "label": "Automated Camera System",
+   "tree": "Powder & Slug",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "FT_IndustrialCannon",
+   "label": "industrial cannons",
+   "tree": "Powder & Slug",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "CameraSecurityAdvanced",
+   "label": "Advanced camera lens",
+   "tree": "Powder & Slug",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "CameraSecurity",
+   "label": "Security camera",
+   "tree": "Powder & Slug",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "FoamTurret",
+   "label": "foam turret",
+   "tree": "Powder & Slug",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "VFES_SiegeEquipment",
+   "label": "siege equipment",
+   "tree": "Powder & Slug",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "KOTOR_Research_AdvMunitions",
+   "label": "Advanced Munitions",
+   "tree": "Powder & Slug",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "DetColumnRes",
+   "label": "defence columns",
+   "tree": "Powder & Slug",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "GasOperation",
+   "label": "gas operation",
+   "tree": "Powder & Slug",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "VWE_TrenchWarfare",
+   "label": "trench warfare",
+   "tree": "Powder & Slug",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "VFES_ConcealedDefenses",
+   "label": "concealed defenses",
+   "tree": "Powder & Slug",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "CGT_WeaponizedGasIEDs",
+   "label": "weaponized gas IEDs",
+   "tree": "Powder & Slug",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "PrecisionRifling",
+   "label": "precision rifling",
+   "tree": "Powder & Slug",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "HeavyTurrets",
+   "label": "autocannon turret",
+   "tree": "Powder & Slug",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "HunterDrones",
+   "label": "hunter drone",
+   "tree": "Powder & Slug",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "CGT_WeaponizedGasShells",
+   "label": "weaponized gas shells",
+   "tree": "Powder & Slug",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "DedicatedDefenceSystems",
+   "label": "Dedicated Defence Systems",
+   "tree": "Powder & Slug",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "SpacerCCTV",
+   "label": "Advanced Light Sensor",
+   "tree": "Powder & Slug",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "OuterRim_Explosives",
+   "label": "explosives",
+   "tree": "Powder & Slug",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "FT_HeavyArtillery",
+   "label": "heavy artillery",
+   "tree": "Powder & Slug",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "Mortars",
+   "label": "mortars",
+   "tree": "Powder & Slug",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "MultibarrelWeapons",
+   "label": "multibarrel weapons",
+   "tree": "Powder & Slug",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "ProjectHeron_BlastDoors",
+   "label": "blast doors",
+   "tree": "Powder & Slug",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "VWE_HeavyWeapons",
+   "label": "heavy weapons",
+   "tree": "Powder & Slug",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "VFES_Railgun",
+   "label": "railgun",
+   "tree": "Powder & Slug",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "RocketswarmLauncher",
+   "label": "rocketswarm launcher",
+   "tree": "Powder & Slug",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "SniperTurret",
+   "label": "uranium slug turret",
+   "tree": "Powder & Slug",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "guy762_ResearchKotOR_lgtcannons",
+   "label": "mounted cannons",
+   "tree": "Powder & Slug",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "KOTOR_Research_Baradium",
+   "label": "Baradium Explosives",
+   "tree": "Powder & Slug",
+   "tier": "T4",
+   "removed": false
+  },
+  {
+   "defName": "RR_IncendiaryWeapons",
+   "label": "incendiary weapons",
+   "tree": "Blasterworks",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "OuterRim_LightInstallations",
+   "label": "Light Installations",
+   "tree": "Blasterworks",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "KOTOR_Research_plasmaApplications",
+   "label": "Plasma Applications",
+   "tree": "Blasterworks",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "guy762_ResearchKotOR_miniblasters",
+   "label": "compact blaster weaponry",
+   "tree": "Blasterworks",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "guy762_ResearchKotOR_droidblasters",
+   "label": "droid-mounted weapons",
+   "tree": "Blasterworks",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "guy762_ResearchKotOR_hvyblasters",
+   "label": "heavy blaster weaponry",
+   "tree": "Blasterworks",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "OuterRim_LightTurrets",
+   "label": "Light Turrets",
+   "tree": "Blasterworks",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "OuterRim_MediumInstallations",
+   "label": "Medium Installations",
+   "tree": "Blasterworks",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "OuterRim_DroidWeaponSys",
+   "label": "Weapon Systems",
+   "tree": "Blasterworks",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "OuterRim_MediumTurrets",
+   "label": "Medium Turrets",
+   "tree": "Blasterworks",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "guy762_ResearchKotOR_blasters",
+   "label": "blaster weaponry",
+   "tree": "Blasterworks",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "ChargedShot",
+   "label": "pulse-charged munitions",
+   "tree": "Blasterworks",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "OuterRim_HeavyInstallations",
+   "label": "Heavy Installations",
+   "tree": "Blasterworks",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "OuterRim_HeavyTurrets",
+   "label": "Heavy Turrets",
+   "tree": "Blasterworks",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "BeamWeapons",
+   "label": "beam weapons",
+   "tree": "Blasterworks",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "OuterRim_HeavyWeaponry",
+   "label": "heavy weaponry",
+   "tree": "Blasterworks",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "KOTOR_Research_plasma",
+   "label": "Tibanna Processing",
+   "tree": "Blasterworks",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "guy762_ResearchKotOR_disruptor",
+   "label": "disruptor weaponry",
+   "tree": "Blasterworks",
+   "tier": "T4",
+   "removed": false
+  },
+  {
+   "defName": "RSW_JawaIon_Weaponry",
+   "label": "Jawa ion weaponry",
+   "tree": "The Strange Schools",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "RR_EMP",
+   "label": "EMP weapons",
+   "tree": "The Strange Schools",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "VFES_EMPCannon",
+   "label": "electromagnetic pulse",
+   "tree": "The Strange Schools",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "guy762_ResearchKotOR_vibroweapons",
+   "label": "vibration weaponry",
+   "tree": "The Strange Schools",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "guy762_ResearchKotOR_bluntmelee",
+   "label": "energy field weaponry",
+   "tree": "The Strange Schools",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "GravWeapon",
+   "label": "grav weapon",
+   "tree": "The Strange Schools",
+   "tier": "T4",
+   "removed": false
+  },
+  {
+   "defName": "KOTOR_Research_cloaking",
+   "label": "Stygium Cloaking Devices",
+   "tree": "The Strange Schools",
+   "tier": "T4",
+   "removed": false
+  },
+  {
+   "defName": "SmokepopBelt",
+   "label": "smokepop packs",
+   "tree": "The Shell",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "PlateArmor",
+   "label": "plate armor",
+   "tree": "The Shell",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "guy762_ResearchKotOR_jawa",
+   "label": "Jawa equipment",
+   "tree": "The Shell",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "FlakArmor",
+   "label": "flak armor",
+   "tree": "The Shell",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "guy762_ResearchKotOR_tusken",
+   "label": "Tusken Raider equipment",
+   "tree": "The Shell",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "ShieldBelt",
+   "label": "shields",
+   "tree": "The Shell",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "guy762_ResearchKotOR_hutts",
+   "label": "Kajidic equipment",
+   "tree": "The Shell",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "guy762_ResearchKotOR_republic",
+   "label": "Republic equipment",
+   "tree": "The Shell",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "OuterRim_Armoursmithing",
+   "label": "armoursmithing",
+   "tree": "The Shell",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "guy762_ResearchKotOR_lgtarmor",
+   "label": "light armors",
+   "tree": "The Shell",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "OuterRim_StimBelts",
+   "label": "stim belts",
+   "tree": "The Shell",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "OuterRim_TechBelts",
+   "label": "tech belts",
+   "tree": "The Shell",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "OuterRim_Vambraces",
+   "label": "vambraces",
+   "tree": "The Shell",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "guy762_ResearchKotOR_czerka",
+   "label": "Czerka equipment",
+   "tree": "The Shell",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "guy762_ResearchKotOR_echanishields",
+   "label": "Echani energy shielding",
+   "tree": "The Shell",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "guy762_ResearchKotOR_exchange",
+   "label": "Exchange equipment",
+   "tree": "The Shell",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "OuterRim_HeavyArmour",
+   "label": "heavy armour",
+   "tree": "The Shell",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "OuterRim_Jetpacks",
+   "label": "jetpacks",
+   "tree": "The Shell",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "guy762_ResearchKotOR_midarmor",
+   "label": "medium armors",
+   "tree": "The Shell",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "ShieldGen_PortableShieldTech",
+   "label": "portable shield tech",
+   "tree": "The Shell",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "guy762_ResearchKotOR_deflectors",
+   "label": "deflector shields",
+   "tree": "The Shell",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "guy762_ResearchKotOR_hvyshields",
+   "label": "heavy shield generators",
+   "tree": "The Shell",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "guy762_ResearchKotOR_sith",
+   "label": "Sith equipment",
+   "tree": "The Shell",
+   "tier": "T4",
+   "removed": false
+  },
+  {
+   "defName": "ShieldGen_BasicShieldTech",
+   "label": "basic shield tech",
+   "tree": "The Shell",
+   "tier": "T4",
+   "removed": false
+  },
+  {
+   "defName": "guy762_ResearchKotOR_eshields",
+   "label": "energy shielding",
+   "tree": "The Shell",
+   "tier": "T4",
+   "removed": false
+  },
+  {
+   "defName": "guy762_ResearchKotOR_hvyarmor",
+   "label": "heavy armors",
+   "tree": "The Shell",
+   "tier": "T4",
+   "removed": false
+  },
+  {
+   "defName": "PoweredArmor",
+   "label": "marine armor",
+   "tree": "The Shell",
+   "tier": "T4",
+   "removed": false
+  },
+  {
+   "defName": "ReconArmor",
+   "label": "recon armor",
+   "tree": "The Shell",
+   "tier": "T4",
+   "removed": false
+  },
+  {
+   "defName": "guy762_ResearchKotOR_wookiee",
+   "label": "Wookiee equipment",
+   "tree": "The Shell",
+   "tier": "T4",
+   "removed": false
+  },
+  {
+   "defName": "guy762_ResearchKotOR_mando",
+   "label": "Mandalorian equipment",
+   "tree": "The Shell",
+   "tier": "T4",
+   "removed": false
+  },
+  {
+   "defName": "ShieldGen_AdvancedShieldTech",
+   "label": "advanced shield tech",
+   "tree": "The Shell",
+   "tier": "T4",
+   "removed": false
+  },
+  {
+   "defName": "RimAI_GW_Communication",
+   "label": "gravitational-wave communication",
+   "tree": "The Waking Mind",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "AM_Cryptoharmonization",
+   "label": "crypto-harmonization",
+   "tree": "The Waking Mind",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "RimAI_Subspace_Gravitic_Penetration",
+   "label": "Subspace gravitic penetration",
+   "tree": "The Waking Mind",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "RimAI_AI_Level1",
+   "label": "RimAI - Level 1 Artificial Intelligence",
+   "tree": "The Waking Mind",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "AM_MechanoidBeamcasting",
+   "label": "mechanoid beamcasting",
+   "tree": "The Waking Mind",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "AM_QuantumPulseMessaging",
+   "label": "quantum pulse messaging",
+   "tree": "The Waking Mind",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "RimAI_AI_Level2",
+   "label": "RimAI - Level 2 Artificial Intelligence",
+   "tree": "The Waking Mind",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "AM_VoidLinkConnectivity",
+   "label": "voidlink connectivity",
+   "tree": "The Waking Mind",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "RimAI_AI_Level3",
+   "label": "RimAI - Level 3 Artificial Intelligence",
+   "tree": "The Waking Mind",
+   "tier": "T4",
+   "removed": false
+  },
+  {
+   "defName": "KOTOR_Research_Lobot",
+   "label": "Positronic Brain",
+   "tree": "The Waking Mind",
+   "tier": "T4",
+   "removed": false
+  },
+  {
+   "defName": "BasicGravtech",
+   "label": "basic gravtech",
+   "tree": "THE SHIP",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "OrbitalTech",
+   "label": "orbital tech",
+   "tree": "THE SHIP",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "KOTOR_Research_HoloRec",
+   "label": "Holographic Recreation",
+   "tree": "THE SHIP",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "Res_Projectors",
+   "label": "holo-projection",
+   "tree": "THE SHIP",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "VFE_Res_Holograms",
+   "label": "holograms",
+   "tree": "THE SHIP",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "ResearchDrillTurret",
+   "label": "drill turret",
+   "tree": "THE SHIP",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "ResearchDrillTurretEfficientDrilling",
+   "label": "efficient drilling",
+   "tree": "THE SHIP",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "Shuttles",
+   "label": "shuttle",
+   "tree": "THE SHIP",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "VFE_Res_AdvancedHydroponics",
+   "label": "artificial ecosystems",
+   "tree": "THE SHIP",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "ShipCryptosleep",
+   "label": "vacuum cryptosleep casket",
+   "tree": "THE SHIP",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "ShipComputerCore",
+   "label": "machine persuasion",
+   "tree": "THE SHIP",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "VGE_GravshipLiving",
+   "label": "gravship living",
+   "tree": "THE SHIP",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "VGE_GravshipWeaponry",
+   "label": "gravship weaponry",
+   "tree": "THE SHIP",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "VGE_AstrofuelRefining",
+   "label": "astrofuel refining",
+   "tree": "THE SHIP",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "VGE_CompactWorkspaces",
+   "label": "compact workspaces",
+   "tree": "THE SHIP",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "VGE_GravshipPower",
+   "label": "gravship power",
+   "tree": "THE SHIP",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "VGE_HeatDissipation",
+   "label": "heat dissipation",
+   "tree": "THE SHIP",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "VGE_OxygenNetwork",
+   "label": "oxygen network",
+   "tree": "THE SHIP",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "StandardGravtech",
+   "label": "standard gravtech",
+   "tree": "THE SHIP",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "ShipBasics",
+   "label": "starflight basics",
+   "tree": "THE SHIP",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "ShipSensorCluster",
+   "label": "starflight sensors",
+   "tree": "THE SHIP",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "MM_Research_AncientShipDesigns",
+   "label": "Ancient Era Ship Designs",
+   "tree": "THE SHIP",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "MM_Research_CWShipDesigns",
+   "label": "Clone Wars Era Ship Designs",
+   "tree": "THE SHIP",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "MM_Research_EmpireShipDesigns",
+   "label": "Empire Era Ship Designs",
+   "tree": "THE SHIP",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "GravForge",
+   "label": "grav forge",
+   "tree": "THE SHIP",
+   "tier": "T4",
+   "removed": false
+  },
+  {
+   "defName": "ShipEngine",
+   "label": "Johnson-Tanaka drive",
+   "tree": "THE SHIP",
+   "tier": "T4",
+   "removed": false
+  },
+  {
+   "defName": "VFE_Manufacturing",
+   "label": "Manufacturing",
+   "tree": "THE SHIP",
+   "tier": "T4",
+   "removed": false
+  },
+  {
+   "defName": "AdvancedGravtech",
+   "label": "advanced gravtech",
+   "tree": "THE SHIP",
+   "tier": "T4",
+   "removed": false
+  },
+  {
+   "defName": "GravTuning",
+   "label": "precise grav tuning",
+   "tree": "THE SHIP",
+   "tier": "T4",
+   "removed": false
+  },
+  {
+   "defName": "VFES_RepulsorTechnology",
+   "label": "repulsor technology",
+   "tree": "THE SHIP",
+   "tier": "T4",
+   "removed": false
+  },
+  {
+   "defName": "ShipReactor",
+   "label": "starship reactor",
+   "tree": "THE SHIP",
+   "tier": "T4",
+   "removed": false
+  },
+  {
+   "defName": "AdvShipParts",
+   "label": "advanced ship parts",
+   "tree": "THE SHIP",
+   "tier": "T4",
+   "removed": false
+  },
+  {
+   "defName": "GTbc_BigCannons",
+   "label": "big cannons",
+   "tree": "THE SHIP",
+   "tier": "T4",
+   "removed": false
+  },
+  {
+   "defName": "OuterRim_HypertechFabrication",
+   "label": "Hypertech Fabrication",
+   "tree": "THE SHIP",
+   "tier": "T4",
+   "removed": false
+  },
+  {
+   "defName": "BlackHole_GT",
+   "label": "taming a Black Hole",
+   "tree": "THE SHIP",
+   "tier": "T4",
+   "removed": false
+  },
+  {
+   "defName": "Prosthetics",
+   "label": "prosthetics",
+   "tree": "The Reach",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "ScuttlebugsBiology",
+   "label": "Xenobiology",
+   "tree": "The Reach",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "KOTOR_Research_AdvPhysiology",
+   "label": "Adv. Physiology",
+   "tree": "The Reach",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "Bionics",
+   "label": "bionic replacements",
+   "tree": "The Reach",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "Cryptosleep",
+   "label": "cryptosleep casket",
+   "tree": "The Reach",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "KOTOR_Research_AdvImplants",
+   "label": "Adv. Modular Implant Systems",
+   "tree": "The Reach",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "GravBionics",
+   "label": "grav bionics",
+   "tree": "The Reach",
+   "tier": "T4",
+   "removed": false
+  },
+  {
+   "defName": "KOTOR_Research_Implants",
+   "label": "Modular Implant Systems",
+   "tree": "The Reach",
+   "tier": "T4",
+   "removed": false
+  },
+  {
+   "defName": "VFEP_WarcasketWeaponry",
+   "label": "warcasket weaponry",
+   "tree": "The Junker Yards",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "VFEP_Warcaskets",
+   "label": "warcaskets (salvaged shells only)",
+   "tree": "The Junker Yards",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "VFEP_AdvancedWarcaskets",
+   "label": "advanced warcaskets",
+   "tree": "The Junker Yards",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "VFEP_SpacerWarcasketWeaponry",
+   "label": "spacer warcasket weaponry",
+   "tree": "The Junker Yards",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "VFEP_SpecialisedWarcaskets",
+   "label": "specialised warcaskets",
+   "tree": "The Junker Yards",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "VFEP_SpacerWarcaskets",
+   "label": "spacer warcaskets",
+   "tree": "The Junker Yards",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "VFEP_WarcasketRemoval",
+   "label": "warcasket removal",
+   "tree": "The Junker Yards",
+   "tier": "T4",
+   "removed": false
+  },
+  {
+   "defName": "VFEI2_BasicHivetech",
+   "label": "basic hivetech",
+   "tree": "The Foundry Hive",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "VFEI2_StandardHivetech",
+   "label": "standard hivetech",
+   "tree": "The Foundry Hive",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "VFEI2_ExoticHivetech",
+   "label": "exotic hivetech",
+   "tree": "The Foundry Hive",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "guy762_ResearchKotOR_sonic",
+   "label": "sonic weaponry",
+   "tree": "The Foundry Hive",
+   "tier": "T4",
+   "removed": false
+  },
+  {
+   "defName": "GrowthVats",
+   "label": "growth vats",
+   "tree": "The Ascendant Ladder",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "FertilityProcedures",
+   "label": "fertility procedures",
+   "tree": "The Ascendant Ladder",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "GeneProcessor",
+   "label": "gene processor",
+   "tree": "The Ascendant Ladder",
+   "tier": "T0",
+   "removed": false
+  },
+  {
+   "defName": "Xenogermination",
+   "label": "xenogenetics",
+   "tree": "The Ascendant Ladder",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "Biosculpting",
+   "label": "biosculpting",
+   "tree": "The Ascendant Ladder",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "NeuralSupercharger",
+   "label": "neural supercharger",
+   "tree": "The Ascendant Ladder",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "Bioregeneration",
+   "label": "bioregeneration",
+   "tree": "The Ascendant Ladder",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "Archogenetics",
+   "label": "archogenetics",
+   "tree": "The Ascendant Ladder",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "ABF_ResearchProject_Synstruct_CoreAssistants",
+   "label": "core assistants",
+   "tree": "The Unbolting",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "ABF_ResearchProject_Synstruct_Infrastructure",
+   "label": "synstruct infrastructure",
+   "tree": "The Unbolting",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "ABF_ResearchProject_Synstruct_Ultraparts",
+   "label": "ultra parts",
+   "tree": "The Unbolting",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "OuterRim_LaborDroids",
+   "label": "Labor Droids",
+   "tree": "The Unbolting",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "OuterRim_MaintenanceDroids",
+   "label": "Maintenance Droids",
+   "tree": "The Unbolting",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "OuterRim_PowerDroids",
+   "label": "Power Droids",
+   "tree": "The Unbolting",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "guy762_ResearchKotOR_droidsimple",
+   "label": "simple droids",
+   "tree": "The Unbolting",
+   "tier": "T1",
+   "removed": false
+  },
+  {
+   "defName": "OuterRim_AstromechDroids",
+   "label": "Astromech Droids",
+   "tree": "The Unbolting",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "OuterRim_MedicalDroids",
+   "label": "Medical Droids",
+   "tree": "The Unbolting",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "OuterRim_ProtocolDroids",
+   "label": "Protocol Droids",
+   "tree": "The Unbolting",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "OuterRim_SecurityDroids",
+   "label": "Security Droids",
+   "tree": "The Unbolting",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "guy762_ResearchKotOR_droidlaboradv",
+   "label": "adv. labor droids",
+   "tree": "The Unbolting",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "guy762_ResearchKotOR_droidutilityadv",
+   "label": "adv. utility droids",
+   "tree": "The Unbolting",
+   "tier": "T2",
+   "removed": false
+  },
+  {
+   "defName": "OuterRim_DroidReplacementPartsAdv",
+   "label": "Advanced Parts",
+   "tree": "The Unbolting",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "OuterRim_DroidAdvancedSys",
+   "label": "Advanced Systems",
+   "tree": "The Unbolting",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "OuterRim_AssassinDroids",
+   "label": "Assassin Droids",
+   "tree": "The Unbolting",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "OuterRim_BattleDroids",
+   "label": "Battle Droids",
+   "tree": "The Unbolting",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "OuterRim_DroidReplacementPartsOver",
+   "label": "Overclocked Parts",
+   "tree": "The Unbolting",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "guy762_ResearchKotOR_droidcombatadv",
+   "label": "adv. combat droids",
+   "tree": "The Unbolting",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "guy762_ResearchKotOR_droidassassin",
+   "label": "assassin droids",
+   "tree": "The Unbolting",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "OuterRim_DroidEngineering",
+   "label": "Droid Engineering",
+   "tree": "The Unbolting",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "guy762_ResearchKotOR_droidtech",
+   "label": "droid upgrades",
+   "tree": "The Unbolting",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "ABF_ResearchProject_Synstruct_Optimization",
+   "label": "synstruct optimization",
+   "tree": "The Unbolting",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "guy762_ResearchKotOR_droidassault",
+   "label": "assault droids",
+   "tree": "The Unbolting",
+   "tier": "T3",
+   "removed": false
+  },
+  {
+   "defName": "guy762_ResearchKotOR_droidsith",
+   "label": "Sith war droids",
+   "tree": "The Unbolting",
+   "tier": "T4",
+   "removed": false
+  },
+  {
+   "defName": "guy762_ResearchKotOR_droidintel",
+   "label": "specialist droids",
+   "tree": "The Unbolting",
+   "tier": "T4",
+   "removed": false
+  },
+  {
+   "defName": "guy762_ResearchKotOR_hk",
+   "label": "HK-51 assassin droids",
+   "tree": "The Unbolting",
+   "tier": "T4",
+   "removed": false
+  },
+  {
+   "defName": "BasicMechtech",
+   "label": "basic mechtech",
+   "tree": null,
+   "tier": null,
+   "removed": true
+  },
+  {
+   "defName": "AM_WorkerStandardMechtech",
+   "label": "light alpha mechs",
+   "tree": null,
+   "tier": null,
+   "removed": true
+  },
+  {
+   "defName": "AM_StandardMechtech",
+   "label": "standard alpha mechs",
+   "tree": null,
+   "tier": null,
+   "removed": true
+  },
+  {
+   "defName": "AM_HeavyMechtech",
+   "label": "heavy alpha mechs",
+   "tree": null,
+   "tier": null,
+   "removed": true
+  },
+  {
+   "defName": "StandardMechtech",
+   "label": "standard mechtech",
+   "tree": null,
+   "tier": null,
+   "removed": true
+  },
+  {
+   "defName": "AM_UltraHeavyMechtech",
+   "label": "ultra-heavy alpha mechs",
+   "tree": null,
+   "tier": null,
+   "removed": true
+  },
+  {
+   "defName": "HighMechtech",
+   "label": "high mechtech",
+   "tree": null,
+   "tier": null,
+   "removed": true
+  },
+  {
+   "defName": "UltraMechtech",
+   "label": "ultra mechtech",
+   "tree": null,
+   "tier": null,
+   "removed": true
+  }
+ ]
+}
