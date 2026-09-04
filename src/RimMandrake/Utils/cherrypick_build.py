@@ -124,6 +124,22 @@ OWNER_EXCLUDE = {
     "Bow_Great": "un-cut: the only vanilla carrier of NeolithicRangedChief",
     "Pila": "un-cut: NeolithicRangedHeavy, part of the bows-and-knives floor",
     "MeleeWeapon_Ikwa": "un-cut: a knife by any reading of the weapon floor",
+    # ANOMALY_CREATURE_RESTORE_1, owner 2026-09-03. He ruled the Anomaly CONTENT
+    # was never cut - only the player's ability to research it - and asked for the
+    # "terminator/night side creatures" back for our own repurposing (the sarlacc,
+    # the Assailant dungeons). These five are the creature set; they are recorded
+    # cuts in the decisions files, so without this they are re-added every run,
+    # exactly as the bows above were. Keyed by bare NAME, which holds both the
+    # PawnKindDef and the ThingDef of the same name - intended here.
+    # ⛔ NOT restored, and deliberately: the IncidentDefs that make them ATTACK
+    # (ShamblerAssault, ShamblerSwarm, SmallShamblerSwarm, ShamblerSwarmAnimals,
+    # GhoulAttack, CreepJoinerJoin_Metalhorror) and RecipeDef/GhoulInfusion stay
+    # cut. We place these deliberately; they do not come for the player on their own.
+    "ShamblerSoldier": "un-cut: night-side creature, ours to place (owner 2026-09-03)",
+    "ShamblerSwarmer": "un-cut: night-side creature, ours to place (owner 2026-09-03)",
+    "Ghoul": "un-cut: night-side creature, ours to place (owner 2026-09-03)",
+    "Metalhorror": "un-cut: the terminator - ours to place (owner 2026-09-03)",
+    "Trispike": "un-cut: night-side creature, ours to place (owner 2026-09-03)",
 }
 
 # ---------------------------------------------------------------- the list
@@ -157,24 +173,22 @@ KEYS = [
     "IncidentDef/ShamblerSwarm",
     "IncidentDef/SmallShamblerSwarm",
     "IncidentDef/ShamblerSwarmAnimals",
-    "PawnKindDef/ShamblerSoldier",
-    "PawnKindDef/ShamblerSwarmer",
+    # ⬑ the five KINDS themselves were un-cut by the owner 2026-09-03 (see
+    #   OWNER_EXCLUDE): the creatures are ours to place. The INCIDENTS that send
+    #   them at the player, and the ghoul surgery, stay cut.
 
     # --- ghouls. The kind, the surgery that makes one, and the incident that
     # sends them at you. The inbox named only the recipe.
-    "PawnKindDef/Ghoul",
     "RecipeDef/GhoulInfusion",
     "IncidentDef/GhoulAttack",
 
     # --- metalhorror. ONE kind with three lifeStages, so the kind is enough —
     # but the arrival is a separate incident and survives without it.
-    "PawnKindDef/Metalhorror",
     "IncidentDef/CreepJoinerJoin_Metalhorror",
 
     # --- trispike. The death-spawn half is NOT a pick: a neutered kind is still
     # summonable BY NAME, so Jawa_Patches/Patches/Fleshbeast_TrispikeCull.xml
     # strikes it from Bulbfreak's and Dreadmeld's divide lists.
-    "PawnKindDef/Trispike",
 
     # --- objects. Both obelisks exist as a ThingDef AND an IncidentDef of the
     # same name; the type segment is the only thing telling them apart.

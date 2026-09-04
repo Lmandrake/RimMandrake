@@ -6,14 +6,9 @@
 			<li>IncidentDef/ShamblerSwarm</li>
 			<li>IncidentDef/SmallShamblerSwarm</li>
 			<li>IncidentDef/ShamblerSwarmAnimals</li>
-			<li>PawnKindDef/ShamblerSoldier</li>
-			<li>PawnKindDef/ShamblerSwarmer</li>
-			<li>PawnKindDef/Ghoul</li>
 			<li>RecipeDef/GhoulInfusion</li>
 			<li>IncidentDef/GhoulAttack</li>
-			<li>PawnKindDef/Metalhorror</li>
 			<li>IncidentDef/CreepJoinerJoin_Metalhorror</li>
-			<li>PawnKindDef/Trispike</li>
 			<li>ThingDef/GoldenCube</li>
 			<li>ThingDef/WarpedObelisk_Duplicator</li>
 			<li>IncidentDef/WarpedObelisk_Duplicator</li>
@@ -1007,7 +1002,6 @@
 			<li>ThingDef/MA_SimbakubAlpha</li>
 			<li>ThingDef/Macaw</li>
 			<li>ThingDef/Mastodon</li>
-			<li>ThingDef/Metalhorror</li>
 			<li>ThingDef/Mink</li>
 			<li>ThingDef/MonitorLizard</li>
 			<li>ThingDef/MutantCow</li>
@@ -1025,7 +1019,6 @@
 			<li>ThingDef/Skunk</li>
 			<li>ThingDef/Sparrow</li>
 			<li>ThingDef/Swan</li>
-			<li>ThingDef/Trispike</li>
 			<li>ThingDef/AbrictosaurusEggFertilized</li>
 			<li>ThingDef/AbrictosaurusEggUnFertilized</li>
 			<li>ThingDef/AcrocanthosaurusEggFertilized</li>
