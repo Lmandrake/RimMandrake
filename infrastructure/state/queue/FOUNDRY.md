@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-04T21:40:13Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: free
+as-of: 2026-09-04T21:52:18Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -288,15 +288,6 @@ kind:     build
 summary:  Identity: the Long Hunger — Deep Desert tribal lore for a colossal entity
 prose:    infrastructure/state/items/SANDWORM_MYTHOS_BUILD_1.md
 
-## HELIX_TELLUROX_SHELL_LOAD_CRASH_1 HelixTellurox crashes mod load to Core-only: a def parse error (MissingMethodException: default ctor for System.String) breaks RSW_TelluroxShell, whose null butcherProducts ref NREs corpse-gen
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  Determine whether mandrake.rsw.helixtellurox genuinely crashes a load to
-prose:    infrastructure/state/items/HELIX_TELLUROX_SHELL_LOAD_CRASH_1.md
-
 ## INHABITED_STOCK_ONTO_MAP_AND_FATE_1 Spawn a place's stock onto its map, collect it back, and wire InhabitedFate to it
 state:    doing
 row:      unassigned
@@ -366,7 +357,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-summary:  (no items/ANTIQUITIES_TREE_BUILD_1.md yet — write one when you have something to say)
+summary:  Owner-unblocked 2026-09-04 (ledger: "the expansion/review sitting the block
 prose:    infrastructure/state/items/ANTIQUITIES_TREE_BUILD_1.md
 
 ## COLD_LOAD_RUN_SHEET_3 Run sheet for the next full-list cold load - research retag proof is the first entry
@@ -391,16 +382,6 @@ kind:     task
 blocked:  Engineering sequence, not an owner call: needs Droidworks Phase 3 (faction/goodwill layer); DROID_SYSTEM_BUILD_1 is live but only in Phase 0
 summary:  (no items/DROID_TILES_SOURED_TERRAIN_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DROID_TILES_SOURED_TERRAIN_1.md
-
-## HELIX_TELLUROX_SHELL_LOAD_CRASH_1 HelixTellurox crashes mod load to Core-only: a def parse error (MissingMethodException: default ctor for System.String) breaks RSW_TelluroxShell, whose null butcherProducts ref NREs corpse-gen
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-blocked:  Live-reproduced 2026-09-04: adding mandrake.rsw.helixtellurox to the working 21-mod MINIMAL list crashed the very next launch to Core-only, exact MissingMethodException signature this item names, first line in the log. NOT yet isolated from droidworks/OuterRim.Core - both already had unrelated pre-existing errors in the same log. Needs one more isolated relaunch (smaller list, no confounds) before attributing the crash to HelixTellurox itself.
-summary:  Determine whether mandrake.rsw.helixtellurox genuinely crashes a load to
-prose:    infrastructure/state/items/HELIX_TELLUROX_SHELL_LOAD_CRASH_1.md
 
 ## INHABITED_TILEMUTATOR_NO_ENTRY_1 No TileMutatorDef anywhere names Inhabited_Cast -- the wilderness settlement-spawn route has no way in
 state:    doing  (BLOCKED)
