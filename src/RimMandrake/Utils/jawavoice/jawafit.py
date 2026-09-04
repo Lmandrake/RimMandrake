@@ -76,7 +76,7 @@ if __name__ == "__main__":
     # Resolved from this file, not hardcoded: the repo moved G: -> D: on
     # 2026-08-12 and is reached differently from Windows Python and WSL.
     _root = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", "..", ".."))
-    os.chdir(os.path.join(_root, "src", "Jawa", "JawaVoice", "Patches"))
+    os.chdir(os.path.join(_root, "src", "RimStarWars", "JawaVoice", "Patches"))
     mine = ["JawaVoice_Insults.xml", "JawaVoice_Ideology.xml"]
     extra = [f for f in sys.argv[1:]]
     O = pairs([f for f in glob.glob("*.xml") if f not in mine and f not in extra])

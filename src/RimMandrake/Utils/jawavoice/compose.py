@@ -41,7 +41,7 @@ def quiet(P):
 
 
 def main():
-    os.chdir(os.path.join(_REPO_ROOT, "src", "Jawa", "JawaVoice", "Patches"))
+    os.chdir(os.path.join(_REPO_ROOT, "src", "RimStarWars", "JawaVoice", "Patches"))
     mine = ["JawaVoice_Insults.xml", "JawaVoice_Ideology.xml"]
     O = jawafit.pairs([f for f in glob.glob("*.xml") if f not in mine])
     t = quiet(O)
