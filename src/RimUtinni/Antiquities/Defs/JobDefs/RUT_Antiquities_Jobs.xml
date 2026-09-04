@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <JobDef>
+    <defName>RUT_ExamineAntiquity</defName>
+    <driverClass>RimMandrake.Utinni.Antiquities.JobDriver_ExamineAntiquity</driverClass>
+    <reportString>examining TargetA at the reading station.</reportString>
+  </JobDef>
+
+</Defs>

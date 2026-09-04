@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_Antiquities_Items.xml   ANTIQUITIES_TREE_BUILD_1 slice 1
+
+  Three of the doc's four item defs (design/Jawa/antiquities_design.md
+  section 4.1) — RUT_Antiquity_Testament is the Call-Out payoff (section
+  7, slice 6) and does not exist until that slice.
+
+  🖼 PLACEHOLDER ART: texPath reuses the vanilla AIPersonaCore texture
+  (already a safe, non-magenta stand-in elsewhere in this repo — see
+  src/RimUtinni/ShipMemory/Defs/ThingDefs_Items/RUT_ShipMemory.xml).
+  The real art + animation is slice 8's Urn Reading Station work; these
+  three items themselves were never scoped for bespoke art in slice 1.
+
+  📜 PLACEHOLDER TEXT: one flavor description per family, not per
+  instance. The combinatorial narrative generator (four-axis grammar,
+  design doc section 4.3) is slice 2 and is not built here — CompAntiquity
+  intentionally carries no per-instance text field yet.
+
+  Non-destructive by design (section 4.2: "spent for knowledge, intact
+  for silver") — reading sets CompAntiquity.catalogued and nothing
+  destroys the item.
+-->
+<Defs>
+
+  <ThingDef Name="RUT_AntiquityBase" Abstract="true">
+    <thingClass>ThingWithComps</thingClass>
+    <category>Item</category>
+    <tradeability>Sellable</tradeability>
+    <selectable>true</selectable>
+    <altitudeLayer>Item</altitudeLayer>
+    <useHitPoints>true</useHitPoints>
+    <stackLimit>1</stackLimit>
+    <rotatable>false</rotatable>
+    <alwaysHaulable>true</alwaysHaulable>
+    <pathCost>15</pathCost>
+    <graphicData>
+      <texPath>Things/Item/Special/AIPersonaCore</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>0.5</Flammability>
+      <DeteriorationRate>0.5</DeteriorationRate>
+    </statBases>
+    <thingCategories>
+      <li>Manufactured</li>
+    </thingCategories>
+    <comps>
+      <li Class="RimMandrake.Utinni.Antiquities.CompProperties_Antiquity" />
+    </comps>
+  </ThingDef>
+
+  <ThingDef ParentName="RUT_AntiquityBase">
+    <defName>RUT_Antiquity_Urn</defName>
+    <label>ancient urn</label>
+    <description>A glazed vessel, dense with pattern. Every ancient site on Ash'karr has these by the dozen — the ubiquitous form of a civilization that encoded everything that mattered into art the Assailant could never parse.</description>
+    <statBases>
+      <MarketValue>140</MarketValue>
+      <Mass>3</Mass>
+    </statBases>
+  </ThingDef>
+
+  <ThingDef ParentName="RUT_AntiquityBase">
+    <defName>RUT_Antiquity_Stele</defName>
+    <label>ancient stele</label>
+    <description>A boundary-stone, carved on every face. Rarer than an urn and heavier with geography — the ancients marked their secret places this way, for readers who would come generations later.</description>
+    <statBases>
+      <MarketValue>220</MarketValue>
+      <Mass>12</Mass>
+    </statBases>
+  </ThingDef>
+
+  <ThingDef ParentName="RUT_AntiquityBase">
+    <defName>RUT_Antiquity_Gravegood</defName>
+    <label>ancient grave-good</label>
+    <description>Something buried with someone. Personal, small, and heavier with grief than the urns and steles — a civic register of daily life, law, and loss rather than liturgy or geography.</description>
+    <statBases>
+      <MarketValue>180</MarketValue>
+      <Mass>1.5</Mass>
+    </statBases>
+  </ThingDef>
+
+</Defs>

@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_Antiquities_Research.xml   ANTIQUITIES_TREE_BUILD_1 slice 1
+
+  Five stages, T0-T4, defNames and baseCosts verbatim from
+  design/Jawa/antiquities_design.md section 3 ("floors", not the real
+  cost — the real cost is artifacts applied). `artifactsRequired` on
+  each RUT_AntiquityStageExtension is the doc's own per-stage count
+  (4/7/10/12/15, 48 total); the reading job (Source/JobDriver_
+  ExamineAntiquity.cs) divides baseCost by artifactsRequired to get
+  the per-read progress amount, so completing every required artifact
+  and nothing else exactly finishes the node.
+
+  🔴 requiredResearchBuilding=RUT_AntiquityCipherBench is a **deliberately
+  unbuildable** Building_ResearchBench (RUT_Antiquities_Buildings.xml —
+  no designationCategory, no recipe, never placeable): vanilla's
+  ResearchProjectDef.PlayerHasAnyAppropriateResearchBench (Verse/
+  ResearchProjectDef.cs) can then never be true, so CanStartNow is
+  always false and WorkGiver_Researcher/JobDriver_Research can never
+  engage these projects. Find.ResearchManager.AddProgress (RimWorld/
+  ResearchManager.cs) does not consult requiredResearchBuilding at
+  all, so this mod's own reading job can still add progress directly.
+  This is the whole mechanism behind "advanced only by applying read
+  artifacts, never by lab-hours alone" (design doc section 2) — no
+  Harmony patch needed, verified against the shipped RimWorld source.
+-->
+<Defs>
+
+  <ResearchTabDef>
+    <defName>RUT_Antiquities</defName>
+    <label>antiquities</label>
+    <generalTitle>Antiquities</generalTitle>
+    <generalDescription>The ancients wrote nothing down except on everything they made. Every urn read is a page of a civilization that burned its own libraries on purpose.</generalDescription>
+  </ResearchTabDef>
+
+  <ResearchProjectDef>
+    <defName>RUT_Antiq_Language</defName>
+    <label>language</label>
+    <description>The glyph-grammar cracks. Every later urn read yields more, and the ship starts naming the places you have already found.</description>
+    <baseCost>500</baseCost>
+    <techLevel>Neolithic</techLevel>
+    <tab>RUT_Antiquities</tab>
+    <requiredResearchBuilding>RUT_AntiquityCipherBench</requiredResearchBuilding>
+    <researchViewX>0</researchViewX>
+    <researchViewY>1</researchViewY>
+    <modExtensions>
+      <li Class="RimMandrake.Utinni.Antiquities.AntiquityStageExtension">
+        <artifactsRequired>4</artifactsRequired>
+      </li>
+    </modExtensions>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef>
+    <defName>RUT_Antiq_Religion</defName>
+    <label>religion</label>
+    <description>The liturgical register. Shrine sites become readable on the map; the dead stop being props.</description>
+    <baseCost>1200</baseCost>
+    <techLevel>Neolithic</techLevel>
+    <tab>RUT_Antiquities</tab>
+    <requiredResearchBuilding>RUT_AntiquityCipherBench</requiredResearchBuilding>
+    <prerequisites><li>RUT_Antiq_Language</li></prerequisites>
+    <researchViewX>1</researchViewX>
+    <researchViewY>1</researchViewY>
+    <modExtensions>
+      <li Class="RimMandrake.Utinni.Antiquities.AntiquityStageExtension">
+        <artifactsRequired>7</artifactsRequired>
+      </li>
+    </modExtensions>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef>
+    <defName>RUT_Antiq_Culture</defName>
+    <label>culture</label>
+    <description>Daily life, law, grief. The war children stop being targets and start being someone's someone.</description>
+    <baseCost>2400</baseCost>
+    <techLevel>Industrial</techLevel>
+    <tab>RUT_Antiquities</tab>
+    <requiredResearchBuilding>RUT_AntiquityCipherBench</requiredResearchBuilding>
+    <prerequisites><li>RUT_Antiq_Religion</li></prerequisites>
+    <researchViewX>2</researchViewX>
+    <researchViewY>1</researchViewY>
+    <modExtensions>
+      <li Class="RimMandrake.Utinni.Antiquities.AntiquityStageExtension">
+        <artifactsRequired>10</artifactsRequired>
+      </li>
+    </modExtensions>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef>
+    <defName>RUT_Antiq_Cartography</defName>
+    <label>cartography</label>
+    <description>The secret geography. Vault sites and their access phrases, for a clan that has earned the right to walk in the front door once.</description>
+    <baseCost>4000</baseCost>
+    <techLevel>Industrial</techLevel>
+    <tab>RUT_Antiquities</tab>
+    <requiredResearchBuilding>RUT_AntiquityCipherBench</requiredResearchBuilding>
+    <prerequisites><li>RUT_Antiq_Culture</li></prerequisites>
+    <researchViewX>3</researchViewX>
+    <researchViewY>1</researchViewY>
+    <modExtensions>
+      <li Class="RimMandrake.Utinni.Antiquities.AntiquityStageExtension">
+        <artifactsRequired>12</artifactsRequired>
+      </li>
+    </modExtensions>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef>
+    <defName>RUT_Antiq_Voice</defName>
+    <label>voice</label>
+    <description>The living register — how to address an ancient, not just read one. The last partitions accept a challenge phrase instead of a challenge.</description>
+    <baseCost>6000</baseCost>
+    <techLevel>Spacer</techLevel>
+    <tab>RUT_Antiquities</tab>
+    <requiredResearchBuilding>RUT_AntiquityCipherBench</requiredResearchBuilding>
+    <prerequisites><li>RUT_Antiq_Cartography</li></prerequisites>
+    <researchViewX>4</researchViewX>
+    <researchViewY>1</researchViewY>
+    <modExtensions>
+      <li Class="RimMandrake.Utinni.Antiquities.AntiquityStageExtension">
+        <artifactsRequired>15</artifactsRequired>
+      </li>
+    </modExtensions>
+  </ResearchProjectDef>
+
+</Defs>

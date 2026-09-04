@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_Antiquities_Buildings.xml   ANTIQUITIES_TREE_BUILD_1 slice 1
+
+  Two buildings, two very different jobs:
+
+  - RUT_AntiquityReadingStation is the REAL, player-buildable furniture the
+    reading job (Source/WorkGiver_ExamineAntiquity.cs,
+    JobDriver_ExamineAntiquity.cs) targets. 🖼 PLACEHOLDER ART — reuses the
+    vanilla simple-research-bench texture as a stand-in. Design doc section
+    4.2's authored-art-plus-animation "turning cradle" object is slice 8;
+    this is the functional placeholder that makes the mechanism real
+    without waiting on it.
+
+  - RUT_AntiquityCipherBench is NOT a real building. It exists only so
+    every RUT_Antiq_* ResearchProjectDef can point requiredResearchBuilding
+    at SOMETHING that can never be built (no designationCategory, no
+    costList, no recipe) — see the long comment in
+    RUT_Antiquities_Research.xml for why that is the entire mechanism that
+    keeps these projects off vanilla's ordinary research-bench work. It is
+    never meant to be seen, selected, or spawned.
+-->
+<Defs>
+
+  <ThingDef ParentName="BuildingBase">
+    <defName>RUT_AntiquityReadingStation</defName>
+    <label>urn reading station</label>
+    <description>A scanning cradle for turning a piece slowly under glyph-light. Non-destructive — whatever it reads out, the piece keeps.</description>
+    <thingClass>Building</thingClass>
+    <category>Building</category>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>PassThroughOnly</passability>
+    <pathCost>50</pathCost>
+    <fillPercent>0.4</fillPercent>
+    <castEdgeShadows>true</castEdgeShadows>
+    <canOverlapZones>false</canOverlapZones>
+    <selectable>true</selectable>
+    <rotatable>true</rotatable>
+    <size>(1,1)</size>
+    <hasInteractionCell>true</hasInteractionCell>
+    <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+    <designationCategory>Production</designationCategory>
+    <constructEffect>ConstructMetal</constructEffect>
+    <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
+    <repairEffect>Repair</repairEffect>
+    <filthLeaving>Filth_RubbleBuilding</filthLeaving>
+    <leaveResourcesWhenKilled>true</leaveResourcesWhenKilled>
+    <building>
+      <buildingTags>
+        <li>Production</li>
+      </buildingTags>
+    </building>
+    <costList>
+      <Steel>40</Steel>
+      <ComponentIndustrial>2</ComponentIndustrial>
+    </costList>
+    <stuffCategories>
+      <li>Metallic</li>
+    </stuffCategories>
+    <statBases>
+      <MaxHitPoints>150</MaxHitPoints>
+      <WorkToBuild>1800</WorkToBuild>
+      <Flammability>0.5</Flammability>
+      <Mass>15</Mass>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Building/Production/ResearchBenchSimple</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <drawSize>(1,1)</drawSize>
+    </graphicData>
+    <uiIconPath>Things/Building/Production/ResearchBenchSimple</uiIconPath>
+  </ThingDef>
+
+  <ThingDef>
+    <defName>RUT_AntiquityCipherBench</defName>
+    <label>UNUSED — antiquity cipher bench (never spawns)</label>
+    <description>Not a real building. requiredResearchBuilding target only — see RUT_Antiquities_Research.xml. If you ever see this in the architect menu, something is wrong.</description>
+    <thingClass>Building_ResearchBench</thingClass>
+    <category>Building</category>
+    <altitudeLayer>Building</altitudeLayer>
+    <selectable>false</selectable>
+    <size>(1,1)</size>
+    <statBases>
+      <MaxHitPoints>10</MaxHitPoints>
+      <Flammability>0</Flammability>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Building/Production/ResearchBenchSimple</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+  </ThingDef>
+
+</Defs>

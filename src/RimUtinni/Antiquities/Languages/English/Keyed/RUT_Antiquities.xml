@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <RUT_Antiquity_Catalogued>Catalogued</RUT_Antiquity_Catalogued>
+  <RUT_Antiquity_Uncatalogued>Not yet read</RUT_Antiquity_Uncatalogued>
+  <RUT_Antiquity_LetterLabel>A page, read</RUT_Antiquity_LetterLabel>
+  <RUT_Antiquity_LetterText>{0} examined {1} at the reading station. The ship's understanding of {2} deepens.</RUT_Antiquity_LetterText>
+  <RUT_Antiquity_KeyText>This one was a key-text — it carried more than most.</RUT_Antiquity_KeyText>
+</LanguageData>

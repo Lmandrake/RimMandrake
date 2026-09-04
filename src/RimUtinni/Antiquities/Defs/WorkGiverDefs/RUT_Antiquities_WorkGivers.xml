@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_Antiquities_WorkGivers.xml   ANTIQUITIES_TREE_BUILD_1 slice 1
+
+  relevantSkills=[Intellectual, Artistic] is the literal implementation of
+  design doc section 4.2's "Intellectual + Artistic average" — vanilla's
+  Pawn_SkillTracker.AverageOfRelevantSkillsFor(WorkTypeDef) reads this list
+  directly (RimWorld/Pawn_SkillTracker.cs), so the C# side
+  (JobDriver_ExamineAntiquity) just calls that instead of writing its own
+  averaging.
+-->
+<Defs>
+
+  <WorkTypeDef>
+    <defName>RUT_ExamineAntiquities</defName>
+    <label>examine antiquities</label>
+    <description>Read ancient urns, steles and grave-goods at the reading station.</description>
+    <gerundLabel>examining antiquities</gerundLabel>
+    <labelShort>antiquities</labelShort>
+    <pawnLabel>Reader</pawnLabel>
+    <verb>Examine antiquities at</verb>
+    <naturalPriority>350</naturalPriority>
+    <relevantSkills>
+      <li>Intellectual</li>
+      <li>Artistic</li>
+    </relevantSkills>
+    <workTags>
+      <li>Intellectual</li>
+      <li>Artistic</li>
+    </workTags>
+  </WorkTypeDef>
+
+  <WorkGiverDef>
+    <defName>RUT_ExamineAntiquity</defName>
+    <label>examine antiquity</label>
+    <gerund>examining an antiquity at</gerund>
+    <verb>examine at</verb>
+    <giverClass>RimMandrake.Utinni.Antiquities.WorkGiver_ExamineAntiquity</giverClass>
+    <workType>RUT_ExamineAntiquities</workType>
+    <priorityInType>100</priorityInType>
+    <requiredCapacities>
+      <li>Manipulation</li>
+    </requiredCapacities>
+  </WorkGiverDef>
+
+</Defs>

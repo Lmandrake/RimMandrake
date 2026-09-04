@@ -1,0 +1,68 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    ANTIQUITIES_TREE_BUILD_1 slice 1: the reading loop's C# (a WorkGiver, a
+    JobDriver, a ThingComp, a DefModExtension, three [DefOf] classes). No
+    Harmony, the "never by lab-hours alone" gate is a plain
+    requiredResearchBuilding pointed at an unbuildable bench def
+    (RUT_Antiquities_Research.xml has the full reasoning). Mirrors
+    src/RimUtinni/ShipMemory/Source/RimMandrake.Utinni.ShipMemory.csproj.
+
+    Build (dotnet is WINDOWS-NATIVE, cannot take a /mnt/d path):
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimUtinni\Antiquities\Source\RimMandrake.Utinni.Antiquities.csproj -c Release
+
+    Output lands in ../Assemblies/, which is where RimWorld looks.
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>RimMandrake.Utinni.Antiquities</AssemblyName>
+    <RootNamespace>RimMandrake.Utinni.Antiquities</RootNamespace>
+    <Version>1.0.0</Version>
+
+    <OutputPath>..\Assemblies\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AssemblySearchPaths>$(AssemblySearchPaths);$(RimWorldManaged)</AssemblySearchPaths>
+
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <DebugType>none</DebugType>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(RimWorldManaged)' == ''">
+    <RimWorldManaged>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManaged>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="DefOfs.cs" />
+    <Compile Include="AntiquityStageExtension.cs" />
+    <Compile Include="CompAntiquity.cs" />
+    <Compile Include="AntiquityUtility.cs" />
+    <Compile Include="WorkGiver_ExamineAntiquity.cs" />
+    <Compile Include="JobDriver_ExamineAntiquity.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(RimWorldManaged)\Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>$(RimWorldManaged)\UnityEngine.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rut.antiquities</packageId>
+  <name>Antiquities</name>
+  <author>Mandrake</author>
+  <supportedVersions><li>1.6</li></supportedVersions>
+  <description>The 17th tree: five stages read out of the world one urn at a
+time. LANGUAGE, RELIGION, CULTURE, CARTOGRAPHY, VOICE — design/Jawa/
+antiquities_design.md, RULED 2026-09-04, owner-unblocked 2026-09-04
+(the expansion/review sitting the block cited concluded; tree
+rebrand names/merges stay open, slices 1-2 do not depend on them —
+labels stay cheap, defNames never rename).
+
+ANTIQUITIES_TREE_BUILD_1 slice 1: the tree, the item family, and the
+reading loop. Every RUT_Antiq_* node is gated on artifacts examined at
+the Reading Station, never on lab-hours alone (requiredResearchBuilding
+points at a bench that is never buildable, so vanilla's own
+research-bench work can never touch these projects — the only route
+in is this mod's own WorkGiver, which calls Find.ResearchManager.
+AddProgress directly). Narrative generator (slice 2), progress meter +
+LOST ledger (slice 3) and everything past it are separate follow-on
+work; this ships with placeholder art and a single flavor description
+per item family — see the item's own build notes.</description>
+  <modDependencies>
+    <li>
+      <packageId>ludeon.rimworld</packageId>
+      <name>Core</name>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>ludeon.rimworld</li>
+  </loadAfter>
+</ModMetaData>
