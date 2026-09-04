@@ -1,0 +1,788 @@
+{
+  "posture": "confirm-delta",
+  "criterion": "Delta vs what the frozen deck already showed - grouped by why each row is here, not by quality. Prefill is ACCEPT everywhere: this sheet exists to collect your overrides.",
+  "generatedBy": "make_research_delta.py",
+  "manifestFingerprint": "fingerprint=e86680d6d5c586ba modCount=589 capturedUtc=2026-09-04T02:23:44Z",
+  "decisions": {
+    "RUT_Antiq_Cartography": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "RUT_Antiq_Culture": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "RUT_Antiq_Language": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "RUT_Antiq_Religion": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "RUT_Antiq_Voice": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "RUT_Rites_ConduitChoir": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "RUT_Rites_GodSpeakerArray": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "RUT_Rites_GodsSpeakBack": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "RUT_Rites_HullLiturgy": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "RUT_Rites_ScrapShrine": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "ABF_ResearchProject_Synstruct_CoreAssistants": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "ABF_ResearchProject_Synstruct_Infrastructure": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "ABF_ResearchProject_Synstruct_Optimization": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "ABF_ResearchProject_Synstruct_Ultraparts": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "Archogenetics": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "Bioregeneration": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "Biosculpting": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "FertilityProcedures": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "GeneProcessor": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "GravBionics": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "GravWeapon": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "GrowthVats": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "NeuralSupercharger": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "OuterRim_AssassinDroids": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "OuterRim_AstromechDroids": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "OuterRim_BattleDroids": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "OuterRim_DroidAdvancedSys": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "OuterRim_DroidEngineering": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "OuterRim_DroidReplacementPartsAdv": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "OuterRim_DroidReplacementPartsOver": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "OuterRim_LaborDroids": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "OuterRim_MaintenanceDroids": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "OuterRim_MedicalDroids": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "OuterRim_PowerDroids": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "OuterRim_ProtocolDroids": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "OuterRim_SecurityDroids": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "VFEI2_BasicHivetech": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "VFEI2_ExoticHivetech": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "VFEI2_StandardHivetech": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "VFEP_AdvancedWarcaskets": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "VFEP_SpacerWarcasketWeaponry": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "VFEP_SpacerWarcaskets": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "VFEP_SpecialisedWarcaskets": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "VFEP_WarcasketRemoval": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "VFEP_WarcasketWeaponry": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "VFEP_Warcaskets": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "Xenogermination": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_droidassassin": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_droidassault": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_droidcombatadv": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_droidintel": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_droidlaboradv": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_droidsimple": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_droidsith": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_droidtech": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_droidutilityadv": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_hk": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_sonic": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "AM_HeavyMechtech": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "AM_StandardMechtech": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "AM_UltraHeavyMechtech": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "AM_WorkerStandardMechtech": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "AdvancedPsychicRituals": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "AtmosphericHeater": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "BS_AndroidConversion": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "BS_AnimalGrowthSerums": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "BS_ArchiteGeneScience": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "BS_GeneScience": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "BS_MadScienceField": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "BasicMechtech": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "BasicPsychicRituals": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "BioferriteExtraction": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "BioferriteGenerator": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "BioferriteHarvesting": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "BioferriteIgnition": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "BioferriteShaping": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "BlissLobotomy": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "BloodRain": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "Brainwipe": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "Chronophagy": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "DA_BloodflameCatacomb": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "DA_Catacombs": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "DP_RGiveArea50": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "DP_RGiveArea52": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "DP_RGiveExcavation": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "DP_RGiveGrandWalls": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "DP_RGiveMaze": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "DP_RGiveNinja": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "DP_RGivePirateBay": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "DP_RGivePrivate": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "DP_RGiveSunCult": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "DP_RGiveThrumboValley": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "DeadlifeDust": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "DeathRefusal": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "Deathrest": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "Electroharvester": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "EntityContainment": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "FrenzyInducer": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "GR_GeneticAlteration": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "GR_GeneticCompatibility": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "GR_GeneticDuplication": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "GR_GeneticEngineering": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "GR_GeneticMechahybridization": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "GR_HybridImplantology": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "GhoulEnhancements": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "GhoulInfusion": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "GhoulResurrection": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "HighMechtech": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "InsanityWeaponry": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "JuggernautSerum": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "MetalbloodSerum": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "MindNumbSerum": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "MutationWeaponry": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "NeurosisPulse": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "OilPourCageResearch": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "Philophagy": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "PleasurePulse": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "ProximityDetector": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "Psychophagy": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "RevenantInvisibility": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "RimFridge_PowerFactorSetting": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "SecurityDoor": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "SerumSynthesis": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "SkipAbductionPlayer": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "SleepSuppressor": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "StandardMechtech": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "SummonAnimals": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "SummonFleshbeastsPlayer": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "SummonPitGate": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "SummonShamblers": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "TormentMaster_CranialPinResearch": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "TurretPack": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "UltraMechtech": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "VoidSculptures": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_advsabers": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_bastila": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_bigZ": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_canderous": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_carth": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_goto": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_handmaiden": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_hkequipment": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_jedi": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_jolee": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_juhani": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_kreia": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_lightsabers": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_luxa": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_malak": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_nihilus": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_saberparts": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_sion": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_teethree": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_uncraftable": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_vao": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
+    "guy762_ResearchKotOR_visas": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    }
+  }
+}
