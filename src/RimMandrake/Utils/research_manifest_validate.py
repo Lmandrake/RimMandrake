@@ -132,7 +132,11 @@ SURVIVING_FATES = {"keep", "reflavor", "untouched"}     # still a live tree node
 
 # --- section 2 + section 7 of the taxonomy doc, made concrete -----------
 TIER_TECHLEVELS = {
-    "T0": {"Neolithic", "Medieval", "Industrial"},
+    # "Animal" is VFE Tribals' own C#-added era below Neolithic; its code stamps
+    # the value post-load, so no XML patch can override it (measured 2026-09-04:
+    # the retag's replace-or-add ops applied and the live value stayed Animal).
+    # T0 is the floor tier, so pre-Neolithic belongs in it.
+    "T0": {"Animal", "Neolithic", "Medieval", "Industrial"},
     "T1": {"Industrial"},
     "T2": {"Industrial"},
     "T3": {"Spacer"},
@@ -325,7 +329,20 @@ def check_orphans(rows, live, cuts):
         # twice (RESEARCH_MANIFEST_DRAFT_1 item 1, and again 2026-09-04).
         # cut_name() stays correct below for unlocks, whose types are unknown.
         cut_as_def = cuts.cut("ResearchProjectDef", dn)
-        if r["fate"] != "cut":
+        if r["fate"] == "merge":
+            # A merge donor DIES into its target at execution (migration rule 4:
+            # the cut wave removes it via Cherry Picker). Absent-and-cut is the
+            # executed state, not a dead reference; the target's own liveness is
+            # checked below. Present-and-uncut just means pre-execution.
+            if not exists and cut_as_def:
+                issues.append(Issue(INFO, "orphan", dn,
+                                     "merge donor executed: absent from the live game and "
+                                     "on the cut list, died into '%s'" % r["merge_target"]))
+            elif not exists:
+                issues.append(Issue(FAIL, "orphan", dn,
+                                     "merge donor is absent from the live game but NOT on "
+                                     "the cut list - it vanished by some other route"))
+        elif r["fate"] != "cut":
             if not exists:
                 issues.append(Issue(FAIL, "orphan", dn,
                                      "manifest row does not resolve to any live "
@@ -513,16 +530,35 @@ def check_coverage(rows, live, manifest_meta, dump_fp):
                              "excluded from the coverage equality: live=%s "
                              "(a def the dump cannot hold yet)" % r["live"]))
     rows = [r for r in rows if r.get("live", "yes") == "yes"]
-    n_rows, n_live = len(rows), len(live)
-    if n_rows != n_live:
-        issues.append(Issue(FAIL, "coverage", None,
-                             "manifest has %d rows, live dump has %d ResearchProjectDef - "
-                             "coverage must be EXACT ('untouched' is a legal fate but must "
-                             "be WRITTEN; absent is not legal)" % (n_rows, n_live)))
-    else:
+    # Two-sided, execution-aware (2026-09-04, post cut wave): rows whose fate
+    # is cut/merge are EXPECTED ABSENT; surviving rows are EXPECTED PRESENT.
+    # Equality of raw counts stopped meaning coverage the moment the cut wave
+    # shipped - a cut row still live, or a survivor missing, is what a
+    # coverage failure actually is.
+    expect_present = [r for r in rows if r["fate"] in SURVIVING_FATES]
+    expect_absent = [r for r in rows if r["fate"] in ("cut", "merge")]
+    missing = [r["defName"] for r in expect_present if r["defName"] not in live]
+    lingering = [r["defName"] for r in expect_absent if r["defName"] in live]
+    unmapped = [n for n in live
+                if n not in {r["defName"] for r in rows}
+                and not any(p.get("defName") == n for p in pending)]
+    for n in missing[:15]:
+        issues.append(Issue(FAIL, "coverage", n,
+                             "surviving manifest row is ABSENT from the live game"))
+    for n in lingering[:15]:
+        issues.append(Issue(FAIL, "coverage", n,
+                             "fate=%s row is STILL LIVE - the cut wave missed it"
+                             % next(r["fate"] for r in expect_absent if r["defName"] == n)))
+    for n in unmapped[:15]:
+        issues.append(Issue(FAIL, "coverage", n,
+                             "live ResearchProjectDef has NO manifest row - coverage must "
+                             "be EXACT ('untouched' is a legal fate but must be WRITTEN; "
+                             "absent is not legal)"))
+    if not (missing or lingering or unmapped):
         issues.append(Issue(INFO, "coverage", None,
-                             "row count matches: %d manifest rows == %d live ResearchProjectDef"
-                             % (n_rows, n_live)))
+                             "coverage exact: %d surviving rows all present, %d cut/merge "
+                             "rows all absent, %d live defs all mapped"
+                             % (len(expect_present), len(expect_absent), len(live))))
     mf = manifest_meta.get("fingerprint")
     if not mf:
         issues.append(Issue(WARN, "coverage", None,

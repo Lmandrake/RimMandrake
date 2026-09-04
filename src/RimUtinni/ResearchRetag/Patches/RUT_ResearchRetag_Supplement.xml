@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- SUPPLEMENT to the generated RUT_ResearchRetag.xml - written by hand 2026-09-04
+     because build_retag_patches.py diffs the manifest against the LIVE capture, and
+     the live capture is now POST-RETAG: regenerating erases the 269 ops whose targets
+     already read correct (defect filed: RETAG_BUILDER_SELF_ERASE_1). These 13 rows
+     (10 revived DP_RGive + 3 RUT_Antiq) were unmeasurable in the pre-retag capture
+     and are patched here per the manifest tier grammar. Fold into the generator when
+     the defect is fixed; techLevel targets come from the manifest tier column. -->
+<Patch>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ResearchProjectDef[defName="DP_RGiveArea50"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/ResearchProjectDef[defName="DP_RGiveArea50"]/techLevel</xpath>
+      <match Class="PatchOperationReplace">
+        <xpath>Defs/ResearchProjectDef[defName="DP_RGiveArea50"]/techLevel</xpath>
+        <value><techLevel>Industrial</techLevel></value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/ResearchProjectDef[defName="DP_RGiveArea50"]</xpath>
+        <value><techLevel>Industrial</techLevel></value>
+      </nomatch>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ResearchProjectDef[defName="DP_RGiveArea52"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/ResearchProjectDef[defName="DP_RGiveArea52"]/techLevel</xpath>
+      <match Class="PatchOperationReplace">
+        <xpath>Defs/ResearchProjectDef[defName="DP_RGiveArea52"]/techLevel</xpath>
+        <value><techLevel>Industrial</techLevel></value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/ResearchProjectDef[defName="DP_RGiveArea52"]</xpath>
+        <value><techLevel>Industrial</techLevel></value>
+      </nomatch>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ResearchProjectDef[defName="DP_RGiveExcavation"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/ResearchProjectDef[defName="DP_RGiveExcavation"]/techLevel</xpath>
+      <match Class="PatchOperationReplace">
+        <xpath>Defs/ResearchProjectDef[defName="DP_RGiveExcavation"]/techLevel</xpath>
+        <value><techLevel>Industrial</techLevel></value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/ResearchProjectDef[defName="DP_RGiveExcavation"]</xpath>
+        <value><techLevel>Industrial</techLevel></value>
+      </nomatch>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ResearchProjectDef[defName="DP_RGiveGrandWalls"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/ResearchProjectDef[defName="DP_RGiveGrandWalls"]/techLevel</xpath>
+      <match Class="PatchOperationReplace">
+        <xpath>Defs/ResearchProjectDef[defName="DP_RGiveGrandWalls"]/techLevel</xpath>
+        <value><techLevel>Ultra</techLevel></value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/ResearchProjectDef[defName="DP_RGiveGrandWalls"]</xpath>
+        <value><techLevel>Ultra</techLevel></value>
+      </nomatch>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ResearchProjectDef[defName="DP_RGiveMaze"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/ResearchProjectDef[defName="DP_RGiveMaze"]/techLevel</xpath>
+      <match Class="PatchOperationReplace">
+        <xpath>Defs/ResearchProjectDef[defName="DP_RGiveMaze"]/techLevel</xpath>
+        <value><techLevel>Industrial</techLevel></value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/ResearchProjectDef[defName="DP_RGiveMaze"]</xpath>
+        <value><techLevel>Industrial</techLevel></value>
+      </nomatch>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ResearchProjectDef[defName="DP_RGiveNinja"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/ResearchProjectDef[defName="DP_RGiveNinja"]/techLevel</xpath>
+      <match Class="PatchOperationReplace">
+        <xpath>Defs/ResearchProjectDef[defName="DP_RGiveNinja"]/techLevel</xpath>
+        <value><techLevel>Industrial</techLevel></value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/ResearchProjectDef[defName="DP_RGiveNinja"]</xpath>
+        <value><techLevel>Industrial</techLevel></value>
+      </nomatch>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ResearchProjectDef[defName="DP_RGivePirateBay"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/ResearchProjectDef[defName="DP_RGivePirateBay"]/techLevel</xpath>
+      <match Class="PatchOperationReplace">
+        <xpath>Defs/ResearchProjectDef[defName="DP_RGivePirateBay"]/techLevel</xpath>
+        <value><techLevel>Industrial</techLevel></value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/ResearchProjectDef[defName="DP_RGivePirateBay"]</xpath>
+        <value><techLevel>Industrial</techLevel></value>
+      </nomatch>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ResearchProjectDef[defName="DP_RGivePrivate"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/ResearchProjectDef[defName="DP_RGivePrivate"]/techLevel</xpath>
+      <match Class="PatchOperationReplace">
+        <xpath>Defs/ResearchProjectDef[defName="DP_RGivePrivate"]/techLevel</xpath>
+        <value><techLevel>Industrial</techLevel></value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/ResearchProjectDef[defName="DP_RGivePrivate"]</xpath>
+        <value><techLevel>Industrial</techLevel></value>
+      </nomatch>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ResearchProjectDef[defName="DP_RGiveSunCult"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/ResearchProjectDef[defName="DP_RGiveSunCult"]/techLevel</xpath>
+      <match Class="PatchOperationReplace">
+        <xpath>Defs/ResearchProjectDef[defName="DP_RGiveSunCult"]/techLevel</xpath>
+        <value><techLevel>Industrial</techLevel></value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/ResearchProjectDef[defName="DP_RGiveSunCult"]</xpath>
+        <value><techLevel>Industrial</techLevel></value>
+      </nomatch>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ResearchProjectDef[defName="DP_RGiveThrumboValley"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/ResearchProjectDef[defName="DP_RGiveThrumboValley"]/techLevel</xpath>
+      <match Class="PatchOperationReplace">
+        <xpath>Defs/ResearchProjectDef[defName="DP_RGiveThrumboValley"]/techLevel</xpath>
+        <value><techLevel>Neolithic</techLevel></value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/ResearchProjectDef[defName="DP_RGiveThrumboValley"]</xpath>
+        <value><techLevel>Neolithic</techLevel></value>
+      </nomatch>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ResearchProjectDef[defName="RUT_Antiq_Cartography"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/ResearchProjectDef[defName="RUT_Antiq_Cartography"]/techLevel</xpath>
+      <match Class="PatchOperationReplace">
+        <xpath>Defs/ResearchProjectDef[defName="RUT_Antiq_Cartography"]/techLevel</xpath>
+        <value><techLevel>Spacer</techLevel></value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/ResearchProjectDef[defName="RUT_Antiq_Cartography"]</xpath>
+        <value><techLevel>Spacer</techLevel></value>
+      </nomatch>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ResearchProjectDef[defName="RUT_Antiq_Religion"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/ResearchProjectDef[defName="RUT_Antiq_Religion"]/techLevel</xpath>
+      <match Class="PatchOperationReplace">
+        <xpath>Defs/ResearchProjectDef[defName="RUT_Antiq_Religion"]/techLevel</xpath>
+        <value><techLevel>Industrial</techLevel></value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/ResearchProjectDef[defName="RUT_Antiq_Religion"]</xpath>
+        <value><techLevel>Industrial</techLevel></value>
+      </nomatch>
+    </match>
+  </Operation>
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ResearchProjectDef[defName="RUT_Antiq_Voice"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/ResearchProjectDef[defName="RUT_Antiq_Voice"]/techLevel</xpath>
+      <match Class="PatchOperationReplace">
+        <xpath>Defs/ResearchProjectDef[defName="RUT_Antiq_Voice"]/techLevel</xpath>
+        <value><techLevel>Ultra</techLevel></value>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/ResearchProjectDef[defName="RUT_Antiq_Voice"]</xpath>
+        <value><techLevel>Ultra</techLevel></value>
+      </nomatch>
+    </match>
+  </Operation>
+</Patch>

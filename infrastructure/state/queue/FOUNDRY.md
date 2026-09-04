@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-04T23:11:26Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-04T23:32:47Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -415,3 +415,13 @@ kind:     build
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/RITES_REVEAL_MECHANISM_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/RITES_REVEAL_MECHANISM_1.md
+
+## RETAG_BUILDER_SELF_ERASE_1 build_retag_patches.py erases itself when run against a post-retag capture
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/RETAG_BUILDER_SELF_ERASE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/RETAG_BUILDER_SELF_ERASE_1.md

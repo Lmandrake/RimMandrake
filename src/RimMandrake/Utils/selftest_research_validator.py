@@ -157,8 +157,8 @@ def main():
 
     # ---- check 5: coverage -------------------------------------------------
     cov_issues = rv.check_coverage(rows, live, meta, {"hash": "selftestfp0001", "modCount": 3})
-    expect("check5 coverage: FAILs on row-count mismatch (16 rows vs 17 live)",
-           any(i.level == rv.FAIL and "coverage" == i.check and "manifest has"
+    expect("check5 coverage: FAILs on the unmapped 17th live def (16 rows vs 17 live)",
+           any(i.level == rv.FAIL and "coverage" == i.check and "NO manifest row"
                in i.msg for i in cov_issues))
     expect("check5 coverage: fingerprint matches -> no fingerprint FAIL",
            not any("declares fingerprint" in i.msg for i in cov_issues if i.level == rv.FAIL))
