@@ -269,19 +269,25 @@ def view_sections(world, seat, target="v1", ctx=None):
     ]
 
 
-def view_ids(world, seat, target="v1", ctx=None):
-    """-> the set of item IDs `queue_view` would put in this seat's file."""
-    ranked, sections = view_sections(world, seat, target, ctx)
+def _ids_from_sections(ranked, sections):
+    """The id half of `view_sections`'s own output — no re-computation."""
     ids = {i.id for i in ranked}
     for _title, items, _note, _extra in sections:
         ids |= {i.id for i in items}
     return ids
 
 
-def queue_view(world, seat, events, target="v1", ctx=None):
-    """-> markdown text for one seat. Pure; no clock, no filesystem beyond items/."""
-    ranked, sections = view_sections(world, seat, target, ctx)
+def view_ids(world, seat, target="v1", ctx=None):
+    """-> the set of item IDs `queue_view` would put in this seat's file."""
+    return _ids_from_sections(*view_sections(world, seat, target, ctx))
 
+
+def _render_view_text(seat, events, world, ranked, sections):
+    """-> markdown text for one seat, from an already-computed `view_sections()`
+    result. Split from `queue_view` (2026-09-04) so `render()` can compute
+    `view_sections()` ONCE per seat and derive both the text and the drift
+    table's ids from it, instead of running the same ranking and partitioning
+    twice — the "views" stage bench()marks doubled while nothing else did."""
     L = [MARKER,
          "# %s — generated queue view" % seat,
          "",
@@ -321,6 +327,12 @@ def queue_view(world, seat, events, target="v1", ctx=None):
             L.extend(_item_line(it, extra(it) if extra else None))
 
     return "\n".join(L).rstrip() + "\n"
+
+
+def queue_view(world, seat, events, target="v1", ctx=None):
+    """-> markdown text for one seat. Pure; no clock, no filesystem beyond items/."""
+    ranked, sections = view_sections(world, seat, target, ctx)
+    return _render_view_text(seat, events, world, ranked, sections)
 
 
 # ---------------------------------------------------------------------------
@@ -445,7 +457,13 @@ def render(events_path=None, out_dir=None, overwrite_queues=False, target="v1",
     t = time.perf_counter()
     written, diffs = [], []
     for seat in VIEW_SEATS:
-        text = queue_view(world, seat, events, target, ctx)
+        # 🔴 ONE view_sections() PER SEAT, not two. Until 2026-09-04 the text below
+        # and the drift ids further down each called it separately — same ranking,
+        # same partitioning, computed twice on every render — which is what made
+        # the "views" stage cost double what census+ledger cost combined. Pure
+        # function, same inputs: compute once, derive both from it.
+        ranked, sections = view_sections(world, seat, target, ctx)
+        text = _render_view_text(seat, events, world, ranked, sections)
         path = _queue_path(seat, target_dir)
         _write(path, text)
         written.append(path)
@@ -461,7 +479,7 @@ def render(events_path=None, out_dir=None, overwrite_queues=False, target="v1",
             # had closed. A drift table that invents 154 items of drift is not a
             # drift table — it is the thing `_print_render`'s own comment warns
             # against, committed in the code below the warning.
-            mine = view_ids(world, seat, target, ctx)
+            mine = _ids_from_sections(ranked, sections)
             diffs.append({"seat": seat, "preview": path, "queue": real,
                           "in_ledger_only": sorted(mine - have),
                           "in_queue_only": sorted(have - mine),
