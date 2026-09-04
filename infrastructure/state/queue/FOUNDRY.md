@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-04T09:17:45Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-04T10:15:23Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -446,12 +446,52 @@ thin:     spec, verify and criteria all present
 summary:  Every load of the full 589-mod list logs the same 31 Config error in … lines
 prose:    infrastructure/state/items/LOAD_CONFIG_ERROR_SWEEP_1.md
 
-## DIRTY_CODE_REVIEW_LOOP_RESTART_8 resume standing code-review sweep after next agent reboot
+## VALIDATE_PATCH_BLIND_SPOTS_1 validate_patch.py: MayRequire never recognized as a guard, vanilla-packed-asset texPaths false-ERROR, Defs-path li-in-dict check gap
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     spec, verify and criteria all present
+summary:  1. MayRequire/MayRequireAnyOf is never read anywhere in the file (grep confirmed
+prose:    infrastructure/state/items/VALIDATE_PATCH_BLIND_SPOTS_1.md
+
+## VALIDATE_QUEST_FALSE_NEGATIVES_1 validate_quest.py: --dir silently swallows parse errors, storeAs collision undetected, framework-scheduler firing route missing
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     spec, verify and criteria all present
+summary:  1. main() only reports unparseable XML for bare positional-arg files. Files
+prose:    infrastructure/state/items/VALIDATE_QUEST_FALSE_NEGATIVES_1.md
+
+## KARRASK_ART_MISSING_1 RSW_Karrask has no sprite anywhere in the repo (3 texPaths, pink placeholder) — needs generating-rimworld-sprites
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     spec, verify and criteria all present
+summary:  Three texPaths on our own original creature resolve to no file anywhere under any
+prose:    infrastructure/state/items/KARRASK_ART_MISSING_1.md
+
+## IMAGE_SKILL_SCRIPT_NITS_1 compare_images.py silently skips drift checks on non-alpha pairs; sprite selftest.py has one dead function
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     spec, verify and criteria all present
+summary:  1. skills/editing-images/scripts/compareimages.py: docstring promises a
+prose:    infrastructure/state/items/IMAGE_SKILL_SCRIPT_NITS_1.md
+
+## DIRTY_CODE_REVIEW_LOOP_RESTART_9 Continuity note for the standing dirty-code-review loop, successor to RESTART_8
 state:    proposed
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  DIRTYCODEREVIEWLOOPRESTART8
-prose:    infrastructure/state/items/DIRTY_CODE_REVIEW_LOOP_RESTART_8.md
+summary:  DIRTYCODEREVIEWLOOPRESTART9
+prose:    infrastructure/state/items/DIRTY_CODE_REVIEW_LOOP_RESTART_9.md
