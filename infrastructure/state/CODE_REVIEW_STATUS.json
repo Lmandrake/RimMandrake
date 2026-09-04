@@ -584,6 +584,11 @@
     "date": "2026-09-03",
     "sha": "c6ede2aa"
   },
+  "src/RimMandrake/MandrakePatches/Patches/ThirdPartySignConfigErrors_Fix.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "f914ab5a"
+  },
   "src/RimMandrake/Ninefold/Source/EventMagnitude.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -2877,6 +2882,11 @@
     "date": "2026-09-03",
     "sha": "66d742be"
   },
+  "src/RimStarWars/FireEcology/Defs/TerrainDefs/ScorchableGround.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "f914ab5a"
+  },
   "src/RimStarWars/FireEcology/Source/FireEcologyHook.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -2941,6 +2951,11 @@
     "cleanCount": 1,
     "date": "2026-09-02",
     "sha": "14ea427e"
+  },
+  "src/RimStarWars/Livestock/Defs/PawnKindDefs/PawnKindDefs_Karrask.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "f914ab5a"
   },
   "src/RimStarWars/Livestock/Source/CompLightAversion.cs": {
     "cleanCount": 1,
