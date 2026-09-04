@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-04T18:08:11Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-04T18:09:49Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -217,7 +217,7 @@ summary:  Full ladder design: infrastructure/VALIDATIONLADDER.md (owner-ruled,
 prose:    infrastructure/state/items/MASS_VALIDATION_LADDER_1.md
 
 ## FLUID_CANAL_MECHANIC_1 General canal/fluid-flow mechanic, RimMandrake tier — dig channels that flood with water, ooze, slime, oil, tar, propane; tar pits are the first client
-state:    doing  (BLOCKED)
+state:    doing
 row:      unassigned
 needs:    offline
 target:   v1
@@ -262,7 +262,7 @@ summary:  Pure ambience feature, no gameplay effect, no new art. mandrake.rut.ri
 prose:    infrastructure/state/items/RIVER_STEAM_ANIMATION_1.md
 
 ## SHIELD_MODS_LEVERAGE_1 Find existing shield mods, study and make compatible; tuned-plasma-field model per shd rulings
-state:    doing  (BLOCKED)
+state:    doing
 row:      unassigned
 needs:    offline
 target:   v1
@@ -298,7 +298,7 @@ summary:  Determine whether mandrake.rsw.helixtellurox genuinely crashes a load 
 prose:    infrastructure/state/items/HELIX_TELLUROX_SHELL_LOAD_CRASH_1.md
 
 ## INHABITED_SETTLEMENT_MAPPARENT_GAP_1 WorldObject_InhabitedSettlement derives from WorldObject, not MapParent - mapGenerator/canHaveMap are architecturally inert, settlement district/cast GenSteps may have never run
-state:    doing  (BLOCKED)
+state:    doing
 row:      unassigned
 needs:    owner
 target:   v1
@@ -383,26 +383,6 @@ blocked:  Engineering sequence, not an owner call: needs Droidworks Phase 3 (fac
 summary:  (no items/DROID_TILES_SOURED_TERRAIN_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DROID_TILES_SOURED_TERRAIN_1.md
 
-## FLUID_CANAL_MECHANIC_1 General canal/fluid-flow mechanic, RimMandrake tier — dig channels that flood with water, ooze, slime, oil, tar, propane; tar pits are the first client
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-blocked:  reservoir refill mechanism (steady drip into the same flood vs periodic re-flood vs other) is an architecture decision, not a bounded fix - engine otherwise complete and compiles clean, blocked on BENCH/owner picking the refill shape before CompFluidReservoir/Flood_FluidCanal gets reworked
-summary:  FLUIDCANALMECHANIC1 — general canal/fluid-flow mechanic, RimMandrake tier
-prose:    infrastructure/state/items/FLUID_CANAL_MECHANIC_1.md
-
-## SHIELD_MODS_LEVERAGE_1 Find existing shield mods, study and make compatible; tuned-plasma-field model per shd rulings
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-blocked:  source-verified both flagged caveats (point-defense speed curve confirmed backwards from canon; CompShieldField confirmed pawn-apparel not building-scale, no VEF hook into Odyssey's gravship shield slot) — needs a BENCH/owner design call on the building-scale foundation before the actual shield build item is filed
-summary:  SHIELDMODSLEVERAGE1 — survey done, scoping (BENCH, 2026-09-02)
-prose:    infrastructure/state/items/SHIELD_MODS_LEVERAGE_1.md
-
 ## HELIX_TELLUROX_SHELL_LOAD_CRASH_1 HelixTellurox crashes mod load to Core-only: a def parse error (MissingMethodException: default ctor for System.String) breaks RSW_TelluroxShell, whose null butcherProducts ref NREs corpse-gen
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -412,16 +392,6 @@ kind:     bug
 blocked:  Live-reproduced 2026-09-04: adding mandrake.rsw.helixtellurox to the working 21-mod MINIMAL list crashed the very next launch to Core-only, exact MissingMethodException signature this item names, first line in the log. NOT yet isolated from droidworks/OuterRim.Core - both already had unrelated pre-existing errors in the same log. Needs one more isolated relaunch (smaller list, no confounds) before attributing the crash to HelixTellurox itself.
 summary:  Determine whether mandrake.rsw.helixtellurox genuinely crashes a load to
 prose:    infrastructure/state/items/HELIX_TELLUROX_SHELL_LOAD_CRASH_1.md
-
-## INHABITED_SETTLEMENT_MAPPARENT_GAP_1 WorldObject_InhabitedSettlement derives from WorldObject, not MapParent - mapGenerator/canHaveMap are architecturally inert, settlement district/cast GenSteps may have never run
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     bug
-blocked:  Live-confirmed dead 2026-09-04 (InvalidCastException from GetOrGenerateMapUtility.GetOrGenerateMap on a live-placed Inhabited_Settlement, control case same session generated cleanly) - remaining blocker is purely the owner/BENCH scope call on the base-class fix (WorldObject_Inhabited itself vs only the Settlement subclass), save-compat stakes
-summary:  Determine (live, via the bridge, not more code reading) whether an
-prose:    infrastructure/state/items/INHABITED_SETTLEMENT_MAPPARENT_GAP_1.md
 
 ## INHABITED_TILEMUTATOR_NO_ENTRY_1 No TileMutatorDef anywhere names Inhabited_Cast -- the wilderness settlement-spawn route has no way in
 state:    doing  (BLOCKED)
