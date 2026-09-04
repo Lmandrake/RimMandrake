@@ -223,7 +223,13 @@ def census(s):
     try:
         names = {t.get("name") for t in s._rb.list_tools()}
     except Exception as e:
-        print("     could not list tools: %s" % str(e)[:140])
+        # Must be a recorded FAILURE, not a silent early return: an omitted
+        # check contributes nothing to RESULTS, so summarise() would print
+        # "0 failed" for a run where the gate check never actually ran --
+        # the same "success without verification" shape this census exists
+        # to catch, one level up.
+        check("companion census", False,
+              "could not list tools: %s" % str(e)[:140])
         return set()
 
     jawa = {n for n in names if n and n.startswith("jawa/")}
@@ -318,6 +324,59 @@ def prove_list_pawns(s, have):
         return skip("  ...sees more than colonists", "no count to compare")
     check("  ...sees more than colonists", total > ncol,
           "%s on map vs %d colonists" % (total, ncol))
+
+
+def prove_list_factions(s, have):
+    """jawa/list_factions -- the header names it as one of the eighteen this
+    file covers, but until this function existed the tool was never actually
+    called: a stale claim, not just an untested tool.
+
+    Deciding strings, per JawaBenchTerrainTools.cs's own 2026-08-13 finding
+    (a caller reading `count` alone got a subset and called it the total):
+      * settlementCount summed across factions equals settlementsTotal.
+      * a defName filter narrows countReturned to 1 while
+        countAllIncludingHidden still reports the FULL roster -- the exact
+        subset-as-total shape that finding exists to make impossible.
+    """
+    if "jawa/list_factions" not in have:
+        return skip("jawa/list_factions", "not registered")
+
+    r = s.call("jawa/list_factions", includeHidden=True)
+    factions = (r or {}).get("factions") or []
+    check("jawa/list_factions lists the world's factions", ok(r) and bool(factions),
+          "count=%s settlementsTotal=%s" % ((r or {}).get("count"),
+                                            (r or {}).get("settlementsTotal")))
+    check("  ...and includeHidden=True returns the complete roster",
+          (r or {}).get("isCompleteList") is True,
+          "hiddenSkipped=%s truncated=%s filtered=%s"
+          % ((r or {}).get("hiddenSkipped"), (r or {}).get("truncated"),
+             (r or {}).get("filtered")))
+
+    summed = sum(f.get("settlementCount") or 0 for f in factions)
+    check("  ...and settlementCount sums to settlementsTotal",
+          summed == (r or {}).get("settlementsTotal"),
+          "sum(settlementCount)=%d vs settlementsTotal=%s"
+          % (summed, (r or {}).get("settlementsTotal")))
+
+    check("  ...and exactly one faction is the player",
+          sum(1 for f in factions if f.get("isPlayer")) == 1,
+          "isPlayer rows: %d" % sum(1 for f in factions if f.get("isPlayer")))
+
+    total_full = (r or {}).get("countAllIncludingHidden")
+    target = next((f.get("defName") for f in factions if not f.get("isPlayer")), None)
+    if target is None:
+        skip("  ...and a defName filter narrows countReturned without losing the total",
+             "no non-player faction on this world to filter on")
+    else:
+        r2 = s.call("jawa/list_factions", includeHidden=True, defName=target)
+        rows2 = (r2 or {}).get("factions") or []
+        check("  ...and a defName filter narrows countReturned without losing the total",
+              ok(r2) and (r2 or {}).get("countReturned") == 1
+              and len(rows2) == 1 and rows2[0].get("defName") == target
+              and (r2 or {}).get("countAllIncludingHidden") == total_full,
+              "countReturned=%s countAllIncludingHidden=%s (want %s)"
+              % ((r2 or {}).get("countReturned"),
+                 (r2 or {}).get("countAllIncludingHidden"), total_full))
 
 
 # ------------------------------------------------------- 2. harmless mutation
@@ -894,6 +953,29 @@ class _StubSession(object):
             alive = ([{"id": "Human1", "dead": False}]
                      if self._hostile_survives else [])
             return {"success": True, "totalOnMap": 19, "pawns": alive}
+        if tool == "jawa/list_factions":
+            if p.get("defName"):
+                return {"success": True,
+                        "factions": [{"defName": p["defName"], "name": p["defName"],
+                                      "isPlayer": False, "hostile": True, "goodwill": -50,
+                                      "hidden": False, "permanentEnemy": False,
+                                      "settlementCount": 2}],
+                        "count": 1, "countReturned": 1, "countAllIncludingHidden": 3,
+                        "isCompleteList": False, "settlementsTotal": 5,
+                        "hiddenSkipped": 0, "filtered": 2, "truncated": 0}
+            return {"success": True, "factions": [
+                {"defName": "PlayerColony", "name": "Player", "isPlayer": True,
+                 "hostile": False, "goodwill": 0, "hidden": False,
+                 "permanentEnemy": False, "settlementCount": 1},
+                {"defName": "OtherFaction", "name": "Other", "isPlayer": False,
+                 "hostile": True, "goodwill": -50, "hidden": False,
+                 "permanentEnemy": False, "settlementCount": 2},
+                {"defName": "ThirdFaction", "name": "Third", "isPlayer": False,
+                 "hostile": False, "goodwill": 20, "hidden": False,
+                 "permanentEnemy": False, "settlementCount": 2}],
+                    "count": 3, "countReturned": 3, "countAllIncludingHidden": 3,
+                    "isCompleteList": True, "settlementsTotal": 5,
+                    "hiddenSkipped": 0, "filtered": 0, "truncated": 0}
         if tool == "jawa/order_pawn":
             # The stub must NOT answer yes to the zero-tick call: the check it
             # feeds asserts the tool refuses to call no movement a success.
@@ -1012,6 +1094,7 @@ def _run_all(s, letter=True, walk=True):
     prove_get_def(s, have)
     prove_drain_log(s, have)
     prove_list_pawns(s, have)
+    prove_list_factions(s, have)
     prove_refresh_rect(s, have, 10, 10)
     prove_spawn_batch(s, have, 10, 10)
     prove_roofs(s, have, 10, 10)
@@ -1131,6 +1214,7 @@ def main(argv=None):
         prove_get_def(s, have)
         prove_drain_log(s, have)
         prove_list_pawns(s, have)
+        prove_list_factions(s, have)
 
         # `paused` lives on rimbridge/get_bridge_status, NOT on
         # rimworld/get_game_info -- which returns status/ticksGame/mapCount and
