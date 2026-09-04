@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-04T22:11:29Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-04T22:22:06Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -405,3 +405,13 @@ kind:     bug
 thin:     spec, verify and criteria all present
 summary:  Found by a code-review pass (2026-09-04) while marking src/RimUtinni/
 prose:    infrastructure/state/items/RESEARCH_RETAG_LOAD_ORDER_GAP_1.md
+
+## KARRASK_ASYMMETRIC_CLAW_TOOL_1 RSW_Karrask ThingDef has a foreclaw tool linked to FrontLeftPaw only, no matching FrontRightPaw tool
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     spec, verify and criteria all present
+summary:  Found by a code-review pass (2026-09-04) while marking
+prose:    infrastructure/state/items/KARRASK_ASYMMETRIC_CLAW_TOOL_1.md
