@@ -409,16 +409,6 @@
       "prefill": "accept",
       "note": ""
     },
-    "DA_BloodflameCatacomb": {
-      "decision": "accept",
-      "prefill": "accept",
-      "note": ""
-    },
-    "DA_Catacombs": {
-      "decision": "accept",
-      "prefill": "accept",
-      "note": ""
-    },
     "DeadlifeDust": {
       "decision": "accept",
       "prefill": "accept",
@@ -660,11 +650,6 @@
       "note": ""
     },
     "guy762_ResearchKotOR_hkequipment": {
-      "decision": "accept",
-      "prefill": "accept",
-      "note": ""
-    },
-    "guy762_ResearchKotOR_jedi": {
       "decision": "accept",
       "prefill": "accept",
       "note": ""
