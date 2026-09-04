@@ -162,7 +162,7 @@ namespace RimMandrake.Visibility
             {
                 return;
             }
-            component.RecordTileDeparture(engine.Map.Tile.tileId);
+            component.RecordTileDeparture(engine.Map.Tile);
         }
 
         /// <summary>Arrival half of tile-memory decay - both ArriveExistingMap and ArriveNewMap resolve the
@@ -174,7 +174,7 @@ namespace RimMandrake.Visibility
             {
                 return;
             }
-            component.ApplyTileMemoryOnArrival(gravship.destinationTile.tileId);
+            component.ApplyTileMemoryOnArrival(gravship.destinationTile);
         }
 
         /// <summary>

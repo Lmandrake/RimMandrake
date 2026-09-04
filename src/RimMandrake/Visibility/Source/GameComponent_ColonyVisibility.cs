@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using RimWorld;
+using RimWorld.Planet;
 using UnityEngine;
 using Verse;
 
@@ -37,12 +38,24 @@ namespace RimMandrake.Visibility
         /// Tile-memory decay (owner card, 2026-08-31, verbatim: "the desert
         /// remembers, decaying - a returned-to tile restores a decayed
         /// fraction of its old Visibility, halved per season away, TUNE").
-        /// Keyed by PlanetTile.tileId. Written on gravship launch (the
+        /// Keyed by the full PlanetTile (tileId + layerId) - CODE_REVIEW fix,
+        /// 2026-09-03: tileId alone is only unique WITHIN one planet layer
+        /// (PlanetLayer.TilesCount / tileIDToNeighbors_offsets is a
+        /// per-layer array starting at 0 - verified via RimSage,
+        /// RimWorld/Planet/PlanetLayer.cs), and Odyssey gravships can launch
+        /// across layers (CompLaunchable.TryLaunch takes canTraverseLayers:
+        /// true). A raw-int key let a surface tile and an orbital tile with
+        /// the same tileId collide and overwrite each other's memory.
+        /// PlanetTile as a Scribe dictionary key is vanilla precedent
+        /// (RimWorld.Planet.WorldLandmarks.landmarks: same
+        /// Scribe_Collections.Look(..., LookMode.Value, LookMode.Deep) shape;
+        /// ParseHelper registers a PlanetTile parser via
+        /// PlanetTile.FromString/ToString). Written on gravship launch (the
         /// departure point - see ColonyVisibilityRaidPatch's postfix on
         /// GravshipUtility.GenerateGravship), read on arrival (postfixes on
         /// GravshipUtility.ArriveNewMap/ArriveExistingMap).
         /// </summary>
-        public Dictionary<int, TileVisibilityMemory> tileMemory = new Dictionary<int, TileVisibilityMemory>();
+        public Dictionary<PlanetTile, TileVisibilityMemory> tileMemory = new Dictionary<PlanetTile, TileVisibilityMemory>();
 
         public GameComponent_ColonyVisibility(Game game)
         {
@@ -56,7 +69,7 @@ namespace RimMandrake.Visibility
             Scribe_Collections.Look(ref tileMemory, "tileMemory", LookMode.Value, LookMode.Deep);
             if (Scribe.mode == LoadSaveMode.PostLoadInit && tileMemory == null)
             {
-                tileMemory = new Dictionary<int, TileVisibilityMemory>();
+                tileMemory = new Dictionary<PlanetTile, TileVisibilityMemory>();
             }
         }
 
@@ -183,16 +196,16 @@ namespace RimMandrake.Visibility
         /// any prior memory of the same tile - only the most recent visit's
         /// value decays forward, not a running history.
         /// </summary>
-        public void RecordTileDeparture(int tileId)
+        public void RecordTileDeparture(PlanetTile tile)
         {
-            tileMemory[tileId] = new TileVisibilityMemory
+            tileMemory[tile] = new TileVisibilityMemory
             {
                 visibilityAtDeparture = shipVisibility,
                 departedTick = Find.TickManager.TicksGame,
             };
             if (Prefs.DevMode)
             {
-                Log.Message($"[ColonyVisibility] tile {tileId} memory recorded at {shipVisibility:F1}");
+                Log.Message($"[ColonyVisibility] tile {tile} memory recorded at {shipVisibility:F1}");
             }
         }
 
@@ -208,9 +221,9 @@ namespace RimMandrake.Visibility
         /// same recorded departure each time until the ship departs again
         /// and overwrites it.
         /// </summary>
-        public void ApplyTileMemoryOnArrival(int tileId)
+        public void ApplyTileMemoryOnArrival(PlanetTile tile)
         {
-            if (!tileMemory.TryGetValue(tileId, out TileVisibilityMemory memory))
+            if (!tileMemory.TryGetValue(tile, out TileVisibilityMemory memory))
             {
                 return;
             }
@@ -222,12 +235,12 @@ namespace RimMandrake.Visibility
             if (decayed > shipVisibility)
             {
                 float delta = decayed - shipVisibility;
-                Adjust(delta, $"tile-memory restore at tile {tileId}: {memory.visibilityAtDeparture:F1} decayed "
+                Adjust(delta, $"tile-memory restore at tile {tile}: {memory.visibilityAtDeparture:F1} decayed "
                     + $"{seasonsAway:F2} seasons -> {decayed:F1}");
             }
             else if (Prefs.DevMode)
             {
-                Log.Message($"[ColonyVisibility] tile {tileId} memory ({decayed:F1} after {seasonsAway:F2} "
+                Log.Message($"[ColonyVisibility] tile {tile} memory ({decayed:F1} after {seasonsAway:F2} "
                     + $"seasons) does not exceed current dial ({shipVisibility:F1}) - no restore");
             }
         }
