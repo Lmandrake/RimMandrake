@@ -653,6 +653,22 @@ namespace JawaBench.BridgeTools
             return string.IsNullOrEmpty(v) ? null : v.Trim();
         }
 
+        /// <summary>
+        /// Set a display name on a WorldObject whose concrete type this assembly does
+        /// not reference at compile time (see JawaBench.BridgeTools.csproj's own note
+        /// on why a foreign mod DLL is never added as a build reference casually).
+        /// Reflection over a public string-typed `Name` property is the one hook that
+        /// reaches RimMandrake.Inhabited.WorldObject_Inhabited (and anything else
+        /// shaped like it) without one; a type with no such property just keeps its
+        /// def label, which is a fine name, not a failure.
+        /// </summary>
+        private static void SetGenericWorldObjectName(WorldObject wo, string name)
+        {
+            if (wo == null || string.IsNullOrEmpty(name)) return;
+            var prop = wo.GetType().GetProperty("Name", typeof(string));
+            if (prop != null && prop.CanWrite) prop.SetValue(wo, name, null);
+        }
+
         private static bool F(string s, out float v)
         {
             return float.TryParse(s, System.Globalization.NumberStyles.Float,
@@ -4180,10 +4196,15 @@ namespace JawaBench.BridgeTools
             "jawa/world_settlements_import",
             Description =
                 "Place the authored settlement roster from a CSV with columns " +
-                "faction_def,name,tile (extra columns are ignored). Resolves EVERY row's " +
+                "faction_def,name,tile (extra columns are ignored, except the optional " +
+                "world_object_def below). Resolves EVERY row's " +
                 "faction to a live faction first and refuses the whole import if any row " +
                 "cannot be resolved, because a Settlement with a null faction is destroyed " +
-                "on load with only a warning. Dry run by default.",
+                "on load with only a warning. An optional world_object_def column lets a row " +
+                "create a WorldObjectDef other than vanilla Settlement (e.g. Inhabited_Settlement) " +
+                "- blank, or the column absent entirely, means Settlement exactly as before; a " +
+                "named def that does not exist or cannot carry a faction refuses the whole " +
+                "import the same way an unresolvable faction_def does. Dry run by default.",
             ResultDescription =
                 "created, removed, refused[] with the reason per row, and the settlement " +
                 "count before and after - read back off Find.WorldObjects, not counted from " +
@@ -4222,10 +4243,11 @@ namespace JawaBench.BridgeTools
                                     string.Join(",", csv.Header.ToArray()));
 
                 // PASS 1 - resolve everything, create nothing.
-                var plan = new List<KeyValuePair<Faction, KeyValuePair<int, string>>>();
+                var plan = new List<(Faction Faction, int Tile, string Name, WorldObjectDef Def)>();
                 var refused = new List<object>();
                 var factionCache = new Dictionary<string, Faction>(StringComparer.OrdinalIgnoreCase);
                 var factionAmbiguous = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                var defCache = new Dictionary<string, WorldObjectDef>(StringComparer.OrdinalIgnoreCase);
                 for (int r = 0; r < csv.Rows.Count; r++)
                 {
                     var row = csv.Rows[r];
@@ -4262,8 +4284,41 @@ namespace JawaBench.BridgeTools
                         refused.Add(new { row = r + 2, name = nm, factionDef = fdName, reason });
                         continue;
                     }
-                    plan.Add(new KeyValuePair<Faction, KeyValuePair<int, string>>(
-                        fac, new KeyValuePair<int, string>(tile, nm)));
+
+                    // INHABITED_SETTLEMENT_PRODUCER_GAP_1: an optional world_object_def
+                    // column lets a row create something other than vanilla Settlement -
+                    // Inhabited_Settlement (RimMandrake.Inhabited.WorldObject_InhabitedSettlement)
+                    // is the reason this exists, but the column is generic on purpose. A
+                    // blank cell, or no such column at all, resolves to WorldObjectDefOf.Settlement
+                    // - every CSV written before this column existed keeps behaving exactly as
+                    // it does today. An unresolvable name refuses the row the same way an
+                    // unresolvable faction_def does, rather than silently falling back.
+                    var wodName = Cell(csv, row, "world_object_def");
+                    WorldObjectDef wod;
+                    if (string.IsNullOrEmpty(wodName))
+                    {
+                        wod = WorldObjectDefOf.Settlement;
+                    }
+                    else if (!defCache.TryGetValue(wodName, out wod))
+                    {
+                        wod = DefDatabase<WorldObjectDef>.GetNamedSilentFail(wodName);
+                        defCache[wodName] = wod;
+                    }
+                    if (wod == null)
+                    {
+                        refused.Add(new { row = r + 2, name = nm, worldObjectDef = wodName,
+                                           reason = "world_object_def '" + wodName + "' is not a loaded WorldObjectDef" });
+                        continue;
+                    }
+                    if (!wod.canHaveFaction)
+                    {
+                        refused.Add(new { row = r + 2, name = nm, worldObjectDef = wodName,
+                                           reason = "WorldObjectDef '" + wod.defName + "' has canHaveFaction=false - " +
+                                                    "it cannot take a faction_def" });
+                        continue;
+                    }
+
+                    plan.Add((fac, tile, nm, wod));
                 }
 
                 int before = Find.WorldObjects.Settlements.Count;
@@ -4283,7 +4338,8 @@ namespace JawaBench.BridgeTools
                         wouldCreate = plan.Count, wouldRemove = clearExisting ? clearable : 0,
                         wouldKeepPlayerOwned = clearExisting ? before - clearable : 0,
                         settlementsNow = before,
-                        factions = plan.Select(q => q.Key.def.defName).Distinct().ToList(),
+                        factions = plan.Select(q => q.Faction.def.defName).Distinct().ToList(),
+                        worldObjectDefs = plan.Select(q => q.Def.defName).Distinct().ToList(),
                         note = "DRY RUN - nothing was written. Every row resolved to a live faction. Pass apply=true.",
                         ticksGame = TicksGameSafe(),
                     };
@@ -4318,44 +4374,72 @@ namespace JawaBench.BridgeTools
                     }
                 }
 
+                var createdObjects = new List<WorldObject>();
+                var createdByDef = new Dictionary<string, int>(StringComparer.OrdinalIgnoreCase);
                 foreach (var kv in plan)
                 {
                     // ⚠️ Without this, importing onto a world that still has its
-                    // generated roster STACKS two settlements on one tile. The lint
+                    // generated roster STACKS two world objects on one tile. The lint
                     // catches it afterwards, but a tool that creates a defect its
                     // sibling then reports is a poor trade. clearExisting=true makes
                     // this branch unreachable, which is the intended path.
-                    if (Find.WorldObjects.ObjectsAt(new PlanetTile(kv.Value.Key, grid.Surface))
-                                         .Any(o => o is Settlement))
+                    //
+                    // Generalised off `is Settlement` to `def.canHaveMap`: Inhabited_Settlement
+                    // is a different C# type (WorldObject_InhabitedSettlement, not Settlement)
+                    // but the collision it can cause - two map-capable world objects claiming
+                    // one tile - is identical, so the def flag is the right test, not the type.
+                    if (Find.WorldObjects.ObjectsAt(new PlanetTile(kv.Tile, grid.Surface))
+                                         .Any(o => o.def.canHaveMap))
                     {
                         skippedOccupied++;
                         if (failures.Count < 25)
-                            failures.Add(new { tile = kv.Value.Key, name = kv.Value.Value,
-                                               error = "a settlement already occupies this tile - skipped rather " +
-                                                       "than stacked. Re-run with clearExisting=true for a clean roster." });
+                            failures.Add(new { tile = kv.Tile, name = kv.Name,
+                                               error = "a map-capable world object already occupies this tile - " +
+                                                       "skipped rather than stacked. Re-run with clearExisting=true " +
+                                                       "for a clean roster." });
                         continue;
                     }
                     try
                     {
-                        var wo = WorldObjectMaker.MakeWorldObject(WorldObjectDefOf.Settlement);
-                        wo.Tile = new PlanetTile(kv.Value.Key, grid.Surface);
-                        wo.SetFaction(kv.Key);
+                        var wo = WorldObjectMaker.MakeWorldObject(kv.Def);
+                        wo.Tile = new PlanetTile(kv.Tile, grid.Surface);
+                        wo.SetFaction(kv.Faction);
                         var st = wo as Settlement;
-                        if (st != null && !string.IsNullOrEmpty(kv.Value.Value)) st.Name = kv.Value.Value;
+                        if (st != null)
+                        {
+                            if (!string.IsNullOrEmpty(kv.Name)) st.Name = kv.Name;
+                        }
+                        else
+                        {
+                            // Non-Settlement placeable types (Inhabited_Settlement included)
+                            // are not referenced from this assembly at compile time - see
+                            // this .csproj's own comment on why a foreign mod DLL is never
+                            // added as a build reference casually. Reflection over a public
+                            // string `Name` property is the one hook that reaches either
+                            // without one; a type with no such property just keeps its def
+                            // label, which is a fine name, not a failure.
+                            SetGenericWorldObjectName(wo, kv.Name);
+                        }
                         Find.WorldObjects.Add(wo);
                         created++;
+                        createdObjects.Add(wo);
+                        createdByDef.TryGetValue(kv.Def.defName, out int n);
+                        createdByDef[kv.Def.defName] = n + 1;
                     }
                     catch (Exception e)
-                    { failures.Add(new { tile = kv.Value.Key, name = kv.Value.Value,
+                    { failures.Add(new { tile = kv.Tile, name = kv.Name,
                                          error = e.GetType().Name + ": " + e.Message }); }
                 }
 
-                // 🔴 Read back off the engine, not off the loop counter.
+                // 🔴 Read back off the engine, not off the loop counter. Settlement-scoped
+                // for backward compatibility with every existing caller of this tool;
+                // nullFactionCreated below covers every def type this run actually made.
                 int after = Find.WorldObjects.Settlements.Count;
                 int nullFaction = Find.WorldObjects.Settlements.Count(q => q.Faction == null);
+                int nullFactionCreated = createdObjects.Count(o => o.Faction == null);
                 return new
                 {
-                    success = failures.Count == 0 && nullFaction == 0 && skippedOccupied == 0,
+                    success = failures.Count == 0 && nullFaction == 0 && nullFactionCreated == 0 && skippedOccupied == 0,
                     message = "created " + created + ", removed " + removed + "; settlements " +
                               before + " -> " + after +
                               (keptPlayer > 0 ? "  (" + keptPlayer + " player-owned or mapped " +
@@ -4367,9 +4451,13 @@ namespace JawaBench.BridgeTools
                     keptPlayerOwned = keptPlayer,
                     settlementsBefore = before, settlementsAfter = after,
                     nullFactionSettlements = nullFaction,
+                    createdByDef,
+                    nullFactionCreated,
                     failures,
                     note = "Run jawa/world_commit - FastTileFinder caches settlement tiles. Then SAVE " +
-                           "AND RELOAD before trusting this: the null-faction trap only fires on load.",
+                           "AND RELOAD before trusting this: the null-faction trap only fires on load. " +
+                           "settlementsBefore/After count vanilla Settlement only - see createdByDef for " +
+                           "the full breakdown when world_object_def rows are involved.",
                     ticksGame = TicksGameSafe(),
                 };
             }, cancellationToken).ConfigureAwait(false);
