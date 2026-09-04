@@ -379,6 +379,11 @@
     "date": "2026-09-03",
     "sha": "08e80429"
   },
+  "src/RimMandrake/Property/Source/FactionRecord.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "0fb4936c"
+  },
   "src/RimMandrake/Property/Source/GameComponent_PropertyLedger.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -428,6 +433,11 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "dc7d9d40"
+  },
+  "src/RimMandrake/SacredGraffiti/Source/SacredGraffiti.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "0fb4936c"
   },
   "src/RimMandrake/SalvageClaim/Source/SalvageClaimFeeUtility.cs": {
     "cleanCount": 1,
@@ -1637,6 +1647,11 @@
     "date": "2026-09-02",
     "sha": "ccb9e9ba"
   },
+  "src/RimUtinni/EmpirePursuit/Source/HarmonyPatches.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "0fb4936c"
+  },
   "src/RimUtinni/EmpirePursuit/Source/RuthlessPursuingMechanoids.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -1656,6 +1671,11 @@
     "cleanCount": 1,
     "date": "2026-09-02",
     "sha": "f9d51180"
+  },
+  "src/RimUtinni/PlantGrowth/Source/Patch_Plant_GrowthRate.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "0fb4936c"
   },
   "src/RimUtinni/VaultDungeons/Source/gen_vault_layouts.py": {
     "cleanCount": 1,
