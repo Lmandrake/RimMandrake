@@ -327,7 +327,13 @@ techprints unlock repair recipes preferentially (WreckedMachines surfaces,
 Rekko-clean), never build-from-scratch — restore≠transcend executed in the
 reward channel AND in the factory floor itself. Art scope: per-module
 damaged/partial/restored states — a major sprite-pipeline commitment,
-its own slice. Reveal ORDER of the modules: owner decision in flight.
+its own slice. **Reveal order RULED (owner, 2026-09-04, card): FIXED and
+fully authored — no player choice, because "the urns lock what they
+unlock"; the sequence is a property of the world's fragments, not a menu.**
+The order: **Mill → Loom → Galley → Farm → Press → Machining Bay →
+Apothecary → Assembler** (stone and metal first — the scavenger's organ —
+then clothing, food, agriculture, ammunition, industry, medicine, and
+components as the crown). Conveyors/hoppers/factory floor ride the Mill.
 
 **D6 · VaultDungeons takes the payout + one dark turn.** The mod ships
 content for the six sited vaults (About.xml, vault_siting_prep V1–V6
