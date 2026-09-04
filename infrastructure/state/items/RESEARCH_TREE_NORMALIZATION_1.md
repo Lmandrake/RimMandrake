@@ -35,12 +35,12 @@ item THIN for it. Nothing here is a new decision; every ruling is already canon
    matches the live mod set — not raw mod XML, and not a dump whose currency is
    assumed. `cherrypicker.py` is the reader for what has been cut, because a Cherry
    Picker cut is invisible to the dump.
-3. **The owner has reviewed the DELTA sheet** (ruled 2026-09-04 by card: "Delta
-   sheet only"). The frozen deck round 3 (2026-09-04) discharged tree placement;
-   the remaining pass covers only what the deck never showed him — the
-   faction-held rows' holders, the Rites/Antiquities rows, and every row whose
-   current fate differs from the 09-03 prefill. Still his pass alone; it cannot
-   be delegated or inferred from a clean validator run.
+3. **DISCHARGED 2026-09-04.** The owner reviewed the delta sheet (ruled by card:
+   "Delta sheet only") and approved it verbally: *"Otherwise the list is approved
+   and done."* His overrides were applied to the manifest before the freeze:
+   OilPourCage Hutt-available · 10 DP_RGive cuts reverted (out of scope) ·
+   bloodflame + catacombs put back · Jedi apparel put-back retracted, cut stands.
+   `research_delta_decisions.json` is frozen as the record.
 4. **The retag is live with no orphaned unlocks** — every unlock still resolves after
    the retag, and the rows alive with empty unlock caches are exactly the prep §1
    allowlist — 30 as of 2026-09-04 (the original 22 plus 8 hand-verified additions,

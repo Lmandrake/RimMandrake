@@ -654,6 +654,11 @@
       "prefill": "accept",
       "note": ""
     },
+    "guy762_ResearchKotOR_jedi": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
     "guy762_ResearchKotOR_jolee": {
       "decision": "accept",
       "prefill": "accept",
@@ -719,5 +724,9 @@
       "prefill": "accept",
       "note": ""
     }
-  }
+  },
+  "frozen": true,
+  "frozenOn": "2026-09-04",
+  "frozenMeaning": "APPROVED VERBALLY by the owner, 2026-09-04: \"Otherwise the list is approved and done.\" His overrides were delivered in conversation and applied to the manifest BEFORE the freeze (OilPourCage Hutt-available; DP_RGive x10 reverted as out-of-scope; bloodflame+catacombs put back; Jedi apparel put-back retracted, cut stands). Every row here is the approved prefill. This file is the source of truth for the delta pass; unfreeze only on his word.",
+  "approvedBy": "owner (verbal, via BENCH)"
 }
