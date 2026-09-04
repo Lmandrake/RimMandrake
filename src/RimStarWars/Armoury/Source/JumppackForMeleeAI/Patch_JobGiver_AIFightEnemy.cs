@@ -53,14 +53,26 @@ public static class Patch_JobGiver_AIFightEnemy
                 Label label2 = generator.DefineLabel();
                 CodeInstruction popInstruction2 = new CodeInstruction(OpCodes.Pop);
                 popInstruction2.labels.Add(label2);
-                list.InsertRange(i, new[]
+                // BUG FIX: this op_Implicit call is mid-expression for
+                // `verb.CanHitTarget(enemyTarget)` — list[i-2]/list[i-1] already
+                // pushed [verb, enemyTarget] onto the stack before we get here.
+                // The old code inserted its Call/Dup/Brfalse/Ret AT i, which made
+                // "Call GetJunpPackRanged" consume enemyTarget as its Pawn argument
+                // (wrong value, wrong type) and left "verb" sitting under the
+                // return value at Ret — an invalid stack depth that fails to JIT
+                // (InvalidProgramException) the first time TryGiveJob runs for ANY
+                // pawn, for both branches. Inserting at i-2 (before those two
+                // loads) keeps the stack empty at the injection point, matching
+                // the melee block above, and Ldarg_1 must be pushed before the
+                // Call so GetJunpPackRanged receives the actual pawn.
+                list.InsertRange(i - 2, new[]
                 {
+                    new CodeInstruction(OpCodes.Ldarg_1),
                     new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(Patch_JobGiver_AIFightEnemy), nameof(GetJunpPackRanged))),
                     new CodeInstruction(OpCodes.Dup),
                     new CodeInstruction(OpCodes.Brfalse_S, label2),
                     new CodeInstruction(OpCodes.Ret),
-                    popInstruction2,
-                    new CodeInstruction(OpCodes.Ldarg_1)
+                    popInstruction2
                 });
                 break;
             }
