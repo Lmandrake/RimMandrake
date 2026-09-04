@@ -249,7 +249,7 @@ def _trigger_health_rebuild():
     if os.path.abspath(_state_root(model.EVENTS)) != os.path.abspath(model.STATE):
         return
     root = model.ROOT
-    MIN_INTERVAL = 300  # mirrors codebase_health_publish.py's MIN_INTERVAL
+    MIN_INTERVAL = 900  # mirrors codebase_health_publish.py's MIN_INTERVAL
     try:
         with open(os.path.join(root, "infrastructure", "state",
                                 "codebase_health_last.json")) as fh:

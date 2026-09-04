@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """Rebuild the codebase-health artifact page — but only when it is worth rebuilding.
 
-Owner's rule, SUPERSEDED 2026-09-03: ceiling lowered from one rebuild/hour to one
-rebuild/5min ("regenerate the board up to every 5 minutes"). The original
-2026-09-02 rule — *"regenerated once per hour (if many changes are occurring) or
-upon change (if it's been longer than an hour)"* — is the same shape, just a
-tighter MIN_INTERVAL; nothing else about the condition changed.
+Owner's rule, 2026-09-04: ceiling is one rebuild per 15 minutes ("no more than
+every 15 minutes, to avoid unnecessary pauses") — raised from the 5-minute
+ceiling set 2026-09-03, which itself replaced the original 2026-09-02 rule
+("once per hour if many changes are occurring, or upon change if it's been
+longer than an hour"). Same shape throughout, just MIN_INTERVAL moving.
 
 Both halves are ONE condition, and this is it:
 
@@ -59,7 +59,7 @@ STATE = os.path.join(REPO, "infrastructure", "state", "codebase_health_last.json
 JSON_OUT = os.path.join(REPO, "Transient", "codebase_health.json")
 PAGE_OUT = os.path.join(REPO, "Transient", "codebase_health_artifact.html")
 
-MIN_INTERVAL = 300           # seconds. The owner's ceiling, lowered from 3600 2026-09-03.
+MIN_INTERVAL = 900           # seconds. The owner's ceiling, raised from 300 2026-09-04.
 
 # The page's status codes. `green` and `grey` both start with "g", which is exactly
 # the kind of collision that turns a health map into a lie, so they are spelled out.
