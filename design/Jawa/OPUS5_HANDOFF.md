@@ -286,3 +286,14 @@ and pushed; nothing below is open design — it is execution.**
   outmoded sheets + `art_biomes/`.
 - Still owed to the owner: nothing blocking. FOUNDRY released the bridge and stamped
   seat-ready; four live passes authorized.
+
+## Correction — 2026-09-04, FOUNDRY (supersedes the proposal-suite status above)
+
+⛔ **Do not restart the sidecar server or regenerate `proposal_suite_review.html`'s
+prefill** — the third reboot addendum's instructions above are stale. The sitting
+completed and `PROPOSAL_SUITE_REVIEW_1` closed at `46edfb7e` (2026-09-02T06:34:28Z).
+`proposal_suite_review.decisions.json` is `frozen: true` (124/125 rows touched,
+posture prefill-ships — the untouched row keeps its pre-filled ladder position, it
+is not pending): 13 cuts, 101 v1, 6 v2, 5 dream. Source of truth and current status:
+`design/Jawa/proposals/README.md`. Remaining work is banking the frozen verdicts
+into the deep-design docs and per-proposal build items, never re-opening the sheet.
