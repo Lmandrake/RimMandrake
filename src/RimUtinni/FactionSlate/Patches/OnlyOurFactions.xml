@@ -222,44 +222,13 @@
       </operations>
     </match>
   </Operation>
-  <!-- CAEvilSacrilegHunters -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/FactionDef[defName="CAEvilSacrilegHunters"]</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="CAEvilSacrilegHunters"]/startingCountAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="CAEvilSacrilegHunters"]/startingCountAtWorldCreation</xpath>
-            <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="CAEvilSacrilegHunters"]</xpath>
-            <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
-          </nomatch>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-  <!-- CAFriendlyMechanoid -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/FactionDef[defName="CAFriendlyMechanoid"]</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/FactionDef[defName="CAFriendlyMechanoid"]/startingCountAtWorldCreation</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/FactionDef[defName="CAFriendlyMechanoid"]/startingCountAtWorldCreation</xpath>
-            <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/FactionDef[defName="CAFriendlyMechanoid"]</xpath>
-            <value><startingCountAtWorldCreation>0</startingCountAtWorldCreation></value>
-          </nomatch>
-        </li>
-      </operations>
-    </match>
-  </Operation>
+  <!-- CAEvilSacrilegHunters, CAFriendlyMechanoid — REMOVED 2026-09-04, XML_PATCH_VALIDATION_SWEEP_1.
+       Verified against Caravan Adventures' (iforgotmysocks.caravanadventures, active)
+       own installed 1.6 FactionDefs.xml: neither defName exists past 1.5 — the mod's
+       current FactionDefs.xml ships only CASacrilegHunters/CANamerFactionSacrilegHunters/
+       CASacrilegHuntersRaidLootMaker (CASacrilegHunters, the survivor, is patched below,
+       unchanged). The Conditional guard already made these safe no-ops; this only drops
+       two blocks that can never fire again under any 1.6 build of that mod. -->
   <!-- CASacrilegHunters -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/FactionDef[defName="CASacrilegHunters"]</xpath>
