@@ -103,9 +103,6 @@
     <Compile Include="guy762_Ionization\DamageWorker_KotORPlasmaGrenade.cs" />
     <Compile Include="MinePocket\MineDefOfs.cs" />
     <Compile Include="MinePocket\MinePocketDefExtension.cs" />
-    <Compile Include="MinePocket\CompDefuse.cs" />
-    <Compile Include="MinePocket\Verb_ShootMine.cs" />
-    <Compile Include="MinePocket\Projectile_SpawnMine.cs" />
     <Compile Include="MinePocket\MinePocketJob.cs" />
     <Compile Include="InstantHealingDrug\CompProperties_DrugInstantHeal.cs" />
     <Compile Include="InstantHealingDrug\InstantHealingDrug.cs" />

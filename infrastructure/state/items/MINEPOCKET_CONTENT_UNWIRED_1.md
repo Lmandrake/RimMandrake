@@ -55,3 +55,21 @@ are gone and nothing else references them.
 
 Not ruled. Needs an owner or BENCH call on which mechanism ships — this
 is a design question, not a bug fix.
+
+## ruling — owner, 2026-09-04: "Drop as dead code."
+
+**`Verb_ShootMine.cs`, `Projectile_SpawnMine.cs`, `CompDefuse.cs` deleted.**
+Removed from `JawaArmoury.csproj`, rebuild confirmed clean, deploy
+pending the next restart (game DLL locked, up at time of the change).
+
+**`MinePocketDefExtension.cs` KEPT — it is not actually part of this dead
+cluster.** `MinePocketJob.cs` (the live job driver behind the shipped
+`TrapIED_HighExplosive`/`MinePocket_Job` mechanism) reads
+`target.def.GetModExtension<MinePocketDefExtension>()` at the end of its
+toil sequence to optionally spawn a bonus thing after a successful
+defuse — deleting the extension type would have broken compilation of a
+live, reachable file. No shipped def currently carries the extension
+(so the optional-spawn branch is a no-op today), but the class itself is
+consumed code, not dead code. Already reviewed clean this session (wave
+14) and now marked CLEAN in `CODE_REVIEW_STATUS.json`, corrected from
+its earlier "same cluster" classification.

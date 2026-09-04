@@ -2052,6 +2052,11 @@
     "date": "2026-09-03",
     "sha": "70cd2206"
   },
+  "src/RimStarWars/Armoury/Source/MinePocket/MinePocketDefExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "e57a41a5"
+  },
   "src/RimStarWars/Armoury/Source/MinePocket/MinePocketJob.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
