@@ -29,6 +29,36 @@
     "date": "2026-09-03",
     "sha": "872db59d"
   },
+  "src/RimMandrake/DesertVehicleReskin/Source/Fuel/check_fuel_predicate.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "b294390b"
+  },
+  "src/RimMandrake/DesertVehicleReskin/Source/build_beast_vehicle.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "b294390b"
+  },
+  "src/RimMandrake/DesertVehicleReskin/Source/build_eopie_sled_east.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "b294390b"
+  },
+  "src/RimMandrake/DesertVehicleReskin/Source/build_eopie_sled_north.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "b294390b"
+  },
+  "src/RimMandrake/DesertVehicleReskin/Source/build_eopie_sled_south.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "b294390b"
+  },
+  "src/RimMandrake/DesertVehicleReskin/Source/despeckle.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "b294390b"
+  },
   "src/RimMandrake/DesertVehicleReskin/Source/preview_derived_facings.py": {
     "cleanCount": 1,
     "date": "2026-09-02",
@@ -43,6 +73,11 @@
     "cleanCount": 1,
     "date": "2026-09-02",
     "sha": "1a7b3aa1"
+  },
+  "src/RimMandrake/DesertVehicleReskin/Source/recrop_east_v2.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "b294390b"
   },
   "src/RimMandrake/DesertVehicleReskin/Source/review_sheet.py": {
     "cleanCount": 1,
@@ -104,6 +139,11 @@
     "date": "2026-09-03",
     "sha": "b0db3c45"
   },
+  "src/RimMandrake/GravshipAstronautFix/Source/make_genebank_north.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "b294390b"
+  },
   "src/RimMandrake/Inhabited/Source/CharacterApplier.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -133,6 +173,11 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "7b9f17a9"
+  },
+  "src/RimMandrake/Inhabited/Source/GenStep_InhabitedCast.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "b294390b"
   },
   "src/RimMandrake/Inhabited/Source/GenStep_InhabitedStock.cs": {
     "cleanCount": 1,
@@ -233,6 +278,11 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "7b9f17a9"
+  },
+  "src/RimMandrake/LoadTracer/Source/LoadTracer.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "c6ede2aa"
   },
   "src/RimMandrake/Ninefold/Source/EventMagnitude.cs": {
     "cleanCount": 1,
@@ -378,6 +428,11 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "ecc86a6f"
+  },
+  "src/RimMandrake/PlanetPresetPrime/Source/PlanetPresetPrime.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "b294390b"
   },
   "src/RimMandrake/Property/Source/ClaimBasis.cs": {
     "cleanCount": 1,
@@ -1492,6 +1547,11 @@
     "date": "2026-09-03",
     "sha": "a6c78782"
   },
+  "src/RimMandrake/Visibility/Source/SelfTest/Program.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "b294390b"
+  },
   "src/RimMandrake/Visibility/Source/VisibilityModInit.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -2157,6 +2217,11 @@
     "date": "2026-09-03",
     "sha": "70cd2206"
   },
+  "src/RimStarWars/BlastDoorFrameAsyncFix/Source/build_frameasync_east.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "b294390b"
+  },
   "src/RimStarWars/BlastDoorFrameAsyncFix/Source/render_review.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -2176,6 +2241,16 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "66d742be"
+  },
+  "src/RimStarWars/FireEcology/Source/FireEcologyHook.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "c6ede2aa"
+  },
+  "src/RimStarWars/JawaIkee/Source/ThoughtWorker_IkeeNearby.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "b294390b"
   },
   "src/RimStarWars/JawaIonWeapons/Source/DamageWorker_IonBuildup.cs": {
     "cleanCount": 1,
