@@ -1607,6 +1607,11 @@
     "date": "2026-09-03",
     "sha": "246700a6"
   },
+  "src/RimStarWars/Armoury/Source/InstantHealingDrug/TCED_TryGiveJob_Patch.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "6a4499e0"
+  },
   "src/RimStarWars/Armoury/Source/JumppackForMeleeAI/JobDriver_CastJumpOnce.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -1632,6 +1637,16 @@
     "date": "2026-09-03",
     "sha": "a6c78782"
   },
+  "src/RimStarWars/Armoury/Source/KoltoTank/Building_KoltoTank.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "6a4499e0"
+  },
+  "src/RimStarWars/Armoury/Source/KoltoTank/CompKoltoTank.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "6a4499e0"
+  },
   "src/RimStarWars/Armoury/Source/KoltoTank/CompProperties_KoltoTank.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -1646,6 +1661,11 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "2a1b73cc"
+  },
+  "src/RimStarWars/Armoury/Source/KoltoTank/FloatMenuOptionProvider_CarryToKoltoTank.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "6a4499e0"
   },
   "src/RimStarWars/Armoury/Source/KoltoTank/HARFleshCheck.cs": {
     "cleanCount": 1,
@@ -1731,6 +1751,16 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "4e362542"
+  },
+  "src/RimStarWars/Armoury/Source/Spinning_Projectile/MoteWeaponReturn.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "6a4499e0"
+  },
+  "src/RimStarWars/Armoury/Source/Spinning_Projectile/SpinningWeaponProjectile.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "6a4499e0"
   },
   "src/RimStarWars/Armoury/Source/Spinning_Projectile/ThingCompProperties_ReturningWeapon.cs": {
     "cleanCount": 1,

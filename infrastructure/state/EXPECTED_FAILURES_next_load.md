@@ -1,20 +1,24 @@
-# Expected-failure signatures — code-review deploy batch, written 2026-09-04 BEFORE launch (FOUNDRY)
+# Expected-failure signatures — Armoury deploy batch #2, written 2026-09-04 BEFORE launch (FOUNDRY)
 
-Supersedes the prior (2026-09-02, BENCH) entry — that load already happened and
-completed; this is a fresh, much smaller batch riding the next restart.
+Supersedes the prior (2026-09-04, FOUNDRY) entry — that batch (4 assemblies)
+already deployed, restarted, and verified clean earlier this session.
 
-Deploy batch: 4 assemblies, each a small isolated fix from this session's standing
-code-review sweep (`DIRTY_CODE_REVIEW_LOOP_RESTART_6`), each in a different mod DLL
-so they cannot blame each other. All four already build clean at 0 warnings/errors
-offline; this load only proves the live deploy + runtime behavior.
+This batch: 6 fixes, all in ONE assembly (`JawaArmoury.dll`, mod
+`mandrake.rsw.armoury`) — lower attribution risk than the last batch since
+there's only one DLL to blame, but each fix still gets its own named
+signature so a real regression can be told apart from the others.
 
-| assembly | fix | expected signature |
+| fix | file | expected signature |
 |---|---|---|
-| RimMandrakeGraffiti.dll | `ModExtension_Graffiti` startup validator gained a third mis-wire check (`viewerReactionThought`/`workerClass`) — commit `1e4fe0eb` | ABSENT: no new `Log.Error` naming `ModExtension_Graffiti` or `viewerReactionThought` (no shipped mark is actually mis-wired, so the new check should log nothing) |
-| RimMandrakeVisibility.dll | `GameComponent_ColonyVisibility.tileMemory` rekeyed `Dictionary<int,...>` → `Dictionary<PlanetTile,...>` — commit `8a24dcd7` | RESIDUAL RISK: this changes the Scribe shape for a field written by prior saves under the OLD (int) key. Watch for any exception naming `tileMemory`, `GameComponent_ColonyVisibility`, or a Scribe parse error near "ColonyVisibility" on load. Best case: old entries silently fail to parse per-entry and the dict starts empty (acceptable — it's ephemeral decay memory, not save-critical state, matches the file's own doc). Worst case (should NOT happen, flag loudly if seen): a hard exception that aborts the whole save load. |
-| RimMandrakeStructureInjections.dll | dead `RimplacePlan.DefNames()` + unused `System.Linq` deleted — commit `5d44b598` | ABSENT: zero behavior change, nothing should differ in the log at all |
-| JawaArmoury.dll | `Patch_JobGiver_AIFightEnemy`'s ranged-branch transpiler injection point fixed (was emitting invalid IL mid-expression) — commit `12ad4c44` | ABSENT (this is the important one): `InvalidProgramException` naming `JobGiver_AIFightEnemy` or `TryGiveJob`. Pre-fix, this would have thrown the first time ANY hostile pawn's ranged-combat AI reached this JobGiver — a prior grep of the live log this session found zero hits, meaning either the path was never exercised yet or (less likely) the exception manifests differently; either way, absence post-fix plus normal-looking raids is the pass condition. |
+| Fixed a Harmony transpiler injection point (already deployed+verified last restart) | Patch_JobGiver_AIFightEnemy.cs | N/A — not part of this batch, already live |
+| Double-integrated mote movement + orphaned mote leak fixed | Spinning_Projectile/MoteWeaponReturn.cs | ABSENT: no behavior to watch for without spawning a returning weapon and observing mote speed in-game (not log-visible) — build success is the only automatic signal here |
+| Dangling `Mote_LightSaberReturn` ThingDef reference documented (comment only, not fixed — unreachable code path, no live `SpinningWeaponProjectile` user) | Spinning_Projectile/SpinningWeaponProjectile.cs | ABSENT: no behavior change, comment-only |
+| Missing null-guard on `VSH_inDangerField` reflection get | InstantHealingDrug/TCED_TryGiveJob_Patch.cs | ABSENT: no `NullReferenceException` naming `TCED_TryGiveJob_Patch` or `VSH_inDangerField` — this guard only fires on an already-rare version-mismatch path, so silence is expected either way; the fix just prevents a crash IF that path is hit, not a currently-observed crash |
+| `CompProperties_KoltoTank.multiplier` (2.5) was declared but never read — healing ran at the hardcoded 2500-tick (1hr) cadence instead of the intended 6250-tick (2.5hr) cadence per the def's own description | KoltoTank/Building_KoltoTank.cs, KoltoTank/CompKoltoTank.cs | ABSENT: no exception. RESIDUAL: this is a gameplay-balance change (healing gets ~2.5x SLOWER, correctly matching the def's text) — not verifiable from the log, needs an in-game observation eventually, not blocking this restart |
+| `FloatMenuOptionProvider_CarryToKoltoTank.Drafted` was `false`, blocking the option during combat — the exact situation the tank exists for | KoltoTank/FloatMenuOptionProvider_CarryToKoltoTank.cs | ABSENT: no exception. Not log-verifiable either — needs an in-game right-click check eventually (drafted pawn standing over a downed ally near a Kolto Tank should now offer "Carry ... to Kolto Tank") |
 
-General sweep: run `harvest_log.py` as usual after this load — dead mods, discarded
-defs, unresolved cross-refs, stale Scribe references, patch no-ops — same as any
-other restart, not specific to this batch.
+General: watch for any `InvalidProgramException`, `TypeLoadException`, or
+Harmony patch-failure line naming `JawaArmoury` — that would mean a build
+succeeded locally but something about the deployed DLL doesn't match
+(should not happen, deterministic build, but check anyway). Run the usual
+`harvest_log.py` full sweep afterward, same as any restart.
