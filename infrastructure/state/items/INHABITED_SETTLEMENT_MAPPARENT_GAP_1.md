@@ -82,3 +82,30 @@ map for district-placed structures/cast pawns).
 Live-confirmed either way. If confirmed dead: an owner-approved fix
 lands, on a fresh world, with the wilderness path's continued behavior
 verified unchanged.
+
+## Live-confirmed DEAD (2026-09-04, FOUNDRY, minimal-list quicktest)
+
+Placed a real `Inhabited_Settlement` WorldObjectDef (`jawa/world_objects_add`,
+faction OutlanderCivil) at an empty world tile, committed, then called
+`jawa/world_tile_map_generate` on that same tile with `suggestedMapParent:
+Inhabited_Settlement`:
+
+```
+"success": false,
+"message": "GetOrGenerateMap threw: InvalidCastException: Specified cast is not valid."
+```
+
+This is `GetOrGenerateMapUtility.GetOrGenerateMap` throwing directly on the object,
+live, in the running engine — the same tool called the SAME way on a plain vanilla
+`Settlement` at a different tile (control case, same session) generated a real
+250x250 map with 71 pawns, no error. The InvalidCastException is exactly what the
+review's engine-source read predicted: something in the generate path casts the
+tile's WorldObject to `MapParent`, and `WorldObject_InhabitedSettlement` (derives
+from plain `WorldObject`) fails that cast. Confirms the finding is not just a
+correct reading of the class hierarchy but an actual live breakage — nothing else
+in the engine compensates for the missing MapParent base.
+
+Remaining blocker is exactly what "why filed for the owner" already said: this is
+a save-compat-sensitive base-class change needing an owner/BENCH scope call
+(`WorldObject_Inhabited` itself vs only the `Settlement` subclass), not a live-
+confirmation gap anymore.

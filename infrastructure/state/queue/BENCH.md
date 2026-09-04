@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-04T17:16:59Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-04T18:01:25Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -60,4 +60,14 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-_none._
+Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
+
+## CORRECT_FLUID_CANAL_1 Live-check attempt: deploy/enable resolved, but RMFluidCanals debug actions never appear in the live debug-action tree
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/CORRECT_FLUID_CANAL_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/CORRECT_FLUID_CANAL_1.md

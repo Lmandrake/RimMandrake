@@ -898,3 +898,31 @@ stretch can report "Paused" while ticks still advance — verify with two
 **Fix:** `set_time_speed 0` and VERIFY the freeze BEFORE `close_window` on the menu.
 **Generalises to:** any pause you observed while a modal was open is unproven the
 moment that modal closes.
+
+## 🔴 `jawa/world_tile_map_generate`'s SECOND call at a DIFFERENT tile, same session, silently reuses the FIRST map
+
+Measured 2026-09-04. Call 1 (`tile: 701`) genuinely generated a new map:
+`wasAlreadyGenerated: false`, `mapIndex: 1`, `pawnCount: 71`. Call 2, same connection,
+different tile (`tile: 703`, a different empty land tile — confirmed via
+`jawa/world_tile_get` before either call): returned `success: true,
+wasAlreadyGenerated: false, mapIndex: 1, pawnCount: 49` — DIFFERENT numbers from call 1,
+so it is not a bare stale-cache echo. But `rimworld/get_game_info` afterward reported
+`mapCount: 2` (not 3, so no second Map object exists), and `jawa/map_info` (reads the
+live `Find.CurrentMap`) reported `tile: 701` for that same `mapId: 1` — the ONLY map
+besides the player's colony is still tile 701's. **Tile 703 was never actually
+generated**; the tool fabricated a plausible-looking but wrong response. A THIRD call
+for the same tile 703 then reported `wasAlreadyGenerated: true` with the SAME numbers,
+compounding the lie into an apparently-stable, apparently-idempotent false state.
+
+⇒ **Do not trust `wasAlreadyGenerated`/`mapIndex`/`pawnCount` from a second
+`world_tile_map_generate` call in one session if the tile differs from the first
+call.** Verify independently: `rimworld/get_game_info`'s `mapCount` before and after
+(it must increase), and `jawa/map_info` (or a fresh `jawa/world_objects_get` /
+`list_pawns` scoped to the new map) actually reflecting the requested tile — not the
+generator tool's own say-so.
+
+**Generalises to:** a companion tool that internally caches "the map I just made" and
+reuses it in place of doing the requested work again is invisible from its own return
+value, because that value is shaped exactly like a real success and even varies
+plausibly between calls. Cross-check against an INDEPENDENT reader (`get_game_info`,
+`map_info`) that did not go through the same code path.

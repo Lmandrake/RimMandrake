@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-04T17:16:59Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-04T18:01:25Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -294,7 +294,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     bug
-summary:  (no items/HELIX_TELLUROX_SHELL_LOAD_CRASH_1.md yet — write one when you have something to say)
+summary:  Determine whether mandrake.rsw.helixtellurox genuinely crashes a load to
 prose:    infrastructure/state/items/HELIX_TELLUROX_SHELL_LOAD_CRASH_1.md
 
 ## INHABITED_SETTLEMENT_MAPPARENT_GAP_1 WorldObject_InhabitedSettlement derives from WorldObject, not MapParent - mapGenerator/canHaveMap are architecturally inert, settlement district/cast GenSteps may have never run
@@ -409,8 +409,8 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     bug
-blocked:  not reproducible offline: mandrake.rsw.helixtellurox is disabled in the live ModsConfig, and a full source-verified field/type audit of Races_Tellurox.xml found no defect; deployed the graphicClass drift fix (unrelated) but the crash needs the original log excerpt or a fresh bridge+restart isolated test to pin
-summary:  (no items/HELIX_TELLUROX_SHELL_LOAD_CRASH_1.md yet — write one when you have something to say)
+blocked:  Live-reproduced 2026-09-04: adding mandrake.rsw.helixtellurox to the working 21-mod MINIMAL list crashed the very next launch to Core-only, exact MissingMethodException signature this item names, first line in the log. NOT yet isolated from droidworks/OuterRim.Core - both already had unrelated pre-existing errors in the same log. Needs one more isolated relaunch (smaller list, no confounds) before attributing the crash to HelixTellurox itself.
+summary:  Determine whether mandrake.rsw.helixtellurox genuinely crashes a load to
 prose:    infrastructure/state/items/HELIX_TELLUROX_SHELL_LOAD_CRASH_1.md
 
 ## INHABITED_SETTLEMENT_MAPPARENT_GAP_1 WorldObject_InhabitedSettlement derives from WorldObject, not MapParent - mapGenerator/canHaveMap are architecturally inert, settlement district/cast GenSteps may have never run
@@ -419,7 +419,7 @@ row:      unassigned
 needs:    owner
 target:   v1
 kind:     bug
-blocked:  confirmed via engine source that WorldObject_Inhabited doesn't derive from MapParent, so mapGenerator/canHaveMap are inert - but the fix is a base-class change with save-compat stakes, needs live confirmation of the actual consequence first, then an owner/BENCH call on scope (WorldObject_Inhabited itself vs only the Settlement subclass)
+blocked:  Live-confirmed dead 2026-09-04 (InvalidCastException from GetOrGenerateMapUtility.GetOrGenerateMap on a live-placed Inhabited_Settlement, control case same session generated cleanly) - remaining blocker is purely the owner/BENCH scope call on the base-class fix (WorldObject_Inhabited itself vs only the Settlement subclass), save-compat stakes
 summary:  Determine (live, via the bridge, not more code reading) whether an
 prose:    infrastructure/state/items/INHABITED_SETTLEMENT_MAPPARENT_GAP_1.md
 
@@ -429,7 +429,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     bug
-blocked:  authored RM_InhabitedPlace (TileMutatorDefs_Inhabited.xml, 75204205), Defs deployed; live check needs bridge (held by BENCH for FOG_REVIEW_SITTING_WITH_OWNER_1) + game DOWN to redeploy the stale Assemblies/Inhabited.dll and GenStepDefs (missing RM_InhabitedStock, undeployed since a prior session)
+blocked:  Live-tested 2026-09-04: deploy blocker was stale (already in sync). Mutator wiring confirmed non-crashing live. Cast/stock spawn sub-question narrowed but not proven - blocked on a jawa/world_tile_map_generate bridge-tool defect (filed in rimbridge/traps.md), not on this mod's own code.
 summary:  The Inhabited mod's own class comments describe two routes onto a map: a proper
 prose:    infrastructure/state/items/INHABITED_TILEMUTATOR_NO_ENTRY_1.md
 
