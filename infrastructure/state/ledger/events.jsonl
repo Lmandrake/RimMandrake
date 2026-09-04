@@ -4375,3 +4375,29 @@
 {"seat":"BENCH","event":"game","state":"LOADING","measured":true,"evidence":"RimWorldWin64 running; BRIDGE NOT PROBED — no port found in the environment or in Player.log, so LOADING here is a DEFAULT, not a reading.","ts":"2026-09-04T06:33:16Z"}
 {"seat":"BENCH","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-09-04T06:48:03Z"}
 {"seat":"BENCH","event":"bridge","state":"released","ts":"2026-09-04T06:49:47Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"ANOMALY_EXCEPTION_ACCESS_1: minimal-list restart to verify RUT_ShipMemory XML load + reveal-gate live checks","ts":"2026-09-04T08:05:49Z"}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"FOUNDRY","ownerSaid":"bridge is yours go!","ts":"2026-09-04T08:06:55Z"}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"BENCH","ownerSaid":"Game is going down","ts":"2026-09-04T08:07:00Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","ownerSaid":"bridge is yours go!","ts":"2026-09-04T08:07:14Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ownerSaid":"Game is down","ts":"2026-09-04T08:07:18Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","ownerSaid":"bridge is yours go!","ts":"2026-09-04T08:07:20Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","ownerSaid":"Game is loading","ts":"2026-09-04T08:07:30Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","ownerSaid":"bridge is yours go!","ts":"2026-09-04T08:07:54Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","ownerSaid":"Game is up","ts":"2026-09-04T08:08:01Z"}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"FOUNDRY","ownerSaid":"bridge is yours go!","ts":"2026-09-04T08:13:39Z"}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"BENCH","ownerSaid":"Game is going down","ts":"2026-09-04T08:13:43Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","ownerSaid":"bridge is yours go!","ts":"2026-09-04T08:13:45Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ownerSaid":"Game is down","ts":"2026-09-04T08:13:50Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","ownerSaid":"bridge is yours go!","ts":"2026-09-04T08:13:52Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","ownerSaid":"Game is loading","ts":"2026-09-04T08:13:58Z"}
+{"seat":"FOUNDRY","event":"close","id":"ANOMALY_EXCEPTION_ACCESS_1","sha":"4217267e","ts":"2026-09-04T08:14:52Z"}
+{"seat":"FOUNDRY","event":"note","id":"ANOMALY_EXCEPTION_ACCESS_1","text":"For BENCH: mandrake.rut.shipmemory built, live-verified (minimal list, 21 mods) and closed at 4217267e — patch confirmed clean, reveal letter fires, architect designator flips visible on the 7 buildables. Criterion 4 still owed: research_tree_taxonomy.md needs its row updated to name this route (discoveryPrerequisites reveal gate, not a research row) — that edit is BENCH's per doctrine, FOUNDRY did not touch the doc. Deferred, not tested: check D (real capture-path trigger) and check F (Assailant signal route) — the fallback (stockpiled Bioferrite) route was proven end-to-end instead. Full modlist restored and reloaded after verification.","ts":"2026-09-04T08:15:03Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","ownerSaid":"bridge is yours go!","ts":"2026-09-04T08:30:45Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-04T08:30:46Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","ownerSaid":"Game is up","ts":"2026-09-04T08:30:49Z"}
+{"seat":"FOUNDRY","event":"claim","id":"ARMOURY_SOUND_PATHS_RSW_PREFIX_1","ts":"2026-09-04T08:41:12Z"}
+{"seat":"FOUNDRY","event":"start","id":"ARMOURY_SOUND_PATHS_RSW_PREFIX_1","ts":"2026-09-04T08:41:12Z"}
+{"seat":"FOUNDRY","event":"close","id":"ARMOURY_SOUND_PATHS_RSW_PREFIX_1","sha":"925bb3d2","ts":"2026-09-04T08:46:35Z"}
+{"seat":"OWNER","event":"close","id":"RIVER_LINK_ORDER_SELFTEST_DRIFT_1","sha":"467998c4","ownerSaid":"Close that item right now","override":"OWNER may not `close` RIVER_LINK_ORDER_SELFTEST_DRIFT_1 — it belongs to FOUNDRY. Filing work FOR another seat is normal; changing another seat's item is refused.","ts":"2026-09-04T08:53:24Z"}
+{"seat":"FOUNDRY","event":"file","id":"DIRTY_CODE_REVIEW_LOOP_RESTART_8","title":"resume standing code-review sweep after next agent reboot","kind":"task","target":"v1","needs":"offline","spec":"Continuity handoff for agent reboot, 2026-09-04. Full narrative and next steps: infrastructure/state/items/DIRTY_CODE_REVIEW_LOOP_RESTART_8.md","for":"FOUNDRY","ts":"2026-09-04T09:05:46Z"}
+{"seat":"FOUNDRY","event":"supersede","id":"DIRTY_CODE_REVIEW_LOOP_RESTART_7","by":"DIRTY_CODE_REVIEW_LOOP_RESTART_8","reason":"closes out this session's work (ANOMALY_EXCEPTION_ACCESS_1, ARMOURY_SOUND_PATHS_RSW_PREFIX_1, RIVER_LINK_ORDER_SELFTEST_DRIFT_1) and hands off to the next reboot","ts":"2026-09-04T09:05:47Z"}
