@@ -105,7 +105,9 @@ TIERS = {
 def read_about(path):
     try:
         r = ET.parse(path).getroot()
-    except Exception:
+    except Exception as e:
+        print("  ! could not parse %s (%s: %s) -- this mod will read as "
+              "NOT INSTALLED" % (path, type(e).__name__, e), file=sys.stderr)
         return None
     pid = (r.findtext("packageId") or "").strip()
     if not pid:
@@ -202,8 +204,14 @@ def order(pids, installed):
                 break
         else:
             # A cycle, or an edge we cannot satisfy. Take the lowest-rank
-            # remaining item and move on rather than looping forever.
+            # remaining item and move on rather than looping forever -- but
+            # say so: this is exactly the case where a mod can end up loading
+            # before something it needed to follow.
             pid = pool.pop(0)
+            unmet = sorted(edges[pid] - placed)
+            print("  ! order: forcing %s into place with unmet ordering "
+                  "constraint(s) on %s (cycle or unsatisfiable loadAfter/"
+                  "loadBefore)" % (pid, unmet), file=sys.stderr)
             out.append(pid)
             placed.add(pid)
     return out
@@ -224,12 +232,13 @@ def game_running():
     """
     try:
         out = subprocess.run(
-            ["tasklist", "/FI", "IMAGENAME eq RimWorldWin64.exe", "/NH"],
+            ["tasklist.exe", "/FI", "IMAGENAME eq RimWorldWin64.exe", "/NH"],
             capture_output=True, text=True, timeout=15)
         if out.returncode == 0:
             return "RimWorldWin64" in out.stdout
-    except (OSError, subprocess.SubprocessError):
-        pass
+    except (OSError, subprocess.SubprocessError) as e:
+        print("  ! could not ask the OS (%s: %s) -- falling back to the "
+              "Player.log mtime heuristic" % (type(e).__name__, e), file=sys.stderr)
 
     # Could not ask the OS. Fall back to the old heuristic.
     if not os.path.isfile(PLAYERLOG):

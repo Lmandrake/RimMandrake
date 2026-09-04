@@ -20,7 +20,13 @@ BASE = [
 
 def main(listfile):
     extra = [l.strip() for l in open(listfile) if l.strip() and not l.startswith("#")]
-    mods = BASE + extra
+    combined = BASE + extra
+    mods = list(dict.fromkeys(combined))  # de-dup, preserve first occurrence
+    if len(mods) != len(combined):
+        dupes = [m for m in dict.fromkeys(combined)
+                 if combined.count(m) > 1]
+        print(f"! dropped {len(combined) - len(mods)} duplicate mod entr"
+              f"{'y' if len(combined) - len(mods) == 1 else 'ies'}: {dupes}")
     tree = ET.parse(LIVE)  # keep version + knownExpansions from the live file
     root = tree.getroot()
     am = root.find("activeMods")
