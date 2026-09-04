@@ -4,7 +4,56 @@ Continuity note for resuming the standing dirty-code-review loop (FOUNDRY).
 Successor to `DIRTY_CODE_REVIEW_LOOP_RESTART_5` (resumed this session,
 closed below).
 
-## Update: session continued past the first restart ("Keep going")
+## Update 2: waves 14-15, Armoury finished + Utils central tooling (416 clean)
+
+Wave 14 closed out Armoury for this pass (6 more files clean; only
+`CompDefuse.cs`/`MinePocketDefExtension.cs` remain DIRTY, confirmed part
+of `MINEPOCKET_CONTENT_UNWIRED_1`'s cluster by independent review).
+
+Wave 15 moved into `src/RimMandrake/Utils` (central tooling, 39 dirty at
+the time) and found real bugs in **every one of the four review
+threads** — this is the highest bug-density wave of the whole session,
+consistent with central tooling being under-reviewed relative to its
+blast radius:
+
+- **`broadcast.py`** (the mechanism behind `./game`, used TWICE this
+  session for both restarts) — two real bugs: (1) `./game <state>
+  "<note>"` scanned the sentence for state words in table order, not
+  sentence order, so a note appended AFTER the state could silently
+  overrule it (e.g. `./game down "after deploying"` stamped DEPLOYING,
+  not DOWN); (2) `main()` returned exit 0 unconditionally, so a failed
+  ledger stamp looked identical to a successful one to anything checking
+  the exit code — "announcing without stamping," the exact failure class
+  CLAUDE.md's bridge doctrine warns about. Both fixed, verified with a
+  14-case table. **Every `./game` call this session happened to keep the
+  state word first, so this session's own restarts were not corrupted by
+  bug (1) — but this was luck, not by design, before the fix.**
+- **`run_selftests.py`** (CLAUDE.md's own mandated pre-commit gate) —
+  was silently discovering only 25 of 37 real selftests (glob only
+  matched `src/`, missed 9 in `.claude/hooks/` and 1 in `skills/`, plus
+  2 files literally named `selftest.py` without the underscore the glob
+  required). Also: the "explicit N/N" denominator was the RETURNED count
+  not the DISCOVERED count (a dropped result could still read green),
+  and only `TimeoutExpired` was caught per-test (any other exception
+  killed the whole summary silently). All three fixed; live before/after
+  went from 24/25 to 34/35 (35 discovered + 2 named-skip = 37, matching
+  `git ls-files` exactly). The one persistent failure
+  (`selftest_river_link_order.py`) is pre-existing and already tracked
+  (`RIVER_LINK_ORDER_SELFTEST_DRIFT_1`, blocked on an owner call).
+- **`rimplace/cli.py`** — `verify`/`lint` built `DUMP_SQLITE` as a raw
+  path, bypassing `dump_projection.sqlite_path`'s staleness guard, so a
+  present-but-stale `defs.sqlite` (measured live: describing a capture
+  from the day before) would produce a confident pass/fail instead of
+  the required `UNMEASURED`. Fixed to route through the guard.
+- **`jawavoice/{genideo,compose,jawafit}.py`** — all three crashed with
+  `FileNotFoundError` on EVERY invocation: hardcoded the pre-tier-rename
+  output path `src/Jawa/JawaVoice/Patches`, which hasn't existed since
+  the `0772bec7` restructure. Fixed to `src/RimStarWars/JawaVoice/Patches`;
+  regenerated output confirmed byte-identical to what's committed.
+
+**Total after wave 15: 416 clean / 656 (~63%).**
+
+## Update 1: session continued past the first restart ("Keep going")
 
 After the handoff below was written, the owner said "Keep going" and the
 sweep continued into Armoury proper: waves 12-13 (34 more files, 2
