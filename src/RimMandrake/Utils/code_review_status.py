@@ -38,6 +38,42 @@ LOG_PATH = os.path.join(ROOT, "infrastructure", "state", "CODE_REVIEW_STATUS.jso
 LOCK_PATH = LOG_PATH + ".lock"
 
 
+def _trigger_health_rebuild():
+    """Give the codebase-health map a heartbeat after a state change that isn't a
+    git commit — mark-clean (dirty->green) and reopen (green->dirty) both flip a
+    file's colour with no commit involved, so the git post-commit hook never fires
+    for them. Same three rules as src/RimMandrake/Utils/git_hooks/post-commit:
+    never block the caller, never fail the caller, never touch the index. The
+    publisher itself decides whether a rebuild is actually due.
+
+    Cheap precheck: a plain read of the publisher's own state file's `ts` — no
+    subprocess — before spawning a python interpreter that would just re-derive
+    "not due yet" via its own fingerprint check. Any read failure falls through
+    to spawning, same as always; MIN_INTERVAL is mirrored from
+    codebase_health_publish.py.
+    """
+    MIN_INTERVAL = 300
+    try:
+        with open(os.path.join(ROOT, "infrastructure", "state",
+                                "codebase_health_last.json")) as fh:
+            last_ts = json.load(fh).get("ts")
+        if last_ts is not None and (time.time() - last_ts) < MIN_INTERVAL:
+            return
+    except (OSError, ValueError):
+        pass
+    log_path = os.path.join(ROOT, "Transient", "codebase_health_hook.log")
+    try:
+        os.makedirs(os.path.dirname(log_path), exist_ok=True)
+        with open(log_path, "a") as fh:
+            subprocess.Popen(
+                [sys.executable, os.path.join(HERE, "codebase_health_publish.py")],
+                cwd=ROOT, stdout=fh, stderr=fh, stdin=subprocess.DEVNULL,
+                start_new_session=True,
+            )
+    except OSError:
+        pass
+
+
 @contextlib.contextmanager
 def locked():
     """Exclusive lock across a load-mutate-save critical section. This repo
@@ -107,6 +143,58 @@ def commits_since(sha, relpath):
         return None  # sha doesn't exist / bad ref
     lines = [l for l in r.stdout.splitlines() if l.strip()]
     return lines
+
+
+def commits_since_bulk(entries):
+    """Same answer as calling `commits_since(sha, path)` once per (path, sha) in
+    `entries` — {path: sha} — but with ONE git subprocess instead of one per path.
+
+    🔴 THIS IS WHY THE HEALTH BOARD WAS SLOW. `codebase_health.py`'s `review_verdicts()`
+    used to call `commits_since()` once per green-marked path — 526 separate `git log`
+    spawns measured on 2026-09-04, each paying full git-process-start overhead on this
+    WSL-mounted drive. One `git log --name-only` walk of the whole history, parsed once,
+    answers all of them: for each path, find the index of its MOST RECENT commit (index 0
+    = HEAD, since `git log`'s default order is newest-first); for each sha, find its own
+    index the same way. `path` has commits since `sha` iff the path's most-recent index is
+    STRICTLY LOWER (newer) than the sha's index — i.e. something touched it after that
+    commit. A sha absent from the log (bad ref, or not an ancestor of HEAD) reproduces the
+    old "unknown" outcome exactly, because `commits_since` also failed for such a sha.
+
+    Returns {path: lines_or_None} — same per-path shape as `commits_since`: `None` means
+    "sha doesn't resolve" (unknown), an empty list means clean, a non-empty list means
+    dirty. The list itself is a placeholder (`["seen"]`), never real commit lines — nothing
+    in this codebase reads more than truthiness off it, and reconstructing real `--oneline`
+    text here would cost back the very git calls this function exists to avoid.
+    """
+    if not entries:
+        return {}
+    # Recorded shas are whatever length `git rev-parse --short` gave at mark-clean
+    # time (this repo's history currently yields 8 hex chars, but that grows with
+    # repo size) — never assume a fixed width, index every full hash at every
+    # width actually in use so a lookup by any of them lands correctly.
+    lengths = {len(s) for s in entries.values() if s}
+    r = git(["log", "--name-only", "--format=C:%H"])
+    if r.returncode != 0:
+        return {p: None for p in entries}
+    sha_index = {}
+    path_newest_index = {}
+    idx = -1
+    for line in r.stdout.splitlines():
+        if line.startswith("C:"):
+            idx += 1
+            full = line[2:]
+            for length in lengths:
+                sha_index.setdefault(full[:length], idx)
+        elif line.strip() and line not in path_newest_index:
+            path_newest_index[line] = idx          # first sighting is the newest (order is newest-first)
+    result = {}
+    for path, sha in entries.items():
+        if sha not in sha_index:
+            result[path] = None
+            continue
+        newest = path_newest_index.get(path)
+        result[path] = ["seen"] if newest is not None and newest < sha_index[sha] else []
+    return result
 
 
 def working_tree_dirty(relpath):
@@ -315,9 +403,15 @@ def main():
     if args.cmd == "check":
         sys.exit(cmd_check(args.paths))
     elif args.cmd == "reopen":
-        sys.exit(cmd_reopen(args.paths, args.reason))
+        rc = cmd_reopen(args.paths, args.reason)
+        if rc == 0:
+            _trigger_health_rebuild()
+        sys.exit(rc)
     elif args.cmd == "mark-clean":
-        sys.exit(cmd_mark_clean(args.path, args.sha))
+        rc = cmd_mark_clean(args.path, args.sha)
+        if rc == 0:
+            _trigger_health_rebuild()
+        sys.exit(rc)
     elif args.cmd == "list":
         sys.exit(cmd_list())
 

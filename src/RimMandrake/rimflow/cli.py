@@ -216,6 +216,65 @@ def _stamp_owner_and_override(ev):
     return ev
 
 
+def _trigger_health_rebuild():
+    """Give the codebase-health map a heartbeat after a ledger write. `claim`/`file
+    --kind bug`/`close`/`drop` flip a file between blue ("doing") and red ("named
+    by an open bug") with no git commit involved — the ledger append here is not
+    tracked by the post-commit hook — so nothing else fires this. Same three rules
+    as src/RimMandrake/Utils/git_hooks/post-commit: never block the caller, never
+    fail the caller, never touch the index. The publisher decides if a rebuild is
+    actually due.
+
+    🔴 SKIP UNLESS THIS IS THE REAL LEDGER. `codebase_health_publish.py` has no
+    concept of a redirected `RIMFLOW_LEDGER` — it always reads the real git repo
+    and the real CODE_REVIEW_STATUS.json. `selftest_cli.py` runs hundreds of
+    `_emit`s a second against a throwaway ledger under `.rimflow_selftest_cli/`
+    (see `_state_root`'s docstring for the last bug this exact shape caused); firing
+    real background rebuilds off of those would be pure waste at best and a flood of
+    spurious processes at worst.
+
+    🔑 A LOCAL FILE READ BEFORE A SUBPROCESS SPAWN. Every `claim`/`close`/`file`/
+    `block`/... call reaches here, which on a busy seat is many times a minute —
+    spawning a python interpreter plus two git subprocesses (codebase_health_
+    publish.py's own fingerprint check) just to learn "not due yet, skip" was real,
+    constant background load on this WSL-mounted drive (2026-09-04: a single git
+    subprocess measured 1-3s under contention). Reading the publisher's own state
+    file's `ts` costs a stat and a small read — no subprocess — and answers the
+    same question for the common case. MIN_INTERVAL is duplicated from
+    codebase_health_publish.py on purpose (open() there is banned in THIS file,
+    see the comment below); a stale copy only costs one extra spawn per skip
+    window, never a missed rebuild — any read failure falls through to spawning,
+    same as always.
+    """
+    if os.path.abspath(_state_root(model.EVENTS)) != os.path.abspath(model.STATE):
+        return
+    root = model.ROOT
+    MIN_INTERVAL = 300  # mirrors codebase_health_publish.py's MIN_INTERVAL
+    try:
+        with open(os.path.join(root, "infrastructure", "state",
+                                "codebase_health_last.json")) as fh:
+            last_ts = json.load(fh).get("ts")
+        if last_ts is not None and (time.time() - last_ts) < MIN_INTERVAL:
+            return
+    except (OSError, ValueError):
+        pass  # unmeasured — fall through and let the publisher itself decide
+    # 🔑 No file is opened FOR WRITING here, deliberately — see `t_render_is_
+    # delegated_never_reimplemented`'s literal scan of this file for write-mode
+    # opens. The publisher does its own logging (the git post-commit hook, a bash
+    # script, appends to Transient/codebase_health_hook.log itself); this trigger
+    # only needs the subprocess launched, so its output is discarded rather than
+    # captured.
+    try:
+        subprocess.Popen(
+            [sys.executable, os.path.join(root, "src", "RimMandrake", "Utils",
+                                           "codebase_health_publish.py")],
+            cwd=root, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL,
+            stdin=subprocess.DEVNULL, start_new_session=True,
+        )
+    except OSError:
+        pass
+
+
 def _emit(ev, world=None, quiet=False):
     """check() then append(). The ONLY writer in this file.
 
@@ -258,6 +317,7 @@ def _emit(ev, world=None, quiet=False):
         print("%s %s%s" % (ev["event"], ev.get("id", ""),
                            "" if ev.get("id") else "(" + str(ev.get("state", "")) + ")"))
     _rerender_queue_views()
+    _trigger_health_rebuild()
     return ev
 
 

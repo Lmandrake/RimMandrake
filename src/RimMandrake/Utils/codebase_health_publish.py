@@ -42,6 +42,8 @@ Exit codes are the point when a scheduler drives this:
 from __future__ import annotations
 
 import argparse
+import contextlib
+import fcntl
 import hashlib
 import json
 import os
@@ -110,6 +112,32 @@ def write_atomic(path, text):
         except OSError:
             pass
         raise
+
+
+LOCK_PATH = STATE + ".lock"
+
+
+@contextlib.contextmanager
+def _try_lock():
+    """Non-blocking exclusive lock around `build()`. Now that mark-clean, reopen and
+    every rimflow ledger write (claim/close/drop/file/block/...) trigger this in the
+    background alongside the git post-commit hook, several "a rebuild is due" checks
+    can land within the same few seconds from different agent windows — each would
+    otherwise run its own ~2min `build()` concurrently, all but one wasted. A second
+    caller that can't get the lock yields False and skips rather than blocking: the
+    build already in flight will publish current-enough state.
+    """
+    os.makedirs(os.path.dirname(LOCK_PATH), exist_ok=True)
+    with open(LOCK_PATH, "w") as fh:
+        try:
+            fcntl.flock(fh, fcntl.LOCK_EX | fcntl.LOCK_NB)
+        except OSError:
+            yield False
+            return
+        try:
+            yield True
+        finally:
+            fcntl.flock(fh, fcntl.LOCK_UN)
 
 
 def load_state():
@@ -209,11 +237,15 @@ def main():
         print("WOULD REBUILD: changed=%s, %d min since last." % (changed, age / 60))
         return 0
 
-    counts, n = build()
-    os.makedirs(os.path.dirname(STATE), exist_ok=True)
-    write_atomic(STATE, json.dumps(
-        {"ts": now, "fingerprint": fp, "counts": counts,
-         "iso": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now))}, indent=1) + "\n")
+    with _try_lock() as got_lock:
+        if not got_lock:
+            print("SKIP: another rebuild is already in flight.")
+            return 3
+        counts, n = build()
+        os.makedirs(os.path.dirname(STATE), exist_ok=True)
+        write_atomic(STATE, json.dumps(
+            {"ts": now, "fingerprint": fp, "counts": counts,
+             "iso": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime(now))}, indent=1) + "\n")
     print("REBUILT %d files — red %d, blue %d, green %d, grey %d, unmeasured %d"
           % (n, counts.get("red", 0), counts.get("blue", 0), counts.get("green", 0),
              counts.get("grey", 0), counts.get("unmeasured", 0)))

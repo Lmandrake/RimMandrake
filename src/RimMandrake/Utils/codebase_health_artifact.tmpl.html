@@ -32,6 +32,12 @@ body{margin:0;background:var(--ground);color:var(--ink);
 .wrap{max-width:1180px;margin:0 auto;padding:32px 24px 72px}
 h1{font-size:26px;font-weight:600;letter-spacing:-.015em;margin:0;text-wrap:balance}
 .sub{color:var(--ink-2);margin:6px 0 0;max-width:66ch}
+.freshness{display:inline-flex;align-items:center;gap:6px;margin:10px 0 0;padding:4px 10px;
+  border-radius:999px;border:1px solid var(--rule);background:var(--panel);
+  font-size:12px;color:var(--ink-2)}
+.freshness b{color:var(--ink);font-variant-numeric:tabular-nums}
+.freshness.stale{border-color:var(--unk);color:var(--unk)}
+.freshness.stale b{color:var(--unk)}
 .mono{font-family:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace}
 .eyebrow{font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);
   font-weight:500;margin:0 0 10px}
@@ -115,6 +121,7 @@ footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--rule);
   <p class="sub">Every code file in <span class="mono">D:\Luke\dev\Rimworld</span>, sized by
   lines and coloured by review state. Generated from the working tree at
   <span class="mono" id="head"></span>.</p>
+  <p class="freshness" id="freshness"></p>
 
   <div class="finding">
     <div class="num">0</div>
@@ -179,6 +186,23 @@ footer{margin-top:44px;padding-top:16px;border-top:1px solid var(--rule);
                      .getPropertyValue(C[k]||"--grey").trim(); }
   document.getElementById("head").textContent = D.head;
   document.getElementById("gen").textContent = D.generated;
+
+  // `D.generated` is "YYYY-MM-DD HH:MM" local time, same clock as the browser's —
+  // both run on the one machine this page is built and viewed on.
+  var genDate = new Date(D.generated.replace(" ", "T"));
+  var freshEl = document.getElementById("freshness");
+  function renderFreshness(){
+    if (isNaN(genDate.getTime())) { freshEl.textContent = ""; return; }
+    var mins = Math.round((Date.now() - genDate.getTime()) / 60000);
+    var rel = mins < 1 ? "just now"
+             : mins < 60 ? mins + " min ago"
+             : mins < 1440 ? Math.round(mins / 60) + " h ago"
+             : Math.round(mins / 1440) + " d ago";
+    freshEl.innerHTML = "🕒 Generated <b>" + D.generated + "</b> — <b>" + rel + "</b>";
+    freshEl.classList.toggle("stale", mins >= 30);
+  }
+  renderFreshness();
+  setInterval(renderFreshness, 30000);
 
   // ---- summary bar, sized by LINES (the same weight the treemap uses) -------
   var byK = {}; D.rows.forEach(function(r){

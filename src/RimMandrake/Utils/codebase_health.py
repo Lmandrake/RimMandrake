@@ -171,18 +171,24 @@ def review_verdicts(paths):
     'unknown' is a real outcome: a recorded sha that no longer resolves, or a
     git failure. The module's own check() folds both into DIRTY for its CLI
     purpose; here they must stay distinguishable from a measured dirty.
+
+    🔴 ONE git CALL, NOT ONE PER GREEN CANDIDATE. This used to call
+    `CRS.commits_since()` per path — 526 separate `git log` spawns measured
+    2026-09-04, the dominant real cost of a rebuild on this WSL-mounted drive.
+    `CRS.commits_since_bulk()` answers all of them from a single history walk.
     """
     log = CRS.load()
+    # .get, not ["sha"]: an entry carrying no sha cannot be measured, which is
+    # the same answer as one whose sha no longer resolves — UNMEASURED.
+    # Subscripting instead kills the whole board on one malformed entry.
+    needed = {p: log[p].get("sha") for p in paths if p in log}
+    since_by_path = CRS.commits_since_bulk(needed)
     verdicts = {}
     for p in paths:
-        entry = log.get(p)
-        if entry is None:
+        if p not in log:
             verdicts[p] = "dirty"          # measured: no entry has ever been recorded
             continue
-        # .get, not ["sha"]: an entry carrying no sha cannot be measured, which
-        # is the same answer as one whose sha no longer resolves — UNMEASURED.
-        # Subscripting instead kills the whole board on one malformed entry.
-        since = CRS.commits_since(entry.get("sha"), p)
+        since = since_by_path.get(p)
         if since is None:
             verdicts[p] = "unknown"        # recorded sha does not resolve; log is stale
         elif since:
@@ -488,6 +494,8 @@ header{padding:10px 16px;border-bottom:1px solid var(--line);background:var(--pa
   display:flex;gap:18px;align-items:center;flex-wrap:wrap}
 h1{font-size:15px;margin:0;font-weight:650;letter-spacing:.2px}
 .sub{color:var(--dim);font-size:11.5px}
+.stampRel{font-weight:600}
+.stampRel.stale{color:var(--unk)}
 .seg{display:flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}
 .seg button{background:transparent;color:var(--dim);border:0;padding:5px 13px;
   font:inherit;font-size:12px;cursor:pointer}
@@ -610,10 +618,26 @@ hatch("hUnk", "#c9a227", "#5c4a0d");
 ORDER.forEach(k => hatch("agg_"+k, COLOR[k], "rgba(0,0,0,.42)"));
 
 /* ---- header ---- */
-d3.select("#stamp").text(
-  DATA.head + " · " + DATA.generated + " · " +
-  DATA.counts.total.toLocaleString() + " files · " +
-  DATA.loc.total.toLocaleString() + " lines");
+// DATA.generated is "YYYY-MM-DD HH:MM" local time, same clock this page renders on.
+const genDate = new Date(DATA.generated.replace(" ", "T"));
+function relTime(){
+  if (isNaN(genDate.getTime())) return "";
+  const mins = Math.round((Date.now() - genDate.getTime()) / 60000);
+  return mins < 1 ? "just now"
+       : mins < 60 ? mins + " min ago"
+       : mins < 1440 ? Math.round(mins / 60) + " h ago"
+       : Math.round(mins / 1440) + " d ago";
+}
+function renderStamp(){
+  const mins = (Date.now() - genDate.getTime()) / 60000;
+  d3.select("#stamp").html(
+    DATA.head + " · " + DATA.generated +
+    ' <span class="stampRel' + (mins >= 30 ? " stale" : "") + '">(' + relTime() + ")</span>" +
+    " · " + DATA.counts.total.toLocaleString() + " files · " +
+    DATA.loc.total.toLocaleString() + " lines");
+}
+renderStamp();
+setInterval(renderStamp, 30000);
 
 const counts = d3.select("#counts");
 ORDER.forEach(k=>{
