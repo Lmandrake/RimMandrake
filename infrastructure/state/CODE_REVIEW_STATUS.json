@@ -69,6 +69,11 @@
     "date": "2026-09-03",
     "sha": "7672f1bd"
   },
+  "src/RimMandrake/Graffiti/Source/MentalState_GraffitiSpree.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "f9da3de0"
+  },
   "src/RimMandrake/Graffiti/Source/RMGraffitiDefOf.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -378,6 +383,11 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "08e80429"
+  },
+  "src/RimMandrake/Property/Source/ClaimantRef.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "f9da3de0"
   },
   "src/RimMandrake/Property/Source/FactionRecord.cs": {
     "cleanCount": 1,
@@ -1641,6 +1651,11 @@
     "cleanCount": 1,
     "date": "2026-09-02",
     "sha": "1a7b3aa1"
+  },
+  "src/RimUtinni/Doctrine/Source/DoctrineCore/DoctrinePatches.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "f9da3de0"
   },
   "src/RimUtinni/Doctrine/Source/gen_megafauna_yield.py": {
     "cleanCount": 1,
