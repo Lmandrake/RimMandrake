@@ -4323,3 +4323,5 @@
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ownerSaid":"Game is going down — FOUNDRY deploying 4 code-review fixes: Graffiti, Visibility, StructureInjections, Armoury","ts":"2026-09-04T01:17:49Z"}
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","ownerSaid":"Yes, restart now","ts":"2026-09-04T01:17:58Z"}
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ownerSaid":"Game is down — closed for deploy","ts":"2026-09-04T01:18:10Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","ownerSaid":"Yes, restart now","ts":"2026-09-04T01:19:30Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","ownerSaid":"Game is loading — launching via Steam","ts":"2026-09-04T01:19:36Z"}
