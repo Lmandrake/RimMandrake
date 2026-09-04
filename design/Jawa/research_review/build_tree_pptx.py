@@ -44,7 +44,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 MODEL = os.path.join(HERE, "restructured_model_v4.json")
 ANSWERS = os.path.join(HERE, "owner_deck_answers_20260904.json")
 ADJUST = os.path.join(HERE, "deck_round2_adjustments.json")
-OUT = os.path.join(HERE, "research_trees_boxes_round3.pptx")
+OUT = os.path.join(HERE, "research_trees_boxes.pptx")
 
 # Slide order and accents — same roster as build_tree_visual_v4.py.
 TREES = [
