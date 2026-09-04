@@ -69,6 +69,11 @@
     "date": "2026-09-03",
     "sha": "7672f1bd"
   },
+  "src/RimMandrake/Graffiti/Source/RMGraffitiDefOf.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "1e4fe0eb"
+  },
   "src/RimMandrake/Inhabited/Source/CharacterApplier.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -374,6 +379,11 @@
     "date": "2026-09-03",
     "sha": "872db59d"
   },
+  "src/RimMandrake/Property/Source/PerceptionUtility.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "0975db76"
+  },
   "src/RimMandrake/Property/Source/PropertyEngine.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -383,6 +393,11 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "ac24cd52"
+  },
+  "src/RimMandrake/Property/Source/TakingAct.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "0975db76"
   },
   "src/RimMandrake/ResearchKitEastFix/Source/mirror_research_kit_easts.py": {
     "cleanCount": 1,
@@ -1511,6 +1526,11 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "ac24cd52"
+  },
+  "src/RimStarWars/JawaIonWeapons/Source/SelfTest/Program.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "0975db76"
   },
   "src/RimStarWars/JawaIonWeapons/Source/StatPart_InverseBodySize.cs": {
     "cleanCount": 1,
