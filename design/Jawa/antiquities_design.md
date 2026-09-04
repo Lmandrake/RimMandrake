@@ -17,8 +17,12 @@
      (design/Jawa/faction_semipermanent_bases_seed.md).
      Feeds RESEARCH_TREE_NORMALIZATION_1, VAULT_DUNGEON_CONCEPT_1,
      ASSAILANT_DUNGEON_BUILD_1, and the Rites/ShipMemory line.
-     Execution: ANTIQUITIES_TREE_BUILD_1 — BLOCKED on the owner's word
-     ("do not build yet"); more expansion/review coming. -->
+     Execution: ANTIQUITIES_TREE_BUILD_1 — UNBLOCKED 2026-09-04 (owner:
+     the expansion/review sitting this was waiting on concluded; tree
+     rebrand names/merges stay open, but slices 1-2 do not depend on them).
+     Slice 1 (tree + items + reading loop) shipped same day,
+     src/RimUtinni/Antiquities/ — see the item file for what's built vs.
+     still owed. -->
 
 # ANTIQUITIES — the tree you dig up one urn at a time
 
@@ -473,8 +477,11 @@ failability with the Recovery Raid as payback (supersedes "permanently
 failable"); the Rites weld confirmed; the hard LOST-ledger gate kept (with
 the payback route); the Testament ambivalent.
 
-**Owner's word: DO NOT BUILD YET** — more expansion/review coming.
-`ANTIQUITIES_TREE_BUILD_1` sits blocked on that word.
+⛔ SUPERSEDED 2026-09-04 — the owner unblocked `ANTIQUITIES_TREE_BUILD_1`
+once the expansion/review sitting below concluded (all fourteen sec-G
+decision points ruled by card; this doc ruled). Slice 1 is built:
+`src/RimUtinni/Antiquities/`, `infrastructure/state/items/
+ANTIQUITIES_TREE_BUILD_1.md`.
 
 Open threads staged for the next sitting:
 
