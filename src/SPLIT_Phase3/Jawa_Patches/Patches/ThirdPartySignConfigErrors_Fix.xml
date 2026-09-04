@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- LOAD_CONFIG_ERROR_SWEEP_1 -> the 9 "Signs and Comments" (Dark.Signs) buildings on the
+     frozen baseline (infrastructure/state/facts/config_error_baseline_2026-09-03.txt).
+
+     THE MECHANISM, read from Verse.ThingDef.ConfigErrors (Source/Verse/ThingDef.cs:1975),
+     not guessed:
+         if (Fillage != FillCategory.Full && passability == Traversability.Impassable
+             && !IsDoor && BuildableByPlayer && !disableImpassableShotOverConfigError)
+             yield return "impassable, player-buildable building that can be shot/seen over.";
+
+     Every one of these 9 signs is deliberately impassable-but-not-full-fillage — that IS
+     the design: a thin post/panel you cannot walk through but can see and shoot over, same
+     as vanilla's own pillars/statues. The engine flags this shape as suspicious by default
+     and gives mod authors exactly one lever to say "yes, on purpose":
+     `disableImpassableShotOverConfigError`, a plain bool on ThingDef (ThingDef.cs:163),
+     read nowhere else and touching nothing but this one warning — Fillage, passability and
+     BuildableByPlayer are all untouched, so nothing about how these signs play changes.
+
+     Confirmed against Dark.Signs' own 1.6 XML (workshop 3281950776,
+     1.6/Defs/ThingDefs_Signs/Buildings_Signs.xml) that none of the 9 already declares this
+     field, so PatchOperationAdd cannot collide with an existing value.
+
+     MayRequire Dark.Signs (this mod's own packageId) - the whole file is a no-op, not an
+     error, if that mod is inactive.
+-->
+<Patch>
+
+  <Operation Class="PatchOperationSequence" MayRequire="Dark.Signs">
+    <operations>
+
+      <li Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="SignBillboard"]</xpath>
+        <value><disableImpassableShotOverConfigError>true</disableImpassableShotOverConfigError></value>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="SignCairn"]</xpath>
+        <value><disableImpassableShotOverConfigError>true</disableImpassableShotOverConfigError></value>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="SignNature"]</xpath>
+        <value><disableImpassableShotOverConfigError>true</disableImpassableShotOverConfigError></value>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="SignObelisk"]</xpath>
+        <value><disableImpassableShotOverConfigError>true</disableImpassableShotOverConfigError></value>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="SignPanel"]</xpath>
+        <value><disableImpassableShotOverConfigError>true</disableImpassableShotOverConfigError></value>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="SignPanelWood"]</xpath>
+        <value><disableImpassableShotOverConfigError>true</disableImpassableShotOverConfigError></value>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="SignRoadLED"]</xpath>
+        <value><disableImpassableShotOverConfigError>true</disableImpassableShotOverConfigError></value>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="SignSlab"]</xpath>
+        <value><disableImpassableShotOverConfigError>true</disableImpassableShotOverConfigError></value>
+      </li>
+      <li Class="PatchOperationAdd">
+        <xpath>Defs/ThingDef[defName="SignWoodenMulti"]</xpath>
+        <value><disableImpassableShotOverConfigError>true</disableImpassableShotOverConfigError></value>
+      </li>
+
+    </operations>
+  </Operation>
+
+</Patch>
