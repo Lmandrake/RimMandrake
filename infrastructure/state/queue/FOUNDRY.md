@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-04T15:54:32Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-04T17:16:59Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -433,6 +433,16 @@ blocked:  authored RM_InhabitedPlace (TileMutatorDefs_Inhabited.xml, 75204205), 
 summary:  The Inhabited mod's own class comments describe two routes onto a map: a proper
 prose:    infrastructure/state/items/INHABITED_TILEMUTATOR_NO_ENTRY_1.md
 
+## ANTIQUITIES_TREE_BUILD_1 Build Antiquities: tree, urns, reading loop, narrative fragments (slices 1-2 first)
+state:    proposed  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  owner: do not build yet - expansion/review sitting in progress
+summary:  (no items/ANTIQUITIES_TREE_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ANTIQUITIES_TREE_BUILD_1.md
+
 # WAITING ON A WINDOW — nothing is wrong
 
 _none._
@@ -443,14 +453,4 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## ANTIQUITIES_TREE_BUILD_1 Build Antiquities: tree, urns, reading loop, narrative fragments (slices 1-2 first)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/ANTIQUITIES_TREE_BUILD_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ANTIQUITIES_TREE_BUILD_1.md
+_none._
