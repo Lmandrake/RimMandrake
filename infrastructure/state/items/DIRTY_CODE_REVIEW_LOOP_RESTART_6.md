@@ -4,6 +4,108 @@ Continuity note for resuming the standing dirty-code-review loop (FOUNDRY).
 Successor to `DIRTY_CODE_REVIEW_LOOP_RESTART_5` (resumed this session,
 closed below).
 
+## Update 3: waves 16-17, Utils finished (443 clean)
+
+Utils is done for this pass except two files left DIRTY on purpose:
+`ashkarr_settle.py` (4 known stale-relative-to-owner-ruling issues from
+before this restart, needs the owner's eye on the map) and
+`selftest_river_link_order.py` (see below — genuinely still failing).
+
+**Owner ruling mid-sweep**: asked "any questions?", surfaced
+`ASHKARR_UPHILL_RIVER_LINKS_DECISION_1` (four river segments climbing
+254-304m on the frozen Ash'karr map). Owner: **"Just accept the river
+item for now please."** Recorded as KEEP AS AUTHORED for all four
+segments — not backwards links, no hand-edit. `RIVER_LINK_ORDER_SELFTEST_DRIFT_1`
+updated to reflect that the uphill-specific worry is resolved, but the
+test's actual failure is broader (a 26-row link-SET difference, not just
+orientation) and was deliberately NOT investigated further or
+fixed — "accept... for now" authorized closing the backwards-link
+question, not a full fixture rebase. Left as its own scoped, non-blocking
+item for whoever picks it back up (investigation steps written into the
+item file).
+
+**Wave 16** (dump_projection.py at `opus`, ilprobe/ x5, rimplace remainder
+x5, rimbench core/build x5 — 16 files, 8 real bugs, extremely high hit
+rate since none of this had been reviewed before):
+- `dump_projection.py` — **the most consequential single bug of the
+  night.** The staleness guard silently disabled itself whenever handed
+  the DefDump *root* rather than a specific capture directory — and
+  `game_paths.DEF_DUMP` (used throughout the repo) resolves to exactly
+  that root. So the guard was quietly inert for its most common call
+  pattern. Fixed by resolving to the newest manifest-bearing capture
+  first. **Also found (not fixed, reported only) a genuine live bypass**
+  in `design/Jawa/mods/xenotype_size_audit.py:68`, which calls the guard
+  and then falls back to a raw path on refusal via `or` — defeating it
+  by construction. Two more callers (`design/Jawa/mods/biome_flora.py`,
+  `plant_names.py`) never call the guard at all. **Worth filing as its
+  own follow-up item if picked back up.**
+- `ilprobe/enumdump.py` — decoded every Constant-table enum value as
+  *signed* regardless of the table's own Type byte; verified live against
+  `Assembly-CSharp.dll` (`CellConnection.AllNeighbours` printed `-1`
+  instead of `255`, a `GasTypeMask` flag printed a negative 32-bit value
+  instead of the real 0xFF000000). Fixed.
+- `ilprobe/meta_core.py` — a null coded-index (row 0) slipped past a
+  loose bounds check and returned the assembly's LAST type as a fake
+  answer. Fixed.
+- `rimplace/defsize.py` — `footprint()` didn't replicate `GenAdj`'s
+  center-shift for even-sized things at non-North rotations — could
+  place a building a full cell off from where the game actually puts it.
+  Verified against decompiled `GenAdj.cs` with two worked examples.
+- `rimbench/savemap.py` — roof grid was decoded through the *TerrainDef*
+  shortHash table instead of *RoofDef* (ShortHashGiver collision-resolves
+  per Def type); snow grid was wrongly treated as a defName hash when
+  it's actually a float-depth encoding — the fogGrid trap's undocumented
+  sibling. Both fixed.
+- `rimbench/build.py` — a placement that failed after passing dry-run
+  was counted in neither `placed` nor `skipped` — silent undercount.
+  Fixed.
+- `rimbench/core.py` — `wear()`/`strip()` drove a debug-action click path
+  with zero readback verification, violating the module's own stated
+  rule. Rewired onto the already-existing self-verifying
+  `jawa/pawn_gear` tool.
+
+**Wave 17** (bridge_latency/genome_scan/gravship_layout, loadsweep+modset_builder,
+rimbench remainder x6 — 11 files, 6 more real bugs):
+- `gravship_layout.py` — **proved with a fault-injection test**:
+  `roundtrip()` loaded `quality`/`plantToGrowDef` on every Thing but only
+  ever diffed `(defName, stuffDef, rot)` — a monkeypatch that dropped
+  `quality` during export still reported "round trip clean." Fixed;
+  re-verified against a real 2864-thing deployed export.
+- `genome_scan.py` — two file-read paths silently swallowed `OSError`,
+  undercounting genes/xenotypes with no log signal. Fixed.
+- `modset_builder.py` — `game_running()` called `tasklist` **without the
+  `.exe` suffix**, which always raises under WSL, silently caught, always
+  fell back to the exact stale 3-minute-mtime heuristic the docstring
+  says was replaced. Fixed to `tasklist.exe` (same convention this
+  session's own restarts used).
+- `loadsweep/gen_config.py` — no dedup on the mod-list concatenation;
+  could silently write duplicate `<li>` entries into the LIVE
+  `ModsConfig.xml`. Fixed with a reporting dedup, verified against a
+  real injected-duplicate test.
+- `rimbench/crater.py` — same "success without verification" pattern as
+  `core.py`'s `wear()`/`strip()` bug — counted spawns without checking
+  the reply's `success` field. Fixed.
+- `rimbench/roll_arm_harvest.py` — broken by the exact same stale
+  post-tier-rename path bug independently found in `jawavoice/` earlier
+  tonight (`src/Jawa/...` instead of `src/RimStarWars/...` /
+  `src/SPLIT_Phase3/...`) — `FileNotFoundError` on every default-roster
+  derive. Fixed.
+
+**Total after wave 17: 443 clean / 656 (~67.5%).**
+
+⚠️ **Pattern worth naming for whoever continues this loop**: the two
+recurring bug classes tonight were (1) **stale post-tier-rename paths**
+(hit `jawavoice/` x3 and `rimbench/roll_arm_harvest.py`), and
+(2) **"success" reported without a readback check** (hit `core.py`'s
+`wear()`/`strip()` and `crater.py` — worth checking any other rimbench
+file that calls a bridge spawn/mutate tool and trusts the reply blindly).
+**Already checked**: repo-wide grep for `src/Jawa/` in every `.py` under
+`src/` found no more live instances of (1) — the one other hardcoded
+hit, `salvation_description.py`'s `RID` path, is genuinely still valid
+(`src/Jawa/ideoligion/` was never part of the mod-source tier rename;
+confirmed the file exists and `--check` passes clean). The other three
+grep hits were doc/comment/usage-string mentions, not live paths.
+
 ## Update 2: waves 14-15, Armoury finished + Utils central tooling (416 clean)
 
 Wave 14 closed out Armoury for this pass (6 more files clean; only
