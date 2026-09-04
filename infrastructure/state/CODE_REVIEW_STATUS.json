@@ -649,6 +649,11 @@
     "date": "2026-09-03",
     "sha": "9f6f93ea"
   },
+  "src/RimMandrake/Utils/broadcast.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "0a8d8761"
+  },
   "src/RimMandrake/Utils/build_jawavoice.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -893,6 +898,36 @@
     "date": "2026-09-03",
     "sha": "35c29544"
   },
+  "src/RimMandrake/Utils/jawavoice/compose.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "934df369"
+  },
+  "src/RimMandrake/Utils/jawavoice/genideo.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "934df369"
+  },
+  "src/RimMandrake/Utils/jawavoice/genxml.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "934df369"
+  },
+  "src/RimMandrake/Utils/jawavoice/jawafit.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "934df369"
+  },
+  "src/RimMandrake/Utils/jawavoice/lines_ideology.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "934df369"
+  },
+  "src/RimMandrake/Utils/jawavoice/lines_insults.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "934df369"
+  },
   "src/RimMandrake/Utils/landmark_art.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -1007,6 +1042,16 @@
     "date": "2026-09-03",
     "sha": "39cd22d5"
   },
+  "src/RimMandrake/Utils/rimplace/cli.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "b4c6bc9d"
+  },
+  "src/RimMandrake/Utils/rimplace/core.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "b4c6bc9d"
+  },
   "src/RimMandrake/Utils/rimplace/luaenv.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -1031,6 +1076,11 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "9f6f93ea"
+  },
+  "src/RimMandrake/Utils/run_selftests.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "3d3ceeae"
   },
   "src/RimMandrake/Utils/salvation_description.py": {
     "cleanCount": 1,
