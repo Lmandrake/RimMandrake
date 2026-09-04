@@ -1,5 +1,7 @@
 # DIRTY_CODE_REVIEW_LOOP_RESTART_9
 
+Superseded by `DIRTY_CODE_REVIEW_LOOP_RESTART_10` — read that file; this one is history.
+
 Continuity note for the standing dirty-code-review loop (FOUNDRY). Successor to
 `DIRTY_CODE_REVIEW_LOOP_RESTART_8` — read that file (and its own chain) for the fuller
 history. This file is the short version: what this session did, current numbers, and
