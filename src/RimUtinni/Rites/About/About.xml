@@ -10,9 +10,12 @@ of the Hull, and the day The Gods Speak Back.
 
 Authored 2026-09-04 on the owner's ruling (RESEARCH_TREE_NORMALIZATION_1
 rulings block). v1 ships the tab and the five ResearchProjectDefs, chained
-T0..T4. The revealed-not-bought gate (ship-memory grants, no ordinary
-research) is LATER work — until it lands these rows are researchable like any
-other, which is acceptable for review and wrong for shipping. Subspace
-gravitic penetration's flavor folds into the God-Speaker Array per
+T0..T4. The revealed-not-bought gate is RULED (owner 2026-09-04): each tier
+past the Scrap Shrine carries a hidden prereq on an Antiquities stage —
+Choir needs LANGUAGE, God-Speaker RELIGION, Hull CULTURE, Gods Speak Back
+VOICE (design/Jawa/antiquities_design.md section 2; built by
+ANTIQUITIES_TREE_BUILD_1). Until that build lands these rows are researchable
+like any other — acceptable for review, wrong for shipping. Subspace gravitic
+penetration's flavor folds into the God-Speaker Array per
 design/Jawa/research_review/functionless_tech_candidates.md.</description>
 </ModMetaData>

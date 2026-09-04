@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-04T14:46:52Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-04T15:54:32Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -443,4 +443,14 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-_none._
+Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
+
+## ANTIQUITIES_TREE_BUILD_1 Build Antiquities: tree, urns, reading loop, narrative fragments (slices 1-2 first)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/ANTIQUITIES_TREE_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ANTIQUITIES_TREE_BUILD_1.md

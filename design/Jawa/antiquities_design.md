@@ -1,7 +1,13 @@
-<!-- status: DESIGN PASS (BENCH/Fable, 2026-09-04) on the owner's Antiquities concept,
-     given verbatim that day. Nothing here is ruled until the owner says so; §9 lists
-     his calls. Feeds RESEARCH_TREE_NORMALIZATION_1, VAULT_DUNGEON_CONCEPT_1,
-     ASSAILANT_DUNGEON_BUILD_1, and the Rites/ShipMemory line. -->
+<!-- status: RULED (owner, 2026-09-04, by card — all four §10 questions):
+     ① VOICE is permanently FAILABLE (Testament the only guaranteed piece);
+     ② the Rites↔Antiquities WELD stands and IS the Rites' revealed-not-bought
+       gate (supersedes the "later ship-memory work" placeholder in
+       src/RimUtinni/Rites/About/About.xml);
+     ③ the Call-Out's LOST-ledger gate is HARD — the world remembers what you sold;
+     ④ the Testament is AMBIVALENT — gratitude without warmth.
+     Feeds RESEARCH_TREE_NORMALIZATION_1, VAULT_DUNGEON_CONCEPT_1,
+     ASSAILANT_DUNGEON_BUILD_1, and the Rites/ShipMemory line.
+     Execution: ANTIQUITIES_TREE_BUILD_1 (slices per §9). -->
 
 # ANTIQUITIES — the tree you dig up one urn at a time
 

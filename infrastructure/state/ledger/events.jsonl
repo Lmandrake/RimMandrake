@@ -4440,3 +4440,4 @@
 {"seat":"FOUNDRY","event":"claim","id":"DIRTY_CODE_REVIEW_LOOP_RESTART_10","ts":"2026-09-04T14:40:51Z"}
 {"seat":"FOUNDRY","event":"start","id":"DIRTY_CODE_REVIEW_LOOP_RESTART_10","ts":"2026-09-04T14:40:51Z"}
 {"seat":"FOUNDRY","event":"close","id":"DIRTY_CODE_REVIEW_LOOP_RESTART_10","sha":"a28d4970","ts":"2026-09-04T14:46:52Z"}
+{"seat":"OWNER","event":"file","id":"ANTIQUITIES_TREE_BUILD_1","title":"Build Antiquities: tree, urns, reading loop, narrative fragments (slices 1-2 first)","kind":"task","target":"v1","needs":"offline","spec":"design/Jawa/antiquities_design.md","for":"FOUNDRY","ownerSaid":"Ok, take these ideas and do a major design pass to improve this. Flesh it out. [...] Be innovative.","ts":"2026-09-04T15:54:32Z"}
