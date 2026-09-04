@@ -414,6 +414,21 @@
     "date": "2026-09-03",
     "sha": "dc7d9d40"
   },
+  "src/RimMandrake/SalvageClaim/Source/SalvageClaimFeeUtility.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "ceeaebb1"
+  },
+  "src/RimMandrake/StructureInjections/Source/GenStep_RimplacePlan.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "8a24dcd7"
+  },
+  "src/RimMandrake/TheftHauler/Source/JobDriver_TheftHaulUninstall.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "ceeaebb1"
+  },
   "src/RimMandrake/ToolBeltFix/Source/mirror_toolbelt_west.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -1168,9 +1183,9 @@
     "sha": "46cc98d3"
   },
   "src/RimMandrake/Visibility/Source/ColonyVisibilityRaidPatch.cs": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-03",
-    "sha": "af66b41c"
+    "sha": "8a24dcd7"
   },
   "src/RimMandrake/WreckedMachines/Source/fit_sprite.py": {
     "cleanCount": 1,
