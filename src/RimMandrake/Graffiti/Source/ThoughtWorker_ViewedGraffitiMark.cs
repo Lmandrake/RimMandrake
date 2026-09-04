@@ -8,7 +8,7 @@ namespace RimMandrake.Graffiti
     // no content ThoughtDef is shipped here (that is the owner-voice work
     // this item's own history reserves). This class is meant to be reused:
     // any future ThoughtDef (Sacred/Mural/Jest/Taunt reaction) sets its own
-    // <thoughtClass>RimMandrake.Graffiti.ThoughtWorker_ViewedGraffitiMark
+    // <workerClass>RimMandrake.Graffiti.ThoughtWorker_ViewedGraffitiMark
     // and points the mark's ModExtension_Graffiti.viewerReactionThought
     // back at that same ThoughtDef - the lookup is by "which marks near me
     // name ME", not by category, so one worker class serves every future
