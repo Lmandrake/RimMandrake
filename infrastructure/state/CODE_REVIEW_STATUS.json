@@ -783,6 +783,11 @@
     "date": "2026-09-03",
     "sha": "9f6f93ea"
   },
+  "src/RimMandrake/Utils/dump_projection.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "0631624b"
+  },
   "src/RimMandrake/Utils/expectations_manifest.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -877,6 +882,31 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "35c29544"
+  },
+  "src/RimMandrake/Utils/ilprobe/enumdump.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "d8984eb2"
+  },
+  "src/RimMandrake/Utils/ilprobe/il.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "d8984eb2"
+  },
+  "src/RimMandrake/Utils/ilprobe/meta.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "d8984eb2"
+  },
+  "src/RimMandrake/Utils/ilprobe/meta_core.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "d8984eb2"
+  },
+  "src/RimMandrake/Utils/ilprobe/xref.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "d8984eb2"
   },
   "src/RimMandrake/Utils/inhabited_soak.py": {
     "cleanCount": 1,
@@ -1027,6 +1057,31 @@
     "date": "2026-09-03",
     "sha": "4de5c0cf"
   },
+  "src/RimMandrake/Utils/rimbench/__init__.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "5c97b5c1"
+  },
+  "src/RimMandrake/Utils/rimbench/build.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "5c97b5c1"
+  },
+  "src/RimMandrake/Utils/rimbench/core.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "5c97b5c1"
+  },
+  "src/RimMandrake/Utils/rimbench/savemap.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "5c97b5c1"
+  },
+  "src/RimMandrake/Utils/rimbench/selftest.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "5c97b5c1"
+  },
   "src/RimMandrake/Utils/rimbench/shipbuild.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -1042,20 +1097,45 @@
     "date": "2026-09-03",
     "sha": "39cd22d5"
   },
+  "src/RimMandrake/Utils/rimplace/__init__.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "1f14e03d"
+  },
+  "src/RimMandrake/Utils/rimplace/__main__.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "1f14e03d"
+  },
   "src/RimMandrake/Utils/rimplace/cli.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "b4c6bc9d"
+  },
+  "src/RimMandrake/Utils/rimplace/contract.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "1f14e03d"
   },
   "src/RimMandrake/Utils/rimplace/core.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "b4c6bc9d"
   },
+  "src/RimMandrake/Utils/rimplace/defsize.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "1f14e03d"
+  },
   "src/RimMandrake/Utils/rimplace/luaenv.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "df166bc9"
+  },
+  "src/RimMandrake/Utils/rimplace/netinfo.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "1f14e03d"
   },
   "src/RimMandrake/Utils/rimplace/plan.py": {
     "cleanCount": 1,
