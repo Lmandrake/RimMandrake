@@ -160,23 +160,34 @@ for code, p in POD.items():
 # =====================================================================
 # report + emit
 # =====================================================================
+# ⚠️ VERIFY BEFORE WRITE. This used to json.dump() skeleton_15.json first and
+# only assert allok afterward, so a design that FAILED the 9.9-tile link check
+# still landed on disk with the bad layout -- the docstring's "or the build
+# aborts" was false as written; only the process exit code caught it, and any
+# caller that didn't check that (render_skeleton.py doesn't) would render a
+# skeleton that violates the doctrine it claims to hard-verify. Compute and
+# assert allok BEFORE the dump so a failing design never reaches the file.
+from collections import Counter
+cnt = Counter(e['type'] for e in elements)
+allok = all(r['within_link'] for r in thermal_report.values())
+if not allok:
+    print("\nTHERMAL 9.9-tile link verification (Factory_lore §5):")
+    for code, r in thermal_report.items():
+        flag = 'OK' if r['within_link'] else '*** EXCEEDS 9.9 ***'
+        print(f"  wing {code}: worst machine {r['worst_machine']} @ {r['worst_dist']} tiles  [{flag}]")
+    assert allok, "thermal link radius exceeded — reposition bank"
+
 json.dump(dict(center=[round(CX, 2), round(CY, 2)], rout=ROUT, rin=RIN, rmid=RMID,
                link=LINK, elements=elements, thermal=thermal_report),
           open('skeleton_15.json', 'w'), indent=1)
 
-from collections import Counter
-cnt = Counter(e['type'] for e in elements)
 print("SKELETON #15  center", (round(CX,1), round(CY,1)))
 print("elements:", dict(cnt))
 print("\nTHERMAL 9.9-tile link verification (Factory_lore §5):")
-allok = True
 for code, r in thermal_report.items():
-    flag = 'OK' if r['within_link'] else '*** EXCEEDS 9.9 ***'
-    allok &= r['within_link']
-    print(f"  wing {code}: worst machine {r['worst_machine']} @ {r['worst_dist']} tiles  [{flag}]")
+    print(f"  wing {code}: worst machine {r['worst_machine']} @ {r['worst_dist']} tiles  [OK]")
 print("\nBELT TRUNKS (7 filtered classes, §1.1):")
 for cls, name, src, dst, r in TRUNKS:
     print(f"  {cls}. {name:<22} {src} -> {dst}")
 print(f"  6. finished goods         each wing -> G (radial stubs)")
-assert allok, "thermal link radius exceeded — reposition bank"
 print("\nwrote skeleton_15.json   (thermal verification PASSED)")
