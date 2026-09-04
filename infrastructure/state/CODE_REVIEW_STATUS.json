@@ -3037,6 +3037,16 @@
     "date": "2026-09-03",
     "sha": "57ce5707"
   },
+  "src/RimUtinni/FactionSlate/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "fe15fae0"
+  },
+  "src/RimUtinni/FactionSlate/Patches/OnlyOurFactions.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "fe15fae0"
+  },
   "src/RimUtinni/LongHunger/Source/IncidentWorker_LongHungerSurfaces.cs": {
     "cleanCount": 1,
     "date": "2026-09-04",
@@ -3076,6 +3086,16 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "250be7a3"
+  },
+  "src/RimUtinni/Rites/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "fe15fae0"
+  },
+  "src/RimUtinni/Rites/Defs/RUT_Rites_Research.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "fe15fae0"
   },
   "src/RimUtinni/RiverSteam/About/About.xml": {
     "cleanCount": 1,
