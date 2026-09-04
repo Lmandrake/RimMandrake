@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-04T20:52:22Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-04T21:10:15Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -360,6 +360,15 @@ kind:     task
 summary:  Every load of the full 589-mod list logs the same 31 Config error in … lines
 prose:    infrastructure/state/items/LOAD_CONFIG_ERROR_SWEEP_1.md
 
+## INHABITED_SETTLEMENT_PRODUCER_GAP_1 Nothing in the game ever constructs an Inhabited_Settlement world object — no producer exists
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  (no items/INHABITED_SETTLEMENT_PRODUCER_GAP_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/INHABITED_SETTLEMENT_PRODUCER_GAP_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -414,14 +423,4 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## INHABITED_SETTLEMENT_PRODUCER_GAP_1 Nothing in the game ever constructs an Inhabited_Settlement world object — no producer exists
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/INHABITED_SETTLEMENT_PRODUCER_GAP_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/INHABITED_SETTLEMENT_PRODUCER_GAP_1.md
+_none._
