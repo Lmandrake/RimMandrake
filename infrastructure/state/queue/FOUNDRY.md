@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-04T04:49:12Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-04T05:14:59Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -369,15 +369,6 @@ kind:     bug
 summary:  VANILLACOUNTPSEUDODEF1
 prose:    infrastructure/state/items/VANILLA_COUNT_PSEUDO_DEF_1.md
 
-## DIRTY_CODE_REVIEW_LOOP_RESTART_6 resume standing code-review sweep after next agent reboot
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  DIRTYCODEREVIEWLOOPRESTART6
-prose:    infrastructure/state/items/DIRTY_CODE_REVIEW_LOOP_RESTART_6.md
-
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -493,3 +484,13 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  Every load of the full 589-mod list logs the same 31 Config error in … lines
 prose:    infrastructure/state/items/LOAD_CONFIG_ERROR_SWEEP_1.md
+
+## DIRTY_CODE_REVIEW_LOOP_RESTART_7 resume standing code-review sweep after next agent reboot
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DIRTY_CODE_REVIEW_LOOP_RESTART_7.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DIRTY_CODE_REVIEW_LOOP_RESTART_7.md
