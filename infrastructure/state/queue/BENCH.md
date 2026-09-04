@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-04T18:09:49Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-04T20:08:31Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -27,28 +27,9 @@ kind:     task
 summary:  Layer stack: design/Jawa/researchnormalizationprinciples.md (why) →
 prose:    infrastructure/state/items/RESEARCH_TREE_NORMALIZATION_1.md
 
-## FLUID_CANAL_FLOOD_LIVE_CHECK_1 Watch a fluid-canal flood recede and give the floor back
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     task
-summary:  FLUIDCANALFLOODTUNINGGAPS1 findings 1/2/3 were fixed in code and
-prose:    infrastructure/state/items/FLUID_CANAL_FLOOD_LIVE_CHECK_1.md
-
 # BLOCKED — something is WRONG and someone must act
 
-⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
-
-## FLUID_CANAL_FLOOD_LIVE_CHECK_1 Watch a fluid-canal flood recede and give the floor back
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     task
-blocked:  blocked on FLUID_CANAL_DEBUG_SURFACE_1: the mod's debug actions do not register in a live game, so none of the three readings can be taken. All else proven ready: deploy in sync (9 files), assembly loads, minimal-list swap+restore clean (589->20->589, md5 identical), game down, bridge released.
-summary:  FLUIDCANALFLOODTUNINGGAPS1 findings 1/2/3 were fixed in code and
-prose:    infrastructure/state/items/FLUID_CANAL_FLOOD_LIVE_CHECK_1.md
+_none._
 
 # WAITING ON A WINDOW — nothing is wrong
 
@@ -60,14 +41,4 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## CORRECT_FLUID_CANAL_1 Live-check attempt: deploy/enable resolved, but RMFluidCanals debug actions never appear in the live debug-action tree
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  Write the following into FLUIDCANALFLOODLIVECHECK1's own file as a dated
-prose:    infrastructure/state/items/CORRECT_FLUID_CANAL_1.md
+_none._
