@@ -222,7 +222,20 @@ def main():
     ap.add_argument("--droids", type=int, default=0)
     ap.add_argument("--propane", type=int, default=2)
     ap.add_argument("--helix", type=int, default=0)
+    ap.add_argument("--i-know-its-stale", action="store_true",
+                     help="required: the four rules below are documented stale since "
+                          "2026-08-24 and this run would fight the current placement "
+                          "rules (see the module docstring). Pass this only once the "
+                          "four rules are fixed, or you have re-checked them by hand.")
     a = ap.parse_args()
+    if not a.i_know_its_stale:
+        sys.exit("REFUSING: this script has been stale since 2026-08-24 in four places "
+                  "(Hutt well-adjacency, Free Droid Enclave gating, BARREN_REGIONS "
+                  "exemption, Deep Desert Tribes roads — see the module docstring and "
+                  "design/Jawa/worldbuilding/ASHKARR_WORLD_DEFINITION.md §7/§7c) and was "
+                  "never rewritten. Running it, even in plan-only mode, computes a plan "
+                  "against rules the owner already reversed. Fix the four rules first, "
+                  "or pass --i-know-its-stale once you have re-verified them by hand.")
 
     T, nb = load()
     srows = list(csv.DictReader(open(STEM + "_settlements.csv", encoding="utf-8")))
