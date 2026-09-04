@@ -68,7 +68,8 @@ namespace RimMandrake.Utinni.ShipMemory
 
                 if (map.resourceCounter.GetCount(ThingDefOf.Bioferrite) >= BioferriteThreshold)
                 {
-                    Reveal(null, assailant: false);
+                    Thing stack = map.listerThings.ThingsOfDef(ThingDefOf.Bioferrite).FirstOrDefault();
+                    Reveal(stack, assailant: false);
                     return;
                 }
             }
