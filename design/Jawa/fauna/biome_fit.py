@@ -62,8 +62,6 @@ def main():
                             round(max(0,1-d),4), round(min(1,d),4)])
     print(f"wrote {out}: {len(ground)} biomes x {len(rows)} creatures")
     print(f"\n{'biome':30}{'ground rgb':>14}  terrains used (water/lava dropped)")
-    for b in sorted(ground, key=lambda x:-int(bt and 0 or 0)):
-        pass
     for b,g in ground.items():
         drop=' | dropped: '+','.join(g['dropped']) if g['dropped'] else ''
         print(f"{b:30}{str(g['rgb']):>14}  {', '.join(g['terrains'][:4])}{drop[:44]}")

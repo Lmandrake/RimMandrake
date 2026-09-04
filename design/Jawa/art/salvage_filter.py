@@ -180,10 +180,6 @@ def collect(idx):
     return rows
 
 
-RUINS = ("Ancient", "Chunk", "Rubble", "Ship", "Slag", "Collapsed", "Scrap",
-         "Wreck", "Ruined", "Busted", "Broken", "Damaged", "Destroyed", "Crashed")
-
-
 def md_table(rows, cols, headers):
     out = ["| " + " | ".join(headers) + " |",
            "|" + "|".join(["---"] * len(cols)) + "|"]

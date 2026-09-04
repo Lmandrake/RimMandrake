@@ -176,8 +176,6 @@ def report(rows, tiles) -> str:
     A("|---|---:|---:|---:|---:|---|")
     for b in sorted(cov, key=lambda x: -tiles[x]):
         by = cov[b]
-        plants = len({d for ds in by.values() for d in ds}) or sum(
-            1 for r in rows if b in (r.get('biomes') or '').split('|'))
         plants = sum(1 for r in rows if b in (r.get('biomes') or '').split('|'))
         wood = len(by.get('WoodLog', []))
         frag = sorted(res for res, ds in by.items() if len(ds) == 1)

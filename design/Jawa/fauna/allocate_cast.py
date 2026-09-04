@@ -257,9 +257,14 @@ def main():
             scored.sort(key=lambda z: (-z[0], z[1]))
             take = [d for _, d in scored[:want]]
             # SUPER slot empty? promote the best 'huge' instead of leaving the biome headless.
+            # Excludes defNames this biome already chose (as 'huge' or otherwise) — without
+            # this, a biome with few huge-band candidates could promote one of its own huge
+            # picks, writing the same defName into the CSV twice for one biome.
             if bnd == 'SUPER' and not take:
+                already = {d for d, _ in chosen}
                 hp = [(max(fit[b][d][0], fit[b][d][1] * float(W[d]['defence'])) - REUSE_PENALTY*used[d], d)
-                      for d in pool if band((A[d].get('race') or {}).get('baseBodySize')) == 'huge']
+                      for d in pool if band((A[d].get('race') or {}).get('baseBodySize')) == 'huge'
+                      and d not in already]
                 hp.sort(key=lambda z: (-z[0], z[1]))
                 if hp:
                     take = [hp[0][1]]

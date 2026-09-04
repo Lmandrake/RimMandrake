@@ -13,18 +13,28 @@ DOC = os.path.join(ROOT, 'design', 'Jawa', 'worldbuilding', 'creature_names_ashk
 OUT = os.path.join(FA, 'CreatureNames_Ashkarr.xml')
 
 def main():
-    # label -> defName, from the cast
+    # label -> defName, from the cast. Two distinct creatures can share a label
+    # (the cast's `label` column is not unique) — track every collision so an
+    # ambiguous rename is refused and reported, never silently applied to
+    # whichever defName happened to appear first in the CSV.
     lab2def = {}
+    collisions = {}
     for r in csv.DictReader(open(os.path.join(FA, 'cast_assignment.csv'), encoding='utf-8')):
         if r['label']:
-            lab2def.setdefault(r['label'].strip().lower(), (r['defName'], r['mod']))
+            key = r['label'].strip().lower()
+            entry = (r['defName'], r['mod'])
+            if key in lab2def and lab2def[key][0] != entry[0]:
+                collisions.setdefault(key, {lab2def[key][0]}).add(entry[0])
+            lab2def.setdefault(key, entry)
 
-    pairs, unmatched = [], []
+    pairs, unmatched, ambiguous = [], [], []
     for line in open(DOC, encoding='utf-8'):
         m = re.match(r'\|\s*([^|]+?)\s*\|\s*\*\*([a-z]+)\*\*\s*\|', line)
         if not m:
             continue
         old, new = m.group(1).strip(), m.group(2).strip()
+        if old.lower() in collisions:
+            ambiguous.append((old, sorted(collisions[old.lower()]))); continue
         hit = lab2def.get(old.lower())
         if not hit:
             unmatched.append(old); continue
@@ -69,6 +79,12 @@ def main():
         print("   reserve - if the creature returns to a cast, its name is already coined.")
         print("   🔴 If this list is ever non-empty, RE-READ the doc against the cast before")
         print("      assuming a def is broken.")
+    if ambiguous:
+        print(f"🔴 {len(ambiguous)} table row(s) refused — the old label is shared by more than")
+        print("   one defName in the cast, and there is no way to tell which one the doc means:")
+        for old, defnames in ambiguous:
+            print(f"     {old!r} -> {defnames}")
+        print("   Rename one side in the CSV or the doc so the label is unique, then re-run.")
 
 if __name__ == '__main__':
     main()
