@@ -181,6 +181,14 @@ namespace JawaBench.BridgeTools
                 var tg = map.terrainGrid;
                 var outp = new List<object>();
                 int foundationCells = 0, substructureCells = 0, scanned = 0;
+                // 🔴 GET_TERRAIN_LAYERS_TRUNCATION_UNFLAGGED_1. `limit` capped cells[] with
+                // NOTHING in the body to say it had - and `cellsScanned` vs `returned` cannot
+                // stand in for it, because onlyFoundation filters between the two, so a rect
+                // of 4000 cells holding 300 foundations returned 200 rows and the caller
+                // could not tell 200-of-300 from 200-of-200. Count the rows that PASSED THE
+                // FILTER and say outright whether the list is short. jawa/build_check already
+                // reports `truncated`; this one did not.
+                int matched = 0;
 
                 foreach (var c in r)
                 {
@@ -196,6 +204,7 @@ namespace JawaBench.BridgeTools
                     if (foundation != null) foundationCells++;
                     if (isSub) substructureCells++;
                     if (onlyFoundation && foundation == null) continue;
+                    matched++;
                     if (outp.Count >= Math.Max(1, limit)) continue;
 
                     outp.Add(new
@@ -214,7 +223,10 @@ namespace JawaBench.BridgeTools
                 {
                     success = true,
                     cellsScanned = scanned,
+                    cellsMatchingFilter = matched,
                     returned = outp.Count,
+                    limit = Math.Max(1, limit),
+                    truncated = matched > outp.Count,
                     foundationCells,
                     substructureCells,
                     odysseyActive = ModsConfig.OdysseyActive,
@@ -497,6 +509,17 @@ namespace JawaBench.BridgeTools
                 var fg = map.fogGrid;
                 string A = (action ?? "").Trim().ToLowerInvariant();
 
+                // 🔴 SET_FOG_ERROR_PRECEDENCE_1. An unrecognised action fell through to the
+                // rect branch, and that branch validated `rect` FIRST - so action='clear'
+                // (or any typo) with no rect was answered "Give a rect as 'x,z,w,h'.", which
+                // sends the caller hunting for a coordinate bug while the real fault is the
+                // action name it never got told about. Two full-map fog censuses also ran
+                // for an action that was never going to execute. Validate the action before
+                // anything else looks at the map - the same up-front gate
+                // jawa/set_weather_buildup's mode and jawa/designate_batch's action have.
+                if (A != "unfog" && A != "unfogall" && A != "refog" && A != "floodunfog")
+                    return Fail("action must be unfog|unfogAll|refog|floodUnfog, got '" + action + "'.");
+
                 // 🔴 COUNT, do not assume. unfogAll used to report map.Area and refog the
                 // whole rect area, whatever the fog had actually been - FogGrid.ClearAllFog
                 // and FogGrid.Refog both flip only the cells whose state differs, so a refog
@@ -528,9 +551,10 @@ namespace JawaBench.BridgeTools
                     {
                         CellRect r;
                         if (!TryRect(rect, map, out r, out err)) return Fail(err);
+                        // Only 'unfog' and 'refog' can reach here - the action was validated
+                        // above, so there is no fall-through branch left to write.
                         if (A == "unfog") { foreach (var c in r) if (fg.IsFogged(c)) fg.Unfog(c); }
-                        else if (A == "refog") fg.Refog(r);
-                        else return Fail("action must be unfog|unfogAll|refog|floodUnfog.");
+                        else fg.Refog(r);
                     }
                 }
                 catch (Exception e) { return Fail("Fog op failed: " + e.GetType().Name + ": " + e.Message); }
@@ -582,8 +606,23 @@ namespace JawaBench.BridgeTools
                 // trap jawa/designate_batch already closed on its own action parameter.
                 if (M != "set" && M != "add" && M != "radial")
                     return Fail("mode must be set|add|radial, got '" + mode + "'.");
-                int changed = 0;
+                int changed = 0, unchanged = 0;
                 IntVec3 radialCenter = IntVec3.Invalid;
+                // 🔴 SET_WEATHER_BUILDUP_SILENT_ZERO_COUNTED_1. SnowGrid.SetDepth forces
+                // newDepth to 0 whenever CanHaveSnow is false - a full-fillage building in the
+                // cell, or terrain with holdSnowOrSand=false (all water, and every bridge) -
+                // and it does so WITHOUT a log line. AddDepth does the same and also early-
+                // returns at the 0/1 rails. `changed++` used to run for every cell regardless,
+                // so a drift laid over a walled room or a lake reported the whole rect piled
+                // and the grid held zeroes. Count what the grid actually did, name the cells
+                // that refused, exactly as jawa/set_gas does for GasCanMoveTo.
+                int refusedTotal = 0;
+                var refused = new List<object>();
+                Action<int, int, string> addRefused = (cx, cz, why) =>
+                {
+                    refusedTotal++;
+                    if (refused.Count < 20) refused.Add(new { x = cx, z = cz, why });
+                };
 
                 try
                 {
@@ -593,10 +632,44 @@ namespace JawaBench.BridgeTools
                         if (b.Length != 2 || !int.TryParse(b[0].Trim(), out x) || !int.TryParse(b[1].Trim(), out z))
                             return Fail("Give centre as 'x,z' for radial.");
                         var c0 = new IntVec3(x, 0, z);
+                        // 🔴 SET_WEATHER_BUILDUP_RADIAL_CENTRE_UNCHECKED_1. AddSnowRadial and
+                        // AddSandRadial bounds-check every cell they touch and skip the rest
+                        // in silence, so a centre off the map piled NOTHING while the tool
+                        // answered success with cellsChanged:-1 and an empty cells[] - and an
+                        // empty cells[] is exactly what a pile it merely could not sample
+                        // looks like. jawa/set_fog already guards its own cell this way.
+                        if (!c0.InBounds(map))
+                            return Fail("Centre " + x + "," + z + " is out of bounds. This map is " +
+                                        map.Size.x + " x " + map.Size.z + " (x 0.." + (map.Size.x - 1) +
+                                        ", z 0.." + (map.Size.z - 1) + "). AddSnowRadial/AddSandRadial skip " +
+                                        "out-of-bounds cells silently, so nothing would have been piled.");
+                        if (radius <= 0f)
+                            return Fail("radius must be greater than 0 for a radial, got " + radius + ".");
                         radialCenter = c0;
+                        // 🔴 SET_WEATHER_BUILDUP_RADIAL_COUNT_IS_UNKNOWN_1. cellsChanged was a
+                        // hard -1 because the utility returns nothing - the same "the engine
+                        // decides" shrug jawa/set_fog stopped taking for an answer. Snapshot
+                        // the depths the utility can reach, call it, and count what moved.
+                        // depth=0, or a depth the grid clamps away, now reads as 0 changed
+                        // instead of an unknowable -1.
+                        var radialCells = new List<IntVec3>();
+                        var radialBefore = new List<float>();
+                        int nRadial = GenRadial.NumCellsInRadius(radius);
+                        for (int i = 0; i < nRadial; i++)
+                        {
+                            var rc = c0 + GenRadial.RadialPattern[i];
+                            if (!rc.InBounds(map)) continue;
+                            radialCells.Add(rc);
+                            radialBefore.Add(sand ? map.sandGrid.GetDepth(rc) : map.snowGrid.GetDepth(rc));
+                        }
                         if (sand) WeatherBuildupUtility.AddSandRadial(c0, map, radius, depth);
                         else WeatherBuildupUtility.AddSnowRadial(c0, map, radius, depth);
-                        changed = -1;
+                        changed = 0;
+                        for (int i = 0; i < radialCells.Count; i++)
+                        {
+                            float now = sand ? map.sandGrid.GetDepth(radialCells[i]) : map.snowGrid.GetDepth(radialCells[i]);
+                            if (now != radialBefore[i]) changed++;
+                        }
                     }
                     else
                     {
@@ -604,9 +677,16 @@ namespace JawaBench.BridgeTools
                         if (!TryRect(rect, map, out r, out err)) return Fail(err);
                         foreach (var c in r)
                         {
+                            float was = sand ? map.sandGrid.GetDepth(c) : map.snowGrid.GetDepth(c);
                             if (sand) { if (M == "add") map.sandGrid.AddDepth(c, depth); else map.sandGrid.SetDepth(c, depth); }
                             else { if (M == "add") map.snowGrid.AddDepth(c, depth); else map.snowGrid.SetDepth(c, depth); }
-                            changed++;
+                            float now = sand ? map.sandGrid.GetDepth(c) : map.snowGrid.GetDepth(c);
+                            if (now != was) { changed++; continue; }
+                            unchanged++;
+                            if (depth > 0f && now == 0f)
+                                addRefused(c.x, c.z, "cell cannot hold " + (sand ? "sand" : "snow") +
+                                    " - a full-fillage building is here, or the terrain has holdSnowOrSand=false; " +
+                                    "SetDepth/AddDepth force 0 and log nothing");
                         }
                     }
                 }
@@ -615,9 +695,8 @@ namespace JawaBench.BridgeTools
                 var back = new List<object>();
                 {
                     // 🔴 Read back WHERE THE WRITE LANDED. In radial mode `rect` is null, so
-                    // this used to sample cell 0,0 - the map corner, nowhere near the pile -
-                    // and `cells` is the only evidence the caller gets, because cellsChanged
-                    // is -1 for a radial. Sample outward from the centre instead.
+                    // this used to sample cell 0,0 - the map corner, nowhere near the pile.
+                    // Sample outward from the centre instead.
                     CellRect rr;
                     bool haveRect = (M == "radial" && radialCenter.IsValid)
                         ? TryRect(radialCenter.x + "," + radialCenter.z + ",1,1", map, out rr, out err)
@@ -650,6 +729,10 @@ namespace JawaBench.BridgeTools
                 return (object)new
                 {
                     success = true, kind, mode = M, cellsChanged = changed,
+                    cellsUnchanged = unchanged,
+                    refusedCount = refusedTotal,
+                    refusedListTruncated = refusedTotal > refused.Count,
+                    refused,
                     odysseyActive = ModsConfig.OdysseyActive,
                     cells = back, ticksGame = TicksGameSafe(),
                 };
@@ -687,6 +770,14 @@ namespace JawaBench.BridgeTools
                 }
                 if (count < 0) count = 0;
                 if (count > 65535) count = 65535;
+                // 🔴 SET_DEEP_RESOURCE_COUNT_ZERO_CLEARS_1. DeepResourceGrid.SetAt opens with
+                // `if (count == 0) def = null;` - so def=MineableGold with count=0 does not
+                // place an empty gold seam, it ERASES whatever the cell held, and the response
+                // still echoed the def back as though it had been written. Say so instead of
+                // performing a deletion the caller did not ask for.
+                if (td != null && count == 0)
+                    return Fail("count=0 CLEARS the cell - DeepResourceGrid.SetAt nulls the def when count is 0, so '"
+                                + td.defName + "' would not be written. Pass count>=1 to place it, or leave def empty to clear.");
 
                 // 🔴 SET_DEEP_RESOURCE_PARTIAL_WRITE_HIDDEN_1. The loop used to
                 // `return Fail("SetAt failed at ...")` on the first throwing cell. By then
@@ -694,12 +785,24 @@ namespace JawaBench.BridgeTools
                 // but the caller was handed success=false with no count - so the map held a
                 // half-authored ore body that the response said did not exist. Record the
                 // cell and carry on; the partial state is in the body either way.
-                int changed = 0;
+                // 🔴 SET_DEEP_RESOURCE_UNCHANGED_CELLS_COUNTED_1. SetAt writes only when the
+                // packed def-or-count actually differs, so re-stamping an ore body that is
+                // already there - or clearing ground that already held nothing - moved no
+                // grid cell at all while `changed++` ran for every cell in the rect. Diff the
+                // grid, the same way jawa/set_gas counts its own writes.
+                int changed = 0, unchangedCells = 0;
                 int problemsTotal = 0;
                 var problems = new List<object>();
                 foreach (var c in r)
                 {
-                    try { map.deepResourceGrid.SetAt(c, td, td == null ? 0 : count); changed++; }
+                    try
+                    {
+                        var wasDef = map.deepResourceGrid.ThingDefAt(c);
+                        int wasCount = map.deepResourceGrid.CountAt(c);
+                        map.deepResourceGrid.SetAt(c, td, td == null ? 0 : count);
+                        if (map.deepResourceGrid.ThingDefAt(c) != wasDef || map.deepResourceGrid.CountAt(c) != wasCount) changed++;
+                        else unchangedCells++;
+                    }
                     catch (Exception e)
                     {
                         problemsTotal++;
@@ -716,7 +819,8 @@ namespace JawaBench.BridgeTools
                 }
                 return (object)new
                 {
-                    success = true, cellsChanged = changed, cellsInRect = r.Area,
+                    success = true, cellsChanged = changed, cellsUnchanged = unchangedCells,
+                    cellsInRect = r.Area,
                     problemCount = problemsTotal,
                     problemListTruncated = problemsTotal > problems.Count,
                     problems,
@@ -1819,9 +1923,32 @@ namespace JawaBench.BridgeTools
                 if (A.Equals("paintZone", StringComparison.OrdinalIgnoreCase) || A.Equals("deleteZone", StringComparison.OrdinalIgnoreCase))
                 {
                     if (string.IsNullOrEmpty(zone)) return Fail("Give a zone label.");
-                    var z = zm.AllZones.FirstOrDefault(x => string.Equals(x.label, zone.Trim(), StringComparison.OrdinalIgnoreCase));
-                    if (z == null) return Fail("No zone labelled '" + zone + "'. Have: " +
+                    // 🔴 MAP_ZONES_DUPLICATE_LABEL_PICKS_ONE_1. FirstOrDefault silently took
+                    // whichever zone came first in AllZones, so deleteZone on an ambiguous
+                    // label DELETED A ZONE THE CALLER DID NOT NAME - irreversibly, and with a
+                    // clean success naming the label it thought it had deleted. Labels are not
+                    // unique by construction: ZoneManager.NewZoneName gives up after 1000
+                    // candidates and returns the un-deduplicated "Zone X", and its uniqueness
+                    // test is ORDINAL while the lookup here is OrdinalIgnoreCase - so
+                    // "Stockpile 1" and "stockpile 1" both exist legally and both match here.
+                    // An exact-case match settles it; anything still ambiguous is refused
+                    // rather than guessed at.
+                    var wantedLabel = zone.Trim();
+                    var matches = zm.AllZones
+                        .Where(x => string.Equals(x.label, wantedLabel, StringComparison.OrdinalIgnoreCase)).ToList();
+                    if (matches.Count > 1)
+                    {
+                        var exact = matches.Where(x => string.Equals(x.label, wantedLabel, StringComparison.Ordinal)).ToList();
+                        if (exact.Count == 1) matches = exact;
+                    }
+                    if (matches.Count == 0) return Fail("No zone labelled '" + zone + "'. Have: " +
                         string.Join(", ", zm.AllZones.Select(x => x.label).ToArray()));
+                    if (matches.Count > 1)
+                        return Fail("AMBIGUOUS: " + matches.Count + " zones are labelled '" + wantedLabel + "'. Refusing to guess "
+                                    + "which one to " + (A.Equals("deleteZone", StringComparison.OrdinalIgnoreCase) ? "DELETE" : "paint")
+                                    + " - rename one first (zone labels are only unique by convention, never by construction).",
+                                    new { candidates = matches.Select(x => new { label = x.label, type = x.GetType().Name, cells = x.Cells.Count }).ToList() });
+                    var z = matches[0];
 
                     if (A.Equals("deleteZone", StringComparison.OrdinalIgnoreCase))
                     {
@@ -1986,8 +2113,13 @@ namespace JawaBench.BridgeTools
                 "affordances and is not bridgeable, so it is reported as impossible rather " +
                 "than half-built. " +
                 "ATOMIC: the whole route is computed and validated before ANYTHING is " +
-                "placed. A half-laid conduit is worse than a refusal. dryRun by default.",
-            ResultDescription = "success, route, routeLength, placed, cleared, blockedAt[], and why.")]
+                "placed. A half-laid conduit is worse than a refusal. dryRun by default. " +
+                "🔴 READ `displaced` as well as `cleared`: `cleared` is the edifices this tool " +
+                "mined deliberately, `displaced` is everything the spawn itself wipes on the " +
+                "way in - items, filth, frames, conduits - and mode='strict' refuses on it.",
+            ResultDescription =
+                "success, route, routeLength, placed, skipped, cleared, bridged, connected, "
+                + "displaced[] naming everything the spawn destroyed, and problems[] with why.")]
         public static async Task<object> ConnectCells(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -2147,8 +2279,32 @@ namespace JawaBench.BridgeTools
 
                 // ---- classify every cell BEFORE placing anything ----------------------
                 var needMine = new List<IntVec3>(); var needBridge = new List<IntVec3>();
+                // 🔴 CONNECT_CELLS_NON_EDIFICE_DISPLACEMENT_UNREPORTED_1. The classification
+                // below looked at GetEdifice AND NOTHING ELSE, while the commit phase spawns
+                // with WipeMode.Vanish - so every NON-edifice thing GenSpawn.SpawningWipes
+                // covers (loose items under an impassable thing, filth, plants under a def
+                // that BlocksPlanting, an existing blueprint or frame, a conduit under any
+                // EverTransmitsPower thing) was destroyed with no entry anywhere in the
+                // response: not in `cleared`, not in `problems`, not in a refusal. mode
+                // 'strict' promises to "refuse if anything is in the way and name the
+                // obstacles" and did not even see these. jawa/build_batch already answers
+                // this exact question with displaced[]; ask SpawningWipes, the engine's own
+                // predicate, the same way it does - so a route that genuinely wipes nothing
+                // (conduit over grass: SpawningWipes is FALSE for a plant unless the new def
+                // wipesPlants or BlocksPlanting) stays a clean strict run.
+                var doomed = new List<Thing>();
                 foreach (var c in route)
                 {
+                    var here = map.thingGrid.ThingsListAtFast(c);
+                    for (int i = 0; i < here.Count; i++)
+                    {
+                        var other = here[i];
+                        if (other == null || other.Destroyed) continue;
+                        if (other.def == td) continue;              // the `skipped` case below
+                        if (!GenSpawn.SpawningWipes(td, other.def)) continue;
+                        if (!doomed.Contains(other)) doomed.Add(other);
+                    }
+
                     if (GenConstruct.CanBuildOnTerrain(td, c, map, Rot4.North))
                     {
                         var ed = c.GetEdifice(map);
@@ -2166,11 +2322,24 @@ namespace JawaBench.BridgeTools
                     return Fail("IMPOSSIBLE: " + blocked.Count + " cell(s) on the only route cannot carry '" + td.defName +
                                 "' and cannot be bridged. This is deep water or equivalent - refusing rather than laying a broken line.",
                                 blocked);
-                if (M == "strict" && (needMine.Count > 0 || needBridge.Count > 0))
-                    return Fail("REFUSING in mode 'strict': the route needs " + needMine.Count + " cell(s) cleared and " +
-                                needBridge.Count + " bridged. Re-run with mode='mine' or 'bridge'.",
+                // Serialised once and reported by every exit below - a caller must be able to
+                // read what the route eats whether it refuses, dry-runs or commits.
+                Func<List<object>> displacedRows = () => doomed.Select(d => (object)new
+                {
+                    destroyed = d.def.defName,
+                    x = d.Position.x, z = d.Position.z,
+                    isEdifice = d.def.IsEdifice(),
+                    stackCount = d.stackCount,
+                }).ToList();
+
+                if (M == "strict" && (needMine.Count > 0 || needBridge.Count > 0 || doomed.Count > 0))
+                    return Fail("REFUSING in mode 'strict': the route needs " + needMine.Count + " cell(s) cleared, " +
+                                needBridge.Count + " bridged, and laying '" + td.defName + "' would DESTROY " +
+                                doomed.Count + " existing thing(s) that are not edifices to be mined. " +
+                                "Re-run with mode='mine' or 'bridge' to accept that.",
                                 new { needMine = needMine.Select(c => new { c.x, c.z }).ToList(),
-                                      needBridge = needBridge.Select(c => new { c.x, c.z }).ToList() });
+                                      needBridge = needBridge.Select(c => new { c.x, c.z }).ToList(),
+                                      wouldDestroy = displacedRows() });
                 if (M == "mine" && needBridge.Count > 0)
                     return Fail("REFUSING: the route crosses " + needBridge.Count + " bridgeable water cell(s). Use mode='bridge'.");
 
@@ -2188,6 +2357,10 @@ namespace JawaBench.BridgeTools
                     {
                         success = true, dryRun = true, route = routeKind, routeLength = route.Count,
                         wouldMine = needMine.Count, wouldBridge = needBridge.Count,
+                        // Everything the spawn itself would wipe on the way in, edifice or
+                        // not - the number a dry run exists to hand back before committing.
+                        wouldDestroyCount = doomed.Count,
+                        wouldDestroy = displacedRows(),
                         firstCells = route.Take(6).Select(c => new { c.x, c.z }).ToList(),
                         note = "DRY RUN - nothing placed. Pass dryRun=false.",
                         ticksGame = TicksGameSafe(),
@@ -2200,6 +2373,11 @@ namespace JawaBench.BridgeTools
                 // caller got an exception, not a report, and the map kept the half-cleared
                 // route this tool exists to refuse. Catch per cell and carry the damage in
                 // the body instead.
+                // Materialise the victims BEFORE anything is destroyed: stackCount reads 0 on
+                // a destroyed Thing, so taking this snapshot afterwards would report the loss
+                // as an empty stack.
+                var displaced = displacedRows();
+
                 int cleared = 0, bridged = 0, placed = 0, skipped = 0;
                 foreach (var c in needMine)
                 {
@@ -2248,6 +2426,11 @@ namespace JawaBench.BridgeTools
                     // whole promise is "after the call they really are connected" - so say it
                     // outright rather than leaving the caller to subtract.
                     connected = blocked.Count == 0 && (placed + skipped) == route.Count,
+                    // 🔑 `cleared` counts EDIFICES this tool mined on purpose. `displaced`
+                    // counts what the spawn itself wiped on the way in - items, filth, frames,
+                    // conduits - which no counter here used to show at all.
+                    displacedCount = displaced.Count,
+                    displaced,
                     problemCount = blocked.Count,
                     problems = blocked,
                     message = (blocked.Count == 0 && (placed + skipped) == route.Count)
