@@ -309,8 +309,14 @@ def roundtrip(path):
                              % (x, z, len(ca.things), len(cb.things)))
             else:
                 for ta, tb in zip(ca.things, cb.things):
-                    if (ta.defName, ta.stuffDef, ta.rot) != \
-                       (tb.defName, tb.stuffDef, tb.rot):
+                    # 🔴 was (defName, stuffDef, rot) only -- quality and
+                    # plantToGrow are loaded and stored on every Thing but were
+                    # never compared, so a bug that silently dropped one of
+                    # them on export still printed "round trip clean". Proven
+                    # 2026-09-03: monkeypatching quality to None during
+                    # to_element() produced zero diffs.
+                    if (ta.defName, ta.stuffDef, ta.rot, ta.quality, ta.plantToGrow) != \
+                       (tb.defName, tb.stuffDef, tb.rot, tb.quality, tb.plantToGrow):
                         diffs.append("(%d,%d) thing %r != %r" % (x, z, ta, tb))
             if len(diffs) > 20:
                 return a, diffs
