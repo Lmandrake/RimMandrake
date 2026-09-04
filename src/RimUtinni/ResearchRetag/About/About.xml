@@ -14,5 +14,61 @@ regenerate, never the XML.
 Scope: surviving rows only; RR_* prereqs excluded (Research Reinvented
 re-splices its techprints at runtime). Tab restructure (the 16 campaign trees
 as ResearchTabDefs) is NOT here yet — that is the next slice, with the cut
-wave. Load after every research-adding mod.</description>
+wave. Load after every research-adding mod.
+
+RESEARCH_RETAG_LOAD_ORDER_GAP_1, fixed 2026-09-04: forceLoadAfter below names the packageId of every non-official mod that owns one of the 269 patched ResearchProjectDefs, built from the live def dump's per-def packageId attribution (2026-09-04T02-23-44Z capture, 52 packageIds, 0 unmatched targets) - same convention as FactionSlate. Core/DLC omitted: the engine always loads official content first. Regenerate this list whenever build_retag_patches.py changes the target set.</description>
+  <forceLoadAfter>
+    <li>als.gravtech</li>
+    <li>als.gravtech.bc</li>
+    <li>aoba.fortress.industrial</li>
+    <li>biomesteam.biomescaverns</li>
+    <li>cain.mineshaft</li>
+    <li>coldcrow.betterkibble</li>
+    <li>dubwise.dubsbadhygiene.lite</li>
+    <li>dubwise.rimefeller</li>
+    <li>error277.tunneler.expanded</li>
+    <li>greg.customgastypes</li>
+    <li>guy762.mm.kotorcore</li>
+    <li>jecrell.doorsexpanded</li>
+    <li>kikohi.jewelry</li>
+    <li>killathon.artificialbeings.syncore</li>
+    <li>kilokio.rimai.core</li>
+    <li>krkr.rule56</li>
+    <li>mandrake.rsw.armoury</li>
+    <li>mandrake.rsw.ionweapons</li>
+    <li>mlie.miningcoalertspeaker</li>
+    <li>mlie.miningcodrillturret</li>
+    <li>mlie.miningcomms</li>
+    <li>mlie.spaceworms</li>
+    <li>nephlite.orbitaltradecolumn</li>
+    <li>neronix17.asimov</li>
+    <li>neronix17.outerrim.core</li>
+    <li>neronix17.outerrim.droiddepot</li>
+    <li>neronix17.shieldgenerators</li>
+    <li>oskarpotocki.vanillavehiclesexpanded</li>
+    <li>oskarpotocki.vfe.insectoid2</li>
+    <li>oskarpotocki.vfe.pirates</li>
+    <li>oskarpotocki.vfe.tribals</li>
+    <li>petetimessix.researchreinvented.steppingstones</li>
+    <li>propickelz.tinkerbench</li>
+    <li>regrowth.botr.core</li>
+    <li>sarg.alphamechs</li>
+    <li>sihv.rombonesport</li>
+    <li>vanillaexpanded.gravship</li>
+    <li>vanillaexpanded.vappe</li>
+    <li>vanillaexpanded.vbrewe</li>
+    <li>vanillaexpanded.vcooke</li>
+    <li>vanillaexpanded.vfeart</li>
+    <li>vanillaexpanded.vfecore</li>
+    <li>vanillaexpanded.vfefactory</li>
+    <li>vanillaexpanded.vfefarming</li>
+    <li>vanillaexpanded.vfepower</li>
+    <li>vanillaexpanded.vfeproduction</li>
+    <li>vanillaexpanded.vfesecurity</li>
+    <li>vanillaexpanded.vfespacer</li>
+    <li>vanillaexpanded.vplantsesucculents</li>
+    <li>vanillaexpanded.vwe</li>
+    <li>vesper.egihologramsandprojectors</li>
+    <li>zal.moreutilitypacks</li>
+  </forceLoadAfter>
 </ModMetaData>
