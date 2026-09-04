@@ -1382,6 +1382,11 @@
     "date": "2026-09-03",
     "sha": "c057fb96"
   },
+  "src/RimMandrake/Utils/selftest_sound_paths.py": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "925bb3d2"
+  },
   "src/RimMandrake/Utils/selftest_stun_scaling.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -1986,6 +1991,11 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "359b0b2c"
+  },
+  "src/RimStarWars/Armoury/Defs/SoundDefs/Absorbed_JDSArmory_Sounds.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "925bb3d2"
   },
   "src/RimStarWars/Armoury/Source/CompExtraSounds/CompExtraSounds.cs": {
     "cleanCount": 1,
