@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-04T14:31:54Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-04T14:32:30Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -444,16 +444,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## VALIDATE_QUEST_FALSE_NEGATIVES_1 validate_quest.py: --dir silently swallows parse errors, storeAs collision undetected, framework-scheduler firing route missing
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     spec, verify and criteria all present
-summary:  1. main() only reports unparseable XML for bare positional-arg files. Files
-prose:    infrastructure/state/items/VALIDATE_QUEST_FALSE_NEGATIVES_1.md
 
 ## KARRASK_ART_MISSING_1 RSW_Karrask has no sprite anywhere in the repo (3 texPaths, pink placeholder) — needs generating-rimworld-sprites
 state:    proposed
