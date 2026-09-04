@@ -1353,6 +1353,60 @@ research_tree:
     terraforming tech) stay ship-only/memory_core, ungated by faction, as
     already ruled — the split is exactly along "Rataka weapon boon" vs
     "ship's own native tech".
+  trees_ruled: true
+  trees_src: >
+    Owner, 2026-09-04, canon-reintegration sitting (canon_reintegration_plan.md,
+    all 14 decision points ruled by card in one day). THE TREE ROSTER IS
+    SIXTEEN, and it supersedes taxonomy_src's seven-tab set (which the
+    taxonomy doc itself had already marked superseded by the 2026-09-03
+    "around 12" ruling; the deck sittings then fixed the real roster).
+    Placements (tab+tier per row) are FROZEN in
+    design/Jawa/research_review/research_deck_FROZEN_20260904.json - the
+    owner's own hand; identities/names were reopened by his rebrand ruling.
+    The sixteen: Jawa Scavenging (renamed from Scavenger, his own phrase;
+    holds basic droid repair - Droidsmith dissolved into it by his deck
+    pass) / The Hearth / The Refinery / The Workshop / Powder & Slug /
+    Blasterworks / The Strange Schools / The Shell / The Utinni (renamed
+    from THE SHIP - the tab named after her) / The Reach / Antiquities
+    (NEW 17th-authored, see antiquities: below) / The Rites / The Junker
+    Yards / The Foundry Hive / The Ascendant Ladder / The Unbolting.
+    THE WAKING MIND IS FOLDED into The Unbolting as "minds you make"
+    (ruled after design/Jawa/waking_mind_ai_deep_dive.md: its 10 rows were
+    comms hardware + the RimAI ladder; Droidworks brings no research rows)
+    PLUS a 3-row "Tenancy" thread re-described in The Utinni's tab,
+    description-only - two tabs telling one argument from both ends.
+    FLAME SPLIT, verbatim ruling: "flame weapons don't belong there [in
+    Blasterworks] even though they kill by heat. Flame weapons should be a
+    commonly available technology, used by all to hold wildlife at bay,
+    but BIG flame weapons are part of the Junker unlock." - small flame
+    (the T0 incendiary row) re-homes to Jawa Scavenging as common;
+    flamethrowers/heavy projectors join The Junker Yards. Applied at the
+    manifest schema v2 pass (F2) as an owner amendment to his own deck.
+  gate_holders_ruled: true
+  gate_holders_src: >
+    Owner, 2026-09-04, card on Antiquities' access class: class (2)
+    faction-held of tech_gating_src's four classes, "though rather than
+    planet I would say Rakata themselves" - THE RAKATA ARE THE HOLDER of
+    the Antiquities techprints; urns are their techprints, the world merely
+    carries them. Same answer, same breath: "The Rust Cathedral would also
+    be of this same faction, except for their love of the Droids and their
+    historical evolution through degradation. So they remain Rust Cathedral
+    / Droids together." - the Cathedral is a SEPARATE holder (see
+    rust_cathedral: below for why it no longer considers itself Rakatan).
+    Full holder map (canon_reintegration_plan.md sec E, ratified via this
+    ruling + the TECHPRINT_FACTION_GATING_1 unblock): Junkers->warcasket ·
+    Helix->gene/flesh · Hive->sonic/hivetech · Enclaves->droid construction
+    · Rust Cathedral/Droids->personal gravtech · the Rakata (via urns)->
+    the canon · the Utinni->her own body (ship-only class).
+  mechanism_ruled: true
+  mechanism_src: >
+    Owner, 2026-09-04, card (G1): ALL-C# - the ruled option-B runtime
+    manifest pass (research_normalization_principles.md sec 3) is the ONE
+    normalization mechanism. The RimUtinni/ResearchRetag XML patch deployed
+    2026-09-04 (269 defs: techLevel/baseCost/prereqs, generated from the
+    manifest by design/Jawa/research_review/build_retag_patches.py) is a
+    dated BOOTSTRAP: it stays live only until the C# pass proves parity,
+    then retires. It must not silently become permanent.
 ownership_fabric:
   ruled: true
   src: >
@@ -1636,3 +1690,183 @@ rakata:
     is tyrant technology. Register guard: tyranny is revealed content - never
     ambient in pre-reveal bios/tooltips. Full text:
     design/Jawa/worldbuilding/ANCIENTS_AS_RAKATA_SPEC.md "the dark half".
+  reclamation_ruled: true
+  reclamation_src: >
+    Owner, 2026-09-04, card G4, choosing BOTH offered options: the VOICE
+    Call-Out SEEMS to settle the colonizer-ship claim (a literate custodian
+    outranks an illiterate heir under the ancients' own law - they
+    relinquish and leave) - "It seems to settle it, but late game there can
+    be a single event where all those Ancients who woke up got together and
+    try to take the Utinni back in a concentrated effort, with local
+    collaboration with the Helix, who then turn hostile. After surviving
+    that, the ancients become permanently neutral so as not to further
+    anger them (dominated)." THE RECLAMATION: every ancient the player
+    ever woke, united, with the Helix - both beaten; ancients permanently
+    dominated-neutral after. The Helix hostility switch ends the Ascendant
+    Ladder boon economy - a real price the player should see coming.
+    Sequencing: the Helix's true-heart reveal (helix_lineage) fires AFTER
+    this event; the Cathedral's hatred of the Helix (rust_cathedral) dates
+    from their siding with the Assailants here.
+antiquities:
+  ruled: true
+  src: >
+    Owner, 2026-09-04, his own concept ("A research tree concept I will call
+    antiquities") given whole and then expanded across two sittings; design
+    of record: design/Jawa/antiquities_design.md (all four original cards +
+    the comment pass ingested). THE SYSTEM: the ancients wrote nothing down
+    except on everything they made (the Doctrine of the Unwritten - art was
+    the one thing the Assailant could not parse); every urn/stele/gravegood
+    is a page; a 16th tree "Antiquities" advances ONLY by reading physical
+    artifacts (48 needed of ~70-90 world pieces) through five stages -
+    LANGUAGE / RELIGION / CULTURE / CARTOGRAPHY / VOICE - each stage
+    revealing map truths and unhiding a Rites tier (the WELD: the Rites'
+    revealed-not-bought gate IS Antiquities progress). Reading happens at
+    the Urn Reading Station (authored, animated, the campaign's centerpiece
+    object). Selling an unread piece writes a permanent LOST ledger entry;
+    the Helix pays premium for unread pieces; god-mood ladder is
+    Helix-directed (INFURIATED unread-to-Helix / UNHAPPY read-to-Helix /
+    neutral to all others - "they cannot understand them"). Failability is
+    APPARENT: the gods rage and intone hopelessness, but the Recovery Raid
+    (attack the randomized settlement holding sold urns) converts LOST to
+    RECLAIMED at the cost of a chosen war. VOICE enables the Call-Out
+    (ancients stand down and LEAVE - they never help); first success yields
+    the Testament, tone RULED ambivalent - gratitude without warmth. Late
+    game: the Empire hunts urns to destroy them (thinking them a morale
+    fetish) and the Shattered Vault event pre-raids one revealed vault -
+    its shards partially readable (fractal encoding) via droid compute in
+    Rust Cathedral partnership.
+  fractal_reading_ruled: true
+  fractal_reading_src: >
+    Owner, 2026-09-04, card G3, improving the offered options, verbatim:
+    "Sympathetic Urn interpretation is the easy one, the naive one... but as
+    the players grow more nuanced, they begin to see the inherent hostility
+    in the deeper, more fractal layers. 'The stars we lost' are found to
+    later include 'the casualties inflicted and resources spent subduing the
+    population' encoded in that same map." => the SAME urns re-read darker:
+    every fragment carries a naive reading and a fluent reading one fractal
+    layer down; stage progress re-opens already-catalogued pieces. The
+    Rakata reversal (victims_and_tyrants_src) is thereby staged through the
+    tree itself; the flesh dungeon keeps visceral primacy. Aggressive urns
+    may appear early, sparingly - foreshadowing. minStage gates the FLUENT
+    layer, never the object. DOOR-MUSIC IS REMOVED (owner, same day: "I
+    don't like the door music door chime analogy, we should remove that") -
+    the urn grammar carries maker's marks/workshop lineages instead.
+  ship_archive_ruled: true
+  ship_archive_src: >
+    Owner, 2026-09-04, comment pass, near-verbatim: the ship's knowledge
+    store is SEVERELY DEGRADED - damaged and faded over time, then rudely
+    overwritten by the damaged, kludged Jawa-mind persona core; a massive
+    archive of fragments and incomprehensible garbage. Each urn offers
+    pattern-matching and a reconstruction framework for a small portion,
+    "much like seemingly random fragments of correct DNA can start to
+    re-assemble on even a poor scaffold." TWO HARD LIMITS: the urns never
+    encode the OS, so nothing restored can overwrite the Jawa-born gods
+    (only the racial/faction database regenerates); and the record returns
+    incomplete - real research with Jawa hands and minds is still required,
+    "not a simple Primer... but an incomplete record that must be restored
+    through trial, error, and testing." The Rites AUTHORIZE the restoration
+    (resources) and permit the gods to alter themselves into harmony; each
+    integration yields per-god reactions (free to be pleased or displeased
+    by content, net positive for wholeness) narrated ONLY in the Knowing
+    register (design/Jawa/narrator_corpus/the_knowing.md) - the ship never
+    explains in systems language. Occasional techprints radiate to ship
+    function/manufacturing/repair. Two kinds of forgetting, one sentence:
+    trauma-sealed rooms open by RECOGNITION (the ShipMemory Memory-Core
+    event); eroded archives open by RECONSTRUCTION (urns).
+  factory_restoration_ruled: true
+  factory_restoration_src: >
+    Owner, 2026-09-04, verbatim: "the tech learned from the ship only REPAIR
+    factory modules, not build new ones (can't scale beyond ship... just
+    restore it)." The VFEFactory machine roster becomes damaged installations
+    ABOARD the Utinni, restored stage by stage with authored, permanently
+    placed art - a visible progress meter beside the Urn Reading Station.
+    ORDER RULED same day: FIXED and fully authored, no player choice -
+    "While I like the player choice, it simply makes no sense from the Urn
+    source point of view... they lock what they unlock. Author it fully."
+    The order: Mill -> Loom -> Galley -> Farm -> Press -> Machining Bay ->
+    Apothecary -> Assembler (conveyors/hoppers/factory floor ride the Mill).
+helix_lineage:
+  ruled: true
+  src: >
+    Owner, 2026-09-04, card G2, expanding both offered options into one:
+    forged ancestry ADOPTED and the tragedy kept, braided. Some Rakata
+    genuinely adapted by merging with other races; their diluted line
+    persists in the Helix - cast-off, denied, distant grandchildren whom
+    the woken ancestors "no longer respect and value." The Helix forged
+    MORE ancestry than they have precisely because the little they have was
+    refused (splicing recovered Rakatan sequence into their germline and
+    calling it descent - their theology performed on themselves; kinship in
+    the Rakatan canon was carried in literacy, not base pairs, which is why
+    the ship can tell). Rejection turns them to the Assailants' residue for
+    knowledge/power; the set-piece line, owner verbatim: "If you will not
+    share your wisdom and power, then I will learn from what destroyed you"
+    - "and the outrage and disgust from the Rakata radiated powerfully."
+    SEQUENCED AFTER the Reclamation (see rakata.reclamation below): the
+    Rakata-Helix alliance fails first, revealing the Rakata as merciless
+    and their alliances untrustworthy, THEN the Helix's true heart shows.
+    "Shades of grey and black everywhere, bleak morality, and hurt emotions
+    turned to the dark side in righteous indignation at rejection and
+    denial." Explains the urn economy edge: forged heirs buying the
+    family's grave-goods, paying MORE for unread pieces (a child would
+    want the reading).
+rust_cathedral:
+  free_agent_ruled: true
+  free_agent_src: >
+    Owner, 2026-09-04, rewriting the Geonosian story wholesale (supersedes
+    the brief door-music weld same day; door-music removed everywhere).
+    The Rust Cathedral is a MACHINE, made by Rakatans, with no time for any
+    other race, period. It rejects the ORGANIC Geonosians (their nine-year
+    communion failure has this one cause) while favoring the Droids: "In
+    the Droids the Rust Cathedral sees simple echoes of itself and its own
+    past, and it regards them like favored pets... not pampered, not
+    beloved, but amusing and interesting as a way to pass eons." (The
+    Enclaves' "whispered voices deep in the old machinery" are thereby
+    REAL attention - droids get whispers, organics get silence.) It never
+    revealed the urns' secret to anyone: revealing secrets is precisely
+    what it was built not to do, so it shows no reaction at all - Geonosian
+    urn-effigies included ("not worthy of its comment still"). It HATES the
+    Helix from the moment they side with the Assailants, urging Forsaken
+    Sentinels to assault them. And it refuses the woken Rakatans
+    themselves, owner verbatim: "I am bound to an Empire that no longer
+    reigns, not their mongrel offspring who managed to lose the war that
+    broke me." It sees itself as a FREE AGENT now - just like the Droids
+    (this is why gate_holders_src keeps Rust Cathedral/Droids together and
+    separate from the Rakata holder).
+  player_tolerance_ruled: true
+  player_tolerance_src: >
+    Owner, 2026-09-04, addendum: the Cathedral tolerates the player Jawa
+    ONLY because the Utinni vouches for them. It is somewhat mistrustful of
+    the Utinni ("what is WRONG with you?") but cannot deny she is part of
+    the same empire it once served - so the clan may perform missions for
+    the Cathedral striking at the Assailant to prove its value, "even if
+    it's secretly hoping the Utinni perishes in a phyrric victory." The
+    Cathedral despises the Empire as well but is in no position to oust
+    them; it wants to continue to survive, "so it slumbers so as not to
+    attract unwanted attention." Every boon it grants is a risk taken by
+    being seen to act.
+  geonosian_alliance_arc_ruled: true
+  geonosian_alliance_arc_src: >
+    Owner, 2026-09-04: the Geonosians remain unsung and desperate - the
+    player's opening. Offer them technology from the ship/urns and they
+    help build a powerful protected base ("It seems like a good trade,
+    almost too good to be true if taken, and it begins to work") - until
+    the Empire catches wind of it and utterly destroys their settlements.
+    "Genosians just don't understand politics at all." Fourth entry in
+    design/Jawa/faction_semipermanent_bases_seed.md, tragic and temporary
+    by design. The formal Hive-Enclave alliance stands and sharpens:
+    allying with the god's favored pets is the closest to the god the Hive
+    has ever been allowed.
+trade_moot_urns:
+  ruled: true
+  src: >
+    Owner, 2026-09-04, card G7, expanding the offered option: the Moot is
+    the urn-finders' network AND publicly ambivalent about the ship, his
+    voice: "Look, you're kin, but WTF are you doing in that huge ship
+    attracting Empire and Hutt hatred?! Stay away please... unless it's
+    safe right now?" Then, secretly, the Moot finds ways to trade with the
+    ship anyway - kinship among the Jawa IS respected and protected, so
+    long as it doesn't cost them publicly and bring down ruin. "Cute,
+    touching, and irritating, just like the Jawa." Early Moot urn-trade is
+    covert (night caravans, dead drops, deniable intermediaries),
+    normalizing as the clan's standing grows. World urn total unchanged -
+    the Moot finds, it does not mint.
