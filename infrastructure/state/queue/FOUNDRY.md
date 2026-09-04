@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-04T05:14:59Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-04T06:49:47Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -360,6 +360,15 @@ kind:     task
 summary:  Measured 2026-09-03 on the 20-mod minimal list, dev quicktest map. The
 prose:    infrastructure/state/items/FLUID_CANAL_DEBUG_SURFACE_1.md
 
+## ANOMALY_EXCEPTION_ACCESS_1 The sarlacc/Assailant exception needs a non-research route before the Anomaly cut ships
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  🔑 The content was never cut (owner, 2026-09-03): "I did not cut the anomaly
+prose:    infrastructure/state/items/ANOMALY_EXCEPTION_ACCESS_1.md
+
 ## VANILLA_COUNT_PSEUDO_DEF_1 A mod writes vanilla count-class pseudo-defs (MealSimple10/Chemfuel60/Steel75/Silver120/ComponentIndustrial12) as defNames instead of Def+count
 state:    doing
 row:      unassigned
@@ -455,16 +464,6 @@ _none._
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
 
-## ANOMALY_EXCEPTION_ACCESS_1 The sarlacc/Assailant exception needs a non-research route before the Anomaly cut ships
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     spec, verify and criteria all present
-summary:  🔑 The content was never cut (owner, 2026-09-03): "I did not cut the anomaly
-prose:    infrastructure/state/items/ANOMALY_EXCEPTION_ACCESS_1.md
-
 ## ARMOURY_SOUND_PATHS_RSW_PREFIX_1 18 Armoury blaster sounds silently resolve to nothing - RSW_ prefix is on the clipPath, not the file
 state:    proposed
 row:      unassigned
@@ -492,5 +491,5 @@ needs:    offline
 target:   v1
 kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DIRTY_CODE_REVIEW_LOOP_RESTART_7.md yet — write one when you have something to say)
+summary:  DIRTYCODEREVIEWLOOPRESTART7
 prose:    infrastructure/state/items/DIRTY_CODE_REVIEW_LOOP_RESTART_7.md
