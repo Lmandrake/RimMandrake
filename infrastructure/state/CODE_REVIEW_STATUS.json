@@ -1612,6 +1612,11 @@
     "date": "2026-09-03",
     "sha": "1a5078e1"
   },
+  "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchDefDumpTools.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "9681117f"
+  },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchDiagnosticTools.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -1712,6 +1717,11 @@
     "date": "2026-09-03",
     "sha": "af2d8daa"
   },
+  "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchMapTools.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "d6ae0f49"
+  },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchMiscTools2.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -1807,20 +1817,90 @@
     "date": "2026-09-03",
     "sha": "8b25e71d"
   },
+  "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchVehicleAerialTools.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "9681117f"
+  },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchVehicleTools.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "e693715a"
+  },
+  "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchWorldEdit2.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "9681117f"
+  },
+  "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchWorldTools.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "17dd0cf9"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchZoneTools.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "8b25e71d"
   },
+  "src/RimMandrake/bridgetools/build.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "1fb0888b"
+  },
+  "src/RimMandrake/bridgetools/check_map_biomes_live.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "353b3c33"
+  },
+  "src/RimMandrake/bridgetools/load_session.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "353b3c33"
+  },
+  "src/RimMandrake/bridgetools/probe_now.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "353b3c33"
+  },
+  "src/RimMandrake/bridgetools/prove_gravship.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "1fb0888b"
+  },
+  "src/RimMandrake/bridgetools/prove_harmony_patches.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "1fb0888b"
+  },
   "src/RimMandrake/bridgetools/prove_load_stall_probe.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "359b0b2c"
+  },
+  "src/RimMandrake/bridgetools/prove_new_tools.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "1fb0888b"
+  },
+  "src/RimMandrake/bridgetools/prove_stat_and_room.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "353b3c33"
+  },
+  "src/RimMandrake/bridgetools/prove_world_cache_audit.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "353b3c33"
+  },
+  "src/RimMandrake/bridgetools/shoot_planet.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "353b3c33"
+  },
+  "src/RimMandrake/bridgetools/time_formation.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "353b3c33"
   },
   "src/RimMandrake/mapsynth/authored/author_coastal_mesa.py": {
     "cleanCount": 1,
