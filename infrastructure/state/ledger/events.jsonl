@@ -4318,3 +4318,6 @@
 {"seat":"FOUNDRY","event":"supersede","id":"DIRTY_CODE_REVIEW_LOOP_RESTART_5","by":"DIRTY_CODE_REVIEW_LOOP_RESTART_6","reason":"superseded by DIRTY_CODE_REVIEW_LOOP_RESTART_6, which takes over its work","ts":"2026-09-04T00:45:43Z"}
 {"seat":"FOUNDRY","event":"claim","id":"DIRTY_CODE_REVIEW_LOOP_RESTART_6","ts":"2026-09-04T00:46:59Z"}
 {"seat":"FOUNDRY","event":"start","id":"DIRTY_CODE_REVIEW_LOOP_RESTART_6","ts":"2026-09-04T00:47:00Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"reboot to deploy 4 pending code-review fixes (Graffiti, Visibility, StructureInjections, Armoury)","ts":"2026-09-04T01:17:13Z"}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"FOUNDRY","ownerSaid":"Yes, restart now","ts":"2026-09-04T01:17:38Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ownerSaid":"Game is going down — FOUNDRY deploying 4 code-review fixes: Graffiti, Visibility, StructureInjections, Armoury","ts":"2026-09-04T01:17:49Z"}
