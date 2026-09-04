@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-04T04:24:57Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-04T04:48:09Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -473,16 +473,6 @@ kind:     task
 thin:     spec, verify and criteria all present
 summary:  🔑 The content was never cut (owner, 2026-09-03): "I did not cut the anomaly
 prose:    infrastructure/state/items/ANOMALY_EXCEPTION_ACCESS_1.md
-
-## MINEPOCKET_CONTENT_UNWIRED_1 MinePocket throw-mine content compiles but no XML wires it to a weapon/trap Def
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     investigate
-thin:     spec, verify and criteria all present
-summary:  Not yet written — this item exists to hold the finding, not to prescribe
-prose:    infrastructure/state/items/MINEPOCKET_CONTENT_UNWIRED_1.md
 
 ## ARMOURY_SOUND_PATHS_RSW_PREFIX_1 18 Armoury blaster sounds silently resolve to nothing - RSW_ prefix is on the clipPath, not the file
 state:    proposed
