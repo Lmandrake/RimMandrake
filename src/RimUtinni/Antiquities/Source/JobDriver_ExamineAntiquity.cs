@@ -29,11 +29,22 @@ namespace RimMandrake.Utinni.Antiquities
 
         protected override IEnumerable<Toil> MakeNewToils()
         {
-            this.FailOnDespawnedNullOrForbidden(TargetIndex.A);
+            // 🔴 TargetIndex.A (the antiquity) is deliberately CARRIED, not left on
+            // the map, from the carry toil onward -- StartCarryThing despawns it
+            // into the pawn's carryTracker exactly like any vanilla haul job. A
+            // DRIVER-WIDE FailOnDespawnedNullOrForbidden(TargetIndex.A) checks
+            // Spawned on every tick of every toil, so it fired the instant the
+            // carry toil completed and the antiquity correctly went un-spawned --
+            // aborting the job before it ever reached the station, silently,
+            // every single time (measured 2026-09-04: "started 10 jobs in one
+            // tick", JobGiver_Work re-proposing the identical job forever).
+            // Fix: only the FIRST toil (walking to a still-on-the-map antiquity)
+            // needs that check; chain it there instead of driver-wide.
             this.FailOnDespawnedNullOrForbidden(TargetIndex.B);
             this.FailOn(() => AntiquityUtility.CurrentStage() == null);
 
-            yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.ClosestTouch);
+            yield return Toils_Goto.GotoThing(TargetIndex.A, PathEndMode.ClosestTouch)
+                .FailOnDespawnedNullOrForbidden(TargetIndex.A);
             yield return Toils_Haul.StartCarryThing(TargetIndex.A);
             yield return Toils_Goto.GotoThing(TargetIndex.B, PathEndMode.InteractionCell);
 

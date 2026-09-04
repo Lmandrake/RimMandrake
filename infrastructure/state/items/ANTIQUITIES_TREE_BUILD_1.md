@@ -135,3 +135,72 @@ also be a live-list change I have no read on their intent for). Antiquities
 stays claimed/`doing`; live-verify resumes the moment `rimflow bridge who`
 reads free, by adding `mandrake.rut.antiquities` back to whatever list is
 live at that time and repeating the `## verify` steps above.
+
+## status 2026-09-04 (later same day) — LIVE-VERIFIED, BUG FOUND AND FIXED, CLOSED
+
+Bridge freed later the same session; re-took it and ran the actual live test.
+
+**Two real bugs found and fixed, both by live testing catching what static
+review couldn't:**
+
+1. 🔴 **The reading job silently aborted every single time** — RimWorld's own
+   safety guard fired ("Katt started 10 jobs in one tick"), no exception, no
+   error line, `Find.ResearchManager` progress stuck at 0 no matter how long
+   stepped. Root cause: `MakeNewToils` had a DRIVER-WIDE
+   `this.FailOnDespawnedNullOrForbidden(TargetIndex.A)` checking the
+   antiquity's `Spawned` flag on every tick of every toil — but
+   `Toils_Haul.StartCarryThing` deliberately DESPAWNS the antiquity into the
+   pawn's carry tracker (exactly like any vanilla haul job), so the
+   driver-wide check fired the instant the carry toil completed, aborting
+   the job before it ever reached the station. `JobDriver_Research`
+   (the vanilla template this was built from) never hits this because a
+   research bench is never carried — the bug was specific to designing a
+   job around a CARRIED target. Fixed: moved that check onto the first
+   `Toils_Goto` toil only (`.FailOnDespawnedNullOrForbidden(TargetIndex.A)`
+   chained there), left the station's driver-wide check alone since the
+   station is never carried. Pinned down via per-toil `Log.Message`
+   instrumentation (temporary, since removed) across three restart cycles.
+2. Two lesser bugs caught in the same passes: a `Config error in
+   RUT_AntiquityReadingStation: madeFromStuff but has a defined
+   constructEffect` (stuff supplies its own construct animation — removed
+   the redundant `<constructEffect>`), and `Could not load Texture2D at
+   'Things/Building/Production/ResearchBenchSimple'` for both buildings —
+   that path is a `Graphic_Multi` directional-suffix prefix, not a
+   standalone file, so loading it under `Graphic_Single` (what I'd written)
+   always fails; switched both buildings to the same `AIPersonaCore`
+   placeholder already proven safe for the item defs.
+
+**Full mechanism now verified live, end to end:**
+- Spawned a station + urn near a fresh quicktest colonist, set
+  `RUT_ExamineAntiquities` priority via `jawa/set_work_priority`.
+- `WorkGiver_ExamineAntiquity` correctly proposed the job; the pawn hauled
+  the urn to the station and ran the full `Toils_General.Wait` toil
+  (~60000 ticks, LANGUAGE not yet done) without incident.
+- `Find.ResearchManager.GetProgress(RUT_Antiq_Language)` read back **exactly
+  125.0** (`500 baseCost / 4 artifactsRequired`, precisely as designed) via
+  `jawa/research_progress` — an independent channel, not the job's own
+  claim.
+- The urn re-spawned intact afterward (`hitPoints: 60/60`, still present via
+  `jawa/list_things`) — non-destructive reading confirmed.
+- Pawn resumed ordinary colony life (no stuck job, no repeated errors) after
+  completion.
+
+Not separately re-run: reading 3 more artifacts to actually finish LANGUAGE
+and observe the `RUT_Antiq_Religion` stage transition. Not needed to close
+this item — `Find.ResearchManager.AddProgress`'s self-finish-on-cost-reached
+behavior is vanilla code already read from source (not guessed), and
+`AntiquityUtility.CurrentStage()` is a simple, already-reviewed
+`FirstOrDefault(!IsFinished)` walk. One correct read is sufficient evidence
+the arithmetic and sequencing are both right; four would only re-confirm
+the same already-proven vanilla API behavior.
+
+**Cleanup:** quicktest world discarded, full 591-mod list restored
+(matches the `mandrake.rm.patches`/`rsw.patches`/`rut.patches` split state,
+not the earlier stale 589 snapshot — see the mid-session modlist-collision
+note above), bridge released, all `Transient/verify_antiquities*.py` scratch
+scripts deleted.
+
+**Slice 1 is DONE.** Slices 2-12 (narrative generator, progress meter/LOST
+ledger, map reveals, Helix economy, Call-Out, vault hoards, real art, god
+reactions, mood ladder, Recovery Raid, Empire arc) remain separate,
+unscoped future work per the design doc's own build-plan table.

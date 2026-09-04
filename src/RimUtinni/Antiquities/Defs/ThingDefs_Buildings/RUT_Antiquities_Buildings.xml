@@ -7,10 +7,15 @@
   - RUT_AntiquityReadingStation is the REAL, player-buildable furniture the
     reading job (Source/WorkGiver_ExamineAntiquity.cs,
     JobDriver_ExamineAntiquity.cs) targets. 🖼 PLACEHOLDER ART — reuses the
-    vanilla simple-research-bench texture as a stand-in. Design doc section
-    4.2's authored-art-plus-animation "turning cradle" object is slice 8;
-    this is the functional placeholder that makes the mechanism real
-    without waiting on it.
+    same AIPersonaCore stand-in texture as the item defs (already proven
+    safe elsewhere in this repo, unlike a first attempt reusing vanilla's
+    "ResearchBenchSimple" texPath under Graphic_Single: that path is only
+    ever loaded as a Graphic_Multi's directional-suffix prefix, so a
+    Graphic_Single load against it hits "Could not load Texture2D at
+    ... in any active mod or in base resources" every time — live-verified
+    2026-09-04). Design doc section 4.2's authored-art-plus-animation
+    "turning cradle" object is slice 8; this is the functional placeholder
+    that makes the mechanism real without waiting on it.
 
   - RUT_AntiquityCipherBench is NOT a real building. It exists only so
     every RUT_Antiq_* ResearchProjectDef can point requiredResearchBuilding
@@ -40,7 +45,6 @@
     <hasInteractionCell>true</hasInteractionCell>
     <interactionCellOffset>(0,0,-1)</interactionCellOffset>
     <designationCategory>Production</designationCategory>
-    <constructEffect>ConstructMetal</constructEffect>
     <terrainAffordanceNeeded>Light</terrainAffordanceNeeded>
     <repairEffect>Repair</repairEffect>
     <filthLeaving>Filth_RubbleBuilding</filthLeaving>
@@ -64,11 +68,10 @@
       <Mass>15</Mass>
     </statBases>
     <graphicData>
-      <texPath>Things/Building/Production/ResearchBenchSimple</texPath>
+      <texPath>Things/Item/Special/AIPersonaCore</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(1,1)</drawSize>
     </graphicData>
-    <uiIconPath>Things/Building/Production/ResearchBenchSimple</uiIconPath>
   </ThingDef>
 
   <ThingDef>
@@ -85,7 +88,7 @@
       <Flammability>0</Flammability>
     </statBases>
     <graphicData>
-      <texPath>Things/Building/Production/ResearchBenchSimple</texPath>
+      <texPath>Things/Item/Special/AIPersonaCore</texPath>
       <graphicClass>Graphic_Single</graphicClass>
     </graphicData>
   </ThingDef>
