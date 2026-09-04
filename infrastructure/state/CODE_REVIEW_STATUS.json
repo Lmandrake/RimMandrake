@@ -649,6 +649,11 @@
     "date": "2026-09-03",
     "sha": "9f6f93ea"
   },
+  "src/RimMandrake/Utils/bridge_latency.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "8193b35c"
+  },
   "src/RimMandrake/Utils/broadcast.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -863,6 +868,11 @@
     "date": "2026-09-02",
     "sha": "3569bca9"
   },
+  "src/RimMandrake/Utils/genome_scan.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "8193b35c"
+  },
   "src/RimMandrake/Utils/grade_authored_kinds_trial.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -872,6 +882,11 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "858dbd2f"
+  },
+  "src/RimMandrake/Utils/gravship_layout.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "8193b35c"
   },
   "src/RimMandrake/Utils/harvest_log.py": {
     "cleanCount": 1,
@@ -968,6 +983,11 @@
     "date": "2026-09-03",
     "sha": "8e8fe001"
   },
+  "src/RimMandrake/Utils/loadsweep/gen_config.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "c170a4ee"
+  },
   "src/RimMandrake/Utils/make_vehicle_mask.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -986,6 +1006,11 @@
   "src/RimMandrake/Utils/modlist_swap.py": {
     "date": "2026-09-02",
     "sha": "d1c193ae"
+  },
+  "src/RimMandrake/Utils/modset_builder.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "c170a4ee"
   },
   "src/RimMandrake/Utils/naming_lint.py": {
     "cleanCount": 1,
@@ -1072,10 +1097,35 @@
     "date": "2026-09-03",
     "sha": "5c97b5c1"
   },
+  "src/RimMandrake/Utils/rimbench/crater.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "86de40c5"
+  },
+  "src/RimMandrake/Utils/rimbench/formations.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "86de40c5"
+  },
+  "src/RimMandrake/Utils/rimbench/place.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "86de40c5"
+  },
+  "src/RimMandrake/Utils/rimbench/roll_arm_harvest.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "86de40c5"
+  },
   "src/RimMandrake/Utils/rimbench/savemap.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "5c97b5c1"
+  },
+  "src/RimMandrake/Utils/rimbench/scatter.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "86de40c5"
   },
   "src/RimMandrake/Utils/rimbench/selftest.py": {
     "cleanCount": 1,
@@ -1086,6 +1136,11 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "2b988f1c"
+  },
+  "src/RimMandrake/Utils/rimbench/terrain.py": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "86de40c5"
   },
   "src/RimMandrake/Utils/rimbridge_client.py": {
     "cleanCount": 1,
