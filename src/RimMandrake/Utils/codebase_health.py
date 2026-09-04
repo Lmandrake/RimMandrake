@@ -105,6 +105,8 @@ EXCLUDE_PREFIXES = (
                # regenerable"; the rest are cited the same way from design docs as
                # docstring-carries-the-reasoning session records (FOUNDRY, 2026-09-04,
                # DIRTY_CODE_REVIEW_LOOP_RESTART_8 follow-on — 211 files, world/_lf/README.md)
+    "infrastructure/state/evidence/",  # same pattern: one item's live-measurement
+               # scripts + README, kept as the record for a closed item (FOUNDRY, 2026-09-04)
 )
 EXCLUDE_PARTS = ("__pycache__", "node_modules", "/bin/", "/obj/")
 
