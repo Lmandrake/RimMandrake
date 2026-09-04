@@ -146,6 +146,21 @@ def measure(use_cache=True):
     `implies` is None when the probe could not look — the one case where a caller must
     leave the recorded value exactly as it found it.
     """
+    # 🔑 Selftest seam. The CLI selftests drive real subprocesses against a
+    # sandboxed ledger, but this probe reads the REAL machine — so a fixture
+    # that stamped `game UP` was "corrected" to DOWN whenever the owner's
+    # actual game happened to be off, and the suite flipped green/red with
+    # his play sessions (measured 2026-09-04: a_free_bridge_offer... was
+    # green while the game ran and failed the hour it closed). The seam
+    # returns the probe's own documented ignorance form — `implies: None`,
+    # "leave the recorded value exactly as it found it" — so fixtures keep
+    # their stamped state without inventing a second code path.
+    if os.environ.get("RIMFLOW_PROBE") == "no-reading":
+        return {"running": None, "bridge": None, "implies": None,
+                "evidence": "RIMFLOW_PROBE=no-reading — probe disabled "
+                            "(selftest seam); no machine reading taken",
+                "at": time.time()}
+
     if use_cache:
         try:
             with open(CACHE, "r", encoding="utf-8") as fh:

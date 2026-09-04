@@ -87,6 +87,10 @@ def env(seat="BUILD", **over):
          if k not in ("RIMFLOW_SEAT", "AGENT_SEAT", "CLAUDE_SESSION_ID")}
     e["RIMFLOW_LEDGER"] = os.path.join(_tmp(), "events.jsonl")
     e["RIMFLOW_ITEMS"] = os.path.join(_tmp(), "items")
+    # The probe reads the REAL machine; without this, any case that stamps a
+    # game state is silently "corrected" to whatever the owner's actual game
+    # is doing right now (see probe.measure's seam note, 2026-09-04).
+    e["RIMFLOW_PROBE"] = "no-reading"
     if seat:
         e["RIMFLOW_SEAT"] = seat
     e.update(over)
