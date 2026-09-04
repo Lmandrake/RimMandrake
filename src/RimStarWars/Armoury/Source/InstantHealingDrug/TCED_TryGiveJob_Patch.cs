@@ -28,7 +28,8 @@ public static class TCED_TryGiveJob_Patch
     private static void Postfix(Pawn pawn, ref bool __state, ref bool ___onlyIfInDanger, ref Job __result)
     {
         ___onlyIfInDanger = __state;
-        if (__result != null || InstantHealingDrug.VerbSelfHediffType == null || pawn == null
+        if (__result != null || InstantHealingDrug.VerbSelfHediffType == null
+            || InstantHealingDrug.VSH_inDangerField == null || pawn == null
             || pawn.equipment == null || pawn.apparel == null || pawn.VerbTracker?.AllVerbs == null
             || Find.TickManager.TicksGame - pawn.mindState.lastHarmTick > 2500
             || Find.TickManager.TicksGame - pawn.mindState.lastTakeCombatEnhancingDrugTick < 20000)
