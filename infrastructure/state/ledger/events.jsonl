@@ -4405,3 +4405,4 @@
 {"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-09-04T09:12:31Z"}
 {"seat":"OWNER","event":"file","id":"RESEARCH_RECOST_PREREQ_JOIN_1","title":"Re-cost to tier bands, join logical prereqs, flag functionless tech","kind":"task","target":"v1","needs":"offline","for":"BENCH","ownerSaid":"accept all your fixes, and yes time for recosting and joining logical prerequisites together. Please also flag effectively functionless tech in the game that might be repurposed for our plot or other functions. I'm going afk, so do your best","ts":"2026-09-04T09:13:12Z"}
 {"seat":"BENCH","event":"claim","id":"RESEARCH_RECOST_PREREQ_JOIN_1","ts":"2026-09-04T09:13:13Z"}
+{"seat":"BENCH","event":"close","id":"RESEARCH_RECOST_PREREQ_JOIN_1","sha":"b2c50c1f","ts":"2026-09-04T09:17:45Z"}
