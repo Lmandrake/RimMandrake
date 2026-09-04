@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rut.rites</packageId>
+  <name>The Rites</name>
+  <author>Mandrake</author>
+  <supportedVersions><li>1.6</li></supportedVersions>
+  <description>The liturgy tree: five rites the clan does not buy but is given,
+as the ship remembers. Scrap Shrine, Conduit Choir, God-Speaker Array, Liturgy
+of the Hull, and the day The Gods Speak Back.
+
+Authored 2026-09-04 on the owner's ruling (RESEARCH_TREE_NORMALIZATION_1
+rulings block). v1 ships the tab and the five ResearchProjectDefs, chained
+T0..T4. The revealed-not-bought gate (ship-memory grants, no ordinary
+research) is LATER work — until it lands these rows are researchable like any
+other, which is acceptable for review and wrong for shipping. Subspace
+gravitic penetration's flavor folds into the God-Speaker Array per
+design/Jawa/research_review/functionless_tech_candidates.md.</description>
+</ModMetaData>

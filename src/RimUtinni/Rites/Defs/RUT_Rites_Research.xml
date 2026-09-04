@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <ResearchTabDef>
+    <defName>RUT_Rites</defName>
+    <label>the rites</label>
+    <generalTitle>The Rites</generalTitle>
+    <generalDescription>The liturgy is not bought. It is revealed, rite by rite, as the ship remembers what it is.</generalDescription>
+  </ResearchTabDef>
+
+  <ResearchProjectDef>
+    <defName>RUT_Rites_ScrapShrine</defName>
+    <label>the scrap shrine</label>
+    <description>A place where the salvage is laid out and spoken over. The first rite: that nothing taken from the sand is junk until the clan says so. Unadorned, load-bearing faith.</description>
+    <baseCost>400</baseCost>
+    <techLevel>Neolithic</techLevel>
+    <tab>RUT_Rites</tab>
+    <researchViewX>0</researchViewX>
+    <researchViewY>1</researchViewY>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef>
+    <defName>RUT_Rites_ConduitChoir</defName>
+    <label>conduit choir</label>
+    <description>The hum in the walls is a voice, and the second rite teaches the clan to hum back. Power conduits laid in patterns that please whatever listens beneath the deck plates.</description>
+    <baseCost>1200</baseCost>
+    <techLevel>Industrial</techLevel>
+    <tab>RUT_Rites</tab>
+    <prerequisites><li>RUT_Rites_ScrapShrine</li></prerequisites>
+    <researchViewX>1</researchViewX>
+    <researchViewY>1</researchViewY>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef>
+    <defName>RUT_Rites_GodSpeakerArray</defName>
+    <label>god-speaker array</label>
+    <description>An antenna raised not to transmit but to be heard. Gravity waves modulated to brush subspace, and for one held breath, an echo answers. The engineers call it resonance. The clan does not.</description>
+    <baseCost>2600</baseCost>
+    <techLevel>Industrial</techLevel>
+    <tab>RUT_Rites</tab>
+    <prerequisites><li>RUT_Rites_ConduitChoir</li></prerequisites>
+    <researchViewX>2</researchViewX>
+    <researchViewY>1</researchViewY>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef>
+    <defName>RUT_Rites_HullLiturgy</defName>
+    <label>liturgy of the hull</label>
+    <description>The whole ship, walked end to end, every weld named aloud. The fourth rite is a map of the Utinni made of spoken words, and the ship holds still to listen to her own name.</description>
+    <baseCost>4000</baseCost>
+    <techLevel>Spacer</techLevel>
+    <tab>RUT_Rites</tab>
+    <prerequisites><li>RUT_Rites_GodSpeakerArray</li></prerequisites>
+    <researchViewX>3</researchViewX>
+    <researchViewY>1</researchViewY>
+  </ResearchProjectDef>
+
+  <ResearchProjectDef>
+    <defName>RUT_Rites_GodsSpeakBack</defName>
+    <label>the gods speak back</label>
+    <description>The last rite is not performed. It happens. Every shrine, every choir, every named weld, answered at once — and the clan learns what the ship has been remembering all along.</description>
+    <baseCost>8000</baseCost>
+    <techLevel>Ultra</techLevel>
+    <tab>RUT_Rites</tab>
+    <prerequisites><li>RUT_Rites_HullLiturgy</li></prerequisites>
+    <researchViewX>4</researchViewX>
+    <researchViewY>1</researchViewY>
+  </ResearchProjectDef>
+
+</Defs>
