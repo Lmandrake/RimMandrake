@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-04T22:06:07Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: FOUNDRY
+as-of: 2026-09-04T22:08:04Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -394,4 +394,14 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-_none._
+Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
+
+## RESEARCH_RETAG_LOAD_ORDER_GAP_1 ResearchRetag has no forceLoadAfter - patches on ~260 defs can silently no-op if a content mod loads after it
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     spec, verify and criteria all present
+summary:  Found by a code-review pass (2026-09-04) while marking src/RimUtinni/
+prose:    infrastructure/state/items/RESEARCH_RETAG_LOAD_ORDER_GAP_1.md
