@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-04T20:20:20Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: FOUNDRY
+as-of: 2026-09-04T20:52:22Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -297,15 +297,6 @@ kind:     bug
 summary:  Determine whether mandrake.rsw.helixtellurox genuinely crashes a load to
 prose:    infrastructure/state/items/HELIX_TELLUROX_SHELL_LOAD_CRASH_1.md
 
-## INHABITED_SETTLEMENT_MAPPARENT_GAP_1 WorldObject_InhabitedSettlement derives from WorldObject, not MapParent - mapGenerator/canHaveMap are architecturally inert, settlement district/cast GenSteps may have never run
-state:    doing
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     bug
-summary:  Determine (live, via the bridge, not more code reading) whether an
-prose:    infrastructure/state/items/INHABITED_SETTLEMENT_MAPPARENT_GAP_1.md
-
 ## INHABITED_STOCK_ONTO_MAP_AND_FATE_1 Spawn a place's stock onto its map, collect it back, and wire InhabitedFate to it
 state:    doing
 row:      unassigned
@@ -423,4 +414,14 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-_none._
+Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
+
+## INHABITED_SETTLEMENT_PRODUCER_GAP_1 Nothing in the game ever constructs an Inhabited_Settlement world object — no producer exists
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/INHABITED_SETTLEMENT_PRODUCER_GAP_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/INHABITED_SETTLEMENT_PRODUCER_GAP_1.md
