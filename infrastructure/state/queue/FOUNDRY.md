@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-04T22:36:33Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-04T22:39:55Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -415,3 +415,13 @@ kind:     bug
 thin:     spec, verify and criteria all present
 summary:  Found by a code-review pass (2026-09-04) while marking
 prose:    infrastructure/state/items/KARRASK_ASYMMETRIC_CLAW_TOOL_1.md
+
+## RITES_REVEAL_MECHANISM_1 The Rites ship ungated - 'revealed-not-bought' has no mechanism yet
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/RITES_REVEAL_MECHANISM_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/RITES_REVEAL_MECHANISM_1.md
