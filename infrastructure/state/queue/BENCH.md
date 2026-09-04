@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-04T23:32:47Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: BENCH
+as-of: 2026-09-04T23:50:24Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -16,16 +16,7 @@ Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED be
 
 # IN PROGRESS
 
-Started, and therefore not offered again. `rimflow close` or `rimflow block` moves them.
-
-## RESEARCH_TREE_NORMALIZATION_1 Restructure ALL research for the whole game - full normalization pass, after the droids land
-state:    doing
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-summary:  Layer stack: design/Jawa/researchnormalizationprinciples.md (why) →
-prose:    infrastructure/state/items/RESEARCH_TREE_NORMALIZATION_1.md
+_none._
 
 # BLOCKED — something is WRONG and someone must act
 
