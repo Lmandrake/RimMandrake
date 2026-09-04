@@ -88,18 +88,37 @@ on the 22s minimal list (`rimworld-load-round`):
   the created object is `SETTLEMENT_MANIFEST_BINDING_1`, a separate item,
   already scoped and unaffected by this change.
 
-## status 2026-09-04
-Code written and committed, builds clean. Blocked on live verification —
-no game running this session to attach a bridge to. Left `doing`; whoever
-next holds FOUNDRY with the bridge up should run the `## verify` steps and
-close with the observed result, per "whoever proves it closes it."
+## status 2026-09-04 — LIVE-VERIFIED, CLOSED
+Owner handed FOUNDRY the bridge same session. Companion rebuilt `--gm --apply`
+(the earlier "would lose 35 tools" warning below was only the missing `--gm`
+flag, not real drift — resolved, kept as the record of why it looked
+alarming), minimal-list quicktest (`start_debug_game_ready`), all four
+`## verify` steps run for real:
 
-Unrelated observation made while building: `build.py`'s deploy-plan gate
-reported the currently-deployed companion DLL (commit `f8b647e7ce24`) has
-several tools (`jawa/pawn_*`, `jawa/lord_*`, `jawa/weather_*`, others) that
-a fresh build from current HEAD does not produce — pre-existing drift, not
-caused by this change (verified: only `JawaBenchWorldTools.cs` is modified
-in this worktree, and every one of those tool names still has a source file
-present). Not investigated further here — out of this item's scope — but
-worth a look before anyone runs `build.py --apply --allow-tool-removal`
-blind.
+1. Dry run against a 2-row test CSV (one `world_object_def=Inhabited_Settlement`,
+   one plain vanilla row) — `wouldCreate: 2`, `worldObjectDefs:
+   ["Inhabited_Settlement", "Settlement"]`, neither row refused.
+2. `apply=true` — `success: true`, `createdByDef: {"Inhabited_Settlement": 1,
+   "Settlement": 1}`, `nullFactionCreated: 0`.
+3. Independent read-back via `jawa/world_objects_get` (reads
+   `Find.WorldObjects.AllWorldObjects` directly, not this tool's own claim):
+   object id 108, `def: "Inhabited_Settlement"`, `label: "Test Inhabited
+   Producer"` (the reflection-set name landed), `faction: "TribeCivil"`,
+   `hasFaction: true`, **`isSettlement: false`** — genuinely a different C#
+   type from the vanilla row (id 109, `isSettlement: true`), not a relabeled
+   Settlement.
+4. Re-ran the SAME import — `success: false`, `skippedOccupied: 2`, both rows
+   refused as "a map-capable world object already occupies this tile" — the
+   generalised `canHaveMap` occupancy check fires for the non-Settlement type
+   too, no stacking.
+
+Cleaned up: quicktest world discarded (disposable, no save), full 589-mod
+list restored (`modlist_swap.py --restore --apply`), bridge released.
+
+Unrelated observation made while building (now resolved): `build.py`'s
+deploy-plan gate reported the currently-deployed companion DLL (commit
+`f8b647e7ce24`) missing several tools (`jawa/pawn_*`, `jawa/lord_*`,
+`jawa/weather_*`, others) that a fresh build from current HEAD did not
+produce without `--gm` — CLAUDE.md's own doctrine ("`--gm` is not optional on
+the companion build") names exactly this shape. Rebuilding with `--gm --apply`
+resolved it; not a real regression.
