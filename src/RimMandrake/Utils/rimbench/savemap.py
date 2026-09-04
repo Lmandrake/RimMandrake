@@ -8,9 +8,12 @@ per cell:
       <underGridDeflate>      ...base64...   what is beneath a floor
       <foundationGridDeflate> ...base64...
       <tempGridDeflate>       ...base64...
-    <roofGrid><roofsDeflate>  ...base64...
-    <snowGrid><depthGridDeflate>
+    <roofGrid><roofsDeflate>  ...base64...   RoofDef shortHash (own hash namespace)
     <pollutionGrid><grid><mapSizeX>250</mapSizeX><arrDeflate>
+
+NOT handled: `<snowGrid><depthGridDeflate>` looks the same shape but is a ushort
+encoding of a FLOAT depth, not a defName shortHash -- see the GRID_DEF_TYPE
+comment below. `<fogGrid>` is a bitfield, not ushorts at all -- see `write()`.
 
 Verified on a 250x250 map: `zlib.decompress(data, -15)` yields exactly
 125,000 bytes = 62,500 cells x 2.
@@ -37,8 +40,26 @@ GRIDS = {
     "under":   ("terrainGrid", "underGridDeflate"),
     "foundation": ("terrainGrid", "foundationGridDeflate"),
     "roof":    ("roofGrid", "roofsDeflate"),
-    "snow":    ("snowGrid", "depthGridDeflate"),
 }
+
+# Def type each grid's ushorts index into. "roof" is a SEPARATE hash namespace
+# from terrain -- RimWorld's ShortHashGiver collision-resolves per Def TYPE
+# (Verse/RoofGrid.cs ExposeData: DefDatabase<RoofDef>.GetByShortHash), so
+# decoding roofsDeflate through the TerrainDef table looks up the wrong
+# namespace and can silently return a real (wrong) TerrainDef name on a hash
+# collision between the two spaces. Verified against Verse/RoofGrid.cs.
+GRID_DEF_TYPE = {"roof": "RoofDef"}
+
+# ⚠️ snowGrid's depthGridDeflate is DELIBERATELY NOT in GRIDS. It is not a
+# defName shortHash array at all: Verse/SnowGrid.cs ExposeData round-trips
+# through SnowFloatToShort/SnowShortToFloat, a ushort encoding of a FLOAT
+# depth (0-1). Same width as every other grid (2 bytes/cell), so it decodes
+# without error through this module's defName machinery and would return
+# meaningless "hash:N" labels on read -- or, on a paint(), write a TerrainDef
+# shortHash into the depth field, corrupting snow silently. This is the
+# fogGrid trap's sibling: wrong CONTENT type at the right width, not wrong
+# width. Leave it alone; drive snow depth through the live bridge
+# (SnowGrid.SetDepth / JawaBenchSystemTools.cs) instead.
 
 
 def load_hash_table(dump_dir, def_type="TerrainDef"):
@@ -73,13 +94,27 @@ class SaveMap(object):
 
     def __init__(self, save_path, dump_dir):
         self.path = save_path
+        self.dump_dir = dump_dir
         self.text = io.open(save_path, encoding="utf-8", errors="replace").read()
-        self.by_hash, self.by_name = load_hash_table(dump_dir)
+        self.by_hash, self.by_name = load_hash_table(dump_dir)   # TerrainDef
+        self._hash_tables = {"TerrainDef": (self.by_hash, self.by_name)}
         m = re.search(r"<mapSizeX>(\d+)</mapSizeX>.*?<mapSizeZ>(\d+)</mapSizeZ>",
                       self.text, re.S)
         self.w = int(m.group(1)) if m else 250
         self.h = int(m.group(2)) if m else 250
         self._grids = {}
+
+    def _hash_table(self, which):
+        """(by_hash, by_name) for the def type that grid `which` indexes into.
+
+        "roof" is RoofDef, everything else is TerrainDef -- see GRID_DEF_TYPE.
+        Using the wrong table decodes through the wrong ShortHashGiver
+        namespace; see the GRIDS/GRID_DEF_TYPE comment above.
+        """
+        def_type = GRID_DEF_TYPE.get(which, "TerrainDef")
+        if def_type not in self._hash_tables:
+            self._hash_tables[def_type] = load_hash_table(self.dump_dir, def_type)
+        return self._hash_tables[def_type]
 
     # ------------------------------------------------------------- codec
     @staticmethod
@@ -111,13 +146,15 @@ class SaveMap(object):
     def terrain_at(self, x, z, which="terrain"):
         g = self.grid(which)
         i = self.idx(x, z)
-        return self.by_hash.get(g[i], "hash:%d" % g[i]) if 0 <= i < len(g) else None
+        by_hash, _ = self._hash_table(which)
+        return by_hash.get(g[i], "hash:%d" % g[i]) if 0 <= i < len(g) else None
 
     def census(self, which="terrain"):
         """defName -> cell count. The fastest way to understand a map."""
         import collections
+        by_hash, _ = self._hash_table(which)
         c = collections.Counter(self.grid(which))
-        return {self.by_hash.get(h, "hash:%d" % h): n for h, n in c.most_common()}
+        return {by_hash.get(h, "hash:%d" % h): n for h, n in c.most_common()}
 
     # ------------------------------------------------------------- write
     def paint(self, cells, terrain, which="terrain", clear_under=True):
@@ -143,10 +180,11 @@ class SaveMap(object):
         rule against, and inventing one from a uniform sample is how the wrong
         rule gets baked in. If you author over gravship substructure, check it.
         """
-        h = self.by_name.get(terrain)
+        _, by_name = self._hash_table(which)
+        h = by_name.get(terrain)
         if h is None:
             raise KeyError("unknown terrain %r for this mod set. Known: %d defs"
-                           % (terrain, len(self.by_name)))
+                           % (terrain, len(by_name)))
         g = self.grid(which)
         under = None
         if clear_under and which == "terrain":

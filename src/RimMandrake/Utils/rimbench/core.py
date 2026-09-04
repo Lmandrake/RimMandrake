@@ -201,16 +201,39 @@ class Session(object):
     def select(self, pawnId):
         return self.call("rimworld/select_pawn", pawnId=pawnId)
 
+    def _worn(self, pawnId):
+        pawns = self.call("jawa/pawn_get", pawn=pawnId).get("pawns") or []
+        return pawns[0].get("apparel") or [] if pawns else []
+
     def wear(self, pawnId, apparelDef):
-        """Dress the SELECTED pawn. Acts on selection, so we select first."""
-        self.select(pawnId)
-        path = "Actions" + BS + "Wear apparel (selected)..." + BS + apparelDef
-        return self.action(path)
+        """Dress a pawn, verified via an independent read-back.
+
+        Used to drive the "Wear apparel (selected)..." debug action, which acts
+        on the UI selection and, like every debug action in this module, reports
+        success on the click regardless of whether apparel.Wear() actually
+        accepted the garment. `jawa/pawn_gear` (action='wear') is the purpose-
+        built, self-verifying replacement -- it checks
+        `p.apparel.WornApparel.Contains(ap)` server-side and returns
+        success:false on a real failure -- but per this module's own rule
+        (see `mutate()`), a mutating call's own response is never trusted alone,
+        so this also reads the pawn back through jawa/pawn_get.
+        """
+        def verify():
+            return any(a.get("defName") == apparelDef for a in self._worn(pawnId))
+
+        return self.mutate(
+            "wear %s on %s" % (apparelDef, pawnId),
+            lambda: self.call("jawa/pawn_gear",
+                              **{"pawn": pawnId, "action": "wear", "def": apparelDef}),
+            verify)
 
     def strip(self, pawnId):
-        self.select(pawnId)
-        return self.action("Actions" + BS + "Wear apparel (selected)..." +
-                           BS + "*Remove all apparel")
+        """Remove all worn apparel, verified via an independent read-back."""
+        return self.mutate(
+            "strip %s" % pawnId,
+            lambda: self.call("jawa/pawn_gear", pawn=pawnId, action="clear",
+                              clearWhat="apparel"),
+            lambda: self._worn(pawnId) == [])
 
     # ---------------------------------------------------------------- time
     def step(self, ticks=60):

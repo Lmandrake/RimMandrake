@@ -121,7 +121,16 @@ class Blueprint(object):
                 r = self.s.call("rimworld/apply_architect_designator",
                                 designatorId=did, x=x, z=z, width=w, height=h,
                                 keepSelected=True)
-                placed += 1 if r.get("success") else 0
+                # A piece that PASSED the dry-run above can still come back
+                # success:false for real (a race with another placement, a
+                # cell that changed between plan() and here) -- that must
+                # count as skipped, not silently vanish from both totals.
+                # placed + skipped must equal len(self.pieces) or the report
+                # is exactly the kind of number that lies about the work done.
+                if r.get("success"):
+                    placed += 1
+                else:
+                    skipped += 1
             except Exception:
                 skipped += 1
         if verbose:
