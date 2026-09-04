@@ -26,8 +26,13 @@ CX, CY = xs.mean(), ys.mean()
 # --- machine sets per wing (Factory_lore.md §3; footprint = (dx,dy) in tiles, io = #hopper ports) ---
 # Every factory machine needs Factory Floor beneath it (§1.1) and hoppers at each I/O port (§4.1).
 # Hot wings additionally carry a Factory Booster (3x1) + Factory Heatsink bank (2x2 each).
+#
+# Autofarmer is (7,3) — VFEFactory_Autofarmer's own <size> in Buildings_Factories.xml, confirmed
+# against the mod source. build_sheet_15.py's MACHINES table (PASS 2) carries this corrected
+# value already; this table (PASS 1) had drifted back to the transposed (3,7) — fixed here to
+# match, since interior_fit_placements.json feeds skeleton_15.py's machine centres downstream.
 MACHINES = {
-    'A': [('Autofarmer', 3, 7, 1), ('Drill Platform', 3, 3, 1), ('Fishfarm', 3, 3, 1)],
+    'A': [('Autofarmer', 7, 3, 1), ('Drill Platform', 3, 3, 1), ('Fishfarm', 3, 3, 1)],
     'B': [('Smelter', 3, 4, 4), ('Masonry Saw', 3, 3, 2), ('Mincer', 3, 3, 2),
           ('Crematorium', 3, 3, 1), ('Biofuel Refinery', 3, 4, 4)],
     'C': [('Conveyor Oven', 3, 5, 4), ('Cannery', 3, 5, 3), ('Distillery', 3, 3, 2)],
