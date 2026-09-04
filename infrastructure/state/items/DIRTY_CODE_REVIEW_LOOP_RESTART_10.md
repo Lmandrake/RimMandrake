@@ -65,3 +65,31 @@ All four commits pushed individually (`908fdc8a`, `a37b8ce5`, `1931db8e`,
    in-scope files (this is `AFK batches` territory — subagents, output budgets,
    grade the diff not the summary) or (b) stop and let the queue refill from other
    seats' work.
+
+## Addendum: (a) was tried, and (a)'s own premise was wrong
+
+Picked `src/RimMandrake/Property/` (the ownership fabric, 18 files) off
+`Transient/codebase_health.json`'s "blue" list as the candidate sweep. Before
+spending the review, ran `code_review_status.py check` on all 18 as a sanity
+pass — **every one was already CLEAN**, recorded 2026-09-03. `codebase_health.py`'s
+"blue" does NOT mean "never reviewed / dirty" — its own legend (line ~592) says
+"in dev: uncommitted changes, OR named by an open item whose state is `doing`".
+These files are blue because `PROPERTY_FABRIC_BUILD_1` (their build item) is
+still `doing`, not because the files themselves need review. `code_review_status.py
+check`/`list` is the CLAUDE.md-authoritative clean/dirty source; `codebase_health.py`
+is a derived dashboard with a different, non-overlapping meaning for the same
+color — don't conflate them again. (First subagent launch attempt for this review
+also silently no-op'd — 0 tool calls, misleading "still running" summary echoed
+back verbatim in its own completion notification — so this was done directly
+rather than re-delegated.)
+
+**Net: there is no free-standing FOUNDRY review backlog left to sweep.** The
+618/635 clean count from RESTART_9 stands, the 26 deliberately-deferred files are
+still deliberately deferred for the same stated reasons, and "blue" in the health
+dashboard is not a queue of reviewable work. Closing this item without a
+successor — `rimflow next --seat FOUNDRY` was empty before this addendum and
+stays empty after it. Whoever picks the loop back up should re-run
+`code_review_status.py list` fresh (this session's own attempt at that hung/ran
+long on the shared mount and was killed) before assuming anything about the
+current count, and should pull from newly-filed items rather than the health
+dashboard's blue list.

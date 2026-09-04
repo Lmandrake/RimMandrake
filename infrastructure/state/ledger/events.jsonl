@@ -4437,3 +4437,6 @@
 {"seat":"FOUNDRY","event":"close","id":"IMAGE_SKILL_SCRIPT_NITS_1","sha":"1931db8e","ts":"2026-09-04T14:36:31Z"}
 {"seat":"FOUNDRY","event":"file","id":"DIRTY_CODE_REVIEW_LOOP_RESTART_10","title":"Continuity note for the standing dirty-code-review loop, successor to RESTART_9","kind":"task","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-04T14:40:11Z"}
 {"seat":"FOUNDRY","event":"supersede","id":"DIRTY_CODE_REVIEW_LOOP_RESTART_9","by":"DIRTY_CODE_REVIEW_LOOP_RESTART_10","reason":"superseded by DIRTY_CODE_REVIEW_LOOP_RESTART_10, which takes over its work","ts":"2026-09-04T14:40:11Z"}
+{"seat":"FOUNDRY","event":"claim","id":"DIRTY_CODE_REVIEW_LOOP_RESTART_10","ts":"2026-09-04T14:40:51Z"}
+{"seat":"FOUNDRY","event":"start","id":"DIRTY_CODE_REVIEW_LOOP_RESTART_10","ts":"2026-09-04T14:40:51Z"}
+{"seat":"FOUNDRY","event":"close","id":"DIRTY_CODE_REVIEW_LOOP_RESTART_10","sha":"a28d4970","ts":"2026-09-04T14:46:52Z"}
