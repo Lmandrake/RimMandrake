@@ -54,3 +54,15 @@ closes only when all five conditions above hold together.
 - Cherry Picker cuts are invisible to the dump; cherrypicker.py is the reader.
 - 22 rows are alive with empty unlock caches (prep §1 allowlist).
 - Nothing renames a defName, ever.
+
+## Rulings 2026-09-04 (owner, by question card)
+
+1. **techLevel retag: BUILD.** The 185 tier-vs-techLevel mismatches get a def
+   patch (tier grammar's mapping); cost multiplier consequences accepted.
+2. **Mechanitor hardware: LEAVE AS LOOT.** No Cherry Picker cuts for mechlinks/
+   subcores/gestators — they drop and trade as flavor junk the Jawa can sell;
+   they unlock nothing (research is cut).
+3. **GravBionics: Rust Cathedral boon-gate**, same as GravWeapon — all personal
+   gravtech is Rataka boon-tech (recorded on the manifest row).
+4. **The Rites: AUTHOR as real rows** — 5-row locked tree, revealed-not-bought;
+   the reveal mechanism is later ship-memory work.
