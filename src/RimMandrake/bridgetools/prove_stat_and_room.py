@@ -127,7 +127,11 @@ def main(argv=None):
     r = call("jawa/pawn_stats", {"pawn": subject, "stats": "ComfortableTemperatureMin"})
     # ComfortableTemperatureMin does NOT exist - the real names are ComfyTemperature*.
     # A tool that returns success here has silently dropped the question.
-    note(r.get("success") is False and r.get("details", {}).get("refused"),
+    # (r.get("details") or {}), not r.get("details", {}): a refusal with an
+    # explicit "details": null would crash this AttributeError on the .get()
+    # below and take the rest of the live session with it -- the very next
+    # line already guards the same field this way.
+    note(r.get("success") is False and (r.get("details") or {}).get("refused"),
          "a bogus stat name fails loudly",
          (r.get("message") or "")[:70])
     sug = ((r.get("details") or {}).get("refused") or [{}])[0].get("suggestions") or []

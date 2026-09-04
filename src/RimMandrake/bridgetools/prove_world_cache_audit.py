@@ -116,9 +116,14 @@ if ex:
     check("cached and expected genuinely DIFFER in the row",
           e.get("hillinessLabelCached") != e.get("hillinessLabelExpected"),
           "equal values here would mean the raw value was returned twice")
-    check("expected tracks the new raw value",
-          e.get("hillinessLabelExpected") == e.get("hillinessRaw") or True,
-          "(mutators may legitimately override the label)")
+    # Not a check(): `or True` made this always report PASS regardless of the
+    # actual comparison, which is exactly the degenerate-pass shape this script
+    # exists to avoid elsewhere. Mutators may legitimately override the label,
+    # so the comparison is informational only -- print it, don't score it.
+    print("  INFO  expected tracks the new raw value: %s   (%s == %s; "
+          "mutators may legitimately override the label)"
+          % (e.get("hillinessLabelExpected") == e.get("hillinessRaw"),
+             e.get("hillinessLabelExpected"), e.get("hillinessRaw")))
 
 # ------------------------------------------------------------ 4. refusal paths
 print("\n== 4. the refusal paths, which a happy-path-only proof would miss ==")

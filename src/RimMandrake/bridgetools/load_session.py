@@ -165,7 +165,13 @@ def census(s, expect=None):
         print("     Fix it in the shutdown window:")
         print("       python.exe src/RimMandrake/bridgetools/build.py --gm --apply")
         print("     Missing: %s" % (set(EXPECTED_TOOLS) - set(jawa) or "none"))
-    return set(jawa)
+    # 🔴 Must return falsy on ANY count mismatch, not just on zero tools. Before
+    # this fix, `run()` only stopped when the bridge reported literally no
+    # jawa/ tools at all -- a stale deploy short (or long) by even one tool
+    # printed "STOP AND READ THIS" and then the harness ran every item anyway,
+    # against the companion the docstring says nothing below is interpretable
+    # without. Found 2026-09-03 during the bridgetools review sweep.
+    return set(jawa) if ok else set()
 
 
 def settle(s, cfg):
