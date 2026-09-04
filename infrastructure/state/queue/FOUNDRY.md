@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-04T02:28:36Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-04T04:24:57Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -339,7 +339,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     bug
-summary:  (no items/RIVER_LINK_ORDER_SELFTEST_DRIFT_1.md yet — write one when you have something to say)
+summary:  RIVERLINKORDERSELFTESTDRIFT1
 prose:    infrastructure/state/items/RIVER_LINK_ORDER_SELFTEST_DRIFT_1.md
 
 ## DIRTY_CODE_REVIEW_STANDING_LOOP_1 Standing FOUNDRY code-review loop in progress per owner (keep going, bit by bit) - 12 waves in, ~230 ledger entries, ~55 real bugs found, self-continuing via /loop, not blocked on anything
@@ -449,7 +449,7 @@ needs:    offline
 target:   v1
 kind:     bug
 blocked:  not a code bug in the emitter - it's a stale-fixture mismatch. Ran the selftest: 266 produced vs 292 accepted rows, tile IDs in disjoint ranges, River/Creek type flips. git log on world/ASHKARR_WORLDMAP_links.csv+tiles.csv shows 15+ recent hand-authoring commits actively moving rivers/craters/terrain (crater relocated, Kiln pan added, river death point moved) since the 'accepted' links.csv was captured. This is Ash'karr world-authoring territory - memory doctrine says worldmap doc/fixture updates go WITH the owner, never a solo sweep, and world/ASHKARR_WORLDMAP_tiles.csv is frozen accepted_for_v1. Needs the owner to decide: refresh the accepted links.csv fixture to match the current hand-edited river network, or is there a real emitter bug independent of the terrain edits. Not something FOUNDRY should decide or fix unilaterally.
-summary:  (no items/RIVER_LINK_ORDER_SELFTEST_DRIFT_1.md yet — write one when you have something to say)
+summary:  RIVERLINKORDERSELFTESTDRIFT1
 prose:    infrastructure/state/items/RIVER_LINK_ORDER_SELFTEST_DRIFT_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
