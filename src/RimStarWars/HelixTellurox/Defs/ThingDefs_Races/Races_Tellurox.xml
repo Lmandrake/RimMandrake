@@ -60,11 +60,12 @@
       <Wildness>0.3</Wildness>
       <FilthRate>10</FilthRate>
     </statBases>
+    <!-- ThingDefCountClass parses via XmlHelper.ParseElements: an <li> node
+         registers a cross-ref to root.InnerText, so the <li><thingDef> form
+         concatenated to a cross-ref on "RSW_TelluroxShell6" (null thingDef,
+         corpse-gen NRE). The defName-as-element form is the only correct one. -->
     <butcherProducts>
-      <li>
-        <thingDef>RSW_TelluroxShell</thingDef>
-        <count>6</count>
-      </li>
+      <RSW_TelluroxShell>6</RSW_TelluroxShell>
     </butcherProducts>
     <tools>
       <li>
