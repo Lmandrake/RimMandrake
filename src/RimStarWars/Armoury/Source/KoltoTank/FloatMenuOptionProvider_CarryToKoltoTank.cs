@@ -6,7 +6,7 @@ namespace KoltoTank;
 
 public class FloatMenuOptionProvider_CarryToKoltoTank : FloatMenuOptionProvider
 {
-    protected override bool Drafted => false;
+    protected override bool Drafted => true;
 
     protected override bool Undrafted => true;
 
