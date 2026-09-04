@@ -43,7 +43,40 @@ normalization pass that ignores it will be normalized OVER; the manifest must
 either run after RR's rewrite and treat its output as the substrate, or the
 sitting decides RR's fate outright (§6.6).
 
-## 1. The tab set — 38 mod tabs become seven campaign tabs (owner rules)
+## 1. ~~The tab set — 38 mod tabs become seven campaign tabs~~ ⛔ SUPERSEDED
+
+🔴 **THE SEVEN-TAB SET BELOW IS NO LONGER THE SHAPE. Do not generate a manifest,
+a validator expectation or a retag from this table.** It is kept visible because
+the pride-register column and the per-tab intent are still the reasoning behind
+the current trees — delete it and the next reader rebuilds it from the evidence.
+
+**What the owner has RULED since (each with his words on the ledger, all binding):**
+
+| ruled | what it means for this section |
+|---|---|
+| 2026-09-03 · Anomaly | all 42 Anomaly **research rows** cut; the **content stays** (rule 5 below). The `(Anomaly)` row's "untouched" is dead |
+| 2026-09-03 · more trees | *"we need more than six total trees… space it out into around 12"* — the seven-tab set is replaced by a wider roster, grouped by **what a thing is**, with tier orthogonal |
+| 2026-09-03 · faction locks | *"all things warcasket is uniquely Junker… its own tree that can only be approached by earning those tech prints from the Junkers themselves"* — some trees leave the general economy entirely and are earned, not bought. Sonic weaponry likewise Geonosian |
+| 2026-09-03 · droids | droid **construction** is owned by the droid faction and is a faction reward; the Jawa keep only low-tier repair, reconstruction and maintenance |
+| 2026-09-03 · sabers | lightsaber construction *"is not tech in this scenario"* — nobody teaches it. Force-user gear likewise. Research rows cut; the items remain |
+| 2026-09-03 · access | the containment/bioferrite buildings are reached by the **Memory-Core revelation event** (`ANOMALY_EXCEPTION_ACCESS_1`), never by research |
+
+**What is PROPOSED and NOT yet ruled** — the concrete roster, row placements,
+tier assignments and re-costs implementing those rulings live in
+`design/Jawa/research_review/` (v4 is current: `droid_and_saber_rulings.md` +
+`restructured_model_v4.json`, with `faction_locked_trees.md` and
+`twelve_trees_proposal.md` behind it). **The owner has not ruled the roster.**
+An executor must not treat v4 as canon either — it is the proposal awaiting his
+review.
+
+⚠️ **So for anything mechanically applying "the rulings" to rows** — notably
+`RESEARCH_MANIFEST_DRAFT_1`, whose spec names §3/§5/§6/§7 of this file as the
+normative source — the honest state is: **the FATE rulings below are still
+normative; the TAB SET is not.** Generate fates, flag tabs as pending rather than
+filling them from this table.
+
+### The superseded table, kept for its reasoning
+
 
 | tab | carries | pride register (principles §2) |
 |---|---|---|
