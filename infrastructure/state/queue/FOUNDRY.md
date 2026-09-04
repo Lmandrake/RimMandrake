@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-04T14:35:52Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-04T14:36:31Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -444,16 +444,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## IMAGE_SKILL_SCRIPT_NITS_1 compare_images.py silently skips drift checks on non-alpha pairs; sprite selftest.py has one dead function
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     spec, verify and criteria all present
-summary:  1. skills/editing-images/scripts/compareimages.py: docstring promises a
-prose:    infrastructure/state/items/IMAGE_SKILL_SCRIPT_NITS_1.md
 
 ## DIRTY_CODE_REVIEW_LOOP_RESTART_9 Continuity note for the standing dirty-code-review loop, successor to RESTART_8
 state:    proposed

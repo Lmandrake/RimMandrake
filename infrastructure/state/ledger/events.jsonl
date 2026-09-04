@@ -4432,3 +4432,6 @@
 {"seat":"FOUNDRY","event":"claim","id":"KARRASK_ART_MISSING_1","ts":"2026-09-04T14:32:43Z"}
 {"seat":"FOUNDRY","event":"start","id":"KARRASK_ART_MISSING_1","ts":"2026-09-04T14:32:43Z"}
 {"seat":"FOUNDRY","event":"close","id":"KARRASK_ART_MISSING_1","sha":"a37b8ce5","ts":"2026-09-04T14:35:52Z"}
+{"seat":"FOUNDRY","event":"claim","id":"IMAGE_SKILL_SCRIPT_NITS_1","ts":"2026-09-04T14:36:18Z"}
+{"seat":"FOUNDRY","event":"start","id":"IMAGE_SKILL_SCRIPT_NITS_1","ts":"2026-09-04T14:36:18Z"}
+{"seat":"FOUNDRY","event":"close","id":"IMAGE_SKILL_SCRIPT_NITS_1","sha":"1931db8e","ts":"2026-09-04T14:36:31Z"}
