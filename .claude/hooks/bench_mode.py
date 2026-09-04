@@ -1,14 +1,15 @@
 #!/usr/bin/env python3
 """BENCH mode delivery — UserPromptSubmit.
 
-🔴 WHY THIS EXISTS. Doctrine written to POLICY.md reaches a seat only when it WAKES,
+🔴 WHY THIS EXISTS. Doctrine written to CHARTER.md reaches a seat only when it WAKES,
 and seats run for hours. BENCH is the one rule that must arrive the instant the owner
 speaks, in a window that has been awake since morning — and no agent may message
 another, so nothing else can carry it. This hook is the delivery route: he says he is
 here, and the rulebook lands in that window's context on that turn.
 
-It reads the BENCH page out of `infrastructure/agents/POLICY.md` rather than carrying a
-copy, so the two can never drift. Filed 2026-08-23 under TRIM_VALIDATION_LAYERS_1.
+It reads the BENCH page out of `infrastructure/agents/CHARTER.md` rather than carrying a
+copy, so the two can never drift. Filed 2026-08-23 under TRIM_VALIDATION_LAYERS_1;
+CHARTER.md replaced POLICY.md 2026-08-27 (redesign #4).
 
 ⚠️ Prints nothing on an ordinary prompt — every turn pays this, so it stays cheap.
 """
