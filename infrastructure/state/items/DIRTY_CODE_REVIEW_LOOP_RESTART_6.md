@@ -4,6 +4,92 @@ Continuity note for resuming the standing dirty-code-review loop (FOUNDRY).
 Successor to `DIRTY_CODE_REVIEW_LOOP_RESTART_5` (resumed this session,
 closed below).
 
+## Update 5: bridgetools opened and fully cleared (501 clean)
+
+Owner explicitly authorized opening `bridgetools/` tonight (previously a
+dedicated, deferred pool) after asking him a scope question. **All 16
+originally-dirty bridgetools files are now clean — the whole folder is
+clean.** This was the highest bug-density wave of the entire session:
+**~20 real bugs**, concentrated in the two largest files.
+
+**`JawaBenchMapTools.cs` round 6** (`d6ae0f49`, 2263 lines) — confirmed
+and fixed all 4 known round-5 leftovers, PLUS 3 new ones:
+- `connect_cells`: non-edifice things (loose items, filth, plants,
+  blueprints, conduits) were silently destroyed by the commit-phase spawn
+  wipe with zero trace in the response — `mode='strict'`'s "refuses if
+  anything is in the way" promise was false for anything but buildings.
+- `get_terrain_layers` truncated with no flag; `set_fog` validated the
+  wrong thing first for an unrecognised action; **`map_zones` could
+  irreversibly delete a DIFFERENT zone than the one named**, because
+  `ZoneManager.NewZoneName` doesn't dedupe labels but the lookup used a
+  case-insensitive match.
+- New: `set_weather_buildup` silently no-op'd off-map or on terrain that
+  can't hold snow/sand while reporting cells changed; `set_deep_resource`
+  with `count=0` erased the cell while echoing the requested def as
+  written.
+
+**`JawaBenchWorldTools.cs`** (`17dd0cf9`, 4374 lines, first-ever review)
+— 5 bugs, several textbook "success:true, world unchanged":
+`world_links_set`/`import` counted priority-refused river/road writes as
+landed; `world_mutators_set` could silently destroy other mutators on a
+tile (loss invisible past the read-back cap — the exact reason the
+world-editing skill tells callers to diff the whole planet by hand);
+`world_landmarks_set`'s success check was true for a landmark *already
+there*; three savegame scalars (elevation/temperature/rainfall)
+unguarded against quantization overflow; `faction_relations_get` skipped
+its own asymmetry check on single-faction row queries.
+
+**Smaller files, one real bug each** (`9681117f`): `VehicleAerialTools.cs`
+(6th round) — the world-landing path was never gated on the vehicle at
+all, could report "landed" while the vehicle spawned nowhere and was
+silently deleted. `DefDumpTools.cs` — its own try/catch was dead code
+(the wrapped method already swallows its exceptions), so success was
+unconditional; now refuses unless a new capture directory actually
+appears. **`WorldEdit2.cs`** — a nominally read-only tool could trigger
+`Building_GravEngine.UpdateSubstructureIfNeeded`'s side effect of opening
+a **naming dialog modal** on an unnamed gravship past 90 cells — a stale
+modal from a bridge call with nobody at the screen would silently block
+every later bridge call in that session. Worth remembering as a
+diagnosis if a future session's bridge ever seems wedged for no reason.
+
+**Python scripts** (`c5e14f29`, `1fb0888b`, `353b3c33`) — the "prove it
+actually works" tooling had its own version of tonight's recurring bug:
+`prove_harmony_patches.py`'s filter-narrowing check any no-op filter
+would pass; `prove_world_cache_audit.py` had a literal `... or True`
+making one check unfalsifiable; `load_session.py`'s stale-deploy gate
+printed a warning but never actually stopped the run except on a total
+zero-tools case; `prove_stat_and_room.py` had an unguarded `.get()` that
+would crash on one response shape; and `prove_new_tools.py`'s own header
+claimed coverage of `jawa/list_factions` that had never actually been
+implemented — a documented gap nobody had closed.
+
+⚠️ **None of the C# fixes are live yet.** Unlike a regular mod (blocked
+only by a live DLL lock), the companion DLL is discovered by
+RimBridgeServer only at its own startup — a live-Mods-folder deploy
+while the game is merely DLL-unlocked does nothing until the NEXT full
+restart. Every C# file above was marked CLEAN on the strength of a clean
+warnings-as-errors build plus verification against decompiled RimWorld
+1.6 source, not a live redeploy — **whoever next has the game DOWN must
+run `python.exe src/RimMandrake/bridgetools/build.py --gm --apply`**
+(NOT a plain `--apply` — the live game copy is a `--gm` build and a
+plain apply plans to silently strip 24+ tools) before these fixes are
+actually live. Given the `map_zones` wrong-delete and the `WorldEdit2`
+modal-block bugs specifically, this is worth prioritizing at the next
+natural DOWN window, not leaving indefinitely.
+
+**Total: 501 clean / 656 (~76%).**
+
+## MinePocket resolved (owner ruling, 2026-09-04)
+
+Owner: "Drop as dead code." Deleted `Verb_ShootMine.cs`,
+`Projectile_SpawnMine.cs`, `CompDefuse.cs` (genuinely dead) — but kept
+`MinePocketDefExtension.cs`, which turned out to be actually consumed by
+the live `MinePocketJob.cs` (an optional post-defuse bonus-spawn check),
+not part of the dead cluster as originally filed. Now marked CLEAN.
+`MINEPOCKET_CONTENT_UNWIRED_1` closed. Build verified; deploy pending
+next restart (same DLL-lock story as any regular mod, not the
+bridgetools DOWN-window story above).
+
 ## Update 4: session-end — active-content sweep essentially complete (484 clean)
 
 Waves 18-20 finished EmpirePursuit, SalvageClaim, TheftHauler,
