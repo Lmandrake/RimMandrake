@@ -10,7 +10,7 @@ three chances to drift and no way to notice.
             only copy anybody edits)
 
     GENERATED
-        src/SPLIT_Phase3/Jawa_Patches/Defs/FactionDefs/JawaTribes.xml  <ideoDescription>
+        src/RimUtinni/UtinniPatches/Defs/FactionDefs/JawaTribes.xml  <ideoDescription>
         src/Jawa/ideoligion/The Salvation.rid   <description> + <descriptionTemplate>
         build_salvation_rid.py imports `text()` instead of holding a literal
 
@@ -26,7 +26,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parents[3]
 SOURCE = REPO / "design/Jawa/worldbuilding/ideoligion/the_salvation_description.md"
-FACTION_XML = REPO / "src/SPLIT_Phase3/Jawa_Patches/Defs/FactionDefs/JawaTribes.xml"
+FACTION_XML = REPO / "src/RimUtinni/UtinniPatches/Defs/FactionDefs/JawaTribes.xml"
 RID = REPO / "src/Jawa/ideoligion/The Salvation.rid"
 
 

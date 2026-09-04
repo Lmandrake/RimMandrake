@@ -599,8 +599,8 @@ def,Z6_Rotary_Blaster_Cannon_Shot,RSW_Z6_Rotary_Blaster_Cannon_Shot,RimStarWars,
 mod,src/Jawa/Jawa_Doctrine,src/RimUtinni/Doctrine,RimUtinni,RULED,campaign doctrine
 packageId,mandrake.jawa.doctrine,mandrake.rut.doctrine,RimUtinni,RULED,
 namespace,JawaDoctrineCore,RimMandrake.Utinni.Doctrine,RimUtinni,RULED,
-mod,src/Jawa/Jawa_Patches,src/SPLIT_Phase3/Jawa_Patches,SPLIT,VERIFY,"Triage done (JAWA_PATCHES_SPLIT_1, 93/93 files classified, jawa_patches_split_map.csv) - physical split not yet executed"
-packageId,mandrake.jawa.patches,TBD_SPLIT,SPLIT,VERIFY,
+mod,src/Jawa/Jawa_Patches,"src/RimMandrake/MandrakePatches + src/RimStarWars/StarWarsPatches + src/RimUtinni/UtinniPatches",SPLIT,HIGH,"EXECUTED 2026-09-04 (JAWA_PATCHES_SPLIT_1): 95 Patches/Defs files + 70 textures/languages/source split per jawa_patches_split_map.csv (owner-confirmed tiers 2026-09-01); old folder is a tombstone README"
+packageId,mandrake.jawa.patches,"mandrake.rm.patches + mandrake.rsw.patches + mandrake.rut.patches",SPLIT,HIGH,"EXECUTED 2026-09-04; old packageId leaves ModsConfig after the next full-list load proves the successors (COLD_LOAD_RUN_SHEET_3)"
 def,Base_Player,TBD_SPLIT,SPLIT,VERIFY,Phase 3 per-file triage: Ashkarr/Rakata/DeepDesert/Pyrelands files=RUT; animal/texture/generic fixes=RSW or RM
 def,Jawa_AscendantHelix,TBD_SPLIT,SPLIT,VERIFY,Phase 3 per-file triage: Ashkarr/Rakata/DeepDesert/Pyrelands files=RUT; animal/texture/generic fixes=RSW or RM
 def,Jawa_BackgroundWater,TBD_SPLIT,SPLIT,VERIFY,Phase 3 per-file triage: Ashkarr/Rakata/DeepDesert/Pyrelands files=RUT; animal/texture/generic fixes=RSW or RM

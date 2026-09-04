@@ -28,7 +28,7 @@ from __future__ import annotations
 import sys
 from pathlib import Path
 
-OUT = Path("src/SPLIT_Phase3/Jawa_Patches/Defs/PawnKindDefs/JawaFactionRoster.xml")
+OUT = Path("src/RimUtinni/UtinniPatches/Defs/PawnKindDefs/JawaFactionRoster.xml")
 
 # (faction, role) -> (race ThingDef, owning packageId for MayRequire)
 #
@@ -412,7 +412,7 @@ def combat_power(wm, am, role, fac=None):
 # ⇒ Regenerating is now a NO-OP DIFF, which is the only definition of "the
 # header is true" that survives contact with anyone. Verify it that way:
 #     python3 src/RimMandrake/Utils/gen_pawnkind_roster.py
-#     git diff --stat src/SPLIT_Phase3/Jawa_Patches/Defs/PawnKindDefs/JawaFactionRoster.xml
+#     git diff --stat src/RimUtinni/UtinniPatches/Defs/PawnKindDefs/JawaFactionRoster.xml
 # Empty means true. Anything else means this table has drifted again.
 #
 # ⚠️ EDIT THE KIT HERE, not in the XML. An edit to the XML is reverted by the

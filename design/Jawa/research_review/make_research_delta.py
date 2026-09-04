@@ -30,10 +30,12 @@ OLD_DECISIONS = HERE / "research_review_decisions.json"
 OUT_DECISIONS = HERE / "research_delta_decisions.json"
 OUT_SHEET = HERE / "research_delta_review.html"
 TEMPLATE = Path.home() / ".claude/skills/review-sheets/assets/sheet_template.html"
-DUMP = Path(
-    "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios"
-    "/DefDump/captures/2026-09-04T02-23-44Z/defs/ResearchProjectDef.json"
-)
+import sys as _sys
+
+_sys.path.insert(0, str(ROOT / "src/RimMandrake/Utils"))
+from game_paths import DEF_DUMP  # noqa: E402
+
+DUMP = Path(DEF_DUMP) / "defs/ResearchProjectDef.json"
 # the KotOR mod family: rows named after game characters are undecidable
 # without knowing the gear they gate (owner, 2026-09-04: "I have no idea
 # what this stuff is") - mine the recipes/things that name each row.

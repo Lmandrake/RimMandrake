@@ -24,7 +24,7 @@ from concurrent.futures import ThreadPoolExecutor
 BASE = "https://integrate.api.nvidia.com/v1/chat/completions"
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.dirname(
     os.path.abspath(__file__)))))
-SRC = "src/SPLIT_Phase3/Jawa_Patches/Defs/PawnKindDefs/JawaFactionRoster.xml"
+SRC = "src/RimUtinni/UtinniPatches/Defs/PawnKindDefs/JawaFactionRoster.xml"
 
 HAYSTACK_SIZES = [8000, 20000, 50000, 120000]
 QUESTION_SIZES = [2, 4, 8, 16, 24]

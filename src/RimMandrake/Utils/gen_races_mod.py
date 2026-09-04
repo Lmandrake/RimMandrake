@@ -1669,7 +1669,8 @@ PROSE = {"label", "description", "labelShortAdj", "labelNoun", "labelPlural",
 # Only the DEFS. A PatchOperation naming a donor def is guarded by
 # PatchOperationConditional or PatchOperationFindMod and becomes a no-op when
 # that mod leaves; a def is not.
-PATCHES = os.path.join(REPO, "src/SPLIT_Phase3/Jawa_Patches/Defs")
+PATCHES = [os.path.join(REPO, "src/RimUtinni/UtinniPatches/Defs"),
+           os.path.join(REPO, "src/RimStarWars/StarWarsPatches/Defs")]  # JAWA_PATCHES_SPLIT_1: the old single Defs tree split by tier
 
 
 def scan_defs(root):
@@ -1763,7 +1764,13 @@ def verify():
 
     ours, refs, parents, trees = scan_defs(OUT + "/Defs")
     files = [fp for fp, _ in trees]
-    pours, prefs, pparents, _ = scan_defs(PATCHES)
+    pours, prefs, pparents = set(), {}, set()
+    for _patchroot in PATCHES:
+        _o, _r, _p, _ = scan_defs(_patchroot)
+        pours |= set(_o)
+        for _t, _who in _r.items():
+            prefs.setdefault(_t, set()).update(_who)
+        pparents |= set(_p)
     known = ours | pours
 
     dead = {t: v for t, v in refs.items()

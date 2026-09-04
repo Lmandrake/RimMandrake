@@ -92,3 +92,5 @@ PodCarIsLandspeeder.xml,RSW,MEDIUM,Generic SW desert reskin of Core's AncientPod
 RebelAlliance_Suppress.xml,RUT,HIGH,Campaign-specific faction-roster ruling keeping a galactic-civil-war belligerent off the map (Jawa scavenger clan campaign),no
 SWCPZoomerIcon_Fix.xml,RSW,HIGH,Fixes a NullReferenceException in generic SW mod SWCP's icon resolution — fix-mod tie-break,no
 SWDesertWeather_Attach.xml,RSW,HIGH,Attaches generic SW desert/volcanic hazard weather (Tatooine/Mustafar archetypes) across unrelated desert/volcano biome mods,no
+DroidDonor_ABFGate.xml,RSW,HIGH,"Added after the 08-31 census (DROID_DONOR_PATCH_GATE_1); gates ABF/Synstructs sites in absorbed KotOR droid content - a fix takes the tier of what it fixes (BENCH classification 2026-09-04)",no
+ThirdPartySignConfigErrors_Fix.xml,RM,HIGH,"Added after the 08-31 census (LOAD_CONFIG_ERROR_SWEEP_1); fixes Dark.Signs config errors - generic third-party mod, nothing SW or campaign (BENCH classification 2026-09-04)",no

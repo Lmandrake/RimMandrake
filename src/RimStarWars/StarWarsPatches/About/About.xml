@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rsw.patches</packageId>
+  <name>RimStarWars Patches</name>
+  <author>mandrake</author>
+  <description>Star Wars content fixes and compatibility patches (RimStarWars tier - any SW scenario, no campaign lore). Split 2026-09-04 from Jawa Patches (mandrake.jawa.patches) per JAWA_PATCHES_SPLIT_1; tiers per infrastructure/state/jawa_patches_split_map.csv, owner-confirmed 2026-09-01. Every patch is MayRequire/Conditional-guarded. Load late, after every mod it touches.</description>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+<loadAfter>
+    <li>mandrake.rsw.starwarsraces</li>                         <!-- RimMandrake* species, name makers and rescued pawn kinds -->
+    <li>Neronix17.OuterRim.Core</li>
+    <li>Neronix17.OuterRim.GalacticEmpire</li>              <!-- OuterRim_Imp* pawn kinds     GalacticEmpire.xml -->
+    <li>Neronix17.OuterRim.RebelAlliance</li>               <!-- OuterRim_RebelAlliance       RebelAlliance_Suppress.xml -->
+    <li>Neronix17.OuterRim.GalacticDiversity</li>           <!-- OuterRim_Jawa, OuterRim_WookieeHead -->
+    <li>Neronix17.OuterRim.DroidDepot</li>                  <!-- OuterRim_*Droid              DroidFemaleTexture_Fix.xml -->
+    <li>Neronix17.Outland.Genetics</li>                     <!-- Outland_AllMale              JawaAppearance_Tuning.xml -->
+    <li>LazyFridayStudio.GenesExpandedEyes</li>             <!-- Eyes_*_Feline / Eyes_*_Reptile -->
+    <li>guy762.StarWarsXenotypes</li>                       <!-- guy762_Eyes_HugeYellow -->
+    <li>guy762.MM.KotORCore</li>                            <!-- SWCP_VATS_Zoomer             SWCPZoomerIcon_Fix.xml -->
+    <li>guy762.KotORWeapons</li>
+    <li>sarg.alphabiomes</li>                               <!-- AB_PyroclasticConflagration -->
+    <li>IronScruff.PrimordialGeysers</li>                   <!-- IronScruff_PrimordialGeysers BiomeAnimalDanglingRefs_Fix.xml -->
+    <li>zylle.MoreVanillaBiomes</li>                        <!-- ZBiome_Badlands, ZBiome_DesertOasis -->
+    <li>titans.fl</li>                                      <!-- Titan                        AnimalBiomeDuplicates_Fix.xml -->
+    <li>Dark.Signs</li>                                     <!-- SignBillboard etc. (9 defs)  ThirdPartySignConfigErrors_Fix.xml -->
+    <li>Nals.FacialAnimation</li>                           <!-- supplies the FaceAdjustmentDef TYPE -->
+    <li>DanZinagri.FacialAnimationCompatabilityProject</li> <!-- BS_InsectoidHumanoid_FourArmed_FaceAdjustment -->
+    <li>ab.hoffa</li>                                       <!-- HeadSetForFA_Revive.xml -->
+    <li>7f.alienworlds.tidallylocked</li>                   <!-- JawaWorld_BiomeMix.xml patches its PlanetTypeDef -->
+    <li>7f.alienworlds</li>                                 <!-- the framework that def's fields belong to -->
+      <li>mandrake.rm.patches</li>
+  </loadAfter>
+</ModMetaData>

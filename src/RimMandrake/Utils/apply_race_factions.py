@@ -34,8 +34,8 @@ import sys
 HERE = os.path.dirname(os.path.abspath(__file__))
 REPO = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
 DEC = os.path.join(REPO, "design/Jawa/worldbuilding/review/race_faction_assignment.prefill.json")
-FACDIR = os.path.join(REPO, "src/SPLIT_Phase3/Jawa_Patches/Defs/FactionDefs")
-PATCH = os.path.join(REPO, "src/SPLIT_Phase3/Jawa_Patches/Patches/VanillaFaction_Xenotypes.xml")
+FACDIR = os.path.join(REPO, "src/RimUtinni/UtinniPatches/Defs/FactionDefs")
+PATCH = os.path.join(REPO, "src/RimStarWars/StarWarsPatches/Patches/VanillaFaction_Xenotypes.xml")
 
 WEIGHT = {"A": 30, "S": 10, "R": 3}
 VANILLA = {"Empire", "OutlanderCivil", "TribeCivil", "Pirate"}
