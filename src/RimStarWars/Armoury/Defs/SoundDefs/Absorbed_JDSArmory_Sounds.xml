@@ -19,7 +19,7 @@
       <li>
         <grains>
           <li Class="AudioGrain_clip">
-            <clipPath>BlasterSound/RSW_DC-17_Blaster_Pistol_Shot</clipPath>
+            <clipPath>BlasterSound/DC-17_Blaster_Pistol_Shot</clipPath>
           </li>
         </grains>
         <volumeRange>
@@ -44,7 +44,7 @@
       <li>
         <grains>
           <li Class="AudioGrain_clip">
-            <clipPath>BlasterSound/RSW_DC-15S_Blaster_Carbine_Shot</clipPath>
+            <clipPath>BlasterSound/DC-15S_Blaster_Carbine_Shot</clipPath>
           </li>
         </grains>
         <volumeRange>
@@ -69,7 +69,7 @@
       <li>
         <grains>
           <li Class="AudioGrain_clip">
-            <clipPath>BlasterSound/RSW_DC-15A_Blaster_Rifle_Shot</clipPath>
+            <clipPath>BlasterSound/DC-15A_Blaster_Rifle_Shot</clipPath>
           </li>
         </grains>
         <volumeRange>
@@ -94,7 +94,7 @@
       <li>
         <grains>
           <li Class="AudioGrain_clip">
-            <clipPath>BlasterSound/RSW_E-5_Bblaster_Rifle_Shot</clipPath>
+            <clipPath>BlasterSound/E-5_Bblaster_Rifle_Shot</clipPath>
           </li>
         </grains>
         <volumeRange>
@@ -119,7 +119,7 @@
       <li>
         <grains>
           <li Class="AudioGrain_clip">
-            <clipPath>BlasterSound/RSW_Z6_Rotary_Blaster_Cannon_Shot</clipPath>
+            <clipPath>BlasterSound/Z6_Rotary_Blaster_Cannon_Shot</clipPath>
           </li>
         </grains>
         <volumeRange>
@@ -144,7 +144,7 @@
       <li>
         <grains>
           <li Class="AudioGrain_clip">
-            <clipPath>BlasterSound/RSW_B-2_Wrist_Blaster_Shot</clipPath>
+            <clipPath>BlasterSound/B-2_Wrist_Blaster_Shot</clipPath>
           </li>
         </grains>
         <volumeRange>
@@ -169,7 +169,7 @@
       <li>
         <grains>
           <li Class="AudioGrain_clip">
-            <clipPath>BlasterSound/RSW_B-2_Wrist_Cannon_Shot</clipPath>
+            <clipPath>BlasterSound/B-2_Wrist_Cannon_Shot</clipPath>
           </li>
         </grains>
         <volumeRange>
@@ -194,7 +194,7 @@
       <li>
         <grains>
           <li Class="AudioGrain_clip">
-            <clipPath>BlasterSound/RSW_Droidek_Shot</clipPath>
+            <clipPath>BlasterSound/Droidek_Shot</clipPath>
           </li>
         </grains>
         <volumeRange>
@@ -219,7 +219,7 @@
       <li>
         <grains>
           <li Class="AudioGrain_clip">
-            <clipPath>BlasterSound/RSW_1Mandalorian_Blaster_Weapon_Shot</clipPath>
+            <clipPath>BlasterSound/1Mandalorian_Blaster_Weapon_Shot</clipPath>
           </li>
         </grains>
         <volumeRange>
@@ -244,7 +244,7 @@
       <li>
         <grains>
           <li Class="AudioGrain_clip">
-            <clipPath>BlasterSound/RSW_2Mandalorian_Blaster_Weapon_Shot</clipPath>
+            <clipPath>BlasterSound/2Mandalorian_Blaster_Weapon_Shot</clipPath>
           </li>
         </grains>
         <volumeRange>
@@ -269,7 +269,7 @@
       <li>
         <grains>
           <li Class="AudioGrain_clip">
-            <clipPath>BlasterSound/RSW_3Mandalorian_Blaster_Weapon_Shot</clipPath>
+            <clipPath>BlasterSound/3Mandalorian_Blaster_Weapon_Shot</clipPath>
           </li>
         </grains>
         <volumeRange>
@@ -294,7 +294,7 @@
       <li>
         <grains>
           <li Class="AudioGrain_clip">
-            <clipPath>BlasterSound/RSW_4Mandalorian_Blaster_Weapon_Shot</clipPath>
+            <clipPath>BlasterSound/4Mandalorian_Blaster_Weapon_Shot</clipPath>
           </li>
         </grains>
         <volumeRange>
@@ -319,7 +319,7 @@
       <li>
         <grains>
           <li Class="AudioGrain_clip">
-            <clipPath>BlasterSound/RSW_Rifle_Shot1</clipPath>
+            <clipPath>BlasterSound/Rifle_Shot1</clipPath>
           </li>
         </grains>
         <volumeRange>
@@ -344,7 +344,7 @@
       <li>
         <grains>
           <li Class="AudioGrain_clip">
-            <clipPath>BlasterSound/RSW_180Blaster_Pistol_Shot</clipPath>
+            <clipPath>BlasterSound/180Blaster_Pistol_Shot</clipPath>
           </li>
         </grains>
         <volumeRange>
@@ -369,7 +369,7 @@
       <li>
         <grains>
           <li Class="AudioGrain_clip">
-            <clipPath>BlasterSound/RSW_38x-targeting-rifle-sound-effects-battlefront-ii</clipPath>
+            <clipPath>BlasterSound/38x-targeting-rifle-sound-effects-battlefront-ii</clipPath>
           </li>
         </grains>
         <volumeRange>
@@ -394,7 +394,7 @@
       <li>
         <grains>
           <li Class="AudioGrain_clip">
-            <clipPath>BlasterSound/RSW_12-blaster-pistol-sound-effect</clipPath>
+            <clipPath>BlasterSound/12-blaster-pistol-sound-effect</clipPath>
           </li>
         </grains>
         <volumeRange>
@@ -419,7 +419,7 @@
       <li>
         <grains>
           <li Class="AudioGrain_clip">
-            <clipPath>BlasterSound/RSW_14_blaster_pistol_Shot</clipPath>
+            <clipPath>BlasterSound/14_blaster_pistol_Shot</clipPath>
           </li>
         </grains>
         <volumeRange>
@@ -444,7 +444,7 @@
       <li>
         <grains>
           <li Class="AudioGrain_clip">
-            <clipPath>BlasterSound/RSW_16_Carbine_Rifle_Shot</clipPath>
+            <clipPath>BlasterSound/16_Carbine_Rifle_Shot</clipPath>
           </li>
         </grains>
         <volumeRange>
