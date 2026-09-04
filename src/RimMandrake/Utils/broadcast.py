@@ -280,13 +280,26 @@ GAME_PHRASES = [
 
 
 def game_state_in(text):
-    """-> the state this sentence announces, or None. First match wins."""
+    """-> the state this sentence announces, or None.
+
+    🔴 THE EARLIEST PHRASE IN THE SENTENCE WINS, not the earliest in the table —
+    fixed 2026-09-03. `./game <state> ["note"]` appends the owner's free-text note
+    after an em dash, so the note sits *downstream* of the word that names the state;
+    a table-order scan let it overrule the command. `./game down "after deploying the
+    mods"` stamped DEPLOYING and `./game up "closing the game window later"` stamped
+    GOING_DOWN — the state the owner explicitly typed, silently replaced by a word in
+    his aside, on the one variable `satisfiable()` gates bridge work on. Table order
+    still breaks a tie at the same position, which is what keeps the specific phrases
+    ahead of the general ones.
+    """
     low = " %s " % " ".join(text.lower().split())
+    best, at = None, len(low)
     for state, phrases in GAME_PHRASES:
         for p in phrases:
-            if p in low:
-                return state
-    return None
+            i = low.find(p)
+            if i != -1 and i < at:
+                best, at = state, i
+    return best
 
 
 def record_game(state, text):
@@ -436,8 +449,10 @@ def main(argv):
     # failure this mechanism exists to end: the board reading DOWN for a whole session
     # while RimWorld was running.
     state = game_state_in(text)
+    stamp_failed = False
     if state:
         err = record_game(state, text)
+        stamp_failed = err is not None
         print("  game -> %-12s %s" % (state, err or "recorded in the ledger"))
 
     if not live:
@@ -452,6 +467,7 @@ def main(argv):
         waiting = seats_waiting_on_the_game()
 
     me = os.environ.get("CLAUDE_CODE_MESSAGING_SOCKET")
+    tried = sent = 0
     for r in live:
         name = r.get("name") or ""
         if me and r.get("messagingSocketPath") == me:
@@ -462,8 +478,24 @@ def main(argv):
         if waiting is not None and seat not in waiting:
             print("  %-18s not told (nothing of theirs is waiting on the game)" % name)
             continue
+        tried += 1
         err = send(r, text, sender)
+        if err is None:
+            sent += 1
         print("  %-18s %s" % (name, err or "delivered"))
+
+    # 🔴 THE EXIT CODE MUST NOT SAY "DONE" WHEN THE HALF THAT MATTERS DID NOT HAPPEN —
+    # fixed 2026-09-03. This returned 0 unconditionally, so `./game up` exited SUCCESS
+    # when `record_game` had refused (a `--said` quote the guard rejects, rimflow
+    # missing, a LedgerError) and equally when every single send raised. One line reading
+    # "state NOT recorded" in a column of "delivered" is easy to skim and invisible to
+    # anything checking a status — which is precisely how the board came to read DOWN
+    # while RimWorld was running. Meanwhile the no-recipient path already exits 1 with
+    # the stamp SAFELY written, so success and failure were the wrong way round.
+    # ⚠️ `tried` excludes this window and the seats deliberately not told, so narrowing
+    # to nobody is not a failure — only failing everyone we actually attempted is.
+    if stamp_failed or (tried and not sent):
+        return 1
     return 0
 
 
