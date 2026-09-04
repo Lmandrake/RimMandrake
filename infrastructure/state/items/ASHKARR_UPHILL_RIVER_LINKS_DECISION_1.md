@@ -58,3 +58,10 @@ The four segments are eyeballed on the render and each is ruled keep or fix.
 ## criteria
 No LargeRiver/HugeRiver on the shipped planet runs materially uphill unless you have
 said it does so on purpose.
+
+## ruling — owner, 2026-09-03: "Just accept the river item for now please."
+
+**KEEP AS AUTHORED, all four segments.** Not backwards links, not a repaint
+candidate. `world/ASHKARR_WORLDMAP_links.csv` stands as-is; none of the four
+named rows (LargeRiver 14571→6470, LargeRiver 11334→675, Creek 3180→16645,
+HugeRiver 8501→19400) get hand-edited.
