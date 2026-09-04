@@ -59,7 +59,7 @@ the current trees — delete it and the next reader rebuilds it from the evidenc
 | 2026-09-03 · faction locks | *"all things warcasket is uniquely Junker… its own tree that can only be approached by earning those tech prints from the Junkers themselves"* — some trees leave the general economy entirely and are earned, not bought. Sonic weaponry likewise Geonosian |
 | 2026-09-03 · droids | droid **construction** is owned by the droid faction and is a faction reward; the Jawa keep only low-tier repair, reconstruction and maintenance |
 | 2026-09-03 · sabers | lightsaber construction *"is not tech in this scenario"* — nobody teaches it. Force-user gear likewise. Research rows cut; the items remain |
-| 2026-09-03 · access | the containment/bioferrite buildings are reached by the **Memory-Core revelation event** (`ANOMALY_EXCEPTION_ACCESS_1`), never by research |
+| 2026-09-03 · access | the containment/bioferrite buildings are reached by the **Memory-Core revelation event** (`ANOMALY_EXCEPTION_ACCESS_1`), never by research. BUILT and live-verified 2026-09-04 (`mandrake.rut.shipmemory`): a `discoveryPrerequisites` reveal gate on the hidden item `RUT_ShipMemory_Containment` — not a research row, not a hidden research row |
 
 **What is PROPOSED and NOT yet ruled** — the concrete roster, row placements,
 tier assignments and re-costs implementing those rulings live in
@@ -177,8 +177,14 @@ Checks, each with its false-pass named:
 6. Anomaly rows: all 42 research rows CUT (owner, 2026-09-03) under rule 5 —
    the tab leaves the player's tree, the content stays ours. The player reaches
    the containment buildings by the **Memory-Core revelation event** (ruled
-   2026-09-03, `ANOMALY_EXCEPTION_ACCESS_1`), which must land before the cut
-   ships.
+   2026-09-03, `ANOMALY_EXCEPTION_ACCESS_1` — built and live-verified
+   2026-09-04). Mechanism: `mandrake.rut.shipmemory` strips the buildings'
+   `researchPrerequisites` by patch and gates them with vanilla
+   `discoveryPrerequisites` on the never-spawned hidden item
+   `RUT_ShipMemory_Containment`; a GameComponent calls
+   `HiddenItemsManager.SetDiscovered` and sends the reveal letter. The
+   ordering constraint (strip patch deploys before the cut) is satisfied —
+   the mod is deployed and verified ahead of the retag.
 7. Nothing renames a defName, ever (saves + mod C# break invisibly).
 
 ## 6. RULED by the owner, 2026-08-31 (question cards) — canon `research_tree.taxonomy_ruled`
