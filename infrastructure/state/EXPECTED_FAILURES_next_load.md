@@ -1,5 +1,9 @@
 # Expected signatures — Rites + ResearchRetag first load, written 2026-09-04 BEFORE launch (BENCH)
 
+⛔ SUPERSEDED 2026-09-04 by `infrastructure/state/items/COLD_LOAD_RUN_SHEET_3.md`
+§1 entry 1 — this table now lives there, folded into the run sheet that
+scores the next full-list load. Read it there.
+
 Supersedes the RESTART_7 deploy-debt entry — that batch rode its restart
 2026-09-04 and verified clean (commit 34885539).
 
