@@ -41,32 +41,17 @@
          component 50, simple meal 10, silver 500), though InhabitedStock.Fill
          splits anything larger rather than writing an oversized stack. -->
     <larder>
-      <li>
-        <thingDef>MealSimple</thingDef>
-        <count>10</count>
-      </li>
-      <li>
-        <thingDef>Chemfuel</thingDef>
-        <count>60</count>
-      </li>
-      <li>
-        <thingDef>Steel</thingDef>
-        <count>75</count>
-      </li>
+      <MealSimple>10</MealSimple>
+      <Chemfuel>60</Chemfuel>
+      <Steel>75</Steel>
     </larder>
 
     <!-- Merchandise, and it only appears if the cast actually has a dealer -
          see WorldObject_Inhabited.FillStock. No InhabitedCastDef is authored
          anywhere yet, so today this table is correctly skipped. -->
     <stock>
-      <li>
-        <thingDef>ComponentIndustrial</thingDef>
-        <count>12</count>
-      </li>
-      <li>
-        <thingDef>Silver</thingDef>
-        <count>120</count>
-      </li>
+      <ComponentIndustrial>12</ComponentIndustrial>
+      <Silver>120</Silver>
     </stock>
 
     <stockLabel>salvage</stockLabel>
