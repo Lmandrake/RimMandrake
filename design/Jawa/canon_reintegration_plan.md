@@ -221,6 +221,19 @@ The formal Hive–Enclave alliance (04_factions §8) stands and sharpens:
 allying with the god's favored pets is the closest to the god the Hive has
 ever been allowed.
 
+**C1a · The Cathedral and the player (owner addendum, same day, RULED).**
+The Rust Cathedral tolerates the player Jawa **only because the Utinni
+vouches for them.** It is likewise somewhat mistrustful of the Utinni
+itself — *"what is WRONG with you?"* (a Rakatan hull wearing a kludged
+Jawa mind and nine gods) — but it cannot deny she is part of the same
+empire it once served. So the clan is permitted to **perform missions for
+the Cathedral striking at the Assailant**, proving the Utinni's value —
+while the Cathedral secretly hopes she perishes in a pyrrhic victory. And
+the Cathedral **despises the Empire** but is in no position to oust them;
+it wants to survive, so **it slumbers** — deliberately dormant so as not
+to attract unwanted attention. (This grounds the boon economy in fear:
+every gravtech grant is a risk the Cathedral takes by being seen to act.)
+
 **C2 · The Free Droid Enclaves were already reading.** 04_factions §5: the
 Cathedral congregation "learning ancient tech from **whispered voices deep in
 the old machinery**." That is the same substrate the Utinni is made of. The
@@ -300,13 +313,21 @@ scalar layer under the C# pass, or the pass absorbs it. Either way the
 generator (`build_retag_patches.py`) stays the pattern: manifest→artifact,
 never hand-edited.
 
-**D5 · WreckedMachines is Antiquities' industrial echo.** The resurrection
-ruling (canon.yml `wrecked_machines`): "learning the tech from the ship not
-to just build but to REPAIR existing broken machinery… is about all the Jawa
-can do." Wire the techprint radiation (§2.1) so radiated prints unlock
-**repair/restoration recipes preferentially** (WreckedMachines surfaces,
-Rekko-clean), never build-from-scratch — the restore≠transcend split
-(principles §2.2) executed in the reward channel itself.
+**D5 · WreckedMachines is Antiquities' industrial echo — SHARPENED TO A
+RULING (owner, 2026-09-04): ship-radiated tech REPAIRS factory modules
+ONLY, never builds new ones.** "Can't scale beyond ship — just restore it."
+The VFEFactory machine roster (26 distinct buildables MEASURED across the
+'basic factories'/'complex factories' rows) becomes **damaged installations
+ABOARD the Utinni**, restored stage by stage — and each restoration stage
+gets **authored art, permanently placed**: a second visible progress meter
+beside the Urn Reading Station, showing at a glance how far the clan has
+come and what she can now make. The player still chooses where to spend
+the research; the ship only determines what CAN come back. Radiated
+techprints unlock repair recipes preferentially (WreckedMachines surfaces,
+Rekko-clean), never build-from-scratch — restore≠transcend executed in the
+reward channel AND in the factory floor itself. Art scope: per-module
+damaged/partial/restored states — a major sprite-pipeline commitment,
+its own slice. Reveal ORDER of the modules: owner decision in flight.
 
 **D6 · VaultDungeons takes the payout + one dark turn.** The mod ships
 content for the six sited vaults (About.xml, vault_siting_prep V1–V6
@@ -361,6 +382,16 @@ the tab intro should say so ("every battle wakes him hungrier").
 KotOR spine (mini→hvy→blasters→plasma) as its one mandated chain
 (`chains_ruled`). Rebrand: the spine's four steps get campaign names — it is
 the clan RE-DERIVING a dead industry from salvage, tier by tier.
+**FLAME IS OUT (owner ruling, 2026-09-04): flame weapons do not belong here
+even though they kill by heat.** Small flame (the T0 'incendiary weapons'
+row — flamebow, incendiary launcher, incendiary shells/grenades) becomes
+**commonly available technology, used by all to hold wildlife at bay** —
+re-homed to Jawa Scavenging's floor (fire is the oldest tool in the floor
+tree). **BIG flame weapons — flamethrowers and heavy projectors — join the
+Junker unlock** (tree 14). Deck amendment: this is an owner amendment to
+his own frozen deck, applied at F2 (the row move + the per-unlock split of
+flamethrower recipes out of 'trench warfare'/'defence columns' into Junker
+rows), recorded here as the ruling of record.
 
 7. **The Strange Schools** — *kills by stranger physics — and now, by
 canon.* Thin (7 rows) on purpose until the sonic expansion lands; C1 gives
