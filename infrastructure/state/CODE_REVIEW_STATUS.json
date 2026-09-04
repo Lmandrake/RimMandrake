@@ -14,6 +14,11 @@
     "date": "2026-09-03",
     "sha": "5ac921b8"
   },
+  "src/RimMandrake/DesertVehicleReskin/Source/Fuel/VegetableFuel.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "ac24cd52"
+  },
   "src/RimMandrake/DesertVehicleReskin/Source/Fuel/VehicleFuelPatches.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -48,6 +53,11 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "872db59d"
+  },
+  "src/RimMandrake/Graffiti/Source/JobDriver_PaintGraffiti.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "ac24cd52"
   },
   "src/RimMandrake/Inhabited/Source/CharacterApplier.cs": {
     "cleanCount": 1,
@@ -353,6 +363,11 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "08e80429"
+  },
+  "src/RimMandrake/Property/Source/RecognizabilityUtility.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "ac24cd52"
   },
   "src/RimMandrake/ResearchKitEastFix/Source/mirror_research_kit_easts.py": {
     "cleanCount": 1,
@@ -1476,6 +1491,11 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "872db59d"
+  },
+  "src/RimStarWars/JawaIonWeapons/Source/IonDamageDef.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "ac24cd52"
   },
   "src/RimStarWars/JawaIonWeapons/Source/VehicleTier/VehicleIonPatches.cs": {
     "cleanCount": 1,
