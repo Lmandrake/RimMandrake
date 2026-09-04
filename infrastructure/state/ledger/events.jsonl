@@ -4310,3 +4310,11 @@
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-03T22:45:38Z"}
 {"seat":"FOUNDRY","event":"file","id":"DIRTY_CODE_REVIEW_LOOP_RESTART_5","title":"resume standing code-review sweep after next agent reboot","kind":"continuity","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-04T00:06:01Z"}
 {"seat":"FOUNDRY","event":"supersede","id":"DIRTY_CODE_REVIEW_LOOP_RESTART_4","by":"DIRTY_CODE_REVIEW_LOOP_RESTART_5","reason":"superseded by DIRTY_CODE_REVIEW_LOOP_RESTART_5, which takes over its work","ts":"2026-09-04T00:06:01Z"}
+{"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-09-04T00:07:26Z"}
+{"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-09-04T00:10:18Z"}
+{"seat":"FOUNDRY","event":"claim","id":"DIRTY_CODE_REVIEW_LOOP_RESTART_5","ts":"2026-09-04T00:12:03Z"}
+{"seat":"FOUNDRY","event":"start","id":"DIRTY_CODE_REVIEW_LOOP_RESTART_5","ts":"2026-09-04T00:12:03Z"}
+{"seat":"FOUNDRY","event":"file","id":"DIRTY_CODE_REVIEW_LOOP_RESTART_6","title":"resume standing code-review sweep after next agent reboot","kind":"task","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-04T00:45:43Z"}
+{"seat":"FOUNDRY","event":"supersede","id":"DIRTY_CODE_REVIEW_LOOP_RESTART_5","by":"DIRTY_CODE_REVIEW_LOOP_RESTART_6","reason":"superseded by DIRTY_CODE_REVIEW_LOOP_RESTART_6, which takes over its work","ts":"2026-09-04T00:45:43Z"}
+{"seat":"FOUNDRY","event":"claim","id":"DIRTY_CODE_REVIEW_LOOP_RESTART_6","ts":"2026-09-04T00:46:59Z"}
+{"seat":"FOUNDRY","event":"start","id":"DIRTY_CODE_REVIEW_LOOP_RESTART_6","ts":"2026-09-04T00:47:00Z"}
