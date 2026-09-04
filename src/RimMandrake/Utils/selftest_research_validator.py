@@ -166,6 +166,27 @@ def main():
     expect("check5 coverage: FAILs on fingerprint mismatch (deliberate)",
            any(i.level == rv.FAIL and "declares fingerprint" in i.msg for i in cov_bad_fp))
 
+    # ---- schema v2: the `live` column (F2, canon_reintegration_plan.md) ----
+    # A row whose def cannot be in the dump yet (a deployed mod awaiting its
+    # restart, or a planned def) declares live=pending-restart/planned. It is
+    # excluded from the orphan check and from the coverage EQUALITY (listed as
+    # INFO) - the check must not weaken for live rows.
+    pend = rv._normalize_row({"defName": "NotYetLiveRow", "source_mod": "x",
+                              "fate": "keep", "tab": "T", "tier": "T0",
+                              "cost": "400", "live": "planned"})
+    expect("schema v2: live defaults to 'yes' when the column is absent",
+           rows[0].get("live") == "yes", repr(rows[0].get("live")))
+    v2_rows = rows + [pend]
+    v2_orphans = rv.check_orphans(v2_rows, live, CUTS)
+    expect("schema v2: a live=planned row is NOT an orphan FAIL",
+           "NotYetLiveRow" not in names(v2_orphans, rv.FAIL))
+    v2_cov = rv.check_coverage(v2_rows, live, meta,
+                               {"hash": "selftestfp0001", "modCount": 3})
+    expect("schema v2: coverage equality excludes live!=yes rows",
+           not any(i.level == rv.FAIL and "manifest has 17" in i.msg for i in v2_cov))
+    expect("schema v2: the excluded row is INFO-listed by coverage",
+           "NotYetLiveRow" in names(v2_cov, rv.INFO))
+
     # ---- check 6: cycle -----------------------------------------------------
     cycle_issues = rv.check_cycles(rows)
     expect("check6 cycle: synthetic CycleA/CycleB FAILs",

@@ -29,8 +29,13 @@ from xml.sax.saxutils import escape
 
 REPO = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "..", ".."))
 MANIFEST = os.path.join(REPO, "infrastructure/output/research_manifest_draft.csv")
-CAP = ("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/"
-       "RimWorld by Ludeon Studios/DefDump/captures/2026-09-04T02-23-44Z")
+import sys as _sys
+_sys.path.insert(0, os.path.join(REPO, "src", "RimMandrake", "Utils"))
+from game_paths import DUMP_ROOT as _DUMP_ROOT  # one-path seam: never a LocalLow literal
+# Pinned to the capture the manifest was built against (its header fingerprint)
+# on purpose - regenerating against a newer capture without re-deriving the
+# manifest would patch against defs the manifest never saw.
+CAP = os.path.join(_DUMP_ROOT, "captures", "2026-09-04T02-23-44Z")
 OUT = os.path.join(REPO, "src/RimUtinni/ResearchRetag/Patches/RUT_ResearchRetag.xml")
 
 TIER_TECHLEVELS = {  # mirror of research_manifest_validate.py, canonical first

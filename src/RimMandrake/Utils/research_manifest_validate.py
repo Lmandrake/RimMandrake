@@ -225,7 +225,9 @@ _REQUIRED_COLS = ("defName", "source_mod", "fate", "tab", "tier", "cost")
 _LIST_COLS = ("prereqs", "hidden_prereqs")
 _ALL_COLS = ("defName", "source_mod", "fate", "tab", "tier", "cost", "prereqs",
              "hidden_prereqs", "source_gate", "form", "theology",
-             "merge_target", "note")
+             "merge_target", "note",
+             # schema v2 (canon_reintegration_plan.md F2, 2026-09-04):
+             "access", "holder", "stage_gate", "live")
 
 
 def _normalize_row(raw, list_sep=";"):
@@ -241,6 +243,10 @@ def _normalize_row(raw, list_sep=";"):
     except (TypeError, ValueError):
         r["cost"] = None
     r["fate"] = (raw.get("fate") or "").strip()
+    # schema v2: rows for defs not yet in the live game (a deployed mod pending
+    # its restart, or a planned-but-unauthored def) declare it. Default "yes"
+    # keeps every v1 manifest and fixture behaving unchanged.
+    r["live"] = (raw.get("live") or "yes").strip() or "yes"
     r["tier"] = (raw.get("tier") or "").strip().upper()
     r["defName"] = (raw.get("defName") or "").strip()
     return r
@@ -302,6 +308,8 @@ def check_orphans(rows, live, cuts):
     issues = []
     by_name = {r["defName"]: r for r in rows}
     for r in rows:
+        if r.get("live", "yes") != "yes":
+            continue          # not in the running game yet; coverage INFO-lists it
         dn = r["defName"]
         exists = dn in live
         # 🔴 TYPED, not cut_name(): the row's type is KNOWN here, and the
@@ -491,6 +499,12 @@ def check_one_chain_per_form(rows):
 
 def check_coverage(rows, live, manifest_meta, dump_fp):
     issues = []
+    pending = [r for r in rows if r.get("live", "yes") != "yes"]
+    for r in pending:
+        issues.append(Issue(INFO, "coverage", r["defName"],
+                             "excluded from the coverage equality: live=%s "
+                             "(a def the dump cannot hold yet)" % r["live"]))
+    rows = [r for r in rows if r.get("live", "yes") == "yes"]
     n_rows, n_live = len(rows), len(live)
     if n_rows != n_live:
         issues.append(Issue(FAIL, "coverage", None,
