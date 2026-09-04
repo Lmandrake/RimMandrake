@@ -86,6 +86,20 @@ namespace RimMandrake.Graffiti
                         " sets visibility=ClanOnly but has no viewerReactionThought - " +
                         "the gate has nothing to grant and will never do anything.");
                 }
+
+                // Third mis-wire shape: ThoughtWorker_ViewedGraffitiMark.CurrentStateInternal
+                // is only ever invoked for a ThoughtDef whose <workerClass> IS that class
+                // (ThoughtDef.IsSituational / .Worker gate on workerClass, not thoughtClass -
+                // verified against RimWorld/ThoughtDef.cs). Pointing viewerReactionThought at
+                // any other ThoughtDef compiles and loads clean but the reaction never fires.
+                if (ext.viewerReactionThought != null &&
+                    ext.viewerReactionThought.workerClass != typeof(ThoughtWorker_ViewedGraffitiMark))
+                {
+                    Log.Warning("[RimMandrake.Graffiti] " + def.defName +
+                        " sets viewerReactionThought=" + ext.viewerReactionThought.defName +
+                        " but that ThoughtDef's workerClass is not ThoughtWorker_ViewedGraffitiMark - " +
+                        "it will never fire from viewing this mark.");
+                }
             }
             foreach (ThoughtDef td in DefDatabase<ThoughtDef>.AllDefsListForReading)
             {
