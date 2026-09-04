@@ -4341,3 +4341,5 @@
 {"seat":"BENCH","event":"game","state":"LOADING","measured":true,"evidence":"RimWorldWin64 running, bridge did not answer","ts":"2026-09-04T02:06:06Z"}
 {"seat":"BENCH","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-09-04T02:06:21Z"}
 {"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ownerSaid":"Game is down — closed for Armoury deploy","ts":"2026-09-04T02:06:28Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","ownerSaid":"Keep going","ts":"2026-09-04T02:07:13Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","ownerSaid":"Game is loading — launching via Steam","ts":"2026-09-04T02:07:20Z"}
