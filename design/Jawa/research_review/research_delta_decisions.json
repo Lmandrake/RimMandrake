@@ -119,6 +119,11 @@
       "prefill": "accept",
       "note": ""
     },
+    "OilPourCageResearch": {
+      "decision": "accept",
+      "prefill": "accept",
+      "note": ""
+    },
     "OuterRim_AssassinDroids": {
       "decision": "accept",
       "prefill": "accept",
@@ -414,56 +419,6 @@
       "prefill": "accept",
       "note": ""
     },
-    "DP_RGiveArea50": {
-      "decision": "accept",
-      "prefill": "accept",
-      "note": ""
-    },
-    "DP_RGiveArea52": {
-      "decision": "accept",
-      "prefill": "accept",
-      "note": ""
-    },
-    "DP_RGiveExcavation": {
-      "decision": "accept",
-      "prefill": "accept",
-      "note": ""
-    },
-    "DP_RGiveGrandWalls": {
-      "decision": "accept",
-      "prefill": "accept",
-      "note": ""
-    },
-    "DP_RGiveMaze": {
-      "decision": "accept",
-      "prefill": "accept",
-      "note": ""
-    },
-    "DP_RGiveNinja": {
-      "decision": "accept",
-      "prefill": "accept",
-      "note": ""
-    },
-    "DP_RGivePirateBay": {
-      "decision": "accept",
-      "prefill": "accept",
-      "note": ""
-    },
-    "DP_RGivePrivate": {
-      "decision": "accept",
-      "prefill": "accept",
-      "note": ""
-    },
-    "DP_RGiveSunCult": {
-      "decision": "accept",
-      "prefill": "accept",
-      "note": ""
-    },
-    "DP_RGiveThrumboValley": {
-      "decision": "accept",
-      "prefill": "accept",
-      "note": ""
-    },
     "DeadlifeDust": {
       "decision": "accept",
       "prefill": "accept",
@@ -570,11 +525,6 @@
       "note": ""
     },
     "NeurosisPulse": {
-      "decision": "accept",
-      "prefill": "accept",
-      "note": ""
-    },
-    "OilPourCageResearch": {
       "decision": "accept",
       "prefill": "accept",
       "note": ""

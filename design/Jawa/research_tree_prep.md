@@ -80,6 +80,26 @@ out of this item's scope), and several stat-buff/flavor rows
 recorded here so nobody re-derives "empty cache = dead" and cuts something
 live.
 
+**+8 more, verified 2026-09-04** (BENCH hand-check of the validator's
+out-of-allowlist WARNs; allowlist is now 30):
+
+* `RR_BasicFoodPrep` / `RR_LateralThinking` — prereq hubs: 3 and 20 live
+  manifest rows respectively name them as prerequisites (MEASURED against
+  the schema-v2 manifest).
+* `ResearchMobileMineralSonarEnhancedScan` — stat-only C# buff to the
+  MobileMineralSonar building, same class as the drill-turret row above.
+* `ScuttlebugsBiology` — hyperlink-only unlock (`RecipeDef/ExtractScuttlebug`,
+  cherrypicker `present`), same class as `ComplexClothing`.
+* `RimAI_Subspace_Gravitic_Penetration` — the defName is a UTF-16 literal in
+  `RimAI.Core.dll` (C# mechanism). ⚠ An earlier check called it dead off
+  ASCII `strings`, which misses .NET UTF-16 literals — use `strings -el`.
+* `MM_Research_AncientShipDesigns` / `MM_Research_CWShipDesigns` /
+  `MM_Research_EmpireShipDesigns` — listed MEASURED-dead in the table above,
+  which stands as a statement about unlocks (they unlock nothing, mod-wide),
+  but the manifest now REFLAVORS all three into The Utinni T3: empty caches
+  by design, alive by ruling. Only `MM_Research_Repulsor` from that chain is
+  cut.
+
 **58 further rows are partial-cut** (some but not all unlocks gone) — none
 qualify as orphans by this item's bar; not tabulated individually.
 

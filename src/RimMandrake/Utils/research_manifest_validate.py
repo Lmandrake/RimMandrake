@@ -157,6 +157,14 @@ EMPTY_CACHE_ALLOWLIST = {
     "ComplexClothing", "VFET_Mining", "ResearchDrillTurretEfficientDrilling",
     "RimFridge_PowerFactorSetting", "VFEP_WarcasketRemoval",
     "OuterRim_DroidEnergySys",
+    # +8 verified 2026-09-04 (prep doc section 1, "+8 more"): prereq hubs,
+    # stat/hyperlink/C#-mechanism rows, and the three MM ship rows reflavored
+    # into The Utinni (empty caches by design, alive by ruling).
+    "RR_BasicFoodPrep", "RR_LateralThinking",
+    "ResearchMobileMineralSonarEnhancedScan", "ScuttlebugsBiology",
+    "RimAI_Subspace_Gravitic_Penetration",
+    "MM_Research_AncientShipDesigns", "MM_Research_CWShipDesigns",
+    "MM_Research_EmpireShipDesigns",
 }
 EMPTY_CACHE_ALLOWLIST_PREFIXES = ("DP_RGive",)
 

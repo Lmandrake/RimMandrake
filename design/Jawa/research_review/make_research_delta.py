@@ -30,6 +30,53 @@ OLD_DECISIONS = HERE / "research_review_decisions.json"
 OUT_DECISIONS = HERE / "research_delta_decisions.json"
 OUT_SHEET = HERE / "research_delta_review.html"
 TEMPLATE = Path.home() / ".claude/skills/review-sheets/assets/sheet_template.html"
+DUMP = Path(
+    "/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios"
+    "/DefDump/captures/2026-09-04T02-23-44Z/defs/ResearchProjectDef.json"
+)
+# the KotOR mod family: rows named after game characters are undecidable
+# without knowing the gear they gate (owner, 2026-09-04: "I have no idea
+# what this stuff is") - mine the recipes/things that name each row.
+KOTOR_FOLDERS = ["2938932438", "3047371944", "3254370945"]
+WORKSHOP = Path("/mnt/c/Program Files (x86)/Steam/steamapps/workshop/content/294100")
+
+
+def dump_labels():
+    try:
+        d = json.loads(DUMP.read_text())
+        defs = d["defs"] if isinstance(d, dict) and "defs" in d else d
+        return {x["defName"]: x.get("label", "") for x in defs}
+    except OSError:
+        return {}
+
+
+def kotor_gates():
+    """defName -> sorted list of item labels whose recipe/thing names the row.
+    Direct references only: a row reached solely via an abstract ParentName
+    (the Lightsaber_Crafting trap) will read low, so treat counts as a floor."""
+    import re as _re
+
+    gates = {}
+    for folder in KOTOR_FOLDERS:
+        base = WORKSHOP / folder
+        if not base.exists():
+            continue
+        for p in base.rglob("Defs/**/*.xml"):
+            try:
+                txt = p.read_text(errors="ignore")
+            except OSError:
+                continue
+            for m in _re.finditer(r"<(ThingDef|RecipeDef)[^>]*>.*?</\1>", txt, _re.S):
+                block = m.group(0)
+                rows = set(_re.findall(r"guy762_ResearchKotOR_\w+", block))
+                if not rows:
+                    continue
+                lab = _re.search(r"<label>([^<]+)</label>", block)
+                name = _re.search(r"<defName>([^<]+)</defName>", block)
+                what = lab.group(1) if lab else (name.group(1) if name else "?")
+                for rr in rows:
+                    gates.setdefault(rr, set()).add(what)
+    return {k: sorted(v) for k, v in gates.items()}
 
 
 def cut_group(note: str) -> str:
@@ -42,6 +89,8 @@ def cut_group(note: str) -> str:
         return "Cut - lightsaber / Force tech (nobody teaches it)"
     if "droid" in n or "unbolting" in n:
         return "Cut - droid construction (Free Droid Enclave-owned)"
+    if "no specific sitting ruling found" in n:
+        return "Cut by the MODEL - no ruling of yours covers these; overrule freely"
     return "Cut - other (v4 model / deck)"
 
 
@@ -55,21 +104,24 @@ def cut_reason(note: str) -> str:
 
 def main() -> int:
     force = "--i-know-this-overwrites-the-owners-decisions" in sys.argv
+    touched = False
     if OUT_DECISIONS.exists():
         doc = json.loads(OUT_DECISIONS.read_text())
-        if (doc.get("savedBy") or doc.get("writeCount")) and not force:
-            sys.exit(
-                "REFUSING: %s carries savedBy/writeCount - the sheet has written "
-                "it, so it holds the OWNER'S decisions, not a prefill. Rerun with "
-                "--i-know-this-overwrites-the-owners-decisions only if he says so."
-                % OUT_DECISIONS
-            )
+        touched = bool(doc.get("savedBy") or doc.get("writeCount"))
+    if touched and force:
+        touched = False
+    # A touched decisions file holds the OWNER'S choices: the sheet is still
+    # regenerated (the renderer is always safe to refresh mid-review), but the
+    # decisions file is only MERGED - new row keys added, dropped rows removed,
+    # every existing decision and provenance key preserved.
 
     header = MANIFEST.open().readline().strip()  # "# fingerprint=... capturedUtc=..."
     with MANIFEST.open() as f:
         next(f)
         rows = list(csv.DictReader(f))
     old = json.loads(OLD_DECISIONS.read_text())["decisions"]
+    labels = dump_labels()
+    gates = kotor_gates()
 
     items, seen = [], set()
 
@@ -77,14 +129,22 @@ def main() -> int:
         if row["defName"] in seen:
             return
         seen.add(row["defName"])
+        dn = row["defName"]
+        g = gates.get(dn)
+        if g:
+            effect += " · gates: " + ", ".join(g[:4]) + (
+                " +%d more" % (len(g) - 4) if len(g) > 4 else ""
+            )
         it = {
-            "id": row["defName"],
-            "label": row["defName"],
+            "id": dn,
+            "label": labels.get(dn) or dn,
             "group": group,
             "effect": effect,
             "prefill": prefill,
             "meta": {"mod": row["source_mod"]} if row["source_mod"] else {},
         }
+        if "no specific sitting ruling found" in row["note"]:
+            it["contested"] = True
         it.update(flags)
         items.append(it)
 
@@ -133,23 +193,36 @@ def main() -> int:
         it["id"]: {"decision": it["prefill"], "prefill": it["prefill"], "note": ""}
         for it in items
     }
-    OUT_DECISIONS.write_text(
-        json.dumps(
-            {
-                "posture": "confirm-delta",
-                "criterion": (
-                    "Delta vs what the frozen deck already showed - grouped by why "
-                    "each row is here, not by quality. Prefill is ACCEPT everywhere: "
-                    "this sheet exists to collect your overrides."
-                ),
-                "generatedBy": "make_research_delta.py",
-                "manifestFingerprint": header.lstrip("# ").strip(),
-                "decisions": prefill_decisions,
-            },
-            indent=2,
+    if not touched:
+        OUT_DECISIONS.write_text(
+            json.dumps(
+                {
+                    "posture": "confirm-delta",
+                    "criterion": (
+                        "Delta vs what the frozen deck already showed - grouped by why "
+                        "each row is here, not by quality. Prefill is ACCEPT everywhere: "
+                        "this sheet exists to collect your overrides."
+                    ),
+                    "generatedBy": "make_research_delta.py",
+                    "manifestFingerprint": header.lstrip("# ").strip(),
+                    "decisions": prefill_decisions,
+                },
+                indent=2,
+            )
+            + "\n"
         )
-        + "\n"
-    )
+    else:
+        # merge: new row keys in, dropped rows out, his decisions untouched
+        doc = json.loads(OUT_DECISIONS.read_text())
+        dec = doc.get("decisions", {})
+        live = {it["id"] for it in items}
+        for k in [k for k in dec if k not in live]:
+            del dec[k]
+        for k, v in prefill_decisions.items():
+            dec.setdefault(k, v)
+        doc["decisions"] = dec
+        OUT_DECISIONS.write_text(json.dumps(doc, indent=2) + "\n")
+        print("MERGED decisions (sheet had been touched): his choices preserved")
 
     config = {
         "sheetId": "research_delta_20260904",

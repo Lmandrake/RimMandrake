@@ -42,8 +42,9 @@ item THIN for it. Nothing here is a new decision; every ruling is already canon
    current fate differs from the 09-03 prefill. Still his pass alone; it cannot
    be delegated or inferred from a clean validator run.
 4. **The retag is live with no orphaned unlocks** — every unlock still resolves after
-   the retag, and the 22 rows alive with empty unlock caches (prep §1 allowlist) are
-   still exactly those 22, not a larger set that grew during execution.
+   the retag, and the rows alive with empty unlock caches are exactly the prep §1
+   allowlist — 30 as of 2026-09-04 (the original 22 plus 8 hand-verified additions,
+   each with evidence in prep §1 "+8 more") — not a set that grew silently.
 5. **No defName was renamed**, anywhere, by anything.
 
 The three execution children (RESEARCH_VALIDATOR_BUILD_1 · RESEARCH_MANIFEST_DRAFT_1 ·
