@@ -143,7 +143,10 @@ def fieldtype(sig):
         elif v & 0xC0 == 0x80: ci = ((v & 0x3F) << 8) | sig[j+1]; j += 2
         else: ci = ((v & 0x1F) << 24) | (sig[j+1] << 16) | (sig[j+2] << 8) | sig[j+3]; j += 4
         tag = ci & 3; ri = ci >> 2
-        if tag == 0 and ri <= len(typedefs): return typedefs[ri-1][0]
+        # ri==0 is a null coded-index row (no type) -- ri<=len(typedefs)
+        # let it through and silently returned typedefs[-1], the LAST type
+        # in the whole assembly, as a plausible-looking wrong answer.
+        if tag == 0 and 0 < ri <= len(typedefs): return typedefs[ri-1][0]
         if tag == 1:
             fl, nI, nsI = readrow(0x01, ri)[0], readrow(0x01, ri)[1], readrow(0x01, ri)[2]
             return s(nI)
