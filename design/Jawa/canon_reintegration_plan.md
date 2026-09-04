@@ -21,6 +21,14 @@
 
 # Canon reintegration — the plan
 
+> 🟢 **ALL FOURTEEN §G DECISION POINTS RULED, 2026-09-04, by card in one
+> sitting.** Several answers EXPANDED the design beyond the offered options —
+> G2 (the cast-off grandchildren), G3 (the same urns re-read darker), G4 (the
+> Reclamation), G5 (the Rakata as holder; Rust Cathedral/Droids together),
+> G6 (merge + Tenancy, after the AI deep-dive), G7 (the Moot's public
+> ambivalence, secret kinship), G8 (BOTH refill mechanisms) — read each §G
+> entry for the ruling as given. The F-sequence is live; F1 is next.
+
 The Antiquities pass (design/Jawa/antiquities_design.md) landed a new gravity
 well in the canon: the world itself became a research economy, the ship's
 memory became a reconstruction project, and the Rites gained a mechanism.
@@ -488,79 +496,102 @@ row-level cuts already did the killing; what remained is load-bearing.
 
 ## G. Decision points — every genuinely-owner call, trade-offs spelled out
 
-1. **Normalization mechanism seam.** (a) Dual-track: ResearchRetag stays the
-scalar layer (techLevel/cost/prereqs — live tonight), C# pass owns the
-dynamic layer (tabs, reveals, theology, gates). Cheapest path to a playable
-tree NOW; cost: two systems that must agree, forever, and the principles doc
-ruled against patches. (b) All-C#: one mechanism, log-loudly everywhere,
-retire the patch at the pass's first proof; cost: the scalar wins get
-re-implemented and re-proven, one more restart cycle before anything is live
-again. *Recommendation: (b), with the patch kept active until the pass
-proves parity — planned obsolescence, dated.*
-2. **The Helix's forged ancestry (B1).** (a) Adopt: sinister, thematically
-perfect, sharpens INFURIATED. Cost: closes the door on a genuine-descendant
-tragedy read of the Helix. (b) Leave ambiguous in-world (the ship believes
-forgery; no doc states it). Keeps both reads; costs the crisp lore line.
-3. **Stage the reversal into Antiquities (B3).** (a) Adopt stage-gated dark
-registers: the tree corroborates the dungeon, register guard preserved by
-`minStage`. Cost: authoring discipline on ~200 fragments; partial tyranny
-foreknowledge if a player rushes CULTURE before the dungeon. (b) Keep all
-urns sympathetic: guard is trivially safe; cost: the tree contradicts the
-reversal arc's second half and VOICE arrives naive.
-4. **The Call-Out settles the ship-claim (B4).** (a) Adopt: VOICE resolves
-the colonizer-ship challenge; the claim-conflict is the stake of the whole
-tree. Cost: the violent claim-endgame becomes the failure branch only. (b)
-Keep claim-conflict independent: preserves a live ship-ownership war even
-post-VOICE; cost: the Call-Out's "they leave" reads shallow beside an
-unresolved claim.
-5. **Antiquities' gate class.** (a) World-held techprints inside the ruled
-four-class economy (holder=the planet): zero new taxonomy, RR implements it
-today; cost: "faction-held" reporting lumps a non-faction holder. (b) A
-fifth `antiquity` class: clean tooling and tooltips; cost: one more concept
-everywhere the four classes are already written.
-6. **The Waking Mind: keep or fold into THE SHIP.** (a) Keep thin: identity
-legible, Droidworks rows land there later; cost: a 10-row tab until then.
-(b) Fold: tab bar tightens to 16; cost: the AI ladder loses its address and
-the Ohm/Oomo argument loses its stage.
-7. **The Moot as urn-finders (C3).** (a) Adopt: characterization + a gentle
-supply valve, world total unchanged. (b) Skip: scarcity maximally tight;
-the player's own nation stays silent on the campaign's central project.
-8. **Fluid canal refill** (unblocks FLUID_CANAL_MECHANIC_1): (a) steady drip
-— continuous, simulation-feeling, needs per-tick water accounting; (b)
-periodic re-flood — event-shaped, cheap, reads as "the canal runs when the
-canal runs." *(No recommendation — FOUNDRY's caveats are engineering-true
-either way; pick the fantasy.)*
-9. **Shield foundation** (unblocks SHIELD_MODS_LEVERAGE_1): (a) build a
-bespoke building-scale shield comp (owns the fantasy, owns the maintenance);
-(b) re-scope to pawn-scale + gravship-slot-only (ships sooner, building
-shields wait for v2).
-10. **Inhabited MapParent scope** (unblocks the GAP item): (a) rebase
-`WorldObject_Inhabited` (fixes the whole class, save-compat risk on every
-instance); (b) subclass only Settlement (surgical, leaves non-settlement
-Inhabited objects architecturally inert).
+1. ~~Normalization mechanism seam~~ **RULED (owner, 2026-09-04, card): (b)
+ALL-C#.** The C# manifest pass is the one mechanism; ResearchRetag stays
+live only until the pass proves parity, then retires, dated. F3 executes.
+2. ~~The Helix's forged ancestry (B1)~~ **RULED (owner, 2026-09-04, card) —
+forged ancestry ADOPTED, and the tragedy kept too, braided.** His expansion,
+canon now: some Rakata genuinely adapted by merging with other races and
+their line persists in the Helix — **cast-off, denied, distant
+grandchildren** — but the ancestors no longer respect or value what they
+became. Rejection is the Helix's origin wound: denied by their claimed
+family, they turned to studying the very Assailants that destroyed their
+ancestors. The line, his verbatim, a set-piece: *"If you will not share your
+wisdom and power, then I will learn from what destroyed you"* — "said in no
+uncertain terms, and the outrage and disgust from the Rakata radiated
+powerfully." **Sequenced AFTER the Reclamation** (G4's event): the
+Rakata-Helix alliance fails, the Rakata's mercilessness and untrustworthy
+alliances are revealed, and THEN the Helix's true heart shows — "shades of
+grey and black everywhere, bleak morality, and hurt emotions turned to the
+dark side in righteous indignation at rejection and denial." The forged
+splice (B1) and the real thread coexist: the Helix forged MORE ancestry
+than they have, precisely because the little they have was refused.
+3. ~~Stage the reversal into Antiquities (B3)~~ **RULED (owner, 2026-09-04,
+card, and his answer improves the design): stage it in — but the darkness is
+NOT separate fragments.** His mechanism, near-verbatim: aggressive urns may
+appear early, sparingly — that is the foreshadowing. Best form: *"Sympathetic
+Urn interpretation is the easy one, the naive one... but as the players grow
+more nuanced, they begin to see the inherent hostility in the deeper, more
+fractal layers. 'The stars we lost' are found to later include 'the
+casualties inflicted and resources spent subduing the population' encoded in
+that same map."* ⇒ **the same urns re-read darker**: every fragment carries
+a naive reading and a fluent reading one fractal layer down; stage progress
+re-opens already-catalogued pieces (the re-inspection hook in antiquities
+§4.1 becomes the delivery mechanism). minStage gates the FLUENT layer, not
+the object. The corpus authoring rule: write the grief first, hide the
+ledger inside it.
+4. ~~The Call-Out settles the ship-claim (B4)~~ **RULED (owner, 2026-09-04,
+card): BOTH.** The Call-Out *seems* to settle the claim — then, late game,
+one concentrated event: **every ancient the player ever woke unites to take
+the Utinni back, in local collaboration with the Helix, who turn hostile.**
+Surviving the Reclamation makes the ancients **permanently neutral —
+dominated**, unwilling to anger the clan further. (The Helix's forged-heir
+lore gets its payoff: the real heirs and the fake ones, allied at last, and
+both beaten. This event joins F8's late-game slate; the Helix hostility
+switch needs its own care — it ends the Ascendant Ladder boon economy, which
+is a real price the player should see coming.)
+5. ~~Antiquities' gate class~~ **RULED (owner, 2026-09-04, card): class ②
+faction-held, and the holder is THE RAKATA THEMSELVES** — not "the planet."
+The dead are a faction; urns are their techprints. And a lore corollary from
+the same answer: **the Rust Cathedral would belong to this same
+Rakata-holder, except for their love of the Droids and their historical
+evolution through degradation — so they remain "Rust Cathedral / Droids
+together"**, a separate holder. (The E-mapping stands with holder names:
+Rakata→the canon; Rust Cathedral/Droids→personal gravtech.)
+6. ~~The Waking Mind~~ **RULED (owner, 2026-09-04, card, after the deep
+dive — design/Jawa/waking_mind_ai_deep_dive.md): MERGE + TENANCY THREAD.**
+The Waking Mind folds into **The Unbolting as "minds you make"** — droid
+bodies and large AI systems (ships, settlements, orbital stations) in one
+moral ladder, mixed access classes framed as the feature (some minds are
+built, some are freed). PLUS a 3-row **"Tenancy" thread** re-described in
+The Utinni's tab (description-only, no row moves): persona cores as houses
+for minds, the Rakatan tenancy architecture — two tabs telling one argument
+from both ends. Tab bar goes to 16.
+7. ~~The Moot as urn-finders (C3)~~ **RULED (owner, 2026-09-04, card):
+ADOPTED, and more.** Early game the Moot is SHOCKED at the Utinni and
+publicly ambivalent — his voice: *"Look, you're kin, but WTF are you doing
+in that huge ship attracting Empire and Hutt hatred?! Stay away please...
+unless it's safe right now?"* — and then **secretly trades with the ship
+anyway**: kinship among the Jawa IS respected and protected, so long as it
+doesn't cost them publicly and bring ruin down on them. "Cute, touching,
+and irritating, just like the Jawa." Design consequence: Moot urn-trade
+arrives through covert/irregular channels early (night caravans, dead-drop
+sales, deniable intermediaries), normalizing only as the clan's standing
+grows.
+8. ~~Fluid canal refill~~ **RULED (owner, 2026-09-04, card): BOTH.** A
+steady drip baseline (the reservoir breathes) AND periodic re-flood events
+(water arriving as an occasion). FLUID_CANAL_MECHANIC_1 unblocked with both
+mechanisms in scope; the drip carries the simulation, the flood carries the
+drama.
+9. ~~Shield foundation~~ **RULED (owner, 2026-09-04, card): bespoke
+building-scale comp, NOW.** The full fantasy owned immediately; the new C#
+system's maintenance cost accepted. SHIELD_MODS_LEVERAGE_1 unblocked; the
+ship_shields proposal's environmental gating rides it.
+10. ~~Inhabited MapParent scope~~ **RULED (owner, 2026-09-04, card): REBASE
+the class.** One architecture for every inhabited world-object; save-compat
+exposure accepted (map state is disposable debug until the campaign starts —
+the cheap window for exactly this kind of rebase is open).
 
-*Per-area balance approvals (ruling ④ — each is its own gate; nothing below
-changes a live number until its letter is approved):*
-
-11. **Armoury live numbers.** The tree rebrand implies re-pricing signature
-weapons against the one-curve pacing (§E) — e.g. spine-tier blaster costs,
-Kolto cadence's neighbors. (a) Approve an Armoury balance letter (one diff,
-review-sheet format); (b) freeze Armoury numbers as-is and let the manifest
-work around them. Trade-off: coherence vs. touching a mod that owner-plays
-today.
-12. **Xenotype tolerances.** The natives-get-a-modest-edge ruling (hold
-ledger, 2026-08-23) predates the tree/faction grammar; the Helix forged-heir
-lore (B1) may want a Made-lineage tell in the gene layer. (a) Approve a
-xenotype letter; (b) tolerances are settled, lore rides on top. Trade-off:
-one more expressive layer vs. reopening a twice-tuned system.
-13. **Ideoligion precepts.** The Salvation's 103 precepts are the owner's
-own artifact; Antiquities suggests exactly ONE addition (a reading-the-canon
-ritual/precept so the Urn Station has an ideo hook). (a) Approve a one-precept
-letter; (b) the .rid is sacred, mechanics stay outside it. Trade-off: native
-ideo integration vs. the artifact's authorship staying purely his.
-14. **Tree renames** (§E, ruling ① licensed the proposing): ratify
-THE SHIP→"The Utinni" and Scavenger→"Jawa Scavenging", or keep either label.
-Cost either way: one deck relabel + one manifest tab-string pass.
+11.–13. ~~Per-area balance approvals~~ **RULED (owner, 2026-09-04, card):
+ALL THREE LETTERS APPROVED** — Armoury (re-price signature weapons against
+the one-curve pacing), Xenotype (a Made-lineage tell in the gene layer for
+the forged-heir lore), Ideoligion (exactly one reading-the-canon
+ritual/precept for the Urn Station). Each still ships as a staged,
+reviewable diff — approval here is license to DRAFT the letter, his review
+of each diff remains the gate on deployment.
+14. ~~Tree renames~~ **RULED (owner, 2026-09-04, card): BOTH.** THE SHIP →
+**"The Utinni"**; Scavenger → **"Jawa Scavenging"**. One deck relabel + one
+manifest tab-string pass, rides F2/F3.
 
 ---
 
