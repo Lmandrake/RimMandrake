@@ -38,11 +38,9 @@ protected thing.
 
 ## Git
 
-Explicit paths, never `add -A`/`.`/`-a`. Commit when a unit of work exists; push is
-the second half of commit (rejected push → `git pull --rebase`, never `--force`).
-`git status --porcelain <path>` before touching a file another window may hold.
-Nothing over ~50 MB. Human-once output → `Transient/` (untracked, ~14-day shelf);
-machine cache → `/tmp`; work products → the repo, committed.
+CLAUDE.md owns the rules ("Git" + the Transient rule). Charter's additions only:
+commit when a unit of work exists, and `git status --porcelain <path>` before
+touching a file another window may hold.
 
 ## Queue
 
@@ -52,8 +50,8 @@ ledger (`events.jsonl`, written only by `rimflow`) is the truth; `queue/*.md` ar
 rendered views you never edit. Close: `rimflow close <ID> --sha <commit>`, commit
 carrying `Closes: <ID>`, push. **Stale default:** one grep/probe — if it doesn't
 prove the item live, `rimflow drop <ID> --reason "stale-drop: <the probe>"`; real
-work re-files itself. Legacy IDs (`B58`) are cited with their title attached, never
-renamed. v2 ideas go straight to `design/V2_DREAMS.md`, any window, no permission.
+work re-files itself. Naming: CLAUDE.md's "Queue items are NAMED" section. v2 ideas
+go straight to `design/V2_DREAMS.md`, any window, no permission.
 
 ## Decisions
 
@@ -79,9 +77,8 @@ dump** (post-patch truth; never a bare number from a scan — `MEASURED`/`UNMEAS
 `REFUSED`) → **quicktest via bridge** (~90 s) → **cold load** (expensive list).
 **Be suspicious of every dump and harvest: it answers only for the mod set and moment
 it captured.** Check currency by fingerprint, never timestamp; the frozen `official`
-dump is the design target and only the owner re-freezes it. A patch that matches
-nothing logs nothing. The game reads the Steam `Mods` folder, never this repo —
-writing is not deploying. Never guess a defName, field, or namespace.
+dump is the design target and only the owner re-freezes it. The silent-failure traps
+(patches, deploys, defName guessing) are CLAUDE.md's "Facts you cannot guess".
 
 ## Game state and the bridge
 
@@ -99,11 +96,10 @@ the game down (OS lock).
 
 ## Windows
 
-**BENCH** (with the owner, permanent bench, Opus orchestrating) and **FOUNDRY**
-(autonomous, pulls the queue, Sonnet escalating per item) — `BENCH.md` /
-`FOUNDRY.md`. Model ladder: `Agent_Policy.md`. Subagents: spawn freely, always with
-`model` (haiku enumerate · sonnet interpret · fable design · opus when the return is acted on
-unverified); a subagent's return is evidence, never a finding, and no subagent writes
-shared state. Windows never message each other — the queue and the owner are the only
-channels; your own subagents are not peers. Queue views render on every `rimflow`
-write — no loop, no publisher, no staleness.
+**BENCH** (with the owner, permanent bench) and **FOUNDRY** (autonomous, pulls the
+queue) — `BENCH.md` / `FOUNDRY.md`; every model choice, seat and subagent alike:
+`Agent_Policy.md`. Subagents: spawn freely, always with `model`; a subagent's return
+is evidence, never a finding, and no subagent writes shared state. Windows never
+message each other — the queue and the owner are the only channels; your own
+subagents are not peers. Queue views render on every `rimflow` write — no loop, no
+publisher, no staleness.

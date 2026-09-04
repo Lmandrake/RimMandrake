@@ -137,10 +137,6 @@ python3 src/RimMandrake/rimflow/cli.py …            the ledger: file/claim/clo
 node --check <file.js>                              Node 22 is installed user-local
 python3 src/RimMandrake/Utils/run_selftests.py      run every selftest before a commit — parallel,
                                                      explicit N/N, never silently truncated
-                                                     (SELFTEST_SWEEP_EXCEEDS_COMMIT_BUDGET_1: the
-                                                     old serial `for` loop exceeded the 120s tool
-                                                     timeout and printed a partial run that read
-                                                     as green)
 ```
 
 ## Options he must LOOK at ship as a savegame — owner, 2026-09-02
@@ -156,9 +152,9 @@ gear on a pawn — **build them and save the game.**
 - **Saves stay until he says delete.** Not auto-purged, not overwritten by the
   next review.
 - 🔴 **Back up the Saves folder's keepers first and stat it afterwards.**
-  `rimworld/save_game` honoured `saveName` on 2026-09-02 and silently wrote the
-  CURRENT slot instead on 2026-08-24. Confirm a NEW file appeared and no
-  existing one changed size — do not trust the path it hands back.
+  `rimworld/save_game` has silently written the CURRENT slot instead of `saveName`.
+  Confirm a NEW file appeared and no existing one changed size — never trust the
+  path it hands back.
 - ⚠️ Verify each option is actually THERE (`jawa/list_things` per slot) before
   calling it a review. A placement log's `thingsSpawned` is a NET count and goes
   negative when a build clears plants.
@@ -184,7 +180,7 @@ if you want it, look again.** ⚠️ Do not message the other window — that ch
 ⭐ **The owner overrides both of you with `./bridge bench|foundry|free`**, and his word
 lands in the same file you already read.
 
-`broadcast.py` is the owner's tool; the game-state relay above is its only carve-out.
+`src/RimMandrake/Utils/broadcast.py` is the owner's tool; the game-state relay above is its only carve-out.
 🔴 Run commands yourself — a `!`-prefixed paste handed to the owner is the defect
 (hook-enforced on Stop); anything he must LOOK at comes with the complete native path.
 

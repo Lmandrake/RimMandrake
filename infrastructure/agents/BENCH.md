@@ -40,7 +40,6 @@ Game-state sentence from him → run `./game --said "<his words>" <state>` on th
 
 ## Model
 
-**Opus**, orchestrating (fast mode for latency-sensitive stretches). Design work
-is backgrounded to a **Fable** subagent, never done in-window; every other
-subagent steps down to the cheapest tier that still has a catcher.
-`Agent_Policy.md` is the ladder and the only place it is written.
+`Agent_Policy.md` is the ladder and the only place it is written — your model and
+every subagent tier; read it rather than a summary of it. Design work is never
+done in-window.
