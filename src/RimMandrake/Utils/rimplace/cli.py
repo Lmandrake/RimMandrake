@@ -29,11 +29,22 @@ from rimplace.luaenv import (TemplateError, TemplateTooSmall,  # noqa: E402
                              declared_min_rect, run_template)
 from rimplace.plan import (calls_summary, compile_calls,      # noqa: E402
                            compile_flat, lint, render)
-from game_paths import DUMP_ROOT                              # noqa: E402
+from game_paths import DEF_DUMP                               # noqa: E402
+import dump_projection                                        # noqa: E402
 
 REPO = _HERE.parents[3]
 TEMPLATES = REPO / "design" / "Jawa" / "templates"
-DUMP_SQLITE = Path(DUMP_ROOT) / "defs.sqlite"
+# 🔴 `defs.sqlite` lives at the DefDump ROOT and outlives any one capture
+# (DUMP_STORAGE_LAYOUT_RULING_1), so a raw `DUMP_ROOT / "defs.sqlite"` path
+# finds the file even when it describes an OLDER capture than the one
+# currently live - measured 2026-09-03: the db on disk right now describes
+# 2026-09-02T19:36:08Z while the newest capture is 2026-09-04T02-23-44Z.
+# `dump_projection.sqlite_path()` is the project's one fingerprint-checked
+# resolver (see its `_sqlite_describes`) - it returns None on a stale or
+# unusable db, and that must map to UNMEASURED here, never a silent pass
+# against yesterday's defs.
+DUMP_SQLITE = dump_projection.sqlite_path(str(DEF_DUMP))
+DUMP_SQLITE = Path(DUMP_SQLITE) if DUMP_SQLITE else None
 
 
 def _resolve_template(name: str) -> Path:
@@ -74,8 +85,9 @@ def _build(a):
 # --------------------------------------------------------------------------- #
 def _verified_defs(plan) -> set[str] | None:
     """Look every defName up in the live dump. Returns None if the dump is not
-    readable - and the caller then reports UNMEASURED rather than passing."""
-    if not DUMP_SQLITE.exists():
+    readable (missing, corrupt, or stale against the current capture) - and
+    the caller then reports UNMEASURED rather than passing."""
+    if DUMP_SQLITE is None:
         return None
     want = plan.defnames()
     con = sqlite3.connect(f"file:{DUMP_SQLITE}?mode=ro", uri=True)
@@ -108,7 +120,7 @@ def _paint_violations(plan):
     floored = {plan.terrain[c] for c in plan.floor_color if c in plan.terrain}
     if not painted and not floored:
         return [], None
-    if not DUMP_SQLITE.exists():
+    if DUMP_SQLITE is None:
         return [], "dump unreadable"
     con = sqlite3.connect(f"file:{DUMP_SQLITE}?mode=ro", uri=True)
     try:
@@ -220,7 +232,7 @@ def main(argv=None):
         vd = _verified_defs(plan)
         want = sorted(plan.defnames())
         if vd is None:
-            print(f"  UNMEASURED - the def dump is not readable at\n    {DUMP_SQLITE}")
+            print(f"  UNMEASURED - no fresh, readable defs.sqlite for capture\n    {DEF_DUMP}")
             print("  This is not a pass. Nothing was checked.")
             return 2
         missing = [d for d in want if d not in vd]
