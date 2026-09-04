@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-04T02:10:34Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: FOUNDRY
+as-of: 2026-09-04T02:26:27Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -467,7 +467,7 @@ Claim one to work it. Any item can be claimed and started; the prose sections ar
 ## ANOMALY_EXCEPTION_ACCESS_1 The sarlacc/Assailant exception needs a non-research route before the Anomaly cut ships
 state:    proposed
 row:      unassigned
-needs:    owner
+needs:    offline
 target:   v1
 kind:     task
 thin:     spec, verify and criteria all present
