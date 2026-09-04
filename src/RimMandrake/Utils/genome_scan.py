@@ -121,7 +121,12 @@ def candidate_xml(def_dirs: list[Path]) -> list[Path]:
 def file_mentions_genes(p: Path) -> bytes | None:
     try:
         raw = p.read_bytes()
-    except OSError:
+    except OSError as ex:
+        # 🔴 was a bare `return None`: identical outcome to "this file has no
+        # gene markers", so an unreadable file silently undercounted genes
+        # with no signal at all -- unlike the ET.ParseError two functions
+        # down, which does log. Match that.
+        log(f"  ! unreadable, skipped: {p}: {ex}")
         return None
     return raw if any(m in raw for m in DEF_MARKERS) else None
 
@@ -201,7 +206,8 @@ def skill_and_chemical_defnames(mod_dirs: dict[str, Path], active: list[str]) ->
                     p = Path(dirpath) / fn
                     try:
                         raw = p.read_bytes()
-                    except OSError:
+                    except OSError as ex:
+                        log(f"  ! unreadable, skipped: {p}: {ex}")
                         continue
                     if b"SkillDef" not in raw and b"ChemicalDef" not in raw:
                         continue
