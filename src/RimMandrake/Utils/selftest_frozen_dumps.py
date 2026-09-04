@@ -212,6 +212,72 @@ def t_a_replaced_capture_is_not_reported_as_frozen():
         shutil.rmtree(d, ignore_errors=True)
 
 
+def _target_root(frozen_id, captured, extra_ids=()):
+    """A throwaway DUMP_ROOT holding a frozen capture (manifest + defs body,
+    so dump_fingerprint accepts it) plus optional empty newer captures."""
+    root = tempfile.mkdtemp(prefix=".tgt_")
+    cap = os.path.join(root, "captures", frozen_id)
+    os.makedirs(os.path.join(cap, "defs"))
+    json.dump({"capturedUtc": captured, "modCount": 2,
+               "mods": [{"packageId": "a.one"}, {"packageId": "b.two"}]},
+              open(os.path.join(cap, "manifest.json"), "w", encoding="utf-8"))
+    open(os.path.join(cap, "defs", "ThingDef.json"), "w").write("{}")
+    for i in extra_ids:
+        d = os.path.join(root, "captures", i)
+        os.makedirs(os.path.join(d, "defs"))
+        json.dump({"capturedUtc": i.replace("-", ":").replace("T", "T", 1),
+                   "modCount": 2,
+                   "mods": [{"packageId": "a.one"}, {"packageId": "b.two"}]},
+                  open(os.path.join(d, "manifest.json"), "w", encoding="utf-8"))
+        open(os.path.join(d, "defs", "ThingDef.json"), "w").write("{}")
+    return root, cap
+
+
+def t_a_newer_capture_beside_the_frozen_one_is_not_replacement():
+    """🔴 Measured 2026-09-04: three ordinary post-freeze captures sat beside
+    the fully intact frozen one, and status() — comparing the freeze against
+    the NEWEST capture — reported REPLACED after every game load, citing a
+    superseded flat-layout entry while doing it. A permanent false alarm is
+    how someone eventually re-freezes to clear the board, which is the silent
+    target move the registry exists to prevent."""
+    root, cap = _target_root("2026-08-29T13-30-02Z", "2026-08-29T13:30:02Z",
+                             extra_ids=["2026-09-04T02-23-44Z"])
+    sha = refresh.dump_fingerprint(cap)["hash"]
+    reg = with_registry([
+        entry(id="OFFICIAL-OLD", capturedUtc="2026-08-21T08:20:20Z"),
+        entry(id="OFFICIAL-NEW", capture="2026-08-29T13-30-02Z",
+              capturedUtc="2026-08-29T13:30:02Z", modlist_sha=sha)])
+    try:
+        fe, state, detail = refresh.design_target_state(root=root)
+        assert fe and fe["id"] == "OFFICIAL-NEW", (
+            "the ACTIVE freeze must be the newest entry, not %r" % (fe,))
+        assert state == "FROZEN", (
+            "an intact frozen capture with a newer sibling read %s (%s)"
+            % (state, detail))
+    finally:
+        shutil.rmtree(reg, ignore_errors=True)
+        shutil.rmtree(root, ignore_errors=True)
+
+
+def t_a_genuinely_replaced_frozen_capture_still_reads_replaced():
+    """The other half: the fix must not weaken detection. A manifest whose
+    capturedUtc no longer says what the freeze recorded is a replacement."""
+    root, cap = _target_root("2026-08-29T13-30-02Z", "2026-08-30T00:00:00Z")
+    reg = with_registry([entry(id="OFFICIAL-NEW", capture="2026-08-29T13-30-02Z",
+                               capturedUtc="2026-08-29T13:30:02Z")])
+    try:
+        _fe, state, _detail = refresh.design_target_state(root=root)
+        assert state == "REPLACED", (
+            "a rewritten frozen capture read %s" % state)
+        # and a MISSING one is REPLACED too, not silently unfrozen
+        shutil.rmtree(cap, ignore_errors=True)
+        _fe, state, detail = refresh.design_target_state(root=root)
+        assert state == "REPLACED" and "GONE" in detail, (state, detail)
+    finally:
+        shutil.rmtree(reg, ignore_errors=True)
+        shutil.rmtree(root, ignore_errors=True)
+
+
 def t_the_derived_db_is_outside_the_freeze():
     """`defs.sqlite` lives inside the frozen path and must NOT be frozen —
     it is a pure function of the capture, so rebuilding it cannot move the

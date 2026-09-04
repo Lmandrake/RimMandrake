@@ -650,6 +650,57 @@ def frozen_entry(path):
     return hit
 
 
+def design_target_state(root=None):
+    """-> (entry, state, detail) for the ACTIVE frozen design target.
+
+    state is None (nothing frozen), "FROZEN" (intact on disk) or "REPLACED"
+    (missing, or its manifest no longer says what the freeze recorded).
+
+    🔴 THE TARGET IS JUDGED IN ITS OWN DIRECTORY, NEVER AGAINST THE NEWEST
+    CAPTURE. Measured 2026-09-04: three ordinary post-freeze captures sat in
+    `captures/` beside the fully intact frozen one (`.keep` present, manifest
+    exact), and status() — which compared the freeze against `D_DUMP`, the
+    NEWEST capture — screamed REPLACED after every game load. Worse, the
+    newest capture matched no entry carrying a `capture` field, so
+    `frozen_entry()` fell through to a superseded FLAT-layout entry and the
+    verdict named a freeze from 2026-08-21 that OFFICIAL-2026-08-29 had long
+    superseded. A permanent false alarm is how someone eventually "fixes" the
+    board by re-freezing — the silent target move this whole registry exists
+    to prevent. Under dated captures a newer capture BESIDE the frozen one is
+    ordinary verification material, not replacement.
+
+    The active entry is the registry's newest official freeze (append-only,
+    so last line wins — same rule as freeze() and the selftests).
+    """
+    root = root or D_DUMP_ROOT
+    officials = [e for e in registry()
+                 if e.get("kind") == "official" and e.get("frozen")]
+    fe = officials[-1] if officials else None
+    if fe is None:
+        return None, None, ""
+    cap_id = str(fe.get("capture") or "")
+    cap_path = os.path.join(root, "captures", cap_id) if cap_id else root
+    ffp = dump_fingerprint(cap_path)
+    want = str(fe.get("capturedUtc") or "")
+    if ffp is None:
+        return fe, "REPLACED", ("frozen capture %s is GONE from disk"
+                                % (cap_id or "(flat root)"))
+    got = str(ffp.get("capturedUtc") or "")
+    # 🔴 A freeze that cannot detect REPLACEMENT is not a freeze. Measured
+    # 2026-08-21: registry froze 2026-08-20T15:08:30Z, disk held
+    # 2026-08-21T08:20:20Z, both 578 mods, and the only thing checked — the
+    # mod count — had not moved. So capturedUtc AND the fingerprint are both
+    # compared; "see manifest.json" is the pre-sha placeholder, not a claim.
+    want_sha = str(fe.get("modlist_sha") or "")
+    if want and got and want != got:
+        return fe, "REPLACED", "frozen as %s, capture holds %s" % (want, got)
+    if want_sha and want_sha != "see manifest.json" and ffp["hash"] != want_sha:
+        return fe, "REPLACED", ("frozen sha %s, capture computes %s"
+                                % (want_sha, ffp["hash"]))
+    return fe, "FROZEN", "%s (%s mods, %s)" % (ffp["hash"], ffp["modCount"],
+                                               got or "?")
+
+
 # ---------------------------------------------------------------- status
 def status_only_fingerprint(fp):
     """Just the listed-vs-installed answer. No artefacts, no dump, no load."""
@@ -722,36 +773,29 @@ def status(fp, steps_failed=False):
                  else "STALE" if sheets_ok else "MISSING", "--offline"))
 
     dfp = dump_fingerprint()
-    if dfp is None:
+    # ✅ The design target is judged by design_target_state() — in the frozen
+    # capture's OWN directory, against the NEWEST registry entry — and this
+    # branch sits ABOVE the hash comparison on purpose, so a count mismatch
+    # can never reach it. See the note at the top, and the docstring of
+    # design_target_state() for the 2026-09-04 false-REPLACED this replaces
+    # (it compared the freeze against the newest capture, and cited a
+    # superseded flat-layout entry while doing it).
+    fe, tgt_state, tgt_detail = design_target_state()
+    if fe is not None:
+        if tgt_state == "REPLACED":
+            rows.append(("DefDump/ (frozen)", tgt_detail,
+                         "REPLACED", "owner re-freezes or restores"))
+        else:
+            rows.append(("DefDump/ (frozen)", tgt_detail,
+                         "FROZEN", "owner only (%s, %s)"
+                         % (fe.get("by", "?"), fe.get("id", "?"))))
+    elif dfp is None:
         # Name WHICH half is gone: a manifest with no defs/ is a half-deleted
         # dump, not a machine that never took one.
         rows.append(("DefDump/ (live)",
                      "manifest, but no defs/*.json"
                      if os.path.isfile(os.path.join(D_DUMP, "manifest.json"))
                      else "absent", "MISSING", "GAME LOAD"))
-    elif frozen_entry(D_DUMP):
-        # ✅ FROZEN, not stale — and this branch sits ABOVE the hash comparison on
-        # purpose, so a count mismatch can never reach it. See the note at the top.
-        fe = frozen_entry(D_DUMP)
-        # 🔴 But a freeze that cannot detect REPLACEMENT is not a freeze.
-        # Measured 2026-08-21: the registry froze capture 2026-08-20T15:08:30Z
-        # and the disk held 2026-08-21T08:20:20Z. Both were 578 mods, so the
-        # only thing this branch checked had not moved, and the design target
-        # everyone builds against had silently changed. The registry's own
-        # README calls that "far worse than a stale warning, because nothing
-        # would announce it". This announces it.
-        want = str(fe.get("capturedUtc") or "")
-        got = str(dfp.get("capturedUtc") or "")
-        if want and got and want != got:
-            rows.append(("DefDump/ (live)",
-                         "frozen as %s, disk holds %s" % (want, got),
-                         "REPLACED", "owner re-freezes or restores"))
-        else:
-            rows.append(("DefDump/ (live)",
-                         "%s (%s mods, %s)" % (dfp["hash"], dfp["modCount"],
-                                               dfp.get("capturedUtc", "?")),
-                         "FROZEN", "owner only (%s, %s)"
-                         % (fe.get("by", "?"), fe.get("id", "?"))))
     elif dfp["hash"] != fp["hash"]:
         rows.append(("DefDump/ (live)",
                      "%s (%s mods, %s)" % (dfp["hash"], dfp["modCount"],
@@ -949,6 +993,16 @@ def do_patches():
 
 
 def main():
+    # Windows Python defaults stdout to cp1252, and the verdict uses 🔴 —
+    # measured 2026-09-04: the one line announcing a replaced design target
+    # crashed the whole VERDICT section with UnicodeEncodeError instead of
+    # printing it. An alarm that dies mid-sentence is worse than none.
+    for stream in (sys.stdout, sys.stderr):
+        if hasattr(stream, "reconfigure"):
+            try:
+                stream.reconfigure(encoding="utf-8", errors="replace")
+            except (OSError, ValueError):
+                pass
     ap = argparse.ArgumentParser(description=__doc__.split("USAGE")[0],
                                  formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--config", default=D_CONFIG)
