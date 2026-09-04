@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-04T22:39:55Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-04T23:11:26Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -395,16 +395,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## RESEARCH_RETAG_LOAD_ORDER_GAP_1 ResearchRetag has no forceLoadAfter - patches on ~260 defs can silently no-op if a content mod loads after it
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     spec, verify and criteria all present
-summary:  Found by a code-review pass (2026-09-04) while marking src/RimUtinni/
-prose:    infrastructure/state/items/RESEARCH_RETAG_LOAD_ORDER_GAP_1.md
 
 ## KARRASK_ASYMMETRIC_CLAW_TOOL_1 RSW_Karrask ThingDef has a foreclaw tool linked to FrontLeftPaw only, no matching FrontRightPaw tool
 state:    proposed
