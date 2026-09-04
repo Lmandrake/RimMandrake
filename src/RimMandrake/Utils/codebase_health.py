@@ -99,6 +99,7 @@ EXCLUDE_PREFIXES = (
     "src/RimMandrake/Utils/vendor_viz/",
     "deployed/",
     ".git/",
+    "research/",  # AI-workforce research notes, not reviewed code (owner, 2026-09-04)
 )
 EXCLUDE_PARTS = ("__pycache__", "node_modules", "/bin/", "/obj/")
 
