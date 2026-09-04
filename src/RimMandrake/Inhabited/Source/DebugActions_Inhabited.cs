@@ -264,11 +264,13 @@ namespace RimMandrake.Inhabited
         // by hand on whatever map is open.
         //
         // 🔑 WHY THEY EXIST RATHER THAN "GENERATE A MAP AND LOOK". Neither route
-        // that would run GenStep_InhabitedStock is reachable in play today, and
-        // both blockers predate this work: WorldObject_InhabitedSettlement is not
-        // a MapParent, so its map generator never runs
-        // (INHABITED_SETTLEMENT_MAPPARENT_GAP_1), and no TileMutatorDef anywhere
-        // in the build set names Inhabited_Cast, so the wilderness route has no
+        // that would run GenStep_InhabitedStock is reachable in play today.
+        // WorldObject_Inhabited is a MapParent now (INHABITED_SETTLEMENT_
+        // MAPPARENT_GAP_1, rebased 2026-09-04) so its map generator no longer
+        // throws on cast -- but nothing in the game ever constructs an
+        // Inhabited_Settlement (no producer exists yet, a second and separate
+        // gap the rebase does not touch), and no TileMutatorDef anywhere in the
+        // build set names Inhabited_Cast, so the wilderness route still has no
         // way in either. These actions exercise the same InhabitedStock and
         // InhabitedFateWorker calls the GenStep and the teardown patch make, on a
         // quicktest map, without waiting on either gap.

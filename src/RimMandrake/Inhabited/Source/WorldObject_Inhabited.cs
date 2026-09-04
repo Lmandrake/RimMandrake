@@ -40,7 +40,7 @@ namespace RimMandrake.Inhabited
     ///    supported opt-out, and it is what makes "frozen until visited" true
     ///    rather than merely intended.
     /// </summary>
-    public class WorldObject_Inhabited : WorldObject, IThingHolder, IThingHolderTickable
+    public class WorldObject_Inhabited : MapParent, IThingHolder, IThingHolderTickable
     {
         /// <summary>What the place is.</summary>
         public InhabitedPlaceDef placeDef;
@@ -161,13 +161,31 @@ namespace RimMandrake.Inhabited
         public CellRect StockArea =>
             stockSpot.IsValid ? CellRect.CenteredOn(stockSpot, stockRadius) : CellRect.Empty;
 
-        public ThingOwner GetDirectlyHeldThings()
+        /// <summary>
+        /// `new`, not an override -- MapParent.GetDirectlyHeldThings() is not
+        /// virtual (it always returns null; MapParent itself holds nothing
+        /// directly, only a Map). Re-declaring IThingHolder on this class (see
+        /// the class line) rebinds the interface's dispatch to THIS method for
+        /// every WorldObject_Inhabited instance regardless of the static
+        /// reference type doing the calling -- interface dispatch resolves off
+        /// the runtime type's own map, not the declaring type's non-virtual
+        /// body.
+        /// </summary>
+        public new ThingOwner GetDirectlyHeldThings()
         {
             return roster;
         }
 
-        public void GetChildHolders(List<IThingHolder> outChildren)
+        /// <summary>
+        /// Override, not new -- MapParent.GetChildHolders IS virtual. base()
+        /// first: MapParent's own body appends the generated Map as a child
+        /// holder when HasMap, which is the whole point of the rebase (a
+        /// visited place's pawns-on-the-map are reachable through this object
+        /// now, not just through whatever else used to own the tile).
+        /// </summary>
+        public override void GetChildHolders(List<IThingHolder> outChildren)
         {
+            base.GetChildHolders(outChildren);
             ThingOwnerUtility.AppendThingHoldersFromThings(outChildren, GetDirectlyHeldThings());
             if (stock != null)
             {

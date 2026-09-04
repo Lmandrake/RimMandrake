@@ -109,3 +109,46 @@ Remaining blocker is exactly what "why filed for the owner" already said: this i
 a save-compat-sensitive base-class change needing an owner/BENCH scope call
 (`WorldObject_Inhabited` itself vs only the `Settlement` subclass), not a live-
 confirmation gap anymore.
+
+## Rebased and live-verified (2026-09-04, FOUNDRY)
+
+Owner's card ruling (`design/Jawa/canon_reintegration_plan.md` G10): **REBASE the
+class** — one architecture for every inhabited world-object, save-compat exposure
+accepted. `WorldObject_Inhabited` (`src/RimMandrake/Inhabited/Source/WorldObject_
+Inhabited.cs`) now derives `MapParent` instead of `WorldObject`; `WorldObject_
+InhabitedSettlement` needed no change (thin subclass). Two consequences of the
+rebase, both handled:
+
+- `MapParent.GetDirectlyHeldThings()` is non-virtual and returns null (MapParent
+  itself holds nothing but a Map) — re-declared `IThingHolder` on the class with
+  `new ThingOwner GetDirectlyHeldThings()` returning `roster`, which correctly
+  rebinds interface dispatch for this type (confirmed: 0 compile warnings, and
+  live below).
+- `GetChildHolders` IS virtual — changed to `override`, calling `base.
+  GetChildHolders()` first so the generated Map registers as a child holder
+  (the actual point of the rebase), then appending `roster`/`stock` as before.
+
+Compiled clean (`dotnet build -c Release`, 0 warnings/errors), deployed, live-
+verified on a fresh MINIMAL-list quicktest (21 mods, world tile 20000, Tundra,
+previously unused this session):
+
+```
+jawa/world_tile_map_generate {"tile": 20000, "suggestedMapParent": "Inhabited_Settlement"}
+-> success: true, wasAlreadyGenerated: false, mapIndex: 1, pawnCount: 14, thingCount: 16955
+```
+
+Cross-checked independently (not just the tool's own say-so, per the traps.md
+entry on this same tool): `rimworld/get_game_info` mapCount went 1 -> 2 (a real
+second Map object exists, not a reused/phantom one), and `jawa/world_objects_get`
+at tile 20000 shows exactly ONE object, `def: Inhabited_Settlement`, `spawned:
+true` — no second vanilla Settlement fabricated alongside it, which is the
+specific failure mode the 2026-09-04 BENCH investigation found on the OLD
+(non-MapParent) code path. The `InvalidCastException` this item is named for
+does not reproduce.
+
+**What this does NOT fix, on purpose — out of this item's scope:** the owner's
+2026-09-04 note also found a second, independent gap: nothing in the game
+actually constructs an `Inhabited_Settlement` (no producer). That's
+`INHABITED_SETTLEMENT_PRODUCER_GAP_1`, filed separately so it isn't lost.
+
+Closing this item: the MapParent architecture gap is fixed and live-proven.
