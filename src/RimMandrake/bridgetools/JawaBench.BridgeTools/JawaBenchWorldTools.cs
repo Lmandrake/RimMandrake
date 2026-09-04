@@ -314,6 +314,22 @@ namespace JawaBench.BridgeTools
                 { clamped.Add("swampiness " + swampiness.Value + " -> " + Mathf.Clamp01(swampiness.Value)); swampiness = Mathf.Clamp01(swampiness.Value); }
                 if (pollution.HasValue && (pollution.Value < 0f || pollution.Value > 1f))
                 { clamped.Add("pollution " + pollution.Value + " -> " + Mathf.Clamp01(pollution.Value)); pollution = Mathf.Clamp01(pollution.Value); }
+                // 🔴 THE OTHER THREE SCALARS ARE QUANTIZED TOO and were left unguarded, so
+                // the trap the two lines above exist to close was still open on them.
+                // SurfaceLayer.ExposeData (1.6) writes:
+                //   elevation   (ushort)Clamp(Round(elev + 8192), 0, 65535)  =>  -8192 .. 57343 m
+                //   temperature (ushort)Clamp(Round((t + 300) * 10), 0, 65535) => -300 .. 6253.5 C
+                //   rainfall    (ushort)Clamp(Round(rain), 0, 65535)         =>      0 .. 65535 mm
+                // Anything outside those ranges lives in memory, is read back by this tool,
+                // is CONFIRMED by world_tile_validate, and then silently becomes the range
+                // edge on the next load - a NEGATIVE rainfall being the easy one to write by
+                // accident, and it comes back as 0.
+                if (elevation.HasValue && (elevation.Value < -8192f || elevation.Value > 57343f))
+                { float v = Mathf.Clamp(elevation.Value, -8192f, 57343f); clamped.Add("elevation " + elevation.Value + " -> " + v + " (savegame stores elev+8192 in one ushort)"); elevation = v; }
+                if (temperature.HasValue && (temperature.Value < -300f || temperature.Value > 6253.5f))
+                { float v = Mathf.Clamp(temperature.Value, -300f, 6253.5f); clamped.Add("temperature " + temperature.Value + " -> " + v + " (savegame stores (t+300)*10 in one ushort)"); temperature = v; }
+                if (rainfall.HasValue && (rainfall.Value < 0f || rainfall.Value > 65535f))
+                { float v = Mathf.Clamp(rainfall.Value, 0f, 65535f); clamped.Add("rainfall " + rainfall.Value + " -> " + v + " (savegame stores rainfall in one ushort; negatives become 0)"); rainfall = v; }
 
                 var ids = new List<int>();
                 var errors = new List<string>();
@@ -742,9 +758,18 @@ namespace JawaBench.BridgeTools
                     if (!apply) { wouldApply++; continue; }
 
                     if (bd != null) t.PrimaryBiome = bd;
-                    if (elevS != null && F(elevS, out fv)) t.elevation = fv;
-                    if (tempS != null && F(tempS, out fv)) t.temperature = fv;
-                    if (rainS != null && F(rainS, out fv)) t.rainfall = fv;
+                    // Clamped to the SAVEGAME's representable ranges for the same reason
+                    // swampiness and pollution are, and by the same encodings read out of
+                    // SurfaceLayer.ExposeData: elevation is stored as (elev + 8192) in one
+                    // ushort, temperature as (t + 300) * 10, rainfall as a bare ushort. A
+                    // negative rainfall column - the easy one for a generator to emit - used
+                    // to import clean, validate clean, and come back 0 after a reload.
+                    if (elevS != null && F(elevS, out fv))
+                    { if (fv < -8192f || fv > 57343f) clampedCells++; t.elevation = Mathf.Clamp(fv, -8192f, 57343f); }
+                    if (tempS != null && F(tempS, out fv))
+                    { if (fv < -300f || fv > 6253.5f) clampedCells++; t.temperature = Mathf.Clamp(fv, -300f, 6253.5f); }
+                    if (rainS != null && F(rainS, out fv))
+                    { if (fv < 0f || fv > 65535f) clampedCells++; t.rainfall = Mathf.Clamp(fv, 0f, 65535f); }
                     // Clamped for the same reason as world_tile_set: the savegame stores
                     // swampiness in one byte and pollution in one ushort, both scaled from
                     // 0-1, so anything outside that range is silently lost on the next load
@@ -975,10 +1000,15 @@ namespace JawaBench.BridgeTools
                 }
                 if (ids.Count == 0) return Fail("Give 'tiles' and/or 'range'.");
 
-                var outp = new List<object>(); int hidden = 0;
-                foreach (var id in ids)
+                // 🔴 `count < requested` is AMBIGUOUS here and used to be the only signal:
+                // onlyLinked legitimately drops rows, so a caller could not tell a filtered
+                // read from a read that hit `limit` and stopped looking. Say which, and how
+                // many ids were never examined at all.
+                var outp = new List<object>(); int hidden = 0; int unexamined = 0;
+                for (int k = 0; k < ids.Count; k++)
                 {
-                    if (outp.Count >= Math.Max(1, limit)) break;
+                    if (outp.Count >= Math.Max(1, limit)) { unexamined = ids.Count - k; break; }
+                    int id = ids[k];
                     string e; var t = SurfaceTileAt(id, out e);
                     if (t == null) { errors.Add(e); continue; }
                     bool has = (t.potentialRoads != null && t.potentialRoads.Count > 0)
@@ -991,6 +1021,9 @@ namespace JawaBench.BridgeTools
                 return (object)new
                 {
                     success = true, count = outp.Count, requested = ids.Count,
+                    limitHit = unexamined > 0,
+                    unexaminedAfterLimit = unexamined,
+                    limit = Math.Max(1, limit),
                     hiddenByBiomeCount = hidden, errors, tiles = outp, ticksGame = TicksGameSafe(),
                 };
             });
@@ -1044,7 +1077,7 @@ namespace JawaBench.BridgeTools
                 { int v; if (int.TryParse(part.Trim(), out v)) ids.Add(v); }
                 if (ids.Count < 2) return Fail("Give at least two tile ids in 'path'.");
 
-                var refused = new List<object>(); int laid = 0;
+                var refused = new List<object>(); int laid = 0; int refusedByPriority = 0;
                 var nbrs = new List<PlanetTile>();
                 for (int i = 0; i + 1 < ids.Count; i++)
                 {
@@ -1058,7 +1091,32 @@ namespace JawaBench.BridgeTools
                     if (!adjacent) { refused.Add(new { from = a, to = b, why = "not adjacent" }); continue; }
 
                     if (river) grid.OverlayRiver(a, b, rv); else grid.OverlayRoad(a, b, rd);
-                    laid++;
+
+                    // 🔴 CALLING Overlay* IS NOT EVIDENCE IT LANDED. Both return void and both
+                    // return EARLY without a word when the link already carries something that
+                    // outranks the ask - OverlayRiver on `existing.degradeThreshold >= new`,
+                    // OverlayRoad on `existing.priority >= new` (read from the 1.6 source).
+                    // `laid++` right after the call therefore reported a whole downgrade pass
+                    // as written while the planet never moved: exactly the silent refusal this
+                    // tool's own Description warns about and then never detected. Read the link
+                    // back off the grid - adjacency is already proven above, so GetRiverDef /
+                    // GetRoadDef cannot hit their own non-neighbour Log.Error path here.
+                    Def live = river ? (Def)grid.GetRiverDef(a, b, false) : (Def)grid.GetRoadDef(a, b, false);
+                    Def want = river ? (Def)rv : (Def)rd;
+                    if (live == want) laid++;
+                    else
+                    {
+                        refusedByPriority++;
+                        refused.Add(new
+                        {
+                            from = a,
+                            to = b,
+                            why = "Overlay refused it SILENTLY - '" + (live != null ? live.defName : "(nothing)") +
+                                  "' is already on this link and outranks '" + def +
+                                  "'. Downgrading means jawa/world_links_clear first.",
+                            live = live != null ? live.defName : null,
+                        });
+                    }
                 }
 
                 var back = new List<object>();
@@ -1072,8 +1130,10 @@ namespace JawaBench.BridgeTools
                 return (object)new
                 {
                     success = true, kind, def, laid, pairs = Math.Max(0, ids.Count - 1),
+                    refusedByPriority,
                     refused,
-                    note = "Overlay* refuses a lower-priority def silently. Nothing is visible until jawa/world_commit.",
+                    laidNote = "`laid` is READ BACK off the grid after each Overlay call, not counted from the calls made.",
+                    note = "Overlay* refuses a lower-priority def silently - such pairs are in refused[] with refusedByPriority. Nothing is visible until jawa/world_commit.",
                     tiles = back, ticksGame = TicksGameSafe(),
                 };
             });
@@ -1302,7 +1362,7 @@ namespace JawaBench.BridgeTools
                 // Rivers first, in file order (mouth-first is the file's responsibility),
                 // then roads - matching the order vanilla's own worldgen steps use.
                 var inbrs = new List<PlanetTile>();
-                int nonAdjacent = 0;
+                int nonAdjacent = 0, silentlyRefused = 0;
                 foreach (var pass in new[] { true, false })
                     foreach (var p in pending)
                     {
@@ -1325,18 +1385,44 @@ namespace JawaBench.BridgeTools
                             continue;
                         }
 
+                        // 🔴 Same silent refusal world_links_set was fixed for: Overlay*
+                        // returns void and returns EARLY when the link already carries a def
+                        // that outranks the ask, so counting the CALL reported the whole
+                        // import as landed while the planet kept its old network. Read the
+                        // link back - adjacency is proven directly above, so GetRiverDef /
+                        // GetRoadDef cannot hit their non-neighbour Log.Error path.
                         if (p.Item1)
                         {
                             var rv = DefDatabase<RiverDef>.GetNamedSilentFail(p.Item4);
                             if (rv == null) { unknown.Add(p.Item4); continue; }
-                            if (apply) grid.OverlayRiver(p.Item2, p.Item3, rv);
+                            if (apply)
+                            {
+                                grid.OverlayRiver(p.Item2, p.Item3, rv);
+                                if (grid.GetRiverDef(p.Item2, p.Item3, false) != rv)
+                                {
+                                    silentlyRefused++;
+                                    if (refused.Count < 30)
+                                        refused.Add(new { from = p.Item2, to = p.Item3, why = "Overlay refused it silently - an existing river outranks '" + p.Item4 + "'; clear it first" });
+                                    continue;
+                                }
+                            }
                             rivers++;
                         }
                         else
                         {
                             var rd = DefDatabase<RoadDef>.GetNamedSilentFail(p.Item4);
                             if (rd == null) { unknown.Add(p.Item4); continue; }
-                            if (apply) grid.OverlayRoad(p.Item2, p.Item3, rd);
+                            if (apply)
+                            {
+                                grid.OverlayRoad(p.Item2, p.Item3, rd);
+                                if (grid.GetRoadDef(p.Item2, p.Item3, false) != rd)
+                                {
+                                    silentlyRefused++;
+                                    if (refused.Count < 30)
+                                        refused.Add(new { from = p.Item2, to = p.Item3, why = "Overlay refused it silently - an existing road outranks '" + p.Item4 + "'; clear it first" });
+                                    continue;
+                                }
+                            }
                             roads++;
                         }
                     }
@@ -1346,7 +1432,11 @@ namespace JawaBench.BridgeTools
                     success = true, dryRun = !apply, path, rows, rivers, roads,
                     clearedFirst = clearFirst && apply,
                     nonAdjacentRefused = nonAdjacent,
+                    silentlyRefused,
                     unknownDefs = unknown.ToList(), refused,
+                    laidNote = apply
+                        ? "`rivers`/`roads` are READ BACK off the grid after each Overlay call, not counted from the calls made."
+                        : "DRY RUN: `rivers`/`roads` are rows that WOULD be attempted; Overlay's silent priority refusal cannot be predicted without writing.",
                     note = apply ? "Written. Call jawa/world_commit." : "DRY RUN - pass apply=true.",
                     ticksGame = TicksGameSafe(),
                 };
@@ -1603,10 +1693,14 @@ namespace JawaBench.BridgeTools
                 }
                 if (ids.Count == 0) return Fail("Give 'tiles' and/or 'range'.");
 
-                var outp = new List<object>();
-                foreach (var id in ids)
+                // Same ambiguity world_links_get was fixed for: onlyWithMutators legitimately
+                // drops rows, so `count < requested` alone could not distinguish a filtered
+                // read from one that hit `limit` and stopped looking.
+                var outp = new List<object>(); int unexamined = 0;
+                for (int k = 0; k < ids.Count; k++)
                 {
-                    if (outp.Count >= Math.Max(1, limit)) break;
+                    if (outp.Count >= Math.Max(1, limit)) { unexamined = ids.Count - k; break; }
+                    int id = ids[k];
                     string e; var t = SurfaceTileAt(id, out e);
                     if (t == null) { errors.Add(e); continue; }
                     if (onlyWithMutators && (t.mutatorsNullable == null || t.mutatorsNullable.Count == 0)) continue;
@@ -1615,6 +1709,9 @@ namespace JawaBench.BridgeTools
                 return (object)new
                 {
                     success = true, count = outp.Count, requested = ids.Count,
+                    limitHit = unexamined > 0,
+                    unexaminedAfterLimit = unexamined,
+                    limit = Math.Max(1, limit),
                     odysseyActive = ModsConfig.OdysseyActive,
                     errors, tiles = outp, ticksGame = TicksGameSafe(),
                 };
@@ -1673,6 +1770,21 @@ namespace JawaBench.BridgeTools
                 if (ids.Count == 0) return Fail("Give 'tiles' and/or 'range'.");
 
                 int added = 0, removed = 0; var errors = new List<string>();
+                // 🔴 Tile.AddMutator IS DESTRUCTIVE AND SAYS NOTHING. Read from the 1.6
+                // source: for every mutator already on the tile that shares a category with
+                // the incoming one, it REMOVES that mutator when the incoming priority is
+                // >= the existing one, and when it is LOWER it logs a red "Detected mutator
+                // conflict" and adds the new one ANYWAY, leaving both on the tile. Either
+                // way the tool's own `added` count reports a clean success while other
+                // work on that tile is gone or the tile is in a state worldgen never
+                // produces. The read-back below is capped at `readBack` tiles, so on a bulk
+                // pass over thousands of tiles the loss was invisible - which is why the
+                // world-editing skill tells the caller to diff the whole planet by hand
+                // after every pass. Diff it HERE instead, uncapped.
+                int displacedN = 0, conflictedN = 0, notLandedN = 0;
+                var displacedBy = new Dictionary<string, int>();
+                var conflictExamples = new List<object>();
+                var beforeSet = new List<TileMutatorDef>();
                 foreach (var id in ids)
                 {
                     string e; var t = SurfaceTileAt(id, out e);
@@ -1688,11 +1800,40 @@ namespace JawaBench.BridgeTools
                         }
                         else if (add)
                         {
+                            beforeSet.Clear();
+                            if (t.mutatorsNullable != null) beforeSet.AddRange(t.mutatorsNullable);
+
                             foreach (var d in defs)
                             {
                                 if (t.mutatorsNullable != null && t.mutatorsNullable.Contains(d)) continue;
                                 t.AddMutator(d); added++;
                             }
+
+                            var afterSet = t.mutatorsNullable;
+                            foreach (var lost in beforeSet)
+                            {
+                                if (afterSet != null && afterSet.Contains(lost)) continue;
+                                displacedN++;
+                                int dc; displacedBy.TryGetValue(lost.defName, out dc);
+                                displacedBy[lost.defName] = dc + 1;
+                                if (conflictExamples.Count < 25)
+                                    conflictExamples.Add(new { tile = id, displaced = lost.defName, by = defs.Select(q => q.defName).ToList() });
+                            }
+                            // Asked for and NOT on the tile afterwards: a later def in the
+                            // same call displaced an earlier one. `added` counts calls made,
+                            // so without this a two-mutator write of one category reported 2.
+                            foreach (var d in defs)
+                                if (afterSet == null || !afterSet.Contains(d)) notLandedN++;
+                            // Both survived a shared category => AddMutator took its
+                            // lower-priority branch, logged a red error and left the tile in
+                            // a state worldgen never builds. Worth naming, not just counting.
+                            if (afterSet != null)
+                                foreach (var d in defs)
+                                    foreach (var old in beforeSet)
+                                        if (old != d && afterSet.Contains(old) && afterSet.Contains(d)
+                                            && old.categories != null && d.categories != null
+                                            && d.categories.Any(c => old.categories.Contains(c)))
+                                            conflictedN++;
                         }
                         else
                         {
@@ -1715,6 +1856,18 @@ namespace JawaBench.BridgeTools
                 return (object)new
                 {
                     success = true, action, added, removed,
+                    // Uncapped, over EVERY tile written - not just the `readBack` sample.
+                    displacedCount = displacedN,
+                    displacedByDef = displacedBy.OrderByDescending(k => k.Value).ToDictionary(k => k.Key, k => k.Value),
+                    displacedExamples = conflictExamples,
+                    askedButNotOnTile = notLandedN,
+                    unresolvedCategoryConflicts = conflictedN,
+                    displacementNote = displacedN + conflictedN + notLandedN == 0
+                        ? "No mutator was displaced by this write."
+                        : "⚠️ AddMutator resolves category conflicts DESTRUCTIVELY and a remove does not " +
+                          "restore what an add displaced. displacedByDef names what this call removed; " +
+                          "unresolvedCategoryConflicts counts tiles where the incoming def had the LOWER " +
+                          "priority, so RimWorld logged a red 'Detected mutator conflict' and kept BOTH.",
                     unknownDefs = unknown, errors,
                     note = "Nothing is visible until jawa/world_commit.",
                     tiles = back, ticksGame = TicksGameSafe(),
@@ -1892,6 +2045,8 @@ namespace JawaBench.BridgeTools
 
                 int added = 0, removed = 0;
                 var validity = new List<object>(); var errors = new List<string>();
+                var overwrote = new List<object>();
+                var displacedMutators = new List<object>(); int displacedMutatorsN = 0;
                 var surface = Find.WorldGrid.Surface;
 
                 foreach (var id in ids)
@@ -1911,7 +2066,37 @@ namespace JawaBench.BridgeTools
 
                     try
                     {
-                        if (add) { wl.AddLandmark(ld, pt, surface, forced); if (wl[pt] != null) added++; }
+                        if (add)
+                        {
+                            // 🔴 `wl[pt] != null` was the whole success test, and it is true
+                            // for the landmark that was ALREADY there: AddLandmark overwrites
+                            // unconditionally (1.6 source) and returns void, so a tile that
+                            // kept a different def would still have counted as added. Check
+                            // the def, and name what was destroyed - the overwritten landmark
+                            // and any mutator the def's mutatorChances rolls displaced through
+                            // AddMutator, neither of which a remove restores.
+                            var priorLandmark = wl[pt];
+                            var priorMutators = t.mutatorsNullable != null
+                                ? t.mutatorsNullable.ToList() : new List<TileMutatorDef>();
+
+                            wl.AddLandmark(ld, pt, surface, forced);
+
+                            var now = wl[pt];
+                            if (now != null && now.def == ld) added++;
+                            else
+                                errors.Add("tile " + id + ": AddLandmark left '" +
+                                           (now != null && now.def != null ? now.def.defName : "(nothing)") +
+                                           "' on the tile, not the requested '" + ld.defName + "'.");
+                            if (priorLandmark != null && priorLandmark != now)
+                                overwrote.Add(new { tile = id, was = priorLandmark.def != null ? priorLandmark.def.defName : null, now = ld.defName });
+                            foreach (var lost in priorMutators)
+                                if (t.mutatorsNullable == null || !t.mutatorsNullable.Contains(lost))
+                                {
+                                    displacedMutatorsN++;
+                                    if (displacedMutators.Count < 25)
+                                        displacedMutators.Add(new { tile = id, displaced = lost.defName, byLandmark = ld.defName });
+                                }
+                        }
                         else { if (wl[pt] != null) { wl.RemoveLandmark(pt); removed++; } }
                     }
                     catch (Exception ex) { errors.Add("tile " + id + ": " + ex.GetType().Name + ": " + ex.Message); }
@@ -1926,9 +2111,15 @@ namespace JawaBench.BridgeTools
                 }
                 return (object)new
                 {
-                    success = true, action, def, added, removed, forced,
+                    success = errors.Count == 0, action, def, added, removed, forced,
+                    // Both destructive side effects, reported over EVERY tile written rather
+                    // than only the eight in the read-back below.
+                    overwroteLandmarks = overwrote,
+                    displacedMutatorCount = displacedMutatorsN,
+                    displacedMutators,
                     validity, errors,
-                    note = "AddLandmark also rolls the def's mutators onto the tile - see the read-back. Call jawa/world_commit.",
+                    note = "AddLandmark also rolls the def's mutators onto the tile, through AddMutator, which " +
+                           "displaces conflicting ones destructively - see displacedMutators. Call jawa/world_commit.",
                     tiles = back, ticksGame = TicksGameSafe(),
                 };
             });
@@ -3194,13 +3385,21 @@ namespace JawaBench.BridgeTools
 
                         // Only walk each unordered pair once for the asymmetry
                         // check, or every disagreement is reported twice.
+                        // 🔴 ...but ONLY when this call is walking the whole matrix. A ROW
+                        // query (`faction` given, `other` omitted) already visits each
+                        // unordered pair exactly once, so the dedupe gate was pure loss
+                        // there: every partner whose loadID sorted BELOW the asked-for
+                        // faction was silently never checked, and roughly half the row came
+                        // back with `asymmetric: []` meaning "not looked at" rather than
+                        // "agrees". This is the tool whose stated purpose is finding that
+                        // disagreement.
                         // 🔴 loadID, NOT defName. A world routinely holds SEVERAL live
                         // factions of one FactionDef - that is why the engine's own
                         // lookup is named FirstFactionOfDef - and CompareOrdinal returns
                         // 0 for both orderings of such a pair, so neither direction
                         // passed this gate and the headline check silently never ran on
                         // them. loadID is unique per faction.
-                        if (a.loadID < b.loadID)
+                        if (fa != null || a.loadID < b.loadID)
                         {
                             var d = PairAsymmetry(a, b);
                             if (d != null) asym.Add(d);
