@@ -74,6 +74,11 @@
     "date": "2026-09-03",
     "sha": "1e4fe0eb"
   },
+  "src/RimMandrake/Graffiti/Source/ThoughtWorker_ViewedGraffitiMark.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "b0db3c45"
+  },
   "src/RimMandrake/Inhabited/Source/CharacterApplier.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -389,6 +394,11 @@
     "date": "2026-09-03",
     "sha": "08e80429"
   },
+  "src/RimMandrake/Property/Source/PropertyTuning.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "5a040901"
+  },
   "src/RimMandrake/Property/Source/RecognizabilityUtility.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -398,6 +408,11 @@
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "0975db76"
+  },
+  "src/RimMandrake/Property/Source/WitnessEntry.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "5a040901"
   },
   "src/RimMandrake/ResearchKitEastFix/Source/mirror_research_kit_easts.py": {
     "cleanCount": 1,
@@ -1186,6 +1201,11 @@
     "cleanCount": 2,
     "date": "2026-09-03",
     "sha": "8a24dcd7"
+  },
+  "src/RimMandrake/Visibility/Source/VisibilityModInit.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-03",
+    "sha": "5a040901"
   },
   "src/RimMandrake/WreckedMachines/Source/fit_sprite.py": {
     "cleanCount": 1,
