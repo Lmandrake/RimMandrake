@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-04T01:39:52Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-04T02:05:54Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -462,4 +462,14 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-_none._
+Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
+
+## MINEPOCKET_CONTENT_UNWIRED_1 MinePocket throw-mine content compiles but no XML wires it to a weapon/trap Def
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     investigate
+thin:     spec, verify and criteria all present
+summary:  Not yet written — this item exists to hold the finding, not to prescribe
+prose:    infrastructure/state/items/MINEPOCKET_CONTENT_UNWIRED_1.md
