@@ -1,5 +1,17 @@
 # RIVER_LINK_ORDER_SELFTEST_DRIFT_1
 
+**CLOSED (owner, 2026-09-04): "Close that item right now."** The selftest
+itself was retired the same day, per the "verify" section below — deleted
+`src/RimMandrake/Utils/selftest_river_link_order.py` rather than leave it
+red forever. The investigation notes below stay as the record of what was
+found; nobody chased possibility (1) or (2) to a conclusion, the test just
+stopped running. If the Ash'karr river network is hand-edited again and
+someone wants this check back, it needs rebuilding against the CURRENT
+`world/ASHKARR_WORLDMAP_links.csv`, not resurrecting the deleted file — the
+old reconstruction approach is exactly what this item found could not keep
+up with hand-authoring.
+
+
 `selftest_river_link_order.py` fails: 266 produced vs 292 accepted rows,
 link SET differs (26 accepted-only rows), order+orientation differs.
 Root cause: `world/ASHKARR_WORLDMAP_links.csv` was substantially
