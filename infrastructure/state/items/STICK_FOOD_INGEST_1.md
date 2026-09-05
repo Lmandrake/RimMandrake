@@ -1,5 +1,40 @@
 # STICK_FOOD_INGEST_1 — measured ingest scope (BENCH, 2026-09-02)
 
+## 2026-09-05 (FOUNDRY) — in-house sprite regeneration complete, all 9 icons
+
+All 9 `Graphic_StackCount` icons generated fresh (Codex `image_gen` + local
+chroma-key, per `generating-rimworld-sprites`), 256x256 RGBA, none copied from
+either BadOaks donor mod. Owner course-corrected mid-pass toward an alien
+Star Wars cuisine look (not vanilla brown-meal realism) — all 8 food icons
+below were generated under that direction from the start, nothing had to be
+redone:
+
+- `RSW_Skewer` — plain pale wood stick, mundane by design (raw resource, no
+  alien treatment called for).
+- `RSW_MeatOnAStick` — three chunks of deep violet-blue alien meat with
+  iridescent marbling, charred edges.
+- `RSW_VegOnAStick` — three bulbous spiraled alien vegetable chunks, teal and
+  violet-purple.
+- `RSW_FungusOnAStick` — three alien mushroom caps, deep teal/cobalt with
+  glowing blue bioluminescent speckles and a ridged gill pattern.
+- `RSW_LittleMeatOnAStick` — same violet-blue alien meat treatment as
+  `RSW_MeatOnAStick`, one small chunk on a mostly-bare stick to read as the
+  smaller portion.
+- `RSW_BlendOnAStick` — alternating violet-blue alien meat and teal alien veg
+  chunks on one stick.
+- `RSW_FishOnAStick` — a small alien aquatic creature skewered lengthwise,
+  cyan/blue scales, asymmetric fins, extra eyes.
+- `RSW_FruitOnAStick` — two segments of spiky pink-and-orange alien fruit
+  with a spiral rind pattern.
+- `RSW_CookedSkewer` — bare stick, tip lightly charred black, otherwise plain
+  wood (the "empty stick" joke item).
+
+`validate_patch.py src/RimStarWars/Cuisine/Defs/ThingDefs_Cuisine.xml`: 0
+errors, 0 warnings (was 9 texPath errors before this pass). Deployed via
+`deploy_custom_mods.py --mod Cuisine --apply` (9 files, verified in sync).
+Not enabled in ModsConfig, no live/bridge testing done — that and retiring
+both BadOaks donor mods are still owed next.
+
 ## 2026-09-05 (FOUNDRY) — moved from a standalone RimUtinni mod into RimStarWars: Cuisine
 
 Owner, verbatim: *"we shouldn't even have Mandrake stick mods, it should be
@@ -106,8 +141,9 @@ raised no longer has a load-bearing defName riding on it, but the original
 donor mod's own author credit (if any) hasn't been separately verified.
 
 ## criteria
-- [ ] All stick foods reachable in our own mod — **defs done**, art still
-      owed (in-house regeneration), live spawn/cook proof still owed.
+- [ ] All stick foods reachable in our own mod — **defs and art done**
+      (in-house regeneration, 0 texPath errors), live spawn/cook proof still
+      owed.
 - [ ] Both badoaks mods retired from the full list with a clean cold load —
       not started; retirement is explicitly a LATER step per the owner's own
       "jettison eventually" framing, not this pass's job.
