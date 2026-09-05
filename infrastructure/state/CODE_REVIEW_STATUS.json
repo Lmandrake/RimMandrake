@@ -674,10 +674,55 @@
     "date": "2026-09-03",
     "sha": "c6ede2aa"
   },
+  "src/RimMandrake/MandrakePatches/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "21d72dc5"
+  },
+  "src/RimMandrake/MandrakePatches/Patches/AnimalDessicatedTexPaths_Fix.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "21d72dc5"
+  },
+  "src/RimMandrake/MandrakePatches/Patches/BTDGravshipQuest_GrammarFix.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "21d72dc5"
+  },
+  "src/RimMandrake/MandrakePatches/Patches/BiomeAnimalDanglingRefs_Fix.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "21d72dc5"
+  },
+  "src/RimMandrake/MandrakePatches/Patches/BuzzerApostrophe_Fix.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "21d72dc5"
+  },
+  "src/RimMandrake/MandrakePatches/Patches/DrillTurret_ShootingJob.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "21d72dc5"
+  },
+  "src/RimMandrake/MandrakePatches/Patches/GrimTerraTexPaths_Fix.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "21d72dc5"
+  },
+  "src/RimMandrake/MandrakePatches/Patches/HeadSetForFA_Revive.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "21d72dc5"
+  },
   "src/RimMandrake/MandrakePatches/Patches/ThirdPartySignConfigErrors_Fix.xml": {
     "cleanCount": 1,
     "date": "2026-09-04",
     "sha": "f914ab5a"
+  },
+  "src/RimMandrake/MandrakePatches/Patches/WorldMapReadability_Ashkarr.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "21d72dc5"
   },
   "src/RimMandrake/Ninefold/Source/EventMagnitude.cs": {
     "cleanCount": 1,
