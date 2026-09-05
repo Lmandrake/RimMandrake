@@ -1005,15 +1005,15 @@
       <rulesRaw>
         <li Class="Rule_File">
           <keyword>LastNameNeimoidian</keyword>
-          <path>Neimoidian/Last</path>
+          <path>RimMandrakeSWNames/SWX/Neimoidian/Last</path>
         </li>
         <li Class="Rule_File">
           <keyword>NameNeimoidian</keyword>
-          <path>Neimoidian/First</path>
+          <path>RimMandrakeSWNames/SWX/Neimoidian/First</path>
         </li>
         <li Class="Rule_File">
           <keyword>NicknameNeimoidian</keyword>
-          <path>Neimoidian/Nick</path>
+          <path>RimMandrakeSWNames/SWX/Neimoidian/Nick</path>
         </li>
       </rulesRaw>
     </rulePack>
