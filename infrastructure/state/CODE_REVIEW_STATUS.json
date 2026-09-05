@@ -2983,29 +2983,59 @@
     "sha": "0e986f2a"
   },
   "src/RimStarWars/BlastDoorFrameAsyncFix/About/About.xml": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-05",
-    "sha": "deb54d02"
+    "sha": "86a41dfa"
   },
   "src/RimStarWars/BlastDoorFrameAsyncFix/Source/blast_door_frameasync_east_BRIEF.md": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-05",
-    "sha": "deb54d02"
+    "sha": "86a41dfa"
   },
   "src/RimStarWars/BlastDoorFrameAsyncFix/Source/build_frameasync_east.py": {
-    "cleanCount": 2,
+    "cleanCount": 3,
     "date": "2026-09-05",
-    "sha": "deb54d02"
+    "sha": "86a41dfa"
   },
   "src/RimStarWars/BlastDoorFrameAsyncFix/Source/render_review.py": {
-    "cleanCount": 2,
+    "cleanCount": 3,
     "date": "2026-09-05",
-    "sha": "deb54d02"
+    "sha": "86a41dfa"
   },
   "src/RimStarWars/BlastDoorFrameAsyncFix/Source/verify_frameasync_east.py": {
-    "cleanCount": 2,
+    "cleanCount": 3,
     "date": "2026-09-05",
-    "sha": "deb54d02"
+    "sha": "86a41dfa"
+  },
+  "src/RimStarWars/BlastDoorFrameAsyncFix/Textures/Things/Building/Door/Blast/SWDoorBlastBDoor_FrameAsync_east.png": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "86a41dfa"
+  },
+  "src/RimStarWars/BlastDoorFrameAsyncFix/Textures/Things/Building/Door/Blast/SWDoorBlastBDoor_FrameAsync_eastm.png": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "86a41dfa"
+  },
+  "src/RimStarWars/BlastDoorFrameAsyncFix/Textures/Things/Building/Door/Blast/SWDoorBlastDDoor_FrameAsync_east.png": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "86a41dfa"
+  },
+  "src/RimStarWars/BlastDoorFrameAsyncFix/Textures/Things/Building/Door/Blast/SWDoorBlastDDoor_FrameAsync_eastm.png": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "86a41dfa"
+  },
+  "src/RimStarWars/BlastDoorFrameAsyncFix/Textures/Things/Building/Door/Blast/SWDoorBlastDoor_FrameAsync_east.png": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "86a41dfa"
+  },
+  "src/RimStarWars/BlastDoorFrameAsyncFix/Textures/Things/Building/Door/Blast/SWDoorBlastDoor_FrameAsync_eastm.png": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "86a41dfa"
   },
   "src/RimStarWars/CereanManeFix/About/About.xml": {
     "cleanCount": 1,
