@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-05T04:01:25Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: BENCH
+as-of: 2026-09-05T04:32:07Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: OWNER
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -18,14 +18,14 @@ Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED be
 
 Started, and therefore not offered again. `rimflow close` or `rimflow block` moves them.
 
-## RESEARCH_TREE_TABS_1 Ship the 16 ResearchTabDefs - blocked on the open tree rebrand and the Waking Mind fold discrepancy
+## ARMOURY_LIGHTSABER_FINDMOD_1 Standing patch failure: Armoury FindMod(Star Wars : The Force - Lightsaber) inner op matches nothing on the full list
 state:    doing
 row:      unassigned
 needs:    offline
 target:   v1
-kind:     task
-summary:  (no items/RESEARCH_TREE_TABS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/RESEARCH_TREE_TABS_1.md
+kind:     bug
+summary:  (no items/ARMOURY_LIGHTSABER_FINDMOD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ARMOURY_LIGHTSABER_FINDMOD_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
