@@ -2892,6 +2892,16 @@
     "date": "2026-09-03",
     "sha": "c6ede2aa"
   },
+  "src/RimStarWars/HelixTellurox/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "612b9263"
+  },
+  "src/RimStarWars/HelixTellurox/Defs/ThingDefs_Races/Races_Tellurox.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "612b9263"
+  },
   "src/RimStarWars/JawaIkee/Source/ThoughtWorker_IkeeNearby.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
