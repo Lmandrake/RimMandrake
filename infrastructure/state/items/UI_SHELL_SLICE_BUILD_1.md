@@ -242,3 +242,49 @@ clean, quicktest reached Playing in 5s, no crash.
   afterward (no forced full reload — nobody was waiting on the game being
   up). `ModsConfig.PRESWAP.20260905_152515.xml` holds the minimal+theme list
   if anyone wants to resume this exact test setup without re-deriving it.
+
+## 2026-09-05 (FOUNDRY), owner asked to rule out mod interference — DONE, ruled out
+
+Owner's hypothesis: another mod might be interfering with RimThemes'
+`Command.BGTex` reskin. Decompiled `Themes.cs`'s actual substitution
+mechanism to check: it keeps a `fieldsOfInterestTex["Command"] = ["BGTex"]`
+table and, on theme change, does
+`ImageConversion.LoadImage(existingFieldTexture, EncodeToPNG(ourTexture))`
+against `Verse.Command.BGTex` by reflection — so the mechanism DOES target
+exactly our shipped file, ruling out "RimThemes has no hook for this asset
+at all."
+
+**Control test, same minimal 23-mod list (no RimHUD/Dubs/other UI mods
+present to interfere)**: switched the live theme to **Cyberpunk** — a theme
+shipped by RimThemes ITSELF, with both `.dds` and `.png` copies of
+`Command.BGTex` (ours ships `.png` only, which was not itself the
+differentiator) — via the same real-OS-click method, then re-ran the same
+gizmo screenshot. **Identical result**: the Draft gizmo's panel interior is
+the same plain grey-blue square as with our own theme, unchanged from
+vanilla. Only the accent BORDER color reads as Cyberpunk-cyan (from
+`ColorsSubstitution`'s separate, working color-field mechanism), not the
+panel texture itself.
+
+**Conclusion: not mod interference, not a defect in our shipped asset.**
+RimThemes' own first-party theme shows the identical non-reskinned gizmo
+interior. Whatever prevents `Command.BGTex`'s reflective swap from visibly
+taking effect (leading hypothesis, still unconfirmed: vanilla's cached
+`Command.BGTex` `Texture2D` may not be marked CPU-readable, which would
+make `ImageConversion.LoadImage` silently no-op into it — no log line for
+this was found either way) affects **every RimThemes theme equally**, ours
+included. Nothing to fix on the Utinni Shell side. Not chasing the RimThemes
+internals further — this is upstream-mod behavior, not our bug.
+
+**Real float-menu screenshot also captured** this pass (the earlier
+attempt's right-click resolved to a single instant order, not a real menu):
+right-clicked one colonist onto another to get an actual multi-option
+`FloatMenu` (`Pick up medicine...`, disabled with a reason shown) —
+`Transient/rimtheme_real_float_menu.png`. Same pattern as the gizmo: cyan
+accent border present, panel interior plain, consistent with the
+control-tested RimThemes limitation above, not a separate bug.
+
+**§4/§5 is now genuinely complete** for what bridge automation can prove.
+Remaining open-ended, cosmetic-only question (own item territory, not this
+one): whether `Command.BGTex`/float-menu panel texture reskinning is worth
+chasing into RimThemes' own source further, given it doesn't work for ANY
+theme today.
