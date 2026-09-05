@@ -4068,24 +4068,44 @@
     "sha": "46cdec42"
   },
   "src/RimUtinni/StickCuisine/About/About.xml": {
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "e27aac5d"
+  },
+  "src/RimUtinni/StickCuisine/Defs/RecipeDefs_StickCuisine.xml": {
     "cleanCount": 1,
-    "date": "2026-09-04",
-    "sha": "71cceeb1"
+    "date": "2026-09-05",
+    "sha": "e27aac5d"
+  },
+  "src/RimUtinni/StickCuisine/Defs/ThingDefs_StickCuisine.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "e27aac5d"
+  },
+  "src/RimUtinni/StickCuisine/Defs/ThoughtDefs_StickCuisine.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "e27aac5d"
   },
   "src/RimUtinni/StickCuisine/Source/StickCuisine/IngredientValueGetter_ExcludeSkewer.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "sha": "43f96b1b"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "e27aac5d"
   },
   "src/RimUtinni/StickCuisine/Source/StickCuisine/NameGenComp.cs": {
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "e27aac5d"
+  },
+  "src/RimUtinni/StickCuisine/Source/StickCuisine/RimUtinniStickCuisine.csproj": {
     "cleanCount": 1,
-    "date": "2026-09-04",
-    "sha": "43f96b1b"
+    "date": "2026-09-05",
+    "sha": "e27aac5d"
   },
   "src/RimUtinni/StickCuisine/Source/StickCuisine/StickCuisineDefOf.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "sha": "43f96b1b"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "e27aac5d"
   },
   "src/RimUtinni/StructureInjectionsRUT/Defs/GenStepDefs_Batch4.xml": {
     "cleanCount": 1,
