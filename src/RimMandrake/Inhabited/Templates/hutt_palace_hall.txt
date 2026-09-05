@@ -1,0 +1,1316 @@
+# rimplace flat plan v1
+# template  hutt_palace_hall (sha 18c179e56815f487)
+# min_rect  22x20   baked at 26x24
+FOOTPRINT	0	0	26	24
+TERRAIN	1	1	TileSandstone
+TERRAIN	1	2	TileSandstone
+TERRAIN	1	3	TileSandstone
+TERRAIN	1	4	TileSandstone
+TERRAIN	1	5	TileSandstone
+TERRAIN	1	6	TileSandstone
+TERRAIN	1	7	TileSandstone
+TERRAIN	1	9	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	1	10	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	1	11	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	1	12	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	1	13	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	1	14	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	1	15	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	1	16	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	1	17	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	1	18	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	1	19	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	1	20	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	1	21	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	1	22	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	2	1	TileSandstone
+TERRAIN	2	2	CarpetBurgundy
+TERRAIN	2	3	CarpetBurgundy
+TERRAIN	2	4	CarpetBurgundy
+TERRAIN	2	5	CarpetBurgundy
+TERRAIN	2	6	CarpetBurgundy
+TERRAIN	2	7	TileSandstone
+TERRAIN	2	9	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	2	10	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	2	11	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	2	12	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	2	13	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	2	14	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	2	15	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	2	16	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	2	17	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	2	18	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	2	19	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	2	20	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	2	21	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	2	22	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	3	1	TileSandstone
+TERRAIN	3	2	CarpetBurgundy
+TERRAIN	3	3	CarpetBurgundy
+TERRAIN	3	4	CarpetBurgundy
+TERRAIN	3	5	CarpetBurgundy
+TERRAIN	3	6	CarpetBurgundy
+TERRAIN	3	7	TileSandstone
+TERRAIN	3	9	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	3	10	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	3	11	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	3	12	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	3	13	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	3	14	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	3	15	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	3	16	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	3	17	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	3	18	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	3	19	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	3	20	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	3	21	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	3	22	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	4	1	TileSandstone
+TERRAIN	4	2	CarpetBurgundy
+TERRAIN	4	3	CarpetBurgundy
+TERRAIN	4	4	CarpetBurgundy
+TERRAIN	4	5	CarpetBurgundy
+TERRAIN	4	6	CarpetBurgundy
+TERRAIN	4	7	TileSandstone
+TERRAIN	4	9	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	4	10	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	4	11	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	4	12	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	4	13	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	4	14	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	4	15	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	4	16	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	4	17	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	4	18	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	4	19	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	4	20	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	4	21	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	4	22	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	5	1	TileSandstone
+TERRAIN	5	2	CarpetBurgundy
+TERRAIN	5	3	CarpetBurgundy
+TERRAIN	5	4	CarpetBurgundy
+TERRAIN	5	5	CarpetBurgundy
+TERRAIN	5	6	CarpetBurgundy
+TERRAIN	5	7	TileSandstone
+TERRAIN	5	9	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	5	10	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	5	11	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	5	12	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	5	13	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	5	14	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	5	15	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	5	16	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	5	17	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	5	18	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	5	19	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	5	20	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	5	21	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	5	22	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	6	1	TileSandstone
+TERRAIN	6	2	CarpetBurgundy
+TERRAIN	6	3	CarpetBurgundy
+TERRAIN	6	4	CarpetBurgundy
+TERRAIN	6	5	CarpetBurgundy
+TERRAIN	6	6	CarpetBurgundy
+TERRAIN	6	7	TileSandstone
+TERRAIN	6	9	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	6	10	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	6	11	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	6	12	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	6	13	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	6	14	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	6	15	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	6	16	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	6	17	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	6	18	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	6	19	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	6	20	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	6	21	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	6	22	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	7	1	TileSandstone
+TERRAIN	7	2	CarpetBurgundy
+TERRAIN	7	3	CarpetBurgundy
+TERRAIN	7	4	CarpetBurgundy
+TERRAIN	7	5	CarpetBurgundy
+TERRAIN	7	6	CarpetBurgundy
+TERRAIN	7	7	TileSandstone
+TERRAIN	7	9	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	7	10	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	7	11	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	7	12	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	7	13	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	7	14	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	7	15	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	7	16	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	7	17	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	7	18	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	7	19	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	7	20	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	7	21	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	7	22	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	8	1	TileSandstone
+TERRAIN	8	2	TileSandstone
+TERRAIN	8	3	TileSandstone
+TERRAIN	8	4	TileSandstone
+TERRAIN	8	5	TileSandstone
+TERRAIN	8	6	TileSandstone
+TERRAIN	8	7	TileSandstone
+TERRAIN	8	9	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	8	10	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	8	11	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	8	12	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	8	13	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	8	14	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	8	15	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	8	16	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	8	17	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	8	18	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	8	19	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	8	20	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	8	21	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	8	22	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	9	9	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	9	10	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	9	11	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	9	12	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	9	13	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	9	14	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	9	15	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	9	16	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	9	17	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	9	18	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	9	19	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	9	20	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	9	21	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	9	22	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	10	1	TileSandstone
+TERRAIN	10	2	TileSandstone
+TERRAIN	10	3	TileSandstone
+TERRAIN	10	4	TileSandstone
+TERRAIN	10	5	TileSandstone
+TERRAIN	10	6	TileSandstone
+TERRAIN	10	7	TileSandstone
+TERRAIN	10	9	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	10	10	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	10	11	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	10	12	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	10	13	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	10	14	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	10	15	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	10	16	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	10	17	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	10	18	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	10	19	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	10	20	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	10	21	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	10	22	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	11	1	TileSandstone
+TERRAIN	11	2	TileSandstone
+TERRAIN	11	3	TileSandstone
+TERRAIN	11	4	TileSandstone
+TERRAIN	11	5	TileSandstone
+TERRAIN	11	6	TileSandstone
+TERRAIN	11	7	TileSandstone
+TERRAIN	11	9	CarpetRed
+TERRAIN	11	10	CarpetRed
+TERRAIN	11	11	CarpetRed
+TERRAIN	11	12	CarpetRed
+TERRAIN	11	13	CarpetRed
+TERRAIN	11	14	CarpetRed
+TERRAIN	11	15	CarpetRed
+TERRAIN	11	16	CarpetRed
+TERRAIN	11	17	CarpetRed
+TERRAIN	11	18	CarpetRed
+TERRAIN	11	19	CarpetRed
+TERRAIN	11	20	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	11	21	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	11	22	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	12	1	TileSandstone
+TERRAIN	12	2	TileSandstone
+TERRAIN	12	3	TileSandstone
+TERRAIN	12	4	TileSandstone
+TERRAIN	12	5	TileSandstone
+TERRAIN	12	6	TileSandstone
+TERRAIN	12	7	TileSandstone
+TERRAIN	12	9	CarpetRed
+TERRAIN	12	10	CarpetRed
+TERRAIN	12	11	CarpetRed
+TERRAIN	12	12	CarpetRed
+TERRAIN	12	13	CarpetRed
+TERRAIN	12	14	CarpetRed
+TERRAIN	12	15	CarpetRed
+TERRAIN	12	16	CarpetRed
+TERRAIN	12	17	CarpetRed
+TERRAIN	12	18	CarpetRed
+TERRAIN	12	19	CarpetRed
+TERRAIN	12	20	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	12	21	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	12	22	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	13	1	TileSandstone
+TERRAIN	13	2	TileSandstone
+TERRAIN	13	3	TileSandstone
+TERRAIN	13	4	TileSandstone
+TERRAIN	13	5	TileSandstone
+TERRAIN	13	6	TileSandstone
+TERRAIN	13	7	TileSandstone
+TERRAIN	13	9	CarpetRed
+TERRAIN	13	10	CarpetRed
+TERRAIN	13	11	CarpetRed
+TERRAIN	13	12	CarpetRed
+TERRAIN	13	13	CarpetRed
+TERRAIN	13	14	CarpetRed
+TERRAIN	13	15	CarpetRed
+TERRAIN	13	16	CarpetRed
+TERRAIN	13	17	CarpetRed
+TERRAIN	13	18	CarpetRed
+TERRAIN	13	19	CarpetRed
+TERRAIN	13	20	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	13	21	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	13	22	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	14	9	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	14	10	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	14	11	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	14	12	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	14	13	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	14	14	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	14	15	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	14	16	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	14	17	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	14	18	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	14	19	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	14	20	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	14	21	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	14	22	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	15	1	TileSandstone
+TERRAIN	15	2	TileSandstone
+TERRAIN	15	3	TileSandstone
+TERRAIN	15	4	TileSandstone
+TERRAIN	15	5	TileSandstone
+TERRAIN	15	6	TileSandstone
+TERRAIN	15	7	TileSandstone
+TERRAIN	15	9	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	15	10	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	15	11	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	15	12	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	15	13	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	15	14	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	15	15	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	15	16	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	15	17	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	15	18	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	15	19	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	15	20	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	15	21	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	15	22	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	16	1	TileSandstone
+TERRAIN	16	2	TileSandstone
+TERRAIN	16	3	TileSandstone
+TERRAIN	16	4	TileSandstone
+TERRAIN	16	5	TileSandstone
+TERRAIN	16	6	TileSandstone
+TERRAIN	16	7	TileSandstone
+TERRAIN	16	9	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	16	10	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	16	11	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	16	12	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	16	13	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	16	14	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	16	15	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	16	16	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	16	17	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	16	18	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	16	19	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	16	20	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	16	21	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	16	22	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	17	1	TileSandstone
+TERRAIN	17	2	TileSandstone
+TERRAIN	17	3	TileSandstone
+TERRAIN	17	4	TileSandstone
+TERRAIN	17	5	TileSandstone
+TERRAIN	17	6	TileSandstone
+TERRAIN	17	7	TileSandstone
+TERRAIN	17	9	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	17	10	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	17	11	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	17	12	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	17	13	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	17	14	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	17	15	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	17	16	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	17	17	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	17	18	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	17	19	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	17	20	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	17	21	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	17	22	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	18	1	TileSandstone
+TERRAIN	18	2	TileSandstone
+TERRAIN	18	3	TileSandstone
+TERRAIN	18	4	TileSandstone
+TERRAIN	18	5	TileSandstone
+TERRAIN	18	6	TileSandstone
+TERRAIN	18	7	TileSandstone
+TERRAIN	18	9	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	18	10	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	18	11	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	18	12	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	18	13	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	18	14	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	18	15	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	18	16	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	18	17	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	18	18	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	18	19	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	18	20	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	18	21	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	18	22	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	19	1	TileSandstone
+TERRAIN	19	2	TileSandstone
+TERRAIN	19	3	TileSandstone
+TERRAIN	19	4	TileSandstone
+TERRAIN	19	5	TileSandstone
+TERRAIN	19	6	TileSandstone
+TERRAIN	19	7	TileSandstone
+TERRAIN	19	9	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	19	10	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	19	11	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	19	12	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	19	13	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	19	14	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	19	15	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	19	16	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	19	17	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	19	18	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	19	19	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	19	20	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	19	21	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	19	22	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	20	1	TileSandstone
+TERRAIN	20	2	TileSandstone
+TERRAIN	20	3	TileSandstone
+TERRAIN	20	4	TileSandstone
+TERRAIN	20	5	TileSandstone
+TERRAIN	20	6	TileSandstone
+TERRAIN	20	7	TileSandstone
+TERRAIN	20	9	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	20	10	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	20	11	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	20	12	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	20	13	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	20	14	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	20	15	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	20	16	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	20	17	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	20	18	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	20	19	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	20	20	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	20	21	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	20	22	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	21	1	TileSandstone
+TERRAIN	21	2	TileSandstone
+TERRAIN	21	3	TileSandstone
+TERRAIN	21	4	TileSandstone
+TERRAIN	21	5	TileSandstone
+TERRAIN	21	6	TileSandstone
+TERRAIN	21	7	TileSandstone
+TERRAIN	21	9	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	21	10	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	21	11	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	21	12	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	21	13	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	21	14	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	21	15	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	21	16	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	21	17	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	21	18	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	21	19	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	21	20	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	21	21	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	21	22	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	22	1	TileSandstone
+TERRAIN	22	2	TileSandstone
+TERRAIN	22	3	TileSandstone
+TERRAIN	22	4	TileSandstone
+TERRAIN	22	5	TileSandstone
+TERRAIN	22	6	TileSandstone
+TERRAIN	22	7	TileSandstone
+TERRAIN	22	9	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	22	10	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	22	11	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	22	12	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	22	13	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	22	14	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	22	15	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	22	16	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	22	17	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	22	18	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	22	19	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	22	20	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	22	21	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	22	22	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	23	1	TileSandstone
+TERRAIN	23	2	TileSandstone
+TERRAIN	23	3	TileSandstone
+TERRAIN	23	4	TileSandstone
+TERRAIN	23	5	TileSandstone
+TERRAIN	23	6	TileSandstone
+TERRAIN	23	7	TileSandstone
+TERRAIN	23	9	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	23	10	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	23	11	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	23	12	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	23	13	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	23	14	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	23	15	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	23	16	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	23	17	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	23	18	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	23	19	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	23	20	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	23	21	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	23	22	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	24	1	TileSandstone
+TERRAIN	24	2	TileSandstone
+TERRAIN	24	3	TileSandstone
+TERRAIN	24	4	TileSandstone
+TERRAIN	24	5	TileSandstone
+TERRAIN	24	6	TileSandstone
+TERRAIN	24	7	TileSandstone
+TERRAIN	24	9	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	24	10	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	24	11	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	24	12	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	24	13	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	24	14	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	24	15	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	24	16	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	24	17	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	24	18	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	24	19	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	24	20	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	24	21	guy762_FloorTiles_HuttOfficeTile
+TERRAIN	24	22	guy762_FloorTiles_HuttOfficeTile
+THING	Wall	0	8	0	BlocksSandstone
+THING	Wall	1	8	0	BlocksSandstone
+THING	Wall	2	8	0	BlocksSandstone
+THING	Wall	3	8	0	BlocksSandstone
+THING	Wall	4	8	0	BlocksSandstone
+THING	Wall	5	8	0	BlocksSandstone
+THING	Wall	7	8	0	BlocksSandstone
+THING	Wall	8	8	0	BlocksSandstone
+THING	Wall	9	8	0	BlocksSandstone
+THING	Wall	10	8	0	BlocksSandstone
+THING	Wall	11	8	0	BlocksSandstone
+THING	Wall	13	8	0	BlocksSandstone
+THING	Wall	14	8	0	BlocksSandstone
+THING	Wall	15	8	0	BlocksSandstone
+THING	Wall	16	8	0	BlocksSandstone
+THING	Wall	18	8	0	BlocksSandstone
+THING	Wall	19	8	0	BlocksSandstone
+THING	Wall	20	8	0	BlocksSandstone
+THING	Wall	21	8	0	BlocksSandstone
+THING	Wall	22	8	0	BlocksSandstone
+THING	Wall	23	8	0	BlocksSandstone
+THING	Wall	24	8	0	BlocksSandstone
+THING	Wall	25	8	0	BlocksSandstone
+THING	Wall	0	9	0	BlocksSandstone
+THING	Wall	25	9	0	BlocksSandstone
+THING	Wall	0	10	0	BlocksSandstone
+THING	Wall	25	10	0	BlocksSandstone
+THING	Wall	0	11	0	BlocksSandstone
+THING	Wall	25	11	0	BlocksSandstone
+THING	Wall	0	12	0	BlocksSandstone
+THING	Wall	25	12	0	BlocksSandstone
+THING	Wall	0	13	0	BlocksSandstone
+THING	Wall	25	13	0	BlocksSandstone
+THING	Wall	0	14	0	BlocksSandstone
+THING	Wall	25	14	0	BlocksSandstone
+THING	Wall	0	15	0	BlocksSandstone
+THING	Wall	25	15	0	BlocksSandstone
+THING	Wall	0	16	0	BlocksSandstone
+THING	Wall	25	16	0	BlocksSandstone
+THING	Wall	0	17	0	BlocksSandstone
+THING	Wall	25	17	0	BlocksSandstone
+THING	Wall	0	18	0	BlocksSandstone
+THING	Wall	25	18	0	BlocksSandstone
+THING	Wall	0	19	0	BlocksSandstone
+THING	Wall	25	19	0	BlocksSandstone
+THING	Wall	0	20	0	BlocksSandstone
+THING	Wall	25	20	0	BlocksSandstone
+THING	Wall	0	21	0	BlocksSandstone
+THING	Wall	25	21	0	BlocksSandstone
+THING	Wall	0	22	0	BlocksSandstone
+THING	Wall	25	22	0	BlocksSandstone
+THING	Wall	0	23	0	BlocksSandstone
+THING	Wall	1	23	0	BlocksSandstone
+THING	Wall	2	23	0	BlocksSandstone
+THING	Wall	3	23	0	BlocksSandstone
+THING	Wall	4	23	0	BlocksSandstone
+THING	Wall	5	23	0	BlocksSandstone
+THING	Wall	6	23	0	BlocksSandstone
+THING	Wall	7	23	0	BlocksSandstone
+THING	Wall	8	23	0	BlocksSandstone
+THING	Wall	9	23	0	BlocksSandstone
+THING	Wall	10	23	0	BlocksSandstone
+THING	Wall	11	23	0	BlocksSandstone
+THING	Wall	12	23	0	BlocksSandstone
+THING	Wall	13	23	0	BlocksSandstone
+THING	Wall	14	23	0	BlocksSandstone
+THING	Wall	15	23	0	BlocksSandstone
+THING	Wall	16	23	0	BlocksSandstone
+THING	Wall	17	23	0	BlocksSandstone
+THING	Wall	18	23	0	BlocksSandstone
+THING	Wall	19	23	0	BlocksSandstone
+THING	Wall	20	23	0	BlocksSandstone
+THING	Wall	21	23	0	BlocksSandstone
+THING	Wall	22	23	0	BlocksSandstone
+THING	Wall	23	23	0	BlocksSandstone
+THING	Wall	24	23	0	BlocksSandstone
+THING	Wall	25	23	0	BlocksSandstone
+THING	Wall	0	0	0	BlocksSandstone
+THING	Wall	1	0	0	BlocksSandstone
+THING	Wall	2	0	0	BlocksSandstone
+THING	Wall	3	0	0	BlocksSandstone
+THING	Wall	4	0	0	BlocksSandstone
+THING	Wall	5	0	0	BlocksSandstone
+THING	Wall	6	0	0	BlocksSandstone
+THING	Wall	7	0	0	BlocksSandstone
+THING	Wall	8	0	0	BlocksSandstone
+THING	Wall	9	0	0	BlocksSandstone
+THING	Wall	0	1	0	BlocksSandstone
+THING	Wall	9	1	0	BlocksSandstone
+THING	Wall	0	2	0	BlocksSandstone
+THING	Wall	9	2	0	BlocksSandstone
+THING	Wall	0	3	0	BlocksSandstone
+THING	Wall	9	3	0	BlocksSandstone
+THING	Wall	0	4	0	BlocksSandstone
+THING	Wall	9	4	0	BlocksSandstone
+THING	Wall	0	5	0	BlocksSandstone
+THING	Wall	9	5	0	BlocksSandstone
+THING	Wall	0	6	0	BlocksSandstone
+THING	Wall	9	6	0	BlocksSandstone
+THING	Wall	0	7	0	BlocksSandstone
+THING	Wall	9	7	0	BlocksSandstone
+THING	Wall	10	0	0	BlocksSandstone
+THING	Wall	11	0	0	BlocksSandstone
+THING	Wall	13	0	0	BlocksSandstone
+THING	Wall	14	0	0	BlocksSandstone
+THING	Wall	14	1	0	BlocksSandstone
+THING	Wall	14	2	0	BlocksSandstone
+THING	Wall	14	3	0	BlocksSandstone
+THING	Wall	14	4	0	BlocksSandstone
+THING	Wall	14	5	0	BlocksSandstone
+THING	Wall	14	6	0	BlocksSandstone
+THING	Wall	14	7	0	BlocksSandstone
+THING	Wall	15	0	0	BlocksSandstone
+THING	Wall	16	0	0	BlocksSandstone
+THING	Wall	17	0	0	BlocksSandstone
+THING	Wall	18	0	0	BlocksSandstone
+THING	Wall	19	0	0	BlocksSandstone
+THING	Wall	20	0	0	BlocksSandstone
+THING	Wall	21	0	0	BlocksSandstone
+THING	Wall	22	0	0	BlocksSandstone
+THING	Wall	23	0	0	BlocksSandstone
+THING	Wall	24	0	0	BlocksSandstone
+THING	Wall	25	0	0	BlocksSandstone
+THING	Wall	25	1	0	BlocksSandstone
+THING	Wall	25	2	0	BlocksSandstone
+THING	Wall	25	3	0	BlocksSandstone
+THING	Wall	25	4	0	BlocksSandstone
+THING	Wall	25	5	0	BlocksSandstone
+THING	Wall	25	6	0	BlocksSandstone
+THING	Wall	25	7	0	BlocksSandstone
+THING	OuterRim_DoorTatooine	12	0	0	-
+THING	OuterRim_DoorTatooine	12	8	0	-
+THING	OuterRim_DoorTatooine	6	8	0	-
+THING	OuterRim_DoorTatooine	17	8	0	-
+THING	OuterRim_Decal_HuttClan	12	18	0	-
+THING	GS_Palp_Throne	12	22	2	Cloth
+THING	GS_Banner_Cult	9	22	0	Cloth
+THING	Brazier	10	19	0	Steel
+THING	GS_Banner_Cult	15	22	0	Cloth
+THING	Brazier	14	19	0	Steel
+THING	kotor_holo_dancerF	8	18	1	-
+THING	kotor_holo_dancerF	16	18	3	-
+THING	Column	7	11	0	BlocksSandstone
+THING	Column	18	11	0	BlocksSandstone
+THING	Column	7	15	0	BlocksSandstone
+THING	Column	18	15	0	BlocksSandstone
+THING	KOTORInstrument_Nalargon	22	10	0	-
+THING	KOTORInstrument_bandfill	19	10	0	-
+THING	kotor_holo_bith	21	13	3	-
+THING	KOTOR_PazaakTable	24	15	3	-
+THING	OuterRim_Tatooine1x1Table	1	16	1	-
+THING	OuterRim_Tatooine1x1Table	24	10	3	-
+THING	OuterRim_Tatooine1x1Table	24	13	3	-
+THING	OuterRim_TatooineStool	18	16	1	-
+THING	OuterRim_TatooineStool	20	17	3	-
+THING	OuterRim_TatooineStool	20	10	3	-
+THING	OuterRim_TatooineStool	14	16	1	-
+THING	PlantPot	1	22	1	BlocksSandstone
+THING	PlantPot	1	20	1	BlocksSandstone
+THING	PlantPot	1	13	1	BlocksSandstone
+THING	PlantPot	1	18	1	BlocksSandstone
+THING	OuterRim_DathomirOrbLamp_Tall	24	22	0	-
+THING	OuterRim_DathomirOrbLamp_Tall	1	9	0	-
+THING	OuterRim_DathomirOrbLamp_Tall	24	9	0	-
+THING	OuterRim_DathomirOrbLamp_Small	1	11	1	-
+THING	WallLamp	20	22	0	-
+THING	WallLamp	24	22	0	-
+THING	WallLamp	19	22	0	-
+THING	WallLamp	24	18	1	-
+THING	WallLamp	24	16	1	-
+THING	OuterRim_TatooineDoubleBed	3	6	0	-
+THING	OuterRim_TatooineDresser	2	7	2	-
+THING	OuterRim_TatooineEndTable	7	7	2	-
+THING	OuterRim_TatooineEndTable	5	7	2	-
+THING	WashBucket	8	1	0	Steel
+THING	SculptureSmall	1	1	0	Gold
+THING	PlantPot	8	6	3	BlocksSandstone
+THING	PlantPot	8	4	3	BlocksSandstone
+THING	OuterRim_DathomirOrbLamp_Small	8	7	0	-
+THING	WallLamp	8	1	2	-
+THING	WallLamp	1	1	3	-
+THING	OuterRim_TatooineStool	10	7	1	-
+THING	OuterRim_TatooineStool	10	2	1	-
+THING	PlantPot	13	7	0	BlocksSandstone
+THING	Brazier	13	1	0	Steel
+THING	OuterRim_AurebeshWordChamber	12	7	0	-
+THING	WallLamp	13	6	1	-
+THING	OuterRim_AdministratorDesk	20	6	2	-
+THING	OuterRim_TatooineDiningChair	20	5	0	-
+THING	Shelf	24	4	3	Steel
+THING	Shelf	24	1	3	Steel
+THING	guy762_decor_StandingTerminalA	24	6	3	-
+THING	ShelfSmall	24	3	3	Steel
+THING	ShelfSmall	24	7	3	Steel
+THING	OuterRim_StorageCrate	15	7	0	-
+THING	OuterRim_TatooineStool	17	1	0	-
+THING	OuterRim_DathomirOrbLamp_Small	15	1	0	-
+THING	WallLamp	22	1	2	-
+ROOF	0	0	RoofConstructed
+ROOF	0	1	RoofConstructed
+ROOF	0	2	RoofConstructed
+ROOF	0	3	RoofConstructed
+ROOF	0	4	RoofConstructed
+ROOF	0	5	RoofConstructed
+ROOF	0	6	RoofConstructed
+ROOF	0	7	RoofConstructed
+ROOF	0	8	RoofConstructed
+ROOF	0	9	RoofConstructed
+ROOF	0	10	RoofConstructed
+ROOF	0	11	RoofConstructed
+ROOF	0	12	RoofConstructed
+ROOF	0	13	RoofConstructed
+ROOF	0	14	RoofConstructed
+ROOF	0	15	RoofConstructed
+ROOF	0	16	RoofConstructed
+ROOF	0	17	RoofConstructed
+ROOF	0	18	RoofConstructed
+ROOF	0	19	RoofConstructed
+ROOF	0	20	RoofConstructed
+ROOF	0	21	RoofConstructed
+ROOF	0	22	RoofConstructed
+ROOF	0	23	RoofConstructed
+ROOF	1	0	RoofConstructed
+ROOF	1	1	RoofConstructed
+ROOF	1	2	RoofConstructed
+ROOF	1	3	RoofConstructed
+ROOF	1	4	RoofConstructed
+ROOF	1	5	RoofConstructed
+ROOF	1	6	RoofConstructed
+ROOF	1	7	RoofConstructed
+ROOF	1	8	RoofConstructed
+ROOF	1	9	RoofConstructed
+ROOF	1	10	RoofConstructed
+ROOF	1	11	RoofConstructed
+ROOF	1	12	RoofConstructed
+ROOF	1	13	RoofConstructed
+ROOF	1	14	RoofConstructed
+ROOF	1	15	RoofConstructed
+ROOF	1	16	RoofConstructed
+ROOF	1	17	RoofConstructed
+ROOF	1	18	RoofConstructed
+ROOF	1	19	RoofConstructed
+ROOF	1	20	RoofConstructed
+ROOF	1	21	RoofConstructed
+ROOF	1	22	RoofConstructed
+ROOF	1	23	RoofConstructed
+ROOF	2	0	RoofConstructed
+ROOF	2	1	RoofConstructed
+ROOF	2	2	RoofConstructed
+ROOF	2	3	RoofConstructed
+ROOF	2	4	RoofConstructed
+ROOF	2	5	RoofConstructed
+ROOF	2	6	RoofConstructed
+ROOF	2	7	RoofConstructed
+ROOF	2	8	RoofConstructed
+ROOF	2	9	RoofConstructed
+ROOF	2	10	RoofConstructed
+ROOF	2	11	RoofConstructed
+ROOF	2	12	RoofConstructed
+ROOF	2	13	RoofConstructed
+ROOF	2	14	RoofConstructed
+ROOF	2	15	RoofConstructed
+ROOF	2	16	RoofConstructed
+ROOF	2	17	RoofConstructed
+ROOF	2	18	RoofConstructed
+ROOF	2	19	RoofConstructed
+ROOF	2	20	RoofConstructed
+ROOF	2	21	RoofConstructed
+ROOF	2	22	RoofConstructed
+ROOF	2	23	RoofConstructed
+ROOF	3	0	RoofConstructed
+ROOF	3	1	RoofConstructed
+ROOF	3	2	RoofConstructed
+ROOF	3	3	RoofConstructed
+ROOF	3	4	RoofConstructed
+ROOF	3	5	RoofConstructed
+ROOF	3	6	RoofConstructed
+ROOF	3	7	RoofConstructed
+ROOF	3	8	RoofConstructed
+ROOF	3	9	RoofConstructed
+ROOF	3	10	RoofConstructed
+ROOF	3	11	RoofConstructed
+ROOF	3	12	RoofConstructed
+ROOF	3	13	RoofConstructed
+ROOF	3	14	RoofConstructed
+ROOF	3	15	RoofConstructed
+ROOF	3	16	RoofConstructed
+ROOF	3	17	RoofConstructed
+ROOF	3	18	RoofConstructed
+ROOF	3	19	RoofConstructed
+ROOF	3	20	RoofConstructed
+ROOF	3	21	RoofConstructed
+ROOF	3	22	RoofConstructed
+ROOF	3	23	RoofConstructed
+ROOF	4	0	RoofConstructed
+ROOF	4	1	RoofConstructed
+ROOF	4	2	RoofConstructed
+ROOF	4	3	RoofConstructed
+ROOF	4	4	RoofConstructed
+ROOF	4	5	RoofConstructed
+ROOF	4	6	RoofConstructed
+ROOF	4	7	RoofConstructed
+ROOF	4	8	RoofConstructed
+ROOF	4	9	RoofConstructed
+ROOF	4	10	RoofConstructed
+ROOF	4	11	RoofConstructed
+ROOF	4	12	RoofConstructed
+ROOF	4	13	RoofConstructed
+ROOF	4	14	RoofConstructed
+ROOF	4	15	RoofConstructed
+ROOF	4	16	RoofConstructed
+ROOF	4	17	RoofConstructed
+ROOF	4	18	RoofConstructed
+ROOF	4	19	RoofConstructed
+ROOF	4	20	RoofConstructed
+ROOF	4	21	RoofConstructed
+ROOF	4	22	RoofConstructed
+ROOF	4	23	RoofConstructed
+ROOF	5	0	RoofConstructed
+ROOF	5	1	RoofConstructed
+ROOF	5	2	RoofConstructed
+ROOF	5	3	RoofConstructed
+ROOF	5	4	RoofConstructed
+ROOF	5	5	RoofConstructed
+ROOF	5	6	RoofConstructed
+ROOF	5	7	RoofConstructed
+ROOF	5	8	RoofConstructed
+ROOF	5	9	RoofConstructed
+ROOF	5	10	RoofConstructed
+ROOF	5	11	RoofConstructed
+ROOF	5	12	RoofConstructed
+ROOF	5	13	RoofConstructed
+ROOF	5	14	RoofConstructed
+ROOF	5	15	RoofConstructed
+ROOF	5	16	RoofConstructed
+ROOF	5	17	RoofConstructed
+ROOF	5	18	RoofConstructed
+ROOF	5	19	RoofConstructed
+ROOF	5	20	RoofConstructed
+ROOF	5	21	RoofConstructed
+ROOF	5	22	RoofConstructed
+ROOF	5	23	RoofConstructed
+ROOF	6	0	RoofConstructed
+ROOF	6	1	RoofConstructed
+ROOF	6	2	RoofConstructed
+ROOF	6	3	RoofConstructed
+ROOF	6	4	RoofConstructed
+ROOF	6	5	RoofConstructed
+ROOF	6	6	RoofConstructed
+ROOF	6	7	RoofConstructed
+ROOF	6	8	RoofConstructed
+ROOF	6	9	RoofConstructed
+ROOF	6	10	RoofConstructed
+ROOF	6	11	RoofConstructed
+ROOF	6	12	RoofConstructed
+ROOF	6	13	RoofConstructed
+ROOF	6	14	RoofConstructed
+ROOF	6	15	RoofConstructed
+ROOF	6	16	RoofConstructed
+ROOF	6	17	RoofConstructed
+ROOF	6	18	RoofConstructed
+ROOF	6	19	RoofConstructed
+ROOF	6	20	RoofConstructed
+ROOF	6	21	RoofConstructed
+ROOF	6	22	RoofConstructed
+ROOF	6	23	RoofConstructed
+ROOF	7	0	RoofConstructed
+ROOF	7	1	RoofConstructed
+ROOF	7	2	RoofConstructed
+ROOF	7	3	RoofConstructed
+ROOF	7	4	RoofConstructed
+ROOF	7	5	RoofConstructed
+ROOF	7	6	RoofConstructed
+ROOF	7	7	RoofConstructed
+ROOF	7	8	RoofConstructed
+ROOF	7	9	RoofConstructed
+ROOF	7	10	RoofConstructed
+ROOF	7	11	RoofConstructed
+ROOF	7	12	RoofConstructed
+ROOF	7	13	RoofConstructed
+ROOF	7	14	RoofConstructed
+ROOF	7	15	RoofConstructed
+ROOF	7	16	RoofConstructed
+ROOF	7	17	RoofConstructed
+ROOF	7	18	RoofConstructed
+ROOF	7	19	RoofConstructed
+ROOF	7	20	RoofConstructed
+ROOF	7	21	RoofConstructed
+ROOF	7	22	RoofConstructed
+ROOF	7	23	RoofConstructed
+ROOF	8	0	RoofConstructed
+ROOF	8	1	RoofConstructed
+ROOF	8	2	RoofConstructed
+ROOF	8	3	RoofConstructed
+ROOF	8	4	RoofConstructed
+ROOF	8	5	RoofConstructed
+ROOF	8	6	RoofConstructed
+ROOF	8	7	RoofConstructed
+ROOF	8	8	RoofConstructed
+ROOF	8	9	RoofConstructed
+ROOF	8	10	RoofConstructed
+ROOF	8	11	RoofConstructed
+ROOF	8	12	RoofConstructed
+ROOF	8	13	RoofConstructed
+ROOF	8	14	RoofConstructed
+ROOF	8	15	RoofConstructed
+ROOF	8	16	RoofConstructed
+ROOF	8	17	RoofConstructed
+ROOF	8	18	RoofConstructed
+ROOF	8	19	RoofConstructed
+ROOF	8	20	RoofConstructed
+ROOF	8	21	RoofConstructed
+ROOF	8	22	RoofConstructed
+ROOF	8	23	RoofConstructed
+ROOF	9	0	RoofConstructed
+ROOF	9	1	RoofConstructed
+ROOF	9	2	RoofConstructed
+ROOF	9	3	RoofConstructed
+ROOF	9	4	RoofConstructed
+ROOF	9	5	RoofConstructed
+ROOF	9	6	RoofConstructed
+ROOF	9	7	RoofConstructed
+ROOF	9	8	RoofConstructed
+ROOF	9	9	RoofConstructed
+ROOF	9	10	RoofConstructed
+ROOF	9	11	RoofConstructed
+ROOF	9	12	RoofConstructed
+ROOF	9	13	RoofConstructed
+ROOF	9	14	RoofConstructed
+ROOF	9	15	RoofConstructed
+ROOF	9	16	RoofConstructed
+ROOF	9	17	RoofConstructed
+ROOF	9	18	RoofConstructed
+ROOF	9	19	RoofConstructed
+ROOF	9	20	RoofConstructed
+ROOF	9	21	RoofConstructed
+ROOF	9	22	RoofConstructed
+ROOF	9	23	RoofConstructed
+ROOF	10	0	RoofConstructed
+ROOF	10	1	RoofConstructed
+ROOF	10	2	RoofConstructed
+ROOF	10	3	RoofConstructed
+ROOF	10	4	RoofConstructed
+ROOF	10	5	RoofConstructed
+ROOF	10	6	RoofConstructed
+ROOF	10	7	RoofConstructed
+ROOF	10	8	RoofConstructed
+ROOF	10	9	RoofConstructed
+ROOF	10	10	RoofConstructed
+ROOF	10	11	RoofConstructed
+ROOF	10	12	RoofConstructed
+ROOF	10	13	RoofConstructed
+ROOF	10	14	RoofConstructed
+ROOF	10	15	RoofConstructed
+ROOF	10	16	RoofConstructed
+ROOF	10	17	RoofConstructed
+ROOF	10	18	RoofConstructed
+ROOF	10	19	RoofConstructed
+ROOF	10	20	RoofConstructed
+ROOF	10	21	RoofConstructed
+ROOF	10	22	RoofConstructed
+ROOF	10	23	RoofConstructed
+ROOF	11	0	RoofConstructed
+ROOF	11	1	RoofConstructed
+ROOF	11	2	RoofConstructed
+ROOF	11	3	RoofConstructed
+ROOF	11	4	RoofConstructed
+ROOF	11	5	RoofConstructed
+ROOF	11	6	RoofConstructed
+ROOF	11	7	RoofConstructed
+ROOF	11	8	RoofConstructed
+ROOF	11	9	RoofConstructed
+ROOF	11	10	RoofConstructed
+ROOF	11	11	RoofConstructed
+ROOF	11	12	RoofConstructed
+ROOF	11	13	RoofConstructed
+ROOF	11	14	RoofConstructed
+ROOF	11	15	RoofConstructed
+ROOF	11	16	RoofConstructed
+ROOF	11	17	RoofConstructed
+ROOF	11	18	RoofConstructed
+ROOF	11	19	RoofConstructed
+ROOF	11	20	RoofConstructed
+ROOF	11	21	RoofConstructed
+ROOF	11	22	RoofConstructed
+ROOF	11	23	RoofConstructed
+ROOF	12	0	RoofConstructed
+ROOF	12	1	RoofConstructed
+ROOF	12	2	RoofConstructed
+ROOF	12	3	RoofConstructed
+ROOF	12	4	RoofConstructed
+ROOF	12	5	RoofConstructed
+ROOF	12	6	RoofConstructed
+ROOF	12	7	RoofConstructed
+ROOF	12	8	RoofConstructed
+ROOF	12	9	RoofConstructed
+ROOF	12	10	RoofConstructed
+ROOF	12	11	RoofConstructed
+ROOF	12	12	RoofConstructed
+ROOF	12	13	RoofConstructed
+ROOF	12	14	RoofConstructed
+ROOF	12	15	RoofConstructed
+ROOF	12	16	RoofConstructed
+ROOF	12	17	RoofConstructed
+ROOF	12	18	RoofConstructed
+ROOF	12	19	RoofConstructed
+ROOF	12	20	RoofConstructed
+ROOF	12	21	RoofConstructed
+ROOF	12	22	RoofConstructed
+ROOF	12	23	RoofConstructed
+ROOF	13	0	RoofConstructed
+ROOF	13	1	RoofConstructed
+ROOF	13	2	RoofConstructed
+ROOF	13	3	RoofConstructed
+ROOF	13	4	RoofConstructed
+ROOF	13	5	RoofConstructed
+ROOF	13	6	RoofConstructed
+ROOF	13	7	RoofConstructed
+ROOF	13	8	RoofConstructed
+ROOF	13	9	RoofConstructed
+ROOF	13	10	RoofConstructed
+ROOF	13	11	RoofConstructed
+ROOF	13	12	RoofConstructed
+ROOF	13	13	RoofConstructed
+ROOF	13	14	RoofConstructed
+ROOF	13	15	RoofConstructed
+ROOF	13	16	RoofConstructed
+ROOF	13	17	RoofConstructed
+ROOF	13	18	RoofConstructed
+ROOF	13	19	RoofConstructed
+ROOF	13	20	RoofConstructed
+ROOF	13	21	RoofConstructed
+ROOF	13	22	RoofConstructed
+ROOF	13	23	RoofConstructed
+ROOF	14	0	RoofConstructed
+ROOF	14	1	RoofConstructed
+ROOF	14	2	RoofConstructed
+ROOF	14	3	RoofConstructed
+ROOF	14	4	RoofConstructed
+ROOF	14	5	RoofConstructed
+ROOF	14	6	RoofConstructed
+ROOF	14	7	RoofConstructed
+ROOF	14	8	RoofConstructed
+ROOF	14	9	RoofConstructed
+ROOF	14	10	RoofConstructed
+ROOF	14	11	RoofConstructed
+ROOF	14	12	RoofConstructed
+ROOF	14	13	RoofConstructed
+ROOF	14	14	RoofConstructed
+ROOF	14	15	RoofConstructed
+ROOF	14	16	RoofConstructed
+ROOF	14	17	RoofConstructed
+ROOF	14	18	RoofConstructed
+ROOF	14	19	RoofConstructed
+ROOF	14	20	RoofConstructed
+ROOF	14	21	RoofConstructed
+ROOF	14	22	RoofConstructed
+ROOF	14	23	RoofConstructed
+ROOF	15	0	RoofConstructed
+ROOF	15	1	RoofConstructed
+ROOF	15	2	RoofConstructed
+ROOF	15	3	RoofConstructed
+ROOF	15	4	RoofConstructed
+ROOF	15	5	RoofConstructed
+ROOF	15	6	RoofConstructed
+ROOF	15	7	RoofConstructed
+ROOF	15	8	RoofConstructed
+ROOF	15	9	RoofConstructed
+ROOF	15	10	RoofConstructed
+ROOF	15	11	RoofConstructed
+ROOF	15	12	RoofConstructed
+ROOF	15	13	RoofConstructed
+ROOF	15	14	RoofConstructed
+ROOF	15	15	RoofConstructed
+ROOF	15	16	RoofConstructed
+ROOF	15	17	RoofConstructed
+ROOF	15	18	RoofConstructed
+ROOF	15	19	RoofConstructed
+ROOF	15	20	RoofConstructed
+ROOF	15	21	RoofConstructed
+ROOF	15	22	RoofConstructed
+ROOF	15	23	RoofConstructed
+ROOF	16	0	RoofConstructed
+ROOF	16	1	RoofConstructed
+ROOF	16	2	RoofConstructed
+ROOF	16	3	RoofConstructed
+ROOF	16	4	RoofConstructed
+ROOF	16	5	RoofConstructed
+ROOF	16	6	RoofConstructed
+ROOF	16	7	RoofConstructed
+ROOF	16	8	RoofConstructed
+ROOF	16	9	RoofConstructed
+ROOF	16	10	RoofConstructed
+ROOF	16	11	RoofConstructed
+ROOF	16	12	RoofConstructed
+ROOF	16	13	RoofConstructed
+ROOF	16	14	RoofConstructed
+ROOF	16	15	RoofConstructed
+ROOF	16	16	RoofConstructed
+ROOF	16	17	RoofConstructed
+ROOF	16	18	RoofConstructed
+ROOF	16	19	RoofConstructed
+ROOF	16	20	RoofConstructed
+ROOF	16	21	RoofConstructed
+ROOF	16	22	RoofConstructed
+ROOF	16	23	RoofConstructed
+ROOF	17	0	RoofConstructed
+ROOF	17	1	RoofConstructed
+ROOF	17	2	RoofConstructed
+ROOF	17	3	RoofConstructed
+ROOF	17	4	RoofConstructed
+ROOF	17	5	RoofConstructed
+ROOF	17	6	RoofConstructed
+ROOF	17	7	RoofConstructed
+ROOF	17	8	RoofConstructed
+ROOF	17	9	RoofConstructed
+ROOF	17	10	RoofConstructed
+ROOF	17	11	RoofConstructed
+ROOF	17	12	RoofConstructed
+ROOF	17	13	RoofConstructed
+ROOF	17	14	RoofConstructed
+ROOF	17	15	RoofConstructed
+ROOF	17	16	RoofConstructed
+ROOF	17	17	RoofConstructed
+ROOF	17	18	RoofConstructed
+ROOF	17	19	RoofConstructed
+ROOF	17	20	RoofConstructed
+ROOF	17	21	RoofConstructed
+ROOF	17	22	RoofConstructed
+ROOF	17	23	RoofConstructed
+ROOF	18	0	RoofConstructed
+ROOF	18	1	RoofConstructed
+ROOF	18	2	RoofConstructed
+ROOF	18	3	RoofConstructed
+ROOF	18	4	RoofConstructed
+ROOF	18	5	RoofConstructed
+ROOF	18	6	RoofConstructed
+ROOF	18	7	RoofConstructed
+ROOF	18	8	RoofConstructed
+ROOF	18	9	RoofConstructed
+ROOF	18	10	RoofConstructed
+ROOF	18	11	RoofConstructed
+ROOF	18	12	RoofConstructed
+ROOF	18	13	RoofConstructed
+ROOF	18	14	RoofConstructed
+ROOF	18	15	RoofConstructed
+ROOF	18	16	RoofConstructed
+ROOF	18	17	RoofConstructed
+ROOF	18	18	RoofConstructed
+ROOF	18	19	RoofConstructed
+ROOF	18	20	RoofConstructed
+ROOF	18	21	RoofConstructed
+ROOF	18	22	RoofConstructed
+ROOF	18	23	RoofConstructed
+ROOF	19	0	RoofConstructed
+ROOF	19	1	RoofConstructed
+ROOF	19	2	RoofConstructed
+ROOF	19	3	RoofConstructed
+ROOF	19	4	RoofConstructed
+ROOF	19	5	RoofConstructed
+ROOF	19	6	RoofConstructed
+ROOF	19	7	RoofConstructed
+ROOF	19	8	RoofConstructed
+ROOF	19	9	RoofConstructed
+ROOF	19	10	RoofConstructed
+ROOF	19	11	RoofConstructed
+ROOF	19	12	RoofConstructed
+ROOF	19	13	RoofConstructed
+ROOF	19	14	RoofConstructed
+ROOF	19	15	RoofConstructed
+ROOF	19	16	RoofConstructed
+ROOF	19	17	RoofConstructed
+ROOF	19	18	RoofConstructed
+ROOF	19	19	RoofConstructed
+ROOF	19	20	RoofConstructed
+ROOF	19	21	RoofConstructed
+ROOF	19	22	RoofConstructed
+ROOF	19	23	RoofConstructed
+ROOF	20	0	RoofConstructed
+ROOF	20	1	RoofConstructed
+ROOF	20	2	RoofConstructed
+ROOF	20	3	RoofConstructed
+ROOF	20	4	RoofConstructed
+ROOF	20	5	RoofConstructed
+ROOF	20	6	RoofConstructed
+ROOF	20	7	RoofConstructed
+ROOF	20	8	RoofConstructed
+ROOF	20	9	RoofConstructed
+ROOF	20	10	RoofConstructed
+ROOF	20	11	RoofConstructed
+ROOF	20	12	RoofConstructed
+ROOF	20	13	RoofConstructed
+ROOF	20	14	RoofConstructed
+ROOF	20	15	RoofConstructed
+ROOF	20	16	RoofConstructed
+ROOF	20	17	RoofConstructed
+ROOF	20	18	RoofConstructed
+ROOF	20	19	RoofConstructed
+ROOF	20	20	RoofConstructed
+ROOF	20	21	RoofConstructed
+ROOF	20	22	RoofConstructed
+ROOF	20	23	RoofConstructed
+ROOF	21	0	RoofConstructed
+ROOF	21	1	RoofConstructed
+ROOF	21	2	RoofConstructed
+ROOF	21	3	RoofConstructed
+ROOF	21	4	RoofConstructed
+ROOF	21	5	RoofConstructed
+ROOF	21	6	RoofConstructed
+ROOF	21	7	RoofConstructed
+ROOF	21	8	RoofConstructed
+ROOF	21	9	RoofConstructed
+ROOF	21	10	RoofConstructed
+ROOF	21	11	RoofConstructed
+ROOF	21	12	RoofConstructed
+ROOF	21	13	RoofConstructed
+ROOF	21	14	RoofConstructed
+ROOF	21	15	RoofConstructed
+ROOF	21	16	RoofConstructed
+ROOF	21	17	RoofConstructed
+ROOF	21	18	RoofConstructed
+ROOF	21	19	RoofConstructed
+ROOF	21	20	RoofConstructed
+ROOF	21	21	RoofConstructed
+ROOF	21	22	RoofConstructed
+ROOF	21	23	RoofConstructed
+ROOF	22	0	RoofConstructed
+ROOF	22	1	RoofConstructed
+ROOF	22	2	RoofConstructed
+ROOF	22	3	RoofConstructed
+ROOF	22	4	RoofConstructed
+ROOF	22	5	RoofConstructed
+ROOF	22	6	RoofConstructed
+ROOF	22	7	RoofConstructed
+ROOF	22	8	RoofConstructed
+ROOF	22	9	RoofConstructed
+ROOF	22	10	RoofConstructed
+ROOF	22	11	RoofConstructed
+ROOF	22	12	RoofConstructed
+ROOF	22	13	RoofConstructed
+ROOF	22	14	RoofConstructed
+ROOF	22	15	RoofConstructed
+ROOF	22	16	RoofConstructed
+ROOF	22	17	RoofConstructed
+ROOF	22	18	RoofConstructed
+ROOF	22	19	RoofConstructed
+ROOF	22	20	RoofConstructed
+ROOF	22	21	RoofConstructed
+ROOF	22	22	RoofConstructed
+ROOF	22	23	RoofConstructed
+ROOF	23	0	RoofConstructed
+ROOF	23	1	RoofConstructed
+ROOF	23	2	RoofConstructed
+ROOF	23	3	RoofConstructed
+ROOF	23	4	RoofConstructed
+ROOF	23	5	RoofConstructed
+ROOF	23	6	RoofConstructed
+ROOF	23	7	RoofConstructed
+ROOF	23	8	RoofConstructed
+ROOF	23	9	RoofConstructed
+ROOF	23	10	RoofConstructed
+ROOF	23	11	RoofConstructed
+ROOF	23	12	RoofConstructed
+ROOF	23	13	RoofConstructed
+ROOF	23	14	RoofConstructed
+ROOF	23	15	RoofConstructed
+ROOF	23	16	RoofConstructed
+ROOF	23	17	RoofConstructed
+ROOF	23	18	RoofConstructed
+ROOF	23	19	RoofConstructed
+ROOF	23	20	RoofConstructed
+ROOF	23	21	RoofConstructed
+ROOF	23	22	RoofConstructed
+ROOF	23	23	RoofConstructed
+ROOF	24	0	RoofConstructed
+ROOF	24	1	RoofConstructed
+ROOF	24	2	RoofConstructed
+ROOF	24	3	RoofConstructed
+ROOF	24	4	RoofConstructed
+ROOF	24	5	RoofConstructed
+ROOF	24	6	RoofConstructed
+ROOF	24	7	RoofConstructed
+ROOF	24	8	RoofConstructed
+ROOF	24	9	RoofConstructed
+ROOF	24	10	RoofConstructed
+ROOF	24	11	RoofConstructed
+ROOF	24	12	RoofConstructed
+ROOF	24	13	RoofConstructed
+ROOF	24	14	RoofConstructed
+ROOF	24	15	RoofConstructed
+ROOF	24	16	RoofConstructed
+ROOF	24	17	RoofConstructed
+ROOF	24	18	RoofConstructed
+ROOF	24	19	RoofConstructed
+ROOF	24	20	RoofConstructed
+ROOF	24	21	RoofConstructed
+ROOF	24	22	RoofConstructed
+ROOF	24	23	RoofConstructed
+ROOF	25	0	RoofConstructed
+ROOF	25	1	RoofConstructed
+ROOF	25	2	RoofConstructed
+ROOF	25	3	RoofConstructed
+ROOF	25	4	RoofConstructed
+ROOF	25	5	RoofConstructed
+ROOF	25	6	RoofConstructed
+ROOF	25	7	RoofConstructed
+ROOF	25	8	RoofConstructed
+ROOF	25	9	RoofConstructed
+ROOF	25	10	RoofConstructed
+ROOF	25	11	RoofConstructed
+ROOF	25	12	RoofConstructed
+ROOF	25	13	RoofConstructed
+ROOF	25	14	RoofConstructed
+ROOF	25	15	RoofConstructed
+ROOF	25	16	RoofConstructed
+ROOF	25	17	RoofConstructed
+ROOF	25	18	RoofConstructed
+ROOF	25	19	RoofConstructed
+ROOF	25	20	RoofConstructed
+ROOF	25	21	RoofConstructed
+ROOF	25	22	RoofConstructed
+ROOF	25	23	RoofConstructed

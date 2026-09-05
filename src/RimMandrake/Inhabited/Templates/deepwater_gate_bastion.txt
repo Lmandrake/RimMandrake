@@ -1,0 +1,487 @@
+# rimplace flat plan v1
+# template  deepwater_gate_bastion (sha f75e1a8a6f1f3469)
+# min_rect  18x12   baked at 24x14
+FOOTPRINT	0	0	24	14
+TERRAIN	1	1	Concrete
+TERRAIN	1	2	Concrete
+TERRAIN	1	3	Concrete
+TERRAIN	1	4	Concrete
+TERRAIN	1	5	Concrete
+TERRAIN	1	6	Concrete
+TERRAIN	1	7	Concrete
+TERRAIN	1	8	Concrete
+TERRAIN	1	9	Concrete
+TERRAIN	1	10	Concrete
+TERRAIN	1	11	Concrete
+TERRAIN	1	12	Concrete
+TERRAIN	2	1	Concrete
+TERRAIN	2	2	Concrete
+TERRAIN	2	3	Concrete
+TERRAIN	2	4	Concrete
+TERRAIN	2	5	Concrete
+TERRAIN	2	6	Concrete
+TERRAIN	2	7	Concrete
+TERRAIN	2	8	SterileTile
+TERRAIN	2	9	SterileTile
+TERRAIN	2	10	SterileTile
+TERRAIN	2	11	SterileTile
+TERRAIN	2	12	SterileTile
+TERRAIN	3	1	Concrete
+TERRAIN	3	2	Concrete
+TERRAIN	3	3	Concrete
+TERRAIN	3	4	Concrete
+TERRAIN	3	5	Concrete
+TERRAIN	3	6	Concrete
+TERRAIN	3	7	Concrete
+TERRAIN	3	8	SterileTile
+TERRAIN	3	9	SterileTile
+TERRAIN	3	10	SterileTile
+TERRAIN	3	11	SterileTile
+TERRAIN	3	12	SterileTile
+TERRAIN	4	1	Concrete
+TERRAIN	4	2	Concrete
+TERRAIN	4	3	Concrete
+TERRAIN	4	4	Concrete
+TERRAIN	4	5	Concrete
+TERRAIN	4	6	Concrete
+TERRAIN	4	7	Concrete
+TERRAIN	4	8	SterileTile
+TERRAIN	4	9	SterileTile
+TERRAIN	4	10	SterileTile
+TERRAIN	4	11	SterileTile
+TERRAIN	4	12	SterileTile
+TERRAIN	5	1	MetalTile
+TERRAIN	5	2	MetalTile
+TERRAIN	5	3	MetalTile
+TERRAIN	5	4	Concrete
+TERRAIN	5	5	Concrete
+TERRAIN	5	6	Concrete
+TERRAIN	5	7	Concrete
+TERRAIN	5	8	SterileTile
+TERRAIN	5	9	SterileTile
+TERRAIN	5	10	SterileTile
+TERRAIN	5	11	SterileTile
+TERRAIN	5	12	SterileTile
+TERRAIN	6	1	MetalTile
+TERRAIN	6	2	MetalTile
+TERRAIN	6	3	MetalTile
+TERRAIN	6	4	Concrete
+TERRAIN	6	5	Concrete
+TERRAIN	6	6	Concrete
+TERRAIN	6	7	Concrete
+TERRAIN	6	8	SterileTile
+TERRAIN	6	9	SterileTile
+TERRAIN	6	10	SterileTile
+TERRAIN	6	11	SterileTile
+TERRAIN	6	12	SterileTile
+TERRAIN	7	1	Concrete
+TERRAIN	7	2	Concrete
+TERRAIN	7	3	MetalTile
+TERRAIN	7	4	Concrete
+TERRAIN	7	5	Concrete
+TERRAIN	7	6	Concrete
+TERRAIN	7	7	Concrete
+TERRAIN	7	8	SterileTile
+TERRAIN	7	9	SterileTile
+TERRAIN	7	10	SterileTile
+TERRAIN	7	11	SterileTile
+TERRAIN	7	12	SterileTile
+TERRAIN	8	1	Concrete
+TERRAIN	8	2	Concrete
+TERRAIN	8	3	MetalTile
+TERRAIN	8	4	Concrete
+TERRAIN	8	5	Concrete
+TERRAIN	8	6	Concrete
+TERRAIN	8	7	Concrete
+TERRAIN	8	8	SterileTile
+TERRAIN	8	9	SterileTile
+TERRAIN	8	10	SterileTile
+TERRAIN	8	11	SterileTile
+TERRAIN	8	12	SterileTile
+TERRAIN	9	1	Concrete
+TERRAIN	9	2	Concrete
+TERRAIN	9	3	MetalTile
+TERRAIN	9	4	Concrete
+TERRAIN	9	5	Concrete
+TERRAIN	9	6	Concrete
+TERRAIN	9	7	Concrete
+TERRAIN	9	8	Concrete
+TERRAIN	9	9	Concrete
+TERRAIN	9	10	Concrete
+TERRAIN	9	11	Concrete
+TERRAIN	9	12	Concrete
+TERRAIN	10	1	Concrete
+TERRAIN	10	2	Concrete
+TERRAIN	10	3	MetalTile
+TERRAIN	10	4	Concrete
+TERRAIN	10	5	Concrete
+TERRAIN	10	6	Concrete
+TERRAIN	10	7	Concrete
+TERRAIN	10	8	Concrete
+TERRAIN	10	9	Concrete
+TERRAIN	10	10	Concrete
+TERRAIN	10	11	Concrete
+TERRAIN	10	12	Concrete
+TERRAIN	11	1	Concrete
+TERRAIN	11	2	Concrete
+TERRAIN	11	3	MetalTile
+TERRAIN	11	4	Concrete
+TERRAIN	11	5	Concrete
+TERRAIN	11	6	Concrete
+TERRAIN	11	7	Concrete
+TERRAIN	11	8	Concrete
+TERRAIN	11	9	Concrete
+TERRAIN	11	10	Concrete
+TERRAIN	11	11	Concrete
+TERRAIN	11	12	Concrete
+TERRAIN	12	1	Concrete
+TERRAIN	12	2	Concrete
+TERRAIN	12	3	MetalTile
+TERRAIN	12	4	Concrete
+TERRAIN	12	5	Concrete
+TERRAIN	12	6	Concrete
+TERRAIN	12	7	Concrete
+TERRAIN	12	8	Concrete
+TERRAIN	12	9	Concrete
+TERRAIN	12	10	Concrete
+TERRAIN	12	11	Concrete
+TERRAIN	12	12	Concrete
+TERRAIN	13	1	Concrete
+TERRAIN	13	2	Concrete
+TERRAIN	13	3	MetalTile
+TERRAIN	13	4	Concrete
+TERRAIN	13	5	Concrete
+TERRAIN	13	6	Concrete
+TERRAIN	13	7	Concrete
+TERRAIN	13	8	Concrete
+TERRAIN	13	9	Concrete
+TERRAIN	13	10	Concrete
+TERRAIN	13	11	Concrete
+TERRAIN	13	12	Concrete
+TERRAIN	14	1	Concrete
+TERRAIN	14	2	Concrete
+TERRAIN	14	3	MetalTile
+TERRAIN	14	4	Concrete
+TERRAIN	14	5	Concrete
+TERRAIN	14	6	Concrete
+TERRAIN	14	7	Concrete
+TERRAIN	14	8	Concrete
+TERRAIN	14	9	Concrete
+TERRAIN	14	10	Concrete
+TERRAIN	14	11	Concrete
+TERRAIN	14	12	Concrete
+TERRAIN	15	1	Concrete
+TERRAIN	15	2	Concrete
+TERRAIN	15	3	MetalTile
+TERRAIN	15	4	Concrete
+TERRAIN	15	5	Concrete
+TERRAIN	15	6	Concrete
+TERRAIN	15	7	Concrete
+TERRAIN	15	8	Concrete
+TERRAIN	15	9	Concrete
+TERRAIN	15	10	Concrete
+TERRAIN	15	11	Concrete
+TERRAIN	15	12	Concrete
+TERRAIN	16	1	Concrete
+TERRAIN	16	2	Concrete
+TERRAIN	16	3	MetalTile
+TERRAIN	16	4	Concrete
+TERRAIN	16	5	Concrete
+TERRAIN	16	6	Concrete
+TERRAIN	16	7	Concrete
+TERRAIN	16	8	Concrete
+TERRAIN	16	9	Concrete
+TERRAIN	16	10	Concrete
+TERRAIN	16	11	Concrete
+TERRAIN	16	12	Concrete
+TERRAIN	17	1	Concrete
+TERRAIN	17	2	Concrete
+TERRAIN	17	3	MetalTile
+TERRAIN	17	4	Concrete
+TERRAIN	17	5	Concrete
+TERRAIN	17	6	Concrete
+TERRAIN	17	7	Concrete
+TERRAIN	17	8	Concrete
+TERRAIN	17	9	Concrete
+TERRAIN	17	10	Concrete
+TERRAIN	17	11	Concrete
+TERRAIN	17	12	Concrete
+TERRAIN	18	1	Concrete
+TERRAIN	18	2	Concrete
+TERRAIN	18	3	MetalTile
+TERRAIN	18	4	MetalTile
+TERRAIN	18	5	MetalTile
+TERRAIN	18	6	Concrete
+TERRAIN	18	7	Concrete
+TERRAIN	18	8	Concrete
+TERRAIN	18	9	Concrete
+TERRAIN	18	10	Concrete
+TERRAIN	18	11	Concrete
+TERRAIN	18	12	Concrete
+TERRAIN	19	1	Concrete
+TERRAIN	19	2	Concrete
+TERRAIN	19	3	MetalTile
+TERRAIN	19	4	MetalTile
+TERRAIN	19	5	MetalTile
+TERRAIN	19	6	Concrete
+TERRAIN	19	7	Concrete
+TERRAIN	19	8	Concrete
+TERRAIN	19	9	Concrete
+TERRAIN	19	10	Concrete
+TERRAIN	19	11	Concrete
+TERRAIN	19	12	Concrete
+TERRAIN	20	1	Concrete
+TERRAIN	20	2	Concrete
+TERRAIN	20	3	Concrete
+TERRAIN	20	4	Concrete
+TERRAIN	20	5	Concrete
+TERRAIN	20	6	Concrete
+TERRAIN	20	7	Concrete
+TERRAIN	20	8	Concrete
+TERRAIN	20	9	Concrete
+TERRAIN	20	10	Concrete
+TERRAIN	20	11	Concrete
+TERRAIN	20	12	Concrete
+TERRAIN	21	1	Concrete
+TERRAIN	21	2	Concrete
+TERRAIN	21	3	Concrete
+TERRAIN	21	4	Concrete
+TERRAIN	21	5	Concrete
+TERRAIN	21	6	Concrete
+TERRAIN	21	7	Concrete
+TERRAIN	21	8	Concrete
+TERRAIN	21	9	Concrete
+TERRAIN	21	10	Concrete
+TERRAIN	21	11	Concrete
+TERRAIN	21	12	Concrete
+TERRAIN	22	1	Concrete
+TERRAIN	22	2	Concrete
+TERRAIN	22	3	Concrete
+TERRAIN	22	4	Concrete
+TERRAIN	22	5	Concrete
+TERRAIN	22	6	Concrete
+TERRAIN	22	7	Concrete
+TERRAIN	22	8	Concrete
+TERRAIN	22	9	Concrete
+TERRAIN	22	10	Concrete
+TERRAIN	22	11	Concrete
+TERRAIN	22	12	Concrete
+THING	Wall	0	0	0	Steel
+THING	Wall	1	0	0	Steel
+THING	Wall	2	0	0	Steel
+THING	Wall	3	0	0	Steel
+THING	Wall	4	0	0	Steel
+THING	Wall	7	0	0	Steel
+THING	Wall	8	0	0	Steel
+THING	Wall	9	0	0	Steel
+THING	Wall	10	0	0	Steel
+THING	Wall	11	0	0	Steel
+THING	Wall	12	0	0	Steel
+THING	Wall	13	0	0	Steel
+THING	Wall	14	0	0	Steel
+THING	Wall	15	0	0	Steel
+THING	Wall	16	0	0	Steel
+THING	Wall	17	0	0	Steel
+THING	Wall	18	0	0	Steel
+THING	Wall	19	0	0	Steel
+THING	Wall	20	0	0	Steel
+THING	Wall	21	0	0	Steel
+THING	Wall	22	0	0	Steel
+THING	Wall	23	0	0	Steel
+THING	Wall	0	1	0	Steel
+THING	Wall	23	1	0	Steel
+THING	Wall	0	2	0	Steel
+THING	Wall	23	2	0	Steel
+THING	Wall	0	3	0	Steel
+THING	Wall	23	3	0	Steel
+THING	Wall	0	4	0	Steel
+THING	Wall	23	4	0	Steel
+THING	Wall	0	5	0	Steel
+THING	Wall	23	5	0	Steel
+THING	Wall	0	6	0	Steel
+THING	Wall	23	6	0	Steel
+THING	Wall	0	7	0	Steel
+THING	Wall	23	7	0	Steel
+THING	Wall	0	8	0	Steel
+THING	Wall	23	8	0	Steel
+THING	Wall	0	9	0	Steel
+THING	Wall	23	9	0	Steel
+THING	Wall	0	10	0	Steel
+THING	Wall	23	10	0	Steel
+THING	Wall	0	11	0	Steel
+THING	Wall	23	11	0	Steel
+THING	Wall	0	12	0	Steel
+THING	Wall	23	12	0	Steel
+THING	Wall	0	13	0	Steel
+THING	Wall	1	13	0	Steel
+THING	Wall	2	13	0	Steel
+THING	Wall	3	13	0	Steel
+THING	Wall	4	13	0	Steel
+THING	Wall	5	13	0	Steel
+THING	Wall	6	13	0	Steel
+THING	Wall	7	13	0	Steel
+THING	Wall	8	13	0	Steel
+THING	Wall	9	13	0	Steel
+THING	Wall	10	13	0	Steel
+THING	Wall	11	13	0	Steel
+THING	Wall	12	13	0	Steel
+THING	Wall	13	13	0	Steel
+THING	Wall	14	13	0	Steel
+THING	Wall	15	13	0	Steel
+THING	Wall	16	13	0	Steel
+THING	Wall	17	13	0	Steel
+THING	Wall	18	13	0	Steel
+THING	Wall	19	13	0	Steel
+THING	Wall	20	13	0	Steel
+THING	Wall	21	13	0	Steel
+THING	Wall	22	13	0	Steel
+THING	Wall	23	13	0	Steel
+THING	Wall	1	6	0	Steel
+THING	Wall	2	6	0	Steel
+THING	Wall	3	6	0	Steel
+THING	Wall	4	6	0	Steel
+THING	Wall	5	6	0	Steel
+THING	Wall	6	6	0	Steel
+THING	Wall	7	6	0	Steel
+THING	Wall	8	6	0	Steel
+THING	Wall	9	6	0	Steel
+THING	Wall	10	6	0	Steel
+THING	Wall	11	6	0	Steel
+THING	Wall	12	6	0	Steel
+THING	Wall	13	6	0	Steel
+THING	Wall	14	6	0	Steel
+THING	Wall	15	6	0	Steel
+THING	Wall	16	6	0	Steel
+THING	Wall	17	6	0	Steel
+THING	Wall	20	6	0	Steel
+THING	Wall	21	6	0	Steel
+THING	Wall	22	6	0	Steel
+THING	Door	5	0	0	Steel
+THING	Door	6	0	0	Steel
+THING	Door	19	6	0	Steel
+THING	Door	18	6	0	Steel
+THING	OuterRim_AurebeshWordWarning	5	1	0	-
+THING	OuterRim_AurebeshWordSecurity	18	5	0	-
+THING	Sandbags	2	4	0	-
+THING	Sandbags	3	4	0	-
+THING	Sandbags	4	4	0	-
+THING	Sandbags	5	4	0	-
+THING	Sandbags	8	4	0	-
+THING	Sandbags	9	4	0	-
+THING	Sandbags	10	4	0	-
+THING	Sandbags	12	4	0	-
+THING	Sandbags	13	4	0	-
+THING	Sandbags	15	4	0	-
+THING	Sandbags	16	4	0	-
+THING	Sandbags	3	1	0	-
+THING	Sandbags	3	2	0	-
+THING	Sandbags	8	1	0	-
+THING	Sandbags	8	2	0	-
+THING	TrapIED_EMP	2	3	0	-
+THING	TrapIED_EMP	8	3	0	-
+THING	TrapIED_EMP	2	2	0	-
+THING	TrapIED_EMP	16	3	0	-
+THING	TrapIED_EMP	19	2	0	-
+THING	Turret_MiniTurret	14	5	0	-
+THING	Turret_MiniTurret	22	4	0	-
+THING	Turret_MiniTurret	15	8	0	-
+THING	Barricade	18	3	0	Steel
+THING	Barricade	17	4	0	Steel
+THING	StandingLamp	17	2	0	-
+THING	StandingLamp	10	3	0	-
+THING	Wall	1	7	0	Steel
+THING	Wall	2	7	0	Steel
+THING	Wall	3	7	0	Steel
+THING	Wall	4	7	0	Steel
+THING	Wall	5	7	0	Steel
+THING	Wall	6	7	0	Steel
+THING	Wall	7	7	0	Steel
+THING	Wall	8	7	0	Steel
+THING	Wall	9	7	0	Steel
+THING	Wall	1	8	0	Steel
+THING	Wall	9	8	0	Steel
+THING	Wall	1	9	0	Steel
+THING	Wall	9	9	0	Steel
+THING	Wall	1	10	0	Steel
+THING	Wall	9	10	0	Steel
+THING	Wall	1	11	0	Steel
+THING	Wall	9	11	0	Steel
+THING	Wall	1	12	0	Steel
+THING	Door	9	12	0	Steel
+THING	Bed	7	11	0	Steel
+THING	Bed	4	11	0	Steel
+THING	Table1x2c	5	10	1	Steel
+THING	DiningChair	5	9	0	Steel
+THING	DiningChair	4	10	1	Steel
+THING	guy762_decor_StandingTerminalA	2	8	0	-
+THING	guy762_decor_BigRebelScreen	8	10	3	-
+THING	ShelfSmall	2	11	1	Steel
+THING	OuterRim_StorageCrateClean	8	8	0	-
+THING	StandingLamp	2	12	0	-
+THING	WallLamp	2	10	3	-
+THING	OuterRim_StorageCrateClean	20	7	0	-
+THING	OuterRim_StorageCrateClean	21	9	0	-
+THING	StandingLamp	20	8	0	-
+ROOF	1	7	RoofConstructed
+ROOF	1	8	RoofConstructed
+ROOF	1	9	RoofConstructed
+ROOF	1	10	RoofConstructed
+ROOF	1	11	RoofConstructed
+ROOF	1	12	RoofConstructed
+ROOF	1	13	RoofConstructed
+ROOF	2	7	RoofConstructed
+ROOF	2	8	RoofConstructed
+ROOF	2	9	RoofConstructed
+ROOF	2	10	RoofConstructed
+ROOF	2	11	RoofConstructed
+ROOF	2	12	RoofConstructed
+ROOF	2	13	RoofConstructed
+ROOF	3	7	RoofConstructed
+ROOF	3	8	RoofConstructed
+ROOF	3	9	RoofConstructed
+ROOF	3	10	RoofConstructed
+ROOF	3	11	RoofConstructed
+ROOF	3	12	RoofConstructed
+ROOF	3	13	RoofConstructed
+ROOF	4	7	RoofConstructed
+ROOF	4	8	RoofConstructed
+ROOF	4	9	RoofConstructed
+ROOF	4	10	RoofConstructed
+ROOF	4	11	RoofConstructed
+ROOF	4	12	RoofConstructed
+ROOF	4	13	RoofConstructed
+ROOF	5	7	RoofConstructed
+ROOF	5	8	RoofConstructed
+ROOF	5	9	RoofConstructed
+ROOF	5	10	RoofConstructed
+ROOF	5	11	RoofConstructed
+ROOF	5	12	RoofConstructed
+ROOF	5	13	RoofConstructed
+ROOF	6	7	RoofConstructed
+ROOF	6	8	RoofConstructed
+ROOF	6	9	RoofConstructed
+ROOF	6	10	RoofConstructed
+ROOF	6	11	RoofConstructed
+ROOF	6	12	RoofConstructed
+ROOF	6	13	RoofConstructed
+ROOF	7	7	RoofConstructed
+ROOF	7	8	RoofConstructed
+ROOF	7	9	RoofConstructed
+ROOF	7	10	RoofConstructed
+ROOF	7	11	RoofConstructed
+ROOF	7	12	RoofConstructed
+ROOF	7	13	RoofConstructed
+ROOF	8	7	RoofConstructed
+ROOF	8	8	RoofConstructed
+ROOF	8	9	RoofConstructed
+ROOF	8	10	RoofConstructed
+ROOF	8	11	RoofConstructed
+ROOF	8	12	RoofConstructed
+ROOF	8	13	RoofConstructed
+ROOF	9	7	RoofConstructed
+ROOF	9	8	RoofConstructed
+ROOF	9	9	RoofConstructed
+ROOF	9	10	RoofConstructed
+ROOF	9	11	RoofConstructed
+ROOF	9	12	RoofConstructed
+ROOF	9	13	RoofConstructed

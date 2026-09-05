@@ -1,4 +1,6 @@
 # rimplace flat plan v1
+# template  junkers_dwelling_cluster (sha 95974ccef496a95f)
+# min_rect  15x15   baked at 22x22
 FOOTPRINT	0	0	22	22
 TERRAIN	0	0	Gravel
 TERRAIN	0	1	Gravel
@@ -24,18 +26,18 @@ TERRAIN	0	20	Gravel
 TERRAIN	0	21	Gravel
 TERRAIN	1	0	Gravel
 TERRAIN	1	1	Gravel
-TERRAIN	1	2	Gravel
-TERRAIN	1	3	Gravel
-TERRAIN	1	4	Gravel
-TERRAIN	1	5	Gravel
-TERRAIN	1	6	Gravel
+TERRAIN	1	2	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	1	3	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	1	4	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	1	5	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	1	6	guy762_FloorTiles_DivotedTile_rust
 TERRAIN	1	7	Gravel
 TERRAIN	1	8	Gravel
 TERRAIN	1	9	Gravel
 TERRAIN	1	10	Gravel
 TERRAIN	1	11	Gravel
 TERRAIN	1	12	Gravel
-TERRAIN	1	13	Gravel
+TERRAIN	1	13	BrokenAsphalt
 TERRAIN	1	14	Gravel
 TERRAIN	1	15	Gravel
 TERRAIN	1	16	Gravel
@@ -46,11 +48,11 @@ TERRAIN	1	20	Gravel
 TERRAIN	1	21	Gravel
 TERRAIN	2	0	Gravel
 TERRAIN	2	1	Gravel
-TERRAIN	2	2	Gravel
-TERRAIN	2	3	Gravel
-TERRAIN	2	4	Gravel
-TERRAIN	2	5	Gravel
-TERRAIN	2	6	Gravel
+TERRAIN	2	2	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	2	3	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	2	4	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	2	5	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	2	6	guy762_FloorTiles_DivotedTile_rust
 TERRAIN	2	7	Gravel
 TERRAIN	2	8	Gravel
 TERRAIN	2	9	Gravel
@@ -59,42 +61,42 @@ TERRAIN	2	11	Gravel
 TERRAIN	2	12	Gravel
 TERRAIN	2	13	Gravel
 TERRAIN	2	14	Gravel
-TERRAIN	2	15	Gravel
-TERRAIN	2	16	Gravel
-TERRAIN	2	17	Gravel
-TERRAIN	2	18	Gravel
-TERRAIN	2	19	Gravel
+TERRAIN	2	15	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	2	16	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	2	17	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	2	18	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	2	19	guy762_FloorTiles_DivotedTile_rust
 TERRAIN	2	20	Gravel
-TERRAIN	2	21	Gravel
+TERRAIN	2	21	BrokenAsphalt
 TERRAIN	3	0	Gravel
 TERRAIN	3	1	Gravel
-TERRAIN	3	2	Gravel
-TERRAIN	3	3	Gravel
-TERRAIN	3	4	Gravel
-TERRAIN	3	5	Gravel
-TERRAIN	3	6	Gravel
+TERRAIN	3	2	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	3	3	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	3	4	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	3	5	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	3	6	guy762_FloorTiles_DivotedTile_rust
 TERRAIN	3	7	Gravel
-TERRAIN	3	8	Gravel
+TERRAIN	3	8	BrokenAsphalt
 TERRAIN	3	9	Gravel
 TERRAIN	3	10	Gravel
 TERRAIN	3	11	Gravel
 TERRAIN	3	12	Gravel
 TERRAIN	3	13	Gravel
 TERRAIN	3	14	Gravel
-TERRAIN	3	15	Gravel
-TERRAIN	3	16	Gravel
-TERRAIN	3	17	Gravel
-TERRAIN	3	18	Gravel
-TERRAIN	3	19	Gravel
+TERRAIN	3	15	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	3	16	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	3	17	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	3	18	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	3	19	guy762_FloorTiles_DivotedTile_rust
 TERRAIN	3	20	Gravel
 TERRAIN	3	21	Gravel
 TERRAIN	4	0	Gravel
-TERRAIN	4	1	Gravel
-TERRAIN	4	2	Gravel
-TERRAIN	4	3	Gravel
-TERRAIN	4	4	Gravel
-TERRAIN	4	5	Gravel
-TERRAIN	4	6	Gravel
+TERRAIN	4	1	BrokenAsphalt
+TERRAIN	4	2	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	4	3	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	4	4	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	4	5	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	4	6	guy762_FloorTiles_DivotedTile_rust
 TERRAIN	4	7	Gravel
 TERRAIN	4	8	Gravel
 TERRAIN	4	9	Gravel
@@ -103,39 +105,39 @@ TERRAIN	4	11	Gravel
 TERRAIN	4	12	Gravel
 TERRAIN	4	13	Gravel
 TERRAIN	4	14	Gravel
-TERRAIN	4	15	Gravel
-TERRAIN	4	16	Gravel
-TERRAIN	4	17	Gravel
-TERRAIN	4	18	Gravel
-TERRAIN	4	19	Gravel
+TERRAIN	4	15	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	4	16	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	4	17	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	4	18	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	4	19	guy762_FloorTiles_DivotedTile_rust
 TERRAIN	4	20	Gravel
 TERRAIN	4	21	Gravel
 TERRAIN	5	0	Gravel
 TERRAIN	5	1	Gravel
-TERRAIN	5	2	Gravel
-TERRAIN	5	3	Gravel
-TERRAIN	5	4	Gravel
-TERRAIN	5	5	Gravel
-TERRAIN	5	6	Gravel
+TERRAIN	5	2	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	5	3	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	5	4	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	5	5	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	5	6	guy762_FloorTiles_DivotedTile_rust
 TERRAIN	5	7	Gravel
-TERRAIN	5	8	Gravel
-TERRAIN	5	9	Gravel
+TERRAIN	5	8	BrokenAsphalt
+TERRAIN	5	9	BrokenAsphalt
 TERRAIN	5	10	Gravel
 TERRAIN	5	11	Gravel
 TERRAIN	5	12	Gravel
 TERRAIN	5	13	Gravel
 TERRAIN	5	14	Gravel
-TERRAIN	5	15	Gravel
+TERRAIN	5	15	BrokenAsphalt
 TERRAIN	5	16	Gravel
 TERRAIN	5	17	Gravel
 TERRAIN	5	18	Gravel
 TERRAIN	5	19	Gravel
 TERRAIN	5	20	Gravel
-TERRAIN	5	21	Gravel
+TERRAIN	5	21	BrokenAsphalt
 TERRAIN	6	0	Gravel
 TERRAIN	6	1	Gravel
 TERRAIN	6	2	Gravel
-TERRAIN	6	3	Gravel
+TERRAIN	6	3	BrokenAsphalt
 TERRAIN	6	4	Gravel
 TERRAIN	6	5	Gravel
 TERRAIN	6	6	Gravel
@@ -149,7 +151,7 @@ TERRAIN	6	13	Gravel
 TERRAIN	6	14	Gravel
 TERRAIN	6	15	Gravel
 TERRAIN	6	16	Gravel
-TERRAIN	6	17	Gravel
+TERRAIN	6	17	BrokenAsphalt
 TERRAIN	6	18	Gravel
 TERRAIN	6	19	Gravel
 TERRAIN	6	20	Gravel
@@ -158,7 +160,7 @@ TERRAIN	7	0	Gravel
 TERRAIN	7	1	Gravel
 TERRAIN	7	2	Gravel
 TERRAIN	7	3	Gravel
-TERRAIN	7	4	Gravel
+TERRAIN	7	4	BrokenAsphalt
 TERRAIN	7	5	Gravel
 TERRAIN	7	6	Gravel
 TERRAIN	7	7	Gravel
@@ -171,7 +173,7 @@ TERRAIN	7	13	Gravel
 TERRAIN	7	14	Gravel
 TERRAIN	7	15	Gravel
 TERRAIN	7	16	Gravel
-TERRAIN	7	17	Gravel
+TERRAIN	7	17	BrokenAsphalt
 TERRAIN	7	18	Gravel
 TERRAIN	7	19	Gravel
 TERRAIN	7	20	Gravel
@@ -180,9 +182,9 @@ TERRAIN	8	0	Gravel
 TERRAIN	8	1	Gravel
 TERRAIN	8	2	Gravel
 TERRAIN	8	3	Gravel
-TERRAIN	8	4	Gravel
+TERRAIN	8	4	BrokenAsphalt
 TERRAIN	8	5	Gravel
-TERRAIN	8	6	Gravel
+TERRAIN	8	6	BrokenAsphalt
 TERRAIN	8	7	Gravel
 TERRAIN	8	8	Gravel
 TERRAIN	8	9	Gravel
@@ -193,16 +195,16 @@ TERRAIN	8	13	Gravel
 TERRAIN	8	14	Gravel
 TERRAIN	8	15	Gravel
 TERRAIN	8	16	Gravel
-TERRAIN	8	17	Gravel
-TERRAIN	8	18	Gravel
+TERRAIN	8	17	BrokenAsphalt
+TERRAIN	8	18	BrokenAsphalt
 TERRAIN	8	19	Gravel
 TERRAIN	8	20	Gravel
 TERRAIN	8	21	Gravel
-TERRAIN	9	0	Gravel
+TERRAIN	9	0	BrokenAsphalt
 TERRAIN	9	1	Gravel
 TERRAIN	9	2	Gravel
 TERRAIN	9	3	Gravel
-TERRAIN	9	4	Gravel
+TERRAIN	9	4	BrokenAsphalt
 TERRAIN	9	5	Gravel
 TERRAIN	9	6	Gravel
 TERRAIN	9	7	Gravel
@@ -216,8 +218,8 @@ TERRAIN	9	14	Gravel
 TERRAIN	9	15	Gravel
 TERRAIN	9	16	Gravel
 TERRAIN	9	17	Gravel
-TERRAIN	9	18	Gravel
-TERRAIN	9	19	Gravel
+TERRAIN	9	18	BrokenAsphalt
+TERRAIN	9	19	BrokenAsphalt
 TERRAIN	9	20	Gravel
 TERRAIN	9	21	Gravel
 TERRAIN	10	0	Gravel
@@ -258,7 +260,7 @@ TERRAIN	11	12	Gravel
 TERRAIN	11	13	Gravel
 TERRAIN	11	14	Gravel
 TERRAIN	11	15	Gravel
-TERRAIN	11	16	Gravel
+TERRAIN	11	16	BrokenAsphalt
 TERRAIN	11	17	Gravel
 TERRAIN	11	18	Gravel
 TERRAIN	11	19	Gravel
@@ -266,9 +268,9 @@ TERRAIN	11	20	Gravel
 TERRAIN	11	21	Gravel
 TERRAIN	12	0	Gravel
 TERRAIN	12	1	Gravel
-TERRAIN	12	2	Gravel
+TERRAIN	12	2	BrokenAsphalt
 TERRAIN	12	3	Gravel
-TERRAIN	12	4	Gravel
+TERRAIN	12	4	BrokenAsphalt
 TERRAIN	12	5	Gravel
 TERRAIN	12	6	Gravel
 TERRAIN	12	7	Gravel
@@ -282,12 +284,12 @@ TERRAIN	12	14	Gravel
 TERRAIN	12	15	Gravel
 TERRAIN	12	16	Gravel
 TERRAIN	12	17	Gravel
-TERRAIN	12	18	Gravel
+TERRAIN	12	18	BrokenAsphalt
 TERRAIN	12	19	Gravel
 TERRAIN	12	20	Gravel
 TERRAIN	12	21	Gravel
-TERRAIN	13	0	Gravel
-TERRAIN	13	1	Gravel
+TERRAIN	13	0	BrokenAsphalt
+TERRAIN	13	1	BrokenAsphalt
 TERRAIN	13	2	Gravel
 TERRAIN	13	3	Gravel
 TERRAIN	13	4	Gravel
@@ -300,11 +302,11 @@ TERRAIN	13	10	Gravel
 TERRAIN	13	11	Gravel
 TERRAIN	13	12	Gravel
 TERRAIN	13	13	Gravel
-TERRAIN	13	14	Gravel
+TERRAIN	13	14	BrokenAsphalt
 TERRAIN	13	15	Gravel
 TERRAIN	13	16	Gravel
-TERRAIN	13	17	Gravel
-TERRAIN	13	18	Gravel
+TERRAIN	13	17	BrokenAsphalt
+TERRAIN	13	18	BrokenAsphalt
 TERRAIN	13	19	Gravel
 TERRAIN	13	20	Gravel
 TERRAIN	13	21	Gravel
@@ -313,9 +315,9 @@ TERRAIN	14	1	Gravel
 TERRAIN	14	2	Gravel
 TERRAIN	14	3	Gravel
 TERRAIN	14	4	Gravel
-TERRAIN	14	5	Gravel
+TERRAIN	14	5	BrokenAsphalt
 TERRAIN	14	6	Gravel
-TERRAIN	14	7	Gravel
+TERRAIN	14	7	BrokenAsphalt
 TERRAIN	14	8	Gravel
 TERRAIN	14	9	Gravel
 TERRAIN	14	10	Gravel
@@ -326,25 +328,25 @@ TERRAIN	14	14	Gravel
 TERRAIN	14	15	Gravel
 TERRAIN	14	16	Gravel
 TERRAIN	14	17	Gravel
-TERRAIN	14	18	Gravel
+TERRAIN	14	18	BrokenAsphalt
 TERRAIN	14	19	Gravel
 TERRAIN	14	20	Gravel
 TERRAIN	14	21	Gravel
 TERRAIN	15	0	Gravel
-TERRAIN	15	1	Gravel
-TERRAIN	15	2	Gravel
-TERRAIN	15	3	Gravel
-TERRAIN	15	4	Gravel
-TERRAIN	15	5	Gravel
+TERRAIN	15	1	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	15	2	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	15	3	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	15	4	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	15	5	guy762_FloorTiles_DivotedTile_rust
 TERRAIN	15	6	Gravel
 TERRAIN	15	7	Gravel
 TERRAIN	15	8	Gravel
 TERRAIN	15	9	Gravel
 TERRAIN	15	10	Gravel
-TERRAIN	15	11	Gravel
+TERRAIN	15	11	BrokenAsphalt
 TERRAIN	15	12	Gravel
 TERRAIN	15	13	Gravel
-TERRAIN	15	14	Gravel
+TERRAIN	15	14	BrokenAsphalt
 TERRAIN	15	15	Gravel
 TERRAIN	15	16	Gravel
 TERRAIN	15	17	Gravel
@@ -353,78 +355,78 @@ TERRAIN	15	19	Gravel
 TERRAIN	15	20	Gravel
 TERRAIN	15	21	Gravel
 TERRAIN	16	0	Gravel
-TERRAIN	16	1	Gravel
-TERRAIN	16	2	Gravel
-TERRAIN	16	3	Gravel
-TERRAIN	16	4	Gravel
-TERRAIN	16	5	Gravel
+TERRAIN	16	1	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	16	2	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	16	3	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	16	4	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	16	5	guy762_FloorTiles_DivotedTile_rust
 TERRAIN	16	6	Gravel
 TERRAIN	16	7	Gravel
 TERRAIN	16	8	Gravel
 TERRAIN	16	9	Gravel
 TERRAIN	16	10	Gravel
 TERRAIN	16	11	Gravel
-TERRAIN	16	12	Gravel
+TERRAIN	16	12	BrokenAsphalt
 TERRAIN	16	13	Gravel
 TERRAIN	16	14	Gravel
 TERRAIN	16	15	Gravel
 TERRAIN	16	16	Gravel
-TERRAIN	16	17	Gravel
-TERRAIN	16	18	Gravel
-TERRAIN	16	19	Gravel
+TERRAIN	16	17	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	16	18	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	16	19	guy762_FloorTiles_DivotedTile_rust
 TERRAIN	16	20	Gravel
 TERRAIN	16	21	Gravel
 TERRAIN	17	0	Gravel
-TERRAIN	17	1	Gravel
-TERRAIN	17	2	Gravel
-TERRAIN	17	3	Gravel
-TERRAIN	17	4	Gravel
-TERRAIN	17	5	Gravel
+TERRAIN	17	1	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	17	2	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	17	3	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	17	4	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	17	5	guy762_FloorTiles_DivotedTile_rust
 TERRAIN	17	6	Gravel
-TERRAIN	17	7	Gravel
-TERRAIN	17	8	Gravel
-TERRAIN	17	9	Gravel
-TERRAIN	17	10	Gravel
+TERRAIN	17	7	BrokenAsphalt
+TERRAIN	17	8	BrokenAsphalt
+TERRAIN	17	9	BrokenAsphalt
+TERRAIN	17	10	BrokenAsphalt
 TERRAIN	17	11	Gravel
-TERRAIN	17	12	Gravel
+TERRAIN	17	12	BrokenAsphalt
 TERRAIN	17	13	Gravel
-TERRAIN	17	14	Gravel
+TERRAIN	17	14	BrokenAsphalt
 TERRAIN	17	15	Gravel
 TERRAIN	17	16	Gravel
-TERRAIN	17	17	Gravel
-TERRAIN	17	18	Gravel
-TERRAIN	17	19	Gravel
+TERRAIN	17	17	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	17	18	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	17	19	guy762_FloorTiles_DivotedTile_rust
 TERRAIN	17	20	Gravel
 TERRAIN	17	21	Gravel
 TERRAIN	18	0	Gravel
-TERRAIN	18	1	Gravel
-TERRAIN	18	2	Gravel
-TERRAIN	18	3	Gravel
-TERRAIN	18	4	Gravel
-TERRAIN	18	5	Gravel
-TERRAIN	18	6	Gravel
+TERRAIN	18	1	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	18	2	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	18	3	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	18	4	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	18	5	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	18	6	BrokenAsphalt
 TERRAIN	18	7	Gravel
 TERRAIN	18	8	Gravel
 TERRAIN	18	9	Gravel
-TERRAIN	18	10	Gravel
+TERRAIN	18	10	BrokenAsphalt
 TERRAIN	18	11	Gravel
 TERRAIN	18	12	Gravel
 TERRAIN	18	13	Gravel
-TERRAIN	18	14	Gravel
+TERRAIN	18	14	BrokenAsphalt
 TERRAIN	18	15	Gravel
 TERRAIN	18	16	Gravel
-TERRAIN	18	17	Gravel
-TERRAIN	18	18	Gravel
-TERRAIN	18	19	Gravel
+TERRAIN	18	17	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	18	18	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	18	19	guy762_FloorTiles_DivotedTile_rust
 TERRAIN	18	20	Gravel
 TERRAIN	18	21	Gravel
-TERRAIN	19	0	Gravel
-TERRAIN	19	1	Gravel
-TERRAIN	19	2	Gravel
-TERRAIN	19	3	Gravel
-TERRAIN	19	4	Gravel
-TERRAIN	19	5	Gravel
-TERRAIN	19	6	Gravel
+TERRAIN	19	0	BrokenAsphalt
+TERRAIN	19	1	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	19	2	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	19	3	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	19	4	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	19	5	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	19	6	BrokenAsphalt
 TERRAIN	19	7	Gravel
 TERRAIN	19	8	Gravel
 TERRAIN	19	9	Gravel
@@ -433,14 +435,14 @@ TERRAIN	19	11	Gravel
 TERRAIN	19	12	Gravel
 TERRAIN	19	13	Gravel
 TERRAIN	19	14	Gravel
-TERRAIN	19	15	Gravel
+TERRAIN	19	15	BrokenAsphalt
 TERRAIN	19	16	Gravel
-TERRAIN	19	17	Gravel
-TERRAIN	19	18	Gravel
-TERRAIN	19	19	Gravel
+TERRAIN	19	17	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	19	18	guy762_FloorTiles_DivotedTile_rust
+TERRAIN	19	19	guy762_FloorTiles_DivotedTile_rust
 TERRAIN	19	20	Gravel
 TERRAIN	19	21	Gravel
-TERRAIN	20	0	Gravel
+TERRAIN	20	0	BrokenAsphalt
 TERRAIN	20	1	Gravel
 TERRAIN	20	2	Gravel
 TERRAIN	20	3	Gravel
@@ -451,7 +453,7 @@ TERRAIN	20	7	Gravel
 TERRAIN	20	8	Gravel
 TERRAIN	20	9	Gravel
 TERRAIN	20	10	Gravel
-TERRAIN	20	11	Gravel
+TERRAIN	20	11	BrokenAsphalt
 TERRAIN	20	12	Gravel
 TERRAIN	20	13	Gravel
 TERRAIN	20	14	Gravel
@@ -467,7 +469,7 @@ TERRAIN	21	1	Gravel
 TERRAIN	21	2	Gravel
 TERRAIN	21	3	Gravel
 TERRAIN	21	4	Gravel
-TERRAIN	21	5	Gravel
+TERRAIN	21	5	BrokenAsphalt
 TERRAIN	21	6	Gravel
 TERRAIN	21	7	Gravel
 TERRAIN	21	8	Gravel
@@ -478,123 +480,145 @@ TERRAIN	21	12	Gravel
 TERRAIN	21	13	Gravel
 TERRAIN	21	14	Gravel
 TERRAIN	21	15	Gravel
-TERRAIN	21	16	Gravel
+TERRAIN	21	16	BrokenAsphalt
 TERRAIN	21	17	Gravel
 TERRAIN	21	18	Gravel
 TERRAIN	21	19	Gravel
 TERRAIN	21	20	Gravel
 TERRAIN	21	21	Gravel
+THING	Wall	1	14	0	Steel
+THING	Wall	2	14	0	Steel
+THING	Wall	3	14	0	Steel
+THING	Wall	4	14	0	Steel
+THING	Wall	5	14	0	Steel
+THING	Wall	1	15	0	Steel
+THING	Wall	5	15	0	Steel
+THING	Wall	1	16	0	Steel
+THING	Wall	5	16	0	Steel
+THING	Wall	1	17	0	Steel
+THING	Wall	5	17	0	Steel
+THING	Wall	1	18	0	Steel
+THING	Wall	1	19	0	Steel
+THING	Wall	5	19	0	Steel
+THING	Wall	1	20	0	Steel
+THING	Wall	2	20	0	Steel
+THING	Wall	3	20	0	Steel
+THING	Wall	4	20	0	Steel
+THING	Wall	5	20	0	Steel
+THING	Door	5	18	0	Steel
+THING	Bedroll	2	18	0	Cloth
+THING	ShelfSmall	4	19	2	Steel
+THING	OuterRim_StorageCrate	2	15	0	-
+THING	TorchLamp	4	15	0	-
+THING	TorchWallLamp	4	17	1	-
+THING	Wall	15	16	0	Steel
+THING	Wall	16	16	0	Steel
+THING	Wall	17	16	0	Steel
+THING	Wall	18	16	0	Steel
+THING	Wall	19	16	0	Steel
+THING	Wall	20	16	0	Steel
+THING	Wall	15	17	0	Steel
+THING	Wall	20	17	0	Steel
+THING	Wall	20	18	0	Steel
+THING	Wall	15	19	0	Steel
+THING	Wall	20	19	0	Steel
+THING	Wall	15	20	0	Steel
+THING	Wall	16	20	0	Steel
+THING	Wall	17	20	0	Steel
+THING	Wall	18	20	0	Steel
+THING	Wall	19	20	0	Steel
+THING	Wall	20	20	0	Steel
+THING	Door	15	18	0	Steel
+THING	Bedroll	17	18	2	Cloth
+THING	EndTable	17	19	2	Steel
+THING	OuterRim_StorageCrate	16	17	0	-
+THING	OuterRim_StorageCrate	16	19	0	-
+THING	Stool	19	17	0	Steel
+THING	TorchLamp	19	19	0	-
+THING	TorchWallLamp	19	18	1	-
+THING	Wall	0	1	0	Steel
 THING	Wall	1	1	0	Steel
 THING	Wall	2	1	0	Steel
 THING	Wall	3	1	0	Steel
+THING	Wall	4	1	0	Steel
 THING	Wall	5	1	0	Steel
 THING	Wall	6	1	0	Steel
-THING	Wall	7	1	0	Steel
-THING	Wall	1	2	0	Steel
-THING	Wall	7	2	0	Steel
-THING	Wall	1	3	0	Steel
-THING	Wall	7	3	0	Steel
-THING	Wall	1	4	0	Steel
-THING	Wall	7	4	0	Steel
-THING	Wall	1	5	0	Steel
-THING	Wall	7	5	0	Steel
-THING	Wall	1	6	0	Steel
-THING	Wall	7	6	0	Steel
+THING	Wall	0	2	0	Steel
+THING	Wall	6	2	0	Steel
+THING	Wall	0	3	0	Steel
+THING	Wall	0	4	0	Steel
+THING	Wall	6	4	0	Steel
+THING	Wall	0	5	0	Steel
+THING	Wall	6	5	0	Steel
+THING	Wall	0	6	0	Steel
+THING	Wall	6	6	0	Steel
+THING	Wall	0	7	0	Steel
 THING	Wall	1	7	0	Steel
 THING	Wall	2	7	0	Steel
 THING	Wall	3	7	0	Steel
 THING	Wall	4	7	0	Steel
 THING	Wall	5	7	0	Steel
 THING	Wall	6	7	0	Steel
-THING	Wall	7	7	0	Steel
-THING	Door	4	1	0	WoodLog
-THING	Bedroll	2	2	0	Cloth
-THING	Shelf	3	2	0	WoodLog
-THING	TorchLamp	5	2	0	-
-THING	Wall	13	1	0	Steel
+THING	Door	6	3	0	Steel
+THING	Bedroll	2	4	3	Cloth
+THING	EndTable	5	4	3	Steel
+THING	ShelfSmall	5	5	3	Steel
+THING	OuterRim_StorageCrate	5	6	0	-
+THING	OuterRim_StorageCrate	1	2	0	-
+THING	Stool	2	2	0	Steel
+THING	TorchLamp	1	6	0	-
+THING	TorchWallLamp	1	4	3	-
+THING	Wall	14	0	0	Steel
+THING	Wall	15	0	0	Steel
+THING	Wall	16	0	0	Steel
+THING	Wall	17	0	0	Steel
+THING	Wall	18	0	0	Steel
+THING	Wall	19	0	0	Steel
+THING	Wall	20	0	0	Steel
 THING	Wall	14	1	0	Steel
-THING	Wall	15	1	0	Steel
-THING	Wall	17	1	0	Steel
-THING	Wall	18	1	0	Steel
-THING	Wall	19	1	0	Steel
-THING	Wall	13	2	0	Steel
-THING	Wall	19	2	0	Steel
-THING	Wall	13	3	0	Steel
-THING	Wall	19	3	0	Steel
-THING	Wall	13	4	0	Steel
-THING	Wall	19	4	0	Steel
-THING	Wall	13	5	0	Steel
-THING	Wall	19	5	0	Steel
-THING	Wall	13	6	0	Steel
+THING	Wall	20	1	0	Steel
+THING	Wall	14	2	0	Steel
+THING	Wall	20	2	0	Steel
+THING	Wall	14	3	0	Steel
+THING	Wall	20	3	0	Steel
+THING	Wall	14	4	0	Steel
+THING	Wall	20	4	0	Steel
+THING	Wall	14	5	0	Steel
+THING	Wall	20	5	0	Steel
+THING	Wall	14	6	0	Steel
+THING	Wall	15	6	0	Steel
+THING	Wall	16	6	0	Steel
+THING	Wall	18	6	0	Steel
 THING	Wall	19	6	0	Steel
-THING	Wall	13	7	0	Steel
-THING	Wall	14	7	0	Steel
-THING	Wall	15	7	0	Steel
-THING	Wall	16	7	0	Steel
-THING	Wall	17	7	0	Steel
-THING	Wall	18	7	0	Steel
-THING	Wall	19	7	0	Steel
-THING	Door	16	1	0	WoodLog
-THING	Bedroll	14	2	0	Cloth
-THING	Shelf	15	2	0	WoodLog
-THING	TorchLamp	17	2	0	-
-THING	Wall	1	13	0	Steel
-THING	Wall	2	13	0	Steel
-THING	Wall	3	13	0	Steel
-THING	Wall	5	13	0	Steel
-THING	Wall	6	13	0	Steel
-THING	Wall	7	13	0	Steel
-THING	Wall	1	14	0	Steel
-THING	Wall	7	14	0	Steel
-THING	Wall	1	15	0	Steel
-THING	Wall	7	15	0	Steel
-THING	Wall	1	16	0	Steel
-THING	Wall	7	16	0	Steel
-THING	Wall	1	17	0	Steel
-THING	Wall	7	17	0	Steel
-THING	Wall	1	18	0	Steel
-THING	Wall	7	18	0	Steel
-THING	Wall	1	19	0	Steel
-THING	Wall	2	19	0	Steel
-THING	Wall	3	19	0	Steel
-THING	Wall	4	19	0	Steel
-THING	Wall	5	19	0	Steel
-THING	Wall	6	19	0	Steel
-THING	Wall	7	19	0	Steel
-THING	Door	4	13	0	WoodLog
-THING	Bedroll	2	14	0	Cloth
-THING	Shelf	3	14	0	WoodLog
-THING	TorchLamp	5	14	0	-
-THING	Wall	13	13	0	Steel
-THING	Wall	14	13	0	Steel
-THING	Wall	15	13	0	Steel
-THING	Wall	17	13	0	Steel
-THING	Wall	18	13	0	Steel
-THING	Wall	19	13	0	Steel
-THING	Wall	13	14	0	Steel
-THING	Wall	19	14	0	Steel
-THING	Wall	13	15	0	Steel
-THING	Wall	19	15	0	Steel
-THING	Wall	13	16	0	Steel
-THING	Wall	19	16	0	Steel
-THING	Wall	13	17	0	Steel
-THING	Wall	19	17	0	Steel
-THING	Wall	13	18	0	Steel
-THING	Wall	19	18	0	Steel
-THING	Wall	13	19	0	Steel
-THING	Wall	14	19	0	Steel
-THING	Wall	15	19	0	Steel
-THING	Wall	16	19	0	Steel
-THING	Wall	17	19	0	Steel
-THING	Wall	18	19	0	Steel
-THING	Wall	19	19	0	Steel
-THING	Door	16	13	0	WoodLog
-THING	Bedroll	14	14	0	Cloth
-THING	Shelf	15	14	0	WoodLog
-THING	TorchLamp	17	14	0	-
-THING	Campfire	10	1	0	-
-THING	Table1x2c	11	1	0	WoodLog
-THING	DiningChair	12	1	0	WoodLog
+THING	Wall	20	6	0	Steel
+THING	Door	17	6	0	Steel
+THING	Bedroll	16	5	3	Cloth
+THING	ShelfSmall	19	3	3	Steel
+THING	OuterRim_StorageCrate	15	1	0	-
+THING	OuterRim_StorageCrate	19	1	0	-
+THING	TorchLamp	19	5	0	-
+THING	TorchWallLamp	18	1	2	-
+THING	Campfire	12	11	0	-
+THING	Stool	11	12	1	Steel
+THING	Stool	12	9	0	Steel
+THING	Stool	13	12	3	Steel
+THING	Table1x2c	9	13	0	Steel
+THING	DiningChair	8	14	1	Steel
+THING	DiningChair	10	14	3	Steel
+THING	AncientBarrel	8	8	0	-
+THING	OuterRim_StorageCrate	2	9	0	-
+THING	OuterRim_StorageCrate	5	9	0	-
+THING	TorchLamp	13	14	0	-
+THING	Fence	9	8	0	Steel
+THING	Fence	10	8	0	Steel
+THING	Fence	11	8	0	Steel
+ROOF	0	1	RoofConstructed
+ROOF	0	2	RoofConstructed
+ROOF	0	3	RoofConstructed
+ROOF	0	4	RoofConstructed
+ROOF	0	5	RoofConstructed
+ROOF	0	6	RoofConstructed
+ROOF	0	7	RoofConstructed
 ROOF	1	1	RoofConstructed
 ROOF	1	2	RoofConstructed
 ROOF	1	3	RoofConstructed
@@ -602,13 +626,13 @@ ROOF	1	4	RoofConstructed
 ROOF	1	5	RoofConstructed
 ROOF	1	6	RoofConstructed
 ROOF	1	7	RoofConstructed
-ROOF	1	13	RoofConstructed
 ROOF	1	14	RoofConstructed
 ROOF	1	15	RoofConstructed
 ROOF	1	16	RoofConstructed
 ROOF	1	17	RoofConstructed
 ROOF	1	18	RoofConstructed
 ROOF	1	19	RoofConstructed
+ROOF	1	20	RoofConstructed
 ROOF	2	1	RoofConstructed
 ROOF	2	2	RoofConstructed
 ROOF	2	3	RoofConstructed
@@ -616,13 +640,13 @@ ROOF	2	4	RoofConstructed
 ROOF	2	5	RoofConstructed
 ROOF	2	6	RoofConstructed
 ROOF	2	7	RoofConstructed
-ROOF	2	13	RoofConstructed
 ROOF	2	14	RoofConstructed
 ROOF	2	15	RoofConstructed
 ROOF	2	16	RoofConstructed
 ROOF	2	17	RoofConstructed
 ROOF	2	18	RoofConstructed
 ROOF	2	19	RoofConstructed
+ROOF	2	20	RoofConstructed
 ROOF	3	1	RoofConstructed
 ROOF	3	2	RoofConstructed
 ROOF	3	3	RoofConstructed
@@ -630,13 +654,13 @@ ROOF	3	4	RoofConstructed
 ROOF	3	5	RoofConstructed
 ROOF	3	6	RoofConstructed
 ROOF	3	7	RoofConstructed
-ROOF	3	13	RoofConstructed
 ROOF	3	14	RoofConstructed
 ROOF	3	15	RoofConstructed
 ROOF	3	16	RoofConstructed
 ROOF	3	17	RoofConstructed
 ROOF	3	18	RoofConstructed
 ROOF	3	19	RoofConstructed
+ROOF	3	20	RoofConstructed
 ROOF	4	1	RoofConstructed
 ROOF	4	2	RoofConstructed
 ROOF	4	3	RoofConstructed
@@ -644,13 +668,13 @@ ROOF	4	4	RoofConstructed
 ROOF	4	5	RoofConstructed
 ROOF	4	6	RoofConstructed
 ROOF	4	7	RoofConstructed
-ROOF	4	13	RoofConstructed
 ROOF	4	14	RoofConstructed
 ROOF	4	15	RoofConstructed
 ROOF	4	16	RoofConstructed
 ROOF	4	17	RoofConstructed
 ROOF	4	18	RoofConstructed
 ROOF	4	19	RoofConstructed
+ROOF	4	20	RoofConstructed
 ROOF	5	1	RoofConstructed
 ROOF	5	2	RoofConstructed
 ROOF	5	3	RoofConstructed
@@ -658,13 +682,13 @@ ROOF	5	4	RoofConstructed
 ROOF	5	5	RoofConstructed
 ROOF	5	6	RoofConstructed
 ROOF	5	7	RoofConstructed
-ROOF	5	13	RoofConstructed
 ROOF	5	14	RoofConstructed
 ROOF	5	15	RoofConstructed
 ROOF	5	16	RoofConstructed
 ROOF	5	17	RoofConstructed
 ROOF	5	18	RoofConstructed
 ROOF	5	19	RoofConstructed
+ROOF	5	20	RoofConstructed
 ROOF	6	1	RoofConstructed
 ROOF	6	2	RoofConstructed
 ROOF	6	3	RoofConstructed
@@ -672,122 +696,82 @@ ROOF	6	4	RoofConstructed
 ROOF	6	5	RoofConstructed
 ROOF	6	6	RoofConstructed
 ROOF	6	7	RoofConstructed
-ROOF	6	13	RoofConstructed
-ROOF	6	14	RoofConstructed
-ROOF	6	15	RoofConstructed
-ROOF	6	16	RoofConstructed
-ROOF	6	17	RoofConstructed
-ROOF	6	18	RoofConstructed
-ROOF	6	19	RoofConstructed
-ROOF	7	1	RoofConstructed
-ROOF	7	2	RoofConstructed
-ROOF	7	3	RoofConstructed
-ROOF	7	4	RoofConstructed
-ROOF	7	5	RoofConstructed
-ROOF	7	6	RoofConstructed
-ROOF	7	7	RoofConstructed
-ROOF	7	13	RoofConstructed
-ROOF	7	14	RoofConstructed
-ROOF	7	15	RoofConstructed
-ROOF	7	16	RoofConstructed
-ROOF	7	17	RoofConstructed
-ROOF	7	18	RoofConstructed
-ROOF	7	19	RoofConstructed
-ROOF	13	1	RoofConstructed
-ROOF	13	2	RoofConstructed
-ROOF	13	3	RoofConstructed
-ROOF	13	4	RoofConstructed
-ROOF	13	5	RoofConstructed
-ROOF	13	6	RoofConstructed
-ROOF	13	7	RoofConstructed
-ROOF	13	13	RoofConstructed
-ROOF	13	14	RoofConstructed
-ROOF	13	15	RoofConstructed
-ROOF	13	16	RoofConstructed
-ROOF	13	17	RoofConstructed
-ROOF	13	18	RoofConstructed
-ROOF	13	19	RoofConstructed
+ROOF	14	0	RoofConstructed
 ROOF	14	1	RoofConstructed
 ROOF	14	2	RoofConstructed
 ROOF	14	3	RoofConstructed
 ROOF	14	4	RoofConstructed
 ROOF	14	5	RoofConstructed
 ROOF	14	6	RoofConstructed
-ROOF	14	7	RoofConstructed
-ROOF	14	13	RoofConstructed
-ROOF	14	14	RoofConstructed
-ROOF	14	15	RoofConstructed
-ROOF	14	16	RoofConstructed
-ROOF	14	17	RoofConstructed
-ROOF	14	18	RoofConstructed
-ROOF	14	19	RoofConstructed
+ROOF	15	0	RoofConstructed
 ROOF	15	1	RoofConstructed
 ROOF	15	2	RoofConstructed
 ROOF	15	3	RoofConstructed
 ROOF	15	4	RoofConstructed
 ROOF	15	5	RoofConstructed
 ROOF	15	6	RoofConstructed
-ROOF	15	7	RoofConstructed
-ROOF	15	13	RoofConstructed
-ROOF	15	14	RoofConstructed
-ROOF	15	15	RoofConstructed
 ROOF	15	16	RoofConstructed
 ROOF	15	17	RoofConstructed
 ROOF	15	18	RoofConstructed
 ROOF	15	19	RoofConstructed
+ROOF	15	20	RoofConstructed
+ROOF	16	0	RoofConstructed
 ROOF	16	1	RoofConstructed
 ROOF	16	2	RoofConstructed
 ROOF	16	3	RoofConstructed
 ROOF	16	4	RoofConstructed
 ROOF	16	5	RoofConstructed
 ROOF	16	6	RoofConstructed
-ROOF	16	7	RoofConstructed
-ROOF	16	13	RoofConstructed
-ROOF	16	14	RoofConstructed
-ROOF	16	15	RoofConstructed
 ROOF	16	16	RoofConstructed
 ROOF	16	17	RoofConstructed
 ROOF	16	18	RoofConstructed
 ROOF	16	19	RoofConstructed
+ROOF	16	20	RoofConstructed
+ROOF	17	0	RoofConstructed
 ROOF	17	1	RoofConstructed
 ROOF	17	2	RoofConstructed
 ROOF	17	3	RoofConstructed
 ROOF	17	4	RoofConstructed
 ROOF	17	5	RoofConstructed
 ROOF	17	6	RoofConstructed
-ROOF	17	7	RoofConstructed
-ROOF	17	13	RoofConstructed
-ROOF	17	14	RoofConstructed
-ROOF	17	15	RoofConstructed
 ROOF	17	16	RoofConstructed
 ROOF	17	17	RoofConstructed
 ROOF	17	18	RoofConstructed
 ROOF	17	19	RoofConstructed
+ROOF	17	20	RoofConstructed
+ROOF	18	0	RoofConstructed
 ROOF	18	1	RoofConstructed
 ROOF	18	2	RoofConstructed
 ROOF	18	3	RoofConstructed
 ROOF	18	4	RoofConstructed
 ROOF	18	5	RoofConstructed
 ROOF	18	6	RoofConstructed
-ROOF	18	7	RoofConstructed
-ROOF	18	13	RoofConstructed
-ROOF	18	14	RoofConstructed
-ROOF	18	15	RoofConstructed
 ROOF	18	16	RoofConstructed
 ROOF	18	17	RoofConstructed
 ROOF	18	18	RoofConstructed
 ROOF	18	19	RoofConstructed
+ROOF	18	20	RoofConstructed
+ROOF	19	0	RoofConstructed
 ROOF	19	1	RoofConstructed
 ROOF	19	2	RoofConstructed
 ROOF	19	3	RoofConstructed
 ROOF	19	4	RoofConstructed
 ROOF	19	5	RoofConstructed
 ROOF	19	6	RoofConstructed
-ROOF	19	7	RoofConstructed
-ROOF	19	13	RoofConstructed
-ROOF	19	14	RoofConstructed
-ROOF	19	15	RoofConstructed
 ROOF	19	16	RoofConstructed
 ROOF	19	17	RoofConstructed
 ROOF	19	18	RoofConstructed
 ROOF	19	19	RoofConstructed
+ROOF	19	20	RoofConstructed
+ROOF	20	0	RoofConstructed
+ROOF	20	1	RoofConstructed
+ROOF	20	2	RoofConstructed
+ROOF	20	3	RoofConstructed
+ROOF	20	4	RoofConstructed
+ROOF	20	5	RoofConstructed
+ROOF	20	6	RoofConstructed
+ROOF	20	16	RoofConstructed
+ROOF	20	17	RoofConstructed
+ROOF	20	18	RoofConstructed
+ROOF	20	19	RoofConstructed
+ROOF	20	20	RoofConstructed

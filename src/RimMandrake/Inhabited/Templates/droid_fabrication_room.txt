@@ -1,0 +1,672 @@
+# rimplace flat plan v1
+# template  droid_fabrication_room (sha 044151958f342907)
+# min_rect  16x12   baked at 20x16
+FOOTPRINT	0	0	20	16
+TERRAIN	1	1	OuterRim_VentedFloor_Steel
+TERRAIN	1	2	OuterRim_VentedFloor_Steel
+TERRAIN	1	3	OuterRim_VentedFloor_Steel
+TERRAIN	1	4	OuterRim_VentedFloor_Steel
+TERRAIN	1	5	OuterRim_VentedFloor_Steel
+TERRAIN	1	6	OuterRim_VentedFloor_Steel
+TERRAIN	1	7	OuterRim_VentedFloor_Steel
+TERRAIN	1	8	OuterRim_VentedFloor_Steel
+TERRAIN	1	9	OuterRim_VentedFloor_Steel
+TERRAIN	1	10	OuterRim_VentedFloor_Steel
+TERRAIN	1	11	OuterRim_VentedFloor_Steel
+TERRAIN	1	12	OuterRim_VentedFloor_Steel
+TERRAIN	1	13	OuterRim_VentedFloor_Steel
+TERRAIN	1	14	OuterRim_VentedFloor_Steel
+TERRAIN	2	1	OuterRim_VentedFloor_Steel
+TERRAIN	2	2	OuterRim_VentedFloor_Steel
+TERRAIN	2	3	OuterRim_VentedFloor_Steel
+TERRAIN	2	4	OuterRim_VentedFloor_Steel
+TERRAIN	2	5	OuterRim_VentedFloor_Steel
+TERRAIN	2	6	OuterRim_VentedFloor_Steel
+TERRAIN	2	7	OuterRim_VentedFloor_Steel
+TERRAIN	2	8	OuterRim_VentedFloor_Steel
+TERRAIN	2	9	OuterRim_VentedFloor_Steel
+TERRAIN	2	10	OuterRim_VentedFloor_Steel
+TERRAIN	2	11	OuterRim_VentedFloor_Steel
+TERRAIN	2	12	OuterRim_VentedFloor_Steel
+TERRAIN	2	13	OuterRim_VentedFloor_Steel
+TERRAIN	2	14	OuterRim_VentedFloor_Steel
+TERRAIN	3	1	OuterRim_VentedFloor_Steel
+TERRAIN	3	2	OuterRim_VentedFloor_Steel
+TERRAIN	3	3	OuterRim_VentedFloor_Steel
+TERRAIN	3	4	OuterRim_VentedFloor_Steel
+TERRAIN	3	5	OuterRim_VentedFloor_Steel
+TERRAIN	3	6	OuterRim_VentedFloor_Steel
+TERRAIN	3	7	OuterRim_VentedFloor_Steel
+TERRAIN	3	8	OuterRim_VentedFloor_Steel
+TERRAIN	3	9	OuterRim_VentedFloor_Steel
+TERRAIN	3	10	OuterRim_VentedFloor_Steel
+TERRAIN	3	11	OuterRim_VentedFloor_Steel
+TERRAIN	3	12	OuterRim_VentedFloor_Steel
+TERRAIN	3	13	OuterRim_VentedFloor_Steel
+TERRAIN	3	14	OuterRim_VentedFloor_Steel
+TERRAIN	4	1	OuterRim_VentedFloor_Steel
+TERRAIN	4	2	OuterRim_VentedFloor_Steel
+TERRAIN	4	3	OuterRim_VentedFloor_Steel
+TERRAIN	4	4	OuterRim_VentedFloor_Steel
+TERRAIN	4	5	OuterRim_VentedFloor_Steel
+TERRAIN	4	6	OuterRim_VentedFloor_Steel
+TERRAIN	4	7	OuterRim_VentedFloor_Steel
+TERRAIN	4	8	OuterRim_VentedFloor_Steel
+TERRAIN	4	9	OuterRim_VentedFloor_Steel
+TERRAIN	4	10	OuterRim_VentedFloor_Steel
+TERRAIN	4	11	OuterRim_VentedFloor_Steel
+TERRAIN	4	12	OuterRim_VentedFloor_Steel
+TERRAIN	4	13	OuterRim_VentedFloor_Steel
+TERRAIN	4	14	OuterRim_VentedFloor_Steel
+TERRAIN	5	1	OuterRim_VentedFloor_Steel
+TERRAIN	5	2	OuterRim_VentedFloor_Steel
+TERRAIN	5	3	OuterRim_VentedFloor_Steel
+TERRAIN	5	4	OuterRim_VentedFloor_Steel
+TERRAIN	5	5	OuterRim_VentedFloor_Steel
+TERRAIN	5	6	OuterRim_VentedFloor_Steel
+TERRAIN	5	7	OuterRim_VentedFloor_Steel
+TERRAIN	5	8	OuterRim_VentedFloor_Steel
+TERRAIN	5	9	OuterRim_VentedFloor_Steel
+TERRAIN	5	10	OuterRim_VentedFloor_Steel
+TERRAIN	5	11	OuterRim_VentedFloor_Steel
+TERRAIN	5	12	OuterRim_VentedFloor_Steel
+TERRAIN	5	13	OuterRim_VentedFloor_Steel
+TERRAIN	5	14	OuterRim_VentedFloor_Steel
+TERRAIN	6	1	OuterRim_VentedFloor_Steel
+TERRAIN	6	2	OuterRim_VentedFloor_Steel
+TERRAIN	6	3	OuterRim_VentedFloor_Steel
+TERRAIN	6	4	OuterRim_VentedFloor_Steel
+TERRAIN	6	5	OuterRim_VentedFloor_Steel
+TERRAIN	6	6	OuterRim_VentedFloor_Steel
+TERRAIN	6	7	OuterRim_VentedFloor_Steel
+TERRAIN	6	8	OuterRim_VentedFloor_Steel
+TERRAIN	6	9	OuterRim_VentedFloor_Steel
+TERRAIN	6	10	OuterRim_VentedFloor_Steel
+TERRAIN	6	11	OuterRim_VentedFloor_Steel
+TERRAIN	6	12	OuterRim_VentedFloor_Steel
+TERRAIN	6	13	OuterRim_VentedFloor_Steel
+TERRAIN	6	14	OuterRim_VentedFloor_Steel
+TERRAIN	7	1	OuterRim_VentedFloor_Steel
+TERRAIN	7	2	OuterRim_VentedFloor_Steel
+TERRAIN	7	3	OuterRim_VentedFloor_Steel
+TERRAIN	7	4	OuterRim_VentedFloor_Steel
+TERRAIN	7	5	OuterRim_VentedFloor_Steel
+TERRAIN	7	6	OuterRim_VentedFloor_Steel
+TERRAIN	7	7	OuterRim_VentedFloor_Steel
+TERRAIN	7	8	OuterRim_VentedFloor_Steel
+TERRAIN	7	9	OuterRim_VentedFloor_Steel
+TERRAIN	7	10	OuterRim_VentedFloor_Steel
+TERRAIN	7	11	OuterRim_VentedFloor_Steel
+TERRAIN	7	12	OuterRim_VentedFloor_Steel
+TERRAIN	7	13	OuterRim_VentedFloor_Steel
+TERRAIN	7	14	OuterRim_VentedFloor_Steel
+TERRAIN	8	1	OuterRim_VentedFloor_Steel
+TERRAIN	8	2	OuterRim_VentedFloor_Steel
+TERRAIN	8	3	OuterRim_VentedFloor_Steel
+TERRAIN	8	4	OuterRim_VentedFloor_Steel
+TERRAIN	8	5	OuterRim_VentedFloor_Steel
+TERRAIN	8	6	OuterRim_VentedFloor_Steel
+TERRAIN	8	7	OuterRim_VentedFloor_Steel
+TERRAIN	8	8	OuterRim_VentedFloor_Steel
+TERRAIN	8	9	OuterRim_VentedFloor_Steel
+TERRAIN	8	10	OuterRim_VentedFloor_Steel
+TERRAIN	8	11	OuterRim_VentedFloor_Steel
+TERRAIN	8	12	OuterRim_VentedFloor_Steel
+TERRAIN	8	13	OuterRim_VentedFloor_Steel
+TERRAIN	8	14	OuterRim_VentedFloor_Steel
+TERRAIN	9	1	OuterRim_VentedFloor_Steel
+TERRAIN	9	2	OuterRim_VentedFloor_Steel
+TERRAIN	9	3	OuterRim_VentedFloor_Steel
+TERRAIN	9	4	OuterRim_VentedFloor_Steel
+TERRAIN	9	5	OuterRim_VentedFloor_Steel
+TERRAIN	9	6	OuterRim_VentedFloor_Steel
+TERRAIN	9	7	OuterRim_VentedFloor_Steel
+TERRAIN	9	8	OuterRim_VentedFloor_Steel
+TERRAIN	9	9	OuterRim_VentedFloor_Steel
+TERRAIN	9	10	OuterRim_VentedFloor_Steel
+TERRAIN	9	11	OuterRim_VentedFloor_Steel
+TERRAIN	9	12	OuterRim_VentedFloor_Steel
+TERRAIN	9	13	OuterRim_VentedFloor_Steel
+TERRAIN	9	14	OuterRim_VentedFloor_Steel
+TERRAIN	10	1	OuterRim_VentedFloor_Steel
+TERRAIN	10	2	OuterRim_VentedFloor_Steel
+TERRAIN	10	3	OuterRim_VentedFloor_Steel
+TERRAIN	10	4	OuterRim_VentedFloor_Steel
+TERRAIN	10	5	OuterRim_VentedFloor_Steel
+TERRAIN	10	6	OuterRim_VentedFloor_Steel
+TERRAIN	10	7	OuterRim_VentedFloor_Steel
+TERRAIN	10	8	OuterRim_VentedFloor_Steel
+TERRAIN	10	9	OuterRim_VentedFloor_Steel
+TERRAIN	10	10	OuterRim_VentedFloor_Steel
+TERRAIN	10	11	OuterRim_VentedFloor_Steel
+TERRAIN	10	12	OuterRim_VentedFloor_Steel
+TERRAIN	10	13	OuterRim_VentedFloor_Steel
+TERRAIN	10	14	OuterRim_VentedFloor_Steel
+TERRAIN	11	1	OuterRim_VentedFloor_Steel
+TERRAIN	11	2	OuterRim_VentedFloor_Steel
+TERRAIN	11	3	OuterRim_VentedFloor_Steel
+TERRAIN	11	4	OuterRim_VentedFloor_Steel
+TERRAIN	11	5	OuterRim_VentedFloor_Steel
+TERRAIN	11	6	OuterRim_VentedFloor_Steel
+TERRAIN	11	7	OuterRim_VentedFloor_Steel
+TERRAIN	11	8	OuterRim_VentedFloor_Steel
+TERRAIN	11	9	OuterRim_VentedFloor_Steel
+TERRAIN	11	10	OuterRim_VentedFloor_Steel
+TERRAIN	11	11	OuterRim_VentedFloor_Steel
+TERRAIN	11	12	OuterRim_VentedFloor_Steel
+TERRAIN	11	13	OuterRim_VentedFloor_Steel
+TERRAIN	11	14	OuterRim_VentedFloor_Steel
+TERRAIN	12	1	OuterRim_VentedFloor_Steel
+TERRAIN	12	2	OuterRim_VentedFloor_Steel
+TERRAIN	12	3	OuterRim_VentedFloor_Steel
+TERRAIN	12	4	OuterRim_VentedFloor_Steel
+TERRAIN	12	5	OuterRim_VentedFloor_Steel
+TERRAIN	12	6	OuterRim_VentedFloor_Steel
+TERRAIN	12	7	OuterRim_VentedFloor_Steel
+TERRAIN	12	8	OuterRim_VentedFloor_Steel
+TERRAIN	12	9	OuterRim_VentedFloor_Steel
+TERRAIN	12	10	OuterRim_VentedFloor_Steel
+TERRAIN	12	11	OuterRim_VentedFloor_Steel
+TERRAIN	12	12	OuterRim_VentedFloor_Steel
+TERRAIN	12	13	OuterRim_VentedFloor_Steel
+TERRAIN	12	14	OuterRim_VentedFloor_Steel
+TERRAIN	14	1	guy762_FloorTiles_XGrate_grey
+TERRAIN	14	2	guy762_FloorTiles_XGrate_grey
+TERRAIN	14	3	guy762_FloorTiles_XGrate_grey
+TERRAIN	14	4	guy762_FloorTiles_XGrate_grey
+TERRAIN	14	5	guy762_FloorTiles_XGrate_grey
+TERRAIN	14	6	guy762_FloorTiles_XGrate_grey
+TERRAIN	14	7	guy762_FloorTiles_XGrate_grey
+TERRAIN	14	8	guy762_FloorTiles_XGrate_grey
+TERRAIN	14	9	guy762_FloorTiles_XGrate_grey
+TERRAIN	14	10	guy762_FloorTiles_XGrate_grey
+TERRAIN	14	11	guy762_FloorTiles_XGrate_grey
+TERRAIN	14	12	guy762_FloorTiles_XGrate_grey
+TERRAIN	14	13	guy762_FloorTiles_XGrate_grey
+TERRAIN	14	14	guy762_FloorTiles_XGrate_grey
+TERRAIN	15	1	guy762_FloorTiles_XGrate_grey
+TERRAIN	15	2	guy762_FloorTiles_XGrate_grey
+TERRAIN	15	3	guy762_FloorTiles_XGrate_grey
+TERRAIN	15	4	guy762_FloorTiles_XGrate_grey
+TERRAIN	15	5	guy762_FloorTiles_XGrate_grey
+TERRAIN	15	6	guy762_FloorTiles_XGrate_grey
+TERRAIN	15	7	guy762_FloorTiles_XGrate_grey
+TERRAIN	15	8	guy762_FloorTiles_XGrate_grey
+TERRAIN	15	9	guy762_FloorTiles_XGrate_grey
+TERRAIN	15	10	guy762_FloorTiles_XGrate_grey
+TERRAIN	15	11	guy762_FloorTiles_XGrate_grey
+TERRAIN	15	12	guy762_FloorTiles_XGrate_grey
+TERRAIN	15	13	guy762_FloorTiles_XGrate_grey
+TERRAIN	15	14	guy762_FloorTiles_XGrate_grey
+TERRAIN	16	1	guy762_FloorTiles_XGrate_grey
+TERRAIN	16	2	guy762_FloorTiles_XGrate_grey
+TERRAIN	16	3	guy762_FloorTiles_XGrate_grey
+TERRAIN	16	4	guy762_FloorTiles_XGrate_grey
+TERRAIN	16	5	guy762_FloorTiles_XGrate_grey
+TERRAIN	16	6	guy762_FloorTiles_XGrate_grey
+TERRAIN	16	7	guy762_FloorTiles_XGrate_grey
+TERRAIN	16	8	guy762_FloorTiles_XGrate_grey
+TERRAIN	16	9	guy762_FloorTiles_XGrate_grey
+TERRAIN	16	10	guy762_FloorTiles_XGrate_grey
+TERRAIN	16	11	guy762_FloorTiles_XGrate_grey
+TERRAIN	16	12	guy762_FloorTiles_XGrate_grey
+TERRAIN	16	13	guy762_FloorTiles_XGrate_grey
+TERRAIN	16	14	guy762_FloorTiles_XGrate_grey
+TERRAIN	17	1	guy762_FloorTiles_XGrate_grey
+TERRAIN	17	2	guy762_FloorTiles_XGrate_grey
+TERRAIN	17	3	guy762_FloorTiles_XGrate_grey
+TERRAIN	17	4	guy762_FloorTiles_XGrate_grey
+TERRAIN	17	5	guy762_FloorTiles_XGrate_grey
+TERRAIN	17	6	guy762_FloorTiles_XGrate_grey
+TERRAIN	17	7	guy762_FloorTiles_XGrate_grey
+TERRAIN	17	8	guy762_FloorTiles_XGrate_grey
+TERRAIN	17	9	guy762_FloorTiles_XGrate_grey
+TERRAIN	17	10	guy762_FloorTiles_XGrate_grey
+TERRAIN	17	11	guy762_FloorTiles_XGrate_grey
+TERRAIN	17	12	guy762_FloorTiles_XGrate_grey
+TERRAIN	17	13	guy762_FloorTiles_XGrate_grey
+TERRAIN	17	14	guy762_FloorTiles_XGrate_grey
+TERRAIN	18	1	guy762_FloorTiles_XGrate_grey
+TERRAIN	18	2	guy762_FloorTiles_XGrate_grey
+TERRAIN	18	3	guy762_FloorTiles_XGrate_grey
+TERRAIN	18	4	guy762_FloorTiles_XGrate_grey
+TERRAIN	18	5	guy762_FloorTiles_XGrate_grey
+TERRAIN	18	6	guy762_FloorTiles_XGrate_grey
+TERRAIN	18	7	guy762_FloorTiles_XGrate_grey
+TERRAIN	18	8	guy762_FloorTiles_XGrate_grey
+TERRAIN	18	9	guy762_FloorTiles_XGrate_grey
+TERRAIN	18	10	guy762_FloorTiles_XGrate_grey
+TERRAIN	18	11	guy762_FloorTiles_XGrate_grey
+TERRAIN	18	12	guy762_FloorTiles_XGrate_grey
+TERRAIN	18	13	guy762_FloorTiles_XGrate_grey
+TERRAIN	18	14	guy762_FloorTiles_XGrate_grey
+THING	Wall	0	0	0	Steel
+THING	Wall	1	0	0	Steel
+THING	Wall	2	0	0	Steel
+THING	Wall	3	0	0	Steel
+THING	Wall	4	0	0	Steel
+THING	Wall	6	0	0	Steel
+THING	Wall	7	0	0	Steel
+THING	Wall	8	0	0	Steel
+THING	Wall	9	0	0	Steel
+THING	Wall	10	0	0	Steel
+THING	Wall	11	0	0	Steel
+THING	Wall	12	0	0	Steel
+THING	Wall	13	0	0	Steel
+THING	Wall	0	1	0	Steel
+THING	Wall	13	1	0	Steel
+THING	Wall	0	2	0	Steel
+THING	Wall	13	2	0	Steel
+THING	Wall	0	3	0	Steel
+THING	Wall	13	3	0	Steel
+THING	Wall	0	4	0	Steel
+THING	Wall	13	4	0	Steel
+THING	Wall	0	5	0	Steel
+THING	Wall	13	5	0	Steel
+THING	Wall	0	6	0	Steel
+THING	Wall	13	6	0	Steel
+THING	Wall	0	7	0	Steel
+THING	Wall	13	7	0	Steel
+THING	Wall	0	8	0	Steel
+THING	Wall	13	8	0	Steel
+THING	Wall	0	9	0	Steel
+THING	Wall	13	9	0	Steel
+THING	Wall	0	10	0	Steel
+THING	Wall	13	10	0	Steel
+THING	Wall	0	11	0	Steel
+THING	Wall	0	12	0	Steel
+THING	Wall	13	12	0	Steel
+THING	Wall	0	13	0	Steel
+THING	Wall	13	13	0	Steel
+THING	Wall	0	14	0	Steel
+THING	Wall	13	14	0	Steel
+THING	Wall	0	15	0	Steel
+THING	Wall	1	15	0	Steel
+THING	Wall	2	15	0	Steel
+THING	Wall	3	15	0	Steel
+THING	Wall	4	15	0	Steel
+THING	Wall	5	15	0	Steel
+THING	Wall	6	15	0	Steel
+THING	Wall	7	15	0	Steel
+THING	Wall	8	15	0	Steel
+THING	Wall	9	15	0	Steel
+THING	Wall	10	15	0	Steel
+THING	Wall	11	15	0	Steel
+THING	Wall	12	15	0	Steel
+THING	Wall	13	15	0	Steel
+THING	Autodoor	5	0	0	Steel
+THING	Wall	14	0	0	Steel
+THING	Wall	15	0	0	Steel
+THING	Wall	16	0	0	Steel
+THING	Wall	17	0	0	Steel
+THING	Wall	18	0	0	Steel
+THING	Wall	19	0	0	Steel
+THING	Wall	19	1	0	Steel
+THING	Wall	19	2	0	Steel
+THING	Wall	19	3	0	Steel
+THING	Wall	19	4	0	Steel
+THING	Wall	19	5	0	Steel
+THING	Wall	19	6	0	Steel
+THING	Wall	19	7	0	Steel
+THING	Wall	19	8	0	Steel
+THING	Wall	19	9	0	Steel
+THING	Wall	19	10	0	Steel
+THING	Wall	19	11	0	Steel
+THING	Wall	19	12	0	Steel
+THING	Wall	19	13	0	Steel
+THING	Wall	19	14	0	Steel
+THING	Wall	14	15	0	Steel
+THING	Wall	15	15	0	Steel
+THING	Wall	16	15	0	Steel
+THING	Wall	17	15	0	Steel
+THING	Wall	18	15	0	Steel
+THING	Wall	19	15	0	Steel
+THING	Autodoor	13	11	0	Steel
+THING	OuterRim_DroidFactory	10	14	2	-
+THING	TableMachining	12	5	3	Steel
+THING	TableMachining	12	9	3	Steel
+THING	Shelf	12	12	3	Steel
+THING	guy762_decor_StandingTerminalA	12	3	3	-
+THING	guy762_decor_BigRebelScreen	7	14	2	-
+THING	ComponentIndustrial	11	3	0	-
+THING	ComponentIndustrial	6	9	0	-
+THING	ChunkSlagSteel	11	12	0	-
+THING	ChunkSlagSteel	6	2	0	-
+THING	ChunkSlagSteel	8	11	0	-
+THING	OuterRim_StorageCrate	12	1	0	-
+THING	OuterRim_StorageCrate	1	1	0	-
+THING	StandingLamp	12	14	0	-
+THING	StandingLamp	1	14	0	-
+THING	WallLamp	1	1	3	-
+THING	WallLamp	1	9	3	-
+THING	OuterRim_AurebeshWordWorkshop	7	1	0	-
+THING	Shelf	17	14	2	Steel
+THING	OuterRim_StorageCrate	18	1	3	-
+THING	OuterRim_StorageCrate	18	12	3	-
+THING	OuterRim_StorageCrateWide	18	10	3	-
+THING	Steel	15	1	0	-
+THING	ComponentIndustrial	15	8	0	-
+THING	ComponentIndustrial	17	9	0	-
+THING	StandingLamp	14	1	0	-
+THING	WallLamp	14	14	3	-
+THING	OuterRim_AurebeshWordStorage	15	7	1	-
+ROOF	0	0	RoofConstructed
+ROOF	0	1	RoofConstructed
+ROOF	0	2	RoofConstructed
+ROOF	0	3	RoofConstructed
+ROOF	0	4	RoofConstructed
+ROOF	0	5	RoofConstructed
+ROOF	0	6	RoofConstructed
+ROOF	0	7	RoofConstructed
+ROOF	0	8	RoofConstructed
+ROOF	0	9	RoofConstructed
+ROOF	0	10	RoofConstructed
+ROOF	0	11	RoofConstructed
+ROOF	0	12	RoofConstructed
+ROOF	0	13	RoofConstructed
+ROOF	0	14	RoofConstructed
+ROOF	0	15	RoofConstructed
+ROOF	1	0	RoofConstructed
+ROOF	1	1	RoofConstructed
+ROOF	1	2	RoofConstructed
+ROOF	1	3	RoofConstructed
+ROOF	1	4	RoofConstructed
+ROOF	1	5	RoofConstructed
+ROOF	1	6	RoofConstructed
+ROOF	1	7	RoofConstructed
+ROOF	1	8	RoofConstructed
+ROOF	1	9	RoofConstructed
+ROOF	1	10	RoofConstructed
+ROOF	1	11	RoofConstructed
+ROOF	1	12	RoofConstructed
+ROOF	1	13	RoofConstructed
+ROOF	1	14	RoofConstructed
+ROOF	1	15	RoofConstructed
+ROOF	2	0	RoofConstructed
+ROOF	2	1	RoofConstructed
+ROOF	2	2	RoofConstructed
+ROOF	2	3	RoofConstructed
+ROOF	2	4	RoofConstructed
+ROOF	2	5	RoofConstructed
+ROOF	2	6	RoofConstructed
+ROOF	2	7	RoofConstructed
+ROOF	2	8	RoofConstructed
+ROOF	2	9	RoofConstructed
+ROOF	2	10	RoofConstructed
+ROOF	2	11	RoofConstructed
+ROOF	2	12	RoofConstructed
+ROOF	2	13	RoofConstructed
+ROOF	2	14	RoofConstructed
+ROOF	2	15	RoofConstructed
+ROOF	3	0	RoofConstructed
+ROOF	3	1	RoofConstructed
+ROOF	3	2	RoofConstructed
+ROOF	3	3	RoofConstructed
+ROOF	3	4	RoofConstructed
+ROOF	3	5	RoofConstructed
+ROOF	3	6	RoofConstructed
+ROOF	3	7	RoofConstructed
+ROOF	3	8	RoofConstructed
+ROOF	3	9	RoofConstructed
+ROOF	3	10	RoofConstructed
+ROOF	3	11	RoofConstructed
+ROOF	3	12	RoofConstructed
+ROOF	3	13	RoofConstructed
+ROOF	3	14	RoofConstructed
+ROOF	3	15	RoofConstructed
+ROOF	4	0	RoofConstructed
+ROOF	4	1	RoofConstructed
+ROOF	4	2	RoofConstructed
+ROOF	4	3	RoofConstructed
+ROOF	4	4	RoofConstructed
+ROOF	4	5	RoofConstructed
+ROOF	4	6	RoofConstructed
+ROOF	4	7	RoofConstructed
+ROOF	4	8	RoofConstructed
+ROOF	4	9	RoofConstructed
+ROOF	4	10	RoofConstructed
+ROOF	4	11	RoofConstructed
+ROOF	4	12	RoofConstructed
+ROOF	4	13	RoofConstructed
+ROOF	4	14	RoofConstructed
+ROOF	4	15	RoofConstructed
+ROOF	5	0	RoofConstructed
+ROOF	5	1	RoofConstructed
+ROOF	5	2	RoofConstructed
+ROOF	5	3	RoofConstructed
+ROOF	5	4	RoofConstructed
+ROOF	5	5	RoofConstructed
+ROOF	5	6	RoofConstructed
+ROOF	5	7	RoofConstructed
+ROOF	5	8	RoofConstructed
+ROOF	5	9	RoofConstructed
+ROOF	5	10	RoofConstructed
+ROOF	5	11	RoofConstructed
+ROOF	5	12	RoofConstructed
+ROOF	5	13	RoofConstructed
+ROOF	5	14	RoofConstructed
+ROOF	5	15	RoofConstructed
+ROOF	6	0	RoofConstructed
+ROOF	6	1	RoofConstructed
+ROOF	6	2	RoofConstructed
+ROOF	6	3	RoofConstructed
+ROOF	6	4	RoofConstructed
+ROOF	6	5	RoofConstructed
+ROOF	6	6	RoofConstructed
+ROOF	6	7	RoofConstructed
+ROOF	6	8	RoofConstructed
+ROOF	6	9	RoofConstructed
+ROOF	6	10	RoofConstructed
+ROOF	6	11	RoofConstructed
+ROOF	6	12	RoofConstructed
+ROOF	6	13	RoofConstructed
+ROOF	6	14	RoofConstructed
+ROOF	6	15	RoofConstructed
+ROOF	7	0	RoofConstructed
+ROOF	7	1	RoofConstructed
+ROOF	7	2	RoofConstructed
+ROOF	7	3	RoofConstructed
+ROOF	7	4	RoofConstructed
+ROOF	7	5	RoofConstructed
+ROOF	7	6	RoofConstructed
+ROOF	7	7	RoofConstructed
+ROOF	7	8	RoofConstructed
+ROOF	7	9	RoofConstructed
+ROOF	7	10	RoofConstructed
+ROOF	7	11	RoofConstructed
+ROOF	7	12	RoofConstructed
+ROOF	7	13	RoofConstructed
+ROOF	7	14	RoofConstructed
+ROOF	7	15	RoofConstructed
+ROOF	8	0	RoofConstructed
+ROOF	8	1	RoofConstructed
+ROOF	8	2	RoofConstructed
+ROOF	8	3	RoofConstructed
+ROOF	8	4	RoofConstructed
+ROOF	8	5	RoofConstructed
+ROOF	8	6	RoofConstructed
+ROOF	8	7	RoofConstructed
+ROOF	8	8	RoofConstructed
+ROOF	8	9	RoofConstructed
+ROOF	8	10	RoofConstructed
+ROOF	8	11	RoofConstructed
+ROOF	8	12	RoofConstructed
+ROOF	8	13	RoofConstructed
+ROOF	8	14	RoofConstructed
+ROOF	8	15	RoofConstructed
+ROOF	9	0	RoofConstructed
+ROOF	9	1	RoofConstructed
+ROOF	9	2	RoofConstructed
+ROOF	9	3	RoofConstructed
+ROOF	9	4	RoofConstructed
+ROOF	9	5	RoofConstructed
+ROOF	9	6	RoofConstructed
+ROOF	9	7	RoofConstructed
+ROOF	9	8	RoofConstructed
+ROOF	9	9	RoofConstructed
+ROOF	9	10	RoofConstructed
+ROOF	9	11	RoofConstructed
+ROOF	9	12	RoofConstructed
+ROOF	9	13	RoofConstructed
+ROOF	9	14	RoofConstructed
+ROOF	9	15	RoofConstructed
+ROOF	10	0	RoofConstructed
+ROOF	10	1	RoofConstructed
+ROOF	10	2	RoofConstructed
+ROOF	10	3	RoofConstructed
+ROOF	10	4	RoofConstructed
+ROOF	10	5	RoofConstructed
+ROOF	10	6	RoofConstructed
+ROOF	10	7	RoofConstructed
+ROOF	10	8	RoofConstructed
+ROOF	10	9	RoofConstructed
+ROOF	10	10	RoofConstructed
+ROOF	10	11	RoofConstructed
+ROOF	10	12	RoofConstructed
+ROOF	10	13	RoofConstructed
+ROOF	10	14	RoofConstructed
+ROOF	10	15	RoofConstructed
+ROOF	11	0	RoofConstructed
+ROOF	11	1	RoofConstructed
+ROOF	11	2	RoofConstructed
+ROOF	11	3	RoofConstructed
+ROOF	11	4	RoofConstructed
+ROOF	11	5	RoofConstructed
+ROOF	11	6	RoofConstructed
+ROOF	11	7	RoofConstructed
+ROOF	11	8	RoofConstructed
+ROOF	11	9	RoofConstructed
+ROOF	11	10	RoofConstructed
+ROOF	11	11	RoofConstructed
+ROOF	11	12	RoofConstructed
+ROOF	11	13	RoofConstructed
+ROOF	11	14	RoofConstructed
+ROOF	11	15	RoofConstructed
+ROOF	12	0	RoofConstructed
+ROOF	12	1	RoofConstructed
+ROOF	12	2	RoofConstructed
+ROOF	12	3	RoofConstructed
+ROOF	12	4	RoofConstructed
+ROOF	12	5	RoofConstructed
+ROOF	12	6	RoofConstructed
+ROOF	12	7	RoofConstructed
+ROOF	12	8	RoofConstructed
+ROOF	12	9	RoofConstructed
+ROOF	12	10	RoofConstructed
+ROOF	12	11	RoofConstructed
+ROOF	12	12	RoofConstructed
+ROOF	12	13	RoofConstructed
+ROOF	12	14	RoofConstructed
+ROOF	12	15	RoofConstructed
+ROOF	13	0	RoofConstructed
+ROOF	13	1	RoofConstructed
+ROOF	13	2	RoofConstructed
+ROOF	13	3	RoofConstructed
+ROOF	13	4	RoofConstructed
+ROOF	13	5	RoofConstructed
+ROOF	13	6	RoofConstructed
+ROOF	13	7	RoofConstructed
+ROOF	13	8	RoofConstructed
+ROOF	13	9	RoofConstructed
+ROOF	13	10	RoofConstructed
+ROOF	13	11	RoofConstructed
+ROOF	13	12	RoofConstructed
+ROOF	13	13	RoofConstructed
+ROOF	13	14	RoofConstructed
+ROOF	13	15	RoofConstructed
+ROOF	14	0	RoofConstructed
+ROOF	14	1	RoofConstructed
+ROOF	14	2	RoofConstructed
+ROOF	14	3	RoofConstructed
+ROOF	14	4	RoofConstructed
+ROOF	14	5	RoofConstructed
+ROOF	14	6	RoofConstructed
+ROOF	14	7	RoofConstructed
+ROOF	14	8	RoofConstructed
+ROOF	14	9	RoofConstructed
+ROOF	14	10	RoofConstructed
+ROOF	14	11	RoofConstructed
+ROOF	14	12	RoofConstructed
+ROOF	14	13	RoofConstructed
+ROOF	14	14	RoofConstructed
+ROOF	14	15	RoofConstructed
+ROOF	15	0	RoofConstructed
+ROOF	15	1	RoofConstructed
+ROOF	15	2	RoofConstructed
+ROOF	15	3	RoofConstructed
+ROOF	15	4	RoofConstructed
+ROOF	15	5	RoofConstructed
+ROOF	15	6	RoofConstructed
+ROOF	15	7	RoofConstructed
+ROOF	15	8	RoofConstructed
+ROOF	15	9	RoofConstructed
+ROOF	15	10	RoofConstructed
+ROOF	15	11	RoofConstructed
+ROOF	15	12	RoofConstructed
+ROOF	15	13	RoofConstructed
+ROOF	15	14	RoofConstructed
+ROOF	15	15	RoofConstructed
+ROOF	16	0	RoofConstructed
+ROOF	16	1	RoofConstructed
+ROOF	16	2	RoofConstructed
+ROOF	16	3	RoofConstructed
+ROOF	16	4	RoofConstructed
+ROOF	16	5	RoofConstructed
+ROOF	16	6	RoofConstructed
+ROOF	16	7	RoofConstructed
+ROOF	16	8	RoofConstructed
+ROOF	16	9	RoofConstructed
+ROOF	16	10	RoofConstructed
+ROOF	16	11	RoofConstructed
+ROOF	16	12	RoofConstructed
+ROOF	16	13	RoofConstructed
+ROOF	16	14	RoofConstructed
+ROOF	16	15	RoofConstructed
+ROOF	17	0	RoofConstructed
+ROOF	17	1	RoofConstructed
+ROOF	17	2	RoofConstructed
+ROOF	17	3	RoofConstructed
+ROOF	17	4	RoofConstructed
+ROOF	17	5	RoofConstructed
+ROOF	17	6	RoofConstructed
+ROOF	17	7	RoofConstructed
+ROOF	17	8	RoofConstructed
+ROOF	17	9	RoofConstructed
+ROOF	17	10	RoofConstructed
+ROOF	17	11	RoofConstructed
+ROOF	17	12	RoofConstructed
+ROOF	17	13	RoofConstructed
+ROOF	17	14	RoofConstructed
+ROOF	17	15	RoofConstructed
+ROOF	18	0	RoofConstructed
+ROOF	18	1	RoofConstructed
+ROOF	18	2	RoofConstructed
+ROOF	18	3	RoofConstructed
+ROOF	18	4	RoofConstructed
+ROOF	18	5	RoofConstructed
+ROOF	18	6	RoofConstructed
+ROOF	18	7	RoofConstructed
+ROOF	18	8	RoofConstructed
+ROOF	18	9	RoofConstructed
+ROOF	18	10	RoofConstructed
+ROOF	18	11	RoofConstructed
+ROOF	18	12	RoofConstructed
+ROOF	18	13	RoofConstructed
+ROOF	18	14	RoofConstructed
+ROOF	18	15	RoofConstructed
+ROOF	19	0	RoofConstructed
+ROOF	19	1	RoofConstructed
+ROOF	19	2	RoofConstructed
+ROOF	19	3	RoofConstructed
+ROOF	19	4	RoofConstructed
+ROOF	19	5	RoofConstructed
+ROOF	19	6	RoofConstructed
+ROOF	19	7	RoofConstructed
+ROOF	19	8	RoofConstructed
+ROOF	19	9	RoofConstructed
+ROOF	19	10	RoofConstructed
+ROOF	19	11	RoofConstructed
+ROOF	19	12	RoofConstructed
+ROOF	19	13	RoofConstructed
+ROOF	19	14	RoofConstructed
+ROOF	19	15	RoofConstructed

@@ -1,0 +1,573 @@
+# rimplace flat plan v1
+# template  hutt_cistern_court (sha a42e38f43383dde5)
+# min_rect  16x16   baked at 22x22
+FOOTPRINT	0	0	22	22
+TERRAIN	1	1	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	1	2	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	1	3	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	1	4	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	1	5	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	1	6	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	1	7	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	1	8	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	1	9	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	1	10	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	1	11	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	1	12	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	1	13	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	1	14	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	1	15	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	1	16	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	1	17	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	1	18	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	1	19	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	1	20	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	2	1	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	2	2	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	2	3	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	2	4	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	2	5	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	2	6	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	2	7	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	2	8	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	2	9	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	2	10	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	2	11	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	2	12	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	2	13	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	2	14	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	2	15	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	2	16	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	2	17	TileSandstone
+TERRAIN	2	18	TileSandstone
+TERRAIN	2	19	TileSandstone
+TERRAIN	2	20	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	3	1	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	3	2	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	3	3	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	3	4	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	3	5	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	3	6	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	3	7	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	3	8	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	3	9	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	3	10	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	3	11	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	3	12	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	3	13	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	3	14	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	3	15	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	3	16	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	3	17	TileSandstone
+TERRAIN	3	18	TileSandstone
+TERRAIN	3	19	TileSandstone
+TERRAIN	3	20	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	4	1	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	4	2	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	4	3	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	4	4	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	4	5	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	4	6	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	4	7	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	4	8	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	4	9	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	4	10	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	4	11	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	4	12	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	4	13	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	4	14	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	4	15	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	4	16	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	4	17	TileSandstone
+TERRAIN	4	18	TileSandstone
+TERRAIN	4	19	TileSandstone
+TERRAIN	4	20	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	5	1	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	5	2	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	5	3	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	5	4	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	5	5	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	5	6	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	5	7	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	5	8	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	5	9	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	5	10	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	5	11	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	5	12	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	5	13	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	5	14	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	5	15	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	5	16	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	5	17	TileSandstone
+TERRAIN	5	18	TileSandstone
+TERRAIN	5	19	TileSandstone
+TERRAIN	5	20	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	6	1	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	6	2	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	6	3	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	6	4	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	6	5	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	6	6	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	6	7	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	6	8	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	6	9	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	6	10	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	6	11	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	6	12	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	6	13	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	6	14	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	6	15	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	6	16	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	6	17	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	6	18	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	6	19	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	6	20	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	7	1	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	7	2	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	7	3	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	7	4	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	7	5	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	7	6	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	7	7	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	7	8	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	7	9	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	7	10	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	7	11	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	7	12	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	7	13	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	7	14	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	7	15	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	7	16	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	7	17	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	7	18	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	7	19	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	7	20	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	8	1	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	8	2	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	8	3	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	8	4	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	8	5	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	8	6	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	8	7	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	8	8	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	8	9	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	8	10	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	8	11	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	8	12	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	8	13	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	8	14	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	8	15	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	8	16	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	8	17	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	8	18	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	8	19	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	8	20	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	9	1	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	9	2	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	9	3	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	9	4	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	9	5	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	9	6	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	9	7	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	9	8	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	9	9	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	9	10	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	9	11	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	9	12	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	9	13	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	9	14	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	9	15	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	9	16	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	9	17	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	9	18	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	9	19	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	9	20	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	10	1	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	10	2	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	10	3	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	10	4	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	10	5	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	10	6	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	10	7	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	10	8	DBHMosaicSandstone
+TERRAIN	10	9	DBHMosaicSandstone
+TERRAIN	10	10	DBHMosaicSandstone
+TERRAIN	10	11	DBHMosaicSandstone
+TERRAIN	10	12	DBHMosaicSandstone
+TERRAIN	10	13	DBHMosaicSandstone
+TERRAIN	10	14	DBHMosaicSandstone
+TERRAIN	10	15	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	10	16	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	10	17	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	10	18	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	10	19	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	10	20	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	11	1	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	11	2	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	11	3	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	11	4	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	11	5	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	11	6	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	11	7	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	11	8	DBHMosaicSandstone
+TERRAIN	11	9	DBHMosaicSandstone
+TERRAIN	11	10	DBHMosaicSandstone
+TERRAIN	11	11	DBHMosaicSandstone
+TERRAIN	11	12	DBHMosaicSandstone
+TERRAIN	11	13	DBHMosaicSandstone
+TERRAIN	11	14	DBHMosaicSandstone
+TERRAIN	11	15	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	11	16	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	11	17	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	11	18	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	11	19	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	11	20	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	12	1	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	12	2	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	12	3	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	12	4	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	12	5	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	12	6	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	12	7	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	12	8	DBHMosaicSandstone
+TERRAIN	12	9	DBHMosaicSandstone
+TERRAIN	12	10	DBHMosaicSandstone
+TERRAIN	12	11	DBHMosaicSandstone
+TERRAIN	12	12	DBHMosaicSandstone
+TERRAIN	12	13	DBHMosaicSandstone
+TERRAIN	12	14	DBHMosaicSandstone
+TERRAIN	12	15	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	12	16	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	12	17	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	12	18	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	12	19	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	12	20	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	13	1	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	13	2	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	13	3	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	13	4	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	13	5	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	13	6	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	13	7	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	13	8	DBHMosaicSandstone
+TERRAIN	13	9	DBHMosaicSandstone
+TERRAIN	13	10	DBHMosaicSandstone
+TERRAIN	13	11	DBHMosaicSandstone
+TERRAIN	13	12	DBHMosaicSandstone
+TERRAIN	13	13	DBHMosaicSandstone
+TERRAIN	13	14	DBHMosaicSandstone
+TERRAIN	13	15	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	13	16	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	13	17	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	13	18	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	13	19	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	13	20	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	14	1	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	14	2	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	14	3	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	14	4	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	14	5	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	14	6	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	14	7	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	14	8	DBHMosaicSandstone
+TERRAIN	14	9	DBHMosaicSandstone
+TERRAIN	14	10	DBHMosaicSandstone
+TERRAIN	14	11	DBHMosaicSandstone
+TERRAIN	14	12	DBHMosaicSandstone
+TERRAIN	14	13	DBHMosaicSandstone
+TERRAIN	14	14	DBHMosaicSandstone
+TERRAIN	14	15	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	14	16	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	14	17	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	14	18	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	14	19	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	14	20	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	15	1	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	15	2	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	15	3	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	15	4	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	15	5	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	15	6	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	15	7	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	15	8	DBHMosaicSandstone
+TERRAIN	15	9	DBHMosaicSandstone
+TERRAIN	15	10	DBHMosaicSandstone
+TERRAIN	15	11	DBHMosaicSandstone
+TERRAIN	15	12	DBHMosaicSandstone
+TERRAIN	15	13	DBHMosaicSandstone
+TERRAIN	15	14	DBHMosaicSandstone
+TERRAIN	15	15	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	15	16	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	15	17	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	15	18	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	15	19	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	15	20	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	16	1	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	16	2	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	16	3	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	16	4	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	16	5	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	16	6	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	16	7	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	16	8	DBHMosaicSandstone
+TERRAIN	16	9	DBHMosaicSandstone
+TERRAIN	16	10	DBHMosaicSandstone
+TERRAIN	16	11	DBHMosaicSandstone
+TERRAIN	16	12	DBHMosaicSandstone
+TERRAIN	16	13	DBHMosaicSandstone
+TERRAIN	16	14	DBHMosaicSandstone
+TERRAIN	16	15	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	16	16	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	16	17	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	16	18	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	16	19	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	16	20	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	17	1	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	17	2	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	17	3	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	17	4	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	17	5	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	17	6	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	17	7	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	17	8	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	17	9	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	17	10	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	17	11	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	17	12	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	17	13	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	17	14	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	17	15	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	17	16	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	17	17	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	17	18	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	17	19	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	17	20	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	18	1	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	18	2	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	18	3	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	18	4	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	18	5	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	18	6	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	18	7	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	18	8	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	18	9	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	18	10	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	18	11	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	18	12	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	18	13	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	18	14	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	18	15	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	18	16	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	18	17	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	18	18	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	18	19	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	18	20	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	19	1	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	19	2	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	19	3	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	19	4	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	19	5	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	19	6	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	19	7	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	19	8	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	19	9	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	19	10	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	19	11	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	19	12	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	19	13	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	19	14	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	19	15	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	19	16	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	19	17	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	19	18	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	19	19	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	19	20	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	20	1	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	20	2	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	20	3	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	20	4	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	20	5	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	20	6	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	20	7	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	20	8	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	20	9	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	20	10	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	20	11	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	20	12	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	20	13	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	20	14	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	20	15	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	20	16	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	20	17	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	20	18	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	20	19	OuterRim_BrickRoadPatterned_Sandstone
+TERRAIN	20	20	OuterRim_BrickRoadPatterned_Sandstone
+THING	Wall	0	0	0	BlocksSandstone
+THING	Wall	1	0	0	BlocksSandstone
+THING	Wall	2	0	0	BlocksSandstone
+THING	Wall	3	0	0	BlocksSandstone
+THING	Wall	4	0	0	BlocksSandstone
+THING	Wall	5	0	0	BlocksSandstone
+THING	Wall	8	0	0	BlocksSandstone
+THING	Wall	9	0	0	BlocksSandstone
+THING	Wall	10	0	0	BlocksSandstone
+THING	Wall	11	0	0	BlocksSandstone
+THING	Wall	12	0	0	BlocksSandstone
+THING	Wall	13	0	0	BlocksSandstone
+THING	Wall	14	0	0	BlocksSandstone
+THING	Wall	15	0	0	BlocksSandstone
+THING	Wall	16	0	0	BlocksSandstone
+THING	Wall	17	0	0	BlocksSandstone
+THING	Wall	18	0	0	BlocksSandstone
+THING	Wall	19	0	0	BlocksSandstone
+THING	Wall	20	0	0	BlocksSandstone
+THING	Wall	21	0	0	BlocksSandstone
+THING	Wall	0	1	0	BlocksSandstone
+THING	Wall	21	1	0	BlocksSandstone
+THING	Wall	0	2	0	BlocksSandstone
+THING	Wall	21	2	0	BlocksSandstone
+THING	Wall	0	3	0	BlocksSandstone
+THING	Wall	21	3	0	BlocksSandstone
+THING	Wall	0	4	0	BlocksSandstone
+THING	Wall	21	4	0	BlocksSandstone
+THING	Wall	0	5	0	BlocksSandstone
+THING	Wall	21	5	0	BlocksSandstone
+THING	Wall	0	6	0	BlocksSandstone
+THING	Wall	21	6	0	BlocksSandstone
+THING	Wall	0	7	0	BlocksSandstone
+THING	Wall	21	7	0	BlocksSandstone
+THING	Wall	0	8	0	BlocksSandstone
+THING	Wall	21	8	0	BlocksSandstone
+THING	Wall	0	9	0	BlocksSandstone
+THING	Wall	21	9	0	BlocksSandstone
+THING	Wall	0	10	0	BlocksSandstone
+THING	Wall	21	10	0	BlocksSandstone
+THING	Wall	0	11	0	BlocksSandstone
+THING	Wall	21	11	0	BlocksSandstone
+THING	Wall	0	12	0	BlocksSandstone
+THING	Wall	21	12	0	BlocksSandstone
+THING	Wall	0	13	0	BlocksSandstone
+THING	Wall	21	13	0	BlocksSandstone
+THING	Wall	0	14	0	BlocksSandstone
+THING	Wall	21	14	0	BlocksSandstone
+THING	Wall	0	15	0	BlocksSandstone
+THING	Wall	21	15	0	BlocksSandstone
+THING	Wall	0	16	0	BlocksSandstone
+THING	Wall	21	16	0	BlocksSandstone
+THING	Wall	0	17	0	BlocksSandstone
+THING	Wall	21	17	0	BlocksSandstone
+THING	Wall	0	18	0	BlocksSandstone
+THING	Wall	21	18	0	BlocksSandstone
+THING	Wall	0	19	0	BlocksSandstone
+THING	Wall	21	19	0	BlocksSandstone
+THING	Wall	0	20	0	BlocksSandstone
+THING	Wall	21	20	0	BlocksSandstone
+THING	Wall	0	21	0	BlocksSandstone
+THING	Wall	1	21	0	BlocksSandstone
+THING	Wall	2	21	0	BlocksSandstone
+THING	Wall	3	21	0	BlocksSandstone
+THING	Wall	4	21	0	BlocksSandstone
+THING	Wall	5	21	0	BlocksSandstone
+THING	Wall	6	21	0	BlocksSandstone
+THING	Wall	7	21	0	BlocksSandstone
+THING	Wall	8	21	0	BlocksSandstone
+THING	Wall	9	21	0	BlocksSandstone
+THING	Wall	10	21	0	BlocksSandstone
+THING	Wall	11	21	0	BlocksSandstone
+THING	Wall	12	21	0	BlocksSandstone
+THING	Wall	13	21	0	BlocksSandstone
+THING	Wall	14	21	0	BlocksSandstone
+THING	Wall	15	21	0	BlocksSandstone
+THING	Wall	16	21	0	BlocksSandstone
+THING	Wall	17	21	0	BlocksSandstone
+THING	Wall	18	21	0	BlocksSandstone
+THING	Wall	19	21	0	BlocksSandstone
+THING	Wall	20	21	0	BlocksSandstone
+THING	Wall	21	21	0	BlocksSandstone
+THING	OuterRim_DoorTatooine	6	0	0	-
+THING	OuterRim_DoorTatooine	7	0	0	-
+THING	Wall	1	16	0	BlocksSandstone
+THING	Wall	2	16	0	BlocksSandstone
+THING	Wall	3	16	0	BlocksSandstone
+THING	Wall	4	16	0	BlocksSandstone
+THING	Wall	5	16	0	BlocksSandstone
+THING	Wall	6	16	0	BlocksSandstone
+THING	Wall	1	17	0	BlocksSandstone
+THING	Wall	6	17	0	BlocksSandstone
+THING	Wall	1	18	0	BlocksSandstone
+THING	Wall	1	19	0	BlocksSandstone
+THING	Wall	6	19	0	BlocksSandstone
+THING	Wall	1	20	0	BlocksSandstone
+THING	Wall	2	20	0	BlocksSandstone
+THING	Wall	3	20	0	BlocksSandstone
+THING	Wall	4	20	0	BlocksSandstone
+THING	Wall	5	20	0	BlocksSandstone
+THING	Wall	6	20	0	BlocksSandstone
+THING	OuterRim_DoorTatooine	6	18	0	-
+THING	OuterRim_TatooineBed	3	18	0	-
+THING	OuterRim_Tatooine1x1Table	3	17	0	-
+THING	OuterRim_TatooineDiningChair	2	17	1	-
+THING	ShelfSmall	4	17	0	Steel
+THING	OuterRim_StorageCrate	2	19	0	-
+THING	OuterRim_DathomirOrbLamp_Small	5	19	0	-
+THING	WallLamp	5	17	1	-
+THING	KotOR_watertank	12	12	0	-
+THING	KotOR_watertank	12	11	0	-
+THING	KotOR_watertank	13	10	0	-
+THING	KotOR_watertank	14	12	0	-
+THING	PrimitiveWell	13	9	0	-
+THING	Fountain	10	9	0	BlocksSandstone
+THING	WaterTrough	5	12	3	-
+THING	WaterTrough	18	8	2	-
+THING	WaterTrough	11	17	3	-
+THING	WashBucket	17	9	0	Steel
+THING	PlantPot	5	1	0	BlocksSandstone
+THING	PlantPot	19	1	0	BlocksSandstone
+THING	PlantPot	13	1	0	BlocksSandstone
+THING	PlantPot	10	1	0	BlocksSandstone
+THING	PlantPot	1	1	0	BlocksSandstone
+THING	OuterRim_DathomirOrbLamp_Tall	20	20	0	-
+THING	OuterRim_DathomirOrbLamp_Tall	20	1	0	-
+THING	Brazier	1	8	1	Steel
+THING	OuterRim_StorageCrate	11	1	0	-
+THING	OuterRim_StorageCrate	10	2	0	-
+THING	WallLamp	20	15	1	-
+THING	WallLamp	1	7	3	-
+THING	WallLamp	15	20	0	-
+THING	Sandbags	4	2	0	-
+THING	Sandbags	5	2	0	-
+THING	Sandbags	8	2	0	-
+THING	Sandbags	9	2	0	-
+THING	Sandbags	4	1	0	-
+THING	Sandbags	9	1	0	-
+THING	Turret_MiniTurret	19	3	0	-
+ROOF	1	16	RoofConstructed
+ROOF	1	17	RoofConstructed
+ROOF	1	18	RoofConstructed
+ROOF	1	19	RoofConstructed
+ROOF	1	20	RoofConstructed
+ROOF	2	16	RoofConstructed
+ROOF	2	17	RoofConstructed
+ROOF	2	18	RoofConstructed
+ROOF	2	19	RoofConstructed
+ROOF	2	20	RoofConstructed
+ROOF	3	16	RoofConstructed
+ROOF	3	17	RoofConstructed
+ROOF	3	18	RoofConstructed
+ROOF	3	19	RoofConstructed
+ROOF	3	20	RoofConstructed
+ROOF	4	16	RoofConstructed
+ROOF	4	17	RoofConstructed
+ROOF	4	18	RoofConstructed
+ROOF	4	19	RoofConstructed
+ROOF	4	20	RoofConstructed
+ROOF	5	16	RoofConstructed
+ROOF	5	17	RoofConstructed
+ROOF	5	18	RoofConstructed
+ROOF	5	19	RoofConstructed
+ROOF	5	20	RoofConstructed
+ROOF	6	16	RoofConstructed
+ROOF	6	17	RoofConstructed
+ROOF	6	18	RoofConstructed
+ROOF	6	19	RoofConstructed
+ROOF	6	20	RoofConstructed
