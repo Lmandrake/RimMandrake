@@ -268,4 +268,37 @@
     </nomatch>
   </Operation>
 
+  <!-- BUGFIX (this review pass): Jawa_FreeDroidEnclaves sets humanlikeFaction=true
+       (JawaFreeDroidEnclaves.xml, load-bearing per its own comment) but was never
+       wired here, and FactionDef.ConfigErrors() flags any humanlikeFaction faction
+       whose OWN backstoryFilters is empty - "Jawa_FreeDroidEnclaves is humanlikeFaction
+       but has no backstory categories" - regardless of the backstoryFilters already
+       declared on its four PawnKindDefs (Jawa_Droid_Grunt/Heavy/Specialist/Leader in
+       JawaFactionRoster.xml). Restating vanilla Outlander/Offworld here (the pattern
+       used for every other OutlanderFactionBase child below) would be lore-wrong for
+       a 0%-biological faction, so this wires the faction's OWN two droid categories
+       (Backstories_FDE_Droids.xml) instead - non-empty, thematically correct, and
+       redundant-but-harmless alongside the per-kind filters PawnBioAndNameGenerator
+       already merges in. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/FactionDef[defName="Jawa_FreeDroidEnclaves"]/backstoryFilters</xpath>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/FactionDef[defName="Jawa_FreeDroidEnclaves"]</xpath>
+      <value>
+        <backstoryFilters>
+          <li>
+            <categories>
+              <li>JawaBSC_FDECathedral</li>
+            </categories>
+          </li>
+          <li>
+            <categories>
+              <li>JawaBSC_FDENightside</li>
+            </categories>
+          </li>
+        </backstoryFilters>
+      </value>
+    </nomatch>
+  </Operation>
+
 </Patch>
