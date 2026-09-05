@@ -8,26 +8,22 @@
     <li>1.6</li>
   </supportedVersions>
 <loadAfter>
-    <li>mandrake.rsw.starwarsraces</li>                         <!-- RimMandrake* species, name makers and rescued pawn kinds -->
-    <li>Neronix17.OuterRim.Core</li>
-    <li>Neronix17.OuterRim.GalacticEmpire</li>              <!-- OuterRim_Imp* pawn kinds     GalacticEmpire.xml -->
-    <li>Neronix17.OuterRim.RebelAlliance</li>               <!-- OuterRim_RebelAlliance       RebelAlliance_Suppress.xml -->
-    <li>Neronix17.OuterRim.GalacticDiversity</li>           <!-- OuterRim_Jawa, OuterRim_WookieeHead -->
-    <li>Neronix17.OuterRim.DroidDepot</li>                  <!-- OuterRim_*Droid              DroidFemaleTexture_Fix.xml -->
-    <li>Neronix17.Outland.Genetics</li>                     <!-- Outland_AllMale              JawaAppearance_Tuning.xml -->
-    <li>LazyFridayStudio.GenesExpandedEyes</li>             <!-- Eyes_*_Feline / Eyes_*_Reptile -->
-    <li>guy762.StarWarsXenotypes</li>                       <!-- guy762_Eyes_HugeYellow -->
-    <li>guy762.MM.KotORCore</li>                            <!-- SWCP_VATS_Zoomer             SWCPZoomerIcon_Fix.xml -->
-    <li>guy762.KotORWeapons</li>
-    <li>sarg.alphabiomes</li>                               <!-- AB_PyroclasticConflagration -->
-    <li>IronScruff.PrimordialGeysers</li>                   <!-- IronScruff_PrimordialGeysers BiomeAnimalDanglingRefs_Fix.xml -->
-    <li>zylle.MoreVanillaBiomes</li>                        <!-- ZBiome_Badlands, ZBiome_DesertOasis -->
-    <li>titans.fl</li>                                      <!-- Titan                        AnimalBiomeDuplicates_Fix.xml -->
+    <!-- Trimmed 2026-09-05 (dirty-code-review pass): the pre-split Jawa_Patches
+         loadAfter list named files that moved to the RUT/RSW tier mods in
+         JAWA_PATCHES_SPLIT_1, and never named several mods this tier's own
+         patches actually touch. Every entry below is cited against a file
+         that is actually in this mod's Patches/ folder. -->
+    <li>biomesteam.biomescaverns</li>                       <!-- AnimalDessicatedTexPaths_Fix.xml -->
+    <li>mlie.starwarsanimalcollection</li>                  <!-- AnimalDessicatedTexPaths_Fix.xml -->
+    <li>Who.VFEE.IsopodaGeneline</li>                       <!-- AnimalDessicatedTexPaths_Fix.xml -->
+    <li>btd.remix.gravshipblueprints</li>                   <!-- BTDGravshipQuest_GrammarFix.xml -->
+    <li>IronScruff.PrimordialGeysers</li>                   <!-- BiomeAnimalDanglingRefs_Fix.xml - patches nodes ITS OWN patch creates; must load after -->
+    <li>det.buzzers</li>                                    <!-- BuzzerApostrophe_Fix.xml -->
+    <li>mlie.miningcodrillturret</li>                       <!-- DrillTurret_ShootingJob.xml -->
+    <li>GRimTerra.Biomesmod</li>                            <!-- GrimTerraTexPaths_Fix.xml -->
+    <li>Nals.FacialAnimation</li>                           <!-- HeadSetForFA_Revive.xml - supplies the FaceAdjustmentDef TYPE -->
+    <li>DanZinagri.FacialAnimationCompatabilityProject</li> <!-- HeadSetForFA_Revive.xml - creates BS_InsectoidHumanoid_FourArmed_FaceAdjustment; must load after -->
+    <li>ab.hoffa</li>                                       <!-- HeadSetForFA_Revive.xml - the mod being revived (not in the current active list; the patch no-ops harmlessly until it is) -->
     <li>Dark.Signs</li>                                     <!-- SignBillboard etc. (9 defs)  ThirdPartySignConfigErrors_Fix.xml -->
-    <li>Nals.FacialAnimation</li>                           <!-- supplies the FaceAdjustmentDef TYPE -->
-    <li>DanZinagri.FacialAnimationCompatabilityProject</li> <!-- BS_InsectoidHumanoid_FourArmed_FaceAdjustment -->
-    <li>ab.hoffa</li>                                       <!-- HeadSetForFA_Revive.xml -->
-    <li>7f.alienworlds.tidallylocked</li>                   <!-- JawaWorld_BiomeMix.xml patches its PlanetTypeDef -->
-    <li>7f.alienworlds</li>                                 <!-- the framework that def's fields belong to -->
     </loadAfter>
 </ModMetaData>
