@@ -60,7 +60,9 @@ TWO MISTAKES THIS SCRIPT ENCODES, both found by reading its own output:
 import collections
 import io
 import os
+import re
 import sys
+import xml.etree.ElementTree as ET
 
 # Resolved from this file, not hardcoded: the repo moved G: -> D: on 2026-08-12
 # and is reached by different paths from Windows Python and WSL.
@@ -612,9 +614,68 @@ for pname, (old, new) in sorted(proj_changes.items()):
 with io.open(os.path.join(OUTDIR, "Armoury_RangedDamage.xml"), "w", encoding="utf-8") as fh:
     emit(fh, "Ranged: restretch the ladder (L1, L7, L9, L11)", ranged_by_mod)
 
+_ADD_TOOLS_XPATH = re.compile(r'^/?Defs/ThingDef\[defName="([^"]+)"\]$')
+
+
+def self_supplied_tools_defnames():
+    """defNames whose <tools> is (re-)supplied by one of OUR OWN Armoury
+    subfolder patches -- Absorbed_AdditionalMods, or any future sibling --
+    rather than by the base def or an earlier-loading mod's own patches.
+
+    Matters because RimWorld applies one mod's own patch FILES in file-tree
+    order, TOP-LEVEL FILES BEFORE SUBFOLDER FILES (proven by bisection,
+    ARMOURY_LIGHTSABER_FINDMOD_1: "Top-level patch files run before subfolder
+    files"). Armoury_MeleePower.xml is a top-level file in this same OUTDIR;
+    a subfolder file under it that PatchOperationAdds a whole <tools> node
+    onto some concrete ThingDef therefore runs AFTER Armoury_MeleePower.xml
+    every load. So a PatchOperationReplace this generator emits at the top
+    level, aimed at that concrete defName's tools/li, targets a node that
+    does not exist yet when it runs -- dead on arrival, even though the
+    fully-patched live dump (read AFTER every patch has run) shows the def
+    with its own tools.
+
+    This is exactly LIGHTSABER_MELEE_PATCH_FAIL_1. The mismatch check just
+    below (declared labels vs live labels) cannot tell "an external mod
+    injected this before we ever run" from "we ourselves inject this AFTER
+    we ever run" -- both look identical from the live dump alone. Resolved
+    by reading our OWN already-generated absorption patches off disk, so the
+    check is general (any defName, any future absorption) rather than a
+    hardcoded name list of the 8 lightsabers that happened to trigger it.
+    """
+    out = set()
+    if not os.path.isdir(OUTDIR):
+        return out
+    for dirpath, _dirnames, filenames in os.walk(OUTDIR):
+        if os.path.abspath(dirpath) == os.path.abspath(OUTDIR):
+            continue          # top-level files -- run BEFORE subfolder files too
+        for fn in filenames:
+            if not fn.lower().endswith(".xml"):
+                continue
+            try:
+                root = ET.parse(os.path.join(dirpath, fn)).getroot()
+            except ET.ParseError:
+                continue
+            for li in root.iter("li"):
+                if li.get("Class") not in ("PatchOperationAdd", "PatchOperationReplace"):
+                    continue
+                m = _ADD_TOOLS_XPATH.match((li.findtext("xpath") or "").strip())
+                if not m:
+                    continue
+                val = li.find("value")
+                if val is not None and val.find("tools") is not None:
+                    out.add(m.group(1))
+    return out
+
+
+SELF_SUPPLIED_TOOLS = self_supplied_tools_defnames()
+if SELF_SUPPLIED_TOOLS:
+    print("self-supplied tools (our own subfolder patch adds them AFTER our "
+          "top-level file runs -- skipped): %d defName(s)"
+          % len(SELF_SUPPLIED_TOOLS))
+
 wmap = {w["defName"]: w for w in sw_weapons}
 melee_by_mod = collections.defaultdict(list)
-seen_decl, mel_missing, injected = set(), [], []
+seen_decl, mel_missing, injected, self_supplied_skipped = set(), [], [], []
 for dn, (old, new) in sorted(tool_changes.items()):
     owner, attr, rec = declarer_of(dn, "tools")
     if owner is None:
@@ -634,6 +695,15 @@ for dn, (old, new) in sorted(tool_changes.items()):
             continue                  # one declarer serves every child
         seen_decl.add(owner)
         pairs = decl_pairs
+    elif dn in SELF_SUPPLIED_TOOLS:
+        # The concrete defName only differs from the declarer because OUR OWN
+        # subfolder patch adds its tools AFTER Armoury_MeleePower.xml (a
+        # top-level file) has already run. Aiming at the concrete defName
+        # here -- the "injected" branch below -- would be exactly the 21 dead
+        # entries LIGHTSABER_MELEE_PATCH_FAIL_1 deleted. Skip; there is
+        # nothing reachable from this file for this defName.
+        self_supplied_skipped.append(dn)
+        continue
     else:
         owner, attr, pairs = dn, "defName", live_pairs
         injected.append(dn)
@@ -664,6 +734,9 @@ if missing:
     print("  ranged skipped (no declarer):", missing[:6])
 if mel_missing:
     print("  melee skipped (no declarer):", mel_missing[:6])
+if self_supplied_skipped:
+    print("  melee skipped (our own subfolder patch supplies tools later):",
+          sorted(self_supplied_skipped))
 
 print("anchors: %s" % dict(anchor_src))
 if tainted_skipped:

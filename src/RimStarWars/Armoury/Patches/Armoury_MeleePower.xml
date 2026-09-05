@@ -110,13 +110,22 @@
         <!-- 2026-09-01, LIGHTSABER_MELEE_PATCH_FAIL_1: removed 21 dead
              PatchOperationReplace entries for Force_Broadsaber, Force_Darksaber,
              Force_Lightsaber_Crossguard/Curved/Custom/Dual/Inquisitor/Shoto.
-             The donor mod no longer gives any of these ThingDefs their own
-             <tools> list - they purely inherit it from ParentName="Force_LightsaberBase"
-             now, so `[defName="Force_X"]/tools/li[...]` can never match (0 nodes),
-             which was making the whole wrapping PatchOperationFindMod report
-             "failed" on every load. Only the base def below still has a live
-             tools node to tune - a future regenerate should not re-add the
-             per-variant entries unless the donor mod restores per-variant tools. -->
+             ROOT CAUSE, corrected 2026-09-04: it is not that the donor mod
+             lacks its own tools for these - OUR OWN Absorbed_AdditionalMods
+             subfolder patch (retired-donor content carried forward from
+             guy762.KotORWeapons, WEAPONS_DONOR_RETIREMENT_1) re-adds a
+             tools node (Inherit="False") onto each of these 8 concrete
+             defNames. RimWorld runs a mod's TOP-LEVEL patch files before its
+             SUBFOLDER files (proven by bisection, ARMOURY_LIGHTSABER_FINDMOD_1),
+             so that subfolder patch always runs AFTER this top-level file -
+             the concrete `[defName="Force_X"]/tools/li[...]` xpath matches
+             ZERO nodes here even though the fully-patched live dump later
+             shows the def with its own tools. Only Force_LightsaberBase below
+             is reachable from this file. gen_armoury_patch.py's
+             self_supplied_tools_defnames() now detects this generally (reads
+             the actual Absorbed_AdditionalMods patches on disk), so a future
+             regenerate will not re-add these 8 on its own - no hand-editing
+             required here again. -->
         <!-- Force_LightsaberBase / hilt : 12 -> 15 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[@Name="Force_LightsaberBase"]/tools/li[label="hilt"]/power</xpath>
