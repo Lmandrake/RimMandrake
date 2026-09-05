@@ -44,6 +44,17 @@ clean in wave 38 by reviewers who checked validator output and "installed"
 status but never checked ACTIVE status against ModsConfig.xml themselves.
 (Armoury_MeleePower.xml is already DIRTY/blocked via `ARMOURY_MELEEPOWER_STALE_1`.)
 
+## correction 2026-09-05
+`Armour_Ratings.xml` is under a standing owner hold —
+`src/DEPLOY_HOLD.txt`: "Owner ruled SHIP NEITHER, 2026-08-12" (alongside
+`Warcasket_HazardRetune.xml`) — so it is never actually written to the live
+Mods folder regardless of this bug. Its 46 ops are NOT part of the "currently
+live" impact; only the other 5 files (124 ops: DamageCategories 2,
+Penetration 79, MeleePower 33, RangedDamage 8, TorpedoSpeed 2) were actually
+shipping and silently dead. Fixed and deployed all 5; fixed but NOT deployed
+Armour_Ratings.xml (repo-only, per the hold — the fix is still correct and
+harmless to have in the repo).
+
 ## why not fixed on the spot
 This needs a design call, not just a mechanical patch: replace the
 `PatchOperationFindMod(donor-name)` guard with something that tests for
@@ -56,6 +67,15 @@ across 6 files and ~170 ops; each guard's `nomatch` behavior (if any) also
 needs checking so a genuine "mod truly absent" case (if the owner ever
 does drop this content) still degrades gracefully. Not something to do
 in the same pass as discovering it.
+
+## deployed 2026-09-05
+`deploy_custom_mods.py --mod Armoury --apply` — 5 files deployed and
+verified in sync (Armour_Ratings.xml correctly skipped, held). **Needs a
+RimWorld restart to take effect** (defs only parse at startup) — not forced
+tonight since the owner was actively using the bridge/game for his own
+review session; verify on the next natural full-list load instead of
+forcing one. Did not deploy via a fresh restart myself to avoid interrupting
+that.
 
 ## criteria
 - Each of the 8 guard blocks above tests presence of its actual target
