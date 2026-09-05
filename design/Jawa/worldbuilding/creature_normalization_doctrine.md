@@ -183,3 +183,38 @@ scale at all — every one must be set explicitly.
 ⇒ **`drawSize` can be literal — it is only art.** `bodySize` cannot be literal
 real-mass without either a mass-compression mapping or editing all 22 thresholds.
 This needs an owner ruling; it is recorded here as OPEN, not silently resolved.
+
+---
+
+## OWNER RULING on bodySize (2026-09-05): **literal + targeted mitigations**
+
+Go literal real-mass, and patch the specific consumers that would break. The
+mitigation list, in priority order:
+
+| # | threshold | mitigation |
+|---|---|---|
+| 1 | **herd migration `ceil(4 / bodySize)`, unclamped** | 🔴 MUST clamp (patch). Untouched, a real-mass rat spawns ~870 animals and hangs the map. Nothing ships before this. |
+| 2 | **bullet stagger `BodySize <= stoppingPower`** | set `RaceProperties.bulletStaggerIgnoreBodySize` per race — the engine ALREADY offers this opt-out. Highest silent risk if skipped. |
+| 3 | `maxPreyBodySize` (vanilla 0.25-3.0) | retune per predator so colonists (1.0) are not casually eligible prey |
+| 4 | haul **0.40** / rescue **0.65** training gates | retune so intended work animals still qualify |
+| 5 | meat/leather `postProcessCurve` (kinks at 0.036 / 0.286) | set yields EXPLICITLY per creature with a stated cap; never ratio-rescale across a kink |
+| 6 | milk / wool / eggs | flat per-def integers — set explicitly, nothing falls out |
+| 7 | ranged hit clamp 0.1-2.0 | ACCEPT saturation (no fix without an engine patch); record that the mechanic loses resolution at the extremes |
+| 8 | ideoligion per-capita, bed 0.25/0.55, large-corpse 0.75, cell-share 1.5, snow 0.9 | audit after the pass; accept or patch case by case |
+
+## ⭐ The Pits mod is not a problem — renormalization FIXES it
+
+The owner's "pit trap activation mass" meant **our own `src/RimMandrake/Pits`**, not
+vanilla traps. It already sums real `StatDefOf.Mass` in KILOGRAMS against cover
+tiers: **WovenScrap 40 kg · PlankLattice 120 kg · ReinforcedFrame 220 kg**.
+
+Those thresholds are honest; **the creature masses are what's wrong**. `PitCoverTier.cs`
+already records the tell: the quicktest matrix found **240 kg was the ceiling of any
+single vanilla creature** — an elephant/megasloth/thrumbo maxing at 240 kg is absurd
+(a real elephant is 4,000-6,000 kg), and the owner filed **`BEAST_MASS_REALISM_AUDIT_1`**
+on 2026-08-30 precisely because "the 240kg ceiling itself looked suspiciously low."
+
+⇒ **This renormalization is the fix for the item he filed in August.** After it, the
+pit tiers finally mean what they say — a real elephant smashes any cover, a rat never
+springs one — with **no change to the Pits mod at all**. Re-verify the tiers against
+the new mass distribution once the pass lands, and close that item.
