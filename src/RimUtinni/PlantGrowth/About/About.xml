@@ -13,7 +13,7 @@ Three bands, biome-aware:
 - trees x2.5 (wood stays a decision)
 - plants on a terminator / poison-forest biome x0.4 (the one place on this world where growth has stalled)
 
-Every number, the terminator biome roster and the exempt plant list live in Defs/JawaPlantGrowthSettings.xml and are read at startup, so tuning does not need a rebuild. The compiled defaults in JawaPlantGrowth.PlantGrowthConfig are used only if that def is missing.
+Every number, the terminator biome roster and the exempt plant list live in Defs/JawaPlantGrowthSettings.xml and are read at startup, so tuning does not need a rebuild. The compiled defaults in RimMandrake.Utinni.PlantGrowth.PlantGrowthConfig are used only if that def is missing.
 
 Exempt plants are untouched in every biome: the anima tree and the Gauranlen tree (their slowness is ritual and dryad pacing, not botany), ambrosia (deliberately scarce), and any plant whose growDays is already under 1 day.
 

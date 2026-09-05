@@ -6,7 +6,7 @@
     no rebuild. If this file is deleted the compiled defaults in
     Source/PlantGrowthConfig.cs are used instead, and they are the same numbers.
   -->
-  <JawaPlantGrowth.PlantGrowthSettingsDef>
+  <RimMandrake.Utinni.PlantGrowth.PlantGrowthSettingsDef>
     <defName>RUT_JawaPlantGrowth_Settings</defName>
 
     <!-- Wild plants AND player crops. Corn's 11.3 growDays becomes ~2.8.
@@ -40,6 +40,6 @@
       <li>Plant_Ambrosia</li>       <!-- a deliberately scarce drug source -->
     </exemptPlants>
 
-  </JawaPlantGrowth.PlantGrowthSettingsDef>
+  </RimMandrake.Utinni.PlantGrowth.PlantGrowthSettingsDef>
 
 </Defs>
