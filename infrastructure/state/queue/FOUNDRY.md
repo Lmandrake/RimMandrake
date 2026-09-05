@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-05T07:05:32Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-05T07:09:49Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -425,3 +425,23 @@ kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/FIREECOLOGY_BURNEDDEF_FLAMMABLE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/FIREECOLOGY_BURNEDDEF_FLAMMABLE_1.md
+
+## NINEFOLD_ENUM_ORDER_SAVE_TRAP_1 Ninefold satiation/mood saved by God enum ORDINAL - reordering the enum silently corrupts per-god values on load
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/NINEFOLD_ENUM_ORDER_SAVE_TRAP_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/NINEFOLD_ENUM_ORDER_SAVE_TRAP_1.md
+
+## PROPERTY_SCRIBE_AND_WITNESS_INVARIANTS_1 RM_Property: two low-severity invariant gaps (ClaimRecord Situational-on-load; witness entries unbounded until an unwired reader)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/PROPERTY_SCRIBE_AND_WITNESS_INVARIANTS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PROPERTY_SCRIBE_AND_WITNESS_INVARIANTS_1.md
