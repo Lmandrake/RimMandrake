@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-05T15:43:26Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-05T15:58:21Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
-The first heading below is what `rimflow next --seat BENCH` returns. This file and that command call the same function, so they cannot disagree.
-
-## ORACLE_OHM_PROMPT_STILL_SHIP_1 OracleRegisterBlocks.Ohm prompt string still tells the LLM Ohm 'believes he IS the ship / first-person-as-hull' - compiled behaviour contradicting the re-scope
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  (no items/ORACLE_OHM_PROMPT_STILL_SHIP_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ORACLE_OHM_PROMPT_STILL_SHIP_1.md
+Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
 
 # IN PROGRESS
 
@@ -33,7 +24,7 @@ _none._
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is LOADING. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## NINEFOLD_MISSING_EVENT_HOOKS_1 Ninefold has NO event hook for battle, trade, launch/rooted or droid-online - four gods (Sh'kaar, Mob'Unloo, Ta'Baa, Ohm) never move; the theology is half-wired
 state:    ready
@@ -41,7 +32,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     bug
-waiting:  needs `deploy`, game is UP
+waiting:  needs `deploy`, game is LOADING
 summary:  Ninefold had zero satiation inputs for 4 of 9 gods — Sh'kaar (battle), Mob'Unloo
 prose:    infrastructure/state/items/NINEFOLD_MISSING_EVENT_HOOKS_1.md
 
@@ -51,14 +42,4 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## BENCH_REBOOT_HANDOFF_20260905 BENCH reboot handoff 2026-09-05 - READ FIRST on wake
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/BENCH_REBOOT_HANDOFF_20260905.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BENCH_REBOOT_HANDOFF_20260905.md
+_none._

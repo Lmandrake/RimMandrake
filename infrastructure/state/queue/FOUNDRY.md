@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-05T15:43:26Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-05T15:58:21Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## WILD_ANIMALS_PADDED_LISTS_1 wildAnimals lists padded to 1024 by unidentified C# pass
-state:    ready
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     investigate
-summary:  WILDANIMALSPADDEDLISTS1 — offline half done: mechanism strongly narrowed, exact patch still unnamed
-prose:    infrastructure/state/items/WILD_ANIMALS_PADDED_LISTS_1.md
 
 ## ASSAILANT_DUNGEON_BUILD_1 Build the Assailant flesh dungeon: frozen first-impact complex, thaw-gated, deep Umbra
 state:    ready
@@ -94,15 +85,6 @@ target:   v1
 kind:     build
 summary:  design/Jawa/researchtreetaxonomy.md section 3 defines the manifest schema
 prose:    infrastructure/state/items/RESEARCH_MANIFEST_DRAFT_1.md
-
-## WEAPONS_DONOR_RETIREMENT_1 Retire the 6 weapon donor packs now that mandrake.rsw.armoury absorbed their content
-state:    ready
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     build
-summary:  Retire the 6 weapon donor packs — 1 of 6 broke the owner's live game, reverted
-prose:    infrastructure/state/items/WEAPONS_DONOR_RETIREMENT_1.md
 
 ## DROID_DONOR_PATCH_GATE_1 Patch the 11 ungated ABF/Synstructs sites in absorbed KotOR content, the prerequisite before ABF/Synstructs/Asimov can retire
 state:    ready
@@ -422,7 +404,27 @@ prose:    infrastructure/state/items/ARMOURY_MELEEPOWER_STALE_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is LOADING. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+
+## WILD_ANIMALS_PADDED_LISTS_1 wildAnimals lists padded to 1024 by unidentified C# pass
+state:    ready
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     investigate
+waiting:  needs `bridge`, game is LOADING
+summary:  WILDANIMALSPADDEDLISTS1 — offline half done: mechanism strongly narrowed, exact patch still unnamed
+prose:    infrastructure/state/items/WILD_ANIMALS_PADDED_LISTS_1.md
+
+## WEAPONS_DONOR_RETIREMENT_1 Retire the 6 weapon donor packs now that mandrake.rsw.armoury absorbed their content
+state:    ready
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     build
+waiting:  needs `game-up`, game is LOADING
+summary:  Retire the 6 weapon donor packs — 1 of 6 broke the owner's live game, reverted
+prose:    infrastructure/state/items/WEAPONS_DONOR_RETIREMENT_1.md
 
 ## TILEGEN_SILENT_REUSE_1 jawa/world_tile_map_generate fabricates success on the second distinct-tile call per session
 state:    ready
@@ -430,7 +432,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     bug
-waiting:  needs `deploy`, game is UP
+waiting:  needs `deploy`, game is LOADING
 summary:  Filed by BENCH: jawa/worldtilemapgenerate fabricates success on its
 prose:    infrastructure/state/items/TILEGEN_SILENT_REUSE_1.md
 
@@ -481,16 +483,6 @@ kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/VEHICLE_REFS_UNGUARDED_BREAK_DEBUGMENU_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/VEHICLE_REFS_UNGUARDED_BREAK_DEBUGMENU_1.md
-
-## PROJECT_UNGUARDED_MOD_REFS_REVIEW_1 Concentrated project-wide review: EVERY hard reference to an optional/third-party mod assembly that isn't guarded (breaks silently when that mod is absent)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/PROJECT_UNGUARDED_MOD_REFS_REVIEW_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PROJECT_UNGUARDED_MOD_REFS_REVIEW_1.md
 
 ## NINEFOLD_HOOK_DOWNS_NOT_JUST_DEATHS_1 Ninefold battle hook should fire on a pawn being DOWNED, not only killed - Sh'kaar feeds on violence, and most fights end in downs
 state:    proposed
