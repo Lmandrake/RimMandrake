@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-05T04:48:39Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: OWNER
+as-of: 2026-09-05T04:54:38Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -16,16 +16,7 @@ Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED be
 
 # IN PROGRESS
 
-Started, and therefore not offered again. `rimflow close` or `rimflow block` moves them.
-
-## ARMOURY_LIGHTSABER_FINDMOD_1 Standing patch failure: Armoury FindMod(Star Wars : The Force - Lightsaber) inner op matches nothing on the full list
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  (no items/ARMOURY_LIGHTSABER_FINDMOD_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ARMOURY_LIGHTSABER_FINDMOD_1.md
+_none._
 
 # BLOCKED — something is WRONG and someone must act
 
