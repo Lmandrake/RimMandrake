@@ -124,9 +124,24 @@ HUMAN_PKG = "ludeon.rimworld"
 #    between the physically pure 1/3 (too flat — a thrumbo barely beats a rat) and a
 #    literal linear 1.0 (absurd — a rat vanishes); 0.6 is the tuned middle, and it
 #    is DELIBERATE that huge creatures dominate the row.
-SIZE_POWER = 0.6
-HUMAN_BODYSIZE = 1.0      # the anchor: a bodySize-1.0 creature equals the human
-SPECIAL_FALLBACK_CELLS = 8.0  # a bodySize-less special with no drawSize (SandWorm)
+# ── SETTLED SIZE MODEL (creature_size_model.md, 2026-09-05) ──────────────────
+# The sheet shows what the ENGINE ACTUALLY DRAWS: review_cells =
+# max(drawSize.x, drawSize.y) from the adult (last) life stage. That is
+# byte-for-byte what PawnRenderNode_AnimalPart hands MeshPool, so the sheet and
+# the game agree with NO fitted constant. The old 1.5*bodySize**0.6 ladder is
+# RETIRED: it disagreed with the render, because vanilla deliberately inflates
+# small animals for clickability (drawSize/bodySize ~7x at bodySize 0.2,
+# converging to ~1x above 2.5) - a swarmling really is drawn near human size.
+#
+# Physics is shown ALONGSIDE, never collapsed into the picture: mass == bodySize,
+# and the size vanilla WOULD give that mass is VANILLA_K * bodySize**VANILLA_P
+# (fitted n=66 vanilla animals+mechs, R2=0.71). Their ratio is the mismatch the
+# owner cares about - where a creature's apparent size and its physics disagree.
+VANILLA_K = 1.995
+VANILLA_P = 0.375
+MISMATCH_WARN = (0.67, 1.5)    # outside this -> warn badge
+MISMATCH_ALARM = (0.4, 2.5)    # outside this -> alarm badge
+SPECIAL_FALLBACK_CELLS = 8.0  # a drawSize-less special (SandWorm, C#-driven art)
 SCALE_CAP = 1500          # px; a bigger canvas is downscaled and SAYS so
 DETAIL_BOX = 240          # px; the fixed-size art-inspection sprite
 KILL_DAMAGE = 150         # the stated proxy for "damage that kills an unarmoured pawn"
@@ -982,18 +997,54 @@ def _resolve(tex, pkg, idx, bundles):
     return (hit, rung) if hit else (None, "not_found")
 
 
-def _physical_cells(r):
-    """On-screen size in cells from bodySize (a mass/volume proxy), so the ladder
-    reads by TRUE physical size, not the modder's inflated drawSize. Anchored on
-    the human: bodySize HUMAN_BODYSIZE -> HUMAN_CELLS, scaled by bodySize**SIZE_POWER.
-    A creature with no bodySize (a special like the SandWorm) falls back to its
-    honest drawSize, or SPECIAL_FALLBACK_CELLS so it still dominates the row."""
-    bs = r.get("bodySize")
-    if bs is not None and bs > 0:
-        return HUMAN_CELLS * (float(bs) / HUMAN_BODYSIZE) ** SIZE_POWER
+def _render_cells(r):
+    """What the GAME draws, in cells: max(drawSize.x, drawSize.y) of the adult
+    life stage. No bodySize term - the engine's draw path has none. A creature
+    with no drawSize (C#-driven art such as the SandWorm) falls back to a fiat
+    size so it still dominates its row; that fallback is stated, not measured."""
     ds = r.get("drawSize") or [None, None]
     d = max(ds[0] or 0, ds[1] or 0)
     return float(d) if d else SPECIAL_FALLBACK_CELLS
+
+
+def _physics_cells(r):
+    """The size VANILLA would draw a creature of this mass, per its own fitted
+    law. Not a render size - the yardstick the render is judged against."""
+    bs = r.get("bodySize")
+    if bs is None or bs <= 0:
+        return None
+    return VANILLA_K * (float(bs) ** VANILLA_P)
+
+
+def _generate_px(r):
+    """Resolution to regenerate this creature's art at, per creature_size_model.md:
+    clamp(ceil_pow2(max(drawSize) * 128), 256, 1024). Floor 256 is the owner's
+    'prefer higher when uncertain' tiebreak; 1024 is the generator's real ceiling
+    (above it we ship 1024 and state the px/cell)."""
+    cells = _render_cells(r)
+    if not cells:
+        return None
+    want = cells * 128.0
+    px = 256
+    while px < want and px < 1024:
+        px *= 2
+    return max(256, min(1024, px))
+
+
+def _mismatch(r):
+    """(ratio, badge) - how far this creature's DRAWN size departs from what its
+    mass implies. >1 means it looks bigger than it hits/weighs."""
+    phys = _physics_cells(r)
+    if not phys:
+        return None, ""
+    ratio = _render_cells(r) / phys
+    lo, hi = MISMATCH_ALARM
+    if ratio < lo or ratio > hi:
+        return ratio, "ALARM"
+    lo, hi = MISMATCH_WARN
+    if ratio < lo or ratio > hi:
+        return ratio, "WARN"
+    return ratio, ""
 
 
 def render_art(rows, force=False):
@@ -1063,14 +1114,12 @@ def render_art(rows, force=False):
         # ── scale: TRUE PHYSICAL size (from bodySize), human anchor beside it.
         #    See SIZE_POWER above — the box is a SQUARE derived from physical size,
         #    and _scale_panel contain-fits the sprite into it keeping its aspect.
-        cells = _physical_cells(r)
+        cells = _render_cells(r)
         cw, ch = r.get("drawSize") or [None, None]
         if cells:
             box = max(8, int(round(cells * PX_PER_CELL)))
-            # pxPerCell keeps its meaning — art softness at the GAME's own draw
-            # size (drawSize), NOT the physical review size — so the quality
-            # ranking is unchanged. Falls back to the physical box when drawSize
-            # is absent (a bodySize-less special).
+            # pxPerCell = art softness at the GAME's own draw size, which the
+            # panel now equals, so picture and metric finally agree.
             longest_draw = max(cw or 0, ch or 0)
             draw_px = max(8.0, (longest_draw or cells) * PX_PER_CELL)
             r["art"]["pxPerCell"] = round(max(im.width, im.height) / draw_px, 3)
@@ -1277,10 +1326,19 @@ def _effect(r):
     if tok:
         bits.append(" ".join(tok))
     if r.get("bodySize") is not None:
-        bits.append("body %.2f" % r["bodySize"])
+        bits.append("mass %.2f" % r["bodySize"])
     ds = r.get("drawSize") or [None, None]
     if ds[0]:
         bits.append("drawn %.1f×%.1f cells" % (ds[0], ds[1]))
+    # The mismatch the owner asked to surface: drawn size vs the size this mass
+    # would get in vanilla. >1 = looks bigger than it hits/weighs.
+    ratio, badge = _mismatch(r)
+    if ratio:
+        bits.append("%ssize/physics %.2f×" % (
+            {"ALARM": "🔴 ", "WARN": "⚠️ "}.get(badge, ""), ratio))
+    gp = _generate_px(r)
+    if gp:
+        bits.append("regen at %dpx" % gp)
     if r.get("hits"):
         bits.append("~%d hits to kill a pawn" % r["hits"])
     elif r.get("hitsNote"):
@@ -1533,10 +1591,17 @@ def _brief(meta, items, groups, n_cut, n_zero, n_miss, n_reserve):
                                                       it.get("hitsNote")))
     return (
         "<p><b>What this is.</b> Every nonhuman creature the campaign's full mod stack "
-        "loads, with its art shown twice: once at <b>true physical scale</b> "
-        "(1.5 × bodySize<sup>0.6</sup> cells × 64 px, with a human silhouette beside it "
-        "for anchor — <b>not</b> the modder's inflated drawSize) and once "
-        "zoomed to a fixed size so the art itself can be judged. Decide whether each "
+        "loads, with its art shown twice: once at <b>the size the GAME actually draws it</b> "
+        "(max drawSize × 64 px, with a human silhouette beside it for anchor) and once "
+        "zoomed to a fixed size so the art itself can be judged. <b>This matches the "
+        "engine exactly</b> — the draw path has no bodySize term. Note vanilla "
+        "deliberately draws small animals BIG for clickability (~7× their mass implies "
+        "at bodySize 0.2, converging to ~1× above 2.5), so a tiny creature looking "
+        "near-human is the game being itself, not an error. Its <b>physics</b> is "
+        "printed beside it — mass (= bodySize) and the size vanilla would give that "
+        "mass (1.995 × bodySize<sup>0.375</sup>) — with a <b>mismatch badge</b> when the "
+        "two disagree, which is where apparent size and how it hits/weighs come apart. "
+        "Decide whether each "
         "sprite is <b>kept</b>, <b>regenerated</b>, <b>regenerated and rescaled</b>, or "
         "whether the <b>creature</b> goes.</p>"
         "<p><b>The campaign it is for.</b> Ash'karr — a desert world, a Jawa scavenger "
