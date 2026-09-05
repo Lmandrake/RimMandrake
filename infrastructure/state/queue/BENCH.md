@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-05T14:24:32Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-05T14:24:47Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: OWNER
 
 # NEXT — `priority.rank()` order, top item first
@@ -22,15 +22,6 @@ target:   v1
 kind:     bug
 summary:  (no items/ORACLE_OHM_PROMPT_STILL_SHIP_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/ORACLE_OHM_PROMPT_STILL_SHIP_1.md
-
-## OHM_PROVENANCE_PURGE_1 Purge the crew-belief that Ohm is the ship AND remove all Ohm-change provenance from the docs - current truth only (owner 2026-09-05)
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     fix
-summary:  (no items/OHM_PROVENANCE_PURGE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/OHM_PROVENANCE_PURGE_1.md
 
 # IN PROGRESS
 
