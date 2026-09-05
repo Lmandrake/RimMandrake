@@ -2526,6 +2526,47 @@
     </match>
   </Operation>
 
+  <!-- RESEARCH_TAB_VIEWCOORD_COLLISION_1, 2026-09-05: the live 2026-09-04
+       full-list load logged 'AdvancedShowers: same research view coords and
+       tab as VCE_StewCooking: 2, 0(RUT_Tree_Hearth)' - a regression from this
+       consolidation putting two independently-authored rows with the same
+       (x,y) into one tab. AdvancedShowers' OWN raw declaration (Dubs Bad
+       Hygiene Lite, ResearchProjects_Hygiene.xml) is researchViewX=5,
+       researchViewY=0.5, not (2,0) - some other active mod's compatibility
+       patch is repositioning it to (2,0) before this file runs, and neither
+       this repo nor RimSage's indexed source names that patch. Rather than
+       chase the third-party mechanism, force a value here explicitly: (2,1),
+       one row below VCE_StewCooking in the same column this settlement
+       apparently wants it in. Conditional Replace-or-Add so this wins
+       whether or not a prior patch already added the field, mirroring the
+       tab pattern above - the same file/mechanism RESEARCH_TREE_TABS_1
+       already proved live for tab reassignment. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ResearchProjectDef[defName="AdvancedShowers"]</xpath>
+    <match Class="PatchOperationConditional">
+      <xpath>Defs/ResearchProjectDef[defName="AdvancedShowers"]/researchViewX</xpath>
+      <match Class="PatchOperationSequence">
+        <operations>
+          <li Class="PatchOperationReplace">
+            <xpath>Defs/ResearchProjectDef[defName="AdvancedShowers"]/researchViewX</xpath>
+            <value><researchViewX>2</researchViewX></value>
+          </li>
+          <li Class="PatchOperationReplace">
+            <xpath>Defs/ResearchProjectDef[defName="AdvancedShowers"]/researchViewY</xpath>
+            <value><researchViewY>1</researchViewY></value>
+          </li>
+        </operations>
+      </match>
+      <nomatch Class="PatchOperationAdd">
+        <xpath>Defs/ResearchProjectDef[defName="AdvancedShowers"]</xpath>
+        <value>
+          <researchViewX>2</researchViewX>
+          <researchViewY>1</researchViewY>
+        </value>
+      </nomatch>
+    </match>
+  </Operation>
+
   <!-- AdvancedToilets -> The Hearth (RUT_Tree_Hearth) -->
   <Operation Class="PatchOperationConditional">
     <xpath>Defs/ResearchProjectDef[defName="AdvancedToilets"]</xpath>
