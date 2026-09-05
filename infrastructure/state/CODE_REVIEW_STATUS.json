@@ -2872,6 +2872,16 @@
     "date": "2026-09-03",
     "sha": "70cd2206"
   },
+  "src/RimStarWars/BeastNorm/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "0e986f2a"
+  },
+  "src/RimStarWars/BeastNorm/Patches/BeastNorm_Law3.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "0e986f2a"
+  },
   "src/RimStarWars/BlastDoorFrameAsyncFix/Source/build_frameasync_east.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -3002,15 +3012,60 @@
     "date": "2026-09-03",
     "sha": "66d742be"
   },
-  "src/RimStarWars/FireEcology/Defs/TerrainDefs/ScorchableGround.xml": {
+  "src/RimStarWars/FireEcology/About/About.xml": {
     "cleanCount": 1,
-    "date": "2026-09-04",
-    "sha": "f914ab5a"
+    "date": "2026-09-05",
+    "sha": "56fc6ecf"
+  },
+  "src/RimStarWars/FireEcology/Defs/TerrainDefs/AshLadder.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "56fc6ecf"
+  },
+  "src/RimStarWars/FireEcology/Defs/TerrainDefs/Firebreak.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "56fc6ecf"
+  },
+  "src/RimStarWars/FireEcology/Defs/TerrainDefs/ScorchableGround.xml": {
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "56fc6ecf"
+  },
+  "src/RimStarWars/FireEcology/Defs/ThingDefs_Ash/Filth_LooseAsh.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "56fc6ecf"
+  },
+  "src/RimStarWars/FireEcology/Defs/ThingDefs_Fulgurite/Fulgurite.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "56fc6ecf"
+  },
+  "src/RimStarWars/FireEcology/Defs/ThingDefs_ScorchFruit/ScorchFruit.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "56fc6ecf"
+  },
+  "src/RimStarWars/FireEcology/Defs/ThingDefs_Sprayer/FirefoamSprayer.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "56fc6ecf"
+  },
+  "src/RimStarWars/FireEcology/Defs/WeatherDefs/BlackRain.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "56fc6ecf"
   },
   "src/RimStarWars/FireEcology/Source/FireEcologyHook.cs": {
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "56fc6ecf"
+  },
+  "src/RimStarWars/FireEcology/Source/FireEcologyHook.csproj": {
     "cleanCount": 1,
-    "date": "2026-09-03",
-    "sha": "c6ede2aa"
+    "date": "2026-09-05",
+    "sha": "56fc6ecf"
   },
   "src/RimStarWars/HelixTellurox/About/About.xml": {
     "cleanCount": 1,
@@ -3092,25 +3147,60 @@
     "date": "2026-09-02",
     "sha": "14ea427e"
   },
-  "src/RimStarWars/Livestock/Defs/PawnKindDefs/PawnKindDefs_Karrask.xml": {
+  "src/RimStarWars/Livestock/About/About.xml": {
     "cleanCount": 1,
-    "date": "2026-09-04",
-    "sha": "f914ab5a"
+    "date": "2026-09-05",
+    "sha": "0e986f2a"
+  },
+  "src/RimStarWars/Livestock/Defs/DamageDefs/DamageDefs_ColdDrain.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "0e986f2a"
+  },
+  "src/RimStarWars/Livestock/Defs/HediffDefs/HediffDefs_ColdDrain.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "0e986f2a"
+  },
+  "src/RimStarWars/Livestock/Defs/PawnKindDefs/PawnKindDefs_ForsakenCrags.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "0e986f2a"
+  },
+  "src/RimStarWars/Livestock/Defs/PawnKindDefs/PawnKindDefs_Karrask.xml": {
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "0e986f2a"
+  },
+  "src/RimStarWars/Livestock/Defs/RecipeDefs/RecipeDefs_Karrask.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "0e986f2a"
+  },
+  "src/RimStarWars/Livestock/Defs/ThingDefs_Animals/ThingDefs_ForsakenCrags.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "0e986f2a"
   },
   "src/RimStarWars/Livestock/Defs/ThingDefs_Animals/ThingDefs_Karrask.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "sha": "42166e1a"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "0e986f2a"
   },
   "src/RimStarWars/Livestock/Source/CompLightAversion.cs": {
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "0e986f2a"
+  },
+  "src/RimStarWars/Livestock/Source/RimMandrakeLivestockRSW.csproj": {
     "cleanCount": 1,
-    "date": "2026-09-04",
-    "sha": "43f96b1b"
+    "date": "2026-09-05",
+    "sha": "0e986f2a"
   },
   "src/RimStarWars/Livestock/art/gen_livestock_mockups.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "sha": "359b0b2c"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "0e986f2a"
   },
   "src/RimStarWars/MSEDroidFix/Source/draw_mse_north.py": {
     "cleanCount": 1,
