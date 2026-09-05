@@ -14,6 +14,19 @@
   `Lightsaber_Crafting`, that eight concrete recipes inherit by ParentName —
   none of the eight override `recipeUsers`.
 
+  ARMOURY_LIGHTSABER_FINDMOD_1 (2026-09-04): this mod's absorbed copy of the
+  donor's Patch_KotORLightsaberRecipes.xml was DELETED, not fixed. RimWorld
+  runs a mod's top-level Patches/*.xml before its subfolder patch files, so
+  this file's Remove of the abstract's recipeUsers ran first and the absorbed
+  Replace of that same node then matched nothing - one FindMod "failed" line
+  every load (proven by deploy-side bisection on the 17-mod repro list, 33s
+  cycles). The failure also aborted its whole PatchOperationSequence, so the
+  absorbed per-recipe research/ingredient ops NEVER ran on any load. Every op
+  in that file existed to wire up lightsaber crafting benches and research -
+  the exact thing the ruling above cuts - so the file is contradiction, not
+  compatibility. If the crafting cut is ever reversed, recover the donor ops
+  from git or the still-subscribed donor (workshop 2938932438).
+
   WHAT THE RESOLVED DUMP ACTUALLY SHOWS - read from the RESOLVED state, not
   the raw donor file, per this item's own criteria
   ============================================================================
