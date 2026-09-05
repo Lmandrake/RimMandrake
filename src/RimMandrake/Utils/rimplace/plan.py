@@ -22,6 +22,18 @@ _GLYPH = {
     "CHAIR": "h", "STORAGE": "S", "STOVE": "K", "COOLER": "C", "HEATER": "H",
     "DECOR": "o", "BATTERY": "B", "GENERATOR": "G", "TURRET": "X",
     "SANDBAG": ",", "VENT": "v", "NEST": "n",
+    # the clutter/prop vocabulary (DISTRICT_TEMPLATE_LIBRARY_1, 2026-09-05)
+    "STOOL": "s", "CRATE": "c", "BARREL": "c", "SHELF_SMALL": "S",
+    "END_TABLE": "t", "DRESSER": "D", "PLANT_POT": "p", "WALL_LIGHT": "'",
+    "JUNK_PILE": "%", "SCRAP": "%", "WRECK": "W", "WRECK_BIG": "W",
+    "FORGE": "K", "BRAZIER": "K", "THRONE": "R", "GAME": "g", "HOLO": "g",
+    "INSTRUMENT": "g", "TERMINAL": "i", "SCREEN": "i", "CHARGER": "E",
+    "GONK": "E", "FUEL_TANK": "F", "FUEL_TANK_SMALL": "F", "REFINERY": "F",
+    "REACTOR": "F", "FABRICATOR": "F", "WATER_TANK": "U", "FOUNTAIN": "U",
+    "WELL": "U", "TROUGH": "U", "TUB": "U", "HOSPITAL_BED": "b",
+    "VITALS": "m", "HYDRO": "y", "SUNLAMP": "*", "TRAP": "x",
+    "BARRICADE": ",", "FENCE": "|", "BANNER": "!", "DECAL": "~", "SIGN": "~",
+    "PILLAR": "#", "DESK": "T", "MEDICINE": "m",
 }
 
 
@@ -40,12 +52,16 @@ def render(plan: BuildPlan, show_roof=False) -> str:
         for (x, z) in plan.roof:
             if grid.get((x, z)) == ".":
                 grid[(x, z)] = "-"
-    for t in plan.things:
+    # overlays (wall lamps, decals) draw only where nothing solid stands, so
+    # the edifice under a decal is what the reviewer sees
+    for t in sorted(plan.things, key=lambda t: t.overlay):
         g = _GLYPH.get((t.role or "").upper())
         if g is None:
             d = t.defName.lower()
             g = ("#" if "wall" in d else "+" if "door" in d else
                  "b" if "bed" in d else "?")
+        if t.overlay and grid.get((t.x, t.z), " ") not in (" ", ".", "-"):
+            continue
         grid[(t.x, t.z)] = g
 
     pad = 1
@@ -100,9 +116,14 @@ def lint(plan: BuildPlan, verified_defs: set[str] | None = None) -> list[Finding
     fp = plan.meta.get("footprint")
     rect = Rect(*fp) if fp else None
 
-    # 1. two things in one cell - build_batch would silently wipe one
+    # 1. two things in one cell - build_batch would silently wipe one.
+    #    Overlays (Thing.overlay: non-edifice wall lamps, floor decals) are
+    #    exempt by the engine's own rule (GenSpawn.SpawningWipes never wipes
+    #    for or against a non-edifice), and 1b below skips them the same way.
     bycell = defaultdict(list)
     for t in plan.things:
+        if t.overlay:
+            continue
         bycell[(t.x, t.z)].append(t)
     for (x, z), ts in sorted(bycell.items()):
         if len(ts) > 1:
@@ -124,6 +145,8 @@ def lint(plan: BuildPlan, verified_defs: set[str] | None = None) -> list[Finding
         owner: dict = {}
         unmeasured = set()
         for t in plan.things:
+            if t.overlay:
+                continue
             cells = _fp(t.defName, t.x, t.z, t.rot or 0, sizes)
             if cells is None:
                 unmeasured.add(t.defName)

@@ -401,6 +401,54 @@ def t_footprint_fires():
     assert f, "a chair inside a 1x2 table was not caught"
 
 
+@case("an overlay (floor decal) shares a cell with an edifice and lint is silent")
+def t_overlay_coexists():
+    p = _run("function build(ctx) ctx:place('DiningChair',2,2,0,'WoodLog') "
+             "ctx:place_overlay('OuterRim_Decal_HuttClan',2,2,0) end")
+    assert len(p.things) == 2, p.things
+    assert p.things[1].overlay is True
+    assert not p.occupied(3, 3), "an overlay-only cell must not read as occupied"
+    bad = [f for f in lint(p) if f.code in ("cell-collision", "footprint-collision")]
+    assert not bad, [str(f) for f in bad]
+
+
+@case("NEGATIVE: a wall lamp with no wall to hang on is refused, not placed")
+def t_wall_attach_refuses():
+    p = _run("function build(ctx) ctx:wall_attach('WALL_LIGHT', 3, 3, 0) end")
+    assert not p.things, "a lamp was placed with no wall in front of it"
+    assert [r for r in p.refusals if r.code == "attach-no-wall"], p.refusals
+
+
+@case("a wall lamp in front of a wall lands as an overlay facing the wall")
+def t_wall_attach_places():
+    p = _run("function build(ctx) ctx:wall_rect(0,0,6,6) "
+             "assert(ctx:wall_attach('WALL_LIGHT', 2, 4, 0)) end")
+    lamps = [t for t in p.things if t.role == "WALL_LIGHT"]
+    assert len(lamps) == 1 and lamps[0].overlay and lamps[0].rot == 0, lamps
+    assert not [f for f in lint(p) if f.level == "ERROR"]
+
+
+@case("the prelude's helpers exist and scatter() places what it says it placed")
+def t_prelude():
+    p = _run("function build(ctx) local r = R(0,0,12,8) "
+             "local n = scatter(ctx, 'STOOL', r, 6) "
+             "assert(n == 6, 'scatter placed ' .. n) "
+             "assert(dress(ctx, r, {{role='CRATE', n={1,2}, where='corner'}}) >= 1) end")
+    assert p.meta.get("prelude_sha256"), "prelude hash missing from the plan meta"
+    assert sum(1 for t in p.things if t.role == "STOOL") == 6
+
+
+@case("NEGATIVE: shell() with no floor named is a refusal, not bare ground")
+def t_shell_needs_floor():
+    p = _run("function build(ctx) shell(ctx, 'Room', R(0,0,6,6), {doors={'S'}}) end")
+    assert [r for r in p.refusals if r.what == "floor"], p.refusals
+    p2 = _run("function build(ctx) shell(ctx, 'Room', R(0,0,6,6), "
+              "{floor='PavedTile', doors={'S'}}) end")
+    assert not [r for r in p2.refusals if r.what == "floor"]
+    assert p2.terrain[(2, 2)] == "PavedTile", p2.terrain.get((2, 2))
+    assert not [f for f in lint(p2) if f.level == "ERROR"]
+
+
 @case("a template can step by a def's real width, and 2-wide shelves do not overlap")
 def t_shelf_stride():
     from .defsize import load as _sizes

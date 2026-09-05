@@ -64,6 +64,14 @@ class Thing:
                                      # quality/hitPoints/stackCount/faction/contents/
                                      # bills/storage. Authoring code never sets this;
                                      # the placer replays what it can and reports the rest.
+    overlay: bool = False            # a NON-EDIFICE thing that shares its cell with an
+                                     # edifice: a wall lamp (building.isAttachment, sits on
+                                     # the floor cell in front of its wall), a floor decal or
+                                     # sign (altitudeLayer Floor, fillPercent 0). Verified
+                                     # against GenSpawn.SpawningWipes (1.6): a non-edifice
+                                     # never wipes and is never wiped by an edifice, so the
+                                     # engine exempts these from cell/footprint collision.
+                                     # Only Ctx.place_overlay/wall_attach set this.
 
 
 @dataclass
@@ -103,9 +111,9 @@ class BuildPlan:
 
     # -- emit ---------------------------------------------------------------
     def add_thing(self, defName, x, z, rot=0, stuff=None, role=None,
-                  paint=None, extra=None):
+                  paint=None, extra=None, overlay=False):
         self.things.append(Thing(defName, int(x), int(z), int(rot), stuff, role,
-                                 paint, extra))
+                                 paint, extra, bool(overlay)))
 
     def set_terrain(self, x, z, defName):
         self.terrain[(int(x), int(z))] = defName
@@ -133,7 +141,9 @@ class BuildPlan:
         return [t for t in self.things if t.x == x and t.z == z]
 
     def occupied(self, x, z) -> bool:
-        return bool(self.thing_at(x, z))
+        """An EDIFICE stands here. Overlays (wall lamps, floor decals) do not
+        count: a chair may share a cell with the decal under it."""
+        return any(not t.overlay for t in self.thing_at(x, z))
 
     # -- serialise ----------------------------------------------------------
     def to_dict(self) -> dict:

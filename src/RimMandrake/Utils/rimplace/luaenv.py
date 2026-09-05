@@ -119,9 +119,29 @@ def _attribute_filter(obj, name, is_setting):
     return name
 
 
-def _sandboxed_runtime():
+_PRELUDE_PATH = Path(__file__).resolve().parent / "prelude.lua"
+
+
+def _prelude_text() -> str:
+    return _PRELUDE_PATH.read_text(encoding="utf-8")
+
+
+def _prelude_sha() -> str:
+    return hashlib.sha256(_prelude_text().encode("utf-8")).hexdigest()[:16]
+
+
+def _sandboxed_runtime(rng=None):
     """The ONE place a LuaRuntime is constructed. Two existed and only one was
-    reviewed; a second construction site is a second sandbox to keep in step."""
+    reviewed; a second construction site is a second sandbox to keep in step.
+
+    ⭐ `prelude.lua` (the shared authoring helpers: scatter, along_wall, dress,
+    shell...) is executed here, AFTER the sandbox strips the forbidden names and
+    BEFORE any template runs, so it lives under exactly the same fence a
+    template does and can only ever call the documented ctx API. Its content
+    hash rides on every plan as meta.prelude_sha256 next to the template's own,
+    because a plan is a function of BOTH sources now. It needs `rng` to exist
+    as a global (shuffle/jitter), which is why the rng table is bound first.
+    """
     from lupa import LuaRuntime
     L = LuaRuntime(unpack_returned_tuples=True, register_eval=False,
                    attribute_filter=_attribute_filter)
@@ -136,7 +156,18 @@ def _sandboxed_runtime():
     # writing this.
     L.execute(_BUDGET_HOOK)
     L.execute(_SANDBOX_PRELUDE)
+    if rng is not None:
+        _bind_rng(L, rng)
+    L.execute(_prelude_text())
     return L
+
+
+def _bind_rng(L, rng):
+    rngt = L.table()
+    rngt["int"] = rng.int
+    rngt["chance"] = rng.chance
+    rngt["pick"] = lambda t: rng.pick(list(t.values()) if hasattr(t, "values") else t)
+    L.globals()["rng"] = rngt
 
 
 class TemplateTooSmall(RuntimeError):
@@ -238,6 +269,8 @@ class Ctx:
             return None
         from .defsize import footprint as _fp
         for t in self.plan.things:
+            if t.overlay:
+                continue            # non-edifice: shares a cell by design
             # Only the IDENTICAL thing in the IDENTICAL cell is exempt - that is
             # the shared-wall-column case place() already returns True for. Two
             # shelves at different origins overlap exactly as much as a shelf
@@ -252,8 +285,17 @@ class Ctx:
                 return t, sorted(hit)[0]
         return None
 
+    def role_at(self, x, z):
+        """The palette ROLE of the edifice standing at (x,z), or nil. Overlays
+        are skipped. This is what a template needs to keep the cell in front
+        of a DOOR clear, or to find the WALL a lamp hangs on."""
+        for t in self.plan.thing_at(int(x), int(z)):
+            if not t.overlay:
+                return t.role
+        return None
+
     # ---- emit -------------------------------------------------------------
-    def place(self, defName, x, z, rot=0, stuff=None, role=None):
+    def place(self, defName, x, z, rot=0, stuff=None, role=None, overlay=False):
         x, z = int(x), int(z)
         if defName is None:
             self.plan.refuse("place", "nil defName (unmapped palette role?)", x, z)
@@ -277,6 +319,17 @@ class Ctx:
         # jawa/build_batch wiped the chair while reporting BOTH as placed. Three
         # of 81 things vanished that way and lint reported nothing.
         cells = self.footprint_of(defName, x, z, rot)
+        if overlay:
+            # A non-edifice shares its cells with whatever edifice is there
+            # (GenSpawn.SpawningWipes never wipes for one, in either direction).
+            # It still has to lie inside the footprint, whole.
+            if cells is not None and not all(self.rect.contains(cx, cz) for cx, cz in cells):
+                self.plan.refuse(str(defName), "overlay footprint leaves the plan rect", x, z)
+                return False
+            self.plan.add_thing(str(defName), x, z, int(rot or 0),
+                                str(stuff) if stuff else None,
+                                str(role) if role else None, overlay=True)
+            return True
         if cells is None:
             # Unmeasured size. Say so on the plan and place it as authored -
             # refusing here would silently drop content because an INDEX is
@@ -370,6 +423,51 @@ class Ctx:
             self.plan.refuse(f"role:{role}", "no palette entry", int(x), int(z))
             return False
         return self.place(d, x, z, rot, self.role(str(role) + "_STUFF"), role)
+
+    # Rot4 as the engine has it: 0 north (+z), 1 east (+x), 2 south (-z), 3 west (-x).
+    _DIR = {0: (0, 1), 1: (1, 0), 2: (0, -1), 3: (-1, 0)}
+
+    def place_overlay(self, name, x, z, rot=0):
+        """Place a NON-EDIFICE thing that shares its cell(s): a floor decal, an
+        Aurebesh sign, a rug-like marker. `name` is a palette ROLE or a raw
+        defName. Skips every collision check on purpose - see Thing.overlay
+        for the engine reading that makes this safe. 🔴 Only use it for defs
+        whose building.isEdifice is false; an edifice placed this way would be
+        wiped live while the plan reports it placed."""
+        role = str(name)
+        d = self.role(role)
+        if d is None:
+            d, role_tag = role, None
+        else:
+            role_tag = role
+        return self.place(d, x, z, rot, self.role(role + "_STUFF") if role_tag else None,
+                          role_tag, overlay=True)
+
+    def wall_attach(self, role, x, z, rot=0):
+        """A wall-mounted thing (wall lamp, wall torch) the way 1.6 actually
+        places one: ON THE FLOOR CELL IN FRONT of the wall, rotated to FACE the
+        wall. Placeworker_AttachedToWall (RimWorld/Placeworker_AttachedToWall.cs)
+        refuses a Fillage-Full cell at `loc` and requires the wall at
+        `loc + CardinalDirections[rot]` - read, not guessed. So `rot` here is
+        the side the wall is on: a lamp on a room's north wall is placed one
+        cell inside that wall at rot 0. Refuses (WARN, attach-no-wall) when
+        there is no WALL-role thing in that cell, rather than spawning a lamp
+        the game would have refused to build."""
+        d = self.role(role)
+        if d is None:
+            self.plan.refuse(f"role:{role}", "no palette entry", int(x), int(z))
+            return False
+        x, z, rot = int(x), int(z), int(rot or 0) % 4
+        dx, dz = self._DIR[rot]
+        if self.role_at(x + dx, z + dz) != "WALL":
+            self.plan.refuse(str(d), f"no WALL at ({x + dx},{z + dz}) for rot {rot} to attach to",
+                             x, z, level="WARN", code="attach-no-wall")
+            return False
+        if self.role_at(x, z) == "WALL" or self.role_at(x, z) == "DOOR":
+            self.plan.refuse(str(d), "wall attachments sit in FRONT of a wall, not in it",
+                             x, z, level="WARN", code="attach-in-wall")
+            return False
+        return self.place(d, x, z, rot, self.role(str(role) + "_STUFF"), role, overlay=True)
 
     def floor(self, x, z, defName=None):
         d = defName or self.role("FLOOR")
@@ -542,6 +640,7 @@ def run_template(path: str | Path, rect: Rect, params: dict,
     plan = BuildPlan({
         "template": path.stem,
         "template_sha256": hashlib.sha256(src_text.encode("utf-8")).hexdigest()[:16],
+        "prelude_sha256": _prelude_sha(),
         "seed": int(seed),
         "generator": "lua-prototype/0.1",
         "footprint": rect.as_list(),
@@ -550,7 +649,7 @@ def run_template(path: str | Path, rect: Rect, params: dict,
     rng = SeededRng(seed)
     ctx = Ctx(plan, rect, params, palette, rng, site)
 
-    L = _sandboxed_runtime()
+    L = _sandboxed_runtime(rng)
 
     g = L.globals()
     g["ctx"] = ctx
@@ -560,12 +659,6 @@ def run_template(path: str | Path, rect: Rect, params: dict,
     for k, v in params.items():
         p[k] = v
     g["params"] = p
-
-    rngt = L.table()
-    rngt["int"] = rng.int
-    rngt["chance"] = rng.chance
-    rngt["pick"] = lambda t: rng.pick(list(t.values()) if hasattr(t, "values") else t)
-    g["rng"] = rngt
 
     # role(name) as a bare function is the most-used call in any template
     g["role"] = ctx.role
@@ -662,7 +755,9 @@ def declared_min_rect(path: str | Path, params: dict) -> tuple[int, int] | None:
     path = Path(path)
     if not path.exists():
         raise TemplateError(f"template not found: {path}")
-    L = _sandboxed_runtime()
+    # A fixed seed: min_rect() is a pure question about a floor and must answer
+    # the same every time, but the prelude's helpers expect `rng` to exist.
+    L = _sandboxed_runtime(SeededRng(0))
     g = L.globals()
     p = L.table()
     for k, v in (params or {}).items():
