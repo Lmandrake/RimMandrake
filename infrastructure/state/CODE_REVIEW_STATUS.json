@@ -1870,6 +1870,12 @@
     "hash": "ec3503b97fa8f6d172c2adb049463a4050931d23596a14396fda53b94a9df12f",
     "sha": "35c29544"
   },
+  "src/RimMandrake/Utils/gen_creature_register.py": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "8aa82eac6411be89d17388e1ef354ccc74779c21466a0cfdfb14a0550249053c",
+    "sha": "48e3e4e4"
+  },
   "src/RimMandrake/Utils/gen_pawn_flavor_phase2_apply.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
