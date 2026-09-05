@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-05T18:33:47Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-05T18:57:18Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -447,7 +447,7 @@ row:      unassigned
 needs:    game-up
 target:   v1
 kind:     task
-summary:  (no items/NINEFOLD_RUNTIME_PROOF_BLOCKED_1.md yet — write one when you have something to say)
+summary:  NINEFOLDRUNTIMEPROOFBLOCKED1 — partial check, deploy is stale, left doing
 prose:    infrastructure/state/items/NINEFOLD_RUNTIME_PROOF_BLOCKED_1.md
 
 # BLOCKED — something is WRONG and someone must act

@@ -4884,3 +4884,5 @@
 {"seat":"FOUNDRY","event":"start","id":"NINEFOLD_RUNTIME_PROOF_BLOCKED_1","ts":"2026-09-05T18:30:11Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"NINEFOLD_RUNTIME_PROOF_BLOCKED_1: verify hooks fire on normal load; live-prove today's fire/downed hooks, moisture vaporator, WILD_ANIMALS follow-up","ts":"2026-09-05T18:30:12Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-05T18:33:47Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"WILD_ANIMALS_PADDED_LISTS_1: check EBSG/Fortified Features Framework leads via jawa/startup_types + harmony_patches","ts":"2026-09-05T18:50:40Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-05T18:57:18Z"}
