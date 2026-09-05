@@ -27,7 +27,16 @@
       <texPath>Buildings/MoistureVaporators/moisturevaporator_1</texPath>
       <graphicClass>Graphic_Single</graphicClass>
       <drawSize>(3,3)</drawSize>
-      <drawOffset>(0,0,1)</drawOffset>
+      <drawOffset>(0,0,0)</drawOffset>
+      <!-- MOISTURE_VAPORATOR_WALL_CLIP_1: was (0,0,1), which anchored the
+           3x3 sprite flush on its south edge and pushed the ENTIRE overhang
+           (~1.7 tiles of opaque pixels beyond the 1x1 footprint, per
+           moisturevaporator_1.png's alpha bbox) onto the north edge - enough
+           to draw through/past a wall placed on that side. Centering splits
+           the overhang to ~0.99 tile south / ~0.71 tile north, matching the
+           ~1 tile overhang convention KotOR_watertank uses on the same
+           footprint (see Absorbed_Kotorcore_NO_DBH_Building_PropWaterTank.xml),
+           so neither side clips a 1-tile-thick wall as badly. -->
       <color>(205,200,195)</color>
       <!-- off-light-grey -->
       <shadowData>
