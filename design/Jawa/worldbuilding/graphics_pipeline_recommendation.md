@@ -59,6 +59,16 @@ rigid wreckage is the local TripoSR 3D-proxy route (GPU, offline, free).
 5. Validate silhouette/proportion drift with the existing
    `validate_sprite.py`; re-roll the odd facing (2D synthesis isn't perfect).
 
+🔴 **TESTED 2026-09-05, verdict = not viable from one hero (see
+`Transient/triposr_prototype/contact_sheet.png`).** TripoSR ran end-to-end on the
+AutomatedSmelter (RTX 5080, torch cu128): silhouette consistency is perfect by
+construction, but east/north come back as near-featureless dark slabs — it
+reconstructs a thin shell from the single photo and invents no detail for unseen
+sides. The current kludged facings are far richer. ⇒ Single-hero 3D-proxy is OUT
+for facings; only revisit with multi-view input, or as a silhouette/geometry
+guide UNDER a separate reference-conditioned texture pass. This means the
+multi-facing goal realistically needs the paid Gemini channel.
+
 **Side-experiment for rigid wreckage (worth it for Wrecked Machines):**
 image→3D proxy (**TripoSR** local / open weights, or **Tripo3D** via fal), then
 render the exact orthographic facings from the mesh — *geometrically perfect*
