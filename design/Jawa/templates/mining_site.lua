@@ -182,30 +182,6 @@ function build(ctx)
   -- the yard's own worn ground around the rail head
   floor_patch(ctx, fr.rect(ur - 3, 3, 7, 4), "Gravel", lot)
 
-  -- ---- the ore yard: chunk heaps, a little steel, the mud carriage ---------
-  local chunk = ctx:role("ROCK_CHUNK") or "ChunkSandstone"
-  local heaps = 0
-  for _ = 1, 2 do
-    local hu = rng.pick({ rng.int(1, 5), rng.int(11, W - 8) })
-    -- v capped at 4, not 5: clump()'s own +/-1 vertical scatter can reach one
-    -- row past this anchor, and the tool shed's rect starts at works_v0 (6) -
-    -- an anchor at v=5 could scatter a chunk into v=6, colliding with the
-    -- shed's wall once shell() builds it later in this same function. Found
-    -- by lint at seed 0/1 (rock_side N): "Wall: footprint overlaps
-    -- ChunkSandstone at (3,6)".
-    local hx, hz = fr.cell(hu, rng.int(3, 4))
-    heaps = heaps + clump(ctx, chunk, "SCRAP", hx, hz, rng.int(3, 5), lot)
-  end
-  for _ = 1, rng.int(1, 2) do
-    local sx, sz = fr.cell(rng.int(11, 17), rng.int(3, 6))
-    try_def(ctx, "Steel", "STEEL", sx, sz, 0)
-  end
-  if extra_w >= 5 then
-    -- 5 wide, centred: keep its east end 2 clear of the bus column (W-7)
-    local mu = math.min(17 + math.floor(extra_w / 2), W - 10)
-    place_local(ctx, fr, "VFEPD_AncientMudCarriage", "WRECK_BIG", mu - 2, 3, 5, 3)
-  end
-
   -- ---- the works ----------------------------------------------------------
   -- cars on the rail: one on the line, one derailed a cell off it
   do
@@ -338,6 +314,38 @@ function build(ctx)
     try_place(ctx, "LIGHT", tx, tz, 0)
     local tx2, tz2 = fr.cell(ur - 2, face_v - 1)
     try_place(ctx, "LIGHT", tx2, tz2, 0)
+  end
+
+  -- ---- the ore yard: chunk heaps, a little steel, the mud carriage ---------
+  -- MINING_SITE_SCATTER_COLLISION_1: this block used to run right after the
+  -- rail (before the tool shed, bunkhouse, dresser, mud carriage and power
+  -- bus existed), so its own can_place-gated clump()/try_def calls could
+  -- only see what had been placed SO FAR - a chunk could land in a cell a
+  -- LATER shell()/place_local call would then build a wall or machine over,
+  -- since neither side knew about the other. shell()'s walls in particular
+  -- do not check pre-occupancy (a wall is meant to always place), which is
+  -- what turned this into a hard footprint-collision/room-not-sealed lint
+  -- ERROR rather than a graceful refusal. Moving this block to run LAST,
+  -- after every other yard/works/power element, means clump()'s existing
+  -- can_place check (via try_def) sees the whole site as it will actually
+  -- be and simply skips any cell something else already claimed - no new
+  -- exclusion-rect plumbing needed. Verified clean across all 4 rock_side
+  -- values x seeds 0-29 (was failing at several E/W combinations before).
+  local chunk = ctx:role("ROCK_CHUNK") or "ChunkSandstone"
+  local heaps = 0
+  for _ = 1, 2 do
+    local hu = rng.pick({ rng.int(1, 5), rng.int(11, W - 8) })
+    local hx, hz = fr.cell(hu, rng.int(3, 5))
+    heaps = heaps + clump(ctx, chunk, "SCRAP", hx, hz, rng.int(3, 5), lot)
+  end
+  for _ = 1, rng.int(1, 2) do
+    local sx, sz = fr.cell(rng.int(11, 17), rng.int(3, 6))
+    try_def(ctx, "Steel", "STEEL", sx, sz, 0)
+  end
+  if extra_w >= 5 then
+    -- 5 wide, centred: keep its east end 2 clear of the bus column (W-7)
+    local mu = math.min(17 + math.floor(extra_w / 2), W - 10)
+    place_local(ctx, fr, "VFEPD_AncientMudCarriage", "WRECK_BIG", mu - 2, 3, 5, 3)
   end
 
   -- ---- the face: E1 CLEAR over the cut, then the rock mass, the cut, the

@@ -1,5 +1,5 @@
 # rimplace flat plan v2
-# template  mining_site (sha 1e439a41cd254882)
+# template  mining_site (sha bbb3d1f841cf6673)
 # min_rect  24x18   baked at 32x24
 FOOTPRINT	0	0	32	24
 CLEAR	-1	-1	34	26	soft
@@ -193,23 +193,14 @@ THING	AncientRustedTruck	2	1	1	-
 THING	QE_Sign	7	0	0	WoodLog
 THING	FT_Trench	13	0	1	-
 THING	FT_Trench	14	1	1	-
-THING	ChunkSandstone	15	3	0	-
-THING	ChunkSandstone	12	5	0	-
-THING	ChunkSandstone	12	4	0	-
-THING	ChunkSandstone	14	3	0	-
-THING	ChunkSandstone	1	4	0	-
-THING	ChunkSandstone	2	3	0	-
-THING	ChunkSandstone	0	4	0	-
-THING	Steel	12	6	0	-
-THING	Steel	15	4	0	-
-THING	VFEPD_AncientMudCarriage	21	4	0	-
-THING	VFEPD_AncientSteelMiningCars	8	10	1	-
+THING	VFEPD_AncientRockMiningCar	8	10	1	-
 THING	VFEPD_AncientEmptyMiningCar	10	5	1	-
-THING	VFEPD_AncientOreDressingMachine	14	11	0	-
-THING	BreadMoAM_AncientMineralConveyor	13	6	0	-
-THING	Filth_RubbleRock	14	10	0	-
-THING	Filth_RubbleRock	13	11	0	-
-THING	Filth_RubbleRock	14	9	0	-
+THING	VFEPD_AncientOreDressingMachine	14	9	0	-
+THING	BreadMoAM_AncientMineralConveyor	13	4	0	-
+THING	BreadMoAM_AncientMineralConveyor	15	4	0	-
+THING	Filth_RubbleRock	14	11	0	-
+THING	Filth_RubbleRock	14	7	0	-
+THING	Filth_RubbleRock	11	11	0	-
 THING	Wall	0	6	0	BlocksSandstone
 THING	Wall	1	6	0	BlocksSandstone
 THING	Wall	2	6	0	BlocksSandstone
@@ -232,9 +223,9 @@ THING	TableMachining	2	10	2	-
 THING	Shelf	1	7	0	WoodLog
 THING	SurvivalTools_Pickaxe	1	7	0	-
 THING	Stool	2	9	0	WoodLog
-THING	Stool	3	7	0	WoodLog
-THING	Filth_Dirt	3	9	0	-
-THING	WallLamp	1	7	3	-
+THING	Stool	2	8	0	WoodLog
+THING	Filth_Dirt	3	10	0	-
+THING	WallLamp	3	7	1	-
 THING	Wall	26	10	0	BlocksSandstone
 THING	Wall	27	10	0	BlocksSandstone
 THING	Wall	28	10	0	BlocksSandstone
@@ -257,17 +248,16 @@ THING	Wall	29	16	0	BlocksSandstone
 THING	Wall	30	16	0	BlocksSandstone
 THING	Wall	31	16	0	BlocksSandstone
 THING	Door	29	10	0	WoodLog
-THING	Bedroll	28	14	0	WoodLog
 THING	Bedroll	27	14	0	WoodLog
-THING	Bedroll	30	14	0	WoodLog
-THING	RH2_ClassicFootlocker	30	13	0	-
-THING	ElectricStove	29	12	0	-
-THING	DizzyCandle	29	15	0	-
-THING	AncientLockers	30	11	0	-
-THING	Stool	29	13	0	WoodLog
-THING	Filth_MoldyUniform	29	14	0	-
-THING	WallLamp	28	11	2	-
-THING	TorchLamp	27	12	0	-
+THING	Bedroll	29	14	0	WoodLog
+THING	Bedroll	28	14	0	WoodLog
+THING	RH2_ClassicFootlocker	29	13	0	-
+THING	Stool	30	14	0	WoodLog
+THING	DizzyCandle	30	15	0	-
+THING	AncientCrate	28	12	0	-
+THING	Filth_MoldyUniform	29	11	0	-
+THING	WallLamp	27	12	3	-
+THING	TorchLamp	27	13	0	-
 THING	QE_Sign	30	9	0	WoodLog
 THING	ChemfuelPoweredGenerator	26	3	0	-
 THING	PowerConduit	25	3	0	-
@@ -300,13 +290,23 @@ THING	PowerConduit	23	16	0	-
 THING	PowerConduit	24	16	0	-
 THING	FloodLight	10	16	0	-
 THING	Filth_MachineBits	26	4	0	-
+THING	ChunkSandstone	3	3	0	-
+THING	ChunkSandstone	7	4	0	-
+THING	ChunkSandstone	7	2	0	-
+THING	ChunkSandstone	20	4	0	-
+THING	ChunkSandstone	21	4	0	-
+THING	ChunkSandstone	22	4	0	-
+THING	ChunkSandstone	20	5	0	-
+THING	Steel	16	5	0	-
+THING	Steel	14	5	0	-
 THING	Sandstone	0	17	0	-
 THING	Sandstone	1	17	0	-
 THING	Sandstone	2	17	0	-
 THING	Sandstone	3	17	0	-
 THING	Sandstone	4	17	0	-
 THING	Sandstone	5	17	0	-
-THING	Sandstone	6	17	0	-
+THING	MineableSteel	6	17	0	-
+THING	Filth_RubbleRock	7	17	0	-
 THING	MineableSteel	10	17	0	-
 THING	Filth_RubbleRock	9	17	0	-
 THING	Sandstone	11	17	0	-
@@ -336,8 +336,7 @@ THING	Sandstone	2	18	0	-
 THING	Sandstone	3	18	0	-
 THING	Sandstone	4	18	0	-
 THING	Sandstone	5	18	0	-
-THING	MineableSteel	6	18	0	-
-THING	Filth_RubbleRock	7	18	0	-
+THING	Sandstone	6	18	0	-
 THING	MineableSteel	10	18	0	-
 THING	Filth_RubbleRock	9	18	0	-
 THING	Sandstone	11	18	0	-
@@ -367,7 +366,8 @@ THING	Sandstone	2	19	0	-
 THING	Sandstone	3	19	0	-
 THING	Sandstone	4	19	0	-
 THING	Sandstone	5	19	0	-
-THING	Sandstone	6	19	0	-
+THING	MineableSteel	6	19	0	-
+THING	Filth_RubbleRock	7	19	0	-
 THING	MineableSteel	10	19	0	-
 THING	Filth_RubbleRock	9	19	0	-
 THING	Sandstone	11	19	0	-
@@ -397,9 +397,9 @@ THING	Sandstone	2	20	0	-
 THING	Sandstone	3	20	0	-
 THING	Sandstone	4	20	0	-
 THING	Sandstone	5	20	0	-
-THING	Sandstone	6	20	0	-
-THING	MineableSteel	10	20	0	-
-THING	Filth_RubbleRock	9	20	0	-
+THING	MineableSteel	6	20	0	-
+THING	Filth_RubbleRock	7	20	0	-
+THING	Sandstone	10	20	0	-
 THING	Sandstone	11	20	0	-
 THING	Sandstone	12	20	0	-
 THING	Sandstone	13	20	0	-
@@ -427,8 +427,10 @@ THING	Sandstone	2	21	0	-
 THING	Sandstone	3	21	0	-
 THING	Sandstone	4	21	0	-
 THING	Sandstone	5	21	0	-
-THING	Sandstone	6	21	0	-
-THING	Sandstone	10	21	0	-
+THING	MineableSteel	6	21	0	-
+THING	Filth_RubbleRock	7	21	0	-
+THING	MineableSteel	10	21	0	-
+THING	Filth_RubbleRock	9	21	0	-
 THING	Sandstone	11	21	0	-
 THING	Sandstone	12	21	0	-
 THING	Sandstone	13	21	0	-
@@ -457,8 +459,7 @@ THING	Sandstone	3	22	0	-
 THING	Sandstone	4	22	0	-
 THING	Sandstone	5	22	0	-
 THING	Sandstone	6	22	0	-
-THING	MineableSteel	10	22	0	-
-THING	Filth_RubbleRock	9	22	0	-
+THING	Sandstone	10	22	0	-
 THING	Sandstone	11	22	0	-
 THING	Sandstone	12	22	0	-
 THING	Sandstone	13	22	0	-
@@ -487,10 +488,10 @@ THING	Sandstone	3	23	0	-
 THING	Sandstone	4	23	0	-
 THING	Sandstone	5	23	0	-
 THING	Sandstone	6	23	0	-
-THING	Sandstone	7	23	0	-
-THING	MineableSteel	8	23	0	-
+THING	MineableSteel	7	23	0	-
 THING	Filth_RubbleRock	8	22	0	-
-THING	Sandstone	9	23	0	-
+THING	Sandstone	8	23	0	-
+THING	MineableSteel	9	23	0	-
 THING	Sandstone	10	23	0	-
 THING	Sandstone	11	23	0	-
 THING	Sandstone	12	23	0	-
@@ -515,10 +516,9 @@ THING	Sandstone	30	23	0	-
 THING	Sandstone	31	23	0	-
 THING	VFEPD_AncientTunnelStructuralSupport_a	7	18	0	-
 THING	VFEPD_AncientTunnelStructuralSupport_b	9	18	0	-
-THING	AncientMiningCharge	8	22	0	-
-THING	DA_GnawedBones	9	21	0	-
-THING	VFEPD_FilthBones	8	19	0	-
-THING	VFEPD_SpaceJunk	5	4	0	-
+THING	VFEPD_FilthBones	7	22	0	-
+THING	Filth_Sand	8	9	0	-
+THING	VFEPD_SpaceJunk	3	5	0	-
 ROOF	0	6	RoofConstructed
 ROOF	0	7	RoofConstructed
 ROOF	0	8	RoofConstructed
