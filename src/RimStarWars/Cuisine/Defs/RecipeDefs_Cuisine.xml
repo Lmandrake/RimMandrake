@@ -7,12 +7,15 @@
   IngredientValueGetter_ExcludeSkewer replaces the donor expansion's
   un-sourced MOAS_Expansion.IngredientValueGetter_MeatlessStick - see that
   C# file's header for why it's a reconstruction, not a byte-for-byte port.
+
+  Moved here from the standalone src/RimUtinni/StickCuisine/ mod, owner
+  ruling 2026-09-05 - see ThingDefs_Cuisine.xml's header for why.
 -->
 <Defs>
 
   <!-- Base: meat only, no skewer resource required -->
   <RecipeDef ParentName="CookMealBase">
-    <defName>RUT_CookMeatOnAStick</defName>
+    <defName>RSW_CookMeatOnAStick</defName>
     <label>cook meat on a stick</label>
     <description>Cook raw meat over an open fire.</description>
     <jobString>Cooking meat on a stick.</jobString>
@@ -39,7 +42,7 @@
       </disallowedCategories>
     </fixedIngredientFilter>
     <products>
-      <RUT_MeatOnAStick>1</RUT_MeatOnAStick>
+      <RSW_MeatOnAStick>1</RSW_MeatOnAStick>
     </products>
     <workSkill>Cooking</workSkill>
     <displayPriority>95</displayPriority>
@@ -49,7 +52,7 @@
   </RecipeDef>
 
   <RecipeDef ParentName="CookMealBase">
-    <defName>RUT_CookMeatOnAStickBulk</defName>
+    <defName>RSW_CookMeatOnAStickBulk</defName>
     <label>cook meat on a stick x4</label>
     <description>Cook raw meat over an open fire (x4).</description>
     <jobString>Cooking 4 meat on a stick.</jobString>
@@ -77,7 +80,7 @@
       </disallowedCategories>
     </fixedIngredientFilter>
     <products>
-      <RUT_MeatOnAStick>4</RUT_MeatOnAStick>
+      <RSW_MeatOnAStick>4</RSW_MeatOnAStick>
     </products>
     <workSkill>Cooking</workSkill>
     <displayPriority>96</displayPriority>
@@ -88,7 +91,7 @@
 
   <!-- Skewer crafting -->
   <RecipeDef>
-    <defName>RUT_CraftSkewers</defName>
+    <defName>RSW_CraftSkewers</defName>
     <label>make skewer sticks from a log</label>
     <description>Make skewer sticks from a log.</description>
     <displayPriority>1</displayPriority>
@@ -117,13 +120,13 @@
       </stuffCategoriesToAllow>
     </fixedIngredientFilter>
     <products>
-      <RUT_Skewer>10</RUT_Skewer>
+      <RSW_Skewer>10</RSW_Skewer>
     </products>
   </RecipeDef>
 
   <!-- Vegetables -->
   <RecipeDef ParentName="CookMealBase">
-    <defName>RUT_CookVegOnAStick</defName>
+    <defName>RSW_CookVegOnAStick</defName>
     <label>cook veg on a stick</label>
     <description>Cook raw veg over an open fire.</description>
     <jobString>Cooking vegetable skewer.</jobString>
@@ -132,7 +135,7 @@
     <effectWorking>Cook</effectWorking>
     <soundWorking>Recipe_CookMeal</soundWorking>
     <allowMixingIngredients>true</allowMixingIngredients>
-    <ingredientValueGetterClass>RimMandrake.Utinni.StickCuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
+    <ingredientValueGetterClass>RimMandrake.StarWars.Cuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
     <ingredients>
       <li>
         <filter>
@@ -145,7 +148,7 @@
       <li>
         <filter>
           <thingDefs>
-            <li>RUT_Skewer</li>
+            <li>RSW_Skewer</li>
           </thingDefs>
         </filter>
         <count>1</count>
@@ -168,7 +171,7 @@
       </categories>
     </defaultIngredientFilter>
     <products>
-      <RUT_VegOnAStick>1</RUT_VegOnAStick>
+      <RSW_VegOnAStick>1</RSW_VegOnAStick>
     </products>
     <workSkill>Cooking</workSkill>
     <displayPriority>97</displayPriority>
@@ -178,7 +181,7 @@
   </RecipeDef>
 
   <RecipeDef ParentName="CookMealBase">
-    <defName>RUT_CookVegOnAStick4</defName>
+    <defName>RSW_CookVegOnAStick4</defName>
     <label>cook veg on a stick x4</label>
     <description>Cook raw veg over an open fire (x4).</description>
     <jobString>Cooking 4 vegetable skewers.</jobString>
@@ -188,7 +191,7 @@
     <effectWorking>Cook</effectWorking>
     <soundWorking>Recipe_CookMeal</soundWorking>
     <allowMixingIngredients>true</allowMixingIngredients>
-    <ingredientValueGetterClass>RimMandrake.Utinni.StickCuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
+    <ingredientValueGetterClass>RimMandrake.StarWars.Cuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
     <ingredients>
       <li>
         <filter>
@@ -201,7 +204,7 @@
       <li>
         <filter>
           <thingDefs>
-            <li>RUT_Skewer</li>
+            <li>RSW_Skewer</li>
           </thingDefs>
         </filter>
         <count>4</count>
@@ -224,7 +227,7 @@
       </categories>
     </defaultIngredientFilter>
     <products>
-      <RUT_VegOnAStick>4</RUT_VegOnAStick>
+      <RSW_VegOnAStick>4</RSW_VegOnAStick>
     </products>
     <workSkill>Cooking</workSkill>
     <displayPriority>97</displayPriority>
@@ -235,7 +238,7 @@
 
   <!-- Little meat -->
   <RecipeDef ParentName="CookMealBase">
-    <defName>RUT_CookLittleMeatOnAStick</defName>
+    <defName>RSW_CookLittleMeatOnAStick</defName>
     <label>cook a morsel of meat on a stick</label>
     <description>Cook a morsel of meat over an open fire.</description>
     <jobString>Cooking a morsel meat skewer.</jobString>
@@ -244,7 +247,7 @@
     <effectWorking>Cook</effectWorking>
     <soundWorking>Recipe_CookMeal</soundWorking>
     <allowMixingIngredients>true</allowMixingIngredients>
-    <ingredientValueGetterClass>RimMandrake.Utinni.StickCuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
+    <ingredientValueGetterClass>RimMandrake.StarWars.Cuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
     <ingredients>
       <li>
         <filter>
@@ -257,7 +260,7 @@
       <li>
         <filter>
           <thingDefs>
-            <li>RUT_Skewer</li>
+            <li>RSW_Skewer</li>
           </thingDefs>
         </filter>
         <count>1</count>
@@ -271,7 +274,7 @@
       </disallowedCategories>
     </fixedIngredientFilter>
     <products>
-      <RUT_LittleMeatOnAStick>1</RUT_LittleMeatOnAStick>
+      <RSW_LittleMeatOnAStick>1</RSW_LittleMeatOnAStick>
     </products>
     <workSkill>Cooking</workSkill>
     <displayPriority>97</displayPriority>
@@ -281,7 +284,7 @@
   </RecipeDef>
 
   <RecipeDef ParentName="CookMealBase">
-    <defName>RUT_CookLittleMeatOnAStick4</defName>
+    <defName>RSW_CookLittleMeatOnAStick4</defName>
     <label>cook a morsel of meat on a stick x4</label>
     <description>Cook a morsel of meat over an open fire (x4).</description>
     <jobString>Cooking 4 morsel meat skewers.</jobString>
@@ -291,7 +294,7 @@
     <effectWorking>Cook</effectWorking>
     <soundWorking>Recipe_CookMeal</soundWorking>
     <allowMixingIngredients>true</allowMixingIngredients>
-    <ingredientValueGetterClass>RimMandrake.Utinni.StickCuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
+    <ingredientValueGetterClass>RimMandrake.StarWars.Cuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
     <ingredients>
       <li>
         <filter>
@@ -304,7 +307,7 @@
       <li>
         <filter>
           <thingDefs>
-            <li>RUT_Skewer</li>
+            <li>RSW_Skewer</li>
           </thingDefs>
         </filter>
         <count>4</count>
@@ -318,7 +321,7 @@
       </disallowedCategories>
     </fixedIngredientFilter>
     <products>
-      <RUT_LittleMeatOnAStick>4</RUT_LittleMeatOnAStick>
+      <RSW_LittleMeatOnAStick>4</RSW_LittleMeatOnAStick>
     </products>
     <workSkill>Cooking</workSkill>
     <displayPriority>97</displayPriority>
@@ -329,7 +332,7 @@
 
   <!-- Meat and vegetables -->
   <RecipeDef ParentName="CookMealBase">
-    <defName>RUT_CookBlendedMeatOnAStick</defName>
+    <defName>RSW_CookBlendedMeatOnAStick</defName>
     <label>cook meat and veg on a stick</label>
     <description>Cook meat and veg over an open fire.</description>
     <jobString>Cooking meat and veg skewer.</jobString>
@@ -338,7 +341,7 @@
     <effectWorking>Cook</effectWorking>
     <soundWorking>Recipe_CookMeal</soundWorking>
     <allowMixingIngredients>true</allowMixingIngredients>
-    <ingredientValueGetterClass>RimMandrake.Utinni.StickCuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
+    <ingredientValueGetterClass>RimMandrake.StarWars.Cuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
     <ingredients>
       <li>
         <filter>
@@ -359,7 +362,7 @@
       <li>
         <filter>
           <thingDefs>
-            <li>RUT_Skewer</li>
+            <li>RSW_Skewer</li>
           </thingDefs>
         </filter>
         <count>1</count>
@@ -377,7 +380,7 @@
       </disallowedThingDefs>
     </fixedIngredientFilter>
     <products>
-      <RUT_BlendOnAStick>1</RUT_BlendOnAStick>
+      <RSW_BlendOnAStick>1</RSW_BlendOnAStick>
     </products>
     <workSkill>Cooking</workSkill>
     <displayPriority>97</displayPriority>
@@ -387,7 +390,7 @@
   </RecipeDef>
 
   <RecipeDef ParentName="CookMealBase">
-    <defName>RUT_CookBlendedMeatOnAStick4</defName>
+    <defName>RSW_CookBlendedMeatOnAStick4</defName>
     <label>cook meat and veg on a stick x4</label>
     <description>Cook meat and veg over an open fire (x4).</description>
     <jobString>Cooking 4 meat and veg skewers.</jobString>
@@ -397,7 +400,7 @@
     <effectWorking>Cook</effectWorking>
     <soundWorking>Recipe_CookMeal</soundWorking>
     <allowMixingIngredients>true</allowMixingIngredients>
-    <ingredientValueGetterClass>RimMandrake.Utinni.StickCuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
+    <ingredientValueGetterClass>RimMandrake.StarWars.Cuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
     <ingredients>
       <li>
         <filter>
@@ -418,7 +421,7 @@
       <li>
         <filter>
           <thingDefs>
-            <li>RUT_Skewer</li>
+            <li>RSW_Skewer</li>
           </thingDefs>
         </filter>
         <count>4</count>
@@ -436,7 +439,7 @@
       </disallowedThingDefs>
     </fixedIngredientFilter>
     <products>
-      <RUT_BlendOnAStick>4</RUT_BlendOnAStick>
+      <RSW_BlendOnAStick>4</RSW_BlendOnAStick>
     </products>
     <workSkill>Cooking</workSkill>
     <displayPriority>97</displayPriority>
@@ -447,7 +450,7 @@
 
   <!-- Fish -->
   <RecipeDef MayRequireAnyOf="Ludeon.RimWorld.Odyssey,vanillaexpanded.vcef">
-    <defName>RUT_CookFishOnAStick</defName>
+    <defName>RSW_CookFishOnAStick</defName>
     <label>cook fish on a stick</label>
     <description>Cook fish over an open fire.</description>
     <jobString>Cooking fish skewer.</jobString>
@@ -456,7 +459,7 @@
     <effectWorking>Cook</effectWorking>
     <soundWorking>Recipe_CookMeal</soundWorking>
     <allowMixingIngredients>true</allowMixingIngredients>
-    <ingredientValueGetterClass>RimMandrake.Utinni.StickCuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
+    <ingredientValueGetterClass>RimMandrake.StarWars.Cuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
     <ingredients>
       <li>
         <filter>
@@ -469,7 +472,7 @@
       <li>
         <filter>
           <thingDefs>
-            <li>RUT_Skewer</li>
+            <li>RSW_Skewer</li>
           </thingDefs>
         </filter>
         <count>1</count>
@@ -486,7 +489,7 @@
       </categories>
     </defaultIngredientFilter>
     <products>
-      <RUT_FishOnAStick>1</RUT_FishOnAStick>
+      <RSW_FishOnAStick>1</RSW_FishOnAStick>
     </products>
     <workSkill>Cooking</workSkill>
     <displayPriority>97</displayPriority>
@@ -496,7 +499,7 @@
   </RecipeDef>
 
   <RecipeDef MayRequireAnyOf="Ludeon.RimWorld.Odyssey,vanillaexpanded.vcef">
-    <defName>RUT_CookFishOnAStick4</defName>
+    <defName>RSW_CookFishOnAStick4</defName>
     <label>cook fish on a stick x4</label>
     <description>Cook fish over an open fire (x4).</description>
     <jobString>Cooking 4 fish skewers.</jobString>
@@ -506,7 +509,7 @@
     <effectWorking>Cook</effectWorking>
     <soundWorking>Recipe_CookMeal</soundWorking>
     <allowMixingIngredients>true</allowMixingIngredients>
-    <ingredientValueGetterClass>RimMandrake.Utinni.StickCuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
+    <ingredientValueGetterClass>RimMandrake.StarWars.Cuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
     <ingredients>
       <li>
         <filter>
@@ -519,7 +522,7 @@
       <li>
         <filter>
           <thingDefs>
-            <li>RUT_Skewer</li>
+            <li>RSW_Skewer</li>
           </thingDefs>
         </filter>
         <count>4</count>
@@ -536,7 +539,7 @@
       </categories>
     </defaultIngredientFilter>
     <products>
-      <RUT_FishOnAStick>4</RUT_FishOnAStick>
+      <RSW_FishOnAStick>4</RSW_FishOnAStick>
     </products>
     <workSkill>Cooking</workSkill>
     <displayPriority>97</displayPriority>
@@ -547,7 +550,7 @@
 
   <!-- Fruit -->
   <RecipeDef>
-    <defName>RUT_CookFruitOnAStick</defName>
+    <defName>RSW_CookFruitOnAStick</defName>
     <label>cook fruit on a stick</label>
     <description>Cook fruit over an open fire.</description>
     <jobString>Cooking fruit skewers.</jobString>
@@ -556,7 +559,7 @@
     <effectWorking>Cook</effectWorking>
     <soundWorking>Recipe_CookMeal</soundWorking>
     <allowMixingIngredients>true</allowMixingIngredients>
-    <ingredientValueGetterClass>RimMandrake.Utinni.StickCuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
+    <ingredientValueGetterClass>RimMandrake.StarWars.Cuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
     <ingredients>
       <li>
         <filter>
@@ -569,7 +572,7 @@
       <li>
         <filter>
           <thingDefs>
-            <li>RUT_Skewer</li>
+            <li>RSW_Skewer</li>
           </thingDefs>
         </filter>
         <count>1</count>
@@ -594,7 +597,7 @@
       </thingDefs>
     </defaultIngredientFilter>
     <products>
-      <RUT_FruitOnAStick>1</RUT_FruitOnAStick>
+      <RSW_FruitOnAStick>1</RSW_FruitOnAStick>
     </products>
     <workSkill>Cooking</workSkill>
     <displayPriority>97</displayPriority>
@@ -604,7 +607,7 @@
   </RecipeDef>
 
   <RecipeDef>
-    <defName>RUT_CookFruitOnAStick4</defName>
+    <defName>RSW_CookFruitOnAStick4</defName>
     <label>cook fruit on a stick x4</label>
     <description>Cook raw fruit over an open fire (x4).</description>
     <jobString>Cooking 4 fruit skewers.</jobString>
@@ -614,7 +617,7 @@
     <effectWorking>Cook</effectWorking>
     <soundWorking>Recipe_CookMeal</soundWorking>
     <allowMixingIngredients>true</allowMixingIngredients>
-    <ingredientValueGetterClass>RimMandrake.Utinni.StickCuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
+    <ingredientValueGetterClass>RimMandrake.StarWars.Cuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
     <ingredients>
       <li>
         <filter>
@@ -627,7 +630,7 @@
       <li>
         <filter>
           <thingDefs>
-            <li>RUT_Skewer</li>
+            <li>RSW_Skewer</li>
           </thingDefs>
         </filter>
         <count>4</count>
@@ -652,7 +655,7 @@
       </thingDefs>
     </defaultIngredientFilter>
     <products>
-      <RUT_FruitOnAStick>4</RUT_FruitOnAStick>
+      <RSW_FruitOnAStick>4</RSW_FruitOnAStick>
     </products>
     <workSkill>Cooking</workSkill>
     <displayPriority>97</displayPriority>
@@ -663,7 +666,7 @@
 
   <!-- Fungus -->
   <RecipeDef ParentName="CookMealBase">
-    <defName>RUT_CookFungusOnAStick</defName>
+    <defName>RSW_CookFungusOnAStick</defName>
     <label>cook mushroom on a stick</label>
     <description>Cook mushrooms over an open fire.</description>
     <jobString>Cooking mushroom skewer.</jobString>
@@ -672,7 +675,7 @@
     <effectWorking>Cook</effectWorking>
     <soundWorking>Recipe_CookMeal</soundWorking>
     <allowMixingIngredients>true</allowMixingIngredients>
-    <ingredientValueGetterClass>RimMandrake.Utinni.StickCuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
+    <ingredientValueGetterClass>RimMandrake.StarWars.Cuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
     <ingredients>
       <li>
         <filter>
@@ -685,7 +688,7 @@
       <li>
         <filter>
           <thingDefs>
-            <li>RUT_Skewer</li>
+            <li>RSW_Skewer</li>
           </thingDefs>
         </filter>
         <count>1</count>
@@ -698,7 +701,7 @@
       </disallowedCategories>
     </fixedIngredientFilter>
     <products>
-      <RUT_FungusOnAStick>1</RUT_FungusOnAStick>
+      <RSW_FungusOnAStick>1</RSW_FungusOnAStick>
     </products>
     <workSkill>Cooking</workSkill>
     <displayPriority>97</displayPriority>
@@ -708,7 +711,7 @@
   </RecipeDef>
 
   <RecipeDef ParentName="CookMealBase">
-    <defName>RUT_CookFungusOnAStick4</defName>
+    <defName>RSW_CookFungusOnAStick4</defName>
     <label>cook mushroom on a stick x4</label>
     <description>Cook mushrooms over an open fire (x4).</description>
     <jobString>Cooking 4 mushroom skewers.</jobString>
@@ -718,7 +721,7 @@
     <effectWorking>Cook</effectWorking>
     <soundWorking>Recipe_CookMeal</soundWorking>
     <allowMixingIngredients>true</allowMixingIngredients>
-    <ingredientValueGetterClass>RimMandrake.Utinni.StickCuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
+    <ingredientValueGetterClass>RimMandrake.StarWars.Cuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
     <ingredients>
       <li>
         <filter>
@@ -731,7 +734,7 @@
       <li>
         <filter>
           <thingDefs>
-            <li>RUT_Skewer</li>
+            <li>RSW_Skewer</li>
           </thingDefs>
         </filter>
         <count>4</count>
@@ -744,7 +747,7 @@
       </disallowedCategories>
     </fixedIngredientFilter>
     <products>
-      <RUT_FungusOnAStick>4</RUT_FungusOnAStick>
+      <RSW_FungusOnAStick>4</RSW_FungusOnAStick>
     </products>
     <workSkill>Cooking</workSkill>
     <displayPriority>97</displayPriority>
@@ -755,7 +758,7 @@
 
   <!-- Cooked (empty) sticks -->
   <RecipeDef ParentName="CookMealBase">
-    <defName>RUT_CookEmptySkewer</defName>
+    <defName>RSW_CookEmptySkewer</defName>
     <label>cook stick</label>
     <description>Cook a stick over a fire.</description>
     <jobString>Cooking stick.</jobString>
@@ -764,12 +767,12 @@
     <effectWorking>Cook</effectWorking>
     <soundWorking>Recipe_CookMeal</soundWorking>
     <allowMixingIngredients>true</allowMixingIngredients>
-    <ingredientValueGetterClass>RimMandrake.Utinni.StickCuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
+    <ingredientValueGetterClass>RimMandrake.StarWars.Cuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
     <ingredients>
       <li>
         <filter>
           <thingDefs>
-            <li>RUT_Skewer</li>
+            <li>RSW_Skewer</li>
           </thingDefs>
         </filter>
         <count>1</count>
@@ -783,7 +786,7 @@
       </disallowedCategories>
     </fixedIngredientFilter>
     <products>
-      <RUT_CookedSkewer>1</RUT_CookedSkewer>
+      <RSW_CookedSkewer>1</RSW_CookedSkewer>
     </products>
     <workSkill>Cooking</workSkill>
     <displayPriority>97</displayPriority>
@@ -793,7 +796,7 @@
   </RecipeDef>
 
   <RecipeDef ParentName="CookMealBase">
-    <defName>RUT_CookEmptySkewer4</defName>
+    <defName>RSW_CookEmptySkewer4</defName>
     <label>cook 4 sticks</label>
     <description>Cook 4 sticks over a fire.</description>
     <jobString>Cooking 4 sticks.</jobString>
@@ -803,12 +806,12 @@
     <effectWorking>Cook</effectWorking>
     <soundWorking>Recipe_CookMeal</soundWorking>
     <allowMixingIngredients>true</allowMixingIngredients>
-    <ingredientValueGetterClass>RimMandrake.Utinni.StickCuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
+    <ingredientValueGetterClass>RimMandrake.StarWars.Cuisine.IngredientValueGetter_ExcludeSkewer</ingredientValueGetterClass>
     <ingredients>
       <li>
         <filter>
           <thingDefs>
-            <li>RUT_Skewer</li>
+            <li>RSW_Skewer</li>
           </thingDefs>
         </filter>
         <count>4</count>
@@ -822,7 +825,7 @@
       </disallowedCategories>
     </fixedIngredientFilter>
     <products>
-      <RUT_CookedSkewer>4</RUT_CookedSkewer>
+      <RSW_CookedSkewer>4</RSW_CookedSkewer>
     </products>
     <workSkill>Cooking</workSkill>
     <displayPriority>97</displayPriority>

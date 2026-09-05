@@ -1,5 +1,40 @@
 # STICK_FOOD_INGEST_1 — measured ingest scope (BENCH, 2026-09-02)
 
+## 2026-09-05 (FOUNDRY) — moved from a standalone RimUtinni mod into RimStarWars: Cuisine
+
+Owner, verbatim: *"we shouldn't even have Mandrake stick mods, it should be
+folded directly into the star wars cuisine project we own."* The "star wars
+cuisine project" is `design/Jawa/proposals/high_cuisine_deep_design.md` —
+ruled by the owner 2026-09-02 (mostly v1'd, 9 rows), including this exact
+mechanic: *"Ingest the 'stuff on a stick' mod into our own version and
+jettison that mod eventually... Let's take what we need and release them."*
+That design was never given a mod home; it should have been this pass's
+container from the start rather than a second standalone `RimUtinni` mod.
+
+**Retired**: `src/RimUtinni/StickCuisine/` (`mandrake.rut.stickcuisine`) —
+deleted from the repo and un-deployed from the game's Mods folder. It was
+never enabled in `ModsConfig.xml`, so nothing live changes for the owner.
+
+**New home**: `src/RimStarWars/Cuisine/` (`mandrake.rsw.cuisine`, ns
+`RimMandrake.StarWars.Cuisine`, `RSW_` prefix — RimStarWars tier per
+`NAMING_SCHEME_PLAN.md`'s tier test: general Star Wars cuisine content, not
+Ash'karr-specific). All 9 ThingDefs, 17 RecipeDefs, 1 ThoughtDef and both C#
+hooks (`NameGenComp`, `IngredientValueGetter_ExcludeSkewer`) moved verbatim,
+`RUT_` renamed to `RSW_` throughout (defNames, texPaths, namespace, DefOf).
+`dotnet build`: 0 warnings/errors. `validate_patch.py`: 0 errors on
+Defs/RecipeDefs/ThoughtDefs/About; the 9 `texPath` errors on ThingDefs are
+the same pre-existing missing-art gap as before the move (never a regression
+introduced by it) — sprite regeneration is next.
+
+This mod's own `About.xml` now states it is the intended eventual home for
+the rest of `high_cuisine_deep_design.md`'s build ladder (hazard-pantry,
+diplomacy meals, brewing, the Feastboss, the Nine-Course Ninefold Feast) as
+later waves land, so future cuisine work has nowhere else to default to.
+
+**Owed next**: in-house sprite regeneration for all 9 ThingDefs (owner,
+2026-09-05: "Yes, do sprite regeneration"), THEN both BadOaks donor mods can
+finally be retired per this item's own long-standing, still-open criterion.
+
 Survey: research/Jawa/stick_food_mods_survey_2026-09-02.md. Both mods ACTIVE:
 - `badoaks.meatonastick` (workshop 3435027361): MEASURED 4 defNames (1 meal
   ThingDef `MeatOnAStick`, 2 recipes, 1 MealSimple patch target), 3 PNGs.

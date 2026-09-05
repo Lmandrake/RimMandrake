@@ -6,21 +6,24 @@
     src/RimStarWars/Livestock/Source/RimMandrakeLivestockRSW.csproj.
 
     Build (dotnet is WINDOWS-NATIVE, cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimUtinni\StickCuisine\Source\StickCuisine\RimUtinniStickCuisine.csproj -c Release
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimStarWars\Cuisine\Source\Cuisine\RimStarWarsCuisine.csproj -c Release
 
     Output lands in ../../Assemblies/, which is where RimWorld looks.
 
-    STICK_FOOD_INGEST_1's two small hooks: NameGenComp (ported verbatim from
-    badoaks.meatonastick's own shipped Source), IngredientValueGetter_ExcludeSkewer
-    (FOUNDRY's own reconstruction of the donor expansion's un-sourced
+    Moved here from src/RimUtinni/StickCuisine/ (owner ruling 2026-09-05):
+    Star Wars cuisine content belongs in one shared galaxy-general mod, not
+    a separate RimUtinni mod per campaign. STICK_FOOD_INGEST_1's two small
+    hooks: NameGenComp (ported verbatim from badoaks.meatonastick's own
+    shipped Source), IngredientValueGetter_ExcludeSkewer (FOUNDRY's own
+    reconstruction of the donor expansion's un-sourced
     MOAS_Expansion.IngredientValueGetter_MeatlessStick - see that file's header).
   -->
 
   <PropertyGroup>
     <TargetFramework>net472</TargetFramework>
     <LangVersion>latest</LangVersion>
-    <AssemblyName>RimUtinniStickCuisine</AssemblyName>
-    <RootNamespace>RimMandrake.Utinni.StickCuisine</RootNamespace>
+    <AssemblyName>RimStarWarsCuisine</AssemblyName>
+    <RootNamespace>RimMandrake.StarWars.Cuisine</RootNamespace>
     <Version>1.0.0</Version>
 
     <OutputPath>..\..\Assemblies\</OutputPath>
@@ -40,7 +43,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Include="StickCuisineDefOf.cs" />
+    <Compile Include="CuisineDefOf.cs" />
     <Compile Include="NameGenComp.cs" />
     <Compile Include="IngredientValueGetter_ExcludeSkewer.cs" />
   </ItemGroup>

@@ -3,7 +3,7 @@
 <Defs>
 
   <ThoughtDef>
-    <defName>RUT_AteEmptySkewer</defName>
+    <defName>RSW_AteEmptySkewer</defName>
     <showBubble>true</showBubble>
     <icon>Things/Mote/ThoughtSymbol/Food</icon>
     <durationDays>1</durationDays>

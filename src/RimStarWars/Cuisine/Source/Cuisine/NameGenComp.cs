@@ -2,11 +2,12 @@ using System.Collections.Generic;
 using RimWorld;
 using Verse;
 
-namespace RimMandrake.Utinni.StickCuisine
+namespace RimMandrake.StarWars.Cuisine
 {
     // Ported from badoaks.meatonastick's MeatOnAStick.NameGenComp (workshop 3435027361,
     // Source/MeatOnAStick_Naming/NameGenComp.cs) - same "Roasted <first ingredient>" label
-    // transform, renamed into our own namespace per STICK_FOOD_INGEST_1.
+    // transform, renamed into our own namespace per STICK_FOOD_INGEST_1. Moved here from
+    // src/RimUtinni/StickCuisine/ (owner ruling 2026-09-05).
     public class NameGenComp : ThingComp
     {
         private List<ThingDef> Ingredients

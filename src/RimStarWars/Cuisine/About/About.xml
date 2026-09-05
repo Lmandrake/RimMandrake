@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimStarWars: Cuisine</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.rsw.cuisine</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Star Wars cuisine, general galaxy content (design/Jawa/proposals/high_cuisine_deep_design.md).
+Wave 1 — basic campfire skewer cooking: meat, veg, fungus, fruit and fish on a stick, plus the raw skewer resource, the "basic stuff" floor of the design's recipe-discovery ruling (owner, 2026-09-02: "Ingest the stuff on a stick mod into our own version and jettison that mod eventually... Let's take what we need and release them."). Absorbs badoaks.meatonastick and badoaks.meatonastick.expansion (workshop 3435027361 / 3577333297): defs and mechanism ported and renamed under our own naming scheme. Art regenerated in-house (STICK_FOOD_INGEST_1) — no donor pixels used, no license found on either donor mod. Both donor mods stay active pending retirement.
+This mod is the intended eventual home for the rest of high_cuisine_deep_design.md's build ladder (hazard-pantry, diplomacy meals, brewing, the Feastboss, the Nine-Course Ninefold Feast) as later waves land — chosen so this content lands in the right place from the start rather than needing a later move. Owner ruling, 2026-09-05: this replaces the earlier standalone RimUtinni-tier "Stick Cuisine" mod, which is retired — Star Wars cuisine content belongs in one shared galaxy-general mod, not scattered per-campaign.</description>
+</ModMetaData>

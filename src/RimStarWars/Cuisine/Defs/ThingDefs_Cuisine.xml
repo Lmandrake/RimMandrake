@@ -7,6 +7,11 @@
   release them." Both donor mods stay ACTIVE until retirement is executed
   separately (this item's own ## verify still owes that step).
 
+  Moved here from the standalone src/RimUtinni/StickCuisine/ mod, owner
+  ruling 2026-09-05: Star Wars cuisine content belongs in one shared
+  galaxy-general mod (mandrake.rsw.cuisine), not a separate RimUtinni mod
+  per campaign. RUT_ defNames renamed to RSW_ in this move.
+
   Parents (MealCookedIngredientless, ResourceBase, CookMealBase) are real
   vanilla Core defs (Data/Core/Defs/ThingDefs_Items/Items_Food.xml),
   confirmed on disk before use - not guessed.
@@ -14,11 +19,11 @@
 <Defs>
 
   <ThingDef ParentName="ResourceBase">
-    <defName>RUT_Skewer</defName>
+    <defName>RSW_Skewer</defName>
     <label>skewer</label>
     <description>A pointy stick made from wood. It can be used to skewer and cook food at a campfire.</description>
     <graphicData>
-      <texPath>Items/RUT_Skewer/RUT_Skewer</texPath>
+      <texPath>Items/RSW_Skewer/RSW_Skewer</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
     </graphicData>
     <tradeability>None</tradeability>
@@ -32,11 +37,11 @@
   </ThingDef>
 
   <ThingDef ParentName="MealCookedIngredientless">
-    <defName>RUT_MeatOnAStick</defName>
+    <defName>RSW_MeatOnAStick</defName>
     <label>meat on a stick</label>
     <description>Meat skewered onto a stick and roasted over a fire.</description>
     <graphicData>
-      <texPath>Things/Item/Meal/RUT_MeatOnAStick/RUT_MeatOnAStick</texPath>
+      <texPath>Things/Item/Meal/RSW_MeatOnAStick/RSW_MeatOnAStick</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
     </graphicData>
     <statBases>
@@ -53,16 +58,16 @@
       <li Class="CompProperties_Ingredients">
         <noIngredientsFoodKind>Meat</noIngredientsFoodKind>
       </li>
-      <li Class="RimMandrake.Utinni.StickCuisine.CompProperties_NameGen" />
+      <li Class="RimMandrake.StarWars.Cuisine.CompProperties_NameGen" />
     </comps>
   </ThingDef>
 
   <ThingDef ParentName="MealCookedIngredientless">
-    <defName>RUT_VegOnAStick</defName>
+    <defName>RSW_VegOnAStick</defName>
     <label>veg on a stick</label>
     <description>Vegetables skewered onto a stick and roasted over a fire.</description>
     <graphicData>
-      <texPath>Things/Item/Meal/RUT_VegOnAStick/RUT_VegOnAStick</texPath>
+      <texPath>Things/Item/Meal/RSW_VegOnAStick/RSW_VegOnAStick</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
     </graphicData>
     <statBases>
@@ -79,16 +84,16 @@
       <li Class="CompProperties_Ingredients">
         <noIngredientsFoodKind>NonMeat</noIngredientsFoodKind>
       </li>
-      <li Class="RimMandrake.Utinni.StickCuisine.CompProperties_NameGen" />
+      <li Class="RimMandrake.StarWars.Cuisine.CompProperties_NameGen" />
     </comps>
   </ThingDef>
 
   <ThingDef ParentName="MealCookedIngredientless">
-    <defName>RUT_FungusOnAStick</defName>
+    <defName>RSW_FungusOnAStick</defName>
     <label>mushroom on a stick</label>
     <description>Mushrooms skewered onto a stick and roasted over a fire.</description>
     <graphicData>
-      <texPath>Things/Item/Meal/RUT_FungusOnAStick/RUT_FungusOnAStick</texPath>
+      <texPath>Things/Item/Meal/RSW_FungusOnAStick/RSW_FungusOnAStick</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
     </graphicData>
     <statBases>
@@ -105,16 +110,16 @@
       <li Class="CompProperties_Ingredients">
         <noIngredientsFoodKind>NonMeat</noIngredientsFoodKind>
       </li>
-      <li Class="RimMandrake.Utinni.StickCuisine.CompProperties_NameGen" />
+      <li Class="RimMandrake.StarWars.Cuisine.CompProperties_NameGen" />
     </comps>
   </ThingDef>
 
   <ThingDef ParentName="MealCookedIngredientless">
-    <defName>RUT_LittleMeatOnAStick</defName>
+    <defName>RSW_LittleMeatOnAStick</defName>
     <label>a little bit of meat on a stick</label>
     <description>A little bit of meat skewered onto a stick and roasted over a fire.</description>
     <graphicData>
-      <texPath>Things/Item/Meal/RUT_LittleMeatOnAStick/RUT_LittleMeatOnAStick</texPath>
+      <texPath>Things/Item/Meal/RSW_LittleMeatOnAStick/RSW_LittleMeatOnAStick</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
     </graphicData>
     <statBases>
@@ -131,16 +136,16 @@
       <li Class="CompProperties_Ingredients">
         <noIngredientsFoodKind>Meat</noIngredientsFoodKind>
       </li>
-      <li Class="RimMandrake.Utinni.StickCuisine.CompProperties_NameGen" />
+      <li Class="RimMandrake.StarWars.Cuisine.CompProperties_NameGen" />
     </comps>
   </ThingDef>
 
   <ThingDef ParentName="MealCookedIngredientless">
-    <defName>RUT_BlendOnAStick</defName>
+    <defName>RSW_BlendOnAStick</defName>
     <label>a blend of meat and veg on a stick</label>
     <description>A blend of meat and vegetables skewered onto a stick and roasted over a fire.</description>
     <graphicData>
-      <texPath>Things/Item/Meal/RUT_BlendOnAStick/RUT_BlendOnAStick</texPath>
+      <texPath>Things/Item/Meal/RSW_BlendOnAStick/RSW_BlendOnAStick</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
     </graphicData>
     <statBases>
@@ -157,16 +162,16 @@
       <li Class="CompProperties_Ingredients">
         <splitTransferableFoodKind>true</splitTransferableFoodKind>
       </li>
-      <li Class="RimMandrake.Utinni.StickCuisine.CompProperties_NameGen" />
+      <li Class="RimMandrake.StarWars.Cuisine.CompProperties_NameGen" />
     </comps>
   </ThingDef>
 
   <ThingDef ParentName="MealCookedIngredientless" MayRequireAnyOf="Ludeon.RimWorld.Odyssey,vanillaexpanded.vcef">
-    <defName>RUT_FishOnAStick</defName>
+    <defName>RSW_FishOnAStick</defName>
     <label>fish on a stick</label>
     <description>Fish skewered onto a stick and roasted over a fire.</description>
     <graphicData>
-      <texPath>Things/Item/Meal/RUT_FishOnAStick/RUT_FishOnAStick</texPath>
+      <texPath>Things/Item/Meal/RSW_FishOnAStick/RSW_FishOnAStick</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
     </graphicData>
     <statBases>
@@ -183,16 +188,16 @@
       <li Class="CompProperties_Ingredients">
         <noIngredientsFoodKind>Meat</noIngredientsFoodKind>
       </li>
-      <li Class="RimMandrake.Utinni.StickCuisine.CompProperties_NameGen" />
+      <li Class="RimMandrake.StarWars.Cuisine.CompProperties_NameGen" />
     </comps>
   </ThingDef>
 
   <ThingDef ParentName="MealCookedIngredientless">
-    <defName>RUT_FruitOnAStick</defName>
+    <defName>RSW_FruitOnAStick</defName>
     <label>fruit on a stick</label>
     <description>Fruit skewered onto a stick and roasted over a fire.</description>
     <graphicData>
-      <texPath>Things/Item/Meal/RUT_FruitOnAStick/RUT_FruitOnAStick</texPath>
+      <texPath>Things/Item/Meal/RSW_FruitOnAStick/RSW_FruitOnAStick</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
     </graphicData>
     <statBases>
@@ -209,18 +214,18 @@
       <li Class="CompProperties_Ingredients">
         <noIngredientsFoodKind>NonMeat</noIngredientsFoodKind>
       </li>
-      <li Class="RimMandrake.Utinni.StickCuisine.CompProperties_NameGen" />
+      <li Class="RimMandrake.StarWars.Cuisine.CompProperties_NameGen" />
     </comps>
   </ThingDef>
 
   <ThingDef ParentName="MealCookedIngredientless">
-    <defName>RUT_CookedSkewer</defName>
+    <defName>RSW_CookedSkewer</defName>
     <label>cooked skewer</label>
     <description>A cooked stick roasted over a fire. It does not hold any food, but you can still try eating it.
 
 Some moments in life make one wonder, "in just what direction is my life going?"</description>
     <graphicData>
-      <texPath>Things/Item/Meal/RUT_CookedSkewer/RUT_CookedSkewer</texPath>
+      <texPath>Things/Item/Meal/RSW_CookedSkewer/RSW_CookedSkewer</texPath>
       <graphicClass>Graphic_StackCount</graphicClass>
     </graphicData>
     <statBases>
@@ -230,7 +235,7 @@ Some moments in life make one wonder, "in just what direction is my life going?"
     </statBases>
     <ingestible>
       <preferability>RawBad</preferability>
-      <tasteThought>RUT_AteEmptySkewer</tasteThought>
+      <tasteThought>RSW_AteEmptySkewer</tasteThought>
       <ingestEffect>EatVegetarian</ingestEffect>
       <ingestSound>RawVegetable_Eat</ingestSound>
     </ingestible>
