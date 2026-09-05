@@ -3247,30 +3247,80 @@
     "date": "2026-09-05",
     "sha": "8c69faa6"
   },
-  "src/RimStarWars/JawaIonWeapons/Source/DamageWorker_IonBuildup.cs": {
+  "src/RimStarWars/JawaIonWeapons/About/About.xml": {
     "cleanCount": 1,
-    "date": "2026-09-03",
-    "sha": "872db59d"
+    "date": "2026-09-05",
+    "sha": "e4070c91"
+  },
+  "src/RimStarWars/JawaIonWeapons/Defs/DamageDefs_JawaIon.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "e4070c91"
+  },
+  "src/RimStarWars/JawaIonWeapons/Defs/HediffDefs_JawaIonStun.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "e4070c91"
+  },
+  "src/RimStarWars/JawaIonWeapons/Defs/ResearchProjectDefs_JawaIon.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "e4070c91"
+  },
+  "src/RimStarWars/JawaIonWeapons/Defs/StatDefs_JawaIon.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "e4070c91"
+  },
+  "src/RimStarWars/JawaIonWeapons/Defs/ThingDefs_JawaIonBlaster.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "e4070c91"
+  },
+  "src/RimStarWars/JawaIonWeapons/README.md": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "e4070c91"
+  },
+  "src/RimStarWars/JawaIonWeapons/Source/DamageWorker_IonBuildup.cs": {
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "e4070c91"
   },
   "src/RimStarWars/JawaIonWeapons/Source/IonDamageDef.cs": {
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "e4070c91"
+  },
+  "src/RimStarWars/JawaIonWeapons/Source/JawaIonWeapons.csproj": {
     "cleanCount": 1,
-    "date": "2026-09-03",
-    "sha": "ac24cd52"
+    "date": "2026-09-05",
+    "sha": "e4070c91"
+  },
+  "src/RimStarWars/JawaIonWeapons/Source/SelfTest/JawaIonWeapons.SelfTest.csproj": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "e4070c91"
   },
   "src/RimStarWars/JawaIonWeapons/Source/SelfTest/Program.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "sha": "0975db76"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "e4070c91"
   },
   "src/RimStarWars/JawaIonWeapons/Source/StatPart_InverseBodySize.cs": {
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "e4070c91"
+  },
+  "src/RimStarWars/JawaIonWeapons/Source/VehicleTier/JawaIonVehicleTier.csproj": {
     "cleanCount": 1,
-    "date": "2026-09-03",
-    "sha": "7672f1bd"
+    "date": "2026-09-05",
+    "sha": "e4070c91"
   },
   "src/RimStarWars/JawaIonWeapons/Source/VehicleTier/VehicleIonPatches.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "sha": "2b385860"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "e4070c91"
   },
   "src/RimStarWars/JawaRules/About/About.xml": {
     "cleanCount": 1,
