@@ -12,6 +12,58 @@ tactical display). Read them before authoring any texture.
 
 ---
 
+## PIVOT, 2026-09-05 (owner, mid-review of the vertical slice) — read this first
+
+**The material direction below (oxidised red-rust plate) is superseded.**
+Owner, reviewing the shipped vertical slice: *"I think the console should be
+more like the ancient ship controls than the rusty scavenger look. The whole
+UI should look like you are at the helm of the Utinni. So it can look old
+and worn but not brown rusted."* Also asked for the "minimal" look to lean
+into the **vector-line schematic graphics common in Star Wars interfaces**,
+and for typography with an **Aurebesh-flavored but still legible** character.
+
+- **Material**: aged grey-green/gunmetal machined metal (riveted, painted-
+  then-worn, NOT oxidised/rusted brown). Amber remains the primary glow
+  accent; cyan is now a live secondary option (see `ref4` and the Zero
+  Company reference below).
+- **Graphic language**: thin white/silver vector schematic lines connecting
+  components (circuit-trace style), amber or cyan tactical-display readouts
+  with small glyph-style labels — not painted texture/grain.
+- **Typography**: swap the display face for something evoking Aurebesh's
+  blocky, angular letterforms while staying Latin-legible (first pass used
+  **Orbitron**, paired with **Rajdhani** for sub-labels — see the review
+  artifact). Real Aurebesh fonts (glyph-substitution) are explicitly OUT —
+  the owner wants legible.
+- **Four new reference images** landed alongside the original two (all in
+  `ui_references/`, all read before this pivot note was written):
+  `ref4_grey_console_bank_cyan_navplot.jpg` (owner-supplied, mid-conversation
+  — light grey panel banks + cyan vector nav-plot screens), plus three
+  already on disk from the same reference-gathering session:
+  `01_07_5100052.webp` (a cockpit fuel/Aurebesh readout — amber vector bars
+  in a worn grey housing with visible wiring), `c4e687d92e01e0941121d656f0e46449.jpg`
+  (an R2-D2 technical blueprint sheet — Aurebesh glyph shapes, thin blue
+  linework), and `How-Star-Wars-Zero-Company-blends-XCOM-with-Mass-Effect-…png`
+  (a modern SW game's own UI chrome: dark navy panels, cyan bracket corners,
+  angular cut edges, bold clean sans labels — useful for window/tab chrome,
+  distinct from the physical-panel references).
+- **First concept render** (FOUNDRY, cloud-only Codex generation, all six
+  references as `--edit-image` conditioning): `Transient/console_concept_panel.png`
+  (not committed — Transient convention; regenerate from the prompt in the
+  review artifact if needed). Read as a mood/direction check, not a
+  shippable 9-slice asset — the actual button atlases, `Command.BGTex`, and
+  loader/menu-bg would need re-authoring in this direction once the owner
+  confirms it, likely by extending `_artsrc/gen_textures.py` with a new
+  style rather than shipping a raw AI render as a 9-slice (a painted image
+  doesn't tile/slice correctly at the corners the way vanilla's button atlas
+  needs to).
+- **Not yet done**: the shipped assets (`B_clean` and siblings, the Ishko
+  temple-gate menu background, the amber orrery loader) still ship the OLD
+  rust-plate direction. Nothing has been re-authored yet — this pivot is
+  agreed-direction, not yet built. Review artifact:
+  `https://claude.ai/code/artifact/d63666e5-28ca-4019-a037-749c9fbb9b4e`.
+
+---
+
 ## 0. What was measured (not assumed)
 
 - **RimThemes** (`aRandomKiwi.RimThemes`, WS 1668983184) is a Harmony UI mod,
