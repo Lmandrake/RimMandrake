@@ -108,7 +108,7 @@
       <!-- temperament -->
       <li>Aggression_HyperAggressive</li>
       <li MayRequire="Ludeon.RimWorld.Ideology">Turn_Gene_HerdMentality</li>
-      <li>Turn_Gene_VerySlowNeuralHeat</li>
+      <li MayRequire="Ludeon.RimWorld.Royalty">Turn_Gene_VerySlowNeuralHeat</li>
       <li>RSW_GS_Primitive</li>
       <li>AptitudeTerrible_Intellectual</li>
 

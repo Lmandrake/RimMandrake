@@ -3072,6 +3072,151 @@
     "date": "2026-09-02",
     "sha": "1a7b3aa1"
   },
+  "src/RimStarWars/StarWarsPatches/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "3c8d5d73"
+  },
+  "src/RimStarWars/StarWarsPatches/Defs/PawnKindDefs/AlienSpawnEnablers.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "3c8d5d73"
+  },
+  "src/RimStarWars/StarWarsPatches/Defs/PawnKindDefs/GamorreanPawnKinds.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "3c8d5d73"
+  },
+  "src/RimStarWars/StarWarsPatches/Defs/RulePackDefs/Jawa_PetNames.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "3c8d5d73"
+  },
+  "src/RimStarWars/StarWarsPatches/Defs/WeatherDefs/SWDesertWeather.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "3c8d5d73"
+  },
+  "src/RimStarWars/StarWarsPatches/Patches/BehemothArtUpres_StarWarsAnimalCollection.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "3c8d5d73"
+  },
+  "src/RimStarWars/StarWarsPatches/Patches/BodySizeIsReal.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "3c8d5d73"
+  },
+  "src/RimStarWars/StarWarsPatches/Patches/DroidDonor_ABFGate.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "3c8d5d73"
+  },
+  "src/RimStarWars/StarWarsPatches/Patches/DroidFemaleTexture_Fix.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "3c8d5d73"
+  },
+  "src/RimStarWars/StarWarsPatches/Patches/EggLayersLayEggs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "3c8d5d73"
+  },
+  "src/RimStarWars/StarWarsPatches/Patches/ForceGremlin_NoHair.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "3c8d5d73"
+  },
+  "src/RimStarWars/StarWarsPatches/Patches/HuttEyes_RestoreRenderNodes.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "3c8d5d73"
+  },
+  "src/RimStarWars/StarWarsPatches/Patches/IonStunMote_Blue.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "3c8d5d73"
+  },
+  "src/RimStarWars/StarWarsPatches/Patches/IsekaiTraits_ExcludeFromRandomRoll.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "3c8d5d73"
+  },
+  "src/RimStarWars/StarWarsPatches/Patches/IsekaiTraits_StarWarsReflavor.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "98863702"
+  },
+  "src/RimStarWars/StarWarsPatches/Patches/JawaAppearance_Tuning.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "98863702"
+  },
+  "src/RimStarWars/StarWarsPatches/Patches/JawaCombatViability_Tuning.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "98863702"
+  },
+  "src/RimStarWars/StarWarsPatches/Patches/JawaXenotype_Repoint.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "98863702"
+  },
+  "src/RimStarWars/StarWarsPatches/Patches/PetNames_Ashkarr.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "98863702"
+  },
+  "src/RimStarWars/StarWarsPatches/Patches/PlantNames_Ashkarr.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "98863702"
+  },
+  "src/RimStarWars/StarWarsPatches/Patches/PodCarIsLandspeeder.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "98863702"
+  },
+  "src/RimStarWars/StarWarsPatches/Patches/SWCPZoomerIcon_Fix.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "98863702"
+  },
+  "src/RimStarWars/StarWarsPatches/Patches/SWDesertWeather_Attach.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "98863702"
+  },
+  "src/RimStarWars/StarWarsPatches/Patches/SpeciesStartingGear_Tuning.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "98863702"
+  },
+  "src/RimStarWars/StarWarsPatches/Patches/ThirdPartyStunBodySize_Squared.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "98863702"
+  },
+  "src/RimStarWars/StarWarsPatches/Patches/VanillaFaction_Xenotypes.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "98863702"
+  },
+  "src/RimStarWars/StarWarsPatches/Patches/VehicleBeastLabels.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "98863702"
+  },
+  "src/RimStarWars/StarWarsPatches/Patches/VehicleBeastSound_Fix.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "98863702"
+  },
+  "src/RimStarWars/StarWarsPatches/Patches/WeaponTags_Renormalise.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "98863702"
+  },
   "src/RimStarWars/StructureInjectionsSW/Defs/GenStepDefs_MoistureFarm.xml": {
     "cleanCount": 1,
     "date": "2026-09-04",
