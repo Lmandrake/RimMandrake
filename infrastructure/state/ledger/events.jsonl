@@ -4577,3 +4577,6 @@
 {"seat":"FOUNDRY","event":"claim","id":"RETAG_BUILDER_SELF_ERASE_1","ts":"2026-09-05T03:35:53Z"}
 {"seat":"FOUNDRY","event":"start","id":"RETAG_BUILDER_SELF_ERASE_1","ts":"2026-09-05T03:35:53Z"}
 {"seat":"OWNER","event":"close","id":"TRANSIENT_SWEEP_RULINGS_1","sha":"e21690cf","ownerSaid":"Delete; Evict next sweep","ts":"2026-09-05T03:35:56Z"}
+{"seat":"BENCH","event":"claim","id":"RESEARCH_TREE_TABS_1","ts":"2026-09-05T03:36:20Z"}
+{"seat":"FOUNDRY","event":"close","id":"RETAG_BUILDER_SELF_ERASE_1","sha":"3e6a2d5a","ts":"2026-09-05T03:41:28Z"}
+{"seat":"BENCH","event":"note","id":"RESEARCH_TREE_TABS_1","text":"Handoff chore cleared: old deployed Jawa_Patches folder deleted from the game Mods dir. Basis: packageId mandrake.jawa.patches MEASURED 0 occurrences in live ModsConfig; rm/rsw/rut.patches all active; 2026-09-04 full-list proof load ran clean without it. Repo holds the split source.","ts":"2026-09-05T03:42:17Z"}
