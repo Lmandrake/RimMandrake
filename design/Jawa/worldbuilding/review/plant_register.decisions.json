@@ -1,0 +1,4046 @@
+{
+ "sheetId": "plant_register",
+ "posture": "blacklist",
+ "postureMeaning": "Default is KEEP THE PLANT AND ITS ART. An undecided row destroys nothing and queues no work. Only 'cut' removes a plant; 'regen'/'rescale' queue art work. 'prio' (A/B/C) is the regeneration ORDER and is meaningful only on a regen/rescale row, or on a LUSH row left undecided, where it means 'look at this first'. An empty 'decision' with a 'why' that begins LEFT UNDECIDED ON PURPOSE is a deliberate open question, not an unreviewed row.",
+ "options": [
+  "keep",
+  "regen",
+  "rescale",
+  "cut"
+ ],
+ "criterion": "px-per-cell — how the shipping art holds up at drawSize.x x visualSizeRange.max x 64. Ranks QUALITY, not WORTH; alien-vs-terrestrial is the owner's call and lives in the notes.",
+ "generatedBy": "gen_plant_register.py 1.0",
+ "generatedUtc": "2026-09-05T22:52:02Z",
+ "provenance": {
+  "dumpMods": 595,
+  "dumpCaptured": "2026-09-05T04:49:08Z",
+  "gameVersion": "1.6.4871 rev591",
+  "liveActiveMods": 596,
+  "ashkarrBiomes": 24,
+  "ashkarrBiomesMatching": 24,
+  "cutProvenance": "cut list: 1454 defs, live settings, 2026-09-04 15:31 (/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Config/Mod_3521312241_Mod_CherryPicker.xml)",
+  "calibration": "PASSED — 11/11 PlantProperties readings across rice, healroot, oak, corn and saguaro match the vanilla RimWorld wiki, RawRice's nutrition statBase is vanilla's 0.05, AND 4/4 campaign renames are exactly where the renaming layer puts them (Plant_Rice is 'kibla grain', not 'rice plant')"
+ },
+ "decisions": {
+  "Plant_Astragalus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RG_Plant_Oxalis": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RG_Plant_Plumeria": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RG_Plant_TigerLily": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VEE_ButtercupFlower": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VEE_ForgetMeNot": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RG_Plant_Dervish": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RG_Plant_AridGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RG_Plant_LupineIceland": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_Healroot": {
+   "decision": "",
+   "prefill": "",
+   "prio": "A",
+   "note": ""
+  },
+  "Plant_HealrootWild": {
+   "decision": "",
+   "prefill": "",
+   "prio": "A",
+   "note": ""
+  },
+  "GRimClivia": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Grim3Shrub": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RG_Plant_CrimsonCushion": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_Bush": {
+   "decision": "",
+   "prefill": "",
+   "prio": "A",
+   "note": ""
+  },
+  "Plant_Bush_Leafless": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "RotR_RoseOfRebirth": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GRim1ShrubLow": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "GRim2ShrubLow": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "GRimShrubLow": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "Plant_Daylily": {
+   "decision": "",
+   "prefill": "",
+   "prio": "A",
+   "note": ""
+  },
+  "Plant_Rose": {
+   "decision": "",
+   "prefill": "",
+   "prio": "A",
+   "note": ""
+  },
+  "Plant_ShrubLow": {
+   "decision": "",
+   "prefill": "",
+   "prio": "A",
+   "note": ""
+  },
+  "VEE_Plant_Bluebell": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "VEE_Plant_Gardenia": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "VEE_Plant_Gentian": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "VEE_Plant_Petunia": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "ZBiome_Plant_WildDaylily": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "ZBiome_Plant_WildRose": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "VEE_Gorse": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "VEE_Heather": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "VEE_Knapweed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "VEE_Loosestrife": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "Plant_Ripthorn": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_Clivia": {
+   "decision": "",
+   "prefill": "",
+   "prio": "A",
+   "note": ""
+  },
+  "BushDandys": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "GRim1Bush": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "GRim2Bush": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "GRim3Bush": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "GRim4Bush": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "GRimBush": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "Plant_Nysyllin": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "Plant_Nysyllin_Wild": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "RG_Plant_CreepStern": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GRimBrambles": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "Plant_Brambles": {
+   "decision": "",
+   "prefill": "",
+   "prio": "A",
+   "note": ""
+  },
+  "Plant_Brambles_Leafless": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "RG_Plant_BramblesRed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "RG_Plant_BramblesYellow": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "AreebianBush": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "Plant_Berry": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "Plant_Berry_Leafless": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "A",
+   "note": ""
+  },
+  "Plant_MujaFruit": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "Plant_MujaFruit_Wild": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "GRim1BerryBush": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "GRim2BerryBush": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "GRim3BerryBush": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "GRim4BerryBush": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "GRim5BerryBush": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "GRimBerryBush": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "IronScruff_Juniper": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "VEE_Plant_JuniperBush": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "GRim1BushPoplar": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GRim2BushPoplar": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GRimBushPoplar": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "NewGreenBush": {
+   "decision": "rescale",
+   "prefill": "rescale",
+   "prio": "A",
+   "note": ""
+  },
+  "GRim1Thornvine": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GRim2Thornvine": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GRimThornvine": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_Thornvine": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RG_Plant_LureWeed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "Plant_Psychoid": {
+   "decision": "",
+   "prefill": "",
+   "prio": "A",
+   "note": ""
+  },
+  "Plant_Psychoid_Wild": {
+   "decision": "",
+   "prefill": "",
+   "prio": "A",
+   "note": ""
+  },
+  "Plant_TookeTrap": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "Plant_TookeTrap_Wild": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "VCE_Plant_BunnyEarsCactus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "VCE_Plant_PeyotePlant": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "VCE_Plant_Schlumbergera": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "GRim1Ripthorn": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GRim2Ripthorn": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GRimRipthorn": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Plant_Mantrap": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_RavenNettle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "AB_RedBugloss": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "VEE_Plant_BarrelCactus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VEE_Plant_BeavertailCactus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VEE_Plant_ChollaCactus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VEE_Plant_HedgehogCactus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VEE_Plant_OrganPipeCactus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_DesertDandelion": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_HardyGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GRimYellowGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RG_FlowerCactus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GRim1PincushionCactus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GRimPincushionCactus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_PincushionCactus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AreebianCactus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_Agave": {
+   "decision": "",
+   "prefill": "",
+   "prio": "A",
+   "note": ""
+  },
+  "Plant_HubbaGourd": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "Plant_HubbaGourd_Wild": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "VCE_Plant_AloeVera": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "VCE_Plant_JadePlant": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "AB_BrownBarrelCactus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GRimAgave": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "GRim1PebbleCactus": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "GRimAgavePlant": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "GRimPebbleCactus": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "Plant_Chakroot": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "Plant_Chakroot_Wild": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "Plant_PebbleCactus": {
+   "decision": "",
+   "prefill": "",
+   "prio": "A",
+   "note": ""
+  },
+  "VCE_Plant_SnakePlant": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "AB_Aaklac": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "Plant_SaguaroCactus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GRim1SaguaroCactus": {
+   "decision": "rescale",
+   "prefill": "rescale",
+   "prio": "A",
+   "note": ""
+  },
+  "GRimSaguaroCactus": {
+   "decision": "rescale",
+   "prefill": "rescale",
+   "prio": "A",
+   "note": ""
+  },
+  "VEE_Plant_HoodiaCactus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_TreeDrago": {
+   "decision": "",
+   "prefill": "",
+   "prio": "A",
+   "note": ""
+  },
+  "AB_DessertTree": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "TreeDragoberry": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "Plant_LilyPad": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_Lotus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GRim1Reeds": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GRimReeds": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_Reeds": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VBE_Plant_Tea": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "GRimBulrush": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_Bulrush": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_Smokeleaf": {
+   "decision": "",
+   "prefill": "",
+   "prio": "A",
+   "note": ""
+  },
+  "Plant_Smokeleaf_Wild": {
+   "decision": "",
+   "prefill": "",
+   "prio": "A",
+   "note": ""
+  },
+  "VBE_Plant_Coffee": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "VBE_Plant_Tobacco": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "VCE_Allspice": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "Plant_Hops": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "Plant_Strawberry": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "Plant_Strawberry_Wild": {
+   "decision": "",
+   "prefill": "",
+   "prio": "A",
+   "note": ""
+  },
+  "Plant_Ambrosia": {
+   "decision": "",
+   "prefill": "",
+   "prio": "A",
+   "note": ""
+  },
+  "Plant_MotherAmbrosiaLGE": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "RG_Plant_Tidalis": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_Meiloorun": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "Plant_Meiloorun_Wild": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "VEE_Plant_ScrewPine": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "Plant_Alocasia": {
+   "decision": "",
+   "prefill": "",
+   "prio": "A",
+   "note": ""
+  },
+  "Plant_Rafflesia": {
+   "decision": "",
+   "prefill": "",
+   "prio": "A",
+   "note": ""
+  },
+  "Plant_HydenockTree": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "Plant_HydenockTree_Wild": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "Plant_JoganTree": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "Plant_JoganTree_Wild": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "Plant_TreeMaple": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "Plant_TreeOak": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "Plant_TreePalm": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "RG_Plant_TreeDwarfPalm": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "VEE_Plant_DatePalm": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VEE_Plant_TreeBirch_Auburn": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "VEE_Plant_TreeMaple_Auburn": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "VEE_Plant_TreeOak_Auburn": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "VEE_Plant_TreePoplar_Auburn": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "GRim1Alocasia": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "GRim2Alocasia": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "GRimAlocasia": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "GRim1RatPalm": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "GRim2RatPalm": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "GRimRatPalm": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "Plant_RatPalm": {
+   "decision": "",
+   "prefill": "",
+   "prio": "A",
+   "note": ""
+  },
+  "RG_Plant_TallPalmTree": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "VEE_Plant_Firewood": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "VEE_Plant_Laurel": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "RG_Plant_TreeSplitpine": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "TreePalma": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "AB_FanPalm": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "Plant_Bloddle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "AB_GargantuanLithops": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "VCE_Plant_Echeveria": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "VCE_Plant_FairyWashboard": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "VCE_Plant_PincushionPlant": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "VCE_Plant_SweetheartPlant": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "TreeDead": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "AB_EuphorbiaRimworldia": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "GRimTreeDead": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "AB_DeadBowerTree": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "AB_EuphorbiaDesiccata": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "AB_GiantStikehr": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "Dandys": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_Dandelion": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RG_Plant_BlueDandelion": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RG_Plant_RedDandelion": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DandyGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GRimBlackGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GRimBlueGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GRimGreenGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GRimNavyGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GRimOrangeGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GRimPurpleGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GRimRedGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GRimTealGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_Grass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_YellowGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_Haygrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "Plant_Rice": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "VCE_Wheat": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "DandyTallGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "GRimBlackTallGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "GRimBlueTallGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "GRimGreenTallGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "GRimNavyTallGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "GRimOrangeTallGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "GRimPurpleTallGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "GRimRedTallGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "GRimTealTallGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "GRimYellowTallGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "PlantTallYellowGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_TallGrass": {
+   "decision": "",
+   "prefill": "",
+   "prio": "A",
+   "note": ""
+  },
+  "Plant_YellowTallGrass": {
+   "decision": "",
+   "prefill": "",
+   "prio": "A",
+   "note": ""
+  },
+  "Plant_Fibercorn": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_Fibercorn_Wild": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_Tinctoria": {
+   "decision": "",
+   "prefill": "",
+   "prio": "A",
+   "note": ""
+  },
+  "Plant_Tinctoria_Wild": {
+   "decision": "",
+   "prefill": "",
+   "prio": "A",
+   "note": ""
+  },
+  "Plant_Cotton": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "Plant_Cotton_Wild": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "Plant_Potato": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "SavannaBush": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VCE_Sugarcane": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "Plant_Dantuber": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "Plant_Dantuber_Wild": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "Plant_Corn": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "SavannaTreeAcacia": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "A",
+   "note": ""
+  },
+  "SavannaTreeBaobab": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "RG_Plant_SwampPod": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Plant_BloomingCorpse": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_TarPuddle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Plant_CryingWolfberryBush": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_PollutedStikehr": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Plant_TreeBarbedLarch": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Plant_TreeClawhandCitron": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "BMT_Plant_TreeSeepingEucalyptus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Plant_TreeSnakeWillow": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Plant_TwistedDandelion": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "PoisonPlantDandelion": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_ToxiGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Plant_ToxicIvy": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_GrayGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RG_Plant_ToxiGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Plant_PoxSorghum": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "PoisonMushroom": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "PoisonPlantTallGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RG_Plant_TallToxiGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Plant_CottonCap": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_SpinyHops": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_Toxipotato": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Plant_Rashroot": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Plant_WildRashroot": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Plant_TumorbulbHyacinth": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Plant_Doomsprout": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Plant_GreyFern": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Plant_PigsEars": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Plant_ScorchedStars": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "PoisonPlantBush": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "PoisonShrub": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "BMT_RainbowTongue": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Plant_EclipsusFlower": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Plant_EclipsusLeaves": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Plant_GutterPlantain": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Plant_Snaketails": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "PoisonPlantRaspberry": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "VRE_PoluxBush": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "PoisonTreeWillow": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_WeepingToxberry": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "PoisonPlantTreeCecropia": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "PoisonTreeCypress": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "PoisonTreePalm": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_TreePolux": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "PoisonAlocasia": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "PoisonBrambles": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "PoisonRafflesia": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "RG_Plant_TreeToxiTeak": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_TreeCypress": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "PoisonPlantTreeTeak": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_ToxiBulb": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RG_Plant_TreeToxipine": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_GiantToxicFlower": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_CavernMycelium": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FloorMold": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Dewshrooms": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FruitingBodies": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_LuminousSpout": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RG_Cibarius": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RG_SychiCap": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RG_Tripaloski": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Fibershroom": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Nuitae": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_NuitaeMarsh": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RG_Potokus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_BiolumiAlgaeCarnelian": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_BiolumiAlgaeChrysoberyl": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_BiolumiAlgaeCitrine": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_BiolumiAlgaeKunzite": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_BiolumiAlgaeTanzanite": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_BiolumiAlgaeTurquoise": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_BalefulBolete": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Brightbell": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_CarveShroom": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Chubshroom": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_CoralClub": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Curlbranch": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FungalTendril": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Glittercap": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Pusmelon": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Skulltop": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_VioletWimple": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_YumBulbs": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RG_NeoAmanita": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VEE_Plant_MysticCap": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_BrightWispcap": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_DarkWispcap": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Gleamtip": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_HealrootGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Wrinklecap": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_WrinklecapMarsh": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Greatbulb": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Ravelmush": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_BleedingTooth": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Chromacap": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_CrimsonCap": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_ExplodingAngel": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_BloomingCactus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_GlowingSucculent": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_JuiceCactus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_WatOrbs": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Wheelshroom": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Poptop": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_StinkLattice": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_PowerFungus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Fungusfern": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_GiantLeaf": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_BlackLily": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_BrightWisptoll": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Candlesnuff": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_DarkWisptoll": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Dishcap": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FlakespireFungus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Frigu": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Shimbershroom": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_Timbershroom": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Mycelium": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Arpeau": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_GreenArpeau": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Nogtyl": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_NogtylMarsh": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Shinecap": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_Flowers": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_GlowingGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_MunchFungus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_MunchFungus_Wild": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_Glowstool": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_ManaxFungus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_TinkleGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_Bryolux": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_TangleTea": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_Bubblespore": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_Bubblespore_Wild": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_Devilstrand": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_Agarilux": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_LandCoral": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_AgaricusDomeCap": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_GlowingAgarilux": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_Gomphoeria": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_Iashiphus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_LilacBeacon": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "AB_SugarFamewort": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_WildRadagast": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_WitchesOyster": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_GiantSeptimum": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_LuminescentTree": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_FelucianGlowspore": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_FelucianGlowspore_Wild": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_ArbuscularMycorrhiza": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_GiantSunflower": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_GiantTulip": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_DribblingCap": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "AB_GiantAgariTox": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "AB_RecurvedStropharia": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "AB_SlimyPholiota": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "AB_GiantAgarilux": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "AB_AgariluxPrime": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Plant_PaganThorns": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GrimShroom": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RG_Plant_Cathedralis": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Plant_Toxcaps": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Plant_TwistingThorngrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RG_Plant_MutatedFungus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GrimMush": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VEE_DayPsilocap": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_Psilocap_Farmed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RG_Plant_GlowLeaf": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Plant_WeepingHagbloom": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VEE_DayBoomshroom": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GRimPsilocap": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_Psilocap": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VEE_DayWillowgill": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Plant_TwistingThornweed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RG_Plant_MutatedFern": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Plant_Pestia": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Plant_PlagueFans": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Boomshroom": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_Willowgill": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Plant_TreeBlotBirch": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Plant_TreeMartyr": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Plant_TreeScalpedCypress": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Plant_TreeTwistingThornwood": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Plant_TreeWhistlingCane": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Plant_TreeWormoak": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GRim1TreeSnagroot": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "GRim1Witchwood": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "GRim2Witchwood": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "GRimTreeSnagroot": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "GRimWitchwood": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "Plant_TreeSnagroot": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "Plant_Witchwood": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Mushpine": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "GrimPepper": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_TallSlimyGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SwordFern": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VCE_ChocolateBush": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JungleShrub": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RG_Plant_TropicalIvy": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RG_Plant_BorealFern": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RG_Plant_TemperateFern": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RG_Plant_TropicalFern": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RG_Plant_TemperateIvy": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_Chokevine": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RG_Plant_TropicalBrambles": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_GreenRockFern": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GRim1BambooBush": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GRimBambooBush": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GRim1Chokevine": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "GRim2Chokevine": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "GRim3Chokevine": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "GRimChokevine": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "RG_Plant_TropicalChokevine": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_KeeningCordax": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_TreeBamboo": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_TreeCecropia": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_TreeCocoa": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_TreeCocoa_Wild": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEI2_TendrilmossVines": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VEE_Plant_Fern": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_TreeTeak": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_TreeArchean": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "TreeAreeb": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "TreeBlareebian": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "TreeCedar": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "TreeCypre": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "TreeGralma": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "TreeGrimber": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "GRimTreePolux": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "AB_GiantFlower": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_JungleTree": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_JungleTree_Polluted": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GrimCoral": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "CoralTreeBlack": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "CoralTreeBlue": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "CoralTreeOrange": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Plant_SewerReed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_TreeWillow": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RG_Plant_TreeWhiteWillow": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_ParasiticMangrove": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BiomesIslands_CoconutPalm": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VEE_Mangrove": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "WetlandTreeMangrove": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_MangrovePalm": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RG_Plant_TreeCornish": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Plant_TreeTanglerootMangrove": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GRimTreeWillow": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "AB_MangroveTree": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_Microshroom": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_Jellyshroom": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "CaveShroom": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "CrystalSmall": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_Nutrifungus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_Psykshroom": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Glowstool": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Glowbulb": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Greyfields": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_RoyalBracket": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Shimmershroom": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_Meatshroom": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_NeutroShroom": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_Fibershroom": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_Healshroom": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_Timbercap": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Blastpod": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Bryolux": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_Cottonshroom": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_PsychoidShroom": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Agarilux": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_CapscoolFungus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_GreyLady": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_JadeGlintsCrop": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_KessingerPlant": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_MoonlessStripesPlant": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_MortalMorelPlant": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "CrystalShard": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Brightbells": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_AbyssalGrapesVine": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_AmbrosyxFungus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Gleamcap": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_StarchstalkPlant": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_DevilShroom": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_GoldShroom": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_DulcisPlant": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_Giantshroom": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_CrystaltipBrambles": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Stimquill": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_SteelShroom": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Crystalcap": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "CrystalBig": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "RG_Plant_TundraCotton": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GRim1Moss": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GRim2Moss": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GRim3Moss": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GRim4Moss": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GRimMoss": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_Moss": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RG_Plant_TundraGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_RimeFlower": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_Nightgrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_ReindeerMoss": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RG_Plant_TundraTallGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_FrostLeaf": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_RimeNodules": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RG_Plant_Coldheart": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RG_Plant_Nightguide": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_FlashFrozenTree": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_NightRafflesia": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VEE_Plant_GnarledPine": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RG_Plant_BlueTreePine": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RG_Plant_OrangeTreePine": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RG_Tree_TundraTreePine": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GRim1TreeGrayPine": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "GRim2TreeGrayPine": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "GRimTreeGrayPine": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "Plant_TreeGrayPine": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RG_Plant_LargeTreePine": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_RottingMound": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Grimtacle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "HorrorWeb": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_BloodBouquet": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_FleshTree": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_GlobularPlant": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_GlobularPlant_Polluted": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_TentacularPlant": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "CaveCrystal": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_RimeFlowerGrowable": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Crystal_BlueSowable": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_CrystalHorn": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "TreeCrystal": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "AB_CrystalFlower": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "IronScruff_Bindweed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_HeatsinkFungus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FireLavender": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_MagmaCactus": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "AG_Septimum": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AG_Gamma": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_GiantGamma": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_ToxicGamma": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_FirevineTree": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Sagecrust": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "IronScruff_PrimordialGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GRim1Fireweed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GRimFireweed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_Fireweed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "IronScruff_PrimordialTallGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GRimMagmaCactus": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "BMT_VoltaicFungus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_SessileMechanoid": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_TechnoTree": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_GoldenCubeTree": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_RustPuff": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AG_DarkGamma": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_BurnedMushroom": {
+   "decision": "rescale",
+   "prefill": "rescale",
+   "prio": "A",
+   "note": ""
+  },
+  "BurnedTree": {
+   "decision": "rescale",
+   "prefill": "rescale",
+   "prio": "A",
+   "note": ""
+  },
+  "VEE_Plant_VyspStrands": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VEE_Plant_CyllenCluster": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VEE_Plant_MyrloxTree": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_Slimecasia": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_SlimyFern": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_SlimyTree": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_LargeSlimyTree": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_AlienGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_AlienGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_EyeGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VEE_Plant_PinkGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VEE_Plant_TallPinkGrass": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_Plant_PollenTrumpet": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_Heat_Ambrosia": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_RedLeaves": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_RedPlantsTall": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_RedLeaves": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_RedPlantsTall": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VEE_Plant_PhoraxTree": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VEE_Plant_XyrilTree": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_HalfAlienTree": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_AlienTree": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_AlienTree": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_AlienTree_Polluted": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RG_Plant_Raspberry": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Plant_PaganThornsPotted": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_GrassAnima": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_MossGauranlen": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_GlowbulbPlanted": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_GreyfieldsPlanted": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_RoyalBracketPlanted": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_ShimmershroomPlanted": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VEE_Plant_AnimaBell": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VEE_Plant_VyspStrands_Wilted": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VGE_OxyalgaePlant": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VEE_Plant_AnimaRoot": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_MortalMorelPlantGrowable": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_HydroDevilstrand_GT": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_BrightbellsPlanted": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_Psilocap_Decorative": {
+   "decision": "rescale",
+   "prefill": "rescale",
+   "prio": "B",
+   "note": ""
+  },
+  "Plant_TreeBonsai": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Plant_CorruptedPodGauranlen": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_PodGauranlen": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "C",
+   "note": ""
+  },
+  "RSW_FE_Plant_ScorchFruit": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VEE_Plant_AnimaHeartBlossom": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VEE_Plant_PsychicLotusSeedling": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VEE_Plant_AnimaBrambles": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_GleamcapPlanted": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RG_Plant_RaspberryCultivated": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VEE_Plant_AnimaBush": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RG_Plant_BerryCultivated": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "C",
+   "note": ""
+  },
+  "VEE_Plant_CyllenCluster_Wilted": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VEE_Plant_PsychicLotus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VEE_Plant_PsychicLotus_Wilted": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ChoppedStump": {
+   "decision": "rescale",
+   "prefill": "rescale",
+   "prio": "B",
+   "note": ""
+  },
+  "ChoppedStump_Anima": {
+   "decision": "rescale",
+   "prefill": "rescale",
+   "prio": "B",
+   "note": ""
+  },
+  "ChoppedStump_Archean": {
+   "decision": "rescale",
+   "prefill": "rescale",
+   "prio": "B",
+   "note": ""
+  },
+  "ChoppedStump_Gauranlen": {
+   "decision": "rescale",
+   "prefill": "rescale",
+   "prio": "B",
+   "note": ""
+  },
+  "ChoppedStump_Harbinger": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "C",
+   "note": ""
+  },
+  "ChoppedStump_Polluted": {
+   "decision": "rescale",
+   "prefill": "rescale",
+   "prio": "B",
+   "note": ""
+  },
+  "ChoppedStump_Polux": {
+   "decision": "rescale",
+   "prefill": "rescale",
+   "prio": "B",
+   "note": ""
+  },
+  "SmashedStump": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "C",
+   "note": ""
+  },
+  "SmashedStump_Anima": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "C",
+   "note": ""
+  },
+  "SmashedStump_Archean": {
+   "decision": "rescale",
+   "prefill": "rescale",
+   "prio": "B",
+   "note": ""
+  },
+  "SmashedStump_Gauranlen": {
+   "decision": "rescale",
+   "prefill": "rescale",
+   "prio": "B",
+   "note": ""
+  },
+  "SmashedStump_Harbinger": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "C",
+   "note": ""
+  },
+  "SmashedStump_Polluted": {
+   "decision": "rescale",
+   "prefill": "rescale",
+   "prio": "B",
+   "note": ""
+  },
+  "SmashedStump_Polux": {
+   "decision": "rescale",
+   "prefill": "rescale",
+   "prio": "B",
+   "note": ""
+  },
+  "VEE_Mangrove_ChoppedStump": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "C",
+   "note": ""
+  },
+  "VEE_Mangrove_SmashedStump": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "C",
+   "note": ""
+  },
+  "VEE_Plant_Firewood_ChoppedStump": {
+   "decision": "rescale",
+   "prefill": "rescale",
+   "prio": "B",
+   "note": ""
+  },
+  "VEE_Plant_Firewood_SmashedStump": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "C",
+   "note": ""
+  },
+  "VEE_Plant_LaurelTree_ChoppedStump": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VEE_Plant_LaurelTree_SmashedStump": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VEE_Plant_ScrewPine_ChoppedStump": {
+   "decision": "rescale",
+   "prefill": "rescale",
+   "prio": "B",
+   "note": ""
+  },
+  "VEE_Plant_ScrewPine_SmashedStump": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "C",
+   "note": ""
+  },
+  "Plant_TreeBirch": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_TreePoplar": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VEE_Plant_FakeAnimaTree": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VEE_Plant_YoungAnimaTree": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_TreeGauranlen": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_TreeHarbinger": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_TreeAnima": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Plant_TreePine": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VEE_Plant_AnimaHusk": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VEE_Plant_MyrloxTree_Wilted": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VEE_Plant_PhoraxTree_Wilted": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VEE_Plant_XyrilTree_Wilted": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VEE_Plant_GrandAnimaTree": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VEE_Plant_TreeAnima_Ancient": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  }
+ }
+}
