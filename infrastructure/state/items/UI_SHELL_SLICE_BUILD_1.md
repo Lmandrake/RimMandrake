@@ -41,7 +41,8 @@ not shipped content).
 ## criteria
 - [x] Mod skeleton, theme, and art built (offline half of spec §2/§3).
 - [x] Shipped art actually committed, not silently gitignored.
-- [~] **§4 gate, partial**: activated `aRandomKiwi.RimThemes` +
+- [x] **§4 gate — RESOLVED** (see the 2026-09-05 real-OS-click entry below):
+      activated `aRandomKiwi.RimThemes` +
       `mandrake.rut.shell` in the live ModsConfig (596 mods now), restarted,
       confirmed both load with **zero errors** (`Player.log` grepped clean
       for either packageId). RimThemes' own theme picker
@@ -96,16 +97,43 @@ not shipped content).
       interaction between the bridge's synthetic input and RimThemes' custom
       `GUI.BeginGroup`/`EndGroup` nesting around each row, not something
       fixable from the tool-call side.
-      **Needs a human click** (5 seconds at the keyboard: main menu → the
-      bottom-left RimThemes icon row → Utinni Shell → its select icon) to
-      actually complete the visual gate, or a bridge-side engineering fix if
-      this class of RimWorld mod (heavy GUI-pipeline patchers with custom
-      nested `BeginGroup`/`EndGroup` layouts) turns out to be a recurring
-      click-injection blind spot worth naming as its own item.
-- [ ] §5 verify: `validate_patch.py --live` after a dump (only `--defs`
-      static-checked this pass), VBE picker shows the menu background,
-      loader shows on the next cold load — all still pending the theme
-      actually being selected.
+      **RESOLVED, same pass, without a human click.** The owner was away
+      from the keyboard and suggested "consider computer usage" — instead of
+      the bridge's semantic `click_ui_target` (which only simulates a click
+      to RimWorld's own input handling), drove the REAL OS mouse: Windows
+      `user32.dll` via `ctypes` (`SetProcessDpiAwareness(2)` first — without
+      it, `GetWindowRect`/`GetClientRect` return virtualized 96-DPI
+      coordinates and every computed screen point is wrong on this
+      multi-monitor, scaled setup), `SetCursorPos` + `mouse_event`
+      LEFTDOWN/LEFTUP at the real screen coordinates (RimWorld's window was
+      already OS-foreground; UI-space coordinates from `get_ui_layout`
+      mapped 1:1 to logical screen pixels once DPI-awareness was set, no
+      scale correction needed). **Worked on the first attempt** — confirmed
+      by two screenshots: the dialog itself re-skinned live the instant the
+      click landed (its own "Supported by" button, row highlighting, and
+      the Utinni Shell row's select icon all switched to the selected/brass
+      look), and after closing the dialog with a second real click, the
+      **main menu now renders the Utinni Shell button atlas** and the
+      bottom-right RimThemes indicator shows our icon as active. This
+      strongly confirms the earlier root-cause theory (an IMGUI
+      hot-control/event-consumption gap specific to the bridge's synthetic
+      injection path) rather than anything wrong with the target mapping or
+      RimThemes itself — a real OS click sails through with no special
+      handling needed. Worth a `rimbridge-companion` note: for dialogs from
+      mods with heavy custom GUI patching, a real `SendInput`-based click is
+      a working fallback the bridge doesn't offer natively yet.
+- [ ] §5 verify, remainder: `validate_patch.py` doesn't actually apply here
+      (`VBE_Backgrounds_Utinni.xml` is a plain `BackgroundImageDef`, not a
+      `PatchOperation` file — nothing for that tool to check). VBE
+      Backgrounds ships no assembly and no picker dialog for this def type
+      (confirmed: no DLL under the mod's workshop folder) — it's rotated in
+      randomly by VBE's own main-menu background system, so "shows in the
+      picker" isn't a real verification step; the honest check is "does our
+      background ever get drawn," which needs either several main-menu
+      reloads (nondeterministic) or reading VBE's own selection code. Not
+      done this pass. **Loader art on a cold load** is still genuinely
+      pending — needs an actual ~25-minute cold load with the full modlist,
+      not a quicktest.
 
 Left `doing` — the offline half is done, the gate is one human click and a
 four-screenshot pass away from complete.
