@@ -161,13 +161,25 @@
         <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
       </li>
       <li>
-        <label>foreclaw</label>
+        <label>left foreclaw</label>
+        <labelNoLocation>foreclaw</labelNoLocation>
         <capacities>
           <li>Scratch</li>
         </capacities>
         <power>6</power>
         <cooldownTime>2</cooldownTime>
         <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+      <li>
+        <label>right foreclaw</label>
+        <labelNoLocation>foreclaw</labelNoLocation>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
         <chanceFactor>0.5</chanceFactor>
       </li>
     </tools>
