@@ -3632,6 +3632,81 @@
     "date": "2026-09-05",
     "sha": "98863702"
   },
+  "src/RimStarWars/StarWarsRaces/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "e69e40f3"
+  },
+  "src/RimStarWars/StarWarsRaces/Defs/GeneDefs/Jawa_EyeColours.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "e69e40f3"
+  },
+  "src/RimStarWars/StarWarsRaces/Defs/GeneDefs/Jawa_Head.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "e69e40f3"
+  },
+  "src/RimStarWars/StarWarsRaces/Defs/GeneDefs/Jawa_MiningDisabled.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "e69e40f3"
+  },
+  "src/RimStarWars/StarWarsRaces/Defs/GeneDefs/Jawa_Skittish.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "e69e40f3"
+  },
+  "src/RimStarWars/StarWarsRaces/Defs/GeneDefs/SW_Genes.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "e69e40f3"
+  },
+  "src/RimStarWars/StarWarsRaces/Defs/HeadTypeDefs/SW_HeadTypes.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "e69e40f3"
+  },
+  "src/RimStarWars/StarWarsRaces/Defs/Misc/SW_Categories.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "e69e40f3"
+  },
+  "src/RimStarWars/StarWarsRaces/Defs/Misc/SW_Support.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "e69e40f3"
+  },
+  "src/RimStarWars/StarWarsRaces/Defs/PawnKindDefs/RimMandrakePawnKinds.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "e69e40f3"
+  },
+  "src/RimStarWars/StarWarsRaces/Defs/PawnKindDefs/SW_RescuedKinds.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "e69e40f3"
+  },
+  "src/RimStarWars/StarWarsRaces/Defs/RulePackDefs/SW_NameMakers.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "e69e40f3"
+  },
+  "src/RimStarWars/StarWarsRaces/Defs/XenotypeDefs/MandrakeJawaXenotype.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "e69e40f3"
+  },
+  "src/RimStarWars/StarWarsRaces/Defs/XenotypeDefs/RimMandrakeXenotypes.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "e69e40f3"
+  },
+  "src/RimStarWars/StarWarsRaces/README.md": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "a492396b"
+  },
   "src/RimStarWars/StructureInjectionsSW/Defs/GenStepDefs_MoistureFarm.xml": {
     "cleanCount": 1,
     "date": "2026-09-04",
@@ -3837,20 +3912,35 @@
     "date": "2026-09-02",
     "sha": "f9d51180"
   },
-  "src/RimUtinni/PlantGrowth/Source/Patch_Plant_GrowthRate.cs": {
+  "src/RimUtinni/PlantGrowth/About/About.xml": {
     "cleanCount": 1,
-    "date": "2026-09-03",
-    "sha": "0fb4936c"
+    "date": "2026-09-05",
+    "sha": "ff35f27f"
+  },
+  "src/RimUtinni/PlantGrowth/Defs/JawaPlantGrowthSettings.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "ff35f27f"
+  },
+  "src/RimUtinni/PlantGrowth/Source/JawaPlantGrowth.csproj": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "ff35f27f"
+  },
+  "src/RimUtinni/PlantGrowth/Source/Patch_Plant_GrowthRate.cs": {
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "ff35f27f"
   },
   "src/RimUtinni/PlantGrowth/Source/PlantGrowthConfig.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "sha": "250be7a3"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "ff35f27f"
   },
   "src/RimUtinni/PlantGrowth/Source/PlantGrowthSettingsDef.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "sha": "250be7a3"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "ff35f27f"
   },
   "src/RimUtinni/ResearchRetag/About/About.xml": {
     "cleanCount": 2,
