@@ -1,4 +1,31 @@
-# MULTIVIEW_FACING_PIPELINE_1 — pose-collision bug fixed and verified; UV-texture path needs an owner decision
+# MULTIVIEW_FACING_PIPELINE_1 — pose-collision bug fixed; owner judged the OUTPUT unusable ("crushed tin cans")
+
+## 2026-09-05, owner review — the actual verdict that matters
+
+Owner looked at the fused-mesh renders directly and called them "crushed tin
+cans... not useful." That is the real judgment here, and it overrides the
+"verified" framing below. **Fixing the north/south pose-collision was a real,
+narrow technical fix — it is not evidence the InstantMesh-plus-software-
+rasterizer approach produces usable sprite art.** It does not, per the one
+person whose visual judgment this project treats as authoritative
+(`[[live-check-must-be-proven-needed]]`-class doctrine: art quality is
+judged by looking, never scored by an instrument or a subagent's own
+self-report).
+
+**What this means going forward**: the mesh-fusion / vertex-color-bake
+technique this prototype used is likely not the right direction for
+production sprite art, independent of the pose-collision bug or the
+nvcc/UV-texture blocker below — a sharper UV texture would not fix "crushed
+tin cans" if the underlying mesh reconstruction and projection itself reads
+as mangled. `graphics_pipeline_recommendation.md`'s own stated winner is
+local Flux.1-dev + ComfyUI (2D generation, IP-Adapter + ControlNet), with
+InstantMesh multi-view framed as a supporting/secondary technique — this
+result is evidence AGAINST leaning on InstantMesh further, not for it.
+**Left for the owner to decide** whether this prototype direction continues
+at all, or whether effort redirects entirely to the 2D Flux/ComfyUI channel.
+Not closing or advancing this item further without that call.
+
+---
 
 Productionize the multi-view-mesh facing pipeline: InstantMesh (4 sprites -> volumetric
 mesh) + meshfuse projection; local/free on the 5080; proven 2/3 facings, fix north/south
@@ -62,13 +89,18 @@ attempted this pass per its own scoping.
 
 ## criteria
 - [x] North/south pose-collision root-caused with real instrumented numbers,
-      not guessed.
-- [x] Fix applied and re-verified by looking at the actual output, not just
-      "it ran" — before/after comparison shown above.
-- [ ] **UV-texture path for sharpness — blocked on installing the CUDA
-      Toolkit on the shared machine.** Owner decision owed: worth the
-      install, or is the current vertex-color bake (already working, just
-      lower-res than a proper UV texture) good enough for v1 sprite output?
+      not guessed, and the fix confirmed to actually separate the two poses.
+- [ ] **Output quality — owner judged it unusable ("crushed tin cans").**
+      This is the criterion that actually matters and it is NOT met. Fixing
+      the pose-collision did not make the mesh-fusion output usable art.
+- [ ] UV-texture path for sharpness — blocked on installing the CUDA
+      Toolkit on the shared machine, AND now moot unless the underlying
+      approach is judged worth continuing at all (see above).
 - [ ] Not yet "productionized" per the item's own word — this is still a
       one-object prototype (AutomatedSmelter only) living in `Transient/`,
-      not a repeatable script other assets can run through. Left `doing`.
+      not a repeatable script other assets can run through.
+- [ ] **Owner call owed**: continue down the InstantMesh/mesh-fusion path,
+      or redirect to the 2D Flux.1-dev/ComfyUI channel
+      `graphics_pipeline_recommendation.md` already names as the stated
+      winner. Left `doing`, no further automated passes on this technique
+      until that's decided.
