@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- SUPPLEMENT to the generated RUT_ResearchRetag.xml - written by hand 2026-09-04
-     because build_retag_patches.py diffs the manifest against the LIVE capture, and
-     the live capture is now POST-RETAG: regenerating erases the 269 ops whose targets
-     already read correct (defect filed: RETAG_BUILDER_SELF_ERASE_1). These 13 rows
-     (10 revived DP_RGive + 3 RUT_Antiq) were unmeasurable in the pre-retag capture
-     and are patched here per the manifest tier grammar. Fold into the generator when
-     the defect is fixed; techLevel targets come from the manifest tier column. -->
+     because build_retag_patches.py used to diff the manifest against the LIVE
+     capture only, and a live capture taken post-deploy already reads every one
+     of the 269 real ops as "correct" - regenerating would have erased them
+     (RETAG_BUILDER_SELF_ERASE_1). These 13 rows (10 revived DP_RGive + 3
+     RUT_Antiq) were unmeasurable in the pre-retag capture and are patched here
+     per the manifest tier grammar.
+
+     STILL LIVE, deliberately not folded in yet: RETAG_BUILDER_SELF_ERASE_1 is
+     FIXED in the generator (unmeasured rows now emit manifest-authoritatively,
+     and a hard guard refuses to run against any capture where
+     mandrake.rut.researchretag is already active) but every capture currently
+     on disk IS post-retag, so there is no valid baseline left to regenerate
+     against and prove the merge live. Fold this file's 13 ops into the
+     generator's output and delete it the next time someone captures a
+     genuinely pre-retag mod set (or a scratch list with researchretag
+     disabled) and re-runs build_retag_patches.py. -->
 <Patch>
   <Operation Class="PatchOperationConditional">
     <xpath>Defs/ResearchProjectDef[defName="DP_RGiveArea50"]</xpath>

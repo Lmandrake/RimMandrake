@@ -18,6 +18,16 @@ that skip is deliberate and counted in the generator's report, not a trap.
 Field-level Conditionals use match=Replace / nomatch=Add because a def whose
 XML omits the node (techLevel defaulting to Undefined) fails a bare Replace.
 
+RETAG_BUILDER_SELF_ERASE_1, fixed 2026-09-04/05: a manifest row absent from
+CAP (never measured pre-retag - e.g. a def authored after CAP was captured)
+is now emitted manifest-authoritatively without a live baseline to diff
+against, instead of being skipped outright - this is what used to require
+RUT_ResearchRetag_Supplement.xml by hand, now folded in and deleted.
+Separately, CAP itself is now asserted pre-retag (mandrake.rut.researchretag
+absent from its own manifest.json mod list) before any diffing happens, so
+repointing CAP at a post-retag capture fails loudly instead of silently
+reading every already-correct row as "nothing to do" and dropping it.
+
 Run from repo root:  python3 design/Jawa/research_review/build_retag_patches.py
 Then validate:       python3 skills/rimworld-modding/scripts/validate_patch.py \
                          src/RimUtinni/ResearchRetag/Patches/RUT_ResearchRetag.xml --defs <dump>
@@ -74,25 +84,62 @@ def prereq_remove(dn):
       </li>""" % {"base": base}
 
 
+RETAG_PACKAGE_ID = "mandrake.rut.researchretag"
+
+
+def _assert_capture_is_pre_retag(cap_dir):
+    """RETAG_BUILDER_SELF_ERASE_1: the diff logic below is only correct
+    against a capture where the retag mod was NOT active - otherwise
+    already-patched fields read as "correct" and a regeneration silently
+    drops them (measured 2026-09-04: 269 -> 33 defs, 5745 deletions). CAP
+    being a hardcoded, pinned path was meant to guarantee this by
+    convention; this makes it a hard, unbypassable check instead, so
+    repointing CAP at some other/newer capture fails loudly rather than
+    quietly erasing the retag on the next regeneration."""
+    manifest_path = os.path.join(cap_dir, "manifest.json")
+    with open(manifest_path, encoding="utf-8") as fh:
+        cap_manifest = json.load(fh)
+    mod_ids = {m.get("packageId") for m in (cap_manifest.get("mods") or [])}
+    if RETAG_PACKAGE_ID in mod_ids:
+        raise SystemExit(
+            "REFUSING: %s has %s active, so it already reflects the "
+            "retagged values - diffing against it would read every "
+            "already-correct row as 'nothing to do' and silently drop it "
+            "from the regenerated patch (RETAG_BUILDER_SELF_ERASE_1). Point "
+            "CAP at a capture taken before the retag mod was ever active."
+            % (manifest_path, RETAG_PACKAGE_ID))
+
+
 def main():
     with open(MANIFEST) as fh:
         fh.readline()
         man = {r["defName"]: r for r in csv.DictReader(fh)}
+    _assert_capture_is_pre_retag(CAP)
     D = json.load(open(os.path.join(CAP, "defs", "ResearchProjectDef.json"),
                        encoding="utf-8"))
     live = {d["defName"]: d for d in D["defs"]}
 
-    blocks, n_tl, n_cost, n_pre = [], 0, 0, 0
+    blocks, n_tl, n_cost, n_pre, n_unmeasured = [], 0, 0, 0, 0
     for dn in sorted(man):
         r = man[dn]
-        if r["fate"] not in SURV or dn not in live:
+        if r["fate"] not in SURV:
             continue
-        f = live[dn].get("fields") or {}
+        # RETAG_BUILDER_SELF_ERASE_1: a row absent from the pinned CAPTURE
+        # (never measured pre-retag - e.g. a def authored after CAP was taken,
+        # like ANTIQUITIES_TREE_BUILD_1's RUT_Antiq_* rows) used to be skipped
+        # entirely here, which is why RUT_ResearchRetag_Supplement.xml had to
+        # exist by hand. There is no live baseline to diff such a row AGAINST,
+        # so the only sound move is unconditional manifest-authoritative
+        # emission for it - which is also naturally idempotent (field_patch's
+        # own Replace-if-present/Add-if-absent shape), so it is safe to run
+        # again later even once the def DOES exist in a fresh capture.
+        unmeasured = dn not in live
+        f = live.get(dn, {}).get("fields") or {}
         ops = []
 
         canon, allowed = TIER_TECHLEVELS.get(r["tier"] or "", (None, None))
         live_tl = f.get("techLevel") or "Undefined"
-        if canon and live_tl not in allowed:
+        if canon and (unmeasured or live_tl not in allowed):
             ops.append(field_patch(dn, "techLevel",
                                    "<techLevel>%s</techLevel>" % canon[0], True))
             n_tl += 1
@@ -102,7 +149,7 @@ def main():
         except ValueError:
             want_cost = 0
         live_cost = float(f.get("baseCost") or 0)
-        if want_cost and abs(want_cost - live_cost) > 0.01:
+        if want_cost and (unmeasured or abs(want_cost - live_cost) > 0.01):
             ops.append(field_patch(dn, "baseCost",
                                    "<baseCost>%g</baseCost>" % want_cost, True))
             n_cost += 1
@@ -111,15 +158,17 @@ def main():
                     if p and not p.startswith("RR_")]
         live_pre = [p for p in (f.get("prerequisites") or [])
                     if not str(p).startswith("RR_")]
-        if sorted(want_pre) != sorted(live_pre):
+        if unmeasured or sorted(want_pre) != sorted(live_pre):
             if want_pre:
                 val = ("<prerequisites>%s</prerequisites>"
                        % "".join("<li>%s</li>" % escape(p) for p in want_pre))
                 ops.append(field_patch(dn, "prerequisites", val, True))
-            else:
+            elif not unmeasured:
                 ops.append(prereq_remove(dn))
             n_pre += 1
 
+        if unmeasured and ops:
+            n_unmeasured += 1
         if not ops:
             continue
         blocks.append("""  <Operation Class="PatchOperationConditional">
@@ -139,8 +188,9 @@ def main():
                  "       change the manifest and regenerate. -->\n")
         fh.write("\n".join(blocks))
         fh.write("\n</Patch>\n")
-    print("wrote %s: %d defs patched (%d techLevel, %d baseCost, %d prereq lists)"
-          % (OUT, len(blocks), n_tl, n_cost, n_pre))
+    print("wrote %s: %d defs patched (%d techLevel, %d baseCost, %d prereq lists, "
+          "%d unmeasured-in-CAP rows folded in manifest-authoritatively)"
+          % (OUT, len(blocks), n_tl, n_cost, n_pre, n_unmeasured))
 
 
 if __name__ == "__main__":
