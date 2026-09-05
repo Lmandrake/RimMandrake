@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-05T04:35:00Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-05T04:48:39Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: OWNER
 
 # NEXT — `priority.rank()` order, top item first
@@ -350,6 +350,15 @@ target:   v1
 kind:     task
 summary:  Every load of the full 589-mod list logs the same 31 Config error in … lines
 prose:    infrastructure/state/items/LOAD_CONFIG_ERROR_SWEEP_1.md
+
+## ARMOURY_MELEEPOWER_STALE_1 Armoury_MeleePower.xml melee damage values are stale vs. its own generator - live, currently affecting the campaign
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  Filed during standing dirty-code-review loop wave 38 (2026-09-05). A fresh
+prose:    infrastructure/state/items/ARMOURY_MELEEPOWER_STALE_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
