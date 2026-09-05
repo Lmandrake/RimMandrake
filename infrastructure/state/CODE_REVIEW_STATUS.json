@@ -744,20 +744,50 @@
     "date": "2026-09-04",
     "sha": "43f96b1b"
   },
+  "src/RimMandrake/Pits/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "e01583ae"
+  },
   "src/RimMandrake/Pits/Defs/DesignationDefs/Pit_Designations.xml": {
     "cleanCount": 1,
     "date": "2026-09-04",
     "sha": "71cceeb1"
+  },
+  "src/RimMandrake/Pits/Defs/HediffDefs/Pit_Hediffs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "e01583ae"
   },
   "src/RimMandrake/Pits/Defs/JobDefs/Pit_JobDefs.xml": {
     "cleanCount": 1,
     "date": "2026-09-04",
     "sha": "71cceeb1"
   },
+  "src/RimMandrake/Pits/Defs/ThingDefs/Pit_Cell.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "e01583ae"
+  },
+  "src/RimMandrake/Pits/Defs/ThingDefs/Pit_DigSites.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "e01583ae"
+  },
+  "src/RimMandrake/Pits/Defs/ThingDefs/Pit_OpenPits.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "e01583ae"
+  },
   "src/RimMandrake/Pits/Defs/WorkGiverDefs/Pit_WorkGivers.xml": {
     "cleanCount": 1,
     "date": "2026-09-04",
     "sha": "71cceeb1"
+  },
+  "src/RimMandrake/Pits/Languages/English/Keyed/Pit_Keys.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "e01583ae"
   },
   "src/RimMandrake/Pits/Source/Debug/PitDebugActions.cs": {
     "cleanCount": 1,
@@ -829,10 +859,20 @@
     "date": "2026-09-03",
     "sha": "ecc86a6f"
   },
+  "src/RimMandrake/Pits/Source/RimMandrake_Pits.csproj": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "e01583ae"
+  },
   "src/RimMandrake/Pits/Source/SelfTest/Program.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "ecc86a6f"
+  },
+  "src/RimMandrake/Pits/Source/SelfTest/RimMandrakePits.SelfTest.csproj": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "e01583ae"
   },
   "src/RimMandrake/Pits/Source/TerrainMimic/Building_TerrainMimicCover.cs": {
     "cleanCount": 1,
