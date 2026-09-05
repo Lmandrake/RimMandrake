@@ -745,14 +745,19 @@
     "sha": "43f96b1b"
   },
   "src/RimMandrake/PhytokinBarkHeadFix/About/About.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "sha": "30f4d18a"
-  },
-  "src/RimMandrake/PhytokinBarkHeadFix/Source/make_bark_female_wide_east.py": {
     "cleanCount": 2,
     "date": "2026-09-05",
-    "sha": "30f4d18a"
+    "sha": "9752fe9c"
+  },
+  "src/RimMandrake/PhytokinBarkHeadFix/Source/make_bark_female_wide_east.py": {
+    "cleanCount": 3,
+    "date": "2026-09-05",
+    "sha": "9752fe9c"
+  },
+  "src/RimMandrake/PhytokinBarkHeadFix/Textures/Things/Pawn/Humanlike/Heads/BarkSkinFemale_Wide_Normal_east.png": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "9752fe9c"
   },
   "src/RimMandrake/Pits/About/About.xml": {
     "cleanCount": 1,
