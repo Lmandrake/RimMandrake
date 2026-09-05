@@ -1157,37 +1157,27 @@ def _checker(w, h, Image, ImageDraw, sq=12):
     return im
 
 
-def _human_figure(hh, Image, ImageDraw):
-    """A recognizable standing-person silhouette ~hh px tall, for scale.
+HUMAN_ANCHOR = os.path.join(os.path.dirname(os.path.abspath(__file__)),
+                            "..", "..", "..", "design", "Jawa", "worldbuilding",
+                            "review", "assets", "human_anchor_south.png")
 
-    RimWorld's own human art is a top-down body blob; a side-on figure reads
-    instantly as 'a person this tall' next to a creature's footprint sprite."""
-    hw = max(6, int(hh * 0.42))
-    fig = Image.new("RGBA", (hw, hh), (0, 0, 0, 0))
-    d = ImageDraw.Draw(fig)
-    col = (150, 160, 175, 235)
-    cx = hw // 2
-    head_r = max(2, int(hh * 0.11))
-    # head
-    d.ellipse([cx - head_r, 0, cx + head_r, 2 * head_r], fill=col)
-    neck = 2 * head_r
-    shoulder_y = neck + max(1, int(hh * 0.02))
-    hip_y = int(hh * 0.60)
-    # torso (shoulders taper to hips)
-    tw = int(hh * 0.30)
-    d.polygon([(cx - tw // 2, shoulder_y), (cx + tw // 2, shoulder_y),
-               (cx + int(tw * 0.34), hip_y), (cx - int(tw * 0.34), hip_y)], fill=col)
-    # arms
-    aw = max(2, int(hh * 0.055))
-    d.line([(cx - tw // 2, shoulder_y + 2), (cx - int(tw * 0.62), hip_y - 2)],
-           fill=col, width=aw)
-    d.line([(cx + tw // 2, shoulder_y + 2), (cx + int(tw * 0.62), hip_y - 2)],
-           fill=col, width=aw)
-    # legs
-    lw = max(2, int(hh * 0.07))
-    d.line([(cx - 1, hip_y), (cx - int(tw * 0.28), hh - 1)], fill=col, width=lw)
-    d.line([(cx + 1, hip_y), (cx + int(tw * 0.28), hh - 1)], fill=col, width=lw)
-    return fig
+
+def _human_figure(hh, Image, ImageDraw):
+    """The scale anchor is a REAL RimWorld colonist — the engine's own body+head
+    sprites composited top-down, the same perspective the creatures are drawn in
+    and the same thing the owner sees on screen. Owner, 2026-09-05: "make the
+    comparison real with what I will see on the screen." Scaled to hh px tall
+    (HUMAN_CELLS cells). Falls back to a drawn outline only if the asset is gone,
+    and that fallback is deliberately crude so its absence is obvious."""
+    try:
+        im = Image.open(HUMAN_ANCHOR).convert("RGBA")
+        k = hh / float(im.height)
+        return im.resize((max(1, int(im.width * k)), hh), Image.LANCZOS)
+    except Exception:                                        # noqa: BLE001
+        fig = Image.new("RGBA", (max(6, int(hh * 0.45)), hh), (0, 0, 0, 0))
+        ImageDraw.Draw(fig).rectangle([0, 0, fig.width - 1, hh - 1],
+                                      outline=(255, 80, 80, 255))
+        return fig
 
 
 def _scale_panel(im, w, h, human, Image, ImageDraw):
@@ -1202,7 +1192,8 @@ def _scale_panel(im, w, h, human, Image, ImageDraw):
     k = min(w / float(im.width), h / float(im.height))
     cw = max(1, int(round(im.width * k)))
     ch = max(1, int(round(im.height * k)))
-    fig_w = max(6, int(hh * 0.42))
+    fig = _human_figure(hh, Image, ImageDraw)
+    fig_w = fig.width
     gap, pad = 18, 10
     tw = pad + fig_w + gap + cw + pad
     th = pad + max(hh, ch) + pad
@@ -1214,8 +1205,7 @@ def _scale_panel(im, w, h, human, Image, ImageDraw):
         d.line([(0, y), (tw, y)], fill=(34, 39, 47, 255))
 
     base_y = th - pad
-    fig = _human_figure(hh, Image, ImageDraw)
-    panel.alpha_composite(fig, (pad, base_y - hh))
+    panel.alpha_composite(fig, (pad, base_y - fig.height))
 
     cre = im.resize((cw, ch), Image.LANCZOS if (im.width > cw) else Image.NEAREST)
     panel.alpha_composite(cre, (pad + fig_w + gap, base_y - ch))

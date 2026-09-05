@@ -1,0 +1,8173 @@
+{
+ "meta": {
+  "generator": "build_creature_deck.py 1.0",
+  "registerBuiltUtc": "2026-09-05T16:56:05Z",
+  "deck": "creature_deck_all_clusters.pptx",
+  "scope": "all 57 clusters",
+  "thumbPx": 112,
+  "bands": [
+   "keep",
+   "regen",
+   "rescale",
+   "cut"
+  ],
+  "what": "Which creature was placed on which slide in which band when the deck was generated. read_creature_deck.py diffs the owner's edited deck against this, so a DELETED creature is a fact and never a silent drop."
+ },
+ "creatures": {
+  "Crow": {
+   "label": "crow",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Bluebird": {
+   "label": "bluebird",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "TYR_KangarooRat": {
+   "label": "kangaroo rat",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "TYR_Mouse": {
+   "label": "mouse",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "BMT_BloodropLarvae": {
+   "label": "bloodrop larvae",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_MossBeetleLarvae": {
+   "label": "moss grub",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "RG_KiwiBird": {
+   "label": "kiwi",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Larva": {
+   "label": "larva",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Chickenffalo": {
+   "label": "chickenffalo",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Chicken": {
+   "label": "chicken",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Chickencat": {
+   "label": "chickencat",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "GR_Chickenwolf": {
+   "label": "chickenwolf",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Sparrow": {
+   "label": "sparrow",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "YorkshireTerrier": {
+   "label": "yorkshire terrier",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "GR_Chickenbear": {
+   "label": "chickenbear",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "SandWorm_Thing": {
+   "label": "sandworm",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "RSW_Mee": {
+   "label": "mee scalefish",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "RSW_Faa": {
+   "label": "faa scalefish",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "RSW_Yobshrimp": {
+   "label": "pale yobshrimp",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "RSW_SiltLamprey": {
+   "label": "silt lamprey",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "RSW_RustNipper": {
+   "label": "rust nipper",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "VFEP_Mech_Spidermine": {
+   "label": "spidermine",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "VFEP_Mech_Wardrone": {
+   "label": "wardrone",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Catman": {
+   "label": "catman",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Cat": {
+   "label": "cat",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "BMT_MegaphoridLarva": {
+   "label": "megaphorid maggot",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AM_Blitzkrieg": {
+   "label": "blitzkrieg",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_FacetMothLarvae": {
+   "label": "crystalline caterpillar",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "OuterRim_DUMDroid": {
+   "label": "DUM Repair Droid",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "VGE_Astronaut": {
+   "label": "astronaut",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_BloodropPupa": {
+   "label": "bloodrop pupa",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_CrystalBeetlePupa": {
+   "label": "crystalback pupa",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_FoundryBeetlePupa": {
+   "label": "foundry pupa",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_JewelBeetlePupa": {
+   "label": "jewel pupa",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_MossBeetlePupa": {
+   "label": "moss pupa",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_RoyalRhinoPupa": {
+   "label": "royal rhino pupa",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_ShatterjawBeetlePupa": {
+   "label": "shatterjaw pupa",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AM_Mech_TurboCleaner": {
+   "label": "turbocleaner",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Mech_Cleansweeper": {
+   "label": "cleansweeper",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Mink": {
+   "label": "mink",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Porcupine": {
+   "label": "porcupine",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Swan": {
+   "label": "swan",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Mech_Agrihand": {
+   "label": "agrihand",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Mech_Constructoid": {
+   "label": "constructoid",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Mech_Fabricor": {
+   "label": "fabricor",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AM_Mech_Guttersnipe": {
+   "label": "guttersnipe",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Mech_Lifter": {
+   "label": "lifter",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Mech_WarUrchin": {
+   "label": "war urchin",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_BovineBeetleLarvae": {
+   "label": "bovine grub",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_CrystalBeetleLarvae": {
+   "label": "crystalback grub",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_JewelBeetleLarvae": {
+   "label": "jewel grub",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_RoyalRhinoLarvae": {
+   "label": "royal rhino grub",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_ShatterjawBeetleLarvae": {
+   "label": "shatterjaw grub",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_FoundryBeetleLarvae": {
+   "label": "foundry grub",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "PrairieDog": {
+   "label": "prairie dog",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "DA_SilverMole": {
+   "label": "silver mole",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "DA_ArcticOwlcat": {
+   "label": "arctic owlcat",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "DA_ForestOwlcat": {
+   "label": "forest owlcat",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "RSW_Laa": {
+   "label": "laa scalefish",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "IronScruff_Jellybird": {
+   "label": "jellybird",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Otter": {
+   "label": "otter",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Dryad_Carrier": {
+   "label": "carrier dryad",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Mech_Militor": {
+   "label": "militor",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Mech_Paramedic": {
+   "label": "paramedic",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "OuterRim_GNKDroid": {
+   "label": "GNK Power Droid",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "RG_Rabbit": {
+   "label": "rabbit",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Macaw": {
+   "label": "macaw",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Badger": {
+   "label": "badger",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Flamingo": {
+   "label": "flamingo",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "AA_FlamingoPhoenix": {
+   "label": "flamingo phoenix",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Goose": {
+   "label": "goose",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Heron": {
+   "label": "heron",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Peacock": {
+   "label": "peafowl",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "GR_Turkeyman": {
+   "label": "turkeyman",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Penguin": {
+   "label": "penguin",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "OuterRim_FX7Droid": {
+   "label": "fx-7 medical droid",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Drone_Wasp": {
+   "label": "wasp",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "Drone_Hunter": {
+   "label": "hunter drone",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "Dryad_Basic": {
+   "label": "immature dryad",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "OuterRim_MSEDroid": {
+   "label": "MSE Repair Droid",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "Fingerspike": {
+   "label": "fingerspike",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "FleshmassNucleus": {
+   "label": "fleshmass nucleus",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "Metalhorror": {
+   "label": "metalhorror",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "Toughspike": {
+   "label": "toughspike",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "Mech_Pikeman": {
+   "label": "pikeman",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "Mech_Centurion": {
+   "label": "centurion",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "Chimera": {
+   "label": "chimera",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "Cow": {
+   "label": "cow",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "Mech_Termite": {
+   "label": "termite",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "Mech_CentipedeBlaster": {
+   "label": "centipede blaster",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "Mech_CentipedeBurner": {
+   "label": "centipede burner",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "Mech_CentipedeGunner": {
+   "label": "centipede gunner",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "Bulbfreak": {
+   "label": "bulbfreak",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "Mech_Diabolus": {
+   "label": "diabolus",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "Devourer": {
+   "label": "devourer",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "Trispike": {
+   "label": "trispike",
+   "biome": "No biome (reserve)",
+   "slide": 2,
+   "band": "rescale",
+   "alreadyCut": false
+  },
+  "BMT_FacetMothPupa": {
+   "label": "facet pupa",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_SmogPupa": {
+   "label": "smog pupa",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Fox_Fennec": {
+   "label": "fennec fox",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "VAEWaste_Toxafox": {
+   "label": "toxafox",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Drone_Sentry": {
+   "label": "sentry drone",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Mecharat": {
+   "label": "mecha-rat",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_PhoenixOwlcat": {
+   "label": "phoenix owlcat",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Cobra": {
+   "label": "cobra",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "SWPotF_RaceDef_ysalamir": {
+   "label": "ysalamir",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Alphabeaver": {
+   "label": "alphabeaver",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "GR_ParagonChicken": {
+   "label": "avian paragon",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "AA_DevilSheep": {
+   "label": "devil sheep",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "OuterRim_SalvageAssistDroid": {
+   "label": "salvage assist droid",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "SeaTurtle": {
+   "label": "sea turtle",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Tortoise": {
+   "label": "tortoise",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Armadillo": {
+   "label": "armadillo",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Dryad_Barkskin": {
+   "label": "barkskin dryad",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Dryad_Berrymaker": {
+   "label": "berrymaker dryad",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Dryad_Clawer": {
+   "label": "clawer dryad",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Dryad_Gaumaker": {
+   "label": "gaumaker dryad",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Dryad_Medicinemaker": {
+   "label": "medicinemaker dryad",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Dryad_Woodmaker": {
+   "label": "woodmaker dryad",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "OuterRim_AstromechDroid": {
+   "label": "Astromech Droid",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Capybara": {
+   "label": "capybara",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "GR_Dogman": {
+   "label": "dogman",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Seal": {
+   "label": "seal",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Zebra": {
+   "label": "zebra",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "AM_Mech_Artilleron": {
+   "label": "artilleron",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AM_Mech_Bellicor": {
+   "label": "bellicor",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AlligatorMan": {
+   "label": "alligator man",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "BlackBearMan": {
+   "label": "black bear man",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "BMT_GlarralPenguin": {
+   "label": "glarral penguin",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "VGE_Hunter": {
+   "label": "hunter",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Mech_Lancer": {
+   "label": "lancer",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Mech_Legionary": {
+   "label": "legionary",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Mandrill": {
+   "label": "mandrill",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "MandrillMan": {
+   "label": "mandrill man",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Neanderthal": {
+   "label": "neanderthal",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Mech_Scyther": {
+   "label": "scyther",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "CAMech_Scyther": {
+   "label": "summoned scyther",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Mech_Tesseron": {
+   "label": "tesseron",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Emu": {
+   "label": "emu",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "BiomesIslands_Flamingo": {
+   "label": "rose flamingo",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "IronScruff_Flatworm": {
+   "label": "flatworm hound",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "LabradorRetriever": {
+   "label": "labrador retriever",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "BMT_AaroxisDendoriaLarvae": {
+   "label": "cinnabar caterpillar",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_SandPillar": {
+   "label": "sandpillar",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_AaroxisDendoriaPupa": {
+   "label": "aaroxis dendoria pupa",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Pig": {
+   "label": "pig",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Gazelle": {
+   "label": "gazelle",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "ERN_Carbuncle": {
+   "label": "carbuncle",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Sightstealer": {
+   "label": "sightstealer",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "OuterRim_MuckrakerDroid": {
+   "label": "Muckraker Crab Droid",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "SeaLion": {
+   "label": "sea lion",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "MO_AbominationRace": {
+   "label": "Abomination",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Mansquirrel": {
+   "label": "mansquirrel",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Sheep": {
+   "label": "sheep",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_CrystallineCaracal": {
+   "label": "crystalline caracal",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "BogHound": {
+   "label": "bog hound",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "CorellianHound": {
+   "label": "corellian hound",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Husky": {
+   "label": "husky",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "AM_Mech_Lux": {
+   "label": "lux",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AM_Mech_Munifex": {
+   "label": "munifex",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AM_Mech_Optio": {
+   "label": "optio",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AM_Mech_Sagittarius": {
+   "label": "sagittarius",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AM_Mech_Polychoron": {
+   "label": "polychoron",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Cassowary": {
+   "label": "cassowary",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Mech_Cyclops": {
+   "label": "cyclops",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "IronScruff_Hydrazoa": {
+   "label": "hydrazoa",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Ostrich": {
+   "label": "ostrich",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Mech_Scorcher": {
+   "label": "scorcher",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Mech_Tunneler": {
+   "label": "tunneler",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Walrus": {
+   "label": "walrus",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "GR_Molehorse": {
+   "label": "molehorse",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "MonitorLizard": {
+   "label": "monitor lizard",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "AM_Mech_MasterChef": {
+   "label": "culinarius",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AM_Goliath": {
+   "label": "goliath",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "AM_Mech_PristineSlurrypede": {
+   "label": "pristine slurrypede",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "Thrumbo": {
+   "label": "thrumbo",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "GR_Thrumboman": {
+   "label": "thrumboman",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "GR_Thrumhorse": {
+   "label": "thrumhorse",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "AV_RowBoat": {
+   "label": "Row boat",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "RUT_LongHunger": {
+   "label": "the Long Hunger",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "AV_Balloon": {
+   "label": "Balloon",
+   "biome": "No biome (reserve)",
+   "slide": 3,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "AM_Mech_Geneticor": {
+   "label": "geneticor",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Boomachicken": {
+   "label": "boomachicken",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "GR_Mechachicken": {
+   "label": "mecha-chicken",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "VVE_Charley": {
+   "label": "Charley",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "OuterRim_DestroyerDroid": {
+   "label": "Destroyer Droid",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "VVE_Dirtbike": {
+   "label": "Dirtbike",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AV_Hwacha": {
+   "label": "Hwacha",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AV_Rickshaw": {
+   "label": "Rickshaw",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AV_Wheelbarrow": {
+   "label": "Wheelbarrow",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Mech_Apocriton": {
+   "label": "apocriton",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_BovineBeetlePupa": {
+   "label": "bovine pupa",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "ERN_Chocobo": {
+   "label": "chocobo",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "GR_Mechamime": {
+   "label": "mecha-mime",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Mechaturtle": {
+   "label": "mechaturtle",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Noctol": {
+   "label": "noctol",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Revenant": {
+   "label": "revenant",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Wolfsnake": {
+   "label": "wolfsnake",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "VAEWaste_Wasteboar": {
+   "label": "wasteboar",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWAdalia": {
+   "label": "Adalia",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWHalszkaraptor": {
+   "label": "Halszkaraptor",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWHolcorobeus": {
+   "label": "Holcorobeus",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWHylonomus": {
+   "label": "Hylonomus",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWParksosaurus": {
+   "label": "Parksosaurus",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWValdosaurus": {
+   "label": "Valdosaurus",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWYi": {
+   "label": "Yi",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "GR_Boomwolf": {
+   "label": "boomwolf",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWCyclosphaeroma": {
+   "label": "karrik",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "GR_Lizardman": {
+   "label": "lizardman",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWHypsilophodon": {
+   "label": "ssvek",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWZephyrosaurus": {
+   "label": "sszhal",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Gorehulk": {
+   "label": "gorehulk",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "RG_Hemolope": {
+   "label": "hemolope",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "GR_ParagonHumanoid": {
+   "label": "humanoid paragon",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Nociosphere": {
+   "label": "nociosphere",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_WasteHound": {
+   "label": "waste hound",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "BMT_ShatterjawBeetle": {
+   "label": "shatterjaw beetle",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Cat_Scimitar": {
+   "label": "scimitar cat",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "GR_Wolfchicken": {
+   "label": "wolfchicken",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Gorilla": {
+   "label": "gorilla",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "RG_Neutrolope": {
+   "label": "neutrolope",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "BlackBear": {
+   "label": "black bear",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWDimetrodon": {
+   "label": "sszhakar",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "VAEWaste_Wastedeer": {
+   "label": "wastedeer",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "RSW_OpeeSeaKiller": {
+   "label": "opee sea killer",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Tiger": {
+   "label": "tiger",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "GR_Rabbitcat": {
+   "label": "rabbitcat",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "VAEWaste_Toxlion": {
+   "label": "toxlion",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWDinilysia": {
+   "label": "sserrik",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWYurlunggur": {
+   "label": "sshaggan",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWWonambi": {
+   "label": "ssorrak",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Muskox": {
+   "label": "muskox",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "RSW_CrimsonOpee": {
+   "label": "crimson opee",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AM_Daggersnout": {
+   "label": "daggersnout",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Booman": {
+   "label": "booman",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "GR_Mechacat": {
+   "label": "mechacat",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Alligator": {
+   "label": "alligator",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "GR_Mechawolf": {
+   "label": "mechawolf",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Panda": {
+   "label": "panda",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "GR_Wolffalo": {
+   "label": "wolffalo",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "GR_ParagonFeline": {
+   "label": "feline paragon",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "GR_Boomhorse": {
+   "label": "boomhorse",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "GR_Cathorse": {
+   "label": "cathorse",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "GiantAnt_Race": {
+   "label": "giant ant",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Manchicken": {
+   "label": "manchicken",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Hippo": {
+   "label": "hippo",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Bulwark": {
+   "label": "bulwark",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Procoptodon": {
+   "label": "jakkir",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "AM_Aura": {
+   "label": "aura",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Chickenlodon": {
+   "label": "chickenlodon",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "RSW_ShaleGorger": {
+   "label": "shale gorger",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "ERN_BigCarbuncle": {
+   "label": "grand carbuncle",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "MutantCow": {
+   "label": "cow",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "GR_ParagonHorse": {
+   "label": "equine paragon",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "GR_Mechahorse": {
+   "label": "mecha-horse",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "MA_Manehound": {
+   "label": "manehound",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWCompsognathus": {
+   "label": "Compsognathus",
+   "biome": "No biome (reserve)",
+   "slide": 4,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Prowler": {
+   "label": "prowler",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Wolfalope": {
+   "label": "wolfalope",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "GR_Wolfbeaver": {
+   "label": "wolfbeaver",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "GR_Beaverwolf": {
+   "label": "beaverwolf",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "AM_Apoptosis": {
+   "label": "apoptosis",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_ParagonWolf": {
+   "label": "canine paragon",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "GR_FleshFlies": {
+   "label": "flesh flies",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AM_PristineStrider": {
+   "label": "pristine strider",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Wolfbear": {
+   "label": "wolfbear",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "GR_Wolfcat": {
+   "label": "wolfcat",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "VVE_Frog": {
+   "label": "Frog",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "JRWPsittacosaurus": {
+   "label": "Psittacosaurus",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "GR_MeadowLizard": {
+   "label": "meadow lizard",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Mechalope": {
+   "label": "mechalope",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "JRWMicroceratus": {
+   "label": "ssbik",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "GR_WoolyWolf": {
+   "label": "wooly Wolf",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "MA_Simbakub": {
+   "label": "Simbakub",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Castoroides": {
+   "label": "grondik",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "GR_Muffalochicken": {
+   "label": "muffalochicken",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "GR_Muffalocat": {
+   "label": "muffalocat",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWLycaenops": {
+   "label": "Lycaenops",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWProtoceratops": {
+   "label": "Protoceratops",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "AA_FrostLynx": {
+   "label": "frost lynx",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "AA_Genix": {
+   "label": "genix",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "GR_Mechabear": {
+   "label": "mechabear",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Muffalowolf": {
+   "label": "muffalowolf",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "GR_WolfShrimp": {
+   "label": "wolf shrimp",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "BMT_Yooka": {
+   "label": "yooka",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Thrumwolf": {
+   "label": "thrumwolf",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "IronScruff_Tardigrade": {
+   "label": "giant tardigrade",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "VAEWaste_Wasteffalo": {
+   "label": "wasteffalo",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWTupandactylus": {
+   "label": "Tupandactylus",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "GR_Muffalobear": {
+   "label": "muffalobear",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWRhamphorhynchus": {
+   "label": "vhikk",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "VGE_Astropede": {
+   "label": "astropede",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "VFEI2_Ironclad": {
+   "label": "ironclad",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Muffalohorse": {
+   "label": "muffalohorse",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "BMT_MaceDrake": {
+   "label": "mace drake",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AM_Mech_Legate": {
+   "label": "legate",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "JRWGallimimus": {
+   "label": "Gallimimus",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWHomalocephale": {
+   "label": "Homalocephale",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWStaurikosaurus": {
+   "label": "Staurikosaurus",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "VAEWaste_Toxbear": {
+   "label": "toxbear",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Mech_Warqueen": {
+   "label": "war queen",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "RSW_ThornbackColo": {
+   "label": "thornback colo",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "MA_SimbakubAlpha": {
+   "label": "Simbakub Alpha",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Smilodon": {
+   "label": "dhakar",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Palaeeudyptes": {
+   "label": "korrik",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Andrewsarchus": {
+   "label": "krondar",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "GR_Bearchicken": {
+   "label": "bearchicken",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Moose": {
+   "label": "moose",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Dinopithecus": {
+   "label": "vekka",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "MA_Capryak": {
+   "label": "Capryak",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "VAEWaste_Toxscorpion": {
+   "label": "toxscorpion",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWTorosaurus": {
+   "label": "ssborrak",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "RSW_ColoClawFish": {
+   "label": "colo claw fish",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "VAEWaste_Pestigator": {
+   "label": "pestigator",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "PoisonDeer": {
+   "label": "deer",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "GR_Catrabbit": {
+   "label": "catrabbit",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "GR_Catbear": {
+   "label": "catbear",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "GR_Catffalo": {
+   "label": "catffalo",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "GR_Catwolf": {
+   "label": "catwolf",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "AA_BlizzariskClutchMother": {
+   "label": "blizzarisk clutch mother",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_DunealiskClutchMother": {
+   "label": "dunealisk clutch mother",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_FeraliskClutchMother": {
+   "label": "feralisk clutch mother",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "MA_Scarodon": {
+   "label": "scarodon",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWPachycephalosaurus": {
+   "label": "Pachycephalosaurus",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "AM_Demolisher": {
+   "label": "demolisher",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "DA_Goldilox": {
+   "label": "goldilox",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AM_Siegebreaker": {
+   "label": "siegebreaker",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AM_Siegemelter": {
+   "label": "siegemelter",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AM_Starfire": {
+   "label": "starfire",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "ShortfacedBear": {
+   "label": "rannak",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "DA_RockTroll": {
+   "label": "rock troll",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_BiliousVarog": {
+   "label": "bilious varog",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "MA_Harpeagle": {
+   "label": "harpeagle",
+   "biome": "No biome (reserve)",
+   "slide": 5,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Daeodon": {
+   "label": "borrak",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "MA_Duskhorn": {
+   "label": "duskhorn",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Gigantopithecus": {
+   "label": "gigantopithecus",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "RSW_AbyssalColo": {
+   "label": "abyssal colo",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Josephoartigasia": {
+   "label": "grondrak",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "GR_Bearwolf": {
+   "label": "bearwolf",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Diprotodon": {
+   "label": "obbak",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWAntarctopelta": {
+   "label": "Antarctopelta",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWAbrictosaurus": {
+   "label": "Abrictosaurus",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWDrinker": {
+   "label": "Drinker",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWAgilisaurus": {
+   "label": "sskarr",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "GR_ParagonBear": {
+   "label": "ursine paragon",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Enhydriodon": {
+   "label": "lussik",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "MA_Furpotamus": {
+   "label": "furpotamus",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "MA_Direhorse": {
+   "label": "direhorse",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "VVE_Toad": {
+   "label": "Toad",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AM_Phalanx": {
+   "label": "phalanx",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AM_Fireworm": {
+   "label": "fireworm",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Ling_Cockroach_Mechanoid": {
+   "label": "Mechanical Cockroach",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "JRWUdanoceratops": {
+   "label": "Udanoceratops",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "AV_Chariot": {
+   "label": "dewback chariot",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Mechaspider": {
+   "label": "mechaspider",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "VVE_Prowler": {
+   "label": "Prowler",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "JRWTermitotron": {
+   "label": "Termitotron",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Aurochs": {
+   "label": "aurochs",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWEdaphosaurus": {
+   "label": "Edaphosaurus",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWOphiacodon": {
+   "label": "Ophiacodon",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "VVE_Roadkill": {
+   "label": "Roadkill",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "JRWTanystropheus": {
+   "label": "Tanystropheus",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWDracorex": {
+   "label": "Dracorex",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWOviraptor": {
+   "label": "Oviraptor",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Chalicotherium": {
+   "label": "chalicotherium",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Megalochelys": {
+   "label": "megalochelys",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWScutosaurus": {
+   "label": "Scutosaurus",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWStyracosaurus": {
+   "label": "Styracosaurus",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Dreadmeld": {
+   "label": "dreadmeld",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "JRWEstemmenosuchus": {
+   "label": "ssgrondak",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "AM_WarEmpress": {
+   "label": "war empress",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Mechamuffalo": {
+   "label": "mecha-muffalo",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Gigantophis": {
+   "label": "sserrakoth",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "MA_Dunbear": {
+   "label": "dunbear",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWOuranosaurus": {
+   "label": "ssvarrak",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "AM_Mech_PristineAssembler": {
+   "label": "pristine assembler",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Nighthrumbo": {
+   "label": "nighthrumbo",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "CACrystalScythe": {
+   "label": "Crystal scythe",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "CAHarbinger": {
+   "label": "Harbinger",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "CAHavoc": {
+   "label": "Havoc",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AV_Palanquin": {
+   "label": "Palanquin",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AV_WarChariot": {
+   "label": "dewback war chariot",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "JRWDryosaurus": {
+   "label": "ssdarr",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Quinkana": {
+   "label": "sskorrak",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWDeinonychus": {
+   "label": "Deinonychus",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWDromaeosaurus": {
+   "label": "Dromaeosaurus",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWStygimoloch": {
+   "label": "Stygimoloch",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWTroodon": {
+   "label": "Troodon",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWVelociraptor": {
+   "label": "Velociraptor",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "AM_Infernus": {
+   "label": "infernus",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "RG_WoollyStegosaurus": {
+   "label": "woolly stegosaurus",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Mastodon": {
+   "label": "mastodon",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Titanoboa": {
+   "label": "ssorrakoth",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Megalania": {
+   "label": "megalania",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWGigantophis": {
+   "label": "gigantophis",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWTitanoboa": {
+   "label": "titanoboa",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "MA_Plastemmoth": {
+   "label": "Plastemmoth",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "VFEI2_Teramantis": {
+   "label": "teramantis",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "VFEI2_Titantick": {
+   "label": "titantick",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "WoollyMammoth": {
+   "label": "vhorbantha",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "VVE_Scytheman": {
+   "label": "Scytheman",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "JRWCoelophysis": {
+   "label": "sslek",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "AV_OutriggerCanoe": {
+   "label": "Outrigger Canoe",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "VVE_Dinghy": {
+   "label": "Dinghy",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "JRWKileskus": {
+   "label": "krissh",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "VVE_Highwayman": {
+   "label": "Highwayman",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "VVE_Traveller": {
+   "label": "Traveller",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "VVE_BangBus": {
+   "label": "Bang Bus",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "VVE_Bunsen": {
+   "label": "Bunsen",
+   "biome": "No biome (reserve)",
+   "slide": 6,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "JRWDesmatosuchus": {
+   "label": "Desmatosuchus",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWKaprosuchus": {
+   "label": "Kaprosuchus",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "VVE_Mule": {
+   "label": "Mule",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "JRWOrnithosuchus": {
+   "label": "Ornithosuchus",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "VVE_Wagon": {
+   "label": "Wagon",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "KingToad": {
+   "label": "king toad",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "JRWCoahuilaceratops": {
+   "label": "Coahuilaceratops",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWIndoraptor": {
+   "label": "Indoraptor",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWKentrosaurus": {
+   "label": "Kentrosaurus",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWKosmoceratops": {
+   "label": "Kosmoceratops",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWNasutoceratops": {
+   "label": "Nasutoceratops",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWPachyrhinosaurus": {
+   "label": "Pachyrhinosaurus",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWTriceratops": {
+   "label": "Triceratops",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWZalmoxes": {
+   "label": "Zalmoxes",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "GR_Mechathrumbo": {
+   "label": "mechathrumbo",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_ArchotechCentipede": {
+   "label": "archocentipede",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "VFEI2_Patriarch": {
+   "label": "patriarch",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Boomnotherium": {
+   "label": "boomnotherium",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Deinotherium": {
+   "label": "deinotherium",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "AV_CoveredCarriage": {
+   "label": "ronto wagon",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AV_OxCart": {
+   "label": "bantha cart",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "JRWBrachiosaurus": {
+   "label": "ssorrbantha",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "VVE_Mosquito": {
+   "label": "Mosquito",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "CADevourer": {
+   "label": "Devourer",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "CAEndBossMech": {
+   "label": "Judgment",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "VVE_Roadrunner": {
+   "label": "Roadrunner",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "VVE_Snatcher": {
+   "label": "Snatcher",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "VVE_Trawler": {
+   "label": "Trawler",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "JRWAlbertosaurus": {
+   "label": "Albertosaurus",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWBaryonyx": {
+   "label": "Baryonyx",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWBecklespinax": {
+   "label": "Becklespinax",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWCeratosaurus": {
+   "label": "Ceratosaurus",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWCryolophosaurus": {
+   "label": "Cryolophosaurus",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWGasosaurus": {
+   "label": "Gasosaurus",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWNanuqsaurus": {
+   "label": "Nanuqsaurus",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWSuchomimus": {
+   "label": "Suchomimus",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "VVE_Bulldog": {
+   "label": "Bulldog",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "JRWEnigmosaurus": {
+   "label": "Enigmosaurus",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWSegnosaurus": {
+   "label": "Segnosaurus",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "VVE_Tango": {
+   "label": "Tango",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "JRWTherizinosaurus": {
+   "label": "Therizinosaurus",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWAnkylosaurus": {
+   "label": "Ankylosaurus",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWMochlodon": {
+   "label": "Mochlodon",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWStegosaurus": {
+   "label": "Stegosaurus",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "VVE_Warbird": {
+   "label": "Warbird",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "JRWCarnotaurus": {
+   "label": "Carnotaurus",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWMetriacanthosaurus": {
+   "label": "Metriacanthosaurus",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWRajasaurus": {
+   "label": "Rajasaurus",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Purussaurus": {
+   "label": "sskorrath",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "Paraceratherium": {
+   "label": "paraceratherium",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "RSW_StormSando": {
+   "label": "storm sando",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AV_DogSled": {
+   "label": "eopie sled",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "JRWPrestosuchus": {
+   "label": "Prestosuchus",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "VVE_Wisent": {
+   "label": "Wisent",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "JRWCamptosaurus": {
+   "label": "Camptosaurus",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWRhabdodon": {
+   "label": "Rhabdodon",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWTenontosaurus": {
+   "label": "Tenontosaurus",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "VVE_Smuggler": {
+   "label": "Smuggler",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "RSW_SandoAquaMonster": {
+   "label": "sando aqua monster",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "JRWYutyrannus": {
+   "label": "Yutyrannus",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWCorythosaurus": {
+   "label": "Corythosaurus",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWDeinosuchus": {
+   "label": "Deinosuchus",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWEdmontosaurus": {
+   "label": "Edmontosaurus",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWParasaurolophus": {
+   "label": "Parasaurolophus",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWSarcosuchus": {
+   "label": "Sarcosuchus",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWAcrocanthosaurus": {
+   "label": "Acrocanthosaurus",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWAllosaurus": {
+   "label": "Allosaurus",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWCarcharodontosaurus": {
+   "label": "Carcharodontosaurus",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWYangchuanosaurus": {
+   "label": "Yangchuanosaurus",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "RSW_ElderSando": {
+   "label": "elder sando",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "JRWSaltasaurus": {
+   "label": "Saltasaurus",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWIndominus": {
+   "label": "Indominus rex",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWApatosaurus": {
+   "label": "Apatosaurus",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWArgentinosaurus": {
+   "label": "Argentinosaurus",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWCamarasaurus": {
+   "label": "Camarasaurus",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWGiganotosaurus": {
+   "label": "Giganotosaurus",
+   "biome": "No biome (reserve)",
+   "slide": 7,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWSupersaurus": {
+   "label": "Supersaurus",
+   "biome": "No biome (reserve)",
+   "slide": 8,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "JRWTyrannosaurus": {
+   "label": "Tyrannosaurus rex",
+   "biome": "No biome (reserve)",
+   "slide": 8,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "BroodLord": {
+   "label": "brood lord",
+   "biome": "No biome (reserve)",
+   "slide": 8,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "RSW_Reefback": {
+   "label": "reefback",
+   "biome": "No biome (reserve)",
+   "slide": 8,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "JRWSpinosaurus": {
+   "label": "Spinosaurus",
+   "biome": "No biome (reserve)",
+   "slide": 8,
+   "band": "keep",
+   "alreadyCut": true
+  },
+  "RSW_Starmaw": {
+   "label": "starmaw",
+   "biome": "No biome (reserve)",
+   "slide": 8,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "RSW_Lanternwhale": {
+   "label": "lanternwhale",
+   "biome": "No biome (reserve)",
+   "slide": 8,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_Aerofleet": {
+   "label": "aerofleet",
+   "biome": "arid shrubland",
+   "slide": 9,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_ImperialToad": {
+   "label": "imperial toad",
+   "biome": "arid shrubland",
+   "slide": 9,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Lothcat": {
+   "label": "loth-cat",
+   "biome": "arid shrubland",
+   "slide": 9,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_MossBeetle": {
+   "label": "moss beetle",
+   "biome": "arid shrubland",
+   "slide": 9,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_FungalFerret": {
+   "label": "fungal ferret",
+   "biome": "arid shrubland",
+   "slide": 9,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Igitz": {
+   "label": "igitz",
+   "biome": "arid shrubland",
+   "slide": 9,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Sketto": {
+   "label": "sketto",
+   "biome": "arid shrubland",
+   "slide": 9,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Gorg": {
+   "label": "gorg",
+   "biome": "arid shrubland",
+   "slide": 9,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "FrilledGorg": {
+   "label": "frilled gorg",
+   "biome": "arid shrubland",
+   "slide": 9,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Pufferpig": {
+   "label": "Pufferpig",
+   "biome": "arid shrubland",
+   "slide": 9,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_TruffleMole": {
+   "label": "truffle mole",
+   "biome": "arid shrubland",
+   "slide": 9,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "DA_Karabal": {
+   "label": "karabal",
+   "biome": "arid shrubland",
+   "slide": 9,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "JRWProtovermes": {
+   "label": "Protovermes",
+   "biome": "arid shrubland",
+   "slide": 9,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "LongtailGorg": {
+   "label": "longtail gorg",
+   "biome": "arid shrubland",
+   "slide": 9,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_FungalWeevil": {
+   "label": "fungal weevil",
+   "biome": "arid shrubland",
+   "slide": 9,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Terrorworm": {
+   "label": "terrorworm",
+   "biome": "arid shrubland",
+   "slide": 9,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Urusai": {
+   "label": "urusai",
+   "biome": "arid shrubland",
+   "slide": 9,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Massiff": {
+   "label": "massiff",
+   "biome": "arid shrubland",
+   "slide": 9,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_Wildpawn": {
+   "label": "wildpawn",
+   "biome": "arid shrubland",
+   "slide": 9,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "JRWCaihong": {
+   "label": "Caihong",
+   "biome": "arid shrubland",
+   "slide": 9,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "JRWDiplocaulus": {
+   "label": "Diplocaulus",
+   "biome": "arid shrubland",
+   "slide": 9,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "JRWMeganeura": {
+   "label": "Meganeura",
+   "biome": "arid shrubland",
+   "slide": 9,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "JRWQantassaurus": {
+   "label": "Qantassaurus",
+   "biome": "arid shrubland",
+   "slide": 9,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "PaintedSpat": {
+   "label": "painted spat",
+   "biome": "arid shrubland",
+   "slide": 9,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_Barbslinger": {
+   "label": "barbslinger",
+   "biome": "arid shrubland",
+   "slide": 9,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Eopie": {
+   "label": "eopie",
+   "biome": "arid shrubland",
+   "slide": 9,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "DA_Pilgrim": {
+   "label": "pilgrim",
+   "biome": "arid shrubland",
+   "slide": 9,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_SandLion": {
+   "label": "sand lion",
+   "biome": "arid shrubland",
+   "slide": 9,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Orray": {
+   "label": "orray",
+   "biome": "arid shrubland",
+   "slide": 9,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Dactillion": {
+   "label": "dactillion",
+   "biome": "arid shrubland",
+   "slide": 9,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Jamel": {
+   "label": "Jamel",
+   "biome": "arid shrubland",
+   "slide": 9,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Jerbal": {
+   "label": "jerbal",
+   "biome": "arid shrubland",
+   "slide": 9,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "JRWBagaceratops": {
+   "label": "Bagaceratops",
+   "biome": "arid shrubland",
+   "slide": 9,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "VAEWaste_Megatardi": {
+   "label": "megatardi",
+   "biome": "arid shrubland",
+   "slide": 9,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "IridonianReek": {
+   "label": "iridonian reek",
+   "biome": "arid shrubland",
+   "slide": 9,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_AberrantFleshbeast": {
+   "label": "aberrant fleshbeast",
+   "biome": "arid shrubland",
+   "slide": 9,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "MA_Hellboar": {
+   "label": "Hellboar",
+   "biome": "arid shrubland",
+   "slide": 9,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Mawvorr": {
+   "label": "mawvorr",
+   "biome": "arid shrubland",
+   "slide": 9,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Uvak": {
+   "label": "uvak",
+   "biome": "arid shrubland",
+   "slide": 9,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Lizardochs": {
+   "label": "lizardochs",
+   "biome": "arid shrubland",
+   "slide": 9,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Zeer": {
+   "label": "zeer",
+   "biome": "arid shrubland",
+   "slide": 9,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "MA_Sivatherium": {
+   "label": "sivatherium",
+   "biome": "arid shrubland",
+   "slide": 9,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "JRWBaseopsis": {
+   "label": "Baseopsis",
+   "biome": "arid shrubland",
+   "slide": 9,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Megavole": {
+   "label": "megavole",
+   "biome": "arid shrubland",
+   "slide": 9,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "Mudhorn": {
+   "label": "mudhorn",
+   "biome": "arid shrubland",
+   "slide": 9,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "Ronto": {
+   "label": "ronto",
+   "biome": "arid shrubland",
+   "slide": 9,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "Brezak": {
+   "label": "brezak",
+   "biome": "arid shrubland",
+   "slide": 9,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "KowakianMonkeyLizard": {
+   "label": "kowakian monkey-lizard",
+   "biome": "tropical rainforest",
+   "slide": 10,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Tach": {
+   "label": "tach",
+   "biome": "tropical rainforest",
+   "slide": 10,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Woolamander": {
+   "label": "woolamander",
+   "biome": "tropical rainforest",
+   "slide": 10,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Borcatu": {
+   "label": "Borcatu",
+   "biome": "tropical rainforest",
+   "slide": 10,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Iriaz": {
+   "label": "iriaz",
+   "biome": "tropical rainforest",
+   "slide": 10,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Monkey": {
+   "label": "monkey",
+   "biome": "tropical rainforest",
+   "slide": 10,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Stintaril": {
+   "label": "stintaril",
+   "biome": "tropical rainforest",
+   "slide": 10,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "CanCell": {
+   "label": "can-cell",
+   "biome": "tropical rainforest",
+   "slide": 10,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Whisperbird": {
+   "label": "whisperbird",
+   "biome": "tropical rainforest",
+   "slide": 10,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Cannok": {
+   "label": "cannok",
+   "biome": "tropical rainforest",
+   "slide": 10,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Insectomorph": {
+   "label": "insectomorph",
+   "biome": "tropical rainforest",
+   "slide": 10,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Panther": {
+   "label": "panther",
+   "biome": "tropical rainforest",
+   "slide": 10,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Kinrath": {
+   "label": "kinrath",
+   "biome": "tropical rainforest",
+   "slide": 10,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Giantala": {
+   "label": "giantala",
+   "biome": "tropical rainforest",
+   "slide": 10,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Acklay": {
+   "label": "acklay",
+   "biome": "tropical rainforest",
+   "slide": 10,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "JRWBernicia": {
+   "label": "Bernicia",
+   "biome": "tropical rainforest",
+   "slide": 10,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Gutkurr": {
+   "label": "gutkurr",
+   "biome": "tropical rainforest",
+   "slide": 10,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "MastiffPhalone": {
+   "label": "mastiff phalone",
+   "biome": "tropical rainforest",
+   "slide": 10,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Vornskyr": {
+   "label": "vornskyr",
+   "biome": "tropical rainforest",
+   "slide": 10,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Devourers": {
+   "label": "devourer",
+   "biome": "tropical rainforest",
+   "slide": 10,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Kwi": {
+   "label": "Kwi",
+   "biome": "tropical rainforest",
+   "slide": 10,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Wyyyschokk": {
+   "label": "wyyyschokk",
+   "biome": "tropical rainforest",
+   "slide": 10,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Arthropleura": {
+   "label": "arthropleura",
+   "biome": "tropical rainforest",
+   "slide": 10,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Titanis": {
+   "label": "titanis",
+   "biome": "tropical rainforest",
+   "slide": 10,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "IthorianReek": {
+   "label": "ithorian reek",
+   "biome": "tropical rainforest",
+   "slide": 10,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Vapaad": {
+   "label": "vapaad",
+   "biome": "tropical rainforest",
+   "slide": 10,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "JRWManipulator": {
+   "label": "Manipulator",
+   "biome": "tropical rainforest",
+   "slide": 10,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Gelagrub": {
+   "label": "gelagrub",
+   "biome": "tropical rainforest",
+   "slide": 10,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Varactyl": {
+   "label": "varactyl",
+   "biome": "tropical rainforest",
+   "slide": 10,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Corinathoth": {
+   "label": "corinathoth",
+   "biome": "tropical rainforest",
+   "slide": 10,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Katarn": {
+   "label": "katarn",
+   "biome": "tropical rainforest",
+   "slide": 10,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "HarvesterBeetle": {
+   "label": "harvester beetle",
+   "biome": "tropical rainforest",
+   "slide": 10,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Zarander": {
+   "label": "zarander",
+   "biome": "tropical rainforest",
+   "slide": 10,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "Yippa": {
+   "label": "yippa",
+   "biome": "tropical rainforest",
+   "slide": 10,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "Rhinoceros": {
+   "label": "rhinoceros",
+   "biome": "tropical rainforest",
+   "slide": 10,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "Elephant": {
+   "label": "elephant",
+   "biome": "tropical rainforest",
+   "slide": 10,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "JRWArthropleura": {
+   "label": "Arthropleura",
+   "biome": "tropical rainforest",
+   "slide": 10,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "Torton": {
+   "label": "torton",
+   "biome": "tropical rainforest",
+   "slide": 10,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "Zakkeg": {
+   "label": "zakkeg",
+   "biome": "tropical rainforest",
+   "slide": 10,
+   "band": "rescale",
+   "alreadyCut": false
+  },
+  "TYR_Lemming": {
+   "label": "lemming",
+   "biome": "boreal forest",
+   "slide": 11,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Voorpak": {
+   "label": "voorpak",
+   "biome": "boreal forest",
+   "slide": 11,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_DrainerLarva": {
+   "label": "drainer larva",
+   "biome": "boreal forest",
+   "slide": 11,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Turkey": {
+   "label": "turkey",
+   "biome": "boreal forest",
+   "slide": 11,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Raccoon": {
+   "label": "raccoon",
+   "biome": "boreal forest",
+   "slide": 11,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Wolverine": {
+   "label": "wolverine",
+   "biome": "boreal forest",
+   "slide": 11,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "DA_DwarvenMuffton": {
+   "label": "dwarven muffton",
+   "biome": "boreal forest",
+   "slide": 11,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Bordok": {
+   "label": "bordok",
+   "biome": "boreal forest",
+   "slide": 11,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "DA_BeardedTroll": {
+   "label": "bearded troll",
+   "biome": "boreal forest",
+   "slide": 11,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Maalraas": {
+   "label": "maalraas",
+   "biome": "boreal forest",
+   "slide": 11,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Rabbuck": {
+   "label": "rabbuck",
+   "biome": "boreal forest",
+   "slide": 11,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_Groundrunner": {
+   "label": "groundrunner",
+   "biome": "boreal forest",
+   "slide": 11,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Bear_Grizzly": {
+   "label": "grizzly bear",
+   "biome": "boreal forest",
+   "slide": 11,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "FeralGrazer": {
+   "label": "feral grazer",
+   "biome": "boreal forest",
+   "slide": 11,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_Gigantelope": {
+   "label": "gigantelope",
+   "biome": "boreal forest",
+   "slide": 11,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "TeeMuss": {
+   "label": "tee muss",
+   "biome": "boreal forest",
+   "slide": 11,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Gualaar": {
+   "label": "gualaar",
+   "biome": "boreal forest",
+   "slide": 11,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Raxshir": {
+   "label": "raxshir",
+   "biome": "boreal forest",
+   "slide": 11,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "JRWNyctosaurus": {
+   "label": "Nyctosaurus",
+   "biome": "boreal forest",
+   "slide": 11,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Megaloceros": {
+   "label": "megaloceros",
+   "biome": "boreal forest",
+   "slide": 11,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_Wildpod": {
+   "label": "wildpod",
+   "biome": "boreal forest",
+   "slide": 11,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Jakobeast": {
+   "label": "jakobeast",
+   "biome": "boreal forest",
+   "slide": 11,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_TetraSlug": {
+   "label": "tetra slug",
+   "biome": "boreal forest",
+   "slide": 11,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "MA_Worhin": {
+   "label": "worhin",
+   "biome": "boreal forest",
+   "slide": 11,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "JRWQuetzalcoatlus": {
+   "label": "Quetzalcoatlus",
+   "biome": "boreal forest",
+   "slide": 11,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Behemoth": {
+   "label": "behemoth",
+   "biome": "boreal forest",
+   "slide": 11,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Gigantelope": {
+   "label": "gigantelope",
+   "biome": "boreal forest",
+   "slide": 11,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "Mastmot": {
+   "label": "mastmot",
+   "biome": "boreal forest",
+   "slide": 11,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "Warbird": {
+   "label": "Warbird",
+   "biome": "boreal forest",
+   "slide": 11,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "Zygolophodon": {
+   "label": "zygolophodon",
+   "biome": "boreal forest",
+   "slide": 11,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "Horax": {
+   "label": "horax",
+   "biome": "boreal forest",
+   "slide": 11,
+   "band": "rescale",
+   "alreadyCut": false
+  },
+  "GR_Chickenlope": {
+   "label": "chickenlope",
+   "biome": "desert",
+   "slide": 12,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_Jellypot": {
+   "label": "jellypot",
+   "biome": "desert",
+   "slide": 12,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Bogwing": {
+   "label": "bogwing",
+   "biome": "desert",
+   "slide": 12,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Squirralope": {
+   "label": "squirralope",
+   "biome": "desert",
+   "slide": 12,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Needlechicken": {
+   "label": "needlechicken",
+   "biome": "desert",
+   "slide": 12,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_Stoneback": {
+   "label": "stoneback",
+   "biome": "desert",
+   "slide": 12,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_CactusCrab": {
+   "label": "cactus crab",
+   "biome": "desert",
+   "slide": 12,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Meganeura": {
+   "label": "meganeura",
+   "biome": "desert",
+   "slide": 12,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "DA_BlackScribe": {
+   "label": "black scribe",
+   "biome": "desert",
+   "slide": 12,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_BumbledroneQueen": {
+   "label": "bumbledrone queen",
+   "biome": "desert",
+   "slide": 12,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "VQEA_Splicetoot": {
+   "label": "splicetoot",
+   "biome": "desert",
+   "slide": 12,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Boombeetle": {
+   "label": "boombeetle",
+   "biome": "desert",
+   "slide": 12,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Toxalope": {
+   "label": "toxalope",
+   "biome": "desert",
+   "slide": 12,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Boomsquirrel": {
+   "label": "boomsquirrel",
+   "biome": "desert",
+   "slide": 12,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Boomsnake": {
+   "label": "boomsnake",
+   "biome": "desert",
+   "slide": 12,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_ParagonBoomalope": {
+   "label": "boomalope paragon",
+   "biome": "desert",
+   "slide": 12,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Dinornis": {
+   "label": "dinornis",
+   "biome": "desert",
+   "slide": 12,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Manwolf": {
+   "label": "manwolf",
+   "biome": "desert",
+   "slide": 12,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Boomffalo": {
+   "label": "boomffalo",
+   "biome": "desert",
+   "slide": 12,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Boomabear": {
+   "label": "boomabear",
+   "biome": "desert",
+   "slide": 12,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Wraid": {
+   "label": "wraid",
+   "biome": "desert",
+   "slide": 12,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_FleshGrowth": {
+   "label": "flesh growth",
+   "biome": "desert",
+   "slide": 12,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Catalope": {
+   "label": "catalope",
+   "biome": "desert",
+   "slide": 12,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Toraton": {
+   "label": "toraton",
+   "biome": "desert",
+   "slide": 12,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "AA_MatureFleshbeast": {
+   "label": "mature fleshbeast",
+   "biome": "desert",
+   "slide": 12,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "Neebray": {
+   "label": "neebray",
+   "biome": "ice sheet",
+   "slide": 13,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GraniteSlug": {
+   "label": "granite slug",
+   "biome": "ice sheet",
+   "slide": 13,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Leaftail": {
+   "label": "leaf-tail",
+   "biome": "ice sheet",
+   "slide": 13,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "WasteRat": {
+   "label": "waste rat",
+   "biome": "ice sheet",
+   "slide": 13,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_ColonyPustuleHornet": {
+   "label": "pustule hornet",
+   "biome": "ice sheet",
+   "slide": 13,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Mynock": {
+   "label": "mynock",
+   "biome": "ice sheet",
+   "slide": 13,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_Megaroach": {
+   "label": "megaroach",
+   "biome": "ice sheet",
+   "slide": 13,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_FamineLocust": {
+   "label": "famine locust",
+   "biome": "ice sheet",
+   "slide": 13,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_PustuleHornet": {
+   "label": "pustule hornet",
+   "biome": "ice sheet",
+   "slide": 13,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_PustuleHornetSpawned": {
+   "label": "pustule hornet",
+   "biome": "ice sheet",
+   "slide": 13,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_Swarmcaller": {
+   "label": "swarmcaller",
+   "biome": "ice sheet",
+   "slide": 13,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_Frostmite": {
+   "label": "frostmite",
+   "biome": "ice sheet",
+   "slide": 13,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "VQE_IceCrawler": {
+   "label": "ice crawler",
+   "biome": "ice sheet",
+   "slide": 13,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_Snowstalker": {
+   "label": "snowstalker",
+   "biome": "ice sheet",
+   "slide": 13,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_ColonyPustuleHornetQueen": {
+   "label": "pustule queen",
+   "biome": "ice sheet",
+   "slide": 13,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Krykna": {
+   "label": "krykna",
+   "biome": "ice sheet",
+   "slide": 13,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_PustuleHornetQueen": {
+   "label": "pustule queen",
+   "biome": "ice sheet",
+   "slide": 13,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "VQE_Megamidge": {
+   "label": "megamidge",
+   "biome": "ice sheet",
+   "slide": 13,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_Frostling": {
+   "label": "frostling",
+   "biome": "ice sheet",
+   "slide": 13,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_ArcticLion": {
+   "label": "arctic lion",
+   "biome": "ice sheet",
+   "slide": 13,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_Blizzarisk": {
+   "label": "blizzarisk",
+   "biome": "ice sheet",
+   "slide": 13,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_FrostweaverSpider": {
+   "label": "frostweaver",
+   "biome": "ice sheet",
+   "slide": 13,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Ling_Cockroach": {
+   "label": "Giant Cockroach",
+   "biome": "ice sheet",
+   "slide": 13,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AM_UnshackledDryad": {
+   "label": "unshackled dryad",
+   "biome": "ice sheet",
+   "slide": 13,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "BMT_Thrumbungus": {
+   "label": "thrumbungus",
+   "biome": "ice sheet",
+   "slide": 13,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "DZY_RNGChicken": {
+   "label": "chaos chicken",
+   "biome": "badlands",
+   "slide": 14,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_MutagenicNorphea": {
+   "label": "mutagenic norphea",
+   "biome": "badlands",
+   "slide": 14,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "FancyRat": {
+   "label": "fancy rat",
+   "biome": "badlands",
+   "slide": 14,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_FissionMouseThird": {
+   "label": "fission mouse, third generation",
+   "biome": "badlands",
+   "slide": 14,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_LuciferBug": {
+   "label": "luciferbug",
+   "biome": "badlands",
+   "slide": 14,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_SandLeaper": {
+   "label": "sand leaper",
+   "biome": "badlands",
+   "slide": 14,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_FissionMouseSecond": {
+   "label": "fission mouse, second generation",
+   "biome": "badlands",
+   "slide": 14,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Gornt": {
+   "label": "gornt",
+   "biome": "badlands",
+   "slide": 14,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_Bumbledrone": {
+   "label": "bumbledrone",
+   "biome": "badlands",
+   "slide": 14,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_BumbledroneHierophant": {
+   "label": "bumbledrone hierophant",
+   "biome": "badlands",
+   "slide": 14,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Bearmole": {
+   "label": "bearmole",
+   "biome": "badlands",
+   "slide": 14,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Chickenhorse": {
+   "label": "chickenhorse",
+   "biome": "badlands",
+   "slide": 14,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_Agaripawn": {
+   "label": "agaripawn",
+   "biome": "badlands",
+   "slide": 14,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Mancat": {
+   "label": "mancat",
+   "biome": "badlands",
+   "slide": 14,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "VQEA_Spliceling": {
+   "label": "spliceling",
+   "biome": "badlands",
+   "slide": 14,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Hurseman": {
+   "label": "hurseman",
+   "biome": "badlands",
+   "slide": 14,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Warg": {
+   "label": "warg",
+   "biome": "badlands",
+   "slide": 14,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_PedigreedRaptor": {
+   "label": "pedigreed raptor",
+   "biome": "badlands",
+   "slide": 14,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_BovineBeetle": {
+   "label": "bovine beetle",
+   "biome": "badlands",
+   "slide": 14,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "VQEA_Splicefiend": {
+   "label": "splicefiend",
+   "biome": "badlands",
+   "slide": 14,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Manffalo": {
+   "label": "manffalo",
+   "biome": "badlands",
+   "slide": 14,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_ChemSnail": {
+   "label": "chem snail",
+   "biome": "badlands",
+   "slide": 14,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Groundffalo": {
+   "label": "groundffalo",
+   "biome": "badlands",
+   "slide": 14,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "JRWEuoplocephalus": {
+   "label": "Euoplocephalus",
+   "biome": "badlands",
+   "slide": 14,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Porg": {
+   "label": "porg",
+   "biome": "sea ice",
+   "slide": 15,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "PoisonRat": {
+   "label": "poison rat",
+   "biome": "sea ice",
+   "slide": 15,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Vulptex": {
+   "label": "vulptex",
+   "biome": "sea ice",
+   "slide": 15,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Bardelot": {
+   "label": "bardelot",
+   "biome": "sea ice",
+   "slide": 15,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_Rimebeak": {
+   "label": "rimebeak",
+   "biome": "sea ice",
+   "slide": 15,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "VFEI2_Durapod": {
+   "label": "durapod",
+   "biome": "sea ice",
+   "slide": 15,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Blarth": {
+   "label": "blarth",
+   "biome": "sea ice",
+   "slide": 15,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_AnimusVox": {
+   "label": "animus vox",
+   "biome": "sea ice",
+   "slide": 15,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "JRWBeelzebufo": {
+   "label": "Beelzebufo",
+   "biome": "sea ice",
+   "slide": 15,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "VFEI2_RoyalSpelopede": {
+   "label": "royal spelopede",
+   "biome": "sea ice",
+   "slide": 15,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "VFEI2_Venomite": {
+   "label": "venomite",
+   "biome": "sea ice",
+   "slide": 15,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Moleman": {
+   "label": "moleman",
+   "biome": "sea ice",
+   "slide": 15,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "VFEI2_Megapede": {
+   "label": "megapede",
+   "biome": "sea ice",
+   "slide": 15,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "VFEI2_Tankroach": {
+   "label": "tankroach",
+   "biome": "sea ice",
+   "slide": 15,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Bearman": {
+   "label": "bearman",
+   "biome": "sea ice",
+   "slide": 15,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "VFEI2_RoyalMegaspider": {
+   "label": "royal megaspider",
+   "biome": "sea ice",
+   "slide": 15,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_Maxolotl": {
+   "label": "maxolotl",
+   "biome": "sea ice",
+   "slide": 15,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Catchicken": {
+   "label": "catchicken",
+   "biome": "sea ice",
+   "slide": 15,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "VFEI2_Silverfish": {
+   "label": "silverfish",
+   "biome": "sea ice",
+   "slide": 15,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "VFEI2_Empress": {
+   "label": "empress",
+   "biome": "sea ice",
+   "slide": 15,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Locust": {
+   "label": "locust",
+   "biome": "sea ice",
+   "slide": 15,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "GR_Thrumdraeodon": {
+   "label": "thrumdraeodon",
+   "biome": "sea ice",
+   "slide": 15,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "AA_SmallButterfly": {
+   "label": "small butterflies",
+   "biome": "sea ice",
+   "slide": 15,
+   "band": "rescale",
+   "alreadyCut": false
+  },
+  "Tibidee": {
+   "label": "tibidee",
+   "biome": "sea ice",
+   "slide": 15,
+   "band": "rescale",
+   "alreadyCut": false
+  },
+  "HermitCrab": {
+   "label": "hermit crab",
+   "biome": "extreme desert",
+   "slide": 16,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Tooke": {
+   "label": "tooke",
+   "biome": "extreme desert",
+   "slide": 16,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "StoneCrab": {
+   "label": "stone crab",
+   "biome": "extreme desert",
+   "slide": 16,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_Glowtail": {
+   "label": "glowtail",
+   "biome": "extreme desert",
+   "slide": 16,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "VFEI2_Megathrips": {
+   "label": "megathrips",
+   "biome": "extreme desert",
+   "slide": 16,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "VFEI2_Macrofly": {
+   "label": "macrofly",
+   "biome": "extreme desert",
+   "slide": 16,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_BloodropMoth": {
+   "label": "bloodrop moth",
+   "biome": "extreme desert",
+   "slide": 16,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_Needleroll": {
+   "label": "needleroll",
+   "biome": "extreme desert",
+   "slide": 16,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Shyrack": {
+   "label": "shyrack",
+   "biome": "extreme desert",
+   "slide": 16,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "VFEI2_Hellbeetle": {
+   "label": "hellbeetle",
+   "biome": "extreme desert",
+   "slide": 16,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "VFEI2_Fuelmite": {
+   "label": "fuelmite",
+   "biome": "extreme desert",
+   "slide": 16,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "VFEI2_Megawasp": {
+   "label": "megawasp",
+   "biome": "extreme desert",
+   "slide": 16,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "VFEI2_Acidspitter": {
+   "label": "acidspitter",
+   "biome": "extreme desert",
+   "slide": 16,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_Dunealisk": {
+   "label": "dunealisk",
+   "biome": "extreme desert",
+   "slide": 16,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "VFEI2_Gigalocust": {
+   "label": "gigalocust",
+   "biome": "extreme desert",
+   "slide": 16,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_ParagonInsectoid": {
+   "label": "insectoid paragon",
+   "biome": "extreme desert",
+   "slide": 16,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Doedicurus": {
+   "label": "doedicurus",
+   "biome": "extreme desert",
+   "slide": 16,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "VFEI2_Queen": {
+   "label": "insectoid princess",
+   "biome": "extreme desert",
+   "slide": 16,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "LavaFlea": {
+   "label": "lava flea",
+   "biome": "extreme desert",
+   "slide": 16,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Lylek": {
+   "label": "lylek",
+   "biome": "extreme desert",
+   "slide": 16,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "KraytDragon": {
+   "label": "krayt dragon",
+   "biome": "extreme desert",
+   "slide": 16,
+   "band": "rescale",
+   "alreadyCut": false
+  },
+  "WarWyrm": {
+   "label": "war wyrm",
+   "biome": "extreme desert",
+   "slide": 16,
+   "band": "rescale",
+   "alreadyCut": false
+  },
+  "BMT_GastroToad": {
+   "label": "gastro toad",
+   "biome": "lava field",
+   "slide": 17,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_GoetoToad": {
+   "label": "goeto toad",
+   "biome": "lava field",
+   "slide": 17,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_GoetoTadpole": {
+   "label": "goeto tadpole",
+   "biome": "lava field",
+   "slide": 17,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Fleshling": {
+   "label": "fleshling",
+   "biome": "lava field",
+   "slide": 17,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_GlowBat": {
+   "label": "bioluminescent bat",
+   "biome": "lava field",
+   "slide": 17,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_BrownBat": {
+   "label": "brown bat",
+   "biome": "lava field",
+   "slide": 17,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_BloodletterPetrel": {
+   "label": "bloodletter petrel",
+   "biome": "lava field",
+   "slide": 17,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Squall": {
+   "label": "squall",
+   "biome": "lava field",
+   "slide": 17,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AM_Dryad_Spitter": {
+   "label": "spitter dryad",
+   "biome": "lava field",
+   "slide": 17,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "VAEWaste_Toxiguana": {
+   "label": "toxiguana",
+   "biome": "lava field",
+   "slide": 17,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_ToxSheep": {
+   "label": "tox-wool sheep",
+   "biome": "lava field",
+   "slide": 17,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_GiantSlug": {
+   "label": "giant slug",
+   "biome": "lava field",
+   "slide": 17,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Spidercat": {
+   "label": "spidercat",
+   "biome": "lava field",
+   "slide": 17,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Wolfscarab": {
+   "label": "wolfscarab",
+   "biome": "lava field",
+   "slide": 17,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_Megapleura": {
+   "label": "megapleura",
+   "biome": "lava field",
+   "slide": 17,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_Metallovore": {
+   "label": "metallovore",
+   "biome": "lava field",
+   "slide": 17,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_Cinderlisk": {
+   "label": "cinderlisk",
+   "biome": "lava field",
+   "slide": 17,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_Animalisk": {
+   "label": "animalisk",
+   "biome": "lava field",
+   "slide": 17,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_ChemfuelMyrmidon": {
+   "label": "chemfuel myrmidon",
+   "biome": "lava field",
+   "slide": 17,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_CrystalMantis": {
+   "label": "crystal mimic mantis",
+   "biome": "lava field",
+   "slide": 17,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_TripleSnapper": {
+   "label": "triple snapper",
+   "biome": "lava field",
+   "slide": 17,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_MammothWorm": {
+   "label": "mammoth worm",
+   "biome": "lava field",
+   "slide": 17,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "Quail": {
+   "label": "quail",
+   "biome": "temperate forest",
+   "slide": 18,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GuineaPig": {
+   "label": "guinea pig",
+   "biome": "temperate forest",
+   "slide": 18,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Scavrat": {
+   "label": "Scavrats",
+   "biome": "temperate forest",
+   "slide": 18,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Clodhopper": {
+   "label": "clodhopper",
+   "biome": "temperate forest",
+   "slide": 18,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Grank": {
+   "label": "Grank",
+   "biome": "temperate forest",
+   "slide": 18,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Qormot": {
+   "label": "qormot",
+   "biome": "temperate forest",
+   "slide": 18,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Kybuck": {
+   "label": "kybuck",
+   "biome": "temperate forest",
+   "slide": 18,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GiantToad": {
+   "label": "giant toad",
+   "biome": "temperate forest",
+   "slide": 18,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Shaak": {
+   "label": "shaak",
+   "biome": "temperate forest",
+   "slide": 18,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Alpaca": {
+   "label": "alpaca",
+   "biome": "temperate forest",
+   "slide": 18,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Runyip": {
+   "label": "runyip",
+   "biome": "temperate forest",
+   "slide": 18,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Jimvu": {
+   "label": "jimvu",
+   "biome": "temperate forest",
+   "slide": 18,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "DA_Taraal": {
+   "label": "taraal",
+   "biome": "temperate forest",
+   "slide": 18,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_MeadowAve": {
+   "label": "meadow ave",
+   "biome": "temperate forest",
+   "slide": 18,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Dalgo": {
+   "label": "dalgo",
+   "biome": "temperate forest",
+   "slide": 18,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Gundark": {
+   "label": "gundark",
+   "biome": "temperate forest",
+   "slide": 18,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "TuskCat": {
+   "label": "tusk cat",
+   "biome": "temperate forest",
+   "slide": 18,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "MA_Gnaut": {
+   "label": "gnaut",
+   "biome": "temperate forest",
+   "slide": 18,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Hrumph": {
+   "label": "hrumph",
+   "biome": "temperate forest",
+   "slide": 18,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Bolotaur": {
+   "label": "bolotaur",
+   "biome": "temperate forest",
+   "slide": 18,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Falumpaset": {
+   "label": "falumpaset",
+   "biome": "temperate forest",
+   "slide": 18,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Megasquid": {
+   "label": "megasquid",
+   "biome": "temperate forest",
+   "slide": 18,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "JOE_Landopus": {
+   "label": "landopus",
+   "biome": "temperate swamp",
+   "slide": 19,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Gullipud": {
+   "label": "gullipud",
+   "biome": "temperate swamp",
+   "slide": 19,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Convor": {
+   "label": "convor",
+   "biome": "temperate swamp",
+   "slide": 19,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Yobshrimp": {
+   "label": "yobshrimp",
+   "biome": "temperate swamp",
+   "slide": 19,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Nuna": {
+   "label": "nuna",
+   "biome": "temperate swamp",
+   "slide": 19,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Shiro": {
+   "label": "shiro",
+   "biome": "temperate swamp",
+   "slide": 19,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Mott": {
+   "label": "mott",
+   "biome": "temperate swamp",
+   "slide": 19,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "ShiroTrap": {
+   "label": "shiro-trap",
+   "biome": "temperate swamp",
+   "slide": 19,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Ollopom": {
+   "label": "ollopom",
+   "biome": "temperate swamp",
+   "slide": 19,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Kaadu": {
+   "label": "kaadu",
+   "biome": "temperate swamp",
+   "slide": 19,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "DA_Barog": {
+   "label": "barogoth",
+   "biome": "temperate swamp",
+   "slide": 19,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "DA_Snaptoad": {
+   "label": "giant snaptoad",
+   "biome": "temperate swamp",
+   "slide": 19,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Silooth": {
+   "label": "silooth",
+   "biome": "temperate swamp",
+   "slide": 19,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Boma": {
+   "label": "boma",
+   "biome": "temperate swamp",
+   "slide": 19,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Fanback": {
+   "label": "fanback",
+   "biome": "temperate swamp",
+   "slide": 19,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "PekoPeko": {
+   "label": "Peko-peko",
+   "biome": "temperate swamp",
+   "slide": 19,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Hssiss": {
+   "label": "hssiss",
+   "biome": "temperate swamp",
+   "slide": 19,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_BoulderMit": {
+   "label": "bouldermit",
+   "biome": "temperate swamp",
+   "slide": 19,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "JOE_Cephalope": {
+   "label": "cephalope",
+   "biome": "temperate swamp",
+   "slide": 19,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Thranta": {
+   "label": "thranta",
+   "biome": "temperate swamp",
+   "slide": 19,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_DuskRat": {
+   "label": "dusk rat",
+   "biome": "forsaken crags",
+   "slide": 20,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Snakecat": {
+   "label": "snakecat",
+   "biome": "forsaken crags",
+   "slide": 20,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_Murkling": {
+   "label": "murkling",
+   "biome": "forsaken crags",
+   "slide": 20,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_Nightling": {
+   "label": "nightling",
+   "biome": "forsaken crags",
+   "slide": 20,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_BarbedPangolin": {
+   "label": "barbed pangolin",
+   "biome": "forsaken crags",
+   "slide": 20,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_DuskProwler": {
+   "label": "dusk prowler",
+   "biome": "forsaken crags",
+   "slide": 20,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_NightRam": {
+   "label": "nightram",
+   "biome": "forsaken crags",
+   "slide": 20,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_FungalHusk": {
+   "label": "fungal husk",
+   "biome": "forsaken crags",
+   "slide": 20,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_NightAve": {
+   "label": "night ave",
+   "biome": "forsaken crags",
+   "slide": 20,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Muffalopede": {
+   "label": "muffalopede",
+   "biome": "forsaken crags",
+   "slide": 20,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_NightMule": {
+   "label": "nightmule",
+   "biome": "forsaken crags",
+   "slide": 20,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Thrumbospider": {
+   "label": "thrumbospider",
+   "biome": "forsaken crags",
+   "slide": 20,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Muffalorat": {
+   "label": "muffalorat",
+   "biome": "forsaken crags",
+   "slide": 20,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_CrepuscularBeetle": {
+   "label": "Crepuscular Beetle",
+   "biome": "forsaken crags",
+   "slide": 20,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Elasmobearium": {
+   "label": "elasmobearium",
+   "biome": "forsaken crags",
+   "slide": 20,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "MA_PlastemmothAlpha": {
+   "label": "Plastemmoth alpha",
+   "biome": "forsaken crags",
+   "slide": 20,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_SummitCrab": {
+   "label": "summit crab",
+   "biome": "forsaken crags",
+   "slide": 20,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_ShadowCharger": {
+   "label": "shadow charger",
+   "biome": "forsaken crags",
+   "slide": 20,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "AA_Thunderox": {
+   "label": "thunderox",
+   "biome": "forsaken crags",
+   "slide": 20,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "BMT_FleeceSpider": {
+   "label": "fleece spider",
+   "biome": "fungal forest",
+   "slide": 21,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Rabbitchicken": {
+   "label": "rabbitchicken",
+   "biome": "fungal forest",
+   "slide": 21,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "PoisonButterfly": {
+   "label": "butterfly",
+   "biome": "fungal forest",
+   "slide": 21,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_Varmot": {
+   "label": "varmot",
+   "biome": "fungal forest",
+   "slide": 21,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_BlackScarab": {
+   "label": "black scarab",
+   "biome": "fungal forest",
+   "slide": 21,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AM_Dryad_Unstable": {
+   "label": "unstable dryad",
+   "biome": "fungal forest",
+   "slide": 21,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AM_Dryad_Corruptor": {
+   "label": "corruptor dryad",
+   "biome": "fungal forest",
+   "slide": 21,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AM_Dryad_Ocular": {
+   "label": "ocular dryad",
+   "biome": "fungal forest",
+   "slide": 21,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_MossyFennec": {
+   "label": "mossy fennec",
+   "biome": "fungal forest",
+   "slide": 21,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "VRE_CompanionDryad": {
+   "label": "companion dryad",
+   "biome": "fungal forest",
+   "slide": 21,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_OcularNightling": {
+   "label": "ocular nightling",
+   "biome": "fungal forest",
+   "slide": 21,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Doedicoon": {
+   "label": "doedicoon",
+   "biome": "fungal forest",
+   "slide": 21,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_FenridStoat": {
+   "label": "fenrid stoat",
+   "biome": "fungal forest",
+   "slide": 21,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_CaveLemming": {
+   "label": "cave lemming",
+   "biome": "fungal forest",
+   "slide": 21,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_BearBug": {
+   "label": "bear bug",
+   "biome": "fungal forest",
+   "slide": 21,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Bearffalo": {
+   "label": "bearffalo",
+   "biome": "fungal forest",
+   "slide": 21,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Platybelodon": {
+   "label": "platybelodon",
+   "biome": "fungal forest",
+   "slide": 21,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Elasmotherium": {
+   "label": "elasmotherium",
+   "biome": "fungal forest",
+   "slide": 21,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_AnimaColossus": {
+   "label": "anima colossus",
+   "biome": "fungal forest",
+   "slide": 21,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "Boomrat": {
+   "label": "boomrat",
+   "biome": "ocular forest",
+   "slide": 22,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "FrogDog": {
+   "label": "frog dog",
+   "biome": "ocular forest",
+   "slide": 22,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Manalope": {
+   "label": "manalope",
+   "biome": "ocular forest",
+   "slide": 22,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_OcularJelly": {
+   "label": "ocular jelly",
+   "biome": "ocular forest",
+   "slide": 22,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Rikknit": {
+   "label": "rikknit",
+   "biome": "ocular forest",
+   "slide": 22,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "JRWPlatyhystrix": {
+   "label": "Platyhystrix",
+   "biome": "ocular forest",
+   "slide": 22,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "JRWArchaeopteryx": {
+   "label": "zhikka",
+   "biome": "ocular forest",
+   "slide": 22,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_RedGoo": {
+   "label": "red goo",
+   "biome": "ocular forest",
+   "slide": 22,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_ShockGoat": {
+   "label": "shock goat",
+   "biome": "ocular forest",
+   "slide": 22,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Boomalisk": {
+   "label": "boomalisk",
+   "biome": "ocular forest",
+   "slide": 22,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_RedSpore": {
+   "label": "red spore",
+   "biome": "ocular forest",
+   "slide": 22,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_AngelMoth": {
+   "label": "angel moth",
+   "biome": "ocular forest",
+   "slide": 22,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "JRWHynerpeton": {
+   "label": "sslugg",
+   "biome": "ocular forest",
+   "slide": 22,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "JRWGeosternbergia": {
+   "label": "vhazh",
+   "biome": "ocular forest",
+   "slide": 22,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_FleshMonstrosity": {
+   "label": "flesh monstrosity",
+   "biome": "ocular forest",
+   "slide": 22,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_RoughPlatedMonitor": {
+   "label": "rough-plated monitor",
+   "biome": "ocular forest",
+   "slide": 22,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "JRWEuphoberia": {
+   "label": "Euphoberia",
+   "biome": "ocular forest",
+   "slide": 22,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "JRWPulmonoscorpius": {
+   "label": "Pulmonoscorpius",
+   "biome": "ocular forest",
+   "slide": 22,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_UnblinkingEye": {
+   "label": "unblinking eye",
+   "biome": "ocular forest",
+   "slide": 22,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GRimPinkbird": {
+   "label": "pinkbird",
+   "biome": "gelatinous superorganism",
+   "slide": 23,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GRimQuail": {
+   "label": "Colorful quail",
+   "biome": "gelatinous superorganism",
+   "slide": 23,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_Mole": {
+   "label": "mole",
+   "biome": "gelatinous superorganism",
+   "slide": 23,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Snoruuk": {
+   "label": "snoruuk",
+   "biome": "gelatinous superorganism",
+   "slide": 23,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_Drainer": {
+   "label": "drainer",
+   "biome": "gelatinous superorganism",
+   "slide": 23,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Chickenrabbit": {
+   "label": "chickenrabbit",
+   "biome": "gelatinous superorganism",
+   "slide": 23,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Scuttlebug": {
+   "label": "Space Worm",
+   "biome": "gelatinous superorganism",
+   "slide": 23,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Manbear": {
+   "label": "manbear",
+   "biome": "gelatinous superorganism",
+   "slide": 23,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Worm": {
+   "label": "worm",
+   "biome": "gelatinous superorganism",
+   "slide": 23,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_CrystalBeetle": {
+   "label": "crystalback beetle",
+   "biome": "gelatinous superorganism",
+   "slide": 23,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_Mime": {
+   "label": "mime",
+   "biome": "gelatinous superorganism",
+   "slide": 23,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "JRWDilophosaurus": {
+   "label": "Dilophosaurus",
+   "biome": "gelatinous superorganism",
+   "slide": 23,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "DA_IroncasketBeetle": {
+   "label": "ironcasket beetle",
+   "biome": "gelatinous superorganism",
+   "slide": 23,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_GreenGoo": {
+   "label": "green goo",
+   "biome": "gelatinous superorganism",
+   "slide": 23,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_DecayDrake": {
+   "label": "decay drake",
+   "biome": "gelatinous superorganism",
+   "slide": 23,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "JRWPteranodon": {
+   "label": "Pteranodon",
+   "biome": "gelatinous superorganism",
+   "slide": 23,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "JRWGeralinura": {
+   "label": "Geralinura",
+   "biome": "gelatinous superorganism",
+   "slide": 23,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Harvester": {
+   "label": "harvester",
+   "biome": "gelatinous superorganism",
+   "slide": 23,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_BedBug": {
+   "label": "bedbug",
+   "biome": "poison forest",
+   "slide": 24,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Beetlefleet": {
+   "label": "beetlefleet",
+   "biome": "poison forest",
+   "slide": 24,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AM_Dryad_Tumorous": {
+   "label": "tumorous dryad",
+   "biome": "poison forest",
+   "slide": 24,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_Screecher": {
+   "label": "screecher",
+   "biome": "poison forest",
+   "slide": 24,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_DarkAxolotl": {
+   "label": "dark axolotl",
+   "biome": "poison forest",
+   "slide": 24,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_ParagonRat": {
+   "label": "rodent paragon",
+   "biome": "poison forest",
+   "slide": 24,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_GreyCoatedMouflon": {
+   "label": "Grey-Coated Mouflon",
+   "biome": "poison forest",
+   "slide": 24,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Visceral": {
+   "label": "visceral",
+   "biome": "poison forest",
+   "slide": 24,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_BlackSpider": {
+   "label": "blackspider",
+   "biome": "poison forest",
+   "slide": 24,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "DA_LeviathanCrab": {
+   "label": "leviathan",
+   "biome": "poison forest",
+   "slide": 24,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_GiantCrownedSilkie": {
+   "label": "giant crowned silkie",
+   "biome": "poison forest",
+   "slide": 24,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "DA_ImperialRedhound": {
+   "label": "imperial redhound",
+   "biome": "poison forest",
+   "slide": 24,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "SW_Grenadierworm": {
+   "label": "Grenadierworm",
+   "biome": "poison forest",
+   "slide": 24,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "MA_Raptorkhan": {
+   "label": "raptorkhan",
+   "biome": "poison forest",
+   "slide": 24,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Narglatch": {
+   "label": "narglatch",
+   "biome": "poison forest",
+   "slide": 24,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Ratffalo": {
+   "label": "ratffalo",
+   "biome": "poison forest",
+   "slide": 24,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "VFEI2_BlackEmpress": {
+   "label": "black empress",
+   "biome": "poison forest",
+   "slide": 24,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_Behemoth": {
+   "label": "Behemoth",
+   "biome": "poison forest",
+   "slide": 24,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "TYR_HotfootRat": {
+   "label": "hotfoot rat",
+   "biome": "feralisk infested jungle",
+   "slide": 25,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Kreetle": {
+   "label": "kreetle",
+   "biome": "feralisk infested jungle",
+   "slide": 25,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_CrestedDragon": {
+   "label": "crested dragon",
+   "biome": "feralisk infested jungle",
+   "slide": 25,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_CrescendoAnole": {
+   "label": "crescendo anole",
+   "biome": "feralisk infested jungle",
+   "slide": 25,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "VAEWaste_Hydra": {
+   "label": "hydra",
+   "biome": "feralisk infested jungle",
+   "slide": 25,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "WompRat": {
+   "label": "womp rat",
+   "biome": "feralisk infested jungle",
+   "slide": 25,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_MucklurkerCatfish": {
+   "label": "mucklurker catfish",
+   "biome": "feralisk infested jungle",
+   "slide": 25,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_MutatingTumorfishFry": {
+   "label": "mutating tumorfish fry",
+   "biome": "feralisk infested jungle",
+   "slide": 25,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_SmogMoth": {
+   "label": "smog moth",
+   "biome": "feralisk infested jungle",
+   "slide": 25,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_JewelBeetle": {
+   "label": "jewel beetle",
+   "biome": "feralisk infested jungle",
+   "slide": 25,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "LavaSnail": {
+   "label": "lava snail",
+   "biome": "feralisk infested jungle",
+   "slide": 25,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_Erin": {
+   "label": "erin",
+   "biome": "feralisk infested jungle",
+   "slide": 25,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_Junglelisk": {
+   "label": "junglelisk",
+   "biome": "feralisk infested jungle",
+   "slide": 25,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "MA_Sporemole": {
+   "label": "Sporemole",
+   "biome": "feralisk infested jungle",
+   "slide": 25,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Crocorse": {
+   "label": "crocorse",
+   "biome": "feralisk infested jungle",
+   "slide": 25,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Muffalokomodo": {
+   "label": "muffalokomodo",
+   "biome": "feralisk infested jungle",
+   "slide": 25,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Thrumbolizard": {
+   "label": "thrumbolizard",
+   "biome": "feralisk infested jungle",
+   "slide": 25,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Scurrier": {
+   "label": "scurrier",
+   "biome": "scarlands",
+   "slide": 26,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_FireSalamander": {
+   "label": "fire salamander",
+   "biome": "scarlands",
+   "slide": 26,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "VFEI2_Boomtick": {
+   "label": "boomtick",
+   "biome": "scarlands",
+   "slide": 26,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_AcanthamoebaGiganteaSmall": {
+   "label": "acanthamoeba gigantea, small",
+   "biome": "scarlands",
+   "slide": 26,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "SW_Electrictick": {
+   "label": "Electrictick",
+   "biome": "scarlands",
+   "slide": 26,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_CarrionVulture": {
+   "label": "carrion vulture",
+   "biome": "scarlands",
+   "slide": 26,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_Megaphorid": {
+   "label": "megaphorid",
+   "biome": "scarlands",
+   "slide": 26,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_Creature_Mantrap": {
+   "label": "mantrap",
+   "biome": "scarlands",
+   "slide": 26,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Rycrit": {
+   "label": "rycrit",
+   "biome": "scarlands",
+   "slide": 26,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_AcanthamoebaGiganteaLarge": {
+   "label": "acanthamoeba gigantea, large",
+   "biome": "scarlands",
+   "slide": 26,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "SW_Electricfish": {
+   "label": "Electricfish",
+   "biome": "scarlands",
+   "slide": 26,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Chickenspider": {
+   "label": "chickenspider",
+   "biome": "scarlands",
+   "slide": 26,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "SW_Electricgryllotalpa": {
+   "label": "Electricgryllotalpa",
+   "biome": "scarlands",
+   "slide": 26,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "SW_Juggernautbeetles": {
+   "label": "Juggernautbeetles",
+   "biome": "scarlands",
+   "slide": 26,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_CaveSpider": {
+   "label": "cave spider",
+   "biome": "scarlands",
+   "slide": 26,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_SandSquid": {
+   "label": "sand squid",
+   "biome": "scarlands",
+   "slide": 26,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "SW_Emperorisopod": {
+   "label": "Emperorisopod",
+   "biome": "scarlands",
+   "slide": 26,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_LarvalAtispec": {
+   "label": "larval atispec",
+   "biome": "tar pits",
+   "slide": 27,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_AnimusHare": {
+   "label": "animus hare",
+   "biome": "tar pits",
+   "slide": 27,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "VFEI2_RoyalMegascarab": {
+   "label": "royal megascarab",
+   "biome": "tar pits",
+   "slide": 27,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Tauntaun": {
+   "label": "tauntaun",
+   "biome": "tar pits",
+   "slide": 27,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Nerf": {
+   "label": "nerf",
+   "biome": "tar pits",
+   "slide": 27,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Pulmonoscorpius": {
+   "label": "pulmonoscorpius",
+   "biome": "tar pits",
+   "slide": 27,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "VQEA_Splicehulk": {
+   "label": "splicehulk",
+   "biome": "tar pits",
+   "slide": 27,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_TarGuzzler": {
+   "label": "tar guzzler",
+   "biome": "tar pits",
+   "slide": 27,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_RoyalAve": {
+   "label": "royal ave",
+   "biome": "tar pits",
+   "slide": 27,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Muffaloman": {
+   "label": "muffaloman",
+   "biome": "tar pits",
+   "slide": 27,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Blurrg": {
+   "label": "blurrg",
+   "biome": "tar pits",
+   "slide": 27,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "JRWMacrelcana": {
+   "label": "Macrelcana",
+   "biome": "tar pits",
+   "slide": 27,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "VFEI2_Gigamite": {
+   "label": "gigamite",
+   "biome": "tar pits",
+   "slide": 27,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Thrumbear": {
+   "label": "thrumbear",
+   "biome": "tar pits",
+   "slide": 27,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_Radyak": {
+   "label": "radyak",
+   "biome": "tar pits",
+   "slide": 27,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "AlphaThrumbo": {
+   "label": "alpha thrumbo",
+   "biome": "tar pits",
+   "slide": 27,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "AA_Locusts": {
+   "label": "locusts",
+   "biome": "tar pits",
+   "slide": 27,
+   "band": "rescale",
+   "alreadyCut": false
+  },
+  "GRimStoneCrab": {
+   "label": "Colorful stone crab",
+   "biome": "miasmic mangrove",
+   "slide": 28,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_AaroxisDendoria": {
+   "label": "aaroxis dendoria",
+   "biome": "miasmic mangrove",
+   "slide": 28,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "VFEI2_BlackSwarmling": {
+   "label": "black swarmlings",
+   "biome": "miasmic mangrove",
+   "slide": 28,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_Gembug": {
+   "label": "gembug",
+   "biome": "miasmic mangrove",
+   "slide": 28,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_Swarmling": {
+   "label": "swarmling",
+   "biome": "miasmic mangrove",
+   "slide": 28,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_Mantrap": {
+   "label": "mantrap",
+   "biome": "miasmic mangrove",
+   "slide": 28,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AG_OcularSlinger": {
+   "label": "ocular slinger",
+   "biome": "miasmic mangrove",
+   "slide": 28,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_Molebear": {
+   "label": "Molebear",
+   "biome": "miasmic mangrove",
+   "slide": 28,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Anooba": {
+   "label": "anooba",
+   "biome": "miasmic mangrove",
+   "slide": 28,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_RaptorShrimp": {
+   "label": "raptor shrimp",
+   "biome": "miasmic mangrove",
+   "slide": 28,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_Thermadon": {
+   "label": "thermadon",
+   "biome": "miasmic mangrove",
+   "slide": 28,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "JRWProtosolpuga": {
+   "label": "Protosolpuga",
+   "biome": "miasmic mangrove",
+   "slide": 28,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "VFEI2_BlackQueen": {
+   "label": "black insectoid queen",
+   "biome": "miasmic mangrove",
+   "slide": 28,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_Lockjaw": {
+   "label": "lockjaw",
+   "biome": "miasmic mangrove",
+   "slide": 28,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_Helixien": {
+   "label": "helixien",
+   "biome": "miasmic mangrove",
+   "slide": 28,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "JRWGorgonops": {
+   "label": "Gorgonops",
+   "biome": "miasmic mangrove",
+   "slide": 28,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_FreezerFrog": {
+   "label": "freezer frog",
+   "biome": "crystalline caverns",
+   "slide": 29,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_Megakrill": {
+   "label": "megakrill",
+   "biome": "crystalline caverns",
+   "slide": 29,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Spidersnake": {
+   "label": "spidersnake",
+   "biome": "crystalline caverns",
+   "slide": 29,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_Skyeel": {
+   "label": "arcturan sky eel",
+   "biome": "crystalline caverns",
+   "slide": 29,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Chickenlizard": {
+   "label": "chickenlizard",
+   "biome": "crystalline caverns",
+   "slide": 29,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_MegaLouse": {
+   "label": "megalouse",
+   "biome": "crystalline caverns",
+   "slide": 29,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_ParagonIguana": {
+   "label": "reptile paragon",
+   "biome": "crystalline caverns",
+   "slide": 29,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_Darkbeast": {
+   "label": "darkbeast",
+   "biome": "crystalline caverns",
+   "slide": 29,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_WindBeast": {
+   "label": "windbeast",
+   "biome": "crystalline caverns",
+   "slide": 29,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_AuroraSylph": {
+   "label": "Aurora sylph",
+   "biome": "crystalline caverns",
+   "slide": 29,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Muffalope": {
+   "label": "muffalope",
+   "biome": "crystalline caverns",
+   "slide": 29,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_Ravager": {
+   "label": "ravager",
+   "biome": "crystalline caverns",
+   "slide": 29,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Gomphotaria": {
+   "label": "morrak",
+   "biome": "crystalline caverns",
+   "slide": 29,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Thrumffalo": {
+   "label": "thrumffalo",
+   "biome": "crystalline caverns",
+   "slide": 29,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_Slurrypede": {
+   "label": "slurrypede",
+   "biome": "crystalline caverns",
+   "slide": 29,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "AA_Eyeling": {
+   "label": "ikee",
+   "biome": "wasteland",
+   "slide": 30,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "DA_RedhornedLarpah": {
+   "label": "red-horned larpah",
+   "biome": "wasteland",
+   "slide": 30,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_Maligoat": {
+   "label": "maligoat",
+   "biome": "wasteland",
+   "slide": 30,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_Terramorph": {
+   "label": "terramorph",
+   "biome": "wasteland",
+   "slide": 30,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Bearhorse": {
+   "label": "bearhorse",
+   "biome": "wasteland",
+   "slide": 30,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_Skiphound": {
+   "label": "skiphound",
+   "biome": "wasteland",
+   "slide": 30,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_ColossalAerofleet": {
+   "label": "colossal aerofleet",
+   "biome": "wasteland",
+   "slide": 30,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Bearscarab": {
+   "label": "bearscarab",
+   "biome": "wasteland",
+   "slide": 30,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_EmpressButterfly": {
+   "label": "Empress butterfly",
+   "biome": "wasteland",
+   "slide": 30,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Bearcat": {
+   "label": "bearcat",
+   "biome": "wasteland",
+   "slide": 30,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Thrumbocat": {
+   "label": "thrumbocat",
+   "biome": "wasteland",
+   "slide": 30,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Spiderhorse": {
+   "label": "spiderhorse",
+   "biome": "wasteland",
+   "slide": 30,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_GreatDevourer": {
+   "label": "great devourer",
+   "biome": "wasteland",
+   "slide": 30,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_Atispec": {
+   "label": "atispec",
+   "biome": "wasteland",
+   "slide": 30,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Aiwha": {
+   "label": "aiwha",
+   "biome": "wasteland",
+   "slide": 30,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Pikobis": {
+   "label": "pikobis",
+   "biome": "volcano",
+   "slide": 31,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_Xyrion": {
+   "label": "xyrion",
+   "biome": "volcano",
+   "slide": 31,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_ShimmershellSnail": {
+   "label": "shimmershell snail",
+   "biome": "volcano",
+   "slide": 31,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_RipperHound": {
+   "label": "ripper hound",
+   "biome": "volcano",
+   "slide": 31,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_Thunderbeast": {
+   "label": "thunderbeast",
+   "biome": "volcano",
+   "slide": 31,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_Megabat": {
+   "label": "megabat",
+   "biome": "volcano",
+   "slide": 31,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "ERN_Amaro": {
+   "label": "amaro",
+   "biome": "volcano",
+   "slide": 31,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Wolfhorse": {
+   "label": "wolfhorse",
+   "biome": "volcano",
+   "slide": 31,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_GiantSnail": {
+   "label": "giant snail",
+   "biome": "volcano",
+   "slide": 31,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_SludgeCrawler": {
+   "label": "sludgecrawler",
+   "biome": "volcano",
+   "slide": 31,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_IronhuskBeetle": {
+   "label": "ironhusk beetle",
+   "biome": "volcano",
+   "slide": 31,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Skalder": {
+   "label": "skalder",
+   "biome": "volcano",
+   "slide": 31,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Tukata": {
+   "label": "tuk'ata",
+   "biome": "volcano",
+   "slide": 31,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "ChrysalideRancor": {
+   "label": "chrysalide rancor",
+   "biome": "volcano",
+   "slide": 31,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "BMT_SmogMothLarvae": {
+   "label": "smog caterpillar",
+   "biome": "pyroclastic conflagration",
+   "slide": 32,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_MutatingTumorfishSpawn": {
+   "label": "mutating tumorfish spawn",
+   "biome": "pyroclastic conflagration",
+   "slide": 32,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Megascarab": {
+   "label": "megascarab",
+   "biome": "pyroclastic conflagration",
+   "slide": 32,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Spelopede": {
+   "label": "spelopede",
+   "biome": "pyroclastic conflagration",
+   "slide": 32,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_FacetMoth": {
+   "label": "facet moth",
+   "biome": "pyroclastic conflagration",
+   "slide": 32,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "DA_Phrak": {
+   "label": "phrak",
+   "biome": "pyroclastic conflagration",
+   "slide": 32,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_FireWasp": {
+   "label": "fire wasp",
+   "biome": "pyroclastic conflagration",
+   "slide": 32,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Megaspider": {
+   "label": "megaspider",
+   "biome": "pyroclastic conflagration",
+   "slide": 32,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_RayHound": {
+   "label": "ray-hound",
+   "biome": "pyroclastic conflagration",
+   "slide": 32,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BI_Queen": {
+   "label": "queen",
+   "biome": "pyroclastic conflagration",
+   "slide": 32,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_SpinedGow": {
+   "label": "spined gow",
+   "biome": "pyroclastic conflagration",
+   "slide": 32,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Roggwart": {
+   "label": "roggwart",
+   "biome": "pyroclastic conflagration",
+   "slide": 32,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "JungleRancor": {
+   "label": "Jungle Rancor",
+   "biome": "pyroclastic conflagration",
+   "slide": 32,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "Strill": {
+   "label": "strill",
+   "biome": "mycotic jungle",
+   "slide": 33,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "FeralNerf": {
+   "label": "feral nerf",
+   "biome": "mycotic jungle",
+   "slide": 33,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_BeardedYak": {
+   "label": "bearded yak",
+   "biome": "mycotic jungle",
+   "slide": 33,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_SilverSheep": {
+   "label": "silver sheep",
+   "biome": "mycotic jungle",
+   "slide": 33,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Grazer": {
+   "label": "grazer",
+   "biome": "mycotic jungle",
+   "slide": 33,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_ParagonMuffalo": {
+   "label": "muffalo paragon",
+   "biome": "mycotic jungle",
+   "slide": 33,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Thrumbalope": {
+   "label": "thrumbalope",
+   "biome": "mycotic jungle",
+   "slide": 33,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "HiveQueen": {
+   "label": "hive queen",
+   "biome": "mycotic jungle",
+   "slide": 33,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_Gallatross": {
+   "label": "gallatross",
+   "biome": "mycotic jungle",
+   "slide": 33,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Thrumborat": {
+   "label": "thrumborat",
+   "biome": "mycotic jungle",
+   "slide": 33,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Thrumbochicken": {
+   "label": "thrumbochicken",
+   "biome": "mycotic jungle",
+   "slide": 33,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_MycoidColossus": {
+   "label": "mycoid colossus",
+   "biome": "mycotic jungle",
+   "slide": 33,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "AA_Cactipine": {
+   "label": "cactipine",
+   "biome": "stormy savanna",
+   "slide": 34,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_AngelMothLarva": {
+   "label": "angel moth larva",
+   "biome": "stormy savanna",
+   "slide": 34,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_Sacapillar": {
+   "label": "sacapillar",
+   "biome": "stormy savanna",
+   "slide": 34,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Boarwolf": {
+   "label": "Boar-wolf",
+   "biome": "stormy savanna",
+   "slide": 34,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Bearodile": {
+   "label": "bearodile",
+   "biome": "stormy savanna",
+   "slide": 34,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Dinocrocuta": {
+   "label": "dinocrocuta",
+   "biome": "stormy savanna",
+   "slide": 34,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Macrauchenia": {
+   "label": "macrauchenia",
+   "biome": "stormy savanna",
+   "slide": 34,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Mantistanis": {
+   "label": "mantistanis",
+   "biome": "stormy savanna",
+   "slide": 34,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "JRWIschigualastia": {
+   "label": "Ischigualastia",
+   "biome": "stormy savanna",
+   "slide": 34,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Uintatherium": {
+   "label": "uintatherium",
+   "biome": "stormy savanna",
+   "slide": 34,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "JRWBrachytrachelopan": {
+   "label": "Brachytrachelopan",
+   "biome": "stormy savanna",
+   "slide": 34,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Sivatherium": {
+   "label": "sivatherium ",
+   "biome": "stormy savanna",
+   "slide": 34,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "Gizka": {
+   "label": "gizka",
+   "biome": "Cypre Jungle",
+   "slide": 35,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_SonarRabbit": {
+   "label": "sonar rabbit",
+   "biome": "Cypre Jungle",
+   "slide": 35,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "VFEI2_Swarmling": {
+   "label": "swarmlings",
+   "biome": "Cypre Jungle",
+   "slide": 35,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Worrt": {
+   "label": "worrt",
+   "biome": "Cypre Jungle",
+   "slide": 35,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_Diggerpede": {
+   "label": "diggerpede",
+   "biome": "Cypre Jungle",
+   "slide": 35,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_Needlepost": {
+   "label": "needlepost",
+   "biome": "Cypre Jungle",
+   "slide": 35,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_LandOctopus": {
+   "label": "terrestrial octopus",
+   "biome": "Cypre Jungle",
+   "slide": 35,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Boomcat": {
+   "label": "boomcat",
+   "biome": "Cypre Jungle",
+   "slide": 35,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Hawkbat": {
+   "label": "hawk-bat",
+   "biome": "Cypre Jungle",
+   "slide": 35,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_Razorjack": {
+   "label": "razorjack",
+   "biome": "Cypre Jungle",
+   "slide": 35,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_BloodShrimp": {
+   "label": "blood shrimp",
+   "biome": "Cypre Jungle",
+   "slide": 35,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_Polluwog": {
+   "label": "polluwog",
+   "biome": "desert oasis",
+   "slide": 36,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_TaintedTurtle": {
+   "label": "tainted turtle",
+   "biome": "desert oasis",
+   "slide": 36,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_Batbird": {
+   "label": "batbird",
+   "biome": "desert oasis",
+   "slide": 36,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_MutatingTumorfishAdult": {
+   "label": "mutating tumorfish",
+   "biome": "desert oasis",
+   "slide": 36,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_FissionMouse": {
+   "label": "fission mouse",
+   "biome": "desert oasis",
+   "slide": 36,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_CaveCricket": {
+   "label": "cave cricket",
+   "biome": "desert oasis",
+   "slide": 36,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_Plasmorph": {
+   "label": "plasmorph",
+   "biome": "desert oasis",
+   "slide": 36,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Manscarab": {
+   "label": "manscarab",
+   "biome": "desert oasis",
+   "slide": 36,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_FungalMantis": {
+   "label": "fungal mimic mantis",
+   "biome": "desert oasis",
+   "slide": 36,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "EnergySpider": {
+   "label": "energy spider",
+   "biome": "desert oasis",
+   "slide": 36,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "MA_Narkospider": {
+   "label": "narkospider",
+   "biome": "desert oasis",
+   "slide": 36,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Ibex": {
+   "label": "ibex",
+   "biome": "tundra",
+   "slide": 37,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_ChameleonYak": {
+   "label": "chameleon yak",
+   "biome": "tundra",
+   "slide": 37,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Manka": {
+   "label": "manka",
+   "biome": "tundra",
+   "slide": 37,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Bantha": {
+   "label": "bantha",
+   "biome": "tundra",
+   "slide": 37,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Elk": {
+   "label": "elk",
+   "biome": "tundra",
+   "slide": 37,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "DA_Crestel": {
+   "label": "crestel",
+   "biome": "tundra",
+   "slide": 37,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "MA_Aminox": {
+   "label": "aminox",
+   "biome": "tundra",
+   "slide": 37,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Caribou": {
+   "label": "caribou",
+   "biome": "tundra",
+   "slide": 37,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "Hare": {
+   "label": "hare",
+   "biome": "tundra",
+   "slide": 37,
+   "band": "rescale",
+   "alreadyCut": false
+  },
+  "Snowhare": {
+   "label": "snowhare",
+   "biome": "tundra",
+   "slide": 37,
+   "band": "rescale",
+   "alreadyCut": false
+  },
+  "AA_EmpressButterflyLarva": {
+   "label": "Empress butterfly larva",
+   "biome": "grassland",
+   "slide": 38,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Donkey": {
+   "label": "donkey",
+   "biome": "grassland",
+   "slide": 38,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Bison": {
+   "label": "bison",
+   "biome": "grassland",
+   "slide": 38,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Muffalo": {
+   "label": "muffalo",
+   "biome": "grassland",
+   "slide": 38,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Akk": {
+   "label": "akk",
+   "biome": "grassland",
+   "slide": 38,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Reek": {
+   "label": "reek",
+   "biome": "grassland",
+   "slide": 38,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "LothWolf": {
+   "label": "loth-wolf",
+   "biome": "grassland",
+   "slide": 38,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Drexl": {
+   "label": "drexl",
+   "biome": "grassland",
+   "slide": 38,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "Rancor": {
+   "label": "Rancor",
+   "biome": "grassland",
+   "slide": 38,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "BMT_MetalloSnail": {
+   "label": "metallosnail",
+   "biome": "mechanoid intrusion",
+   "slide": 39,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_BlackSpelopede": {
+   "label": "black spelopede",
+   "biome": "mechanoid intrusion",
+   "slide": 39,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_Pillbug": {
+   "label": "pillbug",
+   "biome": "mechanoid intrusion",
+   "slide": 39,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_Woollybat": {
+   "label": "woolly bat",
+   "biome": "mechanoid intrusion",
+   "slide": 39,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_AcanthamoebaGiganteaHuge": {
+   "label": "acanthamoeba gigantea, huge",
+   "biome": "mechanoid intrusion",
+   "slide": 39,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_SandProwler": {
+   "label": "sand prowler",
+   "biome": "mechanoid intrusion",
+   "slide": 39,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_BunkerBug": {
+   "label": "bunker bug",
+   "biome": "mechanoid intrusion",
+   "slide": 39,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_HungeringHydra": {
+   "label": "hungering hydra",
+   "biome": "mechanoid intrusion",
+   "slide": 39,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GreaterKraytDragon": {
+   "label": "greater krayt dragon",
+   "biome": "mechanoid intrusion",
+   "slide": 39,
+   "band": "rescale",
+   "alreadyCut": false
+  },
+  "Klorslug": {
+   "label": "k'lor'slug",
+   "biome": "tropical swamp",
+   "slide": 40,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Veermok": {
+   "label": "veermok",
+   "biome": "tropical swamp",
+   "slide": 40,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "KellDragon": {
+   "label": "kell dragon",
+   "biome": "tropical swamp",
+   "slide": 40,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Dianoga": {
+   "label": "dianoga",
+   "biome": "tropical swamp",
+   "slide": 40,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Dragonsnake": {
+   "label": "Dragonsnake",
+   "biome": "tropical swamp",
+   "slide": 40,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "KwazelMaw": {
+   "label": "kwazel maw",
+   "biome": "tropical swamp",
+   "slide": 40,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "JOE_Nautilant": {
+   "label": "nautilant",
+   "biome": "tropical swamp",
+   "slide": 40,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Blixus": {
+   "label": "blixus",
+   "biome": "tropical swamp",
+   "slide": 40,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "Fambaa": {
+   "label": "fambaa",
+   "biome": "tropical swamp",
+   "slide": 40,
+   "band": "rescale",
+   "alreadyCut": false
+  },
+  "AA_InfectedAerofleet": {
+   "label": "infected aerofleet",
+   "biome": "greater tropical swamp",
+   "slide": 41,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_GlowSlug": {
+   "label": "glowslug",
+   "biome": "greater tropical swamp",
+   "slide": 41,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_Crystalope": {
+   "label": "crystalope",
+   "biome": "greater tropical swamp",
+   "slide": 41,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Nexu": {
+   "label": "nexu",
+   "biome": "greater tropical swamp",
+   "slide": 41,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_Feralisk": {
+   "label": "feralisk",
+   "biome": "greater tropical swamp",
+   "slide": 41,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_Basilisk": {
+   "label": "basilisk",
+   "biome": "greater tropical swamp",
+   "slide": 41,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "RG_Rimclaw": {
+   "label": "rimclaw",
+   "biome": "greater tropical swamp",
+   "slide": 41,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_AcidSlug": {
+   "label": "acid slug",
+   "biome": "greater tropical swamp",
+   "slide": 41,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_CrystalFairyMole": {
+   "label": "crystal fairy mole",
+   "biome": "horror wastes",
+   "slide": 42,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_CrystalMit": {
+   "label": "crystalmit",
+   "biome": "horror wastes",
+   "slide": 42,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_PebbleMit": {
+   "label": "pebblemit",
+   "biome": "horror wastes",
+   "slide": 42,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Molebear": {
+   "label": "molebear",
+   "biome": "horror wastes",
+   "slide": 42,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Bearalope": {
+   "label": "bearalope",
+   "biome": "horror wastes",
+   "slide": 42,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "MA_Deermoss": {
+   "label": "deermoss",
+   "biome": "horror wastes",
+   "slide": 42,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_EngorgedTentacularAberration": {
+   "label": "engorged tentacular aberration",
+   "biome": "horror wastes",
+   "slide": 42,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Duck": {
+   "label": "duck",
+   "biome": "cold bog",
+   "slide": 43,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "TetnissCrab": {
+   "label": "tet'niss crab",
+   "biome": "cold bog",
+   "slide": 43,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Yak": {
+   "label": "yak",
+   "biome": "cold bog",
+   "slide": 43,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Bursa": {
+   "label": "bursa",
+   "biome": "cold bog",
+   "slide": 43,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "MarshHaunt": {
+   "label": "marsh haunt",
+   "biome": "cold bog",
+   "slide": 43,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_FrostAve": {
+   "label": "frost ave",
+   "biome": "cold bog",
+   "slide": 43,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_SmolderstingScorpion": {
+   "label": "smoldersting scorpion",
+   "biome": "earthen depths",
+   "slide": 44,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_Maguana": {
+   "label": "maguana",
+   "biome": "earthen depths",
+   "slide": 44,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_FoundryBeetle": {
+   "label": "foundry beetle",
+   "biome": "earthen depths",
+   "slide": 44,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_RoyalRhino": {
+   "label": "royal rhino beetle",
+   "biome": "earthen depths",
+   "slide": 44,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_PodWorm": {
+   "label": "pod worm",
+   "biome": "earthen depths",
+   "slide": 44,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_CrystalCrab": {
+   "label": "crystal crab",
+   "biome": "earthen depths",
+   "slide": 44,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "TYR_MousePoison": {
+   "label": "poison mouse",
+   "biome": "glowforest",
+   "slide": 45,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Bullfrog": {
+   "label": "bullfrog",
+   "biome": "glowforest",
+   "slide": 45,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_DarkVandal": {
+   "label": "dark vandal",
+   "biome": "glowforest",
+   "slide": 45,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_Agaripod": {
+   "label": "agaripod",
+   "biome": "glowforest",
+   "slide": 45,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Taozin": {
+   "label": "taozin",
+   "biome": "glowforest",
+   "slide": 45,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Goat": {
+   "label": "goat",
+   "biome": "alpine meadow",
+   "slide": 46,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Squirrel": {
+   "label": "squirrel",
+   "biome": "alpine meadow",
+   "slide": 46,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Fox_Red": {
+   "label": "red fox",
+   "biome": "alpine meadow",
+   "slide": 46,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Deer": {
+   "label": "deer",
+   "biome": "alpine meadow",
+   "slide": 46,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "Fox_Arctic": {
+   "label": "arctic fox",
+   "biome": "glacial shield",
+   "slide": 47,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "DA_SnowTaraal": {
+   "label": "snow taraal",
+   "biome": "glacial shield",
+   "slide": 47,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Megasloth": {
+   "label": "megasloth",
+   "biome": "glacial shield",
+   "slide": 47,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "DA_NorthernDrog": {
+   "label": "northern drog",
+   "biome": "glacial shield",
+   "slide": 47,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "BMT_HoarfrostMastodon": {
+   "label": "hoarfrost mastodon",
+   "biome": "propane lakes",
+   "slide": 48,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_FrostboundBehemoth": {
+   "label": "frostbound behemoth",
+   "biome": "propane lakes",
+   "slide": 48,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GR_Paraceramuffalo": {
+   "label": "paraceramuffalo",
+   "biome": "propane lakes",
+   "slide": 48,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "GR_ParagonThrumbo": {
+   "label": "colossal paragon",
+   "biome": "propane lakes",
+   "slide": 48,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "Horse": {
+   "label": "horse",
+   "biome": "coastal dunes",
+   "slide": 49,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_DesertAve": {
+   "label": "desert ave",
+   "biome": "coastal dunes",
+   "slide": 49,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Dewback": {
+   "label": "dewback",
+   "biome": "coastal dunes",
+   "slide": 49,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Boomalope": {
+   "label": "boomalope",
+   "biome": "wetland",
+   "slide": 50,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_OvergrownColossus": {
+   "label": "overgrown colossus",
+   "biome": "wetland",
+   "slide": 50,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "WildBoar": {
+   "label": "wild boar",
+   "biome": "wetland",
+   "slide": 50,
+   "band": "rescale",
+   "alreadyCut": false
+  },
+  "GRimCobra": {
+   "label": "Colorful cobra",
+   "biome": "Areeb shrublands",
+   "slide": 51,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Dromedary": {
+   "label": "dromedary",
+   "biome": "Areeb shrublands",
+   "slide": 51,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "Vulture": {
+   "label": "vulture",
+   "biome": "Bleached desert",
+   "slide": 52,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Iguana": {
+   "label": "iguana",
+   "biome": "Bleached desert",
+   "slide": 52,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Chinchilla": {
+   "label": "chinchilla",
+   "biome": "Bluefire Mountains",
+   "slide": 53,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GRimLavaSnail": {
+   "label": "Colorful lava snail",
+   "biome": "Bluefire Mountains",
+   "slide": 53,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Lynx": {
+   "label": "lynx",
+   "biome": "Primordial Geysers",
+   "slide": 54,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_TeratogenicOriginator": {
+   "label": "teratogenic originator",
+   "biome": "Primordial Geysers",
+   "slide": 54,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "ColossusToad": {
+   "label": "colossus toad",
+   "biome": "The Grindlands",
+   "slide": 55,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "ThrumbaToad": {
+   "label": "Thrumba toad",
+   "biome": "The Grindlands",
+   "slide": 55,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "Cougar": {
+   "label": "cougar",
+   "biome": "cloud forest",
+   "slide": 56,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Beldon": {
+   "label": "beldon",
+   "biome": "cloud forest",
+   "slide": 56,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Wolf_Great": {
+   "label": "greatwolf",
+   "biome": "glacial plain",
+   "slide": 57,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Wampa": {
+   "label": "Wampa",
+   "biome": "glacial plain",
+   "slide": 57,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Rat": {
+   "label": "brown rat",
+   "biome": "greater cold bog",
+   "slide": 58,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Wolf_Timber": {
+   "label": "timber wolf",
+   "biome": "greater cold bog",
+   "slide": 58,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Wolf_Arctic": {
+   "label": "arctic wolf",
+   "biome": "ice floes",
+   "slide": 59,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "Bear_Polar": {
+   "label": "polar bear",
+   "biome": "ice floes",
+   "slide": 59,
+   "band": "regen",
+   "alreadyCut": false
+  },
+  "GRimBullfrog": {
+   "label": "Colorful bullfrog",
+   "biome": "The Evernights",
+   "slide": 60,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GRimTortoise": {
+   "label": "Colorful tortoise",
+   "biome": "The Neverglades",
+   "slide": 61,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "GRimMonitorLizard": {
+   "label": "Colorful monitor lizard",
+   "biome": "Tropical Desepelago",
+   "slide": 62,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_GallatrossMoribund": {
+   "label": "moribund gallatross",
+   "biome": "gallatross graveyard",
+   "slide": 63,
+   "band": "keep",
+   "alreadyCut": false
+  },
+  "AA_Bobeene": {
+   "label": "bobeene",
+   "biome": "idyllic meadows",
+   "slide": 64,
+   "band": "keep",
+   "alreadyCut": false
+  }
+ }
+}

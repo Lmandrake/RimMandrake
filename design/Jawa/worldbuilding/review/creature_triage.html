@@ -1,0 +1,574 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>Creature triage — rapid keyboard pass</title>
+<!--
+  ══ CREATURE TRIAGE ══════════════════════════════════════════════════════════════════
+  A SECOND INSTRUMENT over the SAME decisions file as creature_register.html.
+
+  One creature at a time, big, keyboard-driven: a keypress IS the data row.
+  Blast the obvious 80% here, then open creature_register.html to drill the rest —
+  both read and write review/creature_register.decisions.json through the SAME
+  sidecar (assets/serve_sheet.py), which merges per row and stamps savedBy/writeCount.
+
+  It owns NO data of its own. Rows are read out of creature_register.html's
+  <script id="ITEMS"> block, so the two instruments can never disagree about the
+  creatures, the art, the badges or the machine's pre-fill.
+
+  Launch:  python3 ~/.claude/skills/review-sheets/assets/serve_sheet.py \
+             --sheet  .../review/creature_triage.html \
+             --decisions .../review/creature_register.decisions.json
+-->
+<style>
+:root{
+  --bg:#0b0d10; --panel:#14161a; --panel2:#0f1216; --line:#2a2f37;
+  --ink:#e8e6e3; --dim:#98a2b3; --accent:#ffb454; --link:#cfe3ff;
+  --ok:#5ac37f; --warn:#e8b64c; --bad:#e06c6c; --info:#6aa6e8;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);overflow:hidden;
+  font:14px/1.45 ui-sans-serif,-apple-system,"Segoe UI",system-ui,sans-serif}
+button,input,select,textarea{font:inherit;color:inherit}
+kbd{background:#1b2028;border:1px solid var(--line);border-bottom-width:2px;border-radius:4px;
+  padding:1px 6px;font:600 11px/1.4 ui-monospace,Consolas,monospace;color:var(--link)}
+body{display:flex;flex-direction:column}
+
+/* ── header: progress, orientation, link state ─────────────────────────────── */
+header{flex:0 0 auto;background:var(--panel);border-bottom:1px solid var(--line);
+  padding:7px 12px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+#pos{font:700 17px/1 ui-monospace,Consolas,monospace;color:var(--accent);white-space:nowrap}
+#group{color:var(--link);font-weight:600;max-width:26vw;overflow:hidden;text-overflow:ellipsis;
+  white-space:nowrap}
+.counts{color:var(--dim);font-size:12.5px;white-space:nowrap}
+.counts b{color:var(--ink)}
+#bar{position:absolute;left:0;top:0;height:2px;background:var(--accent);width:0}
+header{position:relative}
+.spacer{flex:1 1 auto}
+#link{font-size:12px;padding:3px 9px;border-radius:4px;border:1px solid var(--line);
+  background:#101418;white-space:nowrap}
+#link.ok{color:var(--ok);border-color:#25502f}
+#link.busy{color:var(--warn);border-color:#4a3d18}
+#link.err{color:var(--bad);border-color:#5a2020;background:#241012}
+#link.dead{color:#fff;background:#7a1d1d;border-color:#a33}
+select,.chip{background:#101418;border:1px solid var(--line);border-radius:4px;
+  padding:3px 8px;color:var(--ink);cursor:pointer;font-size:12.5px}
+.chip.on{background:#243447;border-color:#3d6a92;color:#dff0ff;font-weight:700}
+
+/* ── stage ─────────────────────────────────────────────────────────────────── */
+main{flex:1 1 auto;display:grid;grid-template-columns:1fr 400px;gap:12px;padding:12px;
+  min-height:0}
+#art{background:var(--panel2);border:1px solid var(--line);border-radius:8px;
+  display:flex;align-items:center;justify-content:center;position:relative;min-height:0;
+  background-image:linear-gradient(45deg,#15181d 25%,transparent 25%,transparent 75%,#15181d 75%),
+    linear-gradient(45deg,#15181d 25%,#101317 25%,#101317 75%,#15181d 75%);
+  background-size:24px 24px;background-position:0 0,12px 12px}
+#art img{width:100%;height:100%;object-fit:contain;padding:14px;image-rendering:pixelated}
+#artmiss{color:var(--bad);font-size:15px;text-align:center;padding:20px}
+#artnote{position:absolute;left:8px;bottom:6px;font-size:11px;color:var(--dim);
+  background:#0b0d10cc;padding:2px 7px;border-radius:4px}
+aside{display:flex;flex-direction:column;gap:10px;min-height:0;overflow:hidden}
+#scalebox{flex:0 0 auto;background:var(--panel2);border:1px solid var(--line);border-radius:8px;
+  padding:6px;min-height:150px;max-height:38vh;display:flex;align-items:center;justify-content:center}
+#scalebox img{width:100%;max-height:36vh;object-fit:contain;image-rendering:pixelated}
+#facts{flex:1 1 auto;overflow:auto;background:var(--panel2);border:1px solid var(--line);
+  border-radius:8px;padding:10px}
+h1{margin:0 0 2px;font-size:20px;line-height:1.2}
+#defname{font:12px ui-monospace,Consolas,monospace;color:var(--dim);word-break:break-all}
+.badges{margin:8px 0 6px;display:flex;flex-wrap:wrap;gap:4px}
+.badge{font-size:10.5px;border-radius:3px;padding:1px 6px;border:1px solid var(--line);
+  color:var(--dim);background:#12161b}
+.badge.cut{color:#ffd9d9;background:#4a1a1a;border-color:#7a2b2b;font-weight:700}
+.badge.zero{color:#ffe6bf;background:#3d2f14;border-color:#6b551f}
+.badge.contested{color:#e6d9ff;background:#2e2447;border-color:#4f3f77}
+.badge.alarm{color:#ffdada;background:#4a1a1a;border-color:#7a2b2b;font-weight:700}
+.badge.warn{color:#ffeec2;background:#3d3214;border-color:#6b5a1f}
+.badge.kind{color:#cfe3ff}
+#effect{font-size:12.5px;color:#c7d0dc;margin:6px 0}
+#why{font-size:12px;color:var(--dim);border-left:2px solid var(--line);padding-left:8px;margin:8px 0}
+#desc{font-size:11.5px;color:#8d97a5;margin-top:8px;max-height:9em;overflow:auto}
+#state{margin:8px 0 0;padding:8px;border:1px solid var(--line);border-radius:6px;background:#101418}
+#verdict{font:700 15px/1.3 system-ui;margin-bottom:4px}
+#verdict.keep{color:var(--ok)} #verdict.regen{color:var(--info)}
+#verdict.rescale{color:var(--accent)} #verdict.cut{color:var(--bad)}
+.who{font-size:11px;color:var(--dim)}
+.who .human{color:var(--ok);font-weight:700}
+.who .machine{color:var(--warn)}
+
+/* ── footer: verdict keys + note ───────────────────────────────────────────── */
+footer{flex:0 0 auto;background:var(--panel);border-top:1px solid var(--line);padding:8px 12px;
+  display:flex;gap:10px;align-items:flex-start;flex-wrap:wrap}
+.keys{display:flex;gap:6px;flex-wrap:wrap}
+.key{border:1px solid var(--line);border-radius:6px;padding:4px 9px;background:#101418;
+  cursor:pointer;font-size:12.5px;display:flex;gap:6px;align-items:center}
+.key.on{background:#1d2a1f;border-color:#3d7a4d}
+.key[data-v="1"].on{background:#173322;border-color:#2f7a4a}
+.key[data-v="2"].on{background:#152738;border-color:#2f5f8a}
+.key[data-v="3"].on{background:#33290f;border-color:#8a6a2a}
+.key[data-v="4"].on{background:#3a1616;border-color:#8a2f2f}
+#note{flex:1 1 320px;min-width:240px;background:#0d1014;border:1px solid var(--line);
+  border-radius:6px;padding:6px 8px;resize:none;height:52px;color:var(--ink)}
+#note:focus{outline:2px solid var(--accent);border-color:var(--accent);background:#12161b}
+#note.has{border-color:#5f6b7a}
+.hint{color:var(--dim);font-size:11.5px}
+#toast{position:fixed;left:50%;top:52px;transform:translateX(-50%);background:#241012;
+  color:#ffd9d9;border:1px solid #5a2020;border-radius:6px;padding:6px 12px;font-size:12.5px;
+  display:none;z-index:60;max-width:80vw}
+#boot{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;
+  justify-content:center;flex-direction:column;gap:10px;z-index:80;text-align:center;padding:24px}
+#boot .err{color:var(--bad);max-width:60em;font:12.5px/1.6 ui-monospace,Consolas,monospace;
+  white-space:pre-wrap;text-align:left}
+#deadbanner{display:none;background:#7a1d1d;color:#fff;padding:6px 12px;font-weight:700;
+  font-size:13px}
+/* The brief: bounded and foldable, because on a one-item view the creature is the
+   screen. Folded by default; the fold is remembered per sheet id. */
+#brief{flex:0 0 auto;background:var(--panel2);border-bottom:1px solid var(--line);
+  padding:8px 12px;font-size:12.5px;color:#c7d0dc;max-height:22vh;overflow:auto}
+body.folded #brief{display:none}
+#brief b{color:var(--ink)}
+#fold{background:#101418;border:1px solid var(--line);border-radius:4px;padding:2px 8px;
+  cursor:pointer;font-size:11.5px;color:var(--link)}
+#copypath{background:#101418;border:1px solid var(--line);border-radius:4px;padding:1px 7px;
+  cursor:pointer;font-size:11px;color:var(--link)}
+</style>
+
+<div id="boot"><div style="font-size:18px;color:var(--accent)">loading creatures…</div>
+  <div class="hint">reading the register's own rows so both instruments stay in step</div>
+  <div class="err" id="booterr" hidden></div></div>
+
+<div id="deadbanner">NOT LINKED TO THE DECISIONS FILE — nothing you press here is being saved.
+  Launch it through <code>assets/serve_sheet.py</code>.</div>
+
+<header>
+  <div id="bar"></div>
+  <div id="pos">— / —</div>
+  <div id="group">—</div>
+  <div class="counts" id="counts">—</div>
+  <div class="spacer"></div>
+  <select id="fmode" title="which creatures this pass walks">
+    <option value="all">all creatures</option>
+    <option value="untouched">not yet touched by me</option>
+    <option value="contested">contested only</option>
+    <option value="cut">CUT only</option>
+    <option value="regen">machine says regen/rescale</option>
+    <option value="mismatch">size/physics mismatch</option>
+    <option value="noart">art missing</option>
+  </select>
+  <select id="fgroup" title="biome cluster"><option value="">every biome cluster</option></select>
+  <button id="fold" title="show/hide the brief">brief</button>
+  <div id="link" class="dead">no link</div>
+</header>
+
+<div id="brief">
+  <b>Posture:</b> <span id="posture">—</span> — <span id="postureMeaning"></span><br>
+  <b>Ranked by:</b> <span id="criterion">—</span><br>
+  <b>Invented rules:</b> <span id="invented">none — every pre-fill comes from measured art
+    and def data; alien-vs-terrestrial worth is yours alone and belongs in a note (<kbd>N</kbd>).</span><br>
+  <b>Same file as the register sheet.</b> Anything you press here is what
+  <code>creature_register.html</code> will show, and the other way round.
+</div>
+
+<main>
+  <div id="art"><img id="detail" alt=""><div id="artmiss" hidden></div>
+    <div id="artnote"></div></div>
+  <aside>
+    <div id="scalebox"><img id="scale" alt="true scale beside a human"></div>
+    <div id="facts">
+      <h1 id="label">—</h1>
+      <div id="defname">—</div>
+      <div class="badges" id="badges"></div>
+      <div id="effect"></div>
+      <div id="why"></div>
+      <div id="state">
+        <div id="verdict">—</div>
+        <div class="who" id="who"></div>
+        <div class="who" id="priostate" style="margin-top:4px"></div>
+      </div>
+      <div id="desc"></div>
+    </div>
+  </aside>
+</main>
+
+<footer>
+  <div class="keys" id="keys">
+    <div class="key" data-v="1"><kbd>1</kbd> keep art</div>
+    <div class="key" data-v="2"><kbd>2</kbd> regenerate</div>
+    <div class="key" data-v="3"><kbd>3</kbd> regen + rescale</div>
+    <div class="key" data-v="4"><kbd>4</kbd> cut creature</div>
+    <div class="key" data-p="A"><kbd>A</kbd></div>
+    <div class="key" data-p="B"><kbd>B</kbd></div>
+    <div class="key" data-p="C"><kbd>C</kbd></div>
+    <div class="key" data-p=""><kbd>0</kbd> no prio</div>
+  </div>
+  <textarea id="note" placeholder="N — note (why you overruled). Esc or Enter returns to triage."></textarea>
+  <div class="hint"><kbd>←</kbd><kbd>→</kbd> move without deciding · <kbd>U</kbd> undo last verdict
+    · <kbd>1</kbd>–<kbd>4</kbd> commit &amp; advance<br>
+    <span id="path"></span> <button id="copypath">copy path</button></div>
+</footer>
+<div id="toast"></div>
+
+<script>
+"use strict";
+/* ══ 0. where the file lives ═══════════════════════════════════════════════════
+   The sidecar injects window.__SIDECAR__ into whatever it serves as --sheet.
+   No sidecar => no localStorage fallback ON PURPOSE (skill §6: localStorage is
+   where review work goes to die). The page says so, loudly, instead of lying. */
+const CFG = window.__SIDECAR__ || null;
+const esc = s => String(s == null ? '' : s).replace(/[&<>"]/g,
+  c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const $ = id => document.getElementById(id);
+
+let ITEMS = [], byId = new Map(), DEC = {}, view = [], idx = 0;
+const undoStack = [];
+
+/* ══ 1. rows — read from creature_register.html, never duplicated ══════════════ */
+async function loadItems() {
+  const r = await fetch('creature_register.html', { headers: hdrs() });
+  if (!r.ok) throw new Error('GET creature_register.html -> ' + r.status);
+  const html = await r.text();
+  const re = /<script id="ITEMS"[^>]*>/g;
+  let m, last = null;
+  while ((m = re.exec(html))) {
+    const start = m.index + m[0].length;
+    const end = html.indexOf('<\/script>', start);
+    if (end < 0) continue;
+    try {
+      const parsed = JSON.parse(html.slice(start, end));
+      if (Array.isArray(parsed) && parsed.length) last = parsed;
+    } catch (e) { /* the first match is inside the template's comment */ }
+  }
+  if (!last) throw new Error(
+    'could not find a parsable <script id="ITEMS"> array in creature_register.html.\n' +
+    'The register was regenerated in a shape this triage tool does not recognise.');
+  return last;
+}
+function hdrs() { return CFG && CFG.token ? { 'X-Sheet-Token': CFG.token } : {}; }
+
+/* ══ 2. persistence — the sidecar owns the file (skill §6) ═════════════════════ */
+const dirty = new Map();
+let flushTimer = null, saving = false, lastSaved = null, saveErr = null, writes = 0;
+
+async function loadDecisions() {
+  if (!CFG) return {};
+  const r = await fetch(CFG.endpoints.get, { headers: hdrs() });
+  if (!r.ok) throw new Error('GET decisions -> ' + r.status);
+  const doc = await r.json();
+  writes = doc.writeCount || 0;
+  DOC = doc;
+  if (doc.frozen === true) {
+    frozen = true;
+    toast('This decisions file is FROZEN (' + esc(doc.frozenOn || '') + '). Read-only.');
+  }
+  return doc.decisions || {};
+}
+let frozen = false, DOC = {};
+
+function queue(id, now) {
+  dirty.set(id, DEC[id] === undefined ? null : DEC[id]);
+  paintLink();
+  clearTimeout(flushTimer);
+  flushTimer = setTimeout(flush, now ? 0 : 500);
+}
+async function flush() {
+  if (saving || !dirty.size || !CFG) return;
+  const ops = {}; for (const [k, v] of dirty) ops[k] = v;
+  dirty.clear(); saving = true; saveErr = null; paintLink();
+  try {
+    const r = await fetch(CFG.endpoints.post, {
+      method: 'POST',
+      headers: Object.assign({ 'Content-Type': 'application/json' }, hdrs()),
+      body: JSON.stringify({ ops })
+    });
+    const body = await r.json().catch(() => ({}));
+    if (!r.ok) throw new Error(body.hint || body.error || ('POST /decisions ' + r.status));
+    lastSaved = new Date(); writes = body.writeCount || writes;
+  } catch (e) {
+    saveErr = e.message || String(e);
+    for (const k in ops) if (!dirty.has(k)) dirty.set(k, ops[k]);   // stays pending
+    toast(saveErr);
+  } finally {
+    saving = false; paintLink();
+    if (dirty.size && !saveErr) setTimeout(flush, 250);
+  }
+}
+addEventListener('beforeunload', e => {
+  if (dirty.size) { e.preventDefault(); e.returnValue = 'Verdicts are still pending.'; }
+});
+
+/* A row this human actually touched carries `at` — the same marker
+   creature_register.html writes. No `at` => still the machine's guess. */
+const touchedByHuman = rec => !!(rec && rec.at);
+function stamp(rec) { rec.at = new Date().toISOString(); rec.by = 'triage'; return rec; }
+function recOf(it) {
+  return DEC[it.id] || (DEC[it.id] =
+    { decision: '', prefill: it.prefill || '', prio: it.prio || '', note: '' });
+}
+
+/* ══ 3. the pass ══════════════════════════════════════════════════════════════ */
+const MODES = {
+  all:       () => true,
+  untouched: it => !touchedByHuman(DEC[it.id]),
+  contested: it => !!it.contested,
+  cut:       it => !!it.cut,
+  regen:     it => it.prefill === 'regen' || it.prefill === 'rescale',
+  mismatch:  it => /size\/physics/.test(it.effect || '') && /🔴|⚠️/.test(it.effect || ''),
+  noart:     it => !it.thumb
+};
+function rebuildView(keepId) {
+  const test = MODES[$('fmode').value] || MODES.all;
+  const g = $('fgroup').value;
+  view = ITEMS.filter(it => test(it) && (!g || it.group === g));
+  if (!view.length) { view = ITEMS.slice(); toast('No creature matches that filter — showing all.'); }
+  const at = keepId ? view.findIndex(it => it.id === keepId) : -1;
+  idx = at >= 0 ? at : 0;
+  paint();
+}
+const cur = () => view[idx] || null;
+
+function go(delta) {
+  if (!view.length) return;
+  idx = Math.max(0, Math.min(view.length - 1, idx + delta));
+  paint();
+}
+function advance() {
+  if (idx >= view.length - 1) { paint(); toast('End of this pass — ' + view.length + ' items.'); return; }
+  idx++; paint();
+}
+
+/* Undo records the ONE FIELD an action changed, not a whole-record snapshot:
+   restoring a snapshot would silently swallow a note typed after the verdict. */
+function push(it, field) {
+  const r = DEC[it.id];
+  undoStack.push({ id: it.id, field,
+    prev: { value: r ? r[field] : undefined, at: r && r.at, by: r && r.by } });
+}
+function verdict(v) {
+  const it = cur(); if (!it) return;
+  if (frozen) return toast('frozen — read-only');
+  push(it, 'decision');
+  const rec = recOf(it);
+  rec.decision = v;
+  stamp(rec);
+  queue(it.id, true);
+  advance();
+}
+function setPrio(p) {
+  const it = cur(); if (!it) return;
+  if (frozen) return toast('frozen — read-only');
+  push(it, 'prio');
+  const rec = recOf(it);
+  rec.prio = p;
+  stamp(rec);
+  queue(it.id, true);
+  paint();                                   // A/B/C never advances
+}
+function undo() {
+  const u = undoStack.pop();
+  if (!u) return toast('nothing to undo');
+  const rec = DEC[u.id] || (DEC[u.id] = { decision: '', prefill: '', prio: '', note: '' });
+  rec[u.field] = u.prev.value === undefined ? '' : u.prev.value;
+  if (u.prev.at) { rec.at = u.prev.at; rec.by = u.prev.by; }
+  else if (!(rec.note || '').length) { delete rec.at; delete rec.by; }   // back to the machine's guess
+  queue(u.id, true);
+  const at = view.findIndex(it => it.id === u.id);
+  if (at >= 0) idx = at;
+  paint();
+  toast('undid ' + u.field + ' on ' + u.id);
+}
+function commitNote() {
+  const it = cur(); if (!it) return;
+  const rec = recOf(it);
+  const v = $('note').value;
+  if (v === (rec.note || '')) return;
+  rec.note = v; stamp(rec); queue(it.id, true); paint();
+}
+
+/* ══ 4. keyboard — the whole point ════════════════════════════════════════════ */
+const typing = () => {
+  const a = document.activeElement;
+  return a && (a.tagName === 'TEXTAREA' || a.tagName === 'INPUT' ||
+               a.tagName === 'SELECT' || a.isContentEditable);
+};
+addEventListener('keydown', e => {
+  if (typing()) {
+    // Inside the note (or a filter select) NOTHING may commit a verdict.
+    if (document.activeElement === $('note') && (e.key === 'Escape' ||
+        (e.key === 'Enter' && !e.shiftKey))) {
+      e.preventDefault(); commitNote(); $('note').blur();
+    }
+    if (e.key === 'Escape') document.activeElement.blur();
+    return;
+  }
+  if (e.ctrlKey || e.metaKey || e.altKey) return;
+  const k = e.key;
+  if (k === '1') { e.preventDefault(); verdict('keep'); }
+  else if (k === '2') { e.preventDefault(); verdict('regen'); }
+  else if (k === '3') { e.preventDefault(); verdict('rescale'); }
+  else if (k === '4') { e.preventDefault(); verdict('cut'); }
+  else if (k === 'a' || k === 'A') { e.preventDefault(); setPrio('A'); }
+  else if (k === 'b' || k === 'B') { e.preventDefault(); setPrio('B'); }
+  else if (k === 'c' || k === 'C') { e.preventDefault(); setPrio('C'); }
+  else if (k === '0') { e.preventDefault(); setPrio(''); }
+  else if (k === 'n' || k === 'N') { e.preventDefault(); $('note').focus(); $('note').select(); }
+  else if (k === 'ArrowRight' || k === ' ') { e.preventDefault(); go(1); }
+  else if (k === 'ArrowLeft') { e.preventDefault(); go(-1); }
+  else if (k === 'u' || k === 'U') { e.preventDefault(); undo(); }
+  else if (k === 'Home') { e.preventDefault(); idx = 0; paint(); }
+  else if (k === 'End') { e.preventDefault(); idx = view.length - 1; paint(); }
+});
+$('keys').addEventListener('click', e => {
+  const el = e.target.closest('[data-v],[data-p]');
+  if (!el) return;
+  if (el.dataset.v !== undefined)
+    verdict({ '1': 'keep', '2': 'regen', '3': 'rescale', '4': 'cut' }[el.dataset.v]);
+  else setPrio(el.dataset.p);
+});
+$('note').addEventListener('blur', commitNote);
+$('fmode').addEventListener('change', () => { rebuildView(); $('fmode').blur(); });
+$('fgroup').addEventListener('change', () => { rebuildView(); $('fgroup').blur(); });
+
+/* ══ 5. paint ═════════════════════════════════════════════════════════════════ */
+const LABEL = { keep: 'KEEP THE ART', regen: 'REGENERATE', rescale: 'REGEN + RESCALE', cut: 'CUT THE CREATURE' };
+function paint() {
+  const it = cur();
+  $('pos').textContent = view.length ? ('item ' + (idx + 1) + ' / ' + view.length) : '0 / 0';
+  $('bar').style.width = view.length ? ((idx + 1) / view.length * 100) + '%' : '0';
+  if (!it) return;
+  $('group').textContent = it.group || '—';
+
+  // art — detail is what is being judged; scale is the true-size check
+  const img = $('detail'), miss = $('artmiss');
+  if (it.thumb) {
+    img.hidden = false; miss.hidden = true;
+    if (img.getAttribute('src') !== it.thumb) img.src = it.thumb;
+  } else {
+    img.hidden = true; miss.hidden = false;
+    miss.textContent = 'ART MISSING — ' + (it.artReason || 'no reason recorded');
+  }
+  $('scale').style.visibility = it.scale ? 'visible' : 'hidden';
+  if (it.scale && $('scale').getAttribute('src') !== it.scale) $('scale').src = it.scale;
+  $('artnote').textContent = (it.srcPx ? it.srcPx[0] + '×' + it.srcPx[1] + ' px source' : '') +
+    (it.shownPct != null && it.shownPct < 100 ? ' · shown at ' + it.shownPct + '%' : '');
+
+  $('label').textContent = it.label || it.id;
+  $('defname').textContent = it.id;
+
+  const b = [];
+  if (it.cut) b.push('<span class="badge cut">CUT — the game does not have this</span>');
+  if (it.zeroed) b.push('<span class="badge zero">ZEROED — commonality 0</span>');
+  if (it.contested) b.push('<span class="badge contested">◆ contested</span>');
+  const mm = (it.effect || '').match(/(🔴|⚠️)\s*size\/physics ([0-9.]+×)/);
+  if (mm) b.push('<span class="badge ' + (mm[1] === '🔴' ? 'alarm' : 'warn') + '">' +
+    (mm[1] === '🔴' ? 'SIZE/PHYSICS ' : 'size/physics ') + esc(mm[2]) + '</span>');
+  if (!it.thumb) b.push('<span class="badge alarm">NO ART</span>');
+  b.push('<span class="badge kind">' + esc(it.kindOf || '') + '</span>');
+  b.push('<span class="badge">' + esc(it.mod || '') + '</span>');
+  $('badges').innerHTML = b.join('');
+
+  $('effect').textContent = it.effect || '';
+  $('why').textContent = it.why ? ('machine: ' + it.why) : '';
+  $('desc').textContent = it.desc || '';
+
+  const rec = DEC[it.id];
+  const d = rec && rec.decision ? rec.decision : '';
+  $('verdict').textContent = d ? LABEL[d] || d : '— undecided —';
+  $('verdict').className = d || '';
+  $('who').innerHTML = touchedByHuman(rec)
+    ? '<span class="human">✔ your call</span> · ' + esc((rec.at || '').replace('T', ' ').slice(0, 19)) +
+      (rec.prefill && rec.prefill !== d ? ' · overrules the machine\'s <b>' + esc(rec.prefill) + '</b>' : '')
+    : '<span class="machine">machine pre-fill</span>' +
+      (rec && rec.prefill ? ' (' + esc(rec.prefill) + ')' : '') + ' — you have not judged this one';
+  $('priostate').textContent = 'regen priority: ' + ((rec && rec.prio) ? rec.prio : '—') +
+    '   (only meaningful on a regen/rescale row)';
+
+  for (const el of $('keys').querySelectorAll('[data-v]'))
+    el.classList.toggle('on', ({ '1': 'keep', '2': 'regen', '3': 'rescale', '4': 'cut' }[el.dataset.v]) === d);
+  for (const el of $('keys').querySelectorAll('[data-p]'))
+    el.classList.toggle('on', el.dataset.p === ((rec && rec.prio) || ''));
+
+  const note = $('note');
+  if (document.activeElement !== note) note.value = (rec && rec.note) || '';
+  note.classList.toggle('has', !!(rec && rec.note));
+
+  paintCounts();
+  preload(idx + 1); preload(idx + 2); preload(idx + 3);
+}
+function paintCounts() {
+  let human = 0, machine = 0;
+  for (const it of ITEMS) (touchedByHuman(DEC[it.id]) ? human++ : machine++);
+  $('counts').innerHTML = '<b>' + human + '</b> judged by you · <b>' + machine +
+    '</b> still the machine\'s guess · ' + ITEMS.length + ' total';
+}
+const preloaded = new Set();
+function preload(i) {
+  const it = view[i]; if (!it) return;
+  for (const p of [it.thumb, it.scale]) {
+    if (p && !preloaded.has(p)) { preloaded.add(p); const im = new Image(); im.src = p; }
+  }
+}
+function paintLink() {
+  const el = $('link');
+  if (!CFG) { el.className = 'dead'; el.textContent = 'NOT LINKED — nothing is being saved'; return; }
+  if (saveErr) { el.className = 'err'; el.textContent = 'SAVE FAILED — ' + saveErr; return; }
+  if (saving || dirty.size) { el.className = 'busy'; el.textContent = 'saving ' + (dirty.size || 1) + '…'; return; }
+  el.className = 'ok';
+  el.textContent = 'linked · saved ' +
+    (lastSaved ? lastSaved.toTimeString().slice(0, 8) : 'not yet') + ' · ' + writes + ' writes';
+}
+let toastTimer = null;
+function toast(msg) {
+  const t = $('toast'); t.textContent = msg; t.style.display = 'block';
+  clearTimeout(toastTimer); toastTimer = setTimeout(() => { t.style.display = 'none'; }, 4200);
+}
+
+/* ══ 6. boot ══════════════════════════════════════════════════════════════════ */
+(async function boot() {
+  try {
+    if (!CFG) $('deadbanner').style.display = 'block';
+    const [items, dec] = await Promise.all([loadItems(), loadDecisions()]);
+    ITEMS = items; DEC = dec;
+    byId = new Map(ITEMS.map(it => [it.id, it]));
+    const groups = [...new Set(ITEMS.map(it => it.group).filter(Boolean))].sort();
+    for (const g of groups) {
+      const o = document.createElement('option'); o.value = g; o.textContent = g;
+      $('fgroup').appendChild(o);
+    }
+    $('path').textContent = CFG ? (CFG.decisionsPath || '') : 'no decisions file linked';
+    $('posture').textContent = DOC.posture || 'unknown';
+    $('postureMeaning').textContent = DOC.postureMeaning || '';
+    $('criterion').textContent = DOC.criterion || '(not stated in the decisions file)';
+    // the fold is remembered, namespaced by sheet id — never the decisions themselves
+    const FKEY = 'rs:' + (DOC.sheetId || 'creature_register') + ':triageFold';
+    let folded = true;
+    try { folded = localStorage.getItem(FKEY) !== '0'; } catch (e) {}
+    const applyFold = () => document.body.classList.toggle('folded', folded);
+    applyFold();
+    $('fold').addEventListener('click', () => {
+      folded = !folded; applyFold(); $('fold').blur();   // keep Space/Enter meaning triage, not this button
+      try { localStorage.setItem(FKEY, folded ? '1' : '0'); } catch (e) {}
+    });
+    $('copypath').addEventListener('click', async () => {
+      $('copypath').blur();
+      const t = CFG ? (CFG.decisionsPath || '') : '';
+      try { await navigator.clipboard.writeText(t); toast('path copied'); }
+      catch (e) {                                        // clipboard is refused on file://
+        const ta = document.createElement('textarea');
+        ta.value = t; document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); toast('path copied'); }
+        catch (e2) { toast('could not copy — ' + t); }
+        ta.remove();
+      }
+    });
+    rebuildView();
+    paintLink();
+    $('boot').remove();
+    window.__TRIAGE__ = {                       // handles for a headless driver
+      get idx() { return idx; }, get id() { return cur() && cur().id; },
+      get view() { return view.length; }, DEC, flushPending: () => dirty.size, undoDepth: () => undoStack.length
+    };
+  } catch (e) {
+    $('booterr').hidden = false;
+    $('booterr').textContent = (e && e.stack) || String(e);
+    $('boot').firstElementChild.textContent = 'could not start';
+    throw e;
+  }
+})();
+</script>
