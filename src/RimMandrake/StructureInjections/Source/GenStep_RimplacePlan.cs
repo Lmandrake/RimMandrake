@@ -96,6 +96,17 @@ namespace RimMandrake.StructureInjections
         // point.
         public static void ApplyPlan(Map map, RimplacePlan plan, int dx, int dz, string sourceLabel)
         {
+            // 0. clear the footprint -- owner ruling 2026-09-05 (TILE_STRUCTURE_
+            // REVIEW_SAVE_1): a structure/district built onto whatever the terrain
+            // gensteps left there (wild plants, rock rubble, filth) reads as if it
+            // was dropped onto an untouched field, not built. WipeMode.Vanish below
+            // only clears the exact cells a THING gets spawned on, so open floor and
+            // walkway cells inside the footprint were never touched -- clear the
+            // WHOLE rect first, plants and filth only (nothing else should exist on
+            // a cell before its own map's later gensteps run).
+            if (plan.HasFootprint)
+                ClearFootprint(map, plan.FootprintX, plan.FootprintZ, plan.FootprintW, plan.FootprintH, dx, dz);
+
             // 1. foundation (Odyssey substructure) -- must exist before terrain
             foreach (var c in plan.Foundation)
                 SetTerrainCell(map, c, dx, dz, foundation: true);
@@ -138,6 +149,25 @@ namespace RimMandrake.StructureInjections
             // implemented here yet -- no roster row's promise depends on it
             // for v1, and it does not touch the ordering this class exists
             // to prove. Left as a known gap, not silently dropped.
+        }
+
+        // Destroys plants and filth across the whole footprint rect before any
+        // terrain/thing placement runs. Scoped to Plant/Filth only, not every
+        // ThingCategory: a fresh mapgen footprint should not yet hold a real
+        // Building or Item worth preserving, and destroying anything broader
+        // risks eating something a later, unrelated genstep placed first.
+        private static void ClearFootprint(Map map, int x, int z, int w, int h, int dx, int dz)
+        {
+            var rect = new CellRect(x + dx, z + dz, w, h);
+            foreach (var cell in rect)
+            {
+                if (!cell.InBounds(map)) continue;
+                foreach (var t in map.thingGrid.ThingsListAtFast(cell).ToList())
+                {
+                    if (t.def.category == ThingCategory.Plant || t.def.category == ThingCategory.Filth)
+                        t.Destroy(DestroyMode.Vanish);
+                }
+            }
         }
 
         private static void SetTerrainCell(Map map, PlanCell c, int dx, int dz, bool foundation)
