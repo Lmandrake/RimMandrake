@@ -279,9 +279,6 @@
         <degreeName>ChemicalInterest</degreeName>
       </li>
     </traits>
-    <items>
-      <li>Beer</li>
-    </items>
     <skills>
       <Medicine>16</Medicine>
     </skills>
@@ -443,9 +440,6 @@
         <degreeName>Pessimist</degreeName>
       </li>
     </traits>
-    <apparel>
-      <li>Apparel_GasMask</li>
-    </apparel>
   </RimMandrake.Inhabited.CharacterDef>
 
   <RimMandrake.Inhabited.CharacterDef>

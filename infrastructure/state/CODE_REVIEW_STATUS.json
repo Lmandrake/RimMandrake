@@ -444,6 +444,76 @@
     "date": "2026-09-03",
     "sha": "b294390b"
   },
+  "src/RimMandrake/Inhabited/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "dfa5bdd3"
+  },
+  "src/RimMandrake/Inhabited/Defs/CastRosters/CastRoster_EMPIRE.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "dfa5bdd3"
+  },
+  "src/RimMandrake/Inhabited/Defs/CastRosters/CastRoster_GEONOSIAN.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "dfa5bdd3"
+  },
+  "src/RimMandrake/Inhabited/Defs/CastRosters/CastRoster_TUSKEN.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "dfa5bdd3"
+  },
+  "src/RimMandrake/Inhabited/Defs/CastRosters/CastRoster_WILDSTEAM.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "dfa5bdd3"
+  },
+  "src/RimMandrake/Inhabited/Defs/DutyDefs/Duties_Inhabited.xml": {
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "dfa5bdd3"
+  },
+  "src/RimMandrake/Inhabited/Defs/GenStepDefs/GenSteps_Inhabited.xml": {
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "dfa5bdd3"
+  },
+  "src/RimMandrake/Inhabited/Defs/GenStepDefs/GenSteps_InhabitedSettlement.xml": {
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "dfa5bdd3"
+  },
+  "src/RimMandrake/Inhabited/Defs/MapGeneratorDefs/MapGeneratorDefs_InhabitedSettlement.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "1db48f7d"
+  },
+  "src/RimMandrake/Inhabited/Defs/PlaceDefs/Places_Inhabited.xml": {
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "dfa5bdd3"
+  },
+  "src/RimMandrake/Inhabited/Defs/TileMutatorDefs/TileMutatorDefs_Inhabited.xml": {
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "dfa5bdd3"
+  },
+  "src/RimMandrake/Inhabited/Defs/WorldObjectDefs/WorldObjects_Inhabited.xml": {
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "dfa5bdd3"
+  },
+  "src/RimMandrake/Inhabited/Defs/WorldObjectDefs/WorldObjects_InhabitedSettlement.xml": {
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "dfa5bdd3"
+  },
+  "src/RimMandrake/Inhabited/Languages/English/Keyed/Inhabited.xml": {
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "dfa5bdd3"
+  },
   "src/RimMandrake/Inhabited/Source/CharacterApplier.cs": {
     "cleanCount": 2,
     "date": "2026-09-04",

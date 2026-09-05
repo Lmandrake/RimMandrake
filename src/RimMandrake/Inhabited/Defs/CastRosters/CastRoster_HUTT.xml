@@ -72,9 +72,6 @@
         <degree>0</degree>
       </li>
     </traits>
-    <items>
-      <li>Beer</li>
-    </items>
   </RimMandrake.Inhabited.CharacterDef>
 
   <RimMandrake.Inhabited.CharacterDef>
@@ -419,9 +416,6 @@
         <degreeName>Pessimist</degreeName>
       </li>
     </traits>
-    <apparel>
-      <li>Apparel_ClothMask</li>
-    </apparel>
   </RimMandrake.Inhabited.CharacterDef>
 
   <RimMandrake.Inhabited.CharacterDef>

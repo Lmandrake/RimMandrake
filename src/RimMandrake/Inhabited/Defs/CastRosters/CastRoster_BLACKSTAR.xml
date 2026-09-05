@@ -196,7 +196,6 @@
         <degreeName>Sanguine</degreeName>
       </li>
     </traits>
-    <weapon>Gun_MachinePistol</weapon>
     <skills>
       <Shooting>6</Shooting>
       <Intellectual>0</Intellectual>
@@ -232,7 +231,6 @@
     </traits>
     <apparel>
       <li>OuterRim_CompositeHelmet</li>
-      <li>Apparel_ArmorRecon</li>
     </apparel>
     <skills>
       <Melee>18</Melee>
@@ -423,7 +421,6 @@
         <degree>0</degree>
       </li>
     </traits>
-    <weapon>Gun_SniperRifle</weapon>
     <skills>
       <Shooting>20</Shooting>
     </skills>
