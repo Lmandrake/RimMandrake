@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-05T03:29:52Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-05T03:35:56Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -37,7 +37,7 @@ Claim one to work it. Any item can be claimed and started; the prose sections ar
 ## RESEARCH_TREE_TABS_1 Ship the 16 ResearchTabDefs - blocked on the open tree rebrand and the Waking Mind fold discrepancy
 state:    proposed
 row:      unassigned
-needs:    owner
+needs:    offline
 target:   v1
 kind:     task
 thin:     no ## spec, no ## verify, no ## criteria

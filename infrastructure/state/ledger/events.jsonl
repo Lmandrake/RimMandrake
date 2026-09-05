@@ -4570,3 +4570,10 @@
 {"seat":"FOUNDRY","event":"claim","id":"KARRASK_ASYMMETRIC_CLAW_TOOL_1","ts":"2026-09-05T03:33:30Z"}
 {"seat":"FOUNDRY","event":"start","id":"KARRASK_ASYMMETRIC_CLAW_TOOL_1","ts":"2026-09-05T03:33:30Z"}
 {"seat":"FOUNDRY","event":"close","id":"KARRASK_ASYMMETRIC_CLAW_TOOL_1","sha":"42166e1a","ts":"2026-09-05T03:34:15Z"}
+{"seat":"BENCH","event":"note","id":"RESEARCH_TREE_TABS_1","text":"OWNER RULINGS 2026-09-04 (cards): (1) TREE REBRAND: labels are 'Jawa Scavenging' and 'The Utinni' (manifest names win over the deck's Scavenger/THE SHIP); defNames stay stable RUT_Tree_* slugs. (2) THE WAKING MIND: UNFOLDED - its own 10-row tree, per the deck; the manifest F2 fold into The Unbolting is reversed, so 16 tabs ship. Item unblocked; execution is ~1h: 16 ResearchTabDefs + per-row tab assignment ops. CAUTION: build_retag_patches.py carries the RETAG_BUILDER_SELF_ERASE_1 defect - do NOT regenerate the deployed retag; emit tab ops without touching it (read the supplement file header first).","ts":"2026-09-05T03:35:38Z"}
+{"seat":"BENCH","event":"needs","id":"RESEARCH_TREE_TABS_1","to":"offline","ts":"2026-09-05T03:35:44Z"}
+{"seat":"BENCH","event":"note","id":"TRANSIENT_SWEEP_RULINGS_1","text":"OWNER RULINGS 2026-09-04 (cards): (1) Transient/fow_src/ DELETE - reference-only fog-of-war source, re-fetchable; deleted this session. (2) The five git-tracked Transient entries (jawa_patches_triage.md, lf/, logs/, rename_verify/, weapons_donor validate txt) EVICTED - git rm'd this session, history keeps the bytes; Transient/README.md stays (documents the rule). Transient is purely untracked again.","ts":"2026-09-05T03:35:45Z"}
+{"seat":"FOUNDRY","event":"close","id":"COLD_LOAD_RUN_SHEET_3","sha":"e21690cf","ts":"2026-09-05T03:35:46Z"}
+{"seat":"FOUNDRY","event":"claim","id":"RETAG_BUILDER_SELF_ERASE_1","ts":"2026-09-05T03:35:53Z"}
+{"seat":"FOUNDRY","event":"start","id":"RETAG_BUILDER_SELF_ERASE_1","ts":"2026-09-05T03:35:53Z"}
+{"seat":"OWNER","event":"close","id":"TRANSIENT_SWEEP_RULINGS_1","sha":"e21690cf","ownerSaid":"Delete; Evict next sweep","ts":"2026-09-05T03:35:56Z"}
