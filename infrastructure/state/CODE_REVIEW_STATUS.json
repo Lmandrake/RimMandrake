@@ -3022,6 +3022,51 @@
     "date": "2026-09-04",
     "sha": "43f96b1b"
   },
+  "src/RimUtinni/Antiquities/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "e81a98b8"
+  },
+  "src/RimUtinni/Antiquities/Defs/JobDefs/RUT_Antiquities_Jobs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "e81a98b8"
+  },
+  "src/RimUtinni/Antiquities/Defs/ThingDefs_Buildings/RUT_Antiquities_Buildings.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "e81a98b8"
+  },
+  "src/RimUtinni/Antiquities/Defs/ThingDefs_Items/RUT_Antiquities_Items.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "e81a98b8"
+  },
+  "src/RimUtinni/Antiquities/Source/AntiquityStageExtension.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "f1a99184"
+  },
+  "src/RimUtinni/Antiquities/Source/AntiquityUtility.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "f1a99184"
+  },
+  "src/RimUtinni/Antiquities/Source/CompAntiquity.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "f1a99184"
+  },
+  "src/RimUtinni/Antiquities/Source/DefOfs.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "f1a99184"
+  },
+  "src/RimUtinni/Antiquities/Source/WorkGiver_ExamineAntiquity.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "f1a99184"
+  },
   "src/RimUtinni/Doctrine/Source/DoctrineCore/DoctrinePatches.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
