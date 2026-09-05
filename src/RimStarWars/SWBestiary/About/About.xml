@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
-  <name>RimMandrake: SW — Bestiary (Mlie Sound Absorption)</name>
+  <name>RimMandrake: SW — Bestiary</name>
   <packageId>mandrake.rsw.swbestiary</packageId>
   <author>mandrake</author>
   <supportedVersions>
     <li>1.6</li>
   </supportedVersions>
-  <description>MLIE_FAUNA_ABSORPTION_1 — absorbed audio from `mlie.starwarsanimalcollection` (Star Wars Animal Collection), owner ruling 2026-09-02: "Absorb all the sounds absolutely." 589 SoundDefs (per-creature Angry/Wounded/Death/Call vocal sets across 143+ creatures, plus ability sounds), extracted from the donor's AssetBundle and re-hosted here under an `RSW_` prefix. Sound-only this pass — the creature ThingDef/PawnKindDef geometry (Wave A/B/C) is separate, still-open work in the same item; this mod is the intended eventual home for that content too, so the audio lands in the right place from the start.</description>
+  <description>MLIE_FAUNA_ABSORPTION_1 — absorbs content from `mlie.starwarsanimalcollection` (Star Wars Animal Collection) under an `RSW_` prefix, staged in waves. All 589 SoundDefs absorbed (per-creature Angry/Wounded/Death/Call vocal sets across 143+ creatures, plus ability sounds). Wave A creature geometry (Bantha ThingDef/PawnKindDef, wool/milk/leather/meat/horn items, blue-milk thought) is absorbed; Sarlacc was found not to be a creature at all (an Odyssey-DLC building system) and is out of this item's scope. Waves B/C (remaining species) are still open.</description>
   <modDependencies>
     <li>
       <packageId>Ludeon.RimWorld</packageId>
