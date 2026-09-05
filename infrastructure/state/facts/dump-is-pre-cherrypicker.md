@@ -69,3 +69,24 @@ the dump holds, not of what the game runs. That is not wrong — it is answering
 question — but nothing currently says which question.
 ⛔ **Do not "fix" it by re-capturing the dump later in load.** The dump's job is the authored
 def set; the kill list's job is what survives. Two questions, two instruments.
+
+---
+
+## ⚠️ REFINED 2026-09-05 — true for DEFS, NOT uniformly true for LIST FIELDS
+
+Measured while building the weapon register (764 weapons, full 595-mod stack):
+
+- All **177** Cherry-Picker-cut weapons carry an **empty `weaponTags`** in the dump,
+  and **no tagged weapon is cut** — 177/177, in BOTH directions.
+- So the dump is pre-Cherry-Picker about whether a **def exists** (the original
+  finding above stands and is why cut things still appear in sheets), but some
+  **list fields have already been stripped** in it. A cut weapon's def is present
+  while its `weaponTags` list is gone.
+
+⇒ Do NOT read "the dump is pre-Cherry-Picker" as "every field in the dump is
+pre-cut." A list field can be empty *because* the thing was cut, which reads
+identically to a def that never had one. `cherrypicker.py` remains the ONLY
+authority on cut state; a dump field is at best corroboration.
+
+⚠️ This also means "empty `weaponTags`" cannot by itself prove a content bug — see
+the 56 live, uncut weapons that genuinely have no tags (`WEAPONS_NO_TAGS_ORPHANS_1`).
