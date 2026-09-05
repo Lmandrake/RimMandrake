@@ -83,8 +83,9 @@ weak modifier — the whale-never-notices-a-dagger result then comes mostly from
 HEALTH (∝ mass), not from armour pretending to be armour plate.
 
 The whale test is the acceptance test for ruling 3: a trivial weapon against a
-huge creature must be *negligible*, and it falls out of armour ∝ length together
-with health ∝ mass without any special case.
+huge creature must be *negligible*. 🔴 CORRECTED: it does NOT fall out of armour —
+armour has no size term at all (below). It comes from **health ∝ mass**, plus the
+integument class where the creature genuinely is armoured.
 
 ## ⚠️ Engine consequences to watch (flagged, not blocking)
 
@@ -135,3 +136,50 @@ AUDIT and then set deliberately — none of these may be left to fall out silent
 **Rule:** every one of these is either derived by a stated formula or set
 explicitly per creature — and whichever it is gets recorded in the proposal, so
 the owner reviews numbers, not surprises.
+
+
+---
+
+## 🔴 AUDIT CORRECTIONS (mass_consumer_audit.md, 2026-09-05) — read before executing
+
+The audit read the engine and found **~45 consumers and 22 hard thresholds**. Three
+things this doctrine asserted are FALSE, and one danger is disqualifying.
+
+**Struck as non-existent / wrong:**
+- ⛔ **"Pit-trap activation mass" DOES NOT EXIST.** `Building_Trap.SpringChance`
+  (`Building_Trap.cs:116-141`) = knower factor × `TrapSpringChance` ×
+  `PawnTrapSpringChance`, with *zero* StatParts. No mass or bodySize term in any
+  trap class. Making traps mass-sensitive is a **feature request**, not a
+  renormalization — it must be built, not tuned.
+- ⛔ **Pen escape is not size-driven** — `RaceProperties.FenceBlocked => Roamer`,
+  a bool. Only pen *density* is size-driven.
+- ⛔ **Bleed rate is not size-driven** — that line scales blood *filth drop
+  chance* (`Pawn_HealthTracker.cs:1221`), not bleeding.
+
+**Armour — the doctrine's integument model is SAFE and fills a vacuum:** there is
+zero size derivation anywhere; `ArmorRating_*` carries only `StatPart_Stuff`, and
+animals get plain hand-authored `statBases` defaulting to 0 (vanilla Elephant 0,
+Tortoise 0.50 — no size correlation at all). ⚠️ `maxValue` is hard-clamped at **2.0**.
+
+**Yields:** meat + leather auto-scale (`140 × bodySize`, then a `postProcessCurve`
+with kinks at bodySize **0.036** and **0.286** — piecewise, so naive ratio-rescaling
+is wrong below 0.286). **Milk, wool and eggs are FLAT per-def integers** and do not
+scale at all — every one must be set explicitly.
+
+### 🔴 The disqualifying finding: literal real-mass bodySize breaks the engine
+
+`bodySize` is not a free parameter — 22 hard thresholds are calibrated to vanilla's
+~0.02-4.0 range. At literal real mass (rat 0.0046, whale ~1400):
+
+| threshold | what breaks |
+|---|---|
+| **herd migration `ceil(4 / bodySize)`, UNCLAMPED** | a real-mass rat spawns **~870 animals** — **map hang**. Showstopper. |
+| `maxPreyBodySize` (vanilla 0.25-3.0) | predators become eligible for nearly everything **including colonists** |
+| bullet stagger `BodySize <= stoppingPower` (weapons 0.5-3.0) | everything under ~70 kg is **stun-locked by any rifle** — and it is INVISIBLE: no UI, no stat, no log. Surfaces as "combat feels weird" many sessions later. **Biggest silent risk.** |
+| haul training **0.40** / rescue **0.65** | most trained haulers stop qualifying |
+| ranged hit clamp **0.1-2.0** | nearly every animal pins to a rail; the mechanic loses all resolution |
+| ideoligion animal-per-capita **1/2/4/6/8**; large-corpse 0.75; cell-share 1.5; bed 0.25/0.55; snow 0.9 | fail open or stop matching |
+
+⇒ **`drawSize` can be literal — it is only art.** `bodySize` cannot be literal
+real-mass without either a mass-compression mapping or editing all 22 thresholds.
+This needs an owner ruling; it is recorded here as OPEN, not silently resolved.
