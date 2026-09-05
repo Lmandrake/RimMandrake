@@ -301,6 +301,58 @@ or (b) reflect `GenTypes.AllTypes` for method bodies that call
 yet and would need IL inspection, not attribute enumeration, so it's a bigger build
 than this one was.
 
+
+## 2026-09-05, `ChooseBiomeCommonality` RULED OUT by actual decompile — and a
+## decompiler now exists on this machine
+
+🔑 **`ilspycmd` (ICSharpCode.Decompiler CLI, v8.2.0.7535) is now installed** at
+`C:\Users\Mandrake\.dotnet\tools\ilspycmd.exe` via
+`dotnet.exe tool install -g ilspycmd` — this machine had NO decompiler before
+today (both this item's 09-02 pass and `TILEGEN_SILENT_REUSE_1`'s 09-05 pass
+independently hit that same wall). It works from WSL via the `/mnt/c/...`
+interop path for `dotnet.exe`, but **ilspycmd itself needs a native `C:\...`
+path**, not `/mnt/c/...` — it reports "File does not exist" on the WSL-style
+path. Usage: `ilspycmd.exe -t <Namespace.TypeName> <path-to.dll>` for one
+type, `ilspycmd.exe -l c <path-to.dll>` to list every type. **This closes the
+"no decompiler" gap named in both this item and `TILEGEN_SILENT_REUSE_1`** —
+whoever needs it next does not need to install anything.
+
+**Decompiled `ChooseBiomeCommonality.Main` in full (11 types total in the
+whole assembly, all read).** The mod's actual purpose is **biome PLACEMENT
+scoring during world generation** — "commonality" here means "how likely is
+this biome to be chosen for a given world tile", not "how likely is this
+animal within an already-placed biome". Its static constructor Harmony-patches
+`<biome>.workerClass.GetScore(BiomeDef, Tile, PlanetTile)` — vanilla's
+tile-scoring method used during worldgen to decide which biome wins a tile —
+via a generic `BiomeWorker_GetScore.Postfix`. The other 10 types are mod
+settings storage (`ChooseBiomeCommonality_Settings`,
+`ChooseBiomeCommonality_Mod`) and a settings UI page
+(`Page_DoBottomButtons`). **Nothing in this assembly touches `wildAnimals`,
+`PawnKindDef`, or `CommonalityOfAnimal` anywhere** — confirmed by reading
+every type, not by a string search. This was a naming coincidence: "biome
+commonality" (this mod) and "animal commonality within a biome" (this
+item's subject) are different mechanics that happen to share a word.
+**Definitively ruled out**, not just string-negative this time.
+
+**`EBSGFramework.dll`'s one `wildAnimal`-adjacent hit, checked**: a
+case-insensitive re-scan (the prior three passes were case-sensitive, per
+this item's own carried-forward note about that gap) found
+`get_AllWildAnimals` — a compiler-generated getter name. Confirmed this is
+just a call site reading vanilla's own `BiomeDef.AllWildAnimals` PROPERTY
+(a read-only computed filter, not a writable field — see the 2026-09-02
+pass's own read of that getter) — no literal `wildAnimals` (the private
+field name) anywhere in the DLL, and `AllWildAnimals` has no setter to write
+through in vanilla regardless. Ruled out: this is a read, not a write.
+
+**Remaining live leads, unchecked**: `Fortified Features Framework`
+(`aoba.framework`) not yet decompiled (only string-scanned before, and its
+active-mod assembly path wasn't confirmed this pass). With a working
+decompiler now in hand, the honest next move is a full `ilspycmd -l c`
+listing of every remaining suspect mod's assembly (start from the
+`jawa/startup_types` sweep's mod list, StaticCtor entries only, excluding
+the mods already decompiled-and-cleared above) rather than more targeted
+string guesses.
+
 ## criteria
 - [ ] **The padding assembly named with the method that does it** — NOT MET. Both
       Harmony's patch table (`jawa/harmony_patches`) and ordinary static-init sites
