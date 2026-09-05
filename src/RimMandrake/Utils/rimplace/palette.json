@@ -22,7 +22,19 @@
     "(mods=593/8cec2b98) and its footprint read from the size index - none is a guess.",
     "A `null` deliberately REMOVES an inherited role (droids: no BED, no STOVE).",
     "WALL_LIGHT is a wall ATTACHMENT (building.isAttachment): placed by ctx:wall_attach",
-    "on the floor cell in front of a wall, never through place_role."
+    "on the floor cell in front of a wall, never through place_role.",
+    "",
+    "2026-09-05 (RIMPLACE_ENGINE_DELTAS_1 E5): added WINDOW (tech-gated - nil on",
+    "Neolithic/default until RUT_WindowAdobe ships, per spec structure_procedural_spec.md",
+    "section 9), CHEST, BENCH, SIGN (generic; per-purpose SIGN_* roles still win where a",
+    "faction defines them), WATER, TROUGH, ANIMAL_BED, GATE, WORKBENCH, FLOOR_POOR,",
+    "FLOOR_THRESHOLD. Reconciled naming: the spec text says WALL_LAMP; this file already",
+    "shipped WALL_LIGHT everywhere (wall_lights(), every district template, three",
+    "selftests) - kept WALL_LIGHT, no second key, so templates do not have to choose",
+    "between two names for the same attachment. R2 fix: FLOOR was Gravel (stony soil -",
+    "bare ground) on tech:Neolithic, wealth:poor/destitute, faction:Jawa_IndigenousTribes",
+    "and faction:TribeCivil - all four moved Gravel to FLOOR_YARD (a yard, not a floor)",
+    "and gave FLOOR a real value (StrawMatting)."
   ],
   "default": {
     "WALL": "Wall",
@@ -38,6 +50,21 @@
     "BED_STUFF": "WoodLog",
     "LIGHT": "TorchLamp",
     "WALL_LIGHT": "TorchWallLamp",
+    "CHEST": "VFEPD_WoodenChest",
+    "CHEST_STUFF": null,
+    "BENCH": "Seat_Bench",
+    "BENCH_STUFF": "WoodLog",
+    "SIGN": "QE_Sign",
+    "SIGN_STUFF": "WoodLog",
+    "WATER": "PrimitiveWell",
+    "TROUGH": "WaterTrough",
+    "ANIMAL_BED": "AnimalBed",
+    "ANIMAL_BED_STUFF": "Cloth",
+    "GATE": "FenceGate",
+    "GATE_STUFF": "WoodLog",
+    "WORKBENCH": "CraftingSpot",
+    "FLOOR_POOR": "StrawMatting",
+    "FLOOR_THRESHOLD": "FlagstoneSandstone",
     "TABLE": "Table1x2c",
     "TABLE_STUFF": "WoodLog",
     "CHAIR": "DiningChair",
@@ -75,7 +102,8 @@
     "WALL_STUFF": "BlocksSandstone",
     "DOOR": "Door",
     "DOOR_STUFF": "WoodLog",
-    "FLOOR": "Gravel",
+    "FLOOR": "StrawMatting",
+    "FLOOR_YARD": "Gravel",
     "BED": "Bedroll",
     "BED_STUFF": "Cloth",
     "LIGHT": "TorchLamp",
@@ -91,7 +119,10 @@
     "HEATER": "Heater",
     "BATTERY": "Battery",
     "GENERATOR": "SolarGenerator",
-    "FLOOR": "TileSandstone"
+    "FLOOR": "TileSandstone",
+    "WINDOW": "AM_Wall_Atlas_Glass",
+    "WORKBENCH": "TableMachining",
+    "FLOOR_THRESHOLD": "Concrete"
   },
   "tech:Spacer": {
     "WALL_STUFF": "Steel",
@@ -101,7 +132,8 @@
     "LIGHT": "StandingLamp",
     "WALL_LIGHT": "WallLamp",
     "COOLER": "Cooler",
-    "BATTERY": "Battery"
+    "BATTERY": "Battery",
+    "WINDOW": "MUS_SpaceBase_Window"
   },
   "tech:Ultra": {
     "WALL_STUFF": "Steel",
@@ -110,23 +142,27 @@
     "FLOOR": "SterileTile",
     "LIGHT": "StandingLamp",
     "WALL_LIGHT": "WallLamp",
-    "TURRET": "Turret_MiniTurret"
+    "TURRET": "Turret_MiniTurret",
+    "WINDOW": "MUS_SpaceBase_Window"
   },
   "wealth:destitute": {
-    "FLOOR": "Gravel",
+    "FLOOR": "StrawMatting",
+    "FLOOR_YARD": "Gravel",
     "DECOR": null
   },
   "wealth:poor": {
-    "FLOOR": "Gravel"
+    "FLOOR": "StrawMatting",
+    "FLOOR_YARD": "Gravel"
   },
   "wealth:rich": {
     "FLOOR": "TileSandstone",
     "DECOR": "SculptureSmall"
   },
   "faction:Jawa_IndigenousTribes": {
-    "_comment": "Trade Moot. Canon: subterranean, sandcrawler circuits, and the COLD NURSERY (jawa_society 4.3a). Materials invented.",
+    "_comment": "Trade Moot. Canon: subterranean, sandcrawler circuits, and the COLD NURSERY (jawa_society 4.3a). Materials invented. R2 (2026-09-05): FLOOR was Gravel - stony soil, i.e. bare ground, exactly the owner's complaint - moved to FLOOR_YARD; the floor itself is StrawMatting.",
     "WALL_STUFF": "BlocksSandstone",
-    "FLOOR": "Gravel",
+    "FLOOR": "StrawMatting",
+    "FLOOR_YARD": "Gravel",
     "BED": "Bedroll",
     "LIGHT": "TorchLamp",
     "NEST": "EggBox"
@@ -395,7 +431,8 @@
   "faction:TribeCivil": {
     "_comment": "Deep Desert Tribes. Canon: stone huts and caves, traps not turrets, and their answer to fire is to have NO permanent structure.",
     "WALL_STUFF": "BlocksSandstone",
-    "FLOOR": "Gravel",
+    "FLOOR": "StrawMatting",
+    "FLOOR_YARD": "Gravel",
     "BED": "Bedroll",
     "LIGHT": "TorchLamp",
     "STOVE": "Campfire"
