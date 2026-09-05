@@ -67,3 +67,63 @@ symptoms.
 
 Left unclaimed/`ready` — this needs someone with time for a careful, isolated
 repro, not a third blind restart under session pressure.
+
+## 2026-09-05, minidump analysis (FOUNDRY, offline while BENCH held the bridge)
+
+**Root cause identified, and it is NOT tile-generation-specific.** Windows
+crash dumps exist at `%LOCALAPPDATA%\CrashDumps\` (no cdb/windbg/dumpbin on
+this machine — parsed with the pure-Python `minidump` library in a scratch
+venv, reading the real MINIDUMP_EXCEPTION_STREAM/MODULE_LIST/THREAD_LIST
+structures, not eyeballed bytes). **7 confirmed occurrences**, not 2 — the
+two documented above (06:21, 06:49) plus five more found this pass (07:47,
+08:15, 10:01, 10:27, and one from **2026-09-04 13:44** predating this item's
+filing entirely). Every one is **byte-identical**: `ntdll.dll+0x70f32`, READ
+access violation, target address exactly `0xFFFFFFFFFFFFFFFF` (the sentinel
+-1, not a random corrupted pointer). A control dump from Sep 1 (a different,
+unrelated `EXCEPTION_BREAKPOINT` in `UnityPlayer.dll`) confirms the parser
+correctly distinguishes crash types rather than reporting the same thing
+regardless of input.
+
+**Stack signature (heuristic scan, frame-for-frame identical across all 6
+fresh dumps modulo ASLR):** Windows heap-manager internals
+(`RtlpFreeHeap`/low-fragmentation-heap free path, the `ntdll+0x70xxx`
+cluster) called from **`mono-2.0-bdwgc.dll`** (Mono's embedded Boehm-GC
+allocator), with **`gameoverlayrenderer64.dll`** (Steam Overlay, injected
+process-wide) also present on every stack. **No RimWorld-specific or
+mod-specific native code appears anywhere** — this is a
+Steam-overlay/Mono-heap interaction, not a bug in any of our own C#
+assemblies or in vanilla RimWorld's own logic.
+
+**Crucially, dump `11636.dmp` (10:01) occurred in a session that never
+called `world_tile_map_generate` at all** (it was testing an unrelated
+bridge tool) — this alone falsifies the "GenStep corrupts state" hypothesis
+as the crash's *necessary* trigger. Combined with the 2026-09-04 dump
+predating the tilegen report, **the TILEGEN_SILENT_REUSE_1 connection is
+undermined, not confirmed**: this crash and that silent-reuse bug are almost
+certainly two SEPARATE defects that both happen to surface on the full
+594/595-mod list under memory pressure, not one cause with two symptoms.
+Full writeup with the per-dump table and stack trace:
+`Transient/bridge_ntdll_crash_analysis.md` (Transient — not durable, fold
+anything load-bearing back into this file before it ages out).
+
+**Recommended mitigation to TRY (cheap, no code change):** disable Steam
+Overlay for RimWorld specifically (Steam → RimWorld → Properties → General →
+"Enable the Steam Overlay while in-game" OFF) and see if the crash frequency
+drops. This is the single most actionable next step and needs no bridge, no
+build, no restart cycle to attempt — just a Steam settings change the OWNER
+would need to make (game client settings, not a repo file).
+
+## criteria
+- [x] Root cause identified: Steam Overlay (`gameoverlayrenderer64.dll`)
+      interacting with Mono's heap allocator (`mono-2.0-bdwgc.dll`) under
+      heap pressure from the full 594-mod list — a generic runtime/overlay
+      interaction, not a specific native mod plugin (none appears in any
+      dump's module list at the fault site).
+- [x] Relationship to `TILEGEN_SILENT_REUSE_1` resolved: **separate bugs**.
+      Recommend that item be investigated independently as a managed-code
+      (C#) logic bug in `WorldTileMapGenerate`'s own bookkeeping, not as a
+      symptom of this crash.
+- [ ] Mitigation (Steam Overlay off) not yet tried — needs the owner's Steam
+      client settings, not a repo change. Whoever next has the game up
+      should ask him or try it directly if he's said game-state sentences
+      are fine to act on.
