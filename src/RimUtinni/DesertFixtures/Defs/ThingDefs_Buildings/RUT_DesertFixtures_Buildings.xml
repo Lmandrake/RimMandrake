@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RUT_WindowAdobe — structure_procedural_spec.md section 9 NEW content.
+    Parented on vanilla's own `Wall` (ThingDefs_Buildings/Buildings_Structure.xml)
+    so it inherits the real playable wall shape: isWall, isPlaceOverableWall,
+    holdsRoof, terrainAffordanceNeeded=Heavy, the meditation-focus comp, and the
+    per-stat statBases merge (MaxHitPoints/WorkToBuild/SellPriceFactor/Mass all
+    come from Wall/BuildingBase unchanged — only the stats named below differ).
+    Stuff categories are cut to Stony+Metallic (sandstone/steel) per the
+    owner's ruling against inventing faction-specific stuffs; vanilla Wall
+    itself also allows Woody, which this window deliberately excludes.
+  -->
+  <ThingDef ParentName="Wall">
+    <defName>RUT_WindowAdobe</defName>
+    <label>adobe window</label>
+    <description>A shuttered window built into the wall line, its frame packed with the same sandstone render as the wall around it. Closed against a sandstorm it reads as wall; opened, it lets a homestead see out without giving up a defensible line.</description>
+    <graphicData>
+      <texPath>Things/Building/RUT_WindowAdobe/RUT_WindowAdobe</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <blockLight>false</blockLight>
+    <!-- Inherit="False": RimWorld's XmlInheritance APPENDS <li> children to the
+         parent's list by default (Wall's own Metallic/Woody/Stony would survive
+         alongside these), so a full replace needs the explicit reset. -->
+    <stuffCategories Inherit="False">
+      <li>Stony</li>
+      <li>Metallic</li>
+    </stuffCategories>
+    <statBases>
+      <Beauty>2</Beauty>
+    </statBases>
+  </ThingDef>
+
+</Defs>

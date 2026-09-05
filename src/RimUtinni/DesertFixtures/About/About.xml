@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimMandrake: RUT — Desert Fixtures</name>
+  <packageId>mandrake.rut.desertfixtures</packageId>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>`RUT_WindowAdobe` — a real, player-buildable, stuffable wall-slot
+window (`ParentName="Wall"`, `isWall="true"`), filed against
+`structure_procedural_spec.md` section 9: the only wall-slot window defs in the
+593-mod stack (`MUS_SpaceBase_Window`, `AM_Wall_Atlas_Glass`) are both
+decorative/ruin scatter with no `designationCategory` — neither is
+player-buildable. Every pre-industrial desert dwelling, homestead, trading post
+and pen keeper's house needs a window that reads adobe rather than Empire glass
+or spacer paneling. Stuff categories are vanilla's own (`Stony`, `Metallic`) per
+the owner's ruling that per-faction stuffs are not this pass's call to make.
+Single non-linked texture (`Graphic_Single`) rather than a full linked-wall
+atlas — a deliberate art-scope cut; it does not blend edges with neighboring
+window tiles the way `Wall` blends with itself, which is fine for a
+one-per-wall-run fixture. `blockLight` is set `false` (the spec leaves
+light-passing to the artist) so this is a functionally real window, not a
+window in name only like its two forerunners.
+
+RimUtinni tier (campaign-specific) per `NAMING_SCHEME_PLAN.md`.</description>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+  </loadAfter>
+</ModMetaData>
