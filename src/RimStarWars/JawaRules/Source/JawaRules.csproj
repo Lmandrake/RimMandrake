@@ -7,7 +7,7 @@
     reference assemblies from NuGet instead.
 
     Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\JawaRules\Source\JawaRules.csproj -c Release
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimStarWars\JawaRules\Source\JawaRules.csproj -c Release
 
     Output lands in ../Assemblies/, which is where RimWorld looks.
 
