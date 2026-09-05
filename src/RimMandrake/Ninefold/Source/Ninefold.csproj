@@ -29,7 +29,10 @@
     <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
     <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
     <DebugType>none</DebugType>
-    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <!-- Default SDK glob compiles every *.cs here. A hand-maintained
+         <Compile Include> list silently dropped 10 Patch_*.cs (incl. both
+         Pawn.Kill hooks): the DLL built clean and Harmony attached only the 6
+         listed methods, so the hooks never fired and nothing logged. -->
     <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
   </PropertyGroup>
 
@@ -40,19 +43,6 @@
   <PropertyGroup Condition="'$(HarmonyDll)' == ''">
     <HarmonyDll>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HarmonyDll>
   </PropertyGroup>
-
-  <ItemGroup>
-    <Compile Include="God.cs" />
-    <Compile Include="SatiationBand.cs" />
-    <Compile Include="EventMagnitude.cs" />
-    <Compile Include="GameComponent_Ninefold.cs" />
-    <Compile Include="NinefoldMod.cs" />
-    <Compile Include="Patch_ResearchCompleted.cs" />
-    <Compile Include="Patch_MentalBreakStarted.cs" />
-    <Compile Include="Patch_BirthOutcome.cs" />
-    <Compile Include="Patch_BuildingDeconstructed.cs" />
-    <Compile Include="Patch_BuildingRepaired.cs" />
-  </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
