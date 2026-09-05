@@ -440,14 +440,29 @@
     "sha": "b0db3c45"
   },
   "src/RimMandrake/GravshipAstronautFix/About/About.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "sha": "ef7ff505"
-  },
-  "src/RimMandrake/GravshipAstronautFix/Source/make_genebank_north.py": {
     "cleanCount": 2,
     "date": "2026-09-05",
-    "sha": "ef7ff505"
+    "sha": "0292abdc"
+  },
+  "src/RimMandrake/GravshipAstronautFix/Source/make_genebank_north.py": {
+    "cleanCount": 3,
+    "date": "2026-09-05",
+    "sha": "0292abdc"
+  },
+  "src/RimMandrake/GravshipAstronautFix/Textures/Things/Pawns/Mechanoid/Astronaut/Allegiance_Mech_Astronaut_north.png": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "0292abdc"
+  },
+  "src/RimMandrake/GravshipAstronautFix/Textures/Things/Pawns/Mechanoid/Astronaut/MechAncient_Astronaut_north.png": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "0292abdc"
+  },
+  "src/RimMandrake/GravshipAstronautFix/Textures/Things/Structures/GravshipGenebank/GravshipGenebank_north.png": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "0292abdc"
   },
   "src/RimMandrake/Inhabited/About/About.xml": {
     "cleanCount": 1,
@@ -4173,9 +4188,9 @@
     "sha": "53661e66"
   },
   "src/RimUtinni/Rites/About/About.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "sha": "fe15fae0"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "0292abdc"
   },
   "src/RimUtinni/Rites/Defs/RUT_Rites_Research.xml": {
     "cleanCount": 2,
