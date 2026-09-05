@@ -4895,3 +4895,5 @@
 {"seat":"BENCH","event":"file","id":"MULTIVIEW_FACING_PIPELINE_1","title":"Productionize the multi-view-mesh facing pipeline: InstantMesh (4 sprites -> volumetric mesh) + meshfuse projection; local/free on the 5080; proven 2/3 facings, fix north/south pose-collision (per-view az bias) + UV-texture path for sharpness (needs nvcc)","kind":"task","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-05T19:49:36Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"restart to deploy today's Ninefold/bridgetools fixes, prove Ninefold hooks + UI Shell RimThemes gate","ts":"2026-09-05T20:07:56Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-05T20:37:34Z"}
+{"seat":"FOUNDRY","event":"claim","id":"MULTIVIEW_FACING_PIPELINE_1","ts":"2026-09-05T20:40:50Z"}
+{"seat":"FOUNDRY","event":"start","id":"MULTIVIEW_FACING_PIPELINE_1","ts":"2026-09-05T20:40:50Z"}

@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-05T20:37:34Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-05T20:40:50Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -459,6 +459,15 @@ kind:     task
 summary:  NINEFOLDRUNTIMEPROOFBLOCKED1 — partial check, deploy is stale, left doing
 prose:    infrastructure/state/items/NINEFOLD_RUNTIME_PROOF_BLOCKED_1.md
 
+## MULTIVIEW_FACING_PIPELINE_1 Productionize the multi-view-mesh facing pipeline: InstantMesh (4 sprites -> volumetric mesh) + meshfuse projection; local/free on the 5080; proven 2/3 facings, fix north/south pose-collision (per-view az bias) + UV-texture path for sharpness (needs nvcc)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/MULTIVIEW_FACING_PIPELINE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/MULTIVIEW_FACING_PIPELINE_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -493,14 +502,4 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## MULTIVIEW_FACING_PIPELINE_1 Productionize the multi-view-mesh facing pipeline: InstantMesh (4 sprites -> volumetric mesh) + meshfuse projection; local/free on the 5080; proven 2/3 facings, fix north/south pose-collision (per-view az bias) + UV-texture path for sharpness (needs nvcc)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/MULTIVIEW_FACING_PIPELINE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/MULTIVIEW_FACING_PIPELINE_1.md
+_none._
