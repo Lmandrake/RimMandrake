@@ -2452,22 +2452,7 @@
     "date": "2026-09-04",
     "sha": "1cb620ea"
   },
-  "src/RimStarWars/Armoury/Patches/Armour_DamageCategories.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "sha": "1cb620ea"
-  },
   "src/RimStarWars/Armoury/Patches/Armour_Leather.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "sha": "1cb620ea"
-  },
-  "src/RimStarWars/Armoury/Patches/Armour_Penetration.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "sha": "1cb620ea"
-  },
-  "src/RimStarWars/Armoury/Patches/Armour_Ratings.xml": {
     "cleanCount": 1,
     "date": "2026-09-04",
     "sha": "1cb620ea"
@@ -2476,16 +2461,6 @@
     "cleanCount": 1,
     "date": "2026-09-04",
     "sha": "1cb620ea"
-  },
-  "src/RimStarWars/Armoury/Patches/Armoury_RangedDamage.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "sha": "d27125d2"
-  },
-  "src/RimStarWars/Armoury/Patches/Armoury_TorpedoSpeed.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "sha": "d27125d2"
   },
   "src/RimStarWars/Armoury/Patches/Flamebow_TagWiden.xml": {
     "cleanCount": 1,

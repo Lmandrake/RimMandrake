@@ -1,36 +1,69 @@
-## spec
-Found 2026-09-05 while investigating `ARMOURY_MELEEPOWER_STALE_1`. Confirmed
-by actually running `gen_armoury_patch.py` against the current live 595-mod
-dump (fingerprint `3174253fcd55f69c`) with output redirected away from the
-real `Patches/` dir, then diffing.
+## spec — RESCOPED 2026-09-05, larger than first filed
 
-`SW_MODS` (the generator's list of donor mod names it groups
-weapons/projectiles by) does not include whatever name(s) the absorbed
-`guy762.KotORWeapons` and `[JDS] StarWars - Armory` content now presents as
-in the live dump (those donor mods themselves are retired — their content
-was carried forward into our own `Absorbed_AdditionalMods` subfolder,
-per `WEAPONS_DONOR_RETIREMENT_1`). Because of this, a full regenerate
-**silently drops the vibro-blade tuning blocks for those two donor
-families entirely** from `Armoury_MeleePower.xml` — not a wrong value, an
-entire missing block, with no error or warning.
+**Verified, not guessed:** both `guy762.KotORWeapons` ("Star Wars KotOR
+Weapons and Armor") and `M3.Continued.JangoDsoul.StarWars.BTI` ("[JDS]
+StarWars - Armory") are retired donor mods, absorbed into
+`mandrake.rsw.armoury` — and **neither packageId is in the live 595-mod
+`ModsConfig.xml`'s `<activeMods>`** (checked directly, not inferred from
+the About.xml `modDependencies` list, which only proves "installed", not
+"active" — the mistake an earlier reviewing subagent made this session).
 
-This is why `Armoury_MeleePower.xml` cannot safely be regenerated right now
-(see `ARMOURY_MELEEPOWER_STALE_1`, which is blocked on this): the vibro
-values a naive reviewer computes from `BANDS`/`SOURCE_RANGE` alone
-(e.g. expecting `OuterRim_VibroAxe` edge to move to 38, `guy762_vaxe` edge
-to 42) may themselves be wrong, because those weapons might belong to a
-donor-mod SW_MODS group whose current classification is broken by this gap
-rather than being simple stale-constants drift.
+`PatchOperationFindMod`'s real semantics (`skills/rimworld-modding/
+references/patch-operations.md`): when NONE of `<mods>` is active, it
+returns `true` immediately and **never runs its wrapped `<match>` at
+all** — no error, nothing logged. Six Armoury patch files still guard
+their donor-family rebalance content behind `PatchOperationFindMod` on
+these two now-permanently-inactive mod names:
+
+| file | guard | inner ops (currently dead) |
+|---|---|---|
+| Armour_DamageCategories.xml | [JDS] StarWars - Armory | 2 |
+| Armour_Penetration.xml | Star Wars KotOR Weapons and Armor | 73 |
+| Armour_Penetration.xml | [JDS] StarWars - Armory | 6 |
+| Armour_Ratings.xml | Star Wars KotOR Weapons and Armor | 46 |
+| Armoury_MeleePower.xml | Star Wars KotOR Weapons and Armor | 27 |
+| Armoury_MeleePower.xml | [JDS] StarWars - Armory | 6 |
+| Armoury_RangedDamage.xml | [JDS] StarWars - Armory | 8 |
+| Armoury_TorpedoSpeed.xml | [JDS] StarWars - Armory | 2 |
+
+**170 PatchOperationReplace ops, total, currently silent no-ops in the
+live game right now.** The concrete ThingDefs these targeted (guy762_v*
+melee weapons, and whatever JDS-Armory's weapons/armor are — the whole
+"Jawa Armoury Rebalance"-attributed 1112-def absorbed pool) still exist
+and are still playable — they just get NONE of this mod's ranged-damage/
+melee-power/torpedo-speed/armor-penetration/armor-rating rebalance,
+silently keeping their raw absorbed values. This directly undercuts the
+mod's own stated purpose (README: median ranged damage 12, blaster
+weaker than a fist, etc.) for a whole donor family, in the actual
+591-595-mod campaign the owner plays.
+
+Reopened as DIRTY (see `code_review_status.py reopen` calls, this date):
+Armour_DamageCategories.xml, Armour_Penetration.xml, Armour_Ratings.xml,
+Armoury_RangedDamage.xml, Armoury_TorpedoSpeed.xml — all previously marked
+clean in wave 38 by reviewers who checked validator output and "installed"
+status but never checked ACTIVE status against ModsConfig.xml themselves.
+(Armoury_MeleePower.xml is already DIRTY/blocked via `ARMOURY_MELEEPOWER_STALE_1`.)
+
+## why not fixed on the spot
+This needs a design call, not just a mechanical patch: replace the
+`PatchOperationFindMod(donor-name)` guard with something that tests for
+the *content* now, not the retired mod — most likely
+`PatchOperationConditional` testing whether the target ThingDef/xpath
+exists (`skills/rimworld-modding` reference: "Conditional tells you the
+thing you're about to edit is present, which is the fact you actually
+depend on" — exactly this situation). That's a real semantic change
+across 6 files and ~170 ops; each guard's `nomatch` behavior (if any) also
+needs checking so a genuine "mod truly absent" case (if the owner ever
+does drop this content) still degrades gracefully. Not something to do
+in the same pass as discovering it.
 
 ## criteria
-- Identify the actual live-dump modName(s)/packageId string(s) the absorbed
-  KotORWeapons and JDS-Armory content now presents under (read the dump,
-  don't guess), and add them to `SW_MODS` (or whatever mapping decides
-  donor-mod grouping) so a regen includes their blocks again.
-- Re-run the generator with output redirected to a scratch path (never
-  overwrite the real `Patches/` dir directly — this generator has no
-  dry-run flag; copy `Patches/` aside or redirect `OUTDIR` for testing),
-  diff against the currently shipped files, and confirm the two vibro-blade
-  blocks reappear with sane values before ever writing to the real path.
-- Only then is `ARMOURY_MELEEPOWER_STALE_1`'s regenerate-and-compare step
-  safe to attempt.
+- Each of the 8 guard blocks above tests presence of its actual target
+  content (e.g. `PatchOperationConditional` on the first concrete
+  defName/xpath each block edits) instead of a retired mod name.
+- `validate_patch.py` clean against the full 595-mod list.
+- Spot-check via bridge/dump read (or a load) that at least one previously-
+  dead value now actually lands on a live ThingDef (e.g. `guy762_vaxe`
+  edge power reads something other than its raw absorbed value).
+- Fresh independent review of each touched file finds nothing, then
+  `code_review_status.py mark-clean`.
