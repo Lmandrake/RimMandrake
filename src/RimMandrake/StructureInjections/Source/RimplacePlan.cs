@@ -10,17 +10,20 @@ namespace RimMandrake.StructureInjections
     //
     // One directive per line, TAB-separated, "#" lines ignored:
     //   FOOTPRINT   x  z  w  h
+    //   CLEAR       x  z  w  h  mode(all|soft)
     //   FOUNDATION  x  z  defName
     //   TERRAIN     x  z  defName
     //   THING       defName  x  z  rot  stuff-or-dash
+    //   RUN         x  z  dir(N|E|S|W)  defName  stuff-or-dash
     //   ROOF        x  z  defName
     //   PAINT       x  z  colorDefName
     //   FLOORCOLOR  x  z  colorDefName
+    //   PAWN        kindDef  x  z  faction  state(alive|dead|dessicated|skeleton)
     //
-    // Sections are already ordered by the compiler (foundation, terrain,
-    // things, roof, paint, floor color) to match the order the live bridge
-    // path (rimplace.plan.compile_calls) proved necessary — this reader
-    // preserves that order and does not re-sort.
+    // Sections are already ordered by the compiler (CLEAR first - E1 - then
+    // foundation, terrain, things, RUN, roof, paint, floor color, PAWN last)
+    // to match the order the live bridge path (rimplace.plan.compile_calls)
+    // proved necessary — this reader preserves that order and does not re-sort.
     public sealed class PlanThing
     {
         public string DefName;
@@ -37,6 +40,31 @@ namespace RimMandrake.StructureInjections
         public string DefName;
     }
 
+    // RIMPLACE_ENGINE_DELTAS_1 E1.
+    public sealed class PlanClear
+    {
+        public int X, Z, W, H;
+        public string Mode;   // "all" | "soft"
+    }
+
+    // E2.
+    public sealed class PlanRun
+    {
+        public int X, Z;
+        public string Dir;    // "N" | "E" | "S" | "W"
+        public string DefName;
+        public string Stuff;  // null if the plan wrote "-"
+    }
+
+    // E3.
+    public sealed class PlanPawn
+    {
+        public string KindDef;
+        public int X, Z;
+        public string Faction;  // "wild" | a FactionDef defName | "player" (refused upstream, never authored)
+        public string State;    // "alive" | "dead" | "dessicated" | "skeleton"
+    }
+
     public sealed class RimplacePlan
     {
         public int FootprintX, FootprintZ, FootprintW, FootprintH;
@@ -48,6 +76,18 @@ namespace RimMandrake.StructureInjections
         public readonly List<PlanCell> Roof = new List<PlanCell>();
         public readonly List<PlanCell> Paint = new List<PlanCell>();
         public readonly List<PlanCell> FloorColor = new List<PlanCell>();
+        public readonly List<PlanClear> Clears = new List<PlanClear>();
+        public readonly List<PlanRun> Runs = new List<PlanRun>();
+        public readonly List<PlanPawn> Pawns = new List<PlanPawn>();
+
+        // E6: "make the GenStep Log.Warning once per unknown directive it
+        // skips (currently a silent no-op)". The parser has no Log access of
+        // its own reason to reach for (kept dependency-free of Verse on
+        // purpose - it is plain StreamReader/string.Split), so it records
+        // what it could not read and the CALLER (which already imports
+        // Verse) does the warning - one entry per distinct unknown verb,
+        // with a count, not one line per line.
+        public readonly Dictionary<string, int> UnknownDirectives = new Dictionary<string, int>();
 
         public static RimplacePlan Parse(string path)
         {
@@ -66,6 +106,16 @@ namespace RimMandrake.StructureInjections
                         plan.FootprintH = int.Parse(f[4]);
                         plan.HasFootprint = true;
                         break;
+                    case "CLEAR":
+                        plan.Clears.Add(new PlanClear
+                        {
+                            X = int.Parse(f[1]),
+                            Z = int.Parse(f[2]),
+                            W = int.Parse(f[3]),
+                            H = int.Parse(f[4]),
+                            Mode = f[5],
+                        });
+                        break;
                     case "FOUNDATION":
                         plan.Foundation.Add(new PlanCell { X = int.Parse(f[1]), Z = int.Parse(f[2]), DefName = f[3] });
                         break;
@@ -82,6 +132,16 @@ namespace RimMandrake.StructureInjections
                             Stuff = f[5] == "-" ? null : f[5],
                         });
                         break;
+                    case "RUN":
+                        plan.Runs.Add(new PlanRun
+                        {
+                            X = int.Parse(f[1]),
+                            Z = int.Parse(f[2]),
+                            Dir = f[3],
+                            DefName = f[4],
+                            Stuff = f[5] == "-" ? null : f[5],
+                        });
+                        break;
                     case "ROOF":
                         plan.Roof.Add(new PlanCell { X = int.Parse(f[1]), Z = int.Parse(f[2]), DefName = f[3] });
                         break;
@@ -91,9 +151,24 @@ namespace RimMandrake.StructureInjections
                     case "FLOORCOLOR":
                         plan.FloorColor.Add(new PlanCell { X = int.Parse(f[1]), Z = int.Parse(f[2]), DefName = f[3] });
                         break;
-                    // an unknown directive is a forward-compat no-op, not a
-                    // parse failure — the compiler's own header is versioned
-                    // ("# rimplace flat plan v1") for exactly this reason.
+                    case "PAWN":
+                        plan.Pawns.Add(new PlanPawn
+                        {
+                            KindDef = f[1],
+                            X = int.Parse(f[2]),
+                            Z = int.Parse(f[3]),
+                            Faction = f[4],
+                            State = f[5],
+                        });
+                        break;
+                    default:
+                        // An unknown directive is recorded, not silently
+                        // dropped - RIMPLACE_ENGINE_DELTAS_1 E6: an old DLL
+                        // replaying a v2 plan must fail LOUD (the caller logs
+                        // this), never skip a CLEAR/RUN/PAWN with no trace.
+                        plan.UnknownDirectives.TryGetValue(f[0], out var n);
+                        plan.UnknownDirectives[f[0]] = n + 1;
+                        break;
                 }
             }
             return plan;
