@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-05T15:07:34Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-05T15:08:21Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: OWNER
 
 # NEXT — `priority.rank()` order, top item first
@@ -493,13 +493,3 @@ kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/FOUNDRY_QUEUE_NOT_OFFERING_READY_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/FOUNDRY_QUEUE_NOT_OFFERING_READY_1.md
-
-## RIMFLOW_RECLAIM_COMMAND_1 Add 'rimflow reclaim': let a seat self-return its own idle doing item to ready (no BENCH bottleneck) + a staleness auto-sweep
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/RIMFLOW_RECLAIM_COMMAND_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/RIMFLOW_RECLAIM_COMMAND_1.md
