@@ -168,33 +168,33 @@ def working_tree_changes():
 def review_verdicts(paths):
     """{path: 'clean' | 'dirty' | 'unknown'} via the code_review_status module.
 
-    'unknown' is a real outcome: a recorded sha that no longer resolves, or a
-    git failure. The module's own check() folds both into DIRTY for its CLI
-    purpose; here they must stay distinguishable from a measured dirty.
+    'unknown' is a real outcome: a legacy entry `migrate-hashes` couldn't
+    resolve a hash for. The module's own check() folds both into DIRTY for
+    its CLI purpose; here they must stay distinguishable from a measured dirty.
 
-    🔴 ONE git CALL, NOT ONE PER GREEN CANDIDATE. This used to call
-    `CRS.commits_since()` per path — 526 separate `git log` spawns measured
-    2026-09-04, the dominant real cost of a rebuild on this WSL-mounted drive.
-    `CRS.commits_since_bulk()` answers all of them from a single history walk.
+    🔴 ZERO git CALLS, not one per path, not even one bulk walk. This used to
+    call `CRS.commits_since()` per path — 526 separate `git log` spawns
+    measured 2026-09-04 — then `CRS.commits_since_bulk()` (one history walk
+    for all of them). The 2026-09-05 rewrite (owner: "this isn't scaling
+    properly, it's a bottleneck") replaced git-history comparison with a
+    SHA-256 content-hash comparison — `CRS.clean_state()` is now pure Python,
+    so calling it once per path here costs nothing a bulk git walk would have
+    saved. See code_review_status.py's own module docstring for the full story.
     """
     log = CRS.load()
-    # .get, not ["sha"]: an entry carrying no sha cannot be measured, which is
-    # the same answer as one whose sha no longer resolves — UNMEASURED.
-    # Subscripting instead kills the whole board on one malformed entry.
-    needed = {p: log[p].get("sha") for p in paths if p in log}
-    since_by_path = CRS.commits_since_bulk(needed)
     verdicts = {}
     for p in paths:
-        if p not in log:
+        entry = log.get(p)
+        if entry is None:
             verdicts[p] = "dirty"          # measured: no entry has ever been recorded
             continue
-        since = since_by_path.get(p)
-        if since is None:
-            verdicts[p] = "unknown"        # recorded sha does not resolve; log is stale
-        elif since:
-            verdicts[p] = "dirty"
-        else:
+        state, detail = CRS.clean_state(p, entry)
+        if state == "CLEAN":
             verdicts[p] = "clean"
+        elif entry.get("hash"):
+            verdicts[p] = "dirty"          # measured: content differs from the recorded hash
+        else:
+            verdicts[p] = "unknown"        # legacy entry, no hash ever resolved for it
     return verdicts, log
 
 

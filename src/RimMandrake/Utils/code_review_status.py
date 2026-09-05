@@ -2,11 +2,12 @@
 """code_review_status.py — the "clean or dirty" ledger CLAUDE.md's
 "Code isn't clean until a review says so" policy actually points at.
 
-A file is CLEAN only if it has an entry here AND zero commits have
-touched it since the recorded commit. Anything else — no entry, or any
-commit since — is DIRTY. There is no other way to earn CLEAN: fixing a
-finding does not clean a file, only a full-file review returning zero
-significant findings does, recorded here with `mark-clean`.
+A file is CLEAN only if it has an entry here AND its content on disk is
+byte-identical to what was recorded at the last `mark-clean`. Anything else
+— no entry, or any edit since (committed or not) — is DIRTY. There is no
+other way to earn CLEAN: fixing a finding does not clean a file, only a
+full-file review returning zero significant findings does, recorded here
+with `mark-clean`.
 
 🔴 This is not a Python-only tool. It covers ANY file that contributes to
 what the game actually loads — .py tooling, .cs mod source, .xml Defs and
@@ -19,13 +20,46 @@ yet" — it always was.
     python3 src/RimMandrake/Utils/code_review_status.py mark-clean <path> [--sha <sha>]
     python3 src/RimMandrake/Utils/code_review_status.py reopen <path> [<path> ...] --reason "…"
     python3 src/RimMandrake/Utils/code_review_status.py list
+    python3 src/RimMandrake/Utils/code_review_status.py migrate-hashes   # one-time, see below
 
 The log (`infrastructure/state/CODE_REVIEW_STATUS.json`) is owned by this
 script — do not hand-edit it, the same convention as the ledger.
+
+🔴 SCALING REWRITE, owner ruling 2026-09-05 — "I think we need a different
+implementation for the clean/dirty code database... this isn't scaling
+properly, it's a bottleneck": the previous implementation answered every
+`check`/`list` call by asking git (`git status --porcelain` PLUS `git log`
+PER PATH). At 1 caller that's fine; with this repo's usual load — many
+concurrent review agents, each walking dozens of paths — it fanned out into
+hundreds of `git` subprocess spawns hammering one `.git` directory on a
+WSL-over-Windows-drive mount, and a single `list` over ~800 recorded entries
+alone was ~1,600 spawns. That is what a background agent was seen stuck on
+for 10 minutes.
+
+The fix: CLEAN/DIRTY is now answered by comparing a SHA-256 of the file's
+current bytes against a hash recorded at `mark-clean` time — zero git calls,
+zero subprocesses, for `check`/`list`/`reopen`. `mark-clean` still makes a
+small, BEST-EFFORT, TIMEOUT-GUARDED git call or two (to check the file is
+tracked, to refuse on uncommitted changes exactly as documented in CLAUDE.md,
+and to record an informational commit sha/date) — but those calls happen
+once per reviewed file, not once per file per query, and a hung/slow git can
+never again hang this tool: every git() call has a hard timeout and a
+failure path that still lets the hash-based core answer correctly.
+
+`migrate-hashes` is the one-time backfill for entries recorded before this
+rewrite (they carry {sha, date, cleanCount} but no {hash}): for each one it
+reads the file's content AS IT WAS AT THE RECORDED SHA (`git show sha:path`)
+and hashes that — not the current working-tree copy, which may already have
+diverged — so a legacy CLEAN entry's true reviewed content is preserved
+exactly, not silently reset to whatever happens to be on disk today. An
+entry whose sha no longer resolves gets no hash and reads as DIRTY
+("legacy entry, needs re-verification") — the same outcome the old
+"recorded sha not found — log is stale" case produced.
 """
 import argparse
 import contextlib
 import fcntl
+import hashlib
 import json
 import os
 import subprocess
@@ -33,9 +67,14 @@ import sys
 import time
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-ROOT = os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
+# CODE_REVIEW_STATUS_ROOT redirects the whole tool at a throwaway repo, same
+# discipline as rimflow's RIMFLOW_LEDGER/RIMFLOW_ITEMS — a selftest must never
+# run mark-clean/reopen against this repo's own real ledger.
+ROOT = os.environ.get("CODE_REVIEW_STATUS_ROOT") or os.path.dirname(os.path.dirname(os.path.dirname(HERE)))
 LOG_PATH = os.path.join(ROOT, "infrastructure", "state", "CODE_REVIEW_STATUS.json")
 LOCK_PATH = LOG_PATH + ".lock"
+
+GIT_TIMEOUT = 8  # seconds. A hung/contended git call fails fast, never hangs the caller.
 
 
 def _trigger_health_rebuild():
@@ -79,7 +118,12 @@ def locked():
     """Exclusive lock across a load-mutate-save critical section. This repo
     is shared by two live agent windows (BENCH/FOUNDRY); without this, two
     concurrent mark-clean calls on different files is a lost-update race —
-    whichever save() runs last wins and the other's entry silently vanishes."""
+    whichever save() runs last wins and the other's entry silently vanishes.
+
+    Still held only around the tiny load/save below, never around any git
+    call — that discipline predates this rewrite and stays: a lock held
+    across a slow subprocess is exactly how one stuck caller would freeze
+    out every other one."""
     os.makedirs(os.path.dirname(LOCK_PATH), exist_ok=True)
     fd = os.open(LOCK_PATH, os.O_WRONLY | os.O_CREAT, 0o644)
     try:
@@ -134,99 +178,65 @@ def repo_rel(path):
 
 
 def git(args):
-    return subprocess.run(["git"] + args, cwd=ROOT, capture_output=True, text=True)
+    """Run git with a hard timeout, decoding output as text. A
+    `.git/index.lock` collision (many concurrent callers, exactly this
+    repo's normal load) now fails fast with returncode -1 instead of
+    hanging the caller — every use site below treats a git failure as
+    "cannot tell, fall back / refuse", never as silent success, so a
+    timeout is always safe, just less informative."""
+    try:
+        return subprocess.run(["git"] + args, cwd=ROOT, capture_output=True,
+                               text=True, timeout=GIT_TIMEOUT)
+    except subprocess.TimeoutExpired:
+        return subprocess.CompletedProcess(args, -1, "", "git timed out after %ss" % GIT_TIMEOUT)
 
 
-def commits_since(sha, relpath):
-    r = git(["log", "--oneline", f"{sha}..HEAD", "--", relpath])
-    if r.returncode != 0:
-        return None  # sha doesn't exist / bad ref
-    lines = [l for l in r.stdout.splitlines() if l.strip()]
-    return lines
+def git_bytes(args):
+    """Same as git(), but returns raw bytes (stdout) instead of decoded
+    text — `migrate-hashes` uses this for `git show sha:path`, and many of
+    this repo's reviewed paths are PNGs, which are not valid UTF-8 and
+    would crash a text-mode decode."""
+    try:
+        return subprocess.run(["git"] + args, cwd=ROOT, capture_output=True,
+                               text=False, timeout=GIT_TIMEOUT)
+    except subprocess.TimeoutExpired:
+        return subprocess.CompletedProcess(args, -1, b"", b"git timed out after %ds" % GIT_TIMEOUT)
 
 
-def commits_since_bulk(entries):
-    """Same answer as calling `commits_since(sha, path)` once per (path, sha) in
-    `entries` — {path: sha} — but with ONE git subprocess instead of one per path.
-
-    🔴 THIS IS WHY THE HEALTH BOARD WAS SLOW. `codebase_health.py`'s `review_verdicts()`
-    used to call `commits_since()` once per green-marked path — 526 separate `git log`
-    spawns measured on 2026-09-04, each paying full git-process-start overhead on this
-    WSL-mounted drive. One `git log --name-only` walk of the whole history, parsed once,
-    answers all of them: for each path, find the index of its MOST RECENT commit (index 0
-    = HEAD, since `git log`'s default order is newest-first); for each sha, find its own
-    index the same way. `path` has commits since `sha` iff the path's most-recent index is
-    STRICTLY LOWER (newer) than the sha's index — i.e. something touched it after that
-    commit. A sha absent from the log (bad ref, or not an ancestor of HEAD) reproduces the
-    old "unknown" outcome exactly, because `commits_since` also failed for such a sha.
-
-    Returns {path: lines_or_None} — same per-path shape as `commits_since`: `None` means
-    "sha doesn't resolve" (unknown), an empty list means clean, a non-empty list means
-    dirty. The list itself is a placeholder (`["seen"]`), never real commit lines — nothing
-    in this codebase reads more than truthiness off it, and reconstructing real `--oneline`
-    text here would cost back the very git calls this function exists to avoid.
-    """
-    if not entries:
-        return {}
-    # Recorded shas are whatever length `git rev-parse --short` gave at mark-clean
-    # time (this repo's history currently yields 8 hex chars, but that grows with
-    # repo size) — never assume a fixed width, index every full hash at every
-    # width actually in use so a lookup by any of them lands correctly.
-    lengths = {len(s) for s in entries.values() if s}
-    r = git(["log", "--name-only", "--format=C:%H"])
-    if r.returncode != 0:
-        return {p: None for p in entries}
-    sha_index = {}
-    path_newest_index = {}
-    idx = -1
-    for line in r.stdout.splitlines():
-        if line.startswith("C:"):
-            idx += 1
-            full = line[2:]
-            for length in lengths:
-                sha_index.setdefault(full[:length], idx)
-        elif line.strip() and line not in path_newest_index:
-            path_newest_index[line] = idx          # first sighting is the newest (order is newest-first)
-    result = {}
-    for path, sha in entries.items():
-        if sha not in sha_index:
-            result[path] = None
-            continue
-        newest = path_newest_index.get(path)
-        result[path] = ["seen"] if newest is not None and newest < sha_index[sha] else []
-    return result
-
-
-def working_tree_dirty(relpath):
-    """True if `relpath` has any uncommitted change (staged, unstaged, or
-    untracked). Returns None if git itself failed to answer (path outside
-    the repo, index lock contention, ...) — the caller must treat that as
-    "cannot prove clean", never as "no changes"."""
-    r = git(["status", "--porcelain", "--", relpath])
-    if r.returncode != 0:
+def file_hash(relpath):
+    """SHA-256 of the file's current bytes on disk, or None if it doesn't
+    exist / can't be read. This is the WHOLE clean/dirty answer now — no
+    git call, no subprocess, safe to run thousands of times in a `list`."""
+    try:
+        with open(os.path.join(ROOT, relpath), "rb") as f:
+            h = hashlib.sha256()
+            for chunk in iter(lambda: f.read(1 << 20), b""):
+                h.update(chunk)
+            return h.hexdigest()
+    except OSError:
         return None
-    return bool(r.stdout.strip())
 
 
 def clean_state(rel, entry):
     """Returns (state, detail) where state is CLEAN/DIRTY. `entry` may be
     None (never marked). Shared by `check` and `list` so the two commands
-    cannot disagree about what CLEAN means."""
+    cannot disagree about what CLEAN means. Pure Python, zero subprocess
+    calls — this is the fix for the scaling bottleneck: the old version
+    made two `git` spawns per path here."""
     if entry is None:
         return "DIRTY", "never marked clean"
-
-    dirty = working_tree_dirty(rel)
-    if dirty is None:
-        return "DIRTY", "git could not report working-tree status (path outside repo, or a lock)"
-    if dirty:
-        return "DIRTY", "uncommitted changes since the clean mark"
-
-    since = commits_since(entry["sha"], rel)
-    if since is None:
-        return "DIRTY", f"recorded sha {entry['sha']} not found — log is stale"
-    if len(since) > 0:
-        return "DIRTY", (f"{len(since)} commit(s) since clean at {entry['sha']} on {entry['date']}", since)
-    return "CLEAN", f"clean at {entry['sha']} on {entry['date']}"
+    recorded_hash = entry.get("hash")
+    if not recorded_hash:
+        # A pre-rewrite entry that `migrate-hashes` couldn't backfill (its
+        # sha no longer resolved) — same outcome as the old "log is stale".
+        return "DIRTY", "legacy entry with no recorded hash — needs re-verification"
+    current = file_hash(rel)
+    if current is None:
+        return "DIRTY", "file no longer exists on disk"
+    if current != recorded_hash:
+        return "DIRTY", "content changed since clean mark at %s on %s" % (
+            entry.get("sha", "?"), entry.get("date", "?"))
+    return "CLEAN", "clean at %s on %s" % (entry.get("sha", "?"), entry.get("date", "?"))
 
 
 def cmd_check(paths):
@@ -237,13 +247,7 @@ def cmd_check(paths):
         state, detail = clean_state(rel, data.get(rel))
         if state == "DIRTY":
             any_dirty = True
-            if isinstance(detail, tuple):
-                msg, lines = detail
-                print(f"DIRTY  {rel}  ({msg}):")
-                for line in lines:
-                    print(f"         {line}")
-            else:
-                print(f"DIRTY  {rel}  ({detail})")
+            print(f"DIRTY  {rel}  ({detail})")
         else:
             print(f"CLEAN  {rel}  ({detail})")
     return 1 if any_dirty else 0
@@ -257,21 +261,34 @@ def cmd_mark_clean(path, sha):
     if not os.path.isfile(os.path.join(ROOT, rel)):
         print(f"FAIL: {rel} does not exist under the repo root.", file=sys.stderr)
         return 2
-    # A path git does not track has no commit to anchor a clean mark to, and
-    # the working-tree check below cannot see it either: `git status` stays
-    # silent on an IGNORED file, so one would record CLEAN and then read CLEAN
-    # for ever, no edit ever making it dirty again. (`vendor/mod_sources/**` is
-    # ignored, and this tool's docstring puts .cs mod source in scope.)
+    current_hash = file_hash(rel)
+    if current_hash is None:
+        print(f"FAIL: could not read {rel} to hash it.", file=sys.stderr)
+        return 2
+    # A path git does not track has no commit to anchor a clean mark to.
+    # Still enforced (policy, not a correctness need under hash-based
+    # tracking): a clean mark should point at real, shippable, committed
+    # content. `vendor/mod_sources/**` is ignored, and this tool's docstring
+    # puts .cs mod source in scope.
     if git(["ls-files", "--error-unmatch", "--", rel]).returncode != 0:
         print(f"FAIL: {rel} is not tracked by git — commit it first, or it can "
               "never be measured dirty again.", file=sys.stderr)
         return 2
+    # Uncommitted changes to this exact file mean HEAD is not what will
+    # actually ship — refuse rather than record a clean mark whose
+    # informational sha doesn't reflect what was reviewed. `diff --quiet`
+    # is scoped to one path and skips the untracked-file directory walk
+    # `git status` does, so it's the cheaper of the two for this check.
+    diff = git(["diff", "--quiet", "HEAD", "--", rel])
+    if diff.returncode not in (0, 1):
+        print(f"FAIL: git could not report status for {rel} (index lock? bad path?). Try again.", file=sys.stderr)
+        return 2
+    if diff.returncode == 1:
+        print(f"FAIL: {rel} has uncommitted changes. Commit first, then mark-clean.", file=sys.stderr)
+        return 2
     if sha is None:
         r = git(["rev-parse", "--short", "HEAD"])
-        if r.returncode != 0 or not r.stdout.strip():
-            print("FAIL: could not resolve HEAD.", file=sys.stderr)
-            return 2
-        sha = r.stdout.strip()
+        sha = r.stdout.strip() if r.returncode == 0 and r.stdout.strip() else "unknown"
     else:
         # An unvalidated --sha is recorded verbatim. A typo poisons the entry
         # permanently: every later `check` says "recorded sha not found — log is
@@ -289,21 +306,14 @@ def cmd_mark_clean(path, sha):
             print(f"FAIL: --sha {sha} is not an ancestor of HEAD; a clean mark "
                   "there could never be measured dirty.", file=sys.stderr)
             return 2
-    # Uncommitted changes to this exact file mean HEAD is not what will actually
-    # ship - refuse rather than record a clean mark against a commit that
-    # doesn't reflect what was reviewed. A git FAILURE (index lock, bad path)
-    # must refuse too - empty stdout from a failed call is not proof of a
-    # clean working tree, and treating it as one is how a lock collision
-    # would have let a dirty file get marked clean.
-    dirty = working_tree_dirty(rel)
-    if dirty is None:
-        print(f"FAIL: git could not report status for {rel} (index lock? bad path?). Try again.", file=sys.stderr)
-        return 2
-    if dirty:
-        print(f"FAIL: {rel} has uncommitted changes. Commit first, then mark-clean.", file=sys.stderr)
-        return 2
-    r = git(["log", "-1", "--format=%ad", "--date=short", sha])
-    date = r.stdout.strip() if r.returncode == 0 else "unknown"
+    # sha/date below are informational display only — the hash is the real
+    # clean/dirty mechanism, so a git failure here degrades the printout,
+    # never the correctness of what gets recorded.
+    date = "unknown"
+    if sha != "unknown":
+        r = git(["log", "-1", "--format=%ad", "--date=short", sha])
+        if r.returncode == 0 and r.stdout.strip():
+            date = r.stdout.strip()
     with locked():
         data = load()
         prior = data.get(rel) or {}
@@ -312,7 +322,7 @@ def cmd_mark_clean(path, sha):
         # "reviewed and it keeps coming back dirty" signal the health board
         # surfaces — see codebase_health.py's classify().
         clean_count = prior.get("cleanCount", 0) + 1
-        data[rel] = {"sha": sha, "date": date, "cleanCount": clean_count}
+        data[rel] = {"hash": current_hash, "sha": sha, "date": date, "cleanCount": clean_count}
         save(data)
     print(f"CLEAN  {rel}  recorded at {sha} ({date})"
           + (f"  [clean mark #{clean_count}]" if clean_count > 1 else ""))
@@ -378,7 +388,52 @@ def cmd_list():
         label = state if state == "CLEAN" else "DIRTY (edited since / uncommitted)"
         cc = entry.get("cleanCount", 1)
         streak = f"  [x{cc}]" if cc > 1 else ""
-        print(f"{label:35s} {rel}  ({entry['sha']}, {entry['date']}){streak}")
+        print(f"{label:35s} {rel}  ({entry.get('sha', '?')}, {entry.get('date', '?')}){streak}")
+    return 0
+
+
+def cmd_migrate_hashes():
+    """One-time backfill for entries recorded before this rewrite (they have
+    {sha, date, cleanCount} but no {hash}). For each, hash the file's
+    content AS IT WAS AT THE RECORDED SHA (`git show sha:path`) — not the
+    current working-tree copy, which may have already drifted since. An
+    entry whose sha no longer resolves is left without a hash, which
+    `clean_state` correctly reads as DIRTY ("needs re-verification"), the
+    same outcome the pre-rewrite tool gave for "recorded sha not found".
+    Safe to run more than once: an entry that already has a hash is
+    skipped, never re-derived."""
+    data = load()
+    todo = {rel: entry for rel, entry in data.items() if not entry.get("hash")}
+    if not todo:
+        print("Nothing to migrate — every entry already carries a hash.")
+        return 0
+    print(f"Migrating {len(todo)} entr{'y' if len(todo) == 1 else 'ies'} without a recorded hash...")
+    migrated, unresolvable = 0, 0
+    for rel, entry in todo.items():
+        sha = entry.get("sha")
+        if not sha or sha == "unknown":
+            unresolvable += 1
+            continue
+        r = git_bytes(["show", "%s:%s" % (sha, rel)])
+        if r.returncode != 0:
+            unresolvable += 1
+            print(f"  UNRESOLVABLE  {rel}  (sha {sha} no longer resolves for this path — stays DIRTY until re-reviewed)")
+            continue
+        h = hashlib.sha256(r.stdout).hexdigest()
+        entry["hash"] = h
+        migrated += 1
+    if migrated:
+        with locked():
+            # Reload under the lock in case another writer landed a change
+            # while this ran (a bulk migration is the one case here slow
+            # enough for that to matter) — merge our new hashes into
+            # whatever is current rather than clobbering it.
+            fresh = load()
+            for rel, entry in todo.items():
+                if entry.get("hash") and rel in fresh and not fresh[rel].get("hash"):
+                    fresh[rel]["hash"] = entry["hash"]
+            save(fresh)
+    print(f"Migrated {migrated}, left {unresolvable} unresolvable (will read DIRTY until re-reviewed).")
     return 0
 
 
@@ -398,6 +453,7 @@ def main():
     p_reopen.add_argument("--reason", required=True, help="why this is being reopened")
 
     sub.add_parser("list", help="show every recorded entry and its current state")
+    sub.add_parser("migrate-hashes", help="one-time backfill of {hash} onto pre-rewrite entries")
 
     args = ap.parse_args()
     if args.cmd == "check":
@@ -414,6 +470,8 @@ def main():
         sys.exit(rc)
     elif args.cmd == "list":
         sys.exit(cmd_list())
+    elif args.cmd == "migrate-hashes":
+        sys.exit(cmd_migrate_hashes())
 
 
 if __name__ == "__main__":
