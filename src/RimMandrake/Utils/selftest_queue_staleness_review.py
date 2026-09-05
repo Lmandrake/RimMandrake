@@ -146,6 +146,24 @@ def t_needs_bridge_not_flagged_when_bridge_never_freed_since():
     assert row["mistags"] == [], row
 
 
+def t_dropped_item_that_was_once_blocked_is_excluded():
+    # Regression, found live 2026-09-05: item.blocked is a persistent flag a
+    # later drop does not clear. Three real ledger items (REFMATCH_THRESHOLDS_
+    # CALIBRATE_1, B55, FINAL_WORLD_PREP_1) were dropped MONTHS ago but still
+    # read item.blocked==True, and an earlier version of collect() flagged all
+    # three as needing attention today. item.open (state in proposed/ready/doing)
+    # is what actually distinguishes "still blocked" from "was blocked, then closed".
+    file_and_start("I_ITEM_1", "2026-08-01T00:00:00Z", "2026-08-01T00:00:01Z")
+    emit("2026-08-01T00:00:02Z", seat="FOUNDRY", event="block", id="I_ITEM_1",
+        reason="stuck")
+    emit("2026-08-02T00:00:00Z", seat="FOUNDRY", event="drop", id="I_ITEM_1",
+        reason="premise no longer applies")
+    world, events = world_and_events()
+    rows = qsr.collect(world, events, qsr.DEFAULT_BLOCKED_DAYS, qsr.DEFAULT_DOING_DAYS,
+                       qsr.DEFAULT_MISTAG_MIN, now=NOW)
+    assert not any(r["id"] == "I_ITEM_1" for r in rows), rows
+
+
 def t_proposed_and_ready_items_are_excluded():
     emit("2026-08-01T00:00:00Z", seat="BENCH", event="file", id="G_ITEM_1", title="t",
         kind="task", **{"for": "FOUNDRY"})

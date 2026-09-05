@@ -128,7 +128,15 @@ def collect(world, events, blocked_days, doing_days, mistag_min, now=None):
     now = now or datetime.now(timezone.utc)
     rows = []
     for item in world.items.values():
-        if not (item.state == "doing" or item.blocked):
+        # Found live, 2026-09-05: `item.blocked` is a persistent flag a later
+        # `drop`/`close` does NOT clear (by design - it is provenance, not state -
+        # see Item.__repr__ appending " BLOCKED" regardless of state). Checking
+        # it alone flagged three ALREADY-DROPPED items (REFMATCH_THRESHOLDS_
+        # CALIBRATE_1, B55, FINAL_WORLD_PREP_1) as if they still needed a human,
+        # months after they were correctly closed. render.py's own view_sections()
+        # convention (this module's docstring already quotes it) is
+        # `item.blocked and item.open` - `item.open` is what was missing here.
+        if not (item.state == "doing" or (item.blocked and item.open)):
             continue
         bucket = "blocked" if item.blocked else "doing"
         threshold = blocked_days if bucket == "blocked" else doing_days
