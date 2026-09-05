@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-05T15:30:03Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-05T15:36:32Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: OWNER
 
 # NEXT — `priority.rank()` order, top item first
@@ -472,3 +472,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/QUEUE_DAILY_STALENESS_REVIEW_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/QUEUE_DAILY_STALENESS_REVIEW_1.md
+
+## VEHICLE_REFS_UNGUARDED_BREAK_DEBUGMENU_1 Our mods hard-reference Vehicles.VehiclePawn unguarded - breaks the whole debug menu when Vehicle Framework is absent (e.g. minimal list)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/VEHICLE_REFS_UNGUARDED_BREAK_DEBUGMENU_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/VEHICLE_REFS_UNGUARDED_BREAK_DEBUGMENU_1.md
