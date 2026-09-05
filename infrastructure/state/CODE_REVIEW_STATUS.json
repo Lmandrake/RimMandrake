@@ -3937,15 +3937,45 @@
     "date": "2026-09-04",
     "sha": "fe15fae0"
   },
-  "src/RimUtinni/LongHunger/Source/IncidentWorker_LongHungerSurfaces.cs": {
+  "src/RimUtinni/LongHunger/About/About.xml": {
     "cleanCount": 1,
-    "date": "2026-09-04",
-    "sha": "43f96b1b"
+    "date": "2026-09-05",
+    "sha": "3e9a9f20"
+  },
+  "src/RimUtinni/LongHunger/Defs/IncidentDefs/IncidentDefs_LongHunger.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "3e9a9f20"
+  },
+  "src/RimUtinni/LongHunger/Defs/QuestScriptDefs/Quest_LongHunger.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "3e9a9f20"
+  },
+  "src/RimUtinni/LongHunger/Defs/ThingDefs/ThingDefs_LongHunger.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "3e9a9f20"
+  },
+  "src/RimUtinni/LongHunger/Defs/WeatherDefs/WeatherDefs_LongHunger.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "3e9a9f20"
+  },
+  "src/RimUtinni/LongHunger/Source/IncidentWorker_LongHungerSurfaces.cs": {
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "3e9a9f20"
+  },
+  "src/RimUtinni/LongHunger/Source/LongHunger.csproj": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "3e9a9f20"
   },
   "src/RimUtinni/LongHunger/Source/LongHungerThing.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "sha": "43f96b1b"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "3e9a9f20"
   },
   "src/RimUtinni/PawnFlavor/Patches/PawnFlavorPhase2_MentalBreak.xml": {
     "cleanCount": 1,
