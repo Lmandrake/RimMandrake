@@ -1,0 +1,17 @@
+<!--
+  VF_UNGUARDED_EAGER_FIX_1 (2026-09-05): gates VehicleFuel/Assemblies/ (the
+  Vehicle Framework-dependent DesertVehicleReskin.dll) behind Vehicle
+  Framework's own packageId, SmashPhil.VehicleFramework, confirmed from
+  JawaIonWeapons/About/About.xml's loadAfter entry and Vehicle Framework's own
+  workshop copy. "/" is listed unconditionally in every version - required,
+  since IfModActive gating is additive: an unlisted base folder means Defs/,
+  Patches/, Textures/ and the mod's own root Assemblies/ vanish for everyone.
+  Pattern copied from a real shipped mod's own loadFolders.xml
+  (workshop content 294100/1541721856).
+-->
+<loadFolders>
+  <v1.6>
+    <li>/</li>
+    <li IfModActive="SmashPhil.VehicleFramework">VehicleFuel</li>
+  </v1.6>
+</loadFolders>

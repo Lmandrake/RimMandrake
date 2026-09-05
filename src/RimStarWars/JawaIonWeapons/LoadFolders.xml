@@ -1,0 +1,17 @@
+<!--
+  VF_UNGUARDED_EAGER_FIX_1 (2026-09-05): gates VehicleTier/Assemblies/ (the
+  Vehicle Framework-dependent JawaIonVehicleTier.dll) behind Vehicle
+  Framework's own packageId, SmashPhil.VehicleFramework, already named in this
+  mod's own About/About.xml loadAfter entry. "/" is listed unconditionally in
+  every version - required, since IfModActive gating is additive: an unlisted
+  base folder means Defs/, Textures/ and the mod's own root Assemblies/
+  (JawaIonWeapons.dll, which has no VF type anywhere) vanish for everyone.
+  Pattern copied from a real shipped mod's own loadFolders.xml
+  (workshop content 294100/1541721856).
+-->
+<loadFolders>
+  <v1.6>
+    <li>/</li>
+    <li IfModActive="SmashPhil.VehicleFramework">VehicleTier</li>
+  </v1.6>
+</loadFolders>

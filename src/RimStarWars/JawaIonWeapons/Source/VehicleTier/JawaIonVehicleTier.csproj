@@ -15,14 +15,22 @@
     the reference assemblies from NuGet instead.
 
     Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\Jawa\JawaIonWeapons\Source\VehicleTier\JawaIonVehicleTier.csproj -c Release
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimStarWars\JawaIonWeapons\Source\VehicleTier\JawaIonVehicleTier.csproj -c Release
 
-    Output lands in ../../Assemblies/ - the SAME folder the main
-    JawaIonWeapons.csproj (net472) already builds into. RimWorld loads every DLL
-    in a mod's Assemblies/ folder regardless of which one targeted which
-    framework profile, so the mod ships two assemblies from two separate .csproj
-    files with no solution tying them together, same pattern as
-    DesertVehicleReskin's own Source/ layout.
+    VF_UNGUARDED_EAGER_FIX_1 (2026-09-05): output moved from ../../Assemblies/ to
+    ../../VehicleTier/Assemblies/. Sitting in the mod's unconditional Assemblies/
+    folder meant this DLL was ALWAYS loaded into the AppDomain regardless of
+    Vehicle Framework's presence, so RimWorld's own reflective type scanners
+    (the [DebugAction] scanner among them) had to resolve every method signature
+    and field initializer in VehicleIonPatches - VehiclePawn/VehicleStatHandler
+    included - even with VF absent, throwing TypeLoadException. The
+    JawaIonVehicleTierMod AppDomain probe only gated the CALL into
+    VehicleIonPatches.Apply(), not the assembly's own load/scan, so it could not
+    help. The new location is gated behind
+    IfModActive="SmashPhil.VehicleFramework" in ../../LoadFolders.xml (mod
+    root): with VF inactive, RimWorld never loads this DLL at all, so no type in
+    it is ever resolved. JawaIonWeapons.dll (the main net472 assembly) keeps
+    loading from the unconditional ../Assemblies/ - it has no VF type anywhere.
 
     Every reference is Private=false. Nothing but our own DLL may land next to
     the mod: shipping a copy of Vehicles.dll or 0Harmony.dll would give the game
@@ -39,7 +47,7 @@
     <RootNamespace>JawaIonWeapons</RootNamespace>
     <Version>1.0.0</Version>
 
-    <OutputPath>..\..\Assemblies\</OutputPath>
+    <OutputPath>..\..\VehicleTier\Assemblies\</OutputPath>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     <AssemblySearchPaths>$(AssemblySearchPaths);$(RimWorldManaged)</AssemblySearchPaths>
 
