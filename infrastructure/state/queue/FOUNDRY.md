@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-05T07:53:20Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-05T07:54:47Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -515,3 +515,23 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/UI_APPEARANCE_BUILD_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/UI_APPEARANCE_BUILD_1.md
+
+## NINEFOLD_MISSING_EVENT_HOOKS_1 Ninefold has NO event hook for battle, trade, launch/rooted or droid-online - four gods (Sh'kaar, Mob'Unloo, Ta'Baa, Ohm) never move; the theology is half-wired
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/NINEFOLD_MISSING_EVENT_HOOKS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/NINEFOLD_MISSING_EVENT_HOOKS_1.md
+
+## VAULT_THAW_QUEST_FAMILY_1 Six Forsaken vault layouts exist but nothing makes them play - no QuestScriptDef family for thaw/reversal/sleepers/ship-claim/Reclamation
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/VAULT_THAW_QUEST_FAMILY_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/VAULT_THAW_QUEST_FAMILY_1.md
