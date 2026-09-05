@@ -245,10 +245,69 @@ this item's criterion below. `methodCount: 0` on `BiomeDef` with no `methodName`
 would mean the padder acts through a DIFFERENT type (e.g. a `DefGenerator` or
 `ResolveReferences` transpiler) — worth trying if the direct query comes back empty.
 
+## 2026-09-05, second enumerator tool built/deployed/proven live — StaticCtor/Mod-subclass sweep, one new thematic lead
+
+Built the "concrete next step" this item named on 2026-09-02: `jawa/startup_types`
+(`JawaBenchTypeInspect.cs`) enumerates every `[StaticConstructorOnStartup]` type and
+every non-abstract `Verse.Mod` subclass, joined to the owning mod via
+`LoadedModManager.RunningModsListForReading` (same join `jawa/mod_inventory` uses) —
+the gap `jawa/harmony_patches` cannot see, since ordinary reflection from a static
+ctor or a Mod subclass's constructor never touches Harmony's patch table.
+
+Built clean (`python.exe build.py --gm --apply`), proven live twice: first on the
+13-mod minimal list (142 rows, `filter=BigSmall` correctly returns 0 — that mod isn't
+in the minimal list), then on the owner's full 594-mod list (1539 rows). Full-list
+dump written to `Transient/startup_types_full_sweep.json` (not committed — Transient,
+per repo convention; regenerate with `prove_startup_types.py` against a live bridge).
+
+**One new lead, not yet ruled in or out**: `ChooseBiomeCommonality` (packageId
+`mlie.choosebiomecommonality`, mod name "Choose Biome Commonality") is thematically
+the strongest candidate this item has produced — its whole stated purpose is letting
+the player override each biome's per-animal commonality, which requires exactly the
+kind of "every animal kind materialized into every biome's list, non-cast entries at
+commonality 0" structure this item describes. A literal-string check
+(`strings` on `.../2582875043/1.6/Assemblies/ChooseBiomeCommonality.dll` for
+`wildAnimals`/`AllWildAnimals`/`CommonalityOfAnimal`, `MEASURE_ALLOW_SCAN=1`
+acknowledged since this is an existence check not a census) found **zero hits** —
+consistent with the three prior full-tree string sweeps (09-01) finding nothing, and
+consistent with this item's own standing theory that the field access is not a
+literal-string reference (a cached `FieldInfo`, or enumeration by attribute/type
+rather than by name). **Ruling this mod in or out needs an actual decompile of
+`ChooseBiomeCommonality.Main`'s static constructor, not another strings pass.**
+
+Re-confirmed `BigAndSmall.BigSmall` (packageId `redmattis.betterprerequisites`) is
+still the only `BigSmall`-filtered `StaticCtor` entry on the full list — same class
+already string-ruled-out 09-01 (zero `wildAnimals` hits across `BigAndSmall.dll`,
+`BSXeno.dll` x2, `RedHealth.dll`, `GravshipSize.dll`). No new evidence against it.
+
+⚠️ **Unrelated incident, noted for the record, not this item's fault**: the first
+attempt to load the full 594-mod list tonight (to build+deploy this tool) crashed
+silently during `MapInitializing` — process disappeared from `tasklist`, no
+exception in `Player.log`, before `jawa/startup_types` was ever called (the crash
+predates this tool's first live invocation by one full relaunch). Second full-list
+load succeeded. Full modlist restored and left live; bridge released to the owner
+after the sweep (`game is up` received mid-session).
+
+**Next step for whoever picks this up**: decompile `ChooseBiomeCommonality.dll`'s
+`Main` static constructor (ILSpy/dotPeek, or read it via a bridge tool that can pull
+IL/decompiled source if one exists) and check whether it calls
+`typeof(BiomeDef).GetField(...)` or enumerates `DefDatabase<PawnKindDef>.AllDefs`
+and writes into a per-biome list. If ruled out too, the next candidates are: (a)
+`Fortified Features Framework` and `EBSG Framework` (both generic "framework" mods
+with StaticCtor entries and animal-adjacent naming in the sweep, not yet checked),
+or (b) reflect `GenTypes.AllTypes` for method bodies that call
+`FieldInfo.SetValue` on any field typed `List<AnimalCommonalityRecord>` — a
+`jawa/` tool for THAT (grep by field type across all method bodies) does not exist
+yet and would need IL inspection, not attribute enumeration, so it's a bigger build
+than this one was.
+
 ## criteria
-- [ ] **The padding assembly named with the method that does it** — NOT MET. Needs live Harmony
-      patch inspection (see above); offline search of the vendored source subset exhausted.
-      Tool to do this now exists in source; needs build + deploy + a live call to close.
+- [ ] **The padding assembly named with the method that does it** — NOT MET. Both
+      Harmony's patch table (`jawa/harmony_patches`) and ordinary static-init sites
+      (`jawa/startup_types`) have now been swept on the live full mod list; neither
+      instrument found a smoking gun. One live thematic lead (`ChooseBiomeCommonality`)
+      is unconfirmed pending a decompile. Both instruments exist, are deployed, and
+      are proven live — the remaining gap is IL/decompile-level, not tooling.
 - [ ] Owner ruling on exclusivity (145 non-cast animals in Desert) and on the 10 excluded
       Anomaly entity records — **owner's call, not FOUNDRY's**, per the item's own framing.
 - [ ] `biome_animal_conflicts.py`'s b-side (`race.wildBiomes`) validity — not re-checked this
