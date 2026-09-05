@@ -5,7 +5,7 @@ def declares Graphic_Multi, so a north-facing droid silently falls back and show
 its FRONT while walking away. Measured facts, all from the extracted bundle art:
   * canvas 256x256, south bbox (97, 80, 159, 178)
   * black keyline, 3 px
-  * upper plate 231, lower panel 178, seam shadows 148
+  * upper plate 231, lower panel 178, vent seam 96, panel joints 148
 
 The silhouette and keyline are taken PIXEL-FOR-PIXEL from MSE_south, so the north
 registers perfectly by construction. Only the interior is re-authored: the front

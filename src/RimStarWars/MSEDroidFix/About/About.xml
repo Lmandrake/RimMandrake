@@ -32,9 +32,9 @@ CONTENTS
       by construction and cannot drift. Only the interior is re-authored — the
       front bevel is replaced by a plain rear panel with a horizontal vent seam
       and two vertical panel joints, using the donor's own measured greys
-      (upper plate 231, lower panel 178, seam shadows 148), which is what the
-      back of a box droid should read as. The generator is shipped in
-      Source/draw_mse_north.py.
+      (upper plate 231, lower panel 178, vent seam 96, panel joints 148), which
+      is what the back of a box droid should read as. The generator is shipped
+      in Source/draw_mse_north.py.
 
 WHERE THE DEF IS
 
