@@ -58,6 +58,20 @@ LIGHTSABER_MELEE_PATCH_FAIL_1 recorded) — then re-run, diff to a temp path,
 review the diff by hand against both known-good fixes before overwriting
 the shipped file.**
 
+## progress 2026-09-05
+The lightsaber declarer-resolution bug described above IS fixed
+(`gen_armoury_patch.py`, commit `b5da9f9b`) — `self_supplied_tools_defnames()`
+now correctly skips the 8 lightsaber variants. Verified: 35/35 selftests
+pass, `Armoury_RangedDamage.xml` unaffected, shipped `Armoury_MeleePower.xml`
+values unchanged (only its stale explanatory comment was wrong; corrected).
+
+**BLOCKED on a second, separate gap** before the vibro values can be
+regenerated: filed as `ARMOURY_SWMODS_DONOR_GAP_1` — `SW_MODS` doesn't
+recognize the absorbed KotORWeapons/JDS-Armory donor names, so a full regen
+right now silently drops their vibro-blade tuning blocks entirely. Fix that
+first, or the "expected" vibro values this item originally cited
+(OuterRim_VibroAxe 21→38, guy762_vaxe 30→42) may themselves be wrong.
+
 ## criteria
 - A def dump fingerprint-verified current against the live full mod list
   (`ModsConfig.xml`, currently 595 active) is available.
