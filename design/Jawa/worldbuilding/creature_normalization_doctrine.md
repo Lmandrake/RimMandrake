@@ -218,3 +218,48 @@ on 2026-08-30 precisely because "the 240kg ceiling itself looked suspiciously lo
 pit tiers finally mean what they say — a real elephant smashes any cover, a rat never
 springs one — with **no change to the Pits mod at all**. Re-verify the tiers against
 the new mass distribution once the pass lands, and close that item.
+
+---
+
+## 🔴 WORKLIST CORRECTED (visual portfolio, 2026-09-05) — the earlier list was measured wrong
+
+The "TOP MISMATCHES" list carried up from the size model was computed over the
+**full register, cut and live mixed**. That is the wrong population:
+
+- **65 of the 232 out-of-band creatures are ALREADY CUT** by Cherry Picker.
+- Only **28 of Jurassic's 131 dinos are live** — the "whole dino block runs
+  2.5-2.9x" finding was mostly measuring creatures nobody will ever see.
+
+⇒ Any ranking that includes cut creatures is a different and **wrong** worklist.
+Fix only the **live** population. Corrected figures (n=892 live):
+
+**81% (725/892) already obey the engine's own law** — the defect is a MINORITY,
+and it runs in BOTH directions (too big AND too small). 167 are out of band.
+
+**Systematic (one per-mod multiplier fixes most) — do these first, cheap:**
+| mod | median | out | block-fixable |
+|---|---|---|---|
+| Vanilla Vehicles Expanded | 1.71x | 17 | **88%** |
+| Biotech | 0.75x | 6 | **100%** |
+| Caravan Adventures | 2.10x | 5 | 80% |
+| Alpha Animals | 1.16x | 25 | 68% |
+| Biomes! Polluted Lands | 0.94x | 5 | 60% |
+
+**Scattered (per-creature work) — the real cost:**
+🔴 **Biomes! Caverns is the heaviest target and was NOT in the old list**: 27 out
+of band, only **7% block-fixable**, because its defect is **bimodal, not shifted** —
+seven pupae pinned at `bodySize 1.0 -> drawSize 1.0` (0.50x) against `chem snail`
+at 2.83x. ⭐ Those 7 pupae share ONE life-stage drawSize, so they are a **sub-block**
+and cheap to fix as a group even though the mod as a whole is not.
+Then: Vanilla Genetics Expanded 38% · Jurassic 27% · Alpha Mechs 22% · SW Animal
+Collection 14%.
+
+**Overall:** of 160 out-of-band creatures in characterisable blocks, one per-mod
+multiplier clears **67 (42%)**; **93 need hand edits**.
+
+⚠️ A per-mod multiplier applied to `bodySize` moves mass, yields, haul capacity and
+shootability; applied to `drawSize` it moves only the sprite. The 42% holds either
+way, but WHICH field the multiplier lands on is a separate ruling.
+
+Figures + method: `design/Jawa/worldbuilding/review/viz/` (portfolio scored 90/100,
+all three members carry a `visual-critic` SHIP verdict).
