@@ -99,6 +99,16 @@ namespace RimMandrake.StarWars.Droidworks
     /// Droidworks pawn's `pawn.relations` is permanently null and NREs the
     /// first time anything touches it (LovePartnerRelationUtility,
     /// AlienRace's own gender-generation patches, etc).
+    ///
+    /// DROID_PSYCHICENTROPY_NULL_GAP_1: `pawn.psychicEntropy` is allocated in
+    /// the SAME `IsFlesh` block (also gated on `ModsConfig.RoyaltyActive` -
+    /// mirrored exactly below, so this stays a no-op without Royalty, same as
+    /// vanilla) and was not backfilled here. Droids are Humanlike, so vanilla
+    /// Royalty allocates `pawn.royalty` for them regardless of fleshtype; if
+    /// a droid ever receives a title/psycast (quest reward, a mod), every
+    /// caller that dereferences `pawn.psychicEntropy.*` (Verb_CastPsycast,
+    /// Command_Psycast, CompAbilityEffect_TransferEntropy) NREs on a droid
+    /// with Royalty active, the same class of gap the relations fix closes.
     /// </summary>
     public static class Patch_RelationsForNonFleshHumanlike
     {
@@ -121,9 +131,15 @@ namespace RimMandrake.StarWars.Droidworks
             if (pawn?.RaceProps == null) return;
             if (!pawn.RaceProps.Humanlike) return;
             if (pawn.RaceProps.IsFlesh) return;   // vanilla's own branch already allocated it
-            if (pawn.relations != null) return;
 
-            pawn.relations = new Pawn_RelationsTracker(pawn);
+            if (pawn.relations == null)
+                pawn.relations = new Pawn_RelationsTracker(pawn);
+
+            // DROID_PSYCHICENTROPY_NULL_GAP_1: same RoyaltyActive gate vanilla
+            // itself uses for flesh pawns, so this is still a no-op without
+            // Royalty active - exactly matching what a flesh pawn would have.
+            if (ModsConfig.RoyaltyActive && pawn.psychicEntropy == null)
+                pawn.psychicEntropy = new Pawn_PsychicEntropyTracker(pawn);
         }
     }
 }

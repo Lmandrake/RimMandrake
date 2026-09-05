@@ -42,6 +42,17 @@ namespace RimMandrake.StarWars.Droidworks
             this.FailOnDespawnedNullOrForbidden(PawnInd);
             this.FailOn(() => !(Target.Downed || Target.IsPrisoner));
 
+            // DROID_DATASPIKE_SURVIVES_FAILON_1: the class header promises the
+            // spike is destroyed "regardless of outcome", but a Toils_General.Do
+            // as the LAST toil only runs on success - the FailOn above (target
+            // rescued/healed/recaptured mid-job) ends the job from whichever toil
+            // is active and that final toil never starts, leaving the spike
+            // reusable for free. JobDriver.AddFinishAction (a "global" finish
+            // action, distinct from a per-toil Toil.AddFinishAction) fires on
+            // every job end regardless of which toil was current, so registering
+            // the destroy here actually delivers the documented contract.
+            this.AddFinishAction(delegate { Item?.Destroy(); });
+
             yield return Toils_Goto.GotoThing(ItemInd, PathEndMode.Touch);
             yield return Toils_Haul.StartCarryThing(ItemInd);
             yield return Toils_Goto.GotoThing(PawnInd, PathEndMode.Touch);
@@ -62,11 +73,6 @@ namespace RimMandrake.StarWars.Droidworks
                 target.SetFaction(Faction.OfPlayer, pawn);
             });
             yield return spike;
-
-            yield return Toils_General.Do(delegate
-            {
-                Item?.Destroy();
-            });
         }
     }
 }
