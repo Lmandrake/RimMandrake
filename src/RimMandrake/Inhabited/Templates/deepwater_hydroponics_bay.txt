@@ -1,7 +1,9 @@
-# rimplace flat plan v1
+# rimplace flat plan v2
 # template  deepwater_hydroponics_bay (sha 0b7d89fb111b1e0f)
 # min_rect  16x14   baked at 22x18
 FOOTPRINT	0	0	22	18
+CLEAR	-1	-1	24	20	soft
+CLEAR	0	0	22	18	all
 TERRAIN	1	1	guy762_FloorTiles_DivotedTile_offwhite
 TERRAIN	1	2	guy762_FloorTiles_DivotedTile_offwhite
 TERRAIN	1	3	guy762_FloorTiles_DivotedTile_offwhite

@@ -1,7 +1,9 @@
-# rimplace flat plan v1
+# rimplace flat plan v2
 # template  droid_fabrication_room (sha 044151958f342907)
 # min_rect  16x12   baked at 20x16
 FOOTPRINT	0	0	20	16
+CLEAR	-1	-1	22	18	soft
+CLEAR	0	0	20	16	all
 TERRAIN	1	1	OuterRim_VentedFloor_Steel
 TERRAIN	1	2	OuterRim_VentedFloor_Steel
 TERRAIN	1	3	OuterRim_VentedFloor_Steel

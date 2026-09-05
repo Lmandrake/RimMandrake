@@ -1,7 +1,9 @@
-# rimplace flat plan v1
+# rimplace flat plan v2
 # template  hutt_cistern_court (sha a42e38f43383dde5)
 # min_rect  16x16   baked at 22x22
 FOOTPRINT	0	0	22	22
+CLEAR	-1	-1	24	24	soft
+CLEAR	0	0	22	22	all
 TERRAIN	1	1	OuterRim_BrickRoadPatterned_Sandstone
 TERRAIN	1	2	OuterRim_BrickRoadPatterned_Sandstone
 TERRAIN	1	3	OuterRim_BrickRoadPatterned_Sandstone

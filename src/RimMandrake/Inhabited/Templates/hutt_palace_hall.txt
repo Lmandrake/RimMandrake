@@ -1,7 +1,9 @@
-# rimplace flat plan v1
+# rimplace flat plan v2
 # template  hutt_palace_hall (sha 18c179e56815f487)
 # min_rect  22x20   baked at 26x24
 FOOTPRINT	0	0	26	24
+CLEAR	-1	-1	28	26	soft
+CLEAR	0	0	26	24	all
 TERRAIN	1	1	TileSandstone
 TERRAIN	1	2	TileSandstone
 TERRAIN	1	3	TileSandstone

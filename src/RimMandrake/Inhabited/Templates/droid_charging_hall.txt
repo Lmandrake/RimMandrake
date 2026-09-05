@@ -1,7 +1,9 @@
-# rimplace flat plan v1
+# rimplace flat plan v2
 # template  droid_charging_hall (sha 54b1efd92b18e27e)
 # min_rect  18x16   baked at 24x20
 FOOTPRINT	0	0	24	20
+CLEAR	-1	-1	26	22	soft
+CLEAR	0	0	24	20	all
 TERRAIN	1	1	guy762_FloorTiles_XGrate_grey
 TERRAIN	1	2	guy762_FloorTiles_XGrate_grey
 TERRAIN	1	3	guy762_FloorTiles_XGrate_grey

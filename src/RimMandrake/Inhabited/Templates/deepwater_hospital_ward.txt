@@ -1,7 +1,9 @@
-# rimplace flat plan v1
+# rimplace flat plan v2
 # template  deepwater_hospital_ward (sha 734abc71a1f0df95)
 # min_rect  16x13   baked at 20x16
 FOOTPRINT	0	0	20	16
+CLEAR	-1	-1	22	18	soft
+CLEAR	0	0	20	16	all
 TERRAIN	1	1	SterileTile
 TERRAIN	1	2	SterileTile
 TERRAIN	1	3	SterileTile

@@ -1,5 +1,9 @@
-# rimplace flat plan v1
+# rimplace flat plan v2
+# template  bantha_graveyard (sha 375daf22eaa478ab)
+# min_rect  none declared   baked at 20x20
 FOOTPRINT	0	0	20	20
+CLEAR	-1	-1	22	22	soft
+CLEAR	0	0	20	20	all
 THING	Leather_Bantha	0	9	0	-
 THING	BanthaHorn	0	12	0	-
 THING	BanthaHorn	0	17	0	-

@@ -1,7 +1,9 @@
-# rimplace flat plan v1
+# rimplace flat plan v2
 # template  junkers_cantina_block (sha 74b3a61ad246af1e)
 # min_rect  14x15   baked at 16x16
 FOOTPRINT	0	0	16	16
+CLEAR	-1	-1	18	18	soft
+CLEAR	0	0	16	16	all
 TERRAIN	1	1	guy762_FloorTiles_DivotedTile_iron
 TERRAIN	1	2	guy762_FloorTiles_DivotedTile_iron
 TERRAIN	1	3	guy762_FloorTiles_DivotedTile_iron

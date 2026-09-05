@@ -1,7 +1,9 @@
-# rimplace flat plan v1
+# rimplace flat plan v2
 # template  junkers_dwelling_cluster (sha 95974ccef496a95f)
 # min_rect  15x15   baked at 22x22
 FOOTPRINT	0	0	22	22
+CLEAR	-1	-1	24	24	soft
+CLEAR	0	0	22	22	all
 TERRAIN	0	0	Gravel
 TERRAIN	0	1	Gravel
 TERRAIN	0	2	Gravel
@@ -588,10 +590,10 @@ THING	Wall	20	5	0	Steel
 THING	Wall	14	6	0	Steel
 THING	Wall	15	6	0	Steel
 THING	Wall	16	6	0	Steel
-THING	Wall	18	6	0	Steel
+THING	Wall	17	6	0	Steel
 THING	Wall	19	6	0	Steel
 THING	Wall	20	6	0	Steel
-THING	Door	17	6	0	Steel
+THING	Door	18	6	0	Steel
 THING	Bedroll	16	5	3	Cloth
 THING	ShelfSmall	19	3	3	Steel
 THING	OuterRim_StorageCrate	15	1	0	-

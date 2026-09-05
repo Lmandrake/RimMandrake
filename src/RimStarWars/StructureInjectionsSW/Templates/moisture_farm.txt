@@ -1,14 +1,18 @@
-# rimplace flat plan v1
+# rimplace flat plan v2
+# template  moisture_farm (sha 8d868242f2f8bd84)
+# min_rect  none declared   baked at 20x20
 FOOTPRINT	0	0	20	20
-TERRAIN	9	9	Gravel
-TERRAIN	9	10	Gravel
-TERRAIN	9	11	Gravel
-TERRAIN	10	9	Gravel
-TERRAIN	10	10	Gravel
-TERRAIN	10	11	Gravel
-TERRAIN	11	9	Gravel
-TERRAIN	11	10	Gravel
-TERRAIN	11	11	Gravel
+CLEAR	-1	-1	22	22	soft
+CLEAR	0	0	20	20	all
+TERRAIN	9	9	StrawMatting
+TERRAIN	9	10	StrawMatting
+TERRAIN	9	11	StrawMatting
+TERRAIN	10	9	StrawMatting
+TERRAIN	10	10	StrawMatting
+TERRAIN	10	11	StrawMatting
+TERRAIN	11	9	StrawMatting
+TERRAIN	11	10	StrawMatting
+TERRAIN	11	11	StrawMatting
 THING	Wall	8	8	0	BlocksSandstone
 THING	Wall	9	8	0	BlocksSandstone
 THING	Wall	11	8	0	BlocksSandstone

@@ -1,7 +1,9 @@
-# rimplace flat plan v1
+# rimplace flat plan v2
 # template  deepwater_gate_bastion (sha f75e1a8a6f1f3469)
 # min_rect  18x12   baked at 24x14
 FOOTPRINT	0	0	24	14
+CLEAR	-1	-1	26	16	soft
+CLEAR	0	0	24	14	all
 TERRAIN	1	1	Concrete
 TERRAIN	1	2	Concrete
 TERRAIN	1	3	Concrete

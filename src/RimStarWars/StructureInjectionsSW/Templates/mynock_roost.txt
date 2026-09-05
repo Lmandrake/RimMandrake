@@ -1,5 +1,9 @@
-# rimplace flat plan v1
+# rimplace flat plan v2
+# template  mynock_roost (sha de11351bf9c0b7da)
+# min_rect  none declared   baked at 14x14
 FOOTPRINT	0	0	14	14
+CLEAR	-1	-1	16	16	soft
+CLEAR	0	0	14	14	all
 THING	Filth_AnimalFilth	0	2	0	-
 THING	PowerConduit	0	3	0	-
 THING	PowerConduit	0	5	0	-

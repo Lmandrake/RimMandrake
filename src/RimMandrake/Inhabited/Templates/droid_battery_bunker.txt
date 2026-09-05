@@ -1,7 +1,9 @@
-# rimplace flat plan v1
+# rimplace flat plan v2
 # template  droid_battery_bunker (sha 119519663a57d439)
 # min_rect  12x11   baked at 16x14
 FOOTPRINT	0	0	16	14
+CLEAR	-1	-1	18	16	soft
+CLEAR	0	0	16	14	all
 TERRAIN	2	2	MetalTile
 TERRAIN	2	3	MetalTile
 TERRAIN	2	4	MetalTile

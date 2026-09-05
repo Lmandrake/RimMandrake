@@ -1,7 +1,9 @@
-# rimplace flat plan v1
+# rimplace flat plan v2
 # template  droid_cracking_works (sha 0ce869f953b1d9f5)
 # min_rect  20x20   baked at 24x24
 FOOTPRINT	0	0	24	24
+CLEAR	-1	-1	26	26	soft
+CLEAR	0	0	24	24	all
 TERRAIN	1	1	Concrete
 TERRAIN	1	2	Concrete
 TERRAIN	1	3	Concrete

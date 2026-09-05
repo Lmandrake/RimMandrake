@@ -1,7 +1,9 @@
-# rimplace flat plan v1
-# template  hutt_holding_pens (sha e9acd132d5cb2c7d)
+# rimplace flat plan v2
+# template  hutt_holding_pens (sha 26ea52d9bcf7d0f8)
 # min_rect  17x15   baked at 20x16
 FOOTPRINT	0	0	20	16
+CLEAR	-1	-1	22	18	soft
+CLEAR	0	0	20	16	all
 TERRAIN	1	1	TileSandstone
 TERRAIN	1	2	TileSandstone
 TERRAIN	1	3	TileSandstone
@@ -309,19 +311,22 @@ THING	OuterRim_DoorTatooine	8	7	0	-
 THING	OuterRim_DoorTatooine	10	5	0	-
 THING	OuterRim_AurebeshWordPrison	8	8	0	-
 THING	OuterRim_TatooineBed	3	12	3	-
-THING	WashBucket	2	14	0	Steel
-THING	OuterRim_TatooineBed	7	14	3	-
-THING	OuterRim_TatooineStool	6	11	0	-
-THING	OuterRim_TatooineBed	11	13	3	-
-THING	OuterRim_TatooineBed	15	13	3	-
+THING	OuterRim_TatooineStool	2	14	0	-
+THING	OuterRim_TatooineBed	7	13	1	-
+THING	WashBucket	6	14	0	Steel
+THING	OuterRim_TatooineBed	11	13	0	-
+THING	WashBucket	12	11	0	Steel
+THING	OuterRim_TatooineBed	15	12	3	-
+THING	WashBucket	16	11	0	Steel
 THING	Turret_MiniTurret	18	9	0	-
-THING	WallLamp	12	8	2	-
-THING	WallLamp	4	9	0	-
-THING	OuterRim_Tatooine2x1Table	5	4	1	-
-THING	OuterRim_TatooineDiningChair	4	3	1	-
-THING	OuterRim_TatooineDiningChair	5	5	2	-
+THING	WallLamp	6	9	0	-
+THING	WallLamp	1	8	3	-
+THING	OuterRim_Tatooine2x1Table	5	4	0	-
+THING	OuterRim_TatooineDiningChair	7	4	3	-
 THING	OuterRim_TatooineDiningChair	4	4	1	-
-THING	Shelf	5	6	2	Steel
+THING	OuterRim_TatooineDiningChair	5	5	2	-
+THING	Shelf	7	6	2	Steel
+THING	Shelf	2	6	2	Steel
 THING	Barricade	3	2	0	BlocksSandstone
 THING	Barricade	5	2	0	BlocksSandstone
 THING	Barricade	6	2	0	BlocksSandstone

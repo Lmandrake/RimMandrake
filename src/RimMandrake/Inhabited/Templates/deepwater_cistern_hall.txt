@@ -1,7 +1,9 @@
-# rimplace flat plan v1
-# template  deepwater_cistern_hall (sha 1ce31b10c15e3e39)
+# rimplace flat plan v2
+# template  deepwater_cistern_hall (sha 4215ed6a24b4244a)
 # min_rect  18x16   baked at 26x22
 FOOTPRINT	0	0	26	22
+CLEAR	-1	-1	28	24	soft
+CLEAR	0	0	26	22	all
 TERRAIN	1	1	SterileTile
 TERRAIN	1	2	SterileTile
 TERRAIN	1	3	SterileTile

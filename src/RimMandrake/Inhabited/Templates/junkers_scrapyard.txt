@@ -1,7 +1,9 @@
-# rimplace flat plan v1
+# rimplace flat plan v2
 # template  junkers_scrapyard (sha 372009153b4d4dfa)
 # min_rect  24x22   baked at 30x30
 FOOTPRINT	0	0	30	30
+CLEAR	-1	-1	32	32	soft
+CLEAR	0	0	30	30	all
 TERRAIN	0	0	Gravel
 TERRAIN	0	1	Gravel
 TERRAIN	0	2	Gravel

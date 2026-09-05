@@ -1,5 +1,9 @@
-# rimplace flat plan v1
+# rimplace flat plan v2
+# template  krayt_graveyard (sha 903a57605720b439)
+# min_rect  none declared   baked at 20x20
 FOOTPRINT	0	0	20	20
+CLEAR	-1	-1	22	22	soft
+CLEAR	0	0	20	20	all
 THING	KraytDragonSkull	14	3	0	-
 THING	KraytPearl	13	4	0	-
 THING	KraytDragonHorn	17	6	0	-
