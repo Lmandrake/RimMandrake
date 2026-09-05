@@ -453,8 +453,18 @@
     <initialResistanceRange>10~20</initialResistanceRange>
     <apparelMoney>350~600</apparelMoney>
     <xenotypeSet>
+      <!-- Was RSW_RimMandrakeJawa (24-gene generator-output donor copy), not
+           RSW_MandrakeJawa (38-gene, owner's hand-built xenotype, the ONLY
+           active Jawa xenotype per the owner's 2026-08-14 ruling - see
+           XenotypeDefs/MandrakeJawaXenotype.xml). Both share the label "Jawa"
+           so the wrong one was invisible in play. Fixed at source now that
+           this file is hand-edited (see the header above) and the generator
+           no longer overwrites it; StarWarsPatches/Patches/JawaXenotype_Repoint.xml
+           carries a PatchOperationConditional for exactly this defName that
+           degrades to a no-op once the source declares RSW_MandrakeJawa
+           directly, so this is safe to fix here without touching that file. -->
       <xenotypeChances>
-        <RSW_RimMandrakeJawa>1.0</RSW_RimMandrakeJawa>
+        <RSW_MandrakeJawa>1.0</RSW_MandrakeJawa>
       </xenotypeChances>
     </xenotypeSet>
       <apparelRequired>
