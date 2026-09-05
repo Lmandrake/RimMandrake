@@ -520,13 +520,17 @@ def t_min_rect_precedes_build():
     tpl = _TEMPLATES / "junkers_scrapyard.lua"
     if not tpl.exists():
         return
+    # The template's OWN declaration is the reference, read the way a caller
+    # would, so a redesign of the scrapyard does not silently fail this case.
+    need = declared_min_rect(tpl, {})
+    assert need and need[0] > 16, need
     try:
         run_template(tpl, Rect(0, 0, 16, 12), {}, _pal(), 1)
     except TemplateTooSmall as e:
-        assert e.need == (16, 14), e.need
+        assert e.need == need, (e.need, need)
         assert "16x12" in str(e), str(e)
         return
-    raise AssertionError("a 16x12 rect built a template that declares 16x14")
+    raise AssertionError("a 16x12 rect built a template that declares %dx%d" % need)
 
 
 @case("a size-agnostic template declares nothing, and is not forced to")

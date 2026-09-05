@@ -1,151 +1,165 @@
--- junkers_depot.lua - a warehouse floor (grid of storage shelving plus a
--- receiving desk) and a small trader's office. DISTRICT_TEMPLATE_LIBRARY_1,
--- Junkers district #4 (The Claim Jump manifest slot "depot"; the manifest
--- marks this slot required=false, so its own composition is optional, not
--- this template).
+-- junkers_depot.lua - a Junkers goods depot: a loading apron out front, a
+-- warehouse floor behind two loading doors, and a trader's office plus the
+-- trader's own quarters across the back. DISTRICT_TEMPLATE_LIBRARY_1, Junkers
+-- district #4 (The Claim Jump manifest slot "depot", required=false).
 --
--- WHAT THIS FILE DEMONSTRATES:
---   * the same shared-wall two-bay split as junkers_cantina_block.lua,
---     reused rather than re-derived - depot floor + office instead of
---     hall + keeper's room
---   * a genuine 2D grid placement (rows AND columns of shelving), stepping
---     by the role's own measured footprint plus an aisle gap
---   * the SECURITY PROPS VOCABULARY SKETCH the item asked for: a function
---     that WOULD place a watch prop over the depot floor, gated on a param
---     the Junkers pilot never sets, so it is proven inert for THIS
---     settlement rather than merely unused
+-- REWORKED 2026-09-05 after the owner's live review of the first version
+-- (TILE_STRUCTURE_REVIEW_SAVE_1: "these are pretty horrible... not accept any
+-- rooms yet"; this file was named for its "ridiculously regular grid" and
+-- oppressive aisles). What changed, against each of his three defect axes:
+--   FLOORING   every interior is floored by name: the depot floor is iron
+--              grating (FLOOR_WORK) worn through to steel plate in patches,
+--              the office is iron divoted tile (FLOOR_FINE), the quarters rust
+--              plating (FLOOR), the apron outside is broken asphalt. Nothing
+--              sits on the tech-default stony soil any more.
+--   GRIDS      the nested while-loop of shelving is gone. Shelves hug the two
+--              long walls at random slots with gaps (along_wall), and two
+--              short island runs sit at jittered rows, offset from each other
+--              and from the walls by real aisles - a 3-cell centre aisle
+--              from the loading doors to the office door is kept clear by
+--              construction, and every island is at least 2 cells off the
+--              wall shelving. Aisles are walkable; shelving is sparse.
+--   CLUTTER    crates against the walls, barrels in corners, slag chunks on
+--              the floor, a receiving desk with a stool just inside the doors,
+--              wall torches and a floor torch; the office has its own desk,
+--              chair, small shelf and lamp; the quarters a bedroll, end table
+--              and crate. Nothing is a bare furniture set.
 --
--- Reused art only: WALL/DOOR/BED/LIGHT/STORAGE/TABLE/CHAIR/TURRET all
--- resolve through the existing palette. --tech Neolithic like the other
--- three Junkers districts - the depot floor is unpowered.
+-- Security props: NONE, same ruling as the other three Junkers districts
+-- (searchesLeavers=false). The old maybe_place_security() sketch is retired
+-- here: the Deepwater bastion (deepwater_gate_bastion.lua) now places real
+-- security props for a faction whose canon asks for them, which is the proof
+-- the sketch was standing in for.
+--
+-- Reused art only: everything resolves through palette.json's
+-- faction:Jawa_Junkers block. --tech Neolithic (unpowered depot floor).
 
--- ---------------------------------------------------------------------------
--- security props vocabulary - SKETCH ONLY, never exercised by this pilot
--- ---------------------------------------------------------------------------
--- ownership_settlement_spec.md item 8 asks for "security props" per
--- district. The Claim Jump's manifest sets searchesLeavers=false
--- (Inhabited_SecurityProfile_Junkers) and NOTHING in this template ever
--- sets params.security_props - so has_role/refuse below is dead code for
--- Junkers by construction, not by omission. It exists to show what a
--- future HIGH-security settlement's depot (Empire, Deepwater) would ask
--- for: a fixed "eyes on the goods" prop watching the storage floor. The
--- palette's only watch-shaped role today is TURRET (tech:Ultra/Empire),
--- which is itself a placeholder for a proper fixed-camera prop
--- (rimplace-gaps.md notes the palette has no CAMERA role at all yet).
-local function maybe_place_security(ctx, p, x, z)
-  if p.security_props ~= "watched" then
-    return false
-  end
-  if ctx:has_role("TURRET") then
-    ctx:place_role("TURRET", x, z)
-    note("security prop placed (params.security_props='watched'): a fixed watch prop over the depot floor")
-    return true
-  end
-  ctx:refuse("TURRET", "security_props='watched' requested but this faction/tech has no watch prop in its palette")
-  return false
-end
-
--- ---------------------------------------------------------------------------
--- the entry point
--- ---------------------------------------------------------------------------
--- The declared canvas floor; the engine checks it before build() runs
--- (TEMPLATE_CANVAS_UNDECLARED_1). `rimplace minrect junkers_depot`.
--- From build()'s own arithmetic: floor_h = h - office_h + 1 >= 8, office_h = 6.
 function min_rect(params)
-  return 10, 13
+  return 14, 15
 end
 
 function build(ctx)
-  local p = params
   local w, h = rect.w, rect.h
-
-  local office_h = 6
-  local floor_h = h - office_h + 1  -- +1: the shared wall row
-  if floor_h < 8 or w < 10 then
+  if w < 14 or h < 15 then
     ctx:refuse("footprint", string.format(
-      "%dx%d too small for a depot floor (>=10 wide) plus a %d-row office",
-      w, h, office_h))
+      "%dx%d too small for a depot (apron + 11-row floor + 6-row office, >=14 wide)", w, h))
     return
   end
 
-  local officeBay = { x = rect.x, z = rect.z, w = w, h = office_h }
-  local floorBay = { x = rect.x, z = rect.z + office_h - 1, w = w, h = floor_h }
+  -- ---- the loading apron: two rows of broken asphalt out front -----------
+  local apron_h = 2
+  local apron = R(rect.x, rect.z, w, apron_h)
+  floor_worn(ctx, apron, "FLOOR_YARD", "FLOOR_CHEAP", 0.3)
 
-  ctx:room("Storeroom", floorBay.x, floorBay.z, floorBay.w, floorBay.h, true)
-  ctx:wall_rect(floorBay.x, floorBay.z, floorBay.w, floorBay.h)
-  ctx:room("Storeroom", officeBay.x, officeBay.z, officeBay.w, officeBay.h, true)
-  ctx:wall_rect(officeBay.x, officeBay.z, officeBay.w, officeBay.h)
+  -- ---- two bays sharing a wall row: depot floor south, office/quarters north
+  local bld = R(rect.x, rect.z + apron_h, w, h - apron_h)
+  local office_h = 6
+  local floorBay = R(bld.x, bld.z, w, bld.h - office_h + 1)
+  local officeBay = R(bld.x, floorBay.z2, w, office_h)
 
-  local midX = rect.x + math.floor(w / 2)
-  ctx:door(midX, officeBay.z + office_h - 1)          -- office <-> depot floor
-  ctx:door(midX, floorBay.z + floorBay.h - 1)         -- depot floor <-> outside (loading door)
+  local fl = shell(ctx, "Storeroom", floorBay, { floor = "FLOOR_WORK" })
+  floor_worn(ctx, fl, "FLOOR_WORK", "FLOOR_PLATE", 0.12)
 
-  -- ---- depot floor: a real grid of shelving, not one row ------------------
-  local ix, iz, iw, ih = floorBay.x + 1, floorBay.z + 2, floorBay.w - 2, floorBay.h - 3
+  -- two loading doors side by side, off-centre: a bay, not a front door
+  local door_t = rng.int(4, w - 7)
+  ctx:door(floorBay.x + door_t, floorBay.z)
+  ctx:door(floorBay.x + door_t + 1, floorBay.z)
+  local aisle = R(floorBay.x + door_t - 1, fl.z, 4, fl.h)   -- kept clear floor to office
+
+  -- office (west) and the trader's quarters (east) split the back bay
+  local split = officeBay.x + math.floor(w / 2) + rng.int(-1, 1)
+  local office = R(officeBay.x, officeBay.z, split - officeBay.x + 1, office_h)
+  local quarters = R(split, officeBay.z, officeBay.x2 - split + 1, office_h)
+  local oi = shell(ctx, "Office", office, { floor = "FLOOR_FINE" })
+  local qi = shell(ctx, "Bedroom", quarters, { floor = "FLOOR" })
+  -- the office door opens onto the centre aisle; the quarters door where it falls
+  local office_door_x = math.max(office.x + 1, math.min(office.x2 - 1, floorBay.x + door_t + rng.int(0, 1)))
+  ctx:door(office_door_x, officeBay.z)
+  ctx:door(quarters.x + rng.int(2, quarters.w - 3), officeBay.z)
+
+  -- ---- depot floor: wall shelving with gaps, two loose island runs ---------
   local shelves = 0
-  if ctx:has_role("STORAGE") then
-    local sw, sh = ctx:width_of("STORAGE"), ctx:height_of("STORAGE")
-    local step_x, step_z = sw + 1, sh + 2  -- +2 leaves an aisle between rows
-    local zz = iz
-    while zz <= iz + ih - sh do
-      local xx = ix
-      while xx <= ix + iw - sw do
-        if ctx:can_place("STORAGE", xx, zz) then
-          ctx:place_role("STORAGE", xx, zz)
-          shelves = shelves + 1
-        end
-        xx = xx + step_x
-      end
-      zz = zz + step_z
-    end
-  end
-  -- receiving desk, just inside the loading door
-  if ctx:has_role("TABLE") then ctx:place_role_fit("TABLE", ix, floorBay.z + floorBay.h - 3, iw, 2) end
-  if ctx:has_role("CHAIR") then ctx:place_role_fit("CHAIR", ix, floorBay.z + floorBay.h - 3, iw, 2) end
-  if ctx:has_role("LIGHT") then ctx:place_role_fit("LIGHT", floorBay.x + 1, floorBay.z + 1, floorBay.w - 2, floorBay.h - 2) end
-  note(string.format("depot floor: %d shelving unit(s) in a grid, one receiving desk by the loading door", shelves))
-
-  -- ---- roof support pillar --------------------------------------------
-  -- a floor bay this wide (>=18) puts its own centre more than 6 cells from
-  -- any wall - vanilla's own roof-support radius, and rimplace's lint
-  -- checks for exactly that (roof-unsupported). One WALL-role pillar near
-  -- the geometric centre closes the gap; search outward for the first free
-  -- cell so it never lands on top of a shelf the grid above already placed.
-  if ctx:has_role("WALL") then
-    local cx, cz = ix + math.floor(iw / 2), iz + math.floor(ih / 2)
-    local placed = false
-    for r = 0, 3 do
-      for dz = -r, r do
-        for dx = -r, r do
-          if math.abs(dx) + math.abs(dz) == r then
-            local xx, zz = cx + dx, cz + dz
-            if ctx:in_bounds(xx, zz) and not ctx:occupied(xx, zz) then
-              ctx:place_role("WALL", xx, zz)
-              placed = true
-              break
-            end
+  shelves = shelves + along_wall(ctx, "STORAGE", fl, "W", rng.int(2, 3), { gap = 1 })
+  shelves = shelves + along_wall(ctx, "STORAGE", fl, "E", rng.int(2, 3), { gap = 1 })
+  -- islands: short east-west runs, each on its own jittered row, never in the
+  -- centre aisle and at least 2 cells from the wall shelving on either side
+  local sw = ctx:width_of("STORAGE")
+  local rows = { fl.z + rng.int(3, 4), fl.z2 - rng.int(2, 3) }
+  for _, zz in ipairs(rows) do
+    for _, half in ipairs({ { fl.x + 3, aisle.x - sw - 1 }, { aisle.x2 + 2, fl.x2 - 3 - sw + 1 } }) do
+      local lo, hi = half[1], half[2]
+      if hi >= lo then
+        local xx = rng.int(lo, hi)
+        local run = rng.int(2, 3)
+        for i = 1, run do
+          local ox = xx + (i - 1) * sw
+          if ox <= hi and not rng.chance(0.2) then
+            if try_place(ctx, "STORAGE", ox, zz, 0) then shelves = shelves + 1 end
           end
         end
-        if placed then break end
       end
-      if placed then break end
-    end
-    if not placed then
-      ctx:refuse("WALL", "no free cell near centre for a roof-support pillar")
     end
   end
 
-  -- SKETCH ONLY: see the function comment above. p.security_props is never
-  -- set by this pilot's CLI params, so this call is always a no-op here.
-  maybe_place_security(ctx, p, ix, iz)
+  -- the receiving desk: just inside the doors, beside the aisle, a stool at it
+  do
+    local ok, tx, tz = try_near(ctx, "TABLE", aisle.x2 + 2, fl.z + 1, 1, 2, fl)
+    if ok then try_near(ctx, "STOOL", tx, tz + 1, 2, 1, fl) end
+  end
 
-  -- ---- trader's office: the one cast slot the manifest names (1x trader) -
-  local ox, oz, ow, oh = officeBay.x + 1, officeBay.z + 1, officeBay.w - 2, officeBay.h - 2
-  if ctx:has_role("BED") then ctx:place_role_fit("BED", ox, oz, ow, oh) end
-  if ctx:has_role("TABLE") then ctx:place_role_fit("TABLE", ox, oz, ow, oh) end
-  if ctx:has_role("CHAIR") then ctx:place_role_fit("CHAIR", ox, oz, ow, oh) end
-  if ctx:has_role("STORAGE") then ctx:place_role_fit("STORAGE", ox, oz, ow, oh) end
-  if ctx:has_role("LIGHT") then ctx:place_role_fit("LIGHT", ox, oz, ow, oh) end
+  -- clutter and light
+  dress(ctx, fl, {
+    { role = "CRATE",  n = { 3, 5 }, where = "wall" },
+    { role = "BARREL", n = { 1, 2 }, where = "corner" },
+    { role = "SCRAP",  n = { 2, 4 } },
+    { role = "LIGHT",  n = 1, where = "corner" },
+  })
+  wall_lights(ctx, fl, rng.int(2, 3))
+  note(string.format("depot floor: %d shelving unit(s) - wall runs plus two island rows, %d-cell centre aisle kept clear",
+    shelves, aisle.w))
+
+  -- ---- roof support: only a floor bay TALLER than 12 interior rows puts its
+  -- centre more than 6 cells from both long walls (vanilla's support radius,
+  -- rimplace lint rule 6); then two pillars at the aisle edges carry it and
+  -- mark the aisle. At the manifest's 18x18 the bay is 9 rows and needs none.
+  local need = fl.h > 12
+  if need and ctx:has_role("PILLAR") then
+    local pz = fl.z + math.floor(fl.h / 2)
+    local placed = 0
+    for _, px in ipairs({ aisle.x - 1, aisle.x2 + 1 }) do
+      local ok = try_near(ctx, "PILLAR", px, pz, 0, 1, fl)
+      if ok then placed = placed + 1 end
+    end
+    if placed < 2 then
+      ctx:refuse("PILLAR", "could not seat both aisle pillars; roof over the centre may be unsupported")
+    end
+  end
+
+  -- ---- the trader's office ------------------------------------------------
+  do
+    local ok, tx, tz = try_near(ctx, "TABLE", oi.x + math.floor(oi.w / 2), oi.z + 1, 1, 2, oi)
+    if ok then seat_around(ctx, "CHAIR", tx, tz, 1, oi, 1) end
+    along_wall(ctx, "STORAGE", oi, "N", 1)
+    dress(ctx, oi, {
+      { role = "SHELF_SMALL", n = { 1, 2 }, where = "wall" },
+      { role = "CRATE",       n = 1,        where = "corner" },
+      { role = "LIGHT",       n = 1,        where = "corner" },
+    })
+    wall_lights(ctx, oi, 1)
+  end
+
+  -- ---- the trader's quarters: the one person who sleeps on the goods -------
+  do
+    local beds = along_wall(ctx, "BED", qi, rng.pick({ "N", "E" }), 1, { face = "wall" })
+    if beds == 0 then note("quarters: no bed fitted - trader sleeps on the depot floor") end
+    dress(ctx, qi, {
+      { role = "END_TABLE", n = 1,        where = "wall" },
+      { role = "CRATE",     n = { 1, 2 }, where = "corner" },
+      { role = "STOOL",     n = 1 },
+      { role = "LIGHT",     n = 1,        where = "corner" },
+    })
+    wall_lights(ctx, qi, 1)
+  end
 
   note("no security props placed: Junkers/The Claim Jump is low security by design (searchesLeavers=false)")
 end

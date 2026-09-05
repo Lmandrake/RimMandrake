@@ -1,137 +1,149 @@
--- junkers_scrapyard.lua - a Junkers salvage yard: one roofed sorting shed,
--- one roofed forge lean-to, and an open, unwalled lot scattered with scrap
--- heaps. DISTRICT_TEMPLATE_LIBRARY_1, Junkers district #1
--- (ownership_settlement_spec.md item 10, "Pilot town: Junkers"; The Claim
--- Jump's manifest names this slot "scrapyard",
+-- junkers_scrapyard.lua - a Junkers salvage yard: a roofed sorting shed, a
+-- forge lean-to, the boss's shack, and between them an open lot of wrecks,
+-- junk heaps and slag under a half-finished fence. DISTRICT_TEMPLATE_LIBRARY_1,
+-- Junkers district #1 (The Claim Jump manifest slot "scrapyard",
 -- src/RimUtinni/AshkarrInhabited/Defs/SettlementManifestDefs/SettlementManifestDefs_TheClaimJump.xml).
 --
--- WHAT THIS FILE DEMONSTRATES:
---   * an open-air district (no perimeter wall at all) next to two small
---     roofed structures - not every district is a single building
---   * scattered decoration (junk heaps) placed by rng with a footprint
---     exclusion check, so nothing lands inside a room it cannot see
---   * the NO-SECURITY-PROPS decision, made explicit rather than silent
+-- REWORKED 2026-09-05 against the owner's live-review verdict
+-- (TILE_STRUCTURE_REVIEW_SAVE_1 - flooring, regular grids, clutter):
+--   FLOORING   the shed floor is salvaged steel plate (FLOOR_PLATE), the forge
+--              floor iron grating (FLOOR_WORK), the shack rust plating (FLOOR).
+--              The lot itself is cleared stony ground with broken-asphalt
+--              patches worn in around the buildings - an outdoor yard, not an
+--              interior, and the one place bare ground is the honest answer.
+--   GRIDS      the shed's stepped shelf row is gone; shelving hugs walls at
+--              random slots, and every heap, wreck and chunk in the lot lands
+--              by seeded scatter in loose clusters.
+--   CLUTTER    real wrecks (a landspeeder hulk, a rusted car), Piled Junk
+--              mineables, slag chunks, barrels, crates, a campfire with
+--              stools, torches in every room, and a fence nobody finished.
 --
--- Reused art only, no new sprites: WALL/DOOR/STORAGE/TABLE/CHAIR/STOVE/
--- LIGHT/SANDBAG all resolve through the existing rimplace palette
--- (palette.json). Run with --tech Neolithic: Junkers scavenge, they do not
--- run a power grid, and Neolithic gives Campfire/Bedroll/TorchLamp - every
--- piece here is un-powered by construction, which is also why this
--- template needs nothing from the (nonexistent) power/pipe-net layer.
---
--- API available: ctx (see luaenv.Ctx), rect, params, rng, role(), note()
+-- The old SANDBAG-as-junk-heap stand-in is retired: the palette now carries
+-- JUNK_PILE (KOTOR_MineableJunk, an impassable mineable) and WRECK/WRECK_BIG
+-- (Core's AncientPodCar - this project's landspeeder reskin - and
+-- AncientRustedCar). Security props: NONE, deliberately (searchesLeavers=false).
+-- --tech Neolithic: Junkers scavenge, they do not run a grid.
 
--- ---------------------------------------------------------------------------
--- helpers
--- ---------------------------------------------------------------------------
-
--- A small roofed, walled, single-door structure. Returns its rect so the
--- caller can furnish the interior and exclude it from later scatter.
-local function place_shed(ctx, x, z, w, h, roleLabel)
-  ctx:room(roleLabel, x, z, w, h, true)
-  ctx:wall_rect(x, z, w, h)
-  ctx:door(x + math.floor(w / 2), z)
-  return { x = x, z = z, w = w, h = h }
-end
-
-local function in_rect(x, z, r)
-  return x >= r.x and x <= r.x + r.w - 1 and z >= r.z and z <= r.z + r.h - 1
-end
-
--- ---------------------------------------------------------------------------
--- the entry point
--- ---------------------------------------------------------------------------
--- The declared canvas floor; the engine checks it before build() runs
--- (TEMPLATE_CANVAS_UNDECLARED_1). `rimplace minrect junkers_scrapyard`.
 function min_rect(params)
-  return 16, 14
+  return 24, 22
 end
 
 function build(ctx)
-  local p = params
   local w, h = rect.w, rect.h
-
-  if w < 16 or h < 14 then
+  if w < 24 or h < 22 then
     ctx:refuse("footprint", string.format(
-      "%dx%d too small for a scrapyard (sorting shed + forge + open lot)", w, h))
+      "%dx%d too small for a scrapyard (shed 11x8 + forge 8x7 abreast, shack, open lot)", w, h))
     return
   end
+  local lot = R(rect.x, rect.z, w, h)
 
-  -- ---- ground cover: the whole lot is cleared dirt/gravel, not paved -----
-  ctx:floor_rect(rect.x, rect.z, w, h)
+  -- ---- the lot: cleared ground, worn to asphalt in patches -----------------
+  floor_worn(ctx, lot, "FLOOR_CHEAP", "FLOOR_YARD", 0.12)
 
-  -- ---- the sorting shed: parts get triaged here before they go anywhere -
-  local shed = place_shed(ctx, rect.x + 1, rect.z + 1, 10, 8, "Storeroom")
+  -- ---- three buildings, each nudged off its anchor so no two yards match ---
+  local shed = R(rect.x + 1 + rng.int(0, 1), rect.z2 - 8 - rng.int(0, 1), 11, 8)
+  local forge = R(rect.x2 - 8 - rng.int(0, 1), rect.z2 - 7 - rng.int(0, 2), 8, 7)
+  local shack = R(rect.x + 1 + rng.int(0, 2), rect.z + 1 + rng.int(0, 1), 6, 6)
+  local keep = {}
+  for _, b in ipairs({ shed, forge, shack }) do
+    keep[#keep + 1] = R(b.x - 2, b.z - 2, b.w + 4, b.h + 4)
+    floor_patch(ctx, R(b.x - 1, b.z - 1, b.w + 2, b.h + 2), "FLOOR_YARD", lot)
+  end
+
+  -- sorting shed: parts get triaged here before they go anywhere
   do
-    local ix, iz, iw, ih = shed.x + 1, shed.z + 1, shed.w - 2, shed.h - 2
-    if ctx:has_role("STORAGE") then
-      local sw = ctx:width_of("STORAGE")
-      local xx = ix
-      while xx <= ix + iw - sw do
-        ctx:place_role("STORAGE", xx, iz)
-        xx = xx + sw
-      end
+    local si = shell(ctx, "Storeroom", shed, { floor = "FLOOR_PLATE", doors = { "S" } })
+    local shelves = along_wall(ctx, "STORAGE", si, "N", rng.int(2, 3), { gap = 1 })
+    shelves = shelves + along_wall(ctx, "STORAGE", si, "W", 1)
+    local ok, tx, tz = try_near(ctx, "TABLE", si.x + math.floor(si.w / 2), si.z + 2, 1, 2, si)
+    if ok then
+      seat_around(ctx, "STOOL", tx, tz, 1, si, 1)
+      seat_around(ctx, "CHAIR", tx, tz, 1, si, 1)
     end
-    if ctx:has_role("TABLE") then ctx:place_role_fit("TABLE", ix, iz + 2, iw, ih - 2) end
-    if ctx:has_role("CHAIR") then ctx:place_role_fit("CHAIR", ix, iz + 2, iw, ih - 2) end
-    if ctx:has_role("LIGHT") then ctx:place_role_fit("LIGHT", ix, iz, iw, ih) end
+    dress(ctx, si, {
+      { role = "CRATE",       n = { 2, 4 }, where = "wall" },
+      { role = "SHELF_SMALL", n = { 1, 2 }, where = "wall" },
+      { role = "SCRAP",       n = { 2, 3 } },
+      { role = "BARREL",      n = 1,        where = "corner" },
+      { role = "LIGHT",       n = 1,        where = "corner" },
+    })
+    wall_lights(ctx, si, rng.int(1, 2))
+    note(string.format("sorting shed: %d shelving unit(s) against the walls, sorting table with a stool", shelves))
   end
 
-  -- ---- the forge lean-to: a second small roofed room, smelting scrap -----
-  local forge = nil
-  local forge_x = rect.x + w - 9
-  if forge_x > shed.x + shed.w + 1 then
-    forge = place_shed(ctx, forge_x, rect.z + 1, 8, 6, "Workshop")
-    local ix, iz, iw, ih = forge.x + 1, forge.z + 1, forge.w - 2, forge.h - 2
-    if ctx:has_role("STOVE") then
-      -- from the far corner backwards, same idiom as dwelling.lua's kitchen
-      local placed = false
-      for zz = iz + ih - 1, iz, -1 do
-        for xx = ix + iw - 1, ix, -1 do
-          if ctx:can_place("STOVE", xx, zz) then
-            ctx:place_role("STOVE", xx, zz)
-            placed = true
-            break
-          end
-        end
-        if placed then break end
-      end
-    end
-    if ctx:has_role("STORAGE") then ctx:place_role_fit("STORAGE", ix, iz, iw, ih) end
-    if ctx:has_role("LIGHT") then ctx:place_role_fit("LIGHT", ix, iz, iw, ih) end
-  else
-    note("forge lean-to skipped: footprint too narrow to clear the sorting shed")
+  -- forge lean-to: scrap gets smelted here
+  do
+    local fi = shell(ctx, "Workshop", forge, { floor = "FLOOR_WORK", doors = { "S" } })
+    local forged = along_wall(ctx, "FORGE", fi, "N", 1)
+    if forged == 0 then forged = along_wall(ctx, "FORGE", fi, "E", 1) end
+    if forged == 0 then note("forge lean-to: the smithy did not fit; room reads as a scrap store") end
+    along_wall(ctx, "STORAGE", fi, "W", 1)
+    dress(ctx, fi, {
+      { role = "BARREL", n = { 1, 2 }, where = "corner" },
+      { role = "SCRAP",  n = { 2, 4 } },
+      { role = "CRATE",  n = 1,        where = "wall" },
+      { role = "STOOL",  n = 1 },
+      { role = "LIGHT",  n = 1,        where = "corner" },
+    })
+    wall_lights(ctx, fi, 1)
   end
 
-  -- ---- open lot: scattered junk heaps, no walls, no roof -----------------
-  -- SANDBAG stands in for an unsorted scrap heap - there is no dedicated
-  -- "junk pile" ThingDef in the palette and this item's brief is reused art
-  -- only, no new sprites. Excluded from both sheds by rect check, not just
-  -- occupancy, so a heap never reads as "inside" a room it cannot see.
-  if ctx:has_role("SANDBAG") then
-    local heaps = rng.int(5, 9)
-    local placed, attempts = 0, 0
-    while placed < heaps and attempts < heaps * 12 do
-      attempts = attempts + 1
-      local xx = rng.int(rect.x + 1, rect.x + w - 2)
-      local zz = rng.int(rect.z + 1, rect.z + h - 2)
-      if not in_rect(xx, zz, shed) and (forge == nil or not in_rect(xx, zz, forge))
-         and ctx:can_place("SANDBAG", xx, zz) then
-        ctx:place_role("SANDBAG", xx, zz)
-        placed = placed + 1
-      end
-    end
-    note(string.format("%d/%d scrap heaps placed in the open lot", placed, heaps))
+  -- the boss's shack: the one cast slot the manifest puts in this district
+  do
+    local bi = shell(ctx, "Bedroom", shack, { floor = "FLOOR", doors = { rng.pick({ "N", "E" }) } })
+    along_wall(ctx, "BED", bi, rng.pick({ "N", "W" }), 1, { face = "wall" })
+    dress(ctx, bi, {
+      { role = "END_TABLE",   n = 1,        where = "wall" },
+      { role = "SHELF_SMALL", n = 1,        where = "wall" },
+      { role = "CRATE",       n = { 1, 2 }, where = "corner" },
+      { role = "STOOL",       n = 1 },
+      { role = "LIGHT",       n = 1,        where = "corner" },
+    })
+    wall_lights(ctx, bi, 1)
   end
 
-  -- ---- security: NONE, deliberately ---------------------------------------
-  -- ownership_settlement_spec.md item 8 asks for "security props" per
-  -- district; The Claim Jump's own manifest sets searchesLeavers=false
-  -- (Inhabited_SecurityProfile_Junkers) - low security, "forgiving". This
-  -- pilot PROVES the negative: no camera, no watchtower, no fence prop is
-  -- placed here on purpose, rather than forcing a security prop onto a
-  -- settlement that canonically waves visitors through both ways. See
-  -- junkers_depot.lua for a sketch of what the vocabulary would look like
-  -- for a future higher-security settlement.
+  -- ---- the open lot -------------------------------------------------------
+  -- wrecks first (biggest footprints get first pick of the ground)
+  local wrecks = 0
+  wrecks = wrecks + scatter(ctx, "WRECK_BIG", inner(lot, 2), 1, { keep_clear = keep, rot = "any", tries = 40 })
+  wrecks = wrecks + scatter(ctx, "WRECK", inner(lot, 2), rng.int(1, 2), { keep_clear = keep, rot = "any", tries = 40 })
+
+  -- junk heaps in two or three loose clusters, never a spread
+  local heaps = 0
+  for i = 1, rng.int(2, 3) do
+    local cx, cz = rng.int(lot.x + 3, lot.x2 - 3), rng.int(lot.z + 3, lot.z2 - 3)
+    heaps = heaps + scatter(ctx, "JUNK_PILE", R(cx - 2, cz - 2, 5, 5), rng.int(2, 4),
+      { keep_clear = keep, tries = 40 })
+  end
+  -- slag everywhere, thin
+  local slag = scatter(ctx, "SCRAP", inner(lot, 1), rng.int(8, 12), { keep_clear = keep })
+  -- a couple of crates and a barrel left out by the shed
+  scatter(ctx, "CRATE", R(shed.x - 2, shed.z - 3, shed.w + 4, 3), rng.int(1, 2))
+  scatter(ctx, "BARREL", R(forge.x - 2, forge.z - 3, forge.w + 4, 3), 1)
+
+  -- the fire pit by the shack, stools pulled up to it
+  do
+    local ok, fx, fz = try_near(ctx, "STOVE", shack.x2 + 4, shack.z + 2, 0, 2, lot)
+    if ok then
+      floor_patch(ctx, R(fx - 1, fz - 1, 3, 3), "FLOOR_CHEAP", lot)
+      local seats = 0
+      for _, c in ipairs(shuffle({ { fx - 1, fz - 1, 1 }, { fx + 1, fz - 1, 3 }, { fx - 1, fz + 1, 1 }, { fx + 1, fz + 1, 3 }, { fx, fz - 2, 0 }, { fx, fz + 2, 2 } })) do
+        if seats >= rng.int(2, 3) then break end
+        if try_place(ctx, "STOOL", c[1], c[2], c[3]) then seats = seats + 1 end
+      end
+      try_near(ctx, "LIGHT", fx + 3, fz, 0, 2, lot)
+    end
+  end
+
+  -- a fence nobody finished, along the south edge east of the shack
+  if ctx:has_role("FENCE") then
+    local fenced = 0
+    for x = shack.x2 + 3, lot.x2 - 1 do
+      if not rng.chance(0.3) and try_place(ctx, "FENCE", x, lot.z, 0) then fenced = fenced + 1 end
+    end
+    note(string.format("boundary: %d fence cell(s) with gaps - nobody finished it", fenced))
+  end
+
+  note(string.format("open lot: %d wreck(s), %d junk heap(s), %d slag chunk(s)", wrecks, heaps, slag))
   note("no security props placed: Junkers/The Claim Jump is low security by design (searchesLeavers=false)")
 end

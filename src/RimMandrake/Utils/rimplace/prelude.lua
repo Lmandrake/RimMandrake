@@ -172,27 +172,70 @@ function scatter(ctx, role, r, n, opts)
   return placed
 end
 
+-- GenAdj.AdjustForRotation's origin shift (rimplace.defsize._ROT_SHIFT), applied
+-- only on an axis whose ROTATED size is even. Inverted here so a template can
+-- ask "what origin puts this footprint's west/south edge at x0,z0".
+ROT_SHIFT = { [0] = { 0, 0 }, [1] = { 0, -1 }, [2] = { -1, -1 }, [3] = { -1, 0 } }
+
+function rotated_dims(ctx, role, rot)
+  local w, h = ctx:width_of(role), ctx:height_of(role)
+  if rot == 1 or rot == 3 then return h, w end
+  return w, h
+end
+
+-- the origin cell whose rotated footprint has its south-west cell at (x0,z0)
+function origin_for(x0, z0, w, h, rot)
+  local s = ROT_SHIFT[rot % 4]
+  local x = x0 + floor((w - 1) / 2) - ((w % 2 == 0) and s[1] or 0)
+  local z = z0 + floor((h - 1) / 2) - ((h % 2 == 0) and s[2] or 0)
+  return x, z
+end
+
 -- Up to n of a role hugging one wall of interior rect r, at RANDOM slots with
--- at least opts.gap cells between two of them - never a fixed stride.
--- opts.rot defaults to facing away from the wall (a bed's head, a shelf's back).
+-- at least opts.gap free cells between two of them - never a fixed stride.
+-- The footprint is laid so it actually touches the wall whatever its size or
+-- rotation (a 1x2 bedroll on the north wall lands one cell in, head to the
+-- wall). opts.face = "room" (default: a shelf's front, a chair) or "wall"
+-- (a bed's head); opts.rot overrides both.
 function along_wall(ctx, role, r, side, n, opts)
   opts = opts or {}
   if n <= 0 or not ctx:has_role(role) then return 0 end
   local rot = opts.rot
-  if rot == nil then rot = opposite(SIDE_ROT[side]) end
+  if rot == nil then
+    rot = (opts.face == "wall") and SIDE_ROT[side] or opposite(SIDE_ROT[side])
+  end
+  local w, h = rotated_dims(ctx, role, rot)
+  local horizontal = (side == "N" or side == "S")
+  local len, span = (horizontal and r.w or r.h), (horizontal and w or h)
+  if span > len then return 0 end
   local gap = opts.gap or 0
+  local slots = {}
+  for t = 0, len - span do slots[#slots + 1] = t end
+  shuffle(slots)
   local placed, taken = 0, {}
-  for _, c in ipairs(shuffle(wall_cells(r, side))) do
+  for _, t in ipairs(slots) do
     if placed >= n then break end
-    local x, z = c[1], c[2]
     local far = true
-    for _, t in ipairs(taken) do
-      if abs(x - t[1]) + abs(z - t[2]) <= gap then far = false break end
+    for _, u in ipairs(taken) do
+      if not (t + span + gap <= u or u + span + gap <= t) then far = false break end
     end
-    if far and not blocks_a_door(ctx, x, z, r)
-       and try_place(ctx, role, x, z, rot) then
-      placed = placed + 1
-      taken[#taken + 1] = { x, z }
+    if far then
+      local x0, z0
+      if side == "N" then x0, z0 = r.x + t, r.z2 - h + 1
+      elseif side == "S" then x0, z0 = r.x + t, r.z
+      elseif side == "W" then x0, z0 = r.x, r.z + t
+      else x0, z0 = r.x2 - w + 1, r.z + t end
+      local x, z = origin_for(x0, z0, w, h, rot)
+      local clear = true
+      for dx = 0, w - 1 do
+        for dz = 0, h - 1 do
+          if blocks_a_door(ctx, x0 + dx, z0 + dz, r) then clear = false end
+        end
+      end
+      if clear and try_place(ctx, role, x, z, rot) then
+        placed = placed + 1
+        taken[#taken + 1] = t
+      end
     end
   end
   return placed
@@ -211,18 +254,30 @@ function wall_lights(ctx, r, n, role)
   local placed = 0
   for _, s in ipairs(shuffle(slots)) do
     if placed >= n then break end
-    if ctx:wall_attach(role, s[1], s[2], s[3]) then placed = placed + 1 end
+    local d = DIR[s[3]]
+    -- only a WALL takes a lamp; a door or a gap is skipped without a refusal
+    if ctx:role_at(s[1] + d[1], s[2] + d[2]) == "WALL"
+       and ctx:wall_attach(role, s[1], s[2], s[3]) then
+      placed = placed + 1
+    end
   end
   return placed
 end
 
--- Chairs/stools around a table already placed at origin (tx,tz), rot 0,
--- on random sides, each facing the table. Returns how many sat down.
-function seat_around(ctx, role, tx, tz, n, within)
+-- the south-west cell and rotated dims of a role's footprint placed at (x,z,rot)
+function footprint_sw(ctx, role, x, z, rot)
+  local w, h = rotated_dims(ctx, role, rot or 0)
+  local s = ROT_SHIFT[(rot or 0) % 4]
+  local x0 = x + ((w % 2 == 0) and s[1] or 0) - floor((w - 1) / 2)
+  local z0 = z + ((h % 2 == 0) and s[2] or 0) - floor((h - 1) / 2)
+  return x0, z0, w, h
+end
+
+-- Chairs/stools around a TABLE already placed at origin (tx,tz) with rotation
+-- trot, on random sides, each facing the table. Returns how many sat down.
+function seat_around(ctx, role, tx, tz, n, within, trot)
   if n <= 0 or not ctx:has_role(role) then return 0 end
-  local tw, th = ctx:width_of("TABLE"), ctx:height_of("TABLE")
-  local x0 = tx - floor((tw - 1) / 2)
-  local z0 = tz - floor((th - 1) / 2)
+  local x0, z0, tw, th = footprint_sw(ctx, "TABLE", tx, tz, trot or 0)
   local cand = {}
   for x = x0, x0 + tw - 1 do
     cand[#cand + 1] = { x, z0 - 1, 0 }        -- south of the table, facing north
@@ -254,10 +309,22 @@ function dress(ctx, r, spec)
       if type(n) == "table" then n = rng.int(n[1], n[2]) end
       local got = 0
       if s.where == "corner" then
+        -- tuck the WHOLE footprint into the corner: a 3x2 pazaak table's
+        -- origin is not the corner cell, its south-west cell is
+        local rot = s.rot or 0
+        local w, h = rotated_dims(ctx, s.role, rot)
         for _, c in ipairs(corners(r)) do
           if got >= n then break end
-          if not blocks_a_door(ctx, c[1], c[2], r)
-             and try_place(ctx, s.role, c[1], c[2], s.rot or 0) then got = got + 1 end
+          local x0 = (c[1] == r.x) and r.x or (r.x2 - w + 1)
+          local z0 = (c[2] == r.z) and r.z or (r.z2 - h + 1)
+          local x, z = origin_for(x0, z0, w, h, rot)
+          local clear = true
+          for dx = 0, w - 1 do
+            for dz = 0, h - 1 do
+              if blocks_a_door(ctx, x0 + dx, z0 + dz, r) then clear = false end
+            end
+          end
+          if clear and try_place(ctx, s.role, x, z, rot) then got = got + 1 end
         end
       elseif s.where == "wall" then
         for _, side in ipairs(shuffle({ "N", "E", "S", "W" })) do

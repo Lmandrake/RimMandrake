@@ -1,121 +1,143 @@
--- junkers_dwelling_cluster.lua - four small one-room huts in a loose
--- quadrant layout around a shared open-air cooking commons.
+-- junkers_dwelling_cluster.lua - four small huts of unequal size, nudged off a
+-- loose quadrant layout around a shared open-air commons with a fire.
 -- DISTRICT_TEMPLATE_LIBRARY_1, Junkers district #2 (The Claim Jump manifest
 -- slot "dwelling cluster").
 --
--- WHAT THIS FILE DEMONSTRATES, distinct from dwelling.lua's single domicile:
---   * a CLUSTER is several small separate buildings, not one big one -
---     bed count scales across huts rather than rooms within one shell
---   * a deterministic (non-random) layout that still adapts to whatever
---     rect it is given: the corridor between huts is proven empty by
---     construction (the huts' own x-ranges cannot reach it), not by a
---     runtime collision check
---   * a shared, unroofed commons: cooking together outdoors is cheaper art
---     than a fifth building, and fits Junkers' "forgiving" flavour
+-- REWORKED 2026-09-05 against the owner's live-review verdict
+-- (TILE_STRUCTURE_REVIEW_SAVE_1 - flooring, regular grids, clutter):
+--   FLOORING   every hut interior is rust-plating (FLOOR); the commons is
+--              cleared ground worn to asphalt around the fire and the paths
+--              to each door. Nothing inside sits on stony soil.
+--   GRIDS      the huts were four identical squares on a quadrant grid with
+--              beds on a 2-cell stride. Now each hut is 5x5..7x7, its anchor
+--              jittered, its door on whichever side faces the commons, and
+--              beds hug a wall at random slots.
+--   CLUTTER    end tables, crates, small shelves, stools, a wall torch and a
+--              floor torch per hut; the commons has a fire pit with stools,
+--              a table and chairs, a barrel, crates, and fence fragments
+--              between the huts that read as yards.
 --
--- Reused art only: WALL/DOOR/BED/LIGHT/STORAGE/STOVE/TABLE/CHAIR all
--- resolve through the existing palette. Run with --tech Neolithic, same
--- reasoning as junkers_scrapyard.lua: Junkers huts are not powered.
+-- --tech Neolithic, same reasoning as junkers_scrapyard.lua: huts unpowered.
 
--- ---------------------------------------------------------------------------
--- helpers
--- ---------------------------------------------------------------------------
-local function place_hut(ctx, x, z, w, h, beds_needed)
-  ctx:room("Barracks", x, z, w, h, true)
-  ctx:wall_rect(x, z, w, h)
-  ctx:door(x + math.floor(w / 2), z)
-
-  local ix, iz, iw, ih = x + 1, z + 1, w - 2, h - 2
-  local placed = 0
-  if ctx:has_role("BED") then
-    for zz = iz, iz + ih - 1, 2 do
-      for xx = ix, ix + iw - 1, 2 do
-        if placed >= beds_needed then break end
-        if not ctx:occupied(xx, zz) then
-          ctx:place_role("BED", xx, zz)
-          placed = placed + 1
-        end
-      end
-      if placed >= beds_needed then break end
-    end
-    if placed < beds_needed then
-      ctx:refuse("BED", string.format(
-        "%d of %d beds did not fit in this hut", beds_needed - placed, beds_needed))
-    end
-  else
-    note("faction has no BED in its palette - hut left with a bare floor")
-  end
-  if ctx:has_role("STORAGE") then ctx:place_role_fit("STORAGE", ix, iz, iw, ih) end
-  if ctx:has_role("LIGHT") then ctx:place_role_fit("LIGHT", ix, iz, iw, ih) end
-  return placed
+local function hut_door_side(q)
+  -- the side that faces the commons at the centre
+  if q == "NW" then return rng.pick({ "S", "E" }) end
+  if q == "NE" then return rng.pick({ "S", "W" }) end
+  if q == "SW" then return rng.pick({ "N", "E" }) end
+  return rng.pick({ "N", "W" })
 end
 
--- ---------------------------------------------------------------------------
--- the entry point
--- ---------------------------------------------------------------------------
--- The declared canvas floor; the engine checks it before build() runs
--- (TEMPLATE_CANVAS_UNDECLARED_1). `rimplace minrect junkers_dwelling_cluster`.
--- From build()'s own arithmetic: hut = min(floor(dim / 2) - 2, 7) >= 4, both axes.
+local function furnish_hut(ctx, r, beds_needed, q)
+  local side = hut_door_side(q)
+  local hi = shell(ctx, "Barracks", r, { floor = "FLOOR", doors = { side } })
+  -- beds head-to-wall on the walls that do not hold the door
+  local walls = shuffle({ "N", "E", "S", "W" })
+  local beds = 0
+  for _, s in ipairs(walls) do
+    if beds >= beds_needed then break end
+    if s ~= side then
+      beds = beds + along_wall(ctx, "BED", hi, s, beds_needed - beds, { face = "wall", gap = 0 })
+    end
+  end
+  if ctx:has_role("BED") and beds < beds_needed then
+    note(string.format("hut %s: %d of %d beds fitted", q, beds, beds_needed))
+  end
+  dress(ctx, hi, {
+    { role = "END_TABLE",   n = { 0, 1 }, where = "wall" },
+    { role = "SHELF_SMALL", n = { 0, 1 }, where = "wall" },
+    { role = "CRATE",       n = { 1, 2 }, where = "corner" },
+    { role = "STOOL",       n = { 0, 1 } },
+    { role = "LIGHT",       n = 1,        where = "corner" },
+  })
+  wall_lights(ctx, hi, 1)
+  return beds, side
+end
+
+-- From build()'s own arithmetic: two 5-wide huts plus a 3-cell commons gap.
 function min_rect(params)
-  return 12, 12
+  return 15, 15
 end
 
 function build(ctx)
   local p = params
   local w, h = rect.w, rect.h
-  local half_w, half_h = math.floor(w / 2), math.floor(h / 2)
-
-  -- huts are capped at 7x7 so a big rect gives more open ground, not
-  -- oversized single rooms
-  local hut_w = math.min(half_w - 2, 7)
-  local hut_h = math.min(half_h - 2, 7)
-  if hut_w < 4 or hut_h < 4 then
-    ctx:refuse("footprint", string.format(
-      "%dx%d cannot hold four %dx%d-minimum huts in a quadrant layout",
-      w, h, 4, 4))
+  if w < 15 or h < 15 then
+    ctx:refuse("footprint", string.format("%dx%d cannot hold four huts around a commons", w, h))
     return
   end
-
-  ctx:floor_rect(rect.x, rect.z, w, h)
+  local lot = R(rect.x, rect.z, w, h)
+  floor_worn(ctx, lot, "FLOOR_CHEAP", "FLOOR_YARD", 0.08)
 
   local occ = p.occupants or 6
   local beds_per_hut = math.max(1, math.ceil(occ / 4))
 
-  local quadrants = {
-    { x = rect.x + 1,            z = rect.z + 1 },            -- NW
-    { x = rect.x + half_w + 2,   z = rect.z + 1 },             -- NE
-    { x = rect.x + 1,            z = rect.z + half_h + 2 },    -- SW
-    { x = rect.x + half_w + 2,   z = rect.z + half_h + 2 },    -- SE
-  }
-  local total_beds = 0
-  for _, q in ipairs(quadrants) do
-    total_beds = total_beds + place_hut(ctx, q.x, q.z, hut_w, hut_h, beds_per_hut)
+  -- quadrant anchors; each hut takes a random size that still leaves the
+  -- centre band free, and slides off its anchor by up to a cell
+  local half_w, half_h = math.floor(w / 2), math.floor(h / 2)
+  local max_hw, max_hh = math.min(7, half_w - 2), math.min(7, half_h - 2)
+  local huts = {}
+  for _, q in ipairs({ "NW", "NE", "SW", "SE" }) do
+    local hw, hh = rng.int(5, max_hw), rng.int(5, max_hh)
+    local jx, jz = rng.int(0, 1), rng.int(0, 1)
+    local x = (q == "NW" or q == "SW") and (rect.x + jx) or (rect.x2 - hw - jx)
+    local z = (q == "SW" or q == "SE") and (rect.z + jz) or (rect.z2 - hh - jz)
+    huts[#huts + 1] = { q = q, r = R(x, z, hw, hh) }
   end
-  note(string.format("dwelling cluster: 4 huts, %d bed(s) total for %d occupant(s)",
-    total_beds, occ))
 
-  -- ---- shared commons: the vertical gap between the two hut columns ------
-  -- 🔑 by construction (not by a collision check): the hut columns occupy
-  -- x in [1, hut_w] and [half_w+2, half_w+1+hut_w]; this corridor's x-range
-  -- sits strictly between the two, at every z, so it cannot overlap a hut
-  -- regardless of hut_h or which quadrants got built.
-  local corridor = { x = rect.x + half_w - 1, z = rect.z + 1, w = 3, h = h - 2 }
-  local stove_placed = false
-  if ctx:has_role("STOVE") then
-    for zz = corridor.z, corridor.z + corridor.h - 1 do
-      for xx = corridor.x, corridor.x + corridor.w - 1 do
-        if ctx:can_place("STOVE", xx, zz) then
-          ctx:place_role("STOVE", xx, zz)
-          stove_placed = true
-          break
-        end
-      end
-      if stove_placed then break end
+  local total_beds, keep = 0, {}
+  for _, hut in ipairs(huts) do
+    local beds, side = furnish_hut(ctx, hut.r, beds_per_hut, hut.q)
+    total_beds = total_beds + beds
+    keep[#keep + 1] = R(hut.r.x - 1, hut.r.z - 1, hut.r.w + 2, hut.r.h + 2)
+    -- a worn path from the door toward the commons
+    local d = DIR[SIDE_ROT[side]]
+    local cx, cz = center(hut.r)
+    for i = 1, 3 do
+      local px, pz = cx + d[1] * (math.floor(hut.r.w / 2) + i), cz + d[2] * (math.floor(hut.r.h / 2) + i)
+      if in_rect(px, pz, lot) then ctx:floor(px, pz, ctx:role("FLOOR_YARD")) end
     end
   end
-  if ctx:has_role("TABLE") then ctx:place_role_fit("TABLE", corridor.x, corridor.z, corridor.w, corridor.h) end
-  if ctx:has_role("CHAIR") then ctx:place_role_fit("CHAIR", corridor.x, corridor.z, corridor.w, corridor.h) end
-  note("shared cooking commons in the open gap between the four huts - unroofed by design")
+  note(string.format("dwelling cluster: 4 huts of unequal size, %d bed(s) total for %d occupant(s)",
+    total_beds, occ))
+
+  -- ---- the commons: the open centre between the huts ----------------------
+  local cx, cz = center(lot)
+  local commons = R(cx - 3, cz - 3, 7, 7)
+  local fx, fz = jitter(cx, 1), jitter(cz, 1)
+  if try_place(ctx, "STOVE", fx, fz, 0) then
+    floor_patch(ctx, R(fx - 1, fz - 1, 3, 3), "FLOOR_CHEAP", lot)
+    local seats, want = 0, rng.int(3, 4)
+    for _, c in ipairs(shuffle({ { fx - 1, fz - 1, 1 }, { fx + 1, fz - 1, 3 }, { fx - 1, fz + 1, 1 },
+                                 { fx + 1, fz + 1, 3 }, { fx, fz - 2, 0 }, { fx, fz + 2, 2 },
+                                 { fx - 2, fz, 1 }, { fx + 2, fz, 3 } })) do
+      if seats >= want then break end
+      if try_place(ctx, "STOOL", c[1], c[2], c[3]) then seats = seats + 1 end
+    end
+  end
+  -- a table and chairs off to one side of the fire, a barrel, crates, a torch
+  do
+    local trot = rng.int(0, 1)
+    local ok, tx, tz = try_near(ctx, "TABLE", fx + rng.pick({ -3, 3 }), fz + rng.pick({ -2, 2 }), trot, 2, lot)
+    if ok then seat_around(ctx, "CHAIR", tx, tz, rng.int(1, 2), lot, trot) end
+  end
+  scatter(ctx, "BARREL", commons, 1, { keep_clear = keep })
+  scatter(ctx, "CRATE", inner(lot, 1), rng.int(2, 3), { keep_clear = keep })
+  scatter(ctx, "LIGHT", commons, 1, { keep_clear = keep })
+
+  -- fence fragments between neighbouring huts: yards, not walls
+  if ctx:has_role("FENCE") then
+    local fenced = 0
+    for _, pair in ipairs({ { huts[1], huts[2] }, { huts[3], huts[4] } }) do
+      local a, b = pair[1].r, pair[2].r
+      local zz = (a.z == rect.z or a.z == rect.z + 1) and (a.z2 + 1) or (a.z - 1)
+      if rng.chance(0.7) then
+        for x = a.x2 + 2, b.x - 2 do
+          if not rng.chance(0.35) and try_place(ctx, "FENCE", x, zz, 0) then fenced = fenced + 1 end
+        end
+      end
+    end
+    note(string.format("%d fence cell(s) between huts", fenced))
+  end
 
   note("no security props placed: dwelling cluster is residential, not a checkpoint")
 end
