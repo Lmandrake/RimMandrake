@@ -2052,25 +2052,40 @@
     "date": "2026-09-03",
     "sha": "46cc98d3"
   },
+  "src/RimMandrake/Visibility/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "e7fa0af5"
+  },
   "src/RimMandrake/Visibility/Source/ColonyVisibilityRaidPatch.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-03",
-    "sha": "8a24dcd7"
+    "cleanCount": 3,
+    "date": "2026-09-05",
+    "sha": "e7fa0af5"
   },
   "src/RimMandrake/Visibility/Source/GameComponent_ColonyVisibility.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "sha": "a6c78782"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "e7fa0af5"
   },
   "src/RimMandrake/Visibility/Source/SelfTest/Program.cs": {
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "e7fa0af5"
+  },
+  "src/RimMandrake/Visibility/Source/SelfTest/RimMandrakeVisibility.SelfTest.csproj": {
     "cleanCount": 1,
-    "date": "2026-09-03",
-    "sha": "b294390b"
+    "date": "2026-09-05",
+    "sha": "e7fa0af5"
+  },
+  "src/RimMandrake/Visibility/Source/Visibility.csproj": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "e7fa0af5"
   },
   "src/RimMandrake/Visibility/Source/VisibilityModInit.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "sha": "5a040901"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "e7fa0af5"
   },
   "src/RimMandrake/WreckedMachines/Source/briefs.py": {
     "cleanCount": 1,
