@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-05T08:02:19Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-05T12:21:32Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -360,6 +360,42 @@ kind:     bug
 summary:  spec — RESCOPED 2026-09-05, larger than first filed
 prose:    infrastructure/state/items/ARMOURY_SWMODS_DONOR_GAP_1.md
 
+## INHABITED_AUGMENTATION_BUILD_1 Build the tile-augmentation content: rimplace templates + Inhabited wiring for the biome/faction/latitude augmentation dream
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/INHABITED_AUGMENTATION_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/INHABITED_AUGMENTATION_BUILD_1.md
+
+## ORACLE_OHM_PROMPT_STILL_SHIP_1 OracleRegisterBlocks.Ohm prompt string still tells the LLM Ohm 'believes he IS the ship / first-person-as-hull' - compiled behaviour contradicting the re-scope
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  (no items/ORACLE_OHM_PROMPT_STILL_SHIP_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ORACLE_OHM_PROMPT_STILL_SHIP_1.md
+
+## NINEFOLD_MISSING_EVENT_HOOKS_1 Ninefold has NO event hook for battle, trade, launch/rooted or droid-online - four gods (Sh'kaar, Mob'Unloo, Ta'Baa, Ohm) never move; the theology is half-wired
+state:    doing
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     bug
+summary:  (no items/NINEFOLD_MISSING_EVENT_HOOKS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/NINEFOLD_MISSING_EVENT_HOOKS_1.md
+
+## VAULT_THAW_QUEST_FAMILY_1 Six Forsaken vault layouts exist but nothing makes them play - no QuestScriptDef family for thaw/reversal/sleepers/ship-claim/Reclamation
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Full design + build record: design/Jawa/worldbuilding/vaultthawquestfamily.md.
+prose:    infrastructure/state/items/VAULT_THAW_QUEST_FAMILY_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -406,86 +442,6 @@ _none._
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
 
-## RESEARCH_TAB_VIEWCOORD_COLLISION_1 Two research rows overlap at (2,0) in RUT_Tree_Hearth after tab consolidation - AdvancedShowers vs VCE_StewCooking
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/RESEARCH_TAB_VIEWCOORD_COLLISION_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/RESEARCH_TAB_VIEWCOORD_COLLISION_1.md
-
-## FIREECOLOGY_BURNEDDEF_FLAMMABLE_1 RSW_FE FireEcology terrains report 'burnedDef is flammable' ConfigError - intended or fix?
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/FIREECOLOGY_BURNEDDEF_FLAMMABLE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/FIREECOLOGY_BURNEDDEF_FLAMMABLE_1.md
-
-## NINEFOLD_ENUM_ORDER_SAVE_TRAP_1 Ninefold satiation/mood saved by God enum ORDINAL - reordering the enum silently corrupts per-god values on load
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/NINEFOLD_ENUM_ORDER_SAVE_TRAP_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/NINEFOLD_ENUM_ORDER_SAVE_TRAP_1.md
-
-## PROPERTY_SCRIBE_AND_WITNESS_INVARIANTS_1 RM_Property: two low-severity invariant gaps (ClaimRecord Situational-on-load; witness entries unbounded until an unwired reader)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/PROPERTY_SCRIBE_AND_WITNESS_INVARIANTS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PROPERTY_SCRIBE_AND_WITNESS_INVARIANTS_1.md
-
-## DROID_DATASPIKE_SURVIVES_FAILON_1 DWDataSpike item is NOT destroyed when the job aborts via FailOn - contradicts its 'destroyed regardless of outcome' contract, allows free reuse
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DROID_DATASPIKE_SURVIVES_FAILON_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DROID_DATASPIKE_SURVIVES_FAILON_1.md
-
-## DROID_PSYCHICENTROPY_NULL_GAP_1 Droidworks null-backfills pawn.relations for droids but not pawn.psychicEntropy (allocated in the same IsFlesh block) - latent NRE if a droid ever gets a psycast
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DROID_PSYCHICENTROPY_NULL_GAP_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DROID_PSYCHICENTROPY_NULL_GAP_1.md
-
-## DEAD_PYTHON_CANDIDATES_VERIFY_1 23 Utils .py scripts have zero import/invocation hits - verify individually before any deletion (agent's 'in CODE_REVIEW_STATUS = live' reasoning was invalid)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DEAD_PYTHON_CANDIDATES_VERIFY_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DEAD_PYTHON_CANDIDATES_VERIFY_1.md
-
-## INHABITED_AUGMENTATION_BUILD_1 Build the tile-augmentation content: rimplace templates + Inhabited wiring for the biome/faction/latitude augmentation dream
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/INHABITED_AUGMENTATION_BUILD_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/INHABITED_AUGMENTATION_BUILD_1.md
-
 ## PLOT_MECHANISM_MODS_WAVE_1 Build wave: LLM raid-redesigner + post-battle/event hostility creation + plot-gap mods (from plot_mechanisms_wave.md)
 state:    proposed
 row:      unassigned
@@ -495,73 +451,3 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/PLOT_MECHANISM_MODS_WAVE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PLOT_MECHANISM_MODS_WAVE_1.md
-
-## ORACLE_OHM_PROMPT_STILL_SHIP_1 OracleRegisterBlocks.Ohm prompt string still tells the LLM Ohm 'believes he IS the ship / first-person-as-hull' - compiled behaviour contradicting the re-scope
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/ORACLE_OHM_PROMPT_STILL_SHIP_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ORACLE_OHM_PROMPT_STILL_SHIP_1.md
-
-## UI_APPEARANCE_BUILD_1 Build the campaign UI shell: mandrake.rut.menushell (backgrounds/tips/title) + mandrake.rm.rustchrome (rust UI repaint + colour DLL) per ui_appearance_spec.md
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/UI_APPEARANCE_BUILD_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/UI_APPEARANCE_BUILD_1.md
-
-## NINEFOLD_MISSING_EVENT_HOOKS_1 Ninefold has NO event hook for battle, trade, launch/rooted or droid-online - four gods (Sh'kaar, Mob'Unloo, Ta'Baa, Ohm) never move; the theology is half-wired
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/NINEFOLD_MISSING_EVENT_HOOKS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/NINEFOLD_MISSING_EVENT_HOOKS_1.md
-
-## VAULT_THAW_QUEST_FAMILY_1 Six Forsaken vault layouts exist but nothing makes them play - no QuestScriptDef family for thaw/reversal/sleepers/ship-claim/Reclamation
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/VAULT_THAW_QUEST_FAMILY_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/VAULT_THAW_QUEST_FAMILY_1.md
-
-## INHABITED_CONTENT_DEFS_1 New content defs for the augmentation archetypes: RUT_WindowAdobe (desert window), RSW_BeastNest_Large, per-faction palette materials
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/INHABITED_CONTENT_DEFS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/INHABITED_CONTENT_DEFS_1.md
-
-## RIMPLACE_ENGINE_DELTAS_1 Six rimplace/Inhabited engine deltas that gate the augmentation content - CLEAR directive, RUN-to-map-edge, PAWN/corpse directive, Lua helpers, palette roles, lint + v2 header
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/RIMPLACE_ENGINE_DELTAS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/RIMPLACE_ENGINE_DELTAS_1.md
-
-## PATCH_TARGETS_ABSENT_FROM_LIVE_1 6 patch ops target defs absent from the live 595-mod game (silent no-ops) - triage dead-vs-mod-missing
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/PATCH_TARGETS_ABSENT_FROM_LIVE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PATCH_TARGETS_ABSENT_FROM_LIVE_1.md
