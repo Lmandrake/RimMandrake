@@ -44,6 +44,34 @@ and nowhere else; never restate a model choice outside it.
   fingerprint matches the live mod set; the frozen `official` dump is the sole
   design target (`GAME_STATE_WORKFLOW.md`).
 
+## In-game LLM access is the Claude Code CLI, never a hosted API key — owner, 2026-09-05
+
+Every mod that calls out to an LLM (the Oracle, the raid-redesigner, any future
+consumer) does it by shelling out to **`claude -p "<prompt>"`** (Claude Code in
+non-interactive mode) as a subprocess, not by making an HTTP call to an
+OpenAI-compatible endpoint. Owner, verbatim: *"Claude Code in non-interactive
+mode (`claude -p "..."`) authenticates via your claude.ai login and can be
+called from a shell script without any API key."*
+
+- ⛔ **Supersedes `OracleClient`'s original HTTP/OpenAI-compatible design**
+  (`design/RimMandrake/llm_ingame_wiring_spec.md` §1, `src/RimMandrake/Oracle`'s
+  `OracleHttpClient`) — no base URL, no model string, no API key field, no local
+  Ollama fallback. The two laws in that spec (text/menu authority only; the
+  game is whole with the LLM absent) and the async/timeout/kill-switch
+  threading shape are UNCHANGED — only the transport (HTTP → subprocess) moves.
+- The game process (Mono/Unity on the owner's Windows machine) launches `claude
+  -p` via `System.Diagnostics.Process`, same off-tick `Task`-based async
+  pattern already built, reading stdout instead of an HTTP response body.
+  Whoever rebuilds `OracleHttpClient` against this: verify the exact
+  invocation and output shape against a real local `claude -p` call before
+  wiring it — do not assume flags or JSON structure from this note.
+- **New environment dependency this creates**: the owner's machine must have
+  Claude Code installed and logged in for any consumer to work at all — this
+  is now a fact about his machine, not a config value in Mod Settings.
+- Affects `ORACLE_EXPERIMENT_SPIKE_1` (client rewrite owed) and
+  `PLOT_MECHANISM_MODS_WAVE_1` Part 1 (the raid-redesigner's Oracle calls ride
+  whatever `OracleClient` becomes).
+
 ## Shipping names are three-tier — owner, 2026-08-30
 
 Every NEW packageId, defName, C# namespace and mod folder uses the tier

@@ -47,11 +47,19 @@ and rule" instruction) to split the doc's scope:**
      redesign layer (when it lands) upgrades the letter, not required for this
      item's own criteria.
 
-**OUT OF SCOPE, explicitly HELD pending the owner's own Oracle-promotion
-decision** (a cost/API-key call, not a build call): Part 1's raid-redesign
-layer proper — Harmony seams A/B/C, the JSON prompt/response contract, the
-letter rewrite, the recall-and-nickname mechanic. `mandrake.rm.oracle` is not
-in the live 595-mod list; do not build against it landing.
+**OUT OF SCOPE, explicitly HELD** — Part 1's raid-redesign layer proper:
+Harmony seams A/B/C, the JSON prompt/response contract, the letter rewrite,
+the recall-and-nickname mechanic. Two updates since this was first written:
+- `mandrake.rm.oracle` was **promoted to the live ModsConfig.xml** the same
+  session (owner: "Promote the mod.", 596→597 mods, commit `806c069d`) — the
+  mod-list gate is clear.
+- ⛔ **The doc's `OracleHttpClient` design (§1.2's assumption of an HTTP call
+  through `OracleHttpClient`) is SUPERSEDED, owner 2026-09-05**: no API key,
+  no OpenAI-compatible endpoint. All LLM access now shells out to `claude -p
+  "<prompt>"` (Claude Code CLI, non-interactive, the owner's claude.ai login,
+  no key) — see CLAUDE.md and `ORACLE_EXPERIMENT_SPIKE_1`'s supersession
+  note. Part 1 still HELD, but now on the `OracleHttpClient` rewrite landing,
+  not on mod-list promotion or an API key.
 
 **NOT this item, filed separately if picked up:** Part 3's plot-gap backlog —
 gap #3 (verify the pursuit's dark-tile pause exists in the ported ScenPart)

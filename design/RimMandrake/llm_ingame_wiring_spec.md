@@ -4,7 +4,16 @@
      raids, and provide real in game content specialization on an infrequent cadence (event
      triggered)." RimMandrake tier: the wiring is campaign-agnostic plumbing; the consumers
      (gods, raids, flavor) are campaign layers. Consumes: nine_voices_cast_bible.md (the cast
-     law), sarlacc_spec.md §5 (a future consumer). -->
+     law), sarlacc_spec.md §5 (a future consumer).
+
+     SUPERSEDED IN PART, owner 2026-09-05 (see CLAUDE.md "In-game LLM access is
+     the Claude Code CLI, never a hosted API key"): §1's transport (async HTTP
+     to an OpenAI-compatible endpoint, base URL / model / API key config)
+     is replaced by shelling out to `claude -p "<prompt>"` (Claude Code
+     non-interactive mode, authenticates via the owner's claude.ai login, no
+     API key). The two laws below, the threading/timeout/kill-switch shape,
+     and every consumer-facing contract are UNCHANGED — only §1's transport
+     layer needs a rewrite. -->
 # The Oracle — in-game LLM wiring
 
 ## 0. The two laws over everything
@@ -23,11 +32,18 @@
 
 ## 1. Architecture — `RimMandrake.Oracle` (companion module)
 
+⛔ **SUPERSEDED, owner 2026-09-05**: `OracleClient` is no longer an HTTP client.
+It shells out to `claude -p "<prompt>"` (Claude Code CLI, non-interactive,
+authenticates via the owner's claude.ai login) via `System.Diagnostics.Process`
+and reads stdout — no base URL, no model string, no API key, no local Ollama.
+The diagram below is otherwise unchanged; only the `OracleClient` box's
+transport differs from what it says.
+
 ```
 game event ──► OracleRequest (consumer id, context slots, fallback text)
      ──► PromptAssembler   one persona/template block + the context, NEVER the whole cast
-     ──► OracleClient      async HTTP, OpenAI-compatible; default local Ollama;
-                           fire-and-forget Task, hard timeout, one retry
+     ──► OracleClient      async subprocess: `claude -p "<prompt>"` via Process,
+                           reads stdout; fire-and-forget Task, hard timeout, one retry
      ──► Validator         per-consumer: register lint / menu range-check
      ──► MainThreadQueue   delivery next tick or later (letters don't care)
      └─► on ANY failure: the fallback text ships and nothing logs to the player
@@ -40,9 +56,13 @@ game event ──► OracleRequest (consumer id, context slots, fallback text)
   chatter. A hard budget (calls per in-game day, per consumer) in settings;
   exceeding it silently falls back. Infrequency is the owner's stated design,
   not a limitation.
-- **Config surface:** base URL, model, API key (blank = local), per-consumer
-  enable flags, the budget, and a global kill-switch. Defaults to local
-  Ollama; any OpenAI-compatible endpoint works.
+- **Config surface (superseded):** ~~base URL, model, API key (blank = local),
+  per-consumer enable flags, the budget, and a global kill-switch. Defaults to
+  local Ollama; any OpenAI-compatible endpoint works.~~ No base URL, model or
+  API key field exists now — `claude -p` needs none of them. Per-consumer
+  enable flags, the budget and the kill-switch are unchanged. New requirement:
+  the Claude Code CLI must be installed and logged in on the owner's machine
+  — a fact about his environment, not a Mod Settings field.
 - **Memory:** a bounded `GameComponent` store saved in the save file —
   per-god rolling memory lines, named antagonists, delivered-fragment
   history. Hard caps (N lines each); the LLM sees only its own consumer's
@@ -121,6 +141,12 @@ filled, lengths capped, no def names accepted from the model.
 1. ✅ **Host: CLOUD API KEY** — quality is the point; key lives in mod
    settings; the endpoint stays OpenAI-compatible-configurable so local
    remains a fallback posture, never the design target.
+   ⛔ **SUPERSEDED, owner 2026-09-05**: no API key, no endpoint config at all.
+   Host is now the Claude Code CLI (`claude -p`) on the owner's own machine,
+   authenticated via his claude.ai login. "Quality is the point" still holds
+   — this ships a real hosted model, just reached by subprocess instead of a
+   key-bearing HTTP call. See CLAUDE.md's "In-game LLM access is the Claude
+   Code CLI, never a hosted API key".
 2. ✅ **Sequencing, owner verbatim:** *"Let's experiment first with just the
    oracle concept to test out llm work."* ⇒ Neither dormant-ship nor
    consumer-live is decided yet — an **experiment spike comes first**

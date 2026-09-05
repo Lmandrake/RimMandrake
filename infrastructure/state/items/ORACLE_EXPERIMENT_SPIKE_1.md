@@ -4,6 +4,20 @@ Filed thin (no spec/verify/criteria) — FOUNDRY decided the shape below and
 proceeded per CHARTER. Spec: `design/RimMandrake/llm_ingame_wiring_spec.md`.
 Cast: `design/RimMandrake/nine_voices_cast_bible.md`.
 
+⛔ **SUPERSEDED IN PART, owner 2026-09-05** (see CLAUDE.md "In-game LLM access
+is the Claude Code CLI, never a hosted API key"): everything below about
+`OracleHttpClient` being an OpenAI-compatible HTTP client, an API key, a base
+URL, or a local Ollama fallback is the OLD transport. The mod now needs to
+shell out to `claude -p "<prompt>"` (Claude Code CLI, non-interactive,
+authenticates via the owner's claude.ai login, no key) via
+`System.Diagnostics.Process` instead. The register-lint Validator, the ONE
+Ohm consumer, the two debug-action verification hooks, and everything already
+proven about the async/fallback/kill-switch shape are UNCHANGED — this is a
+transport rewrite, not a redesign. Owner: `mandrake.rm.oracle` was also
+**promoted to the live ModsConfig.xml** the same session (596→597 mods,
+commit `806c069d`) — it is inert until this rewrite lands and a real
+`claude` CLI session is available on his machine.
+
 ## spec
 Build the smallest real slice of the Oracle architecture (spec §1): a thin
 OpenAI-compatible chat-completions client, the register-lint Validator, and
@@ -38,20 +52,35 @@ owner's next move once he has this to look at, per §5.2's own wording
    (every fallback path in `OracleGameComponent` logs one; their total
    absence is itself proof the success path ran, since the branches are
    exhaustive).
-3. **Live cloud trial** — NOT DONE. Needs an API key in Mod Settings, which
-   is the owner's to supply. Everything up to this point is proven; this step
-   and the v1 posture decision are next, and are his call.
+3. **Live cloud trial** — SUPERSEDED as written (was: needs an API key in Mod
+   Settings). Now needs `OracleHttpClient` rewritten to shell out to `claude
+   -p` (see the supersession note at the top of this file) and a real `claude`
+   CLI session logged in on the owner's machine — no API key involved at all.
+   Everything up to this point (the client shape, the validator, the ONE
+   consumer) is proven at the architecture level; the transport underneath it
+   needs to be rebuilt before this step can run.
 
 ## criteria
-- [x] Thin OpenAI-compatible client, hand-rolled JSON (see notes — a real
-      JSON library would have shipped a DLL RimWorld's own Mono BCL doesn't
-      carry and thrown at runtime despite compiling clean).
-- [x] ONE consumer (Ohm) end to end: persona block + law → HTTP call →
-      register lint → letter, with a fallback on every failure path.
+- [x] Thin client, hand-rolled JSON (see notes — a real JSON library would
+      have shipped a DLL RimWorld's own Mono BCL doesn't carry and thrown at
+      runtime despite compiling clean). ⚠️ Built as OpenAI-compatible HTTP;
+      superseded — the JSON-handling lesson carries forward, the transport
+      does not.
+- [x] ONE consumer (Ohm) end to end: persona block + law → call → register
+      lint → letter, with a fallback on every failure path. (Proven against
+      the old HTTP transport; the shape carries forward to the subprocess
+      rewrite unchanged.)
 - [x] Offline selftest: 5/5.
 - [x] Mock-endpoint quicktest: delivered letter's text is the mock server's
-      exact marker string, read back via `rimworld/list_letters`.
-- [ ] Cloud key trial — owner's to run.
+      exact marker string, read back via `rimworld/list_letters`. (Proved the
+      OLD transport only — a subprocess needs its own mock/stub strategy,
+      not a local HTTP stub.)
+- [ ] **NEW, owed**: rewrite `OracleHttpClient` to invoke `claude -p` via
+      `System.Diagnostics.Process` instead of `HttpClient`. Verify the exact
+      CLI invocation and stdout shape against a real local `claude -p` call
+      first — do not assume flags.
+- [ ] Live trial against the real `claude` CLI — owner's machine needs it
+      installed and logged in; no key to supply.
 - [ ] v1 posture (dormant-ship vs consumer-live) — owner's ruling, per spec §5.2.
 
 ## notes
