@@ -1064,20 +1064,30 @@
     "date": "2026-09-05",
     "sha": "30f4d18a"
   },
-  "src/RimMandrake/Spikes/Spike1_TerrainMimic.cs": {
+  "src/RimMandrake/Spikes/README.md": {
     "cleanCount": 1,
-    "date": "2026-09-04",
-    "sha": "43f96b1b"
+    "date": "2026-09-05",
+    "sha": "7abf4a85"
+  },
+  "src/RimMandrake/Spikes/Spike1_TerrainMimic.cs": {
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "7abf4a85"
   },
   "src/RimMandrake/Spikes/Spike2_PitCellHolding.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "sha": "43f96b1b"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "7abf4a85"
   },
   "src/RimMandrake/Spikes/Spike3_ThreatPointReplace.cs": {
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "7abf4a85"
+  },
+  "src/RimMandrake/Spikes/Spikes.csproj": {
     "cleanCount": 1,
-    "date": "2026-09-04",
-    "sha": "43f96b1b"
+    "date": "2026-09-05",
+    "sha": "7abf4a85"
   },
   "src/RimMandrake/StrandedQuest/Defs/HistoryEventDefs/HistoryEvents_Stranded.xml": {
     "cleanCount": 1,
