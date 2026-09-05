@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-05T14:47:58Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: OWNER
+as-of: 2026-09-05T14:52:30Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: OWNER
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -360,6 +360,15 @@ kind:     task
 summary:  (no items/INHABITED_AUGMENTATION_BUILD_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/INHABITED_AUGMENTATION_BUILD_1.md
 
+## PLOT_MECHANISM_MODS_WAVE_1 Build wave: LLM raid-redesigner + post-battle/event hostility creation + plot-gap mods (from plot_mechanisms_wave.md)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Full design: design/Jawa/proposals/plotmechanismswave.md (333 lines, all
+prose:    infrastructure/state/items/PLOT_MECHANISM_MODS_WAVE_1.md
+
 ## VAULT_THAW_QUEST_FAMILY_1 Six Forsaken vault layouts exist but nothing makes them play - no QuestScriptDef family for thaw/reversal/sleepers/ship-claim/Reclamation
 state:    doing
 row:      unassigned
@@ -395,7 +404,7 @@ prose:    infrastructure/state/items/ARMOURY_MELEEPOWER_STALE_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## TILEGEN_SILENT_REUSE_1 jawa/world_tile_map_generate fabricates success on the second distinct-tile call per session
 state:    ready
@@ -403,7 +412,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     bug
-waiting:  needs `deploy`, game is UP
+waiting:  needs `deploy`, game is DOWN
 summary:  Filed by BENCH: jawa/worldtilemapgenerate fabricates success on its
 prose:    infrastructure/state/items/TILEGEN_SILENT_REUSE_1.md
 
@@ -414,16 +423,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## PLOT_MECHANISM_MODS_WAVE_1 Build wave: LLM raid-redesigner + post-battle/event hostility creation + plot-gap mods (from plot_mechanisms_wave.md)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/PLOT_MECHANISM_MODS_WAVE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PLOT_MECHANISM_MODS_WAVE_1.md
 
 ## BRIDGE_NTDLL_CRASH_TILEGEN_1 RimWorld crashed twice with identical ntdll.dll fault signature during TILEGEN_SILENT_REUSE_1 live verify
 state:    proposed

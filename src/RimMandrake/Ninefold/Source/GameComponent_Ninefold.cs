@@ -62,11 +62,23 @@ namespace RimMandrake.Ninefold
             // instance, before anything reads/writes satiation[(int)god].
             GodExtensions.CheckOrdinalContract();
 
-            // NINEFOLD_MISSING_EVENT_HOOKS_1: a fresh colony has not "sat
-            // still" yet -- start the rooted clock at construction rather
-            // than at 0 (tick 0), which would make Ta'Baa erode from before
-            // the game even began on a load of an existing save.
-            lastLaunchTick = Find.TickManager.TicksGame;
+            // The rooted clock (lastLaunchTick) is NOT read from Find here:
+            // this ctor runs inside Game.FillComponents, before Find.TickManager
+            // exists, so reading it throws an NRE that fails the whole component
+            // (measured 2026-09-05, full-list crash). It is started in
+            // FinalizeInit (Find is ready there) for a fresh game, and restored
+            // by ExposeData on a load; it defaults to 0 until then.
+        }
+
+        // NINEFOLD_MISSING_EVENT_HOOKS_1: a fresh colony has not "sat still" yet,
+        // so start Ta'Baa's rooted clock at game start rather than tick 0 (which
+        // would erode him from before the game began). FinalizeInit runs after
+        // the game is built and Find.TickManager is available, for both a new
+        // game and a load; the `== 0` guard leaves a loaded save's own value be.
+        public override void FinalizeInit()
+        {
+            if (lastLaunchTick == 0 && Find.TickManager != null)
+                lastLaunchTick = Find.TickManager.TicksGame;
         }
 
         // Convenience accessor for the event hooks (Patch_*.cs) so every hook
