@@ -53,10 +53,9 @@ def main():
 
     north = south.rotate(180)
 
-    os.makedirs(OUT_DIR, exist_ok=True)
-    north.save(OUT)
-
-    # Validate against the donor, not against taste.
+    # Validate against the donor, not against taste. Checked BEFORE anything is
+    # written — a script that saves first and validates after does not "refuse
+    # to write", whatever its docstring claims.
     checks = []
     checks.append(("canvas matches donor", north.size == south.size, f"{north.size}"))
     cov_s, cov_n = coverage(south), coverage(north)
@@ -74,8 +73,15 @@ def main():
     ok = all(c[1] for c in checks)
     for name, passed, detail in checks:
         print(f"  {'PASS' if passed else 'FAIL'}  {name}: {detail}")
-    print(f"{'OK' if ok else 'REJECTED'} -> {OUT}")
-    return 0 if ok else 1
+
+    if not ok:
+        print(f"REJECTED - nothing written -> {OUT}")
+        return 1
+
+    os.makedirs(OUT_DIR, exist_ok=True)
+    north.save(OUT)
+    print(f"OK -> {OUT}")
+    return 0
 
 
 if __name__ == "__main__":

@@ -67,7 +67,7 @@ CONTENTS
 
       WHERE THE DEF IS:
         1.6/Mods/Biotech/Defs/ThingDefs_Buildings/Buildings_Biotech.xml
-          line 212  texPath       Things/Structures/GravshipGenebank/GravshipGenebank
+          line 213  texPath       Things/Structures/GravshipGenebank/GravshipGenebank
           line 214  graphicClass  Graphic_Multi
           line 229  size          (1, 1)
       Neither the def nor its vanilla parent GeneBuildingBase declares rotatable,
