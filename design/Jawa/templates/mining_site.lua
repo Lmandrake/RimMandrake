@@ -187,7 +187,13 @@ function build(ctx)
   local heaps = 0
   for _ = 1, 2 do
     local hu = rng.pick({ rng.int(1, 5), rng.int(11, W - 8) })
-    local hx, hz = fr.cell(hu, rng.int(3, 5))
+    -- v capped at 4, not 5: clump()'s own +/-1 vertical scatter can reach one
+    -- row past this anchor, and the tool shed's rect starts at works_v0 (6) -
+    -- an anchor at v=5 could scatter a chunk into v=6, colliding with the
+    -- shed's wall once shell() builds it later in this same function. Found
+    -- by lint at seed 0/1 (rock_side N): "Wall: footprint overlaps
+    -- ChunkSandstone at (3,6)".
+    local hx, hz = fr.cell(hu, rng.int(3, 4))
     heaps = heaps + clump(ctx, chunk, "SCRAP", hx, hz, rng.int(3, 5), lot)
   end
   for _ = 1, rng.int(1, 2) do
