@@ -1762,7 +1762,11 @@ def main(argv=None):
 
     if a.calibrate:
         db = sqlite3.connect(DB)
-        bad = calibrate(db)
+        fp = dump_fingerprint()
+        with open(os.path.join(fp["capture"]["dir"], "animals.json"), encoding="utf-8") as fh:
+            adoc = json.load(fh)
+        animals = {r.get("defName"): r for r in (adoc.get("animals") or [])}
+        bad = calibrate(db, animals)
         db.close()
         if bad:
             print("CALIBRATION FAILED:\n  " + "\n  ".join(bad))
