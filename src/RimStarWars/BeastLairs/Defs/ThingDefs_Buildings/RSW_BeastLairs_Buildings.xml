@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RSW_BeastNest_Large — structure_procedural_spec.md section 9 NEW content.
+    No ParentName: modeled on the FIELD SHAPE of the stack's existing nest
+    scenery (EggSac [Odyssey], MA_HarpeagleNest [Mythic Ages], MaggotNest
+    [Horrors]) rather than inherited from any of them, since all three are
+    another mod's own pawn-spawner and pulling a cross-mod ParentName would
+    make this a hard dependency on that mod for no reason. Like all three:
+    claimable=false, no designationCategory (never player-buildable — this is
+    map-gen/template scatter only), tickerType Never, canOverlapZones true.
+    Unlike all three: no pawn-spawning comp — this is dressing, not a hive.
+  -->
+  <ThingDef>
+    <defName>RSW_BeastNest_Large</defName>
+    <label>large beast nest</label>
+    <description>A heaped mound of woven brush, shed hide and matted bedding, packed down and worn smooth by something big. Whatever denned here left its mess behind.</description>
+    <thingClass>Building</thingClass>
+    <category>Building</category>
+    <tickerType>Never</tickerType>
+    <useHitPoints>true</useHitPoints>
+    <selectable>true</selectable>
+    <size>(3,3)</size>
+    <rotatable>false</rotatable>
+    <passability>PassThroughOnly</passability>
+    <fillPercent>0.4</fillPercent>
+    <altitudeLayer>Building</altitudeLayer>
+    <canOverlapZones>true</canOverlapZones>
+    <filthLeaving>Filth_RubbleBuilding</filthLeaving>
+    <statBases>
+      <MaxHitPoints>400</MaxHitPoints>
+      <Flammability>1.2</Flammability>
+      <Beauty>-4</Beauty>
+      <Mass>30</Mass>
+    </statBases>
+    <graphicData>
+      <texPath>Things/Building/RSW_BeastNest_Large/RSW_BeastNest_Large</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+      <shaderType>Cutout</shaderType>
+      <drawSize>(3,3)</drawSize>
+    </graphicData>
+    <building>
+      <isEdifice>true</isEdifice>
+      <claimable>false</claimable>
+      <deconstructible>true</deconstructible>
+    </building>
+    <comps>
+      <li Class="CompProperties_SpawnerFilth">
+        <filthDef>Filth_AnimalFilth</filthDef>
+        <spawnCountOnSpawn>6</spawnCountOnSpawn>
+        <spawnRadius>3</spawnRadius>
+        <spawnMtbHours>-1</spawnMtbHours>
+      </li>
+    </comps>
+  </ThingDef>
+
+</Defs>

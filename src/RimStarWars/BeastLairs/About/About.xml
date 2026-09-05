@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimMandrake: RSW — Beast Lairs</name>
+  <packageId>mandrake.rsw.beastlairs</packageId>
+  <author>mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>`RSW_BeastNest_Large` — a 3x3 scenery prop filed against
+`structure_procedural_spec.md` section 9: no large-nest ThingDef existed in the
+593-mod stack, so a lair archetype had to fake the den with bare terrain and a
+hay stack. Modeled on the shape of the stack's existing nest scenery
+(`EggSac` [Odyssey], `MA_HarpeagleNest` [Mythic Ages], `MaggotNest`
+[Horrors]) — a claimable=false, non-buildable (no `designationCategory`)
+Building scattered by map generation, not the player — but with every
+pawn-spawning comp those three carry stripped out: this is dressing for a
+lair whatever occupies it is spawned separately, never a spawner in its own
+right. It carries vanilla's own `CompSpawnerFilth` (used by `Hive`) set to
+`Filth_AnimalFilth`, firing once at `PostSpawnSetup` so the nest scatters its
+own mess the moment it is placed.
+
+RimStarWars tier (world/planet fauna, not campaign-specific) per
+`NAMING_SCHEME_PLAN.md`.</description>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+  </loadAfter>
+</ModMetaData>
