@@ -4892,3 +4892,6 @@
 {"seat":"FOUNDRY","event":"start","id":"UI_SHELL_SLICE_BUILD_1","ts":"2026-09-05T19:33:02Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"check current map/colony state before deciding on a restart for UI_SHELL_SLICE_BUILD_1's coexistence gate","ts":"2026-09-05T19:37:58Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-05T19:38:32Z"}
+{"seat":"BENCH","event":"file","id":"MULTIVIEW_FACING_PIPELINE_1","title":"Productionize the multi-view-mesh facing pipeline: InstantMesh (4 sprites -> volumetric mesh) + meshfuse projection; local/free on the 5080; proven 2/3 facings, fix north/south pose-collision (per-view az bias) + UV-texture path for sharpness (needs nvcc)","kind":"task","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-05T19:49:36Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"restart to deploy today's Ninefold/bridgetools fixes, prove Ninefold hooks + UI Shell RimThemes gate","ts":"2026-09-05T20:07:56Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-05T20:37:34Z"}
