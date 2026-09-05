@@ -28,8 +28,16 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>[JDS] StarWars - Armory</li></mods>
+  <!-- 2026-09-04, ARMOURY_RETIRED_GUARD_FIX_1 (hand-edit, guard only - see
+       Armoury_MeleePower.xml's LIGHTSABER_MELEE_PATCH_FAIL_1 comment for the
+       precedent): "[JDS] StarWars - Armory" (M3.Continued.JangoDsoul.StarWars.BTI)
+       was absorbed and retired; its packageId is not in the live ModsConfig.xml,
+       so PatchOperationFindMod always returned true and never ran this op -
+       no error logged. Swapped to PatchOperationConditional on the actual
+       target def, per patch-operations.md's guidance to test the thing you
+       depend on rather than a retired mod's name. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/DamageDef[defName="RSW_Blaster_Damage"]</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <!-- RSW_Blaster_Damage: Blunt -> Heat -->

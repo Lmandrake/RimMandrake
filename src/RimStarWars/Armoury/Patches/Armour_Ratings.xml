@@ -300,8 +300,18 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
+  <!-- 2026-09-04, ARMOURY_RETIRED_GUARD_FIX_1 (hand-edit, guard only):
+       "Star Wars KotOR Weapons and Armor" (guy762.KotORWeapons) was absorbed
+       and retired; its About.xml <name> is not in the live ModsConfig.xml,
+       so PatchOperationFindMod always returned true and this whole block
+       (46 real balance ops across 15 co-absorbed ThingDefs) silently never
+       ran. These inner ops are plain PatchOperationReplace with no per-op
+       safety net, so the outer gate was swapped for a Conditional on the
+       first concrete defName this block edits rather than just renaming the
+       mod - all 15 defNames are the same absorbed KotOR beskar-armor set and
+       are guaranteed to co-exist or not at all. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_MalgusArmor"]</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <!-- guy762_MalgusArmor [beskar] ArmorRating_Sharp -> 1.00 -->

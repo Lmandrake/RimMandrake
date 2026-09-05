@@ -352,8 +352,18 @@
     </match>
   </Operation>
 
+  <!-- 2026-09-04, ARMOURY_RETIRED_GUARD_FIX_1 (hand-edit, guard only):
+       "Star Wars KotOR Weapons and Armor" (guy762.KotORWeapons) was absorbed
+       and retired; its About.xml <name> is not in the live ModsConfig.xml,
+       so PatchOperationFindMod always returned true and this whole block
+       (73 real balance ops) silently never ran - no error logged. Every
+       inner op below already Conditional-guards its own concrete
+       defName/tools/li node with a nomatch Add, so the outer gate only
+       needs to always run; pointed it at our own always-active mod
+       (mandrake.rsw.armoury's About.xml <name>) instead of the retired
+       donor's name - PatchOperationFindMod matches <name>, not packageId. -->
   <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
+    <mods><li>Jawa Armoury Rebalance</li></mods>
     <match Class="PatchOperationSequence">
       <operations>
         <!-- guy762_vaxe / handle AP -> 1.60 -->
@@ -1268,8 +1278,16 @@
     </match>
   </Operation>
 
+  <!-- 2026-09-04, ARMOURY_RETIRED_GUARD_FIX_1 (hand-edit, guard only):
+       "[JDS] StarWars - Armory" (M3.Continued.JangoDsoul.StarWars.BTI) was
+       absorbed and retired; its packageId is not in the live ModsConfig.xml,
+       so PatchOperationFindMod always returned true and this block silently
+       never ran. Every inner op below already Conditional-guards its own
+       concrete defName/tools/li node with a nomatch Add, so the outer gate
+       only needs to always run; pointed it at our own always-active mod's
+       About.xml <name> instead of the retired donor's name. -->
   <Operation Class="PatchOperationFindMod">
-    <mods><li>[JDS] StarWars - Armory</li></mods>
+    <mods><li>Jawa Armoury Rebalance</li></mods>
     <match Class="PatchOperationSequence">
       <operations>
         <!-- RSW_JDSA_Vibroblade / point AP -> 0.96 -->

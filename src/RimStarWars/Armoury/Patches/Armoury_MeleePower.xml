@@ -145,8 +145,18 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
+  <!-- 2026-09-04, ARMOURY_RETIRED_GUARD_FIX_1 (hand-edit, guard only - see
+       the LIGHTSABER_MELEE_PATCH_FAIL_1 comment below for the precedent on
+       this file): "Star Wars KotOR Weapons and Armor" (guy762.KotORWeapons)
+       was absorbed and retired; its About.xml <name> is not in the live
+       ModsConfig.xml, so PatchOperationFindMod always returned true and this
+       whole block silently never ran. These are plain PatchOperationReplace
+       with no per-op safety net, so the outer gate was swapped for a
+       Conditional on the first concrete tools/li node this block edits -
+       every guy762_v* melee weapon below is the same absorbed KotOR set and
+       is guaranteed to co-exist or not at all. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_vaxe"]/tools/li[label="handle"]/power</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <!-- guy762_vaxe / handle : 12 -> 14 -->
@@ -283,8 +293,16 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>[JDS] StarWars - Armory</li></mods>
+  <!-- 2026-09-04, ARMOURY_RETIRED_GUARD_FIX_1 (hand-edit, guard only):
+       "[JDS] StarWars - Armory" (M3.Continued.JangoDsoul.StarWars.BTI) was
+       absorbed and retired; its packageId is not in the live ModsConfig.xml,
+       so PatchOperationFindMod always returned true and this block silently
+       never ran. Plain PatchOperationReplace, no per-op safety net, so the
+       outer gate was swapped for a Conditional on the first concrete
+       tools/li node - all RSW_JDSA_* weapons below are the same absorbed
+       JDS set and are guaranteed to co-exist or not at all. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_JDSA_Vibroaxe"]/tools/li[label="handle"]/power</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <!-- RSW_JDSA_Vibroaxe / handle : 5 -> 5 -->

@@ -170,8 +170,13 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>[JDS] StarWars - Armory</li></mods>
+  <!-- 2026-09-04, ARMOURY_RETIRED_GUARD_FIX_1 (hand-edit, guard only):
+       "[JDS] StarWars - Armory" (M3.Continued.JangoDsoul.StarWars.BTI) was
+       absorbed and retired; its packageId is not in the live ModsConfig.xml,
+       so PatchOperationFindMod always returned true and this op silently
+       never ran. Swapped to a Conditional on the actual target def. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_JDSA_E-60R_Missile_shot"]/projectile/speed</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <!-- RSW_JDSA_E-60R_Missile_shot : speed 50 -> 12 -->

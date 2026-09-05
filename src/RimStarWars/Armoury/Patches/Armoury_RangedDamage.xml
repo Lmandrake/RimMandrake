@@ -508,8 +508,17 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>[JDS] StarWars - Armory</li></mods>
+  <!-- 2026-09-04, ARMOURY_RETIRED_GUARD_FIX_1 (hand-edit, guard only):
+       "[JDS] StarWars - Armory" (M3.Continued.JangoDsoul.StarWars.BTI) was
+       absorbed and retired; its packageId is not in the live ModsConfig.xml,
+       so PatchOperationFindMod always returned true and this block silently
+       never ran. Plain PatchOperationReplace, no per-op safety net, so the
+       outer gate was swapped for a Conditional on the first concrete
+       projectile def this block edits - all RSW_* blaster bolts below are
+       the same absorbed JDS set and are guaranteed to co-exist or not at
+       all. -->
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_B2-HA_Droid_Wrist_Canno_shot"]/projectile/damageAmountBase</xpath>
     <match Class="PatchOperationSequence">
       <operations>
         <!-- RSW_B2-HA_Droid_Wrist_Canno_shot : 32 -> 33 -->
