@@ -606,6 +606,27 @@ namespace JawaBench.BridgeTools
                 catch (Exception e) { return Fail("GetOrGenerateMap threw: " + e.GetType().Name + ": " + e.Message); }
                 if (map == null) return Fail("GetOrGenerateMap returned null - no MapParent exists at this tile and '" + wod.defName + "' could not be created there. Check the game log.");
 
+                // TILEGEN_SILENT_REUSE_1 - measured 2026-09-04: a second call at a
+                // DIFFERENT tile, same session, has returned a Map whose own .Tile
+                // is still the FIRST call's tile - wasAlreadyGenerated read false,
+                // pawnCount/mapIndex looked plausible, but Find.Maps.Count never
+                // grew and the returned Map was not the one asked for. The root
+                // cause sits somewhere under GetOrGenerateMapUtility/MapGenerator
+                // (vanilla; both read as correct, tile-keyed source at every layer
+                // this session could trace) and was not pinned down further before
+                // this fix - rather than chase it blind, verify what the vanilla
+                // call actually handed back matches what was asked for, and refuse
+                // instead of returning a plausible lie if it does not.
+                if (map.Tile != pt)
+                {
+                    return Fail("GetOrGenerateMap returned a Map for tile " + map.Tile +
+                                ", not the requested tile " + pt + " (TILEGEN_SILENT_REUSE_1 - " +
+                                "the vanilla call handed back a map that does not match what was " +
+                                "asked for; do not trust wasAlreadyGenerated/mapIndex/pawnCount from " +
+                                "this response). Verify independently with rimworld/get_game_info's " +
+                                "mapCount and jawa/map_info before assuming anything generated.");
+                }
+
                 return new
                 {
                     success = true,
