@@ -7,12 +7,30 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-05T13:53:37Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-05T14:06:48Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
-Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
+The first heading below is what `rimflow next --seat BENCH` returns. This file and that command call the same function, so they cannot disagree.
+
+## ORACLE_OHM_PROMPT_STILL_SHIP_1 OracleRegisterBlocks.Ohm prompt string still tells the LLM Ohm 'believes he IS the ship / first-person-as-hull' - compiled behaviour contradicting the re-scope
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  (no items/ORACLE_OHM_PROMPT_STILL_SHIP_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ORACLE_OHM_PROMPT_STILL_SHIP_1.md
+
+## OHM_PROVENANCE_PURGE_1 Purge the crew-belief that Ohm is the ship AND remove all Ohm-change provenance from the docs - current truth only (owner 2026-09-05)
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     fix
+summary:  (no items/OHM_PROVENANCE_PURGE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/OHM_PROVENANCE_PURGE_1.md
 
 # IN PROGRESS
 
@@ -24,7 +42,17 @@ _none._
 
 # WAITING ON A WINDOW — nothing is wrong
 
-_none._
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+
+## NINEFOLD_MISSING_EVENT_HOOKS_1 Ninefold has NO event hook for battle, trade, launch/rooted or droid-online - four gods (Sh'kaar, Mob'Unloo, Ta'Baa, Ohm) never move; the theology is half-wired
+state:    ready
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     bug
+waiting:  needs `deploy`, game is UP
+summary:  Ninefold had zero satiation inputs for 4 of 9 gods — Sh'kaar (battle), Mob'Unloo
+prose:    infrastructure/state/items/NINEFOLD_MISSING_EVENT_HOOKS_1.md
 
 # NOT THIS TARGET
 
