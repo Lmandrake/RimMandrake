@@ -106,4 +106,9 @@ exec systemd-run --user --scope --quiet \
   -p MemoryMax="$MEM_MAX" \
   -p MemorySwapMax="$SWAP_MAX" \
   -p MemoryAccounting=yes \
+  -p OOMPolicy=continue \
   -- "$CLAUDE_BIN" "$@"
+# OOMPolicy=continue (2026-09-05): without it, systemd's default (stop) killed the
+# WHOLE seat when the kernel OOM-killed one runaway python child inside the scope —
+# both live seats died mid-stream that day. With continue, the child dies alone and
+# the seat keeps running; if claude itself is the balloon the outcome is unchanged.
