@@ -166,3 +166,33 @@ OOM-killed) — §5 remainder in progress
 - Cold load relaunched (the load §5 was owed anyway); loader-art capture loop
   running (`Transient/loadercaps/`). Mid-load frame already shows the amber
   tactical orrery loader art rendering on the real stack.
+
+## 2026-09-05 (BENCH) — cold-load verdicts. §5 is done except two map shots.
+
+- **Loader art on a real cold load: MEASURED PASS.** The 596-mod load rendered
+  the amber tactical orrery full-screen; captured frames
+  (`Transient/loadercaps/`, full-res `Transient/foundry_window_check2.png`)
+  match `_artsrc/raw/loader_tactical_raw.png` element-for-element (Star
+  Destroyer inset, glyph clusters, orrery rings).
+- **Theme persistence across restart: MEASURED PASS.** Twice over: RimThemes
+  config carries `curTheme>mandrake.rut.shell§Utinni Shell` pre-launch, and
+  post-restart the picker shows the colourful selected-hex on Utinni Shell's
+  row (screenshot `rimbridge_20260905_151314.png` in the game's Screenshots
+  folder) while every other theme wears grey. Dialog chrome renders themed.
+- **Runtime def presence: MEASURED PASS.** `jawa/get_defs`
+  `VBE.BackgroundImageDef/RUT_BG_ShellIshkoGate` → found, label intact
+  ("1 of 1 def(s) resolved"). With the decompile eligibility analysis above,
+  the background is in VBE's live rotation pool and both pickers.
+- **Post-restart log: clean.** No error naming the mod; the two "Utinni"-ish
+  config errors are the pre-existing AdvancedShowers/VCE_StewCooking research
+  coord collision on `RUT_Tree_Hearth`, not the theme.
+- Clean themed-menu shot post-restart: `rimbridge_20260905_151441.png`.
+  ⚠️ Honest note: B_clean is vanilla-faithful wood, so the menu-button skin is
+  not visually distinguishable from vanilla in a still; the selected-hex +
+  active indicator carry the proof. A B_clean mouseover (strong amber) hover
+  test came back inconclusive — likely focus mechanics, not evidence against.
+- **Remaining, deferred to a map session:** themed **gizmo row** and **float
+  menu** screenshots (§4's last two surfaces) plus RimHUD/Dubs sanity — needs
+  a map, and `start_debug_game_ready` on the full stack killed the game once
+  today with host RAM at 9.4 GB free. Ride the next load round, a
+  minimal-list+theme restart (22 s), or a moment with host headroom.
