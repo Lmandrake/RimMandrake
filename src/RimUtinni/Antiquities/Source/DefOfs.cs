@@ -15,6 +15,12 @@ namespace RimMandrake.Utinni.Antiquities
         public static JobDef RUT_ExamineAntiquity;
     }
 
+    [DefOf]
+    public static class WorkTypeDefOf_Antiquities
+    {
+        public static WorkTypeDef RUT_ExamineAntiquities;
+    }
+
     // The five stages, in order. AntiquityUtility.Stages walks this array --
     // ANTIQUITIES_TREE_BUILD_1's own defNames, never renamed per the
     // owner's unblock caveat (design/Jawa/antiquities_design.md).

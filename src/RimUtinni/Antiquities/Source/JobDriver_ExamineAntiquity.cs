@@ -48,7 +48,14 @@ namespace RimMandrake.Utinni.Antiquities
             yield return Toils_Haul.StartCarryThing(TargetIndex.A);
             yield return Toils_Goto.GotoThing(TargetIndex.B, PathEndMode.InteractionCell);
 
-            int duration = AntiquityUtility.LanguageDone ? HalfDayTicks : FullDayTicks;
+            // design doc section 4.2: "Intellectual + Artistic average" -- found
+            // by code review to be claimed in a comment but never actually wired
+            // up (relevantSkills on the WorkTypeDef only feeds vanilla's
+            // auto-priority assignment, never job speed). Applied for real here:
+            // skill 0 -> 1.5x duration, skill 20 -> 0.5x, linear between.
+            float skillAvg = pawn.skills?.AverageOfRelevantSkillsFor(WorkTypeDefOf_Antiquities.RUT_ExamineAntiquities) ?? 0f;
+            float skillFactor = Mathf.Lerp(1.5f, 0.5f, Mathf.Clamp01(skillAvg / 20f));
+            int duration = Mathf.RoundToInt((AntiquityUtility.LanguageDone ? HalfDayTicks : FullDayTicks) * skillFactor);
             Toil examine = Toils_General.Wait(duration, TargetIndex.B)
                 .FailOnDespawnedOrNull(TargetIndex.B)
                 .WithProgressBarToilDelay(TargetIndex.B);
@@ -70,6 +77,20 @@ namespace RimMandrake.Utinni.Antiquities
 
         private void CompleteReading()
         {
+            // 🔴 Toil.AddFinishAction fires on ANY toil termination -- failure or
+            // interruption exactly as much as natural completion (verified against
+            // Verse/AI/JobDriver.cs: finishActions carry no JobCondition, and
+            // Cleanup runs them unconditionally). Found by code review, not the
+            // earlier live test, which only ever ran the toil to completion.
+            // ticksLeftThisToil only reaches <=0 when the Delay toil actually ran
+            // its full duration (JobDriver.cs decrements it every tick and resets
+            // it to defaultDuration on each new toil) -- draft/undraft, the
+            // station going forbidden, a raid, or any other forced job end during
+            // the wait would otherwise still grant a full read for free.
+            if (ticksLeftThisToil > 0)
+            {
+                return;
+            }
             CompAntiquity comp = Antiquity?.TryGetComp<CompAntiquity>();
             if (comp == null || comp.catalogued)
             {

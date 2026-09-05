@@ -204,3 +204,60 @@ scripts deleted.
 ledger, map reveals, Helix economy, Call-Out, vault hoards, real art, god
 reactions, mood ladder, Recovery Raid, Empire arc) remain separate,
 unscoped future work per the design doc's own build-plan table.
+
+## status 2026-09-05 — three more real findings from independent code review, fixed
+
+Dispatched two independent review agents against the whole slice (they had
+no stake in defending the earlier live-test result and were told explicitly
+to be skeptical of it). Found three real issues the live test hadn't
+exercised:
+
+1. 🔴 **Interruption exploit, high confidence.** `Toil.AddFinishAction`
+   fires on ANY toil termination — failure or interruption exactly as much
+   as natural completion (`Verse/AI/JobDriver.cs`: `finishActions` carry no
+   `JobCondition`, `Cleanup` runs them unconditionally). The live test only
+   ever ran the wait toil to natural completion, so it never caught that
+   draft/undraft, the station going forbidden, a raid, or any other forced
+   job end during the ~60000-tick wait still ran `CompleteReading` in full
+   — free research progress and a catalogued flag for zero read time,
+   trivially discoverable (start the job, immediately draft-undraft).
+   Fixed: guard on `ticksLeftThisToil <= 0` (only true when the Delay toil
+   actually ran its full duration — verified against the same source file,
+   decremented every tick, reset to `defaultDuration` on each new toil).
+2. **"Intellectual + Artistic average" was claimed, never wired.**
+   `relevantSkills` on the WorkTypeDef only feeds vanilla's auto-priority
+   assignment and the work-tab warning icon — it does not touch job speed
+   for a custom JobDriver on its own. The reading duration was flat
+   regardless of skill despite a comment claiming otherwise. Fixed for
+   real: `pawn.skills.AverageOfRelevantSkillsFor(WorkTypeDefOf_Antiquities.
+   RUT_ExamineAntiquities)` now scales duration 1.5x at skill 0 down to
+   0.5x at skill 20 (linear) — an explicit tuning choice, not in the design
+   doc's own numbers, recorded here as such.
+3. **techLevel contradicted the frozen research-normalization manifest.**
+   Religion/Cartography/Voice were hand-picked (Neolithic/Industrial/
+   Spacer) without checking `research_manifest_draft.csv`'s canonical tier
+   grammar (T1/T3/T4 → Industrial/Spacer/Ultra) — the same three defs
+   `RUT_ResearchRetag_Supplement.xml` already patches TO those canonical
+   values. Had ResearchRetag ever deployed alongside Antiquities on the
+   same load, the retag would have silently overwritten what I'd just
+   live-verified, two sources of truth disagreeing. Fixed by correcting
+   the Research.xml to match the manifest exactly (Language/Culture already
+   matched, untouched).
+
+**Not re-run live**: game was up (owner's real campaign, 595 mods) when
+these were found; the DLL fix is deployed-pending (locked while the process
+runs — `deploy_custom_mods.py --mod Antiquities --apply` at the next
+shutdown window; a partial `--apply` attempt tonight correctly aborted
+whole rather than partially deploying). The Research.xml fix WAS deployed
+(copied by hand after the batched tool run aborted on the locked DLL —
+`deploy_custom_mods.py` has no per-file granularity, one locked file stops
+the whole mod's batch). Builds clean
+(`dotnet build ... -c Release`, 0 warnings/errors). Owed at next game-up:
+re-run the same reading-loop test and additionally verify the interruption
+guard (start a read, force-end the job mid-wait via draft/undraft, confirm
+`comp.catalogued` stays false and no progress was added).
+
+Per code-review-status doctrine, fixing a finding does not clean a file —
+`JobDriver_ExamineAntiquity.cs` and `RUT_Antiquities_Research.xml` stay
+DIRTY pending a fresh review pass over the fixed content, not marked clean
+by the same agent that wrote the fix.

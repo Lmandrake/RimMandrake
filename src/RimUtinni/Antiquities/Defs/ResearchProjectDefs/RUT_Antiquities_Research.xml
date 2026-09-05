@@ -23,6 +23,17 @@
   This is the whole mechanism behind "advanced only by applying read
   artifacts, never by lab-hours alone" (design doc section 2) — no
   Harmony patch needed, verified against the shipped RimWorld source.
+
+  techLevel per stage is the CANONICAL tier grammar from
+  RESEARCH_TREE_NORMALIZATION_1's frozen manifest (infrastructure/output/
+  research_manifest_draft.csv, T0-T4 -> Neolithic/Industrial/Industrial/
+  Spacer/Ultra), not a free author choice — a code review caught Religion/
+  Cartography/Voice originally set to whatever read right in isolation
+  (Neolithic/Industrial/Spacer), which directly contradicted
+  RUT_ResearchRetag_Supplement.xml's own patches for the same three defs
+  and would have been silently overwritten the moment ResearchRetag
+  deployed alongside Antiquities. Corrected here so there is one source of
+  truth instead of two disagreeing ones.
 -->
 <Defs>
 
@@ -55,7 +66,7 @@
     <label>religion</label>
     <description>The liturgical register. Shrine sites become readable on the map; the dead stop being props.</description>
     <baseCost>1200</baseCost>
-    <techLevel>Neolithic</techLevel>
+    <techLevel>Industrial</techLevel>
     <tab>RUT_Antiquities</tab>
     <requiredResearchBuilding>RUT_AntiquityCipherBench</requiredResearchBuilding>
     <prerequisites><li>RUT_Antiq_Language</li></prerequisites>
@@ -91,7 +102,7 @@
     <label>cartography</label>
     <description>The secret geography. Vault sites and their access phrases, for a clan that has earned the right to walk in the front door once.</description>
     <baseCost>4000</baseCost>
-    <techLevel>Industrial</techLevel>
+    <techLevel>Spacer</techLevel>
     <tab>RUT_Antiquities</tab>
     <requiredResearchBuilding>RUT_AntiquityCipherBench</requiredResearchBuilding>
     <prerequisites><li>RUT_Antiq_Culture</li></prerequisites>
@@ -109,7 +120,7 @@
     <label>voice</label>
     <description>The living register — how to address an ancient, not just read one. The last partitions accept a challenge phrase instead of a challenge.</description>
     <baseCost>6000</baseCost>
-    <techLevel>Spacer</techLevel>
+    <techLevel>Ultra</techLevel>
     <tab>RUT_Antiquities</tab>
     <requiredResearchBuilding>RUT_AntiquityCipherBench</requiredResearchBuilding>
     <prerequisites><li>RUT_Antiq_Cartography</li></prerequisites>
