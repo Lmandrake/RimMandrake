@@ -50,6 +50,9 @@ namespace RimMandrake.Ninefold
 
         public GameComponent_Ninefold(Game game)
         {
+            // NINEFOLD_ENUM_ORDER_SAVE_TRAP_1: cheap, checked once per game
+            // instance, before anything reads/writes satiation[(int)god].
+            GodExtensions.CheckOrdinalContract();
         }
 
         // Convenience accessor for the event hooks (Patch_*.cs) so every hook
