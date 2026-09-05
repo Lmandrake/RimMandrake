@@ -3042,6 +3042,11 @@
     "date": "2026-09-04",
     "sha": "e81a98b8"
   },
+  "src/RimUtinni/Antiquities/Defs/ResearchProjectDefs/RUT_Antiquities_Research.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "2e3336f4"
+  },
   "src/RimUtinni/Antiquities/Defs/ThingDefs_Buildings/RUT_Antiquities_Buildings.xml": {
     "cleanCount": 1,
     "date": "2026-09-04",
@@ -3068,9 +3073,14 @@
     "sha": "f1a99184"
   },
   "src/RimUtinni/Antiquities/Source/DefOfs.cs": {
+    "cleanCount": 2,
+    "date": "2026-09-04",
+    "sha": "2e3336f4"
+  },
+  "src/RimUtinni/Antiquities/Source/JobDriver_ExamineAntiquity.cs": {
     "cleanCount": 1,
     "date": "2026-09-04",
-    "sha": "f1a99184"
+    "sha": "2e3336f4"
   },
   "src/RimUtinni/Antiquities/Source/WorkGiver_ExamineAntiquity.cs": {
     "cleanCount": 1,
@@ -3163,14 +3173,19 @@
     "sha": "250be7a3"
   },
   "src/RimUtinni/ResearchRetag/About/About.xml": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-04",
-    "sha": "d4af33c4"
+    "sha": "2e3336f4"
   },
   "src/RimUtinni/ResearchRetag/Defs/ResearchTabDefs/RUT_Tree_Defs.xml": {
     "cleanCount": 1,
     "date": "2026-09-04",
     "sha": "53661e66"
+  },
+  "src/RimUtinni/ResearchRetag/Patches/RUT_ResearchRetag_Supplement.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "2e3336f4"
   },
   "src/RimUtinni/ResearchRetag/Patches/RUT_ResearchTabAssign.xml": {
     "cleanCount": 1,
@@ -3183,9 +3198,9 @@
     "sha": "fe15fae0"
   },
   "src/RimUtinni/Rites/Defs/RUT_Rites_Research.xml": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-04",
-    "sha": "fe15fae0"
+    "sha": "2e3336f4"
   },
   "src/RimUtinni/RiverSteam/About/About.xml": {
     "cleanCount": 1,
