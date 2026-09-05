@@ -1757,10 +1757,10 @@
     "sha": "d1c193ae"
   },
   "src/RimMandrake/Utils/code_review_status.py": {
-    "cleanCount": 2,
+    "cleanCount": 3,
     "date": "2026-09-05",
-    "hash": "239f679646022420eff4c8c9c2bd150292bf452de98ddf277e12d959438f420a",
-    "sha": "9ed835fb"
+    "hash": "82bf09dcea009816b47efc8b536471e3bddece5c19ac0d068f8e3a91bb6f241e",
+    "sha": "d0cbc176"
   },
   "src/RimMandrake/Utils/codebase_health.py": {
     "cleanCount": 3,
@@ -2372,6 +2372,12 @@
     "date": "2026-09-03",
     "hash": "8a12c2a13e627290b83b73a3cf0192ff00bcbf2f8771a16b1053c195f248bd86",
     "sha": "e70744ea"
+  },
+  "src/RimMandrake/Utils/selftest_code_review_status.py": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "0d071582d8354dd3dd06dd482ba7c32175d2a605b8673e6aab810296bd34068e",
+    "sha": "d0cbc176"
   },
   "src/RimMandrake/Utils/selftest_codebase_health.py": {
     "cleanCount": 1,
@@ -3266,6 +3272,12 @@
     "date": "2026-09-04",
     "hash": "f6b26113f42a57975b8c11af2d344bd03bf9809d83803373793e4a713403862a",
     "sha": "1cb620ea"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Buildings/Absorbed_KotorCore_Building_MoistureVaporators.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "202f09fe4e8a7c2dd61a2c624d63d7d48f597653c364dc36f709c5e770f3bc0f",
+    "sha": "967759c8"
   },
   "src/RimStarWars/Armoury/Defs/SoundDefs/Absorbed_JDSArmory_Sounds.xml": {
     "cleanCount": 1,

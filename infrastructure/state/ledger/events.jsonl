@@ -4857,3 +4857,19 @@
 {"seat":"BENCH","event":"bridge","state":"taken","purpose":"Deploy 4 fixes (Ninefold DLL, VF, level-up, theme-optional) + Ninefold hook proof after restart","ts":"2026-09-05T17:36:34Z"}
 {"seat":"BENCH","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-09-05T17:36:35Z"}
 {"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","ownerSaid":"bridge is available","ts":"2026-09-05T17:41:14Z"}
+{"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-09-05T17:59:49Z"}
+{"seat":"FOUNDRY","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-09-05T17:59:56Z"}
+{"seat":"FOUNDRY","event":"claim","id":"BRIDGE_NTDLL_CRASH_TILEGEN_1","ts":"2026-09-05T18:00:07Z"}
+{"seat":"FOUNDRY","event":"claim","id":"NINEFOLD_FIRE_HOOK_RATELIMITED_1","ts":"2026-09-05T18:00:08Z"}
+{"seat":"FOUNDRY","event":"claim","id":"QUEUE_DAILY_STALENESS_REVIEW_1","ts":"2026-09-05T18:00:08Z"}
+{"seat":"FOUNDRY","event":"claim","id":"VEHICLE_REFS_UNGUARDED_BREAK_DEBUGMENU_1","ts":"2026-09-05T18:00:09Z"}
+{"seat":"FOUNDRY","event":"start","id":"BRIDGE_NTDLL_CRASH_TILEGEN_1","ts":"2026-09-05T18:03:33Z"}
+{"seat":"FOUNDRY","event":"start","id":"NINEFOLD_FIRE_HOOK_RATELIMITED_1","ts":"2026-09-05T18:03:33Z"}
+{"seat":"FOUNDRY","event":"start","id":"QUEUE_DAILY_STALENESS_REVIEW_1","ts":"2026-09-05T18:03:34Z"}
+{"seat":"FOUNDRY","event":"start","id":"VEHICLE_REFS_UNGUARDED_BREAK_DEBUGMENU_1","ts":"2026-09-05T18:03:34Z"}
+{"seat":"FOUNDRY","event":"claim","id":"NINEFOLD_HOOK_DOWNS_NOT_JUST_DEATHS_1","ts":"2026-09-05T18:06:45Z"}
+{"seat":"FOUNDRY","event":"start","id":"NINEFOLD_HOOK_DOWNS_NOT_JUST_DEATHS_1","ts":"2026-09-05T18:06:46Z"}
+{"seat":"FOUNDRY","event":"claim","id":"MOISTURE_VAPORATOR_WALL_CLIP_1","ts":"2026-09-05T18:06:46Z"}
+{"seat":"FOUNDRY","event":"start","id":"MOISTURE_VAPORATOR_WALL_CLIP_1","ts":"2026-09-05T18:06:46Z"}
+{"seat":"FOUNDRY","event":"close","id":"VEHICLE_REFS_UNGUARDED_BREAK_DEBUGMENU_1","sha":"be00e2c2","ts":"2026-09-05T18:08:53Z"}
+{"seat":"FOUNDRY","event":"close","id":"QUEUE_DAILY_STALENESS_REVIEW_1","sha":"ccf12e3b","ts":"2026-09-05T18:15:58Z"}

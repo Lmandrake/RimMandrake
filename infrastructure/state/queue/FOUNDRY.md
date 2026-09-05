@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-05T17:41:14Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: BENCH
+as-of: 2026-09-05T18:15:58Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -85,6 +85,15 @@ target:   v1
 kind:     build
 summary:  design/Jawa/researchtreetaxonomy.md section 3 defines the manifest schema
 prose:    infrastructure/state/items/RESEARCH_MANIFEST_DRAFT_1.md
+
+## WEAPONS_DONOR_RETIREMENT_1 Retire the 6 weapon donor packs now that mandrake.rsw.armoury absorbed their content
+state:    ready
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     build
+summary:  Retire the 6 weapon donor packs — 1 of 6 broke the owner's live game, reverted
+prose:    infrastructure/state/items/WEAPONS_DONOR_RETIREMENT_1.md
 
 ## DROID_DONOR_PATCH_GATE_1 Patch the 11 ungated ABF/Synstructs sites in absorbed KotOR content, the prerequisite before ABF/Synstructs/Asimov can retire
 state:    ready
@@ -387,6 +396,42 @@ kind:     task
 summary:  Full design + build record: design/Jawa/worldbuilding/vaultthawquestfamily.md.
 prose:    infrastructure/state/items/VAULT_THAW_QUEST_FAMILY_1.md
 
+## BRIDGE_NTDLL_CRASH_TILEGEN_1 RimWorld crashed twice with identical ntdll.dll fault signature during TILEGEN_SILENT_REUSE_1 live verify
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  Filed by FOUNDRY, 2026-09-05, during a live-verify session for
+prose:    infrastructure/state/items/BRIDGE_NTDLL_CRASH_TILEGEN_1.md
+
+## NINEFOLD_FIRE_HOOK_RATELIMITED_1 Fire as a Zizzik/Sh'kaar input needs an incident-level or rate-limited hook - per-fire (FireUtility.TryStartFireIn) would flood satiation in one forest fire
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  NINEFOLDFIREHOOKRATELIMITED1 — hook built, not yet proven live
+prose:    infrastructure/state/items/NINEFOLD_FIRE_HOOK_RATELIMITED_1.md
+
+## NINEFOLD_HOOK_DOWNS_NOT_JUST_DEATHS_1 Ninefold battle hook should fire on a pawn being DOWNED, not only killed - Sh'kaar feeds on violence, and most fights end in downs
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/NINEFOLD_HOOK_DOWNS_NOT_JUST_DEATHS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/NINEFOLD_HOOK_DOWNS_NOT_JUST_DEATHS_1.md
+
+## MOISTURE_VAPORATOR_WALL_CLIP_1 Moisture vaporator graphic extends/clips through an adjacent wall instead of sitting flush
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  (no items/MOISTURE_VAPORATOR_WALL_CLIP_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/MOISTURE_VAPORATOR_WALL_CLIP_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -413,17 +458,7 @@ prose:    infrastructure/state/items/ARMOURY_MELEEPOWER_STALE_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is LOADING. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
-
-## WEAPONS_DONOR_RETIREMENT_1 Retire the 6 weapon donor packs now that mandrake.rsw.armoury absorbed their content
-state:    ready
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     build
-waiting:  needs `game-up`, game is LOADING
-summary:  Retire the 6 weapon donor packs — 1 of 6 broke the owner's live game, reverted
-prose:    infrastructure/state/items/WEAPONS_DONOR_RETIREMENT_1.md
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## TILEGEN_SILENT_REUSE_1 jawa/world_tile_map_generate fabricates success on the second distinct-tile call per session
 state:    ready
@@ -431,7 +466,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     bug
-waiting:  needs `deploy`, game is LOADING
+waiting:  needs `deploy`, game is UP
 summary:  Filed by BENCH: jawa/worldtilemapgenerate fabricates success on its
 prose:    infrastructure/state/items/TILEGEN_SILENT_REUSE_1.md
 
@@ -442,66 +477,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## BRIDGE_NTDLL_CRASH_TILEGEN_1 RimWorld crashed twice with identical ntdll.dll fault signature during TILEGEN_SILENT_REUSE_1 live verify
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     spec, verify and criteria all present
-summary:  Filed by FOUNDRY, 2026-09-05, during a live-verify session for
-prose:    infrastructure/state/items/BRIDGE_NTDLL_CRASH_TILEGEN_1.md
-
-## NINEFOLD_FIRE_HOOK_RATELIMITED_1 Fire as a Zizzik/Sh'kaar input needs an incident-level or rate-limited hook - per-fire (FireUtility.TryStartFireIn) would flood satiation in one forest fire
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/NINEFOLD_FIRE_HOOK_RATELIMITED_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/NINEFOLD_FIRE_HOOK_RATELIMITED_1.md
-
-## QUEUE_DAILY_STALENESS_REVIEW_1 Daily staleness review: surface items idle in doing/blocked past N days, and mis-tagged needs/for, so stalls stop rotting silently
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/QUEUE_DAILY_STALENESS_REVIEW_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/QUEUE_DAILY_STALENESS_REVIEW_1.md
-
-## VEHICLE_REFS_UNGUARDED_BREAK_DEBUGMENU_1 Our mods hard-reference Vehicles.VehiclePawn unguarded - breaks the whole debug menu when Vehicle Framework is absent (e.g. minimal list)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/VEHICLE_REFS_UNGUARDED_BREAK_DEBUGMENU_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/VEHICLE_REFS_UNGUARDED_BREAK_DEBUGMENU_1.md
-
-## NINEFOLD_HOOK_DOWNS_NOT_JUST_DEATHS_1 Ninefold battle hook should fire on a pawn being DOWNED, not only killed - Sh'kaar feeds on violence, and most fights end in downs
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/NINEFOLD_HOOK_DOWNS_NOT_JUST_DEATHS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/NINEFOLD_HOOK_DOWNS_NOT_JUST_DEATHS_1.md
-
-## MOISTURE_VAPORATOR_WALL_CLIP_1 Moisture vaporator graphic extends/clips through an adjacent wall instead of sitting flush
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/MOISTURE_VAPORATOR_WALL_CLIP_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/MOISTURE_VAPORATOR_WALL_CLIP_1.md
 
 ## UI_SHELL_SLICE_BUILD_1 Build the RimUtinni Shell vertical slice per ui_shell_spec.md: mandrake.rut.shell theme mod (3 button atlases + palette meta.xml), 1 loader + 1 menu-bg art, RimThemes-coexistence gate on next load
 state:    proposed
