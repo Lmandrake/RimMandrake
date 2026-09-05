@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-05T06:59:32Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-05T07:05:32Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -404,4 +404,24 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-_none._
+Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
+
+## RESEARCH_TAB_VIEWCOORD_COLLISION_1 Two research rows overlap at (2,0) in RUT_Tree_Hearth after tab consolidation - AdvancedShowers vs VCE_StewCooking
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/RESEARCH_TAB_VIEWCOORD_COLLISION_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/RESEARCH_TAB_VIEWCOORD_COLLISION_1.md
+
+## FIREECOLOGY_BURNEDDEF_FLAMMABLE_1 RSW_FE FireEcology terrains report 'burnedDef is flammable' ConfigError - intended or fix?
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/FIREECOLOGY_BURNEDDEF_FLAMMABLE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FIREECOLOGY_BURNEDDEF_FLAMMABLE_1.md
