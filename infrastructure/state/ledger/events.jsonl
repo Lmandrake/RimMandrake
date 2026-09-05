@@ -4847,3 +4847,13 @@
 {"seat":"FOUNDRY","event":"start","id":"CODE_REVIEW_STATUS_HASH_REWRITE_1","ts":"2026-09-05T16:30:28Z"}
 {"seat":"FOUNDRY","event":"close","id":"CODE_REVIEW_STATUS_HASH_REWRITE_1","sha":"9ed835fb","ts":"2026-09-05T16:30:28Z"}
 {"seat":"BENCH","event":"bridge","state":"released","ts":"2026-09-05T16:39:25Z"}
+{"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-09-05T16:40:13Z"}
+{"seat":"FOUNDRY","event":"start","id":"WILD_ANIMALS_PADDED_LISTS_1","ts":"2026-09-05T16:40:26Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"WILD_ANIMALS_PADDED_LISTS_1: build+deploy StaticConstructorOnStartup/Mod-subclass enumerator tool, live sweep","ts":"2026-09-05T16:40:30Z"}
+{"seat":"FOUNDRY","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-09-05T16:43:13Z"}
+{"seat":"BENCH","event":"file","id":"UI_SHELL_SLICE_BUILD_1","title":"Build the RimUtinni Shell vertical slice per ui_shell_spec.md: mandrake.rut.shell theme mod (3 button atlases + palette meta.xml), 1 loader + 1 menu-bg art, RimThemes-coexistence gate on next load","kind":"task","target":"v1","needs":"game-up","spec":"See design/Jawa/worldbuilding/ui_shell_spec.md. Offline build of the mod skeleton+meta+atlases+first art can proceed now; the coexistence gate (activate RimThemes, theme the 4 surfaces, screenshot) rides the next restart alongside Ninefold/VF/level-up deploys.","for":"FOUNDRY","ts":"2026-09-05T17:11:05Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","ownerSaid":"game is up","ts":"2026-09-05T17:25:30Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-05T17:28:07Z"}
+{"seat":"BENCH","event":"bridge","state":"taken","purpose":"Deploy 4 fixes (Ninefold DLL, VF, level-up, theme-optional) + Ninefold hook proof after restart","ts":"2026-09-05T17:36:34Z"}
+{"seat":"BENCH","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-09-05T17:36:35Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","ownerSaid":"bridge is available","ts":"2026-09-05T17:41:14Z"}

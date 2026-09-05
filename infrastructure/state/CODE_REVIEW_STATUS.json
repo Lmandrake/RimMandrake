@@ -654,10 +654,10 @@
     "sha": "7b9f17a9"
   },
   "src/RimMandrake/Inhabited/Source/DebugActions_Inhabited.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "e4186083cc60f20ebfdaac1eac047c75db387b2971d98fd187e34b1b019374bf",
-    "sha": "7b9f17a9"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "hash": "f674f4fa6751880534b9cd4943ca20281a9568a5804192d5645d8c8204bf3367",
+    "sha": "861e65fa"
   },
   "src/RimMandrake/Inhabited/Source/DisplacedPool.cs": {
     "cleanCount": 1,
@@ -672,10 +672,10 @@
     "sha": "7b9f17a9"
   },
   "src/RimMandrake/Inhabited/Source/GenStep_ComposeSettlementDistrict.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "797289cdb4fa41bffc2e0244ff0ca821ddc5e5c139b37e1190d84950cf235599",
-    "sha": "7b9f17a9"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "hash": "610e0c2cd2c7d03157b8a16c41bee3af674237edd1e75deeaa5de9227e198dbd",
+    "sha": "b18edcac"
   },
   "src/RimMandrake/Inhabited/Source/GenStep_InhabitedCast.cs": {
     "cleanCount": 1,
@@ -792,10 +792,10 @@
     "sha": "7b9f17a9"
   },
   "src/RimMandrake/Inhabited/Source/WorldObject_Inhabited.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-04",
-    "hash": "0232d547ae58869b9e6ed5c95a89b487cb4e0b30c6c124b9e9c30abaed83577a",
-    "sha": "43f96b1b"
+    "cleanCount": 3,
+    "date": "2026-09-05",
+    "hash": "1df60eb106ecdbdc93021f8d5a969c97128e17668459ff72d543e43f9df0d531",
+    "sha": "861e65fa"
   },
   "src/RimMandrake/Inhabited/Source/WorldObject_InhabitedSettlement.cs": {
     "cleanCount": 1,
@@ -876,16 +876,16 @@
     "sha": "ecc86a6f"
   },
   "src/RimMandrake/Ninefold/Source/GameComponent_Ninefold.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "ad5be9601a5660bf3d07f3a66c85162ff8efa75b421099908a86e1acf59b928e",
-    "sha": "ecc86a6f"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "hash": "712a8153a58e5afe386d8a5e7ef324873830dda366d76ba6eee9332d407b051d",
+    "sha": "d4c8e13f"
   },
   "src/RimMandrake/Ninefold/Source/God.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "8950cebd2462de1ea1906f8c6a67950feff9c0c9b51ac436bfe9395287723e94",
-    "sha": "ecc86a6f"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "hash": "00d2ade98db0be652955ccb2d9b1efb6a8a3a0a415395fc401a2ad123a58b221",
+    "sha": "239af5dc"
   },
   "src/RimMandrake/Ninefold/Source/NinefoldMod.cs": {
     "cleanCount": 1,
@@ -948,10 +948,10 @@
     "sha": "43f96b1b"
   },
   "src/RimMandrake/Oracle/Source/OracleRegisterBlocks.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "hash": "30a537659db3e0111bab3a9dd6c2e9c331cce77aea4e7bdf0825abe019d0aef1",
-    "sha": "43f96b1b"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "hash": "d4999b4ae4decfa036542099a68ed3ad37dbea28e62c4b0a40ec096fff45eb5d",
+    "sha": "7abf4a85"
   },
   "src/RimMandrake/Oracle/Source/OracleSettings.cs": {
     "cleanCount": 1,
@@ -1188,10 +1188,10 @@
     "sha": "08e80429"
   },
   "src/RimMandrake/Property/Source/ClaimRecord.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "c2aef79336a438fb171eddf055f82acdb42871aecac007735c67b995ddc4aeed",
-    "sha": "08e80429"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "hash": "984f6ef2797a256714b2b54e452ed63937cd214171b96964c6685bdd8e4758ae",
+    "sha": "dd8bab96"
   },
   "src/RimMandrake/Property/Source/ClaimRecordList.cs": {
     "cleanCount": 1,
@@ -1218,10 +1218,10 @@
     "sha": "f9da3de0"
   },
   "src/RimMandrake/Property/Source/FactionRecord.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "bd9acf8ba06c8127bd3d045e5be19a1d8d29f2a53e404ffdc50b42751d61a691",
-    "sha": "0fb4936c"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "hash": "dcfbbd9777b36584b90a022a79e469a4fc81dab8e4ae7bc103f40acd3a874088",
+    "sha": "dd8bab96"
   },
   "src/RimMandrake/Property/Source/GameComponent_PropertyLedger.cs": {
     "cleanCount": 1,
@@ -1422,16 +1422,16 @@
     "sha": "71cceeb1"
   },
   "src/RimMandrake/StructureInjections/Source/GenStep_RimplacePlan.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "e5f502b527b4a4d378671539d4b29f031818910fe46685387cf19d575ef92668",
-    "sha": "8a24dcd7"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "hash": "da56c7abd2960b82cb68b919a33f63809d040de90af66920f3be5b4f77466090",
+    "sha": "57c00854"
   },
   "src/RimMandrake/StructureInjections/Source/RimplacePlan.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "a6afdf83cd3d46a4e5bec0da4ba3be1d711327341552d96961ebaf4ce02781a6",
-    "sha": "a6c78782"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "hash": "3ff31404625d13c46cf7fe07ef443e0d9f61e7df39346f58902442396df3001e",
+    "sha": "555430a2"
   },
   "src/RimMandrake/StructureInjections/Source/StructureInjectionsDebugActions.cs": {
     "cleanCount": 1,
@@ -1512,10 +1512,10 @@
     "sha": "43884307"
   },
   "src/RimMandrake/Utils/apply_race_factions.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "53fc8d6b68aca060334d11384bb7ef60763ad72317f89dc66a127523d0e07932",
-    "sha": "43884307"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "hash": "a618380326af472016c640bc41bda02adce5ff424a77b333560b2d5c28417a10",
+    "sha": "3287ca65"
   },
   "src/RimMandrake/Utils/ashkarr_clamp_rain.py": {
     "cleanCount": 1,
@@ -1745,22 +1745,22 @@
     "sha": "d1c193ae"
   },
   "src/RimMandrake/Utils/code_review_status.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "8729694d7d936851a88cbf195e145af28334178f1fc922df4e4fd32a5a397823",
-    "sha": "f52addaf"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "hash": "239f679646022420eff4c8c9c2bd150292bf452de98ddf277e12d959438f420a",
+    "sha": "9ed835fb"
   },
   "src/RimMandrake/Utils/codebase_health.py": {
-    "cleanCount": 2,
-    "date": "2026-09-04",
-    "hash": "23cdae7efd5903ea0f4db48eb5500f0036e2af8b08ce9da322a06ab993b63e1d",
-    "sha": "43f96b1b"
+    "cleanCount": 3,
+    "date": "2026-09-05",
+    "hash": "a7da4a26bcf90dd0393aaa6658a3129617a7e20740632ce1f17d8a1bcb5b08e2",
+    "sha": "3287ca65"
   },
   "src/RimMandrake/Utils/codebase_health_publish.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "fe41196a566deed98b935f010e6bb743495786dd79f44bdf3014ffbca994bacb",
-    "sha": "fb248793"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "hash": "69b958af85200e00260ece3075501872c1ab7e118309457fe21aa55af4facad3",
+    "sha": "3287ca65"
   },
   "src/RimMandrake/Utils/def_diff.py": {
     "cleanCount": 1,
@@ -1877,16 +1877,16 @@
     "sha": "4de5c0cf"
   },
   "src/RimMandrake/Utils/gen_pawnkind_roster.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "e6aeddcc1c6266f9f733af145b48e55980530462190232b5fe77f5cb83816e87",
-    "sha": "453a5c7b"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "hash": "49f769ed982598a3a2438d46c76624bdc54a2e008c7aa17489d2f5a8425aab27",
+    "sha": "3287ca65"
   },
   "src/RimMandrake/Utils/gen_races_mod.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "5d837aed0f67265c37286a7052d8aca03a5f002338e442d4e813143c9524859c",
-    "sha": "66d742be"
+    "cleanCount": 2,
+    "date": "2026-09-04",
+    "hash": "0abaa7b249a96c28e75a5b79f95053d42302090d1cf684b19181a0ffbe1026d0",
+    "sha": "d4af33c4"
   },
   "src/RimMandrake/Utils/genome_art_cache.py": {
     "cleanCount": 1,
@@ -1907,10 +1907,10 @@
     "sha": "8193b35c"
   },
   "src/RimMandrake/Utils/grade_authored_kinds_trial.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "78cb737145d72168b3837fb7eef848a0653236a2da01f2394aec4bdec55b48b9",
-    "sha": "43884307"
+    "cleanCount": 2,
+    "date": "2026-09-04",
+    "hash": "ed255fbbaabd6fa9aee444986255dfe76dbdebd6f35159af02003e9053bc8760",
+    "sha": "2385af29"
   },
   "src/RimMandrake/Utils/gravship_floor_v2.py": {
     "cleanCount": 1,
@@ -2080,10 +2080,10 @@
     "sha": "39cd22d5"
   },
   "src/RimMandrake/Utils/nemotron_ceiling.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "8eb58c8da85c0100dec810593cfa2228fce85666548c243028b7d674aba4de31",
-    "sha": "fb248793"
+    "cleanCount": 2,
+    "date": "2026-09-04",
+    "hash": "3e2f998a643c1c169c4a39bf1f17b036448f461ea15711b6a380c7179e3e966c",
+    "sha": "2385af29"
   },
   "src/RimMandrake/Utils/nemotron_fanout.py": {
     "cleanCount": 1,
@@ -2152,10 +2152,10 @@
     "sha": "39cd22d5"
   },
   "src/RimMandrake/Utils/research_manifest_validate.py": {
-    "cleanCount": 2,
+    "cleanCount": 3,
     "date": "2026-09-04",
-    "hash": "9415fa04806bd7f014f9faa38277c8b8d96694d67fd56095d83921c51e90a18e",
-    "sha": "43f96b1b"
+    "hash": "30be758eccdda3078da7c562b97845fab65ba8e45a69fefcdb2556225975cf18",
+    "sha": "f1ebc8c1"
   },
   "src/RimMandrake/Utils/rimbench/__init__.py": {
     "cleanCount": 1,
@@ -2254,10 +2254,10 @@
     "sha": "1f14e03d"
   },
   "src/RimMandrake/Utils/rimplace/cli.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "4ed797da732084e325225379a1dd6b0e063eb960cdc9845ee0dabb5abd601b24",
-    "sha": "b4c6bc9d"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "hash": "00748ea072d344fd3a8c92fb4f5f35fd0daeda8bd3fc76d5fbc04df358c29a0d",
+    "sha": "ade756fc"
   },
   "src/RimMandrake/Utils/rimplace/contract.py": {
     "cleanCount": 1,
@@ -2266,10 +2266,10 @@
     "sha": "1f14e03d"
   },
   "src/RimMandrake/Utils/rimplace/core.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "a9919906055d0f93fd99c00423a2606422c4386e75c0acbc96c668317caa9569",
-    "sha": "b4c6bc9d"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "hash": "d7c62f2107308650d05d69b488a700e5445116a3c6c3d8aa410c7d09656af15f",
+    "sha": "4d72cce3"
   },
   "src/RimMandrake/Utils/rimplace/defsize.py": {
     "cleanCount": 1,
@@ -2278,10 +2278,10 @@
     "sha": "1f14e03d"
   },
   "src/RimMandrake/Utils/rimplace/luaenv.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "dd44b65c2cd482272bf43e6c1ee3495be6ed0a3af67af60b9b33a0efbcaa53da",
-    "sha": "df166bc9"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "hash": "29102b556dbcf26c77aa410cc5be56bc48ba467b950a89102479763e69383d9d",
+    "sha": "3287ca65"
   },
   "src/RimMandrake/Utils/rimplace/netinfo.py": {
     "cleanCount": 1,
@@ -2290,16 +2290,16 @@
     "sha": "1f14e03d"
   },
   "src/RimMandrake/Utils/rimplace/plan.py": {
-    "cleanCount": 1,
-    "date": "2026-09-02",
-    "hash": "2f887ff4074f0f6e56110233fd8913728bbe35a54eaecae96edab4d6369cb3d9",
-    "sha": "ee0b3ad6"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "hash": "8d05c07f3ac053336a0614de96459c99915a6d27203003dce3f3937d23cbe3fc",
+    "sha": "ade756fc"
   },
   "src/RimMandrake/Utils/rimplace/selftest.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "f76e8859a7e669345201cc410f6e8e934c36b214febe437e5fe438f0ebbf8bbd",
-    "sha": "5ac921b8"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "hash": "08c90d6757470e10c55c7542c88b965c4fc4eaabf07d782d2a03f8638202b159",
+    "sha": "ade756fc"
   },
   "src/RimMandrake/Utils/rimworld_loadset.py": {
     "cleanCount": 1,
@@ -2320,10 +2320,10 @@
     "sha": "3d3ceeae"
   },
   "src/RimMandrake/Utils/salvation_description.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "38e351eedcf3291a67ea308488f6737e56c57a301c908475585e6099d765d261",
-    "sha": "359b0b2c"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "hash": "3b2676a40b45eb996424fb14310cec78de1e2b053cc62ebac8e265f5cf63c3dd",
+    "sha": "3287ca65"
   },
   "src/RimMandrake/Utils/save_played_tiles.py": {
     "cleanCount": 1,
@@ -2416,10 +2416,10 @@
     "sha": "1a7b3aa1"
   },
   "src/RimMandrake/Utils/selftest_research_validator.py": {
-    "cleanCount": 2,
-    "date": "2026-09-04",
-    "hash": "d06f3cb8fd98462b068aa4ea8fcb9266e1a797e92faa241dfbb2f869e94901ea",
-    "sha": "43f96b1b"
+    "cleanCount": 3,
+    "date": "2026-09-05",
+    "hash": "046bdceadf7808ee0bab101f5d5e706b2b807abece0cc7ed70f82b86b5ee8678",
+    "sha": "3287ca65"
   },
   "src/RimMandrake/Utils/selftest_sound_paths.py": {
     "cleanCount": 1,
@@ -2440,10 +2440,10 @@
     "sha": "e5013227"
   },
   "src/RimMandrake/Utils/selftest_validate_patch.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "68fba6d22c0bcd5037cf404725c6bbff549c5a0bee182bc2062d4178350fb611",
-    "sha": "8e8fe001"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "hash": "25a0a266611c7bc51929e6d84d4f929fc6d82feff72e5163e67d74932518fbdc",
+    "sha": "09cd3916"
   },
   "src/RimMandrake/Utils/set_planet_subcount.py": {
     "cleanCount": 1,
@@ -2920,10 +2920,10 @@
     "sha": "f10e21c4"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchSocietyTools.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "8632079b165c7f46d2b4bba9a6972b83b06b468e68068d9cb2c2e18553748f98",
-    "sha": "c4ea71c4"
+    "cleanCount": 2,
+    "date": "2026-09-04",
+    "hash": "7abf4b45196cfe5032bc20a044cc208a744478f4fce5c4138654b9f05a365936",
+    "sha": "2e3336f4"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchStatTools.cs": {
     "cleanCount": 1,
@@ -2961,6 +2961,12 @@
     "hash": "8fe30e5c94ee796fb42be3976791663ec64bf0ab6e9754e76425b23e714ef647",
     "sha": "695161ea"
   },
+  "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchTypeInspect.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "7583e3e351f3cd28fc8f68a1ee280b487c8454871eb4c9f6471fc14b740d2a85",
+    "sha": "18e0094e"
+  },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchUIRootTools.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -2986,10 +2992,10 @@
     "sha": "9681117f"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchWorldTools.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "0c2f3b54f6dd87072f91b9d2149f8bfafbfa31d885d8a1a254498ecc57a26252",
-    "sha": "17dd0cf9"
+    "cleanCount": 2,
+    "date": "2026-09-04",
+    "hash": "7f923d050ddee4d966955adf93e6b8d722ec6df80e19f3da33b254686e53be07",
+    "sha": "211e16d0"
   },
   "src/RimMandrake/bridgetools/JawaBench.BridgeTools/JawaBenchZoneTools.cs": {
     "cleanCount": 1,
@@ -3044,6 +3050,12 @@
     "date": "2026-09-03",
     "hash": "09acbcc8c74986e79cd8d23e7e7e98260a49281e6a557c8215c61a817395e321",
     "sha": "1fb0888b"
+  },
+  "src/RimMandrake/bridgetools/prove_startup_types.py": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "c9bc12d3f13f85124d453f95b1dfca3b4b6e795346f86da66336ba3264934aa2",
+    "sha": "18e0094e"
   },
   "src/RimMandrake/bridgetools/prove_stat_and_room.py": {
     "cleanCount": 1,
@@ -3598,10 +3610,10 @@
     "sha": "69ea9703"
   },
   "src/RimStarWars/Armoury/Source/gen_armoury_patch.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "ce8cae4409cfa21b34c965726763018f46d2e9906573a097bf2f411081952b72",
-    "sha": "682b62fa"
+    "cleanCount": 2,
+    "date": "2026-09-04",
+    "hash": "12477f5cdcd081f313123ef8a7ba3e07a7c2baba65cd34675140938dfcb2811f",
+    "sha": "b5da9f9b"
   },
   "src/RimStarWars/Armoury/Source/gen_jds_armory_absorption.py": {
     "cleanCount": 1,
@@ -3770,6 +3782,54 @@
     "date": "2026-09-05",
     "hash": "1a574721ee7c00fc550193d49be5da098c9292a5ace87145c781bfefb748a03a",
     "sha": "85352886"
+  },
+  "src/RimStarWars/Cuisine/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "fccf460f9df46f0d74a27631414332efc1f69a3d4eb3678cfca1c29a055ed9e8",
+    "sha": "4c830bfd"
+  },
+  "src/RimStarWars/Cuisine/Defs/RecipeDefs_Cuisine.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "390fabd90bd5b28bc15e6aebb738b3cced61929f448456dd12b1dceb42058520",
+    "sha": "4c830bfd"
+  },
+  "src/RimStarWars/Cuisine/Defs/ThingDefs_Cuisine.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "4c7d3591d008c47cf26f6d691f80c6c9d7020564ae02b47c0602221b9a883d66",
+    "sha": "4c830bfd"
+  },
+  "src/RimStarWars/Cuisine/Defs/ThoughtDefs_Cuisine.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "540a228a0761ddae58478172dab50109062ec792e01d627beb4d68ba05492c7e",
+    "sha": "4c830bfd"
+  },
+  "src/RimStarWars/Cuisine/Source/Cuisine/CuisineDefOf.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "efc7a643de86956646a09c171e7839d92dcbd3ca7d367332f8c16d3433b3440c",
+    "sha": "4c830bfd"
+  },
+  "src/RimStarWars/Cuisine/Source/Cuisine/IngredientValueGetter_ExcludeSkewer.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "d90a9c8f1672e5aa5b0d04d8c55a6e7c60116c3fde8539cfdb6d994fb83c8e36",
+    "sha": "4c830bfd"
+  },
+  "src/RimStarWars/Cuisine/Source/Cuisine/NameGenComp.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "889efb47f23c0ba38adab2ce5b8377a6cf0be6b7d24ff9bec786171e6727d80a",
+    "sha": "4c830bfd"
+  },
+  "src/RimStarWars/Cuisine/Source/Cuisine/RimStarWarsCuisine.csproj": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "8b6e03361470c648e04e2f4f6dcc4984871a285b4622144a0111547a1eb5dd5d",
+    "sha": "4c830bfd"
   },
   "src/RimStarWars/Droidworks/About/About.xml": {
     "cleanCount": 1,
@@ -4198,10 +4258,10 @@
     "sha": "e4070c91"
   },
   "src/RimStarWars/JawaIonWeapons/Source/VehicleTier/JawaIonVehicleTier.csproj": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-05",
-    "hash": "2585a808eee7f32d9f76dcacb415344ca6a03e4bf2135be4ba0b199bebe7f282",
-    "sha": "e4070c91"
+    "hash": "4490c16798b6cc1777f203b0cea4d1021ce1b6167ab334fb39579a1e3e44d89b",
+    "sha": "fbe5976c"
   },
   "src/RimStarWars/JawaIonWeapons/Source/VehicleTier/VehicleIonPatches.cs": {
     "cleanCount": 2,
@@ -4954,10 +5014,10 @@
     "sha": "e19208c0"
   },
   "src/RimUtinni/Antiquities/About/About.xml": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-04",
-    "hash": "cc9dc6f5d60f8dd8797a3a0be17153e3fc8246714539971e79af859657cffc9e",
-    "sha": "e81a98b8"
+    "hash": "34a29ab15ce69ab8ac76caa0811e6991e4b69c1d6c47275a6163b9d55f39b0b2",
+    "sha": "d27125d2"
   },
   "src/RimUtinni/Antiquities/Defs/JobDefs/RUT_Antiquities_Jobs.xml": {
     "cleanCount": 1,
@@ -5284,10 +5344,10 @@
     "sha": "2e3336f4"
   },
   "src/RimUtinni/ResearchRetag/Patches/RUT_ResearchTabAssign.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "hash": "081e1d6bc3302e55c3c069f0cdf81499856b20a94c77c97d8f1b5344f566b050",
-    "sha": "53661e66"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "hash": "4ab87380f29a37958eaed3f8c02e20641bac2185a96cc4441df4862eecce07ae",
+    "sha": "14cf4186"
   },
   "src/RimUtinni/Rites/About/About.xml": {
     "cleanCount": 2,
@@ -5524,10 +5584,10 @@
     "sha": "aee34d6e"
   },
   "src/RimUtinni/UtinniPatches/Defs/ScenarioDefs/Scenario_Utinni.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "hash": "d7d5ca3bddf8c071826abb12f3c39dbdaf94f20743b4f483a6e217e972af71ed",
-    "sha": "aee34d6e"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "hash": "7587456428769b41985c80b9a686f04679cc771ecd1b270075bf89c7c05647b8",
+    "sha": "7abf4a85"
   },
   "src/RimUtinni/UtinniPatches/Defs/TerrainDefs/JawaSaltCrust.xml": {
     "cleanCount": 1,
@@ -5758,10 +5818,10 @@
     "sha": "948cdbc9"
   },
   "src/RimUtinni/VaultDungeons/Source/gen_vault_layouts.py": {
-    "cleanCount": 1,
-    "date": "2026-09-02",
-    "hash": "f70fe6e0b16635129ac71d4ec55a50c0d1d0775ee57cd92ebf0decfcf32e8df1",
-    "sha": "ccb9e9ba"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "hash": "c55530ab9e32964b23567c846c4828ad4028340fe4dd3901d12b01d74744159e",
+    "sha": "3287ca65"
   },
   "src/SPLIT_Phase3/Jawa_Patches/Source/build_claim_rumour.py": {
     "cleanCount": 1,
