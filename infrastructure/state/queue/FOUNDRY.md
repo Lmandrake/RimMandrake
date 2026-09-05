@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-05T03:35:56Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-05T04:01:25Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -307,7 +307,7 @@ summary:  Owner, 2026-09-02: "Man I wish the Autoopen of the error log was set t
 prose:    infrastructure/state/items/DEV_LOG_AUTOOPEN_SUPPRESS_1.md
 
 ## INHABITED_TILEMUTATOR_NO_ENTRY_1 No TileMutatorDef anywhere names Inhabited_Cast -- the wilderness settlement-spawn route has no way in
-state:    doing  (BLOCKED)
+state:    doing
 row:      unassigned
 needs:    offline
 target:   v1
@@ -351,15 +351,6 @@ kind:     task
 summary:  Every load of the full 589-mod list logs the same 31 Config error in … lines
 prose:    infrastructure/state/items/LOAD_CONFIG_ERROR_SWEEP_1.md
 
-## RETAG_BUILDER_SELF_ERASE_1 build_retag_patches.py erases itself when run against a post-retag capture
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  (no items/RETAG_BUILDER_SELF_ERASE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/RETAG_BUILDER_SELF_ERASE_1.md
-
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -374,16 +365,6 @@ blocked:  Engineering sequence, not an owner call: needs Droidworks Phase 3 (fac
 summary:  (no items/DROID_TILES_SOURED_TERRAIN_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DROID_TILES_SOURED_TERRAIN_1.md
 
-## INHABITED_TILEMUTATOR_NO_ENTRY_1 No TileMutatorDef anywhere names Inhabited_Cast -- the wilderness settlement-spawn route has no way in
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-blocked:  Live-tested 2026-09-04: deploy blocker was stale (already in sync). Mutator wiring confirmed non-crashing live. Cast/stock spawn sub-question narrowed but not proven - blocked on a jawa/world_tile_map_generate bridge-tool defect (filed in rimbridge/traps.md), not on this mod's own code.
-summary:  The Inhabited mod's own class comments describe two routes onto a map: a proper
-prose:    infrastructure/state/items/INHABITED_TILEMUTATOR_NO_ENTRY_1.md
-
 # WAITING ON A WINDOW — nothing is wrong
 
 _none._
@@ -394,4 +375,14 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-_none._
+Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
+
+## TILEGEN_SILENT_REUSE_1 jawa/world_tile_map_generate fabricates success on the second distinct-tile call per session
+state:    proposed
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/TILEGEN_SILENT_REUSE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/TILEGEN_SILENT_REUSE_1.md
