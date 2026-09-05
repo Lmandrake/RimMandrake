@@ -458,18 +458,26 @@ namespace RimMandrake.Inhabited
             return sb.ToString().TrimEndNewlines();
         }
 
-        public override void Destroy()
+        /// <summary>
+        /// Hands every living resident off to <see cref="DisplacedPool"/> and empties
+        /// the roster. Anyone still here becomes placeless and can turn up somewhere
+        /// else, rather than being silently discarded.
+        ///
+        /// Fixed 2026-09-02 (opus code review): the guard used to also require
+        /// Faction != null, gating the ENTIRE rescue on it despite
+        /// DisplacedPool.Absorb already handling a null faction correctly. A
+        /// factionless place (reachable from the shipped debug action, which can
+        /// roll RandomNonHostileFaction(...) == null) lost every living resident
+        /// with no log line.
+        ///
+        /// Extracted 2026-09-05 (code review wave): this exact loop used to be
+        /// duplicated in Destroy() and independently missing from the "change this
+        /// place's def" debug action, which cleared the roster's owning stock
+        /// without evacuating it first -- the two copies drifting is exactly how
+        /// the Faction-gating bug above happened in the first place.
+        /// </summary>
+        public void EvacuateRoster()
         {
-            // A place going away does not kill the people in it. Anyone still on
-            // the roster becomes placeless and can turn up somewhere else.
-            //
-            // Fixed 2026-09-02 (opus code review): the guard used to also require
-            // Faction != null, gating the ENTIRE rescue on it despite
-            // DisplacedPool.Absorb already handling a null faction correctly. A
-            // factionless place (reachable from the shipped debug action, which
-            // can roll RandomNonHostileFaction(...) == null) lost every living
-            // resident with no log line, directly contradicting this method's own
-            // comment.
             DisplacedPool pool = DisplacedPool.Current;
             if (pool != null && roster != null && roster.Count > 0)
             {
@@ -492,13 +500,16 @@ namespace RimMandrake.Inhabited
                         // not take them, and this loop had already taken them off
                         // the roster -- so they were held by nothing, which no
                         // Scribe path reaches and no save can carry.
-                        // InhabitedFateWorker.Apply guards its identical loop this
-                        // way; this copy and the debug one did not.
                         Log.Error("[RimMandrake.Inhabited] " + p.LabelShort + " left " + LabelCap
                                   + " and has nowhere to be; they are lost.");
                     }
                 }
             }
+        }
+
+        public override void Destroy()
+        {
+            EvacuateRoster();
             base.Destroy();
         }
     }

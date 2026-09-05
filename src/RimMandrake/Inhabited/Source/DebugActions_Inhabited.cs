@@ -93,6 +93,11 @@ namespace RimMandrake.Inhabited
             Dialog_DebugOptionListLister.ShowSimpleDebugMenu(all, d => d.defName,
                 delegate (InhabitedPlaceDef d)
                 {
+                    // Evacuate BEFORE flipping castInstantiated: InstantiateCast() only
+                    // ever adds to the roster and is guarded solely by that flag, so
+                    // resetting it without first clearing the old cast doubled the
+                    // roster on the next instantiate instead of replacing it.
+                    place.EvacuateRoster();
                     place.placeDef = d;
                     place.castInstantiated = false;
                     place.stock?.GetDirectlyHeldThings().ClearAndDestroyContents();
