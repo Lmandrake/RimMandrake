@@ -3317,6 +3317,196 @@
     "date": "2026-09-04",
     "sha": "71cceeb1"
   },
+  "src/RimUtinni/UtinniPatches/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "ed416189"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/BiomeDefs/Jawa_BackgroundWater.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "ed416189"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/CultureDefs/JawaLeaderTitles.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "ed416189"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/FactionDefs/JawaAscendantHelix.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "ed416189"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/FactionDefs/JawaDeepwaterCompact.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "ed416189"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/FactionDefs/JawaFreeDroidEnclaves.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "ed416189"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/FactionDefs/JawaGeonosianFoundryHive.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "ed416189"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/FactionDefs/JawaHuttCartel.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "ed416189"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/FactionDefs/JawaJunkers.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "ed416189"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/FactionDefs/JawaTribes.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "ed416189"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/FactionDefs/JawaWildsteamClan.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "aee34d6e"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/MapGeneration/JawaGroundHulk.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "aee34d6e"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/MapGeneration/JawaScrapfields.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "aee34d6e"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/PawnKindDefs/JawaColonistPawnKinds.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "aee34d6e"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/PawnKindDefs/JawaFactionRoster.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "aee34d6e"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/PrefabDefs/JawaGroundHulk.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "aee34d6e"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/QuestScriptDefs/Jawa_TheClaim.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "aee34d6e"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/RulePackDefs/Namer_BlackstarCompany.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "aee34d6e"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/RulePackDefs/Namer_PirateSyndicates.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "aee34d6e"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/ScenarioDefs/Scenario_Utinni.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "aee34d6e"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/TerrainDefs/JawaSaltCrust.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "d92f5459"
+  },
+  "src/RimUtinni/UtinniPatches/Defs/ThingDefs_Items/Jawa_ClaimRumour.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "d92f5459"
+  },
+  "src/RimUtinni/UtinniPatches/Languages/English/Keyed/ImperialVocabulary.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "d92f5459"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/AncientArsenal_Ashkarr.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "d92f5459"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/AncientsAreRakata.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "d92f5459"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/AnimalBiomeDuplicates_Fix.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "d92f5459"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/AnimalBiomeDuplicates_Generated.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "d92f5459"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/AnimalTolerances_Ashkarr.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "d92f5459"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/ApparelTags_DeadTagRepair.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "d92f5459"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/AshStorms_Pyrelands.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "d92f5459"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/BiomeCast_Ashkarr.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "ed416189"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/BiomeFlora_Ashkarr.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "ed416189"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/BlackstarCompany.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "aee34d6e"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/BugTurretRetexture_GeonosianHive.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "ed416189"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/CreatureNames_Ashkarr.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "d92f5459"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/CreatureResize_Ashkarr.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "d92f5459"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/Fleshbeast_TrispikeCull.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "ed416189"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/ForgottenArsenal.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "ed416189"
+  },
   "src/RimUtinni/VaultDungeons/Source/gen_vault_layouts.py": {
     "cleanCount": 1,
     "date": "2026-09-02",

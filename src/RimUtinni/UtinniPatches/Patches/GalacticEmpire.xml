@@ -399,14 +399,21 @@
                 </value>
               </li>
 
-        <!-- Bespoke world-map icon. the def writes it - Data/Royalty/Defs/FactionDefs/Faction_Empire.xml:19, so REPLACE. -->
+            </operations>
+          </match>
+        </li>
+
+        <!-- Bespoke world-map icon. the def writes it - Data/Royalty/Defs/FactionDefs/Faction_Empire.xml:19, so REPLACE.
+             FIXED 2026-09-04 (code review): this <li> was nested inside the Outer Rim
+             PatchOperationFindMod above by mistake (indentation gave it away - 8 spaces
+             like the FindMod's own <li>, not 14 like its true siblings the group-maker
+             ops). It is this mod's own badge art, unrelated to Outer Rim's pawn kinds,
+             and must apply whenever vanilla Empire exists - not only when Outer Rim -
+             Galactic Empire happens to be active. Moved out to be a direct sibling of
+             the FindMod operation instead. -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/FactionDef[defName="Empire"]/factionIconPath</xpath>
           <value><factionIconPath>World/JawaFactions/GalacticEmpire</factionIconPath></value>
-        </li>
-
-            </operations>
-          </match>
         </li>
 
       </operations>

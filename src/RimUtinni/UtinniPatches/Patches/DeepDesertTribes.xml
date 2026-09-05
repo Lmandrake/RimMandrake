@@ -42,6 +42,15 @@
 
   THE WATER RAID  (the one sanctioned group addition)
   ==================================================
+  🔴 SUPERSEDED by AUTHORED_KINDS_MUST_FIELD_1 below, 2026-08-22. This section
+  describes the file's original 2026-08-14 shape (ONE added group, vanilla
+  `Tribal_*` kinds throughout, `pawnGroupMakers` appended rather than
+  declared). That shape shipped bare-handed raiders and was replaced outright
+  ; the mechanism notes on `li`-list append vs `Inherit="False"` below are
+  still accurate and still the reason the fix needed `Inherit="False"`, but
+  the water raid's actual, current composition, kind count and MayRequire
+  status are stated only in AUTHORED_KINDS_MUST_FIELD_1's block, not here.
+
   Vanilla lists twelve group makers on `TribeBase` and the child inherits them.
   RimWorld's inheritance MERGES `li` lists: the child's items are APPENDED to
   the parent's unless the node carries `Inherit="False"`. Verified against
@@ -50,21 +59,15 @@
   `Horaxian_Gunner` has to write `Inherit="False"` on `weaponTags` precisely
   because appending is the default.
 
-  ⇒ Adding a `<pawnGroupMakers>` node holding ONE `li` gives `TribeCivil`
-  thirteen groups, not one. The twelve inherited ones are not touched and no
-  commonality is rewritten.
-
   ⚠️ "Targets containers, disengages once loaded" is a RAID STRATEGY and an
   arrival mode, and a `pawnGroupMaker` expresses NEITHER. What a group maker
   can express is composition and size, so the signature is carried by those:
   `maxTotalPoints` 800 caps it to a light party (vanilla precedent, the
-  Drifter group at 1000), and the options are the three FAST, LIGHT tribal
-  kinds only. No `Tribal_HeavyArcher`, no `Tribal_Breacher`, no chiefs ; a
-  breacher is the exact opposite of a group that leaves once it has the water.
-  Commonality 30 against the parent's 100/60/60/5.
-
-  Every kind here is vanilla Core and was checked present in the 2026-08-14
-  dump, so no `MayRequire` is owed and none carries the 99999 exclude sentinel.
+  Drifter group at 1000). No `Tribal_HeavyArcher`/`Jawa_DeepDesert_Heavy`, no
+  `Tribal_Breacher`, no chiefs ; a breacher is the exact opposite of a group
+  that leaves once it has the water. Commonality 30 against the parent's
+  100/60/60/5 (superseded numbers below — the four combat groups are no
+  longer the parent's).
 
   SAFETY
   ======
