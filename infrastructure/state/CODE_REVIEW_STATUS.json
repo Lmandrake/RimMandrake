@@ -3052,10 +3052,20 @@
     "date": "2026-09-03",
     "sha": "2b385860"
   },
+  "src/RimStarWars/JawaRules/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "7a39f271"
+  },
   "src/RimStarWars/JawaRules/Source/JawaRules.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
     "sha": "d075693a"
+  },
+  "src/RimStarWars/JawaRules/Source/JawaRules.csproj": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "7a39f271"
   },
   "src/RimStarWars/JawaVoice/Patches/JawaVoice_animals.xml": {
     "cleanCount": 1,
