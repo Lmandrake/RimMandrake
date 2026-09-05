@@ -25,10 +25,21 @@ No image API key exists on the machine; `rembg` is not installed. node v22 is.
 
 **Channel: Google Gemini "Nano Banana Pro" (Gemini 3 Pro Image) + local `rembg`.**
 It is the best-in-class *identity-across-angles* engine (up to 8-20 reference
-images, strong subject consistency) — which is exactly the multi-facing problem —
-and Google AI Studio has a **free tier**, the lowest-friction key. Its one gap,
-no native alpha, is closed by a local `rembg` cutout (no key, offline), which
-*also* replaces the current chroma-key step for the whole pipeline. 
+images, strong subject consistency) — which is exactly the multi-facing problem.
+Its one gap, no native alpha, is closed by a local `rembg` cutout (no key,
+offline), which *also* replaces the current chroma-key step for the whole
+pipeline.
+
+🔴 **CORRECTION 2026-09-05 (measured against the live API):** the Gemini free
+tier is **`limit: 0` for image generation** — image models (flash AND pro) return
+HTTP 429 `RESOURCE_EXHAUSTED` on the free tier. Image gen **requires billing
+enabled** on the AI Studio / Google Cloud project. A free key generates TEXT, not
+images. So there is no free image channel: gpt-image-2, Gemini, Flux, Ideogram
+all bill per image. Gemini stays the recommended pick on *quality* (best
+multi-facing), at ~$0.039/image (flash) / ~$0.134 (pro). The channel client
+`skills/generating-images/scripts/gemini_image.py` is built and the key is valid
+— it works the instant billing is turned on. The no-billing alternative for
+rigid wreckage is the local TripoSR 3D-proxy route (GPU, offline, free).
 
 - **Runner-up, single-tool clean:** **gpt-image-2** — native alpha + reference in
   one call, no cutout step at all. Cleaner, but needs an **OpenAI API key +
