@@ -58,12 +58,30 @@ def _resolve_template(name: str) -> Path:
 
 
 def _params(a) -> dict:
-    return {
+    out = {
         "faction": a.faction, "rooms": a.rooms, "occupants": a.occupants,
         "wealth": a.wealth, "techLevel": a.tech, "defended": a.defended,
         "condition": a.condition, "climate": a.climate,
         "temperature_c": a.temperature, "seed": a.seed,
     }
+    # INHABITED_AUGMENTATION_BUILD_1: the spec's variation axes (§3.7 - tier,
+    # state, sun_dir, rock_side, edge_dir, latitude...) are template params
+    # with no dedicated flag, and a template cannot be exported at a tier
+    # the CLI cannot name. `--param k=v` (repeatable) carries any of them;
+    # ints/floats are coerced so `--param occupants=4` reads as a number.
+    for kv in (getattr(a, "param", None) or []):
+        if "=" not in kv:
+            raise SystemExit(f"--param wants k=v, got {kv!r}")
+        k, v = kv.split("=", 1)
+        try:
+            v = int(v)
+        except ValueError:
+            try:
+                v = float(v)
+            except ValueError:
+                pass
+        out[k.strip()] = v
+    return out
 
 
 def _build(a):
@@ -166,6 +184,9 @@ def main(argv=None):
     ap.add_argument("--climate", default="auto")
     ap.add_argument("--temperature", type=float, default=0.0)
     ap.add_argument("--seed", type=int, default=1)
+    ap.add_argument("--param", action="append", default=[], metavar="K=V",
+                    help="extra template param (repeatable): tier=abode, "
+                         "state=abandoned, sun_dir=E, rock_side=N ...")
     ap.add_argument("--roof", action="store_true", help="show roof in render")
     ap.add_argument("--json", action="store_true", help="emit the BuildPlan")
     ap.add_argument("--out", default=None,

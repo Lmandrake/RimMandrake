@@ -1,5 +1,10 @@
 -- dwelling.lua - a one, two or three room domicile.
 --
+-- ⭐ SUPERSEDED for shipped content by homestead.lua (structure_procedural_spec.md
+-- §8.1, INHABITED_AUGMENTATION_BUILD_1): same canon branches, the furnish pass
+-- rebuilt on the §4 room recipes. This file stays as the worked example the
+-- selftests and dwelling_test.txt exercise.
+--
 -- The owner's worked example, 2026-08-22:
 --   "a fairly simple call that can produce a one room, two room, or three room
 --    domicile from a given faction in an area."

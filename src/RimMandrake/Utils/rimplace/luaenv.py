@@ -289,12 +289,37 @@ class Ctx:
         return None
 
     def role_at(self, x, z):
-        """The palette ROLE of the edifice standing at (x,z), or nil. Overlays
+        """The palette ROLE of the edifice whose ORIGIN is (x,z), or nil. Overlays
         are skipped. This is what a template needs to keep the cell in front
-        of a DOOR clear, or to find the WALL a lamp hangs on."""
+        of a DOOR clear, or to find the WALL a lamp hangs on.
+        ⚠️ Origin only: a 3x1 stove answers here at ONE of its three cells.
+        Anything asking "is this cell blocked" wants `role_covering`."""
         for t in self.plan.thing_at(int(x), int(z)):
             if not t.overlay:
                 return t.role
+        return None
+
+    def role_covering(self, x, z):
+        """-> role, origin_x, origin_z of the edifice whose FOOTPRINT covers
+        (x,z), or nil. The prelude's `aisle_ok` flood-fill used `role_at`,
+        which sees only origin cells - so an ElectricStove (3x1) read as
+        passable across two of its three cells and the walkability proof
+        passed rooms the door could not actually cross (found on the first
+        homestead compound, INHABITED_AUGMENTATION_BUILD_1). Bounded scan:
+        only things whose origin is within 4 cells are candidates (the
+        largest footprint in any palette is 7x7, whose origin is 3 away).
+        An UNMEASURED size falls back to the origin cell, never to a guess."""
+        x, z = int(x), int(z)
+        for t in self.plan.things:
+            if t.overlay or abs(t.x - x) > 4 or abs(t.z - z) > 4:
+                continue
+            cells = self.footprint_of(t.defName, t.x, t.z, t.rot or 0)
+            if cells is None:
+                if (t.x, t.z) == (x, z):
+                    return t.role, t.x, t.z
+                continue
+            if (x, z) in cells:
+                return t.role, t.x, t.z
         return None
 
     # ---- emit -------------------------------------------------------------

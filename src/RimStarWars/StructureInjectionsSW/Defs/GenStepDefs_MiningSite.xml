@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- The Mining Site - structure_procedural_spec.md section 8.3 (catalogue
+       E1 AncientQuarry's responder; whisper #16 The Prospector's Bones is its
+       abandoned read). INHABITED_AUGMENTATION_BUILD_1 pilot. Replays
+       Templates/mining_site.txt (rimplace export of
+       design/Jawa/templates/mining_site.lua: 32x24, Industrial, seed 5, rock on the
+       north, abandoned - the plan header carries the exact bake) via
+       mandrake.rm.injections' GenStep_RimplacePlan. -->
+  <GenStepDef>
+    <defName>RSW_GenStep_MiningSite</defName>
+    <genStep Class="RimMandrake.StructureInjections.GenStep_RimplacePlan">
+      <planFile>Templates/mining_site.txt</planFile>
+      <centerOnMap>true</centerOnMap>
+    </genStep>
+    <order>400</order>
+  </GenStepDef>
+
+</Defs>

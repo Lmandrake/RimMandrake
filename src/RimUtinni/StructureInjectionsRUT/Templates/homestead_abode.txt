@@ -1,0 +1,151 @@
+# rimplace flat plan v2
+# template  homestead (sha 9ec12f2d2dc2d0f4)
+# min_rect  7x8   baked at 9x8
+FOOTPRINT	0	0	9	8
+CLEAR	-1	-1	11	10	soft
+CLEAR	0	0	9	8	all
+TERRAIN	1	2	StrawMatting
+TERRAIN	1	3	StrawMatting
+TERRAIN	1	4	StrawMatting
+TERRAIN	1	5	StrawMatting
+TERRAIN	1	6	StrawMatting
+TERRAIN	2	2	StrawMatting
+TERRAIN	2	3	StrawMatting
+TERRAIN	2	4	StrawMatting
+TERRAIN	2	5	StrawMatting
+TERRAIN	2	6	StrawMatting
+TERRAIN	3	0	FlagstoneSandstone
+TERRAIN	3	2	StrawMatting
+TERRAIN	3	3	StrawMatting
+TERRAIN	3	4	StrawMatting
+TERRAIN	3	5	StrawMatting
+TERRAIN	3	6	StrawMatting
+TERRAIN	4	2	StrawMatting
+TERRAIN	4	3	StrawMatting
+TERRAIN	4	4	StrawMatting
+TERRAIN	4	5	StrawMatting
+TERRAIN	4	6	StrawMatting
+TERRAIN	5	2	StrawMatting
+TERRAIN	5	3	StrawMatting
+TERRAIN	5	4	StrawMatting
+TERRAIN	5	5	StrawMatting
+TERRAIN	5	6	StrawMatting
+TERRAIN	6	2	StrawMatting
+TERRAIN	6	3	StrawMatting
+TERRAIN	6	4	StrawMatting
+TERRAIN	6	5	StrawMatting
+TERRAIN	6	6	StrawMatting
+TERRAIN	7	2	StrawMatting
+TERRAIN	7	3	StrawMatting
+TERRAIN	7	4	StrawMatting
+TERRAIN	7	5	StrawMatting
+TERRAIN	7	6	StrawMatting
+THING	Wall	0	1	0	BlocksSandstone
+THING	Wall	1	1	0	BlocksSandstone
+THING	Wall	2	1	0	BlocksSandstone
+THING	Wall	4	1	0	BlocksSandstone
+THING	Wall	5	1	0	BlocksSandstone
+THING	Wall	6	1	0	BlocksSandstone
+THING	Wall	7	1	0	BlocksSandstone
+THING	Wall	8	1	0	BlocksSandstone
+THING	Wall	0	2	0	BlocksSandstone
+THING	Wall	8	2	0	BlocksSandstone
+THING	Wall	0	3	0	BlocksSandstone
+THING	Wall	8	3	0	BlocksSandstone
+THING	Wall	0	4	0	BlocksSandstone
+THING	Wall	8	4	0	BlocksSandstone
+THING	Wall	0	5	0	BlocksSandstone
+THING	Wall	8	5	0	BlocksSandstone
+THING	Wall	0	6	0	BlocksSandstone
+THING	Wall	8	6	0	BlocksSandstone
+THING	Wall	0	7	0	BlocksSandstone
+THING	Wall	1	7	0	BlocksSandstone
+THING	Wall	2	7	0	BlocksSandstone
+THING	Wall	4	7	0	BlocksSandstone
+THING	Wall	5	7	0	BlocksSandstone
+THING	Wall	6	7	0	BlocksSandstone
+THING	Wall	7	7	0	BlocksSandstone
+THING	Wall	8	7	0	BlocksSandstone
+THING	Door	3	1	0	WoodLog
+THING	Bedroll	7	5	0	Cloth
+THING	VFEPD_WoodenChest	7	4	0	-
+THING	Bedroll	2	6	3	Cloth
+THING	Campfire	7	2	3	-
+THING	Table1x2c	5	3	1	WoodLog
+THING	DiningChair	6	2	0	WoodLog
+THING	DiningChair	6	4	2	WoodLog
+THING	DiningChair	4	3	1	WoodLog
+THING	HorseshoesPin	7	3	0	WoodLog
+THING	ShelfSmall	2	3	0	WoodLog
+THING	Stool	5	5	0	WoodLog
+THING	AncientCrate	2	4	0	-
+THING	AncientCrate	1	4	0	-
+THING	AncientCrate	5	4	0	-
+THING	Filth_Dirt	3	2	0	-
+THING	Filth_Dirt	3	3	0	-
+THING	TorchWallLamp	6	6	0	-
+THING	TorchLamp	1	2	0	-
+THING	RUT_WindowAdobe	3	7	0	BlocksSandstone
+ROOF	0	1	RoofConstructed
+ROOF	0	2	RoofConstructed
+ROOF	0	3	RoofConstructed
+ROOF	0	4	RoofConstructed
+ROOF	0	5	RoofConstructed
+ROOF	0	6	RoofConstructed
+ROOF	0	7	RoofConstructed
+ROOF	1	1	RoofConstructed
+ROOF	1	2	RoofConstructed
+ROOF	1	3	RoofConstructed
+ROOF	1	4	RoofConstructed
+ROOF	1	5	RoofConstructed
+ROOF	1	6	RoofConstructed
+ROOF	1	7	RoofConstructed
+ROOF	2	1	RoofConstructed
+ROOF	2	2	RoofConstructed
+ROOF	2	3	RoofConstructed
+ROOF	2	4	RoofConstructed
+ROOF	2	5	RoofConstructed
+ROOF	2	6	RoofConstructed
+ROOF	2	7	RoofConstructed
+ROOF	3	1	RoofConstructed
+ROOF	3	2	RoofConstructed
+ROOF	3	3	RoofConstructed
+ROOF	3	4	RoofConstructed
+ROOF	3	5	RoofConstructed
+ROOF	3	6	RoofConstructed
+ROOF	3	7	RoofConstructed
+ROOF	4	1	RoofConstructed
+ROOF	4	2	RoofConstructed
+ROOF	4	3	RoofConstructed
+ROOF	4	4	RoofConstructed
+ROOF	4	5	RoofConstructed
+ROOF	4	6	RoofConstructed
+ROOF	4	7	RoofConstructed
+ROOF	5	1	RoofConstructed
+ROOF	5	2	RoofConstructed
+ROOF	5	3	RoofConstructed
+ROOF	5	4	RoofConstructed
+ROOF	5	5	RoofConstructed
+ROOF	5	6	RoofConstructed
+ROOF	5	7	RoofConstructed
+ROOF	6	1	RoofConstructed
+ROOF	6	2	RoofConstructed
+ROOF	6	3	RoofConstructed
+ROOF	6	4	RoofConstructed
+ROOF	6	5	RoofConstructed
+ROOF	6	6	RoofConstructed
+ROOF	6	7	RoofConstructed
+ROOF	7	1	RoofConstructed
+ROOF	7	2	RoofConstructed
+ROOF	7	3	RoofConstructed
+ROOF	7	4	RoofConstructed
+ROOF	7	5	RoofConstructed
+ROOF	7	6	RoofConstructed
+ROOF	7	7	RoofConstructed
+ROOF	8	1	RoofConstructed
+ROOF	8	2	RoofConstructed
+ROOF	8	3	RoofConstructed
+ROOF	8	4	RoofConstructed
+ROOF	8	5	RoofConstructed
+ROOF	8	6	RoofConstructed
+ROOF	8	7	RoofConstructed

@@ -486,6 +486,12 @@ IMPASSABLE_ROLES = {
   REACTOR = true, FABRICATOR = true, CHARGER = true, HYDRO = true,
   FENCE = true, BARRICADE = true, SANDBAG = true, DRUG_LAB = true,
   DESK = true, ANIMAL_BED = true, WATER_TANK = true, FOUNTAIN = true,
+  -- INHABITED_AUGMENTATION_BUILD_1: the solid props the homestead and
+  -- mining-site templates place (a chest, a footlocker, lockers, a tool
+  -- cabinet, an ore dresser, a mining car, a wreck, rebuilt rock, a seam)
+  CHEST = true, FOOTLOCKER = true, LOCKER = true, TOOL_CABINET = true,
+  MACHINE = true, RAIL_CAR = true, WRECK = true, WRECK_BIG = true,
+  ROCK = true, SEAM = true, SUPPORT = true, GONK = true,
 }
 -- A structural/boundary role blocks the fill but is not itself a "primary"
 -- that needs a passable neighbour (see plan.py's _STRUCTURAL_IMPASSABLE for
@@ -525,13 +531,22 @@ function hug(ctx, role, room, sides, opts)
   return placed
 end
 
--- `ctx:clutter(room, list, n)`. `list` is { {role=, weight=(default 1),
+-- `ctx:clutter(room, list, n, shell)`. `list` is { {role=, weight=(default 1),
 -- where=, rot=}, ... }; `n` total pieces spread across the list by weight.
 -- Genuinely distinct from `dress` (which takes a per-entry count, not a
 -- shared total): each of the `n` placements is its OWN random-start scan
 -- (spec §3.4 - pick a random interior cell, spiral outward via `try_near`
 -- until it fits), rather than one scan per role.
-function clutter(ctx, room, list, n)
+--
+-- `shell` (optional; the WALLED rect whose inner() is `room`) turns on
+-- §3.5's walkability guard: an IMPASSABLE piece is only placed where the
+-- door flood-fill still covers >=45% of the floor and still reaches every
+-- primary WITH that piece's footprint blocked. INHABITED_AUGMENTATION_BUILD_1
+-- found the unguarded version walling a stove and a table behind three
+-- crates in a 7x5 abode; the spec's own remedy ("remove the last secondary
+-- and retry") is not expressible - the ctx API has no un-place - so the
+-- check runs BEFORE the placement instead of after it.
+function clutter(ctx, room, list, n, shell)
   n = n or 1
   local total = 0
   for _, s in ipairs(list) do total = total + (s.weight or 1) end
@@ -545,11 +560,44 @@ function clutter(ctx, room, list, n)
     end
     if ctx:has_role(chosen.role) then
       local x, z = rng.int(room.x, room.x2), rng.int(room.z, room.z2)
-      local ok = try_near(ctx, chosen.role, x, z, chosen.rot or 0, 3, room)
+      local ok
+      if shell and IMPASSABLE_ROLES[chosen.role] then
+        ok = try_near_walkable(ctx, chosen.role, x, z, chosen.rot or 0, 3, room, shell)
+      else
+        ok = try_near(ctx, chosen.role, x, z, chosen.rot or 0, 3, room)
+      end
       if ok then placed = placed + 1 end
     end
   end
   return placed
+end
+
+-- try_near, but an impassable footprint is placed only where `aisle_ok`
+-- (with that footprint pre-blocked) still passes for the walled `shell`.
+function try_near_walkable(ctx, role, x, z, rot, radius, within, shell)
+  if not IMPASSABLE_ROLES[role] then return try_near(ctx, role, x, z, rot, radius, within) end
+  radius = radius or 1
+  for ring = 0, radius do
+    local cells = {}
+    for dz = -ring, ring do
+      for dx = -ring, ring do
+        if math.max(abs(dx), abs(dz)) == ring then cells[#cells + 1] = { x + dx, z + dz } end
+      end
+    end
+    shuffle(cells)
+    for _, c in ipairs(cells) do
+      if (within == nil or in_rect(c[1], c[2], within))
+         and not (within and blocks_a_door(ctx, c[1], c[2], within))
+         and ctx:has_role(role) and ctx:can_place(role, c[1], c[2], rot) then
+        local x0, z0, w, h = footprint_sw(ctx, role, c[1], c[2], rot)
+        local fp = {}
+        for dx = 0, w - 1 do for dz = 0, h - 1 do fp[#fp + 1] = { x0 + dx, z0 + dz } end end
+        local ok = aisle_ok(ctx, shell, fp)
+        if ok and try_place(ctx, role, c[1], c[2], rot) then return true, c[1], c[2] end
+      end
+    end
+  end
+  return false
 end
 
 -- `ctx:aisle_ok(room)` - spec §3.5's flood-fill proof. Floods from every
@@ -561,10 +609,17 @@ end
 -- A room with no door returns false, 0, 0 rather than erroring - the
 -- room-unreachable lint rule already names that failure; this just refuses
 -- to claim a walkability result it cannot compute.
-function aisle_ok(ctx, room)
+-- `blocked` (optional): a list of {x, z} cells to treat as impassable ON TOP
+-- of what stands - "would this room still walk if I put a crate HERE".
+function aisle_ok(ctx, room, blocked)
   local ir = inner(room)
+  local extra = {}
+  for _, c in ipairs(blocked or {}) do extra[c[1] .. "," .. c[2]] = true end
+  -- FOOTPRINTS, not origins: `role_covering` answers for every cell a thing
+  -- occupies (a 3x1 stove blocks three cells, not one)
   local function passable(x, z)
-    local role = ctx:role_at(x, z)
+    if extra[x .. "," .. z] then return false end
+    local role = ctx:role_covering(x, z)
     return role == nil or not IMPASSABLE_ROLES[role]
   end
   local doors = {}
@@ -598,21 +653,35 @@ function aisle_ok(ctx, room)
       end
     end
   end
+  -- every impassable THING (counted once, by origin) needs one footprint
+  -- cell with a reached neighbour; the hypothetical `blocked` piece is held
+  -- to the same rule, so a guard never places a crate nobody can reach
   local total, reached, unreached = 0, 0, 0
+  local things, thing_ok = {}, {}
+  local function touch(key, x, z)
+    if things[key] == nil then things[key] = true; thing_ok[key] = false end
+    if thing_ok[key] then return end
+    for _, s in ipairs(STEP) do
+      if seen[(x + s[1]) .. "," .. (z + s[2])] then thing_ok[key] = true return end
+    end
+  end
   for x = ir.x, ir.x2 do
     for z = ir.z, ir.z2 do
       total = total + 1
       local k = x .. "," .. z
       if seen[k] then reached = reached + 1 end
-      local role = ctx:role_at(x, z)
-      if role and IMPASSABLE_ROLES[role] and not STRUCTURAL_IMPASSABLE_ROLES[role] then
-        local ok = false
-        for _, s in ipairs(STEP) do
-          if seen[(x + s[1]) .. "," .. (z + s[2])] then ok = true break end
+      if extra[k] then
+        touch("blocked", x, z)
+      else
+        local role, ox, oz = ctx:role_covering(x, z)
+        if role and IMPASSABLE_ROLES[role] and not STRUCTURAL_IMPASSABLE_ROLES[role] then
+          touch(ox .. "," .. oz, x, z)
         end
-        if not ok then unreached = unreached + 1 end
       end
     end
+  end
+  for key, _ in pairs(things) do
+    if not thing_ok[key] then unreached = unreached + 1 end
   end
   local coverage = (total > 0) and (reached / total) or 0
   return (coverage >= 0.45 and unreached == 0), coverage, unreached

@@ -34,7 +34,18 @@
     "between two names for the same attachment. R2 fix: FLOOR was Gravel (stony soil -",
     "bare ground) on tech:Neolithic, wealth:poor/destitute, faction:Jawa_IndigenousTribes",
     "and faction:TribeCivil - all four moved Gravel to FLOOR_YARD (a yard, not a floor)",
-    "and gave FLOOR a real value (StrawMatting)."
+    "and gave FLOOR a real value (StrawMatting).",
+    "",
+    "2026-09-05 (INHABITED_AUGMENTATION_BUILD_1 pilot, homestead + mining site): WINDOW",
+    "now defaults to RUT_WindowAdobe (src/RimUtinni/DesertFixtures - repo-shipped, NOT yet",
+    "deployed, so `rimplace verify` reports it MISSING until the mod is deployed and the",
+    "dump refreshed; that MISSING is the true state, not a typo). Jawa/Junkers/Homestead",
+    "League blocks pin it too so tech:Industrial's glass wall does not override a desert",
+    "house; TribeCivil (Tusken) sets it null - no windows, per the spec. Added GRAVE,",
+    "COOLER_PASSIVE, CANDLE, FOOTLOCKER, ROCK/ROOF_ROCK/SEAM (the mining face rebuilds",
+    "its own rock mass - see mining_site.lua for why), NIGHT_LIGHT/GONK/JUNK for the",
+    "Jawa dressing and TROPHY for the Tusken one. Every defName checked by `measure get`",
+    "against mods=595/08f4a6d8 first."
   ],
   "default": {
     "WALL": "Wall",
@@ -96,7 +107,20 @@
     "PILLAR": "Column",
     "PILLAR_STUFF": "BlocksSandstone",
     "ROOF": "RoofConstructed",
-    "CONDUIT": "PowerConduit"
+    "CONDUIT": "PowerConduit",
+    "WINDOW": "RUT_WindowAdobe",
+    "WINDOW_STUFF": "BlocksSandstone",
+    "GRAVE": "Grave",
+    "COOLER_PASSIVE": "PassiveCooler",
+    "CANDLE": "DizzyCandle",
+    "FOOTLOCKER": "RH2_ClassicFootlocker",
+    "ROCK": "Sandstone",
+    "ROCK_CHUNK": "ChunkSandstone",
+    "ROOF_ROCK": "RoofRockThin",
+    "SEAM": "MineableSteel",
+    "LOCKER": "AncientLockers",
+    "TOOL_CABINET": "ToolCabinet",
+    "TOOL_CABINET_STUFF": "Steel"
   },
   "tech:Neolithic": {
     "WALL_STUFF": "BlocksSandstone",
@@ -165,7 +189,11 @@
     "FLOOR_YARD": "Gravel",
     "BED": "Bedroll",
     "LIGHT": "TorchLamp",
-    "NEST": "EggBox"
+    "NEST": "EggBox",
+    "WINDOW": "RUT_WindowAdobe",
+    "NIGHT_LIGHT": "GLO_SmallGlowstone",
+    "GONK": "KOTOR_GonkBuilding",
+    "JUNK": "VFEPD_SpaceJunk"
   },
   "faction:Jawa_Junkers": {
     "_comment": "Canon: warrens in wreck fields; 'they manufacture nothing' - everything here is salvage. Floors are scavenged deck plating and grating (Jawa Armoury Rebalance's absorbed KotOR floor tiles), walls steel plate, furniture steel-stuffed vanilla. The scrapyard lot gets real wrecks (Core's AncientPodCar - this project's landspeeder reskin - and AncientRustedCar), Piled Junk (KOTOR_MineableJunk, a mineable), slag chunks. Materials invented.",
@@ -202,7 +230,13 @@
     "WRECK_BIG": "AncientRustedCar",
     "FENCE_STUFF": "Steel",
     "PILLAR_STUFF": "Steel",
-    "DECOR": null
+    "DECOR": null,
+    "WINDOW": "RUT_WindowAdobe",
+    "WINDOW_STUFF": "Steel",
+    "NIGHT_LIGHT": "GLO_SmallGlowstone",
+    "GONK": "KOTOR_GonkBuilding",
+    "JUNK": "VFEPD_SpaceJunk",
+    "SEAM": "KOTOR_MineableJunk"
   },
   "faction:Jawa_HuttCartel": {
     "_comment": "Hutt Cartel. Canon (faction_roster_v2.md 'Technology and economy'): 'drug labs, prisons, barracks, throne room, warehouse, defended landing area, walled cistern'; eight oasis palaces, one lord each. Outer Rim's Tatooine furniture line (Jabba's own world) for everything a guest sits or sleeps on; the absorbed KotOR 'outland office tile' for the palace floor; a 3x2 dais throne (GS_Palp_Throne, label reads 'Imperial throne' - the sprite is a raised throne, the tooltip is a known cosmetic wart); pazaak, holo-dancers and a bith band for the hall; the Hutt Clan floor decal (Outer Rim) as the signature. Materials invented.",
@@ -426,21 +460,28 @@
     "WALL_STUFF": "Steel",
     "DOOR": "Autodoor",
     "FLOOR": "SterileTile",
-    "TURRET": "Turret_MiniTurret"
+    "TURRET": "Turret_MiniTurret",
+    "WINDOW": "MUS_SpaceBase_Window",
+    "WINDOW_STUFF": null
   },
   "faction:TribeCivil": {
-    "_comment": "Deep Desert Tribes. Canon: stone huts and caves, traps not turrets, and their answer to fire is to have NO permanent structure.",
+    "_comment": "Deep Desert Tribes. Canon: stone huts and caves, traps not turrets, and their answer to fire is to have NO permanent structure. Spec 8.1 (Tusken read): no windows, XER_Tribal* beds, a bantha horn on the wall side, hay.",
     "WALL_STUFF": "BlocksSandstone",
     "FLOOR": "StrawMatting",
     "FLOOR_YARD": "Gravel",
-    "BED": "Bedroll",
+    "BED": "XER_TribalBedroll",
+    "BED_STUFF": "Cloth",
     "LIGHT": "TorchLamp",
-    "STOVE": "Campfire"
+    "STOVE": "Campfire",
+    "WINDOW": null,
+    "TROPHY": "BanthaHorn"
   },
   "faction:OutlanderCivil": {
-    "_comment": "Homestead Defense League. Canon: hand-made, vaporator arrays, SANDBAGS not walls, no spacer chrome.",
+    "_comment": "Homestead Defense League. Canon: hand-made, vaporator arrays, SANDBAGS not walls, no spacer chrome. Spec 8.1: ES_ScalesSign at the gate, the trough OUTSIDE the fence (the free well is the whole faith).",
     "WALL_STUFF": "WoodLog",
     "FLOOR": "WoodPlankFloor",
-    "LIGHT": "StandingLamp"
+    "LIGHT": "StandingLamp",
+    "WINDOW": "RUT_WindowAdobe",
+    "_sign": "spec 8.1 wants ES_ScalesSign at the gate; it is UNMEASURED in the def size index (defsize's scan does not see Medieval Signs' defs - a scanner gap), so the measured default SIGN stands until the index knows it"
   }
 }

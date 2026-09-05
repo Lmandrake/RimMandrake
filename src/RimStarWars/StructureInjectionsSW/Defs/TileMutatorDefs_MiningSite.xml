@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- The Mining Site - structure_procedural_spec.md section 8.3.
+       Same extraGenSteps responder shape as every prior batch; the two
+       Inhabited steps are carried under MayRequire so a tile that also
+       holds a WorldObject_Inhabited place gets its cast and goods inside
+       the works (both steps no-op on a tile without one).
+
+       The plan rebuilds the rock mass it cuts into (see mining_site.lua's
+       header for why: the engine's own footprint-wide CLEAR mines the
+       tile's rock before any plan runs), so this does not depend on the
+       tile having a mountain edge - but it reads best placed against one.
+
+       NOT YET PLACED on any Ash'karr tile - same deferral as every prior
+       batch. -->
+  <TileMutatorDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RSW_MiningSite</defName>
+    <label>mining site</label>
+    <description>A small mine worked into the rock: a rail from the face to the ore yard, a dresser beside it, a bunkhouse for the crew, and a poor seam left in the walls where the good ore ran out.</description>
+    <extraGenSteps>
+      <li>RSW_GenStep_MiningSite</li>
+      <li MayRequire="mandrake.rm.inhabited">Inhabited_Cast</li>
+      <li MayRequire="mandrake.rm.inhabited">RM_InhabitedStock</li>
+    </extraGenSteps>
+  </TileMutatorDef>
+
+</Defs>

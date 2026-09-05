@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- structure_procedural_spec.md section 8.1, the homestead family
+       (roster #22 The Homestead) - INHABITED_AUGMENTATION_BUILD_1 pilot.
+       Each replays a plan exported from design/Jawa/templates/homestead.lua
+       (`rimplace export homestead ... - -param tier=...`) via
+       mandrake.rm.injections' GenStep_RimplacePlan. The tier, faction, tech
+       and canvas each plan was baked at are in the plan file's own header
+       comment lines. -->
+
+  <!-- abode: one room, 1-2 people. Jawa_IndigenousTribes, Neolithic, poor, 9x8. -->
+  <GenStepDef>
+    <defName>RUT_GenStep_HomesteadAbode</defName>
+    <genStep Class="RimMandrake.StructureInjections.GenStep_RimplacePlan">
+      <planFile>Templates/homestead_abode.txt</planFile>
+      <centerOnMap>true</centerOnMap>
+    </genStep>
+    <order>400</order>
+  </GenStepDef>
+
+  <!-- homestead: hearth room, two bedrooms, store lean-to, porch, power apron.
+       OutlanderCivil (Homestead Defense League), Industrial, comfortable, 16x14. -->
+  <GenStepDef>
+    <defName>RUT_GenStep_Homestead</defName>
+    <genStep Class="RimMandrake.StructureInjections.GenStep_RimplacePlan">
+      <planFile>Templates/homestead.txt</planFile>
+      <centerOnMap>true</centerOnMap>
+    </genStep>
+    <order>400</order>
+  </GenStepDef>
+
+  <!-- compound: households around a shared fire, a pen, a grave plot, a
+       sandbag perimeter. Jawa_IndigenousTribes, Neolithic, poor, 40x34. -->
+  <GenStepDef>
+    <defName>RUT_GenStep_HomesteadCompound</defName>
+    <genStep Class="RimMandrake.StructureInjections.GenStep_RimplacePlan">
+      <planFile>Templates/homestead_compound.txt</planFile>
+      <centerOnMap>true</centerOnMap>
+    </genStep>
+    <order>400</order>
+  </GenStepDef>
+
+</Defs>

@@ -139,6 +139,54 @@ def t_unsealed_fires():
     assert [f for f in lint(p) if f.code == "room-not-sealed"], "gap not caught"
 
 
+@case("E4: a window SEALS a room and HOLDS its roof, exactly like the wall it replaced")
+def t_window_seals():
+    # spec §3.1.3: "Windows are wall-slot cells (ctx:window), so they count as
+    # WALL for room-not-sealed". Found missing by the first template to cut
+    # one (homestead.lua): every window read as an open perimeter cell.
+    p = _run("function build(ctx) ctx:room('Bedroom',0,0,6,6) ctx:wall_rect(0,0,6,6) "
+             "ctx:door(2,0) ctx:window(3,5) end")
+    codes = {f.code for f in lint(p)}
+    assert "room-not-sealed" not in codes, "a window read as a gap in the shell"
+    assert "roof-unsupported" not in codes, "a window did not count as roof support"
+    assert any(t.role == "WINDOW" for t in p.things), "no window placed at all"
+
+
+@case("E4: clutter(..., shell) never walls a primary off from the door")
+def t_clutter_walkable():
+    # A 5x5 shell (3x3 interior), a table (primary) in the far corner, then
+    # far more crates than the room can hold: with the shell passed, every
+    # crate that would cut the door's flood-fill off from the table is
+    # refused BEFORE placement. Without it (the control) they are not.
+    src = ("function build(ctx) ctx:room('R',0,0,5,5) ctx:wall_rect(0,0,5,5) ctx:door(2,0) "
+           "ctx:place_role('TABLE',3,3,0) local ir = inner(R(0,0,5,5)) "
+           "clutter(ctx, ir, {{role='CRATE'}}, 12, %s) end")
+    guarded = _run(src % "R(0,0,5,5)")
+    assert not [f for f in lint(guarded) if f.code == "aisle-blocked"], \
+        "the guard let a crate wall the table off"
+    control = _run(src % "nil")
+    assert [f for f in lint(control) if f.code == "aisle-blocked"], \
+        "the negative control did not block the table - the case proves nothing"
+
+
+@case("NEGATIVE: the aisle fill sees a 3x1 stove's WHOLE footprint, not its origin")
+def t_aisle_footprint():
+    # 5x5 shell, 3x3 interior, door at the south. An ElectricStove (3x1) laid
+    # across the middle row at x=1..3 cuts the room in two; the crate behind
+    # it must read as unreached by BOTH fills. Origin-only bookkeeping saw a
+    # 1-cell stove and a walkable gap either side of it.
+    src = ("function build(ctx) ctx:room('R',0,0,5,5) ctx:wall_rect(0,0,5,5) ctx:door(2,0) "
+           "ctx:place('ElectricStove',2,2,0,nil,'STOVE') ctx:place('AncientCrate',2,3,0,nil,'CRATE') "
+           "local ok, cov, un = aisle_ok(ctx, R(0,0,5,5)) "
+           "note(string.format('lua:%s:%d', tostring(ok), un)) end")
+    p = _run(src, pal=_pal(tech="Industrial"))
+    if not p.things or any(f.code == "size-index-missing" for f in lint(p)):
+        return  # UNMEASURED environment: nothing to prove here
+    assert [f for f in lint(p) if f.code == "aisle-blocked" and f.level == "ERROR"], \
+        "lint let a 3x1 stove read as a 1x1"
+    assert any(n == "lua:false:1" for n in p.notes), p.notes
+
+
 @case("NEGATIVE: a room with no door is an ERROR")
 def t_nodoor_fires():
     p = _run("function build(ctx) ctx:room('Bedroom',0,0,6,6) "

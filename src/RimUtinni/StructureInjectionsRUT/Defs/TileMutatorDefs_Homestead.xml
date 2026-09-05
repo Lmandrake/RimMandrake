@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- structure_procedural_spec.md section 8.1 - the homestead family, one
+       TileMutatorDef per tier (INHABITED_AUGMENTATION_BUILD_1 pilot).
+       Responder mechanism per structure_injection_roster.md section 0b: a
+       TileMutatorDef's extraGenSteps is the def-driven injection hook, the
+       same shape every prior batch used.
+
+       The two Inhabited steps ride along so a tile that ALSO carries a
+       WorldObject_Inhabited place (INHABITED_TILEMUTATOR_NO_ENTRY_1's
+       wilderness route) gets its cast and its goods dropped INTO the
+       structure; on a tile with no such place both steps return without
+       touching the map (GenStep_InhabitedCast / GenStep_InhabitedStock both
+       guard on the place being null). MayRequire keeps this content pack
+       loadable without mandrake.rm.inhabited.
+
+       NOT YET PLACED on any Ash'karr tile - a live world-tile edit on the
+       frozen map (bridge + world_commit), out of scope for this pass, same
+       deferral as every prior batch. -->
+
+  <TileMutatorDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_HomesteadAbode</defName>
+    <label>humble abode</label>
+    <description>One room doing everything: a bed in the far corner, a hearth by the door, a table between. Somebody lives here, or did.</description>
+    <extraGenSteps>
+      <li>RUT_GenStep_HomesteadAbode</li>
+      <li MayRequire="mandrake.rm.inhabited">Inhabited_Cast</li>
+      <li MayRequire="mandrake.rm.inhabited">RM_InhabitedStock</li>
+    </extraGenSteps>
+  </TileMutatorDef>
+
+  <TileMutatorDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_Homestead</defName>
+    <label>homestead</label>
+    <description>A family's house: a hearth room off the porch, bedrooms behind it, a store lean-to on the back wall and a solar panel humming on its pad.</description>
+    <extraGenSteps>
+      <li>RUT_GenStep_Homestead</li>
+      <li MayRequire="mandrake.rm.inhabited">Inhabited_Cast</li>
+      <li MayRequire="mandrake.rm.inhabited">RM_InhabitedStock</li>
+    </extraGenSteps>
+  </TileMutatorDef>
+
+  <TileMutatorDef MayRequire="Ludeon.RimWorld.Odyssey">
+    <defName>RUT_HomesteadCompound</defName>
+    <label>family compound</label>
+    <description>Several households around one fire, a pen on the downwind edge, graves in the far corner and a sandbag line the whole family keeps.</description>
+    <extraGenSteps>
+      <li>RUT_GenStep_HomesteadCompound</li>
+      <li MayRequire="mandrake.rm.inhabited">Inhabited_Cast</li>
+      <li MayRequire="mandrake.rm.inhabited">RM_InhabitedStock</li>
+    </extraGenSteps>
+  </TileMutatorDef>
+
+</Defs>

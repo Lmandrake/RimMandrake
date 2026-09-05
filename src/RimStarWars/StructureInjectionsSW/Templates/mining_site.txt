@@ -1,0 +1,816 @@
+# rimplace flat plan v2
+# template  mining_site (sha cb7a7c040794f06a)
+# min_rect  24x18   baked at 32x24
+FOOTPRINT	0	0	32	24
+CLEAR	-1	-1	34	26	soft
+CLEAR	0	0	32	24	all
+CLEAR	7	17	3	6	all
+TERRAIN	0	0	Gravel
+TERRAIN	0	1	Gravel
+TERRAIN	0	2	Gravel
+TERRAIN	1	0	Gravel
+TERRAIN	1	1	PackedDirt
+TERRAIN	1	2	Gravel
+TERRAIN	1	7	Concrete
+TERRAIN	1	8	Concrete
+TERRAIN	1	9	Concrete
+TERRAIN	1	10	Concrete
+TERRAIN	2	0	Gravel
+TERRAIN	2	1	Gravel
+TERRAIN	2	2	Gravel
+TERRAIN	2	7	Concrete
+TERRAIN	2	8	Concrete
+TERRAIN	2	9	Concrete
+TERRAIN	2	10	Concrete
+TERRAIN	3	0	Gravel
+TERRAIN	3	1	Gravel
+TERRAIN	3	2	Gravel
+TERRAIN	3	7	Concrete
+TERRAIN	3	8	Concrete
+TERRAIN	3	9	Concrete
+TERRAIN	3	10	Concrete
+TERRAIN	4	0	Gravel
+TERRAIN	4	1	PackedDirt
+TERRAIN	4	2	Gravel
+TERRAIN	5	0	Gravel
+TERRAIN	5	1	Gravel
+TERRAIN	5	2	Gravel
+TERRAIN	5	3	Gravel
+TERRAIN	5	4	Gravel
+TERRAIN	5	5	Gravel
+TERRAIN	5	6	Gravel
+TERRAIN	6	0	Gravel
+TERRAIN	6	1	PackedDirt
+TERRAIN	6	2	PackedDirt
+TERRAIN	6	3	Gravel
+TERRAIN	6	4	Gravel
+TERRAIN	6	5	Gravel
+TERRAIN	6	6	Gravel
+TERRAIN	7	0	Gravel
+TERRAIN	7	1	Gravel
+TERRAIN	7	2	Gravel
+TERRAIN	7	3	Gravel
+TERRAIN	7	4	Gravel
+TERRAIN	7	5	Gravel
+TERRAIN	7	6	Gravel
+TERRAIN	7	17	Gravel
+TERRAIN	7	18	Gravel
+TERRAIN	7	19	Gravel
+TERRAIN	7	20	Gravel
+TERRAIN	7	21	Gravel
+TERRAIN	7	22	Gravel
+TERRAIN	8	0	Gravel
+TERRAIN	8	1	Gravel
+TERRAIN	8	2	Gravel
+TERRAIN	8	3	Gravel
+TERRAIN	8	4	Gravel
+TERRAIN	8	5	Gravel
+TERRAIN	8	6	Gravel
+TERRAIN	8	7	PackedDirt
+TERRAIN	8	8	PackedDirt
+TERRAIN	8	9	PackedDirt
+TERRAIN	8	10	PackedDirt
+TERRAIN	8	11	PackedDirt
+TERRAIN	8	12	PackedDirt
+TERRAIN	8	13	PackedDirt
+TERRAIN	8	14	PackedDirt
+TERRAIN	8	15	PackedDirt
+TERRAIN	8	16	PackedDirt
+TERRAIN	8	17	Gravel
+TERRAIN	8	18	Gravel
+TERRAIN	8	19	Gravel
+TERRAIN	8	20	Gravel
+TERRAIN	8	21	Gravel
+TERRAIN	8	22	Gravel
+TERRAIN	9	0	PackedDirt
+TERRAIN	9	1	PackedDirt
+TERRAIN	9	2	Gravel
+TERRAIN	9	3	Gravel
+TERRAIN	9	4	Gravel
+TERRAIN	9	5	Gravel
+TERRAIN	9	6	Gravel
+TERRAIN	9	17	Gravel
+TERRAIN	9	18	Gravel
+TERRAIN	9	19	Gravel
+TERRAIN	9	20	Gravel
+TERRAIN	9	21	Gravel
+TERRAIN	9	22	Gravel
+TERRAIN	10	0	PackedDirt
+TERRAIN	10	1	Gravel
+TERRAIN	10	2	Gravel
+TERRAIN	10	3	Gravel
+TERRAIN	10	4	Gravel
+TERRAIN	10	5	Gravel
+TERRAIN	10	6	Gravel
+TERRAIN	11	0	Gravel
+TERRAIN	11	1	Gravel
+TERRAIN	11	2	Gravel
+TERRAIN	11	3	Gravel
+TERRAIN	11	4	Gravel
+TERRAIN	11	5	Gravel
+TERRAIN	11	6	Gravel
+TERRAIN	12	0	Gravel
+TERRAIN	12	1	Gravel
+TERRAIN	12	2	Gravel
+TERRAIN	13	0	Gravel
+TERRAIN	13	1	Gravel
+TERRAIN	13	2	Gravel
+TERRAIN	14	0	PackedDirt
+TERRAIN	14	1	Gravel
+TERRAIN	14	2	Gravel
+TERRAIN	15	0	Gravel
+TERRAIN	15	1	Gravel
+TERRAIN	15	2	Gravel
+TERRAIN	16	0	Gravel
+TERRAIN	16	1	Gravel
+TERRAIN	16	2	Gravel
+TERRAIN	17	0	Gravel
+TERRAIN	17	1	Gravel
+TERRAIN	17	2	Gravel
+TERRAIN	18	0	PackedDirt
+TERRAIN	18	1	PackedDirt
+TERRAIN	18	2	Gravel
+TERRAIN	19	0	Gravel
+TERRAIN	19	1	Gravel
+TERRAIN	19	2	Gravel
+TERRAIN	20	0	Gravel
+TERRAIN	20	1	Gravel
+TERRAIN	20	2	Gravel
+TERRAIN	21	0	Gravel
+TERRAIN	21	1	Gravel
+TERRAIN	21	2	Gravel
+TERRAIN	22	0	PackedDirt
+TERRAIN	22	1	PackedDirt
+TERRAIN	22	2	Gravel
+TERRAIN	23	0	Gravel
+TERRAIN	23	1	Gravel
+TERRAIN	23	2	PackedDirt
+TERRAIN	24	0	Gravel
+TERRAIN	24	1	PackedDirt
+TERRAIN	24	2	Gravel
+TERRAIN	25	0	PackedDirt
+TERRAIN	25	1	Gravel
+TERRAIN	25	2	Gravel
+TERRAIN	26	0	Gravel
+TERRAIN	26	1	Gravel
+TERRAIN	26	2	PackedDirt
+TERRAIN	27	0	PackedDirt
+TERRAIN	27	1	Gravel
+TERRAIN	27	2	Gravel
+TERRAIN	27	11	Concrete
+TERRAIN	27	12	Concrete
+TERRAIN	27	13	Concrete
+TERRAIN	27	14	Concrete
+TERRAIN	27	15	Concrete
+TERRAIN	28	0	Gravel
+TERRAIN	28	1	Gravel
+TERRAIN	28	2	Gravel
+TERRAIN	28	11	Concrete
+TERRAIN	28	12	Concrete
+TERRAIN	28	13	Concrete
+TERRAIN	28	14	Concrete
+TERRAIN	28	15	Concrete
+TERRAIN	29	0	Gravel
+TERRAIN	29	1	Gravel
+TERRAIN	29	2	Gravel
+TERRAIN	29	11	Concrete
+TERRAIN	29	12	Concrete
+TERRAIN	29	13	Concrete
+TERRAIN	29	14	Concrete
+TERRAIN	29	15	Concrete
+TERRAIN	30	0	PackedDirt
+TERRAIN	30	1	Gravel
+TERRAIN	30	2	Gravel
+TERRAIN	30	11	Concrete
+TERRAIN	30	12	Concrete
+TERRAIN	30	13	Concrete
+TERRAIN	30	14	Concrete
+TERRAIN	30	15	Concrete
+TERRAIN	31	0	PackedDirt
+TERRAIN	31	1	Gravel
+TERRAIN	31	2	Gravel
+THING	AncientRustedTruck	2	1	1	-
+THING	QE_Sign	7	0	0	WoodLog
+THING	FT_Trench	13	0	1	-
+THING	FT_Trench	14	1	1	-
+THING	ChunkSandstone	15	3	0	-
+THING	ChunkSandstone	12	5	0	-
+THING	ChunkSandstone	12	4	0	-
+THING	ChunkSandstone	14	3	0	-
+THING	ChunkSandstone	0	4	0	-
+THING	ChunkSandstone	3	5	0	-
+THING	ChunkSandstone	1	4	0	-
+THING	Steel	14	4	0	-
+THING	VFEPD_AncientMudCarriage	21	4	0	-
+THING	VFEPD_AncientSteelMiningCars	8	10	1	-
+THING	VFEPD_AncientEmptyMiningCar	10	5	1	-
+THING	VFEPD_AncientOreDressingMachine	14	11	0	-
+THING	BreadMoAM_AncientMineralConveyor	13	6	0	-
+THING	Filth_RubbleRock	14	10	0	-
+THING	Filth_RubbleRock	13	11	0	-
+THING	Filth_RubbleRock	14	9	0	-
+THING	Wall	0	6	0	BlocksSandstone
+THING	Wall	1	6	0	BlocksSandstone
+THING	Wall	2	6	0	BlocksSandstone
+THING	Wall	3	6	0	BlocksSandstone
+THING	Wall	4	6	0	BlocksSandstone
+THING	Wall	0	7	0	BlocksSandstone
+THING	Wall	4	7	0	BlocksSandstone
+THING	Wall	0	8	0	BlocksSandstone
+THING	Wall	0	9	0	BlocksSandstone
+THING	Wall	4	9	0	BlocksSandstone
+THING	Wall	0	10	0	BlocksSandstone
+THING	Wall	4	10	0	BlocksSandstone
+THING	Wall	0	11	0	BlocksSandstone
+THING	Wall	1	11	0	BlocksSandstone
+THING	Wall	2	11	0	BlocksSandstone
+THING	Wall	3	11	0	BlocksSandstone
+THING	Wall	4	11	0	BlocksSandstone
+THING	Door	4	8	0	WoodLog
+THING	TableMachining	2	10	2	-
+THING	Shelf	1	7	0	WoodLog
+THING	SurvivalTools_Pickaxe	1	7	0	-
+THING	Stool	2	9	0	WoodLog
+THING	Stool	3	7	0	WoodLog
+THING	Filth_Dirt	3	9	0	-
+THING	WallLamp	1	7	3	-
+THING	Wall	26	10	0	BlocksSandstone
+THING	Wall	27	10	0	BlocksSandstone
+THING	Wall	28	10	0	BlocksSandstone
+THING	Wall	30	10	0	BlocksSandstone
+THING	Wall	31	10	0	BlocksSandstone
+THING	Wall	26	11	0	BlocksSandstone
+THING	Wall	31	11	0	BlocksSandstone
+THING	Wall	26	12	0	BlocksSandstone
+THING	Wall	31	12	0	BlocksSandstone
+THING	Wall	26	13	0	BlocksSandstone
+THING	Wall	31	13	0	BlocksSandstone
+THING	Wall	26	14	0	BlocksSandstone
+THING	Wall	31	14	0	BlocksSandstone
+THING	Wall	26	15	0	BlocksSandstone
+THING	Wall	31	15	0	BlocksSandstone
+THING	Wall	26	16	0	BlocksSandstone
+THING	Wall	27	16	0	BlocksSandstone
+THING	Wall	28	16	0	BlocksSandstone
+THING	Wall	29	16	0	BlocksSandstone
+THING	Wall	30	16	0	BlocksSandstone
+THING	Wall	31	16	0	BlocksSandstone
+THING	Door	29	10	0	WoodLog
+THING	Bed	28	14	0	WoodLog
+THING	Bed	27	14	0	WoodLog
+THING	Bed	30	14	0	WoodLog
+THING	RH2_ClassicFootlocker	30	13	0	-
+THING	ElectricStove	29	12	0	-
+THING	DizzyCandle	29	15	0	-
+THING	AncientLockers	30	11	0	-
+THING	Stool	29	13	0	WoodLog
+THING	Filth_MoldyUniform	29	14	0	-
+THING	WallLamp	28	11	2	-
+THING	StandingLamp	27	12	0	-
+THING	QE_Sign	30	9	0	WoodLog
+THING	ChemfuelPoweredGenerator	26	3	0	-
+THING	PowerConduit	25	3	0	-
+THING	PowerConduit	25	4	0	-
+THING	PowerConduit	25	5	0	-
+THING	PowerConduit	25	6	0	-
+THING	PowerConduit	25	7	0	-
+THING	PowerConduit	25	8	0	-
+THING	PowerConduit	25	9	0	-
+THING	PowerConduit	25	10	0	-
+THING	PowerConduit	25	11	0	-
+THING	PowerConduit	25	12	0	-
+THING	PowerConduit	25	13	0	-
+THING	PowerConduit	25	14	0	-
+THING	PowerConduit	25	15	0	-
+THING	PowerConduit	25	16	0	-
+THING	PowerConduit	11	16	0	-
+THING	PowerConduit	12	16	0	-
+THING	PowerConduit	13	16	0	-
+THING	PowerConduit	14	16	0	-
+THING	PowerConduit	15	16	0	-
+THING	PowerConduit	16	16	0	-
+THING	PowerConduit	17	16	0	-
+THING	PowerConduit	18	16	0	-
+THING	PowerConduit	19	16	0	-
+THING	PowerConduit	20	16	0	-
+THING	PowerConduit	21	16	0	-
+THING	PowerConduit	22	16	0	-
+THING	PowerConduit	23	16	0	-
+THING	PowerConduit	24	16	0	-
+THING	FloodLight	10	16	0	-
+THING	Filth_MachineBits	26	4	0	-
+THING	Sandstone	0	17	0	-
+THING	Sandstone	1	17	0	-
+THING	Sandstone	2	17	0	-
+THING	Sandstone	3	17	0	-
+THING	Sandstone	4	17	0	-
+THING	Sandstone	5	17	0	-
+THING	Sandstone	6	17	0	-
+THING	MineableSteel	10	17	0	-
+THING	Filth_RubbleRock	9	17	0	-
+THING	Sandstone	11	17	0	-
+THING	Sandstone	12	17	0	-
+THING	Sandstone	13	17	0	-
+THING	Sandstone	14	17	0	-
+THING	Sandstone	15	17	0	-
+THING	Sandstone	16	17	0	-
+THING	Sandstone	17	17	0	-
+THING	Sandstone	18	17	0	-
+THING	Sandstone	19	17	0	-
+THING	Sandstone	20	17	0	-
+THING	Sandstone	21	17	0	-
+THING	Sandstone	22	17	0	-
+THING	Sandstone	23	17	0	-
+THING	Sandstone	24	17	0	-
+THING	Sandstone	25	17	0	-
+THING	Sandstone	26	17	0	-
+THING	Sandstone	27	17	0	-
+THING	Sandstone	28	17	0	-
+THING	Sandstone	29	17	0	-
+THING	Sandstone	30	17	0	-
+THING	Sandstone	31	17	0	-
+THING	Sandstone	0	18	0	-
+THING	Sandstone	1	18	0	-
+THING	Sandstone	2	18	0	-
+THING	Sandstone	3	18	0	-
+THING	Sandstone	4	18	0	-
+THING	Sandstone	5	18	0	-
+THING	MineableSteel	6	18	0	-
+THING	Filth_RubbleRock	7	18	0	-
+THING	MineableSteel	10	18	0	-
+THING	Filth_RubbleRock	9	18	0	-
+THING	Sandstone	11	18	0	-
+THING	Sandstone	12	18	0	-
+THING	Sandstone	13	18	0	-
+THING	Sandstone	14	18	0	-
+THING	Sandstone	15	18	0	-
+THING	Sandstone	16	18	0	-
+THING	Sandstone	17	18	0	-
+THING	Sandstone	18	18	0	-
+THING	Sandstone	19	18	0	-
+THING	Sandstone	20	18	0	-
+THING	Sandstone	21	18	0	-
+THING	Sandstone	22	18	0	-
+THING	Sandstone	23	18	0	-
+THING	Sandstone	24	18	0	-
+THING	Sandstone	25	18	0	-
+THING	Sandstone	26	18	0	-
+THING	Sandstone	27	18	0	-
+THING	Sandstone	28	18	0	-
+THING	Sandstone	29	18	0	-
+THING	Sandstone	30	18	0	-
+THING	Sandstone	31	18	0	-
+THING	Sandstone	0	19	0	-
+THING	Sandstone	1	19	0	-
+THING	Sandstone	2	19	0	-
+THING	Sandstone	3	19	0	-
+THING	Sandstone	4	19	0	-
+THING	Sandstone	5	19	0	-
+THING	Sandstone	6	19	0	-
+THING	MineableSteel	10	19	0	-
+THING	Filth_RubbleRock	9	19	0	-
+THING	Sandstone	11	19	0	-
+THING	Sandstone	12	19	0	-
+THING	Sandstone	13	19	0	-
+THING	Sandstone	14	19	0	-
+THING	Sandstone	15	19	0	-
+THING	Sandstone	16	19	0	-
+THING	Sandstone	17	19	0	-
+THING	Sandstone	18	19	0	-
+THING	Sandstone	19	19	0	-
+THING	Sandstone	20	19	0	-
+THING	Sandstone	21	19	0	-
+THING	Sandstone	22	19	0	-
+THING	Sandstone	23	19	0	-
+THING	Sandstone	24	19	0	-
+THING	Sandstone	25	19	0	-
+THING	Sandstone	26	19	0	-
+THING	Sandstone	27	19	0	-
+THING	Sandstone	28	19	0	-
+THING	Sandstone	29	19	0	-
+THING	Sandstone	30	19	0	-
+THING	Sandstone	31	19	0	-
+THING	Sandstone	0	20	0	-
+THING	Sandstone	1	20	0	-
+THING	Sandstone	2	20	0	-
+THING	Sandstone	3	20	0	-
+THING	Sandstone	4	20	0	-
+THING	Sandstone	5	20	0	-
+THING	Sandstone	6	20	0	-
+THING	MineableSteel	10	20	0	-
+THING	Filth_RubbleRock	9	20	0	-
+THING	Sandstone	11	20	0	-
+THING	Sandstone	12	20	0	-
+THING	Sandstone	13	20	0	-
+THING	Sandstone	14	20	0	-
+THING	Sandstone	15	20	0	-
+THING	Sandstone	16	20	0	-
+THING	Sandstone	17	20	0	-
+THING	Sandstone	18	20	0	-
+THING	Sandstone	19	20	0	-
+THING	Sandstone	20	20	0	-
+THING	Sandstone	21	20	0	-
+THING	Sandstone	22	20	0	-
+THING	Sandstone	23	20	0	-
+THING	Sandstone	24	20	0	-
+THING	Sandstone	25	20	0	-
+THING	Sandstone	26	20	0	-
+THING	Sandstone	27	20	0	-
+THING	Sandstone	28	20	0	-
+THING	Sandstone	29	20	0	-
+THING	Sandstone	30	20	0	-
+THING	Sandstone	31	20	0	-
+THING	Sandstone	0	21	0	-
+THING	Sandstone	1	21	0	-
+THING	Sandstone	2	21	0	-
+THING	Sandstone	3	21	0	-
+THING	Sandstone	4	21	0	-
+THING	Sandstone	5	21	0	-
+THING	Sandstone	6	21	0	-
+THING	Sandstone	10	21	0	-
+THING	Sandstone	11	21	0	-
+THING	Sandstone	12	21	0	-
+THING	Sandstone	13	21	0	-
+THING	Sandstone	14	21	0	-
+THING	Sandstone	15	21	0	-
+THING	Sandstone	16	21	0	-
+THING	Sandstone	17	21	0	-
+THING	Sandstone	18	21	0	-
+THING	Sandstone	19	21	0	-
+THING	Sandstone	20	21	0	-
+THING	Sandstone	21	21	0	-
+THING	Sandstone	22	21	0	-
+THING	Sandstone	23	21	0	-
+THING	Sandstone	24	21	0	-
+THING	Sandstone	25	21	0	-
+THING	Sandstone	26	21	0	-
+THING	Sandstone	27	21	0	-
+THING	Sandstone	28	21	0	-
+THING	Sandstone	29	21	0	-
+THING	Sandstone	30	21	0	-
+THING	Sandstone	31	21	0	-
+THING	Sandstone	0	22	0	-
+THING	Sandstone	1	22	0	-
+THING	Sandstone	2	22	0	-
+THING	Sandstone	3	22	0	-
+THING	Sandstone	4	22	0	-
+THING	Sandstone	5	22	0	-
+THING	Sandstone	6	22	0	-
+THING	MineableSteel	10	22	0	-
+THING	Filth_RubbleRock	9	22	0	-
+THING	Sandstone	11	22	0	-
+THING	Sandstone	12	22	0	-
+THING	Sandstone	13	22	0	-
+THING	Sandstone	14	22	0	-
+THING	Sandstone	15	22	0	-
+THING	Sandstone	16	22	0	-
+THING	Sandstone	17	22	0	-
+THING	Sandstone	18	22	0	-
+THING	Sandstone	19	22	0	-
+THING	Sandstone	20	22	0	-
+THING	Sandstone	21	22	0	-
+THING	Sandstone	22	22	0	-
+THING	Sandstone	23	22	0	-
+THING	Sandstone	24	22	0	-
+THING	Sandstone	25	22	0	-
+THING	Sandstone	26	22	0	-
+THING	Sandstone	27	22	0	-
+THING	Sandstone	28	22	0	-
+THING	Sandstone	29	22	0	-
+THING	Sandstone	30	22	0	-
+THING	Sandstone	31	22	0	-
+THING	Sandstone	0	23	0	-
+THING	Sandstone	1	23	0	-
+THING	Sandstone	2	23	0	-
+THING	Sandstone	3	23	0	-
+THING	Sandstone	4	23	0	-
+THING	Sandstone	5	23	0	-
+THING	Sandstone	6	23	0	-
+THING	Sandstone	7	23	0	-
+THING	MineableSteel	8	23	0	-
+THING	Filth_RubbleRock	8	22	0	-
+THING	Sandstone	9	23	0	-
+THING	Sandstone	10	23	0	-
+THING	Sandstone	11	23	0	-
+THING	Sandstone	12	23	0	-
+THING	Sandstone	13	23	0	-
+THING	Sandstone	14	23	0	-
+THING	Sandstone	15	23	0	-
+THING	Sandstone	16	23	0	-
+THING	Sandstone	17	23	0	-
+THING	Sandstone	18	23	0	-
+THING	Sandstone	19	23	0	-
+THING	Sandstone	20	23	0	-
+THING	Sandstone	21	23	0	-
+THING	Sandstone	22	23	0	-
+THING	Sandstone	23	23	0	-
+THING	Sandstone	24	23	0	-
+THING	Sandstone	25	23	0	-
+THING	Sandstone	26	23	0	-
+THING	Sandstone	27	23	0	-
+THING	Sandstone	28	23	0	-
+THING	Sandstone	29	23	0	-
+THING	Sandstone	30	23	0	-
+THING	Sandstone	31	23	0	-
+THING	VFEPD_AncientTunnelStructuralSupport_a	7	18	0	-
+THING	VFEPD_AncientTunnelStructuralSupport_b	9	18	0	-
+THING	AncientMiningCharge	8	22	0	-
+THING	DA_GnawedBones	9	21	0	-
+THING	VFEPD_FilthBones	8	19	0	-
+ROOF	0	6	RoofConstructed
+ROOF	0	7	RoofConstructed
+ROOF	0	8	RoofConstructed
+ROOF	0	9	RoofConstructed
+ROOF	0	10	RoofConstructed
+ROOF	0	11	RoofConstructed
+ROOF	0	17	RoofRockThin
+ROOF	0	18	RoofRockThin
+ROOF	0	19	RoofRockThin
+ROOF	0	20	RoofRockThin
+ROOF	0	21	RoofRockThin
+ROOF	0	22	RoofRockThin
+ROOF	0	23	RoofRockThin
+ROOF	1	6	RoofConstructed
+ROOF	1	7	RoofConstructed
+ROOF	1	8	RoofConstructed
+ROOF	1	9	RoofConstructed
+ROOF	1	10	RoofConstructed
+ROOF	1	11	RoofConstructed
+ROOF	1	17	RoofRockThin
+ROOF	1	18	RoofRockThin
+ROOF	1	19	RoofRockThin
+ROOF	1	20	RoofRockThin
+ROOF	1	21	RoofRockThin
+ROOF	1	22	RoofRockThin
+ROOF	1	23	RoofRockThin
+ROOF	2	6	RoofConstructed
+ROOF	2	7	RoofConstructed
+ROOF	2	8	RoofConstructed
+ROOF	2	9	RoofConstructed
+ROOF	2	10	RoofConstructed
+ROOF	2	11	RoofConstructed
+ROOF	2	17	RoofRockThin
+ROOF	2	18	RoofRockThin
+ROOF	2	19	RoofRockThin
+ROOF	2	20	RoofRockThin
+ROOF	2	21	RoofRockThin
+ROOF	2	22	RoofRockThin
+ROOF	2	23	RoofRockThin
+ROOF	3	6	RoofConstructed
+ROOF	3	7	RoofConstructed
+ROOF	3	8	RoofConstructed
+ROOF	3	9	RoofConstructed
+ROOF	3	10	RoofConstructed
+ROOF	3	11	RoofConstructed
+ROOF	3	17	RoofRockThin
+ROOF	3	18	RoofRockThin
+ROOF	3	19	RoofRockThin
+ROOF	3	20	RoofRockThin
+ROOF	3	21	RoofRockThin
+ROOF	3	22	RoofRockThin
+ROOF	3	23	RoofRockThin
+ROOF	4	6	RoofConstructed
+ROOF	4	7	RoofConstructed
+ROOF	4	8	RoofConstructed
+ROOF	4	9	RoofConstructed
+ROOF	4	10	RoofConstructed
+ROOF	4	11	RoofConstructed
+ROOF	4	17	RoofRockThin
+ROOF	4	18	RoofRockThin
+ROOF	4	19	RoofRockThin
+ROOF	4	20	RoofRockThin
+ROOF	4	21	RoofRockThin
+ROOF	4	22	RoofRockThin
+ROOF	4	23	RoofRockThin
+ROOF	5	17	RoofRockThin
+ROOF	5	18	RoofRockThin
+ROOF	5	19	RoofRockThin
+ROOF	5	20	RoofRockThin
+ROOF	5	21	RoofRockThin
+ROOF	5	22	RoofRockThin
+ROOF	5	23	RoofRockThin
+ROOF	6	17	RoofRockThin
+ROOF	6	18	RoofRockThin
+ROOF	6	19	RoofRockThin
+ROOF	6	20	RoofRockThin
+ROOF	6	21	RoofRockThin
+ROOF	6	22	RoofRockThin
+ROOF	6	23	RoofRockThin
+ROOF	7	17	RoofRockThin
+ROOF	7	18	RoofRockThin
+ROOF	7	19	RoofRockThin
+ROOF	7	20	RoofRockThin
+ROOF	7	21	RoofRockThin
+ROOF	7	22	RoofRockThin
+ROOF	7	23	RoofRockThin
+ROOF	8	17	RoofRockThin
+ROOF	8	18	RoofRockThin
+ROOF	8	19	RoofRockThin
+ROOF	8	20	RoofRockThin
+ROOF	8	21	RoofRockThin
+ROOF	8	22	RoofRockThin
+ROOF	8	23	RoofRockThin
+ROOF	9	17	RoofRockThin
+ROOF	9	18	RoofRockThin
+ROOF	9	19	RoofRockThin
+ROOF	9	20	RoofRockThin
+ROOF	9	21	RoofRockThin
+ROOF	9	22	RoofRockThin
+ROOF	9	23	RoofRockThin
+ROOF	10	17	RoofRockThin
+ROOF	10	18	RoofRockThin
+ROOF	10	19	RoofRockThin
+ROOF	10	20	RoofRockThin
+ROOF	10	21	RoofRockThin
+ROOF	10	22	RoofRockThin
+ROOF	10	23	RoofRockThin
+ROOF	11	17	RoofRockThin
+ROOF	11	18	RoofRockThin
+ROOF	11	19	RoofRockThin
+ROOF	11	20	RoofRockThin
+ROOF	11	21	RoofRockThin
+ROOF	11	22	RoofRockThin
+ROOF	11	23	RoofRockThin
+ROOF	12	17	RoofRockThin
+ROOF	12	18	RoofRockThin
+ROOF	12	19	RoofRockThin
+ROOF	12	20	RoofRockThin
+ROOF	12	21	RoofRockThin
+ROOF	12	22	RoofRockThin
+ROOF	12	23	RoofRockThin
+ROOF	13	17	RoofRockThin
+ROOF	13	18	RoofRockThin
+ROOF	13	19	RoofRockThin
+ROOF	13	20	RoofRockThin
+ROOF	13	21	RoofRockThin
+ROOF	13	22	RoofRockThin
+ROOF	13	23	RoofRockThin
+ROOF	14	17	RoofRockThin
+ROOF	14	18	RoofRockThin
+ROOF	14	19	RoofRockThin
+ROOF	14	20	RoofRockThin
+ROOF	14	21	RoofRockThin
+ROOF	14	22	RoofRockThin
+ROOF	14	23	RoofRockThin
+ROOF	15	17	RoofRockThin
+ROOF	15	18	RoofRockThin
+ROOF	15	19	RoofRockThin
+ROOF	15	20	RoofRockThin
+ROOF	15	21	RoofRockThin
+ROOF	15	22	RoofRockThin
+ROOF	15	23	RoofRockThin
+ROOF	16	17	RoofRockThin
+ROOF	16	18	RoofRockThin
+ROOF	16	19	RoofRockThin
+ROOF	16	20	RoofRockThin
+ROOF	16	21	RoofRockThin
+ROOF	16	22	RoofRockThin
+ROOF	16	23	RoofRockThin
+ROOF	17	17	RoofRockThin
+ROOF	17	18	RoofRockThin
+ROOF	17	19	RoofRockThin
+ROOF	17	20	RoofRockThin
+ROOF	17	21	RoofRockThin
+ROOF	17	22	RoofRockThin
+ROOF	17	23	RoofRockThin
+ROOF	18	17	RoofRockThin
+ROOF	18	18	RoofRockThin
+ROOF	18	19	RoofRockThin
+ROOF	18	20	RoofRockThin
+ROOF	18	21	RoofRockThin
+ROOF	18	22	RoofRockThin
+ROOF	18	23	RoofRockThin
+ROOF	19	17	RoofRockThin
+ROOF	19	18	RoofRockThin
+ROOF	19	19	RoofRockThin
+ROOF	19	20	RoofRockThin
+ROOF	19	21	RoofRockThin
+ROOF	19	22	RoofRockThin
+ROOF	19	23	RoofRockThin
+ROOF	20	17	RoofRockThin
+ROOF	20	18	RoofRockThin
+ROOF	20	19	RoofRockThin
+ROOF	20	20	RoofRockThin
+ROOF	20	21	RoofRockThin
+ROOF	20	22	RoofRockThin
+ROOF	20	23	RoofRockThin
+ROOF	21	17	RoofRockThin
+ROOF	21	18	RoofRockThin
+ROOF	21	19	RoofRockThin
+ROOF	21	20	RoofRockThin
+ROOF	21	21	RoofRockThin
+ROOF	21	22	RoofRockThin
+ROOF	21	23	RoofRockThin
+ROOF	22	17	RoofRockThin
+ROOF	22	18	RoofRockThin
+ROOF	22	19	RoofRockThin
+ROOF	22	20	RoofRockThin
+ROOF	22	21	RoofRockThin
+ROOF	22	22	RoofRockThin
+ROOF	22	23	RoofRockThin
+ROOF	23	17	RoofRockThin
+ROOF	23	18	RoofRockThin
+ROOF	23	19	RoofRockThin
+ROOF	23	20	RoofRockThin
+ROOF	23	21	RoofRockThin
+ROOF	23	22	RoofRockThin
+ROOF	23	23	RoofRockThin
+ROOF	24	17	RoofRockThin
+ROOF	24	18	RoofRockThin
+ROOF	24	19	RoofRockThin
+ROOF	24	20	RoofRockThin
+ROOF	24	21	RoofRockThin
+ROOF	24	22	RoofRockThin
+ROOF	24	23	RoofRockThin
+ROOF	25	17	RoofRockThin
+ROOF	25	18	RoofRockThin
+ROOF	25	19	RoofRockThin
+ROOF	25	20	RoofRockThin
+ROOF	25	21	RoofRockThin
+ROOF	25	22	RoofRockThin
+ROOF	25	23	RoofRockThin
+ROOF	26	10	RoofConstructed
+ROOF	26	11	RoofConstructed
+ROOF	26	12	RoofConstructed
+ROOF	26	13	RoofConstructed
+ROOF	26	14	RoofConstructed
+ROOF	26	15	RoofConstructed
+ROOF	26	16	RoofConstructed
+ROOF	26	17	RoofRockThin
+ROOF	26	18	RoofRockThin
+ROOF	26	19	RoofRockThin
+ROOF	26	20	RoofRockThin
+ROOF	26	21	RoofRockThin
+ROOF	26	22	RoofRockThin
+ROOF	26	23	RoofRockThin
+ROOF	27	10	RoofConstructed
+ROOF	27	11	RoofConstructed
+ROOF	27	12	RoofConstructed
+ROOF	27	13	RoofConstructed
+ROOF	27	14	RoofConstructed
+ROOF	27	15	RoofConstructed
+ROOF	27	16	RoofConstructed
+ROOF	27	17	RoofRockThin
+ROOF	27	18	RoofRockThin
+ROOF	27	19	RoofRockThin
+ROOF	27	20	RoofRockThin
+ROOF	27	21	RoofRockThin
+ROOF	27	22	RoofRockThin
+ROOF	27	23	RoofRockThin
+ROOF	28	10	RoofConstructed
+ROOF	28	11	RoofConstructed
+ROOF	28	12	RoofConstructed
+ROOF	28	13	RoofConstructed
+ROOF	28	14	RoofConstructed
+ROOF	28	15	RoofConstructed
+ROOF	28	16	RoofConstructed
+ROOF	28	17	RoofRockThin
+ROOF	28	18	RoofRockThin
+ROOF	28	19	RoofRockThin
+ROOF	28	20	RoofRockThin
+ROOF	28	21	RoofRockThin
+ROOF	28	22	RoofRockThin
+ROOF	28	23	RoofRockThin
+ROOF	29	10	RoofConstructed
+ROOF	29	11	RoofConstructed
+ROOF	29	12	RoofConstructed
+ROOF	29	13	RoofConstructed
+ROOF	29	14	RoofConstructed
+ROOF	29	15	RoofConstructed
+ROOF	29	16	RoofConstructed
+ROOF	29	17	RoofRockThin
+ROOF	29	18	RoofRockThin
+ROOF	29	19	RoofRockThin
+ROOF	29	20	RoofRockThin
+ROOF	29	21	RoofRockThin
+ROOF	29	22	RoofRockThin
+ROOF	29	23	RoofRockThin
+ROOF	30	10	RoofConstructed
+ROOF	30	11	RoofConstructed
+ROOF	30	12	RoofConstructed
+ROOF	30	13	RoofConstructed
+ROOF	30	14	RoofConstructed
+ROOF	30	15	RoofConstructed
+ROOF	30	16	RoofConstructed
+ROOF	30	17	RoofRockThin
+ROOF	30	18	RoofRockThin
+ROOF	30	19	RoofRockThin
+ROOF	30	20	RoofRockThin
+ROOF	30	21	RoofRockThin
+ROOF	30	22	RoofRockThin
+ROOF	30	23	RoofRockThin
+ROOF	31	10	RoofConstructed
+ROOF	31	11	RoofConstructed
+ROOF	31	12	RoofConstructed
+ROOF	31	13	RoofConstructed
+ROOF	31	14	RoofConstructed
+ROOF	31	15	RoofConstructed
+ROOF	31	16	RoofConstructed
+ROOF	31	17	RoofRockThin
+ROOF	31	18	RoofRockThin
+ROOF	31	19	RoofRockThin
+ROOF	31	20	RoofRockThin
+ROOF	31	21	RoofRockThin
+ROOF	31	22	RoofRockThin
+ROOF	31	23	RoofRockThin
+PAWN	Miner	8	21	wild	skeleton

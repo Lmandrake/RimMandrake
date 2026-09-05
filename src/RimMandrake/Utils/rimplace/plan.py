@@ -39,6 +39,12 @@ _GLYPH = {
     "CHARGER_BIG": "E", "REACTOR_BIG": "F", "GAS_TANK": "F", "TERMINAL_TALL": "i",
     "HOLO_TABLE": "i", "WORKBENCH": "K", "COMPONENT": "%", "STEEL": "%",
     "BASIN": "U", "SINK": "U", "DECOR_BIG": "o", "DECAL_ALT": "~",
+    # INHABITED_AUGMENTATION_BUILD_1 (homestead + mining site vocabulary)
+    "WINDOW": "=", "CHEST": "c", "FOOTLOCKER": "c", "CANDLE": "*",
+    "NIGHT_LIGHT": "*", "TROPHY": "o", "JUNK": "%", "GRAVE": "_",
+    "HAY": "%", "PEN_MARKER": "n", "COOLER_PASSIVE": "C", "GATE": "+",
+    "ROCK": "@", "SEAM": "$", "RAIL_CAR": "W", "MACHINE": "F",
+    "SUPPORT": "|", "TOOL": "/", "CONDUIT": "-", "FILTH": "`",
 }
 
 
@@ -211,7 +217,13 @@ def lint(plan: BuildPlan, verified_defs: set[str] | None = None) -> list[Finding
     # nursery wall defeats the cooling the nursery exists for. Check 5b catches
     # that specifically, because it is exactly the kind of thing that looks
     # correct on a plan and ruins a clutch in play.
-    SEALING = {"WALL", "DOOR", "COOLER", "HEATER"}
+    # A WINDOW is a wall-slot cell (E4: `ctx:window` replaces the wall the
+    # way `ctx:door` does; RUT_WindowAdobe is parented on Wall and keeps
+    # holdsRoof/isWall) - spec §3.1.3 says outright it "counts as WALL for
+    # room-not-sealed". It was missing here, so the first template to cut a
+    # window (homestead.lua, INHABITED_AUGMENTATION_BUILD_1) failed the seal
+    # check on every window it cut; the E4 selftest only checked the replace.
+    SEALING = {"WALL", "DOOR", "COOLER", "HEATER", "WINDOW"}
     walls = {(t.x, t.z) for t in plan.things if (t.role or "").upper() == "WALL"}
     doors = {(t.x, t.z) for t in plan.things if (t.role or "").upper() == "DOOR"}
     shell = {(t.x, t.z) for t in plan.things if (t.role or "").upper() in SEALING}
@@ -251,7 +263,7 @@ def lint(plan: BuildPlan, verified_defs: set[str] | None = None) -> list[Finding
     # 6. roof support. Vanilla drops unsupported roof; 6 cells from a support
     #    is the conventional safe span.
     supports = walls | {(t.x, t.z) for t in plan.things
-                        if (t.role or "").upper() in ("PILLAR", "WALL")}
+                        if (t.role or "").upper() in ("PILLAR", "WALL", "WINDOW")}
     for (x, z) in plan.roof:
         if any((x + dx, z + dz) in supports
                for dx in range(-6, 7) for dz in range(-6, 7)
@@ -385,7 +397,7 @@ def lint(plan: BuildPlan, verified_defs: set[str] | None = None) -> list[Finding
     # Lua runtime attached). ERROR if a primary is completely unreached by a
     # fill from the room's own doors; WARN if reachable coverage is thin.
     for r in plan.rooms:
-        ok, coverage, unreached = _aisle_fill(plan, r)
+        ok, coverage, unreached = _aisle_fill(plan, r, sizes)
         if ok is None:
             continue          # no door on this room - room-unreachable already says so
         if unreached:
@@ -428,6 +440,9 @@ _IMPASSABLE_ROLES = {
     "PILLAR", "THRONE", "FORGE", "REFINERY", "REACTOR", "FABRICATOR",
     "CHARGER", "HYDRO", "FENCE", "BARRICADE", "SANDBAG", "DRUG_LAB",
     "DESK", "ANIMAL_BED", "WATER_TANK", "FOUNTAIN",
+    # INHABITED_AUGMENTATION_BUILD_1 - keep in step with prelude.lua
+    "CHEST", "FOOTLOCKER", "LOCKER", "TOOL_CABINET", "MACHINE", "RAIL_CAR",
+    "WRECK", "WRECK_BIG", "ROCK", "SEAM", "SUPPORT", "GONK",
 }
 # A structural/boundary role BLOCKS the flood fill but is not itself a
 # "primary" that needs a passable neighbour - a wall is not something a
@@ -440,14 +455,33 @@ _STRUCTURAL_IMPASSABLE = {"WALL", "DOOR", "WINDOW", "PILLAR", "FENCE",
                           "BARRICADE", "SANDBAG"}
 
 
-def _aisle_fill(plan: BuildPlan, room: Room):
+def _aisle_fill(plan: BuildPlan, room: Room, sizes: dict | None = None):
     """-> (ok, coverage, unreached_primary_count), or (None, 0, 0) if the
-    room has no door to flood-fill from."""
+    room has no door to flood-fill from.
+
+    FOOTPRINTS, not origins (`sizes` is the defsize index lint already
+    loaded): this used to mark only each thing's origin cell, so a 3x1
+    ElectricStove read as passable across two of its cells and a room the
+    door could not cross passed - found on the first homestead compound
+    (INHABITED_AUGMENTATION_BUILD_1). Mirrors prelude.lua's aisle_ok, which
+    now reads `ctx:role_covering`. Unreached is counted per THING (by
+    origin), so a 3-long stove reached at one end is reached."""
     inner = room.rect.inner()
     role_at: dict[tuple[int, int], str] = {}
+    owner_at: dict[tuple[int, int], tuple[int, int]] = {}
     for t in plan.things:
-        if not t.overlay and inner.contains(t.x, t.z):
-            role_at.setdefault((t.x, t.z), (t.role or "").upper())
+        if t.overlay:
+            continue
+        cells = None
+        if sizes:
+            from .defsize import footprint as _fp
+            cells = _fp(t.defName, t.x, t.z, t.rot or 0, sizes)
+        if cells is None:
+            cells = {(t.x, t.z)}
+        for c in cells:
+            if inner.contains(*c):
+                role_at.setdefault(c, (t.role or "").upper())
+                owner_at.setdefault(c, (t.x, t.z))
 
     def passable(x, z):
         return role_at.get((x, z), "") not in _IMPASSABLE_ROLES
@@ -486,14 +520,16 @@ def _aisle_fill(plan: BuildPlan, room: Room):
     cells = list(inner.cells())
     total = len(cells) or 1
     reached = sum(1 for c in cells if c in seen)
-    unreached = 0
+    thing_ok: dict[tuple[int, int], bool] = {}
     for c in cells:
         role = role_at.get(c, "")
         if role in _IMPASSABLE_ROLES and role not in _STRUCTURAL_IMPASSABLE:
             x, z = c
-            if not any((x + dx, z + dz) in seen
-                      for dx, dz in ((0, 1), (0, -1), (1, 0), (-1, 0))):
-                unreached += 1
+            key = owner_at[c]
+            hit = any((x + dx, z + dz) in seen
+                      for dx, dz in ((0, 1), (0, -1), (1, 0), (-1, 0)))
+            thing_ok[key] = thing_ok.get(key, False) or hit
+    unreached = sum(1 for ok in thing_ok.values() if not ok)
     return (reached / total >= 0.45 and unreached == 0), reached / total, unreached
 
 
