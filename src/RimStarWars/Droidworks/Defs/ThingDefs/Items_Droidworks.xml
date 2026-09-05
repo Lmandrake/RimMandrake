@@ -67,6 +67,18 @@
        already active in this mod's own generated race defs (Races_KotOR.xml)
        — same "reuse an active mod's art by texPath" convention
        Buildings_Charging.xml/Items_Droidworks.xml already established.
+
+       🔴 FIXED (code review): graphicClass was Graphic_StackCount, which
+       (Graphic_Collection.Init) treats texPath as a FOLDER to list via
+       ContentFinder.GetAllInFolder — but "KotOR/Droid/HK/HK_head" is not a
+       folder, it is a filename PREFIX for HK_head_east/north/south/west.png
+       sitting directly in Textures/KotOR/Droid/HK/. GetAllInFolder on a
+       non-existent folder returns nothing, so this always logged "Collection
+       cannot init: No textures found" and rendered BadGraphic (magenta).
+       Graphic_Multi is the class that actually matches this texPath shape
+       (req.path + "_north/_east/_south/_west", verified against
+       Verse/Graphic_Multi.cs) — the same rotation set every RSW_DW_Race_*
+       HK-series race already resolves correctly via HeadTypeDef.
   ======================================================================== -->
   <ThingDef ParentName="ResourceBase">
     <defName>RSW_DW_DroidHead</defName>
@@ -74,7 +86,7 @@
     <description>A salvaged droid head, worn from an unspecified faction's service. PLACEHOLDER — the shop/salvage pipeline that drops real faction-specific heads is unbuilt; this generic resource exists so data-spike crafting has something real to consume today.</description>
     <graphicData>
       <texPath>KotOR/Droid/HK/HK_head</texPath>
-      <graphicClass>Graphic_StackCount</graphicClass>
+      <graphicClass>Graphic_Multi</graphicClass>
     </graphicData>
     <statBases>
       <Mass>1.5</Mass>

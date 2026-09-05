@@ -53,16 +53,19 @@ namespace RimMandrake.StarWars.Droidworks
             // the destroy here actually delivers the documented contract.
             this.AddFinishAction(delegate { Item?.Destroy(); });
 
-            yield return Toils_Goto.GotoThing(ItemInd, PathEndMode.Touch);
-            yield return Toils_Haul.StartCarryThing(ItemInd);
-            yield return Toils_Goto.GotoThing(PawnInd, PathEndMode.Touch);
-
-            Toil spike = ToilMaker.MakeToil("DWDataSpike");
-            spike.defaultCompleteMode = ToilCompleteMode.Delay;
-            spike.defaultDuration = WorkTicks;
-            spike.WithProgressBarToilDelay(PawnInd);
-            spike.AddFinishAction(delegate
+            // Fixed (code review): the faction-flip effect was
+            // spike.AddFinishAction (per-TOIL) - fires whenever the toil ends
+            // for ANY reason, per-toil Cleanup being unconditional on why the
+            // toil ended (same DROID_DATASPIKE_SURVIVES_FAILON_1 mechanism
+            // this file's own header already reasons through for the item
+            // destroy above, just not applied here too). That let an
+            // interrupted/cancelled spike job still flip the target's faction
+            // after far less than the documented 600 ticks of "spiking".
+            // Moved to the job-level, JobCondition-aware AddFinishAction so it
+            // only fires once the delay toil actually completes.
+            this.AddFinishAction(delegate (JobCondition jobCondition)
             {
+                if (jobCondition != JobCondition.Succeeded) return;
                 Pawn target = Target;
                 if (target == null || target.Dead) return;
                 if (!(target.Downed || target.IsPrisoner)) return;
@@ -72,6 +75,15 @@ namespace RimMandrake.StarWars.Droidworks
 
                 target.SetFaction(Faction.OfPlayer, pawn);
             });
+
+            yield return Toils_Goto.GotoThing(ItemInd, PathEndMode.Touch);
+            yield return Toils_Haul.StartCarryThing(ItemInd);
+            yield return Toils_Goto.GotoThing(PawnInd, PathEndMode.Touch);
+
+            Toil spike = ToilMaker.MakeToil("DWDataSpike");
+            spike.defaultCompleteMode = ToilCompleteMode.Delay;
+            spike.defaultDuration = WorkTicks;
+            spike.WithProgressBarToilDelay(PawnInd);
             yield return spike;
         }
     }

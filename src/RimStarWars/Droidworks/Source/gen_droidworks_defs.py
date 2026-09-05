@@ -735,6 +735,35 @@ def build_color_channels(race, mod):
     return None
 
 
+_PARENTNAME_RE = re.compile(r"ParentName=(\w+)")
+
+
+def label_for_kind(kind, kinds_by_defname):
+    """-> (label, note-or-None).
+
+    extraction.json sometimes captures a literal note like
+    "(inherits HK-51 unit label)" as a kind's own `label` field, when the
+    source PawnKindDef declares no <label> of its own and inherits one via
+    ParentName in the donor mod. Emitting that note VERBATIM (as happened
+    before this fix, KotORMIBColonist_HK51AD) puts extraction bookkeeping
+    text on screen as the droid's actual in-game name. Resolved by reading
+    the ParentName out of the kind's own `notes` field and borrowing that
+    parent kind's real label — never guessed, and never left as a literal
+    parenthetical note.
+    """
+    lbl = kind.get("label")
+    if lbl and not lbl.strip().startswith("("):
+        return lbl, None
+    m = _PARENTNAME_RE.search(kind.get("notes") or "")
+    if m and m.group(1) in kinds_by_defname:
+        parent = kinds_by_defname[m.group(1)]
+        parent_label = parent.get("label")
+        if parent_label and not parent_label.strip().startswith("("):
+            return parent_label, ("label resolved from ParentName=%s (extraction captured a "
+                                   "placeholder note, not real text: %r)" % (m.group(1), lbl))
+    return kind["defName"], "label unresolved (%r) — defName used verbatim" % lbl
+
+
 def parse_kind_gear(kind):
     """-> (apparelTags-or-None, weaponTags-or-None, note-or-None)."""
     dn = kind["defName"]
@@ -984,10 +1013,14 @@ def main():
         if apparel is None and weapon is None:
             unarmed.append(orig)
 
+        label, lnote = label_for_kind(kind, kinds_by_race_orig)
+        if lnote:
+            R.note("%s: %s" % (orig, lnote))
+
         kind_defnames.append(dn)
         kd = {
             "dn": dn,
-            "label": kind.get("label") or orig,
+            "label": label,
             "race_dn": race_dn[race_ref],
             "combatPower": combat_power,
             "apparelTags": apparel,

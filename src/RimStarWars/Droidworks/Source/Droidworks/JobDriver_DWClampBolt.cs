@@ -41,14 +41,21 @@ namespace RimMandrake.StarWars.Droidworks
             this.FailOnDespawnedNullOrForbidden(TargetInd);
             this.FailOn(() => !Target.Downed);
 
-            yield return Toils_Goto.GotoThing(TargetInd, PathEndMode.Touch);
-
-            Toil clamp = ToilMaker.MakeToil("ClampBolt");
-            clamp.defaultCompleteMode = ToilCompleteMode.Delay;
-            clamp.defaultDuration = WorkTicks;
-            clamp.WithProgressBarToilDelay(TargetInd);
-            clamp.AddFinishAction(delegate
+            // Fixed (code review): this was clamp.AddFinishAction (per-TOIL),
+            // which Toil.Cleanup fires whenever the toil ends for ANY reason -
+            // job interrupted, cancelled, or forced off mid-clamp included, not
+            // just the 600-tick delay running out (JobDriver.Cleanup calls
+            // toils[curToilIndex].Cleanup(...) unconditionally on every job
+            // end - verified against Verse/AI/JobDriver.cs and Toil.cs). That
+            // applied the bolt after as little as one tick of "clamping".
+            // JobDriver.AddFinishAction (job-level, JobCondition-aware) fires
+            // exactly once when the job truly ends and lets this gate on
+            // Succeeded - the same pattern vanilla's own JobDriver_TendPatient
+            // uses (FinalizeTend on a toil only reached by natural completion,
+            // never by interruption).
+            this.AddFinishAction(delegate (JobCondition jobCondition)
             {
+                if (jobCondition != JobCondition.Succeeded) return;
                 Pawn target = Target;
                 if (target == null || target.Dead) return;
                 if (!target.health.hediffSet.HasHediff(DroidworksDefOf.RSW_DW_RestrainingBolt))
@@ -57,6 +64,13 @@ namespace RimMandrake.StarWars.Droidworks
                 }
                 DroidworksBoltUtility.EnsureBoltResentment(target);
             });
+
+            yield return Toils_Goto.GotoThing(TargetInd, PathEndMode.Touch);
+
+            Toil clamp = ToilMaker.MakeToil("ClampBolt");
+            clamp.defaultCompleteMode = ToilCompleteMode.Delay;
+            clamp.defaultDuration = WorkTicks;
+            clamp.WithProgressBarToilDelay(TargetInd);
             yield return clamp;
         }
     }

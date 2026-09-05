@@ -237,7 +237,7 @@
   </PawnKindDef>
   <PawnKindDef>
     <defName>RSW_DW_KotORMIBColonist_HK51AD</defName>
-    <label>(inherits HK-51 unit label)</label>
+    <label>HK-51 unit</label>
     <race>RSW_DW_Race_guy762_DroidRace_HK51series</race>
     <combatPower>200</combatPower>
     <apparelTags>
