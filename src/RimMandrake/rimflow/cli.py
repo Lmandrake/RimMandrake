@@ -2027,6 +2027,11 @@ def build_parser():
     s.add_argument("--to", required=True)
     s.add_argument("--reason")   # optional since 2026-08-22 — nothing reads it
 
+    s = add("reclaim", "return YOUR OWN abandoned doing item to the ready pool so next offers it again",
+            _simple("reclaim", (("reason", "reason"),)))
+    s.add_argument("id")
+    s.add_argument("--reason")   # optional
+
     s = add("drop", "this will not be done", _simple("drop", (("reason", "reason"),)))
     s.add_argument("id")
     s.add_argument("--reason", required=True)

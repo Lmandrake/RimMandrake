@@ -202,6 +202,13 @@ VERBS = {
     # the item's owner may be the one seat that cannot see the problem.
     "needs":     {"who": ("BENCH", "DECIDE", "owner"), "req": ("to",), "opt": ("reason",)},
     "reassign":  {"who": ("BENCH", "DECIDE"), "req": ("to",), "opt": ("reason",)},
+    # A seat un-sticks its OWN abandoned `doing` item back to `ready`. `next` offers
+    # only `ready` and `doing` is invisible by design, but `reassign` — the other
+    # doing->ready path — is BENCH/DECIDE-only, so before this a seat could not
+    # re-offer its own abandoned work and its queue starved (39 FOUNDRY items stuck,
+    # FOUNDRY_QUEUE_NOT_OFFERING_READY_1). `who` is the "owner" sentinel: the item's
+    # owning seat (and the human OWNER) may reclaim; nobody reclaims another seat's.
+    "reclaim":   {"who": ("owner",), "req": (), "opt": ("reason",)},
     "close":     {"who": "owner", "req": ("sha",), "opt": ()},
     "drop":      {"who": "owner", "req": ("reason",), "opt": ()},
     "supersede": {"who": "owner", "req": ("by",), "opt": ("reason",)},
@@ -1136,6 +1143,16 @@ def _apply_item_verb(ev, index, item, seat, world):
         # returns to `ready` for them to pick up. It lands in `ready` regardless of
         # whether the prose sections exist — the completeness gate was removed by the
         # owner on 2026-08-21; see `start` above.
+        if item.state == "doing":
+            to("ready")
+    elif verb == "reclaim":
+        # The owning seat's self-service counterpart to reassign's doing->ready.
+        # Same move (an abandoned `doing` item returns to the `ready` pool so
+        # `rimflow next` offers it again), but owner-authorized and the owner is
+        # left unchanged — a seat reclaiming ITS OWN work, not a hand-off. Only
+        # `doing` moves, for the same reason reassign guards it: `proposed`/`ready`
+        # are already discoverable, so touching them would rewrite state nobody
+        # asked to change. FOUNDRY_QUEUE_NOT_OFFERING_READY_1 / RIMFLOW_RECLAIM_COMMAND_1.
         if item.state == "doing":
             to("ready")
     elif verb == "close":

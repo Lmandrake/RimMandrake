@@ -680,6 +680,52 @@ def t_reassign_of_a_doing_item_reaches_the_new_seat():
         "`rimflow next --seat CHECK` does not offer the item it was just handed")
 
 
+def t_reclaim_returns_own_doing_item_to_ready():
+    """RIMFLOW_RECLAIM_COMMAND_1: a seat un-sticks its OWN abandoned `doing` item.
+
+    The doing->ready path other than `reassign` (which is BENCH/DECIDE-only), so a
+    seat can re-offer its own abandoned work without waiting on BENCH — the fix for
+    FOUNDRY_QUEUE_NOT_OFFERING_READY_1's queue starvation."""
+    _complete_item("RECLAIMED_BY_OWNER_1")
+    evs = [filed("RECLAIMED_BY_OWNER_1", for_="BUILD"),
+           ev(seat="BUILD", event="claim", id="RECLAIMED_BY_OWNER_1"),
+           ev(seat="BUILD", event="start", id="RECLAIMED_BY_OWNER_1"),
+           ev(seat="BUILD", event="reclaim", id="RECLAIMED_BY_OWNER_1",
+              reason="I am not actually on this; back to the pool")]
+    w = model.replay(evs, strict=True)
+    it = w.items["RECLAIMED_BY_OWNER_1"]
+    assert it.state == "ready", (
+        "a reclaimed `doing` item is still %r — rank() only offers `ready`" % it.state)
+    assert it.owner == "BUILD", "reclaim is self-service, not a hand-off: %r" % it.owner
+    got = priority.next_item(w, "BUILD")
+    assert got is not None and got.id == "RECLAIMED_BY_OWNER_1", (
+        "`rimflow next` does not re-offer an item its owner just reclaimed")
+
+
+def t_reclaim_refused_for_a_non_owner():
+    """`reclaim` is owner-self-service only: no seat reclaims another seat's item."""
+    _complete_item("NOT_YOURS_TO_RECLAIM_1")
+    evs = [filed("NOT_YOURS_TO_RECLAIM_1", for_="BUILD"),
+           ev(seat="BUILD", event="claim", id="NOT_YOURS_TO_RECLAIM_1"),
+           ev(seat="BUILD", event="start", id="NOT_YOURS_TO_RECLAIM_1"),
+           ev(seat="CHECK", event="reclaim", id="NOT_YOURS_TO_RECLAIM_1")]
+    try:
+        model.replay(evs, strict=True)
+    except model.LedgerError:
+        return
+    raise AssertionError("CHECK reclaiming BUILD's item was NOT refused")
+
+
+def t_reclaim_leaves_a_non_doing_item_alone():
+    """Only `doing` moves — a `ready`/`proposed` item is already discoverable."""
+    _complete_item("RECLAIM_NOOP_1")
+    evs = [filed("RECLAIM_NOOP_1", for_="BUILD"),
+           ev(seat="BUILD", event="claim", id="RECLAIM_NOOP_1"),   # -> ready
+           ev(seat="BUILD", event="reclaim", id="RECLAIM_NOOP_1")]
+    it = model.replay(evs, strict=True).items["RECLAIM_NOOP_1"]
+    assert it.state == "ready", "reclaim disturbed a non-doing item: %r" % it.state
+
+
 def t_reassign_of_a_holed_doing_item_still_lands_in_ready():
     """🔴 Was `..._lands_in_proposed_not_ready`, asserting the completeness gate.
 
@@ -861,6 +907,7 @@ CANONICAL = {
     "retarget":  dict(seat="BUILD", id="A_B_1", to="v2"),
     "needs":     dict(seat="BUILD", id="A_B_1", to="offline"),
     "reassign":  dict(seat="DECIDE", id="A_B_1", to="CHECK"),
+    "reclaim":   dict(seat="BUILD", id="A_B_1"),
     "close":     dict(seat="BUILD", id="A_B_1", sha="abc1234"),
     "drop":      dict(seat="BUILD", id="A_B_1", reason="x"),
     "supersede": dict(seat="BUILD", id="A_B_1", by="B_C_1"),
