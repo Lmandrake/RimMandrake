@@ -54,7 +54,22 @@ function build(ctx)
   local cz = hi.z + math.floor(hi.h / 2) + rng.int(-1, 1)
   local apron = R(cx - 4, cz - 3, 9, 7)
   floor_patch(ctx, apron, "FLOOR_WET", hi)
-  local tanks = scatter(ctx, "WATER_TANK", R(cx - 3, cz - 2, 7, 5), rng.int(6, 9), { tries = 80 })
+  -- E6 `aisle-blocked`: reject a candidate cell with no free cardinal side -
+  -- a tank cluster this dense (6-9 in a 7x5 patch) can otherwise wall a tank
+  -- in on all four sides with other tanks, leaving nothing to flood-fill
+  -- reach it from.
+  -- Margin of TWO free sides, not one: a single free neighbour at placement
+  -- time is exactly the cell a LATER scatter (troughs, crates) can still
+  -- seal shut, which is what one-side-open let through the first time.
+  local function too_boxed_in(x, z)
+    local open = 0
+    for _, d in ipairs({ { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } }) do
+      if not ctx:occupied(x + d[1], z + d[2]) then open = open + 1 end
+    end
+    return open < 2
+  end
+  local tanks = scatter(ctx, "WATER_TANK", R(cx - 3, cz - 2, 7, 5), rng.int(6, 9),
+    { tries = 120, avoid = too_boxed_in })
   local basins = scatter(ctx, "FOUNTAIN", apron, rng.int(1, 2), { tries = 40 })
   keep[#keep + 1] = R(apron.x - 1, apron.z - 1, apron.w + 2, apron.h + 2)
   -- the intake well against the back wall, on its own square of mosaic

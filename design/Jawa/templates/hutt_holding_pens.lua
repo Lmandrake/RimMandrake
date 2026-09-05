@@ -70,12 +70,19 @@ function build(ctx)
   ctx:door(split, barracks.z + rng.int(2, barracks.h - 3))
   if ctx:has_role("SIGN_PRISON") then ctx:place_overlay("SIGN_PRISON", corr_door_x, ki.z, 0) end
 
-  -- ---- furnish the cells: a bed, sometimes a tub, sometimes a stool --------
+  -- ---- furnish the cells: a bed, ALWAYS one of tub/stool ------------------
+  -- R4/E6 `no-secondary`: a bare cell with only a bed is exactly the failure
+  -- this rule names, so every cell guarantees at least one; WHICH one still
+  -- varies by seed. A cell whose palette has neither (droid-tier, unlikely
+  -- here) is left as-is - `dress` already no-ops on an unmapped role.
   local beds = 0
   for _, ci in ipairs(cells) do
     beds = beds + along_wall(ctx, "BED", ci, rng.pick({ "N", "W", "E" }), 1, { face = "wall" })
-    if rng.chance(0.5) then dress(ctx, ci, { { role = "TUB", n = 1, where = "corner" } }) end
-    if rng.chance(0.4) then dress(ctx, ci, { { role = "STOOL", n = 1 } }) end
+    local first, second = "TUB", "STOOL"
+    if rng.chance(0.5) then first, second = second, first end
+    if dress(ctx, ci, { { role = first, n = 1, where = "corner" } }) == 0 then
+      dress(ctx, ci, { { role = second, n = 1 } })
+    end
   end
   note(string.format("%d cell(s) off the corridor, %d bed(s)", #cells, beds))
 

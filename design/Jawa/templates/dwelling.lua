@@ -180,6 +180,22 @@ function build(ctx)
       end
     end
 
+    -- RIMPLACE_ENGINE_DELTAS_1 R4/E6 `no-secondary`: every room needs at
+    -- least one clutter-class thing, not just its primary. Filtered to roles
+    -- this faction's palette actually has, so a palette that carries NONE of
+    -- them (rather than rolling a 0-in-5 chance on an unmapped role) still
+    -- tries the ones it does have.
+    do
+      local candidates = {}
+      for _, role in ipairs({ "END_TABLE", "STOOL", "CRATE", "DECOR", "PLANT_POT" }) do
+        if ctx:has_role(role) then candidates[#candidates + 1] = { role = role, weight = 1 } end
+      end
+      if #candidates > 0 then
+        clutter(ctx, { x = ix, z = iz, w = iw, h = ih, x2 = ix + iw - 1, z2 = iz + ih - 1 },
+          candidates, 2)
+      end
+    end
+
     -- light LAST, into whatever cell is still free. Ordering matters: the
     -- linter caught the light claiming the stove's corner when it went first,
     -- and the light is the piece that can go anywhere.
