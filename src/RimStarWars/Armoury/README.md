@@ -161,9 +161,13 @@ absent logs a red error on every launch — and this mod must stay droppable.
 Validation: **3 files, 0 errors, 0 warnings**, down from 163 warnings on the
 first attempt.
 
-## Not enabled
+## Enabled — this text was stale
 
-`mandrake.rsw.armoury` is **not** in `ModsConfig.xml`. RimDefDump was inert and
-read-only; this rewrites combat values across five mods, and dropping a balance
-overhaul into a stack someone else is debugging would be genuinely disruptive.
-Enable deliberately, and load it **last**.
+This section used to say `mandrake.rsw.armoury` was not in `ModsConfig.xml`.
+**That is no longer true.** Measured 2026-09-05: it IS active in the live
+595-mod `ModsConfig.xml`, and the ledger (`ARMOURY_LIGHTSABER_FINDMOD_1`,
+`ARMOURY_SOUND_PATHS_RSW_PREFIX_1`, `LIGHTSABER_RECIPE_GATE_1`) shows BENCH and
+FOUNDRY deploying and live-verifying Armoury fixes against the full campaign
+list across multiple 2026-09-04/05 sessions. Do not trust this doc's enabled/
+disabled claims without checking `ModsConfig.xml` yourself — this file drifted
+out of sync with reality without anyone updating it.
