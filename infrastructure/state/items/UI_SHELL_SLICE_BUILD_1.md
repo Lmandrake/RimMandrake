@@ -196,3 +196,49 @@ OOM-killed) — §5 remainder in progress
   a map, and `start_debug_game_ready` on the full stack killed the game once
   today with host RAM at 9.4 GB free. Ride the next load round, a
   minimal-list+theme restart (22 s), or a moment with host headroom.
+
+## 2026-09-05 (FOUNDRY) — gizmo-row attempt: a real gap found, not the pass we wanted
+
+Tried the full-stack route first: `start_debug_game_ready` **crashed the game
+again**, exact same spot as BENCH's earlier hit (dies mid quicktest research-
+grant spam, no managed exception, no crash dump) — but this time with **33 GB
+host RAM free**, not 9.4 GB. That rules out host memory pressure as the
+cause; this is a reproducible crash in the debug-quicktest research-grant
+path on the full 596-mod research tree, independent of RAM. Filed separately
+so it doesn't get lost: `NINEFOLD_DEBUG_GAME_READY_CRASH_1` (not written yet
+this pass — flagging here so the next session knows to check for it / file
+it before re-attempting `start_debug_game_ready` on the full stack).
+
+**Fell back to BENCH's own suggested route**: swapped to the 21-mod MINIMAL
+list plus `aRandomKiwi.RimThemes` + `mandrake.rut.shell` (23 mods), a real
+restart via `launch_and_wait.sh` (not `./game up`, which — corrected
+understanding — only stamps the ledger/broadcasts state, it does not launch
+anything; the actual launch mechanism is `launch_and_wait.sh`). Loaded
+clean, quicktest reached Playing in 5s, no crash.
+
+- **Theme persistence, now proven across a MOD-LIST-CHANGING restart, not
+  just a same-list one**: `Config/Mod_1668983184_RimThemes.xml` still reads
+  `curTheme>mandrake.rut.shell§Utinni Shell` after swapping the entire active
+  mod list out and back. Stronger evidence than BENCH's same-session check.
+- **Gizmo row screenshot taken** (`Transient/rimtheme_gizmo_row.png`, not
+  committed) — but **the Draft gizmo's background panel is a plain grey-blue
+  square, not the shipped rust/brass `Command.BGTex` art.** Zoomed crop
+  confirms this directly, not a resolution artifact. This is a genuine
+  finding, not yet explained: either (a) this specific texture only re-skins
+  once a pawn is actually drafted / a different game state than a fresh
+  quicktest wanderer, (b) something about the minimal 23-mod list changes
+  how RimThemes resolves this asset versus the full stack, or (c) a real gap
+  in how `Command.BGTex` is wired into the theme. **Not chased further this
+  pass** — recording it plainly rather than either claiming the gizmo row is
+  themed (it visibly isn't, in this shot) or guessing why.
+- **Float menu screenshot: inconclusive, not a real test.** `right_click_
+  cell` on empty ground resolves instantly to a single unambiguous "go here"
+  order — RimWorld never opens an actual multi-option `FloatMenu` for that,
+  so the screenshot (`Transient/rimtheme_float_menu.png`) is identical to
+  the gizmo shot and proves nothing. A real float-menu test needs a target
+  with multiple possible interactions (another pawn, an item, a corpse) —
+  not attempted this pass.
+- Modlist restored to the owner's full 596-mod list and game left DOWN
+  afterward (no forced full reload — nobody was waiting on the game being
+  up). `ModsConfig.PRESWAP.20260905_152515.xml` holds the minimal+theme list
+  if anyone wants to resume this exact test setup without re-deriving it.
