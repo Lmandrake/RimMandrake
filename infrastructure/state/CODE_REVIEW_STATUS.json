@@ -2922,20 +2922,30 @@
     "date": "2026-09-05",
     "sha": "0e986f2a"
   },
-  "src/RimStarWars/BlastDoorFrameAsyncFix/Source/build_frameasync_east.py": {
+  "src/RimStarWars/BlastDoorFrameAsyncFix/About/About.xml": {
     "cleanCount": 1,
-    "date": "2026-09-03",
-    "sha": "b294390b"
+    "date": "2026-09-05",
+    "sha": "deb54d02"
+  },
+  "src/RimStarWars/BlastDoorFrameAsyncFix/Source/blast_door_frameasync_east_BRIEF.md": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "deb54d02"
+  },
+  "src/RimStarWars/BlastDoorFrameAsyncFix/Source/build_frameasync_east.py": {
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "deb54d02"
   },
   "src/RimStarWars/BlastDoorFrameAsyncFix/Source/render_review.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "sha": "359b0b2c"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "deb54d02"
   },
   "src/RimStarWars/BlastDoorFrameAsyncFix/Source/verify_frameasync_east.py": {
-    "cleanCount": 1,
-    "date": "2026-09-02",
-    "sha": "b4095fb8"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "deb54d02"
   },
   "src/RimStarWars/CereanManeFix/About/About.xml": {
     "cleanCount": 1,
@@ -3267,25 +3277,30 @@
     "date": "2026-09-04",
     "sha": "71cceeb1"
   },
-  "src/RimStarWars/KotORBandolierNorthFix/Source/build_north.py": {
+  "src/RimStarWars/KotORBandolierNorthFix/About/About.xml": {
     "cleanCount": 1,
-    "date": "2026-09-04",
-    "sha": "43f96b1b"
+    "date": "2026-09-05",
+    "sha": "deb54d02"
+  },
+  "src/RimStarWars/KotORBandolierNorthFix/Source/build_north.py": {
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "deb54d02"
   },
   "src/RimStarWars/KotORBandolierNorthFix/Source/survey_broken_sets.py": {
-    "cleanCount": 1,
-    "date": "2026-09-02",
-    "sha": "1a7b3aa1"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "deb54d02"
   },
   "src/RimStarWars/KotORBandolierNorthFix/Source/survey_donor_north.py": {
-    "cleanCount": 1,
-    "date": "2026-09-02",
-    "sha": "b4095fb8"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "deb54d02"
   },
   "src/RimStarWars/KotORBandolierNorthFix/Source/test_mask_recipe.py": {
-    "cleanCount": 1,
-    "date": "2026-09-02",
-    "sha": "14ea427e"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "deb54d02"
   },
   "src/RimStarWars/Livestock/About/About.xml": {
     "cleanCount": 1,
@@ -3386,6 +3401,16 @@
     "cleanCount": 1,
     "date": "2026-09-02",
     "sha": "1a7b3aa1"
+  },
+  "src/RimStarWars/SeasWaterline/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "deb54d02"
+  },
+  "src/RimStarWars/SeasWaterline/Patches/Waterline_Lane1.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "deb54d02"
   },
   "src/RimStarWars/StarWarsPatches/About/About.xml": {
     "cleanCount": 1,
