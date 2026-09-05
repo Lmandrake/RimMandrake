@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-05T05:04:18Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-05T06:59:32Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -306,15 +306,6 @@ kind:     build
 summary:  Owner, 2026-09-02: "Man I wish the Autoopen of the error log was set to False by default"
 prose:    infrastructure/state/items/DEV_LOG_AUTOOPEN_SUPPRESS_1.md
 
-## INHABITED_TILEMUTATOR_NO_ENTRY_1 No TileMutatorDef anywhere names Inhabited_Cast -- the wilderness settlement-spawn route has no way in
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  The Inhabited mod's own class comments describe two routes onto a map: a proper
-prose:    infrastructure/state/items/INHABITED_TILEMUTATOR_NO_ENTRY_1.md
-
 ## DIRTY_CODE_REVIEW_STANDING_LOOP_1 Standing FOUNDRY code-review loop in progress per owner (keep going, bit by bit) - 12 waves in, ~230 ledger entries, ~55 real bugs found, self-continuing via /loop, not blocked on anything
 state:    doing
 row:      unassigned
@@ -352,13 +343,22 @@ summary:  Every load of the full 589-mod list logs the same 31 Config error in �
 prose:    infrastructure/state/items/LOAD_CONFIG_ERROR_SWEEP_1.md
 
 ## ARMOURY_MELEEPOWER_STALE_1 Armoury_MeleePower.xml melee damage values are stale vs. its own generator - live, currently affecting the campaign
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     bug
 summary:  Filed during standing dirty-code-review loop wave 38 (2026-09-05). A fresh
 prose:    infrastructure/state/items/ARMOURY_MELEEPOWER_STALE_1.md
+
+## ARMOURY_SWMODS_DONOR_GAP_1 gen_armoury_patch.py SW_MODS doesn't recognize absorbed KotORWeapons/JDS-Armory donor names - a full regen silently drops two live vibro-blade tuning blocks
+state:    doing
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     bug
+summary:  spec — RESCOPED 2026-09-05, larger than first filed
+prose:    infrastructure/state/items/ARMOURY_SWMODS_DONOR_GAP_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -373,6 +373,16 @@ kind:     task
 blocked:  Engineering sequence, not an owner call: needs Droidworks Phase 3 (faction/goodwill layer); DROID_SYSTEM_BUILD_1 is live but only in Phase 0
 summary:  (no items/DROID_TILES_SOURED_TERRAIN_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DROID_TILES_SOURED_TERRAIN_1.md
+
+## ARMOURY_MELEEPOWER_STALE_1 Armoury_MeleePower.xml melee damage values are stale vs. its own generator - live, currently affecting the campaign
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+blocked:  blocked on ARMOURY_SWMODS_DONOR_GAP_1 - regenerating vibro values before that gap is fixed risks shipping wrong numbers or silently dropping tuning blocks
+summary:  Filed during standing dirty-code-review loop wave 38 (2026-09-05). A fresh
+prose:    infrastructure/state/items/ARMOURY_MELEEPOWER_STALE_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
