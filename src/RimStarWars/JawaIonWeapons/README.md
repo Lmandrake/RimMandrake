@@ -85,7 +85,7 @@ The acceptance test, in one load:
 2. **Flesh pawn, repeated hits** — an ion buildup hediff appears in the Health tab and its
    severity climbs per hit; sustained fire reaches the top stage and the target **collapses
    downed with zero injuries listed**, and reads as arrestable.
-3. **Stop firing** — severity visibly decays (`-1.2`/day) and clears, so captures require
+3. **Stop firing** — severity visibly decays (`-0.3`/day) and clears, so captures require
    prompt arrest.
 4. A flesh target **cannot** be killed no matter how long you fire.
 5. Log clean: no `workerClass` resolution error, no NRE out of the damage worker.
@@ -93,11 +93,11 @@ The acceptance test, in one load:
 Offline before spending the load: the assembly builds against net472, and `RSW_JawaIon_Damage`'s
 `workerClass` string matches the **compiled** type name, not just the source.
 
-Tune knobs if needed: `severityPerDamageDealt` (0.03) and the stage `minSeverity` thresholds control how many hits it takes; `severityPerDay` (-1.2) controls how fast buildup fades.
+Tune knobs if needed: `severityPerDamageDealt` (0.03) and the stage `minSeverity` thresholds control how many hits it takes; `severityPerDay` (-0.3, slowed from -1.2 by DROIDWORKS_ION_GUARD_1) controls how fast buildup fades.
 
 ## Art
 
-`Textures/JawaIon/Weapon_JawaIonBlaster.png` is a **placeholder path** — supply real art from the graphics-review pass (Outer Rim Core's `IonBlaster`/`IonRifle`/`HeavyIonRifle` are the reference silhouettes; their PNGs were stripped from `mod_sources` and are being re-fetched). Projectile currently reuses a tinted vanilla `Bullet_Big`.
+🔴 STALE, corrected 2026-08-10 in `Defs/ThingDefs_JawaIonBlaster.xml` (see that file's own history comment): both sprites are now bundled locally, not placeholders. `Textures/JawaIon/Weapon_JawaIonBlaster.png` is the canon gun art (ripped from the EOL Tatooine mod, per About.xml). `Textures/JawaIon/Bullet_JawaIon.png` is the bolt sprite — moved here from this mod's own `art_candidates` folder after a sweep found no `BlasterBolt` sprite anywhere in the actual load set (the assumed Outer Rim texture did not exist), so the projectile no longer reuses any Outer Rim or vanilla `Bullet_Big` art.
 
 **Open cosmetic todo:** the player reports the shot **sounds and looks underwhelming**.
 `soundCast` is Outer Rim's `OuterRim_Shot_DLT19DBlasterBolt` at `muzzleFlashScale 7`.
