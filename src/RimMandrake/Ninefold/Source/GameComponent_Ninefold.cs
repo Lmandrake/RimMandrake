@@ -54,6 +54,13 @@ namespace RimMandrake.Ninefold
         // UNTUNED first-pass rate, same status as EventMagnitude/MoodAmplitude
         // -- SATIATION_TUNING_RIG (§10) owns real tuning.
         private const float RootedErosionPerHour = 0.4f;
+        // UNTUNED first-pass grace window, same status as RootedErosionPerHour above --
+        // SATIATION_TUNING_RIG (§10) owns real tuning. Without this, lastLaunchTick was
+        // written on every launch and never consulted anywhere, so "each launch resets
+        // his erosion" (divine_satiation_engine.md) was false: StepRootedErosion ran on
+        // the same flat per-hour clock whether or not Ta'Baa had just launched (found in
+        // the 2026-09-05 code review wave).
+        private const int RootedErosionGraceTicks = MoodWalkIntervalTicks * 6; // ~6 in-game hours
         private int lastLaunchTick;
 
         public GameComponent_Ninefold(Game game)
