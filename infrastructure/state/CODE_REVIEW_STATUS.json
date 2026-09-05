@@ -3497,6 +3497,11 @@
     "date": "2026-09-04",
     "sha": "d92f5459"
   },
+  "src/RimUtinni/UtinniPatches/Patches/DeepDesertTribes.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "948cdbc9"
+  },
   "src/RimUtinni/UtinniPatches/Patches/Fleshbeast_TrispikeCull.xml": {
     "cleanCount": 1,
     "date": "2026-09-04",
@@ -3506,6 +3511,101 @@
     "cleanCount": 1,
     "date": "2026-09-04",
     "sha": "ed416189"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/GalacticEmpire.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "948cdbc9"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/GiantWeaponWielders_Ashkarr.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "948cdbc9"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/HomesteadDefenseLeague.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "948cdbc9"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/HumanTemperatureBand_Ashkarr.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "948cdbc9"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/Ikee_Rename.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "948cdbc9"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/Ikee_Tuning.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "948cdbc9"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/JawaGroundHulk_Register.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "6cb41e45"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/JawaResource_Scrapfields.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "6cb41e45"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/JawaTerrain_DuneSeas.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "6cb41e45"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/JawaTerrain_SaltPans.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "6cb41e45"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/JawaWorld_BiomeMix.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "6cb41e45"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/JawaWorld_Name.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "6cb41e45"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/MechanoidIntrusion_AllowRivers.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "948cdbc9"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/PirateWaster_Yield.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "948cdbc9"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/PlanetLayer_BackgroundWater.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "948cdbc9"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/PlantTolerances_Ashkarr.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "948cdbc9"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/RebelAlliance_Suppress.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "948cdbc9"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/VQEPatients_AreRakata.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "948cdbc9"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/XenotypeTolerances_Ashkarr.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "948cdbc9"
   },
   "src/RimUtinni/VaultDungeons/Source/gen_vault_layouts.py": {
     "cleanCount": 1,

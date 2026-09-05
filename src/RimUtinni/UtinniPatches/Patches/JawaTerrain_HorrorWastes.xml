@@ -58,43 +58,59 @@
   Both operations are wrapped in a Conditional: a Replace that matches
   nothing is a RED ERROR, not a no-op, and MayRequire only checks the mod,
   never that the def survived.
+
+  🔴 FIX 2026-09-05 (review pass): the ground operation below writes four
+  AB_-prefixed terrain defNames (Alpha Biomes' own) into HorrorWastes, a
+  biome owned by a SEPARATE mod (Horrors (Continued), Mlie.Horrors) that
+  does NOT declare Alpha Biomes as a dependency (checked its About.xml
+  modDependencies directly — Harmony only). Both mods are active in the
+  live 595-mod list today, but nothing in this file said so before now.
+  Without a guard, dropping Alpha Biomes while keeping Horrors would leave
+  HorrorWastes' terrainsByFertility pointing at four TerrainDefs that no
+  longer exist — a silent dangling reference (config-error spam on every
+  load), not a caught failure. Outer Conditional tests for AB_PackedIce
+  (Alpha Biomes' own def, workshop 1841354677, Terrain_PropaneLakes.xml),
+  same technique as JawaGroundHulk_Register.xml's GravshipCrashes guard.
   ==========================================================================
 -->
 <Patch>
 
   <!-- ==== the ground ================================================= -->
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/BiomeDef[defName="HorrorWastes"]/terrainsByFertility</xpath>
-    <match Class="PatchOperationReplace">
+    <xpath>/Defs/TerrainDef[defName="AB_PackedIce"]</xpath>
+    <match Class="PatchOperationConditional">
       <xpath>/Defs/BiomeDef[defName="HorrorWastes"]/terrainsByFertility</xpath>
-      <value>
-        <terrainsByFertility>
-          <!-- bare frozen ground: pale, sterile, the uncommon extreme -->
-          <li>
-            <terrain>AB_PackedIce</terrain>
-            <min>-999</min>
-            <max>0.30</max>
-          </li>
-          <!-- frost breaking over stone - fertility 0.7, so the roster roots here -->
-          <li>
-            <terrain>AB_SnowOverRocks</terrain>
-            <min>0.30</min>
-            <max>0.50</max>
-          </li>
-          <!-- near-black frozen organics - dominant, and nothing grows in it -->
-          <li>
-            <terrain>AB_DarkMud</terrain>
-            <min>0.50</min>
-            <max>0.80</max>
-          </li>
-          <!-- the deep muck - fertility 1.0, where the horror flora actually lives -->
-          <li>
-            <terrain>AB_FertileMud</terrain>
-            <min>0.80</min>
-            <max>999</max>
-          </li>
-        </terrainsByFertility>
-      </value>
+      <match Class="PatchOperationReplace">
+        <xpath>/Defs/BiomeDef[defName="HorrorWastes"]/terrainsByFertility</xpath>
+        <value>
+          <terrainsByFertility>
+            <!-- bare frozen ground: pale, sterile, the uncommon extreme -->
+            <li>
+              <terrain>AB_PackedIce</terrain>
+              <min>-999</min>
+              <max>0.30</max>
+            </li>
+            <!-- frost breaking over stone - fertility 0.7, so the roster roots here -->
+            <li>
+              <terrain>AB_SnowOverRocks</terrain>
+              <min>0.30</min>
+              <max>0.50</max>
+            </li>
+            <!-- near-black frozen organics - dominant, and nothing grows in it -->
+            <li>
+              <terrain>AB_DarkMud</terrain>
+              <min>0.50</min>
+              <max>0.80</max>
+            </li>
+            <!-- the deep muck - fertility 1.0, where the horror flora actually lives -->
+            <li>
+              <terrain>AB_FertileMud</terrain>
+              <min>0.80</min>
+              <max>999</max>
+            </li>
+          </terrainsByFertility>
+        </value>
+      </match>
     </match>
   </Operation>
 

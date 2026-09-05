@@ -69,6 +69,11 @@ def main() -> None:
     keyed = Image.open(tmp).convert("RGBA")
 
     bbox = keyed.getchannel("A").point(lambda v: 255 if v > 8 else 0).getbbox()
+    if bbox is None:
+        raise SystemExit(
+            f"{tmp}: chroma-key left no pixel above the alpha threshold (8) - "
+            "the whole frame keyed out. Check the raw image / key colour, not "
+            "a code path in this script.")
     subject = keyed.crop(bbox)
     print(f"raw {keyed.size}  subject {subject.size} at {bbox[:2]}")
 
