@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-05T14:37:05Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-05T14:47:58Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: OWNER
 
 # NEXT — `priority.rank()` order, top item first
@@ -444,3 +444,33 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/NINEFOLD_FIRE_HOOK_RATELIMITED_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/NINEFOLD_FIRE_HOOK_RATELIMITED_1.md
+
+## QUEUE_DAILY_STALENESS_REVIEW_1 Daily staleness review: surface items idle in doing/blocked past N days, and mis-tagged needs/for, so stalls stop rotting silently
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/QUEUE_DAILY_STALENESS_REVIEW_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/QUEUE_DAILY_STALENESS_REVIEW_1.md
+
+## QUEUE_HEALTH_CHECK_1 Queue health check: verify every open item's state/needs/blocked/for is actually correct (not falsely doing, not falsely blocked, not mis-owned)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/QUEUE_HEALTH_CHECK_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/QUEUE_HEALTH_CHECK_1.md
+
+## FOUNDRY_QUEUE_NOT_OFFERING_READY_1 FOUNDRY often gets 'no queue work ready' even when items exist - diagnose why rimflow next offers nothing
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/FOUNDRY_QUEUE_NOT_OFFERING_READY_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FOUNDRY_QUEUE_NOT_OFFERING_READY_1.md
