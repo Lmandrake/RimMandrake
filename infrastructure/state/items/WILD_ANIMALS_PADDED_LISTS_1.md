@@ -344,14 +344,30 @@ pass's own read of that getter) — no literal `wildAnimals` (the private
 field name) anywhere in the DLL, and `AllWildAnimals` has no setter to write
 through in vanilla regardless. Ruled out: this is a read, not a write.
 
-**Remaining live leads, unchecked**: `Fortified Features Framework`
-(`aoba.framework`) not yet decompiled (only string-scanned before, and its
-active-mod assembly path wasn't confirmed this pass). With a working
-decompiler now in hand, the honest next move is a full `ilspycmd -l c`
-listing of every remaining suspect mod's assembly (start from the
-`jawa/startup_types` sweep's mod list, StaticCtor entries only, excluding
-the mods already decompiled-and-cleared above) rather than more targeted
-string guesses.
+**`Fortified Features Framework` (`aoba.framework`) now also decompiled and
+ruled out.** Live folder confirmed via `jawa/mod_inventory` (workshop
+`3498575851`, assembly `Fortified.dll` — NOT `AOBAUtilities.dll`, a
+different, unrelated workshop item this pass initially guessed wrong by
+name similarity). Its one `[StaticConstructorOnStartup]` class,
+`Fortified.RimIgnoreStartupSweep`, calls `RimIgnoreStaging.SweepLeftovers()`
+— confirmed by decompile to be filesystem cleanup of a `.fff_ws_staging`
+directory the mod uses for its own Workshop-update staging, nothing to do
+with defs, biomes, or animals at all. The `RimIgnore*` class family
+(`RimIgnorePlan`/`RimIgnoreRule`/`RimIgnoreSpec`/etc.) is the mod's own
+fortification-permission rules system, unrelated by subject matter. Ruled
+out.
+
+**Both remaining named leads from every prior pass are now exhausted.**
+Naming a fresh suspect from here needs either (a) a systematic
+`ilspycmd -l c` decompile-and-skim of every one of the ~380 mods
+`jawa/startup_types`'s full sweep found owning a `StaticCtor`/`ModSubclass`
+row (large — see `Transient/startup_types_full_sweep.json`'s 1539 rows for
+the candidate list), or (b) a different instrument entirely: reflecting
+over IL method bodies for a `FieldInfo.SetValue`/`Stfld` call targeting a
+field typed `List<PawnKindDef>` or similar, which `ilspycmd` can decompile
+one type at a time but has no built-in "search every method body in every
+loaded assembly for this IL pattern" mode — that tool does not exist yet
+and would be a real build, not a quick check.
 
 ## criteria
 - [ ] **The padding assembly named with the method that does it** — NOT MET. Both
