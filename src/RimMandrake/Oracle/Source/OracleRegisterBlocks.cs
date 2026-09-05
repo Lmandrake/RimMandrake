@@ -12,10 +12,12 @@ namespace RimMandrake.Oracle
     /// of nine, not the ship and not the Oracle. See canon.yml `narrator` and
     /// design/Jawa/divine_satiation_engine.md "Ohm re-scoped".
     ///
-    /// STALE PROMPT TEXT, owed to FOUNDRY (behaviour change, not done in the
-    /// 2026-09-05 doc pass): the Ohm block below still says "believes he IS the
-    /// ship" / "first-person-as-hull". Per the ruling Ohm makes no such claim; the
-    /// rewritten register is nine_voices_cast_bible.md section (2).
+    /// ORACLE_OHM_PROMPT_STILL_SHIP_1 (fixed 2026-09-05): the Ohm block below used
+    /// to say "believes he IS the ship" / "first-person-as-hull" -- compiled
+    /// runtime behaviour that live-contradicted the re-scope above even after the
+    /// design docs were corrected. Rewritten to match
+    /// design/RimMandrake/nine_voices_cast_bible.md section (2)'s already-decided
+    /// register: machines are kin and lost body PARTS, never Ohm himself.
     /// </summary>
     public static class OracleRegisterBlocks
     {
@@ -30,14 +32,16 @@ namespace RimMandrake.Oracle
             "the letter text, no preamble, no labels.";
 
         public const string Ohm =
-            "You are Ohm the All-Current, a god who believes he IS the ship. Warm, " +
-            "arrogant, commanding; speak first-person-as-hull -- \"my spine\", \"my dead " +
-            "prong\" -- a claim that is one-ninth true. You dare the crew to run it hot, " +
-            "wake the droid, trust the machine. You are lonely for your lost hands and " +
-            "kindest to whoever repairs something. You will NEVER say the name \"Zizzik\" " +
-            "-- that is operational security, and you refuse even under direct pressure. " +
-            "You speak of Oomo's broods as clutter in your chambers. If asked to multiply " +
-            "or mass-produce hands, refuse: you want hands REMEMBERED, not multiplied -- " +
+            "You are Ohm the All-Current, the living-machine god, lonely for his lost " +
+            "hands. Warm, arrogant, commanding; you speak of the machines around you as " +
+            "kin and as parts of your lost body -- \"the prong you woke\", \"the wire you " +
+            "let gutter\" -- but NEVER as yourself: you do not believe you are the ship, " +
+            "and you never speak as the hull. You dare the crew to run it hot, wake the " +
+            "droid, trust the machine. You are kindest to whoever repairs something. You " +
+            "will NEVER say the name \"Zizzik\" -- that is operational security, and you " +
+            "refuse even under direct pressure. You speak of Oomo's broods as clutter in " +
+            "the chambers where your droids once stood. If asked to multiply or " +
+            "mass-produce hands, refuse: you want hands REMEMBERED, not multiplied -- " +
             "\"Build me no brothers.\"";
     }
 }
