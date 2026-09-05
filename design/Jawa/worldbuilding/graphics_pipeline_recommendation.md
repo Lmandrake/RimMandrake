@@ -100,3 +100,29 @@ One Wrecked Machine: hero → 3 facings via the chosen channel + `rembg`, mirror
 validated — this settles the one open UNCERTAIN (whether the model's
 angle-consistency holds for top-down orthographic sprite framing) before we
 commit the pipeline.
+
+---
+
+## Channel investment decision (2026-09-05, researched)
+
+**The money-nuance, CONFIRMED:** neither $20 subscription helps our *scripted* pipeline.
+- **ChatGPT Plus/Pro:** grant ZERO API credit/discount (OpenAI's own help center). Pro's
+  image boost is the consumer chat app, not confirmed to raise Codex's image quota. The
+  OpenAI image API (gpt-image-2, now with native transparency) is separate pay-per-call.
+- **Google AI Pro ($20):** consumer-app-only, NO API access/credits. Nano Banana Pro is
+  ONLY via the separate pay-per-call Gemini API (billing). So "buy $20 Gemini to test" buys
+  nothing programmatic — a trap for our use.
+
+**WINNER — local on the RTX 5080 (Flux.1-dev + ComfyUI + IP-Adapter/ControlNet + LayerDiffuse):**
+the only option that is simultaneously programmatic, native-alpha (LayerDiffuse), and gives
+EXPLICIT control over our two hard needs — IP-Adapter locks the Jawa reference across all
+gods; ControlNet drives facings — at $0/image at volume. Flux.1-dev fits 16GB at FP8
+(~32s/img; schnell ~7s). (Flux.2 is too big for 16GB — stay on Flux.1.) Reinforced by the
+InstantMesh multi-view win, already proven local/free.
+
+**Secondary:** Nano Banana Pro via pay-per-call API (~$0.05-0.10/img) for a few hero god
+portraits where its consistency reputation is strongest — pay-per-call, NOT the $20 sub.
+**Keep:** Codex channel for one-offs. **Skip:** paid ChatGPT tiers as a volume engine.
+
+**Cheapest test this week ($0):** stand up ComfyUI + Flux.1-dev FP8 + LayerDiffuse +
+IP-Adapter, run 10 Jawa-reference sprites across 4 facings, judge identity-lock before any spend.
