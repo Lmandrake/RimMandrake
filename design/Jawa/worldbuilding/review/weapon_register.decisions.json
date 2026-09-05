@@ -1,0 +1,4609 @@
+{
+ "sheetId": "weapon_register",
+ "posture": "blacklist",
+ "postureMeaning": "Default is KEEP THE ART. An undecided row destroys nothing and queues no work. Only 'cut' removes a weapon; 'regen'/'rescale' queue art work. 'prio' (A/B/C) is the regeneration ORDER and is meaningful only on a regen/rescale row. 'note' is free text and outranks everything else.",
+ "options": [
+  "keep",
+  "regen",
+  "rescale",
+  "cut"
+ ],
+ "criterion": "px-per-cell — how the shipping art holds up at drawSize x 64, plus a LEXICAL modern-Earth-name test. Ranks QUALITY and flags a shortlist; it cannot rank WORTH. Whether a weapon belongs in the Star Wars register is the owner's call and lives in the notes.",
+ "generatedBy": "gen_weapon_register.py 1.0",
+ "generatedUtc": "2026-09-05T23:14:18Z",
+ "provenance": {
+  "dumpMods": 595,
+  "dumpCaptured": "2026-09-05T04:49:08Z",
+  "gameVersion": "1.6.4871 rev591",
+  "fullModlist": 596,
+  "liveActiveMods": 596,
+  "cutProvenance": "cut list: 1454 defs, live settings, 2026-09-04 15:31 (/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Config/Mod_3521312241_Mod_CherryPicker.xml)",
+  "calibration": "PASSED — 13 assault-rifle/gladius readings match published vanilla, the one modded divergence (assault-rifle AP 19% from Yayo's Combat 3 vs vanilla's derived 16.5%) is exactly where expected, and the melee-DPS formula reproduces an independently published 7.04"
+ },
+ "decisions": {
+  "VFES_ComplexHmg_Top": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "HMC_Wall_Minigun_Turret_Top": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "FT_Gun_TurretQuadAA": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "HMC_Wall_LightMachinegun_Turret_Top": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_TurretSniper": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "HMC_Wall_Minigun_Turret_Top_Ship": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "FT_Gun_Autocannon": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_VulcanTurret": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "FT_Gun_TurretAA": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFES_ComplexCharge_Top": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "DP_ChainVulcan": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFES_TurretDoubleAutocannon_Top": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "HMC_Wall_MachineCannon_Turret_Top_Ship": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_AutocannonTurret": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFES_Gun_RailgunTurret": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFES_Gun_ConcealedTurret": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "FT_Gun_QuadMG": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFES_Gun_ChargeTurret": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_ChargeBlasterHeavyTurret": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VQE_AncientSpacerAutocannon_Gun": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BreadMoAM_Gun_LargeShotgunTurret": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_Gun_ChargeLMG": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_Gun_ChargeLMG_Unique": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEP_GauntletChargeCanon": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BS_GiantMinigun": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BS_GiantMinigun_Unique": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Gun_SuperHeavyChargeBlaster": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Gun_SniperTurret": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_Gun_ChargeMinigun": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_Gun_ChargeMinigun_Unique": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_Minigun": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_Minigun_Unique": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_hvyrepeater_massdriver": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_AncientArmoredTurret": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Gun_SoulDrainTurret": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "FT_Gun_TurretAT": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_TacticalTurret": {
+   "decision": "rescale",
+   "prefill": "rescale",
+   "prio": "A",
+   "note": ""
+  },
+  "VQE_AncientShieldedTurret_Gun": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Gun_GoliathChargeBlaster": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "CAFakeGun_ChargeBlasterHeavy": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_ChargeBlasterHeavy": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEP_WarcasketGun_Minigun": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "VFEP_WarcasketGun_ChargeLance": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEP_WarcasketGun_Slugthrower": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "FT_Gun_Recoilless": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFES_ComplexMinigun_Top": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEI2_Thornworm_Gun": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_Gun_HMG": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_Gun_HMG_Unique": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "m_Xenophage": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFES_TurretMinigun_Top": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BreadMoAM_Gun_ShotgunTurret": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BreadMoAM_Gun_ShotgunTurretN": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Ame_RhodesShotgun": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Ame_RhodesShotgun_Uniqueya": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_CyclerRifle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_ChainShotgun": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_ChainShotgun_Unique": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_slugrifle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_slugrifle_SovTusken": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_slugrifle_cinnagar": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_slugrifle_kaleesh": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_slugrifle_tusken": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_slugrifle_verpine": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_LMG": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_LMG_Unique": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "m_Riskrunner": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEP_WarcasketGun_Autorifle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_PKM": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_PKP": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_MiniTurretMech": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_DTMDR": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_Gun_ChargeSMG": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_Gun_ChargeSMG_Unique": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AG_ForsakenShotgun": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWEL_Gun_LaserShotgun": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_TKB68A": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_MPX": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Spear68C": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_Gun_TrenchGun_Unique": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_TrenchGun": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_JumpToFace": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_AK68A": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Spear68A": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_ASVAL": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "m_Khvostov_7G0X": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_ChargeRifle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_ChargeRifle_Unique": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_MCXC": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "FT_Gun_MG": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_M4A": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_Gun_SawedOffShotgun_Unique": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_SawedOffShotgun": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_RM68A": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_M5A3LT": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_MCX": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWEL_Gun_LaserMinigun": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "VWE_Gun_ChargeShotgun": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_Gun_ChargeShotgun_Unique": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_MK17A": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_Gun_Carbine": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_Gun_Carbine_Unique": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_Gun_SMG": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_Gun_SMG_Unique": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Gun_TacticalShotgun": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "m_RatKing": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_MK68A": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_MPXL": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_HeavySMG": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_HeavySMG_Unique": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MW2_BattleRifle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_CPHG": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_Gun_ServiceRifle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_Gun_ServiceRifle_Unique": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_AVT": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_AK101A": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MW2_AssaultCarbine": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEP_WarcasketGun_UraniumSlugRifle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_Gun_ChargePistol": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_Gun_ChargePistol_Unique": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_APS": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_MachinePistol": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_Gun_LightSMG": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_Gun_LightSMG_Unique": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BS_JotunRifle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BS_JotunRifle_Unique": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_AssaultRifle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_AssaultRifle_Unique": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_M4C": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_VSS": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_FNHG": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_MK18M": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_DemolisherChargeBase": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_STM": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_Gun_BattleRifle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_Gun_BattleRifle_Unique": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_HellcatRifle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_HellcatRifle_Unique": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_M42U": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_M4ASOP": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_CombatHandgun": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_Gun_CombatHandgun_Unique": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_STMC": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWEL_Gun_LaserSMG": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "m_PolarisLance": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BS_GiantMusket": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BS_GiantMusket_Unique": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "AG_ForsakenBow": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_SR25A": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AG_ForsakenSniper": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "AM_Gun_HeavyLaser": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWEL_Gun_LaserRifle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "m_GravitonLance": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_PumpShotgun": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BS_JotunJavelin": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Hunter": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Makarov": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Gun_CoilLance": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_ADAR": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWEL_Gun_LaserPistol": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_R11A": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AG_ForsakenAssaultRifle": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "VWE_Gun_ChargeSniperRifle": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "VWE_Gun_ChargeSniperRifle_Unique": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "Gun_Autopistol": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GravRifle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFES_Gun_MilitaryTurret": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWEL_Gun_LaserSniperRifle": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "Gun_ChargeLance": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_ChargeLance_Unique": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VQE_Weapon_Cryptobolter": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_Gun_LeverActionRifle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_Gun_LeverActionRifle_Unique": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_Gun_HandCannon": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_Gun_HandCannon_Unique": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_Revolver": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_Revolver_Unique": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_Gun_MarksmanRifle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_Gun_MarksmanRifle_Unique": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_ChargeBlasterTurret": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_Throwing_Knives": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_Gun_AntiMaterialRifle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_Gun_AntiMaterialRifle_Unique": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFES_Gun_ShotgunTurret": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_Spiner": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "m_ErianasVow": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_BoltActionRifle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_BoltActionRifle_Unique": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MW2_HuntingRifle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_ToxicNeedle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_M700A": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_Gun_MakeshiftPistol": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BS_GiantPrimitiveBow": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_Bow_Compound": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_Bow_Compound_Unique": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_Gun_SemiAutomaticRifle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_Gun_SemiAutomaticRifle_Unique": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MA_CapryakScatterbow": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_Scattergun": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_SniperRifle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_SniperRifle_Unique": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_MechanoidGunRotaryNeedle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_MiniTurret": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SW_MiniTurretGun": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFES_Gun_ArmoredTurret": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Bow_Great": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Bow_Great_Unique": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MA_VerdantBow": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Bow_Recurve": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DV_Gun_PrecisionLongrifle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_Gun_MakeshiftSMG": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_Throwing_Rocks": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Melee_MetalPipeLong": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_Gun_MakeshiftRifle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_Bow_Long": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_Bow_Long_Unique": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_Bow_Crossbow": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_Bow_Crossbow_Unique": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEP_WarcasketGun_LaserBlaster": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Bow_Short": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "NerveSpiker": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_MiniShotgun": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Pila": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEM_Bow_HeavyCrossbow": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_Gun_MakeshiftRevolver": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Gun_GoliathNeedle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_Needle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_NeedleLauncher": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Melee_MetalPipeValved": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Melee_MetalPipe": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_Slugthrower": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_WeaponPoisonDart": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPGun_MiniBlaster": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEI2_Thornspitter_Gun": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_Gun_MakeshiftLMG": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFET_Throwspikes": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Flamebow": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_Gun_MakeshiftShotgun": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Gun_MiniNeedle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_FoamBelcher_Gun": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_TurretFoam": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "HMC_Gun_TurretFoam": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VGE_Gun_HeavyChargeAnnihilator": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_Sludger": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DP_InfinityGun": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_carbine_stun": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "RSW_Gun_ArchotechChargeBlasterHeavyTurret": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DP_LightBeam": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_Gun_HeavyLaserCannon": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_Gun_AnaxesTurret": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_Atomiser": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_Gun_MediumLaserCannon": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_RN2SWGun_EWebMounted_GPMG": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_Gun_Turbolaser": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_Gun_HeavyIonCannon": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "HMC_Wall_FireShotgun_Turret_Top": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_BeamRepeater": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_BeamRepeater_Unique": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_Vaporiser": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_Zapper": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_microrepeater_mira": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_microrepeater": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_microrepeater_mando": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_microrepeater_narshaddaa": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_microrepeater_trandoshan": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_JDSA_Westar-M5_Blaster_Rifle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_DLT19HeavyBlasterRifle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_T21RepeatingBlaster": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_TL50HeavyRepeaterBlaster": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_E22BlasterRifle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_lgtrepeater_carbine": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "guy762_lgtrepeater_onderon": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "OuterRim_DroidWeapon_TwinWristBlaster": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_A280Blaster": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_JDSA_Z6_Rotary_Blaster_Cannon": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_DH17Rifle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_AB75BoRifle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_BlasterCarbine": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "OuterRim_E11BlasterRifle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_VSSBlasterCarbine": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "OuterRim_Gun_LightLaserCannon_Corellia": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_Gun_LightLaserCannon_Coruscant": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_Gun_LightLaserCannon_Tatooine": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_DLT20ABlaster": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_JDSA_DC-15S_Blaster_Rifle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_JDSA_DC-17M_Blaster_Rifle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_hvyrepeater": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_hvyrepeater_baragwin": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_hvyrepeater_mando": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_hvyrepeater_ordo": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_lgtrepeater": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_lgtrepeater_baragwin": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_lgtrepeater_enforcer": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_lgtrepeater_mandalore": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "guy762_lgtrepeater_medium": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_DroidWeapon_WristBlaster": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_Gun_PTowerTurret": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_JDSA_Westar-44_Heavy_Blaster_Pistol": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_bpistol": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_bpistol_arkanian": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_bpistol_bendak": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_bpistol_genoharadan": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_bpistol_mandalorian": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_bpistol_micropulse": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_bpistol_onasi": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_bpistol_republic": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_carbine": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "guy762_carbine_cinnigar": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "guy762_carbine_hogra": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "guy762_carbine_kalta": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "guy762_carbine_repcom": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "guy762_carbine_sith": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_E10BlasterRifle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_JDSA_AQ_Battle_Blaster": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_JDSA_Droideka_Long_Blaster": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_JDSA_Droidekas_Blaster": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_JDSA_LR-57_Combat_Blaster": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_E11DBlasterRifle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_hvypistol": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_hvypistol_arkanian": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_hvypistol_cassus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_hvypistol_mandalorian": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_hvypistol_nadd": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_hvypistol_zabrak": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_hvypistol_zabraktystel": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_JDSA_DC-15A_Blaster_Rifle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_JDSA_M-56_Heavy_Blaster_Cannon": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_JDSA_SE-14_Light_Blaster_Pistol": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_brifle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_brifle_arkanian": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_brifle_dmr": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_brifle_jurgan": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "guy762_brifle_mandalorian": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "guy762_brifle_plasma": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_brifle_zersium": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_DroidWeapon_BlasterCannon": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_JDSA_DC-17S_Blaster_Pistol": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_JDSA_DC-17_Blaster_Pistol": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_brifle_zabrak": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_JDSA_EE-3_Carbine_Rifle": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "RSW_JDSA_E-5C_Blaster_Rifle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_JDSA_E-5_Blaster_Rifle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_JDSA_Westar-33_Blaster_Pistol": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_JDSA_Westar-34_Blaster_Pistol": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_JDSA_Westar-35_Blaster_Pistol": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_bowcaster_ceremonial": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_bowcaster": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_bowcaster_merc": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_bowcaster_war": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_bowcaster_zaalbar": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_JDSA_E-5S_Sniper_Rifle": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "OuterRim_A180Blaster": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_DE10Blaster": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_DH17Pistol": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_K16BryarBlaster": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "IW_Gun_IonLMG": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "OuterRim_BARMST12Scattergun": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_DG29Blaster": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_DLT19XTargetingBlaster": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_JDSA_B2_HA_Wrist_Cannon": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "IW_Gun_IonRifle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_dispistol_luxa": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_bpistol_zabrak": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_carbine_zabrak": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "guy762_holdout_sithofficer": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWEL_Gun_SalvagedLaserShotgun": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "IW_Gun_IonPDW": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "IW_Gun_IonSlugthrower": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_BeamRepeaterTurret": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMAD_Gun_GrowthTurret": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMAD_Gun_ShrinkTurret": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMad_GrowthRay": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMad_ShrinkRay": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_holdout_jawa": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_ionpistol": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_ionpistol_aratech": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_ionpistol_verpine": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_ionrifle_carbine": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "guy762_sonpistol": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_sonpistol_arkanian": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_sonpistol_bothan": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_sonpistol_dashade": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_sonpistol_heavy": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWEL_Gun_SalvagedLaserPistol": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_disrifle_carbine": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "guy762_sonrifle_carbine": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "guy762_sonrifle_nagai": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_EC17Blaster": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_SE14RBlaster": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFES_Gun_FlameTurret": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_SiegemelterTurret": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Gun_AcidSpewer": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_ionrifle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_ionrifle_baragwin": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_ionrifle_bothan": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_ionrifle_verpine": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_dispistol": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_dispistol_disintegrator": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_dispistol_ripper": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_dispistol_sith": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWEL_Gun_SalvagedLaserSniperRifle": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "guy762_sonrifle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_sonrifle_argazdan": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_sonrifle_arkanian": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_sonrifle_bothan": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "IW_Gun_IonDMR": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_disrifle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_disrifle_baragwin": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_disrifle_charric": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_disrifle_droid": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_disrifle_tenloss": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_disrifle_zabrak": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_JDSA_Amban_Blaster_Rifle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_JDSA_DC-15x_Sniper_Rifle": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "VWEL_Gun_SalvagedLaserRifle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_DroidWeapon_WristBlasterIon": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_Gun_LightIonCannon": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_Turret_Propane_Gun": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "IW_Gun_HeavyIonLance": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_holdout": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_holdout_needler": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_holdout_quickdraw": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_holdout_sith": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_Sonic_Cannon": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_D72wOppressor": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "IW_Gun_IonPistol": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEP_WarcasketGun_HeavyFlamer": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_JDSA_DSD1_Dwarf_Spider_Blaster": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_ionpistol_static": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_JDSA_B2_Wrist_Blaster": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Flamethrower": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_Gun_Flamethrower": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_TeslaBlaster": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_TeslaGun": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWEL_Gun_TeslaGun": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_HeavyIonRifle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_JawaIon_Blaster": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_IonBlaster": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_IonRifle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_BeamGraserCannon": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Artillery_Mortar": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "FT_Artillery_Mortar": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "FT_Gun_TurretEmpero": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "FT_Gun_TurretHexMortar": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "FT_Gun_TurretPrince": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GTbc_Gun_GravliteDefense": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GravBeamCannon": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_BeamGraser": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_Incinerator": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_MiniFlameblaster": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "LaserCannonTurret": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEP_Artillery_FieldGun": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFES_Artillery_ArtilleryGun": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFES_ComplexGraserCannon_Top": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFES_ComplexHeavyIncinerator_Top": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFES_Gun_PointDefense": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFES_Gun_Searchlight": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VGE_Gun_PointDefense": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_mininglaser": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_Gun_HeavyImperialTurbolaser": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_Gun_HeavyTurbolaser": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GTbc_Gun_GravRailArtillery": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GTbc_Gun_TheSingularityCannon": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_Gun_ProtonArtillery": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFES_Gun_BallistaTurret": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_RocketswarmLauncher": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DP_HolyHandGrenade": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "HMC_Wall_Rocket_Turret_Top": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_HellsphereCannon": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_StarfireTurret": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEP_WarcasketGun_GrenadeLauncher": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "OuterRim_Gun_ProtonMortar": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "VFEP_WarcasketGun_ChargeBlaster": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_AntiArmor_Rocket": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Gun_HellsphereOrbital": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_TripleRocket": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_JDSA_E-60R_Missile_Launcher": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "m_WardcliffCoil": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GTbc_Gun_HugeGravBlaster": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_GravBlasterTurret": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_InfernoCannonTurret": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_FragGrenade": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_ThermalDetonator": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_JDSA_Thermal_Detonator": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Weapon_GrenadeFrag": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BS_JotunRocketLauncher": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BS_JotunRocketLauncher_Unique": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_BlackDefiler_Gun": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VGE_RocketswarmPod": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_Gun_GrenadeLauncher": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEP_WarcasketGun_HandheldCannon": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEP_WarcasketGun_SalvagedLaserEradicator": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_MechanoidMortar": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_DoomsdayRocket": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Melee_MetalPipeSupermassive": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_HH12RocketLauncher": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_Gun_RocketLauncher": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_DroidWeapon_WristRocket": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEP_Artillery_Cannon": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_Gun_ChargeRocketLauncher": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AG_ForsakenHydra": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VGE_MassLance": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_rocketrifle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BS_OgreThrowinRock": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_SiegebreakerTurret": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "m_Gjallarhorn": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DP_ZeusCannon": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_BlastSpore": {
+   "decision": "rescale",
+   "prefill": "rescale",
+   "prio": "A",
+   "note": ""
+  },
+  "VFEI2_Vilelobber_Gun": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GravBlaster": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_PlasmaGrenade": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Weapon_GrenadeMolotov": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_ThrumbungusShroom": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "Gun_ThumpCannon": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "AM_CryogenicGun": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_IncendiaryLauncher": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_SonicGrenade": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_InfernoCannon": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_FE_FirefoamSprayer": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VGE_Gun_MassDriver": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VGE_Gun_GaussGun": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Artillery_AutoMortar": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DP_CannonNoEquip": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFES_Artillery_Catapult": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_DetColumn": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VGE_Gun_JavelinPod": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VGE_Gun_AnticraftCaster": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_FlameColumn": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "HMC_Wall_Emp_Turret_Top": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "HMC_Wall_Emp_Turret_Top_Ship": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DP_RocketNoEquip": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_AutomatedMortar": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_EmpLauncher": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_IonGrenade": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_JDSA_ECD_Grenade": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Weapon_GrenadeEMP": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_EMPColumn": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_Gun_Sonic_HiveEmitter": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_StunGrenade": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_ProwlerSpit": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DP_SolarGuidance": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "DP_SolarRadiance": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_FlashGrenade": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_CryoBanGrenade": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_DeadColumn": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_SmokeLauncher": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gun_ToxbombLauncher": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_SmokeGrenade": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Weapon_GrenadeTox": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_JDSA_Vibroblade": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_JDSA_Vibroaxe": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_JDSA_Vibrosword": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Force_Lightsaber_Dual": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Force_Lightsaber_Inquisitor": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VREA_MeleeWeapon_ArchobladeBladelink": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_VibroBlade": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_VibroDoubleBlade": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Force_Ezra_BlasterLightsaber": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Force_Lightsaber_BuildYourOwn": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Force_Lightsaber_UniqueAnakin": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Force_Lightsaber_UniqueObi": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Force_Protosaber": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Force_SoulSaber": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_VibroGlaive": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_VibroAxe": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MeleeWeapon_MonoSwordBladelink": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_VibroCleaver": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_vdubblade": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_vdubblade_echani": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_vdubblade_sith": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_vdubblade_trandoshan": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_vdubblade_yusanis": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Force_ImbuedBlade": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_VibroDagger": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AG_ForsakenLongBlade": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Weebstick": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "Force_Lightsaber_Curved": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_vglaive": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_vglaive_echani": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_vglaive_krath": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AG_ForsakenBulkSword": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEP_WarcasketMeleeWeapon_PlasmaSword": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AG_ForsakenBattleAxe": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_vblade_tehkla": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MeleeWeapon_MonoSword": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEP_WarcasketMeleeWeapon_Broadsword": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Force_Lightsaber_Shoto": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWEL_LaserSword": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_vblade_prototype": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_vblade": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_vblade_echani": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_vblade_krath": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_vblade_sanasiki": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_vblade_vao": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MeleeWeapon_PlasmaSwordBladelink": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "TukataSpike": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEP_WarcasketMeleeWeapon_CombatKnife": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SurvivalTools_PrecisionScalpel": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Force_Darksaber": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Force_Lightsaber_Custom": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MA_ScarodonFangDagger": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "AG_ForsakenSpear": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DV_MeleeWeapon_PyrinthBlade": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GS_Gaffi": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "HBX_Rapier": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MeleeWeapon_RendingClaws": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_vsword": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_vsword_bacca": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_vsword_baragwin": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_vsword_echani": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_vsword_exchange": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_vsword_krath": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_vsword_sith": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BS_JotunSword": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BS_SurtrSword": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BS_SurtrSword_Persona": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DV_MeleeWeapon_CeremonialBlade": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_CrystalMantisScythe": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DV_MeleeWeapon_SerratedScimitar": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BS_Skarstind": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Force_Broadsaber": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Force_Lightsaber_Crossguard": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MeleeWeapon_LongSword": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BS_Skarstind_Persona": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BS_GiantScythe": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BS_VaeSuis": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BS_VaeSuis_Persona": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_MeleeWeapon_CombatKnife": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_MeleeWeapon_Shovel": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SurvivalTools_SteelKnife": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFET_Stake": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MeleeWeapon_Spear": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MA_GnautHornMace": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MA_ClawSaber": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MeleeWeapon_PlasmaSword": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VQE_MeleeWeapon_Cryptoaxe": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MeleeWeapon_Gladius": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MA_DuskSpear": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SurvivalTools_PowerDrill": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_MeleeWeapon_Axe": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FungalMantisScythe": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MeleeWeapon_Ikwa": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BS_GiantShard": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MeleeWeapon_Axe": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_vaxe": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_vaxe_hutt": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_vaxe_sith": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_MeleeWeapon_BattleAxe": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SurvivalTools_Knife": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MeleeWeapon_Knife": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SurvivalTools_Multitool": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SurvivalTools_CarbidePick": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SurvivalTools_Axe": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SurvivalTools_Pickaxe": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SurvivalTools_Primitive_Axe": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_ResourceBlueCrystal": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_MeleeWeapon_Halberd": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SurvivalTools_Primitive_Sickle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SurvivalTools_Sickle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SurvivalTools_CrosscutSaw": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SurvivalTools_Hoe": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SurvivalTools_PrimitiveLever": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SurvivalTools_HandSaw": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SurvivalTools_BoneSickle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SurvivalTools_StoneFlake": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "VQEA_MeleeWeapon_Scalpel": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GravHammerBladelink": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RSW_JDSA_Electrostaff": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MeleeWeapon_ZeusHammerBladelink": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GravHammer": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_electrostaff": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_electrostaff_gand": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_electrostaff_geonosian": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_electrostaff_mando": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_electrostaff_vulkar": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_GaderffiiStick": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DP_ThorHammer": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BS_SkrymirHammer": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BS_SkrymirHammer_Persona": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MeleeWeapon_Zeushammer": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEP_WarcasketMeleeWeapon_GravityHammer": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MA_Rhinhammer": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BS_JotunHammer": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BS_GiantMedievalHammer": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BS_GiantSalvageClub": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_baton": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_baton_bothan": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_baton_gand": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_baton_rakatan": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_baton_vulkar": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_MeleeWeapon_Baton": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BS_OgreClub": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BS_GiantHammer": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BS_OniClub": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MA_AminoxWarmaul": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MeleeWeapon_Mace": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MeleeWeapon_Warhammer": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VWE_MeleeWeapon_Hammer": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MA_Brontorhin": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MeleeWeapon_Club": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MA_MegaboneClub": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GU_RedWood": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SurvivalTools_Hammer": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SurvivalTools_Primitive_Hammer": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MeleeWeapon_BreachAxe": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFET_Chunk": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SurvivalTools_Wrench": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_MushroomLog": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_Toxwood": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "WoodLog": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "RR_Weapon_Torch": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "MeleeWeapon_PsyfocusStaff": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_MushroomWine": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Beer": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DV_Gorewine": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "FungusBeer": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "TarisianAle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VBE_DoubleWhiskey": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VBE_Gin": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VBE_Soda": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VBE_Tequila": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VBE_Vodka": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VBE_Whiskey": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEP_Rum": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_CrystalWood": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_MushroomWoodLog": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SurvivalTools_Microscope": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SurvivalTools_Abacus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BoneItem": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AlphaThrumboHorn": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "KraytDragonHorn": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RancorTooth": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MA_PlastemmothTusk": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_GallatrossHorn": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BX_BloodletterBlade": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_CaveSpiderHead": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_BunkerClaw": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ThrumboHorn": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "PlatybelodonTusk": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "DA_DrogTusk": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DA_GoldiloxHorn": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MA_DeermossHorn": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MA_DuskhornHorn": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DeinotheriumTusk": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ElasmotheriumHorn": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MastmotTusk": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_CrystalMantisClaw": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_RoyalRhinoHorn": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MastodonTusk": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MA_GnautHorn": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ElephantTusk": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MA_AminoxHorn": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MankaTooth": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MammothTusk": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FungalMantisClaw": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SmilodonFangs": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MA_CapryakHorn": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "NerfHorn": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MA_SivatheriumHorn": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "JakobeastHorn": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SkalderTusk": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_PustuleHornetStinger": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BanthaHorn": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ZygolophodonTusk": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  }
+ }
+}
