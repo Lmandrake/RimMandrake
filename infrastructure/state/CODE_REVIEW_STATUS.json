@@ -739,10 +739,15 @@
     "date": "2026-09-04",
     "sha": "43f96b1b"
   },
-  "src/RimMandrake/PhytokinBarkHeadFix/Source/make_bark_female_wide_east.py": {
+  "src/RimMandrake/PhytokinBarkHeadFix/About/About.xml": {
     "cleanCount": 1,
-    "date": "2026-09-04",
-    "sha": "43f96b1b"
+    "date": "2026-09-05",
+    "sha": "30f4d18a"
+  },
+  "src/RimMandrake/PhytokinBarkHeadFix/Source/make_bark_female_wide_east.py": {
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "30f4d18a"
   },
   "src/RimMandrake/Pits/About/About.xml": {
     "cleanCount": 1,
@@ -1034,6 +1039,11 @@
     "date": "2026-09-03",
     "sha": "ceeaebb1"
   },
+  "src/RimMandrake/SauridFrillFix/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "30f4d18a"
+  },
   "src/RimMandrake/Spikes/Spike1_TerrainMimic.cs": {
     "cleanCount": 1,
     "date": "2026-09-04",
@@ -1089,10 +1099,15 @@
     "date": "2026-09-03",
     "sha": "57ce5707"
   },
-  "src/RimMandrake/ToolBeltFix/Source/mirror_toolbelt_west.py": {
+  "src/RimMandrake/ToolBeltFix/About/About.xml": {
     "cleanCount": 1,
-    "date": "2026-09-03",
-    "sha": "359b0b2c"
+    "date": "2026-09-05",
+    "sha": "30f4d18a"
+  },
+  "src/RimMandrake/ToolBeltFix/Source/mirror_toolbelt_west.py": {
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "30f4d18a"
   },
   "src/RimMandrake/Utils/animal_contact_sheet.py": {
     "cleanCount": 1,
