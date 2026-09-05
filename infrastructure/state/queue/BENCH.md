@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-05T15:58:21Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-05T16:12:33Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -16,7 +16,16 @@ Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED be
 
 # IN PROGRESS
 
-_none._
+Started, and therefore not offered again. `rimflow close` or `rimflow block` moves them.
+
+## CREATURE_ART_REVIEW_SHEET_1 Full creature-art review sheet: every nonhuman at true in-game scale, biome-clustered, verdict+priority+notes - start of the art regeneration pipeline
+state:    doing
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+summary:  (no items/CREATURE_ART_REVIEW_SHEET_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/CREATURE_ART_REVIEW_SHEET_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
