@@ -52,8 +52,35 @@ blubbered. **A disagreement with no stated shape reason is an error, not a style
 | **physical melee** (bite, scratch, stomp, slam) | `∝ mass^(2/3)` | force follows muscle cross-section (length²), i.e. mass^(2/3) — not linear |
 | **acid / venom / toxic / ranged** | **damage does NOT scale** | chemistry is chemistry |
 | **acid / blast AREA of effect** | `∝ length` (cells) | a bigger animal sprays/covers more ground |
-| **armour absorption** | `∝ length ∝ mass^(1/3)` | hide/plate thickness scales with linear size |
+| **armour absorption** | **integument TYPE dominates; size modulates weakly** — see below | corrected by the owner, 2026-09-05 |
 | **health (`baseHealthScale`)** | `∝ mass` | this is what makes a whale not notice a dagger |
+
+### 🔴 Armour is a material property, not a size property (owner correction)
+
+> "I should have been less cavalier about armor absorption. Whale skin is way
+> thicker with blubber than a cow but it's not that much thicker so that's an
+> actual parameter that varies by beast depending on what they are. A rhino as
+> large as a whale would scale just like that and be impervious."
+
+So armour does NOT simply follow length. Each creature gets an **integument
+class** carrying the dominant term, and size modulates it only weakly:
+
+| integument | character | armour base |
+|---|---|---|
+| naked skin | human, worm | lowest |
+| fur / hair | most mammals | low |
+| thick hide | cow, muffalo | moderate |
+| blubber | whale, seal | moderate-high but SOFT — thick, not impervious |
+| scales | reptile, fish | moderate-high |
+| chitin | insectoid | high vs cutting, brittle vs blunt |
+| keratin plate / horn | rhino, thrumbo | very high |
+| bone / bio-plate / metal | mech, armoured beast | highest |
+
+⇒ **A rhino scaled to whale size IS effectively impervious** (keratin plate ×
+huge). **A whale at whale size is merely very tough** (blubber is thick but
+soft). Both fall out correctly once the TYPE carries the weight and size is a
+weak modifier — the whale-never-notices-a-dagger result then comes mostly from
+HEALTH (∝ mass), not from armour pretending to be armour plate.
 
 The whale test is the acceptance test for ruling 3: a trivial weapon against a
 huge creature must be *negligible*, and it falls out of armour ∝ length together
@@ -80,3 +107,31 @@ The pass proposes; the owner reviews. Every changed creature carries: old vs new
 `drawSize`/`bodySize`, the concept and real-world length/mass it came from, the
 shape reason for any cube-check disagreement, and the derived stat deltas.
 Nothing is applied silently.
+
+
+## Everything else that reacts to mass (owner, 2026-09-05)
+
+> "We will want to renormalize a lot after this. Armor and pit trap activation
+> mass and anything else that reacts to damage and mass. Also how much milk,
+> meat, leather, etc comes from these creatures."
+
+Renormalizing `bodySize` moves every consumer of Mass. Before applying anything,
+AUDIT and then set deliberately — none of these may be left to fall out silently:
+
+- **Yields:** MeatAmount, LeatherAmount (both carry `StatPart_BodySize`), plus
+  milk, eggs, wool and their intervals. 🔴 A literal whale is `bodySize` ~1400,
+  so auto-scaled meat is absurd — yields get **explicit per-creature values with
+  a stated playability cap**, never a silent fudge of the size.
+- **Traps & mechanisms:** pit-trap activation mass and anything else gated on
+  Mass crossing a threshold.
+- **Carrying & caravan:** CarryingCapacity, caravan mass capacity (`MassUtility`),
+  pack-animal usefulness.
+- **Husbandry:** pen space/load, bed fit, trainability gates, predation
+  thresholds (who can hunt whom).
+- **Combat:** ranged hit-chance vs the target (clamped 0.1-2.0, so it saturates),
+  bullet-stagger immunity.
+- **Needs:** Nutrition, MaxNutrition, food-tank size.
+
+**Rule:** every one of these is either derived by a stated formula or set
+explicitly per creature — and whichever it is gets recorded in the proposal, so
+the owner reviews numbers, not surprises.
