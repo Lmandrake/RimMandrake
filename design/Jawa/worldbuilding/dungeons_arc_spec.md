@@ -390,6 +390,12 @@ conflict layer is its own item, not part of either dungeon build.
 
 ## 4. Cross-links
 
+- **The quest layer on top of §3 is `vault_thaw_quest_family.md`**
+  (`VAULT_THAW_QUEST_FAMILY_1`, 2026-09-05): reveal via CARTOGRAPHY, the six
+  vaults as quest Sites at the fixed tiles (so §3.9's six `world_commit`
+  placements are now only for V5's landmark and hand-finish), the V6 thaw as a
+  vanilla refuelable heart taking the same `AIPersonaCore` as §2.3, the
+  wake/loot/leave branches, the ship-claim thread and the Reclamation.
 - `design/Jawa/reconciled_lore/FUTURE_VECTORS.md` — "the dungeons arc" bullet
   now points here.
 - `infrastructure/state/items/ASSAILANT_DUNGEON_BUILD_1.md` — spec/verify point

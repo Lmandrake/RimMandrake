@@ -246,7 +246,7 @@
   </KCSG.StructureLayoutDef>
   <KCSG.StructureLayoutDef>
     <defName>RUT_VaultType3_FrozenRakata</defName>
-    <spawnConduits>false</spawnConduits>
+    <spawnConduits>true</spawnConduits>
     <terrainGrid>
       <li>Gravel,Gravel,Gravel,Gravel,Gravel,Gravel,Gravel,Gravel,Gravel,Gravel,Gravel,Gravel,Gravel,Gravel,Gravel,Gravel,Gravel,Gravel,Gravel,Gravel,Gravel,Gravel,Gravel,Gravel,Gravel,Gravel,Gravel,Gravel,Gravel,Gravel,Gravel,Gravel,Gravel,Gravel,Gravel,Gravel,Gravel,Gravel,Gravel,Gravel,Gravel,Gravel,Gravel,Gravel,Gravel,Gravel,Gravel,Gravel,Gravel,Gravel,Gravel,Gravel,Gravel,Gravel,Gravel</li>
       <li>Gravel,Ice,Ice,Ice,Ice,Ice,Ice,Ice,Ice,Ice,Ice,Ice,Ice,Ice,Ice,Ice,Ice,Ice,Ice,Ice,Ice,Ice,Ice,Ice,Ice,Ice,Ice,Ice,Ice,Ice,Ice,Ice,Ice,Ice,Ice,Ice,Ice,Ice,Ice,Ice,Ice,Ice,Ice,Ice,Ice,Ice,Ice,Ice,Ice,Ice,Ice,Ice,Ice,Ice,Gravel</li>
@@ -321,31 +321,31 @@
         <li>Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel</li>
         <li>Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel</li>
         <li>Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel</li>
-        <li>Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Mech_Centurion,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel</li>
         <li>Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel</li>
         <li>Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel</li>
         <li>Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel</li>
         <li>Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel</li>
         <li>Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel</li>
+        <li>Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Turret_MiniTurret,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel</li>
         <li>Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel,Wall_Plasteel,Wall_Plasteel,Wall_Plasteel,Wall_Plasteel,Wall_Plasteel,Wall_Plasteel,Wall_Plasteel,Wall_Plasteel,Wall_Plasteel,Wall_Plasteel,Wall_Plasteel,Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel</li>
-        <li>Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel</li>
-        <li>Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel,.,RUT_Symbol_RakataSleeper,.,.,.,.,.,.,.,.,.,Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel</li>
-        <li>Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel</li>
-        <li>Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel</li>
-        <li>Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel</li>
+        <li>Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel,RUT_Symbol_VaultHeart,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel</li>
+        <li>Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel,.,RUT_Symbol_RakataCasket,.,RUT_Symbol_RakataCasket,.,RUT_Symbol_RakataCasket,.,RUT_Symbol_RakataCasket,.,.,.,Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel</li>
+        <li>Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel,Turret_MiniTurret,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel</li>
         <li>Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel</li>
         <li>Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel</li>
         <li>Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel</li>
         <li>Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel</li>
+        <li>Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel</li>
+        <li>Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Turret_MiniTurret,Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel</li>
         <li>Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel</li>
         <li>Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel</li>
         <li>Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel,Wall_Plasteel,Wall_Plasteel,Wall_Plasteel,Wall_Plasteel,Wall_Plasteel,.,Wall_Plasteel,Wall_Plasteel,Wall_Plasteel,Wall_Plasteel,Wall_Plasteel,Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel</li>
+        <li>Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Turret_MiniTurret,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel</li>
         <li>Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel</li>
         <li>Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel</li>
         <li>Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel</li>
         <li>Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel</li>
         <li>Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel</li>
-        <li>Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Mech_Centurion,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel</li>
         <li>Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel</li>
         <li>Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel</li>
         <li>Wall_Plasteel,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,.,Wall_Plasteel</li>

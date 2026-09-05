@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  RUT_VaultHeart - the V6 thaw socket (VAULT_THAW_QUEST_FAMILY_1).
+
+  The frozen-Rakata vault mirrors the Assailant complex's frozen-first-impact
+  model (dungeons_arc_spec.md SS2.3, ruled 2026-09-01: "thaw trigger =
+  QuestNode + map signal; the power core = vanilla AIPersonaCore"): the vault
+  is dark and inert on arrival, and the crew's OWN act - feeding an archotech
+  core into this dead plant - is what wakes it. Pure vanilla comps:
+
+    CompPowerPlant (basePowerConsumption -1000)   a power SOURCE, not a sink
+    CompRefuelable, fuel = AIPersonaCore only     "bring the old core" IS the
+                                                  vanilla refuel job, no C#
+    fuelConsumptionRate 0, canEjectFuel false     one-way, like the ruling says
+    atomicFueling true, capacity 1                one core, whole, or nothing
+    initialAllowAutoRefuel false                  a deliberate order, never an
+                                                  accidental haul
+
+  RefuelWorkGiverUtility.CanRefuel requires t.Faction == pawn.Faction, so the
+  KCSG symbol spawns it factionless (RUT_Symbol_VaultHeart,
+  spawnPartOfFaction false) and the crew CLAIMS it first - allowed while the
+  sleepers are still in their caskets (Thing.FactionPreventsClaimingOrAdopting
+  only counts SPAWNED pawns of the hostile faction), refused once the woken
+  are up and armed. Power first, then wake: that ordering is the design.
+
+  What the circuit feeds is decided by the layout, not here: type 3 places
+  four Turret_MiniTurret (80W each) against the core wall and KCSG lays
+  conduit under that wall (spawnConduits true) - dark until fed, then the
+  silent ring stops being silent.
+
+  Not buildable (no designationCategory, no costList), not deconstructible.
+  Art is the vanilla ship computer core at 1x1 - the object the persona core
+  was always meant to go into.
+-->
+<Defs>
+  <ThingDef ParentName="BuildingBase">
+    <defName>RUT_VaultHeart</defName>
+    <label>vault heart</label>
+    <description>A Forsaken power plinth, dead for longer than anyone has counted. The socket at its crown is the exact shape of a persona core.\n\nFeed it and the vault wakes. There is no putting the core back.</description>
+    <thingClass>Building</thingClass>
+    <graphicData>
+      <texPath>Things/Building/Ship/ShipComputerCore</texPath>
+      <graphicClass>Graphic_Multi</graphicClass>
+      <drawSize>(1.4,1.4)</drawSize>
+    </graphicData>
+    <altitudeLayer>Building</altitudeLayer>
+    <passability>Impassable</passability>
+    <fillPercent>1</fillPercent>
+    <rotatable>false</rotatable>
+    <size>(1,1)</size>
+    <tickerType>Normal</tickerType>
+    <statBases>
+      <MaxHitPoints>800</MaxHitPoints>
+      <Flammability>0</Flammability>
+      <Beauty>-5</Beauty>
+    </statBases>
+    <building>
+      <deconstructible>false</deconstructible>
+      <claimable>true</claimable>
+    </building>
+    <comps>
+      <li Class="CompProperties_Power">
+        <compClass>CompPowerPlant</compClass>
+        <basePowerConsumption>-1000</basePowerConsumption>
+        <transmitsPower>true</transmitsPower>
+      </li>
+      <li Class="CompProperties_Refuelable">
+        <fuelConsumptionRate>0</fuelConsumptionRate>
+        <fuelCapacity>1</fuelCapacity>
+        <initialFuelPercent>0</initialFuelPercent>
+        <atomicFueling>true</atomicFueling>
+        <canEjectFuel>false</canEjectFuel>
+        <initialAllowAutoRefuel>false</initialAllowAutoRefuel>
+        <showAllowAutoRefuelToggle>true</showAllowAutoRefuelToggle>
+        <fuelLabel>persona core</fuelLabel>
+        <fuelGizmoLabel>core</fuelGizmoLabel>
+        <outOfFuelMessage>The vault heart is dead. It wants a persona core.</outOfFuelMessage>
+        <fuelFilter>
+          <thingDefs>
+            <li>AIPersonaCore</li>
+          </thingDefs>
+        </fuelFilter>
+      </li>
+      <li Class="CompProperties_Glower">
+        <glowRadius>8</glowRadius>
+        <glowColor>(120,200,255,0)</glowColor>
+      </li>
+    </comps>
+  </ThingDef>
+</Defs>

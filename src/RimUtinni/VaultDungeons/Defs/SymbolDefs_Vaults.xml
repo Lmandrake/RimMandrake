@@ -19,15 +19,6 @@
     <defendSpawnPoint>true</defendSpawnPoint>
   </KCSG.SymbolDef>
   <KCSG.SymbolDef>
-    <defName>RUT_Symbol_RakataSleeper</defName>
-    <pawnKindDef>RUT_Jawa_RakataVaultSchooled</pawnKindDef>
-    <spawnPartOfFaction>false</spawnPartOfFaction>
-    <numberToSpawn>1</numberToSpawn>
-    <spawnDead>false</spawnDead>
-    <spawnRotten>false</spawnRotten>
-    <defendSpawnPoint>true</defendSpawnPoint>
-  </KCSG.SymbolDef>
-  <KCSG.SymbolDef>
     <defName>RUT_Symbol_BlackJellyWall</defName>
     <thing>AA_BlackJellyWall</thing>
   </KCSG.SymbolDef>
@@ -50,5 +41,18 @@
   <KCSG.SymbolDef>
     <defName>RUT_Symbol_SingularityCannon</defName>
     <thing>GTbc_TheSingularityCannon</thing>
+  </KCSG.SymbolDef>
+  <KCSG.SymbolDef>
+    <defName>RUT_Symbol_VaultHeart</defName>
+    <thing>RUT_VaultHeart</thing>
+    <spawnPartOfFaction>false</spawnPartOfFaction>
+  </KCSG.SymbolDef>
+  <KCSG.SymbolDef>
+    <defName>RUT_Symbol_RakataCasket</defName>
+    <thing>AncientCryptosleepCasket</thing>
+    <containPawnKindAnyOf>
+      <li>AncientSoldier</li>
+    </containPawnKindAnyOf>
+    <chanceToContainPawn>1</chanceToContainPawn>
   </KCSG.SymbolDef>
 </Defs>

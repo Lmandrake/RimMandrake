@@ -46,12 +46,35 @@ PAWN_SYMBOLS = [
      "HorrorWastes-native (cast_assignment.csv) - bioweapon-adjacent guardian, not the Anomaly toolbox. Third-party (Alpha Animals) -> not KCSG-auto-symbol'd, needs this wrapper."),
     ("RUT_Symbol_Boomsnake", "GR_Boomsnake",
      "HorrorWastes-native (cast_assignment.csv). Third-party (Genesis Regrown) -> needs this wrapper."),
-    ("RUT_Symbol_RakataSleeper", "RUT_Jawa_RakataVaultSchooled",
-     "Dormant sleeper for V6/type3. Wake/loot/leave mechanic itself is NOT built here - "
-     "HELD FOR OWNER (dialogue/letters, dungeons_arc_spec.md SS3.4/SS3.9); this symbol only "
-     "places the pawn at the core, spawnDead=false as a stand-in until the freeze/wake "
-     "hediff-comp lands. Our own mod -> not KCSG-auto-symbol'd, needs this wrapper."),
 ]
+
+# --- Container symbols (VAULT_THAW_QUEST_FAMILY_1) -------------------------
+# The sleepers are IN CASKETS, not standing at the core. The earlier
+# RUT_Symbol_RakataSleeper wrapped `RUT_Jawa_RakataVaultSchooled`, which is a
+# BackstoryDef (PawnFlavor/Defs/Backstories_Rakata_Sleepers.xml), not a
+# PawnKindDef - KCSG would have resolved it to null and spawned nothing,
+# silently. Replaced by a real cryptosleep casket whose contents KCSG fills
+# via `containPawnKindAnyOf` (SymbolUtils.GeneratePawnForContainer, faction =
+# map.ParentFaction when spawnPartOfFaction) - so the V6 Site's faction
+# (AncientsHostile, set by the quest) is what makes the sleepers wake hostile
+# with Building_AncientCryptosleepCasket's own assault lord. AncientSoldier is
+# already patched to the Rakata xenotype (UtinniPatches/AncientsAreRakata.xml).
+CONTAINER_SYMBOLS = [
+    # (symbolDefName, thingDefName, containPawnKinds, note)
+    ("RUT_Symbol_RakataCasket", "AncientCryptosleepCasket", ["AncientSoldier"],
+     "V6 casket hall. spawnPartOfFaction stays TRUE (default) so the sleeper takes the "
+     "Site faction; the quest sets that faction to AncientsHostile."),
+]
+
+SYMBOLDEF_CONTAINER_TMPL = """  <KCSG.SymbolDef>
+    <defName>{defName}</defName>
+    <thing>{thing}</thing>
+    <containPawnKindAnyOf>
+{kinds}
+    </containPawnKindAnyOf>
+    <chanceToContainPawn>1</chanceToContainPawn>
+  </KCSG.SymbolDef>
+"""
 
 # --- Building/item symbols for third-party ThingDefs (same reasoning:
 # vanilla/DLC things like Plasteel/Uranium/ComponentSpacer/Shard/Wall+
@@ -76,7 +99,15 @@ THING_SYMBOLS = [
      "Type-1 garrison doctrine turret - named explicitly in dungeons_arc_spec.md SS3.3 "
      "('Singularity Cannon class'). Third-party -> needs this wrapper. state=rework, same "
      "caveat as the grav-rail artillery above."),
+    ("RUT_Symbol_VaultHeart", "RUT_VaultHeart",
+     "V6 thaw socket (VAULT_THAW_QUEST_FAMILY_1): a dead power plant whose only fuel is "
+     "AIPersonaCore - the same core the Assailant complex takes (ruled 2026-09-01). Feeding "
+     "it is the thaw. Our own ThingDef -> needs this wrapper; spawned factionless so the "
+     "crew can claim and then refuel it (RefuelWorkGiverUtility.CanRefuel needs same faction)."),
 ]
+
+# Symbols that must spawn with NO faction even on a faction-owned site.
+FACTIONLESS_THING_SYMBOLS = {"RUT_Symbol_VaultHeart"}
 
 SYMBOLDEF_PAWN_TMPL = """  <KCSG.SymbolDef>
     <defName>{defName}</defName>
@@ -91,7 +122,7 @@ SYMBOLDEF_PAWN_TMPL = """  <KCSG.SymbolDef>
 
 SYMBOLDEF_THING_TMPL = """  <KCSG.SymbolDef>
     <defName>{defName}</defName>
-    <thing>{thing}</thing>
+    <thing>{thing}</thing>{extra}
   </KCSG.SymbolDef>
 """
 
@@ -101,7 +132,13 @@ def gen_symboldefs():
     for name, kind, note in PAWN_SYMBOLS:
         body.append(SYMBOLDEF_PAWN_TMPL.format(defName=name, pawnKindDef=kind))
     for name, thing, note in THING_SYMBOLS:
-        body.append(SYMBOLDEF_THING_TMPL.format(defName=name, thing=thing))
+        extra = ""
+        if name in FACTIONLESS_THING_SYMBOLS:
+            extra = "\n    <spawnPartOfFaction>false</spawnPartOfFaction>"
+        body.append(SYMBOLDEF_THING_TMPL.format(defName=name, thing=thing, extra=extra))
+    for name, thing, kinds, note in CONTAINER_SYMBOLS:
+        kinds_xml = "\n".join("      <li>%s</li>" % k for k in kinds)
+        body.append(SYMBOLDEF_CONTAINER_TMPL.format(defName=name, thing=thing, kinds=kinds_xml))
     return "<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<Defs>\n" + "".join(body) + "</Defs>\n"
 
 
@@ -109,11 +146,19 @@ def gen_symboldefs():
 
 def build_grid(size, outer_wall, outer_thick, garrison_floor, garrison_thick,
                 garrison_symbols, core_wall, core_size, core_floor, core_items,
-                door_material=None):
+                door_material=None, core_wall_hugging=None, core_corner_item=None):
     """Concentric square grid: outer wall ring -> garrison band -> inner wall
     ring -> core room. Each wall ring gets exactly ONE door, offset 90
     degrees from the other ring's door, so the core is reachable only by
     walking around inside the garrison band - never a straight line in.
+
+    core_wall_hugging: symbols placed in the band on cells ADJACENT to the
+    core wall ring (one per side, N/E/S/W order, away from the S door).
+    core_corner_item: one symbol placed just inside the core's NW corner.
+    Both exist for the powered type-3 pieces: KCSG spawnConduits lays
+    conduits under impassables (walls), and a CompPowerTrader connects to a
+    transmitter in any adjacent cell (PowerConnectionMaker), so anything
+    touching the core wall shares the heart's circuit.
     """
     n = size
     grid = [["."] * n for _ in range(n)]
@@ -166,6 +211,19 @@ def build_grid(size, outer_wall, outer_thick, garrison_floor, garrison_thick,
         cc = core_c0 + 2 + (i % max(1, (core_size - 4)))
         if core_r0 < rr < core_r1 and core_c0 < cc < core_c1:
             grid[rr][cc] = item
+    if core_corner_item:
+        grid[core_r0 + 1][core_c0 + 1] = core_corner_item
+    if core_wall_hugging:
+        q = core_size // 4
+        spots = [
+            (core_r0 - 1, core_c0 + q),        # N face, outside
+            (core_r0 + q, core_c1 + 1),        # E face, outside
+            (core_r1 + 1, core_c1 - q),        # S face, outside (off the door column)
+            (core_r1 - q, core_c0 - 1),        # W face, outside
+        ]
+        for sym, (r, c) in zip(core_wall_hugging, spots):
+            if grid[r][c] == ".":
+                grid[r][c] = sym
 
     # scatter garrison guardians/turrets evenly through the band between the
     # two rings, skipping the core footprint entirely
@@ -246,20 +304,36 @@ def main():
     )
     type2 = render(g2, t2, "RUT_VaultType2_FleshWeaponLoose")
 
-    # Type 3: frozen Rakata - dark, frost-locked, near-silent garrison ring
-    # (a handful of dormant standby units, not a fight), the scene at the
-    # core. Mech_Centurion is Core -> bare; the sleeper is our own mod ->
-    # wrapped.
+    # Type 3: frozen Rakata - dark, frost-locked, near-silent garrison ring,
+    # the scene at the core. VAULT_THAW_QUEST_FAMILY_1 makes the "frost-locked,
+    # no power" state MECHANICAL (the Assailant complex's frozen-first-impact
+    # model, dungeons_arc_spec.md SS2.3): nothing here is a live hostile on
+    # arrival. The garrison ring is four Turret_MiniTurret (Core, 80W,
+    # CompPowerTrader) hugging the core wall - dark and harmless until the
+    # crew feeds an AIPersonaCore into RUT_VaultHeart, the dead power plant
+    # just inside the core's NW corner; then the ring wakes. The core floor is
+    # four ancient caskets (RUT_Symbol_RakataCasket) with Rakata-xenotype
+    # AncientSoldier sleepers, opened by the Open designator like any casket.
+    # spawn_conduits="true" is what carries the heart's circuit under the
+    # core wall to the turrets. The two live Mech_Centurion units are gone:
+    # a live hostile would make Site.AllEnemiesDefeated/NoActiveThreats
+    # meaningless for the quest, and "Mech_Centurion" is both a ThingDef and
+    # a PawnKindDef name in KCSG's auto-symbol table (same caveat applies to
+    # type 1's Mech_Lancer/Mech_Centurion cells - not this pass's file).
     g3, t3 = build_grid(
         size=55, outer_wall="Wall_Plasteel", outer_thick=6,
         garrison_floor="Ice", garrison_thick=18,
-        garrison_symbols=[
-            "Mech_Centurion", "Mech_Centurion",
-        ],  # deliberately sparse - "thin... mostly silence" per SS3.3
+        garrison_symbols=[],  # deliberately silent - "thin... mostly silence" per SS3.3
         core_wall="Wall_Plasteel", core_size=13, core_floor="Ice",
-        core_items=["RUT_Symbol_RakataSleeper"],
+        # a casket is (1,2) with its interaction cell one to the east - a gap
+        # between each keeps every casket openable
+        core_items=["RUT_Symbol_RakataCasket", ".", "RUT_Symbol_RakataCasket", ".",
+                    "RUT_Symbol_RakataCasket", ".", "RUT_Symbol_RakataCasket"],
+        core_corner_item="RUT_Symbol_VaultHeart",
+        core_wall_hugging=["Turret_MiniTurret", "Turret_MiniTurret",
+                           "Turret_MiniTurret", "Turret_MiniTurret"],
     )
-    type3 = render(g3, t3, "RUT_VaultType3_FrozenRakata")
+    type3 = render(g3, t3, "RUT_VaultType3_FrozenRakata", spawn_conduits="true")
 
     with open(os.path.join(OUT_DIR, "StructureLayoutDefs_Vaults.xml"), "w") as f:
         f.write("<?xml version=\"1.0\" encoding=\"utf-8\"?>\n<Defs>\n")
