@@ -1,18 +1,30 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <!--
-    Offline, no-game selftest harness for BattleOutcomeClassifier
-    (PLOT_MECHANISM_MODS_WAVE_1's Aftermath half). Same shape as
-    RimMandrakeProperty.SelfTest.csproj, but simpler: BattleOutcome.cs and
-    BattleOutcomeClassifier.cs have ZERO Verse/UnityEngine dependency (plain
-    ints/bools/enum), so this project needs no RimWorldManaged references at
-    all - unlike Property's SelfTest, which needed them for
-    Mathf/GenDate/Faction/Pawn types.
+    Offline, no-game selftest harness for mandrake.rm.aftermath
+    (PLOT_MECHANISM_MODS_WAVE_1) - BattleOutcomeClassifier's pure
+    classification math and AftermathRuleEligibility's trigger-matching
+    predicate. Same shape/reasoning as
+    RimMandrakeProperty.SelfTest.csproj: a plain console project that
+    compiles the REAL production .cs files in directly where they have no
+    live-game dependency, rather than reimplementing them and drifting out
+    of sync.
 
-    NOT the mod build (RM_Aftermath.csproj, one directory up).
+    NOT the mod build (RM_Aftermath.csproj, one directory up: its own
+    EnableDefaultCompileItems is false and its own explicit Compile list
+    does not mention this folder).
 
-    Run (written apart only because an XML comment cannot hold two adjacent hyphens):
+    Targets net472 (like the real mod) because RM_AftermathRuleDef extends
+    Verse.Def and carries a RimMandrake.Ninefold.God? field - both need real
+    Assembly-CSharp.dll and the Ninefold assembly to resolve, even though
+    nothing called here needs a running game (a Def's own constructor has no
+    live-game dependency - same reasoning as Property's SelfTest constructing
+    ClaimResolution/ClaimantRef with null Pawn/Faction payloads).
+
+    Run via the wrapper (once written) or directly (Windows path required,
+    dotnet.exe cannot take /mnt/d):
       "%USERPROFILE%\.dotnet\dotnet.exe" run [dash][dash]project D:\Luke\dev\Rimworld\src\RimMandrake\Aftermath\Source\SelfTest\RimMandrakeAftermath.SelfTest.csproj -c Release
+      (written apart only because an XML comment cannot hold two adjacent hyphens)
   -->
 
   <PropertyGroup>
@@ -29,10 +41,49 @@
     <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(RimWorldManaged)' == ''">
+    <RimWorldManaged>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManaged>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(RimMandrakeNinefoldDll)' == ''">
+    <RimMandrakeNinefoldDll>..\..\..\Ninefold\Assemblies\RimMandrakeNinefold.dll</RimMandrakeNinefoldDll>
+  </PropertyGroup>
+
   <ItemGroup>
-    <!-- The REAL production source files, compiled in directly. -->
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
+
+  <!-- Private=true here (unlike a real mod .csproj) - this is a standalone
+       .exe, not a mod loaded into a running RimWorld process. -->
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(RimWorldManaged)\Assembly-CSharp.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>$(RimWorldManaged)\UnityEngine.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>true</Private>
+    </Reference>
+    <Reference Include="RimMandrakeNinefold">
+      <HintPath>$(RimMandrakeNinefoldDll)</HintPath>
+      <Private>true</Private>
+    </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- The REAL production source files, compiled in directly - none of
+         these have any Find/Game/DefDatabase dependency at the call sites
+         exercised here. -->
     <Compile Include="..\BattleOutcome.cs" />
     <Compile Include="..\BattleOutcomeClassifier.cs" />
+    <Compile Include="..\AftermathTriggerKind.cs" />
+    <Compile Include="..\AftermathPayloadFactionMode.cs" />
+    <Compile Include="..\RM_AftermathRuleDef.cs" />
+    <Compile Include="..\AftermathRuleEligibility.cs" />
     <Compile Include="Program.cs" />
   </ItemGroup>
 

@@ -56,6 +56,7 @@
     <Compile Include="AftermathTriggerKind.cs" />
     <Compile Include="AftermathPayloadFactionMode.cs" />
     <Compile Include="RM_AftermathRuleDef.cs" />
+    <Compile Include="AftermathRuleEligibility.cs" />
     <Compile Include="RM_AlliancePairDef.cs" />
     <Compile Include="QueuedAftermathMarker.cs" />
     <Compile Include="AftermathRuleRunner.cs" />

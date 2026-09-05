@@ -38,14 +38,10 @@ namespace RimMandrake.Aftermath
         {
             if (record?.RaidFaction == null) return;
 
+            int survivors = record.CountSurvivedAndExited();
             foreach (RM_AftermathRuleDef def in DefDatabase<RM_AftermathRuleDef>.AllDefsListForReading)
             {
-                if (def.triggerKind != AftermathTriggerKind.BattleOutcome) continue;
-                if (def.triggerOutcomes == null || !def.triggerOutcomes.Contains(record.Outcome)) continue;
-
-                int survivors = record.CountSurvivedAndExited();
-                if (survivors < def.minSurvivors) continue;
-
+                if (!AftermathRuleEligibility.IsEligible(def, record.Outcome, survivors)) continue;
                 TryQueue(def, record);
             }
         }
