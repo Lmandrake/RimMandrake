@@ -30,6 +30,13 @@ namespace RimMandrake.Property
         public void RegisterWitness(ClaimantRef suspect, float confidence, int tick)
         {
             if (suspect.Kind != ClaimantKind.Pawn) return; // only individuals can be suspects
+            // PROPERTY_SCRIBE_AND_WITNESS_INVARIANTS_1: GetSuspicion's lazy prune
+            // is the only pruner, and nothing calls GetSuspicion yet (the
+            // consequence-reader layer is unbuilt) - so entries grew unbounded
+            // on any live campaign despite this class's own comment claiming
+            // otherwise. Pruning here too means entries never outlive
+            // SuspicionHalfLifeDays even with zero readers.
+            PruneFullyDecayedEntries(tick);
             entries.Add(new WitnessEntry(suspect, confidence, tick));
         }
 

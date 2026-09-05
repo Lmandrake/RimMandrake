@@ -50,6 +50,20 @@ namespace RimMandrake.Property
             Scribe_Values.Look(ref InitialStrength, "initialStrength", 1f);
             Scribe_Values.Look(ref Basis, "basis", ClaimBasis.Situational);
             Scribe_Values.Look(ref TimestampTicks, "timestampTicks", 0);
+
+            // PROPERTY_SCRIBE_AND_WITNESS_INVARIANTS_1: a ClaimRecord is only
+            // ever constructed with one of the exception-list bases (see class
+            // comment) - Situational is a VIRTUAL basis ClaimEngine computes
+            // fresh and never assigns here. If a load ever resolves to it, the
+            // save's own "basis" node was missing or corrupted; assert loudly
+            // rather than silently treat a broken record as a legitimate one.
+            if (Scribe.mode == LoadSaveMode.PostLoadInit && Basis == ClaimBasis.Situational)
+            {
+                Log.Error("[RimMandrake.Property] ClaimRecord loaded with Basis=Situational - " +
+                          "this basis is virtual/computed and a ClaimRecord should never carry " +
+                          "it. The save's 'basis' node was likely missing or corrupted for this " +
+                          "record (claimant=" + Claimant + ").");
+            }
         }
     }
 }
