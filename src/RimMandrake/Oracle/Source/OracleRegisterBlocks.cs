@@ -5,6 +5,17 @@ namespace RimMandrake.Oracle
     /// carries exactly ONE god's block plus the law -- never the whole cast, or
     /// the model averages them into the single mind R-W6 forbids. This spike
     /// ships Ohm only; the other eight are future consumers, same shape.
+    ///
+    /// Framing (owner, ruled 2026-08-30, re-affirmed 2026-09-05): the Oracle mod is
+    /// the NARRATOR's engine -- the ship's old non-egoic mind -- which voices the
+    /// nine gods in their registers. No god is the Narrator; Ohm is one consumer
+    /// of nine, not the ship and not the Oracle. See canon.yml `narrator` and
+    /// design/Jawa/divine_satiation_engine.md "Ohm re-scoped".
+    ///
+    /// STALE PROMPT TEXT, owed to FOUNDRY (behaviour change, not done in the
+    /// 2026-09-05 doc pass): the Ohm block below still says "believes he IS the
+    /// ship" / "first-person-as-hull". Per the ruling Ohm makes no such claim; the
+    /// rewritten register is nine_voices_cast_bible.md section (2).
     /// </summary>
     public static class OracleRegisterBlocks
     {

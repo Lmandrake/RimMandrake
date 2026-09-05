@@ -400,9 +400,10 @@ whole wheel, not avoidance of it.
 
 ## V. Canon & matrix hygiene (short, actionable)
 
-1. **§4/§4c/§4d of the engine doc still carry Ohm-as-Oracle /
+1. ✅ DONE 2026-09-05 (owner re-affirmed the ruling; struck in place with reasons,
+   not just pointers): ~~**§4/§4c/§4d of the engine doc still carry Ohm-as-Oracle /
    Ohm-believes-he-is-the-ship with no supersession pointers** to the
-   2026-08-30 re-scope living 500 lines below. One line into each section. Same
+   2026-08-30 re-scope living 500 lines below. One line into each section.~~ Same
    for §5c's "voices from the speakers" (now Narrator-voiced — or is the Tiki
    Room chorus preserved? needs a ruling; recommendation: preserve it, Narrator
    as compère).

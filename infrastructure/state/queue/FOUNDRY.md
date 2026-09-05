@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-05T07:45:07Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-05T07:51:38Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -495,3 +495,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/PLOT_MECHANISM_MODS_WAVE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PLOT_MECHANISM_MODS_WAVE_1.md
+
+## ORACLE_OHM_PROMPT_STILL_SHIP_1 OracleRegisterBlocks.Ohm prompt string still tells the LLM Ohm 'believes he IS the ship / first-person-as-hull' - compiled behaviour contradicting the re-scope
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/ORACLE_OHM_PROMPT_STILL_SHIP_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ORACLE_OHM_PROMPT_STILL_SHIP_1.md

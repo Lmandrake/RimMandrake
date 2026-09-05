@@ -103,8 +103,10 @@ voice. They are **not** — they voice **three different surfaces**, so it is no
 - **RimAI Core** (`kilokio.rimai.core`, 1.6-only; + Framework `kilokio.rimai.framework`, 1.5/1.6) — voices
   a **buildable, in-world talkable Server/Terminal object** with an authored Persona module. The **only**
   mod in the whole search space where the voice is natively *a machine you build and address* — a
-  near-perfect vehicle for the **engine-is-god / Cradle-Mind** (Ohm the All-Current speaking through the
-  grav-controller). **Already ADOPTED** (user, 2026-08-07). **→ WINS the ship-voice role.**
+  near-perfect vehicle for the **ship-voice / Cradle-Mind** — the Narrator, and the nine gods in their
+  own registers during rites. ~~engine-is-god (Ohm the All-Current speaking through the grav-controller)~~
+  ⛔ DEAD (owner 2026-08-30, re-affirmed 2026-09-05): no god is the ship's voice; Ohm is one of nine.
+  **Already ADOPTED** (user, 2026-08-07). **→ WINS the ship-voice role.**
 - **RimTalk-Expand: AI Storyteller** (3715752189) — voices the **storyteller-as-character** (four fixed
   personality axes; drops raids when annoyed, sends gifts, chattable). A **different role**. **→ NOT the
   ship voice.** Verdict: **PARK** — a second LLM director is duplicate machinery alongside the

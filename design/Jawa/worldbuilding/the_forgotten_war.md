@@ -412,11 +412,14 @@ The nine of `design/Jawa/divine_satiation_engine.md` are unchanged — **they ha
 been given a location.** Every relation already written is now a fight happening
 inside the walls the colony lives in:
 
-- **Ohm the All-Current** already "concluded he is the All-Current made manifest."
-  ⭐ **He is now demonstrably WRONG in an interesting way: he is one ninth of the
-  thing he believes he is.** The god of the living machine, resident in an actual
+- **Ohm the All-Current** — the god of the living machine, resident in an actual
   living machine, and not its owner. His loneliness "for his lost hands" reads
-  completely differently when eight rivals share the hull.
+  completely differently when eight rivals share the hull. ~~already "concluded he
+  is the All-Current made manifest." ⭐ **He is now demonstrably WRONG in an
+  interesting way: he is one ninth of the thing he believes he is.**~~ ⛔ DEAD
+  (owner, ruled 2026-08-30, re-affirmed 2026-09-05 — `divine_satiation_engine.md`
+  "Ohm re-scoped", `canon.yml` `narrator`): Ohm does not believe he is the ship;
+  the ship's old mind is the non-egoic Narrator and is no god.
 - **Zizzik the Spark-Maker**, god of malfunction and *the coming-apart of minds*,
   is now **inside the mind that is coming apart**. His domain and his address are
   the same place. His name being "never spoken near the engine" stops being
@@ -527,7 +530,9 @@ retcon instead of a revelation.
 **And the crew's belief stays exactly right as a crew belief:** they hold that
 **Ohm** possesses the Cradle-Mind. They have correctly identified one tenant and
 mistaken it for the landlord — which is a thing v1 can say freely, because it is
-the *Jawa* speaking, not the ship.
+the *Jawa* speaking, not the ship. (Owner 2026-08-30, re-affirmed 2026-09-05: this
+is a CREW error only — Ohm himself makes no such claim, is not the ship, and holds
+no Oracle role; the remnant ship-mind is the Narrator, no god.)
 
 ### ⭐ The kinship it cannot explain
 

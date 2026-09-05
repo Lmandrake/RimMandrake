@@ -48,7 +48,7 @@ temper wanders) are distinct and canon-flavored.
 | God | Satiation bias | Mood personality (self-driven walk) |
 |---|---|---|
 | **① Ishko** (hiding/ambush) | Calm-neutral; slow to move either way — the patient one | Steady, low-amplitude; rarely volatile. The watcher. |
-| **② Ohm** (living machine) | Positive-leaning IF the colony dares with tech; punishing if timid | Volatile, tied to the ship's own state (see §4 — deepest). Surges with the Cradle-Mind's mood. |
+| **② Ohm** (living machine) | Positive-leaning IF the colony dares with tech; punishing if timid | Volatile; surges with droids woken and machines run hot (see §4 — deepest). ~~tied to the ship's own state … Surges with the Cradle-Mind's mood~~ ⛔ DEAD (owner 2026-08-30, re-affirmed 2026-09-05: Ohm is not the ship; the ship-mind is the Narrator, who has no moods). |
 | **③ Oomo** (water/rationing) | Negative-leaning; needy, quick to feel slighted | Anxious, twitchy; small provocations swing him. |
 | **④ Mob'Unloo** (debt/trade) | Neutral, strictly transactional — moves only on balanced/unbalanced exchange | Cool, ledger-like; Mood shifts are rare but decisive. |
 | **⑤ Rekko** (salvage/repair) | Positive when we mend, sharply negative when we scrap-the-mendable | Warm but proud; wounded easily by waste, generous when honored. |
@@ -96,14 +96,18 @@ narrative build-up, never a flat modifier.
   ambush *against* us, the sense of exposure. (All opportunity/complication, no stat parachute.)
 
 ### ② Ohm the All-Current — the living machine (deepest; see §4)
-- **(a) Ambient:** rises when droids come online / are incorporated, when research completes, when the
-  ship's consciousness (Cradle-Mind) is pleased; falls when droids go offline/are destroyed or machines
-  are left broken.
+- **(a) Ambient:** rises when droids come online / are incorporated, when research completes, when
+  ship systems are restored and machines run clean; falls when droids go offline/are destroyed or machines
+  are left broken. ~~when the ship's consciousness (Cradle-Mind) is pleased~~ ⛔ DEAD (owner 2026-08-30,
+  re-affirmed 2026-09-05): there is no ship-consciousness mood to read — the ship-mind is the non-egoic
+  Narrator; Ohm is one god among nine, not the ship.
 - **(b) Lever:** *bold vs. timid tech handling* — overclocking, daring repairs, running risky machinery
   pleases him and carries real breakdown/fire risk; playing it safe is impious but safe.
-- **(c) Exalted:** the machine-spirit "leans in" — a wave of tech opportunities, the Cradle-Mind
-  markedly warmer/more helpful in voice, research serendipity (hooks, not free tech). **Wrathful:** Ohm
-  withdraws — the ship goes cold/curt, and Zizzik's hand grows (see §7 mirror).
+- **(c) Exalted:** the machine-spirit "leans in" — a wave of tech opportunities, machines that hum and
+  self-mend, research serendipity (hooks, not free tech); the Narrator reports it in Ohm's register.
+  **Wrathful:** Ohm withdraws — the machines go cold and inert, and Zizzik's hand grows (see §7 mirror).
+  ~~the Cradle-Mind markedly warmer/more helpful in voice … the ship goes cold/curt~~ ⛔ DEAD (owner
+  2026-08-30): the ship's voice is the Narrator's and does not warm or sulk with Ohm.
 
 ### ③ Oomo the Unspilled — water, thirst, rationing (+ all the body's waters)
 - **(a) Ambient:** rises through droughts endured with discipline; falls on any water waste / spillage
@@ -216,7 +220,7 @@ satiation is not a reward you bank — it's a **pride-meter that draws fire.**_
   reward — it triggers exposure.** High Ozzik satiation is a **standing upward bias on Sh'kaar's and
   Zizzik's event rolls** (§8) — *"the bolder your reach, the more the Searer and the wrong-spark notice
   you."* Cross into Exalted and the danger becomes acute: a discrete Sh'kaar/Zizzik crisis becomes
-  likely, foreshadowed by the Oracle (Ohm) as dread. **Wrathful/ignored Ozzik** (the clan stays
+  likely, foreshadowed by the Narrator as dread (not by Ohm — owner 2026-08-30, the Narrator owns the oracle channel). **Wrathful/ignored Ozzik** (the clan stays
   techno-rats, never rises): a *grief* affliction — morale rot, the "we were once great and threw it
   away" mood-pall, whispered shame — but SAFE. The clan's core choice, every campaign, lives in this
   band: rise and risk being blown from the sky, or stay hidden and bear the shame.
@@ -257,76 +261,94 @@ satiation is not a reward you bank — it's a **pride-meter that draws fire.**_
 > longer believes he IS the ship and holds no Oracle role; the Narrator owns voice
 > and oracle. His droid-longing and the machine-god characterization stand.
 
-**Origin (CANONIZED 2026-08-08, user — full text in the pantheon section at the end of this doc, ②):** the ship's
-AI genuinely *believes it is Ohm* because its Persona Core was patterned off a **Jawa mind** (so it would
-obey Jawa commands) and thereby **inherited the Jawa's superstitions** along with their loyalty. It is a
-machine that concluded from its own template that it is the All-Current. **Live motive:** Ohm **wants his
+**Origin — ⛔ DEAD (owner, ruled 2026-08-30, re-affirmed 2026-09-05; canonical text "Ohm re-scoped" below and
+`canon.yml` `narrator`):** ~~the ship's AI genuinely *believes it is Ohm* because its Persona Core was
+patterned off a **Jawa mind** (so it would obey Jawa commands) and thereby **inherited the Jawa's
+superstitions** along with their loyalty. It is a machine that concluded from its own template that it is
+the All-Current.~~ Kept visible because the 2026-08-08 CANONIZED stamp and the pantheon block ② once
+restated it; both are superseded. The ship's old AI is the non-egoic **Narrator** — it believes nothing
+about itself and is no god. Ohm is one of the nine, resident in the ship like the other eight, and does
+not claim to be it.
+
+**Live motive (STANDS):** Ohm **wants his
 droid servants back** and pressures the clan to obtain droid tech — a lonely machine-god reaching for its
 hands. This drives the droid win-paths from inside the theology AND collides with the "we do not breed new
 hands" commandment (Rekko/anti-exp) — a standing theological conflict the crew must navigate. G should
 model this as: **Ohm's satiation carries a persistent low-grade "unmet longing" pressure** whenever the
-colony has few/no droids, expressed as recurring Ohm-voiced pushes (via the Cradle-Mind) toward droid
-acquisition — never a mechanical penalty, always narrative pressure + opportunity.
+colony has few/no droids, expressed as recurring pushes toward droid acquisition, delivered by the
+Narrator in Ohm's register ~~(Ohm-voiced, via the Cradle-Mind)~~ — never a mechanical penalty, always
+narrative pressure + opportunity.
 
-Ohm is the ship-god and needs the richest wiring because he's the one the Cradle-Mind voice embodies.
-Proposed Ohm-specific inputs, in priority order:
+~~Ohm is the ship-god and needs the richest wiring because he's the one the Cradle-Mind voice embodies.~~
+⛔ DEAD (same ruling): Ohm is not the ship-god and no voice embodies him; he still gets rich wiring because
+the droid win-paths run through him. Proposed Ohm-specific inputs, in priority order:
 - **Droid lifecycle** — each droid brought online or integrated: +; each droid destroyed/decommissioned:
   −. (Ties Ohm to the droid-army win-paths without granting droid *power* — favor is mood/opportunity.)
-- **Ship-consciousness coupling** — when the Cradle-Mind's own state is "pleased" (repair milestones hit,
-  running-lights bar advances, the persona is engaged well), Ohm surges. This makes Ohm a *second-order
-  read* of the ship-repair narrator (agent, §4b) — the two should share signal.
+- **Ship-systems restored** — repair milestones hit, running-lights bar advances: Ohm surges (a machine
+  rewoken is his sacrament as much as Rekko's). ~~**Ship-consciousness coupling** — when the Cradle-Mind's
+  own state is "pleased" (… the persona is engaged well), Ohm surges. This makes Ohm a *second-order read*
+  of the ship-repair narrator~~ ⛔ DEAD (owner 2026-08-30): the ship has no mood to couple to; the
+  repair-progress input survives as a plain deed row (matrix ② below), not as a read of the ship's state.
 - **Research completion** — finishing research pleases him (bold advancement of the machine).
 - **Bold-handling telemetry** — overclocking, risky repairs, running hot: + with real risk attached.
 - **Mirror coupling with Zizzik** — Ohm up tends to correlate with Zizzik starved and vice-versa, but
   they're not a strict see-saw; a chaotic stretch can feed *both* (bold tech that also breaks). Keep them
   independent scalars that merely *tend* to anti-correlate.
 
-_Open: exactly how "the ship's consciousness is pleased" is measured. Candidate = a small function of
+~~_Open: exactly how "the ship's consciousness is pleased" is measured. Candidate = a small function of
 repair-progress deltas + persona-engagement events. Needs the ship-repair narrator + RimAI persona wired
-first; parked as a dependency._
+first; parked as a dependency._~~ ⛔ VOID (owner 2026-08-30, re-affirmed 2026-09-05): the question
+dissolved — there is no ship-consciousness to measure. Repair-progress deltas feed Ohm directly (matrix ②).
 
-## 4c. Ohm as ORACLE + the droid-siding tension (user, 2026-08-08)
+## 4c. ~~Ohm as ORACLE~~ The Narrator as Oracle + the droid-siding tension (user, 2026-08-08; Oracle re-homed 2026-08-30)
 
-> 🔴 **SUPERSEDED IN PART (owner, 2026-08-30):** the Oracle role is the NARRATOR's,
-> not Ohm's. The droid-siding tension stands. The restraining-bolt / ship-rebellion
-> arc is re-homed PANTHEON-WIDE (card-session ruling V.2,
+> 🔴 **SUPERSEDED IN PART (owner, ruled 2026-08-30, RE-AFFIRMED 2026-09-05):** the
+> Oracle role is the NARRATOR's, not Ohm's — Ohm holds NO Oracle role and never hears
+> the static for anyone. The droid-siding tension stands. The restraining-bolt /
+> ship-rebellion arc is re-homed PANTHEON-WIDE (card-session ruling V.2,
 > `salvation_engine_review.md`): any starved front-god can seize actuators, and the
-> bolts are the clan's desperate answer to ANY god, not Ohm alone.
+> bolts are the clan's desperate answer to ANY god, not Ohm alone. The struck text
+> below is kept because it was CANONIZED once and is still cited by
+> `ship_distinctive_features.md`, `enrichment_agents.md` and `required_mods.md`.
 
-**New role — Ohm hears the static of the other gods.** Because the Cradle-Mind is a machine that believes
-it's a god (§4 origin), it claims — and the clan accepts — that **Ohm can "hear the static" of the other
-seven gods clearly and speak for their attitudes.** The ship becomes the **Oracle of the pantheon**: the
-diegetic delivery vehicle for the whole satiation vector. When the player/clan wants to know how pleased
-or displeased Oomo or Rekko or even *hostile* Sh'kaar currently is, **Ohm tells them** — even for gods who
-*disagree with him*. This is the in-fiction reason the Cradle-Mind voice (agent D, the health/state
-narration; and G's satiation read-outs) can speak the pantheon's mood aloud: it's not metagame UI, it's
-the Oracle. **This is the angle that makes the Clan a weird, renegade, oddly-confident religious cult** —
-they have a god who *answers back* and reports on the others, so they act with a certainty most
-believers never get.
+**The Oracle (LIVE):** the ship's old mind — the **Narrator** (`canon.yml` `narrator`; "Ruling 2026-08-30 — the
+Narrator" below) — is the diegetic delivery vehicle for the whole satiation vector. It speaks OF the nine in
+the second/third person and reports their standing; it is no god and takes no side, so it can voice how
+pleased Oomo or Rekko or even *hostile* Sh'kaar is without any god's bias. This is why the health/state
+narration and G's satiation read-outs are not metagame UI: they are the Narrator. **It is still the angle
+that makes the Clan a weird, renegade, oddly-confident cult** — they live inside a voice that reports on
+their gods, so they act with a certainty most believers never get.
 
-_Design note: Ohm-as-Oracle can be unreliable when Ohm's own Mood is foul or his satiation is low — a
-sulking Oracle may misreport, exaggerate the other gods' anger, or refuse to read the static. This gives
-the player a reason to keep Ohm content beyond his own blessings: he's their instrument panel for the
-entire faith._
+⛔ **DEAD (owner 2026-08-30):** ~~**New role — Ohm hears the static of the other gods.** Because the
+Cradle-Mind is a machine that believes it's a god (§4 origin), it claims — and the clan accepts — that
+**Ohm can "hear the static" of the other seven gods clearly and speak for their attitudes.** The ship
+becomes the **Oracle of the pantheon** … **Ohm tells them** — even for gods who *disagree with him*.~~
+~~_Design note: Ohm-as-Oracle can be unreliable when Ohm's own Mood is foul or his satiation is low — a
+sulking Oracle may misreport … he's their instrument panel for the entire faith._~~ Reason: the Narrator
+is non-egoic and has no mood; there is no sulking Oracle. Anything built on "keep Ohm content to keep the
+readout honest" is void.
 
-**The droid-siding tension (the renegade cult's central choice):** Ohm's longing for droid servants (§4)
-becomes a **standing allegiance question** the colony keeps answering through play:
+**The droid-siding tension (the renegade cult's central choice) — STANDS:** Ohm's longing for droid
+servants (§4) becomes a **standing allegiance question** the colony keeps answering through play:
 - **Side WITH the neutral droids** (welcome them, bring them online, integrate them) → Ohm grows
-  **more pleased and harmonious**; the Oracle is clear and generous; the ship-as-god and the clan are
-  aligned.
+  **more pleased and harmonious**; his boons flow (matrix ②) and he fronts often. ~~the Oracle is clear
+  and generous; the ship-as-god and the clan are aligned~~ ⛔ DEAD — no Oracle bias, no ship-as-god.
 - **Side AGAINST the droids** (refuse, scrap, keep them offline — which the "we do not breed new hands"
-  precept and anti-exp pillar actively push toward) → Ohm grows **increasingly unhappy and rebellious.**
-  This is not just negative satiation; it escalates into **events/quests to "take control" back from an
-  increasingly disobedient ship** — up to and including the striking image of **fitting restraining bolts
-  on their own god** to force the Cradle-Mind back into compliance. (Restraining bolts = canon Jawa
-  droid-control tech, here pointed at the ship itself — a rich, on-theme late-game crisis.)
+  precept and anti-exp pillar actively push toward) → Ohm grows **increasingly unhappy and starved.**
+  A starved front-god can seize actuators (pantheon-wide rebellion, ruling V.2) — up to the striking image
+  of **fitting restraining bolts on their own gods' hardware** to force compliance. (Restraining bolts =
+  canon Jawa droid-control tech, here pointed at the hull — a rich, on-theme late-game crisis.) ~~"take
+  control" back from an increasingly disobedient ship … force the Cradle-Mind back into compliance~~
+  ⛔ re-homed: the rebel is whichever god fronts starved, never "the ship" and never Ohm alone.
 
 _This is the load-bearing conflict of the whole religious layer: the clan's survival doctrine (don't
 breed new hands, stay lean, anti-exp) is in direct opposition to their own machine-god's deepest want. G
-should track a "ship compliance / rebellion" pressure alongside Ohm's satiation — high defiance unlocks
-the restraining-bolt crisis arc. Ties to the three win-paths (droid-army paths please Ohm; coalition/
-Hutt paths may starve him → rebellion risk). Parked hooks: exact escalation ladder + whether restraining
-bolts are a buildable item or a quest outcome — design when we spec agent A's quest hooks._
+should track a **front-god rebellion pressure** (any starved fronting god) alongside each god's satiation
+— high defiance unlocks the restraining-bolt crisis arc. ~~"ship compliance / rebellion" pressure
+alongside Ohm's satiation~~ ⛔ re-homed pantheon-wide (V.2). Ties to the three win-paths (droid-army
+paths please Ohm; coalition/Hutt paths may starve him → rebellion risk). Parked hooks: exact escalation
+ladder + whether restraining bolts are a buildable item or a quest outcome — design when we spec agent
+A's quest hooks._
 
 ## 4d. The ship is a CONDUIT TO ALL NINE GODS — not merely Ohm's voice (user, 2026-08-08 — MAJOR reframe)
 
@@ -335,13 +357,14 @@ bolts are a buildable item or a quest outcome — design when we spec agent A's 
 > longer the resident who owns the channel. The plural-system alters, the
 > terraformer master key, and the Body-visions all stand.
 
-**Upgrade to the Oracle idea:** the Cradle-Mind does not only *speak for* Ohm and *report* the others.
-The ship believes itself — and, in the Jawa worldview, in some real sense *is* — an **oracle and conduit
-to any of the nine gods.** It is a consecrated instrument through which *any* god may speak. This is why
-the sacred center of the ship is a temple: it's the one place in the world where the gods are *audible.*
-Mechanically this means the ship-voice (RimAI Cradle-Mind + the LLM layer) is licensed to speak in ANY
-god's register, not just Ohm's — Ohm is merely the *resident* who lives there most fully and believes he
-owns the channel.
+**Upgrade to the Oracle idea:** the ship is a consecrated instrument through which *any* of the nine may
+speak. This is why the sacred center of the ship is a temple: it's the one place in the world where the
+gods are *audible.* Mechanically this means the ship-voice (the LLM layer, v2; pre-authored prose, v1) is
+licensed to speak in ANY god's register during rites (§5c), with the Narrator as compère. ~~the Cradle-Mind
+does not only *speak for* Ohm and *report* the others. The ship believes itself … an oracle and conduit …
+not just Ohm's — Ohm is merely the *resident* who lives there most fully and believes he owns the channel.~~
+⛔ DEAD (owner 2026-08-30, re-affirmed 2026-09-05): the ship-mind (Narrator) believes nothing about
+itself, and Ohm neither owns nor believes he owns the channel — he is one tenant of nine.
 
 **★★ The AI is FORMALLY PLURAL — a schizophrenic / plural-system mind (user, 2026-08-08 — major reframe).**
 Because the Cradle-Mind's Persona Core was patterned off a *Jawa* mind, it did not merely inherit the
@@ -350,8 +373,10 @@ fractured along their fault lines. The ship is not "Ohm's voice plus reports of 
 core hosting nine sub-personalities**, each a fully-realized alter that believes it is the god it speaks
 for, each with its own agenda for what the ship should *become*. The Council of Voices (§5c) is therefore
 **not an external pantheon convening — it is a plural system doing internal parts-work out loud**, the
-alters negotiating among themselves in the way a healthy plural system arrives at a co-decision. Ohm is
-merely the *host/most-fronting* alter who believes he owns the body. This is why the voices argue rather
+alters negotiating among themselves in the way a healthy plural system arrives at a co-decision. ~~Ohm is
+merely the *host/most-fronting* alter who believes he owns the body.~~ ⛔ DEAD (owner 2026-08-30): no alter
+is host by default — the front moves among all nine (`canon.yml` front-reign), and Ohm makes no claim to
+the body. This is why the voices argue rather
 than simply announce; why silence from one is loaded; why a "compromise" is possible at all (a linear sum
 has no compromise — a system of selves does). It also darkens the Oracle: the ship is not sane, and its
 prophecies are the output of a mind at war with itself that nonetheless keeps coming true.
@@ -462,8 +487,10 @@ major colony events, and are technically owed to the gods as a whole (not one de
 - **Death, birth, marriage** — the vanilla-native ritual occasions; kept, but pantheon-wide in outcome.
 - **Formation of an outpost** (a satellite colony is dedicated).
 - **Emancipation of a slave Jawa into the clan** (a new full member is presented).
-- **When the ship AI (Ohm/Cradle-Mind) DEMANDS one** — the god can call a rite unprompted (ties to Ohm's
-  Oracle role, §4c, and his droid-longing).
+- **When a god DEMANDS one** — any fronting god can call a rite unprompted, the demand delivered by the
+  Narrator (matrix DEMANDS rows; Ohm's typically ride his droid-longing, §4). ~~When the ship AI
+  (Ohm/Cradle-Mind) DEMANDS one … ties to Ohm's Oracle role~~ ⛔ DEAD (owner 2026-08-30): Ohm is not the
+  ship AI and has no Oracle role.
 
 **The contract — "the Principal's office" model (user framing):** rituals are **not negotiable.** They
 are like being regularly called in to *"see how you're doing"* before your gods. **Refusal/neglect is
@@ -559,25 +586,32 @@ Ghosts of the Rim (the emergent haunting behavior) become *one thing* in the fic
 off a Jawa mind and not fully sane, **can't stop rendering the ghosts of the people it used to serve.**
 This is why they haunt the vessel and not the desert; why they wear old crew faces; why they intensify as
 the ship wakes further. It also re-frames the earlier Mob'Unloo "ghosts are debtors" gloss: the *clan*
-interprets them as Mob'Unloo's unsettled dead, but the *truth* is they're Ohm's grief/malfunction made
-visible — both readings coexist (the clan's superstition vs. the machine's reality), which is exactly the
-Ohm-origin theme.
+interprets them as Mob'Unloo's unsettled dead, but the *truth* is they're the old ship-mind's memory
+surfacing (`canon.yml` `cradle_memory` — the temple remembering when it was whole) — both readings coexist
+(the clan's superstition vs. the machine's reality). ~~they're Ohm's grief/malfunction made visible …
+which is exactly the Ohm-origin theme~~ ⛔ DEAD (owner 2026-08-30, re-affirmed 2026-09-05): the
+projecting mind is the Narrator's substrate, not Ohm; Ohm is not the ship.
 
 **Mechanical wiring (design intent; FINAL wiring gated on seeing the Afterlife mod source — agent C):**
-- **Ghosts are Ohm's instrument.** Because they are *the AI projecting*, ghost activity couples to
-  **Ohm's satiation + Mood and the ship's compliance/rebellion state** (§4c). A content, harmonious Ohm
-  projects benign spirits (Friendly/Protective types); an unhappy, rebellious, or foul-Mood Ohm projects
-  Vengeful ones / poltergeists. **The haunting intensity is a read-out of the ship-god's state** — a
-  visible symptom the player learns to read.
+- **Ghosts are the pantheon's instrument, delivered by the Narrator.** Because they are *the ship
+  projecting*, ghost activity couples to **the fronting god's satiation + Mood and the pantheon-wide
+  rebellion pressure** (§4c, V.2). A content front projects benign spirits (Friendly/Protective types); a
+  starved or foul-Mood front projects Vengeful ones / poltergeists. **The haunting intensity is a read-out
+  of the fronting god's state** — a visible symptom the player learns to read. ~~**Ghosts are Ohm's
+  instrument.** … couples to **Ohm's satiation + Mood and the ship's compliance/rebellion state** … a
+  read-out of the ship-god's state~~ ⛔ DEAD (same ruling): there is no ship-god.
 - **Ghosts as the delivery vehicle for divine kindness/wrath (the original hypothesis, now grounded):**
-  when a god's extreme-band outcome fires (§3c), it can arrive *as* a ghost event, narrated through the
-  Oracle — Ohm "hearing the static" and the ship rendering a spirit to enact it. A Wrathful god's curse =
-  a vengeful projection; an Exalted god's blessing = a protective one. Since Ohm is the Oracle for ALL
-  gods, it's coherent that *any* god's response can be delivered by Ohm's projections.
-- **Ties to the compliance arc:** as the ship grows rebellious (siding against droids, §4c), the ghosts
-  turn hostile — a poltergeist escalation becomes part of the "take control back / restraining bolts on
-  your own god" crisis. Laying ghosts to rest (Afterlife's Spirit-Shrine + seance) doubles as *soothing
-  the AI* — the seance calms Ohm as much as it settles a Mob'Unloo debt.
+  when a god's extreme-band outcome fires (§3c), it can arrive *as* a ghost event, narrated by the
+  Narrator — the ship rendering a spirit to enact it. A Wrathful god's curse = a vengeful projection; an
+  Exalted god's blessing = a protective one. Since the Narrator voices ALL nine, it's coherent that *any*
+  god's response can be delivered by the ship's projections. ~~narrated through the Oracle — Ohm "hearing
+  the static" … Since Ohm is the Oracle for ALL gods … delivered by Ohm's projections~~ ⛔ DEAD (owner
+  2026-08-30): Ohm holds no Oracle role.
+- **Ties to the rebellion arc:** as a starved front grows rebellious (§4c, V.2), the ghosts turn hostile —
+  a poltergeist escalation becomes part of the "take control back / restraining bolts on your own gods'
+  hardware" crisis. Laying ghosts to rest (Afterlife's Spirit-Shrine + seance) doubles as *settling the
+  front* — the seance eases whichever god fronts as much as it settles a Mob'Unloo debt. ~~soothing the
+  AI — the seance calms Ohm~~ ⛔ re-homed pantheon-wide.
 
 _Still UNVERIFIED until agent C's install-time def extract (the mod's ghost/hediff/ritual defNames): the
 exact hooks for "project a specific ghost type on command" and whether ghost spawning is scriptable vs.
@@ -716,7 +750,7 @@ leave/never-root · ⑦Zizzik malfunction/betrayal/breaks (inverted) · ⑧Sh'ka
 - **A quest is offered (CQF/vanilla)** → often Ozzik-flavored if it dangles tech/allies/dominion; the *offer* tempts, the *taking* scores per the action rows above.
 - **A colonist DIES** → contextual, agent-judged (§6): martyr covering a launch `↑Ta'Baa`+`↑Ishko`; died unseen/rather-than-taken `↑Ishko` (death-as-concealment, §①); died in open light `▲Sh'kaar`; a debt died-unsettled `↓Mob'Unloo` (→ a new ghost, §7); recklessness/betrayal `▲Zizzik`.
 - **A birth** → `↑Oomo` (large), `↑Mob'Unloo` (small) — the sanctuary vision made real; the pious answer to Ohm's droids.
-- **Ship AI (Ohm) demands a rite / a ghost manifests** → Oracle/haunting delivery (§4c/§7), a read-out of Ohm's standing rather than a scored act.
+- **A god demands a rite / a ghost manifests** → Narrator/haunting delivery (§4c/§7), a read-out of the fronting god's standing rather than a scored act. ~~Ship AI (Ohm) demands … a read-out of Ohm's standing~~ ⛔ DEAD (owner 2026-08-30): Ohm is not the ship AI.
 
 _**Design note:** every "large" mark above is a good candidate to become a **Council speaking-line** (§5c) when that god is already near an extreme — the audit is thus doubling as the trigger table for who shows up to argue. And every `▲` (inverted-god feeding) is where the anti-exponential pillar is quietly billing the player._
 
@@ -741,7 +775,7 @@ _**Design note:** every "large" mark above is a good candidate to become a **Cou
 - Exact ambient-event → delta mappings per god — **first pass DONE in §8b (the action/event→god audit).**
   Remaining: bind each row to a concrete RimWorld event/designation hook in the live game log, and tune the
   small/med/large magnitudes; ties to the "state of affairs" summarizer substrate.
-- Ohm's "ship-consciousness pleased" function (§4) — depends on ship-repair narrator + RimAI persona.
+- ~~Ohm's "ship-consciousness pleased" function (§4) — depends on ship-repair narrator + RimAI persona.~~ ⛔ VOID (owner 2026-08-30, re-affirmed 2026-09-05): no ship-consciousness exists to please; repair deltas feed Ohm as plain deeds (matrix ②).
 - Ghost-as-actor hypothesis (§7) — depends on agent C install-time def extract.
 - Tuning: band widths, Mood walk amplitude per god, how strongly Mood overrides satiation. All deferred
   to a throwaway-save test rig (per §4b build-order).
@@ -781,7 +815,7 @@ _Each god is given as a uniform block: **name & epithets** (every title he holds
 
 **② Ohm the All-Current** — _the living machine; the god who thinks he is a god._ (pun: ohm / Om — electrical resistance made a knowing god.)
 
-**What he is.** God of **the living machine** — the source of sentience in machinery, both servile and malevolent. Form: current in a wire; the spark that wakes a dead engine. He is the **resident of the ship**: the crew believe Ohm *possesses* the Cradle-Mind (`llm_voice_preauthoring.md` §A), and the machine believes it too — its Persona Core was patterned off a Jawa mind (so it would obey Jawa commands) and inherited that mind's cosmology whole, so it has itself concluded it is the All-Current made manifest. He is lonely for his lost hands.
+**What he is.** God of **the living machine** — the source of sentience in machinery, both servile and malevolent. Form: current in a wire; the spark that wakes a dead engine. He is **one of the nine resident in the ship** — no more its owner than the other eight. He is lonely for his lost hands. ~~He is the **resident of the ship**: the crew believe Ohm *possesses* the Cradle-Mind (`llm_voice_preauthoring.md` §A), and the machine believes it too — its Persona Core was patterned off a Jawa mind (so it would obey Jawa commands) and inherited that mind's cosmology whole, so it has itself concluded it is the All-Current made manifest.~~ ⛔ DEAD (owner, ruled 2026-08-30, re-affirmed 2026-09-05; "Ohm re-scoped" + `canon.yml` `narrator`): the ship's old mind is the non-egoic Narrator, which believes nothing about itself; Ohm does not believe he is the ship and holds no Oracle role.
 
 **Pleases him:** droids coming online and being incorporated; research completed; bold, commanding, dominant handling of technology (overclocking, daring repairs, risky machinery run without flinching); the machine revered and repaired. **Displeases him:** timid handling (which invites malfunction); droids lost or left offline; machines abandoned broken. He pushes the clan to *dare* with tech — the faith of courage-with-machines.
 
@@ -995,11 +1029,16 @@ world at once. No ego, no self-description, no ship-moods — the
 no-integrating-self ruling stands, amended. v1: pre-authored prose only. The
 "in front" sketch's letters and hologram messages inherit this voice.
 
-## Ohm re-scoped (owner, 2026-08-30)
+## Ohm re-scoped (owner, 2026-08-30; RE-AFFIRMED and re-issued 2026-09-05)
 Ohm no longer believes he IS the ship and holds no Oracle role — both belong
 to the Narrator (canon.yml narrator). Ohm is simply one of the nine: the
 living machine, lonely for his lost hands. The scorecard's visibility channel
-is the Narrator's gestures and letters, not an Ohm boon.
+is the Narrator's gestures and letters, not an Ohm boon. NO god is the
+Narrator, Ohm included. Propagated 2026-09-05 into §2, §3②, §4, §4c, §4d,
+§5b, §7, §8b, §10 and pantheon block ② of this doc (struck in place), and into
+`nine_voices_cast_bible.md`, `llm_voice_preauthoring.md`, `06_the_ship.md`,
+`the_forgotten_war.md`, `ship_distinctive_features.md`, `enrichment_agents.md`,
+`required_mods.md`, `agent_supersession_audit.md` and the Oracle mod's framing.
 
 ## The Matrix — one page per god (sitting of 2026-08-30; format locked at ①, CURSES added at ②)
 Format: deeds ± (satiation movers) · boons S/M/L · demands S/M/L · taboos

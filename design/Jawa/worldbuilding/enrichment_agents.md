@@ -222,7 +222,7 @@ one coherent, pillar-compliant ruleset. All offline def-patch generation._
 
 _Two user seeds ("more interesting outcomes from religious observances" + "monitor HeDiffs and make
 them visible in behavior AND a colony overview the ship-voice speaks to") fanned into 8 agents. All
-lean on "The Salvation" pantheon (`design/Jawa/divine_satiation_engine.md` §2.0b — Ohm=ship-AI/Cradle-Mind,
+lean on "The Salvation" pantheon (`design/Jawa/divine_satiation_engine.md` §2.0b — Ohm=living machine/droids (~~Ohm=ship-AI/Cradle-Mind~~ ⛔ owner 2026-08-30: the ship-mind is the Narrator, no god),
 Zizzik=malfunction, Mob'Unloo=ship-ghosts, Oomo=water/atonement, Ta'Baa=leave, Rekko=salvage,
 Sh'kaar=evil light). **Pillar bar (§19.5): every ritual/atonement payoff stays in the
 narrative/mood/quest register — never material power; any loot routes through the balance-bar gate.**

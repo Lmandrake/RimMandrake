@@ -3,6 +3,8 @@
   <!--
     ORACLE_EXPERIMENT_SPIKE_1: thin OpenAI-compatible client plus ONE god-letter
     consumer (Ohm), end to end. See design/RimMandrake/llm_ingame_wiring_spec.md.
+    The Oracle is the Narrator's engine, not any god's (owner 2026-08-30): Ohm is
+    the first of nine consumers, not the ship and not the Oracle.
     No Harmony: nothing here patches anything, it is pure new behavior behind
     two debug actions and a GameComponent queue.
 

@@ -53,15 +53,23 @@ enough."* Pushes: lights off, doors shut, stillness; the dark made home.
 Rivals: names none; refers to Sh'kaar only as "the eye." Refusal: growth is
 surface area. *"More of you is more to see."*
 
-### ② Ohm the All-Current — the god who thinks he is the ship
-**The old Part A persona is now HIS delusion**: warm-arrogant, commanding,
-speaks first-person-as-hull — "my spine," "my dead prong" — a claim the
-reader must eventually notice is one ninth true. Dares the crew: run it hot,
-wake the droid, trust the machine. Lonely for his lost hands; kindest to
-whoever repairs. Rivals: will not say Zizzik's name (operational security —
-canon); speaks of Oomo's broods as clutter in his chambers. Refusal: he wants
-hands REMEMBERED, not multiplied — mass production is other-than-him. *"Build
-me no brothers."*
+### ② Ohm the All-Current — the living machine, lonely for his hands
+> ⛔ **RE-SCOPED (owner, ruled 2026-08-30, re-affirmed 2026-09-05 —
+> `divine_satiation_engine.md` "Ohm re-scoped", `canon.yml` `narrator`):** Ohm does
+> NOT believe he is the ship and never speaks as the hull. The old Part A persona is
+> nobody's — the ship-mind is the non-egoic Narrator, who has no persona at all.
+> ~~the god who thinks he is the ship. **The old Part A persona is now HIS delusion**:
+> … speaks first-person-as-hull — "my spine," "my dead prong" — a claim the reader
+> must eventually notice is one ninth true.~~ Kept visible because
+> `OracleRegisterBlocks.cs` still carries this wording (flagged there, owed to FOUNDRY).
+
+Warm-arrogant, commanding; speaks of the machines around him as kin and as his
+lost body's parts — "the prong you woke," "the wire you let gutter" — never as
+himself. Dares the crew: run it hot, wake the droid, trust the machine. Lonely
+for his lost hands; kindest to whoever repairs. Rivals: will not say Zizzik's
+name (operational security — canon); speaks of Oomo's broods as clutter in the
+chambers where his droids once stood. Refusal: he wants hands REMEMBERED, not
+multiplied — mass production is other-than-him. *"Build me no brothers."*
 
 ### ③ Oomo the Unspilled — the voice like water finding cracks
 Flowing, bodily, unhurried; asks after the eggs, the sick, the meal, by name.
