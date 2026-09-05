@@ -16,6 +16,14 @@ lxml and ElementTree evaluate against the `<Defs>` ROOT ELEMENT, where a leading
     the same treatment. Every xpath using `text()`, `contains()`, `starts-with()`,
     `not()`, an axis or a union takes that branch, and **25 of the 28 operations
     in `BodySizeIsReal.xml` read as dead** when they were all live.
+  * 2026-09-05 (`VALIDATE_PATCH_XPATH_FALSENEG_1`) — a THIRD time, in
+    `to_elementtree_xpath()`'s own translation: a predicate naming a NESTED
+    path (`[genes/li="X"]`, or even the bare existence form `[genes/li]`) was
+    neither substituted nor rejected, so it reached `root.findall()` unchanged
+    and raised `SyntaxError: invalid predicate` — silently swallowed by
+    `xpath_hits()`'s blanket `except Exception: continue` and reported as 0
+    matches. `EggLayersLayEggs.xml`'s `genes/li="Outland_EggLayer"` guard read
+    as dead when lxml's full XPath correctly matched all 19 real targets.
 
 ⚠️ **A false 0 is the worst possible output of this tool**, because it is
 indistinguishable from a genuinely dead xpath — which is the one thing the
@@ -222,6 +230,32 @@ def t_rebase_leaves_a_non_Defs_absolute_path_alone():
         assert V.rebase_for_root_element(xp).endswith(xp.lstrip("/")) or \
             V.rebase_for_root_element(xp) == "." + xp, \
             "rebase mangled %r into %r" % (xp, V.rebase_for_root_element(xp))
+
+
+def t_a_nested_path_predicate_routes_to_lxml_not_a_false_zero():
+    """🔴 THE 2026-09-05 HALF (VALIDATE_PATCH_XPATH_FALSENEG_1).
+
+    `[genes/li="X"]` names a path, not a bare word, before the `=` - ElementPath
+    cannot parse that AT ALL (confirmed against real Python ElementTree: it
+    raises `SyntaxError: invalid predicate` for both quote styles, and even for
+    the bare existence form with no comparison). `to_elementtree_xpath()` must
+    refuse to translate it so `count_matches()` falls through to lxml's full
+    XPath instead of handing ElementPath something that blows up and gets
+    read as a silent 0.
+    """
+    assert V.to_elementtree_xpath('Defs/XenotypeDef[genes/li="RSW_BodySizeGene_big"]') is None, (
+        "a nested-path predicate with a double-quoted comparison must not be "
+        "translated to ElementPath")
+    assert V.to_elementtree_xpath("Defs/XenotypeDef[genes/li='RSW_BodySizeGene_big']") is None, (
+        "single-quoted makes no difference - ElementPath cannot parse a nested "
+        "path predicate at all")
+    assert V.to_elementtree_xpath('Defs/XenotypeDef[genes/li]') is None, (
+        "the bare existence form (no comparison) must also be refused")
+    if getattr(V, "HAVE_LXML", False):
+        got = n('Defs/XenotypeDef[genes/li="RSW_BodySizeGene_big"]')
+        assert got == 1, (
+            "the nested-path predicate must reach lxml and match the real "
+            "Wookiee xenotype; got %s (0 means the false-zero regressed)" % got)
 
 
 def t_the_unsupported_token_list_still_routes_text_to_lxml():

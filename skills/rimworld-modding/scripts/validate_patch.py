@@ -710,6 +710,25 @@ def to_elementtree_xpath(xp: str) -> str | None:
     if not s:
         return None
 
+    # VALIDATE_PATCH_XPATH_FALSENEG_1: ElementPath's predicate grammar only
+    # accepts a SINGLE step before a comparison or on its own - [tag], [tag=
+    # 'x'], [@attr], [@attr='x']. A predicate naming a nested path, e.g.
+    # [genes/li="Outland_EggLayer"] or even the bare existence check
+    # [genes/li], is not translatable at all: root.findall() raises
+    # `SyntaxError: invalid predicate` for BOTH quote styles (confirmed
+    # directly against Python's ElementTree, not assumed from the docs).
+    # The substitution below only matches a single bare word before `=`, so
+    # a nested-path predicate passed through untouched, its raised
+    # SyntaxError was swallowed by the blanket `except Exception: continue`
+    # in xpath_hits() below, and the whole file quietly contributed 0 hits -
+    # read as "dead xpath" exactly like a genuinely unmatched one. Found
+    # 2026-09-05: EggLayersLayEggs.xml's `genes/li="Outland_EggLayer"` guard
+    # reported 0 while lxml's full XPath correctly matched all 19 real
+    # targets. Bail out to the lxml branch instead of attempting a
+    # translation ElementPath cannot parse.
+    if re.search(r"\[([^\]=]*/[^\]=]*)(?:=|\])", s):
+        return None
+
     # [defName="X"]  ->  [defName='X']   (ET wants the child-value form)
     s = re.sub(r'\[\s*(\w+)\s*=\s*"([^"]*)"\s*\]', r"[\1='\2']", s)
     s = re.sub(r"\[\s*@(\w+)\s*=\s*\"([^\"]*)\"\s*\]", r"[@\1='\2']", s)
