@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-05T18:15:58Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-05T18:23:37Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -351,6 +351,15 @@ kind:     task
 summary:  Every load of the full 589-mod list logs the same 31 Config error in … lines
 prose:    infrastructure/state/items/LOAD_CONFIG_ERROR_SWEEP_1.md
 
+## TILEGEN_SILENT_REUSE_1 jawa/world_tile_map_generate fabricates success on the second distinct-tile call per session
+state:    doing
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     bug
+summary:  Filed by BENCH: jawa/worldtilemapgenerate fabricates success on its
+prose:    infrastructure/state/items/TILEGEN_SILENT_REUSE_1.md
+
 ## ARMOURY_MELEEPOWER_STALE_1 Armoury_MeleePower.xml melee damage values are stale vs. its own generator - live, currently affecting the campaign
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -429,7 +438,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     bug
-summary:  (no items/MOISTURE_VAPORATOR_WALL_CLIP_1.md yet — write one when you have something to say)
+summary:  MOISTUREVAPORATORWALLCLIP1 — fixed offline, live verification owed
 prose:    infrastructure/state/items/MOISTURE_VAPORATOR_WALL_CLIP_1.md
 
 # BLOCKED — something is WRONG and someone must act
@@ -458,17 +467,7 @@ prose:    infrastructure/state/items/ARMOURY_MELEEPOWER_STALE_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
-
-## TILEGEN_SILENT_REUSE_1 jawa/world_tile_map_generate fabricates success on the second distinct-tile call per session
-state:    ready
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     bug
-waiting:  needs `deploy`, game is UP
-summary:  Filed by BENCH: jawa/worldtilemapgenerate fabricates success on its
-prose:    infrastructure/state/items/TILEGEN_SILENT_REUSE_1.md
+_none._
 
 # NOT THIS TARGET
 
