@@ -280,8 +280,23 @@ def resolve_load_folders(mod_dir, version, active):
     #
     # Order: root first, then versioned, so a version-specific override wins
     # over the root's copy of the same def under last-in-wins.
+    #
+    # 🔴 AND `Common/` IS PART OF THAT FALLBACK — MEASURED IN THE ENGINE, 2026-09-05.
+    # `ModContentPack.InitLoadFolders` (Verse/ModContentPack.cs:260-355) ends with:
+    #     <root>/<version>  (or the best older version folder)
+    #     <root>/Common      <- ModContentPack.CommonFolderName, line 339
+    #     <root>
+    # so a mod with NO LoadFolders.xml that keeps its shared assets in `Common/`
+    # has them loaded. Omitting it here made that content invisible: Polyamory
+    # Beds (Vanilla) ships every one of its bed textures under
+    # `Common/Textures/Bed3/…` and no LoadFolders.xml at all, and 11 of its beds
+    # came back "art missing" on the furniture register — a resolver gap that
+    # reads exactly like a mod that forgot to ship its art.
     versioned = os.path.join(mod_dir, version) if version else ""
+    common = os.path.join(mod_dir, "Common")
     folders = [mod_dir]
+    if os.path.isdir(common):
+        folders.append(common)
     if versioned and os.path.isdir(versioned) and versioned != mod_dir:
         folders.append(versioned)
     return folders

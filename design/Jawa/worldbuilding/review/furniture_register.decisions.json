@@ -1,0 +1,5935 @@
+{
+ "sheetId": "furniture_register",
+ "posture": "blacklist",
+ "postureMeaning": "Default is KEEP THE ART. An undecided row destroys nothing and queues no work. Only 'cut' removes a piece of furniture; 'regen'/'rescale' queue art work. 'prio' (A/B/C) is the regeneration ORDER and is meaningful only on a regen/rescale row.",
+ "options": [
+  "keep",
+  "regen",
+  "rescale",
+  "cut"
+ ],
+ "criterion": "px-per-cell — longest source edge / longest drawSize edge. Vanilla furniture sits at 64-85. Ranks QUALITY, not WORTH; alien-vs-terrestrial is the owner's call and lives in the notes.",
+ "generatedBy": "gen_furniture_register.py 1.0",
+ "generatedUtc": "2026-09-05T23:07:50Z",
+ "provenance": {
+  "dumpMods": 595,
+  "dumpCaptured": "2026-09-05T04:49:08Z",
+  "gameVersion": "1.6.4871 rev591",
+  "liveActiveMods": 596,
+  "buildingsConsidered": 7743,
+  "cutProvenance": "cut list: 1454 defs, live settings, 2026-09-04 15:31 (/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Config/Mod_3521312241_Mod_CherryPicker.xml)",
+  "calibration": "PASSED — two independent rungs. (1) GEOMETRY: five vanilla pieces (Bed, Grave, Shelf, DiningChair, Table1x2c) whose opaque art × their declared drawSize lands on their declared footprint to within 0.45 cells, which exercises texPath resolution, the bundle ladder, the drawSize semantics and the east/west rotation rule at once. (2) FIELD DECODE: Bed and DiningChair read straight out of the game's own Core/Defs/ThingDefs_Buildings/Buildings_Furniture.xml on disk and compared field by field — statBases, size, drawSize, texPath, costStuffCount — against the sqlite dump.",
+  "markerCensus": {
+   "CUT": {
+    "n": 5,
+    "pct": 0.5
+   },
+   "DROPPED": {
+    "n": 0,
+    "pct": 0.0
+   },
+   "MISSING-ART": {
+    "n": 10,
+    "pct": 1.0
+   },
+   "AMBIGUOUS": {
+    "n": 161,
+    "pct": 16.4
+   },
+   "QUAD>FOOTPRINT": {
+    "n": 94,
+    "pct": 9.6
+   },
+   "(counted-and-cut) STUFFABLE": {
+    "n": 426,
+    "pct": 43.5
+   },
+   "(counted-and-cut) RESEARCH": {
+    "n": 797,
+    "pct": 81.3
+   }
+  }
+ },
+ "decisions": {
+  "AM_CubicCrib": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AnimalBed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AnimalSleepingBox": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AnimalSleepingSpot": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BabySleepingSpot": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Crib": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MUS_SpaceBase_AnimalBed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MUS_SpaceBase_Crib": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AG_RuinedHospitalBed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_AncientBed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_CubicBed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_CubicHospitalBed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_HoraxianBed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_StoneBedroll": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AncientBed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AncientSingleBed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Bed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Bed_AdvBed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Bed_CryptoBed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Bed_Ergonomic": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Bed_OperatingTable": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Bed_Simple": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Bed_StoneSlab": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Bedroll": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "CAMakeshiftBedroll": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "CASpacerBedroll": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DeathrestCasket": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GM_RusticPrisonBed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "HospitalBed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MUS_SpaceBase_Bed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MUS_SpaceBase_BedV": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_CorellianBed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_CoruscantBed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_GenericBed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_TatooineBed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RH2_BarrackBed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RH2_CanvasBed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RR_Bedroll": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RR_FurBed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SlabBed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SleepingSpot": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFE_Lounger": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VGE_CrewBunkBed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VGE_MedbayBed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VME_AncientBed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VQEA_RustedHospitalBed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VQEA_WheeledBed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VQE_RuinedHospitalBed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "XER_TribalBed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "XER_TribalBedroll": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_AncientDoubleBed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_DoubleCubicBed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_DoubleHoraxianBed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_DoubleStoneBedroll": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AncientDoubleBed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Bed_AdvDoubleBed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Bed_DoubleErgonomic": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Bed_Kingsize": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BedrollDouble": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "CAMakeshiftBedrollDouble": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "CASpacerBedrollDouble": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DoubleBed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DoubleSleepingSpot": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MUS_SpaceBase_DoubleBed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MUS_SpaceBase_DoubleBedV": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_CorellianDoubleBed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_CoruscantDoubleBed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_TatooineDoubleBed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RH2_OfficerDoubleBed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RR_FurDoubleBed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RoyalBed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SlabDoubleBed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFE_Bed_SimpleDouble": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFE_Bed_StoneSlabDouble": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "XER_TribalBedrollDouble": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "XER_TribalDoubleBed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BedrollTriple": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SlabTripleBed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "TripleBed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "TripleRoyalBed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "TripleSleepingSpot": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Triple_Ergonomic": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BedrollQuad": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "QuadBed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "QuadRoyalBed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "QuadSleepingSpot": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Quadra_Ergonomic": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SlabQuadBed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "PentaRoyalBed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_DiningChair": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Armchair": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BoneChair": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DBHSaunaSeating": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DiningChair": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GM_RusticCuffsChair": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "KneelPillow": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MUS_SpaceBase_BarStool": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MUS_SpaceBase_LeftBench": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MUS_SpaceBase_RightBench": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MUS_SpaceBase_Sofa": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_CorellianDiningChair": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_CorellianStool": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_CoruscantDiningChair": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_CoruscantStool": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_TatooineDiningChair": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_TatooineStool": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "PL_InterrogationChair": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ProjectorThrone": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RH2_CanvasChair": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RH2_FoldingChair": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RH2_LoungeArmchair": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RR_FluffPillow": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RR_RoundPillow": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RR_StoneStool": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Seat_AdvChair": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Seat_Bench": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Seat_Cushion": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Seat_ModernChair": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Seat_RoyalArmchair": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Seat_RoyalChair": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Seat_SquareChair": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Stool": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "TST_DrumStool": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "TST_MeditationStone": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "TST_PrieDieu": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "TST_RitualStandingSpot": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Throne": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ToiletAdvStuff": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ToiletStuff": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFES_ModernArmchair": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFET_SittingSpot": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFE_ModularCouch": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "XER_SlabSeat": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Couch": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MUS_SpaceBase_DoubleSofa": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "TST_DrumBench": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFES_ModernCouch": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GrandProjectorThrone": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Pew": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "TST_CushionedPew": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "TST_SlabPew": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "KneelSheet": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "TST_BoxPew": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "TST_WorshipPit": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BoneThrone": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GS_Palp_Throne": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GrandThrone": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Counter_Atlas_JewelryA": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Counter_Atlas_JewelryB": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Counter_Atlas_Weapon": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_FrontDesk": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_FrontDeskB": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MUS_SpaceBase_BarCounter": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MUS_SpaceBase_SmallTable": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_Corellian1x1Table": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_Coruscant1x1Table": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_Tatooine1x1Table": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RR_Stump": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Table_1x1c": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Table_Counter": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Table_Royal1x1c": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Table_interactive_1x1c": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_CoffeeTableSmall": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Neolithic_StoneTable_1x2c": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Neolithic_WoodenTable_1x2c": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MUS_SpaceBase_Table": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_AdministratorDesk": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_Corellian2x1Table": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_Coruscant2x1Table": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_Tatooine2x1Table": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RH2_FoldingTable1x2c": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Table1x2c": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Table_Royal1x2c": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_CoffeeTable": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "XER_TribalTable1x2c": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_Desk": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Neolithic_StoneTable_2x2c": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Neolithic_WoodenTable_2x2c": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MUS_SpaceBase_BigTable": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_Corellian2x2Table": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_Coruscant2x2Table": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_Tatooine2x2Table": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Table2x2c": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Table_Royal2x2c": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Table_interactive_2x2c": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "XER_TribalTable2x2c": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GM_3x2RusticTable": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Neolithic_StoneTable_2x4c": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Neolithic_WoodenTable_2x4c": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MUS_SpaceBase_LongTable": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Table2x4c": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Table_Royal2x4c": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "XER_TribalTable2x4c": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Neolithic_StoneTable_3x3c": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Neolithic_WoodenTable_3x3c": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Table3x3c": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Table_Royal3x3c": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "XER_TribalTable3x3c": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_PropaneDrain": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_PropaneTap": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ASF_CellarStone": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ASF_CellarWood": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ASF_CoveredClayPot": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ASF_SmallLogPile": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ASF_StoragePit": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ASF_UncoveredClayPot": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ASF_WovenBasket": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ASF_WovenBasketDouble": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ASF_WovenBasketTriple": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_DisplayCase": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BarrelA": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BarrelD": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BarrelE": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BarrelF": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BarrelG": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BookcaseSmall": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BundleA": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "CanisterA": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ChemfuelHopper": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ChemfuelSiphon": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "CrateA": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "CrateB": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "CrateH": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "CrateI": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "CrateJ": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "CrateK": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "CrateL": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Hopper": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "KOTOR_RhydoniumHopper_dispenser": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "KOTOR_RhydoniumHopper_insert": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "KOTOR_TibannaHopper_dispenser": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "KOTOR_TibannaHopper_insert": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "LWM_Meat_Hook": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "LWM_Safe": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "LWM_WeaponsCabinet": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "LWM_WeaponsLocker": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "LockerBank_1x1z": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MUS_SpaceBase_BookcaseSmall": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MUS_SpaceBase_ShelfSmall": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MealCrate_B": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MetalCrateA": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_StorageCrate": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_StorageCrateClean": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_TibannaBottler": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_TibannaSiphon": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "PalletCrateA": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Reel_AmmoDrain": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Reel_AmmoOutput": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RefineryLoadingBay": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RimFridge_SingleRefrigerator": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ShelfSmall": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Shelf_RepairRack": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VCHE_ChemfuelDrain": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VCHE_ChemfuelTap": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VCHE_DeepchemDrain": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VCHE_DeepchemTap": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEFactory_FactoryHopper": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_BarrelBlueDeep": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_BarrelGreenDeep": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_BarrelGreyDeep": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_BarrelRedDeep": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_BarrelYellowDeep": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_BinBagDeep": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_BoxLargeDeep": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_BoxSmallDeep": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_CardboardBoxLargeDeep": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_CardboardBoxSmallDeep": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_FoodTrolleyDeep": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_MicrowaveDeep": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_OvenDeep": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_SpacerContainerDeep": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_WaterTankDeep": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_WineRackDeep": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFE_Plinth": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VGE_AstrofuelDrain": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VGE_AstrofuelTap": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VGE_OxygenCanisterEmptier": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VGE_OxygenCanisterFiller": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "WeaponRacks_1Rack": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "WeaponRacks_2Rack": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "WeaponRacks_3Rack": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "WeaponRacks_4Rack": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "sbz_Fridge": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "sbz_GravshipWeaponRack": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "sbz_SingleChestFridge": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "sbz_SingleWallFridge": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "sbz_SmallGravshipShelf": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AG_AncientShelf": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ASF_MeatRack": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ASF_WeaponRack": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BarrelB": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Bookcase": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "CrateC": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "CrateD": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "CylinderA": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "KibbleDispenser": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "LWM_BigShelf": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "LWM_Clothing_Rack": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "LWM_DS_RimFridge_Refrigerator": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "LWM_DeepStorage_Skip": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "LWM_FabricHamper": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "LWM_Food_Basket": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "LWM_Hayloft": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "LWM_MealRack": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "LWM_Medicine_Cabinet": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "LWM_Pallet": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "LWM_Pallet_Covered": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "LWM_VeryBigShelf": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "LockerBank_1x2z": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MUS_SpaceBase_Bookcase": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MUS_SpaceBase_Shelf": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_StorageCrateWide": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RimFridge_Refrigerator": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SW_AdaptiveFridgeStorageCabin": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SW_AdaptiveGlassStorageCabin": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SW_AdaptiveRegularStorageCabin": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Shelf": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Shelf_WeaponRack": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_PlasteelCupboardDeep": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_PlasteelCupboardDoubleDeep": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_SilverCupboardDeep": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_SilverCupboardDoubleDeep": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_SpacerContainerLargeDeep": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_SteelCupboardDeep": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_SteelCupboardDoubleDeep": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_WoodenCupboardDeep": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_WoodenCupboardDoubleDeep": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VGE_GravshipShelf": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "asf_rustedtoolbox": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "sbz_DoubleChestFridge": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "sbz_DoubleWallFridge": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "sbz_GravshipGlassShelf": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "sbz_GravshipShelf": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "sbz_GravshipTwoTierShelf": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "sbz_LargeFridge": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ASF_LargeLogPile": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "LockerBank_1x3z": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_SpacerStorageDeep": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BarrelC": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BundleB": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BundleC": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Bundle_D": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "CanisterB": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "CrateE": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "CrateF": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "CrateG": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MealCrate_A": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MetalCrateB": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MetalCrateC": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "PalletCrateB": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RimFridge_QuadRefrigerator": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_GasTankDeep": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_PalletBarrelBlueDeep": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_PalletBarrelGreenDeep": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_PalletBarrelGreyDeep": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_PalletBarrelRedDeep": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_PalletBarrelYellowDeep": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_PalletBoxesDeep": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_PalletCardboardDeep": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_PalletDeep": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_SpacerContainerStackDeep": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "sbz_CorpseFridge": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "sbz_GravshipCrate": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "CanisterC": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "CanisterD": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "CanisterE": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "CanisterF": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MetalCrateD": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_SecretFloorPanel_DoomgiverTile": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_SecretFloorPanel_DreadnaughtCabinTile_black": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_SecretFloorPanel_DreadnaughtCabinTile_blue": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_SecretFloorPanel_darkwhiteoutlines": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_ContainerBlueDeep": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_ContainerGreenDeep": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_ContainerGreyDeep": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_ContainerRedDeep": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_ContainerYellowDeep": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ASF_Granary": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ASF_StorageTent": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "QRY_Platform": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "sbz_LargeGravshipCrate": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ChunkA": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ChunkB": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Freight_A": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Freight_B": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "sbz_LongGravshipCrate": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ContainerC": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ContainerD": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_MaterialElevatorA": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_MaterialElevatorB": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_MaterialElevatorC": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_MaterialElevatorD": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_DarkGlowPod": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_DarkLargeGlowPod": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_PropaneHeater": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_ShackledGamma": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AG_LuminescentColumn": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AlertSpeaker": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AncientEmergencyLight_Blue": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AncientEmergencyLight_Green": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AncientEmergencyLight_Red": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AncientLamp": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_CrystalLamp": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_CrystalTorch": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_DisplayLight": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FungalCrystalTorch": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FungalGlowGooTorch": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FungalPowerGenerator": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_GlowGooTorch": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BluesHumidifier": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "CAMagicLight": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "CARedLight": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ChristmasTree": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DA_BloodCandles": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DA_BloodGrandCandelabra": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DA_BloodflameSepulchralBrazier": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DA_BloodflameSepulchralStatue": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DA_Candles": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DA_DarkCandles": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DA_DarklightGrandCandelabra": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DA_DarklightSepulchralBrazier": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DA_DarkligtSepulchralStatue": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DA_GrandCandelabra": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DA_SepulchralBrazier": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DA_SepulchralStatue": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DV_PyrinthBrazier": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DV_PyrinthLamp": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DV_PyrinthWallLamp": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DarkColumnMod": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Darktorch": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DarktorchFungus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DizzyCandle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Effigy": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "FloodLight": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "FloorLightCorner": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "FloorLightCornerSmall": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "FloorLightEndSmall": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "FloorLightInverseCorner": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "FloorLightInverseCorner2Small": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "FloorLightInverseCorner3Small": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "FloorLightInverseCorner4Small": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "FloorLightInverseCornerCSmall": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "FloorLightInverseCornerSmall": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "FloorLightPathCorner": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "FloorLightPathEnd": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "FloorLightPathLine": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "FloorLightPathPlus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "FloorLightPlus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "FloorLightSmallDStripe": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "FloorLightSmallStripe": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "FloorLightSmallStripeDiagonal": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "FloorLightSmallStripeMiddle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "FloorLightSquare": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "FloorLightStripe": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "FloorLightStripeMiddle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "FloorLightT": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "FloorLightTriangle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "FloorLightTriangleCorner": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "FloorTileLightSquare": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GLO_GlowstoneColumn": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GLO_GlowstoneFloorCornerDouble": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GLO_GlowstoneFloorCornerInner": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GLO_GlowstoneFloorCornerOuter": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GLO_GlowstoneFloorDeadend": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GLO_GlowstoneFloorDouble": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GLO_GlowstoneFloorSingle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GLO_GlowstoneLamp": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GLO_GlowstonePylon": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GLO_SmallGlowstoneChandelier": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GM_PropLowBrazier": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_SmallBioLight": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Gloomlight": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GlowPod": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GravFieldPylon": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "HMC_Tritium_Wall_Lamp": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "HorrorFirefoamPod": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "LandingPadBeaconGlowerGreen": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "LandingPadBeaconGlowerRed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "LandingPadBeaconGlowerWhite": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "LightBall": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "LightColumnMod": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Light_Streetlamp": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Loudspeaker": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MUS_SpaceBase_FloorLamp": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MUS_SpaceBase_HolographicInstrument": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MUS_SpaceBase_WallLamp": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MUS_SpaceBase_Window": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "NOE_HiddenLightsStrip": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "NOE_LightsStrip": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OrbitalTradeColumnMod": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_DathomirOrbLamp": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_DathomirOrbLamp_Small": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_DathomirOrbLamp_Street": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_DathomirOrbLamp_Tall": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_FloorLamp": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_WallLamp": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RH2_DeskLamplight": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RH2_Floodlight_Big": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RH2_HolmoFloorLamp": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RH2_MiniFloodlight": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RR_HangingTorch": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RR_PotCandle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RR_PrimBraizer": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RR_ShortTorch": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RR_StoneTorchFive": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RR_StoneTorchFour": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RR_StoneTorchOne": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RR_StoneTorchThree": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RR_StoneTorchTwo": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RR_TallTorch": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SacrificialFlag": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SanguphageMeetingTorch": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SignWallNeonCocktail": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SignWallNeonOpen": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "StandingLamp": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SunColumnMod": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SunLamp": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "TorchLamp": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "TorchWallLamp": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEI2_FoamPod": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEI2_LargeGlowPod": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_Glowstool": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFE_DeskLamp": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFE_FloorLamp": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFE_RoyalLamp": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VHGE_GasFloodlight": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VHGE_GasLamp": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VHGE_GasSunLamp": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VHGE_GasWallLamp": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VME_AncientLamp": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VQEA_AncientSunLamp": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VQEA_AncientVaultLamp": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "WallLamp": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Wall_SunDevice_light": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ucp_picniclamp": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ucp_tablelamp": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AG_AncientFaultyLamp": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AG_LargeLuminescentColumn": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AG_RuinedLabLamp": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_BioLight": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GS_ImperialLamp": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ShipWallChemreactorCabinStandard": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ShipWallGravcorePowerCellCabin": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ShipWallShieldGeneratorCabin": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SignWallLargeLit": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_DarkGlowPodFormation": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Autobong": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GLO_GlowstoneChandelier": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "OuterRim_DathomirSunLamp": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Pyre": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "TowerLightBeacon": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "VFEI2_GlowPodFormation": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VGE_SmallHeatsink": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DA_DarklightSepulchralReliquary": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AdvShip_ShieldGenerator": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GLO_LargeGlowstoneChandelier": {
+   "decision": "rescale",
+   "prefill": "rescale",
+   "prio": "A",
+   "note": ""
+  },
+  "OuterRim_HoloTable": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Spaceports_FuelProcessor": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEI2_GlowPodSpire": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEI2_Hivenode": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VGE_GravFieldAmplifier": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VGE_GravheatAbsorber": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VGE_LargeHeatsink": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VME_WickerMan": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AdvShip_GravChemfuelTank": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VHGE_HelixienPump": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GTbc_AdvGravheatAbsorber": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VME_Bonfire": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Spaceports_ShuttleLandingPad": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_BrassLionStatue": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_GoldenRoosterStatue": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_MummyFemale": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_MummyMale": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_AmberSculptureMedium": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_CeratopsPlush": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_RexyPlush": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_SauropodPlush": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_StegoPlush": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DA_SkeletonStatue": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DirtCubeSculpture": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GLO_SculptureLarge": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GLO_SculptureSmall": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GrandProjector": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "LEGO_GiantRockExcavator_Accomplish": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "LEGO_HeavyCrane_Accomplish": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "LEGO_LandmarkBuilding_Accomplish": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "LEGO_LightCrane_Accomplish": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "LEGO_MediumCrane_Accomplish": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "LEGO_Palace_Accomplish": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "LargeProjector": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MUS_SpaceBase_CoralSpecimens": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MUS_SpaceBase_LadderModule": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MUS_SpaceBase_RockOrnament": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MUS_SpaceBase_SmallCarpet": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MUS_SpaceBase_TropicalPotted": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RH2_Trashcan_Office": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SandCubeSculpture": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ScrapCubeSculpture": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SculptureLarge": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SculptureSmall": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SculptureTerror": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SmallProjector": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Statue": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "StoneCubeSculpture": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFET_FloorPainting": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFE_ArchotechSculpture": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFE_Carving": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFE_HologramOn": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFE_Obelisk": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFE_Pillar": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFE_Pottery": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFE_RugSmall": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFE_StatueGrand": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFE_StatueLarge": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFE_StatueSmall": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VGE_CrewLockers": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VoidSculpture": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ZNLLarge": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ZNLSmall": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_SkeleSmallGallimimus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_SkeleSmallOviraptor": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_SkeleSmallPteranodon": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_SkeleSmallRaptor": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MUS_SpaceBase_Carpet": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_CorellianDresser": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_CoruscantDresser": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_TatooineDresser": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_DinoFootprintsTableSlab": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFE_Relief": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_AmberSculptureLarge": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_DioramaCoast": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_DioramaPlains": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_DioramaValley": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_KaijuFootprintTableSlab": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_NestTableSlab": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GLO_SculptureGrand": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_HugeBearCatRug": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_HugeBearRug": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_MuffaloRug": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GR_WolfRug": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_SageOfDwartii_BraataDanlos": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_SageOfDwartii_FayaRodemos": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_SageOfDwartii_SistrosNevet": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_SageOfDwartii_YanjonZelmar": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RH2_CzechHedgehogBarricade": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SculptureGrand": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SteleLarge": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "ZNLGrand": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_FuturisticObelisk": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_SkeleMedAllosaurus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_SkeleMedAnkylosaurus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_SkeleMedElasmosaurus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_SkeleMedIguanodon": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_SkeleMedParasaur": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_SkeleMedStegosaurus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_SkeleMedTriceratops": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Joy_RouletteTable": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_FuturisticStele": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_GrandGate": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Megalith": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SteleGrand": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFE_Monument": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFE_RugLarge": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_SkeleLargeBrachiosaurus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_SkeleLargeMosasaurus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_SkeleLargeSpino": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_SkeleLargeTrex": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFE_RugGrand": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Pyramid": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Sphynx": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_FuturisticPyramid": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_GreatPyramid": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FossilInfo1Chungking": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FossilInfo1Dna": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FossilInfo1Fern": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FossilInfo1Fish": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FossilInfo1Footprints": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FossilInfo1Leaelly": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FossilInfo1Shell": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FossilInfo1Text": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FossilInfo1TriSkull": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ChessTable": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Drum": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "FT_Radio": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GameOfUrBoard": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "HMC_Wall_TV": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Harp": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "HoopstoneRing": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "HorseshoesPin": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Joy_Arcade": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Joy_DartsBoard": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Joy_InudstrialComputer": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Joy_PunchingBag": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "KOTORInstrument_bandfill": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "KOTORInstrument_ommnibox": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "KOTORInstrument_slitherhorn": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MUS_SpaceBase_Television": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_HoloArcade_MynockHunt": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RH2_BasketballHoop": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RH2_NERFTarget": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RH2_Panasonic_Television": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Radio_Industrial": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Radio_Spacer": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Telescope": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "TubeTelevision": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_decor_StandingTerminalA": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_decor_TowerTerminalA": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FossilInfo2Dna": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FossilInfo2Footprints": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FossilInfo2Gallimimus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FossilInfo2Iguanodon": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FossilInfo2Mosa": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FossilInfo2Plants": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FossilInfo2Ptero": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FossilInfo2Road": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FossilInfo2Spino": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FossilInfo2Trex": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FossilSculptureMedium": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "FlatscreenTelevision": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Joy_ModernComputer": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Joy_Piano": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MUS_SpaceBase_BigTelevision": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_HypertechTerminal": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RH2_FootballGoalpost": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RH2_Panasonic_LCDTelevision": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RH2_Xbox360_GameConsole": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFES_WallMountedTelevision": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VQEA_AncientFoosballTable": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "guy762_decor_BigRebelScreen": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "kotor_holo_bith": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "kotor_holo_dancerF": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "kotor_holo_dancerM": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FossilInfo3Allosaurus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FossilInfo3Ankleo": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FossilInfo3Chlorosaurus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FossilInfo3Cloning": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FossilInfo3Cycle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FossilInfo3Dying": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FossilInfo3Footprints": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FossilInfo3Measured": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FossilInfo3Raptors": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_FossilInfo3Triceratops": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MegascreenTelevision": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DV_TongoTable": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "HotTub": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "KOTORInstrument_Nalargon": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "PokerTable": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OuterRim_HypertechTerminalWide": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BilliardsTable": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "CameraConsole": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "Harpsichord": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "KOTOR_PazaakTable": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VQE_AncientWargamingTable": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_LargeScreenTelevision": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "UltrascreenTV": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Piano": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "StandaloneHotSpring": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DBHSwimmingPool": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Urn": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DA_BurialUrn": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DA_OssuaryWall": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DA_WallTomb": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MaggotNest": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RR_ClosedUrn": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RR_HandleUrn": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RR_OpenUrn": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RUT_AntiquityReadingStation": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Urn": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_Urn": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFE_AnimalSarcophagus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_SkyBurialSpot": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AncientCryptosleepCasket": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "CQF_CryptosleepCasket": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "CryptosleepCasket": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DA_Coffin": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DA_GrandSarcophagus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Grave": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "QE_Sarcophagus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Sarcophagus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_AncientCryptosleepSarcophagus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_FakeGrave": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_FakeSarcophagus": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VQEA_AncientLaboratoryCasket": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VQEA_AncientLaboratoryCasket_Empty": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VQEA_CandidateCryptosleepCasket": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VQEA_CandidateCryptosleepCasket_Empty": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VQE_OvergrownCryptosleepCasket": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "FuneralPyre": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GraveColumnMod": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEP_ShipChunkCryptosleepCasket": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "PlantPot": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "PlantPot_Bonsai": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFE_DecorativePlantPot": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFE_Ecosystem_Tilable": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFE_Hydroponics_Tilable": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFE_LongPlantPot": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VQEA_AncientGreenbed": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFE_Ecosystem": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_AdvancedFungiponicsBasin": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "HydroponicsBasin": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Brazier": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DarklightBrazier": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "EndTable": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MUS_SpaceBase_Lockers": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MUS_SpaceBase_LockersV": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RH2_ClassicFootlocker": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RH2_LampEndTable": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SleepAccelerator": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Table_IlluminatedEndTable": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Table_RoyalEndTable": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFES_TelevisionSpeaker": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ucp_aerosol": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ucp_ballpeen": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ucp_blueprint": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ucp_hammer": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ucp_measure": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ucp_pencil": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ucp_roboarm": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ucp_scraps": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ucp_screwdrivers": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ucp_textileroll": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ucp_tongs": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ucp_toolbox": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ucp_vise": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ucp_wrench": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Blackboard": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Dresser": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MUS_SpaceBase_Cabinet": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MUS_SpaceBase_CabinetV": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MUS_SpaceBase_SchoolDesk": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RH2_DoubleWardrobe": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RH2_MilitaryCrateDresser": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Table_IlluminatedDresser": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Table_RoyalDresser": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Table_Wardrobe": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFES_Table_IlluminatedWardrobe": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFE_CoffeeTable": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFE_RoyalWardrobe": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Altar_Small": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Burnbong": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GibbetCage": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "HeadColumn": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Lectern": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RitualSpot": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Skullspike": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "TerrorEffigy": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Altar_Medium": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "NeuralSupercharger": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "StylingStation": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "XER_TribalStylingStation": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "IncenseShrine": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Altar_Large": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BiosculpterPod": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "CannibalPlatter": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DA_BloodflameSepulchralReliquary": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DA_SepulchralReliquary": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Reliquary": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Altar_Grand": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Ideogram": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_BanquetTable": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Comment": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MUS_SpaceBase_StylingStation": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MUS_SpaceBase_WallDecorCoral": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MUS_SpaceBase_WallDecorCoralV": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MUS_SpaceBase_WallDecorPlants": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MUS_SpaceBase_WallDecorRock": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MUS_SpaceBase_WallDecorRockV": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MUS_SpaceBase_WallDecorplantV": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RoomSign": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SignArrow_Wood": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SignBillboard": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SignCairn": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SignHanging": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SignHangingIndustrial": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SignHazard": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SignHighway": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SignHologram": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SignHome": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SignIndustrial": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SignNature": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SignObelisk": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SignWallBasic": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SignWallLED": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SignWetFloor": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SignWoodenMulti": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SimpleSign": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MUS_SpaceBase_MachineryModule": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SignPanel": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SignPanelWood": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SignRoadLED": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SignSlab": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SignArchWood": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SignArchWoodRustic": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SignPlaque": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BasinStuff": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BathMat": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Fountain": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "LitterBox": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "PetWaterBowl": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "PitLatrine": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "PrimitiveWell": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ShowerAdvStuff": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ShowerSimple": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ShowerStuff": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "WashBucket": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BathtubStuff": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "WaterTrough": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "KitchenSink": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ABF_Thing_Synstruct_CoherenceSpot": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_AlienComplianceCenter": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_CoreSampleDrill": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_OcularGasSpewer": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Building_Misc_FleshmassPiece1x1c": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_GrayStatueDecorative": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BabyDecoration": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Building_OutfitStand": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DBHSaunaHeaterElec": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "DBHSaunaHeaterLog": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ES_BathSign": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ES_BedSign": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ES_BlacksmithSign": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ES_BookSign": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ES_BowSign": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ES_HorseSign": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ES_KnifeSign": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ES_MoonSign": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ES_MugSign": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ES_PotionSign": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ES_QuarrySign": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ES_ScalesSign": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ES_ScissorsSign": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ES_ScrollSign": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ES_SwordsSign": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "InvisibleDisplayCaseSmall": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MA_IncenseBurner": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MA_StandingIncenseBurner": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RR_FluffyRoundRug": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RR_FluffyRug": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RR_LeatherRoundRug": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RR_MatTwo": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RR_StoneThrone": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RR_WoodThrone": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Spacer_OutdoorLamp": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ToyBox": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ucp_bullets": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ucp_picnic1x1c": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ucp_picnicdresser": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ucp_register": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ucp_remote": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ucp_viseautopistol": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ucp_workmat": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Drape": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RR_MatThree": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "SchoolDesk": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ucp_picnic1x2c": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ucp_picnic2x1c": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ucp_workmatlong": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_MechanoidReceiver": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_MycoticCollector": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_PropanePump": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_PropaneStorage": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_Building_Misc_FleshmassPiece2x2c": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RR_DecoBones": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RR_MatOne": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RR_PeltRug": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RR_RoundRug": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ucp_picnic2x2c": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RR_RectRugOne": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "RR_RectRugTwo": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ucp_picnic2x4c": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ucp_picnic4x2c": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AutoVendingMachine": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_AlcyoniteSolar": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_TarPump": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BrazenBull": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "LaserFlayer": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "OilPourCage": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "WaterPrison": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AB_AlcyoniteSolar_Advanced": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "LiveTargetRange": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  }
+ }
+}
