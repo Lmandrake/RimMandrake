@@ -8,7 +8,7 @@
   </supportedVersions>
   <description>FORSAKEN_CRAGS_PREDATORS_BUILD_1 — Cindermare and Skarnix, two wild `AB_RockyCrags` threats promoted from owner-approved mockup art (`FORSAKEN_CRAGS_FAUNA_1`). Both untameable (wildness 1.0). Cindermare kills by a mouthless cold-drain grip (a real `RSW_ColdDrainDamage`/`RSW_ColdDrain` injury chain, not flavor text) rather than a bite. Skarnix avoids lit ground via `CompLightAversion`, a forced-Goto-to-darkness comp mirroring vanilla's own `HediffComp_Disorientation` force-job pattern.
 
-LIVESTOCK_STARTER_TRIO_1 — karrask (molt-plate), tameable Jawa farm stock: a vanilla `CompProperties_Shearable` molt (zero new job types) plus a bench `RecipeDef` curing the raw shed into wearable plate. Onnik and moornak (the other two legs of the trio) are not yet built — see that item file. Art for karrask is still a placeholder texPath pending sprite generation.
+LIVESTOCK_STARTER_TRIO_1 — karrask (molt-plate), tameable Jawa farm stock: a vanilla `CompProperties_Shearable` molt (zero new job types) plus a bench `RecipeDef` curing the raw shed into wearable plate. Onnik and moornak (the other two legs of the trio) are not yet built — see that item file. Karrask's sprite is generated (`KARRASK_ART_MISSING_1`), not a placeholder; not yet deployed/load-tested.
 
 RimStarWars tier (world/planet fauna, not campaign-specific) per `NAMING_SCHEME_PLAN.md`.</description>
   <modDependencies>
