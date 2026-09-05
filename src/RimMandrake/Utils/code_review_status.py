@@ -20,6 +20,7 @@ yet" — it always was.
     python3 src/RimMandrake/Utils/code_review_status.py mark-clean <path> [--sha <sha>]
     python3 src/RimMandrake/Utils/code_review_status.py reopen <path> [<path> ...] --reason "…"
     python3 src/RimMandrake/Utils/code_review_status.py list
+    python3 src/RimMandrake/Utils/code_review_status.py list --show-untracked  # + files never entered at all
     python3 src/RimMandrake/Utils/code_review_status.py migrate-hashes   # one-time, see below
 
 The log (`infrastructure/state/CODE_REVIEW_STATUS.json`) is owned by this
@@ -411,18 +412,63 @@ def cmd_prune(apply):
     return 0
 
 
-def cmd_list():
+# The three extensions CLAUDE.md's own docstring above names as in scope
+# ("not a Python-only tool... .py tooling, .cs mod source, .xml Defs and
+# Patches alike"). Scoped to src/ - "what the game actually loads" - not the
+# whole repo (design docs, infrastructure/state's own JSON, etc. are not
+# reviewable "code" in this sense).
+UNTRACKED_SCAN_DIR = "src"
+UNTRACKED_SCAN_EXTS = (".py", ".cs", ".xml")
+
+
+def find_untracked(data):
+    """-> sorted list of repo-relative paths under UNTRACKED_SCAN_DIR, of the
+    scanned extensions, that are tracked by git but have NEVER been given an
+    entry here at all.
+
+    🔴 THIS IS A DIFFERENT QUESTION FROM DIRTY. `list`/`check` report DIRTY
+    only for a path that already has an entry and no longer matches it -
+    a path with NO entry at all does not appear there, and CLAUDE.md's own
+    "no entry ... is DIRTY" rule means those files are dirty too, just
+    invisible to a report that only ever iterates recorded entries. Found by
+    the owner 2026-09-05, questioning a reported "0 DIRTY" that turned out to
+    be true only for the ~917 paths ever entered here, out of 1,402 real
+    .py/.cs/.xml files under src/ - the other ~485 were never tracked at all.
+    """
+    r = git(["ls-files", "--", UNTRACKED_SCAN_DIR])
+    if r.returncode != 0:
+        return None  # caller must not treat this as "no untracked files"
+    tracked = [p for p in r.stdout.splitlines() if p.endswith(UNTRACKED_SCAN_EXTS)]
+    return sorted(p for p in tracked if p not in data)
+
+
+def cmd_list(show_untracked=False):
     data = load()
     if not data:
         print("(empty — nothing has ever been marked clean)")
-        return 0
-    for rel in sorted(data):
-        entry = data[rel]
-        state, _ = clean_state(rel, entry)
-        label = state if state == "CLEAN" else "DIRTY (edited since / uncommitted)"
-        cc = entry.get("cleanCount", 1)
-        streak = f"  [x{cc}]" if cc > 1 else ""
-        print(f"{label:35s} {rel}  ({entry.get('sha', '?')}, {entry.get('date', '?')}){streak}")
+    else:
+        for rel in sorted(data):
+            entry = data[rel]
+            state, _ = clean_state(rel, entry)
+            label = state if state == "CLEAN" else "DIRTY (edited since / uncommitted)"
+            cc = entry.get("cleanCount", 1)
+            streak = f"  [x{cc}]" if cc > 1 else ""
+            print(f"{label:35s} {rel}  ({entry.get('sha', '?')}, {entry.get('date', '?')}){streak}")
+    if show_untracked:
+        untracked = find_untracked(data)
+        print()
+        if untracked is None:
+            print("UNTRACKED scan skipped: git ls-files failed (timeout or not a git repo).")
+        elif not untracked:
+            print("UNTRACKED (never reviewed at all): none — every "
+                  f"{'/'.join(UNTRACKED_SCAN_EXTS)} file under {UNTRACKED_SCAN_DIR}/ "
+                  "has at least one entry here.")
+        else:
+            print(f"UNTRACKED (never reviewed at all) — {len(untracked)} file(s), "
+                  "DIRTY by CLAUDE.md's own default, invisible to the report above "
+                  "because no entry has ever been written for them:")
+            for rel in untracked:
+                print(f"  {rel}")
     return 0
 
 
@@ -486,7 +532,10 @@ def main():
     p_reopen.add_argument("paths", nargs="+")
     p_reopen.add_argument("--reason", required=True, help="why this is being reopened")
 
-    sub.add_parser("list", help="show every recorded entry and its current state")
+    p_list = sub.add_parser("list", help="show every recorded entry and its current state")
+    p_list.add_argument("--show-untracked", action="store_true",
+                        help="also list src/*.py|.cs|.xml files with NO entry at all - "
+                             "DIRTY by default but invisible to the recorded-entries report")
     sub.add_parser("migrate-hashes", help="one-time backfill of {hash} onto pre-rewrite entries")
 
     p_prune = sub.add_parser("prune", help="drop entries for paths deleted or moved with no new entry")
@@ -506,7 +555,7 @@ def main():
             _trigger_health_rebuild()
         sys.exit(rc)
     elif args.cmd == "list":
-        sys.exit(cmd_list())
+        sys.exit(cmd_list(args.show_untracked))
     elif args.cmd == "migrate-hashes":
         sys.exit(cmd_migrate_hashes())
     elif args.cmd == "prune":

@@ -36,7 +36,11 @@ hash):
   9. prune drops an entry only when its path no longer exists on disk at
      all (a deleted or `git mv`'d-with-no-new-entry file), leaves everything
      else alone, and does nothing without --apply.
- 10. git()'s timeout path returns a failed CompletedProcess rather than
+ 10. find_untracked() (list --show-untracked) surfaces a src/*.xml file that
+     is tracked by git but has NEVER been given an entry at all — the gap
+     the owner caught 2026-09-05 questioning a reported "0 DIRTY" that was
+     only true for the ~917 paths ever entered, not the ~1,402 real files.
+ 11. git()'s timeout path returns a failed CompletedProcess rather than
      raising — a hung/contended git call must degrade, never hang the caller.
 """
 import os
@@ -206,7 +210,24 @@ eq("art.png" in CRS.load(), True, "prune --apply leaves an entry whose path stil
 rc = run("prune")
 eq(rc, 0, "prune is a clean no-op once nothing is orphaned")
 
-# ---- 10. git() degrades on a timeout instead of raising --------------------
+# ---- 10. find_untracked surfaces a never-entered src/ file ----------------
+write("src/Mod/Defs/never_reviewed.xml", "<Defs><ThingDef><defName>X</defName></ThingDef></Defs>\n")
+write("src/Mod/Defs/reviewed.xml", "<Defs><ThingDef><defName>Y</defName></ThingDef></Defs>\n")
+sh("git", "add", "src/Mod/Defs/never_reviewed.xml", "src/Mod/Defs/reviewed.xml")
+sh("git", "commit", "-q", "-m", "add two src/ files, only one ever reviewed")
+run("mark-clean", os.path.join(TMP, "src/Mod/Defs/reviewed.xml"))
+
+untracked = CRS.find_untracked(CRS.load())
+eq(untracked is None, False, "find_untracked succeeds against a real git repo")
+eq("src/Mod/Defs/never_reviewed.xml" in (untracked or []), True,
+   "a tracked src/*.xml file with no entry at all is surfaced as untracked")
+eq("src/Mod/Defs/reviewed.xml" in (untracked or []), False,
+   "a src/*.xml file that HAS an entry must not appear as untracked, even mid-review-cycle")
+
+rc = run("list", "--show-untracked")
+eq(rc, 0, "list --show-untracked exits 0")
+
+# ---- 11. git() degrades on a timeout instead of raising --------------------
 real_run = subprocess.run
 
 
