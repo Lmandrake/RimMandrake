@@ -3287,10 +3287,70 @@
     "date": "2026-09-05",
     "sha": "7a39f271"
   },
+  "src/RimStarWars/JawaVoice/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "1478cedd"
+  },
+  "src/RimStarWars/JawaVoice/Patches/JawaVoice_CoreInteractions.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "1478cedd"
+  },
+  "src/RimStarWars/JawaVoice/Patches/JawaVoice_Ideology.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "1478cedd"
+  },
+  "src/RimStarWars/JawaVoice/Patches/JawaVoice_Insults.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "1478cedd"
+  },
+  "src/RimStarWars/JawaVoice/Patches/JawaVoice_Interactions.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "1478cedd"
+  },
   "src/RimStarWars/JawaVoice/Patches/JawaVoice_animals.xml": {
     "cleanCount": 1,
     "date": "2026-09-04",
     "sha": "71cceeb1"
+  },
+  "src/RimStarWars/JawaVoice/Patches/JawaVoice_chitchat_jokes.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "1478cedd"
+  },
+  "src/RimStarWars/JawaVoice/Patches/JawaVoice_chitchat_thoughts.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "1478cedd"
+  },
+  "src/RimStarWars/JawaVoice/Patches/JawaVoice_chitchat_weather.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "1478cedd"
+  },
+  "src/RimStarWars/JawaVoice/Patches/JawaVoice_deeptalk.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "1478cedd"
+  },
+  "src/RimStarWars/JawaVoice/Patches/JawaVoice_prisoners.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "1478cedd"
+  },
+  "src/RimStarWars/JawaVoice/Patches/JawaVoice_romance.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "1478cedd"
+  },
+  "src/RimStarWars/JawaVoice/README.md": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "1478cedd"
   },
   "src/RimStarWars/KotORBandolierNorthFix/About/About.xml": {
     "cleanCount": 1,
@@ -3672,6 +3732,16 @@
     "date": "2026-09-04",
     "sha": "f1a99184"
   },
+  "src/RimUtinni/BirthHatchDemo/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "4201a45a"
+  },
+  "src/RimUtinni/BirthHatchDemo/Defs/ThingDefs_Items/RUT_DemoEgg.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "4201a45a"
+  },
   "src/RimUtinni/Doctrine/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-05",
@@ -3813,14 +3883,19 @@
     "sha": "2e3336f4"
   },
   "src/RimUtinni/RiverSteam/About/About.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "sha": "71cceeb1"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "4201a45a"
   },
   "src/RimUtinni/RiverSteam/Source/RiverSteamHook.cs": {
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "4201a45a"
+  },
+  "src/RimUtinni/RiverSteam/Source/RiverSteamHook.csproj": {
     "cleanCount": 1,
-    "date": "2026-09-04",
-    "sha": "43f96b1b"
+    "date": "2026-09-05",
+    "sha": "4201a45a"
   },
   "src/RimUtinni/ShipMemory/About/About.xml": {
     "cleanCount": 1,
