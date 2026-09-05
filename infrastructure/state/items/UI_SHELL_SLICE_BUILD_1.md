@@ -50,22 +50,58 @@ not shipped content).
       isn't reachable through `get_ui_layout`/`click_ui_target` — it's drawn
       by `MainMenuDrawer` directly, not as a `Window`) **correctly discovers
       "Utinni Shell"** with its real name, description and icon pulled from
-      `meta.xml`. Could NOT get the bridge to actually SELECT it:
-      `Themes.changeThemeNow` (decompiled via `ilspycmd`, confirmed exact
-      mechanism) fires from a `Widgets.ButtonImage` click at a specific rect
-      inside the dialog; `rimworld/click_ui_target` reports success against
-      that exact target (verified twice, correct target-id-to-rect mapping
-      confirmed against the decompiled row-layout code) but the main menu
-      never visibly re-themes afterward. RimThemes patches Unity's own GUI
-      pipeline extensively (`WindowStackOnGUI_Patch`, `Widgets_ButtonImage_
-      Patch`, and ~15 more Harmony patches on core GUI internals) — plausible
-      that its own patches intercept the bridge's synthetic click in a way
-      a normal button doesn't hit. **Needs a human click** (5 seconds at the
-      keyboard: main menu → the bottom-left RimThemes icon row → Utinni
-      Shell → its select icon) to actually complete the visual gate, or a
-      bridge-side fix if this class of RimWorld mod (heavy GUI-pipeline
-      patchers) turns out to be a recurring click-injection blind spot worth
-      naming as its own item.
+      `meta.xml`.
+
+  **2026-09-05 (FOUNDRY), deeper pass — root cause narrowed, still unresolved.**
+      Two things that looked like plausible culprits are now RULED OUT by
+      decompile (`ilspycmd` against the live `RimThemes.dll`,
+      `1668983184/1.6/Assemblies/`):
+      - `Widgets_ButtonImage_Patch` (the obvious suspect) only patches the
+        **6-arg** `Widgets.ButtonImage(Rect, Texture2D, Color, Color, bool,
+        string)` overload. The select-icon button in `Dialog_ThemesList`
+        calls the **4-arg** overload (`Rect, Texture2D, bool, string`) —
+        completely unpatched, runs stock vanilla code. Not the interceptor.
+      - `WindowStackOnGUI_Patch`'s per-frame "only the topmost layer-1 window
+        draws" gate doesn't apply either: with only `Dialog_ThemesList` open
+        (plus the debug-toolbar `ImmediateWindow`, a different layer), it's
+        trivially the sole layer-1 window and always wins the "topmost" check.
+      A REAL bug was found and is now understood: the bridge's `targetId`
+      embeds a frame/surface generation number
+      (`ui-element:<surface>:2:<n>`) that **increments continuously** even
+      with no clicks happening — a `targetId` captured by `get_ui_layout` and
+      then used a few hundred ms later in `click_ui_target` times out
+      ("Timed out waiting ... to be redrawn") because that exact generation
+      no longer exists. Fetching the target immediately before the click
+      fixes this and produces a clean `success: true` — a real, generally
+      useful finding for anyone else driving dialogs through this bridge.
+      **But even with a fresh, non-stale target and a `success: true` /
+      non-timeout click: the theme selection still does not take effect.**
+      Proven definitively this pass, not just inferred: opened the dialog,
+      screenshotted it (`Transient/rimthemes_after_click.png` — not
+      committed, Transient convention), clicked Utinni Shell's select icon
+      (fresh target, `success: true`, message "Activated an icon button...
+      UI state did not change"), screenshotted again — **the selection
+      marker never moved off "Centipede"** (the colourful hex icon stays on
+      Centipede's row; Utinni Shell's icon stays the plain grey unselected
+      hex). Repeated against **Vanilla** as a control (not our mod, to rule
+      out something Utinni-Shell-specific) — same result: click reports
+      success, selection marker doesn't move. **This is a general
+      RimThemes-dialog click-injection gap, not specific to our theme or to
+      a target-mapping bug** — the click is delivered and accepted by Unity
+      IMGUI (no timeout, a real `ButtonInvisible`-equivalent presumably
+      returns true) but `Themes.changeThemeNow` (or its precondition) isn't
+      firing through to `Settings.curTheme`. Not chased further into
+      `Themes.changeThemeNow`'s own body this pass — worth a look if anyone
+      picks this up again, but likely an IMGUI hot-control/event-consumption
+      interaction between the bridge's synthetic input and RimThemes' custom
+      `GUI.BeginGroup`/`EndGroup` nesting around each row, not something
+      fixable from the tool-call side.
+      **Needs a human click** (5 seconds at the keyboard: main menu → the
+      bottom-left RimThemes icon row → Utinni Shell → its select icon) to
+      actually complete the visual gate, or a bridge-side engineering fix if
+      this class of RimWorld mod (heavy GUI-pipeline patchers with custom
+      nested `BeginGroup`/`EndGroup` layouts) turns out to be a recurring
+      click-injection blind spot worth naming as its own item.
 - [ ] §5 verify: `validate_patch.py --live` after a dump (only `--defs`
       static-checked this pass), VBE picker shows the menu background,
       loader shows on the next cold load — all still pending the theme
