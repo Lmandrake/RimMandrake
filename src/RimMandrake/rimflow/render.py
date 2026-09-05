@@ -345,18 +345,38 @@ def _write(path, text):
     # or its os.replace() can chase a name the other writer already renamed
     # away. _emit() (cli.py) calls this on EVERY ledger write, so any two
     # concurrent `rimflow` invocations from BENCH and FOUNDRY collide here.
+    #
+    # Found in the 2026-09-05 code review wave: unlike model._write_atomically
+    # (which exists for exactly this reason - see its own docstring), this
+    # function did not check os.write()'s return against len(blob), and had
+    # no except/unlink around the write. A short write here silently
+    # os.replace()'d a truncated file over the real queue view both windows
+    # read; a write failure left a stray *.tmp.<pid>.<ns> file behind in a
+    # git-tracked directory. Now mirrors model._write_atomically exactly.
     os.makedirs(os.path.dirname(path), exist_ok=True)
     tmp = "%s.tmp.%d.%d" % (path, os.getpid(), time.time_ns())
-    fd = os.open(tmp, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o644)
     try:
-        fcntl.flock(fd, fcntl.LOCK_EX)
+        fd = os.open(tmp, os.O_WRONLY | os.O_CREAT | os.O_EXCL, 0o644)
         try:
-            os.write(fd, text.encode("utf-8"))
+            fcntl.flock(fd, fcntl.LOCK_EX)
+            try:
+                blob = text.encode("utf-8")
+                written = os.write(fd, blob)
+                if written != len(blob):
+                    raise RuntimeError(
+                        "short write to %s: %d of %d bytes; the file was NOT "
+                        "replaced." % (path, written, len(blob)))
+            finally:
+                fcntl.flock(fd, fcntl.LOCK_UN)
         finally:
-            fcntl.flock(fd, fcntl.LOCK_UN)
-    finally:
-        os.close(fd)
-    os.replace(tmp, path)
+            os.close(fd)
+        os.replace(tmp, path)
+    except BaseException:
+        try:
+            os.unlink(tmp)
+        except OSError:
+            pass
+        raise
 
 
 def _queue_path(seat, root=None):

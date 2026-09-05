@@ -1540,7 +1540,18 @@ def _bridge_release(seat, w, holder):
     system errs toward freeing a wedged bridge, never toward mutual lockout. What was
     wrong is that it happened UNRECORDED. Stamp it, like every other crossing (review
     finding, 2026-09-02).
+
+    🔴 RE-DERIVE THE HOLDER RIGHT BEFORE WRITING, same reasoning as `_bridge_take`'s
+    own re-check just below it. `holder` here is whatever `load()` read at the TOP of
+    the command; if the real holder released or handed off in the gap since, the
+    `override` field stamped on this PERMANENT ledger event would misdescribe what
+    happened — either claiming a crossing that had already resolved itself, or
+    missing one that occurred in the gap. The bridge-holder state itself is unaffected
+    either way (a `released` event unconditionally clears it), so this only fixes the
+    audit trail, not a lockout (found in the 2026-09-05 code review wave).
     """
+    _, w2 = load()
+    holder = w2.bridge_holder
     ev = {"seat": seat, "event": "bridge", "state": "released"}
     crossed = bool(holder and holder != seat)
     if crossed:
