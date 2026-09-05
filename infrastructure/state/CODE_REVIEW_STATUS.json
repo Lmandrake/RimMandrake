@@ -3227,10 +3227,25 @@
     "date": "2026-09-05",
     "sha": "85352886"
   },
-  "src/RimStarWars/JawaIkee/Source/ThoughtWorker_IkeeNearby.cs": {
+  "src/RimStarWars/JawaIkee/About/About.xml": {
     "cleanCount": 1,
-    "date": "2026-09-03",
-    "sha": "b294390b"
+    "date": "2026-09-05",
+    "sha": "8c69faa6"
+  },
+  "src/RimStarWars/JawaIkee/Defs/ThoughtDefs/Thought_IkeeWatching.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "8c69faa6"
+  },
+  "src/RimStarWars/JawaIkee/Source/JawaIkee.csproj": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "8c69faa6"
+  },
+  "src/RimStarWars/JawaIkee/Source/ThoughtWorker_IkeeNearby.cs": {
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "8c69faa6"
   },
   "src/RimStarWars/JawaIonWeapons/Source/DamageWorker_IonBuildup.cs": {
     "cleanCount": 1,
@@ -3562,10 +3577,45 @@
     "date": "2026-09-04",
     "sha": "71cceeb1"
   },
-  "src/RimStarWars/WeatherSuite/Source/WeatherSuiteHook.cs": {
+  "src/RimStarWars/WeatherSuite/About/About.xml": {
     "cleanCount": 1,
-    "date": "2026-09-04",
-    "sha": "43f96b1b"
+    "date": "2026-09-05",
+    "sha": "e19208c0"
+  },
+  "src/RimStarWars/WeatherSuite/Defs/GameConditionDefs/GameConditionDefs_DarkAurora.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "e19208c0"
+  },
+  "src/RimStarWars/WeatherSuite/Defs/GameConditionDefs/GameConditionDefs_TerminatorFront.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "e19208c0"
+  },
+  "src/RimStarWars/WeatherSuite/Defs/IncidentDefs/IncidentDefs_DarkAurora.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "e19208c0"
+  },
+  "src/RimStarWars/WeatherSuite/Defs/ThingDefs_Buildings/ThingDefs_WeatherInstrument.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "e19208c0"
+  },
+  "src/RimStarWars/WeatherSuite/Defs/ThoughtDefs/ThoughtDefs_DarkAurora.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "e19208c0"
+  },
+  "src/RimStarWars/WeatherSuite/Source/WeatherSuiteHook.cs": {
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "e19208c0"
+  },
+  "src/RimStarWars/WeatherSuite/Source/WeatherSuiteHook.csproj": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "e19208c0"
   },
   "src/RimUtinni/Antiquities/About/About.xml": {
     "cleanCount": 1,
