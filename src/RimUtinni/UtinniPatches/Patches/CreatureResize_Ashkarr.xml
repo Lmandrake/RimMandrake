@@ -156,7 +156,18 @@
              16-tile creature is well under 1,024 px on screen. That is why this ships rather
              than blocking. Do not read it as the rule being wrong.
 
-             Life stages keep their original proportions throughout: x1.843 then x2. -->
+             Life stages keep their original proportions throughout: x1.843 then x2.
+
+             🔴 SUPERSEDED BY A LATER, UNDOCUMENTED-HERE COMMIT: the three values just below
+             (10.81/14.90/18.06) are NOT 16.00-doubled-again (that would be 19.16/26.40/32.00).
+             Commit 15994482 "Behemoth redrawn on all three facings, and drawSize corrected for
+             the framing" moved the redraw from 47% canvas fill to 94%: RimWorld stretches the
+             WHOLE texture across drawSize, so at the old (doubled) numbers the redrawn art would
+             render at ~30 cells instead of the 16.9 the owner approved. These numbers hold that
+             same on-screen size steady against the tighter framing - they are correct, not a
+             missed doubling. This IS why adult drawSize (18.06) no longer numerically matches
+             baseBodySize/baseHealthScale (32/40) below: that match was true only until this
+             framing fix, and is not this file's invariant to restore. -->
         <li Class="PatchOperationReplace">
           <xpath>Defs/PawnKindDef[defName="AA_Behemoth"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
           <value><drawSize>10.81</drawSize></value>
