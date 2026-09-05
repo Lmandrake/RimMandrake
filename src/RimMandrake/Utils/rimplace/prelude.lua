@@ -381,13 +381,27 @@ end
 -- ---------------------------------------------------------------------------
 -- A door in the wall on `side` of rect r. `at` is the offset along that wall;
 -- nil picks a random position clear of both corners. Returns x, z.
+-- E6 `door-centred`: an exterior door at the EXACT midpoint of a wall >=7
+-- long reads as placed by a ruler, not a person (spec §3.1.2). `at` picked
+-- explicitly by a caller is left alone (it asked for that cell on purpose);
+-- only the RANDOM default nudges off the midpoint, and only when doing so
+-- still leaves a legal offset.
+local function _off_center(lo, hi, len)
+  local at = rng.int(lo, hi)
+  if len % 2 == 1 and hi > lo then
+    local mid = math.floor(len / 2)
+    if at == mid then at = (at + 1 <= hi) and (at + 1) or (at - 1) end
+  end
+  return at
+end
+
 function door_on(ctx, r, side, at)
   local x, z
   if side == "N" or side == "S" then
-    at = at or rng.int(2, math.max(2, r.w - 3))
+    at = at or _off_center(2, math.max(2, r.w - 3), r.w)
     x, z = r.x + at, (side == "N") and r.z2 or r.z
   else
-    at = at or rng.int(2, math.max(2, r.h - 3))
+    at = at or _off_center(2, math.max(2, r.h - 3), r.h)
     x, z = (side == "E") and r.x2 or r.x, r.z + at
   end
   ctx:door(x, z)
@@ -444,4 +458,162 @@ function floor_worn(ctx, r, terrain, alt, p)
     end
   end
   return n
+end
+
+-- ---------------------------------------------------------------------------
+-- E4 (RIMPLACE_ENGINE_DELTAS_1) - reconciled against the vocabulary above.
+--
+-- `along_wall`/`dress`/`shell`/`scatter` above already do the E4 jobs of
+-- wall-hugging placement, secondary/clutter passes and floored shells; rather
+-- than ship a second, competing prelude, `hug`/`clutter` below are thin
+-- adapters onto that SAME machinery for the spec's own vocabulary (structure_
+-- procedural_spec.md §2/§3, and its room recipes in §4 which spell it this
+-- way). `aisle_ok` is genuinely new (no flood-fill existed before this pass).
+-- `window` and `ruin` are Ctx (Python) methods, not prelude globals - see
+-- their docstrings in luaenv.py for why each landed where it did.
+-- ---------------------------------------------------------------------------
+
+-- Roles that block a flood-fill (spec §3.5): "beds, tables, shelves, crates
+-- are impassable; stools/chairs/lamps are not". Anything not listed here -
+-- including an unrecognised role or no role at all - reads as passable,
+-- which is the safe default for a check whose job is to warn on the failure
+-- mode (a room too dense to walk), not to invent new impassable furniture.
+IMPASSABLE_ROLES = {
+  WALL = true, BED = true, TABLE = true, STORAGE = true, SHELF_SMALL = true,
+  CRATE = true, BARREL = true, DRESSER = true, WORKBENCH = true,
+  STOVE = true, GENERATOR = true, BATTERY = true, TURRET = true,
+  PILLAR = true, THRONE = true, FORGE = true, REFINERY = true,
+  REACTOR = true, FABRICATOR = true, CHARGER = true, HYDRO = true,
+  FENCE = true, BARRICADE = true, SANDBAG = true, DRUG_LAB = true,
+  DESK = true, ANIMAL_BED = true, WATER_TANK = true, FOUNTAIN = true,
+}
+-- A structural/boundary role blocks the fill but is not itself a "primary"
+-- that needs a passable neighbour (see plan.py's _STRUCTURAL_IMPASSABLE for
+-- why - a second room's shared wall falling inside THIS room's rect must not
+-- read as an unreached fixture forever).
+STRUCTURAL_IMPASSABLE_ROLES = {
+  WALL = true, DOOR = true, WINDOW = true, PILLAR = true, FENCE = true,
+  BARRICADE = true, SANDBAG = true,
+}
+
+-- `ctx:hug(role, room, sides, opts)`. `sides` is one side ("N") or a list
+-- ({"N","S"}); `opts.mode` is "hug" (default: wall-hugging via along_wall,
+-- picking a random side per placement from the list so two calls do not
+-- default to the same wall), "corner" (tucks the whole footprint into a
+-- room corner, via `dress`'s corner branch) or "free" (scattered toward the
+-- room centre). `opts.n` (default 1) is how many to place.
+function hug(ctx, role, room, sides, opts)
+  opts = opts or {}
+  local mode = opts.mode or "hug"
+  local list = sides
+  if type(sides) == "string" then list = { sides } end
+  local n = opts.n or 1
+  if mode == "corner" then
+    return dress(ctx, room, { { role = role, n = n, where = "corner", rot = opts.rot } })
+  elseif mode == "free" then
+    local cx, cz = center(room)
+    local half = 2
+    local r = R(math.max(room.x, cx - half), math.max(room.z, cz - half),
+               math.min(room.w, 2 * half), math.min(room.h, 2 * half))
+    return scatter(ctx, role, r, n, { rot = opts.rot or "any" })
+  end
+  local placed, tries, max_tries = 0, 0, n * (#list + 2)
+  while placed < n and tries < max_tries do
+    tries = tries + 1
+    placed = placed + along_wall(ctx, role, room, list[rng.int(1, #list)], 1, opts)
+  end
+  return placed
+end
+
+-- `ctx:clutter(room, list, n)`. `list` is { {role=, weight=(default 1),
+-- where=, rot=}, ... }; `n` total pieces spread across the list by weight.
+-- Genuinely distinct from `dress` (which takes a per-entry count, not a
+-- shared total): each of the `n` placements is its OWN random-start scan
+-- (spec §3.4 - pick a random interior cell, spiral outward via `try_near`
+-- until it fits), rather than one scan per role.
+function clutter(ctx, room, list, n)
+  n = n or 1
+  local total = 0
+  for _, s in ipairs(list) do total = total + (s.weight or 1) end
+  local placed = 0
+  if total <= 0 then return 0 end
+  for _ = 1, n do
+    local roll, acc, chosen = rng.int(1, total), 0, list[#list]
+    for _, s in ipairs(list) do
+      acc = acc + (s.weight or 1)
+      if roll <= acc then chosen = s break end
+    end
+    if ctx:has_role(chosen.role) then
+      local x, z = rng.int(room.x, room.x2), rng.int(room.z, room.z2)
+      local ok = try_near(ctx, chosen.role, x, z, chosen.rot or 0, 3, room)
+      if ok then placed = placed + 1 end
+    end
+  end
+  return placed
+end
+
+-- `ctx:aisle_ok(room)` - spec §3.5's flood-fill proof. Floods from every
+-- exterior DOOR cell over passable interior cells of `room`. Returns:
+--   ok             true iff coverage >= 45% AND every impassable (primary-
+--                  class) thing has >=1 reached neighbour
+--   coverage       fraction (0-1) of interior cells the fill reached
+--   unreached      count of primaries the fill could not reach
+-- A room with no door returns false, 0, 0 rather than erroring - the
+-- room-unreachable lint rule already names that failure; this just refuses
+-- to claim a walkability result it cannot compute.
+function aisle_ok(ctx, room)
+  local ir = inner(room)
+  local function passable(x, z)
+    local role = ctx:role_at(x, z)
+    return role == nil or not IMPASSABLE_ROLES[role]
+  end
+  local doors = {}
+  for _, side in ipairs({ "N", "E", "S", "W" }) do
+    local d = DIR[SIDE_ROT[side]]
+    for _, c in ipairs(wall_cells(ir, side)) do
+      if ctx:role_at(c[1] + d[1], c[2] + d[2]) == "DOOR" then
+        doors[#doors + 1] = c
+      end
+    end
+  end
+  if #doors == 0 then return false, 0, 0 end
+  local seen, queue, head = {}, {}, 1
+  for _, d in ipairs(doors) do
+    local k = d[1] .. "," .. d[2]
+    if not seen[k] and in_rect(d[1], d[2], ir) and passable(d[1], d[2]) then
+      seen[k] = true
+      queue[#queue + 1] = d
+    end
+  end
+  local STEP = { { 0, 1 }, { 0, -1 }, { 1, 0 }, { -1, 0 } }
+  while head <= #queue do
+    local c = queue[head]
+    head = head + 1
+    for _, s in ipairs(STEP) do
+      local nx, nz = c[1] + s[1], c[2] + s[2]
+      local k = nx .. "," .. nz
+      if in_rect(nx, nz, ir) and not seen[k] and passable(nx, nz) then
+        seen[k] = true
+        queue[#queue + 1] = { nx, nz }
+      end
+    end
+  end
+  local total, reached, unreached = 0, 0, 0
+  for x = ir.x, ir.x2 do
+    for z = ir.z, ir.z2 do
+      total = total + 1
+      local k = x .. "," .. z
+      if seen[k] then reached = reached + 1 end
+      local role = ctx:role_at(x, z)
+      if role and IMPASSABLE_ROLES[role] and not STRUCTURAL_IMPASSABLE_ROLES[role] then
+        local ok = false
+        for _, s in ipairs(STEP) do
+          if seen[(x + s[1]) .. "," .. (z + s[2])] then ok = true break end
+        end
+        if not ok then unreached = unreached + 1 end
+      end
+    end
+  end
+  local coverage = (total > 0) and (reached / total) or 0
+  return (coverage >= 0.45 and unreached == 0), coverage, unreached
 end

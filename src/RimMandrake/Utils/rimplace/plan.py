@@ -12,7 +12,7 @@ from collections import defaultdict
 
 from . import netinfo
 
-from .core import BuildPlan, Rect
+from .core import BuildPlan, Rect, Room
 
 # --------------------------------------------------------------------------- #
 #  Rendering
@@ -114,6 +114,24 @@ class Finding:
     def __str__(self):
         loc = f" at ({self.x},{self.z})" if self.x is not None else ""
         return f"{self.level:<5} {self.code:<22} {self.msg}{loc}"
+
+
+# RIMPLACE_ENGINE_DELTAS_1 E6. Role classes for the `no-secondary` rule - "a
+# class from a palette role list, not a name list" (the item's own wording):
+# these are ROLES, resolved from whatever defName the active faction/tech/
+# wealth block maps them to, never a hardcoded defName.
+_PRIMARY_ROLES = {"BED", "TABLE", "STOVE", "WORKBENCH", "STORAGE", "THRONE",
+                  "GENERATOR", "TURRET", "FORGE", "DRUG_LAB", "HYDRO",
+                  "REACTOR", "FABRICATOR", "REFINERY", "CHARGER", "DESK",
+                  "GONK"}
+# palette.json's own README names this exact tier ("CLUTTER tier: STOOL
+# CRATE BARREL SHELF_SMALL END_TABLE DRESSER PLANT_POT WALL_LIGHT GAME"),
+# plus the other roles the room recipes (spec §4) call secondary/personal.
+_SECONDARY_ROLES = {"STOOL", "CRATE", "BARREL", "SHELF_SMALL", "END_TABLE",
+                    "DRESSER", "PLANT_POT", "WALL_LIGHT", "GAME", "DECOR",
+                    "SIGN", "BANNER", "INSTRUMENT", "TROUGH", "ANIMAL_BED",
+                    "CHAIR", "DECOR_BIG", "TUB", "BASIN", "SINK", "SCRAP",
+                    "JUNK_PILE", "WRECK", "DECAL", "BANNER"}
 
 
 def lint(plan: BuildPlan, verified_defs: set[str] | None = None) -> list[Finding]:
@@ -260,7 +278,223 @@ def lint(plan: BuildPlan, verified_defs: set[str] | None = None) -> list[Finding
     # 9. a plan that builds nothing is a bug, not an empty house
     if not plan.things:
         out.append(Finding("ERROR", "empty-plan", "the template placed nothing"))
+
+    # --- RIMPLACE_ENGINE_DELTAS_1 E6 --------------------------------------
+    # 10. E1's own lint: the plan's FIRST clear must cover the whole
+    # footprint. `run_template` auto-injects this for every plan it builds
+    # (`luaenv.run_template`), so this only ever fires for a plan assembled
+    # some other way - same shape as rule 1b's footprint-collision check.
+    if rect:
+        first = plan.clears[0] if plan.clears else None
+        covers = (first is not None and first.x <= rect.x and first.z <= rect.z
+                 and first.x + first.w >= rect.x2 + 1
+                 and first.z + first.h >= rect.z2 + 1)
+        if not covers:
+            out.append(Finding("ERROR", "footprint-not-cleared",
+                               "the plan's first directive is not a CLEAR "
+                               "covering its footprint (R1)"))
+
+    # 11. every ROOM interior cell must carry a named TERRAIN entry - the
+    # owner's own R2 complaint (bare ground read as unfinished).
+    for r in plan.rooms:
+        bare = [c for c in r.rect.inner().cells() if c not in plan.terrain]
+        if bare:
+            out.append(Finding("ERROR", "interior-bare-ground",
+                               f"room {r.id} ({r.role}) has {len(bare)} "
+                               f"interior cell(s) with no floor", *bare[0]))
+
+    # 12. regular-grid: >=3 identical defs equally spaced on a line, AND
+    # >=2 such parallel lines, in the same room - the lattice signature R3
+    # names by name ("mechanical arrays are horrible").
+    # Structural roles are EXPECTED to form straight, equally-spaced runs (a
+    # rectangular room's own perimeter is four such lines) - this rule is
+    # about furniture ("anything a person owns"), not the shell around it.
+    _STRUCTURAL_ROLES = {"WALL", "DOOR", "WINDOW", "PILLAR", "FENCE", "SANDBAG"}
+    for r in plan.rooms:
+        in_room = [t for t in plan.things
+                  if not t.overlay and r.rect.contains(t.x, t.z)
+                  and (t.role or "").upper() not in _STRUCTURAL_ROLES]
+        by_def: dict[str, list] = defaultdict(list)
+        for t in in_room:
+            by_def[t.defName].append(t)
+        for defName, ts in by_def.items():
+            n_lines = 0
+            # horizontal runs: group by z, sort by x
+            rows: dict[int, list] = defaultdict(list)
+            for t in ts:
+                rows[t.z].append(t.x)
+            for xs in rows.values():
+                if _has_equal_spaced_run(sorted(xs)):
+                    n_lines += 1
+            cols: dict[int, list] = defaultdict(list)
+            for t in ts:
+                cols[t.x].append(t.z)
+            for zs in cols.values():
+                if _has_equal_spaced_run(sorted(zs)):
+                    n_lines += 1
+            if n_lines >= 2:
+                out.append(Finding("WARN", "regular-grid",
+                                   f"room {r.id} ({r.role}) has {n_lines} "
+                                   f"equally-spaced line(s) of '{defName}' "
+                                   "- R3 bans lattices for anything a person "
+                                   "owns"))
+
+    # 13. no-secondary: a room with a primary and zero secondary-class things.
+    # A secondary counts whether it is an overlay or not - a wall lamp or a
+    # floor decal is exactly the "lived-in" dressing R4 wants, and excluding
+    # overlays here (as the OTHER rules correctly do, to skip a decal for
+    # collision purposes) produced false ERRORs on rooms whose only clutter
+    # was a wall-mounted light. Primaries stay non-overlay-only: a primary is
+    # a real edifice, never a decal.
+    for r in plan.rooms:
+        primaries = {(t.role or "").upper() for t in plan.things
+                    if not t.overlay and r.rect.contains(t.x, t.z)}
+        secondaries = {(t.role or "").upper() for t in plan.things
+                      if r.rect.contains(t.x, t.z)}
+        if primaries & _PRIMARY_ROLES and not (secondaries & _SECONDARY_ROLES):
+            out.append(Finding("ERROR", "no-secondary",
+                               f"room {r.id} ({r.role}) has a primary "
+                               f"({sorted(primaries & _PRIMARY_ROLES)}) and zero "
+                               "secondary/clutter things - R4"))
+
+    # 14. door-centred: an exterior door at the EXACT midpoint of a wall
+    # >=7 long (spec §3.1.2 - doors read as hand-placed only when offset).
+    for r in plan.rooms:
+        rr = r.rect
+        edge = set(rr.edge_cells())
+        for (dx, dz) in doors:
+            if (dx, dz) not in edge:
+                continue
+            if dz in (rr.z, rr.z2) and rr.w >= 7:
+                mid = rr.x + rr.w // 2
+                if dx == mid and rr.w % 2 == 1:
+                    out.append(Finding("WARN", "door-centred",
+                                       f"room {r.id} door at ({dx},{dz}) sits "
+                                       f"at the exact midpoint of a {rr.w}-long "
+                                       "wall", dx, dz))
+            elif dx in (rr.x, rr.x2) and rr.h >= 7:
+                mid = rr.z + rr.h // 2
+                if dz == mid and rr.h % 2 == 1:
+                    out.append(Finding("WARN", "door-centred",
+                                       f"room {r.id} door at ({dx},{dz}) sits "
+                                       f"at the exact midpoint of a {rr.h}-long "
+                                       "wall", dx, dz))
+
+    # 15. aisle-blocked: spec §3.5's flood-fill, reimplemented here (not a
+    # call into the Lua prelude's aisle_ok - lint runs on a BuildPlan with no
+    # Lua runtime attached). ERROR if a primary is completely unreached by a
+    # fill from the room's own doors; WARN if reachable coverage is thin.
+    for r in plan.rooms:
+        ok, coverage, unreached = _aisle_fill(plan, r)
+        if ok is None:
+            continue          # no door on this room - room-unreachable already says so
+        if unreached:
+            out.append(Finding("ERROR", "aisle-blocked",
+                               f"room {r.id} ({r.role}) has {unreached} "
+                               "primary thing(s) the door(s) cannot flood-"
+                               "fill reach"))
+        elif coverage < 0.45:
+            out.append(Finding("WARN", "aisle-blocked",
+                               f"room {r.id} ({r.role}) flood-fill reaches "
+                               f"only {coverage:.0%} of its interior (<45%)"))
     return out
+
+
+def _has_equal_spaced_run(coords: list[int], min_len: int = 3) -> bool:
+    """True if `coords` (sorted, distinct positions along one axis) contains
+    >=min_len values at a constant positive step - the lattice signature."""
+    n = len(coords)
+    for i in range(n - min_len + 1):
+        step = coords[i + 1] - coords[i]
+        if step <= 0:
+            continue
+        run = 2
+        j = i + 1
+        while j + 1 < n and coords[j + 1] - coords[j] == step:
+            run += 1
+            j += 1
+        if run >= min_len:
+            return True
+    return False
+
+
+# Roles a flood-fill treats as impassable - mirrors prelude.lua's
+# IMPASSABLE_ROLES (rule 15 has no Lua runtime to call `ctx:aisle_ok` on, so
+# this is a second, Python-side reading of the SAME spec rule; keep both in
+# step if the vocabulary changes).
+_IMPASSABLE_ROLES = {
+    "WALL", "BED", "TABLE", "STORAGE", "SHELF_SMALL", "CRATE", "BARREL",
+    "DRESSER", "WORKBENCH", "STOVE", "GENERATOR", "BATTERY", "TURRET",
+    "PILLAR", "THRONE", "FORGE", "REFINERY", "REACTOR", "FABRICATOR",
+    "CHARGER", "HYDRO", "FENCE", "BARRICADE", "SANDBAG", "DRUG_LAB",
+    "DESK", "ANIMAL_BED", "WATER_TANK", "FOUNTAIN",
+}
+# A structural/boundary role BLOCKS the flood fill but is not itself a
+# "primary" that needs a passable neighbour - a wall is not something a
+# person walks up to. Without this exclusion, a second room's shared wall
+# falling inside THIS room's outer rect (a carved-out office corner, say)
+# reads as an unreached primary forever, since a wall cell's neighbours are
+# routinely other wall cells. Measured on deepwater_cistern_hall.lua: the
+# "unreached primary" was the Office's own partition wall, not a fixture.
+_STRUCTURAL_IMPASSABLE = {"WALL", "DOOR", "WINDOW", "PILLAR", "FENCE",
+                          "BARRICADE", "SANDBAG"}
+
+
+def _aisle_fill(plan: BuildPlan, room: Room):
+    """-> (ok, coverage, unreached_primary_count), or (None, 0, 0) if the
+    room has no door to flood-fill from."""
+    inner = room.rect.inner()
+    role_at: dict[tuple[int, int], str] = {}
+    for t in plan.things:
+        if not t.overlay and inner.contains(t.x, t.z):
+            role_at.setdefault((t.x, t.z), (t.role or "").upper())
+
+    def passable(x, z):
+        return role_at.get((x, z), "") not in _IMPASSABLE_ROLES
+
+    # A DOOR sits ON the wall (rect edge), never inside `inner` - the flood
+    # fill has to start from the door's INTERIOR neighbour cell, not the door
+    # cell itself, or it seeds from a cell `inner.contains()` always rejects
+    # and floods nothing at all. Mirrors prelude.lua's aisle_ok exactly.
+    door_cells = {(t.x, t.z) for t in plan.things if (t.role or "").upper() == "DOOR"}
+    if not door_cells:
+        return None, 0, 0
+    seeds = []
+    for x in range(inner.x, inner.x2 + 1):
+        if (x, inner.z2 + 1) in door_cells:
+            seeds.append((x, inner.z2))
+        if (x, inner.z - 1) in door_cells:
+            seeds.append((x, inner.z))
+    for z in range(inner.z, inner.z2 + 1):
+        if (inner.x2 + 1, z) in door_cells:
+            seeds.append((inner.x2, z))
+        if (inner.x - 1, z) in door_cells:
+            seeds.append((inner.x, z))
+    if not seeds:
+        return None, 0, 0     # this room's door(s) open onto another room, not `inner`
+    seen = {s for s in seeds if passable(*s)}
+    queue = list(seen)
+    head = 0
+    while head < len(queue):
+        x, z = queue[head]
+        head += 1
+        for dx, dz in ((0, 1), (0, -1), (1, 0), (-1, 0)):
+            nc = (x + dx, z + dz)
+            if inner.contains(*nc) and nc not in seen and passable(*nc):
+                seen.add(nc)
+                queue.append(nc)
+    cells = list(inner.cells())
+    total = len(cells) or 1
+    reached = sum(1 for c in cells if c in seen)
+    unreached = 0
+    for c in cells:
+        role = role_at.get(c, "")
+        if role in _IMPASSABLE_ROLES and role not in _STRUCTURAL_IMPASSABLE:
+            x, z = c
+            if not any((x + dx, z + dz) in seen
+                      for dx, dz in ((0, 1), (0, -1), (1, 0), (-1, 0))):
+                unreached += 1
+    return (reached / total >= 0.45 and unreached == 0), reached / total, unreached
 
 
 # --------------------------------------------------------------------------- #
@@ -343,6 +577,55 @@ def compile_calls(plan: BuildPlan, faction: str | None = None,
     can now paint several materials, which the old shape could not.
     """
     calls: list[dict] = []
+
+    # E1 CLEAR, first of all - before foundation, exactly like the mapgen-time
+    # path. `jawa/destroy_batch` (JawaBench.BridgeTools/JawaBenchTerrainTools.cs)
+    # is the live equivalent of GenStep_RimplacePlan.ExecuteClear's Plant/Filth/
+    # Item/Building sweep; it has no rock-type-aware terrain replacement, so
+    # mode="all"'s "replace mined rock with its rough terrain" is UNAVAILABLE
+    # live - noted on the plan rather than silently dropped, and true today
+    # only because no such tool exists yet, not a permanent limitation.
+    if plan.clears:
+        by_mode: dict[str, list] = defaultdict(list)
+        for c in plan.clears:
+            by_mode[c.mode].append(f"{c.x},{c.z},{c.w},{c.h}")
+        for mode, rects in sorted(by_mode.items()):
+            cats = "Plant,Item,Filth,Building" if mode == "all" else "Plant,Item,Filth"
+            calls.append({"tool": "jawa/destroy_batch",
+                          "params": {"rects": ";".join(rects), "categories": cats}})
+        if any(c.mode == "all" for c in plan.clears):
+            plan.notes.append(
+                "⚠️ live path: CLEAR mode=all destroyed Building-category things "
+                "in its rects via jawa/destroy_batch, but did NOT replace mined "
+                "rock with its rough-rock terrain (no such live tool exists) - "
+                "that replacement only happens on the mapgen-time GenStep path.")
+
+    # E2 RUN has no live equivalent: extending a line to the MAP EDGE needs
+    # the real map's size, which no jawa/* tool in this pass exposes. Only the
+    # mapgen-time GenStep (which has the real Map) can execute it.
+    if plan.runs:
+        plan.notes.append(
+            f"⚠️ live path: {len(plan.runs)} RUN directive(s) were NOT compiled "
+            "to any bridge call - no live tool walks a line to the map edge. "
+            "RUN only executes on the mapgen-time GenStep path.")
+
+    # E3 PAWN: only state=alive compiles live, via jawa/spawn_pawn - a corpse
+    # (dead/dessicated/skeleton) needs CompRottable surgery no jawa/* tool
+    # exposes yet, so those stay mapgen-only (GenStep_RimplacePlan.ExecutePawn).
+    if plan.pawns:
+        dead = [p for p in plan.pawns if p.state != "alive"]
+        for p in plan.pawns:
+            if p.state != "alive":
+                continue
+            calls.append({"tool": "jawa/spawn_pawn",
+                          "params": {"kindDef": p.kindDef, "x": p.x, "z": p.z,
+                                     "faction": "none" if p.faction == "wild" else p.faction,
+                                     "count": 1}})
+        if dead:
+            plan.notes.append(
+                f"⚠️ live path: {len(dead)} PAWN directive(s) with a corpse "
+                "state were NOT compiled to any bridge call - no live tool "
+                "makes a Corpse. Those only execute on the mapgen-time GenStep path.")
 
     # foundation first (gravship Substructure - the 1.6 third grid), then floors:
     # a floor laid on missing substructure is refused by the engine, so the
@@ -449,18 +732,29 @@ def compile_flat(plan: BuildPlan) -> str:
 
     One directive per line, tab-separated, "#" comment lines ignored:
         FOOTPRINT   x  z  w  h
+        CLEAR       x  z  w  h  mode(all|soft)
         FOUNDATION  x  z  defName
         TERRAIN     x  z  defName
         THING       defName  x  z  rot  stuff-or-dash
+        RUN         x  z  dir(N|E|S|W)  defName  stuff-or-dash
         ROOF        x  z  defName
         PAINT       x  z  colorDefName
         FLOORCOLOR  x  z  colorDefName
-    Sections are emitted in the SAME order `compile_calls()` uses them
-    (foundation, terrain, things, roof, paint, floor color) so a reader that
-    just applies lines top-to-bottom gets the ordering the live path proved
-    necessary (foundation before terrain, walls before roof).
+        PAWN        kindDef  x  z  faction  state(alive|dead|dessicated|skeleton)
+    Sections are emitted in the order the live path proved necessary
+    (CLEAR before anything - RIMPLACE_ENGINE_DELTAS_1 E1 - then foundation,
+    terrain, things, RUN, roof, paint, floor color, and PAWN last so a spawned
+    pawn/corpse cannot be wiped by anything built after it) so a reader that
+    just applies lines top-to-bottom gets that ordering for free.
+
+    🔑 v2 (RIMPLACE_ENGINE_DELTAS_1): a reader built for v1 has no CLEAR/RUN/
+    PAWN cases and would silently skip every one as an unrecognised directive
+    - exactly the R1 regression this whole item exists to close. The header
+    bump is the visible marker; `GenStep_RimplacePlan`/`RimplacePlan.Parse`
+    additionally `Log.Warning` once per unknown directive verb it skips, so
+    an old DLL replaying a new plan fails LOUD, not silently.
     """
-    lines = ["# rimplace flat plan v1"]
+    lines = ["# rimplace flat plan v2"]
     fp = plan.meta.get("footprint")
     # 🔑 A THIRD PARTY HOLDING ONLY THIS .txt can now read what it was baked at and
     # what it needs. The rect is already a real directive (FOOTPRINT, parsed by
@@ -477,12 +771,16 @@ def compile_flat(plan: BuildPlan) -> str:
                     "%dx%d" % (fp[2], fp[3]) if fp else "?"))
     if fp:
         lines.append(f"FOOTPRINT\t{fp[0]}\t{fp[1]}\t{fp[2]}\t{fp[3]}")
+    for c in plan.clears:
+        lines.append(f"CLEAR\t{c.x}\t{c.z}\t{c.w}\t{c.h}\t{c.mode}")
     for (x, z), d in sorted(plan.foundation.items()):
         lines.append(f"FOUNDATION\t{x}\t{z}\t{d}")
     for (x, z), d in sorted(plan.terrain.items()):
         lines.append(f"TERRAIN\t{x}\t{z}\t{d}")
     for t in plan.things:
         lines.append(f"THING\t{t.defName}\t{t.x}\t{t.z}\t{t.rot}\t{t.stuff or '-'}")
+    for r in plan.runs:
+        lines.append(f"RUN\t{r.x}\t{r.z}\t{r.dir}\t{r.defName}\t{r.stuff or '-'}")
     for (x, z), d in sorted(plan.roof.items()):
         lines.append(f"ROOF\t{x}\t{z}\t{d}")
     for t in plan.things:
@@ -490,6 +788,8 @@ def compile_flat(plan: BuildPlan) -> str:
             lines.append(f"PAINT\t{t.x}\t{t.z}\t{t.paint}")
     for (x, z), d in sorted(plan.floor_color.items()):
         lines.append(f"FLOORCOLOR\t{x}\t{z}\t{d}")
+    for p in plan.pawns:
+        lines.append(f"PAWN\t{p.kindDef}\t{p.x}\t{p.z}\t{p.faction}\t{p.state}")
     return "\n".join(lines) + "\n"
 
 

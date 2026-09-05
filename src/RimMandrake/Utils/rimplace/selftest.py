@@ -558,6 +558,207 @@ def t_min_rect_is_queryable():
     assert declared_min_rect(tpl, {"rooms": 3}) == (16, 1)
 
 
+# --------------------------------------------------------------------------- #
+#  RIMPLACE_ENGINE_DELTAS_1 (E1-E6)
+# --------------------------------------------------------------------------- #
+@case("E1: every plan built via run_template auto-carries a footprint CLEAR")
+def t_e1_auto_clear():
+    p = _run("function build(ctx) ctx:place('Wall',1,1) end", rect=Rect(0, 0, 6, 6))
+    assert len(p.clears) == 2, p.clears
+    assert p.clears[0].mode == "soft" and p.clears[1].mode == "all"
+    assert not [f for f in lint(p) if f.code == "footprint-not-cleared"]
+
+
+@case("NEGATIVE: footprint-not-cleared fires on a plan built without run_template")
+def t_e1_footprint_not_cleared_fires():
+    from .core import BuildPlan
+    p = BuildPlan({"footprint": [0, 0, 6, 6]})
+    p.add_thing("Wall", 1, 1, 0, None, "WALL")
+    assert [f for f in lint(p) if f.code == "footprint-not-cleared"], \
+        "a plan with no CLEAR at all was not caught"
+
+
+@case("E1: ctx:clear records a directive, and rejects a bad mode")
+def t_e1_clear_ctx():
+    p = _run("function build(ctx) ctx:clear(2,2,3,3,'soft') "
+             "ctx:clear(0,0,1,1,'bogus') end")
+    soft = [c for c in p.clears if (c.x, c.z, c.w, c.h) == (2, 2, 3, 3)]
+    assert soft and soft[0].mode == "soft", p.clears
+    assert [r for r in p.refusals if r.code == "clear-bad-mode"], p.refusals
+
+
+@case("E2: ctx:run resolves a role and records a directive")
+def t_e2_run():
+    p = _run("function build(ctx) assert(ctx:run(1,1,'e','WALL')) end")
+    assert len(p.runs) == 1, p.runs
+    assert p.runs[0].dir == "E" and p.runs[0].defName == "Wall", p.runs[0]
+    assert "Wall" in p.defnames()
+
+
+@case("NEGATIVE: ctx:run refuses an unknown direction")
+def t_e2_run_bad_dir():
+    p = _run("function build(ctx) ctx:run(1,1,'NE','WALL') end")
+    assert not p.runs
+    assert [r for r in p.refusals if r.code == "run-bad-dir"], p.refusals
+
+
+@case("E3: ctx:pawn records a directive for a real kindDef/faction/state")
+def t_e3_pawn():
+    p = _run("function build(ctx) assert(ctx:pawn('Jawa',1,1,'wild','dead')) end")
+    assert len(p.pawns) == 1, p.pawns
+    pawn = p.pawns[0]
+    assert (pawn.kindDef, pawn.faction, pawn.state) == ("Jawa", "wild", "dead"), pawn
+    assert "Jawa" in p.defnames()
+
+
+@case("NEGATIVE: ctx:pawn refuses faction=player outright")
+def t_e3_pawn_refuses_player():
+    p = _run("function build(ctx) ctx:pawn('Jawa',1,1,'player','alive') end")
+    assert not p.pawns, "a PAWN directive was recorded for faction=player"
+    assert [r for r in p.refusals if r.code == "pawn-player-faction"], p.refusals
+
+
+@case("NEGATIVE: ctx:pawn refuses an unknown state")
+def t_e3_pawn_bad_state():
+    p = _run("function build(ctx) ctx:pawn('Jawa',1,1,'wild','undead') end")
+    assert not p.pawns
+    assert [r for r in p.refusals if r.code == "pawn-bad-state"], p.refusals
+
+
+@case("E4: ctx:window replaces the wall cell, like ctx:door")
+def t_e4_window():
+    p = _run("function build(ctx) ctx:wall_rect(0,0,5,5) ctx:window(2,0) end")
+    at = p.thing_at(2, 0)
+    assert len(at) == 1 and at[0].role == "WINDOW", at
+
+
+@case("E4: rng.jitter(r) returns an offset in [-r,r]")
+def t_e4_rng_jitter():
+    p = _run("function build(ctx) "
+             "for i=1,50 do local j = rng.jitter(3) "
+             "assert(j >= -3 and j <= 3, 'jitter out of range: '..j) end "
+             "ctx:place('Wall',1,1) end")
+    assert p.things
+
+
+@case("E4: hug/clutter/aisle_ok exist and do what they say")
+def t_e4_prelude_helpers():
+    p = _run("function build(ctx) "
+             "local r = shell(ctx, 'Room', R(0,0,8,8), {floor='FLOOR', doors={'S'}}) "
+             "local n = hug(ctx, 'STOOL', r, {'N','E','W'}, {n=2}) "
+             "local c = clutter(ctx, r, {{role='CRATE', weight=2}, {role='BARREL', weight=1}}, 3) "
+             "local ok, cov, unreached = aisle_ok(ctx, r) "
+             "note(string.format('hug=%d clutter=%d ok=%s cov=%.2f unreached=%d', "
+             "n, c, tostring(ok), cov, unreached)) end")
+    assert any("hug=" in n for n in p.notes), p.notes
+    assert not [f for f in lint(p) if f.level == "ERROR"], \
+        [str(f) for f in lint(p) if f.level == "ERROR"]
+
+
+@case("E4: ctx:ruin removes wall cells and returns how many")
+def t_e4_ruin():
+    p = _run("function build(ctx) "
+             "local r = shell(ctx, 'Room', R(0,0,10,10), {floor='FLOOR', doors={'S'}}) "
+             "ctx:place_role('BED', 2, 2) "
+             "local removed = ctx:ruin(0.3) "
+             "note('ruin removed ' .. removed) end")
+    walls_left = [t for t in p.things if (t.role or "") == "WALL"]
+    assert len(walls_left) < 36, "ruin() removed no wall cells at all"
+    assert any("ruin removed" in n for n in p.notes)
+
+
+@case("NEGATIVE: ctx:ruin on a wall-less plan refuses rather than crashing")
+def t_e4_ruin_no_walls():
+    p = _run("function build(ctx) ctx:ruin(0.5) end")
+    assert [r for r in p.refusals if r.what == "ruin"], p.refusals
+
+
+@case("E6: interior-bare-ground fires for a room with an unfloored cell")
+def t_e6_bare_ground_fires():
+    p = _run("function build(ctx) ctx:room('Bedroom',0,0,5,5) "
+             "ctx:wall_rect(0,0,5,5) ctx:door(2,0) end")
+    # ctx:room() floors its own interior; delete one cell's terrain to prove
+    # the rule actually looks, rather than trusting room() always did its job.
+    any_cell = next(iter(p.terrain))
+    del p.terrain[any_cell]
+    assert [f for f in lint(p) if f.code == "interior-bare-ground"], \
+        "a room missing one floor cell was not caught"
+
+
+@case("NEGATIVE: regular-grid fires for >=2 equally-spaced lines, never for the walls")
+def t_e6_regular_grid_fires():
+    p = _run("function build(ctx) local r = shell(ctx, 'Room', R(0,0,10,4), "
+             "{floor='FLOOR', doors={'S'}}) "
+             "for _, x in ipairs({1,3,5,7}) do "
+             "ctx:place('Stool', x, 1) ctx:place('Stool', x, 2) end end")
+    f = [x for x in lint(p) if x.code == "regular-grid"]
+    assert f, "two parallel equally-spaced lines of Stool were not caught"
+    assert not [x for x in lint(p) if x.code == "regular-grid" and "Wall" in x.msg], \
+        "the room's own rectangular WALL perimeter false-positived as a lattice"
+
+
+@case("NEGATIVE: no-secondary fires for a primary with zero clutter, "
+     "but an OVERLAY secondary (a wall lamp) satisfies it")
+def t_e6_no_secondary_fires():
+    p = _run("function build(ctx) local r = shell(ctx, 'Bedroom', R(0,0,6,6), "
+             "{floor='FLOOR', doors={'S'}}) ctx:place_role('BED', 2, 2) end")
+    assert [f for f in lint(p) if f.code == "no-secondary"], \
+        "a bedroom with a bed and nothing else was not caught"
+    p2 = _run("function build(ctx) local r = shell(ctx, 'Bedroom', R(0,0,6,6), "
+              "{floor='FLOOR', doors={'S'}}) ctx:place_role('BED', 2, 2) "
+              "assert(ctx:wall_attach('WALL_LIGHT', 3, 4, 0)) end")
+    assert not [f for f in lint(p2) if f.code == "no-secondary"], \
+        "an overlay wall lamp should count as the room's secondary"
+
+
+@case("NEGATIVE: door-centred fires at the exact midpoint of a >=7 wall, "
+     "and door_on's own random default no longer lands there")
+def t_e6_door_centred_fires():
+    from .core import BuildPlan
+    p = BuildPlan({"footprint": [0, 0, 9, 9]})
+    p.add_room("r1", "Room", Rect(0, 0, 9, 9))
+    for x in range(9):
+        p.add_thing("Wall", x, 0, 0, None, "WALL")
+        p.add_thing("Wall", x, 8, 0, None, "WALL")
+    for z in range(1, 8):
+        p.add_thing("Wall", 0, z, 0, None, "WALL")
+        p.add_thing("Wall", 8, z, 0, None, "WALL")
+    p.things = [t for t in p.things if not (t.x == 4 and t.z == 0)]
+    p.add_thing("Door", 4, 0, 0, None, "DOOR")
+    assert [f for f in lint(p) if f.code == "door-centred"], \
+        "a door at the exact midpoint of a 9-long wall was not caught"
+    # door_on()'s own default must avoid landing there across many seeds
+    for seed in range(1, 30):
+        pl = _run("function build(ctx) local r = shell(ctx, 'Room', R(0,0,9,4), "
+                  "{floor='FLOOR', doors={'S'}}) end", seed=seed)
+        assert not [f for f in lint(pl) if f.code == "door-centred"], \
+            f"door_on landed on the exact midpoint at seed {seed}"
+
+
+@case("NEGATIVE: aisle-blocked fires when furniture walls off a primary")
+def t_e6_aisle_blocked_fires():
+    # Built directly on the IR (like the door-centred case above), not via a
+    # real BED defName: a real Bedroll's own footprint sits 1x2, and picking
+    # a corner cell for a symbolic test collides with the shell's own wall
+    # before the aisle-fill logic is even reached - the interior geometry is
+    # what this case is about, not a real thing's real size.
+    from .core import BuildPlan
+    p = BuildPlan({"footprint": [0, 0, 6, 6]})
+    p.add_room("r1", "Room", Rect(0, 0, 6, 6))
+    for x, z in Rect(0, 0, 6, 6).edge_cells():
+        p.add_thing("Wall", x, z, 0, None, "WALL")
+    p.things = [t for t in p.things if not (t.x == 2 and t.z == 0)]
+    p.add_thing("Door", 2, 0, 0, None, "DOOR")
+    # a bed tucked in the far corner (4,4), sealed off by two "walls" of its
+    # own (a barricade line a template built badly) at its only two in-bounds
+    # interior neighbours
+    p.add_thing("Bed", 4, 4, 0, None, "BED")
+    p.add_thing("Crate", 3, 4, 0, None, "CRATE")
+    p.add_thing("Crate", 4, 3, 0, None, "CRATE")
+    f = [x for x in lint(p) if x.code == "aisle-blocked" and x.level == "ERROR"]
+    assert f, "a bed sealed off by its own neighbours was not caught"
+
+
 def run_selftest() -> int:
     ok = fail = 0
     for name, fn in CASES:

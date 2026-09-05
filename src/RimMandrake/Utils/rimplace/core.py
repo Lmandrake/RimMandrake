@@ -95,6 +95,56 @@ class Refusal:
     code: str = "generator-refusal"
 
 
+@dataclass
+class Clear:
+    """RIMPLACE_ENGINE_DELTAS_1 E1. A rect the GenStep must destroy BEFORE any
+    FOUNDATION/terrain/things: mode="all" also mines out natural rock in the
+    rect (replacing it with the matching rough-rock TerrainDef, looked up per
+    rock type at GenStep-time - see GenStep_RimplacePlan.ExecuteClear, never
+    hardcoded here); mode="soft" leaves rock standing (plants/filth/chunks/
+    items only) for a template that wants to keep a rock lip (a cave mouth).
+
+    A non-rectangular ("blob") clear is authored as a template loop of many
+    1x1 Clear ops rather than a dedicated shape - `ctx:clear` takes any w/h,
+    including 1x1, and a Lua for-loop over a blob's cells is all a template
+    needs; no separate IR shape was worth the complexity for this pass.
+    """
+    x: int
+    z: int
+    w: int
+    h: int
+    mode: str = "all"          # "all" | "soft"
+
+
+@dataclass
+class Run:
+    """E2. Extend `defName` from (x,z) toward the map edge in cardinal
+    direction `dir` ("N"/"E"/"S"/"W"). This is engine-side (GenStep-time) by
+    necessity: a plan is authored at small offline coordinates and cannot
+    know the real map's edge, so the walk itself happens in C#
+    (GenStep_RimplacePlan.ExecuteRun), not here."""
+    x: int
+    z: int
+    dir: str
+    defName: str
+    stuff: str | None = None
+
+
+@dataclass
+class Pawn:
+    """E3. Spawn a pawn (state="alive") or its remains (state="dead" ==
+    freshly-killed corpse, "dessicated", "skeleton" - RimWorld's CompRottable
+    has no stage past Dessicated, so "skeleton" reads as the same terminal
+    RotStage; see GenStep_RimplacePlan.ExecutePawn). faction is "wild" (no
+    Faction, a feral creature/beast), a real FactionDef defName, or - per the
+    spec, checked at record time in Ctx.pawn - NEVER "player"."""
+    kindDef: str
+    x: int
+    z: int
+    faction: str = "wild"
+    state: str = "alive"
+
+
 class BuildPlan:
     """What every generator emits and the planner consumes."""
 
@@ -108,6 +158,9 @@ class BuildPlan:
         self.rooms: list[Room] = []
         self.notes: list[str] = []
         self.refusals: list[Refusal] = []
+        self.clears: list[Clear] = []        # E1
+        self.runs: list[Run] = []            # E2
+        self.pawns: list[Pawn] = []          # E3
 
     # -- emit ---------------------------------------------------------------
     def add_thing(self, defName, x, z, rot=0, stuff=None, role=None,
@@ -131,6 +184,21 @@ class BuildPlan:
         r = Room(rid, role, rect)
         self.rooms.append(r)
         return r
+
+    def add_clear(self, x, z, w, h, mode="all"):
+        c = Clear(int(x), int(z), int(w), int(h), str(mode))
+        self.clears.append(c)
+        return c
+
+    def add_run(self, x, z, dir, defName, stuff=None):
+        r = Run(int(x), int(z), str(dir), str(defName), str(stuff) if stuff else None)
+        self.runs.append(r)
+        return r
+
+    def add_pawn(self, kindDef, x, z, faction="wild", state="alive"):
+        p = Pawn(str(kindDef), int(x), int(z), str(faction), str(state))
+        self.pawns.append(p)
+        return p
 
     def refuse(self, what, reason, x=None, z=None,
                level="WARN", code="generator-refusal"):
@@ -158,6 +226,9 @@ class BuildPlan:
                        "doors": [list(d) for d in r.doors]} for r in self.rooms],
             "notes": self.notes,
             "refusals": [asdict(r) for r in self.refusals],
+            "clears": [asdict(c) for c in self.clears],
+            "runs": [asdict(r) for r in self.runs],
+            "pawns": [asdict(p) for p in self.pawns],
         }
 
     def to_json(self, indent=2) -> str:
@@ -172,6 +243,10 @@ class BuildPlan:
         out |= set(self.foundation.values())
         out |= set(self.roof.values())
         out |= set(self.floor_color.values())
+        out |= {r.defName for r in self.runs} | {r.stuff for r in self.runs if r.stuff}
+        out |= {p.kindDef for p in self.pawns}    # a PawnKindDef, not a ThingDef -
+        # the verifier's `defs` table is keyed by name across every def TYPE, so
+        # this checks it exists at all, which is the useful half of "never guess".
         return {d for d in out if d}
 
 

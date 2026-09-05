@@ -167,6 +167,9 @@ def _bind_rng(L, rng):
     rngt["int"] = rng.int
     rngt["chance"] = rng.chance
     rngt["pick"] = lambda t: rng.pick(list(t.values()) if hasattr(t, "values") else t)
+    # E4: rng.jitter(r) = rng.int(-r,r) - a bare offset, distinct from the
+    # prelude's existing `jitter(v, j)` global (which returns v OFFSET by this).
+    rngt["jitter"] = lambda r: rng.int(-abs(int(r)), abs(int(r)))
     L.globals()["rng"] = rngt
 
 
@@ -562,6 +565,18 @@ class Ctx:
                             if not (t.x == int(x) and t.z == int(z))]
         return self.place(d, x, z, rot, st, "DOOR")
 
+    def window(self, x, z, defName=None, stuff=None, rot=0):
+        """E4. A wall-slot window: exactly `door()`'s "replaces the wall cell,
+        not a door" shape, with WINDOW's own palette role/defName. A faction
+        with no WINDOW def for its tech (§9's Neolithic gap) resolves to nil
+        and this refuses cleanly through `place()`, the same as any other
+        unmapped role - never a silent skip."""
+        d = defName or self.role("WINDOW")
+        st = stuff if stuff is not None else self.role("WINDOW_STUFF")
+        self.plan.things = [t for t in self.plan.things
+                            if not (t.x == int(x) and t.z == int(z))]
+        return self.place(d, x, z, rot, st, "WINDOW")
+
     def wall_mount(self, role, x, z, rot=0):
         """Place a wall-mounted thing (cooler, vent, wall lamp) INTO a wall cell.
 
@@ -576,6 +591,161 @@ class Ctx:
         self.plan.things = [t for t in self.plan.things
                             if not (t.x == int(x) and t.z == int(z))]
         return self.place(d, x, z, rot, self.role(str(role) + "_STUFF"), role)
+
+    # ---- E1/E2/E3: directives the GenStep executes, not the offline IR -----
+    def clear(self, x, z, w, h, mode="all"):
+        """E1. Record a CLEAR: the GenStep destroys plants/filth/chunks/items
+        in this rect (mode="soft"), plus mineable natural rock replaced by its
+        own rough-rock terrain (mode="all"), BEFORE any FOUNDATION/terrain/
+        things. This is a directive on the PLAN, not a mutation of anything in
+        this offline IR - there is no "existing terrain" here to destroy; see
+        GenStep_RimplacePlan.ExecuteClear for the mapgen-time execution this
+        records intent for. A non-rectangular clear is a template loop calling
+        this with w=h=1 per cell - see `Clear`'s docstring in core.py.
+        """
+        mode = str(mode).lower()
+        if mode not in ("all", "soft"):
+            self.plan.refuse("clear", f"unknown mode {mode!r} (want all|soft)",
+                             int(x), int(z), level="ERROR", code="clear-bad-mode")
+            return False
+        self.plan.add_clear(x, z, w, h, mode)
+        return True
+
+    def run(self, x, z, dir, role):
+        """E2. Record a RUN: extend `role`'s defName from (x,z) toward the map
+        edge in cardinal direction `dir` ("N"/"E"/"S"/"W"), engine-side (a plan
+        is authored at small offline coordinates and cannot know the real map
+        edge - see GenStep_RimplacePlan.ExecuteRun)."""
+        dir = str(dir).upper()
+        if dir not in ("N", "E", "S", "W"):
+            self.plan.refuse("run", f"unknown dir {dir!r} (want N|E|S|W)",
+                             int(x), int(z), level="ERROR", code="run-bad-dir")
+            return False
+        d = self.role(str(role))
+        if d is None:
+            self.plan.refuse(f"role:{role}", "no palette entry", int(x), int(z))
+            return False
+        self.plan.add_run(x, z, dir, d, self.role(str(role) + "_STUFF"))
+        return True
+
+    def pawn(self, kindDef, x, z, faction="wild", state="alive"):
+        """E3. Record a PAWN: spawn a pawn (state="alive") or its remains
+        (state="dead"/"dessicated"/"skeleton" - see GenStep_RimplacePlan.
+        ExecutePawn for what each state maps to in CompRottable.RotStage,
+        which has no stage past Dessicated so "skeleton" reads the same as
+        fully dessicated). faction is "wild" (no Faction - a feral beast), a
+        real FactionDef defName, or - refused outright, never silently
+        substituted - "player": a mapgen template must never spawn a colonist.
+        """
+        faction = str(faction) if faction else "wild"
+        state = str(state) if state else "alive"
+        if faction == "player":
+            self.plan.refuse(str(kindDef),
+                             "PAWN may never spawn faction=player from a "
+                             "mapgen template", int(x), int(z),
+                             level="ERROR", code="pawn-player-faction")
+            return False
+        if state not in ("alive", "dead", "dessicated", "skeleton"):
+            self.plan.refuse(str(kindDef),
+                             f"unknown state {state!r} (want alive|dead|"
+                             "dessicated|skeleton)", int(x), int(z),
+                             level="ERROR", code="pawn-bad-state")
+            return False
+        self.plan.add_pawn(kindDef, x, z, faction, state)
+        return True
+
+    # ---- E4: the ruin pass (spec §8.12) -----------------------------------
+    # Lives on Ctx (Python), not the Lua prelude, unlike hug/clutter/aisle_ok:
+    # it mutates the WHOLE plan's things/roof/terrain collections wholesale
+    # (delete this wall run, replace that thing with its ruin cousin), which
+    # is direct surgery on the plan's own invariants (footprint bounds, one
+    # owner per cell) that Python already enforces on every other mutation.
+    # Reimplementing that through Lua's constrained per-cell API would either
+    # duplicate the bookkeeping or bypass it; this keeps ONE place that owns
+    # plan mutation. Simplified from the full 8-step spec pass (breach,
+    # attrition, roof, floor, furniture, fight, after, time): this covers
+    # breach + attrition + roof-near-breach + furniture rolls + floor ash,
+    # deliberately deferring fight-specific dressing (attacker-conditional
+    # weapon/blood placement) and the "after" grave/skeleton distribution to
+    # whichever archetype pass calls PAWN itself - `ctx:ruin` guarantees the
+    # STRUCTURAL damage every ruined archetype needs, not every flavour beat.
+    _RUIN_COUSIN = {
+        "BED": "AncientBed", "STORAGE": "AncientShelf",
+        "SHELF_SMALL": "AncientShelf", "TURRET": "VFEPD_AncientBrokenTurret",
+        "LIGHT": "AncientLamp", "GENERATOR": "AncientGenerator",
+        "CRATE": "AncientCrate", "SANDBAG": "SandbagRubble",
+    }
+
+    def ruin(self, pct, attacker=None):
+        """Damage THIS plan's shell, roof, floor and furniture. `pct` is the
+        fraction (0-1) of remaining wall cells removed after the initial
+        breach. Returns the number of wall cells removed (breach + attrition),
+        so a template/test can assert the pass actually did something."""
+        pct = max(0.0, min(1.0, float(pct)))
+        walls = [t for t in self.plan.things if (t.role or "").upper() == "WALL"]
+        if not walls:
+            self.plan.refuse("ruin", "no WALL things on this plan to damage")
+            return 0
+        removed = 0
+        # (1) breach: one contiguous run of 2-4 wall cells gone, with rubble
+        # in and around the gap.
+        breach = self.rng.pick(walls)
+        same_row = sorted([t for t in walls if t.z == breach.z], key=lambda t: t.x)
+        same_col = sorted([t for t in walls if t.x == breach.x], key=lambda t: t.z)
+        run = same_row if len(same_row) >= len(same_col) else same_col
+        n_breach = min(len(run), self.rng.int(2, 4))
+        for t in run[:n_breach]:
+            self.plan.things.remove(t)
+            removed += 1
+            self.plan.add_thing(self.role("SCRAP") or "ChunkSandstone",
+                                t.x, t.z, 0, None, "SCRAP", overlay=True)
+        # (2) attrition: pct of what remains, in short runs.
+        remaining = [t for t in self.plan.things if (t.role or "").upper() == "WALL"]
+        target = int(len(remaining) * pct)
+        self.rng.shuffle(remaining)
+        for t in remaining[:target]:
+            if t in self.plan.things:
+                self.plan.things.remove(t)
+                removed += 1
+        # (3) roof: drop roof within 2 cells of any cell this pass cleared.
+        gone = {(t.x, t.z) for t in walls} - {(t.x, t.z) for t in
+               [x for x in self.plan.things if (x.role or "").upper() == "WALL"]}
+        for (rx, rz) in list(self.plan.roof):
+            if any(abs(rx - gx) + abs(rz - gz) <= 2 for gx, gz in gone):
+                del self.plan.roof[(rx, rz)]
+        # (4) floor: Filth_Ash over 30% of the interior. The spec also wants
+        # the terrain ITSELF swapped to a burned cousin per original type
+        # (BurnedCarpet/BurnedStrawMatting/...) - deliberately deferred: that
+        # needs a verified original-terrain -> burned-terrain map per def, and
+        # guessing one is exactly what "never guess a defName" forbids. An
+        # ash overlay is honest with only defNames already in the palette.
+        ash = "Filth_Ash"
+        for (fx, fz) in list(self.plan.terrain):
+            if self.rng.chance(0.3) and not self.occupied(fx, fz):
+                self.plan.add_thing(ash, fx, fz, 0, None, "DECAL", overlay=True)
+        # (5) furniture rolls: 40% stays, 25% -> ruin cousin, 20% -> rubble,
+        # 15% deleted. Walls/doors/windows are excluded - already handled
+        # above by the breach/attrition passes, which have their own rules.
+        SKIP_ROLES = {"WALL", "DOOR", "WINDOW"}
+        for t in list(self.plan.things):
+            role = (t.role or "").upper()
+            if role in SKIP_ROLES or t.overlay:
+                continue
+            roll = self.rng.chance
+            if roll(0.40):
+                continue
+            elif roll(0.25 / 0.60):
+                cousin = self._RUIN_COUSIN.get(role)
+                if cousin:
+                    t.defName = cousin
+            elif roll(0.20 / 0.35):
+                self.plan.things.remove(t)
+                self.plan.add_thing(self.role("SCRAP") or "ChunkSlagSteel",
+                                    t.x, t.z, 0, None, "SCRAP", overlay=True)
+            else:
+                self.plan.things.remove(t)
+        self.note(f"ruin(pct={pct}): {removed} wall cell(s) breached/removed")
+        return removed
 
     def room(self, role, x, z, w, h, roofed=True):
         """Declare a room. Floors it, roofs it, and records it in the plan so
@@ -648,6 +818,17 @@ def run_template(path: str | Path, rect: Rect, params: dict,
     })
     rng = SeededRng(seed)
     ctx = Ctx(plan, rect, params, palette, rng, site)
+
+    # E1: every plan gets these two CLEAR directives, ALWAYS, before anything
+    # a template does - this is the generator's own guarantee (R1), not
+    # something a template must remember to author. `footprint + 1 buffer,
+    # soft` first (plants/filth/chunks/items only, so a neighbouring rock
+    # formation the footprint merely grazes keeps its rock), then the exact
+    # footprint at `all` (rock too). A template may still call `ctx:clear()`
+    # itself for a non-rectangular blob (a cave lair) - those append AFTER
+    # these two, which is exactly the order compile_flat/compile_calls emit.
+    plan.add_clear(rect.x - 1, rect.z - 1, rect.w + 2, rect.h + 2, "soft")
+    plan.add_clear(rect.x, rect.z, rect.w, rect.h, "all")
 
     L = _sandboxed_runtime(rng)
 
