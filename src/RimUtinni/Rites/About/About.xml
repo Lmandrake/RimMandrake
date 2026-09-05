@@ -23,7 +23,7 @@ design/Jawa/research_review/functionless_tech_candidates.md.</description>
   <modDependencies>
     <li>
       <packageId>mandrake.rut.antiquities</packageId>
-      <name>Antiquities</name>
+      <displayName>Antiquities</displayName>
     </li>
   </modDependencies>
   <loadAfter>

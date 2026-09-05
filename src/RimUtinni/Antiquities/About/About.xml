@@ -24,7 +24,7 @@ per item family — see the item's own build notes.</description>
   <modDependencies>
     <li>
       <packageId>ludeon.rimworld</packageId>
-      <name>Core</name>
+      <displayName>Core</displayName>
     </li>
   </modDependencies>
   <loadAfter>
