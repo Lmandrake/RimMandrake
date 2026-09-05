@@ -2957,6 +2957,11 @@
     "date": "2026-09-04",
     "sha": "f914ab5a"
   },
+  "src/RimStarWars/Livestock/Defs/ThingDefs_Animals/ThingDefs_Karrask.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "42166e1a"
+  },
   "src/RimStarWars/Livestock/Source/CompLightAversion.cs": {
     "cleanCount": 1,
     "date": "2026-09-04",
