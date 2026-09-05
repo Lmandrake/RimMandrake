@@ -117,7 +117,7 @@
   ==========================
   50 lines authored, 30 Insult and 20 Slight, emitted as 200 rules because each
   line appears once per speaker condition (PlayerColony, PlayerTribe,
-  OuterRim_Jawa, OuterRim_JawaTribal). Grammar conditions AND together and there
+  RSW_Jawa, RSW_JawaTribal). Grammar conditions AND together and there
   is no OR, so four cases means four copies. Covering only the first would leave
   tribal starts and every NPC Jawa insulting in English.
 
