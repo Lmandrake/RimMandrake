@@ -369,13 +369,84 @@ one type at a time but has no built-in "search every method body in every
 loaded assembly for this IL pattern" mode — that tool does not exist yet
 and would be a real build, not a quick check.
 
+## 2026-09-05 (FOUNDRY) — full 8-way decompile sweep of all ~381 remaining mods: one real suspect found
+
+Ran the systematic decompile sweep option (a) from above, in 8 parallel batches
+of ~58 mod/assembly groups each (`Transient/startup_types_full_sweep.json`'s
+1539 rows minus the 7 assemblies already ruled out). All 8 batches completed
+(a background-task deadlock — subagents waiting on a Monitor notification
+that never reaches a subagent — hit 4 of the 8 batches and needed a
+SendMessage nudge each to recover; noted for `efficient-subagents`).
+
+**A real, confirmed reflective write into `wildAnimals` was found:**
+`kopp.biomecompatibilityproject` ("Biome Compatibility Project"),
+`BiomeCompatibilityProject.dll`
+(`.../workshop/content/294100/3535674283/1.6/Assemblies/`). Its internal
+`Creatures` class does exactly the mechanism this item has been hunting for:
+```csharp
+List<BiomeAnimalRecord> f = Utility.GetPrivateInstanceFieldPerReflection
+    <List<BiomeAnimalRecord>>(biomeToPatch, "wildAnimals");
+...
+f.Add(new BiomeAnimalRecord { animal = pawnKind, commonality = num5 });
+```
+called from `PatchCreaturesToBiomes()` / `PatchPollutedCreaturesToBiomes()` /
+`PatchCoastalCreaturesToBiomes()`, all invoked from `StartUp`'s static
+constructor via `LongEventHandler.ExecuteWhenFinished`, gated by
+`Settings_BCP.settings.patchAnimals`. **Caveat, not yet resolved**: as
+decompiled, this only iterates `StartUp.ModAddedCreatures` ×
+`StartUp.ModAddedBiomes` (mod-added animals into mod-added biomes) and only
+adds a record when average commonality across "representative" biomes is
+`> 0` — it doesn't obviously explain padding EVERY biome (including vanilla
+ones) to exactly 1024 records at commonality 0 for entries that never
+qualify. **Confirmed active**: `kopp.biomecompatibilityproject` IS in the live
+`ModsConfig.xml` activeMods list. This sharpens the caveat above into a live
+hypothesis worth checking next: `StartUp.ModAddedCreatures` most likely means
+"every animal `PawnKindDef` added by any of the 594 mods" (i.e. everything
+non-vanilla), not a small hand-picked set — on a pack this size that count
+could plausibly land close to 1024, and "commonality 0 for anything without
+measured data" is exactly this item's original symptom ("existing weights
+kept, everything else at commonality 0"). Not yet proven — needs the actual
+`StartUp.ModAddedCreatures.Count` read from a live game, which no bridge tool
+does yet (closest is `jawa/get_defs`, scalar-only per the `rimbridge-companion`
+skill's own noted gap).
+
+**A methodology gap in this item's own history was also found and matters
+more than the one suspect**: all three of this item's prior "exhaustive"
+`strings`-based sweeps used ASCII-mode `strings`, which misses .NET's
+UTF-16LE user-string literals entirely. Confirmed directly:
+`strings BiomeCompatibilityProject.dll` (default, ASCII) finds zero
+`wildAnimals` hits; `strings -a -el BiomeCompatibilityProject.dll`
+(UTF-16LE) finds `wildAnimals`, `pollutionWildAnimals`, `coastalWildAnimals`
+immediately. **Every prior "zero hits" string-search claim across the whole
+~594-mod tree in this item's history should be treated as unverified**, not
+just for this one mod — the search tool itself had a blind spot the whole
+time.
+
+Everything else in the 8 batches (~430 groups total minus the one suspect
+above and a handful of unlocatable DLLs, mostly this project's own local
+`mandrake.*` mods and version-mismatched workshop items) came back CLEAR —
+no other reflective or literal `wildAnimals`/`AllWildAnimals`/`BiomeDef`
+write found. Full per-batch decompile logs live in each batch's own
+`/tmp/.../scratchpad/` output (session-local, not committed — Transient
+convention would apply if these were promoted to the repo, but they're
+correctly disposable working files).
+
 ## criteria
-- [ ] **The padding assembly named with the method that does it** — NOT MET. Both
-      Harmony's patch table (`jawa/harmony_patches`) and ordinary static-init sites
-      (`jawa/startup_types`) have now been swept on the live full mod list; neither
-      instrument found a smoking gun. One live thematic lead (`ChooseBiomeCommonality`)
-      is unconfirmed pending a decompile. Both instruments exist, are deployed, and
-      are proven live — the remaining gap is IL/decompile-level, not tooling.
+- [ ] **The padding assembly named with the method that does it** — STILL NOT
+      MET, but materially advanced. One real candidate write-site is now
+      confirmed to exist (`kopp.biomecompatibilityproject`), but its exact
+      code path doesn't yet obviously explain "every biome, every animal,
+      commonality 0" — needs a live activation check before it can be called
+      the mechanism rather than a mechanism. Harmony's patch table
+      (`jawa/harmony_patches`), ordinary static-init sites
+      (`jawa/startup_types`), and now a full 8-way decompile of every
+      remaining candidate assembly have all run on the live full mod list.
+      The next gap, if this suspect doesn't pan out, is genuinely novel: an
+      IL-body pattern search for `Stfld`/`SetValue` against a
+      `List<PawnKindDef>`-shaped field across assemblies this sweep's
+      type-list-based approach might not have surfaced (a type not owning a
+      `[StaticConstructorOnStartup]`/`Mod`-subclass row at all, e.g. one
+      reached only via a Harmony patch target already swept separately).
 - [ ] Owner ruling on exclusivity (145 non-cast animals in Desert) and on the 10 excluded
       Anomaly entity records — **owner's call, not FOUNDRY's**, per the item's own framing.
 - [ ] `biome_animal_conflicts.py`'s b-side (`race.wildBiomes`) validity — not re-checked this
