@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-05T15:42:31Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-05T15:43:26Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -51,4 +51,14 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-_none._
+Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
+
+## BENCH_REBOOT_HANDOFF_20260905 BENCH reboot handoff 2026-09-05 - READ FIRST on wake
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/BENCH_REBOOT_HANDOFF_20260905.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BENCH_REBOOT_HANDOFF_20260905.md
