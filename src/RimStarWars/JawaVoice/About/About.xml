@@ -7,7 +7,7 @@
 
 MECHANISM (assembly-free, additive): for each SpeakUp InteractionDef, this ADDS high-priority, identity-gated Jawaese lines into the def's rulesStrings. Jawa pawns match the gate and speak Jawaese; everyone else (temporary non-Jawa slaves included, by design; and all non-player factions) fails the gate and falls through to SpeakUp's untouched vanilla English lines. Nothing is replaced, so all of SpeakUp's dynamic conditional logic survives.
 
-IDENTITY GATE (dual): colonists via INITIATOR_faction==PlayerColony/PlayerTribe; encountered NPC Jawas via INITIATOR_kind==OuterRim_Jawa/OuterRim_JawaTribal. (SpeakUp exposes no xenotype condition, so faction+kind is the correct proxy for an all-Jawa colony.)
+IDENTITY GATE (dual): colonists via INITIATOR_faction==PlayerColony/PlayerTribe; encountered NPC Jawas via INITIATOR_kind==RSW_Jawa/RSW_JawaTribal. (SpeakUp exposes no xenotype condition, so faction+kind is the correct proxy for an all-Jawa colony.)
 
 VOICE POLICY (per jawa_dialogue_source_audit.md): where a real Ben Burtt licensed phrase fits the moment it is used verbatim (Utinni!, M'um m'aloo, Ibana, Nyeta, Taa baa, ...); the long tail is phonology-matched synthesized Jawaese with the original English kept as a parenthetical situational gloss. Synthesized lines are creative pastiche and never re-enter the attested corpus.
 

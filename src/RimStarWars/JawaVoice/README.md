@@ -29,12 +29,12 @@ top at higher priority for pawns who qualify.
 
 SpeakUp's grammar exposes **no `xenotype` condition** (verified from its
 `ExtraGrammarUtility.cs`), and Jawa-ness in this stack is a *xenotype*
-(`OuterRim_Jawa`). So the gate is a dual proxy:
+(`RSW_MandrakeJawa`). So the gate is a dual proxy:
 
 | Who | Condition |
 |---|---|
 | Colonists (all-Jawa colony) | `INITIATOR_faction==PlayerColony` / `PlayerTribe` |
-| Encountered NPC Jawas | `INITIATOR_kind==OuterRim_Jawa` / `OuterRim_JawaTribal` |
+| Encountered NPC Jawas | `INITIATOR_kind==RSW_Jawa` / `RSW_JawaTribal` |
 
 **Known, accepted leak:** a temporary non-Jawa slave in the colony also matches
 the faction gate and will speak Jawaese until sold. This was accepted as fine.
