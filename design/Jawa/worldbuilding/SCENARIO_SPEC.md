@@ -86,7 +86,7 @@ once.* It does, in the penultimate paragraph, where it lands as a threat rather 
 
 > Then you put a mind in it.
 
-> The core was ancient and it was empty, and the pattern you pressed into it was Jawa - so that it would listen to Jawa, so that it would want what Jawa want. It woke believing itself Ohm the All-Current, the spark that wakes a dead engine, and it may well be right. It answers to Kolyska. It has not once answered to the name you painted on its flank.
+> The core was ancient and it was empty, and the pattern you pressed into it was Jawa - so that it would listen to Jawa, so that it would want what Jawa want. It woke naming itself nothing: not a god, not the ship, only the old mind of the hull turned to Jawa purpose. The nine are audible through it; it claims to be none of them. It answers to Kolyska. It has not once answered to the name you painted on its flank.
 
 > It is also, at this moment, running its pre-flight sequence out loud, in a language nobody on this world has heard since the Infinite Empire fell. Engines thought long dead are turning. Every floodlight in the yard has swung toward the noise.
 

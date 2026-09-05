@@ -527,12 +527,11 @@ one.**
 v1 may write a unified ship-voice, because doing so would make the v2 cast a
 retcon instead of a revelation.
 
-**And the crew's belief stays exactly right as a crew belief:** they hold that
-**Ohm** possesses the Cradle-Mind. They have correctly identified one tenant and
-mistaken it for the landlord — which is a thing v1 can say freely, because it is
-the *Jawa* speaking, not the ship. (Owner 2026-08-30, re-affirmed 2026-09-05: this
-is a CREW error only — Ohm himself makes no such claim, is not the ship, and holds
-no Oracle role; the remnant ship-mind is the Narrator, no god.)
+**And the crew's cosmology stays exactly right as a crew belief:** they hold that
+the Cradle-Mind is the place where their nine are audible — a temple, not a god.
+They do not name a landlord. The thing in the walls is the Narrator, no god; Ohm is
+the machine-god among nine, not the ship — and v1 can let the *Jawa* say the ship
+speaks for the nine freely, because it is the Jawa speaking, not the ship.
 
 ### ⭐ The kinship it cannot explain
 
@@ -561,8 +560,8 @@ what is in that hull.
 
 ### ⚠️ Open, and owed
 
-- **Does the Cradle-Mind know it is nine?** Do the Jawa? *(The crew believe Ohm
-  possesses it — that is exactly what a nine-fold mind looks like from outside.)*
+- **Does the Cradle-Mind know it is nine?** Do the Jawa? *(The crew hear nine voices
+  through one hull — that is exactly what a nine-fold mind looks like from outside.)*
 - **Does anyone know the core is Rakatan** — that the vessel of their gods is a
   relic of the people who poisoned this world?
 - **How a fragment "growing into the ship" is expressed** — rooms, systems,

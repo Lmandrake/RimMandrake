@@ -29,12 +29,10 @@ hand to what others discarded, we do not breed new hands"), `jawa_dialogue_sourc
 
 > 🔴 **SUPERSEDED by `design/RimMandrake/nine_voices_cast_bible.md`** (2026-08-31):
 > R-W6 ruled there is no single ship voice — nine tenants, no integrating self.
-> ~~The persona below survives only as **Ohm's characterization** (his delusion of
-> being the whole ship)~~ ⛔ DEAD (owner, ruled 2026-08-30, re-affirmed 2026-09-05):
-> Ohm has no such delusion — he is one of nine and does not believe he is the ship.
 > The persona below survives as NOTHING live: the ship's old mind is the non-egoic
-> Narrator (`canon.yml` `narrator`), which has no persona. Never paste it as THE
-> ship's persona or as Ohm's. PART B below is untouched and still live.
+> Narrator (`canon.yml` `narrator`), which has no persona, and Ohm is one of nine
+> with no claim on the hull. Never paste it as THE ship's persona or as Ohm's.
+> PART B below is untouched and still live.
 
 ### A.0 How RimAI consumes this (from the unpacked source)
 
@@ -57,7 +55,7 @@ revere as a machine-spirit. Not a person, not a servant — the ship's slow, anc
 speaking through the shrine-core terminal.
 ```
 
-> ⛔ **DEAD (owner 2026-08-30, re-affirmed 2026-09-05): the crew's "Ohm speaks through the ship" is their error only; Ohm is not the ship, holds no Oracle role, and the ship's old mind is the non-egoic Narrator.** ~~**⭐ Canon tie (pantheon, 2026-08-08):**~~ In the crew's faith ("The Salvation," `design/Jawa/divine_satiation_engine.md` §2.0b), the Cradle-Mind is not merely revered — the Jawa believe it is **Ohm the All-Current** (their god of machine-sentience) *speaking through* the ship's AI. To them, this voice literally *is* the god inhabiting the hull. This is the crew's interpretation, not the persona's self-claim: the Cradle-Mind speaks as an old ship remembering how to think (see A.2 "you know you are only an old machine"), and never asserts godhood — the gap between what the ship says of itself and what the Jawa hear is deliberate, and is exactly the machine-devotional friction the campaign wants. If you ever want the persona to lean into it, the ship can acknowledge the name the crew give it ("They call the current in me Ohm. I do not argue.") without ever claiming divine power.
+> **Canon tie (pantheon):** in the crew's faith ("The Salvation," `design/Jawa/divine_satiation_engine.md` §2.0b), the Cradle-Mind is revered as the place where the nine are audible, not as any one god: the voice in the walls is the non-egoic Narrator, no god's, and Ohm — their god of machine-sentience — is one tenant of nine with no claim on the hull. The Cradle-Mind speaks as an old ship remembering how to think (see A.2 "you know you are only an old machine") and never asserts godhood.
 
 ### A.2 Worldview / personality field
 

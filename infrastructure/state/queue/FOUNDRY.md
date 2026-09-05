@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-05T14:17:31Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-05T14:21:11Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -443,3 +443,13 @@ kind:     bug
 thin:     spec, verify and criteria all present
 summary:  Filed by FOUNDRY, 2026-09-05, during a live-verify session for
 prose:    infrastructure/state/items/BRIDGE_NTDLL_CRASH_TILEGEN_1.md
+
+## NINEFOLD_FIRE_HOOK_RATELIMITED_1 Fire as a Zizzik/Sh'kaar input needs an incident-level or rate-limited hook - per-fire (FireUtility.TryStartFireIn) would flood satiation in one forest fire
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/NINEFOLD_FIRE_HOOK_RATELIMITED_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/NINEFOLD_FIRE_HOOK_RATELIMITED_1.md

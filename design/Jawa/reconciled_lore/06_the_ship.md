@@ -38,11 +38,10 @@ tenants plus the Cradle's old purpose, sharing hardware, nothing above them.
 the walls calls itself nothing. A conversation with the ship is a conversation
 with whoever answered; ask twice and a different god may take it, and neither
 will remember or accept that the other spoke. Forbidden: any unified voice
-with moods, any self-description, any "my other selves." The crew believe
-**Ohm possesses the Cradle-Mind** — they have correctly identified one tenant
-and mistaken it for the landlord. This is a CREW error and nothing more (owner
-2026-08-30, re-affirmed 2026-09-05): Ohm does not believe he is the ship, is not
-the ship, and holds no Oracle role; the voice that is no god is the Narrator above.
+with moods, any self-description, any "my other selves." The crew name no
+landlord: to them the Cradle-Mind is the temple where all nine are audible, and
+Ohm — the machine-god — is one tenant of nine, not the ship and not its voice.
+The voice that is no god is the Narrator above.
 
 **Each god seeks to grow into THEIR body — the ship — in the presence of the
 other eight. One hull, nine claimants. That is the campaign arc.** Beneath

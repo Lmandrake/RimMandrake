@@ -837,8 +837,8 @@ These are places where I would be inventing lore if I proceeded, so I have stopp
    player-buildable at all or hand-placed at ship creation.
 
 4. **Which god owns the grav-engine?** §1 of `ship_distinctive_features.md` says "the engine
-   is literally the object of the faith", but §2.0b gives **Ohm** the ship's machine-spirit
-   (he "possesses the Cradle-Mind") and **Rekko** the restoration imperative, and §2.0d names
+   is literally the object of the faith", but §2.0b gives **Ohm** the living machine (one
+   tenant of nine, not the ship) and **Rekko** the restoration imperative, and §2.0d names
    **Rekko ⇄ Ozzik** as "the sharpest internal war in the pantheon". The shrine-core sigil is
    a statement about which program is winning. **I should not pick that by accident with a
    texture.**

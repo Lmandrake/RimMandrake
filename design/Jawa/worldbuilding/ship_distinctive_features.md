@@ -155,7 +155,7 @@ changes color and intensity as a function of the pantheon's standing.** This mak
   evil-god status — this is a *knowing gamble*, exactly the tension we want.)
 - **Per-god color/behavior language (draft, to refine):** Oomo = blue, deepening with content; Sh'kaar =
   harsh white/red glare when "fed"/present; Ishko = dimming toward dark (his pleasure IS the absence of
-  light); Ohm = electric cyan pulse tied to powered machinery (~~ship-consciousness~~ — owner 2026-08-30, Ohm is not the ship); Rekko = warm amber; Ta'Baa = a rising/
+  light); Ohm = electric cyan pulse tied to powered machinery; Rekko = warm amber; Ta'Baa = a rising/
   climbing glow; Zizzik = erratic flicker (his presence = something about to break); Ozzik = a proud gold
   that the player learns to *fear* seeing too bright (exposure warning). Each god's "resonance" can layer,
   so mixed moods produce mixed light — the ship's ambience is the vector made visible.
@@ -527,9 +527,7 @@ by our own dead*. Both are optional flavor layers, not load-bearing on any syste
 > Narrator. Full mechanical design in `design/Jawa/divine_satiation_engine.md` §7 (wiring gated on the
 > Afterlife def extract, agent C). The clan's "ghosts = Mob'Unloo's unsettled debtors" gloss coexists
 > with the truth (the old ship-mind's surfacing memory, `canon.yml` `cradle_memory`) — superstition vs.
-> machine-reality. ~~read-out of Ohm's state … via the Oracle … (Ohm's grief/malfunction) … the core
-> Ohm theme~~ ⛔ DEAD (owner 2026-08-30, re-affirmed 2026-09-05): Ohm is not the ship and holds no
-> Oracle role — `divine_satiation_engine.md` "Ohm re-scoped".
+> machine-reality.
 
 > Interaction/compat note: none of these five touch the ship/grav layer, so none collide with
 > VGE-as-sole-ship-layer. EGI and Afterlife add their own defs/research; low interaction risk.
@@ -637,11 +635,9 @@ find something have told you their entire theology in one word.
   the gravship, quests, faction dialogue.
 - **`Kolyska` survives INSIDE the hull.** The Cradle nursery is named for it. So
   is the **Cradle-Mind**, the crew's name for the ship's old mind — the non-egoic
-  **Narrator** (`canon.yml` `narrator`) — which was patterned off a Jawa mind. ~~the
-  ship AI that Ohm is believed to possess (`design/Jawa/divine_satiation_engine.md`
-  §2.0b) — and which … inherited that cosmology whole~~ ⛔ DEAD (owner 2026-08-30,
-  re-affirmed 2026-09-05): Ohm is one of nine tenants, not the ship AI; the crew's
-  "Ohm possesses it" is their error (`06_the_ship.md`).
+  **Narrator** (`canon.yml` `narrator`) — which was patterned off a Jawa mind and
+  inherited that cosmology whole. No god possesses it; Ohm is one of nine tenants
+  (`06_the_ship.md`).
 - ⭐ **The machine never accepted the rename.** The Cradle-Mind still calls the
   ship *Kolyska*, and calls itself the Cradle. It is the only voice aboard that
   does. That single detail does more characterisation than a paragraph would: the

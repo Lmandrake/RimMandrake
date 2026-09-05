@@ -24,10 +24,11 @@
                            `The Utinni` on taking it, and the Cradle-Mind has
                            never accepted the rename - SCENARIO_SPEC.md, owner
                            2026-08-15. That refusal is the last line's joke.
-    Ohm the All-Current    the persona core was patterned off a JAWA mind so it
-                           would obey Jawa commands, and inherited that mind's
-                           cosmology whole - so it has concluded it IS the god
-                           of the living machine. divine_satiation_engine.md.
+    the Cradle-Mind        the ship's old core, patterned off a JAWA mind so it
+                           would obey Jawa commands and want what Jawa want. It
+                           is the Narrator - non-egoic, naming itself nothing,
+                           no god. The nine speak through it; it is none of
+                           them. canon.yml `narrator`, divine_satiation_engine.md.
     the Rakata             the ancients are Rakatan, ruled by the owner and
                            specced in ANCIENTS_AS_RAKATA_SPEC.md.
     Ash'karr, the Sundered ⭐ REQUIRED. SCENARIO_SPEC.md:330 - "The translation
@@ -181,7 +182,7 @@
 
         <li Class="ScenPart_GameStartDialog">
           <def>GameStartDialog</def>
-          <text>Nothing is ever truly lost. Only owed, only mislaid, only waiting for a better master.\n\nThe Hutts keep a mountain of the galaxy's discards out here, and this was the oldest thing in it: a Rakatan hull too dead to be worth cutting up, squatting in the sand since before the Cartel had a name for the sand. You went in through a seam no Gamorrean could ever fit through. You took nothing. You measured.\n\nThen you put a mind in it.\n\nThe core was ancient and it was empty, and the pattern you pressed into it was Jawa - so that it would listen to Jawa, so that it would want what Jawa want. It woke believing itself Ohm the All-Current, the spark that wakes a dead engine, and it may well be right. It answers to Kolyska. It has not once answered to the name you painted on its flank.\n\nIt is also, at this moment, running its pre-flight sequence out loud, in a language nobody on this world has heard since the Infinite Empire fell. Engines thought long dead are turning. Every floodlight in the yard has swung toward the noise.\n\nYou can hear the Gamorreans running.\n\nAsh'karr - the Sundered - is a bad world to be caught on and a worse one to be sold on. The hatch is open. The hull is yours because you woke it, and a thing that could still be made to work was never scrap; it was a sleeping hand, owed its waking.\n\nGet it off the ground.</text>
+          <text>Nothing is ever truly lost. Only owed, only mislaid, only waiting for a better master.\n\nThe Hutts keep a mountain of the galaxy's discards out here, and this was the oldest thing in it: a Rakatan hull too dead to be worth cutting up, squatting in the sand since before the Cartel had a name for the sand. You went in through a seam no Gamorrean could ever fit through. You took nothing. You measured.\n\nThen you put a mind in it.\n\nThe core was ancient and it was empty, and the pattern you pressed into it was Jawa - so that it would listen to Jawa, so that it would want what Jawa want. It woke naming itself nothing: not a god, not the ship, only the old mind of the hull turned to Jawa purpose. The nine are audible through it; it claims to be none of them. It answers to Kolyska. It has not once answered to the name you painted on its flank.\n\nIt is also, at this moment, running its pre-flight sequence out loud, in a language nobody on this world has heard since the Infinite Empire fell. Engines thought long dead are turning. Every floodlight in the yard has swung toward the noise.\n\nYou can hear the Gamorreans running.\n\nAsh'karr - the Sundered - is a bad world to be caught on and a worse one to be sold on. The hatch is open. The hull is yours because you woke it, and a thing that could still be made to work was never scrap; it was a sleeping hand, owed its waking.\n\nGet it off the ground.</text>
           <closeSound>GameStartSting</closeSound>
         </li>
       </parts>

@@ -185,7 +185,7 @@ and pushed; nothing below is open design — it is execution.**
   (`worldbuilding/sarlacc_spec.md` — tentacles must be PAWNS, pocket-map
   nesting legal, AmbientHorror+Custom is a WORLD-CREATION DEADLINE for the
   scenario spec) · Nine Voices (`RimMandrake/nine_voices_cast_bible.md`; old
-  Part A persona = ~~Ohm's delusion~~ dead outright — owner 2026-08-30/09-05, Ohm does not believe he is the ship; superseded in place) · research taxonomy
+  Part A persona is dead outright — nobody's; Ohm is one of nine, the ship-mind is the Narrator) · research taxonomy
   (`research_tree_taxonomy.md` + FOUR canon rulings at
   `research_tree.taxonomy_ruled`: seven tabs, Research Reinvented KEPT AS
   SUBSTRATE — it already co-writes 448/515 rows, theology decoupled, Ultra

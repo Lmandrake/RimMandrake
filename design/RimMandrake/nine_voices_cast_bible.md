@@ -54,15 +54,10 @@ Rivals: names none; refers to Sh'kaar only as "the eye." Refusal: growth is
 surface area. *"More of you is more to see."*
 
 ### ② Ohm the All-Current — the living machine, lonely for his hands
-> ⛔ **RE-SCOPED (owner, ruled 2026-08-30, re-affirmed 2026-09-05 —
-> `divine_satiation_engine.md` "Ohm re-scoped", `canon.yml` `narrator`):** Ohm does
-> NOT believe he is the ship and never speaks as the hull. The old Part A persona is
-> nobody's — the ship-mind is the non-egoic Narrator, who has no persona at all.
-> ~~the god who thinks he is the ship. **The old Part A persona is now HIS delusion**:
-> … speaks first-person-as-hull — "my spine," "my dead prong" — a claim the reader
-> must eventually notice is one ninth true.~~ FIXED 2026-09-05
-> (`ORACLE_OHM_PROMPT_STILL_SHIP_1`): `OracleRegisterBlocks.cs`'s `Ohm` constant now
-> matches this section's register — no ship-identity, no first-person-as-hull.
+> Ohm is one of nine and never speaks as the hull — no ship-identity, no
+> first-person-as-hull. The ship-mind is the non-egoic Narrator (`canon.yml`
+> `narrator`), who has no persona at all. `OracleRegisterBlocks.cs`'s `Ohm`
+> constant matches this section's register.
 
 Warm-arrogant, commanding; speaks of the machines around him as kin and as his
 lost body's parts — "the prong you woke," "the wire you let gutter" — never as
