@@ -1034,6 +1034,26 @@
     "date": "2026-09-05",
     "sha": "ef7ff505"
   },
+  "src/RimMandrake/ResearchKitEastFix/Textures/Things/Items/HiTechResearchKit/HiTechResearchKit_east.png": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "5a68d1a6"
+  },
+  "src/RimMandrake/ResearchKitEastFix/Textures/Things/Items/MultiAnalyzerResearchKit/MultiAnalyzerResearchKit_east.png": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "5a68d1a6"
+  },
+  "src/RimMandrake/ResearchKitEastFix/Textures/Things/Items/RemoteResearchKit/RemoteResearchKit_east.png": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "5a68d1a6"
+  },
+  "src/RimMandrake/ResearchKitEastFix/Textures/Things/Items/SimpleResearchKit/SimpleResearchKit_east.png": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "5a68d1a6"
+  },
   "src/RimMandrake/RimDefDump/Source/DefDumper.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -1083,6 +1103,11 @@
     "cleanCount": 1,
     "date": "2026-09-05",
     "sha": "30f4d18a"
+  },
+  "src/RimMandrake/SauridFrillFix/Textures/Pawn/CenterFrill/CenterFrill8_north.png": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "5a68d1a6"
   },
   "src/RimMandrake/Spikes/README.md": {
     "cleanCount": 1,
@@ -1158,6 +1183,11 @@
     "cleanCount": 2,
     "date": "2026-09-05",
     "sha": "30f4d18a"
+  },
+  "src/RimMandrake/ToolBeltFix/Textures/Things/Apparel/ToolBelt/ToolBelt_west.png": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "5a68d1a6"
   },
   "src/RimMandrake/Utils/animal_contact_sheet.py": {
     "cleanCount": 1,
@@ -3537,6 +3567,106 @@
     "date": "2026-09-05",
     "sha": "deb54d02"
   },
+  "src/RimStarWars/KotORBandolierNorthFix/Textures/SWApparel/Accessories/bandolier_chewbacca/Apparel_Fat_north.png": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "5a68d1a6"
+  },
+  "src/RimStarWars/KotORBandolierNorthFix/Textures/SWApparel/Accessories/bandolier_chewbacca/Apparel_Fat_northm.png": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "5a68d1a6"
+  },
+  "src/RimStarWars/KotORBandolierNorthFix/Textures/SWApparel/Accessories/bandolier_chewbacca/Apparel_Female_north.png": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "5a68d1a6"
+  },
+  "src/RimStarWars/KotORBandolierNorthFix/Textures/SWApparel/Accessories/bandolier_chewbacca/Apparel_Female_northm.png": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "5a68d1a6"
+  },
+  "src/RimStarWars/KotORBandolierNorthFix/Textures/SWApparel/Accessories/bandolier_chewbacca/Apparel_Hulk_north.png": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "5a68d1a6"
+  },
+  "src/RimStarWars/KotORBandolierNorthFix/Textures/SWApparel/Accessories/bandolier_chewbacca/Apparel_Hulk_northm.png": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "5a68d1a6"
+  },
+  "src/RimStarWars/KotORBandolierNorthFix/Textures/SWApparel/Accessories/bandolier_chewbacca/Apparel_Male_north.png": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "5a68d1a6"
+  },
+  "src/RimStarWars/KotORBandolierNorthFix/Textures/SWApparel/Accessories/bandolier_chewbacca/Apparel_Male_northm.png": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "5a68d1a6"
+  },
+  "src/RimStarWars/KotORBandolierNorthFix/Textures/SWApparel/Accessories/bandolier_chewbacca/Apparel_Thin_north.png": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "5a68d1a6"
+  },
+  "src/RimStarWars/KotORBandolierNorthFix/Textures/SWApparel/Accessories/bandolier_chewbacca/Apparel_Thin_northm.png": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "5a68d1a6"
+  },
+  "src/RimStarWars/KotORBandolierNorthFix/Textures/SWApparel/Accessories/bandolier_traveler/Apparel_Fat_north.png": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "5a68d1a6"
+  },
+  "src/RimStarWars/KotORBandolierNorthFix/Textures/SWApparel/Accessories/bandolier_traveler/Apparel_Fat_northm.png": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "5a68d1a6"
+  },
+  "src/RimStarWars/KotORBandolierNorthFix/Textures/SWApparel/Accessories/bandolier_traveler/Apparel_Female_north.png": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "5a68d1a6"
+  },
+  "src/RimStarWars/KotORBandolierNorthFix/Textures/SWApparel/Accessories/bandolier_traveler/Apparel_Female_northm.png": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "5a68d1a6"
+  },
+  "src/RimStarWars/KotORBandolierNorthFix/Textures/SWApparel/Accessories/bandolier_traveler/Apparel_Hulk_north.png": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "5a68d1a6"
+  },
+  "src/RimStarWars/KotORBandolierNorthFix/Textures/SWApparel/Accessories/bandolier_traveler/Apparel_Hulk_northm.png": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "5a68d1a6"
+  },
+  "src/RimStarWars/KotORBandolierNorthFix/Textures/SWApparel/Accessories/bandolier_traveler/Apparel_Male_north.png": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "5a68d1a6"
+  },
+  "src/RimStarWars/KotORBandolierNorthFix/Textures/SWApparel/Accessories/bandolier_traveler/Apparel_Male_northm.png": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "5a68d1a6"
+  },
+  "src/RimStarWars/KotORBandolierNorthFix/Textures/SWApparel/Accessories/bandolier_traveler/Apparel_Thin_north.png": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "5a68d1a6"
+  },
+  "src/RimStarWars/KotORBandolierNorthFix/Textures/SWApparel/Accessories/bandolier_traveler/Apparel_Thin_northm.png": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "5a68d1a6"
+  },
   "src/RimStarWars/Livestock/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-05",
@@ -3593,14 +3723,19 @@
     "sha": "0e986f2a"
   },
   "src/RimStarWars/MSEDroidFix/About/About.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "sha": "85352886"
-  },
-  "src/RimStarWars/MSEDroidFix/Source/draw_mse_north.py": {
     "cleanCount": 2,
     "date": "2026-09-05",
-    "sha": "85352886"
+    "sha": "5a68d1a6"
+  },
+  "src/RimStarWars/MSEDroidFix/Source/draw_mse_north.py": {
+    "cleanCount": 3,
+    "date": "2026-09-05",
+    "sha": "5a68d1a6"
+  },
+  "src/RimStarWars/MSEDroidFix/Textures/OuterRim/Droid/MSE_north.png": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "5a68d1a6"
   },
   "src/RimStarWars/SeaBeasts/About/About.xml": {
     "cleanCount": 1,
