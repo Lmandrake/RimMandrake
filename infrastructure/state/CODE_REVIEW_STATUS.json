@@ -2942,115 +2942,210 @@
     "date": "2026-09-03",
     "sha": "359b0b2c"
   },
-  "src/RimStarWars/Droidworks/Source/BoltCore/BoltCorePatches.cs": {
+  "src/RimStarWars/Droidworks/About/About.xml": {
     "cleanCount": 1,
-    "date": "2026-09-04",
-    "sha": "43f96b1b"
+    "date": "2026-09-05",
+    "sha": "78944107"
+  },
+  "src/RimStarWars/Droidworks/Defs/HediffDefs/HediffDefs_Droidworks.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "78944107"
+  },
+  "src/RimStarWars/Droidworks/Defs/JobDefs/JobDefs_Droidworks.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "78944107"
+  },
+  "src/RimStarWars/Droidworks/Defs/NeedDefs/NeedDefs_Droidworks.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "78944107"
+  },
+  "src/RimStarWars/Droidworks/Defs/PawnKinds_JDS.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "78944107"
+  },
+  "src/RimStarWars/Droidworks/Defs/PawnKinds_KotOR.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "78944107"
+  },
+  "src/RimStarWars/Droidworks/Defs/PawnKinds_OuterRim.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "78944107"
+  },
+  "src/RimStarWars/Droidworks/Defs/Races_Base.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "78944107"
+  },
+  "src/RimStarWars/Droidworks/Defs/Races_Families.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "78944107"
+  },
+  "src/RimStarWars/Droidworks/Defs/Races_JDS.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "78944107"
+  },
+  "src/RimStarWars/Droidworks/Defs/Races_KotOR.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "78944107"
+  },
+  "src/RimStarWars/Droidworks/Defs/Races_OuterRim.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "78944107"
+  },
+  "src/RimStarWars/Droidworks/Defs/RecipeDefs/RecipeDefs_Droidworks.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "78944107"
+  },
+  "src/RimStarWars/Droidworks/Defs/ThingDefs/Buildings_Charging.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "78944107"
+  },
+  "src/RimStarWars/Droidworks/Defs/ThingDefs/Items_Droidworks.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "78944107"
+  },
+  "src/RimStarWars/Droidworks/Defs/ThinkTreeDefs/ThinkTreeDefs_DWRecharge.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "78944107"
+  },
+  "src/RimStarWars/Droidworks/Patches/IonBuildup_PowersDownDroid.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "78944107"
+  },
+  "src/RimStarWars/Droidworks/Source/BoltCore/BoltCorePatches.cs": {
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "78944107"
+  },
+  "src/RimStarWars/Droidworks/Source/BoltCore/DroidworksBoltCore.csproj": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "78944107"
   },
   "src/RimStarWars/Droidworks/Source/Droidworks/CompDWCharger.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "sha": "43f96b1b"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "78944107"
   },
   "src/RimStarWars/Droidworks/Source/Droidworks/CompDWDataSpike.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "sha": "43f96b1b"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "78944107"
   },
   "src/RimStarWars/Droidworks/Source/Droidworks/CompDroidDetonation.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "sha": "43f96b1b"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "78944107"
   },
   "src/RimStarWars/Droidworks/Source/Droidworks/CompTargetable_DWDataSpike.cs": {
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "78944107"
+  },
+  "src/RimStarWars/Droidworks/Source/Droidworks/Droidworks.csproj": {
     "cleanCount": 1,
-    "date": "2026-09-04",
-    "sha": "43f96b1b"
+    "date": "2026-09-05",
+    "sha": "78944107"
   },
   "src/RimStarWars/Droidworks/Source/Droidworks/DroidworksBoltUtility.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "sha": "43f96b1b"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "78944107"
   },
   "src/RimStarWars/Droidworks/Source/Droidworks/DroidworksDefOf.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "sha": "43f96b1b"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "78944107"
   },
   "src/RimStarWars/Droidworks/Source/Droidworks/DroidworksModExtension.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "sha": "43f96b1b"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "78944107"
   },
   "src/RimStarWars/Droidworks/Source/Droidworks/HediffComp_DWBoltResentment.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "sha": "43f96b1b"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "78944107"
   },
   "src/RimStarWars/Droidworks/Source/Droidworks/HediffComp_IonOverloadsDroid.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "sha": "43f96b1b"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "78944107"
   },
   "src/RimStarWars/Droidworks/Source/Droidworks/HediffComp_PoweredDown.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "sha": "43f96b1b"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "78944107"
   },
   "src/RimStarWars/Droidworks/Source/Droidworks/JobDriver_DWClampBolt.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "sha": "43f96b1b"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "78944107"
   },
   "src/RimStarWars/Droidworks/Source/Droidworks/JobDriver_DWDataSpike.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "sha": "43f96b1b"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "78944107"
   },
   "src/RimStarWars/Droidworks/Source/Droidworks/JobDriver_DWRecharge.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "sha": "43f96b1b"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "78944107"
   },
   "src/RimStarWars/Droidworks/Source/Droidworks/JobGiver_DWRecharge.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "sha": "43f96b1b"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "78944107"
   },
   "src/RimStarWars/Droidworks/Source/Droidworks/Need_Power.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "sha": "43f96b1b"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "78944107"
   },
   "src/RimStarWars/Droidworks/Source/Droidworks/Patch_ShouldHaveNeed_Power.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "sha": "43f96b1b"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "78944107"
   },
   "src/RimStarWars/Droidworks/Source/Droidworks/Recipe_DWMemoryWipe.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "sha": "43f96b1b"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "78944107"
   },
   "src/RimStarWars/Droidworks/Source/Droidworks/Recipe_InstallRestrainingBolt.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "sha": "43f96b1b"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "78944107"
   },
   "src/RimStarWars/Droidworks/Source/Droidworks/Recipe_RebootDroid.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "sha": "43f96b1b"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "78944107"
   },
   "src/RimStarWars/Droidworks/Source/Droidworks/Recipe_RemoveRestrainingBolt.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "sha": "43f96b1b"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "78944107"
   },
   "src/RimStarWars/Droidworks/Source/gen_droidworks_defs.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "sha": "66d742be"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "78944107"
   },
   "src/RimStarWars/FireEcology/About/About.xml": {
     "cleanCount": 1,
