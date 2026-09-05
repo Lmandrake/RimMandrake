@@ -10,7 +10,7 @@ them.
 
 | setting | value | why this and not something else |
 |---|---|---|
-| texture | `RimMandrake_StarWarsRaces/Textures/RimMandrakeSW/Jawa/jawaeyes_glow.png`, 168×168 | the donor art is flat `(255,255,0)` across the whole ellipse, so a `<color>` tint could only ever read as paint |
+| texture | `Textures/RimMandrakeSW/Jawa/jawaeyes_glow.png` (texPath `RimMandrakeSW/Jawa/jawaeyes_glow`), 168×168 | the donor art is flat `(255,255,0)` across the whole ellipse, so a `<color>` tint could only ever read as paint |
 | eye radius | 38 × 29 px | larger merged with the neighbouring eye into one orange bar |
 | halo | 1.10× radius | at 1.75× the bloom was 43% of the texture and the pair read as "a mass of broad orange light, not eyes" |
 | rim | solid opaque black, full width | a soft rim let adjacent eyes bleed together; the hard rim is what makes them read as two |
