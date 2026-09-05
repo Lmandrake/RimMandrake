@@ -555,9 +555,9 @@
   "open": true
  },
  "RESEARCH_RETAG_LOAD_ORDER_GAP_1": {
-  "fp": "31665fc4446c",
+  "fp": "44e25c032af3",
   "number": 134,
-  "open": true
+  "open": false
  },
  "RESEARCH_TAXONOMY_DRAFT_1": {
   "fp": "9593be373e0b",
@@ -565,9 +565,9 @@
   "open": false
  },
  "RESEARCH_TREE_NORMALIZATION_1": {
-  "fp": "110a6ad46efb",
+  "fp": "421bd53619c3",
   "number": 66,
-  "open": true
+  "open": false
  },
  "RESEARCH_TREE_TABS_1": {
   "fp": "da5ce7b64a7e",
@@ -579,9 +579,19 @@
   "number": 136,
   "open": true
  },
+ "RETAG_BUILDER_SELF_ERASE_1": {
+  "fp": "7db477b868d3",
+  "number": 149,
+  "open": true
+ },
  "RIMMANDRAKE_PITS_BUILD_1": {
   "fp": "d41981c0c302",
   "number": 91,
+  "open": true
+ },
+ "RITES_REVEAL_MECHANISM_1": {
+  "fp": "b8b5ed484680",
+  "number": 150,
   "open": true
  },
  "RIVER_STEAM_ANIMATION_1": {

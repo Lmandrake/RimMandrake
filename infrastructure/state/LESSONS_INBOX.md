@@ -12,3 +12,7 @@ rest were already covered where they belonged.*
 ---
 - `git diff <symlinked dir>` shows NOTHING — a pathspec naming `.claude/skills/<name>` (a symlink) matches only the link file, so the target's real changes are silently absent; diff the real `skills/<name>` path (BENCH 2026-09-04, curation pass).
 - The <li> trap third sighting: Inhabited larder/stock, found via the log line naming the WANTER (Verse.ThingDefCountClass) - read the wanter before building instruments; vanilla error lines already attribute.
+- A diff-based patch GENERATOR run against a capture taken with its own patch active erases itself (269 ops -> 33, silent) - diff against raw sources or emit unconditionally; caught only because git diff --stat was read before deploy.
+- A stored FULL modlist decays against the deployed Mods dir: four live-verified mods were deployed-not-active and silently voided a proof load's premise - before any proof load, diff deployed packageIds vs the active list, not just fingerprints.
+- Two windows launching RimWorld near-simultaneously collide invisibly: the bridge file gates DRIVING, not LAUNCHING, and Steam -applaunch on a running instance silently focuses it - my "isolation test" scored another window's session. Before interpreting any load, ask the bridge for the ACTIVE list.
+- The vanilla cross-ref error line already names the WANTER type - read it before building tracer instruments; it solved in one grep what an IL sweep and a planned Harmony postfix could not.
