@@ -4886,3 +4886,5 @@
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-05T18:33:47Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"WILD_ANIMALS_PADDED_LISTS_1: check EBSG/Fortified Features Framework leads via jawa/startup_types + harmony_patches","ts":"2026-09-05T18:50:40Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-05T18:57:18Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"WILD_ANIMALS_PADDED_LISTS_1: locate+decompile Fortified Features Framework via live mod_inventory","ts":"2026-09-05T18:59:54Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-05T19:00:18Z"}
