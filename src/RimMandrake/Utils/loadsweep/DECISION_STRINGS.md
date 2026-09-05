@@ -50,3 +50,14 @@ the batch (config errors self-attribute; only hard resets need bisection).
 - EXPECTED PRESENT (campaign-real, unfixed): `Config error in RSW_Gun_Sonic_HiveEmitter` x2, `burnedDef is flammable` x6
 - EXPECTED ABSENT on full: guy762_*/SWPotF_*/EBSG_* crossrefs (donor mods present on 592)
 - `[RimDefDump]` fires at menu (armed `all`); delete marker after
+
+## Batch: researchretag tabs proof (2026-09-04, BENCH) — written BEFORE launch
+Batch = base + mandrake.rut.researchretag. Purpose: RESEARCH_TREE_TABS_1 parse proof.
+- FAIL: any standing FAIL string above; `^Config error in` naming RUT_Tree or ResearchTab;
+  `Patch operation` + `failed` naming RUT_ResearchTabAssign or RUT_ResearchRetag.
+- PASS positive (not silence): `Bridge token:` present; jawa/get_defs returns non-null for
+  ResearchTabDef:RUT_Tree_JawaScavenging, RUT_Tree_WakingMind, RUT_Tree_Utinni;
+  ResearchTabDef count on the live game >= 15 RUT_Tree_* (MEASURED via bridge, not grep).
+- Full-list follow-up (same strings + these): after full relaunch, spot-check 3 row
+  assignments via bridge (a Waking Mind row reads tab=RUT_Tree_WakingMind), harvest_log
+  at/below baseline. Row-assignment proof is NOT claimable from the minimal load.
