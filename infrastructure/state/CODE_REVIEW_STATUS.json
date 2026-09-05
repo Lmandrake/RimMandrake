@@ -3378,9 +3378,9 @@
     "sha": "8c69faa6"
   },
   "src/RimStarWars/JawaIkee/Source/JawaIkee.csproj": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-05",
-    "sha": "8c69faa6"
+    "sha": "1e4ae18c"
   },
   "src/RimStarWars/JawaIkee/Source/ThoughtWorker_IkeeNearby.cs": {
     "cleanCount": 2,
@@ -3493,9 +3493,9 @@
     "sha": "1478cedd"
   },
   "src/RimStarWars/JawaVoice/Patches/JawaVoice_Insults.xml": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-05",
-    "sha": "1478cedd"
+    "sha": "4e4e34fe"
   },
   "src/RimStarWars/JawaVoice/Patches/JawaVoice_Interactions.xml": {
     "cleanCount": 1,
@@ -4256,6 +4256,46 @@
     "cleanCount": 2,
     "date": "2026-09-05",
     "sha": "3e9a9f20"
+  },
+  "src/RimUtinni/PawnFlavor/Defs/Backstories_Deepwater.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "b577a68f"
+  },
+  "src/RimUtinni/PawnFlavor/Defs/Backstories_Empire_Hutt.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "b577a68f"
+  },
+  "src/RimUtinni/PawnFlavor/Defs/Backstories_FDE_Droids.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "b577a68f"
+  },
+  "src/RimUtinni/PawnFlavor/Defs/Backstories_Geonosian_Helix_Blackstar.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "b577a68f"
+  },
+  "src/RimUtinni/PawnFlavor/Defs/Backstories_Homestead_Tribes.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "b577a68f"
+  },
+  "src/RimUtinni/PawnFlavor/Defs/Backstories_Moot_Wildsteam_Junkers.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "b577a68f"
+  },
+  "src/RimUtinni/PawnFlavor/Defs/Backstories_Rakata_Sleepers.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "b577a68f"
+  },
+  "src/RimUtinni/PawnFlavor/Patches/FactionBackstoryWiring.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "b577a68f"
   },
   "src/RimUtinni/PawnFlavor/Patches/PawnFlavorPhase2_MentalBreak.xml": {
     "cleanCount": 1,
