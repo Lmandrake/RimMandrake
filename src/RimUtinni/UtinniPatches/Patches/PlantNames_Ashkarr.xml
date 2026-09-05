@@ -1,0 +1,247 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!-- Ash'karr plant names. Owner 2026-09-05, on the plant register's rename-gap
+       finding: the campaign had renamed 12 vanilla plants and left the rest under
+       Earth names, so roses and dandelions were growing on a desert world.
+
+       Coined in CLADES so related flora share a morpheme and the ecosystem reads
+       as evolved rather than assembled - the same convention as
+       CreatureNames_Ashkarr.xml:
+         -skal   dry bladed groundcover (grasses)
+         sarn-   standing-water plants (only legal in the water-high biomes)
+         -vaesh  flowering plants
+         grell   scrub and thorn
+         maw     carrion blooms
+
+       Left ALONE deliberately: plants whose vanilla names are already invented
+       (healroot, devilstrand, psychoid, smokeleaf, glowstool, timbershroom,
+       chokevine, witchwood, agarilux ...) - renaming those would churn without
+       gain and break player recognition.
+
+       🔴 LABEL ONLY. No defName is touched. -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Plant_Grass"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Plant_Grass"]/label</xpath>
+      <value><label>duneskal</label></value>
+    </match>
+  </Operation>   <!-- was "grass" -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Plant_TallGrass"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Plant_TallGrass"]/label</xpath>
+      <value><label>tall duneskal</label></value>
+    </match>
+  </Operation>   <!-- was "tall grass" -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Plant_YellowGrass"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Plant_YellowGrass"]/label</xpath>
+      <value><label>ochreskal</label></value>
+    </match>
+  </Operation>   <!-- was "yellow grass" -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Plant_YellowTallGrass"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Plant_YellowTallGrass"]/label</xpath>
+      <value><label>tall ochreskal</label></value>
+    </match>
+  </Operation>   <!-- was "tall yellow grass" -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Plant_GrayGrass"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Plant_GrayGrass"]/label</xpath>
+      <value><label>ashskal</label></value>
+    </match>
+  </Operation>   <!-- was "gray grass" -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Plant_Nightgrass"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Plant_Nightgrass"]/label</xpath>
+      <value><label>nightskal</label></value>
+    </match>
+  </Operation>   <!-- was "night grass" -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Plant_Reeds"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Plant_Reeds"]/label</xpath>
+      <value><label>sarnreed</label></value>
+    </match>
+  </Operation>   <!-- was "reeds" -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Plant_Bulrush"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Plant_Bulrush"]/label</xpath>
+      <value><label>sarnbulb</label></value>
+    </match>
+  </Operation>   <!-- was "bulrush" -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Plant_LilyPad"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Plant_LilyPad"]/label</xpath>
+      <value><label>sarnpad</label></value>
+    </match>
+  </Operation>   <!-- was "lily pad" -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Plant_Lotus"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Plant_Lotus"]/label</xpath>
+      <value><label>sarnbloom</label></value>
+    </match>
+  </Operation>   <!-- was "lotus" -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Plant_Rose"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Plant_Rose"]/label</xpath>
+      <value><label>bloodvaesh</label></value>
+    </match>
+  </Operation>   <!-- was "rose" -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Plant_Daylily"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Plant_Daylily"]/label</xpath>
+      <value><label>sunvaesh</label></value>
+    </match>
+  </Operation>   <!-- was "daylily" -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Plant_Dandelion"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Plant_Dandelion"]/label</xpath>
+      <value><label>driftvaesh</label></value>
+    </match>
+  </Operation>   <!-- was "dandelions" -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Plant_Clivia"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Plant_Clivia"]/label</xpath>
+      <value><label>embervaesh</label></value>
+    </match>
+  </Operation>   <!-- was "clivia" -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Plant_Bush"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Plant_Bush"]/label</xpath>
+      <value><label>grellbush</label></value>
+    </match>
+  </Operation>   <!-- was "bush" -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Plant_ShrubLow"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Plant_ShrubLow"]/label</xpath>
+      <value><label>low grell</label></value>
+    </match>
+  </Operation>   <!-- was "low shrubs" -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Plant_Brambles"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Plant_Brambles"]/label</xpath>
+      <value><label>snarlgrell</label></value>
+    </match>
+  </Operation>   <!-- was "brambles" -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Plant_Rafflesia"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Plant_Rafflesia"]/label</xpath>
+      <value><label>carrion maw</label></value>
+    </match>
+  </Operation>   <!-- was "giant rafflesia" -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Plant_NightRafflesia"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Plant_NightRafflesia"]/label</xpath>
+      <value><label>night maw</label></value>
+    </match>
+  </Operation>   <!-- was "night rafflesia" -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Plant_Strawberry_Wild"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Plant_Strawberry_Wild"]/label</xpath>
+      <value><label>wild sandberry</label></value>
+    </match>
+  </Operation>   <!-- was "wild strawberry plant" -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Plant_Moss"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Plant_Moss"]/label</xpath>
+      <value><label>creepfelt</label></value>
+    </match>
+  </Operation>   <!-- was "moss" -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Plant_Agave"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Plant_Agave"]/label</xpath>
+      <value><label>spinecrown</label></value>
+    </match>
+  </Operation>   <!-- was "agave" -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Plant_SaguaroCactus"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Plant_SaguaroCactus"]/label</xpath>
+      <value><label>sentinel cactus</label></value>
+    </match>
+  </Operation>   <!-- was "saguaro cactus" -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Plant_Astragalus"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Plant_Astragalus"]/label</xpath>
+      <value><label>dustvetch</label></value>
+    </match>
+  </Operation>   <!-- was "astragalus" -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Plant_Alocasia"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Plant_Alocasia"]/label</xpath>
+      <value><label>shadeleaf</label></value>
+    </match>
+  </Operation>   <!-- was "alocasia" -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Plant_RatPalm"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Plant_RatPalm"]/label</xpath>
+      <value><label>skiffpalm</label></value>
+    </match>
+  </Operation>   <!-- was "rat palm tree" -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Plant_TreeCecropia"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Plant_TreeCecropia"]/label</xpath>
+      <value><label>hollowbole</label></value>
+    </match>
+  </Operation>   <!-- was "cecropia tree" -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="Plant_TreeGrayPine"]/label</xpath>
+    <match Class="PatchOperationReplace">
+      <xpath>/Defs/ThingDef[defName="Plant_TreeGrayPine"]/label</xpath>
+      <value><label>greyspire</label></value>
+    </match>
+  </Operation>   <!-- was "gray pine tree" -->
+
+</Patch>
