@@ -115,15 +115,15 @@ namespace RimMandrake.StructureInjections
             // here - a template's own `ctx:clear()` blob clears land in the
             // same list, in the same "before anything" position.
             foreach (var c in plan.Clears)
-                ExecuteClear(map, c, dx, dz);
+                RunItem(sourceLabel, "CLEAR", c.Mode + "@(" + c.X + "," + c.Z + ")", () => ExecuteClear(map, c, dx, dz));
 
             // 1. foundation (Odyssey substructure) -- must exist before terrain
             foreach (var c in plan.Foundation)
-                SetTerrainCell(map, c, dx, dz, foundation: true);
+                RunItem(sourceLabel, "FOUNDATION", c.DefName, () => SetTerrainCell(map, c, dx, dz, foundation: true));
 
             // 2. terrain -- floors under things
             foreach (var c in plan.Terrain)
-                SetTerrainCell(map, c, dx, dz, foundation: false);
+                RunItem(sourceLabel, "TERRAIN", c.DefName, () => SetTerrainCell(map, c, dx, dz, foundation: false));
 
             // 3. things, transmitters first: a connector (cooler, most
             // machines) binds to the nearest transmitter within
@@ -145,19 +145,19 @@ namespace RimMandrake.StructureInjections
                 .OrderByDescending(x => x.def2.EverTransmitsPower);
 
             foreach (var x in byPriority)
-                SpawnThing(map, x.t, x.def2, dx, dz);
+                RunItem(sourceLabel, "THING", x.t.DefName, () => SpawnThing(map, x.t, x.def2, dx, dz, sourceLabel));
 
             // 3b. E2 RUN -- after ordinary things (a run's line should not be
             // overwritten by furniture placed inside its own footprint),
             // before roof (an outdoor conduit bus is not roofed).
             foreach (var r in plan.Runs)
-                ExecuteRun(map, r, dx, dz, sourceLabel);
+                RunItem(sourceLabel, "RUN", r.DefName, () => ExecuteRun(map, r, dx, dz, sourceLabel));
 
             // 4. roof -- last: a roof over a wall that does not exist yet is
             // an unsupported span (WALLS CREATE NO ROOF is the live path's
             // own warning, and the ordering constraint is identical here).
             foreach (var c in plan.Roof)
-                SetRoofCell(map, c, dx, dz);
+                RunItem(sourceLabel, "ROOF", c.DefName, () => SetRoofCell(map, c, dx, dz));
 
             // TODO(paint/floor colour): the live path applies these AFTER
             // things exist via jawa/paint_building and jawa/set_terrain_layer
@@ -170,7 +170,25 @@ namespace RimMandrake.StructureInjections
             // sit under anything a later step in THIS list could still wipe
             // (WipeMode.Vanish on a THING cell, a CLEAR that ran earlier).
             foreach (var p in plan.Pawns)
-                ExecutePawn(map, p, dx, dz, sourceLabel);
+                RunItem(sourceLabel, "PAWN", p.KindDef, () => ExecutePawn(map, p, dx, dz, sourceLabel));
+        }
+
+        // Found in the 2026-09-05 code review wave: MapGenerator.GenerateContentsIntoMap
+        // catches an uncaught exception from ANY GenStep with one generic Log.Error and
+        // abandons the REST of that GenStep entirely, while map generation continues to
+        // the next one -- so one bad plan line used to silently truncate everything after
+        // it (remaining foundation/terrain/things/runs/roof/pawns never applied, with no
+        // per-plan indication of how far it got). Each per-item call above is independent,
+        // so catching here and moving to the next item cannot break the ordering the
+        // comments above document -- it only stops one bad item from eating the rest.
+        private static void RunItem(string sourceLabel, string phase, string label, System.Action action)
+        {
+            try { action(); }
+            catch (System.Exception ex)
+            {
+                Log.Error("[RimMandrake.StructureInjections] " + phase + " '" + label +
+                          "' threw and was skipped (plan " + sourceLabel + "): " + ex);
+            }
         }
 
         // RIMPLACE_ENGINE_DELTAS_1 E1. mode="soft": destroys plants, filth,
@@ -279,8 +297,11 @@ namespace RimMandrake.StructureInjections
                 if (!alreadyThis)
                 {
                     var thing = ThingMaker.MakeThing(def, def.MadeFromStuff ? stuffDef : null);
-                    GenSpawn.Spawn(thing, cell, map, WipeMode.Vanish);
-                    placed++;
+                    // GenSpawn.Spawn returns null (and logs its own error) on failure rather than
+                    // throwing - counting placed unconditionally let `placed == 0` below stay
+                    // silent on a run that spawned fewer things than cells walked.
+                    if (GenSpawn.Spawn(thing, cell, map, WipeMode.Vanish) != null)
+                        placed++;
                 }
                 cell += step;
             }
@@ -346,7 +367,12 @@ namespace RimMandrake.StructureInjections
                           "') failed (plan " + sourceLabel + "): " + ex);
                 return;
             }
-            GenSpawn.Spawn(pawn, cell, map, WipeMode.Vanish);
+            if (GenSpawn.Spawn(pawn, cell, map, WipeMode.Vanish) == null)
+            {
+                Log.Error("[RimMandrake.StructureInjections] PAWN: GenSpawn.Spawn refused '" +
+                          p.KindDef + "' at " + cell + " (plan " + sourceLabel + ") - not on the map.");
+                return;
+            }
 
             if (p.State == "alive") return;
 
@@ -395,7 +421,7 @@ namespace RimMandrake.StructureInjections
             map.roofGrid.SetRoof(cell, rd);
         }
 
-        private static void SpawnThing(Map map, PlanThing t, ThingDef td, int dx, int dz)
+        private static void SpawnThing(Map map, PlanThing t, ThingDef td, int dx, int dz, string sourceLabel)
         {
             var cell = new IntVec3(t.X + dx, 0, t.Z + dz);
             if (!cell.InBounds(map)) { LogOOB(cell, t.DefName); return; }
@@ -411,7 +437,9 @@ namespace RimMandrake.StructureInjections
 
             var thing = ThingMaker.MakeThing(td, td.MadeFromStuff ? stuffDef : null);
             var rot = new Rot4(t.Rot);
-            GenSpawn.Spawn(thing, cell, map, rot, WipeMode.Vanish);
+            if (GenSpawn.Spawn(thing, cell, map, rot, WipeMode.Vanish) == null)
+                Log.Error("[RimMandrake.StructureInjections] GenSpawn.Spawn refused '" + t.DefName +
+                          "' at " + cell + " (plan " + sourceLabel + ") - not placed.");
         }
 
         private static void LogOOB(IntVec3 cell, string defName)
