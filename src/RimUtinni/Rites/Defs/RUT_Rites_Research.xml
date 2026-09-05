@@ -1,4 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--
+  RITES_REVEAL_MECHANISM_1: the four tiers past the Scrap Shrine each carry
+  a <hiddenPrerequisites> on an ANTIQUITIES_TREE_BUILD_1 stage, per design/
+  Jawa/antiquities_design.md section 2 (Choir<-LANGUAGE, God-Speaker
+  Array<-RELIGION, Hull Liturgy<-CULTURE, Gods Speak Back<-VOICE).
+
+  Owner ruling 2026-09-04 (RITES_REVEAL_MECHANISM_1): visible-locked, not
+  truly hidden. Verified against RimWorld/MainTabWindow_Research.cs source
+  before asking - vanilla hiddenPrerequisites gates CanStartNow only;
+  MainTabWindow_Research.VisibleResearchProjects filters solely on
+  hideWhen/IsCurrentProject, so a row with an unmet hiddenPrerequisite still
+  RENDERS in the tree, greyed and unselectable, rather than disappearing.
+  True invisibility would need a Harmony patch on that filter - the owner
+  chose not to pay for that in v1. "The rite exists; the clan cannot yet
+  perform it" reads fine for a liturgy tree either way.
+
+  This makes mandrake.rut.antiquities a hard dependency of this mod (see
+  About.xml) - these are our own two mods, not a patch on someone else's,
+  so the hiddenPrerequisites defNames are referenced directly rather than
+  through a PatchOperationConditional guard.
+-->
 <Defs>
 
   <ResearchTabDef>
@@ -27,6 +48,7 @@
     <techLevel>Industrial</techLevel>
     <tab>RUT_Rites</tab>
     <prerequisites><li>RUT_Rites_ScrapShrine</li></prerequisites>
+    <hiddenPrerequisites><li>RUT_Antiq_Language</li></hiddenPrerequisites>
     <researchViewX>1</researchViewX>
     <researchViewY>1</researchViewY>
   </ResearchProjectDef>
@@ -39,6 +61,7 @@
     <techLevel>Industrial</techLevel>
     <tab>RUT_Rites</tab>
     <prerequisites><li>RUT_Rites_ConduitChoir</li></prerequisites>
+    <hiddenPrerequisites><li>RUT_Antiq_Religion</li></hiddenPrerequisites>
     <researchViewX>2</researchViewX>
     <researchViewY>1</researchViewY>
   </ResearchProjectDef>
@@ -51,6 +74,7 @@
     <techLevel>Spacer</techLevel>
     <tab>RUT_Rites</tab>
     <prerequisites><li>RUT_Rites_GodSpeakerArray</li></prerequisites>
+    <hiddenPrerequisites><li>RUT_Antiq_Culture</li></hiddenPrerequisites>
     <researchViewX>3</researchViewX>
     <researchViewY>1</researchViewY>
   </ResearchProjectDef>
@@ -63,6 +87,7 @@
     <techLevel>Ultra</techLevel>
     <tab>RUT_Rites</tab>
     <prerequisites><li>RUT_Rites_HullLiturgy</li></prerequisites>
+    <hiddenPrerequisites><li>RUT_Antiq_Voice</li></hiddenPrerequisites>
     <researchViewX>4</researchViewX>
     <researchViewY>1</researchViewY>
   </ResearchProjectDef>

@@ -15,17 +15,17 @@ python.exe src/RimMandrake/Utils/deploy_custom_mods.py --apply
   (`Karrask.png` + 2 def XMLs), ShipMemory (`RimMandrake.Utinni.ShipMemory.dll`
   — the source this repo marked CLEAN 2026-09-04 needed a rebuild+redeploy to
   actually reach the game copy). Re-run confirms "Everything in sync."
-- ⚠️ Companion DLL (`JawaBench.BridgeTools.dll`) is **NOT** re-deployed by this
-  pass — separate tool. `build.py`'s own deploy-plan gate reported the
-  currently-deployed copy (commit `f8b647e7ce24`) carries several tools
-  (`jawa/pawn_*`, `jawa/lord_*`, `jawa/weather_*`, others) that a fresh build
-  from current HEAD does not — pre-existing drift, unrelated to today's
-  `INHABITED_SETTLEMENT_PRODUCER_GAP_1` change (verified: every one of those
-  tool names still has a live source file; only `JawaBenchWorldTools.cs` was
-  touched today). **Owed before the next launch:** `git log` the companion
-  source to find where those tools left the build (or the deploy simply never
-  ran for whatever removed them), THEN `build.py --gm --apply` —
-  `--allow-tool-removal` should not be passed blind.
+- ✅ RESOLVED same day: the companion "would lose 35 tools" warning above was
+  just the missing `--gm` build flag, not real drift — rebuilding with
+  `build.py --gm --apply` carried every tool forward correctly (verified live,
+  `INHABITED_SETTLEMENT_PRODUCER_GAP_1`'s quicktest). No action needed here
+  beyond remembering `--gm` is never optional on this companion.
+- ⚠️ **NEW, owed before the next launch**: `RimMandrake.Utinni.Antiquities.dll`
+  (the new `mandrake.rut.antiquities` mod, see item 2 below) is drifted ahead
+  of its deployed copy — a bugfix build made while the game was UP tonight,
+  correctly not force-deployed since the OS locks a loaded assembly.
+  `deploy_custom_mods.py --mod Antiquities --apply` at the next shutdown
+  window.
 - Most `not enabled in ModsConfig` lines in the dry-run output are expected
   noise from the minimal-list regime currently active for cheap testing
   (`rimworld-minimal-modlist-regime`) — restore the owner's full list before
@@ -47,7 +47,29 @@ without the content mods) — proof requires the FULL-list load. A fresh dump
 after that load also folds the 5 Rites rows into the manifest (coverage
 becomes 527) — rerun `research_manifest_validate.py` then.
 
-## 2 — other items waiting on a game-up/deploy signal, pointer only
+### 2. Antiquities + Rites reveal mechanism (FOUNDRY, 2026-09-04, same day)
+`ANTIQUITIES_TREE_BUILD_1` slice 1 (`mandrake.rut.antiquities`) and
+`RITES_REVEAL_MECHANISM_1` both landed tonight — `mandrake.rut.antiquities`
+added to the live list (595 active) alongside Rites/ResearchRetag. Decision
+strings:
+- PASS: `RUT_Antiquities` tab visible with 5 nodes, all initially
+  un-selectable (`CanStartNow` false — proves the never-buildable
+  `requiredResearchBuilding` gate). `RUT_Rites_ConduitChoir` (and the 3
+  tiers after it) render in the `RUT_Rites` tab GREYED/locked even once
+  their own `<prerequisites>` chain is satisfied — that greyed state IS the
+  pass condition (owner-ruled visible-locked, not truly hidden).
+- FAIL: `Could not resolve cross-reference` naming any `RUT_Antiq_*` or
+  `RUT_AntiquityReadingStation`/`RUT_AntiquityCipherBench`; `Config error in
+  RUT_` (should be zero — both known config/texture errors were fixed and
+  live-verified before tonight's commits).
+- Live-verified already, does NOT need re-proving this load: the reading
+  loop itself (quicktest, `ANTIQUITIES_TREE_BUILD_1`'s own item file has the
+  full trace) and the hiddenPrerequisites defName mapping (source-read
+  against `RimWorld/MainTabWindow_Research.cs`). What's genuinely new here
+  is only the FULL-list, real-campaign-mods context — the quicktest used a
+  19-mod list and can't see cross-mod load-order effects.
+
+## 3 — other items waiting on a game-up/deploy signal, pointer only
 Full detail lives in each item's own file — not duplicated here so there is
 one place to keep it current. Check each is still live before scoring it.
 - `WEAPONS_DONOR_RETIREMENT_1` — retire the 6 weapon donor packs; 1 of 6
