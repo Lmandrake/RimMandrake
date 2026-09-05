@@ -64,7 +64,12 @@ from def_diff import iter_live_defs
 from refresh import D_DUMP
 from patch_provenance import guard
 
-OUTDIR = os.path.join(ROOT, "src", "Jawa", "Jawa_Doctrine", "Patches")
+# Derived from HERE (a sibling of Patches/), not hardcoded to a tier path: the
+# 2026-08-30 rename (src/Jawa/Jawa_Doctrine -> src/RimUtinni/Doctrine) moved this
+# file with a pure `git mv` and left a hardcoded OUTDIR pointing at the old,
+# now-nonexistent src/Jawa/Jawa_Doctrine/Patches -- a re-run would have written
+# a stray file there while the live MegafaunaYield.xml went stale, silently.
+OUTDIR = os.path.join(os.path.dirname(HERE), "Patches")
 NL = "\n"
 
 def xesc(s):

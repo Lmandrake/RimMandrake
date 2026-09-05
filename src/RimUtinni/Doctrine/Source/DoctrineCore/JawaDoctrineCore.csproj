@@ -9,10 +9,10 @@
     assemblies from NuGet instead - same as every other .csproj here.
 
     Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\Jawa\Jawa_Doctrine\Source\DoctrineCore\JawaDoctrineCore.csproj -c Release
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimUtinni\Doctrine\Source\DoctrineCore\JawaDoctrineCore.csproj -c Release
 
     Output lands in ../../Assemblies/ (Source/DoctrineCore/../../Assemblies =
-    Jawa_Doctrine/Assemblies/), a new folder for this mod - Jawa_Doctrine
+    Doctrine/Assemblies/), a new folder for this mod - Jawa_Doctrine
     shipped no C# before this item.
 
     Every reference is Private=false. Nothing but our own DLL may land next
