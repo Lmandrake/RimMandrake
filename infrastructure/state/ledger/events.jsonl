@@ -4846,3 +4846,4 @@
 {"seat":"FOUNDRY","event":"claim","id":"CODE_REVIEW_STATUS_HASH_REWRITE_1","ts":"2026-09-05T16:30:27Z"}
 {"seat":"FOUNDRY","event":"start","id":"CODE_REVIEW_STATUS_HASH_REWRITE_1","ts":"2026-09-05T16:30:28Z"}
 {"seat":"FOUNDRY","event":"close","id":"CODE_REVIEW_STATUS_HASH_REWRITE_1","sha":"9ed835fb","ts":"2026-09-05T16:30:28Z"}
+{"seat":"BENCH","event":"bridge","state":"released","ts":"2026-09-05T16:39:25Z"}
