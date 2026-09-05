@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-05T04:01:25Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: BENCH
+as-of: 2026-09-05T04:35:00Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: OWNER
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -367,7 +367,17 @@ prose:    infrastructure/state/items/DROID_TILES_SOURED_TERRAIN_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-_none._
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+
+## TILEGEN_SILENT_REUSE_1 jawa/world_tile_map_generate fabricates success on the second distinct-tile call per session
+state:    ready
+row:      unassigned
+needs:    deploy
+target:   v1
+kind:     bug
+waiting:  needs `deploy`, game is UP
+summary:  Filed by BENCH: jawa/worldtilemapgenerate fabricates success on its
+prose:    infrastructure/state/items/TILEGEN_SILENT_REUSE_1.md
 
 # NOT THIS TARGET
 
@@ -375,14 +385,4 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## TILEGEN_SILENT_REUSE_1 jawa/world_tile_map_generate fabricates success on the second distinct-tile call per session
-state:    proposed
-row:      unassigned
-needs:    deploy
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/TILEGEN_SILENT_REUSE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/TILEGEN_SILENT_REUSE_1.md
+_none._
