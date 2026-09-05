@@ -439,10 +439,15 @@
     "date": "2026-09-03",
     "sha": "b0db3c45"
   },
-  "src/RimMandrake/GravshipAstronautFix/Source/make_genebank_north.py": {
+  "src/RimMandrake/GravshipAstronautFix/About/About.xml": {
     "cleanCount": 1,
-    "date": "2026-09-03",
-    "sha": "b294390b"
+    "date": "2026-09-05",
+    "sha": "ef7ff505"
+  },
+  "src/RimMandrake/GravshipAstronautFix/Source/make_genebank_north.py": {
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "ef7ff505"
   },
   "src/RimMandrake/Inhabited/About/About.xml": {
     "cleanCount": 1,
@@ -999,10 +1004,15 @@
     "date": "2026-09-03",
     "sha": "5a040901"
   },
-  "src/RimMandrake/ResearchKitEastFix/Source/mirror_research_kit_easts.py": {
+  "src/RimMandrake/ResearchKitEastFix/About/About.xml": {
     "cleanCount": 1,
-    "date": "2026-09-02",
-    "sha": "1a7b3aa1"
+    "date": "2026-09-05",
+    "sha": "ef7ff505"
+  },
+  "src/RimMandrake/ResearchKitEastFix/Source/mirror_research_kit_easts.py": {
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "ef7ff505"
   },
   "src/RimMandrake/RimDefDump/Source/DefDumper.cs": {
     "cleanCount": 1,
