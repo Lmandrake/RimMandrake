@@ -4,12 +4,19 @@
   <!--
     SETTLEMENT_VISIT_LOOP_1's map generator.
 
-    genSteps is copied wholesale from the shipped `Encounter` MapGeneratorDef
-    (ParentName="MapCommonBase", read via RimSage 2026-09-01) rather than
-    inherited-and-appended: Def XML inheritance REPLACES a redeclared list
-    node wholesale, it does not merge it, so redeclaring <genSteps> under
-    ParentName="MapCommonBase" here is the only way to get "Encounter's steps
-    plus ours" without either duplicating every vanilla step or losing them.
+    genSteps is copied wholesale from the shipped `MapCommonBase` abstract
+    MapGeneratorDef (Data/Core/Defs/MapGeneration/CommonMapGenerator.xml) plus
+    `Encounter`'s own single addition (`RocksFromGrid_NoMinerals`) tacked on
+    the end, and NOT from `Encounter`'s own genSteps node, which itself
+    redeclares (and so wholesale-replaces) the inherited list down to just
+    that one step. Corrected 2026-09-05 dirty-code-review pass: the original
+    comment named `Encounter` as the source, which is the def whose OWN list
+    is one line long, not the long list actually reproduced below.
+
+    Def XML inheritance REPLACES a redeclared list node wholesale, it does
+    not merge it, so redeclaring <genSteps> under ParentName="MapCommonBase"
+    here is the only way to get "MapCommonBase's steps plus ours" without
+    either duplicating every vanilla step or losing them.
 
     Two entries added at the bottom: Inhabited_ComposeSettlementDistrict
     (order 850) and Inhabited_Cast (order 900, the same GenStepDef the
