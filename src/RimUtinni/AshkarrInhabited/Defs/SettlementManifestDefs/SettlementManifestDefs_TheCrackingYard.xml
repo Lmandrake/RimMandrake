@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!--
+    DISTRICT_TEMPLATE_LIBRARY_1, Free Droid Enclaves set (2026-09-05). The
+    Cracking Yard: Jawa_FreeDroidEnclaves, tile 13177, ExtremeDesert, "they
+    settle on water nobody else can drink and crack it for fuel, so attackers
+    arrive thirsty at a source that would kill them"
+    (world/ASHKARR_WORLDMAP_settlements.csv row 107). Chosen over the Rust
+    Cathedral seats and the propane-lake stations because its NAME is the
+    district this set is built around, and because an ExtremeDesert seat is
+    the canon case: a source only a droid can use.
+
+    Districts map 1:1 onto the four droid_*.lua templates. The manifest
+    names RM_InhabitedPlace_MachineHold, whose larder is FUEL, not food -
+    the roster is explicit that the enclaves keep "no food stores".
+    Cast slots carry no castDef (no InhabitedCastDef exists for any enclave).
+  -->
+  <RimMandrake.Inhabited.SettlementManifestDef>
+    <defName>Inhabited_Manifest_TheCrackingYard</defName>
+    <label>The Cracking Yard</label>
+    <description>A free droid enclave on water no organic can drink: a refinery cracking it to fuel inside a walled yard, a charging hall where the residents stand down, a fabrication shop, and a bunker holding the charge. No beds, no kitchens, no prisoners, and no grudges.</description>
+    <settlementName>The Cracking Yard</settlementName>
+    <factionDefName>Jawa_FreeDroidEnclaves</factionDefName>
+    <securityProfile>Inhabited_SecurityProfile_FreeDroids</securityProfile>
+    <place>RM_InhabitedPlace_MachineHold</place>
+    <districts>
+      <li>
+        <label>charging hall</label>
+        <approxSize>(24, 20)</approxSize>
+        <adjacentTo>
+          <li>cracking works</li>
+          <li>fabrication room</li>
+        </adjacentTo>
+      </li>
+      <li>
+        <label>cracking works</label>
+        <approxSize>(24, 24)</approxSize>
+        <adjacentTo>
+          <li>charging hall</li>
+        </adjacentTo>
+      </li>
+      <li>
+        <label>fabrication room</label>
+        <approxSize>(20, 16)</approxSize>
+        <adjacentTo>
+          <li>charging hall</li>
+        </adjacentTo>
+      </li>
+      <li>
+        <label>battery bunker</label>
+        <approxSize>(16, 14)</approxSize>
+        <adjacentTo>
+          <li>charging hall</li>
+        </adjacentTo>
+        <required>false</required>
+      </li>
+    </districts>
+    <castSlots>
+      <li>
+        <role>speaker</role>
+        <district>charging hall</district>
+        <count>1~1</count>
+      </li>
+      <li>
+        <role>dormant</role>
+        <district>charging hall</district>
+        <count>3~6</count>
+      </li>
+      <li>
+        <role>cracker</role>
+        <district>cracking works</district>
+        <count>2~4</count>
+      </li>
+      <li>
+        <role>sentinel</role>
+        <district>cracking works</district>
+        <count>1~2</count>
+      </li>
+      <li>
+        <role>fabricator</role>
+        <district>fabrication room</district>
+        <count>1~2</count>
+      </li>
+    </castSlots>
+  </RimMandrake.Inhabited.SettlementManifestDef>
+
+</Defs>

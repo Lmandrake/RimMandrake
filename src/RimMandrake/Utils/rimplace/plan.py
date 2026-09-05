@@ -61,6 +61,8 @@ def render(plan: BuildPlan, show_roof=False) -> str:
     # the edifice under a decal is what the reviewer sees
     for t in sorted(plan.things, key=lambda t: t.overlay):
         g = _GLYPH.get((t.role or "").upper())
+        if g is None and (t.role or "").upper().startswith("SIGN_"):
+            g = "~"
         if g is None:
             d = t.defName.lower()
             g = ("#" if "wall" in d else "+" if "door" in d else

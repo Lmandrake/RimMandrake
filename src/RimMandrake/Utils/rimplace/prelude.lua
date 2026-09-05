@@ -115,11 +115,42 @@ function blocks_a_door(ctx, x, z, r)
   return false
 end
 
+-- every successful try_place appends {x, z, rot, role} here; scatter() and
+-- along_wall() reset it on entry, so a template can read back WHERE its beds
+-- landed (a monitor beside each one) without reaching into the Python plan
+LAST_PLACED = {}
+
 function try_place(ctx, role, x, z, rot)
   rot = rot or 0
   if not ctx:has_role(role) then return false end
   if not ctx:can_place(role, x, z, rot) then return false end
-  return ctx:place_role(role, x, z, rot)
+  local ok = ctx:place_role(role, x, z, rot)
+  if ok then LAST_PLACED[#LAST_PLACED + 1] = { x, z, rot, role } end
+  return ok
+end
+
+-- Roof support for a big interior: vanilla holds a roof within 6 cells of a
+-- wall, so a room whose interior exceeds 12 on BOTH axes has a middle no
+-- wall reaches (rimplace lint rule 6, Manhattan, over-warns never under-warns).
+-- Four columns at 7 in from each corner cover interiors up to about 26x26;
+-- anything bigger gets a refusal rather than a silent collapse. Returns the
+-- columns placed.
+function support_columns(ctx, r)
+  if r.w <= 12 or r.h <= 12 then return 0 end
+  if not ctx:has_role("PILLAR") then
+    ctx:refuse("PILLAR", "interior exceeds 12x12 and this palette has no PILLAR to hold the roof")
+    return 0
+  end
+  if r.w > 26 or r.h > 26 then
+    ctx:refuse("PILLAR", string.format("interior %dx%d is beyond four columns' reach; split the room", r.w, r.h))
+  end
+  local cols = 0
+  for _, x in ipairs({ r.x + 7, r.x2 - 7 }) do
+    for _, z in ipairs({ r.z + 7, r.z2 - 7 }) do
+      if try_near(ctx, "PILLAR", x, z, 0, 1, r) then cols = cols + 1 end
+    end
+  end
+  return cols
 end
 
 -- the cell, then rings around it out to `radius`, in random order; `within`
@@ -150,6 +181,7 @@ end
 -- opts.keep_clear: list of rects never to land in.
 function scatter(ctx, role, r, n, opts)
   opts = opts or {}
+  LAST_PLACED = {}
   if n <= 0 or not ctx:has_role(role) then return 0 end
   local placed, tries = 0, 0
   local max_tries = opts.tries or n * 20
@@ -199,6 +231,7 @@ end
 -- (a bed's head); opts.rot overrides both.
 function along_wall(ctx, role, r, side, n, opts)
   opts = opts or {}
+  LAST_PLACED = {}
   if n <= 0 or not ctx:has_role(role) then return 0 end
   local rot = opts.rot
   if rot == nil then
@@ -255,8 +288,11 @@ function wall_lights(ctx, r, n, role)
   for _, s in ipairs(shuffle(slots)) do
     if placed >= n then break end
     local d = DIR[s[3]]
-    -- only a WALL takes a lamp; a door or a gap is skipped without a refusal
+    local here = ctx:role_at(s[1], s[2])
+    -- only a WALL takes a lamp, and only from a cell that is not itself a
+    -- wall or door (an interior partition can run along r's edge)
     if ctx:role_at(s[1] + d[1], s[2] + d[2]) == "WALL"
+       and here ~= "WALL" and here ~= "DOOR"
        and ctx:wall_attach(role, s[1], s[2], s[3]) then
       placed = placed + 1
     end

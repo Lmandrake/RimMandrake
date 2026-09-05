@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!--
+    DISTRICT_TEMPLATE_LIBRARY_1, Deepwater Compact set (2026-09-05).
+    Deepwater Hold: Jawa_DeepwaterCompact, tile 2919, AridShrubland, "the
+    Twilight Sea, the largest standing water on Ash'karr"
+    (world/ASHKARR_WORLDMAP_settlements.csv row 24). The Compact's name-seat
+    on its biggest water; chosen over the Scald-shore and Grey Sea holds
+    because a hold on the largest standing water is the plain case of the
+    faction's own description: "the amphibian peoples who live in the deep
+    water and sell it to everyone".
+
+    Districts map 1:1 onto the four deepwater_*.lua templates. The gate
+    bastion is the first district in this library that places security
+    props with teeth (turrets, EMP traps, sandbag lines) because this
+    faction's canon lists them by name; its gate posture searches EVERY
+    leaver. Cast slots carry no castDef.
+  -->
+  <RimMandrake.Inhabited.SettlementManifestDef>
+    <defName>Inhabited_Manifest_DeepwaterHold</defName>
+    <label>Deepwater Hold</label>
+    <description>The Compact's seat on the Twilight Sea: a columned cistern hall where the water stands in tanks on mosaic, a hospital, growing beds under lamps, and a layered gate that searches every leaver. Neutral to everyone, armed against everyone, and never leaving its walls.</description>
+    <settlementName>Deepwater Hold</settlementName>
+    <factionDefName>Jawa_DeepwaterCompact</factionDefName>
+    <securityProfile>Inhabited_SecurityProfile_Deepwater</securityProfile>
+    <place>RM_InhabitedPlace_WaterHold</place>
+    <districts>
+      <li>
+        <label>cistern hall</label>
+        <approxSize>(26, 22)</approxSize>
+        <adjacentTo>
+          <li>gate bastion</li>
+          <li>hospital ward</li>
+        </adjacentTo>
+      </li>
+      <li>
+        <label>gate bastion</label>
+        <approxSize>(24, 14)</approxSize>
+        <adjacentTo>
+          <li>cistern hall</li>
+        </adjacentTo>
+      </li>
+      <li>
+        <label>hospital ward</label>
+        <approxSize>(20, 16)</approxSize>
+        <adjacentTo>
+          <li>cistern hall</li>
+        </adjacentTo>
+      </li>
+      <li>
+        <label>hydroponics bay</label>
+        <approxSize>(22, 18)</approxSize>
+        <adjacentTo>
+          <li>cistern hall</li>
+        </adjacentTo>
+        <required>false</required>
+      </li>
+    </districts>
+    <castSlots>
+      <li>
+        <role>water warden</role>
+        <district>cistern hall</district>
+        <count>1~2</count>
+      </li>
+      <li>
+        <role>sentry</role>
+        <district>gate bastion</district>
+        <count>2~4</count>
+      </li>
+      <li>
+        <role>medic</role>
+        <district>hospital ward</district>
+        <count>1~2</count>
+      </li>
+      <li>
+        <role>patient</role>
+        <district>hospital ward</district>
+        <count>0~3</count>
+      </li>
+      <li>
+        <role>grower</role>
+        <district>hydroponics bay</district>
+        <count>1~2</count>
+      </li>
+    </castSlots>
+  </RimMandrake.Inhabited.SettlementManifestDef>
+
+</Defs>
