@@ -10,7 +10,7 @@
 
 Ships as plain seafloor-map animals per the ruled aquatic-movement decision (aquatic_movement_routes.md, OK card, 2026-09-02): zero C#, no swimmer pathgrid. The five vanilla water fields (waterSeeker, waterCellCost, canFishForFood, moveSpeedFactorByTerrainTag, swimmingGraphicData) let them swim shallow water on any map today; they do not yet wild-spawn (no wildBiomes — RM_SeafloorBiome does not exist yet), so all 18 are dev/bridge-spawn only until that biome ships.
 
-Two of the eighteen — Starmaw and Lanternwhale — have no art yet (ChatGPT usage limit stopped generation mid-set, see `art/final/README.md`); their defs are complete and their texPath already points at the folder the art will land in.
+All 18 have complete art (4/4 facings each) — see `art/final/README.md`.
 
 RimStarWars tier per NAMING_SCHEME_PLAN.md.</description>
   <modDependencies>
