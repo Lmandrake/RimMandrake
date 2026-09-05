@@ -5799,6 +5799,18 @@
     "hash": "393450f75e51746c06f19442eda85bcf17f7adb559d37565219e62a48cea7818",
     "sha": "948cdbc9"
   },
+  "src/RimUtinni/UtinniShell/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "28bef8f3e59d992014a4a758ecd759ba09f97f1fb231c8f93a154122a52a5ec7",
+    "sha": "abd9fba2"
+  },
+  "src/RimUtinni/UtinniShell/Defs/VBE_Backgrounds_Utinni.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "350284929bdf2936c2f22bf4f14a57fe6a71056d116dd09aeb5ff3c9439931f0",
+    "sha": "abd9fba2"
+  },
   "src/RimUtinni/VaultDungeons/Source/gen_vault_layouts.py": {
     "cleanCount": 2,
     "date": "2026-09-05",
