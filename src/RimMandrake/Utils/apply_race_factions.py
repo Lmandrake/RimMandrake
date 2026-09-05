@@ -15,9 +15,12 @@ in Jawa_Patches instead.
 🔴 Inherit="False" is forced on every set. Without it the vanilla parent's xenotypes
 are APPENDED and the faction fields Hussars and Dirtmoles alongside ours - which is
 exactly how Jawa_FreeDroidEnclaves ended up with none of its own.
-⚠️ Refuses to run if the decisions file is still byte-identical to the generated
-pre-fill, because that means the sheet never wrote and these are the agent's guesses,
-not the owner's.
+⚠️ Refuses to run if the decisions file has no 'placedCount' key (the field the
+review sheet stamps on every save), because that means the sheet never wrote back
+and the grid is still the generated pre-fill, not the owner's decisions. This is a
+presence check, not a byte-for-byte diff against the original pre-fill - it cannot
+tell a real save from a save that happens to reproduce the same grid, but the sheet
+overwrites the whole file on every save so that case does not arise in practice.
 
 🔴 A FactionDef carrying the marker FROZEN-XENOTYPESET is SKIPPED, not rewritten.
 Measured 2026-08-21: `Jawa_FreeDroidEnclaves` was hand-emptied on the owner's ruling of
@@ -112,9 +115,6 @@ def main():
             wrote += 1
         open(p, "w", encoding="utf-8").write(s)
 
-    ops = []
-    for fac in sorted(VANILLA & set(per)):
-        ops.append('  <Operation Class="PatchOperationAddOrReplace_Safe_Placeholder" />')
     # vanilla defs: Replace the set if present, Add it if not - Conditional does both
     ops = []
     for fac in sorted(VANILLA & set(per)):

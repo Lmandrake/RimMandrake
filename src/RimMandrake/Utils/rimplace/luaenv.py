@@ -322,6 +322,28 @@ class Ctx:
                 return t.role, t.x, t.z
         return None
 
+    def _replace_wall_cell(self, x, z, verb):
+        """Remove whatever occupies (x, z) so a wall-slot thing (door, window,
+        wall mount) can take its place. Only ever meant to replace a WALL --
+        found in the 2026-09-05 code review wave: door()/window()/wall_mount()
+        used to unconditionally delete ANY thing at the cell with no refusal,
+        so an authoring mistake (or two passes touching the same cell) could
+        silently destroy unrelated content (a bed, a decal) with zero signal.
+        Now only a WALL-role thing is removed silently; anything else is
+        refused (logged, not discarded blind) before removal still proceeds --
+        callers here always intend to occupy the cell, so leaving the
+        conflicting thing in place would just relocate the same collision to
+        `place()`'s own footprint check instead of surfacing it here.
+        """
+        victims = [t for t in self.plan.things if t.x == int(x) and t.z == int(z)]
+        bad = [t for t in victims if (t.role or "") != "WALL"]
+        if bad:
+            self.plan.refuse(verb, "replaced non-wall thing(s) here: " +
+                              ", ".join(t.defName for t in bad), int(x), int(z),
+                              level="WARN", code="wallcell-replaced-non-wall")
+        self.plan.things = [t for t in self.plan.things
+                            if not (t.x == int(x) and t.z == int(z))]
+
     # ---- emit -------------------------------------------------------------
     def place(self, defName, x, z, rot=0, stuff=None, role=None, overlay=False):
         x, z = int(x), int(z)
@@ -586,8 +608,7 @@ class Ctx:
         d = defName or self.role("DOOR")
         st = stuff or self.role("DOOR_STUFF")
         # A door replaces the wall in that cell rather than stacking on it.
-        self.plan.things = [t for t in self.plan.things
-                            if not (t.x == int(x) and t.z == int(z))]
+        self._replace_wall_cell(x, z, "door")
         return self.place(d, x, z, rot, st, "DOOR")
 
     def window(self, x, z, defName=None, stuff=None, rot=0):
@@ -598,8 +619,7 @@ class Ctx:
         unmapped role - never a silent skip."""
         d = defName or self.role("WINDOW")
         st = stuff if stuff is not None else self.role("WINDOW_STUFF")
-        self.plan.things = [t for t in self.plan.things
-                            if not (t.x == int(x) and t.z == int(z))]
+        self._replace_wall_cell(x, z, "window")
         return self.place(d, x, z, rot, st, "WINDOW")
 
     def wall_mount(self, role, x, z, rot=0):
@@ -613,8 +633,7 @@ class Ctx:
         if d is None:
             self.plan.refuse(f"role:{role}", "no palette entry", int(x), int(z))
             return False
-        self.plan.things = [t for t in self.plan.things
-                            if not (t.x == int(x) and t.z == int(z))]
+        self._replace_wall_cell(x, z, f"wall_mount:{role}")
         return self.place(d, x, z, rot, self.role(str(role) + "_STUFF"), role)
 
     # ---- E1/E2/E3: directives the GenStep executes, not the offline IR -----

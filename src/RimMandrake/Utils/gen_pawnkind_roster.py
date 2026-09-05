@@ -447,36 +447,6 @@ KIT_PRE = {
          the cut left the Helix boss unarmed. Owner: Helix are VERY wealthy - this is what
          very wealthy costs in this stack. -->
 """,
- 'Jawa_Homestead_DesertRanger': """  <!-- ⭐ THE DESERT TROOPER — owner, 2026-08-20: "the Homestead Defense League
-       absolutely would dress like the desert naturally."
-
-       It began as `OuterRim_RebelDesertTrooper`, asserted as an inventory fact in
-       desert_world_design.md:448 and absent from the dump. The Rebel Alliance holds
-       none of the 72 settlements, so it could never have spawned there. The Homestead
-       Defense League is the right home: 13 settlements, the most on the map, sited on
-       "the arable margin of the terminator".
-
-       ⚠️ DRESSED EXPLICITLY, unlike its four siblings, and that is the point of it.
-       They leave apparel to `apparelMoney` and take whatever the roll gives; this one
-       names duster + headwrap because LOOKING like the desert is the whole brief.
-       Both are vanilla `Core` items, so no mod can take them away.
-
-       ⚠️ Outer Rim's own "snow trooper" wears the FOREST set — `RebelForestFatigues`,
-       forest poncho, forest helmet. Its biome troopers are name-and-tag reskins, not
-       new art, which is the licence to do the same here rather than commission a set.
-
-       ✅ IT SPAWNS AS OF 2026-08-21 === OUTLANDER_GROUPMAKER_PATCH_1, owner:
-       "Approved abstract patch." This paragraph used to read "IT DOES NOT SPAWN YET",
-       and that is now wrong. `pawnGroupMakers` for this faction does live on the
-       ABSTRACT parent `OutlanderFactionBase` and not on `OutlanderCivil` — which is
-       exactly why every earlier xpath at `FactionDef[defName="OutlanderCivil"]/
-       pawnGroupMakers` matched nothing and logged nothing. The parent is now patched
-       ADDITIVELY, by its `Name` attribute, at the end of
-       `Patches/HomesteadDefenseLeague.xml`: four new group makers (Combat, Peaceful,
-       Trader, Settlement) at commonality 5, which is 4.8% of Outlander groups of each
-       kind. All five Homestead kinds are in them; the ranger carries the joint-highest
-       weight. If it still never appears, the weight is wrong, not the def. -->
-""",
  'Jawa_Hutt_Leader': """  <!-- 🔴 REVERTED 2026-08-23. Cut to 3000~3600 as 'not intermediate'; the legendary tier starts
          at 12000 and the cut disarmed him. The FACTION is intermediate - its Grunts run
          200~240 - but a Hutt crime boss carrying one ostentatious 12000-credit blaster is
@@ -2868,54 +2838,6 @@ KIT = {
       <li>Royal</li>
       <li>SaV_apparel_jawa</li>
       <li>SaV_apparel_tusken</li>
-    </apparelDisallowTags>""",
- 'Jawa_Homestead_DesertRanger': """    <weaponMoney>200~260</weaponMoney>
-    <apparelMoney>240~300</apparelMoney>
-    <initialResistanceRange>10~16</initialResistanceRange>
-    <initialWillRange>2~4</initialWillRange>
-    <weaponTags>
-      <li>SimpleGun</li>
-      <li>KotORRanged_mid</li>
-    </weaponTags>
-    <apparelRequired>
-      <li>Apparel_Duster</li>
-      <li>Apparel_Headwrap</li>
-    </apparelRequired>
-    <apparelAllowHeadgearChance>1</apparelAllowHeadgearChance>
-    <maxApparelQuality>Good</maxApparelQuality>
-      <!-- settlers and salvagers - modest, practical, a little cash -->
-    <inventoryOptions>
-      <skipChance>0.4</skipChance>
-      <subOptionsChooseOne>
-        <li><thingDef>MedicineHerbal</thingDef><countRange>1~2</countRange></li>
-        <li><thingDef>Pemmican</thingDef><countRange>6~15</countRange></li>
-        <li><thingDef>ComponentIndustrial</thingDef><countRange>1~2</countRange></li>
-        <li><thingDef>Silver</thingDef><countRange>15~45</countRange></li>
-      </subOptionsChooseOne>
-    </inventoryOptions>
-      <!-- design: 'max Good'. Settlers keep decent kit but nothing exquisite. -->
-    <itemQuality>Normal</itemQuality>
-      <!-- TABOO: a culture must never turn up in another culture's uniform. Only
-         families this kind does not use itself are listed - its own apparelTags and
-         every tag its apparelRequired items carry are excluded, so a disallow can
-         never strand it. -->
-    <apparelDisallowTags>
-      <li>DroidArmor</li>
-      <li>ImperialApparel</li>
-      <li>ImperialArmy</li>
-      <li>ImperialOfficer</li>
-      <li>ImperialStormtrooper</li>
-      <li>KotORDroidArmorT1</li>
-      <li>KotORDroidArmorT2</li>
-      <li>KotORDroidArmorT3</li>
-      <li>MNCFactionArmor</li>
-      <li>ORTusken</li>
-      <li>Royal</li>
-      <li>SaV_apparel_jawa</li>
-      <li>SaV_apparel_tusken</li>
-      <li>Warcasket</li>
-      <li>WarcasketAll</li>
-      <li>WarcasketVeteran</li>
     </apparelDisallowTags>""",
 }
 

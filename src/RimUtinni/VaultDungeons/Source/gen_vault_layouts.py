@@ -144,13 +144,13 @@ def gen_symboldefs():
 
 # --- Layout grid generation --------------------------------------------
 
-def build_grid(size, outer_wall, outer_thick, garrison_floor, garrison_thick,
+def build_grid(size, outer_wall, outer_thick, garrison_floor,
                 garrison_symbols, core_wall, core_size, core_floor, core_items,
-                door_material=None, core_wall_hugging=None, core_corner_item=None):
+                core_wall_hugging=None, core_corner_item=None):
     """Concentric square grid: outer wall ring -> garrison band -> inner wall
-    ring -> core room. Each wall ring gets exactly ONE door, offset 90
-    degrees from the other ring's door, so the core is reachable only by
-    walking around inside the garrison band - never a straight line in.
+    ring -> core room. The outer ring's door is on the North face, the core
+    ring's on the South - opposite faces, so the core is reachable only by
+    walking the full garrison band around, never a straight line in.
 
     core_wall_hugging: symbols placed in the band on cells ADJACENT to the
     core wall ring (one per side, N/E/S/W order, away from the S door).
@@ -173,7 +173,6 @@ def build_grid(size, outer_wall, outer_thick, garrison_floor, garrison_thick,
             grid[r][c1] = material
         mid_c = (c0 + c1) // 2
         mid_r = (r0 + r1) // 2
-        d = door_material or material
         if door_side == "N":
             grid[r0][mid_c] = "."
             terrain[r0][mid_c] = "Gravel"
@@ -275,7 +274,7 @@ def main():
     # them bare; the two GravTech cannons are third-party -> wrapped symbols.
     g1, t1 = build_grid(
         size=61, outer_wall="Wall_Plasteel", outer_thick=6,
-        garrison_floor="Concrete", garrison_thick=20,
+        garrison_floor="Concrete",
         garrison_symbols=[
             "Mech_Lancer", "Mech_Centurion",
             "Mech_Lancer", "RUT_Symbol_GravRailArtillery",
@@ -293,7 +292,7 @@ def main():
     # Flesh/terrain names are TerrainDef (no SymbolDef indirection needed).
     g2, t2 = build_grid(
         size=51, outer_wall="RUT_Symbol_BlackJellyWall", outer_thick=5,
-        garrison_floor="Flesh", garrison_thick=15,
+        garrison_floor="Flesh",
         garrison_symbols=[
             "RUT_Symbol_GreenGoo", "RUT_Symbol_Boomsnake",
             "RUT_Symbol_GreenGoo", "RUT_Symbol_InfestedShipPart",
@@ -322,7 +321,7 @@ def main():
     # type 1's Mech_Lancer/Mech_Centurion cells - not this pass's file).
     g3, t3 = build_grid(
         size=55, outer_wall="Wall_Plasteel", outer_thick=6,
-        garrison_floor="Ice", garrison_thick=18,
+        garrison_floor="Ice",
         garrison_symbols=[],  # deliberately silent - "thin... mostly silence" per SS3.3
         core_wall="Wall_Plasteel", core_size=13, core_floor="Ice",
         # a casket is (1,2) with its interaction cell one to the east - a gap

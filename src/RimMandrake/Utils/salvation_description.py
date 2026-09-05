@@ -23,6 +23,7 @@ import argparse
 import re
 import sys
 from pathlib import Path
+from xml.sax.saxutils import escape as _xml_escape
 
 REPO = Path(__file__).resolve().parents[3]
 SOURCE = REPO / "design/Jawa/worldbuilding/ideoligion/the_salvation_description.md"
@@ -64,7 +65,11 @@ def _sub_tag(blob: str, tag: str, value: str) -> tuple[str, int]:
 
 def sync(write: bool) -> bool:
     """Push the source into every generated copy. True when everything already matched."""
-    want_inline = inline()
+    # Found in the 2026-09-05 code review wave: inline() is substituted straight into
+    # XML tags below with no escaping. An ampersand or angle bracket in the source
+    # markdown would silently write malformed XML into JawaTribes.xml/The Salvation.rid
+    # with nothing here to catch it.
+    want_inline = _xml_escape(inline())
     clean = True
     for path, tags in ((FACTION_XML, ("ideoDescription",)),
                        (RID, ("description", "descriptionTemplate"))):

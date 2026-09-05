@@ -182,8 +182,19 @@ def main():
            "NotYetLiveRow" not in names(v2_orphans, rv.FAIL))
     v2_cov = rv.check_coverage(v2_rows, live, meta,
                                {"hash": "selftestfp0001", "modCount": 3})
-    expect("schema v2: coverage equality excludes live!=yes rows",
-           not any(i.level == rv.FAIL and "manifest has 17" in i.msg for i in v2_cov))
+    # Found in the 2026-09-05 code review wave: this used to grep for a message
+    # string ("manifest has 17") that hasn't existed in check_coverage() since the
+    # 2026-09-04 two-sided coverage rewrite (see that function's own comment) --
+    # the assertion passed unconditionally regardless of whether exclusion worked.
+    # `cov_issues` (above) already carries ONE expected coverage FAIL of its own
+    # (UncoveredProject, deliberately live-but-unmapped in the fixture) - a bare
+    # "zero FAILs" assertion here would be wrong in the opposite direction. The
+    # real property under test is that adding the pending row changes NOTHING
+    # about the pre-existing coverage FAIL set.
+    expect("schema v2: coverage equality excludes live!=yes rows (adding the "
+           "pending row does not change the coverage FAIL set)",
+           names(v2_cov, rv.FAIL) == names(cov_issues, rv.FAIL),
+           "v2=%s base=%s" % (names(v2_cov, rv.FAIL), names(cov_issues, rv.FAIL)))
     expect("schema v2: the excluded row is INFO-listed by coverage",
            "NotYetLiveRow" in names(v2_cov, rv.INFO))
 

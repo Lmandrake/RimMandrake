@@ -118,13 +118,24 @@ STATUSES = ("red", "blue", "green", "grey", "unmeasured")
 
 # ---------------------------------------------------------------- git helpers
 
+# Found in the 2026-09-05 code review wave: code_review_status.py added this same
+# hard timeout after concurrent review agents were observed hammering .git into
+# lock contention and hanging a caller for 10 minutes on this exact shared mount.
+# This file's git()/git_z() had no timeout and were exposed to the same hang.
+GIT_TIMEOUT = 8  # seconds
+
+
 def git(args):
-    return subprocess.run(["git"] + args, cwd=ROOT, capture_output=True, text=True)
+    try:
+        return subprocess.run(["git"] + args, cwd=ROOT, capture_output=True,
+                               text=True, timeout=GIT_TIMEOUT)
+    except subprocess.TimeoutExpired:
+        return subprocess.CompletedProcess(args, -1, "", "git timed out after %ss" % GIT_TIMEOUT)
 
 
 def git_z(args):
     """Run git with -z output and split on NUL, so paths with spaces survive."""
-    r = subprocess.run(["git"] + args, cwd=ROOT, capture_output=True, text=True)
+    r = git(args)
     if r.returncode != 0:
         return None
     return [p for p in r.stdout.split("\0") if p]
@@ -141,8 +152,7 @@ def working_tree_changes():
     Returns None if git could not be consulted at all — the caller must then
     treat 'in dev' as UNDETERMINED rather than assume False.
     """
-    r = subprocess.run(["git", "status", "--porcelain=1", "-z", "--untracked-files=all"],
-                       cwd=ROOT, capture_output=True, text=True)
+    r = git(["status", "--porcelain=1", "-z", "--untracked-files=all"])
     if r.returncode != 0:
         return None
     fields = r.stdout.split("\0")

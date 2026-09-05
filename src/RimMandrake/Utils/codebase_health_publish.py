@@ -87,7 +87,11 @@ def fingerprint():
     that as "nothing changed".
     """
     head = sh("git", "rev-parse", "HEAD")
-    dirty = sh("git", "status", "--porcelain")
+    # Found in the 2026-09-05 code review wave: default porcelain output collapses an
+    # entirely-untracked directory to one `?? dir/` line, so adding a second new file
+    # inside an already-untracked directory didn't change this string at all, and the
+    # fingerprint silently missed a real change (SKIP: repo unchanged, wrongly).
+    dirty = sh("git", "status", "--porcelain", "--untracked-files=all")
     if head is None or dirty is None:
         return None
     return hashlib.sha256((head + "\n" + dirty).encode("utf-8")).hexdigest()[:16]
