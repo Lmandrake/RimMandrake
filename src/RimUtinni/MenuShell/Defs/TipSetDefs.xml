@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  TipSetDef per ui_appearance_spec.md section 5: pure XML, zero risk, read
+  automatically by GameplayTipWindow (Verse/GameplayTipWindow.cs pools every
+  DefDatabase<TipSetDef> at once - no registration needed beyond the def existing).
+  Field shape confirmed against Verse/TipSetDef.cs (defName + tips, a List<string>;
+  no TKey required outside vanilla's own translated set) and vanilla's own
+  GameplayTips def.
+
+  Voice calibrated against src/RimStarWars/JawaVoice/Patches/*.xml (the canon
+  anchor named in the spec - dry, fatalist-but-warm, address as "friend") and
+  design/Jawa/worldbuilding/jawa_society.md's doctrine (the three-way gear split,
+  the no-recruit-only-love clan boundary, the buy-Jawa-first/never-sell-kin rule,
+  the cold-nursery egg mechanic) plus design/NAMING_SCHEME_PLAN.md's confirmation
+  that "the ion-over-explosives rule is theology." Every doctrine line below is
+  paraphrased from an actual ruling in those documents, not invented from nothing.
+-->
+<Defs>
+
+  <TipSetDef>
+    <defName>RUT_TipSet_Jawa</defName>
+    <tips>
+      <li>Ash'karr turns but never spins - one face burns, one face freezes, and the clan lives on the line between.</li>
+      <li>The Salvation was not built by the clan. It was found, patched, and never asked where it came from.</li>
+      <li>Nine gods watch the clan: Ishko in the dark doorway, Ozzik in the noon sun, and seven more between.</li>
+      <li>Every dead machine has a soul in it somewhere. The trick is finding which wire it lives in.</li>
+      <li>The desert does not forgive a Jawa who stops moving. Neither does the sun side of the terminator.</li>
+      <li>A hood is not a costume. It is the only roof some Jawa will ever own.</li>
+      <li>A blaster held together with tape and a prayer is not a poor weapon. It is a well-loved one.</li>
+      <li>Tainted apparel means nothing to a Jawa. The dead don't need it anymore, and neither do their manners.</li>
+      <li>A broken tool is an emergency. A cheap one is just Tuesday.</li>
+      <li>Ion beats explosives every time - the Nine prefer their salvage intact.</li>
+      <li>The clan does not recruit. It hatches, and once in a great while, it falls in love.</li>
+      <li>A slave from another clan earns Jawa kinship the only way there is: someone already in the clan has to fall for them.</li>
+      <li>See a Jawa in chains and you can afford to buy them free? Then you already have. Anything else is a debt on the whole clan.</li>
+      <li>Sell the outsider. Never sell the kin. The Hutts will take anyone; the clan takes only its own back.</li>
+      <li>Scrap is sacred. The bolt you throw away today is the bolt someone does without tomorrow.</li>
+      <li>Eggs do not hatch in the heat. Somewhere under this clan's floor there is always a cold room, and it matters more than any throne room ever will.</li>
+      <li>Ask a Jawa for the time and you'll get the temperature, the fuel gauge, and an opinion about your boots.</li>
+      <li>There is no such thing as "just looking." A Jawa's eyes are already pricing your kneecaps.</li>
+      <li>Everything ends in scrap eventually. A Jawa just gets there first.</li>
+      <li>A good haggle is a small prayer. A bad one is a moral failing.</li>
+      <li>The clan mourns every Jawa who dies - even the ones who died shooting at it. Kin is kin, even at gunpoint.</li>
+      <li>Somewhere, a droid is being mourned with more ceremony than most kings get.</li>
+      <li>Nobody has ever won an argument with a Jawa about whether that pile of junk "still works."</li>
+      <li>A Jawa's proudest possession is whatever he's currently repairing. Ask again tomorrow; the answer will change.</li>
+      <li>Quality is a compliment. Function is a commandment.</li>
+      <li>A working machine is holy. A broken one is homework.</li>
+      <li>The clan keeps what it's wearing in good repair without being asked. What's hanging in storage can wait its turn.</li>
+      <li>Every clan member left behind in the wild waits for one thing: another Jawa, coming to claim them, alive or dead.</li>
+      <li>You cannot buy your way into the clan. You can only be born into it, or be loved into it.</li>
+      <li>Somewhere on Ash'karr, five hooded figures are staring up at their temple-ship and getting absolutely nothing done about it.</li>
+    </tips>
+  </TipSetDef>
+
+</Defs>

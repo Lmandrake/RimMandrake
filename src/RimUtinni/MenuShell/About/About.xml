@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimUtinni: Menu Shell</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.rut.menushell</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>The campaign's menu and loading-screen shell, per design/Jawa/worldbuilding/ui_appearance_spec.md section 2 and 5.
+
+Ships two things, both XML/texture only (no C#, no Harmony):
+
+(1) VBE.BackgroundImageDef backgrounds for Vanilla Backgrounds Expanded's main-menu
+picker (which the loading screen inherits for free) - the pantheon slide, letterboxed
+onto a 2560x1440 indigo-black field with no upscaling, plus one background per god
+icon (nine), each the god's icon large on the same indigo field. All ten are
+MayRequire="vanillaexpanded.backgrounds" so they are skipped cleanly if VBE is ever
+dropped - RimWorld checks MayRequire before it even tries to resolve the def's C#
+type, so no red error either way. A Tier-1 fallback ships alongside: the same
+pantheon composite at Textures/UI/HeroArt/BGPlanet.png, which overrides Core's own
+planet background by load order alone (ContentFinder's last-mod-wins walk) with zero
+dependency on VBE.
+
+(2) RUT_TipSet_Jawa - a TipSetDef of ~30 Jawa-voiced loading tips (lore, doctrine,
+one-line jokes), read automatically by GameplayTipWindow alongside vanilla's own tips
+during the long cold load.
+
+Not built here (see the spec and UI_APPEARANCE_BUILD_1's filing note): the temple-ship
+hero render (Image A - needs a commissioned piece), the desert-vista second image, and
+the title wordmark (a taste ruling for the owner, carded, not decided).</description>
+  <loadAfter>
+    <li>vanillaexpanded.backgrounds</li>
+  </loadAfter>
+</ModMetaData>

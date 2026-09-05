@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  VBE.BackgroundImageDef per ui_appearance_spec.md section 2 ("safe wins": zero new
+  art, letterbox route). Def shape confirmed against VBE's own shipped
+  1.6/Defs/Backgrounds.xml and 1.5/Source/VBE/BackgroundImageDef.cs (defName, label,
+  description, path, iconPath - path is relative to this mod's Textures/ root, no
+  extension). `path` and `iconPath` point at the SAME file deliberately: ContentFinder
+  caches by path, so the picker's thumbnail and the drawn background share one
+  loaded texture, no extra art needed for icons.
+
+  MayRequire is verified sufficient on its own (Verse/LoadedModManager.cs: the
+  top-level MayRequire check runs and `continue`s past the whole node BEFORE
+  DirectXmlLoader/DirectXmlToObjectNew ever tries to resolve "VBE.BackgroundImageDef"
+  as a type) - so with VBE inactive these ten defs are skipped cleanly, no red error,
+  and the BGPlanet.png fallback (Textures/UI/HeroArt/BGPlanet.png in this same mod)
+  carries the no-VBE case per the spec's section 7.
+-->
+<Defs>
+
+  <VBE.BackgroundImageDef MayRequire="vanillaexpanded.backgrounds">
+    <defName>RUT_BG_PantheonSlide</defName>
+    <label>The pantheon over Ash'karr</label>
+    <description>The Nine watch the clan cross the split world beneath the wreck of the Salvation.</description>
+    <path>RimUtinni/MenuShell/BG_PantheonSlide</path>
+    <iconPath>RimUtinni/MenuShell/BG_PantheonSlide</iconPath>
+  </VBE.BackgroundImageDef>
+
+  <VBE.BackgroundImageDef MayRequire="vanillaexpanded.backgrounds">
+    <defName>RUT_BG_God_Ishko</defName>
+    <label>Ishko, in the dark doorway</label>
+    <description>Ishko's eyes, burning in the black of the temple gate.</description>
+    <path>RimUtinni/MenuShell/BG_God_Ishko</path>
+    <iconPath>RimUtinni/MenuShell/BG_God_Ishko</iconPath>
+  </VBE.BackgroundImageDef>
+
+  <VBE.BackgroundImageDef MayRequire="vanillaexpanded.backgrounds">
+    <defName>RUT_BG_God_Ohm</defName>
+    <label>Ohm</label>
+    <description>One face of the Nine.</description>
+    <path>RimUtinni/MenuShell/BG_God_Ohm</path>
+    <iconPath>RimUtinni/MenuShell/BG_God_Ohm</iconPath>
+  </VBE.BackgroundImageDef>
+
+  <VBE.BackgroundImageDef MayRequire="vanillaexpanded.backgrounds">
+    <defName>RUT_BG_God_Oomo</defName>
+    <label>Oomo</label>
+    <description>One face of the Nine.</description>
+    <path>RimUtinni/MenuShell/BG_God_Oomo</path>
+    <iconPath>RimUtinni/MenuShell/BG_God_Oomo</iconPath>
+  </VBE.BackgroundImageDef>
+
+  <VBE.BackgroundImageDef MayRequire="vanillaexpanded.backgrounds">
+    <defName>RUT_BG_God_Mobunloo</defName>
+    <label>Mobunloo</label>
+    <description>One face of the Nine.</description>
+    <path>RimUtinni/MenuShell/BG_God_Mobunloo</path>
+    <iconPath>RimUtinni/MenuShell/BG_God_Mobunloo</iconPath>
+  </VBE.BackgroundImageDef>
+
+  <VBE.BackgroundImageDef MayRequire="vanillaexpanded.backgrounds">
+    <defName>RUT_BG_God_Rekko</defName>
+    <label>Rekko</label>
+    <description>One face of the Nine.</description>
+    <path>RimUtinni/MenuShell/BG_God_Rekko</path>
+    <iconPath>RimUtinni/MenuShell/BG_God_Rekko</iconPath>
+  </VBE.BackgroundImageDef>
+
+  <VBE.BackgroundImageDef MayRequire="vanillaexpanded.backgrounds">
+    <defName>RUT_BG_God_Tabaa</defName>
+    <label>Tabaa</label>
+    <description>One face of the Nine.</description>
+    <path>RimUtinni/MenuShell/BG_God_Tabaa</path>
+    <iconPath>RimUtinni/MenuShell/BG_God_Tabaa</iconPath>
+  </VBE.BackgroundImageDef>
+
+  <VBE.BackgroundImageDef MayRequire="vanillaexpanded.backgrounds">
+    <defName>RUT_BG_God_Zizzik</defName>
+    <label>Zizzik</label>
+    <description>One face of the Nine.</description>
+    <path>RimUtinni/MenuShell/BG_God_Zizzik</path>
+    <iconPath>RimUtinni/MenuShell/BG_God_Zizzik</iconPath>
+  </VBE.BackgroundImageDef>
+
+  <VBE.BackgroundImageDef MayRequire="vanillaexpanded.backgrounds">
+    <defName>RUT_BG_God_Shkaar</defName>
+    <label>Shkaar</label>
+    <description>One face of the Nine.</description>
+    <path>RimUtinni/MenuShell/BG_God_Shkaar</path>
+    <iconPath>RimUtinni/MenuShell/BG_God_Shkaar</iconPath>
+  </VBE.BackgroundImageDef>
+
+  <VBE.BackgroundImageDef MayRequire="vanillaexpanded.backgrounds">
+    <defName>RUT_BG_God_Ozzik</defName>
+    <label>Ozzik, in the noon sun</label>
+    <description>Ozzik's face, burning gold on the day side of the world.</description>
+    <path>RimUtinni/MenuShell/BG_God_Ozzik</path>
+    <iconPath>RimUtinni/MenuShell/BG_God_Ozzik</iconPath>
+  </VBE.BackgroundImageDef>
+
+</Defs>
