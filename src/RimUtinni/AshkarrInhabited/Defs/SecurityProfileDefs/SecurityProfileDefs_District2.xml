@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!--
+    DISTRICT_TEMPLATE_LIBRARY_1, 2026-09-05: gate postures for the three
+    faction sets authored after the Junkers pilot. Same two fields the schema
+    has (SecurityProfileDef.cs: searchesLeavers, searchChance); the numbers
+    are a first reading of each faction's own canon, for the owner to tune.
+  -->
+
+  <!-- "Hostile the way a creditor is hostile" (JawaHuttCartel.xml). The gate
+       counts what leaves against what was paid for. -->
+  <RimMandrake.Inhabited.SecurityProfileDef>
+    <defName>Inhabited_SecurityProfile_HuttCartel</defName>
+    <label>Cartel gate posture</label>
+    <description>Nothing leaves a Hutt's seat that has not been paid for, and the gate is where the ledger is checked. Most leavers are searched; a guest of the lord is waved through, and knows it.</description>
+    <searchesLeavers>true</searchesLeavers>
+    <searchChance>0.6</searchChance>
+  </RimMandrake.Inhabited.SecurityProfileDef>
+
+  <!-- "They do not take prisoners and they do not hold grudges. What they
+       hold is the water" (JawaFreeDroidEnclaves.xml). A droid does not care
+       what you carry out; it cares that you were never property here. -->
+  <RimMandrake.Inhabited.SecurityProfileDef>
+    <defName>Inhabited_SecurityProfile_FreeDroids</defName>
+    <label>Enclave gate posture</label>
+    <description>The enclave has no goods it values enough to search a visitor for. It watches the fuel and the water, and it watches whether anyone leaves wearing a restraining bolt they did not arrive with.</description>
+    <searchesLeavers>false</searchesLeavers>
+    <searchChance>0</searchChance>
+  </RimMandrake.Inhabited.SecurityProfileDef>
+
+  <!-- "Inside our walls no one raises a hand. Outside our walls, we do not go"
+       (JawaDeepwaterCompact.xml ideoDescription); turret density HIGH
+       (faction_roster_v2.md). Every leaver is searched - the export is water,
+       and water walks. -->
+  <RimMandrake.Inhabited.SecurityProfileDef>
+    <defName>Inhabited_SecurityProfile_Deepwater</defName>
+    <label>Compact gate posture</label>
+    <description>The Compact sells water; it does not lose it. Every leaver is searched at the bastion, politely, by a warden who will not follow you past the gate and does not need to.</description>
+    <searchesLeavers>true</searchesLeavers>
+    <searchChance>1</searchChance>
+  </RimMandrake.Inhabited.SecurityProfileDef>
+
+</Defs>

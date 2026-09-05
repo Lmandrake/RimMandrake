@@ -57,4 +57,82 @@
     <stockLabel>salvage</stockLabel>
   </RimMandrake.Inhabited.InhabitedPlaceDef>
 
+  <!-- DISTRICT_TEMPLATE_LIBRARY_1, 2026-09-05: three more archetypes, one per
+       faction set authored after the Junkers pilot. Engine tier, so every
+       larder/stock entry is a VANILLA defName: the campaign manifest names
+       the archetype, never the other way round. Fates: a palace, a machine
+       hold and a water hold are all Resident - none of them has anywhere
+       else to be. -->
+
+  <!-- A lord's seat. Fed well, guarded, and sitting on more silver than
+       anything else on the map. -->
+  <RimMandrake.Inhabited.InhabitedPlaceDef>
+    <defName>RM_InhabitedPlace_Palace</defName>
+    <label>palace seat</label>
+    <description>A wealthy lord's seat. It eats well, it entertains, and what it keeps in the strongroom is what everyone who visits is really there about.</description>
+    <fate>Resident</fate>
+    <workRadius>14</workRadius>
+    <homeRadius>12</homeRadius>
+    <sleepStartHour>1</sleepStartHour>
+    <wakeHour>9</wakeHour>
+    <larder>
+      <MealFine>24</MealFine>
+      <Beer>30</Beer>
+      <Chemfuel>40</Chemfuel>
+    </larder>
+    <stock>
+      <Silver>800</Silver>
+      <Gold>40</Gold>
+      <Yayo>40</Yayo>
+    </stock>
+    <stockLabel>the lord's strongroom</stockLabel>
+  </RimMandrake.Inhabited.InhabitedPlaceDef>
+
+  <!-- A hold of machines. No food at all: the larder is fuel, because that
+       is what its residents eat, and the stock is what they crack and cut. -->
+  <RimMandrake.Inhabited.InhabitedPlaceDef>
+    <defName>RM_InhabitedPlace_MachineHold</defName>
+    <label>machine hold</label>
+    <description>A settlement of machines. It stores no food, keeps no beds, and never sleeps as such; what it has is fuel, parts, and the patience to make more of both.</description>
+    <fate>Resident</fate>
+    <workRadius>16</workRadius>
+    <homeRadius>10</homeRadius>
+    <sleepStartHour>0</sleepStartHour>
+    <wakeHour>4</wakeHour>
+    <larder>
+      <Chemfuel>150</Chemfuel>
+      <ComponentIndustrial>16</ComponentIndustrial>
+    </larder>
+    <stock>
+      <Chemfuel>300</Chemfuel>
+      <Steel>240</Steel>
+      <ComponentIndustrial>30</ComponentIndustrial>
+    </stock>
+    <stockLabel>cracked fuel and parts</stockLabel>
+  </RimMandrake.Inhabited.InhabitedPlaceDef>
+
+  <!-- A water hold. Clean, medical, defended; its wealth is the thing it
+       stands on, which cannot be carried off, and the medicine it makes
+       from having it. -->
+  <RimMandrake.Inhabited.InhabitedPlaceDef>
+    <defName>RM_InhabitedPlace_WaterHold</defName>
+    <label>water hold</label>
+    <description>A settlement built around water it will sell to anyone and lose to no one. Sterile rooms, a hospital, growing beds under lamps, and a gate that is the only argument it ever needs to make.</description>
+    <fate>Resident</fate>
+    <workRadius>14</workRadius>
+    <homeRadius>10</homeRadius>
+    <sleepStartHour>22</sleepStartHour>
+    <wakeHour>6</wakeHour>
+    <larder>
+      <MealSimple>30</MealSimple>
+      <MedicineIndustrial>10</MedicineIndustrial>
+    </larder>
+    <stock>
+      <Silver>300</Silver>
+      <MedicineIndustrial>24</MedicineIndustrial>
+      <RawPotatoes>120</RawPotatoes>
+    </stock>
+    <stockLabel>water rights and medicine</stockLabel>
+  </RimMandrake.Inhabited.InhabitedPlaceDef>
+
 </Defs>

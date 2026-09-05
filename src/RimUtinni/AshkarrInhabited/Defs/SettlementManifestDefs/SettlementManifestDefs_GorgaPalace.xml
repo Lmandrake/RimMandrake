@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<Defs>
+
+  <!--
+    DISTRICT_TEMPLATE_LIBRARY_1, Hutt Cartel set (2026-09-05). Gorga the
+    Immense's Palace: Jawa_HuttCartel, tile 15088, AridShrubland, "beside a
+    near-desert oasis - the well is guarded and is NOT the town tile"
+    (world/ASHKARR_WORLDMAP_settlements.csv row 28). One of the Cartel's eight
+    oasis palaces, one lord each (faction_roster_v2.md); chosen over the
+    deep-desert service posts (tolls, markets, kennels) because a PALACE is
+    where every room type the roster names for this faction actually
+    coexists: "throne room, drug labs, prisons, barracks, walled cistern".
+    ownership_settlement_spec.md item 10 calls the Hutt town "the later
+    showcase" after the Junkers pilot - this is that showcase's first seat.
+
+    Districts map 1:1 onto the four hutt_*.lua templates in
+    design/Jawa/templates/ (compiled to src/RimMandrake/Inhabited/Templates/
+    and resolved by label in GenStep_ComposeSettlementDistrict.TemplateFiles).
+    Sizes are the rects each template was exported at. v1's compose step
+    still reads only districts[0]: the palace hall is first on purpose.
+
+    Cast slots are role-shaped and carry no castDef, same as The Claim Jump:
+    no InhabitedCastDef exists for any Cartel place yet.
+  -->
+  <RimMandrake.Inhabited.SettlementManifestDef>
+    <defName>Inhabited_Manifest_GorgaPalace</defName>
+    <label>Gorga the Immense's Palace</label>
+    <description>A Hutt lord's oasis palace: an audience hall under a colonnade, a spice den, the cells where debtors wait, and the walled cistern the whole seat exists to guard. Hostile the way a creditor is hostile; everything is negotiable and everything is watched at the gate.</description>
+    <settlementName>Gorga the Immense's Palace</settlementName>
+    <factionDefName>Jawa_HuttCartel</factionDefName>
+    <securityProfile>Inhabited_SecurityProfile_HuttCartel</securityProfile>
+    <place>RM_InhabitedPlace_Palace</place>
+    <districts>
+      <li>
+        <label>palace hall</label>
+        <approxSize>(26, 24)</approxSize>
+        <adjacentTo>
+          <li>cistern court</li>
+          <li>spicehouse</li>
+        </adjacentTo>
+      </li>
+      <li>
+        <label>cistern court</label>
+        <approxSize>(22, 22)</approxSize>
+        <adjacentTo>
+          <li>palace hall</li>
+        </adjacentTo>
+      </li>
+      <li>
+        <label>holding pens</label>
+        <approxSize>(20, 16)</approxSize>
+        <adjacentTo>
+          <li>palace hall</li>
+        </adjacentTo>
+      </li>
+      <li>
+        <label>spicehouse</label>
+        <approxSize>(18, 16)</approxSize>
+        <adjacentTo>
+          <li>palace hall</li>
+        </adjacentTo>
+        <required>false</required>
+      </li>
+    </districts>
+    <castSlots>
+      <li>
+        <role>lord</role>
+        <district>palace hall</district>
+        <count>1~1</count>
+      </li>
+      <li>
+        <role>majordomo</role>
+        <district>palace hall</district>
+        <count>1~1</count>
+      </li>
+      <li>
+        <role>courtier</role>
+        <district>palace hall</district>
+        <count>2~4</count>
+      </li>
+      <li>
+        <role>guard</role>
+        <district>holding pens</district>
+        <count>2~4</count>
+      </li>
+      <li>
+        <role>debtor</role>
+        <district>holding pens</district>
+        <count>1~4</count>
+      </li>
+      <li>
+        <role>water warden</role>
+        <district>cistern court</district>
+        <count>1~2</count>
+      </li>
+      <li>
+        <role>dealer</role>
+        <district>spicehouse</district>
+        <count>1~2</count>
+      </li>
+    </castSlots>
+  </RimMandrake.Inhabited.SettlementManifestDef>
+
+</Defs>

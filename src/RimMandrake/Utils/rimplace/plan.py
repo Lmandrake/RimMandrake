@@ -34,6 +34,11 @@ _GLYPH = {
     "VITALS": "m", "HYDRO": "y", "SUNLAMP": "*", "TRAP": "x",
     "BARRICADE": ",", "FENCE": "|", "BANNER": "!", "DECAL": "~", "SIGN": "~",
     "PILLAR": "#", "DESK": "T", "MEDICINE": "m",
+    "LIGHT_TALL": "*", "TABLE_SMALL": "T", "INSTRUMENT_BIG": "g", "HOLO_BAND": "g",
+    "BED_FINE": "b", "CRATE_WIDE": "c", "SPICE": "%", "DRUG_LAB": "K",
+    "CHARGER_BIG": "E", "REACTOR_BIG": "F", "GAS_TANK": "F", "TERMINAL_TALL": "i",
+    "HOLO_TABLE": "i", "WORKBENCH": "K", "COMPONENT": "%", "STEEL": "%",
+    "BASIN": "U", "SINK": "U", "DECOR_BIG": "o", "DECAL_ALT": "~",
 }
 
 
