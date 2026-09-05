@@ -137,3 +137,32 @@ not shipped content).
 
 Left `doing` — the offline half is done, the gate is one human click and a
 four-screenshot pass away from complete.
+
+## 2026-09-05 (BENCH, owner-authorized takeover after FOUNDRY's seat was
+OOM-killed) — §5 remainder in progress
+
+- **VBE background question SETTLED by decompile** (subagent, `ilspycmd` on the
+  live workshop DLL; scratch at `/tmp/vbe_decomp/`). Corrects the earlier "VBE
+  ships no assembly / no picker" note: workshop folder `2775017012` ships
+  `1.6/Assemblies/VBE.dll`. `VBESettings.Allowed()` gates only on: def resolved,
+  `enabled[defName]` (defaults **true** via `CheckInit()`), not-animated, and no
+  pinned `current`. Defaults are `randomize=true, cycle=true (10–15s),
+  current=null`, and **no VBE settings file exists in Config/** — install runs
+  on code defaults. So `RUT_BG_ShellIshkoGate` is in the live rotation pool
+  as-shipped, and TWO user-facing pickers list it
+  (`HarmonyPatches.DoMenuBackgroundButton` float menu; `VBEMod.
+  DoSettingsWindowContents` thumbnail grid). Spec §5's "shows in VBE's picker"
+  is therefore checkable in-game after all.
+- **Theme persistence PROVEN on disk**: `Config/Mod_1668983184_RimThemes.xml`
+  carries `curTheme>mandrake.rut.shell§Utinni Shell` — FOUNDRY's OS-click
+  selection survived the session.
+- **Full-stack session log is clean for our mod**: preserved at
+  `Transient/Player_log_quicktest_crash_2026-09-05.log`; exactly one mention of
+  `mandrake.rut.shell` (the mod-list line), no error naming it or Utinni Shell.
+- ⚠️ **`rimworld/start_debug_game_ready` KILLED the 596-mod game** — log stops
+  mid-quicktest-setup (Ninefold research grants), no managed exception, no
+  Unity crash dump (latest is Sep 1). Cause UNMEASURED. The 2026-08 measurement
+  (78.5 s on 580 mods) no longer guarantees safety at this stack size.
+- Cold load relaunched (the load §5 was owed anyway); loader-art capture loop
+  running (`Transient/loadercaps/`). Mid-load frame already shows the amber
+  tactical orrery loader art rendering on the real stack.
