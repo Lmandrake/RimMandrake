@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-05T07:54:47Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-05T08:02:19Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -535,3 +535,33 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/VAULT_THAW_QUEST_FAMILY_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/VAULT_THAW_QUEST_FAMILY_1.md
+
+## INHABITED_CONTENT_DEFS_1 New content defs for the augmentation archetypes: RUT_WindowAdobe (desert window), RSW_BeastNest_Large, per-faction palette materials
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/INHABITED_CONTENT_DEFS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/INHABITED_CONTENT_DEFS_1.md
+
+## RIMPLACE_ENGINE_DELTAS_1 Six rimplace/Inhabited engine deltas that gate the augmentation content - CLEAR directive, RUN-to-map-edge, PAWN/corpse directive, Lua helpers, palette roles, lint + v2 header
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/RIMPLACE_ENGINE_DELTAS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/RIMPLACE_ENGINE_DELTAS_1.md
+
+## PATCH_TARGETS_ABSENT_FROM_LIVE_1 6 patch ops target defs absent from the live 595-mod game (silent no-ops) - triage dead-vs-mod-missing
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/PATCH_TARGETS_ABSENT_FROM_LIVE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PATCH_TARGETS_ABSENT_FROM_LIVE_1.md

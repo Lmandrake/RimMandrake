@@ -1,4 +1,6 @@
 <!-- status: live -->
+> ⭐ **EXPANDED 2026-09-05** — the full BIOME × TERRITORY × ARC-BAND enumeration (313 rows across residents, machinery, trading, salvage, natural, giant beasts, skeletons, garrisons, breeding, shrines) is `design/Jawa/worldbuilding/tile_augmentation_matrix.md`. This file stays the mechanism-first catalogue it cites as `↩A1…F5`.
+
 # tile_augmentation_catalogue.md — the concrete augmentation catalogue
 
 _The **content** layer of map authoring: what gets **placed on** a tile, biome by biome._
