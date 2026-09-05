@@ -2937,10 +2937,15 @@
     "date": "2026-09-02",
     "sha": "b4095fb8"
   },
-  "src/RimStarWars/CereanManeFix/Source/draw_mane_south.py": {
+  "src/RimStarWars/CereanManeFix/About/About.xml": {
     "cleanCount": 1,
-    "date": "2026-09-03",
-    "sha": "359b0b2c"
+    "date": "2026-09-05",
+    "sha": "85352886"
+  },
+  "src/RimStarWars/CereanManeFix/Source/draw_mane_south.py": {
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "85352886"
   },
   "src/RimStarWars/Droidworks/About/About.xml": {
     "cleanCount": 1,
@@ -3203,14 +3208,14 @@
     "sha": "56fc6ecf"
   },
   "src/RimStarWars/HelixTellurox/About/About.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "sha": "612b9263"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "85352886"
   },
   "src/RimStarWars/HelixTellurox/Defs/ThingDefs_Races/Races_Tellurox.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "sha": "612b9263"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "85352886"
   },
   "src/RimStarWars/JawaIkee/Source/ThoughtWorker_IkeeNearby.cs": {
     "cleanCount": 1,
@@ -3337,10 +3342,15 @@
     "date": "2026-09-05",
     "sha": "0e986f2a"
   },
-  "src/RimStarWars/MSEDroidFix/Source/draw_mse_north.py": {
+  "src/RimStarWars/MSEDroidFix/About/About.xml": {
     "cleanCount": 1,
-    "date": "2026-09-03",
-    "sha": "359b0b2c"
+    "date": "2026-09-05",
+    "sha": "85352886"
+  },
+  "src/RimStarWars/MSEDroidFix/Source/draw_mse_north.py": {
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "85352886"
   },
   "src/RimStarWars/SeaBeasts/art/gen_sea_mockups.py": {
     "cleanCount": 1,
@@ -3587,15 +3597,40 @@
     "date": "2026-09-04",
     "sha": "f1a99184"
   },
-  "src/RimUtinni/Doctrine/Source/DoctrineCore/DoctrinePatches.cs": {
+  "src/RimUtinni/Doctrine/About/About.xml": {
     "cleanCount": 1,
-    "date": "2026-09-03",
-    "sha": "f9da3de0"
+    "date": "2026-09-05",
+    "sha": "c9acb340"
+  },
+  "src/RimUtinni/Doctrine/Patches/DroidsAreMachines.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "c9acb340"
+  },
+  "src/RimUtinni/Doctrine/Patches/MegafaunaYield.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "c9acb340"
+  },
+  "src/RimUtinni/Doctrine/Patches/NoDroidManufacture.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "c9acb340"
+  },
+  "src/RimUtinni/Doctrine/Source/DoctrineCore/DoctrinePatches.cs": {
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "c9acb340"
+  },
+  "src/RimUtinni/Doctrine/Source/DoctrineCore/JawaDoctrineCore.csproj": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "c9acb340"
   },
   "src/RimUtinni/Doctrine/Source/gen_megafauna_yield.py": {
-    "cleanCount": 1,
-    "date": "2026-09-02",
-    "sha": "ccb9e9ba"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "c9acb340"
   },
   "src/RimUtinni/EmpirePursuit/Source/HarmonyPatches.cs": {
     "cleanCount": 1,
