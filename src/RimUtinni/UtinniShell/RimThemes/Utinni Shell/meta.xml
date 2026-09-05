@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  RimUtinni Shell theme — consumed by RimThemes (aRandomKiwi.RimThemes).
+  Colours from design/Jawa/worldbuilding/ui_shell_spec.md §1, tuned to the refs.
+  Key names + value formats mirror RimThemes' own shipped themes (Cyberpunk):
+  Widgets.* / FloatMenuOption.* colours are 0-255 (optional 4th = alpha);
+  textColorGray is a 0-1 float triple. No custom font in this slice (owner rule:
+  Aurebesh is unreadable as UI). Vertical-slice key set only (spec §2).
+-->
+<RimThemes>
+  <description>Desert Star Wars shell for the Utinni campaign — oxidised rust plate, chalk graffiti outlines and a brass accent over an indigo-black ground.</description>
+  <category>future</category>
+  <menuAlignment>right</menuAlignment>
+  <windowsShadow>false</windowsShadow>
+
+  <!-- grounds -->
+  <Widgets.WindowBGFillColor>(18,21,26,235)</Widgets.WindowBGFillColor>
+  <Widgets.WindowBGBorderColor>(150,160,175)</Widgets.WindowBGBorderColor>
+
+  <!-- menu section panels -->
+  <Widgets.MenuSectionBGFillColor>(38,28,24,235)</Widgets.MenuSectionBGFillColor>
+  <Widgets.MenuSectionBGBorderColor>(150,160,175)</Widgets.MenuSectionBGBorderColor>
+
+  <!-- selectable options -->
+  <Widgets.OptionUnselectedBGFillColor>(38,28,24,235)</Widgets.OptionUnselectedBGFillColor>
+  <Widgets.OptionSelectedBGFillColor>(74,44,30,235)</Widgets.OptionSelectedBGFillColor>
+  <Widgets.optionTextActiveColor>(222,214,200)</Widgets.optionTextActiveColor>
+
+  <!-- mouseover / active accent (brass) -->
+  <GenUI.MouseoverColor>(150,104,44)</GenUI.MouseoverColor>
+  <FloatMenuOption.ColorBGActive>(38,28,24,215)</FloatMenuOption.ColorBGActive>
+  <FloatMenuOption.ColorBGActiveMouseover>(120,78,40,225)</FloatMenuOption.ColorBGActiveMouseover>
+
+  <!-- default text (bone) -->
+  <textColorGray>(0.87,0.84,0.78)</textColorGray>
+</RimThemes>

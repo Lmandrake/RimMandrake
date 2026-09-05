@@ -1,0 +1,6 @@
+# Derived art + working files. Provenance is the committed generators
+# (gen_textures.py deterministic; gen_bg.py records the image-gen prompts).
+raw/
+options/
+__pycache__/
+*.png

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimUtinni: Shell</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.rut.shell</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>The campaign's UI shell — a RimThemes theme, "Utinni Shell", plus one main-menu background.
+
+Visual language (design/Jawa/worldbuilding/ui_shell_spec.md): oxidised red-rust plate, chalk-white graffiti outlines and a hot brass/amber accent over an indigo-black ground — Galaxy's Edge control panels and an amber Aurebesh tactical read-out, on-model with the god Ishko.
+
+Ships (XML + textures only, no C#, no Harmony of its own — RimThemes does the patching):
+
+(1) RimThemes/Utinni Shell/ — a theme RimThemes consumes: meta.xml colour keys (§1 palette), the three text-button 9-slice atlases (rust plate / brass-edge mouseover / pressed-dark, 64x64 to match vanilla's own atlas so the slice quarters line up), one Command.BGTex gizmo panel, a brass loader bar, and an amber tactical BGLoader cold-load screen. No custom font in this slice (Aurebesh is unreadable as UI).
+
+(2) Defs/VBE_Backgrounds_Utinni.xml — one VBE.BackgroundImageDef (Ishko in the temple gate) drawing Textures/UI/Backgrounds/utinni_menu_1.png, MayRequire="vanillaexpanded.backgrounds" so it is skipped cleanly if VBE is dropped.
+
+This mod contributes its theme by shipping a top-level RimThemes/&lt;ThemeName&gt;/ folder (the measured packaging pattern), so a RimThemes workshop update can never overwrite it. Selecting the theme and confirming coexistence with the other UI mods (RimHUD, Dubs Mint Menus, Camera+, Trade UI Revised) is the next-load gate, per the spec §4.</description>
+  <modDependencies>
+    <li>
+      <packageId>aRandomKiwi.RimThemes</packageId>
+      <displayName>RimThemes</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=1668983184</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>aRandomKiwi.RimThemes</li>
+    <li>vanillaexpanded.backgrounds</li>
+  </loadAfter>
+</ModMetaData>

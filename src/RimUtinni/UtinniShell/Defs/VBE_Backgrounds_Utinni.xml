@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  One VBE.BackgroundImageDef for the RimUtinni Shell slice (spec §2). Def shape
+  matches VBE's own shipped Defs/Backgrounds.xml and src/RimUtinni/MenuShell's
+  established pattern: defName, label, description, path, iconPath (path is
+  relative to this mod's Textures/ root, no extension; path == iconPath so the
+  picker thumbnail and the drawn background share one loaded texture).
+
+  MayRequire="vanillaexpanded.backgrounds": RimWorld checks MayRequire before it
+  resolves the def's C# type, so with VBE inactive this def is skipped cleanly,
+  no red error.
+-->
+<Defs>
+
+  <VBE.BackgroundImageDef MayRequire="vanillaexpanded.backgrounds">
+    <defName>RUT_BG_ShellIshkoGate</defName>
+    <label>Ishko at the temple gate</label>
+    <description>The god Ishko waits in the black of the desert temple doorway, eyes burning amber over the dune sea, a ringed world low on the night horizon.</description>
+    <path>UI/Backgrounds/utinni_menu_1</path>
+    <iconPath>UI/Backgrounds/utinni_menu_1</iconPath>
+  </VBE.BackgroundImageDef>
+
+</Defs>
