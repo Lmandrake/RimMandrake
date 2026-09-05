@@ -1029,15 +1029,25 @@
     "date": "2026-09-03",
     "sha": "250be7a3"
   },
-  "src/RimMandrake/SalvageClaim/Source/FloatMenuOptionProvider_PaySalvageClaim.cs": {
+  "src/RimMandrake/SalvageClaim/About/About.xml": {
     "cleanCount": 1,
-    "date": "2026-09-03",
-    "sha": "57ce5707"
+    "date": "2026-09-05",
+    "sha": "1904ee38"
+  },
+  "src/RimMandrake/SalvageClaim/Source/FloatMenuOptionProvider_PaySalvageClaim.cs": {
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "1904ee38"
+  },
+  "src/RimMandrake/SalvageClaim/Source/RM_SalvageClaim.csproj": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "sha": "1904ee38"
   },
   "src/RimMandrake/SalvageClaim/Source/SalvageClaimFeeUtility.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "sha": "ceeaebb1"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "sha": "1904ee38"
   },
   "src/RimMandrake/SauridFrillFix/About/About.xml": {
     "cleanCount": 1,
