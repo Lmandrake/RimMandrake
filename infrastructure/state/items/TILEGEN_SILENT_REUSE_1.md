@@ -73,3 +73,39 @@ next bridge availability:
 - This does NOT close the item BENCH filed — the actual generation bug
   (why the second call returns the wrong Map at all) is still open. Left
   `doing`, not closed, until live-verified.
+
+## 2026-09-05, deeper vanilla trace (FOUNDRY, offline) — vanilla RimWorld fully exonerated
+
+Traced materially deeper than the pass above: full synchronous chain read via
+RimSage, not guessed — `GetOrGenerateMapUtility.GetOrGenerateMap` →
+`Game.FindMap` (linear scan, `Tile` compared strictly) →
+`WorldObjectsHolder.MapParentAt` (same) → `WorldObjectMaker.MakeWorldObject`
+(always `Activator.CreateInstance`, **no pooling**) → `MapGenerator.
+GenerateMap` → `GenerateContentsIntoMap` → each GenStep. Every
+`MapGenerator` static field (`mapBeingGenerated`, `data`, `tmpGenSteps`,
+`cachedUsedRects`, etc. — all enumerated, not just the obvious ones) is
+cleared in `ClearWorkingData()` before `GenerateMap` returns. The whole
+chain is **fully synchronous** — no `LongEventHandler`, no coroutine, no
+`yield` anywhere in it, so a second call cannot observe a first call
+mid-flight. `Map.Tile` resolves through a plain instance field on
+`WorldObject` (`RimWorld/Planet/WorldObject.cs`), no static/shared backing.
+`PlanetTile.Equals` compares `tileId` first — 701 and 703 can never alias.
+
+**Vanilla RimWorld is fully exonerated at every layer from the tool's own
+call down through map generation.** The bug is not in the game.
+
+**Named next place to look**: the bridge SDK's own `IRimBridgeContext.
+MainThread.InvokeAsync` (`RimBridgeServer.Sdk.dll`) — RimSage does not index
+this closed-source SDK at all, and the vendored copy under
+`vendor/mod_sources/RimBridgeServer-main` ships no `Source/` tree for it
+(confirmed by that project's own csproj comment). The real DLL is at
+workshop `3727949765`'s `1.6/Assemblies/RimBridgeServer.Sdk.dll`; no
+decompiler (ilspycmd/monodis/ildasm) is installed on this machine to read
+it. **Cheapest next step**: no decompiler needed — add a diagnostic log
+line to `WorldTileMapGenerate` itself (managed-thread-id + a monotonic
+per-process call counter, logged immediately before and after the
+`GetOrGenerateMap` call) and reproduce live. That answers directly whether
+call 2's action body actually runs with `pt=703` in scope, or is somehow
+handed call 1's already-completed result by the dispatcher — which would
+point squarely at `MainThread.InvokeAsync`'s own result-correlation logic
+rather than anything in this repo's C# or in RimWorld itself.
