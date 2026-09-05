@@ -377,6 +377,40 @@ def cmd_reopen(paths, reason):
     return 0
 
 
+def cmd_prune(apply):
+    """Drop entries whose path no longer exists on disk AT ALL - a file that was
+    deleted or `git mv`'d to a new path with no entry ever written for the new
+    path. Found 2026-09-05: three such orphans (two deleted score_*.py scripts,
+    one file moved src/SPLIT_Phase3 -> src/RimUtinni) plus a whole 8-file block
+    for a mod folder relocated wholesale (StickCuisine -> RimStarWars/Cuisine)
+    sat in the ledger reading DIRTY forever, because nothing could ever mark a
+    path CLEAN or re-review a path that isn't there to review. This is NOT the
+    same question `check`/`list` answer (dirty vs clean); a missing path is
+    neither - it is not reviewable at all, and its entry is pure noise.
+
+    Deliberately narrow: only removes a path with ZERO bytes to hash (a real
+    rename fix belongs at the NEW path via mark-clean, not here) - it does not
+    try to guess where content moved to.
+    """
+    data = load()
+    orphans = [rel for rel in data if not os.path.isfile(os.path.join(ROOT, rel))]
+    if not orphans:
+        print("(nothing to prune - every recorded path still exists on disk)")
+        return 0
+    for rel in sorted(orphans):
+        print(("would drop" if not apply else "dropped") + f"  {rel}  (no longer exists on disk)")
+    if not apply:
+        print(f"\n{len(orphans)} orphaned entr{'y' if len(orphans) == 1 else 'ies'} - re-run with --apply to remove.")
+        return 0
+    with locked():
+        data = load()
+        for rel in orphans:
+            data.pop(rel, None)
+        save(data)
+    print(f"\n{len(orphans)} orphaned entr{'y' if len(orphans) == 1 else 'ies'} removed.")
+    return 0
+
+
 def cmd_list():
     data = load()
     if not data:
@@ -455,6 +489,9 @@ def main():
     sub.add_parser("list", help="show every recorded entry and its current state")
     sub.add_parser("migrate-hashes", help="one-time backfill of {hash} onto pre-rewrite entries")
 
+    p_prune = sub.add_parser("prune", help="drop entries for paths deleted or moved with no new entry")
+    p_prune.add_argument("--apply", action="store_true", help="without this, only reports what would be dropped")
+
     args = ap.parse_args()
     if args.cmd == "check":
         sys.exit(cmd_check(args.paths))
@@ -472,6 +509,11 @@ def main():
         sys.exit(cmd_list())
     elif args.cmd == "migrate-hashes":
         sys.exit(cmd_migrate_hashes())
+    elif args.cmd == "prune":
+        rc = cmd_prune(args.apply)
+        if rc == 0 and args.apply:
+            _trigger_health_rebuild()
+        sys.exit(rc)
 
 
 if __name__ == "__main__":

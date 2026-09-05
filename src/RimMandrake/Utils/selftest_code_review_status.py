@@ -33,7 +33,10 @@ hash):
   8. migrate-hashes is idempotent and leaves an unresolvable sha hash-less
      (reads DIRTY "needs re-verification"), matching the pre-rewrite tool's
      "recorded sha not found — log is stale" outcome.
-  9. git()'s timeout path returns a failed CompletedProcess rather than
+  9. prune drops an entry only when its path no longer exists on disk at
+     all (a deleted or `git mv`'d-with-no-new-entry file), leaves everything
+     else alone, and does nothing without --apply.
+ 10. git()'s timeout path returns a failed CompletedProcess rather than
      raising — a hung/contended git call must degrade, never hang the caller.
 """
 import os
@@ -184,7 +187,26 @@ state, detail = CRS.clean_state("ghost.xml", ghost_entry)
 eq(state, "DIRTY", "a hash-less legacy entry reads DIRTY")
 eq("needs re-verification" in detail, True, "the reason says it needs a real review, not a repo fault")
 
-# ---- 9. git() degrades on a timeout instead of raising --------------------
+# ---- 9. prune drops only entries whose path no longer exists on disk ------
+write("gone.xml", "<Defs>about to be deleted</Defs>\n")
+sh("git", "add", "gone.xml")
+sh("git", "commit", "-q", "-m", "add gone.xml")
+run("mark-clean", os.path.join(TMP, "gone.xml"))
+os.remove(os.path.join(TMP, "gone.xml"))
+
+rc = run("prune")  # no --apply: report only
+eq(rc, 0, "prune (dry run) exits 0")
+eq("gone.xml" in CRS.load(), True, "prune without --apply does not remove anything")
+
+rc = run("prune", "--apply")
+eq(rc, 0, "prune --apply exits 0")
+eq("gone.xml" in CRS.load(), False, "prune --apply removes an entry for a deleted path")
+eq("art.png" in CRS.load(), True, "prune --apply leaves an entry whose path still exists")
+
+rc = run("prune")
+eq(rc, 0, "prune is a clean no-op once nothing is orphaned")
+
+# ---- 10. git() degrades on a timeout instead of raising --------------------
 real_run = subprocess.run
 
 

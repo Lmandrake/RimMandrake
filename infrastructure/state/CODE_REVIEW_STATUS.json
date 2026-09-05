@@ -911,11 +911,23 @@
     "hash": "6ac732571880e620af7ae05a284d74396a51b4dbc44c8a6c342a332be8d10b96",
     "sha": "ecc86a6f"
   },
+  "src/RimMandrake/Ninefold/Source/Patch_FireStarted.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "5293c76cbe24db9b9d69b17ca8c81ebef9c82aa1660e100de082f155f618674e",
+    "sha": "564bd122"
+  },
   "src/RimMandrake/Ninefold/Source/Patch_MentalBreakStarted.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
     "hash": "0cd99f28f78fa2b2c57cfdc9280cf8bd4d6f74f8976b786c53c3a34bf7474fee",
     "sha": "ecc86a6f"
+  },
+  "src/RimMandrake/Ninefold/Source/Patch_PawnDowned.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "733bcda06ce31c4b1af7151cdfddbd9c4c65715dacfa3363b76b8b2bf8432fc5",
+    "sha": "9e5a639b"
   },
   "src/RimMandrake/Ninefold/Source/Patch_ResearchCompleted.cs": {
     "cleanCount": 1,
@@ -2133,6 +2145,12 @@
     "hash": "2ab950ca3743f5c4173a10f3721797d4234b82f27e3cdd8b3e7e0963fe5b27df",
     "sha": "d8cd2139"
   },
+  "src/RimMandrake/Utils/queue_staleness_review.py": {
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "hash": "b0a2f072818d1a482ba4f6639572dabc779bdb93cf4f1932de546b5b9a3aa0b7",
+    "sha": "cbeff2d3"
+  },
   "src/RimMandrake/Utils/refresh.py": {
     "cleanCount": 2,
     "date": "2026-09-04",
@@ -2331,18 +2349,6 @@
     "hash": "5f88be12e2fd70f5d73108fbe9e245f256f78467ca2847d85461ac7a72169179",
     "sha": "9b556d77"
   },
-  "src/RimMandrake/Utils/score_biome_load.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "03fddbc68ddc6a755972f201ca70ed41912dd373647c97622a26254775fdd1b3",
-    "sha": "43884307"
-  },
-  "src/RimMandrake/Utils/score_inhabited_load.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "0b54cf7880f0e17c5bd56103511a4d621f4de7e2e814c89a649d85a2d6e110c5",
-    "sha": "fb248793"
-  },
   "src/RimMandrake/Utils/selftest_broadcast_frame.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -2414,6 +2420,12 @@
     "date": "2026-09-02",
     "hash": "878593497bc44e35b8f569a78bdbe690664eebd57b5ceb0b7f51a55c72d92383",
     "sha": "1a7b3aa1"
+  },
+  "src/RimMandrake/Utils/selftest_queue_staleness_review.py": {
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "hash": "8019331644c3ee3d64c7e83dc206e9fb47546a71b6dafcbcdaa8b0743d3efe4f",
+    "sha": "cbeff2d3"
   },
   "src/RimMandrake/Utils/selftest_research_validator.py": {
     "cleanCount": 3,
@@ -3166,10 +3178,10 @@
     "sha": "43f96b1b"
   },
   "src/RimMandrake/rimflow/cli.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "b7ca42762b0e279be8e4fde9b10c70202e07640e7781e243d724bc54ed2bd41d",
-    "sha": "3d60b716"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "hash": "5503a777ceda9d15ed80846952d5a5b5f3fc7ba794dbaf7768b589406ec6324a",
+    "sha": "f203d6f3"
   },
   "src/RimMandrake/rimflow/github_mirror.py": {
     "cleanCount": 1,
@@ -3184,10 +3196,10 @@
     "sha": "43f96b1b"
   },
   "src/RimMandrake/rimflow/model.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "fe8eb2f32aeff947f31bbd721c3a9ef444ea625b10476b372cb54d141af24605",
-    "sha": "3089b753"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "hash": "9069d956f98904eedcbbe7b94dd5809c0f19fb5cb77f2649863bf1ad2cc2045b",
+    "sha": "f203d6f3"
   },
   "src/RimMandrake/rimflow/priority.py": {
     "cleanCount": 1,
@@ -3196,16 +3208,16 @@
     "sha": "3089b753"
   },
   "src/RimMandrake/rimflow/probe.py": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "hash": "57a01b71aaeb28bf0d88f5c8b020061e5cc570bf65f5ad5bfafb1fd70559dcff",
-    "sha": "43f96b1b"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "hash": "45308192e58605d8e69dcf52737c36436801754ca8754eab46b93712d12de561",
+    "sha": "f203d6f3"
   },
   "src/RimMandrake/rimflow/render.py": {
-    "cleanCount": 2,
-    "date": "2026-09-04",
-    "hash": "99ab52223add5f088d37e57c69381f61485abe50ec5dc67c94b6076dd141584a",
-    "sha": "43f96b1b"
+    "cleanCount": 3,
+    "date": "2026-09-05",
+    "hash": "5077cb40d4fa0bf766a3902bc76e2dfc1aeeb740964a828cdcd999dc3dffe25a",
+    "sha": "f203d6f3"
   },
   "src/RimMandrake/rimflow/selftest_bridge_file_concurrency.py": {
     "cleanCount": 1,
@@ -3214,10 +3226,10 @@
     "sha": "359b0b2c"
   },
   "src/RimMandrake/rimflow/selftest_cli.py": {
-    "cleanCount": 2,
-    "date": "2026-09-04",
-    "hash": "bfc16fd2cb34d76282d8b55ab0d01fdf08c29490c1ad8e6019a7d26dce6e80bc",
-    "sha": "43f96b1b"
+    "cleanCount": 3,
+    "date": "2026-09-05",
+    "hash": "319f6919a13c3e3b38868ad5c0cd50ad7b330ab53424160deea053965d7585a9",
+    "sha": "f203d6f3"
   },
   "src/RimMandrake/rimflow/selftest_concurrency.py": {
     "cleanCount": 1,
@@ -3226,10 +3238,10 @@
     "sha": "43f96b1b"
   },
   "src/RimMandrake/rimflow/selftest_model.py": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "hash": "0fd0b3ae1ae3fb02462fc4f09673a95060bb5ee9f131c6d2d500b7736da1959e",
-    "sha": "43f96b1b"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "hash": "1345fb8b840a5f95961c10f2f93caaf19f0424d7d27d9652ea55ed72153947e5",
+    "sha": "f203d6f3"
   },
   "src/RimMandrake/rimflow/selftest_probe.py": {
     "cleanCount": 1,
@@ -5415,54 +5427,6 @@
     "hash": "09ae8ecfad05ea0fa0d3547d0ee516d4445888b5db1bba5f15bc53291e885aa6",
     "sha": "46cdec42"
   },
-  "src/RimUtinni/StickCuisine/About/About.xml": {
-    "cleanCount": 2,
-    "date": "2026-09-05",
-    "hash": "15bd0c7cd46e7ec0ddb249fc6b1c8960a085e21a0a36c2e93406a4d40e24f21f",
-    "sha": "e27aac5d"
-  },
-  "src/RimUtinni/StickCuisine/Defs/RecipeDefs_StickCuisine.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "f345dbafed39d8e1e3af1bd12e1839448de9627caf1a38d5ad0e9c39f0ccc3af",
-    "sha": "e27aac5d"
-  },
-  "src/RimUtinni/StickCuisine/Defs/ThingDefs_StickCuisine.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "e5011004f996514c1626582defe742af485a30c25d8c671085c5871f97d04d5d",
-    "sha": "e27aac5d"
-  },
-  "src/RimUtinni/StickCuisine/Defs/ThoughtDefs_StickCuisine.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "9fd13f79bbb09427acadf2102e4e0fdbfe846dd78c8bcb0e3c8b0c24d915aff8",
-    "sha": "e27aac5d"
-  },
-  "src/RimUtinni/StickCuisine/Source/StickCuisine/IngredientValueGetter_ExcludeSkewer.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-05",
-    "hash": "afe435269b596bd49b283f0c698a9d079a653d585b69fc827974f3aa6cce93a8",
-    "sha": "e27aac5d"
-  },
-  "src/RimUtinni/StickCuisine/Source/StickCuisine/NameGenComp.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-05",
-    "hash": "4a45d32747e710169d4c530b38cc4c3d5b2bc8cdb36904233407fbcfe8720c55",
-    "sha": "e27aac5d"
-  },
-  "src/RimUtinni/StickCuisine/Source/StickCuisine/RimUtinniStickCuisine.csproj": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "45f0638a7a35ef0ca335a74e37db2b9ca357d472ab675bd12d76dbf5f275adc9",
-    "sha": "e27aac5d"
-  },
-  "src/RimUtinni/StickCuisine/Source/StickCuisine/StickCuisineDefOf.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-05",
-    "hash": "eb95bb34a1c94d3a1f9f94247a6bf2501da69d0c44fdcf7895a89b4a56723640",
-    "sha": "e27aac5d"
-  },
   "src/RimUtinni/StructureInjectionsRUT/Defs/GenStepDefs_Batch4.xml": {
     "cleanCount": 1,
     "date": "2026-09-04",
@@ -5822,11 +5786,5 @@
     "date": "2026-09-05",
     "hash": "c55530ab9e32964b23567c846c4828ad4028340fe4dd3901d12b01d74744159e",
     "sha": "3287ca65"
-  },
-  "src/SPLIT_Phase3/Jawa_Patches/Source/build_claim_rumour.py": {
-    "cleanCount": 1,
-    "date": "2026-09-02",
-    "hash": "cc79152737c5c432ca8aa9012783b1c561b7dc12a2ac319af866c53f6c9123aa",
-    "sha": "1a7b3aa1"
   }
 }
