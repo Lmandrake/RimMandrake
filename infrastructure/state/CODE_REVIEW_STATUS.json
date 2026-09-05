@@ -3157,6 +3157,16 @@
     "date": "2026-09-04",
     "sha": "d4af33c4"
   },
+  "src/RimUtinni/ResearchRetag/Defs/ResearchTabDefs/RUT_Tree_Defs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "53661e66"
+  },
+  "src/RimUtinni/ResearchRetag/Patches/RUT_ResearchTabAssign.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-04",
+    "sha": "53661e66"
+  },
   "src/RimUtinni/Rites/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-04",
