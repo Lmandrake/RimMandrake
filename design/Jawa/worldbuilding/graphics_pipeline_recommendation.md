@@ -126,3 +126,30 @@ portraits where its consistency reputation is strongest — pay-per-call, NOT th
 
 **Cheapest test this week ($0):** stand up ComfyUI + Flux.1-dev FP8 + LayerDiffuse +
 IP-Adapter, run 10 Jawa-reference sprites across 4 facings, judge identity-lock before any spend.
+
+---
+
+## Unlimited-channel harness — opened options (2026-09-05, CONSIDER-ONLY, not implemented)
+
+🔴 **CORRECTION to the "skip $20 Gemini" call above:** the **Gemini CLI** (official,
+OSS) + `gemini-cli-extensions/nanobanana`, OAuth'd to **Google AI Pro/Ultra ($20+)**,
+generates **Nano Banana Pro images against the SUBSCRIPTION quota (~1,500-2,000/day),
+not pay-per-call**. First-party, sanctioned, fully scriptable — the Codex trick mirrored.
+So the $20 Gemini sub IS worth it, via the CLI (NOT the app, NOT the metered API).
+⚠️ Google AI *Plus* is NOT supported — needs *Pro* or *Ultra*.
+
+**Strategy: local backbone + three sanctioned unlimited-ish channels chained.**
+1. **Local 5080** (installing) — control: IP-Adapter reference-lock, ControlNet facings,
+   LayerDiffuse alpha. The consistency-critical workhorse.
+2. **Codex CLI image_gen** (existing) — ChatGPT unlimited-ish, sanctioned. Lean in:
+   batch/parallelize overnight.
+3. **Gemini CLI + nanobanana on AI Pro** — NEW second channel, ~2,000 Nano Banana Pro/day,
+   best consistency model, sanctioned. Run parallel to Codex to ~double nightly throughput.
+4. **Pollinations.ai** — genuinely free keyless API (Flux, ~1 req/15s), sanctioned; bulk
+   low-stakes filler.
+
+**Flagged TOS-RISK (last resort only):** browser/computer-use automation of consumer web
+UIs (Copilot Designer has no API; Grok web) — most consumer ToS forbid automated UI access;
+Cloudflare/DOM-fragile. Atlas agent-mode is TOS-gray and unproven for batch images. Whisk
+dies April 2026. Prefer first-party CLIs (Codex, Gemini CLI) which are the sanctioned form
+of the same "ride the subscription" idea.
