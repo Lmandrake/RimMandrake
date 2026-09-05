@@ -133,3 +133,95 @@ districts actually generating real geometry on a map) is still owed to a
 future restart+bridge session — not attempted this pass, no bridge held.
 Full four-district spatial composition remains the stretch goal, unbuilt.
 Not closing.
+
+## 2026-09-05 (design, Fable subagent) — all four Junkers districts reworked to the owner's bar; three more faction sets
+
+Owner's mandate tonight: "expand out the settlement maps used for faction
+settlements... examine Visit Settlements... but then we will likely wrap our own.
+Go crazy with this and do real work." Research already done and NOT to be
+redone: `ninagoblin.visitsettlements` and `mlie.largefactionbases` contain no
+authored room/district content (the first reuses vanilla base gen for friendly
+visits, the second scales base size/manpower numerically). This item IS the
+"wrap our own"; there was nothing to port.
+
+Binding bar: `TILE_STRUCTURE_REVIEW_SAVE_1`'s live verdict ("pretty horrible...
+not accept any rooms yet") on three axes — FLOORING, no REGULAR GRIDS, secondary
+CLUTTER — plus aisle-thinning named for `junkers_depot`.
+
+**Engine (`src/RimMandrake/Utils/rimplace/`, commit `a00fafd0` + follow-ups):**
+- `Thing.overlay` + `ctx:place_overlay` / `ctx:wall_attach` / `ctx:role_at`.
+  Non-edifice things (wall lamps, floor decals, Aurebesh signs) share a cell;
+  verified against `GenSpawn.SpawningWipes` and `Placeworker_AttachedToWall`
+  (a wall lamp sits on the floor cell IN FRONT of its wall, rot toward it).
+  Lint rules 1/1b skip overlays; render draws them only on empty cells.
+- `prelude.lua`, loaded under the sandbox before every template, hash on
+  `meta.prelude_sha256`: `R/inner/corners`, `shuffle/jitter`, `try_place/
+  try_near/scatter/along_wall/seat_around/wall_lights/dress`, `shell`
+  (REFUSES a room with no named floor), `floor_patch/floor_worn`,
+  `support_columns` (four columns when an interior exceeds 12x12 — the roof
+  lint's real threshold, derived, not guessed), `LAST_PLACED`.
+- `palette.json`: clutter tier (STOOL CRATE BARREL SHELF_SMALL END_TABLE
+  DRESSER PLANT_POT WALL_LIGHT GAME PILLAR FENCE BARRICADE), floor tiers
+  (FLOOR_FINE/_WORK/_YARD/_PLATE/_WET/_CELL, RUG), and faction blocks for
+  Jawa_Junkers (filled out), Jawa_HuttCartel, Jawa_FreeDroidEnclaves,
+  Jawa_DeepwaterCompact carrying their props (THRONE, DECAL, HOLO, CHARGER,
+  REFINERY, WATER_TANK, HOSPITAL_BED, TRAP...). Every defName checked by
+  `measure get` before use; `rimplace verify` MEASURED afterwards.
+- selftest 41/41 (5 new: overlay coexists, wall_attach refuses without a
+  wall, wall_attach places, prelude helpers, shell needs a floor); the old
+  hardcoded `(16,14)` scrapyard assertion now reads the template's own
+  declaration.
+
+**Junkers rework (`9f6ba81b`)**: every interior floored by name (salvaged
+plating/grating/tile — the tech default was `Gravel` = stony soil, i.e.
+bare ground, which is exactly the complaint); zero fixed-step loops; `dress()`
+in every room; depot shelving = wall runs + two loose island rows with a
+kept-clear centre aisle; scrapyard gets real wrecks (`AncientPodCar`,
+`AncientRustedCar`), `KOTOR_MineableJunk` heaps, slag, a fire pit, an
+unfinished fence, and a boss's shack; cantina gets a bar counter with stools,
+a carpet under the seating, pazaak, a bandfill.
+
+**New sets (`2f04d3cd`, `f0fa7ed1`)**, each with a manifest in
+`src/RimUtinni/AshkarrInhabited/Defs/SettlementManifestDefs/`, a gate posture
+in `SecurityProfileDefs_District2.xml`, and an engine-tier archetype in
+`Places_Inhabited.xml`:
+- **Hutt Cartel — Gorga the Immense's Palace** (CSV row 28, tile 15088):
+  `hutt_palace_hall` (colonnade, dais throne, red runway, clan decal, band
+  corner, holo-dancers, lord's chamber, vestibule, majordomo's office),
+  `hutt_spicehouse` (den on rugs + drug lab), `hutt_holding_pens` (cell row
+  off a corridor, guardroom with barricades, a turret, barracks),
+  `hutt_cistern_court` (unroofed walled court: tank cluster, well, fountain,
+  troughs, warden's hut, sandbags + turret at the gate).
+- **Free Droid Enclaves — The Cracking Yard** (row 107, tile 13177):
+  `droid_charging_hall` (wall charging bays, heavy rechargers, gonks,
+  reactor alcove, speakers' holo-table; NO beds/chairs/stove by palette),
+  `droid_cracking_works` (7x7 fuel refinery in a walled yard, tank farm,
+  control shed, one turret), `droid_fabrication_room`, `droid_battery_bunker`
+  (double wall, battery banks, reactor).
+- **Deepwater Compact — Deepwater Hold** (row 24, tile 2919):
+  `deepwater_cistern_hall` (columned, tanks/fountains on mosaic, intake
+  well, casks, warden's office), `deepwater_gate_bastion` (two staggered
+  gates, sandbag lines, EMP traps, 3 turrets, guardhouse — the security
+  vocabulary with teeth the depot sketch stood in for), `deepwater_hospital_
+  ward` (monitored beds, surgery, scrub room), `deepwater_hydroponics_bay`
+  (lamp clusters, a wall-mounted cooler, columns).
+
+**Verification**: `lint` 0 findings on all 16 at manifest size; `verify`
+MEASURED 0 MISSING on all 16 (sqlite rebuilt with `measure build` for the
+2026-09-05T04-49-08Z capture); `validate_patch.py --live --defs` 7 files
+0 errors 0 warnings; `dotnet build Inhabited.csproj -c Release` 0/0;
+`rimplace selftest` 41/41. Renders reviewed by eye (Transient/
+district_renders.txt, regenerate with Transient/district_lint.sh render).
+All 16 exported to `src/RimMandrake/Inhabited/Templates/` and wired in
+`TemplateFiles` (`b18edcac`).
+
+**NOT done, deliberately**: no deploy, no ModsConfig change, no restart, no
+bridge — same discipline as every prior batch. Owed to a live pass:
+deploy `Inhabited` + `AshkarrInhabited`; a review SAVEGAME per the owner's
+2026-09-02 ruling — one quicktest map, all 16 districts on a grid with
+>=6-cell pitch (largest is 30x30), a grid-key item file, keeper saves backed
+up first and `jawa/list_things` per cell before calling it a review; then
+his verdict per room. Still only `districts[0]` composes per visit. Other
+factions (Wildsteam, Foundry Hive, Trade Moot, Helix) have roster material
+but no set yet; Trade Moot's is thinnest (no "Technology and economy"
+section in the roster).
