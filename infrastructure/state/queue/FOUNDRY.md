@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-05T19:00:18Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-05T19:38:32Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -441,6 +441,15 @@ kind:     bug
 summary:  MOISTUREVAPORATORWALLCLIP1 — fixed offline, live verification owed
 prose:    infrastructure/state/items/MOISTURE_VAPORATOR_WALL_CLIP_1.md
 
+## UI_SHELL_SLICE_BUILD_1 Build the RimUtinni Shell vertical slice per ui_shell_spec.md: mandrake.rut.shell theme mod (3 button atlases + palette meta.xml), 1 loader + 1 menu-bg art, RimThemes-coexistence gate on next load
+state:    doing
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+summary:  UISHELLSLICEBUILD1 — vertical slice landed, coexistence gate owed
+prose:    infrastructure/state/items/UI_SHELL_SLICE_BUILD_1.md
+
 ## NINEFOLD_RUNTIME_PROOF_BLOCKED_1 Ninefold compile-fix VERIFIED (ready:14, was 6); runtime firing UNPROVEN - GameComponent.Instance null on ignoreModCompatibility loads, all hooks incl. research silent; needs a normal-load or fresh new-game test
 state:    doing
 row:      unassigned
@@ -484,14 +493,4 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## UI_SHELL_SLICE_BUILD_1 Build the RimUtinni Shell vertical slice per ui_shell_spec.md: mandrake.rut.shell theme mod (3 button atlases + palette meta.xml), 1 loader + 1 menu-bg art, RimThemes-coexistence gate on next load
-state:    proposed
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/UI_SHELL_SLICE_BUILD_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/UI_SHELL_SLICE_BUILD_1.md
+_none._

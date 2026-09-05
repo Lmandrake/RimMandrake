@@ -4888,3 +4888,7 @@
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-05T18:57:18Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"WILD_ANIMALS_PADDED_LISTS_1: locate+decompile Fortified Features Framework via live mod_inventory","ts":"2026-09-05T18:59:54Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-05T19:00:18Z"}
+{"seat":"FOUNDRY","event":"claim","id":"UI_SHELL_SLICE_BUILD_1","ts":"2026-09-05T19:33:01Z"}
+{"seat":"FOUNDRY","event":"start","id":"UI_SHELL_SLICE_BUILD_1","ts":"2026-09-05T19:33:02Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"check current map/colony state before deciding on a restart for UI_SHELL_SLICE_BUILD_1's coexistence gate","ts":"2026-09-05T19:37:58Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-05T19:38:32Z"}
