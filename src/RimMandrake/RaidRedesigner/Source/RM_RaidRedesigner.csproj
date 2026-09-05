@@ -1,0 +1,91 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    PLOT_MECHANISM_MODS_WAVE_1 (roster half): GameComponent_OldFriends and its
+    eight capture-hook Harmony postfixes. Same recipe as
+    src/RimMandrake/Ninefold/Source/Ninefold.csproj (Harmony via
+    brrainz.harmony at runtime, never bundled) plus a compile-time reference
+    to mandrake.rm.property's own assembly (Patch_TakingResolved.cs patches
+    RimMandrake.Property.PropertyEngine.Fire).
+
+    Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\RaidRedesigner\Source\RM_RaidRedesigner.csproj -c Release
+
+    Output lands in ../Assemblies/, which is where RimWorld looks.
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>RimMandrakeRaidRedesigner</AssemblyName>
+    <RootNamespace>RimMandrake.RaidRedesigner</RootNamespace>
+    <Version>0.1.0</Version>
+
+    <OutputPath>..\Assemblies\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AssemblySearchPaths>$(AssemblySearchPaths);$(RimWorldManaged)</AssemblySearchPaths>
+
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <DebugType>none</DebugType>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(RimWorldManaged)' == ''">
+    <RimWorldManaged>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManaged>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(HarmonyDll)' == ''">
+    <HarmonyDll>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HarmonyDll>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(RimMandrakePropertyDll)' == ''">
+    <RimMandrakePropertyDll>..\..\Property\Assemblies\RimMandrakeProperty.dll</RimMandrakePropertyDll>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="RoleTag.cs" />
+    <Compile Include="Encounter.cs" />
+    <Compile Include="OldFriendEntry.cs" />
+    <Compile Include="RosterPruning.cs" />
+    <Compile Include="WorldPawnPinning.cs" />
+    <Compile Include="GameComponent_OldFriends.cs" />
+    <Compile Include="RaidRedesignerMod.cs" />
+    <Compile Include="Patch_FledRaiderAndCaptain.cs" />
+    <Compile Include="Patch_PrisonerEscaped.cs" />
+    <Compile Include="Patch_PrisonerReleasedOrNamedHunter.cs" />
+    <Compile Include="Patch_CaravanRobbed.cs" />
+    <Compile Include="Patch_ColonistKidnapped.cs" />
+    <Compile Include="Patch_WokenAncient_STUB.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(RimWorldManaged)\Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>$(RimWorldManaged)\UnityEngine.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(HarmonyDll)</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="RimMandrakeProperty">
+      <HintPath>$(RimMandrakePropertyDll)</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>

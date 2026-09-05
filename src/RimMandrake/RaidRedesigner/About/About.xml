@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimMandrake: Raid Redesigner — Old Friends</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.rm.raidredesigner</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>PLOT_MECHANISM_MODS_WAVE_1 — the persistent-NPC roster half of design/Jawa/proposals/plot_mechanisms_wave.md §1.4, ruled in scope 2026-09-05. Ships ONLY `GameComponent_OldFriends`: a scribed roster of `OldFriendEntry` records (pawn, faction-at-entry, role tag, encounter list, grudge, notability, last-seen tick, dead flag), capped at 24 living entries (lowest notability pruned; dead entries collapse to one line and stay), and eight Harmony postfix hooks that each write one Encounter at a real vanilla or sibling-mod seam: a raider fleeing the map, a raid captain leaving, a prisoner escaping, a prisoner being released, a caravan/visitor robbed (mandrake.rm.property's TakingEvent), a colonist kidnapped, and a Blackstar (vanilla Pirate faction, reskinned) guest-status change tagged NAMED_HUNTER. The ninth row in the design doc's table — a woken ancient leaving — is STUBBED: no vanilla or sibling-mod signal fires reliably for it yet (RimUtinni: VaultDungeons' own About.xml says as much: "V6's wake/loot branches listen on signals no vanilla part sends yet"), so RoleTag.WokenAncient exists and the hook point is a documented no-op rather than an invented signal.
+
+Pinning: a recalled/recorded pawn who leaves the map is pinned against world-pawn GC via `Find.WorldPawns.PassToWorld(pawn, PawnDiscardDecideMode.KeepForever)` — the same call vanilla's own `Faction` uses to keep a faction leader alive indefinitely (verified against 1.6 source before writing).
+
+No LLM, no menu authority, no letter rewrite, no defs. Pure C# bookkeeping infrastructure that four other design arcs (Reclamation, Blackstar truce, the woken claim, recurring villains) read later. Part 1's redesign layer proper (Harmony seams A/B/C on the raid pipeline, the Oracle prompt contract) is explicitly OUT of this mod, held pending the owner's own Oracle-promotion decision.</description>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>brrainz.harmony</li>
+    <li>Ludeon.RimWorld</li>
+    <li>mandrake.rm.property</li>
+  </loadAfter>
+</ModMetaData>
