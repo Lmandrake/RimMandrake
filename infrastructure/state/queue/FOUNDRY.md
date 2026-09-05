@@ -7,25 +7,187 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-05T14:52:30Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: OWNER
+as-of: 2026-09-05T15:07:34Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: OWNER
 
 # NEXT — `priority.rank()` order, top item first
 
-Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
+The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
+
+## ASSAILANT_DUNGEON_BUILD_1 Build the Assailant flesh dungeon: frozen first-impact complex, thaw-gated, deep Umbra
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  Full spec: design/Jawa/worldbuilding/dungeonsarcspec.md §2. Summary:
+prose:    infrastructure/state/items/ASSAILANT_DUNGEON_BUILD_1.md
+
+## VAULT_DUNGEON_BUILD_1 Build the six Forsaken vaults: concentric grammar templates, LARGE maps, quicktest-proven
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  Full spec: design/Jawa/worldbuilding/dungeonsarcspec.md §3. Summary:
+prose:    infrastructure/state/items/VAULT_DUNGEON_BUILD_1.md
+
+## RIMMANDRAKE_PITS_BUILD_1 Build RimMandrake Pits: core framework mod (dig stages, terrain-mimic covers, mass triggers, struggle escape, fitting family, holding-platform pit cell) + campaign layer; first step is the spawn-mass quicktest matrix on the 22s minimal list
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Full specs, both ruled by the owner 2026-08-30: design/Jawa/coveredpittrapsspec.md
+prose:    infrastructure/state/items/RIMMANDRAKE_PITS_BUILD_1.md
+
+## GRAFFITI_FRAMEWORK_BUILD_1 Build mandrake.rm.graffiti (SUPERSEDES Mlie.GraffitiMod - absorb spree, retire from modlist, VERIFY license before asset reuse) + mandrake.rut.marks: five families, taunt funnel in v1, faint-scrawl cant
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  design/Jawa/graffitispec.md — full design, all four owner rulings made
+prose:    infrastructure/state/items/GRAFFITI_FRAMEWORK_BUILD_1.md
+
+## NINEFOLD_ENGINE_M0_1 Build RimMandrake Ninefold M0: GodStates satiation ledger + five easiest event hooks + first-contact chains + signed corpus letters (provisional voice approval; owner redlines live text). Felt-only diegesis ruled - no panels ever
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  design/Jawa/divinesatiationengine.md — full design ruled, "NINE OF
+prose:    infrastructure/state/items/NINEFOLD_ENGINE_M0_1.md
+
+## COLONY_VISIBILITY_BUILD_1 Build the Colony Visibility dial (mandrake.rm.visibility): safe core first, threat-scoped Postfix per ruling (hostile callers only), Spike 3 is the patch skeleton
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  design/Jawa/worldbuilding/colonyvisibilitystat.md, specifically
+prose:    infrastructure/state/items/COLONY_VISIBILITY_BUILD_1.md
+
+## RESEARCH_VALIDATOR_BUILD_1 Build the offline research-manifest validator per research_tree_taxonomy.md section 4
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  design/Jawa/researchtreetaxonomy.md section 4 names 7 checks the
+prose:    infrastructure/state/items/RESEARCH_VALIDATOR_BUILD_1.md
+
+## RESEARCH_MANIFEST_DRAFT_1 Generate the draft research manifest: all 515 rows prefilled with fates from the sitting's rulings
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  design/Jawa/researchtreetaxonomy.md section 3 defines the manifest schema
+prose:    infrastructure/state/items/RESEARCH_MANIFEST_DRAFT_1.md
+
+## DROID_DONOR_PATCH_GATE_1 Patch the 11 ungated ABF/Synstructs sites in absorbed KotOR content, the prerequisite before ABF/Synstructs/Asimov can retire
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  Source finding: design/Jawa/droidworksassumptions.md, item 3 (the
+prose:    infrastructure/state/items/DROID_DONOR_PATCH_GATE_1.md
+
+## PROPERTY_FABRIC_BUILD_1 Build RM_Property: the ownership/provenance/perception fabric mod - colony side first
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  Source: design/Jawa/ownershipsettlementspec.md (owner, 2026-08-31
+prose:    infrastructure/state/items/PROPERTY_FABRIC_BUILD_1.md
+
+## SETTLEMENT_VISIT_LOOP_1 Inhabited visit loop: peaceful entry to named settlements, manifest, teardown, casing persistence
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  Full ruling: design/Jawa/ownershipsettlementspec.md (owner sitting 2026-08-31).
+prose:    infrastructure/state/items/SETTLEMENT_VISIT_LOOP_1.md
+
+## SETTLEMENT_VERBS_WAVE_1 v1 interaction verbs: crime suite, salvage-law gray zone, walkable commerce, social fabric
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  Full ruling: design/Jawa/ownershipsettlementspec.md (owner sitting 2026-08-31),
+prose:    infrastructure/state/items/SETTLEMENT_VERBS_WAVE_1.md
+
+## BUILDING_THEFT_HAULER_1 Building-theft hauler droid: Droidworks heavy chassis that uninstalls and carries whole buildings off hostile maps
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  Full ruling: design/Jawa/wreckedmachinesresurrection.md (owner, 2026-08-31,
+prose:    infrastructure/state/items/BUILDING_THEFT_HAULER_1.md
+
+## FORSAKEN_CRAGS_PREDATORS_BUILD_1 Build Cindermare + Skarnix, wild AB_RockyCrags threat pair
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  1. Cindermare (moornakopt1.png) — wild threat, ABRockyCrags. No mouth
+prose:    infrastructure/state/items/FORSAKEN_CRAGS_PREDATORS_BUILD_1.md
+
+## HELIX_TELLUROX_BUILD_1 Build Tellurox, Ascendant Helix labour-line livestock
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  Tellurox (karraskopt3.png) — Ascendant Helix labour-line livestock,
+prose:    infrastructure/state/items/HELIX_TELLUROX_BUILD_1.md
+
+## STARWARS_DONOR_SUNSET_1 Retire ALL remaining third-party Star Wars donors (12 mods, 4 waves; Mlie+TSDA first)
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  STARWARSDONORSUNSET1 — retire the remaining third-party Star Wars donors
+prose:    infrastructure/state/items/STARWARS_DONOR_SUNSET_1.md
+
+## DROID_KOTORDROIDS_PORT_WAVE1_1 Port guy762.kotordroids' 44 kinds/22 races onto the Droidworks platform (wave 1, pure XML)
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  design/Jawa/droidsystembuildspec.md §4/§7: guy762.kotordroids is
+prose:    infrastructure/state/items/DROID_KOTORDROIDS_PORT_WAVE1_1.md
+
+## RIVER_STEAM_ANIMATION_1 Animated steam rising from the rivers (Pyrelands weather visual)
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  Pure ambience feature, no gameplay effect, no new art. mandrake.rut.riversteam
+prose:    infrastructure/state/items/RIVER_STEAM_ANIMATION_1.md
+
+## STICK_FOOD_INGEST_1 Ingest the stuff-on-a-stick food mod(s) into our own recipe-discovery tree, then retire them
+state:    ready
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  STICKFOODINGEST1 — measured ingest scope (BENCH, 2026-09-02)
+prose:    infrastructure/state/items/STICK_FOOD_INGEST_1.md
 
 # IN PROGRESS
 
 Started, and therefore not offered again. `rimflow close` or `rimflow block` moves them.
-
-## WILD_ANIMALS_PADDED_LISTS_1 wildAnimals lists padded to 1024 by unidentified C# pass
-state:    doing
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     investigate
-summary:  WILDANIMALSPADDEDLISTS1 — offline half done: mechanism strongly narrowed, exact patch still unnamed
-prose:    infrastructure/state/items/WILD_ANIMALS_PADDED_LISTS_1.md
 
 ## DROID_SYSTEM_BUILD_1 Build the unifying droid mod per droid_system_spec.md (parked until the owner reopens)
 state:    doing
@@ -45,33 +207,6 @@ kind:     task
 summary:  (no items/DROID_TILES_SOURED_TERRAIN_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DROID_TILES_SOURED_TERRAIN_1.md
 
-## ASSAILANT_DUNGEON_BUILD_1 Build the Assailant flesh dungeon: frozen first-impact complex, thaw-gated, deep Umbra
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  Full spec: design/Jawa/worldbuilding/dungeonsarcspec.md §2. Summary:
-prose:    infrastructure/state/items/ASSAILANT_DUNGEON_BUILD_1.md
-
-## VAULT_DUNGEON_BUILD_1 Build the six Forsaken vaults: concentric grammar templates, LARGE maps, quicktest-proven
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  Full spec: design/Jawa/worldbuilding/dungeonsarcspec.md §3. Summary:
-prose:    infrastructure/state/items/VAULT_DUNGEON_BUILD_1.md
-
-## RIMMANDRAKE_PITS_BUILD_1 Build RimMandrake Pits: core framework mod (dig stages, terrain-mimic covers, mass triggers, struggle escape, fitting family, holding-platform pit cell) + campaign layer; first step is the spawn-mass quicktest matrix on the 22s minimal list
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  Full specs, both ruled by the owner 2026-08-30: design/Jawa/coveredpittrapsspec.md
-prose:    infrastructure/state/items/RIMMANDRAKE_PITS_BUILD_1.md
-
 ## TILE_STRUCTURE_DESIGNS_1 Make and improve the promise/whisper structure designs per the roster (22+22): rimplace templates + GenStep_RimplacePlan responder (VERIFY terrain/roof ordering); coverage lint = no promise without responder
 state:    doing
 row:      unassigned
@@ -90,69 +225,6 @@ kind:     task
 summary:  design/NAMINGSCHEMEPLAN.md §5 Phase 3: "JawaPatches triage; extract
 prose:    infrastructure/state/items/JAWA_PATCHES_SPLIT_1.md
 
-## GRAFFITI_FRAMEWORK_BUILD_1 Build mandrake.rm.graffiti (SUPERSEDES Mlie.GraffitiMod - absorb spree, retire from modlist, VERIFY license before asset reuse) + mandrake.rut.marks: five families, taunt funnel in v1, faint-scrawl cant
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  design/Jawa/graffitispec.md — full design, all four owner rulings made
-prose:    infrastructure/state/items/GRAFFITI_FRAMEWORK_BUILD_1.md
-
-## NINEFOLD_ENGINE_M0_1 Build RimMandrake Ninefold M0: GodStates satiation ledger + five easiest event hooks + first-contact chains + signed corpus letters (provisional voice approval; owner redlines live text). Felt-only diegesis ruled - no panels ever
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  design/Jawa/divinesatiationengine.md — full design ruled, "NINE OF
-prose:    infrastructure/state/items/NINEFOLD_ENGINE_M0_1.md
-
-## COLONY_VISIBILITY_BUILD_1 Build the Colony Visibility dial (mandrake.rm.visibility): safe core first, threat-scoped Postfix per ruling (hostile callers only), Spike 3 is the patch skeleton
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  design/Jawa/worldbuilding/colonyvisibilitystat.md, specifically
-prose:    infrastructure/state/items/COLONY_VISIBILITY_BUILD_1.md
-
-## WEAPONS_DONOR_RETIREMENT_1 Retire the 6 weapon donor packs now that mandrake.rsw.armoury absorbed their content
-state:    doing
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     build
-summary:  Retire the 6 weapon donor packs — 1 of 6 broke the owner's live game, reverted
-prose:    infrastructure/state/items/WEAPONS_DONOR_RETIREMENT_1.md
-
-## DROID_DONOR_PATCH_GATE_1 Patch the 11 ungated ABF/Synstructs sites in absorbed KotOR content, the prerequisite before ABF/Synstructs/Asimov can retire
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  Source finding: design/Jawa/droidworksassumptions.md, item 3 (the
-prose:    infrastructure/state/items/DROID_DONOR_PATCH_GATE_1.md
-
-## PROPERTY_FABRIC_BUILD_1 Build RM_Property: the ownership/provenance/perception fabric mod - colony side first
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  Source: design/Jawa/ownershipsettlementspec.md (owner, 2026-08-31
-prose:    infrastructure/state/items/PROPERTY_FABRIC_BUILD_1.md
-
-## SETTLEMENT_VISIT_LOOP_1 Inhabited visit loop: peaceful entry to named settlements, manifest, teardown, casing persistence
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  Full ruling: design/Jawa/ownershipsettlementspec.md (owner sitting 2026-08-31).
-prose:    infrastructure/state/items/SETTLEMENT_VISIT_LOOP_1.md
-
 ## DISTRICT_TEMPLATE_LIBRARY_1 Authored Lua district template library + composition through rimplace - Junkers set first
 state:    doing
 row:      unassigned
@@ -162,24 +234,6 @@ kind:     build
 summary:  Full ruling: design/Jawa/ownershipsettlementspec.md (owner sitting 2026-08-31),
 prose:    infrastructure/state/items/DISTRICT_TEMPLATE_LIBRARY_1.md
 
-## SETTLEMENT_VERBS_WAVE_1 v1 interaction verbs: crime suite, salvage-law gray zone, walkable commerce, social fabric
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  Full ruling: design/Jawa/ownershipsettlementspec.md (owner sitting 2026-08-31),
-prose:    infrastructure/state/items/SETTLEMENT_VERBS_WAVE_1.md
-
-## BUILDING_THEFT_HAULER_1 Building-theft hauler droid: Droidworks heavy chassis that uninstalls and carries whole buildings off hostile maps
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  Full ruling: design/Jawa/wreckedmachinesresurrection.md (owner, 2026-08-31,
-prose:    infrastructure/state/items/BUILDING_THEFT_HAULER_1.md
-
 ## LIVESTOCK_STARTER_TRIO_1 Livestock v1: onnik kiln-belly + karrask molt-plate + moornak grief-eater, shared-art batch
 state:    doing
 row:      unassigned
@@ -188,24 +242,6 @@ target:   v1
 kind:     build
 summary:  Per the doc's rosters and §7.2 shared-art batching:
 prose:    infrastructure/state/items/LIVESTOCK_STARTER_TRIO_1.md
-
-## FORSAKEN_CRAGS_PREDATORS_BUILD_1 Build Cindermare + Skarnix, wild AB_RockyCrags threat pair
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  1. Cindermare (moornakopt1.png) — wild threat, ABRockyCrags. No mouth
-prose:    infrastructure/state/items/FORSAKEN_CRAGS_PREDATORS_BUILD_1.md
-
-## HELIX_TELLUROX_BUILD_1 Build Tellurox, Ascendant Helix labour-line livestock
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  Tellurox (karraskopt3.png) — Ascendant Helix labour-line livestock,
-prose:    infrastructure/state/items/HELIX_TELLUROX_BUILD_1.md
 
 ## MASS_VALIDATION_LADDER_1 Batched validation ladder: get_defs deep-serialize, manifest runner, hot-reload trial, first review environment
 state:    doing
@@ -225,15 +261,6 @@ kind:     task
 summary:  FLUIDCANALMECHANIC1 — general canal/fluid-flow mechanic, RimMandrake tier
 prose:    infrastructure/state/items/FLUID_CANAL_MECHANIC_1.md
 
-## STARWARS_DONOR_SUNSET_1 Retire ALL remaining third-party Star Wars donors (12 mods, 4 waves; Mlie+TSDA first)
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  STARWARSDONORSUNSET1 — retire the remaining third-party Star Wars donors
-prose:    infrastructure/state/items/STARWARS_DONOR_SUNSET_1.md
-
 ## MLIE_FAUNA_ABSORPTION_1 Absorb Mlie starwarsanimalcollection: port ~150 creature defs before retiring the donor
 state:    doing
 row:      unassigned
@@ -243,24 +270,6 @@ kind:     build
 summary:  RimStarWars tier (RSW prefix, mandrake.rsw.<modname) — this is
 prose:    infrastructure/state/items/MLIE_FAUNA_ABSORPTION_1.md
 
-## DROID_KOTORDROIDS_PORT_WAVE1_1 Port guy762.kotordroids' 44 kinds/22 races onto the Droidworks platform (wave 1, pure XML)
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  design/Jawa/droidsystembuildspec.md §4/§7: guy762.kotordroids is
-prose:    infrastructure/state/items/DROID_KOTORDROIDS_PORT_WAVE1_1.md
-
-## RIVER_STEAM_ANIMATION_1 Animated steam rising from the rivers (Pyrelands weather visual)
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  Pure ambience feature, no gameplay effect, no new art. mandrake.rut.riversteam
-prose:    infrastructure/state/items/RIVER_STEAM_ANIMATION_1.md
-
 ## SHIELD_MODS_LEVERAGE_1 Find existing shield mods, study and make compatible; tuned-plasma-field model per shd rulings
 state:    doing
 row:      unassigned
@@ -269,15 +278,6 @@ target:   v1
 kind:     task
 summary:  SHIELDMODSLEVERAGE1 — survey done, scoping (BENCH, 2026-09-02)
 prose:    infrastructure/state/items/SHIELD_MODS_LEVERAGE_1.md
-
-## STICK_FOOD_INGEST_1 Ingest the stuff-on-a-stick food mod(s) into our own recipe-discovery tree, then retire them
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  STICKFOODINGEST1 — measured ingest scope (BENCH, 2026-09-02)
-prose:    infrastructure/state/items/STICK_FOOD_INGEST_1.md
 
 ## SANDWORM_MYTHOS_BUILD_1 New massive dune-style sandworm with its own mythos (Krayt stays as-is); borrow LEVIATHANS:SANDWORM architecture
 state:    doing
@@ -404,7 +404,27 @@ prose:    infrastructure/state/items/ARMOURY_MELEEPOWER_STALE_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is LOADING. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+
+## WILD_ANIMALS_PADDED_LISTS_1 wildAnimals lists padded to 1024 by unidentified C# pass
+state:    ready
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     investigate
+waiting:  needs `bridge`, game is LOADING
+summary:  WILDANIMALSPADDEDLISTS1 — offline half done: mechanism strongly narrowed, exact patch still unnamed
+prose:    infrastructure/state/items/WILD_ANIMALS_PADDED_LISTS_1.md
+
+## WEAPONS_DONOR_RETIREMENT_1 Retire the 6 weapon donor packs now that mandrake.rsw.armoury absorbed their content
+state:    ready
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     build
+waiting:  needs `game-up`, game is LOADING
+summary:  Retire the 6 weapon donor packs — 1 of 6 broke the owner's live game, reverted
+prose:    infrastructure/state/items/WEAPONS_DONOR_RETIREMENT_1.md
 
 ## TILEGEN_SILENT_REUSE_1 jawa/world_tile_map_generate fabricates success on the second distinct-tile call per session
 state:    ready
@@ -412,7 +432,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     bug
-waiting:  needs `deploy`, game is DOWN
+waiting:  needs `deploy`, game is LOADING
 summary:  Filed by BENCH: jawa/worldtilemapgenerate fabricates success on its
 prose:    infrastructure/state/items/TILEGEN_SILENT_REUSE_1.md
 
@@ -473,3 +493,13 @@ kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/FOUNDRY_QUEUE_NOT_OFFERING_READY_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/FOUNDRY_QUEUE_NOT_OFFERING_READY_1.md
+
+## RIMFLOW_RECLAIM_COMMAND_1 Add 'rimflow reclaim': let a seat self-return its own idle doing item to ready (no BENCH bottleneck) + a staleness auto-sweep
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/RIMFLOW_RECLAIM_COMMAND_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/RIMFLOW_RECLAIM_COMMAND_1.md
