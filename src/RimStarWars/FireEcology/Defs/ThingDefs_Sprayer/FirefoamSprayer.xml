@@ -54,13 +54,11 @@
     <altitudeLayer>Item</altitudeLayer>
     <alwaysHaulable>true</alwaysHaulable>
     <category>Item</category>
-    <comps>
-      <li Class="CompProperties_Forbiddable"></li>
-      <li>
-        <compClass>CompEquippable</compClass>
-      </li>
-      <li Class="CompProperties_Biocodable"></li>
-    </comps>
+    <!-- Forbiddable, CompEquippable and Biocodable already come down the
+         BaseHumanMakeableGun -> ... -> BaseWeapon chain — redeclaring them
+         here APPENDED a second copy of each (XML <li> lists append on
+         inheritance, they don't replace), giving this weapon two
+         CompEquippable comps. Removed; the inherited set already covers it. -->
     <costList>
       <Steel>40</Steel>
       <Chemfuel>15</Chemfuel>

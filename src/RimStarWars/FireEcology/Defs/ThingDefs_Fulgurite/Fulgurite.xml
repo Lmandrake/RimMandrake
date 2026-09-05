@@ -26,9 +26,9 @@
     <altitudeLayer>Item</altitudeLayer>
     <alwaysHaulable>true</alwaysHaulable>
     <category>Item</category>
-    <comps>
-      <li Class="CompProperties_Forbiddable"></li>
-    </comps>
+    <!-- CompProperties_Forbiddable already comes from ResourceBase — do not
+         redeclare it here, XML <li> lists APPEND on inheritance and a second
+         copy would give this thing two Forbiddable comps. -->
     <drawerType>MapMeshOnly</drawerType>
     <drawGUIOverlay>true</drawGUIOverlay>
     <graphicData>

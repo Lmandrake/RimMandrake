@@ -96,8 +96,10 @@
     <altitudeLayer>Item</altitudeLayer>
     <alwaysHaulable>true</alwaysHaulable>
     <category>Item</category>
+    <!-- CompProperties_Forbiddable already comes from ResourceBase — only
+         Rottable is new here. Redeclaring Forbiddable would append a second
+         copy (XML <li> lists append on inheritance, not replace). -->
     <comps>
-      <li Class="CompProperties_Forbiddable"></li>
       <li Class="CompProperties_Rottable">
         <daysToRotStart>4</daysToRotStart>
         <rotDestroys>true</rotDestroys>
