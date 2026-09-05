@@ -7,25 +7,25 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-05T03:54:43Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-05T03:57:17Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
-The first heading below is what `rimflow next --seat BENCH` returns. This file and that command call the same function, so they cannot disagree.
+Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
+
+# IN PROGRESS
+
+Started, and therefore not offered again. `rimflow close` or `rimflow block` moves them.
 
 ## RESEARCH_TREE_TABS_1 Ship the 16 ResearchTabDefs - blocked on the open tree rebrand and the Waking Mind fold discrepancy
-state:    ready
+state:    doing
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
 summary:  (no items/RESEARCH_TREE_TABS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/RESEARCH_TREE_TABS_1.md
-
-# IN PROGRESS
-
-_none._
 
 # BLOCKED — something is WRONG and someone must act
 
