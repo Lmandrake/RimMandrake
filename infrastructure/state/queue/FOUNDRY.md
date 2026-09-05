@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-05T07:09:49Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-05T07:10:47Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -445,3 +445,23 @@ kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/PROPERTY_SCRIBE_AND_WITNESS_INVARIANTS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PROPERTY_SCRIBE_AND_WITNESS_INVARIANTS_1.md
+
+## DROID_DATASPIKE_SURVIVES_FAILON_1 DWDataSpike item is NOT destroyed when the job aborts via FailOn - contradicts its 'destroyed regardless of outcome' contract, allows free reuse
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DROID_DATASPIKE_SURVIVES_FAILON_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROID_DATASPIKE_SURVIVES_FAILON_1.md
+
+## DROID_PSYCHICENTROPY_NULL_GAP_1 Droidworks null-backfills pawn.relations for droids but not pawn.psychicEntropy (allocated in the same IsFlesh block) - latent NRE if a droid ever gets a psycast
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DROID_PSYCHICENTROPY_NULL_GAP_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROID_PSYCHICENTROPY_NULL_GAP_1.md
