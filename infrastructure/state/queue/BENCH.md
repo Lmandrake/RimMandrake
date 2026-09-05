@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-05T07:10:47Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-05T07:45:07Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -32,4 +32,14 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-_none._
+Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
+
+## OHM_RESCOPE_PROPAGATION_1 Propagate the Ohm re-scope: Ohm is NOT the ship/Oracle/Narrator - the Narrator is the ship's repurposed AI, no god is the Narrator (owner re-affirmed 2026-09-05)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     fix
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/OHM_RESCOPE_PROPAGATION_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/OHM_RESCOPE_PROPAGATION_1.md

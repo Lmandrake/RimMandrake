@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-05T07:10:47Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-05T07:45:07Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -465,3 +465,33 @@ kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DROID_PSYCHICENTROPY_NULL_GAP_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DROID_PSYCHICENTROPY_NULL_GAP_1.md
+
+## DEAD_PYTHON_CANDIDATES_VERIFY_1 23 Utils .py scripts have zero import/invocation hits - verify individually before any deletion (agent's 'in CODE_REVIEW_STATUS = live' reasoning was invalid)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DEAD_PYTHON_CANDIDATES_VERIFY_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DEAD_PYTHON_CANDIDATES_VERIFY_1.md
+
+## INHABITED_AUGMENTATION_BUILD_1 Build the tile-augmentation content: rimplace templates + Inhabited wiring for the biome/faction/latitude augmentation dream
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/INHABITED_AUGMENTATION_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/INHABITED_AUGMENTATION_BUILD_1.md
+
+## PLOT_MECHANISM_MODS_WAVE_1 Build wave: LLM raid-redesigner + post-battle/event hostility creation + plot-gap mods (from plot_mechanisms_wave.md)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/PLOT_MECHANISM_MODS_WAVE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PLOT_MECHANISM_MODS_WAVE_1.md
