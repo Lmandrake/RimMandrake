@@ -1,0 +1,624 @@
+{
+ "sheetId": "vehicle_register",
+ "posture": "blacklist",
+ "postureMeaning": "Default is KEEP THE ART. An undecided row destroys nothing and queues no work. Only 'cut' removes a vehicle; 'regen'/'rescale' queue art work. 'prio' (A/B/C) is the regeneration ORDER and is meaningful only on a regen/rescale row. ⚠️ A row is one ARTWORK: applying a decision means applying it to every def listed in that row's `aliases` in vehicle_register_rows.json.",
+ "options": [
+  "keep",
+  "regen",
+  "rescale",
+  "cut"
+ ],
+ "criterion": "px-per-cell at true draw size (ranks art QUALITY) plus an invented 'reads as modern Earth' register guess. Neither ranks WORTH; sandcrawler-adjacent-vs-terrestrial is the owner's call and lives in the notes.",
+ "generatedBy": "gen_vehicle_register.py 1.0",
+ "generatedUtc": "2026-09-05T22:48:07Z",
+ "provenance": {
+  "dumpMods": 595,
+  "dumpCaptured": "2026-09-05T04:49:08Z",
+  "liveActiveMods": 596,
+  "defsBySource": {
+   "drivable": 35,
+   "craft": 32,
+   "prop": 97
+  },
+  "defsTotal": 164,
+  "rowsAfterArtMerge": 98,
+  "creatureRegisterOverlap": {
+   "creatureRegisterVehicleRows": 35,
+   "alsoHere": 35,
+   "creatureOnly": [],
+   "newInThisSweep": 129
+  },
+  "cutProvenance": "cut list: 1454 defs, live settings, 2026-09-04 15:31 (/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios/Config/Mod_3521312241_Mod_CherryPicker.xml)",
+  "calibration": "PASSED — VVE_Bulldog's four vehicleStats agree across the sqlite dump AND Vanilla Vehicles Expanded's own Bulldog_VehiclePawn.xml on disk; the decoded crew (driver ×1, gunner ×1) and fuel (Chemfuel) agree with the def's own prose; AND the known NEGATIVE holds — the resolved PAWN stats read MoveSpeed 3, Mass 4.5, CarryingCapacity 337.5, which are the bodySize artefacts this sheet must never print as vehicle numbers."
+ },
+ "decisions": {
+  "AV_Rickshaw": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AV_Wheelbarrow": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VVE_Charley": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "A",
+   "note": ""
+  },
+  "VVE_Dirtbike": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "A",
+   "note": ""
+  },
+  "AV_Chariot": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VVE_Prowler": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AV_Palanquin": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VVE_BangBus": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "A",
+   "note": ""
+  },
+  "VVE_Mule": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VVE_Traveller": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VVE_Wagon": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "A",
+   "note": ""
+  },
+  "AV_CoveredCarriage": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AV_OxCart": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VVE_Roadrunner": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VVE_Snatcher": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AV_DogSled": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VVE_Wisent": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "A",
+   "note": ""
+  },
+  "AV_Hwacha": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VVE_Roadkill": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "A",
+   "note": ""
+  },
+  "AV_WarChariot": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VVE_Bunsen": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "A",
+   "note": ""
+  },
+  "VVE_Highwayman": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VVE_Scytheman": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VVE_Bulldog": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "A",
+   "note": ""
+  },
+  "VVE_Tango": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VVE_Frog": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VVE_Toad": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "A",
+   "note": ""
+  },
+  "VVE_Mosquito": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VVE_Warbird": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VVE_Smuggler": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AV_Balloon": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "AV_OutriggerCanoe": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AV_RowBoat": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "VVE_Dinghy": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VVE_Trawler": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BMT_DrillPod": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AncientTransportPod": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "MechanoidDropPod": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "TransportPod": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "TTSS_PersonalShuttle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "GravCapsule_GT": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "PassengerShuttle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Spaceports_ShuttleB": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Spaceports_ShuttleC": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Spaceports_ShuttleD": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Spaceports_ShuttleG": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Spaceports_ShuttleK": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VEE_Shuttle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VEE_Shuttle_Combat": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VEE_Shuttle_Heavy": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Shuttle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ShuttleCrashed_Exitable": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "ShuttleCrashed_Exitable_Mechanitor": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "Spaceports_RoyaltyShuttle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Spaceports_ShuttleA": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Spaceports_ShuttleE": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Spaceports_ShuttleF": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Spaceports_ShuttleH": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Spaceports_ShuttleI": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Spaceports_ShuttleInert": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "Spaceports_ShuttleJ": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "TTSS_CargoShuttle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AncientShoppingCart": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "VGE_DamagedEscapePod": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AA_Overgrown_DropPod": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "MalfunctioningTransportPod": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_Personalpod": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_AncientPodCar": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AncientDropshipEngine": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AncientPodCar": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AncientRustedCarFrame": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_WoodenWagon": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "AncientRustedCar": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AncientRustedTruck": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "BreadMoAM_AncientRustedTruck": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "AncientAPC": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "AncientIndustrialTruck": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "AncientTank": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "VFEPD_AncientShuttle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_CarFamilyBlack": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "VFEPD_CarPickupBlack": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "VFEPD_CarVintageBlack": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "VFEPD_SpacerShuttle": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BreadMoAM_AncientTruckCompartment": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "AncientRustedDropship": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_CarDeliveryBlack": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "AM_AncientTruckCarriages": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "VQE_AncientConstructionTruck": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "BreadMoAM_AncientEmptyMiningCar": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "BreadMoAM_AncientMudCarriage": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "BreadMoAM_AncientPlasteelMiningCars": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "BreadMoAM_AncientSteelMiningCars": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "BreadMoAM_AncientUraniumMiningCars": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "VFEPD_AncientRockMiningCar": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "AM_AbandonedBus": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "AM_FireTruck": {
+   "decision": "regen",
+   "prefill": "regen",
+   "prio": "B",
+   "note": ""
+  },
+  "VFEPD_HeavyDropship": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  },
+  "VFEPD_Shuttle_HeavyCargo": {
+   "decision": "keep",
+   "prefill": "keep",
+   "prio": "",
+   "note": ""
+  }
+ }
+}

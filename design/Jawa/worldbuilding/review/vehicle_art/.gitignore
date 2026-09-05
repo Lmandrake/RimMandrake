@@ -1,0 +1,14 @@
+# 196 derived PNGs, ~6 MB. DO NOT COMMIT THEM.
+#
+# Every file here is regenerated in about seven seconds by:
+#     python3 src/RimMandrake/Utils/gen_vehicle_register.py --stage art
+# and the provenance that makes them reproducible — which dump, which mod set,
+# which texPath, which resolver rung, and whether the paint was applied — is
+# committed instead, in vehicle_register_rows.json.
+#
+# CLAUDE.md's rule: commit a derived artifact's provenance, never its bulk.
+#
+# Delete this file if the sheet must ever travel to a machine that cannot run
+# the extractor — but then commit the folder deliberately, not by accident.
+*
+!.gitignore
