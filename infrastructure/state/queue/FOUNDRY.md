@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-05T07:52:03Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-05T07:53:20Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -505,3 +505,13 @@ kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/ORACLE_OHM_PROMPT_STILL_SHIP_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/ORACLE_OHM_PROMPT_STILL_SHIP_1.md
+
+## UI_APPEARANCE_BUILD_1 Build the campaign UI shell: mandrake.rut.menushell (backgrounds/tips/title) + mandrake.rm.rustchrome (rust UI repaint + colour DLL) per ui_appearance_spec.md
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/UI_APPEARANCE_BUILD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/UI_APPEARANCE_BUILD_1.md
