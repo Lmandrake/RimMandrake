@@ -1,3 +1,29 @@
+## SCORED 2026-09-04/05 (BENCH ran the load, FOUNDRY closing the sheet)
+
+The full-list load happened (595 mods, capture 23:46) and every decision
+string on this sheet PASSED, per BENCH's own closing evidence on
+`RESEARCH_TREE_NORMALIZATION_1` (which subsumed most of §1's scope) plus
+this session's own live verification of §2:
+
+- §1 Rites+ResearchRetag: retag live, 185 techLevel mismatches cleared, the
+  13-row supplement covers rows the generator's own capture-diff bug
+  (`RETAG_BUILDER_SELF_ERASE_1`, filed same night) couldn't otherwise catch,
+  0 orphan fails, no defName renamed anywhere across 740 retag ops. Coverage
+  exact: 403 surviving rows present, 119 cut/merge rows absent.
+- §2 Antiquities+Rites reveal: both landed and were added to the live list
+  same session (`mandrake.rut.antiquities` now part of the 595); the
+  reading-loop mechanism itself was live-verified on a quicktest before the
+  full-list load (see `ANTIQUITIES_TREE_BUILD_1`'s item file for the trace),
+  and the hiddenPrerequisites wiring was verified against
+  `MainTabWindow_Research.cs` source rather than guessed
+  (`RITES_REVEAL_MECHANISM_1`).
+- §0 deploy: companion `--gm` rebuild confirmed not a real regression;
+  Antiquities DLL bugfix deployed at the next shutdown window per BENCH's
+  handoff.
+- Successors carrying anything left open: `RESEARCH_TREE_TABS_1` (owner
+  decision, tree rebrand + Waking Mind fold), `RETAG_BUILDER_SELF_ERASE_1`,
+  `LIGHTSABER_RECIPE_GATE_1`. A fresh run sheet is filed next batched window.
+
 ## Spec
 Successor to COLD_LOAD_RUN_SHEET_2 (closed 2026-09-03 after the big-dump load —
 its own record stays there). Filed thin (no spec/verify/criteria); written down
