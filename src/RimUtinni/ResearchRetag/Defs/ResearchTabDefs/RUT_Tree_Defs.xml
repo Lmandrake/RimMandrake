@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- RUT_Tree_Defs.xml - the 15 campaign ResearchTabDefs (RESEARCH_TREE_TABS_1).
+     Labels ruled by the owner 2026-09-04: "Jawa Scavenging" and "The Utinni" rename
+     Scavenger/THE SHIP; The Waking Mind ships UNFOLDED as its own 10-row tree, not
+     merged into The Unbolting. defNames are stable RUT_Tree_* slugs. This plus the
+     existing RUT_Rites tab = 16 ResearchTabDefs total for the campaign. RUT_Antiquities
+     ships its own tab separately and is untouched by this file. -->
+<Defs>
+
+  <!-- Jawa Scavenging - 53 rows -->
+  <ResearchTabDef>
+    <defName>RUT_Tree_Scavenging</defName>
+    <label>jawa scavenging</label>
+    <generalTitle>Jawa Scavenging</generalTitle>
+    <generalDescription>The honest skill of the sand: finding, fixing, and never asking where it came from.</generalDescription>
+  </ResearchTabDef>
+
+  <!-- The Refinery - 53 rows -->
+  <ResearchTabDef>
+    <defName>RUT_Tree_Refinery</defName>
+    <label>the refinery</label>
+    <generalTitle>The Refinery</generalTitle>
+    <generalDescription>Turning raw scrap and stolen ore into something a clan can actually use.</generalDescription>
+  </ResearchTabDef>
+
+  <!-- The Workshop - 50 rows -->
+  <ResearchTabDef>
+    <defName>RUT_Tree_Workshop</defName>
+    <label>the workshop</label>
+    <generalTitle>The Workshop</generalTitle>
+    <generalDescription>The bench between salvage and the finished thing.</generalDescription>
+  </ResearchTabDef>
+
+  <!-- The Hearth - 46 rows -->
+  <ResearchTabDef>
+    <defName>RUT_Tree_Hearth</defName>
+    <label>the hearth</label>
+    <generalTitle>The Hearth</generalTitle>
+    <generalDescription>What keeps a clan fed, warm, and alive between one raid and the next.</generalDescription>
+  </ResearchTabDef>
+
+  <!-- Powder & Slug - 37 rows -->
+  <ResearchTabDef>
+    <defName>RUT_Tree_PowderAndSlug</defName>
+    <label>powder &amp; slug</label>
+    <generalTitle>Powder &amp; Slug</generalTitle>
+    <generalDescription>Chemical fire, the oldest violence, still the cheapest.</generalDescription>
+  </ResearchTabDef>
+
+  <!-- The Utinni - 35 rows -->
+  <ResearchTabDef>
+    <defName>RUT_Tree_Utinni</defName>
+    <label>the utinni</label>
+    <generalTitle>The Utinni</generalTitle>
+    <generalDescription>The ship herself, researched as archaeology of your own home.</generalDescription>
+  </ResearchTabDef>
+
+  <!-- The Shell - 31 rows -->
+  <ResearchTabDef>
+    <defName>RUT_Tree_Shell</defName>
+    <label>the shell</label>
+    <generalTitle>The Shell</generalTitle>
+    <generalDescription>What stands between a Jawa and the sand, or the blaster bolt.</generalDescription>
+  </ResearchTabDef>
+
+  <!-- The Unbolting - 27 rows -->
+  <ResearchTabDef>
+    <defName>RUT_Tree_Unbolting</defName>
+    <label>the unbolting</label>
+    <generalTitle>The Unbolting</generalTitle>
+    <generalDescription>Building droids at all - a liberation rite paid one bolt at a time.</generalDescription>
+  </ResearchTabDef>
+
+  <!-- Blasterworks - 17 rows -->
+  <ResearchTabDef>
+    <defName>RUT_Tree_Blasterworks</defName>
+    <label>blasterworks</label>
+    <generalTitle>Blasterworks</generalTitle>
+    <generalDescription>Focused light as a trade good, and eventually as a weapon.</generalDescription>
+  </ResearchTabDef>
+
+  <!-- The Waking Mind - 10 rows -->
+  <ResearchTabDef>
+    <defName>RUT_Tree_WakingMind</defName>
+    <label>the waking mind</label>
+    <generalTitle>The Waking Mind</generalTitle>
+    <generalDescription>Minds you make, and minds you bind.</generalDescription>
+  </ResearchTabDef>
+
+  <!-- The Reach - 18 rows -->
+  <ResearchTabDef>
+    <defName>RUT_Tree_Reach</defName>
+    <label>the reach</label>
+    <generalTitle>The Reach</generalTitle>
+    <generalDescription>What the clan can see and touch beyond its own dune.</generalDescription>
+  </ResearchTabDef>
+
+  <!-- The Ascendant Ladder - 8 rows -->
+  <ResearchTabDef>
+    <defName>RUT_Tree_AscendantLadder</defName>
+    <label>the ascendant ladder</label>
+    <generalTitle>The Ascendant Ladder</generalTitle>
+    <generalDescription>The Helix's gift, rung by rung, for a Jawa willing to climb it.</generalDescription>
+  </ResearchTabDef>
+
+  <!-- The Strange Schools - 7 rows -->
+  <ResearchTabDef>
+    <defName>RUT_Tree_StrangeSchools</defName>
+    <label>the strange schools</label>
+    <generalTitle>The Strange Schools</generalTitle>
+    <generalDescription>The physics that does not behave, studied anyway.</generalDescription>
+  </ResearchTabDef>
+
+  <!-- The Junker Yards - 7 rows -->
+  <ResearchTabDef>
+    <defName>RUT_Tree_JunkerYards</defName>
+    <label>the junker yards</label>
+    <generalTitle>The Junker Yards</generalTitle>
+    <generalDescription>Warcasket doctrine, earned from the Junkers, never bought.</generalDescription>
+  </ResearchTabDef>
+
+  <!-- The Foundry Hive - 4 rows -->
+  <ResearchTabDef>
+    <defName>RUT_Tree_FoundryHive</defName>
+    <label>the foundry hive</label>
+    <generalTitle>The Foundry Hive</generalTitle>
+    <generalDescription>What the Geonosians will trade a Jawa who proves useful.</generalDescription>
+  </ResearchTabDef>
+</Defs>

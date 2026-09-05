@@ -12,9 +12,17 @@ design/Jawa/research_review/build_retag_patches.py — edit the manifest and
 regenerate, never the XML.
 
 Scope: surviving rows only; RR_* prereqs excluded (Research Reinvented
-re-splices its techprints at runtime). Tab restructure (the 16 campaign trees
-as ResearchTabDefs) is NOT here yet — that is the next slice, with the cut
-wave. Load after every research-adding mod.
+re-splices its techprints at runtime). Load after every research-adding mod.
+
+RESEARCH_TREE_TABS_1, shipped 2026-09-05: 15 campaign ResearchTabDefs
+(Defs/ResearchTabDefs/RUT_Tree_Defs.xml) + per-row tab assignment
+(Patches/RUT_ResearchTabAssign.xml, 403 ops, hand-authored — NOT emitted by
+build_retag_patches.py, which does not touch tab and still carries the
+RETAG_BUILDER_SELF_ERASE_1 defect on the techLevel/baseCost slice). Plus the
+existing RUT_Rites tab = 16 ResearchTabDefs total for the campaign.
+RUT_Antiquities ships its own tab separately, untouched here. Labels ruled by
+the owner 2026-09-04: "Jawa Scavenging"/"The Utinni" rename Scavenger/THE
+SHIP; The Waking Mind ships unfolded, not merged into The Unbolting.
 
 RESEARCH_RETAG_LOAD_ORDER_GAP_1, fixed 2026-09-04: forceLoadAfter below names the packageId of every non-official mod that owns one of the 269 patched ResearchProjectDefs, built from the live def dump's per-def packageId attribution (2026-09-04T02-23-44Z capture, 52 packageIds, 0 unmatched targets) - same convention as FactionSlate. Core/DLC omitted: the engine always loads official content first. Regenerate this list whenever build_retag_patches.py changes the target set.</description>
   <forceLoadAfter>
