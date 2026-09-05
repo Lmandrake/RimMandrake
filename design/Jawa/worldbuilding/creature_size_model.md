@@ -299,3 +299,20 @@ than vanilla draws an animal of that mass.
 - **Not measured:** whether `femaleGraphicData` ever carries a different `drawSize` from
   `bodyGraphicData` in this mod set. The renderer would honour it
   (`PawnRenderNode_AnimalPart.cs:28`); the register reads `bodyGraphicData` only.
+
+---
+
+## Plants do NOT follow the creature rule (measured 2026-09-05, plant register)
+
+`Plant.Print` builds the quad as
+`Vector2(drawSize.x * visualSizeRange.Lerp(growth), <same value>)` — so:
+- **`drawSize.y` is never read**; the plant quad is always SQUARE.
+- Size scales with GROWTH, so a plant's on-screen size changes as it matures.
+- **Mature size = `drawSize.x * visualSizeRange.max`** — that, not `max(drawSize)`,
+  is the number a plant review sheet must show.
+- Multi-mesh plants (4/9/16/25 sub-meshes) are tiled the way the engine tiles them.
+
+⇒ The creature rule (`max(drawSize.x, drawSize.y)`) is WRONG for plants. Each
+category must be checked against its own engine draw path rather than inheriting
+the animal one — buildings use their `size` footprint, plants use the growth-lerped
+square above.
