@@ -41,13 +41,35 @@ not shipped content).
 ## criteria
 - [x] Mod skeleton, theme, and art built (offline half of spec §2/§3).
 - [x] Shipped art actually committed, not silently gitignored.
-- [ ] **§4 gate, needs the game DOWN then a bridge session**: activate
-      RimThemes + this theme, screenshot the main menu / a gizmo row / a
-      window / a float menu, confirm no red errors and RimHUD/Dubs Mint
-      Menus/Camera+/Trade UI Revised still work. Rides the next restart
-      alongside whatever else needs one.
+- [~] **§4 gate, partial**: activated `aRandomKiwi.RimThemes` +
+      `mandrake.rut.shell` in the live ModsConfig (596 mods now), restarted,
+      confirmed both load with **zero errors** (`Player.log` grepped clean
+      for either packageId). RimThemes' own theme picker
+      (`Dialog_ThemesList`, opened directly via
+      `rimworld/open_window_by_type` since the main menu's own button row
+      isn't reachable through `get_ui_layout`/`click_ui_target` — it's drawn
+      by `MainMenuDrawer` directly, not as a `Window`) **correctly discovers
+      "Utinni Shell"** with its real name, description and icon pulled from
+      `meta.xml`. Could NOT get the bridge to actually SELECT it:
+      `Themes.changeThemeNow` (decompiled via `ilspycmd`, confirmed exact
+      mechanism) fires from a `Widgets.ButtonImage` click at a specific rect
+      inside the dialog; `rimworld/click_ui_target` reports success against
+      that exact target (verified twice, correct target-id-to-rect mapping
+      confirmed against the decompiled row-layout code) but the main menu
+      never visibly re-themes afterward. RimThemes patches Unity's own GUI
+      pipeline extensively (`WindowStackOnGUI_Patch`, `Widgets_ButtonImage_
+      Patch`, and ~15 more Harmony patches on core GUI internals) — plausible
+      that its own patches intercept the bridge's synthetic click in a way
+      a normal button doesn't hit. **Needs a human click** (5 seconds at the
+      keyboard: main menu → the bottom-left RimThemes icon row → Utinni
+      Shell → its select icon) to actually complete the visual gate, or a
+      bridge-side fix if this class of RimWorld mod (heavy GUI-pipeline
+      patchers) turns out to be a recurring click-injection blind spot worth
+      naming as its own item.
 - [ ] §5 verify: `validate_patch.py --live` after a dump (only `--defs`
-      static-checked this pass), theme appears in RimThemes' picker, VBE
-      picker shows the menu background, loader shows on the next cold load.
+      static-checked this pass), VBE picker shows the menu background,
+      loader shows on the next cold load — all still pending the theme
+      actually being selected.
 
-Left `doing` — the offline half is done, the gate is real remaining work.
+Left `doing` — the offline half is done, the gate is one human click and a
+four-screenshot pass away from complete.
