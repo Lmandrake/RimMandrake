@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  design/Jawa/proposals/plot_mechanisms_wave.md §2.1 rule 2's alliance table.
+  FactionDef defNames are all real, read from
+  src/RimUtinni/UtinniPatches/Defs/FactionDefs/*.xml directly (not guessed):
+  Jawa_GeonosianFoundryHive, Jawa_FreeDroidEnclaves, Jawa_Junkers,
+  Jawa_HuttCartel, Jawa_AscendantHelix; `Pirate` is vanilla Core (Blackstar
+  Company is a reskin of it, not a new defName — confirmed in
+  src/RimUtinni/UtinniPatches/Patches/BlackstarCompany.xml); `Empire` is
+  vanilla Core (the campaign's Galactic Empire is a reskin, same pattern —
+  per this repo's own memory note "Galactic Empire is reskinned vanilla").
+
+  The Geonosian/Enclave pair is genuinely reachable by AftermathRuleRunner's
+  current engine (rule 2 fires off a BattleRecord close). The three
+  Blackstar "hired by anyone who can pay" pairs are shipped as DATA for when
+  rule 8's real trigger (a TakingEvent/pursuit-loss/escaped-Asset event, not
+  a battle outcome) is wired — rule 2's engine only reaches a pair through a
+  BattleRecord close, so these three are not reachable by anything in this
+  build yet.
+-->
+<Defs>
+
+  <RimMandrake.Aftermath.RM_AlliancePairDef>
+    <defName>RM_AlliancePair_GeonosianHive_FreeDroidEnclaves</defName>
+    <a>Jawa_GeonosianFoundryHive</a>
+    <b>Jawa_FreeDroidEnclaves</b>
+    <weight>1</weight>
+  </RimMandrake.Aftermath.RM_AlliancePairDef>
+
+  <RimMandrake.Aftermath.RM_AlliancePairDef>
+    <defName>RM_AlliancePair_FreeDroidEnclaves_GeonosianHive</defName>
+    <a>Jawa_FreeDroidEnclaves</a>
+    <b>Jawa_GeonosianFoundryHive</b>
+    <weight>1</weight>
+  </RimMandrake.Aftermath.RM_AlliancePairDef>
+
+  <RimMandrake.Aftermath.RM_AlliancePairDef>
+    <defName>RM_AlliancePair_Junkers_FreeDroidEnclaves</defName>
+    <a>Jawa_Junkers</a>
+    <b>Jawa_FreeDroidEnclaves</b>
+    <weight>1</weight>
+  </RimMandrake.Aftermath.RM_AlliancePairDef>
+
+  <!-- Blackstar-hire pairs — NOT reachable this build, see header. -->
+  <RimMandrake.Aftermath.RM_AlliancePairDef>
+    <defName>RM_AlliancePair_HuttCartel_Blackstar</defName>
+    <a>Jawa_HuttCartel</a>
+    <b>Pirate</b>
+    <weight>1</weight>
+  </RimMandrake.Aftermath.RM_AlliancePairDef>
+
+  <RimMandrake.Aftermath.RM_AlliancePairDef>
+    <defName>RM_AlliancePair_Empire_Blackstar</defName>
+    <a>Empire</a>
+    <b>Pirate</b>
+    <weight>1</weight>
+  </RimMandrake.Aftermath.RM_AlliancePairDef>
+
+  <RimMandrake.Aftermath.RM_AlliancePairDef>
+    <defName>RM_AlliancePair_Helix_Blackstar</defName>
+    <a>Jawa_AscendantHelix</a>
+    <b>Pirate</b>
+    <weight>1</weight>
+  </RimMandrake.Aftermath.RM_AlliancePairDef>
+
+</Defs>

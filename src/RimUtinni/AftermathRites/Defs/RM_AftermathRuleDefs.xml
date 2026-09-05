@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  PLOT_MECHANISM_MODS_WAVE_1 - design/Jawa/proposals/plot_mechanisms_wave.md
+  §2.1's eight rules, as data for mandrake.rm.aftermath's AftermathRuleRunner.
+
+  ENGINE STATUS (see src/RimMandrake/Aftermath/Source/AftermathTriggerKind.cs
+  for the exact reasons): only the three defs with
+  <triggerKind>BattleOutcome</triggerKind> (rules 1-3) are evaluated live this
+  build. Rules 4-8 below carry real data (payload, telegraph, letter, god
+  tie) but AftermathRuleRunner does not yet evaluate their trigger kind -
+  see this item's own item-file entry
+  (infrastructure/state/items/PLOT_MECHANISM_MODS_WAVE_1.md) for what each
+  still needs.
+
+  Payload IncidentDefs are all VANILLA, verified present via rimsage
+  search_defs before writing (RaidEnemy, ShortCircuit) - no third-party
+  mod's IncidentDef defName is referenced here, since none was verified to
+  exact defName precision (geojak.tributedemand and
+  mlie.slaverebellionsimproved were only confirmed PRESENT, not their own
+  IncidentDef defNames - using either here would be exactly the guessed-
+  defName failure mode this project's CLAUDE.md forbids). The doc's
+  Blackstar-exchange, Hutt-ransom, wreck-cell attackTargets biasing, and
+  composition-counter biasing are consequently NOT implemented this pass -
+  every payload below is a plain RaidEnemy/ShortCircuit against the named
+  faction, not the doc's fuller per-rule flavor.
+-->
+<Defs>
+
+  <!-- ══ RULE 1 — Regroup and return (WIRED) ══════════════════════════════ -->
+  <RimMandrake.Aftermath.RM_AftermathRuleDef>
+    <defName>RM_AftermathRule_RegroupAndReturn</defName>
+    <label>regroup and return</label>
+    <triggerKind>BattleOutcome</triggerKind>
+    <triggerOutcomes>
+      <li>Routed</li>
+    </triggerOutcomes>
+    <minSurvivors>3</minSurvivors>
+    <delayDaysMin>2</delayDaysMin>
+    <delayDaysMax>6</delayDaysMax>
+    <telegraphLabel>Someone counted your doors</telegraphLabel>
+    <telegraphText>A lone scout was seen at the edge of your land, studying your defenses before slipping away. Someone is coming back to look harder at what beat them.</telegraphText>
+    <payloadIncidentDefName>RaidEnemy</payloadIncidentDefName>
+    <payloadFactionMode>SameAsTrigger</payloadFactionMode>
+    <godTie>Shkaar</godTie>
+    <godDelta>8</godDelta>
+    <letterLabel>They came back</letterLabel>
+    <letterText>{0} did not forget what happened last time. This is the same enemy, returned to try you again.</letterText>
+  </RimMandrake.Aftermath.RM_AftermathRuleDef>
+
+  <!-- ══ RULE 2 — The allies arrive (WIRED) ═══════════════════════════════ -->
+  <RimMandrake.Aftermath.RM_AftermathRuleDef>
+    <defName>RM_AftermathRule_AlliesArrive</defName>
+    <label>the allies arrive</label>
+    <triggerKind>BattleOutcome</triggerKind>
+    <triggerOutcomes>
+      <li>Repelled</li>
+      <li>Routed</li>
+    </triggerOutcomes>
+    <minSurvivors>0</minSurvivors>
+    <delayDaysMin>3</delayDaysMin>
+    <delayDaysMax>8</delayDaysMax>
+    <telegraphLabel>Word travels</telegraphLabel>
+    <telegraphText>News of the fight has reached {0}'s allies. Livery not your enemy's own has been sighted on the roads.</telegraphText>
+    <payloadIncidentDefName>RaidEnemy</payloadIncidentDefName>
+    <payloadFactionMode>AllyOfTrigger</payloadFactionMode>
+    <letterLabel>An ally answers</letterLabel>
+    <letterText>{0} comes because of what you did to their friends. The debt is not yours alone to settle.</letterText>
+  </RimMandrake.Aftermath.RM_AftermathRuleDef>
+
+  <!-- ══ RULE 3 — Scavengers on the field (WIRED) ═════════════════════════ -->
+  <RimMandrake.Aftermath.RM_AftermathRuleDef>
+    <defName>RM_AftermathRule_ScavengersOnTheField</defName>
+    <label>scavengers on the field</label>
+    <triggerKind>BattleOutcome</triggerKind>
+    <triggerOutcomes>
+      <li>Repelled</li>
+    </triggerOutcomes>
+    <minSurvivors>0</minSurvivors>
+    <delayDaysMin>1</delayDaysMin>
+    <delayDaysMax>3</delayDaysMax>
+    <telegraphLabel>The vultures gather</telegraphLabel>
+    <telegraphText>Desert scavengers circle the field where the bodies still lie unburied. Something else has noticed too.</telegraphText>
+    <payloadIncidentDefName>RaidEnemy</payloadIncidentDefName>
+    <payloadFactionMode>SameAsTrigger</payloadFactionMode>
+    <godTie>Rekko</godTie>
+    <godDelta>-6</godDelta>
+    <letterLabel>Junkers, arriving second</letterLabel>
+    <letterText>The Junkers were never going to let good salvage rot. They come for what {0} left behind — and for whoever else is still standing on it.</letterText>
+  </RimMandrake.Aftermath.RM_AftermathRuleDef>
+
+  <!-- ══ RULE 4 — They come for their own (DATA ONLY - not wired) ════════ -->
+  <RimMandrake.Aftermath.RM_AftermathRuleDef>
+    <defName>RM_AftermathRule_TheyComeForTheirOwn</defName>
+    <label>they come for their own</label>
+    <triggerKind>PrisonerHeldDuration</triggerKind>
+    <delayDaysMin>4</delayDaysMin>
+    <delayDaysMax>10</delayDaysMax>
+    <telegraphLabel>Comms chatter</telegraphLabel>
+    <telegraphText>Fragments of encrypted chatter have been intercepted, naming your colony and one of your prisoners by description.</telegraphText>
+    <payloadIncidentDefName>RaidEnemy</payloadIncidentDefName>
+    <payloadFactionMode>HeldPrisonerHome</payloadFactionMode>
+    <godTie>Oomo</godTie>
+    <godDelta>4</godDelta>
+    <letterLabel>They come for their own</letterLabel>
+    <letterText>Whoever you are holding is worth coming for. {0} has sent a raid to take them back.</letterText>
+  </RimMandrake.Aftermath.RM_AftermathRuleDef>
+
+  <!-- ══ RULE 5 — Sh'kaar's escalation (DATA ONLY - not wired) ═══════════ -->
+  <RimMandrake.Aftermath.RM_AftermathRuleDef>
+    <defName>RM_AftermathRule_ShkaarsEscalation</defName>
+    <label>Sh'kaar's escalation</label>
+    <triggerKind>GodBandCrossed</triggerKind>
+    <delayDaysMin>0.5</delayDaysMin>
+    <delayDaysMax>1</delayDaysMax>
+    <telegraphLabel>The sun's regard</telegraphLabel>
+    <telegraphText>The heat has teeth today. A bell you have never heard tolls somewhere aboard, and the sun does not look away.</telegraphText>
+    <payloadIncidentDefName>RaidEnemy</payloadIncidentDefName>
+    <payloadFactionMode>SameAsTrigger</payloadFactionMode>
+    <godTie>Shkaar</godTie>
+    <godDelta>15</godDelta>
+    <letterLabel>The sun's regard</letterLabel>
+    <letterText>Sh'kaar has noticed you. Every old wrong you are owed is coming due at once.</letterText>
+  </RimMandrake.Aftermath.RM_AftermathRuleDef>
+
+  <!-- ══ RULE 6 — Zizzik's aftermath (DATA ONLY - not wired) ══════════════ -->
+  <RimMandrake.Aftermath.RM_AftermathRuleDef>
+    <defName>RM_AftermathRule_ZizziksAftermath</defName>
+    <label>Zizzik's aftermath</label>
+    <triggerKind>MentalBreakNearBattle</triggerKind>
+    <delayDaysMin>1</delayDaysMin>
+    <delayDaysMax>4</delayDaysMax>
+    <telegraphLabel>The triple rattle</telegraphLabel>
+    <telegraphText>A chartreuse flicker runs through the ship's old lights, three quick pulses, gone before anyone else sees it.</telegraphText>
+    <payloadIncidentDefName>ShortCircuit</payloadIncidentDefName>
+    <payloadFactionMode>SameAsTrigger</payloadFactionMode>
+    <godTie>Zizzik</godTie>
+    <godDelta>-8</godDelta>
+    <letterLabel>Zizzik's spark</letterLabel>
+    <letterText>Something in the walls has found the wrong wire at the wrong moment. Zizzik was already close when it happened.</letterText>
+  </RimMandrake.Aftermath.RM_AftermathRuleDef>
+
+  <!-- ══ RULE 7 — The rooted receipt (DATA ONLY - not wired) ══════════════ -->
+  <RimMandrake.Aftermath.RM_AftermathRuleDef>
+    <defName>RM_AftermathRule_TheRootedReceipt</defName>
+    <label>the rooted receipt</label>
+    <triggerKind>RootedClockQuadrum</triggerKind>
+    <delayDaysMin>0</delayDaysMin>
+    <delayDaysMax>0</delayDaysMax>
+    <telegraphLabel>Engine cough</telegraphLabel>
+    <telegraphText>The exit-lights flare violet for a moment and the hull coughs once, deep in its bones, as if remembering it used to move.</telegraphText>
+    <payloadIncidentDefName>RaidEnemy</payloadIncidentDefName>
+    <payloadFactionMode>SameAsTrigger</payloadFactionMode>
+    <godTie>TaBaa</godTie>
+    <godDelta>-10</godDelta>
+    <letterLabel>Someone talked</letterLabel>
+    <letterText>A trader who visited recently has told the wrong people exactly where you sit. Ta'Baa marks another quadrum you did not fly.</letterText>
+  </RimMandrake.Aftermath.RM_AftermathRuleDef>
+
+  <!-- ══ RULE 8 — The reckoning (DATA ONLY - not wired) ═══════════════════ -->
+  <RimMandrake.Aftermath.RM_AftermathRuleDef>
+    <defName>RM_AftermathRule_TheReckoning</defName>
+    <label>the reckoning</label>
+    <triggerKind>TakingEventWitnessed</triggerKind>
+    <delayDaysMin>5</delayDaysMin>
+    <delayDaysMax>12</delayDaysMax>
+    <telegraphLabel>An envoy, naming a debt</telegraphLabel>
+    <telegraphText>A Hutt envoy's letter has reached you, naming a caravan, a date, and a sum. The tone is not a request.</telegraphText>
+    <payloadIncidentDefName>RaidEnemy</payloadIncidentDefName>
+    <payloadFactionMode>HuttClaimant</payloadFactionMode>
+    <godTie>MobUnloo</godTie>
+    <godDelta>-5</godDelta>
+    <letterLabel>The debt comes due</letterLabel>
+    <letterText>The Hutt Cartel was watching, and being watched means being owed. The reckoning has arrived.</letterText>
+  </RimMandrake.Aftermath.RM_AftermathRuleDef>
+
+</Defs>

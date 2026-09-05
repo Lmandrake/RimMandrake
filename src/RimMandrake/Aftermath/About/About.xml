@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimMandrake: Aftermath</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.rm.aftermath</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>PLOT_MECHANISM_MODS_WAVE_1 — the aftermath-hostilities engine from design/Jawa/proposals/plot_mechanisms_wave.md Part 2, ruled in scope 2026-09-05. Two pieces:
+
+(1) The battle recorder — a MapComponent that opens a BattleRecord when `IncidentWorker_Raid.TryGenerateRaidInfo` returns true and closes it when the raid's Lord is removed, classifying the fight REPELLED / ROUTED / STALEMATE / LOST. This reconciles with (does not duplicate) `mandrake.rm.ninefold`'s existing `Patch_BattleResolved.cs`, which already fires Sh'kaar's per-death delta off `Pawn.Kill`; this recorder adds the missing whole-BATTLE-outcome view Ninefold's own About.xml calls out as absent, and calls Ninefold's public `GameComponent_Ninefold.ApplyDelta` directly rather than adding a second patch on the same seam.
+
+(2) The rule runner — `RM_AftermathRuleDef` (defs ship separately in `mandrake.rut.aftermath`) reads each closed BattleRecord, and on a match queues a delayed, telegraphed, vanilla-`IncidentDef` payload via `Find.Storyteller.incidentQueue.Add(def, fireTick, parms)` with `parms.forced = true`. Discipline per doc §2.2: max one queued aftermath per faction and two total; payload points never exceed the storyteller's own.
+
+Ships a deterministic templated-letter baseline per rule — literal English, faction- and reason-named, no LLM required. Part 1's raid-redesign/Oracle letter-rewrite layer is explicitly OUT of scope for this mod.</description>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=2009463077</steamWorkshopUrl>
+    </li>
+    <li>
+      <packageId>mandrake.rm.ninefold</packageId>
+      <displayName>RimMandrake Ninefold</displayName>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>brrainz.harmony</li>
+    <li>Ludeon.RimWorld</li>
+    <li>mandrake.rm.ninefold</li>
+    <li>mlie.factionraidcooldown</li>
+  </loadAfter>
+</ModMetaData>

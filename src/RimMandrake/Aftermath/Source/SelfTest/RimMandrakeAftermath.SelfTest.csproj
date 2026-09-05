@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    Offline, no-game selftest harness for BattleOutcomeClassifier
+    (PLOT_MECHANISM_MODS_WAVE_1's Aftermath half). Same shape as
+    RimMandrakeProperty.SelfTest.csproj, but simpler: BattleOutcome.cs and
+    BattleOutcomeClassifier.cs have ZERO Verse/UnityEngine dependency (plain
+    ints/bools/enum), so this project needs no RimWorldManaged references at
+    all - unlike Property's SelfTest, which needed them for
+    Mathf/GenDate/Faction/Pawn types.
+
+    NOT the mod build (RM_Aftermath.csproj, one directory up).
+
+    Run (written apart only because an XML comment cannot hold two adjacent hyphens):
+      "%USERPROFILE%\.dotnet\dotnet.exe" run [dash][dash]project D:\Luke\dev\Rimworld\src\RimMandrake\Aftermath\Source\SelfTest\RimMandrakeAftermath.SelfTest.csproj -c Release
+  -->
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>RimMandrakeAftermath.SelfTest</AssemblyName>
+    <RootNamespace>RimMandrake.Aftermath.SelfTest</RootNamespace>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <DebugType>none</DebugType>
+    <BaseOutputPath>bin\</BaseOutputPath>
+    <BaseIntermediateOutputPath>obj\</BaseIntermediateOutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- The REAL production source files, compiled in directly. -->
+    <Compile Include="..\BattleOutcome.cs" />
+    <Compile Include="..\BattleOutcomeClassifier.cs" />
+    <Compile Include="Program.cs" />
+  </ItemGroup>
+
+</Project>

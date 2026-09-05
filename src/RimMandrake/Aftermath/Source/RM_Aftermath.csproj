@@ -1,0 +1,92 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <!--
+    PLOT_MECHANISM_MODS_WAVE_1 (Aftermath half): the battle recorder
+    (MapComponent_BattleRecorder) and the RM_AftermathRuleDef rule runner.
+    Harmony via brrainz.harmony at runtime (never bundled), plus a
+    compile-time reference to mandrake.rm.ninefold's own assembly
+    (GameComponent_Ninefold.ApplyDelta / God enum) - same recipe as
+    RimMandrake.RaidRedesigner referencing RimMandrakeProperty.dll.
+
+    Build (the dotnet is WINDOWS-NATIVE and cannot take a /mnt/d path):
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimMandrake\Aftermath\Source\RM_Aftermath.csproj -c Release
+
+    Output lands in ../Assemblies/, which is where RimWorld looks.
+  -->
+
+  <PropertyGroup>
+    <TargetFramework>net472</TargetFramework>
+    <LangVersion>latest</LangVersion>
+    <AssemblyName>RimMandrakeAftermath</AssemblyName>
+    <RootNamespace>RimMandrake.Aftermath</RootNamespace>
+    <Version>0.1.0</Version>
+
+    <OutputPath>..\Assemblies\</OutputPath>
+    <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    <AssemblySearchPaths>$(AssemblySearchPaths);$(RimWorldManaged)</AssemblySearchPaths>
+
+    <CopyLocalLockFileAssemblies>false</CopyLocalLockFileAssemblies>
+    <AutoGenerateBindingRedirects>false</AutoGenerateBindingRedirects>
+    <GenerateAssemblyInfo>true</GenerateAssemblyInfo>
+    <DebugType>none</DebugType>
+    <EnableDefaultCompileItems>false</EnableDefaultCompileItems>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(RimWorldManaged)' == ''">
+    <RimWorldManaged>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed</RimWorldManaged>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(HarmonyDll)' == ''">
+    <HarmonyDll>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HarmonyDll>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(RimMandrakeNinefoldDll)' == ''">
+    <RimMandrakeNinefoldDll>..\..\Ninefold\Assemblies\RimMandrakeNinefold.dll</RimMandrakeNinefoldDll>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="BattleOutcome.cs" />
+    <Compile Include="BattleOutcomeClassifier.cs" />
+    <Compile Include="BattleRecord.cs" />
+    <Compile Include="MapComponent_BattleRecorder.cs" />
+    <Compile Include="Patch_RaidGenerated.cs" />
+    <Compile Include="Patch_LordLifecycle.cs" />
+    <Compile Include="Patch_ColonistCasualty.cs" />
+    <Compile Include="AftermathTriggerKind.cs" />
+    <Compile Include="AftermathPayloadFactionMode.cs" />
+    <Compile Include="RM_AftermathRuleDef.cs" />
+    <Compile Include="RM_AlliancePairDef.cs" />
+    <Compile Include="QueuedAftermathMarker.cs" />
+    <Compile Include="AftermathRuleRunner.cs" />
+    <Compile Include="AftermathMod.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies" Version="1.0.3" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="Assembly-CSharp">
+      <HintPath>$(RimWorldManaged)\Assembly-CSharp.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>$(RimWorldManaged)\UnityEngine.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>$(RimWorldManaged)\UnityEngine.CoreModule.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>$(HarmonyDll)</HintPath>
+      <Private>false</Private>
+    </Reference>
+    <Reference Include="RimMandrakeNinefold">
+      <HintPath>$(RimMandrakeNinefoldDll)</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
+
+</Project>

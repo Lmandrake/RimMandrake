@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimUtinni: Aftermath Rites</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.rut.aftermath</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>Defs-only companion to `mandrake.rm.aftermath`: the eight `RM_AftermathRuleDef`s from design/Jawa/proposals/plot_mechanisms_wave.md §2.1, each naming a real Ash'karr faction, an existing vanilla `IncidentDef` payload, and a Ninefold god tie. Carries no C#, no engine logic — the engine (trigger evaluation, delay/telegraph scheduling, incidentQueue dispatch) lives in `mandrake.rm.aftermath`; this mod only supplies the campaign-specific rule DATA, per this project's engine/content tier split.</description>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+    <li>
+      <packageId>mandrake.rm.aftermath</packageId>
+      <displayName>RimMandrake: Aftermath</displayName>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+    <li>mandrake.rm.aftermath</li>
+    <li>mandrake.rm.ninefold</li>
+  </loadAfter>
+</ModMetaData>
