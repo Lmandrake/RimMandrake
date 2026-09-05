@@ -115,6 +115,18 @@ PX_PER_CELL = 64          # RimWorld's own texture-to-world ratio for a 1x1 thin
 HUMAN_CELLS = 1.5         # a vanilla humanlike body graphic is drawn at 1.5 cells
 HUMAN_TEX = "Things/Pawn/Humanlike/Bodies/Naked_Male"   # resolved via the ladder
 HUMAN_PKG = "ludeon.rimworld"
+# ── PHYSICAL-size ladder. The scale panel used to size a creature by its drawSize
+#    (cells), but drawSize is an ARTISTIC value — how big the modder draws the map
+#    sprite — and is inflated for small creatures: a bodySize-0.2 swarmling carries
+#    drawSize 1.5, so drawSize-sizing rendered it human-sized. bodySize is a
+#    mass/volume proxy, so linear on-screen cell-size scales as bodySize**SIZE_POWER,
+#    anchored on the human (bodySize HUMAN_BODYSIZE -> HUMAN_CELLS). SIZE_POWER sits
+#    between the physically pure 1/3 (too flat — a thrumbo barely beats a rat) and a
+#    literal linear 1.0 (absurd — a rat vanishes); 0.6 is the tuned middle, and it
+#    is DELIBERATE that huge creatures dominate the row.
+SIZE_POWER = 0.6
+HUMAN_BODYSIZE = 1.0      # the anchor: a bodySize-1.0 creature equals the human
+SPECIAL_FALLBACK_CELLS = 8.0  # a bodySize-less special with no drawSize (SandWorm)
 SCALE_CAP = 1500          # px; a bigger canvas is downscaled and SAYS so
 DETAIL_BOX = 240          # px; the fixed-size art-inspection sprite
 KILL_DAMAGE = 150         # the stated proxy for "damage that kills an unarmoured pawn"
@@ -970,6 +982,20 @@ def _resolve(tex, pkg, idx, bundles):
     return (hit, rung) if hit else (None, "not_found")
 
 
+def _physical_cells(r):
+    """On-screen size in cells from bodySize (a mass/volume proxy), so the ladder
+    reads by TRUE physical size, not the modder's inflated drawSize. Anchored on
+    the human: bodySize HUMAN_BODYSIZE -> HUMAN_CELLS, scaled by bodySize**SIZE_POWER.
+    A creature with no bodySize (a special like the SandWorm) falls back to its
+    honest drawSize, or SPECIAL_FALLBACK_CELLS so it still dominates the row."""
+    bs = r.get("bodySize")
+    if bs is not None and bs > 0:
+        return HUMAN_CELLS * (float(bs) / HUMAN_BODYSIZE) ** SIZE_POWER
+    ds = r.get("drawSize") or [None, None]
+    d = max(ds[0] or 0, ds[1] or 0)
+    return float(d) if d else SPECIAL_FALLBACK_CELLS
+
+
 def render_art(rows, force=False):
     from PIL import Image, ImageDraw
 
@@ -1034,13 +1060,21 @@ def render_art(rows, force=False):
         canvas.convert("RGB").save(base + ".detail.png", optimize=True)
         r["art"]["detail"] = "creature_art/" + os.path.basename(base) + ".detail.png"
 
-        # ── scale: TRUE in-game size, with the human anchor beside it
+        # ── scale: TRUE PHYSICAL size (from bodySize), human anchor beside it.
+        #    See SIZE_POWER above — the box is a SQUARE derived from physical size,
+        #    and _scale_panel contain-fits the sprite into it keeping its aspect.
+        cells = _physical_cells(r)
         cw, ch = r.get("drawSize") or [None, None]
-        if cw and ch:
-            w = max(8, int(round(cw * PX_PER_CELL)))
-            h = max(8, int(round(ch * PX_PER_CELL)))
-            r["art"]["pxPerCell"] = round(max(im.width, im.height) / max(w, h), 3)
-            scale_img = _scale_panel(im, w, h, human, Image, ImageDraw)
+        if cells:
+            box = max(8, int(round(cells * PX_PER_CELL)))
+            # pxPerCell keeps its meaning — art softness at the GAME's own draw
+            # size (drawSize), NOT the physical review size — so the quality
+            # ranking is unchanged. Falls back to the physical box when drawSize
+            # is absent (a bodySize-less special).
+            longest_draw = max(cw or 0, ch or 0)
+            draw_px = max(8.0, (longest_draw or cells) * PX_PER_CELL)
+            r["art"]["pxPerCell"] = round(max(im.width, im.height) / draw_px, 3)
+            scale_img = _scale_panel(im, box, box, human, Image, ImageDraw)
             shown = 100
             if max(scale_img.size) > SCALE_CAP:
                 k = SCALE_CAP / float(max(scale_img.size))
@@ -1110,9 +1144,10 @@ def _human_figure(hh, Image, ImageDraw):
 def _scale_panel(im, w, h, human, Image, ImageDraw):
     """The creature at true screen size, a 1-cell grid behind it, a human beside it.
 
-    The creature is CONTAINED in its drawSize box (w x h px) preserving the
-    source sprite's native aspect ratio -- never stretched to fill, which was
-    squashing wide sprites (127x45 iguana, 105x66 camel) into blobs."""
+    The creature is CONTAINED in its physical-size box (w x h px; see
+    _physical_cells) preserving the source sprite's native aspect ratio -- never
+    stretched to fill, which was squashing wide sprites (127x45 iguana, 105x66
+    camel) into blobs."""
     hh = int(round(HUMAN_CELLS * PX_PER_CELL))
     # contain-fit: uniform scale so the sprite fits the drawSize box, aspect kept
     k = min(w / float(im.width), h / float(im.height))
@@ -1455,9 +1490,16 @@ def _invented():
         "entities the owner named by hand: SandWorm_Thing and RUT_LongHunger. Vehicles "
         "are pawns in this engine and are therefore IN, tagged `vehicle`; say the word "
         "and they come out.",
-        "TRUE SCALE = drawSize × 64 px. RimWorld draws a 1×1 thing at 64 px, and a "
-        "PawnKindDef's last life stage carries the adult drawSize. The creature is drawn "
-        "at exactly that; nothing is fitted to a box.",
+        "PHYSICAL SCALE = 1.5 × bodySize^0.6 cells, at 64 px per cell. NOT drawSize: "
+        "drawSize is an artistic value — how big the modder draws the map sprite — and it "
+        "is inflated for small creatures (a bodySize-0.2 swarmling carries drawSize 1.5, "
+        "which rendered it human-sized). bodySize is a mass/volume proxy, so on-screen "
+        "cell-size scales as bodySize to a fractional power, anchored on the human "
+        "(bodySize 1.0 = 1.5 cells). The 0.6 exponent is a TUNED choice between the "
+        "physically pure 1/3 (too flat — a thrumbo barely beats a rat) and a literal 1.0 "
+        "(absurd — a rat vanishes); it is deliberate that huge creatures dominate the row. "
+        "The sprite is contain-fitted into that square box, aspect preserved. A creature "
+        "with no bodySize (SandWorm, RUT_LongHunger) falls back to its drawSize.",
         "THE HUMAN ANCHOR IS 1.5 CELLS TALL. A vanilla humanlike body graphic is drawn at "
         "1.5×1.5 world units — the same figure the Lancer mech declares. I did not find "
         "this stated anywhere in the defs; it is read across from the mechs and from the "
@@ -1491,8 +1533,9 @@ def _brief(meta, items, groups, n_cut, n_zero, n_miss, n_reserve):
                                                       it.get("hitsNote")))
     return (
         "<p><b>What this is.</b> Every nonhuman creature the campaign's full mod stack "
-        "loads, with its art shown twice: once at <b>true in-game scale</b> "
-        "(drawSize × 64 px, with a human silhouette beside it for anchor) and once "
+        "loads, with its art shown twice: once at <b>true physical scale</b> "
+        "(1.5 × bodySize<sup>0.6</sup> cells × 64 px, with a human silhouette beside it "
+        "for anchor — <b>not</b> the modder's inflated drawSize) and once "
         "zoomed to a fixed size so the art itself can be judged. Decide whether each "
         "sprite is <b>kept</b>, <b>regenerated</b>, <b>regenerated and rescaled</b>, or "
         "whether the <b>creature</b> goes.</p>"
