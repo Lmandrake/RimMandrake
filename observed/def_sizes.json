@@ -7263,10 +7263,6 @@
 1,
 1
 ],
-"B2-HA_Droid_Wrist_Canno_shot": [
-1,
-1
-],
 "BI_Hive": [
 1,
 1
@@ -10275,6 +10271,10 @@
 1,
 1
 ],
+"BaseCamera": [
+1,
+1
+],
 "BaseDedicatedGun": [
 1,
 1
@@ -10300,10 +10300,6 @@
 1
 ],
 "BaseFume": [
-1,
-1
-],
-"BaseGraffiti": [
 1,
 1
 ],
@@ -10420,6 +10416,10 @@
 18
 ],
 "BaseSurvivalTool": [
+1,
+1
+],
+"BaseVisionStuff": [
 1,
 1
 ],
@@ -10928,10 +10928,6 @@
 1
 ],
 "BlueMilk": [
-1,
-1
-],
-"Blue_Blaster_Bolt": [
 1,
 1
 ],
@@ -11512,10 +11508,6 @@
 1
 ],
 "Bullet_AntiMaterialRifle": [
-1,
-1
-],
-"Bullet_ArchotechChargeBlasterHeavy": [
 1,
 1
 ],
@@ -12151,6 +12143,10 @@
 1,
 1
 ],
+"CameraConsole": [
+3,
+2
+],
 "Campfire": [
 1,
 1
@@ -12363,10 +12359,6 @@
 1,
 1
 ],
-"ChunkBullet": [
-1,
-1
-],
 "ChunkGranite": [
 1,
 1
@@ -12520,6 +12512,30 @@
 1
 ],
 "Column_Deadlife_Releasing": [
+1,
+1
+],
+"CombatAI_CCTVTurretIndustrial": [
+1,
+1
+],
+"CombatAI_CCTVTurretSpacer": [
+1,
+1
+],
+"CombatAI_IndoorCCTV": [
+1,
+1
+],
+"CombatAI_IndustrialPoleCCTV": [
+1,
+1
+],
+"CombatAI_SpacerPoleCCTV": [
+1,
+1
+],
+"CombatAI_TribalPoleCCTV": [
 1,
 1
 ],
@@ -14211,10 +14227,6 @@
 1,
 1
 ],
-"ECD_Grenade_Thowable": [
-1,
-1
-],
 "EMIDynamo": [
 6,
 4
@@ -14252,10 +14264,6 @@
 1
 ],
 "ETE_MoteBase": [
-1,
-1
-],
-"EWebShot": [
 1,
 1
 ],
@@ -18411,6 +18419,10 @@
 1,
 1
 ],
+"GR_RaidCommsConsole": [
+3,
+2
+],
 "GR_RandomBooster": [
 1,
 1
@@ -19751,10 +19763,6 @@
 1,
 1
 ],
-"GraffitiMod_Paint": [
-1,
-1
-],
 "GrandArchotechStructure": [
 9,
 9
@@ -20144,10 +20152,6 @@
 1
 ],
 "Gun_AntiArmor_Rocket": [
-1,
-1
-],
-"Gun_ArchotechChargeBlasterHeavyTurret": [
 1,
 1
 ],
@@ -20715,10 +20719,6 @@
 1,
 2
 ],
-"HerculeanBase": [
-1,
-1
-],
 "HermitCrab": [
 1,
 1
@@ -20828,14 +20828,6 @@
 2
 ],
 "HiddenConduit": [
-1,
-1
-],
-"High_Blue_Blaster_Bolt": [
-1,
-1
-],
-"High_Red_Blaster_Bolt": [
 1,
 1
 ],
@@ -21267,6 +21259,30 @@
 1,
 1
 ],
+"InspectorAnimalBase": [
+1,
+1
+],
+"InspectorChicken": [
+1,
+1
+],
+"InspectorHare": [
+1,
+1
+],
+"InspectorMonkey": [
+1,
+1
+],
+"InspectorRat": [
+1,
+1
+],
+"InspectorSquirrel": [
+1,
+1
+],
 "InteractionMoteBase": [
 1,
 1
@@ -21349,6 +21365,10 @@
 ],
 "Isekai_Forge": [
 3,
+1
+],
+"Isekai_GuildDropZone": [
+1,
 1
 ],
 "Isekai_HerosAwakeningScroll": [
@@ -21755,206 +21775,6 @@
 1,
 1
 ],
-"JDSA_AQ_Battle_Blaster": [
-1,
-1
-],
-"JDSA_Amban_Blaster_Rifle": [
-1,
-1
-],
-"JDSA_B2_HA_Wrist_Cannon": [
-1,
-1
-],
-"JDSA_B2_Wrist_Blaster": [
-1,
-1
-],
-"JDSA_DC-15A_Blaster_Rifle": [
-1,
-1
-],
-"JDSA_DC-15S_Blaster_Rifle": [
-1,
-1
-],
-"JDSA_DC-15x_Sniper_Rifle": [
-1,
-1
-],
-"JDSA_DC-17M_Blaster_Rifle": [
-1,
-1
-],
-"JDSA_DC-17S_Blaster_Pistol": [
-1,
-1
-],
-"JDSA_DC-17_Blaster_Pistol": [
-1,
-1
-],
-"JDSA_DSD1_Dwarf_Spider_Blaster": [
-1,
-1
-],
-"JDSA_Droideka_Long_Blaster": [
-1,
-1
-],
-"JDSA_Droidekas_Blaster": [
-1,
-1
-],
-"JDSA_E-5C_Blaster_Rifle": [
-1,
-1
-],
-"JDSA_E-5S_Sniper_Rifle": [
-1,
-1
-],
-"JDSA_E-5_Blaster_Rifle": [
-1,
-1
-],
-"JDSA_E-60R_Missile_Launcher": [
-1,
-1
-],
-"JDSA_E-60R_Missile_shot": [
-1,
-1
-],
-"JDSA_ECD_Grenade": [
-1,
-1
-],
-"JDSA_EE-3_Carbine_Rifle": [
-1,
-1
-],
-"JDSA_Electrostaff": [
-1,
-1
-],
-"JDSA_LR-57_Combat_Blaster": [
-1,
-1
-],
-"JDSA_M-56_Heavy_Blaster_Cannon": [
-1,
-1
-],
-"JDSA_SE-14_Light_Blaster_Pistol": [
-1,
-1
-],
-"JDSA_Thermal_Detonator": [
-1,
-1
-],
-"JDSA_Vibroaxe": [
-1,
-1
-],
-"JDSA_Vibroblade": [
-1,
-1
-],
-"JDSA_Vibrosword": [
-1,
-1
-],
-"JDSA_Westar-33_Blaster_Pistol": [
-1,
-1
-],
-"JDSA_Westar-34_Blaster_Pistol": [
-1,
-1
-],
-"JDSA_Westar-35_Blaster_Pistol": [
-1,
-1
-],
-"JDSA_Westar-44_Heavy_Blaster_Pistol": [
-1,
-1
-],
-"JDSA_Westar-M5_Blaster_Rifle": [
-1,
-1
-],
-"JDSA_Z6_Rotary_Blaster_Cannon": [
-1,
-1
-],
-"JDSCIS_AQ_Battle_Droid": [
-1,
-1
-],
-"JDSCIS_B1_Battle_Droid": [
-1,
-1
-],
-"JDSCIS_B1_Commander_Droid": [
-1,
-1
-],
-"JDSCIS_B1_Security_Droid": [
-1,
-1
-],
-"JDSCIS_B2_HA_Super_Battle_Droid": [
-1,
-1
-],
-"JDSCIS_B2_Super_Battle_Droid": [
-1,
-1
-],
-"JDSCIS_BX_Commando_Droid": [
-1,
-1
-],
-"JDSCIS_DSD1_Dwarf_Spider_Droid": [
-1,
-1
-],
-"JDSCIS_Demolition_Droid": [
-1,
-1
-],
-"JDSCIS_Droideka_Droid": [
-1,
-1
-],
-"JDSCIS_Droideka_Sharpshooter_Droid": [
-1,
-1
-],
-"JDSCIS_IG-100_MagnaGuards": [
-1,
-1
-],
-"JDSCIS_LR-57_Combat_Droid": [
-1,
-1
-],
-"JDSCIS_Pistoeka_Sotage_Droid": [
-1,
-1
-],
-"JDSCIS_ST_Super_Tactical_Droid": [
-1,
-1
-],
-"JDSCIS_T1_Tactical_Droid": [
-1,
-1
-],
 "JDSSWA_MeleeBluntBase": [
 1,
 1
@@ -21965,14 +21785,6 @@
 ],
 "JDSSWA_WeaponBase": [
 1,
-1
-],
-"JDSSWCIS_Droids": [
-1,
-1
-],
-"JDS_Blastech_Workbench": [
-3,
 1
 ],
 "JDS_Blaster_Worbench": [
@@ -22536,14 +22348,6 @@
 1
 ],
 "Jamel": [
-1,
-1
-],
-"JawaIon_Blaster": [
-1,
-1
-],
-"JawaIon_Bullet": [
 1,
 1
 ],
@@ -24248,14 +24052,6 @@
 1
 ],
 "LowTechCrateBase": [
-1,
-1
-],
-"Low_Blue_Blaster_Bolt": [
-1,
-1
-],
-"Low_Red_Blaster_Bolt": [
 1,
 1
 ],
@@ -26107,14 +25903,6 @@
 1,
 1
 ],
-"Mid_Blue_Blaster_Bolt": [
-1,
-1
-],
-"Mid_Red_Blaster_Bolt": [
-1,
-1
-],
 "Milk": [
 1,
 1
@@ -26292,6 +26080,10 @@
 1
 ],
 "MoteLaunchedTurret": [
+1,
+1
+],
+"MoteSoundWaveBase": [
 1,
 1
 ],
@@ -26491,10 +26283,6 @@
 1,
 1
 ],
-"Mote_CriticalHit": [
-1,
-1
-],
 "Mote_Danger": [
 1,
 1
@@ -26512,14 +26300,6 @@
 1
 ],
 "Mote_DuelCircle": [
-1,
-1
-],
-"Mote_EarthshatterCloud": [
-1,
-1
-],
-"Mote_EarthshatterCrack": [
 1,
 1
 ],
@@ -26680,10 +26460,6 @@
 1
 ],
 "Mote_ItchyOil": [
-1,
-1
-],
-"Mote_LactateGene": [
 1,
 1
 ],
@@ -27027,6 +26803,10 @@
 1,
 1
 ],
+"Mote_SoundWave": [
+1,
+1
+],
 "Mote_Sow": [
 1,
 1
@@ -27084,18 +26864,6 @@
 1
 ],
 "Mote_TempRoof": [
-1,
-1
-],
-"Mote_TerrifiedGlow": [
-1,
-1
-],
-"Mote_TerrifiedRing": [
-1,
-1
-],
-"Mote_Terror": [
 1,
 1
 ],
@@ -27476,114 +27244,6 @@
 1
 ],
 "Ollopom": [
-1,
-1
-],
-"Onimods_ColoredElectricBrazier": [
-1,
-1
-],
-"Onimods_ColoredElectricDarklightBrazier": [
-1,
-1
-],
-"Onimods_ColoredElectricDarktorch": [
-1,
-1
-],
-"Onimods_ColoredElectricDarktorchFungus": [
-1,
-1
-],
-"Onimods_ColoredElectricTorchLamp": [
-1,
-1
-],
-"Onimods_ColoredElectricTorchWallLamp": [
-1,
-1
-],
-"Onimods_ElectricBrazier": [
-1,
-1
-],
-"Onimods_ElectricDarklightBrazier": [
-1,
-1
-],
-"Onimods_ElectricDarktorch": [
-1,
-1
-],
-"Onimods_ElectricDarktorchFungus": [
-1,
-1
-],
-"Onimods_ElectricTorchBase": [
-1,
-1
-],
-"Onimods_ElectricTorchLamp": [
-1,
-1
-],
-"Onimods_ElectricTorchWallLamp": [
-1,
-1
-],
-"Onimods_ElectricTorches_Colored_DA_BloodflameSepulchralBrazier": [
-1,
-1
-],
-"Onimods_ElectricTorches_Colored_DA_BloodflameSepulchralStatue": [
-1,
-1
-],
-"Onimods_ElectricTorches_Colored_DA_DarklightSepulchralBrazier": [
-1,
-1
-],
-"Onimods_ElectricTorches_Colored_DA_DarkligtSepulchralStatue": [
-1,
-1
-],
-"Onimods_ElectricTorches_Colored_DA_SepulchralBrazier": [
-1,
-1
-],
-"Onimods_ElectricTorches_Colored_DA_SepulchralStatue": [
-1,
-1
-],
-"Onimods_ElectricTorches_DA_BloodflameSepulchralBrazier": [
-1,
-1
-],
-"Onimods_ElectricTorches_DA_BloodflameSepulchralStatue": [
-1,
-1
-],
-"Onimods_ElectricTorches_DA_DarklightSepulchralBrazier": [
-1,
-1
-],
-"Onimods_ElectricTorches_DA_DarkligtSepulchralStatue": [
-1,
-1
-],
-"Onimods_ElectricTorches_DA_SepulchralBrazier": [
-1,
-1
-],
-"Onimods_ElectricTorches_DA_SepulchralBrazierBase": [
-1,
-1
-],
-"Onimods_ElectricTorches_DA_SepulchralStatue": [
-1,
-1
-],
-"Onimods_ElectricTorches_SepulchralStatueBase": [
 1,
 1
 ],
@@ -31523,34 +31183,6 @@
 1,
 1
 ],
-"Proj_Chunk_Default": [
-1,
-1
-],
-"Proj_Chunk_Granite": [
-1,
-1
-],
-"Proj_Chunk_Limestone": [
-1,
-1
-],
-"Proj_Chunk_Marble": [
-1,
-1
-],
-"Proj_Chunk_Sandstone": [
-1,
-1
-],
-"Proj_Chunk_Slate": [
-1,
-1
-],
-"Proj_Chunk_Steel": [
-1,
-1
-],
 "Proj_CorrosiveFluid": [
 1,
 1
@@ -31592,14 +31224,6 @@
 1
 ],
 "Proj_GrenadierGrenade": [
-1,
-1
-],
-"Proj_ObsidianArrow": [
-1,
-1
-],
-"Proj_ObsidianBullet": [
 1,
 1
 ],
@@ -32036,50 +31660,6 @@
 1
 ],
 "Quinkana": [
-1,
-1
-],
-"RBME_EpsilonAxe": [
-1,
-1
-],
-"RBM_Bullslinger": [
-1,
-1
-],
-"RBM_Damocles": [
-1,
-1
-],
-"RBM_FilthGold": [
-1,
-1
-],
-"RBM_Labrys": [
-1,
-1
-],
-"RBM_Midaspear": [
-1,
-1
-],
-"RBM_MilkingMachine": [
-1,
-1
-],
-"RBM_MinotaurCrib": [
-1,
-1
-],
-"RBM_Oxenammer": [
-1,
-1
-],
-"RBM_TaurailGun": [
-1,
-1
-],
-"RBM_Tunbell": [
 1,
 1
 ],
@@ -32735,17 +32315,29 @@
 2,
 1
 ],
-"RN2SWGun_EWebMounted_GPMG": [
+"RM_BaseGraffiti": [
 1,
 1
 ],
-"RN2SWGun_EWeb_MG": [
-2,
-2
-],
-"RNBaseArtilleryWeapon": [
+"RM_Graffiti_Vandal": [
 1,
 1
+],
+"RM_SacredMark_Ishko": [
+1,
+1
+],
+"RM_WM_AutomatedSmelter_Kludged": [
+3,
+4
+],
+"RM_WM_AutomatedSmelter_Repaired": [
+3,
+4
+],
+"RM_WM_AutomatedSmelter_Wrecked": [
+3,
+4
 ],
 "RNBaseWeaponTurret": [
 1,
@@ -32971,6 +32563,390 @@
 1,
 1
 ],
+"RSW_AbyssalColo": [
+1,
+1
+],
+"RSW_B2-HA_Droid_Wrist_Canno_shot": [
+1,
+1
+],
+"RSW_Blue_Blaster_Bolt": [
+1,
+1
+],
+"RSW_Bullet_ArchotechChargeBlasterHeavy": [
+1,
+1
+],
+"RSW_Bullet_Sonic_HivePulse": [
+1,
+1
+],
+"RSW_ColoClawFish": [
+1,
+1
+],
+"RSW_CrimsonOpee": [
+1,
+1
+],
+"RSW_ECD_Grenade_Thowable": [
+1,
+1
+],
+"RSW_EWebShot": [
+1,
+1
+],
+"RSW_ElderSando": [
+1,
+1
+],
+"RSW_FE_Bullet_FirefoamSplash": [
+1,
+1
+],
+"RSW_FE_Filth_LooseAsh": [
+1,
+1
+],
+"RSW_FE_FirefoamSprayer": [
+1,
+1
+],
+"RSW_FE_Fulgurite": [
+1,
+1
+],
+"RSW_FE_Plant_ScorchFruit": [
+1,
+1
+],
+"RSW_FE_ScorchFruitYield": [
+1,
+1
+],
+"RSW_Faa": [
+1,
+1
+],
+"RSW_GandMask": [
+1,
+1
+],
+"RSW_Gun_ArchotechChargeBlasterHeavyTurret": [
+1,
+1
+],
+"RSW_Gun_Sonic_HiveEmitter": [
+1,
+1
+],
+"RSW_High_Blue_Blaster_Bolt": [
+1,
+1
+],
+"RSW_High_Red_Blaster_Bolt": [
+1,
+1
+],
+"RSW_JDSA_AQ_Battle_Blaster": [
+1,
+1
+],
+"RSW_JDSA_Amban_Blaster_Rifle": [
+1,
+1
+],
+"RSW_JDSA_B2_HA_Wrist_Cannon": [
+1,
+1
+],
+"RSW_JDSA_B2_Wrist_Blaster": [
+1,
+1
+],
+"RSW_JDSA_DC-15A_Blaster_Rifle": [
+1,
+1
+],
+"RSW_JDSA_DC-15S_Blaster_Rifle": [
+1,
+1
+],
+"RSW_JDSA_DC-15x_Sniper_Rifle": [
+1,
+1
+],
+"RSW_JDSA_DC-17M_Blaster_Rifle": [
+1,
+1
+],
+"RSW_JDSA_DC-17S_Blaster_Pistol": [
+1,
+1
+],
+"RSW_JDSA_DC-17_Blaster_Pistol": [
+1,
+1
+],
+"RSW_JDSA_DSD1_Dwarf_Spider_Blaster": [
+1,
+1
+],
+"RSW_JDSA_Droideka_Long_Blaster": [
+1,
+1
+],
+"RSW_JDSA_Droidekas_Blaster": [
+1,
+1
+],
+"RSW_JDSA_E-5C_Blaster_Rifle": [
+1,
+1
+],
+"RSW_JDSA_E-5S_Sniper_Rifle": [
+1,
+1
+],
+"RSW_JDSA_E-5_Blaster_Rifle": [
+1,
+1
+],
+"RSW_JDSA_E-60R_Missile_Launcher": [
+1,
+1
+],
+"RSW_JDSA_E-60R_Missile_shot": [
+1,
+1
+],
+"RSW_JDSA_ECD_Grenade": [
+1,
+1
+],
+"RSW_JDSA_EE-3_Carbine_Rifle": [
+1,
+1
+],
+"RSW_JDSA_Electrostaff": [
+1,
+1
+],
+"RSW_JDSA_LR-57_Combat_Blaster": [
+1,
+1
+],
+"RSW_JDSA_M-56_Heavy_Blaster_Cannon": [
+1,
+1
+],
+"RSW_JDSA_SE-14_Light_Blaster_Pistol": [
+1,
+1
+],
+"RSW_JDSA_Thermal_Detonator": [
+1,
+1
+],
+"RSW_JDSA_Vibroaxe": [
+1,
+1
+],
+"RSW_JDSA_Vibroblade": [
+1,
+1
+],
+"RSW_JDSA_Vibrosword": [
+1,
+1
+],
+"RSW_JDSA_Westar-33_Blaster_Pistol": [
+1,
+1
+],
+"RSW_JDSA_Westar-34_Blaster_Pistol": [
+1,
+1
+],
+"RSW_JDSA_Westar-35_Blaster_Pistol": [
+1,
+1
+],
+"RSW_JDSA_Westar-44_Heavy_Blaster_Pistol": [
+1,
+1
+],
+"RSW_JDSA_Westar-M5_Blaster_Rifle": [
+1,
+1
+],
+"RSW_JDSA_Z6_Rotary_Blaster_Cannon": [
+1,
+1
+],
+"RSW_JDS_Blastech_Workbench": [
+3,
+1
+],
+"RSW_JawaIon_Blaster": [
+1,
+1
+],
+"RSW_JawaIon_Bullet": [
+1,
+1
+],
+"RSW_KaleeshMask": [
+1,
+1
+],
+"RSW_KelDorMask": [
+1,
+1
+],
+"RSW_Laa": [
+1,
+1
+],
+"RSW_Lanternwhale": [
+1,
+1
+],
+"RSW_Low_Blue_Blaster_Bolt": [
+1,
+1
+],
+"RSW_Low_Red_Blaster_Bolt": [
+1,
+1
+],
+"RSW_Mee": [
+1,
+1
+],
+"RSW_Mid_Blue_Blaster_Bolt": [
+1,
+1
+],
+"RSW_Mid_Red_Blaster_Bolt": [
+1,
+1
+],
+"RSW_OpeeSeaKiller": [
+1,
+1
+],
+"RSW_RN2SWGun_EWebMounted_GPMG": [
+1,
+1
+],
+"RSW_RN2SWGun_EWeb_MG": [
+2,
+2
+],
+"RSW_Red_Blaster_Bolt": [
+1,
+1
+],
+"RSW_Reefback": [
+1,
+1
+],
+"RSW_RustNipper": [
+1,
+1
+],
+"RSW_SandoAquaMonster": [
+1,
+1
+],
+"RSW_ShaleGorger": [
+1,
+1
+],
+"RSW_SiltLamprey": [
+1,
+1
+],
+"RSW_Sonic_Cannon": [
+1,
+1
+],
+"RSW_Sonic_HiveEmitter": [
+1,
+1
+],
+"RSW_Starmaw": [
+1,
+1
+],
+"RSW_StormSando": [
+1,
+1
+],
+"RSW_Thermal_Detonator_Thowable": [
+1,
+1
+],
+"RSW_ThornbackColo": [
+1,
+1
+],
+"RSW_Turret_AutoChargeBlaster_OP": [
+1,
+1
+],
+"RSW_Yellow_Bullet_Laser": [
+1,
+1
+],
+"RSW_Yobshrimp": [
+1,
+1
+],
+"RSW_filth_ink": [
+1,
+1
+],
+"RSW_throwngrenade_ink": [
+1,
+1
+],
+"RUT_AntiquityBase": [
+1,
+1
+],
+"RUT_AntiquityCipherBench": [
+1,
+1
+],
+"RUT_AntiquityReadingStation": [
+1,
+1
+],
+"RUT_Antiquity_Gravegood": [
+1,
+1
+],
+"RUT_Antiquity_Stele": [
+1,
+1
+],
+"RUT_Antiquity_Urn": [
+1,
+1
+],
+"RUT_DemoEggJawa": [
+1,
+1
+],
+"RUT_ShipMemory_Containment": [
+1,
+1
+],
 "Rabbuck": [
 1,
 1
@@ -33148,10 +33124,6 @@
 1
 ],
 "RedBolt": [
-1,
-1
-],
-"Red_Blaster_Bolt": [
 1,
 1
 ],
@@ -33369,26 +33341,6 @@
 ],
 "RimFridge_WallRefrigerator": [
 2,
-1
-],
-"RimMandrake_GandMask": [
-1,
-1
-],
-"RimMandrake_KaleeshMask": [
-1,
-1
-],
-"RimMandrake_KelDorMask": [
-1,
-1
-],
-"RimMandrake_filth_ink": [
-1,
-1
-],
-"RimMandrake_throwngrenade_ink": [
-1,
 1
 ],
 "RimefellerPipeBase": [
@@ -33683,23 +33635,11 @@
 1,
 1
 ],
-"SWBaseLight": [
-1,
-1
-],
 "SWCP_FuelTankDamageReducerBASE": [
 1,
 1
 ],
 "SWCP_VATS_Zoomer": [
-1,
-1
-],
-"SWLightA": [
-1,
-1
-],
-"SWLightB": [
 1,
 1
 ],
@@ -34036,6 +33976,14 @@
 1
 ],
 "Seat_SquareChair": [
+1,
+1
+],
+"SecurityBell": [
+1,
+1
+],
+"SecurityBellSmall": [
 1,
 1
 ],
@@ -35647,6 +35595,34 @@
 1,
 1
 ],
+"SurveillanceCamera_Bush": [
+1,
+1
+],
+"SurveillanceCamera_DeadBush": [
+1,
+1
+],
+"SurveillanceCamera_Ground": [
+1,
+1
+],
+"SurveillanceCamera_High": [
+1,
+1
+],
+"SurveillanceCamera_Mounted": [
+1,
+1
+],
+"SurveillanceCamera_Solar": [
+1,
+1
+],
+"SurveillanceCamera_UnderRoof": [
+1,
+1
+],
 "SurveyScanner": [
 3,
 3
@@ -35748,14 +35724,6 @@
 1
 ],
 "SurvivalTools_Wrench": [
-1,
-1
-],
-"SwLightA": [
-1,
-1
-],
-"SwLightB": [
 1,
 1
 ],
@@ -36083,10 +36051,6 @@
 1,
 1
 ],
-"Thermal_Detonator_Thowable": [
-1,
-1
-],
 "Thermostat": [
 1,
 1
@@ -36176,10 +36140,6 @@
 1
 ],
 "Tiger": [
-1,
-1
-],
-"Titan": [
 1,
 1
 ],
@@ -36314,6 +36274,10 @@
 "TourmalineBase": [
 1,
 1
+],
+"TowerLightBeacon": [
+2,
+2
 ],
 "Toxalope": [
 1,
@@ -36550,10 +36514,6 @@
 "Turret_AutoChargeBlaster": [
 2,
 2
-],
-"Turret_AutoChargeBlaster_OP": [
-1,
-1
 ],
 "Turret_AutoInferno": [
 2,
@@ -49891,6 +49851,10 @@
 1,
 1
 ],
+"VRF_HoverVehicleDummyProjectile": [
+1,
+1
+],
 "VTE_TradingTerminal": [
 3,
 2
@@ -51171,6 +51135,18 @@
 3,
 2
 ],
+"WatchTelescope": [
+1,
+2
+],
+"WatchTower": [
+2,
+2
+],
+"WatchTowerRoofed": [
+2,
+2
+],
 "WaterBirdThingBase": [
 1,
 1
@@ -51536,10 +51512,6 @@
 1
 ],
 "Yayo": [
-1,
-1
-],
-"Yellow_Bullet_Laser": [
 1,
 1
 ],
@@ -53423,6 +53395,22 @@
 1,
 1
 ],
+"guy762_SWGravshipOverlayBASE": [
+1,
+1
+],
+"guy762_SWGravshipOverlay_DynamicFreighter": [
+1,
+1
+],
+"guy762_SWGravshipOverlay_KT400Freighter": [
+1,
+1
+],
+"guy762_SWGravshipPilotConsole_YT1300transport": [
+2,
+1
+],
 "guy762_SecretFloorPanel_BASE": [
 1,
 1
@@ -53828,14 +53816,6 @@
 1
 ],
 "guy762_brifle_plasma": [
-1,
-1
-],
-"guy762_brifle_rohlan": [
-1,
-1
-],
-"guy762_brifle_sith": [
 1,
 1
 ],
