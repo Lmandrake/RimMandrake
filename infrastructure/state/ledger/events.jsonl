@@ -5140,3 +5140,4 @@
 {"seat":"FOUNDRY","event":"claim","id":"MACRO_GENERATOR_V0_1","ts":"2026-09-06T20:09:04Z"}
 {"seat":"FOUNDRY","event":"start","id":"MACRO_GENERATOR_V0_1","ts":"2026-09-06T20:09:05Z"}
 {"seat":"BENCH","event":"close","id":"NIGHTSIDE_BLUE_DESERT_1","sha":"4d8f4d7999a3a1c98bebb3f17f85720c57ba6d92","ts":"2026-09-06T20:11:55Z"}
+{"seat":"FOUNDRY","event":"file","id":"STRUCTUREINJ_RUT_TEMPLATE_DEFECTS_1","title":"StructureInjectionsRUT: toll_gap.txt bakes rot=4 (invalid Rot4); glass_sea.txt is unreferenced dead content — regenerate from Lua","kind":"bug","target":"v1","needs":"offline","spec":"infrastructure/state/items/STRUCTUREINJ_RUT_TEMPLATE_DEFECTS_1.md","for":"FOUNDRY","ts":"2026-09-06T20:21:01Z"}

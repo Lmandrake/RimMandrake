@@ -4023,6 +4023,12 @@
     "hash": "77aaef5ef16d077f5d5fac3c441f829890d1ac7ca2cc98d4add51a74ea00c9b8",
     "sha": "85401ce7"
   },
+  "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorweapons/ShowMeYourHands/Absorbed_Kotorweapons_ShowMeYourHands_handmodpositioning.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "d168b18d64b3c8a7756d49bde3ad38021367c2eba0587b3efdb882250dd3a45f",
+    "sha": "e67f2cc0"
+  },
   "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorweapons/ShowMeYourHands/Absorbed_Kotorweapons_ShowMeYourHands_handmodpositioning_LightsaberMod.xml": {
     "cleanCount": 2,
     "date": "2026-09-06",
@@ -4707,6 +4713,12 @@
     "hash": "2477b7fc1eef5f95d53f6701780337ec1689f7916611785956a37574b79a2431",
     "sha": "85401ce7"
   },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ModularPartDefs/Absorbed_KotorWeapons_ModularPartDefs_HelmetArmorTech.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "2ec5e20bb79208ec7858089852a3ee62350fcfa639642b0c281b44de3a0d61eb",
+    "sha": "e67f2cc0"
+  },
   "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ModularPartDefs/Absorbed_KotorWeapons_ModularPartDefs_JetpackMissile.xml": {
     "cleanCount": 2,
     "date": "2026-09-06",
@@ -5320,10 +5332,10 @@
     "sha": "ef81a0b7"
   },
   "src/RimStarWars/Armoury/Patches/Armour_Leather.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "hash": "dfb0007af9845b8c8317bcacad4570099aaa21337398083d1275dd1dab6475d0",
-    "sha": "1cb620ea"
+    "cleanCount": 2,
+    "date": "2026-09-06",
+    "hash": "1115d1a520c09dc0c859139259db5efb10b4174bb3276ecc451f98d44f8f06ab",
+    "sha": "e67f2cc0"
   },
   "src/RimStarWars/Armoury/Patches/Armour_Penetration.xml": {
     "cleanCount": 1,
@@ -7785,11 +7797,125 @@
     "hash": "09ae8ecfad05ea0fa0d3547d0ee516d4445888b5db1bba5f15bc53291e885aa6",
     "sha": "46cdec42"
   },
-  "src/RimUtinni/StructureInjectionsRUT/Defs/GenStepDefs_Batch4.xml": {
+  "src/RimUtinni/StructureInjectionsRUT/About/About.xml": {
     "cleanCount": 1,
-    "date": "2026-09-04",
+    "date": "2026-09-06",
+    "hash": "5370f44be7472ea044fc3cf2f36fd3bd39bbe82fcc853bc7d29b4bbebba59af7",
+    "sha": "e67f2cc0"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Defs/GenStepDefs_Batch3.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "caa6cf5d5052bbcd9ae82fedc2907c919d840ca0eaffe70100ea376f73607475",
+    "sha": "e67f2cc0"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Defs/GenStepDefs_Batch4.xml": {
+    "cleanCount": 2,
+    "date": "2026-09-06",
     "hash": "6121e63b46243c8395d898e9ec83e7a5346990e59cda754ca2c55ed507a78ae4",
-    "sha": "71cceeb1"
+    "sha": "e67f2cc0"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Defs/GenStepDefs_Batch5.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "c4c051f12335a14ac0ccd6eca291bc51477d2812b7d32620ead2f178e59b5ea5",
+    "sha": "e67f2cc0"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Defs/GenStepDefs_Batch6.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "76467038c2ae68ff01e66f55b1c94f30851efd970cfc4acb7af560be4ee039b7",
+    "sha": "e67f2cc0"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Defs/GenStepDefs_Homestead.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "d4a952ef3e1bf94e14137c20554c2c741f590704c373afdd6a7fc06d11a10cf3",
+    "sha": "e67f2cc0"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Defs/TileMutatorDefs_Batch3.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "7c2886d3753aec718f54b9632d814d4e1de593aa64c9fd905d47d56d11df4771",
+    "sha": "e67f2cc0"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Defs/TileMutatorDefs_Batch5.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "7250aa9c04cebc27820a800ba416d1b36767e4751c555dbda14b1ab6f75df725",
+    "sha": "e67f2cc0"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Defs/TileMutatorDefs_Batch6.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "07d146a1c81876c200b8ce1650f4784b203a71e6a88f3bbb0339f4e9d0340e02",
+    "sha": "e67f2cc0"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Defs/TileMutatorDefs_Homestead.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "70084841834e5ef73b642bca4dd9d556786d095b315f31cf99963ad23af1cc0a",
+    "sha": "e67f2cc0"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Templates/broken_ring.txt": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "b41ec2303d3cdba8f32cd1e99519c70d8de569510884dae13335394fd6eaa312",
+    "sha": "e67f2cc0"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Templates/cistern.txt": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "635ed07b21112aa037d7c8c29abac97cfe6ab3455e51acdbc8f32b2d0c5b69fa",
+    "sha": "e67f2cc0"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Templates/dead_beacon.txt": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "77b1a2fc5c975ce3440c5d48b86668cfeb56bd852134c7b3f1e804379f4f3ae6",
+    "sha": "e67f2cc0"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Templates/homestead.txt": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "887a5a0bd4559a5c91bb71d9ad55573ef9d199d4f1e7250ad2972af82b63e3b5",
+    "sha": "e67f2cc0"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Templates/homestead_abode.txt": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "5f34e16708093a92191e99ac516e08c3bcf5eec47deb438a46b9cae536a5e0c4",
+    "sha": "e67f2cc0"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Templates/homestead_compound.txt": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "038b73a6c850d47cd473fbe23eb7c3f905350d546550cc5fbbb2201152554746",
+    "sha": "e67f2cc0"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Templates/imperial_waystation.txt": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "278bcdab07801741193567e3fde9a14a2451b0470b0f41b7445bb17370c0b0f3",
+    "sha": "e67f2cc0"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Templates/monument.txt": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "494ced40112455375372a2db2a0597339db4d06c3db76110866440c493a66a61",
+    "sha": "e67f2cc0"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Templates/oasis_shrine.txt": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "2292889a93d845f4d3e2d85f4909570abc0c00e8d8180b083eb2344cb12c04e3",
+    "sha": "e67f2cc0"
+  },
+  "src/RimUtinni/StructureInjectionsRUT/Templates/rakatan_trace.txt": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "b91dee8c79f7f8dcec2404972e72a9199ed65c25a8a4bbdc30288a4b98cdbcfa",
+    "sha": "e67f2cc0"
   },
   "src/RimUtinni/UtinniPatches/About/About.xml": {
     "cleanCount": 1,
@@ -8187,10 +8313,64 @@
     "hash": "783cbc1c1638f6d9d4969e6e0c1d6ba2a674c4376669fbc658e4392374bb2fc3",
     "sha": "8994703f"
   },
+  "src/RimUtinni/VaultDungeons/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "eb2034eb71cb62e57e3ad1ff3c3f123887b44e4fdcf4fd86fcf1ce96c6ef5f06",
+    "sha": "e67f2cc0"
+  },
+  "src/RimUtinni/VaultDungeons/Defs/HistoryEventDefs_Vaults.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "ee7d6c25887ee1bb252f913f2633a08db169d53871536387db7503818b141457",
+    "sha": "e67f2cc0"
+  },
+  "src/RimUtinni/VaultDungeons/Defs/IncidentDefs_Vaults.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "ea29468cc6e966dcde5f12c29d15232274854cc52bb2091344435d74cd243a51",
+    "sha": "e67f2cc0"
+  },
+  "src/RimUtinni/VaultDungeons/Defs/QuestScriptDefs/RUT_VaultThaw.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "70ab5adc16a03521d3779796be21df13dd580a310644d0c733d450904a921876",
+    "sha": "e67f2cc0"
+  },
+  "src/RimUtinni/VaultDungeons/Defs/SitePartDefs_Vaults.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "b1997b9fd744bb5cba8de8807b8cec480e301db47861479a5a6e72d613a8cfd2",
+    "sha": "e67f2cc0"
+  },
+  "src/RimUtinni/VaultDungeons/Defs/StructureLayoutDefs_Vaults.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "a315712b1a22b29b33a2ced9af46cbf9d9c43490089727a42948a271af0ec874",
+    "sha": "e67f2cc0"
+  },
+  "src/RimUtinni/VaultDungeons/Defs/SymbolDefs_Vaults.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "0f02baa108f8e71977c0f2dc1c25a08f880796964aff5f5df1dfb7518f953057",
+    "sha": "e67f2cc0"
+  },
+  "src/RimUtinni/VaultDungeons/Defs/ThingDefs_Buildings/RUT_VaultHeart.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "917dd8a90afc6d8c5d664cff81c4b6a745da0a40cae2668c31066573d7afef47",
+    "sha": "e67f2cc0"
+  },
   "src/RimUtinni/VaultDungeons/Source/gen_vault_layouts.py": {
-    "cleanCount": 2,
-    "date": "2026-09-05",
-    "hash": "c55530ab9e32964b23567c846c4828ad4028340fe4dd3901d12b01d74744159e",
-    "sha": "3287ca65"
+    "cleanCount": 3,
+    "date": "2026-09-06",
+    "hash": "1194ef6ef69df9180017366dd0ef41a3c33c46681335e2646056831d92b3382e",
+    "sha": "e67f2cc0"
+  },
+  "src/RimUtinni/VaultDungeons/Source/gen_vault_quests.py": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "c7617be6fc804370136ca8f278ea2469950416ae314e8e19f1101b1c8fc5a629",
+    "sha": "e67f2cc0"
   }
 }
