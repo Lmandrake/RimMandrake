@@ -1,4 +1,8 @@
 <!-- status: DRAFT PROPOSAL for owner review — brainstorm sitting 2026-08-31, not ruled. -->
+> 🔑 **2026-09-06:** the biome itself is now defined in
+> `design/Jawa/worldbuilding/biomes/the_propane_lakes.md`, which HOUSES the six v1 rows
+> ruled below and adds the aurora physics, the terramanufacture history and the war lab.
+> Where the two disagree, the sheet is the successor.
 # Propane and gas, deep design — a fuel field the size of a sea, and the danger IS the fuel
 
 Canon anchor: `design/Jawa/worldbuilding/hydrology_and_fire_ecology.md` R-H6b

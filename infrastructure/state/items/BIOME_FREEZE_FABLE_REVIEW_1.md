@@ -10,7 +10,7 @@ detail and resist changing what has been decided as much as possible."*
 Every biome sheet finished. Done: poison_forest, dune_sea, terminator_sea, nightside_ice,
 fall_line (injection), deep_desert, desert, arid_shrubland, wasteland, forsaken_crags,
 the_rot, the_slime, the_contagion, the_blue_desert, assailant_weapon_remnants (not a
-biome). In progress: the propane lakes. Still undefined (openers prep, MEASURED tiles):
+biome). the_propane_lakes (2026-09-06). Still undefined (openers prep, MEASURED tiles):
 BMT_CrystalCaverns 578, BMT_FungalForest 425, ZBiome_Badlands 1,086, ZBiome_DesertOasis
 236, AB_MechanoidIntrusion 236, ZBiome_Grasslands 227, BiomeCypreJungle 191,
 AB_FeraliskInfestedJungle 172, AB_MiasmicMangrove 92, Scarlands 90, AB_TarPits 62,

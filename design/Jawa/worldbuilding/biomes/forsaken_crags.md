@@ -53,6 +53,11 @@ with this place; the wind arrives only as sudden violence and leaves as sudden s
 
 ### The Dark, and how it vanishes (owner-ratified mechanism)
 
+🔑 **Where the Dark is made (owner-ratified cross-flow, 2026-09-06, `the_propane_lakes.md`
+§3):** the antistellar aurora — the magnetosphere reconnecting over Umbra — runs particle
+chemistry through a hydrocarbon atmosphere and manufactures the tholins. The Dark is
+aurora-ash, blown from the pole toward the terminator and combed out here.
+
 Two families of particle, both real references:
 
 - **Cold variants — tholin rime.** Fractal organic aggregates (Titan-haze chemistry:
@@ -236,6 +241,8 @@ These rumors are merely whispered, to ensure they do not come to pass.
 
 ## Owed
 
+- **The Frostling joins this roster** (owner, 2026-09-06: moved back from the propane
+  lakes) — the Nightling's polar cousin; admission at the sitting.
 - **Lightfall landmark authoring** — `LIGHTFALL_CHASM_AUTHORING_1`, bridge work at the
   next game-up window (site ruled in §3; nothing further needed from the owner to start).
 - **Dusk rat art redo** → NEW-ART ledger (rat-analog, behavior-named, anything but a rat —

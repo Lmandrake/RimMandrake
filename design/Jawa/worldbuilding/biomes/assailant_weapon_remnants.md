@@ -30,6 +30,11 @@ The two failure modes are the grammar's own logic (one anomaly, two regimes):
   the weapon into **biological overdrive** — frenzy, mutation, infection of other
   lineages, burning itself out. Yet-another-failed-weapon-biology.
 
+🔑 **Mutual learning, mutual destruction** (owner, 2026-09-06, `the_propane_lakes.md` §3):
+every interaction with the Assailants taught them to adapt and evolve to become more
+efficient at destroying their studiers. The war lab beneath the propane lake — built to
+study the weapon after it was already loose — is where that lesson was learned last.
+
 ## 🔴 Rulings (owner, 2026-09-06)
 
 1. **`HorrorWastes` leaves.** No sheet, no BiomeDef on the frozen world: its 1,711 tiles

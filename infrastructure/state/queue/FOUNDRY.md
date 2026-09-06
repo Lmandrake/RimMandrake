@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-06T20:49:44Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-06T21:03:19Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -67,15 +67,6 @@ target:   v1
 kind:     build
 summary:  design/Jawa/researchtreetaxonomy.md section 3 defines the manifest schema
 prose:    infrastructure/state/items/RESEARCH_MANIFEST_DRAFT_1.md
-
-## WEAPONS_DONOR_RETIREMENT_1 Retire the 6 weapon donor packs now that mandrake.rsw.armoury absorbed their content
-state:    ready
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     build
-summary:  Retire the 6 weapon donor packs — 1 of 6 broke the owner's live game, reverted
-prose:    infrastructure/state/items/WEAPONS_DONOR_RETIREMENT_1.md
 
 ## DROID_DONOR_PATCH_GATE_1 Patch the 11 ungated ABF/Synstructs sites in absorbed KotOR content, the prerequisite before ABF/Synstructs/Asimov can retire
 state:    ready
@@ -495,6 +486,15 @@ kind:     task
 summary:  - Input: a biome sheet paragraph (design/Jawa/worldbuilding/biomes/.md, start
 prose:    infrastructure/state/items/MACRO_GENERATOR_V0_1.md
 
+## MAPGEN_GL_SHEET_1 Map generator: 8 plans through the GL emitter, quicktest screenshots beside painter renders — the real terrain, one sheet (owner 2026-09-06: both routes)
+state:    doing
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+summary:  - Input: the 8 plans Transient/mapgenv0/seed01-8.plan.json (or fresh ones from
+prose:    infrastructure/state/items/MAPGEN_GL_SHEET_1.md
+
 ## MAPGEN_PAINTER_V1_1 Map generator painter v1: organic masks, elevation→terrain bands, hydrology with cause; v1 comparator sheet (owner 2026-09-06)
 state:    doing
 row:      unassigned
@@ -540,7 +540,17 @@ prose:    infrastructure/state/items/ARMOURY_MELEEPOWER_STALE_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-_none._
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+
+## WEAPONS_DONOR_RETIREMENT_1 Retire the 6 weapon donor packs now that mandrake.rsw.armoury absorbed their content
+state:    ready
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     build
+waiting:  needs `game-up`, game is DOWN
+summary:  Retire the 6 weapon donor packs — 1 of 6 broke the owner's live game, reverted
+prose:    infrastructure/state/items/WEAPONS_DONOR_RETIREMENT_1.md
 
 # NOT THIS TARGET
 
@@ -760,16 +770,6 @@ thin:     no ## criteria
 summary:  - Architecture A from the design: a request-queue directory driven by N parallel one-shot
 prose:    infrastructure/state/items/CODEX_PARALLEL_WORKERS_1.md
 
-## MAPGEN_GL_SHEET_1 Map generator: 8 plans through the GL emitter, quicktest screenshots beside painter renders — the real terrain, one sheet (owner 2026-09-06: both routes)
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  - Input: the 8 plans Transient/mapgenv0/seed01-8.plan.json (or fresh ones from
-prose:    infrastructure/state/items/MAPGEN_GL_SHEET_1.md
-
 ## MAPGEN_CONVERGENCE_LOOP_1 Map generator convergence loop: painter vs GL vs corpus, iterate until the owner calls it great (owner 2026-09-06)
 state:    proposed
 row:      unassigned
@@ -789,3 +789,33 @@ kind:     task
 thin:     no ## criteria
 summary:  - Reconcile with terminatorsea.md ("the three seas"): which existing sea defs are the
 prose:    infrastructure/state/items/LIQUID_BIOMES_MAP_1.md
+
+## VEHICLE_FUEL_PATCH_UNFILTERED_1 DesertVehicleReskin fuel patch widens fuel for EVERY Vehicle Framework vehicle (VVE trucks on potatoes); About.xml says draught only — owner ruling: intended or filter (Opus review 2026-09-06)
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## criteria
+summary:  VEHICLEFUELPATCHUNFILTERED1 — the fuel-widening patch hits EVERY Vehicle Framework vehicle
+prose:    infrastructure/state/items/VEHICLE_FUEL_PATCH_UNFILTERED_1.md
+
+## GL_EMITTER_OBJECT_GAP_1 gl_emit rebuilds 14 of 44 landforms one <Object> short (coast/river family, Gorge, Valley); selftest must cover all 44
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## criteria
+summary:  - Diff one small case (LandformValley.xml: 3 objects vs 2 emitted) — find which <Object refID the parser drop…
+prose:    infrastructure/state/items/GL_EMITTER_OBJECT_GAP_1.md
+
+## ANCIENT_WAR_LAB_1 The war lab beneath the propane lake over the Impact Site — submerged dungeon, lab fauna + mechanoid guardians, and the crater ending as a permanent map change
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  - What it is: the Rakatan-era war lab where the Assailants were first contained and
+prose:    infrastructure/state/items/ANCIENT_WAR_LAB_1.md
