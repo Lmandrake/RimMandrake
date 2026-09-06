@@ -70,6 +70,19 @@ pass that needs a quicktest map on the full list, not just this one.
   both are OOM, but the fix differs (system RAM/pagefile vs. a Unity
   heap-limit setting).
 
+**Escalation, same investigation session**: a background shell task doing
+nothing but polling `Player.log` and `tasklist.exe` every 2s was itself
+killed by the harness with the reason "the system is running low on
+memory" — at a moment coinciding with a fresh RimWorld reload in progress.
+This means the memory pressure from a heavy RimWorld load is severe enough
+to threaten OTHER processes sharing the host (WSL's own memory manager
+shares physical RAM with the Windows side under WSL2), not just
+`RimWorldWin64.exe` itself. `free -h` immediately after showed 32Gi free
+of 35Gi — the pressure was transient and resolved once the previous
+RimWorld process was gone. Recorded as a reason to not hammer repeated
+full-modlist reloads back-to-back without letting memory settle between
+attempts.
+
 **Workaround for anyone needing a live map on the full list right now**:
 do not call `start_debug_game_ready` past `readiness: "gameData"`. Load
 the real campaign save instead of using the debug quicktest generator —
