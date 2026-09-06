@@ -168,4 +168,91 @@ citation) wrapped in an explicit `KCSG.SymbolDef`.
 
 `validate_patch.py` (594-mod set): 0 errors, 0 warnings, both files.
 
-Commit: (recorded by the ledger note / next commit in this pass).
+## 2026-09-06 (FOUNDRY) — quicktest-proven (§3.7), one real crash found and fixed
+
+Blocked `ASSAILANT_DUNGEON_BUILD_1` first (creative lock-in still owed with the
+owner per `FUTURE_VECTORS.md`), then picked up this item's own remaining
+FOUNDRY-lane step: the §3.7 quicktest proof never done in the 2026-09-02 pass
+("no bridge this pass, a sibling fork held it").
+
+**Added `mandrake.rut.vaultdungeons` to the 22-mod MINIMAL test list**
+(`infrastructure/state/modlists/ModsConfig.MINIMAL.xml`) and did two
+minimal-list restarts (22s cold loads, not the 596-mod ~25 min) to prove it —
+restored to FULL afterward, verified `md5 366f8c35...` matches, game left
+DOWN (nobody was using it, testing finished).
+
+**🔴 Real crash caught and fixed, worth the whole pass on its own**: placing
+`RUT_VaultType1_MechanoidGarrison` via `jawa/kcsg_place` threw
+`TargetInvocationException: Object reference not set to an instance of an
+object`. Read from KCSG's own vendored source (not guessed):
+`SymbolUtils.cs GeneratePawnAt` calls `PawnGenerationRequest(kindDef,
+map.ParentFaction, ...)` when a pawn symbol's `spawnPartOfFaction` is true —
+the KCSG-auto-generated default for a bare `Mech_Lancer`/`Mech_Centurion`
+symbol, which the previous pass's own comment (wrongly) called "safe bare".
+Every KCSG call site that generates a `StructureLayoutDef` - the debug menu
+(`DebugActions.cs`) AND both real gameplay GenSteps
+(`GenStep_BiomeStructures.cs`, `GenStep_CustomStructureGen.cs`) - uses the
+2-arg `Generate(rect, map)` overload, so this is not bridge-tool-specific.
+Generating a MECHANOID-intelligence pawn with a null faction throws in
+vanilla pawn generation; a HUMANLIKE pawn (V6's `AncientSoldier`, via
+`RUT_Symbol_RakataCasket`) does not - confirmed by Type-3 succeeding with the
+identical null `map.ParentFaction` on the same test map. **Fix**:
+`gen_vault_layouts.py` now wraps `Mech_Lancer`/`Mech_Centurion` in explicit
+`RUT_Symbol_MechLancer`/`RUT_Symbol_MechCenturion` SymbolDefs with
+`spawnPartOfFaction=false` and `<faction>Mechanoid</faction>` (a FactionDef
+confirmed present via `mcp__rimsage__search_defs`), so they resolve against
+the world's real Mechanoid faction instead of `map.ParentFaction` ever being
+non-null - correct on a quicktest map and on whatever the real V1/V2/V3 site
+turns out to be. Regenerated, `validate_patch.py`: 0/0 both files, redeployed,
+restarted, re-placed: **all three templates now place with `success: true`
+and no exception.**
+
+**Screenshot-verified** (`take_screenshot` + `rimworld/get_cell_info`, not
+just `success: true` - §2 and §4a of the rimbridge skill):
+- **Type 1** (`.../Transient/vault_kcsg_type1_mechanoid_garrison_v2_2026-09-06.png`):
+  full 61x61 footprint visible, outer wall ring with one door gap, garrison
+  guardians and turrets present in the band, core with 5 loot items
+  (Plasteel/Plasteel/ComponentSpacer/Uranium/Shard), core wall with its own
+  offset door. No crash, no floating pieces, core not reachable in a straight
+  line from the outer door (matches the offline BFS reachability proof from
+  the 2026-09-02 pass).
+- **Type 3** (`.../Transient/vault_kcsg_type3_frozen_rakata_v2_2026-09-06.png`):
+  fully correct - outer/core `Wall_Plasteel` rings, 4 `RUT_Symbol_RakataCasket`
+  in a row, `RUT_VaultHeart` in the core corner, 4 `Turret_MiniTurret` hugging
+  the core wall. Garrison band deliberately empty per design ("thin... mostly
+  silence"). Every symbol here is vanilla or our-own content - no third-party
+  dependency, nothing left to prove.
+- **Type 2** (`.../Transient/vault_kcsg_type2_flesh_weapon_loose_v2_2026-09-06.png`):
+  **terrain-only** - `Flesh` terrain painted correctly across the full 51x51
+  footprint (confirmed via `get_cell_info`), placement reported `success:
+  true`, but **the entire `layouts` grid (walls, guardians, wreckage) is
+  absent** - `get_cell_info` at the outer-wall corner and several garrison
+  cells all show `thingCount: 0`. Root cause isolated, not guessed: EVERY
+  Type-2 symbol (`RUT_Symbol_BlackJellyWall`→`AA_BlackJellyWall`,
+  `RUT_Symbol_GreenGoo`→`AA_GreenGoo`, `RUT_Symbol_Boomsnake`→`GR_Boomsnake`,
+  `RUT_Symbol_InfestedShipPart/Chunk`→`VFEI2_InfestedShipPart/Chunk`,
+  `RUT_Symbol_Fleshmass`→`Fleshmass`) wraps a THIRD-PARTY ThingDef/PawnKindDef
+  (Alpha Animals, VFE Insectoids 2, Vanilla Genetics Expanded), and **none of
+  those source mods are in the 22-mod MINIMAL test list** - a KCSG symbol
+  whose wrapped def does not exist resolves to null and is silently skipped
+  (no crash, no log line without `debug`), exactly the "silent miss" class
+  the 2026-09-02 pass's own header comment already named. **This is a test-
+  scope gap, not a template defect**: confirmed all four packageIds
+  (`sarg.alphaanimals`, `oskarpotocki.vfe.insectoid2`, `als.gravtech.bc`,
+  `vanillaexpanded.vgeneticse`) ARE present in the owner's real 596-mod
+  campaign list (`infrastructure/state/modlists/ModsConfig.FULL.LATEST.xml`),
+  and the SymbolDef XML shape is identical to `RUT_Symbol_MechLancer`, which
+  just proved live. **Not chased further this pass** (adding 4 more mods'
+  transitive dependencies to the minimal list risked its own cascade, for a
+  check that only re-confirms a pattern already proven twice - Type 1's
+  guardians, Type 3's caskets/turrets/heart). Left as an explicit gap for
+  whoever next tests on the full mod list or extends the minimal one.
+
+**Not done, still correctly held for the owner per this item's own "Watch
+out"**: V5's landmark authoring, all six real-site hand-finishing,
+wake/loot/leave dialogue and letters, the six `world_commit` placements.
+This pass only closes the "quicktest-proven" verify bullet for TEMPLATE
+GEOMETRY - it does not touch anything creative-lock-in.
+
+Commit: (this pass's commit, `gen_vault_layouts.py` +
+`Defs/{StructureLayoutDefs,SymbolDefs}_Vaults.xml`).

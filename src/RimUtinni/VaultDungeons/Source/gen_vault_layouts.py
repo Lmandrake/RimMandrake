@@ -37,15 +37,48 @@ import os
 
 OUT_DIR = os.path.join(os.path.dirname(__file__), "..", "Defs")
 
-# --- Pawn symbols (third-party/our-own PawnKindDefs only - vanilla/DLC
-# PawnKindDefs like Mech_Lancer/Mech_Centurion are auto-symbol'd by KCSG
-# itself and are used BARE in the grid, no wrapper needed here) -----------
+# --- Pawn symbols -----------------------------------------------------
+# 🔴 CORRECTED 2026-09-06 after a live quicktest crash (VAULT_DUNGEON_BUILD_1
+# quicktest-proof pass): the comment this replaced claimed bare Mech_Lancer/
+# Mech_Centurion were safe because KCSG auto-symbols them - true for the
+# SYMBOL LOOKUP, but irrelevant to what actually crashed. Read from KCSG's
+# own vendored source (SymbolUtils.cs GeneratePawnAt, StartupActions.cs
+# CreateSymbolDef(PawnKindDef)): auto-generated pawn symbols default
+# spawnPartOfFaction=true, which makes GeneratePawnAt call
+# `PawnGenerationRequest(kindDef, map.ParentFaction, ...)`. Every KCSG
+# structure-placement call site - the debug menu (DebugActions.cs) AND both
+# real gameplay GenSteps (GenStep_BiomeStructures.cs,
+# GenStep_CustomStructureGen.cs) - calls the 2-arg `layoutDef.Generate(rect,
+# map)` overload, so this is not bridge-tool-specific. On any map whose
+# ParentFaction is null (measured: a plain quicktest colony map), generating
+# a MECHANOID-intelligence pawn with a null faction throws a
+# NullReferenceException deep in vanilla pawn generation - reproduced twice,
+# isolated to the two Mech_Lancer/Mech_Centurion cells (Type-2's/Type-3's
+# guardians are Animal- or Humanlike-intelligence and generate fine at
+# faction=null). Fix: wrap both mechanoid kinds explicitly with
+# spawnPartOfFaction=false and an explicit <faction>Mechanoid</faction>, so
+# they resolve against the world's real (always-present) Mechanoid faction
+# object instead of depending on map.ParentFaction ever being non-null -
+# correct on a quicktest map and on whatever the real V1/V2/V3 site turns
+# out to be. Every OTHER vanilla/DLC PawnKindDef used bare elsewhere in this
+# file needs the same scrutiny before it ships: bare is safe for the
+# ResolveSymbols() LOOKUP, never a free pass on the generation semantics.
 PAWN_SYMBOLS = [
-    # (symbolDefName, pawnKindDef, note)
+    # (symbolDefName, pawnKindDef, note, faction)
     ("RUT_Symbol_GreenGoo", "AA_GreenGoo",
-     "HorrorWastes-native (cast_assignment.csv) - bioweapon-adjacent guardian, not the Anomaly toolbox. Third-party (Alpha Animals) -> not KCSG-auto-symbol'd, needs this wrapper."),
+     "HorrorWastes-native (cast_assignment.csv) - bioweapon-adjacent guardian, not the Anomaly toolbox. Third-party (Alpha Animals) -> not KCSG-auto-symbol'd, needs this wrapper.",
+     None),
     ("RUT_Symbol_Boomsnake", "GR_Boomsnake",
-     "HorrorWastes-native (cast_assignment.csv). Third-party (Genesis Regrown) -> needs this wrapper."),
+     "HorrorWastes-native (cast_assignment.csv). Third-party (Genesis Regrown) -> needs this wrapper.",
+     None),
+    ("RUT_Symbol_MechLancer", "Mech_Lancer",
+     "Type-1 garrison guardian. Core PawnKindDef (auto-symbol'd bare name would resolve fine) "
+     "but needs this wrapper anyway - see the module comment above; explicit Mechanoid faction "
+     "so it generates without crashing regardless of map.ParentFaction.",
+     "Mechanoid"),
+    ("RUT_Symbol_MechCenturion", "Mech_Centurion",
+     "Type-1 garrison guardian, same reasoning as RUT_Symbol_MechLancer.",
+     "Mechanoid"),
 ]
 
 # --- Container symbols (VAULT_THAW_QUEST_FAMILY_1) -------------------------
@@ -112,7 +145,7 @@ FACTIONLESS_THING_SYMBOLS = {"RUT_Symbol_VaultHeart"}
 SYMBOLDEF_PAWN_TMPL = """  <KCSG.SymbolDef>
     <defName>{defName}</defName>
     <pawnKindDef>{pawnKindDef}</pawnKindDef>
-    <spawnPartOfFaction>false</spawnPartOfFaction>
+    <spawnPartOfFaction>false</spawnPartOfFaction>{faction_xml}
     <numberToSpawn>1</numberToSpawn>
     <spawnDead>false</spawnDead>
     <spawnRotten>false</spawnRotten>
@@ -129,8 +162,9 @@ SYMBOLDEF_THING_TMPL = """  <KCSG.SymbolDef>
 
 def gen_symboldefs():
     body = []
-    for name, kind, note in PAWN_SYMBOLS:
-        body.append(SYMBOLDEF_PAWN_TMPL.format(defName=name, pawnKindDef=kind))
+    for name, kind, note, faction in PAWN_SYMBOLS:
+        faction_xml = "\n    <faction>%s</faction>" % faction if faction else ""
+        body.append(SYMBOLDEF_PAWN_TMPL.format(defName=name, pawnKindDef=kind, faction_xml=faction_xml))
     for name, thing, note in THING_SYMBOLS:
         extra = ""
         if name in FACTIONLESS_THING_SYMBOLS:
@@ -268,18 +302,22 @@ def main():
     os.makedirs(OUT_DIR, exist_ok=True)
 
     # Type 1: mechanoid garrison held - disciplined+powered outer, the fight
-    # inside, materials/weapons-only core loot (never chassis). Mech_Lancer/
-    # Mech_Centurion/Turret_AutoInferno/Turret_AutoMortar/Plasteel/Uranium/
-    # ComponentSpacer/Shard/Wall_Plasteel are all Core -> KCSG auto-symbols
-    # them bare; the two GravTech cannons are third-party -> wrapped symbols.
+    # inside, materials/weapons-only core loot (never chassis).
+    # Turret_AutoInferno/Turret_AutoMortar/Plasteel/Uranium/ComponentSpacer/
+    # Shard/Wall_Plasteel are Core buildings -> KCSG auto-symbols them bare,
+    # safely (no pawn generation involved). Mech_Lancer/Mech_Centurion are
+    # PawnKindDefs and use the explicit RUT_Symbol_Mech* wrappers instead of
+    # their auto-symbol'd bare names - see the PAWN_SYMBOLS comment above
+    # (auto-symbol'd mechanoid pawns crash on any map with no ParentFaction).
+    # The two GravTech cannons are third-party -> wrapped symbols too.
     g1, t1 = build_grid(
         size=61, outer_wall="Wall_Plasteel", outer_thick=6,
         garrison_floor="Concrete",
         garrison_symbols=[
-            "Mech_Lancer", "Mech_Centurion",
-            "Mech_Lancer", "RUT_Symbol_GravRailArtillery",
+            "RUT_Symbol_MechLancer", "RUT_Symbol_MechCenturion",
+            "RUT_Symbol_MechLancer", "RUT_Symbol_GravRailArtillery",
             "RUT_Symbol_SingularityCannon", "Turret_AutoInferno",
-            "Turret_AutoMortar", "Mech_Centurion",
+            "Turret_AutoMortar", "RUT_Symbol_MechCenturion",
         ],
         core_wall="Wall_Plasteel", core_size=15, core_floor="Concrete",
         core_items=["Plasteel", "Plasteel", "ComponentSpacer", "Uranium", "Shard"],
@@ -316,9 +354,8 @@ def main():
     # spawn_conduits="true" is what carries the heart's circuit under the
     # core wall to the turrets. The two live Mech_Centurion units are gone:
     # a live hostile would make Site.AllEnemiesDefeated/NoActiveThreats
-    # meaningless for the quest, and "Mech_Centurion" is both a ThingDef and
-    # a PawnKindDef name in KCSG's auto-symbol table (same caveat applies to
-    # type 1's Mech_Lancer/Mech_Centurion cells - not this pass's file).
+    # meaningless for the quest (unrelated to, and not a workaround for, the
+    # Mech_Lancer/Mech_Centurion faction crash fixed in Type 1 above).
     g3, t3 = build_grid(
         size=55, outer_wall="Wall_Plasteel", outer_thick=6,
         garrison_floor="Ice",
