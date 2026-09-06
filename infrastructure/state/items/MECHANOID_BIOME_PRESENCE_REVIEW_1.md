@@ -14,6 +14,9 @@ not all of them should!)"*
   Cathedral (`AB_MechanoidIntrusion`, substellar) and the antistellar propane lakes
   around the ancient war lab; the Assailant remnants line is separate (the Horrors are
   not mechanoids). Everything else is a case to argue, biome by biome, to the owner.
+- Add rows for the Lantern Deeps (`the_lantern_deeps.md`): the Shard-minds animating dead
+  droids/suits, the mindstone's droid race, and the mechanoid production facility
+  (`MECHANOID_ORIGIN_CANON_1`) — "ancient dangers" by the owner's own hand.
 - Output as DATA (biome × source × allowed/denied), fed into the freeze review
   (`BIOME_FREEZE_FABLE_REVIEW_1`) as a column.
 

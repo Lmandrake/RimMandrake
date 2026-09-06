@@ -112,7 +112,8 @@ Order is by **similarity — slowly vary** (owner, 2026-09-05).
 | `the_contagion.md` | `AB_OcularForest` ("the Contagion", owner-named; moves to the peaks above the green — placement item open) | ✅ done 2026-09-06 — the weapon at open throttle; the UV cage; the Burn and the Bloom |
 | `the_blue_desert.md` | `BiomeGRimond` ("Blue Desert", name kept; Deadstone's receiving ground as a lobe mosaic) | ✅ done 2026-09-06 — the phase boundary; hydrocarbon biology; the ice hands up the weapon; 🔴 no bullseye |
 | `the_propane_lakes.md` | `AB_PropaneLakes` + Umbra, the antistellar cap (1,589 tiles MEASURED) | ✅ done 2026-09-06 — two solvents; the reconnection aurora and the electrojet tap; the terramanufacture history; the war lab and the crater ending |
-| **next** | owner's pick | 🔵 candidate by similarity: `BMT_CrystalCaverns` (578 tiles, the ring's highland occupant) — **kyber is ruled to go there**; or `IceSheet` (49) / `BMT_FungalForest` (425) |
+| `the_lantern_deeps.md` | `BMT_CrystalCaverns` ⛔ NOT a worldmap biome — an **injected underground layer** beneath any ≤ −40 °C nightside map | ✅ ruled 2026-09-06 — lanternstone, kyber, the Shard-minds in the dead's technology, the mindstone race; the surface tiles re-homed to the ice sheet and the Blue Desert |
+| **next** | owner's pick | 🔵 `nightside_ice.md` second pass (it now holds the deep-night highland — load-bearing before the freeze), or by similarity `BMT_FungalForest` (425) / `ZBiome_Badlands` (1,086) |
 | `wreck_fields.md` | — | ⛔ superseded by `fall_line.md` |
 
 ### 🔑 The dryland ladder is ONE number: the sun's angle

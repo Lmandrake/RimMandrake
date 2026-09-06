@@ -8,8 +8,11 @@ its tiles morph into their neighbors as usual.
   Rimewall 36, Gray Crags 21, Nightspill 20.
 - 🔴 **Receiving defs RULED 2026-09-06 — the anti-bullseye LOBE MOSAIC** (`the_blue_desert.md`
   §0; the ring was MEASURED as all 12 bearing sectors ≥5%): by 30° bearing sector —
-  **Blue Desert (`BiomeGRimond`) core in sectors 0, 7, 9, 10, 11**; **CrystalCaverns
-  climbs into 1, 2, 3 (the highland sectors — ⛔ no Bluefire second biome) and 4, 5, 8**;
+  **Blue Desert (`BiomeGRimond`) core in sectors 0, 7, 9, 10, 11**; 🔴 **RE-RULED
+  2026-09-06 — `BMT_CrystalCaverns` is no longer a worldmap biome (`the_lantern_deeps.md`):
+  the highland sectors 1, 2, 3 AND the former caverns' 578 tiles' HIGH ground (in
+  3/4/5/8) go to the ICE SHEET (`nightside_ice.md`'s def — confirm its defName; ⛔ no
+  Bluefire second biome); the caverns' LOW tiles (7/9/10) join the Blue Desert core**;
   **PropaneLakes bulges up in 6**; arc excursions: Blue Desert lobes in 0 and 11 push down
   into 143–155, propane pushes up in 6. Produce the exact tile list from the sector
   census and **render it for the owner (`worldview.py`) before painting**. Spill regions

@@ -2,6 +2,12 @@
 
 _First pass, 2026-09-05, to the grammar in `README_BIOME_GRAMMAR.md`._
 
+> 🔑 **2026-09-06:** this sheet's def now RECEIVES the deep-night highland — the dissolved
+> ring's sectors 1–3 and the former crystal caverns' high tiles (`the_lantern_deeps.md`
+> §0, `HORRORWASTES_BIOME_DISSOLVE_1`) — as plateau lobes. Its distillation-column idea
+> has since been made literal by the phase-line sheets (`the_blue_desert.md`,
+> `the_propane_lakes.md`). **A second pass is owed** before the freeze review.
+
 **The problem this sheet had to solve:** the deep nightside has no light and — since
 cold gas venting is the poison forest's anomaly and may not be reused — no chemistry
 coming up out of the ground either. Two of the three ways a biosphere is normally

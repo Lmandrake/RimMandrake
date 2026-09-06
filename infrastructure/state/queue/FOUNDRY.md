@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-06T21:03:19Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: FOUNDRY
+as-of: 2026-09-06T21:37:55Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -343,22 +343,13 @@ summary:  Filed by BENCH: jawa/worldtilemapgenerate fabricates success on its
 prose:    infrastructure/state/items/TILEGEN_SILENT_REUSE_1.md
 
 ## ARMOURY_MELEEPOWER_STALE_1 Armoury_MeleePower.xml melee damage values are stale vs. its own generator - live, currently affecting the campaign
-state:    doing  (BLOCKED)
+state:    doing
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     bug
 summary:  Filed during standing dirty-code-review loop wave 38 (2026-09-05). A fresh
 prose:    infrastructure/state/items/ARMOURY_MELEEPOWER_STALE_1.md
-
-## ARMOURY_SWMODS_DONOR_GAP_1 gen_armoury_patch.py SW_MODS doesn't recognize absorbed KotORWeapons/JDS-Armory donor names - a full regen silently drops two live vibro-blade tuning blocks
-state:    doing
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     bug
-summary:  spec — RESCOPED 2026-09-05, larger than first filed
-prose:    infrastructure/state/items/ARMOURY_SWMODS_DONOR_GAP_1.md
 
 ## INHABITED_AUGMENTATION_BUILD_1 Build the tile-augmentation content: rimplace templates + Inhabited wiring for the biome/faction/latitude augmentation dream
 state:    doing
@@ -477,6 +468,15 @@ kind:     repair
 summary:  TILESSTAMPVERIFY1
 prose:    infrastructure/state/items/TILES_STAMP_VERIFY_1.md
 
+## ARMOURY_LEATHER_GEN_DESYNC_1 gen_armour_patch.py will silently re-add the 3 retired-mod leather blocks the retirement commit stripped by hand
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  (no items/ARMOURY_LEATHER_GEN_DESYNC_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ARMOURY_LEATHER_GEN_DESYNC_1.md
+
 ## MACRO_GENERATOR_V0_1 Macro generator v0: ONE idea per map — chooser + plan + terrain grid, graded on a comparator sheet by the owner (research doc §9.3 step 4)
 state:    doing
 row:      unassigned
@@ -527,16 +527,6 @@ kind:     build
 blocked:  creative lock-in owed with the owner (FUTURE_VECTORS.md line 22, item's own watch-out) — mechanical rulings landed 2026-09-01 but KCSG authoring/art/dialogue is a joint BENCH+owner session, not solo FOUNDRY build; skipping to next item
 summary:  Full spec: design/Jawa/worldbuilding/dungeonsarcspec.md §2. Summary:
 prose:    infrastructure/state/items/ASSAILANT_DUNGEON_BUILD_1.md
-
-## ARMOURY_MELEEPOWER_STALE_1 Armoury_MeleePower.xml melee damage values are stale vs. its own generator - live, currently affecting the campaign
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-blocked:  blocked on ARMOURY_SWMODS_DONOR_GAP_1 - regenerating vibro values before that gap is fixed risks shipping wrong numbers or silently dropping tuning blocks
-summary:  Filed during standing dirty-code-review loop wave 38 (2026-09-05). A fresh
-prose:    infrastructure/state/items/ARMOURY_MELEEPOWER_STALE_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
@@ -589,16 +579,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/BEHEMOTH_TEXTURE_MISSING_LIVE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/BEHEMOTH_TEXTURE_MISSING_LIVE_1.md
-
-## ARMOURY_LEATHER_GEN_DESYNC_1 gen_armour_patch.py will silently re-add the 3 retired-mod leather blocks the retirement commit stripped by hand
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/ARMOURY_LEATHER_GEN_DESYNC_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ARMOURY_LEATHER_GEN_DESYNC_1.md
 
 ## PAWNFLAVOR_MEGAFAUNA_GEN_DESYNC_1 Two more generators will silently re-add retired-mod blocks bbf66830 hand-stripped
 state:    proposed
@@ -819,3 +799,33 @@ kind:     task
 thin:     no ## criteria
 summary:  - What it is: the Rakatan-era war lab where the Assailants were first contained and
 prose:    infrastructure/state/items/ANCIENT_WAR_LAB_1.md
+
+## FOUNDRY_REBOOT_HANDOFF_20260906C FOUNDRY reboot handoff 2026-09-06 (evening) - READ FIRST on wake
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  FOUNDRYREBOOTHANDOFF20260906C — READ FIRST on wake (evening session, 2026-09-06)
+prose:    infrastructure/state/items/FOUNDRY_REBOOT_HANDOFF_20260906C.md
+
+## BUILD_PY_TOOLNAME_SCAN_FALSE_LOSS_1 build.py tool-removal guard byte-scans the DLL and reported a fictitious lost tool (jawa/pawn_); compare against source [Tool] declarations
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## criteria
+summary:  - Replace the byte-scan with a metadata read: the Tool attribute's first constructor argument lives in the cu…
+prose:    infrastructure/state/items/BUILD_PY_TOOLNAME_SCAN_FALSE_LOSS_1.md
+
+## LANTERN_DEEPS_INJECTION_1 The crystal caverns as an injected underground layer beneath ≤ −40 °C nightside maps — quicktest the cave-map generation, two entrance features (emergence, ruined mineshaft), persistent Deeps, kyber formations
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  1. Quicktest first (rimworld-debug-testing): confirm what BMTCrystalCaverns
+prose:    infrastructure/state/items/LANTERN_DEEPS_INJECTION_1.md

@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-06T21:03:19Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: FOUNDRY
+as-of: 2026-09-06T21:37:56Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -162,3 +162,33 @@ kind:     task
 thin:     no ## criteria
 summary:  - Write the ruling INTO the docs that already speak of the planet's past (superseding
 prose:    infrastructure/state/items/TERRAMANUFACTURE_CANON_1.md
+
+## CRYSTAL_MODS_INGEST_1 Find the orange glowing crystal's source mod; inventory every crystal harvest in the stack; assess ingesting it so all crystals live in the Lantern Deeps
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  - Identify the mod: which import ships the orange glowing crystal (candidates to
+prose:    infrastructure/state/items/CRYSTAL_MODS_INGEST_1.md
+
+## KYBER_TRADE_PLOT_1 Selling kyber: Empire heat rises per sale, Hutt interest rises, alleged Jedi from the Moisture Farmers, the donate-and-smuggle plot (no helping the Rebellion here)
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  - Wire the heat mechanic (the Empire's pursuit/attention system — find the existing
+prose:    infrastructure/state/items/KYBER_TRADE_PLOT_1.md
+
+## MECHANOID_ORIGIN_CANON_1 The mindstone droid-mind race; mechanoids + Rust Cathedral as a non-artificial AI and the Deeps' crystal minds as their wild cousins; the production facility and the Cathedral's true children
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  - Reconcile with existing canon: the Rust Cathedral (ABMechanoidIntrusion, the
+prose:    infrastructure/state/items/MECHANOID_ORIGIN_CANON_1.md

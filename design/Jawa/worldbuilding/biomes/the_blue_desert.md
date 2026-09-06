@@ -29,8 +29,8 @@ mosaic** by bearing, with arc excursions so no boundary is a circle:
 | sectors | ruled occupant | why |
 |---|---|---|
 | 0, 7, 9, 10, 11 | **Blue Desert core** (~700–900 tiles) | the low ground under the Wasteland's dark scour — where the rivers died is where the water froze; zero high tiles in 0/10/11 |
-| 1, 2, 3 | **CrystalCaverns climbs** (BENCH adjustment — ⛔ the owner ruled NO second highland biome; Bluefire Mountains is not used) | the ring's highland: 82/109, 115/115, 111/113 tiles above 900 m; the caverns are the high def (elev median 979) |
-| 4, 5, 8 | **CrystalCaverns climbs** | caverns already dominant on the cold side (119 / 78 / 102 tiles) |
+| 1, 2, 3 | **the ice sheet** (`nightside_ice.md`'s def) — re-ruled 2026-09-06 when the crystal caverns stopped being a worldmap biome (`the_lantern_deeps.md`); ⛔ no Bluefire second biome | the ring's highland: 82/109, 115/115, 111/113 tiles above 900 m; ice on high ground is physics |
+| 4, 5, 8 | **the ice sheet** takes the former caverns' HIGH tiles; their LOW tiles join the Blue Desert core | the caverns' 578 surface tiles (elev median 979) are re-homed by elevation |
 | 6 | **PropaneLakes bulges up** | propane massed below (127); the hydrocarbon belt gets a northward tongue |
 | arc excursions | Blue Desert lobes in 0 and 11 push *down* into 143–155; propane pushes *up* in 6 | variance in arc as well as longitude |
 
