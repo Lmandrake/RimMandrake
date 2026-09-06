@@ -113,7 +113,8 @@ Order is by **similarity — slowly vary** (owner, 2026-09-05).
 | `the_blue_desert.md` | `BiomeGRimond` ("Blue Desert", name kept; Deadstone's receiving ground as a lobe mosaic) | ✅ done 2026-09-06 — the phase boundary; hydrocarbon biology; the ice hands up the weapon; 🔴 no bullseye |
 | `the_propane_lakes.md` | `AB_PropaneLakes` + Umbra, the antistellar cap (1,589 tiles MEASURED) | ✅ done 2026-09-06 — two solvents; the reconnection aurora and the electrojet tap; the terramanufacture history; the war lab and the crater ending |
 | `the_lantern_deeps.md` | `BMT_CrystalCaverns` ⛔ NOT a worldmap biome — an **injected underground layer** beneath any ≤ −40 °C nightside map | ✅ ruled 2026-09-06 — lanternstone, kyber, the Shard-minds in the dead's technology, the mindstone race; the surface tiles re-homed to the ice sheet and the Blue Desert |
-| **next** | owner's pick | 🔵 by similarity: `BMT_FungalForest` (425 tiles, arc 115–129 — the Rot's smaller sibling, or its injection?) · `ZBiome_Badlands` (1,086, dayside) · `ZBiome_DesertOasis` (236) and the green squares (`BiomeCypreJungle` 191, `AB_FeraliskInfestedJungle` 172) owed short definitions |
+| `BMT_FungalForest` | ⛔ DISSOLVED 2026-09-06 (an underground def wearing 425 surface tiles) | raided into `the_rot.md` §7b (the spore-warfare kit, fungal materials, marsh fungi); tiles merge into the Rot (and the Wasteland at South Crags sector 9) — `FUNGALFOREST_RAID_MERGE_1` |
+| **next** | owner's pick | 🔵 `ZBiome_Badlands` (1,086, dayside) · `ZBiome_DesertOasis` (236) and the green squares (`BiomeCypreJungle` 191, `AB_FeraliskInfestedJungle` 172) owed short definitions · the remaining small nightside/dayside defs (`Scarlands` 90, `AB_TarPits` 62, `AB_MiasmicMangrove` 92, `COMIGO_GreaterSwamp_Tropical` 60, `AB_MechanoidIntrusion` 236, `ZBiome_Grasslands` 227) |
 | `wreck_fields.md` | — | ⛔ superseded by `fall_line.md` |
 
 ### 🔑 The dryland ladder is ONE number: the sun's angle

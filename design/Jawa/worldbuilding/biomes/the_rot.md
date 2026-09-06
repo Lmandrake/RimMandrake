@@ -189,6 +189,45 @@ a day, for certain**. The gut digests whatever is set down in it.
 - **Instant composting** — the rot clock as a service: corpses, filth, and mistakes
   disappear here faster than anywhere on the planet.
 
+## 7b. Raided from the Fungal Forest (owner, 2026-09-06: "raid this biome for its cool contents")
+
+`BMT_FungalForest` (Biomes! Caverns) is dissolved as a worldmap biome (its 425 tiles merge
+into their neighbors — `FUNGALFOREST_RAID_MERGE_1`) and **its contents are ingested here**,
+subject to this sheet's admission tests. Beyond flora and fauna, the mod carries a
+**spore-warfare kit** worth owning (MEASURED from its 1.6 defs):
+
+- **Spore mechanics:** `BMT_ToxicSpores` and `BMT_StunningSpores` DamageDefs; the
+  `BMT_SporeCloud` incident + game condition; `BMT_SporesBuildup` (respiratory
+  accumulation — "generally not dangerous, but if the spores continue to accumulate…");
+  ⭐ **`BMT_SporeFlesh`** disease — *"unique mycelia have invaded the body, numbing pain
+  and slowing bleeding while draining…"* — a ready-made Sheen infection **and** a
+  symbiont-bargain template (§7); `BMT_AthleteFoot` for texture.
+- **Spore weapons:** the **thrumbungus mushroom** (lobbed, spreads toxic spores) and the
+  **fungal mantis scythe** (chitin claw that injects toxin); the chitin spider helmet and
+  the cave-spider-head trophy.
+- **Fungal materials and terrain:** mushroom leather (+ recipe), mushroom-log floors,
+  **mushroom bridges** (light and heavy — built over the milk ponds), mycelial soil and
+  matting, moonless-stripes carpet; the "giant mushrooms as strong as wood" economy.
+- **Buildings:** fungiponics basin, fungal glow-goo and crystal torches (biological light
+  — this biome's law), the research row `BMT_AdvancedFungi` ("strange fungi with unique
+  functions, from cooling to exploding").
+- ⚠️ **Flagged for the anti-exponential test, not ingested blind:** the **blastpod
+  shroom → chemfuel** chain (a *cultivated* fuel fungus) and the **fungal power generator**
+  (power from planted fungus) are infinite-generator ladders as shipped; wild-harvest or
+  cut, per the Blue Desert's precedent — owner's call at the sitting.
+- **Drugs/food:** ambrosyx shroom (an ambrosia analog — a gourmet-line candidate), the
+  bovine beetle's milk economy, cave-cricket eggs, dulcis.
+- **Flora ingested** (all fungal, all pass ban 1): the marsh fungi (nuitae, wrinklecap,
+  nogtyl, arpeau — grow in standing "water": the milk ponds' own plants), dewshrooms,
+  fruiting bodies, pusmelon, rust puff, sagecrust, flakespire, bleeding tooth, crimson
+  cap, violet wimple, grey lady (lace), shinecap/brightbells, mortal morel (fungal
+  medicine), inkcap (fiber, no light), the **Skultop** defender (UNMEASURED defName —
+  "produces toxic spores when anything gets close"; a sibling of the Agarilux Prime).
+- **Fauna to the sitting** (hybrid-or-out, ban 2): keep the strange — glow bats, cave
+  spider, bovine beetle, chem snail, pillbug, the silk moths, fungal mantis and weevil,
+  giant slugs/snails; **evict the nameable** — sonar rabbit, truffle mole, mossy fennec,
+  fungal ferret, goeto toad, maxolotl, cave lemming.
+
 ## 8. Inhabited objects
 
 - **Wildsteam sacred groves** — the pale trees and their tended approaches; the wild's
