@@ -116,6 +116,38 @@ finally:
     except OSError:
         pass
 
+print("handoff: selection is by timestamp, and filenames are not a clock")
+# This repo has BOTH schemes live: ..._20260906C and ..._202609062326. Digits sort
+# before letters, so a fresh numeric-stamped handoff sorts BEFORE the older
+# letter-suffixed ones and alphabetical selection silently picks a stale file.
+#
+# The property to assert is not "name-order and time-order disagree" -- they may
+# happen to agree today, and an assertion that demands a coincidence fails for the
+# wrong reason. It is: whatever previous_handoff returns has the LATEST commit
+# time of all the candidates.
+names = handoff.handoff_files()
+check(len(names) >= 1, "this seat has handoffs to choose between (%d)" % len(names))
+stamped = []
+for fn in names:
+    rel = os.path.join("infrastructure", "state", "items", fn)
+    ts = handoff.sh("git", "log", "-1", "--format=%cI", "--", rel)
+    if ts:
+        stamped.append((ts, fn))
+picked_name, picked_ts = handoff.previous_handoff()
+if stamped:
+    latest_ts = max(t for t, _ in stamped)
+    check(picked_ts == latest_ts,
+          "previous_handoff picked the LATEST commit time (%s), not a filename"
+          % picked_ts)
+    check(picked_name in [f for t, f in stamped if t == latest_ts],
+          "and the name it returned is one that actually carries that timestamp")
+    both_schemes = (any(f[:-3][-1].isdigit() for f in names)
+                    and any(f[:-3][-1].isalpha() for f in names))
+    print("      note: mixed naming schemes present = %s" % both_schemes)
+else:
+    check(picked_name is None,
+          "with no committed handoff it returns nothing rather than guessing")
+
 print("handoff: an empty window is ALREADY HANDED OFF, not a second handoff")
 # The say-once rule. A window whose start is in the future contains nothing by
 # construction, so window_is_empty must agree -- and must NOT agree when there

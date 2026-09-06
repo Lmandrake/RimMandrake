@@ -104,28 +104,49 @@ def events():
     return out
 
 
+def handoff_files():
+    """Every handoff for this seat, unordered — ordering is never by name here."""
+    s = seat()
+    if not os.path.isdir(ITEMS):
+        return []
+    return [fn for fn in os.listdir(ITEMS)
+            if fn.startswith(s + "_REBOOT_HANDOFF_") and fn.endswith(".md")]
+
+
 def previous_handoff():
     """(path, iso-timestamp) of the newest handoff for this seat, or (None, None).
 
     Timestamp comes from git, not the filesystem: a shared worktree gets touched
     by other seats and mtime is not evidence about when this was written.
     """
-    s = seat()
-    # ⚠️ Newest-COMMITTED, not newest on disk. The handoff being written right now
-    # is uncommitted and would otherwise select itself, making the window start
-    # "now" — which silently disabled the whole doing-scope on the first run and
-    # made the gate list 47 items from three sessions back.
-    for fn in reversed(sorted(os.listdir(ITEMS)) if os.path.isdir(ITEMS) else []):
-        if not (fn.startswith(s + "_REBOOT_HANDOFF_") and fn.endswith(".md")):
-            continue
+    # ⚠️ Newest by COMMIT TIME, not by filename and not by mtime.
+    #   * Not the newest on disk: the handoff being written right now is
+    #     uncommitted and would select itself, making the window start "now" —
+    #     which silently disabled the doing-scope and listed 47 stale items.
+    #   * Not alphabetical: this repo has BOTH naming schemes in flight,
+    #     `..._20260906C` and `..._202609062326`, and digits sort before letters,
+    #     so the newest file sorted THIRD. Filenames are not a clock.
+    best = (None, None)
+    for fn in handoff_files():
         rel = os.path.join("infrastructure", "state", "items", fn)
         ts = sh("git", "log", "-1", "--format=%cI", "--", rel)
-        if ts:
-            return fn, ts
-    return None, None
+        if ts and (best[1] is None or ts > best[1]):
+            best = (fn, ts)
+    return best
 
 
-def gates(since_ts=None, handoff_path=None):
+def open_this_window(since_ts):
+    """Items this seat started in the window and has not closed."""
+    ev = events()
+    closed = {e.get("id") for e in ev
+              if e.get("event") in ("close", "block", "drop", "supersede")}
+    return sorted({e["id"] for e in ev
+                   if e.get("event") == "start" and e.get("seat") == seat()
+                   and (since_ts is None or (e.get("ts") or "") > since_ts)
+                   and e.get("id") not in closed})
+
+
+def gates(since_ts=None, handoff_path=None, doing_is_fatal=True):
     """Everything that must be true before a reboot is safe. Returns [problems].
 
     ⚠️ `since_ts` scopes the `doing` check to THIS window, and that scoping is
@@ -148,12 +169,7 @@ def gates(since_ts=None, handoff_path=None):
         bad.append("BRIDGE still held by %s — release it before rebooting:\n      %s"
                    % (seat(), who.splitlines()[0] if who else "?"))
 
-    doing = [e for e in events()
-             if e.get("event") == "start" and e.get("seat") == seat()
-             and (since_ts is None or (e.get("ts") or "") > since_ts)]
-    closed = {e.get("id") for e in events()
-              if e.get("event") in ("close", "block", "drop", "supersede")}
-    open_doing = sorted({e["id"] for e in doing if e.get("id") not in closed})
+    open_doing = open_this_window(since_ts)
 
     # Being named in the handoff DISCHARGES the obligation. The rule is "close it,
     # block it, or account for it" — not "close it": some work is legitimately
@@ -163,7 +179,12 @@ def gates(since_ts=None, handoff_path=None):
         text = io.open(handoff_path, encoding="utf-8").read()
         open_doing = [i for i in open_doing if i not in text]
 
-    if open_doing:
+    # ⚠️ In WRITE mode this must not refuse. The only way to discharge it is to
+    # write the item into 'What is half-done' — in a file that does not exist yet.
+    # A gate that blocks you from creating the thing that satisfies it teaches you
+    # to reach for --force, so write mode pre-fills the list into that section
+    # instead and only --check treats it as fatal.
+    if open_doing and doing_is_fatal:
         bad.append("started THIS window and still open — close, block, or write each "
                    "into 'What is half-done':\n      %s" % ", ".join(open_doing))
 
@@ -244,12 +265,22 @@ def build(since_sha, since_ts, prev_name):
         L.append("First handoff for this seat. Everything below is committed and pushed.")
     L.append("")
 
+    open_doing = open_this_window(since_ts)
     for title, prompt in JUDGEMENT_SECTIONS:
         L.append("## %s" % title)
         L.append("")
         L.append("<!-- %s -->" % prompt)
-        L.append(TODO)
-        L.append("")
+        if title.startswith("What is half-done") and open_doing:
+            L.append("<!-- These are the items you started this window and did not")
+            L.append("     close. Say what state each is in and the exact next action,")
+            L.append("     or close/block it. --check refuses while any is unaccounted")
+            L.append("     for, so deleting a line here is not a way past it. -->")
+            for i in open_doing:
+                L.append("- `%s` — %s" % (i, TODO))
+            L.append("")
+        else:
+            L.append(TODO)
+            L.append("")
 
     L.append("## Closed since the last handoff (%d)" % len(closes))
     L.append("")
@@ -313,10 +344,10 @@ def main():
         p = os.path.join("infrastructure", "state", "items", prev_name)
         since_sha = sh("git", "log", "-1", "--format=%h", "--", p) or None
 
-    newest = None
-    for fn in sorted(os.listdir(ITEMS)) if os.path.isdir(ITEMS) else []:
-        if fn.startswith(s + "_REBOOT_HANDOFF_") and fn.endswith(".md"):
-            newest = os.path.join(ITEMS, fn)
+    # --check validates the handoff THIS session wrote, which is the most recently
+    # touched one — again not the alphabetically last, for the same reason.
+    cands = [os.path.join(ITEMS, fn) for fn in handoff_files()]
+    newest = max(cands, key=os.path.getmtime) if cands else None
 
     if prev_name and window_is_empty(since_sha, prev_ts) and not a.force:
         print("ALREADY HANDED OFF — nothing has closed, been filed or been "
@@ -327,7 +358,8 @@ def main():
               "comes in. --force overrides.")
         return 0
 
-    problems = gates(prev_ts, newest if a.check else None)
+    problems = gates(prev_ts, newest if a.check else None,
+                     doing_is_fatal=a.check)
 
     if a.check:
         problems += todo_scan(newest) if newest else ["no handoff file written yet"]

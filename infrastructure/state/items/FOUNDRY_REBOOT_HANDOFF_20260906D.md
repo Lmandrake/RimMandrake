@@ -157,12 +157,27 @@ worth knowing before you use it:
 - **Say HANDOFF READY once.** With no closes, filings or commits since the last
   handoff it prints ALREADY HANDED OFF and writes nothing.
 
-⚠️ Two bugs in its first draft are recorded in `selftest_handoff.py`, both of the
-kind that leave a gate looking fine while doing nothing: it selected the
-uncommitted handoff it was writing as its own window start, and the doing-check had
-no window at all and named 47 items from three sessions back. **A gate that fires
-every time is a gate nobody reads.** The selftest's assertions are mostly about the
-gate being silent when it should be, because that is the half that broke.
+⚠️ Four bugs in its first draft are recorded in `selftest_handoff.py`, all of the
+kind that leave a gate looking fine while doing nothing:
+
+1. It selected the **uncommitted handoff it was writing** as its own window start,
+   so the window began "now" and the scoping vanished.
+2. The doing-check had **no window at all** and named 47 items from three sessions
+   back. **A gate that fires every time is a gate nobody reads.**
+3. The write-mode gate **blocked you from creating the file that discharges it** —
+   you cannot write "What is half-done" into a file that does not exist. Write mode
+   now pre-fills the open items into that section; only `--check` is fatal. A gate
+   you cannot satisfy honestly teaches you to reach for `--force`.
+4. It picked the newest handoff **alphabetically**, and this directory has both
+   naming schemes live — `..._20260906C` and `..._202609062326`. Digits sort before
+   letters, so a fresh numeric stamp sorts *before* the older lettered ones.
+   **Filenames are not a clock**; selection now goes through git commit time.
+
+The selftest's assertions are mostly about the gate being SILENT when it should be,
+because that is the half that broke. One of them was itself wrong first — it
+asserted that name-order and time-order must disagree, which demands a coincidence;
+it now asserts the real property, that the file chosen carries the latest commit
+time of all candidates.
 
 ## Game / bridge / mod-list state at wrap
 
