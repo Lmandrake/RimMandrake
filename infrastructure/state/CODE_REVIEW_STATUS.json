@@ -8169,6 +8169,12 @@
     "hash": "f6251da76f7d23714abc7eafa5cfc9b50898e3eacb70c7e850cf73127099a04f",
     "sha": "1a5bf47b"
   },
+  "src/RimUtinni/UtinniShell/RimThemes/Utinni Shell/meta.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "c3cd069eef20e6bde89534741bb24a24ef435e7ae13a8d943839249136fa5787",
+    "sha": "72a87ae7"
+  },
   "src/RimUtinni/UtinniShell/_artsrc/gen_bg.py": {
     "cleanCount": 1,
     "date": "2026-09-05",
