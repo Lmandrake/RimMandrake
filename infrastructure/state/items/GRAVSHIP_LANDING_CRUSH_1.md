@@ -103,3 +103,60 @@ own doctrine says not to claim the latter without having watched it happen.
       the correct methods live.
 - [ ] Full behavioral proof: an actual crushed-obstacle landing and an
       actual blocked-thruster launch, watched happen on a live map.
+
+## Second candidate mod found, owner-installed 2026-09-06
+
+Owner subscribed Steam WS `3545384484`, **"Land On Anything"**
+(`nep.landonanything`, author Nepenthe) — downloaded to disk, NOT yet in
+`ModsConfig.xml`/active. Read its actual C# source (shipped in the
+Workshop download, not decompiled) — a real, mature, settings-driven
+implementation:
+
+- Patches the **same private method we do** —
+  `Designator_MoveGravship.IsValidCell` — via the identical
+  `AccessTools.Method` reflection approach. **Direct collision risk if
+  both mods are ever active together**; only one can safely own this
+  patch point.
+- Its terrain/roof/fog/thing/pawn refusals are each gated behind its own
+  mod-settings toggle, defaulting (presumably) to preserving vanilla
+  refusals — same `GenConstruct.CanBuildOnTerrain(TerrainDefOf.Substructure)`
+  check we use for water/lava, same `cell.Roofed(map)` check we rely on
+  vanilla for mountains. **With `allowedToLandOnAnyTerrain` and
+  `allowedToSqishRoofs` left off, this mod satisfies the same ruling ours
+  does** — not verified live, read from source only.
+- Patches thrusters via `CompGravshipThruster.IsBlocked`/`.IsOutdoors`
+  (two different members than the `CompGravshipThruster.Blocked` getter
+  our mod patches) — **not yet confirmed whether these are the same
+  vanilla check under two names or two genuinely different code paths**;
+  worth a RimSage check before assuming equivalence.
+- **Materially different behavior from ours on the crushed obstacle
+  itself**: we DESTROY it outright
+  (`Patch_GravshipInitiateLanding_CrushObstacles`); this mod DAMAGES it
+  (fixed 25-30 or a configurable fraction of max HP via `DamageDefOf.Crush`)
+  — a building can survive a landing on this mod, never on ours. It also
+  does more than either the owner's spec or our build: a recursive
+  radius-2 "clear ring" around the ship (damages/despawns non-plant,
+  non-pawn things adjacent to the footprint, not just under it), automatic
+  steam-geyser removal under the footprint, mote VFX, and a shuttle-landing
+  variant of the same permissiveness. None of this was requested, but none
+  of it violates the ruling either.
+- Also patches `RoyalTitlePermitWorker_CallShuttle.GetReportFromCell`
+  (shuttle landing), a surface our own mod never touched.
+
+**Also newly confirmed, independent of the new mod**: on the CURRENT live
+full-596 list, **only `mf.jfklanding` is active** — the mod this item
+already decompiled and rejected as unfit (permits landing in lava, deep
+water, and on mountains; its takeoff/thruster patch is a no-op). Our own
+`mandrake.rm.gravshipcrushlanding` is built and proven-loading but is
+**not currently active on the full list** (only ever run on the minimal
+test list). So right now, tonight, the owner's own ruling
+("only mountains, deep water and lava should block") is **not actually
+enforced** on his live save — `mf.jfklanding` would wave a landing through
+anywhere.
+
+**Left for the owner's call, not decided here**: destroy-outright (ours)
+vs. damage-with-possible-survival (Land On Anything) is a real gameplay-
+flavor choice, not a criteria question — both satisfy the stated ruling.
+Whichever is chosen, `mf.jfklanding` needs to come OFF the active list
+first (it's currently the only one of the three actually running, and it's
+the one everyone already agrees is wrong).
