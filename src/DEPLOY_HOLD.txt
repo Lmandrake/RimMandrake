@@ -138,3 +138,35 @@ GravshipAstronautFix/Textures/Things/Structures/GravshipGenebank/GravshipGeneban
 # that has a rendered destination. If a facing set is missing from Textures/,
 # copy THAT file — do not lift this hold.
 SeaBeasts/art/*   # BENCH: art SOURCE, never shipped; Textures/ carries the game copies
+
+# --- Armoury/Defs/Absorbed_KotorCore: HELD until guy762.mm.kotorcore retires --
+# 2026-09-06 (FOUNDRY), ARMOURY_ABSORBED_KOTORCORE_DUPES_1. These files carry a
+# header saying "do NOT deploy this file until it retires, or duplicate defNames
+# result" — and they were deployed anyway while the donor is still active. This
+# hold is that header made mechanical, because a comment nobody reads is not a
+# rule.
+#
+# MEASURED against the 2026-09-05T14-41-26Z DefDump (modCount 596, both mods
+# active) and the donor's own XML on disk:
+#   918 defNames declared here, ALL 918 also declared by guy762.mm.kotorcore
+#   (849 concrete + 69 Abstract="True"), plus 136 Name= abstracts, all likewise
+#   already declared by the donor. This folder adds NOTHING the load lacks.
+#   134 of the 918 differ from the donor's current content, 99 of those in an
+#   actual leaf VALUE (the other 35 only in element nesting) — our absorbed copy
+#   is a frozen 2026-08-31 snapshot and the donor has moved on.
+#
+# ⛔ And ours SILENTLY wins. Verse/DefDatabase<T>.AddAllInMods orders mods by
+#   OverwritePriority then load index, and on a defName it already holds it
+#   Remove()s the earlier def before Add()ing the new one — so no "Adding
+#   duplicate" ever logs. Neither About.xml sets overwritePriority, and Armoury
+#   is loadOrder 575 against kotorcore's 573: we overwrite the donor on every
+#   one. The dump confirms it — all 849 concrete names come back owned by
+#   mandrake.rsw.armoury, none by guy762.mm.kotorcore.
+#   ⇒ 99 defs are playing our STALE values instead of the donor's, invisibly.
+#
+# ⇒ LIFT when guy762.mm.kotorcore leaves ModsConfig.xml — that is the whole
+#   reason this folder exists, and on that day it becomes the only source of
+#   these 918 defs. Absorbed_KotorWeapons and Absorbed_AdditionalMods keep
+#   deploying: their donors are already gone, and the abstract parents they
+#   reach for come from the live kotorcore meanwhile.
+Armoury/Defs/Absorbed_KotorCore/*   # FOUNDRY: donor guy762.mm.kotorcore still active, 2026-09-06
