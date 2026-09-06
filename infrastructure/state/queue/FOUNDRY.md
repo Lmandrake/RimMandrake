@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-06T22:10:31Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-06T22:17:01Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -459,15 +459,6 @@ kind:     bug
 summary:  (no items/ARMOURY_GEN_HANDEDIT_DESYNC_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/ARMOURY_GEN_HANDEDIT_DESYNC_1.md
 
-## MEGAFAUNAYIELD_GEN_BEHIND_1 MegafaunaYield.xml is 1159 xpaths behind its generator, and a minimal-list regen of it was found uncommitted in the tree
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  (no items/MEGAFAUNAYIELD_GEN_BEHIND_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/MEGAFAUNAYIELD_GEN_BEHIND_1.md
-
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -813,3 +804,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/COLD_LOAD_RUN_SHEET_4.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/COLD_LOAD_RUN_SHEET_4.md
+
+## DOCTRINE_LOADAFTER_STALE_1 Doctrine's About.xml loadAfter no longer covers what its patches touch
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DOCTRINE_LOADAFTER_STALE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DOCTRINE_LOADAFTER_STALE_1.md
