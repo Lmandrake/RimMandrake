@@ -551,189 +551,161 @@ what is even possible.
 
 *Asked for by the owner: "analyze this plan and skeptically review it. Find the
 shortest path to high quality playmaps without hundreds of human hours authoring
-content." Nothing below is a decision until §8 says so.*
+content." A first draft of this section proposed transplanting the 44 hand-authored
+maps as shipped content; the owner corrected it the same day: **"We really had
+intended to make algorithms capable of generating 'maps like this' — not some kind of
+nearest neighbor metric. I think we really need that. The maps were there simply as
+training or comparator data."** This is the corrected version. The goal is a
+GENERATOR; the corpus calibrates and grades it and is never shipped. Nothing below
+is a decision until §8 says so.*
 
 ### 9.1 What the plan gets wrong, or under-weights
 
 1. **It proved plumbing, not quality.** Every CONFIRMED line in §5 is "a mechanism
-   exists." None touches where beauty comes from. The plan's quality answer is
-   "five metrics + 22 rules + a human looks" — the exact bottleneck it set out to
-   remove.
-2. **The denominator is small and nobody wrote it down.** A gravship campaign
-   generates a map per landing — plausibly 20-60 landings in a playthrough, not
-   thousands. The target is *dozens of great maps with variety*, not infinite
-   procedural quality. That reframes every cost below.
-3. **The biggest shortcut is buried in §5.6 and then ignored in §6.4.** P15/P16:
-   Vanilla Landmarks Expanded already ships a complete, zero-C# pipeline —
-   `PrefabDef` + `TileMutatorDef` (VEF `GenericPrefabSpawner`) + `LandmarkDef` —
-   from an XML file to "scattered on the landing map, ship lands around it." P2
-   confirmed the live exporter. Yet §6.4 names two custom C# workers (P10, P11) as
-   the first BUILD items, before this XML-only route has been exercised end-to-end
-   *once*.
-4. **Natural terrain is the hard part and the plan's answer there is weakest.**
-   Hand-authored maps are beautiful mostly because of ONE dominant landform (§5.5
-   rule 2), and that is L1. But ~250 terrain mutators/landforms are already on the
-   owner's list (vanilla ~50, VLE 151, Geological Landforms 44, Alpha Biomes). The
-   shortest L1 path is *curating which mutators each frozen tile carries* — data
-   entry with a screenshot loop — not writing a mask-stamping worker (P10) for
-   shapes nobody has yet shown to be missing.
-5. **The metric (`beautiful_tilemap.md` §6, §10) is a trap at this scale.** Learning
-   "interesting" from 44 maps is a research project whose output is a number that
-   must then be validated against the owner's eye anyway. At dozens of maps, the
-   owner's eye plus a review save IS the metric and is already tooled (review
-   sheets, grid saves). Build a metric only if review volume becomes the bottleneck.
-6. **L3 (residents) is the sink where hundreds of hours would go.** Inhabited is
-   "not proven live end to end" with two broken entry points. A *functioning*
-   settlement is a simulator. A settlement that *reads* as functioning is a KCSG
-   shell + a few pawns with `DefendPoint`/sleep lords — which is exactly what P8
-   proved and what Samuel Streamer's "guards at a door" actually is.
-7. **The LLM is aimed at the wrong altitude.** P5 has it authoring cells in Lua —
-   the same level a human authors at, with no reference to copy from. Its reliable
-   role is *composer*: pick scenes from a library, site them by the anchor rule,
-   write the history/dressing layer. Cell-level authoring stays a minor pathway.
-8. **The 44 hand-authored maps are the spine, not "one factory of three" — and the
-   plan treats them as a chunk quarry.** (Owner, mid-review: *"take into account the
-   LARGE number of beautiful hand made maps we already downloaded."*) Chunk-cutting
-   throws away the thing that makes them beautiful — the terrain coherence and the
-   one dominant landform (§5.5 rules 2-4) that a ruin fragment loses the moment it
-   is quilted elsewhere. The higher-value use is **whole-map or large-region
-   transplant**: P13 confirmed the engine already consumes a whole 203×203 map as
-   flat XML (`CustomMapDataDef`: terrain + things + roofs + faction), spawned at
-   mapgen by a `SitePartDef`; P4 confirmed a corpus `.rws` carries exactly those
-   layers as plain XML. So a corpus map → `CustomMapDataDef` converter is a
-   format translation, not content authoring — and 44 maps against ~20-60
-   landings per campaign means **the corpus alone could carry most of the maps a
-   player ever sees.** The humans already spent the hundreds of hours. Chunk
-   cutting into `PrefabDef`s is the secondary use, for the scene library.
-   Unmeasured risks, each answerable on ONE save: def remapping to the live mod
-   set; terrain-palette remap for a desert world (how many of the 44 are arid, and
-   what a biome-table swap does to the rest — `biome_terrain_palette.md` exists for
-   this); map-size mismatch (250²-500² vs the campaign's size); the gravship
-   footprint (`UsedRects`) landing on a fully authored map; and fog/roof/region
-   state after a whole-map spawn. Attribution if the campaign is ever published
-   is a separate question, not a technical one.
+   exists." None touches where beauty comes from, and its answer to that is "a
+   human looks" — the bottleneck it set out to remove.
+2. **It has no generator.** §6.2 lists layers and mechanisms; the "content factory"
+   column says LLM / corpus / hand. There is no algorithm anywhere in the plan that
+   takes a biome sheet and a seed and produces a map with one dominant landform,
+   hydrology with a cause, and a focal anchor. The 22 rules (§5.5) and the
+   creators' seven-stage workflow (atlas §7) ARE that algorithm's specification,
+   written in prose, and nobody has implemented a line of it.
+3. **The corpus is under-used as data.** 44 maps × 62k-250k cells is thin for
+   learning GLOBAL structure (one landform per map = 44 examples of composition)
+   and abundant for LOCAL structure (boundary shape, ecotone width, patch size,
+   terrain adjacency = millions of cell neighbourhoods). The plan uses it for
+   neither: `beautiful_tilemap.md` §6 proposed features and then stalled on
+   "which metric," and no statistic has been computed.
+4. **The metric argument was framed as a JUDGE and rejected as one.** Rightly — a
+   nearest-neighbour score against known maps is not what anyone wants. But the
+   same statistics serve two other jobs the generator cannot do without:
+   **calibration** (set the generator's parameters so its outputs land inside the
+   corpus distribution on region size, edge complexity, openness, adjacency) and
+   **regression** (a change to the generator that pushes outputs out of that
+   distribution is caught without a human looking). Without them, every tuning
+   iteration is by eye — which is the hundreds of hours coming back in disguise.
+   The owner's eye stays the judge; the statistics stop it being the only
+   instrument.
+5. **The biggest generative asset on the machine is not in the plan.** P14 read
+   Geological Landforms as "editor-serialised node graphs, not hand-authorable."
+   Read again (2026-09-06): the files are plain XML node graphs over a small typed
+   vocabulary (`gridPerlin`, `gridLinear`, `gridOperator`, `gridRotate`,
+   `valueRandom`, `worldTileReq` with commonness and tile requirements, output
+   nodes for terrain/elevation/fertility/biome grid/caves/water flow/patches/
+   scatterers). Forty-four shipped landforms — DesertPlateau, DryLake, Badlands,
+   Canyon, Oasis, Crater, Rift, Gorge, Sinkhole, Caldera, Cirque, LoneMountain,
+   Valley, SecludedValley among them — are forty-four worked examples of how to
+   COMPOSE that vocabulary into a landform. GL evaluates them in-engine at mapgen,
+   with real water flow and caves — things a painted terrain mask can never do —
+   and Map Preview renders the result for a tile without generating a map.
+   **A program that writes GL graphs is a terrain generator with the engine as its
+   renderer.** Whether GL loads a file we wrote (not its editor) is one probe.
+6. **Natural terrain is the hard part and the plan's answer there was the
+   weakest.** ~250 mutators/landforms already on the list give engine-quality
+   dominant landforms today, for free, by assignment. That is the floor. The
+   generator is what raises it above what the engine ships.
+7. **Beauty is ONE idea per map, and generators produce mush.** Every corpus map
+   and every creator note says: one premise, then subtract everything that
+   contradicts it (§5.5 #2, #10). A generator that scatters a crater AND a river
+   AND ruins AND a cavern on every map will fail exactly the way vanilla does. The
+   first thing the generator must do is CHOOSE — one landform, one anchor, one
+   history — and the second is delete.
+8. **The LLM was aimed at the wrong altitude.** P5 had it authoring cells in Lua.
+   Its reliable job is the compositional layer: write the PLAN (which landform,
+   where the water goes and why, where the anchor is, what history the ruins
+   tell), graded by a comparator sheet, and never at runtime. Deterministic code
+   paints cells.
+9. **L3 (residents) is the sink.** A *functioning* settlement is a simulator. One
+   that *reads* as functioning is a shell plus guards with `DefendPoint` — which P8
+   proved live. Do the cheap version.
+10. **The iteration loop is not designed.** A generator is tuned by looking at
+    hundreds of outputs. A game load per look is impossible; a quicktest per look
+    (90 s) is too slow for hundreds; today there is no offline renderer of a
+    terrain grid at all (`crater.py` only screenshots). The loop must be offline
+    — grid → PNG — with the game only at milestones.
 
-### 9.2 The shortest path, in order
+### 9.2 What "algorithms that generate maps like this" can realistically mean
 
-| # | step | what it proves / yields | cost | code |
+Three levels, by what the corpus can teach at that level:
+
+| level | what it is | what the corpus can teach | method |
+|---|---|---|---|
+| **Macro** — the one idea | dominant landform, hydrology with a cause, the focal anchor, negative space | little by statistics (44 examples), a lot by reading: the 22 rules + the seven stages are ALREADY extracted | a procedural grammar in Python, or GL graphs composed by Python, or an LLM-written plan — all three produce a PLAN + a mask |
+| **Meso** — texture of the idea | how the landform meets the plain, terrace widths, ridge continuity, dry-riverbed braiding | the corpus's region-size and edge-complexity distributions, per landform class | scatter.py primitives (`fbm`, `walk`, `blob`, `ring`, `zones`) with parameters CALIBRATED to corpus statistics |
+| **Micro** — the cells | boundary jaggedness, ecotone bands, patch shapes, terrain adjacency | millions of neighbourhoods — this is where "training data" literally applies | example-based synthesis (WFC / neighbourhood statistics) constrained by the macro mask; or simply dithered noise calibrated to corpus adjacency stats, if that already passes the comparator |
+
+Deep learning on 44 maps for macro structure is not viable and is not proposed.
+Example-based synthesis for micro structure is standard, small (a few hundred lines),
+and has a kill criterion: if a comparator sheet shows it no better than calibrated
+dither, drop it.
+
+### 9.3 The shortest path, in order
+
+| # | step | what it yields | cost | code |
 |---|---|---|---|---|
-| **1** | **Transplant ONE corpus map onto ONE frozen tile.** Pick the most arid of the 44; convert `.rws` → `CustomMapDataDef` (terrain + things + roofs, defs filtered/remapped to the live set); spawn it at mapgen on a quicktest via the P13 route (Ancient Urban Ruins' `SitePartWorker_CustomMap`, or our own GenStep reading the same shape if the dependency is refused); land a gravship on it; screenshot; read fog/roof/regions back | whether the spine of the whole plan works: authored beauty arrives intact, and the five risks in §9.1 #8 get real numbers | one day | Python converter + one SitePartDef/GenStep |
-| **2** | **Corpus census for fit.** For all 44: biome, size, distinct mod defs, arid-or-not, dominant landform, one rendered thumbnail each; one review sheet; owner ranks which tiles they belong on | the transplant roster — how much of the campaign the corpus covers *as is* | half a day, offline (`savemap.py` + P4's iterparse) + one review hour | Python only |
-| **3** | **Mutator census + assignment for the tiles the corpus does NOT cover (L0/L1).** Quicktest each of the ~250 mutators/landforms with a forced tile, screenshot, contact-sheet, owner keeps/cuts; assign per biome sheet (`WORLD_MUTATOR_LANDMARK_IMPORTERS_1` already exists) | engine-quality dominant landform for every remaining landing | 1-2 days, screenshot loop + one review hour | none |
-| **4** | **One scene end-to-end through the XML-only VEF route.** Build live or cut a chunk from a corpus map → `PrefabDef` → `TileMutatorDef` (VEF spawner) → `LandmarkDef` → quicktest landing → screenshot | the L2/L4 spine for dressing mutator-generated tiles with corpus-quality structures | half a day | none |
-| **5** | **Corpus chunk cutter.** Rect-cut rooms/ruins/features from the 44 saves into `PrefabDef`s; ~200 thumbnails on one review sheet; owner keeps/cuts | the scene library for step 4, from hours someone else spent | 1-2 days + one review hour | Python only |
-| **6** | **Residents, cheap version.** KCSG shell or a corpus base + `lord-defend-spawn` + sleep; fix Inhabited's entry points only when a specific scene needs more | "inhabited" that reads as such | per scene, small | none new |
-| **7** | **LLM as composer.** Biome sheet ¶ + scene library → siting + dressing + history plan; rimplace cell authoring only for one-off novelties | variety without per-map hand work | after 5 | prompt + siting glue |
-| **8** | **Quality loop = review saves + the owner's eye.** Rules 6 and 8 as a linter where computable; no learned metric | the grader, already tooled | ongoing | small |
+| **1** | **P17 — GL round-trip.** Copy `LandformDesertPlateau.xml`, change Id/name/one Perlin parameter, place it where GL loads custom landforms, quicktest a tile that meets its requirements, Map Preview it | whether the engine will render OUR generated terrain graphs — decides the whole terrain route | 1-2 h, bridge | none |
+| **2** | **R1 — offline terrain-grid renderer.** `savemap.py` grid (or a generated grid) → PNG, one fixed palette (colours from the captured terrain textures, `render-offline-from-live-captures`) | the iteration loop: hundreds of looks with no game | half a day | Python |
+| **3** | **R2 — corpus statistics.** Hash-only topology features over all 44 (no def names needed, `beautiful_tilemap.md` §6a): region-size distribution, perimeter/area per region, openness, adjacency structure, chokepoint count; stratified by size and version; plus the same over 10 vanilla-generated controls | calibration targets and the regression gate; the "is this map-like" instrument that is NOT a nearest-neighbour judge | half a day | Python |
+| **4** | **G1 — macro generator v0.** Input: biome sheet ¶ + seed. Chooser picks ONE premise (landform class from the GL/vanilla vocabulary + one anchor + one history line); emits a PLAN (JSON, human-readable) and a MASK. Output route depends on P17: a GL graph if yes, a mask for P10 if no. Rendered by R1; comparator sheet of 8 generated vs the 5 arid corpus maps at the same size; owner keeps/cuts | the first "map like this," or the exact way it is not | 2-3 days | Python |
+| **5** | **G2 — micro synthesis.** Neighbourhood statistics from the corpus grids applied under the G1 mask; comparator sheet vs calibrated dither | edges and ecotones that read as authored | 1-2 days; killed if no visible gain | Python |
+| **6** | **A1 — apply at mapgen.** If P17 yes: an emitter that writes the GL graph per tile (data-only, no C#). If no: P10, the mask-stamping `TileMutatorWorker` (C#, bounded) | terrain arrives at landing without a bridge pass | 2-3 days emitter, or 1-2 days C# | Python or C# |
+| **7** | **L2/L4 via the XML-only VEF route.** One scene end-to-end: rimplace template or live build → `PrefabDef` → `TileMutatorDef` (VEF spawner) → `LandmarkDef` → quicktest landing → screenshot. The corpus's ruin placements are the COMPARATOR for where G1 puts anchors | structures and dressing on generated terrain, no new C# | half a day | none |
+| **8** | **LLM as plan author.** Same PLAN schema as G1's chooser, written from the biome sheet ¶; graded by the same comparator sheet | compositional variety without hand work | after 4 | prompt + schema |
+| **9** | **Residents, cheap version.** Shell + `lord-defend-spawn` + sleep | "inhabited" that reads as such | per scene | none new |
+| **10** | **The loop.** R1 render → comparator sheet → owner keeps/cuts → R2 regression → tune → quicktest at milestones → review save with a grid key | the grader, with the owner as judge and statistics as the second instrument | ongoing | small |
 
-**Deferred until a need is shown:** P10 mask worker (name the landform neither the
-corpus nor vanilla can make first), P11 scatter defs (VEF's `plantDefsWithCommonality`
-may cover it), the `interest_evaluator`, the image-in-the-loop generator, and the
-GO-click bridge pass (kept only as the LLM-flavour pass; steps 1 and 4 make it
-unnecessary for terrain and structures).
+**Deferred until a need is shown:** image-in-the-loop (B1) as anything but an idea
+source; P11 scatter defs (VEF `plantDefsWithCommonality` may cover it); finishing
+Inhabited's entry points; the GO-click bridge pass (kept only as the LLM-flavour
+pass). **Dropped:** whole-map transplant and chunk-cutting-as-content (owner,
+2026-09-06 — the corpus is data, not content); any nearest-neighbour scorer.
 
-**What still needs a live proof before any of this is trusted:** steps 1 and 4 have
-never been run. Nobody has watched a corpus map spawn at a landing, and nobody has
-watched VEF's spawner place OUR prefab on OUR tile. Step 1 is first because if
-whole-map transplant works, it retires most of steps 3-5 for most tiles; it is the
-only thing here that costs more than a screenshot loop.
+### 9.4 The problems with the generative approach, honestly
 
-### 9.3 What agreeing to this actually means (owner asked, 2026-09-06)
-
-**The corpus, measured (2026-09-06):** 44 `.rws`; mod dependencies are LIGHT —
-median 11 mods (Core + DLCs + QoL), min 1, one outlier at 405 (Yirah Valley);
-versions 1.4 ×21, 1.5 ×16, 1.6 ×7. **Natively arid: 5 of 44** — In Memory of Rain
-(Desert 325²), Deserted Trader (Desert 275²), Lush River, Point Sea, Blood Gulch
-(Arid Shrubland, 250-275²). The other 39 are temperate / jungle / tundra / swamp /
-island. Campaign map size: UNMEASURED (not in `the_one_map.md` or
-`ASHKARR_WORLD_DEFINITION.md`); corpus sizes run 250²-500².
-
-**What the approach IS, concretely.** A Python converter reads a corpus `.rws`
-(terrain grid, roof grid, thing list with def/pos/rot/stuff/hp/quality/faction — all
-plain per P4) and writes a `CustomMapDataDef` (the P13 format: terrain → cells,
-things → placements, roofs → cells, pawns → counts). A table-driven pass in the
-middle: (a) drop/rename defs the live mod set lacks, (b) swap terrain and plants
-by biome table (`biome_terrain_palette.md`) so a temperate map becomes an Ash'karr
-map, (c) re-faction every player-owned thing (to none = ruin, or to an NPC faction
-= inhabited), (d) drop the original pawns. The def is spawned at mapgen on a chosen
-frozen tile; the gravship lands on it. Deliverables of step 1: the converter, one
-converted map, one screenshot of a gravship standing on it, and read-backs of
-fog/roof/regions. Deliverable of step 2: a review sheet of all 44 with thumbnail,
-biome, size, mod count, "landscape vs base" class, and a suggested tile; the owner
-ranks.
-
-**What is being agreed:**
-1. §9's reweighting is ruled into §8: the corpus is the spine; whole-map transplant
-   is tried FIRST, before any custom C# (P10/P11) or the metric.
-2. Two queue items get filed for FOUNDRY: the transplant proof (step 1) and the
-   fit census + review sheet (step 2). Nothing else in the queue moves.
-3. Ancient Urban Ruins' DLL is an acceptable dependency FOR THE PROOF ONLY (owner,
-   by card, 2026-09-06). Shipping needs our own reader — see problem 4 below for
-   why that comes sooner than "later."
-4. About one hour of the owner's eyes on the census sheet.
-5. Deprioritised, not killed: P10 mask worker, P11 scatter defs, the
-   `interest_evaluator`, image-in-the-loop, LLM cell-authoring (P5 track), and
-   finishing Inhabited's broken entry points. Each comes back when a specific
-   scene proves the corpus + mutators cannot make it.
-
-### 9.4 The problems with the approach, honestly
-
-1. **Only 5 of 44 fit Ash'karr as-is.** The other 39 need the biome swap in (b),
-   and a swap preserves TOPOGRAPHY, not ECOLOGY. A map whose beauty is a gulch, a
-   crater, a cliff line or a dry dam survives sand-for-soil; a map whose beauty is
-   a lush river valley with dense forest does not — rule 3 (hydrology with a
-   cause) breaks when the water is gone. Realistic yield is not 44: perhaps 5
-   direct + 10-15 remap-survivors ≈ **15-20 usable landing maps**, decided by
-   looking, one per census row. That still covers a large share of one campaign's
-   landings; it does not cover "most of the campaign" as §9.1 #8 hoped.
-2. **The story on the map is not ours.** A Cathedral (W44), a Sacrificial Altar
-   (W43), a Dead City (W58) carry someone else's narrative. Vanilla walls, floors,
-   rubble and ruins transfer cleanly; named or decorative things and any
-   modded-content set dressing need a per-map content-fit pass (30-60 min each,
-   owner or agent). This is real authoring time — hours, not hundreds of hours,
-   but not zero.
-3. **They were built as player START maps, not landing sites.** Many contain a
-   ready base with beds, stockpiles, power. Re-factioning (c) turns that into a
-   ruin or an NPC settlement — a per-map design choice. "Landscape" maps (Estuary,
-   Lake Lands, Blood Gulch, Point Sea) are the ideal case and need no such
-   choice; "base" maps are the ones the census must classify.
-4. **The P13 route is a quest-SITE mechanism.** `CustomMapDataDef` is spawned by a
-   `SitePartDef`, i.e. the tile must be a Site world object — which puts a site
-   icon on the frozen world map and may change what a landing there means
-   (quest-site semantics, timeouts). For a plain frozen tile, OUR OWN
-   `TileMutatorWorker`/`GenStep` that reads the same XML shape is needed. That is
-   a bounded C# item (parse → `SetTerrain` / `GenSpawn.Spawn` / `SetRoof`), but it
-   is needed for the FIRST real tile, not "eventually." The AUR dependency proves
-   the format spawns; it does not prove the landing.
-5. **The gravship footprint.** `ReserveGravshipArea` runs at order 600, AFTER
-   critical structures (500). On a fully authored map there may be no clear rect
-   of the ship's size where the creator intended nothing. Outcome unknown: ship
-   overwrites part of the map, or lands somewhere absurd, or fails. Step 1
-   measures this; the fix (leave a designated clear rect per map, or spawn the
-   map at a later order with the ship rect masked) is small once seen.
-6. **Fixed, not varied.** A transplanted tile is the same map every landing. That
-   is consistent with a frozen world (tile identity is a feature) and irrelevant
-   within one playthrough, but it is zero procedural variety on those tiles, and a
-   replay sees the same maps.
-7. **Version drift.** 21 maps are 1.4. Some vanilla defNames changed 1.4→1.6;
-   every unmapped def is a hole in the map. A rename table is finite and
-   measurable on ONE 1.4 map before committing to the rest.
-8. **Map size.** Campaign size unmeasured; corpus 250²-500². Odyssey/VEF mutator
-   extensions carry a per-tile map-size override (P16), which would let each
-   transplant tile match its source map's size — untested. Cropping a composed map
-   is the fallback and costs composition.
-9. **Fog/roof/regions after a whole-map spawn** — spawned at order 500 they sit
-   before Fog (1500), so the engine should compute them normally. "Should" — P9
-   proved the live-edit case, not the mapgen case. Step 1 reads it back.
-10. **The converter is 1-3 days, not 1**, if the rename table and the biome swap
-    are made robust rather than one-off. Per-map fit passes add 10-20 hours across
-    15-20 maps. Total is still an order of magnitude under hand-authoring.
-11. **If step 1 fails**, the cost is one to three days; steps 3-5 (mutator
-    assignment, VEF prefabs, chunk cutting) stand on their own and the corpus
-    still feeds chunk cutting. The plan does not collapse — its best case does.
-12. **Attribution.** Other creators' work, downloaded from their public repos.
-    Fine for a private campaign; a published campaign owes them credit or
-    permission. Not a technical problem; not nothing either.
+1. **44 examples of composition is not a training set; it is a reference shelf.**
+   The macro layer is hand-designed from the rules, calibrated by statistics,
+   judged by eye. If the rules are wrong, nothing downstream fixes them. The
+   comparator sheet in step 4 is the first place this shows.
+2. **The chooser is the whole game.** A generator that produces one strong idea
+   per map is rare; the default failure is "everything everywhere." Step 4 must be
+   graded on ONE thing first: does each output have a single readable premise at
+   thumbnail size, before anything else is scored.
+3. **P17 could fail** — GL may only load landforms through its editor, or may
+   validate graphs in ways a copied file violates. Then terrain goes through P10
+   (painted masks): no real water flow, no caves from the generator, roofs and
+   regions computed by the engine after the stamp. Lower ceiling, still workable,
+   and the C# is bounded.
+4. **P17 could succeed and still be a trap** — composing GL graphs well means
+   learning GL's node semantics (what `gridLinear` with those nine sides does). The
+   44 shipped graphs are the documentation. Budget: if a Python-written
+   DesertPlateau variant does not preview correctly within a day of P17 passing,
+   the emitter is the wrong tool and P10 is the route.
+5. **Statistics can be gamed by the generator you tune with them.** Region-size and
+   edge-complexity distributions can match while the map is nonsense. R2 is a
+   regression gate and a calibration target; it is NEVER the acceptance test. Every
+   acceptance is a comparator sheet the owner looked at.
+6. **Confounds in the corpus** (from `beautiful_tilemap.md` §6b): three game
+   versions, eight sizes. A statistic that detects "is 500²" passes while measuring
+   nothing. Stratify; match controls on size.
+7. **Micro synthesis can look authored and path terribly** — one-cell chokepoints,
+   sealed pockets. Rule 8 gates (connectivity, buildable area) run on every output
+   before the sheet; P12 proved them computable.
+8. **The desert world narrows the vocabulary.** Ash'karr stays desert
+   (`ashkarr-local-features-not-repaints`). Of the corpus, 5 maps are arid; of GL's
+   44 landforms, roughly a dozen fit. That is enough to build and calibrate on; the
+   dryland ladder's other biomes (damp chain, crags, nightside) each need their own
+   sheet paragraph before the generator has anything to choose from.
+9. **The offline renderer is a prerequisite everyone skips.** Without R1 every look
+   costs a quicktest. Half a day, before the generator, not after.
+10. **Time, honestly.** Steps 1-6 are two to three weeks of one agent, most of it
+    offline Python with the owner looking at sheets every few days. The payoff is
+    open-ended variety at zero per-map cost; the risk is that step 4's first sheet
+    says "one strong premise" is harder than the rules make it look — and that is
+    a finding worth two weeks, because it is the finding the whole plan rests on.
+11. **What the corpus cannot tell us at all:** why a creator chose THAT landform
+    for THAT tile. The biome sheets carry that, per biome; the world's frozen
+    landmarks carry it per tile. The generator's chooser reads both; neither is
+    complete yet.
 
 ## 8. Decisions
 
