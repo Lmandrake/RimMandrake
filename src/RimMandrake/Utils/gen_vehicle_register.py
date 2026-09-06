@@ -139,8 +139,6 @@ TEXCACHE = "/tmp/claude-1000/creature_register_texindex.json"   # shared with th
 # hands MeshPool. No fitted constant, no bodySize term.
 PX_PER_CELL = 64          # RimWorld's own texture-to-world ratio for a 1x1 thing
 HUMAN_CELLS = 1.5         # a vanilla humanlike body graphic is drawn at 1.5 cells
-HUMAN_TEX = "Things/Pawn/Humanlike/Bodies/Naked_Male"
-HUMAN_PKG = "ludeon.rimworld"
 SCALE_CAP = 1500          # px; a bigger canvas is downscaled and SAYS so
 DETAIL_BOX = 280          # px; the fixed-size art-inspection sprite
 
@@ -939,14 +937,6 @@ def render_art(rows, force=False):
     idx, _ = _texture_index()
     bundles, _n = ACS.load_bundle_index()
 
-    human = None
-    hf, _r = _resolve(HUMAN_TEX, HUMAN_PKG, idx, bundles)
-    if hf:
-        try:
-            human = Image.open(hf).convert("RGBA")
-        except Exception:                                   # noqa: BLE001
-            human = None
-
     stats = {"placed": 0, "missing": 0, "blank": 0, "capped": 0}
     for r in rows:
         base = os.path.join(ART_DIR, re.sub(r"[^A-Za-z0-9_.-]", "_", r["defName"]))
@@ -986,7 +976,7 @@ def render_art(rows, force=False):
         cells = _render_cells(r)
         box = max(8, int(round(cells * PX_PER_CELL)))
         r["art"]["pxPerCell"] = round(max(im.width, im.height) / float(box), 3)
-        panel = _scale_panel(im, box, box, human, Image, ImageDraw)
+        panel = _scale_panel(im, box, box, Image, ImageDraw)
         shown = 100
         if max(panel.size) > SCALE_CAP:
             k = SCALE_CAP / float(max(panel.size))
@@ -1054,7 +1044,7 @@ def _human_figure(hh, Image, ImageDraw):
     return fig
 
 
-def _scale_panel(im, w, h, human, Image, ImageDraw):
+def _scale_panel(im, w, h, Image, ImageDraw):
     """The vehicle at true screen size, a 1-cell grid behind it, a human beside it.
     Contain-fitted into the drawSize box, aspect preserved — never stretched."""
     hh = int(round(HUMAN_CELLS * PX_PER_CELL))
@@ -1792,7 +1782,12 @@ RENDER_JS = r"""
 
 
 def _inject_render(html):
-    return html.replace("<script>\n\"use strict\";", RENDER_JS + "\n<script>\n\"use strict\";", 1)
+    anchor = "<script>\n\"use strict\";"
+    if anchor not in html:
+        die("the review-sheets template no longer opens its script with "
+            "'<script>\\n\"use strict\";' — the RENDER block would be silently "
+            "dropped and every row would fall back to the template's default body.")
+    return html.replace(anchor, RENDER_JS + "\n" + anchor, 1)
 
 
 def write_sheet(rows, meta):
@@ -1874,6 +1869,11 @@ def write_prefill(rows, meta, override=False):
         dec[r["defName"]] = {"decision": pre, "prefill": pre, "prio": prio, "note": ""}
 
     doc = dict(existing)
+    if override:
+        # The file now holds the generator's guesses, not the owner's decisions —
+        # leaving these stamps in place would keep claiming otherwise.
+        for k in ("savedBy", "writeCount"):
+            doc.pop(k, None)
     doc.update({
         "sheetId": "vehicle_register",
         "posture": "blacklist",
