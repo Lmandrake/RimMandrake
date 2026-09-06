@@ -31,3 +31,11 @@ census_building_graphics.tsv
 # for a presentation slide), not borrowed pixels. A re-run would be a different image,
 # so the file itself is the artifact. Tracked.
 !pantheon_slide.png
+
+# ✅ AND the shrine hologram / first-boarding lore pieces, and the planet-from-space
+# renders — all our own Codex generation (2026-09-05, owner-commissioned), not borrowed
+# pixels. Each is non-reproducible (a re-run differs), so the file itself is the
+# artifact, same rationale as pantheon_slide.png above.
+!shrine_hologram_nine_gods.png
+!jawa_first_boarding_utinni.png
+!planet_ashkarr_*.png
