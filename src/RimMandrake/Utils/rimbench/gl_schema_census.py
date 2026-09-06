@@ -421,7 +421,7 @@ def main():
     # 6. minimal graph sketch
     lines.append("## 6. Minimal-graph sketch (DesertPlateau: Perlin sources -> outputs)\n")
     if sketch_lines:
-        lines.extend(f"```\n{l}\n```" if False else l for l in sketch_lines)
+        lines.extend(sketch_lines)
     else:
         lines.append("UNMEASURED - LandformDesertPlateau.xml was not found among the parsed files.\n")
     lines.append("")
