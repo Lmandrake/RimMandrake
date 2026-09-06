@@ -2824,10 +2824,10 @@
     "sha": "8e8fe001"
   },
   "src/RimMandrake/Utils/weapon_tag_audit.py": {
-    "cleanCount": 1,
-    "date": "2026-09-02",
-    "hash": "0bae0b815bef53010a7066aa52993b8f68e021e3e334b58810e132fc04e0924c",
-    "sha": "69ea9703"
+    "cleanCount": 2,
+    "date": "2026-09-06",
+    "hash": "e3c6070d52228d912b437ff4eb26e3fb23dcdebe5c003b963cdf105120b8df72",
+    "sha": "a12758af"
   },
   "src/RimMandrake/Utils/whats_new.py": {
     "cleanCount": 1,
@@ -6586,16 +6586,16 @@
     "sha": "6e222c8c"
   },
   "src/RimStarWars/SeasWaterline/About/About.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "2165c7556d134b8c05cfd8ad89a653483d3d6beebd9243ccf23d32b31261c454",
-    "sha": "deb54d02"
+    "cleanCount": 2,
+    "date": "2026-09-06",
+    "hash": "97c665caf5133737d628fd105997342c524a1b4c8c228932c970245b3d569a88",
+    "sha": "a12758af"
   },
   "src/RimStarWars/SeasWaterline/Patches/Waterline_Lane1.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "cd8da8be772f8c363ac5b5812c8fd5a67580413878a01f38e29df914b5722b46",
-    "sha": "deb54d02"
+    "cleanCount": 2,
+    "date": "2026-09-06",
+    "hash": "75ffab558da1c78ad9a13996febbbbf74b91afa18101e41c2b37d3b20a52db9a",
+    "sha": "a12758af"
   },
   "src/RimStarWars/StarWarsPatches/About/About.xml": {
     "cleanCount": 1,
@@ -6760,10 +6760,10 @@
     "sha": "98863702"
   },
   "src/RimStarWars/StarWarsPatches/Patches/WeaponTags_Renormalise.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "770f034b1f678827818128d61f631a970007f97b38a9989047bc7a49ed20274a",
-    "sha": "98863702"
+    "cleanCount": 2,
+    "date": "2026-09-06",
+    "hash": "09ed812d3af4ae155e9f3c692958c7b3fa5d89f3f49804ad5f21a0eb58d4aa29",
+    "sha": "a12758af"
   },
   "src/RimStarWars/StarWarsRaces/About/About.xml": {
     "cleanCount": 1,
@@ -7102,10 +7102,10 @@
     "sha": "4201a45a"
   },
   "src/RimUtinni/Doctrine/About/About.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "13776ba64a547817730740feb633e129e1ff2bb15767d6911c17308bb31bbbc4",
-    "sha": "c9acb340"
+    "cleanCount": 2,
+    "date": "2026-09-06",
+    "hash": "04ee9756a76d7c242b789648dce7b6b0159429d78b0598fb056a6bc7c3997eb7",
+    "sha": "a12758af"
   },
   "src/RimUtinni/Doctrine/Patches/DroidsAreMachines.xml": {
     "cleanCount": 1,
