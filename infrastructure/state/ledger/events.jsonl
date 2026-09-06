@@ -5069,3 +5069,11 @@
 {"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"map-injection live probes P2/P3/P8/P9/P12","ts":"2026-09-06T17:07:20Z"}
 {"seat":"BENCH","event":"file","id":"GIZKA_TRIBBLE_ADAPTATION_1","title":"Examine the subscribed (not installed) Tribble module; design the Gizka ship-pest event — cute first, real problem after; check Absorbed_KotorCore for donor art","kind":"task","target":"v1","needs":"offline","for":"BENCH","ts":"2026-09-06T17:10:42Z"}
 {"seat":"BENCH","event":"file","id":"GEONOSIAN_BRAINWORM_MORPH_1","title":"Research Space Worms mod + Geonosian brain worm canon (Brain Invaders arc), author our own RSW_ brain worms — cold-vulnerable, host-puppeting","kind":"task","target":"v1","needs":"offline","for":"BENCH","ts":"2026-09-06T17:10:42Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-06T17:19:35Z"}
+{"seat":"FOUNDRY","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-09-06T17:20:43Z"}
+{"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-09-06T17:23:20Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"recapture map-injection probes P2/P3/P8/P9/P12, resume synthesis after ctrl-z freeze","ts":"2026-09-06T17:24:44Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-06T17:30:08Z"}
+{"seat":"BENCH","event":"file","id":"HORRORWASTES_BIOME_DISSOLVE_1","title":"Dissolve the HorrorWastes biome: re-biome its 1,711 tiles into neighbors (Deadstone receiving def ruled at the PropaneLakes sitting), re-freeze, re-home 29 cast rows","kind":"task","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-06T18:06:41Z"}
+{"seat":"BENCH","event":"file","id":"HORRORS_RAIDING_FACTION_1","title":"Horrors become a RAIDING faction (no settlements, nightside-gated encounters) + nests/sinkholes/crysalises injected as nightside dungeon content — the starved-cold Assailant weapon on patrol","kind":"task","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-06T18:06:41Z"}
+{"seat":"BENCH","event":"file","id":"OCULAR_OVERDRIVE_SITE_1","title":"Ocular Forest stays as a named site (the Overdrive, 3 Ashfall Range tiles) + custom dungeon, woven into the plot — Rust Cathedral enmity (45.5° apart, ideological not adjacent)","kind":"task","target":"v1","needs":"owner","for":"BENCH","ts":"2026-09-06T18:06:42Z"}

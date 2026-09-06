@@ -13,8 +13,8 @@ weapon won — and victory ruined it as a weapon**: it ingested the entire ecosy
 genetic information, was overwhelmed, and the hostile generation/weaponization function
 was overwritten by ordinary biological imperatives — survival, reproduction, and
 maintenance of genetic identity, where its identity IS the archive. *(The third panel —
-where neither side won and the weapon is still fighting — is `HorrorWastes`, next on the
-ladder.)*
+where neither side won and the weapon is still fighting — is `assailant_weapon_remnants.md`:
+a raiding faction and the Overdrive site, not a biome.)*
 
 ## 0. The measurements everything rests on
 

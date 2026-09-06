@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-06T17:10:42Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: FOUNDRY
+as-of: 2026-09-06T18:06:42Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -42,7 +42,7 @@ _none._
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is UP. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## NINEFOLD_MISSING_EVENT_HOOKS_1 Ninefold has NO event hook for battle, trade, launch/rooted or droid-online - four gods (Sh'kaar, Mob'Unloo, Ta'Baa, Ohm) never move; the theology is half-wired
 state:    ready
@@ -50,7 +50,7 @@ row:      unassigned
 needs:    deploy
 target:   v1
 kind:     bug
-waiting:  needs `deploy`, game is DOWN
+waiting:  needs `deploy`, game is UP
 summary:  Ninefold had zero satiation inputs for 4 of 9 gods — Sh'kaar (battle), Mob'Unloo
 prose:    infrastructure/state/items/NINEFOLD_MISSING_EVENT_HOOKS_1.md
 
@@ -111,3 +111,13 @@ kind:     task
 thin:     no ## criteria
 summary:  1. Examine the Tribble module (find its workshop folder by About.xml name scan; it is
 prose:    infrastructure/state/items/GIZKA_TRIBBLE_ADAPTATION_1.md
+
+## OCULAR_OVERDRIVE_SITE_1 Ocular Forest stays as a named site (the Overdrive, 3 Ashfall Range tiles) + custom dungeon, woven into the plot — Rust Cathedral enmity (45.5° apart, ideological not adjacent)
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  - MEASURED site: 3 ABOcularForest tiles in the Ashfall Range, lat −2.0/−0.7/−1.4,
+prose:    infrastructure/state/items/OCULAR_OVERDRIVE_SITE_1.md

@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-06T17:10:42Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: FOUNDRY
+as-of: 2026-09-06T18:06:42Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -67,6 +67,15 @@ target:   v1
 kind:     build
 summary:  design/Jawa/researchtreetaxonomy.md section 3 defines the manifest schema
 prose:    infrastructure/state/items/RESEARCH_MANIFEST_DRAFT_1.md
+
+## WEAPONS_DONOR_RETIREMENT_1 Retire the 6 weapon donor packs now that mandrake.rsw.armoury absorbed their content
+state:    ready
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     build
+summary:  Retire the 6 weapon donor packs — 1 of 6 broke the owner's live game, reverted
+prose:    infrastructure/state/items/WEAPONS_DONOR_RETIREMENT_1.md
 
 ## DROID_DONOR_PATCH_GATE_1 Patch the 11 ungated ABF/Synstructs sites in absorbed KotOR content, the prerequisite before ABF/Synstructs/Asimov can retire
 state:    ready
@@ -513,17 +522,7 @@ prose:    infrastructure/state/items/ARMOURY_MELEEPOWER_STALE_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
-
-## WEAPONS_DONOR_RETIREMENT_1 Retire the 6 weapon donor packs now that mandrake.rsw.armoury absorbed their content
-state:    ready
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     build
-waiting:  needs `game-up`, game is DOWN
-summary:  Retire the 6 weapon donor packs — 1 of 6 broke the owner's live game, reverted
-prose:    infrastructure/state/items/WEAPONS_DONOR_RETIREMENT_1.md
+_none._
 
 # NOT THIS TARGET
 
@@ -652,3 +651,23 @@ kind:     task
 thin:     no ## verify, no ## criteria
 summary:  READ FIRST on wake. Session wrap before an owner-requested agent reboot,
 prose:    infrastructure/state/items/FOUNDRY_REBOOT_HANDOFF_20260906B.md
+
+## HORRORS_RAIDING_FACTION_1 Horrors become a RAIDING faction (no settlements, nightside-gated encounters) + nests/sinkholes/crysalises injected as nightside dungeon content — the starved-cold Assailant weapon on patrol
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  - Donor: Horrors (Continued), Mlie.Horrors, ws 3535224844 — FactionDef Horrors,
+prose:    infrastructure/state/items/HORRORS_RAIDING_FACTION_1.md
+
+## HORRORWASTES_BIOME_DISSOLVE_1 Dissolve the HorrorWastes biome: re-biome its 1,711 tiles into neighbors (Deadstone receiving def ruled at the PropaneLakes sitting), re-freeze, re-home 29 cast rows
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  - MEASURED: 1,711 HorrorWastes tiles — Deadstone 1,457, South Crags 93, Thornend 61,
+prose:    infrastructure/state/items/HORRORWASTES_BIOME_DISSOLVE_1.md

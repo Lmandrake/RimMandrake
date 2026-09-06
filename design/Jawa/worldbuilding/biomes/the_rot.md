@@ -51,8 +51,9 @@ green line; the nightside's is a thick pale sprawl.
 🔴 **The Rot is Assailant-bioweapon-ADJACENT, and disarmed** (owner's ruling): the war's
 biological material arrived as **lateral gene transfer** and drove the fungi to extreme
 behaviors — but a thousand years of layered ecological stability broke the donor material
-down and kept only what earned its place. **Nature won here.** HorrorWastes is what that
-material does unstabilized; The Rot is what a gut does to a weapon: it composts it.
+down and kept only what earned its place. **Nature won here.** The Horrors remnants
+(`assailant_weapon_remnants.md`) are what that material does unstabilized; The Rot is what
+a gut does to a weapon: it composts it.
 
 🔴 **Consequence for genes (owner, 2026-09-06):** genepack extraction here yields ONLY
 genes beneficial to the local fungus and hybrids — the competitive survivors. **The

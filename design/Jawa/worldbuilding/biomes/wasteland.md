@@ -38,8 +38,9 @@ Founding doctrine already in force and honored here:
   TWO legacies of the old war and they must never merge. `Wasteland` is the **poisoned**
   one — *"contaminated by radiation and more conventional poisoning."* The danger is **the
   ground, the air, the water** — never the wildlife — and ⛔ **anomaly entities may NOT be
-  cast here.** The bioweapon class (`HorrorWastes` etc.) is a different biome and a
-  different meaning.
+  cast here.** The bioweapon class is a different meaning — and since
+  2026-09-06 not a biome at all: the Horrors raiding faction, injected nightside dungeons
+  and the Overdrive site (`assailant_weapon_remnants.md`); `HorrorWastes` is dissolved.
 
 ## 1. What it is
 
