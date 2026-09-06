@@ -431,6 +431,34 @@ bug: `mandrake.rm.injections` needs adding to the minimal list before P3 (live
 apply-timing for a 100×100 plan) can run. Left for whoever next holds the
 bridge for this research; one line to fix.
 
+### 5.8 P17 — Geological Landforms loads and RENDERS a landform file we wrote. CONFIRMED (live, 2026-09-06)
+
+`LandformDesertPlateau.xml` copied to `Config\CustomLandforms-v1\RUT_ProbePlateau.xml`
+with Id/IsCustom/DisplayName changed and ONE parameter changed (Perlin node 5
+`Frequency` 0.025 → 0.075). Minimal list + GL + Map Preview, restart 36 s.
+Player.log: `Loaded 45 landforms of which 0 are edited and 1 are custom.` Then a
+quicktest map: `Map generator context: TileId: 62181, Landforms: RUT_ProbePlateau,
+Topology: CliffTwoSides` — GL's own per-map log names the landform it applied, so the
+proof is exact, not visual. Screenshot (raised rock mass with cliff edges around a
+lower basin, fine-scale crinkled outline):
+`Transient/landform_probe_RUT_ProbePlateau_tile62181_2026-09-06.png`; the file as
+loaded: `Transient/landform_probe_RUT_ProbePlateau_loosened.xml`. **⇒ §9.3 step 6 is
+the GL-graph EMITTER route (data only, no C#), not the P10 mask worker.**
+
+Side findings, each one line: (a) a custom landform gets NO `TileMutatorDef` (stock
+ones are `GL_<Id>`), so it cannot be forced onto a tile through `world_mutators_set`;
+selection is GL's own per-tile draw by `worldTileReq` + `Commonness` — the probe was
+made to win by setting commonness 1 and permissive requirements, which is also how a
+generator would target a tile. (b) GL's Debug-tab "Dev quick test landform override"
+exists but its settings keys are not persisted at defaults and my guessed names did
+nothing; the real names need `ilprobe` on
+`2773943594\1.6\Lunar\Components\GeologicalLandformsMod.dll` — not needed now.
+(c) With Odyssey active GL auto-disables 14 of its own landforms in favour of the
+vanilla mutators (Archipelago, Coast, Cove, Cliff*, CoastalIsland, DryLake, Fjord,
+Lake, LakeWithIsland, Oasis, Peninsula, Valley) — the emitter must not target those
+Ids. (d) The probe file was REMOVED from the live config after the test; at
+commonness 1 it would have hijacked landforms on the owner's real world.
+
 ## 6. Synthesis after the first research pass
 
 ### 6.1 What the findings change about §3
@@ -643,7 +671,7 @@ dither, drop it.
 
 | # | step | what it yields | cost | code |
 |---|---|---|---|---|
-| **1** | **P17 — GL round-trip.** Copy `LandformDesertPlateau.xml`, change Id/name/one Perlin parameter, place it where GL loads custom landforms, quicktest a tile that meets its requirements, Map Preview it | whether the engine will render OUR generated terrain graphs — decides the whole terrain route | 1-2 h, bridge | none |
+| **1** | **P17 — GL round-trip.** ✅ **CONFIRMED 2026-09-06 (§5.8)** — the engine generated a map from a landform file we wrote; the terrain route is the GL-graph emitter (data only) | decided: step 6 = emitter, P10 stays deferred | done | none |
 | **2** | **R1 — offline terrain-grid renderer.** `savemap.py` grid (or a generated grid) → PNG, one fixed palette (colours from the captured terrain textures, `render-offline-from-live-captures`) | the iteration loop: hundreds of looks with no game | half a day | Python |
 | **3** | **R2 — corpus statistics.** Hash-only topology features over all 44 (no def names needed, `beautiful_tilemap.md` §6a): region-size distribution, perimeter/area per region, openness, adjacency structure, chokepoint count; stratified by size and version; plus the same over 10 vanilla-generated controls | calibration targets and the regression gate; the "is this map-like" instrument that is NOT a nearest-neighbour judge | half a day | Python |
 | **4** | **G1 — macro generator v0.** Input: biome sheet ¶ + seed. Chooser picks ONE premise (landform class from the GL/vanilla vocabulary + one anchor + one history line); emits a PLAN (JSON, human-readable) and a MASK. Output route depends on P17: a GL graph if yes, a mask for P10 if no. Rendered by R1; comparator sheet of 8 generated vs the 5 arid corpus maps at the same size; owner keeps/cuts | the first "map like this," or the exact way it is not | 2-3 days | Python |
