@@ -763,6 +763,8 @@ def _row(d, dn, pid, modname, isd, dmgdefs, projs, kindidx, research, cuts):
         "techLevel": f.get("techLevel"),
         "weaponTags": tags, "weaponClasses": classes,
         "isTurretGun": KNOWN_TURRET_TAG in tags,
+        "thingCategories": list(f.get("thingCategories") or []),
+        "destroyOnDrop": bool(f.get("destroyOnDrop")),
         "mass": stats.get("Mass"),
         "workToMake": stats.get("WorkToMake"),
         "stuffable": bool(f.get("stuffCategories")),
@@ -798,6 +800,21 @@ def _row(d, dn, pid, modname, isd, dmgdefs, projs, kindidx, research, cuts):
     grp, inferred = _cluster_of(r)
     r["group"] = grp
     r["clusterInferred"] = inferred
+    # 🔴 ORPHAN-TAGS IS A NARROW FLAG, MEASURED BEFORE IT WAS NARROWED. The first
+    # cut — "live and no weaponTags" — fired on 56 rows and essentially every one
+    # was CORRECTLY untagged: 22 survival tools, 8 drinks (vanilla Beer ships
+    # weaponTags=[]), ~18 animal-part trophies and wood logs (vanilla ElephantTusk
+    # likewise), plus turret-internal guns. A flag with a ~100% false-positive
+    # rate teaches the eye to skip it. So the flag now requires the def to SIT IN
+    # A Weapons* thingCategory (the mod's own statement that this is equipment,
+    # not a tool or a drink) and to survive being dropped (destroyOnDrop marks a
+    # turret/creature-internal gun, which no pawn was ever meant to hold — note
+    # isTurretGun cannot catch these: it keys on the TurretGun TAG, and these
+    # have no tags at all). ⚠️ ~100 tagged weapons carry no thingCategory, so an
+    # uncategorised real orphan slips this test: it is a shortlist, not a proof.
+    r["orphanTags"] = bool(
+        not tags and not r["cut"] and not r["destroyOnDrop"]
+        and any("Weapon" in c for c in r["thingCategories"]))
     r["role"] = _role(r)
     r["registerRisk"] = _register_risk(r)
     return r
@@ -1225,7 +1242,7 @@ def _effect(r):
     ppc = (r.get("art") or {}).get("pxPerCell")
     if ppc is not None and ppc < PPC_SOFT:
         toks.append("SOFT-ART")
-    if not r.get("weaponTags") and not r.get("cut"):
+    if r.get("orphanTags"):
         toks.append("ORPHAN-TAGS")
     if r.get("registerRisk"):
         toks.append("REGISTER-RISK")
@@ -1351,6 +1368,7 @@ def make_items(rows):
             "regenPx": generate_px(r),
             "cells": render_cells(r),
             "registerRisk": r.get("registerRisk"),
+            "orphan": bool(r.get("orphanTags")),
             "why": why,
         })
     return items
@@ -1458,6 +1476,15 @@ def _invented():
         "PRIORITY IS ONLY MEANINGFUL FOR REGENERATION. A/B/C is pre-filled on rows marked "
         "Regenerate or Regen + rescale and left blank on Keep, because there is no order "
         "to work you are not doing.",
+        "ORPHAN-TAGS IS A NARROW FLAG, and it was measured before it was narrowed. "
+        "“Live and no weaponTags” fired on 56 rows and essentially every one was "
+        "untagged CORRECTLY — survival tools, drinks (vanilla Beer ships an empty "
+        "weaponTags), animal-part trophies (so does ElephantTusk), turret-internal guns. "
+        "The flag now also requires the def to sit in a Weapons thingCategory (the mod's "
+        "own statement that this is equipment) and to survive being dropped "
+        "(destroyOnDrop marks an internal gun). ⚠ Roughly 100 tagged weapons carry no "
+        "thingCategory at all, so an uncategorised real orphan can slip this test: it is "
+        "a shortlist for your eye, not a proof of completeness.",
     ]
 
 
@@ -1502,9 +1529,13 @@ def _brief(meta, items, groups, counts):
         "that list and are <b>badged CUT, not hidden</b>, because you must be able to tell "
         "\u201cthis mod ships nothing\u201d from \u201cI cut it all\u201d. A second, "
         "independent reading agrees with it exactly: every cut weapon has an <b>empty "
-        "weaponTags</b> list in the dump and no tagged weapon is cut. A further <b>%d</b> "
-        "LIVE weapons also carry no tags \u2014 those are <code>ORPHAN-TAGS</code>: real, "
-        "loadable, and <b>no pawn kind can ever roll them</b>.</p>"
+        "weaponTags</b> list in the dump and no tagged weapon is cut. <b>%d</b> LIVE weapons "
+        "that sit in a <b>Weapons category</b> also carry no tags \u2014 those are "
+        "<code>ORPHAN-TAGS</code>: real wieldable weapons <b>no pawn kind can ever "
+        "roll</b>, reaching the game only by craft, loot or script. The many other "
+        "untagged rows \u2014 survival tools, drinks, animal-part trophies, "
+        "turret-internal guns \u2014 are untagged <i>correctly</i> (vanilla ships Beer "
+        "and ElephantTusk the same way) and are deliberately NOT flagged.</p>"
         "<p><b>Clusters (strongest first inside each):</b> %s. <b>%d</b> rows have no art "
         "this machine could resolve offline \u2014 that says MISSING on the row and never "
         "a placeholder guess.</p>"
@@ -1587,7 +1618,7 @@ RENDER_JS = r"""
     if (it.cut) b.push('<span class="wp-badge wp-cut">CUT — the game does not have this</span>');
     if (!it.thumb) b.push('<span class="wp-badge wp-miss">ART MISSING: ' + esc(it.artReason || '?') + '</span>');
     if (it.registerRisk) b.push('<span class="wp-badge wp-reg">REGISTER RISK — label says “' + esc(it.registerRisk) + '”</span>');
-    if (!it.cut && (it.tags === '(none)')) b.push('<span class="wp-badge wp-orph">ORPHAN — no weaponTags, no pawn kind can roll it</span>');
+    if (it.orphan) b.push('<span class="wp-badge wp-orph">ORPHAN — a real weapon with no weaponTags, no pawn kind can roll it</span>');
     /* kind and mod are CATEGORIES, not flags: every row has exactly one of each, so
        they must not share the badge row with the sparse marks or they teach the eye
        to skip that position. They get their own muted line. The template already
@@ -1660,7 +1691,12 @@ RENDER_JS = r"""
 
 
 def _inject_render(html):
-    return html.replace("<script>\n\"use strict\";", RENDER_JS + "\n<script>\n\"use strict\";", 1)
+    anchor = "<script>\n\"use strict\";"
+    if anchor not in html:
+        die("the review-sheets template no longer opens its script with "
+            "'<script>\\n\"use strict\";' — the RENDER block would be silently "
+            "dropped and every row would fall back to the template's default body.")
+    return html.replace(anchor, RENDER_JS + "\n" + anchor, 1)
 
 
 def _counts(items, rows):
@@ -1668,7 +1704,7 @@ def _counts(items, rows):
         "cut": sum(1 for it in items if it["cut"]),
         "missing": sum(1 for it in items if not it["thumb"]),
         "register": sum(1 for it in items if it.get("registerRisk")),
-        "orphan": sum(1 for r in rows if not r.get("weaponTags") and not r.get("cut")),
+        "orphan": sum(1 for r in rows if r.get("orphanTags")),
         "unmeasured": sum(1 for it in items if "UNMEASURED" in json.dumps(it)),
         "contested": sum(1 for it in items if it["contested"]),
         "softArt": sum(1 for it in items
@@ -1757,6 +1793,11 @@ def write_prefill(rows, meta, override=False):
         dec[r["defName"]] = {"decision": pre, "prefill": pre, "prio": prio, "note": ""}
 
     doc = dict(existing)
+    if override:
+        # The file now holds the generator's guesses, not the owner's decisions —
+        # leaving these stamps in place would keep claiming otherwise.
+        for k in ("savedBy", "writeCount"):
+            doc.pop(k, None)
     doc.update({
         "sheetId": "weapon_register",
         "posture": "blacklist",
