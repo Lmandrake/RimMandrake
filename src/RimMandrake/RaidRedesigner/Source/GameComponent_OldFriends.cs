@@ -39,11 +39,11 @@ namespace RimMandrake.RaidRedesigner
             if (pawn == null) return null;
 
             OldFriendEntry entry = entries.Find(e => !e.Dead && e.Pawn == pawn);
-            if (entry == null)
+            bool isNewEntry = entry == null;
+            if (isNewEntry)
             {
                 entry = new OldFriendEntry(pawn, factionAtEntry, role, tick);
                 entries.Add(entry);
-                EnforceCap();
             }
             else if (role == RoleTag.Captain)
             {
@@ -53,6 +53,13 @@ namespace RimMandrake.RaidRedesigner
             entry.AddEncounter(new Encounter(tick, role, summary));
             entry.Grudge = Mathf_Clamp(entry.Grudge + grudgeDelta, -100, 100);
             entry.Notability = Mathf_Clamp(entry.Notability + notabilityDelta, 0, 100);
+
+            // Enforce the cap only after this call's own deltas are applied --
+            // otherwise a brand-new entry is judged for pruning at Notability
+            // 0, before the very notabilityDelta this call is about to award
+            // it, and can be evicted (as an orphaned, no-longer-in-`entries`
+            // object) in the same call that created it.
+            if (isNewEntry) EnforceCap();
 
             if (pin) WorldPawnPinning.PinForever(pawn);
 
