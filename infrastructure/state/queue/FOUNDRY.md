@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-06T06:58:09Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-06T07:05:41Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -562,3 +562,23 @@ kind:     repair
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/TILES_STAMP_VERIFY_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/TILES_STAMP_VERIFY_1.md
+
+## ARMOURY_LEATHER_GEN_DESYNC_1 gen_armour_patch.py will silently re-add the 3 retired-mod leather blocks the retirement commit stripped by hand
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/ARMOURY_LEATHER_GEN_DESYNC_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ARMOURY_LEATHER_GEN_DESYNC_1.md
+
+## REGISTER_CORPSE_CROSSCHECK_1 gen_creature_register.py corpse cross-check is illusory: corpseDefsExcluded=1156 vs dumper corpseDefsSkipped=1265 (off by 109) with no comparison and no warning - verify dumper count semantics (humanlike corpses?) and make the check actually fire (lines ~739-766, ~1618)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/REGISTER_CORPSE_CROSSCHECK_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/REGISTER_CORPSE_CROSSCHECK_1.md

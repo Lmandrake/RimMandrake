@@ -233,6 +233,12 @@
     "hash": "80d0307d576e2e1447aaff98df1bdadacc1a649b78b51742472a34f29095b693",
     "sha": "43f96b1b"
   },
+  "design/Jawa/worldbuilding/review/gen_creature_explorer.py": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "08a887b139e7a8b1dfae9b80bda1577d4a4fbe92985db713a7e8489b3bb40924",
+    "sha": "de817c2a"
+  },
   "design/Jawa/worldbuilding/review/gen_proposal_suite_sheet.py": {
     "cleanCount": 1,
     "date": "2026-09-04",

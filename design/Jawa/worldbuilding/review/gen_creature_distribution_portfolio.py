@@ -154,14 +154,19 @@ def fig4():
             ann.append(ax.annotate(nm, (r["bodySize"], r["meatAmount"]),
                                    xytext=(r["bodySize"] * dx, r["meatAmount"] * dy), fontsize=7.6,
                                    arrowprops=dict(arrowstyle="-", lw=0.6, color="#888888")))
-    r = next(x for x in conform if x["defName"] == "GR_Paraceramuffalo")
-    ann.append(ax.annotate("GR_Paraceramuffalo — the law's own extreme:\n35,840 meat from one carcass (≈17,900 meals)",
-                           (r["bodySize"], r["meatAmount"]), xytext=(3.1, 44000), fontsize=7.8,
-                           arrowprops=dict(arrowstyle="-", lw=0.6, color="#888888")))
-    r = next(x for x in big_linear if x["defName"] == "RSW_Lanternwhale")
-    ann.append(ax.annotate("RSW_Lanternwhale bs 40, unpatched: 5,600 —\nless than a bs-16 land beast (law: 224,000)",
-                           (r["bodySize"], r["meatAmount"]), xytext=(3.6, 700), fontsize=7.8,
-                           arrowprops=dict(arrowstyle="-", lw=0.6, color="#888888")))
+    # Guarded like every other named annotation: a patch or dump change can move
+    # either creature out of its bucket, and an unguarded next() would then kill
+    # all five figures with StopIteration.
+    r = next((x for x in conform if x["defName"] == "GR_Paraceramuffalo"), None)
+    if r:
+        ann.append(ax.annotate("GR_Paraceramuffalo — the law's own extreme:\n35,840 meat from one carcass (≈17,900 meals)",
+                               (r["bodySize"], r["meatAmount"]), xytext=(3.1, 44000), fontsize=7.8,
+                               arrowprops=dict(arrowstyle="-", lw=0.6, color="#888888")))
+    r = next((x for x in big_linear if x["defName"] == "RSW_Lanternwhale"), None)
+    if r:
+        ann.append(ax.annotate("RSW_Lanternwhale bs 40, unpatched: 5,600 —\nless than a bs-16 land beast (law: 224,000)",
+                               (r["bodySize"], r["meatAmount"]), xytext=(3.6, 700), fontsize=7.8,
+                               arrowprops=dict(arrowstyle="-", lw=0.6, color="#888888")))
     fl = sorted(zero_flesh, key=lambda x: -x["bodySize"])[:2]
     for r, ty in zip(fl, (4.6, 2.5)):
         ann.append(ax.annotate(r["defName"], (r["bodySize"], rail * 1.35), xytext=(r["bodySize"] * 0.42, ty),
@@ -329,7 +334,7 @@ def fig6():
     ax.set_xscale("log"); ax.set_xlim(0.008, 45); ax.set_ylim(0, 2.0); ax.set_yticks([])
     ax.set_xlabel("bodySize (log)", fontsize=8)
     ax.set_title("Arid shrubland (sheet law: small · medium · VOID · huge) — %d of %d residents sit in the banned large band (%d%%)"
-                 % (len(viol), len(res), round(100 * len(viol) / len(res))), fontsize=9.6, loc="left")
+                 % (len(viol), len(res), round(100 * len(viol) / len(res)) if res else 0), fontsize=9.6, loc="left")
     ax.text(0.0095, 1.72, "size bands (stated thresholds):\nsmall <0.5 ≤ medium <1.5 ≤ large ≤3.5 < huge", fontsize=7.0, color="#777777")
     out["AridShrubland"] = dict(residents=len(res), large=len(viol),
                                 top=[(r["defName"], c) for r, c in sorted(viol, key=lambda t: -t[1])[:8]])
@@ -357,7 +362,7 @@ def fig6():
     ax.set_xscale("log"); ax.set_xlim(0.008, 45); ax.set_ylim(0, 2.0); ax.set_yticks([])
     ax.set_xlabel("bodySize (log)", fontsize=8)
     ax.set_title("Dune sea / ExtremeDesert (sheet law: giant or grain-scale ONLY) — %d of %d residents are medium-sized (%d%%)"
-                 % (len(viol), len(res), round(100 * len(viol) / len(res))), fontsize=9.6, loc="left")
+                 % (len(viol), len(res), round(100 * len(viol) / len(res)) if res else 0), fontsize=9.6, loc="left")
     ax.text(0.0095, 1.72, "banned 'medium' stated as 0.3 ≤ bodySize ≤ 3.0\n(the sheet gives no number; this is the analytic choice)", fontsize=7.0, color="#777777")
     out["ExtremeDesert"] = dict(residents=len(res), medium=len(viol),
                                 top=[(r["defName"], c) for r, c in sorted(viol, key=lambda t: -t[1])[:8]])
@@ -426,9 +431,15 @@ def fig8():
     def wb(w): return 0 if w < 0.35 else (1 if w < 0.75 else 2)
     M = np.zeros((3, 3), int)
     cell = collections.defaultdict(list)
+    # Rows whose trainability names a def outside the vanilla three (a modded
+    # TrainabilityDef) cannot be binned; count them explicitly so the caption
+    # can say so instead of letting them vanish from the total.
+    nonstandard = []
     for r in pop:
         t = r.get("trainability") or "None"
-        if t not in tl: continue
+        if t not in tl:
+            nonstandard.append(r["defName"])
+            continue
         i, j = wb(r["wildness"]), tl.index(t)
         M[i, j] += 1
         cell[(i, j)].append(r)
@@ -447,9 +458,11 @@ def fig8():
                  "taming difficulty, not trainability, gates war/work beasts" % M[2, 2],
                  fontsize=10.5, loc="left")
     fig.text(0.012, 0.022,
-             "Live animals+insectoids with a wildness stat, n=%d (%d rows lack trainability and are counted as None — RimWorld's own default).\n"
+             "Live animals+insectoids with a wildness stat, n=%d binned (rows lacking trainability default to None — RimWorld's own default;\n"
+             "%d rows carry a nonstandard TrainabilityDef and are EXCLUDED from the matrix%s).\n"
              "Wildness bins are stated analytic choices. Counts printed in every cell; the colormap is monotonic-lightness grayscale.\n%s"
-             % (sum(M.flatten()), len(pop) - sum(M.flatten()), src_line()), **FOOT)
+             % (sum(M.flatten()), len(nonstandard),
+                (": " + ", ".join(nonstandard[:6])) if nonstandard else "", src_line()), **FOOT)
     fig.subplots_adjust(left=0.16, right=0.99, top=0.87, bottom=0.15)
     for ext in ("png", "svg"):
         fig.savefig(os.path.join(VIZ, "fig8_husbandry.%s" % ext))
