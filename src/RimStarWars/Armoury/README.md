@@ -30,7 +30,7 @@ Measured on the live post-patch dump of this exact 562-mod stack:
 | slugthrower | 10 | **27** (18–36) | 4.0 → **1.5** |
 | blaster | 10 | **25** (24–34) | 4.0 → **1.6** |
 | vibro | 24 | **44** (35–52) | 1.7 → **0.9** |
-| lightsaber | 28 | **99** | 1.4 → **0.4** |
+| lightsaber | 28 | **35** (see KNOWN DEFECTS #2 correction — "99" below was this pass's original, unshipped number) | 1.4 → **0.5** |
 | turbolaser | 80 | **1400** (800–2000) | 0.5 → 0.03 |
 | ion / stun / EMP / sonic | 8 | **8 — untouched** | — |
 | explosives | — | **untouched** | — |
@@ -79,7 +79,7 @@ projectile-level patch cannot tell them apart.
 Fix: give a handful of iconic heavies their own projectile defs, or accept the
 mod authors' verdict that a heavy repeater is a faster-firing standard bolt.
 
-### 2. All 15 lightsabers are now identical at 99
+### 2. All 15 lightsabers are now identical at 99 — STALE, see correction below
 
 A direct consequence of patching the declarer. They share one base
 (`Force_LightsaberBase`), so **one node means one value** — the generator
@@ -89,6 +89,17 @@ spread.
 Fix: `PatchOperationAdd` a `tools` block per saber, so Anakin's blade can differ
 from a training foil.
 
+**Correction, 2026-09-06 (`ARMOURY_MELEEPOWER_STALE_1`):** the "99" above is
+from this section's original 2026-08-10/11 pass and is not what ships. KotOR
+Weapons injects its own `<tools Inherit="False">` onto 8 of the 15 sabers
+(`LIGHTSABER_MELEE_PATCH_FAIL_1`, 2026-09-01), so only the other 7 are actually
+reachable through `Force_LightsaberBase` — and `gen_armoury_patch.py`'s
+declarer-vs-live-label comparison (`self_supplied_tools_defnames()`,
+`b5da9f9b`) now writes those 7 at **hilt 12→15, point/edge 28→35**, not 99. A
+fresh regen against a near-current (596/598-mod) dump reproduces this section
+of `Armoury_MeleePower.xml` byte-for-byte, so the shipped 15/35/35 is current,
+not stale — only this paragraph's "99" was.
+
 ### 3. Vibro out-damages blasters, 44 vs 25
 
 Intentional under L14 (vibro shears ablative armour), but it means melee still
@@ -97,6 +108,23 @@ physics answer is that blasters win at *range* and armour is where the real
 differentiation lives: vibro shreds ablative, blasters bounce off it. **Armour is
 unpatched, so that half of the contract does not exist yet.** Decide deliberately
 rather than discovering it in a firefight.
+
+### 4. The generator cannot currently touch the absorbed KotOR/JDS melee weapons at all
+
+`guy762_v*` (KotOR vibro-blades) and `RSW_JDSA_*` (JDS Armory vibro-blades) are
+absorbed, retired-donor content (`ARMOURY_SWMODS_DONOR_GAP_1`, 2026-09-05):
+their ThingDefs now live under `mandrake.rsw.armoury`'s own
+`Absorbed_AdditionalMods` patches, so the live dump reports their `modName` as
+**"Jawa Armoury Rebalance"** — our own mod's display name, not one of the
+retired donor strings (`Star Wars KotOR Weapons and Armor`, `[JDS] StarWars -
+Armory`) still hardcoded in `gen_armoury_patch.py`'s `SW_MODS` tuple. A regen
+right now silently **drops** these 33 melee ops entirely rather than producing
+wrong numbers — checked 2026-09-06 by running the generator to a scratch
+output dir against a near-current (596/598-mod) dump. The 33 ops currently in
+`Armoury_MeleePower.xml` are hand-preserved and NOT reproducible until
+`SW_MODS` (or a `retired_mods`-style rename map) recognizes "Jawa Armoury
+Rebalance" — and doing that pulls in 173 total weapon defs (most of them
+ranged), so it is a separate, larger item, not a one-line fix here.
 
 ---
 
