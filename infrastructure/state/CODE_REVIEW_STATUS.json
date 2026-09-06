@@ -7816,10 +7816,10 @@
     "sha": "abd9fba2"
   },
   "src/RimUtinni/UtinniShell/Defs/VBE_Backgrounds_Utinni.xml": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-05",
-    "hash": "350284929bdf2936c2f22bf4f14a57fe6a71056d116dd09aeb5ff3c9439931f0",
-    "sha": "abd9fba2"
+    "hash": "f6251da76f7d23714abc7eafa5cfc9b50898e3eacb70c7e850cf73127099a04f",
+    "sha": "1a5bf47b"
   },
   "src/RimUtinni/UtinniShell/_artsrc/gen_bg.py": {
     "cleanCount": 1,
