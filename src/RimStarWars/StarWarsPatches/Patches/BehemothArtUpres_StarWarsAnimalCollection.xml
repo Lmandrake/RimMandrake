@@ -56,6 +56,34 @@
 
   ⛔ DO NOT EDIT THE WORKSHOP FOLDER. Steam overwrites it on the next update.
   ============================================================================
+
+  BEHEMOTH_TEXTURE_MISSING_LIVE_1 (2026-09-06): live log showed "Failed to
+  find any textures at swanimals/Behemoth/JawaBehemoth_fPack while
+  constructing Multi(...)". Root cause: vanilla's animal "Pack" (saddlebag)
+  overlay - PawnRenderNode_AnimalPack.GraphicFor(), wired for every
+  packAnimal race via Core's PawnRenderTreeDefs.xml ("Pack" node,
+  PawnRenderNodeWorker_AnimalPack) - derives ITS OWN texPath at runtime as
+  `<bodyOrFemaleGraphicData.texPath> + "Pack"`. There is no separate XML
+  field for it. Behemoth has <packAnimal>true</packAnimal> in the donor's
+  own Races_Animal_SW.xml, so the rename above (Behemoth_f -> JawaBehemoth_f,
+  Behemoth_m -> JawaBehemoth_m) silently orphaned the donor's OWN Pack art,
+  which ships in the donor's AssetBundle (Mlie_StarWarsAnimalCollection) as
+  Behemoth_fPack_north/south/east and Behemoth_mPack_north/south/east
+  (256x256, the donor's original un-upres'd canvas - Pack art was never
+  redrawn by this item). Fix: those six textures, extracted byte-for-byte
+  from the donor's bundle via UnityPy (no redraw, no new pixels), are
+  deployed here under the renamed stem -
+  Textures/swanimals/Behemoth/JawaBehemoth_fPack_*.png /
+  JawaBehemoth_mPack_*.png - so the vanilla Pack-overlay probe resolves
+  again. No _west (matches this mod's own convention above; Graphic_Multi
+  flips _east). The overlay only actually DRAWS when a Behemoth is a live
+  caravan pack beast carrying inventory (PawnRenderNodeWorker_AnimalPack.
+  CanDrawNow), so the visible defect (a BadMat/magenta patch on the animal's
+  back) was real but conditional, not universal. This Pack art is still
+  256x256 against the body's upres'd 512x512 - a quality mismatch, not a
+  missing-art blocker; an uprez of the Pack overlay is a separate, optional
+  follow-up, not chased here.
+  ============================================================================
 -->
 <Patch>
 
