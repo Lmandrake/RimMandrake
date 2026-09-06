@@ -113,6 +113,38 @@ no real diagnostic gain over what's already recorded. Bridge released;
 live verification for `BIOME_SPAWN_FLORA_AUDIT_1` and
 `VAULT_DUNGEON_BUILD_1`'s quicktest-proof resumes after that reboot.
 
+**Post-reboot retest, 2026-09-06 (same evening, owner rebooted as planned)**:
+launched the full 596-mod list fresh via `steam://rungameid/294100` with a
+`tasklist.exe` RSS watcher sampling every 3s throughout. Full trace kept at
+`/tmp/claude-1000/-mnt-d-Luke-dev-Rimworld/b51c06ea-117c-432b-8dfd-604f597a64ab/scratchpad/rimworld_mem_watch.log`
+(session-scoped tmp, not preserved). **The OS reboot did not lower the
+ceiling.** RSS climbed steadily through the load, hit a peak of **18.73GB**
+at bridge-ready (`[RimBridge] GABP server running standalone`), then
+settled to ~18.6GB once mod init finished (CE param lists, ShowMeYourHands,
+Harmony transpiling). That peak is *higher* than the ~18.2GB level that
+triggered the earlier OOM kill, and higher than the 17.7GB baseline
+recorded reaching `Entry` state pre-reboot. Process did not crash this
+time — no bulk-research debug action was run (deliberately withheld, see
+below) — but it is sitting at or above the exact level that killed it
+before, with a full main-menu game screen for the owner already loaded on
+top of that. **This reframes "reboot might fix it" as ruled out**: the
+ceiling is a steady-state property of the 596-mod stack at rest, not
+transient OS-level accumulation that a reboot clears.
+**RimThemes not implicated or cleared by this pass** — it loaded without
+error (`RimThemes NX rev10` logged cleanly) and nothing in this data
+isolates its contribution from the other 595 mods; the owner's suspicion
+is plausible but unconfirmed. Deliberately did NOT run
+`start_debug_game_ready`'s bulk-research quicktest path this pass — the
+known trigger sits on top of an already-near-ceiling baseline and the
+question asked ("does the reboot help") was answered without needing to
+risk a repeat crash.
+Two unrelated config errors surfaced during this load, filed separately:
+our own `StarWarsPatches/Patches/WeaponTags_Renormalise.xml` failed
+`PatchOperationAdd` against `guy762_brifle_rohlan` and
+`guy762_brifle_sith` — those defNames are not present in the currently
+loaded stack (likely renamed/retired KotOR-droid weapons since the patch
+was written).
+
 ## criteria
 A quicktest map (`mapData` or better) reachable on the full 596-mod list
 without the process disappearing, OR a confirmed, named root cause if it
