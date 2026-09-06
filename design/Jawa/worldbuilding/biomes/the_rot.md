@@ -204,8 +204,9 @@ a day, for certain**. The gut digests whatever is set down in it.
 
 ## Owed
 
-- **The heat-generating gene def** — verify the exact def in the newly-added donor mods
-  before wiring grown heaters (never guess a defName). Rides `GENEPACK_MODS_PLUNDER_1`.
+- **The heat-generating gene** — MEASURED (`genepack_mods_plunder.md`, 2026-09-06):
+  neither new mod ships any GeneDef, so the gene must be AUTHORED; closest ready-made
+  numbers are the consumables mod's `IgniFurnace`/`IgniWarm` hediffs.
 - **Guardian repertoire concretized** per tea species at the assignment sitting (owner
   asked for this portion expanded — the menu in §7 is the seed).
 - **Engine feasibility pass:** health-share comp (C#, two variants); the live-item
