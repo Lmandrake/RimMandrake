@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-06T22:23:38Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-06T22:31:55Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -297,15 +297,6 @@ kind:     task
 summary:  Measured 2026-09-03 on the 20-mod minimal list, dev quicktest map. The
 prose:    infrastructure/state/items/FLUID_CANAL_DEBUG_SURFACE_1.md
 
-## LOAD_CONFIG_ERROR_SWEEP_1 The 19 third-party config errors, with a frozen baseline so new ones are visible
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  Every load of the full 589-mod list logs the same 31 Config error in … lines
-prose:    infrastructure/state/items/LOAD_CONFIG_ERROR_SWEEP_1.md
-
 ## TILEGEN_SILENT_REUSE_1 jawa/world_tile_map_generate fabricates success on the second distinct-tile call per session
 state:    doing
 row:      unassigned
@@ -449,15 +440,6 @@ target:   v1
 kind:     task
 summary:  MAPGENPAINTERV11 — make the offline terrain painter draw like a landscape, not a diagram
 prose:    infrastructure/state/items/MAPGEN_PAINTER_V1_1.md
-
-## ARMOURY_GEN_HANDEDIT_DESYNC_1 gen_armour_patch.py would destroy two hand-edits and is 48 xpaths behind on the three non-leather files it owns
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  (no items/ARMOURY_GEN_HANDEDIT_DESYNC_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ARMOURY_GEN_HANDEDIT_DESYNC_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -1114,3 +1096,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DROIDWORKS_WILD_DROIDS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DROIDWORKS_WILD_DROIDS_1.md
+
+## ARMOURY_ABSORBED_KOTORCORE_DUPES_1 Absorbed_KotorCore is DEPLOYED while guy762.mm.kotorcore is still active, against its own header - duplicate ThingDefs are live now
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/ARMOURY_ABSORBED_KOTORCORE_DUPES_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ARMOURY_ABSORBED_KOTORCORE_DUPES_1.md
