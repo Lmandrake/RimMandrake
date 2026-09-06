@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-06T03:13:19Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-06T03:36:59Z (the last event's own timestamp, not the render clock)
 game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -530,5 +530,15 @@ needs:    offline
 target:   v1
 kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/SARLACC_NATIVE_HABITAT_1.md yet — write one when you have something to say)
+summary:  SARLACCNATIVEHABITAT1
 prose:    infrastructure/state/items/SARLACC_NATIVE_HABITAT_1.md
+
+## WORLDMAP_DESERT_BAND_REPAIR_1 Repair the Desert def's climate outliers on the frozen world map, re-freeze the savegame
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/WORLDMAP_DESERT_BAND_REPAIR_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/WORLDMAP_DESERT_BAND_REPAIR_1.md
