@@ -113,17 +113,6 @@ TEXCACHE = "/tmp/claude-1000/creature_register_texindex.json"
 #    asked for, presented as a finding, is this format's most expensive mistake.
 PX_PER_CELL = 64          # RimWorld's own texture-to-world ratio for a 1x1 thing
 HUMAN_CELLS = 1.5         # a vanilla humanlike body graphic is drawn at 1.5 cells
-HUMAN_TEX = "Things/Pawn/Humanlike/Bodies/Naked_Male"   # resolved via the ladder
-HUMAN_PKG = "ludeon.rimworld"
-# ── PHYSICAL-size ladder. The scale panel used to size a creature by its drawSize
-#    (cells), but drawSize is an ARTISTIC value — how big the modder draws the map
-#    sprite — and is inflated for small creatures: a bodySize-0.2 swarmling carries
-#    drawSize 1.5, so drawSize-sizing rendered it human-sized. bodySize is a
-#    mass/volume proxy, so linear on-screen cell-size scales as bodySize**SIZE_POWER,
-#    anchored on the human (bodySize HUMAN_BODYSIZE -> HUMAN_CELLS). SIZE_POWER sits
-#    between the physically pure 1/3 (too flat — a thrumbo barely beats a rat) and a
-#    literal linear 1.0 (absurd — a rat vanishes); 0.6 is the tuned middle, and it
-#    is DELIBERATE that huge creatures dominate the row.
 # ── SETTLED SIZE MODEL (creature_size_model.md, 2026-09-05) ──────────────────
 # The sheet shows what the ENGINE ACTUALLY DRAWS: review_cells =
 # max(drawSize.x, drawSize.y) from the adult (last) life stage. That is
@@ -1054,17 +1043,6 @@ def render_art(rows, force=False):
     idx, _ = _texture_index()
     bundles, _n = ACS.load_bundle_index()
 
-    human = None
-    hf, _r = _resolve(HUMAN_TEX, HUMAN_PKG, idx, bundles)
-    if hf:
-        try:
-            human = Image.open(hf).convert("RGBA")
-        except Exception:                                   # noqa: BLE001
-            human = None
-    if human is None:
-        print("  ⚠ no human body texture resolved — the scale anchor will be a drawn "
-              "outline, not the game's own art")
-
     stats = {"placed": 0, "missing": 0, "blank": 0, "capped": 0}
     for r in rows:
         base = os.path.join(ART_DIR, re.sub(r"[^A-Za-z0-9_.-]", "_", r["defName"]))
@@ -1111,9 +1089,8 @@ def render_art(rows, force=False):
         canvas.convert("RGB").save(base + ".detail.png", optimize=True)
         r["art"]["detail"] = "creature_art/" + os.path.basename(base) + ".detail.png"
 
-        # ── scale: TRUE PHYSICAL size (from bodySize), human anchor beside it.
-        #    See SIZE_POWER above — the box is a SQUARE derived from physical size,
-        #    and _scale_panel contain-fits the sprite into it keeping its aspect.
+        # ── scale: the size the GAME draws (settled model above), colonist anchor
+        #    beside it; _scale_panel contain-fits the sprite keeping its aspect.
         cells = _render_cells(r)
         cw, ch = r.get("drawSize") or [None, None]
         if cells:
@@ -1123,7 +1100,7 @@ def render_art(rows, force=False):
             longest_draw = max(cw or 0, ch or 0)
             draw_px = max(8.0, (longest_draw or cells) * PX_PER_CELL)
             r["art"]["pxPerCell"] = round(max(im.width, im.height) / draw_px, 3)
-            scale_img = _scale_panel(im, box, box, human, Image, ImageDraw)
+            scale_img = _scale_panel(im, box, box, Image, ImageDraw)
             shown = 100
             if max(scale_img.size) > SCALE_CAP:
                 k = SCALE_CAP / float(max(scale_img.size))
@@ -1180,11 +1157,11 @@ def _human_figure(hh, Image, ImageDraw):
         return fig
 
 
-def _scale_panel(im, w, h, human, Image, ImageDraw):
+def _scale_panel(im, w, h, Image, ImageDraw):
     """The creature at true screen size, a 1-cell grid behind it, a human beside it.
 
-    The creature is CONTAINED in its physical-size box (w x h px; see
-    _physical_cells) preserving the source sprite's native aspect ratio -- never
+    The creature is CONTAINED in its render-size box (w x h px; see
+    _render_cells) preserving the source sprite's native aspect ratio -- never
     stretched to fill, which was squashing wide sprites (127x45 iguana, 105x66
     camel) into blobs."""
     hh = int(round(HUMAN_CELLS * PX_PER_CELL))
