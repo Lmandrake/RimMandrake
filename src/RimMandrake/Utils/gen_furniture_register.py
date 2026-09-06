@@ -160,8 +160,6 @@ CORE_FURNITURE_XML = os.path.join(
 #    finding, is this format's most expensive mistake.
 PX_PER_CELL = 64          # RimWorld's own texture-to-world ratio for a 1x1 thing
 HUMAN_CELLS = 1.5         # a vanilla humanlike body graphic is drawn at 1.5 cells
-HUMAN_TEX = "Things/Pawn/Humanlike/Bodies/Naked_Male"
-HUMAN_PKG = "ludeon.rimworld"
 SCALE_CAP = 1400          # px; a bigger canvas is downscaled and SAYS so
 DETAIL_BOX = 240          # px; the fixed-size art-inspection sprite
 
@@ -996,14 +994,6 @@ def render_art(rows, force=False):
     idx, _ = _texture_index()
     bundles, _n = ACS.load_bundle_index()
 
-    human = None
-    hf, _r = _resolve(HUMAN_TEX, HUMAN_PKG, idx, bundles)
-    if hf:
-        try:
-            human = Image.open(hf).convert("RGBA")
-        except Exception:                                   # noqa: BLE001
-            human = None
-
     stats = {"placed": 0, "missing": 0, "blank": 0, "capped": 0}
     for r in rows:
         base = os.path.join(ART_DIR, re.sub(r"[^A-Za-z0-9_.-]", "_", r["defName"]))
@@ -1083,7 +1073,7 @@ def render_art(rows, force=False):
 
         # ── scale: the WHOLE texture across drawSize cells, footprint outlined
         if sw and sh and dw and dh:
-            panel = _scale_panel(im, (sw, sh), (dw, dh), human, Image, ImageDraw)
+            panel = _scale_panel(im, (sw, sh), (dw, dh), Image, ImageDraw)
             shown = 100
             if max(panel.size) > SCALE_CAP:
                 k = SCALE_CAP / float(max(panel.size))
@@ -1142,7 +1132,7 @@ def _human_figure(hh, Image, ImageDraw):
     return fig
 
 
-def _scale_panel(im, foot, draw, human, Image, ImageDraw):
+def _scale_panel(im, foot, draw, Image, ImageDraw):
     """The building at true in-game size: the WHOLE texture painted across its
     drawSize quad, the `size` footprint outlined under it, a 1-cell grid behind
     both, and a human silhouette beside it.
@@ -1841,9 +1831,8 @@ def _brief(meta, items, groups, n_cut, n_miss, n_amb, art):
         "overruled / noted marks. The search box carries the rest. Four badges exist "
         "and each was counted against the real rows before it shipped: "
         "<code>CUT</code> (%d) · <code>MISSING-ART</code> (%d) · "
-        "<code>AMBIGUOUS</code> (%d) · <code>DROPPED</code> (<b>%d — a measured zero, "
-        "not an unrecorded one</b>: one mod was dropped after the dump was taken and "
-        "it contributes no furniture). <i>STUFFABLE</i> and <i>RESEARCH</i> were "
+        "<code>AMBIGUOUS</code> (%d) · <code>DROPPED</code> (%d — counted, so a zero "
+        "here is measured, not unrecorded). <i>STUFFABLE</i> and <i>RESEARCH</i> were "
         "counted too, at 44%% and 81%% of rows, and cut as wallpaper.</p>"
 
         "<p><b>Keyboard:</b> <kbd>1</kbd> keep · <kbd>2</kbd> regenerate · "
@@ -1987,7 +1976,12 @@ RENDER_JS = r"""
 
 
 def _inject_render(html):
-    return html.replace("<script>\n\"use strict\";", RENDER_JS + "\n<script>\n\"use strict\";", 1)
+    anchor = "<script>\n\"use strict\";"
+    if anchor not in html:
+        die("the review-sheets template no longer opens its script with "
+            "'<script>\\n\"use strict\";' — the RENDER block would be silently "
+            "dropped and every row would fall back to the template's default body.")
+    return html.replace(anchor, RENDER_JS + "\n" + anchor, 1)
 
 
 # ═════════════════════════════════════════════════════════ stage: prefill 🔒
@@ -2015,6 +2009,11 @@ def write_prefill(rows, meta, override=False):
         dec[r["defName"]] = {"decision": pre, "prefill": pre, "prio": prio, "note": ""}
 
     doc = dict(existing)
+    if override:
+        # The file now holds the generator's guesses, not the owner's decisions —
+        # leaving these stamps in place would keep claiming otherwise.
+        for k in ("savedBy", "writeCount"):
+            doc.pop(k, None)
     doc.update({
         "sheetId": "furniture_register",
         "posture": "blacklist",
