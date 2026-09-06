@@ -1346,7 +1346,7 @@ Each file has one flat `<Connections>` list of `<Connection port1ID="X" port2ID=
 Literal example, `LandformDesertPlateau.xml`:
 
 ```xml
-<Connection port1ID="17" port2ID="0" />
+<Connection port1ID="0" port2ID="17" />
 ```
 
 port 17 = "OutputKnob" (Out) on Node ID=7 ("Linear Function", type=gridLinear); port 0 = "InputKnob" (In) on Node ID=2 ("Preview", type=gridPreview). Data flows producer -> consumer.
