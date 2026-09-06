@@ -1,3 +1,7 @@
+⛔ **SUPERSEDED 2026-09-05 by `fall_line.md`** — this sheet was groping for a
+wreck-field biome that turned out to be already canon as **The Fall Line** (region,
+308 tiles, canon 2026-08-16). Read `fall_line.md`. Nothing here is authoritative.
+
 # The Wreck Fields — biome definition sheet
 
 # 🔴 UNRULED — BENCH'S PROPOSAL, FOR THE OWNER TO ACCEPT OR REJECT
