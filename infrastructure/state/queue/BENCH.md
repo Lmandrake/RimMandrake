@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-06T23:49:59Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-06T23:58:04Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -212,3 +212,13 @@ kind:     task
 thin:     no ## criteria
 summary:  - Inputs: the frozen sheets (every biome's §8 Inhabited objects + who-lives-here
 prose:    infrastructure/state/items/SETTLEMENT_REJIGGER_ROUND2_1.md
+
+## FISH_BY_BIOME_1 Fish in every biome where relevant — inventory the stack's fish defs and each biome's fishTypes; rule per water kind (milk, propane, red water, brine); analogs only
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  - Odyssey's fishing is live in the stack (donor biome defs carry fishTypes blocks —
+prose:    infrastructure/state/items/FISH_BY_BIOME_1.md

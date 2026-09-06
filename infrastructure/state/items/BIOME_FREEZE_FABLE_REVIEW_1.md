@@ -13,7 +13,7 @@ the_rot, the_slime, the_contagion, the_blue_desert, assailant_weapon_remnants (n
 biome). the_propane_lakes (2026-09-06), nightside_ice second pass + the_lantern_deeps
 injection (2026-09-06). Dissolved, no sheet needed: BMT_CrystalCaverns (→ the Lantern Deeps injection),
 BMT_FungalForest (→ raided into the Rot), HorrorWastes. Still undefined (openers prep,
-MEASURED tiles): ZBiome_Badlands 1,086, ZBiome_DesertOasis
+MEASURED tiles): ~~ZBiome_Badlands~~ (done 2026-09-06 as the_cracked_lands), ZBiome_DesertOasis
 236, AB_MechanoidIntrusion 236, ZBiome_Grasslands 227, BiomeCypreJungle 191,
 AB_FeraliskInfestedJungle 172, AB_MiasmicMangrove 92, Scarlands 90, AB_TarPits 62,
 COMIGO_GreaterSwamp_Tropical 60, IceSheet 49 — plus the four LIQUID biomes (owner,

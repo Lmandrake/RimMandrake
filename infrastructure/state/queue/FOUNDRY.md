@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-06T23:49:59Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-06T23:58:04Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -1155,3 +1155,13 @@ kind:     task
 thin:     no ## criteria
 summary:  1. Segment classes as data (rules must be data): headwater (red — the Contagion's
 prose:    infrastructure/state/items/WORLD_RIVER_COLORS_1.md
+
+## SAND_SWIMMERS_MOD_1 Sand fishing: impassable Deep Sand pools you fish like water, with sand-swimmer analogs (never fish-shaped) — the sand swimmers mod
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  - Deep Sand terrain: pools of sand you cannot walk over (impassable like deep water,
+prose:    infrastructure/state/items/SAND_SWIMMERS_MOD_1.md
