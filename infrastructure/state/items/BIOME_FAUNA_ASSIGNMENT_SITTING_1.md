@@ -24,3 +24,7 @@ remaining biome descriptions, then assign the animals and plants.
 Register `flies` special broken (all flier reasoning UNMEASURED); juvenile sizes absent
 (huge-young exemptions UNMEASURED); two rows statsResolved:false. Both register defects
 ride REGISTER_CORPSE_CROSSCHECK_1.
+
+## sequence rider (owner, 2026-09-06)
+Blocked until `BIOME_FREEZE_FABLE_REVIEW_1` AND `SETTLEMENT_REJIGGER_ROUND2_1` close — the
+sheets freeze first, the settlements move to fit them, then the animals and plants land.

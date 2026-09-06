@@ -65,3 +65,8 @@ check-out. Output must let the assignment sitting proceed without reopening ruli
 A per-biome, per-dimension table exists as DATA; every contradiction between sheets is
 either resolved by an owner ruling or listed as an accepted tension; the sheets are then
 marked frozen per the frozen-artifacts discipline.
+
+## sequence rider (owner, 2026-09-06)
+This review is followed IMMEDIATELY by `SETTLEMENT_REJIGGER_ROUND2_1` (settlements
+re-shifted to the frozen biomes), and only then by the animal/plant assignment
+(`BIOME_FAUNA_ASSIGNMENT_SITTING_1`) and the inhabited injections.
