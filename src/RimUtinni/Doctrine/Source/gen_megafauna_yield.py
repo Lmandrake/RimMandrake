@@ -325,6 +325,7 @@ with io.open(out, "w", encoding="utf-8", newline="") as fh:
     fh.write("<Patch>" + NL)
     n = 0
     retired_skipped = {}
+    emitted_mods = set()
     for mod, oplist in sorted(ops.items()):
         # A dump captured before the 2026-09-05 retirements still carries their
         # animals, so an unfiltered re-run emits yield patches for four mods the
@@ -333,6 +334,7 @@ with io.open(out, "w", encoding="utf-8", newline="") as fh:
             retired_skipped[mod] = len(oplist)
             continue
         n += len(oplist)
+        emitted_mods.add(mod)
         fh.write(NL + '  <Operation Class="PatchOperationFindMod">' + NL)
         fh.write("    <mods><li>" + xesc(mod) + "</li></mods>" + NL)
         fh.write('    <match Class="PatchOperationSequence">' + NL)
@@ -342,6 +344,54 @@ with io.open(out, "w", encoding="utf-8", newline="") as fh:
         fh.write("      </operations>" + NL)
         fh.write("    </match>" + NL + "  </Operation>" + NL)
     fh.write(NL + "</Patch>" + NL)
+
+# --- DOCTRINE_LOADAFTER_STALE_1: assert About.xml's loadAfter still covers ---
+# every mod this file just emitted a PatchOperationFindMod group for. The list
+# above IS the patch surface; About.xml's <loadAfter> is what protects that
+# surface across a re-sort (PatchOperationFindMod returns true on NO match, so
+# an out-of-order group is a silent no-op, never a load error -- see the
+# 2026-08-13 comment block in About.xml). A patch file naming a mod the About
+# does not declare is exactly the bug DOCTRINE_LOADAFTER_STALE_1 found, so
+# check it here rather than trusting the curated list to stay in sync by hand.
+#
+# Base-game DLC is exempt: it always loads first, so About.xml deliberately
+# never names Core/Biotech/Anomaly/Odyssey (see its own header comment).
+_BASE_GAME = {"Core", "Biotech", "Anomaly", "Odyssey"}
+_ABOUT = os.path.join(os.path.dirname(HERE), "About", "About.xml")
+_MANIFEST = os.path.join(D_DUMP, "manifest.json")
+
+import json
+import re as _re
+
+with io.open(_ABOUT, encoding="utf-8") as _fh:
+    _about_xml = _fh.read()
+_loadafter_block = _re.search(r"<loadAfter>(.*?)</loadAfter>", _about_xml, _re.S)
+_declared_pids = {m.strip().lower() for m in
+                  _re.findall(r"<li>\s*([^<]+?)\s*</li>",
+                              _loadafter_block.group(1) if _loadafter_block else "")}
+
+with io.open(_MANIFEST, encoding="utf-8") as _fh:
+    _manifest = json.load(_fh)
+_name_to_pid = {m["name"]: m["packageId"] for m in _manifest["mods"]
+                if m.get("name") and m.get("packageId")}
+
+_missing = []
+for _mod in sorted(emitted_mods - _BASE_GAME):
+    _pid = _name_to_pid.get(_mod)
+    if _pid is None:
+        _missing.append((_mod, "NO PACKAGEID FOUND in %s" % _MANIFEST))
+    elif _pid.lower() not in _declared_pids:
+        _missing.append((_mod, _pid))
+
+if _missing:
+    print()
+    print("  LOADAFTER CHECK FAILED: %s's About.xml does not declare %d of the "
+          "mods this patch just targeted:" % (_ABOUT, len(_missing)))
+    for _mod, _pid in _missing:
+        print("    %-45s -> %s" % (_mod, _pid))
+    print("  Add each packageId to <loadAfter> in About.xml (see the header "
+          "comment there), then re-run this generator.")
+    sys.exit(1)
 
 if retired_skipped:
     print("  retired mods excluded: %s"

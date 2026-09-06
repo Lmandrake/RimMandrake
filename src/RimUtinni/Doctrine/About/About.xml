@@ -68,10 +68,21 @@ Load last.</description>
     <li>BiomesTeam.BiomesCore</li>                        <!-- Biomes! Core -->
     <li>BiomesTeam.BiomesPollutedLands</li>               <!-- Biomes! Polluted Lands -->
     <li>Erin.FFAnimals</li>                               <!-- Erin's Final Fantasy Animals -->
+    <li>grimterra.biomesmod</li>                          <!-- GRiNDTerra Biomes -->
     <li>IronScruff.PrimordialGeysers</li>                 <!-- Primordial Geysers -->
     <li>Joe.Cephaloids</li>                               <!-- Cephaloids -->
-    <li>Killathon.ArtificialBeings</li>                   <!-- ABF: Synstructs Core -->
+    <li>killathon.artificialbeings.syncore</li>           <!-- ABF: Synstructs Core -->
+    <!-- Was Killathon.ArtificialBeings (DOCTRINE_LOADAFTER_STALE_1, 2026-09-06):
+         that packageId belongs to "ABF: Artificial Beings Framework", the
+         donor's FRAMEWORK mod, not "ABF: Synstructs Core" which is what
+         DroidsAreMachines.xml actually gates on (ABF_FleshType_Synstruct_Base).
+         Confirmed against the live def dump manifest - killathon.artificialbeings
+         is the framework's own id, killathon.artificialbeings.syncore is
+         Synstructs Core's. The wrong id happened to sit before its real target
+         in load order too, so this was a second silent no-op waiting to
+         trigger, not a live bug today. -->
     <li>LingLuo.Cockroach</li>                            <!-- Rim cockroach -->
+    <li>mandrake.rsw.seabeasts</li>                       <!-- RimMandrake - SW Sea Beasts -->
     <li>Mlie.AdvancedBiomes</li>                          <!-- Advanced Biomes (Continued) -->
     <li>Mlie.Horrors</li>                                 <!-- Horrors (Continued) -->
     <li>Mlie.MoEvents</li>                                <!-- Mo'Events (Continued) -->
