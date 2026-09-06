@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimMandrake Gravship Crush Landing</name>
+  <author>Mandrake</author>
+  <packageId>mandrake.rm.gravshipcrushlanding</packageId>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>GRAVSHIP_LANDING_CRUSH_1. Owner ruling, 2026-09-05: a gravship that size will never find a perfectly clear landing site, so small barriers and blockages (walls, furniture, rubble, anything without canLandGravshipOn) are crushed rather than refusing the landing — only a natural rock roof (major mountain), the map's own designated landing-blocker zones, and terrain that cannot take Substructure (deep water, lava) still refuse. Also lets the gravship launch even with a thruster physically blocked, since the grav engine lifts vertically before thrust is needed.
+
+Two small Harmony patches, both re-derived from the live decompiled vanilla mechanism (RimWorld.Designator_MoveGravship.IsValidCell, RimWorld.WorldComponent_GravshipController.InitiateLanding, RimWorld.CompGravshipThruster.Blocked) rather than copied from a guess — see the source comments for exactly which vanilla branch each patch changes and which ones are left untouched.</description>
+
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+    <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+    </li>
+  </modDependencies>
+
+  <loadAfter>
+    <li>brrainz.harmony</li>
+    <li>Ludeon.RimWorld.Odyssey</li>
+  </loadAfter>
+</ModMetaData>
