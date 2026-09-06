@@ -110,10 +110,14 @@
     </thingSetMakerTags>
     <equippedDistanceOffset>0.25</equippedDistanceOffset>
     <comps>
+<!-- SWCP.Core.CompProperties_PositionAttributes removed: SWCP is not in the
+           live mod list (see Absorbed_KotorWeapons_BLOCKED_manifest.txt, which
+           already lists this exact defName as excluded for this class match;
+           the generator wrote it anyway). Purely cosmetic held-weapon draw
+           offset, safe to drop entirely.
       <li Class="SWCP.Core.CompProperties_PositionAttributes">
-        <!-- <DraftedDrawOffset>(0.5, 0)</DraftedDrawOffset> -->
         <HeldDrawOffset>(0.125, -0.125)</HeldDrawOffset>
-      </li>
+      </li> -->
     </comps>
   </ThingDef>
 
@@ -205,10 +209,14 @@
     </thingSetMakerTags>
     <equippedDistanceOffset>0.25</equippedDistanceOffset>
     <comps>
+<!-- SWCP.Core.CompProperties_PositionAttributes removed: SWCP is not in the
+           live mod list (see Absorbed_KotorWeapons_BLOCKED_manifest.txt, which
+           already lists this exact defName as excluded for this class match;
+           the generator wrote it anyway). Purely cosmetic held-weapon draw
+           offset, safe to drop entirely.
       <li Class="SWCP.Core.CompProperties_PositionAttributes">
-        <!-- <DraftedDrawOffset>(0.5, 0)</DraftedDrawOffset> -->
         <HeldDrawOffset>(0.125, -0.125)</HeldDrawOffset>
-      </li>
+      </li> -->
       <li Class="ModularWeapons2.CompProperties_ModularWeapon">
         <baseGraphicData>
           <texPath>kotorhvyrepeater_mando</texPath>
@@ -322,10 +330,14 @@
     </thingSetMakerTags>
     <equippedDistanceOffset>0.25</equippedDistanceOffset>
     <comps>
+<!-- SWCP.Core.CompProperties_PositionAttributes removed: SWCP is not in the
+           live mod list (see Absorbed_KotorWeapons_BLOCKED_manifest.txt, which
+           already lists this exact defName as excluded for this class match;
+           the generator wrote it anyway). Purely cosmetic held-weapon draw
+           offset, safe to drop entirely.
       <li Class="SWCP.Core.CompProperties_PositionAttributes">
-        <!-- <DraftedDrawOffset>(0.5, 0)</DraftedDrawOffset> -->
         <HeldDrawOffset>(0.125, -0.125)</HeldDrawOffset>
-      </li>
+      </li> -->
     </comps>
     <modExtensions>
       <li Class="IgnoreConfigErrors.Ignore_ForcedMissRadius" />
@@ -403,10 +415,14 @@
     </tools>
     <equippedDistanceOffset>0.25</equippedDistanceOffset>
     <comps>
+<!-- SWCP.Core.CompProperties_PositionAttributes removed: SWCP is not in the
+           live mod list (see Absorbed_KotorWeapons_BLOCKED_manifest.txt, which
+           already lists this exact defName as excluded for this class match;
+           the generator wrote it anyway). Purely cosmetic held-weapon draw
+           offset, safe to drop entirely.
       <li Class="SWCP.Core.CompProperties_PositionAttributes">
-        <!-- <DraftedDrawOffset>(0.5, 0)</DraftedDrawOffset> -->
         <HeldDrawOffset>(0.125, -0.125)</HeldDrawOffset>
-      </li>
+      </li> -->
       <li Class="ModularWeapons2.CompProperties_ModularWeapon">
         <baseGraphicData>
           <texPath>kotorhvyrepeater_baragwin</texPath>
@@ -516,10 +532,14 @@
     </tools>
     <equippedDistanceOffset>0.25</equippedDistanceOffset>
     <comps>
+<!-- SWCP.Core.CompProperties_PositionAttributes removed: SWCP is not in the
+           live mod list (see Absorbed_KotorWeapons_BLOCKED_manifest.txt, which
+           already lists this exact defName as excluded for this class match;
+           the generator wrote it anyway). Purely cosmetic held-weapon draw
+           offset, safe to drop entirely.
       <li Class="SWCP.Core.CompProperties_PositionAttributes">
-        <!-- <DraftedDrawOffset>(0.5, 0)</DraftedDrawOffset> -->
         <HeldDrawOffset>(0.125, -0.125)</HeldDrawOffset>
-      </li>
+      </li> -->
       <li Class="ModularWeapons2.CompProperties_ModularWeapon">
         <baseGraphicData>
           <texPath>kotorhvyrepeater_ordo</texPath>

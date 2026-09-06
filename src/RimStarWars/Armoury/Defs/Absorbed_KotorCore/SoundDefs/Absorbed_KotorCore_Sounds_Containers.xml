@@ -25,7 +25,7 @@
       <li>
         <grains>
           <li Class="AudioGrain_Clip">
-            <clipPath>kotormisc/containers/pl_footlkr_close</clipPath>
+            <clipPath>kotormisc/containers/pl_footlkr_open</clipPath>
           </li>
         </grains>
         <volumeRange>
@@ -50,7 +50,7 @@
       <li>
         <grains>
           <li Class="AudioGrain_Clip">
-            <clipPath>kotormisc/containers/pl_footlkr_open</clipPath>
+            <clipPath>kotormisc/containers/pl_footlkr_close</clipPath>
           </li>
         </grains>
         <volumeRange>

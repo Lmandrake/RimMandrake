@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-06T08:24:17Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-06T08:42:23Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -600,3 +600,13 @@ kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/KOTORCORE_ABSORPTION_MISSING_TEXTURES_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/KOTORCORE_ABSORPTION_MISSING_TEXTURES_1.md
+
+## KOTORWEAPONS_ABSORPTION_CONTENT_NITS_1 Donor-original flavor-text nits across the KotOR absorption pool (cosmetic only)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/KOTORWEAPONS_ABSORPTION_CONTENT_NITS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/KOTORWEAPONS_ABSORPTION_CONTENT_NITS_1.md

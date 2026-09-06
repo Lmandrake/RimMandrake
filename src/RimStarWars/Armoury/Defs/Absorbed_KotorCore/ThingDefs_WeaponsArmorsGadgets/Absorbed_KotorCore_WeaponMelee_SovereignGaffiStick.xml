@@ -29,7 +29,7 @@
     </graphicData>
     <techLevel>Neolithic</techLevel>
     <equippedAngleOffset>-65</equippedAngleOffset>
-    <weaponTags inherit="False">
+    <weaponTags Inherit="False">
       <li>SandClub</li>
     </weaponTags>
     <tradeTags>
