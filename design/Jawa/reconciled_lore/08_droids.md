@@ -1,5 +1,7 @@
 # Droids — the five states and Droidworks
 
+> ⛔ **SUPERSEDED IN PART 2026-09-06** by `design/Jawa/droids/DROID_UNIFIED_FRAMEWORK_DESIGN.md` §0 (15 owner rulings): there is no droid faction — droids ride every faction's loadouts and wild droids are factionless crashed units (ruling 2, this doc's "Wild droids are their own faction"); needs follow the format tier (ruling 4); brains are import-only and the head-gate is the standing rule (ruling 6); the customer layer is a v1 event pack, still on top (ruling 2, "Build state").
+
 Governing aesthetic [owner, frozen sheet 2026-08-29]: *"Everything in Star Wars
 should feel like bringing it in to the shop, not magical tech."* Design intent:
 `droid_system_spec.md`. Buildable engineering + port plan:

@@ -1,4 +1,5 @@
 > ⛔ **SUPERSEDED** — the live version of this content: design/Jawa/reconciled_lore/08_droids.md
+> ⛔ **SUPERSEDED IN PART 2026-09-06** by `design/Jawa/droids/DROID_UNIFIED_FRAMEWORK_DESIGN.md` §0 — this doc reads the FROZEN sheet `droid_verbs_decisions.json` (frozen by the owner 2026-08-29, not edited), whose rows `abf_reprogram`, `abf_formatting` and `abf_cradle` are now ruled as follows: wild droids are factionless crashed units and there is no droid faction (ruling 2, §6 here); programmable-tier droids have Mood but not Joy/Beauty/Comfort, mindless and blank have no needs (ruling 4, §5 here); the Cradle-equivalent is head-gated and only the Primitive tier fabricates, never a brain (rulings 6 and 8, §2 here); and the shop CUSTOMER layer is a v1 quest pack of recurring repair-for-profit events (ruling 2, §11.3 here).
 
 <!-- status: REOPENED 2026-08-29 (owner: "We've fallen in love with the full
      droid item") — this doc stays the DESIGN-INTENT authority; the buildable

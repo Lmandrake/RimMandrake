@@ -42,7 +42,7 @@ cash — which is exactly the owner's instinct.
 | droid construction (~24 rows: OuterRim + guy762 + Synstructs) | The Unbolting (faction-held, Enclaves) | ruled home; the liberation curriculum |
 | droid repair (Energy Systems, Replacement/adv parts, armor, shields) | Scavenger (owner's own move — Droidsmith dissolved) | ruled home; do not touch |
 | droid weapon systems (2 rows) | Blasterworks | fine — guns are guns whoever aims them |
-| `OuterRim_DroidBrain` (item) | crafting chain under Unbolting rows | droid minds as manufacturable parts |
+| ~~`OuterRim_DroidBrain` (item)~~ | ~~crafting chain under Unbolting rows~~ | ⛔ STRUCK 2026-09-06 — droid brains (personality matrix, processor, databank) are import-only and no research row ever unlocks one; the Depot brain rows die with Droid Depot: `design/Jawa/droids/DROID_UNIFIED_FRAMEWORK_DESIGN.md` §0 ruling 6 |
 | neural supercharger | The Ascendant Ladder | flesh-adjacent; fine |
 | CCTV/automated cameras (CAI 5000, 3 rows) | Powder & Slug | weak-AI surveillance; fine as security |
 | automated smelter restoration (WreckedMachines) | The Workshop | automation, not mind; fine |

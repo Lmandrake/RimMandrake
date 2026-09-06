@@ -1,4 +1,5 @@
 > ⛔ **SUPERSEDED** — the live version of this content: design/Jawa/reconciled_lore/07_physics_and_arms.md + design/Jawa/reconciled_lore/08_droids.md
+> ⛔ **SUPERSEDED 2026-09-06 on enemies** — there is no rogue droid faction and no droid faction of any kind; droids are fielded inside every faction's own loadouts and the capture line is the Empire's attack droids: `design/Jawa/droids/DROID_UNIFIED_FRAMEWORK_DESIGN.md` §0 ruling 2 (applies to §7 "the KotOR rogue droid collective" and the 2026-08-13 "KotOR droids are the capture-and-upgrade line" section below).
 
 <!-- status: live -->
 # Droid ruling — ion, capture, and what detonates
@@ -75,6 +76,8 @@ argued at the time as a technicality about force-kill; it is now the intended
 design.
 
 ### KotOR droids are the capture-and-upgrade line
+
+> ⛔ SUPERSEDED 2026-09-06 — the capture line is the Empire's attack droids (KotOR chassis now ride Empire, Hutt and Junker loadouts, not a droid faction): `design/Jawa/droids/DROID_UNIFIED_FRAMEWORK_DESIGN.md` §0 ruling 2.
 
 > Owner: *"KotOR droids are capturable and have lots of buildable upgrade parts.
 > That's AWESOME and totally on brand. They should NOT blow up when ion blasted."*
@@ -561,6 +564,8 @@ FactionDef → pawnGroupMakers → PawnKindDef → race → fleshType across 84 
 and 1,741 pawnKinds. Every negative below is "searched and absent", not inferred.
 
 ### The enemy is the KotOR rogue droid collective — already live
+
+> ⛔ SUPERSEDED 2026-09-06 — no rogue droid collective exists on the platform; `guy762_KotORFaction_RogueDroids` retires with its mod and its raids are replaced by Empire attack-droid groups: `design/Jawa/droids/DROID_UNIFIED_FRAMEWORK_DESIGN.md` §0 ruling 2.
 
 `file:///C:/Program%20Files%20(x86)/Steam/steamapps/workshop/content/294100/3047371944/1.6/Defs/FactionDefs/Factions_RogueDroids.xml`
 

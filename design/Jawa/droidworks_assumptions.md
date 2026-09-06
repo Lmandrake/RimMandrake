@@ -191,6 +191,10 @@
     start-prep pass (rimworld-start-prep rules apply; RimSort refresh trap).
 17. ✅ RULED QUEST-PACK-ON-TOP (owner, 2026-08-29). The shop CUSTOMER layer
     ships as a separate quest/incident mod later; Droidworks stays pure platform.
+    ⛔ SUPERSEDED 2026-09-06 on timing — the customer layer is v1: recurring
+    repair-for-profit events from local friendlies (`DROID_REPAIR_FOR_PROFIT_EVENTS_1`),
+    still a RimUtinni pack on top of the platform:
+    `design/Jawa/droids/DROID_UNIFIED_FRAMEWORK_DESIGN.md` §0 ruling 2.
 18. **A fifth mod holds KotOR droid plumbing**: the abstract race parent
     `guy762_KotORDroidBase` and the droid-slot equipment art
     (`droidshield_*`, `droidtech_*`, `hvyshield_*`) live in
