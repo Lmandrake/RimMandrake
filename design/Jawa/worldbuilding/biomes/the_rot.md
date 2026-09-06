@@ -94,6 +94,18 @@ a day, for certain**. The gut digests whatever is set down in it.
 - 🔴 **All-fungus flora** (owner's ruling): no conventional plants, none. The donor's
   twelve-species suite is the base — glow-carpet, food-caps, the giant Agarilux
   wood-substitutes.
+- ⭐ **The Agarilux Prime — celebrated** (owner, 2026-09-06: "amazing content that we
+  should celebrate"). Donor `AB_AgariluxPrime`, MEASURED: "an unbelievably large exemplar
+  of Agarilux… releasing large clouds of extremely dangerous spores… these spores attack
+  both other fungi and roaming animals, and after they inevitably suffocate, the Agarilux
+  Prime extends prehensile hyphae to feed on their rotting corpses"; cutting it without
+  perfect spore protection kills the cutter. Mechanism: `AlphaBiomes.CompProperties_GasProducer`,
+  radius 8, gas `AB_MycoticSpores`, a 6,000-day lifespan — a permanent, predatory
+  mushroom. **It is the biome's guardian exemplar** (§7) and the seed of our own
+  active-defender line: the owner's call to *"replicate ourselves with other similar
+  functions"* rides `ALPHA_FAMILY_SOURCE_REVIEW_1` — a generic defender-plant comp (spore
+  cloud / gas / sap / lure) for the tea-sources here, the Contagion's aberrations and the
+  Deeps' Lantern.
 - 🔴 **Hybrid-or-out fauna** (owner's ruling): the few animals that dwell here are
   fungus/animal hybrids — the donor natives mostly already are (Agari/Wild pawns and pods,
   the Mycoid Colossus, Swarmlings). The admission test at the assignment sitting is
@@ -151,9 +163,10 @@ a day, for certain**. The gut digests whatever is set down in it.
   bioregeneration, the pleasure brew — each carrying a biosculpter cycle's effect, each
   brewed live on-site or never. **Their source mushrooms defend themselves richly** —
   guardianship expands to a real defense repertoire (to concretize with the roster):
-  suffocating spore bursts, hybrid defenders summoned through the mycelial network, the
-  mat itself grasping, false fruiting bodies. Getting a tea is an expedition, not a
-  harvest.
+  suffocating spore clouds (the Agarilux Prime pattern, §4 — the donor already built the
+  exemplar), hybrid defenders summoned through the mycelial network, the mat itself
+  grasping, false fruiting bodies, and the Prime's own trick: feeding on what it kills.
+  Getting a tea is an expedition, not a harvest.
 - ⭐ **Symbiont parasites — luciferium pulled apart** (owner's ruling): beneficial tenants,
   each a bargain with teeth. The ratified pairs: **accelerated healing / massively
   increased metabolism** · **sleep abolished / always a little psychotic** · **Sheen

@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-06T22:47:09Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-06T23:07:45Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -192,3 +192,13 @@ kind:     task
 thin:     no ## criteria
 summary:  - Reconcile with existing canon: the Rust Cathedral (ABMechanoidIntrusion, the
 prose:    infrastructure/state/items/MECHANOID_ORIGIN_CANON_1.md
+
+## ALPHA_FAMILY_SOURCE_REVIEW_1 Study the whole Alpha family from its public source (github.com/juanosarg/AlphaBiomes + AlphaAnimals): catalog the C# mechanics, replicate the ones worth owning as generic comps (active-defender plants, terrain attacks, sensor fog), broaden the concepts for Ash'karr
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  1. Inventory the family: which Alpha mods are in our stack (ModsConfig, MEASURED) and
+prose:    infrastructure/state/items/ALPHA_FAMILY_SOURCE_REVIEW_1.md
