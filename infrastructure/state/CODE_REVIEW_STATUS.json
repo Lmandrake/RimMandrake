@@ -5098,10 +5098,10 @@
     "sha": "ef81a0b7"
   },
   "src/RimStarWars/Armoury/Patches/Armoury_RangedDamage.xml": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-05",
-    "hash": "4d1e02553815c519404731c8a3b89f7907fb1bd565d6bacb9ccb6895719452c5",
-    "sha": "ef81a0b7"
+    "hash": "b636ae66ba6b8e9be70f272b2ebce390b47f227e2ea35913f6f453ae13d0e469",
+    "sha": "d512cc3c"
   },
   "src/RimStarWars/Armoury/Patches/Armoury_TorpedoSpeed.xml": {
     "cleanCount": 1,
@@ -7042,10 +7042,10 @@
     "sha": "c9acb340"
   },
   "src/RimUtinni/Doctrine/Patches/MegafaunaYield.xml": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-05",
-    "hash": "91f8bcd38ff8c5480d2061dc8dbe3b9d6dc009407ed53dafb08a3c922c2a48ce",
-    "sha": "c9acb340"
+    "hash": "99bda0e997fd2831eb30b6303482b01d93f8c6c68b473ddbecd71c276ead09ec",
+    "sha": "d512cc3c"
   },
   "src/RimUtinni/Doctrine/Patches/NoDroidManufacture.xml": {
     "cleanCount": 1,
@@ -7270,10 +7270,10 @@
     "sha": "f9d51180"
   },
   "src/RimUtinni/PawnFlavor/Patches/PawnFlavorPhase2_ThoughtDef.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-02",
-    "hash": "cd5492ada2461df299e871afdc541752ad9723fadf6b4ffb752cbd65ac7151a3",
-    "sha": "f9d51180"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "hash": "e22320b39d691cf3402c81e62915e4fca8d2991f7ca7fb2a8019482c44b8f01e",
+    "sha": "d512cc3c"
   },
   "src/RimUtinni/PawnFlavor/Patches/PawnFlavorPhase2_Xenotype.xml": {
     "cleanCount": 1,
