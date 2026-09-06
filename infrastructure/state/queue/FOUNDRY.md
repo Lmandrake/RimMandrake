@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-06T08:59:09Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-06T12:49:49Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -610,3 +610,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  KOTORWEAPONSABSORPTIONCONTENTNITS1
 prose:    infrastructure/state/items/KOTORWEAPONS_ABSORPTION_CONTENT_NITS_1.md
+
+## FOUNDRY_REBOOT_HANDOFF_20260906 FOUNDRY reboot handoff 2026-09-06 - READ FIRST on wake
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify
+summary:  FOUNDRYREBOOTHANDOFF20260906 — READ FIRST on wake
+prose:    infrastructure/state/items/FOUNDRY_REBOOT_HANDOFF_20260906.md
