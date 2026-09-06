@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-06T15:16:54Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-06T16:13:12Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -632,3 +632,13 @@ kind:     task
 thin:     no ## criteria
 summary:  - Site (MEASURED, ruled): the Damp chain — 32 ABRockyCrags tiles straddling arc 90,
 prose:    infrastructure/state/items/LIGHTFALL_CHASM_AUTHORING_1.md
+
+## EDIBLE_GENEPACK_NATIVE_1 Scan Genepacks Injection DLL (TommasoBelluzzo.GenepacksInjection, ws 3784789591), understand its consumption flow, reimplement the edible-genepack loop natively in our own mod — the Slime's gene machine must not lean on donor mods (owner 2026-09-06, the_slime.md Owed)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/EDIBLE_GENEPACK_NATIVE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/EDIBLE_GENEPACK_NATIVE_1.md

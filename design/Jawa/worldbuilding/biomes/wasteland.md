@@ -277,6 +277,10 @@ Junkers refuse and refute all of it.
      bleeding reactor core dropped into cryogenic propane ignites — and a sustained melt
      could be **how the players breach the sealed research station holding active
      Assailants.**
+  5. **The Slime experiment** (owner, 2026-09-06 — `the_slime.md` §7): scoop tons of the
+     living archive onto the gravship and pour it down the Throat — likely killing what
+     you poured, maybe neutralizing the pit, with genuinely unknown results below. The
+     only option that is an experiment rather than a verdict.
 
 ---
 

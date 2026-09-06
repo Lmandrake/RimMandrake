@@ -158,6 +158,9 @@ a day, for certain**. The gut digests whatever is set down in it.
   increased metabolism** · **sleep abolished / always a little psychotic** · **Sheen
   immunity without gear / intolerance of the sun**. All live preparations (ban 4); the
   Sheen-immunity symbiont is how you *join* the biome instead of resisting it.
+  ⭐ Two Rot exports serve the Slime (`the_slime.md`, owner 2026-09-06): the **mycoid
+  symbiotes** that confer slimification resistance, and the **intentionally toxic
+  injection** that kills swallowed Slime before conversion completes.
 - **Local genepacks** — the competitive survivors of the digested war: heat generation,
   Sheen compatibility, hybrid vigor. Beneficial-to-here only (ban 5).
 - **The gourmet line** — powerhouse chemistry as Star Wars cuisine: named delicacies,
