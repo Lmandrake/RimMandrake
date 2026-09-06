@@ -15,8 +15,19 @@ Two measured facts about Ash'karr drive everything (`the_one_map.md`):
 Those two are in tension: the physics wants rings, the aesthetics forbid them. That
 tension IS the design engine:
 
-> **θ sets the ENERGY BUDGET. A local ANOMALY sets the IDENTITY.**
+> **θ sets the ENERGY BUDGET. TEMPERATURE sets what METABOLISM is possible.
+> A local ANOMALY sets the IDENTITY.**
 > Rings never form because the anomalies are scattered.
+
+**Three axes, not two (owner, 2026-09-05):** temperature is *similar to θ but
+independent of it* — altitude, wind, water and venting all decouple the two. It is
+its own axis because it decides two things θ cannot:
+1. **Which metabolisms are chemically available at all** (a reaction that runs at
+   40 °C may simply not run at −40 °C, whatever the energy budget says), and
+2. **Which non-biological processes are at work** — frost shatter, evaporation,
+   sublimation, clathrate stability, what the wind can carry.
+
+A biome is a *reasoned intersection* of a regime, a temperature, and an anomaly.
 
 **Energy regimes** — deep dayside (eternal noon, no diurnal cycle at all) · mid
 dayside · **terminator band** (permanent low-angle light, the water, and the
