@@ -33,3 +33,11 @@ that picks a material/tint per river SEGMENT.
 The world map shows a red headwater turning green/brown into a jungle and brown/blue at
 its salt end, and a slate-cyan propane lake; screenshots for the owner; no frame-rate
 regression on the globe.
+
+## gradient (owner, 2026-09-06: "It would be even cooler if we could add a gradient to it")
+Prefer a **continuous gradient along the river's length** over hard segment classes: the
+river world-layer builds a mesh with vertices along the path — tint per VERTEX, interpolating
+by position along the river (source → mouth) and/or by the biome of the tile under each
+vertex, so red bleeds into green/brown across the jungle edge and into brown/blue as the
+salt approaches, with no visible seam. Segment classes (spec 1) remain the fallback if the
+layer's mesh cannot carry per-vertex color. Mock the gradient in `worldview.py` first.
