@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-06T08:06:38Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-06T08:24:17Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -495,15 +495,6 @@ kind:     repair
 summary:  TILESSTAMPVERIFY1
 prose:    infrastructure/state/items/TILES_STAMP_VERIFY_1.md
 
-## REGISTER_CORPSE_CROSSCHECK_1 gen_creature_register.py corpse cross-check is illusory: corpseDefsExcluded=1156 vs dumper corpseDefsSkipped=1265 (off by 109) with no comparison and no warning - verify dumper count semantics (humanlike corpses?) and make the check actually fire (lines ~739-766, ~1618)
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  (no items/REGISTER_CORPSE_CROSSCHECK_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/REGISTER_CORPSE_CROSSCHECK_1.md
-
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -589,3 +580,23 @@ kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/PAWNFLAVOR_MEGAFAUNA_GEN_DESYNC_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PAWNFLAVOR_MEGAFAUNA_GEN_DESYNC_1.md
+
+## KOTORWEAPONS_ABSORPTION_DANGLING_REFS_1 Absorbed_KotorWeapons/KotorCore defs reference defNames the absorption generator deliberately excluded
+state:    proposed
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/KOTORWEAPONS_ABSORPTION_DANGLING_REFS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/KOTORWEAPONS_ABSORPTION_DANGLING_REFS_1.md
+
+## KOTORCORE_ABSORPTION_MISSING_TEXTURES_1 8 Absorbed_KotorCore/AdditionalMods files carry pink-placeholder texPaths (validate_patch.py, 13 errors)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/KOTORCORE_ABSORPTION_MISSING_TEXTURES_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/KOTORCORE_ABSORPTION_MISSING_TEXTURES_1.md
