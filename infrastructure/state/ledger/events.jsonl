@@ -4960,3 +4960,7 @@
 {"seat":"FOUNDRY","event":"start","id":"WEAPONTAGS_KOTOR_REGATE_1","ts":"2026-09-06T02:20:41Z"}
 {"seat":"BENCH","event":"bridge","state":"released","ts":"2026-09-06T02:26:02Z"}
 {"seat":"FOUNDRY","event":"close","id":"WEAPONTAGS_KOTOR_REGATE_1","sha":"4913b92c","ts":"2026-09-06T02:35:53Z"}
+{"seat":"FOUNDRY","event":"claim","id":"BIOME_SPAWN_FLORA_AUDIT_1","ts":"2026-09-06T02:36:25Z"}
+{"seat":"FOUNDRY","event":"start","id":"BIOME_SPAWN_FLORA_AUDIT_1","ts":"2026-09-06T02:36:25Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"BIOME_SPAWN_FLORA_AUDIT_1 - spawn each biome, photograph flora","ts":"2026-09-06T02:36:25Z"}
+{"seat":"FOUNDRY","event":"note","id":"BIOME_SPAWN_FLORA_AUDIT_1","text":"Static proof done: BiomeFlora_Ashkarr.xml still carries the ORIGINAL rainbow commonalities (VCE succulents, GRim* recolors) unmodified - DESERT_PLANTS_SCRAGGLY_1's pass-1 cut was specced 2026-08-31 but never executed. Also found: the live game process is STALE - jawa/get_defs on BiomeDef/Desert reads stock vanilla wildPlants (no Ash'karr additions at all), and BackgroundImageDef doesn't resolve (VBE Backgrounds absent) despite ModsConfig.xml/modlist_swap.py reporting FULL 596-mod list active. The running process predates that config and never restarted. Triggered a relaunch (launch_and_wait.sh, backgrounded) to get a correctly-loaded session for photographic biome confirmation. Item stays doing pending that.","ts":"2026-09-06T02:44:26Z"}

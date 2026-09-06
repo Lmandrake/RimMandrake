@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-06T02:35:53Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-06T02:44:26Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -459,6 +459,15 @@ kind:     task
 summary:  MULTIVIEWFACINGPIPELINE1 — pose-collision bug fixed; owner judged the OUTPUT unusable ("crushed tin cans")
 prose:    infrastructure/state/items/MULTIVIEW_FACING_PIPELINE_1.md
 
+## BIOME_SPAWN_FLORA_AUDIT_1 Spawn each biome in game and photograph what actually grows - normalize before adjusting; also identify the rainbow prolific unclickable bushes the owner keeps seeing
+state:    doing
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+summary:  (no items/BIOME_SPAWN_FLORA_AUDIT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BIOME_SPAWN_FLORA_AUDIT_1.md
+
 ## GRAVSHIP_LANDING_CRUSH_1 Gravship must land on top of small obstacles (crush them) and launch with blocked thrusters - only mountains, deep water and lava should block
 state:    doing
 row:      unassigned
@@ -502,14 +511,4 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## BIOME_SPAWN_FLORA_AUDIT_1 Spawn each biome in game and photograph what actually grows - normalize before adjusting; also identify the rainbow prolific unclickable bushes the owner keeps seeing
-state:    proposed
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/BIOME_SPAWN_FLORA_AUDIT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BIOME_SPAWN_FLORA_AUDIT_1.md
+_none._
