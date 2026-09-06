@@ -124,4 +124,10 @@ Open ruling owed: `VEHICLE_FUEL_PATCH_UNFILTERED_1` (intended or filter?).
 
 ## Game / bridge / mod-list state at wrap
 
-(filled in at wrap — see the final commit)
+- **Game: DOWN** (closed by FOUNDRY 14:31 for the companion build; `./game` reads NOT RUNNING / recorded DOWN).
+- **Bridge: FREE** (released 14:32).
+- **Live `ModsConfig.xml` = the owner's FULL list** (598 active, md5 `a62d0338…`, verified by `modlist_swap.py --restore`).
+- **`Config\CustomLandforms-v1\` is EMPTY** — no probe landform can hijack the real world.
+- **JawaBench companion DLL DEPLOYED** (14:32) with the seven Society-tools fixes; RimBridgeServer discovers it at the next launch. `build.py` refused on a fictitious `LOSES jawa/pawn_` — proven a byte-scan artifact (313 declared == 313 live), overridden with `--allow-tool-removal`, filed `BUILD_PY_TOOLNAME_SCAN_FALSE_LOSS_1`. **Live-prove on next game-up:** `jawa/settlement_remove mode=map` refuses the player home map without `force=true`; `gene_reimplant`/`ideo_create` return read-back success.
+- **MAPGEN_GL_SHEET_1 result:** 7 of 8 emitted landforms proven applied in-game (Canyon ×4, LoneMountain, Sinkhole, Crater; `RUT_Gen_06` loaded but GL drew none on its tile). Sheet for the owner: `Transient/mapgen_gl/comparator_gl_vs_painter.png` (GL top row, painter v1 bottom). Caveat: GL screenshots are default-zoom partial views — zoom out (`rimworld/set_camera_zoom`, `frame_cell_rect`) before shooting next round.
+- Nothing uncommitted from this session except the untracked Transient logs other seats own.
