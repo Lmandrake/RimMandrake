@@ -140,32 +140,57 @@ eyes catching "this reads as two skulls" is exactly the failure mode a builder w
 already knows it's one animal cannot self-detect. Iterate: fix, rebuild, re-screenshot,
 re-review, until every metric clears the gate in §4.
 
-## 6. Worked example — this skill's own first three defects
+🔴 **But verify a reviewer's low score before acting on it, the same way you'd verify
+your own claim — a fresh reviewer has a failure mode too.** Live-caught 2026-09-06: a
+critical-reviewer pass scored Waste Camp 2/5 on every metric, describing a tent-pole
+frame and a dark "collapsed mass" sitting 15-20 tiles from the actual sunken pit. On
+inspection those objects were a large ambient decoration and a pre-existing map prop
+that happened to sit in the same wide screenshot — NOT anything the template placed.
+The reviewer had no way to tell "built by this template" from "already on the
+quicktest map" from a wide shot, and reasonably scored what it saw. **Fix: frame the
+screenshot tightly enough to exclude ambient map scatter, or tell the reviewer
+explicitly which defNames belong to the build**, before trusting a low score as a
+real defect. A reviewer's job is to catch what the builder can't self-see, not to
+replace checking the claim — the same discipline `verify-before-you-escalate` asks
+of everything else in this project.
 
-Recorded so the next builder does not re-discover these the slow way.
+## 6. Worked example — two rounds so far, and what's still open
 
-- **Waste Camp** (`design/Jawa/templates/waste_camp.lua`) — every prop individually
-  correct, zero elevation change, zero implied footprint. Fix direction: sink the
-  camp's floor 1 cell below grade (a "this was dug in" read, cheap and biome-honest —
-  the Deep Desert sheet already establishes dwellings dig in against the heat) with a
-  jagged (not rectangular) sunken-edge boundary, and cluster the props around an
-  implied hearth-and-shelter footprint rather than a scatter pattern.
-- **Boneyard** (`design/Jawa/templates/boneyard.lua`) — the skull-to-ribcage gap (5
-  cells, bridged by one neck-bone) reads as two separate skulls/animals rather than
-  one creature's head, violating §3's "one body" rule directly. Fix direction: shorten
-  the gap so the skull visually abuts or nearly touches the ribcage's edge (a real
-  skeleton's skull is NOT separated from its spine by an open gap), and reduce or
-  remove the "no filler" open lane in between v.s. testing whether extra tail
-  vertebrae in that lane fix the read instead of shortening it. Also: widen the site's
-  own CLEAR footprint — the same screenshot showed a second, unrelated skull-shaped
-  object further out, which read as part of the scene even though it was ambient map
-  scatter never placed by this template; a real site must control what a viewer will
-  see inside its own frame, not just what it places.
-- **Long Crossing** (`design/Jawa/templates/long_crossing.lua`) — "a tad more
-  coherent" (owner, 2026-09-06) than the other two, i.e. closer to passing but not
-  confirmed done. Next pass: try embedding the wreck against a cliff-face/dune-lip
-  pairing (§1's face+top rule) instead of open ground, to give it the same elevation-
-  boundary presence §2 argues for, and re-score.
+Recorded so the next builder does not re-discover any of this the slow way. Status as
+of 2026-09-06, end of round 2 (a fresh critical-reviewer pass, §5).
+
+- **Waste Camp** (`design/Jawa/templates/waste_camp.lua`) — ROUND 1 fix: sank the
+  camp's floor into a jagged, non-rectangular pit and clustered every prop inside it
+  (§2/§3). ROUND 2 finding: a critical-reviewer pass scored this 2/5 across the board,
+  but on inspection the reviewer had mistaken nearby AMBIENT MAP SCATTER (unrelated to
+  this template) for the camp's own tent frame — see §5's verification note. The pit
+  and props ARE correctly co-located. **Still genuinely open**: the pit's own edge
+  reads as subtle ("a flat, near-rectangular patch of slightly lighter soil" per the
+  reviewer, before the misattribution) — the jaggedness needs to read more strongly
+  at normal play zoom, and someone needs to re-review with a tightly-framed shot that
+  can't be confused with the map's own furniture.
+- **Boneyard** (`design/Jawa/templates/boneyard.lua`) — ROUND 1 fix: closed the
+  skull-to-ribcage gap to zero (was 5 cells). ROUND 2 finding, CONFIRMED by a fresh
+  reviewer independent of the round-1 fix: a bone-fragment prop (`AB_AncientBrokenBone`
+  or `AB_AncientVerticalBone` — not yet pinned down to one) sitting at the tail's far
+  end has its OWN sprite art close enough to the real skull's that it still reads as
+  "a second head" even though only one true skull object exists — confirmed by direct
+  game-data query. **Two items still open**: (1) swap or remove that tail-end prop so
+  its silhouette doesn't echo the skull's; (2) the tree (`TreeDead`, the silverbole
+  stand-in) still does not spawn via the live bridge path at all — a silent failure,
+  same class as `waste_camp`'s mined-rock CLEAR gap, root cause not yet found (a
+  terrain-fertility refusal is the leading theory, unconfirmed).
+- **Long Crossing** (`design/Jawa/templates/long_crossing.lua`) — ROUND 1 added a
+  Decorative Cliffs dune-lip as a VERTICAL column, which rendered as a broken zigzag
+  (§1's horizontal-run finding) — fixed by reorienting to a horizontal row, confirmed
+  live to link into one solid mound. ROUND 2 finding: even linked correctly, a
+  ONE-CELL-THICK horizontal run reads as a wooden fence rail, not an earthen dune — a
+  dune needs BULK (multiple rows of depth), not just correct linking. **Still open**:
+  widen the dune to 2-3 rows deep; also the sand-drift chance function varies only
+  with x (distance from the hull), never z, so it paints a uniform band across the
+  WHOLE rect regardless of whether the hull is even at that z-row — it needs to taper
+  in z too, or be masked to the hull's own z-span, so it reads as caused by the truck
+  specifically rather than an unrelated background gradient.
 
 ## 7. Process for this whole skill going forward
 
