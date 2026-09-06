@@ -22,7 +22,7 @@ donor can retire until it is. Everything below is evidence for that sentence.
 
 | item | state | what it is |
 |---|---|---|
-| `DROID_SYSTEM_EMBRACE_1` | done (closed `bbea1609`, 2026-08-29) | census → owner curates 39-row sheet → spec. Item file is misfiled at `infrastructure/state/queue/items/` (FOUNDRY note 2026-09-06; BENCH to `git mv`) |
+| `DROID_SYSTEM_EMBRACE_1` | done (closed `bbea1609`, 2026-08-29) | census → owner curates 39-row sheet → spec. Item file now at `infrastructure/state/items/` (moved by BENCH 2026-09-06) |
 | `DROID_SYSTEM_BUILD_1` | **doing** (FOUNDRY) | the parent build item; greenlit 2026-09-01; open criteria: port waves at save boundaries, Cherry Picker cuts, DroidsAreMachines retirement |
 | `DROIDWORKS_DLL_COMPILE_1` · `PHASE0_XML_1` · `ION_GUARD_1` · `DEF_GENERATOR_1` · `PILOT_GONK_1` · `CHARGING_TRIO_1` · `BOLT_CORE_1` · `WIPE_AND_SPIKE_1` · `FAMILY_LAYER_1` · `FLESHTYPE_NEEDS_GAP_1` · `ISFLESH_RELATIONS_CRASH_1` · `POWEREDDOWN_NOT_WIRED_1` · `CHARGER_STATE_MACHINE_SWEEP_1` · `GENERATOR_NAMING_DRIFT_1` | all **done** | Phase 0 + most of Phase 1 verbs, built 2026-08-30 → 09-05 |
 | `DROID_PSYCHICENTROPY_NULL_GAP_1` · `DROID_DATASPIKE_SURVIVES_FAILON_1` | done (`fe5dfe7d`) | code-review bugs, 2026-09-05 |
@@ -168,11 +168,31 @@ consequence layer beyond the accumulator (#7 payoff) · per-faction heads and
 spikes (#8 as specced) · ion shield-break + body-size scaling (#3 halves) ·
 research rows · droid factions on the platform.
 
-**Genuinely open (owner)**: see the question list at the end of
-`DROID_UNIFIED_FRAMEWORK_DESIGN.md`. The three that block Foundry today:
-activation route (full list now vs. minimal-list proof first), who fields droids
-against the player once the donor factions retire, and whether the mindstone
-race rides the Droidworks chassis system.
+**Ruled by the owner 2026-09-06 (15 cards, verbatim in
+`DROID_UNIFIED_FRAMEWORK_DESIGN.md` §0)**: activation = minimal-list proof then
+full list · **no rogue droid faction, ever** — droids ride every faction's
+loadouts (Empire attack droids are the capture line; traders carry protocol
+droids with a real trade advantage; FDE hostile only in-territory; Trade Moot
+buys/sells) · mindstone race = chassis + special head · needs by format tier ·
+fine parts from the start · head-gate confirmed, brains import-only forever ·
+wipes severe with permanent hardware quirks · modules loot-only, a grossly
+inferior Primitive fabricable tier + the G2 · detonation reviewed as a savegame ·
+port at the next fresh start · scrub the 82 Asimov entries · reboot Crafting 4 ·
+Distress Call re-pointed as the crashed-droid rescue · Oracle voice designed
+dormant · B and C before D.
+
+**Still open after the rulings (not owner calls — measure or build)**: which
+droid FactionDefs are scribed in the frozen/campaign saves (A3, haiku — ⚠️ the
+sibling file `A3_frozen_save_droid_census.md` in this folder is a scan-grade
+string count whose comparison BENCH has already voided: its second file was a
+25-mod Droidworks quicktest autosave, not the campaign; it does not answer A3,
+which needs `<def>NAME</def>`-shaped reads via the `rimworld-savegame` skill); the
+exact per-faction droid share of raid points (C1 tunes at the bench); the G2's
+art (owner's eye, B9); whether `btd.gbp.shippack.kotor.vge`'s quest sub-mod is
+`LoadFolders`-gated on kotordroids (C7 reads it before patching).
+
+**Housekeeping already done**: `DROID_SYSTEM_EMBRACE_1.md` moved to
+`infrastructure/state/items/` (BENCH, 2026-09-06).
 
 ## 7. Cross-links that pull on this program
 

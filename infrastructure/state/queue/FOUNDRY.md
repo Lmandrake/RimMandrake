@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-06T22:17:01Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-06T22:20:25Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -814,3 +814,313 @@ kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DOCTRINE_LOADAFTER_STALE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DOCTRINE_LOADAFTER_STALE_1.md
+
+## DROID_FACTIONS_IN_FROZEN_SAVE_1 Census: which droid FactionDefs/kinds/need classes are scribed in the frozen world and campaign saves
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DROID_FACTIONS_IN_FROZEN_SAVE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROID_FACTIONS_IN_FROZEN_SAVE_1.md
+
+## DROID_DONOR_REFGREP_1 Per-donor reference grep: every KotOR/ABF/Asimov/Depot defName and class in src/ and every active mod
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DROID_DONOR_REFGREP_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROID_DONOR_REFGREP_1.md
+
+## DROID_ORACLE_VOICE_DESIGN_1 Design (dormant): four droid Oracle consumers with prescribed fallbacks, claude -p transport
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DROID_ORACLE_VOICE_DESIGN_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROID_ORACLE_VOICE_DESIGN_1.md
+
+## DROIDWORKS_FULL_LIST_COEXIST_1 Enable Droidworks in the full mod list beside the donors; cold load, texPath census, Harmony idempotency
+state:    proposed
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DROIDWORKS_FULL_LIST_COEXIST_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROIDWORKS_FULL_LIST_COEXIST_1.md
+
+## DROIDWORKS_LIVE_LOOP_PROOF_1 Minimal-list quicktest proof of the five-state loop on GNK + a KotOR kind; close the 8 open live checkboxes
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DROIDWORKS_LIVE_LOOP_PROOF_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROIDWORKS_LIVE_LOOP_PROOF_1.md
+
+## DROIDWORKS_FORMAT_TIERS_1 Format tiers blank/mindless/programmable/sapient with needs by tier (ruling 4), work gating, format recipes
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DROIDWORKS_FORMAT_TIERS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROIDWORKS_FORMAT_TIERS_1.md
+
+## DROIDWORKS_MODULE_ABSORB_1 Absorb KotOR's six-slot droid module apparel as RSW_DW_Module_* (loot-only, no recipes)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DROIDWORKS_MODULE_ABSORB_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROIDWORKS_MODULE_ABSORB_1.md
+
+## DROIDWORKS_HEADS_BRAINS_SPIKES_1 Brain trio (import-only), per-family heads with CompHeadIdentity, the mindstone head, per-faction data spikes
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DROIDWORKS_HEADS_BRAINS_SPIKES_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROIDWORKS_HEADS_BRAINS_SPIKES_1.md
+
+## DROIDWORKS_FINE_PARTS_1 Fine parts per family (limbs, sensors, motivators, cells) with quality, drop tables and stat/personality effects
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DROIDWORKS_FINE_PARTS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROIDWORKS_FINE_PARTS_1.md
+
+## DROIDWORKS_SHOP_BENCHES_1 Repair bench, reassembly harness (head-gated), rebuild-from-corpse, overclock as a bench job
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DROIDWORKS_SHOP_BENCHES_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROIDWORKS_SHOP_BENCHES_1.md
+
+## DROIDWORKS_BOLT_PAYOFF_1 Restraining bolt consequences: mood aura, rebellion on removal past resentment threshold, shear on damage, un-bolt-each-other
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DROIDWORKS_BOLT_PAYOFF_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROIDWORKS_BOLT_PAYOFF_1.md
+
+## DROIDWORKS_ION_SHIELD_BODYSIZE_1 Ion breaks shields (EMP side-damage) and scales by body size — merge with ION_STUN_IGNORES_BODY_SIZE_1
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DROIDWORKS_ION_SHIELD_BODYSIZE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROIDWORKS_ION_SHIELD_BODYSIZE_1.md
+
+## DROIDWORKS_DETONATION_REVIEW_1 Detonation grid (energyDensity x charge) built and SAVED for the owner to walk; deny-module on JDS battle kinds
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DROIDWORKS_DETONATION_REVIEW_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROIDWORKS_DETONATION_REVIEW_1.md
+
+## DROIDWORKS_PRIMITIVE_TIER_1 Primitive family: Jawa-fabricable frames/parts/modules at grossly inferior stats, the G2 repair droid (new art), the Junker suicide droid
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DROIDWORKS_PRIMITIVE_TIER_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROIDWORKS_PRIMITIVE_TIER_1.md
+
+## DROIDWORKS_WIPE_SEVERITY_1 Memory wipe: 7-day severe relearning debuff, service-record reset, permanent accreting hardware quirks
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DROIDWORKS_WIPE_SEVERITY_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROIDWORKS_WIPE_SEVERITY_1.md
+
+## DROIDWORKS_RESEARCH_ROWS_1 Seven Droidworks research rows in The Unbolting; cut the Depot droid-brain rows; brains never researchable
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DROIDWORKS_RESEARCH_ROWS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROIDWORKS_RESEARCH_ROWS_1.md
+
+## DROID_FACTION_LOADOUTS_1 Droids in every faction's hands: Empire attack droids, Homestead utility droids, Hutt heavies, Junker suicide droids, traders' protocol droids, Trade Moot stock — no droid faction
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DROID_FACTION_LOADOUTS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROID_FACTION_LOADOUTS_1.md
+
+## DROID_FDE_KINDS_REPOINT_1 Repoint the 4 Jawa_Droid_* FDE kinds and FDE droid backstories onto Droidworks races (fix the generator)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DROID_FDE_KINDS_REPOINT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROID_FDE_KINDS_REPOINT_1.md
+
+## DROID_FDE_GOODWILL_CAP_1 Free Droid Enclaves goodwill cap via GoodwillSituationDef (spec: restraining_bolt_technical.md)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DROID_FDE_GOODWILL_CAP_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROID_FDE_GOODWILL_CAP_1.md
+
+## DROID_PROTOCOL_TRADE_ADVANTAGE_1 Protocol droid in the trade party shifts prices both ways; none on your side is a penalty
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DROID_PROTOCOL_TRADE_ADVANTAGE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROID_PROTOCOL_TRADE_ADVANTAGE_1.md
+
+## DROID_HUTT_CAPTIVES_1 Droids held in Hutt torture chambers as a rescue-or-purchase source at Hutt sites
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DROID_HUTT_CAPTIVES_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROID_HUTT_CAPTIVES_1.md
+
+## DROID_REPAIR_FOR_PROFIT_EVENTS_1 Recurring event: friendlies bring droids for paid repair/upgrade; inferior/superior parts choices; offload problem droids
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DROID_REPAIR_FOR_PROFIT_EVENTS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROID_REPAIR_FOR_PROFIT_EVENTS_1.md
+
+## DROID_DISTRESS_CALL_REPOINT_1 Re-point the BTD Droid Distress Call quest's 5 KotOR kinds to Droidworks kinds; reframe as the crashed-droid rescue
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DROID_DISTRESS_CALL_REPOINT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROID_DISTRESS_CALL_REPOINT_1.md
+
+## DROID_ASIMOV_SAVE_SCRUB_1 Scrub the 82 inert Asimov.Need_Energy entries from WORLDMAP_V1_original.rws (backup first)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DROID_ASIMOV_SAVE_SCRUB_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROID_ASIMOV_SAVE_SCRUB_1.md
+
+## DROID_RETIRE_ABF_SYNCORE_1 Retire ABF + SynCore (wave R2); DroidDonor_ABFGate fires; remove DroidsAreMachines ABF half; cold load
+state:    proposed
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DROID_RETIRE_ABF_SYNCORE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROID_RETIRE_ABF_SYNCORE_1.md
+
+## DROID_RETIRE_KOTORDROIDS_1 Retire guy762.kotordroids (wave R1) after modules, heads, loadouts, FDE repoint and Distress Call are closed; cold load
+state:    proposed
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DROID_RETIRE_KOTORDROIDS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROID_RETIRE_KOTORDROIDS_1.md
+
+## DROID_RETIRE_DEPOT_ASIMOV_1 Retire Droid Depot + Asimov + MSEDroidFix (wave R3); repoint the Empire KX kind; retire NoDroidManufacture; cold load
+state:    proposed
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DROID_RETIRE_DEPOT_ASIMOV_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROID_RETIRE_DEPOT_ASIMOV_1.md
+
+## DROIDWORKS_CHASSIS_PERSONALITY_1 Per-family starting-trait weights and the protocol-droid pedantry social modifier
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DROIDWORKS_CHASSIS_PERSONALITY_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROIDWORKS_CHASSIS_PERSONALITY_1.md
+
+## DROIDWORKS_SERVICE_RECORD_DRIFT_1 CompServiceRecord: time-since-wipe accretes chassis-weighted idiosyncrasies; wipe resets
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DROIDWORKS_SERVICE_RECORD_DRIFT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROIDWORKS_SERVICE_RECORD_DRIFT_1.md
+
+## DROIDWORKS_MODULE_PERSONALITY_1 Installed modules carry attitudes: CompModulePersonality trait-hediffs while worn
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DROIDWORKS_MODULE_PERSONALITY_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROIDWORKS_MODULE_PERSONALITY_1.md
+
+## DROIDWORKS_WILD_DROIDS_1 Wild crashed droids: factionless erratic hostiles, capture -> Wild spike -> reprogram-as-recruit with resistance
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DROIDWORKS_WILD_DROIDS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROIDWORKS_WILD_DROIDS_1.md
