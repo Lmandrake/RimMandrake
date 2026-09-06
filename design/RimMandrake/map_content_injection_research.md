@@ -638,6 +638,103 @@ watched VEF's spawner place OUR prefab on OUR tile. Step 1 is first because if
 whole-map transplant works, it retires most of steps 3-5 for most tiles; it is the
 only thing here that costs more than a screenshot loop.
 
+### 9.3 What agreeing to this actually means (owner asked, 2026-09-06)
+
+**The corpus, measured (2026-09-06):** 44 `.rws`; mod dependencies are LIGHT —
+median 11 mods (Core + DLCs + QoL), min 1, one outlier at 405 (Yirah Valley);
+versions 1.4 ×21, 1.5 ×16, 1.6 ×7. **Natively arid: 5 of 44** — In Memory of Rain
+(Desert 325²), Deserted Trader (Desert 275²), Lush River, Point Sea, Blood Gulch
+(Arid Shrubland, 250-275²). The other 39 are temperate / jungle / tundra / swamp /
+island. Campaign map size: UNMEASURED (not in `the_one_map.md` or
+`ASHKARR_WORLD_DEFINITION.md`); corpus sizes run 250²-500².
+
+**What the approach IS, concretely.** A Python converter reads a corpus `.rws`
+(terrain grid, roof grid, thing list with def/pos/rot/stuff/hp/quality/faction — all
+plain per P4) and writes a `CustomMapDataDef` (the P13 format: terrain → cells,
+things → placements, roofs → cells, pawns → counts). A table-driven pass in the
+middle: (a) drop/rename defs the live mod set lacks, (b) swap terrain and plants
+by biome table (`biome_terrain_palette.md`) so a temperate map becomes an Ash'karr
+map, (c) re-faction every player-owned thing (to none = ruin, or to an NPC faction
+= inhabited), (d) drop the original pawns. The def is spawned at mapgen on a chosen
+frozen tile; the gravship lands on it. Deliverables of step 1: the converter, one
+converted map, one screenshot of a gravship standing on it, and read-backs of
+fog/roof/regions. Deliverable of step 2: a review sheet of all 44 with thumbnail,
+biome, size, mod count, "landscape vs base" class, and a suggested tile; the owner
+ranks.
+
+**What is being agreed:**
+1. §9's reweighting is ruled into §8: the corpus is the spine; whole-map transplant
+   is tried FIRST, before any custom C# (P10/P11) or the metric.
+2. Two queue items get filed for FOUNDRY: the transplant proof (step 1) and the
+   fit census + review sheet (step 2). Nothing else in the queue moves.
+3. Ancient Urban Ruins' DLL is an acceptable dependency FOR THE PROOF ONLY (owner,
+   by card, 2026-09-06). Shipping needs our own reader — see problem 4 below for
+   why that comes sooner than "later."
+4. About one hour of the owner's eyes on the census sheet.
+5. Deprioritised, not killed: P10 mask worker, P11 scatter defs, the
+   `interest_evaluator`, image-in-the-loop, LLM cell-authoring (P5 track), and
+   finishing Inhabited's broken entry points. Each comes back when a specific
+   scene proves the corpus + mutators cannot make it.
+
+### 9.4 The problems with the approach, honestly
+
+1. **Only 5 of 44 fit Ash'karr as-is.** The other 39 need the biome swap in (b),
+   and a swap preserves TOPOGRAPHY, not ECOLOGY. A map whose beauty is a gulch, a
+   crater, a cliff line or a dry dam survives sand-for-soil; a map whose beauty is
+   a lush river valley with dense forest does not — rule 3 (hydrology with a
+   cause) breaks when the water is gone. Realistic yield is not 44: perhaps 5
+   direct + 10-15 remap-survivors ≈ **15-20 usable landing maps**, decided by
+   looking, one per census row. That still covers a large share of one campaign's
+   landings; it does not cover "most of the campaign" as §9.1 #8 hoped.
+2. **The story on the map is not ours.** A Cathedral (W44), a Sacrificial Altar
+   (W43), a Dead City (W58) carry someone else's narrative. Vanilla walls, floors,
+   rubble and ruins transfer cleanly; named or decorative things and any
+   modded-content set dressing need a per-map content-fit pass (30-60 min each,
+   owner or agent). This is real authoring time — hours, not hundreds of hours,
+   but not zero.
+3. **They were built as player START maps, not landing sites.** Many contain a
+   ready base with beds, stockpiles, power. Re-factioning (c) turns that into a
+   ruin or an NPC settlement — a per-map design choice. "Landscape" maps (Estuary,
+   Lake Lands, Blood Gulch, Point Sea) are the ideal case and need no such
+   choice; "base" maps are the ones the census must classify.
+4. **The P13 route is a quest-SITE mechanism.** `CustomMapDataDef` is spawned by a
+   `SitePartDef`, i.e. the tile must be a Site world object — which puts a site
+   icon on the frozen world map and may change what a landing there means
+   (quest-site semantics, timeouts). For a plain frozen tile, OUR OWN
+   `TileMutatorWorker`/`GenStep` that reads the same XML shape is needed. That is
+   a bounded C# item (parse → `SetTerrain` / `GenSpawn.Spawn` / `SetRoof`), but it
+   is needed for the FIRST real tile, not "eventually." The AUR dependency proves
+   the format spawns; it does not prove the landing.
+5. **The gravship footprint.** `ReserveGravshipArea` runs at order 600, AFTER
+   critical structures (500). On a fully authored map there may be no clear rect
+   of the ship's size where the creator intended nothing. Outcome unknown: ship
+   overwrites part of the map, or lands somewhere absurd, or fails. Step 1
+   measures this; the fix (leave a designated clear rect per map, or spawn the
+   map at a later order with the ship rect masked) is small once seen.
+6. **Fixed, not varied.** A transplanted tile is the same map every landing. That
+   is consistent with a frozen world (tile identity is a feature) and irrelevant
+   within one playthrough, but it is zero procedural variety on those tiles, and a
+   replay sees the same maps.
+7. **Version drift.** 21 maps are 1.4. Some vanilla defNames changed 1.4→1.6;
+   every unmapped def is a hole in the map. A rename table is finite and
+   measurable on ONE 1.4 map before committing to the rest.
+8. **Map size.** Campaign size unmeasured; corpus 250²-500². Odyssey/VEF mutator
+   extensions carry a per-tile map-size override (P16), which would let each
+   transplant tile match its source map's size — untested. Cropping a composed map
+   is the fallback and costs composition.
+9. **Fog/roof/regions after a whole-map spawn** — spawned at order 500 they sit
+   before Fog (1500), so the engine should compute them normally. "Should" — P9
+   proved the live-edit case, not the mapgen case. Step 1 reads it back.
+10. **The converter is 1-3 days, not 1**, if the rename table and the biome swap
+    are made robust rather than one-off. Per-map fit passes add 10-20 hours across
+    15-20 maps. Total is still an order of magnitude under hand-authoring.
+11. **If step 1 fails**, the cost is one to three days; steps 3-5 (mutator
+    assignment, VEF prefabs, chunk cutting) stand on their own and the corpus
+    still feeds chunk cutting. The plan does not collapse — its best case does.
+12. **Attribution.** Other creators' work, downloaded from their public repos.
+    Fine for a private campaign; a published campaign owes them credit or
+    permission. Not a technical problem; not nothing either.
+
 ## 8. Decisions
 
 Owner, by card, 2026-09-06:
