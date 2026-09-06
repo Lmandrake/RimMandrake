@@ -12,6 +12,48 @@ the line. What is left is the owner's, because it is the live mod list.
 
 ---
 
+## 🔴 Before unticking ANY mod, check retirement ORDER — not just this doc's four
+
+This rule outlives the four mods named above; it applies to every future
+retirement, not only the 2026-09-05 batch.
+
+A `PatchOperationFindMod` can add or remove a node when a donor mod is
+absent. It **cannot** make a `ParentName` resolve. If a def anywhere in the
+live mod set (ours or a donor's) inherits from an abstract `Name=` owned by a
+different mod, and that owning mod retires first, the child def is silently
+discarded — no Config error, no log line — and takes every def built on it
+down with it. `DROID_RETIREMENT_ORDER_ASSERT_1` found this live:
+`guy762_KotORDroidBase` (in kotorcore's `_DroidsBase` folder, loaded only
+while `guy762.KotORDroids` is active) carries
+`ParentName="ABF_Thing_Synstruct_HumanlikeBase"`, an ABF-owned abstract — so
+`guy762.kotordroids` must retire no later than ABF/SynCore, or 12 downstream
+droid ThingDefs vanish with nothing to connect the loss to this cause.
+
+**Run this before touching `ModsConfig.xml`:**
+
+```
+python3 src/RimMandrake/Utils/retirement_order.py
+```
+
+It reads every known ordering constraint from
+`infrastructure/state/facts/retirement_order.json` against the live mod list
+and exits non-zero, naming the violation, if the mod you are about to untick
+would break one. `src/RimMandrake/Utils/selftest_retirement_order.py` proves
+the check actually fails on the bad state (a fixture, not the live file), and
+runs automatically with every selftest pass.
+
+**When a retirement sweep finds another absorbed-content `ParentName`
+crossing into a donor scheduled to retire, add a row to
+`retirement_order.json` — never a hardcoded pair of strings in a script.**
+A full sweep of `src/` on 2026-09-06 (`DROID_RETIREMENT_ORDER_ASSERT_1`)
+found this is the only such crossing today: no other def anywhere under
+`src/` inherits via `ParentName` from an abstract owned by Asimov
+(`neronix17.asimov`) or Outer Rim Droid Depot
+(`neronix17.outerrim.droiddepot`), the two other donor mods currently
+scheduled to retire per `design/Jawa/droids/DROID_PROGRAM_STATE_2026-09-06.md`.
+
+---
+
 ## 🔴 What the owner does
 
 ⛔ Nothing here was done for you: `ModsConfig.xml` and the Steam subscriptions are

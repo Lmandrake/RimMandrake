@@ -1,0 +1,16 @@
+{
+  "_what": "Retirement ORDER constraints. Each entry names a set of mods (`dependent_active_all`) that, while ALL active together, make an inheritance chain (a `ParentName`/`Name` def pair) resolve only because a second set of mods (`requires_active_all`) is also active. No XML patch can gate an inheritance dependency -- an unresolvable ParentName silently discards the whole parent def and every downstream def built on it, with no error. The only safeguard is retiring the dependent mod no later than the mods it requires, and this file is what lets a machine check that order before it is violated.",
+  "_authority": "design/Jawa/droids/DROID_PROGRAM_STATE_2026-09-06.md and design/Jawa/worldbuilding/RETIREMENT_CHECKLIST.md",
+  "_reader": "src/RimMandrake/Utils/retirement_order.py  (check_order)",
+  "_rule": "A constraint fires only when EVERY packageId in dependent_active_all is active AND at least one packageId in requires_active_all is ABSENT. packageIds are matched lowercase, exactly as ModsConfig.xml stores them. Add an entry here -- never a hardcoded pair of strings in a script -- the moment a sweep finds another absorbed-content ParentName crossing into a donor mod.",
+  "order_constraints": [
+    {
+      "id": "kotordroids_needs_abf_while_kotorcore_active",
+      "dependent_active_all": ["guy762.kotordroids", "guy762.mm.kotorcore"],
+      "requires_active_all": ["killathon.artificialbeings", "killathon.artificialbeings.syncore"],
+      "reason": "guy762_KotORDroidBase -- defined in kotorcore's `_DroidsBase` folder, which kotorcore's own LoadFolders.xml loads ONLY while guy762.KotORDroids is active -- carries ParentName=\"ABF_Thing_Synstruct_HumanlikeBase\", an abstract owned by ABF (killathon.artificialbeings). An unresolvable ParentName discards the whole parent def and takes all 12 downstream droid ThingDefs with it, silently: no Config error, no log line. Retire guy762.kotordroids no later than ABF/SynCore, or gate kotorcore's own droid content first.",
+      "filed": "DROID_RETIREMENT_ORDER_ASSERT_1",
+      "since": "DROID_DONOR_PATCH_GATE_1's Site 1, deliberately left unpatched -- see src/RimStarWars/StarWarsPatches/Patches/DroidDonor_ABFGate.xml's header"
+    }
+  ]
+}
