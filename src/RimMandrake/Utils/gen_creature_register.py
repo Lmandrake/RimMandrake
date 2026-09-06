@@ -645,7 +645,13 @@ def _specials(f, race):
         add("migrates across the map in herds")
     if race.get("packAnimal"):
         add("can carry cargo in a caravan")
-    if race.get("canFlyInVacuum") or _num(race.get("flightSpeedFactor"), 0) > 1:
+    # 🪤 flightSpeedFactor is NOT a "this creature flies" flag — RaceProperties
+    # declares it 2.8f by default on EVERY race (Verse/RaceProperties.cs:138) and
+    # it only ever multiplies speed while a pawn is ALREADY flying
+    # (Pawn_PathFollower.cs:821). Checking `> 1` against it fired on 1161/1165
+    # rows, including Muffalo. canFlyInVacuum is the actual gate
+    # (Pawn_FlightTracker.cs:57) — it alone decides whether the race flies.
+    if race.get("canFlyInVacuum"):
         add("flies")
     return out
 
@@ -729,20 +735,37 @@ def build_rows():
 
     rows = []
     n_corpse = 0
+    n_corpse_humanlike = 0
     for dn, j in db.execute("select def_name, json from defs where def_type='ThingDef'"):
         d = json.loads(j)
         isd = d.get("is") or {}
         f = d.get("fields") or {}
-        if not isd.get("pawn") or isd.get("humanlike"):
+        if not isd.get("pawn"):
             continue
         tc = f.get("thingClass") or ""
         # 🪤 RimWorld auto-generates a Corpse_<X> ThingDef that INHERITS <race>, so
         # the dump reports it as a pawn. 1,156 of the 2,319 "pawn, non-humanlike"
         # ThingDefs in this stack are corpses. Counting them would have doubled
-        # every total on the sheet. The in-game dumper independently skips 1,265
-        # of them, which is the cross-check that this filter is the right one.
-        if "Corpse" in tc or isd.get("corpse") or dn.startswith("Corpse_"):
-            n_corpse += 1
+        # every total on the sheet.
+        #
+        # The in-game dumper's own corpseDefsSkipped (DefDumper.cs) walks every
+        # ThingDef with a non-null `race` and counts td.IsCorpse — it does NOT
+        # exclude humanlike races first, so it also counts corpses of humans and
+        # every other humanlike pawnkind. This filter excludes humanlike pawns
+        # BEFORE the corpse check, so those corpses never reach n_corpse. The two
+        # counts are measuring different sets by construction; comparing them
+        # directly (1,156 vs 1,265) is comparing apples to apples-plus-109, not a
+        # discrepancy. What must actually match is
+        # n_corpse + n_corpse_humanlike == corpseDefsSkippedByDumper — verified
+        # below, for real, against the CURRENT dump (2026-09-06: 1156+109=1265).
+        is_corpse = "Corpse" in tc or isd.get("corpse") or dn.startswith("Corpse_")
+        if is_corpse:
+            if isd.get("humanlike"):
+                n_corpse_humanlike += 1
+            else:
+                n_corpse += 1
+            continue
+        if isd.get("humanlike"):
             continue
         row = _row_from_dump(d, dn, f, isd, kinds, biomes, cuts, animals.get(dn))
         row["modDropped"] = (row.get("packageId") or "").lower() in dropped
@@ -751,6 +774,22 @@ def build_rows():
     rows.extend(_extra_rows(db, cuts))
     db.close()
     n_dropped = sum(1 for r in rows if r.get("modDropped"))
+
+    skipped_by_dumper = adoc.get("corpseDefsSkipped")
+    total_corpse_seen = n_corpse + n_corpse_humanlike
+    if skipped_by_dumper is None:
+        print("WARNING: animals.json has no corpseDefsSkipped — corpse cross-check "
+              "is UNMEASURED (dumper predates this field; re-capture with the "
+              "current DefDumper before trusting corpse-exclusion counts)",
+              file=sys.stderr)
+    elif total_corpse_seen != skipped_by_dumper:
+        die("CORPSE CROSS-CHECK FAILED: this filter found %d non-humanlike + %d "
+            "humanlike = %d corpse ThingDefs; the in-game dumper independently "
+            "skipped %d while walking the same def set. They must match exactly "
+            "(both key off td.IsCorpse) — a mismatch means one of the two filters "
+            "just changed and every corpse-exclusion number on the sheet is "
+            "suspect until this is explained." %
+            (n_corpse, n_corpse_humanlike, total_corpse_seen, skipped_by_dumper))
 
     meta = {
         "generator": "gen_creature_register.py " + VERSION,
@@ -763,7 +802,8 @@ def build_rows():
         "droppedCreatureRows": n_dropped,
         "statsCapture": fp["capture"]["id"],
         "corpseDefsExcluded": n_corpse,
-        "corpseDefsSkippedByDumper": adoc.get("corpseDefsSkipped"),
+        "corpseDefsExcludedHumanlike": n_corpse_humanlike,
+        "corpseDefsSkippedByDumper": skipped_by_dumper,
         "cutProvenance": cuts.provenance(),
         "calibration":
             "PASSED — 6/6 Muffalo readings match the vanilla RimWorld wiki AND 2/2 "
@@ -1585,8 +1625,10 @@ def _brief(meta, items, groups, n_cut, n_zero, n_miss, n_reserve):
         "<code>MeatAmount</code> and <code>LeatherAmount</code> both carry "
         "<code>StatPart_BodySize</code>, so the declared number is not the yield and "
         "reading it as one understates a muffalo by 2.4x. Calibration: <b>%s</b>. %d "
-        "auto-generated corpse defs were excluded (the in-game dumper independently "
-        "skipped %s, which is the cross-check). Anything the defs do not declare is "
+        "auto-generated corpse defs were excluded (+%d humanlike corpses excluded "
+        "earlier, for %s total — the in-game dumper independently skipped %s of "
+        "the same def set, and the two are checked to match exactly at build time). "
+        "Anything the defs do not declare is "
         "written <b>UNMEASURED</b>, never a plausible digit — %d rows carry at least "
         "one.</p>"
         "<p><b>What has already been cut.</b> %s. Cut creatures are <b>badged, not "
@@ -1616,6 +1658,8 @@ def _brief(meta, items, groups, n_cut, n_zero, n_miss, n_reserve):
             % (", ".join(meta["droppedSinceDump"]), meta["droppedCreatureRows"]))
            if meta["droppedSinceDump"] else " — the same set",
            meta["calibration"], meta["corpseDefsExcluded"],
+           meta.get("corpseDefsExcludedHumanlike", 0),
+           meta["corpseDefsExcluded"] + meta.get("corpseDefsExcludedHumanlike", 0),
            meta.get("corpseDefsSkippedByDumper"),
            unmeasured, meta["cutProvenance"], n_cut, n_zero,
            ", ".join("%s (%d)" % (g, n) for g, n in top), n_reserve, n_miss))
@@ -1771,7 +1815,8 @@ def write_prefill(rows, meta, override=False):
         "generatedUtc": meta["builtUtc"],
         "provenance": {k: meta[k] for k in
                        ("dumpMods", "dumpCaptured", "liveActiveMods",
-                        "corpseDefsExcluded", "cutProvenance", "calibration")},
+                        "corpseDefsExcluded", "corpseDefsExcludedHumanlike",
+                        "corpseDefsSkippedByDumper", "cutProvenance", "calibration")},
         "decisions": dec,
     })
     with open(DECISIONS, "w", encoding="utf-8") as fh:
