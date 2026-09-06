@@ -70,10 +70,8 @@ content-hash), `deploy_custom_mods.py` (Opus: 5 defects fixed + my own regressio
 caught by a diff review: `--pull` tuple).
 
 **Owner-requested reviews answered:** `JawaBenchSocietyTools.cs` (Opus: 7 fixes
-committed `33e2e681` — **NOT BUILT**; companion DLL builds only with the game
-closed: `taskkill` → `python.exe src/RimMandrake/bridgetools/build.py --gm --apply`
-per the rimbridge-companion skill — then live-prove `force=` on `settlement_remove`
-mode=map); `VehicleFuelPatches.cs` (Opus: unfiltered patch hits every VF vehicle —
+committed `33e2e681`, **BUILT AND DEPLOYED 14:32** (see the last section) — live-prove
+`force=` on `settlement_remove` mode=map at the next game-up); `VehicleFuelPatches.cs` (Opus: unfiltered patch hits every VF vehicle —
 `VEHICLE_FUEL_PATCH_UNFILTERED_1`, **owner ruling needed**; deployed DLL predates
 the repo build); vaporators (fix present; absorbed file deployed against its own
 header while donor kotorcore is active — dup defName risk noted on
