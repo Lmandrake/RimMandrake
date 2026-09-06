@@ -120,6 +120,8 @@ def main():
         for t in sorted(mut, key=int):
             if mut[t]: w.writerow([t, mut[t]])
     print(f"\nWROTE {TILES}\nWROTE {MUTS}")
+    print("⚠️ Now restamp the freeze:  python3 src/RimMandrake/Utils/verify_frozen.py "
+          "--restamp world/ASHKARR_WORLDMAP_tiles.csv")
 
 if __name__ == '__main__':
     main()

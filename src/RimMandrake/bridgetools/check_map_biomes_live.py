@@ -39,6 +39,10 @@ for cand in (os.path.join(REPO, "world", "ASHKARR_WORLDMAP_tiles.csv"),
 if not TILES_CSV:
     sys.exit("could not find ASHKARR_WORLDMAP_tiles.csv")
 
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(TILES_CSV)), "src", "RimMandrake", "Utils"))
+from verify_frozen import warn_if_stale  # noqa: E402
+warn_if_stale(TILES_CSV)
+
 counts = collections.Counter()
 with io.open(TILES_CSV, encoding="utf-8", newline="") as fh:
     for row in csv.DictReader(fh):

@@ -58,6 +58,9 @@ def check(marker: str, restamp: bool = False) -> bool:
     return False
 
 
+_WARNED: dict = {}   # abspath -> result, so a reader warns once per process, not per call
+
+
 def warn_if_stale(artifact_path: str) -> bool:
     """Library entry point for a READER of a frozen artifact.
 
@@ -74,19 +77,27 @@ def warn_if_stale(artifact_path: str) -> bool:
     marker = artifact_path + '.frozen.json'
     if not os.path.exists(marker):
         return True
+    # Warn ONCE per path per process: several readers call this from a helper that runs
+    # more than once per run, and a warning repeated five times reads as five problems.
+    key = os.path.abspath(artifact_path)
+    if key in _WARNED:
+        return _WARNED[key]
     try:
         d = json.load(open(marker, encoding='utf-8'))
         now = measure(artifact_path)
         bad = [k for k in ('sha256', 'rows', 'bytes') if k in d and d[k] != now.get(k)]
     except Exception as e:  # fail open — a reader must never crash on this check
         print(f"⚠️  could not verify freeze stamp for {artifact_path}: {e}", file=sys.stderr)
+        _WARNED[key] = True
         return True
     if bad:
         print(f"⚠️  STALE FREEZE STAMP on {os.path.basename(artifact_path)} — "
               + ", ".join(bad) + f". You are reading data the stamp does not describe.\n"
               f"   python3 src/RimMandrake/Utils/verify_frozen.py {os.path.relpath(artifact_path, ROOT)}"
               f"  for details.", file=sys.stderr)
+        _WARNED[key] = False
         return False
+    _WARNED[key] = True
     return True
 
 

@@ -156,6 +156,9 @@ def load():
     for r in csv.DictReader(open(f'{FA}/biome_fit.csv', encoding='utf-8')):
         fit[r['biome']][r['defName']] = (float(r['belong']), float(r['standout']))
     tiles = collections.defaultdict(list)
+    sys.path.insert(0, os.path.join(ROOT, 'src', 'RimMandrake', 'Utils'))
+    from verify_frozen import warn_if_stale
+    warn_if_stale(f'{ROOT}/world/ASHKARR_WORLDMAP_tiles.csv')
     for r in csv.DictReader(open(f'{ROOT}/world/ASHKARR_WORLDMAP_tiles.csv', encoding='utf-8')):
         if r['biome'] not in ('Ocean', 'Lake'):
             tiles[r['biome']].append(float(r['temp_c']))

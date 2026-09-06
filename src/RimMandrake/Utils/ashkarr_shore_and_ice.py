@@ -196,6 +196,8 @@ def main() -> int:
             if mv:
                 w.writerow({'tile': t, 'mutators': mv})
     print(f"\nwrote {TILES}\nwrote {MUTS}")
+    print("⚠️ Now restamp the freeze:  python3 src/RimMandrake/Utils/verify_frozen.py "
+          "--restamp world/ASHKARR_WORLDMAP_tiles.csv")
     return 0
 
 

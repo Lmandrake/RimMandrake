@@ -127,6 +127,8 @@ def main():
         wr.writeheader()
         wr.writerows(rows)
     print("\nwrote %s" % TILES)
+    print("⚠️ Now restamp the freeze:  python3 src/RimMandrake/Utils/verify_frozen.py "
+          "--restamp world/ASHKARR_WORLDMAP_tiles.csv")
     return 0
 
 

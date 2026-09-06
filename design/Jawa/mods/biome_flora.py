@@ -534,6 +534,8 @@ def load():
 
 
 def placed():
+    from verify_frozen import warn_if_stale
+    warn_if_stale(TILES)
     c = collections.Counter(r['biome'] for r in csv.DictReader(open(TILES, encoding='utf-8')))
     return c
 
@@ -562,6 +564,8 @@ def check(plants, biomes, tiles):
 
 
 def _tile_temps():
+    from verify_frozen import warn_if_stale
+    warn_if_stale(TILES)
     t = collections.defaultdict(list)
     for r in csv.DictReader(open(TILES, encoding='utf-8')):
         t[r['biome']].append(float(r['temp_c']))

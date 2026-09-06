@@ -77,6 +77,8 @@ def main() -> int:
     after = [r for r in rows if float(r["rain_mm"]) > 0 and int(r["hilliness"]) < 4]
     mx = max(float(r["rain_mm"]) for r in rows)
     print("\nwrote %s" % TILES)
+    print("⚠️ Now restamp the freeze:  python3 src/RimMandrake/Utils/verify_frozen.py "
+          "--restamp world/ASHKARR_WORLDMAP_tiles.csv")
     print("  selector now returns     %d   (must be 0)" % len(after))
     print("  rain_mm > 0, hilliness >= 4 %d   (must be unchanged)" % len(keep))
     print("  max rain_mm now          %g" % mx)

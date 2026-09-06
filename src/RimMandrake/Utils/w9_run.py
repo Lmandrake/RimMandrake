@@ -151,6 +151,8 @@ def _played_tile_conflict(load_name, out):
                 else "%s carries no generated local maps - nothing to protect" % used))
         return []
 
+    from verify_frozen import warn_if_stale
+    warn_if_stale(TILES)
     rows = read_csv(TILES)
     if rows is None:
         w(out, "- ⚠️ paint guard: %s missing — cannot check for a conflict, and this run "

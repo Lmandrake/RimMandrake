@@ -203,6 +203,8 @@ def main():
 
             if os.path.exists(TILES_CSV):
                 try:
+                    from verify_frozen import warn_if_stale
+                    warn_if_stale(TILES_CSV)
                     v = rb.call("jawa/world_tile_validate", {"path": TILES_CSV})
                     out.append("- authored tiles: matched %s / %s (%s%%)" %
                                (v.get("matched"), v.get("rows"), v.get("matchPct")))

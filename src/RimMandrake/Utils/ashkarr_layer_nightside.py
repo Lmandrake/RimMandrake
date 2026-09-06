@@ -131,6 +131,8 @@ def main() -> int:
         print("  %-22s %5d -> %5d   %7.1f .. %7.1f C   med %6.1f"
               % (b, before[b], after[b], v[0], v[-1], v[len(v) // 2]))
     print("\nwrote %s" % CSV)
+    print("⚠️ Now restamp the freeze:  python3 src/RimMandrake/Utils/verify_frozen.py "
+          "--restamp world/ASHKARR_WORLDMAP_tiles.csv")
     print("now LOOK at it:  python3 src/RimMandrake/Utils/worldview.py "
           "world/ASHKARR_WORLDMAP --png")
     return 0

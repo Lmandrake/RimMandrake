@@ -553,6 +553,9 @@ def main():
     try:
         import csv as _csv, collections as _c
         _root = os.path.normpath(os.path.join(FA, '..', '..', '..'))
+        sys.path.insert(0, os.path.join(_root, 'src', 'RimMandrake', 'Utils'))
+        from verify_frozen import warn_if_stale
+        warn_if_stale(os.path.join(_root, 'world', 'ASHKARR_WORLDMAP_tiles.csv'))
         _t = _c.Counter(r['biome'] for r in _csv.DictReader(
             open(os.path.join(_root, 'world', 'ASHKARR_WORLDMAP_tiles.csv'), encoding='utf-8')))
         _ash = {b: n for b, n in _t.items() if b not in ('Ocean', 'Lake')}

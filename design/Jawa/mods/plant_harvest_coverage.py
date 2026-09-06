@@ -50,6 +50,9 @@ PLANTLESS_BY_DESIGN = {'Ocean', 'Lake', 'SeaIce', 'IceSheet'}
 
 
 def tile_counts() -> collections.Counter:
+    sys.path.insert(0, os.path.join(os.path.dirname(os.path.dirname(TILES)), 'src', 'RimMandrake', 'Utils'))
+    from verify_frozen import warn_if_stale
+    warn_if_stale(TILES)
     c = collections.Counter()
     with open(TILES, encoding='utf-8') as fh:
         for r in csv.DictReader(fh):
