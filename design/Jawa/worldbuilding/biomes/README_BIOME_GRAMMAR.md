@@ -104,7 +104,8 @@ Order is by **similarity — slowly vary** (owner, 2026-09-05).
 | `deep_desert.md` | `ExtremeDesert`, far ring | ✅ done |
 | `desert.md` | `Desert` | ✅ done |
 | `arid_shrubland.md` | `AridShrubland` | ✅ done 2026-09-05 |
-| **wasteland** | `Wasteland` | 🔵 next by the ladder (sun −9.9°) — not yet opened |
+| `wasteland.md` | `Wasteland` | ✅ done 2026-09-05 — the dryland ladder is complete |
+| **next** | owner's pick | 🔵 candidates by similarity: `AB_RockyCrags` (largest undefined def, 4,440 tiles) or `AB_MycoticJungle` (the stormwall's wet-toxin sibling, 1,939) |
 | `wreck_fields.md` | — | ⛔ superseded by `fall_line.md` |
 
 ### 🔑 The dryland ladder is ONE number: the sun's angle
