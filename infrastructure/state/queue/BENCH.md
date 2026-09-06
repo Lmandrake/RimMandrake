@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-06T19:21:57Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-06T20:11:55Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
-The first heading below is what `rimflow next --seat BENCH` returns. This file and that command call the same function, so they cannot disagree.
-
-## NIGHTSIDE_BLUE_DESERT_1 Owner idea 2026-09-05: use the Blue desert biome on Ash'karr's night side
-state:    ready
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-summary:  NIGHTSIDEBLUEDESERT1 — use the Blue desert biome on Ash'karr's night side
-prose:    infrastructure/state/items/NIGHTSIDE_BLUE_DESERT_1.md
+Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
 
 # IN PROGRESS
 

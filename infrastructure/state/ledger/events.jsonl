@@ -5137,3 +5137,6 @@
 {"seat":"FOUNDRY","event":"note","id":"DIRTY_CODE_REVIEW_STANDING_LOOP_1","text":"Wave 2026-09-06 (this window): 5 reviewers, 37 files. Marked clean: 5 Utils (diff), 3 new rimbench tools, 6 UtinniPatches XMLs (diff), 8 RaidRedesigner .cs (1 real fix: OldFriends cap ordering), 9 Ninefold patches, 5 tooling scripts. Left DIRTY on purpose: Ninefold/Patch_GravshipLaunched.cs (bug, filed NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1), UtinniPatches/AnimalBiomeDuplicates_Generated.xml (hand-edited under a GENERATED header; biome_animal_conflicts.py will overwrite it — regenerate, don't mark), loadsweep/sweep_load.sh (minor: activeMods None swallowed by 2>/dev/null).","ts":"2026-09-06T20:02:25Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-06T20:03:12Z"}
 {"seat":"FOUNDRY","event":"close","id":"GL_GRAPH_EMITTER_1","sha":"3ef2e7f565a3453a72dc44997a31ab126abb160c","ts":"2026-09-06T20:03:19Z"}
+{"seat":"FOUNDRY","event":"claim","id":"MACRO_GENERATOR_V0_1","ts":"2026-09-06T20:09:04Z"}
+{"seat":"FOUNDRY","event":"start","id":"MACRO_GENERATOR_V0_1","ts":"2026-09-06T20:09:05Z"}
+{"seat":"BENCH","event":"close","id":"NIGHTSIDE_BLUE_DESERT_1","sha":"4d8f4d7999a3a1c98bebb3f17f85720c57ba6d92","ts":"2026-09-06T20:11:55Z"}

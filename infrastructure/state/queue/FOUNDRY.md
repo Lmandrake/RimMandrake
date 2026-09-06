@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-06T19:21:57Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-06T20:11:55Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -486,14 +486,14 @@ kind:     repair
 summary:  TILESSTAMPVERIFY1
 prose:    infrastructure/state/items/TILES_STAMP_VERIFY_1.md
 
-## LANDFORM_RECIPE_ROUNDTRIP_1 Can Geological Landforms load a landform file WE wrote? Decides the map generator's terrain route (research doc §9.3 step 1)
+## MACRO_GENERATOR_V0_1 Macro generator v0: ONE idea per map — chooser + plan + terrain grid, graded on a comparator sheet by the owner (research doc §9.3 step 4)
 state:    doing
 row:      unassigned
-needs:    bridge
+needs:    offline
 target:   v1
 kind:     task
-summary:  - Source recipe: C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2773943594\1.6\Landforms-v1\L…
-prose:    infrastructure/state/items/LANDFORM_RECIPE_ROUNDTRIP_1.md
+summary:  - Input: a biome sheet paragraph (design/Jawa/worldbuilding/biomes/.md, start
+prose:    infrastructure/state/items/MACRO_GENERATOR_V0_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -681,26 +681,6 @@ thin:     no ## criteria
 summary:  - MEASURED: 1,711 HorrorWastes tiles — Deadstone 1,457, South Crags 93, Thornend 61,
 prose:    infrastructure/state/items/HORRORWASTES_BIOME_DISSOLVE_1.md
 
-## TERRAIN_GRID_RENDERER_1 Offline terrain grid → PNG renderer + contact sheet mode — the generator's iteration loop (research doc §9.3 step 2)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  - Input: a 2-D grid of terrain identifiers, from EITHER savemap.py (a corpus
-prose:    infrastructure/state/items/TERRAIN_GRID_RENDERER_1.md
-
-## CORPUS_MAP_STATISTICS_1 Topology statistics over the 44 hand-authored maps + vanilla controls — calibration and regression only, never acceptance (research doc §9.3 step 3)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  - Input: the 44 .rws under research/RimMandrake/handauthoredmaps/ via
-prose:    infrastructure/state/items/CORPUS_MAP_STATISTICS_1.md
-
 ## CONTAGION_BIOME_PLACEMENT_1 Move the Contagion (AB_OcularForest) to the peaks above the green: Scald Spine's 38 non-green highs + optional Ashfall/Dew Horn tops — NO green squares; render for owner before painting
 state:    proposed
 row:      unassigned
@@ -710,3 +690,33 @@ kind:     task
 thin:     no ## criteria
 summary:  - MEASURED candidate bands (non-green, dayside arc < 75):
 prose:    infrastructure/state/items/CONTAGION_BIOME_PLACEMENT_1.md
+
+## UNUSED_MUTATORS_WORLD_ASSIGNMENT_1 Put the unused tile mutators and Geological Landforms landforms on the frozen world — 88 of ~380 in use, zero GL_* (owner 2026-09-06)
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  1. Exact census (offline, haiku-tier): every TileMutatorDef on the full list
+prose:    infrastructure/state/items/UNUSED_MUTATORS_WORLD_ASSIGNMENT_1.md
+
+## CORPUS_STATS_VANILLA_CONTROLS_1 Vanilla control maps for corpus_stats.py (≥10 at matched sizes) + corpus-vs-controls section; fix or drop the degenerate chokepoint proxy
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  - Capture ≥10 vanilla-generated terrain grids at matched sizes (250², 275², 300²) in arid biomes: quicktests…
+prose:    infrastructure/state/items/CORPUS_STATS_VANILLA_CONTROLS_1.md
+
+## NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1 Ninefold: Patch_GravshipLaunched postfix fires on FAILED launches, feeding Ta'Baa for nothing (code review 2026-09-06)
+state:    proposed
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     bug
+thin:     no ## criteria
+summary:  Prefix captures state = (parent.Spawned && comp.CanLaunch() && destination within range) using the same check…
+prose:    infrastructure/state/items/NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1.md
