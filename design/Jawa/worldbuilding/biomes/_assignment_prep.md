@@ -315,3 +315,297 @@ mutants — protected mechanics lane, REGENERATE art where too cute.
    smalls only? (Recommend: excretor first — mechanic mostly exists; radiothermal is the
    most design-load-bearing.)
 3. SW_Electrictick: slow to walking pace and promote to brine-battery-adjacent signature?
+
+---
+
+## 5. THE POISON FOREST — `PoisonForest` (53 residents)
+
+### 5.1 Admission test (checkable)
+- ⛔ **Nothing fast** (ban 9): proxy = moveSpeed ≥ 4.5 evicts (sprinter/pursuit ban).
+- ⛔ No open-grazing herbivore body plans (ban 8 — there is no grass; diet + silhouette).
+- ⛔ Everything sealed (plated/shelled/waxed) or itself toxic — eye/def test; venom and
+  toxic-meat defs pass by construction.
+- ⛔ No green, no conventional trees, nothing volcanic (art lane).
+- ✅ Wanted: eye-heavy or eyeless vibration-sensers, slow plated crawlers, toxic-meat game
+  (prized — the cuisine chain input).
+
+### 5.2 KEEP candidates (32 residents pass the speed law)
+Top: **Neebray** (SW, spd 3.0, comm 1.0) · **GR_Beetlefleet** (spd 2.5, 0.7 — shelled) ·
+AM dryads (Corruptor/Ocular/Tumorous, 0.7 — Alpha Memes, alien and slow; dryad lane
+needs its Gauranlen context checked) · AA_InfectedAerofleet (0.5 — "infected" = the
+biome's own adjective) · BMT_Screecher (0.4) · Visceral (Horrors, 0.4) · AA_OcularJelly
+(eye-heavy in the name) · AA_PebbleMit (0.35, plated) · AA_BedBug (0.35) ·
+AA_GiantCrownedSilkie (0.2). ⚠️ Little Critters' Lemming/PoisonMouse (comm 1.0, spd 4.0)
+pass on stats and FAIL recognizability on sight — the top spawns in the biome are a
+lemming and a mouse; recommend evict-by-recognizability.
+
+### 5.3 EVICT candidates (ban 9: fast)
+**21 of 53 residents (40%, MEASURED), moveSpeed cited:** PoisonButterfly (4.84, comm
+1.0) · GR_ParagonRat (4.5, 0.7) · BMT_CaveLemming (6.0, 0.4) · BMT_FenridStoat (5.0,
+0.4) · BMT_DarkAxolotl (4.6, 0.4) · AA_BlackSpider (5.0) · GR_Ratffalo (6.0) ·
+MA_Raptorkhan (6.0) · DA_ImperialRedhound (5.5) · DA_LeviathanCrab (4.6) · Narglatch
+(5.0) · VFEI2_BlackEmpress (5.6) + 9 more. Several also fail recognizability
+(stoat, axolotl, redhound).
+
+### 5.4 IMPORT candidates
+- **Slow plated/mineral crawlers:** GraniteSlug (SW — mineral-eater; dual-home with the
+  dune sea is thematically fine, or pick one) · AA_CrystalMit family (crystal = the
+  trunks' crystal fans) · Mynock (icon, spd 2.0 — chemosynthetic parasite read).
+- **Toxic-meat prestige game:** any keeper can carry it — toxic-meat is a def property
+  we author (meat hediff), not a creature hunt; flag the 3–4 keepers that get it.
+- **Eyeless vibration-sensing ambusher (the signature):** **NEW ART/DEF NEEDED** — no
+  donor is vibration-themed; nearest body: Biomes! Caverns blind fauna (its 10%
+  recognizability survivors).
+- **Flora:** Alpha Biomes' chemical/fungal flora is the sheet's own named donor pool —
+  the flora roster already assigns Polluted Lands trees here (TreeTwistingThornwood,
+  TreeMartyr — owner favourites, keep); audit each against "no green, no leaf-crown".
+
+### 5.5 Open calls
+1. Little Critters at comm 1.0: evict both on recognizability despite passing every stat?
+2. Do dryads stay (they are Gauranlen-mechanic creatures — do they function wild)?
+3. Which keepers get the toxic-prized-meat treatment (cuisine chain input)?
+
+---
+
+## 6. THE TERMINATOR SEA — no BiomeDef (0 residents; the seas are `Ocean`/`Lake` tiles)
+
+### 6.1 Admission test (checkable)
+- ⛔ Roster CAP: "a handful of large organisms" — a rich list is itself a violation
+  (ban: no high species count). Target ≈ 1 mat organism + 1–2 giants PER SEA + 1–2
+  shore/shadow-lane forms.
+- ⛔ No herds/flocks/schools/swarms (single-spawn, low-density by def — checkable).
+- ⛔ No freshwater life, no seasonal behaviour, no sun-trackers, no trees.
+- ✅ Every large organism endemic to its own sea — one def per sea, no sharing.
+
+### 6.2 KEEP candidates
+None — nothing spawns in Ocean/Lake in the register for these waters (MEASURED 0; water
+biomes use a coastal-animal channel the register does not carry — UNMEASURED beyond that).
+This roster is built, not curated.
+
+### 6.3 EVICT candidates
+None (empty roster).
+
+### 6.4 IMPORT candidates — the endemic giants
+**Our own homeless mod is the donor pool: `RimMandrake - SW Sea Beasts` — 12 live
+creatures, 0 map homes (MEASURED).** Menu, one per sea (single-spawn, near-zero
+commonality, renamed to be endemic):
+
+| sea | candidate body | bs | why |
+|---|---|---|---|
+| Twilight Sea (*moldy*) | RSW_Lanternwhale | 40 | slow (1.8), luminous name fits the last-of-lineage read |
+| Grey Sea (*shrinking*) | RSW_Reefback | 32 | carries-its-own-ecology read suits a dying sea |
+| The Scald (if it gets one) | RSW_ElderSando / SandoAquaMonster | 20/14 | icon lineage (Naboo) — carve-out protected |
+
+Remaining 9 sea beasts stay homeless (the seas cannot hold 12 kinds without breaking the
+sheet) — dispose under §11. ⚠️ All 12 are on the linear-yield list (fig4) — their yield
+ruling rides whatever the owner decides there.
+- **The mat organism (one per sea), blade flora, shadow-lane detritivores, condensate
+  drinkers:** **NEW ART/DEF NEEDED** — no donor in 895 rows is a planetary mat or a
+  50 m salt-rimed blade.
+- Shore scavengers: HermitCrab/StoneCrab (Odyssey) fit the shore niche but fail
+  recognizability (a crab is a crab) — REGENERATE or NEW.
+
+### 6.5 Open calls
+1. Mechanically, do the seas get fauna via a coastal-water BiomeDef patch, map-condition
+   spawner, or scripted encounters? (No def exists to hang commonality on — this gates
+   everything above.)
+2. One giant per sea or two (adult + the "last juvenile" as a story beat)?
+3. Does The Scald (dayside, jungle-coast `Lake`) count as a terminator sea at all? (Sheet
+   says no — its coast is the green line. Recommend: Scald fauna belongs to the river
+   jungle conversation, not this sheet.)
+
+---
+
+## 7. THE NIGHTSIDE ICE — `AB_RockyCrags` + `AB_PropaneLakes` + `BMT_CrystalCaverns` (76 residents union)
+
+### 7.1 Admission test (checkable)
+- ⛔ No normal move speed (ban: warm/fast/pursuing/fleeing/flocking): proxy stated here =
+  **moveSpeed ≥ 2.0 evicts**.
+- ⛔ No bioluminescence (Glowforest owns glow — and Glowforest is on canon's deep night
+  but NOT painted on the current tiles CSV; separate map question, not this sheet's).
+- ⛔ No eyes, no ordinary animal silhouette, no dispersal, nothing warm-blooded — eye/def
+  tests; "if a player can tell it is a creature before it acts, it is wrong."
+- ✅ Wanted: sessile catalytic sheets at landform scale, the one-move animal,
+  thermal-sensing strikers, clonal crusts.
+
+### 7.2 KEEP candidates (10 of 76 pass the speed proxy, MEASURED)
+The goo/mit/slug shelf — the only donor family that reads as "indistinguishable from
+terrain": **AA_TetraSlug** (bs 5, spd 0.6) · **AA_BoulderMit** (bs 4, spd 1.0) ·
+**AA_SummitCrab** (bs 15, spd 1.0 — landform-scale) · AA_GreenGoo / AA_RedGoo (spd 1.5)
+· AA_CrystalMit (in CrystalCaverns — on-theme) · AA_Slurrypede · AA_Terramorph ·
+AA_PebbleMit · GraniteSlug. Recommend: keep ≤6 of these at trace commonality; even they
+need the no-eyes/no-glow art check.
+
+### 7.3 EVICT candidates
+**66 of 76 residents (87%, MEASURED — the hardest cut on the planet, as the sheet
+predicts).** Everything with legs and a face: BMT_Megakrill/Megaroach (spd 5–6, comm
+1.0) · GR_Spidersnake (4.8, 1.0) · TYR_Lemming (1.0) · Neebray · BMT_FreezerFrog (6.0) ·
+BMT pustule hornets/famine locusts (flock + fast) · AA_DuskRat · AA_Murkling ·
+AA_NightMule (a pack MULE at −60 °C) · GR muffalo-hybrids… Wholesale eviction is the
+recommendation; the sheet routes anything that "reads as an animal" to the terminator.
+
+### 7.4 IMPORT candidates
+- **The one-move animal** · **thermal-sensing seam striker** · **hectare-scale sessile
+  catalysts** · **chemical frosts ambiguously alive**: all four = **NEW ART/DEF
+  NEEDED** — nothing in the donor pool senses heat, moves once, or is landform-sized
+  flat. (The 107 "lies dormant until something wakes it" rows are the nearest MECHANIC
+  for the one-move animal's trigger — borrow the comp, not the bodies.)
+- Nightside-lush (the deep pans) is a reserved future biome — import nothing for it now.
+
+### 7.5 Open calls
+1. Accept ~87% eviction and open the nightside nearly empty (recommend yes — emptiness
+   is the sheet), or keep the goo-shelf as interim texture?
+2. The one-move animal is the biome's whole gameplay — commission it as its own item?
+3. `HorrorWastes` (bioweapon legacy) and `AB_MycoticJungle` sit in the same θ band,
+   undefined — does today's eviction dump anything INTO them by default? (Recommend: no
+   default moves into undefined biomes; homeless pool instead.)
+
+---
+
+## 8. THE FALL LINE — injection layer, no BiomeDef (308 tiles over `ExtremeDesert`/`Desert`/`AridShrubland`)
+
+### 8.1 Admission test (checkable)
+- ⛔ No new BiomeDef (ban 1) — everything below is injected content.
+- ⛔ Ferals carry NO faction (`Faction=null`), and killing feral droids must not touch
+  droid relations (bans 3/4 — def-checkable).
+- ⛔ No long-lived/territorial fauna (ban 6); wily, flee-prone behaviour.
+- ⛔ Any plant gated on wreck-shade (ban 2); no water (ban 5); no lush (ban 8).
+
+### 8.2 KEEP candidates
+n/a — an injection layer has no register residents. The underlying biome rosters (§1–§3)
+show through; the injection ADDS the ferals and vermin.
+
+### 8.3 EVICT candidates
+n/a (nothing injected yet).
+
+### 8.4 IMPORT candidates
+- **Ship vermin (eat what falls):** **Scavrat** (SW — the name is the job; currently a
+  desert pursuit-evictee, re-homed here where scurrying between wrecks is correct) ·
+  **WompRat** (icon) · **Mynock** (icon — hull parasite, its literal canon niche) ·
+  VFEI2_Fuelmite ("fuelmite" — eats fuel; currently homeless after shrubland band cut).
+- **Feral droids:** Outer Rim Droid Depot's 8 animal-classed droids (meatless — correctly
+  butcher-less, MEASURED via fig4's droid note; icon-protected). Behaviour (flee-prone,
+  memwipe-capture, no droid-relations hit) = **our C#** (sheet §8b names this the likely
+  own-code piece).
+- **Feral races (crash survivors → damaged slaves):** **NEW DEF + C# NEEDED** — no donor
+  mod ships capturable feral sentients with permanent mental scars; pawnkind + hediff +
+  capture wiring is ours.
+- **Wreck-shade flora pockets:** gate existing hardy smalls (fuzz/ultracactus cousins)
+  on wreck mutators — flora authoring, not new species.
+
+### 8.5 Open calls
+1. Which sentient RACES go feral here (the menu of installed alien races is a separate
+   census — authorize it)?
+2. Is the feral-droid C# scoped into `PLOT_MECHANISM_MODS_WAVE_1` or its own item?
+
+---
+
+## 9. GLOBAL — the ubiquity-25 disposition menu
+
+fig7's 25 homogenizers (≥20 spawn biomes AND top commonality ≥0.3 — re-verified against
+the register, 25 exactly). Whatever per-biome curation does, these are the connective
+tissue everywhere until ruled on ONCE, globally. Menu — recommended disposition per row:
+
+| creature | spread | top | recommend | why |
+|---|---:|---:|---|---|
+| AA_PebbleMit | 45 | 0.35 | TRIM to rock/cavern biomes | plated pebble — fine texture, wrong everywhere |
+| AA_FissionMouse | 40 | 0.35 | RESKIN → Wasteland radiotroph | the name is already the archetype |
+| AA_Swarmling | 40 | 0.35 | TRIM to 2–3 biomes | generic swarm noise |
+| AA_Aerofleet | 35 | 0.5 | TRIM (terminator-adjacent only?) | floating jelly — atmospheric, keep scarce |
+| AA_CrystalMit | 33 | 0.35 | TRIM to CrystalCaverns/PoisonForest | crystal belongs to two sheets only |
+| AA_MegaLouse | 29 | 0.35 | TRIM | vermin texture, cap it |
+| AA_AnimusVox | 28 | 0.35 | TRIM to one strange home | too distinctive to be everywhere |
+| AA_LuciferBug | 27 | 0.5 | TRIM; ban from nightside (glow) | glow ban conflicts |
+| AA_Bumbledrone | 27 | 0.35 | TRIM | |
+| AA_AcanthamoebaGigantea (small) | 27 | 0.5 | TRIM to wasteland/pans | amoeba reads contamination |
+| AA_PedigreedRaptor | 26 | 0.35 | EVICT planet-wide | reads dinosaur — deeper-cut rule |
+| Boomalope | 25 | 0.7 | KEEP, reskinned (in-joke lane) | owner's deliberate exception |
+| Rat | 23 | 3.0 | TRIM to Fall Line/settlements | comm 3.0 is the loudest single number in the table |
+| GraniteSlug | 23 | 1.0 | TRIM to dune sea + poison forest | good creature, everywhere is too many |
+| WildBoar | 23 | 1.0 | EVICT planet-wide | instantly nameable Earth animal |
+| Warg | 22 | 0.4 | EVICT or reskin | fantasy wolf |
+| AA_Murkling | 22 | 0.5 | TRIM | |
+| Mynock | 22 | 0.7 | TRIM to Fall Line + poison forest | icon — but a parasite needs hosts/hulls |
+| Hare | 22 | 2.0 | EVICT planet-wide | nameable; comm 2.0 |
+| AA_AuroraSylph | 21 | 0.35 | TRIM (wasteland halo-storm fauna?) | aurora name fits one sheet |
+| AA_Drainer | 21 | 0.35 | TRIM | |
+| Raccoon | 20 | 0.5 | EVICT planet-wide | nameable |
+| Muffalo | 20 | 1.0 | KEEP, reskinned (in-joke lane) | owner's exception; doctrine's calibration animal |
+| Neebray | 20 | 1.0 | TRIM to poison forest + caves | icon, but capped |
+| Scavrat | 20 | 0.8 | TRIM to Fall Line | see §8.4 |
+
+One ruling pattern would clear the table in a sitting: **EVICT the nameable Earth five
+(Rat/Hare/WildBoar/Raccoon/Warg), KEEP the two in-jokes reskinned, TRIM everything else
+to ≤2 named home biomes.**
+
+---
+
+## 10. GLOBAL — contradictions with prior rosters (sheet wins pending owner)
+
+1. 🔴 **`biome_and_fauna_roster.md` (2026-08-13, aspirational) vs the sheets — the big
+   one.** It rules "Star Wars Animal Collection: ✅ KEEP ALL — this is the theme," parks
+   SW herds in `AridShrubland` ("the liveable fringe — herds") and "SW large reptilian
+   grazers + their predators" in `Desert`. The 2026-09-05 sheets invert all three: the
+   shrubland size ladder evicts 59 SW midrange creatures, the desert bans its pursuit
+   predators (Wraid/Gutkurr/Massiff at comm 0.8), and its "⛔ do NOT cut on predator
+   grounds" note is superseded by the desert sheet's no-pursuit law (an ecology law, not
+   a difficulty cut). Its §2 worldgen-weight machinery is dead anyway (no worldgen,
+   owner 2026-08-15). **Recommend: mark the doc superseded-by-sheets at the top.**
+2. **It also rules PoisonForest, AB_MycoticJungle, AB_PropaneLakes, HorrorWastes,
+   Glowforest OUT (weight 0)** — the frozen map paints 1,939 MycoticJungle tiles, 1,589
+   PropaneLakes, 542 PoisonForest. The one-map superseded the in/out table; nobody wrote
+   that into the doc.
+3. **`biome_flora_rosters.md` (generated, 2026-08-23) vs the desert/dune sheets:**
+   `Desert` is assigned saguaro/agave/aloe/pincushion — instantly-nameable Earth cacti —
+   and `ExtremeDesert` a 21-plant list where the sheet demands buried glass-nub flora
+   and "no above-ground foliage." Flora predates the sheets wholesale; the generator
+   (`biome_flora.py` FAMILIES) needs a sheet-law pass. ⚠️ Its own header says climate was
+   deliberately not a filter — that job (`NORMALIZE_TEMPERATURE_TOLERANCES_1`) now folds
+   into per-sheet flora law.
+4. **`creature_recognizability_rule.md` survival table** already condemns Megafauna,
+   Mythic Ages, Beasts of the Rim (0% survival, retirement rulings recorded) — so any
+   import list above naming their bodies (Sivatherium, Titanoboa) is a RESKIN-SOURCE
+   claim, never a keep.
+5. Minor: `Alien_Bestiary.md` and `creature_names_ashkarr.md` predate the sheets;
+   spot-checks found no direct law conflicts (they are naming/flavor layers) — UNMEASURED
+   beyond that, flagged for the naming pass.
+
+---
+
+## 11. GLOBAL — "the planet has no temperate forest" (all MEASURED)
+
+- The register's most-populated biome is **TemperateForest: 282 live residents** — a
+  biome painted on **zero** Ash'karr tiles. The mods' default worldview and the frozen
+  map disagree wholesale.
+- **157 of 767 live wild creatures (animals+insectoids, 20%) already have NO residency
+  in ANY biome painted on Ash'karr** — homeless before any sheet is enforced (221 total
+  live rows have an empty biome list; the rest of the homeless are mech/vehicle/entity
+  kinds that spawn by event, not biome).
+- Applying just the STAT-CHECKABLE evictions above (desert pursuit, shrubland large
+  band, dune-sea medium band, poison-forest speed, nightside speed) makes **48 more
+  wild creatures newly homeless** (MEASURED under the stated proxies) — among them
+  whole VFE-Insectoids midsize hives and SW staples (Orray, Akk, Gundark, Falumpaset,
+  PaintedSpat).
+- ⇒ **~205 of 767 live wild creatures (27%) will have no legal home once the sheets
+  bind.** That pool is not a defect list — it is the sitting's raw material: each row
+  ends as an IMPORT (re-homed under a sheet's test), a Cherry Picker cut, or a
+  reserve-for-events creature. Recommend the owner rule the DEFAULT for the pool
+  (cut vs reserve), then triage exceptions.
+
+## 12. The NEW ART/DEF NEEDED ledger (feeds the graphics pipeline)
+
+| biome | needed | mechanic load |
+|---|---|---|
+| dune sea | shade-commensal micro-fauna · mirror sun-axis giants · glass-nub flora | C# shade later; defs now |
+| deep desert | silverbole · egg-trap clutch · cavern beast · drum-lure predator | sheet-ticketed |
+| desert | ultracactus · staggerseed · glitter-birds · shade-whale reskin (Paraceramuffalo) | shade grid C# |
+| shrubland | fuzz · venomvine · sweetline trees · tunnel snake-analog · scrap-nest birds · THE giant + young | enrage C#, nest C# |
+| wasteland | radiotroph flora · excretor bezoars · radiothermal solitary · brine-battery | dose layer C# |
+| poison forest | eyeless vibration ambusher · crust phototroph flora | none blocking |
+| terminator | per-sea mat organism · blade flora · shadow-lane detritivores | water-spawn route (§6.5) |
+| nightside | one-move animal · thermal seam striker · landform catalysts | thermal-sense C# |
+| fall line | feral races (pawnkind+hediff+capture) · feral droid behaviour | C#, ours |
+
+_Lesson filed to LESSONS_INBOX: the register's `flies` special is set on ~every row —
+a fauna instrument that lies with a flag; validate specials against a known animal
+before filtering on one._
