@@ -131,6 +131,39 @@ static viewCoord edit may not be able to beat.
 - `DebugActionType.ToolMap` is **not** a separate menu — `DebugTabMenu_Actions`
   adds those to the same `Actions` root with a `T: ` label prefix.
 
+## New this session: handing off is now a command
+
+Owner asked for it mid-session: *"Is there a way for an agent to automatically
+prepare for agent reboot when it finishes a big wave... Then it could just say
+HANDOFF READY at the end and I could reboot myself while keeping things in cache."*
+Plus: *"It should be fired especially when it says 'Ok, that's all I have for now,
+waiting for new items'... and then NOT do so again unless new work does come in."*
+
+```
+python3 src/RimMandrake/Utils/handoff.py          write the skeleton (it gates first)
+python3 src/RimMandrake/Utils/handoff.py --check  gates + unfilled-section scan
+```
+
+Doctrine is in `infrastructure/agents/FOUNDRY.md` and `CHARTER.md`. Three things
+worth knowing before you use it:
+
+- **The trigger is the sentence "that's all I have for now."** Do not report an
+  empty queue and then sit on a warm context — report it BY handing off.
+- **It gates before it writes**: unpushed commits, a bridge you still hold, and
+  items you started this window that are neither closed nor written into "What is
+  half-done". Being NAMED in the handoff discharges the last one — some work is
+  legitimately mid-flight, and a gate you cannot satisfy honestly teaches you to
+  pass `--force`.
+- **Say HANDOFF READY once.** With no closes, filings or commits since the last
+  handoff it prints ALREADY HANDED OFF and writes nothing.
+
+⚠️ Two bugs in its first draft are recorded in `selftest_handoff.py`, both of the
+kind that leave a gate looking fine while doing nothing: it selected the
+uncommitted handoff it was writing as its own window start, and the doing-check had
+no window at all and named 47 items from three sessions back. **A gate that fires
+every time is a gate nobody reads.** The selftest's assertions are mostly about the
+gate being silent when it should be, because that is the half that broke.
+
 ## Game / bridge / mod-list state at wrap
 
 - **Game: DOWN** (`./game` reads NOT RUNNING / recorded DOWN). Never started this
@@ -146,5 +179,9 @@ static viewCoord edit may not be able to beat.
 - **Uncommitted and NOT mine**: `src/RimStarWars/BeastLairs/About/About.xml`,
   `.../RSW_BeastLairs_Buildings.xml` (present at session start, another seat's),
   and `infrastructure/state/codebase_health_last.json` (generated state).
+- **Selftests 39/40** — `selftest_cli.py` times out under cross-window
+  contention; `selftest_one_path_seam` was fixed this session, and
+  `selftest_retired_mods`, `selftest_retirement_order` and `selftest_handoff`
+  are new.
 - **`COLD_LOAD_RUN_SHEET_4` has six readings queued** for the next full-list load.
   Read it before launching anything.
