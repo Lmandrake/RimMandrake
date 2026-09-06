@@ -15,9 +15,15 @@ Ships batch 3, four promises: The Oasis Shrine (row 10), The Rakatan Trace (row 
       <packageId>mandrake.rm.injections</packageId>
       <displayName>RimMandrake: Structure Injections</displayName>
     </li>
+    <li>
+      <!-- homestead*.txt spawn RUT_WindowAdobe, which this mod owns (review 2026-09-06) -->
+      <packageId>mandrake.rut.desertfixtures</packageId>
+      <displayName>RimMandrake: RUT — Desert Fixtures</displayName>
+    </li>
   </modDependencies>
 
   <loadAfter>
     <li>mandrake.rm.injections</li>
+    <li>mandrake.rut.desertfixtures</li>
   </loadAfter>
 </ModMetaData>
