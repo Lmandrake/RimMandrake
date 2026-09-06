@@ -547,6 +547,97 @@ Open, not yet carded: whether large authored maps (question 3) ship through Anci
 Urban Ruins' `CustomMapDataDef` route or through district composition — P13 decides
 what is even possible.
 
+## 9. Skeptical review and the shortest path — PROPOSAL, not ruled (2026-09-06)
+
+*Asked for by the owner: "analyze this plan and skeptically review it. Find the
+shortest path to high quality playmaps without hundreds of human hours authoring
+content." Nothing below is a decision until §8 says so.*
+
+### 9.1 What the plan gets wrong, or under-weights
+
+1. **It proved plumbing, not quality.** Every CONFIRMED line in §5 is "a mechanism
+   exists." None touches where beauty comes from. The plan's quality answer is
+   "five metrics + 22 rules + a human looks" — the exact bottleneck it set out to
+   remove.
+2. **The denominator is small and nobody wrote it down.** A gravship campaign
+   generates a map per landing — plausibly 20-60 landings in a playthrough, not
+   thousands. The target is *dozens of great maps with variety*, not infinite
+   procedural quality. That reframes every cost below.
+3. **The biggest shortcut is buried in §5.6 and then ignored in §6.4.** P15/P16:
+   Vanilla Landmarks Expanded already ships a complete, zero-C# pipeline —
+   `PrefabDef` + `TileMutatorDef` (VEF `GenericPrefabSpawner`) + `LandmarkDef` —
+   from an XML file to "scattered on the landing map, ship lands around it." P2
+   confirmed the live exporter. Yet §6.4 names two custom C# workers (P10, P11) as
+   the first BUILD items, before this XML-only route has been exercised end-to-end
+   *once*.
+4. **Natural terrain is the hard part and the plan's answer there is weakest.**
+   Hand-authored maps are beautiful mostly because of ONE dominant landform (§5.5
+   rule 2), and that is L1. But ~250 terrain mutators/landforms are already on the
+   owner's list (vanilla ~50, VLE 151, Geological Landforms 44, Alpha Biomes). The
+   shortest L1 path is *curating which mutators each frozen tile carries* — data
+   entry with a screenshot loop — not writing a mask-stamping worker (P10) for
+   shapes nobody has yet shown to be missing.
+5. **The metric (`beautiful_tilemap.md` §6, §10) is a trap at this scale.** Learning
+   "interesting" from 44 maps is a research project whose output is a number that
+   must then be validated against the owner's eye anyway. At dozens of maps, the
+   owner's eye plus a review save IS the metric and is already tooled (review
+   sheets, grid saves). Build a metric only if review volume becomes the bottleneck.
+6. **L3 (residents) is the sink where hundreds of hours would go.** Inhabited is
+   "not proven live end to end" with two broken entry points. A *functioning*
+   settlement is a simulator. A settlement that *reads* as functioning is a KCSG
+   shell + a few pawns with `DefendPoint`/sleep lords — which is exactly what P8
+   proved and what Samuel Streamer's "guards at a door" actually is.
+7. **The LLM is aimed at the wrong altitude.** P5 has it authoring cells in Lua —
+   the same level a human authors at, with no reference to copy from. Its reliable
+   role is *composer*: pick scenes from a library, site them by the anchor rule,
+   write the history/dressing layer. Cell-level authoring stays a minor pathway.
+8. **The 44 hand-authored maps are the spine, not "one factory of three" — and the
+   plan treats them as a chunk quarry.** (Owner, mid-review: *"take into account the
+   LARGE number of beautiful hand made maps we already downloaded."*) Chunk-cutting
+   throws away the thing that makes them beautiful — the terrain coherence and the
+   one dominant landform (§5.5 rules 2-4) that a ruin fragment loses the moment it
+   is quilted elsewhere. The higher-value use is **whole-map or large-region
+   transplant**: P13 confirmed the engine already consumes a whole 203×203 map as
+   flat XML (`CustomMapDataDef`: terrain + things + roofs + faction), spawned at
+   mapgen by a `SitePartDef`; P4 confirmed a corpus `.rws` carries exactly those
+   layers as plain XML. So a corpus map → `CustomMapDataDef` converter is a
+   format translation, not content authoring — and 44 maps against ~20-60
+   landings per campaign means **the corpus alone could carry most of the maps a
+   player ever sees.** The humans already spent the hundreds of hours. Chunk
+   cutting into `PrefabDef`s is the secondary use, for the scene library.
+   Unmeasured risks, each answerable on ONE save: def remapping to the live mod
+   set; terrain-palette remap for a desert world (how many of the 44 are arid, and
+   what a biome-table swap does to the rest — `biome_terrain_palette.md` exists for
+   this); map-size mismatch (250²-500² vs the campaign's size); the gravship
+   footprint (`UsedRects`) landing on a fully authored map; and fog/roof/region
+   state after a whole-map spawn. Attribution if the campaign is ever published
+   is a separate question, not a technical one.
+
+### 9.2 The shortest path, in order
+
+| # | step | what it proves / yields | cost | code |
+|---|---|---|---|---|
+| **1** | **Transplant ONE corpus map onto ONE frozen tile.** Pick the most arid of the 44; convert `.rws` → `CustomMapDataDef` (terrain + things + roofs, defs filtered/remapped to the live set); spawn it at mapgen on a quicktest via the P13 route (Ancient Urban Ruins' `SitePartWorker_CustomMap`, or our own GenStep reading the same shape if the dependency is refused); land a gravship on it; screenshot; read fog/roof/regions back | whether the spine of the whole plan works: authored beauty arrives intact, and the five risks in §9.1 #8 get real numbers | one day | Python converter + one SitePartDef/GenStep |
+| **2** | **Corpus census for fit.** For all 44: biome, size, distinct mod defs, arid-or-not, dominant landform, one rendered thumbnail each; one review sheet; owner ranks which tiles they belong on | the transplant roster — how much of the campaign the corpus covers *as is* | half a day, offline (`savemap.py` + P4's iterparse) + one review hour | Python only |
+| **3** | **Mutator census + assignment for the tiles the corpus does NOT cover (L0/L1).** Quicktest each of the ~250 mutators/landforms with a forced tile, screenshot, contact-sheet, owner keeps/cuts; assign per biome sheet (`WORLD_MUTATOR_LANDMARK_IMPORTERS_1` already exists) | engine-quality dominant landform for every remaining landing | 1-2 days, screenshot loop + one review hour | none |
+| **4** | **One scene end-to-end through the XML-only VEF route.** Build live or cut a chunk from a corpus map → `PrefabDef` → `TileMutatorDef` (VEF spawner) → `LandmarkDef` → quicktest landing → screenshot | the L2/L4 spine for dressing mutator-generated tiles with corpus-quality structures | half a day | none |
+| **5** | **Corpus chunk cutter.** Rect-cut rooms/ruins/features from the 44 saves into `PrefabDef`s; ~200 thumbnails on one review sheet; owner keeps/cuts | the scene library for step 4, from hours someone else spent | 1-2 days + one review hour | Python only |
+| **6** | **Residents, cheap version.** KCSG shell or a corpus base + `lord-defend-spawn` + sleep; fix Inhabited's entry points only when a specific scene needs more | "inhabited" that reads as such | per scene, small | none new |
+| **7** | **LLM as composer.** Biome sheet ¶ + scene library → siting + dressing + history plan; rimplace cell authoring only for one-off novelties | variety without per-map hand work | after 5 | prompt + siting glue |
+| **8** | **Quality loop = review saves + the owner's eye.** Rules 6 and 8 as a linter where computable; no learned metric | the grader, already tooled | ongoing | small |
+
+**Deferred until a need is shown:** P10 mask worker (name the landform neither the
+corpus nor vanilla can make first), P11 scatter defs (VEF's `plantDefsWithCommonality`
+may cover it), the `interest_evaluator`, the image-in-the-loop generator, and the
+GO-click bridge pass (kept only as the LLM-flavour pass; steps 1 and 4 make it
+unnecessary for terrain and structures).
+
+**What still needs a live proof before any of this is trusted:** steps 1 and 4 have
+never been run. Nobody has watched a corpus map spawn at a landing, and nobody has
+watched VEF's spawner place OUR prefab on OUR tile. Step 1 is first because if
+whole-map transplant works, it retires most of steps 3-5 for most tiles; it is the
+only thing here that costs more than a screenshot loop.
+
 ## 8. Decisions
 
 Owner, by card, 2026-09-06:
