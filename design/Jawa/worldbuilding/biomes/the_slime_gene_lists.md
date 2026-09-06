@@ -1,105 +1,115 @@
-# The Slime — gene machine lists (draft 1, for iteration)
+# The Slime — gene machine lists (draft 2, for iteration)
 
-_BENCH first draft 2026-09-06 per the owner's call; comment and I'll cut/rework. Numbered
-for commenting. Companion to `the_slime.md` §7._
+_BENCH draft 2, 2026-09-06 — owner's comment applied: every entry now has a real cost and
+a distinct oddness with impact; Jawa-aligned throughout. Numbered stably (B25 is new).
+Companion to `the_slime.md` §7._
 
-## Curation principles (proposed, rule on these too)
+## Curation principles
 
 - **P1 — Provenance is the list.** A gene exists here only because its carrier plausibly
-  touched the Slime: a visiting Star Wars race (our `StarWarsRaces` mod ships 70
-  xenotypes — every target cites one) or a local denizen the rivers/winds delivered.
-- **P2 — 🔴 No Force.** `FORCE_POWERS_ARE_V2_1` binds the machine: nothing Force-flavored,
-  no sensitivity, no precognition framed as the Force. (Iktotchi entry flagged.)
-- **P3 — Excluded bloodlines:** Sith (all three), Rakata, Dathomirian — the archive holds
-  them, the machine's menu does not (the Helix filtered the catalog they sell; why is
-  its own lore hook). Anzati predation excluded outright.
-- **P4 — Anti-exponential:** no gene raises a production/combat ceiling; each is a
-  sidegrade with texture. Riders are never crippling, never lethal, sometimes secretly
-  nice.
-- **P5 — Riders are visible.** Every rider shows: on the body, in behavior, or in the
-  social log. The machine never takes invisibly.
+  touched the Slime: a visiting race (cited from our 70 `StarWarsRaces` xenotypes) or a
+  local denizen the rivers delivered.
+- **P2 — 🔴 No Force** (`FORCE_POWERS_ARE_V2_1`). Nothing Force-flavored, ever.
+- **P3 — Excluded bloodlines:** Sith (all three), Rakata, Dathomirian, Anzati predation —
+  the archive holds them; the Helix-filtered menu does not.
+- **P4 — Anti-exponential:** no gene raises a ceiling. **Every gene is a trade**, priced
+  in stats, not flavor text.
+- **P5 — Riders are visible AND felt.** Every rider shows on the body or in behavior,
+  and every rider moves at least one stat.
+- **P6 — Jawa-aligned bite** (owner's call): costs land where Jawas live — haggling,
+  sneaking, scavenging, tinkering, warren life. A gene should make a Jawa argue with
+  themselves.
+- **P7 — 🔴 The marked are hard to love** (owner, 2026-09-06): machine genes freak people
+  out. Each machine-granted gene stacks a **Slime-marked** romance penalty — roughly
+  −20% romance-attempt success and −2 opinion-as-partner-material per gene, uncapped.
+  One gene is a quirk; four is a creature. Exceptions only where the gene itself says
+  otherwise (A16's pheromones fight the mark to a draw; B25's Reek doubles it).
+- **P8 — 🔴 Breedable** (owner, 2026-09-06, resolves K5): machine genes are **heritable
+  endogenes** — children carry them, and the mark carries too. The colony's bloodline is
+  a decision, made one coma at a time.
 
 ---
 
-## A. Target list — what you can ask for
+## A. Target list — what you can ask for (every gift priced)
 
-### From the visitors (xenotype cited)
+### From the visitors
 
-| # | gene (working name) | source | effect sketch |
-|---|---|---|---|
-| A1 | Amphibious lungs | Nautolan / Mon Calamari | breathe underwater, no swimming penalty — the owner's founding example |
-| A2 | Kolto glands | Selkath | +tend quality on self-tended wounds; wounds you tend heal cleaner |
-| A3 | Limb regrowth | Trandoshan | lost limbs regrow over a season (slow, hungry work) |
-| A4 | Great frame | Wookiee | +melee damage, +carry capacity, −move on fine work |
-| A5 | Low-light eyes | Chiss / Umbaran | no darkness work or accuracy penalty |
-| A6 | Heat-pit senses | Rodian | see warm creatures through darkness and foliage (hunting) |
-| A7 | Toxin-proof gut | Hutt | permanent food-poisoning and ingested-poison immunity |
-| A8 | Leather hide | Weequay | heat tolerance up, sun never burns, −beauty |
-| A9 | Ammonia lungs | Gand | immune to toxic gas, rot-stink, and the Sheen's *airborne* load |
-| A10 | Thick blubber | Herglic | cold floor drops sharply, blunt-damage padding |
-| A11 | Spring legs | Lasat | +move, ignore minor elevation/rubble penalties |
-| A12 | Natural claws | Cathar / Togorian | always-armed melee verb, +unarmed damage |
-| A13 | Mirror reflexes | Echani | +melee dodge, +training speed for melee skills |
-| A14 | Tunnel sense | Sullustan | +mining speed, never lost underground, no cave mood hit |
-| A15 | Forge hands | Ugnaught | +crafting/smithing quality on worked goods |
-| A16 | Pheromone charm | Falleen / Zeltron | +social impact aura, occasional unwanted admirers |
-| A17 | Trader's head | Muun | better prices, faster intellectual work |
-| A18 | Prehensile tail | assorted visitors | carry a small item hands-free; +climb — the owner's tail |
-| A19 | Sonic bellow | Ithorian | once-per-day cone stagger shout (non-lethal) |
-| A20 | Acute ears | Bith / Chadra-Fan | detect threats sooner (no surprise-attack bonus against you) |
-| A21 | Water discipline | Tusken (local-born visitors) | thirst/heat needs drop hard; desert travel barely costs |
-| A22 | Scavenger's nose | Jawa | find more components/salvage in ruins and wrecks |
-| A23 | ⚠️ Battle premonition | Iktotchi | +dodge/aim for 5s after taking fire — P2 flag: reads Force-ish; keep, reflavor, or cut |
+| # | gene | source | gift | 🔻 cost |
+|---|---|---|---|---|
+| A1 | Amphibious lungs | Nautolan / Mon Cal | breathe underwater, swim clean | skin must stay moist: on desert tiles thirst +25%, −3 mood in dry air — a hard gene to carry on THIS planet |
+| A2 | Kolto glands | Selkath | +25% tend quality on wounds tended on you | glands never stop: hunger +10%, permanent faint medicinal reek (−1 social opinion) |
+| A3 | Limb regrowth | Trandoshan | lost limbs regrow over ~1 season | while regrowing: hunger +50%, immunity −30% — regrowth season is a danger season |
+| A4 | Great frame | Wookiee | melee dmg +25%, carry +40% | hunger +35%; global work speed −10% on fine work; most armor no longer fits until retailored |
+| A5 | Low-light eyes | Chiss / Umbaran | zero darkness penalties | photophobia: −15% accuracy and work speed under open dayside sun |
+| A6 | Heat-pit senses | Rodian | see warm prey through dark and cover | every heater, fire and forge glares: −10% accuracy indoors near heat sources; hot-biome mood −3 |
+| A7 | Toxin-proof gut | Hutt | immune to food poisoning and ingested poison | drugs barely work: all drug and medicine potency on you −50% — including the good ones |
+| A8 | Leather hide | Weequay | sun cannot burn you, heat floor +15 °C | needles hate it: surgery success and tend quality on you −15%; beauty −1 |
+| A9 | Ammonia lungs | Gand | immune to toxic gas, rot-stink, airborne Sheen | clean air tastes wrong: rest effectiveness −10%, permanent −2 mood outside polluted/gassy ground |
+| A10 | Thick blubber | Herglic | cold floor −40 °C, blunt padding | heat ceiling −15 °C (dayside is misery), move −0.2 |
+| A11 | Spring legs | Lasat | move +0.6, rubble/elevation penalties ignored | burns fuel: hunger +20%; jittery hands — crafting quality tier-down chance |
+| A12 | Natural claws | Cathar / Togorian | always armed, +unarmed damage | no fine touch: surgery/art quality −20%; "menacing" −2 social with strangers |
+| A13 | Mirror reflexes | Echani | melee dodge +20% | the mirror never shuts off: mental break threshold +5%, crowded-room mood −2 |
+| A14 | Tunnel sense | Sullustan | +30% mining, never lost, no cave mood hit | open sky gnaws: −4 mood while outdoors and unroofed — a scavenger who hates the dunes |
+| A15 | Forge hands | Ugnaught | +1 crafting quality tier chance on worked goods | callus everywhere: tend/surgery done BY you −15%; romance attempts −20% |
+| A16 | Pheromone charm | Falleen / Zeltron | +40% trade prices in your favor, +social impact | you cannot turn it off: jealousy/social-fight chance around you doubles; other Jawas distrust the "too-smooth one" (−10 faction-mate opinion) |
+| A17 | Trader's head | Muun | +15% better prices, +25% research speed | expectations rise permanently one tier; giving away or losing goods hits −5 mood ("that had VALUE") |
+| A18 | Prehensile tail | assorted spacers | carry one small item hands-free, never slowed by climbing | the tail is bare: cold floor +10 °C, legwear must be retailored, −1 beauty in robes |
+| A19 | Sonic bellow | Ithorian | 1/day cone stagger-shout, non-lethal | there is no quiet setting: your voice breaks stealth — sneak/steal jobs near you −30%; whispering impossible (social −2) |
+| A20 | Acute ears | Bith / Chadra-Fan | cannot be surprise-attacked; detect raids sooner | the workshop is agony: −4 mood in rooms with active machinery or gunfire; stun chance from explosions doubled |
+| A21 | Water discipline | Tusken kin | thirst/heat needs −40%; desert travel barely costs | cold becomes lethal fast: cold floor +20 °C; forced hydration (medical IV, soaking) causes vomiting |
+| A22 | Scavenger's nose | Jawa | +30% components/salvage found in ruins and wrecks | the nose never closes: −10% consciousness near corpses, chemfuel or the unwashed; compelled to sniff new trade goods (−1 trader opinion) |
+| A23 | ⚠️ Battle premonition | Iktotchi | +15% dodge/aim for 5s after first taking fire | never sleeps deep: rest effectiveness −15%, nightmare mood events — ⚠️ P2 flag stands: keep/reflavor/cut |
 
-### From the local denizens (the rivers delivered everything, eventually)
+### From the local denizens
 
-| # | gene | source | effect sketch |
-|---|---|---|---|
-| A24 | Sleepless | the Slime's own cells (CMSlime never rests) | sleep need −70%, slight permanent mood tax |
-| A25 | Clotting flesh | Green Goo | bleed rates halved, scars fade |
-| A26 | Sand-swimmer | sand prowler | burrow-step: +move on sand terrain, leave no footprints there |
-| A27 | Antifreeze blood | crag rime-life | cold floor to −60 °C, frostbite immune |
-| A28 | Thermogene | Rot hybrids (the authored heat gene) | radiate gentle heat; you are a small campfire |
-| A29 | Sheen-adapted lungs | Rot natives | the Sheen cannot colonize you (gene route beside the symbiote) |
-| A30 | Iron stomach | sarlacc lineage | eat anything raw, no food poisoning ever, ignore disgusting-food mood |
-| A31 | Camel flesh | desert megafauna | hunger/thirst −30%; fat stores read as one skipped meal a day |
-| A32 | Rad-eater | wasteland radiotrophs | radiation tolerance; mild healing in irradiated zones |
-| A33 | Buoyant step | aerofleet | soft-terrain penalties halved — you wade the Slime like a local |
-| A34 | 🔴 Slime-resistant | the Slime itself | slimification immune — the ironic entry, already ruled in `the_slime.md` |
+| # | gene | source | gift | 🔻 cost |
+|---|---|---|---|---|
+| A24 | Sleepless | the Slime's cells | sleep need −70% | −5 permanent mood, joy falls +50% faster — awake is not the same as well |
+| A25 | Clotting flesh | Green Goo | bleed rates halved, scars fade over years | blood like syrup: move −0.15, surgery on you slower; cold thickens you further (−work speed below 0 °C) |
+| A26 | Sand-swimmer | sand prowler | +0.5 move on sand, no footprints there | skin needs the scour: −3 mood each day without sand terrain underfoot; itchy on soft floors (sleep on beds −10% rest) |
+| A27 | Antifreeze blood | crag rime-life | cold floor −60 °C, frostbite immune | runs cold always: heat ceiling −20 °C, global work −5% in warm rooms — a nightsider now |
+| A28 | Thermogene | Rot hybrids | you radiate gentle heat; nearby pawns' cold floor drops | hunger +30%; unbearable bunkmate: shared-room pawns −3 mood in warm biomes; heatstroke risk doubled on dayside |
+| A29 | Sheen-adapted lungs | Rot natives | the Sheen cannot colonize you | you smell like the Rot's own: colony animals distrust you (taming/handling −20%); Rot fauna treats you as furniture — including the predators' total indifference to your bait attempts |
+| A30 | Iron stomach | sarlacc lineage | eat anything raw, ever, no poisoning, no disgust | taste is dead: NO meal quality mood bonus ever again — lavish cuisine is wasted on you, on the gourmet planet |
+| A31 | Camel flesh | desert megafauna | hunger/thirst −30%, one skipped meal a day free | the reserve shows: beauty −1, move −0.1; when the reserve empties (true starvation) you crash harder than others |
+| A32 | Rad-eater | wasteland radiotrophs | radiation tolerance, mild healing on irradiated ground | needs the glow: −4 mood and −10% immunity after a quadrum with no radiation exposure — the wasteland calls you back |
+| A33 | Buoyant step | aerofleet | soft-terrain penalties halved — wade the Slime like a local | light frame: knockback/stagger taken +50%, carry −20% |
+| A34 | 🔴 Slime-resistant | the Slime itself | slimification immune (the ironic entry, ruled) | immune to the good half too: slime's universal antitoxin and radiation purge no longer work on you — you chose the wall over the well |
 
-## B. Rider list — the hidden price (player never sees this list)
+## B. Rider list — the hidden price (player never sees this list; every rider bites)
 
-| # | rider | visible how |
+| # | rider | odd + impact |
 |---|---|---|
-| B1 | Vivid skin | skin re-hues to a random Twi'lek-palette color, permanent |
-| B2 | Vestigial lekku | two small head-tails, cosmetic, hats fit oddly |
-| B3 | Nictitating membrane | you blink sideways; people notice |
-| B4 | Bantha snore | roommates' rest fills slightly slower |
-| B5 | Glow freckles | faint bioluminescent dots at night |
-| B6 | Petrichor gland | you smell rain-scent an hour before slime rain — secretly useful |
-| B7 | Photic sneeze | stepping into bright light triggers sneezing fits |
-| B8 | Seasonal molt | you shed a skin twice a year (filth event, minor mood hit that day) |
-| B9 | Contented purr | audible purring when mood is high |
-| B10 | Mismatched eyes | two colors, +1 social with children, unsettles traders |
-| B11 | Slime craving | occasional strong urge to eat raw slime; harmless (you're resistant by then) |
-| B12 | Startle-Jawaese | involuntary Jawaese exclamations when surprised |
-| B13 | Webbed toes | cosmetic — and a secret small swim bonus |
-| B14 | Green blood | Mimbanese-tinted; medics comment forever |
-| B15 | Ear tufts | fine downy tufts; +cold ears, −wearing tight helmets comfort |
-| B16 | Audible digestion | your stomach narrates meals to the room |
-| B17 | Cold nose | pawns you nuzzle (romance/comfort interactions) get a tiny mood blip — odd but sweet |
-| B18 | Dull musk | local predators find you uninteresting — the hidden gem rider |
-| B19 | Vestigial gills | cosmetic neck-slits; breathe normally |
-| B20 | Sun-shy pigment | skin darkens sharply in sunlight, fades in dark |
-| B21 | Pocket instinct | you occasionally pick up and pocket small items while hauling (they turn up later) |
-| B22 | Scent memory | you recall people by smell; greet returning caravans before they're visible |
-| B23 | ⚠️ Somnambulant homing | rarely sleep-walks a few tiles toward the nearest slime terrain — flag: fun or too dark? |
-| B24 | Hiccup bubbles | hiccups produce small, briefly floating slime bubbles |
+| B1 | Vivid skin | permanent random Twi'lek-palette hue; strangers haggle harder (−10% trade prices) and raid targets remember you (named-enemy grudge events) |
+| B2 | Vestigial lekku | two small head-tails; NO tight headgear — helmets give −50% head armor until retailored, and Jawa hoods sit wrong (−1 mood, "my hood") |
+| B3 | Nictitating membrane | you visibly blink sideways; +eye protection in ash/sand storms, but membrane flickers in bright light: −10% shooting accuracy on dayside |
+| B4 | Bantha snore | thunderous; everyone in the barracks rests −15%; you can never sleep hidden — snoring breaks concealment while camping |
+| B5 | Glow freckles | faint bioluminescent dots; pretty (+1 social with children) but you glow: night stealth −20%, snipers find you first |
+| B6 | Petrichor gland | you smell slime rain an hour early (real forecast) — but before every storm you're distracted: −10% consciousness for that hour, and you permanently smell of wet dirt (−1 social) |
+| B7 | Photic sneeze | stepping into bright light = sneezing fit: first action after leaving a roof delayed ~2s; sneezes break sneak jobs on dayside |
+| B8 | Seasonal molt | twice a year you shed whole: ALL scars removed (real gift) — but molt week is misery: −10 mood, manipulation −20%, itching interrupts sleep, filth everywhere, and you can't wear armor over raw skin |
+| B9 | Contented purr | audible purring when mood >70%: bunkmates +1 comfort — but happiness betrays you: stealth fails while purring, and interrogators always know when you're pleased with a lie (social deception −20%) |
+| B10 | Mismatched eyes | genuinely rendered two-color (implementation note: heterochromia must SHOW on the pawn) — depth perception off: −5% ranged accuracy; unforgettable face: disguise/infiltration impossible, witnesses always identify you |
+| B11 | Slime craving | monthly craving binge: you will eat colony slime stores or take a −8 mood "denied" debuff; while bingeing, work −20% |
+| B12 | Startle-Jawaese | involuntary LOUD Jawaese exclamations when surprised — hiding and stealing near enemies can fail on any startle (owner's ruling: disrupts stealth/theft work outright); also wakes the room |
+| B13 | Webbed toes | small swim bonus — but boots never fit: move −5% in any footwear, barefoot on hot sand burns |
+| B14 | Green blood | Mimbanese-tinted; medics unfamiliar: tend quality on you −10%, and blood-trail hunters track you EASILY (the green shows on everything) |
+| B15 | Ear tufts | downy tufts, +cold ear comfort — but tight helmets hurt: −2 mood in headgear, and the tufts telegraph: opponents read your flinches (+5% enemy melee hit on you) |
+| B16 | Audible digestion | your gut narrates loudly for an hour after meals: stealth −30% post-meal, bunkroom pawns sleep −5%; going hungry to stay quiet is a real tactical choice |
+| B17 | Cold nose | it's always freezing and it's always touching someone: +1 mood to bonded pawns (endearing), −0.5 comfort to you always, and in cold biomes it frostbites FIRST |
+| B18 | Dull musk | predators find you uninteresting (real gift) — animals in general do: taming/handling −25%, bonded animals drift, your riding animal keeps wandering off |
+| B19 | Vestigial gills | neck slits, breathe normally — but they dry and crack in desert air: −5% breathing on hot dry tiles, +infection chance from neck wounds |
+| B20 | Sun-shy pigment | skin darkens sharply in sun, fades pale in dark: beauty flips ±1 by biome, and each rapid change (caravan crossing the terminator) costs −3 mood for a day ("whose skin is this") |
+| B21 | Pocket instinct | you pocket small things while hauling, discovered later: colony items go missing into your inventory weekly (haul chaos, −1 colonist opinion when caught) — but once a season the pocket holds something genuinely lost and valuable |
+| B22 | Scent memory | you know returning caravans before sight (+2 social with returnees) — but strong smells overwhelm: −15% consciousness near corpses, chemfuel, or the Reek (B25); you CANNOT work the butcher table |
+| B23 | ⚠️ Somnambulant homing | rarely sleep-walks toward the nearest slime terrain; wakes exhausted (rest −30% that night) and far from bed — ⚠️ flag stands: fun or too dark? |
+| B24 | Hiccup bubbles | hiccups produce small floating slime bubbles that pop AUDIBLY: any stressed moment (combat, social fight, theft) risks a bubble — stealth −15% while stressed, and the bubbles leave slime filth |
+| B25 | ⭐ The Reek (owner-commissioned) | you REALLY stink — beyond Jawa baseline, offensive even to other Jawas: an **animated stink-cloud gas visibly emits from you** (Biotech gas-emission gene visual); −15 opinion from everyone including Jawas, shared-room mood −4, trade prices −15%, stealth-by-smell impossible (animals and Rodians detect you tiles away) — and one mercy: the cloud repels insects and vermin from whatever you guard |
 
-## Open knobs (rule when commenting)
+## Open knobs (unchanged, still yours)
 
-- **K1** — visits per pawn: unlimited, or a cap (each visit stacks another rider — my lean: unlimited, riders accumulate, the pawn slowly becomes a story)?
-- **K2** — can riders ever be removed (surgery/Helix fee), or are they permanent by design (my lean: permanent — the price must stay paid)?
-- **K3** — animals in the machine: allowed (your caravan beast comes back *odd*) or pawns only?
-- **K4** — rarity tiers on targets (some genes need multiple visits / deeper map cells), or flat cost?
-- **K5** — xenogene vs endogene: overlay, or true inheritance (Genepacks Injection proves endogene is settable) — heritable machine genes change colony breeding forever.
+- **K1** — visits per pawn: unlimited (riders accumulate; the pawn becomes a story) or capped?
+- **K2** — riders removable (surgery/Helix fee) or permanent by design (my lean: permanent)?
+- **K3** — animals in the machine: allowed, or pawns only?
+- **K4** — rarity tiers on targets (deeper genes = deeper map cells) or flat?
+- ~~**K5** — xenogene vs endogene~~ — 🔴 RULED (P8): heritable endogenes, breedable.
