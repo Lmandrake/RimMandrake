@@ -194,7 +194,7 @@ def render_loop(base_png, out_webm, effects, duration_s=8.0, fps=20, size=None):
     os.makedirs(os.path.dirname(out_webm), exist_ok=True)
     writer = imageio_ffmpeg.write_frames(
         out_webm, (w, h), fps=fps, codec="libvpx",
-        output_params=["-b:v", "2200k", "-crf", "10", "-deadline", "good"],
+        output_params=["-b:v", "2200k", "-crf", "10", "-deadline", "good", "-f", "webm"],
     )
     writer.send(None)
     for i in range(n_frames):
