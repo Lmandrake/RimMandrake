@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-06T06:55:11Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-06T06:58:09Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -20,7 +20,7 @@ row:      unassigned
 needs:    owner
 target:   v1
 kind:     task
-summary:  (no items/NIGHTSIDE_BLUE_DESERT_1.md yet — write one when you have something to say)
+summary:  NIGHTSIDEBLUEDESERT1 — use the Blue desert biome on Ash'karr's night side
 prose:    infrastructure/state/items/NIGHTSIDE_BLUE_DESERT_1.md
 
 # IN PROGRESS
@@ -69,7 +69,7 @@ needs:    owner
 target:   v1
 kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/GRAPHICS_GEMINI_BILLING_DECISION_1.md yet — write one when you have something to say)
+summary:  GRAPHICSGEMINIBILLINGDECISION1 — enable Gemini billing for the facing pipeline?
 prose:    infrastructure/state/items/GRAPHICS_GEMINI_BILLING_DECISION_1.md
 
 ## LOCAL_IMAGEGEN_TRACK_PARKED_1 PARKED by owner 2026-09-05: local ComfyUI/Flux image-generation track halted - it caused the seat OOM window kills; do NOT relaunch local generation until the owner says otherwise

@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-06T05:51:37Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-06T06:58:09Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -149,15 +149,6 @@ kind:     build
 summary:  1. Cindermare (moornakopt1.png) — wild threat, ABRockyCrags. No mouth
 prose:    infrastructure/state/items/FORSAKEN_CRAGS_PREDATORS_BUILD_1.md
 
-## HELIX_TELLUROX_BUILD_1 Build Tellurox, Ascendant Helix labour-line livestock
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  Tellurox (karraskopt3.png) — Ascendant Helix labour-line livestock,
-prose:    infrastructure/state/items/HELIX_TELLUROX_BUILD_1.md
-
 ## STARWARS_DONOR_SUNSET_1 Retire ALL remaining third-party Star Wars donors (12 mods, 4 waves; Mlie+TSDA first)
 state:    ready
 row:      unassigned
@@ -260,6 +251,15 @@ target:   v1
 kind:     build
 summary:  Per the doc's rosters and §7.2 shared-art batching:
 prose:    infrastructure/state/items/LIVESTOCK_STARTER_TRIO_1.md
+
+## HELIX_TELLUROX_BUILD_1 Build Tellurox, Ascendant Helix labour-line livestock
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  Tellurox (karraskopt3.png) — Ascendant Helix labour-line livestock,
+prose:    infrastructure/state/items/HELIX_TELLUROX_BUILD_1.md
 
 ## MASS_VALIDATION_LADDER_1 Batched validation ladder: get_defs deep-serialize, manifest runner, hot-reload trial, first review environment
 state:    doing
@@ -467,15 +467,6 @@ target:   v1
 kind:     task
 summary:  (no items/BIOME_SPAWN_FLORA_AUDIT_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/BIOME_SPAWN_FLORA_AUDIT_1.md
-
-## GRAVSHIP_LANDING_CRUSH_1 Gravship must land on top of small obstacles (crush them) and launch with blocked thrusters - only mountains, deep water and lava should block
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  GRAVSHIPLANDINGCRUSH1 — RETIRED our own mod (owner ruling); using Land On Anything instead
-prose:    infrastructure/state/items/GRAVSHIP_LANDING_CRUSH_1.md
 
 ## NINEFOLD_DEBUG_GAME_READY_CRASH_1 start_debug_game_ready crashes RimWorldWin64 outright - observed live during BIOME_SPAWN_FLORA_AUDIT_1, correlates with Ninefold satiation hook firing on a burst of debug auto-research completions
 state:    doing
