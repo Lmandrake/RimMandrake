@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-06T16:13:12Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: free
+as-of: 2026-09-06T17:10:42Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -91,3 +91,23 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  BIOMEFAUNAASSIGNMENTSITTING1 — the morning sitting, prepped
 prose:    infrastructure/state/items/BIOME_FAUNA_ASSIGNMENT_SITTING_1.md
+
+## GEONOSIAN_BRAINWORM_MORPH_1 Research Space Worms mod + Geonosian brain worm canon (Brain Invaders arc), author our own RSW_ brain worms — cold-vulnerable, host-puppeting
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  1. Research the donor: the Space Worms mod already in our orbit (the legacy cast
+prose:    infrastructure/state/items/GEONOSIAN_BRAINWORM_MORPH_1.md
+
+## GIZKA_TRIBBLE_ADAPTATION_1 Examine the subscribed (not installed) Tribble module; design the Gizka ship-pest event — cute first, real problem after; check Absorbed_KotorCore for donor art
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  1. Examine the Tribble module (find its workshop folder by About.xml name scan; it is
+prose:    infrastructure/state/items/GIZKA_TRIBBLE_ADAPTATION_1.md
