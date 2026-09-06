@@ -45,6 +45,15 @@ BONE         = (222, 214, 200)
 GREY_PANEL   = (58, 60, 64)     # recessed grey sub-panel (ref1/ref2)
 GREY_PANEL_D = (34, 36, 40)
 
+# D_helm palette — "ancient ship helm" pivot, 2026-09-05 (owner: "rusty
+# buttons are out... console should be more like the ancient ship controls").
+# Aged grey-green gunmetal, NOT rust/brown. Amber stays the glow accent
+# (now light, not material); vector-line white replaces chalk graffiti.
+GUNMETAL       = (64, 71, 68)
+GUNMETAL_HI    = (168, 178, 172)
+GUNMETAL_SH    = (30, 35, 33)
+VECTOR_WHITE   = (222, 230, 224)
+
 BORDER = 16  # 9-slice corner size for a 64px atlas (Widgets.DrawAtlas: width/4)
 
 def _n(base, amt, rng):
@@ -70,6 +79,48 @@ def rusted_plate(size, base, amt, rng, streak=0.0, streak_col=None):
             x = rng.randint(0, size - 1)
             a = rng.randint(15, 45)
             d.line([(x, 0), (x + rng.randint(-2, 2), size)], fill=streak_col + (a,), width=1)
+    return im
+
+def metal_plate(size, base, amt, rng, streak=0.0):
+    """Opaque worn-metal fill: cool noise + grime/scuff blotches, no rust tint."""
+    im = Image.new("RGB", (size, size), base)
+    px = im.load()
+    for y in range(size):
+        for x in range(size):
+            px[x, y] = _n(base, amt, rng)
+    d = ImageDraw.Draw(im, "RGBA")
+    for _ in range(int(size * size * 0.008)):
+        cx, cy = rng.randint(0, size - 1), rng.randint(0, size - 1)
+        r = rng.randint(1, max(2, size // 14))
+        tone = rng.choice([(20, 22, 21), (90, 96, 92), (44, 48, 46)])  # grime/scuff, no warmth
+        a = rng.randint(15, 55)
+        d.ellipse([cx - r, cy - r, cx + r, cy + r], fill=tone + (a,))
+    if streak:
+        for _ in range(int(size * streak)):
+            x = rng.randint(0, size - 1)
+            a = rng.randint(10, 30)
+            d.line([(x, 0), (x + rng.randint(-2, 2), size)], fill=(120, 128, 124, a))
+    return im
+
+def vector_inset(im, col=VECTOR_WHITE, inset=6, accent=None, accent_corners=2):
+    """A crisp single-pixel schematic outline with small corner tick marks
+    (circuit-trace bracket style, ref2) — replaces chalk_inset's soft
+    hand-drawn look with something engineered/precise."""
+    size = im.width
+    d = ImageDraw.Draw(im, "RGBA")
+    pts = [inset, inset, size - 1 - inset, size - 1 - inset]
+    d.rectangle(pts, outline=col + (200,), width=1)
+    tick = max(3, size // 10)
+    corners = [(inset, inset), (size - 1 - inset, inset),
+               (inset, size - 1 - inset), (size - 1 - inset, size - 1 - inset)]
+    acc_col = accent if accent else col
+    for i, (cx, cy) in enumerate(corners):
+        sx = 1 if cx == inset else -1
+        sy = 1 if cy == inset else -1
+        use_accent = i < accent_corners
+        c = (acc_col if use_accent else col) + (255,)
+        d.line([(cx, cy), (cx + sx * tick, cy)], fill=c, width=2)
+        d.line([(cx, cy), (cx, cy + sy * tick)], fill=c, width=2)
     return im
 
 def bevel(im, hi, sh, depth=BORDER, invert=False, strength=1.0):
@@ -155,8 +206,25 @@ def style_chalk(seed):
     chalk_inset(cl, (110, 118, 130), inset=7)
     return bg, mo, cl
 
-STYLES = {"A_heavy": style_heavy, "B_clean": style_clean, "C_chalk": style_chalk}
-DEFAULT_STYLE = "B_clean"  # ship B as default; owner picks from the contact sheet
+def style_helm(seed):
+    """D: ancient ship-helm console — grey-green gunmetal, vector-line
+    schematic brackets, amber glow accent. Owner pivot 2026-09-05: rust is
+    out; this is the new shipped default."""
+    rng = random.Random(seed)
+    bg = metal_plate(64, GUNMETAL, 10, rng)
+    bevel(bg, GUNMETAL_HI, GUNMETAL_SH, strength=0.9)
+    vector_inset(bg, VECTOR_WHITE, inset=7, accent=None, accent_corners=0)
+    mo = metal_plate(64, (72, 80, 76), 10, random.Random(seed + 1))
+    bevel(mo, GUNMETAL_HI, GUNMETAL_SH, strength=0.9)
+    vector_inset(mo, VECTOR_WHITE, inset=7, accent=BRASS_HI, accent_corners=4)
+    ImageDraw.Draw(mo, "RGBA").rectangle([1, 1, 62, 62], outline=BRASS_HI + (200,), width=1)
+    cl = metal_plate(64, (40, 45, 43), 8, random.Random(seed + 2))
+    bevel(cl, GUNMETAL_SH, GUNMETAL_HI, invert=True, strength=0.95)
+    vector_inset(cl, (140, 148, 143), inset=7, accent=BRASS, accent_corners=2)
+    return bg, mo, cl
+
+STYLES = {"A_heavy": style_heavy, "B_clean": style_clean, "C_chalk": style_chalk, "D_helm": style_helm}
+DEFAULT_STYLE = "D_helm"  # owner pivot 2026-09-05: "rusty buttons are out"
 
 # ---- 9-slice blit (for the contact sheet's real-size buttons) -------------
 def nineslice(atlas, w, h, b=BORDER):
@@ -198,11 +266,12 @@ def main():
     mo.save(os.path.join(THEME_TEX, "Widgets.ButtonBGAtlasMouseover.png"))
     cl.save(os.path.join(THEME_TEX, "Widgets.ButtonBGAtlasClick.png"))
 
-    # Command.BGTex — recessed grey sub-panel with a chalk outline (75x75, opaque)
+    # Command.BGTex — recessed gunmetal sub-panel with a vector-line bracket
+    # inset (75x75, opaque). Owner pivot 2026-09-05: matches D_helm, not rust.
     rng = random.Random(7)
-    cmd = rusted_plate(75, GREY_PANEL, 8, rng)
-    bevel(cmd, (18, 19, 22), (86, 88, 94), depth=14, invert=True, strength=1.0)  # recessed
-    chalk_inset(cmd, CHALK, inset=9)
+    cmd = metal_plate(75, GUNMETAL, 8, rng)
+    bevel(cmd, (18, 19, 22), (150, 158, 153), depth=14, invert=True, strength=1.0)  # recessed
+    vector_inset(cmd, VECTOR_WHITE, inset=9, accent=BRASS_HI, accent_corners=2)
     cmd.save(os.path.join(THEME_TEX, "Command.BGTex.png"))
 
     # LoaderBar / TextBar — 10x10 brass tint swatches (RGBA), what RimThemes stretches
@@ -213,12 +282,12 @@ def main():
         d.line([(0, 9), (9, 9)], fill=(120, 80, 34, 255))    # bottom shade
         bar.save(os.path.join(THEME_LOADER, fn_name))
 
-    # Misc/Icon — 96x96 theme picker icon: rust plate, brass ring, LED
-    icon = rusted_plate(96, (90, 56, 42), 16, random.Random(3))
-    bevel(icon, (150, 104, 72), (40, 24, 16), depth=10, strength=1.0)
+    # Misc/Icon — 96x96 theme picker icon: gunmetal plate, amber ring, LED
+    icon = metal_plate(96, GUNMETAL, 10, random.Random(3))
+    bevel(icon, GUNMETAL_HI, GUNMETAL_SH, depth=10, strength=1.0)
     di = ImageDraw.Draw(icon, "RGBA")
-    di.ellipse([20, 20, 76, 76], outline=BRASS + (255,), width=4)
-    di.ellipse([30, 30, 66, 66], outline=CHALK + (200,), width=2)
+    di.ellipse([20, 20, 76, 76], outline=BRASS_HI + (255,), width=4)
+    di.ellipse([30, 30, 66, 66], outline=VECTOR_WHITE + (200,), width=2)
     di.ellipse([43, 43, 53, 53], fill=LED_RED + (255,))       # LED
     icon.save(os.path.join(THEME_MISC, "Icon.png"))
 
