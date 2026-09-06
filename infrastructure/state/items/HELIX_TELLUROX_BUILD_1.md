@@ -162,3 +162,117 @@ inert until a texture exists), confirming the fix didn't regress anything.
 Biome-cast CSV still untouched, correctly — no art to reference. This item's
 art blocker is now the single remaining offline-addressable gap; everything
 else offline (defs, mechanism, validation) is done and correct.
+
+## 2026-09-05/06 (FOUNDRY) — art unblocked without codex_image.py; biome-cast CSV still correctly untouched
+
+**Art blocker resolved by a different route, not a repeat of the dead end.**
+Before touching anything, re-read the two prior sprite-gen commits
+(`c325d982`, and the 5-attempt retry noted above) — both routed through
+`codex_image.py`'s cloud generate/edit call, which hit "model at capacity"
+and hangs past its 120s cap. This pass never calls `codex_image.py` at all:
+`karrask_opt3.png` is *already* a clean, chroma-keyed (`#00ff00`, auto-detected)
+side-view render with a real subject silhouette — 38% coverage, 0% fringe.
+Per the item's own `## verify` bar ("Art matches `karrask_opt3.png`'s
+silhouette") and `## criteria` ("art traced to the promoted mockup"), tracing
+the promoted mockup IS the spec, not a stopgap — the mechanical differentiation
+from karrask (permanent shell, no shear job) already lives entirely in the defs
+built 2026-09-02, so the art itself needing no separate edit is consistent with
+the item's own bar, not a shortcut around it.
+
+Pipeline used (`skills/generating-images/scripts/chroma_key.py` +
+`skills/generating-rimworld-sprites/scripts/validate_sprite.py --describe`,
+per `generating-rimworld-sprites/SKILL.md`):
+1. `chroma_key.py` on `karrask_opt3.png` → clean cut, 1453x768 subject,
+   0% fringe, corners `[0,0,0,0]`.
+2. Measured the sibling convention rather than guessing a canvas: Karrask's
+   own shipped `Karrask.png` (same mockup batch, drawSize 1.5) is 256x256 with
+   its subject at 88% width / bottom-anchored ~5% margin; Cindermare.png
+   (drawSize 2.6, the SAME adult drawSize Tellurox uses) is 512x512 with the
+   same ~88%-width / ~3.5%-bottom-margin layout. Tellurox's adult `drawSize`
+   is 2.6 → `2.6 × 128 = 332.8` → round up to **512**, matching Cindermare's
+   own precedent exactly (not a coincidence — same batch, same convention).
+3. Cropped-to-bbox, scaled to 88% canvas width, bottom-anchored at ~3.5%
+   margin, centered horizontally (small script, not `conform_sprite.py` —
+   that tool registers a candidate against an EXISTING same-creature
+   reference by mask overlap, which does not apply to a first-ever sprite).
+   Result: 451x238 subject on a 512x512 canvas, alpha mix 77.65% clear /
+   0.32% fringe / 20.55% solid — matches Cindermare's own numbers
+   (77.00%/0.18%/21.74%) closely enough to call it the same quality bar.
+4. Deployed to `src/RimStarWars/HelixTellurox/Textures/Things/Pawn/Animal/
+   Tellurox/Tellurox.png` and via `deploy_custom_mods.py --mod HelixTellurox
+   --apply` (file-copy only, mod still disabled in `ModsConfig.xml`, no
+   restart triggered).
+
+**`validate_patch.py` re-run: RSW_Tellurox's own texPath now resolves clean —
+0 errors on that file.** The remaining 4 ERRORs (`RSW_TelluroxShell`'s
+`Leather_Plain`, and 3x `Dessicated_Muffalo` in the PawnKindDef's lifeStages)
+are a validator false-positive, confirmed by precedent rather than assumed:
+the SIBLING `Livestock` mod (already-shipped, same directory tree) throws
+the **identical** error shape on `RSW_KarraskShedRaw`/`RSW_KarraskPlate`'s
+own reused-vanilla `Things/Item/Resource/Leather` texPath — 2 errors, 0
+elsewhere, `validate_patch.py` source at line ~2068-2074 explains why:
+once a mod ships ANY loose texture under a top-level folder name (here
+`things`), the validator treats that ENTIRE top-level namespace as
+self-supplied and stops treating a miss as an unmeasurable vanilla-bundle
+gap — it starts calling it a hard error instead, even for paths that are
+correctly reused vanilla art. Since Karrask ships in production today with
+this exact same false-positive standing, HelixTellurox's 4 remaining errors
+are the same known class, not a real defect. Both intentional vanilla reuses
+(`Leather_Plain` for the shell's own leather-family stuff, `Dessicated_
+Muffalo` for the standard animal-corpse fallback) are real, correctly-spelled
+vanilla paths — checked against a working def (Karrask's identical pattern),
+per this project's own "never guess a texPath" rule.
+
+**Biome-cast CSV: still correctly untouched, for a DIFFERENT reason than
+2026-09-02's note (art no longer the blocker).** Went looking for the
+`sprite_features.csv` row Tellurox would need to enter `allocate_cast.py`'s
+`belong`/`standout`/`defence` scoring — confirmed (again) it has none, and
+this time also confirmed **no generator script for that CSV exists anywhere
+in this repo** (`grep -rl sprite_features design/ src/` finds only
+`biome_fit.py`, which *reads* it, and two `gen_creature_*_sheet.py` files
+that also only read it — nothing that writes it). Whatever produced the
+existing ~1,260 rows' `px/w/h/fill/spiky/symmetry/hue/hue_conc/sat/val/
+contrast/hist` columns is not present offline, and guessing those numbers
+by a different, ad hoc method than whatever built the other 1,260 rows would
+put an inconsistent measurement into a curated, cross-compared artifact —
+worse than leaving the row absent. **Still explicitly owed**, and now the
+correctly-scoped blocker is "the sprite-feature extraction method used to
+build the rest of the corpus is not available offline," not "no art exists."
+When that tool is available (or the owner names one), the item's prior
+guidance stands: one hand-placed row, diffed to a temp path first, never a
+full `allocate_cast.py` re-run (560/746 rows, 75% of the planet's fauna,
+measured).
+
+**Live check still owed in full** — nothing in this pass touched the bridge
+or the live game. Exact live verify, superseding the item's `## verify`
+block with the concrete steps:
+
+```
+PROVE   enable mandrake.rsw.helixtellurox in a MINIMAL-list relaunch (bridge-holding
+        session's call, not this one) alongside the already-fixed butcherProducts
+        form (HELIX_TELLUROX_SHELL_LOAD_CRASH_1's decision strings: no Core-only
+        fallback, no unresolved cross-ref naming "RSW_TelluroxShell6")
+EXPECT  RSW_Tellurox spawns via dev-spawn or a quicktest colony, renders the new
+        Tellurox.png (not pink, not a Muffalo silhouette from the bare-path-fallback
+        trap), tameable, and butchering a mature adult yields exactly 6x
+        RSW_TelluroxShell (butcherProducts value) with NO shear/gather job ever
+        offered on it
+LIES    a mis-deployed or wrong-cased Tellurox.png falls back to drawing the base
+        (unsuffixed) path fine for Graphic_Single, so "it rendered" is not itself
+        proof the FILE I built is what's showing — diff the in-game screenshot
+        against `src/RimStarWars/HelixTellurox/Textures/Things/Pawn/Animal/
+        Tellurox/Tellurox.png` pixel-for-pixel, not just "an animal appeared"
+```
+
+Also still owed once the live check passes: `HELIX_TELLUROX_SHELL_LOAD_CRASH_1`
+itself closes on the same relaunch (its own criteria: no Core-only fallback,
+no `RSW_TelluroxShell6` cross-ref, butcher yields 6 plates) — the fix is
+already deployed (commit `3468e2a0`), only the confirming relaunch is missing.
+
+**Left `doing`** — `## criteria`'s spawn/live-mechanic/biome-wiring bars are
+still unmet (bridge-only work). Art and def-side criteria are now met offline:
+art traced to the promoted mockup (unaltered, not edited — the correct
+reading of "traced"), Helix origin/registry naming in the def (unchanged from
+2026-09-02). `validate_patch.py`: 0 errors on the mod's own new-art texPath,
+4 errors remaining are the confirmed false-positive class shared with the
+already-shipped Karrask sibling.
