@@ -7,12 +7,21 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-06T05:51:37Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-06T06:53:09Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
-Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
+The first heading below is what `rimflow next --seat BENCH` returns. This file and that command call the same function, so they cannot disagree.
+
+## NIGHTSIDE_BLUE_DESERT_1 Owner idea 2026-09-05: use the Blue desert biome on Ash'karr's night side
+state:    ready
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+summary:  (no items/NIGHTSIDE_BLUE_DESERT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/NIGHTSIDE_BLUE_DESERT_1.md
 
 # IN PROGRESS
 
@@ -73,12 +82,12 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/LOCAL_IMAGEGEN_TRACK_PARKED_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/LOCAL_IMAGEGEN_TRACK_PARKED_1.md
 
-## NIGHTSIDE_BLUE_DESERT_1 Owner idea 2026-09-05: use the Blue desert biome on Ash'karr's night side
+## BIOME_FAUNA_ASSIGNMENT_SITTING_1 Joint sitting: review all biome sheets, finish remaining biome descriptions (candidates: AB_RockyCrags, AB_MycoticJungle), then assign fauna/flora per sheet laws — prep pack being built overnight 2026-09-05
 state:    proposed
 row:      unassigned
 needs:    owner
 target:   v1
 kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/NIGHTSIDE_BLUE_DESERT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/NIGHTSIDE_BLUE_DESERT_1.md
+summary:  (no items/BIOME_FAUNA_ASSIGNMENT_SITTING_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BIOME_FAUNA_ASSIGNMENT_SITTING_1.md
