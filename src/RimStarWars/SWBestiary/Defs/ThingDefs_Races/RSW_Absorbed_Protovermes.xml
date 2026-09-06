@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  JURASSIC_RETIREMENT_ABSORPTION, 2026-09-05 - ABSORBED CONTENT, DO NOT DELETE.
+
+  Source mod: Jurassic Rimworld - Dinosaurs Only (Continued),
+  `Mlie.JurassicRimworldDinosaursOnly`, workshop 3541510004.
+  WHY: the owner retired that mod
+  ("Same for Jurassic", 2026-09-05). design/Jawa/worldbuilding/mod_retirement_audit.md
+  section 7 ruled it RETIRE-AFTER-ABSORB: nothing in the frozen world, the shipped
+  ideoligion or any other mod depends on it, and only the creatures that pass
+  design/Jawa/worldbuilding/creature_recognizability_rule.md are worth keeping.
+
+  WHICH: survives the recognizability pass STRANGE: a red slug-blob. It is also the only one of the eight already cast on Ash'karr (BiomeCast_Ashkarr.xml had it in AB_OcularForest); that cast entry was removed with the mod and its wildBiomes are declared here instead.
+
+  WHAT CHANGED from the donor def, and why - nothing else was touched:
+   * defName JRWProtovermes -> RSW_Protovermes, per design/NAMING_SCHEME_PLAN.md; the donor
+     names are left free so the two can coexist during the changeover.
+   * ParentName AnimalDinoThingBase (the donor's own abstract, Dino_Base.xml) ->
+     vanilla AnimalThingBase, with that abstract's two statBases inlined.
+   * leatherDef Leather_SmallDino / Leather_MediumDino (donor items) -> vanilla
+     Leather_Lizard. useMeatFrom JRWAcrocanthosaurus (a donor dinosaur that is NOT
+     absorbed) dropped, so the species carries its own auto-generated meat;
+     useMeatFrom Megaspider / Boomrat are VANILLA and are kept as-is.
+   * ExtraButcheringProducts.CompProperties_SpecialButcherChance removed - that
+     comp class lives in the donor's ExtraButcheringProducts.dll and its product
+     (DinoChitin) is a donor item. Keeping it would throw at load.
+   * eggs repointed to the RSW_ egg items in
+     Defs/ThingDefs_Items/RSW_Absorbed_Eggs.xml (absorbed with the creatures, so
+     they still breed).
+   * tradeTags CarnivoreDinosaur / HerbivoreDinosaur (donor trader tags, no trader
+     left to read them) -> vanilla AnimalUncommon.
+   * Segnosaurus's Pawn_Carnotaurus_* sounds -> vanilla Pawn_Thrumbo_* (Wounded -> Pawn_Thrumbo_Pain; vanilla has no Pawn_Thrumbo_Wounded). Every other
+     sound this file names was ALREADY vanilla. The donor ships its 228 SoundDefs'
+     clips inside its AssetBundle, not as loose .ogg, so they cannot be absorbed.
+   * MeatAmount is the value MegafaunaYield.xml's doctrine had been patching in
+     (base = unit x bodySize; the engine multiplies by bodySize again). Baked in
+     here because the Jurassic group in that generated file was deleted with the
+     mod. BoneAmount is NOT baked - it is a modded StatDef and belongs in the
+     generated doctrine patch, not in a def.
+   * texPath Things/Pawn/Animal/Protovermes -> swanimals/absorbed/Protovermes/Protovermes; the art
+     was pulled out of the donor's AssetBundle via
+     observed/inventory/bundle_textures/ (extract_bundle_textures.py) and lives in
+     this mod's Textures/. Dessicated graphics point at VANILLA corpses because the
+     donor's Spooky/*Dessicated set exists only as a north-facing texture.
+-->
+<Defs>
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RSW_Protovermes</defName>
+    <label>Protovermes</label>
+    <description>-- > BIOSYN INTERNAL CASE FILE #028172-5500 [PROTOVERMES RIMIENSIS] CODENAME: NOSTALGIA >109
+
+A blood-red cynodont that is peaceful unless disturbed. Its modern decendants are still alive on the rim to this day. Interestingly enough the ability to ignite itself after death remains even through normal genome restoration means, implying that the rim underwent a similar - albeit bizarre - motion of prehistory much like Earth did millions of years ago. This suggests that boomrats were not genetically engineered as was previously thought.</description>
+    <statBases>
+      <MeatAmount>50</MeatAmount>
+      <LeatherAmount>30</LeatherAmount>
+      <MoveSpeed>5.5</MoveSpeed>
+      <ComfyTemperatureMin>-30</ComfyTemperatureMin>
+      <MarketValue>500</MarketValue>
+      <Wildness>0.75</Wildness>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggFertilizedDef>RSW_ProtovermesEggFertilized</eggFertilizedDef>
+        <eggUnfertilizedDef>RSW_ProtovermesEggUnFertilized</eggUnfertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>20</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>1</eggCountRange>
+      </li>
+    </comps>
+    <tools>
+      <li>
+        <label>left claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>1.65</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>6</power>
+        <cooldownTime>1.65</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>4</power>
+        <cooldownTime>1.65</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>1</power>
+        <cooldownTime>1.65</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+      </li>
+    </tools>
+    <race>
+      <body>QuadrupedAnimalWithPaws</body>
+      <deathAction>
+        <workerClass>DeathActionWorker_SmallExplosion</workerClass>
+      </deathAction>
+      <baseBodySize>0.2</baseBodySize>
+      <baseHungerRate>0.35</baseHungerRate>
+      <baseHealthScale>0.4</baseHealthScale>
+      <foodType>OmnivoreRoughAnimal</foodType>
+      <executionRange>4</executionRange>
+      <trainability>Advanced</trainability>
+      <leatherDef>Leather_Lizard</leatherDef>
+      <useMeatFrom>Boomrat</useMeatFrom>
+      <mateMtbHours>8</mateMtbHours>
+      <nuzzleMtbHours>120</nuzzleMtbHours>
+      <canBePredatorPrey>false</canBePredatorPrey>
+      <gestationPeriodDays>12.5</gestationPeriodDays>
+      <litterSizeCurve>
+        <points>
+          <li>(0.5, 0)</li>
+          <li>(1, 1)</li>
+          <li>(5, 1)</li>
+          <li>(5.5, 0)</li>
+        </points>
+      </litterSizeCurve>
+      <lifeExpectancy>8</lifeExpectancy>
+      <wildBiomes>
+        <AridShrubland>1.0</AridShrubland> <!-- Ash'karr cast restored animal-side; the biome-side entry in BiomeCast_Ashkarr.xml went with the retired mod -->
+      </wildBiomes>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.1</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.35</minAge>
+          <soundWounded>Pawn_Boomrat_Wounded</soundWounded>
+          <soundDeath>Pawn_Boomrat_Death</soundDeath>
+          <soundCall>Pawn_Boomrat_Call</soundCall>
+          <soundAngry>Pawn_Boomrat_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_SmallScratch_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_SmallScratch_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_SmallScratch_Miss</soundMeleeMiss>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Protovermes</defName>
+    <label>Protovermes</label>
+    <race>RSW_Protovermes</race>
+    <combatPower>55</combatPower>
+    <ecoSystemWeight>0.25</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/absorbed/Protovermes/Protovermes</texPath>
+          <drawSize>1</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Boomrat/Dessicated_Boomrat</texPath>
+          <drawSize>1</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/absorbed/Protovermes/Protovermes</texPath>
+          <drawSize>1.5</drawSize>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Boomrat/Dessicated_Boomrat</texPath>
+          <drawSize>1.2</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/absorbed/Protovermes/Protovermes</texPath>
+          <drawSize>1.75</drawSize>
+          <shadowData>
+            <volume>(0.25, 0.3, 0.25)</volume>
+            <offset>(0,0,0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Boomrat/Dessicated_Boomrat</texPath>
+          <drawSize>1.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

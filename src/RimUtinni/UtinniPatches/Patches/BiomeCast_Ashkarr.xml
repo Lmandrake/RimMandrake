@@ -79,17 +79,6 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="spino.megafauna">   <!-- donor: spino.megafauna -->
-    <xpath>/Defs/BiomeDef[defName="Desert"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="Desert"]/wildAnimals</xpath>
-      <value>
-        <Meganeura>0.7</Meganeura> <!-- meganeura - small, ours -->
-        <Dinornis>0.315</Dinornis> <!-- dinornis - huge, ours -->
-      </value>
-    </match>
-  </Operation>
-
   <Operation Class="PatchOperationConditional" MayRequire="vanillaexpanded.vgeneticse">   <!-- donor: vanillaexpanded.vgeneticse -->
     <xpath>/Defs/BiomeDef[defName="Desert"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
@@ -420,17 +409,6 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.horrors,veterano.mythicages.megafaunabestiary">   <!-- donor: veterano.mythicages.megafaunabestiary -->
-    <xpath>/Defs/BiomeDef[defName="HorrorWastes"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="HorrorWastes"]/wildAnimals</xpath>
-      <value>
-        <MA_Deermoss>0.18</MA_Deermoss> <!-- deermoss - large, foreign -->
-        <MA_Worhin>0.05</MA_Worhin> <!-- worhin - huge, ours -->
-      </value>
-    </match>
-  </Operation>
-
   <Operation Class="PatchOperationConditional" MayRequire="mlie.advancedbiomes">
     <xpath>/Defs/BiomeDef[defName="Wasteland"]/wildAnimals</xpath>
     <match Class="PatchOperationReplace">
@@ -594,16 +572,6 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,mlie.beastsoftherim">   <!-- donor: mlie.beastsoftherim -->
-    <xpath>/Defs/BiomeDef[defName="AB_PropaneLakes"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_PropaneLakes"]/wildAnimals</xpath>
-      <value>
-        <Rabbuck>0.4</Rabbuck> <!-- rabbuck - med, foreign -->
-      </value>
-    </match>
-  </Operation>
-
   <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,mlie.starwarsanimalcollection">   <!-- donor: mlie.starwarsanimalcollection -->
     <xpath>/Defs/BiomeDef[defName="AB_PropaneLakes"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
@@ -748,16 +716,6 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,veterano.mythicages.megafaunabestiary">   <!-- donor: veterano.mythicages.megafaunabestiary -->
-    <xpath>/Defs/BiomeDef[defName="AB_RockyCrags"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_RockyCrags"]/wildAnimals</xpath>
-      <value>
-        <MA_PlastemmothAlpha>0.07</MA_PlastemmothAlpha> <!-- Plastemmoth alpha - huge, dormant -->
-      </value>
-    </match>
-  </Operation>
-
   <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes">
     <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/wildAnimals</xpath>
     <match Class="PatchOperationReplace">
@@ -808,16 +766,6 @@
       <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/wildAnimals</xpath>
       <value>
         <DZY_RNGChicken>0.7</DZY_RNGChicken> <!-- chaos chicken - small, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes,mlie.jurassicrimworlddinosaursonly">   <!-- donor: mlie.jurassicrimworlddinosaursonly -->
-    <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_Badlands"]/wildAnimals</xpath>
-      <value>
-        <JRWEuoplocephalus>0.21</JRWEuoplocephalus> <!-- Euoplocephalus - huge, ours -->
       </value>
     </match>
   </Operation>
@@ -916,21 +864,6 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.jurassicrimworlddinosaursonly">   <!-- donor: mlie.jurassicrimworlddinosaursonly -->
-    <xpath>/Defs/BiomeDef[defName="AridShrubland"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AridShrubland"]/wildAnimals</xpath>
-      <value>
-        <JRWProtovermes>1.0</JRWProtovermes> <!-- Protovermes - tiny, dormant -->
-        <JRWCaihong>0.4</JRWCaihong> <!-- Caihong - med, ours -->
-        <JRWDiplocaulus>0.4</JRWDiplocaulus> <!-- Diplocaulus - med, foreign -->
-        <JRWMeganeura>0.4</JRWMeganeura> <!-- Meganeura - med, foreign -->
-        <JRWQantassaurus>0.4</JRWQantassaurus> <!-- Qantassaurus - med, ours -->
-        <JRWBagaceratops>0.18</JRWBagaceratops> <!-- Bagaceratops - large, ours -->
-      </value>
-    </match>
-  </Operation>
-
   <Operation Class="PatchOperationConditional" MayRequire="mlie.starwarsanimalcollection">   <!-- donor: mlie.starwarsanimalcollection -->
     <xpath>/Defs/BiomeDef[defName="AridShrubland"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
@@ -980,16 +913,6 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="veterano.mythicages.megafaunabestiary">   <!-- donor: veterano.mythicages.megafaunabestiary -->
-    <xpath>/Defs/BiomeDef[defName="AridShrubland"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AridShrubland"]/wildAnimals</xpath>
-      <value>
-        <MA_Sivatherium>0.07</MA_Sivatherium> <!-- sivatherium - huge, ours -->
-      </value>
-    </match>
-  </Operation>
-
   <Operation Class="PatchOperationConditional" MayRequire="zal.gianttoads">   <!-- donor: zal.gianttoads -->
     <xpath>/Defs/BiomeDef[defName="AridShrubland"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
@@ -1032,16 +955,6 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="biomesteam.biomescaverns,mlie.beastsoftherim">   <!-- donor: mlie.beastsoftherim -->
-    <xpath>/Defs/BiomeDef[defName="BMT_CrystalCaverns"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="BMT_CrystalCaverns"]/wildAnimals</xpath>
-      <value>
-        <Rabbuck>0.4</Rabbuck> <!-- rabbuck - med, foreign -->
-      </value>
-    </match>
-  </Operation>
-
   <Operation Class="PatchOperationConditional" MayRequire="biomesteam.biomescaverns,mlie.starwarsanimalcollection">   <!-- donor: mlie.starwarsanimalcollection -->
     <xpath>/Defs/BiomeDef[defName="BMT_CrystalCaverns"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
@@ -1076,16 +989,6 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="biomesteam.biomescaverns,spino.megafauna">   <!-- donor: spino.megafauna -->
-    <xpath>/Defs/BiomeDef[defName="BMT_CrystalCaverns"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="BMT_CrystalCaverns"]/wildAnimals</xpath>
-      <value>
-        <Gomphotaria>0.0504</Gomphotaria> <!-- gomphotaria - huge, foreign -->
-      </value>
-    </match>
-  </Operation>
-
   <Operation Class="PatchOperationConditional" MayRequire="biomesteam.biomescaverns,vanillaexpanded.vgeneticse">   <!-- donor: vanillaexpanded.vgeneticse -->
     <xpath>/Defs/BiomeDef[defName="BMT_CrystalCaverns"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
@@ -1107,16 +1010,6 @@
       <value>
         <VQE_IceCrawler>0.4</VQE_IceCrawler> <!-- ice crawler - med, dormant -->
         <VQE_Megamidge>0.4</VQE_Megamidge> <!-- megamidge - med, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="biomesteam.biomescaverns,veterano.mythicages.megafaunabestiary">   <!-- donor: veterano.mythicages.megafaunabestiary -->
-    <xpath>/Defs/BiomeDef[defName="BMT_CrystalCaverns"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="BMT_CrystalCaverns"]/wildAnimals</xpath>
-      <value>
-        <MA_Aminox>0.0504</MA_Aminox> <!-- aminox - huge, foreign -->
       </value>
     </match>
   </Operation>
@@ -1249,16 +1142,6 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.advancedbiomes,veterano.mythicages.megafaunabestiary">   <!-- donor: veterano.mythicages.megafaunabestiary -->
-    <xpath>/Defs/BiomeDef[defName="PoisonForest"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="PoisonForest"]/wildAnimals</xpath>
-      <value>
-        <MA_Raptorkhan>0.18</MA_Raptorkhan> <!-- raptorkhan - large, ours -->
-      </value>
-    </match>
-  </Operation>
-
   <Operation Class="PatchOperationConditional" MayRequire="mlie.advancedbiomes,who.vfee.isopodageneline">   <!-- donor: who.vfee.isopodageneline -->
     <xpath>/Defs/BiomeDef[defName="PoisonForest"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
@@ -1351,17 +1234,6 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="biomesteam.biomescaverns,spino.megafauna">   <!-- donor: spino.megafauna -->
-    <xpath>/Defs/BiomeDef[defName="BMT_FungalForest"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="BMT_FungalForest"]/wildAnimals</xpath>
-      <value>
-        <Elasmotherium>0.05</Elasmotherium> <!-- elasmotherium - huge, foreign -->
-        <Platybelodon>0.05</Platybelodon> <!-- platybelodon - huge, ours -->
-      </value>
-    </match>
-  </Operation>
-
   <Operation Class="PatchOperationConditional" MayRequire="biomesteam.biomescaverns,van.beasts">   <!-- donor: van.beasts -->
     <xpath>/Defs/BiomeDef[defName="BMT_FungalForest"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
@@ -1403,16 +1275,6 @@
       <xpath>/Defs/BiomeDef[defName="BMT_FungalForest"]/wildAnimals</xpath>
       <value>
         <VRE_CompanionDryad>0.18</VRE_CompanionDryad> <!-- companion dryad - large, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="biomesteam.biomescaverns,veterano.mythicages.megafaunabestiary">   <!-- donor: veterano.mythicages.megafaunabestiary -->
-    <xpath>/Defs/BiomeDef[defName="BMT_FungalForest"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="BMT_FungalForest"]/wildAnimals</xpath>
-      <value>
-        <MA_Gnaut>0.4</MA_Gnaut> <!-- gnaut - med, foreign -->
       </value>
     </match>
   </Operation>
@@ -1599,17 +1461,6 @@
       <value>
         <GR_Chickenlope>1.0</GR_Chickenlope> <!-- chickenlope - tiny, dormant -->
         <GR_Manscarab>0.4</GR_Manscarab> <!-- manscarab - med, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="zylle.morevanillabiomes,veterano.mythicages.megafaunabestiary">   <!-- donor: veterano.mythicages.megafaunabestiary -->
-    <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="ZBiome_DesertOasis"]/wildAnimals</xpath>
-      <value>
-        <MA_Narkospider>0.18</MA_Narkospider> <!-- narkospider - large, dormant -->
-        <MA_Hellboar>0.084</MA_Hellboar> <!-- Hellboar - huge, ours -->
       </value>
     </match>
   </Operation>
@@ -1859,36 +1710,12 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,mlie.beastsoftherim">   <!-- donor: mlie.beastsoftherim -->
-    <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/wildAnimals</xpath>
-      <value>
-        <Worm>0.4</Worm> <!-- worm - med, foreign -->
-        <Toraton>0.063</Toraton> <!-- toraton - huge, ours -->
-      </value>
-    </match>
-  </Operation>
-
   <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,mlie.horrors">   <!-- donor: mlie.horrors -->
     <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
       <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/wildAnimals</xpath>
       <value>
         <Harvester>0.0108</Harvester> <!-- harvester - SUPER, dormant -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,mlie.jurassicrimworlddinosaursonly">   <!-- donor: mlie.jurassicrimworlddinosaursonly -->
-    <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_GelatinousSuperorganism"]/wildAnimals</xpath>
-      <value>
-        <JRWDilophosaurus>0.4</JRWDilophosaurus> <!-- Dilophosaurus - med, foreign -->
-        <JRWGeralinura>0.4</JRWGeralinura> <!-- Geralinura - med, ours -->
-        <JRWPteranodon>0.18</JRWPteranodon> <!-- Pteranodon - large, ours -->
-        <JRWArthropleura>0.063</JRWArthropleura> <!-- Arthropleura - huge, ours -->
       </value>
     </match>
   </Operation>
@@ -2085,26 +1912,6 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,mlie.beastsoftherim">   <!-- donor: mlie.beastsoftherim -->
-    <xpath>/Defs/BiomeDef[defName="AB_TarPits"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_TarPits"]/wildAnimals</xpath>
-      <value>
-        <Zarander>0.4</Zarander> <!-- zarander - med, foreign -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,mlie.jurassicrimworlddinosaursonly">   <!-- donor: mlie.jurassicrimworlddinosaursonly -->
-    <xpath>/Defs/BiomeDef[defName="AB_TarPits"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_TarPits"]/wildAnimals</xpath>
-      <value>
-        <JRWMacrelcana>0.4</JRWMacrelcana> <!-- Macrelcana - med, foreign -->
-      </value>
-    </match>
-  </Operation>
-
   <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,mlie.starwarsanimalcollection">   <!-- donor: mlie.starwarsanimalcollection -->
     <xpath>/Defs/BiomeDef[defName="AB_TarPits"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
@@ -2145,16 +1952,6 @@
         <AA_RoyalAve>0.4</AA_RoyalAve> <!-- royal ave - med, ours -->
         <AA_Bobeene>0.18</AA_Bobeene> <!-- bobeene - large, foreign -->
         <AA_Radyak>0.18</AA_Radyak> <!-- radyak - large, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,spino.megafauna">   <!-- donor: spino.megafauna -->
-    <xpath>/Defs/BiomeDef[defName="AB_TarPits"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_TarPits"]/wildAnimals</xpath>
-      <value>
-        <Pulmonoscorpius>0.4</Pulmonoscorpius> <!-- pulmonoscorpius - med, ours -->
       </value>
     </match>
   </Operation>
@@ -2651,32 +2448,6 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,mlie.beastsoftherim">   <!-- donor: mlie.beastsoftherim -->
-    <xpath>/Defs/BiomeDef[defName="AB_OcularForest"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_OcularForest"]/wildAnimals</xpath>
-      <value>
-        <Yippa>0.4</Yippa> <!-- yippa - med, foreign -->
-        <Jerbal>0.18</Jerbal> <!-- jerbal - large, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,mlie.jurassicrimworlddinosaursonly">   <!-- donor: mlie.jurassicrimworlddinosaursonly -->
-    <xpath>/Defs/BiomeDef[defName="AB_OcularForest"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_OcularForest"]/wildAnimals</xpath>
-      <value>
-        <JRWArchaeopteryx>0.4</JRWArchaeopteryx> <!-- Archaeopteryx - med, ours -->
-        <JRWEuphoberia>0.4</JRWEuphoberia> <!-- Euphoberia - med, ours -->
-        <JRWHynerpeton>0.4</JRWHynerpeton> <!-- Hynerpeton - med, foreign -->
-        <JRWPlatyhystrix>0.4</JRWPlatyhystrix> <!-- Platyhystrix - med, foreign -->
-        <JRWPulmonoscorpius>0.4</JRWPulmonoscorpius> <!-- Pulmonoscorpius - med, foreign -->
-        <JRWGeosternbergia>0.18</JRWGeosternbergia> <!-- Geosternbergia - large, ours -->
-      </value>
-    </match>
-  </Operation>
-
   <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,mlie.spaceworms">   <!-- donor: mlie.spaceworms -->
     <xpath>/Defs/BiomeDef[defName="AB_OcularForest"]/wildAnimals</xpath>
     <match Class="PatchOperationAdd">
@@ -2763,26 +2534,6 @@
       <xpath>/Defs/BiomeDef[defName="SeaIce"]/wildAnimals</xpath>
       <value>
         <PoisonRat>1.0</PoisonRat> <!-- poison rat - tiny, ours -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.beastsoftherim">   <!-- donor: mlie.beastsoftherim -->
-    <xpath>/Defs/BiomeDef[defName="SeaIce"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="SeaIce"]/wildAnimals</xpath>
-      <value>
-        <Bardelot>0.7</Bardelot> <!-- bardelot - small, foreign -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="mlie.jurassicrimworlddinosaursonly">   <!-- donor: mlie.jurassicrimworlddinosaursonly -->
-    <xpath>/Defs/BiomeDef[defName="SeaIce"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="SeaIce"]/wildAnimals</xpath>
-      <value>
-        <JRWBeelzebufo>0.4</JRWBeelzebufo> <!-- Beelzebufo - med, foreign -->
       </value>
     </match>
   </Operation>
@@ -2963,16 +2714,6 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,veterano.mythicages.megafaunabestiary">   <!-- donor: veterano.mythicages.megafaunabestiary -->
-    <xpath>/Defs/BiomeDef[defName="AB_FeraliskInfestedJungle"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_FeraliskInfestedJungle"]/wildAnimals</xpath>
-      <value>
-        <MA_Sporemole>0.18</MA_Sporemole> <!-- Sporemole - large, foreign -->
-      </value>
-    </match>
-  </Operation>
-
   <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes">
     <xpath>/Defs/BiomeDef[defName="AB_MiasmicMangrove"]/wildAnimals</xpath>
     <match Class="PatchOperationReplace">
@@ -3005,17 +2746,6 @@
       <xpath>/Defs/BiomeDef[defName="AB_MiasmicMangrove"]/wildAnimals</xpath>
       <value>
         <GRimStoneCrab>0.7</GRimStoneCrab> <!-- Colorful stone crab - small, foreign -->
-      </value>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional" MayRequire="sarg.alphabiomes,mlie.jurassicrimworlddinosaursonly">   <!-- donor: mlie.jurassicrimworlddinosaursonly -->
-    <xpath>/Defs/BiomeDef[defName="AB_MiasmicMangrove"]/wildAnimals</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/BiomeDef[defName="AB_MiasmicMangrove"]/wildAnimals</xpath>
-      <value>
-        <JRWProtosolpuga>0.4</JRWProtosolpuga> <!-- Protosolpuga - med, substituted -->
-        <JRWGorgonops>0.18</JRWGorgonops> <!-- Gorgonops - large, substituted -->
       </value>
     </match>
   </Operation>

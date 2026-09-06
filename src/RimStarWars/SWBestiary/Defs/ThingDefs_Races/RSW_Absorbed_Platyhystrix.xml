@@ -1,0 +1,219 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  JURASSIC_RETIREMENT_ABSORPTION, 2026-09-05 - ABSORBED CONTENT, DO NOT DELETE.
+
+  Source mod: Jurassic Rimworld - Dinosaurs Only (Continued),
+  `Mlie.JurassicRimworldDinosaursOnly`, workshop 3541510004.
+  WHY: the owner retired that mod
+  ("Same for Jurassic", 2026-09-05). design/Jawa/worldbuilding/mod_retirement_audit.md
+  section 7 ruled it RETIRE-AFTER-ABSORB: nothing in the frozen world, the shipped
+  ideoligion or any other mod depends on it, and only the creatures that pass
+  design/Jawa/worldbuilding/creature_recognizability_rule.md are worth keeping.
+
+  WHICH: survives the recognizability pass STRANGE: a sail-backed amphibian.
+
+  WHAT CHANGED from the donor def, and why - nothing else was touched:
+   * defName JRWPlatyhystrix -> RSW_Platyhystrix, per design/NAMING_SCHEME_PLAN.md; the donor
+     names are left free so the two can coexist during the changeover.
+   * ParentName AnimalDinoThingBase (the donor's own abstract, Dino_Base.xml) ->
+     vanilla AnimalThingBase, with that abstract's two statBases inlined.
+   * leatherDef Leather_SmallDino / Leather_MediumDino (donor items) -> vanilla
+     Leather_Lizard. useMeatFrom JRWAcrocanthosaurus (a donor dinosaur that is NOT
+     absorbed) dropped, so the species carries its own auto-generated meat;
+     useMeatFrom Megaspider / Boomrat are VANILLA and are kept as-is.
+   * ExtraButcheringProducts.CompProperties_SpecialButcherChance removed - that
+     comp class lives in the donor's ExtraButcheringProducts.dll and its product
+     (DinoChitin) is a donor item. Keeping it would throw at load.
+   * eggs repointed to the RSW_ egg items in
+     Defs/ThingDefs_Items/RSW_Absorbed_Eggs.xml (absorbed with the creatures, so
+     they still breed).
+   * tradeTags CarnivoreDinosaur / HerbivoreDinosaur (donor trader tags, no trader
+     left to read them) -> vanilla AnimalUncommon.
+   * Segnosaurus's Pawn_Carnotaurus_* sounds -> vanilla Pawn_Thrumbo_* (Wounded -> Pawn_Thrumbo_Pain; vanilla has no Pawn_Thrumbo_Wounded). Every other
+     sound this file names was ALREADY vanilla. The donor ships its 228 SoundDefs'
+     clips inside its AssetBundle, not as loose .ogg, so they cannot be absorbed.
+   * MeatAmount is the value MegafaunaYield.xml's doctrine had been patching in
+     (base = unit x bodySize; the engine multiplies by bodySize again). Baked in
+     here because the Jurassic group in that generated file was deleted with the
+     mod. BoneAmount is NOT baked - it is a modded StatDef and belongs in the
+     generated doctrine patch, not in a def.
+   * texPath Things/Pawn/Animal/Platyhystrix -> swanimals/absorbed/Platyhystrix/Platyhystrix; the art
+     was pulled out of the donor's AssetBundle via
+     observed/inventory/bundle_textures/ (extract_bundle_textures.py) and lives in
+     this mod's Textures/. Dessicated graphics point at VANILLA corpses because the
+     donor's Spooky/*Dessicated set exists only as a north-facing texture.
+-->
+<Defs>
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RSW_Platyhystrix</defName>
+    <label>Platyhystrix</label>
+    <description>-- > INGEN INTERNAL CASE FILE #06281-1910 [PLATYHYSTRIX RUGOSUS] CODENAME: COOKIE >982
+
+A temnospondyl amphibian with a distinctive sail along its back, similar to synapsids such as Dimetrodon and Edaphosaurus. It is theorized that the large, lumpy sail was used to thermoregulate. The short, stocky build indicates a largly terrestial lifestyle, living in the swampy, sandy biomes of the early carboniferous to the late permian.</description>
+    <statBases>
+      <MeatAmount>210</MeatAmount>
+      <LeatherAmount>30</LeatherAmount>
+      <MoveSpeed>3</MoveSpeed>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <MarketValue>500</MarketValue>
+      <Wildness>0.50</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left foot</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>3</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right foot</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>3</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>jaw</label>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>3</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.7</chanceFactor>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>3</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggFertilizedDef>RSW_PlatyhystrixEggFertilized</eggFertilizedDef>
+        <eggUnfertilizedDef>RSW_PlatyhystrixEggUnFertilized</eggUnfertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>14.0</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>
+          <min>1</min>
+          <max>3</max>
+        </eggCountRange>
+      </li>
+    </comps>
+    <race>
+      <body>QuadrupedAnimalWithPawsAndTail</body>
+      <baseHungerRate>0.5</baseHungerRate>
+      <baseBodySize>1.5</baseBodySize>
+      <baseHealthScale>2.0</baseHealthScale>
+      <packAnimal>false</packAnimal>
+      <predator>false</predator>
+      <foodType>OmnivoreRoughAnimal</foodType>
+      <leatherDef>Leather_Lizard</leatherDef>
+      <gestationPeriodDays>15</gestationPeriodDays>
+      <trainability>Advanced</trainability>
+      <manhunterOnTameFailChance>0.25</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>0.05</manhunterOnDamageChance>
+      <nuzzleMtbHours>120</nuzzleMtbHours>
+      <lifeExpectancy>40</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>1.0</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>3.0</minAge>
+          <soundWounded>Pawn_Iguana_Wounded</soundWounded>
+          <soundDeath>Pawn_Iguana_Death</soundDeath>
+          <soundCall>Pawn_Iguana_Call</soundCall>
+          <soundAngry>Pawn_Iguana_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <wildBiomes>
+        <AridShrubland>0.4</AridShrubland> <!-- Ash'karr cast restored animal-side; the biome-side entry in BiomeCast_Ashkarr.xml went with the retired mod -->
+        <TropicalRainforest>0.1</TropicalRainforest>
+        <TropicalSwamp>0.1</TropicalSwamp>
+        <TemperateForest>0.1</TemperateForest>
+        <TemperateSwamp>0.1</TemperateSwamp>
+      </wildBiomes>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Platyhystrix</defName>
+    <label>Platyhystrix</label>
+    <race>RSW_Platyhystrix</race>
+    <combatPower>25</combatPower>
+    <wildGroupSize>
+      <min>1</min>
+      <max>2</max>
+    </wildGroupSize>
+    <ecoSystemWeight>1.5</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <label>Platyhystrix hatchling</label>
+        <bodyGraphicData>
+          <texPath>swanimals/absorbed/Platyhystrix/Platyhystrix</texPath>
+          <drawSize>1.50</drawSize>
+          <shadowData>
+            <volume>(0.3, 0.3, 0.3)</volume>
+            <offset>(0,0,0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Tortoise/Dessicated_Tortoise</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/absorbed/Platyhystrix/Platyhystrix</texPath>
+          <drawSize>1.75</drawSize>
+          <shadowData>
+            <volume>(0.3, 0.3, 0.3)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Tortoise/Dessicated_Tortoise</texPath>
+          <drawSize>2.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/absorbed/Platyhystrix/Platyhystrix</texPath>
+          <drawSize>2</drawSize>
+          <shadowData>
+            <volume>(0.3, 0.3, 0.3)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Tortoise/Dessicated_Tortoise</texPath>
+          <drawSize>2.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

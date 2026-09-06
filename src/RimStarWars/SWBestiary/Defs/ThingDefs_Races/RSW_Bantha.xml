@@ -1,0 +1,293 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 — Wave A creature port.
+  Ported from mlie.starwarsanimalcollection's `Bantha` ThingDef/PawnKindDef
+  pair (Races_Animal_SW.xml), renamed under the RSW_ tier prefix per
+  infrastructure/state/facts/mlie_creature_defname_map_wave_a.json.
+  Geometry/stats/comps copied verbatim; only defName references were
+  repointed to this wave's new names (RSW_Bantha, RSW_WoolBantha,
+  RSW_BlueMilk, RSW_Leather_Bantha, RSW_Bantha_Meat, RSW_BanthaHorn) and to
+  the already-absorbed sound wave (RSW_Pawn_Bantha_*, see
+  mlie_sound_defname_map.json). texPaths are UNCHANGED text — the extracted
+  art was placed at the same relative Textures/ path the donor used
+  (swanimals/Bantha/..., swresource/...), so no re-pathing was needed.
+  `body`, `AnimalThingBase`/`AnimalKindBase`, and every ParentName referenced
+  below are vanilla RimWorld (Core), confirmed via RimSage — no donor BodyDef
+  is required for this species.
+-->
+<Defs>
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RSW_Bantha</defName>
+    <label>bantha</label>
+    <description>Banthas are a species of large, hairy mammals with sharp, spiraling horns. They inhabit the desert planet Tatooine, though they are bred on many worlds throughout the galaxy. They are social herd animals, and are often domesticated, and used prominently, by Tusken Raiders as mounts and companionship.</description>
+    <statBases>
+      <MoveSpeed>4.5</MoveSpeed>
+      <ComfyTemperatureMin>-20</ComfyTemperatureMin>
+      <ComfyTemperatureMax>80</ComfyTemperatureMax>
+      <MarketValue>650</MarketValue>
+      <Wildness>0.7</Wildness>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Shearable">
+        <woolDef>RSW_WoolBantha</woolDef>
+        <shearIntervalDays>25</shearIntervalDays>
+        <woolAmount>100</woolAmount>
+      </li>
+      <li Class="CompProperties_Milkable">
+        <milkDef>RSW_BlueMilk</milkDef>
+        <milkIntervalDays>1</milkIntervalDays>
+        <milkAmount>15</milkAmount>
+      </li>
+    </comps>
+    <tools>
+      <li>
+        <label>horns</label>
+        <capacities>
+          <li>Scratch</li>
+          <li>Stab</li>
+        </capacities>
+        <power>23</power>
+        <cooldownTime>2.4</cooldownTime>
+        <linkedBodyPartsGroup>HornAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>horns</label>
+        <capacities>
+          <li>Scratch</li>
+          <li>Stab</li>
+        </capacities>
+        <power>23</power>
+        <cooldownTime>2.4</cooldownTime>
+        <linkedBodyPartsGroup>HornAttackTool</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>13</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+      </li>
+      <li>
+        <label>left hoof</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Poke</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right hoof</label>
+        <capacities>
+          <li>Blunt</li>
+          <li>Poke</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightLeg</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.5</chanceFactor>
+      </li>
+    </tools>
+    <race>
+      <herdAnimal>true</herdAnimal>
+      <body>QuadrupedAnimalWithHoovesAndHorn</body>
+      <baseHungerRate>1.8</baseHungerRate>
+      <baseBodySize>4.0</baseBodySize>
+      <baseHealthScale>5.2</baseHealthScale>
+      <foodType>VegetarianRoughAnimal</foodType>
+      <gestationPeriodDays>7</gestationPeriodDays>
+      <packAnimal>true</packAnimal>
+      <lifeExpectancy>100</lifeExpectancy>
+      <trainability>Advanced</trainability>
+      <manhunterOnTameFailChance>0.05</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>0.35</manhunterOnDamageChance>
+      <nameGenerator>SWAnimalNamerMale</nameGenerator>
+      <nameGeneratorFemale>SWAnimalNamerFemale</nameGeneratorFemale>
+      <leatherDef>RSW_Leather_Bantha</leatherDef>
+      <specificMeatDef>RSW_Bantha_Meat</specificMeatDef>
+      <specialTrainables>
+        <li MayRequire="Ludeon.RimWorld.Odyssey">Comfort</li>
+      </specialTrainables>
+      <wildBiomes>
+        <AridShrubland>0.5</AridShrubland>
+        <TemperateForest>0.02</TemperateForest>
+        <TropicalRainforest>0.01</TropicalRainforest>
+        <IceSheet>0</IceSheet>
+        <BorealForest>0.01</BorealForest>
+        <Tundra>0.5</Tundra>
+        <Desert>0.5</Desert>
+      </wildBiomes>
+      <nuzzleMtbHours>275</nuzzleMtbHours>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>0.3</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>0.6</minAge>
+          <soundWounded>RSW_Pawn_Bantha_Wounded</soundWounded>
+          <soundDeath>RSW_Pawn_Bantha_Death</soundDeath>
+          <soundCall>RSW_Pawn_Bantha_Call</soundCall>
+          <soundAngry>RSW_Pawn_Bantha_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <soundEating>Herbivore_Eat</soundEating>
+    </race>
+    <tradeTags>
+      <li>StandardAnimal</li>
+      <li>AnimalCommon</li>
+      <li>BadassAnimal</li>
+      <li>AnimalFarm</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Bantha</defName>
+    <label>bantha</label>
+    <race>RSW_Bantha</race>
+    <combatPower>375</combatPower>
+    <ecoSystemWeight>1.1</ecoSystemWeight>
+    <labelMale>bantha bull</labelMale>
+    <labelFemale>bantha cow</labelFemale>
+    <wildGroupSize>3~9</wildGroupSize>
+    <alternateGraphicChance>0.8</alternateGraphicChance>
+    <alternateGraphics>
+      <li>
+        <color>(140,74,39)</color>
+      </li>
+      <li>
+        <color>(150,75,0)</color>
+      </li>
+      <li>
+        <color>(109,73,55)</color>
+      </li>
+      <li>
+        <color>(87,71,57)</color>
+      </li>
+      <li>
+        <color>(132,91,78)</color>
+      </li>
+      <li>
+        <color>(137,128,103)</color>
+      </li>
+      <li>
+        <color>(140,102,49)</color>
+      </li>
+      <li>
+        <color>(91,83,61)</color>
+      </li>
+      <li>
+        <color>(156,148,125)</color>
+      </li>
+      <li>
+        <color>(85,85,85)</color>
+      </li>
+    </alternateGraphics>
+    <lifeStages>
+      <li>
+        <label>bantha calf</label>
+        <labelPlural>bantha calves</labelPlural>
+        <bodyGraphicData>
+          <texPath>swanimals/Bantha/BanthaW_j</texPath>
+          <shaderType>CutoutComplex</shaderType>
+          <color>(67,38,32)</color>
+          <drawSize>1.5</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.3, 0.3)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <femaleGraphicData>
+          <texPath>swanimals/Bantha/BanthaW_j</texPath>
+          <shaderType>CutoutComplex</shaderType>
+          <color>(67,38,32)</color>
+          <drawSize>1.3</drawSize>
+          <shadowData>
+            <volume>(0.4, 0.3, 0.3)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </femaleGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Bantha/Bantha_j_Dessicated</texPath>
+          <drawSize>1.5</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Bantha/BanthaW</texPath>
+          <shaderType>CutoutComplex</shaderType>
+          <color>(67,38,32)</color>
+          <drawSize>2</drawSize>
+          <shadowData>
+            <volume>(0.6, 0.45, 0.45)</volume>
+            <offset>(0,0,-0.25)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <femaleGraphicData>
+          <texPath>swanimals/Bantha/BanthaW</texPath>
+          <shaderType>CutoutComplex</shaderType>
+          <color>(67,38,32)</color>
+          <drawSize>1.8</drawSize>
+          <shadowData>
+            <volume>(0.6, 0.45, 0.45)</volume>
+            <offset>(0,0,-0.25)</offset>
+          </shadowData>
+        </femaleGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Bantha/Bantha_Dessicated</texPath>
+          <drawSize>2</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/Bantha/BanthaW</texPath>
+          <shaderType>CutoutComplex</shaderType>
+          <color>(67,38,32)</color>
+          <drawSize>3.0</drawSize>
+          <shadowData>
+            <volume>(0.8, 0.6, 0.6)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <femaleGraphicData>
+          <texPath>swanimals/Bantha/BanthaW</texPath>
+          <shaderType>CutoutComplex</shaderType>
+          <color>(67,38,32)</color>
+          <drawSize>2.7</drawSize>
+          <shadowData>
+            <volume>(0.8, 0.6, 0.6)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </femaleGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>swanimals/Bantha/Bantha_Dessicated</texPath>
+          <drawSize>3.0</drawSize>
+        </dessicatedBodyGraphicData>
+        <butcherBodyPart>
+          <bodyPartGroup>HornAttackTool</bodyPartGroup>
+          <thing>RSW_BanthaHorn</thing>
+          <allowFemale>true</allowFemale>
+        </butcherBodyPart>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

@@ -767,102 +767,6 @@
   </Operation>
 
   <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="MA_AminoxHorn"]/weaponTags</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="MA_AminoxHorn"]/weaponTags</xpath>
-      <value><li>MedievalMeleeDecent</li><li>NeolithicMeleeAdvanced</li><li>NeolithicMeleeDecent</li></value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="MA_AminoxHorn"]</xpath>
-      <value><weaponTags><li>MedievalMeleeDecent</li><li>NeolithicMeleeAdvanced</li><li>NeolithicMeleeDecent</li></weaponTags></value>
-    </nomatch>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="MA_Brontorhin"]/weaponTags</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="MA_Brontorhin"]/weaponTags</xpath>
-      <value><li>MedievalMeleeDecent</li><li>NeolithicMeleeAdvanced</li><li>NeolithicMeleeDecent</li></value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="MA_Brontorhin"]</xpath>
-      <value><weaponTags><li>MedievalMeleeDecent</li><li>NeolithicMeleeAdvanced</li><li>NeolithicMeleeDecent</li></weaponTags></value>
-    </nomatch>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="MA_CapryakHorn"]/weaponTags</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="MA_CapryakHorn"]/weaponTags</xpath>
-      <value><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="MA_CapryakHorn"]</xpath>
-      <value><weaponTags><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></weaponTags></value>
-    </nomatch>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="MA_DeermossHorn"]/weaponTags</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="MA_DeermossHorn"]/weaponTags</xpath>
-      <value><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="MA_DeermossHorn"]</xpath>
-      <value><weaponTags><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></weaponTags></value>
-    </nomatch>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="MA_DuskhornHorn"]/weaponTags</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="MA_DuskhornHorn"]/weaponTags</xpath>
-      <value><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="MA_DuskhornHorn"]</xpath>
-      <value><weaponTags><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></weaponTags></value>
-    </nomatch>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="MA_GnautHorn"]/weaponTags</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="MA_GnautHorn"]/weaponTags</xpath>
-      <value><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="MA_GnautHorn"]</xpath>
-      <value><weaponTags><li>NeolithicMeleeBasic</li><li>NeolithicMeleeDecent</li></weaponTags></value>
-    </nomatch>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="MA_PlastemmothTusk"]/weaponTags</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="MA_PlastemmothTusk"]/weaponTags</xpath>
-      <value><li>MedievalMeleeDecent</li><li>NeolithicMeleeAdvanced</li><li>NeolithicMeleeDecent</li></value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="MA_PlastemmothTusk"]</xpath>
-      <value><weaponTags><li>MedievalMeleeDecent</li><li>NeolithicMeleeAdvanced</li><li>NeolithicMeleeDecent</li></weaponTags></value>
-    </nomatch>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="MA_SivatheriumHorn"]/weaponTags</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="MA_SivatheriumHorn"]/weaponTags</xpath>
-      <value><li>MedievalMeleeDecent</li><li>NeolithicMeleeAdvanced</li><li>NeolithicMeleeDecent</li></value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="MA_SivatheriumHorn"]</xpath>
-      <value><weaponTags><li>MedievalMeleeDecent</li><li>NeolithicMeleeAdvanced</li><li>NeolithicMeleeDecent</li></weaponTags></value>
-    </nomatch>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="MankaTooth"]/weaponTags</xpath>
     <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="MankaTooth"]/weaponTags</xpath>
@@ -2180,7 +2084,10 @@
         cheapest must sit at or under 330 or a low roll still fields bare hands
         VFET_Throwspikes        25  cheapest; this is what makes the kind ALWAYS arm
         VWE_Throwing_Knives     45
-        MA_CapryakScatterbow   520  an actual bow at the top of the roll
+        (MA_CapryakScatterbow, 520, an actual bow, WAS the top of this roll. Mythic
+         Ages: Megafauna Bestiary was retired 2026-09-05 and its whole group here
+         went with it, so the pool now tops out at the throwing knives. The floor -
+         the thing that decides whether the kind arms at all - is unchanged at 25.)
 
     ⚠️ `AG_ForsakenBow` (125) and `BMT_BlastSpore` (1) were rejected on lore, not price -
     an Ultratech Forsaken bow and a thrown fungus are not desert-tribal hunting gear.
@@ -2243,21 +2150,6 @@
       </match>
       <nomatch Class="PatchOperationAdd">
         <xpath>Defs/ThingDef[defName="VWE_Throwing_Knives"]</xpath>
-        <value><weaponTags><li>VEE_HunterNeolithicWeapon</li></weaponTags></value>
-      </nomatch>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Mythic Ages: Megafauna Bestiary</li></mods>
-    <match Class="PatchOperationConditional">
-      <xpath>Defs/ThingDef[defName="MA_CapryakScatterbow"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>Defs/ThingDef[defName="MA_CapryakScatterbow"]/weaponTags</xpath>
-        <value><li>VEE_HunterNeolithicWeapon</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>Defs/ThingDef[defName="MA_CapryakScatterbow"]</xpath>
         <value><weaponTags><li>VEE_HunterNeolithicWeapon</li></weaponTags></value>
       </nomatch>
     </match>

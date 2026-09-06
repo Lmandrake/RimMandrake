@@ -82,54 +82,6 @@
             <value><baseBodySize>8.2</baseBodySize></value>
           </nomatch>
         </li>
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="JRWBrachiosaurus"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>1.65</drawSize></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="JRWBrachiosaurus"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>3.30</drawSize></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="JRWBrachiosaurus"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>5.50</drawSize></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="JRWDimetrodon"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>1.38</drawSize></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="JRWDimetrodon"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>1.65</drawSize></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="JRWDimetrodon"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>2.20</drawSize></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="JRWOuranosaurus"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>3.00</drawSize></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="JRWOuranosaurus"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>3.90</drawSize></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="JRWOuranosaurus"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>4.20</drawSize></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="JRWAntarctopelta"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>2.79</drawSize></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="JRWAntarctopelta"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>3.10</drawSize></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="JRWAntarctopelta"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>3.72</drawSize></value>
-        </li>
         <!-- 🔴 AA_Behemoth IS A PROMOTION, NOT A SHRINK. Owner, 2026-08-24, on seeing the
              redraw in game: "Behemoth (forsakendragon) is so cool it really deserves to be
              MUCH larger now. One of the most massive creatures."
@@ -325,18 +277,6 @@
           <value><drawSize>4.02</drawSize></value>
         </li>
         <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="Procoptodon"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>1.14</drawSize></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="Procoptodon"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>1.90</drawSize></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="Procoptodon"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>2.58</drawSize></value>
-        </li>
-        <li Class="PatchOperationReplace">
           <xpath>Defs/PawnKindDef[defName="Ronto"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
           <value><drawSize>1.42</drawSize></value>
         </li>
@@ -371,18 +311,6 @@
         <li Class="PatchOperationReplace">
           <xpath>Defs/PawnKindDef[defName="GR_Paraceramuffalo"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
           <value><drawSize>4.68</drawSize></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="Gomphotaria"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>1.42</drawSize></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="Gomphotaria"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>2.05</drawSize></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="Gomphotaria"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>3.16</drawSize></value>
         </li>
         <li Class="PatchOperationReplace">
           <xpath>Defs/PawnKindDef[defName="GreaterKraytDragon"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
@@ -433,30 +361,6 @@
           <value><drawSize>3.84</drawSize></value>
         </li>
         <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="MA_Capryak"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>1.12</drawSize></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="MA_Capryak"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>1.92</drawSize></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="MA_Capryak"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>3.20</drawSize></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="JRWTorosaurus"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>1.64</drawSize></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="JRWTorosaurus"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>2.46</drawSize></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="JRWTorosaurus"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>3.28</drawSize></value>
-        </li>
-        <li Class="PatchOperationReplace">
           <xpath>Defs/PawnKindDef[defName="Torton"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
           <value><drawSize>1.20</drawSize></value>
         </li>
@@ -493,32 +397,8 @@
           <value><drawSize>3.44</drawSize></value>
         </li>
         <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="MA_Hellboar"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>1.04</drawSize></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="MA_Hellboar"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>2.00</drawSize></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="MA_Hellboar"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>3.04</drawSize></value>
-        </li>
-        <li Class="PatchOperationReplace">
           <xpath>Defs/PawnKindDef[defName="AA_Atispec"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
           <value><drawSize>3.69</drawSize></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="Andrewsarchus"]/lifeStages/li[1]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>2.29</drawSize></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="Andrewsarchus"]/lifeStages/li[2]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>2.64</drawSize></value>
-        </li>
-        <li Class="PatchOperationReplace">
-          <xpath>Defs/PawnKindDef[defName="Andrewsarchus"]/lifeStages/li[3]/bodyGraphicData/drawSize</xpath>
-          <value><drawSize>3.17</drawSize></value>
         </li>
     </operations>
   </Operation>

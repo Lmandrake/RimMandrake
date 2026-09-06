@@ -470,37 +470,16 @@
     </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="Megasquid"]/race/wildBiomes/Lake</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="Megasquid"]/race/wildBiomes/Lake</xpath>
-      <value>
-        <Lake>0.38</Lake>
-      </value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="Megasquid"]/race/wildBiomes</xpath>
-      <value>
-        <Lake>0.38</Lake>
-      </value>
-    </nomatch>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="Megasquid"]/race/wildBiomes/Ocean</xpath>
-    <match Class="PatchOperationReplace">
-      <xpath>/Defs/ThingDef[defName="Megasquid"]/race/wildBiomes/Ocean</xpath>
-      <value>
-        <Ocean>0.2</Ocean>
-      </value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="Megasquid"]/race/wildBiomes</xpath>
-      <value>
-        <Ocean>0.2</Ocean>
-      </value>
-    </nomatch>
-  </Operation>
+  <!-- Megasquid (Beasts of the Rim (Continued), mlie.beastsoftherim) was the
+       fourteenth member of this cast at Lake 0.38 / Ocean 0.2. That mod was
+       RETIRED 2026-09-05 (design/Jawa/worldbuilding/mod_retirement_audit.md
+       section 2; owner ruling "take what we need from beasts of the rim and
+       retire it and free seaswaterline"), so its two operations are gone and
+       this mod no longer declares a dependency on it. The freed slot was
+       RE-HOMED onto DA_LeviathanCrab below, which now carries Megasquid's
+       0.38 / 0.2 instead of its own former 0.12 / 0.06 - one big invertebrate
+       offshore silhouette at the density the manifest gave the squid, rather
+       than two rare ones. seas_waterline_manifest.csv was updated to match. -->
 
   <!-- DA_LeviathanCrab (Dark Ages: Beasts and Monsters): same missing-
        container shape as the BMT_* block above. -->
@@ -512,22 +491,22 @@
           <xpath>/Defs/ThingDef[defName="DA_LeviathanCrab"]/race/wildBiomes/Lake</xpath>
           <match Class="PatchOperationReplace">
             <xpath>/Defs/ThingDef[defName="DA_LeviathanCrab"]/race/wildBiomes/Lake</xpath>
-            <value><Lake>0.12</Lake></value>
+            <value><Lake>0.38</Lake></value>
           </match>
           <nomatch Class="PatchOperationAdd">
             <xpath>/Defs/ThingDef[defName="DA_LeviathanCrab"]/race/wildBiomes</xpath>
-            <value><Lake>0.12</Lake></value>
+            <value><Lake>0.38</Lake></value>
           </nomatch>
         </li>
         <li Class="PatchOperationConditional">
           <xpath>/Defs/ThingDef[defName="DA_LeviathanCrab"]/race/wildBiomes/Ocean</xpath>
           <match Class="PatchOperationReplace">
             <xpath>/Defs/ThingDef[defName="DA_LeviathanCrab"]/race/wildBiomes/Ocean</xpath>
-            <value><Ocean>0.06</Ocean></value>
+            <value><Ocean>0.2</Ocean></value>
           </match>
           <nomatch Class="PatchOperationAdd">
             <xpath>/Defs/ThingDef[defName="DA_LeviathanCrab"]/race/wildBiomes</xpath>
-            <value><Ocean>0.06</Ocean></value>
+            <value><Ocean>0.2</Ocean></value>
           </nomatch>
         </li>
       </operations>
@@ -536,11 +515,11 @@
       <xpath>/Defs/ThingDef[defName="DA_LeviathanCrab"]/race</xpath>
       <match Class="PatchOperationAdd">
         <xpath>/Defs/ThingDef[defName="DA_LeviathanCrab"]/race</xpath>
-        <value><wildBiomes><Lake>0.12</Lake><Ocean>0.06</Ocean></wildBiomes></value>
+        <value><wildBiomes><Lake>0.38</Lake><Ocean>0.2</Ocean></wildBiomes></value>
       </match>
       <nomatch Class="PatchOperationAdd">
         <xpath>/Defs/ThingDef[defName="DA_LeviathanCrab"]</xpath>
-        <value><race><wildBiomes><Lake>0.12</Lake><Ocean>0.06</Ocean></wildBiomes></race></value>
+        <value><race><wildBiomes><Lake>0.38</Lake><Ocean>0.2</Ocean></wildBiomes></race></value>
       </nomatch>
     </nomatch>
   </Operation>

@@ -41,14 +41,6 @@
     </match>
   </Operation>
 
-  <!-- 2. Purussaurus x AB_GelatinousSuperorganism   (race Purussaurus) -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="Purussaurus"]/race/wildBiomes/AB_GelatinousSuperorganism</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="Purussaurus"]/race/wildBiomes/AB_GelatinousSuperorganism</xpath>
-    </match>
-  </Operation>
-
   <!-- 3. AA_AcanthamoebaGiganteaSmall x AB_MechanoidIntrusion   (race AA_AcanthamoebaGiganteaSmall) -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="AA_AcanthamoebaGiganteaSmall"]/race/wildBiomes/AB_MechanoidIntrusion</xpath>
@@ -137,14 +129,6 @@
     </match>
   </Operation>
 
-  <!-- 14. Procoptodon x AB_TarPits   (race Procoptodon) -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="Procoptodon"]/race/wildBiomes/AB_TarPits</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="Procoptodon"]/race/wildBiomes/AB_TarPits</xpath>
-    </match>
-  </Operation>
-
   <!-- 15. AA_BedBug x PoisonForest   (race AA_BedBug) -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="AA_BedBug"]/race/wildBiomes/PoisonForest</xpath>
@@ -193,22 +177,6 @@
     </match>
   </Operation>
 
-  <!-- 21. Dinopithecus x ZBiome_Badlands   (race Dinopithecus) -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="Dinopithecus"]/race/wildBiomes/ZBiome_Badlands</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="Dinopithecus"]/race/wildBiomes/ZBiome_Badlands</xpath>
-    </match>
-  </Operation>
-
-  <!-- 22. JRWTorosaurus x ZBiome_Badlands   (race JRWTorosaurus) -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="JRWTorosaurus"]/race/wildBiomes/ZBiome_Badlands</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="JRWTorosaurus"]/race/wildBiomes/ZBiome_Badlands</xpath>
-    </match>
-  </Operation>
-
   <!-- 23. AA_FissionMouse x ZBiome_DesertOasis   (race AA_FissionMouse) -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="AA_FissionMouse"]/race/wildBiomes/ZBiome_DesertOasis</xpath>
@@ -238,14 +206,6 @@
     <xpath>/Defs/ThingDef[defName="AA_DesertAve"]/race/wildBiomes/ZBiome_Grasslands</xpath>
     <match Class="PatchOperationRemove">
       <xpath>/Defs/ThingDef[defName="AA_DesertAve"]/race/wildBiomes/ZBiome_Grasslands</xpath>
-    </match>
-  </Operation>
-
-  <!-- 27. JRWWonambi x ZBiome_Grasslands   (race JRWWonambi) -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="JRWWonambi"]/race/wildBiomes/ZBiome_Grasslands</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="JRWWonambi"]/race/wildBiomes/ZBiome_Grasslands</xpath>
     </match>
   </Operation>
 
@@ -393,30 +353,6 @@
     </match>
   </Operation>
 
-  <!-- U15. JRWBagaceratops x AridShrubland   (from the 2026-08-27 cast, uncovered) -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="JRWBagaceratops"]/race/wildBiomes/AridShrubland</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="JRWBagaceratops"]/race/wildBiomes/AridShrubland</xpath>
-    </match>
-  </Operation>
-
-  <!-- U16. JRWQantassaurus x AridShrubland   (from the 2026-08-27 cast, uncovered) -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="JRWQantassaurus"]/race/wildBiomes/AridShrubland</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="JRWQantassaurus"]/race/wildBiomes/AridShrubland</xpath>
-    </match>
-  </Operation>
-
-  <!-- U17. MA_Sivatherium x AridShrubland   (from the 2026-08-27 cast, uncovered) -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="MA_Sivatherium"]/race/wildBiomes/AridShrubland</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="MA_Sivatherium"]/race/wildBiomes/AridShrubland</xpath>
-    </match>
-  </Operation>
-
   <!-- U18. Orray x AridShrubland   (from the 2026-08-27 cast, uncovered) -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="Orray"]/race/wildBiomes/AridShrubland</xpath>
@@ -470,14 +406,6 @@
     <xpath>/Defs/ThingDef[defName="AA_PedigreedRaptor"]/race/wildBiomes/ZBiome_Badlands</xpath>
     <match Class="PatchOperationRemove">
       <xpath>/Defs/ThingDef[defName="AA_PedigreedRaptor"]/race/wildBiomes/ZBiome_Badlands</xpath>
-    </match>
-  </Operation>
-
-  <!-- U25. JRWEuoplocephalus x ZBiome_Badlands   (from the 2026-08-27 cast, uncovered) -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="JRWEuoplocephalus"]/race/wildBiomes/ZBiome_Badlands</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="JRWEuoplocephalus"]/race/wildBiomes/ZBiome_Badlands</xpath>
     </match>
   </Operation>
 

@@ -6,7 +6,15 @@
   <supportedVersions>
     <li>1.6</li>
   </supportedVersions>
-  <description>MLIE_FAUNA_ABSORPTION_1 — absorbs content from `mlie.starwarsanimalcollection` (Star Wars Animal Collection) under an `RSW_` prefix, staged in waves. All 589 SoundDefs absorbed (per-creature Angry/Wounded/Death/Call vocal sets across 143+ creatures, plus ability sounds). Wave A creature geometry (Bantha ThingDef/PawnKindDef, wool/milk/leather/meat/horn items, blue-milk thought) is absorbed; Sarlacc was found not to be a creature at all (an Odyssey-DLC building system) and is out of this item's scope. Waves B/C (remaining species) are still open.</description>
+  <description>Absorbed creature content: defs and art lifted out of mods that are being retired, so retiring them costs the campaign nothing.
+
+MLIE_FAUNA_ABSORPTION_1 — absorbs content from `mlie.starwarsanimalcollection` (Star Wars Animal Collection) under an `RSW_` prefix, staged in waves. All 589 SoundDefs absorbed (per-creature Angry/Wounded/Death/Call vocal sets across 143+ creatures, plus ability sounds). Wave A creature geometry (Bantha ThingDef/PawnKindDef, wool/milk/leather/meat/horn items, blue-milk thought) is absorbed; Sarlacc was found not to be a creature at all (an Odyssey-DLC building system) and is out of this item's scope. Waves B/C (remaining species) are still open.
+
+JURASSIC_RETIREMENT_ABSORPTION (2026-09-05) — eight creatures out of Jurassic Rimworld - Dinosaurs Only (Continued), `Mlie.JurassicRimworldDinosaursOnly`, retired by the owner that day. The eight are the five live creatures that survive design/Jawa/worldbuilding/creature_recognizability_rule.md as STRANGE (Baseopsis, Diplocaulus, Platyhystrix, Protosolpuga, Protovermes) plus the three CUT ones that review/recognizability/RESTORE_CANDIDATES.md argued should come back (Segnosaurus — the owner's own type-case for a dinosaur that reads alien — Holcorobeus and Termitotron). Each is an `RSW_`-prefixed ThingDef/PawnKindDef pair with its egg items, its art extracted from the donor AssetBundle, and every donor-only dependency (the AnimalDinoThingBase abstract, Leather_SmallDino/MediumDino, DinoChitin's butchering comp, the Carnotaurus SoundDefs) replaced with a vanilla equivalent. Per-file headers say exactly what changed.
+
+BEASTS_OF_THE_RIM_RETIREMENT (2026-09-05) — `RSW_Jerba`, new content rather than a port. Beasts of the Rim (`mlie.beastsoftherim`) was retired the same day; it shipped a speculative-biology `Jerbal` that was never a Star Wars jerba. This is the real one: the shaggy horned Tatooine pack-and-milk beast, desert-banded for Ash&apos;karr, reusing the already-absorbed unwooled bantha sprite at a third of the size in a pale dun palette. Iconic Star Wars creature, so the recognizability rule&apos;s icon carve-out applies.
+
+Content only — no assemblies, no patches, no dependency on any retired mod.</description>
   <modDependencies>
     <li>
       <packageId>Ludeon.RimWorld</packageId>

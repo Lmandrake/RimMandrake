@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  JURASSIC_RETIREMENT_ABSORPTION, 2026-09-05 - ABSORBED CONTENT, DO NOT DELETE.
+
+  Source mod: Jurassic Rimworld - Dinosaurs Only (Continued),
+  `Mlie.JurassicRimworldDinosaursOnly`, workshop 3541510004.
+  WHY: the owner retired that mod
+  ("Same for Jurassic", 2026-09-05). design/Jawa/worldbuilding/mod_retirement_audit.md
+  section 7 ruled it RETIRE-AFTER-ABSORB: nothing in the frozen world, the shipped
+  ideoligion or any other mod depends on it, and only the creatures that pass
+  design/Jawa/worldbuilding/creature_recognizability_rule.md are worth keeping.
+
+  WHICH: RESTORE_CANDIDATES.md #2 - a purple horned beetle-beast whose art reads as an alien armoured thing, not as a rhinoceros.
+
+  WHAT CHANGED from the donor def, and why - nothing else was touched:
+   * defName JRWHolcorobeus -> RSW_Holcorobeus, per design/NAMING_SCHEME_PLAN.md; the donor
+     names are left free so the two can coexist during the changeover.
+   * ParentName AnimalDinoThingBase (the donor's own abstract, Dino_Base.xml) ->
+     vanilla AnimalThingBase, with that abstract's two statBases inlined.
+   * leatherDef Leather_SmallDino / Leather_MediumDino (donor items) -> vanilla
+     Leather_Lizard. useMeatFrom JRWAcrocanthosaurus (a donor dinosaur that is NOT
+     absorbed) dropped, so the species carries its own auto-generated meat;
+     useMeatFrom Megaspider / Boomrat are VANILLA and are kept as-is.
+   * ExtraButcheringProducts.CompProperties_SpecialButcherChance removed - that
+     comp class lives in the donor's ExtraButcheringProducts.dll and its product
+     (DinoChitin) is a donor item. Keeping it would throw at load.
+   * eggs repointed to the RSW_ egg items in
+     Defs/ThingDefs_Items/RSW_Absorbed_Eggs.xml (absorbed with the creatures, so
+     they still breed).
+   * tradeTags CarnivoreDinosaur / HerbivoreDinosaur (donor trader tags, no trader
+     left to read them) -> vanilla AnimalUncommon.
+   * Segnosaurus's Pawn_Carnotaurus_* sounds -> vanilla Pawn_Thrumbo_* (Wounded -> Pawn_Thrumbo_Pain; vanilla has no Pawn_Thrumbo_Wounded). Every other
+     sound this file names was ALREADY vanilla. The donor ships its 228 SoundDefs'
+     clips inside its AssetBundle, not as loose .ogg, so they cannot be absorbed.
+   * MeatAmount is the value MegafaunaYield.xml's doctrine had been patching in
+     (base = unit x bodySize; the engine multiplies by bodySize again). Baked in
+     here because the Jurassic group in that generated file was deleted with the
+     mod. BoneAmount is NOT baked - it is a modded StatDef and belongs in the
+     generated doctrine patch, not in a def.
+   * texPath Things/Pawn/Animal/Holcorobeus -> swanimals/absorbed/Holcorobeus/Holcorobeus; the art
+     was pulled out of the donor's AssetBundle via
+     observed/inventory/bundle_textures/ (extract_bundle_textures.py) and lives in
+     this mod's Textures/. Dessicated graphics point at VANILLA corpses because the
+     donor's Spooky/*Dessicated set exists only as a north-facing texture.
+-->
+<Defs>
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RSW_Holcorobeus</defName>
+    <label>Holcorobeus</label>
+    <description>-- > INGEN INTERNAL CASE FILE #02739-1992 [HOLCOROBEUS ATROSULCATUS] CODENAME: HERCULES >380
+
+A large extinct rhinoceros beetle that has a brilliant purple hue. Primitive, but gentle, they have often been used as hauling animals after their introduction on the rim.</description>
+    <statBases>
+      <MeatAmount>210</MeatAmount>
+      <LeatherAmount>30</LeatherAmount>
+      <MoveSpeed>2.5</MoveSpeed>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <MarketValue>500</MarketValue>
+      <LeatherAmount>0</LeatherAmount>
+      <Wildness>0.50</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>head claw</label>
+        <capacities>
+          <li>Cut</li>
+        </capacities>
+        <power>12</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>HeadClaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>7</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggFertilizedDef>RSW_HolcorobeusEggFertilized</eggFertilizedDef>
+        <eggUnfertilizedDef>RSW_HolcorobeusEggUnFertilized</eggUnfertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>14.0</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>
+          <min>1</min>
+          <max>3</max>
+        </eggCountRange>
+      </li>
+    </comps>
+    <race>
+      <body>BeetleLikeWithClaw</body>
+      <baseHungerRate>0.5</baseHungerRate>
+      <baseBodySize>1.5</baseBodySize>
+      <baseHealthScale>2.0</baseHealthScale>
+      <packAnimal>true</packAnimal>
+      <predator>false</predator>
+      <foodType>OmnivoreRoughAnimal</foodType>
+      <useMeatFrom>Megaspider</useMeatFrom>
+      <gestationPeriodDays>30</gestationPeriodDays>
+      <trainability>Advanced</trainability>
+      <manhunterOnTameFailChance>0.25</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>0.05</manhunterOnDamageChance>
+      <nuzzleMtbHours>120</nuzzleMtbHours>
+      <lifeExpectancy>40</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>1.0</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>3.0</minAge>
+          <soundWounded>Pawn_Megascarab_Wounded</soundWounded>
+          <soundDeath>Pawn_Megascarab_Death</soundDeath>
+          <soundCall>Pawn_Megascarab_Call</soundCall>
+          <soundAngry>Pawn_Megascarab_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <wildBiomes>
+        <TropicalRainforest>0.1</TropicalRainforest>
+        <TemperateSwamp>0.075</TemperateSwamp>
+        <TropicalSwamp>0.075</TropicalSwamp>
+        <TemperateForest>0.05</TemperateForest>
+        <BorealForest>0.05</BorealForest>
+      </wildBiomes>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Holcorobeus</defName>
+    <label>Holcorobeus</label>
+    <race>RSW_Holcorobeus</race>
+    <combatPower>25</combatPower>
+    <wildGroupSize>
+      <min>2</min>
+      <max>3</max>
+    </wildGroupSize>
+    <ecoSystemWeight>0.2</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <label>Holcorobeus larvae</label>
+        <bodyGraphicData>
+          <texPath>swanimals/absorbed/Holcorobeus/Holcorobeus</texPath>
+          <drawSize>1.50</drawSize>
+          <shadowData>
+            <volume>(0.3, 0.3, 0.3)</volume>
+            <offset>(0,0,0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Megaspider/Dessicated_Megaspider</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/absorbed/Holcorobeus/Holcorobeus</texPath>
+          <drawSize>1.75</drawSize>
+          <shadowData>
+            <volume>(0.3, 0.3, 0.3)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Megaspider/Dessicated_Megaspider</texPath>
+          <drawSize>2.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/absorbed/Holcorobeus/Holcorobeus</texPath>
+          <drawSize>2</drawSize>
+          <shadowData>
+            <volume>(0.3, 0.3, 0.3)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Megaspider/Dessicated_Megaspider</texPath>
+          <drawSize>2.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

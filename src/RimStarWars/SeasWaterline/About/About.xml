@@ -11,7 +11,7 @@
 Gives Lake and Ocean their first wildAnimals commonality for a fourteen-creature waterline cast:
 
   the seven Star Wars aquatics (KwazelMaw, Mott, Dianoga, Dragonsnake, Fambaa, Fanback, Blixus) from Star Wars Animal Collection (Continued)
-  five license-cleared neighbors (design/Jawa/worldbuilding/depths_concept.md's Lane-1 check): the BMT catfish/turtle/tumorfish family from Biomes! Polluted Lands, Megasquid from Beasts of the Rim (Continued), and DA_LeviathanCrab from Dark Ages: Beasts and Monsters, as the big offshore silhouette
+  four license-cleared neighbors (design/Jawa/worldbuilding/depths_concept.md's Lane-1 check): the BMT catfish/turtle/tumorfish family from Biomes! Polluted Lands, and DA_LeviathanCrab from Dark Ages: Beasts and Monsters as the big offshore silhouette. Megasquid (Beasts of the Rim) was dropped when that mod was retired, 2026-09-05; its Lake 0.38 / Ocean 0.2 slot was re-homed onto DA_LeviathanCrab, which previously sat at 0.12 / 0.06
 
 Also zeroes KwazelMaw's ExtremeDesert 0.35 and Mott's LavaField 0.70 placement, which some other mod's compatibility patch adds (neither value is declared in the donor mod's own file) - the fire-desert entries are collection defaults nobody curated, not an intentional design. The validator's cross-mod scan flagged Alpha Biomes, More Vanilla Biomes and Alpha Animals as the mods whose own patches touch wildBiomes broadly across the stack, so those three are named in loadAfter alongside the direct donors, and this mod is positioned late in ModsConfig to win the override race.
 
@@ -31,11 +31,6 @@ Odyssey fishing tile mutators on Ash'karr's actual sea tiles (the_seas.md's thir
       <steamWorkshopUrl>steam://url/CommunityFilePage/3390196656</steamWorkshopUrl>
     </li>
     <li>
-      <packageId>mlie.beastsoftherim</packageId>
-      <displayName>Beasts of the Rim (Continued)</displayName>
-      <steamWorkshopUrl>steam://url/CommunityFilePage/2194018641</steamWorkshopUrl>
-    </li>
-    <li>
       <packageId>van.beasts</packageId>
       <displayName>Dark Ages: Beasts and Monsters</displayName>
       <steamWorkshopUrl>steam://url/CommunityFilePage/3472275628</steamWorkshopUrl>
@@ -45,7 +40,6 @@ Odyssey fishing tile mutators on Ash'karr's actual sea tiles (the_seas.md's thir
   <loadAfter>
     <li>mlie.starwarsanimalcollection</li>
     <li>biomesteam.biomespollutedlands</li>
-    <li>mlie.beastsoftherim</li>
     <li>van.beasts</li>
     <li>sarg.alphabiomes</li>
     <li>zylle.morevanillabiomes</li>

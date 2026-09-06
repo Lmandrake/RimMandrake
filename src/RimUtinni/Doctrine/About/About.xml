@@ -43,7 +43,15 @@ Load last.</description>
           such mod is installed today. A loadAfter naming a packageId that does
           not exist fails SILENTLY and constrains nothing, which is exactly how
           mandrake.rsw.armoury's rule sat inert. Its patch group is a harmless
-          no-op; if the mod is ever reinstalled, add it here. -->
+          no-op; if the mod is ever reinstalled, add it here.
+        * Megafauna (Spino.Megafauna), Beasts of the Rim (Mlie.BeastsoftheRim),
+          Mythic Ages: Megafauna Bestiary
+          (veterano.mythicages.megafaunabestiary) and Jurassic Rimworld -
+          Dinosaurs Only (Mlie.JurassicRimworldDinosaursOnly) - RETIRED
+          2026-09-05 on the owner's ruling; see
+          design/Jawa/worldbuilding/mod_retirement_audit.md and
+          design/Jawa/worldbuilding/RETIREMENT_CHECKLIST.md. Their
+          MegafaunaYield groups were deleted with them. -->
   <loadAfter>
     <li>Abrolo.Grimstone.Beasts</li>                      <!-- Grimstone : Beasts -->
     <li>BiomesTeam.BiomesCaverns</li>                     <!-- Biomes! Caverns -->
@@ -55,9 +63,7 @@ Load last.</description>
     <li>Killathon.ArtificialBeings</li>                   <!-- ABF: Synstructs Core -->
     <li>LingLuo.Cockroach</li>                            <!-- Rim cockroach -->
     <li>Mlie.AdvancedBiomes</li>                          <!-- Advanced Biomes (Continued) -->
-    <li>Mlie.BeastsoftheRim</li>                          <!-- Beasts of the Rim (Continued) -->
     <li>Mlie.Horrors</li>                                 <!-- Horrors (Continued) -->
-    <li>Mlie.JurassicRimworldDinosaursOnly</li>           <!-- Jurassic Rimworld - Dinosaurs Only (Continued) -->
     <li>Mlie.MoEvents</li>                                <!-- Mo'Events (Continued) -->
     <li>Mlie.StarWarsAnimalCollection</li>                <!-- Star Wars Animal Collection (Continued) -->
     <li>Neronix17.Asimov</li>                             <!-- Asimov -->
@@ -70,7 +76,6 @@ Load last.</description>
     <li>Sapiently.TheyAtomicMonsters</li>                 <!-- They! (Giant Ants) -->
     <li>sarg.alphaanimals</li>                            <!-- Alpha Animals -->
     <li>sarg.alphagenes</li>                              <!-- Alpha Genes -->
-    <li>Spino.Megafauna</li>                              <!-- Megafauna -->
     <li>titans.fl</li>                                    <!-- Titans -->
     <li>Van.Beasts</li>                                   <!-- Dark Ages : Beasts and Monsters -->
     <li>VanillaExpanded.VAEWaste</li>                     <!-- Vanilla Animals Expanded — Waste Animals -->
@@ -79,7 +84,6 @@ Load last.</description>
     <li>vanillaquestsexpanded.ancients</li>               <!-- Vanilla Quests Expanded - Ancients -->
     <li>vanillaquestsexpanded.cryptoforge</li>            <!-- Vanilla Quests Expanded - Cryptoforge -->
     <li>vanillaracesexpanded.phytokin</li>                <!-- Vanilla Races Expanded - Phytokin -->
-    <li>veterano.mythicages.megafaunabestiary</li>        <!-- Mythic Ages: Megafauna Bestiary -->
     <li>Who.VFEE.IsopodaGeneline</li>                     <!-- Insectoids 2 - Isopoda geneline -->
     <li>zal.betterinfestations</li>                       <!-- Better Infestations (Continued) -->
     <li>zal.giantsnake</li>                               <!-- Giant Snake (Continued) -->

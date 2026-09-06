@@ -104,6 +104,19 @@
                we load 518 slots later and the conditional SEES the duplicate.
                This op is firing, not silently no-opping.
 
+  🔴 STALE AFTER THE 2026-09-05 RETIREMENTS - REGENERATE ON THE NEXT CAPTURE.
+      Megafauna, Beasts of the Rim, Mythic Ages and Jurassic Rimworld were retired
+      that day (design/Jawa/worldbuilding/RETIREMENT_CHECKLIST.md). Seven operations
+      whose defNames belonged only to those mods were deleted, so the numbering in
+      the comments below now has gaps. What could NOT be deleted by name is the
+      Armadillo and Penguin work: those defNames are vanilla AND redefined by Beasts
+      of the Rim, and it was Beasts of the Rim that added the colliding animal-side
+      entry. With that mod gone the vanilla defs carry no wildBiomes at all, so each
+      of those conditionals simply matches nothing - dead, not harmful. Re-run
+      src/RimMandrake/Utils/biome_animal_conflicts.py against a capture taken after
+      the mods are actually unticked; it needs a LIVE dump, which is why this was
+      left rather than guessed at.
+
   Titan      [VERIFIED 2026-08-10]
       Titans, WS 3572242808, Defs/ThingDefs_Races/Races_Animal_Titan.xml lists
       <TropicalSwamp>1.0</TropicalSwamp> TWICE inside its own <wildBiomes>.
@@ -190,13 +203,6 @@
        that biome, at the commonality we chose. Each pair has exactly ONE
        animal-side registration (verified), so no [2] predicate is needed.
        -->
-  <!-- == Desert : 1 pair(s) : Megafauna == -->
-  <Operation Class="PatchOperationConditional">   <!-- 4. Gigantophis x Desert (Megafauna) -->
-    <xpath>/Defs/ThingDef[defName="Gigantophis"]/race/wildBiomes/Desert</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="Gigantophis"]/race/wildBiomes/Desert</xpath>
-    </match>
-  </Operation>
   <!-- == ExtremeDesert : 10 pair(s) : Alpha Animals; Star Wars Animal Collection (Continued) == -->
   <Operation Class="PatchOperationConditional">   <!-- 5. AA_Dunealisk x ExtremeDesert (Alpha Animals) -->
     <xpath>/Defs/ThingDef[defName="AA_Dunealisk"]/race/wildBiomes/ExtremeDesert</xpath>
@@ -258,31 +264,6 @@
       <xpath>/Defs/ThingDef[defName="WarWyrm"]/race/wildBiomes/ExtremeDesert</xpath>
     </match>
   </Operation>
-  <!-- == AridShrubland : 6 pair(s) : Megafauna; Mythic Ages: Megafauna Bestiary; Star Wars Animal Collection (Continued) == -->
-  <Operation Class="PatchOperationConditional">   <!-- 15. Diprotodon x AridShrubland (Megafauna) -->
-    <xpath>/Defs/ThingDef[defName="Diprotodon"]/race/wildBiomes/AridShrubland</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="Diprotodon"]/race/wildBiomes/AridShrubland</xpath>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">   <!-- 16. MA_Direhorse x AridShrubland (Mythic Ages: Megafauna Bestiary) -->
-    <xpath>/Defs/ThingDef[defName="MA_Direhorse"]/race/wildBiomes/AridShrubland</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="MA_Direhorse"]/race/wildBiomes/AridShrubland</xpath>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">   <!-- 17. MA_Harpeagle x AridShrubland (Mythic Ages: Megafauna Bestiary) -->
-    <xpath>/Defs/ThingDef[defName="MA_Harpeagle"]/race/wildBiomes/AridShrubland</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="MA_Harpeagle"]/race/wildBiomes/AridShrubland</xpath>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">   <!-- 18. Quinkana x AridShrubland (Megafauna) -->
-    <xpath>/Defs/ThingDef[defName="Quinkana"]/race/wildBiomes/AridShrubland</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="Quinkana"]/race/wildBiomes/AridShrubland</xpath>
-    </match>
-  </Operation>
   <Operation Class="PatchOperationConditional">   <!-- 19. Torton x AridShrubland (Star Wars Animal Collection (Continued)) -->
     <xpath>/Defs/ThingDef[defName="Torton"]/race/wildBiomes/AridShrubland</xpath>
     <match Class="PatchOperationRemove">
@@ -307,13 +288,6 @@
     <xpath>/Defs/ThingDef[defName="AA_CrystallineCaracal"]/race/wildBiomes/Scarlands</xpath>
     <match Class="PatchOperationRemove">
       <xpath>/Defs/ThingDef[defName="AA_CrystallineCaracal"]/race/wildBiomes/Scarlands</xpath>
-    </match>
-  </Operation>
-  <!-- == SeaIce : 2 pair(s) : Beasts of the Rim (Continued) == -->
-  <Operation Class="PatchOperationConditional">   <!-- 23. Bardelot x SeaIce (Beasts of the Rim (Continued)) -->
-    <xpath>/Defs/ThingDef[defName="Bardelot"]/race/wildBiomes/SeaIce</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="Bardelot"]/race/wildBiomes/SeaIce</xpath>
     </match>
   </Operation>
   <Operation Class="PatchOperationConditional">   <!-- 24. Penguin x SeaIce (Beasts of the Rim (Continued)) -->
@@ -357,12 +331,6 @@
     <xpath>/Defs/ThingDef[defName="Krykna"]/race/wildBiomes/IceSheet</xpath>
     <match Class="PatchOperationRemove">
       <xpath>/Defs/ThingDef[defName="Krykna"]/race/wildBiomes/IceSheet</xpath>
-    </match>
-  </Operation>
-  <Operation Class="PatchOperationConditional">   <!-- 31. MA_Manehound x IceSheet (Mythic Ages: Megafauna Bestiary) -->
-    <xpath>/Defs/ThingDef[defName="MA_Manehound"]/race/wildBiomes/IceSheet</xpath>
-    <match Class="PatchOperationRemove">
-      <xpath>/Defs/ThingDef[defName="MA_Manehound"]/race/wildBiomes/IceSheet</xpath>
     </match>
   </Operation>
   <Operation Class="PatchOperationConditional">   <!-- 32. Mynock x IceSheet (Star Wars Animal Collection (Continued)) -->

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 — Wave A creature port.
+  RSW_BlueMilk's tasteThought, ported verbatim from
+  mlie.starwarsanimalcollection (Thoughts_Memory_SpecialCuisine.xml).
+-->
+<Defs>
+  <ThoughtDef>
+    <defName>RSW_DrankBlueMilk</defName>
+    <durationDays>1</durationDays>
+    <stages>
+      <li>
+        <label>drank blue milk</label>
+        <description>Ah, can't argue with a bit of blue milk...</description>
+        <baseMoodEffect>3</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+</Defs>

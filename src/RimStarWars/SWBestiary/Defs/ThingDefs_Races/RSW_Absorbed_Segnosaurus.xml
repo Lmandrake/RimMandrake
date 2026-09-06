@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  JURASSIC_RETIREMENT_ABSORPTION, 2026-09-05 - ABSORBED CONTENT, DO NOT DELETE.
+
+  Source mod: Jurassic Rimworld - Dinosaurs Only (Continued),
+  `Mlie.JurassicRimworldDinosaursOnly`, workshop 3541510004.
+  WHY: the owner retired that mod
+  ("Same for Jurassic", 2026-09-05). design/Jawa/worldbuilding/mod_retirement_audit.md
+  section 7 ruled it RETIRE-AFTER-ABSORB: nothing in the frozen world, the shipped
+  ideoligion or any other mod depends on it, and only the creatures that pass
+  design/Jawa/worldbuilding/creature_recognizability_rule.md are worth keeping.
+
+  WHICH: the owner's own type-case for a dinosaur that reads ALIEN. review/recognizability/RESTORE_CANDIDATES.md #1: a clawed, feathered, unnameable biped - and the sprite that actually carries the therizinosaur silhouette, where JRWTherizinosaurus's own art does not.
+
+  WHAT CHANGED from the donor def, and why - nothing else was touched:
+   * defName JRWSegnosaurus -> RSW_Segnosaurus, per design/NAMING_SCHEME_PLAN.md; the donor
+     names are left free so the two can coexist during the changeover.
+   * ParentName AnimalDinoThingBase (the donor's own abstract, Dino_Base.xml) ->
+     vanilla AnimalThingBase, with that abstract's two statBases inlined.
+   * leatherDef Leather_SmallDino / Leather_MediumDino (donor items) -> vanilla
+     Leather_Lizard. useMeatFrom JRWAcrocanthosaurus (a donor dinosaur that is NOT
+     absorbed) dropped, so the species carries its own auto-generated meat;
+     useMeatFrom Megaspider / Boomrat are VANILLA and are kept as-is.
+   * ExtraButcheringProducts.CompProperties_SpecialButcherChance removed - that
+     comp class lives in the donor's ExtraButcheringProducts.dll and its product
+     (DinoChitin) is a donor item. Keeping it would throw at load.
+   * eggs repointed to the RSW_ egg items in
+     Defs/ThingDefs_Items/RSW_Absorbed_Eggs.xml (absorbed with the creatures, so
+     they still breed).
+   * tradeTags CarnivoreDinosaur / HerbivoreDinosaur (donor trader tags, no trader
+     left to read them) -> vanilla AnimalUncommon.
+   * Segnosaurus's Pawn_Carnotaurus_* sounds -> vanilla Pawn_Thrumbo_* (Wounded -> Pawn_Thrumbo_Pain; vanilla has no Pawn_Thrumbo_Wounded). Every other
+     sound this file names was ALREADY vanilla. The donor ships its 228 SoundDefs'
+     clips inside its AssetBundle, not as loose .ogg, so they cannot be absorbed.
+   * MeatAmount is the value MegafaunaYield.xml's doctrine had been patching in
+     (base = unit x bodySize; the engine multiplies by bodySize again). Baked in
+     here because the Jurassic group in that generated file was deleted with the
+     mod. BoneAmount is NOT baked - it is a modded StatDef and belongs in the
+     generated doctrine patch, not in a def.
+   * texPath Things/Pawn/Animal/Segnosaurus -> swanimals/absorbed/Segnosaurus/Segnosaurus; the art
+     was pulled out of the donor's AssetBundle via
+     observed/inventory/bundle_textures/ (extract_bundle_textures.py) and lives in
+     this mod's Textures/. Dessicated graphics point at VANILLA corpses because the
+     donor's Spooky/*Dessicated set exists only as a north-facing texture.
+-->
+<Defs>
+  <ThingDef ParentName="AnimalThingBase">
+    <defName>RSW_Segnosaurus</defName>
+    <label>Segnosaurus</label>
+    <description>-- > INGEN INTERNAL CASE FILE #04938-1979 [SEGNOSAURUS GALBINENSIS] CODENAME: VEGAS >932
+
+A therizinosauroid theropod covered in multicoloured feathers. Despite their rather flamboyant appearence these dinosaurs are more than capable of fending off predators and attackers alike, their feathery paws hiding ferociously sharp claws that can cut through flesh and scale like scissors glide through paper.</description>
+    <statBases>
+      <MeatAmount>630</MeatAmount>
+      <LeatherAmount>30</LeatherAmount>
+      <MoveSpeed>6.0</MoveSpeed>
+      <ComfyTemperatureMin>-10</ComfyTemperatureMin>
+      <MarketValue>800</MarketValue>
+      <Wildness>0.75</Wildness>
+    </statBases>
+    <tools>
+      <li>
+        <label>left claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>30</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontLeftPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <label>right claw</label>
+        <capacities>
+          <li>Scratch</li>
+        </capacities>
+        <power>30</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>FrontRightPaw</linkedBodyPartsGroup>
+      </li>
+      <li>
+        <capacities>
+          <li>Bite</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>2.6</cooldownTime>
+        <linkedBodyPartsGroup>Teeth</linkedBodyPartsGroup>
+        <chanceFactor>0.7</chanceFactor>
+      </li>
+      <li>
+        <label>head</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>10</power>
+        <cooldownTime>2</cooldownTime>
+        <linkedBodyPartsGroup>HeadAttackTool</linkedBodyPartsGroup>
+        <ensureLinkedBodyPartsGroupAlwaysUsable>true</ensureLinkedBodyPartsGroupAlwaysUsable>
+        <chanceFactor>0.2</chanceFactor>
+      </li>
+    </tools>
+    <comps>
+      <li Class="CompProperties_EggLayer">
+        <eggFertilizedDef>RSW_SegnosaurusEggFertilized</eggFertilizedDef>
+        <eggUnfertilizedDef>RSW_SegnosaurusEggUnFertilized</eggUnfertilizedDef>
+        <eggFertilizationCountMax>1</eggFertilizationCountMax>
+        <eggLayIntervalDays>14.0</eggLayIntervalDays>
+        <eggProgressUnfertilizedMax>0.5</eggProgressUnfertilizedMax>
+        <eggCountRange>
+          <min>1</min>
+          <max>3</max>
+        </eggCountRange>
+      </li>
+    </comps>
+    <race>
+      <body>QuadrupedAnimalWithPawsAndTail</body>
+      <herdAnimal>false</herdAnimal>
+      <baseHungerRate>1.0</baseHungerRate>
+      <baseBodySize>4.5</baseBodySize>
+      <baseHealthScale>4.0</baseHealthScale>
+      <packAnimal>false</packAnimal>
+      <foodType>VegetarianAnimal</foodType>
+      <leatherDef>Leather_Lizard</leatherDef>
+      <gestationPeriodDays>30</gestationPeriodDays>
+      <trainability>Advanced</trainability>
+      <manhunterOnTameFailChance>0.80</manhunterOnTameFailChance>
+      <manhunterOnDamageChance>0.99</manhunterOnDamageChance>
+      <nuzzleMtbHours>120</nuzzleMtbHours>
+      <lifeExpectancy>80</lifeExpectancy>
+      <lifeStageAges>
+        <li>
+          <def>AnimalBaby</def>
+          <minAge>0</minAge>
+        </li>
+        <li>
+          <def>AnimalJuvenile</def>
+          <minAge>1.0</minAge>
+        </li>
+        <li>
+          <def>AnimalAdult</def>
+          <minAge>3.0</minAge>
+          <soundWounded>Pawn_Thrumbo_Pain</soundWounded>
+          <soundDeath>Pawn_Thrumbo_Death</soundDeath>
+          <soundCall>Pawn_Thrumbo_Call</soundCall>
+          <soundAngry>Pawn_Thrumbo_Angry</soundAngry>
+        </li>
+      </lifeStageAges>
+      <soundMeleeHitPawn>Pawn_Melee_BigBash_HitPawn</soundMeleeHitPawn>
+      <soundMeleeHitBuilding>Pawn_Melee_BigBash_HitBuilding</soundMeleeHitBuilding>
+      <soundMeleeMiss>Pawn_Melee_BigBash_Miss</soundMeleeMiss>
+      <wildBiomes>
+        <TropicalRainforest>0.08</TropicalRainforest>
+        <BorealForest>0.09</BorealForest>
+        <TemperateForest>0.09</TemperateForest>
+      </wildBiomes>
+    </race>
+    <tradeTags>
+      <li>AnimalUncommon</li>
+    </tradeTags>
+  </ThingDef>
+  <PawnKindDef ParentName="AnimalKindBase">
+    <defName>RSW_Segnosaurus</defName>
+    <label>Segnosaurus</label>
+    <race>RSW_Segnosaurus</race>
+    <combatPower>60</combatPower>
+    <ecoSystemWeight>1.5</ecoSystemWeight>
+    <lifeStages>
+      <li>
+        <label>Segnosaurus hatchling</label>
+        <bodyGraphicData>
+          <texPath>swanimals/absorbed/Segnosaurus/Segnosaurus</texPath>
+          <drawSize>3</drawSize>
+          <shadowData>
+            <volume>(0.3, 0.3, 0.3)</volume>
+            <offset>(0,0,0)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Ostrich/Dessicated_Ostrich</texPath>
+          <drawSize>1.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/absorbed/Segnosaurus/Segnosaurus</texPath>
+          <drawSize>5</drawSize>
+          <shadowData>
+            <volume>(0.3, 0.3, 0.3)</volume>
+            <offset>(0,0,-0.2)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Ostrich/Dessicated_Ostrich</texPath>
+          <drawSize>2.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+      <li>
+        <bodyGraphicData>
+          <texPath>swanimals/absorbed/Segnosaurus/Segnosaurus</texPath>
+          <drawSize>6</drawSize>
+          <shadowData>
+            <volume>(0.3, 0.3, 0.3)</volume>
+            <offset>(0,0,-0.3)</offset>
+          </shadowData>
+        </bodyGraphicData>
+        <dessicatedBodyGraphicData>
+          <texPath>Things/Pawn/Animal/Ostrich/Dessicated_Ostrich</texPath>
+          <drawSize>2.0</drawSize>
+        </dessicatedBodyGraphicData>
+      </li>
+    </lifeStages>
+  </PawnKindDef>
+</Defs>

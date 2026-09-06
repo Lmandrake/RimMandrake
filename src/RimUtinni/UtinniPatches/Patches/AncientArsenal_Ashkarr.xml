@@ -23,39 +23,6 @@
          mod may supply it later); the fix is to give the boss a pool worth its budget. -->
 
   <!-- ============ 1. the scatterbow is not a gun ============ -->
-  <!-- MA_CapryakScatterbow (520) resolves to ["Gun","NeolithicRangedAdvanced",
-       "VEE_HunterNeolithicWeapon"], so a bow from a megafauna mod sits inside the industrial
-       gun pool and surfaces on EVERY low-budget `Gun` kind, not just ancients. Observed live:
-       two of six thawed sleepers held one. This is the narrow fix and it is independent of
-       anyone's money.
-
-       🔴 THE OBVIOUS PATCH DOES NOT WORK, AND IT FAILS SILENTLY. Measured against the
-       2026-08-23T22:49:51Z capture (581 mods): the scatterbow still carried `Gun` after this
-       file had already applied, while the weaponMoney operations beside it took. The reason is
-       inheritance — the def's OWN xml declares only
-
-           <weaponTags><li>NeolithicRangedAdvanced</li></weaponTags>
-
-       and `Gun` arrives from Core's abstract `BaseHumanMakeableGun`
-       (Data/Core/Defs/ThingDefs_Misc/Weapons/BaseWeapons.xml:86), whose list is APPENDED to the
-       child's when defs resolve — which happens AFTER patching. So
-       `.../weaponTags/li[text()="Gun"]` matches nothing at patch time, the Conditional wrapping
-       it returns true on no match, and the log stays clean. ⛔ Do not "fix" this by re-adding a
-       Remove; there is no node to remove.
-
-       ✅ Sever the append instead. `Inherit="False"` on the child's list node stops the parent's
-       items merging in, and AttributeSet touches only the attribute, so any tag another mod's
-       patch already appended to this node survives. The scatterbow's own mod uses the same idiom
-       on `stuffCategories` two defs above, so it is in-idiom for this file. -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="MA_CapryakScatterbow"]/weaponTags</xpath>
-    <match Class="PatchOperationAttributeSet">
-      <xpath>/Defs/ThingDef[defName="MA_CapryakScatterbow"]/weaponTags</xpath>
-      <attribute>Inherit</attribute>
-      <value>False</value>
-    </match>
-  </Operation>
-
   <!-- ============ 2. an ancient soldier can afford ancient kit ============ -->
   <!-- 300~900 bought from a three-weapon pool. 1200~2600 spans the `Gun` pool's p25..p75,
        so a sleeper comes out holding mid-tier industrial kit instead of whatever was cheap. -->

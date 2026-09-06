@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  MLIE_FAUNA_ABSORPTION_1 — Wave A creature port.
+  RSW_Bantha's five product/resource ThingDefs, ported verbatim from
+  mlie.starwarsanimalcollection (Items_Resource_swanimal_Items.xml) under the
+  RSW_ tier prefix. ParentNames (WoolBase, OrganicProductBase, LeatherBase,
+  ResourceVerbBase; SWanimals_RawMeatBase is Mlie's own abstract, itself
+  ParentName="OrganicProductBase") all resolve to vanilla RimWorld Core —
+  confirmed via RimSage, nothing here needs its own abstract ported.
+  texPaths unchanged (art placed at the same relative path the donor used).
+-->
+<Defs>
+  <ThingDef ParentName="WoolBase">
+    <defName>RSW_WoolBantha</defName>
+    <label>bantha wool</label>
+    <description>Soft, light and provides very good insulation. Wool clothes can keep the body warm even in extreme conditions.</description>
+    <graphicData>
+      <texPath>swresource/Leather_Wool/Leather_Wool</texPath>
+      <color>(69,39,32)</color>
+    </graphicData>
+    <statBases>
+      <StuffPower_Armor_Sharp>1.1</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Heat>2.2</StuffPower_Armor_Heat>
+      <StuffPower_Insulation_Cold>40</StuffPower_Insulation_Cold>
+      <StuffPower_Insulation_Heat>10</StuffPower_Insulation_Heat>
+    </statBases>
+    <stuffProps>
+      <color>(69,39,32)</color>
+    </stuffProps>
+  </ThingDef>
+  <ThingDef ParentName="OrganicProductBase">
+    <defName>RSW_BlueMilk</defName>
+    <label>blue milk</label>
+    <description>Blue milk from a bantha.</description>
+    <graphicData>
+      <texPath>swresource/AnimalProduct/BlueMilk</texPath>
+    </graphicData>
+    <socialPropernessMatters>true</socialPropernessMatters>
+    <statBases>
+      <MarketValue>3.5</MarketValue>
+      <Mass>0.045</Mass>
+      <MaxHitPoints>60</MaxHitPoints>
+      <Flammability>0.2</Flammability>
+      <Nutrition>0.1</Nutrition>
+      <FoodPoisonChanceFixedHuman>0.02</FoodPoisonChanceFixedHuman>
+    </statBases>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>14</daysToRotStart>
+        <rotDestroys>true</rotDestroys>
+      </li>
+    </comps>
+    <ingestible>
+      <preferability>RawTasty</preferability>
+      <foodType>AnimalProduct, Fluid</foodType>
+      <tasteThought>RSW_DrankBlueMilk</tasteThought>
+    </ingestible>
+    <thingCategories>
+      <li>AnimalProductRaw</li>
+    </thingCategories>
+  </ThingDef>
+  <ThingDef ParentName="LeatherBase">
+    <defName>RSW_Leather_Bantha</defName>
+    <label>bantha fur</label>
+    <description>Tanned, dried, bantha fur. Not the toughest material, but very insulative against the heat.</description>
+    <graphicData>
+      <texPath>swresource/Leather_Fur</texPath>
+      <color>(69,39,32)</color>
+    </graphicData>
+    <statBases>
+      <MarketValue>3.5</MarketValue>
+      <StuffPower_Armor_Sharp>1.0</StuffPower_Armor_Sharp>
+      <StuffPower_Armor_Blunt>1.25</StuffPower_Armor_Blunt>
+      <StuffPower_Insulation_Cold>15</StuffPower_Insulation_Cold>
+      <StuffPower_Insulation_Heat>30</StuffPower_Insulation_Heat>
+    </statBases>
+    <stuffProps>
+      <color>(69,39,32)</color>
+      <commonality>0.1</commonality>
+      <statFactors>
+        <MaxHitPoints>1.0</MaxHitPoints>
+      </statFactors>
+    </stuffProps>
+  </ThingDef>
+  <ThingDef Name="RSW_SWanimals_RawMeatBase" Abstract="True" ParentName="OrganicProductBase">
+    <thingClass>ThingWithComps</thingClass>
+    <comps>
+      <li Class="CompProperties_Rottable">
+        <daysToRotStart>2</daysToRotStart>
+        <rotDestroys>True</rotDestroys>
+      </li>
+    </comps>
+    <socialPropernessMatters>true</socialPropernessMatters>
+    <statBases>
+      <Nutrition>0.1</Nutrition>
+      <Flammability>0.5</Flammability>
+      <Mass>0.03</Mass>
+      <FoodPoisonChanceFixedHuman>0.02</FoodPoisonChanceFixedHuman>
+    </statBases>
+    <ingestible>
+      <foodType>Meat</foodType>
+      <preferability>DesperateOnly</preferability>
+      <ingestEffect>EatMeat</ingestEffect>
+      <ingestSound>RawMeat_Eat</ingestSound>
+    </ingestible>
+    <thingCategories>
+      <li>MeatRaw</li>
+    </thingCategories>
+  </ThingDef>
+  <ThingDef ParentName="RSW_SWanimals_RawMeatBase">
+    <defName>RSW_Bantha_Meat</defName>
+    <label>bantha meat</label>
+    <description>A piece of meat from a bantha.</description>
+    <graphicData>
+      <texPath>swresource/Meat_Bantha</texPath>
+      <graphicClass>Graphic_StackCount</graphicClass>
+    </graphicData>
+    <statBases>
+      <MarketValue>1.0</MarketValue>
+    </statBases>
+  </ThingDef>
+  <ThingDef ParentName="ResourceVerbBase">
+    <defName>RSW_BanthaHorn</defName>
+    <label>bantha horn</label>
+    <description>A bantha's horn. Good enough to fend off some enemies. Comes as at least a pair, so not as valuable as other horns out there.</description>
+    <graphicData>
+      <texPath>swresource/Trophies/BanthaHorn</texPath>
+      <graphicClass>Graphic_Single</graphicClass>
+    </graphicData>
+    <equippedAngleOffset>-20</equippedAngleOffset>
+    <statBases>
+      <MarketValue>150</MarketValue>
+      <MaxHitPoints>100</MaxHitPoints>
+      <Mass>3.0</Mass>
+      <Flammability>0.1</Flammability>
+      <DeteriorationRate>0.3</DeteriorationRate>
+    </statBases>
+    <resourceReadoutPriority>Middle</resourceReadoutPriority>
+    <stackLimit>10</stackLimit>
+    <relicChance>2</relicChance>
+    <comps>
+      <li Class="CompProperties_Styleable">
+      </li>
+    </comps>
+    <tools>
+      <li>
+        <label>point</label>
+        <capacities>
+          <li>Scratch</li>
+          <li>Stab</li>
+        </capacities>
+        <power>7</power>
+        <cooldownTime>1.85</cooldownTime>
+      </li>
+      <li>
+        <label>base</label>
+        <capacities>
+          <li>Blunt</li>
+        </capacities>
+        <power>5</power>
+        <cooldownTime>1.85</cooldownTime>
+      </li>
+    </tools>
+    <thingCategories>
+      <li>ItemsMisc</li>
+    </thingCategories>
+    <tradeTags>
+      <li>ExoticMisc</li>
+    </tradeTags>
+    <thingSetMakerTags>
+      <li>AnimalPart</li>
+    </thingSetMakerTags>
+  </ThingDef>
+</Defs>
