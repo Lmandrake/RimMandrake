@@ -1,8 +1,8 @@
-# The Slime — gene machine lists (draft 2, for iteration)
+# The Slime — gene machine lists — ✅ ACCEPTED (owner, 2026-09-06)
 
-_BENCH draft 2, 2026-09-06 — owner's comment applied: every entry now has a real cost and
-a distinct oddness with impact; Jawa-aligned throughout. Numbered stably (B25 is new).
-Companion to `the_slime.md` §7._
+_Draft 2 accepted with one cut: **A23 battle premonition is STRUCK** (P2 wins). Knobs:
+K1 = unlimited visits (riders accumulate), K2 = riders permanent; K3 (animals) and K4
+(rarity tiers) remain open. Companion to `the_slime.md` §7._
 
 ## Curation principles
 
@@ -58,7 +58,7 @@ Companion to `the_slime.md` §7._
 | A20 | Acute ears | Bith / Chadra-Fan | cannot be surprise-attacked; detect raids sooner | the workshop is agony: −4 mood in rooms with active machinery or gunfire; stun chance from explosions doubled |
 | A21 | Water discipline | Tusken kin | thirst/heat needs −40%; desert travel barely costs | cold becomes lethal fast: cold floor +20 °C; forced hydration (medical IV, soaking) causes vomiting |
 | A22 | Scavenger's nose | Jawa | +30% components/salvage found in ruins and wrecks | the nose never closes: −10% consciousness near corpses, chemfuel or the unwashed; compelled to sniff new trade goods (−1 trader opinion) |
-| A23 | ⚠️ Battle premonition | Iktotchi | +15% dodge/aim for 5s after first taking fire | never sleeps deep: rest effectiveness −15%, nightmare mood events — ⚠️ P2 flag stands: keep/reflavor/cut |
+| A23 | ~~Battle premonition~~ | Iktotchi | 🔴 STRUCK (owner, 2026-09-06) — too Force-adjacent; P2 wins | — |
 
 ### From the local denizens
 
