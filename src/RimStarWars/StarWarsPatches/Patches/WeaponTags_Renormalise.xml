@@ -982,949 +982,760 @@
     </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_bowcaster"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_bowcaster"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_bowcaster"]/weaponTags</xpath>
-        <value><li>AssaultRifle</li><li>SimpleGun</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_bowcaster"]</xpath>
-        <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
-      </nomatch>
+      <value><li>AssaultRifle</li><li>SimpleGun</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_bowcaster"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_bowcaster_ceremonial"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_bowcaster_ceremonial"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_bowcaster_ceremonial"]/weaponTags</xpath>
-        <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_bowcaster_ceremonial"]</xpath>
-        <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
-      </nomatch>
+      <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_bowcaster_ceremonial"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_bowcaster_merc"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_bowcaster_merc"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_bowcaster_merc"]/weaponTags</xpath>
-        <value><li>AssaultRifle</li><li>SimpleGun</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_bowcaster_merc"]</xpath>
-        <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
-      </nomatch>
+      <value><li>AssaultRifle</li><li>SimpleGun</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_bowcaster_merc"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_bowcaster_war"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_bowcaster_war"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_bowcaster_war"]/weaponTags</xpath>
-        <value><li>AssaultRifle</li><li>SimpleGun</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_bowcaster_war"]</xpath>
-        <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
-      </nomatch>
+      <value><li>AssaultRifle</li><li>SimpleGun</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_bowcaster_war"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_bowcaster_zaalbar"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_bowcaster_zaalbar"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_bowcaster_zaalbar"]/weaponTags</xpath>
-        <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_bowcaster_zaalbar"]</xpath>
-        <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
-      </nomatch>
+      <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_bowcaster_zaalbar"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_bpistol_bendak"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_bpistol_bendak"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_bpistol_bendak"]/weaponTags</xpath>
-        <value><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_bpistol_bendak"]</xpath>
-        <value><weaponTags><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
-      </nomatch>
+      <value><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_bpistol_bendak"]</xpath>
+      <value><weaponTags><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_bpistol_genoharadan"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_bpistol_genoharadan"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_bpistol_genoharadan"]/weaponTags</xpath>
-        <value><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_bpistol_genoharadan"]</xpath>
-        <value><weaponTags><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
-      </nomatch>
+      <value><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_bpistol_genoharadan"]</xpath>
+      <value><weaponTags><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_bpistol_mandalorian"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_bpistol_mandalorian"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_bpistol_mandalorian"]/weaponTags</xpath>
-        <value><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_bpistol_mandalorian"]</xpath>
-        <value><weaponTags><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
-      </nomatch>
+      <value><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_bpistol_mandalorian"]</xpath>
+      <value><weaponTags><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_bpistol_micropulse"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_bpistol_micropulse"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_bpistol_micropulse"]/weaponTags</xpath>
-        <value><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_bpistol_micropulse"]</xpath>
-        <value><weaponTags><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
-      </nomatch>
+      <value><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_bpistol_micropulse"]</xpath>
+      <value><weaponTags><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_bpistol_onasi"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_bpistol_onasi"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_bpistol_onasi"]/weaponTags</xpath>
-        <value><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_bpistol_onasi"]</xpath>
-        <value><weaponTags><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
-      </nomatch>
+      <value><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_bpistol_onasi"]</xpath>
+      <value><weaponTags><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_bpistol_republic"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_bpistol_republic"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_bpistol_republic"]/weaponTags</xpath>
-        <value><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_bpistol_republic"]</xpath>
-        <value><weaponTags><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
-      </nomatch>
+      <value><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_bpistol_republic"]</xpath>
+      <value><weaponTags><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_bpistol_zabrak"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_bpistol_zabrak"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_bpistol_zabrak"]/weaponTags</xpath>
-        <value><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_bpistol_zabrak"]</xpath>
-        <value><weaponTags><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
-      </nomatch>
+      <value><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_bpistol_zabrak"]</xpath>
+      <value><weaponTags><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_brifle_dmr"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_brifle_dmr"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_brifle_dmr"]/weaponTags</xpath>
-        <value><li>LongShots</li><li>SniperRifle</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_brifle_dmr"]</xpath>
-        <value><weaponTags><li>LongShots</li><li>SniperRifle</li></weaponTags></value>
-      </nomatch>
+      <value><li>LongShots</li><li>SniperRifle</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_brifle_dmr"]</xpath>
+      <value><weaponTags><li>LongShots</li><li>SniperRifle</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_brifle_jurgan"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_brifle_jurgan"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_brifle_jurgan"]/weaponTags</xpath>
-        <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_brifle_jurgan"]</xpath>
-        <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
-      </nomatch>
+      <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_brifle_jurgan"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_brifle_mandalorian"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_brifle_mandalorian"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_brifle_mandalorian"]/weaponTags</xpath>
-        <value><li>AssaultRifle</li><li>SimpleGun</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_brifle_mandalorian"]</xpath>
-        <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
-      </nomatch>
+      <value><li>AssaultRifle</li><li>SimpleGun</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_brifle_mandalorian"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_brifle_plasma"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_brifle_plasma"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_brifle_plasma"]/weaponTags</xpath>
-        <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_brifle_plasma"]</xpath>
-        <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
-      </nomatch>
+      <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_brifle_plasma"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_brifle_rohlan"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_brifle_rohlan"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_brifle_rohlan"]/weaponTags</xpath>
-        <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_brifle_rohlan"]</xpath>
-        <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
-      </nomatch>
+      <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_brifle_rohlan"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_brifle_sith"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_brifle_sith"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_brifle_sith"]/weaponTags</xpath>
-        <value><li>IndustrialGunAdvanced</li><li>LongShots</li><li>SniperRifle</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_brifle_sith"]</xpath>
-        <value><weaponTags><li>IndustrialGunAdvanced</li><li>LongShots</li><li>SniperRifle</li></weaponTags></value>
-      </nomatch>
+      <value><li>IndustrialGunAdvanced</li><li>LongShots</li><li>SniperRifle</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_brifle_sith"]</xpath>
+      <value><weaponTags><li>IndustrialGunAdvanced</li><li>LongShots</li><li>SniperRifle</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_brifle_zabrak"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_brifle_zabrak"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_brifle_zabrak"]/weaponTags</xpath>
-        <value><li>GunHeavy</li><li>IndustrialGunAdvanced</li><li>Minigun</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_brifle_zabrak"]</xpath>
-        <value><weaponTags><li>GunHeavy</li><li>IndustrialGunAdvanced</li><li>Minigun</li></weaponTags></value>
-      </nomatch>
+      <value><li>GunHeavy</li><li>IndustrialGunAdvanced</li><li>Minigun</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_brifle_zabrak"]</xpath>
+      <value><weaponTags><li>GunHeavy</li><li>IndustrialGunAdvanced</li><li>Minigun</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_brifle_zersium"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_brifle_zersium"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_brifle_zersium"]/weaponTags</xpath>
-        <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_brifle_zersium"]</xpath>
-        <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
-      </nomatch>
+      <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_brifle_zersium"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_carbine_hogra"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_carbine_hogra"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_carbine_hogra"]/weaponTags</xpath>
-        <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_carbine_hogra"]</xpath>
-        <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
-      </nomatch>
+      <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_carbine_hogra"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_carbine_kalta"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_carbine_kalta"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_carbine_kalta"]/weaponTags</xpath>
-        <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_carbine_kalta"]</xpath>
-        <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
-      </nomatch>
+      <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_carbine_kalta"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_carbine_repcom"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_carbine_repcom"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_carbine_repcom"]/weaponTags</xpath>
-        <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_carbine_repcom"]</xpath>
-        <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
-      </nomatch>
+      <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_carbine_repcom"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_carbine_sith"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_carbine_sith"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_carbine_sith"]/weaponTags</xpath>
-        <value><li>AssaultRifle</li><li>SimpleGun</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_carbine_sith"]</xpath>
-        <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
-      </nomatch>
+      <value><li>AssaultRifle</li><li>SimpleGun</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_carbine_sith"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_carbine_stun"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_carbine_stun"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_carbine_stun"]/weaponTags</xpath>
-        <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_carbine_stun"]</xpath>
-        <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
-      </nomatch>
+      <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_carbine_stun"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_carbine_zabrak"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_carbine_zabrak"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_carbine_zabrak"]/weaponTags</xpath>
-        <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_carbine_zabrak"]</xpath>
-        <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
-      </nomatch>
+      <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_carbine_zabrak"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_dispistol_disintegrator"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_dispistol_disintegrator"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_dispistol_disintegrator"]/weaponTags</xpath>
-        <value><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_dispistol_disintegrator"]</xpath>
-        <value><weaponTags><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
-      </nomatch>
+      <value><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_dispistol_disintegrator"]</xpath>
+      <value><weaponTags><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_dispistol_luxa"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_dispistol_luxa"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_dispistol_luxa"]/weaponTags</xpath>
-        <value><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_dispistol_luxa"]</xpath>
-        <value><weaponTags><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
-      </nomatch>
+      <value><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_dispistol_luxa"]</xpath>
+      <value><weaponTags><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_dispistol_ripper"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_dispistol_ripper"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_dispistol_ripper"]/weaponTags</xpath>
-        <value><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_dispistol_ripper"]</xpath>
-        <value><weaponTags><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
-      </nomatch>
+      <value><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_dispistol_ripper"]</xpath>
+      <value><weaponTags><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_dispistol_sith"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_dispistol_sith"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_dispistol_sith"]/weaponTags</xpath>
-        <value><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_dispistol_sith"]</xpath>
-        <value><weaponTags><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
-      </nomatch>
+      <value><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_dispistol_sith"]</xpath>
+      <value><weaponTags><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_disrifle_baragwin"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_disrifle_baragwin"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_disrifle_baragwin"]/weaponTags</xpath>
-        <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_disrifle_baragwin"]</xpath>
-        <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
-      </nomatch>
+      <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_disrifle_baragwin"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_disrifle_charric"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_disrifle_charric"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_disrifle_charric"]/weaponTags</xpath>
-        <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_disrifle_charric"]</xpath>
-        <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
-      </nomatch>
+      <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_disrifle_charric"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_disrifle_droid"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_disrifle_droid"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_disrifle_droid"]/weaponTags</xpath>
-        <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_disrifle_droid"]</xpath>
-        <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
-      </nomatch>
+      <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_disrifle_droid"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_disrifle_tenloss"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_disrifle_tenloss"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_disrifle_tenloss"]/weaponTags</xpath>
-        <value><li>AssaultRifle</li><li>SimpleGun</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_disrifle_tenloss"]</xpath>
-        <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
-      </nomatch>
+      <value><li>AssaultRifle</li><li>SimpleGun</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_disrifle_tenloss"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_disrifle_zabrak"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_disrifle_zabrak"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_disrifle_zabrak"]/weaponTags</xpath>
-        <value><li>GunHeavy</li><li>IndustrialGunAdvanced</li><li>Minigun</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_disrifle_zabrak"]</xpath>
-        <value><weaponTags><li>GunHeavy</li><li>IndustrialGunAdvanced</li><li>Minigun</li></weaponTags></value>
-      </nomatch>
+      <value><li>GunHeavy</li><li>IndustrialGunAdvanced</li><li>Minigun</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_disrifle_zabrak"]</xpath>
+      <value><weaponTags><li>GunHeavy</li><li>IndustrialGunAdvanced</li><li>Minigun</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_holdout_jawa"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_holdout_jawa"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_holdout_jawa"]/weaponTags</xpath>
-        <value><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_holdout_jawa"]</xpath>
-        <value><weaponTags><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
-      </nomatch>
+      <value><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_holdout_jawa"]</xpath>
+      <value><weaponTags><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_holdout_sith"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_holdout_sith"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_holdout_sith"]/weaponTags</xpath>
-        <value><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_holdout_sith"]</xpath>
-        <value><weaponTags><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
-      </nomatch>
+      <value><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_holdout_sith"]</xpath>
+      <value><weaponTags><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_holdout_sithofficer"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_holdout_sithofficer"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_holdout_sithofficer"]/weaponTags</xpath>
-        <value><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_holdout_sithofficer"]</xpath>
-        <value><weaponTags><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
-      </nomatch>
+      <value><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_holdout_sithofficer"]</xpath>
+      <value><weaponTags><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_hvypistol_cassus"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_hvypistol_cassus"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_hvypistol_cassus"]/weaponTags</xpath>
-        <value><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_hvypistol_cassus"]</xpath>
-        <value><weaponTags><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
-      </nomatch>
+      <value><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_hvypistol_cassus"]</xpath>
+      <value><weaponTags><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_hvypistol_mandalorian"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_hvypistol_mandalorian"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_hvypistol_mandalorian"]/weaponTags</xpath>
-        <value><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_hvypistol_mandalorian"]</xpath>
-        <value><weaponTags><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
-      </nomatch>
+      <value><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_hvypistol_mandalorian"]</xpath>
+      <value><weaponTags><li>Autopistol</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_hvypistol_nadd"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_hvypistol_nadd"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_hvypistol_nadd"]/weaponTags</xpath>
-        <value><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_hvypistol_nadd"]</xpath>
-        <value><weaponTags><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
-      </nomatch>
+      <value><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_hvypistol_nadd"]</xpath>
+      <value><weaponTags><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_hvypistol_zabraktystel"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_hvypistol_zabraktystel"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_hvypistol_zabraktystel"]/weaponTags</xpath>
-        <value><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_hvypistol_zabraktystel"]</xpath>
-        <value><weaponTags><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
-      </nomatch>
+      <value><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_hvypistol_zabraktystel"]</xpath>
+      <value><weaponTags><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_hvyrepeater_baragwin"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_hvyrepeater_baragwin"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_hvyrepeater_baragwin"]/weaponTags</xpath>
-        <value><li>GunHeavy</li><li>IndustrialGunAdvanced</li><li>Minigun</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_hvyrepeater_baragwin"]</xpath>
-        <value><weaponTags><li>GunHeavy</li><li>IndustrialGunAdvanced</li><li>Minigun</li></weaponTags></value>
-      </nomatch>
+      <value><li>GunHeavy</li><li>IndustrialGunAdvanced</li><li>Minigun</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_hvyrepeater_baragwin"]</xpath>
+      <value><weaponTags><li>GunHeavy</li><li>IndustrialGunAdvanced</li><li>Minigun</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_hvyrepeater_mando"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_hvyrepeater_mando"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_hvyrepeater_mando"]/weaponTags</xpath>
-        <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_hvyrepeater_mando"]</xpath>
-        <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
-      </nomatch>
+      <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_hvyrepeater_mando"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_hvyrepeater_massdriver"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_hvyrepeater_massdriver"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_hvyrepeater_massdriver"]/weaponTags</xpath>
-        <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_hvyrepeater_massdriver"]</xpath>
-        <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
-      </nomatch>
+      <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_hvyrepeater_massdriver"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_hvyrepeater_ordo"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_hvyrepeater_ordo"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_hvyrepeater_ordo"]/weaponTags</xpath>
-        <value><li>GunHeavy</li><li>IndustrialGunAdvanced</li><li>Minigun</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_hvyrepeater_ordo"]</xpath>
-        <value><weaponTags><li>GunHeavy</li><li>IndustrialGunAdvanced</li><li>Minigun</li></weaponTags></value>
-      </nomatch>
+      <value><li>GunHeavy</li><li>IndustrialGunAdvanced</li><li>Minigun</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_hvyrepeater_ordo"]</xpath>
+      <value><weaponTags><li>GunHeavy</li><li>IndustrialGunAdvanced</li><li>Minigun</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_ionpistol_aratech"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_ionpistol_aratech"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_ionpistol_aratech"]/weaponTags</xpath>
-        <value><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_ionpistol_aratech"]</xpath>
-        <value><weaponTags><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
-      </nomatch>
+      <value><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_ionpistol_aratech"]</xpath>
+      <value><weaponTags><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_ionrifle_baragwin"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_ionrifle_baragwin"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_ionrifle_baragwin"]/weaponTags</xpath>
-        <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_ionrifle_baragwin"]</xpath>
-        <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
-      </nomatch>
+      <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_ionrifle_baragwin"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_ionrifle_verpine"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_ionrifle_verpine"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_ionrifle_verpine"]/weaponTags</xpath>
-        <value><li>AssaultRifle</li><li>SimpleGun</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_ionrifle_verpine"]</xpath>
-        <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
-      </nomatch>
+      <value><li>AssaultRifle</li><li>SimpleGun</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_ionrifle_verpine"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_lgtrepeater_baragwin"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_lgtrepeater_baragwin"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_lgtrepeater_baragwin"]/weaponTags</xpath>
-        <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_lgtrepeater_baragwin"]</xpath>
-        <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
-      </nomatch>
+      <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_lgtrepeater_baragwin"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_lgtrepeater_enforcer"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_lgtrepeater_enforcer"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_lgtrepeater_enforcer"]/weaponTags</xpath>
-        <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_lgtrepeater_enforcer"]</xpath>
-        <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
-      </nomatch>
+      <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_lgtrepeater_enforcer"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_lgtrepeater_mandalore"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_lgtrepeater_mandalore"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_lgtrepeater_mandalore"]/weaponTags</xpath>
-        <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_lgtrepeater_mandalore"]</xpath>
-        <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
-      </nomatch>
+      <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_lgtrepeater_mandalore"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_lgtrepeater_onderon"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_lgtrepeater_onderon"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_lgtrepeater_onderon"]/weaponTags</xpath>
-        <value><li>GunHeavy</li><li>IndustrialGunAdvanced</li><li>Minigun</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_lgtrepeater_onderon"]</xpath>
-        <value><weaponTags><li>GunHeavy</li><li>IndustrialGunAdvanced</li><li>Minigun</li></weaponTags></value>
-      </nomatch>
+      <value><li>GunHeavy</li><li>IndustrialGunAdvanced</li><li>Minigun</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_lgtrepeater_onderon"]</xpath>
+      <value><weaponTags><li>GunHeavy</li><li>IndustrialGunAdvanced</li><li>Minigun</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_microrepeater_mando"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_microrepeater_mando"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_microrepeater_mando"]/weaponTags</xpath>
-        <value><li>AssaultRifle</li><li>SimpleGun</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_microrepeater_mando"]</xpath>
-        <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
-      </nomatch>
+      <value><li>AssaultRifle</li><li>SimpleGun</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_microrepeater_mando"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_microrepeater_narshaddaa"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_microrepeater_narshaddaa"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_microrepeater_narshaddaa"]/weaponTags</xpath>
-        <value><li>AssaultRifle</li><li>SimpleGun</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_microrepeater_narshaddaa"]</xpath>
-        <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
-      </nomatch>
+      <value><li>AssaultRifle</li><li>SimpleGun</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_microrepeater_narshaddaa"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_slugrifle_SovTusken"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_slugrifle_SovTusken"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_slugrifle_SovTusken"]/weaponTags</xpath>
-        <value><li>AssaultRifle</li><li>SimpleGun</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_slugrifle_SovTusken"]</xpath>
-        <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
-      </nomatch>
+      <value><li>AssaultRifle</li><li>SimpleGun</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_slugrifle_SovTusken"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_slugrifle_tusken"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_slugrifle_tusken"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_slugrifle_tusken"]/weaponTags</xpath>
-        <value><li>AssaultRifle</li><li>SimpleGun</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_slugrifle_tusken"]</xpath>
-        <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
-      </nomatch>
+      <value><li>AssaultRifle</li><li>SimpleGun</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_slugrifle_tusken"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_slugrifle_verpine"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_slugrifle_verpine"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_slugrifle_verpine"]/weaponTags</xpath>
-        <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_slugrifle_verpine"]</xpath>
-        <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
-      </nomatch>
+      <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_slugrifle_verpine"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_sonpistol_dashade"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_sonpistol_dashade"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_sonpistol_dashade"]/weaponTags</xpath>
-        <value><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_sonpistol_dashade"]</xpath>
-        <value><weaponTags><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
-      </nomatch>
+      <value><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_sonpistol_dashade"]</xpath>
+      <value><weaponTags><li>IndustrialGunAdvanced</li><li>Revolver</li><li>ShortShots</li><li>SimpleGun</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_sonrifle_arkanian"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_sonrifle_arkanian"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_sonrifle_arkanian"]/weaponTags</xpath>
-        <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_sonrifle_arkanian"]</xpath>
-        <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
-      </nomatch>
+      <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_sonrifle_arkanian"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_sonrifle_nagai"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_sonrifle_nagai"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_sonrifle_nagai"]/weaponTags</xpath>
-        <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_sonrifle_nagai"]</xpath>
-        <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
-      </nomatch>
+      <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_sonrifle_nagai"]</xpath>
+      <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_vaxe"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_vaxe"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_vaxe"]/weaponTags</xpath>
-        <value><li>Jawa_GamorreanAxe</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_vaxe"]</xpath>
-        <value><weaponTags><li>Jawa_GamorreanAxe</li></weaponTags></value>
-      </nomatch>
+      <value><li>Jawa_GamorreanAxe</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_vaxe"]</xpath>
+      <value><weaponTags><li>Jawa_GamorreanAxe</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_vaxe_hutt"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>/Defs/ThingDef[defName="guy762_vaxe_hutt"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_vaxe_hutt"]/weaponTags</xpath>
-        <value><li>Jawa_GamorreanAxe</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>/Defs/ThingDef[defName="guy762_vaxe_hutt"]</xpath>
-        <value><weaponTags><li>Jawa_GamorreanAxe</li></weaponTags></value>
-      </nomatch>
+      <value><li>Jawa_GamorreanAxe</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>/Defs/ThingDef[defName="guy762_vaxe_hutt"]</xpath>
+      <value><weaponTags><li>Jawa_GamorreanAxe</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
 
@@ -2110,19 +1921,16 @@
     </match>
   </Operation>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="guy762_brifle_dmr"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>Defs/ThingDef[defName="guy762_brifle_dmr"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>Defs/ThingDef[defName="guy762_brifle_dmr"]/weaponTags</xpath>
-        <value><li>VEE_HunterIndustrialWeapon</li></value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>Defs/ThingDef[defName="guy762_brifle_dmr"]</xpath>
-        <value><weaponTags><li>VEE_HunterIndustrialWeapon</li></weaponTags></value>
-      </nomatch>
+      <value><li>VEE_HunterIndustrialWeapon</li></value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>Defs/ThingDef[defName="guy762_brifle_dmr"]</xpath>
+      <value><weaponTags><li>VEE_HunterIndustrialWeapon</li></weaponTags></value>
+    </nomatch>
   </Operation>
 
   <Operation Class="PatchOperationFindMod">
@@ -2204,27 +2012,24 @@
   <!-- hold-out blaster, 60. The cheapest surviving gun on the planet, and the one that arms
          the 65~125 civilians - Farmer, Miner, Logger, BS_LittleBigVillager. `MakeshiftGun` had
          ZERO carriers of any price; a palm-sized illegal blaster is exactly what it meant. -->
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="guy762_holdout"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>Defs/ThingDef[defName="guy762_holdout"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>Defs/ThingDef[defName="guy762_holdout"]/weaponTags</xpath>
-        <value>
+      <value>
+        <li>Gun</li>
+        <li>MakeshiftGun</li>
+      </value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>Defs/ThingDef[defName="guy762_holdout"]</xpath>
+      <value>
+        <weaponTags>
           <li>Gun</li>
           <li>MakeshiftGun</li>
-        </value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>Defs/ThingDef[defName="guy762_holdout"]</xpath>
-        <value>
-          <weaponTags>
-            <li>Gun</li>
-            <li>MakeshiftGun</li>
-          </weaponTags>
-        </value>
-      </nomatch>
-    </match>
+        </weaponTags>
+      </value>
+    </nomatch>
   </Operation>
 
   <!-- blaster pistol, 100. The generic sidearm. Arms every 200-budget trader and
@@ -2234,52 +2039,46 @@
          `Mechanitor_Basic`, `AM_Scavenger`, `Mercenary_Gunner_Pig` and
          `VRESaurids_MercenaryGunner_Saurid` each rolled bare some fraction of the time.
          A pistol is what both tags mean. -->
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="guy762_bpistol"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>Defs/ThingDef[defName="guy762_bpistol"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>Defs/ThingDef[defName="guy762_bpistol"]/weaponTags</xpath>
-        <value>
+      <value>
+        <li>Gun</li>
+        <li>Autopistol</li>
+        <li>ShortShots</li>
+      </value>
+    </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>Defs/ThingDef[defName="guy762_bpistol"]</xpath>
+      <value>
+        <weaponTags>
           <li>Gun</li>
           <li>Autopistol</li>
           <li>ShortShots</li>
-        </value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>Defs/ThingDef[defName="guy762_bpistol"]</xpath>
-        <value>
-          <weaponTags>
-            <li>Gun</li>
-            <li>Autopistol</li>
-            <li>ShortShots</li>
-          </weaponTags>
-        </value>
-      </nomatch>
-    </match>
+        </weaponTags>
+      </value>
+    </nomatch>
   </Operation>
 
   <!-- slug-rifle, 100. A cheap long arm rather than a second pistol, so a Scavenger or a
          Hunter reads as carrying a hunting weapon and not a hold-out. -->
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Weapons and Armor</li></mods>
-    <match Class="PatchOperationConditional">
+  <Operation Class="PatchOperationConditional">
+    <xpath>Defs/ThingDef[defName="guy762_slugrifle"]/weaponTags</xpath>
+    <match Class="PatchOperationAdd">
       <xpath>Defs/ThingDef[defName="guy762_slugrifle"]/weaponTags</xpath>
-      <match Class="PatchOperationAdd">
-        <xpath>Defs/ThingDef[defName="guy762_slugrifle"]/weaponTags</xpath>
-        <value>
-          <li>Gun</li>
-        </value>
-      </match>
-      <nomatch Class="PatchOperationAdd">
-        <xpath>Defs/ThingDef[defName="guy762_slugrifle"]</xpath>
-        <value>
-          <weaponTags>
-            <li>Gun</li>
-          </weaponTags>
-        </value>
-      </nomatch>
+      <value>
+        <li>Gun</li>
+      </value>
     </match>
+    <nomatch Class="PatchOperationAdd">
+      <xpath>Defs/ThingDef[defName="guy762_slugrifle"]</xpath>
+      <value>
+        <weaponTags>
+          <li>Gun</li>
+        </weaponTags>
+      </value>
+    </nomatch>
   </Operation>
 
   <!-- cycler rifle, 364, against the snipers' 600~600. It already carries `ORSniper` and

@@ -82,7 +82,7 @@
       <recipeUsers Inherit="False">
         <li>HandTailoringBench</li>
         <li>ElectricTailoringBench</li>
-        <li MayRequire="guy762.KotORWeapons">guy762_KotORWorkbench</li>
+        <li>guy762_KotORWorkbench</li>
       </recipeUsers>
     </recipeMaker>
     <colorGenerator Class="ColorGenerator_Options" Inherit="False">
@@ -131,7 +131,7 @@
       <recipeUsers Inherit="False">
         <li>HandTailoringBench</li>
         <li>ElectricTailoringBench</li>
-        <li MayRequire="guy762.KotORWeapons">guy762_KotORWorkbench</li>
+        <li>guy762_KotORWorkbench</li>
       </recipeUsers>
     </recipeMaker>
     <apparel>
@@ -210,7 +210,7 @@
       <recipeUsers Inherit="False">
         <li>HandTailoringBench</li>
         <li>ElectricTailoringBench</li>
-        <li MayRequire="guy762.KotORWeapons">guy762_KotORWorkbench</li>
+        <li>guy762_KotORWorkbench</li>
       </recipeUsers>
     </recipeMaker>
     <apparel>

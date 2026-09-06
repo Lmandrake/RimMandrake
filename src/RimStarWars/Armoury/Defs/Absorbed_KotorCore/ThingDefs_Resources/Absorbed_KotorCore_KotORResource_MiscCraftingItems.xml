@@ -112,7 +112,7 @@
     <displayPriority>10</displayPriority>
     <recipeUsers>
       <li>FabricationBench</li>
-      <li MayRequire="guy762.KotORWeapons">guy762_KotORWorkbench</li>
+      <li>guy762_KotORWorkbench</li>
     </recipeUsers>
   </RecipeDef>
 
@@ -249,7 +249,7 @@
     </products>
     <recipeUsers>
       <li>FabricationBench</li>
-      <li MayRequire="guy762.KotORWeapons">guy762_KotORWorkbench</li>
+      <li>guy762_KotORWorkbench</li>
     </recipeUsers>
     <researchPrerequisite>KOTOR_Research_AdvMaterials</researchPrerequisite>
     <skillRequirements>
@@ -305,7 +305,7 @@
     </products>
     <recipeUsers>
       <li>FabricationBench</li>
-      <li MayRequire="guy762.KotORWeapons">guy762_KotORWorkbench</li>
+      <li>guy762_KotORWorkbench</li>
     </recipeUsers>
     <researchPrerequisite>KOTOR_Research_AdvMaterials</researchPrerequisite>
     <skillRequirements>
@@ -632,7 +632,7 @@
     </products>
     <recipeUsers>
       <li>FabricationBench</li>
-      <li MayRequire="guy762.KotORWeapons">guy762_KotORWorkbench</li>
+      <li>guy762_KotORWorkbench</li>
     </recipeUsers>
     <researchPrerequisite>KOTOR_Research_AdvMaterials</researchPrerequisite>
     <skillRequirements>
@@ -670,7 +670,7 @@
     </products>
     <recipeUsers>
       <li>FabricationBench</li>
-      <li MayRequire="guy762.KotORWeapons">guy762_KotORWorkbench</li>
+      <li>guy762_KotORWorkbench</li>
     </recipeUsers>
     <researchPrerequisite>KOTOR_Research_AdvMaterials</researchPrerequisite>
     <skillRequirements>

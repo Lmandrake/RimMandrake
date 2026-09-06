@@ -64,7 +64,7 @@
       <researchPrerequisite>guy762_ResearchKotOR_tusken</researchPrerequisite>
       <recipeUsers Inherit="False">
         <li>CraftingSpot</li>
-        <li MayRequire="guy762.KotORWeapons">guy762_KotORWorkbench</li>
+        <li>guy762_KotORWorkbench</li>
       </recipeUsers>
     </recipeMaker>
     <colorGenerator Class="ColorGenerator_Options" Inherit="False">
@@ -141,7 +141,7 @@
       <researchPrerequisite>guy762_ResearchKotOR_tusken</researchPrerequisite>
       <recipeUsers Inherit="False">
         <li>CraftingSpot</li>
-        <li MayRequire="guy762.KotORWeapons">guy762_KotORWorkbench</li>
+        <li>guy762_KotORWorkbench</li>
       </recipeUsers>
     </recipeMaker>
     <colorGenerator Class="ColorGenerator_Options" Inherit="False">

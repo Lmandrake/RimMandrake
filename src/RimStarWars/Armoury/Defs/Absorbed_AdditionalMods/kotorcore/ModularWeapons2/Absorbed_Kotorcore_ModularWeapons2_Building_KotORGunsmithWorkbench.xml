@@ -96,7 +96,7 @@
     <workType>Smithing</workType>
     <priorityInType>75</priorityInType>
     <fixedBillGiverDefs>
-      <li MayRequire="guy762.KotORWeapons">guy762_KotORWorkbench</li>
+      <li>guy762_KotORWorkbench</li>
     </fixedBillGiverDefs>
     <verb>work</verb>
     <gerund>working at</gerund>

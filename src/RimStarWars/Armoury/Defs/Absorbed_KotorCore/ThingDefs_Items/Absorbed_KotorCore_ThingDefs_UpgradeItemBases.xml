@@ -37,7 +37,7 @@
     <techLevel>Spacer</techLevel>
     <recipeMaker>
       <recipeUsers>
-        <li MayRequire="guy762.KotORWeapons">guy762_KotORWorkbench</li>
+        <li>guy762_KotORWorkbench</li>
         <!-- <li>FabricationBench</li> -->
       </recipeUsers>
       <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
@@ -90,7 +90,7 @@
     <techLevel>Spacer</techLevel>
     <recipeMaker>
       <recipeUsers>
-        <li MayRequire="guy762.KotORWeapons">guy762_KotORWorkbench</li>
+        <li>guy762_KotORWorkbench</li>
         <!-- <li>FabricationBench</li> -->
       </recipeUsers>
       <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
@@ -124,7 +124,7 @@
     <techLevel>Spacer</techLevel>
     <recipeMaker>
       <recipeUsers>
-        <li MayRequire="guy762.KotORWeapons">guy762_KotORWorkbench</li>
+        <li>guy762_KotORWorkbench</li>
         <!-- <li>FabricationBench</li> -->
       </recipeUsers>
       <workSpeedStat>GeneralLaborSpeed</workSpeedStat>

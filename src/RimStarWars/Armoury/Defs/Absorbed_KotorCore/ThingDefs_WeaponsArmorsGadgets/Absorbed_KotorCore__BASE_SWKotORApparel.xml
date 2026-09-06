@@ -61,7 +61,7 @@
       <workSkill>Crafting</workSkill>
       <recipeUsers>
         <li>FabricationBench</li>
-        <li MayRequire="guy762.KotORWeapons">guy762_KotORWorkbench</li>
+        <li>guy762_KotORWorkbench</li>
       </recipeUsers>
       <defaultIngredientFilter>
         <categories>
@@ -92,7 +92,7 @@
       <workSkill>Crafting</workSkill>
       <recipeUsers>
         <li>FabricationBench</li>
-        <li MayRequire="guy762.KotORWeapons">guy762_KotORWorkbench</li>
+        <li>guy762_KotORWorkbench</li>
       </recipeUsers>
       <defaultIngredientFilter>
         <categories>
@@ -186,7 +186,7 @@
       <recipeUsers Inherit="False">
         <li>HandTailoringBench</li>
         <li>ElectricTailoringBench</li>
-        <li MayRequire="guy762.KotORWeapons">guy762_KotORWorkbench</li>
+        <li>guy762_KotORWorkbench</li>
       </recipeUsers>
     </recipeMaker>
   </ThingDef>
@@ -225,7 +225,7 @@
       <recipeUsers Inherit="False">
         <li>HandTailoringBench</li>
         <li>ElectricTailoringBench</li>
-        <li MayRequire="guy762.KotORWeapons">guy762_KotORWorkbench</li>
+        <li>guy762_KotORWorkbench</li>
       </recipeUsers>
     </recipeMaker>
   </ThingDef>
@@ -278,7 +278,7 @@
       <recipeUsers Inherit="False">
         <li>HandTailoringBench</li>
         <li>ElectricTailoringBench</li>
-        <li MayRequire="guy762.KotORWeapons">guy762_KotORWorkbench</li>
+        <li>guy762_KotORWorkbench</li>
       </recipeUsers>
     </recipeMaker>
   </ThingDef>
@@ -363,7 +363,7 @@
     <recipeMaker>
       <soundWorking>kotorsound_upgrade</soundWorking>
       <recipeUsers>
-        <li MayRequire="guy762.KotORWeapons">guy762_KotORWorkbench</li>
+        <li>guy762_KotORWorkbench</li>
       </recipeUsers>
       <researchPrerequisite>guy762_ResearchKotOR_uncraftable</researchPrerequisite>
     </recipeMaker>
@@ -385,7 +385,7 @@
       <KOTOR_UltraComponent>1</KOTOR_UltraComponent>
     </costList>
     <descriptionHyperlinks>
-      <ThingDef MayRequire="guy762.KotORWeapons">guy762_KotORWorkbench</ThingDef>
+      <ThingDef>guy762_KotORWorkbench</ThingDef>
     </descriptionHyperlinks>
     <apparel>
       <defaultOutfitTags Inherit="False">
@@ -430,7 +430,7 @@
     <recipeMaker>
       <soundWorking>kotorsound_upgrade</soundWorking>
       <recipeUsers>
-        <li MayRequire="guy762.KotORWeapons">guy762_KotORWorkbench</li>
+        <li>guy762_KotORWorkbench</li>
       </recipeUsers>
       <researchPrerequisite>guy762_ResearchKotOR_uncraftable</researchPrerequisite>
     </recipeMaker>
@@ -452,7 +452,7 @@
       <KOTOR_UltraComponent>1</KOTOR_UltraComponent>
     </costList>
     <descriptionHyperlinks>
-      <ThingDef MayRequire="guy762.KotORWeapons">guy762_KotORWorkbench</ThingDef>
+      <ThingDef>guy762_KotORWorkbench</ThingDef>
     </descriptionHyperlinks>
     <apparel>
       <defaultOutfitTags Inherit="False">
@@ -515,7 +515,7 @@
     <!-- </equippedStatOffsets> -->
     <tickerType>Normal</tickerType>
     <descriptionHyperlinks>
-      <ThingDef MayRequire="guy762.KotORWeapons">guy762_KotORWorkbench</ThingDef>
+      <ThingDef>guy762_KotORWorkbench</ThingDef>
     </descriptionHyperlinks>
     <recipeMaker>
       <unfinishedThingDef>UnfinishedTechArmor</unfinishedThingDef>
@@ -545,7 +545,7 @@
     <!-- </equippedStatOffsets> -->
     <tickerType>Normal</tickerType>
     <descriptionHyperlinks>
-      <ThingDef MayRequire="guy762.KotORWeapons">guy762_KotORWorkbench</ThingDef>
+      <ThingDef>guy762_KotORWorkbench</ThingDef>
     </descriptionHyperlinks>
     <recipeMaker>
       <unfinishedThingDef>UnfinishedMetallicTechArmor</unfinishedThingDef>
@@ -607,7 +607,7 @@
     <!-- </equippedStatOffsets> -->
     <tickerType>Normal</tickerType>
     <descriptionHyperlinks>
-      <ThingDef MayRequire="guy762.KotORWeapons">guy762_KotORWorkbench</ThingDef>
+      <ThingDef>guy762_KotORWorkbench</ThingDef>
     </descriptionHyperlinks>
   </ThingDef>
 
@@ -665,7 +665,7 @@
     <!-- </equippedStatOffsets> -->
     <tickerType>Normal</tickerType>
     <descriptionHyperlinks>
-      <ThingDef MayRequire="guy762.KotORWeapons">guy762_KotORWorkbench</ThingDef>
+      <ThingDef>guy762_KotORWorkbench</ThingDef>
     </descriptionHyperlinks>
   </ThingDef>
 
@@ -802,7 +802,7 @@
       <effectWorking>Smith</effectWorking>
       <soundWorking>Recipe_Machining</soundWorking>
       <recipeUsers>
-        <li MayRequire="guy762.KotORWeapons">guy762_KotORWorkbench</li>
+        <li>guy762_KotORWorkbench</li>
       </recipeUsers>
       <defaultIngredientFilter>
         <categories>
@@ -937,7 +937,7 @@
     </apparel>
     <recipeMaker>
       <recipeUsers>
-        <li MayRequire="guy762.KotORWeapons">guy762_KotORWorkbench</li>
+        <li>guy762_KotORWorkbench</li>
       </recipeUsers>
     </recipeMaker>
   </ThingDef>
@@ -1164,7 +1164,7 @@
       <workSpeedStat>GeneralLaborSpeed</workSpeedStat>
       <workSkill>Crafting</workSkill>
       <recipeUsers>
-        <li MayRequire="guy762.KotORWeapons">guy762_KotORWorkbench</li>
+        <li>guy762_KotORWorkbench</li>
       </recipeUsers>
       <defaultIngredientFilter>
         <categories>

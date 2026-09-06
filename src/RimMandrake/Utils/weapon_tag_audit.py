@@ -384,8 +384,15 @@ EXTRA_TAGS = {
 # operations against the 154 on disk and silently lost every hand-authored op, with no
 # warning of any kind. CAUTION DISARMED THE GUARD.
 # ⇒ Both now read CANON_PATCH no matter where the output goes.
-CANON_PATCH = Path(__file__).resolve().parents[3] / "src" / "Jawa" / "Jawa_Patches" \
-    / "Patches" / "WeaponTags_Renormalise.xml"
+CANON_PATCH = Path(__file__).resolve().parents[3] / "src" / "RimStarWars" \
+    / "StarWarsPatches" / "Patches" / "WeaponTags_Renormalise.xml"
+# ⚠️ This constant pointed at src/Jawa/Jawa_Patches/... (the pre-tier-migration
+# location) until WEAPONTAGS_KOTOR_REGATE_1, 2026-09-06: that path no longer
+# exists, so existing_targets() silently returned empty (refuse_shrink saw
+# nothing to lose) and preserved_block() found no markers (the whole
+# HAND-AUTHORED block would have been dropped) on the next --emit-patch run.
+# Never regenerate against a stale CANON_PATCH again -- verify the path
+# resolves before trusting either guard.
 
 HAND_BEGIN = "<!-- BEGIN HAND-AUTHORED -->"
 HAND_END = "<!-- END HAND-AUTHORED -->"
