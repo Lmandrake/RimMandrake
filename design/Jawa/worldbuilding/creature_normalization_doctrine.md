@@ -263,3 +263,21 @@ way, but WHICH field the multiplier lands on is a separate ruling.
 
 Figures + method: `design/Jawa/worldbuilding/review/viz/` (portfolio scored 90/100,
 all three members carry a `visual-critic` SHIP verdict).
+
+---
+
+## 🔴 YIELD-LAW COVERAGE GAP (distribution portfolio, 2026-09-05) — rule before the size pass
+
+MEASURED over the live register (viz/PORTFOLIO_creature_distribution.md, fig4):
+the quadratic megafauna economy (`MegafaunaYield.xml`) covers 400 big creatures,
+but its per-mod FindMod blocks were generated before some mods existed — **14 live
+creatures with bodySize > 1 still yield the engine's LINEAR default, including all
+12 `RimMandrake - SW Sea Beasts`** (Lanternwhale bs 40 → 5,600 meat where the law
+says 224,000; less than a conforming bs-16 land beast), plus ThrumbaToad and
+DA_Taraal. Either record the linear whales as the stated yield cap this doctrine
+already demands, or add the mods to `src/RimUtinni/Doctrine/Source/gen_megafauna_yield.py`
+— and after ANY bodySize edit, re-render fig4: yields are quadratic in bs, so a ×2
+size correction is a ×4 meat correction. The K=15 lethality pass likewise covers
+exactly the two mods it targeted (fig5): 337 big flesh creatures elsewhere are
+below the Law-3 band, GR_Paraceramuffalo the marquee inversion (35,840 meat, best
+hit 17).
