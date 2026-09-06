@@ -246,6 +246,76 @@ not see this); Gravship Crashes has no XML at all.
 
 Creator workflow (atlas §7, seven stages): macro-landform → reroll → hand-sculpt silhouette → texture geology/ecology → one focal landmark → seed history → package. The corpus: 44 saves, sizes 250² (17) … 500² (2), 11-44 distinct terrains per map (median 19); no terrain-mix percentages measured yet. NONE FOUND on scripted guard/patrol scenes in any of these sources.
 
+### 5.6 Probe results (disk, 2026-09-06)
+
+**P13 — Ancient Urban Ruins carries WHOLE MAPS as data. CONFIRMED.**
+`1.6/Defs/AncientMarket_Libraray.CustomMapDataDef/` holds 42 defs, 18 KB to 2.5 MB;
+the largest (`AM_Supermarket_L.xml`) is `<size>(203,1,203)</size>` — a full 203×203
+map. Format is uncompressed per-cell XML: `terrains` (defName → list of cells),
+`thingDatas` (def, count, position, `stuff`, `hitPoint`, `quality`, per-thing
+`faction`), `roofs` (defName → cells), `pawns` as a spawn-count table
+(`<AncientSoldier>4</AncientSoldier>`), no per-pawn placement. Spawned by a
+`SitePartDef` whose `workerClass` is `AncientMarket_Libraray.SitePartWorker_CustomMap`
+and whose `ModExtension_Map` lists map defNames — so **our own mod can ship a map in
+this shape and have it spawned by referencing that DLL**. No in-game exporter exists
+(no export/record strings anywhere). Dungeon Core uses the same schema family under
+`QuestEditor_Library.CustomMapDataDef` with dungeon-linking tags (entrance/exit,
+conditions), consumed by the separate `HaiLuan.CustomQuestFramework`, whose About
+explicitly invites third-party maps. ⇒ Question 3 (large authored maps) has a shipped
+data route today, at the cost of a dependency on one of these DLLs; our own
+`GenStep`/`SitePartWorker` reading the same shape would remove the dependency.
+
+**P14 — Geological Landforms IS a set of Odyssey tile mutators. CONFIRMED.**
+`1.6/Defs/TileMutators.xml`: every landform is a `TileMutatorDef` with
+`workerClass GeologicalLandforms.TileMutatorWorker_Landform`; the mod loads after
+Odyssey and resolves overlaps automatically (its Keyed strings: a landform that
+conflicts with a vanilla map feature auto-disables one of the two; "replaces" /
+"obsolete due to" relations). So on the frozen world, **landforms and vanilla
+mutators are ONE vocabulary of per-tile mutators** for L0/L1 assignment. The 44
+landform files (`1.6/Landforms-v1/*.xml`) are serialized node graphs
+(`NodeCanvas` → `Node type=…` with editor pixel positions, port/connection IDs,
+seeds) — valid XML but not practically hand-authorable; the in-game editor is the
+authoring tool. Node kinds go well beyond terrain: `outputTerrain`,
+`outputElevation`, `outputFertility`, `outputBiomeGrid`, `outputCaves`,
+`outputWaterFlow`, `outputTerrainPatches`, `outputScatterers` (mineables, cave
+hives), `mapIncidents`. Engine: `TerrainGraph.dll` (hot-loaded via LunarLoader),
+not the open-source Node Editor Framework. Biome Transitions and Biomes! Caverns
+use the same canvas format. ⇒ For L1, authoring a new landform means the in-game
+editor (a human, or a bridge-driven UI — UNCERTAIN whether it is scriptable); our
+own mask-stamping `TileMutatorWorker` (P10) remains the programmatic route and
+coexists as just another mutator.
+
+**P4 — the corpus thing layer is mineable offline. CONFIRMED.**
+`World_58_the_Dead_City/[W58] Dead City - Fox/DeadCity.rws`: 35.6 MB, 500×500,
+game 1.6.4633. All 57,385 things sit as plain `<thing>` XML elements inside one
+`<things>` list (the only deflate blob near them, `compressedThingMapDeflate`, is a
+spatial index, not storage). Each carries `def`, `pos`, `rot`, `health`, `stuff`,
+`quality`, `faction` as plain fields; pawns carry `kindDef`, `gender`, `faction`.
+241 distinct defNames, none mod-prefixed in this map (top: grass 12,973, wall
+5,896, rubble filth 5,257, `AncientPipe` 1,867). 10,209 buildings, 4,744 with a
+faction. Roof and terrain grids are the deflate blobs `savemap.py` already reads.
+⇒ Cutting rectangular chunks by `pos` bounds into PrefabDefs is a plain XML job —
+one iterparse pass per save; the mod-remapping burden is measured per save, not
+assumed.
+
+**P15 — the L1+L2 pattern ships with ZERO C# of ours, via the Vanilla Expanded
+Framework. CONFIRMED.** Vanilla Landmarks Expanded (`3656316229/1.6/Defs/`) ships
+151 `TileMutatorDef`s, 59 `LandmarkDef`s, 8 `PrefabDef`s. Its man-made landmarks are
+a `TileMutatorDef` whose `workerClass` is **`VEF.Maps.TileMutatorWorker_GenericPrefabSpawner`**
+with a `VEF.Maps.TileMutatorExtension` listing `prefabsToSpawn`, `prefabsToSpawnAmount`
+(e.g. `15~25`) and `minSeparationBetweenPrefabs` (e.g. 30), plus `biomeWhitelist`,
+`canSpawnOnRiver`, `coastSidesRange`, `preventsPondGeneration`. The `LandmarkDef`
+carries `mutatorChances` (one `Required="True"`, the rest weighted). The prefab
+(`VEE_RuinedFarmlandPrefabA`, 15×9) is terrain rects + plant rects, no buildings.
+VEF (`OskarPotocki.VanillaFactionsExpanded.Core`) is on the full list AND the
+minimal list, so this worker is available in every load we run. Alpha Biomes uses
+the same worker and additionally composes room grids as `KCSG.StructureLayoutDef`
+(comma-separated symbol rows). UNCERTAIN: the worker's internals (siting rule,
+terrain tests) — VEF's source is on GitHub and should be read before relying on its
+placement quality. ⇒ A new scattered scene (bone field, wreck field, ruined
+farmland) is `PrefabDef` + `TileMutatorDef` + optionally `LandmarkDef`, all XML;
+our own C# is needed only for siting rules VEF's worker lacks.
+
 ## 6. Synthesis after the first research pass
 
 ### 6.1 What the findings change about §3
@@ -309,7 +379,7 @@ names, the unit the LLM authors, and the unit the review save shows.
 | P1 | landing runs standard mapgen with mutators | **CONFIRMED** (`GravshipUtility.cs:540,660`; `MapGenerator.cs:141`) |
 | P2 | `SpawnPrefab` on a live map at a cell | source CONFIRMED; **live call pending** — expose `jawa/spawn_prefab` + `jawa/export_prefab` in JawaBench, one quicktest |
 | P3 | live plan apply timing for 100×100 | pending |
-| P4 | corpus `.rws` thing-layer decode | pending — extend `savemap.py` or a new reader; one World_58 save |
+| P4 | corpus `.rws` thing-layer decode | **CONFIRMED feasible** — things are plain XML with def/stuff/pos/rot/health/quality/faction (§5.6) |
 | P5 | Claude → Lua template from one biome-sheet paragraph | pending |
 | P6 | Geological Landforms XML authorable / active? | see §5.3: ACTIVE, `Landforms-v1/` XML — format read pending |
 | P7 | Real Ruins 1.6 + blueprint format | web CONFIRMED; on disk, INACTIVE (§5.3) — format read pending |
@@ -318,13 +388,22 @@ names, the unit the LLM authors, and the unit the review save shows.
 | P10 | a data-driven `TileMutatorWorker` that stamps a mask file, proven on a quicktest | new — decides whether L1 is authorable without per-shape C# |
 | P11 | `GenStep_ScatterGroup` defs of our own (pure XML) place a plant community keyed to terrain | new — decides whether L4 needs any C# |
 | P12 | playability gates (rule 8) computable from the bridge read-back on a quicktest | new — the grader's floor |
-| P13 | Ancient Urban Ruins' `CustomMapDataDef`: can it carry OUR whole authored maps (question 3) and spawn them by quest? read the def + one shipped instance | new — a possible shipped route for large maps |
-| P14 | Geological Landforms vs Odyssey mutators on one tile: which runs, in what order, and is `Landforms-v1` XML hand-authorable | new — decides L1's authoring format |
-| P15 | Vanilla Landmarks Expanded: read one landmark's `TileMutator` + `PrefabDef` pair as the worked example of L1+L2 | new — cheapest study, pure XML |
+| P13 | Ancient Urban Ruins' `CustomMapDataDef` carries whole maps | **CONFIRMED** — 203×203 flat XML with terrain/things/roofs/faction/pawn counts, spawned by SitePartDef (§5.6) |
+| P14 | Geological Landforms vs Odyssey mutators | **CONFIRMED** — landforms ARE `TileMutatorDef`s with auto conflict resolution; files are editor-serialized node graphs, not hand-authorable (§5.6) |
+| P15 | Vanilla Landmarks Expanded worked example | **CONFIRMED** — VEF's `TileMutatorWorker_GenericPrefabSpawner` scatters PrefabDefs from XML alone (§5.6) |
 
 Each probe is under an hour on the minimal mod list and a quicktest map; none needs
 the full list. The first three that CHANGE the architecture if they fail: P2 (the
 prefab spine), P10 (natural content without C# per shape), P8 (guards).
+
+**Status after the disk pass (2026-09-06):** P1, P4, P13, P14, P15 CONFIRMED from
+source and disk. Still owed, all needing the game up on the minimal list: P2 (live
+`SpawnPrefab` through the vanilla debug action, then export with `CreatePrefab`), P3,
+P8, P9, P12 — nothing new to build for these; P10 and P11 need a small C# worker and
+a scatter-group def respectively, and are the first BUILD items. P5 needs no game.
+New from P15: **P16 — read VEF's `TileMutatorWorker_GenericPrefabSpawner` source
+(GitHub) for its siting rule** before deciding whether our own siting GenStep is
+needed at all.
 
 ## 7. Questions for the owner
 
@@ -339,10 +418,10 @@ Asked as cards, answers recorded below when given:
 
 | # | question | options | answer |
 |---|---|---|---|
-| Q1 | When does content enter the map? | mapgen-time by default, bridge pass optional · GO-click bridge pass only · both always | — |
-| Q2 | What is the stored unit of a structure? | `PrefabDef` (engine format; rimplace compiles to it) · keep the flat rimplace plan · KCSG `StructureLayoutDef` | — |
-| Q3 | How is natural terrain shaped? | vanilla mutators + Geological Landforms + one mask-stamping worker of ours · Python terrain gen applied live through the bridge · both | — |
-| Q4 | Which content factories first? (multi) | LLM from biome sheets · corpus mining of the 44 saves · live-build-and-export · hand-authored Lua | — |
+| Q1 | When does content enter the map? | mapgen-time by default, bridge pass optional · GO-click bridge pass only · both always | **Both — put as much in mapgen as it can bear; optimally all of it, but never filter out a great idea by that requirement** |
+| Q2 | What is the stored unit of a structure? | `PrefabDef` (engine format; rimplace compiles to it) · keep the flat rimplace plan · KCSG `StructureLayoutDef` | **PrefabDef; rimplace compiles to it** |
+| Q3 | How is natural terrain shaped? | vanilla mutators + Geological Landforms + one mask-stamping worker of ours · Python terrain gen applied live through the bridge · both | **Gen-time is optimal; the live bridge route where we must, to keep quality high** |
+| Q4 | Which content factories first? (multi) | LLM from biome sheets · corpus mining of the 44 saves · live-build-and-export · hand-authored Lua | **LLM + corpus + live-build-export. "We must try many things to know the right way. Human hand authoring everything is simply not scalable."** |
 
 Open, not yet carded: whether large authored maps (question 3) ship through Ancient
 Urban Ruins' `CustomMapDataDef` route or through district composition — P13 decides
@@ -350,4 +429,10 @@ what is even possible.
 
 ## 8. Decisions
 
-*None yet. Nothing in this document is ruled.*
+Owner, by card, 2026-09-06:
+
+1. **Mapgen-time carries as much as it can bear; the bridge pass is kept for whatever cannot go there.** The test for putting a thing in the bridge pass is quality, never convenience; a great idea is never dropped because it only works live.
+2. **`PrefabDef` is the stored unit of a structure. rimplace (Lua) is the authoring language and compiles to it.** A sidecar carries what PrefabDef lacks (roofs, pawns, posts, clears) until proven otherwise.
+3. **Natural terrain: gen-time (vanilla mutators, Geological Landforms, our mask-stamping worker) is the target; the live route is the fallback where quality demands it.**
+4. **Three content factories stand up in the first wave: LLM-from-biome-sheet, corpus mining of the 44 saves, live-build-and-export.** Hand authoring continues but is not the plan; it does not scale.
+5. **The probes in §6.4 run before anything is built on them.** Nothing below this line is built yet.
