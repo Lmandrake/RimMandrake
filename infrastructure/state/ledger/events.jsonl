@@ -4971,3 +4971,5 @@
 {"seat":"FOUNDRY","event":"start","id":"NINEFOLD_DEBUG_GAME_READY_CRASH_1","ts":"2026-09-06T03:03:12Z"}
 {"seat":"FOUNDRY","event":"game","state":"LOADING","measured":true,"evidence":"RimWorldWin64 running; BRIDGE NOT PROBED — no port found in the environment or in Player.log, so LOADING here is a DEFAULT, not a reading.","ts":"2026-09-06T03:06:53Z"}
 {"seat":"BENCH","event":"file","id":"SARLACC_NATIVE_HABITAT_1","title":"Sarlacc: native deep-desert habitat, three life-cycle stages, dungeon module","kind":"task","target":"v1","for":"FOUNDRY","ts":"2026-09-06T03:13:19Z"}
+{"seat":"FOUNDRY","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-09-06T03:19:00Z"}
+{"seat":"FOUNDRY","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-09-06T03:21:33Z"}
