@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-06T22:49:51Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-06T23:03:23Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -440,15 +440,6 @@ target:   v1
 kind:     task
 summary:  MAPGENPAINTERV11 — make the offline terrain painter draw like a landscape, not a diagram
 prose:    infrastructure/state/items/MAPGEN_PAINTER_V1_1.md
-
-## ARMOURY_SWMODS_MODNAME_GAP_1 gen_armoury_patch.py's SW_MODS still names the retired donors, so a regen silently drops 33 melee ops now attributed to Jawa Armoury Rebalance
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  (no items/ARMOURY_SWMODS_MODNAME_GAP_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ARMOURY_SWMODS_MODNAME_GAP_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -1105,3 +1096,23 @@ kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/PATCHMODS_LOADAFTER_SWEEP_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/PATCHMODS_LOADAFTER_SWEEP_1.md
+
+## PATCH_LEDGER_MINUS_ONE_OSCILLATES_1 87 patch_ledger entries record an original of -1, and any op emitted onto one oscillates in and out on alternate runs
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/PATCH_LEDGER_MINUS_ONE_OSCILLATES_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PATCH_LEDGER_MINUS_ONE_OSCILLATES_1.md
+
+## ARMOURY_SUBSTRING_RUNG_TRAP_1 gen_armoury_patch's 'repeater'/'heavy'/'cannon' substring rung can retune any third-party projectile a turret drags in
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/ARMOURY_SUBSTRING_RUNG_TRAP_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ARMOURY_SUBSTRING_RUNG_TRAP_1.md
