@@ -176,3 +176,59 @@ flavor choice, not a criteria question — both satisfy the stated ruling.
 Whichever is chosen, `mf.jfklanding` needs to come OFF the active list
 first (it's currently the only one of the three actually running, and it's
 the one everyone already agrees is wrong).
+
+## Live-verified 2026-09-06, post-restart on the corrected full list
+
+**Mod swap confirmed clean via `jawa/harmony_patches`**: `mf.jfklanding`'s
+patches are gone entirely. `nep.NepLOA`'s prefixes are attached to the
+right targets — `Designator_MoveGravship.IsValidCell` and
+`CompGravshipThruster.IsBlocked` — matching the source read. Our own
+retired mod's `CompGravshipThruster.get_Blocked` patch is confirmed gone
+(no patches on that member at all now). `harvest_log.py` shows zero config
+errors naming either mod, patch-failure count unchanged from baseline+2
+(the pre-existing StarWarsPatches finding, unrelated).
+
+**New collision found, not previously known**: `vanillaexpanded.gravship`
+(Vanilla Gravship Expanded, already active) ALSO prefixes
+`Designator_MoveGravship.IsValidCell`, same priority (400) as
+LandOnAnything's prefix. Both will run; same-priority Harmony ordering is
+load-order-dependent, and whichever runs second can overwrite the other's
+`__result`. **Not investigated further this pass** — VGE's own patch
+content wasn't decompiled (scope/time), so it's unknown whether it
+conflicts with the crush-landing behavior or is compatible. This existed
+before today's change too (VGE was always active alongside whichever of
+the three landing mods was running) — not a regression introduced here,
+but newly visible now that the right question is being asked.
+
+**Settings forced off their wrong-permissive defaults, and PROVEN durable**:
+`allowedToSqishRoofs` and `allowedToLandOnAnyTerrain` set to `false` via
+`rimworld/update_mod_settings`, then verified two ways — read back
+immediately, AND via `rimworld/reload_mod_settings` (discards in-memory
+state, re-reads from `Config/Mod_3545384484_LandOnAnythingMod.xml`) — both
+confirm `false`. The settings file itself omits both fields (RimWorld's
+Scribe skips writing bool fields that equal `default(bool)` == `false`),
+which looked like a possible silent-failure at first glance but is
+confirmed CORRECT: the reload-from-disk round-trip proves the omission
+still loads back as `false`, not the C# field's `true` initializer.
+`allowedToLandOnThings=true` and `unblockableThrusters=true` (defaults,
+unchanged) — matches the crush-and-launch-anyway requirement.
+
+**Still not done**: the actual live-behavioral test (a real landing over a
+small obstacle, a real refused mountain/lava/water tile, a real blocked-
+thruster launch) — not attempted this pass. `gravship_scratch_d.rws`
+exists and is the obvious vehicle for it next time the bridge is free for
+it.
+
+## criteria (updated)
+- [x] Existing-mod check done first, by decompile, and correctly rejected
+      (too permissive on terrain; takeoff patch is a no-op). — original,
+      superseded approach; new approach used a REAL maintained mod instead
+      of building our own.
+- [x] `nep.landonanything` patches confirmed attached to the correct
+      vanilla methods, live, via `jawa/harmony_patches`.
+- [x] Settings forced to match the ruling and proven durable across a
+      settings reload (not just an in-memory echo).
+- [ ] Full behavioral proof: an actual crushed/damaged-obstacle landing,
+      an actual terrain refusal, and an actual blocked-thruster launch,
+      watched happen on a live map.
+- [ ] VGE collision on `IsValidCell` — unresolved, not chased this pass.
