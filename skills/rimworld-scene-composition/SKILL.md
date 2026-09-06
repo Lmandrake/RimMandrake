@@ -46,6 +46,14 @@ that claim for you, you must satisfy it by construction, every time:
   standing in a field, not a plateau edge — the TOP piece is what tells the eye
   "there is more raised ground back there," and the mod ships both halves precisely
   because neither one alone completes the claim.
+- 🔴 **Decorative Cliffs pieces only link into a solid face along a HORIZONTAL run
+  (same z, varying x) of the same defName.** Live-tested 2026-09-06: a VERTICAL
+  column (fixed x, varying z) of `Dirt_Hill_Right` rendered as a broken, disconnected
+  zigzag/ladder shape — bizarre and clearly a defect, not a dune. The identical pieces
+  placed as a horizontal row linked into one continuous mound. `Graphic_Single` +
+  `CornerFiller` evidently blends adjacent SAME-row neighbors, not same-column ones.
+  **Orient every cliff/hill run east-west, never north-south**, until a counter-example
+  is found and recorded here.
 - 🔴 **A terrain-type boundary must be JAGGED, never a straight or rectangular line.**
   A ruler-straight edge between two floor types (or a rectangular "cleared zone" left
   behind by a scatter template's own CLEAR step) reads as a UI grid or a foundation

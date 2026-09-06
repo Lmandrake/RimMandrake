@@ -77,6 +77,52 @@ function build(ctx)
     return x >= hx - 1 and x < hx + hull_w + 1 and z >= hz - 1 and z < hz + hull_h + 1
   end
 
+  -- ---- dune-lip the hull is half-buried against --------------------------
+  -- rimworld-scene-composition §1's pairing rule: a cliff/hill FACE piece
+  -- never stands alone - it reads as a wall in a field unless its TOP piece
+  -- sits behind/above it, implying more raised ground continues back. Put on
+  -- the SAME leeward (+x) side the sand already drifts toward (below), so
+  -- the two effects reinforce each other instead of competing: the hull
+  -- stalled nose-first into a dune's flank, half-buried at its base, not
+  -- sitting on open flat sand with an unrelated drift beside it.
+  --
+  -- 🔴 ORIENTATION, live-tested 2026-09-06 (rimworld-scene-composition's own
+  -- first live proof): Decorative Cliffs' `Graphic_Single`+`CornerFiller`
+  -- linking only reads as a solid face along a HORIZONTAL run of the SAME
+  -- defName at a fixed z (varying x) - a VERTICAL column at fixed x (varying
+  -- z, the first version of this file) renders as a broken zigzag/ladder
+  -- shape, not a dune. Confirmed live: an isolated build_batch test of a
+  -- vertical column of Dirt_Hill_Right produced the zigzag; the identical
+  -- pieces placed as a horizontal row linked into one continuous mound.
+  -- So the ridge here runs EAST-WEST (fixed z, varying x) beside the hull's
+  -- flank, not north-south along its height.
+  --
+  -- Dirt_Hill_Right / Dirt_HillTop_Right (Decorative Cliffs' Dirt Hill
+  -- family, ParentName="HillBase" in Buildings_Cliffs.xml, both verified
+  -- against the live def dump) - not the Stone_Cliff family, which reads as
+  -- quarried rock. A packed-dirt dune lip is the desert-honest read for a
+  -- Deep Desert wreck site. The ridge sits one row north of the hull's own
+  -- footprint (dune_face_z = hz - 2, clear of the Iguana's shade spot below
+  -- the hull), running east from the hull's east flank for 4 cells, with the
+  -- TOP row one further cell north (behind/above the face, per §1).
+  local dune_face_z = hz - 2
+  local dune_top_z = dune_face_z - 1
+  local dune_run_len = 4
+  local dune_cells = 0
+  if ctx:in_bounds(hx, dune_top_z) then
+    for i = 0, dune_run_len - 1 do
+      local dx = hx + i
+      if ctx:in_bounds(dx, dune_face_z) and not ctx:occupied(dx, dune_face_z) then
+        ctx:place("Dirt_Hill_Right", dx, dune_face_z)
+        dune_cells = dune_cells + 1
+      end
+      if ctx:in_bounds(dx, dune_top_z) and not ctx:occupied(dx, dune_top_z) then
+        ctx:place("Dirt_HillTop_Right", dx, dune_top_z)
+        dune_cells = dune_cells + 1
+      end
+    end
+  end
+
   -- ---- leeward sand accretion: one direction, tapering with distance ----
   -- The wind is fixed campaign-wide (deep_desert.md §9's yardang grain);
   -- this template just needs ONE consistent side, so it picks the map's own
@@ -130,8 +176,9 @@ function build(ctx)
 
   note(string.format(
     "the long crossing: 1 stalled AncientIndustrialTruck (engine failure, "
-    .. "never touched by anything alive), %d ChunkSlagSteel leftovers too "
-    .. "small to have been worth carrying off, %d SoftSand cells drifted "
-    .. "against its leeward side, 1 dessicated Iguana - the shade's first "
-    .. "and so-far only tenant", scattered, drift_cells))
+    .. "never touched by anything alive), half-buried against a %d-cell "
+    .. "Dirt_Hill/Dirt_HillTop dune-lip on its leeward side, %d ChunkSlagSteel "
+    .. "leftovers too small to have been worth carrying off, %d SoftSand "
+    .. "cells drifted against the same side, 1 dessicated Iguana - the "
+    .. "shade's first and so-far only tenant", dune_cells, scattered, drift_cells))
 end

@@ -93,6 +93,25 @@ function build(ctx)
 
   local anchor, skulls, bones, chunks, trees, tenants = 0, 0, 0, 0, 0, 0
 
+  -- ---- bounding box of everything actually placed, tracked live so the
+  -- CLEAR footprint below (BONEYARD_SCATTER_GUARD_1) can cover the real
+  -- assembly - the tail/chunk spread is seeded per-render and cannot be
+  -- known ahead of placement, so this is measured, never guessed. Approx
+  -- (ignores the rotation origin-shift defsize.footprint applies to
+  -- even-sized things) is fine here: this only sizes a generous CLEAR
+  -- margin, not a collision check - that precision lives in can_place().
+  local min_x, max_x, min_z, max_z = nil, nil, nil, nil
+  local function expand_bounds(defName, x, z)
+    local w, h = ctx:width_of(defName), ctx:height_of(defName)
+    local x0 = x - math.floor((w - 1) / 2)
+    local z0 = z - math.floor((h - 1) / 2)
+    local x1, z1 = x0 + w - 1, z0 + h - 1
+    if min_x == nil or x0 < min_x then min_x = x0 end
+    if max_x == nil or x1 > max_x then max_x = x1 end
+    if min_z == nil or z0 < min_z then min_z = z0 end
+    if max_z == nil or z1 > max_z then max_z = z1 end
+  end
+
   if not compact then
     -- ---- the one animal ---------------------------------------------------
     -- "what died here is still lying where it fell" (deep_desert.md section
@@ -101,6 +120,7 @@ function build(ctx)
     if ctx:can_place(SKELETON, cx, cz) then
       anchor = 1
       ctx:place(SKELETON, cx, cz)
+      expand_bounds(SKELETON, cx, cz)
 
       -- Footprint math for an 8x4 Building at rot 0 (both dims even, so the
       -- rotation shift at rot 0 is (0,0) - rimplace.defsize.footprint):
@@ -111,13 +131,15 @@ function build(ctx)
       local skel_west, skel_east = cx - 3, cx + 4
 
       -- head end vs tail end: seeded per-tile variety (same seed, same
-      -- animal), never per-render noise - but the skull needs ~6 clear
-      -- cells past whichever edge it lands on (2-wide skull + neck-bone gap,
-      -- see below), and a narrow rect (the CLI's own 16x12 default among
-      -- them) does not always have that on BOTH sides. Pick whichever side
-      -- actually has room; only randomize between the two when both do, so
-      -- this never quietly loses the skull the way a fixed side would.
-      local SKULL_ROOM = 6
+      -- animal), never per-render noise - but the skull needs ~4 clear
+      -- cells past whichever edge it lands on (1-cell neck bone + 2-wide
+      -- skull, BOTH now flush against each other and against the ribcage,
+      -- see below, +1 margin), and a narrow rect (the CLI's own 16x12
+      -- default among them) does not always have that on BOTH sides. Pick
+      -- whichever side actually has room; only randomize between the two
+      -- when both do, so this never quietly loses the skull the way a
+      -- fixed side would.
+      local SKULL_ROOM = 4
       local room_west, room_east = skel_west - rect.x, rect.x2 - skel_east
       local head_dir
       if room_west >= SKULL_ROOM and room_east >= SKULL_ROOM then
@@ -135,15 +157,35 @@ function build(ctx)
       local tail_edge = (head_dir < 0) and skel_east or skel_west
       local tail_dir = -head_dir
 
-      -- ---- the skull, one neck-vertebra's gap from the ribcage ----------
-      local neck_x = head_edge + head_dir * 2
+      -- ---- the skull, flush against the ribcage - BONEYARD_TWO_SKULLS_1 --
+      -- Was: neck bone 2 cells past the edge, skull 5 cells past the edge -
+      -- a 3-4 cell OPEN gap that read as a second, disconnected skull/animal
+      -- (owner, looking at a live screenshot; see the skill's §6 worked
+      -- example). A real skeleton's skull sits AT its spine: the neck bone
+      -- now touches the ribcage's own edge (zero gap) and the skull touches
+      -- the neck bone (zero gap) - one continuous chain, not three floating
+      -- pieces. defsize.footprint's rot-0 origin always extends toward +x,
+      -- regardless of which way head_dir points, so the skull's offset
+      -- (unlike the neck bone's, which is 1-wide and symmetric) cannot use
+      -- the same head_dir multiplier on both sides without overlapping the
+      -- neck bone - hence the explicit branch below.
+      local neck_x = head_edge + head_dir       -- touches the ribcage edge
       if ctx:can_place(BONE_C, neck_x, cz) then
         ctx:place(BONE_C, neck_x, cz)
+        expand_bounds(BONE_C, neck_x, cz)
         bones = bones + 1
       end
-      local skull_x = head_edge + head_dir * 5   -- (2-wide skull, 1-cell gap past the neck bone)
+      local skull_x
+      if head_dir > 0 then
+        skull_x = neck_x + 1                    -- skull's near edge touches the neck bone
+      else
+        skull_x = neck_x - 2                    -- skull is 2-wide and its footprint always
+                                                  -- extends toward +x, so its FAR edge must
+                                                  -- land one cell short of the neck bone
+      end
       if ctx:can_place(SKULL, skull_x, cz) then
         ctx:place(SKULL, skull_x, cz)
+        expand_bounds(SKULL, skull_x, cz)
         skulls = skulls + 1
       else
         ctx:refuse(SKULL, "no room for the skull at the ribcage's head end")
@@ -159,6 +201,7 @@ function build(ctx)
         local def = (i <= n_tail - 2) and BONE_C or BONE_B
         if ctx:can_place(def, tx, tz) then
           ctx:place(def, tx, tz)
+          expand_bounds(def, tx, tz)
           bones = bones + 1
         end
       end
@@ -172,6 +215,7 @@ function build(ctx)
         local bz = cz + math.floor(r * math.sin(ang) + 0.5)
         if ctx:can_place(BONE_CHUNK, bx, bz) then
           ctx:place(BONE_CHUNK, bx, bz)
+          expand_bounds(BONE_CHUNK, bx, bz)
           chunks = chunks + 1
         end
       end
@@ -186,12 +230,14 @@ function build(ctx)
     -- animal's remains, not a graveyard --------------------------------
     if ctx:can_place(SKULL, cx, cz) then
       ctx:place(SKULL, cx, cz)
+      expand_bounds(SKULL, cx, cz)
       skulls = skulls + 1
     end
     for _, off in ipairs({ { -2, 0 }, { 2, 0 }, { 0, -2 }, { 0, 2 } }) do
       local bx, bz = cx + off[1], cz + off[2]
       if ctx:can_place(BONE_A, bx, bz) then
         ctx:place(BONE_A, bx, bz)
+        expand_bounds(BONE_A, bx, bz)
         bones = bones + 1
       end
     end
@@ -206,6 +252,7 @@ function build(ctx)
   local tree_z = cz + (compact and 2 or 3)
   if ctx:can_place(TREE, cx, tree_z) then
     ctx:place(TREE, cx, tree_z)
+    expand_bounds(TREE, cx, tree_z)
     trees = trees + 1
 
     -- ---- tenants: small desert life paying rent in the one patch of shade
@@ -223,6 +270,30 @@ function build(ctx)
     end
   else
     ctx:refuse(TREE, "no room beside the ribcage for the silverbole-standin tree")
+  end
+
+  -- ---- CLEAR a margin beyond the assembly's own bounding box, not just its
+  -- footprint - BONEYARD_SCATTER_GUARD_1. A live screenshot showed a second,
+  -- unrelated skull-shaped object sitting near this site: ambient map
+  -- scatter this template never placed, but which read as part of the scene
+  -- because nothing controlled the ground around the bones. This site now
+  -- clears MARGIN cells past whatever it actually built (tracked live above
+  -- via expand_bounds, since the tail/chunk spread is seeded per-render) so
+  -- stray plants/filth/items from the wider map do not land inside the
+  -- frame a viewer will screenshot. "soft" mode only - this is a bone field
+  -- on open desert ground, not a mined excavation, so any natural mineable
+  -- rock nearby is left standing rather than replaced with rough-rock
+  -- terrain. CLEAR always executes before THING placement at mapgen time
+  -- (GenStep_RimplacePlan's fixed step order), regardless of Lua call
+  -- order, so clearing this same ground the tree/bones just landed on does
+  -- not un-place them.
+  if min_x then
+    local MARGIN = 3
+    local cx0 = math.max(rect.x, min_x - MARGIN)
+    local cz0 = math.max(rect.z, min_z - MARGIN)
+    local cx1 = math.min(rect.x2, max_x + MARGIN)
+    local cz1 = math.min(rect.z2, max_z + MARGIN)
+    ctx:clear(cx0, cz0, cx1 - cx0 + 1, cz1 - cz0 + 1, "soft")
   end
 
   note(string.format(
