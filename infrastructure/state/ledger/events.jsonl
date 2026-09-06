@@ -5109,3 +5109,8 @@
 {"seat":"FOUNDRY","event":"start","id":"TERRAIN_GRID_RENDERER_1","ts":"2026-09-06T19:35:05Z"}
 {"seat":"FOUNDRY","event":"claim","id":"CORPUS_MAP_STATISTICS_1","ts":"2026-09-06T19:35:06Z"}
 {"seat":"FOUNDRY","event":"start","id":"CORPUS_MAP_STATISTICS_1","ts":"2026-09-06T19:35:08Z"}
+{"seat":"FOUNDRY","event":"close","id":"TERRAIN_GRID_RENDERER_1","sha":"0ad8ecb5792b49531c36de6671a5b72657cfe9d4","ts":"2026-09-06T19:41:09Z"}
+{"seat":"FOUNDRY","event":"file","id":"GL_GRAPH_EMITTER_1","title":"GL-graph emitter: write Geological Landforms recipe files from Python; proof = rebuilt DesertPlateau census-identical + a live RUT_EmitterPlateau log line (research doc §9.3 step 6)","kind":"task","target":"v1","needs":"offline","spec":"infrastructure/state/items/GL_GRAPH_EMITTER_1.md","for":"FOUNDRY","ts":"2026-09-06T19:42:45Z"}
+{"seat":"FOUNDRY","event":"file","id":"MACRO_GENERATOR_V0_1","title":"Macro generator v0: ONE idea per map — chooser + plan + terrain grid, graded on a comparator sheet by the owner (research doc §9.3 step 4)","kind":"task","target":"v1","needs":"offline","spec":"infrastructure/state/items/MACRO_GENERATOR_V0_1.md","for":"FOUNDRY","ts":"2026-09-06T19:42:46Z"}
+{"seat":"FOUNDRY","event":"claim","id":"GL_GRAPH_EMITTER_1","ts":"2026-09-06T19:42:46Z"}
+{"seat":"FOUNDRY","event":"start","id":"GL_GRAPH_EMITTER_1","ts":"2026-09-06T19:42:47Z"}
