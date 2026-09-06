@@ -136,3 +136,24 @@ dependencies are **ours**.
 ⇒ Lesson for future retirement calls: **a fauna count is not a retirement decision.**
 Ask what the mod generates (biomes, terrain, genes, GenSteps, world tiles) and what
 OUR content already leans on, before counting creatures.
+
+
+---
+
+## 🔴 THE STAR WARS ICON CARVE-OUT (owner ruling, 2026-09-05)
+
+> "Iconic Star Wars status protects completely."
+
+The rule disqualifies **terrestrial** recognizability, never **in-universe**
+recognizability. A bantha that reads as a bantha, a dewback that reads as a
+dewback, an astromech that reads as an astromech — **that is the campaign
+working.** Iconic Star Wars creatures and droids are exempt outright, and their
+recognizability is an ASSET to seek rather than a defect to correct.
+
+This settles the five Outer Rim droids the mechanics scan flagged: **not cut, not
+even regenerate — protected.**
+
+⇒ Corollary, and it inverts the usual direction of this work: where an iconic
+creature is MISSING from the game, that is an opportunity to reskin or recreate
+something into it. Being instantly nameable is the goal there.
+See `design/Jawa/worldbuilding/starwars_iconic_creatures.md` (research pending).

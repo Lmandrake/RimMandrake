@@ -64,4 +64,24 @@ inherited from whatever mod shipped them. Two standing bans apply everywhere:
 
 - 🔴 **The recognizability rule** (`creature_recognizability_rule.md`): if a player
   can instantly name what it is meant to be, it does not belong on this planet.
-- 🔴 **Lush flora only in the water-high biomes** (owner, 2026-09-05).
+- 🔴 **THE LUSH RULE, three-part** (owner, 2026-09-05 — corrected; an earlier
+  "lush = water-high biomes" phrasing was WRONG and is struck):
+  1. **Dayside: lush exists ONLY along rivers and coasts.** It is a THIN LINE on
+     the map, never a region — a green edge against the vast empty dune. Away from
+     water there is nothing.
+  2. **The terminator is NOT lush. It is SOLITARY.** Its character is sparse,
+     lonely and singular; never write it as an abundant green belt.
+  3. **The nightside has a DIFFERENT definition of lush** — dense, but built of
+     very alien life forms rather than green plants. A future nightside-lush biome
+     is the owner's stated intent.
+
+
+## 🔴 The Star Wars icon carve-out (owner, 2026-09-05)
+
+> "Iconic Star Wars status protects completely."
+
+The recognizability rule disqualifies **terrestrial** referents, never in-universe
+ones. A bantha, a dewback, an astromech reading as exactly what it is *is the
+campaign working*, not a violation. Iconic Star Wars creatures and droids are
+exempt from the cut rule outright — and their recognizability is an asset to be
+sought, not a defect to be corrected.
