@@ -63,6 +63,7 @@ from def_inventory import build, D_CONFIG, D_WORKSHOP, D_LOCAL, D_DATA
 from def_diff import iter_live_defs
 from refresh import D_DUMP
 from patch_provenance import guard
+from retired_mods import is_retired
 
 # Derived from HERE (a sibling of Patches/), not hardcoded to a tier path: the
 # 2026-08-30 rename (src/Jawa/Jawa_Doctrine -> src/RimUtinni/Doctrine) moved this
@@ -70,6 +71,10 @@ from patch_provenance import guard
 # now-nonexistent src/Jawa/Jawa_Doctrine/Patches -- a re-run would have written
 # a stray file there while the live MegafaunaYield.xml went stale, silently.
 OUTDIR = os.path.join(os.path.dirname(HERE), "Patches")
+# --out DIR sends the emit elsewhere, so a re-run can be diffed against the
+# committed file instead of overwriting the thing you wanted to compare with.
+if "--out" in sys.argv:
+    OUTDIR = os.path.abspath(sys.argv[sys.argv.index("--out") + 1])
 NL = "\n"
 
 def xesc(s):
@@ -271,7 +276,14 @@ with io.open(out, "w", encoding="utf-8", newline="") as fh:
     fh.write("     Only bodySize > %.1f is affected. -->" % MIN_BODY_SIZE + NL)
     fh.write("<Patch>" + NL)
     n = 0
+    retired_skipped = {}
     for mod, oplist in sorted(ops.items()):
+        # A dump captured before the 2026-09-05 retirements still carries their
+        # animals, so an unfiltered re-run emits yield patches for four mods the
+        # game will never load again (ARMOURY_LEATHER_GEN_DESYNC_1, same shape).
+        if is_retired(mod):
+            retired_skipped[mod] = len(oplist)
+            continue
         n += len(oplist)
         fh.write(NL + '  <Operation Class="PatchOperationFindMod">' + NL)
         fh.write("    <mods><li>" + xesc(mod) + "</li></mods>" + NL)
@@ -283,7 +295,11 @@ with io.open(out, "w", encoding="utf-8", newline="") as fh:
         fh.write("    </match>" + NL + "  </Operation>" + NL)
     fh.write(NL + "</Patch>" + NL)
 
-print("  %-30s %4d operations in %d mod groups" % ("MegafaunaYield.xml", n, len(ops)))
+if retired_skipped:
+    print("  retired mods excluded: %s"
+          % ", ".join("%s (%d ops)" % kv for kv in sorted(retired_skipped.items())))
+print("  %-30s %4d operations in %d mod groups"
+      % ("MegafaunaYield.xml", n, len(ops) - len(retired_skipped)))
 print("  skipped: %s" % dict(skipped))
 if inherited_statbases:
     print("  statBases inherited from a parent, so NOT patched (%d): %s"

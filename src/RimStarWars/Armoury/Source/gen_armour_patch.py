@@ -43,8 +43,14 @@ from def_inventory import build, D_CONFIG, D_WORKSHOP, D_LOCAL, D_DATA
 from def_diff import iter_live_defs
 from refresh import D_DUMP
 from patch_provenance import guard
+from retired_mods import is_retired
 
 OUTDIR = os.path.join(ROOT, "src", "RimStarWars", "Armoury", "Patches")
+# --out DIR sends the emit somewhere else. Without it this generator could
+# only be checked by clobbering the very file you wanted to compare against,
+# which is how its output silently diverged (ARMOURY_LEATHER_GEN_DESYNC_1).
+if "--out" in sys.argv:
+    OUTDIR = os.path.abspath(sys.argv[sys.argv.index("--out") + 1])
 ANIMALS = os.path.join(ROOT, "observed", "2026-08-13",
                        "inventory", "animals.csv")
 NL = "\n"
@@ -604,6 +610,7 @@ for rec in ds.of_type("ThingDef"):
                       for name, i in FACTORS))
 
 # ========================================================== emit
+retired_skipped = collections.Counter()
 os.makedirs(OUTDIR, exist_ok=True)
 HDR = ('<?xml version="1.0" encoding="utf-8"?>' + NL +
        "<!-- %s" + NL +
@@ -622,6 +629,13 @@ for fn, by_mod in sorted(ops.items()):
     with io.open(os.path.join(OUTDIR, fn), "w", encoding="utf-8") as fh:
         fh.write(HDR % TITLES.get(fn, fn))
         for mod, oplist in sorted(by_mod.items()):
+            # The dump this reads predates the 2026-09-05 retirements and still
+            # carries their defs. Emitting a FindMod block for a mod that is
+            # gone is not merely dead weight: it undoes the hand cleanup in
+            # bbf66830 every time anyone follows the header and re-runs.
+            if is_retired(mod):
+                retired_skipped[mod] += len(oplist)
+                continue
             n += len(oplist)
             fh.write(NL + '  <Operation Class="PatchOperationFindMod">' + NL)
             fh.write("    <mods><li>" + mod + "</li></mods>" + NL)
@@ -633,6 +647,11 @@ for fn, by_mod in sorted(ops.items()):
             fh.write("    </match>" + NL + "  </Operation>" + NL)
         fh.write(NL + "</Patch>" + NL)
     print("  %-34s %4d operations in %d mod groups" % (fn, n, len(by_mod)))
+
+if retired_skipped:
+    print("retired mods excluded: %s"
+          % ", ".join("%s (%d ops)" % (m, n)
+                      for m, n in sorted(retired_skipped.items())))
 
 print("\narmour tiers matched: %s" % dict(tier_counts))
 print("vibro %d | alien blades %d | slugthrowers %d | lightsaber bases %d"

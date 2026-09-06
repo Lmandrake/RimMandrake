@@ -1,0 +1,36 @@
+{
+  "_what": "Donor mods the owner has RETIRED. Anything that reads a frozen observed/ dump must exclude these, because a dump captured before the retirement still carries their defs and a generator re-run will silently resurrect content for mods that are no longer in the game.",
+  "_authority": "design/Jawa/worldbuilding/RETIREMENT_CHECKLIST.md and design/Jawa/worldbuilding/mod_retirement_audit.md",
+  "_reader": "src/RimMandrake/Utils/retired_mods.py  (is_retired / filter_rows)",
+  "_rule": "Match on packageId when the artifact carries one, else on any string in modNames. Retirement is by the owner's ruling only; never add an entry because a mod is merely absent from a dump.",
+  "retired": [
+    {
+      "packageId": "veterano.mythicages.megafaunabestiary",
+      "modNames": ["Mythic Ages: Megafauna Bestiary"],
+      "retiredOn": "2026-09-05",
+      "commit": "bbf66830",
+      "why": "owner ruling 2026-09-05; zero dependents, nothing absorbed"
+    },
+    {
+      "packageId": "Spino.Megafauna",
+      "modNames": ["Megafauna"],
+      "retiredOn": "2026-09-05",
+      "commit": "bbf66830",
+      "why": "owner ruling 2026-09-05; every reference was conditional and is deleted"
+    },
+    {
+      "packageId": "Mlie.JurassicRimworldDinosaursOnly",
+      "modNames": ["Jurassic Rimworld - Dinosaurs Only (Continued)"],
+      "retiredOn": "2026-09-05",
+      "commit": "bbf66830",
+      "why": "owner ruling 2026-09-05; eight creatures absorbed into mandrake.rsw.swbestiary"
+    },
+    {
+      "packageId": "Mlie.BeastsoftheRim",
+      "modNames": ["Beasts of the Rim (Continued)"],
+      "retiredOn": "2026-09-05",
+      "commit": "bbf66830",
+      "why": "owner ruling 2026-09-05; content absorbed, hard dependency removed"
+    }
+  ]
+}
