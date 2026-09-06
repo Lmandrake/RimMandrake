@@ -145,6 +145,37 @@ our own `StarWarsPatches/Patches/WeaponTags_Renormalise.xml` failed
 loaded stack (likely renamed/retired KotOR-droid weapons since the patch
 was written).
 
+**Owner's counter-theory, same evening**: the machine also threw an
+unrelated "massive error" earlier today with no RimWorld or Claude
+involvement, around the time `LOCAL_IMAGEGEN_TRACK_PARKED_1`'s ComfyUI/
+Flux local-hardware graphics work was OOM-killing agent seats (measured
+cause there: a 7.2GB python child blew a 10G cgroup). Owner's read: the
+local graphics experimentation destabilized the host's memory subsystem
+generally, and RimWorld's 18GB ceiling is a symptom of THAT, not of
+anything in our own mod stack (RimThemes included). **Ruling: proceed as
+though the full list is fine post-reboot-and-park; if it crashes anyway,
+the instrumentation should say precisely how.**
+
+Checked what OS-level telemetry says, for whatever it's worth: Windows
+Application-log crash reports (Event ID 1000/1001, last 200 entries) have
+**never once named RimWorldWin64.exe** — consistent with the earlier
+finding that the process just vanishes with no managed exception, no
+Unity/Mono crash stack, no WER crash-dump banner. No
+Kernel-Power/resource-exhaustion System events (41/2004/6008) around
+either death either. This doesn't distinguish the owner's
+"host-destabilized-by-ComfyUI" theory from an ordinary OOM-killer citing
+RimWorld specifically — both look like a silent kill from outside the
+process, which is all this data can say.
+
+**Passive crash-watch instrumentation now running**
+(`src/RimMandrake/bridgetools/crash_watch.sh`, backgrounded, survives this
+session): samples `tasklist.exe` RSS every 5s indefinitely and, the
+instant `RimWorldWin64.exe` disappears, writes a timestamped crash report
+under `Transient/` (RSS trend, Player.log tail, matching Windows Event
+Viewer Application/System entries) — so if it crashes during real play,
+the exact moment and shape of it is captured rather than reconstructed
+after the fact.
+
 ## criteria
 A quicktest map (`mapData` or better) reachable on the full 596-mod list
 without the process disappearing, OR a confirmed, named root cause if it
