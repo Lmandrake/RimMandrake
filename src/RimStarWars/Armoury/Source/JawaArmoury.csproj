@@ -14,7 +14,7 @@
     resolves those names across every loaded assembly, not by DLL identity.
 
     Build (dotnet is WINDOWS-NATIVE, cannot take a /mnt/d path):
-      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\Jawa\Jawa_Armoury\Source\JawaArmoury.csproj -c Release
+      "%USERPROFILE%\.dotnet\dotnet.exe" build D:\Luke\dev\Rimworld\src\RimStarWars\Armoury\Source\JawaArmoury.csproj -c Release
 
     Output lands in ../Assemblies/ (Source/../Assemblies = Jawa_Armoury/Assemblies/).
   -->
