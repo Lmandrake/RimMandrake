@@ -39,8 +39,9 @@ CORPUS_STATS_PATH = os.path.join(
     _REPO_ROOT, "research", "RimMandrake", "reference", "corpus_map_stats.md")
 BIOMES_DIR = os.path.join(
     _REPO_ROOT, "design", "Jawa", "worldbuilding", "biomes")
-DUMP_DIR = ("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/"
-            "RimWorld by Ludeon Studios/DefDump")
+sys.path.insert(0, os.path.join(_HERE, ".."))
+from game_paths import DUMP_ROOT  # noqa: E402 -- the one seam that
+DUMP_DIR = DUMP_ROOT                    # knows where LocalLow is
 
 # --------------------------------------------------------------- vocabulary
 GL_IDS = ["DesertPlateau", "Badlands", "Canyon", "Crater", "Rift", "Gorge",

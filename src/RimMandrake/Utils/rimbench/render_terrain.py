@@ -83,8 +83,9 @@ try:
 except ImportError:
     HAVE_PIL = False
 
-DEFAULT_DUMP_DIR = ("/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/"
-                     "RimWorld by Ludeon Studios/DefDump")
+sys.path.insert(0, os.path.join(_HERE, ".."))
+from game_paths import DUMP_ROOT  # noqa: E402 -- the one seam that
+DEFAULT_DUMP_DIR = DUMP_ROOT                    # knows where LocalLow is
 
 MAGENTA = (255, 0, 255)
 
