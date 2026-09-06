@@ -70,6 +70,18 @@ pass that needs a quicktest map on the full list, not just this one.
   both are OOM, but the fix differs (system RAM/pagefile vs. a Unity
   heap-limit setting).
 
+**Baseline is the real problem, not just the debug quicktest**: on this
+attempt (the 4th relaunch this session), `RimWorldWin64.exe` reached
+**17.7 GB RSS just getting to the main menu (`programState: Entry`,
+bridge answering)** — before any quicktest, any map, any load at all. That
+is within ~0.5GB of the ~18.2GB level measured right before the earlier
+OOM kill. This reframes the finding: the debug quicktest's bulk-research
+step may only need to push a FEW HUNDRED MB further to tip an
+already-nearly-full ceiling, not create an 18GB spike on its own. **Loading
+the real campaign save was about to be attempted as the workaround, but at
+this baseline the same ceiling looks reachable there too** — not tested,
+paused deliberately (see below).
+
 **Escalation, same investigation session**: a background shell task doing
 nothing but polling `Player.log` and `tasklist.exe` every 2s was itself
 killed by the harness with the reason "the system is running low on
@@ -88,7 +100,18 @@ do not call `start_debug_game_ready` past `readiness: "gameData"`. Load
 the real campaign save instead of using the debug quicktest generator —
 it never runs the bulk-research shortcut, and (as a bonus) is the actual
 Ash'karr world rather than whatever random tile the quicktest scenario
-picks.
+picks. **Caveat added same session**: given the baseline-at-menu finding
+above, this workaround is not yet proven safe either — untested this pass.
+
+**Paused 2026-09-05, this session**: owner said he will be home in ~39
+minutes and able to reboot the machine — a full OS reboot clears more than
+a game-process relaunch can (driver/GPU memory, anything else accumulated
+outside RimWorldWin64.exe's own heap). Given the process is already
+sitting within striking distance of the known crash ceiling just at the
+main menu, attempting `load_game_ready` right now risks another crash for
+no real diagnostic gain over what's already recorded. Bridge released;
+live verification for `BIOME_SPAWN_FLORA_AUDIT_1` and
+`VAULT_DUNGEON_BUILD_1`'s quicktest-proof resumes after that reboot.
 
 ## criteria
 A quicktest map (`mapData` or better) reachable on the full 596-mod list
