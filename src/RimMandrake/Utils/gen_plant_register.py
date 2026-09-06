@@ -790,6 +790,7 @@ def build_rows():
             "isTree": is_tree, "treeCategory": p.get("treeCategory"),
             "product": prod, "harvestYield": _num(p.get("harvestYield"), 0.0) or 0.0,
             "harvestTag": p.get("harvestTag"),
+            "drugForHarvestPurposes": bool(p.get("drugForHarvestPurposes")),
             "harvestWork": _num(p.get("harvestWork")),
             "harvestMinGrowth": _num(p.get("harvestMinGrowth")),
             "harvestDestroys": (_num(p.get("harvestAfterGrowth"), 0.0) or 0.0) <= 0.0,
@@ -1415,7 +1416,8 @@ def _desert_line(r):
              else "needs fertility %.2f — %s" % (
                  fm, "bare dune sand is 0.00, so NO" if fm > FERT_SAND else
                  "bare dune sand (0.00) is enough"))
-    temp = "%.3g … %.3g °C" % (mn if mn is not None else float("nan"), mx)
+    temp = ("%.3g … %.3g °C" % (mn, mx) if mn is not None
+            else "up to %.3g °C (min UNMEASURED)" % mx)
     verdict = ("XERIC — it can live on the dayside" if xer else
                "needs shade or better ground" if ground and not heat else
                "needs real soil" if heat and not ground else
@@ -1540,7 +1542,8 @@ def make_items(rows, bio2fam):
             "forWhat": _purpose_line(
                 {"purpose": r.get("purpose"), "harvestYield": r.get("harvestYield"),
                  "harvestTag": r.get("harvestTag"),
-                 "drugForHarvestPurposes": False}, r.get("product"), r.get("isTree")),
+                 "drugForHarvestPurposes": r.get("drugForHarvestPurposes")},
+                r.get("product"), r.get("isTree")),
             "yieldLine": _yield_line(r),
             "lifeLine": _life_line(r),
             "sowLine": _sow_line(r),
@@ -1633,8 +1636,11 @@ def _invented():
         "jungle and a poison forest where soil-hungry flora is doing exactly what it "
         "was asked to. The mismatch worth your time is soil-hungry flora on the "
         "DAYSIDE. It is a flag, not a verdict: LUSH rows are pre-filled KEEP (their "
-        "art is measurably fine) and marked contested, because handing back 151 blank "
-        "rows would be the chore this format exists to avoid.",
+        "art is measurably fine), because handing back 151 blank rows would be the "
+        "chore this format exists to avoid. They are NOT marked contested — that mark "
+        "is reserved for the few rows the machine genuinely cannot decide, and putting "
+        "it on 22% of the sheet would teach the eye to skip it. LUSH has its own badge "
+        "and search token instead.",
         "RENAME GAP = LUSH, Ludeon-shipped, and its label is byte-identical to the "
         "one the game ships on disk — measured by walking Data/<DLC>/Defs and "
         "comparing, not assumed. The campaign renamed 12 vanilla dayside plants (oak "
@@ -1688,8 +1694,8 @@ def _brief(meta, items, groups, counts):
         "brambles, tall grass), which the renaming layer covered for 12 other vanilla "
         "plants and missed for these. Those %d <b>RENAME GAP</b> rows are the only "
         "ones left <b>UNDECIDED on purpose</b> — the art may be fine and only the name "
-        "wrong, so a default would be a guess. Every other LUSH row is pre-filled and "
-        "marked contested. 🔴 <b>The pre-fill ranks how well the art "
+        "wrong, so a default would be a guess. Every other LUSH row is pre-filled "
+        "KEEP and carries its own badge. 🔴 <b>The pre-fill ranks how well the art "
         "holds up at display size. It CANNOT rank WORTH.</b> “Recognisably from "
         "Earth”, “fascinating profile shape, keep it and shrink it”, “I can't even "
         "see what this is” are invisible to every measurement here. <b>The rows you "
@@ -1895,7 +1901,12 @@ RENDER_JS = r"""
 
 
 def _inject_render(html):
-    return html.replace("<script>\n\"use strict\";", RENDER_JS + "\n<script>\n\"use strict\";", 1)
+    anchor = "<script>\n\"use strict\";"
+    if anchor not in html:
+        die("the review-sheets template no longer opens its script with "
+            "'<script>\\n\"use strict\";' — the RENDER block would be silently "
+            "dropped and every row would fall back to the template's default body.")
+    return html.replace(anchor, RENDER_JS + "\n" + anchor, 1)
 
 
 def write_sheet(rows, meta, bio2fam):
@@ -1994,6 +2005,11 @@ def write_prefill(rows, meta, override=False):
         dec[r["defName"]] = {"decision": pre, "prefill": pre, "prio": prio, "note": ""}
 
     doc = dict(existing)
+    if override:
+        # The file now holds the generator's guesses, not the owner's decisions —
+        # leaving these stamps in place would keep claiming otherwise.
+        for k in ("savedBy", "writeCount"):
+            doc.pop(k, None)
     doc.update({
         "sheetId": "plant_register",
         "posture": "blacklist",
