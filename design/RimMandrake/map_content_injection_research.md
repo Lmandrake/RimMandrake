@@ -761,6 +761,16 @@ Owner, by card, 2026-09-06 (later the same day, after the §9 review):
    data."* Whole-map transplant and chunk-cutting-as-content are DROPPED.
 7. **Corpus statistics are allowed as calibration and regression, never as
    acceptance.** The owner's eye on a comparator sheet is the only acceptance.
+9. **Two terrain routes, converging — owner, 2026-09-06, on the first comparator
+   sheet** (`Transient/mapgen_v0/comparator_sheet.png`: chooser sound, painted
+   terrain geometric and lifeless): *"All and more. Do both, accept they differ at
+   first, but then go back and improve the painter until they converge. Keep
+   iterating until we get great results."* ⇒ the GL-recipe emitter is the REAL
+   output (graded on quicktest screenshots); the Python painter is the fast
+   preview and is improved until its render of a plan matches what GL draws for
+   the same plan; the convergence gap is measured on every sheet. Filed:
+   `MAPGEN_GL_SHEET_1` (bridge), `MAPGEN_PAINTER_V1_1` (offline),
+   `MAPGEN_CONVERGENCE_LOOP_1` (the standing iteration, both sheets side by side).
 8. **§9.3 is the path, ruled "yes, go."** Filed for FOUNDRY: `LANDFORM_RECIPE_ROUNDTRIP_1`
    (can Geological Landforms load a landform file we wrote — decides the terrain
    route), `TERRAIN_GRID_RENDERER_1` (offline grid → PNG, the iteration loop),
