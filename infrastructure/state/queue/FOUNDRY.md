@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-06T05:23:29Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-06T05:51:37Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -474,7 +474,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     task
-summary:  GRAVSHIPLANDINGCRUSH1 — crush-landing + unblockable-thrust patches built, patches verified attached
+summary:  GRAVSHIPLANDINGCRUSH1 — RETIRED our own mod (owner ruling); using Land On Anything instead
 prose:    infrastructure/state/items/GRAVSHIP_LANDING_CRUSH_1.md
 
 ## NINEFOLD_DEBUG_GAME_READY_CRASH_1 start_debug_game_ready crashes RimWorldWin64 outright - observed live during BIOME_SPAWN_FLORA_AUDIT_1, correlates with Ninefold satiation hook firing on a burst of debug auto-research completions

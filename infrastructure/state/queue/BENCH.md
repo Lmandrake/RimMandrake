@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-06T05:23:29Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-06T05:51:37Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -52,16 +52,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## UI_SHELL_OWNER_DECISIONS_1 Theme slice awaits 3 owner calls: button style A_heavy/B_clean/C_chalk, RustChrome-vs-UtinniShell dedup, then the RimThemes coexistence-gate restart
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/UI_SHELL_OWNER_DECISIONS_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/UI_SHELL_OWNER_DECISIONS_1.md
 
 ## GRAPHICS_GEMINI_BILLING_DECISION_1 Wrecked-Machines facing pipeline gated on owner enabling Gemini billing (free tier=0 for images); channel+key ready, rembg+Remotion free wins already landed
 state:    proposed
