@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-06T14:27:17Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-06T15:09:53Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -91,3 +91,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  BIOMEFAUNAASSIGNMENTSITTING1 — the morning sitting, prepped
 prose:    infrastructure/state/items/BIOME_FAUNA_ASSIGNMENT_SITTING_1.md
+
+## GENEPACK_MODS_PLUNDER_1 Plunder+review the two newly added inactive mods (genepacks injection, more consumables) for gene/consumable mechanics — RESERVED for the AB_GelatinousSuperorganism gene-reactor sheet, NOT The Rot (owner 2026-09-06); also verify the heat-generating gene def for The Rot's grown heaters
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/GENEPACK_MODS_PLUNDER_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/GENEPACK_MODS_PLUNDER_1.md

@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-06T14:27:17Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-06T15:09:53Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -629,6 +629,6 @@ row:      unassigned
 needs:    bridge
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/LIGHTFALL_CHASM_AUTHORING_1.md yet — write one when you have something to say)
+thin:     no ## criteria
+summary:  - Site (MEASURED, ruled): the Damp chain — 32 ABRockyCrags tiles straddling arc 90,
 prose:    infrastructure/state/items/LIGHTFALL_CHASM_AUTHORING_1.md

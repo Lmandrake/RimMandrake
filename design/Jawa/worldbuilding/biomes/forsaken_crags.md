@@ -185,6 +185,9 @@ _Names owner-ratified 2026-09-06._
 - **Gust power** — wind energy in violent pulses: turbines plus storage plus a standing
   repair bill; the breakage economy is the price of the watt.
 - **Ultima fibers** — the giant septimum's hardened line, per donor lore.
+- **The gourmet line** (owner, 2026-09-06, ruled with The Rot's): darklight produce and
+  crag-fungus delicacies as Star Wars cuisine — named ingredients, lavish-meal
+  multipliers, trade goods. Concretize at the assignment sitting.
 - **Lightfall** — the deepest etch on the planet; what waits at the bottom is unwritten.
 
 ## 8. Inhabited objects
