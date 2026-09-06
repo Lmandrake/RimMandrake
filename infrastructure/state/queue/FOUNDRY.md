@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-05T22:58:03Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-06T02:35:53Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -447,7 +447,7 @@ row:      unassigned
 needs:    game-up
 target:   v1
 kind:     task
-summary:  NINEFOLDRUNTIMEPROOFBLOCKED1 — partial check, deploy is stale, left doing
+summary:  NINEFOLDRUNTIMEPROOFBLOCKED1 — PROVEN 2026-09-05
 prose:    infrastructure/state/items/NINEFOLD_RUNTIME_PROOF_BLOCKED_1.md
 
 ## MULTIVIEW_FACING_PIPELINE_1 Productionize the multi-view-mesh facing pipeline: InstantMesh (4 sprites -> volumetric mesh) + meshfuse projection; local/free on the 5080; proven 2/3 facings, fix north/south pose-collision (per-view az bias) + UV-texture path for sharpness (needs nvcc)
@@ -458,6 +458,15 @@ target:   v1
 kind:     task
 summary:  MULTIVIEWFACINGPIPELINE1 — pose-collision bug fixed; owner judged the OUTPUT unusable ("crushed tin cans")
 prose:    infrastructure/state/items/MULTIVIEW_FACING_PIPELINE_1.md
+
+## GRAVSHIP_LANDING_CRUSH_1 Gravship must land on top of small obstacles (crush them) and launch with blocked thrusters - only mountains, deep water and lava should block
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  GRAVSHIPLANDINGCRUSH1 — crush-landing + unblockable-thrust patches built, patches verified attached
+prose:    infrastructure/state/items/GRAVSHIP_LANDING_CRUSH_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -495,12 +504,12 @@ _none._
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
 
-## PLANT_REGISTER_REVIEW_CLEAN_1 gen_plant_register.py is DIRTY (never reviewed) - full-file review then mark-clean
+## BIOME_SPAWN_FLORA_AUDIT_1 Spawn each biome in game and photograph what actually grows - normalize before adjusting; also identify the rainbow prolific unclickable bushes the owner keeps seeing
 state:    proposed
 row:      unassigned
-needs:    offline
+needs:    game-up
 target:   v1
 kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/PLANT_REGISTER_REVIEW_CLEAN_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/PLANT_REGISTER_REVIEW_CLEAN_1.md
+summary:  (no items/BIOME_SPAWN_FLORA_AUDIT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BIOME_SPAWN_FLORA_AUDIT_1.md
