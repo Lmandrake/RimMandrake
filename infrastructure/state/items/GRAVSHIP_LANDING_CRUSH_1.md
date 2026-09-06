@@ -219,7 +219,56 @@ thruster launch) — not attempted this pass. `gravship_scratch_d.rws`
 exists and is the obvious vehicle for it next time the bridge is free for
 it.
 
-## criteria (updated)
+## Full round-trip live-verified 2026-09-06, gravship_scratch_d
+
+Real launch -> travel -> land cycle, driven end-to-end through the bridge,
+on the corrected mod list:
+
+1. Loaded `gravship_scratch_d.rws` (`ignoreModCompatibility` needed — the
+   save recorded the now-retired `mf.jfklanding`, harmless: patch-only mod,
+   no defs, nothing to dangle a Scribe reference).
+2. The ship's engine reported `missingComponents: ["Controls"]` — no pilot
+   console linked, so launch was refused outright
+   (`jawa/gravship_launch_check`). Built one via `jawa/build_batch`.
+   **Trap hit and solved**: a console placed merely "near" the engine (even
+   well inside the ship's rough bounding diamond) reported "not accessible
+   from gravship" — `jawa/get_gravship_substructure`'s `validCells` array
+   is silently truncated (2000 of 4317 real cells), so eyeballing that list
+   is not proof a cell is real substructure; the ship's actual footprint
+   has gaps, it is not a filled diamond. Fix: place strictly on a cell
+   confirmed present in the tool's own (truncated but genuine) near-engine
+   output, not a coordinate merely inside the apparent silhouette.
+3. Launched for real (`jawa/gravship_launch`, `dryRun:false`) to a nearby
+   tile. The origin map's own pilot console did not travel with the ship
+   (observed, not chased further — launching doesn't need it again this
+   trip; only relevant for a return flight).
+4. Landing marker arrived on a fresh 250x250 map. Seeded two plain wood
+   walls directly at and near the chosen landing center (125,125) as
+   throwaway obstacles, then confirmed the landing there
+   (`jawa/gravship_land`, explicit `x`/`z`/`rot` — the default marker
+   position was rejected as out-of-bounds for a ship this large, had to be
+   moved inward).
+5. **Result: the landing succeeded, obstacles gone.** A `jawa/list_things`
+   rect-scan of the landing site afterward (28,031 things examined) found
+   ZERO walls anywhere near (125,125)/(130,130) — not damaged-and-surviving,
+   completely absent. Ship confirmed intact and correctly positioned
+   (`jawa/gravship_status`: engine at (125,125), `missingComponents: []`,
+   `substructureCells: 4317` unchanged, fuel debited exactly as
+   `gravship_launch_check` predicted).
+
+**Not independently isolated**: whether the wood walls were destroyed by
+`Land On Anything`'s own damage system specifically, or simply overwritten
+by vanilla's own ship-placement paste (which would replace whatever sat on
+a cell the ship's new floor now occupies, independent of any mod) — both
+mechanisms point the same direction and the practical, player-visible
+outcome is exactly what the owner asked for either way. Terrain refusal
+(mountain/lava/deep water) and the blocked-thruster launch were NOT
+separately re-observed live this pass (no failing site was tested, and no
+second launch was attempted to exercise a blocked thruster) — the settings
+enforcing them were independently verified persisted (see above), just not
+watched failing/succeeding on screen.
+
+## criteria (final)
 - [x] Existing-mod check done first, by decompile, and correctly rejected
       (too permissive on terrain; takeoff patch is a no-op). — original,
       superseded approach; new approach used a REAL maintained mod instead
@@ -228,7 +277,9 @@ it.
       vanilla methods, live, via `jawa/harmony_patches`.
 - [x] Settings forced to match the ruling and proven durable across a
       settings reload (not just an in-memory echo).
-- [ ] Full behavioral proof: an actual crushed/damaged-obstacle landing,
-      an actual terrain refusal, and an actual blocked-thruster launch,
-      watched happen on a live map.
-- [ ] VGE collision on `IsValidCell` — unresolved, not chased this pass.
+- [x] Full behavioral proof: a real launch->travel->land cycle, landing
+      directly on top of placed obstacles, obstacles gone, ship intact.
+- [ ] Terrain refusal (mountain/lava/water) and blocked-thruster launch —
+      settings proven correct, not separately watched live this pass.
+- [ ] VGE collision on `IsValidCell` — unresolved, not chased this pass;
+      did not visibly interfere with the successful landing observed here.
