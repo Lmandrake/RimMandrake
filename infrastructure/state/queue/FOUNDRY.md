@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-06T03:03:12Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: FOUNDRY
+as-of: 2026-09-06T03:13:19Z (the last event's own timestamp, not the render clock)
+game:  LOADING   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -474,7 +474,7 @@ row:      unassigned
 needs:    game-up
 target:   v1
 kind:     task
-summary:  NINEFOLDDEBUGGAMEREADYCRASH1 — startdebuggameready crashes the full-stack game, not a memory issue
+summary:  Reproduced live, 2026-09-06, while working BIOMESPAWNFLORAAUDIT1 on
 prose:    infrastructure/state/items/NINEFOLD_DEBUG_GAME_READY_CRASH_1.md
 
 # BLOCKED — something is WRONG and someone must act
@@ -503,7 +503,7 @@ prose:    infrastructure/state/items/ARMOURY_MELEEPOWER_STALE_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is LOADING. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
 
 ## WEAPONS_DONOR_RETIREMENT_1 Retire the 6 weapon donor packs now that mandrake.rsw.armoury absorbed their content
 state:    ready
@@ -511,7 +511,7 @@ row:      unassigned
 needs:    game-up
 target:   v1
 kind:     build
-waiting:  needs `game-up`, game is DOWN
+waiting:  needs `game-up`, game is LOADING
 summary:  Retire the 6 weapon donor packs — 1 of 6 broke the owner's live game, reverted
 prose:    infrastructure/state/items/WEAPONS_DONOR_RETIREMENT_1.md
 
@@ -521,4 +521,14 @@ _none._
 
 # PROPOSED — filed, not yet taken
 
-_none._
+Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
+
+## SARLACC_NATIVE_HABITAT_1 Sarlacc: native deep-desert habitat, three life-cycle stages, dungeon module
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SARLACC_NATIVE_HABITAT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SARLACC_NATIVE_HABITAT_1.md
