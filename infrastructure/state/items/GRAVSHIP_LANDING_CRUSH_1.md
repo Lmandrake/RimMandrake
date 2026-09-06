@@ -1,4 +1,20 @@
-# GRAVSHIP_LANDING_CRUSH_1 — crush-landing + unblockable-thrust patches built, patches verified attached
+# GRAVSHIP_LANDING_CRUSH_1 — RETIRED our own mod (owner ruling); using Land On Anything instead
+
+## RULING 2026-09-06 (owner, verbatim): "We should not have our own mod, that was a mistaken filing. Use the one I downloaded."
+
+Our custom `mandrake.rm.gravshipcrushlanding` mod is RETIRED — source
+(`src/RimMandrake/GravshipCrushLanding/`) and the deployed copy both
+deleted (git history has it if ever needed). The requirement itself is
+unchanged; the implementation is now **Land On Anything**
+(`nep.landonanything`, Steam WS `3545384484`) per the research below,
+with `allowedToSqishRoofs` and `allowedToLandOnAnyTerrain` forced OFF
+from their (wrong, permissive) defaults to actually match the ruling.
+`mf.jfklanding` comes off the active list — never a fit, already proven
+so twice over.
+
+---
+
+_History below kept for the investigation trail — the custom-mod plan itself is dead, not the requirement it was answering._
 
 Owner, 2026-09-05, verbatim: *"We absolutely need mods that let the ship
 just plop down on top of small barriers and blockages or a ship that size
