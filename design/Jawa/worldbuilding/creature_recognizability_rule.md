@@ -37,3 +37,79 @@ The cut pile is not a restore pool. It was cut largely FOR familiarity, so most 
 it must stay cut. Restore only where the creature is genuinely strange — and judge
 that by the test above, not by the mod it came from and not by whether the biome
 needs stocking. **A starved biome is not a reason to admit a recognisable animal.**
+
+---
+
+## AMENDMENTS, 2026-09-05 (owner) — recognizability is necessary, not sufficient
+
+The rule above says what to CUT. These say when NOT to, and what to do instead.
+
+### 1. 🔴 Mechanical value outranks a bad sprite — REGENERATE, don't cut
+> "Alpha creatures tend to have cool powers. I would rather regenerate their
+> graphics to save them than just cut them because they boringly made a blue
+> butterfly... if there are extenuating reasons to keep a beast such as custom
+> attacks or code or functions (such as the genetic freak hybrids)."
+
+⇒ The decision is not `recognizable → cut`. It is:
+
+| art | mechanics | verdict |
+|---|---|---|
+| recognizable | ordinary | **CUT** |
+| recognizable | **unique** (custom attack, ability, C#, hybrid function) | **REGENERATE ART + RENAME** |
+| strange | anything | keep |
+
+Alpha Animals and Vanilla Genetics Expanded are the two mods this protects: their
+*inventiveness is the asset*, and a boring blue butterfly is an art defect, not a
+design defect. **Check for unique mechanics before cutting anything.**
+
+### 2. 🔴 Size amplifies the penalty
+> "I am very serious about making truly huge creatures everywhere, so even more
+> risk if they aren't alien."
+
+A huge creature dominates the screen, so a recognizable *large* animal is a worse
+offence than a recognizable small one. **Scale the strictness with drawn size** —
+the renormalization will make this sharper, not softer.
+
+### 3. The dinosaur ruling: take the DEEPER cut
+> "If we can afford the deeper Dino cut it is safer as I don't really want the
+> world to feel like a Walking with Dinosaurs episode."
+
+⇒ Strict reading applies: **"reads as a dinosaur at all" counts as OBVIOUS**, not
+just the famous silhouettes. Generic theropods and ornithopods are cut too.
+
+### 4. Boomalope and thrumbo are deliberate in-jokes
+Kept as RimWorld references — but **reskinned**, with descriptions that reference
+them only distantly and punningly. They are an exception granted on purpose, not a
+failure of the rule.
+
+### 5. Restoration path: art + name redo
+A cut creature may return if art AND name are redone enough to **sever it from its
+terrestrial-hybrid past**. The bar is the same test applied to the NEW art.
+
+### 6. ⭐ Retire whole mods where little survives
+> "We should also watch for the opportunity to retire entire mods if we're barely
+> keeping their content and reskinning what they got... Less mod mod conflict,
+> easier maintenance."
+
+Absorb the few survivors into our own mods (the `Absorbed_*` pattern already in
+`RimStarWars/Armoury`) and drop the dependency. **Measured survival under the
+strict rule (STRANGE only), live creatures:**
+
+| mod | live | survive | % | note |
+|---|---|---|---|---|
+| Megafauna | 15 | **0** | 0% | retire — nothing to absorb |
+| Mythic Ages: Megafauna Bestiary | 10 | **0** | 0% | retire |
+| Beasts of the Rim (Continued) | 10 | **0** | 0% | retire |
+| GRiNDTerra Biomes | 9 | **0** | 0% | ⚠️ also ships biomes |
+| Biomes! Caverns | 89 | 9 | 10% | ⚠️ also ships biomes |
+| Jurassic (Dinosaurs Only) | 28 | 5 | 18% | owner named it; absorb Segnosaurus + 4 |
+| Biomes! Polluted Lands | 37 | 9 | 24% | ⚠️ also ships biomes |
+| Vanilla Genetics Expanded | 93 | 33 | 35% | 🔴 PROTECTED by rule 1 (hybrid functions) |
+| Alpha Animals | 135 | 73 | 54% | 🔴 PROTECTED by rule 1 (powers) — regenerate, don't cut |
+| Star Wars Animal Collection | 160 | 89 | 56% | cleanest large mod in the set |
+| VFE-Insectoids 2 / Anomaly / Ideology / Horrors / Alpha Memes | 58 | 58 | 100% | keep entire |
+
+🔴 **Before retiring ANY of these, audit what else the mod ships.** Several are
+biome mods — Biomes! Caverns, Polluted Lands and GRiNDTerra supply terrain, plants
+and biomes we may want to keep even when their fauna is worthless. Creature
+survival alone is NOT a retirement decision.
