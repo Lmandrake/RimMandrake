@@ -56,7 +56,6 @@ A large extinct rhinoceros beetle that has a brilliant purple hue. Primitive, bu
       <MoveSpeed>2.5</MoveSpeed>
       <ComfyTemperatureMin>-10</ComfyTemperatureMin>
       <MarketValue>500</MarketValue>
-      <LeatherAmount>0</LeatherAmount>
       <Wildness>0.50</Wildness>
     </statBases>
     <tools>

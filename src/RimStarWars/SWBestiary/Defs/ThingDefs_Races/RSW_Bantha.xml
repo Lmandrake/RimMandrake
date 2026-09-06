@@ -51,16 +51,6 @@
         <linkedBodyPartsGroup>HornAttackTool</linkedBodyPartsGroup>
       </li>
       <li>
-        <label>horns</label>
-        <capacities>
-          <li>Scratch</li>
-          <li>Stab</li>
-        </capacities>
-        <power>23</power>
-        <cooldownTime>2.4</cooldownTime>
-        <linkedBodyPartsGroup>HornAttackTool</linkedBodyPartsGroup>
-      </li>
-      <li>
         <label>head</label>
         <capacities>
           <li>Blunt</li>

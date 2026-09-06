@@ -56,7 +56,6 @@ A humongous species of earwig with a pair of terrifying looking pincers. While g
       <MoveSpeed>6.0</MoveSpeed>
       <ComfyTemperatureMin>-10</ComfyTemperatureMin>
       <MarketValue>500</MarketValue>
-      <LeatherAmount>0</LeatherAmount>
       <Wildness>0.50</Wildness>
     </statBases>
     <tools>

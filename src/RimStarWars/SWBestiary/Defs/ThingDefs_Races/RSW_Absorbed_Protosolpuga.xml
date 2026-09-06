@@ -56,7 +56,6 @@ An extinct genus of solifugae. They do not possess any venom or stinger, but uti
       <MoveSpeed>6.0</MoveSpeed>
       <ComfyTemperatureMin>-10</ComfyTemperatureMin>
       <MarketValue>500</MarketValue>
-      <LeatherAmount>0</LeatherAmount>
       <Wildness>0.50</Wildness>
     </statBases>
     <tools>
