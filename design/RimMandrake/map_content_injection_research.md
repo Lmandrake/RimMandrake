@@ -355,6 +355,82 @@ prefix, the flag wants the bare name); (3) `verify` shares the 16×12 default re
 so a template whose guard refuses reports "0 defNames, 0 missing" exactly like a
 clean pass. All three are the "silent success" class this project already hunts.
 
+### 5.7 Live bridge probe results — P2/P8/P9/P12 (2026-09-06, second pass)
+
+Raw dumps: `Transient/_p2.json`, `_p2b.json`, `_p2c.json`, `_p2d.json`, `_p8.json`
+through `_p8e.json`, `_p9a.json`, `_p9c.json`, `_p9d.json`, `_p12.json`, `_p12b.json`.
+This pass was interrupted mid-synthesis (owner's ctrl-Z froze/backgrounded the
+window); the raw evidence survived in `Transient/`, only the write-up was lost.
+
+**P2 — `SpawnPrefab`/`CreatePrefab` on a live map. CONFIRMED reachable, no new
+JawaBench tool needed.** The generic debug-action executor already reaches
+vanilla's exporter: `Actions\Create Prefab` (category `Generation`,
+`allowedGameStates=PlayingOnMap`) executes and returns
+`followUp.required=true, tool="rimworld/click_cell"` — it is a two-call
+sequence (execute the action, then `click_cell` to supply the target rect),
+exactly the pattern `rimworld/execute_debug_action` + `click_cell` already
+supports for other ToolMap-shaped actions. `Actions\Rotate Prefab Spawn` sits
+alongside it. A prefab-name census pulled from the live tree lists 47+ shipped
+prefabs (`AncientSystemRacks_Rows`, `Exterior_CrashedCrane`, `CrashedShuttle`,
+`Exterior_AncientBunker`, …) confirming §5.1/§5.6's VEF/Ancient vocabulary is
+present and enumerable on THIS mod list, not just on disk. ⇒ §6.4's "expose
+`jawa/spawn_prefab` + `jawa/export_prefab` in JawaBench" is downgraded from
+required to optional — the existing generic-action + `click_cell` harness may
+already close this without new C#; the second call of the two-stage sequence
+(`createPrefab_withcell`) was issued but its completion was not re-verified
+this pass.
+
+**P8 — a pawn holds a post via `LordJob_DefendPoint`, from the bridge.
+CONFIRMED, and no new tool was needed — it already exists.**
+`jawa-bench-terrain-tools/lord-defend-spawn` spawns N hostile pawns and
+assigns them to a defend point in one call (`point`, `faction`, `requested`
+member count); tracked across 500-7500 ticks the members held near the
+assigned point (posPreLord → posAfter tracking in `_p8c.json`/`_p8d.json`).
+A player colonist was then spawned and walked past the guarded door
+(`_p8e.json`) to probe the sneak-past scenario from §7. ⇒ Q4's "guards at a
+doorway" needs no new mechanism AND no new tool — it is one existing bridge
+call plus siting (which cell to name as the point) that is ours to author.
+
+**P9 — post-hoc structure edit leaves fog/roof/region/pathing state sane.
+CONFIRMED for the room-build case, narrower than originally scoped.** The
+probe built a live 9×9 room (`make-empty-room`) then ran the explicit
+map-commit sequence (`regionAndRoomUpdater.Enabled=true` →
+`RebuildAllRegionsAndRooms` → `pathing.RecalculateAllPerceivedPathCosts` →
+`reachability.ClearCache` → `powerNetManager.UpdatePowerNetsAndConnections_First`
+→ `mapDrawer.RegenerateEverythingNow`, all `status: ok`, 578 ms). Read-back
+after: `rooms` query found exactly 2 regions (one proper enclosed room, 19
+cells; one outdoor region, 59,259 cells) — no orphaned or duplicate regions.
+A colonist spawned and ordered to walk 48 tiles across the area (through
+rock/roof terrain) arrived cleanly in 6,003 ticks / 91.4 real-seconds,
+`canReach:true`, no stuck path. ⇒ **The commit sequence above is the answer to
+P9's "does the engine stay sane"** — call it after any live structural edit
+and region/pathing state reads correct. What this pass did NOT test: a literal
+terrain rewrite (rimbench `crater.py`-style) on top of already-generated
+terrain, which was P9's original framing — that specific case is still open.
+
+**P12 — playability gates are computable from a bridge read-back. CONFIRMED.**
+`map_info` returns per-tile biome, hilliness, elevation, rainfall, swampiness,
+temperature and pollution — the resource/climate half of §7's gate table
+(`beautiful_tilemap.md`). A flood-fill-from-cell tool run from several root
+cells on one 250×250 map returned `visited=50255` (of 62,500 cells) from every
+root that started in open ground, consistently across four different roots —
+one connected buildable region, computable in one call per root. Two roots
+that started inside blocked terrain correctly returned `visited=0` rather than
+a false region. ⇒ Connectivity and buildable-area-size (§7 gates 1-2 of
+`beautiful_tilemap.md`) are both a single flood-fill call away; no new tool
+needed.
+
+**P3 — NOT completed this pass.** `RunAt`'s debug actions (`RMInject`
+category, `StructureInjectionsDebugActions.cs`) require the
+`mandrake.rm.injections` mod, which is **absent from
+`infrastructure/state/modlists/ModsConfig.MINIMAL.xml`** — confirmed by a
+budgeted live search (`jawa/debug_actions`, exhaustive scan of 24,309 types,
+0 matches for "rimplace"/"rminject"/"structureinjection") against a fresh
+quicktest on the minimal list. This is a test-setup gap, not a registration
+bug: `mandrake.rm.injections` needs adding to the minimal list before P3 (live
+apply-timing for a 100×100 plan) can run. Left for whoever next holds the
+bridge for this research; one line to fix.
+
 ## 6. Synthesis after the first research pass
 
 ### 6.1 What the findings change about §3
@@ -416,17 +492,17 @@ names, the unit the LLM authors, and the unit the review save shows.
 | # | probe | status |
 |---|---|---|
 | P1 | landing runs standard mapgen with mutators | **CONFIRMED** (`GravshipUtility.cs:540,660`; `MapGenerator.cs:141`) |
-| P2 | `SpawnPrefab` on a live map at a cell | source CONFIRMED; **live call pending** — expose `jawa/spawn_prefab` + `jawa/export_prefab` in JawaBench, one quicktest |
-| P3 | live plan apply timing for 100×100 | pending |
+| P2 | `SpawnPrefab` on a live map at a cell | **CONFIRMED reachable live** — `Actions\Create Prefab`/`Rotate Prefab Spawn` via the generic debug-action executor + `click_cell`; a new JawaBench tool is now optional, not required (§5.7) |
+| P3 | live plan apply timing for 100×100 | blocked on test setup — `mandrake.rm.injections` missing from the minimal modlist (§5.7), not yet run |
 | P4 | corpus `.rws` thing-layer decode | **CONFIRMED feasible** — things are plain XML with def/stuff/pos/rot/health/quality/faction (§5.6) |
 | P5 | Claude → Lua template from one biome-sheet paragraph | **CONFIRMED** — lint clean, 9/9 verify, one iteration; three CLI silent-failure findings (§5.6) |
 | P6 | Geological Landforms XML authorable / active? | see §5.3: ACTIVE, `Landforms-v1/` XML — format read pending |
 | P7 | Real Ruins 1.6 + blueprint format | web CONFIRMED; on disk, INACTIVE (§5.3) — format read pending |
-| P8 | a pawn holds a post through `LordJob_DefendPoint`, from the bridge | pending |
-| P9 | post-hoc terrain rewrite leaves fog/roof/regions sane | pending |
+| P8 | a pawn holds a post through `LordJob_DefendPoint`, from the bridge | **CONFIRMED, no new tool needed** — `lord-defend-spawn` already does this (§5.7) |
+| P9 | post-hoc terrain rewrite leaves fog/roof/regions sane | **CONFIRMED for a live room-build + the map-commit sequence** (§5.7); the literal terrain-rewrite case (crater-into-existing-terrain) still untested |
 | P10 | a data-driven `TileMutatorWorker` that stamps a mask file, proven on a quicktest | new — decides whether L1 is authorable without per-shape C# |
 | P11 | `GenStep_ScatterGroup` defs of our own (pure XML) place a plant community keyed to terrain | new — decides whether L4 needs any C# |
-| P12 | playability gates (rule 8) computable from the bridge read-back on a quicktest | new — the grader's floor |
+| P12 | playability gates (rule 8) computable from the bridge read-back on a quicktest | **CONFIRMED** — `map_info` + flood-fill cover connectivity and buildable-area (§5.7) |
 | P13 | Ancient Urban Ruins' `CustomMapDataDef` carries whole maps | **CONFIRMED** — 203×203 flat XML with terrain/things/roofs/faction/pawn counts, spawned by SitePartDef (§5.6) |
 | P14 | Geological Landforms vs Odyssey mutators | **CONFIRMED** — landforms ARE `TileMutatorDef`s with auto conflict resolution; files are editor-serialized node graphs, not hand-authorable (§5.6) |
 | P15 | Vanilla Landmarks Expanded worked example | **CONFIRMED** — VEF's `TileMutatorWorker_GenericPrefabSpawner` scatters PrefabDefs from XML alone (§5.6) |
@@ -436,13 +512,18 @@ the full list. The first three that CHANGE the architecture if they fail: P2 (th
 prefab spine), P10 (natural content without C# per shape), P8 (guards).
 
 **Status after the disk pass (2026-09-06):** P1, P4, P13, P14, P15 CONFIRMED from
-source and disk. Still owed, all needing the game up on the minimal list: P2 (live
-`SpawnPrefab` through the vanilla debug action, then export with `CreatePrefab`), P3,
-P8, P9, P12 — nothing new to build for these; P10 and P11 need a small C# worker and
-a scatter-group def respectively, and are the first BUILD items. P5 done (no game).
-P16 (VEF spawner source) CONFIRMED: random clear rect, North only, honours
-`UsedRects` and `CanSpawnPrefab`, no anchor preference — so our own siting worker is
-owed for anchored scenes and rotation, nothing else (§5.6).
+source and disk. P5 done (no game). P16 (VEF spawner source) CONFIRMED: random clear
+rect, North only, honours `UsedRects` and `CanSpawnPrefab`, no anchor preference — so
+our own siting worker is owed for anchored scenes and rotation, nothing else (§5.6).
+
+**Status after the live bridge pass (2026-09-06, second pass, §5.7):** P2, P8, P9
+(room-build case), P12 CONFIRMED live — and for P2/P8/P12, no new JawaBench C# turned
+out to be needed; the existing generic debug-action executor, `lord-defend-spawn` and
+`map_info`/flood-fill already close them. **P3 alone is still blocked** — not on
+mechanism, on test setup: `mandrake.rm.injections` is missing from
+`ModsConfig.MINIMAL.xml`. P10 and P11 remain the first BUILD items (a small C# mask-
+stamping `TileMutatorWorker` and a pure-XML scatter-group def, respectively) — nothing
+in this pass changed that.
 
 ## 7. Questions for the owner
 

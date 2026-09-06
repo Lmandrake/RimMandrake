@@ -1,0 +1,376 @@
+{
+ "roof_before": "RoofRockThick:165,112,1,1;RoofRockThick:170,113,1,1;RoofRockThick:175,114,1,1;RoofRockThin:168,118,1,1;None:172,120,1,1",
+ "rooms_before": {
+  "success": true,
+  "message": "2 distinct room(s) over 2500 cell(s).",
+  "cellsProbed": 2500,
+  "roomsFound": 2,
+  "outdoorsSkipped": 0,
+  "rooms": [
+   {
+    "id": 91,
+    "role": "None",
+    "roleLabel": "none",
+    "cellCount": 59259,
+    "temperature": 14.6498241,
+    "openRoofCount": 59259,
+    "properRoom": false,
+    "psychologicallyOutdoors": true,
+    "isOutdoors": true,
+    "usesOutdoorTemperature": true,
+    "sampleCell": {
+     "x": 145,
+     "z": 93
+    },
+    "stats": {
+     "Impressiveness": 0.0,
+     "Beauty": 0.0,
+     "Space": 350.0,
+     "Cleanliness": 0.0,
+     "Wealth": 0.0
+    }
+   },
+   {
+    "id": 114,
+    "role": "Room",
+    "roleLabel": "room",
+    "cellCount": 19,
+    "temperature": 14.6498241,
+    "openRoofCount": 19,
+    "properRoom": true,
+    "psychologicallyOutdoors": false,
+    "isOutdoors": false,
+    "usesOutdoorTemperature": true,
+    "sampleCell": {
+     "x": 170,
+     "z": 122
+    },
+    "stats": {
+     "Impressiveness": -12.1422844,
+     "Beauty": -1.86440682,
+     "Space": 26.5999947,
+     "Cleanliness": 0.0,
+     "Wealth": 0.0
+    }
+   }
+  ],
+  "recomputedNotCached": true,
+  "ticksGame": 15000,
+  "operation": {
+   "OperationId": "op_02907e48735542c4b5a3702bd793b81c",
+   "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/room-get",
+   "Status": 2,
+   "Success": true,
+   "StartedAtUtc": "2026-09-06T17:16:06.0704212+00:00",
+   "CompletedAtUtc": "2026-09-06T17:16:06.1200708+00:00",
+   "DurationMs": 49,
+   "Result": null,
+   "HasResult": true,
+   "ResultWasTruncated": false,
+   "Warnings": [],
+   "Error": null,
+   "Metadata": {}
+  }
+ },
+ "things_rock_before": {
+  "success": true,
+  "things": [
+   {
+    "id": "AncientPodCar25801",
+    "def": "AncientPodCar",
+    "label": "Ancient pod car",
+    "x": 160,
+    "z": 140,
+    "spawned": true,
+    "rot": 0,
+    "stackCount": 1,
+    "hitPoints": 600,
+    "maxHitPoints": 600,
+    "faction": null,
+    "stuff": null,
+    "quality": null
+   },
+   {
+    "id": "AncientHydrant25868",
+    "def": "AncientHydrant",
+    "label": "Ancient hydrant",
+    "x": 159,
+    "z": 135,
+    "spawned": true,
+    "rot": 0,
+    "stackCount": 1,
+    "hitPoints": 200,
+    "maxHitPoints": 200,
+    "faction": null,
+    "stuff": null,
+    "quality": null
+   },
+   {
+    "id": "AncientHydrant26292",
+    "def": "AncientHydrant",
+    "label": "Ancient hydrant",
+    "x": 190,
+    "z": 133,
+    "spawned": true,
+    "rot": 0,
+    "stackCount": 1,
+    "hitPoints": 200,
+    "maxHitPoints": 200,
+    "faction": null,
+    "stuff": null,
+    "quality": null
+   },
+   {
+    "id": "AncientPipelineSection27037",
+    "def": "AncientPipelineSection",
+    "label": "Ancient pipeline section",
+    "x": 168,
+    "z": 141,
+    "spawned": true,
+    "rot": 0,
+    "stackCount": 1,
+    "hitPoints": 400,
+    "maxHitPoints": 400,
+    "faction": null,
+    "stuff": null,
+    "quality": null
+   },
+   {
+    "id": "AncientMilitaryCrate27826",
+    "def": "AncientMilitaryCrate",
+    "label": "Ancient military crate",
+    "x": 194,
+    "z": 142,
+    "spawned": true,
+    "rot": 0,
+    "stackCount": 1,
+    "hitPoints": 100,
+    "maxHitPoints": 100,
+    "faction": null,
+    "stuff": null,
+    "quality": null
+   }
+  ],
+  "scanned": 1515,
+  "countReturned": 5,
+  "countMatched": 5,
+  "isCompleteList": true,
+  "truncated": 0,
+  "pawnsSkipped": 0,
+  "perDef": {
+   "AncientPodCar": 1,
+   "AncientHydrant": 2,
+   "AncientPipelineSection": 1,
+   "AncientMilitaryCrate": 1
+  },
+  "ticksGame": 15000,
+  "message": "5 of 5 matching thing(s) returned, 1515 examined.",
+  "operation": {
+   "OperationId": "op_f42c9f5f427848a585009f0f6d0ddb97",
+   "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-things",
+   "Status": 2,
+   "Success": true,
+   "StartedAtUtc": "2026-09-06T17:16:06.1306029+00:00",
+   "CompletedAtUtc": "2026-09-06T17:16:06.1692042+00:00",
+   "DurationMs": 38,
+   "Result": null,
+   "HasResult": true,
+   "ResultWasTruncated": false,
+   "Warnings": [],
+   "Error": null,
+   "Metadata": {}
+  }
+ },
+ "crater": {
+  "placed": 182,
+  "queued": 400,
+  "ground": 4157,
+  "terrain": "terrain: route=batch, 1 calls, 3704 cells changed",
+  "objects": "place: route=batch, 1 calls, 182 spawned, 218 FAILED, errors: [{'op': 0, 'def': 'Filth_Ash', 'x': 163, 'z': 118, 'error': 'terrain does not accept this filth'}, {'op': 1, 'def': 'Filth_Ash', 'x': 163, 'z': 120, 'error': 'terrain does not accept this filth'}]"
+ },
+ "crater_secs": 0.2,
+ "destroy": {
+  "success": true,
+  "message": "Destroyed 910 thing(s) across 1296 cell(s).",
+  "cellsExamined": 1296,
+  "outOfBounds": 0,
+  "destroyed": 910,
+  "pawnsSkipped": 0,
+  "perCategory": {
+   "Plant": 99,
+   "Filth": 117,
+   "Item": 9,
+   "Building": 685
+  },
+  "samples": [
+   {
+    "x": 152,
+    "z": 100,
+    "def": "Plant_Grass",
+    "category": "Plant"
+   },
+   {
+    "x": 152,
+    "z": 101,
+    "def": "Plant_Grass",
+    "category": "Plant"
+   },
+   {
+    "x": 152,
+    "z": 106,
+    "def": "Plant_TallGrass",
+    "category": "Plant"
+   },
+   {
+    "x": 152,
+    "z": 112,
+    "def": "Plant_Grass",
+    "category": "Plant"
+   },
+   {
+    "x": 152,
+    "z": 114,
+    "def": "Plant_Grass",
+    "category": "Plant"
+   },
+   {
+    "x": 152,
+    "z": 115,
+    "def": "Plant_TallGrass",
+    "category": "Plant"
+   },
+   {
+    "x": 152,
+    "z": 118,
+    "def": "Plant_TreePoplar",
+    "category": "Plant"
+   },
+   {
+    "x": 152,
+    "z": 119,
+    "def": "Filth_RubbleRock",
+    "category": "Filth"
+   }
+  ],
+  "ticksGame": 15000,
+  "operation": {
+   "OperationId": "op_4ad65fcf73794518a3b992a99385ccf1",
+   "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/destroy-batch",
+   "Status": 2,
+   "Success": true,
+   "StartedAtUtc": "2026-09-06T17:16:06.3443143+00:00",
+   "CompletedAtUtc": "2026-09-06T17:16:06.8650197+00:00",
+   "DurationMs": 520,
+   "Result": null,
+   "HasResult": true,
+   "ResultWasTruncated": false,
+   "Warnings": [],
+   "Error": null,
+   "Metadata": {}
+  }
+ },
+ "destroy_secs": 0.5,
+ "commit": {
+  "success": true,
+  "failedSteps": 0,
+  "map": 0,
+  "mapSize": {
+   "x": 250,
+   "z": 250,
+   "area": 62500
+  },
+  "note": "Thing.SpawnSetup already handles listers, thingGrid, edificeGrid, coverGrid, linkGrid, glowGrid, fertility, snow/sand, temperature, gas, zones and per-cell mesh dirtying. This covers the rest.",
+  "steps": [
+   {
+    "step": "regionAndRoomUpdater.Enabled = true",
+    "status": "ok"
+   },
+   {
+    "step": "RebuildAllRegionsAndRooms",
+    "status": "ok"
+   },
+   {
+    "step": "pathing.RecalculateAllPerceivedPathCosts",
+    "status": "ok"
+   },
+   {
+    "step": "reachability.ClearCache",
+    "status": "ok"
+   },
+   {
+    "step": "powerNetManager.UpdatePowerNetsAndConnections_First",
+    "status": "ok"
+   },
+   {
+    "step": "mapDrawer.RegenerateEverythingNow",
+    "status": "ok"
+   }
+  ],
+  "ticksGame": 15000,
+  "operation": {
+   "OperationId": "op_198523dcea5d41e1a4637485633ccae7",
+   "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/map-commit",
+   "Status": 2,
+   "Success": true,
+   "StartedAtUtc": "2026-09-06T17:16:06.8709329+00:00",
+   "CompletedAtUtc": "2026-09-06T17:16:07.4530201+00:00",
+   "DurationMs": 582,
+   "Result": null,
+   "HasResult": true,
+   "ResultWasTruncated": false,
+   "Warnings": [],
+   "Error": null,
+   "Metadata": {}
+  }
+ },
+ "roof_after": "RoofRockThick:165,112,1,1;RoofRockThick:170,113,1,1;RoofRockThick:175,114,1,1;RoofRockThin:168,118,1,1;None:172,120,1,1",
+ "rooms_after": {
+  "success": true,
+  "message": "1 distinct room(s) over 2500 cell(s).",
+  "cellsProbed": 2500,
+  "roomsFound": 1,
+  "outdoorsSkipped": 0,
+  "rooms": [
+   {
+    "id": 129,
+    "role": "None",
+    "roleLabel": "none",
+    "cellCount": 59962,
+    "temperature": 14.7309637,
+    "openRoofCount": 59398,
+    "properRoom": false,
+    "psychologicallyOutdoors": true,
+    "isOutdoors": true,
+    "usesOutdoorTemperature": true,
+    "sampleCell": {
+     "x": 145,
+     "z": 93
+    },
+    "stats": {
+     "Impressiveness": 0.0,
+     "Beauty": 0.0,
+     "Space": 350.0,
+     "Cleanliness": 0.0,
+     "Wealth": 0.0
+    }
+   }
+  ],
+  "recomputedNotCached": true,
+  "ticksGame": 15000,
+  "operation": {
+   "OperationId": "op_064b7001b99c473fad0dc1a13306fded",
+   "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/room-get",
+   "Status": 2,
+   "Success": true,
+   "StartedAtUtc": "2026-09-06T17:16:07.5016997+00:00",
+   "CompletedAtUtc": "2026-09-06T17:16:07.5418998+00:00",
+   "DurationMs": 40,
+   "Result": null,
+   "HasResult": true,
+   "ResultWasTruncated": false,
+   "Warnings": [],
+   "Error": null,
+   "Metadata": {}
+  }
+ }
+}

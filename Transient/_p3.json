@@ -1,0 +1,30 @@
+{
+ "hits": [
+  "Actions\\T: Grow plant 1 day",
+  "Actions\\T: Grow plant to maturity",
+  "Actions\\T: Make plant leafless"
+ ],
+ "cats": [
+  "AlienRace",
+  "Anomaly",
+  "Autotests",
+  "General",
+  "Generation",
+  "Ideoligion",
+  "Incidents",
+  "KCSG",
+  "Lighting",
+  "Map",
+  "Mechanoid",
+  "More debug actions",
+  "Music",
+  "Pathing",
+  "Pawns",
+  "Pipe System",
+  "Quests",
+  "RMFluidCanals",
+  "RimMandrake.Inhabited",
+  "Sound",
+  "Spawning"
+ ]
+}

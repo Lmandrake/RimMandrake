@@ -1,0 +1,667 @@
+{
+ "runs": [
+  {
+   "root": [
+    20,
+    20
+   ],
+   "ok": false,
+   "visited": 0,
+   "bounds": null,
+   "stoppedEarly": false,
+   "hitLimit": false
+  },
+  {
+   "root": [
+    20,
+    60
+   ],
+   "ok": false,
+   "visited": 0,
+   "bounds": null,
+   "stoppedEarly": false,
+   "hitLimit": false
+  },
+  {
+   "root": [
+    20,
+    100
+   ],
+   "ok": true,
+   "visited": 50255,
+   "bounds": {
+    "minX": 0,
+    "maxX": 249,
+    "minZ": 0,
+    "maxZ": 249,
+    "width": 250,
+    "height": 250
+   },
+   "stoppedEarly": false,
+   "hitLimit": false
+  },
+  {
+   "root": [
+    20,
+    140
+   ],
+   "ok": true,
+   "visited": 50255,
+   "bounds": {
+    "minX": 0,
+    "maxX": 249,
+    "minZ": 0,
+    "maxZ": 249,
+    "width": 250,
+    "height": 250
+   },
+   "stoppedEarly": false,
+   "hitLimit": false
+  },
+  {
+   "root": [
+    20,
+    180
+   ],
+   "ok": true,
+   "visited": 50255,
+   "bounds": {
+    "minX": 0,
+    "maxX": 249,
+    "minZ": 0,
+    "maxZ": 249,
+    "width": 250,
+    "height": 250
+   },
+   "stoppedEarly": false,
+   "hitLimit": false
+  },
+  {
+   "root": [
+    20,
+    220
+   ],
+   "ok": true,
+   "visited": 50255,
+   "bounds": {
+    "minX": 0,
+    "maxX": 249,
+    "minZ": 0,
+    "maxZ": 249,
+    "width": 250,
+    "height": 250
+   },
+   "stoppedEarly": false,
+   "hitLimit": false
+  },
+  {
+   "root": [
+    60,
+    20
+   ],
+   "ok": true,
+   "visited": 50255,
+   "bounds": {
+    "minX": 0,
+    "maxX": 249,
+    "minZ": 0,
+    "maxZ": 249,
+    "width": 250,
+    "height": 250
+   },
+   "stoppedEarly": false,
+   "hitLimit": false
+  },
+  {
+   "root": [
+    60,
+    60
+   ],
+   "ok": true,
+   "visited": 50255,
+   "bounds": {
+    "minX": 0,
+    "maxX": 249,
+    "minZ": 0,
+    "maxZ": 249,
+    "width": 250,
+    "height": 250
+   },
+   "stoppedEarly": false,
+   "hitLimit": false
+  },
+  {
+   "root": [
+    60,
+    100
+   ],
+   "ok": true,
+   "visited": 50255,
+   "bounds": {
+    "minX": 0,
+    "maxX": 249,
+    "minZ": 0,
+    "maxZ": 249,
+    "width": 250,
+    "height": 250
+   },
+   "stoppedEarly": false,
+   "hitLimit": false
+  },
+  {
+   "root": [
+    60,
+    140
+   ],
+   "ok": true,
+   "visited": 50255,
+   "bounds": {
+    "minX": 0,
+    "maxX": 249,
+    "minZ": 0,
+    "maxZ": 249,
+    "width": 250,
+    "height": 250
+   },
+   "stoppedEarly": false,
+   "hitLimit": false
+  },
+  {
+   "root": [
+    60,
+    180
+   ],
+   "ok": false,
+   "visited": 0,
+   "bounds": null,
+   "stoppedEarly": false,
+   "hitLimit": false
+  },
+  {
+   "root": [
+    60,
+    220
+   ],
+   "ok": true,
+   "visited": 50255,
+   "bounds": {
+    "minX": 0,
+    "maxX": 249,
+    "minZ": 0,
+    "maxZ": 249,
+    "width": 250,
+    "height": 250
+   },
+   "stoppedEarly": false,
+   "hitLimit": false
+  },
+  {
+   "root": [
+    100,
+    20
+   ],
+   "ok": true,
+   "visited": 50255,
+   "bounds": {
+    "minX": 0,
+    "maxX": 249,
+    "minZ": 0,
+    "maxZ": 249,
+    "width": 250,
+    "height": 250
+   },
+   "stoppedEarly": false,
+   "hitLimit": false
+  },
+  {
+   "root": [
+    100,
+    60
+   ],
+   "ok": true,
+   "visited": 50255,
+   "bounds": {
+    "minX": 0,
+    "maxX": 249,
+    "minZ": 0,
+    "maxZ": 249,
+    "width": 250,
+    "height": 250
+   },
+   "stoppedEarly": false,
+   "hitLimit": false
+  },
+  {
+   "root": [
+    100,
+    100
+   ],
+   "ok": false,
+   "visited": 0,
+   "bounds": null,
+   "stoppedEarly": false,
+   "hitLimit": false
+  },
+  {
+   "root": [
+    100,
+    140
+   ],
+   "ok": true,
+   "visited": 50255,
+   "bounds": {
+    "minX": 0,
+    "maxX": 249,
+    "minZ": 0,
+    "maxZ": 249,
+    "width": 250,
+    "height": 250
+   },
+   "stoppedEarly": false,
+   "hitLimit": false
+  },
+  {
+   "root": [
+    100,
+    180
+   ],
+   "ok": false,
+   "visited": 0,
+   "bounds": null,
+   "stoppedEarly": false,
+   "hitLimit": false
+  },
+  {
+   "root": [
+    100,
+    220
+   ],
+   "ok": true,
+   "visited": 50255,
+   "bounds": {
+    "minX": 0,
+    "maxX": 249,
+    "minZ": 0,
+    "maxZ": 249,
+    "width": 250,
+    "height": 250
+   },
+   "stoppedEarly": false,
+   "hitLimit": false
+  },
+  {
+   "root": [
+    140,
+    20
+   ],
+   "ok": true,
+   "visited": 50255,
+   "bounds": {
+    "minX": 0,
+    "maxX": 249,
+    "minZ": 0,
+    "maxZ": 249,
+    "width": 250,
+    "height": 250
+   },
+   "stoppedEarly": false,
+   "hitLimit": false
+  },
+  {
+   "root": [
+    140,
+    60
+   ],
+   "ok": true,
+   "visited": 50255,
+   "bounds": {
+    "minX": 0,
+    "maxX": 249,
+    "minZ": 0,
+    "maxZ": 249,
+    "width": 250,
+    "height": 250
+   },
+   "stoppedEarly": false,
+   "hitLimit": false
+  },
+  {
+   "root": [
+    140,
+    100
+   ],
+   "ok": true,
+   "visited": 50255,
+   "bounds": {
+    "minX": 0,
+    "maxX": 249,
+    "minZ": 0,
+    "maxZ": 249,
+    "width": 250,
+    "height": 250
+   },
+   "stoppedEarly": false,
+   "hitLimit": false
+  },
+  {
+   "root": [
+    140,
+    140
+   ],
+   "ok": true,
+   "visited": 50255,
+   "bounds": {
+    "minX": 0,
+    "maxX": 249,
+    "minZ": 0,
+    "maxZ": 249,
+    "width": 250,
+    "height": 250
+   },
+   "stoppedEarly": false,
+   "hitLimit": false
+  },
+  {
+   "root": [
+    140,
+    180
+   ],
+   "ok": true,
+   "visited": 50255,
+   "bounds": {
+    "minX": 0,
+    "maxX": 249,
+    "minZ": 0,
+    "maxZ": 249,
+    "width": 250,
+    "height": 250
+   },
+   "stoppedEarly": false,
+   "hitLimit": false
+  },
+  {
+   "root": [
+    140,
+    220
+   ],
+   "ok": true,
+   "visited": 50255,
+   "bounds": {
+    "minX": 0,
+    "maxX": 249,
+    "minZ": 0,
+    "maxZ": 249,
+    "width": 250,
+    "height": 250
+   },
+   "stoppedEarly": false,
+   "hitLimit": false
+  },
+  {
+   "root": [
+    180,
+    20
+   ],
+   "ok": true,
+   "visited": 167,
+   "bounds": {
+    "minX": 176,
+    "maxX": 190,
+    "minZ": 17,
+    "maxZ": 33,
+    "width": 15,
+    "height": 17
+   },
+   "stoppedEarly": false,
+   "hitLimit": false
+  },
+  {
+   "root": [
+    180,
+    60
+   ],
+   "ok": true,
+   "visited": 50255,
+   "bounds": {
+    "minX": 0,
+    "maxX": 249,
+    "minZ": 0,
+    "maxZ": 249,
+    "width": 250,
+    "height": 250
+   },
+   "stoppedEarly": false,
+   "hitLimit": false
+  },
+  {
+   "root": [
+    180,
+    100
+   ],
+   "ok": true,
+   "visited": 50255,
+   "bounds": {
+    "minX": 0,
+    "maxX": 249,
+    "minZ": 0,
+    "maxZ": 249,
+    "width": 250,
+    "height": 250
+   },
+   "stoppedEarly": false,
+   "hitLimit": false
+  },
+  {
+   "root": [
+    180,
+    140
+   ],
+   "ok": true,
+   "visited": 50255,
+   "bounds": {
+    "minX": 0,
+    "maxX": 249,
+    "minZ": 0,
+    "maxZ": 249,
+    "width": 250,
+    "height": 250
+   },
+   "stoppedEarly": false,
+   "hitLimit": false
+  },
+  {
+   "root": [
+    180,
+    180
+   ],
+   "ok": false,
+   "visited": 0,
+   "bounds": null,
+   "stoppedEarly": false,
+   "hitLimit": false
+  },
+  {
+   "root": [
+    180,
+    220
+   ],
+   "ok": false,
+   "visited": 0,
+   "bounds": null,
+   "stoppedEarly": false,
+   "hitLimit": false
+  },
+  {
+   "root": [
+    220,
+    20
+   ],
+   "ok": true,
+   "visited": 50255,
+   "bounds": {
+    "minX": 0,
+    "maxX": 249,
+    "minZ": 0,
+    "maxZ": 249,
+    "width": 250,
+    "height": 250
+   },
+   "stoppedEarly": false,
+   "hitLimit": false
+  },
+  {
+   "root": [
+    220,
+    60
+   ],
+   "ok": true,
+   "visited": 50255,
+   "bounds": {
+    "minX": 0,
+    "maxX": 249,
+    "minZ": 0,
+    "maxZ": 249,
+    "width": 250,
+    "height": 250
+   },
+   "stoppedEarly": false,
+   "hitLimit": false
+  },
+  {
+   "root": [
+    220,
+    100
+   ],
+   "ok": true,
+   "visited": 50255,
+   "bounds": {
+    "minX": 0,
+    "maxX": 249,
+    "minZ": 0,
+    "maxZ": 249,
+    "width": 250,
+    "height": 250
+   },
+   "stoppedEarly": false,
+   "hitLimit": false
+  },
+  {
+   "root": [
+    220,
+    140
+   ],
+   "ok": true,
+   "visited": 50255,
+   "bounds": {
+    "minX": 0,
+    "maxX": 249,
+    "minZ": 0,
+    "maxZ": 249,
+    "width": 250,
+    "height": 250
+   },
+   "stoppedEarly": false,
+   "hitLimit": false
+  },
+  {
+   "root": [
+    220,
+    180
+   ],
+   "ok": true,
+   "visited": 50255,
+   "bounds": {
+    "minX": 0,
+    "maxX": 249,
+    "minZ": 0,
+    "maxZ": 249,
+    "width": 250,
+    "height": 250
+   },
+   "stoppedEarly": false,
+   "hitLimit": false
+  },
+  {
+   "root": [
+    220,
+    220
+   ],
+   "ok": true,
+   "visited": 50255,
+   "bounds": {
+    "minX": 0,
+    "maxX": 249,
+    "minZ": 0,
+    "maxZ": 249,
+    "width": 250,
+    "height": 250
+   },
+   "stoppedEarly": false,
+   "hitLimit": false
+  }
+ ],
+ "geyserCount": 5,
+ "geyserCells": [
+  [
+   67,
+   136
+  ],
+  [
+   46,
+   188
+  ],
+  [
+   141,
+   45
+  ],
+  [
+   126,
+   218
+  ],
+  [
+   104,
+   136
+  ]
+ ],
+ "designators": {
+  "success": false,
+  "message": "A category id is required.",
+  "devModeEnabled": true,
+  "godMode": true,
+  "state": {
+   "programState": "Playing",
+   "inEntryScene": false,
+   "hasCurrentGame": true,
+   "currentMapId": "Map_0",
+   "currentMapIndex": 0,
+   "mapCount": 1,
+   "longEventPending": false,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "screenFading": false,
+   "fadeOverlayAlpha": 0.0,
+   "gameDataReady": true,
+   "mapDataReady": true,
+   "currentMapReady": true,
+   "screenFadeClear": true,
+   "playable": true,
+   "visualReady": true,
+   "automationReady": true
+  },
+  "operation": {
+   "OperationId": "op_e43384d248a049b59762b0666236f9ab",
+   "CapabilityId": "rimbridge.optional/architect/list-architect-designators",
+   "Status": 2,
+   "Success": true,
+   "StartedAtUtc": "2026-09-06T17:19:08.2896304+00:00",
+   "CompletedAtUtc": "2026-09-06T17:19:08.3066668+00:00",
+   "DurationMs": 17,
+   "Result": null,
+   "HasResult": true,
+   "ResultWasTruncated": false,
+   "Warnings": [],
+   "Error": null,
+   "Metadata": {}
+  }
+ }
+}

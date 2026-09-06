@@ -1,0 +1,212 @@
+{
+ "colonists": [
+  {
+   "pawnId": "Thing_Human669",
+   "thingIdNumber": 669,
+   "className": "Verse.Pawn",
+   "defName": "Human",
+   "kindDef": "Colonist",
+   "race": "Verse.RaceProperties",
+   "name": "Maxwell",
+   "fullName": "Anton Maxwell",
+   "label": "Maxwell<color=#999999FF>, Farmer</color>",
+   "selected": false,
+   "drafted": false,
+   "downed": false,
+   "dead": false,
+   "spawned": true,
+   "map": "0",
+   "mapId": "Map_0",
+   "mapIndex": 0,
+   "position": {
+    "x": 105,
+    "z": 103
+   },
+   "job": "Clean",
+   "mentalState": null,
+   "faction": "New Arrivals",
+   "factionDef": "PlayerColony",
+   "factionIsPlayer": true,
+   "factionHostileToPlayer": false,
+   "humanlike": true,
+   "animal": false,
+   "mechanoid": false,
+   "insect": false
+  }
+ ],
+ "before": [
+  [
+   "Human669",
+   105,
+   103,
+   "PlayerColony",
+   false,
+   false
+  ],
+  [
+   "Human33594",
+   99,
+   108,
+   "TribeRoughNeanderthal",
+   false,
+   false
+  ],
+  [
+   "Human33602",
+   99,
+   106,
+   "TribeRoughNeanderthal",
+   false,
+   false
+  ],
+  [
+   "Human33607",
+   98,
+   107,
+   "TribeRoughNeanderthal",
+   false,
+   false
+  ]
+ ],
+ "order": {
+  "success": false,
+  "message": "0/1 pawn(s) standing on (94,107) after 2005 tick(s); 1 moved at all.",
+  "arrivedCount": 0,
+  "movedCount": 1,
+  "pawnCount": 1,
+  "destination": {
+   "x": 94,
+   "z": 107
+  },
+  "targetId": null,
+  "targetLabel": null,
+  "targetDef": null,
+  "pathEndMode": "OnCell",
+  "ticksElapsed": 2005,
+  "ticksRequested": 2000,
+  "timedOut": false,
+  "polls": 319,
+  "waitedSeconds": 31.9,
+  "speedBefore": "Paused",
+  "speedRestored": true,
+  "leftDrafted": [],
+  "noDrafter": [],
+  "pawns": [
+   {
+    "id": "Human669",
+    "name": "Maxwell",
+    "kind": "Colonist",
+    "drafted": false,
+    "hasDrafter": true,
+    "requested": {
+     "x": 94,
+     "z": 107
+    },
+    "start": {
+     "x": 105,
+     "z": 103
+    },
+    "end": {
+     "x": 100,
+     "z": 107
+    },
+    "arrived": false,
+    "moved": true,
+    "distanceBefore": 11.7,
+    "distanceAfter": 6.0,
+    "canReach": true,
+    "orderAccepted": true,
+    "stillMoving": false,
+    "pathDestination": null,
+    "curJob": "Wait_Downed",
+    "downed": true,
+    "note": "Pawn is downed; it cannot walk."
+   }
+  ],
+  "ticksGame": 14208
+ },
+ "mid": [
+  [
+   "Human669",
+   100,
+   107,
+   "PlayerColony",
+   false,
+   true
+  ],
+  [
+   "Human33594",
+   98,
+   107,
+   "TribeRoughNeanderthal",
+   false,
+   false
+  ],
+  [
+   "Human33602",
+   99,
+   107,
+   "TribeRoughNeanderthal",
+   false,
+   false
+  ],
+  [
+   "Human33607",
+   101,
+   106,
+   "TribeRoughNeanderthal",
+   false,
+   false
+  ],
+  [
+   "Human33833",
+   17,
+   186,
+   "PlayerColony",
+   false,
+   false
+  ]
+ ],
+ "after": [
+  [
+   "Human669",
+   100,
+   107,
+   "PlayerColony",
+   false,
+   true
+  ],
+  [
+   "Human33594",
+   99,
+   108,
+   "TribeRoughNeanderthal",
+   false,
+   false
+  ],
+  [
+   "Human33602",
+   98,
+   107,
+   "TribeRoughNeanderthal",
+   false,
+   false
+  ],
+  [
+   "Human33607",
+   100,
+   109,
+   "TribeRoughNeanderthal",
+   false,
+   false
+  ],
+  [
+   "Human33833",
+   33,
+   173,
+   "PlayerColony",
+   false,
+   false
+  ]
+ ]
+}

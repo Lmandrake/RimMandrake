@@ -1,0 +1,304 @@
+{
+ "spawn": {
+  "success": true,
+  "message": "Spawned 1/1 Colonist in faction PlayerColony.",
+  "spawnedCount": 1,
+  "failedCount": 0,
+  "substitutedCount": 0,
+  "xenotypeRequested": null,
+  "pawns": [
+   {
+    "ok": true,
+    "id": "Human34017",
+    "name": "Viktor",
+    "kindRequested": "Colonist",
+    "kindActual": "Colonist",
+    "kindSubstituted": false,
+    "faction": "PlayerColony",
+    "hostile": false,
+    "x": 146,
+    "z": 118,
+    "spawned": true,
+    "xenotype": "Baseliner",
+    "xenotypeRequested": null,
+    "xenotypeApplied": true
+   }
+  ],
+  "ticksGame": 15000
+ },
+ "walk": {
+  "success": true,
+  "message": "1/1 pawn(s) standing on (194,118) after 6003 tick(s); 1 moved at all. \u26a0\ufe0f LEFT DRAFTED: Human34017. Pass undraftAfter=true or undraft them yourself.",
+  "arrivedCount": 1,
+  "movedCount": 1,
+  "pawnCount": 1,
+  "destination": {
+   "x": 194,
+   "z": 118
+  },
+  "targetId": null,
+  "targetLabel": null,
+  "targetDef": null,
+  "pathEndMode": "OnCell",
+  "ticksElapsed": 6003,
+  "ticksRequested": 6000,
+  "timedOut": false,
+  "polls": 914,
+  "waitedSeconds": 91.4,
+  "speedBefore": "Paused",
+  "speedRestored": true,
+  "leftDrafted": [
+   "Human34017"
+  ],
+  "noDrafter": [],
+  "pawns": [
+   {
+    "id": "Human34017",
+    "name": "Viktor",
+    "kind": "Colonist",
+    "drafted": true,
+    "hasDrafter": true,
+    "requested": {
+     "x": 194,
+     "z": 118
+    },
+    "start": {
+     "x": 146,
+     "z": 118
+    },
+    "end": {
+     "x": 194,
+     "z": 118
+    },
+    "arrived": true,
+    "moved": true,
+    "distanceBefore": 48.0,
+    "distanceAfter": 0.0,
+    "canReach": true,
+    "orderAccepted": true,
+    "stillMoving": false,
+    "pathDestination": null,
+    "curJob": "Wait_Combat",
+    "downed": false,
+    "note": null
+   }
+  ],
+  "ticksGame": 21004
+ },
+ "walk_secs": 100.4,
+ "roof_recheck": "RoofRockThick:165,112,1,1;RoofRockThick:170,113,1,1;RoofRockThick:175,114,1,1;None:168,118,1,1;None:172,120,1,1",
+ "cell_170_113": {
+  "success": true,
+  "cell": {
+   "x": 170,
+   "z": 113,
+   "terrainDefName": "Sandstone_RoughHewn",
+   "roofDefName": "RoofRockThick",
+   "fogged": false,
+   "walkable": false,
+   "thingCount": 1,
+   "designationCount": 0,
+   "blueprintBuildDefs": [],
+   "frameBuildDefs": [],
+   "solidThingDefs": [
+    "CollapsedRocks"
+   ],
+   "zone": null,
+   "areaCount": 0,
+   "areas": [],
+   "things": [
+    {
+     "defName": "CollapsedRocks",
+     "label": "Collapsed rocks",
+     "className": "RimWorld.Mineable",
+     "stuffDefName": null,
+     "isBlueprint": false,
+     "isBlueprintBuild": false,
+     "blueprintBuildDefName": null,
+     "isFrame": false,
+     "frameBuildDefName": null,
+     "hitPoints": 500
+    }
+   ],
+   "designations": []
+  },
+  "state": {
+   "programState": "Playing",
+   "inEntryScene": false,
+   "hasCurrentGame": true,
+   "currentMapId": "Map_0",
+   "currentMapIndex": 0,
+   "mapCount": 1,
+   "longEventPending": false,
+   "paused": true,
+   "timeSpeed": "Paused",
+   "screenFading": false,
+   "fadeOverlayAlpha": 0.0,
+   "gameDataReady": true,
+   "mapDataReady": true,
+   "currentMapReady": true,
+   "screenFadeClear": true,
+   "playable": true,
+   "visualReady": true,
+   "automationReady": true
+  },
+  "operation": {
+   "OperationId": "op_1e40b2a93eeb48589bdf22844b5011af",
+   "CapabilityId": "rimbridge.optional/architect/get-cell-info",
+   "Status": 2,
+   "Success": true,
+   "StartedAtUtc": "2026-09-06T17:18:12.4557913+00:00",
+   "CompletedAtUtc": "2026-09-06T17:18:12.4719727+00:00",
+   "DurationMs": 16,
+   "Result": null,
+   "HasResult": true,
+   "ResultWasTruncated": false,
+   "Warnings": [],
+   "Error": null,
+   "Metadata": {}
+  }
+ },
+ "fog": {
+  "success": true,
+  "action": "unfogall",
+  "cellsChanged": 1309,
+  "foggedCellsBefore": 1309,
+  "foggedCellsNow": 0,
+  "mapArea": 62500,
+  "ticksGame": 21004,
+  "operation": {
+   "OperationId": "op_0165661a3ff34e7d871ebe66990aa35d",
+   "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/set-fog",
+   "Status": 2,
+   "Success": true,
+   "StartedAtUtc": "2026-09-06T17:18:12.4729716+00:00",
+   "CompletedAtUtc": "2026-09-06T17:18:12.5276622+00:00",
+   "DurationMs": 54,
+   "Result": null,
+   "HasResult": true,
+   "ResultWasTruncated": false,
+   "Warnings": [],
+   "Error": null,
+   "Metadata": {}
+  }
+ },
+ "ui": {
+  "success": true,
+  "closed": [
+   "ImmediateWindow",
+   "Dialog_DevPalette"
+  ],
+  "closedCount": 2,
+  "remaining": [],
+  "deselected": 0,
+  "message": "Closed 2 window(s), deselected 0 thing(s).",
+  "operation": {
+   "OperationId": "op_898ae89443844553b1256b48f5495788",
+   "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/clear-ui",
+   "Status": 2,
+   "Success": true,
+   "StartedAtUtc": "2026-09-06T17:18:12.5301807+00:00",
+   "CompletedAtUtc": "2026-09-06T17:18:12.5717986+00:00",
+   "DurationMs": 41,
+   "Result": null,
+   "HasResult": true,
+   "ResultWasTruncated": false,
+   "Warnings": [],
+   "Error": null,
+   "Metadata": {}
+  }
+ },
+ "shot": {
+  "success": false,
+  "message": "Requested cell rectangle does not fit in the viewport at the selected camera root size.",
+  "requestedRect": {
+   "x": 145,
+   "z": 93,
+   "width": 50,
+   "height": 50,
+   "maxX": 194,
+   "maxZ": 142
+  },
+  "paddedRect": {
+   "x": 141,
+   "z": 89,
+   "width": 58,
+   "height": 58,
+   "maxX": 198,
+   "maxZ": 146
+  },
+  "paddingCells": 4,
+  "fullyVisible": false,
+  "rootSizeMode": "current",
+  "requestedRootSize": null,
+  "requiredRootSize": 29.0,
+  "appliedRootSize": 24.0,
+  "cameraBefore": {
+   "success": true,
+   "map": "0",
+   "mapId": "Map_0",
+   "mapIndex": 0,
+   "rootSize": 24.0,
+   "zoomRootSize": 24.0,
+   "zoomRange": "Middle",
+   "sizeRange": {
+    "min": 11.0,
+    "max": 60.0
+   },
+   "cameraZoomExtensionEnabled": false,
+   "mapPosition": {
+    "x": 126,
+    "z": 134
+   },
+   "viewRect": {
+    "minX": 78,
+    "minZ": 109,
+    "maxX": 174,
+    "maxZ": 159,
+    "width": 97,
+    "height": 51
+   }
+  },
+  "cameraDuringCapture": {
+   "success": true,
+   "map": "0",
+   "mapId": "Map_0",
+   "mapIndex": 0,
+   "rootSize": 24.0,
+   "zoomRootSize": 24.0,
+   "zoomRange": "Middle",
+   "sizeRange": {
+    "min": 11.0,
+    "max": 60.0
+   },
+   "cameraZoomExtensionEnabled": false,
+   "mapPosition": {
+    "x": 170,
+    "z": 118
+   },
+   "viewRect": {
+    "minX": 121,
+    "minZ": 93,
+    "maxX": 218,
+    "maxZ": 142,
+    "width": 98,
+    "height": 50
+   }
+  },
+  "operation": {
+   "OperationId": "op_53825cece2e8425883e5c306f5b7c025",
+   "CapabilityId": "rimbridge.core/view/screenshot-cell-rect",
+   "Status": 2,
+   "Success": true,
+   "StartedAtUtc": "2026-09-06T17:18:12.5747919+00:00",
+   "CompletedAtUtc": "2026-09-06T17:18:12.6335632+00:00",
+   "DurationMs": 58,
+   "Result": null,
+   "HasResult": true,
+   "ResultWasTruncated": false,
+   "Warnings": [],
+   "Error": null,
+   "Metadata": {}
+  }
+ }
+}

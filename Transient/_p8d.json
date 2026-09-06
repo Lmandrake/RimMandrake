@@ -1,0 +1,490 @@
+{
+ "spawn": [
+  "Spawned 1/1 Mercenary_Gunner in faction TribeRoughNeanderthal.",
+  "Spawned 1/1 Mercenary_Gunner in faction TribeRoughNeanderthal.",
+  "Spawned 1/1 Mercenary_Gunner in faction TribeRoughNeanderthal."
+ ],
+ "ids": [
+  "Human33594",
+  "Human33602",
+  "Human33607"
+ ],
+ "lord": {
+  "success": true,
+  "lordIndex": 1,
+  "point": {
+   "x": 100,
+   "z": 107
+  },
+  "faction": "TribeRoughNeanderthal",
+  "requested": 3,
+  "memberCount": 3,
+  "members": [
+   "Black",
+   "Blue",
+   "White"
+  ],
+  "refused": [],
+  "notAdded": [],
+  "ticksGame": 7501
+ },
+ "pos_t0": {
+  "Human33594": [
+   97,
+   107,
+   false,
+   false
+  ],
+  "Human33602": [
+   97,
+   105,
+   false,
+   false
+  ],
+  "Human33607": [
+   97,
+   109,
+   false,
+   false
+  ]
+ },
+ "track": [
+  {
+   "Human33594": [
+    97,
+    107,
+    false,
+    false
+   ],
+   "Human33602": [
+    97,
+    105,
+    false,
+    false
+   ],
+   "Human33607": [
+    97,
+    109,
+    false,
+    false
+   ]
+  },
+  {
+   "Human33594": [
+    98,
+    107,
+    false,
+    false
+   ],
+   "Human33602": [
+    97,
+    105,
+    false,
+    false
+   ],
+   "Human33607": [
+    97,
+    109,
+    false,
+    false
+   ]
+  },
+  {
+   "Human33594": [
+    99,
+    108,
+    false,
+    false
+   ],
+   "Human33602": [
+    98,
+    108,
+    false,
+    false
+   ],
+   "Human33607": [
+    102,
+    109,
+    false,
+    false
+   ]
+  }
+ ],
+ "colonist": "Thing_Human676",
+ "order": {
+  "success": false,
+  "message": "0/1 pawn(s) standing on (94,107) after 1501 tick(s); 0 moved at all.",
+  "arrivedCount": 0,
+  "movedCount": 0,
+  "pawnCount": 1,
+  "destination": {
+   "x": 94,
+   "z": 107
+  },
+  "targetId": null,
+  "targetLabel": null,
+  "targetDef": null,
+  "pathEndMode": "OnCell",
+  "ticksElapsed": 1501,
+  "ticksRequested": 1500,
+  "timedOut": false,
+  "polls": 246,
+  "waitedSeconds": 24.6,
+  "speedBefore": "Paused",
+  "speedRestored": true,
+  "leftDrafted": [],
+  "noDrafter": [],
+  "pawns": [
+   {
+    "id": "Human676",
+    "name": "Igor",
+    "kind": "Colonist",
+    "drafted": false,
+    "hasDrafter": false,
+    "requested": {
+     "x": 94,
+     "z": 107
+    },
+    "start": {
+     "x": 107,
+     "z": 112
+    },
+    "end": null,
+    "arrived": false,
+    "moved": false,
+    "distanceBefore": 13.93,
+    "distanceAfter": -1.0,
+    "canReach": true,
+    "orderAccepted": true,
+    "stillMoving": false,
+    "pathDestination": null,
+    "curJob": null,
+    "downed": false,
+    "note": "Pawn is no longer spawned on this map."
+   }
+  ],
+  "ticksGame": 11002,
+  "operation": {
+   "OperationId": "op_9e1ef215ab05412694bd78b44043bb0b",
+   "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/order-pawn",
+   "Status": 2,
+   "Success": true,
+   "StartedAtUtc": "2026-09-06T17:13:05.7082945+00:00",
+   "CompletedAtUtc": "2026-09-06T17:13:30.8102602+00:00",
+   "DurationMs": 25101,
+   "Result": null,
+   "HasResult": true,
+   "ResultWasTruncated": false,
+   "Warnings": [],
+   "Error": null,
+   "Metadata": {}
+  }
+ },
+ "pos_afterApproach": {
+  "Human33594": [
+   99,
+   108,
+   false,
+   false
+  ],
+  "Human33602": [
+   98,
+   108,
+   false,
+   false
+  ],
+  "Human33607": [
+   102,
+   109,
+   false,
+   false
+  ]
+ },
+ "pos_afterEngageWindow": {
+  "Human33594": [
+   99,
+   108,
+   false,
+   false
+  ],
+  "Human33602": [
+   99,
+   106,
+   false,
+   false
+  ],
+  "Human33607": [
+   98,
+   107,
+   false,
+   false
+  ]
+ },
+ "colPos": {
+  "x": 105,
+  "z": 103
+ },
+ "pawnsNearDoor": {
+  "success": true,
+  "message": "4 pawn(s), 52 outside the rect.",
+  "pawns": [
+   {
+    "id": "Human669",
+    "name": "Maxwell",
+    "kind": "Colonist",
+    "kindDef": "Colonist",
+    "def": "Human",
+    "hasGenes": true,
+    "xenotype": "Baseliner",
+    "xenotypeLabel": "baseliner",
+    "uniqueXenotype": false,
+    "faction": "PlayerColony",
+    "factionName": "New Arrivals",
+    "isPlayer": true,
+    "hostile": false,
+    "x": 105,
+    "z": 103,
+    "spawned": true,
+    "dead": false,
+    "downed": false,
+    "stunned": false,
+    "stunTicksLeft": 0,
+    "fleshType": "Normal",
+    "isMechanoid": false,
+    "isFlesh": true,
+    "intelligence": "Humanlike",
+    "bodySize": 1.0,
+    "health": {
+     "hediffs": [
+      {
+       "def": "Gunshot",
+       "label": "old gunshot",
+       "severity": 6.0,
+       "part": "Torso",
+       "partLabel": "torso"
+      },
+      {
+       "def": "Gunshot",
+       "label": "gunshot (machine pistol)",
+       "severity": 5.92,
+       "part": "Heart",
+       "partLabel": "heart"
+      },
+      {
+       "def": "Gunshot",
+       "label": "gunshot (machine pistol)",
+       "severity": 5.84,
+       "part": "Torso",
+       "partLabel": "torso"
+      },
+      {
+       "def": "Gunshot",
+       "label": "gunshot (machine pistol)",
+       "severity": 5.84,
+       "part": "Humerus",
+       "partLabel": "right humerus"
+      },
+      {
+       "def": "Gunshot",
+       "label": "gunshot (machine pistol)",
+       "severity": 5.92,
+       "part": "Arm",
+       "partLabel": "right arm"
+      },
+      {
+       "def": "Gunshot",
+       "label": "gunshot (machine pistol)",
+       "severity": 6.0,
+       "part": "Leg",
+       "partLabel": "left leg"
+      },
+      {
+       "def": "BloodLoss",
+       "label": "blood loss (minor)",
+       "severity": 0.180192128,
+       "part": null,
+       "partLabel": null
+      }
+     ],
+     "capacities": {
+      "Consciousness": 0.71,
+      "Moving": 0.58,
+      "Manipulation": 0.56,
+      "Talking": 0.71,
+      "Eating": 0.71,
+      "Sight": 1.0,
+      "Hearing": 1.0,
+      "Breathing": 1.0,
+      "BloodFiltration": 1.0,
+      "BloodPumping": 0.6,
+      "Metabolism": 1.0
+     },
+     "painTotal": 0.369000018,
+     "bleedRate": 2.8416
+    }
+   },
+   {
+    "id": "Human33594",
+    "name": "Black",
+    "kind": "Mercenary_Gunner",
+    "kindDef": "Mercenary_Gunner",
+    "def": "Human",
+    "hasGenes": true,
+    "xenotype": "Neanderthal",
+    "xenotypeLabel": "neanderthal",
+    "uniqueXenotype": false,
+    "faction": "TribeRoughNeanderthal",
+    "factionName": "Bothawel",
+    "isPlayer": false,
+    "hostile": true,
+    "x": 99,
+    "z": 108,
+    "spawned": true,
+    "dead": false,
+    "downed": false,
+    "stunned": false,
+    "stunTicksLeft": 0,
+    "fleshType": "Normal",
+    "isMechanoid": false,
+    "isFlesh": true,
+    "intelligence": "Humanlike",
+    "bodySize": 1.0,
+    "health": {
+     "hediffs": [
+      {
+       "def": "Bite",
+       "label": "bite scar (aching)",
+       "severity": 2.0,
+       "part": "Leg",
+       "partLabel": "left leg"
+      }
+     ],
+     "capacities": {
+      "Consciousness": 1.0,
+      "Moving": 0.96,
+      "Manipulation": 1.0,
+      "Talking": 1.0,
+      "Eating": 1.0,
+      "Sight": 1.0,
+      "Hearing": 1.0,
+      "Breathing": 1.0,
+      "BloodFiltration": 1.0,
+      "BloodPumping": 1.0,
+      "Metabolism": 1.0
+     },
+     "painTotal": 0.01875,
+     "bleedRate": 0.0
+    }
+   },
+   {
+    "id": "Human33602",
+    "name": "Blue",
+    "kind": "Mercenary_Gunner",
+    "kindDef": "Mercenary_Gunner",
+    "def": "Human",
+    "hasGenes": true,
+    "xenotype": "Neanderthal",
+    "xenotypeLabel": "neanderthal",
+    "uniqueXenotype": false,
+    "faction": "TribeRoughNeanderthal",
+    "factionName": "Bothawel",
+    "isPlayer": false,
+    "hostile": true,
+    "x": 99,
+    "z": 106,
+    "spawned": true,
+    "dead": false,
+    "downed": false,
+    "stunned": false,
+    "stunTicksLeft": 0,
+    "fleshType": "Normal",
+    "isMechanoid": false,
+    "isFlesh": true,
+    "intelligence": "Humanlike",
+    "bodySize": 1.0,
+    "health": {
+     "hediffs": [],
+     "capacities": {
+      "Consciousness": 1.0,
+      "Moving": 1.0,
+      "Manipulation": 1.0,
+      "Talking": 1.0,
+      "Eating": 1.0,
+      "Sight": 1.0,
+      "Hearing": 1.0,
+      "Breathing": 1.0,
+      "BloodFiltration": 1.0,
+      "BloodPumping": 1.0,
+      "Metabolism": 1.0
+     },
+     "painTotal": 0.0,
+     "bleedRate": 0.0
+    }
+   },
+   {
+    "id": "Human33607",
+    "name": "White",
+    "kind": "Mercenary_Gunner",
+    "kindDef": "Mercenary_Gunner",
+    "def": "Human",
+    "hasGenes": true,
+    "xenotype": "Neanderthal",
+    "xenotypeLabel": "neanderthal",
+    "uniqueXenotype": false,
+    "faction": "TribeRoughNeanderthal",
+    "factionName": "Bothawel",
+    "isPlayer": false,
+    "hostile": true,
+    "x": 98,
+    "z": 107,
+    "spawned": true,
+    "dead": false,
+    "downed": false,
+    "stunned": false,
+    "stunTicksLeft": 0,
+    "fleshType": "Normal",
+    "isMechanoid": false,
+    "isFlesh": true,
+    "intelligence": "Humanlike",
+    "bodySize": 1.0,
+    "health": {
+     "hediffs": [],
+     "capacities": {
+      "Consciousness": 1.0,
+      "Moving": 1.0,
+      "Manipulation": 1.0,
+      "Talking": 1.0,
+      "Eating": 1.0,
+      "Sight": 1.0,
+      "Hearing": 1.0,
+      "Breathing": 1.0,
+      "BloodFiltration": 1.0,
+      "BloodPumping": 1.0,
+      "Metabolism": 1.0
+     },
+     "painTotal": 0.0,
+     "bleedRate": 0.0
+    }
+   }
+  ],
+  "returned": 4,
+  "truncated": 0,
+  "totalOnMap": 56,
+  "ticksGame": 12202,
+  "operation": {
+   "OperationId": "op_a3dfd0ccce6b4074811fbe0b630aa905",
+   "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/list-pawns",
+   "Status": 2,
+   "Success": true,
+   "StartedAtUtc": "2026-09-06T17:13:40.5030555+00:00",
+   "CompletedAtUtc": "2026-09-06T17:13:40.5530569+00:00",
+   "DurationMs": 50,
+   "Result": null,
+   "HasResult": true,
+   "ResultWasTruncated": false,
+   "Warnings": [],
+   "Error": null,
+   "Metadata": {}
+  }
+ }
+}

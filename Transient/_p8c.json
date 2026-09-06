@@ -1,0 +1,109 @@
+{
+ "posPreLord": {
+  "Human33523": [
+   61,
+   116,
+   "TribeRoughNeanderthal",
+   false,
+   false
+  ],
+  "Human33532": [
+   60,
+   113,
+   "TribeRoughNeanderthal",
+   false,
+   false
+  ],
+  "Human33540": [
+   59,
+   116,
+   "TribeRoughNeanderthal",
+   false,
+   false
+  ]
+ },
+ "lord": {
+  "success": true,
+  "lordIndex": 1,
+  "point": {
+   "x": 100,
+   "z": 107
+  },
+  "faction": "TribeRoughNeanderthal",
+  "requested": 3,
+  "memberCount": 3,
+  "members": [
+   "Daisa",
+   "Rarsenna",
+   "Morg"
+  ],
+  "refused": [],
+  "notAdded": [],
+  "ticksGame": 4001,
+  "operation": {
+   "OperationId": "op_5115d5408f9745108f291fffbb8d30db",
+   "CapabilityId": "extension.global/global/jawa-bench.-bridge-tools/jawa-bench-terrain-tools/lord-defend-spawn",
+   "Status": 2,
+   "Success": true,
+   "StartedAtUtc": "2026-09-06T17:12:12.4873671+00:00",
+   "CompletedAtUtc": "2026-09-06T17:12:12.5364441+00:00",
+   "DurationMs": 49,
+   "Result": null,
+   "HasResult": true,
+   "ResultWasTruncated": false,
+   "Warnings": [],
+   "Error": null,
+   "Metadata": {}
+  }
+ },
+ "pos_after_500": {
+  "Human33523": [
+   51,
+   116,
+   "TribeRoughNeanderthal",
+   false,
+   false
+  ],
+  "Human33532": [
+   50,
+   115,
+   "TribeRoughNeanderthal",
+   false,
+   false
+  ],
+  "Human33540": [
+   49,
+   117,
+   "TribeRoughNeanderthal",
+   false,
+   false
+  ]
+ },
+ "secs_500": 8.4,
+ "pos_after_1000": {
+  "Human33523": [
+   32,
+   123,
+   "TribeRoughNeanderthal",
+   false,
+   false
+  ],
+  "Human33532": [
+   30,
+   123,
+   "TribeRoughNeanderthal",
+   false,
+   false
+  ],
+  "Human33540": [
+   30,
+   123,
+   "TribeRoughNeanderthal",
+   false,
+   false
+  ]
+ },
+ "secs_1000": 6.2,
+ "pos_after_2000": {},
+ "secs_2000": 8.7
+}
