@@ -139,6 +139,23 @@ disk and the web disagree, the disk wins.*
 Source root: `D:\Luke\dev\reference\rimworld-decompiled\`.
 
 - CONFIRMED **A gravship landing runs the standard map generator.** `GravshipUtility.cs:540` calls `GetOrGenerateMap(destinationTile, size, mapParent.def, GetGenSteps(gravship))`; `GetGenSteps` (line 660) only PREPENDS `ReserveGravshipArea` and `GravshipMarker`. `MapGenerator.cs:141` runs every tile mutator's `Init(map)` before the gen steps. So every GenStep/mutator hook fires at the landing moment, and `MapGenerator.GetOrGenerateVar<List<CellRect>>("UsedRects")` already carries the ship's footprint — anything we inject at mapgen must respect it.
+- CONFIRMED **The GenStep order table** (96 GenStepDefs across Core + DLCs, `Data/*/Defs/MapGeneration/`) is the timeline any injection must slot into:
+
+  | order | step | what it fixes |
+  |---|---|---|
+  | 10-20 | ElevationFertility → MutatorPostElevationFertility | the heightfield (mountains, lakes, craters get their shape HERE) |
+  | 200-240 | RocksFromGrid → Terrain → MutatorPostTerrain → RemoveTinyIslands | rock vs open ground; terrain types |
+  | 390-401 | Roads → Settlement → SettlementPower | faction bases (vanilla settlements go here) |
+  | 500 | MutatorCriticalStructures | mutator-owned structures (ancient quarry, uplink, abandoned colony) |
+  | **600** | **ReserveGravshipArea** | the ship's footprint is reserved AFTER settlements and critical structures, so those are sited first and the ship lands around them |
+  | 700-750 | MutatorNonCriticalStructures → AncientRuins → ScatterRuinsSimple/Shrines | ruins |
+  | 850-875 | FindPlayerStartSpot → ScenParts | |
+  | 900-970 | Plants → scatter groups (junk clusters, craters, debris, fences, mechs) → RockChunks | dressing |
+  | 1120-1200 | CaveHives → Animals | fauna |
+  | 1500 | Fog | everything enclosed is fogged from here |
+  | 1600-1700 | MutatorFinal → GravshipMarker | |
+
+  Below 600 an injected structure is something the ship lands AROUND; above 600 it must avoid `UsedRects`. `GenStep_ScatterGroup` / `GenStep_ScatterGroupPrefabs` (order 900-960) are pure-XML scatter of thing groups and prefabs — vanilla "junk clusters" are made with no C# at all.
 - CONFIRMED **GenStep ordering and failure mode.** Steps sort by `def.order, def.index`; each `Generate()` is wrapped in a try/catch that logs `Error in GenStep` and continues with the NEXT step (`MapGenerator.cs:309-345`). A throwing step loses only its own remaining work, silently for the player.
 - CONFIRMED **`GenStepParams` is `{sitePart, gravship, layout}`** — a GenStep knows whether it is running for a landing.
 - CONFIRMED **TileMutatorWorker hooks:** `Init`, `Tick`, `GeneratePostElevationFertility`, `GeneratePostTerrain`, `GenerateCriticalStructures`, `GenerateNonCriticalStructures`, `GeneratePostFog` (`TileMutatorWorker.cs:25-61`), each invoked by a dedicated `GenStep_Mutator*`. ~50 Odyssey workers exist: Lake, LakeWithIsland(s), Cliffs, Dunes, Fjord, Bay, Cove, Archipelago, Basin, Wetland, HotSprings, IceCaves, Lava*, Oasis, Valley, Plateau, AncientQuarry/Ruins/Vents/Uplink, AbandonedColony*, InsectMegahive… (`Data/Odyssey/Defs/TileMutators/`). **This is the vanilla "landform" system and the crater-lake in image 01 is the shape it makes.** Mutators are terrain-first and gen-time only — no runtime API re-applies one to a live map (UNCERTAIN: absence not exhaustively proven).
@@ -151,7 +168,57 @@ Source root: `D:\Luke\dev\reference\rimworld-decompiled\`.
 - CONFIRMED **Guards and posts exist in vanilla lords:** `LordJob_DefendBase` (toils DefendBase/AssaultColony), `LordJob_DefendPoint` (`LordToil_DefendPoint` with `wanderRadius`/`defendRadius`), `LordToil_Sleep`. `SitePartWorker.PostMapGenerate(Map)` is a sanctioned post-generation hook for site-specific setup.
 - CONFIRMED **Refresh APIs after bulk live injection:** `RegionAndRoomUpdater.RebuildAllRegionsAndRooms()`, `FloodFillerFog.FloodUnfog(root, map)`, roof grid `SetRoof`, power-net rebuild (bodies not traced).
 
-### 5.2 Published mods and corpora (web, 2026-09-06)
+### 5.2 What this repo already has (audit, 2026-09-06)
+
+- CONFIRMED **rimplace** ctx API (`luaenv.py:222-812`): `role, has_role, in_bounds, buildable, occupied, sizes, footprint_of, place, can_place, place_role_fit, place_role, place_overlay, wall_attach, floor, floor_rect, paint, floor_color, roof, roof_rect, wall_rect, door, window, wall_mount, clear, run, pawn, ruin, room, note, refuse`. Sandbox proven by negative-control selftests. **37 Lua templates** in `design/Jawa/templates/`, several already "site dressing, no walls" (krayt/bantha graveyard, podracer wreck, waste camp).
+- CONFIRMED **flat plan directives** (`RimplacePlan.cs`): `FOOTPRINT, CLEAR(all|soft), FOUNDATION, TERRAIN, THING, RUN, ROOF, PAINT, FLOORCOLOR, PAWN`. Siting is `centerOnMap` or a fixed offset — **no terrain-aware siting exists**. PAINT/FLOORCOLOR are unimplemented at mapgen. The debug action applying a plan at the mouse cell on the current map is bridge-reachable (`StructureInjectionsDebugActions.cs`).
+- CONFIRMED **Inhabited** is a resident cast with a one-toil-forever Lord (`RouteStance {AtWork, AtRest, Defending}`), a forced night-sleep job giver, and a `SecurityProfileDef` that is a stub. `GenStep_ComposeSettlementDistrict` composes `districts[0]` only. Two recorded gaps say nothing reaches it from either intended entry (`INHABITED_SETTLEMENT_MAPPARENT_GAP_1`, `INHABITED_TILEMUTATOR_NO_ENTRY_1`). **Not proven live end to end.**
+- CONFIRMED **rimbench**: `scatter.py` pure geometry (`noise, fbm, elliptical_radius, lobes, radial_field, dither, pick, clumps, ring, rim_band, walk, blob, zones`); `formations.py` live (`crater, wreck, cavern, outpost, geyser_field`); `terrain.py` batches `jawa/set_terrain_batch`; open question whether painting terrain clears plants.
+- CONFIRMED **savemap.py decodes terrain, under-terrain, foundation, roof and pollution grids only** — things and pawns are NOT decoded. Corpus mining of structures (approach E) needs a thing-layer reader; the `.rws` thing XML is plain and greppable (`rimworld-savegame` skill).
+- CONFIRMED **rimplace gaps** (`rimplace-gaps.md`): no power/pipe/conduit layer in the IR; no door→room reachability; `buildable()` vacuous; roof-support check approximate; `door()`/`wall_mount()` delete what they overwrite; `calls` output not replayable.
+- CONFIRMED **biome grammar** field 8 *"Inhabited objects — what structures, ruins and wrecks occur, and why here"* is where a sheet specifies map content; field 6 *"Never true"* is a hard-ban list a linter can read.
+- CONFIRMED **queue items in flight that overlap this work**: `TILE_STRUCTURE_DESIGNS_1` (doing), `INHABITED_STOCK_ONTO_MAP_AND_FATE_1` (doing), `INHABITED_AUGMENTATION_BUILD_1` (doing), `SETTLEMENT_VISIT_LOOP_1`, `SETTLEMENT_VERBS_WAVE_1` (ready), `LIGHTFALL_CHASM_AUTHORING_1` (proposed); item files also exist for `BRIDGE_KCSG_VGE_TOOLS_1`, `WORLD_MUTATOR_LANDMARK_IMPORTERS_1`, `ISHKO_DARK_LANDMARKS_1`, `TILE_STRUCTURE_REVIEW_SAVE_1` (state UNCERTAIN). This plan must not fork those; it should name which it absorbs.
+
+### 5.3 What is on THIS machine (disk inventory against `ModsConfig.FULL.LATEST.xml`, 2026-09-06)
+
+Workshop root `C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\<id>`.
+
+**ACTIVE on the owner's full list and directly relevant:**
+
+| mod | packageId | mechanism (from its def folders) | id |
+|---|---|---|---|
+| Vanilla Expanded Framework | OskarPotocki.VanillaFactionsExpanded.Core | KCSG: `CustomStructureGeneration/SymbolDef`, structure layouts, exporter | 2023507013 |
+| Geological Landforms | m00nl1ght.GeologicalLandforms | `Landforms-v1/` XML graphs; replaces terrain/elevation gen (UNCERTAIN how it coexists with Odyssey mutators on a tile — P14) | 2773943594 |
+| Biome Transitions | m00nl1ght.GeologicalLandforms.BiomeTransitions | data-only landform pack, ecotones at biome borders | 2814391846 |
+| Biomes! Caverns | BiomesTeam.BiomesCaverns | `Landforms/` + C#: cavern map generation | 2969748433 |
+| Alpha Biomes | sarg.alphabiomes | Odyssey `LayoutDefs`, `PrefabDefs`, `TileMutators` for its biomes | 1841354677 |
+| **Vanilla Landmarks Expanded** | VanillaExpanded.VExplorationE | `PrefabDefs` + `TileMutators` — **a shipped example of exactly the L1+L2 pattern in §6.2** | 3656316229 |
+| Gravship Raids | sk.gravshipraids | `PrefabDefs` (base + VGE) for wreck/raid structures | 3767338163 |
+| Vanilla Gravship Expanded Ch1 | vanillaexpanded.gravship | `LayoutDefs`, `PrefabDefs` | 3609835606 |
+| Gravship Crashes | Arcjc007.GravshipCrashes | no XML defs — Harmony/C# only (UNCERTAIN internals; source on GitHub per author) | 3578515873 |
+| **Ancient Urban Ruins** | XMB.AncientUrbanrUins.MO | `AncientMarket_Library.CustomMapDataDef` + QuestScriptDefs — **a saved-map-data format spawned by quest**: the "import floor plans" system | 3316062206 |
+| Go Explore! | Albion.GoExplore | own `GenStepDefs` | 1814100216 |
+| Minerals Framework | zacharyfoster.mineralsframework | own `GenStepDef` | 3562390384 |
+| Dark Ages: Beasts and Monsters | Van.Beasts | `TileMutators` for beast lairs (UNCERTAIN) | 3472275628 |
+| VOE: Additional Outposts | MrHydralisk.VOEAdditionalOutposts | `StructureLayoutDefs` (KCSG) | 2873841790 |
+| Outer Rim Furniture & Decor | Neronix17.OuterRim.FurnitureAndDecor | `SymbolDefs` (KCSG) | 2919553599 |
+| VQE Cryptoforge / VQE Ancients / [SR] Factional War / [BTD] Gravship Blueprints | — | `SitePartDefs` — quest-site maps | 3461526070 / 3618306875 / 3423264477 / 3575162262 |
+| Map Designer, Map Preview | zylle.MapDesigner, m00nl1ght.MapPreview | C# tools (blockout knobs; pre-landing preview) | 2111424996 / 2800857642 |
+| Inhabited (ours) | mandrake.rm.inhabited | `GenStepDefs`, `TileMutatorDefs` | local |
+
+**On disk but INACTIVE:** Vanilla Base Generation Expanded (3209927822, `LayoutDefs`),
+Real Ruins (1552146295), Dungeon Core (3064597982, `QuestEditor_Library.CustomMapDataDef`
+— same map-data idea as Ancient Urban Ruins), VFE Deserters / The Profaned / VOE Power
+Grid (KCSG `StructureLayoutDefs`), VFE Settlers (C# GenSteps), GravTide (3779600989,
+`TileMutatorDefs` + `WorldGenStepDefs`).
+
+**Not on disk:** Map Reroll, Save Maps, Roads of the Rim, Better Ancient Complex (base).
+
+Disk beats web where they differed: Real Ruins is present (inactive), not merely
+"available"; Ancient Urban Ruins' mechanism is a `CustomMapDataDef` (the web could
+not see this); Gravship Crashes has no XML at all.
+
+### 5.4 Published mods and corpora (web, 2026-09-06)
 
 - CONFIRMED **Real Ruins** uploads player-base snapshots to a server (author cites 3M+ blueprints) and replays pieces as ruins; blueprints are static XML; a public viewer exists at woolstrand.art/view; repo github.com/dieworld/RealRuins has a 1.6 folder (UNCERTAIN it is fully 1.6-working). Steam id 1552146295.
 - CONFIRMED **KCSG** (Vanilla Expanded Framework): dev-mode exporter ("Export" ≤51×51, "Export from area" irregular) writes `StructureLayoutDef` (`layouts` grid, `roofGrid`, `terrainGrid`, `modRequirements`) plus `SymbolDef`s; runtime use via `KCSG.CustomGenOption` mod extension on a WorldObjectDef (`chooseFromlayouts`, `tryFindFreeArea`, `symbolResolvers` like `kcsg_randomdamage`, `kcsg_scatterstuffaround`). UNCERTAIN: no documented static call for third-party runtime spawning of a layout. Wiki: github.com/Vanilla-Expanded/VanillaExpandedFramework/wiki.
@@ -162,7 +229,7 @@ Source root: `D:\Luke\dev\reference\rimworld-decompiled\`.
 - UNKNOWN **The Samuel Streamer sneak-past-guards mechanism**: no source ties the episode to a mod; the vanilla lord toils in §5.1 can produce it regardless.
 - CONFIRMED **Save Maps (Continued)** (Steam 2916523481, github.com/emipa606/SaveMaps) exports/imports a full tile as a blueprint under `Config\SavedMapPresets`. CONFIRMED **MapRenderer** (github.com/AaronCRobinson/MapRenderer) renders a live map to a high-res PNG (map→image; nothing goes image→map).
 
-### 5.3 Composition rules already written down in this repo
+### 5.5 Composition rules already written down in this repo
 
 22 rules extracted (source: `skills/rimworld-scene-composition/SKILL.md`, the map atlas §7-8, `beautiful_tilemap.md`, the streamer study). The ones that bind a generator:
 
@@ -179,10 +246,108 @@ Source root: `D:\Luke\dev\reference\rimworld-decompiled\`.
 
 Creator workflow (atlas §7, seven stages): macro-landform → reroll → hand-sculpt silhouette → texture geology/ecology → one focal landmark → seed history → package. The corpus: 44 saves, sizes 250² (17) … 500² (2), 11-44 distinct terrains per map (median 19); no terrain-mix percentages measured yet. NONE FOUND on scripted guard/patrol scenes in any of these sources.
 
-## 6. Questions for the owner
+## 6. Synthesis after the first research pass
 
-*Kept here with the answers once given.*
+### 6.1 What the findings change about §3
 
-## 7. Decisions
+1. **The engine already has the contract we were about to invent.** `PrefabDef` is a
+   data format for a structure with per-thing stuff/quality/hp/chance, terrain rects,
+   nested sub-prefabs, and rotations; it spawns on a LIVE map from a static call; and
+   the game ships an exporter from a live rect to XML. Approach C's "plan file" and
+   approach D's "engine format" collapse into one thing: **author with rimplace (Lua)
+   or by building live, store as PrefabDef, spawn at mapgen through a siting GenStep,
+   spawn live through the bridge for iteration.** The flat plan executor stays only for
+   what PrefabDef lacks: roofs, pawns, clears, paint.
+2. **Landing time IS mapgen time, and the order table gives us slots.** Terrain-level
+   work (question 1) belongs at order 10-240 as a `TileMutatorWorker`; structures at
+   400-750; dressing at 900-970; denizens after 700 or in `PostMapGenerate`. Nothing
+   post-generation can move the heightfield without fighting fog/roof/region state
+   (P9 still to measure).
+3. **Vanilla mutators ARE the landform system** for question 1: ~50 workers, terrain
+   first, gen-time only. A crater-lake tile is `LakeWithIsland` + `Cliffs`. Our lever
+   on the frozen world is which mutators each tile carries (`WORLD_MUTATOR_LANDMARK_IMPORTERS_1`
+   already exists as an item) plus our own workers for shapes vanilla lacks.
+4. **Guards at doors need no new mechanism**: `LordJob_DefendPoint` with a small
+   radius at the door cell, or `LordToil_Sleep`; Inhabited's routine toil already
+   switches between AtWork/AtRest/Defending. What is missing is the AUTHORING of a
+   post (a cell + a stance + a pawn) inside a scene, and proof it holds live (P8).
+5. **Quality has a grader already**: the five scene-composition metrics and the 22
+   rules in §5.5. What is missing is anything that applies them BEFORE a human looks —
+   playability gates (rule 8) and implied-shape checks (rule 6) are computable.
+
+### 6.2 The layered shape this suggests (hypothesis, not a ruling)
+
+| layer | gen order | shipped mechanism | authoring / iteration | content factory |
+|---|---|---|---|---|
+| **L0 world** | worldgen | landmark + mutator assignment on the frozen tiles | `rimworld-world-editing` bridge tools | biome sheet field 8 |
+| **L1 landform** | 10-240 | vanilla `TileMutatorDef`s + ONE data-driven worker of ours that stamps a terrain/height mask from a file | rimbench `crater.py`/`terrain.py` live paint on a quicktest; masks from Python (`scatter.py`) or from an image | procedural Python; image-conditioned generation (`beautiful_tilemap.md`) |
+| **L2 structure** | 400-750 | `PrefabDef` + a siting GenStep of ours (anchor selection: near water, on plateau, against cliff, off `UsedRects`) + aging passes (hp, ruin, filth) | rimplace Lua → PrefabDef; build live → `CreatePrefab` export; `SpawnPrefab` live via bridge | LLM from biome sheet; corpus mining of the 44 saves; hand |
+| **L3 residents** | 700+ / `PostMapGenerate` | Inhabited cast + `LordJob_DefendPoint`/`DefendBase`; nests as prefab + pawnkind + lord | bridge spawn + lord assignment on a quicktest | cast rosters (Inhabited) |
+| **L4 dressing** | 900-970 | `GenStep_ScatterGroup(Prefabs)` defs — pure XML | live scatter via rimbench | scatter maths |
+| **L5 reveal** | 1500 | vanilla fog; dungeons are enclosed rock + roof | — | — |
+
+A **scene** = a bundle across layers (prefab + roof rects + terrain mask + cast + posts
++ dressing) with a siting rule. That bundle is the unit the biome sheet's field 8
+names, the unit the LLM authors, and the unit the review save shows.
+
+### 6.3 Where each of the owner's three questions lands
+
+1. **Natural elements** → L1 (mutators, our mask-stamping worker) + L4 (plant
+   communities as scatter groups keyed to terrain). The image-in-the-loop idea is a
+   MASK generator for L1, never a runtime dependency.
+2. **Plot and flavour** → L2 scenes with aging passes + L3 small casts + L4 debris
+   trails; history rules (§5.5 #5) as a checklist the generator must satisfy.
+3. **Functioning settlements with guards** → L2 composed from district prefabs
+   (KCSG/VBGE do this for vanilla factions; Inhabited's `districts[0]` is our start)
+   + L3 posts and routines + power/pipe layers (the `rimplace-gaps.md` list is the
+   work).
+
+### 6.4 The research path, in order
+
+| # | probe | status |
+|---|---|---|
+| P1 | landing runs standard mapgen with mutators | **CONFIRMED** (`GravshipUtility.cs:540,660`; `MapGenerator.cs:141`) |
+| P2 | `SpawnPrefab` on a live map at a cell | source CONFIRMED; **live call pending** — expose `jawa/spawn_prefab` + `jawa/export_prefab` in JawaBench, one quicktest |
+| P3 | live plan apply timing for 100×100 | pending |
+| P4 | corpus `.rws` thing-layer decode | pending — extend `savemap.py` or a new reader; one World_58 save |
+| P5 | Claude → Lua template from one biome-sheet paragraph | pending |
+| P6 | Geological Landforms XML authorable / active? | see §5.3: ACTIVE, `Landforms-v1/` XML — format read pending |
+| P7 | Real Ruins 1.6 + blueprint format | web CONFIRMED; on disk, INACTIVE (§5.3) — format read pending |
+| P8 | a pawn holds a post through `LordJob_DefendPoint`, from the bridge | pending |
+| P9 | post-hoc terrain rewrite leaves fog/roof/regions sane | pending |
+| P10 | a data-driven `TileMutatorWorker` that stamps a mask file, proven on a quicktest | new — decides whether L1 is authorable without per-shape C# |
+| P11 | `GenStep_ScatterGroup` defs of our own (pure XML) place a plant community keyed to terrain | new — decides whether L4 needs any C# |
+| P12 | playability gates (rule 8) computable from the bridge read-back on a quicktest | new — the grader's floor |
+| P13 | Ancient Urban Ruins' `CustomMapDataDef`: can it carry OUR whole authored maps (question 3) and spawn them by quest? read the def + one shipped instance | new — a possible shipped route for large maps |
+| P14 | Geological Landforms vs Odyssey mutators on one tile: which runs, in what order, and is `Landforms-v1` XML hand-authorable | new — decides L1's authoring format |
+| P15 | Vanilla Landmarks Expanded: read one landmark's `TileMutator` + `PrefabDef` pair as the worked example of L1+L2 | new — cheapest study, pure XML |
+
+Each probe is under an hour on the minimal mod list and a quicktest map; none needs
+the full list. The first three that CHANGE the architecture if they fail: P2 (the
+prefab spine), P10 (natural content without C# per shape), P8 (guards).
+
+## 7. Questions for the owner
+
+**Owner, mid-session 2026-09-06:** *"we had assumed previously the unfavorable but
+necessary 'player lands in a boring map, then clicks GO! and the map improves around
+them through Bridge'. I'd take that, even though it's clumsy."* — so the runtime
+audience is this machine, and a Python driver at runtime is acceptable. Findings say
+the click is not necessary for structures and terrain (§6.1 #2); it remains available
+as a second, LLM-flavoured pass.
+
+Asked as cards, answers recorded below when given:
+
+| # | question | options | answer |
+|---|---|---|---|
+| Q1 | When does content enter the map? | mapgen-time by default, bridge pass optional · GO-click bridge pass only · both always | — |
+| Q2 | What is the stored unit of a structure? | `PrefabDef` (engine format; rimplace compiles to it) · keep the flat rimplace plan · KCSG `StructureLayoutDef` | — |
+| Q3 | How is natural terrain shaped? | vanilla mutators + Geological Landforms + one mask-stamping worker of ours · Python terrain gen applied live through the bridge · both | — |
+| Q4 | Which content factories first? (multi) | LLM from biome sheets · corpus mining of the 44 saves · live-build-and-export · hand-authored Lua | — |
+
+Open, not yet carded: whether large authored maps (question 3) ship through Ancient
+Urban Ruins' `CustomMapDataDef` route or through district composition — P13 decides
+what is even possible.
+
+## 8. Decisions
 
 *None yet. Nothing in this document is ruled.*
