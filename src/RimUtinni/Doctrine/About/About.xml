@@ -51,9 +51,19 @@ Load last.</description>
           2026-09-05 on the owner's ruling; see
           design/Jawa/worldbuilding/mod_retirement_audit.md and
           design/Jawa/worldbuilding/RETIREMENT_CHECKLIST.md. Their
-          MegafaunaYield groups were deleted with them. -->
+          MegafaunaYield groups were deleted with them.
+        * Grimstone : Beasts (Abrolo.Grimstone.Beasts), ReGrowth: Boiling
+          (ReGrowth.BOTR.BoilingForest), Titans (titans.fl), Vanilla Animals
+          Expanded (VanillaExpanded.VanillaAnimalsExpanded) and Giant Snake
+          (Continued) (zal.giantsnake) - REMOVED 2026-09-06 (dirty-review
+          pass, WEAPONTAGS_RENORMALISE_STALE_DEFS_1's sibling finding): none
+          of the five is in the live ModsConfig.xml, and MegafaunaYield.xml
+          has no group for any of them either - the megafauna groups these
+          five belonged to were already deleted, this loadAfter list just
+          wasn't trimmed to match. A loadAfter naming an absent packageId is
+          a silent no-op (see the PatchOperationFindMod note above), so this
+          was never a live bug, only stale bookkeeping. -->
   <loadAfter>
-    <li>Abrolo.Grimstone.Beasts</li>                      <!-- Grimstone : Beasts -->
     <li>BiomesTeam.BiomesCaverns</li>                     <!-- Biomes! Caverns -->
     <li>BiomesTeam.BiomesCore</li>                        <!-- Biomes! Core -->
     <li>BiomesTeam.BiomesPollutedLands</li>               <!-- Biomes! Polluted Lands -->
@@ -71,22 +81,18 @@ Load last.</description>
     <li>OskarPotocki.VFE.Insectoid2</li>                  <!-- Vanilla Factions Expanded - Insectoids 2 -->
     <li>RedMattis.BetterPrerequisites</li>                <!-- Big and Small - Framework -->
     <li>RedMattis.BigSmall.Core</li>                      <!-- Big and Small - Genes &amp; More -->
-    <li>ReGrowth.BOTR.BoilingForest</li>                  <!-- ReGrowth: Boiling -->
     <li>ReGrowth.BOTR.Core</li>                           <!-- ReGrowth 2 -->
     <li>Sapiently.TheyAtomicMonsters</li>                 <!-- They! (Giant Ants) -->
     <li>sarg.alphaanimals</li>                            <!-- Alpha Animals -->
     <li>sarg.alphagenes</li>                              <!-- Alpha Genes -->
-    <li>titans.fl</li>                                    <!-- Titans -->
     <li>Van.Beasts</li>                                   <!-- Dark Ages : Beasts and Monsters -->
     <li>VanillaExpanded.VAEWaste</li>                     <!-- Vanilla Animals Expanded — Waste Animals -->
-    <li>VanillaExpanded.VanillaAnimalsExpanded</li>       <!-- Vanilla Animals Expanded -->
     <li>VanillaExpanded.VGeneticsE</li>                   <!-- Vanilla Genetics Expanded -->
     <li>vanillaquestsexpanded.ancients</li>               <!-- Vanilla Quests Expanded - Ancients -->
     <li>vanillaquestsexpanded.cryptoforge</li>            <!-- Vanilla Quests Expanded - Cryptoforge -->
     <li>vanillaracesexpanded.phytokin</li>                <!-- Vanilla Races Expanded - Phytokin -->
     <li>Who.VFEE.IsopodaGeneline</li>                     <!-- Insectoids 2 - Isopoda geneline -->
     <li>zal.betterinfestations</li>                       <!-- Better Infestations (Continued) -->
-    <li>zal.giantsnake</li>                               <!-- Giant Snake (Continued) -->
     <li>zal.gianttoads</li>                               <!-- Giant Toads (Continued) -->
   </loadAfter>
 </ModMetaData>

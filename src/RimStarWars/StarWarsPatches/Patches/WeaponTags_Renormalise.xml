@@ -44,6 +44,11 @@
     `PatchOperationConditional ... failed` on a clean load because the target
     ThingDef no longer exists at all. A future safe regenerate (offline dump,
     never a post-patch live one) will not reintroduce them.
+
+    🔴 2026-09-06, WEAPONTAGS_RENORMALISE_STALE_DEFS_1: same shape again, two more —
+    guy762_brifle_rohlan and guy762_brifle_sith. Their sole owner, guy762.KotORWeapons,
+    is not in the live ModsConfig.xml; see the comment beside their removed operations
+    further down for what was checked before deleting them.
 -->
 
   <Operation Class="PatchOperationConditional">
@@ -1174,29 +1179,18 @@
     </nomatch>
   </Operation>
 
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="guy762_brifle_rohlan"]/weaponTags</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="guy762_brifle_rohlan"]/weaponTags</xpath>
-      <value><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="guy762_brifle_rohlan"]</xpath>
-      <value><weaponTags><li>AssaultRifle</li><li>IndustrialGunAdvanced</li></weaponTags></value>
-    </nomatch>
-  </Operation>
-
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="guy762_brifle_sith"]/weaponTags</xpath>
-    <match Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="guy762_brifle_sith"]/weaponTags</xpath>
-      <value><li>IndustrialGunAdvanced</li><li>LongShots</li><li>SniperRifle</li></value>
-    </match>
-    <nomatch Class="PatchOperationAdd">
-      <xpath>/Defs/ThingDef[defName="guy762_brifle_sith"]</xpath>
-      <value><weaponTags><li>IndustrialGunAdvanced</li><li>LongShots</li><li>SniperRifle</li></weaponTags></value>
-    </nomatch>
-  </Operation>
+  <!-- guy762_brifle_rohlan / guy762_brifle_sith: hand-removed WEAPONTAGS_RENORMALISE_STALE_DEFS_1,
+       2026-09-06, same shape as WEAPONS_DONOR_RETIREMENT_1 above - a clean full-modlist load
+       logged PatchOperationAdd "Failed to find a node with the given xpath" for both, followed
+       by PatchOperationConditional "Error in <nomatch>". Verified against disk, not guessed:
+       both defNames exist ONLY in guy762.KotORWeapons's own 1.6/Defs/ThingDefs_Weapons/
+       WeaponRanged_KotORBlasterRifle.xml (10 guy762_brifle_* variants total, rohlan and sith
+       among them) - that mod (packageId guy762.KotORWeapons) is NOT in the live ModsConfig.xml
+       today, and neither of the two guy762 mods that ARE active (guy762.kotordroids,
+       guy762.mm.kotorcore) defines any guy762_brifle_* ThingDef anywhere in their own XML
+       (grepped both folders whole). Not a rename: "rohlan" does not appear ANYWHERE else in
+       the current 596-mod def dump under any defName. A future safe regenerate (offline dump
+       captured under this same list, never a post-patch live one) will not reintroduce them. -->
 
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/ThingDef[defName="guy762_brifle_zabrak"]/weaponTags</xpath>
