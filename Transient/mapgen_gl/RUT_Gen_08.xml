@@ -13,10 +13,10 @@
 			<boolean name="IsEdited">false</boolean>
 			<string name="DisplayName">RUT_Gen_08</string>
 			<boolean name="DisplayNameHasDirection">false</boolean>
-			<int name="RandSeed">949061282</int>
+			<int name="RandSeed">906231276</int>
 		</Node>
 		<Node name="World Tile Requirements" ID="1" type="worldTileReq" pos="-950,-517">
-			<Topology name="Topology">CliffValley</Topology>
+			<Topology name="Topology">Any</Topology>
 			<float name="Commonness">1</float>
 			<float name="CaveChance">0.7011173</float>
 			<FloatRange xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" name="HillinessRequirement">
@@ -57,7 +57,7 @@
 			</FloatRange>
 			<boolean name="AllowSettlements">false</boolean>
 			<boolean name="AllowSites">false</boolean>
-			<int name="RandSeed">423870817</int>
+			<int name="RandSeed">259936147</int>
 		</Node>
 		<Node name="Perlin Noise" ID="2" type="gridPerlin" pos="-448.0002,-415.8">
 			<Port ID="0" name="FrequencyKnob" dynamic="False" />
@@ -73,24 +73,24 @@
 			<double name="Bias">0.5</double>
 			<int name="Octaves">6</int>
 			<boolean name="DynamicSeed">false</boolean>
-			<int name="RandSeed">195341743</int>
+			<int name="RandSeed">621709812</int>
 		</Node>
 		<Node name="Preview" ID="3" type="gridPreview" pos="371.4,-317.7999">
 			<Port ID="6" name="InputKnob" dynamic="False" />
 			<Port ID="7" name="OutputKnob" dynamic="False" />
 			<string name="PreviewModelId">Default</string>
-			<int name="RandSeed">777515309</int>
+			<int name="RandSeed">2081944809</int>
 		</Node>
 		<Node name="Elevation Output" ID="4" type="outputElevation" pos="1577,-306">
 			<Port ID="8" name="InputKnob" dynamic="False" />
 			<Port ID="9" name="OutputKnob" dynamic="False" />
-			<int name="RandSeed">2036753883</int>
+			<int name="RandSeed">1510790153</int>
 		</Node>
 		<Node name="Preview" ID="5" type="gridPreview" pos="1357,-351">
 			<Port ID="10" name="InputKnob" dynamic="False" />
 			<Port ID="11" name="OutputKnob" dynamic="False" />
 			<string name="PreviewModelId">Elevation</string>
-			<int name="RandSeed">562609072</int>
+			<int name="RandSeed">1772959544</int>
 		</Node>
 		<Node name="Add" ID="6" type="gridOperator" pos="813.2,-370">
 			<Port ID="12" name="OutputKnob" dynamic="False" />
@@ -114,13 +114,13 @@
 			<Operation name="OperationType">Add</Operation>
 			<double name="ApplyChance">1</double>
 			<double name="Smoothness">0</double>
-			<int name="RandSeed">1935356698</int>
+			<int name="RandSeed">1417326941</int>
 		</Node>
 		<Node name="Preview" ID="7" type="gridPreview" pos="1129.2,-288">
 			<Port ID="15" name="InputKnob" dynamic="False" />
 			<Port ID="16" name="OutputKnob" dynamic="False" />
 			<string name="PreviewModelId">Default</string>
-			<int name="RandSeed">1191966002</int>
+			<int name="RandSeed">1897640903</int>
 		</Node>
 		<Node name="Add" ID="8" type="gridOperator" pos="52,-179">
 			<Port ID="17" name="OutputKnob" dynamic="False" />
@@ -144,7 +144,7 @@
 			<Operation name="OperationType">Max</Operation>
 			<double name="ApplyChance">1</double>
 			<double name="Smoothness">0</double>
-			<int name="RandSeed">1379704603</int>
+			<int name="RandSeed">2050313993</int>
 		</Node>
 		<Node name="Map Sides" ID="9" type="gridRotateToMapSides" pos="-149,-138">
 			<Port ID="20" name="Input 0" dynamic="True" type="NodeEditorFramework.ValueConnectionKnob, TerrainGraph, Version=1.1.1.0, Culture=neutral, PublicKeyToken=null">
@@ -180,7 +180,7 @@
 				<float name="sideOffset">0</float>
 			</Port>
 			<Variable name="MapSides" refID="2" />
-			<int name="RandSeed">735574588</int>
+			<int name="RandSeed">1813680021</int>
 		</Node>
 		<Node name="Linear Function" ID="10" type="gridLinear" pos="-448,-169">
 			<Port ID="24" name="OutputKnob" dynamic="False" />
@@ -242,20 +242,20 @@
 			<double name="SpanPz">0</double>
 			<double name="SpanNz">0</double>
 			<boolean name="Circular">false</boolean>
-			<int name="RandSeed">754599234</int>
+			<int name="RandSeed">1749599449</int>
 		</Node>
 		<Node name="Preview" ID="11" type="gridPreview" pos="617,-248">
 			<Port ID="31" name="InputKnob" dynamic="False" />
 			<Port ID="32" name="OutputKnob" dynamic="False" />
 			<string name="PreviewModelId">Default</string>
-			<int name="RandSeed">503959505</int>
+			<int name="RandSeed">153652524</int>
 		</Node>
 		<Node name="Rotate" ID="12" type="gridRotate" pos="326,-146">
 			<Port ID="33" name="InputKnob" dynamic="False" />
 			<Port ID="34" name="AngleKnob" dynamic="False" />
 			<Port ID="35" name="OutputKnob" dynamic="False" />
 			<double name="Angle">48.0</double>
-			<int name="RandSeed">90609767</int>
+			<int name="RandSeed">1611388814</int>
 		</Node>
 		<Node name="Random Value" ID="13" type="valueRandom" pos="53,-56">
 			<Port ID="36" name="AverageKnob" dynamic="False" />
@@ -264,11 +264,11 @@
 			<double name="Average">0</double>
 			<double name="Deviation">25</double>
 			<boolean name="DynamicSeed">true</boolean>
-			<int name="RandSeed">408420572</int>
+			<int name="RandSeed">656406414</int>
 		</Node>
 		<Node name="Scatterers" ID="14" type="outputScatterers" pos="1504,-167">
 			<Port ID="39" name="MineablesKnob" dynamic="False" />
-			<int name="RandSeed">1372632262</int>
+			<int name="RandSeed">1702554858</int>
 		</Node>
 		<Node name="Random Value" ID="15" type="valueRandom" pos="1205,-108">
 			<Port ID="40" name="AverageKnob" dynamic="False" />
@@ -277,7 +277,7 @@
 			<double name="Average">24</double>
 			<double name="Deviation">4</double>
 			<boolean name="DynamicSeed">true</boolean>
-			<int name="RandSeed">1086978890</int>
+			<int name="RandSeed">223011649</int>
 		</Node>
 	</Nodes>
 	<Connections>
@@ -309,11 +309,11 @@
 				<double>0</double>
 			</ArrayOfDouble>
 		</Object>
-		<Object refID="2" type="System.Collections.Generic.List`1[[System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089]]">
-			<ArrayOfString xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+		<Object refID="2" type="System.Collections.Generic.List`1[[TerrainGraph.NodeGridRotateToMapSides+MapSide, GeologicalLandforms, Version=1.5.3.0, Culture=neutral, PublicKeyToken=null]]">
+			<ArrayOfMapSide xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 				<MapSide>Left</MapSide>
 				<MapSide>Right</MapSide>
-			</ArrayOfString>
+			</ArrayOfMapSide>
 		</Object>
 	</Objects>
 </NodeCanvas>

@@ -1,0 +1,75 @@
+{
+  "schema_version": 1,
+  "seed": 5,
+  "biome": "ExtremeDesert",
+  "sheet": "deep_desert.md",
+  "map_size": 250,
+  "premise": "One sinkhole cuts the ground, and everything answers to the pit floor.",
+  "landform": {
+    "id": "Sinkhole",
+    "source": "gl"
+  },
+  "landform_params": {
+    "footprint_fraction": 0.291,
+    "orientation_deg": 353,
+    "relief_class": "mid"
+  },
+  "hydrology": {
+    "kind": "dry_riverbed",
+    "cause": "the dry riverbed is what the Sinkhole's own relief produces"
+  },
+  "anchor": {
+    "position": "pit_floor",
+    "cell_frac": [
+      0.61,
+      0.4
+    ],
+    "holds": "the abandoned wreck"
+  },
+  "history": "A wreck stood here until the wind buried what was left.",
+  "deletions": [
+    {
+      "forbid": "No green in the open, and no standing surface water except brine seeps.",
+      "source": "sheet:6.5"
+    },
+    {
+      "forbid": "No abundant shade or structure. Shade is rare by definition; a generator that scatters cov",
+      "source": "sheet:6.6"
+    },
+    {
+      "forbid": "a second throat",
+      "source": "landform"
+    },
+    {
+      "forbid": "a second sinkhole or feature the premise does not mention",
+      "source": "premise"
+    }
+  ],
+  "calibration": {
+    "bucket": "250",
+    "region_count": [
+      496.0,
+      3056.0
+    ],
+    "largest_region_fraction": [
+      0.04416,
+      0.6346
+    ],
+    "perimeter_area_mean": [
+      2.619,
+      3.064
+    ],
+    "openness_top3": [
+      0.4979,
+      0.9232
+    ],
+    "openness_std_25": [
+      0.136,
+      0.2963
+    ],
+    "distinct_terrains": [
+      12.0,
+      28.0
+    ]
+  }
+}

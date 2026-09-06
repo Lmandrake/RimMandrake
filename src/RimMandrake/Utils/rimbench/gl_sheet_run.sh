@@ -10,7 +10,9 @@ REPO=/mnt/d/Luke/dev/Rimworld
 LL="/mnt/c/Users/Mandrake/AppData/LocalLow/Ludeon Studios/RimWorld by Ludeon Studios"
 LOG="$LL/Player.log"; CFG="$LL/Config/ModsConfig.xml"; CL="$LL/Config/CustomLandforms-v1"
 SS="$LL/Screenshots"
-CLIENT="python.exe $REPO/src/RimMandrake/Utils/rimbridge_client.py"
+cd "$REPO" || exit 2
+# Windows python.exe reads a WSL absolute path /mnt/d/... as D:\mnt\d\... — keep the client path RELATIVE to the repo cwd (found 2026-09-06).
+CLIENT="python.exe src/RimMandrake/Utils/rimbridge_client.py"
 mkdir -p "$OUT"; : > "$RUNLOG"
 say(){ echo "$(date +%H:%M:%S) $*" | tee -a "$RUNLOG"; }
 
@@ -23,9 +25,10 @@ for rec in "$REC"/RUT_Gen_*.xml; do
   up=0; for i in $(seq 1 100); do sleep 3; [ -f "$LOG" ] && grep -q "Bridge token:" "$LOG" 2>/dev/null && { up=1; break; }; done
   if [ $up = 0 ]; then say "[$id] BRIDGE NOT UP after 300s — skipping"; continue; fi
   say "[$id] bridge up ~$((i*3))s; $(grep -o 'Loaded .* landforms of which .* custom' "$LOG" | head -1)"
-  sleep 5
-  $CLIENT --call rimworld/start_debug_game_ready --json {} --yes-i-know-this-is-live --timeout 35 >/dev/null 2>&1
-  ready=0; for i in $(seq 1 20); do sleep 5; $CLIENT --call jawa/map_info --json {} --yes-i-know-this-is-live --timeout 20 2>&1 | grep -q '"tile"' && { ready=1; break; }; done
+  sleep 25   # the bridge token lands before the main menu is live; a quicktest fired at +5 s did nothing (measured 2026-09-06)
+  $CLIENT --call rimworld/start_debug_game_ready --json {} --yes-i-know-this-is-live --timeout 40 > "$OUT/$id.quicktest.json" 2>&1
+  grep -q '"success": true' "$OUT/$id.quicktest.json" || say "[$id] quicktest call did not report success: $(head -c 160 "$OUT/$id.quicktest.json")"
+  ready=0; for i in $(seq 1 36); do sleep 5; $CLIENT --call jawa/map_info --json {} --yes-i-know-this-is-live --timeout 20 2>&1 | grep -q '"tile"' && { ready=1; break; }; done
   if [ $ready = 0 ]; then say "[$id] map never became ready — skipping"; continue; fi
   ctx=$(grep -o "Map generator context: TileId: [0-9]*, Landforms: [A-Za-z_,\ ]*" "$LOG" | tail -1)
   say "[$id] $ctx"

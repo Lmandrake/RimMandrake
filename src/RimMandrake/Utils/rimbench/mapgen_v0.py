@@ -30,6 +30,9 @@ _HERE = os.path.dirname(os.path.abspath(__file__))
 if _HERE not in sys.path:
     sys.path.insert(0, _HERE)
 import scatter  # noqa: E402
+import mapgen_paint  # noqa: E402  -- MAPGEN_PAINTER_V1_1: grid() delegates here
+import corpus_stats  # noqa: E402  -- selftest only: its region/perimeter/distinct
+                       # functions, never duplicated (MAPGEN_PAINTER_V1_1 rule 2)
 
 _REPO_ROOT = os.path.abspath(os.path.join(_HERE, "..", "..", "..", ".."))
 CORPUS_STATS_PATH = os.path.join(
@@ -599,181 +602,36 @@ def validate(plan_dict):
 
 
 # ---------------------------------------------------------------------- grid
-def _make_plain(size, seed):
-    grid_rows = [["Sand"] * size for _ in range(size)]
-    for z in range(size):
-        row = grid_rows[z]
-        for x in range(size):
-            n = scatter.fbm(x, z, seed=seed, octaves=3, scale=16.0)
-            if n > 0.60:
-                row[x] = "Gravel"
-            elif n < 0.32:
-                row[x] = "SoftSand"
-    return grid_rows
-
-
-def _paint(grid_rows, cells, terrain, size):
-    for item in cells:
-        x, z = item[0], item[1]
-        if 0 <= x < size and 0 <= z < size:
-            grid_rows[int(z)][int(x)] = terrain
-
-
-def _line_endpoints(cx, cy, length, rot, size):
-    dx, dy = math.cos(rot), math.sin(rot)
-    half = length / 2.0
-    x0, y0 = cx - dx * half, cy - dy * half
-    x1, y1 = cx + dx * half, cy + dy * half
-    m = size * 0.06
-    clamp = lambda v: min(max(v, m), size - m)
-    return clamp(x0), clamp(y0), clamp(x1), clamp(y1)
-
-
-def _edge_from_orientation(deg):
-    d = deg % 360
-    if 45 <= d < 135:
-        return "S"
-    if 135 <= d < 225:
-        return "W"
-    if 225 <= d < 315:
-        return "N"
-    return "E"
-
-
-def _dist_from_edge(x, z, edge, size):
-    if edge == "N":
-        return z
-    if edge == "S":
-        return size - 1 - z
-    if edge == "W":
-        return x
-    return size - 1 - x
-
-
-def _push_point(cx, cy, edge, radius, size):
-    if edge == "N":
-        return cx, max(radius, cy - radius)
-    if edge == "S":
-        return cx, min(size - radius, cy + radius)
-    if edge == "W":
-        return max(radius, cx - radius), cy
-    return min(size - radius, cx + radius), cy
-
-
-def _edge_point_toward(cx, cy, edge, size):
-    if edge == "N":
-        return cx, 2
-    if edge == "S":
-        return cx, size - 2
-    if edge == "W":
-        return 2, cy
-    return size - 2, cy
-
-
-def _carve(plan_dict, size):
-    seed = plan_dict["seed"]
-    grid_rows = _make_plain(size, seed)
-    lf = plan_dict["landform"]["id"]
-    params = plan_dict["landform_params"]
-    footprint = params["footprint_fraction"]
-    orient = math.radians(params["orientation_deg"])
-    relief = params["relief_class"]
-    hydro = plan_dict["hydrology"]["kind"]
-    cat = LANDFORM_CATEGORY.get(lf, "raised_blob")
-    cx, cy = size / 2.0, size / 2.0
-    area = footprint * size * size
-
-    if cat == "raised_blob":
-        radius = math.sqrt(area / math.pi)
-        core = scatter.blob(cx, cy, radius, seed=seed, roughness=0.5)
-        rim = scatter.rim_band(cx, cy, radius, width=0.18,
-                                squash=0.8 if lf == "LoneMountain" else 0.55,
-                                rotation=orient)
-        core_fill = "Sandstone_Smooth" if relief == "low" else "Sandstone_Rough"
-        _paint(grid_rows, core, core_fill, size)
-        _paint(grid_rows, rim, "Sandstone_RoughHewn", size)
-
-    elif cat == "carved_line":
-        length = max(size * 0.7, math.sqrt(area) * 3.2)
-        x0, y0, x1, y1 = _line_endpoints(cx, cy, length, orient, size)
-        width = max(3, int(math.sqrt(area) / 6))
-        wallcells = scatter.walk(x0, y0, x1, y1, wander=0.45, seed=seed, width=width + 3)
-        _paint(grid_rows, [(x, z, 1.0) for x, z in wallcells], "Sandstone_Rough", size)
-        floorcells = scatter.walk(x0, y0, x1, y1, wander=0.45, seed=seed, width=width)
-        floor_fill = "Gravel" if hydro == "dry_riverbed" else "SoftSand"
-        _paint(grid_rows, [(x, z, 1.0) for x, z in floorcells], floor_fill, size)
-        if lf == "Badlands":
-            for i in range(2):
-                sign = 1 if i else -1
-                bx0, by0, bx1, by1 = _line_endpoints(
-                    cx + sign * size * 0.15, cy + sign * size * 0.15,
-                    length * 0.5, orient + math.radians(40 * sign), size)
-                cells = scatter.walk(bx0, by0, bx1, by1, wander=0.5, seed=seed + 10 + i,
-                                      width=max(2, width - 1))
-                _paint(grid_rows, [(x, z, 1.0) for x, z in cells], floor_fill, size)
-
-    elif cat == "radial":
-        radius = math.sqrt(area / math.pi)
-        core = list(scatter.radial_field(cx, cy, radius, falloff=1.4))
-        rim = scatter.rim_band(cx, cy, radius, width=0.16)
-        floor_fill = "Mud" if lf == "Sinkhole" else (
-            "SoftSand" if hydro in ("salt_pan", "brine_seep") else "Gravel")
-        _paint(grid_rows, [(x, z, d) for x, z, d in core if d > 0.04], floor_fill, size)
-        _paint(grid_rows, rim, "Sandstone_RoughHewn", size)
-        if hydro in ("spring", "brine_seep") and lf in ("Crater", "Caldera"):
-            centre_cells = [(x, z, d) for x, z, d in core if d > 0.75]
-            _paint(grid_rows, centre_cells, "WaterShallow", size)
-
-    elif cat == "basin":
-        radius = math.sqrt(area / math.pi)
-        cells = scatter.blob(cx, cy, radius, seed=seed, roughness=0.35)
-        basin_fill = {"salt_pan": "SoftSand", "delta": "Mud", "brine_seep": "Marsh",
-                      "spring": "WaterShallow", "river": "WaterShallow",
-                      "none": "Mud"}.get(hydro, "Mud")
-        _paint(grid_rows, cells, basin_fill, size)
-        if hydro in ("delta", "river", "spring"):
-            edge = _edge_from_orientation(params["orientation_deg"])
-            ex, ey = _edge_point_toward(cx, cy, edge, size)
-            path = scatter.walk(ex, ey, cx, cy, wander=0.4, seed=seed + 3, width=2)
-            _paint(grid_rows, [(x, z, 1.0) for x, z in path], "WaterShallow", size)
-
-    elif cat == "coastal":
-        edge = _edge_from_orientation(params["orientation_deg"])
-        depth = size * footprint
-        for z in range(size):
-            for x in range(size):
-                d = _dist_from_edge(x, z, edge, size)
-                wob = (scatter.fbm(x, z, seed=seed, octaves=2, scale=14.0) - 0.5) * size * 0.12
-                if d + wob < depth:
-                    grid_rows[z][x] = "WaterOceanDeep" if d + wob < depth * 0.45 else "WaterOceanShallow"
-        if lf == "Peninsula":
-            radius = math.sqrt(area / math.pi) * 0.6
-            px, py = _push_point(cx, cy, edge, radius, size)
-            cells = scatter.blob(px, py, radius, seed=seed, roughness=0.4)
-            _paint(grid_rows, cells, "Sand", size)
-
-    return grid_rows
-
-
 def grid(plan_dict, size=250):
-    """Terrain grid: list of rows (z), each a list of defNames (x)."""
+    """Terrain grid: list of rows (z), each a list of defNames (x).
+
+    MAPGEN_PAINTER_V1_1: all painting (organic masks, terraced terrain
+    bands, hydrology) lives in mapgen_paint.py; this only resolves which
+    per-landform painter applies and hands off the validated plan.
+    """
     sz = plan_dict.get("map_size", size)
-    return _carve(plan_dict, sz)
+    category = LANDFORM_CATEGORY.get(plan_dict["landform"]["id"], "raised_blob")
+    return mapgen_paint.paint(plan_dict, sz, category)
 
 
 # --------------------------------------------------------------------- gates
-IMPASSABLE = {"WaterOceanDeep", "WaterDeep", "WaterMovingChestDeep"}
+# MAPGEN_PAINTER_V1_1 rule 4: Granite_Rough/Sandstone_Rough are real
+# impassable natural rock now (the painter's rock terrace band), so gates
+# can and sometimes should fail -- that is the point, not a bug to tune
+# around.
+IMPASSABLE = {"WaterOceanDeep", "WaterDeep", "WaterMovingChestDeep",
+              "Granite_Rough", "Sandstone_Rough"}
 
 
 def gates(grid_rows):
     """Offline connectivity (flood-fill from map centre) and largest
-    buildable area (largest connected non-water region), rule 8.
+    buildable area (largest connected non-impassable region), rule 8.
 
-    UNKNOWN/simplification: this v0 terrain grid carries no actual
-    ThingDef walls (structures are out of scope, spec section E), so
-    "impassable" here means only deep water. The rule-3 test ("an anchor
-    cell unreachable from two map edges") is not checked per-anchor;
-    the aggregate connectivity_fraction is used as the proxy instead.
+    UNKNOWN/simplification: this terrain grid carries no actual ThingDef
+    walls (structures are out of scope, spec section E), so "impassable"
+    here means deep water and bare rock. The rule-3 test ("an anchor cell
+    unreachable from two map edges") is not checked per-anchor; the
+    aggregate connectivity_fraction is used as the proxy instead.
     """
     h = len(grid_rows)
     w = len(grid_rows[0]) if h else 0
@@ -783,7 +641,7 @@ def gates(grid_rows):
         return t not in IMPASSABLE
 
     def buildable(t):
-        return "water" not in t.lower()
+        return t not in IMPASSABLE
 
     cx, cy = w // 2, h // 2
     start = None
@@ -893,13 +751,37 @@ def cmd_batch(args):
     return 0 if ok else 1
 
 
+def _terrain_stats(grid_rows, tag):
+    """(distinct_terrains, perimeter/area) for one generated grid, via
+    corpus_stats.analyze_map -- MAPGEN_PAINTER_V1_1 rule 2/selftest: reuses
+    the corpus's own region/perimeter/distinct-count code, never
+    duplicated. defNames are arbitrary strings; analyze_map wants an int
+    grid, so each distinct name is remapped to a small int code first --
+    the labelling only ever compares values for equality, so the remap
+    changes nothing about the regions it finds."""
+    codes = {}
+    coded = []
+    for row in grid_rows:
+        for name in row:
+            c = codes.get(name)
+            if c is None:
+                c = codes[name] = len(codes)
+            coded.append(c)
+    h = len(grid_rows)
+    w = len(grid_rows[0]) if h else 0
+    row = corpus_stats.analyze_map(w, h, coded, "gen", tag)
+    return row["distinct_hash_count"], row["perim_area_mean_overall"]
+
+
 def cmd_selftest(_args):
     sheet = os.path.join(BIOMES_DIR, "deep_desert.md")
     dump_names = _load_terrain_defnames()
     landforms = set()
     ok_validate = True
-    ok_gates = True
     ok_defnames = True
+    distinct_ok = 0
+    band_ok = 0
+    gates_ok = 0
     for s in range(1, 9):
         p = plan(sheet, s)
         errs = validate(p)
@@ -910,20 +792,40 @@ def cmd_selftest(_args):
         landforms.add(p["landform"]["id"])
         g = grid(p)
         gt = gates(g)
-        if not gt["passed"]:
-            ok_gates = False
-            print("seed %d gates fail: %r" % (s, gt), file=sys.stderr)
+        if gt["passed"]:
+            gates_ok += 1
         names = {name for row in g for name in row}
         missing = names - dump_names if dump_names else set()
         if missing:
             ok_defnames = False
             print("seed %d unknown defNames: %s" % (s, missing), file=sys.stderr)
+        distinct, ratio = _terrain_stats(g, "seed%02d" % s)
+        if distinct >= 10:
+            distinct_ok += 1
+        else:
+            print("seed %d only %d distinct terrains (need >=10)" % (s, distinct), file=sys.stderr)
+        in_band = 2.4 <= ratio <= 3.3
+        if in_band:
+            band_ok += 1
+        print("seed %2d: landform=%-14s distinct=%2d perim/area=%.3f gates=%-4s (%s)"
+              % (s, p["landform"]["id"], distinct, ratio,
+                 "PASS" if gt["passed"] else "FAIL", "in-band" if in_band else "out-of-band"))
+
     ok_variety = len(landforms) >= 4
+    ok_distinct = distinct_ok == 8
+    ok_band = band_ok >= 6
     print("landforms seen: %s" % sorted(landforms))
-    checks = {"variety(>=4 distinct)": ok_variety, "validate(all pass)": ok_validate,
-              "gates(all pass)": ok_gates, "defnames(all known)": ok_defnames}
+    # rule 4: gates are REPORTED, not required to pass -- Granite_Rough/
+    # Sandstone_Rough are genuinely impassable now, so a rock-heavy map can
+    # honestly fail connectivity/buildable-area. Not a selftest gate.
+    print("gates reported: %d/8 passed (informational, not a pass/fail gate)" % gates_ok)
+    checks = {"variety(>=4 distinct landforms)": ok_variety,
+              "validate(all pass)": ok_validate,
+              "defnames(all known)": ok_defnames,
+              "distinct_terrains(>=10, all 8)": ok_distinct,
+              "perim_area(2.4-3.3, >=6/8)": ok_band}
     for name, v in checks.items():
-        print("  %-24s %s" % (name, "PASS" if v else "FAIL"))
+        print("  %-32s %s" % (name, "PASS" if v else "FAIL"))
     passed = sum(1 for v in checks.values() if v)
     print("SELFTEST PASS %d/%d" % (passed, len(checks)))
     return 0 if passed == len(checks) else 1

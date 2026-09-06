@@ -530,7 +530,7 @@ def build_desertplateau(g, frequency=None, manifest_overrides=None, tile_req_ove
             )
         elif type_ == "worldTileReq":
             node = g.tile_req(
-                topology=kwargs.get("Topology", "Inland"),
+                topology=tro.get("topology", kwargs.get("Topology", "Inland")),
                 commonness=tro.get("commonness", kwargs.get("Commonness")),
                 cave_chance=kwargs.get("CaveChance"),
                 hilliness=tro.get("hilliness", floatranges.get("HillinessRequirement")),
@@ -708,6 +708,9 @@ def main():
                          "with --id/--out, and optionally --rotate DEG (every gridRotate Angle) and --freq-scale X (every gridPerlin Frequency x X). "
                          "worldTileReq is loosened like --variant (commonness 1, hilliness 0-6, rainfall 0-10000, temperature -100..100).")
     ap.add_argument("--rotate", type=float, default=None, help="with --from: set every gridRotate node's Angle (degrees)")
+    ap.add_argument("--topology", default=None,
+                    help="with --from: override worldTileReq Topology (e.g. Any). Canyon ships CliffValley and Sinkhole CliffAllSides — "
+                         "a random quicktest tile almost never qualifies, and GL then draws NO landform (found live 2026-09-06).")
     ap.add_argument("--freq-scale", type=float, default=None, help="with --from: multiply every gridPerlin Frequency by this")
     ap.add_argument("--id", dest="landform_id", default=None, help="new landformManifest Id / DisplayName")
     ap.add_argument("--out", default=None, help="output path for --variant")
@@ -725,8 +728,9 @@ def main():
         build_desertplateau(   # generic over the parsed source despite the name
             g,
             manifest_overrides={"id": args.landform_id, "display_name": args.landform_id, "is_custom": True},
-            tile_req_overrides={"commonness": 1.0, "hilliness": (0.0, 6.0),
-                                "rainfall": (0.0, 10000.0), "avg_temperature": (-100.0, 100.0)},
+            tile_req_overrides=dict({"commonness": 1.0, "hilliness": (0.0, 6.0),
+                                     "rainfall": (0.0, 10000.0), "avg_temperature": (-100.0, 100.0)},
+                                    **({"topology": args.topology} if args.topology else {})),
             freq_scale=args.freq_scale, rotate_deg=args.rotate,
         )
         path = g.write(args.out)
