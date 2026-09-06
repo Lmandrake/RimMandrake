@@ -1,90 +1,139 @@
 # The Nightside Ice — biome definition sheet
 
-_First pass, 2026-09-05, to the grammar in `README_BIOME_GRAMMAR.md`._
+_First pass 2026-09-05 (the nightside as a whole); **second pass 2026-09-06, owner +
+BENCH**, binding it to a def and reconciling it with the seven sheets that landed since.
+The first pass's ecology (§4) stands **unchanged, word for word** — owner's ruling. Defines
+**`RUT_NightsideIce`** (our own def, inheriting vanilla `IceSheet`'s shape — owner's
+ruling: own def, not a patch; name owed if the dirty-ice plateau wants one). Thematic
+handle: **the drain of the atmosphere** — and its image: **dirty white ice on the highest
+ground of the night, under the aurora, with something moving inside it.**_
 
-> 🔑 **2026-09-06:** this sheet's def now RECEIVES the deep-night highland — the dissolved
-> ring's sectors 1–3 and the former crystal caverns' high tiles (`the_lantern_deeps.md`
-> §0, `HORRORWASTES_BIOME_DISSOLVE_1`) — as plateau lobes. Its distillation-column idea
-> has since been made literal by the phase-line sheets (`the_blue_desert.md`,
-> `the_propane_lakes.md`). **A second pass is owed** before the freeze review.
+🔑 **Read against `the_blue_desert.md`, `the_propane_lakes.md`, `the_lantern_deeps.md`,
+`forsaken_crags.md`.** This sheet is the deep night's **uplands**; the pans and lows are
+theirs. The physics the first pass reasoned from — the antistellar point as the
+**fractional distillation column the size of a hemisphere**, freezing the atmosphere out in
+order of freezing point — has since been made literal by the phase-line sheets, and this
+sheet is now the column's top.
 
-**The problem this sheet had to solve:** the deep nightside has no light and — since
-cold gas venting is the poison forest's anomaly and may not be reused — no chemistry
-coming up out of the ground either. Two of the three ways a biosphere is normally
-powered are off the table. The way through is that the antistellar point is not
-merely cold; it is the **drain of the planet's entire atmosphere**. Everything the
-dayside evaporates, everything volcanism emits, everything anybody has ever burned,
-travels aloft to the nightside, sinks, and freezes out **in order of its freezing
-point**. The nightside is not a wasteland. It is a **fractional distillation column
-the size of a hemisphere**, and it is the only place on Ash'karr where the energy
-source is *delivered from somewhere else*.
+## 0. The measurements everything rests on
+
+MEASURED 2026-09-06 off `world/ASHKARR_WORLDMAP_tiles.csv`. Vanilla `IceSheet` holds 49
+tiles today (Deadstone, −52 °C). After the ruled re-home (`HORRORWASTES_BIOME_DISSOLVE_1`;
+`the_lantern_deeps.md` §0) the def holds **802 tiles**: the dissolved ring's highland
+sectors 1–3 (337 tiles, elev median 1,271 m) + the former crystal caverns' high ground
+(416 tiles ≥ 900 m) + its own 49. Arc 128→159; temp p10/median/p90 **−70 / −56 / −39 °C**;
+**elevation median 1,129 m (max 1,884) — the deep night's mountains, under ice.** Regions
+Deadstone 509, Umbra 158, Ammonia Flats 73, Rimewall 30. Sectors 0–5 and 7–10 —
+**highland lobes, accepted as topography (owner's ruling), not a band**: chemistry here
+follows basin depth and height, never arc, which is the sheet's own anti-bullseye argument.
+
+🔴 **Own def, not a patch (owner's ruling).** Vanilla `IceSheet` carries an arctic zoo,
+coastal walrus and penguin, salmon and cod, snow at commonality 60 with DLC-gated
+blizzards, and a worldgen worker; patching all of it out across `MayRequire` branches is
+silent-failure territory. `RUT_NightsideIce` inherits the shape (terrain `Ice`, no roads,
+no rivers, `isExtremeBiome`) and overrides every list. Rides `NIGHTSIDE_ICE_DEF_1`.
+Vanilla's one line survives as this sheet's epigraph: *"The only animals here are
+migrating to somewhere else — or badly lost."*
 
 ## 1. What it is
 
-Ice as hard as quartzite, black under a sky full of stars, absolutely still.
+Ice as hard as quartzite, **white**, on the highest ground of the night, under a sky of
+stars and aurora, absolutely still at its heart.
 
-There is no wind — this is the bottom of the global circulation, where air arrives
-and stops — and there is no snow underfoot, because at −80 °C water ice does not
-behave like snow, it behaves like rock. The ground rings when you strike it and
-fractures in slabs. It is not white. Deep ice over dark rock reads **blue-black**,
-and the only white on the nightside is in the basins.
+Not blue: **dirty ice** (owner's ruling). Ice only turns blue when it is very pure, clean,
+old and compressed; white ice holds impurities — bubbles, mineral dust, everything the
+distillation column drops from the sky. So the highland is the **geologically active ice**
+— still ancient, but *recent* as ice goes, not yet compressed to solid mineral crystal:
+it flows, it fractures, it holds things, and things within it burst out more easily than
+anywhere on the nightside. The interior has no wind — this is the bottom of the global
+circulation, where air arrives and stops — and no snow underfoot, because at −60 °C
+water ice does not behave like snow, it behaves like rock. The ground rings when you
+strike it and fractures in slabs.
 
-The basins are the point of the place. Every low spot is a **pan of frost that is not
-water** — ammonia in one, carbon dioxide in the next, hydrocarbon slush in the
-deepest and coldest — each one a different colour, each one sharply bounded, each one
-a chemical warehouse with a floor and a rim. The Umbra Trap holds ammonia. The
-propane lakes lie lower still, and they are liquid, and they are surrounded by
-breathable oxygen, and **you are the only source of ignition on the hemisphere**.
+The basins below are the point of the place, and they belong to their own sheets now:
+every low spot is a pan of frost that is not water — ammonia in one, hydrocarbon slush in
+the deepest — and the propane lakes lie lower still, liquid, under breathable oxygen, and
+**you are the only source of ignition on the hemisphere.**
 
-Nothing moves. Not "nothing moved while you watched" — **nothing here moves on a
-human timescale at all.** The hills have metabolisms. What you take for a boulder
-field has been slowly eating the frost beneath it since before your species had
-writing, and one of those boulders has been saving up, for two hundred years, to move
-exactly once.
+Nothing moves on a human timescale — on the *surface*. The hills have metabolisms. What
+you take for a boulder field has been slowly eating the frost beneath it since before
+your species had writing, and one of those boulders has been saving up, for two hundred
+years, to move exactly once. And inside the dirty ice, unseen, something is tunneling
+toward the warmth of whatever just lay down to die.
 
 ## 2. Planetary position
 
-**Deep nightside (θ ≈ 140-180°), −58 °C at θ 150 falling to −80 °C at the
-antistellar point.** `AB_RockyCrags` is the dominant terrain (canon: 2,828 of 3,916
-tiles past θ 130), with `AB_PropaneLakes` in the basins and `BMT_CrystalCaverns` in
-the highlands below −55 °C.
+**Deep nightside highland (arc 128–159; the coldest high ground on the planet) × the
+cold-trap anomaly, upland half.** The antistellar point is the planet's condensation sink;
+this sheet is the inert-ice top of that column, and the Blue Desert, the Ammonia Flats and
+the propane sea are where the frost the uplands shed finally pools.
 
-- **Energy regime:** none. No light, and — 🔴 explicitly — **no vents, no geothermal,
-  no volcanism**. The only energy arriving is what the atmosphere carries in.
-- **Temperature:** the coldest on the planet, and it is the *active* axis here. It
-  does not merely slow chemistry down; it **removes species from the gas phase one by
-  one**, which is the whole mechanism.
-- **Anomaly:** ⭐ **the cold trap** — the antistellar point as the planet's
-  condensation sink, sorting the atmosphere by freezing point into topographic pans.
+- **Energy regime:** none from the sun, none from below — 🔴 explicitly **no vents, no
+  geothermal, no volcanism**. What arrives is what the atmosphere carries in, and (second
+  pass) what the aurora's ground currents deliver.
+- **Temperature:** the active axis — it removes species from the gas phase one by one.
+- **Anomaly:** the cold trap. Sorting by freezing point into topographic pans.
 
 ### Why this is not a ring, and cannot be moved 🔴
-Descending air spreads and deposits, but it does not deposit *evenly*: the volatiles
-migrate downslope as frost and pool in **whatever the local topography holds**. So
-the chemistry of a given place is set by **the depth and temperature of its basin**,
-not by its arc from the antistellar point. Two pans at the same θ, one shallow and
-one deep, hold entirely different inventories.
+Descending air deposits *downslope*, into whatever the local topography holds; the
+chemistry of a place is set by the depth and temperature of its basin, not by arc.
+⇒ A scatter of chemically distinct pans separated by inert ice uplands — the uplands are
+this sheet. Move it fifty degrees dayward and the ice softens, the pans empty, and there
+is nothing left.
 
-⇒ **The nightside is a scatter of chemically distinct pans separated by inert ice
-uplands.** No band, no halo, no gradient you could draw with a compass — a
-patchwork whose pattern is the *terrain map*, which is torn and irregular already.
-
-⇒ And it exists only here. A cold trap needs a permanent atmospheric sink with a
-temperature below the freezing points of the species being trapped. There is exactly
-one on Ash'karr, and it is a point, not a band. Move this biome fifty degrees
-dayward and the ammonia sublimes, the pans empty, and there is nothing left.
-
-⚠️ **Not the Glowforest.** Canon places `Glowforest` as isolated points on the deep
-night. Those are a *different anomaly* and get their own sheet: 🔴 bioluminescence is
-banned in this biome (§6) on energetic grounds, and the Glowforest points are an
-exception that must justify its own power source, not a licence to light this one up.
+⚠️ A first-pass claim is struck: *"`AB_RockyCrags` is the dominant terrain past θ 130"* —
+the crags are twilight (arc 103–121, `forsaken_crags.md`); the deep night is the Blue
+Desert, this highland, the caverns' former ground, and the propane country.
 
 ## 3. Driving forces
 
-**A hemisphere-sized cold trap with no light, no wind and no heat from below, where
-the only energy available is the chemical disequilibrium of an atmosphere that has
-been frozen out in the wrong order.** Everything below follows.
+**A hemisphere-sized cold trap with no light from the sun, no wind at its heart and no
+heat from below, where the only energy available is the chemical disequilibrium of an
+atmosphere frozen out in the wrong order** — and, on the highland, the slow violence of
+dirty ice.
+
+### The six reconciliations (owner-ratified, 2026-09-06)
+
+1. **Wind — the ice sheet is the SOURCE.** Cold air pools on the high plateau and drains
+   off its edges: that *is* the katabatic wind that strips the Blue Desert bare. Interior:
+   dead still, as the first pass wrote. Margins: the drainage. The ice sheet makes the
+   wind it never feels.
+2. **Light — aurora, not just starlight.** The propane sheet ruled aurora most of the clear
+   time on the dark side; the highland adopts it. The first pass's real rule survives —
+   *no warm light except what the player brings* — because aurora is cold light, and
+   nothing native cares: nothing here sees.
+3. **Glow — the ban stands for surface residents.** The Lantern Deeps beneath glow, and
+   their emergences leak light at the surface: an injection, not a native (§6 marks the
+   exception).
+4. **Speed and warmth — partition by chemistry.** The water-ice uplands keep the starvation
+   seam metabolism — slow, sessile, laminar. The hydrocarbon lows (Blue Desert, propane,
+   Ammonia Flats) carry the fuel-life; the Burners cannot enter here — no fuel to burn,
+   nothing to eat.
+5. **Falling weather — none on the interior.** Deposition happens in the pans (fuel snow is
+   the propane sheet's; drift is the Blue Desert's). Vanilla's snow and blizzards re-skin
+   as **ablation at the margins**, not precipitation.
+6. **The §10 door is now occupied** — by the Rot on the night shoulder and the Ammonia
+   Flats' deep-pan life (`the_propane_lakes.md`); the reservation becomes pointers.
+
+### Dirty ice — the second pass's physics (owner-ratified)
+
+- **Ice flow and crevassing.** Young, impure ice creeps; the plateau is scored with
+  crevasses that open and close over years — the ruled collapse hazard, in ice. The
+  warning vocabulary: **frost-sift and rime-fall at a crevasse lip**, and the grumble.
+- **Things burst out.** Impure ice holds inclusions, and flowing ice delivers them to the
+  surface *violently* — pressure release, a slab calving — and whatever was frozen inside
+  is suddenly in the open: pieces of the terramanufacture's collapsing machine, the war's
+  cocoons where the highland meets Deadstone, the well-provisioned dead of failed Junker
+  crystal expeditions, and the tunnelers.
+- 🔑 **The thaw pulse is the disaster.** Vanilla's cold snap is meaningless at −56 °C; the
+  *inverse* is the event: a warm intrusion — a reconnection storm dumping energy, a
+  machine venting, **your own base** — softens dirty ice, and softened dirty ice slumps,
+  calves, and releases what it held. Heating is the threat generator (§4); dirty ice gives
+  it a second mechanism beyond thermal sensing.
 
 ## 4. How the biology adapted
+
+_(First pass, verbatim — owner's ruling: unchanged.)_
 
 **Life here does not grow. It catalyses, and it waits.**
 
@@ -134,155 +183,169 @@ been frozen out in the wrong order.** Everything below follows.
   what a seam provides. Anything warm on the nightside is a **visitor, a machine, or
   dying**.
 
+### Second pass — the highland's additions (owner-ratified)
+
+**Animals and plants are nearly nonexistent; the population is mostly corpses and dying
+lost souls** (owner). Too hot for the truly icy beings of the propane country; too cold for
+anything from the terminator — the plateau is the gap in both ranges.
+
+- ⭐ **The tunnelers** — the naked-mole-rat analog: blind, thermal-sensing (§4), moving
+  *within* the dirty ice where nothing on the surface ever sees it, feeding on what little
+  arrives — which is the lost. A body dying on the plateau is a warm signal in the ice;
+  the tunnelers come to it from below. **Surfacing is the burst.** Colonial, clonal, one
+  warren per pan-margin. A threat to the dying, and — through a thaw pulse — to a camp
+  that has made itself warm.
+- **Icy insects** — the small life of the inclusions: things that live in the bubbles and
+  mineral veins of dirty ice, active only in a thaw pulse, dormant otherwise. Harmless
+  individually; a slumping slab full of them is not.
+- **Corpses and the lost** — not fauna, the biome's real population: what wandered too
+  far from the terminator, what came down from orbit, perfectly preserved. The lost-soul
+  events (§4b) are how they arrive.
+
+## 4b. Weather and events — the equivalence table (owner-accepted)
+
+Vanilla ice-sheet incidents, and what happens here instead:
+
+| vanilla ice sheet | here |
+|---|---|
+| cold snap | ⭐ **thaw pulse** — the inverse; the ice softens and releases |
+| blizzard / hard snow | **rime-fall** off the crags' margin; ablation drift at the escarpment; never on the interior |
+| aurora (cosmetic) | **reconnection storm** — radiation up, circuits surge, the electrojet tap over-produces, the tunnelers stir |
+| meteorite / ship chunk | **calving delivery** — inclusions burst out: chunks, pods, a cocoon, a machine part |
+| wanderer joins / refugee / traveler in need | **the lost soul** — a dying traveler on the plateau; save them or bury them; the tunnelers are already coming |
+| animal migration passing | **the one-move animal commits** — once, ever; and Junker crystal expeditions crossing, failing |
+| psychic drone / mech cluster | not here by default — the propane country and the Deeps (`MECHANOID_BIOME_PRESENCE_REVIEW_1`) |
+| toxic fallout / volcanic winter | **the crags' Dark drifting over the plateau** — the tholin cloud, sensor loss |
+
+Standing weather: **aurora-clear** (interior), ablation drift (margins), rime-fall
+(the Rimewall edge). 🔴 No rain (R-H1). No precipitation on the interior.
+
 ## 5. Always true
 
-- **It is dark.** Starlight only. Nothing is lit and nothing casts a shadow you
-  could see without instruments.
-- **It is still.** No wind, ever — this is the sink of the circulation.
-- **The ground is hard.** Ice at −80 °C is a brittle rock; it fractures, it does not
-  compress, and there is no snowpack to walk through.
-- **Chemistry is sorted by basin.** What a pan holds is a function of its depth and
-  temperature, and its boundary is sharp.
-- **Everything alive is old, huge, stationary and unrecognisable as life.**
+- **The sky is bright and cold** — starlight and aurora; no warm light exists but yours.
+- **The interior is still**; the margins drain — the wind starts here and leaves.
+- **The ground is hard, white, and moving on a geological clock** — dirty ice: it
+  fractures, it flows, it holds inclusions, and it gives them up.
+- **Chemistry is sorted by basin** — and the basins are other sheets'.
+- **Everything alive on the surface is old, huge, stationary and unrecognisable as
+  life**; everything alive *inside* the ice is blind, slow, and coming toward warmth.
 - **Anything left here is preserved perfectly and indefinitely** — bodies, machines,
-  records, and mistakes.
-- ⚠️ **Fire is possible and catastrophic.** Liquid hydrocarbon under an oxygen
-  atmosphere is a fuel-air weapon waiting for the one thing the environment cannot
-  supply. You are that thing.
+  records, and mistakes — until the ice calves it back out.
+- ⚠️ **Fire is possible and catastrophic** below, in the pans; **warmth is catastrophic**
+  here, on the ice.
 
 ## 6. Never true 🔴 (hard bans — checkable)
 
-- ⛔ **No vents, no geysers, no geothermal, no volcanism, no hot springs, no
-  fumaroles.** The nightside has no energy from below. (The cold vents belong to the
-  poison forest and may not be reused here.)
-- ⛔ **No bioluminescence, no glowing organisms, no light-producing flora or fauna.**
-  A seam metabolism cannot afford photons. Any glow on the nightside is a machine, a
-  fire, or `Glowforest`, which is a different biome with a different anomaly.
+- ⛔ **No vents, no geysers, no geothermal, no volcanism, no hot springs, no fumaroles.**
+- ⛔ **No bioluminescence in surface residents** — a seam metabolism cannot afford photons.
+  🔑 Exception by injection: Lantern Deeps emergences (`the_lantern_deeps.md`) leak the
+  caverns' glow at the surface; they are not residents.
 - ⛔ **No photosynthesis and no photosynthetic tissue of any kind.**
-- ⛔ **No liquid water anywhere, in any form, ever.** The liquids here are
-  hydrocarbons and the frosts are not water-dominated.
-- ⛔ **No soft snow, snowdrifts, blizzards, snowfall or falling weather** on the
-  uplands. Deposition happens in the pans and it is chemical frost, not weather.
-- ⛔ **No wind, no storms, no dust.**
-- ⛔ **No warm-blooded, fast, pursuing, fleeing or flocking fauna.** No pack hunters,
-  no herds, no migration. Any creature def here with a normal move speed is a
-  violation.
-- ⛔ **No vision-based or sound-based sensing, and no vibration/ground-sense** (that
-  is the poison forest's channel). **Thermal only.**
+- ⛔ **No liquid water anywhere, in any form, ever.**
+- ⛔ **No precipitation on the interior** — no snowfall, no drifts, no blizzards; ablation
+  and rime-fall occur only at the margins. Deposition is the pans' business.
+- ⛔ **No wind on the interior** — katabatic drainage exists only at the escarpment; a
+  storm def resident on the plateau is a violation.
+- ⛔ **No warm-blooded, fast, pursuing, fleeing or flocking fauna** on the surface; the
+  tunnelers move only within the ice and surface only to feed or in a thaw pulse.
+- ⛔ **No vision-based or sound-based sensing, and no vibration/ground-sense.** Thermal
+  only.
 - ⛔ **No spores, seeds, pollen or airborne dispersal.**
 - ⛔ **No farming, no soil, no arable ground.** 🔴 Canon: *the nightside must never
   become farmable.*
-- ⛔ **No green and no instantly-nameable Earth organisms** (standing bans).
-- ⛔ **No lush flora of the ordinary kind** — nothing leafy, nothing photosynthetic,
-  nothing that reads as a plant. ⚠️ **This ban is about FORM, not density.** Under the
-  owner's three-part lush rule the nightside is promised *"a very different definition
-  of lush using very alien life forms"*, so density on the nightside is not forbidden
-  — being a **plant** is. See §10.
+- ⛔ **No icy dayside analogs and no instantly-nameable Earth organisms** — vanilla's
+  arctic zoo is evicted with the def.
+- ⛔ **No lush flora of the ordinary kind** — nothing leafy, nothing that reads as a plant
+  (form, not density — see §10).
 - ⛔ **No ordinary animal silhouettes at all.** If a player can tell it is a creature
   before it acts, it is wrong for this biome.
+- ⛔ **No blue ice as the standing surface** — the highland is dirty white ice; pure blue
+  ice is the Blue Desert's ancient compressed floor, not this.
 
 ## 7. Uniquely available
 
-- ⭐ **Cryogenic feedstocks, sorted and pure, by the basin.** Ammonia (fertiliser,
-  refrigerant, explosives precursor), CO₂ ice, and liquid hydrocarbons — the planet's
-  chemical industry has exactly one raw source and this is it. 🔑 **Which pan you
-  stand in decides which chemical you get**, so prospecting here is real and
-  map-driven rather than generic mining.
-- **Fuel** — the propane lakes are the only large-scale liquid fuel on Ash'karr, and
-  extracting it in an oxygen atmosphere with heated equipment is the single most
-  dangerous industrial act in the game.
-- **Perfect, indefinite preservation.** The nightside is the planet's archive and its
-  hiding place: nothing decays, nothing rusts, nothing is found. Canon puts four
-  **Free Droid Enclave** seats out here — immune to the cold, invisible because they
-  can run cold, and safe from organics who cannot.
-- **Cold as a resource** — free superconduction, free refrigeration, free heat
-  rejection for anything that needs it.
-- ⚠️ **Not food, not water, not fuel-you-can-burn-indoors, not safety.** And ⛔ not
+- **The ice itself, impure** — not the Blue Desert's distilled-purity blocks; dirty ice
+  is water with everything the sky dropped in it (`WATER_KINDS_TAXONOMY_1` row: dirty ice
+  → melt → filter).
+- ⭐ **What the ice gives up** — calving delivers inclusions: machine parts of the
+  terramanufacture, cocoons, pods, the well-provisioned dead. Prospecting here is waiting
+  for the ice to move, or making it.
+- **Perfect, indefinite preservation** — the planet's archive and hiding place; canon puts
+  four **Free Droid Enclave** seats out here, cold on purpose.
+- **Cold as a resource** — free superconduction, refrigeration, heat rejection.
+- **The electrojet tap** works here too (`the_propane_lakes.md` §7), weaker than at the
+  pole.
+- ⚠️ **Not food, not water you can drink unfiltered, not fuel, not safety.** And ⛔ not
   farmland, permanently.
 
 ## 8. Inhabited objects
 
-Whoever is out here is out here **to be un-findable**, and everything they build
-fights the same fight: stay warm inside, be cold outside.
+Whoever is out here is out here **to be un-findable**, and everything they build fights
+the same fight: stay warm inside, be cold outside — and now, on dirty ice, *stay light*,
+because a warm building softens its own foundation.
 
-- **Buried and bermed structures**, walls thick with ice, exteriors deliberately at
-  ambient — the architectural language is **thermal camouflage**, and it is unique to
+- **Buried and bermed structures**, exteriors at ambient — thermal camouflage, unique to
   this hemisphere.
-- **Droid enclaves** — canon: *The Trade Socket*, *Vent Nine*, *Coldfire*, *The
-  Cracking Station*. Machines that need no heat build the only comfortable
-  settlements on the nightside, and they build them **cold on purpose**.
-- **Cracking and tap plant** on the pan margins: condenser trains, tank farms and
-  pipe runs, standing in the open, uncorroded and perfect after centuries.
-- **Everything that ever landed here is still exactly where it landed**, in the
-  condition it landed in. The nightside does not bury, dissolve or overgrow. It is
-  the fourth and last ruin-language on the planet: **untouched**.
+- **Droid enclaves** — canon: *The Trade Socket*, *Vent Nine*, *Coldfire*, *The Cracking
+  Station* — highland holdings, built cold on purpose, nothing organic climbs to −60 °C.
+- **Cracking and tap plant** on the pan margins, uncorroded and perfect after centuries.
+- **The failed Junker crystal expeditions** — crossing this ground toward the Deeps'
+  mouths and preserved on it exactly as they died.
+- **Everything that ever landed here is still exactly where it landed** — the fourth and
+  last ruin-language on the planet: **untouched** — until the ice calves it out.
 
 ## 9. Artistic theme
 
-**"A chemistry set the size of a hemisphere, switched off, in the dark."**
+**"A chemistry set the size of a hemisphere, switched off, under the aurora."**
 
-Palette: **blue-black and slate** ice · **starlight grey**, the only ambient there is
-· and then, in the pans and nowhere else, **shockingly clean saturated chemistry
-colour** — ammonia's cold white-blue, CO₂ frost's flat matte white, hydrocarbon
-slush's brown-amber and oily iridescence, and the odd sulfur-yellow rime. ⛔ **No
-warm light anywhere except what the player brings**, which is why the player's own
-lamp is the most emotionally loaded object in the biome.
+Palette: **white dirty ice** over blue-black rock at the fractures · aurora green and
+violet as the ambient · starlight grey · and then, in the pans and nowhere else, the
+shockingly clean saturated chemistry colour of the other sheets. ⛔ **No warm light
+anywhere except what the player brings** — which is why the player's own lamp is the most
+emotionally loaded object in the biome.
 
-Light: **no source.** Everything is ambient starlight — flat, blue, and just barely
-enough. Objects are read by rim and by silhouette against the sky, not by their
-faces. Any directional light in a nightside shot is artificial and belongs to
-someone, and the player should read it that way instantly.
+Light: cold and *from above* — aurora and stars; objects read by rim and silhouette. Any
+warm directional light in a nightside shot is artificial and belongs to someone.
 
-Silhouette language: **low, horizontal, geological.** Slabs, terraces, shelves,
-rims, fracture lines. Living things are **indistinguishable from landform** — sheets,
-crusts, lobes, mounds — and their scale is announced only by something small and
-warm standing next to them. ⭐ The composition rule is that the viewer should not be
-able to tell which part of a nightside picture is the creature until it is told.
+Silhouette language: **low, horizontal, geological** — slabs, terraces, crevasse lines,
+calving faces. Living things are indistinguishable from landform; ⭐ the viewer should not
+be able to tell which part of the picture is the creature until told — and now, a second
+tell: a fresh slab-fall with something in it.
 
-Against the dune sea's glare and the terminator's stripes this must read as **the
-place where the planet stops**: still, silent, enormous, patient, and entirely
-uninterested in you until you turn the heating on.
+## 10. The door — occupied (second pass)
 
-## 10. ⭐ THE DOOR THIS SHEET LEAVES OPEN — nightside "lush" (owner, 2026-09-05)
-
-> *"And then there will be a very different definition of lush using very alien life
-> forms on the night side."*
-
-🔑 **This is the owner's stated intent, and it is not this biome.** The sheet above
-describes the nightside's *default* state — the inert ice uplands and the sorted pans,
-sparse by construction, because a seam metabolism is a starvation metabolism. A
-**dense** nightside biome needs a richer seam than an upland offers, and the mechanism
-for one is already sitting in §2 waiting to be used:
-
-- The **deepest, coldest pans** hold the largest and most reactive inventories:
-  hydrocarbon slush lying against oxidised frost, metres thick, laid down over a
-  geological age and still unreacted.
-- A catalyst on *that* interface is not starving. It has real power density, and the
-  constraint that keeps upland life flat and slow is lifted.
-- ⇒ **Volume becomes worth building.** Sheets stack into masses, masses into
-  structures, and a pan floor fills with something dense, three-dimensional, metres
-  deep and packed — **lush by every measure except that no part of it is a plant, none
-  of it is green, none of it photosynthesises, and none of it reads as life at all.**
-  Crystalline, laminar, chemically vivid, and completely still.
-
-⛔ **Do not build it inside this sheet.** It is a distinct biome with a distinct
-anomaly — the deep pan, not the upland — and it needs its own definition sheet and its
-own roster. What this sheet does is **reserve the ground for it** and record why the
-mechanism is available. ⚠️ Its palette must stay in the nightside's register —
-saturated chemistry colour under starlight — because if a nightside-lush biome ever
-reads as *a forest in the dark*, both sheets have failed.
+The first pass reserved "a very different definition of lush using very alien life forms
+on the night side." It has since been built: **the Rot** (`the_rot.md`, the night shoulder's
+pale sprawl) and **the Ammonia Flats' deep-pan life** (`the_propane_lakes.md`). This sheet
+stays the sparse default those two are exceptions to.
 
 ## Roster consequences (the sheet is the admission test)
 
 **Wanted:** sessile catalytic sheets, crusts and lobes at landform scale · organisms
-that are indistinguishable from terrain · the one-move animal · clonal colonial
-forms · thermal-sensing predators that strike at heat sources · chemical-frost
-formations that are ambiguously alive.
-**Barred on sight:** anything that walks, runs, flies, flocks, herds or flees ·
-anything warm-blooded · anything that glows · anything green or photosynthetic ·
-anything with eyes · anything with a normal creature silhouette · anything that
-disperses seeds or spores · anything instantly nameable.
-🔴 **The hardest admission test on the planet.** Most creature defs in every donor
-mod fail this sheet at the first line, and that is correct: the nightside's roster
-should be **very short, very strange, and mostly not obviously fauna at all**. If a
-candidate reads as an animal, it belongs at the terminator instead.
+indistinguishable from terrain · the one-move animal · clonal colonial forms ·
+thermal-sensing tunnelers within the ice · icy insects of the inclusions · chemical-frost
+formations that are ambiguously alive · corpses and the lost.
+**Barred on sight:** anything that walks, runs, flies, flocks, herds or flees on the
+surface · anything warm-blooded · anything that glows (residents) · anything green or
+photosynthetic · anything with eyes · anything with a normal creature silhouette ·
+anything that disperses seeds or spores · anything instantly nameable · anything from the
+propane country's fuel-life · anything from the terminator.
+🔴 **The hardest admission test on the planet.** The roster should be very short, very
+strange, and mostly not obviously fauna at all.
+
+---
+
+## Owed
+
+- `NIGHTSIDE_ICE_DEF_1` — author `RUT_NightsideIce` (inherit vanilla's shape, override every
+  list, no arctic zoo, no snow table); paint the 802 tiles under
+  `HORRORWASTES_BIOME_DISSOLVE_1`; add it to the world tools' biome list.
+- **Name** — owner's pick if the dirty-ice plateau wants one beyond "the Nightside Ice."
+- **Tunnelers and icy insects** — authoring (art to the NEW-ART ledger; the within-ice
+  movement and the thaw-pulse surfacing are C#), admission at the sitting.
+- **Events** — the equivalence table as incident defs: thaw pulse, calving delivery, the
+  lost soul, rime-fall/ablation, the Dark drifting over.
+- **Engine feasibility pass:** crevasse/collapse in ice with the ruled warning tells; the
+  thaw pulse as a temperature-driven map event; inclusions as a calving spawner.
+- **Cross-flow ledger**: ice sheet → Blue Desert (katabatic wind); Umbra → here (aurora);
+  crags → here (the Dark drifting; rime-fall at Rimewall); Deeps beneath (emergences).

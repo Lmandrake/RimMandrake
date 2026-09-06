@@ -11,7 +11,8 @@ its tiles morph into their neighbors as usual.
   **Blue Desert (`BiomeGRimond`) core in sectors 0, 7, 9, 10, 11**; 🔴 **RE-RULED
   2026-09-06 — `BMT_CrystalCaverns` is no longer a worldmap biome (`the_lantern_deeps.md`):
   the highland sectors 1, 2, 3 AND the former caverns' 578 tiles' HIGH ground (in
-  3/4/5/8) go to the ICE SHEET (`nightside_ice.md`'s def — confirm its defName; ⛔ no
+  3/4/5/8) go to the ICE SHEET — 🔴 ruled 2026-09-06: **our own def `RUT_NightsideIce`**
+  (`NIGHTSIDE_ICE_DEF_1` authors it first; vanilla `IceSheet`'s 49 tiles repaint too; ⛔ no
   Bluefire second biome); the caverns' LOW tiles (7/9/10) join the Blue Desert core**;
   **PropaneLakes bulges up in 6**; arc excursions: Blue Desert lobes in 0 and 11 push down
   into 143–155, propane pushes up in 6. Produce the exact tile list from the sector

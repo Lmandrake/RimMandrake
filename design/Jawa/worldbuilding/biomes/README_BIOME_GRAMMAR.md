@@ -99,7 +99,7 @@ Order is by **similarity — slowly vary** (owner, 2026-09-05).
 | `poison_forest.md` | `PoisonForest` | ✅ done |
 | `dune_sea.md` | `ExtremeDesert` (Dune Sea) | ✅ done |
 | `terminator_sea.md` | the three seas | ✅ done |
-| `nightside_ice.md` | nightside | ✅ done |
+| `nightside_ice.md` | `RUT_NightsideIce` (own def, inherits vanilla `IceSheet`; 802 tiles MEASURED — the deep-night highland) | ✅ first pass 2026-09-05; **second pass 2026-09-06** — dirty ice, the thaw pulse, tunnelers, the six reconciliations; first-pass ecology unchanged |
 | `fall_line.md` | **injection layer** over `ExtremeDesert` | ✅ done — no new BiomeDef |
 | `deep_desert.md` | `ExtremeDesert`, far ring | ✅ done |
 | `desert.md` | `Desert` | ✅ done |
@@ -113,7 +113,7 @@ Order is by **similarity — slowly vary** (owner, 2026-09-05).
 | `the_blue_desert.md` | `BiomeGRimond` ("Blue Desert", name kept; Deadstone's receiving ground as a lobe mosaic) | ✅ done 2026-09-06 — the phase boundary; hydrocarbon biology; the ice hands up the weapon; 🔴 no bullseye |
 | `the_propane_lakes.md` | `AB_PropaneLakes` + Umbra, the antistellar cap (1,589 tiles MEASURED) | ✅ done 2026-09-06 — two solvents; the reconnection aurora and the electrojet tap; the terramanufacture history; the war lab and the crater ending |
 | `the_lantern_deeps.md` | `BMT_CrystalCaverns` ⛔ NOT a worldmap biome — an **injected underground layer** beneath any ≤ −40 °C nightside map | ✅ ruled 2026-09-06 — lanternstone, kyber, the Shard-minds in the dead's technology, the mindstone race; the surface tiles re-homed to the ice sheet and the Blue Desert |
-| **next** | owner's pick | 🔵 `nightside_ice.md` second pass (it now holds the deep-night highland — load-bearing before the freeze), or by similarity `BMT_FungalForest` (425) / `ZBiome_Badlands` (1,086) |
+| **next** | owner's pick | 🔵 by similarity: `BMT_FungalForest` (425 tiles, arc 115–129 — the Rot's smaller sibling, or its injection?) · `ZBiome_Badlands` (1,086, dayside) · `ZBiome_DesertOasis` (236) and the green squares (`BiomeCypreJungle` 191, `AB_FeraliskInfestedJungle` 172) owed short definitions |
 | `wreck_fields.md` | — | ⛔ superseded by `fall_line.md` |
 
 ### 🔑 The dryland ladder is ONE number: the sun's angle
