@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-06T02:44:26Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-06T03:03:12Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -85,15 +85,6 @@ target:   v1
 kind:     build
 summary:  design/Jawa/researchtreetaxonomy.md section 3 defines the manifest schema
 prose:    infrastructure/state/items/RESEARCH_MANIFEST_DRAFT_1.md
-
-## WEAPONS_DONOR_RETIREMENT_1 Retire the 6 weapon donor packs now that mandrake.rsw.armoury absorbed their content
-state:    ready
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     build
-summary:  Retire the 6 weapon donor packs — 1 of 6 broke the owner's live game, reverted
-prose:    infrastructure/state/items/WEAPONS_DONOR_RETIREMENT_1.md
 
 ## DROID_DONOR_PATCH_GATE_1 Patch the 11 ungated ABF/Synstructs sites in absorbed KotOR content, the prerequisite before ABF/Synstructs/Asimov can retire
 state:    ready
@@ -477,6 +468,15 @@ kind:     task
 summary:  GRAVSHIPLANDINGCRUSH1 — crush-landing + unblockable-thrust patches built, patches verified attached
 prose:    infrastructure/state/items/GRAVSHIP_LANDING_CRUSH_1.md
 
+## NINEFOLD_DEBUG_GAME_READY_CRASH_1 start_debug_game_ready crashes RimWorldWin64 outright - observed live during BIOME_SPAWN_FLORA_AUDIT_1, correlates with Ninefold satiation hook firing on a burst of debug auto-research completions
+state:    doing
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+summary:  NINEFOLDDEBUGGAMEREADYCRASH1 — startdebuggameready crashes the full-stack game, not a memory issue
+prose:    infrastructure/state/items/NINEFOLD_DEBUG_GAME_READY_CRASH_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -503,7 +503,17 @@ prose:    infrastructure/state/items/ARMOURY_MELEEPOWER_STALE_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-_none._
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+
+## WEAPONS_DONOR_RETIREMENT_1 Retire the 6 weapon donor packs now that mandrake.rsw.armoury absorbed their content
+state:    ready
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     build
+waiting:  needs `game-up`, game is DOWN
+summary:  Retire the 6 weapon donor packs — 1 of 6 broke the owner's live game, reverted
+prose:    infrastructure/state/items/WEAPONS_DONOR_RETIREMENT_1.md
 
 # NOT THIS TARGET
 

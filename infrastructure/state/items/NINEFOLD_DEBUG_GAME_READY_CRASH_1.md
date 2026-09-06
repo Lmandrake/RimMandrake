@@ -1,68 +1,74 @@
-# NINEFOLD_DEBUG_GAME_READY_CRASH_1 — start_debug_game_ready crashes the full-stack game, not a memory issue
+## spec
+Reproduced live, 2026-09-06, while working `BIOME_SPAWN_FLORA_AUDIT_1` on
+the full 596-mod list: `rimworld/start_debug_game_ready` (readiness
+`mapData`, `pauseIfNeeded: true`, `timeoutMs: 280000`) never returned — the
+bridge client's own socket eventually raised `ConnectionResetError: An
+existing connection was forcibly closed by the remote host`. `tasklist.exe`
+confirmed `RimWorldWin64.exe` was gone entirely; `./game` re-measured and
+corrected the ledger DOWN.
 
-`rimworld/start_debug_game_ready` reliably kills the RimWorld process on the
-owner's full 596-mod list, mid quicktest-map setup, during the debug tool's
-instant-research-completion sweep. Reproduced twice:
+**What the log shows, and doesn't.** The tail of `Player.log` at the moment
+of death shows the quicktest's own bulk "research everything" debug action
+completing dozens of research projects in a tight burst, each one firing
+`[Ninefold] <god> satiation ... -> ...` lines (`Patch_ResearchCompleted.cs`
+postfixing `ResearchManager.FinishProject`) — no managed exception, no
+Unity/Mono crash stack, no native crash-dump banner anywhere in the log.
+That absence is itself informative: a real unhandled exception or access
+violation normally prints one. Its absence is more consistent with an
+external kill (Windows OOM, a watchdog) than a code fault inside the game
+process — **not confirmed**, just the shape of the evidence.
 
-- **BENCH, 2026-09-05, host RAM 9.4 GB free** — assumed at the time to be
-  memory pressure (a plausible read, given the same-day ComfyUI/rembg OOM
-  kills elsewhere).
-- **FOUNDRY, 2026-09-05, host RAM 33 GB free** — same crash, same exact
-  spot in the log, with ample headroom. **This rules out host memory as the
-  cause.**
+**Read the Ninefold hook before blaming it, per doctrine.** Checked
+`Patch_ResearchCompleted.cs` and `GameComponent_Ninefold.ApplyDelta`
+directly: the postfix has a correct re-entrancy guard (`__state` from the
+prefix, since `FinishProject` recurses into prerequisites), and `ApplyDelta`
+itself is a single `Mathf.Clamp` plus one conditional `Log.Message` gated on
+`Prefs.DevMode`. No allocation loop, no O(n²) shape, no save/UI call. It is
+a plausible LOG-VOLUME contributor (hundreds of research completions ×
+2 log lines each, across a debug quicktest that dev-mode-completes a large
+modded techtree) but nothing in it reads as a crash cause on its own — this
+item's name should not be read as an accusation against that file; it is
+just the last visible activity before the process died, and needs whatever
+else fires per-research-completion (every other mod's own hooks, if any)
+checked before pointing at Ninefold specifically.
 
-## What the log shows, both times
+**Reproduction is exactly the standard rimbridge-companion quicktest
+opener** (`readiness="mapData"`, `pauseIfNeeded=True`) — the documented
+"about one minute" pattern every `prove_*.py` script uses. If this is
+reliably reproducible on the full modlist, it blocks EVERY live-proof
+pass that needs a quicktest map on the full list, not just this one.
 
-`Player.log` ends abruptly inside a burst of `[Ninefold] <God> satiation
-+N.0 (research completed: <ResearchDef>) -> ...` lines — the debug
-quicktest path grants/completes research instantly, and Ninefold's
-satiation hook fires once per completed `ResearchProjectDef` including
-"shared input" cascades. No managed exception is logged, no Unity crash
-dump is written (checked both times), the process is simply gone from
-`tasklist.exe` afterward. The bridge connection drops with a raw socket
-reset (`ConnectionResetError: [WinError 10054]`), consistent with the
-process dying outright rather than a graceful shutdown.
-
-## What's ruled out
-
-- **Host memory pressure** — ruled out by the 33 GB-free reproduction.
-- Not yet checked: whether this happens on `start_debug_game_ready` at all
-  without Ninefold active (a control run on the minimal 21-mod list, which
-  has no Ninefold and did NOT crash this session, is suggestive but not a
-  clean isolation — the minimal list also has ~575 fewer research defs
-  total, so either "no Ninefold" or "far fewer research defs to instant-
-  complete" could explain the difference).
-
-## Leading hypothesis, unconfirmed
-
-Ninefold's research-completion hook (`GameComponent_Ninefold`'s satiation
-handler, wired per `NINEFOLD_MISSING_EVENT_HOOKS_1`/
-`NINEFOLD_RUNTIME_PROOF_BLOCKED_1`) may not be designed to handle receiving
-every research completion in the ENTIRE tree fired in one instant burst
-(the debug tool's behavior) rather than one-at-a-time as a real playthrough
-would trigger them — a tight loop, a growing collection with no cap, or
-repeated expensive work per event (a save, a UI redraw, a def-database
-re-scan) could plausibly take an unbounded amount of time or stack depth
-under that burst and crash without ever getting to log an exception.
-**Not verified this pass** — this is a hypothesis for whoever picks this up
-next, not a finding.
-
-## Practical impact
-
-Blocks any bridge-automated `start_debug_game_ready` quicktest on the
-owner's full modlist while Ninefold is active. The **minimal-list + theme
-mods** restart path (`modlist_swap.py --minimal --apply` plus manually
-adding the 1-2 mods actually under test) is a reliable workaround for
-UI/theme verification work that doesn't need Ninefold or the full research
-tree — used successfully this session for `UI_SHELL_SLICE_BUILD_1`'s gizmo-
-row check.
+## verify
+- [ ] Reproduce at least once more, deliberately, watching Windows memory
+  (`tasklist.exe` RSS) in the seconds immediately before death — confirm or
+  rule out OOM as the mechanism (was ruled out once before per an earlier
+  session's note; this pass did not re-derive that, it's inherited belief,
+  flag it as unconfirmed here too).
+- [ ] Try `readiness: "gameData"` or `"currentMap"` (lower bars than
+  `mapData`) to see whether the crash happens during RimWorld's OWN
+  quicktest-scenario setup (before any readiness the tool checks) or during
+  something the tool itself does after that setup — narrows where in the
+  sequence it dies.
+- [ ] Check whether this reproduces on the MINIMAL 21-mod list too, or only
+  the full 596 — if minimal-only avoids it, this is almost certainly a
+  mod-interaction/volume problem, not a single-mod defect.
+- [ ] If reproducible, check Windows Event Viewer (Application/System logs)
+  for an actual OS-level fault report for `RimWorldWin64.exe` at the death
+  timestamp — the one artifact that would distinguish "killed" from
+  "crashed silently."
 
 ## criteria
-- [ ] Root cause identified (Ninefold's research hook vs. something else
-      entirely) — not attempted beyond the hypothesis above.
-- [ ] A control run: full 596-mod list, Ninefold's DLL temporarily removed
-      or its research hook disabled, confirm whether the crash still
-      happens — would cleanly separate "Ninefold" from "any full-tree
-      instant-research burst."
-- [x] Host memory pressure ruled out as the cause (two data points, 9.4GB
-      and 33GB free, same crash both times).
+A quicktest map (`mapData` or better) reachable on the full 596-mod list
+without the process disappearing, OR a confirmed, named root cause if it
+turns out to be structurally unavoidable at this mod count (in which case
+the fix is elsewhere — e.g. skip the debug scenario's bulk-research step
+entirely and settle a normal way instead).
+
+## Watch out
+🔶 Every `prove_*.py` script and the `rimbridge-companion` skill's own
+canonical quicktest opener assumes this call just works. Until this closes,
+any live-proof pass on the full modlist should expect it to fail and budget
+a relaunch (~500s to bridge-up per two measurements this session, full
+mapData readiness likely longer) — or fall back to a manually-driven
+world-tile-set + travel/settle flow that never invokes RimWorld's own
+bulk-research debug action.
