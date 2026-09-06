@@ -113,3 +113,26 @@ strict rule (STRANGE only), live creatures:**
 biome mods — Biomes! Caverns, Polluted Lands and GRiNDTerra supply terrain, plants
 and biomes we may want to keep even when their fauna is worthless. Creature
 survival alone is NOT a retirement decision.
+
+### 🔴 CORRECTION to the retirement table above (mod_retirement_audit.md, 2026-09-05)
+
+The §6 table lists four mods at 0% survival **as if that made four retirements. It
+makes one and a half.** Creature survival was never why three of them were installed:
+
+| mod | real verdict | why |
+|---|---|---|
+| Mythic Ages: Megafauna Bestiary | ✅ **RETIRE — the clean kill** | fauna-and-nothing-else, zero dependents, zero absorption |
+| Beasts of the Rim | ✅ retire after ONE edit | **our own** `SeasWaterline/About.xml` hard-depends on it; re-home its Megasquid lane |
+| Megafauna | ✅ retire, cleanup only | dead groups in `MegafaunaYield.xml` + 4 patches + a loadAfter; every reference is conditional so nothing breaks if cleanup slips |
+| GRiNDTerra Biomes | 🔴 **KEEP** | ships **15 biomes, 123 terrains, 117 plants**, and its DLL holds 15 `BiomeWorker_*` subclasses (one per biome, wired by bare `<workerClass>`) — there is no XML-only version of it |
+| Biomes! Caverns | 🔴 **KEEP, decisively** | **1,003 planet tiles** sit on its biomes, and `The Salvation.rid` — our shipped ideoligion — holds its precept `BMT_FungusEating_DontCare`. Not fixable by removal. |
+| Biomes! Polluted Lands | **KEEP** | 40 plants, 18 genes, a faction, and our own SeasWaterline fish |
+| Jurassic (Dinosaurs Only) | ⏳ retire after absorbing 5 | Segnosaurus + 4; no world content at stake |
+
+🔑 **No other mod in the 601-mod list declares a hard dependency on any of the seven** —
+every third-party coupling found is an inert `loadAfter` ordering hint. The only hard
+dependencies are **ours**.
+
+⇒ Lesson for future retirement calls: **a fauna count is not a retirement decision.**
+Ask what the mod generates (biomes, terrain, genes, GenSteps, world tiles) and what
+OUR content already leans on, before counting creatures.
