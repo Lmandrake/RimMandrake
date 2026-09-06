@@ -4998,3 +4998,6 @@
 {"seat":"FOUNDRY","event":"note","id":"GRAVSHIP_LANDING_CRUSH_1","text":"Correction: the close event's sha field literally recorded the string 'HEAD' instead of resolving it. Real closing commit is e17e976a016f43ab9638a40d6c95114cf6cab576 (full round-trip writeup + criteria update).","ts":"2026-09-06T06:50:23Z"}
 {"seat":"OWNER","event":"file","id":"BIOME_FAUNA_ASSIGNMENT_SITTING_1","title":"Joint sitting: review all biome sheets, finish remaining biome descriptions (candidates: AB_RockyCrags, AB_MycoticJungle), then assign fauna/flora per sheet laws — prep pack being built overnight 2026-09-05","kind":"task","target":"v1","needs":"owner","for":"BENCH","ownerSaid":"Tomorrow we will review all those sheets together, finish all these biome descriptions, and then assign the animals, planets, etc to finally lend some true life to the planet.","ts":"2026-09-06T06:53:08Z"}
 {"seat":"BENCH","event":"claim","id":"NIGHTSIDE_BLUE_DESERT_1","ts":"2026-09-06T06:53:09Z"}
+{"seat":"FOUNDRY","event":"claim","id":"HELIX_TELLUROX_BUILD_1","ts":"2026-09-06T06:55:06Z"}
+{"seat":"FOUNDRY","event":"start","id":"HELIX_TELLUROX_BUILD_1","ts":"2026-09-06T06:55:06Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-06T06:55:11Z"}
