@@ -1871,10 +1871,10 @@
     "sha": "35c29544"
   },
   "src/RimMandrake/Utils/gen_creature_register.py": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-05",
-    "hash": "8aa82eac6411be89d17388e1ef354ccc74779c21466a0cfdfb14a0550249053c",
-    "sha": "48e3e4e4"
+    "hash": "59e83fc3fb56fa9479f30ddbb862da10a907428f896c7dc1650019b8358ab892",
+    "sha": "eccd1b14"
   },
   "src/RimMandrake/Utils/gen_pawn_flavor_phase2_apply.py": {
     "cleanCount": 1,
@@ -1900,11 +1900,23 @@
     "hash": "49f769ed982598a3a2438d46c76624bdc54a2e008c7aa17489d2f5a8425aab27",
     "sha": "3287ca65"
   },
+  "src/RimMandrake/Utils/gen_plant_register.py": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "9a04573a4975d714c1885aefc1e2c83e7f35dd72b2f2fd0fa789db0ef341de8a",
+    "sha": "c50f8f68"
+  },
   "src/RimMandrake/Utils/gen_races_mod.py": {
     "cleanCount": 2,
     "date": "2026-09-04",
     "hash": "0abaa7b249a96c28e75a5b79f95053d42302090d1cf684b19181a0ffbe1026d0",
     "sha": "d4af33c4"
+  },
+  "src/RimMandrake/Utils/gen_weapon_register.py": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "7892c73c0457d59809136b227939953a3d8c44126bb475e8f028660088c56867",
+    "sha": "6d60a241"
   },
   "src/RimMandrake/Utils/genome_art_cache.py": {
     "cleanCount": 1,
@@ -2326,10 +2338,10 @@
     "sha": "ade756fc"
   },
   "src/RimMandrake/Utils/rimworld_loadset.py": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "5dedd99ba22d8b9029e628f25a595c9c51becd2c8ee17c16463352d91fcdc6e5",
-    "sha": "b8e4171c"
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "hash": "b51a8c8c8c1f9303323e6886965cfc06349eb63dc3a193bc30a6a56559fd0758",
+    "sha": "6d60a241"
   },
   "src/RimMandrake/Utils/run_expectations.py": {
     "cleanCount": 1,
@@ -3279,17 +3291,1499 @@
     "hash": "f6b26113f42a57975b8c11af2d344bd03bf9809d83803373793e4a713403862a",
     "sha": "1cb620ea"
   },
+  "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/AdaptiveStorageFramework/Absorbed_Kotorcore_AdaptiveStorageFramework_HiddenSmugglingCompartmentPanels.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "fae41c7ef49ab87bfe60587a0cd64582321600d769655c64a2065d3e6c8d3a7f",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/BTDKotORGravships/Absorbed_Kotorcore_BTDKotORGravships_Buildings_SWGravshipInteriorPieces.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "88e961cb40bb7fb69e04566775add93001deb4c36be7fb51496f11500ac55aa6",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/BTDKotORGravships/Absorbed_Kotorcore_BTDKotORGravships_Gravship_DynamicFreighter.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "de398340bce4668f31e8bc5842cb3276459c18abbe60f15d3da01b3b0c6600f6",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/BTDKotORGravships/Absorbed_Kotorcore_BTDKotORGravships_Gravship_KT400Freighter.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "7808ca99bd6aa011ed04cf32bc3f693e086d6abcdcf30c07698c6325f35f2229",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/BTDKotORGravships/Absorbed_Kotorcore_BTDKotORGravships_ResearchProjects.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "49e059bfbd1647fffb8494dca027e96255f47d878430533151645dd14f0c475b",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/BTDKotORGravships/Absorbed_Kotorcore_BTDKotORGravships_ResearchTabs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "2063a1e3614b14f9790eaab24245a8cf002817f5153aa8425d4f2419855d546c",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/BTDKotORGravships/Absorbed_Kotorcore_BTDKotORGravships__GravshipOverlay_BASE.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "188b3ca9b8517ea36fb0aac2f5d26adda14b99fc065d76e01c069a1029d20317",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/BTDKotORGravships/Absorbed_Kotorcore_BTDKotORGravships_buildMenu.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "10376ea3be6edf14334b50c7ade8cb94342e5abd94e646b6ec2d4f500f5f5222",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/EBSG/Absorbed_Kotorcore_EBSG_AbilityDefs_CommandTiers.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "1bdd2969efd12c072e64c75c61a6d51afd3211817511606a56130faecf5d4076",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/EBSG/Absorbed_Kotorcore_EBSG_GadgetApparel_MedicBelt.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "fd65e50edc8b6e7be4f47460e0b5804dd1d7c8ea23ebb2e5dfde559cb79cfb0e",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/EBSG/Absorbed_Kotorcore_EBSG_ThingDefs_ImplantDPackages.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "f763c4e82820f5fb20dad5b44bd4bef98427217689747907c1f814f41b82dfbd",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/EBSG/Absorbed_Kotorcore_EBSG_ThingDefs_ImplantDock1.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "3175c52ced26b0b75fb99c2bd80f05b0fdee494df892589871172e1710cd33c9",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/EBSG/Absorbed_Kotorcore_EBSG_ThingDefs_ImplantDock2.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "29fde87c2970523a43168b84cc0d8eef8643fbcbe44e4814f61a779ae5138e5e",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/EBSG/Absorbed_Kotorcore_EBSG_ThingDefs_ImplantDock3.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "60792bef5c2353b401d2dde20bac251dee31262611b88d93253b6ca27f09dcf7",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/EBSG/Absorbed_Kotorcore_EBSG_ThingDefs_ImplantImplants.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "a4b577fe81e369733d33c2522246fff54b980f814b3f58453315e93b147a0072",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/EBSG/Absorbed_Kotorcore_EBSG_ThingDefs_ImplantPackages.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "9d24dd6ced339d5094258851cc5874f41b64dba455b368cab388c3dc7b07e4ef",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/EBSG/Absorbed_Kotorcore_EBSG_ThingDefs_ImplantSystems.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "8d13abbfced9c741535130ce8de43b1ec0430dd4bebf2c5cba7940f97b711594",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/EBSG/Absorbed_Kotorcore_EBSG_ThinkTree_CommandAbilityAI.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "388e255ae83ee8bff3803972a3e2b19704ee7dd9de9c8b0cbad336174420e6c0",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/ModularWeapons2/Absorbed_Kotorcore_ModularWeapons2_Building_KotORGunsmithWorkbench.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "ba1ab17d390e8b03330128b3d83d0b70c5b4262189e02512a4ea5f4efbf275f8",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/ModularWeapons2/Absorbed_Kotorcore_ModularWeapons2_ModularPartDefs_ArmorBasic.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "9bd7b452ab45a9dd75b69bc485c4f0896f12d0fc41efd35251dd54ea4be82057",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/ModularWeapons2/Absorbed_Kotorcore_ModularWeapons2_ModularPartDefs_ArmorHvyHatsRobes.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "7a67327720c77481b49fce563d6aac30bf1e8649727ef1916b4e8ad9b1b0a3c9",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/ModularWeapons2/Absorbed_Kotorcore_ModularWeapons2_ModularPartDefs_MeleeBasic.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "94f25453d31c978839279a46b37c1a44195afac60663a30286c3b58b022c26b3",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/ModularWeapons2/Absorbed_Kotorcore_ModularWeapons2_ModularPartDefs_RangedBasic.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "f2c5453631eda5b7f4afbdaf2faf408394da4f5789f0b4ef99e158332bbc0b6a",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/ModularWeapons2/Absorbed_Kotorcore_ModularWeapons2_ModularPartsMountsBase.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "3e54d7883b3a6143e051139576d8e58a9472788c4bf6df36ce4c03544a3ab628",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/ModularWeapons2/Absorbed_Kotorcore_ModularWeapons2_ThingDefs_UpgradeItems_Armor.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "a50f651f36baf35e85d00542b833d7696e5bc01b43cd91d5effd78bd476991e0",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/ModularWeapons2/Absorbed_Kotorcore_ModularWeapons2_ThingDefs_UpgradeItems_Melee.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "16cbd2348f861b01752f305f9e6f7bfdc595ffd4055034749177065033875d1d",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/ModularWeapons2/Absorbed_Kotorcore_ModularWeapons2_ThingDefs_UpgradeItems_Ranged.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "a29ac72367067a3a2c202cd97677be43777f5fa4e5ca7a6d7b93de0a3626091c",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/NO_DBH/Absorbed_Kotorcore_NO_DBH_Building_PropWaterTank.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "63e06376fbc66ec95b22c936990999a6f9b2526e7410e3a0a9327ca4007b2fd9",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/NO_DBH/Absorbed_Kotorcore_NO_DBH_ThingDefs_Water.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "6493c86c85efce633d2529cb277aff1fd3e66dabb1a7d086f91846ad88eac0be",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/ShowMeYourHands/Absorbed_Kotorcore_ShowMeYourHands_handmodpositioning.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "84e9d6d464d39c05190c61c6f66ba4b8c527410c904f6f5734b1a32665be6fe0",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/VEF/Absorbed_Kotorcore_VEF_Building_FuelTankDamageReducerBase.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "b9af6586ef27dde186fdaf4c9478debf59039ddae2364c51cf579bfc99b5cd9f",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/VEF/Absorbed_Kotorcore_VEF_KotORPipeSystem_Rhydonium.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "c7683a2ac2c09990b6493df46afc29d509f0a0a6d3188a80083485df4dd60430",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/VEF/Absorbed_Kotorcore_VEF_KotORPipeSystem_Tibanna.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "77aaef5ef16d077f5d5fac3c441f829890d1ac7ca2cc98d4add51a74ea00c9b8",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorcore/VEF/Absorbed_Kotorcore_VEF_Ysalamiri.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "9f0c72e7ac864ad64254bb4365bbc38cbcba554f6bfd2f904abe009ca24e8409",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorweapons/ShowMeYourHands/Absorbed_Kotorweapons_ShowMeYourHands_handmodpositioning.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "d168b18d64b3c8a7756d49bde3ad38021367c2eba0587b3efdb882250dd3a45f",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorweapons/ShowMeYourHands/Absorbed_Kotorweapons_ShowMeYourHands_handmodpositioning_LightsaberMod.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "19493b613e8e57e47bfbdc2e41a0279a98cc7fb80890c92328144c0973f36c82",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorweapons/TheForceLightsabers/Absorbed_Kotorweapons_TheForceLightsabers_HiltPartDefs_KotORColorCrystals.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "57d93ff0fc0b2241cc311e6cf4390f3bd7d871736bef450be022caa2c0c71727",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorweapons/TheForceLightsabers/Absorbed_Kotorweapons_TheForceLightsabers_HiltPartDefs_KotORFocusingCrystals.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "73df32fc9c37c73d39a638fe67c3d589da3d660475282186bf2f1be58122f0c9",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_AdditionalMods/kotorweapons/TheForceLightsabers/Absorbed_Kotorweapons_TheForceLightsabers_HiltPartDefs_KotORPowerCrystals.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "0fbcce44a5644286aba0a56c0eef6c0a661e8b7f5e3d91875e13d87ed71bbc7a",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/Absorbed_KotorCore_ColorDefs_structure.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "f4ab92a0624cce4ea3929e2daae14c7b5b80f31139178047ebf92766620ed159",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/Absorbed_KotorCore_DevPrefab_ParkingLotRuler.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "5e923f13badb470920fb430f791d2f8d32ad31d20abb5a16885cc7c72d333564",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/Absorbed_KotorCore_JobDef_JumppackForMeleeAI.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "d1b77ffdb395c6c3501b059ef6c60816a252b8ce238f1856a85afb8f55d5b5ce",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/Absorbed_KotorCore_JobDefs_misc.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "7dcc736f7724d7b79da291472e8a2a24e84a0e0e78427e92a85a92641a27c979",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/Absorbed_KotorCore_LetterDef_StorytellerJoiner.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "aefa043ca8d90d01c574dabfc341b747f89a28a3a925818cd6e1b15def70b537",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/Absorbed_KotorCore_ModOptionsMenu.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "b8f17e0cf10446e1353260387bb130655fabe4cff4392440a07fc4ecce252b06",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/Absorbed_KotorCore_MotesAndFlecks.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "81a561758691a3e5bb44bcacec17a472c8f174dfe4a9e21d39b50df8a2f116f7",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/Absorbed_KotorCore_PawnGroupKind_TaxCollectors.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "032dffe4332de8166ccd57bdd80be70419dafc53aa7132987db316086c77ef68",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/Absorbed_KotorCore_PawnKindDefs_HeroBase.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "b3d56be50b816a3ccb64e80d1b349a6ef9455b98a4a9b0c4a09cbbbfcf533736",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/Absorbed_KotorCore_RulePackDefs_CloneTrooper.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "5a4bb6efd95579ee772e643c3cdf723d94dbfe27e6f0a7d785d6fda25ad2022d",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/Absorbed_KotorCore_RulePacks_DroidNameMakers.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "c2d4d64c2da2861ea8bc71bb1750903979753e88e49eb27a60687134b6b218c0",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/Absorbed_KotorCore_RulePacks_StormtrooperNameMaker.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "d0ffe58b8476a01acd6600e07a86ae2d6293d22956ddc4e0f234aa595efa9d40",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/Absorbed_KotorCore_Thing_VATS_Zoomer.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "530b104830617cfa064f3b5cf71aeac4b75af0abcd4955f77bb256abab9e889d",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/DamageDefs/Absorbed_KotorCore_BlasterDamages.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "3b56fc3b63cb8d8dbe4a69ef310cff229569c43d41ac65a888090d2d758930bc",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/DamageDefs/Absorbed_KotorCore_DamageAndProjectileDefs_KotORDroidUtilityWeapons.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "555abde9e03af87d10ee0bac1ab8f2efc98f33956aef3a896ac9c07a2b2e7cc6",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/DamageDefs/Absorbed_KotorCore_GrenadeDamages.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "0d75c1a1f4171d5dec7237fa56df768e99e5878063b2d15486d6fbcacfedb22d",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/DamageDefs/Absorbed_KotorCore_MeleeDamages.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "ff03e02370efcedf074f111b0ba75ac4f6a2d7e8700aa1053b46fd841bd76ade",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/DamageDefs/Absorbed_KotorCore_SpecialDamages.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "353086f065c4a58d09e6e46dafe0d07a6df8766a5f17e017353a42fa28169f2c",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/HediffDefs/Absorbed_KotorCore_Hediff_Electrocuted.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "26c189499be14f3086f99ab11011087377ec67fdcf22622c3a100257a7597ac7",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/HediffDefs/Absorbed_KotorCore_Hediff_IonBuildup.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "b020d4cad88f8ff41e53270c8745c649ee0bf4737a693632ab08b41b83d4094d",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/HediffDefs/Absorbed_KotorCore_Hediff_Poison.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "d1ac51c60ec7a6635602b5dd976ba153b201c786c6bed3c4dc9eed2da5598386",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/HediffDefs/Absorbed_KotorCore_Hediff_SonicDisorientation.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "dfd45c619553cad32d3b82b9938923bf4594c8fc9c607e22493eddc42ca5c277",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/HediffDefs/Absorbed_KotorCore_Hediffs_KoltoTank.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "b406df78808fca0f8991c6eb9c6cbe04b9d67203bdb282a40425a596f3f00258",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/HediffDefs/Absorbed_KotorCore__hediff_base.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "2a96ba6d6b518c4b57a8ee11387d6e1d53d6414ee8210c9907a1b1b83ab9dd96",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ProjectileDefs/Absorbed_KotorCore_Bullets_Base.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "d5003bbac61f8cabbd8b649d8a8af917eab57b8b2647c0cdcdfa6d3ec250096a",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ProjectileDefs/Absorbed_KotorCore_Bullets_BeamMotes.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "4c9b22377b893d9aa7de96a729fc8cefdacb5740f3fb8116376e86f18825db20",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ProjectileDefs/Absorbed_KotorCore_Bullets_Kinetics.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "d274b6bc62d97ce74c9d99dc45e224b3101cd5e3fd71d5745fa70930ce820c74",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ProjectileDefs/Absorbed_KotorCore_Bullets_KotORGrenades.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "1297c1b9977284f5f293e8bd48d850c35bd58e89fa3076a81df3a6939fce095a",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ProjectileDefs/Absorbed_KotorCore_Bullets_Special.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "136cae3c3dda6f7421767f5ff19c3ea4f6e0ae56bef6394aa97b4a3f5d92ab68",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/SoundDefs/Absorbed_KotorCore_BuildingSounds_Ambience.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "b6a5e5bef8accd3b8f4b9496b360ce98bc043d9517f6c5470818970417ab2757",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/SoundDefs/Absorbed_KotorCore_BuildingSounds_Ambience_PowerGenerators.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "b68395c3eaf1b90f57cddf9a8af67298c4de6fbcff39891b7a4654045aa9c620",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/SoundDefs/Absorbed_KotorCore_BuildingSounds_Doors.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "f48d106eb95cf28b2ae3c9c1b34c3fdbfb34d4e697ada929b0587548e30c7d52",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/SoundDefs/Absorbed_KotorCore_BuildingSounds_RandomAmbienceNoises.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "d06960ad8209b9b26696cc46a17b7d84ab49bccad165643f384f263960394293",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/SoundDefs/Absorbed_KotorCore_BuildingSounds_ShipAmbience.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "96f05dd59be5dfa187cd67d42272412017f547af034d3dcae1287169033cb3a4",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/SoundDefs/Absorbed_KotorCore_Kotor_Misc_Sounds.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "315401254ebfa7039c83e924d44afe59e12902b6757e68c6523401136a708857",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/SoundDefs/Absorbed_KotorCore_Sounds_Containers.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "ab9aee84bd6ebfda062173c0a414720d711b5cb4eee8a5a0fe679a6391c7d013",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/SoundDefs/Absorbed_KotorCore_Sounds_GUI.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "1c6f5b468c859226b1e79c026e2a4cc4be5bbae518d48c47d8ee23b41f8a0022",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/SoundDefs/Absorbed_KotorCore_Sounds_Lightsaber.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "3858134a91b5696729f05bcda7d1ba6a26dafe750b19f9c5476cc025889a2a67",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/SoundDefs/Absorbed_KotorCore_Sounds_Misc.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "59fa9360b805f20c3bf7e6f3e84c887fe5f4d5feb5e3e48ef61bef4c49bcb870",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/SoundDefs/Absorbed_KotorCore_VehicleSounds_Engines.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "c36fe98821f251fed1217023fd7f23ab7d74a56f085cb08662b461873e340c6e",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/SoundDefs/Absorbed_KotorCore_VehicleSounds_Misc.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "849fa5bb400aef274d0fc6d3ac4a43de06fd3bc0afb105e0f2648eb3069982ca",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/SoundDefs/Absorbed_KotorCore_VehicleSounds_Weapons.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "40944a83ed478756425ea3e03e0378c3da1b248ee7c063ea7ed93266b3acfd21",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/SoundDefs/Absorbed_KotorCore_WeaponSounds_Basic.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "968da56b9324235cbeaff2f9bb54e995820ecebe459da26be9970e924bffd6c0",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/SoundDefs/Absorbed_KotorCore_WeaponSounds_Beams.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "949e07d8543866c6f41a113bb511b1a81c024f21c45490415ae7199e0e0f1343",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/SoundDefs/Absorbed_KotorCore_WeaponSounds_Cannons.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "2a524e00913e6850202d1db789b5031fa153439fc0a3b55758c6e348a82bb7ba",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/SoundDefs/Absorbed_KotorCore_WeaponSounds_Grenades.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "b2710aa58fb61eafcdfc3ea6af261243832340d2e4bd2f4de4cc4d2f57478c40",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/SoundDefs/Absorbed_KotorCore_WeaponSounds_Melee.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "cf7cdbaf4031a0f07a547389e5f2cc44ec83d51ab7646459c31df59b893e91cf",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/SoundDefs/Absorbed_KotorCore_WeaponSounds_Misc.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "243d88c5c3b240ad4b93caa675f1d8213658370b9aa31d0241efb200fd536c66",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/SoundDefs/Absorbed_KotorCore_WeaponSounds_Missiles.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "cec364756bab92baa24622a027742675680e6c08d03f7e90d1cdfcfd0537887e",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/SoundDefs/Absorbed_KotorCore_WeaponSounds_SWWarlords.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "8d19e7a0a9fd3119bad87f49258057a100ae8f95f01c8150f851513c9c567686",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/SoundDefs/Absorbed_KotorCore_WeaponSounds_Special.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "ac725a163c999428e17b9946f658dd736b6f4950c86d1b317ba4c0ba99652cb2",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingCategoryDefs/Absorbed_KotorCore_ThingCategories_All.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "8d24bf2f29b6c97310d987177c25848e948a85015cabbb08fe54dcf107c40c4e",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Buildings/Absorbed_KotorCore_Banner.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "7eaed5ac3d3912fc1b781a5616bde10ac6381a6330783499663b2b0aa17c4327",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Buildings/Absorbed_KotorCore_Building_DecorativeTerminals.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "e91f1cb3d35878131a66ab66d9787a574f23992b9d2ed1fae1587eaeaac18f09",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Buildings/Absorbed_KotorCore_Building_GonkDroids.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "6872c1c3f9c544ca972bf4a04dbdc9564f39fa419ed1372459cb6cf7a46dbd40",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Buildings/Absorbed_KotorCore_Building_KotORWorkbenches.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "0146106f9bd41db75ab4b6704c6fefe8eed8c53c607739b7e07b46819605bcb0",
+    "sha": "ef81a0b7"
+  },
   "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Buildings/Absorbed_KotorCore_Building_MoistureVaporators.xml": {
     "cleanCount": 1,
     "date": "2026-09-05",
     "hash": "202f09fe4e8a7c2dd61a2c624d63d7d48f597653c364dc36f709c5e770f3bc0f",
     "sha": "967759c8"
   },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Buildings/Absorbed_KotorCore_Building_ShieldRecharger.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "19d1fdd5712e3dcaa98051bb2c7bdf392ecb8e9680eab526c9a0c5f8234169a3",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Buildings/Absorbed_KotorCore_Carpets.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "325f39eb0ae4fb13c15c391107452368505e252357e30c7a3c7d3f17d7e26d32",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Buildings/Absorbed_KotorCore_Czerkatech_Holo.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "56ffa5421c0e0c9e7e178bfc8d9e5432d5bef1150636d9fbbc9f703d36d33793",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Buildings/Absorbed_KotorCore_Czerkatech_Instruments.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "d8b78e48d7a97b9e23d7fbd507b362fdc8dd91b677dec93c25cb066676dba85e",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Buildings/Absorbed_KotorCore_Czerkatech_Table.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "6de6569edb81befa0bd00308eeac678a0542a12458478131d0f6c7117c2055cd",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Buildings/Absorbed_KotorCore_Lights.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "4221e5f2743d834823ddaedf555dfb5dd24fa6e3ce40a399f23ec1caaf42ef99",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Buildings/Absorbed_KotorCore_Structure_SWDoors.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "03dac86844a6e679a84709b2fa1de8655914010f01923dad60e4e4fe7d54d633",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Buildings/Absorbed_KotorCore_Structure_SWWalls.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "58c1793d5a8ece15c480eabbba4917bf9fcf1667e523e44f91d5fe91b1ae862b",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Buildings/Absorbed_KotorCore_Terrain_SWFloors.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "03e558b0d9f928c8906c3c04b0d755b887a0020e55fa13cbfbe0b7f93ee76f75",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Buildings/Absorbed_KotorCore_Throne.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "9b2d67d60a5668145b07e11358a67a3539d02bb324fe54c1567580a54c3f777a",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Consumables/Absorbed_KotorCore_RecipeDefs_Medpacs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "bfd9e2e73655d90dc83a74d269ea2a4b60b26bcddf72d1d470c51c958c689ed7",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Consumables/Absorbed_KotorCore_ThingDefs_Deathsticks.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "57946d8f8cb794c86465a01b6b839bd08efae5b283b1b995474311f1b9779b4b",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Consumables/Absorbed_KotorCore_ThingDefs_DrugBases.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "b798987a53e08a6b5df6efe2e9ef5de5ed2c281af67a24484a7a817df4bd526c",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Consumables/Absorbed_KotorCore_ThingDefs_Medpacs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "ee2ee66242db5872e22f7ca509ecc80a04eb8ea7ed534d295ce09992027eaaad",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Consumables/Absorbed_KotorCore_ThingDefs_Stimulants_Battle.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "c186ff14ac0513865877b89cf7343da50e2be72772de163bc84960877d0c78d8",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Consumables/Absorbed_KotorCore_ThingDefs_Stimulants_Con.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "3931b80965880862642f108bcf253f72a11f2dc739316bd91d1f9a0996e07afb",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Consumables/Absorbed_KotorCore_ThingDefs_Stimulants_Dex.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "01f17986a921b63b4d5ba114560ceb0ad7a4859e839b70fbd57db216afd2a168",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Consumables/Absorbed_KotorCore_ThingDefs_Stimulants_Str.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "e8dbd49a8a080357cbf424dfdfec1e578ef144a891af01e79080cb04f662dd37",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Items/Absorbed_KotorCore_ThingDefs_Credits.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "98381451758bf9c3f5502a5e72d823b3d8f6a6c5baa958e95ef6378dc7ab49fc",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Items/Absorbed_KotorCore_ThingDefs_LightsaberParts.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "4d75fd71fb34044e032a9f1c94a6f8ee9ce994bfc4b00a164d8019b931097e7b",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Items/Absorbed_KotorCore_ThingDefs_RocketItems.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "b376d395d575a310ad70c7dda0070c25c407bb0fb9683480314a28fdb255fdd1",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Items/Absorbed_KotorCore_ThingDefs_UpgradeItemBases.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "593628546cea9777aad93d6c7d155afdb7191fce7d0f9af55f2633a3e84be5d4",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Resources/Absorbed_KotorCore_CrystalMapGenerator.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "c3316afc4f9a51cacf4df5715c7795b73e6a91deeceb9be40fa05b22abf19377",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Resources/Absorbed_KotorCore_JunkMapGenerator.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "129f552748d593e0dc8b9a7e6795e71e13f80085735a8c285b8d33b40103a48d",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Resources/Absorbed_KotorCore_KotORResource_CrystalFormation_Base.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "d99e1c9a2611e65ec113e2b9e1be725a04c9f4945b938bf0502ebb8988e557dc",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Resources/Absorbed_KotorCore_KotORResource_JunkPile.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "5558b48d71f0f9d66b8ffffd5b492dc11214f164b66427dbaf97b50cbc327462",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Resources/Absorbed_KotorCore_KotORResource_Kolto.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "f9c765118b388dc10bf23c4e32940b090c9013a064527b45cf4effd324f778e9",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Resources/Absorbed_KotorCore_KotORResource_Metals2.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "229e5144d1b90d13526070e93f518a291e3aaaf0c7e9d8e751a613414c14b023",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Resources/Absorbed_KotorCore_KotORResource_MiscCraftingItems.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "d48e6b811ed06507051fa97ef4fc29584dfafeb2e13aa2bb94175f46708dda2d",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Resources/Absorbed_KotorCore_KotORResource_Rhydonium.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "ccfeab82ce34f478c536afbe845adbeaa466290c1100489fccc6a0cc5b8ee648",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Resources/Absorbed_KotorCore_KotORResource_Spice.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "69bc5b9b7e6a8195068e804ea5bc35dee8ca125d7db3cc2a8f101c4f321318d0",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Resources/Absorbed_KotorCore_KotORResource_Stygium.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "f13c6494a5abcf493212473e3d1aca67910f6d5ff7467eb567cb350815dbbf1d",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_Resources/Absorbed_KotorCore_KotORResource_TibannaPlasma.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "704a244adf63710e4703dc52352e77a0047004b862de6dbb7d86917e7a1804ca",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_WeaponsArmorsGadgets/Absorbed_KotorCore_Apparel_DevModeTools.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "b2bac65a65006521e0c1cd8b7129f955ea10325c87d4fe3aa011c50bf1ae9525",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_WeaponsArmorsGadgets/Absorbed_KotorCore_Apparel_SWAccessories.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "73b3f2430f0e8fdf17103960e40115d1ad442ec3e010f35c31843362239ba2e9",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_WeaponsArmorsGadgets/Absorbed_KotorCore_Apparel_SWBackpacks.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "3f5943daf04534661e15a68d52f71eed0105ec4cee5658f2b503a2bb46f06eaa",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_WeaponsArmorsGadgets/Absorbed_KotorCore_Apparel_SWClothes.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "704d339950f1184bb9b5bbbfcdfdac2aa076d702016a350303e7b05c95a55c1b",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_WeaponsArmorsGadgets/Absorbed_KotorCore_Apparel_SWFactions_Scum.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "e463a74de7f11624386718f9af775071729aaa407c5422c9d62ae31986d3b5f0",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_WeaponsArmorsGadgets/Absorbed_KotorCore_Apparel_SWGenericFlightSuits.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "5ed6cf1e54d17564acfecd939f04becc2985a076ccde0d99418d9d9838121ca4",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_WeaponsArmorsGadgets/Absorbed_KotorCore_Apparel_SWGenericHeadgear.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "72b5bfeb29b3c9715f9c462257107e08cc63d9927683006edb693c2e0ab73863",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_WeaponsArmorsGadgets/Absorbed_KotorCore_Apparel_SWJediSithCloaksHoods.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "464dfb1944e8d7129282a9ac16247748d76bdf3c89ec0af3f95fa217d30aa0ed",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_WeaponsArmorsGadgets/Absorbed_KotorCore_Apparel_SWRobes.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "05b8aa9899f39c1dd9cf8b348ed8c4394f150841d6df25c48d84da1ca8a23b0d",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_WeaponsArmorsGadgets/Absorbed_KotorCore_Apparel_SovereignTusken.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "340b59b1426f1b061ec844ef9e8f0cc567ea05c59c48f2422db98f19c827c8de",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_WeaponsArmorsGadgets/Absorbed_KotorCore_GadgetApparel_KotORArmbands.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "25db0a284f07b70604a3ff04cfad522c6b2ad4f0f8df1a405928f6767fe10e7c",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_WeaponsArmorsGadgets/Absorbed_KotorCore_GadgetApparel_KotORThrowingKnifeBandolier.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "7b5679ef7a07e131ecb2f4cd7272c78a745ccf12bd4653ca2a7b523f0d8b4a4f",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_WeaponsArmorsGadgets/Absorbed_KotorCore_GadgetApparel_SWBelts.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "9780ef21279b7dd5cb333272d826c5a06fa6e809133a819ba8ae6972010168f6",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_WeaponsArmorsGadgets/Absorbed_KotorCore_GadgetApparel_SWGloves.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "02ab561a4ec6b33980e8657331bde3b0adec4cb43fce86ce698e1d8ce98b4563",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_WeaponsArmorsGadgets/Absorbed_KotorCore_GadgetApparel_SWJetpacks.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "b3a2f417ee47ec14a52eda0df0a72e016ea32c7b2deff512b2fe1daad2b60f0e",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_WeaponsArmorsGadgets/Absorbed_KotorCore_GadgetApparel_SWStealthBelts.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "18a46b26bbbd001ae8f9c5d5355d6466eaa26d02d6bf3921aef16af4a5495ef6",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_WeaponsArmorsGadgets/Absorbed_KotorCore_WeaponMelee_GamorreanAxe.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "b78606ad73be0dcd304a62f9d3c529d7e3a9e620132bc8e8326b400b228aeada",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_WeaponsArmorsGadgets/Absorbed_KotorCore_WeaponMelee_SovereignGaffiStick.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "36d73dbc8590a6edf95752a63270bb7d51e3b7d14177c22f79e95e7a1a32dfda",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_WeaponsArmorsGadgets/Absorbed_KotorCore__BASE_SWKotORApparel.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "90b24e9bbe4c2a1b8817c3bd5afcdaa9d71152c8785558e4e86b5e61c7134268",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/ThingDefs_WeaponsArmorsGadgets/Absorbed_KotorCore__BASE_SWKotORWeapons.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "4ac0dcc9d41c0ad1af2ddbd96df3987a8db6e12d5eb24b3fd4b7c7c25b0413ac",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/interfaceDefs/Absorbed_KotorCore_Kotor_Build_Designator.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "5ac7ce7d5db0eed14612877ca31db21fe16805e34404cae9a8eb1c92a8b927f1",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/researchDefs/Absorbed_KotorCore_Czerkatech_Base_Research.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "9f67573e0b9a29b43fd197002865d2a0844419088e91c10e88e92c05231df6fc",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/researchDefs/Absorbed_KotorCore_Czerkatech_Research.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "c640e8e23a3d0b8e84e9ec419681e5932fad1fd9bf54f5b45b96c2e98e41cb64",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/researchDefs/Absorbed_KotorCore_Czerkatech_Techprint_Research.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "7ac2a562a6de9eb2922ea42dda566cb9cfeee8d3a66364ec646c9c40435ee2e2",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/researchDefs/Absorbed_KotorCore_ResearchProjects_KotORDebugUncraftables.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "aca2fa3dc6c4c7ce30be7308f5a8f7dcb9c53a3185cb50ae61556ee8224abb68",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorCore/researchDefs/Absorbed_KotorCore_ResearchProjects_KotORWeapons.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "6622e2e30d8ab629dc52e3ad4bf9ee182acf8776cac8ef2ba782c9d29402407f",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/AdditionalModOptions/Absorbed_KotorWeapons_MVCF.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "2477b7fc1eef5f95d53f6701780337ec1689f7916611785956a37574b79a2431",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ModularPartDefs/Absorbed_KotorWeapons_ModularPartDefs_HelmetArmorTech.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "2ec5e20bb79208ec7858089852a3ee62350fcfa639642b0c281b44de3a0d61eb",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ModularPartDefs/Absorbed_KotorWeapons_ModularPartDefs_JetpackMissile.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "af2bd5e04090261770b02405c04b4fd0821c61dc87887cd4eab429f2648ed237",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ModularPartDefs/Absorbed_KotorWeapons_ModularPartDefs_MeleeTools_ElectroStaff.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "91ca5432c71b23ebf9db7cc7736f60897eaf30f6792ad06fa0f432539324542b",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ModularPartDefs/Absorbed_KotorWeapons_ModularPartDefs_MeleeTools_StunBaton.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "813b51fe975b7514c1e8567d83f51cd591eebdcd5013905e0d833dc0dc4f37ab",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ModularPartDefs/Absorbed_KotorWeapons_ModularPartDefs_MeleeTools_VibroDoubleblade.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "3f0086ded2f21d60f6d8e8b7471c8c0c78c78d16f5d5436c5cd00a889f1dfcfa",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ModularPartDefs/Absorbed_KotorWeapons_ModularPartDefs_MeleeTools_Vibroaxe.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "5b34032fe6f867e814c9208ba3c07a923df640e3dce834f01a19e46ea155fccb",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ModularPartDefs/Absorbed_KotorWeapons_ModularPartDefs_MeleeTools_Vibroblade.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "e9d5c9bf14d397481bff584b095e7a557849665af1be6c79c69db760a7c99d41",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ModularPartDefs/Absorbed_KotorWeapons_ModularPartDefs_MeleeTools_Vibroglaive.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "11b7a60ac647fe394fa959f5306b7d6ff5c8fa120c6fe87c60060382bc6d5247",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ModularPartDefs/Absorbed_KotorWeapons_ModularPartDefs_MeleeTools_Vibrosword.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "224db3617ce33b5333ed863e8c932d0c209ff4a407075acd1dde104af9a37e73",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ModularPartDefs/Absorbed_KotorWeapons_ModularPartDefs_RangedVerbs_BowcasterSlugrifles.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "66798a32458b25af218b16ac385fc10eb28e5acfc8b42f8ca4a4ed7f54fd1009",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ModularPartDefs/Absorbed_KotorWeapons_ModularPartDefs_RangedVerbs_LightHeavyRepeaters.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "c3bba4137733596d2218575bd74c40ce698640fc5f66600c23e1afb863fca62e",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ModularPartDefs/Absorbed_KotorWeapons_ModularPartDefs_RangedVerbs_blasterDMG.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "d75cf61f2a1b58075d85f5226a1bb1ff662fe0848747a9bf5cdb0c5d4eb64616",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ModularPartDefs/Absorbed_KotorWeapons_ModularPartDefs_RangedVerbs_disruptorDMG.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "a41855a347074027308351932476d99bbde379b098d09ab9c8bfaf4669d925c1",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ModularPartDefs/Absorbed_KotorWeapons_ModularPartDefs_RangedVerbs_ionDMG.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "d633f8bd3a26b8ea59db9f43f4e9f48c72ef3bcf7030baff0c0ecfb534cb99a8",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ModularPartDefs/Absorbed_KotorWeapons_ModularPartDefs_RangedVerbs_stunDMG.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "a469fc4cd97f22493021c4bd681794e3b830cd816ad243cb4e7ae44f0e96fe40",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ModularPartDefs/Absorbed_KotorWeapons_ModularPartDefs_Wristgun.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "6a996eec26c8eaf3b647ed4089d2b56910e78c36d7e3ea26effe7b139aafd456",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Apparel/Absorbed_KotorWeapons_Apparel_ImmortalusSithLords.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "3672306067c731c91ae413c41476ec6b2122ba538cb16eeb94621003fc208a2c",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Apparel/Absorbed_KotorWeapons_Apparel_KotORArmor_combatsuit.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "27c4e6abbacaf31b9949e4d7cc37f142f575fc2bb6df964a91d6730cc4393f55",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Apparel/Absorbed_KotorWeapons_Apparel_KotORArmor_hvybattlearmor.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "909c809c04750f9b2978c17190587f61472891f1b41edd7dfad5cba7a0f86342",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Apparel/Absorbed_KotorWeapons_Apparel_KotORArmor_hvycombatsuit.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "909499008de53ac6d1c923c97e30db82edaa3b1938729f3656957954abb6e833",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Apparel/Absorbed_KotorWeapons_Apparel_KotORArmor_lgtbattlearmor.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "d96782d83fd2ffa1808f30667cf12231d326c7a81c1edb367c91a33b628f6667",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Apparel/Absorbed_KotorWeapons_Apparel_KotORArmor_midbattlearmor.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "89b9a48c801765241ca6b5e595fb70049f2dfccb5f36dbd5e173323d25073123",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Apparel/Absorbed_KotorWeapons_Apparel_KotORArmor_milsuit.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "e4bc7d70fd48983344e1f4ec91e5ccc2f1b09cf9ec5248a6df4adab3414c659f",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Apparel/Absorbed_KotorWeapons_Apparel_KotORFactions_Czerka.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "dcd4e94f8e036694c729a114fe4ddcb21b24b136fe04fef12131334814a76b2d",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Apparel/Absorbed_KotorWeapons_Apparel_KotORFactions_Jedi.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "10b07bec98fce84a98232a88aa4dfc843cccd8df7a7ebc56dd56b262e26f0ae7",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Apparel/Absorbed_KotorWeapons_Apparel_KotORFactions_Mando.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "cf0cfd1af4b730f82335bb1a3baff2c528690440a78dcd9b0f388b3124a5b631",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Apparel/Absorbed_KotorWeapons_Apparel_KotORFactions_OldRep.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "70ee98e3da1a737dacb2a79384a5cb031437014635e539c825cda415fc741df6",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Apparel/Absorbed_KotorWeapons_Apparel_KotORFactions_Scum.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "ff6d4c579d9eaf841c1fa2e5442c8a10cdba1f0df18ffac6c0c9e7ec44e45133",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Apparel/Absorbed_KotorWeapons_Apparel_KotORFactions_Sith.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "3bcded1282be1831aaff281a947f9d3080da1bf263c443e9863a0ea93793a6d4",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Apparel/Absorbed_KotorWeapons_Apparel_KotORFactions_SithMilitary.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "2faa40722fb0a5c13a7a8fc89be944ff13b7f91f9059adc5b7e0b0ef3ff30735",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Apparel/Absorbed_KotorWeapons_Apparel_KotORHelmets.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "ae3e7832e0fefc21cfe03d0e5d09b51ccd4ad1028ede1a68b1e574eb1f0554d8",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Apparel/Absorbed_KotorWeapons_Apparel_KotORHeroApparel.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "42171c702bbdba42c6d2146fa5ffa682c91d270b381b23692fee1bb60c54af0b",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Gadgets/Absorbed_KotorWeapons_GadgetApparel_KotORBelts.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "0f0331b9b7a2ad54a70a3ae389f41b707683338d23459b7e7195b14de568bf82",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Gadgets/Absorbed_KotorWeapons_GadgetApparel_KotORGloves.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "f5841e818678f0f8a367a1e0a5f69531043109bcd77575dde1bf2fec928ac2f4",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Gadgets/Absorbed_KotorWeapons_GadgetApparel_KotORGrenadeBelts.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "83b75cf634939f8b21493f48ee47310487497b0e051497e030c464163b5b3dae",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Gadgets/Absorbed_KotorWeapons_GadgetApparel_KotORHeadgear.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "13aa83219a091beabfd4b383532c9db70cf90d6531f849caf020255bea9891e7",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Gadgets/Absorbed_KotorWeapons_GadgetApparel_KotORMissileLauncherJetpack.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "dc5a585061ef9ce2b823d76c4bb063600ab25760f8e37cb57e796faeeb28e724",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Gadgets/Absorbed_KotorWeapons_GadgetApparel_KotORModularWristLauncher.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "e9e8ebeecc141fa26b2e258545beacbd5c437781e60845ab4a01535a1150f50d",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Gadgets/Absorbed_KotorWeapons_GadgetApparel_KotORMountedWeapons.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "647ded56ddd74f3f2b213ad825b1d4e20d7a615690f542f3e19b0f9c5873e2fb",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Gadgets/Absorbed_KotorWeapons_GadgetApparel_KotORShields.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "733ca39087a60bc6ed7106eed4ff0b8cbd107b7de8f43f435a6c61680fb7f5a7",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Gadgets/Absorbed_KotorWeapons_GadgetApparel_KotORStealthBelts.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "ab9e6bfeaeb63c78b3e310999e41d6294e199ff6c3bba1e587036b06996299df",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Gadgets/Absorbed_KotorWeapons_Hediff_Shields.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "784ac69a765a77f0b22cd6c46d64466cd2e2ae7741e64b153a523d23fb1b1796",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Gadgets/Absorbed_KotorWeapons_Hediff_Stealth.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "15ce7ac8022f5d5330ce926c35e00732226c88e5c0f1d15865d43deb384f2218",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Gadgets/Absorbed_KotorWeapons_RecipeDefs_KotORShields.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "d71836b4184a7eaf88827c554948f399798a7fddca559fd18d55b21dda0218a9",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Gadgets/Absorbed_KotorWeapons_RecipeDefs_ShieldRecharge.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "2b9d3d1d1fbc6907c83edf6369e4b667789f5a3ac7f8d5dc5219f7a6e355de79",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Mineables/Absorbed_KotorWeapons_KotORResource_CrystalFormations_Large.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "1dae445040b45766add565c3bf2ab41b6a67b755ddc59a89ed4ae9fb995b51bc",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Mineables/Absorbed_KotorWeapons_KotORResource_CrystalFormations_Medium.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "eb3c5bb62aeb6f2d9d741e09ca1b09339087ac9661c2c8a9630d131796d567b1",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Mineables/Absorbed_KotorWeapons_KotORResource_CrystalFormations_Small.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "86ae5e593c4ae6e05c2b7a44b13a0a6dbf2706012ad4eff600e3a806899eba57",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Mineables/Absorbed_KotorWeapons_ThingDefs_UpgradeItems_Lightsaber.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "b3c8cadd918278971f31bb67256ad72760def9b665dbe7df2ad48d0da585c827",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_WeaponMelee_KotORShockStaffs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "bb2116b58240cf2736de9cb6547161158af2fff1b69750fbe4d2a01dadb1b779",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_WeaponMelee_KotORStunBaton.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "7ed3f124af5af47352fce3cf61752c69e4fb4cabca09a71c71d0403568026e14",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_WeaponMelee_KotORVibroDoubleBlade.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "b244d68b02cdd351a19a14f115038b31b5d3d51e7e4bb1227a14ed67586395ec",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_WeaponMelee_KotORVibroaxe.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "a27c5fc332109badaa0160c4bde99ff8a1f5a2c5071468b331c36bf38ebf7dbc",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_WeaponMelee_KotORVibroblade.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "ddbed3eef3dffdbceecbfd6fb1136fab15d095c17823551ebc875694a3784f52",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_WeaponMelee_KotORVibroglaive.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "ca82c98fede66888ccb9674938a2a5464ae8ecaf741357c41486c662c315e346",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_WeaponMelee_KotORVibrosword.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "c9004eff67cfb3992db34634467dec56fb75f701ff1ddccabab475f648306f4a",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_WeaponRanged_KotORBlasterCarbine.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "379bf73a766bfd5a587845df1e3faf8b19907290780f3d5d78a2ba7fde47e414",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_WeaponRanged_KotORBlasterPistol.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "2e962d9027c932295a1a5479b43ec10f5f2461fc73fbbdc8411f741eaca8ffe9",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_WeaponRanged_KotORBlasterRifle.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "34e82e3ab8060d53fa6b028ea906ff12910dfd159677238130b188a2e71096eb",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_WeaponRanged_KotORBowcaster.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "3f4d5ea341bef56724aabd02e3592279ab712cfe24e9b73e1ef2ab4f8f4d9c15",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_WeaponRanged_KotORDisruptorPistol.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "e91f25e4f62b3bbfec38193bdef693be068df23ea81be42af0815caf7a775206",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_WeaponRanged_KotORDisruptorRifle.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "05a39ef96114ad828bb346123bc96f52beb318790d44ae87dc58a98681477c60",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_WeaponRanged_KotORHeavyBlasterPistol.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "6b36048ea02f68b45b5c076a61896e287d33c7866f1551d3b94c20057e5de928",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_WeaponRanged_KotORHeavyRepeater.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "6d4a7488ae76fdc8d9bd87e91baf20823e69cb84f2d02873be1ef315d42cbd43",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_WeaponRanged_KotORHoldoutPistol.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "c350bd99234b41d292b95363f8e3f143fd32f529406852a24c2c7ed674fa811b",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_WeaponRanged_KotORIonPistol.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "3692e87e953f0872a1b2b2ec2b8e3742ca36c59e9d6f741ef353cf9cb39f7088",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_WeaponRanged_KotORIonRifle.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "7dde1b8fa7e7730c468b91a510a738290fddc1edf61840a31d2c332a76fb7545",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_WeaponRanged_KotORLightRepeater.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "5ccdb7de66a38fbacfe3fb554600ad091a38835f443ce93a446702684ed3e4a8",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_WeaponRanged_KotORMicroRepeater.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "d0347d85dadfbce9322da9a8e1c53bcf67563d780a1f62f4f430ba6c897e0599",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_WeaponRanged_KotORMiningLaser.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "e6d2e878617bc7da47e8286dfe0af921fbb848a5967cf26379f13983310b7fd9",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_WeaponRanged_KotORRocketRifle.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "b17860ee5b14adb054fc4016780d704b4f4d5a1d16dd3e79b651fa5fe26f8119",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_WeaponRanged_KotORSlugRifle.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "a467605cbac0d3cf839954b18d6e6f427d50b9720ea20dd121db9713f4866048",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_WeaponRanged_KotORSonicPistol.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "4d89da3bb843d5732ad7eb960de1b5e626c41b11c131787664a64a4fddf2f92f",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_WeaponRanged_KotORSonicRifle.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "bc00ef497ae004ca29157fdb103df3339e21adda0f8ed019bbc729388590944b",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/ThingDefs_Weapons/Absorbed_KotorWeapons_lightsabernames.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "d27d69e8337bd8085ee9bab2f5edfca820246a3c628bdd789ca51b6bbbca3ea1",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/TraderKindDefs/Absorbed_KotorWeapons_BaseTrader_Baragwin.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "6c8b5c59698607ddfac859e3da29339107f0ec47f1a58998710c6cb4e3f6d972",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/TraderKindDefs/Absorbed_KotorWeapons_BaseTrader_Scum_Gunrunner.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "40eeb3271d4040aaefdc03eb61fb3d16261cde4605b5b542aa011f25ddb31804",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/TraderKindDefs/Absorbed_KotorWeapons_OrbitalTrader_Baragwin.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "fe3d2ef176626374c5741d7607c4347e61c96bd4e383b3d2ed85cf4fe0aaa27d",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/Absorbed_KotorWeapons/TraderKindDefs/Absorbed_KotorWeapons_OrbitalTrader_Scum_Gunrunner.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "a97b0b278e879dd2e78987588f500b547e84c13745fa0c1f74b671d22b8db89c",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/DamageDefs/Absorbed_Eweb_Damage.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "ebd53b320edba3d751be12aae7e8efd1bed0d0ec1c3df04d63df64346079d2f7",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/DamageDefs/Absorbed_JDSArmory_Damage.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "b2b1b059f7ef1b91f6fc1f421b7e89fbaad147930bede5b43b6800b285804438",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/HediffDefs/Absorbed_Eweb_Hediff.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "ccbe3c6e4ad48b7a839351afa2c29d3eb2a137b7a15b7e941409f67945ba4162",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/HediffDefs/Absorbed_JDSArmory_Hediff.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "280edfa93629273907f837874c7a61e71ccb9e5cc67f407f561a0c8b48b50bea",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/MiscDefs/Absorbed_SovSith_Misc.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "6beb5352d10fefa7d1b27f495949efc31989e89f48f61deddcfc5c0a8ce469f2",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/SoundDefs/Absorbed_Eweb_Sounds.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "e25b3235002765fd661ca8ef2fb96dddc65627e060bd9086f4999cd27523cda2",
+    "sha": "ef81a0b7"
+  },
   "src/RimStarWars/Armoury/Defs/SoundDefs/Absorbed_JDSArmory_Sounds.xml": {
     "cleanCount": 1,
     "date": "2026-09-04",
     "hash": "8dd5d98b5c9bfdf967c1a6a7b4e4e1c6c7bf0d9555051541e3d18f3a49631e87",
     "sha": "925bb3d2"
+  },
+  "src/RimStarWars/Armoury/Defs/ThingDefs/Absorbed_Eweb.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "99841a96084dd95fc6006129d311cf7683d21c5a3ef1386576bb97de400a9f69",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/ThingDefs/Absorbed_JDSArmory_Buildings.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "eebf0112f48ff17daf9cbaaa8ae86cdf98739417c3e2814d18e4d4b5e5f83a25",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/ThingDefs/Absorbed_JDSArmory_Projectiles.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "9c7646330e1b56022e327f75f06be1e0dc877a2cbd798e6385ce7f51c3ccce4c",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/ThingDefs/Absorbed_JDSArmory_Weapons.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "d4542df726c794e882fe9c4186798af276aa088004427074454d4828a1ffba2d",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/ThingDefs/Absorbed_OPTurret.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "987aa2ed9d9a83a49456f32a1af52b49a1c85c7656f17d806bd43b955e48ae20",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/ThingDefs/Absorbed_SovSith_Genes.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "4bdd10d702f57a643288c7ad10995f0e2fd9df02ea8f48d3b759b14e3869fb86",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Defs/ThingDefs/Absorbed_SovSith_HeadTypes.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "f47fc4e8c445f076497a16b3c7cd9e0cb9f1515cf25cb0790721c2495ac12bb0",
+    "sha": "ef81a0b7"
   },
   "src/RimStarWars/Armoury/Defs/ThingDefs/RSW_Sonic_Cannon.xml": {
     "cleanCount": 1,
@@ -3303,17 +4797,95 @@
     "hash": "df754b822f1cf37916b20fc326e339f06a9127aded70858769684affc6b31cc3",
     "sha": "1cb620ea"
   },
+  "src/RimStarWars/Armoury/Patches/Absorbed_AdditionalMods/kotorcore/ATC/Absorbed_Kotorcore_ATC_Patch_DroidIngestibleBlacklist.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "114b59fe76b4bf643bacbee47862df7d19637e7f641471346544bdac1377f7fc",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Patches/Absorbed_AdditionalMods/kotorcore/MHC/Absorbed_Kotorcore_MHC_Patch_IonDamageWorker.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "bda95e337ef524297e459fae9c014ae02dcafeb8caae594bf8832e7bcee4ab74",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Patches/Absorbed_AdditionalMods/kotorcore/VEF/Absorbed_Kotorcore_VEF_OptionalPatches.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "42f9d81c43ebf26d768d7295b5bcdd6738ae1d9580649ade6a73e3c70f47c954",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Patches/Absorbed_AdditionalMods/kotorweapons/BiomesCaverns/Absorbed_Kotorweapons_BiomesCaverns_Patch_KotORCrystalFormationInjector.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "8a6aed497ecdc77851b2a593aecfbdaec67afed1139c118d0bcb045b6195db3f",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Patches/Absorbed_AdditionalMods/kotorweapons/TheForceLightsabers/Absorbed_Kotorweapons_TheForceLightsabers_Patch_HandModPositioning.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "726de5b0c0bd1a44a5a4efc417abce776524833af5db4fa3a5b4caf3fe1f483f",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Patches/Absorbed_AdditionalMods/kotorweapons/TheForceLightsabers/Absorbed_Kotorweapons_TheForceLightsabers_Patch_KotORLightsaberBalancing.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "4851e22db3622c029dba46eaab0ae7697023ba2be7b55dcd1be82c16d7cc963a",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Patches/Absorbed_AdditionalMods/kotorweapons/TheForceLightsabers/Absorbed_Kotorweapons_TheForceLightsabers_Patch_KotORLightsaberPartSlots.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "1dd34c6d524475bb461a1705be83433a0fb46d1f5c149e09f8904b9026b86371",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Patches/Armour_DamageCategories.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "484db8d556717c0addb5f58a6dafa17c18f7ae7da7efedd692c044b262147074",
+    "sha": "ef81a0b7"
+  },
   "src/RimStarWars/Armoury/Patches/Armour_Leather.xml": {
     "cleanCount": 1,
     "date": "2026-09-04",
     "hash": "dfb0007af9845b8c8317bcacad4570099aaa21337398083d1275dd1dab6475d0",
     "sha": "1cb620ea"
   },
+  "src/RimStarWars/Armoury/Patches/Armour_Penetration.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "f78faa169124de68b2bbd37a91503a85a8e0450c063b78b0a66a730e21936649",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Patches/Armour_Ratings.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "b3a84ba7b5f2a1dd0aa9a43d23763c68970dcf872437548651cab53e5497b8bf",
+    "sha": "ef81a0b7"
+  },
   "src/RimStarWars/Armoury/Patches/Armoury_LightsaberCraftingCut.xml": {
     "cleanCount": 1,
     "date": "2026-09-04",
     "hash": "56559f3f33609ed22b58b80b518a9eb166989cd77865ac342a44506b81acc650",
     "sha": "1cb620ea"
+  },
+  "src/RimStarWars/Armoury/Patches/Armoury_MeleePower.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "719a9c336b871ca47699e38a10a93f26f2fe9e66047981a4ff0ec3480e9f7cc4",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Patches/Armoury_RangedDamage.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "4d1e02553815c519404731c8a3b89f7907fb1bd565d6bacb9ccb6895719452c5",
+    "sha": "ef81a0b7"
+  },
+  "src/RimStarWars/Armoury/Patches/Armoury_TorpedoSpeed.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "23d021fd4eef5748e31e8792c3e98d7573c7b46dd09cb3666becb3cc39df5bd6",
+    "sha": "ef81a0b7"
   },
   "src/RimStarWars/Armoury/Patches/Flamebow_TagWiden.xml": {
     "cleanCount": 1,
