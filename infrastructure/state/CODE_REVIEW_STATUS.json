@@ -486,100 +486,148 @@
     "sha": "43f96b1b"
   },
   "src/RimMandrake/Graffiti/About/About.xml": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-05",
     "hash": "823e2e245e852868ede7cf065c4214323e20c15b9c0d79e5926cbe4f1ad07c05",
-    "sha": "629956d2"
+    "sha": "5a1f89a6"
   },
   "src/RimMandrake/Graffiti/Defs/JobDefs_Graffiti.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
+    "cleanCount": 2,
+    "date": "2026-09-05",
     "hash": "c362ba4bc1147f88e137b8b7709f951feea700567b45b44450ad029d2c215fbc",
-    "sha": "71cceeb1"
+    "sha": "5a1f89a6"
   },
   "src/RimMandrake/Graffiti/Defs/JoyGiverDefs_Graffiti.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
+    "cleanCount": 2,
+    "date": "2026-09-05",
     "hash": "aecfb29cf3d41c72c114324e65b4425706e172849f2365ccc272f6275459b18a",
-    "sha": "71cceeb1"
+    "sha": "5a1f89a6"
   },
   "src/RimMandrake/Graffiti/Defs/MentalStateDefs_Graffiti.xml": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-05",
     "hash": "9decb473258d3be1996fc3ea81ca52c2529c7e2d381813d52ef334de84da3e3f",
-    "sha": "629956d2"
+    "sha": "5a1f89a6"
   },
   "src/RimMandrake/Graffiti/Defs/ThingDefs_Graffiti.xml": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-05",
     "hash": "2a64d0563823d8220e91cb0376c0fb40417b3992798267c0697bd8aac8aeabe9",
-    "sha": "629956d2"
+    "sha": "5a1f89a6"
   },
   "src/RimMandrake/Graffiti/Defs/ThinkTreeDefs_Graffiti.xml": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-05",
     "hash": "4eb813fb92153f273a3fbc1afe7d75fc1035716e8e30046aebe8091fc165490a",
-    "sha": "629956d2"
+    "sha": "5a1f89a6"
+  },
+  "src/RimMandrake/Graffiti/LICENSE-THIRD-PARTY.md": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "f39239b7ba0eabcab127a97b1a7fe0e4f2b99aeccd68f79108e7958d3272028a",
+    "sha": "5a1f89a6"
   },
   "src/RimMandrake/Graffiti/Source/BreachBiasHook.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
+    "cleanCount": 2,
+    "date": "2026-09-05",
     "hash": "3b18754999a8b794ff848f7f66bc21e282432c898573168b62d5b3188bb3a147",
-    "sha": "ec953fe5"
+    "sha": "5a1f89a6"
+  },
+  "src/RimMandrake/Graffiti/Source/Graffiti.csproj": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "f0629241c5acf6a2c0a762b4fd6a80d10dbcde0c96013f6c64900192bb325b11",
+    "sha": "5a1f89a6"
   },
   "src/RimMandrake/Graffiti/Source/GraffitiCategory.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
+    "cleanCount": 2,
+    "date": "2026-09-05",
     "hash": "4de6b29352f45272e55b06913482234f5271fd57451a5f0b2cbd9ddc04615aaa",
-    "sha": "ec953fe5"
+    "sha": "5a1f89a6"
   },
   "src/RimMandrake/Graffiti/Source/GraffitiJobUtility.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
+    "cleanCount": 2,
+    "date": "2026-09-05",
     "hash": "16d3b6f763e6ea19a4336d9b916c466131e3f84fe9d7a732d29549bf9779bec4",
-    "sha": "872db59d"
+    "sha": "5a1f89a6"
   },
   "src/RimMandrake/Graffiti/Source/JobDriver_PaintGraffiti.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
+    "cleanCount": 2,
+    "date": "2026-09-05",
     "hash": "fd74ebd574dad5952c55d98eca12b10806d8e414009647d7d0d7af0520cbb57b",
-    "sha": "ac24cd52"
+    "sha": "5a1f89a6"
   },
   "src/RimMandrake/Graffiti/Source/JobGiver_GraffitiPaintingSpree.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
+    "cleanCount": 2,
+    "date": "2026-09-05",
     "hash": "c5e87262bb3a1b1652c11cae783915d5b4e3ca8aa627d207b06394e6c7216a45",
-    "sha": "7672f1bd"
+    "sha": "5a1f89a6"
   },
   "src/RimMandrake/Graffiti/Source/JoyGiver_PaintGraffiti.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
+    "cleanCount": 2,
+    "date": "2026-09-05",
     "hash": "ca102365b33408f9581dd374874e0d79d690dee01d23aeb0973cd53078b290aa",
-    "sha": "9c1523eb"
+    "sha": "5a1f89a6"
   },
   "src/RimMandrake/Graffiti/Source/MentalState_GraffitiSpree.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
+    "cleanCount": 2,
+    "date": "2026-09-05",
     "hash": "57c5a7b03eee4fccf5c5958c0886872b0f68a18c565702d80430fd76f8239876",
-    "sha": "f9da3de0"
+    "sha": "5a1f89a6"
   },
   "src/RimMandrake/Graffiti/Source/ModExtension_Graffiti.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
+    "cleanCount": 2,
+    "date": "2026-09-05",
     "hash": "e7ef5b4f3e1d301551aeb211ddbbbf83f13c7a7b1afc75baa98fa1268d5daa0d",
-    "sha": "a6c78782"
+    "sha": "5a1f89a6"
   },
   "src/RimMandrake/Graffiti/Source/RMGraffitiDefOf.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
+    "cleanCount": 2,
+    "date": "2026-09-05",
     "hash": "5be1e7a1b6babaa8e5c09c64e5fb55c967951926b9f63743027167c5aad8094f",
-    "sha": "1e4fe0eb"
+    "sha": "5a1f89a6"
   },
   "src/RimMandrake/Graffiti/Source/ThoughtWorker_ViewedGraffitiMark.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
+    "cleanCount": 2,
+    "date": "2026-09-05",
     "hash": "9235a8c202065a07be54c59dfd650811bb9bde5d60e5c3c243781583c3bf0d83",
-    "sha": "b0db3c45"
+    "sha": "5a1f89a6"
+  },
+  "src/RimMandrake/Graffiti/Textures/Things/Filth/Art/RM_Graffiti_Vandal/vandal_0.png": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "48f13def743d32f0c4b6b8cf41fb695348853061d3eead87fe58f022cfe88a82",
+    "sha": "5a1f89a6"
+  },
+  "src/RimMandrake/Graffiti/Textures/Things/Filth/Art/RM_Graffiti_Vandal/vandal_1.png": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "cfc1395f273e092001a5f4dbeea19d9fbc3891fcb291c77677a8c02b68f13c7a",
+    "sha": "5a1f89a6"
+  },
+  "src/RimMandrake/Graffiti/Textures/Things/Filth/Art/RM_Graffiti_Vandal/vandal_2.png": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "8b6b22325d3bf6e67683d51123a49264dda6fc85f9f390d22f1f2adfd4053776",
+    "sha": "5a1f89a6"
+  },
+  "src/RimMandrake/Graffiti/Textures/Things/Filth/Art/RM_Graffiti_Vandal/vandal_3.png": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "aa2037ae899b27bb2be0f94f03d62dee4bd4bffe4806cfffab0d5731d07a5044",
+    "sha": "5a1f89a6"
+  },
+  "src/RimMandrake/Graffiti/Textures/Things/Filth/Art/RM_Graffiti_Vandal/vandal_4.png": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "ef72288a4d66895ba107c1b9672b7d9aa729c13da8d086e19665660969a6f2fb",
+    "sha": "5a1f89a6"
+  },
+  "src/RimMandrake/Graffiti/Textures/Things/Filth/Art/RM_Graffiti_Vandal/vandal_5.png": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "326151f46d9d554bc1b8d56149013c909ce06d91cda005846bb963c57b2794dd",
+    "sha": "5a1f89a6"
   },
   "src/RimMandrake/GravshipAstronautFix/About/About.xml": {
     "cleanCount": 2,
@@ -1302,124 +1350,136 @@
     "sha": "b294390b"
   },
   "src/RimMandrake/Property/About/About.xml": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-05",
     "hash": "e2be43a988f132ad4446186075b9923fd340534543f7994031a6bba3e49c621d",
-    "sha": "629956d2"
+    "sha": "df3d5398"
   },
   "src/RimMandrake/Property/Source/ClaimBasis.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
+    "cleanCount": 2,
+    "date": "2026-09-05",
     "hash": "803c43343b20a97da2d1e4156d96518948ed930471a2efa9f76651856424e947",
-    "sha": "9c1523eb"
+    "sha": "df3d5398"
   },
   "src/RimMandrake/Property/Source/ClaimDecay.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
+    "cleanCount": 2,
+    "date": "2026-09-05",
     "hash": "83d5f5867ea70ab906d1246366bb564b1f24ed468f76f3c81cbbf65bd8649c66",
-    "sha": "7672f1bd"
+    "sha": "df3d5398"
   },
   "src/RimMandrake/Property/Source/ClaimEngine.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
+    "cleanCount": 2,
+    "date": "2026-09-05",
     "hash": "af00a7d3d3751cd18c5f5f9e20b15e9178db2182c09efeae132aea0111c8ca51",
-    "sha": "08e80429"
+    "sha": "df3d5398"
   },
   "src/RimMandrake/Property/Source/ClaimRecord.cs": {
-    "cleanCount": 2,
+    "cleanCount": 3,
     "date": "2026-09-05",
     "hash": "984f6ef2797a256714b2b54e452ed63937cd214171b96964c6685bdd8e4758ae",
-    "sha": "dd8bab96"
+    "sha": "df3d5398"
   },
   "src/RimMandrake/Property/Source/ClaimRecordList.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "75ba9d8598aa7542248638d247464548433971701d9fc206f847b998add43d37",
-    "sha": "08e80429"
-  },
-  "src/RimMandrake/Property/Source/ClaimResolution.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "beb43c44e060cd852a31f8e18b0a688877c6363a5e94b27144ccc0c059b833e8",
-    "sha": "08e80429"
-  },
-  "src/RimMandrake/Property/Source/ClaimantKind.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "63b33a156651a598fd7244afbb5ed5077e44b29b8680bde1362538a82489bde6",
-    "sha": "9c1523eb"
-  },
-  "src/RimMandrake/Property/Source/ClaimantRef.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "33b61a07ec88b467792a34601cc0a0b714372081005c492141b63683588014d8",
-    "sha": "f9da3de0"
-  },
-  "src/RimMandrake/Property/Source/FactionRecord.cs": {
     "cleanCount": 2,
     "date": "2026-09-05",
+    "hash": "75ba9d8598aa7542248638d247464548433971701d9fc206f847b998add43d37",
+    "sha": "df3d5398"
+  },
+  "src/RimMandrake/Property/Source/ClaimResolution.cs": {
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "hash": "beb43c44e060cd852a31f8e18b0a688877c6363a5e94b27144ccc0c059b833e8",
+    "sha": "df3d5398"
+  },
+  "src/RimMandrake/Property/Source/ClaimantKind.cs": {
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "hash": "63b33a156651a598fd7244afbb5ed5077e44b29b8680bde1362538a82489bde6",
+    "sha": "5a1f89a6"
+  },
+  "src/RimMandrake/Property/Source/ClaimantRef.cs": {
+    "cleanCount": 2,
+    "date": "2026-09-05",
+    "hash": "33b61a07ec88b467792a34601cc0a0b714372081005c492141b63683588014d8",
+    "sha": "5a1f89a6"
+  },
+  "src/RimMandrake/Property/Source/FactionRecord.cs": {
+    "cleanCount": 3,
+    "date": "2026-09-05",
     "hash": "dcfbbd9777b36584b90a022a79e469a4fc81dab8e4ae7bc103f40acd3a874088",
-    "sha": "dd8bab96"
+    "sha": "5a1f89a6"
   },
   "src/RimMandrake/Property/Source/GameComponent_PropertyLedger.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
+    "cleanCount": 2,
+    "date": "2026-09-05",
     "hash": "fce03410cf6025f5b92fa7ccfa7bbce5e2c278555f3676886620fcc5d8608804",
-    "sha": "872db59d"
+    "sha": "5a1f89a6"
   },
   "src/RimMandrake/Property/Source/PerceptionUtility.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
+    "cleanCount": 2,
+    "date": "2026-09-05",
     "hash": "500f6cc7ec4aebd18199692cad1cadc32ae3c3f997c44758e03c6529de8e4576",
-    "sha": "0975db76"
+    "sha": "5a1f89a6"
   },
   "src/RimMandrake/Property/Source/PropertyEngine.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
+    "cleanCount": 2,
+    "date": "2026-09-05",
     "hash": "8c23828cfdb045644bcfc436abe6f45ce098c6fda08339decc2b4ebdc3a47b01",
-    "sha": "08e80429"
+    "sha": "5a1f89a6"
   },
   "src/RimMandrake/Property/Source/PropertyEvents.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
+    "cleanCount": 2,
+    "date": "2026-09-05",
     "hash": "64225870a9888201c8c1ec2f2a431c91283d2aed64815f47581189e6ebb07e18",
-    "sha": "9c1523eb"
+    "sha": "5a1f89a6"
   },
   "src/RimMandrake/Property/Source/PropertyTuning.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
+    "cleanCount": 2,
+    "date": "2026-09-05",
     "hash": "66d27f55f0b23621765565db4166bb67da752dc6d626647794333e245d7f0373",
-    "sha": "5a040901"
+    "sha": "5a1f89a6"
+  },
+  "src/RimMandrake/Property/Source/RM_Property.csproj": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "753bdb028386a40f35c60e7796515dc58ddd5697d7193140fa7527b45958f3b2",
+    "sha": "5a1f89a6"
   },
   "src/RimMandrake/Property/Source/RecognizabilityUtility.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
+    "cleanCount": 2,
+    "date": "2026-09-05",
     "hash": "ffd4fa1dfabc9e3ae8ead36f42f25513b183bbd71984508ae86a3c7628a38e93",
-    "sha": "ac24cd52"
+    "sha": "5a1f89a6"
   },
   "src/RimMandrake/Property/Source/SelfTest/Program.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
+    "cleanCount": 2,
+    "date": "2026-09-05",
     "hash": "234a2084aff97f8de611ce99de11a8a40a90be8a58452967d070dfb76f4b232d",
-    "sha": "ec953fe5"
+    "sha": "5a1f89a6"
+  },
+  "src/RimMandrake/Property/Source/SelfTest/RimMandrakeProperty.SelfTest.csproj": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "25e66a3113b3834011e2b65b1cf909bdb997b4c29c675697acbb5c40848fc632",
+    "sha": "5a1f89a6"
   },
   "src/RimMandrake/Property/Source/TakingAct.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
+    "cleanCount": 2,
+    "date": "2026-09-05",
     "hash": "833bf1e5d6f081afc50ee0d45c62aae1d32f0fd59ce53533a00d75efb453021f",
-    "sha": "0975db76"
+    "sha": "5a1f89a6"
   },
   "src/RimMandrake/Property/Source/TakingEvent.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
+    "cleanCount": 2,
+    "date": "2026-09-05",
     "hash": "bb97c2d4136c83693fd14b24a227f5b433843d05b415ba6185488743cc60d0e2",
-    "sha": "9c1523eb"
+    "sha": "5a1f89a6"
   },
   "src/RimMandrake/Property/Source/WitnessEntry.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
+    "cleanCount": 2,
+    "date": "2026-09-05",
     "hash": "a9bfddac2b6df10cda8a07b0ca281edf21cf209f53e32e6536ebc1434e5a3694",
-    "sha": "5a040901"
+    "sha": "5a1f89a6"
   },
   "src/RimMandrake/ResearchKitEastFix/About/About.xml": {
     "cleanCount": 1,
