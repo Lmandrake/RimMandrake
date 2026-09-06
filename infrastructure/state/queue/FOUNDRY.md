@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-06T20:11:55Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-06T20:24:34Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -720,3 +720,33 @@ kind:     bug
 thin:     no ## criteria
 summary:  Prefix captures state = (parent.Spawned && comp.CanLaunch() && destination within range) using the same check…
 prose:    infrastructure/state/items/NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1.md
+
+## STRUCTUREINJ_RUT_TEMPLATE_DEFECTS_1 StructureInjectionsRUT: toll_gap.txt bakes rot=4 (invalid Rot4); glass_sea.txt is unreferenced dead content — regenerate from Lua
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## criteria
+summary:  1. Templates/tollgap.txt:39 — THING DiningChair … rot=4. Rot4 is 0-3; 4 is invalid (the engine wraps or error…
+prose:    infrastructure/state/items/STRUCTUREINJ_RUT_TEMPLATE_DEFECTS_1.md
+
+## CODEX_WRAPPER_HARVEST_FIX_1 codex_image.py discards finished images on timeout (harvest never runs) — fix, recover ~14 orphaned TREE_GRAPHICS images, retire chroma-key: native transparency MEASURED clean
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## criteria
+summary:  1. runcodex(): on timeout, ALWAYS attempt harvestnew() before raising; a harvested
+prose:    infrastructure/state/items/CODEX_WRAPPER_HARVEST_FIX_1.md
+
+## CODEX_PARALLEL_WORKERS_1 N-worker codex exec queue with receiving-agent AGENTS.md prose + grumpiness detector reading rollout rate_limits; own CODEX_HOME per worker
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  - Architecture A from the design: a request-queue directory driven by N parallel one-shot
+prose:    infrastructure/state/items/CODEX_PARALLEL_WORKERS_1.md

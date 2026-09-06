@@ -103,14 +103,17 @@ def first_existing(paths, what):
     sys.exit("could not find %s; tried:\n  %s" % (what, "\n  ".join(paths)))
 
 
-EXCLUDE_DIRS = {"Source", "__pycache__", ".git", "art_candidates", "art_source"}
+EXCLUDE_DIRS = {"Source", "__pycache__", ".git", "art_candidates", "art_source",
+                "_artsrc", "obj", "bin", ".vs"}
 EXCLUDE_FILES = {".gitignore", ".DS_Store", "Thumbs.db"}
 # .md is excluded wholesale rather than just README.md: WreckedMachines carries
 # DESIGN.md, MACHINES.md and PLACEHOLDER.md files that are authoring notes, not
 # game data. RimWorld ignores them either way, but a deployed mod should be only
 # the files the game actually reads — that is what makes the deploy diff
-# meaningful. `art_source/` is likewise a workshop, not a payload.
-EXCLUDE_EXTS = {".py", ".pyc", ".md"}
+# meaningful. `art_source/` and `_artsrc/` are likewise workshops, not payloads
+# (review 2026-09-06: `_artsrc/raw/*.png`, 28 MB, was about to deploy); `obj/`,
+# `bin/`, `.csproj` are build residue — the game reads Assemblies/*.dll only.
+EXCLUDE_EXTS = {".py", ".pyc", ".md", ".csproj", ".sln", ".user"}
 
 
 def shippable(rel):
@@ -263,18 +266,34 @@ def wellformed(src, rels):
 
 
 def copy(src, dst, rels):
+    """Returns (copied, refused, failed). `refused` is True when the mod's XML
+    is malformed and NOTHING was copied; `failed` lists (rel, error) for files
+    the OS would not write (a DLL locked by the running game, a permission
+    error on the Program Files tree). One bad file must not abort the run —
+    every later mod in the list still deploys and the summary still prints
+    (review 2026-09-06)."""
     bad = wellformed(src, rels)
     if bad:
         print("  ! REFUSING TO DEPLOY: malformed XML")
         for rel, err in bad:
             print("  !   %s: %s" % (rel, err))
         print("  ! fix the file, then re-run. Nothing was copied for this mod.")
-        return 0
+        return 0, True, []
+    copied, failed = 0, []
     for rel in rels:
         target = os.path.join(dst, rel)
-        os.makedirs(os.path.dirname(target), exist_ok=True)
-        shutil.copy2(os.path.join(src, rel), target)
-    return len(rels)
+        try:
+            os.makedirs(os.path.dirname(target), exist_ok=True)
+            shutil.copy2(os.path.join(src, rel), target)
+            copied += 1
+        except OSError as e:
+            failed.append((rel, str(e)))
+            print("  ! FAILED to write %s: %s" % (rel, e))
+    if failed:
+        print("  ! %d file(s) NOT written for this mod (locked by the running "
+              "game, or permissions). Nothing here is deployed until they are."
+              % len(failed))
+    return copied, False, failed
 
 
 def main():
@@ -295,7 +314,14 @@ def main():
     config = first_existing(_CONFIG, "ModsConfig.xml")
     active = active_ids(config)
 
+    known_mods = mod_dirs()
     if args.pull:
+        # Same guard --mod has: mod_dir() GUESSES a path for an unknown name,
+        # so `--pull Core` or a typo would import an entire game folder into
+        # the repo as a brand-new tree (review 2026-09-06).
+        if args.pull not in known_mods:
+            sys.exit("deploy_custom_mods.py: no such mod in the repo: %s\n"
+                     "  known mods: %s" % (args.pull, ", ".join(sorted(known_mods))))
         src = os.path.join(mods_dir, args.pull)
         dst = mod_dir(args.pull)
         if not os.path.isdir(src):
@@ -319,7 +345,6 @@ def main():
         print("done — review with `git diff` before committing")
         return 0
 
-    known_mods = mod_dirs()
     if args.mod:
         # mod_dir() falls back to a guessed path for an unknown name rather
         # than raising, so a typo'd --mod used to sail through: tree() on the
@@ -335,8 +360,10 @@ def main():
     print("repo : %s" % SRC_ROOT)
     print("game : %s" % mods_dir)
     print("mode : %s" % ("APPLY" if args.apply else "plan only (use --apply to write)"))
-    print("holds: %d pattern(s) from %s\n"
+    print("holds: %d pattern(s) from %s"
           % (len(holds), pretty(HOLD_FILE)))
+    print("skip : dirs %s · exts %s\n"
+          % (" ".join(sorted(EXCLUDE_DIRS)), " ".join(sorted(EXCLUDE_EXTS))))
 
     drift = False
     any_leftover = False   # apply-mode exit code; unlike `drift`, NEVER reset by a
@@ -416,11 +443,24 @@ def main():
             # than the requested count when the source XML is malformed —
             # `wrote` must reflect what actually happened, not what was asked
             # for, or a refused deploy still prints "Deployed N file(s)."
-            wrote += copy(src, dst, new + changed)
-            if args.prune:
-                wrote += len(gone)
+            if pid is None:
+                # SKILL §6: no About.xml packageId means not deployable — it
+                # was a flag only and --apply deployed anyway (review 2026-09-06).
+                print("  ! REFUSING TO DEPLOY: no packageId in About.xml. "
+                      "Nothing was copied for this mod.")
+                copied, refused, failed = 0, True, []
+            else:
+                copied, refused, failed = copy(src, dst, new + changed)
+            wrote += copied
+            if refused or failed:
+                any_leftover = True
+            # Never prune after a refusal or a failed write: `gone` files are
+            # by definition the hand-edits --pull exists to rescue, and a
+            # refused copy is not a deploy to prune behind (review 2026-09-06).
+            if args.prune and not refused and not failed:
                 for r in gone:
                     os.remove(os.path.join(dst, r))
+                wrote += len(gone)
             n2, c2, g2, _ = compare(src, dst)
             # Held files legitimately still differ after a deploy — that is the
             # whole point of holding them. Without this filter the verify step
@@ -472,6 +512,13 @@ def main():
     if args.apply and wrote:
         print("Deployed %d file(s). RESTART RIMWORLD — defs are only parsed at "
               "startup, so reloading a save will not pick these up." % wrote)
+    elif args.apply and any_leftover:
+        # wrote == 0 does NOT mean "nothing needed doing". copy() returns 0 after
+        # printing its own malformed-XML refusal, so the old unconditional
+        # "already in sync" printed a flat lie directly under the refusal — the
+        # exact false-deployed shape this script exists to prevent.
+        print("NOTHING WAS WRITTEN, and the repo and game still DIFFER — see the "
+              "refusal(s) above. Fix them and re-run.")
     elif args.apply:
         print("Nothing to do; already in sync. No restart needed.")
     elif drift:

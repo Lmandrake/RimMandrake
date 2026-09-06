@@ -277,3 +277,110 @@ does not touch the second.
 `skills/generating-images/references/codex-contract.md` stays the verified-facts
 file, but §2.1 and §2.3 supersede it on this install's version, on
 `--output-schema`/`-o`/`resume`/`queue`, and possibly on transparency.
+
+---
+
+# Addendum, 2026-09-06 — one transparency test, and the throttle answer
+
+## A. Native transparency WORKS. Measured, one generation, not repeated.
+
+```
+python3 skills/generating-images/scripts/codex_image.py generate \
+  --prompt "a small weathered metal supply crate seen from directly above, top-down
+   orthographic game sprite, ... rendered at 1024x1024 with a GENUINELY TRANSPARENT
+   background — output a real alpha channel, no backdrop, no floor, no shadow" \
+  --out Transient/transparency_test/crate_native_alpha.png --timeout 180 --verbose
+```
+
+**No `--chroma-key`.** Session started 13:16:08, PNG on disk 13:17:10 — **62 s**,
+dead on the month-long median. `1448x1086`, colour type 6 (RGBA):
+
+| alpha | share | |
+|---|---|---|
+| `0` (clear) | **55.71%** | all four corners `(0,0,0,0)` |
+| `1–31` (invisible fringe) | 0.97% — 15,310 px | the defect `validate_sprite.py` exists to catch |
+| `32–247` (genuine mid) | **0.28%** | ⇒ **not washed out** |
+| `248–255` (solid) | 42.78% | |
+
+`validate_sprite.py --describe`: *coverage 43.3% · subject 1032x692 at (208,196) ·
+corners [0,0,0,0]*. Composited over a checkerboard and looked at: a clean crate,
+**no green rim, no halo, no despill artefacts**. This is better than chroma-key
+output, not merely equal to it.
+
+⇒ **Redundant if we adopt it:** the `TRANSPARENT_CLAUSE` in `build_prompt()`,
+`chroma_key.py` in its entirety (key auto-detect, soft matte, despill,
+`--edge-contract`), and `rembg_cut.py` inside `make_sprite.py` — with them go
+the two failure modes that have destroyed subjects here (a key colour present in
+the art, and an auto-detected "key" that was really banked alpha).
+⚠️ **Not fixed:** the built-in tool still ignores requested size — asked
+1024x1024, got 1448x1086, not even a multiple of 16 — so `conform_sprite.py`
+stays mandatory; and the 1–31 fringe is present in native alpha too, so the
+validator's fringe check still earns its place. §2.3's contradiction is settled
+in favour of the installed Codex skill.
+
+## 🔴 The wedge was never a wedge — and the wrapper is throwing away good images
+
+`codex exec` text-only returned **PONG in 5 seconds** with PID 5028 still alive.
+The channel was never blocked. What actually happened above: the image completed
+at 62 s, the wrapper's 180 s ceiling then expired during the *agent's* wrap-up,
+and `codex_image.py`'s `run_codex()` **raises `EnvError` on `TimeoutExpired`, so
+`harvest_new()` is never reached** — a finished PNG sitting in
+`generated_images/` is discarded and reported as "no image produced". That is
+almost certainly what the ~14 "timeouts" of `TREE_GRAPHICS_OWNERSHIP_1` were, and
+their images may still be on disk. **Any supervisor must harvest before
+declaring failure.** Likely cause of the long tail: `config.toml` sets
+`model_reasoning_effort = "xhigh"` on `gpt-5.6-sol`, so the trivial wrapper turn
+(call tool, copy file, report) reasons at xhigh. Workers should pass
+`-c model_reasoning_effort="low"`; saving **UNMEASURED**.
+
+## B. Will we know if it gets grumpy? Yes — first-party and machine-readable.
+
+Every rollout at `$CODEX_HOME/sessions/YYYY/MM/DD/rollout-<ts>-<thread>.jsonl`
+carries, per turn:
+
+```json
+"rate_limits":{"limit_id":"codex",
+ "primary":{"used_percent":2.0,"window_minutes":300,"resets_at":<unix>},
+ "secondary":{"used_percent":70.0,"window_minutes":10080,"resets_at":<unix>},
+ "credits":{"has_credits":false,"unlimited":false,"balance":"0"}}
+```
+
+`primary` = rolling 5 h, `secondary` = weekly. ⚠️ **The live `--json` stream does
+not carry it** — measured event types are only `thread.started` (with
+`thread_id`), `turn.started`, `item.completed`, `turn.completed` (with `usage`).
+So the read path is: take `thread_id` from `thread.started`, then read that
+rollout file after the request.
+
+**We have never been pushed back.** Census over 371 session logs: `TooManyRequests`
+**0 files**, `Rate limit` 0, `Retry-After` 0 (the 368 hits for `429`/`rate_limit`
+are the telemetry key itself and a git hash). Across the 2026-08-24 **102 img/h**
+burst the 5 h window moved **2% → 7%** — ~0.3%/image, no error, no latency drift.
+**Images-per-minute is not our constraint.** The weekly token budget is: it read
+**65% → 70% between 06:49 and 07:36 today**, so one 4-way overnight batch could
+eat the week — and because it is *token*-metered, `model_reasoning_effort` moves
+it more than image count does.
+
+Web evidence (CONFIRMED): the API tier table (Tier 1 = 5 img/min … Tier 5 = 250)
+**does not apply to `auth_mode: chatgpt`**. On that path throttling surfaces as a
+**fast, explicit** `TooManyRequests` / "image generation request was rate limited"
+with no retry-after and no bucket named (openai/codex #26727, #26595, #26567 —
+all open). #26727 also shows image throttling firing while the 5 h/weekly meters
+showed ample headroom ⇒ **`used_percent` is a budget gauge, not a throttle
+predictor.** ⚠️ **Correction to §2.2 A:** openai/codex **#11435 — parallel
+`codex exec` instances interfere via shared session restore under one
+`CODEX_HOME`.** Each worker must get its own `CODEX_HOME`; cheap, and mandatory.
+
+### Grumpiness detector — the spec for the queue runner
+
+| # | signal | where | threshold → action |
+|---|---|---|---|
+| 1 | `TooManyRequests`, "rate limited" | worker stderr / `-o` last message | any → hard stop, drain queue, report. One retry max |
+| 2 | `secondary.used_percent` (weekly) | rollout JSONL after each request | 80 warn · 90 refuse new batch · 97 stop |
+| 3 | `primary.used_percent` (5 h) | same | 70 → drop to N=1 · 90 → sleep until `resets_at` |
+| 4 | rolling median wall-clock of last 5 vs the **62 s** baseline | supervisor's own clock | >2× for 3 consecutive → halve N (the only guard against silent queueing) |
+| 5 | exit 0, no manifest, no new `generated_images` dir | supervisor | the `--`-trap no-op — fail the request, do **not** back off |
+| 6 | 🔴 a **timeout** | — | **never** evidence of throttling. Harvest `generated_images/` first; today's "failure" was already on disk |
+
+Silent degradation is **UNMEASURED and probably not the main mode** — today's
+62 s generation sat exactly on the month-long median while weekly stood at 70%.
+Row 4 is cheap insurance; rows 1–3 are the real detector.
