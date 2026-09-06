@@ -67,7 +67,9 @@ def scatters instead of ringing:
 ## 3. Driving forces
 
 **Concentration without circulation.** Cold, dark (past arc ~95), bone-dry, and chemically
-loaded. Rot runs slow to nothing — without desiccation needing to occur (owner's ruling).
+loaded. 🔑 Canon 2026-09-06 (`forsaken_crags.md` §3): the crag country kills the wind's
+coherence — laminar flow shatters to turbulence in the crags, so what escapes nightward
+over the dark scour carries nothing. Rot runs slow to nothing — without desiccation needing to occur (owner's ruling).
 The Hadley downdraft keeps the dark scour under hard, dry, cold outflow; the basins bake
 under low sun; the terminator pockets sit in the wall's own fallout and glow.
 

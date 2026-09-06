@@ -105,7 +105,8 @@ Order is by **similarity — slowly vary** (owner, 2026-09-05).
 | `desert.md` | `Desert` | ✅ done |
 | `arid_shrubland.md` | `AridShrubland` | ✅ done 2026-09-05 |
 | `wasteland.md` | `Wasteland` | ✅ done 2026-09-05 — the dryland ladder is complete |
-| **next** | owner's pick | 🔵 candidates by similarity: `AB_RockyCrags` (largest undefined def, 4,440 tiles) or `AB_MycoticJungle` (the stormwall's wet-toxin sibling, 1,939) |
+| `forsaken_crags.md` | `AB_RockyCrags` (Forsaken Crags, 1,225 tiles MEASURED — an earlier "4,440" here was wrong) | ✅ done 2026-09-06 — donor content incorporated wholesale, the Dark's physics ratified |
+| **next** | owner's pick | 🔵 candidate by similarity: `AB_MycoticJungle` (the stormwall's wet-toxin sibling, 1,939 tiles; the nightside-lush candidate) |
 | `wreck_fields.md` | — | ⛔ superseded by `fall_line.md` |
 
 ### 🔑 The dryland ladder is ONE number: the sun's angle
