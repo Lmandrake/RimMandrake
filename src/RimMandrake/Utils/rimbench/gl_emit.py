@@ -123,7 +123,12 @@ def _read_objects(root):
             else:
                 values.append(item.text if item.text is not None else "")
         out[refid] = {"elem_kind": elem_kind, "values": values,
-                      "obj_type": obj_el.get("type"), "array_tag": arr_el.tag}
+                      "obj_type": obj_el.get("type"), "array_tag": arr_el.tag,
+                      # verbatim payload: complex element types (NodeUIMapIncidents+Entry
+                      # with WorkerName/Value children) cannot be rebuilt from a flat
+                      # value list — GL threw ArgumentNullException on the emitted
+                      # Sinkhole (2026-09-06). Written back as-is when values are untouched.
+                      "raw_inner": ET.tostring(arr_el, encoding="unicode")}
     return out
 
 
@@ -272,7 +277,8 @@ class Graph:
                 for entry in sn["ordered"]:
                     if entry[0] == "variable" and entry[2] is not None:
                         self._var_meta[(sn["type"], entry[1])] = (
-                            entry[2].get("obj_type"), entry[2].get("array_tag"), entry[2].get("elem_kind"))
+                            entry[2].get("obj_type"), entry[2].get("array_tag"), entry[2].get("elem_kind"),
+                            entry[2].get("raw_inner"), list(entry[2].get("values") or []))
         except Exception:
             self._var_meta = {}
         self._nodes = []
@@ -444,6 +450,13 @@ class Graph:
                     array_tag = "ArrayOfDouble" if elem_kind == "double" else "ArrayOfString"
                     if meta and meta[0] and meta[1]:
                         obj_type, array_tag = meta[0], meta[1]
+                    if meta and len(meta) > 4 and meta[3] and list(values) == meta[4]:
+                        # untouched -> verbatim payload (re-indented to the source's 3 tabs)
+                        raw = meta[3].strip().replace("\n", "\n\t\t\t")
+                        objects_out.append(f'\t\t<Object refID="{refid}" type="{_esc(obj_type)}">')
+                        objects_out.append("\t\t\t" + raw)
+                        objects_out.append('\t\t</Object>')
+                        continue
                     obj_lines = [
                         f'\t\t<Object refID="{refid}" type="{_esc(obj_type)}">',
                         f'\t\t\t<{array_tag}{XML_SCHEMA_XMLNS}>',
