@@ -333,8 +333,8 @@ def main():
         print("pulling %d file(s) from the game copy into the repo:" % len(new + changed))
         for r in new + changed:
             print("   ", r)
-        pulled = copy(src, dst, new + changed)
-        if pulled == 0:
+        pulled, refused, failed = copy(src, dst, new + changed)
+        if refused or failed or pulled == 0:
             # copy() already printed its own "REFUSING TO DEPLOY: malformed
             # XML" — the likely case for --pull specifically, since its whole
             # purpose is rescuing a hand-edit made directly in the Mods
