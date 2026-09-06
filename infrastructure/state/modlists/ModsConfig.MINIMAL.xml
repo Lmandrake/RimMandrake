@@ -2,7 +2,7 @@
   <version>1.6.4871 rev590</version>
   <activeMods>
     <li>brrainz.harmony</li><li>ludeon.rimworld</li><li>ludeon.rimworld.royalty</li><li>ludeon.rimworld.ideology</li><li>ludeon.rimworld.biotech</li><li>ludeon.rimworld.anomaly</li><li>ludeon.rimworld.odyssey</li><li>oskarpotocki.vanillafactionsexpanded.core</li><li>brrainz.rimbridgeserver</li><li>7f.alienworlds</li><li>7f.alienworlds.tidallylocked</li><li>sarg.alphabiomes</li><li>oblitus.mylittleplanet</li><li>mandrake.rm.inhabited</li><li>neronix17.toolbox</li><li>Neronix17.OuterRim.Core</li><li>erdelf.HumanoidAlienRaces</li><li>mandrake.rsw.ionweapons</li><li>mandrake.rsw.droidworks</li>
-    <li>mandrake.rm.fluidcanals</li><li>mandrake.rut.shipmemory</li><li>mandrake.rut.vaultdungeons</li></activeMods>
+    <li>mandrake.rm.fluidcanals</li><li>mandrake.rut.shipmemory</li><li>mandrake.rut.vaultdungeons</li><li>rw.mod.simplestairs</li><li>Kutte.Stairs</li></activeMods>
   <knownExpansions>
     <li>ludeon.rimworld.royalty</li>
     <li>ludeon.rimworld.ideology</li>
