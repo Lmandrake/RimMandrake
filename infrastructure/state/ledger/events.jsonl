@@ -5116,3 +5116,22 @@
 {"seat":"FOUNDRY","event":"start","id":"GL_GRAPH_EMITTER_1","ts":"2026-09-06T19:42:47Z"}
 {"seat":"FOUNDRY","event":"file","id":"CORPUS_STATS_VANILLA_CONTROLS_1","title":"Vanilla control maps for corpus_stats.py (≥10 at matched sizes) + corpus-vs-controls section; fix or drop the degenerate chokepoint proxy","kind":"task","target":"v1","needs":"bridge","spec":"infrastructure/state/items/CORPUS_STATS_VANILLA_CONTROLS_1.md","for":"FOUNDRY","ts":"2026-09-06T19:44:05Z"}
 {"seat":"FOUNDRY","event":"close","id":"CORPUS_MAP_STATISTICS_1","sha":"e29c40c98cff7e429c30483b03147d3df5a183bc","ts":"2026-09-06T19:44:11Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"GL_GRAPH_EMITTER_1 live proof: emitted RUT_EmitterPlateau on a quicktest","ts":"2026-09-06T19:53:05Z"}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"FOUNDRY","ownerSaid":"FOUNDRY autonomous restart: GL_GRAPH_EMITTER_1 live proof","ts":"2026-09-06T19:53:08Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","ownerSaid":"FOUNDRY autonomous restart: GL_GRAPH_EMITTER_1 live proof","ts":"2026-09-06T19:53:18Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ownerSaid":"Game is going down","ts":"2026-09-06T19:53:18Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","ownerSaid":"FOUNDRY autonomous restart: GL_GRAPH_EMITTER_1 live proof","ts":"2026-09-06T19:53:19Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ownerSaid":"Game is down","ts":"2026-09-06T19:53:23Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","ownerSaid":"Game is loading","ts":"2026-09-06T19:53:27Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","ownerSaid":"FOUNDRY autonomous restart: up","ts":"2026-09-06T19:58:23Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","ownerSaid":"Game is up","ts":"2026-09-06T19:58:28Z"}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"FOUNDRY","ownerSaid":"FOUNDRY correction: previous 'up' was wrong — launch was on the FULL list by mistake; killing and relaunching on minimal+GL","ts":"2026-09-06T20:00:37Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ownerSaid":"Game is going down","ts":"2026-09-06T20:00:42Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","ownerSaid":"FOUNDRY correction: relaunching on minimal+GL for GL_GRAPH_EMITTER_1","ts":"2026-09-06T20:00:46Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","ownerSaid":"FOUNDRY: relaunched on minimal+GL","ts":"2026-09-06T20:00:47Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ownerSaid":"Game is down","ts":"2026-09-06T20:01:11Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","ownerSaid":"Game is loading","ts":"2026-09-06T20:01:12Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","ownerSaid":"FOUNDRY: minimal+GL up, bridge answering","ts":"2026-09-06T20:01:21Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","ownerSaid":"Game is up","ts":"2026-09-06T20:01:37Z"}
+{"seat":"FOUNDRY","event":"file","id":"NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1","title":"Ninefold: Patch_GravshipLaunched postfix fires on FAILED launches, feeding Ta'Baa for nothing (code review 2026-09-06)","kind":"bug","target":"v1","needs":"game-up","spec":"infrastructure/state/items/NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1.md","for":"FOUNDRY","ts":"2026-09-06T20:02:23Z"}
+{"seat":"FOUNDRY","event":"note","id":"DIRTY_CODE_REVIEW_STANDING_LOOP_1","text":"Wave 2026-09-06 (this window): 5 reviewers, 37 files. Marked clean: 5 Utils (diff), 3 new rimbench tools, 6 UtinniPatches XMLs (diff), 8 RaidRedesigner .cs (1 real fix: OldFriends cap ordering), 9 Ninefold patches, 5 tooling scripts. Left DIRTY on purpose: Ninefold/Patch_GravshipLaunched.cs (bug, filed NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1), UtinniPatches/AnimalBiomeDuplicates_Generated.xml (hand-edited under a GENERATED header; biome_animal_conflicts.py will overwrite it — regenerate, don't mark), loadsweep/sweep_load.sh (minor: activeMods None swallowed by 2>/dev/null).","ts":"2026-09-06T20:02:25Z"}

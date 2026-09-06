@@ -1061,6 +1061,18 @@
     "hash": "782214e6d38fba8e11239d3e1b970d34e8febd68e100b8f9014ec094c33753db",
     "sha": "ecc86a6f"
   },
+  "src/RimMandrake/Ninefold/Source/Patch_ArtCreated.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "49d338a7355d48b5b875c45face556186c3f7d9f0a0c48160ddb27b83e22ac76",
+    "sha": "b87a3622"
+  },
+  "src/RimMandrake/Ninefold/Source/Patch_BattleResolved.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "945d1afe3821eb028fa5ec49e55164d900c29d163999e5df50dfbef52918b000",
+    "sha": "b87a3622"
+  },
   "src/RimMandrake/Ninefold/Source/Patch_BirthOutcome.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -1079,11 +1091,41 @@
     "hash": "6ac732571880e620af7ae05a284d74396a51b4dbc44c8a6c342a332be8d10b96",
     "sha": "ecc86a6f"
   },
+  "src/RimMandrake/Ninefold/Source/Patch_DroidOnline.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "28a0f040763a7e4a5852245e363a1650cc9aea5b2f9ada9b3ec3348e3e364172",
+    "sha": "b87a3622"
+  },
+  "src/RimMandrake/Ninefold/Source/Patch_ExplosionOccurred.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "dac968d5d459b852639f6c8495932671d5053391c539b11c4fb0f290be3b5d27",
+    "sha": "b87a3622"
+  },
+  "src/RimMandrake/Ninefold/Source/Patch_FactionJoined.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "9b1fa5fc92222a336b89747a92c267ca674ad29bcc1926919cbd9e835a74ffe9",
+    "sha": "b87a3622"
+  },
   "src/RimMandrake/Ninefold/Source/Patch_FireStarted.cs": {
     "cleanCount": 1,
     "date": "2026-09-05",
     "hash": "5293c76cbe24db9b9d69b17ca8c81ebef9c82aa1660e100de082f155f618674e",
     "sha": "564bd122"
+  },
+  "src/RimMandrake/Ninefold/Source/Patch_KillManner.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "01dcc88844f4d201ab77a836e664d10b867683730729eee5e3cb4596219e2d53",
+    "sha": "b87a3622"
+  },
+  "src/RimMandrake/Ninefold/Source/Patch_Marriage.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "21b07b88bcae31d60246d9d4349f35d59fc162239673e5b1536e4d857b37bab2",
+    "sha": "b87a3622"
   },
   "src/RimMandrake/Ninefold/Source/Patch_MentalBreakStarted.cs": {
     "cleanCount": 1,
@@ -1097,11 +1139,23 @@
     "hash": "733bcda06ce31c4b1af7151cdfddbd9c4c65715dacfa3363b76b8b2bf8432fc5",
     "sha": "9e5a639b"
   },
+  "src/RimMandrake/Ninefold/Source/Patch_PrisonerCaptured.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "4ede1962820516e6c83d9bd1f55f020c97510eef78fba59380b4f3334235c462",
+    "sha": "b87a3622"
+  },
   "src/RimMandrake/Ninefold/Source/Patch_ResearchCompleted.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
     "hash": "d1d5e0ffa494b36ef49ecff17eeee297780f7bb3eb7207986f2fddc40bb59252",
     "sha": "ecc86a6f"
+  },
+  "src/RimMandrake/Ninefold/Source/Patch_TradeCompleted.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "6701815b2ae5ff0ce51f7468212c7fb140dbcaa9927c076e6e19e61a0daf22b0",
+    "sha": "b87a3622"
   },
   "src/RimMandrake/Ninefold/Source/SatiationBand.cs": {
     "cleanCount": 1,
@@ -1486,6 +1540,54 @@
     "date": "2026-09-05",
     "hash": "a9bfddac2b6df10cda8a07b0ca281edf21cf209f53e32e6536ebc1434e5a3694",
     "sha": "5a1f89a6"
+  },
+  "src/RimMandrake/RaidRedesigner/Source/Encounter.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "a0184eca4379df1771cfbfc784498b1295e6f92db4cbeef0b33d2934bc44282f",
+    "sha": "b87a3622"
+  },
+  "src/RimMandrake/RaidRedesigner/Source/GameComponent_OldFriends.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "f39fb88bbdc494afca7bd1787964c70a07c578df77e60ea6e17df6014aba2b56",
+    "sha": "b87a3622"
+  },
+  "src/RimMandrake/RaidRedesigner/Source/OldFriendEntry.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "2420f3da340e2b06afe6aa8ea7713688f14a4a5f025b4b3930a6f4f0880a221f",
+    "sha": "b87a3622"
+  },
+  "src/RimMandrake/RaidRedesigner/Source/Patch_CaravanRobbed.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "4fea06f1b03d6b031faa224c84824fec36c38db2ced2603e3ec7ff04761ec19f",
+    "sha": "b87a3622"
+  },
+  "src/RimMandrake/RaidRedesigner/Source/Patch_ColonistKidnapped.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "67a3ba640a748aad008c0a1434710e5b8e4a6ed8c2bba1e124d2b16afe0be7cc",
+    "sha": "b87a3622"
+  },
+  "src/RimMandrake/RaidRedesigner/Source/Patch_FledRaiderAndCaptain.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "56628700028d8c23ef526f1b345abfe5f257935fb29bc5e752f1cbeb9b50ed27",
+    "sha": "b87a3622"
+  },
+  "src/RimMandrake/RaidRedesigner/Source/Patch_PrisonerEscaped.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "36329604e23b55aed5edf0a9d4a3d4a084438f63f58d87a4d5933fc265f6b322",
+    "sha": "b87a3622"
+  },
+  "src/RimMandrake/RaidRedesigner/Source/Patch_PrisonerReleasedOrNamedHunter.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "2853cf5421cfc323a9f311d697d0d63096686f419455692a47649c230d4df1bb",
+    "sha": "b87a3622"
   },
   "src/RimMandrake/ResearchKitEastFix/About/About.xml": {
     "cleanCount": 1,
@@ -2008,6 +2110,12 @@
     "hash": "d867a4d3e9bce98f5278b0f0eaffd302fb5c73d92f6773b2c2109c888edad35a",
     "sha": "d1c193ae"
   },
+  "src/RimMandrake/Utils/claude_bounded.sh": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "eb9e1c0ebd6527064bf35b6017fa4f26b9221f0574a8a7e4c2d6b37b30aedd52",
+    "sha": "b87a3622"
+  },
   "src/RimMandrake/Utils/code_review_status.py": {
     "cleanCount": 4,
     "date": "2026-09-05",
@@ -2475,6 +2583,12 @@
     "hash": "8ee4130558ee307c4bfe1344e6ed29848ec052fbfb9dbba6c5b6f8507b6bd168",
     "sha": "5c97b5c1"
   },
+  "src/RimMandrake/Utils/rimbench/corpus_stats.py": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "240ca5ef389368bd5a8fb43a6dfa95129dc8e09729561664d6497365a55280f1",
+    "sha": "7fbb1af5"
+  },
   "src/RimMandrake/Utils/rimbench/crater.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -2487,11 +2601,23 @@
     "hash": "144d2228096dd73e4eb14ef438a901b210e5981ed4415a1223444785b5f9d63f",
     "sha": "86de40c5"
   },
+  "src/RimMandrake/Utils/rimbench/gl_schema_census.py": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "c9d752376d3f8138710ceae3490c6bc599fe6e1d1ceb2e53166de0bd41b461af",
+    "sha": "7fbb1af5"
+  },
   "src/RimMandrake/Utils/rimbench/place.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
     "hash": "5ac19e7c2e0711eae227706cc75ca75571667f3b5c0a749b55d9caa4b21671cf",
     "sha": "86de40c5"
+  },
+  "src/RimMandrake/Utils/rimbench/render_terrain.py": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "28f84a487872cc42b87f1d82e286e96995e7a333e96faba4fb46f90f19f41260",
+    "sha": "7fbb1af5"
   },
   "src/RimMandrake/Utils/rimbench/roll_arm_harvest.py": {
     "cleanCount": 1,
@@ -2595,6 +2721,12 @@
     "hash": "8d05c07f3ac053336a0614de96459c99915a6d27203003dce3f3937d23cbe3fc",
     "sha": "ade756fc"
   },
+  "src/RimMandrake/Utils/rimplace/prelude.lua": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "662b67ad1a179261bfd6693f0f9b5140541f42849a6441863a85c74a06383685",
+    "sha": "b87a3622"
+  },
   "src/RimMandrake/Utils/rimplace/selftest.py": {
     "cleanCount": 2,
     "date": "2026-09-05",
@@ -2630,6 +2762,12 @@
     "date": "2026-09-02",
     "hash": "5f88be12e2fd70f5d73108fbe9e245f256f78467ca2847d85461ac7a72169179",
     "sha": "9b556d77"
+  },
+  "src/RimMandrake/Utils/selftest_aftermath.py": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "ffa032259471d1e12ce34468afa36dc5c07dc41c5f39db94c20383994f763cad",
+    "sha": "b87a3622"
   },
   "src/RimMandrake/Utils/selftest_broadcast_frame.py": {
     "cleanCount": 1,
@@ -2745,6 +2883,12 @@
     "hash": "25a0a266611c7bc51929e6d84d4f929fc6d82feff72e5163e67d74932518fbdc",
     "sha": "09cd3916"
   },
+  "src/RimMandrake/Utils/set_agent_window.sh": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "6c59dac8f1ddc443345de606cbf0aa79b328150d38074c57397f0b726fad7bba",
+    "sha": "b87a3622"
+  },
   "src/RimMandrake/Utils/set_planet_subcount.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -2756,6 +2900,12 @@
     "date": "2026-09-03",
     "hash": "70ed03b7dfa7c8ea5f66c5ae9a6c0018a796965414918d2db750bb80cac6bb2f",
     "sha": "7eabd2a4"
+  },
+  "src/RimMandrake/Utils/show.sh": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "a5ceea399cb8541de44e9cf355dbbf90a115d524defd7698795d40bc4544d9d6",
+    "sha": "b87a3622"
   },
   "src/RimMandrake/Utils/statusline.py": {
     "cleanCount": 1,
@@ -7594,10 +7744,10 @@
     "sha": "d92f5459"
   },
   "src/RimUtinni/UtinniPatches/Patches/AncientArsenal_Ashkarr.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "hash": "2286487fae7deaf47a079dcd52c525e8541238d5a863e531599042196e8d0484",
-    "sha": "d92f5459"
+    "cleanCount": 2,
+    "date": "2026-09-06",
+    "hash": "e65e442b51938a3fdd565d44e854808c0b33a370aa0e35fc51774ecde4328d04",
+    "sha": "b87a3622"
   },
   "src/RimUtinni/UtinniPatches/Patches/AncientsAreRakata.xml": {
     "cleanCount": 1,
@@ -7606,10 +7756,10 @@
     "sha": "d92f5459"
   },
   "src/RimUtinni/UtinniPatches/Patches/AnimalBiomeDuplicates_Fix.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "hash": "7ea725c44788df0fd454eb5dc98244c5dad00388c68305d6bcbbea0b9977f94d",
-    "sha": "d92f5459"
+    "cleanCount": 2,
+    "date": "2026-09-06",
+    "hash": "03663792408389eaf6eca1a99a87eef05d33fa3e48144cfdaa51aacbf34d6845",
+    "sha": "b87a3622"
   },
   "src/RimUtinni/UtinniPatches/Patches/AnimalBiomeDuplicates_Generated.xml": {
     "cleanCount": 1,
@@ -7618,10 +7768,10 @@
     "sha": "d92f5459"
   },
   "src/RimUtinni/UtinniPatches/Patches/AnimalTolerances_Ashkarr.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "hash": "225a19309a1cdafff94b862a973d1aa98e11d7751015a03c910b511641dc8719",
-    "sha": "d92f5459"
+    "cleanCount": 2,
+    "date": "2026-09-06",
+    "hash": "67ff1799c43e19c9421ce7046f08bc15cd04c2b400fea671dc076b21f75da024",
+    "sha": "b87a3622"
   },
   "src/RimUtinni/UtinniPatches/Patches/ApparelTags_DeadTagRepair.xml": {
     "cleanCount": 1,
@@ -7636,10 +7786,10 @@
     "sha": "d92f5459"
   },
   "src/RimUtinni/UtinniPatches/Patches/BiomeCast_Ashkarr.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "hash": "c23fcbddc5f1d2abf18e25717c3ff5e0202217de87580d7e57509fcfc5fa56ea",
-    "sha": "ed416189"
+    "cleanCount": 2,
+    "date": "2026-09-06",
+    "hash": "8776041ac4bb8b93e1e7c1b86a7626446aeefc3aa0d0a401ddeb6456b171d823",
+    "sha": "b87a3622"
   },
   "src/RimUtinni/UtinniPatches/Patches/BiomeFlora_Ashkarr.xml": {
     "cleanCount": 1,
@@ -7660,16 +7810,16 @@
     "sha": "ed416189"
   },
   "src/RimUtinni/UtinniPatches/Patches/CreatureNames_Ashkarr.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "hash": "d01b5a3a245b228a0b8270efda84c5f431ebcd27a1f8a91776c2b0539a7243e4",
-    "sha": "d92f5459"
+    "cleanCount": 2,
+    "date": "2026-09-06",
+    "hash": "86407c2be7ff667de9b6e73e4128e90339b65637d80a3bffa5f04355f0088535",
+    "sha": "b87a3622"
   },
   "src/RimUtinni/UtinniPatches/Patches/CreatureResize_Ashkarr.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
-    "hash": "64504579fecd9c82e021d912174d932ae1df56e383622ddb87c5a9e0db6d5198",
-    "sha": "d92f5459"
+    "cleanCount": 2,
+    "date": "2026-09-06",
+    "hash": "56fe2c1f2dc0338f7f71e5b4375880e39c328ada9d521abd716362e3c4117184",
+    "sha": "b87a3622"
   },
   "src/RimUtinni/UtinniPatches/Patches/DeepDesertTribes.xml": {
     "cleanCount": 1,
