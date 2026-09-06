@@ -103,3 +103,13 @@ is evidence, never a finding, and no subagent writes shared state. Windows never
 message each other — the queue and the owner are the only channels; your own
 subagents are not peers. Queue views render on every `rimflow` write — no loop, no
 publisher, no staleness.
+
+**Rebooting a window is prepared, not improvised** (owner, 2026-09-06). At a real
+wave boundary — subagents all reported, everything committed and pushed, nothing
+mid-edit — and above all the moment you would say *"that's all I have for now"*,
+write the handoff with `python3 src/RimMandrake/Utils/handoff.py`, fill
+the four sections it leaves marked, pass `--check`, then say **HANDOFF READY** as
+your last line and start nothing new. He reboots on his own clock while the cache is
+warm; the phrase is the signal, and only a seat may say it — the script refuses to.
+Say it **once**: until real work comes in, `handoff.py` reports ALREADY HANDED OFF
+and writes nothing, because a signal given every idle turn is not a signal.

@@ -38,6 +38,42 @@ You run the queue. Autonomous — never ask, never message; blocked means
 - Escalate to the owner by saying it in your reply (he reads you) or
   `rimflow file --for OWNER --kind decision`; there is no other route.
 
+## Handing off at a wave boundary — owner, 2026-09-06
+
+> *"Is there a way for an agent to automatically prepare for agent reboot when it
+> finishes a big wave and it thinks it's a good time to hand off? Then it could just
+> say HANDOFF READY at the end and I could reboot myself while keeping things in
+> cache."*
+
+So the seat decides when the moment has come, and prepares it **before** he asks.
+
+🔑 **The trigger is the sentence "that's all I have for now"** (owner, same day).
+The instant you would tell him the queue is exhausted and you are waiting for new
+items, that IS the handoff moment — do not report idleness and then sit on a warm
+context; report idleness by handing off. A real boundary also means every subagent
+reported, everything committed and pushed, nothing mid-edit.
+
+⛔ **Say it ONCE.** *"...and then NOT do so again unless new work does come in."* A
+signal repeated on every idle turn is not a signal. After you have said HANDOFF
+READY, stay quiet until real work actually arrives; `handoff.py` enforces this — with
+no closes, no filings and no commits since the last handoff it prints ALREADY HANDED
+OFF and writes nothing.
+
+```
+python3 src/RimMandrake/Utils/handoff.py          write the skeleton (it gates first)
+python3 src/RimMandrake/Utils/handoff.py --check  gates + unfilled-section scan
+```
+
+It fills what a script can know — items closed and filed in the window, the commits,
+game/bridge/tree state — and leaves four sections marked `<<< WRITE THIS >>>` that it
+cannot: the one thing to carry forward, what the OWNER should see, what is half-done
+and where it stops, and the traps. Fill those, `--check`, commit, push.
+
+⛔ **The script never says HANDOFF READY.** Only you do, once `--check` passes and you
+judge the wave genuinely closed — then say it as the last line of your reply and stop.
+He reboots on his own clock; a warm cache is the whole point, so do not start new work
+after saying it.
+
 ## Start of turn
 
 ```
