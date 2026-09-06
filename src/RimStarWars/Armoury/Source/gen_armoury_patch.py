@@ -100,7 +100,20 @@ from patch_provenance import guard, OurWrites, Recorder
 # same lesson in its own header; game_paths.LOCALLOW is the shared fix.
 import game_paths as _GP
 DUMP = os.path.join(_GP.DEF_DUMP, "defs", "ThingDef.json")
-OUTDIR = os.path.join(_REPO_ROOT, "src", "RimStarWars", "Armoury", "Patches")
+
+# PATCHDIR is where this mod's patches actually live and is NEVER redirected:
+# self_supplied_tools_defnames() reads our own already-shipped subfolder patches
+# off it, and pointing that read at an empty scratch directory would silently
+# revive the 21 dead entries LIGHTSABER_MELEE_PATCH_FAIL_1 deleted.
+PATCHDIR = os.path.join(_REPO_ROOT, "src", "RimStarWars", "Armoury", "Patches")
+# OUTDIR is where the emit LANDS. --out DIR sends it somewhere else, exactly as
+# gen_armour_patch.py takes one: without it this generator could only be checked
+# by clobbering the very file you wanted to compare against, and that is how a
+# whole class of silent divergence went unseen here (ARMOURY_LEATHER_GEN_DESYNC_1,
+# ARMOURY_SWMODS_MODNAME_GAP_1).
+OUTDIR = PATCHDIR
+if "--out" in sys.argv:
+    OUTDIR = os.path.abspath(sys.argv[sys.argv.index("--out") + 1])
 
 # Mods whose HAND weapons sit on our ladder. Additive by design: dropping a mod
 # name in here is the whole cost of covering it.
@@ -121,6 +134,33 @@ SW_MODS = ("Star Wars KotOR Weapons and Armor", "Outer Rim - Core",
            "Outer Rim - Droid Depot", "[JDS] StarWars - Armory",
            "Star Wars : The Force - Lightsaber",
            "[AB] Xenotype: Yautja")
+
+# 🔴 AND A DISPLAY NAME IS NOT AN IDENTITY. Two of the six names above are dead:
+# "Star Wars KotOR Weapons and Armor" and "[JDS] StarWars - Armory" were absorbed
+# into mandrake.rsw.armoury and retired, so the live dump now reports every one
+# of their weapons under modName "Jawa Armoury Rebalance". Matching on the tuple
+# alone therefore stopped seeing them -- and because this generator DROPS what it
+# cannot classify rather than emitting a different number, a re-run deleted 31
+# melee ops and 13 ranged ops in total silence (ARMOURY_SWMODS_MODNAME_GAP_1).
+# The dead names stay in the tuple: they cost nothing, and a donor that is
+# re-installed one day is covered again the moment it loads.
+#
+# The durable half of the test is our OWN packageId. `mandrake.rsw.*` IS the
+# Star Wars tier by the repo's own naming law (design/NAMING_SCHEME_PLAN.md,
+# CLAUDE.md), so anything we ship under it is Star Wars content by construction
+# -- no curated name to rot, and every future absorption covered on the day it
+# lands. Verified 2026-09-06 against the live 596-mod dump: the prefix selects
+# 176 weapons, 173 of them the absorbed KotOR/JDS set in mandrake.rsw.armoury,
+# and the other three (RSW_BanthaHorn, RSW_JawaIon_Blaster,
+# RSW_FE_FirefoamSprayer) all fall out again downstream -- the horn is neither
+# saber nor vibro, and ion and foam are both VERB_MARKERS.
+OWN_SW_PID_PREFIX = "mandrake.rsw."
+
+
+def is_sw(w):
+    """A Star Wars hand weapon: a donor mod we named, or our own SW tier."""
+    return (w["mod"] in SW_MODS
+            or (w["pid"] or "").lower().startswith(OWN_SW_PID_PREFIX))
 VERB_MARKERS = ("ion", "stun", "emp", "sonic", "disrupt", "electr", "shock",
                 "extinguish", "smoke", "gas", "tear", "foam", "net", "web")
 BANDS = {"blaster": (24, 34), "blaster_heavy": (52, 72), "slugthrower": (18, 36),
@@ -296,8 +336,14 @@ projectiles, weapons = {}, []
 # weapon an emplacement, and it is read from the defs rather than from a list of
 # mod names -- see TURRET_GUNS below for why that had to change.
 turret_guns = set()
+# Display names of the mods THIS repo ships, derived from the dump rather than
+# typed. The emit needs them because an op on a def we declare OURSELVES must
+# not be wrapped in a PatchOperationFindMod naming us -- see OWN_NOTE.
+own_mod_names = set()
 for d in iter_live_defs(DUMP):
     f = d.get("fields") or {}
+    if str(d.get("packageId") or "").lower().startswith("mandrake."):
+        own_mod_names.add(d.get("modName") or "")
     bld = f.get("building")
     if isinstance(bld, dict) and isinstance(bld.get("turretGunDef"), str):
         turret_guns.add(bld["turretGunDef"])
@@ -307,6 +353,7 @@ for d in iter_live_defs(DUMP):
                      "projectile/damageAmountBase", pr["damageAmountBase"])
         if dmg is not None:
             projectiles[d.get("defName")] = {"mod": d.get("modName") or "",
+                                             "pid": d.get("packageId") or "",
                                              "dmg": dmg,
                                              "type": pr.get("damageDef") or "",
                                              # 🔴 The DISCRIMINATOR for the artillery
@@ -317,7 +364,8 @@ for d in iter_live_defs(DUMP):
     isb = d.get("is") or {}
     if isb.get("weapon") or isb.get("meleeWeapon") or isb.get("rangedWeapon"):
         w = {"defName": d.get("defName") or "", "label": d.get("label") or "",
-             "mod": d.get("modName") or "", "ranged": bool(isb.get("rangedWeapon")),
+             "mod": d.get("modName") or "", "pid": d.get("packageId") or "",
+             "ranged": bool(isb.get("rangedWeapon")),
              "proj": None, "tools": []}
         for v in (f.get("verbs") or []):
             if isinstance(v, dict) and isinstance(v.get("defaultProjectile"), str):
@@ -371,7 +419,8 @@ SENTINEL_DAMAGE = 9999
 
 TURRET_GUNS = turret_guns
 
-sw_weapons = [w for w in weapons if w["mod"] in SW_MODS]
+OWN_MODS = own_mod_names
+sw_weapons = [w for w in weapons if is_sw(w)]
 sw_proj = collections.defaultdict(list)
 for w in sw_weapons:
     if w["proj"] in projectiles:
@@ -400,6 +449,12 @@ for src in (sw_proj, turret_proj):
                 candidate_proj[pname].append(u)
 
 print("SW weapons %d | SW projectiles %d" % (len(sw_weapons), len(sw_proj)))
+print("  by name %d | by our own %s* %d | own mod display names %d"
+      % (len([w for w in sw_weapons if w["mod"] in SW_MODS]),
+         OWN_SW_PID_PREFIX,
+         len([w for w in sw_weapons
+              if (w["pid"] or "").lower().startswith(OWN_SW_PID_PREFIX)]),
+         len(OWN_MODS)))
 print("turret guns %d | turret projectiles %d | candidate projectiles %d"
       % (len(TURRET_GUNS), len(turret_proj), len(candidate_proj)))
 
@@ -580,20 +635,77 @@ def repl(xpath, tag, value):
             '        </li>' + NL)
 
 
+# No "--" anywhere in here: a double hyphen inside an XML comment is illegal and
+# takes the WHOLE file down, not just the comment (validate_patch.py catches it).
+OWN_NOTE = (
+    "  <!-- Ops on defs THIS mod declares (the absorbed KotOR and JDS weapons)."
+    + NL +
+    "       No PatchOperationFindMod: def and patch ship in the same mod, so"
+    + NL +
+    "       naming ourselves is a tautology dressed as a guard, and that shape"
+    + NL +
+    "       has already failed here. While the donor was still named, the FindMod"
+    + NL +
+    "       named a mod nobody loads; FindMod returns true on no match, so whole"
+    + NL +
+    "       blocks silently never ran (ARMOURY_RETIRED_GUARD_FIX_1). The guard"
+    + NL +
+    "       that means something is the target def itself, which is also true"
+    + NL +
+    "       whichever copy of a co-declared def the load ends up holding. -->"
+    + NL)
+
+
 def emit(fh, title, by_mod):
+    """by_mod: modName -> [(defpath, op-string)].
+
+    `defpath` is the def NODE the op edits, /Defs/ThingDef[<selector>] with
+    everything below the def stripped. It is what guards an op on a def we
+    declare ourselves.
+    """
     fh.write(HDR % title)
+    n_own = n_dup = 0
+    # An absorbed def can be declared twice at once, once by us and once by a
+    # donor that has not retired yet, and then the identical op is emitted under
+    # both mod names. Keep OUR copy: its guard is the def node, true for either
+    # declaration, so it survives the donor's retirement AND the day our
+    # absorbed file stops being deployed. A Replace hits every matching node, so
+    # one op already covers both.
+    own_texts = {t for mod, lst in by_mod.items() if mod in OWN_MODS
+                 for _, t in lst}
     for mod, ops in sorted(by_mod.items()):
+        if mod in OWN_MODS:
+            by_def = collections.OrderedDict()
+            for defpath, text in ops:
+                by_def.setdefault(defpath, []).append(text)
+            fh.write(NL + OWN_NOTE)
+            for defpath, texts in by_def.items():
+                n_own += len(texts)
+                fh.write(NL + '  <Operation Class="PatchOperationConditional">' + NL)
+                fh.write('    <xpath>' + defpath + '</xpath>' + NL)
+                fh.write('    <match Class="PatchOperationSequence">' + NL)
+                fh.write('      <operations>' + NL)
+                for t in texts:
+                    fh.write(t)
+                fh.write('      </operations>' + NL)
+                fh.write('    </match>' + NL + '  </Operation>' + NL)
+            continue
+        keep = [t for _, t in ops if t not in own_texts]
+        n_dup += len(ops) - len(keep)
+        if not keep:
+            continue
         # Unguarded, a Replace whose target mod is absent logs a red error on
         # every launch. This mod must stay droppable.
         fh.write(NL + '  <Operation Class="PatchOperationFindMod">' + NL)
         fh.write('    <mods><li>' + mod + '</li></mods>' + NL)
         fh.write('    <match Class="PatchOperationSequence">' + NL)
         fh.write('      <operations>' + NL)
-        for o in ops:
-            fh.write(o)
+        for t in keep:
+            fh.write(t)
         fh.write('      </operations>' + NL)
         fh.write('    </match>' + NL + '  </Operation>' + NL)
     fh.write(NL + '</Patch>' + NL)
+    return n_own, n_dup
 
 
 os.makedirs(OUTDIR, exist_ok=True)
@@ -607,12 +719,14 @@ for pname, (old, new) in sorted(proj_changes.items()):
         continue
     sel = '[defName="%s"]' % owner if attr == "defName" else '[@Name="%s"]' % owner
     ranged_by_mod[projectiles[pname]["mod"]].append(
-        '        <!-- %s : %s -> %d -->' % (pname, old, new) + NL +
-        repl('/Defs/ThingDef' + sel + '/projectile/damageAmountBase',
-             'damageAmountBase', new))
+        ('/Defs/ThingDef' + sel,
+         '        <!-- %s : %s -> %d -->' % (pname, old, new) + NL +
+         repl('/Defs/ThingDef' + sel + '/projectile/damageAmountBase',
+              'damageAmountBase', new)))
 
 with io.open(os.path.join(OUTDIR, "Armoury_RangedDamage.xml"), "w", encoding="utf-8") as fh:
-    emit(fh, "Ranged: restretch the ladder (L1, L7, L9, L11)", ranged_by_mod)
+    r_own, r_dup = emit(fh, "Ranged: restretch the ladder (L1, L7, L9, L11)",
+                        ranged_by_mod)
 
 _ADD_TOOLS_XPATH = re.compile(r'^/?Defs/ThingDef\[defName="([^"]+)"\]$')
 
@@ -643,10 +757,10 @@ def self_supplied_tools_defnames():
     hardcoded name list of the 8 lightsabers that happened to trigger it.
     """
     out = set()
-    if not os.path.isdir(OUTDIR):
+    if not os.path.isdir(PATCHDIR):
         return out
-    for dirpath, _dirnames, filenames in os.walk(OUTDIR):
-        if os.path.abspath(dirpath) == os.path.abspath(OUTDIR):
+    for dirpath, _dirnames, filenames in os.walk(PATCHDIR):
+        if os.path.abspath(dirpath) == os.path.abspath(PATCHDIR):
             continue          # top-level files -- run BEFORE subfolder files too
         for fn in filenames:
             if not fn.lower().endswith(".xml"):
@@ -717,19 +831,26 @@ for dn, (old, new) in sorted(tool_changes.items()):
             newp = int(round(float(pw) * factor))
         except ValueError:
             continue
-        ops.append('        <!-- %s / %s : %s -> %d -->' % (owner, lab, pw, newp) + NL +
-                   repl('/Defs/ThingDef' + sel + '/tools/li[label="' + lab + '"]/power',
-                        'power', newp))
+        ops.append(('/Defs/ThingDef' + sel,
+                    '        <!-- %s / %s : %s -> %d -->' % (owner, lab, pw, newp) + NL +
+                    repl('/Defs/ThingDef' + sel + '/tools/li[label="' + lab + '"]/power',
+                         'power', newp)))
     if ops:
         melee_by_mod[wmap[dn]["mod"]].extend(ops)
 
 with io.open(os.path.join(OUTDIR, "Armoury_MeleePower.xml"), "w", encoding="utf-8") as fh:
-    emit(fh, "Melee: lightsabers decisive vs flesh (L3); vibro anti-ablative (L14)",
-         melee_by_mod)
+    m_own, m_dup = emit(
+        fh, "Melee: lightsabers decisive vs flesh (L3); vibro anti-ablative (L14)",
+        melee_by_mod)
 
 print("ranged ops %d in %d groups | melee declarers %d in %d groups"
       % (sum(len(v) for v in ranged_by_mod.values()), len(ranged_by_mod),
          len(seen_decl), len(melee_by_mod)))
+print("  def-guarded (ours, no FindMod): ranged %d, melee %d"
+      % (r_own, m_own))
+if r_dup or m_dup:
+    print("  co-declared duplicates dropped from donor groups: ranged %d, melee %d"
+          % (r_dup, m_dup))
 if missing:
     print("  ranged skipped (no declarer):", missing[:6])
 if mel_missing:

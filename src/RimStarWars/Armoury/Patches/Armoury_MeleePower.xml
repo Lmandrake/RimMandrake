@@ -5,6 +5,266 @@
      Rationale: design/Jawa/worldbuilding/setting_physics.md + balance_paradigm.md -->
 <Patch>
 
+  <!-- Ops on defs THIS mod declares (the absorbed KotOR and JDS weapons).
+       No PatchOperationFindMod: def and patch ship in the same mod, so
+       naming ourselves is a tautology dressed as a guard, and that shape
+       has already failed here. While the donor was still named, the FindMod
+       named a mod nobody loads; FindMod returns true on no match, so whole
+       blocks silently never ran (ARMOURY_RETIRED_GUARD_FIX_1). The guard
+       that means something is the target def itself, which is also true
+       whichever copy of a co-declared def the load ends up holding. -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_JDSA_Vibroaxe"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- RSW_JDSA_Vibroaxe / handle : 5 -> 5 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="RSW_JDSA_Vibroaxe"]/tools/li[label="handle"]/power</xpath>
+          <value><power>5</power></value>
+        </li>
+        <!-- RSW_JDSA_Vibroaxe / point : 50 -> 52 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="RSW_JDSA_Vibroaxe"]/tools/li[label="point"]/power</xpath>
+          <value><power>52</power></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_JDSA_Vibroblade"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- RSW_JDSA_Vibroblade / point : 50 -> 52 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="RSW_JDSA_Vibroblade"]/tools/li[label="point"]/power</xpath>
+          <value><power>52</power></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_JDSA_Vibrosword"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- RSW_JDSA_Vibrosword / handle : 5 -> 5 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="RSW_JDSA_Vibrosword"]/tools/li[label="handle"]/power</xpath>
+          <value><power>5</power></value>
+        </li>
+        <!-- RSW_JDSA_Vibrosword / point : 50 -> 52 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="RSW_JDSA_Vibrosword"]/tools/li[label="point"]/power</xpath>
+          <value><power>52</power></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_vaxe"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_vaxe / handle : 12 -> 14 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_vaxe"]/tools/li[label="handle"]/power</xpath>
+          <value><power>14</power></value>
+        </li>
+        <!-- guy762_vaxe / edge : 30 -> 35 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_vaxe"]/tools/li[label="edge"]/power</xpath>
+          <value><power>35</power></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_vblade"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_vblade / handle : 6 -> 8 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_vblade"]/tools/li[label="handle"]/power</xpath>
+          <value><power>8</power></value>
+        </li>
+        <!-- guy762_vblade / point : 22 -> 29 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_vblade"]/tools/li[label="point"]/power</xpath>
+          <value><power>29</power></value>
+        </li>
+        <!-- guy762_vblade / edge : 18 -> 24 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_vblade"]/tools/li[label="edge"]/power</xpath>
+          <value><power>24</power></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_vblade_echani"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_vblade_echani / handle : 6 -> 8 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_vblade_echani"]/tools/li[label="handle"]/power</xpath>
+          <value><power>8</power></value>
+        </li>
+        <!-- guy762_vblade_echani / point : 22 -> 29 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_vblade_echani"]/tools/li[label="point"]/power</xpath>
+          <value><power>29</power></value>
+        </li>
+        <!-- guy762_vblade_echani / edge : 18 -> 24 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_vblade_echani"]/tools/li[label="edge"]/power</xpath>
+          <value><power>24</power></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_vblade_prototype"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_vblade_prototype / handle : 6 -> 8 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_vblade_prototype"]/tools/li[label="handle"]/power</xpath>
+          <value><power>8</power></value>
+        </li>
+        <!-- guy762_vblade_prototype / point : 22 -> 29 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_vblade_prototype"]/tools/li[label="point"]/power</xpath>
+          <value><power>29</power></value>
+        </li>
+        <!-- guy762_vblade_prototype / edge : 19 -> 25 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_vblade_prototype"]/tools/li[label="edge"]/power</xpath>
+          <value><power>25</power></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_vdubblade"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_vdubblade / handle : 6 -> 8 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_vdubblade"]/tools/li[label="handle"]/power</xpath>
+          <value><power>8</power></value>
+        </li>
+        <!-- guy762_vdubblade / point : 20 -> 27 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_vdubblade"]/tools/li[label="point"]/power</xpath>
+          <value><power>27</power></value>
+        </li>
+        <!-- guy762_vdubblade / edge : 22 -> 29 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_vdubblade"]/tools/li[label="edge"]/power</xpath>
+          <value><power>29</power></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_vglaive"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_vglaive / handle : 8 -> 10 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_vglaive"]/tools/li[label="handle"]/power</xpath>
+          <value><power>10</power></value>
+        </li>
+        <!-- guy762_vglaive / point : 24 -> 30 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_vglaive"]/tools/li[label="point"]/power</xpath>
+          <value><power>30</power></value>
+        </li>
+        <!-- guy762_vglaive / edge : 20 -> 25 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_vglaive"]/tools/li[label="edge"]/power</xpath>
+          <value><power>25</power></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_vglaive_echani"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_vglaive_echani / handle : 8 -> 10 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_vglaive_echani"]/tools/li[label="handle"]/power</xpath>
+          <value><power>10</power></value>
+        </li>
+        <!-- guy762_vglaive_echani / point : 24 -> 30 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_vglaive_echani"]/tools/li[label="point"]/power</xpath>
+          <value><power>30</power></value>
+        </li>
+        <!-- guy762_vglaive_echani / edge : 20 -> 25 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_vglaive_echani"]/tools/li[label="edge"]/power</xpath>
+          <value><power>25</power></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_vsword"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_vsword / handle : 8 -> 10 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_vsword"]/tools/li[label="handle"]/power</xpath>
+          <value><power>10</power></value>
+        </li>
+        <!-- guy762_vsword / point : 20 -> 25 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_vsword"]/tools/li[label="point"]/power</xpath>
+          <value><power>25</power></value>
+        </li>
+        <!-- guy762_vsword / edge : 24 -> 30 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_vsword"]/tools/li[label="edge"]/power</xpath>
+          <value><power>30</power></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_vsword_echani"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_vsword_echani / handle : 8 -> 12 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_vsword_echani"]/tools/li[label="handle"]/power</xpath>
+          <value><power>12</power></value>
+        </li>
+        <!-- guy762_vsword_echani / point : 20 -> 30 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_vsword_echani"]/tools/li[label="point"]/power</xpath>
+          <value><power>30</power></value>
+        </li>
+        <!-- guy762_vsword_echani / edge : 24 -> 36 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_vsword_echani"]/tools/li[label="edge"]/power</xpath>
+          <value><power>36</power></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
   <Operation Class="PatchOperationFindMod">
     <mods><li>Outer Rim - Core</li></mods>
     <match Class="PatchOperationSequence">
@@ -107,25 +367,6 @@
     <mods><li>Star Wars : The Force - Lightsaber</li></mods>
     <match Class="PatchOperationSequence">
       <operations>
-        <!-- 2026-09-01, LIGHTSABER_MELEE_PATCH_FAIL_1: removed 21 dead
-             PatchOperationReplace entries for Force_Broadsaber, Force_Darksaber,
-             Force_Lightsaber_Crossguard/Curved/Custom/Dual/Inquisitor/Shoto.
-             ROOT CAUSE, corrected 2026-09-04: it is not that the donor mod
-             lacks its own tools for these - OUR OWN Absorbed_AdditionalMods
-             subfolder patch (retired-donor content carried forward from
-             guy762.KotORWeapons, WEAPONS_DONOR_RETIREMENT_1) re-adds a
-             tools node (Inherit="False") onto each of these 8 concrete
-             defNames. RimWorld runs a mod's TOP-LEVEL patch files before its
-             SUBFOLDER files (proven by bisection, ARMOURY_LIGHTSABER_FINDMOD_1),
-             so that subfolder patch always runs AFTER this top-level file -
-             the concrete `[defName="Force_X"]/tools/li[...]` xpath matches
-             ZERO nodes here even though the fully-patched live dump later
-             shows the def with its own tools. Only Force_LightsaberBase below
-             is reachable from this file. gen_armoury_patch.py's
-             self_supplied_tools_defnames() now detects this generally (reads
-             the actual Absorbed_AdditionalMods patches on disk), so a future
-             regenerate will not re-add these 8 on its own - no hand-editing
-             required here again. -->
         <!-- Force_LightsaberBase / hilt : 12 -> 15 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[@Name="Force_LightsaberBase"]/tools/li[label="hilt"]/power</xpath>
@@ -140,195 +381,6 @@
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[@Name="Force_LightsaberBase"]/tools/li[label="edge"]/power</xpath>
           <value><power>35</power></value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-
-  <!-- 2026-09-04, ARMOURY_RETIRED_GUARD_FIX_1 (hand-edit, guard only - see
-       the LIGHTSABER_MELEE_PATCH_FAIL_1 comment below for the precedent on
-       this file): "Star Wars KotOR Weapons and Armor" (guy762.KotORWeapons)
-       was absorbed and retired; its About.xml <name> is not in the live
-       ModsConfig.xml, so PatchOperationFindMod always returned true and this
-       whole block silently never ran. These are plain PatchOperationReplace
-       with no per-op safety net, so the outer gate was swapped for a
-       Conditional on the first concrete tools/li node this block edits -
-       every guy762_v* melee weapon below is the same absorbed KotOR set and
-       is guaranteed to co-exist or not at all. -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="guy762_vaxe"]/tools/li[label="handle"]/power</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <!-- guy762_vaxe / handle : 12 -> 14 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_vaxe"]/tools/li[label="handle"]/power</xpath>
-          <value><power>14</power></value>
-        </li>
-        <!-- guy762_vaxe / edge : 30 -> 35 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_vaxe"]/tools/li[label="edge"]/power</xpath>
-          <value><power>35</power></value>
-        </li>
-        <!-- guy762_vblade / handle : 6 -> 8 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_vblade"]/tools/li[label="handle"]/power</xpath>
-          <value><power>8</power></value>
-        </li>
-        <!-- guy762_vblade / point : 22 -> 29 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_vblade"]/tools/li[label="point"]/power</xpath>
-          <value><power>29</power></value>
-        </li>
-        <!-- guy762_vblade / edge : 18 -> 24 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_vblade"]/tools/li[label="edge"]/power</xpath>
-          <value><power>24</power></value>
-        </li>
-        <!-- guy762_vblade_echani / handle : 6 -> 8 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_vblade_echani"]/tools/li[label="handle"]/power</xpath>
-          <value><power>8</power></value>
-        </li>
-        <!-- guy762_vblade_echani / point : 22 -> 29 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_vblade_echani"]/tools/li[label="point"]/power</xpath>
-          <value><power>29</power></value>
-        </li>
-        <!-- guy762_vblade_echani / edge : 18 -> 24 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_vblade_echani"]/tools/li[label="edge"]/power</xpath>
-          <value><power>24</power></value>
-        </li>
-        <!-- guy762_vblade_prototype / handle : 6 -> 8 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_vblade_prototype"]/tools/li[label="handle"]/power</xpath>
-          <value><power>8</power></value>
-        </li>
-        <!-- guy762_vblade_prototype / point : 22 -> 29 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_vblade_prototype"]/tools/li[label="point"]/power</xpath>
-          <value><power>29</power></value>
-        </li>
-        <!-- guy762_vblade_prototype / edge : 19 -> 25 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_vblade_prototype"]/tools/li[label="edge"]/power</xpath>
-          <value><power>25</power></value>
-        </li>
-        <!-- guy762_vdubblade / handle : 6 -> 8 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_vdubblade"]/tools/li[label="handle"]/power</xpath>
-          <value><power>8</power></value>
-        </li>
-        <!-- guy762_vdubblade / point : 20 -> 27 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_vdubblade"]/tools/li[label="point"]/power</xpath>
-          <value><power>27</power></value>
-        </li>
-        <!-- guy762_vdubblade / edge : 22 -> 29 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_vdubblade"]/tools/li[label="edge"]/power</xpath>
-          <value><power>29</power></value>
-        </li>
-        <!-- guy762_vglaive / handle : 8 -> 10 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_vglaive"]/tools/li[label="handle"]/power</xpath>
-          <value><power>10</power></value>
-        </li>
-        <!-- guy762_vglaive / point : 24 -> 30 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_vglaive"]/tools/li[label="point"]/power</xpath>
-          <value><power>30</power></value>
-        </li>
-        <!-- guy762_vglaive / edge : 20 -> 25 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_vglaive"]/tools/li[label="edge"]/power</xpath>
-          <value><power>25</power></value>
-        </li>
-        <!-- guy762_vglaive_echani / handle : 8 -> 10 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_vglaive_echani"]/tools/li[label="handle"]/power</xpath>
-          <value><power>10</power></value>
-        </li>
-        <!-- guy762_vglaive_echani / point : 24 -> 30 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_vglaive_echani"]/tools/li[label="point"]/power</xpath>
-          <value><power>30</power></value>
-        </li>
-        <!-- guy762_vglaive_echani / edge : 20 -> 25 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_vglaive_echani"]/tools/li[label="edge"]/power</xpath>
-          <value><power>25</power></value>
-        </li>
-        <!-- guy762_vsword / handle : 8 -> 10 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_vsword"]/tools/li[label="handle"]/power</xpath>
-          <value><power>10</power></value>
-        </li>
-        <!-- guy762_vsword / point : 20 -> 25 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_vsword"]/tools/li[label="point"]/power</xpath>
-          <value><power>25</power></value>
-        </li>
-        <!-- guy762_vsword / edge : 24 -> 30 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_vsword"]/tools/li[label="edge"]/power</xpath>
-          <value><power>30</power></value>
-        </li>
-        <!-- guy762_vsword_echani / handle : 8 -> 12 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_vsword_echani"]/tools/li[label="handle"]/power</xpath>
-          <value><power>12</power></value>
-        </li>
-        <!-- guy762_vsword_echani / point : 20 -> 30 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_vsword_echani"]/tools/li[label="point"]/power</xpath>
-          <value><power>30</power></value>
-        </li>
-        <!-- guy762_vsword_echani / edge : 24 -> 36 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_vsword_echani"]/tools/li[label="edge"]/power</xpath>
-          <value><power>36</power></value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-
-  <!-- 2026-09-04, ARMOURY_RETIRED_GUARD_FIX_1 (hand-edit, guard only):
-       "[JDS] StarWars - Armory" (M3.Continued.JangoDsoul.StarWars.BTI) was
-       absorbed and retired; its packageId is not in the live ModsConfig.xml,
-       so PatchOperationFindMod always returned true and this block silently
-       never ran. Plain PatchOperationReplace, no per-op safety net, so the
-       outer gate was swapped for a Conditional on the first concrete
-       tools/li node - all RSW_JDSA_* weapons below are the same absorbed
-       JDS set and are guaranteed to co-exist or not at all. -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RSW_JDSA_Vibroaxe"]/tools/li[label="handle"]/power</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <!-- RSW_JDSA_Vibroaxe / handle : 5 -> 5 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="RSW_JDSA_Vibroaxe"]/tools/li[label="handle"]/power</xpath>
-          <value><power>5</power></value>
-        </li>
-        <!-- RSW_JDSA_Vibroaxe / point : 50 -> 50 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="RSW_JDSA_Vibroaxe"]/tools/li[label="point"]/power</xpath>
-          <value><power>50</power></value>
-        </li>
-        <!-- RSW_JDSA_Vibroblade / point : 50 -> 50 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="RSW_JDSA_Vibroblade"]/tools/li[label="point"]/power</xpath>
-          <value><power>50</power></value>
-        </li>
-        <!-- RSW_JDSA_Vibrosword / handle : 5 -> 5 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="RSW_JDSA_Vibrosword"]/tools/li[label="handle"]/power</xpath>
-          <value><power>5</power></value>
-        </li>
-        <!-- RSW_JDSA_Vibrosword / point : 50 -> 50 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="RSW_JDSA_Vibrosword"]/tools/li[label="point"]/power</xpath>
-          <value><power>50</power></value>
         </li>
       </operations>
     </match>

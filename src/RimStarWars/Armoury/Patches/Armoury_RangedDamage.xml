@@ -119,6 +119,19 @@
   </Operation>
 
   <Operation Class="PatchOperationFindMod">
+    <mods><li>Dungeon Pack (Continued)</li></mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- DP_Cannonball : 560 -> 335 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="DP_Cannonball"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>335</damageAmountBase></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationFindMod">
     <mods><li>Fortifications - Industrial</li></mods>
     <match Class="PatchOperationSequence">
       <operations>
@@ -154,6 +167,184 @@
     </match>
   </Operation>
 
+  <!-- Ops on defs THIS mod declares (the absorbed KotOR and JDS weapons).
+       No PatchOperationFindMod: def and patch ship in the same mod, so
+       naming ourselves is a tautology dressed as a guard, and that shape
+       has already failed here. While the donor was still named, the FindMod
+       named a mod nobody loads; FindMod returns true on no match, so whole
+       blocks silently never ran (ARMOURY_RETIRED_GUARD_FIX_1). The guard
+       that means something is the target def itself, which is also true
+       whichever copy of a co-declared def the load ends up holding. -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="KotORBlasterBolt_default"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- KotORBlasterBolt_default : 32 -> 33 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="KotORBlasterBolt_default"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>33</damageAmountBase></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="KotORBlasterBolt_nadd"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- KotORBlasterBolt_nadd : 32 -> 33 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="KotORBlasterBolt_nadd"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>33</damageAmountBase></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="KotORBlasterBolt_plasma"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- KotORBlasterBolt_plasma : 32 -> 33 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="KotORBlasterBolt_plasma"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>33</damageAmountBase></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="KotORBowcasterBolt_default"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- KotORBowcasterBolt_default : 34 -> 36 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="KotORBowcasterBolt_default"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>36</damageAmountBase></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="KotORSlugBolt"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- KotORSlugBolt : 34 -> 36 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="KotORSlugBolt"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>36</damageAmountBase></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_B2-HA_Droid_Wrist_Canno_shot"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- RSW_B2-HA_Droid_Wrist_Canno_shot : 20 -> 28 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="RSW_B2-HA_Droid_Wrist_Canno_shot"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>28</damageAmountBase></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_Bullet_ArchotechChargeBlasterHeavy"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- RSW_Bullet_ArchotechChargeBlasterHeavy : 24 -> 60 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="RSW_Bullet_ArchotechChargeBlasterHeavy"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>60</damageAmountBase></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_High_Blue_Blaster_Bolt"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- RSW_High_Blue_Blaster_Bolt : 25 -> 30 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="RSW_High_Blue_Blaster_Bolt"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>30</damageAmountBase></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_High_Red_Blaster_Bolt"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- RSW_High_Red_Blaster_Bolt : 22 -> 29 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="RSW_High_Red_Blaster_Bolt"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>29</damageAmountBase></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_Low_Blue_Blaster_Bolt"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- RSW_Low_Blue_Blaster_Bolt : 11 -> 25 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="RSW_Low_Blue_Blaster_Bolt"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>25</damageAmountBase></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_Low_Red_Blaster_Bolt"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- RSW_Low_Red_Blaster_Bolt : 9 -> 24 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="RSW_Low_Red_Blaster_Bolt"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>24</damageAmountBase></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_Mid_Blue_Blaster_Bolt"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- RSW_Mid_Blue_Blaster_Bolt : 15 -> 26 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="RSW_Mid_Blue_Blaster_Bolt"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>26</damageAmountBase></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_Mid_Red_Blaster_Bolt"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- RSW_Mid_Red_Blaster_Bolt : 13 -> 26 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="RSW_Mid_Red_Blaster_Bolt"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>26</damageAmountBase></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
   <Operation Class="PatchOperationFindMod">
     <mods><li>MiningCo. Spaceship (Continued)</li></mods>
     <match Class="PatchOperationSequence">
@@ -175,11 +366,6 @@
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="Bullet_AncientArmoredTurret"]/projectile/damageAmountBase</xpath>
           <value><damageAmountBase>86</damageAmountBase></value>
-        </li>
-        <!-- Bullet_BeamRepeater : 52 -> 64 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="Bullet_BeamRepeater"]/projectile/damageAmountBase</xpath>
-          <value><damageAmountBase>64</damageAmountBase></value>
         </li>
       </operations>
     </match>
@@ -249,6 +435,16 @@
           <xpath>/Defs/ThingDef[defName="OuterRim_Proj_MediumLaserCannon"]/projectile/damageAmountBase</xpath>
           <value><damageAmountBase>200</damageAmountBase></value>
         </li>
+        <!-- OuterRim_Proj_ProtonArtillery : 3188 -> 600 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="OuterRim_Proj_ProtonArtillery"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>600</damageAmountBase></value>
+        </li>
+        <!-- OuterRim_Proj_ProtonMortar : 560 -> 335 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="OuterRim_Proj_ProtonMortar"]/projectile/damageAmountBase</xpath>
+          <value><damageAmountBase>335</damageAmountBase></value>
+        </li>
         <!-- OuterRim_Proj_Turbolaser : 2000 -> 2000 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="OuterRim_Proj_Turbolaser"]/projectile/damageAmountBase</xpath>
@@ -292,46 +488,13 @@
   </Operation>
 
   <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Resources and Materials</li></mods>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <!-- KotORBlasterBolt_default : 32 -> 33 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="KotORBlasterBolt_default"]/projectile/damageAmountBase</xpath>
-          <value><damageAmountBase>33</damageAmountBase></value>
-        </li>
-        <!-- KotORBlasterBolt_nadd : 32 -> 33 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="KotORBlasterBolt_nadd"]/projectile/damageAmountBase</xpath>
-          <value><damageAmountBase>33</damageAmountBase></value>
-        </li>
-        <!-- KotORBlasterBolt_plasma : 32 -> 33 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="KotORBlasterBolt_plasma"]/projectile/damageAmountBase</xpath>
-          <value><damageAmountBase>33</damageAmountBase></value>
-        </li>
-        <!-- KotORBowcasterBolt_default : 34 -> 36 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="KotORBowcasterBolt_default"]/projectile/damageAmountBase</xpath>
-          <value><damageAmountBase>36</damageAmountBase></value>
-        </li>
-        <!-- KotORSlugBolt : 34 -> 36 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="KotORSlugBolt"]/projectile/damageAmountBase</xpath>
-          <value><damageAmountBase>36</damageAmountBase></value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationFindMod">
     <mods><li>Utility Columns</li></mods>
     <match Class="PatchOperationSequence">
       <operations>
-        <!-- Bullet_DetColumn : 102 -> 250 -->
+        <!-- Bullet_DetColumn : 102 -> 187 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="Bullet_DetColumn"]/projectile/damageAmountBase</xpath>
-          <value><damageAmountBase>250</damageAmountBase></value>
+          <value><damageAmountBase>187</damageAmountBase></value>
         </li>
         <!-- Bullet_FlameColumn : 61 -> 120 -->
         <li Class="PatchOperationReplace">
@@ -490,58 +653,6 @@
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="HMC_Wall_Rocket_Turret_Bullet"]/projectile/damageAmountBase</xpath>
           <value><damageAmountBase>161</damageAmountBase></value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-
-  <!-- 2026-09-04, ARMOURY_RETIRED_GUARD_FIX_1 (hand-edit, guard only):
-       "[JDS] StarWars - Armory" (M3.Continued.JangoDsoul.StarWars.BTI) was
-       absorbed and retired; its packageId is not in the live ModsConfig.xml,
-       so PatchOperationFindMod always returned true and this block silently
-       never ran. Plain PatchOperationReplace, no per-op safety net, so the
-       outer gate was swapped for a Conditional on the first concrete
-       projectile def this block edits - all RSW_* blaster bolts below are
-       the same absorbed JDS set and are guaranteed to co-exist or not at
-       all. -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="RSW_B2-HA_Droid_Wrist_Canno_shot"]/projectile/damageAmountBase</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <!-- RSW_B2-HA_Droid_Wrist_Canno_shot : 32 -> 33 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="RSW_B2-HA_Droid_Wrist_Canno_shot"]/projectile/damageAmountBase</xpath>
-          <value><damageAmountBase>33</damageAmountBase></value>
-        </li>
-        <!-- RSW_High_Blue_Blaster_Bolt : 33 -> 33 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="RSW_High_Blue_Blaster_Bolt"]/projectile/damageAmountBase</xpath>
-          <value><damageAmountBase>33</damageAmountBase></value>
-        </li>
-        <!-- RSW_High_Red_Blaster_Bolt : 33 -> 33 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="RSW_High_Red_Blaster_Bolt"]/projectile/damageAmountBase</xpath>
-          <value><damageAmountBase>33</damageAmountBase></value>
-        </li>
-        <!-- RSW_Low_Blue_Blaster_Bolt : 32 -> 33 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="RSW_Low_Blue_Blaster_Bolt"]/projectile/damageAmountBase</xpath>
-          <value><damageAmountBase>33</damageAmountBase></value>
-        </li>
-        <!-- RSW_Low_Red_Blaster_Bolt : 32 -> 33 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="RSW_Low_Red_Blaster_Bolt"]/projectile/damageAmountBase</xpath>
-          <value><damageAmountBase>33</damageAmountBase></value>
-        </li>
-        <!-- RSW_Mid_Blue_Blaster_Bolt : 32 -> 33 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="RSW_Mid_Blue_Blaster_Bolt"]/projectile/damageAmountBase</xpath>
-          <value><damageAmountBase>33</damageAmountBase></value>
-        </li>
-        <!-- RSW_Mid_Red_Blaster_Bolt : 32 -> 33 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="RSW_Mid_Red_Blaster_Bolt"]/projectile/damageAmountBase</xpath>
-          <value><damageAmountBase>33</damageAmountBase></value>
         </li>
       </operations>
     </match>
