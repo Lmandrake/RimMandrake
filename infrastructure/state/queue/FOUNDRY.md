@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-06T20:24:55Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-06T20:49:44Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -495,6 +495,15 @@ kind:     task
 summary:  - Input: a biome sheet paragraph (design/Jawa/worldbuilding/biomes/.md, start
 prose:    infrastructure/state/items/MACRO_GENERATOR_V0_1.md
 
+## MAPGEN_PAINTER_V1_1 Map generator painter v1: organic masks, elevation→terrain bands, hydrology with cause; v1 comparator sheet (owner 2026-09-06)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  MAPGENPAINTERV11 — make the offline terrain painter draw like a landscape, not a diagram
+prose:    infrastructure/state/items/MAPGEN_PAINTER_V1_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -750,3 +759,33 @@ kind:     task
 thin:     no ## criteria
 summary:  - Architecture A from the design: a request-queue directory driven by N parallel one-shot
 prose:    infrastructure/state/items/CODEX_PARALLEL_WORKERS_1.md
+
+## MAPGEN_GL_SHEET_1 Map generator: 8 plans through the GL emitter, quicktest screenshots beside painter renders — the real terrain, one sheet (owner 2026-09-06: both routes)
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  - Input: the 8 plans Transient/mapgenv0/seed01-8.plan.json (or fresh ones from
+prose:    infrastructure/state/items/MAPGEN_GL_SHEET_1.md
+
+## MAPGEN_CONVERGENCE_LOOP_1 Map generator convergence loop: painter vs GL vs corpus, iterate until the owner calls it great (owner 2026-09-06)
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  Each round:
+prose:    infrastructure/state/items/MAPGEN_CONVERGENCE_LOOP_1.md
+
+## LIQUID_BIOMES_MAP_1 Four liquid biomes on the frozen world: boiling ocean, two brine seas, and the propane lake as worldmap tiles under Umbra (render before painting)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  - Reconcile with terminatorsea.md ("the three seas"): which existing sea defs are the
+prose:    infrastructure/state/items/LIQUID_BIOMES_MAP_1.md

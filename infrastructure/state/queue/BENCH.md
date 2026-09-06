@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-06T20:24:55Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-06T20:49:44Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -132,3 +132,23 @@ kind:     task
 thin:     no ## criteria
 summary:  - Inventory, from the live def dump + mod XML (never guess a defName):
 prose:    infrastructure/state/items/MUTATION_MODIFIERS_SURVEY_1.md
+
+## BIOME_FREEZE_FABLE_REVIEW_1 Full-scale Fable review of ALL biomes together before the freeze — temps, physics, weather, precipitation, dust/sand/ash, fuel/wood/animal/meat/growth, diseases — BLOCKED until every biome sheet is finished; pre-assignment, not final check-out
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## spec, no ## criteria
+summary:  BIOMEFREEZEFABLEREVIEW1 — full-scale Fable review of ALL biomes together, before the freeze
+prose:    infrastructure/state/items/BIOME_FREEZE_FABLE_REVIEW_1.md
+
+## MECHANOID_BIOME_PRESENCE_REVIEW_1 Review which biomes contain mechanoids and ancient dangers — not all should; the two magnetic poles (Rust Cathedral, the antistellar war lab) by ruling, everything else argued
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  - Inventory, per biome, everything mechanoid-class and ancient-danger-class that can
+prose:    infrastructure/state/items/MECHANOID_BIOME_PRESENCE_REVIEW_1.md
