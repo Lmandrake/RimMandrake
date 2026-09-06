@@ -1,0 +1,31 @@
+=== minrect ===
+  rib_vault                    none declared
+=== lint ===
+  rib_vault.lua: 0 finding(s)
+=== render (Jawa_Junkers, 17x13) ===
+  rib_vault  seed=1  faction=Jawa_Junkers  rooms=2  occ=2  wealth=modest
+  footprint 17x13 at (0,0)
+
+                     
+                     
+        ...?...?     
+       ..........    
+      ............   
+     ............    
+    ?..............  
+   ?.....#####....   
+   ?.....#.%.#.....  
+     ?...#%c.#.....? 
+    .....#%.%#....   
+     ....##+##....   
+      ............   
+                     
+                     
+
+  room r1   Storeroom    5x5 at (6,2)
+
+  note: rib-vault: 138 throat-pit floor cells (jagged, Gravel), 5x5 steel vault (door S), 1 worst-cask anchor, 2 junk piles, 2 scrap around it, 7 ribs lining the throat
+
+  #=wall +=door c=crate c=barrel %=junk_pile %=scrap #=pillar c=crate_wide %=spice %=component %=steel c=chest c=footlocker %=junk %=hay +=gate  .=floor
+=== verify ===
+  9 distinct defName(s) in the plan; 9 found, 0 MISSING

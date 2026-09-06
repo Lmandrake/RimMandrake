@@ -316,6 +316,45 @@ placement quality. ⇒ A new scattered scene (bone field, wreck field, ruined
 farmland) is `PrefabDef` + `TileMutatorDef` + optionally `LandmarkDef`, all XML;
 our own C# is needed only for siting rules VEF's worker lacks.
 
+**P16 — VEF's spawner siting rule (source, GitHub `main`). CONFIRMED.**
+`Source/VEF/Maps/TileMutatorWorkers/TileMutatorWorker_GenericPrefabSpawner.cs`
+overrides `GenerateCriticalStructures` (order 500, so BEFORE the gravship reserve at
+600 — the ship lands around these). Per prefab: random pick from `prefabsToSpawn`,
+`MapGenUtility.TryGetRandomClearRect` then `CellFinder.TryFindRandomCell` fallback,
+validator = in bounds, no fogged cell, `PrefabUtility.CanSpawnPrefab(…, Rot4.North,
+canWipeEdifices:false)`, and no overlap with any rect in the shared `UsedRects`
+expanded by `minSeparationBetweenPrefabs`; each placed rect is appended to
+`UsedRects`. **Rotation is always North. Failure is silent and partial** (the loop
+returns early). No terrain preference beyond what `CanSpawnPrefab` enforces — no
+"near water", "on plateau", "against cliff". `TileMutatorExtension` also carries:
+`forcedPawnKindDefs` (kind + chance), `thingToSpawn`/`thingToSpawnAmount` with
+`terrainValidation`/`allowWater` (worker `_GenericSpawner`),
+`KCSGStructuresToSpawn`/`minSeparationBetweenKCSGStructures` (worker
+`_GenericKCSGSpawner`, same pattern, spawns `KCSG.StructureLayoutDef`s),
+`terrainToSwap`/`terrainToSwapTo` (`_TerrainSwapper`, post-terrain),
+`plantDefsWithCommonality` (`_PlantsWithCommonality`, biome plant weighting), map
+size overrides, deep-ore/disease/movement/riverbank/tide multipliers. ⇒ VEF gives us
+random-clear-rect scatter of prefabs, KCSG layouts, things, pawn kinds and plant
+weightings from XML alone. **Our own siting worker is needed exactly for
+compositional anchors (§5.5 rule 2) and rotation** — a small C# class that reuses
+the same extension shape.
+
+**P5 — a model can author a rimplace template from one sheet paragraph. CONFIRMED,
+with three tooling findings.** A Sonnet agent, given wasteland.md §8, the rimplace
+API and two exemplars, chose "the Rib-Vault" (a dead sarlacc throat: sunken pit,
+rib flanks thinning toward the mouth, a 5×5 steel vault at the deepest point with
+one anchor crate). Lint clean on the first pass; `verify` 9/9 defNames against the
+live dump; one authoring iteration. Probe artefacts kept at
+`research/RimMandrake/inspiration/map_injection_2026-09-06/p5_rib_vault_probe.lua`
+and `…_render.txt` (throwaway, not a shipped template). Self-score 4/3/4/3/4 on the
+five metrics — from an ASCII render, so unproven until a screenshot. The real
+findings are about the harness, not the model: (1) the CLI has no `--dir`/`--file`
+to run a template outside `design/Jawa/templates/`; (2) `--faction faction:X`
+parses fine and silently drops every faction-gated role (the palette key is the
+prefix, the flag wants the bare name); (3) `verify` shares the 16×12 default rect,
+so a template whose guard refuses reports "0 defNames, 0 missing" exactly like a
+clean pass. All three are the "silent success" class this project already hunts.
+
 ## 6. Synthesis after the first research pass
 
 ### 6.1 What the findings change about §3
@@ -380,7 +419,7 @@ names, the unit the LLM authors, and the unit the review save shows.
 | P2 | `SpawnPrefab` on a live map at a cell | source CONFIRMED; **live call pending** — expose `jawa/spawn_prefab` + `jawa/export_prefab` in JawaBench, one quicktest |
 | P3 | live plan apply timing for 100×100 | pending |
 | P4 | corpus `.rws` thing-layer decode | **CONFIRMED feasible** — things are plain XML with def/stuff/pos/rot/health/quality/faction (§5.6) |
-| P5 | Claude → Lua template from one biome-sheet paragraph | pending |
+| P5 | Claude → Lua template from one biome-sheet paragraph | **CONFIRMED** — lint clean, 9/9 verify, one iteration; three CLI silent-failure findings (§5.6) |
 | P6 | Geological Landforms XML authorable / active? | see §5.3: ACTIVE, `Landforms-v1/` XML — format read pending |
 | P7 | Real Ruins 1.6 + blueprint format | web CONFIRMED; on disk, INACTIVE (§5.3) — format read pending |
 | P8 | a pawn holds a post through `LordJob_DefendPoint`, from the bridge | pending |
@@ -400,10 +439,10 @@ prefab spine), P10 (natural content without C# per shape), P8 (guards).
 source and disk. Still owed, all needing the game up on the minimal list: P2 (live
 `SpawnPrefab` through the vanilla debug action, then export with `CreatePrefab`), P3,
 P8, P9, P12 — nothing new to build for these; P10 and P11 need a small C# worker and
-a scatter-group def respectively, and are the first BUILD items. P5 needs no game.
-New from P15: **P16 — read VEF's `TileMutatorWorker_GenericPrefabSpawner` source
-(GitHub) for its siting rule** before deciding whether our own siting GenStep is
-needed at all.
+a scatter-group def respectively, and are the first BUILD items. P5 done (no game).
+P16 (VEF spawner source) CONFIRMED: random clear rect, North only, honours
+`UsedRects` and `CanSpawnPrefab`, no anchor preference — so our own siting worker is
+owed for anchored scenes and rotation, nothing else (§5.6).
 
 ## 7. Questions for the owner
 
