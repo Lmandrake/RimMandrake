@@ -445,6 +445,14 @@ lower basin, fine-scale crinkled outline):
 loaded: `Transient/landform_probe_RUT_ProbePlateau_loosened.xml`. **⇒ §9.3 step 6 is
 the GL-graph EMITTER route (data only, no C#), not the P10 mask worker.**
 
+**Emitter proven the same day (`GL_GRAPH_EMITTER_1`, closed 3ef2e7f5):**
+`rimbench/gl_emit.py` rebuilt DesertPlateau from builder calls (census-identical:
+36 nodes / 16 types / 59 fields / 121 ports / 35 connections) and a Python-authored
+variant produced `Map generator context: TileId: 89567, Landforms: RUT_EmitterPlateau`
+on a quicktest (`Transient/landform_emitter_RUT_EmitterPlateau_tile89567_2026-09-06.png`).
+The generator's terrain apply path exists, with zero C#. Schema it writes against:
+`research/RimMandrake/reference/gl_landform_schema.md`.
+
 Side findings, each one line: (a) a custom landform gets NO `TileMutatorDef` (stock
 ones are `GL_<Id>`), so it cannot be forced onto a tile through `world_mutators_set`;
 selection is GL's own per-tile draw by `worldTileReq` + `Commonness` — the probe was
