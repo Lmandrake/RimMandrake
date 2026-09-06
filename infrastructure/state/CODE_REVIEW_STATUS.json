@@ -2062,6 +2062,12 @@
     "hash": "59e83fc3fb56fa9479f30ddbb862da10a907428f896c7dc1650019b8358ab892",
     "sha": "eccd1b14"
   },
+  "src/RimMandrake/Utils/gen_furniture_register.py": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "fa0d94af037d0a82a63905a612dfdaf93dff4a9eae262c8d36846d747fe0f394",
+    "sha": "64b75417"
+  },
   "src/RimMandrake/Utils/gen_pawn_flavor_phase2_apply.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -2097,6 +2103,12 @@
     "date": "2026-09-04",
     "hash": "0abaa7b249a96c28e75a5b79f95053d42302090d1cf684b19181a0ffbe1026d0",
     "sha": "d4af33c4"
+  },
+  "src/RimMandrake/Utils/gen_vehicle_register.py": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "3bfb4c374c621bf899e3cd3ec675d95c1bf096bac2a8183067337d10ff6d929f",
+    "sha": "5e85a8a0"
   },
   "src/RimMandrake/Utils/gen_weapon_register.py": {
     "cleanCount": 1,
@@ -7803,6 +7815,12 @@
     "hash": "393450f75e51746c06f19442eda85bcf17f7adb559d37565219e62a48cea7818",
     "sha": "948cdbc9"
   },
+  "src/RimUtinni/UtinniPatches/Source/build_claim_rumour.py": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "92022fea04bd02a399078fd26fe0d1754534686b427ee387b37c2815ff582f3a",
+    "sha": "8994703f"
+  },
   "src/RimUtinni/UtinniShell/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-05",
@@ -7814,6 +7832,18 @@
     "date": "2026-09-05",
     "hash": "350284929bdf2936c2f22bf4f14a57fe6a71056d116dd09aeb5ff3c9439931f0",
     "sha": "abd9fba2"
+  },
+  "src/RimUtinni/UtinniShell/_artsrc/gen_bg.py": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "0260e3fff4f32f07eae453d7c958543f19e874ee52bb21413a53c75dc8704319",
+    "sha": "8994703f"
+  },
+  "src/RimUtinni/UtinniShell/_artsrc/gen_textures.py": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "783cbc1c1638f6d9d4969e6e0c1d6ba2a674c4376669fbc658e4392374bb2fc3",
+    "sha": "8994703f"
   },
   "src/RimUtinni/VaultDungeons/Source/gen_vault_layouts.py": {
     "cleanCount": 2,
