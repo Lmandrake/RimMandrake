@@ -299,6 +299,36 @@
     "hash": "a312db69586ffa5573396b4033288d17f673245bc7bc8c6374b447b87ec93feb",
     "sha": "43f96b1b"
   },
+  "src/RimMandrake/DesertVehicleReskin/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "6d17d76ddbe2a85a1c33286e4ca28961188f7bb1ac909c4be69171d16db7159c",
+    "sha": "629956d2"
+  },
+  "src/RimMandrake/DesertVehicleReskin/LoadFolders.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "db3b123018940f577cd6d1b04d2bc410faa54714a23b023e5a40d0175bd243db",
+    "sha": "629956d2"
+  },
+  "src/RimMandrake/DesertVehicleReskin/Patches/BeastVehicle_Identity.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "e118b6d831e306cca190dea55eb4c15251c029fe86f7a4aaaca61ab050ffcacb",
+    "sha": "629956d2"
+  },
+  "src/RimMandrake/DesertVehicleReskin/Patches/DogSledTint_Brown.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "7b93c2e56283754235bc3637c97908cc75604cebc6049a2a5d179adf8dae718a",
+    "sha": "629956d2"
+  },
+  "src/RimMandrake/DesertVehicleReskin/Patches/EopieSled_Identity.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "ad12d8d13a73ac57d6205a6cba7f32cb8a547148f6f162654b4084369b961213",
+    "sha": "629956d2"
+  },
   "src/RimMandrake/DesertVehicleReskin/Source/Fuel/FuelDebugActions.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -455,6 +485,12 @@
     "hash": "5fc9bade1bf699bba7c0b05c4936d5052c4f62029d03b50f3d0cf65b26df04cb",
     "sha": "43f96b1b"
   },
+  "src/RimMandrake/Graffiti/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "823e2e245e852868ede7cf065c4214323e20c15b9c0d79e5926cbe4f1ad07c05",
+    "sha": "629956d2"
+  },
   "src/RimMandrake/Graffiti/Defs/JobDefs_Graffiti.xml": {
     "cleanCount": 1,
     "date": "2026-09-04",
@@ -466,6 +502,24 @@
     "date": "2026-09-04",
     "hash": "aecfb29cf3d41c72c114324e65b4425706e172849f2365ccc272f6275459b18a",
     "sha": "71cceeb1"
+  },
+  "src/RimMandrake/Graffiti/Defs/MentalStateDefs_Graffiti.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "9decb473258d3be1996fc3ea81ca52c2529c7e2d381813d52ef334de84da3e3f",
+    "sha": "629956d2"
+  },
+  "src/RimMandrake/Graffiti/Defs/ThingDefs_Graffiti.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "2a64d0563823d8220e91cb0376c0fb40417b3992798267c0697bd8aac8aeabe9",
+    "sha": "629956d2"
+  },
+  "src/RimMandrake/Graffiti/Defs/ThinkTreeDefs_Graffiti.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "4eb813fb92153f273a3fbc1afe7d75fc1035716e8e30046aebe8091fc165490a",
+    "sha": "629956d2"
   },
   "src/RimMandrake/Graffiti/Source/BreachBiasHook.cs": {
     "cleanCount": 1,
@@ -563,6 +617,24 @@
     "hash": "20bdc10d379b22d64e6550c998425a9e141f0107a8b361ea756b1a59c3d7c3bc",
     "sha": "dfa5bdd3"
   },
+  "src/RimMandrake/Inhabited/Defs/CastRosters/CastRoster_BLACKSTAR.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "1b5c3ac7071c9893b8237e792c10f31225b616f5d41d551355691876f01f0eb9",
+    "sha": "629956d2"
+  },
+  "src/RimMandrake/Inhabited/Defs/CastRosters/CastRoster_DEEPWATER.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "a6866dc0c26b491f4098e08c4cba404906c8972e4664379bb841655a3c296ea4",
+    "sha": "629956d2"
+  },
+  "src/RimMandrake/Inhabited/Defs/CastRosters/CastRoster_DROIDS.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "96c1371247b71ec9ea9275b1b4bf7271ea8bd665184795cd14af7aff935d15fc",
+    "sha": "629956d2"
+  },
   "src/RimMandrake/Inhabited/Defs/CastRosters/CastRoster_EMPIRE.xml": {
     "cleanCount": 1,
     "date": "2026-09-05",
@@ -574,6 +646,36 @@
     "date": "2026-09-05",
     "hash": "50458d87b29d879b15e18636aa44a0fe25f0a4461ac90d3cef09c3c948433682",
     "sha": "dfa5bdd3"
+  },
+  "src/RimMandrake/Inhabited/Defs/CastRosters/CastRoster_HELIX.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "df429d0d3f3acff9bf0739abfff0446314e90d3b6ffc574055f0cfa62cec22a2",
+    "sha": "629956d2"
+  },
+  "src/RimMandrake/Inhabited/Defs/CastRosters/CastRoster_HOMESTEAD.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "833a725c6a81d1facf28735b0233796062a62f8c981f8a8843ed0cee00a9a094",
+    "sha": "629956d2"
+  },
+  "src/RimMandrake/Inhabited/Defs/CastRosters/CastRoster_HUTT.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "66e3566d9e88de38ee47991ca3fbb9eca842679088fc10ef79036dfa10d50f9c",
+    "sha": "629956d2"
+  },
+  "src/RimMandrake/Inhabited/Defs/CastRosters/CastRoster_JAWA.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "6a37308960cafbc21cb4a0ae7132e2caebaf9dfc97ac038114e0def14727487e",
+    "sha": "629956d2"
+  },
+  "src/RimMandrake/Inhabited/Defs/CastRosters/CastRoster_JUNKERS.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "d45c2e861c70cc242fa5f97369a243ab9ef70fa19ad7699ae0c6f07a3347b4c0",
+    "sha": "629956d2"
   },
   "src/RimMandrake/Inhabited/Defs/CastRosters/CastRoster_TUSKEN.xml": {
     "cleanCount": 1,
@@ -803,6 +905,12 @@
     "hash": "f6d218ea8490a3c48e1bf875f0ad26d9d63ae8023043aa5744267d012261350d",
     "sha": "7b9f17a9"
   },
+  "src/RimMandrake/LoadTracer/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "4ce6515fc27f701ed8202bbca55ad580151045e6ce9bfad29727305e24d06833",
+    "sha": "629956d2"
+  },
   "src/RimMandrake/LoadTracer/Source/LoadTracer.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -868,6 +976,12 @@
     "date": "2026-09-05",
     "hash": "52af343beb45b58c019e9bfd90bc1f6b0853477ca3f504e4e5941e9f8706d14c",
     "sha": "21d72dc5"
+  },
+  "src/RimMandrake/Ninefold/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "8c929961730f9ebd37201d315f0e7019e2f5cce8b52bf6ff3850fd2b19d85bce",
+    "sha": "629956d2"
   },
   "src/RimMandrake/Ninefold/Source/EventMagnitude.cs": {
     "cleanCount": 1,
@@ -1175,11 +1289,23 @@
     "hash": "e1fcea21f8139c030002c8e1681f2292aebd1de642f44c23bd085e54f12abb5b",
     "sha": "ecc86a6f"
   },
+  "src/RimMandrake/PlanetPresetPrime/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "4f7c0d35eb6b070729211b7cfa1a8fa9d9bef7a5c4a8a043586bc1954c7397d7",
+    "sha": "629956d2"
+  },
   "src/RimMandrake/PlanetPresetPrime/Source/PlanetPresetPrime.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
     "hash": "946ee86bd511cf97eaace672185924b90933ccee86098883086dada999aea388",
     "sha": "b294390b"
+  },
+  "src/RimMandrake/Property/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "e2be43a988f132ad4446186075b9923fd340534543f7994031a6bba3e49c621d",
+    "sha": "629956d2"
   },
   "src/RimMandrake/Property/Source/ClaimBasis.cs": {
     "cleanCount": 1,
@@ -1331,6 +1457,12 @@
     "hash": "3cdb67909eff52988707e76fb1a92ef06ccfb680ad9d3bf9e6986cc2435d67a1",
     "sha": "5a68d1a6"
   },
+  "src/RimMandrake/RimDefDump/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "9fe293e6150b35a485fc451d2a456bac6e3d2ddb56dae7153f8b065e6a4daf22",
+    "sha": "629956d2"
+  },
   "src/RimMandrake/RimDefDump/Source/DefDumper.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -1348,6 +1480,24 @@
     "date": "2026-09-04",
     "hash": "9599ec736082b9b0e2ae360ca7839fca07499603b253bf865bf5ff9628d0702e",
     "sha": "43f96b1b"
+  },
+  "src/RimMandrake/SacredGraffiti/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "b8cd6c532a6311a7a0f839521f1b94ec2558b11ca599ee8d26f1ccd5d297e9d8",
+    "sha": "629956d2"
+  },
+  "src/RimMandrake/SacredGraffiti/Defs/RitualOutcomeEffects.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "d477bc921ebcacacb4b6de54a9e7eb6873d58a113d37776464c2e00978ed66f2",
+    "sha": "629956d2"
+  },
+  "src/RimMandrake/SacredGraffiti/Defs/SacredMarks.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "520c91c4e7e93fb933f36bc2abe5b3b227c598e2f6712910cfe5b662c57df8eb",
+    "sha": "629956d2"
   },
   "src/RimMandrake/SacredGraffiti/Source/SacredGraffiti.cs": {
     "cleanCount": 1,
@@ -1427,11 +1577,29 @@
     "hash": "df76201c2251016c3fed6422d8a29e5a8ffccacbb0ec08fe72d19b4610bcaf80",
     "sha": "7abf4a85"
   },
+  "src/RimMandrake/StrandedQuest/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "07b72459955adf93ef63bfe50eaa1dbd6496353089f6e9baa7fe4aab92e68471",
+    "sha": "629956d2"
+  },
   "src/RimMandrake/StrandedQuest/Defs/HistoryEventDefs/HistoryEvents_Stranded.xml": {
     "cleanCount": 1,
     "date": "2026-09-04",
     "hash": "d35aa14bdefb6142e73ac3e5295758e0bda66168bbb9453f15e442203fbe1149",
     "sha": "71cceeb1"
+  },
+  "src/RimMandrake/StrandedQuest/Defs/QuestScriptDefs/Quest_Stranded.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "16796cda379caa1d572c1b19726e6e16a965c62be2d55bb0e8c43e40b104f08c",
+    "sha": "629956d2"
+  },
+  "src/RimMandrake/StructureInjections/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "b56a0691689f2a5c0145895622f0f1af1fc84fbc70b79451d6a4e413d151732c",
+    "sha": "629956d2"
   },
   "src/RimMandrake/StructureInjections/Source/GenStep_RimplacePlan.cs": {
     "cleanCount": 2,
@@ -1450,6 +1618,24 @@
     "date": "2026-09-03",
     "hash": "2b0c2c1f7d379f241837a385a0f36c109c7a3c925d68c62fd4e5616f4cf47bfc",
     "sha": "9c1523eb"
+  },
+  "src/RimMandrake/TheftHauler/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "5c854fe94a65332f638b2695d9f86f63400331ef20c8beddf68c9c70320c4128",
+    "sha": "629956d2"
+  },
+  "src/RimMandrake/TheftHauler/Defs/JobDefs_TheftHauler.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "58ad7a135f2b104cecfeca4fe54cc95468c417ec31cc5ab8321aa810e5a707f5",
+    "sha": "629956d2"
+  },
+  "src/RimMandrake/TheftHauler/Patches/MuckrakerChassis_TheftHauler.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "30f55ad7716a43fbe62c42c8f5c699c8c3966a1054a81cf4fb65d0fa45921e3e",
+    "sha": "629956d2"
   },
   "src/RimMandrake/TheftHauler/Source/FloatMenuOptionProvider_TheftHaulUninstall.cs": {
     "cleanCount": 1,
@@ -2690,6 +2876,30 @@
     "date": "2026-09-05",
     "hash": "e3505190b1e26d3b49e53bd4af46197f8aa3fa7382fbfe305aaf3bacc672ebbc",
     "sha": "e7fa0af5"
+  },
+  "src/RimMandrake/WreckedMachines/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "17687d39c96047b59f53231a92a5632d7be3970d072a864bdaaaef8ec04bba6a",
+    "sha": "629956d2"
+  },
+  "src/RimMandrake/WreckedMachines/Defs/ResearchProjectDefs/ResearchProjects_WreckedMachines.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "9baac20f6263c7824f97640236f184e7f1de61167ed92d0c8dae9d5c32b75f67",
+    "sha": "629956d2"
+  },
+  "src/RimMandrake/WreckedMachines/Defs/Specials/SpecialResearchOpportunities_WreckedMachines.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "09909ed110df81e7b48d2298ee276f979b9d276e99b52f4322ef6f9f96d8e6d7",
+    "sha": "629956d2"
+  },
+  "src/RimMandrake/WreckedMachines/Defs/ThingDefs_Buildings/Buildings_WreckedMachines_AutomatedSmelter.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "b45f4c4358b7c0d0eff17016c189e0ddda06cc2017de3982bf93476c5656be42",
+    "sha": "629956d2"
   },
   "src/RimMandrake/WreckedMachines/Source/briefs.py": {
     "cleanCount": 1,
@@ -5817,6 +6027,12 @@
     "hash": "d3aaf244b138501d2dbc8ff39377b37c03fc9c9403da26a850f083e772451af9",
     "sha": "e4070c91"
   },
+  "src/RimStarWars/JawaIonWeapons/LoadFolders.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "5fd8080d66aac0985c8fce62d44eeb654ddbf0c85c49c39746a7dd1423f76f49",
+    "sha": "629956d2"
+  },
   "src/RimStarWars/JawaIonWeapons/README.md": {
     "cleanCount": 1,
     "date": "2026-09-05",
@@ -6327,6 +6543,12 @@
     "hash": "ffecf79dd83bb3750a5834fc9191a40864c7cddcf0960196f6e5de9b09e17147",
     "sha": "3c8d5d73"
   },
+  "src/RimStarWars/StarWarsPatches/Defs/XenotypeDefs/GamorreanXenotype.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "a6ede04ebbacd3c6b6ecbb8117cb2c6971c92074683f26a83d5b5436d07d3757",
+    "sha": "629956d2"
+  },
   "src/RimStarWars/StarWarsPatches/Patches/BehemothArtUpres_StarWarsAnimalCollection.xml": {
     "cleanCount": 1,
     "date": "2026-09-05",
@@ -6561,11 +6783,59 @@
     "hash": "f81dd801f228b21c3af75f6f9dcfed21eb41f61ee924c407ce902f489bc00e8b",
     "sha": "a492396b"
   },
+  "src/RimStarWars/StructureInjectionsSW/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "be2b726c29ca1743b6533ddeb299edf0858130c000694eccee4fd095d0d031b5",
+    "sha": "629956d2"
+  },
+  "src/RimStarWars/StructureInjectionsSW/Defs/GenStepDefs_Batch2.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "e683073ef6d73de43905e52c969372aed8c3125ae9f1845d005ea37f05fad586",
+    "sha": "629956d2"
+  },
+  "src/RimStarWars/StructureInjectionsSW/Defs/GenStepDefs_Batch4.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "50f046277a1e0dffa6ea44fc149be88d3c8ecb847cf423903fb409836aba1bbf",
+    "sha": "629956d2"
+  },
+  "src/RimStarWars/StructureInjectionsSW/Defs/GenStepDefs_MiningSite.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "cec084b0bdccf5c34fa6dedbb712a16136070c96fdb2943e3c9a67ee693c70cd",
+    "sha": "629956d2"
+  },
   "src/RimStarWars/StructureInjectionsSW/Defs/GenStepDefs_MoistureFarm.xml": {
     "cleanCount": 1,
     "date": "2026-09-04",
     "hash": "ef511fd76d49feb4d1d42343ce379382eda970c6d949f9dbf41a5600ce93a60b",
     "sha": "71cceeb1"
+  },
+  "src/RimStarWars/StructureInjectionsSW/Defs/TileMutatorDefs_Batch2.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "2f52350345cf43da5b3460cfa422d4095a0ccc94ca243369b48efc450c08b137",
+    "sha": "629956d2"
+  },
+  "src/RimStarWars/StructureInjectionsSW/Defs/TileMutatorDefs_Batch4.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "450f4beb9fc6213ec29d22aed5491a7d3c0bf9c22225ebd5a1ea008d6ec743a6",
+    "sha": "629956d2"
+  },
+  "src/RimStarWars/StructureInjectionsSW/Defs/TileMutatorDefs_MiningSite.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "71275b1dcbecc96c8cee3212bcc04007f8f2de8c2dff12f818f12db9c8a13bb2",
+    "sha": "629956d2"
+  },
+  "src/RimStarWars/StructureInjectionsSW/Defs/TileMutatorDefs_MoistureFarm.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "c83ac2986231f93d742a23d4709fa89b898b0c4183c8036e96d4afaaefa974e3",
+    "sha": "629956d2"
   },
   "src/RimStarWars/WeatherSuite/About/About.xml": {
     "cleanCount": 1,
@@ -6645,6 +6915,18 @@
     "hash": "c9142a861249438b000ff61bb30e29fe763b2f8db7a78c92b73d136895d16579",
     "sha": "e81a98b8"
   },
+  "src/RimUtinni/Antiquities/Defs/WorkGiverDefs/RUT_Antiquities_WorkGivers.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "7b97329086ede42838160c54f074e17f72452e6d03d1f89c54bd84e9e051162f",
+    "sha": "629956d2"
+  },
+  "src/RimUtinni/Antiquities/Languages/English/Keyed/RUT_Antiquities.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "87c441c5c1a475ef5f604f3075fa5438b7031e51df62a89b4a0728b1a4cac146",
+    "sha": "629956d2"
+  },
   "src/RimUtinni/Antiquities/Source/AntiquityStageExtension.cs": {
     "cleanCount": 1,
     "date": "2026-09-04",
@@ -6680,6 +6962,60 @@
     "date": "2026-09-04",
     "hash": "062a238642c0231499a10eacbdbf6bd3aea89d3a301dab8e3aa759b40add408f",
     "sha": "f1a99184"
+  },
+  "src/RimUtinni/AshkarrInhabited/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "98c177e43cb41ea9b8d3f3ec09da7a59a6d5131a6bf8fb97e67c65af0fea4f05",
+    "sha": "629956d2"
+  },
+  "src/RimUtinni/AshkarrInhabited/Defs/SecurityProfileDefs/SecurityProfileDefs_District2.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "83f8bd27241a788a7b400711f82e6d45ff3d988b7d1fd75a92b04fe399daacb6",
+    "sha": "629956d2"
+  },
+  "src/RimUtinni/AshkarrInhabited/Defs/SecurityProfileDefs/SecurityProfileDefs_Junkers.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "ec25243ad0493a51db79c1a00d3300f55c9e280b04410c2576f805a4bd628dbd",
+    "sha": "629956d2"
+  },
+  "src/RimUtinni/AshkarrInhabited/Defs/SettlementManifestDefs/SettlementManifestDefs_DeepwaterHold.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "389f80ad7884f43cae3783c7117840600e196c5dd831e4fd2072faf68b0e8afa",
+    "sha": "629956d2"
+  },
+  "src/RimUtinni/AshkarrInhabited/Defs/SettlementManifestDefs/SettlementManifestDefs_GorgaPalace.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "dc38859ddbc417fef8f9512979989c04b1ea821cf7bb4eefe33dc41420480a80",
+    "sha": "629956d2"
+  },
+  "src/RimUtinni/AshkarrInhabited/Defs/SettlementManifestDefs/SettlementManifestDefs_TheClaimJump.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "c82aaadac9b428d5d7eb2ce94f9640da154416e20c0ad6d3f7b052f8f6214f90",
+    "sha": "629956d2"
+  },
+  "src/RimUtinni/AshkarrInhabited/Defs/SettlementManifestDefs/SettlementManifestDefs_TheCrackingYard.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "61618753a53d36d48c527d4d3a28a76b69d1c1689c76204c4a659d3982074d80",
+    "sha": "629956d2"
+  },
+  "src/RimUtinni/AshkarrLandmarkArt/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "a82e94ff950c80145d0bb194ab8fab6806279d160a814314a64671d1862773c5",
+    "sha": "629956d2"
+  },
+  "src/RimUtinni/AshkarrLandmarkArt/Patches/LandmarkIcons.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "0694fbe4b9547038683ae89d8d1bc75bad2881f5139e7a4659e470accc9fbc51",
+    "sha": "629956d2"
   },
   "src/RimUtinni/BirthHatchDemo/About/About.xml": {
     "cleanCount": 1,
@@ -6735,6 +7071,36 @@
     "hash": "631c793356e9e85a64f76b35687d0f4f56630ad92a2db1c008fe830fa38e5550",
     "sha": "c9acb340"
   },
+  "src/RimUtinni/EmpirePursuit/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "14ed8edcf8fafecde5e1a481b29a6ca93342febddb393208a70ca4a47b3fdf64",
+    "sha": "629956d2"
+  },
+  "src/RimUtinni/EmpirePursuit/Defs/Scenarios/ScenParts_EmpirePursuit.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "d15bfd6aa9f74c07e0c9866a9aaf004c82471bfdf7983713a67354f6eaa4107b",
+    "sha": "629956d2"
+  },
+  "src/RimUtinni/EmpirePursuit/Languages/English/Keyed/Alerts.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "d61068ef0570f3d46b49becc48ab0ac9e748a66867740c9fbf71ee55514a9a68",
+    "sha": "629956d2"
+  },
+  "src/RimUtinni/EmpirePursuit/Languages/English/Keyed/Letters.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "3f2c53126aee1101b88be8227f23c823284473cbd8ecc98d604f7ea837c23f57",
+    "sha": "629956d2"
+  },
+  "src/RimUtinni/EmpirePursuit/Languages/English/Keyed/ScenPartSettings.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "a3161862164d70918a51253cdcd8f3fea901422d65780c26577c7e7cac509cab",
+    "sha": "629956d2"
+  },
   "src/RimUtinni/EmpirePursuit/Source/HarmonyPatches.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -6776,6 +7142,18 @@
     "date": "2026-09-04",
     "hash": "2316487c0076c830ab0fecd873d4ffba96a4d823e3311918656374b473d460ea",
     "sha": "fe15fae0"
+  },
+  "src/RimUtinni/IshkoDarkLandmarks/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "4985d10dfb6f237a078718ea618b378c15f013eaf0e9fc8bd045d5e9f88d448d",
+    "sha": "629956d2"
+  },
+  "src/RimUtinni/IshkoDarkLandmarks/Defs/LandmarkDefs_IshkoDark.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "c71178cfea9a00a702d86db174ff5ddae73fe5ad22d1befd122da6bc94f8f3ce",
+    "sha": "629956d2"
   },
   "src/RimUtinni/LongHunger/About/About.xml": {
     "cleanCount": 1,
@@ -6825,6 +7203,12 @@
     "hash": "a7bfacac811ef61c5e048834af551c8a9ab5a94ef65d467fbaa9ea6308c32567",
     "sha": "3e9a9f20"
   },
+  "src/RimUtinni/PawnFlavor/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "54e567ea7ec0208ec423d16e3589deac67f8e12aa066e7be38d6ed95ed9fd064",
+    "sha": "629956d2"
+  },
   "src/RimUtinni/PawnFlavor/Defs/Backstories_Deepwater.xml": {
     "cleanCount": 1,
     "date": "2026-09-05",
@@ -6866,6 +7250,12 @@
     "date": "2026-09-05",
     "hash": "1128bfa4cf81173b8f6c05ec82519f0bd1c0f9562d0253d298ebd3121eb93352",
     "sha": "b577a68f"
+  },
+  "src/RimUtinni/PawnFlavor/Defs/Traits_JawaPawnFlavor.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "a290e0c6eee3717d40066097c32e9979ff233e035501eafa27f2ddff758d0425",
+    "sha": "629956d2"
   },
   "src/RimUtinni/PawnFlavor/Patches/FactionBackstoryWiring.xml": {
     "cleanCount": 1,
@@ -6927,6 +7317,30 @@
     "hash": "6ff0b6da33c4b8855ae09b629f4d2b9e27116828a3d1947b9b89b847bcab107d",
     "sha": "ff35f27f"
   },
+  "src/RimUtinni/PyrelandsFireEcology/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "ab9b2f5e08c081ceff8fe466ecbb9810b7c2983c96030327e5a5a56bc9e733a4",
+    "sha": "629956d2"
+  },
+  "src/RimUtinni/PyrelandsFireEcology/Patches/PyrelandsGround_ScorchableTerrain.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "b858b1f336d2f10c88850c1ab7fd5e4f2c9b15b570864453d841e588e686fc3d",
+    "sha": "629956d2"
+  },
+  "src/RimUtinni/PyrelandsFireEcology/Patches/PyrelandsWeather_BlackRain.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "df286f2b6f581d1012cb99b5bece6f3ea09def8e8212e82168eb51427121c9cc",
+    "sha": "629956d2"
+  },
+  "src/RimUtinni/PyrelandsFireEcology/Patches/PyrelandsWeather_Stage0.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "66adeb2ef91271dcfb1112a57efefbacc4870e445bace2fcd638b37e45ec2fde",
+    "sha": "629956d2"
+  },
   "src/RimUtinni/ResearchRetag/About/About.xml": {
     "cleanCount": 2,
     "date": "2026-09-04",
@@ -6938,6 +7352,12 @@
     "date": "2026-09-04",
     "hash": "431b0ad6e1788d6c5f687c3351375aff72bf01c30ca3c3bc61e02ea2cb64a74f",
     "sha": "53661e66"
+  },
+  "src/RimUtinni/ResearchRetag/Patches/RUT_ResearchRetag.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "b45f7dd9bd914edcfb5a350db81021c2f5f89c894f9b384ad1c9920fc7062b6e",
+    "sha": "629956d2"
   },
   "src/RimUtinni/ResearchRetag/Patches/RUT_ResearchRetag_Supplement.xml": {
     "cleanCount": 1,
@@ -7311,6 +7731,12 @@
     "hash": "f93b17ed631da1da405a42f1225441f856ac5d8a857a972cd632f87c2d698c3e",
     "sha": "6cb41e45"
   },
+  "src/RimUtinni/UtinniPatches/Patches/JawaTerrain_HorrorWastes.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "2e29a9befba74928082a38e08b204823d864f96778d4a38f21e34fc6a4d0d436",
+    "sha": "629956d2"
+  },
   "src/RimUtinni/UtinniPatches/Patches/JawaTerrain_SaltPans.xml": {
     "cleanCount": 1,
     "date": "2026-09-05",
@@ -7346,6 +7772,12 @@
     "date": "2026-09-05",
     "hash": "ac81c3ea5ebda1761334297bccf77e27e9d784102e528f8139eb39b210fe4077",
     "sha": "948cdbc9"
+  },
+  "src/RimUtinni/UtinniPatches/Patches/PlantNames_Ashkarr.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-05",
+    "hash": "1757c95ee7eb6a55cc0927b0bb593f90ff5717bcb332ea80c3e46ecba4ad04ca",
+    "sha": "629956d2"
   },
   "src/RimUtinni/UtinniPatches/Patches/PlantTolerances_Ashkarr.xml": {
     "cleanCount": 1,
