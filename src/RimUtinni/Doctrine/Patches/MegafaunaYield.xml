@@ -207,28 +207,28 @@
             <value><MeatAmount>350</MeatAmount></value>
           </nomatch>
         </li>
-        <!-- AA_Behemoth MeatAmount: bodySize 8.00, base 1120, yields 8960 -->
+        <!-- AA_Behemoth MeatAmount: bodySize 32.00, base 4480, yields 143360 -->
         <li Class="PatchOperationConditional">
           <xpath>/Defs/ThingDef[defName="AA_Behemoth"]/statBases/MeatAmount</xpath>
           <match Class="PatchOperationReplace">
             <xpath>/Defs/ThingDef[defName="AA_Behemoth"]/statBases/MeatAmount</xpath>
-            <value><MeatAmount>1120</MeatAmount></value>
+            <value><MeatAmount>4480</MeatAmount></value>
           </match>
           <nomatch Class="PatchOperationAdd">
             <xpath>/Defs/ThingDef[defName="AA_Behemoth"]/statBases</xpath>
-            <value><MeatAmount>1120</MeatAmount></value>
+            <value><MeatAmount>4480</MeatAmount></value>
           </nomatch>
         </li>
-        <!-- AA_Behemoth BoneAmount: bodySize 8.00, base 400, yields 3200 -->
+        <!-- AA_Behemoth BoneAmount: bodySize 32.00, base 1600, yields 51200 -->
         <li Class="PatchOperationConditional">
           <xpath>/Defs/ThingDef[defName="AA_Behemoth"]/statBases/BoneAmount</xpath>
           <match Class="PatchOperationReplace">
             <xpath>/Defs/ThingDef[defName="AA_Behemoth"]/statBases/BoneAmount</xpath>
-            <value><BoneAmount>400</BoneAmount></value>
+            <value><BoneAmount>1600</BoneAmount></value>
           </match>
           <nomatch Class="PatchOperationAdd">
             <xpath>/Defs/ThingDef[defName="AA_Behemoth"]/statBases</xpath>
-            <value><BoneAmount>400</BoneAmount></value>
+            <value><BoneAmount>1600</BoneAmount></value>
           </nomatch>
         </li>
         <!-- AA_BlackSpider MeatAmount: bodySize 1.50, base 210, yields 315 -->
@@ -495,7 +495,7 @@
             <value><MeatAmount>182</MeatAmount></value>
           </nomatch>
         </li>
-        <!-- AA_FrostAve BoneAmount: bodySize 1.30, base 65, yields 84 -->
+        <!-- AA_FrostAve BoneAmount: bodySize 1.30, base 65, yields 85 -->
         <li Class="PatchOperationConditional">
           <xpath>/Defs/ThingDef[defName="AA_FrostAve"]/statBases/BoneAmount</xpath>
           <match Class="PatchOperationReplace">
@@ -1398,30 +1398,60 @@
           <xpath>/Defs/ThingDef[defName="AA_Thunderox"]/comps/li[woolAmount]/woolAmount</xpath>
           <value><woolAmount>75</woolAmount></value>
         </li>
-        <!-- AA_Bobeene milkAmount: bodySize 2.10, 10 -> 8 -->
+        <!-- AA_Bobeene milkAmount: bodySize 2.10, 10 -> 9 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AA_Bobeene"]/comps/li[milkAmount]/milkAmount</xpath>
-          <value><milkAmount>8</milkAmount></value>
+          <value><milkAmount>9</milkAmount></value>
         </li>
-        <!-- AA_FrostboundBehemoth milkAmount: bodySize 3.00, 15 -> 17 -->
+        <!-- AA_ChameleonYak milkAmount: bodySize 2.50, 12 -> 12 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_ChameleonYak"]/comps/li[milkAmount]/milkAmount</xpath>
+          <value><milkAmount>12</milkAmount></value>
+        </li>
+        <!-- AA_ChemfuelMyrmidon milkAmount: bodySize 1.50, 12 -> 4 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_ChemfuelMyrmidon"]/comps/li[milkAmount]/milkAmount</xpath>
+          <value><milkAmount>4</milkAmount></value>
+        </li>
+        <!-- AA_FrostboundBehemoth milkAmount: bodySize 3.00, 15 -> 18 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AA_FrostboundBehemoth"]/comps/li[milkAmount]/milkAmount</xpath>
-          <value><milkAmount>17</milkAmount></value>
+          <value><milkAmount>18</milkAmount></value>
         </li>
         <!-- AA_Gigantelope milkAmount: bodySize 2.00, 15 -> 8 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AA_Gigantelope"]/comps/li[milkAmount]/milkAmount</xpath>
           <value><milkAmount>8</milkAmount></value>
         </li>
-        <!-- AA_NightMule milkAmount: bodySize 2.80, 12 -> 15 -->
+        <!-- AA_NightMule milkAmount: bodySize 2.80, 12 -> 16 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AA_NightMule"]/comps/li[milkAmount]/milkAmount</xpath>
-          <value><milkAmount>15</milkAmount></value>
+          <value><milkAmount>16</milkAmount></value>
+        </li>
+        <!-- AA_NightRam milkAmount: bodySize 2.50, 12 -> 12 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_NightRam"]/comps/li[milkAmount]/milkAmount</xpath>
+          <value><milkAmount>12</milkAmount></value>
+        </li>
+        <!-- AA_Radyak milkAmount: bodySize 2.50, 15 -> 12 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_Radyak"]/comps/li[milkAmount]/milkAmount</xpath>
+          <value><milkAmount>12</milkAmount></value>
+        </li>
+        <!-- AA_ShadowCharger milkAmount: bodySize 2.50, 12 -> 12 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_ShadowCharger"]/comps/li[milkAmount]/milkAmount</xpath>
+          <value><milkAmount>12</milkAmount></value>
         </li>
         <!-- AA_SpinedGow milkAmount: bodySize 2.75, 12 -> 15 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="AA_SpinedGow"]/comps/li[milkAmount]/milkAmount</xpath>
           <value><milkAmount>15</milkAmount></value>
+        </li>
+        <!-- AA_Thunderox milkAmount: bodySize 2.50, 12 -> 12 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="AA_Thunderox"]/comps/li[milkAmount]/milkAmount</xpath>
+          <value><milkAmount>12</milkAmount></value>
         </li>
       </operations>
     </match>
@@ -2023,7 +2053,7 @@
             <value><MeatAmount>238</MeatAmount></value>
           </nomatch>
         </li>
-        <!-- BMT_GiantSlug BoneAmount: bodySize 1.70, base 85, yields 145 -->
+        <!-- BMT_GiantSlug BoneAmount: bodySize 1.70, base 85, yields 144 -->
         <li Class="PatchOperationConditional">
           <xpath>/Defs/ThingDef[defName="BMT_GiantSlug"]/statBases/BoneAmount</xpath>
           <match Class="PatchOperationReplace">
@@ -2311,16 +2341,16 @@
             <value><MeatAmount>280</MeatAmount></value>
           </nomatch>
         </li>
-        <!-- BMT_Thrumbungus BoneAmount: bodySize 4.00, base 200, yields 800 -->
+        <!-- BMT_Thrumbungus BoneAmount: bodySize 8.20, base 410, yields 3362 -->
         <li Class="PatchOperationConditional">
           <xpath>/Defs/ThingDef[defName="BMT_Thrumbungus"]/statBases/BoneAmount</xpath>
           <match Class="PatchOperationReplace">
             <xpath>/Defs/ThingDef[defName="BMT_Thrumbungus"]/statBases/BoneAmount</xpath>
-            <value><BoneAmount>200</BoneAmount></value>
+            <value><BoneAmount>410</BoneAmount></value>
           </match>
           <nomatch Class="PatchOperationAdd">
             <xpath>/Defs/ThingDef[defName="BMT_Thrumbungus"]/statBases</xpath>
-            <value><BoneAmount>200</BoneAmount></value>
+            <value><BoneAmount>410</BoneAmount></value>
           </nomatch>
         </li>
         <!-- BMT_Woollybat MeatAmount: bodySize 1.20, base 168, yields 202 -->
@@ -2381,10 +2411,10 @@
           <xpath>/Defs/ThingDef[defName="BMT_Woollybat"]/comps/li[woolAmount]/woolAmount</xpath>
           <value><woolAmount>36</woolAmount></value>
         </li>
-        <!-- BMT_BeardedYak milkAmount: bodySize 2.10, 11 -> 8 -->
+        <!-- BMT_BeardedYak milkAmount: bodySize 2.10, 11 -> 9 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="BMT_BeardedYak"]/comps/li[milkAmount]/milkAmount</xpath>
-          <value><milkAmount>8</milkAmount></value>
+          <value><milkAmount>9</milkAmount></value>
         </li>
         <!-- BMT_BovineBeetle milkAmount: bodySize 2.45, 16 -> 12 -->
         <li Class="PatchOperationReplace">
@@ -2396,15 +2426,15 @@
           <xpath>/Defs/ThingDef[defName="BMT_Crystalope"]/comps/li[milkAmount]/milkAmount</xpath>
           <value><milkAmount>8</milkAmount></value>
         </li>
-        <!-- BMT_PodWorm milkAmount: bodySize 4.00, 6 -> 31 -->
+        <!-- BMT_PodWorm milkAmount: bodySize 4.00, 6 -> 32 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="BMT_PodWorm"]/comps/li[milkAmount]/milkAmount</xpath>
-          <value><milkAmount>31</milkAmount></value>
+          <value><milkAmount>32</milkAmount></value>
         </li>
-        <!-- BMT_Yooka milkAmount: bodySize 2.10, 36 -> 8 -->
+        <!-- BMT_Yooka milkAmount: bodySize 2.10, 36 -> 9 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="BMT_Yooka"]/comps/li[milkAmount]/milkAmount</xpath>
-          <value><milkAmount>8</milkAmount></value>
+          <value><milkAmount>9</milkAmount></value>
         </li>
       </operations>
     </match>
@@ -2614,10 +2644,10 @@
             <value><BoneAmount>70</BoneAmount></value>
           </nomatch>
         </li>
-        <!-- BMT_SludgeCrawler milkAmount: bodySize 2.60, 10 -> 13 -->
+        <!-- BMT_SludgeCrawler milkAmount: bodySize 2.60, 10 -> 14 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="BMT_SludgeCrawler"]/comps/li[milkAmount]/milkAmount</xpath>
-          <value><milkAmount>13</milkAmount></value>
+          <value><milkAmount>14</milkAmount></value>
         </li>
       </operations>
     </match>
@@ -3075,7 +3105,7 @@
             <value><MeatAmount>238</MeatAmount></value>
           </nomatch>
         </li>
-        <!-- Pig BoneAmount: bodySize 1.70, base 85, yields 145 -->
+        <!-- Pig BoneAmount: bodySize 1.70, base 85, yields 144 -->
         <li Class="PatchOperationConditional">
           <xpath>/Defs/ThingDef[defName="Pig"]/statBases/BoneAmount</xpath>
           <match Class="PatchOperationReplace">
@@ -3174,30 +3204,30 @@
           <xpath>/Defs/ThingDef[defName="Megasloth"]/comps/li[woolAmount]/woolAmount</xpath>
           <value><woolAmount>120</woolAmount></value>
         </li>
-        <!-- Cow milkAmount: bodySize 2.40, 14 -> 11 -->
+        <!-- Cow milkAmount: bodySize 2.40, 14 -> 12 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="Cow"]/comps/li[milkAmount]/milkAmount</xpath>
-          <value><milkAmount>11</milkAmount></value>
+          <value><milkAmount>12</milkAmount></value>
         </li>
         <!-- Boomalope milkAmount: bodySize 2.00, 11 -> 8 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="Boomalope"]/comps/li[milkAmount]/milkAmount</xpath>
           <value><milkAmount>8</milkAmount></value>
         </li>
-        <!-- Dromedary milkAmount: bodySize 2.10, 18 -> 8 -->
+        <!-- Dromedary milkAmount: bodySize 2.10, 18 -> 9 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="Dromedary"]/comps/li[milkAmount]/milkAmount</xpath>
-          <value><milkAmount>8</milkAmount></value>
+          <value><milkAmount>9</milkAmount></value>
         </li>
-        <!-- Elk milkAmount: bodySize 2.10, 11 -> 8 -->
+        <!-- Elk milkAmount: bodySize 2.10, 11 -> 9 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="Elk"]/comps/li[milkAmount]/milkAmount</xpath>
-          <value><milkAmount>8</milkAmount></value>
+          <value><milkAmount>9</milkAmount></value>
         </li>
-        <!-- Yak milkAmount: bodySize 2.10, 11 -> 8 -->
+        <!-- Yak milkAmount: bodySize 2.10, 11 -> 9 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="Yak"]/comps/li[milkAmount]/milkAmount</xpath>
-          <value><milkAmount>8</milkAmount></value>
+          <value><milkAmount>9</milkAmount></value>
         </li>
       </operations>
     </match>
@@ -3291,7 +3321,7 @@
             <value><MeatAmount>182</MeatAmount></value>
           </nomatch>
         </li>
-        <!-- DA_DwarvenMuffton BoneAmount: bodySize 1.30, base 65, yields 84 -->
+        <!-- DA_DwarvenMuffton BoneAmount: bodySize 1.30, base 65, yields 85 -->
         <li Class="PatchOperationConditional">
           <xpath>/Defs/ThingDef[defName="DA_DwarvenMuffton"]/statBases/BoneAmount</xpath>
           <match Class="PatchOperationReplace">
@@ -3534,10 +3564,10 @@
           <xpath>/Defs/ThingDef[defName="DA_DwarvenMuffton"]/comps/li[milkAmount]/milkAmount</xpath>
           <value><milkAmount>3</milkAmount></value>
         </li>
-        <!-- DA_Goldilox milkAmount: bodySize 4.00, 6 -> 31 -->
+        <!-- DA_Goldilox milkAmount: bodySize 4.00, 6 -> 32 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="DA_Goldilox"]/comps/li[milkAmount]/milkAmount</xpath>
-          <value><milkAmount>31</milkAmount></value>
+          <value><milkAmount>32</milkAmount></value>
         </li>
       </operations>
     </match>
@@ -3569,6 +3599,38 @@
           <nomatch Class="PatchOperationAdd">
             <xpath>/Defs/ThingDef[defName="ERN_Amaro"]/statBases</xpath>
             <value><BoneAmount>62</BoneAmount></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>GRiNDTerra Biomes</li></mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- ThrumbaToad MeatAmount: bodySize 3.00, base 420, yields 1260 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="ThrumbaToad"]/statBases/MeatAmount</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="ThrumbaToad"]/statBases/MeatAmount</xpath>
+            <value><MeatAmount>420</MeatAmount></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="ThrumbaToad"]/statBases</xpath>
+            <value><MeatAmount>420</MeatAmount></value>
+          </nomatch>
+        </li>
+        <!-- ThrumbaToad BoneAmount: bodySize 3.00, base 150, yields 450 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="ThrumbaToad"]/statBases/BoneAmount</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="ThrumbaToad"]/statBases/BoneAmount</xpath>
+            <value><BoneAmount>150</BoneAmount></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="ThrumbaToad"]/statBases</xpath>
+            <value><BoneAmount>150</BoneAmount></value>
           </nomatch>
         </li>
       </operations>
@@ -3911,7 +3973,7 @@
             <value><MeatAmount>182</MeatAmount></value>
           </nomatch>
         </li>
-        <!-- Cat_Scimitar BoneAmount: bodySize 1.30, base 65, yields 84 -->
+        <!-- Cat_Scimitar BoneAmount: bodySize 1.30, base 65, yields 85 -->
         <li Class="PatchOperationConditional">
           <xpath>/Defs/ThingDef[defName="Cat_Scimitar"]/statBases/BoneAmount</xpath>
           <match Class="PatchOperationReplace">
@@ -4261,10 +4323,10 @@
             <value><BoneAmount>120</BoneAmount></value>
           </nomatch>
         </li>
-        <!-- IronScruff_Tardigrade milkAmount: bodySize 2.40, 18 -> 11 -->
+        <!-- IronScruff_Tardigrade milkAmount: bodySize 2.40, 18 -> 12 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="IronScruff_Tardigrade"]/comps/li[milkAmount]/milkAmount</xpath>
-          <value><milkAmount>11</milkAmount></value>
+          <value><milkAmount>12</milkAmount></value>
         </li>
       </operations>
     </match>
@@ -4392,6 +4454,302 @@
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="Ling_Cockroach"]/comps/li[milkAmount]/milkAmount</xpath>
           <value><milkAmount>8</milkAmount></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationFindMod">
+    <mods><li>RimMandrake - SW Sea Beasts</li></mods>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- RSW_ColoClawFish MeatAmount: bodySize 3.00, base 420, yields 1260 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RSW_ColoClawFish"]/statBases/MeatAmount</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RSW_ColoClawFish"]/statBases/MeatAmount</xpath>
+            <value><MeatAmount>420</MeatAmount></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RSW_ColoClawFish"]/statBases</xpath>
+            <value><MeatAmount>420</MeatAmount></value>
+          </nomatch>
+        </li>
+        <!-- RSW_ColoClawFish BoneAmount: bodySize 3.00, base 150, yields 450 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RSW_ColoClawFish"]/statBases/BoneAmount</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RSW_ColoClawFish"]/statBases/BoneAmount</xpath>
+            <value><BoneAmount>150</BoneAmount></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RSW_ColoClawFish"]/statBases</xpath>
+            <value><BoneAmount>150</BoneAmount></value>
+          </nomatch>
+        </li>
+        <!-- RSW_AbyssalColo MeatAmount: bodySize 3.60, base 504, yields 1814 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RSW_AbyssalColo"]/statBases/MeatAmount</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RSW_AbyssalColo"]/statBases/MeatAmount</xpath>
+            <value><MeatAmount>504</MeatAmount></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RSW_AbyssalColo"]/statBases</xpath>
+            <value><MeatAmount>504</MeatAmount></value>
+          </nomatch>
+        </li>
+        <!-- RSW_AbyssalColo BoneAmount: bodySize 3.60, base 180, yields 648 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RSW_AbyssalColo"]/statBases/BoneAmount</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RSW_AbyssalColo"]/statBases/BoneAmount</xpath>
+            <value><BoneAmount>180</BoneAmount></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RSW_AbyssalColo"]/statBases</xpath>
+            <value><BoneAmount>180</BoneAmount></value>
+          </nomatch>
+        </li>
+        <!-- RSW_ThornbackColo MeatAmount: bodySize 2.60, base 364, yields 946 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RSW_ThornbackColo"]/statBases/MeatAmount</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RSW_ThornbackColo"]/statBases/MeatAmount</xpath>
+            <value><MeatAmount>364</MeatAmount></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RSW_ThornbackColo"]/statBases</xpath>
+            <value><MeatAmount>364</MeatAmount></value>
+          </nomatch>
+        </li>
+        <!-- RSW_ThornbackColo BoneAmount: bodySize 2.60, base 130, yields 338 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RSW_ThornbackColo"]/statBases/BoneAmount</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RSW_ThornbackColo"]/statBases/BoneAmount</xpath>
+            <value><BoneAmount>130</BoneAmount></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RSW_ThornbackColo"]/statBases</xpath>
+            <value><BoneAmount>130</BoneAmount></value>
+          </nomatch>
+        </li>
+        <!-- RSW_Reefback MeatAmount: bodySize 32.00, base 4480, yields 143360 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RSW_Reefback"]/statBases/MeatAmount</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RSW_Reefback"]/statBases/MeatAmount</xpath>
+            <value><MeatAmount>4480</MeatAmount></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RSW_Reefback"]/statBases</xpath>
+            <value><MeatAmount>4480</MeatAmount></value>
+          </nomatch>
+        </li>
+        <!-- RSW_Reefback BoneAmount: bodySize 32.00, base 1600, yields 51200 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RSW_Reefback"]/statBases/BoneAmount</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RSW_Reefback"]/statBases/BoneAmount</xpath>
+            <value><BoneAmount>1600</BoneAmount></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RSW_Reefback"]/statBases</xpath>
+            <value><BoneAmount>1600</BoneAmount></value>
+          </nomatch>
+        </li>
+        <!-- RSW_Starmaw MeatAmount: bodySize 36.00, base 5040, yields 181440 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RSW_Starmaw"]/statBases/MeatAmount</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RSW_Starmaw"]/statBases/MeatAmount</xpath>
+            <value><MeatAmount>5040</MeatAmount></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RSW_Starmaw"]/statBases</xpath>
+            <value><MeatAmount>5040</MeatAmount></value>
+          </nomatch>
+        </li>
+        <!-- RSW_Starmaw BoneAmount: bodySize 36.00, base 1800, yields 64800 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RSW_Starmaw"]/statBases/BoneAmount</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RSW_Starmaw"]/statBases/BoneAmount</xpath>
+            <value><BoneAmount>1800</BoneAmount></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RSW_Starmaw"]/statBases</xpath>
+            <value><BoneAmount>1800</BoneAmount></value>
+          </nomatch>
+        </li>
+        <!-- RSW_Lanternwhale MeatAmount: bodySize 40.00, base 5600, yields 224000 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RSW_Lanternwhale"]/statBases/MeatAmount</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RSW_Lanternwhale"]/statBases/MeatAmount</xpath>
+            <value><MeatAmount>5600</MeatAmount></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RSW_Lanternwhale"]/statBases</xpath>
+            <value><MeatAmount>5600</MeatAmount></value>
+          </nomatch>
+        </li>
+        <!-- RSW_Lanternwhale BoneAmount: bodySize 40.00, base 2000, yields 80000 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RSW_Lanternwhale"]/statBases/BoneAmount</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RSW_Lanternwhale"]/statBases/BoneAmount</xpath>
+            <value><BoneAmount>2000</BoneAmount></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RSW_Lanternwhale"]/statBases</xpath>
+            <value><BoneAmount>2000</BoneAmount></value>
+          </nomatch>
+        </li>
+        <!-- RSW_OpeeSeaKiller MeatAmount: bodySize 1.40, base 196, yields 274 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RSW_OpeeSeaKiller"]/statBases/MeatAmount</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RSW_OpeeSeaKiller"]/statBases/MeatAmount</xpath>
+            <value><MeatAmount>196</MeatAmount></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RSW_OpeeSeaKiller"]/statBases</xpath>
+            <value><MeatAmount>196</MeatAmount></value>
+          </nomatch>
+        </li>
+        <!-- RSW_OpeeSeaKiller BoneAmount: bodySize 1.40, base 70, yields 98 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RSW_OpeeSeaKiller"]/statBases/BoneAmount</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RSW_OpeeSeaKiller"]/statBases/BoneAmount</xpath>
+            <value><BoneAmount>70</BoneAmount></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RSW_OpeeSeaKiller"]/statBases</xpath>
+            <value><BoneAmount>70</BoneAmount></value>
+          </nomatch>
+        </li>
+        <!-- RSW_CrimsonOpee MeatAmount: bodySize 1.70, base 238, yields 405 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RSW_CrimsonOpee"]/statBases/MeatAmount</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RSW_CrimsonOpee"]/statBases/MeatAmount</xpath>
+            <value><MeatAmount>238</MeatAmount></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RSW_CrimsonOpee"]/statBases</xpath>
+            <value><MeatAmount>238</MeatAmount></value>
+          </nomatch>
+        </li>
+        <!-- RSW_CrimsonOpee BoneAmount: bodySize 1.70, base 85, yields 144 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RSW_CrimsonOpee"]/statBases/BoneAmount</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RSW_CrimsonOpee"]/statBases/BoneAmount</xpath>
+            <value><BoneAmount>85</BoneAmount></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RSW_CrimsonOpee"]/statBases</xpath>
+            <value><BoneAmount>85</BoneAmount></value>
+          </nomatch>
+        </li>
+        <!-- RSW_ShaleGorger MeatAmount: bodySize 2.00, base 280, yields 560 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RSW_ShaleGorger"]/statBases/MeatAmount</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RSW_ShaleGorger"]/statBases/MeatAmount</xpath>
+            <value><MeatAmount>280</MeatAmount></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RSW_ShaleGorger"]/statBases</xpath>
+            <value><MeatAmount>280</MeatAmount></value>
+          </nomatch>
+        </li>
+        <!-- RSW_ShaleGorger BoneAmount: bodySize 2.00, base 100, yields 200 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RSW_ShaleGorger"]/statBases/BoneAmount</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RSW_ShaleGorger"]/statBases/BoneAmount</xpath>
+            <value><BoneAmount>100</BoneAmount></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RSW_ShaleGorger"]/statBases</xpath>
+            <value><BoneAmount>100</BoneAmount></value>
+          </nomatch>
+        </li>
+        <!-- RSW_SandoAquaMonster MeatAmount: bodySize 14.00, base 1960, yields 27440 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RSW_SandoAquaMonster"]/statBases/MeatAmount</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RSW_SandoAquaMonster"]/statBases/MeatAmount</xpath>
+            <value><MeatAmount>1960</MeatAmount></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RSW_SandoAquaMonster"]/statBases</xpath>
+            <value><MeatAmount>1960</MeatAmount></value>
+          </nomatch>
+        </li>
+        <!-- RSW_SandoAquaMonster BoneAmount: bodySize 14.00, base 700, yields 9800 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RSW_SandoAquaMonster"]/statBases/BoneAmount</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RSW_SandoAquaMonster"]/statBases/BoneAmount</xpath>
+            <value><BoneAmount>700</BoneAmount></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RSW_SandoAquaMonster"]/statBases</xpath>
+            <value><BoneAmount>700</BoneAmount></value>
+          </nomatch>
+        </li>
+        <!-- RSW_ElderSando MeatAmount: bodySize 20.00, base 2800, yields 56000 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RSW_ElderSando"]/statBases/MeatAmount</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RSW_ElderSando"]/statBases/MeatAmount</xpath>
+            <value><MeatAmount>2800</MeatAmount></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RSW_ElderSando"]/statBases</xpath>
+            <value><MeatAmount>2800</MeatAmount></value>
+          </nomatch>
+        </li>
+        <!-- RSW_ElderSando BoneAmount: bodySize 20.00, base 1000, yields 20000 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RSW_ElderSando"]/statBases/BoneAmount</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RSW_ElderSando"]/statBases/BoneAmount</xpath>
+            <value><BoneAmount>1000</BoneAmount></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RSW_ElderSando"]/statBases</xpath>
+            <value><BoneAmount>1000</BoneAmount></value>
+          </nomatch>
+        </li>
+        <!-- RSW_StormSando MeatAmount: bodySize 12.00, base 1680, yields 20160 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RSW_StormSando"]/statBases/MeatAmount</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RSW_StormSando"]/statBases/MeatAmount</xpath>
+            <value><MeatAmount>1680</MeatAmount></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RSW_StormSando"]/statBases</xpath>
+            <value><MeatAmount>1680</MeatAmount></value>
+          </nomatch>
+        </li>
+        <!-- RSW_StormSando BoneAmount: bodySize 12.00, base 600, yields 7200 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RSW_StormSando"]/statBases/BoneAmount</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RSW_StormSando"]/statBases/BoneAmount</xpath>
+            <value><BoneAmount>600</BoneAmount></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RSW_StormSando"]/statBases</xpath>
+            <value><BoneAmount>600</BoneAmount></value>
+          </nomatch>
         </li>
       </operations>
     </match>
@@ -4917,16 +5275,16 @@
             <value><MeatAmount>203</MeatAmount></value>
           </nomatch>
         </li>
-        <!-- CanCell BoneAmount: bodySize 1.45, base 73, yields 105 -->
+        <!-- CanCell BoneAmount: bodySize 1.45, base 72, yields 105 -->
         <li Class="PatchOperationConditional">
           <xpath>/Defs/ThingDef[defName="CanCell"]/statBases/BoneAmount</xpath>
           <match Class="PatchOperationReplace">
             <xpath>/Defs/ThingDef[defName="CanCell"]/statBases/BoneAmount</xpath>
-            <value><BoneAmount>73</BoneAmount></value>
+            <value><BoneAmount>72</BoneAmount></value>
           </match>
           <nomatch Class="PatchOperationAdd">
             <xpath>/Defs/ThingDef[defName="CanCell"]/statBases</xpath>
-            <value><BoneAmount>73</BoneAmount></value>
+            <value><BoneAmount>72</BoneAmount></value>
           </nomatch>
         </li>
         <!-- ChrysalideRancor MeatAmount: bodySize 8.00, base 1120, yields 8960 -->
@@ -6753,28 +7111,28 @@
             <value><BoneAmount>150</BoneAmount></value>
           </nomatch>
         </li>
-        <!-- Zakkeg MeatAmount: bodySize 5.00, base 700, yields 3500 -->
+        <!-- Zakkeg MeatAmount: bodySize 8.20, base 1148, yields 9414 -->
         <li Class="PatchOperationConditional">
           <xpath>/Defs/ThingDef[defName="Zakkeg"]/statBases/MeatAmount</xpath>
           <match Class="PatchOperationReplace">
             <xpath>/Defs/ThingDef[defName="Zakkeg"]/statBases/MeatAmount</xpath>
-            <value><MeatAmount>700</MeatAmount></value>
+            <value><MeatAmount>1148</MeatAmount></value>
           </match>
           <nomatch Class="PatchOperationAdd">
             <xpath>/Defs/ThingDef[defName="Zakkeg"]/statBases</xpath>
-            <value><MeatAmount>700</MeatAmount></value>
+            <value><MeatAmount>1148</MeatAmount></value>
           </nomatch>
         </li>
-        <!-- Zakkeg BoneAmount: bodySize 5.00, base 250, yields 1250 -->
+        <!-- Zakkeg BoneAmount: bodySize 8.20, base 410, yields 3362 -->
         <li Class="PatchOperationConditional">
           <xpath>/Defs/ThingDef[defName="Zakkeg"]/statBases/BoneAmount</xpath>
           <match Class="PatchOperationReplace">
             <xpath>/Defs/ThingDef[defName="Zakkeg"]/statBases/BoneAmount</xpath>
-            <value><BoneAmount>250</BoneAmount></value>
+            <value><BoneAmount>410</BoneAmount></value>
           </match>
           <nomatch Class="PatchOperationAdd">
             <xpath>/Defs/ThingDef[defName="Zakkeg"]/statBases</xpath>
-            <value><BoneAmount>250</BoneAmount></value>
+            <value><BoneAmount>410</BoneAmount></value>
           </nomatch>
         </li>
         <!-- Zeer MeatAmount: bodySize 3.00, base 420, yields 1260 -->
@@ -6846,80 +7204,80 @@
           <xpath>/Defs/ThingDef[defName="Wyyyschokk"]/comps/li[woolAmount]/woolAmount</xpath>
           <value><woolAmount>90</woolAmount></value>
         </li>
-        <!-- Bantha milkAmount: bodySize 4.00, 15 -> 31 -->
+        <!-- Bantha milkAmount: bodySize 4.00, 15 -> 32 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="Bantha"]/comps/li[milkAmount]/milkAmount</xpath>
-          <value><milkAmount>31</milkAmount></value>
+          <value><milkAmount>32</milkAmount></value>
         </li>
         <!-- Nerf milkAmount: bodySize 2.00, 15 -> 8 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="Nerf"]/comps/li[milkAmount]/milkAmount</xpath>
           <value><milkAmount>8</milkAmount></value>
         </li>
-        <!-- Beldon milkAmount: bodySize 6.00, 30 -> 69 -->
+        <!-- Beldon milkAmount: bodySize 6.00, 30 -> 72 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="Beldon"]/comps/li[milkAmount]/milkAmount</xpath>
-          <value><milkAmount>69</milkAmount></value>
+          <value><milkAmount>72</milkAmount></value>
         </li>
         <!-- Bordok milkAmount: bodySize 1.40, 12 -> 4 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="Bordok"]/comps/li[milkAmount]/milkAmount</xpath>
           <value><milkAmount>4</milkAmount></value>
         </li>
-        <!-- EnergySpider milkAmount: bodySize 3.00, 5 -> 17 -->
+        <!-- EnergySpider milkAmount: bodySize 3.00, 5 -> 18 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="EnergySpider"]/comps/li[milkAmount]/milkAmount</xpath>
-          <value><milkAmount>17</milkAmount></value>
+          <value><milkAmount>18</milkAmount></value>
         </li>
         <!-- Eopie milkAmount: bodySize 1.40, 9 -> 4 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="Eopie"]/comps/li[milkAmount]/milkAmount</xpath>
           <value><milkAmount>4</milkAmount></value>
         </li>
-        <!-- Falumpaset milkAmount: bodySize 3.00, 10 -> 17 -->
+        <!-- Falumpaset milkAmount: bodySize 3.00, 10 -> 18 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="Falumpaset"]/comps/li[milkAmount]/milkAmount</xpath>
-          <value><milkAmount>17</milkAmount></value>
+          <value><milkAmount>18</milkAmount></value>
         </li>
         <!-- FeralGrazer milkAmount: bodySize 2.00, 12 -> 8 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="FeralGrazer"]/comps/li[milkAmount]/milkAmount</xpath>
           <value><milkAmount>8</milkAmount></value>
         </li>
-        <!-- Gelagrub milkAmount: bodySize 2.40, 10 -> 11 -->
+        <!-- Gelagrub milkAmount: bodySize 2.40, 10 -> 12 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="Gelagrub"]/comps/li[milkAmount]/milkAmount</xpath>
-          <value><milkAmount>11</milkAmount></value>
+          <value><milkAmount>12</milkAmount></value>
         </li>
         <!-- Grazer milkAmount: bodySize 2.75, 20 -> 15 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="Grazer"]/comps/li[milkAmount]/milkAmount</xpath>
           <value><milkAmount>15</milkAmount></value>
         </li>
-        <!-- Gualaar milkAmount: bodySize 3.00, 10 -> 17 -->
+        <!-- Gualaar milkAmount: bodySize 3.00, 10 -> 18 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="Gualaar"]/comps/li[milkAmount]/milkAmount</xpath>
-          <value><milkAmount>17</milkAmount></value>
+          <value><milkAmount>18</milkAmount></value>
         </li>
-        <!-- HarvesterBeetle milkAmount: bodySize 5.00, 15 -> 48 -->
+        <!-- HarvesterBeetle milkAmount: bodySize 5.00, 15 -> 50 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="HarvesterBeetle"]/comps/li[milkAmount]/milkAmount</xpath>
-          <value><milkAmount>48</milkAmount></value>
+          <value><milkAmount>50</milkAmount></value>
         </li>
-        <!-- IthorianReek milkAmount: bodySize 4.50, 40 -> 39 -->
+        <!-- IthorianReek milkAmount: bodySize 4.50, 15 -> 40 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="IthorianReek"]/comps/li[milkAmount]/milkAmount</xpath>
-          <value><milkAmount>39</milkAmount></value>
+          <value><milkAmount>40</milkAmount></value>
         </li>
-        <!-- Jakobeast milkAmount: bodySize 2.60, 15 -> 13 -->
+        <!-- Jakobeast milkAmount: bodySize 2.60, 15 -> 14 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="Jakobeast"]/comps/li[milkAmount]/milkAmount</xpath>
-          <value><milkAmount>13</milkAmount></value>
+          <value><milkAmount>14</milkAmount></value>
         </li>
-        <!-- Zeer milkAmount: bodySize 3.00, 15 -> 17 -->
+        <!-- Zeer milkAmount: bodySize 3.00, 15 -> 18 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="Zeer"]/comps/li[milkAmount]/milkAmount</xpath>
-          <value><milkAmount>17</milkAmount></value>
+          <value><milkAmount>18</milkAmount></value>
         </li>
       </operations>
     </match>
@@ -7117,7 +7475,7 @@
             <value><MeatAmount>182</MeatAmount></value>
           </nomatch>
         </li>
-        <!-- VAEWaste_Wasteboar BoneAmount: bodySize 1.30, base 65, yields 84 -->
+        <!-- VAEWaste_Wasteboar BoneAmount: bodySize 1.30, base 65, yields 85 -->
         <li Class="PatchOperationConditional">
           <xpath>/Defs/ThingDef[defName="VAEWaste_Wasteboar"]/statBases/BoneAmount</xpath>
           <match Class="PatchOperationReplace">
@@ -8057,7 +8415,7 @@
             <value><MeatAmount>182</MeatAmount></value>
           </nomatch>
         </li>
-        <!-- GR_Boomsquirrel BoneAmount: bodySize 1.30, base 65, yields 84 -->
+        <!-- GR_Boomsquirrel BoneAmount: bodySize 1.30, base 65, yields 85 -->
         <li Class="PatchOperationConditional">
           <xpath>/Defs/ThingDef[defName="GR_Boomsquirrel"]/statBases/BoneAmount</xpath>
           <match Class="PatchOperationReplace">
@@ -8885,7 +9243,7 @@
             <value><BoneAmount>500</BoneAmount></value>
           </nomatch>
         </li>
-        <!-- GR_Mechacat BoneAmount: bodySize 1.30, base 65, yields 84 -->
+        <!-- GR_Mechacat BoneAmount: bodySize 1.30, base 65, yields 85 -->
         <li Class="PatchOperationConditional">
           <xpath>/Defs/ThingDef[defName="GR_Mechacat"]/statBases/BoneAmount</xpath>
           <match Class="PatchOperationReplace">
@@ -9017,16 +9375,16 @@
             <value><MeatAmount>259</MeatAmount></value>
           </nomatch>
         </li>
-        <!-- GR_Muffalocat BoneAmount: bodySize 1.85, base 93, yields 171 -->
+        <!-- GR_Muffalocat BoneAmount: bodySize 1.85, base 92, yields 171 -->
         <li Class="PatchOperationConditional">
           <xpath>/Defs/ThingDef[defName="GR_Muffalocat"]/statBases/BoneAmount</xpath>
           <match Class="PatchOperationReplace">
             <xpath>/Defs/ThingDef[defName="GR_Muffalocat"]/statBases/BoneAmount</xpath>
-            <value><BoneAmount>93</BoneAmount></value>
+            <value><BoneAmount>92</BoneAmount></value>
           </match>
           <nomatch Class="PatchOperationAdd">
             <xpath>/Defs/ThingDef[defName="GR_Muffalocat"]/statBases</xpath>
-            <value><BoneAmount>93</BoneAmount></value>
+            <value><BoneAmount>92</BoneAmount></value>
           </nomatch>
         </li>
         <!-- GR_Muffaloman MeatAmount: bodySize 1.50, base 210, yields 315 -->
@@ -9548,7 +9906,7 @@
           <xpath>/Defs/ThingDef[defName="GR_WoolyWolf"]/comps/li[woolAmount]/woolAmount</xpath>
           <value><woolAmount>45</woolAmount></value>
         </li>
-        <!-- GR_Boomffalo woolAmount: bodySize 2.25, 68 -> 68 -->
+        <!-- GR_Boomffalo woolAmount: bodySize 2.25, 90 -> 68 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="GR_Boomffalo"]/comps/li[woolAmount]/woolAmount</xpath>
           <value><woolAmount>68</woolAmount></value>
@@ -9593,40 +9951,55 @@
           <xpath>/Defs/ThingDef[defName="GR_Bearffalo"]/comps/li[woolAmount]/woolAmount</xpath>
           <value><woolAmount>45</woolAmount></value>
         </li>
-        <!-- GR_Paraceramuffalo milkAmount: bodySize 16.00, 12 -> 492 -->
+        <!-- GR_Paraceramuffalo milkAmount: bodySize 16.00, 12 -> 512 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="GR_Paraceramuffalo"]/comps/li[milkAmount]/milkAmount</xpath>
-          <value><milkAmount>492</milkAmount></value>
+          <value><milkAmount>512</milkAmount></value>
         </li>
-        <!-- GR_Lizardochs milkAmount: bodySize 3.00, 16 -> 17 -->
+        <!-- GR_Lizardochs milkAmount: bodySize 3.00, 16 -> 18 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="GR_Lizardochs"]/comps/li[milkAmount]/milkAmount</xpath>
-          <value><milkAmount>17</milkAmount></value>
+          <value><milkAmount>18</milkAmount></value>
         </li>
-        <!-- GR_Groundffalo milkAmount: bodySize 3.00, 12 -> 17 -->
+        <!-- GR_Groundffalo milkAmount: bodySize 3.00, 12 -> 18 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="GR_Groundffalo"]/comps/li[milkAmount]/milkAmount</xpath>
-          <value><milkAmount>17</milkAmount></value>
+          <value><milkAmount>18</milkAmount></value>
         </li>
         <!-- GR_Boomffalo milkAmount: bodySize 2.25, 12 -> 10 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="GR_Boomffalo"]/comps/li[milkAmount]/milkAmount</xpath>
           <value><milkAmount>10</milkAmount></value>
         </li>
-        <!-- GR_Thrumffalo milkAmount: bodySize 8.40, 20 -> 135 -->
+        <!-- GR_Wolffalo milkAmount: bodySize 1.50, 5 -> 4 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="GR_Wolffalo"]/comps/li[milkAmount]/milkAmount</xpath>
+          <value><milkAmount>4</milkAmount></value>
+        </li>
+        <!-- GR_Thrumffalo milkAmount: bodySize 8.40, 20 -> 141 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="GR_Thrumffalo"]/comps/li[milkAmount]/milkAmount</xpath>
-          <value><milkAmount>135</milkAmount></value>
+          <value><milkAmount>141</milkAmount></value>
         </li>
-        <!-- GR_Manffalo milkAmount: bodySize 2.40, 10 -> 11 -->
+        <!-- GR_Manffalo milkAmount: bodySize 2.40, 10 -> 12 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="GR_Manffalo"]/comps/li[milkAmount]/milkAmount</xpath>
-          <value><milkAmount>11</milkAmount></value>
+          <value><milkAmount>12</milkAmount></value>
         </li>
-        <!-- GR_Mechamuffalo milkAmount: bodySize 13.00, 1 -> 324 -->
+        <!-- GR_Mechalope milkAmount: bodySize 1.50, 20 -> 4 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="GR_Mechalope"]/comps/li[milkAmount]/milkAmount</xpath>
+          <value><milkAmount>4</milkAmount></value>
+        </li>
+        <!-- GR_Mechamuffalo milkAmount: bodySize 13.00, 1 -> 338 -->
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="GR_Mechamuffalo"]/comps/li[milkAmount]/milkAmount</xpath>
-          <value><milkAmount>324</milkAmount></value>
+          <value><milkAmount>338</milkAmount></value>
+        </li>
+        <!-- GR_Muffalobear milkAmount: bodySize 2.50, 12 -> 12 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="GR_Muffalobear"]/comps/li[milkAmount]/milkAmount</xpath>
+          <value><milkAmount>12</milkAmount></value>
         </li>
         <!-- GR_Muffalochicken milkAmount: bodySize 1.80, 12 -> 6 -->
         <li Class="PatchOperationReplace">
@@ -9637,6 +10010,16 @@
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="GR_Muffalocat"]/comps/li[milkAmount]/milkAmount</xpath>
           <value><milkAmount>7</milkAmount></value>
+        </li>
+        <!-- GR_ParagonMuffalo milkAmount: bodySize 2.50, 15 -> 12 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="GR_ParagonMuffalo"]/comps/li[milkAmount]/milkAmount</xpath>
+          <value><milkAmount>12</milkAmount></value>
+        </li>
+        <!-- GR_Bearffalo milkAmount: bodySize 1.50, 6 -> 4 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="GR_Bearffalo"]/comps/li[milkAmount]/milkAmount</xpath>
+          <value><milkAmount>4</milkAmount></value>
         </li>
       </operations>
     </match>

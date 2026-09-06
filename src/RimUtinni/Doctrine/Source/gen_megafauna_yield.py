@@ -129,6 +129,47 @@ patchable = {r.defName for r in ds.of_type("ThingDef") if r.defName}
 raw_statbases = {r.defName for r in ds.of_type("ThingDef")
                  if r.defName and r.own.find("statBases") is not None}
 
+# 🔴 The same raw-versus-resolved rule governs milk and fur, and here it bites
+# twice as hard because the value itself is read, not just the presence of a
+# node. The dump is the LIVE game, and the live game has THIS PATCH deployed --
+# `guard()` says so in the banner every run ("VALUES at our xpaths must come
+# from the ledger"). Sourcing milkAmount/woolAmount from the dump therefore
+# feeds the generator its own previous output:
+#
+#   * the median anchor is computed from values we wrote, so the emitted numbers
+#     depend on whether Doctrine happened to be deployed when the dump was
+#     captured -- the output stops being a function of the mod set alone;
+#   * worse, the `abs(new - old) < 0.5` do-not-churn test compares the target
+#     against OUR OWN last write, finds them equal, and drops the operation --
+#     which does not leave the animal where it is, it hands the animal back to
+#     the mod's authored value. On 2026-09-06 that silently removed 77 milk/fur
+#     operations (Cow 11->14, Muffalo 72->120, Megasloth 120->200, ...) from an
+#     otherwise routine re-run.
+#
+# So milk and fur are read from the def's OWN XML, which is also the only thing
+# a PatchOperationReplace can actually match, and the ordinals the positional
+# predicate counts are the raw <li> nodes rather than the resolved ones.
+raw_comps = {}
+for _r in ds.of_type("ThingDef"):
+    if not _r.defName:
+        continue
+    _c = _r.own.find("comps")
+    if _c is None:
+        continue
+    for _field in ("milkAmount", "woolAmount"):
+        _vals = []
+        for _li in _c.findall("li"):
+            _e = _li.find(_field)
+            if _e is not None and (_e.text or "").strip():
+                try:
+                    _v = float(_e.text)
+                except ValueError:
+                    continue
+                if _v > 0:
+                    _vals.append(_v)
+        if _vals:
+            raw_comps[(_r.defName, _field)] = _vals
+
 ops = collections.defaultdict(list)
 skipped = collections.Counter()
 inherited_statbases = []
@@ -224,12 +265,19 @@ for d in iter_live_defs(os.path.join(D_DUMP, "defs", "ThingDef.json")):
     # are, so the emitter can aim a positional predicate at exactly one node.
     # Without it every op for that def gets the same xpath and writes to ALL
     # of them, which the patch validator reports as a double-match Replace.
-    comps = [c for c in (f.get("comps") or []) if isinstance(c, dict)]
     for kind, (field, _expo) in HARVEST_SPEC.items():
-        bearing = [c for c in comps
-                   if isinstance(c.get(field), (int, float)) and c[field] > 0]
-        for ordinal, c in enumerate(bearing, 1):
-            harvest[kind].append((bs, dn, mod, c[field], ordinal, len(bearing)))
+        bearing = raw_comps.get((dn, field))
+        if not bearing:
+            if any(isinstance(c, dict) and isinstance(c.get(field), (int, float))
+                   and c[field] > 0 for c in (f.get("comps") or [])):
+                # Resolved def has the comp but the def's own XML does not:
+                # inherited from a ParentName, or added by another mod's patch.
+                # A Replace aimed at it matches nothing and takes the whole
+                # enclosing sequence down with it. Left alone.
+                skipped["%s not in own XML (left alone)" % field] += 1
+            continue
+        for ordinal, old in enumerate(bearing, 1):
+            harvest[kind].append((bs, dn, mod, old, ordinal, len(bearing)))
 
 # --- emit milk and fur, anchored on the median animal ----------------------
 movers = []
