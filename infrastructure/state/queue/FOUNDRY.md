@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-06T22:20:25Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-06T22:23:38Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -832,7 +832,7 @@ needs:    offline
 target:   v1
 kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DROID_DONOR_REFGREP_1.md yet — write one when you have something to say)
+summary:  sweep on record (BENCH, 2026-09-06 — haiku, treat as evidence not verdict)
 prose:    infrastructure/state/items/DROID_DONOR_REFGREP_1.md
 
 ## DROID_ORACLE_VOICE_DESIGN_1 Design (dormant): four droid Oracle consumers with prescribed fallbacks, claude -p transport
@@ -1044,16 +1044,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DROID_DISTRESS_CALL_REPOINT_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DROID_DISTRESS_CALL_REPOINT_1.md
-
-## DROID_ASIMOV_SAVE_SCRUB_1 Scrub the 82 inert Asimov.Need_Energy entries from WORLDMAP_V1_original.rws (backup first)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DROID_ASIMOV_SAVE_SCRUB_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DROID_ASIMOV_SAVE_SCRUB_1.md
 
 ## DROID_RETIRE_ABF_SYNCORE_1 Retire ABF + SynCore (wave R2); DroidDonor_ABFGate fires; remove DroidsAreMachines ABF half; cold load
 state:    proposed
