@@ -38,9 +38,26 @@ icons). Removed those four `.gitignore`s; kept `_artsrc/`'s own (raw/
 generation intermediates and options/ rejects are genuine scratch material,
 not shipped content).
 
+## 2026-09-05 (FOUNDRY) — owner reopened the art direction, rust is out
+
+Owner, after seeing a concept render: *"I love love love the tech panel you
+made. Rusty buttons are out."* Full context and reasoning in the PIVOT
+section of `ui_shell_spec.md`. Built and shipped a new `D_helm` procedural
+button/gizmo/icon style (grey-green gunmetal, vector-line brackets, amber
+accent) as the new default — commit `506daf52`. The A_heavy/B_clean/C_chalk
+rust options this item originally shipped and verified are now archived,
+not live. **Still owed**: the menu background (Ishko at the temple gate)
+and the loader screen (amber orrery) are image-gen pieces from `gen_bg.py`,
+not touched by this pass — they still ship the old rust-adjacent look and
+need a fresh generation in the new material language before this item's
+art can be called consistent top-to-bottom.
+
 ## criteria
 - [x] Mod skeleton, theme, and art built (offline half of spec §2/§3).
 - [x] Shipped art actually committed, not silently gitignored.
+- [x] **Button/gizmo/icon art re-authored to the owner's confirmed
+      direction** (`D_helm`) — see above. The menu background and loader
+      are NOT yet re-done and still need their own pass.
 - [x] **§4 gate — RESOLVED** (see the 2026-09-05 real-OS-click entry below):
       activated `aRandomKiwi.RimThemes` +
       `mandrake.rut.shell` in the live ModsConfig (596 mods now), restarted,

@@ -56,11 +56,30 @@ and for typography with an **Aurebesh-flavored but still legible** character.
   style rather than shipping a raw AI render as a 9-slice (a painted image
   doesn't tile/slice correctly at the corners the way vanilla's button atlas
   needs to).
-- **Not yet done**: the shipped assets (`B_clean` and siblings, the Ishko
-  temple-gate menu background, the amber orrery loader) still ship the OLD
-  rust-plate direction. Nothing has been re-authored yet — this pivot is
-  agreed-direction, not yet built. Review artifact:
-  `https://claude.ai/code/artifact/d63666e5-28ca-4019-a037-749c9fbb9b4e`.
+**LOCKED, same day — owner, on seeing the concept render**: *"I love love
+love the tech panel you made. Rusty buttons are out."* Not a direction to
+keep exploring; a decision.
+
+**Built and shipped** (commit `506daf52`): a fourth procedural style,
+`D_helm`, added to `_artsrc/gen_textures.py` alongside the three rust
+options (kept on disk, archived, no longer live contenders) and made the
+new `DEFAULT_STYLE`. Grey-green gunmetal plate (`metal_plate()`, cool
+scuff/grime blotches, no rust tint), a crisp single-pixel vector-line
+bracket inset with amber corner ticks (`vector_inset()`, replacing
+`chalk_inset()`'s soft hand-drawn look), amber glow accent kept from the old
+palette (it was already light/glow-coded, not material, so it survives the
+pivot unchanged). `Command.BGTex` and the theme-picker `Icon` re-authored to
+match. **This is a real deterministic PIL 9-slice asset, not the AI concept
+render** — it tiles correctly at the button-atlas corners, unlike a raw
+painted image would.
+
+**Still NOT re-authored, old rust-direction art still shipping**: the Ishko
+temple-gate menu background and the amber-orrery loader screen (both
+image-gen pieces from `gen_bg.py`, not procedural — re-doing these needs a
+fresh generation pass in the new material language, not a script edit).
+Typography (Orbitron/Rajdhani pairing) only exists on the review artifact
+page so far, not wired into the actual RimThemes `meta.xml` font keys.
+Review artifact: `https://claude.ai/code/artifact/d63666e5-28ca-4019-a037-749c9fbb9b4e`.
 
 ---
 
