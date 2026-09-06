@@ -565,3 +565,36 @@ gorg, akk dog, tauntaun, wampa).
 - [Dxun – Wookieepedia (Legends)](https://starwars.fandom.com/wiki/Dxun/Legends)
 - [Kath hound – Wookieepedia (Legends)](https://starwars.fandom.com/wiki/Kath_hound/Legends)
 - [Gizka – Star Wars Saga Edition Wiki](https://swse.fandom.com/wiki/Gizka)
+
+---
+
+## 🔑 CROSS-REFERENCE against what the campaign ACTUALLY has (2026-09-05)
+
+Checked every icon above against `creature_register_rows.json` (the live 595-mod set).
+
+**Result: we already have nearly all of them, and one mod is carrying it.**
+LIVE and present: ronto · bantha · dewback · krayt dragon · vulptex · eopie ·
+massiff · anooba · womp rat · worrt · scurrier · gorg · rancor · kinrath · gizka ·
+tauntaun · nexu · acklay · reek · blurrg · varactyl · mynock · dianoga · loth-cat ·
+loth-wolf · porg · convor.
+
+⭐ **27 of the 28 found come from Star Wars Animal Collection (Continued).** That
+single mod is carrying the campaign's entire iconography — which independently
+confirms the recognizability pass's verdict that it is the cleanest large mod we
+have (only 7 of its 160 fail the terrestrial test). **It is protected content.**
+
+### 🔴 The real gap is SIX creatures — this is the recreate worklist
+
+| icon | niche it fills | why it matters here |
+|---|---|---|
+| **Luggabeast** | scavenger beast of burden — organic animal fused to a scrap yoke/harness | the single most *Jawa* animal in the franchise; near-zero-stretch reskin |
+| **Sarlacc** | stationary desert pit hazard | a monster that never moves is unusual gameplay, and it is pure Tatooine |
+| **Steelpecker** | metal-eating scrap bird | a bird that eats your metal, on a scavenger world |
+| **Rakghoul** | cave/tunnel swarm hazard | KOTOR-canon *beneath Tatooine* — fits the caverns exactly |
+| **Firaxan shark** | sea apex predator | the seas currently have almost nothing (14 live species) |
+| **Profogg** | burrowing desert pest | minor, cheap |
+
+⚠️ **Retirement note:** `jerbal` (the jerba analogue) comes from **Beasts of the
+Rim**, which is queued for retirement. Jerba is Legends-only and thin, so losing it
+is acceptable — but it is a real, if small, cost of that retirement and should be
+recorded rather than discovered later.
