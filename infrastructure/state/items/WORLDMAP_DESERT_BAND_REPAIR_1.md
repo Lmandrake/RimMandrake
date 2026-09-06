@@ -94,3 +94,10 @@ Same session, same instrument. From `arid_shrubland.md` §Owed:
   Maintain longitude-based differences as much as possible." Paint by PLUMES —
   shrubland where a Torn Sea or wind-gap lies upwind in the Hadley return flow,
   Desert elsewhere at the same arc. Damp/Grey Sea/Twilight Sea are the model survivors.
+
+## Wasteland tail (BENCH + owner, 2026-09-05)
+
+Same instrument, same session as the shrubland fold above: 19 `Wasteland` tiles at
+arc < 60 (min 37.1, up to 54 °C) are mislabeled sunward tails — re-biome per the
+ladder. The three-family split (salt basins / fallout scour / terminator pockets)
+in `wasteland.md` §0 is the reference for which tiles legitimately stay.
