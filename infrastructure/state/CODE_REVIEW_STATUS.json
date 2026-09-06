@@ -5259,6 +5259,12 @@
     "hash": "aafa3d66664d88383c2f3f99b41f96244a5f16be7ef65b47f661eb0a30c6569c",
     "sha": "6a4499e0"
   },
+  "src/RimStarWars/Armoury/Source/JawaArmoury.csproj": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "7378a644d21e190f8d205a6cd28d193e72c7bb42447f501907d5a8b44defac55",
+    "sha": "feaff12b"
+  },
   "src/RimStarWars/Armoury/Source/JumppackForMeleeAI/JobDriver_CastJumpOnce.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
