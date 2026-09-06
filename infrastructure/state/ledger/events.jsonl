@@ -5114,3 +5114,5 @@
 {"seat":"FOUNDRY","event":"file","id":"MACRO_GENERATOR_V0_1","title":"Macro generator v0: ONE idea per map — chooser + plan + terrain grid, graded on a comparator sheet by the owner (research doc §9.3 step 4)","kind":"task","target":"v1","needs":"offline","spec":"infrastructure/state/items/MACRO_GENERATOR_V0_1.md","for":"FOUNDRY","ts":"2026-09-06T19:42:46Z"}
 {"seat":"FOUNDRY","event":"claim","id":"GL_GRAPH_EMITTER_1","ts":"2026-09-06T19:42:46Z"}
 {"seat":"FOUNDRY","event":"start","id":"GL_GRAPH_EMITTER_1","ts":"2026-09-06T19:42:47Z"}
+{"seat":"FOUNDRY","event":"file","id":"CORPUS_STATS_VANILLA_CONTROLS_1","title":"Vanilla control maps for corpus_stats.py (≥10 at matched sizes) + corpus-vs-controls section; fix or drop the degenerate chokepoint proxy","kind":"task","target":"v1","needs":"bridge","spec":"infrastructure/state/items/CORPUS_STATS_VANILLA_CONTROLS_1.md","for":"FOUNDRY","ts":"2026-09-06T19:44:05Z"}
+{"seat":"FOUNDRY","event":"close","id":"CORPUS_MAP_STATISTICS_1","sha":"e29c40c98cff7e429c30483b03147d3df5a183bc","ts":"2026-09-06T19:44:11Z"}
