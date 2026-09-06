@@ -208,8 +208,16 @@ bouquet**'s spine-armored seed rolls to the burn line and dies there as fertiliz
 
 ## Owed
 
-- `CONTAGION_BIOME_PLACEMENT_1` — the exact tile list from the candidate bands (§0), the
-  3 Ashfall Range strays folded in or dissolved, the green below defined separately.
+- `CONTAGION_BIOME_PLACEMENT_1` — 🔴 **widened (owner, 2026-09-06, Badlands sitting): put
+  the Contagion everywhere it reasonably can go, as a world presence — every rain-receiving
+  non-green high on the dayside — so long as there is an excuse it is sterilized before
+  flowing down** (the UV cage on the descent). A tall mountain stays its host biome's
+  ONLY if it gets no rain from the Scald's storms; a peak that rains and stayed clean would
+  "seem odd that it couldn't infect downstream." The 3 Ashfall Range strays fold in; the
+  green below defined separately.
+- **Art: the half-transformed tree** (owner's player note): redo it so it does not say or
+  look like a "half oak" — a **"half plant"**, alien on both halves. NEW-ART ledger; rides
+  the tree-ownership work (`TREE_GRAPHICS_OWNERSHIP_1`).
 - `WATER_KINDS_TAXONOMY_1` — the owner's cross-cutting call: many kinds of water, by
   content, and the transmutations between them.
 - `MUTATION_MODIFIERS_SURVEY_1` — survey every mutation-type system in the stack before

@@ -181,3 +181,13 @@ of call this pass was told not to make unilaterally overnight.
   rescaled despite the defName being absent from every template, the
   per-defName-dictionary theory is wrong and the DLL needs a real
   decompile — don't re-guess from the XML a second time.
+
+## BENCH note, 2026-09-06 (Badlands sitting) — scope riders, not a state change
+- The repeated "art gen blocked" here is very likely `CODEX_WRAPPER_HARVEST_FIX_1`: the
+  wrapper raised on its 180 s ceiling BEFORE harvesting, so finished PNGs were reported as
+  failures — check `generated_images/` for the earlier attempts before regenerating.
+- Owner asked to "check on that Comingo/tree mod absorption ticket so we can own our own
+  vegetation without entangling multi-mod sizing crap" — this is that ticket; it now also
+  owes: the Badlands' all-alien flora (grasses and mosses first, occasional twisted trees —
+  terrestrial-analog allowed there "to give a vague suggestion of home"), and the
+  Contagion's **half-transformed tree redone as a "half plant," not a half oak**.

@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-06T23:18:07Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-06T23:42:22Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -1126,3 +1126,23 @@ kind:     task
 thin:     no ## spec, no ## criteria
 summary:  FUNGALFORESTRAIDMERGE1 — dissolve BMTFungalForest into its neighbors; ingest its content into the Rot
 prose:    infrastructure/state/items/FUNGALFOREST_RAID_MERGE_1.md
+
+## FUNGAL_SOIL_TRADE_1 Jawas dig fungal soil from the Rot and haul it to the moisture farms by ship — early money; digging sends distress through the fungal whole and brings its creatures
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  - The good: fungal soil (the Rot's mycelial ground — therot.md; the raided
+prose:    infrastructure/state/items/FUNGAL_SOIL_TRADE_1.md
+
+## MOISTURE_FARM_TEMPLATES_1 Content injection: several highly plausible moisture-farm templates (homestead, vaporator field, cistern head, compound, ruin) — needed many times over
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  - Author a family of moisture-farm templates (KCSG / the structure-template engine —
+prose:    infrastructure/state/items/MOISTURE_FARM_TEMPLATES_1.md
