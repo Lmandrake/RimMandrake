@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-06T16:13:12Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-06T16:20:10Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -642,3 +642,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/EDIBLE_GENEPACK_NATIVE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/EDIBLE_GENEPACK_NATIVE_1.md
+
+## FOUNDRY_REBOOT_HANDOFF_20260906B FOUNDRY reboot handoff 2026-09-06 (afternoon) - READ FIRST on wake
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/FOUNDRY_REBOOT_HANDOFF_20260906B.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/FOUNDRY_REBOOT_HANDOFF_20260906B.md
