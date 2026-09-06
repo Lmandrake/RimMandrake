@@ -5104,3 +5104,8 @@
 {"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","ownerSaid":"Game is up","ts":"2026-09-06T19:26:36Z"}
 {"seat":"FOUNDRY","event":"close","id":"LANDFORM_RECIPE_ROUNDTRIP_1","sha":"f28586a6be865408d7d318b65fb6dfc1e7f5d6a3","ts":"2026-09-06T19:27:45Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-06T19:27:45Z"}
+{"seat":"FOUNDRY","event":"file","id":"UNUSED_MUTATORS_WORLD_ASSIGNMENT_1","title":"Put the unused tile mutators and Geological Landforms landforms on the frozen world — 88 of ~380 in use, zero GL_* (owner 2026-09-06)","kind":"task","target":"v1","needs":"bridge","spec":"infrastructure/state/items/UNUSED_MUTATORS_WORLD_ASSIGNMENT_1.md","for":"FOUNDRY","ts":"2026-09-06T19:35:03Z"}
+{"seat":"FOUNDRY","event":"claim","id":"TERRAIN_GRID_RENDERER_1","ts":"2026-09-06T19:35:04Z"}
+{"seat":"FOUNDRY","event":"start","id":"TERRAIN_GRID_RENDERER_1","ts":"2026-09-06T19:35:05Z"}
+{"seat":"FOUNDRY","event":"claim","id":"CORPUS_MAP_STATISTICS_1","ts":"2026-09-06T19:35:06Z"}
+{"seat":"FOUNDRY","event":"start","id":"CORPUS_MAP_STATISTICS_1","ts":"2026-09-06T19:35:08Z"}
