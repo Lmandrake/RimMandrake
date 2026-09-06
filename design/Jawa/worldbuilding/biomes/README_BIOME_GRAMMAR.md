@@ -103,7 +103,8 @@ Order is by **similarity — slowly vary** (owner, 2026-09-05).
 | `fall_line.md` | **injection layer** over `ExtremeDesert` | ✅ done — no new BiomeDef |
 | `deep_desert.md` | `ExtremeDesert`, far ring | ✅ done |
 | `desert.md` | `Desert` | ✅ done |
-| **arid shrubland** | `AridShrubland` | 🔵 **NEXT — opened, awaiting the owner** |
+| `arid_shrubland.md` | `AridShrubland` | ✅ done 2026-09-05 |
+| **wasteland** | `Wasteland` | 🔵 next by the ladder (sun −9.9°) — not yet opened |
 | `wreck_fields.md` | — | ⛔ superseded by `fall_line.md` |
 
 ### 🔑 The dryland ladder is ONE number: the sun's angle
@@ -124,21 +125,10 @@ terrain is hilly enough to cast shadows and the sun is high enough to make them 
 drops to 16% of overhead, so nothing has to hide any more. That is the proposed hinge, put to
 the owner 2026-09-05 and **not yet ruled**.
 
-### Where arid shrubland was left
+### Arid shrubland — done
 
-Opened with the owner; his answer is owed. Proposed:
-- **The first ground on the dayside where you don't have to hide** — which is why vegetation
-  is continuous and why it is a shrubland rather than another desert.
-- **The inversion:** both deserts have total visibility and threats at known fixed positions.
-  This is the first biome with **cover**, so the danger stops being the ground and becomes
-  **concealment** — something can be near you without your knowing.
-- It is **low and flat at the terminator's edge** (median arc 80.8, median elevation 21.5 m,
-  largest region literally named **Damp** at arc 90.0), so R-H2b's condensation — the second
-  water source — begins to reach it.
-- ❓ **Open question put to the owner:** the poison forest is toxic because condensation
-  deposits the dayside's airborne filth and nothing washes it away. Arid shrubland is upwind,
-  on the approach. **Does the taint start here in a mild early form, or is this the last clean
-  ground before it?**
-- ⚠️ The def is scattered worse than `Desert` was — arc 15.6→112.5, −14.7→59.6 °C, with 45
-  tiles at 57 °C in the Dune Sea. Same class of defect as `WORLDMAP_DESERT_BAND_REPAIR_1` and
-  probably folds into that same bridge session.
+Sheet: `arid_shrubland.md` (2026-09-05, three passes). The taint question resolved by the
+Hadley-cell ruling: the stormwall's toxins precipitate AT the terminator, so the fog reaching
+the shrubland is the last **clean** water on the approach. The def's scatter is owed to the
+band mend (in the sheet's Owed section) — plume-painted, never a bullseye, folding into
+`WORLDMAP_DESERT_BAND_REPAIR_1`.

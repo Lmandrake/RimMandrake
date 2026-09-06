@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-06T05:08:03Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-06T05:23:29Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -551,3 +551,23 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/BEHEMOTH_TEXTURE_MISSING_LIVE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/BEHEMOTH_TEXTURE_MISSING_LIVE_1.md
+
+## TREE_GRAPHICS_OWNERSHIP_1 Own tree art at our scales: generate custom tree graphics (sweetline trees first — huge, ancient); remove tree-mod rescaling of our designs
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/TREE_GRAPHICS_OWNERSHIP_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/TREE_GRAPHICS_OWNERSHIP_1.md
+
+## TILES_STAMP_VERIFY_1 Tiles CSV frozen stamp stale AGAIN (disk b38fd685 vs stamped 65c7be19, ~1650-tile shrubland->Desert repaint unexplained): explain the census delta via git log, restamp, and make the hash check a command run by anything reading the file
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     repair
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/TILES_STAMP_VERIFY_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/TILES_STAMP_VERIFY_1.md

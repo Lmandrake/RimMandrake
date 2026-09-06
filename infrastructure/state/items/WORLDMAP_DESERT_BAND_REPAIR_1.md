@@ -82,3 +82,15 @@ planet.
 
 `world/ASHKARR_VIVIFIED_2026-08-24_tiles.csv` (21,872 tiles) and
 `world/ASHKARR_VIVIFIED_2026-08-24_settlements.csv` (121 rows), measured 2026-09-05.
+
+## AridShrubland folds in (BENCH + owner, 2026-09-05 — ratified)
+
+Same session, same instrument. From `arid_shrubland.md` §Owed:
+- Cut the 248 shrubland tiles at arc < 70 to Desert/ExtremeDesert per the sun ladder
+  (worst: 45 tiles in the Dune Sea at up to 59.6 °C). Judge Ashfall Range (85) and
+  Dew Horn (43) individually as possible legitimate anomalies.
+- Keep arc 95–100 only where a sea sits upwind (deep-fog margin); cull past arc 100.
+- 🔴 Owner's constraint, verbatim: "please don't just revert it to a bullseye world.
+  Maintain longitude-based differences as much as possible." Paint by PLUMES —
+  shrubland where a Torn Sea or wind-gap lies upwind in the Hadley return flow,
+  Desert elsewhere at the same arc. Damp/Grey Sea/Twilight Sea are the model survivors.
