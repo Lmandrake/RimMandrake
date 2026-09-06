@@ -1,0 +1,1164 @@
+s01|1|STRANGE|machine limb assemblage|abstract mechanical mass, nothing nameable
+s01|2|OBVIOUS|white rat|textbook lab rat, instant
+s01|3|OBVIOUS|cow|plain brown cow silhouette
+s01|4|OBVIOUS|butterfly|purple butterfly, instantly named
+s01|5|OBVIOUS|deer|antlered white deer, instant
+s01|6|OBVIOUS|white rat|identical rat sprite, instant
+s01|7|BORDERLINE|microscope amoeba|reads as a cell, alien at colony scale
+s01|8|BORDERLINE|microscope amoeba|same amoeba art, size variant
+s01|9|BORDERLINE|microscope amoeba|same amoeba art, size variant
+s01|10|STRANGE|glowing orb with skirt|no terrestrial referent
+s01|11|STRANGE|mushroom-covered rock|fungal lump, unnameable as animal
+s01|12|STRANGE|mushroom-covered rock|fungal lump, unnameable as animal
+s01|13|BORDERLINE|ornate moth|moth shape but heavily alien-styled
+s01|14|OBVIOUS|caterpillar|plain segmented caterpillar
+s01|15|STRANGE|walking tree stump|plant-beast hybrid, no referent
+s01|16|STRANGE|clawed brown lump|silhouette unreadable
+s01|17|STRANGE|white wisp|abstract feathered smear
+s01|18|BORDERLINE|fluffy white beast|vaguely feline but abstract
+s01|19|BORDERLINE|red crustacean|reads shrimp/scorpion-ish
+s01|20|STRANGE|feathered anemone|no referent
+s01|21|STRANGE|armoured husk|unreadable form
+s01|22|BORDERLINE|dark bug|generic insect blob
+s01|23|BORDERLINE|armoured saurian|reads as armoured dinosaur-beast
+s01|24|STRANGE|smooth dark blob|no readable features
+s02|1|STRANGE|dark segmented husk|silhouette unreadable
+s02|2|STRANGE|dark lump|no spider legs visible, unreadable
+s02|3|STRANGE|white spiny grub|no terrestrial referent
+s02|4|STRANGE|white spiny grub|no terrestrial referent
+s02|5|BORDERLINE|small red crustacean|shrimp-ish but tiny and odd
+s02|6|BORDERLINE|bee with skull head|bee body obvious, skull head alienates
+s02|7|STRANGE|boulder with legs|rock-creature, unnameable
+s02|8|OBVIOUS|wasp|striped wings and stinger, instant
+s02|9|OBVIOUS|wasp|clearly a wasp with jaws
+s02|10|OBVIOUS|bumblebee|striped fuzzy bee, instant
+s02|11|STRANGE|green blade-thing|no referent
+s02|12|OBVIOUS|yak or bison|shaggy horned bovine, instant
+s02|13|STRANGE|grey clawed arthropod|unplaceable
+s02|14|STRANGE|molten rock beast|unplaceable
+s02|15|BORDERLINE|jellyfish|orb with tentacles reads jellyfish
+s02|16|BORDERLINE|beetle grub|generic insect, semi-readable
+s02|17|OBVIOUS|lizard or iguana|plain lizard profile
+s02|18|STRANGE|crystal shard creature|no referent
+s02|19|BORDERLINE|pink finned cat|feline hint, heavily alien colouring
+s02|20|BORDERLINE|black rat|rodent-ish lump, ambiguous
+s02|21|STRANGE|spiny black mass|unreadable
+s02|22|OBVIOUS|dragon|winged green dragon, instant
+s02|23|BORDERLINE|large bird|long-necked bird, chocobo-like
+s02|24|BORDERLINE|horned sheep|ram head on abstract red cloud
+s03|1|OBVIOUS|butterfly|classic butterfly wings, instant
+s03|2|OBVIOUS|caterpillar|segmented larva, instant
+s03|3|STRANGE|shelled grub|armoured crawler, no referent
+s03|4|STRANGE|shelled grub|armoured crawler, no referent
+s03|5|STRANGE|flat dark crawler|unreadable silhouette
+s03|6|BORDERLINE|rat|rodent shape, very simplified
+s03|7|OBVIOUS|butterfly|instantly a butterfly
+s03|8|OBVIOUS|caterpillar|instantly a caterpillar
+s03|9|STRANGE|tentacled gore mass|no referent
+s03|10|OBVIOUS|crocodile|crocodilian jaw and body, instant
+s03|11|STRANGE|giant eye with tentacles|alien, unnameable
+s03|12|BORDERLINE|spider|leggy brown spider-ish body
+s03|13|BORDERLINE|spider|same spider form, larger
+s03|14|OBVIOUS|wasp|clear wasp anatomy
+s03|15|OBVIOUS|mouse or rabbit|big-eared white rodent
+s03|16|OBVIOUS|mouse or rabbit|same rodent art
+s03|17|OBVIOUS|mouse or rabbit|same rodent art
+s03|18|OBVIOUS|flamingo|unmistakable flamingo
+s03|19|BORDERLINE|white bird|generic feathered bird
+s03|20|OBVIOUS|lynx or cat|spotted cat, instant
+s03|21|STRANGE|ice mass|unreadable icy hulk
+s03|22|STRANGE|shaggy white lump|no referent
+s03|23|STRANGE|ice shard|abstract wedge
+s03|24|STRANGE|fungus-covered corpse|grotesque, unnameable
+s04|1|BORDERLINE|white ape-ox hulk|massive but hard to name
+s04|2|BORDERLINE|white ape-ox hulk|same art, decayed variant
+s04|3|BORDERLINE|striped rodent-lizard|hybrid, not cleanly nameable
+s04|4|OBVIOUS|cassowary|big blue-necked ratite, instant
+s04|5|STRANGE|tan tentacled mass|unreadable
+s04|6|STRANGE|orange spiked maw|no referent
+s04|7|BORDERLINE|slime blob|familiar game trope, not terrestrial
+s04|8|OBVIOUS|ram or sheep|curled horns, instant
+s04|9|OBVIOUS|large rodent|beaver or capybara, instant
+s04|10|STRANGE|flat spotted worm|unplaceable
+s04|11|STRANGE|red orb creature|no referent
+s04|12|STRANGE|grey armoured lump|unreadable
+s04|13|STRANGE|green clawed crawler|unplaceable
+s04|14|BORDERLINE|pink grub|reads as maggot or grub
+s04|15|BORDERLINE|toothy green fish|whale or fish-ish
+s04|16|BORDERLINE|flying insect|tiny sprite, generic fly
+s04|17|STRANGE|grey pincered insect|unplaceable
+s04|18|STRANGE|purple lump|no features
+s04|19|STRANGE|carnivorous plant|plant, not nameable species
+s04|20|STRANGE|red gore mass|no referent
+s04|21|OBVIOUS|bird|clear blue bird silhouette
+s04|22|STRANGE|dark humped bug|unreadable
+s04|23|STRANGE|purple tendrilled grub|unplaceable
+s04|24|STRANGE|black shadow with eye|abstract
+s05|1|STRANGE|dark tailed blob|unreadable
+s05|2|STRANGE|walking mushroom mound|no referent
+s05|3|STRANGE|green stalk|abstract
+s05|4|STRANGE|spiky green ball|abstract
+s05|5|OBVIOUS|black bird|raven or crow silhouette
+s05|6|STRANGE|dark low quadruped|features unreadable
+s05|7|STRANGE|dark crouching shape|unreadable
+s05|8|STRANGE|dark crouching shape|unreadable
+s05|9|STRANGE|eyed red mass|no referent
+s05|10|STRANGE|eyed red crawler|no referent
+s05|11|STRANGE|mound carrying trees|no referent
+s05|12|BORDERLINE|hermit crab|rock plus red claws suggests hermit crab
+s05|13|BORDERLINE|slim hound|greyhound-ish but odd head
+s05|14|OBVIOUS|cat|clean housecat silhouette
+s05|15|OBVIOUS|slug or snail|slug body with shell frill
+s05|16|OBVIOUS|yak|shaggy horned bovine
+s05|17|STRANGE|bladed arthropod|unplaceable
+s05|18|STRANGE|grey clawed beast|unreadable
+s05|19|STRANGE|toothy white ray|no referent
+s05|20|STRANGE|spiked tan crawler|unplaceable
+s05|21|BORDERLINE|slime blob|game-trope slime
+s05|22|STRANGE|fungal tentacle stalk|no referent
+s05|23|BORDERLINE|pale maw-beast|dog-ish but heavily distorted
+s05|24|OBVIOUS|monitor lizard|clear lizard body plan
+s06|1|OBVIOUS|bird|clear beaked feathered bird
+s06|2|BORDERLINE|tan big cat|lion-ish but crude and flat
+s06|3|STRANGE|pale flat crawler|unreadable
+s06|4|STRANGE|translucent finned thing|no referent
+s06|5|BORDERLINE|dark horned bull|bovine hint, mostly shadow
+s06|6|OBVIOUS|goat|horned goat, instant
+s06|7|BORDERLINE|green lizard-dog|hybrid, not cleanly named
+s06|8|BORDERLINE|eel|serpentine eel form
+s06|9|STRANGE|grey segmented crawler|unplaceable
+s06|10|OBVIOUS|butterfly|small but clearly a butterfly
+s06|11|BORDERLINE|shelled quadruped|snail-goat hybrid, odd
+s06|12|STRANGE|mountain with claws|no referent
+s06|13|STRANGE|small orange blob|no features
+s06|14|STRANGE|tentacled maw|no referent
+s06|15|STRANGE|rock sprouting hands|no referent
+s06|16|STRANGE|blue frilled creature|unplaceable
+s06|17|STRANGE|abstract shelled thing|unreadable
+s06|18|STRANGE|segmented worm|abstract
+s06|19|BORDERLINE|spiky grey megafauna|rhino-ish, ambiguous
+s06|20|BORDERLINE|black ox|bovine bulk, low detail
+s06|21|STRANGE|red many-eyed thing|no referent
+s06|22|STRANGE|fungal mound|no referent
+s06|23|STRANGE|fungal mound|no referent
+s06|24|STRANGE|green wisp-lizard|unplaceable
+s07|1|STRANGE|alien insectoid|no terrestrial insect referent
+s07|2|STRANGE|alien insectoid queen|unplaceable
+s07|3|STRANGE|dark rock lump|unreadable
+s07|4|STRANGE|red many-eyed crawler|no referent
+s07|5|STRANGE|pale tendrilled mech|machine, not a nameable animal
+s07|6|STRANGE|bladed mech|machine, not a nameable animal
+s07|7|STRANGE|armoured mech|machine, not a nameable animal
+s07|8|STRANGE|snouted mech|machine, not a nameable animal
+s07|9|STRANGE|heavy mech|machine, not a nameable animal
+s07|10|STRANGE|mech worm|machine, not a nameable animal
+s07|11|STRANGE|walker mech|machine, not a nameable animal
+s07|12|STRANGE|flamethrower mech|machine, not a nameable animal
+s07|13|STRANGE|artillery mech|machine, not a nameable animal
+s07|14|STRANGE|combat mech|machine, not a nameable animal
+s07|15|STRANGE|bladed mech|machine, not a nameable animal
+s07|16|STRANGE|mech officer|machine, not a nameable animal
+s07|17|STRANGE|scythe mech|machine, not a nameable animal
+s07|18|STRANGE|utility mech|machine, not a nameable animal
+s07|19|STRANGE|gun mech|machine, not a nameable animal
+s07|20|STRANGE|armoured mech|machine, not a nameable animal
+s07|21|STRANGE|cannon mech|machine, not a nameable animal
+s07|22|STRANGE|assembler mech|machine, not a nameable animal
+s07|23|STRANGE|mech centipede|machine, not a nameable animal
+s07|24|STRANGE|gun mech|machine, not a nameable animal
+s08|1|STRANGE|cleaner mech|machine, not a nameable animal
+s08|2|STRANGE|bladed mech|machine, not a nameable animal
+s08|3|STRANGE|strider mech|machine, not a nameable animal
+s08|4|STRANGE|siege mech|machine, not a nameable animal
+s08|5|STRANGE|siege mech|machine, not a nameable animal
+s08|6|STRANGE|gun mech|machine, not a nameable animal
+s08|7|STRANGE|insectoid mech empress|machine, not a nameable animal
+s08|8|STRANGE|red fleshy tentacled blob|no referent
+s08|9|STRANGE|eyed flesh blob|no referent
+s08|10|STRANGE|orange flesh blob|no referent
+s08|11|STRANGE|tumorous flesh blob|no referent
+s08|12|STRANGE|bulbous flesh blob|no referent
+s08|13|STRANGE|tan flesh blob|no referent
+s08|14|OBVIOUS|hot air balloon|vehicle, not a creature
+s08|15|OBVIOUS|cart with draft beast|vehicle, not a creature
+s08|16|OBVIOUS|wagon with draft beasts|vehicle, not a creature
+s08|17|OBVIOUS|sled with draft beasts|vehicle, not a creature
+s08|18|OBVIOUS|artillery cart|vehicle, not a creature
+s08|19|OBVIOUS|outrigger canoe|vehicle, not a creature
+s08|20|OBVIOUS|cart with shaggy beasts|vehicle, not a creature
+s08|21|OBVIOUS|palanquin|vehicle, not a creature
+s08|22|OBVIOUS|rickshaw|vehicle, not a creature
+s08|23|OBVIOUS|rowboat|vehicle, not a creature
+s08|24|OBVIOUS|war chariot with lizards|vehicle, not a creature
+s09|1|OBVIOUS|wheelbarrow|vehicle, not a creature
+s09|2|STRANGE|pink flesh mass|no referent
+s09|3|STRANGE|matted flesh beast|unreadable
+s09|4|STRANGE|maw-flesh mass|no referent
+s09|5|STRANGE|lumpy flesh mound|no referent
+s09|6|STRANGE|pink meat slab|no referent
+s09|7|STRANGE|dark faceted sphere|abstract
+s09|8|STRANGE|pale spined flesh|no referent
+s09|9|STRANGE|shredded metal-flesh|unreadable
+s09|10|STRANGE|red energy sphere|abstract
+s09|11|STRANGE|dark horned crawler|unplaceable
+s09|12|STRANGE|dark upright shape|unreadable
+s09|13|STRANGE|dark hunched form|unreadable
+s09|14|STRANGE|flesh mass|no referent
+s09|15|STRANGE|pink flesh mass|no referent
+s09|16|OBVIOUS|alligator|open alligator jaws, instant
+s09|17|OBVIOUS|armadillo|banded shell, instant
+s09|18|BORDERLINE|white big cat|feline face but stylised
+s09|19|OBVIOUS|black bear|unmistakable bear
+s09|20|OBVIOUS|bear|bear head and fur, instant
+s09|21|BORDERLINE|large marsupial|koala or kangaroo-ish, odd colours
+s09|22|OBVIOUS|ox or antelope|horned bovine, instant
+s09|23|OBVIOUS|jerboa or kangaroo|hopping rodent, instant
+s09|24|OBVIOUS|mandrill|colourful monkey, instant
+s10|1|OBVIOUS|mandrill|coloured monkey face, instant
+s10|2|BORDERLINE|squid|orange cephalopod-ish, crude art
+s10|3|UNJUDGEABLE|pale abstract shape|sprite unreadable at this size
+s10|4|OBVIOUS|penguin|unmistakable penguin
+s10|5|OBVIOUS|spotted deer|deer body and antlers, instant
+s10|6|BORDERLINE|giant tortoise|shell plus long neck, hybrid
+s10|7|OBVIOUS|earthworm|plain segmented worm
+s10|8|OBVIOUS|giraffe or deer|long-necked ungulate, instant
+s10|9|BORDERLINE|horse or tapir|equine-ish, crude
+s10|10|OBVIOUS|zebra|stripes, instant
+s10|11|STRANGE|insect queen|no terrestrial referent
+s10|12|STRANGE|shaggy horned lump|unreadable
+s10|13|BORDERLINE|caterpillar grub|generic larva
+s10|14|BORDERLINE|pupa|generic insect pupa
+s10|15|OBVIOUS|slug|classic slug with eyestalks
+s10|16|BORDERLINE|lizard-fish|ambiguous form
+s10|17|OBVIOUS|bird|red parrot-like bird
+s10|18|OBVIOUS|yak|shaggy horned bovine
+s10|19|BORDERLINE|larva|generic white grub
+s10|20|BORDERLINE|moth|moth-ish but distorted
+s10|21|STRANGE|red pod|featureless
+s10|22|OBVIOUS|beetle|striped elytra, instant
+s10|23|BORDERLINE|grub|generic white maggot
+s10|24|BORDERLINE|pupa|generic insect pupa
+s11|1|OBVIOUS|bat|ears and wing membrane, instant
+s11|2|STRANGE|cactus clump on rock|creature hidden inside plant form
+s11|3|OBVIOUS|cricket|jumping leg and body, instant
+s11|4|OBVIOUS|mouse or lemming|small rodent, instant
+s11|5|OBVIOUS|spider|eight legs, instant
+s11|6|OBVIOUS|snail|shell and foot, instant
+s11|7|BORDERLINE|lizard|crested reptile, ambiguous species
+s11|8|BORDERLINE|beetle|beetle with crystal growths
+s11|9|BORDERLINE|grub|generic larva
+s11|10|BORDERLINE|pupa|generic insect pupa
+s11|11|STRANGE|crystal cluster|creature not readable
+s11|12|BORDERLINE|furry mole|mole-ish but crystalline
+s11|13|STRANGE|floating crystal shards|no referent
+s11|14|BORDERLINE|crystal antelope|ungulate hint under crystal
+s11|15|OBVIOUS|axolotl or newt|external gills, instant
+s11|16|BORDERLINE|centipede|many-legged crawler
+s11|17|OBVIOUS|moth|wings and antennae, instant
+s11|18|BORDERLINE|caterpillar|generic larva
+s11|19|BORDERLINE|pupa|generic insect pupa
+s11|20|OBVIOUS|salamander|bright newt, instant
+s11|21|OBVIOUS|spider|hairy tarantula, instant
+s11|22|BORDERLINE|beetle|beetle-ish, mechanical colouring
+s11|23|BORDERLINE|grub|generic larva
+s11|24|BORDERLINE|pupa|generic insect pupa
+s12|1|BORDERLINE|frog|amphibian hint, dark and abstract
+s12|2|OBVIOUS|spider|eight legs, instant
+s12|3|BORDERLINE|slug or weasel|ambiguous soft-bodied crawler
+s12|4|STRANGE|fungal tendrils|creature hidden in fungus
+s12|5|STRANGE|fungal lump|unreadable
+s12|6|BORDERLINE|isopod|segmented pillbug-ish
+s12|7|OBVIOUS|slug|classic slug, instant
+s12|8|OBVIOUS|snail|spiral shell, instant
+s12|9|OBVIOUS|penguin|unmistakable penguin
+s12|10|OBVIOUS|bat|ears and wings, instant
+s12|11|OBVIOUS|slug|slug body, instant
+s12|12|OBVIOUS|toad|warty toad, instant
+s12|13|OBVIOUS|toad|warty toad, instant
+s12|14|OBVIOUS|mammoth|tusks and shaggy coat, instant
+s12|15|STRANGE|many-tongued green beast|no referent
+s12|16|OBVIOUS|toad|warty toad, instant
+s12|17|BORDERLINE|shelled snail-thing|ambiguous
+s12|18|OBVIOUS|beetle|glossy elytra, instant
+s12|19|BORDERLINE|grub|generic larva
+s12|20|BORDERLINE|pupa|generic insect pupa
+s12|21|BORDERLINE|dragon|club-tailed drake, fantasy staple
+s12|22|BORDERLINE|lizard|iguana-ish with flame crest
+s12|23|OBVIOUS|bat|clear bat wings and ears
+s12|24|BORDERLINE|centipede|many-legged crawler
+s13|1|OBVIOUS|snail|spiral shell and foot, instant
+s13|2|OBVIOUS|mole|classic mole silhouette
+s13|3|OBVIOUS|mole or badger|clawed burrower, instant
+s13|4|BORDERLINE|beetle|plain elytra lump
+s13|5|BORDERLINE|grub|generic larva
+s13|6|BORDERLINE|pupa|generic insect pupa
+s13|7|BORDERLINE|fox|fennec ears under moss
+s13|8|OBVIOUS|pillbug or woodlouse|segmented isopod, instant
+s13|9|BORDERLINE|worm|segmented crawler with pod
+s13|10|OBVIOUS|eagle or bird|hooked beak and feathers
+s13|11|OBVIOUS|rhinoceros beetle|horned beetle, instant
+s13|12|BORDERLINE|grub|generic larva
+s13|13|BORDERLINE|pupa|generic insect pupa
+s13|14|BORDERLINE|rodent|rat-ish, indistinct
+s13|15|BORDERLINE|caterpillar|large larva
+s13|16|BORDERLINE|beetle|pincered insect
+s13|17|BORDERLINE|grub|generic larva
+s13|18|BORDERLINE|pupa|generic insect pupa
+s13|19|BORDERLINE|crystal slug|slug with crystal shell
+s13|20|OBVIOUS|sheep|woolly sheep, instant
+s13|21|OBVIOUS|scorpion|raised sting tail, instant
+s13|22|BORDERLINE|pale quadruped|indistinct mammal
+s13|23|OBVIOUS|rabbit|long ears, instant
+s13|24|STRANGE|rock-backed lump|unreadable
+s14|1|BORDERLINE|spiky white reptile|lizard hint, otherwise odd
+s14|2|OBVIOUS|mole|claws and snout, instant
+s14|3|OBVIOUS|bat|wings and ears, instant
+s14|4|BORDERLINE|seal or manatee|smooth aquatic mammal-ish
+s14|5|BORDERLINE|white rodent|indistinct small mammal
+s14|6|BORDERLINE|octopus|arms read cephalopod, leafy colouring
+s14|7|OBVIOUS|axolotl|pink with gills, instant
+s14|8|OBVIOUS|flamingo|unmistakable flamingo
+s14|9|BORDERLINE|pangolin or spiny beast|scaly hint, dark
+s14|10|BORDERLINE|monitor lizard|reptile shape, murky
+s14|11|OBVIOUS|seabird|petrel or gull, instant
+s14|12|STRANGE|machine-shelled bug|unplaceable
+s14|13|OBVIOUS|vulture|bald head and hunch, instant
+s14|14|STRANGE|green pustuled insect|no clean referent
+s14|15|STRANGE|green pustuled insect queen|no clean referent
+s14|16|STRANGE|spiked carnivorous plant|no animal referent
+s14|17|BORDERLINE|locust or mantis|insect limbs, abstracted
+s14|18|OBVIOUS|stoat or weasel|long-bodied mustelid, instant
+s14|19|OBVIOUS|toad|warty amphibian, instant
+s14|20|BORDERLINE|salamander|pale amphibian-ish
+s14|21|OBVIOUS|goat|floppy-eared goat, instant
+s14|22|BORDERLINE|krill or shrimp|small crustacean-ish
+s14|23|OBVIOUS|fly|big-eyed fly, instant
+s14|24|BORDERLINE|maggot|generic larva
+s15|1|BORDERLINE|cockroach|roach-ish shell, dark
+s15|2|OBVIOUS|catfish|barbels and fins, instant
+s15|3|STRANGE|green winged husk|unreadable
+s15|4|OBVIOUS|fish|clear fish silhouette
+s15|5|OBVIOUS|fish|clear fish silhouette
+s15|6|OBVIOUS|fish|clear fish silhouette
+s15|7|BORDERLINE|tadpole|amphibian larva, simple
+s15|8|STRANGE|green pustuled insect|no clean referent
+s15|9|STRANGE|green pustuled insect queen|no clean referent
+s15|10|STRANGE|green pustuled insect|no clean referent
+s15|11|BORDERLINE|caterpillar|segmented larva
+s15|12|BORDERLINE|dark bird|crow-ish, murky
+s15|13|BORDERLINE|snail-crawler|shell hint, indistinct
+s15|14|OBVIOUS|moth|patterned wings, instant
+s15|15|BORDERLINE|caterpillar|spiny larva
+s15|16|STRANGE|dark pupa lump|featureless
+s15|17|BORDERLINE|snail|shelled crawler
+s15|18|OBVIOUS|turtle|shell and head, instant
+s15|19|OBVIOUS|sheep or ram|curled horns and fleece
+s15|20|BORDERLINE|turtle-lizard|ambiguous
+s15|21|BORDERLINE|shaggy rodent|marmot-ish blob
+s15|22|BORDERLINE|hairless dog|canine shape, sickly
+s15|23|STRANGE|mech with cargo|machine, not a nameable animal
+s15|24|STRANGE|bladed mech insect|machine, not a nameable animal
+s16|1|STRANGE|mechanoid|machine, not a nameable animal
+s16|2|STRANGE|mechanoid|machine, not a nameable animal
+s16|3|STRANGE|mechanoid|machine, not a nameable animal
+s16|4|STRANGE|mechanoid|machine, not a nameable animal
+s16|5|STRANGE|mechanoid|machine, not a nameable animal
+s16|6|STRANGE|mechanoid|machine, not a nameable animal
+s16|7|STRANGE|mechanoid|machine, not a nameable animal
+s16|8|STRANGE|mechanoid|machine, not a nameable animal
+s16|9|STRANGE|mechanoid|machine, not a nameable animal
+s16|10|STRANGE|mechanoid|machine, not a nameable animal
+s16|11|STRANGE|mechanoid|machine, not a nameable animal
+s16|12|STRANGE|mechanoid|machine, not a nameable animal
+s16|13|STRANGE|mechanoid|machine, not a nameable animal
+s16|14|STRANGE|insectoid mech queen|machine, not a nameable animal
+s16|15|STRANGE|lumpy tan growth|unreadable
+s16|16|OBVIOUS|rat|classic rat, instant
+s16|17|STRANGE|bladed mech|machine, not a nameable animal
+s16|18|STRANGE|mech pod|machine, not a nameable animal
+s16|19|STRANGE|mechanoid|machine, not a nameable animal
+s16|20|STRANGE|mechanoid|machine, not a nameable animal
+s16|21|STRANGE|mechanoid|machine, not a nameable animal
+s16|22|STRANGE|scyther mech|machine, not a nameable animal
+s16|23|BORDERLINE|squid|tentacled cephalopod-ish
+s16|24|OBVIOUS|octopus|blue-ringed octopus, instant
+s17|1|OBVIOUS|nautilus|spiral chambered shell, instant
+s17|2|OBVIOUS|alpaca|unmistakable alpaca
+s17|3|OBVIOUS|beaver|paddle tail, instant
+s17|4|OBVIOUS|grizzly bear|unmistakable bear
+s17|5|OBVIOUS|polar bear|unmistakable bear
+s17|6|OBVIOUS|bison|humped horned bovine
+s17|7|BORDERLINE|deer with gas sacs|ungulate plus alien bladders
+s17|8|OBVIOUS|rat|classic rat
+s17|9|OBVIOUS|capybara|large rodent, instant
+s17|10|OBVIOUS|caribou|antlered deer
+s17|11|OBVIOUS|cassowary|unmistakable cassowary
+s17|12|OBVIOUS|cat|housecat, instant
+s17|13|OBVIOUS|chicken|unmistakable chicken
+s17|14|OBVIOUS|chinchilla|fluffy rodent
+s17|15|OBVIOUS|cobra|hooded snake, instant
+s17|16|OBVIOUS|cougar|big cat, instant
+s17|17|OBVIOUS|cow|unmistakable cow
+s17|18|OBVIOUS|deer|antlered deer
+s17|19|OBVIOUS|donkey|unmistakable donkey
+s17|20|OBVIOUS|camel|dromedary hump, instant
+s17|21|OBVIOUS|duck|mallard, instant
+s17|22|OBVIOUS|elephant|trunk and ears, instant
+s17|23|OBVIOUS|elk|antlered deer
+s17|24|OBVIOUS|emu|ratite bird, instant
+s18|1|OBVIOUS|fox|unmistakable fox
+s18|2|OBVIOUS|fox|big-eared fox, instant
+s18|3|OBVIOUS|fox|red fox, instant
+s18|4|OBVIOUS|gazelle|horned antelope, instant
+s18|5|OBVIOUS|goat|unmistakable goat
+s18|6|OBVIOUS|goose|unmistakable goose
+s18|7|OBVIOUS|guinea pig|round rodent, instant
+s18|8|OBVIOUS|hare|long ears, instant
+s18|9|OBVIOUS|horse|unmistakable horse
+s18|10|OBVIOUS|husky dog|unmistakable dog
+s18|11|OBVIOUS|ibex|curved horns goat, instant
+s18|12|OBVIOUS|iguana|spined lizard, instant
+s18|13|OBVIOUS|dog|labrador, instant
+s18|14|OBVIOUS|lynx|tufted-ear cat, instant
+s18|15|STRANGE|mech centipede|machine, not a nameable animal
+s18|16|STRANGE|mech centipede|machine, not a nameable animal
+s18|17|STRANGE|mech centipede|machine, not a nameable animal
+s18|18|STRANGE|mechanoid|machine, not a nameable animal
+s18|19|STRANGE|mechanoid|machine, not a nameable animal
+s18|20|STRANGE|mechanoid|machine, not a nameable animal
+s18|21|STRANGE|mech termite|machine, not a nameable animal
+s18|22|BORDERLINE|beetle|insectoid, stylised
+s18|23|OBVIOUS|sloth or anteater|shaggy long-snouted mammal
+s18|24|BORDERLINE|spider|insectoid spider, stylised
+s19|1|OBVIOUS|monkey|curled tail primate, instant
+s19|2|BORDERLINE|shaggy bovine|muffalo, bison-like but odd face
+s19|3|OBVIOUS|ostrich|long-necked ratite, instant
+s19|4|OBVIOUS|big cat|panther silhouette
+s19|5|OBVIOUS|pig|unmistakable pig
+s19|6|OBVIOUS|raccoon|masked face and ringed tail
+s19|7|OBVIOUS|rat|classic rat
+s19|8|OBVIOUS|rhinoceros|horn and bulk, instant
+s19|9|OBVIOUS|sheep|woolly sheep, instant
+s19|10|OBVIOUS|hare|long ears, instant
+s19|11|STRANGE|pale many-limbed crawler|no referent
+s19|12|OBVIOUS|squirrel|bushy tail, instant
+s19|13|STRANGE|horned white beast|thrumbo, unnameable to newcomers
+s19|14|OBVIOUS|tortoise|domed shell, instant
+s19|15|OBVIOUS|turkey|wattle and fan tail, instant
+s19|16|BORDERLINE|wolf-like beast|canine but exaggerated
+s19|17|OBVIOUS|wild boar|tusked pig, instant
+s19|18|OBVIOUS|wolf|unmistakable wolf
+s19|19|OBVIOUS|wolf|unmistakable wolf
+s19|20|OBVIOUS|yak|horned shaggy bovine
+s19|21|OBVIOUS|terrier dog|small dog, instant
+s19|22|BORDERLINE|owl-cat hybrid|reads owl-ish, chimeric
+s19|23|STRANGE|green mound-slug|unreadable
+s19|24|STRANGE|grey shaggy hulk|indistinct mass
+s20|1|BORDERLINE|bird|parrot-ish, muddy art
+s20|2|OBVIOUS|rooster|comb and wattle, instant
+s20|3|OBVIOUS|ram|big curled horn, instant
+s20|4|BORDERLINE|owl or small mammal|indistinct brown lump
+s20|5|OBVIOUS|bison|humped horned bovine
+s20|6|OBVIOUS|dog or wolf|canine head and ears
+s20|7|STRANGE|grey armoured lump|unreadable
+s20|8|BORDERLINE|small cat or rabbit|ambiguous small mammal
+s20|9|STRANGE|spiked grey hulk|no referent
+s20|10|OBVIOUS|boar|tusked pig head, instant
+s20|11|BORDERLINE|mosquito|long-beaked insect
+s20|12|OBVIOUS|bird|clear flying bird
+s20|13|BORDERLINE|moose|palmate antlers, otherwise odd
+s20|14|STRANGE|white rock mass|unreadable
+s20|15|OBVIOUS|mole|blind burrower, instant
+s20|16|OBVIOUS|toad|warty amphibian, instant
+s20|17|BORDERLINE|white furry beast|indistinct
+s20|18|BORDERLINE|brown furry beast|indistinct
+s20|19|OBVIOUS|bird|feathered bird, instant
+s20|20|OBVIOUS|rabbit|long ears, instant
+s20|21|OBVIOUS|rabbit|long ears, instant
+s20|22|OBVIOUS|large bird|chocobo, reads as ostrich-bird
+s20|23|OBVIOUS|frog|frog silhouette, instant
+s20|24|OBVIOUS|snake|coiled snake, instant
+s21|1|OBVIOUS|snail|spiral shell, instant
+s21|2|OBVIOUS|monitor lizard|clear lizard body, instant
+s21|3|OBVIOUS|small bird|songbird, instant
+s21|4|OBVIOUS|quail or bird|plump bird, instant
+s21|5|BORDERLINE|crab|claw shape, crude sprite
+s21|6|OBVIOUS|tortoise|shell and head, instant
+s21|7|BORDERLINE|toad|amphibian hint, odd colouring
+s21|8|OBVIOUS|toad|warty toad, instant
+s21|9|OBVIOUS|toad|warty toad, instant
+s21|10|STRANGE|spindly grey arachnid|alien insectoid, unnameable
+s21|11|STRANGE|spindly grey arachnid|alien insectoid, unnameable
+s21|12|STRANGE|bladed grey insectoid|no referent
+s21|13|STRANGE|grey hunched worm-beast|unplaceable
+s21|14|STRANGE|armoured worm|no referent
+s21|15|STRANGE|toothed insectoid|no referent
+s21|16|STRANGE|tan lumpy dryad|no referent
+s21|17|STRANGE|tan lumpy dryad|no referent
+s21|18|STRANGE|green lumpy dryad|no referent
+s21|19|STRANGE|tan lumpy dryad|no referent
+s21|20|STRANGE|pink lumpy dryad|no referent
+s21|21|STRANGE|antlered lumpy dryad|no referent
+s21|22|STRANGE|teal lumpy dryad|no referent
+s21|23|STRANGE|orange lumpy dryad|no referent
+s21|24|BORDERLINE|fish|small finned fish, stylised
+s22|1|STRANGE|alien insectoid|iridescent, no referent
+s22|2|STRANGE|alien insectoid|no referent
+s22|3|BORDERLINE|isopod|armoured woodlouse-ish
+s22|4|STRANGE|armoured worm-beast|no referent
+s22|5|STRANGE|spiked crystal beetle|unplaceable
+s22|6|OBVIOUS|lizard|plain lizard body, instant
+s22|7|BORDERLINE|small dinosaur|generic dino, not a named one
+s22|8|OBVIOUS|tyrannosaur-type dinosaur|big theropod, instantly dinosaur
+s22|9|OBVIOUS|ladybug|red-spotted beetle, instant
+s22|10|OBVIOUS|lizard|monitor lizard shape
+s22|11|OBVIOUS|tyrannosaur-type dinosaur|classic theropod silhouette
+s22|12|OBVIOUS|tyrannosaur-type dinosaur|classic theropod silhouette
+s22|13|OBVIOUS|ankylosaurus|armoured club-tail dinosaur, instant
+s22|14|OBVIOUS|armoured dinosaur|ankylosaur silhouette
+s22|15|OBVIOUS|brontosaurus|long-neck sauropod, instant
+s22|16|BORDERLINE|bird-dinosaur|feathered biped, ambiguous
+s22|17|OBVIOUS|brontosaurus|long-neck sauropod, instant
+s22|18|OBVIOUS|millipede|segmented many-legged, instant
+s22|19|OBVIOUS|triceratops-type dinosaur|frilled ceratopsian, instant
+s22|20|BORDERLINE|crocodile-snouted dinosaur|hybrid read, not a named dino
+s22|21|STRANGE|segmented tube creature|unreadable
+s22|22|BORDERLINE|generic theropod|dinosaur but not a named one
+s22|23|OBVIOUS|frog|giant frog, instant
+s22|24|OBVIOUS|snail|spiral shell, instant
+s23|1|OBVIOUS|brontosaurus|long-neck sauropod, instant
+s23|2|BORDERLINE|short-necked sauropod|dinosaur but odd proportions
+s23|3|BORDERLINE|feathered raptor|colourful bird-dino, ambiguous
+s23|4|OBVIOUS|brontosaurus|long-neck sauropod, instant
+s23|5|BORDERLINE|duckbill dinosaur|generic ornithopod
+s23|6|OBVIOUS|tyrannosaur-type dinosaur|large theropod, instant
+s23|7|OBVIOUS|tyrannosaur-type dinosaur|large theropod, instant
+s23|8|BORDERLINE|generic theropod|dinosaur, not a named one
+s23|9|BORDERLINE|horned dinosaur|ceratopsian-ish, odd frill
+s23|10|BORDERLINE|small lizard-dinosaur|ambiguous
+s23|11|BORDERLINE|small theropod|generic dino
+s23|12|BORDERLINE|duckbill dinosaur|crested ornithopod, not famous
+s23|13|BORDERLINE|crested theropod|generic dino
+s23|14|BORDERLINE|isopod or grub|segmented insect
+s23|15|OBVIOUS|velociraptor|raptor silhouette, instant
+s23|16|OBVIOUS|crocodile|long-jawed croc, instant
+s23|17|BORDERLINE|spiked reptile|croc-ish, unfamiliar
+s23|18|OBVIOUS|dilophosaurus|frilled spitter, Jurassic Park famous
+s23|19|OBVIOUS|dimetrodon-type|sail-backed reptile, instant
+s23|20|OBVIOUS|snake|coiled snake, instant
+s23|21|STRANGE|flame-finned amphibian|no clean referent
+s23|22|BORDERLINE|small ornithopod|generic dino
+s23|23|BORDERLINE|small ornithopod|generic dino
+s23|24|OBVIOUS|velociraptor|raptor silhouette, instant
+s24|1|BORDERLINE|duckbill dinosaur|generic ornithopod
+s24|2|OBVIOUS|dimetrodon|red sail-back, instant
+s24|3|BORDERLINE|duckbill dinosaur|generic ornithopod
+s24|4|BORDERLINE|small sauropod|dinosaur, unnamed type
+s24|5|OBVIOUS|horned dinosaur|ceratopsian frill and horns
+s24|6|OBVIOUS|ankylosaurus|armoured club-tail dinosaur
+s24|7|OBVIOUS|millipede|banded many-legged, instant
+s24|8|BORDERLINE|ostrich-dinosaur|reads part bird part dino
+s24|9|BORDERLINE|spotted theropod|generic dino
+s24|10|OBVIOUS|pterodactyl|winged pterosaur, instant
+s24|11|BORDERLINE|scorpion or arthropod|ambiguous invertebrate
+s24|12|BORDERLINE|plesiosaur-ish beast|marine reptile, ambiguous
+s24|13|OBVIOUS|snake|long coiled snake, instant
+s24|14|BORDERLINE|sabre-toothed reptile|mammal-reptile hybrid look
+s24|15|BORDERLINE|long-necked raptor|odd swan-dino hybrid
+s24|16|STRANGE|purple horned beetle-beast|no referent
+s24|17|BORDERLINE|domed-head dinosaur|pachycephalosaur, not famous
+s24|18|BORDERLINE|lizard|small reptile, ambiguous
+s24|19|BORDERLINE|spotted salamander-reptile|ambiguous
+s24|20|BORDERLINE|small sauropod|dinosaur, unnamed
+s24|21|OBVIOUS|white tyrannosaur|Jurassic World hybrid, reads T-rex
+s24|22|OBVIOUS|raptor|velociraptor silhouette
+s24|23|BORDERLINE|beaked mammal-reptile|ambiguous
+s24|24|BORDERLINE|crocodile-lizard|croc-ish, unfamiliar
+s25|1|OBVIOUS|stegosaurus|back plates and spikes, instant
+s25|2|BORDERLINE|spined theropod|generic dino
+s25|3|OBVIOUS|horned dinosaur|ceratopsian, instant
+s25|4|BORDERLINE|sabre-toothed reptile|ambiguous synapsid
+s25|5|OBVIOUS|wasp or hornet|striped flying insect, instant
+s25|6|OBVIOUS|praying mantis|raptorial forelimbs, instant
+s25|7|OBVIOUS|dragonfly|giant dragonfly, instant
+s25|8|BORDERLINE|generic theropod|dinosaur, unnamed
+s25|9|BORDERLINE|crested small dinosaur|generic dino
+s25|10|BORDERLINE|duckbill dinosaur|generic ornithopod
+s25|11|BORDERLINE|feathered theropod|white raptor, ambiguous
+s25|12|OBVIOUS|horned dinosaur|ceratopsian frill, instant
+s25|13|OBVIOUS|pterosaur|winged pterodactyl, instant
+s25|14|BORDERLINE|crocodile-lizard|ambiguous reptile
+s25|15|BORDERLINE|crocodile-lizard|ambiguous reptile
+s25|16|OBVIOUS|spinosaurus-type|sail-backed dinosaur, instant
+s25|17|BORDERLINE|beaked dinosaur|oviraptor, not widely known
+s25|18|BORDERLINE|domed-head dinosaur|pachycephalosaur, not famous
+s25|19|OBVIOUS|horned dinosaur|ceratopsian, instant
+s25|20|OBVIOUS|parasaurolophus|crested duckbill, Jurassic Park famous
+s25|21|BORDERLINE|small ornithopod|generic dino
+s25|22|STRANGE|sail-backed amphibian|no clean referent
+s25|23|BORDERLINE|crocodile|croc-ish reptile
+s25|24|OBVIOUS|horned dinosaur|small ceratopsian, instant
+s26|1|STRANGE|small dark arthropod|too indistinct to name
+s26|2|STRANGE|red slug-blob|featureless
+s26|3|BORDERLINE|beaked small dinosaur|ambiguous
+s26|4|OBVIOUS|pterodactyl|crested pterosaur, instant
+s26|5|OBVIOUS|scorpion|pale giant scorpion, instant
+s26|6|BORDERLINE|small ornithopod|generic dino
+s26|7|BORDERLINE|pterosaur head|partial sprite, hard to read
+s26|8|OBVIOUS|tyrannosaur-type dinosaur|theropod, instant
+s26|9|BORDERLINE|duckbill dinosaur|generic ornithopod
+s26|10|BORDERLINE|pterosaur|winged reptile, odd colouring
+s26|11|OBVIOUS|brontosaurus|long-neck sauropod, instant
+s26|12|OBVIOUS|crocodile|long-jawed croc, instant
+s26|13|BORDERLINE|armoured reptile|ankylosaur-ish, unfamiliar
+s26|14|STRANGE|clawed feathered biped|therizinosaur, reads alien
+s26|15|OBVIOUS|spinosaurus|sail back and croc snout, famous
+s26|16|BORDERLINE|small theropod|generic dino
+s26|17|OBVIOUS|stegosaurus|plates and spikes, instant
+s26|18|BORDERLINE|horned dinosaur|spiky-headed, unfamiliar
+s26|19|OBVIOUS|horned dinosaur|ceratopsian, instant
+s26|20|BORDERLINE|croc-snouted theropod|ambiguous
+s26|21|OBVIOUS|brontosaurus|long-neck sauropod, instant
+s26|22|BORDERLINE|long-necked marine reptile|plesiosaur-ish
+s26|23|BORDERLINE|generic dinosaur|unnamed ornithopod
+s26|24|STRANGE|orange mech-insect|machine-insect, no referent
+s27|1|BORDERLINE|small sauropod|art hides the alien claws
+s27|2|OBVIOUS|snake|huge coiled snake, instant
+s27|3|OBVIOUS|triceratops-type|frill and horns, instant
+s27|4|OBVIOUS|triceratops|the famous silhouette, instant
+s27|5|BORDERLINE|small raptor|generic feathered dino
+s27|6|OBVIOUS|pterosaur|crested pterodactyl, instant
+s27|7|OBVIOUS|tyrannosaurus rex|the most named dinosaur alive
+s27|8|BORDERLINE|horned dinosaur|ceratopsian without famous frill
+s27|9|BORDERLINE|small ornithopod|generic dino
+s27|10|OBVIOUS|velociraptor|Jurassic Park raptor, instant
+s27|11|OBVIOUS|giant snake or eel|serpent, instant
+s27|12|OBVIOUS|tyrannosaur-type dinosaur|theropod, instant
+s27|13|BORDERLINE|feathered bird-dino|ambiguous
+s27|14|OBVIOUS|snake|green serpent, instant
+s27|15|OBVIOUS|tyrannosaur-type dinosaur|feathered theropod, still T-rex-ish
+s27|16|BORDERLINE|small dinosaur|generic dino
+s27|17|BORDERLINE|duckbill dinosaur|generic ornithopod
+s27|18|UNJUDGEABLE|tiled scale texture|sprite is a texture sheet, not a creature
+s27|19|OBVIOUS|rat|classic rat, instant
+s27|20|OBVIOUS|rat|classic rat, instant
+s27|21|OBVIOUS|lemming or mouse|small rodent, instant
+s27|22|OBVIOUS|mouse|classic mouse, instant
+s27|23|OBVIOUS|mouse|classic mouse, instant
+s27|24|BORDERLINE|badger or mustelid|striped carnivore, ambiguous
+s28|1|OBVIOUS|millipede|segmented many-legged, instant
+s28|2|OBVIOUS|cattle|horned bovine, instant
+s28|3|OBVIOUS|otter or beaver|semi-aquatic rodent look
+s28|4|BORDERLINE|horse-gorilla hybrid|odd ungulate, hard to name
+s28|5|BORDERLINE|horse-like beast|equine hint, shaggy
+s28|6|OBVIOUS|elephant|trunk and tusks, instant
+s28|7|OBVIOUS|hyena|striped scavenger head, instant
+s28|8|OBVIOUS|baboon or monkey|maned primate, instant
+s28|9|OBVIOUS|large flightless bird|moa or emu, instant
+s28|10|OBVIOUS|bear|bulky bear silhouette
+s28|11|BORDERLINE|armadillo-glyptodont|domed shell, unfamiliar species
+s28|12|BORDERLINE|horned woolly rhino|rhino-ish, shaggy
+s28|13|BORDERLINE|otter or seal|aquatic mammal, ambiguous
+s28|14|OBVIOUS|python|patterned coiled snake, instant
+s28|15|OBVIOUS|gorilla|ape silhouette, instant
+s28|16|OBVIOUS|walrus or seal|tusks and flippers, instant
+s28|17|BORDERLINE|spotted rodent|indistinct mammal
+s28|18|BORDERLINE|camel-llama hybrid|ungulate, hard to name
+s28|19|BORDERLINE|monitor lizard|large reptile, ambiguous
+s28|20|OBVIOUS|elk or moose|palmate antlers, instant
+s28|21|OBVIOUS|turtle|domed shell and head, instant
+s28|22|OBVIOUS|dragonfly|giant dragonfly, instant
+s28|23|OBVIOUS|penguin|unmistakable penguin
+s28|24|BORDERLINE|hornless giraffe-rhino|large ungulate, hard to name
+s29|1|BORDERLINE|shovel-tusked elephant|proboscidean, odd jaw
+s29|2|BORDERLINE|llama or camel|ungulate, ambiguous
+s29|3|OBVIOUS|scorpion|claws and sting tail, instant
+s29|4|OBVIOUS|crocodile|croc silhouette, instant
+s29|5|OBVIOUS|crocodile|green croc, instant
+s29|6|OBVIOUS|badger or bear|stocky furred mammal
+s29|7|OBVIOUS|giraffe|spotted long neck, instant
+s29|8|OBVIOUS|big cat|spotted sabre-tooth, instant
+s29|9|OBVIOUS|vulture or terror bird|hooked beak scavenger
+s29|10|OBVIOUS|python|patterned coiled snake
+s29|11|OBVIOUS|rhinoceros or hippo|grey megafauna, instant
+s29|12|OBVIOUS|mammoth|tusks and shaggy coat
+s29|13|OBVIOUS|elephant|trunk and tusks, instant
+s29|14|STRANGE|fleshy maw-worm|no referent
+s29|15|OBVIOUS|musk ox|horned shaggy bovine
+s29|16|OBVIOUS|goat|horned white goat
+s29|17|BORDERLINE|mossy antlered deer|deer under plant growth
+s29|18|OBVIOUS|horse|striped equine, instant
+s29|19|OBVIOUS|bear|bear silhouette, instant
+s29|20|OBVIOUS|bison or ox|horned shaggy bovine
+s29|21|BORDERLINE|hippo-boar hybrid|bulky mammal, ambiguous
+s29|22|OBVIOUS|boar|tusked pig, instant
+s29|23|OBVIOUS|eagle|hooked beak raptor bird
+s29|24|OBVIOUS|boar|tusked pig head, instant
+s30|1|OBVIOUS|shaggy dog|maned hound, instant
+s30|2|BORDERLINE|spider or beetle|dark arthropod, ambiguous
+s30|3|OBVIOUS|mammoth|tusks and shaggy coat, plus spines
+s30|4|OBVIOUS|mammoth|tusks and shaggy coat, plus spines
+s30|5|OBVIOUS|dodo|hooked-beak flightless bird
+s30|6|OBVIOUS|sabre-toothed cat|fangs and mane, instant
+s30|7|OBVIOUS|hyena or wolf|canine scavenger, instant
+s30|8|OBVIOUS|hyena or wolf|canine scavenger, instant
+s30|9|OBVIOUS|giraffe|spotted long-necked ungulate
+s30|10|BORDERLINE|mole with fungus|burrower under growth
+s30|11|OBVIOUS|rhinoceros|horn and bulk, instant
+s30|12|OBVIOUS|alligator|croc silhouette, instant
+s30|13|STRANGE|horned white beast|thrumbo, unnameable to newcomers
+s30|14|OBVIOUS|badger|striped face, instant
+s30|15|OBVIOUS|bluebird|small songbird, instant
+s30|16|OBVIOUS|dog|canine silhouette, instant
+s30|17|OBVIOUS|frog|bullfrog, instant
+s30|18|OBVIOUS|big cat|sabre-toothed feline
+s30|19|OBVIOUS|toad|amphibian bulk, instant
+s30|20|OBVIOUS|crow|black corvid, instant
+s30|21|STRANGE|drone machine|machine, not a nameable animal
+s30|22|STRANGE|drone machine|machine, not a nameable animal
+s30|23|UNJUDGEABLE|tiny brown blob|sprite too small to read
+s30|24|OBVIOUS|flamingo|unmistakable flamingo
+s31|1|OBVIOUS|gorilla|ape silhouette, instant
+s31|2|OBVIOUS|hermit crab|shell and claw, instant
+s31|3|OBVIOUS|heron|long-legged wading bird
+s31|4|OBVIOUS|hippopotamus|barrel body and jaw, instant
+s31|5|STRANGE|insect queen on mound|alien hive form
+s31|6|STRANGE|white grub pod|indistinct larva blob
+s31|7|OBVIOUS|snail|spiral shell, instant
+s31|8|BORDERLINE|insect|white segmented bug, ambiguous
+s31|9|OBVIOUS|macaw|red parrot, instant
+s31|10|OBVIOUS|mammoth or mastodon|tusks and trunk, instant
+s31|11|STRANGE|one-eyed mech|machine, not a nameable animal
+s31|12|BORDERLINE|large rodent|vole-ish, indistinct
+s31|13|OBVIOUS|mink or weasel|long-bodied mustelid
+s31|14|OBVIOUS|monitor lizard|clear lizard, instant
+s31|15|OBVIOUS|moose|palmate antlers, instant
+s31|16|OBVIOUS|musk ox|horned shaggy bovine
+s31|17|OBVIOUS|otter|sleek river mustelid
+s31|18|OBVIOUS|panda|black and white bear, instant
+s31|19|OBVIOUS|peacock|fanned tail, instant
+s31|20|OBVIOUS|porcupine|quills, instant
+s31|21|OBVIOUS|prairie dog or marmot|burrowing rodent, instant
+s31|22|OBVIOUS|quail|topknot game bird, instant
+s31|23|OBVIOUS|sea lion|flippered pinniped, instant
+s31|24|OBVIOUS|sea turtle|shell and flippers, instant
+s32|1|OBVIOUS|seal|pinniped, instant
+s32|2|OBVIOUS|sparrow|small songbird, instant
+s32|3|BORDERLINE|crab|claw shapes only, crude
+s32|4|OBVIOUS|swan|unmistakable swan
+s32|5|OBVIOUS|tiger|orange stripes, instant
+s32|6|OBVIOUS|vulture|hunched bald scavenger
+s32|7|OBVIOUS|walrus|tusks, instant
+s32|8|OBVIOUS|wolf|canine, instant
+s32|9|OBVIOUS|wolverine or badger|stocky mustelid
+s32|10|OBVIOUS|R2-D2 astromech|Star Wars droid, instantly named
+s32|11|OBVIOUS|repair droid|machine, Star Wars register
+s32|12|STRANGE|floating droid|machine, abstract
+s32|13|OBVIOUS|medical droid|machine, Star Wars register
+s32|14|OBVIOUS|gonk power droid|Star Wars droid, instantly named
+s32|15|OBVIOUS|mouse droid|Star Wars droid
+s32|16|STRANGE|crab droid|machine, abstract
+s32|17|STRANGE|utility droid|machine, abstract
+s32|18|BORDERLINE|flatworm|pale worm, ambiguous
+s32|19|STRANGE|tendrilled white worm|no referent
+s32|20|STRANGE|jellyfish-cloud|abstract floating form
+s32|21|OBVIOUS|tardigrade|water bear, nameable to many
+s32|22|STRANGE|floating eye|abstract, no referent
+s32|23|BORDERLINE|antelope with growths|ungulate plus alien pods
+s32|24|OBVIOUS|kiwi|long-billed flightless bird
+s33|1|BORDERLINE|antelope with pods|ungulate plus alien growths
+s33|2|OBVIOUS|rabbit|unmistakable rabbit
+s33|3|BORDERLINE|dark horned beast|bovine-ish, murky
+s33|4|OBVIOUS|stegosaurus|back plates, instantly named
+s33|5|OBVIOUS|cockroach|unmistakable roach
+s33|6|BORDERLINE|cockroach|roach form, mechanical
+s33|7|STRANGE|toothed sea serpent|no terrestrial referent
+s33|8|STRANGE|clawed deep-sea horror|alien, unnameable
+s33|9|STRANGE|spiny maw crustacean|alien, unnameable
+s33|10|STRANGE|armoured sea beast|no referent
+s33|11|OBVIOUS|fish|plain fish, instant
+s33|12|OBVIOUS|angelfish|ornamental fish, instant
+s33|13|STRANGE|frilled glowing sea beast|no referent
+s33|14|OBVIOUS|fish|plain fish, instant
+s33|15|BORDERLINE|anglerfish|lure reads anglerfish
+s33|16|BORDERLINE|whale|whale with reef growth
+s33|17|BORDERLINE|crab or lobster|spiny crustacean
+s33|18|STRANGE|marine reptile monster|alien, unnameable
+s33|19|STRANGE|armoured maw-beast|no referent
+s33|20|BORDERLINE|lamprey|jawless eel form
+s33|21|STRANGE|toothed sky-whale|no referent
+s33|22|STRANGE|marine reptile monster|alien, unnameable
+s33|23|STRANGE|frilled sea serpent|no referent
+s33|24|BORDERLINE|giant isopod|woodlouse-ish, deep sea
+s34|1|STRANGE|dark pit|not a creature silhouette at all
+s34|2|STRANGE|fleshy worm|no referent
+s34|3|STRANGE|crab-legged alien|unnameable, strong alien read
+s34|4|BORDERLINE|lizard-whale|ambiguous reptile
+s34|5|BORDERLINE|red lizard|reptile, unusual colouring
+s34|6|BORDERLINE|hairless canine|dog-ish, alien skin
+s34|7|BORDERLINE|shaggy horned ox|bovine read, very heavy horns
+s34|8|STRANGE|spiked tusked megafauna|hybrid, unnameable
+s34|9|STRANGE|orange bubble mass|no referent
+s34|10|STRANGE|finned tadpole-thing|no referent
+s34|11|STRANGE|tentacled swimmer|no referent
+s34|12|STRANGE|grey toothy biped|unnameable
+s34|13|OBVIOUS|boar|tusked pig head, instant
+s34|14|BORDERLINE|pterosaur|winged reptile
+s34|15|BORDERLINE|small dinosaur|generic dino
+s34|16|BORDERLINE|green lizard|reptile, ambiguous
+s34|17|STRANGE|brown lumpy beast|unreadable
+s34|18|OBVIOUS|donkey or ox|horned draft ungulate
+s34|19|STRANGE|flat winged creature|no referent
+s34|20|BORDERLINE|boar-hyena hybrid|ambiguous mammal
+s34|21|BORDERLINE|dragonfly|insect wings, alien body
+s34|22|STRANGE|big-eyed lizard-beast|unnameable
+s34|23|STRANGE|white armoured monster|unnameable
+s34|24|STRANGE|orange lump|unreadable
+s35|1|OBVIOUS|owl|owl face and perch, instant
+s35|2|BORDERLINE|walrus-hound|pinniped-ish hybrid
+s35|3|STRANGE|horned spotted beast|unnameable
+s35|4|BORDERLINE|pterosaur|winged reptile, thin
+s35|5|STRANGE|orange finned quadruped|unnameable
+s35|6|STRANGE|green humped beast|unreadable
+s35|7|BORDERLINE|large lizard|reptile, ambiguous
+s35|8|STRANGE|tentacled eye-beast|no referent
+s35|9|BORDERLINE|snake|serpent with jaws
+s35|10|STRANGE|winged purple beast|unnameable
+s35|11|STRANGE|spindly alien spider|arachnid hint, heavily alien
+s35|12|BORDERLINE|camel-llama|long-necked ungulate
+s35|13|STRANGE|pale bulbous quadruped|unnameable
+s35|14|BORDERLINE|large lizard|reptile, ambiguous
+s35|15|BORDERLINE|sail-backed reptile|dimetrodon-ish
+s35|16|STRANGE|horned spotted grazer|unnameable
+s35|17|STRANGE|pale antelope-thing|odd proportions, unnameable
+s35|18|STRANGE|frilled lizard-beast|unnameable
+s35|19|STRANGE|frog-dog hybrid|unnameable
+s35|20|BORDERLINE|grub|large larva
+s35|21|BORDERLINE|small lizard|reptile, ambiguous
+s35|22|STRANGE|smooth blue amphibian|unnameable
+s35|23|BORDERLINE|iguana|crested lizard
+s35|24|STRANGE|spiny orange slug|unnameable
+s36|1|BORDERLINE|anteater-lizard|long-snouted hybrid
+s36|2|STRANGE|white bulbous beast|unnameable
+s36|3|STRANGE|long serpentine dragon|no clean referent
+s36|4|BORDERLINE|goat-antelope|horned ungulate, alien colouring
+s36|5|STRANGE|orange blob-beast|unreadable
+s36|6|STRANGE|red horned brute|unnameable
+s36|7|STRANGE|orange armoured reptile|unnameable
+s36|8|BORDERLINE|beetle|iridescent beetle-ish
+s36|9|STRANGE|winged lizard-bat|hybrid, unnameable
+s36|10|STRANGE|blue armoured beast|unnameable
+s36|11|STRANGE|pale winged mammal|unnameable
+s36|12|BORDERLINE|crocodile-lizard|reptile, ambiguous
+s36|13|STRANGE|teal fish-beast|unnameable
+s36|14|STRANGE|striped insect-limbed thing|unreadable
+s36|15|STRANGE|warty green serpent-beast|unnameable
+s36|16|STRANGE|grey tusked brute|unnameable
+s36|17|STRANGE|yellow bulky beast|unnameable
+s36|18|BORDERLINE|shaggy white beast|yak-ish but strange
+s36|19|BORDERLINE|small sail-backed reptile|dimetrodon-ish
+s36|20|BORDERLINE|feathered dinosaur|bird-dino hybrid
+s36|21|STRANGE|grey tusked monster|rancor, unnameable
+s36|22|BORDERLINE|duck-billed swimmer|platypus-ish alien
+s36|23|STRANGE|olive predator|unnameable
+s36|24|STRANGE|armoured dragon-beast|unnameable
+s37|1|STRANGE|spindly alien arachnid|unnameable
+s37|2|STRANGE|clawed red horror|unnameable
+s37|3|BORDERLINE|monkey|primate face and tail, alien ears
+s37|4|BORDERLINE|horned lizard|reptile, ambiguous
+s37|5|STRANGE|angular shell fragment|unreadable
+s37|6|BORDERLINE|spider|long-legged arachnid
+s37|7|STRANGE|flat toothed eel-thing|unnameable
+s37|8|BORDERLINE|blue theropod|dinosaur-ish
+s37|9|BORDERLINE|antelope or deer|ungulate, odd horns
+s37|10|BORDERLINE|flea or louse|arthropod, enlarged
+s37|11|STRANGE|leafy tailed creature|plant-animal, unnameable
+s37|12|BORDERLINE|purple lizard|reptile, ambiguous
+s37|13|OBVIOUS|wolf|canine face and ruff, instant
+s37|14|OBVIOUS|cat|feline with big ears, instant
+s37|15|STRANGE|angular armoured beast|unnameable
+s37|16|BORDERLINE|rodent-hound|hybrid mammal
+s37|17|BORDERLINE|big cat|lion-ish with tusks
+s37|18|STRANGE|mossy stone beast|unnameable
+s37|19|STRANGE|striped toothed reptile|unnameable
+s37|20|STRANGE|dark feathered beast|unreadable
+s37|21|BORDERLINE|white rodent|rat-ish, large
+s37|22|STRANGE|purple finned beast|unnameable
+s37|23|BORDERLINE|hairless canine|dog-ish, alien
+s37|24|STRANGE|horned dark brute|unnameable
+s38|1|STRANGE|winged leathery thing|unnameable
+s38|2|STRANGE|spined dark predator|unnameable
+s38|3|STRANGE|red winged ray|unnameable
+s38|4|BORDERLINE|woolly horned sheep|ovine read, alien face
+s38|5|STRANGE|striped toothy rodent-beast|unnameable
+s38|6|BORDERLINE|duck-billed bird|waterfowl-ish alien
+s38|7|STRANGE|finned crested fish-thing|unnameable
+s38|8|STRANGE|spotted lizard-beast|unnameable
+s38|9|STRANGE|clawed tan husk|unreadable
+s38|10|STRANGE|long-tailed winged thing|unnameable
+s38|11|BORDERLINE|small pterosaur|thin winged reptile
+s38|12|OBVIOUS|puffin-like bird|reads as a puffin, instant
+s38|13|STRANGE|yellow spiny quadruped|unnameable
+s38|14|STRANGE|white shaggy beast|unreadable
+s38|15|STRANGE|hulking brown monster|rancor, unnameable
+s38|16|BORDERLINE|sabre-toothed cat|feline read, yellow stripes
+s38|17|STRANGE|horned bulky brute|unnameable
+s38|18|STRANGE|purple armoured crawler|unnameable
+s38|19|STRANGE|dark tusked beast|unnameable
+s38|20|BORDERLINE|camel-llama|long-necked ungulate
+s38|21|BORDERLINE|antlered striped beast|deer-ish hybrid
+s38|22|BORDERLINE|white dog|canine, scruffy
+s38|23|BORDERLINE|rat|rodent with ruff
+s38|24|BORDERLINE|antelope|small ungulate, alien horns
+s39|1|STRANGE|smooth blimp-beast|no referent
+s39|2|STRANGE|green shelled crawler|unnameable
+s39|3|STRANGE|flowered shell-trap|plant-animal, unnameable
+s39|4|STRANGE|skeletal winged thing|unnameable
+s39|5|STRANGE|orange insect-limbed beast|unnameable
+s39|6|STRANGE|grey armoured lump|unreadable
+s39|7|BORDERLINE|dragonfly or mosquito|winged insect, thin
+s39|8|STRANGE|mushroom|fungus, not an animal read
+s39|9|BORDERLINE|white ferret-rabbit|small mammal hybrid
+s39|10|BORDERLINE|long-tailed rodent|ambiguous small mammal
+s39|11|OBVIOUS|rat|classic rodent, instant
+s39|12|STRANGE|dark toothy cowl|unreadable
+s39|13|STRANGE|crested worm|unnameable
+s39|14|BORDERLINE|shaggy biped lizard|tauntaun, hybrid read
+s39|15|BORDERLINE|anteater|long-snouted mammal
+s39|16|BORDERLINE|mantis shrimp or crab|crustacean, alien colours
+s39|17|STRANGE|winged manta-thing|unnameable
+s39|18|STRANGE|pale winged creature|unnameable
+s39|19|BORDERLINE|big-eyed rodent|ambiguous small mammal
+s39|20|STRANGE|tan armoured hulk|unreadable
+s39|21|STRANGE|spined reptile hound|unnameable
+s39|22|BORDERLINE|long-bodied cat|feline-ish, stretched
+s39|23|STRANGE|flat pale swimmer|unreadable
+s39|24|STRANGE|winged reptile mount|unnameable
+s40|1|STRANGE|blue orb with legs|unnameable
+s40|2|BORDERLINE|lizard|long reptile, ambiguous
+s40|3|STRANGE|shaggy toothed beast|unreadable
+s40|4|STRANGE|spiky grey lump|unreadable
+s40|5|BORDERLINE|weasel or marten|long mustelid-ish
+s40|6|BORDERLINE|white rabbit-fox|hybrid small mammal
+s40|7|STRANGE|white ape-monster|wampa, unnameable
+s40|8|STRANGE|frilled serpent|unnameable
+s40|9|BORDERLINE|green bird-lizard|hybrid
+s40|10|STRANGE|thin darting bird-thing|hard to read
+s40|11|BORDERLINE|rodent|rat-ish, alien snout
+s40|12|STRANGE|colourful salamander-thing|unnameable
+s40|13|STRANGE|fleshy lumpy toad-thing|unnameable
+s40|14|STRANGE|orange maw-beast|unnameable
+s40|15|BORDERLINE|spider or crustacean|arthropod, alien
+s40|16|BORDERLINE|shrimp|purple crustacean
+s40|17|BORDERLINE|spiked reptile|ankylosaur-ish alien
+s40|18|BORDERLINE|striped antelope|okapi-ish ungulate
+s40|19|OBVIOUS|ant|unmistakable ant
+s40|20|OBVIOUS|snake|coiled serpent, instant
+s40|21|BORDERLINE|grub|large larva
+s40|22|BORDERLINE|alligator|spined croc-ish
+s40|23|OBVIOUS|fox|fox head and brush tail
+s40|24|BORDERLINE|bear|bulky mammal, indistinct
+s41|1|BORDERLINE|iguana|lizard, warty and toxic-looking
+s41|2|BORDERLINE|lion|feline with mane, sickly
+s41|3|OBVIOUS|scorpion|curled sting and claws, instant
+s41|4|OBVIOUS|boar|tusked pig, instant
+s41|5|OBVIOUS|deer|antlered deer, instant
+s41|6|BORDERLINE|shaggy bovine|muffalo-like, ambiguous
+s41|7|STRANGE|white insectoid|alien insect, unnameable
+s41|8|STRANGE|white insectoid pod|alien insect, unnameable
+s41|9|STRANGE|white armoured pod|unreadable
+s41|10|STRANGE|white insectoid empress|alien insect, unnameable
+s41|11|STRANGE|white insectoid|alien insect, unnameable
+s41|12|STRANGE|white winged insectoid|alien insect, unnameable
+s41|13|STRANGE|white insectoid|alien insect, unnameable
+s41|14|STRANGE|white bladed insectoid|alien insect, unnameable
+s41|15|STRANGE|white armoured insectoid|alien insect, unnameable
+s41|16|STRANGE|white winged insectoid|alien insect, unnameable
+s41|17|STRANGE|white segmented insectoid|alien insect, unnameable
+s41|18|STRANGE|white insectoid|alien insect, unnameable
+s41|19|STRANGE|white winged insectoid|alien insect, unnameable
+s41|20|STRANGE|white insectoid patriarch|alien insect, unnameable
+s41|21|STRANGE|white insectoid princess|alien insect, unnameable
+s41|22|STRANGE|white shelled insectoid|alien insect, unnameable
+s41|23|STRANGE|white insectoid|alien insect, unnameable
+s41|24|STRANGE|white insectoid|alien insect, unnameable
+s42|1|STRANGE|white insectoid|alien insect, unnameable
+s42|2|STRANGE|green blobs|unreadable
+s42|3|STRANGE|white armoured insectoid|alien insect, unnameable
+s42|4|STRANGE|white bladed insectoid|alien insect, unnameable
+s42|5|STRANGE|white tick with sac|alien insect, unnameable
+s42|6|STRANGE|white insectoid|alien insect, unnameable
+s42|7|STRANGE|mine device|machine, not a creature
+s42|8|STRANGE|drone machine|machine, not a creature
+s42|9|STRANGE|red flesh mass|no referent
+s42|10|OBVIOUS|rabbit|long-eared rabbit, instant
+s42|11|STRANGE|armoured centipede-thing|alien, unnameable
+s42|12|BORDERLINE|grub|brown larva, chimeric
+s42|13|BORDERLINE|rodent with sacs|chimera, ambiguous
+s42|14|BORDERLINE|striped mammal|chimera, ambiguous
+s42|15|BORDERLINE|wattled mammal|chimera, ambiguous
+s42|16|BORDERLINE|shaggy bovine|chimera, ambiguous
+s42|17|BORDERLINE|brown ungulate|chimera, ambiguous
+s42|18|STRANGE|pink hairless mass|unreadable
+s42|19|BORDERLINE|hairless mole-rat|naked burrower-ish
+s42|20|BORDERLINE|spiky green reptile|chimera, ambiguous
+s42|21|BORDERLINE|horned beetle-mammal|chimera, ambiguous
+s42|22|BORDERLINE|small brown canine|chimera, ambiguous
+s42|23|BORDERLINE|beaver|flat-tailed rodent
+s42|24|STRANGE|dark orb with tendrils|no referent
+s43|1|BORDERLINE|beast with gas sacs|boomalope chimera, ambiguous
+s43|2|BORDERLINE|bird with gas sacs|boomalope chimera, ambiguous
+s43|3|STRANGE|clawed sac-covered beast|unnameable
+s43|4|BORDERLINE|beast with gas sacs|boomalope chimera, ambiguous
+s43|5|BORDERLINE|beetle with gas sac|chimera, ambiguous
+s43|6|BORDERLINE|beast with gas sacs|chimera, ambiguous
+s43|7|BORDERLINE|antlered beast with sacs|chimera, ambiguous
+s43|8|BORDERLINE|ungulate with gas sacs|chimera, ambiguous
+s43|9|BORDERLINE|tusked beast with sacs|chimera, ambiguous
+s43|10|BORDERLINE|snake with gas sac|snake read, alien sac
+s43|11|BORDERLINE|squirrel with gas sacs|chimera, ambiguous
+s43|12|BORDERLINE|canine with gas sacs|chimera, ambiguous
+s43|13|BORDERLINE|tiny tan quadruped|too small to name confidently
+s43|14|BORDERLINE|tiny brown mammal|too small to name confidently
+s43|15|OBVIOUS|chicken|white hen with comb, instant
+s43|16|BORDERLINE|tiny grey mammal|too small to name confidently
+s43|17|OBVIOUS|cat|tabby cat, instant
+s43|18|OBVIOUS|cat|tabby cat, instant
+s43|19|OBVIOUS|rabbit|small rabbit, instant
+s43|20|BORDERLINE|tiny canine|too small to name confidently
+s43|21|BORDERLINE|bird-mammal chimera|ambiguous
+s43|22|OBVIOUS|chicken|white hen with comb, instant
+s43|23|STRANGE|grey masked blob|unreadable
+s43|24|BORDERLINE|white bird-horse chimera|ambiguous
+s44|1|BORDERLINE|chicken-lizard chimera|ambiguous
+s44|2|OBVIOUS|chicken|white hen with comb, instant
+s44|3|BORDERLINE|bird with gas sacs|chimera, ambiguous
+s44|4|BORDERLINE|small bird-rabbit|ambiguous
+s44|5|BORDERLINE|tiny grey chimera|too small to name
+s44|6|BORDERLINE|winged canine|chimera, ambiguous
+s44|7|BORDERLINE|crocodile-horse chimera|reptile-ish, ambiguous
+s44|8|OBVIOUS|armadillo|banded shell, instant
+s44|9|OBVIOUS|pig|pink pig, instant
+s44|10|BORDERLINE|horned shaggy beast|rhino-bear chimera
+s44|11|STRANGE|red tentacle growth|no referent
+s44|12|STRANGE|red flesh monstrosity|no referent
+s44|13|STRANGE|pink flesh lump|no referent
+s44|14|BORDERLINE|shaggy horned chimera|ambiguous
+s44|15|BORDERLINE|hairless pink mammal|mole-rat-ish
+s44|16|BORDERLINE|green horned lizard|chimera, ambiguous
+s44|17|BORDERLINE|olive tusked beast|chimera, ambiguous
+s44|18|BORDERLINE|pink beast with gas sacs|chimera, ambiguous
+s44|19|OBVIOUS|bear|brown bear cub, instant
+s44|20|BORDERLINE|hairless cat|feline-ish, odd
+s44|21|BORDERLINE|yellow bird-mammal|chimera, ambiguous
+s44|22|BORDERLINE|horned pale beast|chimera, ambiguous
+s44|23|BORDERLINE|clawed brown chimera|ambiguous
+s44|24|OBVIOUS|squirrel|bushy tail, instant
+s45|1|BORDERLINE|mantis chimera|insect head on body, ambiguous
+s45|2|BORDERLINE|pink fanged canine|chimera, ambiguous
+s45|3|BORDERLINE|green serpent|snake-ish with fins
+s45|4|STRANGE|armoured mech-beast|machine-animal, unnameable
+s45|5|STRANGE|skeletal mech-beast|unreadable
+s45|6|STRANGE|mech bird|machine-animal, unnameable
+s45|7|BORDERLINE|robot horse|equine read under plating
+s45|8|STRANGE|mech ungulate|machine-animal, unnameable
+s45|9|STRANGE|grey humanoid mech|unreadable
+s45|10|STRANGE|mech bovine|machine-animal, unnameable
+s45|11|STRANGE|mech rodent|machine-animal, unnameable
+s45|12|STRANGE|mech arthropod|machine-animal, unnameable
+s45|13|STRANGE|mech beast with gun|unnameable
+s45|14|BORDERLINE|robot turtle|shell read under plating
+s45|15|STRANGE|mech canine|machine-animal, unnameable
+s45|16|BORDERLINE|mole-bear chimera|burrower-ish, ambiguous
+s45|17|BORDERLINE|hairless pink mammal|mole-rat-ish
+s45|18|STRANGE|pink flesh lump|unreadable
+s45|19|BORDERLINE|shaggy bovine|muffalo chimera
+s45|20|BORDERLINE|bovine with cat face|chimera, ambiguous
+s45|21|BORDERLINE|white bird-bovine|chimera, ambiguous
+s45|22|BORDERLINE|horned shaggy bovine|chimera, ambiguous
+s45|23|BORDERLINE|olive horned bovine|chimera, ambiguous
+s45|24|BORDERLINE|horned shaggy bovine|chimera, ambiguous
+s46|1|BORDERLINE|beast with gas sacs|chimera, ambiguous
+s46|2|BORDERLINE|spiky bovine chimera|ambiguous
+s46|3|BORDERLINE|grey rodent-bovine|ambiguous
+s46|4|BORDERLINE|shaggy bovine|muffalo chimera
+s46|5|BORDERLINE|spiky chicken|bird read, alien quills
+s46|6|STRANGE|black horned beast|thrumbo variant, unnameable
+s46|7|BORDERLINE|white ungulate|camel-muffalo chimera
+s46|8|OBVIOUS|bear|brown bear, instant
+s46|9|BORDERLINE|beast with gas sacs|chimera, ambiguous
+s46|10|OBVIOUS|rooster|comb and wattle, instant
+s46|11|BORDERLINE|spotted feline|cat-ish chimera
+s46|12|OBVIOUS|horse|equine head and mane, instant
+s46|13|STRANGE|fleshy humanoid mass|unreadable
+s46|14|BORDERLINE|iguana|green lizard chimera
+s46|15|STRANGE|clawed tan insectoid|unnameable
+s46|16|BORDERLINE|horned shaggy bovine|chimera, ambiguous
+s46|17|OBVIOUS|rat|classic rodent, instant
+s46|18|STRANGE|horned white colossus|thrumbo-like, unnameable
+s46|19|OBVIOUS|wolf|canine, instant
+s46|20|BORDERLINE|rabbit-cat chimera|long ears, ambiguous
+s46|21|OBVIOUS|chicken|comb and wattle, instant
+s46|22|OBVIOUS|rat|rodent with tail, instant
+s46|23|OBVIOUS|snake|coiled green snake, instant
+s46|24|BORDERLINE|segmented tan crawler|ambiguous
+s47|1|BORDERLINE|brown quadruped chimera|ambiguous
+s47|2|OBVIOUS|snake|coiled patterned snake, instant
+s47|3|BORDERLINE|squirrel with gas sac|squirrel read plus sac
+s47|4|STRANGE|horned white beast with sacs|thrumbo chimera, unnameable
+s47|5|STRANGE|horned white beast|thrumbo chimera, unnameable
+s47|6|STRANGE|horned brown beast|thrumbo chimera, unnameable
+s47|7|STRANGE|horned white bird-beast|thrumbo chimera, unnameable
+s47|8|STRANGE|horned green reptile|thrumbo chimera, unnameable
+s47|9|STRANGE|horned white beast|thrumbo chimera, unnameable
+s47|10|STRANGE|horned white rodent-beast|thrumbo chimera, unnameable
+s47|11|STRANGE|horned winged beast|unnameable
+s47|12|STRANGE|horned white beast|thrumbo chimera, unnameable
+s47|13|STRANGE|horned white beast|thrumbo chimera, unnameable
+s47|14|STRANGE|horned white beast|thrumbo chimera, unnameable
+s47|15|STRANGE|horned canine-beast|thrumbo chimera, unnameable
+s47|16|OBVIOUS|turkey|fanned tail and wattle, instant
+s47|17|BORDERLINE|shrimp-wolf chimera|ambiguous
+s47|18|BORDERLINE|canine with gas sacs|chimera, ambiguous
+s47|19|BORDERLINE|grey canine|wolf-ish chimera
+s47|20|BORDERLINE|brown canine|wolf-ish chimera
+s47|21|BORDERLINE|grey canine|wolf-ish chimera
+s47|22|BORDERLINE|white bird-canine|chimera, ambiguous
+s47|23|BORDERLINE|grey shaggy canine|chimera, ambiguous
+s47|24|BORDERLINE|dark canine|wolf-ish chimera
+s48|1|BORDERLINE|clawed brown chimera|ambiguous
+s48|2|BORDERLINE|green lizard-canine|chimera, ambiguous
+s48|3|BORDERLINE|shaggy tusked beast|mammoth-wolf chimera
+s48|4|STRANGE|giant eyeball creature|no referent
+s48|5|STRANGE|segmented eyed pod|no referent
+s48|6|STRANGE|armoured pod with lens|no referent
+s48|7|STRANGE|fleshy lumpy mass|unreadable
+s48|8|STRANGE|pale bloated grub|unnameable
+s48|9|STRANGE|pale grub|unnameable
+s48|10|STRANGE|mottled blob|unreadable
+s48|11|STRANGE|segmented white pod|unnameable
+s48|12|STRANGE|shelled white pod|unnameable
+s48|13|STRANGE|fluffy orange blob|unreadable
+s48|14|OBVIOUS|bus|vehicle, not a creature
+s48|15|OBVIOUS|armoured truck|vehicle, not a creature
+s48|16|OBVIOUS|tank|vehicle, not a creature
+s48|17|OBVIOUS|motorcycle|vehicle, not a creature
+s48|18|OBVIOUS|boat|vehicle, not a creature
+s48|19|OBVIOUS|dirtbike|vehicle, not a creature
+s48|20|OBVIOUS|drop pod craft|vehicle, not a creature
+s48|21|OBVIOUS|truck|vehicle, not a creature
+s48|22|OBVIOUS|helicopter|vehicle, not a creature
+s48|23|OBVIOUS|truck|vehicle, not a creature
+s48|24|OBVIOUS|buggy|vehicle, not a creature
+s49|1|OBVIOUS|armoured vehicle|vehicle, not a creature
+s49|2|OBVIOUS|pickup truck|vehicle, not a creature
+s49|3|OBVIOUS|construction truck|vehicle, not a creature
+s49|4|OBVIOUS|light aircraft|vehicle, not a creature
+s49|5|OBVIOUS|van|vehicle, not a creature
+s49|6|OBVIOUS|tank|vehicle, not a creature
+s49|7|OBVIOUS|armoured vehicle|vehicle, not a creature
+s49|8|OBVIOUS|car|vehicle, not a creature
+s49|9|OBVIOUS|boat|vehicle, not a creature
+s49|10|OBVIOUS|station wagon|vehicle, not a creature
+s49|11|OBVIOUS|propeller aircraft|vehicle, not a creature
+s49|12|OBVIOUS|dump truck|vehicle, not a creature
