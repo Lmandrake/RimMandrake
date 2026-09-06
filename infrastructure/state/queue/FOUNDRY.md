@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-06T08:42:23Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-06T08:59:09Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -588,7 +588,7 @@ needs:    game-up
 target:   v1
 kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/KOTORWEAPONS_ABSORPTION_DANGLING_REFS_1.md yet — write one when you have something to say)
+summary:  KOTORWEAPONSABSORPTIONDANGLINGREFS1
 prose:    infrastructure/state/items/KOTORWEAPONS_ABSORPTION_DANGLING_REFS_1.md
 
 ## KOTORCORE_ABSORPTION_MISSING_TEXTURES_1 8 Absorbed_KotorCore/AdditionalMods files carry pink-placeholder texPaths (validate_patch.py, 13 errors)
@@ -598,7 +598,7 @@ needs:    offline
 target:   v1
 kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/KOTORCORE_ABSORPTION_MISSING_TEXTURES_1.md yet — write one when you have something to say)
+summary:  KOTORCOREABSORPTIONMISSINGTEXTURES1
 prose:    infrastructure/state/items/KOTORCORE_ABSORPTION_MISSING_TEXTURES_1.md
 
 ## KOTORWEAPONS_ABSORPTION_CONTENT_NITS_1 Donor-original flavor-text nits across the KotOR absorption pool (cosmetic only)
@@ -608,5 +608,5 @@ needs:    offline
 target:   v1
 kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/KOTORWEAPONS_ABSORPTION_CONTENT_NITS_1.md yet — write one when you have something to say)
+summary:  KOTORWEAPONSABSORPTIONCONTENTNITS1
 prose:    infrastructure/state/items/KOTORWEAPONS_ABSORPTION_CONTENT_NITS_1.md
