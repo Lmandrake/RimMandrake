@@ -6,10 +6,14 @@ its tiles morph into their neighbors as usual.
 ## spec
 - MEASURED: 1,711 `HorrorWastes` tiles — Deadstone 1,457, South Crags 93, Thornend 61,
   Rimewall 36, Gray Crags 21, Nightspill 20.
-- Receiving def for Deadstone is RULED AT THE PROPANELAKES SITTING (its other occupants:
-  AB_PropaneLakes 299, BMT_CrystalCaverns 194, IceSheet 49). Do not pick it unilaterally.
-  Spill regions take their local majority neighbor per the standing band-repair method
-  (`WORLDMAP_DESERT_BAND_REPAIR_1`).
+- 🔴 **Receiving defs RULED 2026-09-06 — the anti-bullseye LOBE MOSAIC** (`the_blue_desert.md`
+  §0; the ring was MEASURED as all 12 bearing sectors ≥5%): by 30° bearing sector —
+  **Blue Desert (`BiomeGRimond`) core in sectors 0, 7, 9, 10, 11**; **CrystalCaverns
+  climbs into 1, 2, 3 (the highland sectors — ⛔ no Bluefire second biome) and 4, 5, 8**;
+  **PropaneLakes bulges up in 6**; arc excursions: Blue Desert lobes in 0 and 11 push down
+  into 143–155, propane pushes up in 6. Produce the exact tile list from the sector
+  census and **render it for the owner (`worldview.py`) before painting**. Spill regions
+  take their local majority neighbor per the standing band-repair method.
 - Re-biome via the world tools + `world_commit`, then re-freeze the savegame per the
   repair item's procedure; back up the Saves keepers first.
 - Re-home the 29 legacy `design/Jawa/fauna/cast_assignment.csv` rows for this biome to

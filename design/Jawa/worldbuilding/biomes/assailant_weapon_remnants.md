@@ -16,10 +16,14 @@ The Assailant bioweapon, left alone too long with nature, met three ends:
 
 The two failure modes are the grammar's own logic (one anomaly, two regimes):
 
-- **Starved-cold patrol** — the deep nightside (Deadstone). Starved of energy and prey,
-  the weapon has **degraded LESS than anywhere else**: slow, patient, cold-adapted,
-  dormant in crysalises, surfacing to hunt and to *collect* (the BroodLord still takes
-  victims alive — samples for a master who no longer exists). *"A semi-live version of the
+- **Starved-cold patrol** — the deep nightside (Deadstone → now the Blue Desert's ice,
+  `the_blue_desert.md` §3). Starved of energy and prey, the weapon has **degraded LESS
+  than anywhere else**: slow, patient, cold-adapted, dormant in crysalises, surfacing to
+  hunt and to *collect* (the BroodLord still takes victims alive — samples for a master
+  who no longer exists). 🔴 Owner, 2026-09-06: these are the weapon's **"spore forms" —
+  hardened for siege, building and vehicle attack**, not the fleshy infectious forms of
+  the warm sides; they emerge **after thawing or on trigger** (explosive release at
+  proximity from stored energy — the ice's own butane chemistry). *Mining is warming.* *"A semi-live version of the
   weapon slowly operating on the frozen darkside, showing its complex, alien, weaponized
   behavior far from the dayside"* (owner).
 - **Overdrive-hot contagion** — the Overdrive (§ below): ambient heat and energy drove
