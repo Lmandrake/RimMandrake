@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-06T21:37:55Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-06T21:56:54Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -50,15 +50,6 @@ kind:     task
 summary:  design/Jawa/worldbuilding/colonyvisibilitystat.md, specifically
 prose:    infrastructure/state/items/COLONY_VISIBILITY_BUILD_1.md
 
-## RESEARCH_VALIDATOR_BUILD_1 Build the offline research-manifest validator per research_tree_taxonomy.md section 4
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  design/Jawa/researchtreetaxonomy.md section 4 names 7 checks the
-prose:    infrastructure/state/items/RESEARCH_VALIDATOR_BUILD_1.md
-
 ## RESEARCH_MANIFEST_DRAFT_1 Generate the draft research manifest: all 515 rows prefilled with fates from the sitting's rulings
 state:    ready
 row:      unassigned
@@ -67,15 +58,6 @@ target:   v1
 kind:     build
 summary:  design/Jawa/researchtreetaxonomy.md section 3 defines the manifest schema
 prose:    infrastructure/state/items/RESEARCH_MANIFEST_DRAFT_1.md
-
-## DROID_DONOR_PATCH_GATE_1 Patch the 11 ungated ABF/Synstructs sites in absorbed KotOR content, the prerequisite before ABF/Synstructs/Asimov can retire
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  Source finding: design/Jawa/droidworksassumptions.md, item 3 (the
-prose:    infrastructure/state/items/DROID_DONOR_PATCH_GATE_1.md
 
 ## PROPERTY_FABRIC_BUILD_1 Build RM_Property: the ownership/provenance/perception fabric mod - colony side first
 state:    ready
@@ -216,6 +198,15 @@ kind:     task
 summary:  design/NAMINGSCHEMEPLAN.md §5 Phase 3: "JawaPatches triage; extract
 prose:    infrastructure/state/items/JAWA_PATCHES_SPLIT_1.md
 
+## DROID_DONOR_PATCH_GATE_1 Patch the 11 ungated ABF/Synstructs sites in absorbed KotOR content, the prerequisite before ABF/Synstructs/Asimov can retire
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  Source finding: design/Jawa/droidworksassumptions.md, item 3 (the
+prose:    infrastructure/state/items/DROID_DONOR_PATCH_GATE_1.md
+
 ## DISTRICT_TEMPLATE_LIBRARY_1 Authored Lua district template library + composition through rimplace - Junkers set first
 state:    doing
 row:      unassigned
@@ -342,15 +333,6 @@ kind:     bug
 summary:  Filed by BENCH: jawa/worldtilemapgenerate fabricates success on its
 prose:    infrastructure/state/items/TILEGEN_SILENT_REUSE_1.md
 
-## ARMOURY_MELEEPOWER_STALE_1 Armoury_MeleePower.xml melee damage values are stale vs. its own generator - live, currently affecting the campaign
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  Filed during standing dirty-code-review loop wave 38 (2026-09-05). A fresh
-prose:    infrastructure/state/items/ARMOURY_MELEEPOWER_STALE_1.md
-
 ## INHABITED_AUGMENTATION_BUILD_1 Build the tile-augmentation content: rimplace templates + Inhabited wiring for the biome/faction/latitude augmentation dream
 state:    doing
 row:      unassigned
@@ -459,24 +441,6 @@ kind:     build
 summary:  Owner, verbatim (filed on the item): "Rather than use the whole Comingo tree
 prose:    infrastructure/state/items/TREE_GRAPHICS_OWNERSHIP_1.md
 
-## TILES_STAMP_VERIFY_1 Tiles CSV frozen stamp stale AGAIN (disk b38fd685 vs stamped 65c7be19, ~1650-tile shrubland->Desert repaint unexplained): explain the census delta via git log, restamp, and make the hash check a command run by anything reading the file
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     repair
-summary:  TILESSTAMPVERIFY1
-prose:    infrastructure/state/items/TILES_STAMP_VERIFY_1.md
-
-## ARMOURY_LEATHER_GEN_DESYNC_1 gen_armour_patch.py will silently re-add the 3 retired-mod leather blocks the retirement commit stripped by hand
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  (no items/ARMOURY_LEATHER_GEN_DESYNC_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ARMOURY_LEATHER_GEN_DESYNC_1.md
-
 ## MACRO_GENERATOR_V0_1 Macro generator v0: ONE idea per map — chooser + plan + terrain grid, graded on a comparator sheet by the owner (research doc §9.3 step 4)
 state:    doing
 row:      unassigned
@@ -503,6 +467,24 @@ target:   v1
 kind:     task
 summary:  MAPGENPAINTERV11 — make the offline terrain painter draw like a landscape, not a diagram
 prose:    infrastructure/state/items/MAPGEN_PAINTER_V1_1.md
+
+## ARMOURY_GEN_HANDEDIT_DESYNC_1 gen_armour_patch.py would destroy two hand-edits and is 48 xpaths behind on the three non-leather files it owns
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  (no items/ARMOURY_GEN_HANDEDIT_DESYNC_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ARMOURY_GEN_HANDEDIT_DESYNC_1.md
+
+## MEGAFAUNAYIELD_GEN_BEHIND_1 MegafaunaYield.xml is 1159 xpaths behind its generator, and a minimal-list regen of it was found uncommitted in the tree
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  (no items/MEGAFAUNAYIELD_GEN_BEHIND_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/MEGAFAUNAYIELD_GEN_BEHIND_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -569,16 +551,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  WORLDMAPDESERTBANDREPAIR1
 prose:    infrastructure/state/items/WORLDMAP_DESERT_BAND_REPAIR_1.md
-
-## BEHEMOTH_TEXTURE_MISSING_LIVE_1 swanimals/Behemoth/JawaBehemoth_fPack texture missing, live on full list
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/BEHEMOTH_TEXTURE_MISSING_LIVE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/BEHEMOTH_TEXTURE_MISSING_LIVE_1.md
 
 ## PAWNFLAVOR_MEGAFAUNA_GEN_DESYNC_1 Two more generators will silently re-add retired-mod blocks bbf66830 hand-stripped
 state:    proposed
@@ -829,3 +801,13 @@ kind:     task
 thin:     no ## criteria
 summary:  1. Quicktest first (rimworld-debug-testing): confirm what BMTCrystalCaverns
 prose:    infrastructure/state/items/LANTERN_DEEPS_INJECTION_1.md
+
+## ARMOURY_SWMODS_MODNAME_GAP_1 gen_armoury_patch.py's SW_MODS still names the retired donors, so a regen silently drops 33 melee ops now attributed to Jawa Armoury Rebalance
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/ARMOURY_SWMODS_MODNAME_GAP_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ARMOURY_SWMODS_MODNAME_GAP_1.md
