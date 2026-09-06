@@ -30,8 +30,9 @@ the same region within ±6° of arc)
   (ambrosyx), flora (marsh fungi, Skultop, morel, inkcap…) — as OUR defs under the tier
   grammar (`RSW_`/`RUT_`), art referenced by texPath per the absorption precedent;
   Cherry Picker the originals if the mod stays installed.
-- ⚠️ Blastpod→chemfuel and the fungal power generator: anti-exponential card to the
-  owner before ingesting (cultivated infinite fuel/power).
+- 🔴 Ruled 2026-09-06: blastpod→chemfuel ingested WILD-ONLY (no sow tags for Jawa; may be
+  cut later if hokey); the fungal power generator (`BMT_FungalPowerGenerator`) is CUT —
+  do not ingest, Cherry Picker it if the mod stays installed.
 - Fauna admission at `BIOME_FAUNA_ASSIGNMENT_SITTING_1` (hybrid-or-out list in §7b).
 - Verify the Skultop's actual defName (UNMEASURED in 1.6 defs) before citing it.
 

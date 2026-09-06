@@ -211,10 +211,10 @@ subject to this sheet's admission tests. Beyond flora and fauna, the mod carries
 - **Buildings:** fungiponics basin, fungal glow-goo and crystal torches (biological light
   — this biome's law), the research row `BMT_AdvancedFungi` ("strange fungi with unique
   functions, from cooling to exploding").
-- ⚠️ **Flagged for the anti-exponential test, not ingested blind:** the **blastpod
-  shroom → chemfuel** chain (a *cultivated* fuel fungus) and the **fungal power generator**
-  (power from planted fungus) are infinite-generator ladders as shipped; wild-harvest or
-  cut, per the Blue Desert's precedent — owner's call at the sitting.
+- 🔴 **Ruled (owner, 2026-09-06):** the **blastpod shroom → chemfuel** chain is ingested
+  **wild-only — it cannot be cultivated (by Jawa at least)**; "a fungus that's energy rich
+  enough to be chemfuel, that's not so bad as long as we're harvesting it" — and it may be
+  cut later if it plays hokey. The **fungal power generator is CUT** ("that's stupid").
 - **Drugs/food:** ambrosyx shroom (an ambrosia analog — a gourmet-line candidate), the
   bovine beetle's milk economy, cave-cricket eggs, dulcis.
 - **Flora ingested** (all fungal, all pass ban 1): the marsh fungi (nuitae, wrinklecap,
