@@ -443,12 +443,6 @@
     "hash": "ccf074fece7b4d6d17fcb494cb2253357e12ed539ba617e8de24cfa1b5513793",
     "sha": "ac24cd52"
   },
-  "src/RimMandrake/DesertVehicleReskin/Source/Fuel/VehicleFuelPatches.cs": {
-    "cleanCount": 1,
-    "date": "2026-09-03",
-    "hash": "058daffbd6a7804d63024a318bc521df15e8d5ae6126babfa3c70a2eb465c0ff",
-    "sha": "872db59d"
-  },
   "src/RimMandrake/DesertVehicleReskin/Source/Fuel/check_fuel_predicate.py": {
     "cleanCount": 1,
     "date": "2026-09-03",

@@ -122,7 +122,8 @@ def _read_objects(root):
                 values.append(None)
             else:
                 values.append(item.text if item.text is not None else "")
-        out[refid] = {"elem_kind": elem_kind, "values": values}
+        out[refid] = {"elem_kind": elem_kind, "values": values,
+                      "obj_type": obj_el.get("type"), "array_tag": arr_el.tag}
     return out
 
 
@@ -260,6 +261,20 @@ class _Port:
 class Graph:
     def __init__(self, template_source=SOURCE_DESERTPLATEAU):
         self._tpl = _templates(template_source)
+        # (node type, variable name) -> (obj_type, array_tag, elem_kind) copied
+        # verbatim from the source: GL's deserializer rejects a List<String>
+        # where the graph declares List<MapSide> (found live 2026-09-06 on
+        # LandformCanyon; the DesertPlateau-only selftest could not see it).
+        self._var_meta = {}
+        try:
+            _nodes, _conns = _parse_source(template_source)
+            for sn in _nodes:
+                for entry in sn["ordered"]:
+                    if entry[0] == "variable" and entry[2] is not None:
+                        self._var_meta[(sn["type"], entry[1])] = (
+                            entry[2].get("obj_type"), entry[2].get("array_tag"), entry[2].get("elem_kind"))
+        except Exception:
+            self._var_meta = {}
         self._nodes = []
         self._node_ctr = 0
         self._port_ctr = 0
@@ -280,7 +295,10 @@ class Graph:
                     elem_kind = "string" if any(e is None or isinstance(e, str) for e in v) else "double"
                 refid = self._obj_ctr
                 self._obj_ctr += 1
-                n.fields.append(("variable", k, elem_kind, list(v), refid))
+                meta = self._var_meta.get((type_, k))
+                if meta and meta[2]:
+                    elem_kind = meta[2]
+                n.fields.append(("variable", k, elem_kind, list(v), refid, meta))
             else:
                 tag = self._tpl["field_tag"].get((type_, k))
                 if tag is None:
@@ -414,16 +432,20 @@ class Graph:
                     out.append(f'\t\t\t\t<max>{_esc(_fmt_scalar(mx))}</max>')
                     out.append('\t\t\t</FloatRange>')
                 elif kind == "variable":
-                    _, name, elem_kind, values, refid = f
+                    _, name, elem_kind, values, refid = f[:5]
+                    meta = f[5] if len(f) > 5 else None
                     out.append(f'\t\t\t<Variable name="{_esc(name)}" refID="{refid}" />')
                     dotnet_elem = (
                         "System.Double, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
                         if elem_kind == "double" else
                         "System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089"
                     )
+                    obj_type = f"System.Collections.Generic.List`1[[{dotnet_elem}]]"
                     array_tag = "ArrayOfDouble" if elem_kind == "double" else "ArrayOfString"
+                    if meta and meta[0] and meta[1]:
+                        obj_type, array_tag = meta[0], meta[1]
                     obj_lines = [
-                        f'\t\t<Object refID="{refid}" type="System.Collections.Generic.List`1[[{dotnet_elem}]]">',
+                        f'\t\t<Object refID="{refid}" type="{_esc(obj_type)}">',
                         f'\t\t\t<{array_tag}{XML_SCHEMA_XMLNS}>',
                     ]
                     for v in values:

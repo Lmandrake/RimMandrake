@@ -5153,3 +5153,9 @@
 {"seat":"FOUNDRY","event":"start","id":"MAPGEN_PAINTER_V1_1","ts":"2026-09-06T20:47:27Z"}
 {"seat":"BENCH","event":"file","id":"MECHANOID_BIOME_PRESENCE_REVIEW_1","title":"Review which biomes contain mechanoids and ancient dangers — not all should; the two magnetic poles (Rust Cathedral, the antistellar war lab) by ruling, everything else argued","kind":"task","target":"v1","needs":"offline","for":"BENCH","ts":"2026-09-06T20:49:43Z"}
 {"seat":"BENCH","event":"file","id":"LIQUID_BIOMES_MAP_1","title":"Four liquid biomes on the frozen world: boiling ocean, two brine seas, and the propane lake as worldmap tiles under Umbra (render before painting)","kind":"task","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-06T20:49:44Z"}
+{"seat":"FOUNDRY","event":"claim","id":"MAPGEN_GL_SHEET_1","ts":"2026-09-06T20:50:41Z"}
+{"seat":"FOUNDRY","event":"start","id":"MAPGEN_GL_SHEET_1","ts":"2026-09-06T20:50:41Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"MAPGEN_GL_SHEET_1: 8 emitted landforms, 8 restart+quicktest cycles (~20 min), game flapping","ts":"2026-09-06T20:50:42Z"}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"FOUNDRY","ownerSaid":"FOUNDRY autonomous: MAPGEN_GL_SHEET_1 — 8 restart+quicktest cycles on minimal+GL over ~20 min; game will flap; bridge held by FOUNDRY","ts":"2026-09-06T20:52:42Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ownerSaid":"Game is going down","ts":"2026-09-06T20:52:49Z"}
+{"seat":"FOUNDRY","event":"file","id":"VEHICLE_FUEL_PATCH_UNFILTERED_1","title":"DesertVehicleReskin fuel patch widens fuel for EVERY Vehicle Framework vehicle (VVE trucks on potatoes); About.xml says draught only — owner ruling: intended or filter (Opus review 2026-09-06)","kind":"bug","target":"v1","needs":"owner","spec":"infrastructure/state/items/VEHICLE_FUEL_PATCH_UNFILTERED_1.md","for":"FOUNDRY","ts":"2026-09-06T20:53:28Z"}

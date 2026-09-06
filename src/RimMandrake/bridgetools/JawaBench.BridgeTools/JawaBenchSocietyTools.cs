@@ -97,8 +97,10 @@ namespace JawaBench.BridgeTools
                 "handling of those three fields is foundation-specific and not guaranteed. " +
                 "Requires Ideology.",
             ResultDescription =
-                "success, id, name, description, hidden, foundation (class name), memes[], " +
-                "preceptCount, addedToManager (IdeoManager.Add's own bool).")]
+                "success (= Add returned true AND the ideo is read back out of " +
+                "IdeoManager.IdeosListForReading), inManagerAfter, id, name, description, hidden, " +
+                "foundation (class name), memes[], preceptCount, addedToManager (IdeoManager.Add's " +
+                "own bool).")]
         public static async Task<object> IdeoCreate(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -183,9 +185,16 @@ namespace JawaBench.BridgeTools
                 try { added = Find.IdeoManager.Add(ideo); }
                 catch (Exception e) { return Fail("IdeoManager.Add threw: " + e.GetType().Name + ": " + e.Message); }
 
+                // READ BACK, do not trust Add's own bool: the only thing that makes this ideo
+                // reachable by every other ideo tool on this bridge is its presence in
+                // IdeosListForReading, so that is what success reports.
+                var live = Find.IdeoManager.IdeosListForReading;
+                bool inManagerAfter = live != null && live.Contains(ideo);
+
                 return new
                 {
-                    success = added,
+                    success = added && inManagerAfter,
+                    inManagerAfter,
                     id = ideo.id,
                     name = ideo.name,
                     description = ideo.description,
@@ -287,7 +296,7 @@ namespace JawaBench.BridgeTools
 
                     if (matches.Count == 0)
                         return Fail("'" + wanted + "' matches no precept on ideo '" + target.name + "'.",
-                            new { precepts = target.PreceptsListForReading.Select(p => new { def = p.def != null ? p.def.defName : null, label = p.Label }).ToList() });
+                            new { precepts = (target.PreceptsListForReading ?? new List<Precept>()).Select(p => new { def = p.def != null ? p.def.defName : null, label = p.Label }).ToList() });
                     if (matches.Count > 1)
                         return Fail("'" + wanted + "' matches " + matches.Count + " precepts ambiguously.",
                             new { matches = matches.Select(p => new { def = p.def != null ? p.def.defName : null, label = p.Label }).ToList() });
@@ -365,7 +374,7 @@ namespace JawaBench.BridgeTools
 
                 if (matches.Count == 0)
                     return Fail("'" + wanted + "' matches no ritual precept on ideo '" + target.name + "'.",
-                        new { rituals = target.PreceptsListForReading.OfType<Precept_Ritual>().Select(r => new { def = r.def.defName, label = r.Label }).ToList() });
+                        new { rituals = (target.PreceptsListForReading ?? new List<Precept>()).OfType<Precept_Ritual>().Select(r => new { def = r.def.defName, label = r.Label }).ToList() });
                 if (matches.Count > 1)
                     return Fail("'" + wanted + "' matches " + matches.Count + " ritual precepts ambiguously.",
                         new { matches = matches.Select(r => new { def = r.def.defName, label = r.Label }).ToList() });
@@ -425,7 +434,9 @@ namespace JawaBench.BridgeTools
                 "caller never silently blanks the other.",
             ResultDescription =
                 "success, action, ideo{id,name}, and for list/add/remove: styles[] " +
-                "{category,priority}; for icon: iconDef, colorDef, colorHex.")]
+                "{category,priority} plus presentAfter (the read-back) and sortError/" +
+                "resetStylesError (a failed invalidation makes success FALSE); for icon: " +
+                "iconDef, colorDef.")]
         public static async Task<object> IdeoStyle(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -508,10 +519,35 @@ namespace JawaBench.BridgeTools
                     //                                 savegame. Without the flush every ThingDef already
                     //                                 looked up stays bound to the OLD category list
                     //                                 forever - on disk - while this tool reports success.
-                    try { target.SortStyleCategories(); } catch { }
-                    try { if (target.style != null) target.style.ResetStylesForThingDef(); } catch { }
+                    // A BARE catch {} HERE WAS THE VERY FAILURE THE COMMENT ABOVE DESCRIBES: if the
+                    // flush throws, the memoized styleForThingDef dictionary stays stale ON DISK
+                    // while the tool reports success. Report the error and fail instead.
+                    string sortError = null, resetStylesError = null;
+                    try { target.SortStyleCategories(); }
+                    catch (Exception e) { sortError = e.GetType().Name + ": " + e.Message; }
+                    try { if (target.style != null) target.style.ResetStylesForThingDef(); }
+                    catch (Exception e) { resetStylesError = e.GetType().Name + ": " + e.Message; }
 
-                    return new { success = true, action = A, ideo = new { target.id, target.name }, styles = listStyles(), ticksGame = TicksGameSafe() };
+                    bool nowPresent = target.thingStyleCategories != null && target.thingStyleCategories.Any(s => s.category == cd);
+                    bool mutated = A == "add" ? nowPresent : !nowPresent;
+
+                    return new
+                    {
+                        success = mutated && sortError == null && resetStylesError == null,
+                        action = A,
+                        ideo = new { target.id, target.name },
+                        category = cd.defName,
+                        presentAfter = nowPresent,
+                        sortError,
+                        resetStylesError,
+                        note = (sortError != null || resetStylesError != null)
+                            ? "The style list changed but the invalidation did NOT run - IdeoStyleTracker.styleForThingDef " +
+                              "memoizes per ThingDef and is Scribed into the save, so already-resolved things stay bound to " +
+                              "the OLD category list until something flushes it."
+                            : null,
+                        styles = listStyles(),
+                        ticksGame = TicksGameSafe()
+                    };
                 }
 
                 // action == "icon"
@@ -573,6 +609,11 @@ namespace JawaBench.BridgeTools
             [ToolParameter(Description = "Report what would happen and change nothing.")] bool dryRun = false)
         {
             if (tile < 0) return Fail("Give 'tile', a valid world tile id.");
+            // Half a size is not a size: the pair is used only when BOTH are positive, so
+            // one alone used to be dropped in silence and the world default generated instead.
+            if ((sizeX > 0) != (sizeZ > 0))
+                return Fail("sizeX and sizeZ must be given TOGETHER - one alone is ignored and the world's " +
+                            "initialMapSize is used instead. Give both, or neither.");
 
             return await ctx.MainThread.InvokeAsync<object>(() =>
             {
@@ -634,6 +675,10 @@ namespace JawaBench.BridgeTools
                     mapParentDef = wod.defName,
                     wasAlreadyGenerated = existing != null,
                     mapSize = new { x = map.Size.x, z = map.Size.z },
+                    // mapId is the STABLE identity (Map.uniqueID, the convention every other
+                    // tool here uses); mapIndex is a position in Find.Maps and shifts the
+                    // moment any map is removed - jawa/settlement_remove does exactly that.
+                    mapId = map.uniqueID,
                     mapIndex = map.Index,
                     pawnCount = map.mapPawns != null ? map.mapPawns.AllPawnsSpawned.Count : 0,
                     thingCount = map.listerThings != null ? map.listerThings.AllThings.Count : 0,
@@ -654,11 +699,15 @@ namespace JawaBench.BridgeTools
                 "in place - the map regenerates lazily on the next visit, same as any unvisited tile. " +
                 "⚠️ mode='settlement' mirrors the vanilla UI's OWN disable condition " +
                 "(AllColonistsThere - true when abandoning here would leave every free colonist with " +
-                "nowhere else on the map layer) and refuses unless force=true.",
+                "nowhere else on the map layer) and refuses unless force=true. " +
+                "⚠️ mode='map' refuses unless force=true when the map is the PLAYER'S HOME MAP - " +
+                "deiniting that one removes the colony and everything on it.",
             ResultDescription =
-                "success, mode, and for settlement: label, hasMap (a map was generated here), " +
-                "wasHomeMap (that map was the player's - both read BEFORE the abandon), destroyed; " +
-                "for map: tile, mapIndex, parentDef, stillHasMaps.")]
+                "success, mode, and for settlement: settlementId, tile, label, hasMap (a map was " +
+                "generated here), wasHomeMap (that map was the player's - both read BEFORE the " +
+                "abandon), destroyed; for map: tile, mapId (Map.uniqueID - stable), mapIndex " +
+                "(Find.Maps position - shifts when any map is removed), isPlayerHome, parentDef, " +
+                "stillHasMaps.")]
         public static async Task<object> SettlementRemove(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -666,7 +715,7 @@ namespace JawaBench.BridgeTools
             [ToolParameter(Description = "mode='settlement': live MapParent WorldObject id (Settlement, Site, ...).")] int settlementId = -1,
             [ToolParameter(Description = "mode='map': world tile id whose live Map should be dropped.")] int tile = -1,
             [ToolParameter(Description = "mode='map': Game.DeinitAndRemoveMap's own notifyPlayer flag.")] bool notifyPlayer = false,
-            [ToolParameter(Description = "mode='settlement': bypass the AllColonistsThere guard.")] bool force = false,
+            [ToolParameter(Description = "Bypass the safety guard for this mode: settlement -> AllColonistsThere; map -> the map is the player's home map.")] bool force = false,
             [ToolParameter(Description = "Report what would happen and change nothing.")] bool dryRun = false)
         {
             var M = (mode ?? "settlement").Trim().ToLowerInvariant();
@@ -685,8 +734,14 @@ namespace JawaBench.BridgeTools
                         : null;
                     if (mp == null) return Fail("No live MapParent WorldObject with id " + settlementId + ".");
 
-                    bool allColonistsThere;
-                    try { allColonistsThere = SettlementAbandonUtility.AllColonistsThere(mp); } catch { allColonistsThere = false; }
+                    // A catch that answered 'false' FAILED THE GUARD OPEN - a throwing check read
+                    // as "safe to abandon". If it cannot be evaluated, say so and refuse.
+                    bool allColonistsThere; string guardError = null;
+                    try { allColonistsThere = SettlementAbandonUtility.AllColonistsThere(mp); }
+                    catch (Exception e) { allColonistsThere = false; guardError = e.GetType().Name + ": " + e.Message; }
+                    if (guardError != null && !force)
+                        return Fail("SettlementAbandonUtility.AllColonistsThere threw, so the vanilla safety guard could NOT " +
+                                    "be evaluated for '" + mp.Label + "': " + guardError + ". Pass force=true to abandon anyway.");
                     bool hasMap = mp.Map != null;
                     // Captured BEFORE Abandon: mp.Map is gone afterward, so this cannot be
                     // recomputed. "had a generated map" is NOT the same thing as "was the player's
@@ -697,8 +752,10 @@ namespace JawaBench.BridgeTools
                         return Fail("AllColonistsThere is true for '" + mp.Label + "' - the vanilla UI DISABLES 'Abandon Home' here " +
                                     "because every free colonist on this map layer has nowhere else to be. Pass force=true to override.");
 
+                    int settlementTile = mp.Tile.tileId;
+
                     if (dryRun)
-                        return new { success = true, dryRun = true, mode = M, label = mp.Label, hasMap, wasHomeMap, allColonistsThere };
+                        return new { success = true, dryRun = true, mode = M, settlementId, tile = settlementTile, label = mp.Label, hasMap, wasHomeMap, allColonistsThere };
 
                     try { mp.Abandon(wasGravshipLaunch: false); }
                     catch (Exception e) { return Fail("Abandon threw: " + e.GetType().Name + ": " + e.Message); }
@@ -708,6 +765,8 @@ namespace JawaBench.BridgeTools
                     {
                         success = mp.Destroyed,
                         mode = M,
+                        settlementId,
+                        tile = settlementTile,
                         label = mp.Label,
                         hasMap,
                         wasHomeMap,
@@ -727,9 +786,21 @@ namespace JawaBench.BridgeTools
 
                     var parentDef = map.Parent != null ? map.Parent.def.defName : null;
                     int mapIndex = map.Index;
+                    int mapId = map.uniqueID;
+                    bool isPlayerHome = map.IsPlayerHome;
+                    int freeColonistsHere = map.mapPawns != null ? map.mapPawns.FreeColonistsSpawned.Count : 0;
+
+                    // The settlement half of this tool refuses to strand the colony; the map half
+                    // used to deinit the player's OWN home map, colonists and all, with no gate at
+                    // all. Same guard shape, same force= override.
+                    if (isPlayerHome && !force)
+                        return Fail("Map " + mapId + " at tile " + tile + " is the PLAYER'S HOME MAP (" + freeColonistsHere +
+                                    " free colonist(s) spawned). DeinitAndRemoveMap would remove it and everything on it. " +
+                                    "Pass force=true if that is genuinely what you want.",
+                            new { mapId, mapIndex, tile, parentDef, freeColonistsHere });
 
                     if (dryRun)
-                        return new { success = true, dryRun = true, mode = M, tile, mapIndex, parentDef, notifyPlayer };
+                        return new { success = true, dryRun = true, mode = M, tile, mapId, mapIndex, parentDef, isPlayerHome, freeColonistsHere, notifyPlayer };
 
                     try { Current.Game.DeinitAndRemoveMap(map, notifyPlayer); }
                     catch (Exception e) { return Fail("DeinitAndRemoveMap threw: " + e.GetType().Name + ": " + e.Message); }
@@ -739,7 +810,9 @@ namespace JawaBench.BridgeTools
                         success = Current.Game.FindMap(pt) == null,
                         mode = M,
                         tile,
+                        mapId,
                         mapIndex,
+                        isPlayerHome,
                         parentDef,
                         note = parentDef != null ? "MapParent '" + parentDef + "' was left in place and will regenerate lazily on the next visit." : null,
                         stillHasMaps = Find.Maps != null && Find.Maps.Count > 0,
@@ -768,8 +841,10 @@ namespace JawaBench.BridgeTools
                 "accepted as the result: MakeCaravan always builds a fresh Caravan, so an older one " +
                 "proves the call did nothing.",
             ResultDescription =
-                "success, pawnCount, refused[] (pawn tokens that did not resolve), caravanId, name, " +
-                "tile, destTile, pathed.")]
+                "success, pawnCount (input), caravanPawnCount (what actually boarded), refused[] " +
+                "(pawn tokens that did not resolve), faction, exitTile and directionTile AS " +
+                "RESOLVED (both default from the first spawned pawn's map), caravanId, name, tile, " +
+                "destTile, pathed.")]
         public static async Task<object> CaravanFormExit(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -876,8 +951,14 @@ namespace JawaBench.BridgeTools
                 return new
                 {
                     success = true,
+                    // pawnCount is the INPUT echoed back; caravanPawnCount is what actually
+                    // boarded. They differ when a resolved pawn could not exit the map.
                     pawnCount = found.Count,
+                    caravanPawnCount = resultCaravan.PawnsListForReading != null ? resultCaravan.PawnsListForReading.Count : 0,
                     refused,
+                    faction = fac.def.defName,
+                    exitTile = exitTileId,
+                    directionTile = dirPt.tileId,
                     caravanId = resultCaravan.ID,
                     name = resultCaravan.Name,
                     tile = resultCaravan.Tile.tileId,
@@ -909,8 +990,10 @@ namespace JawaBench.BridgeTools
                 "mitigation silently changing the caster's xenotype out from under the caller. " +
                 "Requires Biotech.",
             ResultDescription =
-                "success, caster, recipient, casterWouldDieFromReimplanting, recipient xenotype " +
-                "before/after, xenogeneCountBefore/After.")]
+                "success (= the recipient now carries the caster's PRE-CALL xenotype, read back, not " +
+                "the void call's word for it), xenotypeCopied, caster, recipient, " +
+                "casterWouldDieFromReimplanting, caster and recipient xenotype before/after, " +
+                "xenogeneCountBefore/After.")]
         public static async Task<object> GeneReimplant(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -945,6 +1028,11 @@ namespace JawaBench.BridgeTools
                                 "than block, which is a bigger side effect than most callers expect. Pass " +
                                 "force=true to proceed anyway.");
 
+                // ReimplantXenogerm's FIRST act is recipient.genes.SetXenotype(caster.genes.Xenotype)
+                // (GeneUtility.cs:173), and its LAST is ExtractXenogerm(caster), which can revert the
+                // CASTER to Baseliner - so the caster's xenotype must be captured BEFORE the call for
+                // the read-back to mean anything.
+                var casterXenoBeforeDef = c.genes.Xenotype;
                 var recipXenoBefore = r.genes.Xenotype != null ? r.genes.Xenotype.defName : null;
                 var recipXenoNameBefore = r.genes.xenotypeName;
                 int xenoCountBefore = r.genes.Xenogenes.Count;
@@ -964,12 +1052,20 @@ namespace JawaBench.BridgeTools
                 try { GeneUtility.ReimplantXenogerm(c, r); }
                 catch (Exception e) { return Fail("ReimplantXenogerm threw: " + e.GetType().Name + ": " + e.Message); }
 
+                // READ BACK, never a bare success = true: ReimplantXenogerm is void and returns
+                // silently if ModLister.CheckBiotech refuses. The recipient now carrying the
+                // caster's PRE-CALL xenotype is the evidence that it ran.
+                bool copied = r.genes.Xenotype == casterXenoBeforeDef;
+
                 return new
                 {
-                    success = true,
+                    success = copied,
+                    xenotypeCopied = copied,
                     caster = c.LabelShortCap.ToString(),
                     recipient = r.LabelShortCap.ToString(),
                     casterWouldDieFromReimplanting = wouldDie,
+                    casterXenotypeBefore = casterXenoBeforeDef != null ? casterXenoBeforeDef.defName : null,
+                    casterXenotypeAfter = c.genes.Xenotype != null ? c.genes.Xenotype.defName : null,
                     recipientXenotypeBefore = recipXenoBefore,
                     recipientXenotypeAfter = r.genes.Xenotype != null ? r.genes.Xenotype.defName : null,
                     recipientXenotypeNameBefore = recipXenoNameBefore,
@@ -1099,8 +1195,9 @@ namespace JawaBench.BridgeTools
                 "severity push into death or downed range is NOT re-evaluated unless something calls " +
                 "it. THIS TOOL CALLS CheckForStateChange(null, hediff) IMMEDIATELY AFTER, every time.",
             ResultDescription =
-                "success, pawn, hediff, existedBefore, severityBefore, severityAfter, wasCreated, " +
-                "stateChangeChecked, pawnDeadAfter, pawnDownedAfter.")]
+                "success (= severity actually MOVED, read back), severityChanged, pawn, hediff, " +
+                "existedBefore, severityBefore, severityAfter, wasCreated, stateChangeChecked, " +
+                "pawnDeadAfter, pawnDownedAfter.")]
         public static async Task<object> PawnSeverityAdjust(
             IRimBridgeContext ctx,
             CancellationToken cancellationToken,
@@ -1158,15 +1255,24 @@ namespace JawaBench.BridgeTools
                 try { p.health.CheckForStateChange(null, after); }
                 catch (Exception e) { stateChecked = false; stateCheckError = e.GetType().Name + ": " + e.Message; }
 
+                // A THIRD SILENT NO-OP THE ENGINE DOES NOT REPORT: a positive offset on a hediff
+                // already at its def's maxSeverity moves nothing, and AdjustSeverity is void. Judge
+                // by the severity actually read back, not by the call having run.
+                bool severityChanged = !existedBefore || after.Severity != severityBefore.Value;
+
                 return new
                 {
-                    success = true,
+                    success = severityChanged,
+                    severityChanged,
                     pawn = p.LabelShortCap.ToString(),
                     hediff = hd.defName,
                     existedBefore,
                     severityBefore,
                     severityAfter = after.Severity,
                     wasCreated = !existedBefore,
+                    noOpNote = severityChanged ? null
+                        : "AdjustSeverity ran and severity did not move - the hediff is most likely already clamped at " +
+                          "its maxSeverity (or at 0 for a negative offset).",
                     stateChangeChecked = stateChecked,
                     stateCheckError,
                     pawnDeadAfter = p.Dead,
