@@ -716,3 +716,17 @@ Owner, by card, 2026-09-06:
 3. **Natural terrain: gen-time (vanilla mutators, Geological Landforms, our mask-stamping worker) is the target; the live route is the fallback where quality demands it.**
 4. **Three content factories stand up in the first wave: LLM-from-biome-sheet, corpus mining of the 44 saves, live-build-and-export.** Hand authoring continues but is not the plan; it does not scale.
 5. **The probes in §6.4 run before anything is built on them.** Nothing below this line is built yet.
+
+Owner, by card, 2026-09-06 (later the same day, after the §9 review):
+
+6. **The goal is a GENERATOR, not shipped corpus content.** *"We really had intended
+   to make algorithms capable of generating 'maps like this' — not some kind of
+   nearest neighbor metric. The maps were there simply as training or comparator
+   data."* Whole-map transplant and chunk-cutting-as-content are DROPPED.
+7. **Corpus statistics are allowed as calibration and regression, never as
+   acceptance.** The owner's eye on a comparator sheet is the only acceptance.
+8. **§9.3 is the path, ruled "yes, go."** Filed for FOUNDRY: `LANDFORM_RECIPE_ROUNDTRIP_1`
+   (can Geological Landforms load a landform file we wrote — decides the terrain
+   route), `TERRAIN_GRID_RENDERER_1` (offline grid → PNG, the iteration loop),
+   `CORPUS_MAP_STATISTICS_1` (hash-only topology features over the 44 + vanilla
+   controls). The macro generator (§9.3 step 4) is filed once the first answers.
