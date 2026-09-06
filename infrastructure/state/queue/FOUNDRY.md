@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-06T21:56:54Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-06T22:05:00Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -197,15 +197,6 @@ target:   v1
 kind:     task
 summary:  design/NAMINGSCHEMEPLAN.md §5 Phase 3: "JawaPatches triage; extract
 prose:    infrastructure/state/items/JAWA_PATCHES_SPLIT_1.md
-
-## DROID_DONOR_PATCH_GATE_1 Patch the 11 ungated ABF/Synstructs sites in absorbed KotOR content, the prerequisite before ABF/Synstructs/Asimov can retire
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  Source finding: design/Jawa/droidworksassumptions.md, item 3 (the
-prose:    infrastructure/state/items/DROID_DONOR_PATCH_GATE_1.md
 
 ## DISTRICT_TEMPLATE_LIBRARY_1 Authored Lua district template library + composition through rimplace - Junkers set first
 state:    doing
@@ -811,3 +802,13 @@ kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/ARMOURY_SWMODS_MODNAME_GAP_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/ARMOURY_SWMODS_MODNAME_GAP_1.md
+
+## DROID_RETIREMENT_ORDER_ASSERT_1 Retirement ORDER is the safeguard for the KotOR droid parent def, and nothing enforces it
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DROID_RETIREMENT_ORDER_ASSERT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROID_RETIREMENT_ORDER_ASSERT_1.md
