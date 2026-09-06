@@ -109,7 +109,8 @@ Order is by **similarity — slowly vary** (owner, 2026-09-05).
 | `the_rot.md` | `AB_MycoticJungle` ("The Rot", owner-named; 1,939 tiles MEASURED) | ✅ done 2026-09-06 — the planet's gut; nightside-lush honored; gene-reactor mechanic RESERVED for `AB_GelatinousSuperorganism` |
 | `the_slime.md` | `AB_GelatinousSuperorganism` ("The Slime", owner-named; 96 tiles MEASURED) | ✅ done 2026-09-06 — the living registry; Assailant-sibling of The Rot; gene machine, slime rain, Slime Pit |
 | `assailant_weapon_remnants.md` | `HorrorWastes` ⛔ DISSOLVED · `AB_OcularForest` → the Overdrive site | ✅ ruled 2026-09-06 — neither is a biome: Horrors = raiding faction + injected dungeons; Ocular = named site + custom dungeon |
-| **next** | owner's pick | 🔵 candidate by similarity: `AB_PropaneLakes` (1,589 tiles, deep night) — its sitting also rules Deadstone's receiving def for the dissolved HorrorWastes tiles |
+| `the_contagion.md` | `AB_OcularForest` ("the Contagion", owner-named; moves to the peaks above the green — placement item open) | ✅ done 2026-09-06 — the weapon at open throttle; the UV cage; the Burn and the Bloom |
+| **next** | ruled | 🔵 **the Blue Desert** (`BiomeGRimond`, GRiNDTerra) — ratified as Deadstone's receiving def for the dissolved HorrorWastes tiles and the Horrors' host; sheet loop owed before any tile is painted (`NIGHTSIDE_BLUE_DESERT_1` rides it) |
 | `wreck_fields.md` | — | ⛔ superseded by `fall_line.md` |
 
 ### 🔑 The dryland ladder is ONE number: the sun's angle

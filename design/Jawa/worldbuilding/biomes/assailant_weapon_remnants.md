@@ -42,10 +42,10 @@ The two failure modes are the grammar's own logic (one anomaly, two regimes):
    the cave network, the molting crysalises, the mite-nest larders: injected onto
    nightside map tiles as Inhabited objects and dungeon templates (`fall_line.md`
    precedent: injection layer, no new BiomeDef). Same item.
-4. **The Ocular Forest STAYS as a named site with a custom dungeon** — its 3 tiles in the
-   Ashfall Range (MEASURED: lat −2..−0.7, lon 63..64, elev 2,177 m, 23 °C, dayside) are
-   already a point feature. **Working name: the Overdrive.** It must be **woven into the
-   plot more deeply**. Rides `OCULAR_OVERDRIVE_SITE_1`.
+4. ~~The Ocular Forest stays as a named site~~ — **SUPERSEDED the same day: it is a BIOME
+   again, `the_contagion.md` ("the Contagion")**, placed on the peaks above the green per
+   the rain instrument; the custom dungeon becomes the **Ashfall Research Base**
+   (`OCULAR_OVERDRIVE_SITE_1` carries it). The "Overdrive" name is retired.
 5. **The Rust Cathedral hates it** (owner): a mechanoid cathedral and a biological weapon
    in frenzy are natural enemies. ⚠️ MEASURED: the Overdrive sits **45.5° of arc** from
    the nearest Rust Cathedral tile — the enmity is written as *ideological and strategic*,
@@ -74,8 +74,8 @@ lands."
    settlement-generation weight above zero is a violation.
 2. 🔴 **No `HorrorWastes` tiles on the frozen world** after `HORRORWASTES_BIOME_DISSOLVE_1`
    closes; no sheet is ever written for it.
-3. 🔴 **The Overdrive stays a point** — Ocular content never spreads as terrain beyond its
-   site; a biome-scale Ocular is a violation of the contagion-as-*site* ruling.
+3. ~~The Overdrive stays a point~~ — struck 2026-09-06; the Contagion is a biome with its
+   own bans (`the_contagion.md` §6), chief among them: **no green squares taken**.
 4. 🔴 **The war-legacy split holds**: this material never enters the Wasteland (its bans
    1–2), and the Rot/Slime stay the *disarmed* siblings.
 5. 🔴 **The recognizability rule applies**; the icon carve-out protects mynock and neebray

@@ -172,7 +172,8 @@ shuffling deck, and this is it.
 4. 🔴 **No unmarked wildlife.** Everything living here is visibly shaped by the
    contamination — wretched, mutated, or extremophile-odd. A clean, healthy, ordinary
    animal def resident here is a violation.
-5. 🔴 **No rain** (planet-wide, R-H1).
+5. 🔴 **No rain** (R-H1: rain falls only at the greatest altitudes; the Wasteland is
+   not one — an earlier "planet-wide" paraphrase here was loose and is corrected).
 6. 🔴 **No spoilage-dependent content** — rot is near-zero here; a mechanic that assumes
    normal decay is a violation.
 7. 🔴 **Plasma storms never occur outside the terminator families** (elsewhere: ash storms

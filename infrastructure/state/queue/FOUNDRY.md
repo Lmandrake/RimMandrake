@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-06T18:06:42Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-06T19:21:57Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -486,6 +486,15 @@ kind:     repair
 summary:  TILESSTAMPVERIFY1
 prose:    infrastructure/state/items/TILES_STAMP_VERIFY_1.md
 
+## LANDFORM_RECIPE_ROUNDTRIP_1 Can Geological Landforms load a landform file WE wrote? Decides the map generator's terrain route (research doc §9.3 step 1)
+state:    doing
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+summary:  - Source recipe: C:\Program Files (x86)\Steam\steamapps\workshop\content\294100\2773943594\1.6\Landforms-v1\L…
+prose:    infrastructure/state/items/LANDFORM_RECIPE_ROUNDTRIP_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -671,3 +680,33 @@ kind:     task
 thin:     no ## criteria
 summary:  - MEASURED: 1,711 HorrorWastes tiles — Deadstone 1,457, South Crags 93, Thornend 61,
 prose:    infrastructure/state/items/HORRORWASTES_BIOME_DISSOLVE_1.md
+
+## TERRAIN_GRID_RENDERER_1 Offline terrain grid → PNG renderer + contact sheet mode — the generator's iteration loop (research doc §9.3 step 2)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  - Input: a 2-D grid of terrain identifiers, from EITHER savemap.py (a corpus
+prose:    infrastructure/state/items/TERRAIN_GRID_RENDERER_1.md
+
+## CORPUS_MAP_STATISTICS_1 Topology statistics over the 44 hand-authored maps + vanilla controls — calibration and regression only, never acceptance (research doc §9.3 step 3)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  - Input: the 44 .rws under research/RimMandrake/handauthoredmaps/ via
+prose:    infrastructure/state/items/CORPUS_MAP_STATISTICS_1.md
+
+## CONTAGION_BIOME_PLACEMENT_1 Move the Contagion (AB_OcularForest) to the peaks above the green: Scald Spine's 38 non-green highs + optional Ashfall/Dew Horn tops — NO green squares; render for owner before painting
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  - MEASURED candidate bands (non-green, dayside arc < 75):
+prose:    infrastructure/state/items/CONTAGION_BIOME_PLACEMENT_1.md

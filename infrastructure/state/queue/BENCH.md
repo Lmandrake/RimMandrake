@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-06T18:06:42Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-06T19:21:57Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -121,3 +121,23 @@ kind:     task
 thin:     no ## criteria
 summary:  - MEASURED site: 3 ABOcularForest tiles in the Ashfall Range, lat −2.0/−0.7/−1.4,
 prose:    infrastructure/state/items/OCULAR_OVERDRIVE_SITE_1.md
+
+## WATER_KINDS_TAXONOMY_1 Owner: many kinds of water by content + the transmutations between them — inventory every sheet's water, write the taxonomy as data, map onto the live water systems
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  - Inventory every water the sheets have already produced, with what is IN it:
+prose:    infrastructure/state/items/WATER_KINDS_TAXONOMY_1.md
+
+## MUTATION_MODIFIERS_SURVEY_1 Survey every mutation-type system in the stack (Biotech genes, mutagen part-hediffs, SlurryHigh, transformation hediffs) to build Contagion-touched — never an upgrade
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  - Inventory, from the live def dump + mod XML (never guess a defName):
+prose:    infrastructure/state/items/MUTATION_MODIFIERS_SURVEY_1.md

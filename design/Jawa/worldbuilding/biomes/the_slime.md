@@ -84,7 +84,7 @@ transformed**; that is the roster admission test, literally.
 🔴 Owner-authored: when the body needs a drink it **emits volatiles that condense into
 precipitation** — a slimy, slick rain, arriving as brief but intense flooding that
 drinks back into the terrain rapidly. ⭐ **The floodwater is potable and useful** — and
-this is a ruled carve-out, not a violation: R-H1 stands planet-wide because this is not
+this is a ruled carve-out, not a violation: R-H1 (rain only at the greatest altitudes) stands because this is not
 weather, it is a body irrigating itself; the sky over the Slime rains only because the
 Slime asks it to.
 

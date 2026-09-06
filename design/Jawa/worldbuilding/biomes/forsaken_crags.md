@@ -161,7 +161,8 @@ _Names owner-ratified 2026-09-06._
 1. 🔴 **No geothermal** — no vents, no thermal springs, no geothermal power content.
 2. 🔴 **No steady wind** — any weather def, mechanic or prose giving this biome sustained
    laminar wind is a violation; gust-pattern only.
-3. 🔴 **No water rain** (planet-wide R-H1) — the drizzle is chemical; a water-rain def
+3. 🔴 **No water rain** (R-H1: rain only at the greatest altitudes; the crags are not
+   them) — the drizzle is chemical; a water-rain def
    here is a violation.
 4. 🔴 **No permanent Clear** — `Clear` weather commonality stays 0; illumination rises
    only as the rare, brief Unveiling.

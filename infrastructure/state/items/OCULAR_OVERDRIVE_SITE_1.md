@@ -1,8 +1,19 @@
-# OCULAR_OVERDRIVE_SITE_1 — the Ocular Forest as a named site with a custom dungeon
+# OCULAR_OVERDRIVE_SITE_1 — now: the Ashfall Research Base (the Contagion's dungeon)
 
-Owner ruling 2026-09-06 (`assailant_weapon_remnants.md` §Rulings 4–5): the Ocular Forest
-STAYS — as a named site with a custom dungeon, woven into the plot more deeply. Working
-name: **the Overdrive**.
+🔴 **Superseded the same day it was filed:** the Ocular Forest became a BIOME again —
+`the_contagion.md` ("the Contagion"); placement rides `CONTAGION_BIOME_PLACEMENT_1`. This
+item now carries only the **custom dungeon, formally the Ashfall Research Base** (owner,
+2026-09-06). The "Overdrive" name is retired.
+
+## the plot the base carries (owner, verbatim in intent)
+The reveal of the real relationship between the Helix and the Assailants: how the Helix
+"adopted" Rakatan genetics to adopt *themselves* into that family line, in an attempt to
+control the old technology in the Cathedral — a failure that gave them intelligence and
+cruelty in equal parts. The base's datafiles show them **actively attempting to modify the
+Contagion to make it more robust and productive**, to focus its creativity where they
+want it — at the risk of unleashing it across the planet.
+
+## original filing (kept for provenance)
 
 ## spec
 - MEASURED site: 3 `AB_OcularForest` tiles in the Ashfall Range, lat −2.0/−0.7/−1.4,
