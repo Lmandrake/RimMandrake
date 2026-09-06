@@ -275,13 +275,32 @@ CHECKS = [
     # and prints "BETTER — update the docs" while NOTHING has been fixed. A drop toward
     # 19 means the pass count changed; a drop to 22 (say) means a def was actually
     # fixed. Read `--show configerror` and count DEFS before believing either.
+    # 🟢 34 -> 17 measured 2026-09-06 (LOAD_CONFIG_ERROR_SWEEP_1), confirmed identically
+    # across THREE independent full-list logs spanning 594-596 mods over ~9 hours
+    # (Transient/Player_log_{before_foundry_reboot,stale_ninefold_session,quicktest_crash}
+    # _2026-09-05.log) — same 17 lines, byte-for-byte, at every mod count. The 18-line drop
+    # is the 9 Sign* defs: CONFIRMED gone (ThirdPartySignConfigErrors_Fix.xml, 776cc6ed).
+    # Remaining 17 = 12 RSW_FE (ours, accepted) + 1 Techprint_RR_lighting (third-party,
+    # cosmetic) + 2 CannibalPirate/PirateYttakin NRE (vanilla-adjacent, unattributed,
+    # verified NOT touched by our own patches) + 2 NEW: AdvancedShowers/VCE_StewCooking
+    # "same research view coords" mutual collision. That last pair is NOT the sign fix's
+    # business — see infrastructure/state/facts/config_error_baseline_2026-09-06.json for
+    # the full writeup, including why a committed fix (14cf4186) does not actually take
+    # effect and the vanilla ResearchProjectDef.GenerateNonOverlappingCoordinates() angle
+    # that makes this possibly a same-species false alarm as the RSW_FE lines, unconfirmed.
+    # Cross-reference failures (separate CHECKS entry) also dropped 5->0 across the same
+    # three logs, cause unattributed - tell VANILLA_COUNT_PSEUDO_DEF_1.
+    # ⚠️ Do not chase this to 12 by "fixing" the vanilla NRE or the research collision
+    # without first reading that JSON — both routes were investigated and found to be
+    # either unattributed (no patch of ours or any other active mod touches them) or an
+    # open bug whose existing "fix" is proven not to work in a real load.
     ("configerror", "def ConfigErrors (loaded but WRONG)",
-     r"Config error in |Exception in ConfigErrors\(\) of ", 34,
-     "34 LINES over 19 defs (15 of them logged twice - mechanism unexplained). "
-     "6 RSW_FE ash-ladder terrains are INTENTIONAL (ruled not-a-defect, aa9ab7fa); "
-     "9 Sign* are another mod's; 2 vanilla FactionDef NRE; 2 techprint whitespace. "
-     "Read --show configerror BEFORE filing: this finds defs the ENGINE disapproves "
-     "of, which is not the same as defs that are wrong"),
+     r"Config error in |Exception in ConfigErrors\(\) of ", 17,
+     "17 LINES over 11 distinct sources (6 RSW_FE + 5 others logged once each, except "
+     "RSW_FE which double-logs - mechanism still unexplained). Read --show configerror "
+     "BEFORE filing, and check infrastructure/state/facts/config_error_baseline_*.json "
+     "or run check_config_errors.py first - it classifies every line so nobody re-derives "
+     "this by eye"),
     # Baseline 5, MEASURED 2026-08-12 by diffing the 568-mod load (18:18,
     # Player-prev.log) against the 573-mod load (21:09). Byte-for-byte the same
     # three mods, same ops, same counts - so the five mods added that day

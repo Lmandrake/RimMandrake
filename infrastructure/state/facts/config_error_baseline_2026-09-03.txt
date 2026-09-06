@@ -1,3 +1,7 @@
+SUPERSEDED 2026-09-06 by config_error_baseline_2026-09-06.json (LOAD_CONFIG_ERROR_SWEEP_1)
+— check with `python3 src/RimMandrake/Utils/check_config_errors.py`, not by reading this
+file. This txt is kept as history: what the 9 signs fix (776cc6ed) measured a drop AGAINST.
+
 CONFIG ERROR BASELINE — full 589-mod list, 2026-09-03
   Config error in ...            : 31  (12 ours, 19 third-party)
   Could not resolve cross-ref    : 5
