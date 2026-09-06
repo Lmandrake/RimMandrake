@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-06T22:05:00Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-06T22:10:31Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -143,15 +143,6 @@ prose:    infrastructure/state/items/STICK_FOOD_INGEST_1.md
 # IN PROGRESS
 
 Started, and therefore not offered again. `rimflow close` or `rimflow block` moves them.
-
-## WILD_ANIMALS_PADDED_LISTS_1 wildAnimals lists padded to 1024 by unidentified C# pass
-state:    doing
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     investigate
-summary:  WILDANIMALSPADDEDLISTS1 — offline half done: mechanism strongly narrowed, exact patch still unnamed
-prose:    infrastructure/state/items/WILD_ANIMALS_PADDED_LISTS_1.md
 
 ## DROID_SYSTEM_BUILD_1 Build the unifying droid mod per droid_system_spec.md (parked until the owner reopens)
 state:    doing
@@ -300,7 +291,7 @@ prose:    infrastructure/state/items/DIRTY_CODE_REVIEW_STANDING_LOOP_1.md
 ## FLUID_CANAL_DEBUG_SURFACE_1 FluidCanals [DebugAction]s never register in a live game
 state:    doing
 row:      unassigned
-needs:    offline
+needs:    game-up
 target:   v1
 kind:     task
 summary:  Measured 2026-09-03 on the 20-mod minimal list, dev quicktest map. The
@@ -812,3 +803,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DROID_RETIREMENT_ORDER_ASSERT_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DROID_RETIREMENT_ORDER_ASSERT_1.md
+
+## COLD_LOAD_RUN_SHEET_4 Run sheet for the next full-list load: three readings owed from the 2026-09-06 offline wave
+state:    proposed
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/COLD_LOAD_RUN_SHEET_4.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/COLD_LOAD_RUN_SHEET_4.md
