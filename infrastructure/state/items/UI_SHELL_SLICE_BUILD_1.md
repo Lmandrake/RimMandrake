@@ -75,15 +75,29 @@ it's now recorded here in case anyone re-derives from an earlier note.
 VP9 (`Error: Unsupported video codec 'VP9'`); switched `animate_menu.py` to
 VP8 (`libvpx`), confirmed via `ffprobe` and a clean reload.
 
-**Found, NOT fixed, filed separately**: even with the def, video, and VBE
-settings all independently confirmed correct, the main-menu background
-renders solid black while any non-Vanilla RimThemes theme is active —
-reproduced 3x, and shown to be unrelated to our mod by switching RimThemes
-to Vanilla and watching a (different, unrelated) VBE background appear
-immediately. Filed as `RIMTHEMES_VBE_BACKGROUND_CONFLICT_1` — this may mean
-the menu background has NEVER been visible during real play with Utinni
-Shell selected, static or animated, predating this session's animation
-work entirely.
+**Found, then FIXED same day**: the main-menu background rendered solid
+black while any non-Vanilla RimThemes theme was active — filed as
+`RIMTHEMES_VBE_BACKGROUND_CONFLICT_1`, then root-caused by decompile within
+the hour: RimThemes fully replaces vanilla's background draw per-theme via
+its own native asset slot (`Textures/UI_BackgroundMain.BGPlanet.png` +
+`.webm`), and VBE's own background system never runs at all once a custom
+theme is active — our mod had simply used the wrong channel (VBE) instead
+of RimThemes' own. Fix: shipped the same assets under RimThemes' own
+naming inside the theme folder, alongside (not instead of) the existing
+VBE registration. **Live-verified**: the full Ishko-gate scene now renders
+with Utinni Shell active, and two screenshots 2 seconds apart show the
+pulsing-eye glow at different points in its cycle — the animated loop is
+genuinely playing, not a static frame. See
+`RIMTHEMES_VBE_BACKGROUND_CONFLICT_1` for the full mechanism and the
+still-open full-modlist collision check (owner asked specifically about
+the RimStarWars-tier mods; clean on the minimal list, not yet checked on
+the full 596-mod stack — blocked on the separate
+`NINEFOLD_DEBUG_GAME_READY_CRASH_1` crash).
+
+**This item's art direction is now consistent top-to-bottom and live-verified**:
+buttons, gizmo, icon, menu background (static + animated), and loader all
+ship the grey-gunmetal/vector-line/amber "ancient ship helm" language, and
+the coexistence gate with RimThemes is proven working end-to-end.
 
 ## criteria
 - [x] Mod skeleton, theme, and art built (offline half of spec §2/§3).
