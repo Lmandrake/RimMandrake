@@ -52,6 +52,39 @@ not touched by this pass — they still ship the old rust-adjacent look and
 need a fresh generation in the new material language before this item's
 art can be called consistent top-to-bottom.
 
+## 2026-09-05 (FOUNDRY) — menu bg + loader re-authored; animated bg attempted; deploy gap caught
+
+Menu background and loader regenerated in the new material language (see
+`ui_shell_spec.md`'s pivot section for the full prompt diffs and the
+animated-loop build). Owner then asked to consider a lightly-animated menu
+loop; built it (dust/fog/pulsing eyes, VBE's real `animated`+`Videos/`
+mechanism, not guessed).
+
+**Caught mid-verification: none of today's shell work had been deployed.**
+`deploy_custom_mods.py --mod UtinniShell` showed 23 files of drift — the
+live game had been running a stale copy this whole session, which is
+exactly why `jawa/get_defs` first read `animated: false` on a def whose XML
+said `true`. Deployed. **This means every "verified via bridge" claim
+earlier today for `D_helm`/the button atlases should be treated as
+re-confirmed only from the point of the deploy, not before** — the
+Cyberpunk-vs-D_helm control test result itself doesn't change (that used
+RimThemes' pre-existing Cyberpunk theme, unaffected by our deploy), but
+it's now recorded here in case anyone re-derives from an earlier note.
+
+**Found and fixed a real codec bug**: Unity's `VideoPlayer` errors hard on
+VP9 (`Error: Unsupported video codec 'VP9'`); switched `animate_menu.py` to
+VP8 (`libvpx`), confirmed via `ffprobe` and a clean reload.
+
+**Found, NOT fixed, filed separately**: even with the def, video, and VBE
+settings all independently confirmed correct, the main-menu background
+renders solid black while any non-Vanilla RimThemes theme is active —
+reproduced 3x, and shown to be unrelated to our mod by switching RimThemes
+to Vanilla and watching a (different, unrelated) VBE background appear
+immediately. Filed as `RIMTHEMES_VBE_BACKGROUND_CONFLICT_1` — this may mean
+the menu background has NEVER been visible during real play with Utinni
+Shell selected, static or animated, predating this session's animation
+work entirely.
+
 ## criteria
 - [x] Mod skeleton, theme, and art built (offline half of spec §2/§3).
 - [x] Shipped art actually committed, not silently gitignored.

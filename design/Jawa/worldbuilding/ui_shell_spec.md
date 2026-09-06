@@ -73,12 +73,62 @@ match. **This is a real deterministic PIL 9-slice asset, not the AI concept
 render** — it tiles correctly at the button-atlas corners, unlike a raw
 painted image would.
 
-**Still NOT re-authored, old rust-direction art still shipping**: the Ishko
-temple-gate menu background and the amber-orrery loader screen (both
-image-gen pieces from `gen_bg.py`, not procedural — re-doing these needs a
-fresh generation pass in the new material language, not a script edit).
-Typography (Orbitron/Rajdhani pairing) only exists on the review artifact
-page so far, not wired into the actual RimThemes `meta.xml` font keys.
+**Menu background + loader RE-AUTHORED in the new material language**
+(2026-09-05, same pass as `D_helm`): `gen_bg.py`'s two prompts rewritten
+(grey-green gunmetal hull instead of rust/bronze stonework, vector-line
+markings instead of chalk graffiti) and regenerated via cloud Codex.
+Ishko's gate is now an ancient ship-hull structure etched with schematic
+circuitry; the loader keeps its amber tactical-display identity (it was
+already aligned) with a gunmetal-frame note added to the prompt.
+
+**Owner then asked to consider animating the menu background** (drifting
+dust, gentle fog, pulsing eyes) — admissibility confirmed by READING
+`VBE.BackgroundImageDef.cs` (not guessed): setting `<animated>true</animated>`
+on the def makes VBE resolve a `.webm` from a `Videos/` content root whose
+path (stripped of extension) matches `<path>`, alongside the still PNG
+`iconPath` still needs. Built `_artsrc/animate_menu.py`: a 5s/20fps seamless
+loop (fog band, ~55 drifting dust motes, eyes pulsing on their MEASURED
+pixel coordinates — a numpy amber-threshold scan, not a guess) composited
+in PIL/numpy and encoded via `imageio-ffmpeg` (installed in the `rwgfx`
+venv; no local ML, no OOM risk — plain CPU video muxing).
+
+**Two real bugs found and fixed during live verification, not assumed
+away:**
+1. **The whole shell (`D_helm`, the new backgrounds, everything from this
+   pass) had never actually been DEPLOYED to the game's Mods folder** —
+   `deploy_custom_mods.py --mod UtinniShell` showed 23 files of drift.
+   `jawa/get_defs` against a live game confirmed this directly: the def
+   read `animated: false` even after the XML said `true`, because the game
+   was still running the stale deployed copy. **Writing a file to this repo
+   is not deploying it — this project's own standing rule, re-caught live.**
+   Fixed: deployed, redeployed after the codec fix below.
+2. **VP9 is unplayable — Unity's `VideoPlayer` on this build hard-errors
+   on it**: `Error: Unsupported video codec 'VP9' found in
+   .../utinni_menu_1.webm`, logged live the first time the game actually
+   tried to play it. `animate_menu.py`'s ffmpeg codec switched from
+   `libvpx-vp9` to `libvpx` (VP8) — confirmed via `ffprobe` and a clean,
+   error-free reload afterward.
+
+**A THIRD finding, not fixed — a real RimThemes×VBE incompatibility,
+independent of anything above**: even with the def correct, the video
+correctly encoded, and `VBEMod.Settings.current`/`allowAnimated` confirmed
+persisted to `Config/Mod_2775017012_VBEMod.xml`, the main-menu background
+renders **solid black** while `Utinni Shell` (or any non-Vanilla RimThemes
+theme) is the active theme. Switching RimThemes to **Vanilla** with
+identical VBE settings immediately shows a normal VBE background (a
+different, unrelated one from the rotation pool — not proof our specific
+video plays, but proof VBE's rendering path works AT ALL only when
+RimThemes isn't overriding it). **RimThemes appears to suppress VBE's
+main-menu background draw entirely whenever a custom theme is selected** —
+this would have blocked the ORIGINAL STATIC Ishko-gate image just as much
+as the new animated one; it is not new breakage from this pass, but it may
+mean the menu background has never actually been visible during normal
+play with Utinni Shell active, static or animated. **Not chased further —
+a big enough finding to need its own item**, filed as
+`RIMTHEMES_VBE_BACKGROUND_CONFLICT_1`.
+
+Typography (Orbitron/Rajdhani pairing) still only exists on the review
+artifact page, not wired into the actual RimThemes `meta.xml` font keys.
 Review artifact: `https://claude.ai/code/artifact/d63666e5-28ca-4019-a037-749c9fbb9b4e`.
 
 ---
