@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-06T22:31:55Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-06T22:44:18Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -441,6 +441,33 @@ kind:     task
 summary:  MAPGENPAINTERV11 — make the offline terrain painter draw like a landscape, not a diagram
 prose:    infrastructure/state/items/MAPGEN_PAINTER_V1_1.md
 
+## ARMOURY_SWMODS_MODNAME_GAP_1 gen_armoury_patch.py's SW_MODS still names the retired donors, so a regen silently drops 33 melee ops now attributed to Jawa Armoury Rebalance
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  (no items/ARMOURY_SWMODS_MODNAME_GAP_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ARMOURY_SWMODS_MODNAME_GAP_1.md
+
+## DROID_RETIREMENT_ORDER_ASSERT_1 Retirement ORDER is the safeguard for the KotOR droid parent def, and nothing enforces it
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/DROID_RETIREMENT_ORDER_ASSERT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROID_RETIREMENT_ORDER_ASSERT_1.md
+
+## DOCTRINE_LOADAFTER_STALE_1 Doctrine's About.xml loadAfter no longer covers what its patches touch
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  (no items/DOCTRINE_LOADAFTER_STALE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DOCTRINE_LOADAFTER_STALE_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -757,26 +784,6 @@ thin:     no ## criteria
 summary:  1. Quicktest first (rimworld-debug-testing): confirm what BMTCrystalCaverns
 prose:    infrastructure/state/items/LANTERN_DEEPS_INJECTION_1.md
 
-## ARMOURY_SWMODS_MODNAME_GAP_1 gen_armoury_patch.py's SW_MODS still names the retired donors, so a regen silently drops 33 melee ops now attributed to Jawa Armoury Rebalance
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/ARMOURY_SWMODS_MODNAME_GAP_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ARMOURY_SWMODS_MODNAME_GAP_1.md
-
-## DROID_RETIREMENT_ORDER_ASSERT_1 Retirement ORDER is the safeguard for the KotOR droid parent def, and nothing enforces it
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DROID_RETIREMENT_ORDER_ASSERT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DROID_RETIREMENT_ORDER_ASSERT_1.md
-
 ## COLD_LOAD_RUN_SHEET_4 Run sheet for the next full-list load: three readings owed from the 2026-09-06 offline wave
 state:    proposed
 row:      unassigned
@@ -786,16 +793,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/COLD_LOAD_RUN_SHEET_4.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/COLD_LOAD_RUN_SHEET_4.md
-
-## DOCTRINE_LOADAFTER_STALE_1 Doctrine's About.xml loadAfter no longer covers what its patches touch
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DOCTRINE_LOADAFTER_STALE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DOCTRINE_LOADAFTER_STALE_1.md
 
 ## DROID_FACTIONS_IN_FROZEN_SAVE_1 Census: which droid FactionDefs/kinds/need classes are scribed in the frozen world and campaign saves
 state:    proposed
@@ -1096,13 +1093,3 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DROIDWORKS_WILD_DROIDS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DROIDWORKS_WILD_DROIDS_1.md
-
-## ARMOURY_ABSORBED_KOTORCORE_DUPES_1 Absorbed_KotorCore is DEPLOYED while guy762.mm.kotorcore is still active, against its own header - duplicate ThingDefs are live now
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/ARMOURY_ABSORBED_KOTORCORE_DUPES_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/ARMOURY_ABSORBED_KOTORCORE_DUPES_1.md
