@@ -6609,18 +6609,6 @@
     "hash": "f21e9310db927e8b1e3a58d1e19805267be30fd7481b22d9069781876ef6786d",
     "sha": "3c8d5d73"
   },
-  "src/RimStarWars/StarWarsPatches/Patches/IsekaiTraits_ExcludeFromRandomRoll.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "e9510cebb1d7051b236e08af544f1cda5bc7ad5e3a745f99c9ff73c69b972410",
-    "sha": "3c8d5d73"
-  },
-  "src/RimStarWars/StarWarsPatches/Patches/IsekaiTraits_StarWarsReflavor.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "246ee0569eddd3ea9b08549dd07d63943ea3b0110ebd08d67d739ca9d1c50c4e",
-    "sha": "98863702"
-  },
   "src/RimStarWars/StarWarsPatches/Patches/JawaAppearance_Tuning.xml": {
     "cleanCount": 1,
     "date": "2026-09-05",

@@ -6958,38 +6958,6 @@
   </Operation>
 
   <Operation Class="PatchOperationFindMod">
-    <mods><li>Titans</li></mods>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <!-- Titan MeatAmount: bodySize 5.00, base 700, yields 3500 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="Titan"]/statBases/MeatAmount</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="Titan"]/statBases/MeatAmount</xpath>
-            <value><MeatAmount>700</MeatAmount></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="Titan"]/statBases</xpath>
-            <value><MeatAmount>700</MeatAmount></value>
-          </nomatch>
-        </li>
-        <!-- Titan BoneAmount: bodySize 5.00, base 250, yields 1250 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="Titan"]/statBases/BoneAmount</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="Titan"]/statBases/BoneAmount</xpath>
-            <value><BoneAmount>250</BoneAmount></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="Titan"]/statBases</xpath>
-            <value><BoneAmount>250</BoneAmount></value>
-          </nomatch>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationFindMod">
     <mods><li>Vanilla Animals Expanded — Waste Animals</li></mods>
     <match Class="PatchOperationSequence">
       <operations>
