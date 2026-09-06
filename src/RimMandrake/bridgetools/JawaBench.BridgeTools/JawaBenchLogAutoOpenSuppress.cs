@@ -127,7 +127,11 @@ namespace JawaBench.BridgeTools
                 "default. The debug menu's own manual toggle is a SEPARATE code path " +
                 "(DebugWindowsOpener) and always still works by hand regardless of this setting. " +
                 "'get' (default) reports state; 'suppress' turns the auto-open off; 'restore' " +
-                "turns it back to vanilla behaviour. READ 'installed' FIRST - the patch target is " +
+                "turns it back to vanilla behaviour; 'testerror' RAISES A REAL RED ERROR on " +
+                "purpose (a harmless, clearly-labelled one) and reports the suppression counter " +
+                "either side of it - the only repeatable way to prove the suppression live, and " +
+                "it needs dev mode ON or the engine never attempts an auto-open at all. " +
+                "READ 'installed' FIRST - the patch target is " +
                 "a private/internal engine method and if upstream renamed it this reports nothing " +
                 "while nothing is wrong with the call.",
             ResultDescription =
@@ -145,8 +149,8 @@ namespace JawaBench.BridgeTools
             cancellationToken.ThrowIfCancellationRequested();
 
             var act = (action ?? "get").Trim().ToLowerInvariant();
-            if (act != "get" && act != "suppress" && act != "restore")
-                return Fail("Unknown action '" + action + "'. Use 'get', 'suppress' or 'restore'.");
+            if (act != "get" && act != "suppress" && act != "restore" && act != "testerror")
+                return Fail("Unknown action '" + action + "'. Use 'get', 'suppress', 'restore' or 'testerror'.");
 
             if (act == "suppress" || act == "restore")
             {
@@ -158,10 +162,53 @@ namespace JawaBench.BridgeTools
                 JawaBenchLogAutoOpenSuppress.Suppressed = (act == "suppress");
             }
 
+            // 'testerror' is the deliberate trigger the item's own ## verify needs and
+            // which 2026-09-03's live pass could not find: a genuine Verse.Log.Error
+            // raised AFTER the patch installs, so the suppression counter can be read
+            // across it. Runs on the main thread because Log.Error itself can call
+            // Find.TickManager.Pause() (DebugSettings.pauseOnError && ProgramState.Playing).
+            int before = 0, after = 0;
+            bool devMode = false, fired = false;
+            if (act == "testerror")
+            {
+                if (!JawaBenchLogAutoOpenSuppress.Installed)
+                    return Fail("The suppressor is not installed, so a test error would prove nothing. " +
+                                "This is a refusal, not a silent no-op.",
+                        new { installError = JawaBenchLogAutoOpenSuppress.InstallError });
+
+                await ctx.MainThread.InvokeAsync(() =>
+                {
+                    devMode = Prefs.DevMode;
+                    before = JawaBenchLogAutoOpenSuppress.Suppressions;
+                    Log.Error("[JawaBench] DEV_LOG_AUTOOPEN_SUPPRESS_1 deliberate test error - " +
+                              "raised on purpose to prove the auto-open suppressor; nothing is wrong.");
+                    after = JawaBenchLogAutoOpenSuppress.Suppressions;
+                    fired = true;
+                    return (object)null;
+                }).ConfigureAwait(false);
+            }
+
             return await Task.FromResult<object>(new
             {
                 success = true,
                 action = act,
+                testError = act != "testerror" ? null : (object)new
+                {
+                    raised = fired,
+                    devMode,
+                    suppressionsBefore = before,
+                    suppressionsAfter = after,
+                    delta = after - before,
+                    // Verse.Log.Error only reaches the auto-open at all when
+                    // (!PlayDataLoader.Loaded || Prefs.DevMode) - read from 1.6 source.
+                    // With dev mode off in a loaded game a delta of 0 is CORRECT and
+                    // proves nothing; say so rather than let it read as a failure.
+                    verdict = !devMode
+                        ? "INCONCLUSIVE - dev mode is OFF, so the engine never attempted an auto-open. Turn dev mode on and repeat."
+                        : (after > before
+                            ? "PASS - the engine attempted an auto-open and it was suppressed. The log window should NOT have raised."
+                            : "FAIL - dev mode is on and the engine's auto-open was not intercepted. Check 'installed'.")
+                },
                 installed = JawaBenchLogAutoOpenSuppress.Installed,
                 installError = JawaBenchLogAutoOpenSuppress.InstallError,
                 target = JawaBenchLogAutoOpenSuppress.TargetType + "." + JawaBenchLogAutoOpenSuppress.TargetMethod,
