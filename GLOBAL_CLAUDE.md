@@ -181,3 +181,29 @@ Applies to **files and folders alike**, in prose, tables, lists and summaries.
 If a path is worth mentioning, it is worth writing in full.
 
 Standing rule from the owner, 2026-08-12; form revised 2026-08-13.
+
+## Handoff at the end of a long queue of work — owner, 2026-09-06
+
+Applies to any long-running agent or session, in any project — not one seat, one
+repo's queue tooling, or one agent's identity file. *"Is there a way for an agent
+to automatically prepare for agent reboot when it finishes a big wave and it
+thinks it's a good time to hand off? Then it could just say HANDOFF READY at the
+end and I could reboot myself while keeping things in cache."*
+
+🔑 **The trigger is the sentence "that's all I have for now."** The instant you
+would tell the owner a queue/backlog is exhausted and you're waiting for new
+work, that IS the handoff moment — don't report idleness and then sit on a warm
+context; report idleness by handing off instead.
+
+- Before saying it: everything committed and pushed (if applicable), every
+  subagent you spawned has reported back, nothing left mid-edit.
+- Write whatever handoff artifact the project defines — a project may have its
+  own generator/template (check for one before improvising); with none, a short
+  plain summary covering what you just finished, what's half-done and where it
+  stops, what the owner should look at first, and any traps for whoever resumes.
+- Say **"HANDOFF READY"** as the last line of your reply, **once** — then stop.
+  Do not repeat it on every idle turn afterward; a signal said every time is not
+  a signal. Only say it again once genuinely new work arrived and was then
+  worked through to exhaustion a second time.
+
+Standing rule from the owner, 2026-09-06.
