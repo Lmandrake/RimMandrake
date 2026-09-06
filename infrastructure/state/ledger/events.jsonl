@@ -5301,3 +5301,8 @@
 {"seat":"FOUNDRY","event":"seat","state":"ready","ts":"2026-09-06T23:40:08Z"}
 {"seat":"BENCH","event":"file","id":"FUNGAL_SOIL_TRADE_1","title":"Jawas dig fungal soil from the Rot and haul it to the moisture farms by ship — early money; digging sends distress through the fungal whole and brings its creatures","kind":"task","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-06T23:42:21Z"}
 {"seat":"BENCH","event":"file","id":"MOISTURE_FARM_TEMPLATES_1","title":"Content injection: several highly plausible moisture-farm templates (homestead, vaporator field, cistern head, compound, ruin) — needed many times over","kind":"task","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-06T23:42:22Z"}
+{"seat":"FOUNDRY","event":"claim","id":"RIMMANDRAKE_PITS_BUILD_1","ts":"2026-09-06T23:44:21Z"}
+{"seat":"FOUNDRY","event":"start","id":"RIMMANDRAKE_PITS_BUILD_1","ts":"2026-09-06T23:44:22Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"RIMMANDRAKE_PITS_BUILD_1: live-prove PitCell/Oiled gizmos on pits tier","ts":"2026-09-06T23:45:07Z"}
+{"seat":"FOUNDRY","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-09-06T23:46:38Z"}
+{"seat":"BENCH","event":"file","id":"WORLD_RIVER_COLORS_1","title":"Color the worldmap's rivers by segment (red headwaters → brackish green/brown jungle → toxic brown/blue termini) and the propane lake slate cyan — RiverDef has no color field, so a Harmony patch on the river world-layer; mock in worldview.py first","kind":"task","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-06T23:48:35Z"}

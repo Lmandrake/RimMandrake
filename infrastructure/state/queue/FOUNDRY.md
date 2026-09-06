@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-06T23:42:22Z (the last event's own timestamp, not the render clock)
-game:  DOWN   bridge: free
+as-of: 2026-09-06T23:48:35Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## RIMMANDRAKE_PITS_BUILD_1 Build RimMandrake Pits: core framework mod (dig stages, terrain-mimic covers, mass triggers, struggle escape, fitting family, holding-platform pit cell) + campaign layer; first step is the spawn-mass quicktest matrix on the 22s minimal list
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  Full specs, both ruled by the owner 2026-08-30: design/Jawa/coveredpittrapsspec.md
-prose:    infrastructure/state/items/RIMMANDRAKE_PITS_BUILD_1.md
 
 ## GRAFFITI_FRAMEWORK_BUILD_1 Build mandrake.rm.graffiti (SUPERSEDES Mlie.GraffitiMod - absorb spree, retire from modlist, VERIFY license before asset reuse) + mandrake.rut.marks: five families, taunt funnel in v1, faint-scrawl cant
 state:    ready
@@ -58,6 +49,15 @@ target:   v1
 kind:     build
 summary:  design/Jawa/researchtreetaxonomy.md section 3 defines the manifest schema
 prose:    infrastructure/state/items/RESEARCH_MANIFEST_DRAFT_1.md
+
+## WEAPONS_DONOR_RETIREMENT_1 Retire the 6 weapon donor packs now that mandrake.rsw.armoury absorbed their content
+state:    ready
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     build
+summary:  Retire the 6 weapon donor packs — 1 of 6 broke the owner's live game, reverted
+prose:    infrastructure/state/items/WEAPONS_DONOR_RETIREMENT_1.md
 
 ## PROPERTY_FABRIC_BUILD_1 Build RM_Property: the ownership/provenance/perception fabric mod - colony side first
 state:    ready
@@ -170,6 +170,15 @@ target:   v1
 kind:     build
 summary:  Full spec: design/Jawa/worldbuilding/dungeonsarcspec.md §3. Summary:
 prose:    infrastructure/state/items/VAULT_DUNGEON_BUILD_1.md
+
+## RIMMANDRAKE_PITS_BUILD_1 Build RimMandrake Pits: core framework mod (dig stages, terrain-mimic covers, mass triggers, struggle escape, fitting family, holding-platform pit cell) + campaign layer; first step is the spawn-mass quicktest matrix on the 22s minimal list
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Full specs, both ruled by the owner 2026-08-30: design/Jawa/coveredpittrapsspec.md
+prose:    infrastructure/state/items/RIMMANDRAKE_PITS_BUILD_1.md
 
 ## TILE_STRUCTURE_DESIGNS_1 Make and improve the promise/whisper structure designs per the roster (22+22): rimplace templates + GenStep_RimplacePlan responder (VERIFY terrain/roof ordering); coverage lint = no promise without responder
 state:    doing
@@ -467,17 +476,7 @@ prose:    infrastructure/state/items/ASSAILANT_DUNGEON_BUILD_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
-
-## WEAPONS_DONOR_RETIREMENT_1 Retire the 6 weapon donor packs now that mandrake.rsw.armoury absorbed their content
-state:    ready
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     build
-waiting:  needs `game-up`, game is DOWN
-summary:  Retire the 6 weapon donor packs — 1 of 6 broke the owner's live game, reverted
-prose:    infrastructure/state/items/WEAPONS_DONOR_RETIREMENT_1.md
+_none._
 
 # NOT THIS TARGET
 
@@ -1146,3 +1145,13 @@ kind:     task
 thin:     no ## criteria
 summary:  - Author a family of moisture-farm templates (KCSG / the structure-template engine —
 prose:    infrastructure/state/items/MOISTURE_FARM_TEMPLATES_1.md
+
+## WORLD_RIVER_COLORS_1 Color the worldmap's rivers by segment (red headwaters → brackish green/brown jungle → toxic brown/blue termini) and the propane lake slate cyan — RiverDef has no color field, so a Harmony patch on the river world-layer; mock in worldview.py first
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  1. Segment classes as data (rules must be data): headwater (red — the Contagion's
+prose:    infrastructure/state/items/WORLD_RIVER_COLORS_1.md
