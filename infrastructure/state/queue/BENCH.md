@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-06T23:48:35Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-06T23:49:59Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -202,3 +202,13 @@ kind:     task
 thin:     no ## criteria
 summary:  1. Inventory the family: which Alpha mods are in our stack (ModsConfig, MEASURED) and
 prose:    infrastructure/state/items/ALPHA_FAMILY_SOURCE_REVIEW_1.md
+
+## SETTLEMENT_REJIGGER_ROUND2_1 Round-2 rejigger: re-shift every settlement to fit the pre-frozen biomes — right AFTER BIOME_FREEZE_FABLE_REVIEW_1, BEFORE the animal/plant assignment; every move carded to the owner
+state:    proposed
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+thin:     no ## criteria
+summary:  - Inputs: the frozen sheets (every biome's §8 Inhabited objects + who-lives-here
+prose:    infrastructure/state/items/SETTLEMENT_REJIGGER_ROUND2_1.md
