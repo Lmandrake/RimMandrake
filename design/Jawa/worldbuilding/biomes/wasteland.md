@@ -4,6 +4,11 @@ _Owner + BENCH, 2026-09-05, written in conversation over three passes. The ladde
 the first truly dead ground. Thematic handle: **no outlet** — and its image: **a just-lost
 sunset, flickering with wrathful lightning.**_
 
+🔑 **Read against `forsaken_crags.md` where the regions overlap** (Gray Crags, Sunreach,
+Nightspill): the interleave ruling (owner, 2026-09-06) is crag = the standing relief that
+shatters the wind, wasteland = the drained flat between — no border drawn, no tile churn,
+and never regularized into bullseye rings.
+
 🔑 **Read against `arid_shrubland.md`.** The shrubland is where the land goes mild and life
 becomes the danger; the Wasteland is the opposite inversion — **the land itself is the only
 danger, and there is almost nothing alive to fear.** You can sleep here without a watch. The

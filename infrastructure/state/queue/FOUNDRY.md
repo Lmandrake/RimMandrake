@@ -7,30 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-06T12:49:49Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-06T14:27:17Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## ASSAILANT_DUNGEON_BUILD_1 Build the Assailant flesh dungeon: frozen first-impact complex, thaw-gated, deep Umbra
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  Full spec: design/Jawa/worldbuilding/dungeonsarcspec.md §2. Summary:
-prose:    infrastructure/state/items/ASSAILANT_DUNGEON_BUILD_1.md
-
-## VAULT_DUNGEON_BUILD_1 Build the six Forsaken vaults: concentric grammar templates, LARGE maps, quicktest-proven
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  Full spec: design/Jawa/worldbuilding/dungeonsarcspec.md §3. Summary:
-prose:    infrastructure/state/items/VAULT_DUNGEON_BUILD_1.md
 
 ## RIMMANDRAKE_PITS_BUILD_1 Build RimMandrake Pits: core framework mod (dig stages, terrain-mimic covers, mass triggers, struggle escape, fitting family, holding-platform pit cell) + campaign layer; first step is the spawn-mass quicktest matrix on the 22s minimal list
 state:    ready
@@ -85,15 +67,6 @@ target:   v1
 kind:     build
 summary:  design/Jawa/researchtreetaxonomy.md section 3 defines the manifest schema
 prose:    infrastructure/state/items/RESEARCH_MANIFEST_DRAFT_1.md
-
-## WEAPONS_DONOR_RETIREMENT_1 Retire the 6 weapon donor packs now that mandrake.rsw.armoury absorbed their content
-state:    ready
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     build
-summary:  Retire the 6 weapon donor packs — 1 of 6 broke the owner's live game, reverted
-prose:    infrastructure/state/items/WEAPONS_DONOR_RETIREMENT_1.md
 
 ## DROID_DONOR_PATCH_GATE_1 Patch the 11 ungated ABF/Synstructs sites in absorbed KotOR content, the prerequisite before ABF/Synstructs/Asimov can retire
 state:    ready
@@ -215,6 +188,15 @@ target:   v1
 kind:     task
 summary:  (no items/DROID_TILES_SOURED_TERRAIN_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DROID_TILES_SOURED_TERRAIN_1.md
+
+## VAULT_DUNGEON_BUILD_1 Build the six Forsaken vaults: concentric grammar templates, LARGE maps, quicktest-proven
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  Full spec: design/Jawa/worldbuilding/dungeonsarcspec.md §3. Summary:
+prose:    infrastructure/state/items/VAULT_DUNGEON_BUILD_1.md
 
 ## TILE_STRUCTURE_DESIGNS_1 Make and improve the promise/whisper structure designs per the roster (22+22): rimplace templates + GenStep_RimplacePlan responder (VERIFY terrain/roof ordering); coverage lint = no promise without responder
 state:    doing
@@ -509,6 +491,16 @@ blocked:  Engineering sequence, not an owner call: needs Droidworks Phase 3 (fac
 summary:  (no items/DROID_TILES_SOURED_TERRAIN_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DROID_TILES_SOURED_TERRAIN_1.md
 
+## ASSAILANT_DUNGEON_BUILD_1 Build the Assailant flesh dungeon: frozen first-impact complex, thaw-gated, deep Umbra
+state:    ready  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+blocked:  creative lock-in owed with the owner (FUTURE_VECTORS.md line 22, item's own watch-out) — mechanical rulings landed 2026-09-01 but KCSG authoring/art/dialogue is a joint BENCH+owner session, not solo FOUNDRY build; skipping to next item
+summary:  Full spec: design/Jawa/worldbuilding/dungeonsarcspec.md §2. Summary:
+prose:    infrastructure/state/items/ASSAILANT_DUNGEON_BUILD_1.md
+
 ## ARMOURY_MELEEPOWER_STALE_1 Armoury_MeleePower.xml melee damage values are stale vs. its own generator - live, currently affecting the campaign
 state:    doing  (BLOCKED)
 row:      unassigned
@@ -521,7 +513,17 @@ prose:    infrastructure/state/items/ARMOURY_MELEEPOWER_STALE_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-_none._
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+
+## WEAPONS_DONOR_RETIREMENT_1 Retire the 6 weapon donor packs now that mandrake.rsw.armoury absorbed their content
+state:    ready
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     build
+waiting:  needs `game-up`, game is DOWN
+summary:  Retire the 6 weapon donor packs — 1 of 6 broke the owner's live game, reverted
+prose:    infrastructure/state/items/WEAPONS_DONOR_RETIREMENT_1.md
 
 # NOT THIS TARGET
 
@@ -617,6 +619,16 @@ row:      unassigned
 needs:    owner
 target:   v1
 kind:     task
-thin:     no ## spec, no ## verify
-summary:  FOUNDRYREBOOTHANDOFF20260906 — READ FIRST on wake
+thin:     no ## verify
+summary:  RESTART HANDOFF 2026-09-06 (FOUNDRY, pre-agent-restart). Read this whole
 prose:    infrastructure/state/items/FOUNDRY_REBOOT_HANDOFF_20260906.md
+
+## LIGHTFALL_CHASM_AUTHORING_1 Author the Lightfall chasm landmark on the Damp chain (terminator suture, deepest at tile 9023) — site+name owner-ratified 2026-09-06, spec in forsaken_crags.md §3
+state:    proposed
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/LIGHTFALL_CHASM_AUTHORING_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/LIGHTFALL_CHASM_AUTHORING_1.md

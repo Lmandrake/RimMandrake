@@ -101,3 +101,7 @@ Same instrument, same session as the shrubland fold above: 19 `Wasteland` tiles 
 arc < 60 (min 37.1, up to 54 °C) are mislabeled sunward tails — re-biome per the
 ladder. The three-family split (salt basins / fallout scour / terminator pockets)
 in `wasteland.md` §0 is the reference for which tiles legitimately stay.
+
+Added 2026-09-06 (forsaken_crags.md §0): 5 `AB_RockyCrags` tiles in Twilight Sea at
+arc 69–71 (tiles 15045, 15046, 1294, 15047, 15048 — flat, dayside, inside a sea
+region) are the same class of instrument tail — re-biome per the ladder.

@@ -19,8 +19,15 @@ large-hills or worse, 17 impassable. Water: 5 tiles. Regions: Rimewall (258), Gr
 (181), Sunreach (174), Nightspill (172), Twilight Crags (169), The Verge (103).
 
 🔑 It **interleaves with the Wasteland's dark scour in the same named regions** (Gray
-Crags, Sunreach, Nightspill appear in both sheets). What separates a crag tile from a
-wasteland tile is **relief** — ⚠️ the formal boundary ruling is still owed (§Owed).
+Crags, Sunreach, Nightspill appear in both sheets). 🔴 **The interleave ruling (owner,
+2026-09-06): crag = the standing relief that shatters the wind; wasteland = the drained
+flat between. No border is ever drawn and no tiles churn** — a tile's biome is what it IS,
+not where a line falls. ⚠️ With the standing caveat re-affirmed on the ruling: the mix must
+stay **anomaly-scattered, never bullseye** — relief is scattered by geology, and any
+authoring or repair pass that regularizes the crag/wasteland mix into rings about the
+substellar point violates the planet's founding ban. (Five stray "crag" tiles found in
+Twilight Sea at arc 69–71, flat and dayside, are instrument tails — folded into
+`WORLDMAP_DESERT_BAND_REPAIR_1`, not into any ruling.)
 
 ## 1. What it is
 
@@ -66,9 +73,14 @@ Where the Dark dies, its compacted grains settle with their acid chemistry and *
 downward** — a slow, insidious rain eating the land. The famous obsidian-black twisted
 formations are causal, not decorative: **the wild rock is the trail of everywhere the Dark
 has been clearing for ten thousand years.** Where a standing clear-pocket has sat over one
-spot geologically long, the etch goes deep — and the deepest is **the great chasm on the
-planet's terminator**, the one massive feature of its kind (name and worldmap placement
-owed).
+spot geologically long, the etch goes deep — and the deepest is **LIGHTFALL**, the great
+chasm on the planet's terminator, the one massive feature of its kind (owner-named
+2026-09-06: where light falls in — the one place the Dark always dies). 🔴 **Placed on the
+Damp chain** (MEASURED): the 32-tile mountainous suture straddling arc 90 at lat −37→−64,
+lon 86–97 — centered on the arc-90.0 spine (tiles 12253, 15934, 107, 7924, 1445, 15951),
+deepest at **tile 9023** (hilliness 5, elev 919 m). The chain's 8–17 °C ambient band is
+standing clear-pocket country, so the map's own scar and the ratified mechanism agree.
+Landmark authoring rides `LIGHTFALL_CHASM_AUTHORING_1` (bridge work, next game-up window).
 
 ### Wind: laminar → turbulence (canon, both sheets)
 
@@ -120,13 +132,15 @@ The donor's weather table, re-skinned to the physics (`Clear` stays at commonali
 
 - **The Dark** (donor `AB_ForsakenNight`, the permanent state): near-black "day" sky,
   ranged accuracy ×0.6, ambient glow below crop threshold. Gust cycles run *inside* it.
-- ⭐ **The Clearing** (owner-authored, new, rare): illumination briefly RISES — the Dark
+- ⭐ **The Unveiling** (owner-authored, new, rare): illumination briefly RISES — the Dark
   folds away wholesale and the actual map shows itself, naked and lit — then it simply
   folds back. The one moment you see what country you have been living in.
-- **The etching drizzle** (re-skin of donor `AB_ForsakenRainyNight`): the insidious rain
-  made visible — 🔴 it is collapsed-grain chemistry, NEVER water (R-H1 stands).
-- **Reaction storms** (re-skin of donor `AB_ForsakenThunderstorm`): the two atmospheres
+- **Etchfall** (re-skin of donor `AB_ForsakenRainyNight`): the insidious rain made
+  visible — 🔴 it is collapsed-grain chemistry, NEVER water (R-H1 stands).
+- **Witchfire storms** (re-skin of donor `AB_ForsakenThunderstorm`): the two atmospheres
   igniting into chemistry native to neither — light and violence with no terrestrial name.
+
+_Names owner-ratified 2026-09-06._
 
 ## 5. Always true
 
@@ -150,7 +164,7 @@ The donor's weather table, re-skinned to the physics (`Clear` stays at commonali
 3. 🔴 **No water rain** (planet-wide R-H1) — the drizzle is chemical; a water-rain def
    here is a violation.
 4. 🔴 **No permanent Clear** — `Clear` weather commonality stays 0; illumination rises
-   only as the rare, brief Clearing.
+   only as the rare, brief Unveiling.
 5. 🔴 **No clean sensing** — content granting unimpeded sensors, targeting or overwatch
    through the Dark violates the pursuit ruling.
 6. 🔴 **No sun-dependent resident life** — a def needing real sky light to live here is a
@@ -171,7 +185,7 @@ The donor's weather table, re-skinned to the physics (`Clear` stays at commonali
 - **Gust power** — wind energy in violent pulses: turbines plus storage plus a standing
   repair bill; the breakage economy is the price of the watt.
 - **Ultima fibers** — the giant septimum's hardened line, per donor lore.
-- **The chasm** — the deepest etch on the planet; what waits at the bottom is unwritten.
+- **Lightfall** — the deepest etch on the planet; what waits at the bottom is unwritten.
 
 ## 8. Inhabited objects
 
@@ -195,7 +209,7 @@ These rumors are merely whispered, to ensure they do not come to pass.
   biome's power wells, and its explosions.
 - **Fugitive holds** — smuggler caches and bolt-holes of everyone the Empire ever chased
   into the sensor shadow; some still occupied, some now just supplies in the dark.
-- **The chasm** and whatever generations of the desperate have lowered into it.
+- **Lightfall** and whatever generations of the desperate have lowered into it.
 - **Rumor-sites** — places where something was found too neatly arranged: a creature den
   too well provisioned, a stone circle nobody admits to. Forsaken evidence, deniable.
 
@@ -205,7 +219,7 @@ These rumors are merely whispered, to ensure they do not come to pass.
 
 - **Light:** two-toned bioluminescence — blue darklight gammas against yellow giant flora,
   a harbor-at-night palette; the Dark as a visible medium with knife-edge clear pockets;
-  the Clearing as the rare, almost religious reveal of the whole map.
+  the Unveiling as the rare, almost religious reveal of the whole map.
 - **Palette:** obsidian black, glow-blue, lamp-yellow, hydrocarbon-frost grey on the rime
   faces.
 - **Silhouette language:** twisted, etched verticals — rock that reads dissolved, not
@@ -218,13 +232,10 @@ These rumors are merely whispered, to ensure they do not come to pass.
 
 ## Owed
 
-- **The interleave ruling** (carried from pass 1, unruled): crag = the standing relief,
-  wasteland = the drained flat between — formally split the shared regions by relief, or
-  draw a border. Owner's call.
-- **Names, owner's pick:** the great chasm; the Clearing's player-facing name; the
-  re-skinned storm and drizzle names; the dusk rat's proper species name (if any).
-- **The chasm's worldmap placement** — authored as a landmark on the terminator.
-- **Dusk rat art redo** → NEW-ART ledger (rat-analog, behavior-named, anything but a rat).
+- **Lightfall landmark authoring** — `LIGHTFALL_CHASM_AUTHORING_1`, bridge work at the
+  next game-up window (site ruled in §3; nothing further needed from the owner to start).
+- **Dusk rat art redo** → NEW-ART ledger (rat-analog, behavior-named, anything but a rat —
+  the name stays; owner ruled the name IS the joke).
 - **Colder/warmer variant mapping** (BENCH-derived, unratified): tholin-rime families to
   the deep regions (Rimewall, Twilight Crags), daysmoke families to the terminator edge
   (Sunreach, The Verge) — mutator palette to concretize at the assignment sitting.
