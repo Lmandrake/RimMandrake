@@ -402,7 +402,13 @@ class Graph:
                     else:
                         out.append(f'\t\t\t<{tag} name="{_esc(name)}">{_esc(text)}</{tag}>')
                 elif kind == "floatrange":
-                    _, name, (mn, mx) = f
+                    _, name, rng = f
+                    if rng is None:
+                        # The source landform does not carry this requirement
+                        # (Canyon/LoneMountain lack TopologyValue/DepthInCaveSystem);
+                        # emit nothing, exactly like the source.
+                        continue
+                    mn, mx = rng
                     out.append(f'\t\t\t<FloatRange{XML_SCHEMA_XMLNS} name="{_esc(name)}">')
                     out.append(f'\t\t\t\t<min>{_esc(_fmt_scalar(mn))}</min>')
                     out.append(f'\t\t\t\t<max>{_esc(_fmt_scalar(mx))}</max>')
@@ -455,7 +461,8 @@ class Graph:
 
 # ==================== DesertPlateau expressed as builder calls ====================
 
-def build_desertplateau(g, frequency=None, manifest_overrides=None, tile_req_overrides=None):
+def build_desertplateau(g, frequency=None, manifest_overrides=None, tile_req_overrides=None,
+                        freq_scale=None, rotate_deg=None):
     """Issue the exact sequence of g.node()/g.port()/g.connect() calls that
     reproduce LandformDesertPlateau.xml, sourcing field/port/connection
     VALUES from one parse of the shipped file. `frequency`, when given,
@@ -525,6 +532,17 @@ def build_desertplateau(g, frequency=None, manifest_overrides=None, tile_req_ove
                 for i, f in enumerate(node.fields):
                     if f[0] == "scalar" and f[2] == "Frequency":
                         node.fields[i] = ("scalar", f[1], "Frequency", frequency)
+            # Generic variant knobs (MAPGEN_GL_SHEET_1): scale every Perlin
+            # frequency, and set every Rotate node's Angle, on ANY source
+            # landform the Graph was constructed from.
+            if freq_scale is not None and type_ == "gridPerlin":
+                for i, f in enumerate(node.fields):
+                    if f[0] == "scalar" and f[2] == "Frequency":
+                        node.fields[i] = ("scalar", f[1], "Frequency", repr(float(f[3]) * freq_scale))
+            if rotate_deg is not None and type_ == "gridRotate":
+                for i, f in enumerate(node.fields):
+                    if f[0] == "scalar" and f[2] == "Angle":
+                        node.fields[i] = ("scalar", f[1], "Angle", repr(float(rotate_deg)))
 
         for p in sn["ports"]:
             if p["dynamic"] == "True":
@@ -663,6 +681,12 @@ def main():
     ap.add_argument("--selftest", action="store_true", help="rebuild DesertPlateau via the builder and census-compare it to the source")
     ap.add_argument("--variant", action="store_true", help="emit a DesertPlateau variant with a parametrized Perlin Frequency")
     ap.add_argument("--frequency", type=float, default=0.025, help="Frequency for the primary Perlin node (source Node ID=5)")
+    ap.add_argument("--from", dest="from_source", metavar="LANDFORM_XML",
+                    help="build a variant from ANY shipped landform file (Landforms-v1/Landform<Id>.xml) instead of DesertPlateau; "
+                         "with --id/--out, and optionally --rotate DEG (every gridRotate Angle) and --freq-scale X (every gridPerlin Frequency x X). "
+                         "worldTileReq is loosened like --variant (commonness 1, hilliness 0-6, rainfall 0-10000, temperature -100..100).")
+    ap.add_argument("--rotate", type=float, default=None, help="with --from: set every gridRotate node's Angle (degrees)")
+    ap.add_argument("--freq-scale", type=float, default=None, help="with --from: multiply every gridPerlin Frequency by this")
     ap.add_argument("--id", dest="landform_id", default=None, help="new landformManifest Id / DisplayName")
     ap.add_argument("--out", default=None, help="output path for --variant")
     args = ap.parse_args()
@@ -670,6 +694,22 @@ def main():
     if args.selftest:
         ok = run_selftest()
         sys.exit(0 if ok else 1)
+
+    if args.from_source:
+        if not args.landform_id or not args.out:
+            print("ERROR: --from requires --id and --out", file=sys.stderr)
+            sys.exit(2)
+        g = Graph(template_source=args.from_source)
+        build_desertplateau(   # generic over the parsed source despite the name
+            g,
+            manifest_overrides={"id": args.landform_id, "display_name": args.landform_id, "is_custom": True},
+            tile_req_overrides={"commonness": 1.0, "hilliness": (0.0, 6.0),
+                                "rainfall": (0.0, 10000.0), "avg_temperature": (-100.0, 100.0)},
+            freq_scale=args.freq_scale, rotate_deg=args.rotate,
+        )
+        path = g.write(args.out)
+        print(f"Wrote {path}  (from {os.path.basename(args.from_source)}, rotate={args.rotate}, freq_scale={args.freq_scale})")
+        sys.exit(0)
 
     if args.variant:
         if not args.landform_id or not args.out:
