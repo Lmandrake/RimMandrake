@@ -107,11 +107,13 @@ committing; rejected push → `git pull --rebase`, never `--force`. Never a file
 **Every file in this repo is dirty by default — including files nobody has
 touched today.** The only way a file is CLEAN is a recorded entry in
 `infrastructure/state/CODE_REVIEW_STATUS.json` (owned by
-`code_review_status.py`, never hand-edited) with zero commits against that
-path since the recorded commit. No entry, or any commit since — DIRTY.
+`code_review_status.py`, never hand-edited) whose recorded content hash is
+byte-identical to the file on disk. No entry, or any byte changed — DIRTY.
+(Content-based, not commit-based: a rewrite reverted to identical bytes is
+CLEAN; a path moved by `git mv` has no entry at the new path — review 2026-09-06.)
 
 ```
-python3 src/RimMandrake/Utils/code_review_status.py check <path>...   CLEAN/DIRTY, with the commits since if dirty
+python3 src/RimMandrake/Utils/code_review_status.py check <path>...   CLEAN/DIRTY, with the reason if dirty
 python3 src/RimMandrake/Utils/code_review_status.py mark-clean <path>  only after a full-file review finds nothing — refuses on uncommitted changes
 python3 src/RimMandrake/Utils/code_review_status.py list               every recorded entry and its current state
 ```

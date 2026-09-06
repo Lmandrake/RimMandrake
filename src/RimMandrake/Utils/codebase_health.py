@@ -25,12 +25,13 @@ assigned, by this precedence — the FIRST rule that matches wins:
 
   3. GREEN "clean"
            `CODE_REVIEW_STATUS.json` records a clean mark for this exact path
-           and git reports zero commits against it since the recorded sha.
-           This is read through the `code_review_status` module — its own
-           `load()` and `commits_since()` — never by hand-parsing the JSON.
+           whose content hash is byte-identical to the file on disk (content-
+           based, not commit-based). This is read through the
+           `code_review_status` module — its own `load()` and `clean_state()`
+           — never by hand-parsing the JSON.
 
   4. GREY  "dirty" — the default, and per CLAUDE.md the correct answer for
-           almost every file. No review entry at all, or commits since one.
+           almost every file. No review entry at all, or any byte changed since.
            Grey is a MEASURED verdict, not a shrug.
 
   5. HATCHED / UNMEASURED
@@ -428,7 +429,7 @@ def classify(path, loc_measured, uncommitted, doing_files, bug_files, verdict,
     if not ledger_known:
         return "unmeasured", ["the rimflow ledger could not be replayed, so bug/doing state is undetermined"]
     if verdict == "clean":
-        return "green", ["review recorded clean, zero commits since"]
+        return "green", ["review recorded clean, content unchanged since"]
     if verdict == "unknown":
         return "unmeasured", ["a review entry exists but its recorded sha does not resolve"]
     if clean_count > 0:

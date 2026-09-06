@@ -404,11 +404,17 @@ def cmd_prune(apply):
         print(f"\n{len(orphans)} orphaned entr{'y' if len(orphans) == 1 else 'ies'} - re-run with --apply to remove.")
         return 0
     with locked():
+        # Re-test under the lock against the fresh reload: a mark-clean that
+        # landed between the unlocked scan above and here must not lose its
+        # entry, and a path re-created meanwhile is no longer an orphan
+        # (review finding 2026-09-06).
         data = load()
-        for rel in orphans:
+        removed = [rel for rel in orphans
+                   if rel in data and not os.path.isfile(os.path.join(ROOT, rel))]
+        for rel in removed:
             data.pop(rel, None)
         save(data)
-    print(f"\n{len(orphans)} orphaned entr{'y' if len(orphans) == 1 else 'ies'} removed.")
+    print(f"\n{len(removed)} orphaned entr{'y' if len(removed) == 1 else 'ies'} removed.")
     return 0
 
 
