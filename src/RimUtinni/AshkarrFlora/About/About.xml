@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <name>RimUtinni: Ash'karr Flora</name>
+  <packageId>mandrake.rut.ashkarrflora</packageId>
+  <author>Mandrake</author>
+  <supportedVersions>
+    <li>1.6</li>
+  </supportedVersions>
+  <description>TREE_GRAPHICS_OWNERSHIP_1: our own tree art at our own scale, per the
+owner's ruling — "generate our own tree graphics at the scales we want and drop
+all the nonsense of multiple tree mods modifying our designs to who-knows-what
+scale." Ships `RUT_SweetlineTree` (`design/Jawa/worldbuilding/biomes/arid_shrubland.md`
+§4 "The sweetline, and the gradient that reverses" / "The sweetline trees" —
+"huge, ancient, powerful things... never small trees"), a fresh ThingDef with
+its own generated art and its own `plant.visualSizeRange`.
+
+Mechanism found and neutralized: three subscribed mods form a data-driven
+rescaling framework — `ChaoticEnrico.BetterTrees` (Harmony framework,
+`BetterTrees.TreeScaleTemplateDef`/`TreeTextureTemplateDef`, keyed strictly by
+`defName`) plus two texture packs that feed it templates,
+`Qux.Comigo.BetterTreesMod` and `Maal.BetterTreesMod` ("the whole Comingo tree
+thing"). Read from the live Workshop copies (not shippable here — see
+`items/TREE_GRAPHICS_OWNERSHIP_1.md`): every template is a `defName -> {texture
+dir | minScale/maxScale}` dictionary; there is no category- or
+thingClass-wide fallback in the data. `RUT_SweetlineTree` is a brand-new
+defName absent from all three mods' template lists, so it is structurally
+immune — nothing here needs BetterTrees to be uninstalled. `Patches/BetterTrees_SweetlineTree_Immunity.xml`
+adds a defensive `PatchOperationRemove` that strips any future
+`RUT_SweetlineTree` entry those three mods' templates might ever add, so an
+update to any of them can't silently reclaim our defName. It matches nothing
+today — that is by design and is a no-op until proven otherwise (a patch that
+matches nothing logs nothing).
+
+Live check still owed (bridge held by another window at authoring time):
+spawn `RUT_SweetlineTree`, confirm it renders at its authored
+`visualSizeRange` (5.0~6.5, i.e. a canopy roughly 5-6.5 tiles wide at full
+growth) and that no BetterTrees console/log line mentions it.</description>
+  <modDependencies>
+    <li>
+      <packageId>Ludeon.RimWorld</packageId>
+      <displayName>RimWorld</displayName>
+    </li>
+  </modDependencies>
+  <loadAfter>
+    <li>Ludeon.RimWorld</li>
+    <li>ChaoticEnrico.BetterTrees</li>
+    <li>Qux.Comigo.BetterTreesMod</li>
+    <li>Maal.BetterTreesMod</li>
+  </loadAfter>
+</ModMetaData>

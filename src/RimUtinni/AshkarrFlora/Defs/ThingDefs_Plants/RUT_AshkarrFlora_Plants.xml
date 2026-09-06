@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!--
+    RUT_SweetlineTree — TREE_GRAPHICS_OWNERSHIP_1, our own art at our own scale.
+    design/Jawa/worldbuilding/biomes/arid_shrubland.md §4 "The sweetline trees":
+    "Huge, ancient, powerful things (owner's ruling — never small trees). Each
+    grows only on the optimum, so each is a living surveyor's mark, visible for
+    a day's walk; roads follow them and every one has a name. Giants rub
+    against them, so the bark snags shed giant-wool."
+
+    ParentName="TreeBase" (Defs/Core/ThingDefs_Plants/Plants_Bases.xml) rather
+    than DeciduousTreeBase — this is a fixed-sun tidally-locked world with no
+    day/night or season cycle (arid_shrubland.md §6 rule 3), so the fall-colour
+    shader parameters DeciduousTreeBase carries do not apply.
+
+    Scale: plant.visualSizeRange caps at 6.5 — a canopy 6.5 tiles wide at full
+    growth, well above vanilla's biggest common tree (Plant_TreePine, 3.0~6.0
+    under the BetterTrees Djeeshka template referenced below) and matching the
+    "huge, ancient" ruling without inventing a multi-tile footprint. A true
+    monumental multi-cell object (giants rubbing against it, named road anchor,
+    hand-placed one-per-sweetline rather than random wildPlants scatter) is
+    still Owed — see items/TREE_GRAPHICS_OWNERSHIP_1.md — this def only closes
+    the ART/SCALE-OWNERSHIP half of the ticket.
+
+    Flammability 0.1 (down from TreeBase's 0.8): arid_shrubland.md §6 rule 9,
+    "No flammable living flora" — a hard ban, not a judgment call.
+
+    growDays/harvestWork raised well past TreeBase's defaults as flavour for
+    "ancient" and "huge" respectively; not a balance pass. mustBeWildToSow
+    stays true (inherited) — the tree can never be planted by a colonist,
+    matching "each grows only on the optimum."
+  -->
+  <ThingDef ParentName="TreeBase">
+    <defName>RUT_SweetlineTree</defName>
+    <label>sweetline tree</label>
+    <description>A single ancient giant, centuries old, growing only where the moisture-light trade balances exactly. Its trunk is scarred smooth in patches where the biome's giants have rubbed against it for longer than any settlement nearby has stood; the bark sheds their snagged wool in long silver hanks. Every sweetline tree has a name, and the roads of the shrubland are laid tree to tree along the line they mark.</description>
+    <graphicData>
+      <texPath>Things/Plant/RUT_SweetlineTree</texPath>
+      <graphicClass>Graphic_Random</graphicClass>
+      <shadowData>
+        <volume>(0.45, 0.6, 0.32)</volume>
+        <offset>(0,0,-0.46)</offset>
+      </shadowData>
+    </graphicData>
+    <statBases>
+      <MaxHitPoints>650</MaxHitPoints>
+      <Flammability>0.1</Flammability>
+      <Mass>900</Mass>
+      <BeautyOutdoors>10</BeautyOutdoors>
+    </statBases>
+    <plant>
+      <visualSizeRange>5.0~6.5</visualSizeRange>
+      <growDays>240</growDays>
+      <harvestWork>4200</harvestWork>
+      <harvestYield>160</harvestYield>
+      <wildClusterRadius>0</wildClusterRadius>
+      <wildClusterWeight>0.05</wildClusterWeight>
+      <wildOrder>4</wildOrder>
+    </plant>
+  </ThingDef>
+
+</Defs>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Patch>
+  <!-- TREE_GRAPHICS_OWNERSHIP_1 — defensive, not corrective.
+
+       The three subscribed "better trees" mods (ChaoticEnrico.BetterTrees,
+       the Harmony framework; Qux.Comigo.BetterTreesMod and Maal.BetterTreesMod,
+       the texture packs that feed it) rescale/retexture trees by looking up
+       the tree's defName in a BetterTrees.TreeScaleTemplateDef /
+       TreeTextureTemplateDef dictionary — read from the live Workshop copies,
+       there is no thingClass- or category-wide fallback, only exact defName
+       keys. RUT_SweetlineTree is a brand-new defName absent from every
+       template those three mods currently ship, so it is already immune by
+       construction; nothing here is needed for that to hold today.
+
+       This patch is insurance against a FUTURE update to any of the three
+       silently adding an RUT_SweetlineTree entry (unlikely, but the whole
+       point of the ticket is that we, not a donor mod, decide this tree's
+       scale) — it strips any <li> naming our defName out of every loaded
+       TreeScaleTemplateDef/TreeTextureTemplateDef's dictionary. It matches
+       nothing today and therefore logs nothing today; that is the correct,
+       inert state until such an entry ever exists (CLAUDE.md: "a patch that
+       matches nothing logs nothing" is expected here, not a bug). -->
+
+  <Operation Class="PatchOperationConditional" MayRequire="ChaoticEnrico.BetterTrees">
+    <xpath>/Defs/BetterTrees.TreeScaleTemplateDef/treeScales/li[defName="RUT_SweetlineTree"]</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/BetterTrees.TreeScaleTemplateDef/treeScales/li[defName="RUT_SweetlineTree"]</xpath>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional" MayRequire="ChaoticEnrico.BetterTrees">
+    <xpath>/Defs/BetterTrees.TreeTextureTemplateDef/treeTextures/li[key="RUT_SweetlineTree"]</xpath>
+    <match Class="PatchOperationRemove">
+      <xpath>/Defs/BetterTrees.TreeTextureTemplateDef/treeTextures/li[key="RUT_SweetlineTree"]</xpath>
+    </match>
+  </Operation>
+
+</Patch>

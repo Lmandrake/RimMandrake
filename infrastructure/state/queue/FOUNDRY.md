@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-06T07:07:05Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-06T08:05:42Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -477,6 +477,33 @@ kind:     task
 summary:  Reproduced live, 2026-09-06, while working BIOMESPAWNFLORAAUDIT1 on
 prose:    infrastructure/state/items/NINEFOLD_DEBUG_GAME_READY_CRASH_1.md
 
+## TREE_GRAPHICS_OWNERSHIP_1 Own tree art at our scales: generate custom tree graphics (sweetline trees first — huge, ancient); remove tree-mod rescaling of our designs
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+summary:  Owner, verbatim (filed on the item): "Rather than use the whole Comingo tree
+prose:    infrastructure/state/items/TREE_GRAPHICS_OWNERSHIP_1.md
+
+## TILES_STAMP_VERIFY_1 Tiles CSV frozen stamp stale AGAIN (disk b38fd685 vs stamped 65c7be19, ~1650-tile shrubland->Desert repaint unexplained): explain the census delta via git log, restamp, and make the hash check a command run by anything reading the file
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     repair
+summary:  (no items/TILES_STAMP_VERIFY_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/TILES_STAMP_VERIFY_1.md
+
+## REGISTER_CORPSE_CROSSCHECK_1 gen_creature_register.py corpse cross-check is illusory: corpseDefsExcluded=1156 vs dumper corpseDefsSkipped=1265 (off by 109) with no comparison and no warning - verify dumper count semantics (humanlike corpses?) and make the check actually fire (lines ~739-766, ~1618)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+summary:  (no items/REGISTER_CORPSE_CROSSCHECK_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/REGISTER_CORPSE_CROSSCHECK_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -543,26 +570,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/BEHEMOTH_TEXTURE_MISSING_LIVE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/BEHEMOTH_TEXTURE_MISSING_LIVE_1.md
 
-## TREE_GRAPHICS_OWNERSHIP_1 Own tree art at our scales: generate custom tree graphics (sweetline trees first — huge, ancient); remove tree-mod rescaling of our designs
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/TREE_GRAPHICS_OWNERSHIP_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/TREE_GRAPHICS_OWNERSHIP_1.md
-
-## TILES_STAMP_VERIFY_1 Tiles CSV frozen stamp stale AGAIN (disk b38fd685 vs stamped 65c7be19, ~1650-tile shrubland->Desert repaint unexplained): explain the census delta via git log, restamp, and make the hash check a command run by anything reading the file
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     repair
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/TILES_STAMP_VERIFY_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/TILES_STAMP_VERIFY_1.md
-
 ## ARMOURY_LEATHER_GEN_DESYNC_1 gen_armour_patch.py will silently re-add the 3 retired-mod leather blocks the retirement commit stripped by hand
 state:    proposed
 row:      unassigned
@@ -573,12 +580,12 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/ARMOURY_LEATHER_GEN_DESYNC_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/ARMOURY_LEATHER_GEN_DESYNC_1.md
 
-## REGISTER_CORPSE_CROSSCHECK_1 gen_creature_register.py corpse cross-check is illusory: corpseDefsExcluded=1156 vs dumper corpseDefsSkipped=1265 (off by 109) with no comparison and no warning - verify dumper count semantics (humanlike corpses?) and make the check actually fire (lines ~739-766, ~1618)
+## PAWNFLAVOR_MEGAFAUNA_GEN_DESYNC_1 Two more generators will silently re-add retired-mod blocks bbf66830 hand-stripped
 state:    proposed
 row:      unassigned
 needs:    offline
 target:   v1
 kind:     bug
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/REGISTER_CORPSE_CROSSCHECK_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/REGISTER_CORPSE_CROSSCHECK_1.md
+summary:  (no items/PAWNFLAVOR_MEGAFAUNA_GEN_DESYNC_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PAWNFLAVOR_MEGAFAUNA_GEN_DESYNC_1.md
