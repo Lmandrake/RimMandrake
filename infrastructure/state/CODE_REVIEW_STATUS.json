@@ -305,6 +305,102 @@
     "hash": "a312db69586ffa5573396b4033288d17f673245bc7bc8c6374b447b87ec93feb",
     "sha": "43f96b1b"
   },
+  "src/RimMandrake/Aftermath/Source/AftermathMod.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "4649a75a2fa98c13c9554cff4ca4293d5f187485e110e56ef792fe914faf6d0b",
+    "sha": "f3a684e1"
+  },
+  "src/RimMandrake/Aftermath/Source/AftermathPayloadFactionMode.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "3227aeffebb19f0b3767829ecc5c9b6d007c5771b231ccc3d84d50097807253d",
+    "sha": "f3a684e1"
+  },
+  "src/RimMandrake/Aftermath/Source/AftermathRuleEligibility.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "6a1076338e3f09894c20939b0fd2ce11ec0bbbce71e4c6fc25a2e5c8c67f5d40",
+    "sha": "f3a684e1"
+  },
+  "src/RimMandrake/Aftermath/Source/AftermathRuleRunner.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "4b0a504b4e8d5411e94578ce8cf0a29ecef27c866e6e57173063a1b3fd500046",
+    "sha": "f3a684e1"
+  },
+  "src/RimMandrake/Aftermath/Source/AftermathTriggerKind.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "b967e70afdab9dae09e37890094fae42ffa7df77ae7b9e9d78daa5d133e930b9",
+    "sha": "f3a684e1"
+  },
+  "src/RimMandrake/Aftermath/Source/BattleOutcome.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "07e5569472b50a82cb99bb7dcb22657cc6a8933dff1ec1da9d9dde4461720d15",
+    "sha": "f3a684e1"
+  },
+  "src/RimMandrake/Aftermath/Source/BattleOutcomeClassifier.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "d1b5c7413bbf22c0f2e2021e894d91460921e829375fdbfd44ab2563208134d9",
+    "sha": "f3a684e1"
+  },
+  "src/RimMandrake/Aftermath/Source/BattleRecord.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "0e55e33760c52caa966b9c9d724457323c81ee6ff1a26d80a01785cbce3fc4cf",
+    "sha": "f3a684e1"
+  },
+  "src/RimMandrake/Aftermath/Source/MapComponent_BattleRecorder.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "9a1893222b2107bff410cc8305c8f104026dd08dc47de1fd53d118cd9db15211",
+    "sha": "f3a684e1"
+  },
+  "src/RimMandrake/Aftermath/Source/Patch_ColonistCasualty.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "537354ed6552a5e76be2c89530466613b1caaf0fca425674bd6b166b008debf5",
+    "sha": "f3a684e1"
+  },
+  "src/RimMandrake/Aftermath/Source/Patch_LordLifecycle.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "f64d05a744304c914ef8d91ef646bb5e0098862f3f3740e75d33c3152d348d97",
+    "sha": "f3a684e1"
+  },
+  "src/RimMandrake/Aftermath/Source/Patch_RaidGenerated.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "e712abfd2a02ee7385016aac78a6f78deb6f1f287ee54e400c746187da451dce",
+    "sha": "f3a684e1"
+  },
+  "src/RimMandrake/Aftermath/Source/QueuedAftermathMarker.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "a02af506bc65480069b355cca286ae4ce98810d32f40294772ed086e178a4b78",
+    "sha": "f3a684e1"
+  },
+  "src/RimMandrake/Aftermath/Source/RM_AftermathRuleDef.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "13f2838e67b25676e6b655c2b7817171688e8f250fbae885d5f298d8e7c5d05e",
+    "sha": "f3a684e1"
+  },
+  "src/RimMandrake/Aftermath/Source/RM_AlliancePairDef.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "a3d8d3e8c94c0b52efdbf4dd9d751fe50a690563d1f3628c945e79d7772231fa",
+    "sha": "f3a684e1"
+  },
+  "src/RimMandrake/Aftermath/Source/SelfTest/Program.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "da8273d528b3f7e7dfa936af5068acb4c9e164d4c4d3a0c1430776c697fa0be3",
+    "sha": "f3a684e1"
+  },
   "src/RimMandrake/DesertVehicleReskin/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-05",
@@ -2117,10 +2213,10 @@
     "sha": "b87a3622"
   },
   "src/RimMandrake/Utils/code_review_status.py": {
-    "cleanCount": 4,
-    "date": "2026-09-05",
-    "hash": "07ce1f5370134fcd7c673e641e3c72c58be16e8856981f465e18a1a945236c39",
-    "sha": "d401c253"
+    "cleanCount": 5,
+    "date": "2026-09-06",
+    "hash": "74459b58c5d74e6e1027619fea7279b63d486f37c074ce6e8981dd80fda3af6f",
+    "sha": "f3a684e1"
   },
   "src/RimMandrake/Utils/codebase_health.py": {
     "cleanCount": 3,
