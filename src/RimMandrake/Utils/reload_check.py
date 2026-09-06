@@ -126,6 +126,9 @@ def main():
              (wi.get("info") or {}).get("planetCoverage"), wi.get("tilesCount")))
 
         import csv as _csv
+        sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+        from verify_frozen import warn_if_stale
+        warn_if_stale(TILES)
         rows = {int(r["tile"]): r for r in _csv.DictReader(io.open(TILES, encoding="utf-8"))}
         g = s.call("jawa/world_tile_get", {"tiles": ",".join(map(str, PROBE))})
         bad = 0

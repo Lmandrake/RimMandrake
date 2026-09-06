@@ -58,6 +58,38 @@ def check(marker: str, restamp: bool = False) -> bool:
     return False
 
 
+def warn_if_stale(artifact_path: str) -> bool:
+    """Library entry point for a READER of a frozen artifact.
+
+    Call this right after resolving the path to a frozen CSV/etc, before you read it,
+    from any script that only reads the file (a writer should call `check()` above, or
+    just run this module with --restamp after a deliberate edit). Non-fatal: prints a
+    one-line warning to stderr and returns False on a stale/missing stamp, but never
+    raises and never blocks the caller — a reader that cannot look at its own data is a
+    worse failure than a reader that looked at slightly-unstamped data and said so.
+
+    Returns True if there is no marker at all (nothing to warn about) or if the stamp
+    matches; False if the marker exists and disagrees with the file on disk.
+    """
+    marker = artifact_path + '.frozen.json'
+    if not os.path.exists(marker):
+        return True
+    try:
+        d = json.load(open(marker, encoding='utf-8'))
+        now = measure(artifact_path)
+        bad = [k for k in ('sha256', 'rows', 'bytes') if k in d and d[k] != now.get(k)]
+    except Exception as e:  # fail open — a reader must never crash on this check
+        print(f"⚠️  could not verify freeze stamp for {artifact_path}: {e}", file=sys.stderr)
+        return True
+    if bad:
+        print(f"⚠️  STALE FREEZE STAMP on {os.path.basename(artifact_path)} — "
+              + ", ".join(bad) + f". You are reading data the stamp does not describe.\n"
+              f"   python3 src/RimMandrake/Utils/verify_frozen.py {os.path.relpath(artifact_path, ROOT)}"
+              f"  for details.", file=sys.stderr)
+        return False
+    return True
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument('artifact', nargs='?', help='the guarded file, or its .frozen.json')

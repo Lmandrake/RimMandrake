@@ -95,6 +95,9 @@ HAND_PLACED = [
 
 
 def load_tiles():
+    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+    from verify_frozen import warn_if_stale
+    warn_if_stale(TILES)
     rows = []
     with io.open(TILES, encoding="utf-8") as fh:
         for r in csv.DictReader(fh):

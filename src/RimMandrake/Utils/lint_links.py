@@ -108,6 +108,8 @@ def main():
     nbr, _lat, _lon, _vec = world_graph.load()   # list[list[int]] — see its docstring
     adj = [set(int(j) for j in row if int(j) >= 0) for row in nbr]
 
+    from verify_frozen import warn_if_stale
+    warn_if_stale(TILES)
     water, elev = {}, {}
     with open(TILES, encoding="utf-8") as fh:
         for r in csv.DictReader(fh):

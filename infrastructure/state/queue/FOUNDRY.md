@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-06T08:05:42Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-06T08:06:38Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -492,7 +492,7 @@ row:      unassigned
 needs:    offline
 target:   v1
 kind:     repair
-summary:  (no items/TILES_STAMP_VERIFY_1.md yet — write one when you have something to say)
+summary:  TILESSTAMPVERIFY1
 prose:    infrastructure/state/items/TILES_STAMP_VERIFY_1.md
 
 ## REGISTER_CORPSE_CROSSCHECK_1 gen_creature_register.py corpse cross-check is illusory: corpseDefsExcluded=1156 vs dumper corpseDefsSkipped=1265 (off by 109) with no comparison and no warning - verify dumper count semantics (humanlike corpses?) and make the check actually fire (lines ~739-766, ~1618)
