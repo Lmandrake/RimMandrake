@@ -24,13 +24,14 @@ The low-sun reasoning below defines the core; the outliers are flagged in §Owed
 
 ## 1. What it is
 
-The one place on the dayside where the land makes its own night.
+The one place on the dayside where there is enough shade to survive between — but never
+enough to survive *in*.
 
 The sun sits so low that every ridge, boulder and scarp throws a shadow four times its own
-height, and those shadows are long enough to **touch each other**. What that produces is not
-patches of shade but a **network** — ribbons of permanent dark running across the country,
-joining up, branching, and going somewhere. An animal here does not hide in a shadow. It
-**travels** in one.
+height. But those shadows are **patches, not cover**: discrete islands of survivable dark
+scattered across ground that will kill you, with hard lethal light in between. Nothing here
+lives in the open and nothing here stays put. Life is **a sprint between shelters**, and the
+distance from one patch to the next is the single number that decides what can live where.
 
 So this is the desert that can be lived in. Cooler, shaded, rocky, with enough vegetation to
 carry meagre but *regular* populations — and regularity is the whole gift. The Pyrelands boom
@@ -45,8 +46,9 @@ angle of illumination that turns ordinary terrain into continuous shelter.
 
 ## 3. Driving forces
 
-**The sun is fixed and low, so shadow is permanent, long, and connected.** Everything
-follows: where life can be, where it can go, when it is safe, and where it dies.
+**The sun is fixed and low, so shade is permanent, long, and PATCHY.** The shadows never
+move, so neither do the islands or the gaps — and the gap distance decides everything: what
+can live here, how big it must be, where it can go, and where it dies.
 
 Second engine, and it comes from somewhere else entirely: **the fertility here is imported.**
 Ash and smoke wander in from Pyreland fires beyond the horizon. This biome is fed by burning
@@ -54,21 +56,45 @@ it never sees.
 
 ## 4. How the biology adapted
 
-### Night is a network, and the danger is the gaps
+### The sprint economy
 
-Because the sun never moves, **the ribbons never move either** — and neither do the places
-where two ribbons fail to meet. There are permanent, known **crossings**: stretches of open
-light that everything must sprint across.
+Shade is discrete, so the fundamental act of life here is **the dash** — rest in a shadow,
+run to the next one, rest again. Everything is built for it:
 
-- 🔑 **Prey use the same ribbons for generations, so the ribbons are trails.** Predators do
-  not hunt in the dark; they **wait at the crossings**. The entire predator strategy of this
-  biome is ambush at a fixed, well-known place.
-- This is the biome's signature tactical fact and it applies to the player identically: a
-  caravan moving in shade is safe and fast, and every raider on the planet knows exactly
-  where it must come into the light.
-- ⇒ Contrast with the deep desert, and state it that way: **there a shadow is property**, held
-  for life and fought over. **Here a shadow is a road.** Territorial versus migratory, out of
-  the same fact about the sun.
+- **Explosive acceleration and high burst speed, with almost no endurance.** Nothing here is
+  a distance runner, because distance running is not what the terrain asks for. It asks for
+  twenty seconds of everything you have, repeated for a lifetime.
+- **Rest is thermal accounting, not fatigue.** An animal in shade is not recovering its
+  breath, it is **dumping the heat it took crossing**. Time in shelter is set by how much
+  heat it picked up, which is set by how far it ran.
+- 🔑 **Body size maps directly to maximum dash distance.** Large animals hold heat longer and
+  can cross wider gaps; small ones are confined to close-packed country and can never leave
+  it. **The landscape is therefore sorted by size** — the rocky, dense-patch hills hold small
+  life, and only big animals can be out on the open pavement at all. (Binds to
+  `creature_normalization_doctrine.md`: mass becomes a readable statement about *which ground
+  a creature is allowed to occupy*.)
+
+### The shelter is the trap
+
+Because every patch is a required destination, a predator does not need to hunt. **It can own
+a shadow and wait for something to arrive needing it**, overheated and out of options. The
+alternative strategy is to **intercept mid-dash**, when the prey is committed, in the open,
+and physically cannot turn back.
+
+⇒ Both strategies are ambush, and both are positional. **Nothing in this biome pursues.**
+The chase does not exist here as a behaviour, because the terrain has already done the work.
+
+⇒ And state the contrast with the deep desert plainly: **there a shadow is property**, held
+for life. **Here a shadow is a staging post** — used by everything, owned by whatever is
+strong enough to be sitting in it when you arrive.
+
+### Connectivity is geography
+
+Since neither the patches nor the gaps ever move, the country has a permanent, knowable
+**map of what is reachable from what**. Some routes across it are viable and some are simply
+not, and that is a fixed fact rather than a seasonal one. Animals inherit routes. So do
+caravans. **A stretch where the patches thin out is a wall**, and it does not matter that you
+can see straight across it.
 
 ### Everything is lit from one side, forever
 
@@ -128,8 +154,9 @@ It is the workaday biome: the game a colony hunts, and the beasts a Jawa clan ac
 ## 5. Always true
 
 - The sun is low, fixed, and lights everything from one side.
-- Shadows are long, connected, and permanent — and so are the gaps between them.
-- Predators wait at crossings; they do not pursue through open light.
+- Shade is long, permanent and **patchy** — islands, never cover — and the gaps never move.
+- Life is a sprint economy: rest, dash, rest. **Nothing pursues.**
+- How far a creature can dash is a function of its size, and it decides where it may live.
 - Activity is a matter of *where*, never *when*.
 - Populations are small and **steady** — never boom-and-bust.
 - The fertility arrives as ash from fires beyond the horizon.
@@ -158,8 +185,8 @@ It is the workaday biome: the game a colony hunts, and the beasts a Jawa clan ac
 - 🔑 **Reliable game.** The only ground on Ash'karr with a food web steady enough to hunt as
   a livelihood rather than a windfall.
 - **Herd beasts** — the pack and draught animals the campaign runs on.
-- **The shade ribbons as travel infrastructure** — routes that are faster and safer than open
-  ground, for the player exactly as for the animals.
+- **Known viable routes** — the chains of shade patches close enough to be crossed, which are
+  as fixed for a caravan as for an animal, and worth mapping.
 - **Ash-pulse harvests** after a smoke event.
 - **Desert pavement stone**, wind-stripped and flat.
 - **Crevice shelter** — buildable ground with cover already present, which almost nowhere
@@ -167,17 +194,18 @@ It is the workaday biome: the game a colony hunts, and the beasts a Jawa clan ac
 
 ## 8. Inhabited objects
 
-- **Settlements at ribbon junctions.** Where several shadow corridors meet is a natural
-  crossroads, and it is where anything sane builds. Roads follow the ribbons because
-  everything always has.
-- 🔑 **The crossings are named places.** A stretch of open light every caravan must run is a
-  landmark, a toll point, an ambush, and a story. These should be authored, named, and
-  reused — they are this biome's equivalent of a bridge.
+- **Settlements on the big patches.** A shadow large enough to hold more than one thing is
+  the only place worth building, and roads run along the chains of them because nothing can
+  travel any other way.
+- 🔑 **The wide gaps are named places.** A stretch too broad for most things to cross is a
+  landmark, a border, a toll point, an ambush and a story — this biome's equivalent of a
+  river. Author them, name them, reuse them. **The last patch before a wide gap is the most
+  contested real estate in the biome**, because everything must stage there.
 - **Rock shelters and crevice dwellings** in the hills.
 - **Deep Desert Tribe holdings** — canyons, caves and isolated ridges, never near water, and
   **no roads** (canon, `ASHKARR_WORLD_DEFINITION.md` §7). Their fire doctrine is set out in
   `deep_desert.md`.
-- **Herder camps** following the ribbons seasonally — where "seasonally" means *by smoke*,
+- **Herder camps** working the patch chains seasonally — where "seasonally" means *by smoke*,
   not by calendar.
 - **Ash middens** — drifted accumulations at the downwind foot of ridges, worth digging.
 
@@ -198,8 +226,8 @@ It is the workaday biome: the game a colony hunts, and the beasts a Jawa clan ac
   between **soft sand sheets** and **cracked hardpan pavement**, in patches, visibly.
 - **Weather:** the smoke haze, arriving from over the horizon, turning everything orange and
   flattening the distance. It should read as **relief**, not as threat.
-- **Motion:** herds moving along the ribbons, and the pause before something breaks cover at
-  a crossing.
+- **Motion:** stillness, then a sudden committed sprint across the light, then stillness
+  again. The biome's signature image is **an animal at the edge of a shadow, deciding**.
 
 ---
 
@@ -209,6 +237,10 @@ It is the workaday biome: the game a colony hunts, and the beasts a Jawa clan ac
   hot and too high-sun for this reasoning; tiles at arc 94–105 (Sinkground, Sunreach) have
   **the sun below the horizon** and sit at 6 °C and −1.9 °C. Neither end fits the sheet. Owner
   call: retune the placement, or accept that the def spans more than this definition covers.
-- The **crossings** want authoring as named world features.
+- The **wide gaps** want authoring as named world features, and the patch-chain connectivity
+  wants to be a real thing the map generator lays down rather than an accident of scatter.
 - A name. "The Desert" is what the engine calls it; the thematic handle running through this
   sheet is **the long shade**.
+- ⚠️ An earlier draft of this sheet modelled the shade as a *connected network* travelled
+  within. That was wrong (owner, 2026-09-05) and is superseded by the patch-and-dash model
+  above: the shade is discrete and the gaps are lethal.
