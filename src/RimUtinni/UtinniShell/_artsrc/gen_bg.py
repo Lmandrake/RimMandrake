@@ -56,7 +56,7 @@ LOADER_PROMPT = (
     "atmospheric. No humans, no readable English text, no watermark."
 )
 
-def crop_to_16x9_and_upscale(src, dst, w=2560, h=2160 * 0 + 1440, jpg=False):
+def crop_to_16x9_and_upscale(src, dst, w=2560, h=1440, jpg=False):
     im = Image.open(src).convert("RGB")
     # center-crop to 16:9 then Lanczos to the shipped canvas
     tw, th = w / h, im.width / im.height

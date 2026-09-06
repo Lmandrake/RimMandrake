@@ -20,7 +20,7 @@ stays inside that 16 px so the 9-slice quarters line up.
 
 Run:  python3 gen_textures.py            # writes options + ships the default + contact sheet
 """
-import os, math, random
+import os, math, random, zlib
 from PIL import Image, ImageDraw, ImageFilter
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -151,12 +151,8 @@ def chalk_inset(im, col=CHALK, inset=6, jitter=True):
         off = inset + (0 if pass_i == 0 else 1)
         pts = [off, off, size - 1 - off, size - 1 - off]
         d.rectangle(pts, outline=col + (a,), width=w)
-    if jitter:  # scuff the chalk so it reads hand-drawn, not printed
-        px = im.load()
-        for _ in range(size * 3):
-            x, y = rng.randint(0, size - 1), rng.randint(0, size - 1)
-            if rng.random() < 0.3:
-                pass
+    # (a scuff pass to roughen the chalk was planned and never implemented —
+    # the double-pass alpha above is what actually reads as hand-drawn)
     return im
 
 # ---- three button-atlas style options -------------------------------------
@@ -249,10 +245,12 @@ def nineslice(atlas, w, h, b=BORDER):
 
 # ---- generate all options + ship the default ------------------------------
 def main():
-    from PIL import ImageFont
     made = {}
     for name, fn in STYLES.items():
-        bg, mo, cl = fn(seed=1000 + hash(name) % 1000)
+        # 🪤 NOT hash(name): Python salts str hashes per process, so that seed
+        # changed on every run and quietly broke this file's whole promise of
+        # determinism. crc32 is stable across runs and machines.
+        bg, mo, cl = fn(seed=1000 + zlib.crc32(name.encode()) % 1000)
         od = os.path.join(OPTDIR, name)
         os.makedirs(od, exist_ok=True)
         bg.save(os.path.join(od, "Widgets.ButtonBGAtlas.png"))
