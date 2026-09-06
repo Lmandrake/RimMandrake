@@ -521,17 +521,53 @@
     "hash": "59b40f3dbb5e66a279e89a69211ca9114d42ab61fd22e2b6a9262113e1a46230",
     "sha": "14ea427e"
   },
-  "src/RimMandrake/FluidCanals/Defs/DesignationDefs/FluidCanal_Designations.xml": {
+  "src/RimMandrake/FluidCanals/About/About.xml": {
     "cleanCount": 1,
-    "date": "2026-09-04",
+    "date": "2026-09-06",
+    "hash": "a6825457843c7bfe8bcf6a889bc087865adb4f0a0095b7bd661831a041c0273b",
+    "sha": "52dee04f"
+  },
+  "src/RimMandrake/FluidCanals/Defs/DesignationDefs/FluidCanal_Designations.xml": {
+    "cleanCount": 2,
+    "date": "2026-09-06",
     "hash": "2c9eb19e78548fd4a2645334aacbed8722ff258ebe31b23797e89919e16ba060",
-    "sha": "71cceeb1"
+    "sha": "52dee04f"
+  },
+  "src/RimMandrake/FluidCanals/Defs/FluidDefs/FluidCanal_Fluids.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "ec4a75fad79e38664a6591e8a1d498f654eccbed9c1da9cf5f223d26c8f57bb4",
+    "sha": "52dee04f"
   },
   "src/RimMandrake/FluidCanals/Defs/JobDefs/FluidCanal_JobDefs.xml": {
-    "cleanCount": 1,
-    "date": "2026-09-04",
+    "cleanCount": 2,
+    "date": "2026-09-06",
     "hash": "361a9dc051a5a4f06978aff282a0ea347c0c608f15a61d839852bb7a3bfe86d2",
-    "sha": "71cceeb1"
+    "sha": "52dee04f"
+  },
+  "src/RimMandrake/FluidCanals/Defs/TerrainDefs/FluidCanal_Terrain.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "cd1f1ae656153ed243617c8ca714c19a6e4f74556239a9e03b75bd1fac45f110",
+    "sha": "52dee04f"
+  },
+  "src/RimMandrake/FluidCanals/Defs/ThingDefs/FluidCanal_ThingDefs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "0b3e96c52d0ce07a221418ce0c3e48362d9718434f37ac2e00483a357eb472b3",
+    "sha": "52dee04f"
+  },
+  "src/RimMandrake/FluidCanals/Defs/WorkGiverDefs/FluidCanal_WorkGivers.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "c8b3e319365d6c89350b18606b2a3aa7adba63f65ce1c7d0494302876406028f",
+    "sha": "52dee04f"
+  },
+  "src/RimMandrake/FluidCanals/Patches/FluidCanal_OrdersPatch.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "d2fc6cefd2d30e42d862591c24e6da33ae85e9abe70ada8303b8aaf614d048f9",
+    "sha": "52dee04f"
   },
   "src/RimMandrake/FluidCanals/Source/CompFluidReservoir.cs": {
     "cleanCount": 1,
@@ -1745,6 +1781,18 @@
     "hash": "9599ec736082b9b0e2ae360ca7839fca07499603b253bf865bf5ff9628d0702e",
     "sha": "43f96b1b"
   },
+  "src/RimMandrake/RustChrome/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "5dff27c1592bec937d6e42605a444056688c0891dd158d13863027a7f57bba6a",
+    "sha": "52dee04f"
+  },
+  "src/RimMandrake/RustChrome/Source/RustChromeColors.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "2cb45640405e9224c02a869cf2f4c7d4de8cb534376f57e527c27fe76076a7f3",
+    "sha": "52dee04f"
+  },
   "src/RimMandrake/SacredGraffiti/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-05",
@@ -2243,10 +2291,10 @@
     "sha": "f2fdef82"
   },
   "src/RimMandrake/Utils/deploy_custom_mods.py": {
-    "cleanCount": 1,
-    "date": "2026-09-02",
-    "hash": "4c404ee9bda468c95fd0591ef4a7aa681c86d296f1ce65118a1d33cb6f565b17",
-    "sha": "fe90ab46"
+    "cleanCount": 2,
+    "date": "2026-09-06",
+    "hash": "49d18427797e7a7d3d78019e9fb40bbf2082e20af7e9933034dea6c817bcc962",
+    "sha": "52dee04f"
   },
   "src/RimMandrake/Utils/design_doc_render.py": {
     "cleanCount": 1,
@@ -3585,6 +3633,18 @@
     "hash": "6566b8f5c826de1ac0013a59ac4a456ad8c38d7fde110a1a36323f5facf59a87",
     "sha": "353b3c33"
   },
+  "src/RimMandrake/bridgetools/crash_watch.sh": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "6611cc5c972fb818fb93c1d8ed92c64ff2af8e51a321927b6de7debaccd7a4b6",
+    "sha": "52dee04f"
+  },
+  "src/RimMandrake/bridgetools/launch_and_wait.sh": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "72bd3a3e51a70207bee66e1cf08624305dfffec8249d020024942d08abc93c1a",
+    "sha": "52dee04f"
+  },
   "src/RimMandrake/bridgetools/load_session.py": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -3596,6 +3656,12 @@
     "date": "2026-09-03",
     "hash": "a130103abeac8d0c991122ceb7a2bb60c4690b47684d2bad5cfb29a53b199aa6",
     "sha": "353b3c33"
+  },
+  "src/RimMandrake/bridgetools/prove_fluid_canal.py": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "c28eb32a744b12c154846c84ae53bacdbf60da740f36a4fd7b6234eb128dc399",
+    "sha": "52dee04f"
   },
   "src/RimMandrake/bridgetools/prove_gravship.py": {
     "cleanCount": 1,
@@ -7245,6 +7311,24 @@
     "hash": "cc3f438967b80e58f04ac1fdaba29c6b63d539134044798ca897a6124eb9bd6a",
     "sha": "e19208c0"
   },
+  "src/RimUtinni/AftermathRites/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "ccaa6d54a2cb70b077387177b74fe9367bf55913722dcd14a594c086d8beec63",
+    "sha": "52dee04f"
+  },
+  "src/RimUtinni/AftermathRites/Defs/RM_AftermathRuleDefs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "b0642e4cadc8165ac74e9602aef42ea603325ed28b36664b258e8b17e369f59a",
+    "sha": "52dee04f"
+  },
+  "src/RimUtinni/AftermathRites/Defs/RM_AlliancePairDefs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "e104f00399e084bd70d72db54232a014a63c932d84bf9991c5a704f0b2b7aa70",
+    "sha": "52dee04f"
+  },
   "src/RimUtinni/Antiquities/About/About.xml": {
     "cleanCount": 2,
     "date": "2026-09-04",
@@ -7323,6 +7407,24 @@
     "hash": "062a238642c0231499a10eacbdbf6bd3aea89d3a301dab8e3aa759b40add408f",
     "sha": "f1a99184"
   },
+  "src/RimUtinni/AshkarrFlora/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "75f5496a1065001e3715ed509df3f9872d31aa4ff4c4a940f54aba188f88e9dc",
+    "sha": "52dee04f"
+  },
+  "src/RimUtinni/AshkarrFlora/Defs/ThingDefs_Plants/RUT_AshkarrFlora_Plants.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "0c040dfbf1cc485c68ff323c7a96af5078b4e5e8d224c44ead529970c4c27227",
+    "sha": "52dee04f"
+  },
+  "src/RimUtinni/AshkarrFlora/Patches/BetterTrees_SweetlineTree_Immunity.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "75dee61b2d652af4c62c7a7c26d353b06e4ec50c8bde1abf05e72fcaa9a07636",
+    "sha": "52dee04f"
+  },
   "src/RimUtinni/AshkarrInhabited/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-05",
@@ -7377,6 +7479,24 @@
     "hash": "0694fbe4b9547038683ae89d8d1bc75bad2881f5139e7a4659e470accc9fbc51",
     "sha": "629956d2"
   },
+  "src/RimUtinni/AshkarrWeatherSuite/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "9c2eaa9c52cd79878f4a849abf1d3f20b76cf734cb8844e18842e6afe2688058",
+    "sha": "52dee04f"
+  },
+  "src/RimUtinni/AshkarrWeatherSuite/Defs/WeatherGeometryDefs/WeatherGeometryDefs_Ashkarr.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "396aaa90fa66c700a02980e41bd492c1d819a9fe741e5766bdd28f642c81552a",
+    "sha": "52dee04f"
+  },
+  "src/RimUtinni/AshkarrWeatherSuite/Patches/AshkarrWeather_FolkSigns.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "81a4bfa044271304047f0b9e8b0b62ddf948bfebf00a4b14d30cd37ccdd3a328",
+    "sha": "52dee04f"
+  },
   "src/RimUtinni/BirthHatchDemo/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-05",
@@ -7388,6 +7508,18 @@
     "date": "2026-09-05",
     "hash": "4572544ffaa19e187e899a0cd7d208b80150e024db6ab8c93f49ef4b4ee1435e",
     "sha": "4201a45a"
+  },
+  "src/RimUtinni/DesertFixtures/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "89dd240349dbfd88f72d0af8ca12b8b3b92731d2076f5d6d1cff8dd079942dbf",
+    "sha": "52dee04f"
+  },
+  "src/RimUtinni/DesertFixtures/Defs/ThingDefs_Buildings/RUT_DesertFixtures_Buildings.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "7bd5d284d3811df1528d422f41e13fe7c0e4680a2e885081f651b6b0b386c2c7",
+    "sha": "52dee04f"
   },
   "src/RimUtinni/Doctrine/About/About.xml": {
     "cleanCount": 2,
@@ -7562,6 +7694,24 @@
     "date": "2026-09-05",
     "hash": "a7bfacac811ef61c5e048834af551c8a9ab5a94ef65d467fbaa9ea6308c32567",
     "sha": "3e9a9f20"
+  },
+  "src/RimUtinni/MenuShell/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "df6fc3557931cc6dd0c6d007a04854ff71e2e06d9e3f4175fad5d002b19554a2",
+    "sha": "52dee04f"
+  },
+  "src/RimUtinni/MenuShell/Defs/BackgroundImageDefs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "3f67caf88de67de0ee8bc95610b5409c09dc659ba63f876be8a57f5f649c5f24",
+    "sha": "52dee04f"
+  },
+  "src/RimUtinni/MenuShell/Defs/TipSetDefs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "7127ea6292a433d7fdb0d479645b81ceb58e9fd9ae55c27648dfc181c6c69798",
+    "sha": "52dee04f"
   },
   "src/RimUtinni/PawnFlavor/About/About.xml": {
     "cleanCount": 1,
