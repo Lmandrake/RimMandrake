@@ -125,7 +125,13 @@ ARMOUR_TIERS = [
 # put two operations from the SAME mod on one node, and which one wins would be
 # a filename-ordering accident. Their Sharp is 1.20 -- already under the cap --
 # and blunt is untouched, so skipping them outright loses nothing.
-HAND_TUNED = ("RSW_VFEP_Warcasket_Hazard", "VFEP_WarcasketHelmet_Hazard",
+#
+# All three names are VFE Pirates' own, read 2026-09-06 from
+# .../workshop/content/294100/2723801948/1.6/Defs/ThingDefs_Misc/Apparel_Various.xml
+# and confirmed against def_inventory (56 WarcasketDefs, exactly three with
+# "Hazard" in the name, none prefixed). An exclusion list is silent when a name
+# is wrong -- it simply matches nothing -- so these are checked, not typed.
+HAND_TUNED = ("VFEP_Warcasket_Hazard", "VFEP_WarcasketHelmet_Hazard",
               "VFEP_WarcasketShoulders_Hazard")
 
 # --- 3. armour penetration ------------------------------------------------
@@ -168,6 +174,12 @@ def fnum(x, d=None):
 # every node regardless of this filter.
 ds = build(D_CONFIG, D_WORKSHOP, D_LOCAL, D_DATA,
            types=("ThingDef", "DamageDef", "VFEPirates.WarcasketDef"))
+
+# Display names of the mods THIS repo ships. Derived, never typed: a hardcoded
+# name rots the moment About.xml is renamed, and a guard that names a mod nobody
+# loads is the exact failure this set exists to end (see OWN_NOTE at the emit).
+OWN_MODS = {r.modName for r in ds.records
+            if (r.packageId or "").lower().startswith("mandrake.")}
 
 
 def declarer(defname, node, defType="ThingDef"):
@@ -260,23 +272,28 @@ if LIVE is None:
     print("  ! falling back to offline names; tool AP may miss injected tools")
 
 
-# filename -> source mod -> [op strings]. Grouping by mod is not cosmetic:
-# every operation ends up inside a PatchOperationFindMod, because an unguarded
-# Replace whose target mod is absent logs a red error on every launch, and this
-# mod has to stay droppable.
+# filename -> source mod -> [(defpath, op string)]. Grouping by mod is not
+# cosmetic: an operation on a FOREIGN mod's def ends up inside a
+# PatchOperationFindMod, because an unguarded Replace whose target mod is absent
+# logs a red error on every launch, and this mod has to stay droppable.
+#
+# `defpath` is the def NODE the operation edits -- /Defs/<Type>[<selector>], the
+# xpath with everything below the def stripped. It is what guards an op on a def
+# we declare ourselves; see OWN_NOTE at the emit for why that is not the same
+# guard as the mod name.
 ops = collections.defaultdict(lambda: collections.defaultdict(list))
 
 
-def replace(fn, mod, comment, xpath, tag, value):
-    ops[fn][mod or "?"].append(
+def replace(fn, mod, comment, defpath, xpath, tag, value):
+    ops[fn][mod or "?"].append((defpath,
         "        <!-- %s -->" % comment + NL +
         '        <li Class="PatchOperationReplace">' + NL +
         "          <xpath>" + xpath + "</xpath>" + NL +
         "          <value><%s>%s</%s></value>" % (tag, value, tag) + NL +
-        "        </li>" + NL)
+        "        </li>" + NL))
 
 
-def set_block(fn, mod, comment, parent_xpath, tag, inner):
+def set_block(fn, mod, comment, defpath, parent_xpath, tag, inner):
     """Like set_field, but for a whole child element rather than one value.
 
     Replace when the block exists, Add when it does not, decided at load. The
@@ -284,7 +301,7 @@ def set_block(fn, mod, comment, parent_xpath, tag, inner):
     duplicate sibling node; see the leather section for the full account.
     """
     block = ("            <%s>" % tag) + NL + inner + ("            </%s>" % tag) + NL
-    ops[fn][mod or "?"].append(
+    ops[fn][mod or "?"].append((defpath,
         "        <!-- %s -->" % comment + NL +
         '        <li Class="PatchOperationConditional">' + NL +
         "          <xpath>%s/%s</xpath>" % (parent_xpath, tag) + NL +
@@ -296,10 +313,10 @@ def set_block(fn, mod, comment, parent_xpath, tag, inner):
         "            <xpath>%s</xpath>" % parent_xpath + NL +
         "            <value>" + NL + block + "            </value>" + NL +
         "          </nomatch>" + NL +
-        "        </li>" + NL)
+        "        </li>" + NL))
 
 
-def set_field(fn, mod, comment, parent_xpath, tag, value):
+def set_field(fn, mod, comment, defpath, parent_xpath, tag, value):
     """Set a field that may or may not exist in the raw XML.
 
     Replace fails when the node is absent; Add duplicates it when present. The
@@ -312,7 +329,7 @@ def set_field(fn, mod, comment, parent_xpath, tag, value):
     load, so it is also idempotent when the generator is re-run against a dump
     that already contains this mod's own output.
     """
-    ops[fn][mod or "?"].append(
+    ops[fn][mod or "?"].append((defpath,
         "        <!-- %s -->" % comment + NL +
         '        <li Class="PatchOperationConditional">' + NL +
         "          <xpath>%s/%s</xpath>" % (parent_xpath, tag) + NL +
@@ -324,7 +341,7 @@ def set_field(fn, mod, comment, parent_xpath, tag, value):
         "            <xpath>%s</xpath>" % parent_xpath + NL +
         "            <value><%s>%s</%s></value>" % (tag, value, tag) + NL +
         "          </nomatch>" + NL +
-        "        </li>" + NL)
+        "        </li>" + NL))
 
 
 # ========================================================== 1. categories
@@ -340,6 +357,7 @@ for dn, cat in CATEGORY_FIX.items():
         continue
     replace("Armour_DamageCategories.xml", rec.modName,
             "%s: %s -> %s" % (dn, cur, cat),
+            '/Defs/DamageDef[defName="%s"]' % dn,
             '/Defs/DamageDef[defName="%s"]/armorCategory' % dn,
             "armorCategory", cat)
 
@@ -390,6 +408,7 @@ for rec in [r for t in APPAREL_TYPES for r in ds.of_type(t)]:
                 note = " (was %.2f, capped)" % cur
             replace("Armour_Ratings.xml", rec.modName,
                     "%s [%s] %s -> %.2f%s" % (dn, tier, stat, val, note),
+                    "/Defs/%s%s" % (rec.defType, sel(owner, attr)),
                     "/Defs/%s%s/statBases/%s"
                     % (rec.defType, sel(owner, attr), stat),
                     stat, "%.2f" % val)
@@ -414,6 +433,7 @@ for rec in ds.of_type("ThingDef"):
         if p_owner is not None:
             replace("Armour_Penetration.xml", rec.modName,
                     "%s slugthrower AP -> %.2f" % (dn, SLUG_AP),
+                    "/Defs/ThingDef%s" % sel(p_owner, p_attr),
                     "/Defs/ThingDef%s/projectile/armorPenetrationBase"
                     % sel(p_owner, p_attr),
                     "armorPenetrationBase", "%.2f" % SLUG_AP)
@@ -488,6 +508,7 @@ for rec in ds.of_type("ThingDef"):
         # showed up in-game as a "zero-AP" lightsaber reading 0.14%.
         set_field("Armour_Penetration.xml", rec.modName,
                   "%s / %s AP -> %.2f" % (owner, lab, ap),
+                  "/Defs/ThingDef%s" % sel(owner, attr),
                   '/Defs/ThingDef%s/tools/li[label="%s"]'
                   % (sel(owner, attr), lab),
                   "armorPenetration", "%.2f" % ap)
@@ -604,6 +625,7 @@ for rec in ds.of_type("ThingDef"):
     # and is right either way, so the offline guess is removed entirely.
     set_block("Armour_Leather.xml", rec.modName,
               "%s : %s" % (dn, why),
+              '/Defs/ThingDef[defName="%s"]' % dn,
               '/Defs/ThingDef[defName="%s"]/stuffProps' % dn,
               "statFactors",
               "".join("              <%s>%.2f</%s>%s" % (name, prof[i], name, NL)
@@ -624,8 +646,38 @@ TITLES = {
     "Armour_Penetration.xml": "Penetration: vibro shears, the lightsaber does not (L3/L14)",
     "Armour_Leather.xml": "Every hide carries the character of its creature (L7/L11)",
 }
+# No '--' anywhere in here: a double hyphen inside an XML comment is illegal and
+# takes the WHOLE file down, not just the comment (validate_patch.py catches it).
+OWN_NOTE = (
+    "  <!-- Ops on defs THIS mod declares (mostly absorbed donors). No"
+    + NL +
+    "       PatchOperationFindMod: def and patch ship in the same mod, so naming"
+    + NL +
+    "       ourselves is a tautology dressed as a guard, and that shape has"
+    + NL +
+    "       already failed twice here. When a donor was absorbed and RETIRED the"
+    + NL +
+    "       FindMod went on naming a mod nobody loads; FindMod returns true on no"
+    + NL +
+    "       match, so whole blocks silently never ran (ARMOURY_RETIRED_GUARD_FIX_1)."
+    + NL +
+    "       The guard that means something is the target def itself, which is also"
+    + NL +
+    "       true whichever copy of a co-declared def the load ends up holding. -->"
+    + NL)
+
+own_dropped = 0
 for fn, by_mod in sorted(ops.items()):
     n = 0
+    # An absorbed def can be declared twice at once -- once by us, once by the
+    # donor that has not retired yet -- and then the same op is emitted under
+    # both mod names. Keep OUR copy: its guard is the def node, which is true
+    # for either declaration, so it survives the donor's eventual retirement
+    # AND the day our absorbed file stops being deployed. The donor-group twin
+    # is pure duplication; a PatchOperationReplace hits every matching node, so
+    # one op already covers both declarations.
+    own_texts = {t for mod, lst in by_mod.items() if mod in OWN_MODS
+                 for _, t in lst}
     with io.open(os.path.join(OUTDIR, fn), "w", encoding="utf-8") as fh:
         fh.write(HDR % TITLES.get(fn, fn))
         for mod, oplist in sorted(by_mod.items()):
@@ -636,17 +688,42 @@ for fn, by_mod in sorted(ops.items()):
             if is_retired(mod):
                 retired_skipped[mod] += len(oplist)
                 continue
-            n += len(oplist)
+            if mod in OWN_MODS:
+                by_def = collections.OrderedDict()
+                for defpath, text in oplist:
+                    by_def.setdefault(defpath, []).append(text)
+                fh.write(NL + OWN_NOTE)
+                for defpath, texts in by_def.items():
+                    n += len(texts)
+                    fh.write(NL + '  <Operation Class="PatchOperationConditional">'
+                             + NL)
+                    fh.write("    <xpath>" + defpath + "</xpath>" + NL)
+                    fh.write('    <match Class="PatchOperationSequence">' + NL)
+                    fh.write("      <operations>" + NL)
+                    for t in texts:
+                        fh.write(t)
+                    fh.write("      </operations>" + NL)
+                    fh.write("    </match>" + NL + "  </Operation>" + NL)
+                continue
+            keep = [t for _, t in oplist if t not in own_texts]
+            own_dropped += len(oplist) - len(keep)
+            if not keep:
+                continue
+            n += len(keep)
             fh.write(NL + '  <Operation Class="PatchOperationFindMod">' + NL)
             fh.write("    <mods><li>" + mod + "</li></mods>" + NL)
             fh.write('    <match Class="PatchOperationSequence">' + NL)
             fh.write("      <operations>" + NL)
-            for o in oplist:
-                fh.write(o)
+            for t in keep:
+                fh.write(t)
             fh.write("      </operations>" + NL)
             fh.write("    </match>" + NL + "  </Operation>" + NL)
         fh.write(NL + "</Patch>" + NL)
     print("  %-34s %4d operations in %d mod groups" % (fn, n, len(by_mod)))
+
+if own_dropped:
+    print("co-declared duplicates dropped from donor groups: %d "
+          "(kept under our own def-guarded block)" % own_dropped)
 
 if retired_skipped:
     print("retired mods excluded: %s"

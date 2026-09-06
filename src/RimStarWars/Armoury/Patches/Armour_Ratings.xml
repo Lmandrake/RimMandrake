@@ -194,6 +194,406 @@
     </match>
   </Operation>
 
+  <!-- Ops on defs THIS mod declares (mostly absorbed donors). No
+       PatchOperationFindMod: def and patch ship in the same mod, so naming
+       ourselves is a tautology dressed as a guard, and that shape has
+       already failed twice here. When a donor was absorbed and RETIRED the
+       FindMod went on naming a mod nobody loads; FindMod returns true on no
+       match, so whole blocks silently never ran (ARMOURY_RETIRED_GUARD_FIX_1).
+       The guard that means something is the target def itself, which is also
+       true whichever copy of a co-declared def the load ends up holding. -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_Backpack_scorch"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_Backpack_scorch [beskar] ArmorRating_Sharp -> 1.00 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_Backpack_scorch"]/statBases/ArmorRating_Sharp</xpath>
+          <value><ArmorRating_Sharp>1.00</ArmorRating_Sharp></value>
+        </li>
+        <!-- guy762_Backpack_scorch [beskar] ArmorRating_Blunt -> 0.90 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_Backpack_scorch"]/statBases/ArmorRating_Blunt</xpath>
+          <value><ArmorRating_Blunt>0.90</ArmorRating_Blunt></value>
+        </li>
+        <!-- guy762_Backpack_scorch [beskar] ArmorRating_Heat -> 1.20 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_Backpack_scorch"]/statBases/ArmorRating_Heat</xpath>
+          <value><ArmorRating_Heat>1.20</ArmorRating_Heat></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_armband_cortosis"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_armband_cortosis [cortosis] ArmorRating_Sharp -> 0.20 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_armband_cortosis"]/statBases/ArmorRating_Sharp</xpath>
+          <value><ArmorRating_Sharp>0.20</ArmorRating_Sharp></value>
+        </li>
+        <!-- guy762_armband_cortosis [cortosis] ArmorRating_Blunt -> 0.15 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_armband_cortosis"]/statBases/ArmorRating_Blunt</xpath>
+          <value><ArmorRating_Blunt>0.15</ArmorRating_Blunt></value>
+        </li>
+        <!-- guy762_armband_cortosis [cortosis] ArmorRating_Heat -> 2.00 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_armband_cortosis"]/statBases/ArmorRating_Heat</xpath>
+          <value><ArmorRating_Heat>2.00</ArmorRating_Heat></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_MalgusArmor"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_MalgusArmor [beskar] ArmorRating_Sharp -> 1.00 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_MalgusArmor"]/statBases/ArmorRating_Sharp</xpath>
+          <value><ArmorRating_Sharp>1.00</ArmorRating_Sharp></value>
+        </li>
+        <!-- guy762_MalgusArmor [beskar] ArmorRating_Blunt -> 0.90 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_MalgusArmor"]/statBases/ArmorRating_Blunt</xpath>
+          <value><ArmorRating_Blunt>0.90</ArmorRating_Blunt></value>
+        </li>
+        <!-- guy762_MalgusArmor [beskar] ArmorRating_Heat -> 1.20 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_MalgusArmor"]/statBases/ArmorRating_Heat</xpath>
+          <value><ArmorRating_Heat>1.20</ArmorRating_Heat></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_MalgusMask"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_MalgusMask [beskar] ArmorRating_Sharp -> 1.00 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_MalgusMask"]/statBases/ArmorRating_Sharp</xpath>
+          <value><ArmorRating_Sharp>1.00</ArmorRating_Sharp></value>
+        </li>
+        <!-- guy762_MalgusMask [beskar] ArmorRating_Blunt -> 0.90 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_MalgusMask"]/statBases/ArmorRating_Blunt</xpath>
+          <value><ArmorRating_Blunt>0.90</ArmorRating_Blunt></value>
+        </li>
+        <!-- guy762_MalgusMask [beskar] ArmorRating_Heat -> 1.20 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_MalgusMask"]/statBases/ArmorRating_Heat</xpath>
+          <value><ArmorRating_Heat>1.20</ArmorRating_Heat></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_MalgusHood"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_MalgusHood [beskar] ArmorRating_Sharp -> 1.00 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_MalgusHood"]/statBases/ArmorRating_Sharp</xpath>
+          <value><ArmorRating_Sharp>1.00</ArmorRating_Sharp></value>
+        </li>
+        <!-- guy762_MalgusHood [beskar] ArmorRating_Blunt -> 0.90 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_MalgusHood"]/statBases/ArmorRating_Blunt</xpath>
+          <value><ArmorRating_Blunt>0.90</ArmorRating_Blunt></value>
+        </li>
+        <!-- guy762_MalgusHood [beskar] ArmorRating_Heat -> 1.20 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_MalgusHood"]/statBases/ArmorRating_Heat</xpath>
+          <value><ArmorRating_Heat>1.20</ArmorRating_Heat></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_CombatSuit_onderon"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_CombatSuit_onderon [beskar] ArmorRating_Sharp -> 1.00 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_CombatSuit_onderon"]/statBases/ArmorRating_Sharp</xpath>
+          <value><ArmorRating_Sharp>1.00</ArmorRating_Sharp></value>
+        </li>
+        <!-- guy762_CombatSuit_onderon [beskar] ArmorRating_Blunt -> 0.90 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_CombatSuit_onderon"]/statBases/ArmorRating_Blunt</xpath>
+          <value><ArmorRating_Blunt>0.90</ArmorRating_Blunt></value>
+        </li>
+        <!-- guy762_CombatSuit_onderon [beskar] ArmorRating_Heat -> 1.20 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_CombatSuit_onderon"]/statBases/ArmorRating_Heat</xpath>
+          <value><ArmorRating_Heat>1.20</ArmorRating_Heat></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_MidBattleArmor_mando"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_MidBattleArmor_mando [beskar] ArmorRating_Sharp -> 1.00 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_MidBattleArmor_mando"]/statBases/ArmorRating_Sharp</xpath>
+          <value><ArmorRating_Sharp>1.00</ArmorRating_Sharp></value>
+        </li>
+        <!-- guy762_MidBattleArmor_mando [beskar] ArmorRating_Blunt -> 0.90 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_MidBattleArmor_mando"]/statBases/ArmorRating_Blunt</xpath>
+          <value><ArmorRating_Blunt>0.90</ArmorRating_Blunt></value>
+        </li>
+        <!-- guy762_MidBattleArmor_mando [beskar] ArmorRating_Heat -> 1.20 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_MidBattleArmor_mando"]/statBases/ArmorRating_Heat</xpath>
+          <value><ArmorRating_Heat>1.20</ArmorRating_Heat></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_MandoArmor_battle"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_MandoArmor_battle [beskar] ArmorRating_Sharp -> 1.00 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_MandoArmor_battle"]/statBases/ArmorRating_Sharp</xpath>
+          <value><ArmorRating_Sharp>1.00</ArmorRating_Sharp></value>
+        </li>
+        <!-- guy762_MandoArmor_battle [beskar] ArmorRating_Blunt -> 0.90 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_MandoArmor_battle"]/statBases/ArmorRating_Blunt</xpath>
+          <value><ArmorRating_Blunt>0.90</ArmorRating_Blunt></value>
+        </li>
+        <!-- guy762_MandoArmor_battle [beskar] ArmorRating_Heat -> 1.20 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_MandoArmor_battle"]/statBases/ArmorRating_Heat</xpath>
+          <value><ArmorRating_Heat>1.20</ArmorRating_Heat></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_MandoArmor_assault"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_MandoArmor_assault [beskar] ArmorRating_Sharp -> 1.00 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_MandoArmor_assault"]/statBases/ArmorRating_Sharp</xpath>
+          <value><ArmorRating_Sharp>1.00</ArmorRating_Sharp></value>
+        </li>
+        <!-- guy762_MandoArmor_assault [beskar] ArmorRating_Blunt -> 0.90 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_MandoArmor_assault"]/statBases/ArmorRating_Blunt</xpath>
+          <value><ArmorRating_Blunt>0.90</ArmorRating_Blunt></value>
+        </li>
+        <!-- guy762_MandoArmor_assault [beskar] ArmorRating_Heat -> 1.20 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_MandoArmor_assault"]/statBases/ArmorRating_Heat</xpath>
+          <value><ArmorRating_Heat>1.20</ArmorRating_Heat></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_MandoArmor_supercom"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_MandoArmor_supercom [beskar] ArmorRating_Sharp -> 1.00 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_MandoArmor_supercom"]/statBases/ArmorRating_Sharp</xpath>
+          <value><ArmorRating_Sharp>1.00</ArmorRating_Sharp></value>
+        </li>
+        <!-- guy762_MandoArmor_supercom [beskar] ArmorRating_Blunt -> 0.90 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_MandoArmor_supercom"]/statBases/ArmorRating_Blunt</xpath>
+          <value><ArmorRating_Blunt>0.90</ArmorRating_Blunt></value>
+        </li>
+        <!-- guy762_MandoArmor_supercom [beskar] ArmorRating_Heat -> 1.20 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_MandoArmor_supercom"]/statBases/ArmorRating_Heat</xpath>
+          <value><ArmorRating_Heat>1.20</ArmorRating_Heat></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_MandoHelmet_supercom"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_MandoHelmet_supercom [beskar] ArmorRating_Sharp -> 1.00 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_MandoHelmet_supercom"]/statBases/ArmorRating_Sharp</xpath>
+          <value><ArmorRating_Sharp>1.00</ArmorRating_Sharp></value>
+        </li>
+        <!-- guy762_MandoHelmet_supercom [beskar] ArmorRating_Blunt -> 0.90 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_MandoHelmet_supercom"]/statBases/ArmorRating_Blunt</xpath>
+          <value><ArmorRating_Blunt>0.90</ArmorRating_Blunt></value>
+        </li>
+        <!-- guy762_MandoHelmet_supercom [beskar] ArmorRating_Heat -> 1.20 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_MandoHelmet_supercom"]/statBases/ArmorRating_Heat</xpath>
+          <value><ArmorRating_Heat>1.20</ArmorRating_Heat></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_HelmetHeavyBattle_repcom"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_HelmetHeavyBattle_repcom [beskar] ArmorRating_Sharp -> 1.00 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_HelmetHeavyBattle_repcom"]/statBases/ArmorRating_Sharp</xpath>
+          <value><ArmorRating_Sharp>1.00</ArmorRating_Sharp></value>
+        </li>
+        <!-- guy762_HelmetHeavyBattle_repcom [beskar] ArmorRating_Blunt -> 0.90 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_HelmetHeavyBattle_repcom"]/statBases/ArmorRating_Blunt</xpath>
+          <value><ArmorRating_Blunt>0.90</ArmorRating_Blunt></value>
+        </li>
+        <!-- guy762_HelmetHeavyBattle_repcom [beskar] ArmorRating_Heat -> 1.20 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_HelmetHeavyBattle_repcom"]/statBases/ArmorRating_Heat</xpath>
+          <value><ArmorRating_Heat>1.20</ArmorRating_Heat></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_HvyArmor_repcom"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_HvyArmor_repcom [beskar] ArmorRating_Sharp -> 1.00 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_HvyArmor_repcom"]/statBases/ArmorRating_Sharp</xpath>
+          <value><ArmorRating_Sharp>1.00</ArmorRating_Sharp></value>
+        </li>
+        <!-- guy762_HvyArmor_repcom [beskar] ArmorRating_Blunt -> 0.90 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_HvyArmor_repcom"]/statBases/ArmorRating_Blunt</xpath>
+          <value><ArmorRating_Blunt>0.90</ArmorRating_Blunt></value>
+        </li>
+        <!-- guy762_HvyArmor_repcom [beskar] ArmorRating_Heat -> 1.20 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_HvyArmor_repcom"]/statBases/ArmorRating_Heat</xpath>
+          <value><ArmorRating_Heat>1.20</ArmorRating_Heat></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_SithArmor_commando"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_SithArmor_commando [beskar] ArmorRating_Sharp -> 1.00 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_SithArmor_commando"]/statBases/ArmorRating_Sharp</xpath>
+          <value><ArmorRating_Sharp>1.00</ArmorRating_Sharp></value>
+        </li>
+        <!-- guy762_SithArmor_commando [beskar] ArmorRating_Blunt -> 0.90 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_SithArmor_commando"]/statBases/ArmorRating_Blunt</xpath>
+          <value><ArmorRating_Blunt>0.90</ArmorRating_Blunt></value>
+        </li>
+        <!-- guy762_SithArmor_commando [beskar] ArmorRating_Heat -> 1.20 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_SithArmor_commando"]/statBases/ArmorRating_Heat</xpath>
+          <value><ArmorRating_Heat>1.20</ArmorRating_Heat></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_SithHelmet_commando"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_SithHelmet_commando [beskar] ArmorRating_Sharp -> 1.00 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_SithHelmet_commando"]/statBases/ArmorRating_Sharp</xpath>
+          <value><ArmorRating_Sharp>1.00</ArmorRating_Sharp></value>
+        </li>
+        <!-- guy762_SithHelmet_commando [beskar] ArmorRating_Blunt -> 0.90 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_SithHelmet_commando"]/statBases/ArmorRating_Blunt</xpath>
+          <value><ArmorRating_Blunt>0.90</ArmorRating_Blunt></value>
+        </li>
+        <!-- guy762_SithHelmet_commando [beskar] ArmorRating_Heat -> 1.20 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_SithHelmet_commando"]/statBases/ArmorRating_Heat</xpath>
+          <value><ArmorRating_Heat>1.20</ArmorRating_Heat></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_SithArmor_colorcommando"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_SithArmor_colorcommando [beskar] ArmorRating_Sharp -> 1.00 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_SithArmor_colorcommando"]/statBases/ArmorRating_Sharp</xpath>
+          <value><ArmorRating_Sharp>1.00</ArmorRating_Sharp></value>
+        </li>
+        <!-- guy762_SithArmor_colorcommando [beskar] ArmorRating_Blunt -> 0.90 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_SithArmor_colorcommando"]/statBases/ArmorRating_Blunt</xpath>
+          <value><ArmorRating_Blunt>0.90</ArmorRating_Blunt></value>
+        </li>
+        <!-- guy762_SithArmor_colorcommando [beskar] ArmorRating_Heat -> 1.20 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_SithArmor_colorcommando"]/statBases/ArmorRating_Heat</xpath>
+          <value><ArmorRating_Heat>1.20</ArmorRating_Heat></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_SithHelmet_colorcommando"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_SithHelmet_colorcommando [beskar] ArmorRating_Sharp -> 1.00 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_SithHelmet_colorcommando"]/statBases/ArmorRating_Sharp</xpath>
+          <value><ArmorRating_Sharp>1.00</ArmorRating_Sharp></value>
+        </li>
+        <!-- guy762_SithHelmet_colorcommando [beskar] ArmorRating_Blunt -> 0.90 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_SithHelmet_colorcommando"]/statBases/ArmorRating_Blunt</xpath>
+          <value><ArmorRating_Blunt>0.90</ArmorRating_Blunt></value>
+        </li>
+        <!-- guy762_SithHelmet_colorcommando [beskar] ArmorRating_Heat -> 1.20 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="guy762_SithHelmet_colorcommando"]/statBases/ArmorRating_Heat</xpath>
+          <value><ArmorRating_Heat>1.20</ArmorRating_Heat></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
   <Operation Class="PatchOperationFindMod">
     <mods><li>Royalty</li></mods>
     <match Class="PatchOperationSequence">
@@ -257,287 +657,6 @@
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="Apparel_ArmorCataphractPhoenix"]/statBases/ArmorRating_Heat</xpath>
           <value><ArmorRating_Heat>0.35</ArmorRating_Heat></value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Resources and Materials</li></mods>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <!-- guy762_Backpack_scorch [beskar] ArmorRating_Sharp -> 1.00 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_Backpack_scorch"]/statBases/ArmorRating_Sharp</xpath>
-          <value><ArmorRating_Sharp>1.00</ArmorRating_Sharp></value>
-        </li>
-        <!-- guy762_Backpack_scorch [beskar] ArmorRating_Blunt -> 0.90 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_Backpack_scorch"]/statBases/ArmorRating_Blunt</xpath>
-          <value><ArmorRating_Blunt>0.90</ArmorRating_Blunt></value>
-        </li>
-        <!-- guy762_Backpack_scorch [beskar] ArmorRating_Heat -> 1.20 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_Backpack_scorch"]/statBases/ArmorRating_Heat</xpath>
-          <value><ArmorRating_Heat>1.20</ArmorRating_Heat></value>
-        </li>
-        <!-- guy762_armband_cortosis [cortosis] ArmorRating_Sharp -> 0.20 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_armband_cortosis"]/statBases/ArmorRating_Sharp</xpath>
-          <value><ArmorRating_Sharp>0.20</ArmorRating_Sharp></value>
-        </li>
-        <!-- guy762_armband_cortosis [cortosis] ArmorRating_Blunt -> 0.15 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_armband_cortosis"]/statBases/ArmorRating_Blunt</xpath>
-          <value><ArmorRating_Blunt>0.15</ArmorRating_Blunt></value>
-        </li>
-        <!-- guy762_armband_cortosis [cortosis] ArmorRating_Heat -> 2.00 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_armband_cortosis"]/statBases/ArmorRating_Heat</xpath>
-          <value><ArmorRating_Heat>2.00</ArmorRating_Heat></value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-
-  <!-- 2026-09-04, ARMOURY_RETIRED_GUARD_FIX_1 (hand-edit, guard only):
-       "Star Wars KotOR Weapons and Armor" (guy762.KotORWeapons) was absorbed
-       and retired; its About.xml <name> is not in the live ModsConfig.xml,
-       so PatchOperationFindMod always returned true and this whole block
-       (46 real balance ops across 15 co-absorbed ThingDefs) silently never
-       ran. These inner ops are plain PatchOperationReplace with no per-op
-       safety net, so the outer gate was swapped for a Conditional on the
-       first concrete defName this block edits rather than just renaming the
-       mod - all 15 defNames are the same absorbed KotOR beskar-armor set and
-       are guaranteed to co-exist or not at all. -->
-  <Operation Class="PatchOperationConditional">
-    <xpath>/Defs/ThingDef[defName="guy762_MalgusArmor"]</xpath>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <!-- guy762_MalgusArmor [beskar] ArmorRating_Sharp -> 1.00 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_MalgusArmor"]/statBases/ArmorRating_Sharp</xpath>
-          <value><ArmorRating_Sharp>1.00</ArmorRating_Sharp></value>
-        </li>
-        <!-- guy762_MalgusArmor [beskar] ArmorRating_Blunt -> 0.90 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_MalgusArmor"]/statBases/ArmorRating_Blunt</xpath>
-          <value><ArmorRating_Blunt>0.90</ArmorRating_Blunt></value>
-        </li>
-        <!-- guy762_MalgusArmor [beskar] ArmorRating_Heat -> 1.20 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_MalgusArmor"]/statBases/ArmorRating_Heat</xpath>
-          <value><ArmorRating_Heat>1.20</ArmorRating_Heat></value>
-        </li>
-        <!-- guy762_MalgusMask [beskar] ArmorRating_Sharp -> 1.00 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_MalgusMask"]/statBases/ArmorRating_Sharp</xpath>
-          <value><ArmorRating_Sharp>1.00</ArmorRating_Sharp></value>
-        </li>
-        <!-- guy762_MalgusMask [beskar] ArmorRating_Blunt -> 0.90 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_MalgusMask"]/statBases/ArmorRating_Blunt</xpath>
-          <value><ArmorRating_Blunt>0.90</ArmorRating_Blunt></value>
-        </li>
-        <!-- guy762_MalgusMask [beskar] ArmorRating_Heat -> 1.20 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_MalgusMask"]/statBases/ArmorRating_Heat</xpath>
-          <value><ArmorRating_Heat>1.20</ArmorRating_Heat></value>
-        </li>
-        <!-- guy762_MalgusHood [beskar] ArmorRating_Sharp -> 1.00 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_MalgusHood"]/statBases/ArmorRating_Sharp</xpath>
-          <value><ArmorRating_Sharp>1.00</ArmorRating_Sharp></value>
-        </li>
-        <!-- guy762_MalgusHood [beskar] ArmorRating_Blunt -> 0.90 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_MalgusHood"]/statBases/ArmorRating_Blunt</xpath>
-          <value><ArmorRating_Blunt>0.90</ArmorRating_Blunt></value>
-        </li>
-        <!-- guy762_MalgusHood [beskar] ArmorRating_Heat -> 1.20 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_MalgusHood"]/statBases/ArmorRating_Heat</xpath>
-          <value><ArmorRating_Heat>1.20</ArmorRating_Heat></value>
-        </li>
-        <!-- guy762_CombatSuit_onderon [beskar] ArmorRating_Sharp -> 1.00 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_CombatSuit_onderon"]/statBases/ArmorRating_Sharp</xpath>
-          <value><ArmorRating_Sharp>1.00</ArmorRating_Sharp></value>
-        </li>
-        <!-- guy762_CombatSuit_onderon [beskar] ArmorRating_Blunt -> 0.90 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_CombatSuit_onderon"]/statBases/ArmorRating_Blunt</xpath>
-          <value><ArmorRating_Blunt>0.90</ArmorRating_Blunt></value>
-        </li>
-        <!-- guy762_CombatSuit_onderon [beskar] ArmorRating_Heat -> 1.20 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_CombatSuit_onderon"]/statBases/ArmorRating_Heat</xpath>
-          <value><ArmorRating_Heat>1.20</ArmorRating_Heat></value>
-        </li>
-        <!-- guy762_MidBattleArmor_mando [beskar] ArmorRating_Sharp -> 1.00 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_MidBattleArmor_mando"]/statBases/ArmorRating_Sharp</xpath>
-          <value><ArmorRating_Sharp>1.00</ArmorRating_Sharp></value>
-        </li>
-        <!-- guy762_MidBattleArmor_mando [beskar] ArmorRating_Blunt -> 0.90 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_MidBattleArmor_mando"]/statBases/ArmorRating_Blunt</xpath>
-          <value><ArmorRating_Blunt>0.90</ArmorRating_Blunt></value>
-        </li>
-        <!-- guy762_MidBattleArmor_mando [beskar] ArmorRating_Heat -> 1.20 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_MidBattleArmor_mando"]/statBases/ArmorRating_Heat</xpath>
-          <value><ArmorRating_Heat>1.20</ArmorRating_Heat></value>
-        </li>
-        <!-- guy762_MandoArmor_battle [beskar] ArmorRating_Sharp -> 1.00 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_MandoArmor_battle"]/statBases/ArmorRating_Sharp</xpath>
-          <value><ArmorRating_Sharp>1.00</ArmorRating_Sharp></value>
-        </li>
-        <!-- guy762_MandoArmor_battle [beskar] ArmorRating_Blunt -> 0.90 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_MandoArmor_battle"]/statBases/ArmorRating_Blunt</xpath>
-          <value><ArmorRating_Blunt>0.90</ArmorRating_Blunt></value>
-        </li>
-        <!-- guy762_MandoArmor_battle [beskar] ArmorRating_Heat -> 1.20 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_MandoArmor_battle"]/statBases/ArmorRating_Heat</xpath>
-          <value><ArmorRating_Heat>1.20</ArmorRating_Heat></value>
-        </li>
-        <!-- guy762_MandoArmor_assault [beskar] ArmorRating_Sharp -> 1.00 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_MandoArmor_assault"]/statBases/ArmorRating_Sharp</xpath>
-          <value><ArmorRating_Sharp>1.00</ArmorRating_Sharp></value>
-        </li>
-        <!-- guy762_MandoArmor_assault [beskar] ArmorRating_Blunt -> 0.90 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_MandoArmor_assault"]/statBases/ArmorRating_Blunt</xpath>
-          <value><ArmorRating_Blunt>0.90</ArmorRating_Blunt></value>
-        </li>
-        <!-- guy762_MandoArmor_assault [beskar] ArmorRating_Heat -> 1.20 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_MandoArmor_assault"]/statBases/ArmorRating_Heat</xpath>
-          <value><ArmorRating_Heat>1.20</ArmorRating_Heat></value>
-        </li>
-        <!-- guy762_MandoArmor_supercom [beskar] ArmorRating_Sharp -> 1.00 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_MandoArmor_supercom"]/statBases/ArmorRating_Sharp</xpath>
-          <value><ArmorRating_Sharp>1.00</ArmorRating_Sharp></value>
-        </li>
-        <!-- guy762_MandoArmor_supercom [beskar] ArmorRating_Blunt -> 0.90 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_MandoArmor_supercom"]/statBases/ArmorRating_Blunt</xpath>
-          <value><ArmorRating_Blunt>0.90</ArmorRating_Blunt></value>
-        </li>
-        <!-- guy762_MandoArmor_supercom [beskar] ArmorRating_Heat -> 1.20 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_MandoArmor_supercom"]/statBases/ArmorRating_Heat</xpath>
-          <value><ArmorRating_Heat>1.20</ArmorRating_Heat></value>
-        </li>
-        <!-- guy762_MandoHelmet_supercom [beskar] ArmorRating_Sharp -> 1.00 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_MandoHelmet_supercom"]/statBases/ArmorRating_Sharp</xpath>
-          <value><ArmorRating_Sharp>1.00</ArmorRating_Sharp></value>
-        </li>
-        <!-- guy762_MandoHelmet_supercom [beskar] ArmorRating_Blunt -> 0.90 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_MandoHelmet_supercom"]/statBases/ArmorRating_Blunt</xpath>
-          <value><ArmorRating_Blunt>0.90</ArmorRating_Blunt></value>
-        </li>
-        <!-- guy762_MandoHelmet_supercom [beskar] ArmorRating_Heat -> 1.20 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_MandoHelmet_supercom"]/statBases/ArmorRating_Heat</xpath>
-          <value><ArmorRating_Heat>1.20</ArmorRating_Heat></value>
-        </li>
-        <!-- guy762_HelmetHeavyBattle_repcom [beskar] ArmorRating_Sharp -> 1.00 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_HelmetHeavyBattle_repcom"]/statBases/ArmorRating_Sharp</xpath>
-          <value><ArmorRating_Sharp>1.00</ArmorRating_Sharp></value>
-        </li>
-        <!-- guy762_HelmetHeavyBattle_repcom [beskar] ArmorRating_Blunt -> 0.90 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_HelmetHeavyBattle_repcom"]/statBases/ArmorRating_Blunt</xpath>
-          <value><ArmorRating_Blunt>0.90</ArmorRating_Blunt></value>
-        </li>
-        <!-- guy762_HelmetHeavyBattle_repcom [beskar] ArmorRating_Heat -> 1.20 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_HelmetHeavyBattle_repcom"]/statBases/ArmorRating_Heat</xpath>
-          <value><ArmorRating_Heat>1.20</ArmorRating_Heat></value>
-        </li>
-        <!-- guy762_HvyArmor_repcom [beskar] ArmorRating_Sharp -> 1.00 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_HvyArmor_repcom"]/statBases/ArmorRating_Sharp</xpath>
-          <value><ArmorRating_Sharp>1.00</ArmorRating_Sharp></value>
-        </li>
-        <!-- guy762_HvyArmor_repcom [beskar] ArmorRating_Blunt -> 0.90 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_HvyArmor_repcom"]/statBases/ArmorRating_Blunt</xpath>
-          <value><ArmorRating_Blunt>0.90</ArmorRating_Blunt></value>
-        </li>
-        <!-- guy762_HvyArmor_repcom [beskar] ArmorRating_Heat -> 1.20 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_HvyArmor_repcom"]/statBases/ArmorRating_Heat</xpath>
-          <value><ArmorRating_Heat>1.20</ArmorRating_Heat></value>
-        </li>
-        <!-- guy762_SithArmor_commando [beskar] ArmorRating_Sharp -> 1.00 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_SithArmor_commando"]/statBases/ArmorRating_Sharp</xpath>
-          <value><ArmorRating_Sharp>1.00</ArmorRating_Sharp></value>
-        </li>
-        <!-- guy762_SithArmor_commando [beskar] ArmorRating_Blunt -> 0.90 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_SithArmor_commando"]/statBases/ArmorRating_Blunt</xpath>
-          <value><ArmorRating_Blunt>0.90</ArmorRating_Blunt></value>
-        </li>
-        <!-- guy762_SithArmor_commando [beskar] ArmorRating_Heat -> 1.20 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_SithArmor_commando"]/statBases/ArmorRating_Heat</xpath>
-          <value><ArmorRating_Heat>1.20</ArmorRating_Heat></value>
-        </li>
-        <!-- guy762_SithHelmet_commando [beskar] ArmorRating_Sharp -> 1.00 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_SithHelmet_commando"]/statBases/ArmorRating_Sharp</xpath>
-          <value><ArmorRating_Sharp>1.00</ArmorRating_Sharp></value>
-        </li>
-        <!-- guy762_SithHelmet_commando [beskar] ArmorRating_Blunt -> 0.90 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_SithHelmet_commando"]/statBases/ArmorRating_Blunt</xpath>
-          <value><ArmorRating_Blunt>0.90</ArmorRating_Blunt></value>
-        </li>
-        <!-- guy762_SithHelmet_commando [beskar] ArmorRating_Heat -> 1.20 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_SithHelmet_commando"]/statBases/ArmorRating_Heat</xpath>
-          <value><ArmorRating_Heat>1.20</ArmorRating_Heat></value>
-        </li>
-        <!-- guy762_SithArmor_colorcommando [beskar] ArmorRating_Sharp -> 1.00 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_SithArmor_colorcommando"]/statBases/ArmorRating_Sharp</xpath>
-          <value><ArmorRating_Sharp>1.00</ArmorRating_Sharp></value>
-        </li>
-        <!-- guy762_SithArmor_colorcommando [beskar] ArmorRating_Blunt -> 0.90 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_SithArmor_colorcommando"]/statBases/ArmorRating_Blunt</xpath>
-          <value><ArmorRating_Blunt>0.90</ArmorRating_Blunt></value>
-        </li>
-        <!-- guy762_SithArmor_colorcommando [beskar] ArmorRating_Heat -> 1.20 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_SithArmor_colorcommando"]/statBases/ArmorRating_Heat</xpath>
-          <value><ArmorRating_Heat>1.20</ArmorRating_Heat></value>
-        </li>
-        <!-- guy762_SithHelmet_colorcommando [beskar] ArmorRating_Sharp -> 1.00 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_SithHelmet_colorcommando"]/statBases/ArmorRating_Sharp</xpath>
-          <value><ArmorRating_Sharp>1.00</ArmorRating_Sharp></value>
-        </li>
-        <!-- guy762_SithHelmet_colorcommando [beskar] ArmorRating_Blunt -> 0.90 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_SithHelmet_colorcommando"]/statBases/ArmorRating_Blunt</xpath>
-          <value><ArmorRating_Blunt>0.90</ArmorRating_Blunt></value>
-        </li>
-        <!-- guy762_SithHelmet_colorcommando [beskar] ArmorRating_Heat -> 1.20 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="guy762_SithHelmet_colorcommando"]/statBases/ArmorRating_Heat</xpath>
-          <value><ArmorRating_Heat>1.20</ArmorRating_Heat></value>
         </li>
       </operations>
     </match>

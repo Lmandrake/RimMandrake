@@ -18,6 +18,1189 @@
     </match>
   </Operation>
 
+  <!-- Ops on defs THIS mod declares (mostly absorbed donors). No
+       PatchOperationFindMod: def and patch ship in the same mod, so naming
+       ourselves is a tautology dressed as a guard, and that shape has
+       already failed twice here. When a donor was absorbed and RETIRED the
+       FindMod went on naming a mod nobody loads; FindMod returns true on no
+       match, so whole blocks silently never ran (ARMOURY_RETIRED_GUARD_FIX_1).
+       The guard that means something is the target def itself, which is also
+       true whichever copy of a co-declared def the load ends up holding. -->
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="KotORSlugBolt"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- KotORSlugBolt slugthrower AP -> 0.85 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="KotORSlugBolt"]/projectile/armorPenetrationBase</xpath>
+          <value><armorPenetrationBase>0.85</armorPenetrationBase></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="SWProj_TL50slugbolt"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- SWProj_TL50slugbolt slugthrower AP -> 0.85 -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/ThingDef[defName="SWProj_TL50slugbolt"]/projectile/armorPenetrationBase</xpath>
+          <value><armorPenetrationBase>0.85</armorPenetrationBase></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_vaxe"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_vaxe / handle AP -> 1.60 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vaxe"]/tools/li[label="handle"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vaxe"]/tools/li[label="handle"]/armorPenetration</xpath>
+            <value><armorPenetration>1.60</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vaxe"]/tools/li[label="handle"]</xpath>
+            <value><armorPenetration>1.60</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- guy762_vaxe / edge AP -> 1.60 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vaxe"]/tools/li[label="edge"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vaxe"]/tools/li[label="edge"]/armorPenetration</xpath>
+            <value><armorPenetration>1.60</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vaxe"]/tools/li[label="edge"]</xpath>
+            <value><armorPenetration>1.60</armorPenetration></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_vaxe_hutt"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_vaxe_hutt / handle AP -> 1.51 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vaxe_hutt"]/tools/li[label="handle"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vaxe_hutt"]/tools/li[label="handle"]/armorPenetration</xpath>
+            <value><armorPenetration>1.51</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vaxe_hutt"]/tools/li[label="handle"]</xpath>
+            <value><armorPenetration>1.51</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- guy762_vaxe_hutt / edge AP -> 1.51 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vaxe_hutt"]/tools/li[label="edge"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vaxe_hutt"]/tools/li[label="edge"]/armorPenetration</xpath>
+            <value><armorPenetration>1.51</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vaxe_hutt"]/tools/li[label="edge"]</xpath>
+            <value><armorPenetration>1.51</armorPenetration></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_vaxe_sith"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_vaxe_sith / handle AP -> 1.51 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vaxe_sith"]/tools/li[label="handle"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vaxe_sith"]/tools/li[label="handle"]/armorPenetration</xpath>
+            <value><armorPenetration>1.51</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vaxe_sith"]/tools/li[label="handle"]</xpath>
+            <value><armorPenetration>1.51</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- guy762_vaxe_sith / edge AP -> 1.51 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vaxe_sith"]/tools/li[label="edge"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vaxe_sith"]/tools/li[label="edge"]/armorPenetration</xpath>
+            <value><armorPenetration>1.51</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vaxe_sith"]/tools/li[label="edge"]</xpath>
+            <value><armorPenetration>1.51</armorPenetration></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_vblade"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_vblade / handle AP -> 1.05 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vblade"]/tools/li[label="handle"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vblade"]/tools/li[label="handle"]/armorPenetration</xpath>
+            <value><armorPenetration>1.05</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vblade"]/tools/li[label="handle"]</xpath>
+            <value><armorPenetration>1.05</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- guy762_vblade / point AP -> 1.05 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vblade"]/tools/li[label="point"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vblade"]/tools/li[label="point"]/armorPenetration</xpath>
+            <value><armorPenetration>1.05</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vblade"]/tools/li[label="point"]</xpath>
+            <value><armorPenetration>1.05</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- guy762_vblade / edge AP -> 1.05 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vblade"]/tools/li[label="edge"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vblade"]/tools/li[label="edge"]/armorPenetration</xpath>
+            <value><armorPenetration>1.05</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vblade"]/tools/li[label="edge"]</xpath>
+            <value><armorPenetration>1.05</armorPenetration></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_vblade_prototype"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_vblade_prototype / handle AP -> 1.23 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vblade_prototype"]/tools/li[label="handle"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vblade_prototype"]/tools/li[label="handle"]/armorPenetration</xpath>
+            <value><armorPenetration>1.23</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vblade_prototype"]/tools/li[label="handle"]</xpath>
+            <value><armorPenetration>1.23</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- guy762_vblade_prototype / point AP -> 1.23 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vblade_prototype"]/tools/li[label="point"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vblade_prototype"]/tools/li[label="point"]/armorPenetration</xpath>
+            <value><armorPenetration>1.23</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vblade_prototype"]/tools/li[label="point"]</xpath>
+            <value><armorPenetration>1.23</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- guy762_vblade_prototype / edge AP -> 1.23 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vblade_prototype"]/tools/li[label="edge"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vblade_prototype"]/tools/li[label="edge"]/armorPenetration</xpath>
+            <value><armorPenetration>1.23</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vblade_prototype"]/tools/li[label="edge"]</xpath>
+            <value><armorPenetration>1.23</armorPenetration></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_vblade_krath"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_vblade_krath / handle AP -> 1.23 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vblade_krath"]/tools/li[label="handle"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vblade_krath"]/tools/li[label="handle"]/armorPenetration</xpath>
+            <value><armorPenetration>1.23</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vblade_krath"]/tools/li[label="handle"]</xpath>
+            <value><armorPenetration>1.23</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- guy762_vblade_krath / point AP -> 1.23 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vblade_krath"]/tools/li[label="point"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vblade_krath"]/tools/li[label="point"]/armorPenetration</xpath>
+            <value><armorPenetration>1.23</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vblade_krath"]/tools/li[label="point"]</xpath>
+            <value><armorPenetration>1.23</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- guy762_vblade_krath / edge AP -> 1.23 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vblade_krath"]/tools/li[label="edge"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vblade_krath"]/tools/li[label="edge"]/armorPenetration</xpath>
+            <value><armorPenetration>1.23</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vblade_krath"]/tools/li[label="edge"]</xpath>
+            <value><armorPenetration>1.23</armorPenetration></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_vblade_echani"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_vblade_echani / handle AP -> 1.23 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vblade_echani"]/tools/li[label="handle"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vblade_echani"]/tools/li[label="handle"]/armorPenetration</xpath>
+            <value><armorPenetration>1.23</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vblade_echani"]/tools/li[label="handle"]</xpath>
+            <value><armorPenetration>1.23</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- guy762_vblade_echani / point AP -> 1.23 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vblade_echani"]/tools/li[label="point"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vblade_echani"]/tools/li[label="point"]/armorPenetration</xpath>
+            <value><armorPenetration>1.23</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vblade_echani"]/tools/li[label="point"]</xpath>
+            <value><armorPenetration>1.23</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- guy762_vblade_echani / edge AP -> 1.23 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vblade_echani"]/tools/li[label="edge"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vblade_echani"]/tools/li[label="edge"]/armorPenetration</xpath>
+            <value><armorPenetration>1.23</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vblade_echani"]/tools/li[label="edge"]</xpath>
+            <value><armorPenetration>1.23</armorPenetration></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_vblade_tehkla"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_vblade_tehkla / handle AP -> 1.23 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vblade_tehkla"]/tools/li[label="handle"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vblade_tehkla"]/tools/li[label="handle"]/armorPenetration</xpath>
+            <value><armorPenetration>1.23</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vblade_tehkla"]/tools/li[label="handle"]</xpath>
+            <value><armorPenetration>1.23</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- guy762_vblade_tehkla / point AP -> 1.23 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vblade_tehkla"]/tools/li[label="point"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vblade_tehkla"]/tools/li[label="point"]/armorPenetration</xpath>
+            <value><armorPenetration>1.23</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vblade_tehkla"]/tools/li[label="point"]</xpath>
+            <value><armorPenetration>1.23</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- guy762_vblade_tehkla / edge AP -> 1.23 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vblade_tehkla"]/tools/li[label="edge"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vblade_tehkla"]/tools/li[label="edge"]/armorPenetration</xpath>
+            <value><armorPenetration>1.23</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vblade_tehkla"]/tools/li[label="edge"]</xpath>
+            <value><armorPenetration>1.23</armorPenetration></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_vblade_vao"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_vblade_vao / handle AP -> 1.23 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vblade_vao"]/tools/li[label="handle"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vblade_vao"]/tools/li[label="handle"]/armorPenetration</xpath>
+            <value><armorPenetration>1.23</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vblade_vao"]/tools/li[label="handle"]</xpath>
+            <value><armorPenetration>1.23</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- guy762_vblade_vao / point AP -> 1.23 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vblade_vao"]/tools/li[label="point"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vblade_vao"]/tools/li[label="point"]/armorPenetration</xpath>
+            <value><armorPenetration>1.23</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vblade_vao"]/tools/li[label="point"]</xpath>
+            <value><armorPenetration>1.23</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- guy762_vblade_vao / edge AP -> 1.23 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vblade_vao"]/tools/li[label="edge"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vblade_vao"]/tools/li[label="edge"]/armorPenetration</xpath>
+            <value><armorPenetration>1.23</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vblade_vao"]/tools/li[label="edge"]</xpath>
+            <value><armorPenetration>1.23</armorPenetration></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_vblade_sanasiki"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_vblade_sanasiki / handle AP -> 1.23 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vblade_sanasiki"]/tools/li[label="handle"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vblade_sanasiki"]/tools/li[label="handle"]/armorPenetration</xpath>
+            <value><armorPenetration>1.23</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vblade_sanasiki"]/tools/li[label="handle"]</xpath>
+            <value><armorPenetration>1.23</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- guy762_vblade_sanasiki / point AP -> 1.23 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vblade_sanasiki"]/tools/li[label="point"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vblade_sanasiki"]/tools/li[label="point"]/armorPenetration</xpath>
+            <value><armorPenetration>1.23</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vblade_sanasiki"]/tools/li[label="point"]</xpath>
+            <value><armorPenetration>1.23</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- guy762_vblade_sanasiki / edge AP -> 1.23 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vblade_sanasiki"]/tools/li[label="edge"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vblade_sanasiki"]/tools/li[label="edge"]/armorPenetration</xpath>
+            <value><armorPenetration>1.23</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vblade_sanasiki"]/tools/li[label="edge"]</xpath>
+            <value><armorPenetration>1.23</armorPenetration></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_vdubblade"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_vdubblade / handle AP -> 1.42 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vdubblade"]/tools/li[label="handle"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vdubblade"]/tools/li[label="handle"]/armorPenetration</xpath>
+            <value><armorPenetration>1.42</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vdubblade"]/tools/li[label="handle"]</xpath>
+            <value><armorPenetration>1.42</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- guy762_vdubblade / point AP -> 1.42 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vdubblade"]/tools/li[label="point"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vdubblade"]/tools/li[label="point"]/armorPenetration</xpath>
+            <value><armorPenetration>1.42</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vdubblade"]/tools/li[label="point"]</xpath>
+            <value><armorPenetration>1.42</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- guy762_vdubblade / edge AP -> 1.42 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vdubblade"]/tools/li[label="edge"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vdubblade"]/tools/li[label="edge"]/armorPenetration</xpath>
+            <value><armorPenetration>1.42</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vdubblade"]/tools/li[label="edge"]</xpath>
+            <value><armorPenetration>1.42</armorPenetration></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_vdubblade_sith"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_vdubblade_sith / handle AP -> 1.60 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vdubblade_sith"]/tools/li[label="handle"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vdubblade_sith"]/tools/li[label="handle"]/armorPenetration</xpath>
+            <value><armorPenetration>1.60</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vdubblade_sith"]/tools/li[label="handle"]</xpath>
+            <value><armorPenetration>1.60</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- guy762_vdubblade_sith / point AP -> 1.60 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vdubblade_sith"]/tools/li[label="point"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vdubblade_sith"]/tools/li[label="point"]/armorPenetration</xpath>
+            <value><armorPenetration>1.60</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vdubblade_sith"]/tools/li[label="point"]</xpath>
+            <value><armorPenetration>1.60</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- guy762_vdubblade_sith / edge AP -> 1.60 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vdubblade_sith"]/tools/li[label="edge"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vdubblade_sith"]/tools/li[label="edge"]/armorPenetration</xpath>
+            <value><armorPenetration>1.60</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vdubblade_sith"]/tools/li[label="edge"]</xpath>
+            <value><armorPenetration>1.60</armorPenetration></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_vdubblade_echani"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_vdubblade_echani / handle AP -> 1.60 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vdubblade_echani"]/tools/li[label="handle"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vdubblade_echani"]/tools/li[label="handle"]/armorPenetration</xpath>
+            <value><armorPenetration>1.60</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vdubblade_echani"]/tools/li[label="handle"]</xpath>
+            <value><armorPenetration>1.60</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- guy762_vdubblade_echani / point AP -> 1.60 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vdubblade_echani"]/tools/li[label="point"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vdubblade_echani"]/tools/li[label="point"]/armorPenetration</xpath>
+            <value><armorPenetration>1.60</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vdubblade_echani"]/tools/li[label="point"]</xpath>
+            <value><armorPenetration>1.60</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- guy762_vdubblade_echani / edge AP -> 1.60 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vdubblade_echani"]/tools/li[label="edge"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vdubblade_echani"]/tools/li[label="edge"]/armorPenetration</xpath>
+            <value><armorPenetration>1.60</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vdubblade_echani"]/tools/li[label="edge"]</xpath>
+            <value><armorPenetration>1.60</armorPenetration></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_vdubblade_trandoshan"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_vdubblade_trandoshan / handle AP -> 1.60 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vdubblade_trandoshan"]/tools/li[label="handle"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vdubblade_trandoshan"]/tools/li[label="handle"]/armorPenetration</xpath>
+            <value><armorPenetration>1.60</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vdubblade_trandoshan"]/tools/li[label="handle"]</xpath>
+            <value><armorPenetration>1.60</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- guy762_vdubblade_trandoshan / point AP -> 1.60 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vdubblade_trandoshan"]/tools/li[label="point"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vdubblade_trandoshan"]/tools/li[label="point"]/armorPenetration</xpath>
+            <value><armorPenetration>1.60</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vdubblade_trandoshan"]/tools/li[label="point"]</xpath>
+            <value><armorPenetration>1.60</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- guy762_vdubblade_trandoshan / edge AP -> 1.60 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vdubblade_trandoshan"]/tools/li[label="edge"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vdubblade_trandoshan"]/tools/li[label="edge"]/armorPenetration</xpath>
+            <value><armorPenetration>1.60</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vdubblade_trandoshan"]/tools/li[label="edge"]</xpath>
+            <value><armorPenetration>1.60</armorPenetration></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_vdubblade_yusanis"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_vdubblade_yusanis / handle AP -> 1.60 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vdubblade_yusanis"]/tools/li[label="handle"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vdubblade_yusanis"]/tools/li[label="handle"]/armorPenetration</xpath>
+            <value><armorPenetration>1.60</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vdubblade_yusanis"]/tools/li[label="handle"]</xpath>
+            <value><armorPenetration>1.60</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- guy762_vdubblade_yusanis / point AP -> 1.60 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vdubblade_yusanis"]/tools/li[label="point"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vdubblade_yusanis"]/tools/li[label="point"]/armorPenetration</xpath>
+            <value><armorPenetration>1.60</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vdubblade_yusanis"]/tools/li[label="point"]</xpath>
+            <value><armorPenetration>1.60</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- guy762_vdubblade_yusanis / edge AP -> 1.60 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vdubblade_yusanis"]/tools/li[label="edge"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vdubblade_yusanis"]/tools/li[label="edge"]/armorPenetration</xpath>
+            <value><armorPenetration>1.60</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vdubblade_yusanis"]/tools/li[label="edge"]</xpath>
+            <value><armorPenetration>1.60</armorPenetration></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_vglaive"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_vglaive / handle AP -> 1.51 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vglaive"]/tools/li[label="handle"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vglaive"]/tools/li[label="handle"]/armorPenetration</xpath>
+            <value><armorPenetration>1.51</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vglaive"]/tools/li[label="handle"]</xpath>
+            <value><armorPenetration>1.51</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- guy762_vglaive / point AP -> 1.51 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vglaive"]/tools/li[label="point"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vglaive"]/tools/li[label="point"]/armorPenetration</xpath>
+            <value><armorPenetration>1.51</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vglaive"]/tools/li[label="point"]</xpath>
+            <value><armorPenetration>1.51</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- guy762_vglaive / edge AP -> 1.51 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vglaive"]/tools/li[label="edge"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vglaive"]/tools/li[label="edge"]/armorPenetration</xpath>
+            <value><armorPenetration>1.51</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vglaive"]/tools/li[label="edge"]</xpath>
+            <value><armorPenetration>1.51</armorPenetration></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_vglaive_krath"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_vglaive_krath / handle AP -> 1.51 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vglaive_krath"]/tools/li[label="handle"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vglaive_krath"]/tools/li[label="handle"]/armorPenetration</xpath>
+            <value><armorPenetration>1.51</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vglaive_krath"]/tools/li[label="handle"]</xpath>
+            <value><armorPenetration>1.51</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- guy762_vglaive_krath / point AP -> 1.51 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vglaive_krath"]/tools/li[label="point"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vglaive_krath"]/tools/li[label="point"]/armorPenetration</xpath>
+            <value><armorPenetration>1.51</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vglaive_krath"]/tools/li[label="point"]</xpath>
+            <value><armorPenetration>1.51</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- guy762_vglaive_krath / edge AP -> 1.51 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vglaive_krath"]/tools/li[label="edge"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vglaive_krath"]/tools/li[label="edge"]/armorPenetration</xpath>
+            <value><armorPenetration>1.51</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vglaive_krath"]/tools/li[label="edge"]</xpath>
+            <value><armorPenetration>1.51</armorPenetration></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_vglaive_echani"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_vglaive_echani / handle AP -> 1.51 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vglaive_echani"]/tools/li[label="handle"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vglaive_echani"]/tools/li[label="handle"]/armorPenetration</xpath>
+            <value><armorPenetration>1.51</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vglaive_echani"]/tools/li[label="handle"]</xpath>
+            <value><armorPenetration>1.51</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- guy762_vglaive_echani / point AP -> 1.51 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vglaive_echani"]/tools/li[label="point"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vglaive_echani"]/tools/li[label="point"]/armorPenetration</xpath>
+            <value><armorPenetration>1.51</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vglaive_echani"]/tools/li[label="point"]</xpath>
+            <value><armorPenetration>1.51</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- guy762_vglaive_echani / edge AP -> 1.51 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vglaive_echani"]/tools/li[label="edge"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vglaive_echani"]/tools/li[label="edge"]/armorPenetration</xpath>
+            <value><armorPenetration>1.51</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vglaive_echani"]/tools/li[label="edge"]</xpath>
+            <value><armorPenetration>1.51</armorPenetration></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_vsword"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_vsword / handle AP -> 1.23 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vsword"]/tools/li[label="handle"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vsword"]/tools/li[label="handle"]/armorPenetration</xpath>
+            <value><armorPenetration>1.23</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vsword"]/tools/li[label="handle"]</xpath>
+            <value><armorPenetration>1.23</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- guy762_vsword / point AP -> 1.23 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vsword"]/tools/li[label="point"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vsword"]/tools/li[label="point"]/armorPenetration</xpath>
+            <value><armorPenetration>1.23</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vsword"]/tools/li[label="point"]</xpath>
+            <value><armorPenetration>1.23</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- guy762_vsword / edge AP -> 1.23 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vsword"]/tools/li[label="edge"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vsword"]/tools/li[label="edge"]/armorPenetration</xpath>
+            <value><armorPenetration>1.23</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vsword"]/tools/li[label="edge"]</xpath>
+            <value><armorPenetration>1.23</armorPenetration></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_vsword_krath"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_vsword_krath / handle AP -> 1.33 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vsword_krath"]/tools/li[label="handle"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vsword_krath"]/tools/li[label="handle"]/armorPenetration</xpath>
+            <value><armorPenetration>1.33</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vsword_krath"]/tools/li[label="handle"]</xpath>
+            <value><armorPenetration>1.33</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- guy762_vsword_krath / point AP -> 1.33 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vsword_krath"]/tools/li[label="point"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vsword_krath"]/tools/li[label="point"]/armorPenetration</xpath>
+            <value><armorPenetration>1.33</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vsword_krath"]/tools/li[label="point"]</xpath>
+            <value><armorPenetration>1.33</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- guy762_vsword_krath / edge AP -> 1.33 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vsword_krath"]/tools/li[label="edge"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vsword_krath"]/tools/li[label="edge"]/armorPenetration</xpath>
+            <value><armorPenetration>1.33</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vsword_krath"]/tools/li[label="edge"]</xpath>
+            <value><armorPenetration>1.33</armorPenetration></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_vsword_sith"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_vsword_sith / handle AP -> 1.33 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vsword_sith"]/tools/li[label="handle"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vsword_sith"]/tools/li[label="handle"]/armorPenetration</xpath>
+            <value><armorPenetration>1.33</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vsword_sith"]/tools/li[label="handle"]</xpath>
+            <value><armorPenetration>1.33</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- guy762_vsword_sith / point AP -> 1.33 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vsword_sith"]/tools/li[label="point"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vsword_sith"]/tools/li[label="point"]/armorPenetration</xpath>
+            <value><armorPenetration>1.33</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vsword_sith"]/tools/li[label="point"]</xpath>
+            <value><armorPenetration>1.33</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- guy762_vsword_sith / edge AP -> 1.33 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vsword_sith"]/tools/li[label="edge"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vsword_sith"]/tools/li[label="edge"]/armorPenetration</xpath>
+            <value><armorPenetration>1.33</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vsword_sith"]/tools/li[label="edge"]</xpath>
+            <value><armorPenetration>1.33</armorPenetration></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_vsword_echani"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_vsword_echani / handle AP -> 1.33 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vsword_echani"]/tools/li[label="handle"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vsword_echani"]/tools/li[label="handle"]/armorPenetration</xpath>
+            <value><armorPenetration>1.33</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vsword_echani"]/tools/li[label="handle"]</xpath>
+            <value><armorPenetration>1.33</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- guy762_vsword_echani / point AP -> 1.33 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vsword_echani"]/tools/li[label="point"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vsword_echani"]/tools/li[label="point"]/armorPenetration</xpath>
+            <value><armorPenetration>1.33</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vsword_echani"]/tools/li[label="point"]</xpath>
+            <value><armorPenetration>1.33</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- guy762_vsword_echani / edge AP -> 1.33 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vsword_echani"]/tools/li[label="edge"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vsword_echani"]/tools/li[label="edge"]/armorPenetration</xpath>
+            <value><armorPenetration>1.33</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vsword_echani"]/tools/li[label="edge"]</xpath>
+            <value><armorPenetration>1.33</armorPenetration></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_vsword_exchange"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_vsword_exchange / handle AP -> 1.33 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vsword_exchange"]/tools/li[label="handle"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vsword_exchange"]/tools/li[label="handle"]/armorPenetration</xpath>
+            <value><armorPenetration>1.33</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vsword_exchange"]/tools/li[label="handle"]</xpath>
+            <value><armorPenetration>1.33</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- guy762_vsword_exchange / point AP -> 1.33 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vsword_exchange"]/tools/li[label="point"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vsword_exchange"]/tools/li[label="point"]/armorPenetration</xpath>
+            <value><armorPenetration>1.33</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vsword_exchange"]/tools/li[label="point"]</xpath>
+            <value><armorPenetration>1.33</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- guy762_vsword_exchange / edge AP -> 1.33 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vsword_exchange"]/tools/li[label="edge"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vsword_exchange"]/tools/li[label="edge"]/armorPenetration</xpath>
+            <value><armorPenetration>1.33</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vsword_exchange"]/tools/li[label="edge"]</xpath>
+            <value><armorPenetration>1.33</armorPenetration></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_vsword_baragwin"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_vsword_baragwin / handle AP -> 1.33 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vsword_baragwin"]/tools/li[label="handle"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vsword_baragwin"]/tools/li[label="handle"]/armorPenetration</xpath>
+            <value><armorPenetration>1.33</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vsword_baragwin"]/tools/li[label="handle"]</xpath>
+            <value><armorPenetration>1.33</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- guy762_vsword_baragwin / point AP -> 1.33 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vsword_baragwin"]/tools/li[label="point"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vsword_baragwin"]/tools/li[label="point"]/armorPenetration</xpath>
+            <value><armorPenetration>1.33</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vsword_baragwin"]/tools/li[label="point"]</xpath>
+            <value><armorPenetration>1.33</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- guy762_vsword_baragwin / edge AP -> 1.33 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vsword_baragwin"]/tools/li[label="edge"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vsword_baragwin"]/tools/li[label="edge"]/armorPenetration</xpath>
+            <value><armorPenetration>1.33</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vsword_baragwin"]/tools/li[label="edge"]</xpath>
+            <value><armorPenetration>1.33</armorPenetration></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="guy762_vsword_bacca"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_vsword_bacca / handle AP -> 1.33 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vsword_bacca"]/tools/li[label="handle"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vsword_bacca"]/tools/li[label="handle"]/armorPenetration</xpath>
+            <value><armorPenetration>1.33</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vsword_bacca"]/tools/li[label="handle"]</xpath>
+            <value><armorPenetration>1.33</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- guy762_vsword_bacca / point AP -> 1.33 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vsword_bacca"]/tools/li[label="point"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vsword_bacca"]/tools/li[label="point"]/armorPenetration</xpath>
+            <value><armorPenetration>1.33</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vsword_bacca"]/tools/li[label="point"]</xpath>
+            <value><armorPenetration>1.33</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- guy762_vsword_bacca / edge AP -> 1.33 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="guy762_vsword_bacca"]/tools/li[label="edge"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="guy762_vsword_bacca"]/tools/li[label="edge"]/armorPenetration</xpath>
+            <value><armorPenetration>1.33</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="guy762_vsword_bacca"]/tools/li[label="edge"]</xpath>
+            <value><armorPenetration>1.33</armorPenetration></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_JDSA_Vibroblade"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- RSW_JDSA_Vibroblade / point AP -> 0.96 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RSW_JDSA_Vibroblade"]/tools/li[label="point"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RSW_JDSA_Vibroblade"]/tools/li[label="point"]/armorPenetration</xpath>
+            <value><armorPenetration>0.96</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RSW_JDSA_Vibroblade"]/tools/li[label="point"]</xpath>
+            <value><armorPenetration>0.96</armorPenetration></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_JDSA_Vibrosword"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- RSW_JDSA_Vibrosword / handle AP -> 0.96 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RSW_JDSA_Vibrosword"]/tools/li[label="handle"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RSW_JDSA_Vibrosword"]/tools/li[label="handle"]/armorPenetration</xpath>
+            <value><armorPenetration>0.96</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RSW_JDSA_Vibrosword"]/tools/li[label="handle"]</xpath>
+            <value><armorPenetration>0.96</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- RSW_JDSA_Vibrosword / point AP -> 0.96 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RSW_JDSA_Vibrosword"]/tools/li[label="point"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RSW_JDSA_Vibrosword"]/tools/li[label="point"]/armorPenetration</xpath>
+            <value><armorPenetration>0.96</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RSW_JDSA_Vibrosword"]/tools/li[label="point"]</xpath>
+            <value><armorPenetration>0.96</armorPenetration></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/ThingDef[defName="RSW_JDSA_Vibroaxe"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- RSW_JDSA_Vibroaxe / handle AP -> 0.96 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RSW_JDSA_Vibroaxe"]/tools/li[label="handle"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RSW_JDSA_Vibroaxe"]/tools/li[label="handle"]/armorPenetration</xpath>
+            <value><armorPenetration>0.96</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RSW_JDSA_Vibroaxe"]/tools/li[label="handle"]</xpath>
+            <value><armorPenetration>0.96</armorPenetration></value>
+          </nomatch>
+        </li>
+        <!-- RSW_JDSA_Vibroaxe / point AP -> 0.96 -->
+        <li Class="PatchOperationConditional">
+          <xpath>/Defs/ThingDef[defName="RSW_JDSA_Vibroaxe"]/tools/li[label="point"]/armorPenetration</xpath>
+          <match Class="PatchOperationReplace">
+            <xpath>/Defs/ThingDef[defName="RSW_JDSA_Vibroaxe"]/tools/li[label="point"]/armorPenetration</xpath>
+            <value><armorPenetration>0.96</armorPenetration></value>
+          </match>
+          <nomatch Class="PatchOperationAdd">
+            <xpath>/Defs/ThingDef[defName="RSW_JDSA_Vibroaxe"]/tools/li[label="point"]</xpath>
+            <value><armorPenetration>0.96</armorPenetration></value>
+          </nomatch>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
   <Operation Class="PatchOperationFindMod">
     <mods><li>Outer Rim - Core</li></mods>
     <match Class="PatchOperationSequence">
@@ -246,18 +1429,6 @@
     <mods><li>Star Wars : The Force - Lightsaber</li></mods>
     <match Class="PatchOperationSequence">
       <operations>
-        <!-- 2026-09-01, LIGHTSABER_MELEE_PATCH_FAIL_1: removed 24 dead
-             PatchOperationConditional entries (8 variants x 3 tools) for
-             Force_Broadsaber, Force_Darksaber, Force_Lightsaber_Crossguard/
-             Curved/Custom/Dual/Inquisitor/Shoto - same root cause as the
-             companion fix in Armoury_MeleePower.xml: none of these ThingDefs
-             have their own <tools> list any more, they purely inherit it
-             from ParentName="Force_LightsaberBase", so even the nomatch
-             PatchOperationAdd (targeting the non-existent tools/li itself)
-             could never match. Force_ImbuedBlade is untouched here - it is
-             NOT a Force_LightsaberBase descendant and genuinely owns its
-             own <tools> list, so its 3 ops still work fine. Only the base
-             def's 3 ops below still have a live tools node to tune. -->
         <!-- Force_LightsaberBase / hilt AP -> 0.00 -->
         <li Class="PatchOperationConditional">
           <xpath>/Defs/ThingDef[@Name="Force_LightsaberBase"]/tools/li[label="hilt"]/armorPenetration</xpath>
@@ -330,904 +1501,292 @@
             <value><armorPenetration>0.00</armorPenetration></value>
           </nomatch>
         </li>
-      </operations>
-    </match>
-  </Operation>
-
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Resources and Materials</li></mods>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <!-- KotORSlugBolt slugthrower AP -> 0.85 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="KotORSlugBolt"]/projectile/armorPenetrationBase</xpath>
-          <value><armorPenetrationBase>0.85</armorPenetrationBase></value>
-        </li>
-        <!-- SWProj_TL50slugbolt slugthrower AP -> 0.85 -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/ThingDef[defName="SWProj_TL50slugbolt"]/projectile/armorPenetrationBase</xpath>
-          <value><armorPenetrationBase>0.85</armorPenetrationBase></value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-
-  <!-- 2026-09-04, ARMOURY_RETIRED_GUARD_FIX_1 (hand-edit, guard only):
-       "Star Wars KotOR Weapons and Armor" (guy762.KotORWeapons) was absorbed
-       and retired; its About.xml <name> is not in the live ModsConfig.xml,
-       so PatchOperationFindMod always returned true and this whole block
-       (73 real balance ops) silently never ran - no error logged. Every
-       inner op below already Conditional-guards its own concrete
-       defName/tools/li node with a nomatch Add, so the outer gate only
-       needs to always run; pointed it at our own always-active mod
-       (mandrake.rsw.armoury's About.xml <name>) instead of the retired
-       donor's name - PatchOperationFindMod matches <name>, not packageId. -->
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Jawa Armoury Rebalance</li></mods>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <!-- guy762_vaxe / handle AP -> 1.60 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vaxe"]/tools/li[label="handle"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vaxe"]/tools/li[label="handle"]/armorPenetration</xpath>
-            <value><armorPenetration>1.60</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vaxe"]/tools/li[label="handle"]</xpath>
-            <value><armorPenetration>1.60</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- guy762_vaxe / edge AP -> 1.60 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vaxe"]/tools/li[label="edge"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vaxe"]/tools/li[label="edge"]/armorPenetration</xpath>
-            <value><armorPenetration>1.60</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vaxe"]/tools/li[label="edge"]</xpath>
-            <value><armorPenetration>1.60</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- guy762_vaxe_hutt / handle AP -> 1.51 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vaxe_hutt"]/tools/li[label="handle"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vaxe_hutt"]/tools/li[label="handle"]/armorPenetration</xpath>
-            <value><armorPenetration>1.51</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vaxe_hutt"]/tools/li[label="handle"]</xpath>
-            <value><armorPenetration>1.51</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- guy762_vaxe_hutt / edge AP -> 1.51 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vaxe_hutt"]/tools/li[label="edge"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vaxe_hutt"]/tools/li[label="edge"]/armorPenetration</xpath>
-            <value><armorPenetration>1.51</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vaxe_hutt"]/tools/li[label="edge"]</xpath>
-            <value><armorPenetration>1.51</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- guy762_vaxe_sith / handle AP -> 1.51 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vaxe_sith"]/tools/li[label="handle"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vaxe_sith"]/tools/li[label="handle"]/armorPenetration</xpath>
-            <value><armorPenetration>1.51</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vaxe_sith"]/tools/li[label="handle"]</xpath>
-            <value><armorPenetration>1.51</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- guy762_vaxe_sith / edge AP -> 1.51 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vaxe_sith"]/tools/li[label="edge"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vaxe_sith"]/tools/li[label="edge"]/armorPenetration</xpath>
-            <value><armorPenetration>1.51</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vaxe_sith"]/tools/li[label="edge"]</xpath>
-            <value><armorPenetration>1.51</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- guy762_vblade / handle AP -> 1.05 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vblade"]/tools/li[label="handle"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vblade"]/tools/li[label="handle"]/armorPenetration</xpath>
-            <value><armorPenetration>1.05</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vblade"]/tools/li[label="handle"]</xpath>
-            <value><armorPenetration>1.05</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- guy762_vblade / point AP -> 1.05 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vblade"]/tools/li[label="point"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vblade"]/tools/li[label="point"]/armorPenetration</xpath>
-            <value><armorPenetration>1.05</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vblade"]/tools/li[label="point"]</xpath>
-            <value><armorPenetration>1.05</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- guy762_vblade / edge AP -> 1.05 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vblade"]/tools/li[label="edge"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vblade"]/tools/li[label="edge"]/armorPenetration</xpath>
-            <value><armorPenetration>1.05</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vblade"]/tools/li[label="edge"]</xpath>
-            <value><armorPenetration>1.05</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- guy762_vblade_prototype / handle AP -> 1.23 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vblade_prototype"]/tools/li[label="handle"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vblade_prototype"]/tools/li[label="handle"]/armorPenetration</xpath>
-            <value><armorPenetration>1.23</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vblade_prototype"]/tools/li[label="handle"]</xpath>
-            <value><armorPenetration>1.23</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- guy762_vblade_prototype / point AP -> 1.23 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vblade_prototype"]/tools/li[label="point"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vblade_prototype"]/tools/li[label="point"]/armorPenetration</xpath>
-            <value><armorPenetration>1.23</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vblade_prototype"]/tools/li[label="point"]</xpath>
-            <value><armorPenetration>1.23</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- guy762_vblade_prototype / edge AP -> 1.23 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vblade_prototype"]/tools/li[label="edge"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vblade_prototype"]/tools/li[label="edge"]/armorPenetration</xpath>
-            <value><armorPenetration>1.23</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vblade_prototype"]/tools/li[label="edge"]</xpath>
-            <value><armorPenetration>1.23</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- guy762_vblade_krath / handle AP -> 1.23 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vblade_krath"]/tools/li[label="handle"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vblade_krath"]/tools/li[label="handle"]/armorPenetration</xpath>
-            <value><armorPenetration>1.23</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vblade_krath"]/tools/li[label="handle"]</xpath>
-            <value><armorPenetration>1.23</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- guy762_vblade_krath / point AP -> 1.23 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vblade_krath"]/tools/li[label="point"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vblade_krath"]/tools/li[label="point"]/armorPenetration</xpath>
-            <value><armorPenetration>1.23</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vblade_krath"]/tools/li[label="point"]</xpath>
-            <value><armorPenetration>1.23</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- guy762_vblade_krath / edge AP -> 1.23 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vblade_krath"]/tools/li[label="edge"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vblade_krath"]/tools/li[label="edge"]/armorPenetration</xpath>
-            <value><armorPenetration>1.23</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vblade_krath"]/tools/li[label="edge"]</xpath>
-            <value><armorPenetration>1.23</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- guy762_vblade_echani / handle AP -> 1.23 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vblade_echani"]/tools/li[label="handle"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vblade_echani"]/tools/li[label="handle"]/armorPenetration</xpath>
-            <value><armorPenetration>1.23</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vblade_echani"]/tools/li[label="handle"]</xpath>
-            <value><armorPenetration>1.23</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- guy762_vblade_echani / point AP -> 1.23 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vblade_echani"]/tools/li[label="point"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vblade_echani"]/tools/li[label="point"]/armorPenetration</xpath>
-            <value><armorPenetration>1.23</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vblade_echani"]/tools/li[label="point"]</xpath>
-            <value><armorPenetration>1.23</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- guy762_vblade_echani / edge AP -> 1.23 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vblade_echani"]/tools/li[label="edge"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vblade_echani"]/tools/li[label="edge"]/armorPenetration</xpath>
-            <value><armorPenetration>1.23</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vblade_echani"]/tools/li[label="edge"]</xpath>
-            <value><armorPenetration>1.23</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- guy762_vblade_tehkla / handle AP -> 1.23 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vblade_tehkla"]/tools/li[label="handle"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vblade_tehkla"]/tools/li[label="handle"]/armorPenetration</xpath>
-            <value><armorPenetration>1.23</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vblade_tehkla"]/tools/li[label="handle"]</xpath>
-            <value><armorPenetration>1.23</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- guy762_vblade_tehkla / point AP -> 1.23 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vblade_tehkla"]/tools/li[label="point"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vblade_tehkla"]/tools/li[label="point"]/armorPenetration</xpath>
-            <value><armorPenetration>1.23</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vblade_tehkla"]/tools/li[label="point"]</xpath>
-            <value><armorPenetration>1.23</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- guy762_vblade_tehkla / edge AP -> 1.23 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vblade_tehkla"]/tools/li[label="edge"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vblade_tehkla"]/tools/li[label="edge"]/armorPenetration</xpath>
-            <value><armorPenetration>1.23</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vblade_tehkla"]/tools/li[label="edge"]</xpath>
-            <value><armorPenetration>1.23</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- guy762_vblade_vao / handle AP -> 1.23 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vblade_vao"]/tools/li[label="handle"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vblade_vao"]/tools/li[label="handle"]/armorPenetration</xpath>
-            <value><armorPenetration>1.23</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vblade_vao"]/tools/li[label="handle"]</xpath>
-            <value><armorPenetration>1.23</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- guy762_vblade_vao / point AP -> 1.23 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vblade_vao"]/tools/li[label="point"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vblade_vao"]/tools/li[label="point"]/armorPenetration</xpath>
-            <value><armorPenetration>1.23</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vblade_vao"]/tools/li[label="point"]</xpath>
-            <value><armorPenetration>1.23</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- guy762_vblade_vao / edge AP -> 1.23 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vblade_vao"]/tools/li[label="edge"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vblade_vao"]/tools/li[label="edge"]/armorPenetration</xpath>
-            <value><armorPenetration>1.23</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vblade_vao"]/tools/li[label="edge"]</xpath>
-            <value><armorPenetration>1.23</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- guy762_vblade_sanasiki / handle AP -> 1.23 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vblade_sanasiki"]/tools/li[label="handle"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vblade_sanasiki"]/tools/li[label="handle"]/armorPenetration</xpath>
-            <value><armorPenetration>1.23</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vblade_sanasiki"]/tools/li[label="handle"]</xpath>
-            <value><armorPenetration>1.23</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- guy762_vblade_sanasiki / point AP -> 1.23 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vblade_sanasiki"]/tools/li[label="point"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vblade_sanasiki"]/tools/li[label="point"]/armorPenetration</xpath>
-            <value><armorPenetration>1.23</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vblade_sanasiki"]/tools/li[label="point"]</xpath>
-            <value><armorPenetration>1.23</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- guy762_vblade_sanasiki / edge AP -> 1.23 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vblade_sanasiki"]/tools/li[label="edge"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vblade_sanasiki"]/tools/li[label="edge"]/armorPenetration</xpath>
-            <value><armorPenetration>1.23</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vblade_sanasiki"]/tools/li[label="edge"]</xpath>
-            <value><armorPenetration>1.23</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- guy762_vdubblade / handle AP -> 1.42 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vdubblade"]/tools/li[label="handle"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vdubblade"]/tools/li[label="handle"]/armorPenetration</xpath>
-            <value><armorPenetration>1.42</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vdubblade"]/tools/li[label="handle"]</xpath>
-            <value><armorPenetration>1.42</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- guy762_vdubblade / point AP -> 1.42 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vdubblade"]/tools/li[label="point"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vdubblade"]/tools/li[label="point"]/armorPenetration</xpath>
-            <value><armorPenetration>1.42</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vdubblade"]/tools/li[label="point"]</xpath>
-            <value><armorPenetration>1.42</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- guy762_vdubblade / edge AP -> 1.42 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vdubblade"]/tools/li[label="edge"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vdubblade"]/tools/li[label="edge"]/armorPenetration</xpath>
-            <value><armorPenetration>1.42</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vdubblade"]/tools/li[label="edge"]</xpath>
-            <value><armorPenetration>1.42</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- guy762_vdubblade_sith / handle AP -> 1.60 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vdubblade_sith"]/tools/li[label="handle"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vdubblade_sith"]/tools/li[label="handle"]/armorPenetration</xpath>
-            <value><armorPenetration>1.60</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vdubblade_sith"]/tools/li[label="handle"]</xpath>
-            <value><armorPenetration>1.60</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- guy762_vdubblade_sith / point AP -> 1.60 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vdubblade_sith"]/tools/li[label="point"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vdubblade_sith"]/tools/li[label="point"]/armorPenetration</xpath>
-            <value><armorPenetration>1.60</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vdubblade_sith"]/tools/li[label="point"]</xpath>
-            <value><armorPenetration>1.60</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- guy762_vdubblade_sith / edge AP -> 1.60 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vdubblade_sith"]/tools/li[label="edge"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vdubblade_sith"]/tools/li[label="edge"]/armorPenetration</xpath>
-            <value><armorPenetration>1.60</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vdubblade_sith"]/tools/li[label="edge"]</xpath>
-            <value><armorPenetration>1.60</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- guy762_vdubblade_echani / handle AP -> 1.60 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vdubblade_echani"]/tools/li[label="handle"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vdubblade_echani"]/tools/li[label="handle"]/armorPenetration</xpath>
-            <value><armorPenetration>1.60</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vdubblade_echani"]/tools/li[label="handle"]</xpath>
-            <value><armorPenetration>1.60</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- guy762_vdubblade_echani / point AP -> 1.60 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vdubblade_echani"]/tools/li[label="point"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vdubblade_echani"]/tools/li[label="point"]/armorPenetration</xpath>
-            <value><armorPenetration>1.60</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vdubblade_echani"]/tools/li[label="point"]</xpath>
-            <value><armorPenetration>1.60</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- guy762_vdubblade_echani / edge AP -> 1.60 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vdubblade_echani"]/tools/li[label="edge"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vdubblade_echani"]/tools/li[label="edge"]/armorPenetration</xpath>
-            <value><armorPenetration>1.60</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vdubblade_echani"]/tools/li[label="edge"]</xpath>
-            <value><armorPenetration>1.60</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- guy762_vdubblade_trandoshan / handle AP -> 1.60 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vdubblade_trandoshan"]/tools/li[label="handle"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vdubblade_trandoshan"]/tools/li[label="handle"]/armorPenetration</xpath>
-            <value><armorPenetration>1.60</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vdubblade_trandoshan"]/tools/li[label="handle"]</xpath>
-            <value><armorPenetration>1.60</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- guy762_vdubblade_trandoshan / point AP -> 1.60 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vdubblade_trandoshan"]/tools/li[label="point"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vdubblade_trandoshan"]/tools/li[label="point"]/armorPenetration</xpath>
-            <value><armorPenetration>1.60</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vdubblade_trandoshan"]/tools/li[label="point"]</xpath>
-            <value><armorPenetration>1.60</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- guy762_vdubblade_trandoshan / edge AP -> 1.60 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vdubblade_trandoshan"]/tools/li[label="edge"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vdubblade_trandoshan"]/tools/li[label="edge"]/armorPenetration</xpath>
-            <value><armorPenetration>1.60</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vdubblade_trandoshan"]/tools/li[label="edge"]</xpath>
-            <value><armorPenetration>1.60</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- guy762_vdubblade_yusanis / handle AP -> 1.60 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vdubblade_yusanis"]/tools/li[label="handle"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vdubblade_yusanis"]/tools/li[label="handle"]/armorPenetration</xpath>
-            <value><armorPenetration>1.60</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vdubblade_yusanis"]/tools/li[label="handle"]</xpath>
-            <value><armorPenetration>1.60</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- guy762_vdubblade_yusanis / point AP -> 1.60 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vdubblade_yusanis"]/tools/li[label="point"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vdubblade_yusanis"]/tools/li[label="point"]/armorPenetration</xpath>
-            <value><armorPenetration>1.60</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vdubblade_yusanis"]/tools/li[label="point"]</xpath>
-            <value><armorPenetration>1.60</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- guy762_vdubblade_yusanis / edge AP -> 1.60 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vdubblade_yusanis"]/tools/li[label="edge"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vdubblade_yusanis"]/tools/li[label="edge"]/armorPenetration</xpath>
-            <value><armorPenetration>1.60</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vdubblade_yusanis"]/tools/li[label="edge"]</xpath>
-            <value><armorPenetration>1.60</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- guy762_vglaive / handle AP -> 1.51 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vglaive"]/tools/li[label="handle"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vglaive"]/tools/li[label="handle"]/armorPenetration</xpath>
-            <value><armorPenetration>1.51</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vglaive"]/tools/li[label="handle"]</xpath>
-            <value><armorPenetration>1.51</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- guy762_vglaive / point AP -> 1.51 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vglaive"]/tools/li[label="point"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vglaive"]/tools/li[label="point"]/armorPenetration</xpath>
-            <value><armorPenetration>1.51</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vglaive"]/tools/li[label="point"]</xpath>
-            <value><armorPenetration>1.51</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- guy762_vglaive / edge AP -> 1.51 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vglaive"]/tools/li[label="edge"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vglaive"]/tools/li[label="edge"]/armorPenetration</xpath>
-            <value><armorPenetration>1.51</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vglaive"]/tools/li[label="edge"]</xpath>
-            <value><armorPenetration>1.51</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- guy762_vglaive_krath / handle AP -> 1.51 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vglaive_krath"]/tools/li[label="handle"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vglaive_krath"]/tools/li[label="handle"]/armorPenetration</xpath>
-            <value><armorPenetration>1.51</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vglaive_krath"]/tools/li[label="handle"]</xpath>
-            <value><armorPenetration>1.51</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- guy762_vglaive_krath / point AP -> 1.51 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vglaive_krath"]/tools/li[label="point"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vglaive_krath"]/tools/li[label="point"]/armorPenetration</xpath>
-            <value><armorPenetration>1.51</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vglaive_krath"]/tools/li[label="point"]</xpath>
-            <value><armorPenetration>1.51</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- guy762_vglaive_krath / edge AP -> 1.51 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vglaive_krath"]/tools/li[label="edge"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vglaive_krath"]/tools/li[label="edge"]/armorPenetration</xpath>
-            <value><armorPenetration>1.51</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vglaive_krath"]/tools/li[label="edge"]</xpath>
-            <value><armorPenetration>1.51</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- guy762_vglaive_echani / handle AP -> 1.51 -->
+        <!-- Force_Lightsaber_Custom / hilt AP -> 0.00 -->
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vglaive_echani"]/tools/li[label="handle"]/armorPenetration</xpath>
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Custom"]/tools/li[label="hilt"]/armorPenetration</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vglaive_echani"]/tools/li[label="handle"]/armorPenetration</xpath>
-            <value><armorPenetration>1.51</armorPenetration></value>
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Custom"]/tools/li[label="hilt"]/armorPenetration</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vglaive_echani"]/tools/li[label="handle"]</xpath>
-            <value><armorPenetration>1.51</armorPenetration></value>
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Custom"]/tools/li[label="hilt"]</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
           </nomatch>
         </li>
-        <!-- guy762_vglaive_echani / point AP -> 1.51 -->
+        <!-- Force_Lightsaber_Custom / tip AP -> 0.00 -->
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vglaive_echani"]/tools/li[label="point"]/armorPenetration</xpath>
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Custom"]/tools/li[label="tip"]/armorPenetration</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vglaive_echani"]/tools/li[label="point"]/armorPenetration</xpath>
-            <value><armorPenetration>1.51</armorPenetration></value>
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Custom"]/tools/li[label="tip"]/armorPenetration</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vglaive_echani"]/tools/li[label="point"]</xpath>
-            <value><armorPenetration>1.51</armorPenetration></value>
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Custom"]/tools/li[label="tip"]</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
           </nomatch>
         </li>
-        <!-- guy762_vglaive_echani / edge AP -> 1.51 -->
+        <!-- Force_Lightsaber_Custom / edge AP -> 0.00 -->
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vglaive_echani"]/tools/li[label="edge"]/armorPenetration</xpath>
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Custom"]/tools/li[label="edge"]/armorPenetration</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vglaive_echani"]/tools/li[label="edge"]/armorPenetration</xpath>
-            <value><armorPenetration>1.51</armorPenetration></value>
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Custom"]/tools/li[label="edge"]/armorPenetration</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vglaive_echani"]/tools/li[label="edge"]</xpath>
-            <value><armorPenetration>1.51</armorPenetration></value>
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Custom"]/tools/li[label="edge"]</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
           </nomatch>
         </li>
-        <!-- guy762_vsword / handle AP -> 1.23 -->
+        <!-- Force_Lightsaber_Dual / hilt AP -> 0.00 -->
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vsword"]/tools/li[label="handle"]/armorPenetration</xpath>
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Dual"]/tools/li[label="hilt"]/armorPenetration</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vsword"]/tools/li[label="handle"]/armorPenetration</xpath>
-            <value><armorPenetration>1.23</armorPenetration></value>
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Dual"]/tools/li[label="hilt"]/armorPenetration</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vsword"]/tools/li[label="handle"]</xpath>
-            <value><armorPenetration>1.23</armorPenetration></value>
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Dual"]/tools/li[label="hilt"]</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
           </nomatch>
         </li>
-        <!-- guy762_vsword / point AP -> 1.23 -->
+        <!-- Force_Lightsaber_Dual / tip AP -> 0.00 -->
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vsword"]/tools/li[label="point"]/armorPenetration</xpath>
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Dual"]/tools/li[label="tip"]/armorPenetration</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vsword"]/tools/li[label="point"]/armorPenetration</xpath>
-            <value><armorPenetration>1.23</armorPenetration></value>
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Dual"]/tools/li[label="tip"]/armorPenetration</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vsword"]/tools/li[label="point"]</xpath>
-            <value><armorPenetration>1.23</armorPenetration></value>
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Dual"]/tools/li[label="tip"]</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
           </nomatch>
         </li>
-        <!-- guy762_vsword / edge AP -> 1.23 -->
+        <!-- Force_Lightsaber_Dual / edge AP -> 0.00 -->
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vsword"]/tools/li[label="edge"]/armorPenetration</xpath>
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Dual"]/tools/li[label="edge"]/armorPenetration</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vsword"]/tools/li[label="edge"]/armorPenetration</xpath>
-            <value><armorPenetration>1.23</armorPenetration></value>
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Dual"]/tools/li[label="edge"]/armorPenetration</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vsword"]/tools/li[label="edge"]</xpath>
-            <value><armorPenetration>1.23</armorPenetration></value>
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Dual"]/tools/li[label="edge"]</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
           </nomatch>
         </li>
-        <!-- guy762_vsword_krath / handle AP -> 1.33 -->
+        <!-- Force_Lightsaber_Inquisitor / hilt AP -> 0.00 -->
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vsword_krath"]/tools/li[label="handle"]/armorPenetration</xpath>
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Inquisitor"]/tools/li[label="hilt"]/armorPenetration</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vsword_krath"]/tools/li[label="handle"]/armorPenetration</xpath>
-            <value><armorPenetration>1.33</armorPenetration></value>
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Inquisitor"]/tools/li[label="hilt"]/armorPenetration</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vsword_krath"]/tools/li[label="handle"]</xpath>
-            <value><armorPenetration>1.33</armorPenetration></value>
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Inquisitor"]/tools/li[label="hilt"]</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
           </nomatch>
         </li>
-        <!-- guy762_vsword_krath / point AP -> 1.33 -->
+        <!-- Force_Lightsaber_Inquisitor / tip AP -> 0.00 -->
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vsword_krath"]/tools/li[label="point"]/armorPenetration</xpath>
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Inquisitor"]/tools/li[label="tip"]/armorPenetration</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vsword_krath"]/tools/li[label="point"]/armorPenetration</xpath>
-            <value><armorPenetration>1.33</armorPenetration></value>
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Inquisitor"]/tools/li[label="tip"]/armorPenetration</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vsword_krath"]/tools/li[label="point"]</xpath>
-            <value><armorPenetration>1.33</armorPenetration></value>
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Inquisitor"]/tools/li[label="tip"]</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
           </nomatch>
         </li>
-        <!-- guy762_vsword_krath / edge AP -> 1.33 -->
+        <!-- Force_Lightsaber_Inquisitor / edge AP -> 0.00 -->
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vsword_krath"]/tools/li[label="edge"]/armorPenetration</xpath>
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Inquisitor"]/tools/li[label="edge"]/armorPenetration</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vsword_krath"]/tools/li[label="edge"]/armorPenetration</xpath>
-            <value><armorPenetration>1.33</armorPenetration></value>
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Inquisitor"]/tools/li[label="edge"]/armorPenetration</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vsword_krath"]/tools/li[label="edge"]</xpath>
-            <value><armorPenetration>1.33</armorPenetration></value>
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Inquisitor"]/tools/li[label="edge"]</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
           </nomatch>
         </li>
-        <!-- guy762_vsword_sith / handle AP -> 1.33 -->
+        <!-- Force_Lightsaber_Curved / hilt AP -> 0.00 -->
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vsword_sith"]/tools/li[label="handle"]/armorPenetration</xpath>
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Curved"]/tools/li[label="hilt"]/armorPenetration</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vsword_sith"]/tools/li[label="handle"]/armorPenetration</xpath>
-            <value><armorPenetration>1.33</armorPenetration></value>
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Curved"]/tools/li[label="hilt"]/armorPenetration</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vsword_sith"]/tools/li[label="handle"]</xpath>
-            <value><armorPenetration>1.33</armorPenetration></value>
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Curved"]/tools/li[label="hilt"]</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
           </nomatch>
         </li>
-        <!-- guy762_vsword_sith / point AP -> 1.33 -->
+        <!-- Force_Lightsaber_Curved / tip AP -> 0.00 -->
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vsword_sith"]/tools/li[label="point"]/armorPenetration</xpath>
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Curved"]/tools/li[label="tip"]/armorPenetration</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vsword_sith"]/tools/li[label="point"]/armorPenetration</xpath>
-            <value><armorPenetration>1.33</armorPenetration></value>
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Curved"]/tools/li[label="tip"]/armorPenetration</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vsword_sith"]/tools/li[label="point"]</xpath>
-            <value><armorPenetration>1.33</armorPenetration></value>
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Curved"]/tools/li[label="tip"]</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
           </nomatch>
         </li>
-        <!-- guy762_vsword_sith / edge AP -> 1.33 -->
+        <!-- Force_Lightsaber_Curved / edge AP -> 0.00 -->
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vsword_sith"]/tools/li[label="edge"]/armorPenetration</xpath>
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Curved"]/tools/li[label="edge"]/armorPenetration</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vsword_sith"]/tools/li[label="edge"]/armorPenetration</xpath>
-            <value><armorPenetration>1.33</armorPenetration></value>
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Curved"]/tools/li[label="edge"]/armorPenetration</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vsword_sith"]/tools/li[label="edge"]</xpath>
-            <value><armorPenetration>1.33</armorPenetration></value>
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Curved"]/tools/li[label="edge"]</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
           </nomatch>
         </li>
-        <!-- guy762_vsword_echani / handle AP -> 1.33 -->
+        <!-- Force_Lightsaber_Shoto / hilt AP -> 0.00 -->
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vsword_echani"]/tools/li[label="handle"]/armorPenetration</xpath>
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Shoto"]/tools/li[label="hilt"]/armorPenetration</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vsword_echani"]/tools/li[label="handle"]/armorPenetration</xpath>
-            <value><armorPenetration>1.33</armorPenetration></value>
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Shoto"]/tools/li[label="hilt"]/armorPenetration</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vsword_echani"]/tools/li[label="handle"]</xpath>
-            <value><armorPenetration>1.33</armorPenetration></value>
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Shoto"]/tools/li[label="hilt"]</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
           </nomatch>
         </li>
-        <!-- guy762_vsword_echani / point AP -> 1.33 -->
+        <!-- Force_Lightsaber_Shoto / tip AP -> 0.00 -->
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vsword_echani"]/tools/li[label="point"]/armorPenetration</xpath>
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Shoto"]/tools/li[label="tip"]/armorPenetration</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vsword_echani"]/tools/li[label="point"]/armorPenetration</xpath>
-            <value><armorPenetration>1.33</armorPenetration></value>
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Shoto"]/tools/li[label="tip"]/armorPenetration</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vsword_echani"]/tools/li[label="point"]</xpath>
-            <value><armorPenetration>1.33</armorPenetration></value>
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Shoto"]/tools/li[label="tip"]</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
           </nomatch>
         </li>
-        <!-- guy762_vsword_echani / edge AP -> 1.33 -->
+        <!-- Force_Lightsaber_Shoto / edge AP -> 0.00 -->
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vsword_echani"]/tools/li[label="edge"]/armorPenetration</xpath>
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Shoto"]/tools/li[label="edge"]/armorPenetration</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vsword_echani"]/tools/li[label="edge"]/armorPenetration</xpath>
-            <value><armorPenetration>1.33</armorPenetration></value>
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Shoto"]/tools/li[label="edge"]/armorPenetration</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vsword_echani"]/tools/li[label="edge"]</xpath>
-            <value><armorPenetration>1.33</armorPenetration></value>
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Shoto"]/tools/li[label="edge"]</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
           </nomatch>
         </li>
-        <!-- guy762_vsword_exchange / handle AP -> 1.33 -->
+        <!-- Force_Lightsaber_Crossguard / hilt AP -> 0.00 -->
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vsword_exchange"]/tools/li[label="handle"]/armorPenetration</xpath>
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Crossguard"]/tools/li[label="hilt"]/armorPenetration</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vsword_exchange"]/tools/li[label="handle"]/armorPenetration</xpath>
-            <value><armorPenetration>1.33</armorPenetration></value>
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Crossguard"]/tools/li[label="hilt"]/armorPenetration</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vsword_exchange"]/tools/li[label="handle"]</xpath>
-            <value><armorPenetration>1.33</armorPenetration></value>
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Crossguard"]/tools/li[label="hilt"]</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
           </nomatch>
         </li>
-        <!-- guy762_vsword_exchange / point AP -> 1.33 -->
+        <!-- Force_Lightsaber_Crossguard / tip AP -> 0.00 -->
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vsword_exchange"]/tools/li[label="point"]/armorPenetration</xpath>
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Crossguard"]/tools/li[label="tip"]/armorPenetration</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vsword_exchange"]/tools/li[label="point"]/armorPenetration</xpath>
-            <value><armorPenetration>1.33</armorPenetration></value>
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Crossguard"]/tools/li[label="tip"]/armorPenetration</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vsword_exchange"]/tools/li[label="point"]</xpath>
-            <value><armorPenetration>1.33</armorPenetration></value>
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Crossguard"]/tools/li[label="tip"]</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
           </nomatch>
         </li>
-        <!-- guy762_vsword_exchange / edge AP -> 1.33 -->
+        <!-- Force_Lightsaber_Crossguard / edge AP -> 0.00 -->
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vsword_exchange"]/tools/li[label="edge"]/armorPenetration</xpath>
+          <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Crossguard"]/tools/li[label="edge"]/armorPenetration</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vsword_exchange"]/tools/li[label="edge"]/armorPenetration</xpath>
-            <value><armorPenetration>1.33</armorPenetration></value>
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Crossguard"]/tools/li[label="edge"]/armorPenetration</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vsword_exchange"]/tools/li[label="edge"]</xpath>
-            <value><armorPenetration>1.33</armorPenetration></value>
+            <xpath>/Defs/ThingDef[defName="Force_Lightsaber_Crossguard"]/tools/li[label="edge"]</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
           </nomatch>
         </li>
-        <!-- guy762_vsword_baragwin / handle AP -> 1.33 -->
+        <!-- Force_Darksaber / hilt AP -> 0.00 -->
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vsword_baragwin"]/tools/li[label="handle"]/armorPenetration</xpath>
+          <xpath>/Defs/ThingDef[defName="Force_Darksaber"]/tools/li[label="hilt"]/armorPenetration</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vsword_baragwin"]/tools/li[label="handle"]/armorPenetration</xpath>
-            <value><armorPenetration>1.33</armorPenetration></value>
+            <xpath>/Defs/ThingDef[defName="Force_Darksaber"]/tools/li[label="hilt"]/armorPenetration</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vsword_baragwin"]/tools/li[label="handle"]</xpath>
-            <value><armorPenetration>1.33</armorPenetration></value>
+            <xpath>/Defs/ThingDef[defName="Force_Darksaber"]/tools/li[label="hilt"]</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
           </nomatch>
         </li>
-        <!-- guy762_vsword_baragwin / point AP -> 1.33 -->
+        <!-- Force_Darksaber / tip AP -> 0.00 -->
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vsword_baragwin"]/tools/li[label="point"]/armorPenetration</xpath>
+          <xpath>/Defs/ThingDef[defName="Force_Darksaber"]/tools/li[label="tip"]/armorPenetration</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vsword_baragwin"]/tools/li[label="point"]/armorPenetration</xpath>
-            <value><armorPenetration>1.33</armorPenetration></value>
+            <xpath>/Defs/ThingDef[defName="Force_Darksaber"]/tools/li[label="tip"]/armorPenetration</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vsword_baragwin"]/tools/li[label="point"]</xpath>
-            <value><armorPenetration>1.33</armorPenetration></value>
+            <xpath>/Defs/ThingDef[defName="Force_Darksaber"]/tools/li[label="tip"]</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
           </nomatch>
         </li>
-        <!-- guy762_vsword_baragwin / edge AP -> 1.33 -->
+        <!-- Force_Darksaber / edge AP -> 0.00 -->
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vsword_baragwin"]/tools/li[label="edge"]/armorPenetration</xpath>
+          <xpath>/Defs/ThingDef[defName="Force_Darksaber"]/tools/li[label="edge"]/armorPenetration</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vsword_baragwin"]/tools/li[label="edge"]/armorPenetration</xpath>
-            <value><armorPenetration>1.33</armorPenetration></value>
+            <xpath>/Defs/ThingDef[defName="Force_Darksaber"]/tools/li[label="edge"]/armorPenetration</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vsword_baragwin"]/tools/li[label="edge"]</xpath>
-            <value><armorPenetration>1.33</armorPenetration></value>
+            <xpath>/Defs/ThingDef[defName="Force_Darksaber"]/tools/li[label="edge"]</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
           </nomatch>
         </li>
-        <!-- guy762_vsword_bacca / handle AP -> 1.33 -->
+        <!-- Force_Broadsaber / hilt AP -> 0.00 -->
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vsword_bacca"]/tools/li[label="handle"]/armorPenetration</xpath>
+          <xpath>/Defs/ThingDef[defName="Force_Broadsaber"]/tools/li[label="hilt"]/armorPenetration</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vsword_bacca"]/tools/li[label="handle"]/armorPenetration</xpath>
-            <value><armorPenetration>1.33</armorPenetration></value>
+            <xpath>/Defs/ThingDef[defName="Force_Broadsaber"]/tools/li[label="hilt"]/armorPenetration</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vsword_bacca"]/tools/li[label="handle"]</xpath>
-            <value><armorPenetration>1.33</armorPenetration></value>
+            <xpath>/Defs/ThingDef[defName="Force_Broadsaber"]/tools/li[label="hilt"]</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
           </nomatch>
         </li>
-        <!-- guy762_vsword_bacca / point AP -> 1.33 -->
+        <!-- Force_Broadsaber / tip AP -> 0.00 -->
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vsword_bacca"]/tools/li[label="point"]/armorPenetration</xpath>
+          <xpath>/Defs/ThingDef[defName="Force_Broadsaber"]/tools/li[label="tip"]/armorPenetration</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vsword_bacca"]/tools/li[label="point"]/armorPenetration</xpath>
-            <value><armorPenetration>1.33</armorPenetration></value>
+            <xpath>/Defs/ThingDef[defName="Force_Broadsaber"]/tools/li[label="tip"]/armorPenetration</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vsword_bacca"]/tools/li[label="point"]</xpath>
-            <value><armorPenetration>1.33</armorPenetration></value>
+            <xpath>/Defs/ThingDef[defName="Force_Broadsaber"]/tools/li[label="tip"]</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
           </nomatch>
         </li>
-        <!-- guy762_vsword_bacca / edge AP -> 1.33 -->
+        <!-- Force_Broadsaber / edge AP -> 0.00 -->
         <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="guy762_vsword_bacca"]/tools/li[label="edge"]/armorPenetration</xpath>
+          <xpath>/Defs/ThingDef[defName="Force_Broadsaber"]/tools/li[label="edge"]/armorPenetration</xpath>
           <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="guy762_vsword_bacca"]/tools/li[label="edge"]/armorPenetration</xpath>
-            <value><armorPenetration>1.33</armorPenetration></value>
+            <xpath>/Defs/ThingDef[defName="Force_Broadsaber"]/tools/li[label="edge"]/armorPenetration</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
           </match>
           <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="guy762_vsword_bacca"]/tools/li[label="edge"]</xpath>
-            <value><armorPenetration>1.33</armorPenetration></value>
+            <xpath>/Defs/ThingDef[defName="Force_Broadsaber"]/tools/li[label="edge"]</xpath>
+            <value><armorPenetration>0.00</armorPenetration></value>
           </nomatch>
         </li>
       </operations>
@@ -1273,82 +1832,6 @@
         <li Class="PatchOperationReplace">
           <xpath>/Defs/ThingDef[defName="Bullet_ChargeSniperRifle"]/projectile/armorPenetrationBase</xpath>
           <value><armorPenetrationBase>0.85</armorPenetrationBase></value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
-
-  <!-- 2026-09-04, ARMOURY_RETIRED_GUARD_FIX_1 (hand-edit, guard only):
-       "[JDS] StarWars - Armory" (M3.Continued.JangoDsoul.StarWars.BTI) was
-       absorbed and retired; its packageId is not in the live ModsConfig.xml,
-       so PatchOperationFindMod always returned true and this block silently
-       never ran. Every inner op below already Conditional-guards its own
-       concrete defName/tools/li node with a nomatch Add, so the outer gate
-       only needs to always run; pointed it at our own always-active mod's
-       About.xml <name> instead of the retired donor's name. -->
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Jawa Armoury Rebalance</li></mods>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <!-- RSW_JDSA_Vibroblade / point AP -> 0.96 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="RSW_JDSA_Vibroblade"]/tools/li[label="point"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="RSW_JDSA_Vibroblade"]/tools/li[label="point"]/armorPenetration</xpath>
-            <value><armorPenetration>0.96</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="RSW_JDSA_Vibroblade"]/tools/li[label="point"]</xpath>
-            <value><armorPenetration>0.96</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- RSW_JDSA_Vibrosword / handle AP -> 0.96 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="RSW_JDSA_Vibrosword"]/tools/li[label="handle"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="RSW_JDSA_Vibrosword"]/tools/li[label="handle"]/armorPenetration</xpath>
-            <value><armorPenetration>0.96</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="RSW_JDSA_Vibrosword"]/tools/li[label="handle"]</xpath>
-            <value><armorPenetration>0.96</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- RSW_JDSA_Vibrosword / point AP -> 0.96 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="RSW_JDSA_Vibrosword"]/tools/li[label="point"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="RSW_JDSA_Vibrosword"]/tools/li[label="point"]/armorPenetration</xpath>
-            <value><armorPenetration>0.96</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="RSW_JDSA_Vibrosword"]/tools/li[label="point"]</xpath>
-            <value><armorPenetration>0.96</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- RSW_JDSA_Vibroaxe / handle AP -> 0.96 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="RSW_JDSA_Vibroaxe"]/tools/li[label="handle"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="RSW_JDSA_Vibroaxe"]/tools/li[label="handle"]/armorPenetration</xpath>
-            <value><armorPenetration>0.96</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="RSW_JDSA_Vibroaxe"]/tools/li[label="handle"]</xpath>
-            <value><armorPenetration>0.96</armorPenetration></value>
-          </nomatch>
-        </li>
-        <!-- RSW_JDSA_Vibroaxe / point AP -> 0.96 -->
-        <li Class="PatchOperationConditional">
-          <xpath>/Defs/ThingDef[defName="RSW_JDSA_Vibroaxe"]/tools/li[label="point"]/armorPenetration</xpath>
-          <match Class="PatchOperationReplace">
-            <xpath>/Defs/ThingDef[defName="RSW_JDSA_Vibroaxe"]/tools/li[label="point"]/armorPenetration</xpath>
-            <value><armorPenetration>0.96</armorPenetration></value>
-          </match>
-          <nomatch Class="PatchOperationAdd">
-            <xpath>/Defs/ThingDef[defName="RSW_JDSA_Vibroaxe"]/tools/li[label="point"]</xpath>
-            <value><armorPenetration>0.96</armorPenetration></value>
-          </nomatch>
         </li>
       </operations>
     </match>

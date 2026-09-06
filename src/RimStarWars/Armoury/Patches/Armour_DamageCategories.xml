@@ -5,37 +5,15 @@
      Rationale: design/Jawa/worldbuilding/setting_physics.md L3/L7/L8/L11/L14 -->
 <Patch>
 
-  <Operation Class="PatchOperationFindMod">
-    <mods><li>Star Wars KotOR Resources and Materials</li></mods>
-    <match Class="PatchOperationSequence">
-      <operations>
-        <!-- guy762_RangedDamage_sonic: Sharp -> Blunt -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/DamageDef[defName="guy762_RangedDamage_sonic"]/armorCategory</xpath>
-          <value><armorCategory>Blunt</armorCategory></value>
-        </li>
-        <!-- guy762_MeleeDamage_sonic: Sharp -> Blunt -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/DamageDef[defName="guy762_MeleeDamage_sonic"]/armorCategory</xpath>
-          <value><armorCategory>Blunt</armorCategory></value>
-        </li>
-        <!-- guy762_GrenadeDamage_sonic: Sharp -> Blunt -->
-        <li Class="PatchOperationReplace">
-          <xpath>/Defs/DamageDef[defName="guy762_GrenadeDamage_sonic"]/armorCategory</xpath>
-          <value><armorCategory>Blunt</armorCategory></value>
-        </li>
-      </operations>
-    </match>
-  </Operation>
+  <!-- Ops on defs THIS mod declares (mostly absorbed donors). No
+       PatchOperationFindMod: def and patch ship in the same mod, so naming
+       ourselves is a tautology dressed as a guard, and that shape has
+       already failed twice here. When a donor was absorbed and RETIRED the
+       FindMod went on naming a mod nobody loads; FindMod returns true on no
+       match, so whole blocks silently never ran (ARMOURY_RETIRED_GUARD_FIX_1).
+       The guard that means something is the target def itself, which is also
+       true whichever copy of a co-declared def the load ends up holding. -->
 
-  <!-- 2026-09-04, ARMOURY_RETIRED_GUARD_FIX_1 (hand-edit, guard only - see
-       Armoury_MeleePower.xml's LIGHTSABER_MELEE_PATCH_FAIL_1 comment for the
-       precedent): "[JDS] StarWars - Armory" (M3.Continued.JangoDsoul.StarWars.BTI)
-       was absorbed and retired; its packageId is not in the live ModsConfig.xml,
-       so PatchOperationFindMod always returned true and never ran this op -
-       no error logged. Swapped to PatchOperationConditional on the actual
-       target def, per patch-operations.md's guidance to test the thing you
-       depend on rather than a retired mod's name. -->
   <Operation Class="PatchOperationConditional">
     <xpath>/Defs/DamageDef[defName="RSW_Blaster_Damage"]</xpath>
     <match Class="PatchOperationSequence">
@@ -44,6 +22,45 @@
         <li Class="PatchOperationReplace">
           <xpath>/Defs/DamageDef[defName="RSW_Blaster_Damage"]/armorCategory</xpath>
           <value><armorCategory>Heat</armorCategory></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/DamageDef[defName="guy762_RangedDamage_sonic"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_RangedDamage_sonic: Sharp -> Blunt -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/DamageDef[defName="guy762_RangedDamage_sonic"]/armorCategory</xpath>
+          <value><armorCategory>Blunt</armorCategory></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/DamageDef[defName="guy762_MeleeDamage_sonic"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_MeleeDamage_sonic: Sharp -> Blunt -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/DamageDef[defName="guy762_MeleeDamage_sonic"]/armorCategory</xpath>
+          <value><armorCategory>Blunt</armorCategory></value>
+        </li>
+      </operations>
+    </match>
+  </Operation>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/DamageDef[defName="guy762_GrenadeDamage_sonic"]</xpath>
+    <match Class="PatchOperationSequence">
+      <operations>
+        <!-- guy762_GrenadeDamage_sonic: Sharp -> Blunt -->
+        <li Class="PatchOperationReplace">
+          <xpath>/Defs/DamageDef[defName="guy762_GrenadeDamage_sonic"]/armorCategory</xpath>
+          <value><armorCategory>Blunt</armorCategory></value>
         </li>
       </operations>
     </match>
