@@ -4976,3 +4976,4 @@
 {"seat":"FOUNDRY","event":"game","state":"LOADING","measured":true,"evidence":"RimWorldWin64 running; BRIDGE NOT PROBED — no port found in the environment or in Player.log, so LOADING here is a DEFAULT, not a reading.","ts":"2026-09-06T03:24:37Z"}
 {"seat":"BENCH","event":"file","id":"WORLDMAP_DESERT_BAND_REPAIR_1","title":"Repair the Desert def's climate outliers on the frozen world map, re-freeze the savegame","kind":"task","target":"v1","for":"FOUNDRY","ts":"2026-09-06T03:36:59Z"}
 {"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-06T03:38:27Z"}
+{"seat":"FOUNDRY","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-09-06T03:38:43Z"}
