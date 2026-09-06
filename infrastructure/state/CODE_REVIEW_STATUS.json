@@ -6687,6 +6687,96 @@
     "hash": "61bcccc5fc288884c621184f62739b384b9a2e009f0e2c676b73e57da4c897c9",
     "sha": "5a68d1a6"
   },
+  "src/RimStarWars/SWBestiary/About/About.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "c743ac1c841b13f37bccb0900108e078c1ff638389894a9aa2dfedc25d571aef",
+    "sha": "bd07c0e6"
+  },
+  "src/RimStarWars/SWBestiary/Defs/SoundDefs/SoundDefs_SWBestiary.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "0742fbd93cd19d6d9f43a134cf74cfa2d30d8b7030d1714360df503184188254",
+    "sha": "bd07c0e6"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Items/RSW_Absorbed_Eggs.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "f40aa98cc84d09c7b678b6116828f00342c1753b24ead96cf6609495cc92eb59",
+    "sha": "bd07c0e6"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Items/RSW_Bantha_Items.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "afe7de302d26b46714cfb232db4907884a86483bf0e35faac8447a86f97691ea",
+    "sha": "bd07c0e6"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Absorbed_Baseopsis.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "2aadb0bce5ce04c7a93a3a0239693361e0afbee597cc3b790cad3cb0f008657b",
+    "sha": "bd07c0e6"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Absorbed_Diplocaulus.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "fe708d81b52490983002a2d87efaf5536a60d9f53b60485140b2391e5efb3525",
+    "sha": "bd07c0e6"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Absorbed_Holcorobeus.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "db8d1e9b5ab8c8dd8b3703134fc0bc31ece525dd922af2fa394089dc5e859a1e",
+    "sha": "bd07c0e6"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Absorbed_Platyhystrix.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "5225439961799c4f20eb3904affe7a5e1053aeba5da659e560f0680e9a555d4f",
+    "sha": "bd07c0e6"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Absorbed_Protosolpuga.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "76e80502e06bf6362bb8e1a3f884322c11b5e3b50298ee618d5562d37290b54f",
+    "sha": "bd07c0e6"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Absorbed_Protovermes.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "2f29fd2ffac33ee3f43b196c60f6b6f1d87e4c28cc514f866a517cec42a1299a",
+    "sha": "bd07c0e6"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Absorbed_Segnosaurus.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "b4aaa9eb53a699fc4624b2b77e70fd558b4acdb18168be726e821f96d1a0fd62",
+    "sha": "bd07c0e6"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Absorbed_Termitotron.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "4e4af80883b9b004c160a325af76dd2533491d1c557ebcbad4ddedc78a36ff4a",
+    "sha": "bd07c0e6"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Bantha.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "3c64248838987bda6bfc52907a8e57efa08b28e5650c1f08bc576bc395e47bd8",
+    "sha": "bd07c0e6"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThingDefs_Races/RSW_Jerba.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "b4a35657a08f413293dd5e058afe62c6869f56d17ee493ed5d61675a26d27b7c",
+    "sha": "bd07c0e6"
+  },
+  "src/RimStarWars/SWBestiary/Defs/ThoughtDefs/RSW_Bantha_Thoughts.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "ce49b8a96817193c56cd9f13806b280f0f2aeeed6b1c94f6013e7746c253f85d",
+    "sha": "bd07c0e6"
+  },
   "src/RimStarWars/SeaBeasts/About/About.xml": {
     "cleanCount": 1,
     "date": "2026-09-05",
