@@ -5094,3 +5094,13 @@
 {"seat":"BENCH","event":"file","id":"CONTAGION_BIOME_PLACEMENT_1","title":"Move the Contagion (AB_OcularForest) to the peaks above the green: Scald Spine's 38 non-green highs + optional Ashfall/Dew Horn tops — NO green squares; render for owner before painting","kind":"task","target":"v1","needs":"offline","for":"FOUNDRY","ts":"2026-09-06T19:21:56Z"}
 {"seat":"BENCH","event":"file","id":"WATER_KINDS_TAXONOMY_1","title":"Owner: many kinds of water by content + the transmutations between them — inventory every sheet's water, write the taxonomy as data, map onto the live water systems","kind":"task","target":"v1","needs":"owner","for":"BENCH","ts":"2026-09-06T19:21:56Z"}
 {"seat":"BENCH","event":"file","id":"MUTATION_MODIFIERS_SURVEY_1","title":"Survey every mutation-type system in the stack (Biotech genes, mutagen part-hediffs, SlurryHigh, transformation hediffs) to build Contagion-touched — never an upgrade","kind":"task","target":"v1","needs":"offline","for":"BENCH","ts":"2026-09-06T19:21:57Z"}
+{"seat":"OWNER","event":"game","state":"GOING_DOWN","ranBy":"FOUNDRY","ownerSaid":"FOUNDRY autonomous restart: LANDFORM_RECIPE_ROUNDTRIP_1 — reload loosened custom landform file","ts":"2026-09-06T19:24:37Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"FOUNDRY","ownerSaid":"FOUNDRY autonomous restart: relaunching minimal+GL","ts":"2026-09-06T19:24:46Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"FOUNDRY","ownerSaid":"FOUNDRY autonomous restart: relaunching minimal+GL","ts":"2026-09-06T19:24:47Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ownerSaid":"Game is going down","ts":"2026-09-06T19:24:53Z"}
+{"seat":"OWNER","event":"game","state":"DOWN","ranBy":"BENCH","ownerSaid":"Game is down","ts":"2026-09-06T19:25:07Z"}
+{"seat":"OWNER","event":"game","state":"LOADING","ranBy":"BENCH","ownerSaid":"Game is loading","ts":"2026-09-06T19:25:08Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"FOUNDRY","ownerSaid":"FOUNDRY autonomous restart: up","ts":"2026-09-06T19:25:25Z"}
+{"seat":"OWNER","event":"game","state":"UP","ranBy":"BENCH","ownerSaid":"Game is up","ts":"2026-09-06T19:26:36Z"}
+{"seat":"FOUNDRY","event":"close","id":"LANDFORM_RECIPE_ROUNDTRIP_1","sha":"f28586a6be865408d7d318b65fb6dfc1e7f5d6a3","ts":"2026-09-06T19:27:45Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-06T19:27:45Z"}
