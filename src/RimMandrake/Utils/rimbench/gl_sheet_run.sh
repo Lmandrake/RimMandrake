@@ -20,7 +20,7 @@ cp -f "$MC_GL" "$CFG"; say "ModsConfig <- minimal+GL ($(grep -o '<li>' "$CFG" | 
 for rec in "$REC"/RUT_Gen_*.xml; do
   id=$(basename "$rec" .xml)
   rm -f "$CL"/*.xml; cp -f "$rec" "$CL/$id.xml"; say "[$id] placed as the only custom landform"
-  taskkill.exe /F /IM RimWorldWin64.exe >/dev/null 2>&1; sleep 8; mv -f "$LOG" "$LOG.prev_glsheet" 2>/dev/null
+  taskkill.exe /F /IM RimWorldWin64.exe >/dev/null 2>&1; sleep 8; [ -f "$LOG" ] && cp -f "$LOG" "$OUT/prev_${id}_before.log" 2>/dev/null; mv -f "$LOG" "$LOG.prev_glsheet" 2>/dev/null
   "/mnt/c/Program Files (x86)/Steam/steam.exe" -applaunch 294100 & disown
   up=0; for i in $(seq 1 100); do sleep 3; [ -f "$LOG" ] && grep -q "Bridge token:" "$LOG" 2>/dev/null && { up=1; break; }; done
   if [ $up = 0 ]; then say "[$id] BRIDGE NOT UP after 300s — skipping"; continue; fi
@@ -30,7 +30,7 @@ for rec in "$REC"/RUT_Gen_*.xml; do
   grep -q '"success": true' "$OUT/$id.quicktest.json" || say "[$id] quicktest call did not report success: $(head -c 160 "$OUT/$id.quicktest.json")"
   ready=0; for i in $(seq 1 36); do sleep 5; $CLIENT --call jawa/map_info --json {} --yes-i-know-this-is-live --timeout 20 2>&1 | grep -q '"tile"' && { ready=1; break; }; done
   if [ $ready = 0 ]; then say "[$id] map never became ready — skipping"; continue; fi
-  ctx=$(grep -o "Map generator context: TileId: [0-9]*, Landforms: [A-Za-z_,\ ]*" "$LOG" | tail -1)
+  ctx=$(grep -o "Map generator context: TileId: [0-9]*, Landforms: [A-Za-z0-9_,\ ]*" "$LOG" | tail -1)   # digits! RUT_Gen_01 was captured as RUT_Gen_ and read as a failed proof
   say "[$id] $ctx"
   echo "$ctx" | grep -q "Landforms: $id" && say "[$id] PROOF OK" || say "[$id] PROOF FAILED — landform not applied"
   sleep 4
@@ -40,7 +40,7 @@ for rec in "$REC"/RUT_Gen_*.xml; do
   sleep 4
   $CLIENT --call jawa/screenshot_mode --json '{"enabled":false}' --yes-i-know-this-is-live --timeout 20 >/dev/null 2>&1
   [ -f "$SS/glsheet_$id.png" ] && { cp -f "$SS/glsheet_$id.png" "$OUT/$id.png"; say "[$id] screenshot -> $OUT/$id.png"; } || say "[$id] screenshot MISSING"
-  echo "$ctx" > "$OUT/$id.log.txt"
+  echo "$ctx" > "$OUT/$id.log.txt"; cp -f "$LOG" "$OUT/$id.player.log" 2>/dev/null
 done
 rm -f "$CL"/*.xml; say "custom landforms removed from live config ($(ls "$CL" | wc -l) left)"
 say "DONE"
