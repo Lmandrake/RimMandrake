@@ -1,7 +1,8 @@
 <#
-launch_fleet.ps1 — open the three agent windows, each Windows Terminal window placed.
+launch_fleet.ps1 — open the four agent windows, each Windows Terminal window placed.
 
     TOP-LEFT     HESTIA        (separate project, D:\Luke\dev\Hestia)
+    TOP-RIGHT    EMERGENCY     (small floating window, D:\Luke\dev)
     BOTTOM-LEFT  AGENT BENCH   (green — with the owner)
     BOTTOM-RIGHT AGENT FOUNDRY (amber — the autonomous queue)
 
@@ -54,7 +55,7 @@ Normally invoked by the Desktop shortcut written by install_fleet_shortcut.py.
 #>
 param(
     [int]$Gap = 0,
-    [string[]]$Seats = @('HESTIA', 'FOUNDRY', 'BENCH'),
+    [string[]]$Seats = @('HESTIA', 'EMERGENCY', 'FOUNDRY', 'BENCH'),
     [int]$TimeoutSec = 30,
     [switch]$Test,
     [switch]$CloseTest
@@ -134,19 +135,24 @@ $work = New-Object Fleet+RECT
 $X = $work.L; $Y = $work.T
 $W = $work.R - $work.L; $H = $work.B - $work.T
 
-# All three rects below are literal — the exact DWM extended-frame-bounds
-# measured on 2026-09-03 on the 3840x2160 @200% display, per the owner's
+# All four rects below are literal — the exact DWM extended-frame-bounds
+# measured on 2026-09-05 on the 3840x2160 @200% display, per the owner's
 # instruction to open at their CURRENT sizes rather than a recomputed split.
-# None of the three scale with the work area any more (HESTIA never did, and
-# BENCH/FOUNDRY's old halfW/full-height formula is gone now that HESTIA takes
-# the top-left). If the owner reshapes any of these three and wants the new
-# size kept, re-measure with DWM extended frame bounds (not GetWindowRect,
-# which includes the invisible resize border) and update the numbers below —
-# there is no "capture current layout" mode in this script.
+# None of them scale with the work area. If the owner reshapes any of these
+# and wants the new size kept, re-measure with DWM extended frame bounds (not
+# GetWindowRect, which includes the invisible resize border) and update the
+# numbers below — there is no "capture current layout" mode in this script.
+#
+# ⚠️ Every arithmetic expression inside @(...) MUST be parenthesized: the comma
+# binds tighter than + in PowerShell, so a bare `$X + 39, $Y + 13` parses as
+# `$X + (39, $Y) + 13` and dies with "[Object[]] does not contain op_Addition".
+# That single missing pair of parens killed the whole shortcut from 2026-09-03
+# to 2026-09-05 — the hidden powershell console flashed and nothing opened.
 $place = [ordered]@{
-    HESTIA  = @($X + 39,   $Y + 13,   1873, 1114)
-    BENCH   = @($X,        $Y + 1135, 1920, 929)
-    FOUNDRY = @($X + 1920, $Y + 1135, 1920, 929)
+    HESTIA    = @(($X + 4),    ($Y + 42),  1835, 818)
+    EMERGENCY = @(($X + 2909), ($Y + 465),  923, 374)
+    BENCH     = @(($X + 24),   ($Y + 900), 1835, 1151)
+    FOUNDRY   = @(($X + 1899), ($Y + 901), 1930, 1151)
 }
 
 # The wt profile name IS the live window title (no --title override on a real
@@ -155,9 +161,10 @@ $place = [ordered]@{
 # "AGENT <seat>" fleet naming), not "AGENT HESTIA" — don't collapse this back
 # to a single "AGENT $seat" format string.
 $titleFor = [ordered]@{
-    HESTIA  = 'HESTIA'
-    BENCH   = 'AGENT BENCH'
-    FOUNDRY = 'AGENT FOUNDRY'
+    HESTIA    = 'HESTIA'
+    EMERGENCY = 'EMERGENCY'
+    BENCH     = 'AGENT BENCH'
+    FOUNDRY   = 'AGENT FOUNDRY'
 }
 
 $wt = "$env:LOCALAPPDATA\Microsoft\WindowsApps\wt.exe"
