@@ -107,7 +107,7 @@ def main():
     fog_noise = make_fog_band(W, fog_h)           # 0..1
     fog_col = np.array([150, 158, 165], dtype=np.float32)  # cool grey-blue haze
 
-    glow = make_glow_sprite(int(26 * SCALE * (1600 / W) * (W / 1600)) or 26)
+    glow = make_glow_sprite(int(26 * SCALE) or 26)
 
     os.makedirs(os.path.dirname(OUT_WEBM), exist_ok=True)
     import imageio_ffmpeg
