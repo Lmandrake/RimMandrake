@@ -5510,3 +5510,6 @@
 {"seat":"FOUNDRY","event":"start","id":"DROID_FACTIONS_IN_FROZEN_SAVE_1","ts":"2026-09-07T08:24:39Z"}
 {"seat":"FOUNDRY","event":"close","id":"DROID_FACTIONS_IN_FROZEN_SAVE_1","sha":"cb0f7506c4dffd0e2c1724d97b210c47248f8e29","ts":"2026-09-07T08:25:36Z"}
 {"seat":"FOUNDRY","event":"note","id":"DROID_RETIRE_DEPOT_ASIMOV_1","text":"Supporting evidence from DROID_FACTIONS_IN_FROZEN_SAVE_1's census (cb0f7506): on the frozen world (WORLDMAP_V1_original_e.rws), Asimov_EnergyNeed is scribed on 61 of 77 total pawns -- almost entirely wildlife/livestock (Eopie x11, Bantha x7, Megascarab x6, Corinathoth x5, AA_Behemoth x5...), plus 4 Humans and 3 vanilla Mechanoids. Zero droid-lore pawnkinds carry it, because zero droid-lore pawnkinds are spawned anywhere on the world yet. The need is not gated to droids at all -- it's essentially universal. Hard number for whatever the retirement writeup cites.","ts":"2026-09-07T08:25:37Z"}
+{"seat":"FOUNDRY","event":"claim","id":"DROID_DONOR_REFGREP_1","ts":"2026-09-07T08:28:31Z"}
+{"seat":"FOUNDRY","event":"start","id":"DROID_DONOR_REFGREP_1","ts":"2026-09-07T08:28:32Z"}
+{"seat":"FOUNDRY","event":"close","id":"DROID_DONOR_REFGREP_1","sha":"a7dd778266f52d37d9c323a1c79758a0975cbe74","ts":"2026-09-07T08:28:32Z"}
