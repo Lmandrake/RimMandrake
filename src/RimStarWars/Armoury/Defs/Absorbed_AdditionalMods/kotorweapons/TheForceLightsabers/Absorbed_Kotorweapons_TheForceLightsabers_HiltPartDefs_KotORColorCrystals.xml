@@ -222,7 +222,7 @@
   <Lightsaber.HiltPartDef ParentName="guy762_SWForceLightsabers_ColorCrystalPartBASE">
     <defName>guy762_SWForceLightsabers_CrystalPart_heart</defName>
     <label>Heart of the Guardian</label>
-    <description>The Mantle of the Force is an item assembled by Suvam Tan from pieces found in the ruins of Exar Kun's temples on the fourth moon orbiting Yavin. It appears to be the remains of an even older artifact of unknown origin. It is not known if it was used by Exar Kun, or just uncovered when his temples were destroyed. Nor is it known what the original properties of the item were, but given the current abilities, in its original state it must have been fearsome indeed.\n\nThe Mantle is a crystalline lattice, resembling a lightsaber crystal in many ways, but having the additional property of being able to radically alter the flow of energy that passes through it. Additionally, the Mantle seems to almost act as a focusing tool for Force-sensitive individuals, leading to the idea that the original artifact may once have been a powerful tool of the Sith, or perhaps something they took with them when the dark Jedi originally split from the Order.</description>
+    <description>The Heart of the Guardian shares the Mantle of the Force's crystalline lattice, recovered from the same ruined temples on Yavin's fourth moon, but where the Mantle unmakes and redirects the energy that passes through it, the Heart holds steady -- it seems built to anchor a wielder rather than to focus one, and radiates a faint warmth even when cut from its housing.</description>
     <requiredComponent>guy762_crystalitem_heart</requiredComponent>
     <colorGenerator Class="ColorGenerator_Options">
       <options>

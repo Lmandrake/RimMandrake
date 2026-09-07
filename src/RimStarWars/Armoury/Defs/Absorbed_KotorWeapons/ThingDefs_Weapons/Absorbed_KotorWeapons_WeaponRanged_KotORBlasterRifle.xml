@@ -686,7 +686,7 @@
   <ThingDef ParentName="KotORRangedModdable_TwoHand">
     <defName>guy762_brifle_jurgan</defName>
     <label>Jurgan Kalta's Assault Rifle</label>
-    <description>Jurgan Kalta wanteed to make a big noise in the galaxy. If it was the screams of his enemies, all the better. This weapon was his favorite because it shared his adaptability.\n\nUPGRADE SLOTS:\n- Scope\n- Power Cell\n- Firing Chamber\n- Beam Splitter\n- Trigger</description>
+    <description>Jurgan Kalta wanted to make a big noise in the galaxy. If it was the screams of his enemies, all the better. This weapon was his favorite because it shared his adaptability.\n\nUPGRADE SLOTS:\n- Scope\n- Power Cell\n- Firing Chamber\n- Beam Splitter\n- Trigger</description>
     <techLevel>Spacer</techLevel>
     <thingClass>ThingWithComps</thingClass>
     <graphicData>

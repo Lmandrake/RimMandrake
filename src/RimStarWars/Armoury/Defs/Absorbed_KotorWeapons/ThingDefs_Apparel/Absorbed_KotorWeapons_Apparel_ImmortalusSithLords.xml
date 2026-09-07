@@ -1097,7 +1097,7 @@
   <ThingDef ParentName="KotORArmorModdable_hard">
     <defName>guy762_MalgusArmor</defName>
     <label>Darth Malgus' powered battle armor</label>
-    <description>.\n\nUPGRADE SLOTS:\n- Armor Underlay (heavy)\n- Armor Overlay (heavy)\n- Armor Tech</description>
+    <description>Salvaged from Darth Malgus' own war-plate, this powered battle armor still carries the weight and menace of the man who wore it into the Jedi Temple itself.\n\nUPGRADE SLOTS:\n- Armor Underlay (heavy)\n- Armor Overlay (heavy)\n- Armor Tech</description>
     <graphicData>
       <texPath>SWApparel/CharacterOutfits/Immortalus_SithLords/Malgus/Malgus</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -1200,7 +1200,7 @@
   <ThingDef ParentName="guy762_HeadbandBase">
     <defName>guy762_MalgusMask</defName>
     <label>Darth Malgus' breath mask</label>
-    <description>.</description>
+    <description>A rebreather mask built into Darth Malgus' armor, filtering the air around a face few ever saw whole.</description>
     <graphicData>
       <texPath>SWApparel/CharacterOutfits/Immortalus_SithLords/Malgus/Mask/MalgusM_south</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -1273,7 +1273,7 @@
   <ThingDef ParentName="guy762_HeadbandBase">
     <defName>guy762_MalgusHood</defName>
     <label>Darth Malgus' masked hood</label>
-    <description>.</description>
+    <description>The hood that completed Darth Malgus' silhouette, concealing the scarring beneath.</description>
     <graphicData>
       <texPath>SWApparel/CharacterOutfits/Immortalus_SithLords/Malgus/Hood/MalgusHM_south</texPath>
       <graphicClass>Graphic_Single</graphicClass>

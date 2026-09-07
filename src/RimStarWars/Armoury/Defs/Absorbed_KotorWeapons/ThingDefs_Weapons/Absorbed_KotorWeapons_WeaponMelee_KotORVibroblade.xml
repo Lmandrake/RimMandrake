@@ -660,7 +660,6 @@
     <statBases>
       <MarketValue>7000</MarketValue>
       <Mass>4</Mass>
-      <MeleeHitChance>1.2</MeleeHitChance>
     </statBases>
     <equippedStatOffsets>
       <MeleeHitChance>0.2</MeleeHitChance>

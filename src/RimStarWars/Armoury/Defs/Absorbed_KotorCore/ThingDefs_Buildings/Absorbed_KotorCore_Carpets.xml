@@ -72,8 +72,8 @@
 
   <ThingDef ParentName="CarpetBased">
     <defName>GS_Carpet_Star</defName>
-    <label>large carpet</label>
-    <description>a big carpet</description>
+    <label>star carpet</label>
+    <description>a large carpet woven with a radiant star pattern</description>
     <graphicData>
       <texPath>Furniture/Sovereign_ImperialDecor/Carpet/CarpetStar</texPath>
     </graphicData>
@@ -81,8 +81,8 @@
 
   <ThingDef ParentName="CarpetBased">
     <defName>GS_Carpet_cult</defName>
-    <label>large carpet</label>
-    <description>a big carpet</description>
+    <label>cult carpet</label>
+    <description>a large carpet bearing an old cult's sigil</description>
     <graphicData>
       <texPath>Furniture/Sovereign_ImperialDecor/Carpet/CarpetCult</texPath>
     </graphicData>
@@ -90,8 +90,8 @@
 
   <ThingDef ParentName="CarpetBased">
     <defName>GS_Carpet_forge</defName>
-    <label>large carpet</label>
-    <description>a big carpet</description>
+    <label>forge carpet</label>
+    <description>a large carpet patterned after forge-guild ironwork</description>
     <graphicData>
       <texPath>Furniture/Sovereign_ImperialDecor/Carpet/CarpetForge</texPath>
     </graphicData>

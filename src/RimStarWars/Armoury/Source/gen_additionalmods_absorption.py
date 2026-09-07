@@ -37,6 +37,9 @@ import shutil
 import sys
 import xml.etree.ElementTree as ET
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from absorption_content_fixes import apply_content_fixes  # noqa: E402
+
 
 def _find_repo_root(start):
     d = os.path.abspath(start)
@@ -233,6 +236,10 @@ def process_pack(label, workshop_id, expected_pkg, subfolders):
                 elements = list(root)
                 if not elements:
                     continue
+
+                if not is_patch:
+                    for e in elements:
+                        apply_content_fixes(e, note=R.note)
 
                 out_root = PATCHES_ROOT if is_patch else DEFS_ROOT
                 out_dir = os.path.join(out_root, OUT_SUBDIR, label, dest_label)

@@ -70,6 +70,9 @@ import shutil
 import sys
 import xml.etree.ElementTree as ET
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from absorption_content_fixes import apply_content_fixes  # noqa: E402
+
 
 def _find_repo_root(start):
     d = os.path.abspath(start)
@@ -431,6 +434,8 @@ def main():
 
             dn_el = el.find("defName")
             dn = dn_el.text.strip() if dn_el is not None and dn_el.text else None
+
+            apply_content_fixes(el, note=R.note)
 
             blocked_ns = matched_blocked_namespace(el)
             if blocked_ns:

@@ -15,7 +15,7 @@
   <ThingDef ParentName="guy762_HatModdableBase">
     <defName>guy762_VisasHood</defName>
     <label>Visas' hood</label>
-    <description>https://steamcommunity.com/sharedfiles/filedetails/?id=3378970100</description>
+    <description>A hood cut for a blind seer who reads a room by touch and instinct rather than sight.</description>
     <graphicData>
       <texPath>SWApparel/CharacterOutfits/Visas/hood</texPath>
       <graphicClass>Graphic_Single</graphicClass>
@@ -124,7 +124,7 @@
   <ThingDef ParentName="KotORArmorModdable_soft">
     <defName>guy762_VisasRobes</defName>
     <label>Visas' robes</label>
-    <description>.\n\nUPGRADE SLOTS:\n- Armor Underlay (robe)</description>
+    <description>Plain robes worn by a wanderer who trusts her other senses more than her eyes.\n\nUPGRADE SLOTS:\n- Armor Underlay (robe)</description>
     <graphicData>
       <texPath>SWApparel/CharacterOutfits/Visas/Apparel</texPath>
       <graphicClass>Graphic_Single</graphicClass>
