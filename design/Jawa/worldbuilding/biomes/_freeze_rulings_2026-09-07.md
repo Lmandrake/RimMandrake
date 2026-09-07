@@ -731,3 +731,39 @@ worldmap write session.** Settlement placement is a looking-and-judging pass
 deserving the map in front of the owner, and it depends on [R10] (the Greentide
 capital, Sporefall as second city) and [R7]/[R14] (no permanent settlement in the
 Pyrelands) — rulings the sheets have not absorbed until the Wednesday sitting.
+
+---
+
+## R35 — R01 DRAINS THE SPINE'S OUTER FLANK
+
+**Ruled:** R01 (**The Long Green**, 102 tiles — the planet's largest river) drains
+the **OUTER face of the Scald Spine**: the same ring of mountains, the same rain,
+the slope that faces away from the crater. It is the Scald's water without being
+the Scald's outflow.
+
+- ✅ **[R1] holds with no map surgery and no exception.** No links are added.
+- 🔑 It also explains why R01 is the biggest: it takes the whole outer catchment.
+- ⭐ **The Scald Spine is the planet's true water engine** — the crater and the
+  outer flank are two faces of one mountain ring. "Nourish the world" is about
+  the Spine as much as the Scald.
+
+**Amends:** `the_scald.md` and `the_one_map.md` — name the Spine as the
+catchment; the outer flank is R01's source.
+
+---
+
+## R36 — SAFETY STANDARD FOR WRITING TO THE FROZEN WORLD
+
+**Ruled, and it is the bar for calling ANY of this done:**
+
+1. **Back up the savegame first.**
+2. **Apply in batches**, never one giant write.
+3. **After each batch, read back with a GETTER** — `world_tile_get`,
+   `world_links_get`, `world_mutators_get`. ⛔ **Never trust the write's return
+   value.**
+4. **Re-export the tiles CSV and DIFF it against the committed one** — confirming
+   not only that the intended tiles changed, but that **nothing else did.**
+
+🔑 **Step 4 is the one that catches the failure a per-def check cannot see:** a
+scoped check reads 100% while other work is silently destroyed. Diff the LOSSES,
+not just the gains.
