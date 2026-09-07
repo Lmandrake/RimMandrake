@@ -8013,6 +8013,12 @@
     "hash": "7c2886d3753aec718f54b9632d814d4e1de593aa64c9fd905d47d56d11df4771",
     "sha": "e67f2cc0"
   },
+  "src/RimUtinni/StructureInjectionsRUT/Defs/TileMutatorDefs_Batch4.xml": {
+    "cleanCount": 1,
+    "date": "2026-09-07",
+    "hash": "e720ebbbf7762d83cb61906b44ed29bcff4a74601028da1601190333e7e5409d",
+    "sha": "803338da"
+  },
   "src/RimUtinni/StructureInjectionsRUT/Defs/TileMutatorDefs_Batch5.xml": {
     "cleanCount": 1,
     "date": "2026-09-06",
