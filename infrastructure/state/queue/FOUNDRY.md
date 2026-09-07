@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T06:15:46Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-07T06:25:30Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -378,6 +378,15 @@ kind:     task
 summary:  - Site (MEASURED, ruled): the Damp chain — 32 ABRockyCrags tiles straddling arc 90,
 prose:    infrastructure/state/items/LIGHTFALL_CHASM_AUTHORING_1.md
 
+## UNUSED_MUTATORS_WORLD_ASSIGNMENT_1 Put the unused tile mutators and Geological Landforms landforms on the frozen world — 88 of ~380 in use, zero GL_* (owner 2026-09-06)
+state:    doing
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+summary:  1. Exact census (offline, haiku-tier): every TileMutatorDef on the full list
+prose:    infrastructure/state/items/UNUSED_MUTATORS_WORLD_ASSIGNMENT_1.md
+
 ## MACRO_GENERATOR_V0_1 Macro generator v0: ONE idea per map — chooser + plan + terrain grid, graded on a comparator sheet by the owner (research doc §9.3 step 4)
 state:    doing
 row:      unassigned
@@ -578,16 +587,6 @@ kind:     task
 thin:     no ## criteria
 summary:  - MEASURED candidate bands (non-green, dayside arc < 75):
 prose:    infrastructure/state/items/CONTAGION_BIOME_PLACEMENT_1.md
-
-## UNUSED_MUTATORS_WORLD_ASSIGNMENT_1 Put the unused tile mutators and Geological Landforms landforms on the frozen world — 88 of ~380 in use, zero GL_* (owner 2026-09-06)
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  1. Exact census (offline, haiku-tier): every TileMutatorDef on the full list
-prose:    infrastructure/state/items/UNUSED_MUTATORS_WORLD_ASSIGNMENT_1.md
 
 ## CORPUS_STATS_VANILLA_CONTROLS_1 Vanilla control maps for corpus_stats.py (≥10 at matched sizes) + corpus-vs-controls section; fix or drop the degenerate chokepoint proxy
 state:    proposed
