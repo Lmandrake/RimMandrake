@@ -670,3 +670,64 @@ before the assignment pass.
 ⚠️ **Compounds:** the 53 tiles going to `Desert` land on top of the already-open
 `WORLDMAP_DESERT_BAND_REPAIR_1` climate-outlier defect. Repair before painting,
 or the outliers grow.
+
+---
+
+## R31 — ALL FIVE SCALD RIVERS FLOW OUT. ELEVATION IS NOT AN ARGUMENT
+
+**Ruled.** Owner, 2026-09-07, correcting BENCH a second time on the same point:
+*"Remember: the fact the scald is low is an artifact of the limitation of
+Rimworld, NOT the world itself. So please have the rivers flow as we're saying,
+and then simply adapt the map the best Rimworld can handle, ok?"*
+
+- **R02, R03, R05, R06, R12 all become OUTFLOW** from the Scald.
+- ⛔ **Do not argue from `elev_m` against a lore direction.** The −350 m floor and
+  every upstream height are consequences of [R1]'s rendering constraint. "R12
+  would have to climb 1587 m" is not an objection; it is the artifact talking.
+- The ring-mountain **inflow is not currently drawn as rivers**, and does not
+  need to be — the Scald Spine sheds into the crater whether or not the engine
+  draws a link.
+- 🔑 **Method: author the lore truth, then adapt the map to whatever RimWorld can
+  hold.** Not the reverse.
+
+⚠️ **BENCH note against repetition:** this is the second time an elevation
+reading was allowed to argue against [R1] in one day. The rule is written at
+[R1] and again here; a third occurrence is a process failure, not an oversight.
+
+---
+
+## R32 — PROVE `riverDist` FIRST, AND EXPECT A SAVE→RELOAD
+
+**Ruled: session order is prove-then-work.** Before any bulk edit, read
+`riverDist` live with `jawa/world_links_get`, then clear and re-lay ONE short
+river (**R06**, 10 tiles) with `jawa/world_links_clear` + `jawa/world_links_set`
+and read it back.
+
+Why it is first: `OverlayRiver` sets `riverDist = Max(existing, previous + 1)`,
+so the value **never decreases**. If `world_links_clear` does not reset it, a
+clear-and-relay reports success and silently keeps the old direction — the
+classic bridge silent failure.
+
+⚠️ **Owner, 2026-09-07:** *"you may need to Save→Reload the game file in order to
+see changes (very common in Rimworld)."* **A read-back that still shows the old
+value is therefore NOT proof of failure until a save/reload has been tried.**
+Budget the reload into the test rather than concluding from the first read.
+
+---
+
+## R33 — RIVER NAMES: BENCH DRAFTS, THE OWNER EDITS
+
+**Ruled:** BENCH drafts all 16 names from the vocabulary the biome sheets and
+world regions already use; the owner accepts, edits or rejects line by line.
+Working IDs R01–R16 retire the moment the list is ruled.
+
+---
+
+## R34 — SETTLEMENT REJIGGER: RELEASED, BUT ITS OWN SESSION
+
+**Ruled:** `SETTLEMENT_REJIGGER_ROUND2_1` moves off `needs: owner` (now
+`needs: bridge`) so it stops being invisible, but it is **not folded into the
+worldmap write session.** Settlement placement is a looking-and-judging pass
+deserving the map in front of the owner, and it depends on [R10] (the Greentide
+capital, Sporefall as second city) and [R7]/[R14] (no permanent settlement in the
+Pyrelands) — rulings the sheets have not absorbed until the Wednesday sitting.
