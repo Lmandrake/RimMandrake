@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T02:58:17Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: free
+as-of: 2026-09-07T03:14:41Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -449,15 +449,6 @@ target:   v1
 kind:     bug
 summary:  - Diff one small case (LandformValley.xml: 3 objects vs 2 emitted) — find which <Object refID the parser drop…
 prose:    infrastructure/state/items/GL_EMITTER_OBJECT_GAP_1.md
-
-## BUILD_PY_TOOLNAME_SCAN_FALSE_LOSS_1 build.py tool-removal guard byte-scans the DLL and reported a fictitious lost tool (jawa/pawn_); compare against source [Tool] declarations
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  - Replace the byte-scan with a metadata read: the Tool attribute's first constructor argument lives in the cu…
-prose:    infrastructure/state/items/BUILD_PY_TOOLNAME_SCAN_FALSE_LOSS_1.md
 
 # BLOCKED — something is WRONG and someone must act
 

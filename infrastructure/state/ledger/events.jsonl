@@ -5383,3 +5383,5 @@
 {"seat":"FOUNDRY","event":"start","id":"GL_EMITTER_OBJECT_GAP_1","ts":"2026-09-07T02:58:16Z"}
 {"seat":"FOUNDRY","event":"claim","id":"BUILD_PY_TOOLNAME_SCAN_FALSE_LOSS_1","ts":"2026-09-07T02:58:17Z"}
 {"seat":"FOUNDRY","event":"start","id":"BUILD_PY_TOOLNAME_SCAN_FALSE_LOSS_1","ts":"2026-09-07T02:58:17Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"FORSAKEN_CRAGS_PREDATORS_BUILD_1 verify","ts":"2026-09-07T03:05:55Z"}
+{"seat":"FOUNDRY","event":"close","id":"BUILD_PY_TOOLNAME_SCAN_FALSE_LOSS_1","sha":"3a8978bfd71cf4c7046fbe0418a63db2a8389b26","ts":"2026-09-07T03:14:41Z"}
