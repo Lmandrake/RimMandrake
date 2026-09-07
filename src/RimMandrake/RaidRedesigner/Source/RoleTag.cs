@@ -10,7 +10,10 @@ namespace RimMandrake.RaidRedesigner
         FledRaider,        // Pawn.ExitMap postfix: a hostile-faction pawn survived and left the map
         Captain,           // same seam, plus Faction.leader == pawn (or our own captain flag)
         EscapedPrisoner,   // GuestUtility.Notify_PrisonerEscaped postfix
-        Released,          // Pawn_GuestTracker.SetGuestStatus(..., GuestStatus.Released) postfix
+        Released,          // GenGuest.PrisonerRelease postfix (see Patch_PrisonerReleasedOrNamedHunter.cs's
+                           // own header: the doc's literal SetGuestStatus(null) citation only fires when
+                           // the released pawn stays on OUR map, never for a released foreign prisoner -
+                           // GuestStatus has no "Released" member at all; p.guest.Released is a bool)
         BetrayedTrader,    // mandrake.rm.property's PropertyEngine.Fire postfix: an unauthorized
                            // Take/Strip against a non-player-faction pawn's claim
         Kidnapper,         // the pawn who performed a successful kidnap of one of ours
