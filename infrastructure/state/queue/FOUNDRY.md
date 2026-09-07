@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T06:25:30Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-07T06:39:49Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -432,6 +432,15 @@ kind:     task
 summary:  MAPGENPAINTERV11 — make the offline terrain painter draw like a landscape, not a diagram
 prose:    infrastructure/state/items/MAPGEN_PAINTER_V1_1.md
 
+## LIQUID_BIOMES_MAP_1 Four liquid biomes on the frozen world: boiling ocean, two brine seas, and the propane lake as worldmap tiles under Umbra (render before painting)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  - Reconcile with terminatorsea.md ("the three seas"): which existing sea defs are the
+prose:    infrastructure/state/items/LIQUID_BIOMES_MAP_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -578,16 +587,6 @@ _none._
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
 
-## CONTAGION_BIOME_PLACEMENT_1 Move the Contagion (AB_OcularForest) to the peaks above the green: Scald Spine's 38 non-green highs + optional Ashfall/Dew Horn tops — NO green squares; render for owner before painting
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  - MEASURED candidate bands (non-green, dayside arc < 75):
-prose:    infrastructure/state/items/CONTAGION_BIOME_PLACEMENT_1.md
-
 ## CORPUS_STATS_VANILLA_CONTROLS_1 Vanilla control maps for corpus_stats.py (≥10 at matched sizes) + corpus-vs-controls section; fix or drop the degenerate chokepoint proxy
 state:    proposed
 row:      unassigned
@@ -607,16 +606,6 @@ kind:     task
 thin:     no ## criteria
 summary:  Each round:
 prose:    infrastructure/state/items/MAPGEN_CONVERGENCE_LOOP_1.md
-
-## LIQUID_BIOMES_MAP_1 Four liquid biomes on the frozen world: boiling ocean, two brine seas, and the propane lake as worldmap tiles under Umbra (render before painting)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  - Reconcile with terminatorsea.md ("the three seas"): which existing sea defs are the
-prose:    infrastructure/state/items/LIQUID_BIOMES_MAP_1.md
 
 ## VEHICLE_FUEL_PATCH_UNFILTERED_1 DesertVehicleReskin fuel patch widens fuel for EVERY Vehicle Framework vehicle (VVE trucks on potatoes); About.xml says draught only — owner ruling: intended or filter (Opus review 2026-09-06)
 state:    proposed
