@@ -394,7 +394,11 @@ namespace JawaBench.BridgeTools
                 "returned ops string straight back to jawa/set_terrain_batch to restore it " +
                 "exactly. rects format: 'x,z,w,h' separated by ';' (a leading 'Name:' is " +
                 "accepted and ignored, so a set_terrain_batch payload can be replayed as a " +
-                "read).",
+                "read). CORPUS_STATS_VANILLA_CONTROLS_1: defaults to Find.CurrentMap, same " +
+                "as always, but 'mapId' (Map.uniqueID, the stable id jawa/world_tile_map_generate " +
+                "returns) reads any OTHER loaded map -- there was previously no way to read " +
+                "terrain off a map generated at a different tile without first switching " +
+                "Find.CurrentMap to it, which no tool exposes either.",
             ResultDescription =
                 "Returns ops (run-length encoded, one run per contiguous same-terrain span " +
                 "in a row), cellsRead, and the distinct terrains found. The ops string is " +
@@ -410,7 +414,10 @@ namespace JawaBench.BridgeTools
                 "'foundation' is the third grid (1.6 Odyssey) where gravship Substructure " +
                 "lives; buildings with terrainAffordanceNeeded=Substructure need it.",
                 DefaultValue = "top")]
-            string layer = "top")
+            string layer = "top",
+            [ToolParameter(Description = "Map.uniqueID of a loaded map to read instead of " +
+                "Find.CurrentMap. -1 (default) keeps the old current-map behaviour.")]
+            int mapId = -1)
         {
             if (string.IsNullOrWhiteSpace(rects))
                 return Fail("rects is required, e.g. '10,20,3,4;14,20,2,2'.");
@@ -436,9 +443,13 @@ namespace JawaBench.BridgeTools
 
             return await ctx.MainThread.InvokeAsync<object>(() =>
             {
-                var map = Find.CurrentMap;
+                var map = mapId < 0 ? Find.CurrentMap
+                    : Find.Maps.FirstOrDefault(m => m.uniqueID == mapId);
                 if (map == null)
-                    return Fail("No current map. Load a game first.");
+                    return Fail(mapId < 0
+                        ? "No current map. Load a game first."
+                        : $"No loaded map with uniqueID {mapId}. Find.Maps has " +
+                          $"{Find.Maps.Count} map(s): [{string.Join(", ", Find.Maps.Select(m => m.uniqueID))}].");
 
                 var grid = map.terrainGrid;
                 var size = map.Size;
@@ -493,6 +504,7 @@ namespace JawaBench.BridgeTools
                     cellsNullTerrain = nullTerrain,
                     distinctTerrains = distinct.OrderBy(n => n).ToList(),
                     mapSize = new { x = size.x, z = size.z },
+                    mapId = map.uniqueID,
                     ticksGame = TicksGameSafe()
                 };
             }, cancellationToken).ConfigureAwait(false);
