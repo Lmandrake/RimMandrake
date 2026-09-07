@@ -42,3 +42,6 @@ rest were already covered where they belonged.*
 - A cross-mod duplicate defName logs NOTHING: `DefDatabase.AddAllInMods` Remove()s then Add()s, so the "Adding duplicate" Log.Error is unreachable for that case; the dump's package_id per defName is the only evidence of who won.
 - The 2026-09-05 def-dump capture has no `duplicateDefName`/`duplicateOwners` fields — `measure find` returns MEASURED 0. Do not cite that instrument in an item spec without checking it exists.
 - A gate scoped to "everything ever" is a gate nobody reads: handoff.py's first draft named 47 stale items and had to be scoped to the window (`selftest_handoff.py` records it).
+- 2026-09-06 BENCH: a donor BiomeDef with `isCavern true` (Biomes! Caverns) is an UNDERGROUND layer — check the def's own fields before writing a sheet for it; two such defs wore ~1,000 surface tiles on the frozen world.
+- 2026-09-06 BENCH: read a savegame's `<modIds>` header before comparing it to another save — a 25-mod quicktest autosave was mislabeled "the campaign" by a census agent and produced a false "donors retired" verdict.
+- 2026-09-06 BENCH: `xargs` breaks on workshop paths with spaces ("Program Files (x86)") and the grep chain silently finds nothing — use python glob for donor-mod scans.

@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-06T23:58:04Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-07T00:01:25Z (the last event's own timestamp, not the render clock)
+game:  DOWN   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -49,15 +49,6 @@ target:   v1
 kind:     build
 summary:  design/Jawa/researchtreetaxonomy.md section 3 defines the manifest schema
 prose:    infrastructure/state/items/RESEARCH_MANIFEST_DRAFT_1.md
-
-## WEAPONS_DONOR_RETIREMENT_1 Retire the 6 weapon donor packs now that mandrake.rsw.armoury absorbed their content
-state:    ready
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     build
-summary:  Retire the 6 weapon donor packs — 1 of 6 broke the owner's live game, reverted
-prose:    infrastructure/state/items/WEAPONS_DONOR_RETIREMENT_1.md
 
 ## PROPERTY_FABRIC_BUILD_1 Build RM_Property: the ownership/provenance/perception fabric mod - colony side first
 state:    ready
@@ -476,7 +467,17 @@ prose:    infrastructure/state/items/ASSAILANT_DUNGEON_BUILD_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
-_none._
+🔑 These are ready and unblocked; their `needs` is simply not satisfiable while the game is DOWN. ⚠️ A `bridge` row does NOT reopen on its own — it reopens when the seat holding the bridge releases it.
+
+## WEAPONS_DONOR_RETIREMENT_1 Retire the 6 weapon donor packs now that mandrake.rsw.armoury absorbed their content
+state:    ready
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     build
+waiting:  needs `game-up`, game is DOWN
+summary:  Retire the 6 weapon donor packs — 1 of 6 broke the owner's live game, reverted
+prose:    infrastructure/state/items/WEAPONS_DONOR_RETIREMENT_1.md
 
 # NOT THIS TARGET
 
