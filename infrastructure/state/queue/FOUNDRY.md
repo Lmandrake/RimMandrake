@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T08:42:09Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-07T08:44:14Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -441,6 +441,15 @@ kind:     task
 summary:  MAPGENPAINTERV11 — make the offline terrain painter draw like a landscape, not a diagram
 prose:    infrastructure/state/items/MAPGEN_PAINTER_V1_1.md
 
+## DROID_FDE_KINDS_REPOINT_1 Repoint the 4 Jawa_Droid_* FDE kinds and FDE droid backstories onto Droidworks races (fix the generator)
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  (no items/DROID_FDE_KINDS_REPOINT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROID_FDE_KINDS_REPOINT_1.md
+
 ## DROID_FDE_GOODWILL_CAP_1 Free Droid Enclaves goodwill cap via GoodwillSituationDef (spec: restraining_bolt_technical.md)
 state:    doing
 row:      unassigned
@@ -573,6 +582,16 @@ kind:     task
 blocked:  dependency satisfied, CODEX_HOME piece done as a side effect; N-worker queue + grumpiness detector unbuilt, needs owner ruling on queue-vs-no-queue per today's Opus review
 summary:  - Architecture A from the design: a request-queue directory driven by N parallel one-shot
 prose:    infrastructure/state/items/CODEX_PARALLEL_WORKERS_1.md
+
+## DROID_FDE_KINDS_REPOINT_1 Repoint the 4 Jawa_Droid_* FDE kinds and FDE droid backstories onto Droidworks races (fix the generator)
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  premature: verified zero concrete Droidworks races exist to repoint onto. Races_Base.xml's DW_Race_Base and every family in Races_Families.xml (Astromech/Battle/Heavy/Labour/Power) are all Abstract=True scaffolding, no instantiable derived race anywhere in src/RimStarWars/Droidworks/. The 4 Jawa_Droid_* PawnKindDefs (JawaFactionRoster.xml) currently set race=OuterRim_ImperialLaborDroid etc. (Depot's own races) under MayRequire=Neronix17.OuterRim.DroidDepot -- there is nothing else to point them at yet. Needs a concrete Droidworks race landing first (DROIDWORKS_PRIMITIVE_TIER_1 or DROIDWORKS_FORMAT_TIERS_1 look like the likely source, neither closed).
+summary:  (no items/DROID_FDE_KINDS_REPOINT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DROID_FDE_KINDS_REPOINT_1.md
 
 # WAITING ON A WINDOW — nothing is wrong
 
@@ -775,16 +794,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DROID_FACTION_LOADOUTS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DROID_FACTION_LOADOUTS_1.md
-
-## DROID_FDE_KINDS_REPOINT_1 Repoint the 4 Jawa_Droid_* FDE kinds and FDE droid backstories onto Droidworks races (fix the generator)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DROID_FDE_KINDS_REPOINT_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DROID_FDE_KINDS_REPOINT_1.md
 
 ## DROID_PROTOCOL_TRADE_ADVANTAGE_1 Protocol droid in the trade party shifts prices both ways; none on your side is a penalty
 state:    proposed
