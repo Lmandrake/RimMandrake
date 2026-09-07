@@ -376,3 +376,62 @@ error, though the stronger support is `deep_desert.md` §4.
 **Supports [R11]:** the warden migration is an instance of the same principle.
 **Doctrine for reviewers:** before filing "this animal appears in two biomes",
 check whether it can travel. If it can, there is no finding.
+
+---
+
+## R18 — RIVERS: THE LORE LEDGER FIRST, THE REPAINT AFTER
+
+**Ruled:** both, in order.
+
+1. **Author the lore river ledger now** — every river named, `source → course →
+   fate`, built on [R1] (the Scald's outflow makes the rivers that nourish the
+   world). This unblocks the assignment pass and the four sheets whose
+   arithmetic depends on where water goes.
+2. **Queue the repaint as a separate, verified build item** — once the ledger
+   says exactly which rivers change direction on the painted map, redirect them
+   from a finished spec rather than improvising on a frozen planet.
+
+⚠️ **Until step 2 lands, the painted map and the lore disagree on river
+direction at the Scald.** That is expected and is recorded here so a future
+reviewer does not re-file it as a contradiction.
+
+---
+
+## R19 — ARC 40–50: MEASURE BEFORE RULING
+
+**Ruled: do not rule the coverage gap blind.** `dune_sea.md` owns θ 0–40 and
+`deep_desert.md` owns arc 50–69; read the world data for what biome defs
+actually occupy arc 40–50 and how many tiles are involved, then rule with the
+number in hand. The band may already be painted as one of the two, which decides
+it for free.
+
+---
+
+## R20 — THE BLIZZARISK IS CUT FROM THE GAME
+
+**Ruled, and this resolves the hyperweave violation by removal.** Owner,
+2026-09-07: *"The blizzarisk is from the donor, not our canon. Remove it from
+the game, it makes no sense here. Resolved."*
+
+- ⛔ Not a rename, not a reclassification — a **cut**. It is a donor creature
+  that was never ours.
+- The Shokkweave sole-source ruling is therefore **unviolated**; nothing amends
+  it.
+
+**Amends:** `the_propane_lakes.md` §4/§7 — strike the Blizzarisk, its hyperweave
+webs and 'hyperweave silk' from the exports. The Propane Lakes' value is the
+propane (a late-game prize per [R5]); it has no luxury fibre harvest.
+**Action owed:** a Cherry Picker cut of the donor def, not merely a prose
+deletion — the sheet going quiet does not remove the animal from play.
+
+---
+
+## R21 — THE WEEPING STONES DO NOT GET RAIN
+
+**Ruled:** `weeping_stones.md` §10b's "rare gentle rain" is a slip and is
+**struck**. The Weeping Stones live on **condensate**, exactly as its own §6
+says. Minimum surface area; the rain law is not rewritten.
+
+**Amends:** `weeping_stones.md` §10b (strike), and **R-H4 — write in the
+BlackRain carve-out that was ruled but never recorded in the rule.** R-H1 and
+the rest of the rain law stand as written.
