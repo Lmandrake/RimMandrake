@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T00:05:41Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-07T00:26:59Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## GRAFFITI_FRAMEWORK_BUILD_1 Build mandrake.rm.graffiti (SUPERSEDES Mlie.GraffitiMod - absorb spree, retire from modlist, VERIFY license before asset reuse) + mandrake.rut.marks: five families, taunt funnel in v1, faint-scrawl cant
-state:    ready
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  design/Jawa/graffitispec.md — full design, all four owner rulings made
-prose:    infrastructure/state/items/GRAFFITI_FRAMEWORK_BUILD_1.md
 
 ## NINEFOLD_ENGINE_M0_1 Build RimMandrake Ninefold M0: GodStates satiation ledger + five easiest event hooks + first-contact chains + signed corpus letters (provisional voice approval; owner redlines live text). Felt-only diegesis ruled - no panels ever
 state:    ready
@@ -179,6 +170,15 @@ target:   v1
 kind:     task
 summary:  design/NAMINGSCHEMEPLAN.md §5 Phase 3: "JawaPatches triage; extract
 prose:    infrastructure/state/items/JAWA_PATCHES_SPLIT_1.md
+
+## GRAFFITI_FRAMEWORK_BUILD_1 Build mandrake.rm.graffiti (SUPERSEDES Mlie.GraffitiMod - absorb spree, retire from modlist, VERIFY license before asset reuse) + mandrake.rut.marks: five families, taunt funnel in v1, faint-scrawl cant
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  design/Jawa/graffitispec.md — full design, all four owner rulings made
+prose:    infrastructure/state/items/GRAFFITI_FRAMEWORK_BUILD_1.md
 
 ## DISTRICT_TEMPLATE_LIBRARY_1 Authored Lua district template library + composition through rimplace - Junkers set first
 state:    doing

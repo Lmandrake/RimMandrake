@@ -5320,3 +5320,10 @@
 {"seat":"FOUNDRY","event":"close","id":"MODSET_BUILDER_RESTORE_STALE_1","sha":"abc1e7cd","ts":"2026-09-07T00:05:40Z"}
 {"seat":"FOUNDRY","event":"close","id":"RIMMANDRAKE_PITS_BUILD_1","sha":"abc1e7cd","ts":"2026-09-07T00:05:41Z"}
 {"seat":"BENCH","event":"seat","state":"ready","ts":"2026-09-07T00:05:53Z"}
+{"seat":"FOUNDRY","event":"claim","id":"GRAFFITI_FRAMEWORK_BUILD_1","ts":"2026-09-07T00:06:13Z"}
+{"seat":"FOUNDRY","event":"start","id":"GRAFFITI_FRAMEWORK_BUILD_1","ts":"2026-09-07T00:06:14Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"GRAFFITI_FRAMEWORK_BUILD_1: prove assembly deploy + vandal spree load clean on graffiti tier","ts":"2026-09-07T00:08:48Z"}
+{"seat":"FOUNDRY","event":"game","state":"UP","measured":true,"evidence":"RimWorldWin64 running, bridge answers","ts":"2026-09-07T00:09:09Z"}
+{"seat":"OWNER","event":"file","id":"VAPOR_EMITTER_PLACEMENT_1","title":"Worldmap review: ALL vapor/smoke/gas emitters — inventory every vent/geyser/smoker type, rule placement per type; steam geysers radially decay from mountains/vulcanism, zero before the terminator","kind":"task","target":"v1","for":"BENCH","ownerSaid":"The closer the players get to any mountain ranges or overt vulcanism, the more frequently they encounter steam geysers. They are NOT uniformly distributed around the planet. They should radially decay away from mountains until they stop completely before you get to the terminator. We also need to think about the different other vent types out there and where they go... that's a whole review for the worldmap, make a ticket for all vapor/smoke/gas emitters on the map","ts":"2026-09-07T00:20:23Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"released","ts":"2026-09-07T00:25:16Z"}
+{"seat":"FOUNDRY","event":"game","state":"DOWN","measured":true,"evidence":"tasklist.exe lists no RimWorldWin64","ts":"2026-09-07T00:26:59Z"}
