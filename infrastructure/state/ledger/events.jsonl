@@ -5400,3 +5400,5 @@
 {"seat":"FOUNDRY","event":"start","id":"KOTORCORE_ABSORPTION_MISSING_TEXTURES_1","ts":"2026-09-07T03:27:54Z"}
 {"seat":"FOUNDRY","event":"claim","id":"STRUCTUREINJ_RUT_TEMPLATE_DEFECTS_1","ts":"2026-09-07T03:27:55Z"}
 {"seat":"FOUNDRY","event":"start","id":"STRUCTUREINJ_RUT_TEMPLATE_DEFECTS_1","ts":"2026-09-07T03:27:55Z"}
+{"seat":"FOUNDRY","event":"bridge","state":"taken","purpose":"DROID_KOTORDROIDS_PORT_WAVE1_1 live verify","ts":"2026-09-07T03:32:11Z"}
+{"seat":"FOUNDRY","event":"close","id":"STRUCTUREINJ_RUT_TEMPLATE_DEFECTS_1","sha":"8ab4d5a68c333a70f3b9cad04f6342dbb539ce70","ts":"2026-09-07T03:35:26Z"}
