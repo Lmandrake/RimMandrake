@@ -162,3 +162,22 @@ reference, so extracting it cleanly is a separate ~30-60 min increment
 (add references or pull the curve into a dependency-free helper). Everything
 else remaining is live-quicktest-gated (per the note above) or blocked on
 unbuilt Ninefold infrastructure — not boundable offline work this pass.
+
+## FOUNDRY, 2026-09-06: re-checked — nothing new to build offline, still live-gated
+
+Re-verified rather than re-doing: `code_review_status.py check` on all four
+Visibility source files (`ColonyVisibilityRaidPatch.cs`,
+`GameComponent_ColonyVisibility.cs`, `VisibilityModInit.cs`,
+`SelfTest/Program.cs`) — all four CLEAN. The
+`VisibilityToThreatCurve`-not-selftested gap noted 2026-09-02 is closed: the
+curve now lives on `GameComponent_ColonyVisibility` (no HarmonyLib
+dependency), selftestable, per that file's own header comment.
+`deploy_custom_mods.py --mod Visibility` (dry run): already in sync, 2
+files — no redeploy owed.
+
+Everything genuinely left is gated on a live game session (the threat-point
+Prefix and tile-memory round trip have never been observed firing) or on
+Ninefold's still-unbuilt Sh'kaar-meter/corpus-letter infrastructure (same
+block as `NINEFOLD_ENGINE_M0_1`). Not triggering a solo restart for this one item — batching game-up work
+across the queue first. Blocking rather than leaving `doing` so the next
+pass can tell at a glance this isn't mid-edit.
