@@ -28,7 +28,10 @@ and nowhere else; never restate a model choice outside it.
 
 - **The game reads `C:\Program Files (x86)\Steam\steamapps\common\RimWorld\Mods`,
   never this repo.** Writing a file is not deploying it.
-- **A cold load is ~25 minutes; a quicktest map is ~90 s.** Never "restart and see".
+- **A cold load is ~15 minutes on the full list; a quicktest map is ~90 s.** Never
+  "restart and see". *(MEASURED 2026-09-07: launch 15:12 → `Bridge token:` 15:27 on
+  **599** active mods. Supersedes the long-standing ~25 min figure. Caveat: that was
+  the second launch of a session, so a first launch after a reboot may run slower.)*
 - **`ModsConfig.xml` is the live mod list**, at
   `C:\Users\Mandrake\AppData\LocalLow\Ludeon Studios\RimWorld by Ludeon Studios\Config\ModsConfig.xml`.
   Read it for the active count, never a number written in a doc.
