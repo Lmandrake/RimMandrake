@@ -936,10 +936,10 @@
     "sha": "7b9f17a9"
   },
   "src/RimMandrake/Inhabited/Source/DebugActions_Inhabited.cs": {
-    "cleanCount": 2,
-    "date": "2026-09-05",
-    "hash": "f674f4fa6751880534b9cd4943ca20281a9568a5804192d5645d8c8204bf3367",
-    "sha": "861e65fa"
+    "cleanCount": 3,
+    "date": "2026-09-06",
+    "hash": "449373effd81cabebda302bfa9bde742031bc28c2bd71dd4845aaabd37604900",
+    "sha": "572413c0"
   },
   "src/RimMandrake/Inhabited/Source/DisplacedPool.cs": {
     "cleanCount": 1,
@@ -1242,10 +1242,10 @@
     "sha": "564bd122"
   },
   "src/RimMandrake/Ninefold/Source/Patch_GravshipLaunched.cs": {
-    "cleanCount": 1,
+    "cleanCount": 2,
     "date": "2026-09-06",
-    "hash": "779bf062a71eaa919cc36cfd581d247929523315bb8c26694170fcc4fd86fb3f",
-    "sha": "87331ff7"
+    "hash": "40424ef387773128f13d331087216ddb71399787bcf63b31a82be31130f96fd9",
+    "sha": "572413c0"
   },
   "src/RimMandrake/Ninefold/Source/Patch_KillManner.cs": {
     "cleanCount": 1,
@@ -1949,6 +1949,12 @@
     "hash": "30f55ad7716a43fbe62c42c8f5c699c8c3966a1054a81cf4fb65d0fa45921e3e",
     "sha": "629956d2"
   },
+  "src/RimMandrake/TheftHauler/Source/DebugActions_TheftHauler.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "4138b7cd17f5f75fe5a1f09840b31e35ca8c7a4846927d72abaeb0b709aef624",
+    "sha": "572413c0"
+  },
   "src/RimMandrake/TheftHauler/Source/FloatMenuOptionProvider_TheftHaulUninstall.cs": {
     "cleanCount": 1,
     "date": "2026-09-03",
@@ -1960,6 +1966,12 @@
     "date": "2026-09-03",
     "hash": "834b21438fd5ad5cb9ddd53c087eb152d5f8d52f5ca43014b2a68f7159f6311c",
     "sha": "ceeaebb1"
+  },
+  "src/RimMandrake/TheftHauler/Source/RM_TheftHauler.csproj": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "c95f98b089b1fc0acf86c0a060d68bf4791bf40119acbf56c3019aa0ed7f7664",
+    "sha": "572413c0"
   },
   "src/RimMandrake/TheftHauler/Source/TheftHaulerDefOf.cs": {
     "cleanCount": 1,
@@ -3219,6 +3231,12 @@
     "hash": "25d3d3189d3a60583fd70996ed32d18b79a3e9e95b7c3fe15465f40a266b3246",
     "sha": "e7fa0af5"
   },
+  "src/RimMandrake/Visibility/Source/DebugActions_Visibility.cs": {
+    "cleanCount": 1,
+    "date": "2026-09-06",
+    "hash": "352f79bf7fe78bf4985b00c378e36ed254d3720523d58b3bc2782f1c57e055bc",
+    "sha": "572413c0"
+  },
   "src/RimMandrake/Visibility/Source/GameComponent_ColonyVisibility.cs": {
     "cleanCount": 2,
     "date": "2026-09-05",
@@ -3238,10 +3256,10 @@
     "sha": "e7fa0af5"
   },
   "src/RimMandrake/Visibility/Source/Visibility.csproj": {
-    "cleanCount": 1,
-    "date": "2026-09-05",
-    "hash": "2d95cafcf47a4d43e5923db5e8a7eb714b57bfb04ec4f6ea5078242052d6c284",
-    "sha": "e7fa0af5"
+    "cleanCount": 2,
+    "date": "2026-09-06",
+    "hash": "24d8befcab31571004e15a0e3ee0e84755cdbccce4be2522f02333bd5a09be09",
+    "sha": "572413c0"
   },
   "src/RimMandrake/Visibility/Source/VisibilityModInit.cs": {
     "cleanCount": 2,
