@@ -21,8 +21,8 @@ water tiles, zero rivers.** Regions: Nightspill (368), Frostcaps (224), Sporefie
 Blindwood (135), Mould Marches (121), Hanging Wood (118).
 
 Donor inventory taken in: the twelve-species fungal flora suite (Bryolux carpet,
-Glowstools, the Agarilux family), the two spore-allergy diseases and the mod's fastest
-disease clock (mtb 35), and the fungus/animal hybrid natives (Agaripawn, Agaripod,
+Glowstools, the Agarilux family), the two spore-allergy diseases and a disease
+clock at mtb 35, and the fungus/animal hybrid natives (Agaripawn, Agaripod,
 Wildpawn, Wildpod, Mycoid Colossus, Swarmlings). 🔴 The donor def's vanilla `wildAnimals`
 zoo (rat, boar, alpaca, cassowary, chinchilla, raccoon, cobra, warg) is **evicted
 wholesale** (owner's ruling).

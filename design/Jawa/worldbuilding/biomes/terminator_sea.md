@@ -89,7 +89,7 @@ The owner's rule says *rivers and coasts* are the dayside's lush lines, so the w
 | water | fed by rain condensed at altitude, moving | terminal, no outflow, going nowhere |
 | salinity | usable at the inflow | **saturated brine** |
 | light | +38 to +58 °C, overhead, fierce | grazing, weak, from one bearing |
-| result | 🌿 **a fierce green line** — the planet's only jungle | 🧂 **salt crust and solitude** |
+| result | 🌿 **a fierce green line** | 🧂 **salt crust and solitude** |
 
 ⇒ Lushness on Ash'karr is not bought by water. It is bought by **moving fresh water
 plus a real photon budget**, and the terminator has neither. It has standing brine
@@ -102,7 +102,7 @@ surface from night to day**. So the terminator's surface wind is **cold, dry
 nightside air moving dayward**, permanently, from a fixed bearing.
 
 - It crosses the water, loads with vapour, and **carries it dayward, where it warms
-  and never condenses.** The sea's water is being pumped onto the dayside and lost.
+  and never condenses as rain.** The sea's water is being pumped onto the dayside and lost.
 - Nothing brings it back: there are no meridian rivers (canon — *"no meridian river
   exists"*), and rain only condenses at altitude on the dayside.
 - ⇒ **The terminator seas are evaporating and will not be refilled.** Canon already
@@ -172,8 +172,8 @@ here, and it is a measurable claim, not a mood.**
   intermittent and shallow, and nowhere near enough to grow anything on. What it is
   enough for is **condensation on a surface**: the blades run it down grooved faces
   to their roots, animals lick it off them, and people string nets. ⇒ 🔑 The seas are
-  not drinkable and never will be; **fog condensate is the planet's only free potable
-  water**, and it arrives a cupful at a time. That is exactly why canon puts 33
+  not drinkable and never will be; **fog condensate is what there is to drink**,
+  and it arrives a cupful at a time. That is exactly why canon puts 33
   Homestead Defense League sites on this margin — *stores water, has no source.*
   They are scraping, not farming.
 - **Giants, for a reason unique to this biome: osmotic surface area.** Everything
@@ -205,8 +205,8 @@ here, and it is a measurable claim, not a mood.**
 - **The ground is salt crust**, white, and it takes a footprint.
 - **Diversity is minimal and biomass is not.** Few kinds, large individuals, huge
   gaps.
-- **The sea is not potable; thin fog condensate is** — and it is the only free water
-  on Ash'karr.
+- **The sea is not potable; thin fog condensate is** — and there is never enough
+  of it.
 - **Every large organism here is endemic to its own sea** and has no population
   anywhere else.
 
@@ -240,9 +240,8 @@ here, and it is a measurable claim, not a mood.**
 
 ## 7. Uniquely available
 
-- ⭐ **Water you can drink**, condensed from fog — the only free source on the planet,
-  in small quantities, and therefore the reason every faction on Ash'karr has a stake
-  in this band.
+- ⭐ **Water you can drink**, condensed from fog, in small quantities — and therefore
+  the reason every faction on Ash'karr has a stake in this band.
 - **Salt, brine chemistry and evaporites** at industrial scale, from a resource that
   is *increasing in concentration* as the seas retreat. The Grey Sea is the planet's
   chemical works.
@@ -250,8 +249,8 @@ here, and it is a measurable claim, not a mood.**
   comfortable, and the reason the Homesteaders exist at all.
 - **Single enormous carcasses.** One animal is a season's provisioning: mass, oil,
   plate, gut chemistry. ⚠️ And it may genuinely be the last one.
-- **Structural blade-sheet** — the only large workable non-metal building material on
-  the planet, from a plant it takes a century to replace.
+- **Structural blade-sheet** — a large workable non-metal building material,
+  from a plant it takes a century to replace.
 - ⚠️ **Not abundance, not farmland, not cover, not company.** Anyone here is far from
   anyone else, on purpose or otherwise.
 

@@ -23,9 +23,9 @@ MEASURED off the live CSV: **44 tiles, one compact massif in the Dune Sea
 interior** (27 Pyroclastic tiles + all Volcano/LavaField in Dune Sea; 4 in the
 Anvil), dayside sun +51°..+64°, temps 42–56 °C, and the zonation in the
 elevations: Volcano median 1,875 m (max 2,266 — the cones), LavaField 1,496
-(the flows), Pyroclastic 1,382 (the skirts). The planet's **only seismically
-active province** (`hydrology_and_fire_ecology.md`: "the rest of the planet is
-quiet") and the **epicenter of the geyser law** (`VAPOR_EMITTER_PLACEMENT_1`:
+(the flows), Pyroclastic 1,382 (the skirts). **A seismically active massif** —
+vents, tremors and lava at the surface (`hydrology_and_fire_ecology.md`) —
+and the **epicenter of the geyser law** (`VAPOR_EMITTER_PLACEMENT_1`:
 steam frequency radiates from here and reaches zero before the terminator).
 
 ⚠️ Two decayed geographies flagged for the canon sitting: `sacred_sites_pass_1.md`
@@ -82,7 +82,7 @@ geology; its life is overhead or between raindrops.
   the boiling rain exists as liquid. Signature: **fireweed** — whose
   heat-proof fiber is the source material of the planet's heat-survival gear
   economy: the desert kit, the Greentide kit, and the only clothing that
-  lets you walk the Forge itself. The hottest place on Ash'karr grows the
+  lets you walk the Forge itself. A place hot enough to kill grows the
   thing that lets you endure everywhere else.
 - **The sky herds** (owner): aerial creatures floating in the turbulent air
   above vents and lava, absorbing and metabolizing the complex chemical

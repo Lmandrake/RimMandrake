@@ -194,8 +194,8 @@ pools explain it themselves: **nothing goes in the water here.**
 - **Light:** two worlds — warm steam-lamp gold and green-filtered sun in the
   crown; dim, symmetrical, mirror-doubled dark below.
 - **Palette:** living-wood browns and moss greens, nectar amber, oil-sheen
-  rainbows on the seeps (the wetland's third rainbow — the Miasma's honest
-  blooms, the Scarlands' lying pools, and here: just oil, just useful),
+  rainbows on the seeps (another of the planet's rainbow registers — the Miasma's
+  honest blooms, the Scarlands' lying pools, and here: just oil, just useful),
   black water, chitin red-and-black at the war margins.
 - **Silhouette language:** trunks as towers, boughways as bridges, thornbug
   spikes along the bark; below, verticals doubled in reflection.

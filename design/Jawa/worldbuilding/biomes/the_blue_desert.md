@@ -43,8 +43,8 @@ mosaic** by bearing, with arc excursions so no boundary is a circle:
 Exact tiles are the dissolve item's job, **rendered for the owner before painting**.
 
 Donor inventory taken in: blue sand/soil (re-read as water-ice sand), animal density
-0.5 (the sparsest def defined), plant density 0.33, movement 1.5, disease clock 90 d
-(the healthiest), weather table (Clear 18; **BlueSnow** → ice-sand drift; **Blue
+0.5 (the sparsest def defined), plant density 0.33, movement 1.5, disease clock 90 d,
+weather table (Clear 18; **BlueSnow** → ice-sand drift; **Blue
 Fogstorm** / **Purple Fog** → ice fog, accuracy and range penalties; rainy thunderstorm
 stripped per R-H1), the Blareebian tree and cactus silhouettes as *shape references only*.
 🔴 **Evicted wholesale:** the entire Earth desert zoo (donkey, iguana, dromedary,

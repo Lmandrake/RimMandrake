@@ -24,7 +24,7 @@ moved in the history of the world.
 Every dune runs the same way. Every crest is the same distance from the next. The
 grain of the sand-sheet is so regular that from a ridge it reads as a machined
 surface, and it holds that regularity for a thousand kilometres in every direction —
-the largest single texture on the planet and very nearly the only one.
+a single texture with nothing to break it.
 
 Your shadow is short, hard-edged, black, and **it never changes length**. Set a
 stone down and the shadow it throws will be exactly that shadow when your
@@ -92,7 +92,7 @@ a landscape that gets none** — and at +55 °C under unlimited light, water is 
 *only* missing input. Put it back and productivity goes vertical within metres of the
 bank. Take it away and there is nothing.
 
-- The **Scald's rivers** carry the planet's only true jungle (canon:
+- The **Scald's rivers** carry a real jungle (canon:
   `AB_FeraliskInfestedJungle`, `COMIGO_GreaterSwamp_Tropical`), and the **Scald's own
   coast** is the one dayside shoreline that behaves like a shore.
 - ⛔ **Everything more than a short walk from flowing water or that coast is dune
@@ -173,8 +173,8 @@ owns a shadow instead.**
   activity is the normal state and proves nothing.
 - Surfaces are **dry, matte, dusty or mirror-bright** — never wet, never slick,
   never encrusted.
-- **Anything buried is perfectly preserved.** Dry, hot, sterile sand is the best
-  archive on the planet.
+- **Anything buried is perfectly preserved.** Dry, hot, sterile sand acts like a deep
+  record of everything it swallows.
 - The density of everything is **absurdly low**. A correct dune sea map is mostly
   nothing, and a reviewer's instinct to add one more thing is the defect.
 - **The tract ends at a hard edge or not at all.** Where it meets a river or the

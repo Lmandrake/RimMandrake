@@ -34,9 +34,9 @@ Wildsteam holds two seats here on the owner's own coordinates: **Oilpalm** (tile
 1,128 m, river + CaveLakes — its remotest).
 
 Donor inventory (workshop 3537211820, read from the mod XML): **kept in spirit** —
-animalDensity **3.5**, the highest donor density on the planet (§4 explains why it
-is accidentally right), forageability 1.0, diseaseMtbDays 50 (the planet's sickest
-air — also accidentally honest), the custom terrain family (CypreJungleMud/Soil/
+animalDensity **3.5** (§4 explains why it
+is accidentally right), forageability 1.0, diseaseMtbDays 50 (a heavy disease
+load — also accidentally honest), the custom terrain family (CypreJungleMud/Soil/
 SoilRich — raw material for §8b's floor). **Evicted** — the entire vanilla-Earth zoo
 (deer, panther, elephant, raccoon, timber wolf, monkey…). **Replaced** — the GRim
 flora (TreeCypre and kin). ⚠️ GRiNDTerra is under retirement audit but its 117

@@ -30,7 +30,7 @@ against the substellar neighborhood. Sun median **+72°**; temp median 59.4 °C
 mountainous of 90); elevation to 620 m. ⚠️ Three river tiles at arc ~18 where
 nothing should flow — flag for the freeze review. Neighbors are the whole story:
 the **Rust Cathedral** (`AB_MechanoidIntrusion`, permanently at war) one region
-over, its 305-tile pollution halo — the planet's largest connected poison block —
+over, its 305-tile pollution halo — a single connected poison block —
 spilling into the Scorch; the **AncientLaunchSite** (tile 4000, in the Scorch)
 where the dead-straight **Ashfall Road** begins; eight of twelve Free Droid
 enclave seats next door in the Cathedral's holy poison.
@@ -76,7 +76,7 @@ war. The energy regime just keeps the corpse hot.
 - **The madness in the blood** — scaria, endemic at 50% in the wildlife (§GM owns
   its authorship; §P knows only that the animals here go mad).
 
-The only surface water in the deep dayside rises here, and it kills you: the
+Surface water rises here, in the deep dayside, and it kills you: the
 ancients' buried plumbing and coolant galleries still leak upward into poisoned
 ponds — and into the **rainbow pools** (§8).
 
@@ -186,7 +186,7 @@ The biome description and all first-tier lore say only this register:
 
 ## 7. Uniquely available
 
-- **The sealed salvage** — the richest old-tech trove on the planet: hermetic
+- **The sealed salvage** — a rich old-tech trove: hermetic
   crates, ancient pods, intact sublevels under the husks (donor gen-steps,
   first-party). The open wrecks teach the rule: everything obvious is long
   plundered; the prizes are sealed.

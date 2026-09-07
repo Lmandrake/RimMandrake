@@ -40,7 +40,7 @@ what can live where.
 It is also the desert that can be *lived in*. Cooler, shaded, rocky, with enough vegetation
 for meagre but **regular** populations — and the regularity is the gift. The Pyrelands boom
 and burn; the deep desert holds almost nothing; here the numbers are small and steady, which
-makes this the only ground on the planet a colony can live off.
+makes this ground a colony can actually live off.
 
 ## 2. Planetary position
 
@@ -272,7 +272,7 @@ Whale-metaphor animals crossing between harbours of shadow.
 
 ## 7. Uniquely available
 
-- 🔑 **Reliable game.** The only ground on Ash'karr with a food web steady enough to hunt as a
+- 🔑 **Reliable game.** A food web steady enough to hunt as a
   livelihood rather than a windfall.
 - **Herd beasts** — the pack and draught animals the campaign runs on.
 - ⭐ **The prepared cycle-seed** — a euphoric delicacy that is a controlled near-miss with a

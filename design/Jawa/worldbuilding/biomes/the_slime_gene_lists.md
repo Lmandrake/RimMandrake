@@ -17,7 +17,7 @@ K1 = unlimited visits (riders accumulate), K2 = riders permanent; K3 (animals) a
   local denizen the rivers delivered.
 - **P2 — 🔴 No Force** (`FORCE_POWERS_ARE_V2_1`). Nothing Force-flavored, ever.
 - **P3 — Excluded bloodlines:** Sith (all three), Rakata, Dathomirian, Anzati predation —
-  the archive holds them; the Helix-filtered menu does not.
+  the database holds them; the Helix-filtered menu does not.
 - **P4 — Anti-exponential:** no gene raises a ceiling. **Every gene is a trade**, priced
   in stats, not flavor text.
 - **P5 — Riders are visible AND felt.** Every rider shows on the body or in behavior,

@@ -38,8 +38,8 @@ Half this jungle drinks storms. Half drinks nothing — and is jungle anyway. §
 explains how.
 
 Donor inventory (Alpha Biomes, workshop 1841354677): **kept** — movementDifficulty
-2 (the worst walking on the dayside), diseaseMtbDays 35 (the sickest air on the
-planet), forageability 1.0, and the donor's own gameplay advice, canonized in §7b
+2 (hard going underfoot), diseaseMtbDays 35 (a heavy disease load in the canopy
+air), forageability 1.0, and the donor's own gameplay advice, canonized in §7b
 ("build a walled compound, leave it seldom, and USE the spiders"). **Corrected** —
 animalDensity 5.4 inverts to low-but-lethal: this jungle's ordinary wildlife has
 been *eaten* (§4b). **Evicted** — the vanilla-Earth zoo (elephant, rhino,
