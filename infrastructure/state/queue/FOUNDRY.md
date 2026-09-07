@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T05:57:27Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-07T06:05:38Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -548,16 +548,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## EDIBLE_GENEPACK_NATIVE_1 Scan Genepacks Injection DLL (TommasoBelluzzo.GenepacksInjection, ws 3784789591), understand its consumption flow, reimplement the edible-genepack loop natively in our own mod — the Slime's gene machine must not lean on donor mods (owner 2026-09-06, the_slime.md Owed)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/EDIBLE_GENEPACK_NATIVE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/EDIBLE_GENEPACK_NATIVE_1.md
 
 ## HORRORS_RAIDING_FACTION_1 Horrors become a RAIDING faction (no settlements, nightside-gated encounters) + nests/sinkholes/crysalises injected as nightside dungeon content — the starved-cold Assailant weapon on patrol
 state:    proposed
