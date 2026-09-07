@@ -301,6 +301,97 @@ def test_seed_home() -> None:
               ci.seed_codex_home(base, worker) == worker)
 
 
+def test_sandbox_seed_template() -> None:
+    """A fresh worker home gets its Windows-sandbox setup COPIED from a
+    captured template, instead of needing its own (UAC-gated) setup.
+
+    CODEX_PARALLEL_WORKERS_1: every brand-new --codex-home used to trigger a
+    fresh `codex-windows-sandbox-setup.exe` run, which creates two local
+    Windows accounts and needs a UAC consent dialog per home - unworkable for
+    N unattended workers. This is the fix under test.
+    """
+    real_env = os.environ.get("CODEX_SANDBOX_SEED")
+    try:
+        with tempfile.TemporaryDirectory() as td:
+            template = Path(td) / "template"
+            (template / ".sandbox").mkdir(parents=True)
+            (template / ".sandbox" / "setup_marker.json").write_text('{"version": 5}')
+            (template / ".sandbox-bin").mkdir()
+            (template / ".sandbox-bin" / "codex-command-runner.exe").write_bytes(b"x")
+            (template / ".sandbox-secrets").mkdir()
+            (template / ".sandbox-secrets" / "sandbox_users.json").write_text("{}")
+            (template / ".sandbox_migration").write_text("1")
+            os.environ["CODEX_SANDBOX_SEED"] = str(template)
+
+            check("sandbox_seed_template() finds a valid template",
+                  ci.sandbox_seed_template() == template)
+
+            fresh = Path(td) / "fresh_worker"
+            fresh.mkdir()
+            got = ci.seed_sandbox_from_template(fresh)
+            check("seed_sandbox_from_template reports success with a template", got is True)
+            check("sandbox setup marker copied into the fresh home",
+                  (fresh / ".sandbox" / "setup_marker.json").is_file())
+            check("sandbox-bin copied into the fresh home",
+                  (fresh / ".sandbox-bin" / "codex-command-runner.exe").is_file())
+            check("sandbox-secrets copied into the fresh home",
+                  (fresh / ".sandbox-secrets" / "sandbox_users.json").is_file())
+            check(".sandbox_migration file copied into the fresh home",
+                  (fresh / ".sandbox_migration").is_file())
+
+            # A home that already has its OWN real setup is left untouched -
+            # never overwritten by the template.
+            already_set_up = Path(td) / "already_set_up"
+            (already_set_up / ".sandbox").mkdir(parents=True)
+            (already_set_up / ".sandbox" / "setup_marker.json").write_text('{"real": true}')
+            got2 = ci.seed_sandbox_from_template(already_set_up)
+            check("an already-set-up home is reported as fine", got2 is True)
+            check("an already-set-up home's OWN marker is not overwritten",
+                  "real" in (already_set_up / ".sandbox" / "setup_marker.json").read_text())
+            check("an already-set-up home did NOT get .sandbox-bin from the template",
+                  not (already_set_up / ".sandbox-bin").exists())
+
+            # No template at all -> honest False, never a raise, never a fake claim.
+            # Redirect the DEFAULT lookup too (not just the env override) - this
+            # machine has a real template at the real default path once the fix
+            # this test is proving has actually been applied, so leaving the
+            # default path live here would test nothing.
+            os.environ.pop("CODEX_SANDBOX_SEED", None)
+            real_windows_home = ci.windows_home
+            ci.windows_home = lambda: Path(td) / "nothing_here"
+            try:
+                no_template_home = Path(td) / "no_template"
+                no_template_home.mkdir()
+                check("no template configured -> sandbox_seed_template() is None",
+                      ci.sandbox_seed_template() is None)
+                check("no template -> seed_sandbox_from_template returns False, not a raise",
+                      ci.seed_sandbox_from_template(no_template_home) is False)
+            finally:
+                ci.windows_home = real_windows_home
+
+        # seed_codex_home() must actually CALL this, not just have it exist unused.
+        with tempfile.TemporaryDirectory() as td2:
+            template = Path(td2) / "template"
+            (template / ".sandbox").mkdir(parents=True)
+            (template / ".sandbox" / "setup_marker.json").write_text("{}")
+            os.environ["CODEX_SANDBOX_SEED"] = str(template)
+
+            base = Path(td2) / "base"
+            base.mkdir()
+            (base / "auth.json").write_text("{}")
+            (base / "config.toml").write_text("{}")
+
+            worker = Path(td2) / "worker"
+            ci.seed_codex_home(base, worker)
+            check("seed_codex_home() itself seeds the sandbox template",
+                  (worker / ".sandbox" / "setup_marker.json").is_file())
+    finally:
+        if real_env is not None:
+            os.environ["CODEX_SANDBOX_SEED"] = real_env
+        else:
+            os.environ.pop("CODEX_SANDBOX_SEED", None)
+
+
 def test_home_must_be_windows_visible() -> None:
     if not ci.in_wsl():
         print("  skip /mnt guard (not running under WSL)")
@@ -316,7 +407,7 @@ def main() -> int:
     for fn in (test_prompt, test_run_codex_timeout, test_reasoning_effort_flag,
                test_timeout_still_harvests, test_output_schema_passthrough,
                test_harvest_grace,
-               test_child_env_wslenv, test_seed_home,
+               test_child_env_wslenv, test_seed_home, test_sandbox_seed_template,
                test_home_must_be_windows_visible):
         print(fn.__name__)
         fn()
