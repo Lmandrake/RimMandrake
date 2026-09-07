@@ -19,5 +19,6 @@ RimStarWars tier (world/planet fauna, not campaign-specific) per `NAMING_SCHEME_
   </modDependencies>
   <loadAfter>
     <li>Ludeon.RimWorld</li>
+    <li>sarg.alphabiomes</li>
   </loadAfter>
 </ModMetaData>

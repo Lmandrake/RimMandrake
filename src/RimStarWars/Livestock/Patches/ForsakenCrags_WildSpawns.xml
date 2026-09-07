@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- FORSAKEN_CRAGS_PREDATORS_BUILD_1 - wires RSW_Cindermare and RSW_Skarnix
+     into Alpha Biomes' AB_RockyCrags (label "forsaken crags") wildAnimals
+     dictionary. Without this the two PawnKindDefs built earlier for this
+     item would never spawn wild anywhere - "both creatures spawn on
+     AB_RockyCrags" is a real criterion, not flavor text, and nothing in the
+     ThingDef/PawnKindDef pair links them to a biome by itself.
+
+     Guarded with PatchOperationConditional on the biome's own wildAnimals
+     node rather than a hard modDependency: if Alpha Biomes isn't loaded the
+     condition is false and this whole op is a silent no-op (CLAUDE.md's
+     "PatchOperationConditional/FindMod return true on no match" trap does
+     not bite here because we gate on the TARGET NODE existing, not on the
+     mod's presence) - correct, because this mod's other content (Karrask
+     livestock) does not need Alpha Biomes at all.
+
+     Commonalities picked relative to the biome's existing sole entry
+     (<Rat>0.101</Rat>, live-checked on disk 2026-09-07) - both new predators
+     are rarer than the biome's background vermin, Skarnix (cat-large
+     stalker) somewhat more common than Cindermare (larger, more dangerous
+     solitary threat). -->
+<Patch>
+
+  <Operation Class="PatchOperationConditional">
+    <xpath>/Defs/BiomeDef[defName="AB_RockyCrags"]/wildAnimals</xpath>
+    <match Class="PatchOperationAdd">
+      <xpath>/Defs/BiomeDef[defName="AB_RockyCrags"]/wildAnimals</xpath>
+      <value>
+        <RSW_Cindermare>0.04</RSW_Cindermare>
+        <RSW_Skarnix>0.09</RSW_Skarnix>
+      </value>
+    </match>
+  </Operation>
+
+</Patch>
