@@ -1,49 +1,49 @@
-# Decision strings, written before this load — BENCH, 2026-09-05 (full-list Ninefold-proof load)
+# Decision strings — the load of 2026-09-07 (GravTide + the three seas)
 
-## Ninefold hook proof — NINEFOLD hooks on-screen firing (this load's purpose)
-DevMode must be ON: every hook routes through `ApplyDelta`, which logs only under
-`Prefs.DevMode`. Expected-present string per hook, all matching
-`[Ninefold] <god> satiation ±N.N (<reason>) -> ...`:
-- kill/battle: reason `melee, the close exposed war` (KillManner) — fires on REAL
-  `Pawn.Kill`, which jawa/damage bypasses; prove via an actual fight.
-- explosion: reason starting `an explosion` (three variants).
-- trade: reason `trade completed`.
-Absence after a real fight with DevMode on = hook genuinely not attached (last
-session could not distinguish this from bridge-bypass; this load can).
-Baseline: research hook already proven live last session.
+Written BEFORE launching, per `rimworld-load-round` §2. A signature invented
+after reading the log is a story that fits, not evidence.
 
-## Full-list quicktest crash (attempt LAST — may kill the session)
-`start_debug_game` on the full list crashed unexplained. Signature to capture:
-whatever the log's final lines are at crash; compare against a clean load-to-menu
-(known fine). Run only after the Ninefold proof is banked.
+## What is riding this load
 
-# Prior deploy's strings (four assemblies) — still valid, kept below — FOUNDRY, 2026-09-05
+1. **`gravtide.mod` activated** — 598 → **599** active mods, inserted at index
+   172 (after `brrainz.harmony` @1 and `ludeon.rimworld.odyssey` @9, before the
+   `mandrake.*` block).
+2. **Four new sea BiomeDefs parsed for the first time** — `RUT_TheScald`,
+   `RUT_GreySea`, `RUT_TwilightSea`, `RUT_PropaneLake`, each now carrying
+   `terrainsByFertility`, `baseWeatherCommonalities`, `wildAnimalsCanWanderInto`.
+3. **Assemblies deployed in the shutdown window**, incl.
+   `RimMandrakeVisibility.dll`.
 
-Full 595-mod list. Four assemblies changed this deploy: JawaBench.BridgeTools,
-RustChrome, StructureInjections, Inhabited. Batched per doctrine's "distinguishable
-failure signature per assembly" waiver.
+## The strings that settle each one
 
-## JawaBench.BridgeTools — TILEGEN_SILENT_REUSE_1 + DEV_LOG_AUTOOPEN_SUPPRESS_1
-- Signature if broken: any Harmony patch exception naming `JawaBenchLogAutoOpenSuppress`
-  or a `TypeLoadException`/`MissingMethodException` referencing `JawaBenchSocietyTools`.
-- Live test (bridge, post-load): two `jawa/world_tile_map_generate` calls at two
-  distinct, confirmed-empty tiles. Decide by:
-  - Second call REFUSES with a message naming both tiles → guard works, underlying
-    bug still open (expected, not a failure).
-  - Second call SUCCEEDS and `jawa/map_info`/`rimworld/get_game_info` show a real,
-    distinct second map (`mapCount` increments, `map.Tile` matches request) → bug
-    narrower than the trap suggested; re-run once more before believing it.
-  - Second call SUCCEEDS but the map is still tile 701's (silent reuse persists) →
-    guard did not fire; regression in the guard itself.
+| # | claim | string / check | baseline |
+|---|---|---|---|
+| 1 | GravTide loaded, not dead | `harvest_log.py` DEAD MODS (static ctor / type load) | **0**; any hit naming GravTide = it did not load |
+| 2 | the four sea defs parsed | `jawa/world_tile_get` on a Scald tile returns `biome: RUT_TheScald`, **not `Lake`** | today it returns `Lake` |
+| 3 | no def was silently discarded | `harvest_log.py` DEFS DISCARDED | **0** — any hit is NEW, read the file it names |
+| 4 | the seas' terrain resolves | `Player.log` must NOT contain `No terrain found in biome` for any `RUT_*` | absent |
+| 5 | weather resolves | must NOT contain `All weather commonalities were zero` for a `RUT_*` biome | absent |
+| 6 | patch failures did not rise | `harvest_log.py` patch operations failed | **8** (5 pre-existing + 3 `[Jawa Armoury Rebalance]`, see `ARMOURY_PATCH_INNER_MISS_1`). GravTide may add its own — attribute before filing |
+| 7 | config errors did not rise | `harvest_log.py` def ConfigErrors | **17** |
+| 8 | cross-references clean | `harvest_log.py` cross-reference (def loader) | **0** |
 
-## RustChrome / StructureInjections / Inhabited
-- No live behavior change intended this pass (rebuild only, no source edits
-  since last deploy — confirms deployed bytes match repo HEAD).
-- Signature if broken: any `Def.ConfigErrors()`/`^Config error in` line naming
-  `RimMandrakeRustChrome`, `RimMandrakeStructureInjections`, or `Inhabited`
-  assemblies, or a Harmony patch failure naming any type in them.
+⚠️ **Absence is necessary, not sufficient** (§2). #2 is the only
+expected-PRESENT check here, and it is the one that actually proves the seas
+exist. The rest are expected-absent.
 
-## Baseline
-`harvest_log.py` on the last known-good full load: 0 dead mods, standing
-crossref/patch-no-op counts as recorded in its own baseline file — read those,
-don't requote from memory.
+## Then, and only if #1–#3 pass
+
+- Load `WORLDMAP_V2_merged_2026-09-07`.
+- `python.exe src/RimMandrake/Utils/w9_run.py --apply --load WORLDMAP_V2_merged_2026-09-07`
+  — paints the **1135** sea tiles stage 1 skipped last run
+  (`unknownBiomes` was `[RUT_TwilightSea, RUT_GreySea, RUT_TheScald]`).
+- **Success condition:** stage 1 reports `applied=21872`, `unknownBiomes=[]`.
+- Then re-export and diff against `world/ASHKARR_WORLDMAP_tiles.csv`:
+  **expect 0 mismatches** (last run: 1135, all of them sea tiles).
+
+## Also measure, do not assume
+
+⚠️ **River link count discrepancy, open.** Last run imported 292 river links but
+`world_links_validate` reported `riverEntries 634` (=317 links) over
+`riverTiles 347` against our graph's 308. The import appears to ADD rather than
+replace. **Measure it this load before deciding whether a `clearFirst` is owed.**
