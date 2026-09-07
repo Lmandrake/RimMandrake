@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Defs>
+
+  <!-- DROID_FDE_GOODWILL_CAP_1. baseMaxGoodwill is read by NOTHING
+       (GoodwillSituationDef::.ctor stfld only; GoodwillSituationWorker.GetMaxGoodwill
+       is what Recalculate actually reads), per design/Jawa/worldbuilding/
+       restraining_bolt_technical.md's own decompiled-IL trap note. Omitted on
+       purpose so nobody mistakes it for load-bearing. -->
+  <GoodwillSituationDef>
+    <defName>Jawa_RestrainingBolts</defName>
+    <label>restraining bolts</label>
+    <workerClass>RimMandrake.Utinni.RestrainingBolts.GoodwillSituationWorker_RestrainingBolts</workerClass>
+  </GoodwillSituationDef>
+
+</Defs>

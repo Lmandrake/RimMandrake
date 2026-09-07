@@ -6,7 +6,14 @@ C-v3; the fiction and the intent are `restraining_bolt_doctrine.md`, which this
 does not restate. Drained out of the queue on its retirement to budget — the
 queue keeps one line, this keeps the spec. Commit `8353622`._
 
-**`[v2]` — lands with the Free Droid Enclaves, whose `FactionDef` is unbuilt.**
+**SUPERSEDED 2026-09-07 (DROID_FDE_GOODWILL_CAP_1): the blocking condition below is
+resolved.** The Free Droid Enclaves `FactionDef` (`Jawa_FreeDroidEnclaves`) is built
+and live on the frozen world (confirmed via census, `DROID_FACTIONS_IN_FROZEN_SAVE_1`,
+cb0f7506) — BENCH promoted this item to v1 on 2026-09-06 accordingly. Implemented at
+`src/RimUtinni/RestrainingBolts/` exactly as this doc's own "Build note" specifies;
+compiles clean against the live RimWorld assemblies. Live in-game verify (goodwill
+actually caps, explanation line shows) still owed to a game-up session — not yet run.
+~~`[v2]` — lands with the Free Droid Enclaves, whose `FactionDef` is unbuilt.~~
 
 ---
 
@@ -349,12 +356,12 @@ defs × the faction list — and `PawnsFinder.…_OfPlayerFaction` rebuilds its 
 each call. Return 100 on the faction check *before* counting, and the real walk
 happens once per 1000 ticks instead of hundreds of times.
 
-**Dependencies:** the Free Droid Enclaves `FactionDef` (unbuilt — deferred to v2),
-and the bolt hediff. Resolve the latter with
+**Dependencies:** the Free Droid Enclaves `FactionDef` (built, see the 2026-09-07
+note at the top of this doc) and the bolt hediff. Resolve the latter with
 `DefDatabase<HediffDef>.GetNamedSilentFail("OuterRim_RestraintBolt")` and return
 100 if null, so the assembly degrades quietly if Droid Depot is ever dropped
 rather than throwing on every recache.
 
-`[v2]` — lands with the Enclaves.
+~~`[v2]` — lands with the Enclaves.~~ Landed in v1, 2026-09-07 (DROID_FDE_GOODWILL_CAP_1).
 
 ---

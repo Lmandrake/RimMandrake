@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ModMetaData>
+  <packageId>mandrake.rut.restrainingbolts</packageId>
+  <name>Jawa Restraining Bolts</name>
+  <author>Mandrake</author>
+  <supportedVersions><li>1.6</li></supportedVersions>
+  <description>DROID_FDE_GOODWILL_CAP_1. Caps the player's goodwill ceiling with the Free
+Droid Enclaves by how many currently-owned droids carry a restraining bolt right
+now (design/Jawa/worldbuilding/restraining_bolt_technical.md). One GoodwillSituationDef
++ one GoodwillSituationWorker, no Harmony, no stored state -- the count is read live
+off Droid Depot's OuterRim_RestraintBolt hediff every recache, so freeing a droid lifts
+the ceiling within the engine's own ~1000-tick recompute, no removal hook needed.
+Degrades quietly (returns the vanilla default) if Droid Depot is not active, or if the
+Free Droid Enclaves faction has not loaded.</description>
+</ModMetaData>
