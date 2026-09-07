@@ -39,3 +39,44 @@ the same region within ±6° of arc)
 ## verify
 CSV re-count: 0 `BMT_FungalForest` tiles; receivers as tabled; the Rot's sector coverage
 recorded; ingested defs resolve in the dump; the owner has ruled the two flagged chains.
+
+---
+
+## ⛔ THE CLUSTER-SPEC TABLE ABOVE IS SUPERSEDED — owner, 2026-09-07 (R29)
+
+**Ruled: follow the paint.** The per-tile neighbour analysis wins over the
+cluster-spec table. In particular the **South Crags sector 9** tiles (16) go to
+**BiomeGRimond (Blue Desert)** / **AB_RockyCrags (Forsaken Crags)** — whichever
+actually surrounds each — **not to Wasteland**.
+
+🔑 **The principle: a merged tile must be continuous with its new biome.** A
+16-tile Wasteland enclave with no Wasteland adjacent to it reads as an error to
+anyone who opens the map later.
+
+✅ **The 15 flagged ties are settled by the same rule** — majority adjacent
+biome, broken by closest temp/rain match. No separate ruling owed.
+
+## MEASURED plan
+
+`design/Jawa/worldbuilding/data/fungalforest_merge_plan_2026-09-07.md` — 425
+tiles carrying `BMT_FungalForest`, arc 74.0–132.9, temp −43.9 to 24.3 °C, rain
+0–14 mm. Method: 216 tiles resolved by direct non-FungalForest neighbour
+(majority vote, temp/rain tie-break); the 209 interior tiles by multi-source BFS
+to the nearest resolved tile. **Zero unreachable, zero all-water-bounded.**
+
+| tiles | receiving biome |
+|---:|---|
+| 352 | `AB_MycoticJungle` — the Rot |
+| 53 | `Desert` |
+| 8 | `BiomeGRimond` — the Blue Desert |
+| 8 | `AB_RockyCrags` — the Forsaken Crags |
+| 4 | `RUT_NightsideIce` |
+
+## owed alongside the paint
+
+- **[R30]** `the_rot.md`'s arc range is amended from 89–130 to the measured
+  **75.3–132.9**, and its temperature line checked against the warmer dayward
+  edge it now reaches.
+- ⚠️ The 53 tiles going to `Desert` land on top of the already-open
+  `WORLDMAP_DESERT_BAND_REPAIR_1` climate-outlier defect. **Repair before
+  painting, or the outliers grow.**
