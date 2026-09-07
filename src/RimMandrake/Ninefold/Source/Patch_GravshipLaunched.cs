@@ -25,10 +25,25 @@ namespace RimMandrake.Ninefold
     [HarmonyPatch(typeof(CompLaunchable), nameof(CompLaunchable.TryLaunch))]
     public static class Patch_GravshipLaunched
     {
-        [HarmonyPostfix]
-        public static void Postfix()
+        // TryLaunch has several early-return failure paths (unspawned, no
+        // fuel, over mass, on cooldown, under roof) that still run to
+        // completion with no exception -- a bare Postfix would credit
+        // Ta'Baa on every failed launch ATTEMPT, not just real ones. Gate
+        // on the same pre-check vanilla itself uses (CanLaunch), taken in
+        // a Prefix before TryLaunch mutates anything.
+        [HarmonyPrefix]
+        public static void Prefix(CompLaunchable __instance, out bool __state)
         {
-            GameComponent_Ninefold.Instance?.Notify_Launched("launch/relocation");
+            __state = __instance.parent.Spawned && __instance.CanLaunch();
+        }
+
+        [HarmonyPostfix]
+        public static void Postfix(bool __state)
+        {
+            if (__state)
+            {
+                GameComponent_Ninefold.Instance?.Notify_Launched("launch/relocation");
+            }
         }
     }
 }
