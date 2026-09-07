@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T05:55:47Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-07T05:57:27Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -549,16 +549,6 @@ _none._
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
 
-## FOUNDRY_REBOOT_HANDOFF_20260906 FOUNDRY reboot handoff 2026-09-06 - READ FIRST on wake
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-thin:     no ## verify
-summary:  RESTART HANDOFF 2026-09-06 (FOUNDRY, pre-agent-restart). Read this whole
-prose:    infrastructure/state/items/FOUNDRY_REBOOT_HANDOFF_20260906.md
-
 ## EDIBLE_GENEPACK_NATIVE_1 Scan Genepacks Injection DLL (TommasoBelluzzo.GenepacksInjection, ws 3784789591), understand its consumption flow, reimplement the edible-genepack loop natively in our own mod — the Slime's gene machine must not lean on donor mods (owner 2026-09-06, the_slime.md Owed)
 state:    proposed
 row:      unassigned
@@ -568,16 +558,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/EDIBLE_GENEPACK_NATIVE_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/EDIBLE_GENEPACK_NATIVE_1.md
-
-## FOUNDRY_REBOOT_HANDOFF_20260906B FOUNDRY reboot handoff 2026-09-06 (afternoon) - READ FIRST on wake
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-thin:     no ## verify, no ## criteria
-summary:  READ FIRST on wake. Session wrap before an owner-requested agent reboot,
-prose:    infrastructure/state/items/FOUNDRY_REBOOT_HANDOFF_20260906B.md
 
 ## HORRORS_RAIDING_FACTION_1 Horrors become a RAIDING faction (no settlements, nightside-gated encounters) + nests/sinkholes/crysalises injected as nightside dungeon content — the starved-cold Assailant weapon on patrol
 state:    proposed
@@ -668,16 +648,6 @@ kind:     task
 thin:     no ## criteria
 summary:  - What it is: the Rakatan-era war lab where the Assailants were first contained and
 prose:    infrastructure/state/items/ANCIENT_WAR_LAB_1.md
-
-## FOUNDRY_REBOOT_HANDOFF_20260906C FOUNDRY reboot handoff 2026-09-06 (evening) - READ FIRST on wake
-state:    proposed
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  FOUNDRYREBOOTHANDOFF20260906C — READ FIRST on wake (evening session, 2026-09-06)
-prose:    infrastructure/state/items/FOUNDRY_REBOOT_HANDOFF_20260906C.md
 
 ## LANTERN_DEEPS_INJECTION_1 The crystal caverns as an injected underground layer beneath ≤ −40 °C nightside maps — quicktest the cave-map generation, two entrance features (emergence, ruined mineshaft), persistent Deeps, kyber formations
 state:    proposed
