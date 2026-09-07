@@ -160,3 +160,63 @@ TwilightSea→AB_RockyCrags). **Zero collateral damage on the other 20,737 tiles
    `riverTiles 347` against our graph's 308. The import appears to have ADDED to
    pre-existing links rather than replacing them. Measure before the next import;
    a `clearFirst` may be owed.
+
+---
+
+# ⭐ THE WHOLE MAP IS WORKING — 2026-09-07, after the GravTide restart
+
+**Save: `WORLDMAP_V3_seas_2026-09-07.rws`** (13,086,256 bytes). Verified: NEW file
+appeared, `WORLDMAP_V2_merged_2026-09-07.rws` md5 **unchanged**, nothing else in
+`Saves/` written.
+
+## the load — every decision string written before launch PASSED
+
+599 active mods. Dead mods (static ctor / type load) **0 / 0** — GravTide loaded
+clean. Defs discarded **0**. Cross-references **0**. Harmony patch failures **1 =
+baseline**. ConfigErrors **17 = baseline**. Patch operations failed **8 =
+baseline** — *GravTide added none of its own*.
+Both silent-failure strings **ABSENT**: no `No terrain found in biome`, no
+`All weather commonalities were zero` ⇒ the `terrainsByFertility` drafting worked.
+
+**The expected-PRESENT check passed** — all four sea BiomeDefs are live:
+`RUT_TheScald` "the Scald" · `RUT_GreySea` "the Grey Sea" · `RUT_TwilightSea`
+"the Twilight Sea" · `RUT_PropaneLake` "the propane lake"
+(`RUT_NightsideIce` as the control that already worked).
+
+## the import
+
+`stage 1 tiles: rows=21872 applied=21872 skipped=0 unknownBiomes=[]`
+— against last run's `applied=20737` and three unknown biomes.
+Stages 2–6 all ran; `world_commit: True`.
+
+## R36 verification — **0 MISMATCHES** (previous run: 1135)
+
+Live world re-exported and diffed against `world/ASHKARR_WORLDMAP_tiles.csv`:
+**every one of the 21872 tiles matches intent.**
+
+| live census | |
+|---|---:|
+| `RUT_TheScald` | **312** |
+| `RUT_GreySea` | **381** |
+| `RUT_TwilightSea` | **442** |
+| `BMT_FungalForest` | **0** |
+
+## ✅ the river-link question from the last run is ANSWERED — no defect
+
+Last run flagged that we imported 292 river links but the world reported
+`riverEntries 634` / `riverTiles 347`, and asked whether the import ADDS rather
+than replaces. **This run reports 634 / 347 again — identical.** An accumulating
+import would have grown it. ⇒ **the import is idempotent; no `clearFirst` is
+owed.** The 25 extra links are pre-existing world links absent from our CSV, a
+standing difference rather than an import bug.
+
+## what the run sheet still leaves open
+
+- `WORLD_LINT_WATER_HARDCODE_1` — the lint's 1135 `landBiomeSubmerged` findings
+  are a **lint defect, not a map defect** (hard-coded `Ocean || SeaIce`), with the
+  fix recorded. Its `staleMarineMutators 0 → 99` half is filed **UNPROVEN**.
+- The seas render with the vanilla ocean texture ([R37] ship-as-is); colouring
+  them is its own pass alongside `WORLD_RIVER_COLORS_1`.
+- `UNDERWATER_BIOME_SUPPORT_1` — GravTide is now ACTIVE, and its arrival gate is
+  generic (`isWaterBiome`), so the three seas should already be divable.
+  **Untested in play.**
