@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T06:39:49Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-07T06:47:54Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -544,16 +544,6 @@ kind:     task
 blocked:  recon done, not stale: donor Factions_Horrors.xml read (settlementGenerationWeight 1, permanentEnemy already true, allowedArrivalTemperatureRange 0..45 -- warm-gated, not cold); vanilla FactionDef Mechanoid is the right template for 'no settlements, still raids' (hidden=true, no settlementGenerationWeight, raidCommonalityFromPointsCurve drives selection independent of world-map presence) -- Horrors donor has NO raidCommonalityFromPointsCurve at all, meaning its raids likely fire through the mod's OWN storyteller/incident C# (item spec: 'own storyteller + map generation + think trees'), not vanilla's generic faction-vs-points selection. Gating those by nightside/cold reach needs that DLL understood first (unstarted -- separate decompile from EDIBLE_GENEPACK_NATIVE_1's). Real blocker: this item's own dungeon-injection half ('nests/sinkholes/crysalises... on nightside tiles') is explicitly entangled with sibling HORRORWASTES_BIOME_DISSOLVE_1 ('The Horrors content is NOT lost -- it moves to HORRORS_RAIDING_FACTION_1'), and that item's own spec requires an owner-reviewed worldview.py render BEFORE painting the tile reassignment -- not done. Building dungeon content now risks placing it on tiles that land somewhere else post-dissolve. A shallow FactionDef-only patch would also be inert on its own: the frozen Ash'karr world already generated once, so a def change has zero observable effect without live world-editing (bridge-checked: game UP, bridge FREE, but a live settlement-removal now would front-run the same still-pending owner render). KEEP for whoever does the biome-dissolve render pass, or clears the storyteller gating question with the owner directly.
 summary:  - Donor: Horrors (Continued), Mlie.Horrors, ws 3535224844 — FactionDef Horrors,
 prose:    infrastructure/state/items/HORRORS_RAIDING_FACTION_1.md
-
-## HORRORWASTES_BIOME_DISSOLVE_1 Dissolve the HorrorWastes biome: re-biome its 1,711 tiles into neighbors (Deadstone receiving def ruled at the PropaneLakes sitting), re-freeze, re-home 29 cast rows
-state:    proposed  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-blocked:  not stale, real dependency order: this item's own receiving mosaic assigns tiles to RUT_NightsideIce (sectors 1-3 + former CrystalCaverns highland), which does not exist yet as a BiomeDef -- that's NIGHTSIDE_ICE_DEF_1 (filed later, 2026-09-06T22:47:09Z, currently unclaimed), a genuine prerequisite despite being younger in the queue. Both items independently carry an owner-render-before-painting gate (worldview.py) -- neither can be painted blind. Working NIGHTSIDE_ICE_DEF_1's offline half (author the BiomeDef) now, out of strict oldest-first order, since it's the actual next unblocked step in this chain; the paint-and-render halves of both items stay gated on the owner's look. KEEP.
-summary:  - MEASURED: 1,711 HorrorWastes tiles — Deadstone 1,457, South Crags 93, Thornend 61,
-prose:    infrastructure/state/items/HORRORWASTES_BIOME_DISSOLVE_1.md
 
 ## NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1 Ninefold: Patch_GravshipLaunched postfix fires on FAILED launches, feeding Ta'Baa for nothing (code review 2026-09-06)
 state:    doing  (BLOCKED)
