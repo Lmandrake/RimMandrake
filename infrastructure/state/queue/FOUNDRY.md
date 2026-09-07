@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T23:05:10Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-07T23:07:54Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
@@ -1141,5 +1141,5 @@ needs:    offline
 target:   v1
 kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/BIOME_LABEL_CAMPAIGN_NAMES_1.md yet — write one when you have something to say)
+summary:  the symptom
 prose:    infrastructure/state/items/BIOME_LABEL_CAMPAIGN_NAMES_1.md
