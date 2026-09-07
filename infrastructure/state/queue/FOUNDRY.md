@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T03:35:26Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-07T03:58:20Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -386,15 +386,6 @@ target:   v1
 kind:     build
 summary:  Owner, verbatim (filed on the item): "Rather than use the whole Comingo tree
 prose:    infrastructure/state/items/TREE_GRAPHICS_OWNERSHIP_1.md
-
-## KOTORCORE_ABSORPTION_MISSING_TEXTURES_1 8 Absorbed_KotorCore/AdditionalMods files carry pink-placeholder texPaths (validate_patch.py, 13 errors)
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  KOTORCOREABSORPTIONMISSINGTEXTURES1
-prose:    infrastructure/state/items/KOTORCORE_ABSORPTION_MISSING_TEXTURES_1.md
 
 ## MACRO_GENERATOR_V0_1 Macro generator v0: ONE idea per map — chooser + plan + terrain grid, graded on a comparator sheet by the owner (research doc §9.3 step 4)
 state:    doing
@@ -1166,3 +1157,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  OASISMUTATORPATCH1 — the vanilla Oasis mutator, adapted
 prose:    infrastructure/state/items/OASIS_MUTATOR_PATCH_1.md
+
+## KOTORCORE_ADAPTIVESTORAGE_PARENTNAME_1 Absorbed_Kotorcore_AdaptiveStorageFramework_HiddenSmugglingCompartmentPanels.xml: guy762_SecretFloorPanel_BASE ParentName=AdaptiveStorageBase resolves to nothing, def discarded
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## verify
+summary:  Found while closing KOTORCOREABSORPTIONMISSINGTEXTURES1
+prose:    infrastructure/state/items/KOTORCORE_ADAPTIVESTORAGE_PARENTNAME_1.md
