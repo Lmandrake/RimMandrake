@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T04:39:22Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-07T05:17:57Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -190,7 +190,7 @@ summary:  RimStarWars tier (RSW prefix, mandrake.rsw.<modname) — this is
 prose:    infrastructure/state/items/MLIE_FAUNA_ABSORPTION_1.md
 
 ## RIVER_STEAM_ANIMATION_1 Animated steam rising from the rivers (Pyrelands weather visual)
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
@@ -208,7 +208,7 @@ summary:  SHIELDMODSLEVERAGE1 — survey done, scoping (BENCH, 2026-09-02)
 prose:    infrastructure/state/items/SHIELD_MODS_LEVERAGE_1.md
 
 ## STICK_FOOD_INGEST_1 Ingest the stuff-on-a-stick food mod(s) into our own recipe-discovery tree, then retire them
-state:    doing
+state:    doing  (BLOCKED)
 row:      unassigned
 needs:    offline
 target:   v1
@@ -486,6 +486,26 @@ kind:     task
 blocked:  Waves 1-3 verified/scoped clean (wave 1 re-verified live-clean 2026-09-06; wave 2 is MLIE_FAUNA_ABSORPTION_1, doing; wave 3 points at DROID_SYSTEM_BUILD_1). Sole remaining gap: lumi.doorsexpanded retirement needs an owner call (port our own BlastDoorFrameAsyncFix's modDependencies first, or accept its bug returns) - no ruling on file.
 summary:  STARWARSDONORSUNSET1 — retire the remaining third-party Star Wars donors
 prose:    infrastructure/state/items/STARWARS_DONOR_SUNSET_1.md
+
+## RIVER_STEAM_ANIMATION_1 Animated steam rising from the rivers (Pyrelands weather visual)
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     build
+blocked:  Verify agent hung/looped and was stopped by the owner mid-session; left the live ModsConfig.xml swapped to a throwaway 18-mod quicktest list. Recovered: restored the owner's real 603-mod list from the agent's own pre-swap scratchpad backup (verified against ModsConfig.FULL601.bench-backup.xml, only 4 legitimate mod-list deltas since 09-05). Bridge released. Live-observe verify for this item still owed to a fresh session.
+summary:  Pure ambience feature, no gameplay effect, no new art. mandrake.rut.riversteam
+prose:    infrastructure/state/items/RIVER_STEAM_ANIMATION_1.md
+
+## STICK_FOOD_INGEST_1 Ingest the stuff-on-a-stick food mod(s) into our own recipe-discovery tree, then retire them
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+blocked:  Same stuck-agent recovery as RIVER_STEAM_ANIMATION_1 - owner's mod list restored, bridge released. Live craft-proof still owed to a fresh session.
+summary:  STICKFOODINGEST1 — measured ingest scope (BENCH, 2026-09-02)
+prose:    infrastructure/state/items/STICK_FOOD_INGEST_1.md
 
 ## NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1 Ninefold: Patch_GravshipLaunched postfix fires on FAILED launches, feeding Ta'Baa for nothing (code review 2026-09-06)
 state:    doing  (BLOCKED)
