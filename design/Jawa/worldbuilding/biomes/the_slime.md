@@ -18,7 +18,8 @@ In the Rot, nature won: the weapon was digested and only its useful genes kept. 
 weapon won — and victory ruined it as a weapon**: it ingested the entire ecosystem's
 genetic information, was overwhelmed, and the hostile generation/weaponization function
 was overwritten by ordinary biological imperatives — survival, reproduction, and
-maintenance of genetic identity, where its identity IS the archive. *(The third panel —
+maintenance of genetic identity, where its identity IS a living, flowing genetic
+database. *(The third panel —
 where neither side won and the weapon is still fighting — is `assailant_weapon_remnants.md`:
 a raiding faction and the Overdrive site, not a biome.)*
 
@@ -41,7 +42,7 @@ Donor inventory taken in: the all-slime terrain suite (hardened slime f0.1, rich
 f0.4, slime-grass f1.0, slimy mud, liquid slime — every surface takes footprints),
 movement difficulty 4, forage 0.75 raw slime (*"edible. Barely."*), fastest regrow in the
 donor mod (13 d), the empty disease list, the **slime compressor** (ooze pressed into
-usable sandstone — construction here means eating the archive), the slime-in-eyes
+usable sandstone — construction here means eating the database), the slime-in-eyes
 terrain-attack, and the fauna (§4). 🔴 The donor's 15-species vanilla zoo (rat, monkey,
 elephant, rhino, horse…) is **evicted wholesale**.
 
@@ -62,17 +63,17 @@ only reads.
 the dead rivers end — the planet's **inbox**. Everything converges on the terminator:
 the seas sit in it, the rivers drain toward it, the stormwall precipitates onto it,
 dayside runoff and nightside sporefall meet across it. And it is the one strip with no
-thermal violence, where long molecules survive. An archive could keep itself nowhere
-else — chemistry stable, and the whole world's mail delivered to the door.
+thermal violence, where long molecules survive. A body like this could keep itself
+nowhere else — chemistry stable, and the whole world's mail delivered to the door.
 
 ## 3. Driving forces
 
-### The archive, and how it circulates
+### The genetic database, and how it circulates
 
 🔴 **The distributed genome** (owner's ruling): no part of the body holds every gene.
 Information **slurms through sluggish currents** inside the organism, carrying both its
-weaponized imperative and its loyalty to the decayed master. The archive is a
-**circulating library — the shelf you need is somewhere out on the tide.** Every genome
+weaponized imperative and its loyalty to the decayed master. The genetic database
+is a **circulating library — the shelf you need is somewhere out on the tide.** Every genome
 that ever touched the Slime is in circulation: every creature that waded in, every Star
 Wars race that ever visited, every dead thing the rivers delivered for a thousand years.
 
@@ -117,7 +118,7 @@ library's antidote — the two Assailant siblings, pharmacologically entangled.
   champions — the giant trash-eating acanthamoeba, the corrosive Helixien slug, the
   iron-shelled plasmorph. Rendered down or milked, the resistant natives supply the
   resistance economy.
-- **The trace tail** of exotics at 0.001–0.07 commonality is the archive **running
+- **The trace tail** of exotics at 0.001–0.07 commonality is the database **running
   experiments** — recombinations walking around in small numbers, kept if interesting,
   reabsorbed if not.
 
@@ -131,7 +132,7 @@ draining, potable. No meteorological water rain, ever (R-H1).
 
 - The land is a body; walking on it is being read. Movement is punishing, footprints
   always show, and the ground can strike back (slime in the eyes).
-- The archive circulates: any given gene is *somewhere*, never everywhere.
+- The database circulates: any given gene is *somewhere*, never everywhere.
 - Unprotected organics slimify in ~1 week; every resident is resistant or converting.
 - **It feeds you and waters you**: cooked slime is disgusting but fully edible goo, and
   slime-rain floods are potable — a place to fill your belly and your tanks (slime water
@@ -157,7 +158,7 @@ draining, potable. No meteorological water rain, ever (R-H1).
    nor a transformation state is a violation.
 6. 🔴 **No shelf-stable gene extraction** — the machine's genes are taken in place, in
    the open, on the body (§7); a portable or remote extraction route is a violation.
-   The FULL archive is available here (the Rot's local-only limit is the Rot's).
+   The full database is available here (the Rot's local-only limit is the Rot's).
 7. 🔴 **The war-legacy split holds** — the Slime is a *disarmed* end-state of the
    Assailant arsenal; content re-arming it (weapon-generation behavior) is a violation.
 8. 🔴 **The recognizability rule applies**; the Star Wars icon carve-out protects
@@ -187,10 +188,11 @@ draining, potable. No meteorological water rain, ever (R-H1).
 - **Belly and tanks** — endless barely-food, potable flood-water, toxic-water
   distillation feedstock.
 - **Compressed sandstone** — the no-rock economy's answer, one grind at a time.
-- ⭐ **The Throat experiment** (cross-written into `wasteland.md` §10): scoop tons of
-  living archive onto the gravship and pour it down the Glowing Throat — likely killing
-  what you poured, maybe neutralizing a planet-scale hazard, with genuinely unknown
-  results below. The only disposal option that is an experiment rather than a verdict.
+- ⭐ **The Throat experiment** (cross-written into `wasteland.md` §10): scoop tons of the
+  living genetic database onto the gravship and pour it down the Glowing Throat — likely
+  killing what you poured, maybe neutralizing a planet-scale hazard, with genuinely
+  unknown results below. The only disposal option that is an experiment rather than a
+  verdict.
 
 ## 8. Inhabited objects
 
@@ -200,7 +202,7 @@ draining, potable. No meteorological water rain, ever (R-H1).
   conversion rate.
 - **The Helix presence** — survey relics of the Ascendant Helix's completed study, and
   their trade contact for the machine: they come to sell, not to stay. *(The Helix wrote
-  their own ancestry; a living archive holds no more secrets they want.)*
+  their own ancestry; a living genetic database holds no more secrets they want.)*
 - **Wildsteam absence, pointed** — the wild's partisans disapprove of the place
   (bioweapon-mediated lateral gene transfer, against everything nature-carved they hold
   sacred); their pilgrim routes bend around it, and that bend is visible on the world.

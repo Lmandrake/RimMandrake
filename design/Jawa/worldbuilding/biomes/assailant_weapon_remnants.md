@@ -17,7 +17,7 @@ The Assailant bioweapon, left alone too long with nature, met three ends:
 | panel | sheet | what happened |
 |---|---|---|
 | **The Rot** | `the_rot.md` | nature won — the weapon was digested; only useful genes kept |
-| **The Slime** | `the_slime.md` | the weapon won, and victory unmade it — a living archive |
+| **The Slime** | `the_slime.md` | the weapon won, and victory unmade it — a living, flowing genetic database |
 | **The remnants** | *this doc* | **neither side won — the weapon is still fighting**, in two failure modes by energy regime |
 
 The two failure modes are the grammar's own logic (one anomaly, two regimes):

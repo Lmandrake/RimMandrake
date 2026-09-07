@@ -100,7 +100,7 @@ beetle (tilts its ridged back into the fog wind and drinks with its back). So:
 - Nothing here lives on soil; everything lives on **stone-shade real estate** — the
   cold faces, the overhangs, the seep lines. Fertility follows the patch-makers, but
   the *life* follows the shade.
-- The pools are the only reliable standing fresh water on the dayside, so every big
+- The pools are reliable standing fresh water, so every big
   animal on the hot half of the world must come here. The donor's animalDensity 1.5
   was accidentally right — this is pilgrimage density, not abundance.
 
@@ -158,9 +158,9 @@ toll-keepers, no absentee water-lords — the map and factions must never presen
 
 ## 7. Uniquely available
 
-- The only reliable standing fresh water on the dayside — and under the truce, the one
-  place a colonist can stand beside every dayside animal in peace: the best taming,
-  bonding, and observation ground on the planet.
+- Reliable standing fresh water — and under the truce, a
+  place a colonist can stand beside every dayside animal in peace: good taming,
+  bonding, and observation ground.
 - Relic condenser tech: vane arrays and cistern shafts to salvage — or restore. A
   working ancient condenser is a water economy.
 - The landmark loadouts: one oasis holds the **ancient uplink**, one is an animal
@@ -262,8 +262,8 @@ Weather is the engine made visible. The base state is **clear and windy** — th
 sea-wind always runs (§5). The signature weather is **fog at wind-hour**: when the
 damp flow peaks, the high country goes into cloud at ground level, every comb in the
 biome drinks at once, and the biome does its actual living — travel slows, the pools
-rise, the mirrik swarms come out. Rain is rare and gentle when the fog oversaturates;
-never storms, and **never snow** (§6 strips the donor's absurd SnowGentle/SnowHard).
+rise, the mirrik swarms come out. There is no rain here; never storms, and
+**never snow** (§6 strips the donor's absurd SnowGentle/SnowHard).
 Seep oases (§2b) add ground-steam instead of fog — their weather comes from below.
 
 **Sound: an oasis is heard before it is seen.** Wind through the ancient vane arrays

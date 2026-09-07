@@ -61,7 +61,7 @@ mountains fence it. The heart of the dayside's hydrology (§3).
 - 🔴 **Fouled heart, clean breath** (owner's ruling): the Scald is
   **non-potable — fouled, not toxic** — far too much salt and mineral
   gathered in a pan that has boiled forever. But **through the distillation
-  of its constant boiling it produces the cleanest water on the planet upon
+  of its constant boiling it produces pure water upon
   the peaks of its border mountains, to nourish everything everywhere.**
 - **The full chain, named**: the Scald boils fouled → the steam rises clean
   → the border peaks condense it → **the Contagion sterilizes it** (the
@@ -82,9 +82,9 @@ the dung-and-mat economy.**
 
 - **The welcome blankets** (owner): rainbow sheets of thermophile bacteria
   and algae coating everything in the depths, oddly fuzzy, banded by
-  temperature — **the planet's third rainbow**, completing the triptych:
+  temperature — one of the planet's rainbow registers:
   the Scarlands' rainbow lies, the Miasma's hopes, the Scald's is the
-  oldest truth. The mats at the margins are the planet's **pigment
+  oldest truth. The mats at the margins are a **pigment
   source** — rainbow dyes from the most ancient life there is.
 - **The bottom-walkers** (owner): huge creatures walking the crater floor
   at −350 m, where the boil gentles to mere heat — armored, slow,
@@ -131,7 +131,7 @@ the dung-and-mat economy.**
 ## 7. Uniquely available
 
 - ⭐ **The steam-catch** — condensers at the rim's lower vents harvesting
-  the cleanest water on the planet, below the Contagion's line: the tap of
+  distilled water, below the Contagion's line: the tap of
   the world, and the Deepwater Compact's headwater interest (whoever holds
   catch-rights holds the monopoly's source).
 - **Rainbow pigment** — mat-harvest dyes; the artistic economy's raw color

@@ -63,8 +63,8 @@ one family of cold carbon (`the_blue_desert.md`, `the_propane_lakes.md`).
 
 - **The tar arrives and never leaves** — made by fire half a world away,
   collected here, sealed by cold.
-- **The tar preserves** — anoxic, chill, patient: Earth's La Brea at planetary
-  scale and deep-time depth. The pits are an archive (§7).
+- **The tar preserves** — anoxic, chill, patient: it entombs all who fall into it,
+  preserving their hard structures far into the future (§7).
 - **The tar defends** (owner): wonderfully, twice — nothing crosses it
   willingly, and **it can be lit into a terrible smoky horror nothing can
   cross.** From that one fact flows the biome's whole economy (§7b).
@@ -124,7 +124,7 @@ one family of cold carbon (`the_blue_desert.md`, `the_propane_lakes.md`).
 
 ## 7. Uniquely available
 
-- ⭐ **The archive** — excavation as core gameplay: every dig a lottery
+- ⭐ **What the tar keeps** — excavation as core gameplay: every dig a lottery
   across deep time. Bones and hides of ages the bestiary never named,
   sunken machines, sealed casings — and, per the ruling, **armed booby
   traps preserved in perfect working order**. Every dig is treasure or a
@@ -151,7 +151,7 @@ one family of cold carbon (`the_blue_desert.md`, `the_propane_lakes.md`).
   literal reek (owner) — the biome's only industry, law, and light. Their
   caravans (already canon on the Cracked Lands roads) now have a home
   terminus. Everyone at the derricks knows which ponds you don't pump deep.
-- **Player play**: dig the archive, farm the wicks, pump and barrel, read
+- **Player play**: dig the tar, farm the wicks, pump and barrel, read
   the mouse-lines — and never dig past the click you were warned about.
 
 ## 8. Inhabited objects

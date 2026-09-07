@@ -33,10 +33,10 @@ on** (§3 explains what feeds it). Regions: Dune Sea 29, Fever Wood 21, Dew Horn
 17, Salt Gate 16, Grey Sea shore 6. Holds **Bitterleaf** (tile 6645, 29 m,
 27 °C) — the Wildsteam Clan's first coastal and coolest seat.
 
-Donor inventory (Alpha Biomes): three planetary records kept and *explained* —
-**animalDensity 6.5** (the highest anywhere: §4's refugee crowding),
+Donor inventory (Alpha Biomes): three figures kept and *explained* —
+**animalDensity 6.5** (§4's refugee crowding),
 **movementDifficulty 4** (the root-maze and the muck), **diseaseMtbDays 15**
-(the sickest air on Ash'karr: the Working's failures leaking out). Forageability
+(the Working's failures leaking out). Forageability
 1.0 kept. The donor's own phrase **"bio-engineered viruses"** is canonized into
 the watershed story (§3; authorship stays gated with the war's §GM canon —
 players may know the swamp holds engineered plagues without learning whose).
@@ -46,8 +46,8 @@ players may know the swamp holds engineered plagues without learning whose).
 
 The deltas: a salt-crusted, stilt-rooted mangal forest standing in brackish
 channels between a dying sea and the rivers that feed it, under a green-gold
-haze of its own breath. The worst walking, the thickest air, and the most
-crowded water on the planet — because **everything ends up here: the water, the
+haze of its own breath. Walking is hard, the air hangs thick, and the water
+crowds with life — because **everything ends up here: the water, the
 sins it carries, and the life running from the salt.** And threaded through the
 stink, improbably, beauty: rainbow-hued plants of genuine loveliness, young
 animals everywhere, and the stubborn sense that the place is on the verge of
@@ -55,7 +55,7 @@ something.
 
 ## 2. Planetary position
 
-Mid-dayside coastal lowlands, arc 24–66, the mouths of the world's water. The
+Mid-dayside coastal lowlands, arc 18.9–75.0, the mouths of the world's water. The
 reasoned intersection: **river meets brine × the refugee crush × the compost of
 a war.** Two engines, and they are the same engine:
 
@@ -135,7 +135,7 @@ tables are the roster/mechanics item's to tune.)
 - Everything ends up here — water, sins, refugees; density is crowding, not
   plenty.
 - The salt line moves with every surge; no map state is permanent.
-- The air is the sickest on the planet, and the sickness is the Working's
+- The air is thick with sickness, and the sickness is the Working's
   spillage; survival sometimes forges.
 - The young are everywhere, and the young are hope.
 - The rainbow flora is genuinely beautiful and genuinely benign (§6).

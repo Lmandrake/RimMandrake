@@ -155,8 +155,8 @@ _(First pass, verbatim — owner's ruling: unchanged.)_
   maximum contact with an interface, so bodies are **sheets, crusts and plates
   pressed into a boundary layer** — and since the power density is absurdly low, the
   only way to accumulate a usable total is **area and time**. Nightside organisms are
-  measured in hectares and centuries. ⇒ ⭐ **The largest living things on Ash'karr
-  are here, and none of them looks alive.** A ridge is an organism. A boulder field
+  measured in hectares and centuries. ⇒ ⭐ **Organisms here grow to enormous scale,
+  and none of them looks alive.** A ridge is an organism. A boulder field
   is one organism. The owner's "truly huge creatures everywhere" is most defensible
   right here, because size is not a display or a defence — it is the *only* way to
   make the arithmetic work.
@@ -276,7 +276,8 @@ Standing weather: **aurora-clear** (interior), ablation drift (margins), rime-fa
 - ⭐ **What the ice gives up** — calving delivers inclusions: machine parts of the
   terramanufacture, cocoons, pods, the well-provisioned dead. Prospecting here is waiting
   for the ice to move, or making it.
-- **Perfect, indefinite preservation** — the planet's archive and hiding place; canon puts
+- **Perfect, indefinite preservation** — acting like a deep record of all who fell here,
+  so long as they survive the brutal cold, and a hiding place besides; canon puts
   four **Free Droid Enclave** seats out here, cold on purpose.
 - **Cold as a resource** — free superconduction, refrigeration, heat rejection.
 - **The electrojet tap** works here too (`the_propane_lakes.md` §7), weaker than at the

@@ -124,7 +124,6 @@ hydrocarbon- or ammonia-metabolic, cold-loving (R-H10), not an icy dayside analo
   agitated by pumping, attacking pawns and pipe on sight.
 - **The Frostmite** (donor 1.0): the corpse-sweeper working the Blue Desert's fallen dead,
   rolled downhill — the pole's undertaker.
-- **The Blizzarisk**: hyperweave webs strung across the ice — the one luxurious harvest.
 - **The Slurrypede** — kept, re-read: a bio-mechanoid "built to feed prisoners
   efficiently" is **lab fauna**, the containment facility's feeder, still running.
 - **Lab guardians** (injected): the mechanoids and ancient dangers that return as you
@@ -174,7 +173,7 @@ hydrocarbon- or ammonia-metabolic, cold-loving (R-H10), not an icy dayside analo
 
 ## 7. Uniquely available
 
-- **Fuel by the pipe-length** — the biggest single deposit on the planet, refueled in
+- **Fuel by the pipe-length** — a single vast deposit, refueled in
   place (ruled), priced entirely in cold survival.
 - ⭐ **The submerged adventure** — the ship lowered into fuel (ruled); what lies on the
   bottom is §8.
@@ -183,7 +182,7 @@ hydrocarbon- or ammonia-metabolic, cold-loving (R-H10), not an icy dayside analo
   footprint, extremely cheap in time and materials** — and surge-prone: the sky that feeds
   it fries unprotected circuits on a reconnection night.
 - **Rime-nodule euphoric** — a mild drug that grows overnight.
-- **Crystal wood, hyperweave silk.**
+- **Crystal wood.**
 - **The ending** — the one biome with a *before and after* (§8).
 
 ## 8. Inhabited objects

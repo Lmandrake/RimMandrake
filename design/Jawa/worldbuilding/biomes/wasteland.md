@@ -188,8 +188,8 @@ shuffling deck, and this is it.
 
 ## 7. Uniquely available
 
-- **Preservation** — the planet's larder and archive: cold, sterile, salted; nothing rots.
-  With the caveat in §5.
+- **Preservation** — cold, sterile, salted: nothing here rots, so whatever is buried
+  stays exactly as it fell. With the caveat in §5.
 - **Salt, glass, brine minerals** — the basins' concentrate.
 - 🔑 **War salvage priced in dose** — ground nobody can live on is ground nobody has
   stripped. The dive structure: vac suits, radiation-scrubbing drugs, the dose budget as
@@ -200,8 +200,8 @@ shuffling deck, and this is it.
   salvage-within-salvage: suit, tools, and the half-extracted core still in its grips.
 - **Excretor refining** — kept herds that hand back concentrated material as bezoars.
 - **Radiothermal heating** — the living furnace, at the living furnace's price.
-- 🔴 **Plant-vault ore — the cursed prize.** The sequestration flora manufactures the
-  richest concentrated fuel deposits on the planet. Mining them is exactly what the Junkers
+- 🔴 **Plant-vault ore — the cursed prize.** The sequestration flora manufactures
+  densely concentrated fuel deposits. Mining them is exactly what the Junkers
   do and exactly what reopens the wound.
 - **The tipping fee** — the one biome with an income stream attached to its awfulness.
 - **The exhumation lottery** — post-storm prospecting, the map re-dealt.
@@ -212,7 +212,7 @@ shuffling deck, and this is it.
 
 It is usually the Junkers who are foolish enough to venture in, extracting usable nuclear
 (or worse) fuel in specially adjusted warcaskets — and dying at it more often than anyone.
-They **claim ownership of the planet's largest dump** and charge for the *rite* of dropping
+They **claim ownership of the dump** and charge for the *rite* of dropping
 waste here, making meager credit off a claim that is legally absurd and universally honored,
 because nobody else wants to enforce anything in a Wasteland.
 
@@ -286,7 +286,7 @@ Junkers refuse and refute all of it.
      could be **how the players breach the sealed research station holding active
      Assailants.**
   5. **The Slime experiment** (owner, 2026-09-06 — `the_slime.md` §7): scoop tons of the
-     living archive onto the gravship and pour it down the Throat — likely killing what
+     living genetic database onto the gravship and pour it down the Throat — likely killing what
      you poured, maybe neutralizing the pit, with genuinely unknown results below. The
      only option that is an experiment rather than a verdict.
 

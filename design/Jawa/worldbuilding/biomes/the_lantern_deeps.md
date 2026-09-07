@@ -155,7 +155,7 @@ sand piles warn; the caverns grumble; Geonosian sonic does not trigger it. The h
   (owner); `CRYSTAL_MODS_INGEST_1` examines ingesting that mod so every crystal harvest
   lives in one place.
 - **The mindstone** — the rarest find, and the seed of a new race (§8).
-- **The dead's gear** — the best loot on the planet, sometimes still moving.
+- **The dead's gear** — excellent loot, sometimes still moving.
 - **Mushroom logs, lace cloth, glow-fungi** — the donor's cave economy.
 
 ## 8. Inhabited objects and the plot that lives down here (owner-authored, 2026-09-06)

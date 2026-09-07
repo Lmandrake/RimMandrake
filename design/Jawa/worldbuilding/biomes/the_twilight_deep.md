@@ -42,8 +42,8 @@ work the columns, something fast hunts the dark between them, an enormous
 placid gardener tends the roof — and along the bottom run **rivers that look
 dry**: mud-bedded channels where heavier water flows invisibly, carving banks
 like any river anywhere. And on those banks, **lamplight**: the Deepwater
-Compact's dwellings, tended plots, and moored instruments. The planet's only
-crowded water — and it turns out somebody has been keeping it.
+Compact's dwellings, tended plots, and moored instruments. Crowded water,
+for once — and it turns out somebody has been keeping it.
 
 ## 2. Planetary position
 
@@ -66,7 +66,7 @@ marine ecosystem in the world, in one lidded bowl, at permanent sunset.
   means sinking with it — and their banks are the richest ground in the
   sea. Rivers at the bottom of a sea: the planet's love of lane-travel,
   one more time.
-- **Abundance as the rule** (owner): the one biome allowed to be crowded —
+- **Abundance as the rule** (owner): crowded, for once —
   because it holds ALL the ordinary life the planet has left, in one basin,
   sharing.
 
