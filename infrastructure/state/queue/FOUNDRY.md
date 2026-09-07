@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T00:02:49Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-07T00:05:41Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -161,15 +161,6 @@ target:   v1
 kind:     build
 summary:  Full spec: design/Jawa/worldbuilding/dungeonsarcspec.md §3. Summary:
 prose:    infrastructure/state/items/VAULT_DUNGEON_BUILD_1.md
-
-## RIMMANDRAKE_PITS_BUILD_1 Build RimMandrake Pits: core framework mod (dig stages, terrain-mimic covers, mass triggers, struggle escape, fitting family, holding-platform pit cell) + campaign layer; first step is the spawn-mass quicktest matrix on the 22s minimal list
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-summary:  Full specs, both ruled by the owner 2026-08-30: design/Jawa/coveredpittrapsspec.md
-prose:    infrastructure/state/items/RIMMANDRAKE_PITS_BUILD_1.md
 
 ## TILE_STRUCTURE_DESIGNS_1 Make and improve the promise/whisper structure designs per the roster (22+22): rimplace templates + GenStep_RimplacePlan responder (VERIFY terrain/roof ordering); coverage lint = no promise without responder
 state:    doing
@@ -440,15 +431,6 @@ target:   v1
 kind:     task
 summary:  MAPGENPAINTERV11 — make the offline terrain painter draw like a landscape, not a diagram
 prose:    infrastructure/state/items/MAPGEN_PAINTER_V1_1.md
-
-## MODSET_BUILDER_RESTORE_STALE_1 MODSET_BUILDER_RESTORE_STALE_1
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     bug
-summary:  (no items/MODSET_BUILDER_RESTORE_STALE_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/MODSET_BUILDER_RESTORE_STALE_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -1175,3 +1157,13 @@ kind:     task
 thin:     no ## criteria
 summary:  - Deep Sand terrain: pools of sand you cannot walk over (impassable like deep water,
 prose:    infrastructure/state/items/SAND_SWIMMERS_MOD_1.md
+
+## PITCELL_PRISONER_BED_BRIDGE_GAP_1 PITCELL_PRISONER_BED_BRIDGE_GAP_1
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     feature
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/PITCELL_PRISONER_BED_BRIDGE_GAP_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PITCELL_PRISONER_BED_BRIDGE_GAP_1.md
