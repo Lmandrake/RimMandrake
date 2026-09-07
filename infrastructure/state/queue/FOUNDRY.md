@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T18:57:29Z (the last event's own timestamp, not the render clock)
-game:  LOADING   bridge: BENCH
+as-of: 2026-09-07T19:11:03Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: BENCH
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -1063,3 +1063,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/GEOTHERMAL_DENSITY_FIELD_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/GEOTHERMAL_DENSITY_FIELD_1.md
+
+## ARMOURY_CROSSFILE_ADD_REPLACE_ORDER_1 Armoury_RangedDamage.xml's Replace on OuterRim_Proj_ProtonArtillery/ProtonMortar damageAmountBase runs before Turrets_DamageDoctrine.xml's Add creates it - fails every load, leaves both projectiles untuned
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     bug
+thin:     no ## spec, no ## criteria
+summary:  finding
+prose:    infrastructure/state/items/ARMOURY_CROSSFILE_ADD_REPLACE_ORDER_1.md
