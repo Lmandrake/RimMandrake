@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T06:46:10Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-07T07:01:51Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -392,3 +392,13 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/SUMP_MECHANICS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SUMP_MECHANICS_1.md
+
+## PYRELANDS_MECHANICS_1 Pyrelands C# kit: migrating burn-line presence + burn intelligence, fire-hawk twig-carrying, furnace-beast thermal circuit (heat aura, bed-down ignition), flame-harvest + fire-raid events (unplanned-burn detection), ruled weather table - spec the_pyrelands.md
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/PYRELANDS_MECHANICS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/PYRELANDS_MECHANICS_1.md
