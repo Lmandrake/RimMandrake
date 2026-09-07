@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T08:28:32Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-07T08:42:09Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -441,6 +441,15 @@ kind:     task
 summary:  MAPGENPAINTERV11 — make the offline terrain painter draw like a landscape, not a diagram
 prose:    infrastructure/state/items/MAPGEN_PAINTER_V1_1.md
 
+## DROID_FDE_GOODWILL_CAP_1 Free Droid Enclaves goodwill cap via GoodwillSituationDef (spec: restraining_bolt_technical.md)
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  Implement design/Jawa/worldbuilding/restrainingbolttechnical.md's "Build note"
+prose:    infrastructure/state/items/DROID_FDE_GOODWILL_CAP_1.md
+
 # BLOCKED — something is WRONG and someone must act
 
 ⚠️ Blocked is not the same as waiting for a window. These need an action, not the passage of time.
@@ -776,16 +785,6 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/DROID_FDE_KINDS_REPOINT_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/DROID_FDE_KINDS_REPOINT_1.md
-
-## DROID_FDE_GOODWILL_CAP_1 Free Droid Enclaves goodwill cap via GoodwillSituationDef (spec: restraining_bolt_technical.md)
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  (no items/DROID_FDE_GOODWILL_CAP_1.md yet — write one when you have something to say)
-prose:    infrastructure/state/items/DROID_FDE_GOODWILL_CAP_1.md
 
 ## DROID_PROTOCOL_TRADE_ADVANTAGE_1 Protocol droid in the trade party shifts prices both ways; none on your side is a penalty
 state:    proposed
