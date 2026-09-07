@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T18:20:25Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-07T18:29:47Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
-The first heading below is what `rimflow next --seat BENCH` returns. This file and that command call the same function, so they cannot disagree.
-
-## BIOME_FREEZE_FABLE_REVIEW_1 Full-scale Fable review of ALL biomes together before the freeze — temps, physics, weather, precipitation, dust/sand/ash, fuel/wood/animal/meat/growth, diseases — BLOCKED until every biome sheet is finished; pre-assignment, not final check-out
-state:    ready
-row:      unassigned
-needs:    owner
-target:   v1
-kind:     task
-summary:  BIOMEFREEZEFABLEREVIEW1 — full-scale Fable review of ALL biomes together, before the freeze
-prose:    infrastructure/state/items/BIOME_FREEZE_FABLE_REVIEW_1.md
+Nothing is offered. That is a legitimate answer — check WAITING and BLOCKED below before concluding there is no work.
 
 # IN PROGRESS
 
@@ -35,6 +26,15 @@ target:   v1
 kind:     task
 summary:  Full creature-art review sheet, per design/Jawa/fauna/creatureartdecisions.json
 prose:    infrastructure/state/items/CREATURE_ART_REVIEW_SHEET_1.md
+
+## BIOME_FREEZE_FABLE_REVIEW_1 Full-scale Fable review of ALL biomes together before the freeze — temps, physics, weather, precipitation, dust/sand/ash, fuel/wood/animal/meat/growth, diseases — BLOCKED until every biome sheet is finished; pre-assignment, not final check-out
+state:    doing
+row:      unassigned
+needs:    owner
+target:   v1
+kind:     task
+summary:  BIOMEFREEZEFABLEREVIEW1 — full-scale Fable review of ALL biomes together, before the freeze
+prose:    infrastructure/state/items/BIOME_FREEZE_FABLE_REVIEW_1.md
 
 # BLOCKED — something is WRONG and someone must act
 
@@ -431,3 +431,53 @@ kind:     task
 thin:     no ## spec, no ## verify, no ## criteria
 summary:  (no items/SCALD_MECHANICS_1.md yet — write one when you have something to say)
 prose:    infrastructure/state/items/SCALD_MECHANICS_1.md
+
+## ASHKARR_RIVER_LEDGER_1 Author the lore river ledger: every river named, source-course-fate, built on R1's Scald outflow -- R18 step 1, unblocks the assignment pass
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/ASHKARR_RIVER_LEDGER_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/ASHKARR_RIVER_LEDGER_1.md
+
+## POISON_FOREST_REPASS_1 poison_forest.md second pass: MEASURED block, weather table, R13's chemical venting, struck phrasing removed
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/POISON_FOREST_REPASS_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/POISON_FOREST_REPASS_1.md
+
+## DONOR_DEFNAME_RECONCILE_1 Reconcile ten shipping names that differ from their def labels (listed in _freeze_matrix.csv)
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/DONOR_DEFNAME_RECONCILE_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/DONOR_DEFNAME_RECONCILE_1.md
+
+## LANES_DOCTRINE_PARAGRAPH_1 One paragraph in the grammar README naming the lanes motif: boughways, causeways, root-roads, pillar navigation, oasis strings
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/LANES_DOCTRINE_PARAGRAPH_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/LANES_DOCTRINE_PARAGRAPH_1.md
+
+## RAKATAN_LEGACY_INDEX_1 Rakatan engineered-legacy GM index: quickgrass, scaria, smart metal, the Webwork question, the Scald's makers
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/RAKATAN_LEGACY_INDEX_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/RAKATAN_LEGACY_INDEX_1.md

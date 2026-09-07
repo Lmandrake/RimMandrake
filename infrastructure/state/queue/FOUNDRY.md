@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T18:20:25Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-07T18:29:47Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -406,7 +406,7 @@ summary:  Prefix captures state = (parent.Spawned && comp.CanLaunch() && destina
 prose:    infrastructure/state/items/NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1.md
 
 ## CODEX_PARALLEL_WORKERS_1 N-worker codex exec queue with receiving-agent AGENTS.md prose + grumpiness detector reading rollout rate_limits; own CODEX_HOME per worker
-state:    doing  (BLOCKED)
+state:    doing
 row:      unassigned
 needs:    offline
 target:   v1
@@ -590,16 +590,6 @@ kind:     bug
 blocked:  fixed source-side (572413c0, lastLaunchTick gate), adversarially reviewed CLEAN; live PROVE/EXPECT quicktest still owed to a game-up session
 summary:  Prefix captures state = (parent.Spawned && comp.CanLaunch() && destination within range) using the same check…
 prose:    infrastructure/state/items/NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1.md
-
-## CODEX_PARALLEL_WORKERS_1 N-worker codex exec queue with receiving-agent AGENTS.md prose + grumpiness detector reading rollout rate_limits; own CODEX_HOME per worker
-state:    doing  (BLOCKED)
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-blocked:  dependency satisfied, CODEX_HOME piece done as a side effect; N-worker queue + grumpiness detector unbuilt, needs owner ruling on queue-vs-no-queue per today's Opus review
-summary:  - Architecture A from the design: a request-queue directory driven by N parallel one-shot
-prose:    infrastructure/state/items/CODEX_PARALLEL_WORKERS_1.md
 
 ## DROID_FDE_KINDS_REPOINT_1 Repoint the 4 Jawa_Droid_* FDE kinds and FDE droid backstories onto Droidworks races (fix the generator)
 state:    doing  (BLOCKED)
@@ -1052,3 +1042,33 @@ kind:     bug
 thin:     no ## spec, no ## criteria
 summary:  finding
 prose:    infrastructure/state/items/ARMOURY_DECLARER_ATTRIBUTION_FLIP_1.md
+
+## SCALD_RIVER_REPAINT_1 Redirect the Scald's rivers outward on the painted worldmap to match R1 -- R18 step 2, blocked on ASHKARR_RIVER_LEDGER_1, verify tile-by-tile
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/SCALD_RIVER_REPAINT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/SCALD_RIVER_REPAINT_1.md
+
+## BLIZZARISK_DONOR_CUT_1 Cherry Picker cut of the Blizzarisk donor def -- R20, owner: donor creature not our canon, remove it from the game
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/BLIZZARISK_DONOR_CUT_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/BLIZZARISK_DONOR_CUT_1.md
+
+## GEOTHERMAL_DENSITY_FIELD_1 Geothermal vent/geyser density field: high at dayside mountain ranges, decaying with distance, zero at the terminator -- R12, stop geysers spawning on every map
+state:    proposed
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+thin:     no ## spec, no ## verify, no ## criteria
+summary:  (no items/GEOTHERMAL_DENSITY_FIELD_1.md yet — write one when you have something to say)
+prose:    infrastructure/state/items/GEOTHERMAL_DENSITY_FIELD_1.md
