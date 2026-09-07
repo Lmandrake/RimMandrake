@@ -83,6 +83,14 @@ TIERS = {
         "want": [BRIDGE, "mandrake.rm.pits"],
         "dlc": False,
     },
+    "graffiti": {
+        "why": "Prove mandrake.rm.graffiti + mandrake.rm.sacredgraffiti load "
+               "clean and the absorbed vandal spree mechanic runs, with "
+               "Mlie.GraffitiMod already retired and nothing else on the "
+               "list that could explain a failure.",
+        "want": [BRIDGE, "mandrake.rm.graffiti", "mandrake.rm.sacredgraffiti"],
+        "dlc": False,
+    },
     "bench": {
         "why": "RimBridge + our mods + the smallest content set that can answer "
                "the open balance questions: saber vs vibro vs armour, ion vs "

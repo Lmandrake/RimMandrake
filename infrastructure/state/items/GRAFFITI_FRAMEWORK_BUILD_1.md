@@ -218,3 +218,53 @@ Both `Graffiti.csproj` and `SacredGraffiti.csproj` rebuild clean, 0/0. Not
 deployed (game is up), not live-verified — same content-gated blocker as
 above: nothing fires this reaction path until a real reaction ThoughtDef
 exists to attach.
+
+## 2026-09-06 (FOUNDRY) — the absorbed vandal spree proved live, and its own defect fixed
+
+Added a `graffiti` tier to `modset_builder.py` (`mandrake.rm.graffiti` +
+`mandrake.rm.sacredgraffiti` + bridge/Core/Harmony, 5 mods) so this could be
+tested in isolation. Rebuilt both `.csproj`s (0/0), deployed both
+assemblies — the 2026-09-02 pass's C# had never actually reached the live
+`Mods/` folder (game was mid-restart then); confirmed via `deploy_custom_mods.py`
+reporting `~ Assemblies/*.dll` on this pass, not "in sync". `0` config
+errors, `0` crossref errors on a fresh load of the 5-mod tier (an unrelated
+`MissingMethodException` at line 54 of `Player.log` fires during RimWorld's
+own About.xml-metadata scan of all 1346 installed mods, before any Def
+loading begins — not caused by, or specific to, either of ours).
+
+**Live-forced the vandal spree** (`Actions\Mental state...\RM_GraffitiPaintingSpreeState`,
+a `ToolMapForPawns` debug leaf) on a quicktest colonist next to a spawned
+wall, then drove `step_game_ticks` through the whole spree.
+
+🔴 **Found and fixed a real, previously-unproven defect: the absorbed spree
+NEVER placed a single mark.** `JobDriver_PaintGraffiti` ran correctly
+(goto wall, face it, call `FilthMaker.TryMakeFilth` every 250 ticks) for
+the pawn's entire ~20,000-tick mental-break duration and produced zero
+filth. Root-caused via `mcp__rimsage` against `FilthMaker.CanMakeFilth`/
+`TerrainAcceptsFilth`: `RM_BaseGraffiti`'s `<placementMask>Any</placementMask>`
+(`FilthSourceFlags.Any = 0xF`, all four bits) is read as a REQUIREMENT the
+terrain's own `filthAcceptanceMask` must fully cover
+(`(terrainMask & placementMask) == placementMask`), not "accepted from any
+source" — the exact opposite of the author's evident intent. No real
+`TerrainDef` declares all four flags (`Terrain_Natural.xml` and
+`Terrain_Road.xml` both declare only `Unnatural`), so the mark could never
+land on ANY terrain, ever. **Fixed** to `<li>Unnatural</li>` — the same
+value vanilla's own closest analog (`Filth_Trash`, a man-made mess) uses.
+Rebuilt (XML-only, no recompile needed), redeployed, restarted the
+`graffiti` tier fresh, re-ran the identical repro: **10 `RM_Graffiti_Vandal`
+marks appeared** across the map within ~9000 ticks, scattered near several
+different walls the JoyGiver found on repeat job cycles — not just the one
+originally spawned. Screenshot: `graffiti_vandal_marks_fixed_2026-09-06.png`.
+
+**This closes the absorbed spree mechanism's live-proof gap** carried since
+2026-08-31/09-02. The `ThoughtWorker_ViewedGraffitiMark` and `BreachBiasHook`
+mechanisms remain unexercised live — both still need at least one real
+content def with `viewerReactionThought`/`breachLure` set, which is
+content-authoring, held to the same owner-voice boundary the last three
+passes drew (spec text is written, but committing ~34 art-dependent
+ThingDefs before the art itself exists would ship broken/missing-texture
+content — not attempted). Restored the owner's mod list from the actual
+pre-swap backup (verified 598 mods both before and after, matching
+`ModsConfig.FULL.LATEST.xml`) — the `modset_builder.py --restore` bug this
+same session fixed under `MODSET_BUILDER_RESTORE_STALE_1` is exactly why
+that comparison was worth making. Left `doing` — content is still owed.

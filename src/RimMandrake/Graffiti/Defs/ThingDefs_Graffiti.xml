@@ -21,8 +21,24 @@
     <altitudeLayer>BuildingOnTop</altitudeLayer>
     <useHitPoints>false</useHitPoints>
     <drawerType>MapMeshAndRealTime</drawerType>
+    <!-- 🔴 REQUIRED, and measured live 2026-09-06: placementMask is a
+         REQUIREMENT the terrain's own filthAcceptanceMask must fully cover
+         (FilthMaker.TerrainAcceptsFilth: (terrainMask & placementMask) ==
+         placementMask), not "accepted from any source" - so the previous
+         <placementMask>Any</placementMask> (all 4 FilthSourceFlags bits)
+         demanded a terrain that accepts EVERY source category, which no
+         real TerrainDef does (Natural and Road both declare only
+         Unnatural). Proved live: a colonist spent an entire mental-break
+         spree (~20000 ticks, dozens of TryMakeFilth calls every 250 ticks
+         per JobDriver_PaintGraffiti) painting at a spawned wall and never
+         once produced a mark. Unnatural matches vanilla's own closest
+         analog for a man-made mess (Filth_Trash, Data/Core/Defs/
+         ThingDefs_Misc/Filth_Various.xml) and is exactly what both tested
+         terrains accept. -->
     <filth>
-      <placementMask>Any</placementMask>
+      <placementMask>
+        <li>Unnatural</li>
+      </placementMask>
       <cleaningSound>Interact_CleanFilth</cleaningSound>
       <rainWashes>true</rainWashes>
       <cleaningWorkToReduceThickness>1200</cleaningWorkToReduceThickness>
