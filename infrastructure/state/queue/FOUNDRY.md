@@ -7,8 +7,8 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T03:23:00Z (the last event's own timestamp, not the render clock)
-game:  UP   bridge: FOUNDRY
+as-of: 2026-09-07T03:25:00Z (the last event's own timestamp, not the render clock)
+game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
@@ -179,15 +179,6 @@ target:   v1
 kind:     build
 summary:  Per the doc's rosters and §7.2 shared-art batching:
 prose:    infrastructure/state/items/LIVESTOCK_STARTER_TRIO_1.md
-
-## FORSAKEN_CRAGS_PREDATORS_BUILD_1 Build Cindermare + Skarnix, wild AB_RockyCrags threat pair
-state:    doing
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     build
-summary:  1. Cindermare (moornakopt1.png) — wild threat, ABRockyCrags. No mouth
-prose:    infrastructure/state/items/FORSAKEN_CRAGS_PREDATORS_BUILD_1.md
 
 ## HELIX_TELLUROX_BUILD_1 Build Tellurox, Ascendant Helix labour-line livestock
 state:    doing
