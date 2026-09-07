@@ -7,21 +7,12 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T02:46:42Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-07T02:55:54Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
 
 The first heading below is what `rimflow next --seat FOUNDRY` returns. This file and that command call the same function, so they cannot disagree.
-
-## WEAPONS_DONOR_RETIREMENT_1 Retire the 6 weapon donor packs now that mandrake.rsw.armoury absorbed their content
-state:    ready
-row:      unassigned
-needs:    game-up
-target:   v1
-kind:     build
-summary:  Retire the 6 weapon donor packs — 1 of 6 broke the owner's live game, reverted
-prose:    infrastructure/state/items/WEAPONS_DONOR_RETIREMENT_1.md
 
 ## FORSAKEN_CRAGS_PREDATORS_BUILD_1 Build Cindermare + Skarnix, wild AB_RockyCrags threat pair
 state:    ready
@@ -143,6 +134,15 @@ target:   v1
 kind:     task
 summary:  design/Jawa/worldbuilding/colonyvisibilitystat.md, specifically
 prose:    infrastructure/state/items/COLONY_VISIBILITY_BUILD_1.md
+
+## WEAPONS_DONOR_RETIREMENT_1 Retire the 6 weapon donor packs now that mandrake.rsw.armoury absorbed their content
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     build
+summary:  Retire the 6 weapon donor packs — 1 of 6 broke the owner's live game, reverted
+prose:    infrastructure/state/items/WEAPONS_DONOR_RETIREMENT_1.md
 
 ## SETTLEMENT_VISIT_LOOP_1 Inhabited visit loop: peaceful entry to named settlements, manifest, teardown, casing persistence
 state:    doing
@@ -484,6 +484,16 @@ kind:     task
 blocked:  code CLEAN/deployed; threat-point Prefix + tile-memory round trip need a live game session (batching, not restarting solo)
 summary:  design/Jawa/worldbuilding/colonyvisibilitystat.md, specifically
 prose:    infrastructure/state/items/COLONY_VISIBILITY_BUILD_1.md
+
+## WEAPONS_DONOR_RETIREMENT_1 Retire the 6 weapon donor packs now that mandrake.rsw.armoury absorbed their content
+state:    doing  (BLOCKED)
+row:      unassigned
+needs:    game-up
+target:   v1
+kind:     build
+blocked:  validate_patch.py --defs (Data+Mods+Workshop+Armoury) re-run clean: 13 errors, all pre-existing KOTORCORE_ABSORPTION_MISSING_TEXTURES_1 findings, no new fallout. Sole remaining criterion (guy762.mm.kotorcore retirement) still gated on parked DROID_SYSTEM_BUILD_1 — DROID_KOTORDROIDS_PORT_WAVE1_1's Site 1 (Droidworks Need_Power port) still open. Not forcing through solo per prior session's own note.
+summary:  Retire the 6 weapon donor packs — 1 of 6 broke the owner's live game, reverted
+prose:    infrastructure/state/items/WEAPONS_DONOR_RETIREMENT_1.md
 
 ## NINEFOLD_LAUNCH_POSTFIX_FALSE_FIRE_1 Ninefold: Patch_GravshipLaunched postfix fires on FAILED launches, feeding Ta'Baa for nothing (code review 2026-09-06)
 state:    doing  (BLOCKED)
