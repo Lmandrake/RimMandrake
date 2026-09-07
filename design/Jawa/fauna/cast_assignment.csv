@@ -86,35 +86,35 @@ AB_MycoticJungle,BMT_Swarmcaller,swarmcaller,Biomes! Polluted Lands,med,1,0.4,0.
 AB_MycoticJungle,Bursa,bursa,Star Wars Animal Collection (Continued),large,2.5,0.18,0.882,0.118,0.663,ours,wildlife,0
 AB_MycoticJungle,DA_BeardedTroll,bearded troll,Dark Ages : Beasts and Monsters,large,2,0.18,0.8684,0.1316,0.6,foreign,wildlife,0
 AB_MycoticJungle,GR_Thrumbochicken,thrumbochicken,Vanilla Genetics Expanded,huge,3,0.0663,0.8682,0.1318,0.792,dormant,wildlife,0
-HorrorWastes,Neebray,neebray,Star Wars Animal Collection (Continued),tiny,0.20000000298023224,1.0,0.8075,0.1925,0.605,ours,wildlife,0
-HorrorWastes,GR_Spidersnake,spidersnake,Vanilla Genetics Expanded,tiny,0.25,1.0,0.7936,0.2064,0.69,dormant,wildlife,0
-HorrorWastes,AA_Skyeel,arcturan sky eel,Alpha Animals,tiny,0.25,1.0,0.7215,0.2785,0.473,dormant,wildlife,0
-HorrorWastes,GraniteSlug,granite slug,Star Wars Animal Collection (Continued),tiny,0.20000000298023224,1.0,0.7987,0.2013,0.605,ours,wildlife,0
-HorrorWastes,AA_CrystalMit,crystalmit,Alpha Animals,small,0.5,0.7,0.6368,0.3632,0.621,ours,wildlife,0
-HorrorWastes,GR_Chickenlizard,chickenlizard,Vanilla Genetics Expanded,small,0.30000001192092896,0.7,0.8063,0.1937,0.408,dormant,wildlife,0
-HorrorWastes,AA_PebbleMit,pebblemit,Alpha Animals,small,0.5,0.7,0.8913,0.1087,0.554,ours,wildlife,0
-HorrorWastes,Mynock,mynock,Star Wars Animal Collection (Continued),small,0.5,0.7,0.8616,0.1384,0.613,ours,wildlife,0
-HorrorWastes,AA_AuroraSylph,Aurora sylph,Alpha Animals,small,0.5,0.7,0.8513,0.1487,0.413,ours,wildlife,0
-HorrorWastes,AA_GreenGoo,green goo,Alpha Animals,small,0.5,0.7,0.8299,0.1701,0.413,ours,wildlife,0
-HorrorWastes,AA_MegaLouse,megalouse,Alpha Animals,small,0.5,0.7,0.7126,0.2874,0.713,ours,wildlife,0
-HorrorWastes,AA_FungalHusk,fungal husk,Alpha Animals,med,1,0.4,0.9248,0.0752,0.575,dormant,wildlife,0
-HorrorWastes,GR_Boomsnake,boomsnake,Vanilla Genetics Expanded,med,1.5,0.4,0.9116,0.0884,0.438,dormant,wildlife,0
-HorrorWastes,GR_Snakecat,snakecat,Vanilla Genetics Expanded,med,1.5,0.4,0.8144,0.1856,0.588,dormant,wildlife,0
-HorrorWastes,GR_Muffalorat,muffalorat,Vanilla Genetics Expanded,med,1,0.4,0.7843,0.2157,0.425,dormant,wildlife,0
-HorrorWastes,Maalraas,maalraas,Star Wars Animal Collection (Continued),large,2,0.18,0.9143,0.0857,0.822,ours,wildlife,0
-HorrorWastes,BMT_FrostweaverSpider,frostweaver,Biomes! Caverns,large,2.4000000953674316,0.18,0.745,0.255,0.735,dormant,wildlife,0
-HorrorWastes,AA_BoulderMit,bouldermit,Alpha Animals,huge,4,0.05,0.9758,0.0242,0.733,ours,wildlife,0
-HorrorWastes,AA_EngorgedTentacularAberration,engorged tentacular aberration,Alpha Animals,SUPER,6,0.008,0.7309,0.2691,0.65,dormant,wildlife,0
-HorrorWastes,WasteRat,waste rat,Biotech,small,0.30000001192092896,0.7,0.9784,0.0216,0.558,dormant,wildlife,0
-HorrorWastes,BMT_CrystalFairyMole,crystal fairy mole,Biomes! Caverns,med,0.8600000143051147,0.4,0.5093,0.4907,0.422,ours,wildlife,0
-HorrorWastes,GR_Molebear,molebear,Vanilla Genetics Expanded,med,1,0.4,0.8753,0.1247,0.575,dormant,wildlife,0
-HorrorWastes,GR_Bearalope,bearalope,Vanilla Genetics Expanded,med,1.5,0.4,0.8751,0.1249,0.588,dormant,wildlife,0
-HorrorWastes,GR_Bearffalo,bearffalo,Vanilla Genetics Expanded,med,1.5,0.4,0.8595,0.1405,0.438,dormant,wildlife,0
-HorrorWastes,FeralGrazer,feral grazer,Star Wars Animal Collection (Continued),large,2,0.18,0.8138,0.1862,0.51,ours,wildlife,0
-HorrorWastes,MA_Deermoss,deermoss,Mythic Ages: Megafauna Bestiary,large,2.5,0.18,0.7439,0.2561,0.537,foreign,wildlife,0
-HorrorWastes,Muffalo,muffalo,Core,large,2.4000000953674316,0.18,0.7405,0.2595,0.46,ours,wildlife,0
-HorrorWastes,MA_Worhin,worhin,Mythic Ages: Megafauna Bestiary,huge,4,0.05,0.8832,0.1168,0.57,ours,wildlife,0
-HorrorWastes,DA_NorthernDrog,northern drog,Dark Ages : Beasts and Monsters,huge,4,0.05,0.877,0.123,0.65,foreign,wildlife,0
+BiomeGRimond,Neebray,neebray,Star Wars Animal Collection (Continued),tiny,0.20000000298023224,1.0,0.8075,0.1925,0.605,ours,wildlife,0
+BiomeGRimond,GR_Spidersnake,spidersnake,Vanilla Genetics Expanded,tiny,0.25,1.0,0.7936,0.2064,0.69,dormant,wildlife,0
+BiomeGRimond,AA_Skyeel,arcturan sky eel,Alpha Animals,tiny,0.25,1.0,0.7215,0.2785,0.473,dormant,wildlife,0
+BiomeGRimond,GraniteSlug,granite slug,Star Wars Animal Collection (Continued),tiny,0.20000000298023224,1.0,0.7987,0.2013,0.605,ours,wildlife,0
+BiomeGRimond,AA_CrystalMit,crystalmit,Alpha Animals,small,0.5,0.7,0.6368,0.3632,0.621,ours,wildlife,0
+BiomeGRimond,GR_Chickenlizard,chickenlizard,Vanilla Genetics Expanded,small,0.30000001192092896,0.7,0.8063,0.1937,0.408,dormant,wildlife,0
+BiomeGRimond,AA_PebbleMit,pebblemit,Alpha Animals,small,0.5,0.7,0.8913,0.1087,0.554,ours,wildlife,0
+BiomeGRimond,Mynock,mynock,Star Wars Animal Collection (Continued),small,0.5,0.7,0.8616,0.1384,0.613,ours,wildlife,0
+BiomeGRimond,AA_AuroraSylph,Aurora sylph,Alpha Animals,small,0.5,0.7,0.8513,0.1487,0.413,ours,wildlife,0
+BiomeGRimond,AA_GreenGoo,green goo,Alpha Animals,small,0.5,0.7,0.8299,0.1701,0.413,ours,wildlife,0
+BiomeGRimond,AA_MegaLouse,megalouse,Alpha Animals,small,0.5,0.7,0.7126,0.2874,0.713,ours,wildlife,0
+BiomeGRimond,AA_FungalHusk,fungal husk,Alpha Animals,med,1,0.4,0.9248,0.0752,0.575,dormant,wildlife,0
+BiomeGRimond,GR_Boomsnake,boomsnake,Vanilla Genetics Expanded,med,1.5,0.4,0.9116,0.0884,0.438,dormant,wildlife,0
+BiomeGRimond,GR_Snakecat,snakecat,Vanilla Genetics Expanded,med,1.5,0.4,0.8144,0.1856,0.588,dormant,wildlife,0
+BiomeGRimond,GR_Muffalorat,muffalorat,Vanilla Genetics Expanded,med,1,0.4,0.7843,0.2157,0.425,dormant,wildlife,0
+BiomeGRimond,Maalraas,maalraas,Star Wars Animal Collection (Continued),large,2,0.18,0.9143,0.0857,0.822,ours,wildlife,0
+BiomeGRimond,BMT_FrostweaverSpider,frostweaver,Biomes! Caverns,large,2.4000000953674316,0.18,0.745,0.255,0.735,dormant,wildlife,0
+BiomeGRimond,AA_BoulderMit,bouldermit,Alpha Animals,huge,4,0.05,0.9758,0.0242,0.733,ours,wildlife,0
+BiomeGRimond,AA_EngorgedTentacularAberration,engorged tentacular aberration,Alpha Animals,SUPER,6,0.008,0.7309,0.2691,0.65,dormant,wildlife,0
+BiomeGRimond,WasteRat,waste rat,Biotech,small,0.30000001192092896,0.7,0.9784,0.0216,0.558,dormant,wildlife,0
+BiomeGRimond,BMT_CrystalFairyMole,crystal fairy mole,Biomes! Caverns,med,0.8600000143051147,0.4,0.5093,0.4907,0.422,ours,wildlife,0
+BiomeGRimond,GR_Molebear,molebear,Vanilla Genetics Expanded,med,1,0.4,0.8753,0.1247,0.575,dormant,wildlife,0
+BiomeGRimond,GR_Bearalope,bearalope,Vanilla Genetics Expanded,med,1.5,0.4,0.8751,0.1249,0.588,dormant,wildlife,0
+BiomeGRimond,GR_Bearffalo,bearffalo,Vanilla Genetics Expanded,med,1.5,0.4,0.8595,0.1405,0.438,dormant,wildlife,0
+BiomeGRimond,FeralGrazer,feral grazer,Star Wars Animal Collection (Continued),large,2,0.18,0.8138,0.1862,0.51,ours,wildlife,0
+BiomeGRimond,MA_Deermoss,deermoss,Mythic Ages: Megafauna Bestiary,large,2.5,0.18,0.7439,0.2561,0.537,foreign,wildlife,0
+BiomeGRimond,Muffalo,muffalo,Core,large,2.4000000953674316,0.18,0.7405,0.2595,0.46,ours,wildlife,0
+BiomeGRimond,MA_Worhin,worhin,Mythic Ages: Megafauna Bestiary,huge,4,0.05,0.8832,0.1168,0.57,ours,wildlife,0
+BiomeGRimond,DA_NorthernDrog,northern drog,Dark Ages : Beasts and Monsters,huge,4,0.05,0.877,0.123,0.65,foreign,wildlife,0
 Wasteland,VFEI2_Swarmling,swarmlings,Vanilla Factions Expanded - Insectoids 2,tiny,0.20000000298023224,1.0,0.8044,0.1956,0.605,dormant,wildlife,0
 Wasteland,SW_Electrictick,Electrictick,Insectoids 2 - Isopoda geneline,tiny,0.25,1.0,0.7569,0.2431,0.906,dormant,wildlife,0
 Wasteland,GraniteSlug,granite slug,Star Wars Animal Collection (Continued),tiny,0.20000000298023224,1.0,0.8141,0.1859,0.605,ours,wildlife,0
@@ -260,35 +260,35 @@ AridShrubland,AA_SandLion,sand lion,Alpha Animals,large,2,0.18,0.8971,0.1029,0.6
 AridShrubland,Orray,orray,Star Wars Animal Collection (Continued),large,2,0.18,0.8825,0.1175,0.67,ours,wildlife,0
 AridShrubland,GR_AberrantFleshbeast,aberrant fleshbeast,Vanilla Genetics Expanded,huge,5,0.07,0.8572,0.1428,0.5,dormant,wildlife,0
 AridShrubland,MA_Sivatherium,sivatherium,Mythic Ages: Megafauna Bestiary,huge,3.299999952316284,0.07,0.9339,0.0661,0.549,ours,wildlife,0
-BMT_CrystalCaverns,Neebray,neebray,Star Wars Animal Collection (Continued),tiny,0.20000000298023224,1.0,0.5308,0.4692,0.605,ours,wildlife,0
-BMT_CrystalCaverns,AA_Skyeel,arcturan sky eel,Alpha Animals,tiny,0.25,1.0,0.7196,0.2804,0.473,dormant,wildlife,0
-BMT_CrystalCaverns,GR_Spidersnake,spidersnake,Vanilla Genetics Expanded,tiny,0.25,1.0,0.4937,0.5063,0.69,dormant,wildlife,0
-BMT_CrystalCaverns,AA_Frostmite,frostmite,Alpha Animals,small,0.5,0.7,0.5975,0.4025,0.613,ours,wildlife,0
-BMT_CrystalCaverns,AA_RedGoo,red goo,Alpha Animals,small,0.5,0.7,0.2947,0.7053,0.413,ours,wildlife,0
-BMT_CrystalCaverns,BMT_FreezerFrog,freezer frog,Biomes! Caverns,small,0.75,0.7,0.8528,0.1472,0.569,dormant,wildlife,0
-BMT_CrystalCaverns,AA_MegaLouse,megalouse,Alpha Animals,small,0.5,0.7,0.8056,0.1944,0.713,ours,wildlife,0
-BMT_CrystalCaverns,GR_ParagonIguana,reptile paragon,Vanilla Genetics Expanded,small,0.4000000059604645,0.7,0.5592,0.4408,0.56,dormant,wildlife,0
-BMT_CrystalCaverns,AA_AuroraSylph,Aurora sylph,Alpha Animals,small,0.5,0.7,0.6566,0.3434,0.413,ours,wildlife,0
-BMT_CrystalCaverns,GR_Chickenlizard,chickenlizard,Vanilla Genetics Expanded,small,0.30000001192092896,0.7,0.5311,0.4689,0.408,dormant,wildlife,0
-BMT_CrystalCaverns,Krykna,krykna,Star Wars Animal Collection (Continued),med,0.800000011920929,0.4,0.9461,0.0539,0.703,ours,wildlife,0
-BMT_CrystalCaverns,VQE_IceCrawler,ice crawler,Vanilla Quests Expanded - Cryptoforge,med,0.800000011920929,0.4,0.8066,0.1934,0.68,dormant,wildlife,0
-BMT_CrystalCaverns,VQE_Megamidge,megamidge,Vanilla Quests Expanded - Cryptoforge,med,1.2000000476837158,0.4,0.7804,0.2196,0.705,dormant,wildlife,0
-BMT_CrystalCaverns,AA_Frostling,frostling,Alpha Animals,med,1.5,0.4,0.6735,0.3265,0.621,ours,wildlife,0
-BMT_CrystalCaverns,AA_FrostAve,frost ave,Alpha Animals,med,1.2999999523162842,0.4,0.6694,0.3306,0.432,foreign,wildlife,0
-BMT_CrystalCaverns,AA_WindBeast,windbeast,Alpha Animals,med,1.5,0.4,0.5811,0.4189,0.488,ours,wildlife,0
-BMT_CrystalCaverns,Rabbuck,rabbuck,Beasts of the Rim (Continued),med,0.8999999761581421,0.4,0.4496,0.5504,0.422,foreign,wildlife,0
-BMT_CrystalCaverns,Jakobeast,jakobeast,Star Wars Animal Collection (Continued),large,2.5999999046325684,0.18,0.6959,0.3041,0.465,ours,wildlife,0
-BMT_CrystalCaverns,GR_Muffalope,muffalope,Vanilla Genetics Expanded,large,2,0.18,0.3625,0.6375,0.45,dormant,wildlife,0
-BMT_CrystalCaverns,AA_RedSpore,red spore,Alpha Animals,large,2,0.18,0.3668,0.6332,0.5,ours,wildlife,0
-BMT_CrystalCaverns,Gomphotaria,gomphotaria,Megafauna,huge,5,0.0504,0.8305,0.1695,0.65,foreign,wildlife,0
-BMT_CrystalCaverns,MA_Aminox,aminox,Mythic Ages: Megafauna Bestiary,huge,3,0.0504,0.8137,0.1863,0.508,foreign,wildlife,0
-BMT_CrystalCaverns,GR_Thrumffalo,thrumffalo,Vanilla Genetics Expanded,SUPER,8.399999618530273,0.0086,0.7633,0.2367,0.767,dormant,wildlife,0
-BMT_CrystalCaverns,BMT_Megakrill,megakrill,Biomes! Polluted Lands,tiny,0.20000000298023224,1.0,0.8792,0.1208,0.455,dormant,wildlife,0
-BMT_CrystalCaverns,BMT_Megaphorid,megaphorid,Biomes! Polluted Lands,small,0.6000000238418579,0.7,0.7618,0.2382,0.615,dormant,wildlife,0
-BMT_CrystalCaverns,AA_Darkbeast,darkbeast,Alpha Animals,med,1.5,0.4,0.4374,0.5626,0.488,ours,wildlife,0
-BMT_CrystalCaverns,AA_Slurrypede,slurrypede,Alpha Animals,large,2,0.18,0.8992,0.1008,0.833,ours,wildlife,0
-BMT_CrystalCaverns,AA_Ravager,ravager,Alpha Animals,large,2.5,0.18,0.8552,0.1448,0.796,ours,wildlife,0
-BMT_CrystalCaverns,Blixus,blixus,Star Wars Animal Collection (Continued),huge,4,0.0504,0.7548,0.2452,0.9,ours,wildlife,0
+RUT_NightsideIce,Neebray,neebray,Star Wars Animal Collection (Continued),tiny,0.20000000298023224,1.0,0.5328,0.4672,0.605,ours,wildlife,0
+RUT_NightsideIce,AA_Skyeel,arcturan sky eel,Alpha Animals,tiny,0.25,1.0,0.7196,0.2804,0.473,dormant,wildlife,0
+RUT_NightsideIce,GR_Spidersnake,spidersnake,Vanilla Genetics Expanded,tiny,0.25,1.0,0.4937,0.5063,0.69,dormant,wildlife,0
+RUT_NightsideIce,AA_Frostmite,frostmite,Alpha Animals,small,0.5,0.7,0.9376,0.0624,0.613,ours,wildlife,0
+RUT_NightsideIce,AA_RedGoo,red goo,Alpha Animals,small,0.5,0.7,0.2947,0.7053,0.413,ours,wildlife,0
+RUT_NightsideIce,BMT_FreezerFrog,freezer frog,Biomes! Caverns,small,0.75,0.7,0.8528,0.1472,0.569,dormant,wildlife,0
+RUT_NightsideIce,AA_MegaLouse,megalouse,Alpha Animals,small,0.5,0.7,0.8056,0.1944,0.713,ours,wildlife,0
+RUT_NightsideIce,GR_ParagonIguana,reptile paragon,Vanilla Genetics Expanded,small,0.4000000059604645,0.7,0.5592,0.4408,0.56,dormant,wildlife,0
+RUT_NightsideIce,AA_AuroraSylph,Aurora sylph,Alpha Animals,small,0.5,0.7,0.6566,0.3434,0.413,ours,wildlife,0
+RUT_NightsideIce,GR_Chickenlizard,chickenlizard,Vanilla Genetics Expanded,small,0.30000001192092896,0.7,0.5311,0.4689,0.408,dormant,wildlife,0
+RUT_NightsideIce,Krykna,krykna,Star Wars Animal Collection (Continued),med,0.800000011920929,0.4,0.9461,0.0539,0.703,ours,wildlife,0
+RUT_NightsideIce,VQE_IceCrawler,ice crawler,Vanilla Quests Expanded - Cryptoforge,med,0.800000011920929,0.4,0.8068,0.1932,0.68,dormant,wildlife,0
+RUT_NightsideIce,VQE_Megamidge,megamidge,Vanilla Quests Expanded - Cryptoforge,med,1.2000000476837158,0.4,0.8321,0.1679,0.705,dormant,wildlife,0
+RUT_NightsideIce,AA_Frostling,frostling,Alpha Animals,med,1.5,0.4,0.9217,0.0783,0.621,ours,wildlife,0
+RUT_NightsideIce,AA_FrostAve,frost ave,Alpha Animals,med,1.2999999523162842,0.4,0.6694,0.3306,0.432,foreign,wildlife,0
+RUT_NightsideIce,AA_WindBeast,windbeast,Alpha Animals,med,1.5,0.4,0.5811,0.4189,0.488,ours,wildlife,0
+RUT_NightsideIce,Rabbuck,rabbuck,Beasts of the Rim (Continued),med,0.8999999761581421,0.4,0.4496,0.5504,0.422,foreign,wildlife,0
+RUT_NightsideIce,Jakobeast,jakobeast,Star Wars Animal Collection (Continued),large,2.5999999046325684,0.18,0.6959,0.3041,0.465,ours,wildlife,0
+RUT_NightsideIce,GR_Muffalope,muffalope,Vanilla Genetics Expanded,large,2,0.18,0.3625,0.6375,0.45,dormant,wildlife,0
+RUT_NightsideIce,AA_RedSpore,red spore,Alpha Animals,large,2,0.18,0.3668,0.6332,0.5,ours,wildlife,0
+RUT_NightsideIce,Gomphotaria,gomphotaria,Megafauna,huge,5,0.0504,0.8305,0.1695,0.65,foreign,wildlife,0
+RUT_NightsideIce,MA_Aminox,aminox,Mythic Ages: Megafauna Bestiary,huge,3,0.0504,0.8137,0.1863,0.508,foreign,wildlife,0
+RUT_NightsideIce,GR_Thrumffalo,thrumffalo,Vanilla Genetics Expanded,SUPER,8.399999618530273,0.0086,0.7633,0.2367,0.767,dormant,wildlife,0
+RUT_NightsideIce,BMT_Megakrill,megakrill,Biomes! Polluted Lands,tiny,0.20000000298023224,1.0,0.8792,0.1208,0.455,dormant,wildlife,0
+RUT_NightsideIce,BMT_Megaphorid,megaphorid,Biomes! Polluted Lands,small,0.6000000238418579,0.7,0.7618,0.2382,0.615,dormant,wildlife,0
+RUT_NightsideIce,AA_Darkbeast,darkbeast,Alpha Animals,med,1.5,0.4,0.4374,0.5626,0.488,ours,wildlife,0
+RUT_NightsideIce,AA_Slurrypede,slurrypede,Alpha Animals,large,2,0.18,0.8992,0.1008,0.833,ours,wildlife,0
+RUT_NightsideIce,AA_Ravager,ravager,Alpha Animals,large,2.5,0.18,0.8552,0.1448,0.796,ours,wildlife,0
+RUT_NightsideIce,Blixus,blixus,Star Wars Animal Collection (Continued),huge,4,0.0504,0.7548,0.2452,0.9,ours,wildlife,0
 PoisonForest,Neebray,neebray,Star Wars Animal Collection (Continued),tiny,0.20000000298023224,1.0,0.685,0.315,0.605,ours,wildlife,0
 PoisonForest,AA_InfectedAerofleet,infected aerofleet,Alpha Animals,tiny,0.20000000298023224,1.0,0.6271,0.3729,0.405,ours,wildlife,0
 PoisonForest,TYR_Lemming,lemming,Little Critters,tiny,0.20000000298023224,1.0,0.6227,0.3773,0.405,ours,wildlife,0
@@ -661,32 +661,26 @@ COMIGO_GreaterSwamp_Tropical,Varactyl,varactyl,Star Wars Animal Collection (Cont
 COMIGO_GreaterSwamp_Tropical,BMT_AcidSlug,acid slug,Biomes! Caverns,huge,4,0.0548,0.693,0.307,0.883,dormant,wildlife,0
 COMIGO_GreaterSwamp_Tropical,Reek,reek,Star Wars Animal Collection (Continued),huge,3,0.0548,0.7789,0.2211,0.625,ours,wildlife,0
 COMIGO_GreaterSwamp_Tropical,AA_Behemoth,Behemoth,Alpha Animals,SUPER,32,0.0094,0.8126,0.1874,0.867,dormant,wildlife,0
-IceSheet,BMT_Megaroach,megaroach,Biomes! Polluted Lands,tiny,0.20000000298023224,1.0,0.5462,0.4538,0.605,dormant,wildlife,0
-IceSheet,Neebray,neebray,Star Wars Animal Collection (Continued),tiny,0.20000000298023224,1.0,0.5328,0.4672,0.605,ours,wildlife,0
-IceSheet,GraniteSlug,granite slug,Star Wars Animal Collection (Continued),tiny,0.20000000298023224,1.0,0.492,0.508,0.605,ours,wildlife,0
-IceSheet,AA_Frostmite,frostmite,Alpha Animals,small,0.5,0.7,0.9376,0.0624,0.613,ours,wildlife,0
-IceSheet,BMT_ColonyPustuleHornet,pustule hornet,Biomes! Polluted Lands,small,0.3199999928474426,0.7,0.6866,0.3134,0.608,dormant,wildlife,0
-IceSheet,BMT_PustuleHornet,pustule hornet,Biomes! Polluted Lands,small,0.3199999928474426,0.7,0.6866,0.3134,0.608,dormant,wildlife,0
-IceSheet,BMT_PustuleHornetSpawned,pustule hornet,Biomes! Polluted Lands,small,0.3199999928474426,0.7,0.6866,0.3134,0.608,dormant,wildlife,0
-IceSheet,BMT_FamineLocust,famine locust,Biomes! Polluted Lands,small,0.3199999928474426,0.7,0.5262,0.4738,0.608,dormant,wildlife,0
-IceSheet,Mynock,mynock,Star Wars Animal Collection (Continued),small,0.5,0.7,0.562,0.438,0.613,ours,wildlife,0
-IceSheet,BMT_ColonyPustuleHornetQueen,pustule queen,Biomes! Polluted Lands,med,1,0.4,0.6949,0.3051,0.625,dormant,wildlife,0
-IceSheet,BMT_PustuleHornetQueen,pustule queen,Biomes! Polluted Lands,med,1,0.4,0.6949,0.3051,0.625,dormant,wildlife,0
-IceSheet,VQE_Megamidge,megamidge,Vanilla Quests Expanded - Cryptoforge,med,1.2000000476837158,0.4,0.8321,0.1679,0.705,dormant,wildlife,0
-IceSheet,AA_Frostling,frostling,Alpha Animals,med,1.5,0.4,0.9217,0.0783,0.621,ours,wildlife,0
-IceSheet,VQE_IceCrawler,ice crawler,Vanilla Quests Expanded - Cryptoforge,med,0.800000011920929,0.4,0.8068,0.1932,0.68,dormant,wildlife,0
-IceSheet,BMT_Swarmcaller,swarmcaller,Biomes! Polluted Lands,med,1,0.4,0.6254,0.3746,0.625,dormant,wildlife,0
-IceSheet,Krykna,krykna,Star Wars Animal Collection (Continued),med,0.800000011920929,0.4,0.6493,0.3507,0.703,ours,wildlife,0
-IceSheet,DA_SnowTaraal,snow taraal,Dark Ages : Beasts and Monsters,large,2.5,0.18,0.9357,0.0643,0.613,foreign,wildlife,0
-IceSheet,Ling_Cockroach,Giant Cockroach,Rim cockroach,large,2,0.18,0.4742,0.5258,0.883,ours,wildlife,0
-IceSheet,AA_ArcticLion,arctic lion,Alpha Animals,large,2,0.18,0.9431,0.0569,0.6,ours,wildlife,0
-IceSheet,BMT_Thrumbungus,thrumbungus,Biomes! Caverns,huge,4,0.35,0.897,0.103,0.867,dormant,wildlife,0
-IceSheet,Leaftail,leaf-tail,Star Wars Animal Collection (Continued),tiny,0.20000000298023224,1.0,0.6053,0.3947,0.555,ours,wildlife,0
-IceSheet,AM_UnshackledDryad,unshackled dryad,Alpha Memes,small,0.6669999957084656,0.7,0.746,0.254,0.617,dormant,wildlife,0
-IceSheet,WasteRat,waste rat,Biotech,small,0.30000001192092896,0.7,0.585,0.415,0.558,dormant,wildlife,0
-IceSheet,BMT_Snowstalker,snowstalker,Biomes! Caverns,med,1,0.4,0.7327,0.2673,0.575,dormant,wildlife,0
-IceSheet,AA_Blizzarisk,blizzarisk,Alpha Animals,large,2,0.18,0.9215,0.0785,0.85,ours,wildlife,0
-IceSheet,BMT_FrostweaverSpider,frostweaver,Biomes! Caverns,large,2.4000000953674316,0.18,0.7363,0.2637,0.735,dormant,wildlife,0
+RUT_NightsideIce,BMT_Megaroach,megaroach,Biomes! Polluted Lands,tiny,0.20000000298023224,1.0,0.5462,0.4538,0.605,dormant,wildlife,0
+RUT_NightsideIce,GraniteSlug,granite slug,Star Wars Animal Collection (Continued),tiny,0.20000000298023224,1.0,0.492,0.508,0.605,ours,wildlife,0
+RUT_NightsideIce,BMT_ColonyPustuleHornet,pustule hornet,Biomes! Polluted Lands,small,0.3199999928474426,0.7,0.6866,0.3134,0.608,dormant,wildlife,0
+RUT_NightsideIce,BMT_PustuleHornet,pustule hornet,Biomes! Polluted Lands,small,0.3199999928474426,0.7,0.6866,0.3134,0.608,dormant,wildlife,0
+RUT_NightsideIce,BMT_PustuleHornetSpawned,pustule hornet,Biomes! Polluted Lands,small,0.3199999928474426,0.7,0.6866,0.3134,0.608,dormant,wildlife,0
+RUT_NightsideIce,BMT_FamineLocust,famine locust,Biomes! Polluted Lands,small,0.3199999928474426,0.7,0.5262,0.4738,0.608,dormant,wildlife,0
+RUT_NightsideIce,Mynock,mynock,Star Wars Animal Collection (Continued),small,0.5,0.7,0.562,0.438,0.613,ours,wildlife,0
+RUT_NightsideIce,BMT_ColonyPustuleHornetQueen,pustule queen,Biomes! Polluted Lands,med,1,0.4,0.6949,0.3051,0.625,dormant,wildlife,0
+RUT_NightsideIce,BMT_PustuleHornetQueen,pustule queen,Biomes! Polluted Lands,med,1,0.4,0.6949,0.3051,0.625,dormant,wildlife,0
+RUT_NightsideIce,BMT_Swarmcaller,swarmcaller,Biomes! Polluted Lands,med,1,0.4,0.6254,0.3746,0.625,dormant,wildlife,0
+RUT_NightsideIce,DA_SnowTaraal,snow taraal,Dark Ages : Beasts and Monsters,large,2.5,0.18,0.9357,0.0643,0.613,foreign,wildlife,0
+RUT_NightsideIce,Ling_Cockroach,Giant Cockroach,Rim cockroach,large,2,0.18,0.4742,0.5258,0.883,ours,wildlife,0
+RUT_NightsideIce,AA_ArcticLion,arctic lion,Alpha Animals,large,2,0.18,0.9431,0.0569,0.6,ours,wildlife,0
+RUT_NightsideIce,BMT_Thrumbungus,thrumbungus,Biomes! Caverns,huge,4,0.35,0.897,0.103,0.867,dormant,wildlife,0
+RUT_NightsideIce,Leaftail,leaf-tail,Star Wars Animal Collection (Continued),tiny,0.20000000298023224,1.0,0.6053,0.3947,0.555,ours,wildlife,0
+RUT_NightsideIce,AM_UnshackledDryad,unshackled dryad,Alpha Memes,small,0.6669999957084656,0.7,0.746,0.254,0.617,dormant,wildlife,0
+RUT_NightsideIce,WasteRat,waste rat,Biotech,small,0.30000001192092896,0.7,0.585,0.415,0.558,dormant,wildlife,0
+RUT_NightsideIce,BMT_Snowstalker,snowstalker,Biomes! Caverns,med,1,0.4,0.7327,0.2673,0.575,dormant,wildlife,0
+RUT_NightsideIce,AA_Blizzarisk,blizzarisk,Alpha Animals,large,2,0.18,0.9215,0.0785,0.85,ours,wildlife,0
+RUT_NightsideIce,BMT_FrostweaverSpider,frostweaver,Biomes! Caverns,large,2.4000000953674316,0.18,0.7363,0.2637,0.735,dormant,wildlife,0
 AB_PyroclasticConflagration,Tooke,tooke,Star Wars Animal Collection (Continued),tiny,0.10000000149011612,1.0,0.6064,0.3936,0.603,ours,wildlife,0
 AB_PyroclasticConflagration,Megascarab,megascarab,Core,tiny,0.20000000298023224,1.0,0.5716,0.4284,0.755,ours,wildlife,0
 AB_PyroclasticConflagration,BMT_FacetMoth,facet moth,Biomes! Caverns,small,0.7699999809265137,0.7,0.3928,0.6072,0.419,ours,wildlife,0
