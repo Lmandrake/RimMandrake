@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T04:37:58Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-07T04:39:22Z (the last event's own timestamp, not the render clock)
 game:  UP   bridge: FOUNDRY
 
 # NEXT — `priority.rank()` order, top item first
@@ -351,6 +351,15 @@ kind:     task
 summary:  Reproduced live, 2026-09-06, while working BIOMESPAWNFLORAAUDIT1 on
 prose:    infrastructure/state/items/NINEFOLD_DEBUG_GAME_READY_CRASH_1.md
 
+## WORLDMAP_DESERT_BAND_REPAIR_1 Repair the Desert def's climate outliers on the frozen world map, re-freeze the savegame
+state:    doing
+row:      unassigned
+needs:    offline
+target:   v1
+kind:     task
+summary:  WORLDMAPDESERTBANDREPAIR1
+prose:    infrastructure/state/items/WORLDMAP_DESERT_BAND_REPAIR_1.md
+
 ## TREE_GRAPHICS_OWNERSHIP_1 Own tree art at our scales: generate custom tree graphics (sweetline trees first — huge, ancient); remove tree-mod rescaling of our designs
 state:    doing
 row:      unassigned
@@ -359,6 +368,15 @@ target:   v1
 kind:     build
 summary:  Owner, verbatim (filed on the item): "Rather than use the whole Comingo tree
 prose:    infrastructure/state/items/TREE_GRAPHICS_OWNERSHIP_1.md
+
+## LIGHTFALL_CHASM_AUTHORING_1 Author the Lightfall chasm landmark on the Damp chain (terminator suture, deepest at tile 9023) — site+name owner-ratified 2026-09-06, spec in forsaken_crags.md §3
+state:    doing
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+summary:  - Site (MEASURED, ruled): the Damp chain — 32 ABRockyCrags tiles straddling arc 90,
+prose:    infrastructure/state/items/LIGHTFALL_CHASM_AUTHORING_1.md
 
 ## MACRO_GENERATOR_V0_1 Macro generator v0: ONE idea per map — chooser + plan + terrain grid, graded on a comparator sheet by the owner (research doc §9.3 step 4)
 state:    doing
@@ -511,16 +529,6 @@ thin:     no ## spec, no ## verify, no ## criteria
 summary:  SARLACCNATIVEHABITAT1
 prose:    infrastructure/state/items/SARLACC_NATIVE_HABITAT_1.md
 
-## WORLDMAP_DESERT_BAND_REPAIR_1 Repair the Desert def's climate outliers on the frozen world map, re-freeze the savegame
-state:    proposed
-row:      unassigned
-needs:    offline
-target:   v1
-kind:     task
-thin:     no ## spec, no ## verify, no ## criteria
-summary:  WORLDMAPDESERTBANDREPAIR1
-prose:    infrastructure/state/items/WORLDMAP_DESERT_BAND_REPAIR_1.md
-
 ## PAWNFLAVOR_MEGAFAUNA_GEN_DESYNC_1 Two more generators will silently re-add retired-mod blocks bbf66830 hand-stripped
 state:    proposed
 row:      unassigned
@@ -550,16 +558,6 @@ kind:     task
 thin:     no ## verify
 summary:  RESTART HANDOFF 2026-09-06 (FOUNDRY, pre-agent-restart). Read this whole
 prose:    infrastructure/state/items/FOUNDRY_REBOOT_HANDOFF_20260906.md
-
-## LIGHTFALL_CHASM_AUTHORING_1 Author the Lightfall chasm landmark on the Damp chain (terminator suture, deepest at tile 9023) — site+name owner-ratified 2026-09-06, spec in forsaken_crags.md §3
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  - Site (MEASURED, ruled): the Damp chain — 32 ABRockyCrags tiles straddling arc 90,
-prose:    infrastructure/state/items/LIGHTFALL_CHASM_AUTHORING_1.md
 
 ## EDIBLE_GENEPACK_NATIVE_1 Scan Genepacks Injection DLL (TommasoBelluzzo.GenepacksInjection, ws 3784789591), understand its consumption flow, reimplement the edible-genepack loop natively in our own mod — the Slime's gene machine must not lean on donor mods (owner 2026-09-06, the_slime.md Owed)
 state:    proposed
