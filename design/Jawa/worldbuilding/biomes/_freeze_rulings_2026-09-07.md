@@ -191,3 +191,95 @@ Stones / arid shrubland condensate economies stand.
 **Amends:** `terminator_sea.md`, one sentence.
 ⚠️ **Deliberately left open:** WHERE dayside dew forms (open sand? stone? shade?)
 is not ruled. The roster pass will have to answer it to site condensate flora.
+
+---
+
+## R9 — ⭐ WE DO NOT CROWN THINGS. DESCRIBE THE MECHANISM INSTEAD
+
+**Ruled, and this is general doctrine, not an archive fix.** Owner, 2026-09-07:
+*"We don't need any of these superlatives... We don't need to go around crowning
+things for the planet."*
+
+🔑 **The replacement is descriptive prose that states the MECHANISM and lets the
+reader compare.** His own examples, as the pattern to write to:
+
+- the cold preserver → *"acting like a deep record of all who fell here, so long
+  as they survive the brutal dry freezing"*
+- the tar → *"entombs all who fall into it, preserving their hard structures far
+  into the future"*
+- the Slime → **not "archive" at all**: *"living, flowing genetic database"* —
+  which *"is more accurate than archive anyway."*
+
+⛔ **This retires the whole SUPERLATIVE CROWNS card group** — the review's
+finding #18 and its ten double/triple claims, #29's terminator "only"s, #13's
+"the mod's fastest disease clock", #12's sickest-air trio, #15's wood monopoly,
+#26's "only surface water", #20's "only seismically active province". **None of
+them needs a crown ruling. Each needs its superlative rewritten as a
+mechanism.** No sitting time is owed to deciding who wins; the work is prose.
+
+**Amends:** every sheet carrying an "only / the planet's / the most / the
+fastest" claim. The rule for the rewrite: say what the place DOES and why, and
+never rank it against the rest of the planet.
+
+---
+
+## R10 — THE WILDSTEAM: THE GREENTIDE IS HOME, THE REST ARE HOLDINGS
+
+**Ruled:** the Greentide is home ground and holds the **capital** — it already
+carries two seats on the owner's own coordinates (Oilpalm and one more), the
+strongest existing commitment. The others are demoted to holdings:
+
+- **Sporefall** (Fever Wood) — the **beloved second city**, a stilt-built
+  treetop town; a jewel, not the seat.
+- **The Miasma seat** — the cool-weather retreat and first coastal foothold.
+- **The Webwork seats** — the war front, ringing the Webwork's Scald side.
+
+**Amends:** `the_greentide.md` (name the capital), `the_fever_wood.md` (Sporefall
+is second city; its "home-canton preference" question for the Wednesday sitting
+is now ANSWERED — remove it), `the_miasma.md`, `the_webwork.md`.
+**Feeds:** the settlement pass, directly.
+
+---
+
+## R11 — THE WARDENS: ONE LIFECYCLE, A MIGRATION BETWEEN TWO BIOMES
+
+**Ruled:** wardens **breed and are born in the Miasma's mangal nurseries**,
+spend their **adult lives in the Grey Deep as the brine adults**, and **return to
+the Miasma to die** — the elders too brine-broken to go back out become the
+**warden mothers** guarding the next crèche.
+
+Both sheets stand with one line each, and the planet gains a migration worth
+more than either sheet alone.
+
+**Amends:** `the_miasma.md` (the mothers are the END of the cycle, not the
+species), `the_grey_deep.md` (its giant is paired against adults on their ocean
+ground), and `sea_beasts_roster.md`.
+**Owed:** a stated route between the Miasma delta and the Grey Deep.
+
+---
+
+## R12 — GEOTHERMAL: A DENSITY FIELD, NOT AN EXCLUSIVITY CLAIM
+
+**Ruled: the question was never which province owns volcanism.** Owner,
+2026-09-07: *"we should compute a density, a likelihood, of geothermal geysers
+and other vents that decreases as you move away from mountain ranges on the
+dayside and drops to zero on the terminator for sure. Just as a guide to prevent
+the utterly random distribution currently observed... It's mostly about
+preventing them from spawning on every map as they do now."*
+
+**So the deliverable is a FIELD, not a sentence:**
+
+- **likelihood is highest at/near dayside mountain ranges**, and **decays with
+  distance** from them;
+- **zero at the terminator**;
+- it exists to stop geysers appearing on **every** map, which is the observed
+  defect today.
+
+⛔ **The Forge's "only seismically active province" is struck under [R9] anyway**
+— it is a crown. The Forge is where the field is densest; it does not own the
+mechanism.
+
+**This is a BUILD item, not a prose amendment** — geysers are placed by RimWorld
+mapgen per map, so honouring the field means constraining that placement.
+**Amends:** `the_forge.md`, `the_scald.md`, and the Anvil seep lines, each to
+cite the field rather than claim or deny exclusivity.
