@@ -586,3 +586,38 @@ weather.
   [R16]'s silk hazard, and the rest.
 
 Wednesday opens on clean sheets and spends its time on the interesting half.
+
+---
+
+## R18a — HOW RIVER DIRECTION ACTUALLY WORKS (engine fact, read 2026-09-07)
+
+⛔ **"Reverse the river links" is a NO-OP and must not be attempted.** Read from
+the RimWorld source, not inferred:
+
+- `WorldGrid.OverlayRiver` writes the link **symmetrically** — `fromTile` gets a
+  `RiverLink` to `toTile` **and** `toTile` gets one back to `fromTile`. A river
+  edge stores **no direction at all**. Swapping the a/b columns of a links row
+  changes nothing.
+- Direction lives in **`SurfaceTile.riverDist`**, one `int` per tile (saved to the
+  world as the byte array `tileRiverDistances`). `OverlayRiver`'s last line:
+  `toTile.riverDist = Max(toTile.riverDist, fromTile.riverDist + 1)`.
+- `WorldGenStep_Rivers` seeds its flood-fill from **coastal Ocean tiles** and
+  extends upstream, so **riverDist counts hops from the MOUTH: 0 at the mouth,
+  increasing upstream.**
+- Map generation reads it back — `TileMutatorWorker_River`,
+  `_RiverConfluence`, `_RiverIsland` all order the tile's links by the
+  neighbour's `riverDist`. **The neighbour with the LOWER riverDist is
+  downstream.**
+
+🔑 **So the real repaint spec for [R18] step 2 is: renumber `riverDist` along the
+five Scald rivers so the Scald end holds the MAXIMUM, not the minimum.** No
+elevation change is needed, and no link is edited. This also means [R1] costs the
+map nothing — the Scald can stay at −350 m and still be the source.
+
+⚠️ **UNMEASURED, and it needs the live game:** `riverDist` is not in
+`ASHKARR_WORLDMAP_tiles.csv`, so we do not know what values the frozen world
+actually holds — our rivers were applied by `world/_rivers/apply.py`, which may
+never have set it. Read it live before planning any write. Also unconfirmed:
+whether the bridge exposes `riverDist` for writing at all.
+⚠️ `riverDist` is stored as a **byte** — a river longer than 255 hops cannot be
+numbered.
