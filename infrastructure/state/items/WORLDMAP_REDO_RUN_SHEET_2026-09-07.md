@@ -107,3 +107,56 @@ superseded, and the 15 flagged ties are settled by the same rule.
 
 River names R01–R16 are **drafted, not ruled** ([R33]). They block nothing here;
 the ledger doc needs them before it can be cited by the biome sheets.
+
+---
+
+# OUTCOME — 2026-09-07, session complete
+
+**Save: `WORLDMAP_V2_merged_2026-09-07.rws`** (12,812,406 bytes). Verified against
+all three known save-tool failure modes: a NEW file appeared; all three
+pre-existing `WORLDMAP_V1_original_*` saves are **byte-identical to backups taken
+before the session**; nothing else in `Saves/` was written.
+
+## what landed
+
+- **FungalForest merge complete.** `BMT_FungalForest` is **extinct** (0 tiles).
+  Live census: Rot 1939→**2291**, Desert 4150→**4203**, Blue Desert 1328→**1336**,
+  Forsaken Crags 1225→**1239**, Nightside Ice **806**.
+- **All 292 river links laid mouth-first**, establishing `riverDist` for the first
+  time ([R38]). `world_links_validate`: `asymmetricCount 0`, `nonAdjacentCount 0`.
+- Landmarks 563, mutators 10084 placements over 6710 tiles, settlements 96→122,
+  71 regions over all 21872 tiles. `world_lint`: 11 findings (3
+  settlementsWithNoRoad), `staleMarineMutators 0`, `waterBiomeOnRaisedLand 0`.
+- **New colony per [R39]:** `Utinni Landing`, settlement 389, **tile 24** (Desert,
+  arc 69.1, 31.3 °C, flat, region *Long Sand*), 250×250. One colonist,
+  **Stoddart** — `kindRequested Colonist / kindActual Colonist /
+  kindSubstituted false`. Map creation verified by `mapCount` **1→2 delta**, not by
+  the tool's return ([TILEGEN_SILENT_REUSE_1]).
+- Old colony (settlement 255, tile 16869) abandoned with `force` — vanilla refuses
+  while `AllColonistsThere`. Its ground had been repainted, which is exactly what
+  the paint guard warned about.
+
+## R36 verification — PASSED
+
+Re-exported the live world and diffed against the intended CSV:
+**1135 mismatches, and every one is a sea tile** whose def does not exist yet
+(436 TwilightSea→Ocean, 381 GreySea→Ocean, 312 TheScald→Lake, 6
+TwilightSea→AB_RockyCrags). **Zero collateral damage on the other 20,737 tiles.**
+
+## 🔴 STILL OWED — rides the next restart, no extra cost
+
+1. **The three seas do not exist in game.** `RUT_TheScald`, `RUT_GreySea`,
+   `RUT_TwilightSea` (+ `RUT_PropaneLake`, painted nowhere) were newly authored in
+   the biome-sheet work and had never been deployed. **Now deployed and validated
+   offline against vanilla `Ocean` — `workerClass BiomeWorker_Ocean`, all required
+   fields present, they WILL load** — but defs parse only at startup.
+   ⇒ After the next restart: reload this save and re-run
+   `w9_run.py --apply` to paint the 1135 tiles. ~2 minutes.
+2. **An assembly is waiting on the same down-window:**
+   `RimMandrakeVisibility.dll` shows `~` in the deploy plan, plus UtinniShell
+   webm textures. Assemblies cannot be written while the game holds them.
+3. ⚠️ **River count discrepancy, unexplained:** we imported 292 river links but
+   `world_links_validate` reports `riverEntries 634` (=317 links) over
+   `riverTiles 347` against our graph's 308. The import appears to have ADDED to
+   pre-existing links rather than replacing them. Measure before the next import;
+   a `clearFirst` may be owed.
