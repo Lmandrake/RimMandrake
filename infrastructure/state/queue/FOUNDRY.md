@@ -7,7 +7,7 @@ The truth is `infrastructure/state/ledger/events.jsonl`; the prose is
 
     python3 src/RimMandrake/rimflow/render.py --overwrite-queues
 
-as-of: 2026-09-07T08:19:20Z (the last event's own timestamp, not the render clock)
+as-of: 2026-09-07T08:20:07Z (the last event's own timestamp, not the render clock)
 game:  DOWN   bridge: free
 
 # NEXT — `priority.rank()` order, top item first
@@ -423,6 +423,15 @@ kind:     task
 summary:  - Input: the 8 plans Transient/mapgenv0/seed01-8.plan.json (or fresh ones from
 prose:    infrastructure/state/items/MAPGEN_GL_SHEET_1.md
 
+## MAPGEN_CONVERGENCE_LOOP_1 Map generator convergence loop: painter vs GL vs corpus, iterate until the owner calls it great (owner 2026-09-06)
+state:    doing
+row:      unassigned
+needs:    bridge
+target:   v1
+kind:     task
+summary:  Each round:
+prose:    infrastructure/state/items/MAPGEN_CONVERGENCE_LOOP_1.md
+
 ## MAPGEN_PAINTER_V1_1 Map generator painter v1: organic masks, elevation→terrain bands, hydrology with cause; v1 comparator sheet (owner 2026-09-06)
 state:    doing
 row:      unassigned
@@ -567,16 +576,6 @@ _none._
 # PROPOSED — filed, not yet taken
 
 Claim one to work it. Any item can be claimed and started; the prose sections are good practice, never a precondition.
-
-## MAPGEN_CONVERGENCE_LOOP_1 Map generator convergence loop: painter vs GL vs corpus, iterate until the owner calls it great (owner 2026-09-06)
-state:    proposed
-row:      unassigned
-needs:    bridge
-target:   v1
-kind:     task
-thin:     no ## criteria
-summary:  Each round:
-prose:    infrastructure/state/items/MAPGEN_CONVERGENCE_LOOP_1.md
 
 ## VEHICLE_FUEL_PATCH_UNFILTERED_1 DesertVehicleReskin fuel patch widens fuel for EVERY Vehicle Framework vehicle (VVE trucks on potatoes); About.xml says draught only — owner ruling: intended or filter (Opus review 2026-09-06)
 state:    proposed
